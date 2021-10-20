@@ -2,182 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B3A43418F
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Oct 2021 00:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F8B434388
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Oct 2021 04:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229803AbhJSWrK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Oct 2021 18:47:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37074 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbhJSWrK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 18:47:10 -0400
-Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E1C8C06161C
-        for <linux-iio@vger.kernel.org>; Tue, 19 Oct 2021 15:44:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
-        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=vwQEiZupVHzjmkcqTqKaN9zmsflv1I6BA2tOaHJ/DXY=; b=DEjuYICmyH4IRv6zqV1lwRO4nk
-        Ednyyo5OYjavztqr5u0zr83EPyN5nfsjuF50KvYMS7h+WIrAA78YajPyRkVN4EhrjpbWoxaUgn8tD
-        1SpUh9OYHnDIUgS0Atsu13ByvF8lOwuAOdyHcp02rHf6CWTu7Ce6a6qXJiWMzgb0DNNvHBU/45scQ
-        rzTOLbBN0q/xuAD36B9+7AkWmExMqXkj6+Uym0OUj+N8hWgyWxZI38yRwZaH23p2AkjfmvERFws4L
-        RF6LzAnsWbvuqlN/uIzRv9qC7Xt2Laj3tgRHe5QbDNqsxvgor28hXkWbxBxDVTZLQvtaxLZ2jIcdn
-        carnzWFA==;
-Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:56469 helo=[192.168.10.61])
-        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <noralf@tronnes.org>)
-        id 1mcxqn-00084f-Ld; Wed, 20 Oct 2021 00:44:53 +0200
-Subject: Re: [PATCH] iio: dln2-adc: Fix lockdep complaint
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        Jack Andersen <jackoalan@gmail.com>
-References: <20211018113731.25723-1-noralf@tronnes.org>
- <CAHp75VdAxnMHkEmLbTKidvAaZWSXQFqGmJ034MW_k3wquCiJWw@mail.gmail.com>
-From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
-Message-ID: <37ed2d67-0296-c126-1255-03e649d62080@tronnes.org>
-Date:   Wed, 20 Oct 2021 00:44:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S229683AbhJTCe1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Oct 2021 22:34:27 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:35068 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229555AbhJTCe0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Oct 2021 22:34:26 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.73 with qID 19K2VSRx8000319, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36503.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.71/5.88) with ESMTPS id 19K2VSRx8000319
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 20 Oct 2021 10:31:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36503.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.14; Wed, 20 Oct 2021 10:31:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 20 Oct 2021 10:31:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098]) by
+ RTEXMBS04.realtek.com.tw ([fe80::cdd5:82a3:e854:7098%5]) with mapi id
+ 15.01.2106.013; Wed, 20 Oct 2021 10:31:27 +0800
+From:   Hayes Wang <hayeswang@realtek.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Maxim Levitsky <maximlevitsky@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Hans de Goede <hdegoede@redhat.com>,
+        "linux-realtek-soc@lists.infradead.org" 
+        <linux-realtek-soc@lists.infradead.org>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Pkshih <pkshih@realtek.com>, nic_swsd <nic_swsd@realtek.com>,
+        =?utf-8?B?RGVyZWsgW+aWueW+t+e+qV0=?= <derek.fang@realtek.com>,
+        Kailang <kailang@realtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "info@ayaneo.com" <info@ayaneo.com>
+Subject: RE: BMI160 accelerometer on AyaNeo tablet
+Thread-Topic: BMI160 accelerometer on AyaNeo tablet
+Thread-Index: AQHXxNAUgmd8rDSWIkW9G49XjG5V2KvbKGbw
+Date:   Wed, 20 Oct 2021 02:31:27 +0000
+Message-ID: <cd43fddcf9b74f6eaa4dd5a8cdd71bf2@realtek.com>
+References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
+ <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
+ <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
+ <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
+ <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
+ <CACAwPwYrxxFstQgYHhPOhMwUz_5RprSuoPNHL7m9ft1i-N2icQ@mail.gmail.com>
+ <CAHp75VdCF_Fhso-uS_4JL7a9X90_nQ5JcyCwpeLM3b-YKVqjYw@mail.gmail.com>
+In-Reply-To: <CAHp75VdCF_Fhso-uS_4JL7a9X90_nQ5JcyCwpeLM3b-YKVqjYw@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.177.203]
+x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
+x-kse-attachmentfiltering-interceptor-info: no applicable attachment filtering
+ rules found
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: =?utf-8?B?Q2xlYW4sIGJhc2VzOiAyMDIxLzEwLzE5IOS4i+WNiCAxMDo1MjowMA==?=
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VdAxnMHkEmLbTKidvAaZWSXQFqGmJ034MW_k3wquCiJWw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36503.realtek.com.tw, 9
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-KSE-AntiSpam-Outbound-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/20/2021 02:21:59
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 166840 [Oct 19 2021]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: hayeswang@realtek.com
+X-KSE-AntiSpam-Info: LuaCore: 463 463 5854868460de3f0d8e8c0a4df98aeb05fb764a09
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;realtek.com:7.1.1;www.realtek.com:7.1.1
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/20/2021 02:24:00
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-Den 20.10.2021 00.07, skrev Andy Shevchenko:
-> 
-> 
-> On Monday, October 18, 2021, Noralf Trønnes <noralf@tronnes.org
-> <mailto:noralf@tronnes.org>> wrote:
-> 
->     When reading the voltage:
-> 
->     $ cat /sys/bus/iio/devices/iio\:device0/in_voltage0_raw
-> 
->     Lockdep complains:
-> 
->     [  153.910616] ======================================================
->     [  153.916918] WARNING: possible circular locking dependency detected
->     [  153.923221] 5.14.0+ #5 Not tainted
->     [  153.926692] ------------------------------------------------------
->     [  153.932992] cat/717 is trying to acquire lock:
->     [  153.937525] c2585358 (&indio_dev->mlock){+.+.}-{3:3}, at:
->     iio_device_claim_direct_mode+0x28/0x44
->     [  153.946541]
->                    but task is already holding lock:
->     [  153.952487] c2585860 (&dln2->mutex){+.+.}-{3:3}, at:
->     dln2_adc_read_raw+0x94/0x2bc [dln2_adc]
->     [  153.961152]
->                    which lock already depends on the new lock.
-> 
->     Fix this by not calling into the iio core underneath the dln2->mutex
->     lock.
-> 
-> 
-> Side question: have you noticed any race condition when you connect and
-> disconnect DLN2 module many times in a row? (okay, I have a board where
-> uB and type A connectors are for the same DR port, and it has a switch
-> for ID pin, that user may toggle, when I do this, sometimes race happens
-> and usb doesn’t really switches the role and dln2 drivers crashes with
-> rcu splat)
->  
-
-No I haven't seen that, but I haven't got an actual DLN2 adapter if that
-matters, I've implemented the protocol on a Raspberry Pi Pico:
-https://github.com/notro/pico-usb-io-board
-
-Noralf.
-
-> 
->     Fixes: 7c0299e879dd ("iio: adc: Add support for DLN2 ADC")
->     Cc: Jack Andersen <jackoalan@gmail.com <mailto:jackoalan@gmail.com>>
->     Signed-off-by: Noralf Trønnes <noralf@tronnes.org
->     <mailto:noralf@tronnes.org>>
->     ---
-> 
->     Note that this patch is needed for the driver to be usable:
-> 
->     mfd: dln2: Add cell for initializing DLN2 ADC
->     https://lore.kernel.org/lkml/20211018112541.25466-1-noralf@tronnes.org/T/#u
->     <https://lore.kernel.org/lkml/20211018112541.25466-1-noralf@tronnes.org/T/#u>
-> 
-> 
->      drivers/iio/adc/dln2-adc.c | 15 +++++++--------
->      1 file changed, 7 insertions(+), 8 deletions(-)
-> 
->     diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
->     index 16407664182c..6c67192946aa 100644
->     --- a/drivers/iio/adc/dln2-adc.c
->     +++ b/drivers/iio/adc/dln2-adc.c
->     @@ -248,7 +248,6 @@ static int dln2_adc_set_chan_period(struct
->     dln2_adc *dln2,
->      static int dln2_adc_read(struct dln2_adc *dln2, unsigned int channel)
->      {
->             int ret, i;
->     -       struct iio_dev *indio_dev = platform_get_drvdata(dln2->pdev);
->             u16 conflict;
->             __le16 value;
->             int olen = sizeof(value);
->     @@ -257,13 +256,9 @@ static int dln2_adc_read(struct dln2_adc *dln2,
->     unsigned int channel)
->                     .chan = channel,
->             };
-> 
->     -       ret = iio_device_claim_direct_mode(indio_dev);
->     -       if (ret < 0)
->     -               return ret;
->     -
->             ret = dln2_adc_set_chan_enabled(dln2, channel, true);
->             if (ret < 0)
->     -               goto release_direct;
->     +               return ret;
-> 
->             ret = dln2_adc_set_port_enabled(dln2, true, &conflict);
->             if (ret < 0) {
->     @@ -300,8 +295,6 @@ static int dln2_adc_read(struct dln2_adc *dln2,
->     unsigned int channel)
->             dln2_adc_set_port_enabled(dln2, false, NULL);
->      disable_chan:
->             dln2_adc_set_chan_enabled(dln2, channel, false);
->     -release_direct:
->     -       iio_device_release_direct_mode(indio_dev);
-> 
->             return ret;
->      }
->     @@ -337,10 +330,16 @@ static int dln2_adc_read_raw(struct iio_dev
->     *indio_dev,
-> 
->             switch (mask) {
->             case IIO_CHAN_INFO_RAW:
->     +               ret = iio_device_claim_direct_mode(indio_dev);
->     +               if (ret < 0)
->     +                       return ret;
->     +
->                     mutex_lock(&dln2->mutex);
->                     ret = dln2_adc_read(dln2, chan->channel);
->                     mutex_unlock(&dln2->mutex);
-> 
->     +               iio_device_release_direct_mode(indio_dev);
->     +
->                     if (ret < 0)
->                             return ret;
->      
->     -- 
->     2.33.0
-> 
-> 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+QW5keSBTaGV2Y2hlbmtvIDxhbmR5LnNoZXZjaGVua29AZ21haWwuY29tPg0KPiBTZW50OiBUdWVz
+ZGF5LCBPY3RvYmVyIDE5LCAyMDIxIDU6NTkgUE0NClsuLi5dDQo+ID4gPiBSZWFsdGVrIHByb2Jh
+Ymx5IHNob3VsZCBtYWtlIHRoaXMgSUQgbWFya2VkIHNvbWVob3cgYnJva2VuIGFuZCBub3QgdXNl
+DQo+ID4gPiBpbiB0aGVpciBwcm9kdWN0cyBpbiBjYXNlIHRoZSBhbnN3ZXIgdG8gdGhlIGZpcnN0
+IG9mIHRoZSBhYm92ZSBxdWVzdGlvbg0KPiA+ID4gaXMgInllcyIuIChPZiBjb3Vyc2UgaW4gY2Fz
+ZSB0aGUgSUQgd2lsbCBiZSB1c2VkIGZvciBzb2xlbHkgUENJIGVudW1lcmF0ZWQNCj4gPiA+IHBy
+b2R1Y3QgdGhlcmUgd2lsbCBiZSBubyBjb25mbGljdCwgSSBqdXN0IHByb3Bvc2UgdG8gYmUgb24g
+dGhlIHNhZmVzdCBzaWRlLA0KPiA+ID4gYnV0IHJlbWFyayBzaG91bGQgYmUgbWFkZSBzb21ld2hl
+cmUpLg0KPiANCj4gQW55IGNvbW1lbnRzIGZyb20gUmVhbHRlaywgcGxlYXNlPw0KDQpFeGN1c2Ug
+bWUuIEkgZG9uJ3Qga25vdyB0aGlzIGRldmljZSwgc28gSSBkb24ndCBrbm93IHdobyBJIGNvdWxk
+IGZvcndhcmQuDQpNYXliZSB5b3UgY291bGQgdHJ5IG91ciBjb250cmFjdCB3aW5kb3cgZnJvbSBv
+dXIgd2ViIHNpdGUuDQpodHRwczovL3d3dy5yZWFsdGVrLmNvbS9lbi9jdS0xLWVuL2N1LTEtdGFp
+d2FuLWVuDQoNCkJlc3QgUmVnYXJkcywNCkhheWVzDQoNCg==

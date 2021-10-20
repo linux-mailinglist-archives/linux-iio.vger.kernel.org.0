@@ -2,224 +2,231 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92688434D64
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Oct 2021 16:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C82C434F30
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Oct 2021 17:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbhJTOYJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Oct 2021 10:24:09 -0400
-Received: from www381.your-server.de ([78.46.137.84]:43426 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230020AbhJTOYJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Oct 2021 10:24:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=fjJUwMC1J0bMmk/2H6Lt35lPdT2I5hLzEWf5XF4XWGs=; b=ky8Gr4oXhbpg7j+yYlFlCSnNj8
-        J4vthwdfnGWRmjWDjaCTlvU0N8F84FgD8OPQKq8lbaMpMEP9LnMVQL6PcCxSzsGy7zC1ZYTXxaifF
-        pvS7MGo7PW7lkFJG59cUu3p7ZfImY83PZdVCjFXW2SQlCgaBtrNXP22z5teEPARnknk0MUx189t2u
-        BT/uwodPpgQX+hVOamT4A4Wvlww2xrJBdScC+PySvowfF3Il8VGAUqhDT2zEIp2Y6tsSLrXL2ZC8m
-        VSSrDeMVm8pzwBCJtXzx4tbR+MSohxcKpoDQq68kROcupOkasmGQZ7PiWvffEsD7VmZtAH/E+z9wZ
-        gYH+t5qA==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mdCTZ-000AYg-Nc; Wed, 20 Oct 2021 16:21:53 +0200
-Received: from [82.135.83.71] (helo=lars-desktop.fritz.box)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mdCTZ-0004SK-JC; Wed, 20 Oct 2021 16:21:53 +0200
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Tomasz Duszynski <tduszyns@gmail.com>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: ms5611: Simplify IO callback parameters
-Date:   Wed, 20 Oct 2021 16:21:10 +0200
-Message-Id: <20211020142110.7060-1-lars@metafoo.de>
-X-Mailer: git-send-email 2.20.1
+        id S229570AbhJTPia convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 20 Oct 2021 11:38:30 -0400
+Received: from relay11.mail.gandi.net ([217.70.178.231]:47847 "EHLO
+        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229952AbhJTPia (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Oct 2021 11:38:30 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay11.mail.gandi.net (Postfix) with ESMTPSA id 41D75100013;
+        Wed, 20 Oct 2021 15:36:13 +0000 (UTC)
+Date:   Wed, 20 Oct 2021 17:36:11 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 00/48] TI AM437X ADC1
+Message-ID: <20211020173611.07980c1d@xps13>
+In-Reply-To: <20211015081506.933180-1-miquel.raynal@bootlin.com>
+References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26327/Tue Oct 19 13:35:20 2021)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The ms5611 passes &indio_dev->dev as a parameter to all its IO callbacks
-only to directly cast the struct device back to struct iio_dev. And the
-struct iio_dev is then only used to get the drivers state struct.
+Hi Lee,
 
-Simplify this a bit by passing the state struct directly. This makes it a
-bit easier to follow what the code is doing.
+miquel.raynal@bootlin.com wrote on Fri, 15 Oct 2021 10:14:18 +0200:
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
----
- drivers/iio/pressure/ms5611.h      |  6 +++---
- drivers/iio/pressure/ms5611_core.c |  7 +++----
- drivers/iio/pressure/ms5611_i2c.c  | 11 ++++-------
- drivers/iio/pressure/ms5611_spi.c  | 17 +++++++----------
- 4 files changed, 17 insertions(+), 24 deletions(-)
+> /*
+>  * Reducing the Cc: list as this is just a rebase and all patches
+>  * received reviews already. Only the DT patches have received no
+>  * feedback, hence keeping the omap@ list in.
+>  */
+> 
+> Hello,
+> 
+> This is a (fairly big) series bringing support of AM437X ADC1.
+> On TI AM33XX SoCs family there is an ADC that can also be connected to a
+> touchscreen. This hardware has been extended and is present on certain
+> SoCs from the AM437X family. In particular, the touchscreen has been
+> replaced by a magnetic card reader. In both cases, the representation is
+> an MFD device with two children:
+> * on AM33XX: the touchscreen controller and the ADC
+> * on AM437X: the magnetic stripe reader and the ADC
+> 
+> This series really targets small and atomic changes so that the overall
+> review is eased, even though it leads to a lot of rather small patches.
+> Here are the steps:
+> * Supporting the missing clock
+> * Translating a single text file containing the description for the
+>   MFD, the touchscreen and the ADC into three independent yaml files.
+> * Cleaning/preparing the MFD driver.
+> * Supporting ADC1 in the MFD driver.
+> * Cleaning/preparing of the ADC driver.
+> * Supporting ADC1 in the ADC driver.
+> * Updating various device trees.
+> 
+> Here is the full series again, almost reviewed and acked entirely.
+> The clock patch has been acked, the ADC patches as well, so we expect
+> the series to go through the MFD tree if the maintainers agree with it.
 
-diff --git a/drivers/iio/pressure/ms5611.h b/drivers/iio/pressure/ms5611.h
-index 86b1c4b1820d..cbc9349c342a 100644
---- a/drivers/iio/pressure/ms5611.h
-+++ b/drivers/iio/pressure/ms5611.h
-@@ -50,9 +50,9 @@ struct ms5611_state {
- 	const struct ms5611_osr *pressure_osr;
- 	const struct ms5611_osr *temp_osr;
- 
--	int (*reset)(struct device *dev);
--	int (*read_prom_word)(struct device *dev, int index, u16 *word);
--	int (*read_adc_temp_and_pressure)(struct device *dev,
-+	int (*reset)(struct ms5611_state *st);
-+	int (*read_prom_word)(struct ms5611_state *st, int index, u16 *word);
-+	int (*read_adc_temp_and_pressure)(struct ms5611_state *st,
- 					  s32 *temp, s32 *pressure);
- 
- 	struct ms5611_chip_info *chip_info;
-diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
-index ee75f08655c9..a4d0b54cde9b 100644
---- a/drivers/iio/pressure/ms5611_core.c
-+++ b/drivers/iio/pressure/ms5611_core.c
-@@ -85,8 +85,7 @@ static int ms5611_read_prom(struct iio_dev *indio_dev)
- 	struct ms5611_state *st = iio_priv(indio_dev);
- 
- 	for (i = 0; i < MS5611_PROM_WORDS_NB; i++) {
--		ret = st->read_prom_word(&indio_dev->dev,
--					 i, &st->chip_info->prom[i]);
-+		ret = st->read_prom_word(st, i, &st->chip_info->prom[i]);
- 		if (ret < 0) {
- 			dev_err(&indio_dev->dev,
- 				"failed to read prom at %d\n", i);
-@@ -108,7 +107,7 @@ static int ms5611_read_temp_and_pressure(struct iio_dev *indio_dev,
- 	int ret;
- 	struct ms5611_state *st = iio_priv(indio_dev);
- 
--	ret = st->read_adc_temp_and_pressure(&indio_dev->dev, temp, pressure);
-+	ret = st->read_adc_temp_and_pressure(st, temp, pressure);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev,
- 			"failed to read temperature and pressure\n");
-@@ -196,7 +195,7 @@ static int ms5611_reset(struct iio_dev *indio_dev)
- 	int ret;
- 	struct ms5611_state *st = iio_priv(indio_dev);
- 
--	ret = st->reset(&indio_dev->dev);
-+	ret = st->reset(st);
- 	if (ret < 0) {
- 		dev_err(&indio_dev->dev, "failed to reset device\n");
- 		return ret;
-diff --git a/drivers/iio/pressure/ms5611_i2c.c b/drivers/iio/pressure/ms5611_i2c.c
-index 5c82d80f85b6..1047a85527a9 100644
---- a/drivers/iio/pressure/ms5611_i2c.c
-+++ b/drivers/iio/pressure/ms5611_i2c.c
-@@ -20,17 +20,15 @@
- 
- #include "ms5611.h"
- 
--static int ms5611_i2c_reset(struct device *dev)
-+static int ms5611_i2c_reset(struct ms5611_state *st)
- {
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
--
- 	return i2c_smbus_write_byte(st->client, MS5611_RESET);
- }
- 
--static int ms5611_i2c_read_prom_word(struct device *dev, int index, u16 *word)
-+static int ms5611_i2c_read_prom_word(struct ms5611_state *st, int index,
-+				     u16 *word)
- {
- 	int ret;
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
- 
- 	ret = i2c_smbus_read_word_swapped(st->client,
- 			MS5611_READ_PROM_WORD + (index << 1));
-@@ -57,11 +55,10 @@ static int ms5611_i2c_read_adc(struct ms5611_state *st, s32 *val)
- 	return 0;
- }
- 
--static int ms5611_i2c_read_adc_temp_and_pressure(struct device *dev,
-+static int ms5611_i2c_read_adc_temp_and_pressure(struct ms5611_state *st,
- 						 s32 *temp, s32 *pressure)
- {
- 	int ret;
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
- 	const struct ms5611_osr *osr = st->temp_osr;
- 
- 	ret = i2c_smbus_write_byte(st->client, osr->cmd);
-diff --git a/drivers/iio/pressure/ms5611_spi.c b/drivers/iio/pressure/ms5611_spi.c
-index 79bed64c9b68..9fa2dcd71760 100644
---- a/drivers/iio/pressure/ms5611_spi.c
-+++ b/drivers/iio/pressure/ms5611_spi.c
-@@ -15,18 +15,17 @@
- 
- #include "ms5611.h"
- 
--static int ms5611_spi_reset(struct device *dev)
-+static int ms5611_spi_reset(struct ms5611_state *st)
- {
- 	u8 cmd = MS5611_RESET;
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
- 
- 	return spi_write_then_read(st->client, &cmd, 1, NULL, 0);
- }
- 
--static int ms5611_spi_read_prom_word(struct device *dev, int index, u16 *word)
-+static int ms5611_spi_read_prom_word(struct ms5611_state *st, int index,
-+				     u16 *word)
- {
- 	int ret;
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
- 
- 	ret = spi_w8r16be(st->client, MS5611_READ_PROM_WORD + (index << 1));
- 	if (ret < 0)
-@@ -37,11 +36,10 @@ static int ms5611_spi_read_prom_word(struct device *dev, int index, u16 *word)
- 	return 0;
- }
- 
--static int ms5611_spi_read_adc(struct device *dev, s32 *val)
-+static int ms5611_spi_read_adc(struct ms5611_state *st, s32 *val)
- {
- 	int ret;
- 	u8 buf[3] = { MS5611_READ_ADC };
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
- 
- 	ret = spi_write_then_read(st->client, buf, 1, buf, 3);
- 	if (ret < 0)
-@@ -52,11 +50,10 @@ static int ms5611_spi_read_adc(struct device *dev, s32 *val)
- 	return 0;
- }
- 
--static int ms5611_spi_read_adc_temp_and_pressure(struct device *dev,
-+static int ms5611_spi_read_adc_temp_and_pressure(struct ms5611_state *st,
- 						 s32 *temp, s32 *pressure)
- {
- 	int ret;
--	struct ms5611_state *st = iio_priv(dev_to_iio_dev(dev));
- 	const struct ms5611_osr *osr = st->temp_osr;
- 
- 	/*
-@@ -68,7 +65,7 @@ static int ms5611_spi_read_adc_temp_and_pressure(struct device *dev,
- 		return ret;
- 
- 	usleep_range(osr->conv_usec, osr->conv_usec + (osr->conv_usec / 10UL));
--	ret = ms5611_spi_read_adc(dev, temp);
-+	ret = ms5611_spi_read_adc(st, temp);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -78,7 +75,7 @@ static int ms5611_spi_read_adc_temp_and_pressure(struct device *dev,
- 		return ret;
- 
- 	usleep_range(osr->conv_usec, osr->conv_usec + (osr->conv_usec / 10UL));
--	return ms5611_spi_read_adc(dev, pressure);
-+	return ms5611_spi_read_adc(st, pressure);
- }
- 
- static int ms5611_spi_probe(struct spi_device *spi)
--- 
-2.20.1
+Sorry to ping you so early, but we already are at -rc6 and I was
+wondering if you could take the series as it has been on the mailing
+list for a while and received no real change since a couple of weeks
+already, possibly avoiding the need for yet another resend of 48
+patches :)
 
+Cheers,
+Miquèl
+
+> 
+> Thanks,
+> Miquèl
+> 
+> Changes in v6:
+> * Rebased the entire series on top of
+>   f38d3e404326 (linux-mfd/for-mfd-next) ("dt-bindings: mfd: Convert
+>   X-Powers AXP binding to a schema") as requested by Lee.
+> 
+> Changes in v5:
+> * Let the 48 v4 patch series aside, while only resending this patch that
+>   triggered a robot warning. Use the use_mag boolean instead of sticking
+>   to tscmag_wires which was not optimal anyway, silencing the 'not used'
+>   warning while keeping the code simple and clear.
+> 
+> Changes in v4:
+> * R-by/A-by tags added from Tony, Dmitry and Jonathan.
+> * Inverted the order of three patches following Jonathan's advice:
+>   removing the ENB macro (and related definitions) should be done first,
+>   in order to avoid further updates of these useless macros. This lead
+>   to the addition of a new patch to first do the removal (which was part
+>   of patch "Drop useless definitions from the header" in the first
+>   place).
+> * Updated the naming of the MFD driver data structure as discussed with
+>   Lee.
+> * Used the "magnetic stripe reader" wording when appropriate.
+> * Created a helper using the compatible to determine if there is a
+>   touchscreen or a magnetic stripe reader in this version of the
+>   hardware.
+> 
+> Changes in v3:
+> * Rebased on top of v5.15-rc1.
+> * R-by/A-by tags added.
+> * Light reordering to let the of_put_node() fix to be applied more easily
+> * Dropped a patch made useless because of the previous reordering
+> * Explained how the tscadc->ctrl variable was used.
+> * Fixed a couple of typos.
+> * Included the change for the HZ macro.
+> * Went further in the BIT()/FIELD_PREP() cleanup.
+> * Added maximum definitions for sample delay/open delay.
+> * Removed useless definitions.
+> * Fixed a couple of rebase conflicts (the series was not bisectable).
+> 
+> Changes in v2:
+> * Added various R-by/A-by tags.
+> * Various typos & style fixes.
+> [Bindings]
+> * Included the missing ti,am654-tscadc compatible.
+> * Reworded the compatible lines as requested by Jonathan.
+> * Reworded the bindings content a little bit as advised by Rob (subnodes
+>   being objects, MFD descriptions provided once, status and unused
+>   labels removed).
+> [SPDX changes]
+> * Mentioned that the license macro and the license text matched.
+> * Also added an SPDX tag in the MFD header.
+> [MFD header]
+> * Used the BIT(), GENMASK() and PREP_FIELD() macros when relevant.
+> [MFD driver]
+> * Did not reordered the variables declared on the probe stack as advised
+>   by Jonathan.
+> * Added missing of_node_put() calls.
+> * Moved the patch changing the place where the main structure is
+>   allocated to directly precede the patch using this change.
+> * Fixed the driver data wiring (bug happening between ex patches 16 and
+>   28).
+> * Added a commit just to explain the reordering of the register writes
+>   during initialization/resume.
+> * Explained the check about 'use_tsc' in the commit message.
+> * Added a link to the TRM in a commit message referencing it.
+> * Removed the use of the ti,tracks property, used a constant value
+>   instead.
+> * Dropped the error check when retrieving the "wrong" DT property
+>   (coordiante-readouts) which is unused.
+> 
+> Miquel Raynal (48):
+>   clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+>   dt-bindings: mfd: ti,am3359-tscadc: Add a yaml description for this
+>     MFD
+>   dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
+>   dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+>   dt-bindings: touchscreen: ti,am3359-tsc: Remove deprecated text file
+>   dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
+>   dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+>   mfd: ti_am335x_tscadc: Ensure a balanced number of node get/put
+>   mfd: ti_am335x_tscadc: Replace license text with SPDX tag
+>   mfd: ti_am335x_tscadc: Fix style
+>   mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack
+>     variables
+>   mfd: ti_am335x_tscadc: Get rid of useless gotos
+>   mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+>   mfd: ti_am335x_tscadc: Don't search the tree for our clock
+>   mfd: ti_am335x_tscadc: Simplify divisor calculation
+>   mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+>   mfd: ti_am335x_tscadc: Use driver data
+>   mfd: ti_am335x_tscadc: Mimic the probe from resume()
+>   mfd: ti_am335x_tscadc: Drop useless variables from the driver
+>     structure
+>   mfd: ti_am335x_tscadc: Always provide an idle configuration
+>   mfd: ti_am335x_tscadc: Reorder the initialization steps
+>   mfd: ti_am335x_tscadc: Gather the ctrl register logic in one place
+>   mfd: ti_am335x_tscadc: Replace the header license text with SPDX tag
+>   mfd: ti_am335x_tscadc: Fix header spacing
+>   mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ macro
+>   mfd: ti_am335x_tscadc: Drop unused definitions from the header
+>   mfd: ti_am335x_tscadc: Use BIT(), GENMASK() and FIELD_PREP() when
+>     relevant
+>   mfd: ti_am335x_tscadc: Clarify the maximum values for DT entries
+>   mfd: ti_am335x_tscadc: Drop useless definitions from the header
+>   mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+>   mfd: ti_am335x_tscadc: Add TSC prefix in certain macros
+>   mfd: ti_am335x_tscadc: Rename a variable
+>   mfd: ti_am335x_tscadc: Fix an error message
+>   mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a
+>     touchscreen
+>   mfd: ti_am335x_tscadc: Introduce a helper to deal with the type of
+>     hardware
+>   mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
+>   mfd: ti_am335x_tscadc: Support the correctly spelled DT property
+>   iio: adc: ti_am335x_adc: Wait the idle state to avoid stalls
+>   iio: adc: ti_am335x_adc: Replace license text with SPDX tag
+>   iio: adc: ti_am335x_adc: Fix style
+>   iio: adc: ti_am335x_adc: Get rid of useless gotos
+>   iio: adc: ti_am335x_adc: Gather the checks on the delays
+>   iio: adc: ti_am335x_adc: Add a unit to the timeout delay
+>   iio: adc: ti_am335x_adc: Add the scale information
+>   iio: adc: ti_am335x_adc: Add the am437x compatible
+>   ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
+>   ARM: dts: am43xx: Describe the magnetic reader/ADC1 hardware module
+>   ARM: dts: am437x-gp-evm: enable ADC1
+> 
+>  .../bindings/iio/adc/ti,am3359-adc.yaml       |  70 ++++++
+>  .../input/touchscreen/ti,am3359-tsc.yaml      |  76 ++++++
+>  .../bindings/input/touchscreen/ti-tsc-adc.txt |  91 -------
+>  .../bindings/mfd/ti,am3359-tscadc.yaml        |  84 +++++++
+>  arch/arm/boot/dts/am437x-cm-t43.dts           |   2 +-
+>  arch/arm/boot/dts/am437x-gp-evm.dts           |   8 +
+>  arch/arm/boot/dts/am437x-l4.dtsi              |  31 ++-
+>  arch/arm/boot/dts/am43xx-clocks.dtsi          |   7 +
+>  drivers/clk/ti/clk-43xx.c                     |   1 +
+>  drivers/iio/adc/ti_am335x_adc.c               | 220 ++++++++++-------
+>  drivers/mfd/ti_am335x_tscadc.c                | 233 ++++++++++--------
+>  include/dt-bindings/clock/am4.h               |   1 +
+>  include/linux/mfd/ti_am335x_tscadc.h          | 119 +++++----
+>  13 files changed, 593 insertions(+), 350 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+>  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> 

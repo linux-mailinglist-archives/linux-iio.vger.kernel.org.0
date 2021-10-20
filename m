@@ -2,69 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FB4B4347E9
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Oct 2021 11:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DED14349F7
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Oct 2021 13:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbhJTJbq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Oct 2021 05:31:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbhJTJbq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Oct 2021 05:31:46 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DD47C06161C
-        for <linux-iio@vger.kernel.org>; Wed, 20 Oct 2021 02:29:32 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id m42so17435176wms.2
-        for <linux-iio@vger.kernel.org>; Wed, 20 Oct 2021 02:29:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ykgdjxhAzVVgvIOev5ZjMvpn28ZknbgkcJ3ItmcQ13s=;
-        b=ccTcYnaTCZnvx+0dioCUfvzxTuT7PAiYz1X882B4WE2X/v27ojgcjsmDhjXpZBS5ot
-         ufyathg3MHNQJMd1scWM92QWQjBSsw24qE61/z8eHhkI5gLytEtkCppqZzbpLkk2es70
-         b2Mlil+m4TNz0PjqF7Y45I22ctCZtIXP4s98vL9wG6BhxlZE8on365XkR+4gwGWaHmqg
-         MtIqln8OX63Iz5YuWEEdFCD3hFyaXmS63Q6z67NNDsuaLNEzL52XXG+64r1wsZHcFsnJ
-         W49E8mTUAxs9T6AUrbM+YT61ancgPyynFXH/a9BtxYLP07GChUF3W/5N39rzUQO5/w39
-         5OUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ykgdjxhAzVVgvIOev5ZjMvpn28ZknbgkcJ3ItmcQ13s=;
-        b=o+9wFgTsRXXfxa4WD8oNygbFlKuRYzY62vyl/k14alz6iLZ2EEU/tMgl0QpmIA9ZR/
-         vy+zZrZawSfyTEqw+hSehP/6LP6IvthSQmycZP0IqxSEzkoh8p2fgrSsd33YIQ07Xqwf
-         LXmItDc9IAoJME6auWoQ5ljU5bOECAkMXF1a60wHFf9Tr18skxjApRAy9eNvsAu9gW3y
-         9f9NOsU9UUh/Y6FcnJNfARRpnns9rrFGLBh8FjGSIsH7i14Ipn5LpKFYSypp9pZnX/QD
-         FHikX0J/pJVkKlzwXj0Dcj/5oSsQNuJUkk+04sMeu9nnwtoyLkib9ERE9xthfR8AIWOl
-         w7aA==
-X-Gm-Message-State: AOAM531eg2sr/R9rU/6gxEJ493COov4q0HMU/G7FCSwviqNtlYiE0qbi
-        lte3D2qao6DRyDHGBeLApcX2ZBJ+HIW4fxHPwYs=
-X-Google-Smtp-Source: ABdhPJz2pIbFJxrBXUS7QiS2zj+nr5m31skAto/hnzsK7k5shLcuv43Y4cMSbYJ+opQk1gzgcYk4mDZINR2JpUxp+Wc=
-X-Received: by 2002:a05:600c:19cd:: with SMTP id u13mr12080602wmq.148.1634722170892;
- Wed, 20 Oct 2021 02:29:30 -0700 (PDT)
+        id S230063AbhJTLXn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Oct 2021 07:23:43 -0400
+Received: from mga12.intel.com ([192.55.52.136]:31187 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230058AbhJTLXn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 20 Oct 2021 07:23:43 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10142"; a="208858566"
+X-IronPort-AV: E=Sophos;i="5.87,166,1631602800"; 
+   d="scan'208";a="208858566"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 04:21:27 -0700
+X-IronPort-AV: E=Sophos;i="5.87,166,1631602800"; 
+   d="scan'208";a="527017742"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.159])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2021 04:21:23 -0700
+Received: from andy by smile with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1md9ea-000CLD-1P;
+        Wed, 20 Oct 2021 14:21:04 +0300
+Date:   Wed, 20 Oct 2021 14:21:04 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Hayes Wang <hayeswang@realtek.com>, nicfae@realtek.com,
+        wlanfae@realtek.com, pctech@realtek.com, security@realtek.com
+Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "linux-realtek-soc@lists.infradead.org" 
+        <linux-realtek-soc@lists.infradead.org>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Pkshih <pkshih@realtek.com>, nic_swsd <nic_swsd@realtek.com>,
+        Derek =?utf-8?B?W+aWueW+t+e+qV0=?= <derek.fang@realtek.com>,
+        Kailang <kailang@realtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "info@ayaneo.com" <info@ayaneo.com>
+Subject: Re: BMI160 accelerometer on AyaNeo tablet
+Message-ID: <YW/7oKPZORexnyN1@smile.fi.intel.com>
+References: <CACAwPwb7edLzX-KO1XVNWuQ3w=U0BfA=_kwiGCjZOpKfZpc2pw@mail.gmail.com>
+ <CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com>
+ <CAHp75VcEZ19zUU-Ps=kAYJDX1bkxmOqmHii36HE2ujC3gROkNQ@mail.gmail.com>
+ <CACAwPwaj_ekK6j9S4CRu6tRTPyjffgDhL3UFnhoYSyJSkAkmpw@mail.gmail.com>
+ <YW3ErLKGtmyhSFd3@smile.fi.intel.com>
+ <CACAwPwYrxxFstQgYHhPOhMwUz_5RprSuoPNHL7m9ft1i-N2icQ@mail.gmail.com>
+ <CAHp75VdCF_Fhso-uS_4JL7a9X90_nQ5JcyCwpeLM3b-YKVqjYw@mail.gmail.com>
+ <cd43fddcf9b74f6eaa4dd5a8cdd71bf2@realtek.com>
+ <CAHp75VfB2FULb_jfQNg0wF9Z4jPkrKfmw6hSwtLg8Y1NhKks8g@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a7b:c14c:0:0:0:0:0 with HTTP; Wed, 20 Oct 2021 02:29:30
- -0700 (PDT)
-Reply-To: mauhin11@gmail.com
-From:   Maureen Hinckley <joycenyamweya5@gmail.com>
-Date:   Wed, 20 Oct 2021 12:29:30 +0300
-Message-ID: <CAOT2_Cw+kuN=Utgs2W3b2sOHpBba3jEzmyVZj0GX3OH9Qa6Cdg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VfB2FULb_jfQNg0wF9Z4jPkrKfmw6hSwtLg8Y1NhKks8g@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Hello,
++Cc: another set of emails from Realtek as per Hayes' email.
 
-I am Maureen Hinckley and my foundation is donating ($2.2 Million.
-Dollars) to you. Contact us via my email at (mauhin11@gmail.com) for
-further details.
+Please waterfall to the people inside Realtek who can answer the question.
+(Note, you may access this discussion in full via:
+https://lore.kernel.org/linux-iio/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/T/#u)
 
-Best Regards,
-Mrs. Maureen Hinckley,
-Copyright =C2=A92021 The Maureen Hinckley Foundation All Rights Reserved.
+The problem here is to have an official confirmation of what 10ec:5280
+ID is from Realtek's point of view.
+
+Context: the current discussion and a patch state that it's related
+to gyro sensor. Is it so?
+
+On Wed, Oct 20, 2021 at 10:36:12AM +0300, Andy Shevchenko wrote:
+> On Wednesday, October 20, 2021, Hayes Wang <hayeswang@realtek.com> wrote:
+> > Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > Sent: Tuesday, October 19, 2021 5:59 PM
+
+...
+
+> > > > > Realtek probably should make this ID marked somehow broken and not
+> > use
+> > > > > in their products in case the answer to the first of the above
+> > question
+> > > > > is "yes". (Of course in case the ID will be used for solely PCI
+> > enumerated
+> > > > > product there will be no conflict, I just propose to be on the
+> > safest side,
+> > > > > but remark should be made somewhere).
+> > >
+> > > Any comments from Realtek, please?
+> >
+> > Excuse me. I don't know this device, so I don't know who I could forward.
+> > Maybe you could try our contract window from our web site.
+> > https://www.realtek.com/en/cu-1-en/cu-1-taiwan-en
+> 
+> Thanks for reply. I will try my best, but I am afraid that what you suggest
+> will be a long loop (and I believe the people behind that form are not
+> technical, they probably won’t understand the topic). I think you may pull
+> strings inside much faster. Just ask somebody who is technical superior in
+> your team / organization. Ideally inside company you may have a dedicated
+> people who responsible for allocating PCI and ACPI IDs.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

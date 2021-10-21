@@ -2,330 +2,250 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B510435DF4
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 11:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14B61435E05
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 11:31:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231488AbhJUJbL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 21 Oct 2021 05:31:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40618 "EHLO mail.kernel.org"
+        id S231446AbhJUJeH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Oct 2021 05:34:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41452 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231334AbhJUJbK (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 21 Oct 2021 05:31:10 -0400
+        id S231342AbhJUJeG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 21 Oct 2021 05:34:06 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED53160F9E;
-        Thu, 21 Oct 2021 09:28:53 +0000 (UTC)
-Date:   Thu, 21 Oct 2021 10:33:11 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 779E960F9E;
+        Thu, 21 Oct 2021 09:31:49 +0000 (UTC)
+Date:   Thu, 21 Oct 2021 10:36:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v8 1/2] iio: frequency: adrf6780: add support for
- ADRF6780
-Message-ID: <20211021103311.261350f8@jic23-huawei>
-In-Reply-To: <CY4PR03MB33999A76B9A7FE15CBEA01699BBF9@CY4PR03MB3399.namprd03.prod.outlook.com>
-References: <20211018110931.82225-1-antoniu.miclaus@analog.com>
-        <20211020212348.3a110ebc@jic23-huawei>
-        <CY4PR03MB33999A76B9A7FE15CBEA01699BBF9@CY4PR03MB3399.namprd03.prod.outlook.com>
+To:     Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+Cc:     jbhayana@google.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Vasyl.Vavrychuk@opensynergy.com
+Subject: Re: [PATCH v6 1/1] iio/scmi: Add reading "raw" attribute.
+Message-ID: <20211021103607.38c85766@jic23-huawei>
+In-Reply-To: <4e73398f-126a-0e1a-6eed-88d2d37778c2@opensynergy.com>
+References: <20211019075949.17644-1-andriy.tryshnivskyy@opensynergy.com>
+        <20211019075949.17644-2-andriy.tryshnivskyy@opensynergy.com>
+        <20211020185118.7a02cbf8@jic23-huawei>
+        <4e73398f-126a-0e1a-6eed-88d2d37778c2@opensynergy.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Oct 2021 08:18:11 +0000
-"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
+On Wed, 20 Oct 2021 21:57:00 +0300
+Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com> wrote:
 
-> Hello Jonathan,
+> On 20.10.21 20:51, Jonathan Cameron wrote:
 > 
-> Would you like me to reintroduce the locked/unlocked version for the "adrf6780_spi_update_bits" function too?
-> This was present in the first version of the driver but removed afterwards based on the review.
+> > CAUTION: This email originated from outside of the organization.
+> > Do not click links or open attachments unless you recognize the sender and know the content is safe.
+> >
+> >
+> > On Tue, 19 Oct 2021 10:59:49 +0300
+> > Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com> wrote:
+> >  
+> >> Add IIO_CHAN_INFO_RAW to the mask and implement corresponding
+> >> reading "raw" attribute in scmi_iio_read_raw.
+> >> Introduce new type IIO_VAL_INT_64 to read 64-bit value
+> >> for "raw" attribute.
+> >>  
+> > Change log needs to be below the --- otherwise we'll store it forever
+> > in git.  A linked tag (which will be generated when I apply)
+> > is sufficient for this sort of historical info.
+> >  
+> Sorry, this is my first patch, I was not aware of that.
+> Thanks for the explanation.
+> Quick question: since next version will include 2 patches,
+> I guess a change log should be moved back to the cover letter, right?
 
-Hmm. Good point.  I'll leave it up to you on whether you decide to add the locks and handling
-external to the relevant read/write/update functions or provide locked wrappers around
-the unlocked form.  I don't mind either way as long as we can easily see when the
-locks are held.
+It's a trade off for which there are no firm rules.
+Sometimes changes are well isolated in individual patches, in which case
+the best bet is to put the change logs in each patch, sometimes they are
+more global things that affect the whole series in which case the change
+log is best in the cover letter.
+
+However, for a given series pick one or other style (don't mix!) as
+otherwise it would get really confusing.  Mostly no one really minds
+where the log is as long as we can find it easily.
 
 Jonathan
 
 > 
-> Regards,
-> --
-> Antoniu Miclăuş
 > 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Wednesday, October 20, 2021 11:24 PM
-> > To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org
-> > Subject: Re: [PATCH v8 1/2] iio: frequency: adrf6780: add support for
-> > ADRF6780
-> > 
-> > [External]
-> > 
-> > On Mon, 18 Oct 2021 14:09:30 +0300
-> > Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
-> >   
-> > > The ADRF6780 is a silicon germanium (SiGe) design, wideband,
-> > > microwave upconverter optimized for point to point microwave
-> > > radio designs operating in the 5.9 GHz to 23.6 GHz frequency
-> > > range.
-> > >
-> > > Datasheet:
-> > > https://www.analog.com/media/en/technical-documentation/data-  
-> > sheets/ADRF6780.pdf  
-> > >
-> > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>  
-> > 
-> > The 'problem' with rereading drivers lots of times is sometimes
-> > you notice a new issue that you've missed before.  Unfortunately
-> > the locking in here is inconsistent and there is not protection against
-> > various functions using the dev->data[] array at the same time.
-> > Sorry I missed this in earlier reviews!
-> > 
-> > It's a little bit too fiddly for me to simply make the changes
-> > whilst applying, so please add the missing mutex_lock/unlock
-> > and send out a v9.  I would suggest doing it by renaming the existing
-> > unlocked versions to
-> > __XXX_write() /read()
-> > and then adding functions which take the mutex called after their
-> > original names.
-> > 
-> > I made a small additional comment on naming that would also be good to
-> > clear up.
-> > 
-> > Plus please run scripts/checkpatch.pl over the file and fix the warnings.
-> > Preferably with --strict
-> > 
+> >> Changes comparing v5 -> v6:
+> >> * revert v5 changes since with scmi_iio_read_raw() the channel
+> >>    can't be used by in kernel users (iio-hwmon)
+> >> * returned to v3 with direct mode
+> >> * introduce new type IIO_VAL_INT_64 to read 64-bit value
+> >>
+> >> Changes comparing v4 -> v5:
+> >> * call iio_device_release_direct_mode() on error
+> >> * code cleanup, fix typo
+> >>
+> >> Changes comparing v3 -> v4:
+> >> * do not use scmi_iio_get_raw() for reading raw attribute due to 32-bit
+> >>    return value limitation (actually I reverted the previous v3)
+> >> * introduce scmi_iio_read_raw to scmi_iio_ext_info[] which can return
+> >>    64-bit value
+> >> * enabling/disabling and reading raw attribute is done in direct mode
+> >>
+> >> Changes comparing v2 -> v3:
+> >> * adaptation for changes in structure scmi_iio_priv (no member
+> >>    named 'handle')
+> >>
+> >> Changes comparing v0 -> v2:
+> >> * added an error return when the error happened during config_set
+> >> * removed redundant cast for "readings"
+> >> * added check if raw value fits 32 bits
+> >>
+> >> Signed-off-by: Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+> >> ---
+> >>   drivers/iio/common/scmi_sensors/scmi_iio.c | 57 +++++++++++++++++++++-
+> >>   drivers/iio/industrialio-core.c            |  3 ++
+> >>   include/linux/iio/types.h                  |  1 +  
+> > Two patches needed.  One to introduce the new core functionality then
+> > a second to use it in the driver.
+> >
+> > Actual code looks good to me though I think I'd like a comment next to
+> > the #define as not obvious which way around the two parts will go.
+> >
+> > There are some other places we will probably need to ultimately handle this
+> > to allow for in kernel consumers but those can come when someone needs them.
+> >
+> > Will need an ack from Jyoti on this one though as driver author.
 > > Thanks,
-> > 
-> > Jonathan
-> >   
-> > > ---
-> > > changes in v8:
-> > > 	- condense lines that are very long
-> > > 	- set ADC channel as input
-> > > 	- add `dev_err_probe`
-> > > 	- handle device powerdown via `devm_add_action_or_reset`
-> > >  drivers/iio/frequency/Kconfig    |  12 +
-> > >  drivers/iio/frequency/Makefile   |   1 +
-> > >  drivers/iio/frequency/adrf6780.c | 496  
-> > +++++++++++++++++++++++++++++++  
-> > >  3 files changed, 509 insertions(+)
-> > >  create mode 100644 drivers/iio/frequency/adrf6780.c
-> > >
-> > > diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
-> > > index 240b81502512..2c9e0559e8a4 100644
-> > > --- a/drivers/iio/frequency/Kconfig
-> > > +++ b/drivers/iio/frequency/Kconfig
-> > > @@ -49,5 +49,17 @@ config ADF4371
-> > >
-> > >  	  To compile this driver as a module, choose M here: the
-> > >  	  module will be called adf4371.
-> > > +
-> > > +config ADRF6780
-> > > +        tristate "Analog Devices ADRF6780 Microwave Upconverter"
-> > > +        depends on SPI
-> > > +        depends on COMMON_CLK
-> > > +        help
-> > > +          Say yes here to build support for Analog Devices ADRF6780
-> > > +          5.9 GHz to 23.6 GHz, Wideband, Microwave Upconverter.
-> > > +
-> > > +          To compile this driver as a module, choose M here: the
-> > > +          module will be called adrf6780.
-> > > +
-> > >  endmenu
-> > >  endmenu
-> > > diff --git a/drivers/iio/frequency/Makefile  
-> > b/drivers/iio/frequency/Makefile  
-> > > index 518b1e50caef..ae3136c79202 100644
-> > > --- a/drivers/iio/frequency/Makefile
-> > > +++ b/drivers/iio/frequency/Makefile
-> > > @@ -7,3 +7,4 @@
-> > >  obj-$(CONFIG_AD9523) += ad9523.o
-> > >  obj-$(CONFIG_ADF4350) += adf4350.o
-> > >  obj-$(CONFIG_ADF4371) += adf4371.o
-> > > +obj-$(CONFIG_ADRF6780) += adrf6780.o
-> > > diff --git a/drivers/iio/frequency/adrf6780.c  
-> > b/drivers/iio/frequency/adrf6780.c  
-> > > new file mode 100644
-> > > index 000000000000..4097b31bdf0b
-> > > --- /dev/null
-> > > +++ b/drivers/iio/frequency/adrf6780.c  
-> >   
-> > > +
-> > > +static int adrf6780_spi_read(struct adrf6780_dev *dev, unsigned int reg,
-> > > +			      unsigned int *val)  
-> > 
-> > I've highlighted a few paths inline where this isn't protected by a
-> > mutex.  As such we will be racing on the content of dev->data[]
-> > and results are going to be very unpredicatable.
-> >   
-> > > +{
-> > > +	int ret;
-> > > +	struct spi_transfer t = {0};
-> > > +
-> > > +	dev->data[0] = 0x80 | (reg << 1);
-> > > +	dev->data[1] = 0x0;
-> > > +	dev->data[2] = 0x0;
-> > > +
-> > > +	t.rx_buf = &dev->data[0];
-> > > +	t.tx_buf = &dev->data[0];
-> > > +	t.len = 3;
-> > > +
-> > > +	ret = spi_sync_transfer(dev->spi, &t, 1);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	*val = (get_unaligned_be24(&dev->data[0]) >> 1) & GENMASK(15,  
-> > 0);  
-> > > +
-> > > +	return ret;
-> > > +}
-> > > +
-> > > +static int adrf6780_spi_write(struct adrf6780_dev *dev,
-> > > +				      unsigned int reg,
-> > > +				      unsigned int val)
-> > > +{
-> > > +	put_unaligned_be24((val << 1) | (reg << 17), &dev->data[0]);
-> > > +
-> > > +	return spi_write(dev->spi, &dev->data[0], 3);
-> > > +}
-> > > +  
-> > ...
-> >   
-> > > +static int adrf6780_read_raw(struct iio_dev *indio_dev,
-> > > +			    struct iio_chan_spec const *chan,
-> > > +			    int *val, int *val2, long info)
-> > > +{
-> > > +	struct adrf6780_dev *dev = iio_priv(indio_dev);
-> > > +	unsigned int data;
-> > > +	int ret;
-> > > +
-> > > +	switch (info) {
-> > > +	case IIO_CHAN_INFO_RAW:
-> > > +		ret = adrf6780_read_adc_raw(dev, &data);  
-> > 
-> > This takes the mutex inside the call which is good.
-> >   
-> > > +		if (ret)
-> > > +			return ret;
-> > > +
-> > > +		*val = data & ADRF6780_ADC_VALUE_MSK;
-> > > +
-> > > +		return IIO_VAL_INT;
-> > > +
-> > > +	case IIO_CHAN_INFO_SCALE:  
-> > 
-> > But need locks here as well (see below)
-> >   
-> > > +		ret = adrf6780_spi_read(dev, ADRF6780_REG_LINEARIZE,  
-> > &data);  
-> > > +		if (ret)
-> > > +			return ret;
-> > > +
-> > > +		*val = data & ADRF6780_RDAC_LINEARIZE_MSK;
-> > > +
-> > > +		return IIO_VAL_INT;
-> > > +	case IIO_CHAN_INFO_PHASE:  
-> > 
-> > And here.
-> >   
-> > > +		ret = adrf6780_spi_read(dev, ADRF6780_REG_LO_PATH,  
-> > &data);  
-> > > +		if (ret)
-> > > +			return ret;
-> > > +
-> > > +		switch (chan->channel2) {
-> > > +		case IIO_MOD_I:
-> > > +			*val = data &  
-> > ADRF6780_I_PATH_PHASE_ACCURACY_MSK;  
-> > > +
-> > > +			return IIO_VAL_INT;
-> > > +		case IIO_MOD_Q:
-> > > +			*val =  
-> > FIELD_GET(ADRF6780_Q_PATH_PHASE_ACCURACY_MSK, data);  
-> > > +
-> > > +			return IIO_VAL_INT;
-> > > +		default:
-> > > +			return -EINVAL;
-> > > +		}
-> > > +	default:
-> > > +		return -EINVAL;
-> > > +	}
-> > > +}
-> > > +
-> > > +static int adrf6780_write_raw(struct iio_dev *indio_dev,
-> > > +			     struct iio_chan_spec const *chan,
-> > > +			     int val, int val2, long info)
-> > > +{
-> > > +	struct adrf6780_dev *dev = iio_priv(indio_dev);  
-> > 
-> > Minor point but there is a fairly strong expectation than anything
-> > called simply 'dev' is a struct device.  Consider renaming.
-> >   
-> > > +	int ret;
-> > > +
-> > > +	switch (info) {
-> > > +	case IIO_CHAN_INFO_SCALE:  
-> > 
-> > This needs to take the lock or you can have this using dev->data at the
-> > same time as other calls which have taken the mutex.
-> >   
-> > > +		return adrf6780_spi_write(dev, ADRF6780_REG_LINEARIZE,  
-> > val);  
-> > > +	case IIO_CHAN_INFO_PHASE:
-> > > +		switch (chan->channel2) {
-> > > +		case IIO_MOD_I:
-> > > +			mutex_lock(&dev->lock);
-> > > +			ret = adrf6780_spi_update_bits(dev,  
-> > ADRF6780_REG_LO_PATH,  
-> > > +  
-> > 	ADRF6780_I_PATH_PHASE_ACCURACY_MSK,  
-> > > +  
-> > 	FIELD_PREP(ADRF6780_I_PATH_PHASE_ACCURACY_MSK, val));  
-> > > +			mutex_unlock(&dev->lock);
-> > > +
-> > > +			return ret;
-> > > +		case IIO_MOD_Q:
-> > > +			mutex_lock(&dev->lock);
-> > > +			ret = adrf6780_spi_update_bits(dev,  
-> > ADRF6780_REG_LO_PATH,  
-> > > +  
-> > 	ADRF6780_Q_PATH_PHASE_ACCURACY_MSK,  
-> > > +  
-> > 	FIELD_PREP(ADRF6780_Q_PATH_PHASE_ACCURACY_MSK, val));  
-> > > +			mutex_unlock(&dev->lock);
-> > > +
-> > > +			return ret;
-> > > +		default:
-> > > +			return -EINVAL;
-> > > +		}
-> > > +	default:
-> > > +		return -EINVAL;
-> > > +	}
-> > > +}
-> > > +
-> > > +static int adrf6780_reg_access(struct iio_dev *indio_dev,
-> > > +				unsigned int reg,
-> > > +				unsigned int write_val,
-> > > +				unsigned int *read_val)
-> > > +{
-> > > +	struct adrf6780_dev *dev = iio_priv(indio_dev);
-> > > +
-> > > +	if (read_val)  
-> > 
-> > Nothing prevents these being concurrent with other accesses
-> > using the st->buf either.
-> >   
-> > > +		return adrf6780_spi_read(dev, reg, read_val);
-> > > +	else
-> > > +		return adrf6780_spi_write(dev, reg, write_val);
-> > > +}
-> > > +  
-> > ...  
+> >
+> > Jonathan  
 > 
+> Sure, will split the current patch into two patches.
+> 
+> 
+> >>   3 files changed, 60 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> >> index 7cf2bf282cef..2c1aec0fd5ff 100644
+> >> --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
+> >> +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> >> @@ -279,6 +279,52 @@ static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
+> >>        return 0;
+> >>   }
+> >>
+> >> +static int scmi_iio_read_channel_data(struct iio_dev *iio_dev,
+> >> +                          struct iio_chan_spec const *ch, int *val, int *val2)
+> >> +{
+> >> +     struct scmi_iio_priv *sensor = iio_priv(iio_dev);
+> >> +     u32 sensor_config;
+> >> +     struct scmi_sensor_reading readings[SCMI_IIO_NUM_OF_AXIS];
+> >> +     int err;
+> >> +
+> >> +     sensor_config = FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> >> +                                     SCMI_SENS_CFG_SENSOR_ENABLE);
+> >> +     err = sensor->sensor_ops->config_set(
+> >> +             sensor->ph, sensor->sensor_info->id, sensor_config);
+> >> +     if (err) {
+> >> +             dev_err(&iio_dev->dev,
+> >> +                     "Error in enabling sensor %s err %d",
+> >> +                     sensor->sensor_info->name, err);
+> >> +             return err;
+> >> +     }
+> >> +
+> >> +     err = sensor->sensor_ops->reading_get_timestamped(
+> >> +             sensor->ph, sensor->sensor_info->id,
+> >> +             sensor->sensor_info->num_axis, readings);
+> >> +     if (err) {
+> >> +             dev_err(&iio_dev->dev,
+> >> +                     "Error in reading raw attribute for sensor %s err %d",
+> >> +                     sensor->sensor_info->name, err);
+> >> +             return err;
+> >> +     }
+> >> +
+> >> +     sensor_config = FIELD_PREP(SCMI_SENS_CFG_SENSOR_ENABLED_MASK,
+> >> +                                     SCMI_SENS_CFG_SENSOR_DISABLE);
+> >> +     err = sensor->sensor_ops->config_set(
+> >> +             sensor->ph, sensor->sensor_info->id, sensor_config);
+> >> +     if (err) {
+> >> +             dev_err(&iio_dev->dev,
+> >> +                     "Error in disabling sensor %s err %d",
+> >> +                     sensor->sensor_info->name, err);
+> >> +             return err;
+> >> +     }
+> >> +
+> >> +     *val = (u32)readings[ch->scan_index].value;
+> >> +     *val2 = (u32)(readings[ch->scan_index].value >> 32)
+> >> +
+> >> +     return IIO_VAL_INT_64;
+> >> +}
+> >> +
+> >>   static int scmi_iio_read_raw(struct iio_dev *iio_dev,
+> >>                             struct iio_chan_spec const *ch, int *val,
+> >>                             int *val2, long mask)
+> >> @@ -300,6 +346,14 @@ static int scmi_iio_read_raw(struct iio_dev *iio_dev,
+> >>        case IIO_CHAN_INFO_SAMP_FREQ:
+> >>                ret = scmi_iio_get_odr_val(iio_dev, val, val2);
+> >>                return ret ? ret : IIO_VAL_INT_PLUS_MICRO;
+> >> +     case IIO_CHAN_INFO_RAW:
+> >> +             ret = iio_device_claim_direct_mode(iio_dev);
+> >> +             if (ret)
+> >> +                     return ret;
+> >> +
+> >> +             ret = scmi_iio_read_channel_data(iio_dev, ch, val, val2);
+> >> +             iio_device_release_direct_mode(iio_dev);
+> >> +             return ret;
+> >>        default:
+> >>                return -EINVAL;
+> >>        }
+> >> @@ -381,7 +435,8 @@ static void scmi_iio_set_data_channel(struct iio_chan_spec *iio_chan,
+> >>        iio_chan->type = type;
+> >>        iio_chan->modified = 1;
+> >>        iio_chan->channel2 = mod;
+> >> -     iio_chan->info_mask_separate = BIT(IIO_CHAN_INFO_SCALE);
+> >> +     iio_chan->info_mask_separate =
+> >> +             BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_RAW);
+> >>        iio_chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> >>        iio_chan->info_mask_shared_by_type_available =
+> >>                BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> >> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> >> index 6d2175eb7af2..49e42d04ea16 100644
+> >> --- a/drivers/iio/industrialio-core.c
+> >> +++ b/drivers/iio/industrialio-core.c
+> >> @@ -702,6 +702,9 @@ static ssize_t __iio_format_value(char *buf, size_t offset, unsigned int type,
+> >>        }
+> >>        case IIO_VAL_CHAR:
+> >>                return sysfs_emit_at(buf, offset, "%c", (char)vals[0]);
+> >> +     case IIO_VAL_INT_64:
+> >> +             tmp2 = (s64)((((u64)vals[1]) << 32) | (u32)vals[0]);
+> >> +             return sysfs_emit_at(buf, offset, "%lld", tmp2);
+> >>        default:
+> >>                return 0;
+> >>        }
+> >> diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+> >> index 84b3f8175cc6..e148fe11a3dc 100644
+> >> --- a/include/linux/iio/types.h
+> >> +++ b/include/linux/iio/types.h
+> >> @@ -24,6 +24,7 @@ enum iio_event_info {
+> >>   #define IIO_VAL_INT_PLUS_NANO 3
+> >>   #define IIO_VAL_INT_PLUS_MICRO_DB 4
+> >>   #define IIO_VAL_INT_MULTIPLE 5
+> >> +#define IIO_VAL_INT_64 6  
+> > Possibly worth a descriptive comment. The other
+> > types tend to make it easy to assume the role
+> > of val and that of val2, in this case, val being
+> > the lower 32 bits isn't obvious...  
+> 
+> I will add a comment here.
+> 
+> Thank you for your review!
+> 
+> Best regard,
+> Andriy.
+> 
+> 
+> >>   #define IIO_VAL_FRACTIONAL 10
+> >>   #define IIO_VAL_FRACTIONAL_LOG2 11
+> >>   #define IIO_VAL_CHAR 12  
+> >  
 

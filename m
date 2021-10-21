@@ -2,90 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 653494362ED
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 15:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DC94363AA
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 16:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230349AbhJUNan (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Oct 2021 09:30:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53290 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbhJUNam (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Oct 2021 09:30:42 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF379C0613B9
-        for <linux-iio@vger.kernel.org>; Thu, 21 Oct 2021 06:28:26 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id m14so637538pfc.9
-        for <linux-iio@vger.kernel.org>; Thu, 21 Oct 2021 06:28:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=BKa7HEtV6lhYW+rhpHmPPE1qxY78ZTewDFg/eHB2DgE=;
-        b=eUvEJlZKklhnU+qWEDL8M4q74/+DGj9k74WvJsbJDKVmeS7/1wninp5Rx4MJdZmCDa
-         lAVy4UxhHBXd2DlIrKCIBuoazHfGfpOCBxH0XgENV4DFxobQ9HPoSzo8zR8OowcPxphr
-         wqtl+q0Qr4F2wqFGMsBBOUHDWGK9qsRcRv7GNHlm7qJabVeUtccTKRc487pufcHgoCeC
-         j1AFUAP6J0nriTM1kfqrhuonHt1y0adfWu5m8F8AjHtAmyXb5dt3oUgUEPOWrls8674p
-         Rbrl5+EiaWQxXmWhs8xFCJXo4H3URGL/5SnGEAjZG/Erk8liSoGV7XBgmuQdYrqQ1WfN
-         2MZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=BKa7HEtV6lhYW+rhpHmPPE1qxY78ZTewDFg/eHB2DgE=;
-        b=gyBlsycc8PmAsjJIflmt02NiEoKSl2bKKPGL8pyhIHTsJpCAYSOMYtew7EjBXWbHzC
-         N8fq27ykg4060JuqTGtgNguERkTRMVGIBPeQEd+0W+/gZWQDQjlzCb1YtNZBuJ0j7BNP
-         c8harTaGbZX58SnrKn+TKquepUB3XHH4DshDkvuCK0iNO1yCy5eYFuuH31OPJ0m+6kls
-         DTQJvqxSw/BNeXMaUyjSouZWUpByrWpjCizWT8tjgSVdSpM8VfjrvASkBUAG1amUsd2/
-         W9BcymfEaQ15zkd0pwgimWePeX3GklB/Cr+BXe1nfXP/yUJmCgyLLdEgzYQqg8YZspxp
-         /YSg==
-X-Gm-Message-State: AOAM533gO9t9VukO/NjsYWsQVK2w8Q7VhKmSwqGnWNUr8Ehk/TMeBpdq
-        YIw6ZsMik1y+bqWSfQnRg7XNAuNz5UEcWpTl6Tk=
-X-Google-Smtp-Source: ABdhPJzQdCC2aVEEkfoCcrg+8qwnW0vqz5zomf23Fhm200VjJX1e4OYpUz1Ata4b13n+KQIvKzoDBmePVi+UBntoNzk=
-X-Received: by 2002:a63:dc42:: with SMTP id f2mr4517016pgj.152.1634822906394;
- Thu, 21 Oct 2021 06:28:26 -0700 (PDT)
+        id S231522AbhJUODO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Oct 2021 10:03:14 -0400
+Received: from protonic.xs4all.nl ([83.163.252.89]:42370 "EHLO
+        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230283AbhJUODN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Oct 2021 10:03:13 -0400
+Received: from ert768.prtnl (ert768.prtnl [192.168.224.11])
+        by sparta.prtnl (Postfix) with ESMTP id 4D76F44A024E;
+        Thu, 21 Oct 2021 16:00:55 +0200 (CEST)
+From:   Roan van Dijk <roan@protonic.nl>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        david@protonic.nl, Lars-Peter Clausen <lars@metafoo.de>,
+        Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH] iio: chemical: scd4x: Add a scale for the co2 concentration reading
+Date:   Thu, 21 Oct 2021 16:00:18 +0200
+Message-Id: <20211021140018.3051213-1-roan@protonic.nl>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20211021121042.1372803-1-siyanteng@loongson.cn> <CAKv63uvBkC+n_1DBNwc9e+GoEGrEGKirAFgd6QxSnNYMMo0gMg@mail.gmail.com>
-In-Reply-To: <CAKv63uvBkC+n_1DBNwc9e+GoEGrEGKirAFgd6QxSnNYMMo0gMg@mail.gmail.com>
-From:   teng sterling <sterlingteng@gmail.com>
-Date:   Thu, 21 Oct 2021 21:28:15 +0800
-Message-ID: <CAMU9jJrPhk-=BTgX+vHi2dkhNQeGjWNvFs9S4fr870JZaNHb9g@mail.gmail.com>
-Subject: Re: [PATCH] iio/mlx90632: restyle mlx90632_calc_temp_object_iteration
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Yanteng Si <siyanteng01@gmail.com>,
-        Johnathan Iain Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Linux Iio <linux-iio@vger.kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Crt Mori <cmo@melexis.com> =E4=BA=8E2021=E5=B9=B410=E6=9C=8821=E6=97=A5=E5=
-=91=A8=E5=9B=9B =E4=B8=8B=E5=8D=888:39=E5=86=99=E9=81=93=EF=BC=9A
->
-> Hi Yanteng Si,
-> Why did you limit yourself to restyling just one function in the whole dr=
-iver?
-Sorry, I'll restyle the whole driver next.
->
-> If you decide that we should restyle the driver, then please separate
-> the words with underscores to provide some more meaningful variable
-> names because name of variable for calculated Ks coefficient for
-> Temperature Object is kinda more meaningful than calcedksto without
-> any split or capitalization. Same goes for Ha_customer and Hb_customer
-> which are coefficients, capitalized in datasheet (hence retained
-> capitalization in driver) and we want to maintain some sort of
-> resemblance to the datasheet.
-OK, Thanks!
+This patch adds a scale for the co2 concentration reading. The reading is
+expressed in percent after applying the scale to the raw value.
 
->
-> This patch is introducing a strange mix where coefficients from
-> datasheet are capitalized, but local variables referencing/expanding
-> them are not and all in just one function.
-OK, I see. Thanks!
+Signed-off-by: Roan van Dijk <roan@protonic.nl>
+---
+ drivers/iio/chemical/scd4x.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Thanks,
-Yanteng
+diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+index 09b34201c42b..b063b378c7d5 100644
+--- a/drivers/iio/chemical/scd4x.c
++++ b/drivers/iio/chemical/scd4x.c
+@@ -352,7 +352,11 @@ static int scd4x_read_raw(struct iio_dev *indio_dev,
+ 		*val = ret;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		if (chan->type == IIO_TEMP) {
++		if (chan->type == IIO_CONCENTRATION) {
++			*val = 0;
++			*val2 = 100;
++			return IIO_VAL_INT_PLUS_MICRO;
++		} else if (chan->type == IIO_TEMP) {
+ 			*val = 175000;
+ 			*val2 = 65536;
+ 			return IIO_VAL_FRACTIONAL;
+@@ -501,7 +505,8 @@ static const struct iio_chan_spec scd4x_channels[] = {
+ 		.type = IIO_CONCENTRATION,
+ 		.channel2 = IIO_MOD_CO2,
+ 		.modified = 1,
+-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++					BIT(IIO_CHAN_INFO_SCALE),
+ 		.address = SCD4X_CO2,
+ 		.scan_index = SCD4X_CO2,
+ 		.scan_type = {
+-- 
+2.30.2
+

@@ -2,116 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1AF143610A
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 14:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48779436117
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 14:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbhJUMHL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Oct 2021 08:07:11 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:45500 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230340AbhJUMHK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Oct 2021 08:07:10 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19L8h2sI007645;
-        Thu, 21 Oct 2021 14:04:21 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=hvddE42Q9bJ7IvzpAni+KWpr1V0kd9MuytQRIK1sshU=;
- b=0WK/cvMW+iNDuWqG0pNhSG7kEReA9R122vl0mFaH6fKU0vMCD2rEqHgXgVENJhXEQs5p
- Mm8EF8zrtqp9JVfkNxWgy9PEZVAgwcuz3gsZJLKXutUihuSHg5Wirx8j8rSbtdpOw7gt
- yxlt7ertC45S1yqJm0Ra+HLmv/CM8OPJRNY83lyUcuiwozKZelgaqFTswqavZIvW0sku
- JgsCDxF4+1+lMJmJdSoh+jOTNOVJ5i/QJBFV+RF/9qc86HorUtiLmC8uFCDeSGoBwOjB
- HuAfS8BB0QjqlZUytxDSSk/OnCNosDpXWEZe7Ez+o/2ANbUYi71Qnds9kLlqbZqBG0Kd sQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3btywkb956-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 21 Oct 2021 14:04:21 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E665210002A;
-        Thu, 21 Oct 2021 14:04:14 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id DDFE821CA96;
-        Thu, 21 Oct 2021 14:04:14 +0200 (CEST)
-Received: from [10.211.1.225] (10.75.127.44) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 21 Oct
- 2021 14:04:13 +0200
-Subject: Re: [PATCH] iio: adc: stm32-adc: Fix of_node_put() issue in stm32-adc
-To:     Wan Jiabing <wanjiabing@vivo.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Xu Wang <vulab@iscas.ac.cn>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <kael_w@yeah.net>
-References: <20211021112452.9491-1-wanjiabing@vivo.com>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Message-ID: <46423a73-5c4f-84d8-6f2c-5889bc14cd53@foss.st.com>
-Date:   Thu, 21 Oct 2021 14:04:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S230231AbhJUMNV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Oct 2021 08:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34794 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229765AbhJUMNU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Oct 2021 08:13:20 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7BFEC06161C
+        for <linux-iio@vger.kernel.org>; Thu, 21 Oct 2021 05:11:04 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id oa12-20020a17090b1bcc00b0019f715462a8so388876pjb.3
+        for <linux-iio@vger.kernel.org>; Thu, 21 Oct 2021 05:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=O4/z0whPgiQjs5coOxcU57bQrWr1t2+NY/9kmngGtu0=;
+        b=X7lBxaAjAXyIcFEoq5oEEtNaXJZpgTzDRcAGSQWGtnI/VaOU7G0uaxBei+1lUiF9vZ
+         QcH1YdjOq5uJQLTracAbl+KNVVkmJc/5OikfGCCfTiji+qkLhw11qM4YQ3YdTQXqlNyr
+         VNdorN9HaKIKS2lUb+6fFGnIFki0wHfiVIUUGJX7iSqJlbQdHW+QUC6QMOi2qWaWju8L
+         TGiB+jyRrOH0ot4Aq7on8kbYC71e9ZSTBuwotC4UjYtWhzZq6PWGf+ZhDLT1SIkuw7ml
+         h5N+2YfVjMAY1nQos0OKXgQh7NkuAtC+0fp4nilu7mFwF2YXvxBxFPORvSJxS531O2Ya
+         QJGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=O4/z0whPgiQjs5coOxcU57bQrWr1t2+NY/9kmngGtu0=;
+        b=jjgXQtKTXgesqnD+qfwu6CwqZxsr8a/V10QJb6BUQ7+f6cJrtGFQR26OOVP1uCsok1
+         VdsV2BcglnvzUGJMhdN+Kc5u+37ZXNeMG8js1KiCwjIhOPOoCDt8iYcwohWFY06LINZM
+         J18fD0AEkGadjCQFM25zuCVWuULrz6yeBIL4Ypso+4CcRRr+G3jva5QAIgFAgXYygCBT
+         cKOaMwGBxHJu92ZsdaUrK3KlG30Okbk05JvGRvL/9HSVoeUeq3qNwCq1gzvfysfOXLWJ
+         H5vB7NujkoUpDXX2GOwq9jXkv1vWis9/68dlp49z4e5ry4M+dBqk7gRHAkNAxe+i67P6
+         NlcA==
+X-Gm-Message-State: AOAM533Kyh3IzLC1qerQR86Ru0uEMv/q4cziFp558AiXBIR6cRXUbtIh
+        kojGYTb7WS6UuGK7hjjyZBPP1GxFodcXV8AX
+X-Google-Smtp-Source: ABdhPJyNJsjJppf3LB5xiPk1keirioNBnayHTWSV3qHIZnwsoUy9QUKGWuui16HxjgET0MtXlASsQw==
+X-Received: by 2002:a17:902:da8a:b0:13f:1a39:e02f with SMTP id j10-20020a170902da8a00b0013f1a39e02fmr4936632plx.82.1634818264230;
+        Thu, 21 Oct 2021 05:11:04 -0700 (PDT)
+Received: from localhost.localdomain ([8.45.41.28])
+        by smtp.gmail.com with ESMTPSA id d67sm5998284pfd.151.2021.10.21.05.11.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Oct 2021 05:11:03 -0700 (PDT)
+From:   Yanteng Si <siyanteng01@gmail.com>
+X-Google-Original-From: Yanteng Si <siyanteng@loongson.cn>
+To:     jic23@kernel.org, cmo@melexis.com, lars@metafoo.de
+Cc:     Yanteng Si <siyanteng@loongson.cn>, linux-iio@vger.kernel.org,
+        sterlingteng@gmail.com, chenhuacai@kernel.org
+Subject: [PATCH] iio/mlx90632: restyle mlx90632_calc_temp_object_iteration
+Date:   Thu, 21 Oct 2021 20:10:42 +0800
+Message-Id: <20211021121042.1372803-1-siyanteng@loongson.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <20211021112452.9491-1-wanjiabing@vivo.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-21_02,2021-10-21_02,2020-04-07_01
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/21/21 1:24 PM, Wan Jiabing wrote:
-> Fix following coccicheck warning:
-> ./drivers/iio/adc/stm32-adc.c:2014:1-33: WARNING: Function
-> for_each_available_child_of_node should have of_node_put() before return.
-> 
-> Early exits from for_each_available_child_of_node should decrement the
-> node reference counter. Replce return by goto here.
+ref: Documentation/process/coding-style.rst:
+C programmers do not use cute names like ThisVariableIsATemporaryCounter
 
-Hi Wan,
+so,restyle mlx90632_calc_temp_object_iteration()
 
-typo: Replace
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+---
+ drivers/iio/temperature/mlx90632.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-I guess there's no need for a Fixes tag. (I'm pretty sure Jonathan will
-advise on this if needed).
+diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+index 608ccb1d8bc8..03257da92db4 100644
+--- a/drivers/iio/temperature/mlx90632.c
++++ b/drivers/iio/temperature/mlx90632.c
+@@ -547,24 +547,24 @@ static s32 mlx90632_calc_temp_object_iteration(s32 prev_object_temp, s64 object,
+ 					       s32 Ga, s16 Ha, s16 Hb,
+ 					       u16 emissivity)
+ {
+-	s64 calcedKsTO, calcedKsTA, ir_Alpha, Alpha_corr;
+-	s64 Ha_customer, Hb_customer;
++	s64 calcedksto, calcedksta, ir_alpha, alpha_corr;
++	s64 ha_customer, hb_customer;
+ 
+-	Ha_customer = ((s64)Ha * 1000000LL) >> 14ULL;
+-	Hb_customer = ((s64)Hb * 100) >> 10ULL;
++	ha_customer = ((s64)Ha * 1000000LL) >> 14ULL;
++	hb_customer = ((s64)Hb * 100) >> 10ULL;
+ 
+-	calcedKsTO = ((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
++	calcedksto = ((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
+ 			     * 1000LL)) >> 36LL;
+-	calcedKsTA = ((s64)(Fb * (TAdut - 25 * 1000000LL))) >> 36LL;
+-	Alpha_corr = div64_s64((((s64)(Fa * 10000000000LL) >> 46LL)
+-				* Ha_customer), 1000LL);
+-	Alpha_corr *= ((s64)(1 * 1000000LL + calcedKsTO + calcedKsTA));
+-	Alpha_corr = emissivity * div64_s64(Alpha_corr, 100000LL);
+-	Alpha_corr = div64_s64(Alpha_corr, 1000LL);
+-	ir_Alpha = div64_s64((s64)object * 10000000LL, Alpha_corr);
+-
+-	return (int_sqrt64(int_sqrt64(ir_Alpha * 1000000000000LL + TAdut4))
+-		- 27315 - Hb_customer) * 10;
++	calcedksta = ((s64)(Fb * (TAdut - 25 * 1000000LL))) >> 36LL;
++	alpha_corr = div64_s64((((s64)(Fa * 10000000000LL) >> 46LL)
++				* ha_customer), 1000LL);
++	alpha_corr *= ((s64)(1 * 1000000LL + calcedksto + calcedksta));
++	alpha_corr = emissivity * div64_s64(alpha_corr, 100000LL);
++	alpha_corr = div64_s64(alpha_corr, 1000LL);
++	ir_alpha = div64_s64((s64)object * 10000000LL, alpha_corr);
++
++	return (int_sqrt64(int_sqrt64(ir_alpha * 1000000000000LL + TAdut4))
++		- 27315 - hb_customer) * 10;
+ }
+ 
+ static s64 mlx90632_calc_ta4(s64 TAdut, s64 scale)
+-- 
+2.27.0
 
-> 
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
-
-Apart from that, you can add my:
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-
-Thanks for the fix,
-Best Regards,
-Fabrice
-
-> ---
->  drivers/iio/adc/stm32-adc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index 6245434f8377..7f1fb36c747c 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -2024,7 +2024,8 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
->  			if (strlen(name) >= STM32_ADC_CH_SZ) {
->  				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
->  					name, STM32_ADC_CH_SZ);
-> -				return -EINVAL;
-> +				ret = -EINVAL;
-> +				goto err;
->  			}
->  			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
->  			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
-> 

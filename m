@@ -2,367 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EACF4435FD7
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 13:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 798BF436028
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 13:25:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbhJULEc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Oct 2021 07:04:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34328 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229567AbhJULE0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 21 Oct 2021 07:04:26 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D27C60FF2;
-        Thu, 21 Oct 2021 11:02:08 +0000 (UTC)
-Date:   Thu, 21 Oct 2021 12:06:26 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <git@xilinx.com>,
-        <michal.simek@xilinx.com>, <pmeerw@pmeerw.net>,
-        <devicetree@vger.kernel.org>,
-        Manish Narani <manish.narani@xilinx.com>
-Subject: Re: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
-Message-ID: <20211021120626.56cf1b8d@jic23-huawei>
-In-Reply-To: <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
-References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com>
-        <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S230105AbhJUL1Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Oct 2021 07:27:25 -0400
+Received: from mail-eopbgr1310102.outbound.protection.outlook.com ([40.107.131.102]:31283
+        "EHLO APC01-SG2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230072AbhJUL1Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 21 Oct 2021 07:27:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZTrYnh3aVMTB7O29DKXgdd9QNNVg/YwYkYOlZ3XGyMzEDdxg6FQ+uqfYtp+d5Z8jqP4E4Qq6u7T4I8gJoyTNaAcGJns9+6kGMW3wbjmjEMVlg/kgVHrZ5vbG3d12y2Pysyk313tf6tqquUM6hr2ugLu5nU7m9LyJerBbrwM+bJp4ORiG8jZJ5hRemRjbFYGWSNu5enYSV269rJ6GSfHljt3G1BuV5DDGrbLPVlytdLhHj/+/ycPBCyzRXMJggntAW739Nqpi9DfF0QoaevoBP1wbs9iRM5S67Ho64R/Wg3gixDdyNncBX9PXrzc6QCrF6JrtV5db84dVYu3NNKXP2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wZXq6ygkNsrLJjXtGer1fvQZNjdjIaUbYKaj5NFk8RA=;
+ b=BhbGQILSHqANFiX2FEIorcg+y10zXYVj9+1Wh+VO4kLpmsuSHCzSSPiom3GyCEKy14vwp4giVGNIGj3hEa0a76onPyZHB5fgIXWLBCiMrIwH3S6zfCnljjvSsJcom2sS7U+oPGd4Y1r2A+DDTKGLY2zoiC2usz8VHiJHIuWGVthMdXNwOxd8GyEV411iFvMri46QlTEWpn96HaOvZOkC/MPmxyCPaGbrlluC1p/bx2GKWiFKhXaOgBx3JyxP1d5x5UHq91IZHj53pAHnKMX+kGmcFeOZCUQZOzHB7Ltf/tYbL4NU5ZYyddk9YqRr0MxGKj/Il7zYTnVFmhpfn9p7ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
+ s=selector2-vivo0-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wZXq6ygkNsrLJjXtGer1fvQZNjdjIaUbYKaj5NFk8RA=;
+ b=mS6QBGHeS4tRRgx1AqqCYRlOaPO6wILTGUpZPspNTggt3ocqBzZhoVk6nzehaCf58akUefdqDq4yFnTXRo2tnY3JZQO5CQXhfYo/YnBeERZgtmnxpizKuDPv8xVU50ubW59hg6TeUlt5e8JcOHKW9KlDsbH9kfaDvIJ5M9OakAA=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=vivo.com;
+Received: from SG2PR06MB3367.apcprd06.prod.outlook.com (2603:1096:4:78::19) by
+ SG2PR06MB2779.apcprd06.prod.outlook.com (2603:1096:4:21::21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4608.18; Thu, 21 Oct 2021 11:25:04 +0000
+Received: from SG2PR06MB3367.apcprd06.prod.outlook.com
+ ([fe80::fc12:4e1b:cc77:6c0]) by SG2PR06MB3367.apcprd06.prod.outlook.com
+ ([fe80::fc12:4e1b:cc77:6c0%6]) with mapi id 15.20.4628.018; Thu, 21 Oct 2021
+ 11:25:04 +0000
+From:   Wan Jiabing <wanjiabing@vivo.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Xu Wang <vulab@iscas.ac.cn>, Wan Jiabing <wanjiabing@vivo.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     kael_w@yeah.net
+Subject: [PATCH] iio: adc: stm32-adc: Fix of_node_put() issue in stm32-adc
+Date:   Thu, 21 Oct 2021 07:24:49 -0400
+Message-Id: <20211021112452.9491-1-wanjiabing@vivo.com>
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HK2PR04CA0075.apcprd04.prod.outlook.com
+ (2603:1096:202:15::19) To SG2PR06MB3367.apcprd06.prod.outlook.com
+ (2603:1096:4:78::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: from localhost.localdomain (203.90.234.87) by HK2PR04CA0075.apcprd04.prod.outlook.com (2603:1096:202:15::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.16 via Frontend Transport; Thu, 21 Oct 2021 11:25:02 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 985d6a5f-530d-4d35-109b-08d994856da9
+X-MS-TrafficTypeDiagnostic: SG2PR06MB2779:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SG2PR06MB27795CEE13D6FE6CC3CD2713ABBF9@SG2PR06MB2779.apcprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1227;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: brLOAQMuP2YSwdPbhbCR6nqRyf/OaoGP7JkseL7PeTKhE5/fG9qlcaUUlBesOzSfam9NuWrFVp671HZhA41vPl0GNHZqPdUV1ERfLXD/+yhZ7bjOJGReSrPiGA5P0YH47ywoTaRathGfZ+fDzbJTsFDdUp8x37x+0HmO9blKj2pdXL4r/bbV3NvWTcbM/BV5IWmDaxmd3HxSsVvzJ3z2840cnsF9zEtT9hMmF/RJ04U2qD9DLAfBRy/W8AKA6J3Xa+A5w3HUgktxHmtz1mQih1cX3SpZr/cucNgGHqTbm1Hx8W/Lq6DIn9xo4N++Ee0Qde+gFN9857RVdvm3B2Fv2qx4PulvBhy2fRI6WYwj+XHi7bzdGZ0BTirmhomo4Ea8K6Toy09LyB67qMW/HTiK+QUFkIY6KdTRCT71zt3t/cLUuWzzNTn1cRX3B79ZeeavSOy4Biaj3MzvuzkKlZB7GIN75x/+AokJkSYsmC33LLqIjE6FA3SYw2DsXuzGfX/mHaE28XuUX5D5/PRjuK+8qYxJV2hoBtZRfmOgkDvO06f79SizTwTc6WWOlZDm+b6R1xhdMbosDwqEMqDi63DWWXaQj4blJYwSXDFlHlktJtHJCNavZ76YD9dbopQ1wtPeNz12a47cuBcxpM8QTNWERY7mjk/MpNYwGeaFmbX0TyWx1V7hbiHS8yAu7pCx2dm8neVmxmfXoQOG43OD8PksdJu3tlTed8KndmZhn4+E4fM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB3367.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(36756003)(316002)(38100700002)(186003)(38350700002)(66556008)(1076003)(66946007)(6512007)(110136005)(5660300002)(956004)(4744005)(4326008)(52116002)(7416002)(6666004)(6506007)(26005)(508600001)(2906002)(8676002)(66476007)(83380400001)(921005)(86362001)(8936002)(6486002)(2616005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aV8Ui46EVrgn+mcR/bBih+lnQ7+8cQOL5+cIrNhaGHt75DQVj5SYecLYKwYu?=
+ =?us-ascii?Q?TFwrtUIpBKo3TOg8s5pGpvxBB56lsuOOPg4lfZqBAt0Y/uwJQYklS2Jgui6j?=
+ =?us-ascii?Q?QmQ/2LDnxjZrCVqVMPpLy0iVa8SjuPOrPTtgLs+MKCaur7RSSP/i1PIOLfrN?=
+ =?us-ascii?Q?BVxNq951dsDI++k5yZ/m3Z3AfRiiyBE5K66QaKVmMK4KmiXy4r5tsZg4Vsho?=
+ =?us-ascii?Q?Qp5XR9qbsQHs66ouh7UUnXKgptepYi6VBjnHdVhCN+iUsxhV55QOQwL20Fts?=
+ =?us-ascii?Q?5fm+Oyjn4OZkkeEMXRqQEoMZ5fN0xtL2Zmg7lgNgXYI13HKb4KX1DnfDbyu4?=
+ =?us-ascii?Q?rZe0CfMvo5Q14v+b1YfR8ec+0E/ZGEkYZWoqRg3BQoBpdAppjhJ0Dg5KQrk+?=
+ =?us-ascii?Q?8D/Cr2Nn1rWTyAXCj3Uwa9r5DzRAC2Q6jjuY2qS28OFB4j+TJ/8h6s61SL1z?=
+ =?us-ascii?Q?uUfBybzvoaAtEumLimzGdDeFYoDgW1ceOh7ogmQXgx6nhbggS6e5Kx6SQMR6?=
+ =?us-ascii?Q?ke0DH4pu+XGtl4pdAo0298wfSqjZIYYsFVcf+Vhry4zkMPgaavhINEA/Alr+?=
+ =?us-ascii?Q?JxkjvNRyK7Nz0VtokEpG9/HCaXMD+0OgTwEMQP5SIDuGNARBxO3ikcN0vLu1?=
+ =?us-ascii?Q?NE3UoVa+ml6vtuNztQ8NAR7ZIdsD1EAy1WH+eT6UEZkthTHcHhFZm0Yh4Aue?=
+ =?us-ascii?Q?kc86nUD/PFWHc9gNSEy7+7dkeVv/TVcU4Eshr+t6v8bKFyrKe6X54WMxXqw1?=
+ =?us-ascii?Q?2pLb3e/wzMqy/PpJMenNjGqUnTw7073PYikXxl8rw17fTPuCgMn2S3KSCLqN?=
+ =?us-ascii?Q?xrK3GgUHSjk46yb3Df9Efhs4gg1kuY4STxjMX6ngbeEoECYKVzk4MI1Ue9fe?=
+ =?us-ascii?Q?QJg27xQbQEshvRI3teS79Baqe9OH42kS2sKSbOiOHqBm+zEu3WTV+KW8nsFc?=
+ =?us-ascii?Q?1Y9a2frb8xqvWy+WEl40RRZbKv+yUrouTXCqh/for1j7ZZU5NtBtDTXUCkaX?=
+ =?us-ascii?Q?/mhgh3AqGGMXKSYA5pnFF0DOgPeExUMjbem/5aFa66JbV6qqK31rK7Rnf/Rh?=
+ =?us-ascii?Q?jElufN5jZYfrvIOhIS4R0Z8GxY57o9eMxWq8ZbSLtyYVPIorIQT9A8p8DQ8/?=
+ =?us-ascii?Q?sBmcnOXH5Sa8FN01wR/ey4Gn5XES6SVLv5+p6SH7TdaOc+fu1kGd9KznZSPj?=
+ =?us-ascii?Q?hZZJy9RAH2HYBd25iIey869Xei1WkfwcuZ7mASFulbNqfG5o5iYery7AEiIM?=
+ =?us-ascii?Q?gwS1N/ZM2oQ8FpvL2PDlZkLYJqhWCLLCmUNo84JbdcRNigXmWarsdrhIlS7D?=
+ =?us-ascii?Q?Oj/shEI6WGQDp1kFVROWXPt7?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 985d6a5f-530d-4d35-109b-08d994856da9
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3367.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2021 11:25:04.3841
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 11126903@vivo.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR06MB2779
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 19 Oct 2021 16:20:46 +0100
-Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
+Fix following coccicheck warning:
+./drivers/iio/adc/stm32-adc.c:2014:1-33: WARNING: Function
+for_each_available_child_of_node should have of_node_put() before return.
 
-> The AMS includes an ADC as well as on-chip sensors that can be used to
-> sample external voltages and monitor on-die operating conditions, such
-> as temperature and supply voltage levels. The AMS has two SYSMON blocks.
-> PL-SYSMON block is capable of monitoring off chip voltage and
-> temperature.
-> PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
-> from external master. Out of these interface currently only DRP is
-> supported.
-> Other block PS-SYSMON is memory mapped to PS.
-> The AMS can use internal channels to monitor voltage and temperature as
-> well as one primary and up to 16 auxiliary channels for measuring
-> external voltages.
-> The voltage and temperature monitoring channels also have event
-> capability which allows to generate an interrupt when their value falls
-> below or raises above a set threshold.
-> 
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Early exits from for_each_available_child_of_node should decrement the
+node reference counter. Replce return by goto here.
 
-It would be good at some point to move away from of specific firmware property
-reading, but on a platform like this I guess you can be fairly sure no one will
-be using ACPI or other firmware description options so I'm not going to insist
-on it for an initial merge.
+Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+---
+ drivers/iio/adc/stm32-adc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Other comment I have are fairly minor but we need to leave some time
-for other reviews and in particular DT binding review.
-
-> ---
->  drivers/iio/adc/Kconfig      |   13 +
->  drivers/iio/adc/Makefile     |    1 +
->  drivers/iio/adc/xilinx-ams.c | 1341 ++++++++++++++++++++++++++++++++++
->  3 files changed, 1355 insertions(+)
->  create mode 100644 drivers/iio/adc/xilinx-ams.c
-
-...
-
-> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-> new file mode 100644
-> index 000000000000..597cdda8a618
-> --- /dev/null
-> +++ b/drivers/iio/adc/xilinx-ams.c
-> @@ -0,0 +1,1341 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Xilinx AMS driver
-> + *
-> + *  Copyright (C) 2021 Xilinx, Inc.
-> + *
-> + *  Manish Narani <mnarani@xilinx.com>
-> + *  Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-#include <linux/mod_devicetable.h> for the of_device_id structure defintion.
-
-> +#include <linux/of_address.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
-> +
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-...
-
-> +/**
-> + * struct ams - Driver data for xilinx-ams
-> + * @base: physical base address of device
-> + * @ps_base: physical base address of PS device
-> + * @pl_base: physical base address of PL device
-> + * @clk: clocks associated with the device
-> + * @dev: pointer to device struct
-> + * @lock: to handle multiple user interaction
-> + * @intr_lock: to protect interrupt mask values
-> + * @masked_alarm: currently masked due to alarm
-> + * @alarm_mask: alarm configuration
-> + * @interrupt_mask: interrupt configuration
-> + * @irq: interrupt number of the sysmon
-> + * @ams_unmask_work: re-enables event once the event condition disappears
-> + *
-> + * This structure contains necessary state for Sysmon driver to operate
-> + */
-> +struct ams {
-> +	void __iomem *base;
-> +	void __iomem *ps_base;
-> +	void __iomem *pl_base;
-> +	struct clk *clk;
-> +	struct device *dev;
-> +	/* check kernel doc above */
-> +	struct mutex lock;
-> +	/* check kernel doc above */
-> +	spinlock_t intr_lock;
-> +	unsigned int alarm_mask;
-Docs should be same order as the fields.
-> +	unsigned int masked_alarm;
-> +	u64 intr_mask;
-
-That's not the name in the docs.  Run kernel-doc script over this and
-fix all the errors / warnings.
-
-> +	int irq;
-> +	struct delayed_work ams_unmask_work;
-> +};
-> +
-
-...
-
-> +
-> +static irqreturn_t ams_irq(int irq, void *data)
-> +{
-> +	struct iio_dev *indio_dev = data;
-> +	struct ams *ams = iio_priv(indio_dev);
-> +	u32 isr0;
-> +
-> +	spin_lock(&ams->intr_lock);
-> +
-> +	isr0 = readl(ams->base + AMS_ISR_0);
-> +
-> +	/* only process alarms that are not masked */
-> +	isr0 &= ~((ams->intr_mask & AMS_ISR0_ALARM_MASK) | ams->masked_alarm);
-> +
-> +	if (!isr0)
-
-lock held.
-
-> +		return IRQ_NONE;
-> +
-> +	/* clear interrupt */
-> +	writel(isr0, ams->base + AMS_ISR_0);
-> +
-> +	/* Mask the alarm interrupts until cleared */
-> +	ams->masked_alarm |= isr0;
-> +	ams_update_intrmask(ams, 0, 0);
-> +
-> +	ams_handle_events(indio_dev, isr0);
-> +
-> +	schedule_delayed_work(&ams->ams_unmask_work,
-> +			      msecs_to_jiffies(AMS_UNMASK_TIMEOUT_MS));
-> +
-> +	spin_unlock(&ams->intr_lock);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-
-...
-
-> +
-> +static int ams_parse_dt(struct iio_dev *indio_dev, struct platform_device *pdev)
-> +{
-> +	struct ams *ams = iio_priv(indio_dev);
-> +	struct iio_chan_spec *ams_channels, *dev_channels;
-> +	struct device_node *child_node = NULL, *np = pdev->dev.of_node;
-> +	int ret, vol_ch_cnt = 0, temp_ch_cnt = 0, i, rising_off, falling_off;
-> +	unsigned int num_channels = 0;
-> +
-> +	/* Initialize buffer for channel specification */
-> +	ams_channels = kzalloc(sizeof(ams_ps_channels) +
-> +			       sizeof(ams_pl_channels) +
-> +			       sizeof(ams_ctrl_channels), GFP_KERNEL);
-> +	if (!ams_channels)
-> +		return -ENOMEM;
-> +
-> +	if (of_device_is_available(np)) {
-> +		ret = ams_init_module(indio_dev, np, ams_channels);
-> +		if (ret < 0)
-> +			goto err;
-> +
-> +		num_channels += ret;
-> +	}
-> +
-> +	for_each_child_of_node(np, child_node) {
-> +		if (of_device_is_available(child_node)) {
-> +			ret = ams_init_module(indio_dev, child_node,
-> +					      ams_channels + num_channels);
-> +			if (ret < 0)
-> +				goto err;
-
-for_each_child_of_node() holds a reference if we jump out of the loop
-before it terminates.
-https://elixir.bootlin.com/linux/latest/source/drivers/of/base.c#L715
-is where it ultimately releases that reference when the loop is terminating.
-Her you need to do it manually with an of_node_put() call
-
-> +
-> +			num_channels += ret;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < num_channels; i++) {
-> +		if (ams_channels[i].type == IIO_VOLTAGE)
-> +			ams_channels[i].channel = vol_ch_cnt++;
-> +		else
-> +			ams_channels[i].channel = temp_ch_cnt++;
-> +
-> +		if (ams_channels[i].scan_index < (AMS_PS_SEQ_MAX * 3)) {
-> +			/* set threshold to max and min for each channel */
-> +			falling_off =
-> +				ams_get_alarm_offset(ams_channels[i].scan_index,
-> +						     IIO_EV_DIR_FALLING);
-> +			rising_off =
-> +				ams_get_alarm_offset(ams_channels[i].scan_index,
-> +						     IIO_EV_DIR_RISING);
-> +			if (ams_channels[i].scan_index >= AMS_PS_SEQ_MAX) {
-> +				writel(AMS_ALARM_THR_MIN,
-> +				       ams->pl_base + falling_off);
-> +				writel(AMS_ALARM_THR_MAX,
-> +				       ams->pl_base + rising_off);
-> +			} else {
-> +				writel(AMS_ALARM_THR_MIN,
-> +				       ams->ps_base + falling_off);
-> +				writel(AMS_ALARM_THR_MAX,
-> +				       ams->ps_base + rising_off);
-> +			}
-> +		}
-> +	}
-> +
-> +	dev_channels = devm_kzalloc(&pdev->dev, sizeof(*dev_channels) *
-> +				    num_channels, GFP_KERNEL);
-> +	if (!dev_channels) {
-> +		ret = -ENOMEM;
-> +		goto err;
-> +	}
-
-We now have the option of devm_krealloc()   If you used that in conjunction
-with devm_kzalloc to replace the kzalloc above, you could avoid this need to
-copy.  Not important though if you prefer doing this manual version.
-
-> +
-> +	memcpy(dev_channels, ams_channels,
-> +	       sizeof(*ams_channels) * num_channels);
-> +	indio_dev->channels = dev_channels;
-> +	indio_dev->num_channels = num_channels;
-> +
-> +	ret = 0;
-> +err:
-> +	kfree(ams_channels);
-> +
-> +	return ret;
-> +}
-> +
-
-...
-
-> +static int ams_probe(struct platform_device *pdev)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct ams *ams;
-> +	int ret;
-> +
-> +	if (!pdev->dev.of_node)
-> +		return -ENODEV;
-> +
-> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*ams));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	ams = iio_priv(indio_dev);
-> +	mutex_init(&ams->lock);
-> +	spin_lock_init(&ams->intr_lock);
-> +
-> +	indio_dev->name = "xilinx-ams";
-> +
-> +	indio_dev->info = &iio_ams_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ams->base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(ams->base))
-> +		return PTR_ERR(ams->base);
-> +
-> +	ams->clk = devm_clk_get(&pdev->dev, NULL);
-> +	if (IS_ERR(ams->clk))
-> +		return PTR_ERR(ams->clk);
-> +	clk_prepare_enable(ams->clk);
-> +	devm_add_action_or_reset(&pdev->dev, ams_clk_disable_unprepare,
-> +				 ams->clk);
-> +
-> +	INIT_DELAYED_WORK(&ams->ams_unmask_work, ams_unmask_worker);
-> +	devm_add_action_or_reset(&pdev->dev, ams_cancel_delayed_work,
-> +				 &ams->ams_unmask_work);
-> +
-> +	ret = ams_init_device(ams);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "failed to initialize AMS\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = ams_parse_dt(indio_dev, pdev);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "failure in parsing DT\n");
-> +		return ret;
-> +	}
-> +
-> +	ams_enable_channel_sequence(indio_dev);
-> +
-> +	ams->irq = platform_get_irq(pdev, 0);
-> +	if (ams->irq == -EPROBE_DEFER) {
-> +		ret = -EPROBE_DEFER;
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_request_irq(&pdev->dev, ams->irq, &ams_irq, 0, "ams-irq",
-> +			       indio_dev);
-> +	if (ret < 0) {
-> +		dev_err(&pdev->dev, "failed to register interrupt\n");
-> +		return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, indio_dev);
-> +
-> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> +
-
-return devm_...
-
-> +	return ret;
-> +}
-> +
-
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index 6245434f8377..7f1fb36c747c 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2024,7 +2024,8 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 			if (strlen(name) >= STM32_ADC_CH_SZ) {
+ 				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
+ 					name, STM32_ADC_CH_SZ);
+-				return -EINVAL;
++				ret = -EINVAL;
++				goto err;
+ 			}
+ 			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+ 			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
+-- 
+2.20.1
 

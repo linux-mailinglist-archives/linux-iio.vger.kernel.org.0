@@ -2,629 +2,252 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 791D7436BA9
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Oct 2021 21:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1A5E4370A6
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Oct 2021 06:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232005AbhJUUA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Oct 2021 16:00:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43582 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232017AbhJUUA4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 21 Oct 2021 16:00:56 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8A0EF611C7;
-        Thu, 21 Oct 2021 19:58:39 +0000 (UTC)
-Date:   Thu, 21 Oct 2021 21:02:57 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v9 1/2] iio: frequency: adrf6780: add support for
- ADRF6780
-Message-ID: <20211021210257.746ba5dc@jic23-huawei>
-In-Reply-To: <20211021113244.56936-1-antoniu.miclaus@analog.com>
-References: <20211021113244.56936-1-antoniu.miclaus@analog.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S229478AbhJVEMa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Oct 2021 00:12:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229484AbhJVEM3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Oct 2021 00:12:29 -0400
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3CBC061764
+        for <linux-iio@vger.kernel.org>; Thu, 21 Oct 2021 21:10:12 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id o4so3482257oia.10
+        for <linux-iio@vger.kernel.org>; Thu, 21 Oct 2021 21:10:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DdgjWsmZv/kZGNUbeAgYT36Gdfi8zvgJLOlEmSHZjKc=;
+        b=jby2Xvld2B5M5QYJGCBHmsCDVmCh8ZeHMHyfeDpRPxGmA+m2hCF4FqA3D3s3uLyi6R
+         q+d0swAY/6G4AHdUD4EwRJnNjC+bSXDRYUSJSClajLdYXf7YrvkcnDJ1/UnVsuUM3eXu
+         ftcBxsqidvZxUE2RpAkR+jMMxuUtRm/kNNpWR1DJQhSNX8p0ql1VPODvyId9gnLXb4Vs
+         ikXM3Kc/fyplrafm+Iz1EO7uj+Nj58ZvWelDej2GTjHpEYFlHpp1ZREjRpBEVYsiFOaI
+         tZWtHEZvGaGJzO729Mu2givmpJwNuZlfOoNS2fs2WbL6BYP5JZyoHJCf7VFzyY1fnvO0
+         c0aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DdgjWsmZv/kZGNUbeAgYT36Gdfi8zvgJLOlEmSHZjKc=;
+        b=SAVuk+Ekq4FSx80SkdqABXTfexoc8KKKqh0ZoSBQFVLcSHCazkBgzXFdaGVjdgYRra
+         9YrK34b4XACO1LUFGvvUARXmwnVEa9xgFMivd5FmRsd8G9/t6sOn868KW6YFwEfVgrEY
+         RZUTL4F94wb7KXQteuDoSSnM0a+yyeEUGrT8x0WD6a2NxHJQ4AWRoFEFQeavU/75UPGc
+         7oZC1Ib8XOTFHbLK3B9w6i9xa2fh3d3eagrAwgSJZn3YRomnus3s0uA0yBE9LzN9e/kP
+         WT26TEWlNa7c+QMJernjSdfjEXuSYO8hSq8/AblJTlfH7OOj6Og7g0IYkrkEAMuYytbu
+         7D9A==
+X-Gm-Message-State: AOAM533gSLsiXAwe9BzQrvuucR1pwp3KB/oyPNEpsghjkyA1aT0un4SP
+        c5a2Q15lS+W3oakn9LQGIEc=
+X-Google-Smtp-Source: ABdhPJwChRnzov13qCvUoSMCMZD0dQpL7tHKul9REE4c+PMuihOLRDyt7vSTxGdWPy7JD1RTyvACZw==
+X-Received: by 2002:a05:6808:90e:: with SMTP id w14mr7566311oih.131.1634875811466;
+        Thu, 21 Oct 2021 21:10:11 -0700 (PDT)
+Received: from localhost.localdomain ([8.47.15.131])
+        by smtp.gmail.com with ESMTPSA id j12sm1456744ota.47.2021.10.21.21.10.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Oct 2021 21:10:11 -0700 (PDT)
+From:   Yanteng Si <siyanteng01@gmail.com>
+X-Google-Original-From: Yanteng Si <siyanteng@loongson.cn>
+To:     jic23@kernel.org, cmo@melexis.com, lars@metafoo.de
+Cc:     Yanteng Si <siyanteng@loongson.cn>, linux-iio@vger.kernel.org,
+        sterlingteng@gmail.com, chenhuacai@kernel.org
+Subject: [PATCH v2] iio/mlx90632: restyle mlx90632
+Date:   Fri, 22 Oct 2021 12:09:49 +0800
+Message-Id: <20211022040949.4037879-1-siyanteng@loongson.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Oct 2021 14:32:43 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+ref: Documentation/process/coding-style.rst:
+C programmers do not use cute names like ThisVariableIsATemporaryCounter
 
-> The ADRF6780 is a silicon germanium (SiGe) design, wideband,
-> microwave upconverter optimized for point to point microwave
-> radio designs operating in the 5.9 GHz to 23.6 GHz frequency
-> range.
-> 
-> Datasheet:
-> https://www.analog.com/media/en/technical-documentation/data-sheets/ADRF6780.pdf
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cutting it fine but hopefully we can sneak this one in before
-the merge window as I'm about to push out for a final inclusion
-in linux-next before sending a pull request.
+so,restyle mlx90632 driver.
 
-Applied to the togreg branch of iio.git - I tweaked the line breaks
-a little, choosing to relax the align with opening brackets in favour
-of having sub 100 char lines,
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+---
+v1:
 
-Thanks,
+Restyle the whole driver under Crt's advice.
 
-Jonathan
+ drivers/iio/temperature/mlx90632.c | 80 +++++++++++++++---------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
-> ---
-> changes in v9:
-> 	- add locked and unlocked versions for spi operations and use them
-> 	  accordingly
-> 	- rename `dev` -> `st`
-> 	- rename `struct adrf6780_dev` -> `struct adrf6780_state`
->  drivers/iio/frequency/Kconfig    |  12 +
->  drivers/iio/frequency/Makefile   |   1 +
->  drivers/iio/frequency/adrf6780.c | 521 +++++++++++++++++++++++++++++++
->  3 files changed, 534 insertions(+)
->  create mode 100644 drivers/iio/frequency/adrf6780.c
-> 
-> diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
-> index 240b81502512..2c9e0559e8a4 100644
-> --- a/drivers/iio/frequency/Kconfig
-> +++ b/drivers/iio/frequency/Kconfig
-> @@ -49,5 +49,17 @@ config ADF4371
->  
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called adf4371.
-> +
-> +config ADRF6780
-> +        tristate "Analog Devices ADRF6780 Microwave Upconverter"
-> +        depends on SPI
-> +        depends on COMMON_CLK
-> +        help
-> +          Say yes here to build support for Analog Devices ADRF6780
-> +          5.9 GHz to 23.6 GHz, Wideband, Microwave Upconverter.
-> +
-> +          To compile this driver as a module, choose M here: the
-> +          module will be called adrf6780.
-> +
->  endmenu
->  endmenu
-> diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
-> index 518b1e50caef..ae3136c79202 100644
-> --- a/drivers/iio/frequency/Makefile
-> +++ b/drivers/iio/frequency/Makefile
-> @@ -7,3 +7,4 @@
->  obj-$(CONFIG_AD9523) += ad9523.o
->  obj-$(CONFIG_ADF4350) += adf4350.o
->  obj-$(CONFIG_ADF4371) += adf4371.o
-> +obj-$(CONFIG_ADRF6780) += adrf6780.o
-> diff --git a/drivers/iio/frequency/adrf6780.c b/drivers/iio/frequency/adrf6780.c
-> new file mode 100644
-> index 000000000000..b3fb0521196b
-> --- /dev/null
-> +++ b/drivers/iio/frequency/adrf6780.c
-> @@ -0,0 +1,521 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ADRF6780 driver
-> + *
-> + * Copyright 2021 Analog Devices Inc.
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/clk.h>
-> +#include <linux/clkdev.h>
-> +#include <linux/clk-provider.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/spi/spi.h>
-> +
-> +#include <asm/unaligned.h>
-> +
-> +/* ADRF6780 Register Map */
-> +#define ADRF6780_REG_CONTROL			0x00
-> +#define ADRF6780_REG_ALARM_READBACK		0x01
-> +#define ADRF6780_REG_ALARM_MASKS		0x02
-> +#define ADRF6780_REG_ENABLE			0x03
-> +#define ADRF6780_REG_LINEARIZE			0x04
-> +#define ADRF6780_REG_LO_PATH			0x05
-> +#define ADRF6780_REG_ADC_CONTROL		0x06
-> +#define ADRF6780_REG_ADC_OUTPUT			0x0C
-> +
-> +/* ADRF6780_REG_CONTROL Map */
-> +#define ADRF6780_PARITY_EN_MSK			BIT(15)
-> +#define ADRF6780_SOFT_RESET_MSK			BIT(14)
-> +#define ADRF6780_CHIP_ID_MSK			GENMASK(11, 4)
-> +#define ADRF6780_CHIP_ID			0xA
-> +#define ADRF6780_CHIP_REVISION_MSK		GENMASK(3, 0)
-> +
-> +/* ADRF6780_REG_ALARM_READBACK Map */
-> +#define ADRF6780_PARITY_ERROR_MSK		BIT(15)
-> +#define ADRF6780_TOO_FEW_ERRORS_MSK		BIT(14)
-> +#define ADRF6780_TOO_MANY_ERRORS_MSK		BIT(13)
-> +#define ADRF6780_ADDRESS_RANGE_ERROR_MSK	BIT(12)
-> +
-> +/* ADRF6780_REG_ENABLE Map */
-> +#define ADRF6780_VGA_BUFFER_EN_MSK		BIT(8)
-> +#define ADRF6780_DETECTOR_EN_MSK		BIT(7)
-> +#define ADRF6780_LO_BUFFER_EN_MSK		BIT(6)
-> +#define ADRF6780_IF_MODE_EN_MSK			BIT(5)
-> +#define ADRF6780_IQ_MODE_EN_MSK			BIT(4)
-> +#define ADRF6780_LO_X2_EN_MSK			BIT(3)
-> +#define ADRF6780_LO_PPF_EN_MSK			BIT(2)
-> +#define ADRF6780_LO_EN_MSK			BIT(1)
-> +#define ADRF6780_UC_BIAS_EN_MSK			BIT(0)
-> +
-> +/* ADRF6780_REG_LINEARIZE Map */
-> +#define ADRF6780_RDAC_LINEARIZE_MSK		GENMASK(7, 0)
-> +
-> +/* ADRF6780_REG_LO_PATH Map */
-> +#define ADRF6780_LO_SIDEBAND_MSK		BIT(10)
-> +#define ADRF6780_Q_PATH_PHASE_ACCURACY_MSK	GENMASK(7, 4)
-> +#define ADRF6780_I_PATH_PHASE_ACCURACY_MSK	GENMASK(3, 0)
-> +
-> +/* ADRF6780_REG_ADC_CONTROL Map */
-> +#define ADRF6780_VDET_OUTPUT_SELECT_MSK		BIT(3)
-> +#define ADRF6780_ADC_START_MSK			BIT(2)
-> +#define ADRF6780_ADC_EN_MSK			BIT(1)
-> +#define ADRF6780_ADC_CLOCK_EN_MSK		BIT(0)
-> +
-> +/* ADRF6780_REG_ADC_OUTPUT Map */
-> +#define ADRF6780_ADC_STATUS_MSK			BIT(8)
-> +#define ADRF6780_ADC_VALUE_MSK			GENMASK(7, 0)
-> +
-> +struct adrf6780_state {
-> +	struct spi_device	*spi;
-> +	struct clk		*clkin;
-> +	/* Protect against concurrent accesses to the device */
-> +	struct mutex		lock;
-> +	bool			vga_buff_en;
-> +	bool			lo_buff_en;
-> +	bool			if_mode_en;
-> +	bool			iq_mode_en;
-> +	bool			lo_x2_en;
-> +	bool			lo_ppf_en;
-> +	bool			lo_en;
-> +	bool			uc_bias_en;
-> +	bool			lo_sideband;
-> +	bool			vdet_out_en;
-> +	u8			data[3] ____cacheline_aligned;
-> +};
-> +
-> +static int __adrf6780_spi_read(struct adrf6780_state *st, unsigned int reg,
-> +			       unsigned int *val)
-> +{
-> +	int ret;
-> +	struct spi_transfer t = {0};
-> +
-> +	st->data[0] = 0x80 | (reg << 1);
-> +	st->data[1] = 0x0;
-> +	st->data[2] = 0x0;
-> +
-> +	t.rx_buf = &st->data[0];
-> +	t.tx_buf = &st->data[0];
-> +	t.len = 3;
-> +
-> +	ret = spi_sync_transfer(st->spi, &t, 1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*val = (get_unaligned_be24(&st->data[0]) >> 1) & GENMASK(15, 0);
-> +
-> +	return ret;
-> +}
-> +
-> +static int adrf6780_spi_read(struct adrf6780_state *st, unsigned int reg,
-> +			     unsigned int *val)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = adrf6780_spi_read(st, reg, val);
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int __adrf6780_spi_write(struct adrf6780_state *st,
-> +				unsigned int reg,
-> +				unsigned int val)
-> +{
-> +	put_unaligned_be24((val << 1) | (reg << 17), &st->data[0]);
-> +
-> +	return spi_write(st->spi, &st->data[0], 3);
-> +}
-> +
-> +static int adrf6780_spi_write(struct adrf6780_state *st, unsigned int reg,
-> +			      unsigned int val)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = adrf6780_spi_write(st, reg, val);
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int __adrf6780_spi_update_bits(struct adrf6780_state *st, unsigned int reg,
-> +				      unsigned int mask, unsigned int val)
-> +{
-> +	int ret;
-> +	unsigned int data, temp;
-> +
-> +	ret = __adrf6780_spi_read(st, reg, &data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	temp = (data & ~mask) | (val & mask);
-> +
-> +	return __adrf6780_spi_write(st, reg, temp);
-> +}
-> +
-> +static int adrf6780_spi_update_bits(struct adrf6780_state *st, unsigned int reg,
-> +				    unsigned int mask, unsigned int val)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +	ret = __adrf6780_spi_update_bits(st, reg, mask, val);
-> +	mutex_unlock(&st->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int adrf6780_read_adc_raw(struct adrf6780_state *st, unsigned int *read_val)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&st->lock);
-> +
-> +	ret = __adrf6780_spi_update_bits(st, ADRF6780_REG_ADC_CONTROL,
-> +					 ADRF6780_ADC_EN_MSK |
-> +					 ADRF6780_ADC_CLOCK_EN_MSK |
-> +					 ADRF6780_ADC_START_MSK,
-> +					 FIELD_PREP(ADRF6780_ADC_EN_MSK, 1) |
-> +					 FIELD_PREP(ADRF6780_ADC_CLOCK_EN_MSK, 1) |
-> +					 FIELD_PREP(ADRF6780_ADC_START_MSK, 1));
-> +	if (ret)
-> +		goto exit;
-> +
-> +	/* Recommended delay for the ADC to be ready*/
-> +	usleep_range(200, 250);
-> +
-> +	ret = __adrf6780_spi_read(st, ADRF6780_REG_ADC_OUTPUT, read_val);
-> +	if (ret)
-> +		goto exit;
-> +
-> +	if (!(*read_val & ADRF6780_ADC_STATUS_MSK)) {
-> +		ret = -EINVAL;
-> +		goto exit;
-> +	}
-> +
-> +	ret = __adrf6780_spi_update_bits(st, ADRF6780_REG_ADC_CONTROL,
-> +					 ADRF6780_ADC_START_MSK,
-> +					 FIELD_PREP(ADRF6780_ADC_START_MSK, 0));
-> +	if (ret)
-> +		goto exit;
-> +
-> +	ret = __adrf6780_spi_read(st, ADRF6780_REG_ADC_OUTPUT, read_val);
-> +
-> +exit:
-> +	mutex_unlock(&st->lock);
-> +	return ret;
-> +}
-> +
-> +static int adrf6780_read_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int *val, int *val2, long info)
-> +{
-> +	struct adrf6780_state *dev = iio_priv(indio_dev);
-> +	unsigned int data;
-> +	int ret;
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = adrf6780_read_adc_raw(dev, &data);
-> +		if (ret)
-> +			return ret;
-> +
-> +		*val = data & ADRF6780_ADC_VALUE_MSK;
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		ret = adrf6780_spi_read(dev, ADRF6780_REG_LINEARIZE, &data);
-> +		if (ret)
-> +			return ret;
-> +
-> +		*val = data & ADRF6780_RDAC_LINEARIZE_MSK;
-> +
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_PHASE:
-> +		ret = adrf6780_spi_read(dev, ADRF6780_REG_LO_PATH, &data);
-> +		if (ret)
-> +			return ret;
-> +
-> +		switch (chan->channel2) {
-> +		case IIO_MOD_I:
-> +			*val = data & ADRF6780_I_PATH_PHASE_ACCURACY_MSK;
-> +
-> +			return IIO_VAL_INT;
-> +		case IIO_MOD_Q:
-> +			*val = FIELD_GET(ADRF6780_Q_PATH_PHASE_ACCURACY_MSK, data);
-> +
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int adrf6780_write_raw(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      int val, int val2, long info)
-> +{
-> +	struct adrf6780_state *st = iio_priv(indio_dev);
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return adrf6780_spi_write(st, ADRF6780_REG_LINEARIZE, val);
-> +	case IIO_CHAN_INFO_PHASE:
-> +		switch (chan->channel2) {
-> +		case IIO_MOD_I:
-> +			return adrf6780_spi_update_bits(st, ADRF6780_REG_LO_PATH,
-> +							ADRF6780_I_PATH_PHASE_ACCURACY_MSK,
-> +							FIELD_PREP(ADRF6780_I_PATH_PHASE_ACCURACY_MSK, val));
-> +		case IIO_MOD_Q:
-> +			return adrf6780_spi_update_bits(st, ADRF6780_REG_LO_PATH,
-> +							ADRF6780_Q_PATH_PHASE_ACCURACY_MSK,
-> +							FIELD_PREP(ADRF6780_Q_PATH_PHASE_ACCURACY_MSK, val));
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int adrf6780_reg_access(struct iio_dev *indio_dev,
-> +			       unsigned int reg,
-> +			       unsigned int write_val,
-> +			       unsigned int *read_val)
-> +{
-> +	struct adrf6780_state *st = iio_priv(indio_dev);
-> +
-> +	if (read_val)
-> +		return adrf6780_spi_read(st, reg, read_val);
-> +	else
-> +		return adrf6780_spi_write(st, reg, write_val);
-> +}
-> +
-> +static const struct iio_info adrf6780_info = {
-> +	.read_raw = adrf6780_read_raw,
-> +	.write_raw = adrf6780_write_raw,
-> +	.debugfs_reg_access = &adrf6780_reg_access,
-> +};
-> +
-> +#define ADRF6780_CHAN_ADC(_channel) {			\
-> +	.type = IIO_ALTVOLTAGE,				\
-> +	.output = 0,					\
-> +	.indexed = 1,					\
-> +	.channel = _channel,				\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW)	\
-> +}
-> +
-> +#define ADRF6780_CHAN_RDAC(_channel) {			\
-> +	.type = IIO_ALTVOLTAGE,				\
-> +	.output = 1,					\
-> +	.indexed = 1,					\
-> +	.channel = _channel,				\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_SCALE)	\
-> +}
-> +
-> +#define ADRF6780_CHAN_IQ_PHASE(_channel, rf_comp) {		\
-> +	.type = IIO_ALTVOLTAGE,					\
-> +	.modified = 1,						\
-> +	.output = 1,						\
-> +	.indexed = 1,						\
-> +	.channel2 = IIO_MOD_##rf_comp,				\
-> +	.channel = _channel,					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_PHASE)		\
-> +}
-> +
-> +static const struct iio_chan_spec adrf6780_channels[] = {
-> +	ADRF6780_CHAN_ADC(0),
-> +	ADRF6780_CHAN_RDAC(0),
-> +	ADRF6780_CHAN_IQ_PHASE(0, I),
-> +	ADRF6780_CHAN_IQ_PHASE(0, Q),
-> +};
-> +
-> +static int adrf6780_reset(struct adrf6780_state *st)
-> +{
-> +	int ret;
-> +	struct spi_device *spi = st->spi;
-> +
-> +	ret = __adrf6780_spi_update_bits(st, ADRF6780_REG_CONTROL,
-> +					 ADRF6780_SOFT_RESET_MSK,
-> +					 FIELD_PREP(ADRF6780_SOFT_RESET_MSK, 1));
-> +	if (ret) {
-> +		dev_err(&spi->dev, "ADRF6780 SPI software reset failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = __adrf6780_spi_update_bits(st, ADRF6780_REG_CONTROL,
-> +					 ADRF6780_SOFT_RESET_MSK,
-> +					 FIELD_PREP(ADRF6780_SOFT_RESET_MSK, 0));
-> +	if (ret) {
-> +		dev_err(&spi->dev, "ADRF6780 SPI software reset disable failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int adrf6780_init(struct adrf6780_state *st)
-> +{
-> +	int ret;
-> +	unsigned int chip_id, enable_reg, enable_reg_msk;
-> +	struct spi_device *spi = st->spi;
-> +
-> +	/* Perform a software reset */
-> +	ret = adrf6780_reset(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = __adrf6780_spi_read(st, ADRF6780_REG_CONTROL, &chip_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	chip_id = FIELD_GET(ADRF6780_CHIP_ID_MSK, chip_id);
-> +	if (chip_id != ADRF6780_CHIP_ID) {
-> +		dev_err(&spi->dev, "ADRF6780 Invalid Chip ID.\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	enable_reg_msk = ADRF6780_VGA_BUFFER_EN_MSK |
-> +			ADRF6780_DETECTOR_EN_MSK |
-> +			ADRF6780_LO_BUFFER_EN_MSK |
-> +			ADRF6780_IF_MODE_EN_MSK |
-> +			ADRF6780_IQ_MODE_EN_MSK |
-> +			ADRF6780_LO_X2_EN_MSK |
-> +			ADRF6780_LO_PPF_EN_MSK |
-> +			ADRF6780_LO_EN_MSK |
-> +			ADRF6780_UC_BIAS_EN_MSK;
-> +
-> +	enable_reg = FIELD_PREP(ADRF6780_VGA_BUFFER_EN_MSK, st->vga_buff_en) |
-> +			FIELD_PREP(ADRF6780_DETECTOR_EN_MSK, 1) |
-> +			FIELD_PREP(ADRF6780_LO_BUFFER_EN_MSK, st->lo_buff_en) |
-> +			FIELD_PREP(ADRF6780_IF_MODE_EN_MSK, st->if_mode_en) |
-> +			FIELD_PREP(ADRF6780_IQ_MODE_EN_MSK, st->iq_mode_en) |
-> +			FIELD_PREP(ADRF6780_LO_X2_EN_MSK, st->lo_x2_en) |
-> +			FIELD_PREP(ADRF6780_LO_PPF_EN_MSK, st->lo_ppf_en) |
-> +			FIELD_PREP(ADRF6780_LO_EN_MSK, st->lo_en) |
-> +			FIELD_PREP(ADRF6780_UC_BIAS_EN_MSK, st->uc_bias_en);
-> +
-> +	ret = __adrf6780_spi_update_bits(st, ADRF6780_REG_ENABLE, enable_reg_msk, enable_reg);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = __adrf6780_spi_update_bits(st, ADRF6780_REG_LO_PATH,
-> +					 ADRF6780_LO_SIDEBAND_MSK,
-> +					 FIELD_PREP(ADRF6780_LO_SIDEBAND_MSK, st->lo_sideband));
-> +	if (ret)
-> +		return ret;
-> +
-> +	return __adrf6780_spi_update_bits(st, ADRF6780_REG_ADC_CONTROL,
-> +					  ADRF6780_VDET_OUTPUT_SELECT_MSK,
-> +					  FIELD_PREP(ADRF6780_VDET_OUTPUT_SELECT_MSK, st->vdet_out_en));
-> +}
-> +
-> +static void adrf6780_properties_parse(struct adrf6780_state *st)
-> +{
-> +	struct spi_device *spi = st->spi;
-> +
-> +	st->vga_buff_en = device_property_read_bool(&spi->dev, "adi,vga-buff-en");
-> +	st->lo_buff_en = device_property_read_bool(&spi->dev, "adi,lo-buff-en");
-> +	st->if_mode_en = device_property_read_bool(&spi->dev, "adi,if-mode-en");
-> +	st->iq_mode_en = device_property_read_bool(&spi->dev, "adi,iq-mode-en");
-> +	st->lo_x2_en = device_property_read_bool(&spi->dev, "adi,lo-x2-en");
-> +	st->lo_ppf_en = device_property_read_bool(&spi->dev, "adi,lo-ppf-en");
-> +	st->lo_en = device_property_read_bool(&spi->dev, "adi,lo-en");
-> +	st->uc_bias_en = device_property_read_bool(&spi->dev, "adi,uc-bias-en");
-> +	st->lo_sideband = device_property_read_bool(&spi->dev, "adi,lo-sideband");
-> +	st->vdet_out_en = device_property_read_bool(&spi->dev, "adi,vdet-out-en");
-> +}
-> +
-> +static void adrf6780_clk_disable(void *data)
-> +{
-> +	clk_disable_unprepare(data);
-> +}
-> +
-> +static void adrf6780_powerdown(void *data)
-> +{
-> +	/* Disable all components in the Enable Register */
-> +	adrf6780_spi_write(data, ADRF6780_REG_ENABLE, 0x0);
-> +}
-> +
-> +static int adrf6780_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct adrf6780_state *st;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st = iio_priv(indio_dev);
-> +
-> +	indio_dev->info = &adrf6780_info;
-> +	indio_dev->name = "adrf6780";
-> +	indio_dev->channels = adrf6780_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(adrf6780_channels);
-> +
-> +	st->spi = spi;
-> +
-> +	adrf6780_properties_parse(st);
-> +
-> +	st->clkin = devm_clk_get(&spi->dev, "lo_in");
-> +	if (IS_ERR(st->clkin))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
-> +				     "failed to get the LO input clock\n");
-> +
-> +	ret = clk_prepare_enable(st->clkin);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, adrf6780_clk_disable, st->clkin);
-> +	if (ret)
-> +		return ret;
-> +
-> +	mutex_init(&st->lock);
-> +
-> +	ret = adrf6780_init(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, adrf6780_powerdown, st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct spi_device_id adrf6780_id[] = {
-> +	{ "adrf6780", 0 },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(spi, adrf6780_id);
-> +
-> +static const struct of_device_id adrf6780_of_match[] = {
-> +	{ .compatible = "adi,adrf6780" },
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(of, adrf6780_of_match);
-> +
-> +static struct spi_driver adrf6780_driver = {
-> +	.driver = {
-> +		.name = "adrf6780",
-> +		.of_match_table = adrf6780_of_match,
-> +	},
-> +	.probe = adrf6780_probe,
-> +	.id_table = adrf6780_id,
-> +};
-> +module_spi_driver(adrf6780_driver);
-> +
-> +MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com");
-> +MODULE_DESCRIPTION("Analog Devices ADRF6780");
-> +MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+index 608ccb1d8bc8..17b47f5d1742 100644
+--- a/drivers/iio/temperature/mlx90632.c
++++ b/drivers/iio/temperature/mlx90632.c
+@@ -480,11 +480,11 @@ static int mlx90632_read_ee_register(struct regmap *regmap, u16 reg_lsb,
+ static s64 mlx90632_preprocess_temp_amb(s16 ambient_new_raw,
+ 					s16 ambient_old_raw, s16 Gb)
+ {
+-	s64 VR_Ta, kGb, tmp;
++	s64 VR_Ta, k_Gb, tmp;
+ 
+-	kGb = ((s64)Gb * 1000LL) >> 10ULL;
++	k_Gb = ((s64)Gb * 1000LL) >> 10ULL;
+ 	VR_Ta = (s64)ambient_old_raw * 1000000LL +
+-		kGb * div64_s64(((s64)ambient_new_raw * 1000LL),
++		k_Gb * div64_s64(((s64)ambient_new_raw * 1000LL),
+ 			(MLX90632_REF_3));
+ 	tmp = div64_s64(
+ 			 div64_s64(((s64)ambient_new_raw * 1000000000000LL),
+@@ -496,11 +496,11 @@ static s64 mlx90632_preprocess_temp_obj(s16 object_new_raw, s16 object_old_raw,
+ 					s16 ambient_new_raw,
+ 					s16 ambient_old_raw, s16 Ka)
+ {
+-	s64 VR_IR, kKa, tmp;
++	s64 VR_IR, k_Ka, tmp;
+ 
+-	kKa = ((s64)Ka * 1000LL) >> 10ULL;
++	k_Ka = ((s64)Ka * 1000LL) >> 10ULL;
+ 	VR_IR = (s64)ambient_old_raw * 1000000LL +
+-		kKa * div64_s64(((s64)ambient_new_raw * 1000LL),
++		k_Ka * div64_s64(((s64)ambient_new_raw * 1000LL),
+ 			(MLX90632_REF_3));
+ 	tmp = div64_s64(
+ 			div64_s64(((s64)((object_new_raw + object_old_raw) / 2)
+@@ -512,11 +512,11 @@ static s64 mlx90632_preprocess_temp_obj(s16 object_new_raw, s16 object_old_raw,
+ static s64 mlx90632_preprocess_temp_obj_extended(s16 object_new_raw, s16 ambient_new_raw,
+ 						 s16 ambient_old_raw, s16 Ka)
+ {
+-	s64 VR_IR, kKa, tmp;
++	s64 VR_IR, k_Ka, tmp;
+ 
+-	kKa = ((s64)Ka * 1000LL) >> 10ULL;
++	k_Ka = ((s64)Ka * 1000LL) >> 10ULL;
+ 	VR_IR = (s64)ambient_old_raw * 1000000LL +
+-		kKa * div64_s64((s64)ambient_new_raw * 1000LL,
++		k_Ka * div64_s64((s64)ambient_new_raw * 1000LL,
+ 				MLX90632_REF_3);
+ 	tmp = div64_s64(
+ 			div64_s64((s64) object_new_raw * 1000000000000LL, MLX90632_REF_12),
+@@ -527,70 +527,70 @@ static s64 mlx90632_preprocess_temp_obj_extended(s16 object_new_raw, s16 ambient
+ static s32 mlx90632_calc_temp_ambient(s16 ambient_new_raw, s16 ambient_old_raw,
+ 				      s32 P_T, s32 P_R, s32 P_G, s32 P_O, s16 Gb)
+ {
+-	s64 Asub, Bsub, Ablock, Bblock, Cblock, AMB, sum;
++	s64 A_sub, B_sub, A_block, B_block, C_block, AMB, sum;
+ 
+ 	AMB = mlx90632_preprocess_temp_amb(ambient_new_raw, ambient_old_raw,
+ 					   Gb);
+-	Asub = ((s64)P_T * 10000000000LL) >> 44ULL;
+-	Bsub = AMB - (((s64)P_R * 1000LL) >> 8ULL);
+-	Ablock = Asub * (Bsub * Bsub);
+-	Bblock = (div64_s64(Bsub * 10000000LL, P_G)) << 20ULL;
+-	Cblock = ((s64)P_O * 10000000000LL) >> 8ULL;
++	A_sub = ((s64)P_T * 10000000000LL) >> 44ULL;
++	B_sub = AMB - (((s64)P_R * 1000LL) >> 8ULL);
++	A_block = A_sub * (B_sub * B_sub);
++	B_block = (div64_s64(B_sub * 10000000LL, P_G)) << 20ULL;
++	C_block = ((s64)P_O * 10000000000LL) >> 8ULL;
+ 
+-	sum = div64_s64(Ablock, 1000000LL) + Bblock + Cblock;
++	sum = div64_s64(A_block, 1000000LL) + B_block + C_block;
+ 
+ 	return div64_s64(sum, 10000000LL);
+ }
+ 
+ static s32 mlx90632_calc_temp_object_iteration(s32 prev_object_temp, s64 object,
+-					       s64 TAdut, s64 TAdut4, s32 Fa, s32 Fb,
++					       s64 TA_dut, s64 TA_dut4, s32 Fa, s32 Fb,
+ 					       s32 Ga, s16 Ha, s16 Hb,
+ 					       u16 emissivity)
+ {
+-	s64 calcedKsTO, calcedKsTA, ir_Alpha, Alpha_corr;
++	s64 calced_Ks_TO, calced_Ks_TA, ir_Alpha, Alpha_corr;
+ 	s64 Ha_customer, Hb_customer;
+ 
+ 	Ha_customer = ((s64)Ha * 1000000LL) >> 14ULL;
+ 	Hb_customer = ((s64)Hb * 100) >> 10ULL;
+ 
+-	calcedKsTO = ((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
++	calced_Ks_TO = ((s64)((s64)Ga * (prev_object_temp - 25 * 1000LL)
+ 			     * 1000LL)) >> 36LL;
+-	calcedKsTA = ((s64)(Fb * (TAdut - 25 * 1000000LL))) >> 36LL;
++	calced_Ks_TA = ((s64)(Fb * (TA_dut - 25 * 1000000LL))) >> 36LL;
+ 	Alpha_corr = div64_s64((((s64)(Fa * 10000000000LL) >> 46LL)
+ 				* Ha_customer), 1000LL);
+-	Alpha_corr *= ((s64)(1 * 1000000LL + calcedKsTO + calcedKsTA));
++	Alpha_corr *= ((s64)(1 * 1000000LL + calced_Ks_TO + calced_Ks_TA));
+ 	Alpha_corr = emissivity * div64_s64(Alpha_corr, 100000LL);
+ 	Alpha_corr = div64_s64(Alpha_corr, 1000LL);
+ 	ir_Alpha = div64_s64((s64)object * 10000000LL, Alpha_corr);
+ 
+-	return (int_sqrt64(int_sqrt64(ir_Alpha * 1000000000000LL + TAdut4))
++	return (int_sqrt64(int_sqrt64(ir_Alpha * 1000000000000LL + TA_dut4))
+ 		- 27315 - Hb_customer) * 10;
+ }
+ 
+-static s64 mlx90632_calc_ta4(s64 TAdut, s64 scale)
++static s64 mlx90632_calc_ta4(s64 TA_dut, s64 scale)
+ {
+-	return (div64_s64(TAdut, scale) + 27315) *
+-		(div64_s64(TAdut, scale) + 27315) *
+-		(div64_s64(TAdut, scale) + 27315) *
+-		(div64_s64(TAdut, scale) + 27315);
++	return (div64_s64(TA_dut, scale) + 27315) *
++		(div64_s64(TA_dut, scale) + 27315) *
++		(div64_s64(TA_dut, scale) + 27315) *
++		(div64_s64(TA_dut, scale) + 27315);
+ }
+ 
+ static s32 mlx90632_calc_temp_object(s64 object, s64 ambient, s32 Ea, s32 Eb,
+ 				     s32 Fa, s32 Fb, s32 Ga, s16 Ha, s16 Hb,
+ 				     u16 tmp_emi)
+ {
+-	s64 kTA, kTA0, TAdut, TAdut4;
++	s64 k_TA, k_TA0, TA_dut, TA_dut4;
+ 	s64 temp = 25000;
+ 	s8 i;
+ 
+-	kTA = (Ea * 1000LL) >> 16LL;
+-	kTA0 = (Eb * 1000LL) >> 8LL;
+-	TAdut = div64_s64(((ambient - kTA0) * 1000000LL), kTA) + 25 * 1000000LL;
+-	TAdut4 = mlx90632_calc_ta4(TAdut, 10000LL);
++	k_TA = (Ea * 1000LL) >> 16LL;
++	k_TA0 = (Eb * 1000LL) >> 8LL;
++	TA_dut = div64_s64(((ambient - k_TA0) * 1000000LL), k_TA) + 25 * 1000000LL;
++	TA_dut4 = mlx90632_calc_ta4(TA_dut, 10000LL);
+ 
+ 	/* Iterations of calculation as described in datasheet */
+ 	for (i = 0; i < 5; ++i) {
+-		temp = mlx90632_calc_temp_object_iteration(temp, object, TAdut, TAdut4,
++		temp = mlx90632_calc_temp_object_iteration(temp, object, TA_dut, TA_dut4,
+ 							   Fa, Fb, Ga, Ha, Hb,
+ 							   tmp_emi);
+ 	}
+@@ -601,20 +601,20 @@ static s32 mlx90632_calc_temp_object_extended(s64 object, s64 ambient, s64 refle
+ 					      s32 Ea, s32 Eb, s32 Fa, s32 Fb, s32 Ga,
+ 					      s16 Ha, s16 Hb, u16 tmp_emi)
+ {
+-	s64 kTA, kTA0, TAdut, TAdut4, Tr4, TaTr4;
++	s64 k_TA, k_TA0, TA_dut, TA_dut4, Tr4, Ta_Tr4;
+ 	s64 temp = 25000;
+ 	s8 i;
+ 
+-	kTA = (Ea * 1000LL) >> 16LL;
+-	kTA0 = (Eb * 1000LL) >> 8LL;
+-	TAdut = div64_s64((ambient - kTA0) * 1000000LL, kTA) + 25 * 1000000LL;
++	k_TA = (Ea * 1000LL) >> 16LL;
++	k_TA0 = (Eb * 1000LL) >> 8LL;
++	TA_dut = div64_s64((ambient - k_TA0) * 1000000LL, k_TA) + 25 * 1000000LL;
+ 	Tr4 = mlx90632_calc_ta4(reflected, 10);
+-	TAdut4 = mlx90632_calc_ta4(TAdut, 10000LL);
+-	TaTr4 = Tr4 - div64_s64(Tr4 - TAdut4, tmp_emi) * 1000;
++	TA_dut4 = mlx90632_calc_ta4(TA_dut, 10000LL);
++	Ta_Tr4 = Tr4 - div64_s64(Tr4 - TA_dut4, tmp_emi) * 1000;
+ 
+ 	/* Iterations of calculation as described in datasheet */
+ 	for (i = 0; i < 5; ++i) {
+-		temp = mlx90632_calc_temp_object_iteration(temp, object, TAdut, TaTr4,
++		temp = mlx90632_calc_temp_object_iteration(temp, object, TA_dut, Ta_Tr4,
+ 							   Fa / 2, Fb, Ga, Ha, Hb,
+ 							   tmp_emi);
+ 	}
+-- 
+2.27.0
 

@@ -2,133 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 566CA437A94
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Oct 2021 18:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61748437EEE
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Oct 2021 21:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232181AbhJVQKP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Oct 2021 12:10:15 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4024 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233504AbhJVQKN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Oct 2021 12:10:13 -0400
-Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HbTgy3Td0z67lBv;
-        Sat, 23 Oct 2021 00:04:46 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.15; Fri, 22 Oct 2021 18:07:53 +0200
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 22 Oct
- 2021 17:07:53 +0100
-Date:   Fri, 22 Oct 2021 17:07:52 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <gregkh@linuxfoundation.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PULL] 1st set of IIO fixes for the 5.16 cycle (suggest queuing
- for merge window as nothing urgent)
-Message-ID: <20211022170752.0000686c@Huawei.com>
-In-Reply-To: <20211022162345.0000350c@Huawei.com>
-References: <20211022162345.0000350c@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S234283AbhJVT7g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Oct 2021 15:59:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53488 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234314AbhJVT73 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 22 Oct 2021 15:59:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A67060F12;
+        Fri, 22 Oct 2021 19:57:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634932631;
+        bh=tztV518ojLRtlutbEnCzM1wsjUZFOmK8O5ObqyQpukM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZnfGmuzDa/YU3Ti7bxy5KWj1upSvP1jlrFOH1IOO+uoe4B/6GzZvt7qgi8Vv07WgG
+         wASIq98UScX4R/xHHi3eHgnT9TS5RLDImylnKMgf0eiF80vp4EVwH8dSeI5tILfCh9
+         csr4oHpOYN8u2KXZrOceKxpPYPY6rdUpcKlxE3A10C51qrvejuJh4+Xt+uycZfm5vj
+         L0lRytNfIsMJw7EnCjyd5a7/VaW1fucOdYVSUf9JmWeiQI2DL30A7/cYAnHDR47KcC
+         t+8ncAxqg7O5oSD+UtJW0a1/q7NHbqSlvBHoHB75EIcOUbYMr12x/I9Y+U3xhwuWZ2
+         sicSE8VPt14mA==
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH] iio: frequency: adrf6780: Fix adrf6780_spi_{read,write}()
+Date:   Fri, 22 Oct 2021 12:56:56 -0700
+Message-Id: <20211022195656.1513147-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.33.1.637.gf443b226ca
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml744-chm.china.huawei.com (10.201.108.194) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Oct 2021 16:23:45 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+Clang warns:
 
-> The following changes since commit 37f12202c5d28291ba5f83ce229771447ce9148f:
-> 
->   staging: r8188eu: prevent array underflow in rtw_hal_update_ra_mask() (2021-10-05 12:35:30 +0200)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.16a
-> 
-> for you to fetch changes up to 486a25084155bf633768c26f022201c051d6fd95:
-> 
->   iio: buffer: Fix memory leak in iio_buffers_alloc_sysfs_and_mask() (2021-10-21 10:26:38 +0100)
-> 
-> ----------------------------------------------------------------
+drivers/iio/frequency/adrf6780.c:117:1: error: all paths through this
+function will call itself [-Werror,-Winfinite-recursion]
+{
+^
+drivers/iio/frequency/adrf6780.c:138:1: error: all paths through this
+function will call itself [-Werror,-Winfinite-recursion]
+{
+^
+2 errors generated.
 
-Hi Greg,
+The underscore variants should be used here.
 
-Doesn't make much sense to rush this set in, so I'd suggest just merging
-it alongside the other pull request to char-misc-next.
+Fixes: 63aaf6d06d87 ("iio: frequency: adrf6780: add support for ADRF6780")
+Link: https://github.com/ClangBuiltLinux/linux/issues/1490
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/iio/frequency/adrf6780.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I thought about just merging this into the iio-togreg branch and
-sending you one pull request, but decided this was simpler.  Let me know
-if you'd prefer it done a different way.
+diff --git a/drivers/iio/frequency/adrf6780.c b/drivers/iio/frequency/adrf6780.c
+index abe8b30fceca..8255ffd174f6 100644
+--- a/drivers/iio/frequency/adrf6780.c
++++ b/drivers/iio/frequency/adrf6780.c
+@@ -118,7 +118,7 @@ static int adrf6780_spi_read(struct adrf6780_state *st, unsigned int reg,
+ 	int ret;
+ 
+ 	mutex_lock(&st->lock);
+-	ret = adrf6780_spi_read(st, reg, val);
++	ret = __adrf6780_spi_read(st, reg, val);
+ 	mutex_unlock(&st->lock);
+ 
+ 	return ret;
+@@ -139,7 +139,7 @@ static int adrf6780_spi_write(struct adrf6780_state *st, unsigned int reg,
+ 	int ret;
+ 
+ 	mutex_lock(&st->lock);
+-	ret = adrf6780_spi_write(st, reg, val);
++	ret = __adrf6780_spi_write(st, reg, val);
+ 	mutex_unlock(&st->lock);
+ 
+ 	return ret;
 
-*fingers crossed* I haven't messed these up this time!
-
-The last few patches hit linux-next today but most in both these pull
-requests have been soaking for a while.
-
-Thanks,
-
-Jonathan
-
-> First set of IIO fixes for the 5.16 cycle
-> 
-> As these are very late in the 5.15 cycle and non are particularly urgent,
-> they can wait for the merge window.
-> 
-> Key element in this set is Yang Yingliang has identified a number of
-> issues in error paths introduced recently when we added multiple
-> buffer support.
-> 
-> Other fixes:
-> * adi,ad5662
->   - Fix handling of i2c_master_send() return value.
-> * adi,ad5766
->   - Fix a wrong dt-property name that indicated wrong units and
->     did not mach the bindings.
->   - Associated 'fix' of the bindings example to have a possible scale.
-> * st,pressure-spi
->   - Add some missing entries to the spi_device_id table to ensure
->     auto-loading works.
-> * ti,tsc2046
->   - Fix a backwards comparison leading to a false dev_warn
-> 
-> ----------------------------------------------------------------
-> Mark Brown (1):
->       iio: st_pressure_spi: Add missing entries SPI to device ID table
-> 
-> Mihail Chindris (2):
->       drivers: iio: dac: ad5766: Fix dt property name
->       Documentation:devicetree:bindings:iio:dac: Fix val
-> 
-> Oleksij Rempel (1):
->       iio: adc: tsc2046: fix scan interval warning
-> 
-> Pekka Korpinen (1):
->       iio: dac: ad5446: Fix ad5622_write() return value
-> 
-> Yang Yingliang (7):
->       iio: buffer: check return value of kstrdup_const()
->       iio: buffer: Fix memory leak in __iio_buffer_alloc_sysfs_and_mask()
->       iio: buffer: Fix double-free in iio_buffers_alloc_sysfs_and_mask()
->       iio: buffer: Fix memory leak in iio_buffer_register_legacy_sysfs_groups()
->       iio: core: check return value when calling dev_set_name()
->       iio: core: fix double free in iio_device_unregister_sysfs()
->       iio: buffer: Fix memory leak in iio_buffers_alloc_sysfs_and_mask()
-> 
->  .../devicetree/bindings/iio/dac/adi,ad5766.yaml    |  2 +-
->  drivers/iio/adc/ti-tsc2046.c                       |  2 +-
->  drivers/iio/dac/ad5446.c                           |  9 ++++++-
->  drivers/iio/dac/ad5766.c                           |  6 ++---
->  drivers/iio/industrialio-buffer.c                  | 28 +++++++++++++---------
->  drivers/iio/industrialio-core.c                    |  9 ++++++-
->  drivers/iio/pressure/st_pressure_spi.c             |  4 ++++
->  7 files changed, 42 insertions(+), 18 deletions(-)
+base-commit: 77af145dc7eadcb78d38912b67d6a68050d21a9b
+-- 
+2.33.1.637.gf443b226ca
 

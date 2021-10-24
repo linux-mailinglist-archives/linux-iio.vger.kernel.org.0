@@ -2,34 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E948A438A89
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Oct 2021 18:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D17D438A8B
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Oct 2021 18:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbhJXQFx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Oct 2021 12:05:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56104 "EHLO mail.kernel.org"
+        id S229755AbhJXQIS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Oct 2021 12:08:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56504 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229755AbhJXQFu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 24 Oct 2021 12:05:50 -0400
+        id S229788AbhJXQIR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 24 Oct 2021 12:08:17 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CBA7360F9C;
-        Sun, 24 Oct 2021 16:03:27 +0000 (UTC)
-Date:   Sun, 24 Oct 2021 17:07:49 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 5806560F9C;
+        Sun, 24 Oct 2021 16:05:54 +0000 (UTC)
+Date:   Sun, 24 Oct 2021 17:10:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier MOYSAN <olivier.moysan@foss.st.com>
-Cc:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <alexandre.torgue@foss.st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: Re: [PATCH] iio: adc: stm32: fix a leak by resetting pcsel before
- disabling vdda
-Message-ID: <20211024170749.44c0d81f@jic23-huawei>
-In-Reply-To: <77f3593a-0e94-f5ab-f102-86ba8d0f1a3b@foss.st.com>
-References: <1634905169-23762-1-git-send-email-fabrice.gasnier@foss.st.com>
-        <77f3593a-0e94-f5ab-f102-86ba8d0f1a3b@foss.st.com>
+To:     Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+Cc:     jbhayana@google.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Vasyl.Vavrychuk@opensynergy.com,
+        andy.shevchenko@gmail.com
+Subject: Re: [PATCH v7 1/2] iio: core: Introduce IIO_VAL_INT_64.
+Message-ID: <20211024171015.3b6b46e5@jic23-huawei>
+In-Reply-To: <20211024091627.28031-2-andriy.tryshnivskyy@opensynergy.com>
+References: <20211024091627.28031-1-andriy.tryshnivskyy@opensynergy.com>
+        <20211024091627.28031-2-andriy.tryshnivskyy@opensynergy.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,61 +35,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Oct 2021 14:38:52 +0200
-Olivier MOYSAN <olivier.moysan@foss.st.com> wrote:
+On Sun, 24 Oct 2021 12:16:26 +0300
+Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com> wrote:
 
-I'll probably reword the description here as 'leak' tends to mean memory
-leak rather than current.
-
-> Hi Fabrice,
+> Introduce IIO_VAL_INT_64 to read 64-bit value for
+> channel attribute. Val is used as lower 32 bits.
 > 
-> On 10/22/21 2:19 PM, Fabrice Gasnier wrote:
-> > Some I/Os are connected to ADC input channels, when the corresponding bit
-> > in PCSEL register are set on STM32H7 and STM32MP15. This is done in the
-> > prepare routine of stm32-adc driver.
-> > There are constraints here, as PCSEL shouldn't be set when VDDA supply
-> > is disabled. Enabling/disabling of VDDA supply in done via stm32-adc-core
-> > runtime PM routines (before/after ADC is enabled/disabled).
-> > 
-> > Currently, PCSEL remains set when disabling ADC. Later on, PM runtime
-> > can disable the VDDA supply. This creates some conditions on I/Os that
-> > can start to leak current.
-> > So PCSEL needs to be cleared when disabling the ADC.
-> > 
-> > Fixes: 95e339b6e85d ("iio: adc: stm32: add support for STM32H7")
-> > 
-
-No line break here as Fixes forms part of the tag block.
-
-> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-
-Given timing wrt to being too near merge window, I'll let this it on
-list a while longer as it'll be post rc1 material now anyway.
-
-I can fix the above whilst applying if nothing else comes up.
-
-Jonathan
-
-> > ---
-> >   drivers/iio/adc/stm32-adc.c | 1 +
-> >   1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> > index 5088de8..e3e7541 100644
-> > --- a/drivers/iio/adc/stm32-adc.c
-> > +++ b/drivers/iio/adc/stm32-adc.c
-> > @@ -975,6 +975,7 @@ static void stm32h7_adc_unprepare(struct iio_dev *indio_dev)
-> >   {
-> >   	struct stm32_adc *adc = iio_priv(indio_dev);
-> >   
-> > +	stm32_adc_writel(adc, STM32H7_ADC_PCSEL, 0);
-> >   	stm32h7_adc_disable(indio_dev);
-> >   	stm32h7_adc_enter_pwr_down(adc);
-> >   }
-> >   
+> Signed-off-by: Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+> ---
+>  drivers/iio/industrialio-core.c | 3 +++
+>  include/linux/iio/types.h       | 1 +
+>  2 files changed, 4 insertions(+)
 > 
-> Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> 
-> Thanks
-> Olivier
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 6d2175eb7af2..49e42d04ea16 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -702,6 +702,9 @@ static ssize_t __iio_format_value(char *buf, size_t offset, unsigned int type,
+>  	}
+>  	case IIO_VAL_CHAR:
+>  		return sysfs_emit_at(buf, offset, "%c", (char)vals[0]);
+> +	case IIO_VAL_INT_64:
+> +		tmp2 = (s64)((((u64)vals[1]) << 32) | (u32)vals[0]);
+> +		return sysfs_emit_at(buf, offset, "%lld", tmp2);
+>  	default:
+>  		return 0;
+>  	}
+> diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+> index 84b3f8175cc6..bb6578a5ee28 100644
+> --- a/include/linux/iio/types.h
+> +++ b/include/linux/iio/types.h
+> @@ -24,6 +24,7 @@ enum iio_event_info {
+>  #define IIO_VAL_INT_PLUS_NANO 3
+>  #define IIO_VAL_INT_PLUS_MICRO_DB 4
+>  #define IIO_VAL_INT_MULTIPLE 5
+> +#define IIO_VAL_INT_64 6 /* 64-bit data, val is lower 32 bits) */
+
+I'm guessing the closing bracket is left over of some editing?
+
+Otherwise fine and I can tidy that up whilst applying.
+
+Note that this is almost certainly too late for this cycle (we are
+about a week away from merge window subject to whatever Linus says
+for rc7 and new stuff needs some time to soak in next), but I'll
+plan to get it queued up early in the next one.
+
+>  #define IIO_VAL_FRACTIONAL 10
+>  #define IIO_VAL_FRACTIONAL_LOG2 11
+>  #define IIO_VAL_CHAR 12
 

@@ -2,374 +2,489 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9694391B3
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Oct 2021 10:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CAE6439368
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Oct 2021 12:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbhJYIua (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Oct 2021 04:50:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45972 "EHLO
+        id S232633AbhJYKOL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Oct 2021 06:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232156AbhJYIu3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 04:50:29 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6228C061745;
-        Mon, 25 Oct 2021 01:48:07 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d5so10112434pfu.1;
-        Mon, 25 Oct 2021 01:48:07 -0700 (PDT)
+        with ESMTP id S230164AbhJYKOL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 06:14:11 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CDEC061745;
+        Mon, 25 Oct 2021 03:11:48 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id z20so17698195edc.13;
+        Mon, 25 Oct 2021 03:11:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SOJlnCiZSupKP9SIJKepHt2o7XplreuRDHmKrfzEaXA=;
-        b=jWEUBCaD7n7CuWDEyLCxrHE0Htj/hDftJUtaTbd1Gj6vcN7RMgvnaU/7Tbo3Lq2Qg9
-         ytu7RRwU+Aqhkzh9xyw2Czb1J1U1koR7T9fp/tmPxQmacTXdMvLalpzYh+f5e5j0DXb9
-         uf5aBuBfge0Dac2yazYtbI1D5jUMyA7PTo/8YMifSbhcB30hDzPOV79VuCUvGWW9sJ1e
-         qxk1rVPDLEmHCpXbENtgWqV3gu4XjyRown+0WJgZPS73pEQI5S2oBIVsZjtLVBKbhgmo
-         sl13OBMtIdP1PrkgLlS92j8VSr7GKztKZOslAtOTqMWSR2VcjUPx8HHm8rCT2wZ3mbRJ
-         jxQQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fBDtSkb+dGGN2tqHEpHesGVMQTFs7wdi20nGWFMJJF4=;
+        b=n2Z58umT1+y0hJ5/VfGH1xRDoEhFgQuhRInFhcwYSFtUZxXCAzmQErcbgeU1nAhleh
+         K/5HCcYFZnIft/4SR8pXSjoEeuHcQOc0vJ1Ob+e8qwqFPsb33LVJpjFbFAGalIb5TS0J
+         lnBm7OFJx8isN4EzqP9C3HAkx/ZeqSDNqkyoAzoNob219dzQHLpkH44o3Qy5dQHYZy0N
+         lVW5jrjKe702eSujSxyfPWuuvJ04B2GomOuMQN+6dkX2RhSRuVhYjDesbodIlDYQdVMX
+         YkKwpLFEu6fGw7Gee2awRAdaYrR5OPeaZa6n1u3SAE0vomAdtK9Gs3semnj2dbqHT0z7
+         Ag9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SOJlnCiZSupKP9SIJKepHt2o7XplreuRDHmKrfzEaXA=;
-        b=nz1+cP/gNPWGEpdxEAA4YKMqTGRemaR9PYAd/kcKy5Fo4SwsHJYZItEv/JlGbJU8Wo
-         aGAHy/AX0YTZs5T76CZANXT7239H+daaI2RCJ5XnJuXA6uglQSrkLL1Tzw/ZZBkpgTgl
-         1q67eNorXElcC8knJsv9nwOOSYtphHj4Kg7UG5l8y2xExQF7WHIKTPoUPvhZ1k2qSlaS
-         4Rx3F+vNDa2GZ+3kPc43gOIOVA1NvR9J+TzQIJSIltxwZp32MFfvR6snE6pQRnkFW78I
-         TxOzF0a08Urk17XU0ON2UTrO7MOcHXnmqL0Qn+JxP0yl0x/RoMcL0GtvQi8Bc0lOdq/Y
-         LyLA==
-X-Gm-Message-State: AOAM530TCHfgXEioG68Mc2taUknQfsYxZtN9w7ljBlrvvk7KpXmNvXAF
-        pleHSmsaJtCS3p1U5x43BEgnOnx4100=
-X-Google-Smtp-Source: ABdhPJyZ3l2NTn9GmAojkuhItDdVWIz+/WmKjyz2mzB9uZiy3oABR2RyQEN9n6OGvLr5ZmTYkYbq3Q==
-X-Received: by 2002:a63:7445:: with SMTP id e5mr1441728pgn.482.1635151687255;
-        Mon, 25 Oct 2021 01:48:07 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id s13sm20578477pfk.175.2021.10.25.01.48.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Oct 2021 01:48:06 -0700 (PDT)
-Date:   Mon, 25 Oct 2021 17:48:01 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/8] counter/ti-eqep: add support for unit timer
-Message-ID: <YXZvQSU6bRRaWD89@shinobu>
-References: <20211017013343.3385923-1-david@lechnology.com>
- <20211017013343.3385923-4-david@lechnology.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fBDtSkb+dGGN2tqHEpHesGVMQTFs7wdi20nGWFMJJF4=;
+        b=GOzDMl0WBKHgd9QjXQFgB96tWX8cV1Hpjzw8xMqXwnwcjtOLQ3Cn9H7VXjhO0feu7h
+         GkmznSGZIeEmYWzNiJJNnNgMZmONvTa+xUMRfVpxQ9KDSpbjqDv7BaNryl4eLJ34x/Lc
+         BGOs7iSw3RsrzxmPAVuo7PmEhx9+1utWL4IrQiZ9YHrr2VJOFzo6vFaicxoSMVbR4DH2
+         8q8BdDRwyUCaazAyVyNax2a5y3xPRdEkVHqY9+xYu21bg6E/2PYJZIVX802ZNDwAokb8
+         ErfnAKBGCwA0EB+CduWM6j+pVTScSSBgNYfjHc43KEYiknycFl35JPjK9lbInpzDPfB5
+         iFXw==
+X-Gm-Message-State: AOAM532emzADzL5sf06wMruuo1DWiFexYDApSuna8aHekWVcbI3QLQMd
+        EUgBdcFS7nbG7Ng4xZ/OH8Q/t8KJHv1ibKSzFlAvs4FwpT5wC0t7
+X-Google-Smtp-Source: ABdhPJxnVs+40H4BfrBPiJ9jq/jYd7cxqczAPOsv2ew+ObXa4taiOCia9XzqsSkUyVhDTJnu3UyfP0mDRcNp0ExmemU=
+X-Received: by 2002:a05:6402:150f:: with SMTP id f15mr25381328edw.224.1635156705178;
+ Mon, 25 Oct 2021 03:11:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="d71MlQyvtsLzRQ2B"
-Content-Disposition: inline
-In-Reply-To: <20211017013343.3385923-4-david@lechnology.com>
+References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com> <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
+In-Reply-To: <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 25 Oct 2021 13:10:50 +0300
+Message-ID: <CAHp75Vf+dWSG6g-JsVnkJc0nREviRGZCeqoCfi20YZ9ouD+=hg@mail.gmail.com>
+Subject: Re: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>, git <git@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Peter Meerwald <pmeerw@pmeerw.net>,
+        devicetree <devicetree@vger.kernel.org>,
+        Manish Narani <manish.narani@xilinx.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, Oct 19, 2021 at 6:22 PM Anand Ashok Dumbre
+<anand.ashok.dumbre@xilinx.com> wrote:
+>
+> The AMS includes an ADC as well as on-chip sensors that can be used to
+> sample external voltages and monitor on-die operating conditions, such
+> as temperature and supply voltage levels. The AMS has two SYSMON blocks.
+> PL-SYSMON block is capable of monitoring off chip voltage and
+> temperature.
+> PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
+> from external master. Out of these interface currently only DRP is
 
---d71MlQyvtsLzRQ2B
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+from an external
+interfaces
 
-On Sat, Oct 16, 2021 at 08:33:38PM -0500, David Lechner wrote:
-> This adds support to the TI eQEP counter driver for the Unit Timer.
-> The Unit Timer is a device-level extension that provides a timer to be
-> used for speed calculations. The sysfs interface for the Unit Timer is
-> new and will be documented in a later commit. It contains a R/W time
-> attribute for the current time, a R/W period attribute for the timeout
-> period and a R/W enable attribute to start/stop the timer. It also
-> implements a timeout event on the chrdev interface that is triggered
-> each time the period timeout is reached.
->=20
-> Signed-off-by: David Lechner <david@lechnology.com>
+> supported.
+> Other block PS-SYSMON is memory mapped to PS.
+> The AMS can use internal channels to monitor voltage and temperature as
+> well as one primary and up to 16 auxiliary channels for measuring
+> external voltages.
+> The voltage and temperature monitoring channels also have event
+> capability which allows to generate an interrupt when their value falls
+> below or raises above a set threshold.
+>
+> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
 
-I'll comment on the sysfs interface in the respective docs patch. Some
-comments regarding this patch below.
+What does this SoB mean here? Have you read Submitting Patches?
 
-> ---
->  drivers/counter/ti-eqep.c    | 132 ++++++++++++++++++++++++++++++++++-
->  include/uapi/linux/counter.h |   2 +
->  2 files changed, 133 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-> index 9881e5115da6..a4a5a4486329 100644
-> --- a/drivers/counter/ti-eqep.c
-> +++ b/drivers/counter/ti-eqep.c
-> @@ -6,6 +6,7 @@
->   */
-> =20
->  #include <linux/bitops.h>
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+
+...
+
+> +config XILINX_AMS
+> +       tristate "Xilinx AMS driver"
+> +       depends on ARCH_ZYNQMP || COMPILE_TEST
+> +       depends on HAS_IOMEM
+> +       help
+
+> +         Say yes here to have support for the Xilinx AMS.
+
+It's not important for most of the users. Please, strat help with more
+useful information like below.
+
+> +         The driver supports Voltage and Temperature monitoring on Xilinx Ultrascale
+> +         devices.
+> +
+> +         The driver can also be built as a module. If so, the module will be called
+> +         xilinx-ams.
+
+...
+
+> + *  Manish Narani <mnarani@xilinx.com>
+
+A-ha! You probably forgot the Co-developed-by tag above.
+
+> + *  Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>
+
+...
+
+Missed headers, like bits.h.
+
 > +#include <linux/clk.h>
->  #include <linux/counter.h>
->  #include <linux/interrupt.h>
->  #include <linux/kernel.h>
-> @@ -131,6 +132,7 @@ enum ti_eqep_count_func {
-> =20
->  struct ti_eqep_cnt {
->  	struct counter_device counter;
-> +	unsigned long sysclkout_rate;
->  	struct regmap *regmap32;
->  	struct regmap *regmap16;
->  };
-> @@ -298,6 +300,9 @@ static int ti_eqep_events_configure(struct counter_de=
-vice *counter)
->  		case COUNTER_EVENT_DIRECTION_CHANGE:
->  			qeint |=3D QEINT_QDC;
->  			break;
-> +		case COUNTER_EVENT_TIMEOUT:
-> +			qeint |=3D QEINT_UTO;
-> +			break;
->  		}
->  	}
-> =20
-> @@ -311,6 +316,7 @@ static int ti_eqep_watch_validate(struct counter_devi=
-ce *counter,
->  	case COUNTER_EVENT_OVERFLOW:
->  	case COUNTER_EVENT_UNDERFLOW:
->  	case COUNTER_EVENT_DIRECTION_CHANGE:
-> +	case COUNTER_EVENT_TIMEOUT:
->  		return 0;
->  	default:
->  		return -EINVAL;
-> @@ -457,6 +463,106 @@ static struct counter_count ti_eqep_counts[] =3D {
->  	},
->  };
-> =20
-> +static int ti_eqep_unit_timer_time_read(struct counter_device *counter,
-> +				       u64 *value)
-> +{
-> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> +	u32 qutmr;
-> +
-> +	regmap_read(priv->regmap32, QUTMR, &qutmr);
-> +
-> +	/* convert timer ticks to nanoseconds */
-> +	*value =3D mul_u64_u32_div(qutmr, NSEC_PER_SEC, priv->sysclkout_rate);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_unit_timer_time_write(struct counter_device *counter,
-> +					u64 value)
-> +{
-> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> +	u32 qutmr;
-> +
-> +	/* convert nanoseconds to timer ticks */
-> +	qutmr =3D value =3D mul_u64_u32_div(value, priv->sysclkout_rate, NSEC_P=
-ER_SEC);
-> +	if (qutmr !=3D value)
-> +		return -ERANGE;
-> +
-> +	regmap_write(priv->regmap32, QUTMR, qutmr);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_unit_timer_period_read(struct counter_device *counter,
-> +					  u64 *value)
-> +{
-> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> +	u32 quprd;
-> +
-> +	regmap_read(priv->regmap32, QUPRD, &quprd);
-> +
-> +	/* convert timer ticks to nanoseconds */
-> +	*value =3D mul_u64_u32_div(quprd, NSEC_PER_SEC, priv->sysclkout_rate);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_unit_timer_period_write(struct counter_device *counte=
-r,
-> +					   u64 value)
-> +{
-> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> +	u32 quprd;
-> +
-> +	/* convert nanoseconds to timer ticks */
-> +	quprd =3D value =3D mul_u64_u32_div(value, priv->sysclkout_rate, NSEC_P=
-ER_SEC);
-> +	if (quprd !=3D value)
-> +		return -ERANGE;
-> +
-> +	/* protect against infinite unit timeout interrupts */
-> +	if (quprd =3D=3D 0)
-> +		return -EINVAL;
+> +#include <linux/delay.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
 
-I doubt there's any practical reason for a user to set the timer period
-to 0, but perhaps we should not try to protect users from themselves
-here. It's very obvious and expected that setting the timer period to 0
-results in timeouts as quickly as possible, so really the user should be
-left to reap the fruits of their decision regardless of how asinine that
-decision is.
+> +#include <linux/of_address.h>
 
-> +
-> +	regmap_write(priv->regmap32, QUPRD, quprd);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_unit_timer_enable_read(struct counter_device *counter,
-> +					  u8 *value)
-> +{
-> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> +	u32 qepctl;
-> +
-> +	regmap_read(priv->regmap16, QEPCTL, &qepctl);
-> +	*value =3D !!(qepctl & QEPCTL_UTE);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ti_eqep_unit_timer_enable_write(struct counter_device *counte=
-r,
-> +					   u8 value)
-> +{
-> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> +
-> +	if (value)
-> +		regmap_set_bits(priv->regmap16, QEPCTL, QEPCTL_UTE);
-> +	else
-> +		regmap_clear_bits(priv->regmap16, QEPCTL, QEPCTL_UTE);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct counter_comp ti_eqep_device_ext[] =3D {
-> +	COUNTER_COMP_DEVICE_U64("unit_timer_time", ti_eqep_unit_timer_time_read,
-> +				ti_eqep_unit_timer_time_write),
-> +	COUNTER_COMP_DEVICE_U64("unit_timer_period",
-> +				ti_eqep_unit_timer_period_read,
-> +				ti_eqep_unit_timer_period_write),
-> +	COUNTER_COMP_DEVICE_BOOL("unit_timer_enable",
-> +				 ti_eqep_unit_timer_enable_read,
-> +				 ti_eqep_unit_timer_enable_write),
+Do you need this? Maybe mod_devicetable.h?
+
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+
+...
+
+> +static const unsigned int AMS_UNMASK_TIMEOUT_MS = 500;
+
+Why not define (esp. taking into account another similar define below?
+
+...
+
+> +#define AMS_REGCFG1_ALARM_MASK         0xF0F
+> +#define AMS_REGCFG3_ALARM_MASK         0x3F
+
+> +#define AMS_PL_ALARM_MASK              0xFFFF0000U
+> +#define AMS_ISR0_ALARM_MASK            0xFFFFFFFFU
+> +#define AMS_ISR1_ALARM_MASK            0xE000001FU
+> +#define AMS_ISR1_EOC_MASK              0x00000008U
+
+What is so special about these that they are not using combinations of
+GENMASK() / BIT()?
+
+...
+
+> +enum ams_alarm_bit {
+> +       AMS_ALARM_BIT_TEMP,
+> +       AMS_ALARM_BIT_SUPPLY1,
+> +       AMS_ALARM_BIT_SUPPLY2,
+> +       AMS_ALARM_BIT_SUPPLY3,
+> +       AMS_ALARM_BIT_SUPPLY4,
+> +       AMS_ALARM_BIT_SUPPLY5,
+> +       AMS_ALARM_BIT_SUPPLY6,
+> +       AMS_ALARM_BIT_RESERVED,
+> +       AMS_ALARM_BIT_SUPPLY7,
+> +       AMS_ALARM_BIT_SUPPLY8,
+> +       AMS_ALARM_BIT_SUPPLY9,
+> +       AMS_ALARM_BIT_SUPPLY10,
+> +       AMS_ALARM_BIT_VCCAMS,
+> +       AMS_ALARM_BIT_TEMP_REMOTE
+
+Is it terminator line? Doesn't sound like it to me. So, please add a
+comma. Same for the rest.
+
 > +};
+
+...
+
+> +       AMS_SEQ_MAX
+
+This seems correct, no comma is needed :-)
+
+...
+
+> +struct ams {
+> +       void __iomem *base;
+> +       void __iomem *ps_base;
+> +       void __iomem *pl_base;
+> +       struct clk *clk;
+> +       struct device *dev;
+
+> +       /* check kernel doc above */
+
+Useless
+
+> +       struct mutex lock;
+
+> +       /* check kernel doc above */
+
+Ditto.
+
+> +       spinlock_t intr_lock;
+> +       unsigned int alarm_mask;
+> +       unsigned int masked_alarm;
+> +       u64 intr_mask;
+> +       int irq;
+> +       struct delayed_work ams_unmask_work;
+> +};
+
+...
+
+> +       writel((val & ~mask) | (data & mask), ams->ps_base + offset);
+
+Split to assignment and simple writel() call. Same to the rest.
+
+...
+
+> +       ams->intr_mask &= ~mask;
+> +       ams->intr_mask |= (val & mask);
+
+This may be combined to one line as it's a standard pattern.
+
+...
+
+> +       if (ams->ps_base) {
+> +               /* Configuring PS alarm enable */
+> +               cfg = ~((alarm_mask & AMS_ISR0_ALARM_2_TO_0_MASK) <<
+> +                              AMS_CONF1_ALARM_2_TO_0_SHIFT);
+> +               cfg &= ~((alarm_mask & AMS_ISR0_ALARM_6_TO_3_MASK) <<
+> +                               AMS_CONF1_ALARM_6_TO_3_SHIFT);
+> +               ams_ps_update_reg(ams, AMS_REG_CONFIG1, AMS_REGCFG1_ALARM_MASK,
+> +                                 cfg);
 > +
->  static irqreturn_t ti_eqep_irq_handler(int irq, void *dev_id)
->  {
->  	struct ti_eqep_cnt *priv =3D dev_id;
-> @@ -474,6 +580,8 @@ static irqreturn_t ti_eqep_irq_handler(int irq, void =
-*dev_id)
->  	if (qflg & QFLG_QDC)
->  		counter_push_event(counter, COUNTER_EVENT_DIRECTION_CHANGE, 0);
-> =20
-> +	if (qflg & QFLG_UTO)
-> +		counter_push_event(counter, COUNTER_EVENT_TIMEOUT, 0);
-> =20
->  	regmap_set_bits(priv->regmap16, QCLR, ~0);
+> +               cfg = ~((alarm_mask >> AMS_CONF3_ALARM_12_TO_7_SHIFT) &
+> +                               AMS_ISR0_ALARM_12_TO_7_MASK);
+> +               ams_ps_update_reg(ams, AMS_REG_CONFIG3, AMS_REGCFG3_ALARM_MASK,
+> +                                 cfg);
+> +       }
 
-Same comment here as the previous patches about clearing all interrupt
-flags.
+By factoring out the body of the conditional to a helper function you may:
+- decrease indentation
+- make code better to read
+- reduce LOCs
 
-> =20
-> @@ -500,6 +608,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
->  {
->  	struct device *dev =3D &pdev->dev;
->  	struct ti_eqep_cnt *priv;
-> +	struct clk *clk;
->  	void __iomem *base;
->  	int err;
->  	int irq;
-> @@ -508,6 +617,24 @@ static int ti_eqep_probe(struct platform_device *pde=
-v)
->  	if (!priv)
->  		return -ENOMEM;
-> =20
-> +	clk =3D devm_clk_get(dev, "sysclkout");
-> +	if (IS_ERR(clk)) {
-> +		if (PTR_ERR(clk) !=3D -EPROBE_DEFER)
-> +			dev_err(dev, "failed to get sysclkout");
-> +		return PTR_ERR(clk);
-> +	}
+> +       if (ams->pl_base) {
+> +               pl_alarm_mask = (alarm_mask >> AMS_PL_ALARM_START);
+> +               pl_alarm_mask = FIELD_GET(AMS_PL_ALARM_MASK, alarm_mask);
+> +               /* Configuring PL alarm enable */
+> +               cfg = ~((pl_alarm_mask & AMS_ISR0_ALARM_2_TO_0_MASK) <<
+> +                       AMS_CONF1_ALARM_2_TO_0_SHIFT);
+> +               cfg &= ~((pl_alarm_mask & AMS_ISR0_ALARM_6_TO_3_MASK) <<
+> +                        AMS_CONF1_ALARM_6_TO_3_SHIFT);
+> +               ams_pl_update_reg(ams, AMS_REG_CONFIG1,
+> +                                 AMS_REGCFG1_ALARM_MASK, cfg);
 > +
-> +	priv->sysclkout_rate =3D clk_get_rate(clk);
-> +	if (priv->sysclkout_rate =3D=3D 0) {
-> +		dev_err(dev, "failed to get sysclkout rate");
-> +		/* prevent divide by zero */
-> +		priv->sysclkout_rate =3D 1;
-> +		/*
-> +		 * This error is not expected and the driver is mostly usable
-> +		 * without clock rate anyway, so don't exit here.
-> +		 */
+> +               cfg = ~((pl_alarm_mask >> AMS_CONF3_ALARM_12_TO_7_SHIFT) &
+> +                       AMS_ISR0_ALARM_12_TO_7_MASK);
+> +               ams_pl_update_reg(ams, AMS_REG_CONFIG3,
+> +                                 AMS_REGCFG3_ALARM_MASK, cfg);
+> +       }
 
-If the values for these new attributes are expected to be denominated in
-nanoseconds then we must guarantee that. You should certainly error out
-here if you can't guarantee such.
+Ditto. And the same applies to all the rest where it gains something
+from the above list of improvements.
 
-Alternatively, you could provide an additional set of attributes that
-are denominated in units of raw timer ticks rather than nanoseconds.
-That way if you can't determine the clock rate you can simply have the
-nanosecond-denominated timer attributes return an EOPNOTSUPP error code
-or similar while still providing users with the raw timer ticks
-attributes.
+...
 
-William Breathitt Gray
+> +       int i;
+> +       unsigned long long scan_mask;
+> +       struct ams *ams = iio_priv(indio_dev);
 
-> +	}
+Reversed xmas tree order, please.
+Same for the rest.
+
+...
+
+> +       /* Run calibration of PS & PL as part of the sequence */
+> +       scan_mask = 0x1 | BIT(AMS_PS_SEQ_MAX);
+
+BIT(0) ?
+
+...
+
+> +       ams_update_intrmask(ams, ~0, ~0);
+
+Replace ~0 to proper GENMASK()./BIT() combination which takes into
+account real bits used by hardware.
+
+...
+
+> +       case IIO_CHAN_INFO_RAW:
+> +               mutex_lock(&ams->lock);
+> +               if (chan->scan_index >= (AMS_PS_SEQ_MAX * 3)) {
+
+Too many parens.
+
+> +                       ret = ams_read_vcc_reg(ams, chan->address, val);
+> +                       if (ret) {
+> +                               mutex_unlock(&ams->lock);
+> +                               return -EINVAL;
+> +                       }
+> +                       ams_enable_channel_sequence(indio_dev);
+> +               } else if (chan->scan_index >= AMS_PS_SEQ_MAX)
+> +                       *val = readl(ams->pl_base + chan->address);
+> +               else
+> +                       *val = readl(ams->ps_base + chan->address);
+> +               mutex_unlock(&ams->lock);
 > +
->  	base =3D devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(base))
->  		return PTR_ERR(base);
-> @@ -536,6 +663,8 @@ static int ti_eqep_probe(struct platform_device *pdev)
->  	priv->counter.ops =3D &ti_eqep_counter_ops;
->  	priv->counter.counts =3D ti_eqep_counts;
->  	priv->counter.num_counts =3D ARRAY_SIZE(ti_eqep_counts);
-> +	priv->counter.ext =3D ti_eqep_device_ext;
-> +	priv->counter.num_ext =3D ARRAY_SIZE(ti_eqep_device_ext);
->  	priv->counter.signals =3D ti_eqep_signals;
->  	priv->counter.num_signals =3D ARRAY_SIZE(ti_eqep_signals);
->  	priv->counter.priv =3D priv;
-> @@ -552,10 +681,11 @@ static int ti_eqep_probe(struct platform_device *pd=
-ev)
-> =20
->  	/*
->  	 * We can end up with an interupt infinite loop (interrupts triggered
-> -	 * as soon as they are cleared) if we leave this at the default value
-> +	 * as soon as they are cleared) if we leave these at the default value
->  	 * of 0 and events are enabled.
->  	 */
->  	regmap_write(priv->regmap32, QPOSMAX, UINT_MAX);
-> +	regmap_write(priv->regmap32, QUPRD, UINT_MAX);
-> =20
->  	err =3D counter_register(&priv->counter);
->  	if (err < 0) {
-> diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
-> index 36dd3b474d09..640d9719b88c 100644
-> --- a/include/uapi/linux/counter.h
-> +++ b/include/uapi/linux/counter.h
-> @@ -63,6 +63,8 @@ enum counter_event_type {
->  	COUNTER_EVENT_INDEX,
->  	/* Direction change detected */
->  	COUNTER_EVENT_DIRECTION_CHANGE,
-> +	/* Timer exceeded timeout */
-> +	COUNTER_EVENT_TIMEOUT,
->  };
-> =20
->  /**
-> --=20
-> 2.25.1
->=20
+> +               return IIO_VAL_INT;
 
---d71MlQyvtsLzRQ2B
-Content-Type: application/pgp-signature; name="signature.asc"
+...
 
------BEGIN PGP SIGNATURE-----
+> +       return -EINVAL;
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF2bywACgkQhvpINdm7
-VJJ7tg//aDHVGj7iEDr8/ZT3fTBI6GpWrPtv2bQ6l7v7sbDNO7MK4GJla/7pBjIG
-SapC+Ktkx1713X3rAbnw/t1ZIlneVtfWlCo7zq+WPGNOE12i4xsrrgb81AnvJD/7
-3bmDZ9x3tBnmHKSGyYBGQCfSCM7sV3jjTuB4qxvaQY6OVDQR/M3C70VjZO3UWOe2
-nyHthb/aG3x2H49hbalezOmlA+4Eqm0SZ0oxLvO7kSmOWjtqDrZSfMUaQgaQ9A+M
-+yquD4+cq2CGQ3+RGXCr7T6eo5X/xWxXgb+UiEOn8F+4pd3o04SZGbqm44JiX5jF
-9z1ZUAWy16NF3XJaa0UedkVXFMzaxWwS3S/ErXdYBBrZjNYTvw52nCOXkTxbV/DA
-qTqemQy/d59mEjxNrsZI9kAgei9MqLn6wwAUM1txSFxPFI38hyJLbi4ScdVl568I
-70t6DGQBTfRMCBCZIv15eD45JFPuulCqZZbUSLE0KJI+vObu8LTvebcvXjQOjjo0
-36M86FnaGqdnd7fo7ivxqbyB1qnoLn1zH4XfCOLzMZU9CjedqVbFVITjC5MWfPtQ
-0J3F9SVi4oBzKqw7HTt5Op58FIUfEUTpxuXXEPIBxBkXE1tRkqaTjizIBqZNyZuq
-+2UwTV27SWorrSLV/9GcXGBIlM6SdfJeVcbK5bEQIU7g1483ZII=
-=PWl0
------END PGP SIGNATURE-----
+Use corresponding defaul cases in each of the switches.
 
---d71MlQyvtsLzRQ2B--
+...
+
+> +       int offset = 0;
+
+Make the assignment as an else branch, so all offset assignments will
+be grouped together.
+
+> +       if (dir == IIO_EV_DIR_FALLING) {
+> +               if (scan_index < AMS_SEQ_SUPPLY7)
+> +                       offset = AMS_ALARM_THRESHOLD_OFF_10;
+> +               else
+> +                       offset = AMS_ALARM_THRESHOLD_OFF_20;
+> +       }
+
+...
+
+> +       return 0;
+
+default case.
+
+> +}
+
+...
+
+> +static const struct iio_chan_spec
+> +*ams_event_to_channel(struct iio_dev *indio_dev, u32 event)
+
+Unusual indentation.
+
+...
+
+> +       case AMS_ALARM_BIT_TEMP_REMOTE:
+> +               scan_index += AMS_SEQ_TEMP_REMOTE;
+> +               break;
+
+default?
+Same for the rest of the cases like this.
+
+...
+
+> +       return (ams->alarm_mask & ams_get_alarm_mask(chan->scan_index)) ? 1 : 0;
+
+!! would work as well.
+
+...
+
+> +               /*
+> +                * The temperature channel only supports over-temperature
+> +                * events
+
+Missed period.
+
+> +                */
+
+...
+
+> +       /* only process alarms that are not masked */
+
+Inconsistent style (here capitalization is missed). Make all comments
+in the code consistent.
+
+> +       isr0 &= ~((ams->intr_mask & AMS_ISR0_ALARM_MASK) | ams->masked_alarm);
+
+> +
+
+Redundant blank line.
+
+> +       if (!isr0)
+
+How did you test this branch? (Hint: something very important should
+be done here)
+
+> +               return IRQ_NONE;
+
+...
+
+> +       for_each_child_of_node(chan_node, child) {
+> +               ret = of_property_read_u32(child, "reg", &reg);
+> +               if (ret || reg > (AMS_PL_MAX_EXT_CHANNEL + 30))
+> +                       continue;
+> +
+> +               memcpy(&channels[num_channels], &ams_pl_channels[reg +
+> +                      AMS_PL_MAX_FIXED_CHANNEL - 30], sizeof(*channels));
+> +
+> +               if (of_property_read_bool(child, "xlnx,bipolar"))
+> +                       channels[num_channels].scan_type.sign = 's';
+> +
+> +               num_channels++;
+> +       }
+
+Use device property API here instead of *of_*() calls.
+
+...
+
+> +       /* Initialize buffer for channel specification */
+> +       ams_channels = kzalloc(sizeof(ams_ps_channels) +
+> +                              sizeof(ams_pl_channels) +
+> +                              sizeof(ams_ctrl_channels), GFP_KERNEL);
+
+Use the corresponding macro from overflow.h.
+
+> +       if (!ams_channels)
+> +               return -ENOMEM;
+
+...
+
+> +       if (of_device_is_available(np)) {
+
+fwnode_device_is_available()
+
+> +               ret = ams_init_module(indio_dev, np, ams_channels);
+> +               if (ret < 0)
+> +                       goto err;
+> +
+> +               num_channels += ret;
+> +       }
+
+...
+
+> +       for_each_child_of_node(np, child_node) {
+> +               if (of_device_is_available(child_node)) {
+> +                       ret = ams_init_module(indio_dev, child_node,
+> +                                             ams_channels + num_channels);
+> +                       if (ret < 0)
+> +                               goto err;
+> +
+> +                       num_channels += ret;
+> +               }
+> +       }
+
+As per above.
+
+...
+
+> +       if (!pdev->dev.of_node)
+> +               return -ENODEV;
+
+Drop this, please. It will allow reuse of the driver in ACPI environments.
+
+...
+
+> +       ams->irq = platform_get_irq(pdev, 0);
+> +       if (ams->irq == -EPROBE_DEFER) {
+
+Is IRQ optional or not?
+
+> +               ret = -EPROBE_DEFER;
+> +               return ret;
+> +       }
+
+...
+
+> +       ret = devm_iio_device_register(&pdev->dev, indio_dev);
+> +
+> +       return ret;
+
+return devm_...
+
+...
+
+> +       clk_prepare_enable(ams->clk);
+
+It might fail.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

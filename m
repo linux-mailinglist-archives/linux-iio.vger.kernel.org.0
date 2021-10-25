@@ -2,234 +2,516 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F8043944B
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Oct 2021 12:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5813643959C
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Oct 2021 14:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbhJYK6f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Oct 2021 06:58:35 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5984 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231829AbhJYK6f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 06:58:35 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19OLenXE029323;
-        Mon, 25 Oct 2021 06:55:52 -0400
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2169.outbound.protection.outlook.com [104.47.59.169])
-        by mx0a-00128a01.pphosted.com with ESMTP id 3bwcgcjuts-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 Oct 2021 06:55:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hOX5ZxgAoytYl+ub6m5bufjkSsDlmJqPzCXMABpTT7Dc3euc2Goez+kZI809ZBUlDwLlYwA2RN+M9g2tcxCWBeqOjHl1vl1qEf1DLzfO9iHyVl/lqf9iYTd9liNRszmzO4yFzVY/4+HpFxg+GQ+nMEWLIP53Xvx/wY4XvSPLpCwWfRiy9DxFzmx/CbAExRAdc8GJtS5D9tU+cPM7vLSBE8agEj325F5Vb/JbJ3jUYucOk6ACAib+q9TbTAj1vpzFgFNzX4/FvSUPaZ3ch2TYlXTno6DZBIlKDTrcQyK5NI4QHfzFXlICrFOm9R3CShkY9gjRt5MAK1/X9dDFAs34Xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sek/qhdy2xUFtDppEWhC0x4kCoNLHERNE4BGqarGLVY=;
- b=MzIV8NcW3Z+GU2S1eRPcQwB03kmRZY10ouTOxAwv1gB3FPY6GfoWcQ8V1HhhGExXZPR/+KxHzva4wt9MnZ5jRAZAA2QPBfeAzds4M6AWJzoZKqeuu3SpRiv/nJ1rZvzBdaGT/LK8eGqBkqFdPKSBzDL3IfcrXN61dY+HioypkADRDdJmtJpiIbLyngFRyyZsf1TfPksiesdqtRKvlyVk/+zkzLsCrtM8P8esfrPWIgO+AnPct6Yp8iihmSfbjISozf/+d9MyCAUw3MQW8pMslOH3jIk71IfdEOzkZp5FzaHnMgZ4fjZr1PlyylqZA0mPi+nR+Vki+PQFzfGEUYst5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        id S231512AbhJYMK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Oct 2021 08:10:28 -0400
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:7286 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231129AbhJYMK2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 08:10:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sek/qhdy2xUFtDppEWhC0x4kCoNLHERNE4BGqarGLVY=;
- b=xaXpRKqKzxA0xmb+c5AROWqSK4VSvvoyLCFzLi9rKC4AXnDSGEAKsqyUU9eidwnTJRgla9NWzvN6pwmHRV7OLtekhQm91Oh/EXoC43qbR2PD4ZltvNd+wH7RCd/Y/UyKtO3dJRjzcnmcHzNJrghq7Gu+EQjcQYzzCX9qqw0nAYs=
-Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
- by PH0PR03MB5781.namprd03.prod.outlook.com (2603:10b6:510:32::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.16; Mon, 25 Oct
- 2021 10:55:50 +0000
-Received: from PH0PR03MB6366.namprd03.prod.outlook.com
- ([fe80::e555:851:6adb:f73]) by PH0PR03MB6366.namprd03.prod.outlook.com
- ([fe80::e555:851:6adb:f73%7]) with mapi id 15.20.4628.018; Mon, 25 Oct 2021
- 10:55:50 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Martin Fuzzey <mfuzzey@parkeon.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [PATCH 2/2] iio: trigger: Fix reference counting
-Thread-Topic: [PATCH 2/2] iio: trigger: Fix reference counting
-Thread-Index: AQHXyLlgGI73fsNWc0yc3c412zhae6vji+Wg
-Date:   Mon, 25 Oct 2021 10:55:50 +0000
-Message-ID: <PH0PR03MB636676B8D42B59300751FA6C99839@PH0PR03MB6366.namprd03.prod.outlook.com>
-References: <20211024092700.6844-1-lars@metafoo.de>
- <20211024092700.6844-2-lars@metafoo.de>
-In-Reply-To: <20211024092700.6844-2-lars@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
- =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctMWIyNzUxNmItMzU4Mi0xMWVjLThiOTMtZmM3Nz?=
- =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDFiMjc1MTZkLTM1ODItMTFlYy04YjkzLWZj?=
- =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMjcwMSIgdD0iMTMyNzk2MzI5ND?=
- =?iso-8859-1?Q?Y5MzgxNTI1IiBoPSJ2RUpIcGFuTlpKZ2lLL1FuUjRITkE2cVhRUnc9IiBp?=
- =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FFb0NBQUNWaTMvZGpzblhBU1FrR2FEMTFrKy9KQ1Fab1BYV1Q3OERBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVZJRXZvUUFBQUFBQUFBQUFBQUFBQUo0?=
- =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
- =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
- =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
- =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
- =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
- =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
- =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
-x-dg-rorf: true
-authentication-results: metafoo.de; dkim=none (message not signed)
- header.d=none;metafoo.de; dmarc=none action=none header.from=analog.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: fa9b0401-2f43-4719-8e97-08d997a60224
-x-ms-traffictypediagnostic: PH0PR03MB5781:
-x-microsoft-antispam-prvs: <PH0PR03MB5781EF4F2AF7B3F04CC71C6499839@PH0PR03MB5781.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 1/DA1PKuGugS8vjOW4CRJPAKV3JnoS4qXPweiyGRsPRVMod34frhXRAZAT2KFjQseYl/lviRQWj+9a6RQaDFWHSZaLGs9egs/kmCd6Eze8MDIwmKjhRb+/8f+rHPXHQV+8M9DaXryYXaPj8yGOKn2rM11N6I29h1pqk/X0A9iQT7fNBjcqCWlPby90AHIwaTgv1u/CwUcwUfbT3PDYJQ+fTPfzdHGefnElwG+LeZpLSXFvlRbtO/7y8eWyNZhIlhb3APqf1GE8FWS2Q+nX5RsbOv4mEv0i2cpCJEHmSm6/QtjF+4DzHtBp5vK3DmltVRXaDOp3kW5xeJoXvW4RAl90lX+9JeaMay/zibXJgkwHQjYqteWV/94wFkNcjzbyr8wGtLqjZfUSKY5BAKOcxp2ZubgPNKa7ildUSitMfXWZa2bJaf5wHXdIiPqzHbu3M/wx5+LraAJrwFaD0eDvPG3nzivr6UA5Xd/oqebCFOZkM/PLldYKzK2hOGzEQ9Z0xrgSiLqWcVIYnfd++SuRgmpbVtAxhfu5H6tEgWdjfieUpmxbKihBotLOT9+Qf6+linnaPRUxsS4uAArgvOuoZ6Y+e2koqLkiIo8zghLFd87Mz3HLSF/26wCimaAVhmQu7HN/DPkQW14jMe6xMHlj08b4zey1ixSQ2sWE9Ea7oJXqhCYqtkELa9FNv0aVbCCYgXD4jHGNX3UIZ3eycxaB2MNQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(38100700002)(122000001)(86362001)(110136005)(9686003)(8676002)(54906003)(52536014)(8936002)(508600001)(83380400001)(66476007)(316002)(55016002)(7696005)(26005)(5660300002)(2906002)(66946007)(64756008)(33656002)(186003)(71200400001)(4326008)(38070700005)(6506007)(53546011)(66556008)(66446008)(76116006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?B1ewXa6eOA76BOzGhEnrhcaGIwE5d3mPeJ1lxiu1uJCPxqASS3kRACDltx?=
- =?iso-8859-1?Q?4DaySpWzFHVyg09ROI6mC2ebnaqiqEpNznxuRvAmoK2NWF00javs5emJvN?=
- =?iso-8859-1?Q?Xf5pIn72f8P9YcrNKDPDAwsWyII7EY83S3F9+q8j8NFCdO3G/fUP6LqXO0?=
- =?iso-8859-1?Q?t6WBqE9KjzUZcKfLfVZJzTYZYE9dvjocRuFXYAusfj94/B0tESVF98ZOLr?=
- =?iso-8859-1?Q?AolBYSkS5h+NEiUolyIWdvBrA6LdLUOdVRa1rDpgSmzDrd3l+vTu9kJvCl?=
- =?iso-8859-1?Q?HTQTkIanJ9kHxgCugtkdMbER1GrJ8MCbvTWkD6ZMnTDJAEN/MJ4oYw2jty?=
- =?iso-8859-1?Q?2yeTgwOojChgyC8pmz4uDA3k3mVEmKbrkVi0SIAz8WO5mVjkZDPxhcdobQ?=
- =?iso-8859-1?Q?dy/IIv9g/kMGqgxt7iIXPW0OZVP2eQU0UKoDmW6D/lUxxLhTBCLOhCjRGd?=
- =?iso-8859-1?Q?8hNAFE2XQNslapamwF57ewotogpoegZQsl6e2z2bNWdTOXfHDrpAH+xx6x?=
- =?iso-8859-1?Q?/xggv0WJMrtQCDTXOnd4cqCso3ML6vcQIH+QuLteTGBSWKt3g+b2Ao/zQY?=
- =?iso-8859-1?Q?M4XpicOk6W9m/r++pxMaHr0AoPWUedod3aawd+1PqBK5YMSoYn6wZpDvCp?=
- =?iso-8859-1?Q?GOHWU2DopbA5zZxzdzTJZHa5RIPgtoEsnoYil6u4jxYlFoA/OHDAOAF6dY?=
- =?iso-8859-1?Q?2AslbmhlOWqNCvrj3jyaxCdL5T8TonCIb4F0wIvqxGUYsQsaZXtfBUsj8L?=
- =?iso-8859-1?Q?wdv9I9U02+kOMlj/N9+EUg0HRmL6sZxSPEzqx/gQ+6hinrZkjEnXlinARc?=
- =?iso-8859-1?Q?xzF0YrBrTr7HIv5xvTy9goRSpp/3XnIDeAxTsMTxrnBa8xtKPctxT1cePd?=
- =?iso-8859-1?Q?qoV96HuUVP98gfbPIp8eFR+5BkLAjlRnReq6Sb1lGlG4j02xKTw/ZNjQTr?=
- =?iso-8859-1?Q?5NqB5xOlI/Qyz6OPM0d6QyPBC7jgsx3DvmJTfrWKhoShtwfcBbRDtnS1r9?=
- =?iso-8859-1?Q?m02CBbdoAAh4B8vp+n5p5e5N2G888Yd6aR2yOV5GrsozIA/w/wR50mt+kN?=
- =?iso-8859-1?Q?d4y0omROKEKzGuZS9ET8pLJCG+kKqGRalj7QpsBwam/JvDQ2n7LknKKB1f?=
- =?iso-8859-1?Q?t1KpBOtv0lp/qW1MuWrUXsQhhELVRZUxIFQkHIdwLrB6A9iZ355PnebTX6?=
- =?iso-8859-1?Q?LA6QvJlNR1qaIiO34yqtjAUviyJX8KxysNUpzhKRvrqazaIZCdbQTgcAdZ?=
- =?iso-8859-1?Q?rzdiA1Z5D4YC7bSzR3oZI7ZWOb5CEKY8j7l1xICpVL9mLK0/fPVIomb77z?=
- =?iso-8859-1?Q?jK80FGYA14IGOAg8u8cyl8RfZ9fT5sxffSl56kmdhVbz6zqWkL+n9PbUrf?=
- =?iso-8859-1?Q?rUVH39oEmqObaf0T+g0XpMX4r754u9aUiFtjqOdCYungPxG1AuW7HajX6X?=
- =?iso-8859-1?Q?+7zjEyX/NgSW6uJxhaLhh8B/kgveon+dBH8yz3AqB2ryz8mq2PDn3O22ql?=
- =?iso-8859-1?Q?DqpJjDAjhdy5HKou94m0PpafDqdvC/rN4tfgioiOPazoT5qBWs0NjlV3NF?=
- =?iso-8859-1?Q?x+QPQKQ72ZQ3dkr4hd9L26QVh95j1nuyVkmYP5jAYrRslU6IpGNN+GwJKL?=
- =?iso-8859-1?Q?p5/l49ZKyq/oCNxCXDHqBLx22/0lGH0hfIhgomlU+FHZc1WOAuzUZ0lw?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1635163687; x=1666699687;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=3Czd8Il2z0Nrgd4/ahkVxYHkanAIVTxbnZroNdcd5FE=;
+  b=UitVdVPrWac9H+IVxe7zDIcr/ihxLB5XaZA/55GvtWY0K7yrDsKA502t
+   deLCXry+86xgFfJeIBAQQ7ofP0jNkZQOk9+TC6pBl+pUCt5QNXZbqZCqj
+   MQ9J6DzhrK26x6TMBukarM2D88P2NL6ssbLSTN2/neZf5DYKDZUGTcTal
+   4=;
+Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
+  by alexa-out.qualcomm.com with ESMTP; 25 Oct 2021 05:08:06 -0700
+X-QCInternal: smtphost
+Received: from nalasex01a.na.qualcomm.com ([10.47.209.196])
+  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2021 05:08:05 -0700
+Received: from [10.216.54.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.7; Mon, 25 Oct 2021
+ 05:07:55 -0700
+Subject: Re: [PATCH 2/2] thermal: qcom: add support for PMIC5 Gen2 ADCTM
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Matthias Kaehlcke <mka@chromium.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+        <quic_kgunda@quicinc.com>, <quic_aghayal@quicinc.com>,
+        <quic_subbaram@quicinc.com>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        <linux-arm-msm-owner@vger.kernel.org>
+References: <1634541429-3215-1-git-send-email-quic_jprakash@quicinc.com>
+ <1634541429-3215-3-git-send-email-quic_jprakash@quicinc.com>
+ <CAA8EJpo9Zu=JJehYg9gdsc0U88pEBGe-x5v=ZbcV5dWCOJTyKA@mail.gmail.com>
+From:   Jishnu Prakash <quic_jprakash@quicinc.com>
+Message-ID: <111fcc56-6441-3300-8d96-029ef8600702@quicinc.com>
+Date:   Mon, 25 Oct 2021 17:37:40 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa9b0401-2f43-4719-8e97-08d997a60224
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2021 10:55:50.4358
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WIkr/c/1fzUoAaNbH0Tchyr26788SuDdRM9Zw7/Cdsjf7NV6NYrtqf7P7PD+WZjPgNWYX0B/Jzz5Qh2ELnTx5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5781
-X-Proofpoint-ORIG-GUID: wrTooHdJUDGzgEqdMJ6_q8_rtbGSQGm9
-X-Proofpoint-GUID: wrTooHdJUDGzgEqdMJ6_q8_rtbGSQGm9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-25_04,2021-10-25_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 suspectscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 mlxscore=0 spamscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2109230001 definitions=main-2110250068
+In-Reply-To: <CAA8EJpo9Zu=JJehYg9gdsc0U88pEBGe-x5v=ZbcV5dWCOJTyKA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Dmitry,
+
+On 10/18/2021 5:16 PM, Dmitry Baryshkov wrote:
+> On Mon, 18 Oct 2021 at 10:18, Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
+>> Add support for PMIC5 Gen2 ADC_TM, used on PMIC7 chips. It is a
+> It looks to me like the Gen2 suffix is a bit misleading. I haven't
+> checked the docs, but following the ADC example, I think we should
+> name it ADC_TM7.
+> Or maybe my original naming was wrong and we should use ADC5_TM and ADC7_TM.
+
+The name used for this ADC version was amended internally, it should be 
+called PMIC5 Gen2 ADC.
+
+Keeping future ADC versions in mind, it would be better to call this 
+peripheral PMIC5 Gen2 ADC_TM.
+
+>
+>> close counterpart of PMIC7 ADC and has the same functionality as
+>> PMIC5 ADC_TM, for threshold monitoring and interrupt generation.
+>> It is present on PMK8350 alone, like PMIC7 ADC and can be used
+>> to monitor up to 8 ADC channels, from any of the PMIC7 PMICs
+>> having ADC on a target, through PBS(Programmable Boot Sequence).
+>>
+>> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+>> ---
+>>   drivers/iio/adc/qcom-vadc-common.c       | 187 ++++++++++++++
+>>   drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 431 ++++++++++++++++++++++++++++++-
+>>   include/linux/iio/adc/qcom-vadc-common.h |   2 +
+> Please split iio changes to the separate patch.
+I'll split them in the next post.
+>
+>>   3 files changed, 611 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
+>> index 1472389..e192736 100644
+>> --- a/drivers/iio/adc/qcom-vadc-common.c
+>> +++ b/drivers/iio/adc/qcom-vadc-common.c
+>> @@ -100,6 +100,182 @@ static const struct vadc_map_pt adcmap_100k_104ef_104fb_1875_vref[] = {
+>>          { 46,   125000 },
+>>   };
+>>
+>> +/*
+>> + * Resistance to temperature table for NTCG104EF104 thermistor with
+>> + * 100k pull-up.
+>> + */
+>> +static const struct vadc_map_pt adcmap_100k_adc7[] = {
+> There is the adcmap7_100k table, which looks identical. Do you need
+> this extra table?
+
+You're right, I'll remove it in the next post.
+
+>
+>> +       { 4250657, -40960 },
+>> +       { 3962085, -39936 },
+>> +       { 3694875, -38912 },
+>> +       { 3447322, -37888 },
+>> +       { 3217867, -36864 },
+>> +       { 3005082, -35840 },
+
+>> +       { 2633, 126976 },
+>> +       { 2560, 128000 },
+>> +       { 2489, 129024 },
+>> +       { 2420, 130048 }
+>> +};
+>> +
+>> +
+> Extra newline
+Will remove this.
+>
+>>   static const struct vadc_map_pt adcmap7_die_temp[] = {
+>>          { 857300, 160000 },
+>>          { 820100, 140000 },
+>> @@ -677,6 +853,17 @@ u16 qcom_adc_tm5_temp_volt_scale(unsigned int prescale_ratio,
+>>   }
+>>   EXPORT_SYMBOL(qcom_adc_tm5_temp_volt_scale);
+>>
+>> +u16 qcom_adc_tm5_temp_res_scale(int temp)
+> This is definitely not an qcom_adc_tm5-kind of function. What about
+> qcom_adc_tm7_temp_res_scale() ?
 
 
-> -----Original Message-----
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> Sent: Sunday, October 24, 2021 11:27 AM
-> To: Jonathan Cameron <jic23@kernel.org>
-> Cc: Martin Fuzzey <mfuzzey@parkeon.com>; Peter Meerwald-Stadler
-> <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org; Lars-Peter
-> Clausen <lars@metafoo.de>
-> Subject: [PATCH 2/2] iio: trigger: Fix reference counting
->=20
-> [External]
->=20
-> In viio_trigger_alloc() device_initialize() is used to set the initial
-> reference count of the trigger to 1. Then another get_device() is called
-> on
-> trigger. This sets the reference count to 2 before the trigger is
-> returned.
->=20
-> iio_trigger_free(), which is the matching API to viio_trigger_alloc(),
-> calls put_device() which decreases the reference count by 1. But the
-> second
-> reference count acquired in viio_trigger_alloc() is never dropped.
->=20
-> As a result the iio_trigger_release() function is never called and the
-> memory associated with the trigger is never freed.
->=20
-> Since there is no reason for the trigger to start its lifetime with two
-> reference counts just remove the extra get_device() in
-> viio_trigger_alloc().
->=20
-> Fixes: 5f9c035cae18 ("staging:iio:triggers. Add a reference get to the
-> core for triggers.")
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+I'll rename it using adc_tm5_gen2 in the next post.
 
-Acked-by: Nuno S=E1 <nuno.sa@analog.com>
+>> +{
+>> +       int64_t resistance;
+>> +
+>> +       resistance = qcom_vadc_map_temp_voltage(adcmap_100k_adc7,
+>> +               ARRAY_SIZE(adcmap_100k_adc7), temp);
+>> +
+>> +       return div64_s64((resistance * RATIO_MAX_ADC7), (resistance + R_PU_100K));
+> Internal brackets are not needed.
+Will fix it in the next post.
+>
+>>   struct adc_tm5_data {
+>> +       const struct    adc_tm_ops *ops;
+>>          const u32       full_scale_code_volt;
+>>          unsigned int    *decimation;
+>>          unsigned int    *hw_settle;
+>> @@ -100,6 +155,12 @@ struct adc_tm5_chip;
+>>    * @prescale: channel scaling performed on the input signal.
+>>    * @hw_settle_time: the time between AMUX being configured and the
+>>    *     start of conversion.
+>> + * @decimation: sampling rate supported for the channel.
+>> + * @avg_samples: ability to provide single result from the ADC
+>> + *     that is an average of multiple measurements.
+>> + * @high_thr_en: channel upper voltage threshold enable state.
+>> + * @low_thr_en: channel lower voltage threshold enable state.
+>> + * @meas_en: recurring measurement enable state
+>>    * @iio: IIO channel instance used by this channel.
+>>    * @chip: ADC TM chip instance.
+>>    * @tzd: thermal zone device used by this channel.
+>> @@ -110,6 +171,11 @@ struct adc_tm5_channel {
+>>          enum adc_tm5_cal_method cal_method;
+>>          unsigned int            prescale;
+>>          unsigned int            hw_settle_time;
+>> +       unsigned int            decimation;     /* For Gen2 ADC_TM */
+>> +       unsigned int            avg_samples;    /* For Gen2 ADC_TM */
+>> +       bool                    high_thr_en;
+>> +       bool                    low_thr_en;
+>> +       bool                    meas_en;
+> Is there any reason for using the data here rather than reading it
+> back from the register?
+> And if there is one, adc_tm5 code should be converted to use them too.
+That is one major difference between PMIC5 and PMIC5 Gen2 ADC_TM. In 
+PMIC5, there was a separate set of
+configuration registers for each ADC_TM channel, but in Gen2 ADC_TM, 
+there is only one common set of
+registers which can be used to configure any one of the 8 channels at a 
+time. Reading back these
+values for any one of the channels is not possible, the registers can 
+only be used to write a
+configuration which is read and applied by PBS on the actual ADC HW to 
+monitor the channel,
+as ADC_TM functionality is implemented completely within PBS. Therefore 
+the channel data has to be
+stored in SW.
+>>          struct iio_channel      *iio;
+>>          struct adc_tm5_chip     *chip;
+>>          struct thermal_zone_device *tzd;
+>> @@ -123,9 +189,12 @@ struct adc_tm5_channel {
+>>    * @channels: array of ADC TM channel data.
+>>    * @nchannels: amount of channels defined/allocated
+>>    * @decimation: sampling rate supported for the channel.
 
-> ---
-> I'm a bit unsure about the fixes tag. I've looked at the IIO tree at the
-> point when this was introduced and I believe it was incorrect even
-> back
-> then.
->=20
-> But we also had a few drivers that directly assigned the indio_dev->trig
-> without getting an extra reference. So these two bugs, one in the
-> core, one
-> in the drivers sort of even out. Except that iio_trigger_get() also gets =
-a
-> reference to the drivers module and iio_trigger_put() releases it again.
-> So
-> with the missing iio_trigger_get() there is still the problem that, even
-> though the device references balance out, there is a module reference
-> count
-> imbalance.
-> ---
->  drivers/iio/industrialio-trigger.c | 1 -
->  1 file changed, 1 deletion(-)
->=20
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industriali=
-o-
-> trigger.c
-> index b23caa2f2aa1..93990ff1dfe3 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -556,7 +556,6 @@ struct iio_trigger *viio_trigger_alloc(struct
-> device *parent,
->  		irq_modify_status(trig->subirq_base + i,
->  				  IRQ_NOREQUEST | IRQ_NOAUTOEN,
-> IRQ_NOPROBE);
->  	}
-> -	get_device(&trig->dev);
->=20
->  	return trig;
->=20
-> --
-> 2.20.1
+>>
+>> +enum adc_tm_index {
+>> +       ADC_TM5,
+>> +       ADC_TM5_GEN2,
+>> +       ADC_TM5_MAX
+>> +};
+>> +
+>> +static const struct adc_tm_ops ops_adc_tm5[ADC_TM5_MAX];
+> There is no need for this extra array, please use ops directly. And if
+> you introduce flags into the data, you won't have to forward declare
+> the ops here.
+Yes, I'll use the existing adc_tm5_data directly for these in the next 
+post.
+>> +static irqreturn_t adc_tm5_gen2_isr(int irq, void *data)
+>> +{
+>> +       struct adc_tm5_chip *chip = data;
+>> +       u8 status_low, status_high;
+>> +       int ret, i;
+>> +
+>> +       ret = adc_tm5_read(chip, ADC_TM_GEN2_STATUS_LOW_CLR, &status_low, sizeof(status_low));
+>> +       if (ret) {
+>> +               dev_err(chip->dev, "read status_low failed: %d\n", ret);
+>> +               return IRQ_HANDLED;
+>> +       }
+>> +
+>> +       ret = adc_tm5_read(chip, ADC_TM_GEN2_STATUS_HIGH_CLR, &status_high, sizeof(status_high));
+>> +       if (ret) {
+>> +               dev_err(chip->dev, "read status_high failed: %d\n", ret);
+>> +               return IRQ_HANDLED;
+>> +       }
+>> +
+>> +       ret = adc_tm5_write(chip, ADC_TM_GEN2_STATUS_LOW_CLR, &status_low, sizeof(status_low));
+>> +       if (ret < 0) {
+>> +               dev_err(chip->dev, "clear status low failed with %d\n", ret);
+>> +               return IRQ_HANDLED;
+>> +       }
+>> +
+>> +       ret = adc_tm5_write(chip, ADC_TM_GEN2_STATUS_HIGH_CLR, &status_high, sizeof(status_high));
+>> +       if (ret < 0) {
+>> +               dev_err(chip->dev, "clear status high failed with %d\n", ret);
+>> +               return IRQ_HANDLED;
+>> +       }
+>> +
+>> +       for (i = 0; i < chip->nchannels; i++) {
+>> +               bool upper_set = false, lower_set = false;
+>> +               unsigned int ch = chip->channels[i].channel;
+>> +
+>> +               /* No TZD, we warned at the boot time */
+>> +               if (!chip->channels[i].tzd)
+>> +                       continue;
+>> +
+>> +               if (!chip->channels[i].meas_en)
+>> +                       continue;
+> Any reason for having the meas_en here rather than reading the MEAS_EN
+> bit like the ADC_TM5 code does?
+
+
+As mentioned in the earlier comment above, the channel status cannot be 
+read back from
+
+registers for Gen2 ADC_TM, it needs to be stored in SW.
+
+>
+>> +
+>> +               lower_set = (status_low & BIT(ch)) &&
+>> +                       (chip->channels[i].low_thr_en);
+>> +
+>> +               upper_set = (status_high & BIT(ch)) &&
+>> +                       (chip->channels[i].high_thr_en);
+> And the high_thr_en/low_thr_en too.
+Same as above comment.
+>
+>> +
+>> +               if (upper_set || lower_set)
+>> +                       thermal_zone_device_update(chip->channels[i].tzd,
+>> +                                                  THERMAL_EVENT_UNSPECIFIED);
+>> +       }
+>> +
+>> +       return IRQ_HANDLED;
+>> +}
+>> +
+>>   static int adc_tm5_get_temp(void *data, int *temp)
+>>   {
+>>          struct adc_tm5_channel *channel = data;
+>> @@ -240,6 +398,104 @@ static int adc_tm5_disable_channel(struct adc_tm5_channel *channel)
+>>                                    0);
+>>   }
+>>
+>> +#define ADC_TM_GEN2_POLL_DELAY_MIN_US          100
+>> +#define ADC_TM_GEN2_POLL_DELAY_MAX_US          110
+>> +#define ADC_TM_GEN2_POLL_RETRY_COUNT                   3
+>> +
+>> +static int32_t adc_tm5_gen2_conv_req(struct adc_tm5_chip *chip)
+>> +{
+>> +       int ret = 0;
+>> +       u8 data = 0;
+>> +       unsigned int count;
+>> +
+>> +       data = ADC_TM_GEN2_EN;
+>> +       ret = adc_tm5_write(chip, ADC_TM_GEN2_EN_CTL1, &data, 1);
+>> +       if (ret < 0) {
+>> +               pr_err("adc-tm enable failed with %d\n", ret);
+>> +               return ret;
+>> +       }
+>> +
+>> +       data = ADC_TM_GEN2_CFG_HS_FLAG;
+>> +       ret = adc_tm5_write(chip, ADC_TM_GEN2_CFG_HS_SET, &data, 1);
+>> +       if (ret < 0) {
+>> +               pr_err("adc-tm handshake failed with %d\n", ret);
+>> +               return ret;
+>> +       }
+>> +
+>> +       data = ADC_TM_GEN2_CONV_REQ_EN;
+>> +       ret = adc_tm5_write(chip, ADC_TM_GEN2_CONV_REQ, &data, 1);
+>> +       if (ret < 0) {
+>> +               pr_err("adc-tm request conversion failed with %d\n", ret);
+>> +               return ret;
+>> +       }
+>> +
+>> +       /*
+>> +        * SW sets a handshake bit and waits for PBS to clear it
+>> +        * before the next conversion request can be queued.
+>> +        */
+> Should this section be protected by the mutex then, so that any other
+> possible user won't queue the conversion?
+
+
+This API is only called within the mutex-protected region, in two other 
+places in this file.
+
+>
+>> +
+>> +       for (count = 0; count < ADC_TM_GEN2_POLL_RETRY_COUNT; count++) {
+>> +               ret = adc_tm5_read(chip, ADC_TM_GEN2_CFG_HS_SET, &data, sizeof(data));
+>> +               if (ret < 0) {
+>> +                       pr_err("adc-tm read failed with %d\n", ret);
+>> +                       return ret;
+>> +               }
+>> +
+>> +               if (!(data & ADC_TM_GEN2_CFG_HS_FLAG))
+>> +                       return ret;
+>> +               usleep_range(ADC_TM_GEN2_POLL_DELAY_MIN_US,
+>> +                       ADC_TM_GEN2_POLL_DELAY_MAX_US);
+>> +       }
+>> +
+>> +       pr_err("adc-tm conversion request handshake timed out\n");
+>> +
+>> +       return -ETIMEDOUT;
+>> +}
+>> +
+
+>>   static int adc_tm5_enable(struct adc_tm5_chip *chip)
+>>   {
+>>          int ret;
+>> @@ -320,6 +576,86 @@ static int adc_tm5_configure(struct adc_tm5_channel *channel, int low, int high)
+>>          return adc_tm5_enable(chip);
+>>   }
+>>
+>> +static int adc_tm5_gen2_configure(struct adc_tm5_channel *channel, int low, int high)
+>> +{
+>> +       struct adc_tm5_chip *chip = channel->chip;
+>> +       int ret;
+>> +       u8 buf[14];
+>> +       u16 adc_code;
+>> +
+>> +       mutex_lock(&chip->adc_mutex_lock);
+> Either introduce mutex into the adc_tm5 code too, or drop it here.
+I believe the mutex lock is not really needed for PMIC5 ADC_TM 
+configuration because there we have one separate set of registers per TM 
+channel, so only
+one channel (and its set of registers) would be configured at a time. It 
+could be a problem here if there are multiple thermal zones mapped to same
+ADC_TM channel, but I understand the thermal framework supports only one 
+thermal zone for one registered sensor, so this should not be not a problem.
+For PMIC5 Gen2 ADC_TM, we need a mutex, as it is a common set of 
+registers shared between all TM channels, which could be a problem if 
+two different
+ADC_TM thermal zones are configured simultaneously.
+
+Considering the above points, which do you think is better, to add the 
+mutex for ADC_TM5 too or not ?
+
+>
+>> +
+>> +       channel->meas_en = true;
+>> +
+>> +       ret = adc_tm5_read(chip, ADC_TM_GEN2_SID, buf, sizeof(buf));
+>> +       if (ret < 0) {
+>> +               pr_err("adc-tm block read failed with %d\n", ret);
+>> +               goto config_fail;
+>> +       }
+>> +
+>> +       /* Set SID from virtual channel number */
+>> +       buf[0] = channel->adc_channel >> 8;
+>> +
+>> +       /* Set TM channel number used and measurment interval */
+> measurement
+Will fix it in the next post.
+
+> +static int adc_tm5_gen2_init(struct adc_tm5_chip *chip)
+> +{
+> +       u8 channels_available;
+> +       int ret;
+> +       unsigned int i;
+> +
+> +       ret = adc_tm5_read(chip, ADC_TM5_NUM_BTM,
+> +                          &channels_available, sizeof(channels_available));
+> +       if (ret) {
+> +               dev_err(chip->dev, "read failed for BTM channels\n");
+> +               return ret;
+> +       }
+> +
+> +       mutex_init(&chip->adc_mutex_lock);
+> +
+> +       for (i = 0; i < chip->nchannels; i++) {
+> +               if (chip->channels[i].channel >= channels_available) {
+> +                       dev_err(chip->dev, "Invalid channel %d\n", chip->channels[i].channel);
+> +                       return -EINVAL;
+> +               }
+> +       }
+> +
+> +       return ret;
+> This is the adc_tm5_init(), but with the ADC_DIG_PARAM bits left off.
+> So it might be better to split the adc_tm5_init() rather than
+> introducing the duplicate.
+Will do it in the next post.
+>
+>> +}
+>> +
+>>   static int adc_tm5_get_dt_channel_data(struct adc_tm5_chip *adc_tm,
+>>                                         struct adc_tm5_channel *channel,
+>>                                         struct device_node *node)
+>>   {
+>>          const char *name = node->name;
+>> -       u32 chan, value, varr[2];
+>> +       u32 chan, value, adc_channel, varr[2];
+>>          int ret;
+>>          struct device *dev = adc_tm->dev;
+>>          struct of_phandle_args args;
+>> @@ -445,7 +806,11 @@ static int adc_tm5_get_dt_channel_data(struct adc_tm5_chip *adc_tm,
+>>          }
+>>          of_node_put(args.np);
+>>
+>> -       if (args.args_count != 1 || args.args[0] >= ADC5_MAX_CHANNEL) {
+> This does not apply either against current linux master or against
+> linux-next master.
+I'm not sure what you mean here, can you please explain some more? Which 
+part exactly needs to change?
+>
+>> +       adc_channel = args.args[0];
+>> +       if (adc_tm->data->ops == &ops_adc_tm5[ADC_TM5_GEN2])
+> Please replace ops comparison with flags.
+Will do it in the next post.
+>
+>> +               adc_channel &= 0xff;
+>> +
+>> +       if (args.args_count != 1 || adc_channel >= ADC5_MAX_CHANNEL) {
+>>                  dev_err(dev, "%s: invalid ADC channel number %d\n", name, chan);
+>>                  return -EINVAL;
+>>          }
+>> @@ -491,6 +856,32 @@ static int adc_tm5_get_dt_channel_data(struct adc_tm5_chip *adc_tm,
+>>          else
+>>                  channel->cal_method = ADC_TM5_ABSOLUTE_CAL;
+>>
+>> +       if (adc_tm->data->ops == &ops_adc_tm5[ADC_TM5_GEN2]) {
+> And here too, please replace it with flags.
+Will do it in the next post.
+>
+>
+
+>> @@ -591,7 +982,7 @@ static int adc_tm5_probe(struct platform_device *pdev)
+>>                  return ret;
+>>          }
+>>
+>> -       ret = adc_tm5_init(adc_tm);
+>> +       ret = adc_tm->data->ops->init(adc_tm);
+>>          if (ret) {
+>>                  dev_err(dev, "adc-tm init failed\n");
+>>                  return ret;
+>> @@ -603,15 +994,37 @@ static int adc_tm5_probe(struct platform_device *pdev)
+>>                  return ret;
+>>          }
+>>
+>> +       if (adc_tm->data->ops == &ops_adc_tm5[ADC_TM5_GEN2])
+>> +               return devm_request_threaded_irq(dev, irq, NULL, adc_tm5_gen2_isr,
+>> +                               IRQF_ONESHOT, "pm-adc-tm5-gen2", adc_tm);
+>> +
+>>          return devm_request_threaded_irq(dev, irq, NULL, adc_tm5_isr,
+>> -                                        IRQF_ONESHOT, "pm-adc-tm5", adc_tm);
+>> +                               IRQF_ONESHOT, "pm-adc-tm5", adc_tm);
+> Push ISR into TM data.
+Will do it in the next post.
+>
+>>   }
+>>
+Thanks,
+
+Jishnu
+
 

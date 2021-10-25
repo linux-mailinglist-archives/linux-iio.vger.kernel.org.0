@@ -2,489 +2,234 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CAE6439368
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Oct 2021 12:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F8043944B
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Oct 2021 12:56:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232633AbhJYKOL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Oct 2021 06:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbhJYKOL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 06:14:11 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CDEC061745;
-        Mon, 25 Oct 2021 03:11:48 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id z20so17698195edc.13;
-        Mon, 25 Oct 2021 03:11:48 -0700 (PDT)
+        id S231685AbhJYK6f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Oct 2021 06:58:35 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5984 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231829AbhJYK6f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 06:58:35 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19OLenXE029323;
+        Mon, 25 Oct 2021 06:55:52 -0400
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2169.outbound.protection.outlook.com [104.47.59.169])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3bwcgcjuts-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Oct 2021 06:55:52 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hOX5ZxgAoytYl+ub6m5bufjkSsDlmJqPzCXMABpTT7Dc3euc2Goez+kZI809ZBUlDwLlYwA2RN+M9g2tcxCWBeqOjHl1vl1qEf1DLzfO9iHyVl/lqf9iYTd9liNRszmzO4yFzVY/4+HpFxg+GQ+nMEWLIP53Xvx/wY4XvSPLpCwWfRiy9DxFzmx/CbAExRAdc8GJtS5D9tU+cPM7vLSBE8agEj325F5Vb/JbJ3jUYucOk6ACAib+q9TbTAj1vpzFgFNzX4/FvSUPaZ3ch2TYlXTno6DZBIlKDTrcQyK5NI4QHfzFXlICrFOm9R3CShkY9gjRt5MAK1/X9dDFAs34Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sek/qhdy2xUFtDppEWhC0x4kCoNLHERNE4BGqarGLVY=;
+ b=MzIV8NcW3Z+GU2S1eRPcQwB03kmRZY10ouTOxAwv1gB3FPY6GfoWcQ8V1HhhGExXZPR/+KxHzva4wt9MnZ5jRAZAA2QPBfeAzds4M6AWJzoZKqeuu3SpRiv/nJ1rZvzBdaGT/LK8eGqBkqFdPKSBzDL3IfcrXN61dY+HioypkADRDdJmtJpiIbLyngFRyyZsf1TfPksiesdqtRKvlyVk/+zkzLsCrtM8P8esfrPWIgO+AnPct6Yp8iihmSfbjISozf/+d9MyCAUw3MQW8pMslOH3jIk71IfdEOzkZp5FzaHnMgZ4fjZr1PlyylqZA0mPi+nR+Vki+PQFzfGEUYst5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fBDtSkb+dGGN2tqHEpHesGVMQTFs7wdi20nGWFMJJF4=;
-        b=n2Z58umT1+y0hJ5/VfGH1xRDoEhFgQuhRInFhcwYSFtUZxXCAzmQErcbgeU1nAhleh
-         K/5HCcYFZnIft/4SR8pXSjoEeuHcQOc0vJ1Ob+e8qwqFPsb33LVJpjFbFAGalIb5TS0J
-         lnBm7OFJx8isN4EzqP9C3HAkx/ZeqSDNqkyoAzoNob219dzQHLpkH44o3Qy5dQHYZy0N
-         lVW5jrjKe702eSujSxyfPWuuvJ04B2GomOuMQN+6dkX2RhSRuVhYjDesbodIlDYQdVMX
-         YkKwpLFEu6fGw7Gee2awRAdaYrR5OPeaZa6n1u3SAE0vomAdtK9Gs3semnj2dbqHT0z7
-         Ag9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fBDtSkb+dGGN2tqHEpHesGVMQTFs7wdi20nGWFMJJF4=;
-        b=GOzDMl0WBKHgd9QjXQFgB96tWX8cV1Hpjzw8xMqXwnwcjtOLQ3Cn9H7VXjhO0feu7h
-         GkmznSGZIeEmYWzNiJJNnNgMZmONvTa+xUMRfVpxQ9KDSpbjqDv7BaNryl4eLJ34x/Lc
-         BGOs7iSw3RsrzxmPAVuo7PmEhx9+1utWL4IrQiZ9YHrr2VJOFzo6vFaicxoSMVbR4DH2
-         8q8BdDRwyUCaazAyVyNax2a5y3xPRdEkVHqY9+xYu21bg6E/2PYJZIVX802ZNDwAokb8
-         ErfnAKBGCwA0EB+CduWM6j+pVTScSSBgNYfjHc43KEYiknycFl35JPjK9lbInpzDPfB5
-         iFXw==
-X-Gm-Message-State: AOAM532emzADzL5sf06wMruuo1DWiFexYDApSuna8aHekWVcbI3QLQMd
-        EUgBdcFS7nbG7Ng4xZ/OH8Q/t8KJHv1ibKSzFlAvs4FwpT5wC0t7
-X-Google-Smtp-Source: ABdhPJxnVs+40H4BfrBPiJ9jq/jYd7cxqczAPOsv2ew+ObXa4taiOCia9XzqsSkUyVhDTJnu3UyfP0mDRcNp0ExmemU=
-X-Received: by 2002:a05:6402:150f:: with SMTP id f15mr25381328edw.224.1635156705178;
- Mon, 25 Oct 2021 03:11:45 -0700 (PDT)
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sek/qhdy2xUFtDppEWhC0x4kCoNLHERNE4BGqarGLVY=;
+ b=xaXpRKqKzxA0xmb+c5AROWqSK4VSvvoyLCFzLi9rKC4AXnDSGEAKsqyUU9eidwnTJRgla9NWzvN6pwmHRV7OLtekhQm91Oh/EXoC43qbR2PD4ZltvNd+wH7RCd/Y/UyKtO3dJRjzcnmcHzNJrghq7Gu+EQjcQYzzCX9qqw0nAYs=
+Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
+ by PH0PR03MB5781.namprd03.prod.outlook.com (2603:10b6:510:32::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.16; Mon, 25 Oct
+ 2021 10:55:50 +0000
+Received: from PH0PR03MB6366.namprd03.prod.outlook.com
+ ([fe80::e555:851:6adb:f73]) by PH0PR03MB6366.namprd03.prod.outlook.com
+ ([fe80::e555:851:6adb:f73%7]) with mapi id 15.20.4628.018; Mon, 25 Oct 2021
+ 10:55:50 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     Martin Fuzzey <mfuzzey@parkeon.com>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: RE: [PATCH 2/2] iio: trigger: Fix reference counting
+Thread-Topic: [PATCH 2/2] iio: trigger: Fix reference counting
+Thread-Index: AQHXyLlgGI73fsNWc0yc3c412zhae6vji+Wg
+Date:   Mon, 25 Oct 2021 10:55:50 +0000
+Message-ID: <PH0PR03MB636676B8D42B59300751FA6C99839@PH0PR03MB6366.namprd03.prod.outlook.com>
+References: <20211024092700.6844-1-lars@metafoo.de>
+ <20211024092700.6844-2-lars@metafoo.de>
+In-Reply-To: <20211024092700.6844-2-lars@metafoo.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctMWIyNzUxNmItMzU4Mi0xMWVjLThiOTMtZmM3Nz?=
+ =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDFiMjc1MTZkLTM1ODItMTFlYy04YjkzLWZj?=
+ =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMjcwMSIgdD0iMTMyNzk2MzI5ND?=
+ =?iso-8859-1?Q?Y5MzgxNTI1IiBoPSJ2RUpIcGFuTlpKZ2lLL1FuUjRITkE2cVhRUnc9IiBp?=
+ =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
+ =?iso-8859-1?Q?FFb0NBQUNWaTMvZGpzblhBU1FrR2FEMTFrKy9KQ1Fab1BYV1Q3OERBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVZJRXZvUUFBQUFBQUFBQUFBQUFBQUo0?=
+ =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
+ =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
+ =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
+ =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
+ =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
+ =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
+ =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
+x-dg-rorf: true
+authentication-results: metafoo.de; dkim=none (message not signed)
+ header.d=none;metafoo.de; dmarc=none action=none header.from=analog.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fa9b0401-2f43-4719-8e97-08d997a60224
+x-ms-traffictypediagnostic: PH0PR03MB5781:
+x-microsoft-antispam-prvs: <PH0PR03MB5781EF4F2AF7B3F04CC71C6499839@PH0PR03MB5781.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4502;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 1/DA1PKuGugS8vjOW4CRJPAKV3JnoS4qXPweiyGRsPRVMod34frhXRAZAT2KFjQseYl/lviRQWj+9a6RQaDFWHSZaLGs9egs/kmCd6Eze8MDIwmKjhRb+/8f+rHPXHQV+8M9DaXryYXaPj8yGOKn2rM11N6I29h1pqk/X0A9iQT7fNBjcqCWlPby90AHIwaTgv1u/CwUcwUfbT3PDYJQ+fTPfzdHGefnElwG+LeZpLSXFvlRbtO/7y8eWyNZhIlhb3APqf1GE8FWS2Q+nX5RsbOv4mEv0i2cpCJEHmSm6/QtjF+4DzHtBp5vK3DmltVRXaDOp3kW5xeJoXvW4RAl90lX+9JeaMay/zibXJgkwHQjYqteWV/94wFkNcjzbyr8wGtLqjZfUSKY5BAKOcxp2ZubgPNKa7ildUSitMfXWZa2bJaf5wHXdIiPqzHbu3M/wx5+LraAJrwFaD0eDvPG3nzivr6UA5Xd/oqebCFOZkM/PLldYKzK2hOGzEQ9Z0xrgSiLqWcVIYnfd++SuRgmpbVtAxhfu5H6tEgWdjfieUpmxbKihBotLOT9+Qf6+linnaPRUxsS4uAArgvOuoZ6Y+e2koqLkiIo8zghLFd87Mz3HLSF/26wCimaAVhmQu7HN/DPkQW14jMe6xMHlj08b4zey1ixSQ2sWE9Ea7oJXqhCYqtkELa9FNv0aVbCCYgXD4jHGNX3UIZ3eycxaB2MNQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(38100700002)(122000001)(86362001)(110136005)(9686003)(8676002)(54906003)(52536014)(8936002)(508600001)(83380400001)(66476007)(316002)(55016002)(7696005)(26005)(5660300002)(2906002)(66946007)(64756008)(33656002)(186003)(71200400001)(4326008)(38070700005)(6506007)(53546011)(66556008)(66446008)(76116006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?B1ewXa6eOA76BOzGhEnrhcaGIwE5d3mPeJ1lxiu1uJCPxqASS3kRACDltx?=
+ =?iso-8859-1?Q?4DaySpWzFHVyg09ROI6mC2ebnaqiqEpNznxuRvAmoK2NWF00javs5emJvN?=
+ =?iso-8859-1?Q?Xf5pIn72f8P9YcrNKDPDAwsWyII7EY83S3F9+q8j8NFCdO3G/fUP6LqXO0?=
+ =?iso-8859-1?Q?t6WBqE9KjzUZcKfLfVZJzTYZYE9dvjocRuFXYAusfj94/B0tESVF98ZOLr?=
+ =?iso-8859-1?Q?AolBYSkS5h+NEiUolyIWdvBrA6LdLUOdVRa1rDpgSmzDrd3l+vTu9kJvCl?=
+ =?iso-8859-1?Q?HTQTkIanJ9kHxgCugtkdMbER1GrJ8MCbvTWkD6ZMnTDJAEN/MJ4oYw2jty?=
+ =?iso-8859-1?Q?2yeTgwOojChgyC8pmz4uDA3k3mVEmKbrkVi0SIAz8WO5mVjkZDPxhcdobQ?=
+ =?iso-8859-1?Q?dy/IIv9g/kMGqgxt7iIXPW0OZVP2eQU0UKoDmW6D/lUxxLhTBCLOhCjRGd?=
+ =?iso-8859-1?Q?8hNAFE2XQNslapamwF57ewotogpoegZQsl6e2z2bNWdTOXfHDrpAH+xx6x?=
+ =?iso-8859-1?Q?/xggv0WJMrtQCDTXOnd4cqCso3ML6vcQIH+QuLteTGBSWKt3g+b2Ao/zQY?=
+ =?iso-8859-1?Q?M4XpicOk6W9m/r++pxMaHr0AoPWUedod3aawd+1PqBK5YMSoYn6wZpDvCp?=
+ =?iso-8859-1?Q?GOHWU2DopbA5zZxzdzTJZHa5RIPgtoEsnoYil6u4jxYlFoA/OHDAOAF6dY?=
+ =?iso-8859-1?Q?2AslbmhlOWqNCvrj3jyaxCdL5T8TonCIb4F0wIvqxGUYsQsaZXtfBUsj8L?=
+ =?iso-8859-1?Q?wdv9I9U02+kOMlj/N9+EUg0HRmL6sZxSPEzqx/gQ+6hinrZkjEnXlinARc?=
+ =?iso-8859-1?Q?xzF0YrBrTr7HIv5xvTy9goRSpp/3XnIDeAxTsMTxrnBa8xtKPctxT1cePd?=
+ =?iso-8859-1?Q?qoV96HuUVP98gfbPIp8eFR+5BkLAjlRnReq6Sb1lGlG4j02xKTw/ZNjQTr?=
+ =?iso-8859-1?Q?5NqB5xOlI/Qyz6OPM0d6QyPBC7jgsx3DvmJTfrWKhoShtwfcBbRDtnS1r9?=
+ =?iso-8859-1?Q?m02CBbdoAAh4B8vp+n5p5e5N2G888Yd6aR2yOV5GrsozIA/w/wR50mt+kN?=
+ =?iso-8859-1?Q?d4y0omROKEKzGuZS9ET8pLJCG+kKqGRalj7QpsBwam/JvDQ2n7LknKKB1f?=
+ =?iso-8859-1?Q?t1KpBOtv0lp/qW1MuWrUXsQhhELVRZUxIFQkHIdwLrB6A9iZ355PnebTX6?=
+ =?iso-8859-1?Q?LA6QvJlNR1qaIiO34yqtjAUviyJX8KxysNUpzhKRvrqazaIZCdbQTgcAdZ?=
+ =?iso-8859-1?Q?rzdiA1Z5D4YC7bSzR3oZI7ZWOb5CEKY8j7l1xICpVL9mLK0/fPVIomb77z?=
+ =?iso-8859-1?Q?jK80FGYA14IGOAg8u8cyl8RfZ9fT5sxffSl56kmdhVbz6zqWkL+n9PbUrf?=
+ =?iso-8859-1?Q?rUVH39oEmqObaf0T+g0XpMX4r754u9aUiFtjqOdCYungPxG1AuW7HajX6X?=
+ =?iso-8859-1?Q?+7zjEyX/NgSW6uJxhaLhh8B/kgveon+dBH8yz3AqB2ryz8mq2PDn3O22ql?=
+ =?iso-8859-1?Q?DqpJjDAjhdy5HKou94m0PpafDqdvC/rN4tfgioiOPazoT5qBWs0NjlV3NF?=
+ =?iso-8859-1?Q?x+QPQKQ72ZQ3dkr4hd9L26QVh95j1nuyVkmYP5jAYrRslU6IpGNN+GwJKL?=
+ =?iso-8859-1?Q?p5/l49ZKyq/oCNxCXDHqBLx22/0lGH0hfIhgomlU+FHZc1WOAuzUZ0lw?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com> <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
-In-Reply-To: <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Oct 2021 13:10:50 +0300
-Message-ID: <CAHp75Vf+dWSG6g-JsVnkJc0nREviRGZCeqoCfi20YZ9ouD+=hg@mail.gmail.com>
-Subject: Re: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>, git <git@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Peter Meerwald <pmeerw@pmeerw.net>,
-        devicetree <devicetree@vger.kernel.org>,
-        Manish Narani <manish.narani@xilinx.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa9b0401-2f43-4719-8e97-08d997a60224
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2021 10:55:50.4358
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WIkr/c/1fzUoAaNbH0Tchyr26788SuDdRM9Zw7/Cdsjf7NV6NYrtqf7P7PD+WZjPgNWYX0B/Jzz5Qh2ELnTx5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5781
+X-Proofpoint-ORIG-GUID: wrTooHdJUDGzgEqdMJ6_q8_rtbGSQGm9
+X-Proofpoint-GUID: wrTooHdJUDGzgEqdMJ6_q8_rtbGSQGm9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-25_04,2021-10-25_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 mlxscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2109230001 definitions=main-2110250068
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 19, 2021 at 6:22 PM Anand Ashok Dumbre
-<anand.ashok.dumbre@xilinx.com> wrote:
->
-> The AMS includes an ADC as well as on-chip sensors that can be used to
-> sample external voltages and monitor on-die operating conditions, such
-> as temperature and supply voltage levels. The AMS has two SYSMON blocks.
-> PL-SYSMON block is capable of monitoring off chip voltage and
-> temperature.
-> PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
-> from external master. Out of these interface currently only DRP is
 
-from an external
-interfaces
 
-> supported.
-> Other block PS-SYSMON is memory mapped to PS.
-> The AMS can use internal channels to monitor voltage and temperature as
-> well as one primary and up to 16 auxiliary channels for measuring
-> external voltages.
-> The voltage and temperature monitoring channels also have event
-> capability which allows to generate an interrupt when their value falls
-> below or raises above a set threshold.
->
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> -----Original Message-----
+> From: Lars-Peter Clausen <lars@metafoo.de>
+> Sent: Sunday, October 24, 2021 11:27 AM
+> To: Jonathan Cameron <jic23@kernel.org>
+> Cc: Martin Fuzzey <mfuzzey@parkeon.com>; Peter Meerwald-Stadler
+> <pmeerw@pmeerw.net>; linux-iio@vger.kernel.org; Lars-Peter
+> Clausen <lars@metafoo.de>
+> Subject: [PATCH 2/2] iio: trigger: Fix reference counting
+>=20
+> [External]
+>=20
+> In viio_trigger_alloc() device_initialize() is used to set the initial
+> reference count of the trigger to 1. Then another get_device() is called
+> on
+> trigger. This sets the reference count to 2 before the trigger is
+> returned.
+>=20
+> iio_trigger_free(), which is the matching API to viio_trigger_alloc(),
+> calls put_device() which decreases the reference count by 1. But the
+> second
+> reference count acquired in viio_trigger_alloc() is never dropped.
+>=20
+> As a result the iio_trigger_release() function is never called and the
+> memory associated with the trigger is never freed.
+>=20
+> Since there is no reason for the trigger to start its lifetime with two
+> reference counts just remove the extra get_device() in
+> viio_trigger_alloc().
+>=20
+> Fixes: 5f9c035cae18 ("staging:iio:triggers. Add a reference get to the
+> core for triggers.")
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+
+Acked-by: Nuno S=E1 <nuno.sa@analog.com>
+
+> ---
+> I'm a bit unsure about the fixes tag. I've looked at the IIO tree at the
+> point when this was introduced and I believe it was incorrect even
+> back
+> then.
+>=20
+> But we also had a few drivers that directly assigned the indio_dev->trig
+> without getting an extra reference. So these two bugs, one in the
+> core, one
+> in the drivers sort of even out. Except that iio_trigger_get() also gets =
+a
+> reference to the drivers module and iio_trigger_put() releases it again.
+> So
+> with the missing iio_trigger_get() there is still the problem that, even
+> though the device references balance out, there is a module reference
+> count
+> imbalance.
+> ---
+>  drivers/iio/industrialio-trigger.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industriali=
+o-
+> trigger.c
+> index b23caa2f2aa1..93990ff1dfe3 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -556,7 +556,6 @@ struct iio_trigger *viio_trigger_alloc(struct
+> device *parent,
+>  		irq_modify_status(trig->subirq_base + i,
+>  				  IRQ_NOREQUEST | IRQ_NOAUTOEN,
+> IRQ_NOPROBE);
+>  	}
+> -	get_device(&trig->dev);
+>=20
+>  	return trig;
+>=20
+> --
+> 2.20.1
 
-What does this SoB mean here? Have you read Submitting Patches?
-
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-
-...
-
-> +config XILINX_AMS
-> +       tristate "Xilinx AMS driver"
-> +       depends on ARCH_ZYNQMP || COMPILE_TEST
-> +       depends on HAS_IOMEM
-> +       help
-
-> +         Say yes here to have support for the Xilinx AMS.
-
-It's not important for most of the users. Please, strat help with more
-useful information like below.
-
-> +         The driver supports Voltage and Temperature monitoring on Xilinx Ultrascale
-> +         devices.
-> +
-> +         The driver can also be built as a module. If so, the module will be called
-> +         xilinx-ams.
-
-...
-
-> + *  Manish Narani <mnarani@xilinx.com>
-
-A-ha! You probably forgot the Co-developed-by tag above.
-
-> + *  Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>
-
-...
-
-Missed headers, like bits.h.
-
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-
-> +#include <linux/of_address.h>
-
-Do you need this? Maybe mod_devicetable.h?
-
-> +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
-
-...
-
-> +static const unsigned int AMS_UNMASK_TIMEOUT_MS = 500;
-
-Why not define (esp. taking into account another similar define below?
-
-...
-
-> +#define AMS_REGCFG1_ALARM_MASK         0xF0F
-> +#define AMS_REGCFG3_ALARM_MASK         0x3F
-
-> +#define AMS_PL_ALARM_MASK              0xFFFF0000U
-> +#define AMS_ISR0_ALARM_MASK            0xFFFFFFFFU
-> +#define AMS_ISR1_ALARM_MASK            0xE000001FU
-> +#define AMS_ISR1_EOC_MASK              0x00000008U
-
-What is so special about these that they are not using combinations of
-GENMASK() / BIT()?
-
-...
-
-> +enum ams_alarm_bit {
-> +       AMS_ALARM_BIT_TEMP,
-> +       AMS_ALARM_BIT_SUPPLY1,
-> +       AMS_ALARM_BIT_SUPPLY2,
-> +       AMS_ALARM_BIT_SUPPLY3,
-> +       AMS_ALARM_BIT_SUPPLY4,
-> +       AMS_ALARM_BIT_SUPPLY5,
-> +       AMS_ALARM_BIT_SUPPLY6,
-> +       AMS_ALARM_BIT_RESERVED,
-> +       AMS_ALARM_BIT_SUPPLY7,
-> +       AMS_ALARM_BIT_SUPPLY8,
-> +       AMS_ALARM_BIT_SUPPLY9,
-> +       AMS_ALARM_BIT_SUPPLY10,
-> +       AMS_ALARM_BIT_VCCAMS,
-> +       AMS_ALARM_BIT_TEMP_REMOTE
-
-Is it terminator line? Doesn't sound like it to me. So, please add a
-comma. Same for the rest.
-
-> +};
-
-...
-
-> +       AMS_SEQ_MAX
-
-This seems correct, no comma is needed :-)
-
-...
-
-> +struct ams {
-> +       void __iomem *base;
-> +       void __iomem *ps_base;
-> +       void __iomem *pl_base;
-> +       struct clk *clk;
-> +       struct device *dev;
-
-> +       /* check kernel doc above */
-
-Useless
-
-> +       struct mutex lock;
-
-> +       /* check kernel doc above */
-
-Ditto.
-
-> +       spinlock_t intr_lock;
-> +       unsigned int alarm_mask;
-> +       unsigned int masked_alarm;
-> +       u64 intr_mask;
-> +       int irq;
-> +       struct delayed_work ams_unmask_work;
-> +};
-
-...
-
-> +       writel((val & ~mask) | (data & mask), ams->ps_base + offset);
-
-Split to assignment and simple writel() call. Same to the rest.
-
-...
-
-> +       ams->intr_mask &= ~mask;
-> +       ams->intr_mask |= (val & mask);
-
-This may be combined to one line as it's a standard pattern.
-
-...
-
-> +       if (ams->ps_base) {
-> +               /* Configuring PS alarm enable */
-> +               cfg = ~((alarm_mask & AMS_ISR0_ALARM_2_TO_0_MASK) <<
-> +                              AMS_CONF1_ALARM_2_TO_0_SHIFT);
-> +               cfg &= ~((alarm_mask & AMS_ISR0_ALARM_6_TO_3_MASK) <<
-> +                               AMS_CONF1_ALARM_6_TO_3_SHIFT);
-> +               ams_ps_update_reg(ams, AMS_REG_CONFIG1, AMS_REGCFG1_ALARM_MASK,
-> +                                 cfg);
-> +
-> +               cfg = ~((alarm_mask >> AMS_CONF3_ALARM_12_TO_7_SHIFT) &
-> +                               AMS_ISR0_ALARM_12_TO_7_MASK);
-> +               ams_ps_update_reg(ams, AMS_REG_CONFIG3, AMS_REGCFG3_ALARM_MASK,
-> +                                 cfg);
-> +       }
-
-By factoring out the body of the conditional to a helper function you may:
-- decrease indentation
-- make code better to read
-- reduce LOCs
-
-> +       if (ams->pl_base) {
-> +               pl_alarm_mask = (alarm_mask >> AMS_PL_ALARM_START);
-> +               pl_alarm_mask = FIELD_GET(AMS_PL_ALARM_MASK, alarm_mask);
-> +               /* Configuring PL alarm enable */
-> +               cfg = ~((pl_alarm_mask & AMS_ISR0_ALARM_2_TO_0_MASK) <<
-> +                       AMS_CONF1_ALARM_2_TO_0_SHIFT);
-> +               cfg &= ~((pl_alarm_mask & AMS_ISR0_ALARM_6_TO_3_MASK) <<
-> +                        AMS_CONF1_ALARM_6_TO_3_SHIFT);
-> +               ams_pl_update_reg(ams, AMS_REG_CONFIG1,
-> +                                 AMS_REGCFG1_ALARM_MASK, cfg);
-> +
-> +               cfg = ~((pl_alarm_mask >> AMS_CONF3_ALARM_12_TO_7_SHIFT) &
-> +                       AMS_ISR0_ALARM_12_TO_7_MASK);
-> +               ams_pl_update_reg(ams, AMS_REG_CONFIG3,
-> +                                 AMS_REGCFG3_ALARM_MASK, cfg);
-> +       }
-
-Ditto. And the same applies to all the rest where it gains something
-from the above list of improvements.
-
-...
-
-> +       int i;
-> +       unsigned long long scan_mask;
-> +       struct ams *ams = iio_priv(indio_dev);
-
-Reversed xmas tree order, please.
-Same for the rest.
-
-...
-
-> +       /* Run calibration of PS & PL as part of the sequence */
-> +       scan_mask = 0x1 | BIT(AMS_PS_SEQ_MAX);
-
-BIT(0) ?
-
-...
-
-> +       ams_update_intrmask(ams, ~0, ~0);
-
-Replace ~0 to proper GENMASK()./BIT() combination which takes into
-account real bits used by hardware.
-
-...
-
-> +       case IIO_CHAN_INFO_RAW:
-> +               mutex_lock(&ams->lock);
-> +               if (chan->scan_index >= (AMS_PS_SEQ_MAX * 3)) {
-
-Too many parens.
-
-> +                       ret = ams_read_vcc_reg(ams, chan->address, val);
-> +                       if (ret) {
-> +                               mutex_unlock(&ams->lock);
-> +                               return -EINVAL;
-> +                       }
-> +                       ams_enable_channel_sequence(indio_dev);
-> +               } else if (chan->scan_index >= AMS_PS_SEQ_MAX)
-> +                       *val = readl(ams->pl_base + chan->address);
-> +               else
-> +                       *val = readl(ams->ps_base + chan->address);
-> +               mutex_unlock(&ams->lock);
-> +
-> +               return IIO_VAL_INT;
-
-...
-
-> +       return -EINVAL;
-
-Use corresponding defaul cases in each of the switches.
-
-...
-
-> +       int offset = 0;
-
-Make the assignment as an else branch, so all offset assignments will
-be grouped together.
-
-> +       if (dir == IIO_EV_DIR_FALLING) {
-> +               if (scan_index < AMS_SEQ_SUPPLY7)
-> +                       offset = AMS_ALARM_THRESHOLD_OFF_10;
-> +               else
-> +                       offset = AMS_ALARM_THRESHOLD_OFF_20;
-> +       }
-
-...
-
-> +       return 0;
-
-default case.
-
-> +}
-
-...
-
-> +static const struct iio_chan_spec
-> +*ams_event_to_channel(struct iio_dev *indio_dev, u32 event)
-
-Unusual indentation.
-
-...
-
-> +       case AMS_ALARM_BIT_TEMP_REMOTE:
-> +               scan_index += AMS_SEQ_TEMP_REMOTE;
-> +               break;
-
-default?
-Same for the rest of the cases like this.
-
-...
-
-> +       return (ams->alarm_mask & ams_get_alarm_mask(chan->scan_index)) ? 1 : 0;
-
-!! would work as well.
-
-...
-
-> +               /*
-> +                * The temperature channel only supports over-temperature
-> +                * events
-
-Missed period.
-
-> +                */
-
-...
-
-> +       /* only process alarms that are not masked */
-
-Inconsistent style (here capitalization is missed). Make all comments
-in the code consistent.
-
-> +       isr0 &= ~((ams->intr_mask & AMS_ISR0_ALARM_MASK) | ams->masked_alarm);
-
-> +
-
-Redundant blank line.
-
-> +       if (!isr0)
-
-How did you test this branch? (Hint: something very important should
-be done here)
-
-> +               return IRQ_NONE;
-
-...
-
-> +       for_each_child_of_node(chan_node, child) {
-> +               ret = of_property_read_u32(child, "reg", &reg);
-> +               if (ret || reg > (AMS_PL_MAX_EXT_CHANNEL + 30))
-> +                       continue;
-> +
-> +               memcpy(&channels[num_channels], &ams_pl_channels[reg +
-> +                      AMS_PL_MAX_FIXED_CHANNEL - 30], sizeof(*channels));
-> +
-> +               if (of_property_read_bool(child, "xlnx,bipolar"))
-> +                       channels[num_channels].scan_type.sign = 's';
-> +
-> +               num_channels++;
-> +       }
-
-Use device property API here instead of *of_*() calls.
-
-...
-
-> +       /* Initialize buffer for channel specification */
-> +       ams_channels = kzalloc(sizeof(ams_ps_channels) +
-> +                              sizeof(ams_pl_channels) +
-> +                              sizeof(ams_ctrl_channels), GFP_KERNEL);
-
-Use the corresponding macro from overflow.h.
-
-> +       if (!ams_channels)
-> +               return -ENOMEM;
-
-...
-
-> +       if (of_device_is_available(np)) {
-
-fwnode_device_is_available()
-
-> +               ret = ams_init_module(indio_dev, np, ams_channels);
-> +               if (ret < 0)
-> +                       goto err;
-> +
-> +               num_channels += ret;
-> +       }
-
-...
-
-> +       for_each_child_of_node(np, child_node) {
-> +               if (of_device_is_available(child_node)) {
-> +                       ret = ams_init_module(indio_dev, child_node,
-> +                                             ams_channels + num_channels);
-> +                       if (ret < 0)
-> +                               goto err;
-> +
-> +                       num_channels += ret;
-> +               }
-> +       }
-
-As per above.
-
-...
-
-> +       if (!pdev->dev.of_node)
-> +               return -ENODEV;
-
-Drop this, please. It will allow reuse of the driver in ACPI environments.
-
-...
-
-> +       ams->irq = platform_get_irq(pdev, 0);
-> +       if (ams->irq == -EPROBE_DEFER) {
-
-Is IRQ optional or not?
-
-> +               ret = -EPROBE_DEFER;
-> +               return ret;
-> +       }
-
-...
-
-> +       ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> +
-> +       return ret;
-
-return devm_...
-
-...
-
-> +       clk_prepare_enable(ams->clk);
-
-It might fail.
-
-
--- 
-With Best Regards,
-Andy Shevchenko

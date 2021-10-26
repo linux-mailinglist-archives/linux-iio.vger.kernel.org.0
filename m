@@ -2,64 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D510643A91D
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Oct 2021 02:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE6543ACAD
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Oct 2021 09:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234630AbhJZAKW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Oct 2021 20:10:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234462AbhJZAKU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Oct 2021 20:10:20 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF006C061745
-        for <linux-iio@vger.kernel.org>; Mon, 25 Oct 2021 17:07:57 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id f24so6545680uav.12
-        for <linux-iio@vger.kernel.org>; Mon, 25 Oct 2021 17:07:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ANhoqFIvutey4Kjwwv4uowGEBiP8Sw6NlRI3E6SZ9JM=;
-        b=QAtcDo/+hx8jAch3teTUiMBUl2YZSS2YcxpSxq+stuvvuMhivm7O/kqeI/xzuzFCvT
-         j1ZscnpbAyeRFYCb67XyQpBjhH3Zy2dJLtc6tJS2qxv/uMYnpgZkESnFDjzEkxHqWM7O
-         Jfe1Sdul3EKHtwOoNX6nTZPPgC5uezlpQhJHHzEEnrwelEsOhs42/i8k/HXhX6WdktAY
-         1gLieW9CCcqkLEAUxA62bQIbM1rGtDWn/biNUFXbeoWS2rxDWTHXQfLOmoNUdWWJnDzz
-         SZQXRgsdq0/gUNUFRZx5p8fzSjt3EMvyUYCKpyqsRXxWdWyYP8JENneyXOUsQjj+tseQ
-         8JrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ANhoqFIvutey4Kjwwv4uowGEBiP8Sw6NlRI3E6SZ9JM=;
-        b=EHeJIRN4A36UrFVeKPKYBCykZCydqL43G+d6BG5MYs5PjkURguzfJNzGyYOfUAY4Uj
-         kCS35HY4HByHO2DoYf5ev+lpbyMmpBer3D3dyRIXHL1DYt+/3bAEkcnQ2DA7Ej9GN7j/
-         hl1S8uvQ+cGSBQTmrd68i40Q8OLB8qdhOiBu6cLmNSKpGqO+LU9hNdvR6QJZKbnAvVJb
-         iJwiQ+GiJhb3IeWfgCrHZFyV3fba2Di63GjHKEeqLWQ6PVJorXqU+BZUuqSmjB2fUAm7
-         dElYDEpb382pIIWKmaogt7qohc7yaWBeAdME3F5SM6cfRDz/WtA+D8f9LYR0d8WbATg4
-         Cdbg==
-X-Gm-Message-State: AOAM531Xsi4S7JUtkmwmcrDV6rm6987dT5VGPAHnPwztMWThn4rzlC1Q
-        6zzaQTpMtegFUbd0h6tPvOyjI+eddR8M+hW4Im4=
-X-Google-Smtp-Source: ABdhPJxe27XD+KHkwd45nkWU0U2+O6JZWeWrD5MJDL2r+DuZkYgGDGPZtQKAhze5EAF6eAZefHon9rIDajNzs3Dn8+8=
-X-Received: by 2002:a67:ec57:: with SMTP id z23mr9762743vso.55.1635206877074;
- Mon, 25 Oct 2021 17:07:57 -0700 (PDT)
+        id S231284AbhJZHML (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Oct 2021 03:12:11 -0400
+Received: from www381.your-server.de ([78.46.137.84]:35550 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230414AbhJZHML (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Oct 2021 03:12:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=bAiPxkcq1Y6Mqy9Co7oacNf9Gp/96uAvHuTosH8SVn8=; b=e6ySv/d3AfLHaWHUfsV1w+aD1f
+        aJ64bJG+MTy+J6h4GZTZnz2Ro34fWref2PVQWpPVhI302oVkjWts7qDmKb8r2t7pIhD0JJkC9q/Cd
+        KCuZ41I/4hj0SBwqDqkseCyaBkZYZd2AN62DFvlPHrrKl4t6/Xl/EPo1z9TCr9rBdCTtv4rS+Fiom
+        uzg9KxN2Qdd3xj3iBs18uJJhqyQCkRRsmuKubV1s83GqhR9hQB/+GBB9a2DXpXA1j9aKKRpUwEQ6/
+        ML5oPt/CMqFC6pDjPbmo75oATVYKjD/zgfilruen4XM1eNA2UbU9TACT92VeJFs88jlIjn1q5K2gy
+        7sqIW8mA==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mfGaf-000DW6-3j; Tue, 26 Oct 2021 09:09:45 +0200
+Received: from [82.135.83.71] (helo=[192.168.178.20])
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mfGae-000UaZ-R6; Tue, 26 Oct 2021 09:09:44 +0200
+Subject: Re: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        linux-kernel@vger.kernel.org, jic23@kernel.org,
+        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
+        pmeerw@pmeerw.net, devicetree@vger.kernel.org
+Cc:     Manish Narani <manish.narani@xilinx.com>
+References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com>
+ <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <03afaedd-8ea5-0379-ac98-db61ac679259@metafoo.de>
+Date:   Tue, 26 Oct 2021 09:09:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Received: by 2002:a59:a847:0:b0:238:b604:4ab1 with HTTP; Mon, 25 Oct 2021
- 17:07:56 -0700 (PDT)
-Reply-To: mrs.chantal166@gmail.com
-From:   Mrs chantal <misschantal10015@gmail.com>
-Date:   Tue, 26 Oct 2021 02:07:56 +0200
-Message-ID: <CAGcPTPSAvy_YxpoGm1AVGdxdZKBeMwF=mUjc+mqf+fFyYbh4vA@mail.gmail.com>
-Subject: Dear Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26333/Mon Oct 25 10:29:40 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear Friend
-You have been compensated with the sum of 4.3 million dollars in this
-united nation the payment will be issue into atm visa card and send to
-you from the santander bank we need your address and your whatsapp
-number
-Fill the followings with your details;1. Your Name:2. Country:
-3. Age and Sex:4. Occupation:5. Id Card Identification
+On 10/19/21 5:20 PM, Anand Ashok Dumbre wrote:
+> [...]
+> +#define AMS_CHAN_TEMP(_scan_index, _addr) { \
+> +	.type = IIO_TEMP, \
+> +	.indexed = 1, \
+> +	.address = (_addr), \
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +		BIT(IIO_CHAN_INFO_SCALE) | \
+> +		BIT(IIO_CHAN_INFO_OFFSET), \
+> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+There is no handling of IIO_CHAN_INFO_SAMP_FREQ in read_raw(). Reading 
+the sampling_frequency attribute always returns -EINVAL.
+> +	.event_spec = ams_temp_events, \
+> +	.scan_index = _scan_index, \
+> +	.num_event_specs = ARRAY_SIZE(ams_temp_events), \
+> +}
+> +
+> +#define AMS_CHAN_VOLTAGE(_scan_index, _addr, _alarm) { \
+> +	.type = IIO_VOLTAGE, \
+> +	.indexed = 1, \
+> +	.address = (_addr), \
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +		BIT(IIO_CHAN_INFO_SCALE), \
+> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+> +	.event_spec = (_alarm) ? ams_voltage_events : NULL, \
+> +	.scan_index = _scan_index, \
+> +	.num_event_specs = (_alarm) ? ARRAY_SIZE(ams_voltage_events) : 0, \
+> +}

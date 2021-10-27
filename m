@@ -2,154 +2,699 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1626443C60E
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 11:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2970943C661
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 11:23:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239857AbhJ0JHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Oct 2021 05:07:20 -0400
-Received: from mail-mw2nam08on2059.outbound.protection.outlook.com ([40.107.101.59]:28416
-        "EHLO NAM04-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236159AbhJ0JHT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 27 Oct 2021 05:07:19 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Gwb7aX7zix24NoDOPOcsjv6Zw5XP/HqLliCiZhgjwcMwsuvdCnYXHoM1LL4xcMiAeiiGvDNAD1FME6r9dyc5K+bJWuj0FphkrBrLA1fsRPgPYbais4g0F5sVZUbG9OcXZdJaO6q8pUE8Nq1zhavRfMpbTXkW14Q+oFTGlD1HKTR4uqYvnN22OrmXnsMd3U8KUJWUFK+9kNQ1YPq2UvIRT9QdUzr4BqfD8ZovUGIbwHMucIByePUZO6p7iumtUtD0BM4Y1iTosbvV+G00sDfwSECQpCk9nNznl0xiSobSK15R40wFv4I9W1Pi6uG+yOZyR0ETIiZnXrfKXD9HBEHGrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VxBrtTWsEh87NyiIFV4U6eLkcREoB702bNLRxoutvs4=;
- b=DXN3QdhzWDQaI10M/BBD7Y5nvLjTtxkRtlfUIZry9ISuPijm+xPCf6qIhFHR3ooOE7ipmprZQERZnzBFH8MTp/Mave41Nhy4lhJ49F/D1+GkdswvvArcYy8MKrsQTB1Tws6SGnTFLkRxPoRLGVXlbu3GEFZKDfG0ARF9l64uSW51gLRPStvaBQMs8ym5hBtgtKAzeJSB+pU5mRMWhaEgkBFkz7Od0IypSP+L04W+ZKxTTd9bt+ERyRwwhC1LcqzJ4kfUzNC0m6sG2jcfgfB5ts6TupNKbVFvL9J7HZUhTaT24GwZ2preCfhah43T72rGrpQfJlKpyzhUPPRaXJJqBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VxBrtTWsEh87NyiIFV4U6eLkcREoB702bNLRxoutvs4=;
- b=pUD0jWUAVD5/YRE+d9p3j9aRytIdJAGRCLmg7GkJWnrEmYX8dkSUB8bjRa7LzNRA/s/pa5IZk1m+Jo661xacthnbFeZnSB3WXPztdyTtA8y9e6bvxQUhbUiEDLb9jQzWDLLi+P2TumQRTbdCiY/wtQi6G5eZoI+cEHL4xhiMFAw=
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
- by BYAPR02MB5365.namprd02.prod.outlook.com (2603:10b6:a03:66::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.13; Wed, 27 Oct
- 2021 09:04:51 +0000
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::c8a:dfb7:e411:9ad]) by BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::c8a:dfb7:e411:9ad%7]) with mapi id 15.20.4649.015; Wed, 27 Oct 2021
- 09:04:51 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-CC:     Manish Narani <MNARANI@xilinx.com>
-Subject: RE: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
-Thread-Topic: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
-Thread-Index: AQHXxPztLE/r+aVUT0W7KtDOJosftqvk5u0AgAGxjBA=
-Date:   Wed, 27 Oct 2021 09:04:51 +0000
-Message-ID: <BY5PR02MB6916298122D8F4BDEFF67D0FA9859@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com>
- <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
- <03afaedd-8ea5-0379-ac98-db61ac679259@metafoo.de>
-In-Reply-To: <03afaedd-8ea5-0379-ac98-db61ac679259@metafoo.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: metafoo.de; dkim=none (message not signed)
- header.d=none;metafoo.de; dmarc=none action=none header.from=xilinx.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 10f19532-b738-426c-dd24-08d99928d5be
-x-ms-traffictypediagnostic: BYAPR02MB5365:
-x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-x-microsoft-antispam-prvs: <BYAPR02MB5365279ABBE9F693EA7940EFA9859@BYAPR02MB5365.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: sI4H7lmDZVE5CN+nWwUPkmWqZmRF/ArbbqghT4mUXNmt+35QlovSSgcVNySKclaFwZangPWfoqa2XDy/Sd9ZXHBsYLKX+aTXRPGbUBFJbebkfnBwBaAuBJ8+im57YC2R3GnOeJFDdLYP+JOmN0gRgeWneh7EGXitt0Wz2g3QyTOxy+TzhLHzOuPx387C3/tK/Zy81UrILiOwBIhEPJbjbfQkYqPCg5Y7ML90/iptjIm11XtDqlm0x9liVkGz9+XhBLSEcgTyL1IzvAM62qQrrdx5oJo1nw4OGCF7GrW3ftvujCRB0+q49YpiCcurtBMkTXEkZko/DDvY20StzTpsnt37SttOrihpFg/IRLSv6rXazrVhkmoabO/NPZJkA9GAVl2r9EAx+N+CqYJnu1ogKcBvDc72dC2HGgV+qfPBMpifJA5kcLZeoy8Ddak2Js0Hc/eln1zYQiX6m4Vio4aIDKRi0cpYNQwNJQ5JjwJyOgt2Qyef3CMNo8CI1pKzUYYHMLWpznTkmvoCo4eMJc6RkG1/VFaZHu37VI/u7qKiD/gXBsiLH5D7p777I/Bwpc4SgafFi2ya6A7I2KhKsTqZsXG/ZysTLVAzode5Pb0b3wiwMhl8YRe/WhR/fM1ATLIRLhR/9F38YYwvwTLSNUSWX9WjKYLIX25ye/Atrpbn3yQBP/af1UDjibiQkhhb6/lESjRw2R95yH1aMxkrbqgryw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(5660300002)(110136005)(9686003)(33656002)(52536014)(26005)(186003)(76116006)(8936002)(38100700002)(2906002)(122000001)(71200400001)(4326008)(316002)(107886003)(64756008)(53546011)(66556008)(38070700005)(66946007)(66476007)(7696005)(8676002)(6506007)(66446008)(55016002)(86362001)(508600001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cWVEV05OZEdkWWJkNGRyNGZoS1U3a0p1T2t6WWhzRVBpM3NzbHd3dnptemFM?=
- =?utf-8?B?bDRYTm53dUx1VGVRMkFTamJSbkhLelZqbVJxVEZ2cllXQWsxTGI5WUgvZzYy?=
- =?utf-8?B?enZSNGVUSytEekZnQkVialgxdUpVQTFlbkZHNngvVjRPTUdPeVhnSCttUmND?=
- =?utf-8?B?cUZuNEEzRjM2LzBCOWFQN3JWRGZ1MlF5UndPNjdRUVVqdW56cmduOHhjTVR2?=
- =?utf-8?B?Mnk0cE9qdFNsQ2FzY0E2REpYZjNKbWZQTXFBVjFuWWVxc29ZdGVQVGxVYUp3?=
- =?utf-8?B?U3dWN2NYdngycEZ1T0QwVkJkWU5pZEU0RWZxTTh3TGR0NmhUSEVBT25YTXp0?=
- =?utf-8?B?K0gwdjdiUS9rdVhZdDFUUENCRmEyWnExUkgvbEU3V1p1ZWdLSy9UdEc4V0hi?=
- =?utf-8?B?aVluYVc0djdjYjJxQ0FuVDZpcmp4WllVSUlPSXlOdjA2VXpESlpyRitmVGFy?=
- =?utf-8?B?M0owYUJLK1h5b3d3dW5kSW01TlRPWHpSam1tQjd6bW5aRGdiT081YVh1dEhE?=
- =?utf-8?B?c2FQRWt2NE9XTlRITjczbjNXVHIzTldLZHZJUUlxVmRxWW1uUnJTcXhXQkh2?=
- =?utf-8?B?c1g3MnhvTlJVSE1vOW41S3J6bVNVbUZzMG1oTGZWM0hPSDFPa1Jnc0FqTThk?=
- =?utf-8?B?b3JWT1hqY3BYKzdQb2kwZUViTDdEczRKOE5IQ3d0UkZMc3RkV1NFWnJJT1pI?=
- =?utf-8?B?MXZYWDFESzNtR1hrYTM1RTh1QTZaZnhHKzE4aCtFdHEwRWRmcklPcXgzRDZp?=
- =?utf-8?B?VTRZWis5SWFvVTBUN3VTa2JlZ2ZxWEw4QzQyWGtGRWcvdkhPYThLRVZPN2ww?=
- =?utf-8?B?WEx3THhmMWtZaU5FSklkdFpmblBaYldQMVFjUXFjeDFQbEYyVU1GbGJZZlQ1?=
- =?utf-8?B?eXJVcHBid3ptRS9PV21uYnorazJYL1NtcGpVZXBiZWdMdFArZ2NTWUk2NWNV?=
- =?utf-8?B?RmZ1ajZKL0NkaXh2ZGpma1pHSmZ6aVp0bmZ4cnFLK2tiUFdjekhxeWFMQ2Vq?=
- =?utf-8?B?TXU5QUZIVldlNCtSMzNQalN2S2FQWThmUnp5UzYwSE9Jc2h0UktIZXVyay8w?=
- =?utf-8?B?UThLeUZGVmVrZVI1VmdsV1FIeWVXSWFBUUJidjU1NXJtRG9BaFhxa0kxTmIx?=
- =?utf-8?B?bzhBaVRHdUpya3psZHp3RzFjUUlJNStaa20yc2tqTTZOZ09rcDBJd2p6aFpV?=
- =?utf-8?B?a0VNS252UElvSTRVZTQ0MTh2cW0vbXpjQmJTd0ZtSmlSSmZSdFJ3bFp2RTRT?=
- =?utf-8?B?aVNHU3JCU2Q3dzVpVGVFZzl1OTFLd2JFazJncFNOcW1VQm1SOWttVU1zbGxD?=
- =?utf-8?B?djdic0JhWGdlMTNjc3dYWDJrT2czWUJHcGVUL00zVFlMem1leUZia1JBTGd1?=
- =?utf-8?B?c241WjIxOVF1NXY0Wm5COEo1Tk9qY0RJMlpFQU96dXI1NnRBSGwweW4wa3ll?=
- =?utf-8?B?YnpwRy9zOU95Y1dDU1gyendpYUxGenFVU1FpenJQVmhwWStlUGRtb2F1UURP?=
- =?utf-8?B?STd1Rm1hUmttd3VrZzBpT2pIaTZ4MG5zbW9vOXczRW1hUDRJRER4YWVTSjV3?=
- =?utf-8?B?amZ5Y05CQ0t3RmZpMFVwaytYU29JY2dwaFBoZ3o1QmlDUXhrRzJXMW9ETmlZ?=
- =?utf-8?B?RUsrYWZ1ZlR2S2h4VXFGMXNFYmQxREo3MGxNcXBkbnhINDhZWmljS1pNNno4?=
- =?utf-8?B?NG5KK0M2RzRSUGdDM2xYQmY3TWhtYkZObm14eisvNUs1WWxZQWJVdTFRREhz?=
- =?utf-8?B?WGxkRG54allLVlNZNnF6bVNZNVZUZnU1dTRzQTRBL3BFdXp3Qyt4N3ltUGZU?=
- =?utf-8?B?MzUyTVVmcFE4MWhsWk1kSndlVWRmU0dTYnFMWEV5OHAvTUdrbENTSUpSdWZs?=
- =?utf-8?B?OUlqZGVySU96WHI5eVZGcVlSUUhqcjY4QzNVUHUySDBzVm95QjhYREJBOHlI?=
- =?utf-8?B?TkZjdlJkb3g0RDBQT3c2dytlN09FSXVrRW1HSE4rSndXeHRXKzFvam1OeVRM?=
- =?utf-8?B?RlhaL3VwTVZYb2xxenlhU1RwWUJDTGRKeTJ6RHlHUUx3WEw4bHBEMGJJaHNK?=
- =?utf-8?B?R2lvVWZ5UTA1d0k5TElFZUdTV05jcjZ2TEdmNkNNMGE4NlRZam4rTmJ1U0xJ?=
- =?utf-8?B?RXJvWFVkMW1NLzlkc0dsR2tSaWVJS0FlTWQxMU5zOVJwWlR6RUFPNFNXZkFP?=
- =?utf-8?Q?MyyP0xo2uxyC4TPcXL+h3K8=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S231764AbhJ0J0L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Oct 2021 05:26:11 -0400
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:34840 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229699AbhJ0J0K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Oct 2021 05:26:10 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19R90naJ014816;
+        Wed, 27 Oct 2021 05:23:44 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com with ESMTP id 3bx4fb0240-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Oct 2021 05:23:44 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 19R9NhMr051139
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 27 Oct 2021 05:23:43 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
+ Wed, 27 Oct 2021 05:23:42 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
+ Wed, 27 Oct 2021 05:23:42 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.858.5 via Frontend Transport;
+ Wed, 27 Oct 2021 05:23:42 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.136])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 19R9NdaD017350;
+        Wed, 27 Oct 2021 05:23:40 -0400
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <nuno.sa@analog.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v2 1/2] iio: frequency: admv1013: add support for ADMV1013
+Date:   Wed, 27 Oct 2021 12:23:32 +0300
+Message-ID: <20211027092333.5270-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10f19532-b738-426c-dd24-08d99928d5be
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2021 09:04:51.1461
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LKlGCJlwCatPRKiDrb+sOv6GePLTRkrp/owtNoK5zcUEaeBHlghqJVL7Ij3KKZhURDUhtvdSjJREdmbNEMxyVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB5365
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 2wXNB0YM7Tn6pe_ZkyzNahWyhatpflVC
+X-Proofpoint-ORIG-GUID: 2wXNB0YM7Tn6pe_ZkyzNahWyhatpflVC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-27_03,2021-10-26_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ clxscore=1015 adultscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2110270057
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgTGFycywNCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3Lg0KDQo+IE9uIDEwLzE5LzIxIDU6MjAg
-UE0sIEFuYW5kIEFzaG9rIER1bWJyZSB3cm90ZToNCj4gPiBbLi4uXQ0KPiA+ICsjZGVmaW5lIEFN
-U19DSEFOX1RFTVAoX3NjYW5faW5kZXgsIF9hZGRyKSB7IFwNCj4gPiArCS50eXBlID0gSUlPX1RF
-TVAsIFwNCj4gPiArCS5pbmRleGVkID0gMSwgXA0KPiA+ICsJLmFkZHJlc3MgPSAoX2FkZHIpLCBc
-DQo+ID4gKwkuaW5mb19tYXNrX3NlcGFyYXRlID0gQklUKElJT19DSEFOX0lORk9fUkFXKSB8IFwN
-Cj4gPiArCQlCSVQoSUlPX0NIQU5fSU5GT19TQ0FMRSkgfCBcDQo+ID4gKwkJQklUKElJT19DSEFO
-X0lORk9fT0ZGU0VUKSwgXA0KPiA+ICsJLmluZm9fbWFza19zaGFyZWRfYnlfYWxsID0gQklUKElJ
-T19DSEFOX0lORk9fU0FNUF9GUkVRKSwgXA0KPiBUaGVyZSBpcyBubyBoYW5kbGluZyBvZiBJSU9f
-Q0hBTl9JTkZPX1NBTVBfRlJFUSBpbiByZWFkX3JhdygpLiBSZWFkaW5nDQo+IHRoZSBzYW1wbGlu
-Z19mcmVxdWVuY3kgYXR0cmlidXRlIGFsd2F5cyByZXR1cm5zIC1FSU5WQUwuDQpDb3JyZWN0LiBJ
-IHdpbGwgcmVtb3ZlIGl0Lg0KDQo+ID4gKwkuZXZlbnRfc3BlYyA9IGFtc190ZW1wX2V2ZW50cywg
-XA0KPiA+ICsJLnNjYW5faW5kZXggPSBfc2Nhbl9pbmRleCwgXA0KPiA+ICsJLm51bV9ldmVudF9z
-cGVjcyA9IEFSUkFZX1NJWkUoYW1zX3RlbXBfZXZlbnRzKSwgXCB9DQo+ID4gKw0KPiA+ICsjZGVm
-aW5lIEFNU19DSEFOX1ZPTFRBR0UoX3NjYW5faW5kZXgsIF9hZGRyLCBfYWxhcm0pIHsgXA0KPiA+
-ICsJLnR5cGUgPSBJSU9fVk9MVEFHRSwgXA0KPiA+ICsJLmluZGV4ZWQgPSAxLCBcDQo+ID4gKwku
-YWRkcmVzcyA9IChfYWRkciksIFwNCj4gPiArCS5pbmZvX21hc2tfc2VwYXJhdGUgPSBCSVQoSUlP
-X0NIQU5fSU5GT19SQVcpIHwgXA0KPiA+ICsJCUJJVChJSU9fQ0hBTl9JTkZPX1NDQUxFKSwgXA0K
-PiA+ICsJLmluZm9fbWFza19zaGFyZWRfYnlfYWxsID0gQklUKElJT19DSEFOX0lORk9fU0FNUF9G
-UkVRKSwgXA0KPiA+ICsJLmV2ZW50X3NwZWMgPSAoX2FsYXJtKSA/IGFtc192b2x0YWdlX2V2ZW50
-cyA6IE5VTEwsIFwNCj4gPiArCS5zY2FuX2luZGV4ID0gX3NjYW5faW5kZXgsIFwNCj4gPiArCS5u
-dW1fZXZlbnRfc3BlY3MgPSAoX2FsYXJtKSA/IEFSUkFZX1NJWkUoYW1zX3ZvbHRhZ2VfZXZlbnRz
-KSA6DQo+IDAsIFwNCj4gPiArfQ0KDQpBbHNvLCBmb3Igc29tZSByZWFzb24sIEkgaGF2ZW7igJl0
-IHJlY2VpdmVkIHJlc3Qgb2YgeW91ciBjb21tZW50cyBpbiB0aGUgbWFpbCwgYnV0IEkgc2VlIHRo
-ZW0gb24gcGF0Y2h3b3JrLg0KSSBhbSBub3Qgc3VyZSBob3cgSSBjYW4gcmVzcG9uZCB0byB0aG9z
-ZSBjb21tZW50cy4NCg0KVGhhbmtzLA0KQW5hbmQNCg==
+The ADMV1013 is a wideband, microwave upconverter optimized
+for point to point microwave radio designs operating in the
+24 GHz to 44 GHz radio frequency (RF) range.
+
+Datasheet:
+https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1013.pdf
+
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v2:
+ - Kconfig: put all dependencies in one line
+ - remove `indio_dev->dev.parent = &spi->dev`
+ drivers/iio/frequency/Kconfig    |  11 +
+ drivers/iio/frequency/Makefile   |   1 +
+ drivers/iio/frequency/admv1013.c | 578 +++++++++++++++++++++++++++++++
+ 3 files changed, 590 insertions(+)
+ create mode 100644 drivers/iio/frequency/admv1013.c
+
+diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
+index 240b81502512..6a1950a0b8fa 100644
+--- a/drivers/iio/frequency/Kconfig
++++ b/drivers/iio/frequency/Kconfig
+@@ -49,5 +49,16 @@ config ADF4371
+ 
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called adf4371.
++
++config ADMV1013
++	tristate "Analog Devices ADMV1013 Microwave Upconverter"
++	depends on SPI && COMMON_CLK && 64BIT
++	help
++	  Say yes here to build support for Analog Devices ADMV1013
++	  24 GHz to 44 GHz, Wideband, Microwave Upconverter.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called admv1013.
++
+ endmenu
+ endmenu
+diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
+index 518b1e50caef..559922a8196e 100644
+--- a/drivers/iio/frequency/Makefile
++++ b/drivers/iio/frequency/Makefile
+@@ -7,3 +7,4 @@
+ obj-$(CONFIG_AD9523) += ad9523.o
+ obj-$(CONFIG_ADF4350) += adf4350.o
+ obj-$(CONFIG_ADF4371) += adf4371.o
++obj-$(CONFIG_ADMV1013) += admv1013.o
+diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+new file mode 100644
+index 000000000000..91254605013c
+--- /dev/null
++++ b/drivers/iio/frequency/admv1013.c
+@@ -0,0 +1,578 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * ADMV1013 driver
++ *
++ * Copyright 2021 Analog Devices Inc.
++ */
++
++#include <linux/bitfield.h>
++#include <linux/bitops.h>
++#include <linux/bits.h>
++#include <linux/clk.h>
++#include <linux/clkdev.h>
++#include <linux/clk-provider.h>
++#include <linux/device.h>
++#include <linux/iio/iio.h>
++#include <linux/module.h>
++#include <linux/notifier.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#include <asm/unaligned.h>
++
++/* ADMV1013 Register Map */
++#define ADMV1013_REG_SPI_CONTROL		0x00
++#define ADMV1013_REG_ALARM			0x01
++#define ADMV1013_REG_ALARM_MASKS		0x02
++#define ADMV1013_REG_ENABLE			0x03
++#define ADMV1013_REG_LO_AMP_I			0x05
++#define ADMV1013_REG_LO_AMP_Q			0x06
++#define ADMV1013_REG_OFFSET_ADJUST_I		0x07
++#define ADMV1013_REG_OFFSET_ADJUST_Q		0x08
++#define ADMV1013_REG_QUAD			0x09
++#define ADMV1013_REG_VVA_TEMP_COMP		0x0A
++
++/* ADMV1013_REG_SPI_CONTROL Map */
++#define ADMV1013_PARITY_EN_MSK			BIT(15)
++#define ADMV1013_SPI_SOFT_RESET_MSK		BIT(14)
++#define ADMV1013_CHIP_ID_MSK			GENMASK(11, 4)
++#define ADMV1013_CHIP_ID			0xA
++#define ADMV1013_REVISION_ID_MSK		GENMASK(3, 0)
++
++/* ADMV1013_REG_ALARM Map */
++#define ADMV1013_PARITY_ERROR_MSK		BIT(15)
++#define ADMV1013_TOO_FEW_ERRORS_MSK		BIT(14)
++#define ADMV1013_TOO_MANY_ERRORS_MSK		BIT(13)
++#define ADMV1013_ADDRESS_RANGE_ERROR_MSK	BIT(12)
++
++/* ADMV1013_REG_ENABLE Map */
++#define ADMV1013_VGA_PD_MSK			BIT(15)
++#define ADMV1013_MIXER_PD_MSK			BIT(14)
++#define ADMV1013_QUAD_PD_MSK			GENMASK(13, 11)
++#define ADMV1013_BG_PD_MSK			BIT(10)
++#define ADMV1013_MIXER_IF_EN_MSK		BIT(7)
++#define ADMV1013_DET_EN_MSK			BIT(5)
++
++/* ADMV1013_REG_LO_AMP_I Map */
++#define ADMV1013_LOAMP_PH_ADJ_I_FINE_MSK	GENMASK(13, 7)
++#define ADMV1013_MIXER_VGATE_MSK		GENMASK(6, 0)
++
++/* ADMV1013_REG_LO_AMP_Q Map */
++#define ADMV1013_LOAMP_PH_ADJ_Q_FINE_MSK	GENMASK(13, 7)
++
++/* ADMV1013_REG_OFFSET_ADJUST_I Map */
++#define ADMV1013_MIXER_OFF_ADJ_I_P_MSK		GENMASK(15, 9)
++#define ADMV1013_MIXER_OFF_ADJ_I_N_MSK		GENMASK(8, 2)
++
++/* ADMV1013_REG_OFFSET_ADJUST_Q Map */
++#define ADMV1013_MIXER_OFF_ADJ_Q_P_MSK		GENMASK(15, 9)
++#define ADMV1013_MIXER_OFF_ADJ_Q_N_MSK		GENMASK(8, 2)
++
++/* ADMV1013_REG_QUAD Map */
++#define ADMV1013_QUAD_SE_MODE_MSK		GENMASK(9, 6)
++#define ADMV1013_QUAD_FILTERS_MSK		GENMASK(3, 0)
++
++/* ADMV1013_REG_VVA_TEMP_COMP Map */
++#define ADMV1013_VVA_TEMP_COMP_MSK		GENMASK(15, 0)
++
++struct admv1013_state {
++	struct spi_device	*spi;
++	struct clk		*clkin;
++	/* Protect against concurrent accesses to the device */
++	struct mutex		lock;
++	struct regulator	*reg;
++	struct notifier_block	nb;
++	unsigned int		quad_se_mode;
++	bool			vga_pd;
++	bool			mixer_pd;
++	bool			quad_pd;
++	bool			bg_pd;
++	bool			mixer_if_en;
++	bool			det_en;
++	u8			data[3] ____cacheline_aligned;
++};
++
++static int __admv1013_spi_read(struct admv1013_state *st, unsigned int reg,
++			       unsigned int *val)
++{
++	int ret;
++	struct spi_transfer t = {0};
++
++	st->data[0] = 0x80 | (reg << 1);
++	st->data[1] = 0x0;
++	st->data[2] = 0x0;
++
++	t.rx_buf = &st->data[0];
++	t.tx_buf = &st->data[0];
++	t.len = 3;
++
++	ret = spi_sync_transfer(st->spi, &t, 1);
++	if (ret)
++		return ret;
++
++	*val = (get_unaligned_be24(&st->data[0]) >> 1) & GENMASK(15, 0);
++
++	return ret;
++}
++
++static int admv1013_spi_read(struct admv1013_state *st, unsigned int reg,
++			     unsigned int *val)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = __admv1013_spi_read(st, reg, val);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int __admv1013_spi_write(struct admv1013_state *st,
++				unsigned int reg,
++				unsigned int val)
++{
++	put_unaligned_be24((val << 1) | (reg << 17), &st->data[0]);
++
++	return spi_write(st->spi, &st->data[0], 3);
++}
++
++static int admv1013_spi_write(struct admv1013_state *st, unsigned int reg,
++			      unsigned int val)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = __admv1013_spi_write(st, reg, val);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int __admv1013_spi_update_bits(struct admv1013_state *st, unsigned int reg,
++				      unsigned int mask, unsigned int val)
++{
++	int ret;
++	unsigned int data, temp;
++
++	ret = __admv1013_spi_read(st, reg, &data);
++	if (ret)
++		return ret;
++
++	temp = (data & ~mask) | (val & mask);
++
++	return __admv1013_spi_write(st, reg, temp);
++}
++
++static int admv1013_spi_update_bits(struct admv1013_state *st, unsigned int reg,
++				    unsigned int mask, unsigned int val)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = __admv1013_spi_update_bits(st, reg, mask, val);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int admv1013_read_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     int *val, int *val2, long info)
++{
++	struct admv1013_state *st = iio_priv(indio_dev);
++	unsigned int data;
++	int ret;
++
++	switch (info) {
++	case IIO_CHAN_INFO_OFFSET:
++		if (chan->channel2 == IIO_MOD_I) {
++			ret = admv1013_spi_read(st, ADMV1013_REG_OFFSET_ADJUST_I, &data);
++			if (ret)
++				return ret;
++
++			*val = FIELD_GET(ADMV1013_MIXER_OFF_ADJ_I_P_MSK, data);
++			*val2 = FIELD_GET(ADMV1013_MIXER_OFF_ADJ_I_N_MSK, data);
++		} else {
++			ret = admv1013_spi_read(st, ADMV1013_REG_OFFSET_ADJUST_Q, &data);
++			if (ret)
++				return ret;
++
++			*val = FIELD_GET(ADMV1013_MIXER_OFF_ADJ_Q_P_MSK, data);
++			*val2 = FIELD_GET(ADMV1013_MIXER_OFF_ADJ_Q_N_MSK, data);
++		}
++
++		return IIO_VAL_INT_MULTIPLE;
++	case IIO_CHAN_INFO_PHASE:
++		if (chan->channel2 == IIO_MOD_I) {
++			ret = admv1013_spi_read(st, ADMV1013_REG_LO_AMP_I, &data);
++			if (ret)
++				return ret;
++
++			*val = FIELD_GET(ADMV1013_LOAMP_PH_ADJ_I_FINE_MSK, data);
++		} else {
++			ret = admv1013_spi_read(st, ADMV1013_REG_LO_AMP_Q, &data);
++			if (ret)
++				return ret;
++
++			*val = FIELD_GET(ADMV1013_LOAMP_PH_ADJ_Q_FINE_MSK, data);
++		}
++
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int admv1013_write_raw(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      int val, int val2, long info)
++{
++	struct admv1013_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (info) {
++	case IIO_CHAN_INFO_OFFSET:
++		val2 /= 100000;
++
++		if (chan->channel2 == IIO_MOD_I)
++			ret = admv1013_spi_update_bits(st, ADMV1013_REG_OFFSET_ADJUST_I,
++						       ADMV1013_MIXER_OFF_ADJ_I_P_MSK |
++						       ADMV1013_MIXER_OFF_ADJ_I_N_MSK,
++						       FIELD_PREP(ADMV1013_MIXER_OFF_ADJ_I_P_MSK, val) |
++						       FIELD_PREP(ADMV1013_MIXER_OFF_ADJ_I_N_MSK, val2));
++		else
++			ret = admv1013_spi_update_bits(st, ADMV1013_REG_OFFSET_ADJUST_Q,
++						       ADMV1013_MIXER_OFF_ADJ_Q_P_MSK |
++						       ADMV1013_MIXER_OFF_ADJ_Q_N_MSK,
++						       FIELD_PREP(ADMV1013_MIXER_OFF_ADJ_Q_P_MSK, val) |
++						       FIELD_PREP(ADMV1013_MIXER_OFF_ADJ_Q_N_MSK, val2));
++
++		return ret;
++	case IIO_CHAN_INFO_PHASE:
++		if (chan->channel2 == IIO_MOD_I)
++			return admv1013_spi_update_bits(st, ADMV1013_REG_LO_AMP_I,
++							ADMV1013_LOAMP_PH_ADJ_I_FINE_MSK,
++							FIELD_PREP(ADMV1013_LOAMP_PH_ADJ_I_FINE_MSK, val));
++		else
++			return admv1013_spi_update_bits(st, ADMV1013_REG_LO_AMP_Q,
++							ADMV1013_LOAMP_PH_ADJ_Q_FINE_MSK,
++							FIELD_PREP(ADMV1013_LOAMP_PH_ADJ_Q_FINE_MSK, val));
++	default:
++		return -EINVAL;
++	}
++}
++
++static int admv1013_update_quad_filters(struct admv1013_state *st)
++{
++	unsigned int filt_raw;
++	u64 rate = clk_get_rate(st->clkin);
++
++	if (rate >= 5400000000 && rate <= 7000000000)
++		filt_raw = 15;
++	else if (rate >= 5400000000 && rate <= 8000000000)
++		filt_raw = 10;
++	else if (rate >= 6600000000 && rate <= 9200000000)
++		filt_raw = 5;
++	else
++		filt_raw = 0;
++
++	return __admv1013_spi_update_bits(st, ADMV1013_REG_QUAD,
++					ADMV1013_QUAD_FILTERS_MSK,
++					FIELD_PREP(ADMV1013_QUAD_FILTERS_MSK, filt_raw));
++}
++
++static int admv1013_update_mixer_vgate(struct admv1013_state *st)
++{
++	unsigned int vcm, mixer_vgate;
++
++	vcm = regulator_get_voltage(st->reg);
++
++	if (vcm >= 0 && vcm < 1800000)
++		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
++	else if (vcm > 1800000 && vcm < 2600000)
++		mixer_vgate = (2375 * vcm / 1000000 + 125) / 100;
++	else
++		return -EINVAL;
++
++	return __admv1013_spi_update_bits(st, ADMV1013_REG_LO_AMP_I,
++				 ADMV1013_MIXER_VGATE_MSK,
++				 FIELD_PREP(ADMV1013_MIXER_VGATE_MSK, mixer_vgate));
++}
++
++static int admv1013_reg_access(struct iio_dev *indio_dev,
++			       unsigned int reg,
++			       unsigned int write_val,
++			       unsigned int *read_val)
++{
++	struct admv1013_state *st = iio_priv(indio_dev);
++	int ret;
++
++	if (read_val)
++		ret = admv1013_spi_read(st, reg, read_val);
++	else
++		ret = admv1013_spi_write(st, reg, write_val);
++
++	return ret;
++}
++
++static const struct iio_info admv1013_info = {
++	.read_raw = admv1013_read_raw,
++	.write_raw = admv1013_write_raw,
++	.debugfs_reg_access = &admv1013_reg_access,
++};
++
++static int admv1013_freq_change(struct notifier_block *nb, unsigned long action, void *data)
++{
++	struct admv1013_state *st = container_of(nb, struct admv1013_state, nb);
++	int ret;
++
++	if (action == POST_RATE_CHANGE) {
++		mutex_lock(&st->lock);
++		ret = notifier_from_errno(admv1013_update_quad_filters(st));
++		mutex_unlock(&st->lock);
++		return ret;
++	}
++
++	return NOTIFY_OK;
++}
++
++static void admv1013_clk_notifier_unreg(void *data)
++{
++	struct admv1013_state *st = data;
++
++	clk_notifier_unregister(st->clkin, &st->nb);
++}
++
++#define ADMV1013_CHAN(_channel, rf_comp) {			\
++	.type = IIO_ALTVOLTAGE,					\
++	.modified = 1,						\
++	.output = 1,						\
++	.indexed = 1,						\
++	.channel2 = IIO_MOD_##rf_comp,				\
++	.channel = _channel,					\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_PHASE) |	\
++		BIT(IIO_CHAN_INFO_OFFSET)			\
++	}
++
++static const struct iio_chan_spec admv1013_channels[] = {
++	ADMV1013_CHAN(0, I),
++	ADMV1013_CHAN(0, Q),
++};
++
++static int admv1013_init(struct admv1013_state *st)
++{
++	int ret;
++	unsigned int chip_id, enable_reg, enable_reg_msk;
++	struct spi_device *spi = st->spi;
++
++	/* Perform a software reset */
++	ret = __admv1013_spi_update_bits(st, ADMV1013_REG_SPI_CONTROL,
++					 ADMV1013_SPI_SOFT_RESET_MSK,
++					 FIELD_PREP(ADMV1013_SPI_SOFT_RESET_MSK, 1));
++	if (ret)
++		return ret;
++
++	ret = __admv1013_spi_update_bits(st, ADMV1013_REG_SPI_CONTROL,
++					 ADMV1013_SPI_SOFT_RESET_MSK,
++					 FIELD_PREP(ADMV1013_SPI_SOFT_RESET_MSK, 0));
++	if (ret)
++		return ret;
++
++	ret = __admv1013_spi_read(st, ADMV1013_REG_SPI_CONTROL, &chip_id);
++	if (ret)
++		return ret;
++
++	chip_id = FIELD_GET(ADMV1013_CHIP_ID_MSK, chip_id);
++	if (chip_id != ADMV1013_CHIP_ID) {
++		dev_err(&spi->dev, "Invalid Chip ID.\n");
++		return -EINVAL;
++	}
++
++	ret = __admv1013_spi_write(st, ADMV1013_REG_VVA_TEMP_COMP, 0xE700);
++	if (ret)
++		return ret;
++
++	ret = __admv1013_spi_update_bits(st, ADMV1013_REG_QUAD,
++					 ADMV1013_QUAD_SE_MODE_MSK,
++					 FIELD_PREP(ADMV1013_QUAD_SE_MODE_MSK, st->quad_se_mode));
++	if (ret)
++		return ret;
++
++	ret = admv1013_update_mixer_vgate(st);
++	if (ret)
++		return ret;
++
++	ret = admv1013_update_quad_filters(st);
++	if (ret)
++		return ret;
++
++	enable_reg_msk = ADMV1013_VGA_PD_MSK |
++			ADMV1013_MIXER_PD_MSK |
++			ADMV1013_QUAD_PD_MSK |
++			ADMV1013_BG_PD_MSK |
++			ADMV1013_MIXER_IF_EN_MSK |
++			ADMV1013_DET_EN_MSK;
++
++	enable_reg = FIELD_PREP(ADMV1013_VGA_PD_MSK, st->vga_pd) |
++			FIELD_PREP(ADMV1013_MIXER_PD_MSK, st->mixer_pd) |
++			FIELD_PREP(ADMV1013_QUAD_PD_MSK, st->quad_pd ? 7 : 0) |
++			FIELD_PREP(ADMV1013_BG_PD_MSK, st->bg_pd) |
++			FIELD_PREP(ADMV1013_MIXER_IF_EN_MSK, st->mixer_if_en) |
++			FIELD_PREP(ADMV1013_DET_EN_MSK, st->det_en);
++
++	return __admv1013_spi_update_bits(st, ADMV1013_REG_ENABLE, enable_reg_msk, enable_reg);
++}
++
++static void admv1013_clk_disable(void *data)
++{
++	clk_disable_unprepare(data);
++}
++
++static void admv1013_reg_disable(void *data)
++{
++	regulator_disable(data);
++}
++
++static void admv1013_powerdown(void *data)
++{
++	unsigned int enable_reg, enable_reg_msk;
++
++	/* Disable all components in the Enable Register */
++	enable_reg_msk = ADMV1013_VGA_PD_MSK |
++			ADMV1013_MIXER_PD_MSK |
++			ADMV1013_QUAD_PD_MSK |
++			ADMV1013_BG_PD_MSK |
++			ADMV1013_MIXER_IF_EN_MSK |
++			ADMV1013_DET_EN_MSK;
++
++	enable_reg = FIELD_PREP(ADMV1013_VGA_PD_MSK, 1) |
++			FIELD_PREP(ADMV1013_MIXER_PD_MSK, 1) |
++			FIELD_PREP(ADMV1013_QUAD_PD_MSK, 7) |
++			FIELD_PREP(ADMV1013_BG_PD_MSK, 1) |
++			FIELD_PREP(ADMV1013_MIXER_IF_EN_MSK, 0) |
++			FIELD_PREP(ADMV1013_DET_EN_MSK, 0);
++
++	admv1013_spi_update_bits(data, ADMV1013_REG_ENABLE, enable_reg_msk, enable_reg);
++}
++
++static int admv1013_properties_parse(struct admv1013_state *st)
++{
++	int ret;
++	struct spi_device *spi = st->spi;
++
++	st->vga_pd = device_property_read_bool(&spi->dev, "adi,vga-pd");
++	st->mixer_pd = device_property_read_bool(&spi->dev, "adi,mixer-pd");
++	st->quad_pd = device_property_read_bool(&spi->dev, "adi,quad-pd");
++	st->bg_pd = device_property_read_bool(&spi->dev, "adi,bg-pd");
++	st->mixer_if_en = device_property_read_bool(&spi->dev, "adi,mixer-if-en");
++	st->det_en = device_property_read_bool(&spi->dev, "adi,det-en");
++
++	ret = device_property_read_u32(&spi->dev, "adi,quad-se-mode", &st->quad_se_mode);
++	if (ret)
++		st->quad_se_mode = 12;
++
++	st->reg = devm_regulator_get(&spi->dev, "vcm");
++	if (IS_ERR(st->reg))
++		return dev_err_probe(&spi->dev, PTR_ERR(st->reg),
++				     "failed to get the common-mode voltage\n");
++
++	st->clkin = devm_clk_get(&spi->dev, "lo_in");
++	if (IS_ERR(st->clkin))
++		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
++				     "failed to get the LO input clock\n");
++
++	return 0;
++}
++
++static int admv1013_probe(struct spi_device *spi)
++{
++	struct iio_dev *indio_dev;
++	struct admv1013_state *st;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	indio_dev->info = &admv1013_info;
++	indio_dev->name = "admv1013";
++	indio_dev->channels = admv1013_channels;
++	indio_dev->num_channels = ARRAY_SIZE(admv1013_channels);
++
++	st->spi = spi;
++
++	ret = admv1013_properties_parse(st);
++	if (ret)
++		return ret;
++
++	ret = regulator_enable(st->reg);
++	if (ret) {
++		dev_err(&spi->dev, "Failed to enable specified Common-Mode Voltage!\n");
++		return ret;
++	}
++
++	ret = devm_add_action_or_reset(&spi->dev, admv1013_reg_disable,
++				       st->reg);
++	if (ret)
++		return ret;
++
++	ret = clk_prepare_enable(st->clkin);
++	if (ret)
++		return ret;
++
++	ret = devm_add_action_or_reset(&spi->dev, admv1013_clk_disable, st->clkin);
++	if (ret)
++		return ret;
++
++	st->nb.notifier_call = admv1013_freq_change;
++	ret = clk_notifier_register(st->clkin, &st->nb);
++	if (ret)
++		return ret;
++
++	ret = devm_add_action_or_reset(&spi->dev, admv1013_clk_notifier_unreg, st);
++	if (ret)
++		return ret;
++
++	mutex_init(&st->lock);
++
++	ret = admv1013_init(st);
++	if (ret) {
++		dev_err(&spi->dev, "admv1013 init failed\n");
++		return ret;
++	}
++
++	ret = devm_add_action_or_reset(&spi->dev, admv1013_powerdown, st);
++	if (ret)
++		return ret;
++
++	return devm_iio_device_register(&spi->dev, indio_dev);
++}
++
++static const struct spi_device_id admv1013_id[] = {
++	{ "admv1013", 0},
++	{}
++};
++MODULE_DEVICE_TABLE(spi, admv1013_id);
++
++static const struct of_device_id admv1013_of_match[] = {
++	{ .compatible = "adi,admv1013" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, admv1013_of_match);
++
++static struct spi_driver admv1013_driver = {
++	.driver = {
++		.name = "admv1013",
++		.of_match_table = admv1013_of_match,
++	},
++	.probe = admv1013_probe,
++	.id_table = admv1013_id,
++};
++module_spi_driver(admv1013_driver);
++
++MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com");
++MODULE_DESCRIPTION("Analog Devices ADMV1013");
++MODULE_LICENSE("GPL v2");
+-- 
+2.33.1
+

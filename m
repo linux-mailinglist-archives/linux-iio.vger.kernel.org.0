@@ -2,177 +2,181 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A7D143C2AF
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 08:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4693143C333
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 08:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239834AbhJ0GOr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Oct 2021 02:14:47 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:47286 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231208AbhJ0GOo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Oct 2021 02:14:44 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19R4bM68014856;
-        Wed, 27 Oct 2021 08:11:49 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=nT19xZKAS1g6Wr2Uc3j1zTC0eEqLF61U2hb0csAByE8=;
- b=qpkz848/RtyF6rGQB646MxF7l3lRxh06i/JQDEq4QXdNf0bBls4oIzPKu9hJoks6f/Qu
- zZ5EPSZzQPRMBZmURzYyXHIGJHoV4pRjFM5QrtfySALfgLuclLRwFWXOohJuaq9ZdXXU
- 1A/tvhP9HqzAkj7qPpIoRWuTrxgBM2xIlkxBQmQxMEry3YegaYhl15hpEr+uFaZRHM09
- G2djmdsXb1j1BFg4VMmDFOY0NS6CiVjZ+SJVVgVnIEPs22BxO+HytLu9jDmcsJjCYtyk
- jzPyozDJ9b4xRK9AsLTKfGq8y+d1KoyRnwgOYG+KGwS3rDJRaK+8FSk1qCrfTltXZ7Qd XQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3bxm40v5fh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 27 Oct 2021 08:11:49 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0B2CC100034;
-        Wed, 27 Oct 2021 08:11:49 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E23C3218104;
-        Wed, 27 Oct 2021 08:11:48 +0200 (CEST)
-Received: from lmecxl0573.lme.st.com (10.75.127.51) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 27 Oct
- 2021 08:11:45 +0200
-Subject: Re: dt-bindings: treewide: Update @st.com email address to
- @foss.st.com
-To:     Marc Zyngier <maz@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        maxime coquelin <mcoquelin.stm32@gmail.com>,
-        alexandre torgue <alexandre.torgue@foss.st.com>,
-        michael turquette <mturquette@baylibre.com>,
-        stephen boyd <sboyd@kernel.org>,
-        herbert xu <herbert@gondor.apana.org.au>,
-        "david s . miller" <davem@davemloft.net>,
-        david airlie <airlied@linux.ie>,
-        daniel vetter <daniel@ffwll.ch>,
-        thierry reding <thierry.reding@gmail.com>,
-        sam ravnborg <sam@ravnborg.org>,
-        yannick fertre <yannick.fertre@foss.st.com>,
-        "philippe cornu" <philippe.cornu@foss.st.com>,
-        benjamin gaignard <benjamin.gaignard@linaro.org>,
-        vinod koul <vkoul@kernel.org>,
-        ohad ben-cohen <ohad@wizery.com>,
-        bjorn andersson <bjorn.andersson@linaro.org>,
-        baolin wang <baolin.wang7@gmail.com>,
-        jonathan cameron <jic23@kernel.org>,
-        "lars-peter clausen" <lars@metafoo.de>,
-        olivier moysan <olivier.moysan@foss.st.com>,
-        arnaud pouliquen <arnaud.pouliquen@foss.st.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        Hugues Fruchet <hugues.fruchet@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        "Richard Weinberger" <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Matt Mackall <mpm@selenic.com>,
-        "Alessandro Zummo" <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Ahmad Fatoum" <a.fatoum@pengutronix.de>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        dillon min <dillon.minfei@gmail.com>,
-        Marek Vasut <marex@denx.de>,
-        "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Fabien Dessenne <fabien.dessenne@foss.st.com>,
-        Christophe Roullier <christophe.roullier@foss.st.com>,
-        Gabriel Fernandez <gabriel.fernandez@foss.st.com>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        pascal Paillet <p.paillet@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        "Jose Abreu" <joabreu@synopsys.com>,
-        Le Ray <erwan.leray@foss.st.com>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-clk@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <dmaengine@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        <linux-media@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <netdev@vger.kernel.org>, <linux-phy@lists.infradead.org>,
-        <linux-gpio@vger.kernel.org>, <linux-rtc@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <linux-watchdog@vger.kernel.org>
-References: <20211020065000.21312-1-patrice.chotard@foss.st.com>
- <22fb6f19-21eb-dcb5-fa31-bb243d4a7eaf@canonical.com>
- <878ryoc4dc.wl-maz@kernel.org>
-From:   Patrice CHOTARD <patrice.chotard@foss.st.com>
-Message-ID: <82492eb2-5a5e-39a2-a058-5e2ba75323e0@foss.st.com>
-Date:   Wed, 27 Oct 2021 08:11:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S240154AbhJ0GtE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Oct 2021 02:49:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240153AbhJ0GtA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Oct 2021 02:49:00 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80375C061745;
+        Tue, 26 Oct 2021 23:46:34 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id x1-20020a17090a530100b001a1efa4ebe6so2780550pjh.0;
+        Tue, 26 Oct 2021 23:46:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=y7gwGiASJEFrbmc+5fzAPURspTpeBi4FYZUcQ7WbVCE=;
+        b=N24vFHm16eCHZXvMd10Rk/AiC7bRqCz2UF3LvMw7JIBAU+2a/031pPXIZtSSZuex/F
+         i7MSPaGtGROlLOycu7B4PXVWRGI9fSikrQlIXZeWLnpSChFqKNX+YYrcRFaT6IwsPe74
+         kZx0ZMv6PpEsoRroH7D7Vqs1pRcKhiJpM7xuHgX6W+oS3CsreKFBmZ10bGWFf3giWjFt
+         C9K29Aq4zdUZUARtFhovytBHo3OJ6MCQDzEUnNQhjcz3J3IFKelUZzPjPDyLQI+kaKAQ
+         l7FAD2xVKj5wVj7BgxeUDSmA+hgMYn/8778iEDhlVu9byUXiM3joGc/Wac9y+2fTMNrt
+         uN+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=y7gwGiASJEFrbmc+5fzAPURspTpeBi4FYZUcQ7WbVCE=;
+        b=QKvO3YWaKIFYBsfCUt84fcfhmsiseq5FvqeL01wsBUAzht0ONMDY3YOwOcso9dzhG3
+         3n+F4mMe4s6vyqFjGAOAekav+eZ/5f/Aak9tG9pZRpV1Oi/97sAMH7KM7gWv/uiYUNvx
+         HuB99utMJz7dtSIvhyp313rCy5rbgNUW8Jb3EEaoQVqtXbae6BfWqSMiS55UMDmy6UG7
+         HdnTgjiNQx4ns0QDvD59dYeaNlWw/tMhdLg7zlhUkWlvMhXQnj8reifXlZvgSrjFiT4J
+         uLdv3xsq7Dn5TlP168/HIFqqASxzcSYav+VX7m8XR7SZLmDbJ9+iE4CMvmxtMofUMVQW
+         vFzA==
+X-Gm-Message-State: AOAM530mGwjZnZ385SCHV06ElMJzQ4jKaqWp2tuKwUcPH6r/91ZHswyf
+        gMxZFTifncec5+5vFDwesJQYa4xD3OY=
+X-Google-Smtp-Source: ABdhPJy9JMOrQk+HJ5YEpSCz+4qPlUg2ZzA4ItTlUN3Ca4s+cQHYdts7GkiwHkLAyVx2V6pg1whOUw==
+X-Received: by 2002:a17:902:6544:b0:13e:dd16:bd5b with SMTP id d4-20020a170902654400b0013edd16bd5bmr27190310pln.61.1635317193986;
+        Tue, 26 Oct 2021 23:46:33 -0700 (PDT)
+Received: from shinobu ([156.146.35.76])
+        by smtp.gmail.com with ESMTPSA id a135sm13813710pfd.96.2021.10.26.23.46.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Oct 2021 23:46:33 -0700 (PDT)
+Date:   Wed, 27 Oct 2021 15:46:29 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/8] docs: counter: add unit timer sysfs attributes
+Message-ID: <YXj1xc6DdeOrUKjW@shinobu>
+References: <20211017013343.3385923-1-david@lechnology.com>
+ <20211017013343.3385923-5-david@lechnology.com>
 MIME-Version: 1.0
-In-Reply-To: <878ryoc4dc.wl-maz@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.51]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-27_01,2021-10-26_01,2020-04-07_01
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="P6cTM9CQv3NfngqX"
+Content-Disposition: inline
+In-Reply-To: <20211017013343.3385923-5-david@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Marc
 
-On 10/20/21 1:39 PM, Marc Zyngier wrote:
-> On Wed, 20 Oct 2021 08:45:02 +0100,
-> Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
->>
->> On 20/10/2021 08:50, patrice.chotard@foss.st.com wrote:
->>> From: Patrice Chotard <patrice.chotard@foss.st.com>
->>>
->>> Not all @st.com email address are concerned, only people who have
->>> a specific @foss.st.com email will see their entry updated.
->>> For some people, who left the company, remove their email.
->>>
->>
->> Please split simple address change from maintainer updates (removal,
->> addition).
->>
->> Also would be nice to see here explained *why* are you doing this.
-> 
-> And why this can't be done with a single update to .mailmap, like
-> anyone else does.
+--P6cTM9CQv3NfngqX
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the tips, yes, it will be simpler.
+On Sat, Oct 16, 2021 at 08:33:39PM -0500, David Lechner wrote:
+> This documents new unit timer sysfs attributes for the counter
+> subsystem.
+>=20
+> Signed-off-by: David Lechner <david@lechnology.com>
 
-Thanks
-Patrice
+Hello David,
 
-> 
-> 	M.
-> 
+The unit timer is effectively a Count in its own right, so instead of
+introducing new sysfs attributes you can just implement it as another
+Count in the driver. Count 0 is "QPOSCNT", so set the name of this new
+Count 1 as "Unit Timer" (or the datasheet naming if more apt) to
+differentiate the Counts. You can then provide the "unit_timer_enable",
+"unit_timer_period", and "unit_timer_time" functionalities as respective
+Count 1 extensions ("enable" and "period") and Count 1 "count".
+
+If you believe it appropriate, you can provide the raw timer ticks via
+the Count 1 "count" while a nanoseconds interface is provided via a
+Count 1 extension "timeout" (or something similar).
+
+William Breathitt Gray
+
+> ---
+>  Documentation/ABI/testing/sysfs-bus-counter | 24 +++++++++++++++++++++
+>  drivers/counter/ti-eqep.c                   |  2 +-
+>  2 files changed, 25 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/=
+ABI/testing/sysfs-bus-counter
+> index 06c2b3e27e0b..37d960a8cb1b 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-counter
+> +++ b/Documentation/ABI/testing/sysfs-bus-counter
+> @@ -218,6 +218,9 @@ What:		/sys/bus/counter/devices/counterX/signalY/cabl=
+e_fault_enable_component_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_=
+component_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_componen=
+t_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_compon=
+ent_id
+> +What:		/sys/bus/counter/devices/unit_timer_enable_component_id
+> +What:		/sys/bus/counter/devices/unit_timer_period_component_id
+> +What:		/sys/bus/counter/devices/unit_timer_time_component_id
+>  KernelVersion:	5.16
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> @@ -345,3 +348,24 @@ Description:
+>  			via index_polarity. The index function (as enabled via
+>  			preset_enable) is performed synchronously with the
+>  			quadrature clock on the active level of the index input.
+> +
+> +What:		/sys/bus/counter/devices/unit_timer_enable
+> +KernelVersion:	5.16
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Read/write attribute that starts or stops the unit timer. Valid
+> +		values are boolean.
+> +
+> +What:		/sys/bus/counter/devices/unit_timer_period
+> +KernelVersion:	5.16
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Read/write attribute that selects the unit timer timeout in
+> +		nanoseconds.
+> +
+> +What:		/sys/bus/counter/devices/unit_timer_time
+> +KernelVersion:	5.16
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Read/write attribute that indicates the current time of the
+> +		unit timer in nanoseconds.
+> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
+> index a4a5a4486329..1ba7f3c7cb7e 100644
+> --- a/drivers/counter/ti-eqep.c
+> +++ b/drivers/counter/ti-eqep.c
+> @@ -680,7 +680,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
+>  	pm_runtime_get_sync(dev);
+> =20
+>  	/*
+> -	 * We can end up with an interupt infinite loop (interrupts triggered
+> +	 * We can end up with an interrupt infinite loop (interrupts triggered
+>  	 * as soon as they are cleared) if we leave these at the default value
+>  	 * of 0 and events are enabled.
+>  	 */
+> --=20
+> 2.25.1
+>=20
+
+--P6cTM9CQv3NfngqX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF49bsACgkQhvpINdm7
+VJIsxQ/+NlqGyom3rHdIRp5zS/p1NHrDS9ip4Guwu+o2vs/pL/q4i8kIAdtHqMRt
+QUor8ZKVecm62TkgeHgognLnDWqzNeCpfHxJa2+pYbJHAtWZ5+0kSvYywI9sO54O
+d43Rgx87uwOlUaNo6qLOjqLAuyJb8X5ZSxazkk1zAnL+bpXoWTEkxWA5w9OKNbRF
+duW9uSsudT4dYbmxDiXOyZkppEH91ZazClbolG8Sg5aAHxrA92GcFODpWoIOYf8A
+adjpXeWtadJcH+V/+YxKcH//aQKPwm4JKnzgJKWixdQ7gBNc+R5Kzxe7wmN/aLaL
+g15tuuZzf0D5LF2if0d2uFZrojhh+WVgPDmA7ZW9D9h9yQbCtIhZGuyzRCODHqgt
+OvzhQEtjSDBLpMZ/LOYe/zQUgkeF7InTQdl9tHu2mjuUW8r+dYCim6tvwX8fuGwu
+AVSLDTklNgY+QhrLv4hURxtjIVms1mde/+7BcTgNzNAWOPirztqZg/kdulPUeHNF
+VZgWFK0e6/fzpdVXJgpBOHvpAezpjtZPLOyCBYrTXF/clEeyqiZ4FaTZoCZ6Mk0w
+ANMaTZHRLJ1B+a1CA7bSmyPLFFP12EhZ9eNV8VC/k3MTta+AAlUoL8ehkmArSEx0
+nqcufqFU9JTT+Fv6ulpQEt5dFCWpF7K+mvrQJHEdTdaJ3s8JkVQ=
+=SYqP
+-----END PGP SIGNATURE-----
+
+--P6cTM9CQv3NfngqX--

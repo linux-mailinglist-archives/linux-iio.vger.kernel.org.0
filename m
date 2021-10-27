@@ -2,197 +2,209 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94CA143CF2E
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 18:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E05AD43CF45
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 19:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243097AbhJ0RBM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Oct 2021 13:01:12 -0400
-Received: from smtprelay0195.hostedemail.com ([216.40.44.195]:47860 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S239242AbhJ0RBL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Oct 2021 13:01:11 -0400
-Received: from omf01.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 88CE218027A8A;
-        Wed, 27 Oct 2021 16:58:41 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf01.hostedemail.com (Postfix) with ESMTPA id 34EC11727C;
-        Wed, 27 Oct 2021 16:57:52 +0000 (UTC)
-Message-ID: <20ffb5604269f9add568b343701d42097c599c89.camel@perches.com>
-Subject: Re: dt-bindings: treewide: Update @st.com email address to
- @foss.st.com
-From:   Joe Perches <joe@perches.com>
-To:     Patrice CHOTARD <patrice.chotard@foss.st.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        maxime coquelin <mcoquelin.stm32@gmail.com>,
-        alexandre torgue <alexandre.torgue@foss.st.com>,
-        michael turquette <mturquette@baylibre.com>,
-        stephen boyd <sboyd@kernel.org>,
-        herbert xu <herbert@gondor.apana.org.au>,
-        "david s . miller" <davem@davemloft.net>,
-        david airlie <airlied@linux.ie>,
-        daniel vetter <daniel@ffwll.ch>,
-        thierry reding <thierry.reding@gmail.com>,
-        sam ravnborg <sam@ravnborg.org>,
-        yannick fertre <yannick.fertre@foss.st.com>,
-        philippe cornu <philippe.cornu@foss.st.com>,
-        benjamin gaignard <benjamin.gaignard@linaro.org>,
-        vinod koul <vkoul@kernel.org>,
-        ohad ben-cohen <ohad@wizery.com>,
-        bjorn andersson <bjorn.andersson@linaro.org>,
-        baolin wang <baolin.wang7@gmail.com>,
-        jonathan cameron <jic23@kernel.org>,
-        lars-peter clausen <lars@metafoo.de>,
-        olivier moysan <olivier.moysan@foss.st.com>,
-        arnaud pouliquen <arnaud.pouliquen@foss.st.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hugues Fruchet <hugues.fruchet@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Matt Mackall <mpm@selenic.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        dillon min <dillon.minfei@gmail.com>,
-        Marek Vasut <marex@denx.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Fabien Dessenne <fabien.dessenne@foss.st.com>,
-        Christophe Roullier <christophe.roullier@foss.st.com>,
-        Gabriel Fernandez <gabriel.fernandez@foss.st.com>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        pascal Paillet <p.paillet@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Le Ray <erwan.leray@foss.st.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-crypto@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        dmaengine@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-media@vger.kernel.org,
-        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org
-Date:   Wed, 27 Oct 2021 09:57:50 -0700
-In-Reply-To: <865a4055-5c2f-0793-bdce-9f04eac167d2@foss.st.com>
-References: <20211020065000.21312-1-patrice.chotard@foss.st.com>
-         <22fb6f19-21eb-dcb5-fa31-bb243d4a7eaf@canonical.com>
-         <878ryoc4dc.wl-maz@kernel.org>
-         <82492eb2-5a5e-39a2-a058-5e2ba75323e0@foss.st.com>
-         <865a4055-5c2f-0793-bdce-9f04eac167d2@foss.st.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.4-1 
+        id S233007AbhJ0RCx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Oct 2021 13:02:53 -0400
+Received: from vern.gendns.com ([98.142.107.122]:55306 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229508AbhJ0RCw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 27 Oct 2021 13:02:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=L95rUlDD4cOcJhh6QKg864IhS017khXESLCjEv59VkA=; b=te5um+8iPVTtdq9AiXzt9VFU6T
+        opnaktzIxQjS/I2m+uUfj2wVxqgKXbOrZZ8xpFLd2yM0Wfy2dkwE8J646dpfqgVkqtStGQpI/zdj2
+        ZT870VBPYJwmXKpiTGAZKZ6YDM4CQJcz9YjetORQKbbG3XtMMoV6K0kLRtXLNha7IukVah/zo/vbk
+        1oy8EsoKnTR9trx9kbadeaJd54wDLjTxHfB2wUh7WD2/BEI4QcgfGJWXliwNvVGgCcYB3RFqzLftE
+        u4r6zyUKaeIi+Zh3apbXpiyc7DnK6MVhZMDDbt0JBz6tWOaSpmAsMOP5PP0A3yo3o6AbISfE33Da6
+        CAux/H6A==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:44842 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1mfmHh-0007hN-98; Wed, 27 Oct 2021 13:00:24 -0400
+Subject: Re: [PATCH 6/8] docs: counter: add latch_mode and latched_count sysfs
+ attributes
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
+        linux-kernel@vger.kernel.org
+References: <20211017013343.3385923-1-david@lechnology.com>
+ <20211017013343.3385923-7-david@lechnology.com> <YXkFzK0TA5zswSrQ@shinobu>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <e660e9c5-a116-5450-8afb-1053a1504ab6@lechnology.com>
+Date:   Wed, 27 Oct 2021 12:00:24 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.20
-X-Stat-Signature: d7f39g9ut4x78f1qzm6ux4u3z7warbny
-X-Rspamd-Server: rspamout02
-X-Rspamd-Queue-Id: 34EC11727C
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1/mP1yO9Xb7wezovkJWdqP2VR+2BHiCxac=
-X-HE-Tag: 1635353872-396338
+In-Reply-To: <YXkFzK0TA5zswSrQ@shinobu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2021-10-27 at 15:56 +0200, Patrice CHOTARD wrote:
-> On 10/27/21 8:11 AM, Patrice CHOTARD wrote:
-> > On 10/20/21 1:39 PM, Marc Zyngier wrote:
-> > > On Wed, 20 Oct 2021 08:45:02 +0100,
-> > > Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
-> > > > On 20/10/2021 08:50, patrice.chotard@foss.st.com wrote:
-> > > > > From: Patrice Chotard <patrice.chotard@foss.st.com>
-> > > > > 
-> > > > > Not all @st.com email address are concerned, only people who have
-> > > > > a specific @foss.st.com email will see their entry updated.
-> > > > > For some people, who left the company, remove their email.
-> > > > Also would be nice to see here explained *why* are you doing this.
-> > > 
-> > > And why this can't be done with a single update to .mailmap, like
-> > > anyone else does.
-> > 
-> > Thanks for the tips, yes, it will be simpler.
+On 10/27/21 2:54 AM, William Breathitt Gray wrote:
+> On Sat, Oct 16, 2021 at 08:33:41PM -0500, David Lechner wrote:
+>> This documents new counterX/latch_mode* and
+>> counterX/countY/latched_count* attributes.
+>>
+>> The counterX/signalY/*_available are moved to the
+>> counterX/countY/*_available section similar to the way we already have
+>> The counterX/*_component_id and The counterX/signalY/*_component_id
+>> grouped together so that we don't have to start a 3rd redundant section
+>> for device-level *_available section.
+>>
+
+
+
+>> @@ -147,6 +150,14 @@ Description:
+>>   			updates	the respective count. Quadrature encoding
+>>   			determines the direction.
+>>   
+>> +What:		/sys/bus/counter/devices/counterX/countY/latched_count
+>> +KernelVersion:	5.16
+>> +Contact:	linux-iio@vger.kernel.org
+>> +Description:
+>> +		Latched count data of Count Y represented as a string. The value
+>> +		is latched in based on the trigger selected by the
+>> +		counterX/latch_mode attribute.
+>> +
 > 
-> I made a try by updating .mailmap with adding a new entry with my @foss.st.com email :
+> Latches are pretty common components of devices, and not simply limited
+> to latching the count data. I wonder if it would be better to omit the
+> "_count" suffix in order to make this more general. Well, the name
+> "latched_count" is suitable for counters so you probably don't need to
+> change it, but it's something to think about in the future.
 > 
->  Pali Rohár <pali@kernel.org> <pali.rohar@gmail.com>
->  Paolo 'Blaisorblade' Giarrusso <blaisorblade@yahoo.it>
-> +Patrice Chotard <patrice.chotard@foss.st.com> <patrice.chotard@st.com>
->  Patrick Mochel <mochel@digitalimplant.org>
->  Paul Burton <paulburton@kernel.org> <paul.burton@imgtec.com>
+
+I chose the name counterX/countY/latched_count since we already have
+counterX/countY/count to read the same (not latched) count. This
+indicates that they are the same quantity, just from a different
+point in time.
+
+Also for consideration, this particular hardware actually has 3
+independent latched counts. One is triggered by the selected
+latched_mode. One is triggered by the index signal and one is
+triggered by the strobe signal.
+
+The latter two are not implemented in this series, but if there were a
+use for those, I would probably submit attributes index_latched_count
+and strobe_latched_count. These are unaffected by the latch_mode.
+
+Similarly, the unit timer has a timer latch and a period latch. If we
+change the unit timer to be a Count as suggested, then the latched
+timer would basically be the same as latched_count. Both of these
+are triggered by the selected latch_mode.
+
+So, I supposed if we wanted to keep things really generic, we would
+want to introduce some sort of "latch trigger" component (synapse?).
+There could theoretically be multiple configurable triggers, so
+the proposed latch_mode might need to be made indexed or part of
+an index component/extension.
+
+
+
+>>   What:		/sys/bus/counter/devices/counterX/countY/name
+>>   KernelVersion:	5.2
+>>   Contact:	linux-iio@vger.kernel.org
+>> @@ -209,6 +220,7 @@ What:		/sys/bus/counter/devices/counterX/countY/count_mode_component_id
+>>   What:		/sys/bus/counter/devices/counterX/countY/direction_component_id
+>>   What:		/sys/bus/counter/devices/counterX/countY/enable_component_id
+>>   What:		/sys/bus/counter/devices/counterX/countY/error_noise_component_id
+>> +What:		/sys/bus/counter/devices/counterX/countY/latched_count_component_id
+>>   What:		/sys/bus/counter/devices/counterX/countY/prescaler_component_id
+>>   What:		/sys/bus/counter/devices/counterX/countY/preset_component_id
+>>   What:		/sys/bus/counter/devices/counterX/countY/preset_enable_component_id
+>> @@ -218,6 +230,7 @@ What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable_component_id
+>>   What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_component_id
+>>   What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_component_id
+>>   What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_component_id
+>> +What:		/sys/bus/counter/devices/latch_mode_component_id
+>>   What:		/sys/bus/counter/devices/unit_timer_enable_component_id
+>>   What:		/sys/bus/counter/devices/unit_timer_period_component_id
+>>   What:		/sys/bus/counter/devices/unit_timer_time_component_id
+
+Just noticing here, I missed the counterX in the device-level components.
+
+>> @@ -244,6 +257,22 @@ Description:
+>>   		counter_event data structures. The number of elements will be
+>>   		rounded-up to a power of 2.
+>>   
+>> +What:		/sys/bus/counter/devices/counterX/latch_mode
+>> +KernelVersion:	5.16
+>> +Contact:	linux-iio@vger.kernel.org
+>> +Description:
+>> +		Read/write attribute that selects the trigger for latching
+>> +		values. Valid values are device-specific (given by
+>> +		latch_mode_available attribute) and may include:
+>> +
+>> +		"Read count":
+>> +			Reading the countY/count attribute latches values.
+>> +
+>> +		"Unit timeout":
+>> +			Unit timer timeout event latches values.
+>> +
+>> +		The latched values can be read from latched_* attributes.
+>> +
 > 
-> But when running ./scripts/get_maintainer.pl Documentation/devicetree/bindings/arm/sti.yaml, by old email is still displayed
+> To make these modes more generic for use in future drivers, I suggest
+> removing the "Unit " prefix and just leaving that mode as "Timeout". In
+> a similar vein, rewording "Read count" to "Count read" would make this
+> mode easier to understand in case a future driver introduces a mode
+> called "Signal read" or similar.
 > 
-> Rob Herring <robh+dt@kernel.org> (maintainer:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
-> Patrice Chotard <patrice.chotard@st.com> (in file)
-> devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
-> linux-kernel@vger.kernel.org (open list)
-> 
-> By default, the get_maintainer.pl script is using .mailmap file ($email_use_mailmap = 1).
-> 
-> It seems there is an issue with get_maintainer.pl and maintainer name/e-mail found in yaml file ?
 
-I'm of two minds whether it's an "issue" actually.
+Continuing my thoughts from above and taking this suggestion into
+consideration...
 
-get_maintainer is not the only tool used to create email
-address lists.
+Maybe we need a /sys/bus/counter/devices/counterX/latchY component.
+This would represent the trigger for a latch. For the TI eQEP in this
+series, there are potentially 3 of these (only one implemented for
+now).
 
-Some actually read files like MAINTAINERS or .dts or .yaml
-files directly to find maintainer addresses.
+latchY would have a required `trigger` attribute that would describe
+what triggers the latch. If the trigger is selectable, there would be
+a `triggers_available` attribute that would list the possible triggers,
+otherwise the `trigger` attribute would just be read-only. Available
+triggers could could be "X read" where X is a fully qualified component
+name, e.g. "Count0 count read" or a fully qualified event, e.g.
+"Count1 overflow event" (this is unit timer timeout in generic counter
+terms). But, there may be potential triggers that don't fit either
+of these patterns.
 
-So If your name and email address is listed in an source file
-where nominally active email addresses are entered then I
-believe .mailmap should not modify it.
+Although not currently needed, the triggers for the index and strobe
+latches on the eQEP get more interesting. The `triggers_available` for
+the index latch are "index rising edge", "index falling edge" and
+"software" (this would require a `software_trigger` attribute that
+would be written to trigger the latch). The `triggers_available` for
+the strobe latch are "strobe rising edge" and "strobe rising edge if
+direction is clockwise and strobe falling edge if direction is
+counterclockwise".
 
-So I believe email addresses in each file should be updated
-in preference to using a mailmap entry for nominally active
-email addresses in these files.
-
----
-
-$ cat Documentation/devicetree/bindings/arm/sti.yaml
-# SPDX-License-Identifier: GPL-2.0
-%YAML 1.2
----
-$id: http://devicetree.org/schemas/arm/sti.yaml#
-$schema: http://devicetree.org/meta-schemas/core.yaml#
-
-title: ST STi Platforms Device Tree Bindings
-
-maintainers:
-  - Patrice Chotard <patrice.chotard@st.com>
-
-
-
+Circling back to the beginning, to read latched registers, there
+would be attributes like counterX/countY/latchY_count instead of
+the proposed counterX/countY/latched_count. So for the eQEP there
+would be counter0/count0/latch0_count (triggered by reading
+counter0/count0/count or counter0/count1 overflow event),
+counter0/count0/latch1_count (triggered by index signal),
+counter0/count0/latch2_count (triggered by strobe signal),
+counter0/count1/latch0_count (unit timer latched timer trigger
+by same trigger as counter0/count0/latch0_count) and
+counter0/count0/latch0_ceiling (unit timer latched period
+triggered by same trigger as counter0/count0/latch0_count).

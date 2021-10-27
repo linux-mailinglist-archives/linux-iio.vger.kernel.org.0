@@ -2,185 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B74C243C50A
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 10:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1626443C60E
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Oct 2021 11:04:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237236AbhJ0I3I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Oct 2021 04:29:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45152 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237179AbhJ0I3I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Oct 2021 04:29:08 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898F1C061570;
-        Wed, 27 Oct 2021 01:26:43 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id r2so2177344pgl.10;
-        Wed, 27 Oct 2021 01:26:43 -0700 (PDT)
+        id S239857AbhJ0JHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Oct 2021 05:07:20 -0400
+Received: from mail-mw2nam08on2059.outbound.protection.outlook.com ([40.107.101.59]:28416
+        "EHLO NAM04-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S236159AbhJ0JHT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 27 Oct 2021 05:07:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Gwb7aX7zix24NoDOPOcsjv6Zw5XP/HqLliCiZhgjwcMwsuvdCnYXHoM1LL4xcMiAeiiGvDNAD1FME6r9dyc5K+bJWuj0FphkrBrLA1fsRPgPYbais4g0F5sVZUbG9OcXZdJaO6q8pUE8Nq1zhavRfMpbTXkW14Q+oFTGlD1HKTR4uqYvnN22OrmXnsMd3U8KUJWUFK+9kNQ1YPq2UvIRT9QdUzr4BqfD8ZovUGIbwHMucIByePUZO6p7iumtUtD0BM4Y1iTosbvV+G00sDfwSECQpCk9nNznl0xiSobSK15R40wFv4I9W1Pi6uG+yOZyR0ETIiZnXrfKXD9HBEHGrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VxBrtTWsEh87NyiIFV4U6eLkcREoB702bNLRxoutvs4=;
+ b=DXN3QdhzWDQaI10M/BBD7Y5nvLjTtxkRtlfUIZry9ISuPijm+xPCf6qIhFHR3ooOE7ipmprZQERZnzBFH8MTp/Mave41Nhy4lhJ49F/D1+GkdswvvArcYy8MKrsQTB1Tws6SGnTFLkRxPoRLGVXlbu3GEFZKDfG0ARF9l64uSW51gLRPStvaBQMs8ym5hBtgtKAzeJSB+pU5mRMWhaEgkBFkz7Od0IypSP+L04W+ZKxTTd9bt+ERyRwwhC1LcqzJ4kfUzNC0m6sG2jcfgfB5ts6TupNKbVFvL9J7HZUhTaT24GwZ2preCfhah43T72rGrpQfJlKpyzhUPPRaXJJqBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=70nkIk1FToo0R/GNFHrATD7HbTVBXbdIxH+0XdYsr1U=;
-        b=GKHaLygw4u+iwCMo2u/mQojshnehQZ2fT+HTaNfIx47JKPyRC3LCc+l1E1J0zwc6A1
-         u3WrIMF0ZilVuFKHilL2xm9aJUOlje3vbobEzg+HPAovmTB12Am5IPnGuhs/q0JpOtkC
-         +IxZCK+aldlWqKTY9RYnoiC3X6yD/Cj/VV5r8Wi4raJOecAIZRBhXWFJMDgCGFHRYk9O
-         MHFnmdfz3S52+UNLKDqZNL3oQbD60ObtCao3VAlbvhBVT4Z6YZKDxS8I7yilQIfa2gag
-         zJrCr+FXAGvfPer6fU3yydGunKtnB+OY0f9tBUnjNkB1QZghE1hpTLUWSNjQRzk2sR2+
-         mD+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=70nkIk1FToo0R/GNFHrATD7HbTVBXbdIxH+0XdYsr1U=;
-        b=JA5deZBjOSN8dAfVqhLilX9/8ZetQqEW0Hzv6NG9wGatEQJxH1r1DX3zXkgknTSxIF
-         lYZYtCNfYNva/QX+vYReEdl9WBFgAAxLaOPE2p6wtiiuxUGhSMQRBpJzOJWZelsLIl32
-         2aP2XCcuPrS140j+S0NLM1LqZoFbBNwtHB+2H9dXHeNj4hRYaEiYewkLgQbs7JlbO0t9
-         XNQc4dFmQYglk/VD9t/PrcD0qtRWj+wJrQ9AE2QjS5AK40Wbu9PDRlTsVGgq2cvGxKrF
-         jYj+Aou5qAcuhwbXrcJ67Z3KHnF4bV7ZTwkPf3C1+9BiuItb225YD8C7UGdMVLPJ2yIA
-         EthA==
-X-Gm-Message-State: AOAM531JWNoeChrpnQO0Ok8pZnKRmTagh/I5dhVLAMPkkVyYIEEpCCIH
-        Foi5rfCAs6A6yJg4NaBjmNU=
-X-Google-Smtp-Source: ABdhPJyiwXwtgosZ0zLtUDjsD4TYRVYNIASXHrbnAfFjs0gkxFGT5a26JChDp5wHwL0LuN+HWhoK6g==
-X-Received: by 2002:a63:7e42:: with SMTP id o2mr23075863pgn.296.1635323203062;
-        Wed, 27 Oct 2021 01:26:43 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id t40sm10519507pfg.142.2021.10.27.01.26.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Oct 2021 01:26:42 -0700 (PDT)
-Date:   Wed, 27 Oct 2021 17:26:38 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/8] docs: counter: add edge_capture_unit_* attributes
-Message-ID: <YXkNPk65hXAgpVv3@shinobu>
-References: <20211017013343.3385923-1-david@lechnology.com>
- <20211017013343.3385923-9-david@lechnology.com>
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VxBrtTWsEh87NyiIFV4U6eLkcREoB702bNLRxoutvs4=;
+ b=pUD0jWUAVD5/YRE+d9p3j9aRytIdJAGRCLmg7GkJWnrEmYX8dkSUB8bjRa7LzNRA/s/pa5IZk1m+Jo661xacthnbFeZnSB3WXPztdyTtA8y9e6bvxQUhbUiEDLb9jQzWDLLi+P2TumQRTbdCiY/wtQi6G5eZoI+cEHL4xhiMFAw=
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
+ by BYAPR02MB5365.namprd02.prod.outlook.com (2603:10b6:a03:66::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.13; Wed, 27 Oct
+ 2021 09:04:51 +0000
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::c8a:dfb7:e411:9ad]) by BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::c8a:dfb7:e411:9ad%7]) with mapi id 15.20.4649.015; Wed, 27 Oct 2021
+ 09:04:51 +0000
+From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+CC:     Manish Narani <MNARANI@xilinx.com>
+Subject: RE: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
+Thread-Topic: [PATCH v7 2/4] iio: adc: Add Xilinx AMS driver
+Thread-Index: AQHXxPztLE/r+aVUT0W7KtDOJosftqvk5u0AgAGxjBA=
+Date:   Wed, 27 Oct 2021 09:04:51 +0000
+Message-ID: <BY5PR02MB6916298122D8F4BDEFF67D0FA9859@BY5PR02MB6916.namprd02.prod.outlook.com>
+References: <20211019152048.28983-1-anand.ashok.dumbre@xilinx.com>
+ <20211019152048.28983-3-anand.ashok.dumbre@xilinx.com>
+ <03afaedd-8ea5-0379-ac98-db61ac679259@metafoo.de>
+In-Reply-To: <03afaedd-8ea5-0379-ac98-db61ac679259@metafoo.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: metafoo.de; dkim=none (message not signed)
+ header.d=none;metafoo.de; dmarc=none action=none header.from=xilinx.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 10f19532-b738-426c-dd24-08d99928d5be
+x-ms-traffictypediagnostic: BYAPR02MB5365:
+x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+x-microsoft-antispam-prvs: <BYAPR02MB5365279ABBE9F693EA7940EFA9859@BYAPR02MB5365.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: sI4H7lmDZVE5CN+nWwUPkmWqZmRF/ArbbqghT4mUXNmt+35QlovSSgcVNySKclaFwZangPWfoqa2XDy/Sd9ZXHBsYLKX+aTXRPGbUBFJbebkfnBwBaAuBJ8+im57YC2R3GnOeJFDdLYP+JOmN0gRgeWneh7EGXitt0Wz2g3QyTOxy+TzhLHzOuPx387C3/tK/Zy81UrILiOwBIhEPJbjbfQkYqPCg5Y7ML90/iptjIm11XtDqlm0x9liVkGz9+XhBLSEcgTyL1IzvAM62qQrrdx5oJo1nw4OGCF7GrW3ftvujCRB0+q49YpiCcurtBMkTXEkZko/DDvY20StzTpsnt37SttOrihpFg/IRLSv6rXazrVhkmoabO/NPZJkA9GAVl2r9EAx+N+CqYJnu1ogKcBvDc72dC2HGgV+qfPBMpifJA5kcLZeoy8Ddak2Js0Hc/eln1zYQiX6m4Vio4aIDKRi0cpYNQwNJQ5JjwJyOgt2Qyef3CMNo8CI1pKzUYYHMLWpznTkmvoCo4eMJc6RkG1/VFaZHu37VI/u7qKiD/gXBsiLH5D7p777I/Bwpc4SgafFi2ya6A7I2KhKsTqZsXG/ZysTLVAzode5Pb0b3wiwMhl8YRe/WhR/fM1ATLIRLhR/9F38YYwvwTLSNUSWX9WjKYLIX25ye/Atrpbn3yQBP/af1UDjibiQkhhb6/lESjRw2R95yH1aMxkrbqgryw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(5660300002)(110136005)(9686003)(33656002)(52536014)(26005)(186003)(76116006)(8936002)(38100700002)(2906002)(122000001)(71200400001)(4326008)(316002)(107886003)(64756008)(53546011)(66556008)(38070700005)(66946007)(66476007)(7696005)(8676002)(6506007)(66446008)(55016002)(86362001)(508600001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cWVEV05OZEdkWWJkNGRyNGZoS1U3a0p1T2t6WWhzRVBpM3NzbHd3dnptemFM?=
+ =?utf-8?B?bDRYTm53dUx1VGVRMkFTamJSbkhLelZqbVJxVEZ2cllXQWsxTGI5WUgvZzYy?=
+ =?utf-8?B?enZSNGVUSytEekZnQkVialgxdUpVQTFlbkZHNngvVjRPTUdPeVhnSCttUmND?=
+ =?utf-8?B?cUZuNEEzRjM2LzBCOWFQN3JWRGZ1MlF5UndPNjdRUVVqdW56cmduOHhjTVR2?=
+ =?utf-8?B?Mnk0cE9qdFNsQ2FzY0E2REpYZjNKbWZQTXFBVjFuWWVxc29ZdGVQVGxVYUp3?=
+ =?utf-8?B?U3dWN2NYdngycEZ1T0QwVkJkWU5pZEU0RWZxTTh3TGR0NmhUSEVBT25YTXp0?=
+ =?utf-8?B?K0gwdjdiUS9rdVhZdDFUUENCRmEyWnExUkgvbEU3V1p1ZWdLSy9UdEc4V0hi?=
+ =?utf-8?B?aVluYVc0djdjYjJxQ0FuVDZpcmp4WllVSUlPSXlOdjA2VXpESlpyRitmVGFy?=
+ =?utf-8?B?M0owYUJLK1h5b3d3dW5kSW01TlRPWHpSam1tQjd6bW5aRGdiT081YVh1dEhE?=
+ =?utf-8?B?c2FQRWt2NE9XTlRITjczbjNXVHIzTldLZHZJUUlxVmRxWW1uUnJTcXhXQkh2?=
+ =?utf-8?B?c1g3MnhvTlJVSE1vOW41S3J6bVNVbUZzMG1oTGZWM0hPSDFPa1Jnc0FqTThk?=
+ =?utf-8?B?b3JWT1hqY3BYKzdQb2kwZUViTDdEczRKOE5IQ3d0UkZMc3RkV1NFWnJJT1pI?=
+ =?utf-8?B?MXZYWDFESzNtR1hrYTM1RTh1QTZaZnhHKzE4aCtFdHEwRWRmcklPcXgzRDZp?=
+ =?utf-8?B?VTRZWis5SWFvVTBUN3VTa2JlZ2ZxWEw4QzQyWGtGRWcvdkhPYThLRVZPN2ww?=
+ =?utf-8?B?WEx3THhmMWtZaU5FSklkdFpmblBaYldQMVFjUXFjeDFQbEYyVU1GbGJZZlQ1?=
+ =?utf-8?B?eXJVcHBid3ptRS9PV21uYnorazJYL1NtcGpVZXBiZWdMdFArZ2NTWUk2NWNV?=
+ =?utf-8?B?RmZ1ajZKL0NkaXh2ZGpma1pHSmZ6aVp0bmZ4cnFLK2tiUFdjekhxeWFMQ2Vq?=
+ =?utf-8?B?TXU5QUZIVldlNCtSMzNQalN2S2FQWThmUnp5UzYwSE9Jc2h0UktIZXVyay8w?=
+ =?utf-8?B?UThLeUZGVmVrZVI1VmdsV1FIeWVXSWFBUUJidjU1NXJtRG9BaFhxa0kxTmIx?=
+ =?utf-8?B?bzhBaVRHdUpya3psZHp3RzFjUUlJNStaa20yc2tqTTZOZ09rcDBJd2p6aFpV?=
+ =?utf-8?B?a0VNS252UElvSTRVZTQ0MTh2cW0vbXpjQmJTd0ZtSmlSSmZSdFJ3bFp2RTRT?=
+ =?utf-8?B?aVNHU3JCU2Q3dzVpVGVFZzl1OTFLd2JFazJncFNOcW1VQm1SOWttVU1zbGxD?=
+ =?utf-8?B?djdic0JhWGdlMTNjc3dYWDJrT2czWUJHcGVUL00zVFlMem1leUZia1JBTGd1?=
+ =?utf-8?B?c241WjIxOVF1NXY0Wm5COEo1Tk9qY0RJMlpFQU96dXI1NnRBSGwweW4wa3ll?=
+ =?utf-8?B?YnpwRy9zOU95Y1dDU1gyendpYUxGenFVU1FpenJQVmhwWStlUGRtb2F1UURP?=
+ =?utf-8?B?STd1Rm1hUmttd3VrZzBpT2pIaTZ4MG5zbW9vOXczRW1hUDRJRER4YWVTSjV3?=
+ =?utf-8?B?amZ5Y05CQ0t3RmZpMFVwaytYU29JY2dwaFBoZ3o1QmlDUXhrRzJXMW9ETmlZ?=
+ =?utf-8?B?RUsrYWZ1ZlR2S2h4VXFGMXNFYmQxREo3MGxNcXBkbnhINDhZWmljS1pNNno4?=
+ =?utf-8?B?NG5KK0M2RzRSUGdDM2xYQmY3TWhtYkZObm14eisvNUs1WWxZQWJVdTFRREhz?=
+ =?utf-8?B?WGxkRG54allLVlNZNnF6bVNZNVZUZnU1dTRzQTRBL3BFdXp3Qyt4N3ltUGZU?=
+ =?utf-8?B?MzUyTVVmcFE4MWhsWk1kSndlVWRmU0dTYnFMWEV5OHAvTUdrbENTSUpSdWZs?=
+ =?utf-8?B?OUlqZGVySU96WHI5eVZGcVlSUUhqcjY4QzNVUHUySDBzVm95QjhYREJBOHlI?=
+ =?utf-8?B?TkZjdlJkb3g0RDBQT3c2dytlN09FSXVrRW1HSE4rSndXeHRXKzFvam1OeVRM?=
+ =?utf-8?B?RlhaL3VwTVZYb2xxenlhU1RwWUJDTGRKeTJ6RHlHUUx3WEw4bHBEMGJJaHNK?=
+ =?utf-8?B?R2lvVWZ5UTA1d0k5TElFZUdTV05jcjZ2TEdmNkNNMGE4NlRZam4rTmJ1U0xJ?=
+ =?utf-8?B?RXJvWFVkMW1NLzlkc0dsR2tSaWVJS0FlTWQxMU5zOVJwWlR6RUFPNFNXZkFP?=
+ =?utf-8?Q?MyyP0xo2uxyC4TPcXL+h3K8=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Ek0MJCt6gYWt9LXH"
-Content-Disposition: inline
-In-Reply-To: <20211017013343.3385923-9-david@lechnology.com>
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10f19532-b738-426c-dd24-08d99928d5be
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2021 09:04:51.1461
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LKlGCJlwCatPRKiDrb+sOv6GePLTRkrp/owtNoK5zcUEaeBHlghqJVL7Ij3KKZhURDUhtvdSjJREdmbNEMxyVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB5365
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---Ek0MJCt6gYWt9LXH
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Oct 16, 2021 at 08:33:43PM -0500, David Lechner wrote:
-> This adds documentation for new counter subsystem edge_capture_unit_*
-> sysfs attributes.
->=20
-> Signed-off-by: David Lechner <david@lechnology.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-counter | 37 +++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->=20
-> diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/=
-ABI/testing/sysfs-bus-counter
-> index 78bb1a501007..6c192c8c2b55 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-counter
-> +++ b/Documentation/ABI/testing/sysfs-bus-counter
-> @@ -59,6 +59,7 @@ What:		/sys/bus/counter/devices/counterX/countY/error_n=
-oise_available
->  What:		/sys/bus/counter/devices/counterX/countY/function_available
->  What:		/sys/bus/counter/devices/counterX/countY/prescaler_available
->  What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_available
-> +What:		/sys/bus/counter/devices/counterX/edge_capture_unit_prescaler_ava=
-ilable
->  What:		/sys/bus/counter/devices/counterX/latch_mode_available
->  What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_available
->  What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_availa=
-ble
-> @@ -230,6 +231,10 @@ What:		/sys/bus/counter/devices/counterX/signalY/cab=
-le_fault_enable_component_id
->  What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_=
-component_id
->  What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_componen=
-t_id
->  What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_compon=
-ent_id
-> +What:		/sys/bus/counter/devices/edge_capture_unit_enable_component_id
-> +What:		/sys/bus/counter/devices/edge_capture_unit_latched_period_compone=
-nt_id
-> +What:		/sys/bus/counter/devices/edge_capture_unit_max_period_component_id
-> +What:		/sys/bus/counter/devices/edge_capture_unit_prescaler_component_id
->  What:		/sys/bus/counter/devices/latch_mode_component_id
->  What:		/sys/bus/counter/devices/unit_timer_enable_component_id
->  What:		/sys/bus/counter/devices/unit_timer_period_component_id
-> @@ -249,6 +254,38 @@ Description:
->  		shorter or equal to configured value are ignored. Value 0 means
->  		filter is disabled.
-> =20
-> +What:		/sys/bus/counter/devices/edge_capture_unit_enable
-> +KernelVersion:	5.16
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write attribute that starts or stops the Edge Capture Unit.
-> +		Valid values are boolean.
-> +
-> +What:		/sys/bus/counter/devices/edge_capture_unit_latched_period
-> +KernelVersion:	5.16
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Latched period of the Edge Capture Unit represented as a string.
-> +		The value is latched in based on the trigger selected by the
-> +		counterX/latch_mode attribute. Units are nanoseconds.
-> +
-> +What:		/sys/bus/counter/devices/edge_capture_unit_max_period
-> +KernelVersion:	5.16
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write attribute that selects the maximum period that can
-> +		be measured by the Edge Capture Unit. Units are nanoseconds.
-> +
-> +What:		/sys/bus/counter/devices/edge_capture_unit_prescaler
-> +KernelVersion:	5.16
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write attribute that selects the how the
-> +		counterX/countY/count value is scaled coming in to the Edge
-> +		Capture Unit. This acts like a clock divider, e.g. if a value
-> +		of 4 is selected, the Edge Capture Unit will measure the period
-> +		between every 4 counts.
-> +
-
-I'd like to see that naming for this made more generic if possible so
-that other drivers can use these extensions in the future. For example,
-instead of the "edge_capture_unit_*" prefix, perhaps "latched_count_*"
-would be appropriate. Would this be feasible?
-
-William Breathitt Gray
-
->  What:		/sys/bus/counter/devices/counterX/events_queue_size
->  KernelVersion:	5.16
->  Contact:	linux-iio@vger.kernel.org
-> --=20
-> 2.25.1
->=20
-
---Ek0MJCt6gYWt9LXH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF5DT4ACgkQhvpINdm7
-VJIZtQ/+Mb0bJ6fZ3OKhP4XxbSLj3pMkArvOiIMgHRgycGcYnc/VhAvBTnGZgt6P
-K/Zn8pyy/e2Wn4NB+DPefeKjPfXvdNym/+dvUZ6Vj5M9caYR+B8Rgutxc/8Hio75
-95IL3T99tfyt7IzwfV5DGnQAw+8NJVYAopWum0V7a2FSMTyHO5JwHVIfj+EN942a
-MU5pfHy55gKu9K6pkoSk347O8nyvghXRpB+fJHBvezMjH77M15/u4DYRRslqW+tZ
-R/daQrhdzFmP7+hdgwG9XlE/n3qQHCnFvWMLHDY9Ro//61RppB/9/ueCkKYv65xY
-FB8doar8X65T1hlNFn5B/ANd2YN/Js0V/h8k4H+1f3xUl1AAeoOuJBzywd3F7ykN
-DCjY31Ffqo3fXLFnvaGns5OEQCD3Q9CCVg1Bhs5cuPcSZnJFBbfQvfFY7zM0Zc9G
-PC4vD5ZsWzp0+kgReYkTvDYGpovoi6teMeuQc4bjRWkBE1bKiVLQpoHJyXPWau0t
-OJV5ACGIIw89KT70VwRlgdIdkSxfagtk2F5V1eDytX9GZCOlGBtLiLqQDEdRuYO+
-fR2k48WRd+Hc2dPKl9gzfTHdlzTl4gcRYjl6T2P8fZdd0mrgtleEmf6Vxmt3mGxO
-wUYYqS12VWlKwxUMuOr/I9A469pJ0Nydsv8fwMh5jpeKGNCLc78=
-=WR06
------END PGP SIGNATURE-----
-
---Ek0MJCt6gYWt9LXH--
+SGkgTGFycywNCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3Lg0KDQo+IE9uIDEwLzE5LzIxIDU6MjAg
+UE0sIEFuYW5kIEFzaG9rIER1bWJyZSB3cm90ZToNCj4gPiBbLi4uXQ0KPiA+ICsjZGVmaW5lIEFN
+U19DSEFOX1RFTVAoX3NjYW5faW5kZXgsIF9hZGRyKSB7IFwNCj4gPiArCS50eXBlID0gSUlPX1RF
+TVAsIFwNCj4gPiArCS5pbmRleGVkID0gMSwgXA0KPiA+ICsJLmFkZHJlc3MgPSAoX2FkZHIpLCBc
+DQo+ID4gKwkuaW5mb19tYXNrX3NlcGFyYXRlID0gQklUKElJT19DSEFOX0lORk9fUkFXKSB8IFwN
+Cj4gPiArCQlCSVQoSUlPX0NIQU5fSU5GT19TQ0FMRSkgfCBcDQo+ID4gKwkJQklUKElJT19DSEFO
+X0lORk9fT0ZGU0VUKSwgXA0KPiA+ICsJLmluZm9fbWFza19zaGFyZWRfYnlfYWxsID0gQklUKElJ
+T19DSEFOX0lORk9fU0FNUF9GUkVRKSwgXA0KPiBUaGVyZSBpcyBubyBoYW5kbGluZyBvZiBJSU9f
+Q0hBTl9JTkZPX1NBTVBfRlJFUSBpbiByZWFkX3JhdygpLiBSZWFkaW5nDQo+IHRoZSBzYW1wbGlu
+Z19mcmVxdWVuY3kgYXR0cmlidXRlIGFsd2F5cyByZXR1cm5zIC1FSU5WQUwuDQpDb3JyZWN0LiBJ
+IHdpbGwgcmVtb3ZlIGl0Lg0KDQo+ID4gKwkuZXZlbnRfc3BlYyA9IGFtc190ZW1wX2V2ZW50cywg
+XA0KPiA+ICsJLnNjYW5faW5kZXggPSBfc2Nhbl9pbmRleCwgXA0KPiA+ICsJLm51bV9ldmVudF9z
+cGVjcyA9IEFSUkFZX1NJWkUoYW1zX3RlbXBfZXZlbnRzKSwgXCB9DQo+ID4gKw0KPiA+ICsjZGVm
+aW5lIEFNU19DSEFOX1ZPTFRBR0UoX3NjYW5faW5kZXgsIF9hZGRyLCBfYWxhcm0pIHsgXA0KPiA+
+ICsJLnR5cGUgPSBJSU9fVk9MVEFHRSwgXA0KPiA+ICsJLmluZGV4ZWQgPSAxLCBcDQo+ID4gKwku
+YWRkcmVzcyA9IChfYWRkciksIFwNCj4gPiArCS5pbmZvX21hc2tfc2VwYXJhdGUgPSBCSVQoSUlP
+X0NIQU5fSU5GT19SQVcpIHwgXA0KPiA+ICsJCUJJVChJSU9fQ0hBTl9JTkZPX1NDQUxFKSwgXA0K
+PiA+ICsJLmluZm9fbWFza19zaGFyZWRfYnlfYWxsID0gQklUKElJT19DSEFOX0lORk9fU0FNUF9G
+UkVRKSwgXA0KPiA+ICsJLmV2ZW50X3NwZWMgPSAoX2FsYXJtKSA/IGFtc192b2x0YWdlX2V2ZW50
+cyA6IE5VTEwsIFwNCj4gPiArCS5zY2FuX2luZGV4ID0gX3NjYW5faW5kZXgsIFwNCj4gPiArCS5u
+dW1fZXZlbnRfc3BlY3MgPSAoX2FsYXJtKSA/IEFSUkFZX1NJWkUoYW1zX3ZvbHRhZ2VfZXZlbnRz
+KSA6DQo+IDAsIFwNCj4gPiArfQ0KDQpBbHNvLCBmb3Igc29tZSByZWFzb24sIEkgaGF2ZW7igJl0
+IHJlY2VpdmVkIHJlc3Qgb2YgeW91ciBjb21tZW50cyBpbiB0aGUgbWFpbCwgYnV0IEkgc2VlIHRo
+ZW0gb24gcGF0Y2h3b3JrLg0KSSBhbSBub3Qgc3VyZSBob3cgSSBjYW4gcmVzcG9uZCB0byB0aG9z
+ZSBjb21tZW50cy4NCg0KVGhhbmtzLA0KQW5hbmQNCg==

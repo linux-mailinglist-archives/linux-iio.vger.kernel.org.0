@@ -2,151 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C80CA43DCC3
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 10:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA5E843DD7B
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 11:12:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbhJ1IPJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 04:15:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57988 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbhJ1IPG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 04:15:06 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F38C0613B9;
-        Thu, 28 Oct 2021 01:12:40 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id s136so5653540pgs.4;
-        Thu, 28 Oct 2021 01:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=dKSILrA9SrmuW2Kh7vGWyglLiggejgoMfZiJ4C3uTsY=;
-        b=CCSgYFHZTcxqaXy5AFkRkjcjA5dhLYXEGNA233ZBlcqXAmZkUiwEw8dov02JXBPv/z
-         XYB4iQ9YgUiLtYTRHUGCWkz/Gv2aQf4nGtYLGUCeM97oebL6ZnnxGVQRCnaPRaR7wYDP
-         FjfPRNH/CXVWX0BlPYlaqRNzcvLZFHAtiwQEQpqXswWze25krUs4Yk/zKC15m4wlfZdG
-         7JgO4OVGxnS7Q6LLO21wgwhhMk9y/Cy1IT6VqxmWdof0T1hYhPUXyzEjC8Yr48QyjKll
-         hMh1SvJ58v1VA2yfnsI5us8JHTxtWk2Uv/iy/epeMUd0rl7FRSdGGOoGc6DPhl6N9jwO
-         0NKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dKSILrA9SrmuW2Kh7vGWyglLiggejgoMfZiJ4C3uTsY=;
-        b=BIFZxaPltrk934KWp2xmAMrvBhGqO1FsqY0T3nQapYltFeHbO0Jc+1AOAaWnpj/aB1
-         F4OJUS0zR8P4J5LzOdckMSslOhFuO+L7FmVMo7F26SlW/0mCdPIdDdO0I79e+ArktlNJ
-         qKt1D6ZVOVTBUYUWv+ce755fZ4Gpm4ZZ9vFfL+8WEYiWY6MAxNvUxBjHtJjfUO9RyKSl
-         ieG70jQbnGU0ZYjD+k7OttlTRYiAK3XOWyOcXpihWncpnNahu0WxNMOVOZv/XEd34beB
-         ezAAm7W3KFAAv6n8VBWxYVhRs6axt2mU3R3qjMsQRKlGIRhJ6v+KPkl5+V7EAc77X2SP
-         3avg==
-X-Gm-Message-State: AOAM533K1yupz5EGKa6SJ/zratEmKJ18ysYTv18NZRvqcqtlmC+chSru
-        x39S/3T66iGZDOekKguQZtBUSHUGFJQ=
-X-Google-Smtp-Source: ABdhPJzuaFwl5QyLA2f6q4NBMTtFlUxjhpjFq+84NiHuv2/DdsCo29Pl7473bhKe/RtAU4qV8Jy+TQ==
-X-Received: by 2002:a63:3d8c:: with SMTP id k134mr2100645pga.394.1635408759937;
-        Thu, 28 Oct 2021 01:12:39 -0700 (PDT)
-Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id h12sm2502732pfv.117.2021.10.28.01.12.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Oct 2021 01:12:39 -0700 (PDT)
-Date:   Thu, 28 Oct 2021 17:12:35 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/8] counter/ti-eqep: add support for latched position
-Message-ID: <YXpbc61WAKgN0DgU@shinobu>
-References: <20211017013343.3385923-1-david@lechnology.com>
- <20211017013343.3385923-6-david@lechnology.com>
- <YXkDT2gaFfdIsgTQ@shinobu>
- <444960b4-1120-26fa-bd00-dfbe3c13cf23@lechnology.com>
+        id S229992AbhJ1JO3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 05:14:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58526 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229835AbhJ1JO2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 28 Oct 2021 05:14:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 2D829610A0
+        for <linux-iio@vger.kernel.org>; Thu, 28 Oct 2021 09:12:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635412322;
+        bh=r+n4rbmqUS+HozgjsnTugOasqqBlCyq/lp92o9H9z0g=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=NqNB35sRaXZ5VAFxRJnFChhyxMbmVNtCB4TLNCESObfIJVb7UsxkXtEAAUKpSI7zB
+         Rs9Ez+3/IZvU8CMNiG3zRvMxm+iS5SPWCHrUzF/SFe8Q4Fc1LG56QxQ5C0Q7BycxZp
+         DIDN73eSHo4VhoocxMTS7evgYypaTAkQknVuZeg+swrLsQRSI3JGNIFq22MYFb0tcK
+         q3c9KxUWApW5SG/9ZxLtAFp04HVHYzbHdtAa1Z2L3LwPBOiAb4QQKX4nqh9OMixUfv
+         gEbzAYUKwXd+kjo4dK1UE6jG+8nBgcA+3d3i4gM+9nVq2km0P2FmhVT1exS29g4Mod
+         hKi/jl3GHQVug==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+        id 182D2610CD; Thu, 28 Oct 2021 09:12:02 +0000 (UTC)
+From:   bugzilla-daemon@bugzilla.kernel.org
+To:     linux-iio@vger.kernel.org
+Subject: [Bug 214751] Lenovo Yoga Chromebook C630 i7 missing support for
+ sound, microphone, touchscreen and gyroscope
+Date:   Thu, 28 Oct 2021 09:12:01 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: I2C
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: waownn@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-214751-217253-pSK4GjcWGk@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-214751-217253@https.bugzilla.kernel.org/>
+References: <bug-214751-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="k9Jnbqt0PQC5h0Qc"
-Content-Disposition: inline
-In-Reply-To: <444960b4-1120-26fa-bd00-dfbe3c13cf23@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D214751
 
---k9Jnbqt0PQC5h0Qc
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--- Comment #1 from waleed (waownn@gmail.com) ---
+dmesg | grep -i failed
+[    7.539736] i2c_hid_acpi i2c-SYTS7817:00: failed to change power setting.
+[    7.662541] raydium_ts i2c-RAYD0001:00: failed to get reset gpio: -16
+[    7.794229] raydium_ts: probe of i2c-RAYD0001:00 failed with error -16
+[    8.121999] iwlwifi 0000:01:00.0: pci_enable_msi failed - -22
+[    8.562335] i2c_hid_acpi i2c-SYTS7817:00: failed to change power setting.
+[    8.945729] thermal thermal_zone7: failed to read out thermal zone (-61)
+[    9.018731] snd_soc_skl 0000:00:1f.3: Direct firmware load for
+9d71-GOOGLE-NAMIMAX-0-tplg.bin failed with error -2
+[    9.018735] snd_soc_skl 0000:00:1f.3: tplg fw 9d71-GOOGLE-NAMIMAX-0-tplg=
+.bin
+load failed with -2, trying alternative tplg name kbl_da7219_mx98357a-tplg.=
+bin
+[    9.018751] snd_soc_skl 0000:00:1f.3: Direct firmware load for
+kbl_da7219_mx98357a-tplg.bin failed with error -2
+[    9.018753] snd_soc_skl 0000:00:1f.3: tplg kbl_da7219_mx98357a-tplg.bin
+failed with -2, falling back to dfw_sst.bin
+[    9.018767] snd_soc_skl 0000:00:1f.3: Direct firmware load for dfw_sst.b=
+in
+failed with error -2
+[    9.018768] snd_soc_skl 0000:00:1f.3: Fallback tplg fw dfw_sst.bin load
+failed with -2
+[    9.018804] snd_soc_skl 0000:00:1f.3: Failed to init topology!
+[    9.018881] kbl_da7219_max98357a kbl_da7219_mx98357a: ASoC: failed to
+instantiate card -2
+[    9.019011] kbl_da7219_max98357a: probe of kbl_da7219_mx98357a failed wi=
+th
+error -2
+[    9.586869] i2c_hid_acpi i2c-SYTS7817:00: failed to change power setting.
+[   10.610851] i2c_hid_acpi i2c-SYTS7817:00: failed to change power setting.
+[   11.634548] i2c_hid_acpi: probe of i2c-SYTS7817:00 failed with error -121
 
-On Wed, Oct 27, 2021 at 10:40:15AM -0500, David Lechner wrote:
-> On 10/27/21 2:44 AM, William Breathitt Gray wrote:
-> > On Sat, Oct 16, 2021 at 08:33:40PM -0500, David Lechner wrote:
-> >> This adds support to the TI eQEP counter driver for a latched position.
-> >> This is a new extension that gets the counter count that was recorded
-> >> when an event was triggered. A new device-level latch_mode attribute is
-> >> added to select the trigger. Edge capture unit support will be needed
-> >> to make full use of this, but "Unit timeout" mode can already be used
-> >> to calculate high speeds.
-> >>
-> >> The unit timer could also have attributes for latched_time and
-> >> latched_period that use the same trigger. However this is not a use
-> >> case at this time, so they can be added later if needed.
-> >=20
-> > I see that "latched_count" holds the captured counter count; would this
-> > "latched_time" hold the captured unit timer time? If so, does that mean
-> > setting the latch mode to "Unit timeout" always results in a
-> > "latched_time" equal to 0 (assuming that's when the timeout event
-> > triggers)?
-> >=20
->=20
-> Some `latched_*` attributes will only be useful for one `latched_mode`
-> selection but not the other.
->=20
-> These latched registers are used to measure speed. There are two ways
-> to do this. A) measuring the change in position over a fixed time and
-> B) measuring the change in time for a fixed change in position. So for
-> A) latched_mode would be set to trigger on timeout and we would use
-> the latched_position for the measurement. For B) we would set the
-> latched_mode to trigger on reading the count register and use the
-> latched_time as the measurement.
->=20
-> ...
->=20
-> >>   static struct counter_comp ti_eqep_device_ext[] =3D {
-> >> +	COUNTER_COMP_DEVICE_ENUM("latch_mode", ti_eqep_latch_mode_read,
-> >> +				ti_eqep_latch_mode_write, ti_eqep_latch_modes),
-> >=20
-> > It seems more appropriate to move this alongside "latched_count" as
-> > Count extension because this is setting the trigger mode to latch the
-> > respective Count's count. Or does this particular extension also affect
-> > the "latched_time" capture for the unit timer?
-> >=20
->=20
-> In hardware, there are at least 3 registers that get latched that I
-> recall. They are in different subsystems (main count, unit timer,
-> edge capture). So as you have guessed, that is the reason for having
-> the trigger selection at the device level.
+--=20
+You may reply to this email to add a comment.
 
-Ah, I see what's going on now. I think supporting these latch registers
-will involve some further considerations. I'll continue my reply in the
-respective docs patch where you've gone more in depth about the
-hardware.
-
-William Breathitt Gray
-
---k9Jnbqt0PQC5h0Qc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF6W3MACgkQhvpINdm7
-VJJ8Gg/+Jq2nEP9P/wcHD/LVa98CSKJST4B861rtYxFy+q3PDz2ZGrCCB8E0v/HB
-RLiSoCdlPSRUkwO2KLVaIPNvhS59izkFeKzK2hm8ihFdNXo8lFa7TAhuQ0dqk/+3
-rPEOtCgeYpR6g9SNaiU72hGjIPubcWHS7ZEEJk0ZSNoVScuT9cz56IljInpJ85ub
-fvUGDCDwOYgLzHZuSoLmnWaXTk/5tmjx4OF8pdBE9qeRrYkvzEby374y7BuUPiI2
-fEo4wQ30gtcpKZ4CCUVZNEJ5YO2fw8YF9TLhlqBPheU6FG3fKTztTPdK3ipIrtca
-uRMVPqNk4GvrlRn08zOhytc/6YAw4PfEdqG2yG7l0uw42GeQRCir2zAfpoaTFEuh
-1I4grzshGUhdLg4qZkq3mvtcH5QmWfLBavmfyf8p69LUYit5q5gFklI2NNdS9jBf
-7Rs2FnuB2C67fqoitD1j0MJePV/yHB8T+VC+NEa2tVO6WfV1gf3hRUyC7Vw0HLG2
-LsOgRkz8mhv4qGuOc7XmazQ5aZy2xqE75a2Yg0QEKz4PctwUixT9czg68WUq581G
-melUOyjYRnNsBgUJWRe9EtWmoJ1LhGhxosLpqwB4gXKnAJ6evYq5LuQY4AP0/azT
-4TOgHyGRQs025wKN5lyM2nmQscRdS7hQH38Mtf10eyAVtszpriU=
-=v9A/
------END PGP SIGNATURE-----
-
---k9Jnbqt0PQC5h0Qc--
+You are receiving this mail because:
+You are watching the assignee of the bug.=

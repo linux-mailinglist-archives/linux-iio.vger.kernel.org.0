@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C12843DF9A
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 12:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E940D43DFB5
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 13:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230115AbhJ1LCJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 07:02:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49860 "EHLO mail.kernel.org"
+        id S230135AbhJ1LIH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 07:08:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52096 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230093AbhJ1LCJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 28 Oct 2021 07:02:09 -0400
+        id S229835AbhJ1LIG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 28 Oct 2021 07:08:06 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0D6E5610FC;
-        Thu, 28 Oct 2021 10:59:38 +0000 (UTC)
-Date:   Thu, 28 Oct 2021 12:04:05 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 066E560C51;
+        Thu, 28 Oct 2021 11:05:35 +0000 (UTC)
+Date:   Thu, 28 Oct 2021 12:10:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andrea Merello <andrea.merello@gmail.com>
 Cc:     mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
@@ -24,12 +24,12 @@ Cc:     mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
         lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
         matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
         jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [v2 06/10] iio: document bno055 private sysfs attributes
-Message-ID: <20211028120405.6ffb01d1@jic23-huawei>
-In-Reply-To: <20211028101840.24632-7-andrea.merello@gmail.com>
+Subject: Re: [v2 10/10] iio: imu: add BNO055 I2C driver
+Message-ID: <20211028121001.73d8abbe@jic23-huawei>
+In-Reply-To: <20211028101840.24632-11-andrea.merello@gmail.com>
 References: <20210715141742.15072-1-andrea.merello@gmail.com>
         <20211028101840.24632-1-andrea.merello@gmail.com>
-        <20211028101840.24632-7-andrea.merello@gmail.com>
+        <20211028101840.24632-11-andrea.merello@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,166 +38,122 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Oct 2021 12:18:36 +0200
+On Thu, 28 Oct 2021 12:18:40 +0200
 Andrea Merello <andrea.merello@gmail.com> wrote:
 
-> This patch adds ABI documentation for bno055 driver private sysfs
-> attributes.
-
-Hohum. As normal I dislike custom attributes but reality is these
-don't map to anything 'standard' and I don't want them getting adopted
-in places where the 'standard' approach works.
-
-So thinking a bit more on this, I wonder if we can fit it into standard
-ABI.
-
-We can't use the normal range specification method of
-_scale because it's internal to the device and the output reading is
-unaffected.  The range specification via _raw_available would let us know
-the range, but it is not writeable so..
-
-A control that changes the internal scaling of the sensor in a fashion
-that is not visible to the outside world maps to calibscale.  Whilst
-that was intended for little tweaks to the input signal (often front
-end amplifier gain tweak) it works here.  It doesn't map through to
-anything userspace is expected to apply.  That combined with
-_raw_available to let us know what the result is should work?
-
-What do you think of that approach?  It's obviously a little more complex
-to handle in the driver, but it does map to existing ABI and avoids
-custom attributes etc.
-
+> This path adds an I2C driver for communicating to a BNO055 IMU via I2C bus
+> and it enables the BNO055 core driver to work in this scenario.
 > 
 > Signed-off-by: Andrea Merello <andrea.merello@iit.it>
+Hi Andrea,
+
+A few minor things inline.
+
+Jonathan
+
 > ---
->  .../ABI/testing/sysfs-bus-iio-bno055          | 84 +++++++++++++++++++
->  1 file changed, 84 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-bno055
+>  drivers/iio/imu/bno055/Kconfig      |  6 ++++
+>  drivers/iio/imu/bno055/Makefile     |  1 +
+>  drivers/iio/imu/bno055/bno055_i2c.c | 54 +++++++++++++++++++++++++++++
+>  3 files changed, 61 insertions(+)
+>  create mode 100644 drivers/iio/imu/bno055/bno055_i2c.c
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-bno055 b/Documentation/ABI/testing/sysfs-bus-iio-bno055
+> diff --git a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
+> index 941e43f0368d..87200787d548 100644
+> --- a/drivers/iio/imu/bno055/Kconfig
+> +++ b/drivers/iio/imu/bno055/Kconfig
+> @@ -7,3 +7,9 @@ config BOSH_BNO055_SERIAL
+>  	tristate "Bosh BNO055 attached via serial bus"
+>  	depends on SERIAL_DEV_BUS
+>  	select BOSH_BNO055_IIO
+> +
+> +config BOSH_BNO055_I2C
+> +	tristate "Bosh BNO055 attached via I2C bus"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	select BOSH_BNO055_IIO
+> diff --git a/drivers/iio/imu/bno055/Makefile b/drivers/iio/imu/bno055/Makefile
+> index 7285ade2f4b9..eaf24018cb28 100644
+> --- a/drivers/iio/imu/bno055/Makefile
+> +++ b/drivers/iio/imu/bno055/Makefile
+> @@ -2,3 +2,4 @@
+>  
+>  obj-$(CONFIG_BOSH_BNO055_IIO) += bno055.o
+>  obj-$(CONFIG_BOSH_BNO055_SERIAL) += bno055_sl.o
+> +obj-$(CONFIG_BOSH_BNO055_I2C) += bno055_i2c.o
+> diff --git a/drivers/iio/imu/bno055/bno055_i2c.c b/drivers/iio/imu/bno055/bno055_i2c.c
 > new file mode 100644
-> index 000000000000..930a70c5a858
+> index 000000000000..eea0daa6a61d
 > --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-bno055
-> @@ -0,0 +1,84 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_accel_range
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Range for acceleration readings in G. Note that this does not
-> +		affects the scale (which should be used when changing the
-> +		maximum and minimum readable value affects also the reading
-> +		scaling factor).
+> +++ b/drivers/iio/imu/bno055/bno055_i2c.c
+> @@ -0,0 +1,54 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * I2C interface for Bosh BNO055 IMU.
+> + * This file implements I2C communication up to the register read/write
+> + * level.
 
-Having this in G but the sensor output in m/s^2 seems inconsistent.
+Not really. It just uses regmap, so I'd drop this comment.
 
+> + *
+> + * Copyright (C) 2021 Istituto Italiano di Tecnologia
+> + * Electronic Design Laboratory
+> + * Written by Andrea Merello <andrea.merello@iit.it>
+> + */
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_range
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Range for angular velocity readings in dps. Note that this does
-> +		not affects the scale (which should be used when changing the
-> +		maximum	and minimum readable value affects also the reading
-> +		scaling	factor).
+> +#include <linux/i2c.h>
 
-Again, units need to match or this is going to be really confusing.
+Why?  I'm not seeing an i2c specific calls in here.
 
+> +#include <linux/regmap.h>
+> +#include <linux/module.h>
+
+mod_devicetable.h for struct i2c_device_id
+ 
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_accel_range_available
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		List of allowed values for in_accel_range attribute
+> +#include "bno055.h"
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_anglvel_range_available
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		List of allowed values for in_anglvel_range attribute
+> +#define BNO055_I2C_XFER_BURST_BREAK_THRESHOLD 3 /* FIXME */
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/fast_magnetometer_calibration_enable
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Can be 1 or 0. Enables/disables the "Fast Magnetometer
-> +		Calibration" HW function.
-
-Naming needs to be consistent with the ABI.  This is a channel type specific function
-and to match existing calibration related ABI naming it would be.
-
-in_magn_calibration_fast_enable
-
-Some of the others need renaming in a similar way.
-
+> +static int bno055_i2c_probe(struct i2c_client *client,
+> +			    const struct i2c_device_id *id)
+> +{
+> +	struct regmap *regmap =
+> +		devm_regmap_init_i2c(client, &bno055_regmap_config);
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/fusion_enable
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Can be 1 or 0. Enables/disables the "sensor fusion" (a.k.a.
-> +		NDOF) HW function.
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(&client->dev, "Unable to init register map");
+> +		return PTR_ERR(regmap);
+> +	}
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_calibration_data
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reports the binary calibration data blob for the IMU sensors.
-
-Why in_ ?  What channels does this apply to?
-
+> +	return bno055_probe(&client->dev, regmap,
+> +			    BNO055_I2C_XFER_BURST_BREAK_THRESHOLD);
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_accel
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
-> +		Report the autocalibration status for the accelerometer sensor.
+> +	return 0;
 
-For interfaces that really don't have any chance of generalising this one is terrible.
-Any hope at all of mapping this to something numeric?
+?
 
-in_accel_calibration_auto_status
-
-
+> +}
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_gyro
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
-> +		Reports the autocalibration status for the gyroscope sensor.
+> +static const struct i2c_device_id bno055_i2c_id[] = {
+> +	{"bno055", 0},
+> +	{ },
 
-in_angvel_calibration_auto_status
-etc.
+It's at terminator, so don't put a comma as we'll never add entries after this.
 
+> +};
+> +MODULE_DEVICE_TABLE(i2c, bno055_i2c_id);
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_magn
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
-> +		Reports the autocalibration status for the magnetometer sensor.
+> +static struct i2c_driver bno055_driver = {
+> +	.driver = {
+> +		.name = "bno055-i2c",
+> +	},
+> +	.probe = bno055_i2c_probe,
+> +	.id_table = bno055_i2c_id
+> +};
+> +module_i2c_driver(bno055_driver);
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_sys
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
-> +		Reports the status for the IMU overall autocalibration.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/unique_id
-
-Hmm. So normally we just dump these in the kernel log.  I guess you need it
-here to associate a calibration blob with a particular sensor?
-
-We could put it in label, but that would stop us using that for things like
-positioning of the sensor.  So perhaps this is something that we should add
-to the main ABI doc.  Probably as serial_number rather than unique ID though.
-
-> +KernelVersion:	5.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		16-bytes, 2-digits-per-byte, HEX-string representing the sensor
-> +		unique ID number.
+> +MODULE_AUTHOR("Andrea Merello");
+> +MODULE_DESCRIPTION("Bosch BNO055 I2C interface");
+> +MODULE_LICENSE("GPL v2");
 

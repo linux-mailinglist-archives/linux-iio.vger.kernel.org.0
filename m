@@ -2,32 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E0643E596
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 17:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA2843E5A5
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 17:59:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbhJ1QBA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 12:01:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44660 "EHLO mail.kernel.org"
+        id S229565AbhJ1QCF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 12:02:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45000 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229565AbhJ1QBA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 28 Oct 2021 12:01:00 -0400
+        id S230046AbhJ1QCE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 28 Oct 2021 12:02:04 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A16DA60FC4;
-        Thu, 28 Oct 2021 15:58:30 +0000 (UTC)
-Date:   Thu, 28 Oct 2021 17:02:56 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id CD6F460FC4;
+        Thu, 28 Oct 2021 15:59:33 +0000 (UTC)
+Date:   Thu, 28 Oct 2021 17:04:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] iio: add adddac subdirectory
-Message-ID: <20211028170256.5a616bae@jic23-huawei>
-In-Reply-To: <20211028135608.3666940-1-demonsingur@gmail.com>
-References: <20211028134849.3664969-1-demonsingur@gmail.com>
-        <20211028135608.3666940-1-demonsingur@gmail.com>
+To:     Wan Jiabing <wanjiabing@vivo.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Xu Wang <vulab@iscas.ac.cn>, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        jiabing.wan@qq.com
+Subject: Re: [PATCH v3] iio: adc: stm32-adc: Fix of_node_put() issue in
+ stm32-adc
+Message-ID: <20211028170400.1d922d5c@jic23-huawei>
+In-Reply-To: <20211028154204.1263861-1-wanjiabing@vivo.com>
+References: <20211028154204.1263861-1-wanjiabing@vivo.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -36,84 +43,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Oct 2021 16:56:03 +0300
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
+On Thu, 28 Oct 2021 23:42:02 +0800
+Wan Jiabing <wanjiabing@vivo.com> wrote:
 
-> From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> Fix following coccicheck warning:
+> ./drivers/iio/adc/stm32-adc.c:2014:1-33: WARNING: Function
+> for_each_available_child_of_node should have of_node_put() before return.
 > 
-> For IIO devices that expose both ADC and DAC functionality.
+> Early exits from for_each_available_child_of_node should decrement the
+> node reference counter. Replace return by goto here.
 > 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-Why v2?
+> Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+I applied v2.  So no need to resend.  I fix minor typos etc whilst
+applying patches as it saves everyone time!
 
-Should be a change log (+ I would suggest a cover letter).
-Also, reply to previous version if there haven't been comments that
-you are replying to..
-
-I'll assume most v1 comments apply to v2 and hence wait for v3.
-
-Please leave some time for others to review these versions before
-sending a v3.  
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/Kconfig        | 1 +
->  drivers/iio/Makefile       | 1 +
->  drivers/iio/addac/Kconfig  | 8 ++++++++
->  drivers/iio/addac/Makefile | 6 ++++++
->  4 files changed, 16 insertions(+)
->  create mode 100644 drivers/iio/addac/Kconfig
->  create mode 100644 drivers/iio/addac/Makefile
+> Changelog:
+> v2:
+> - Fix typo and add reviewed-by.
+> v3:
+> - Fix typo.
+> ---
+>  drivers/iio/adc/stm32-adc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-> index 2334ad249b46..4fb4321a72cb 100644
-> --- a/drivers/iio/Kconfig
-> +++ b/drivers/iio/Kconfig
-> @@ -70,6 +70,7 @@ config IIO_TRIGGERED_EVENT
->  
->  source "drivers/iio/accel/Kconfig"
->  source "drivers/iio/adc/Kconfig"
-> +source "drivers/iio/addac/Kconfig"
->  source "drivers/iio/afe/Kconfig"
->  source "drivers/iio/amplifiers/Kconfig"
->  source "drivers/iio/cdc/Kconfig"
-> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-> index 65e39bd4f934..8d48c70fee4d 100644
-> --- a/drivers/iio/Makefile
-> +++ b/drivers/iio/Makefile
-> @@ -15,6 +15,7 @@ obj-$(CONFIG_IIO_TRIGGERED_EVENT) += industrialio-triggered-event.o
->  
->  obj-y += accel/
->  obj-y += adc/
-> +obj-y += addac/
->  obj-y += afe/
->  obj-y += amplifiers/
->  obj-y += buffer/
-> diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
-> new file mode 100644
-> index 000000000000..2e64d7755d5e
-> --- /dev/null
-> +++ b/drivers/iio/addac/Kconfig
-> @@ -0,0 +1,8 @@
-> +#
-> +# ADC DAC drivers
-> +#
-> +# When adding new entries keep the list in alphabetical order
-> +
-> +menu "Analog to digital and digital to analog converters"
-> +
-> +endmenu
-> diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
-> new file mode 100644
-> index 000000000000..b888b9ee12da
-> --- /dev/null
-> +++ b/drivers/iio/addac/Makefile
-> @@ -0,0 +1,6 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Makefile for industrial I/O ADDAC drivers
-> +#
-> +
-> +# When adding new entries keep the list in alphabetical order
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index 6245434f8377..7f1fb36c747c 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -2024,7 +2024,8 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+>  			if (strlen(name) >= STM32_ADC_CH_SZ) {
+>  				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
+>  					name, STM32_ADC_CH_SZ);
+> -				return -EINVAL;
+> +				ret = -EINVAL;
+> +				goto err;
+>  			}
+>  			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+>  			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
 

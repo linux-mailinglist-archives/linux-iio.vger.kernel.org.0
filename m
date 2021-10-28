@@ -2,39 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA2843E5A5
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 17:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D71843E5B2
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 18:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbhJ1QCF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 12:02:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45000 "EHLO mail.kernel.org"
+        id S229764AbhJ1QEi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 12:04:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45590 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230046AbhJ1QCE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 28 Oct 2021 12:02:04 -0400
+        id S230070AbhJ1QEh (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 28 Oct 2021 12:04:37 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CD6F460FC4;
-        Thu, 28 Oct 2021 15:59:33 +0000 (UTC)
-Date:   Thu, 28 Oct 2021 17:04:00 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id D71A260551;
+        Thu, 28 Oct 2021 16:02:08 +0000 (UTC)
+Date:   Thu, 28 Oct 2021 17:06:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Wan Jiabing <wanjiabing@vivo.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Xu Wang <vulab@iscas.ac.cn>, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        jiabing.wan@qq.com
-Subject: Re: [PATCH v3] iio: adc: stm32-adc: Fix of_node_put() issue in
- stm32-adc
-Message-ID: <20211028170400.1d922d5c@jic23-huawei>
-In-Reply-To: <20211028154204.1263861-1-wanjiabing@vivo.com>
-References: <20211028154204.1263861-1-wanjiabing@vivo.com>
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] iio: adc: ina2xx: Make use of the helper macro
+ kthread_run()
+Message-ID: <20211028170634.4e815890@jic23-huawei>
+In-Reply-To: <20211021124254.3247-1-caihuoqing@baidu.com>
+References: <20211021124254.3247-1-caihuoqing@baidu.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -43,47 +34,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Oct 2021 23:42:02 +0800
-Wan Jiabing <wanjiabing@vivo.com> wrote:
+On Thu, 21 Oct 2021 20:42:53 +0800
+Cai Huoqing <caihuoqing@baidu.com> wrote:
 
-> Fix following coccicheck warning:
-> ./drivers/iio/adc/stm32-adc.c:2014:1-33: WARNING: Function
-> for_each_available_child_of_node should have of_node_put() before return.
+> Repalce kthread_create/wake_up_process() with kthread_run()
+> to simplify the code.
 > 
-> Early exits from for_each_available_child_of_node should decrement the
-> node reference counter. Replace return by goto here.
-> 
-> Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
-I applied v2.  So no need to resend.  I fix minor typos etc whilst
-applying patches as it saves everyone time!
+> Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+
+Series applied to the togreg branch of iio.git which is pushed out initially
+as testing for 0-day to see if it can find any problems we missed.
 
 Thanks,
 
 Jonathan
 
 > ---
-> Changelog:
-> v2:
-> - Fix typo and add reviewed-by.
-> v3:
-> - Fix typo.
-> ---
->  drivers/iio/adc/stm32-adc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> v1->v2: Sort with [2/2] patch as a series.
 > 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index 6245434f8377..7f1fb36c747c 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -2024,7 +2024,8 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
->  			if (strlen(name) >= STM32_ADC_CH_SZ) {
->  				dev_err(&indio_dev->dev, "Label %s exceeds %d characters\n",
->  					name, STM32_ADC_CH_SZ);
-> -				return -EINVAL;
-> +				ret = -EINVAL;
-> +				goto err;
->  			}
->  			strncpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
->  			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
+>  drivers/iio/adc/ina2xx-adc.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+> index a4b2ff9e0dd5..360d7a00f60d 100644
+> --- a/drivers/iio/adc/ina2xx-adc.c
+> +++ b/drivers/iio/adc/ina2xx-adc.c
+> @@ -842,15 +842,14 @@ static int ina2xx_buffer_enable(struct iio_dev *indio_dev)
+>  	dev_dbg(&indio_dev->dev, "Async readout mode: %d\n",
+>  		chip->allow_async_readout);
+>  
+> -	task = kthread_create(ina2xx_capture_thread, (void *)indio_dev,
+> -			      "%s:%d-%uus", indio_dev->name,
+> -			      iio_device_id(indio_dev),
+> -			      sampling_us);
+> +	task = kthread_run(ina2xx_capture_thread, (void *)indio_dev,
+> +			   "%s:%d-%uus", indio_dev->name,
+> +			   iio_device_id(indio_dev),
+> +			   sampling_us);
+>  	if (IS_ERR(task))
+>  		return PTR_ERR(task);
+>  
+>  	get_task_struct(task);
+> -	wake_up_process(task);
+>  	chip->task = task;
+>  
+>  	return 0;
 

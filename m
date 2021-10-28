@@ -2,142 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0726843E270
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 15:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94EC443E28A
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 15:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbhJ1NpU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 09:45:20 -0400
-Received: from vern.gendns.com ([98.142.107.122]:58772 "EHLO vern.gendns.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229887AbhJ1NpT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 28 Oct 2021 09:45:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=SVlgNf+ucxEPseJvy+L/+bBmOwRajcw4V+PyOl9QXbA=; b=Al5M4BbYU+HjwYm6e9i0JgWcH0
-        cxzOwIHAF0fEp1eLeTCENiW1kD+SZzd4yODLESrUw0E6VzKkTk7lk9Fq/srfxd6Ue4ksLyylVB968
-        m9yF4fNokuhAENlbDJsbHZZrfixIhdxWrVifhLNudShT3OZolwaTPx5FyMBttWMXtcR8O6Bei2dgD
-        ixyag8870IuuX8myLCo8AjieTOJslZBxy6sEawQxcF+K4ASUUL23/G4cyyHYCUCEcp8FPk87np7Wz
-        bfv17pVsxmB5IKmKbW3vjV6I+7MTa767PKZWrNVAJacUAdoe5YhHfPmHFJLKlc+MhEOLVtXc63Nzy
-        NQu/nviw==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:47982 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <david@lechnology.com>)
-        id 1mg5g0-00013p-Ck; Thu, 28 Oct 2021 09:42:50 -0400
-Subject: Re: [PATCH 3/8] counter/ti-eqep: add support for unit timer
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
-        linux-kernel@vger.kernel.org
-References: <20211017013343.3385923-1-david@lechnology.com>
- <20211017013343.3385923-4-david@lechnology.com> <YXZvQSU6bRRaWD89@shinobu>
- <253916e2-a808-8786-ac72-60a1a62b1531@lechnology.com>
- <YXpVyjnrrmRbpHJU@shinobu>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <f5e40a22-3c7f-4d4d-d160-fe5b5a7dd72e@lechnology.com>
-Date:   Thu, 28 Oct 2021 08:42:49 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S230455AbhJ1Nv6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 09:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50178 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230508AbhJ1Nvj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 09:51:39 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A06C061220;
+        Thu, 28 Oct 2021 06:49:11 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id h7so25610207ede.8;
+        Thu, 28 Oct 2021 06:49:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3BovXqE0Q/mhEQVcledJTFqExJrjsVNS5gIUqVyJDoY=;
+        b=hv+9b20zOu4SMISP96uhUZGkB2paa1ApPsBGLC1kGOxjNUBR7J/1pT3H88Lwh510nC
+         aRQxp3ZlClR3ZGLQkF4tJURYyS26RWElkVw0G3KJMSLacP/TIfqQE42EdpSSr6AbZXxA
+         Yl9zPBar9YZPqfL1INj1Ny7s+o6WqkqFmDmFSbKxwJseUAb3pvlSdRGdbuFJX141eL9k
+         B2tvIRwt/FtzZM3KfjCQ4U/rpGGjnib7478r7Lsz7YdbZFInIZ6J1XRu5eEAWINTpPfD
+         EySyHbgZ0J/w0rdkbPj4RMP8c9mI3gHLFZpxjdMepCjP5t0I9fmPXDuL4NzqEFaSDjHU
+         GGeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3BovXqE0Q/mhEQVcledJTFqExJrjsVNS5gIUqVyJDoY=;
+        b=NNgfJcdfd1fiV3oC2sLMTnut+SsGA6PuABqieSkAcipndj6cWYC9w1rhzEt4dpbm6I
+         N+LEFrD7hcuNHTiI2O4lbrnBZR0lsHID59xi4X3Qs5pYnWJV6YHRvtWxCaOSRHuEPOv2
+         L17iRXM2f+9l+waKyVoUNIgb9VcA8c1Tlv0/StBQaE0/3TFGRiCHSykZgOSWaONESSIj
+         yBFgcuTp6+lYgshBkraAAxv2L5r91+wVZJ33H+RFUH1wJgkeF/ujIfHx6SzCv78KExW1
+         nWGCORZovoBRcLRQtl9hxhRbD+nhW7MZOFvTVhDoUrSX4C+/3/VWNISXxisZyonJdnhA
+         Pn4g==
+X-Gm-Message-State: AOAM530/fQ16+lPtx0wIeRyI6L6QA+VWNIKdT0jIkqF+KTlAgqnRNzZo
+        wWcLjlRXqfX9RBntuJ/H1x4=
+X-Google-Smtp-Source: ABdhPJwB5nJKhRiOxwpp/Pgj4qcD/x4TVfHGhWJIqnq49U0MEpM3I+U11DNwqOiy3JMqCVQ2l2ZbmQ==
+X-Received: by 2002:a05:6402:42d4:: with SMTP id i20mr6165295edc.337.1635428947629;
+        Thu, 28 Oct 2021 06:49:07 -0700 (PDT)
+Received: from demon-pc.localdomain ([188.24.96.74])
+        by smtp.gmail.com with ESMTPSA id x3sm1941934edd.67.2021.10.28.06.49.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Oct 2021 06:49:07 -0700 (PDT)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     demonsingur@gmail.com, cosmin.tanislav@analog.com,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/3] iio: add adddac subdirectory
+Date:   Thu, 28 Oct 2021 16:48:43 +0300
+Message-Id: <20211028134849.3664969-1-demonsingur@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <YXpVyjnrrmRbpHJU@shinobu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/28/21 2:48 AM, William Breathitt Gray wrote:
-> On Wed, Oct 27, 2021 at 10:28:59AM -0500, David Lechner wrote:
->> On 10/25/21 3:48 AM, William Breathitt Gray wrote:
->>> On Sat, Oct 16, 2021 at 08:33:38PM -0500, David Lechner wrote:
->>>> This adds support to the TI eQEP counter driver for the Unit Timer.
->>>> The Unit Timer is a device-level extension that provides a timer to be
->>>> used for speed calculations. The sysfs interface for the Unit Timer is
->>>> new and will be documented in a later commit. It contains a R/W time
->>>> attribute for the current time, a R/W period attribute for the timeout
->>>> period and a R/W enable attribute to start/stop the timer. It also
->>>> implements a timeout event on the chrdev interface that is triggered
->>>> each time the period timeout is reached.
->>>>
->>>> Signed-off-by: David Lechner <david@lechnology.com>
->>>
->>> I'll comment on the sysfs interface in the respective docs patch. Some
->>> comments regarding this patch below.
->>>
->>
->> ...
->>
->>>> +static int ti_eqep_unit_timer_period_write(struct counter_device *counter,
->>>> +					   u64 value)
->>>> +{
->>>> +	struct ti_eqep_cnt *priv = counter->priv;
->>>> +	u32 quprd;
->>>> +
->>>> +	/* convert nanoseconds to timer ticks */
->>>> +	quprd = value = mul_u64_u32_div(value, priv->sysclkout_rate, NSEC_PER_SEC);
->>>> +	if (quprd != value)
->>>> +		return -ERANGE;
->>>> +
->>>> +	/* protect against infinite unit timeout interrupts */
->>>> +	if (quprd == 0)
->>>> +		return -EINVAL;
->>>
->>> I doubt there's any practical reason for a user to set the timer period
->>> to 0, but perhaps we should not try to protect users from themselves
->>> here. It's very obvious and expected that setting the timer period to 0
->>> results in timeouts as quickly as possible, so really the user should be
->>> left to reap the fruits of their decision regardless of how asinine that
->>> decision is.
->>
->> Even if the operating system ceases operation because the interrupt
->> handler keeps running because clearing the interrupt has no effect
->> in this condition?
-> 
-> I don't disagree with you that configuring the device to repeatedly
-> timeout without pause would be a waste of system resources. However, it
-> is more appropriate for this protection to be located in a userspace
-> application rather than the driver code here.
-> 
-> The purpose of a driver is to expose the functionality of a device in an
-> understandable and consistent manner. Drivers should not dictate what a
-> user does with their device, but rather should help facilitate the
-> user's control so that the device behaves as would be expected given
-> such an interface.
-> 
-> For this particular case, the device is capable of sending an interrupt
-> when a timeout events occurs, and the timeout period can be adjusted;
-> setting the timeout period lower and lower results in less and less time
-> between timeout events. The behavior and result of setting the timeout
-> period lower is well-defined and predictable; it is intuitive that
-> configuring the timeout period to 0, the lowest value possible, results
-> in the shortest time possible between timeouts: no pause at all.
-> 
-> As long as the functionality of this device is exposed in such an
-> understandable and consistent manner, the driver succeeds in serving its
-> purpose. So I believe a timeout period of 0 is a valid configuration
-> for this driver to allow, albeit a seemingly pointless one for users to
-> actually choose. To that end, simply set the default value of QUPRD to
-> non-zero on probe() as you do already in this patch and let the user be
-> free to adjust if they so decide.
-> 
-> William Breathitt Gray
-> 
+For IIO devices that expose both ADC and DAC functionality.
 
-I disagree. I consider this a crash. The system becomes completely
-unusable and you have to pull power to turn it off, potentially
-leading to data loss and disk corruption.
+Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+---
+ drivers/iio/Kconfig        | 1 +
+ drivers/iio/Makefile       | 1 +
+ drivers/iio/addac/Kconfig  | 8 ++++++++
+ drivers/iio/addac/Makefile | 6 ++++++
+ 4 files changed, 16 insertions(+)
+ create mode 100644 drivers/iio/addac/Kconfig
+ create mode 100644 drivers/iio/addac/Makefile
+
+diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
+index 2334ad249b46..4fb4321a72cb 100644
+--- a/drivers/iio/Kconfig
++++ b/drivers/iio/Kconfig
+@@ -70,6 +70,7 @@ config IIO_TRIGGERED_EVENT
+ 
+ source "drivers/iio/accel/Kconfig"
+ source "drivers/iio/adc/Kconfig"
++source "drivers/iio/addac/Kconfig"
+ source "drivers/iio/afe/Kconfig"
+ source "drivers/iio/amplifiers/Kconfig"
+ source "drivers/iio/cdc/Kconfig"
+diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
+index 65e39bd4f934..8d48c70fee4d 100644
+--- a/drivers/iio/Makefile
++++ b/drivers/iio/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_IIO_TRIGGERED_EVENT) += industrialio-triggered-event.o
+ 
+ obj-y += accel/
+ obj-y += adc/
++obj-y += addac/
+ obj-y += afe/
+ obj-y += amplifiers/
+ obj-y += buffer/
+diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
+new file mode 100644
+index 000000000000..2e64d7755d5e
+--- /dev/null
++++ b/drivers/iio/addac/Kconfig
+@@ -0,0 +1,8 @@
++#
++# ADC DAC drivers
++#
++# When adding new entries keep the list in alphabetical order
++
++menu "Analog to digital and digital to analog converters"
++
++endmenu
+diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
+new file mode 100644
+index 000000000000..b888b9ee12da
+--- /dev/null
++++ b/drivers/iio/addac/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for industrial I/O ADDAC drivers
++#
++
++# When adding new entries keep the list in alphabetical order
+-- 
+2.33.0
 

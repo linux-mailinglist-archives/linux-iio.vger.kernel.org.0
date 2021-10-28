@@ -2,92 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88BDA43DF21
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 12:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D047343DF7F
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 12:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbhJ1KpF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 06:45:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45274 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229775AbhJ1KpE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 28 Oct 2021 06:45:04 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B396B60F58;
-        Thu, 28 Oct 2021 10:42:34 +0000 (UTC)
-Date:   Thu, 28 Oct 2021 11:47:00 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
-        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
-        jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [v2 05/10] iio: add modifers for pitch, yaw, roll
-Message-ID: <20211028114700.788635ba@jic23-huawei>
-In-Reply-To: <20211028101840.24632-6-andrea.merello@gmail.com>
-References: <20210715141742.15072-1-andrea.merello@gmail.com>
-        <20211028101840.24632-1-andrea.merello@gmail.com>
-        <20211028101840.24632-6-andrea.merello@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S230296AbhJ1KzB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 06:55:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37572 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230225AbhJ1Kyw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 06:54:52 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283E7C0432C1
+        for <linux-iio@vger.kernel.org>; Thu, 28 Oct 2021 03:52:23 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id g10so22795561edj.1
+        for <linux-iio@vger.kernel.org>; Thu, 28 Oct 2021 03:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
+         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
+         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
+         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
+         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
+         gaRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=ST1ieMl7Gt7Mxi0mE8IBLhzE7eC9HlwQwnOG8xAWy3rPaPomKR8szWptVmpEdVO9bL
+         ILqCY+dvhI1Q5w3WcrVhhIGiJBsBrYnvQ84Rn6Wh2DcJW3MmaFBHKaBpgBcMJcoDaU7U
+         PtJk4wbCAcG2GbwQDeM4udzY7rWngDVyDRxlcpKCyA8D7p1hGgn7WDeqDli+B4nY3xs7
+         z4Vr7LZ64O/mL3wdi3LJKVU/WZwPlmLf20vO5UZ5aqeLye/UqHyBYhbFAMhIlitv5tvO
+         kCrImLfDqTbEOQsbS27DOM9lNj7zokBWW6qqULK7U2wtE1V/7vV4HT5NynQstwGqPAp9
+         GfoA==
+X-Gm-Message-State: AOAM531iQ1CCH51NB7L40/gmrfy4ShkglcrDYZwR8RtBKxQr9g8P4oXp
+        oW0gNRVBRUWnsAyLwfOyLm/jQ/bOEN6k/NgQRYkfXLqtk0cdFO5R
+X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
+X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
+ Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
+ -0700 (PDT)
+Reply-To: aabdulwalialhashmi@gmail.com
+From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
+Date:   Thu, 28 Oct 2021 03:52:09 -0700
+Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
+Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Oct 2021 12:18:35 +0200
-Andrea Merello <andrea.merello@gmail.com> wrote:
+-- 
+Greetings,
 
-> This patch adds modifiers for reporting rotations as euler angles (i.e.
-> yaw, pitch and roll).
-> 
-> Signed-off-by: Andrea Merello <andrea.merello@iit.it>
-Same comment on tools update, and a few editorial things inline.
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
 
-Jonathan
+I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
 
-> ---
->  drivers/iio/industrialio-core.c | 5 ++++-
->  include/uapi/linux/iio/types.h  | 3 +++
->  2 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index a79cb32207e4..d2ebbfa8b9fc 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -136,7 +136,10 @@ static const char * const iio_modifier_names[] = {
->  	[IIO_MOD_O2] = "o2",
->  	[IIO_MOD_ACCEL_LINEAR_X] = "linear_x",
->  	[IIO_MOD_ACCEL_LINEAR_Y] = "linear_y",
-> -	[IIO_MOD_ACCEL_LINEAR_Z] = "linear_z"
-> +	[IIO_MOD_ACCEL_LINEAR_Z] = "linear_z",
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
 
-Move the comman to the previous patch.
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
 
-> +	[IIO_MOD_PITCH] = "pitch",
-> +	[IIO_MOD_YAW] = "yaw",
-> +	[IIO_MOD_ROLL] = "roll"
->  };
->  
->  /* relies on pairs of these shared then separate */
-> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> index db00f7c45f48..fc9909ca4f95 100644
-> --- a/include/uapi/linux/iio/types.h
-> +++ b/include/uapi/linux/iio/types.h
-> @@ -98,6 +98,9 @@ enum iio_modifier {
->  	IIO_MOD_ACCEL_LINEAR_X,
->  	IIO_MOD_ACCEL_LINEAR_Y,
->  	IIO_MOD_ACCEL_LINEAR_Z,
-> +	IIO_MOD_PITCH,
-> +	IIO_MOD_YAW,
-> +	IIO_MOD_ROLL
+He is from your country and shares the same last name with you.
 
-And add a comma here to make extending this in future easy.
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
 
->  };
->  
->  enum iio_event_type {
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
 
+Please kindly get back to me for more details if I can TRUST YOU.{
+aabdulwalialhashmi@gmail.com }
+
+Regards
+Abdulwali Alhashmi
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands

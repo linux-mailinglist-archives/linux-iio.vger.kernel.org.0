@@ -2,172 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A32543DC59
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 09:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2656143DC94
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 09:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbhJ1HvA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 03:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52320 "EHLO
+        id S229963AbhJ1IBo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 04:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbhJ1Hu7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 03:50:59 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4659C061570;
-        Thu, 28 Oct 2021 00:48:32 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id r28so5663842pga.0;
-        Thu, 28 Oct 2021 00:48:32 -0700 (PDT)
+        with ESMTP id S229881AbhJ1IBo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 04:01:44 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE6BC061570;
+        Thu, 28 Oct 2021 00:59:17 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id n11-20020a17090a2bcb00b001a1e7a0a6a6so7351530pje.0;
+        Thu, 28 Oct 2021 00:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=Zfml4e/5zjeeksUFAYJ3rGZIA4StdAA4EuaHjMcQT38=;
-        b=huhpet0MqDupEUIfOECUKPrG53w0qEtMllFJZbxy4Me0FyWstqsZ7UneriQNH7rGuC
-         3LgBE/hmavntJtz7TkVXqvfm37Bg8GiktDQOMOOEW9FOgiBOC06JWXwBlNwnBroXa0BR
-         Voi+RaSCWJnELgSdWiUvOtw+D9w8vLnQsVIPLscCG7DUaxWR4AZLsDgwygX0i3GwMUho
-         my/uxovtguIuI+HPJz+29klY4pI9fADhnYLFraQgF1+c0fnq2+VG/qTvQLePegSwKFCg
-         bsZumqvtECcx5VQb6lNno6nAUKS+fIsvH/VSJ1Juo6nbQ3jNQyWF1OtacPOuipV1kYaW
-         q5Dw==
+        bh=WAuGYNbo/AA6GA7SUHxxtP8LSZF8idLZrI6kORizGFk=;
+        b=K0CRhciV+Fa4xYa652bhU2Qbrcq2efo/uHMWjBWGdMUVJd0F8KCwPIMQ7E93PcmCaU
+         wjI30s5I6Bo4TDFol5YqHP2+EU+O3lQ0mzRShq048VYjI9+Yh2BxFOTRLFzrJLBz3wCD
+         eETTh9AHYlM0k85GWwIWWvsYqYWEOXJajXVUsuTVDDQOY1yCDrp225tAMj74hvysd94+
+         1hKfaxEzxILsOSMoCeF1BXneOtGuImyNaeCy/S8r5pbDHEmPdnpuqgZPQvSpIGUqOvUK
+         X7PM+xQW2sRpVWgH1PR6fgKW/2WbjMfHUMFPl7oT0DLumEKaGBBp0rfQsFdWMt217y0p
+         lCOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Zfml4e/5zjeeksUFAYJ3rGZIA4StdAA4EuaHjMcQT38=;
-        b=RfQnrQzB0l8Om9MFcFJ9gJWVt2Nlmi/xRTbHXQBl6WqhfEXlh1lrbU5kpnu2THcRCc
-         mhTey7P8e//BNIXioHysy3960oQit+V61T7EQDLuV6dv6Rtqv8gLo4p8Lx8+pXrPRV0w
-         9rXF1nWlrfgBw+hxDB6lH3rzHH3Bs3xglLZTFEJuVoBveptUfl5p+lyqx7kU42v50yVK
-         AUAV7lE3yh0mUHaGdEN6VDue54Ncv4zU7wH78YT/JSzIzQ1RZ/XuW/Qk6/EPGekTzEXG
-         pk+x1GEdiRtHD0fWZBIPmrK4057FB93AMNyICj3/b7CvNjbUW10zOviJ7lj+VO7iW16f
-         4EWA==
-X-Gm-Message-State: AOAM532pu+atIOtldm5qR6y5JzZtQGwr1lOXlghY0Iqwxm5kPd4Rd21v
-        eMwFsPR9NxCB8GHAigQHQiWlmD2ao38=
-X-Google-Smtp-Source: ABdhPJxhSQ80/zsI1j1kX4zZKzW2XoeRvm6mtyOtSwlgdy3+1ugCeIH2wETwQ0645Pb5LNOQP4zbKA==
-X-Received: by 2002:a63:b957:: with SMTP id v23mr2013793pgo.74.1635407312096;
-        Thu, 28 Oct 2021 00:48:32 -0700 (PDT)
+        bh=WAuGYNbo/AA6GA7SUHxxtP8LSZF8idLZrI6kORizGFk=;
+        b=RuSqwiGidAWOnHqeMAjZnI7qmizBdG3IWXjCg0AUcVmW9qbBv4jHUJnkjYpjcuw/ii
+         23ftcEyfRxuuwdE4zanCjoH57fRrkwdZJw6DG18xKaVQtiv7ag0CY4TUAvChMGUhT/PV
+         brFyVcPN3xzrM8OzxJBsqVrqCq3yvqP1tbMHpx+x+sRk24nkLSL/6kx0pmnsDb/4tCNI
+         fiQv0ZrKS1cijbsB0gm9NpNSuJ+pDFXkHhbkNOc9QTd2sq6lN3GGvsgUaTrtA8C+qyfx
+         YD9sjOL9H3YNkLwUsHw4MZ+x5a6M8idnHkxPS+U93IU4T78XgF/kCT9KaeLpD19jGhOD
+         W/tQ==
+X-Gm-Message-State: AOAM5303AYp/cTGvMuKn5iY9hgRCKPh8SpJBJKPKTuDwjSeqrRYg+9cX
+        EiN/35JIv3DAUHrLSAS8Dk4j8FC72qg=
+X-Google-Smtp-Source: ABdhPJxW308wutNNZsfzuUxliY4SLoyiVzFbHVwefJZ+PIE14lMcCb6ekAgSpwfDR+MjiJZRigehmA==
+X-Received: by 2002:a17:90b:3b52:: with SMTP id ot18mr11056313pjb.77.1635407957405;
+        Thu, 28 Oct 2021 00:59:17 -0700 (PDT)
 Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id i2sm2274853pfa.34.2021.10.28.00.48.29
+        by smtp.gmail.com with ESMTPSA id f21sm2828759pfc.89.2021.10.28.00.59.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Oct 2021 00:48:31 -0700 (PDT)
-Date:   Thu, 28 Oct 2021 16:48:26 +0900
+        Thu, 28 Oct 2021 00:59:16 -0700 (PDT)
+Date:   Thu, 28 Oct 2021 16:59:12 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     David Lechner <david@lechnology.com>
 Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/8] counter/ti-eqep: add support for unit timer
-Message-ID: <YXpVyjnrrmRbpHJU@shinobu>
+Subject: Re: [PATCH 4/8] docs: counter: add unit timer sysfs attributes
+Message-ID: <YXpYUIUIQe+oxwXK@shinobu>
 References: <20211017013343.3385923-1-david@lechnology.com>
- <20211017013343.3385923-4-david@lechnology.com>
- <YXZvQSU6bRRaWD89@shinobu>
- <253916e2-a808-8786-ac72-60a1a62b1531@lechnology.com>
+ <20211017013343.3385923-5-david@lechnology.com>
+ <YXj1xc6DdeOrUKjW@shinobu>
+ <6e96cdd9-d1f1-6861-59eb-c4e6b9a2ffb9@lechnology.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hJL1FEZlpoaElEeg"
+        protocol="application/pgp-signature"; boundary="79xH+X/itCG/Y5or"
 Content-Disposition: inline
-In-Reply-To: <253916e2-a808-8786-ac72-60a1a62b1531@lechnology.com>
+In-Reply-To: <6e96cdd9-d1f1-6861-59eb-c4e6b9a2ffb9@lechnology.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---hJL1FEZlpoaElEeg
+--79xH+X/itCG/Y5or
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 27, 2021 at 10:28:59AM -0500, David Lechner wrote:
-> On 10/25/21 3:48 AM, William Breathitt Gray wrote:
-> > On Sat, Oct 16, 2021 at 08:33:38PM -0500, David Lechner wrote:
-> >> This adds support to the TI eQEP counter driver for the Unit Timer.
-> >> The Unit Timer is a device-level extension that provides a timer to be
-> >> used for speed calculations. The sysfs interface for the Unit Timer is
-> >> new and will be documented in a later commit. It contains a R/W time
-> >> attribute for the current time, a R/W period attribute for the timeout
-> >> period and a R/W enable attribute to start/stop the timer. It also
-> >> implements a timeout event on the chrdev interface that is triggered
-> >> each time the period timeout is reached.
+On Wed, Oct 27, 2021 at 10:30:36AM -0500, David Lechner wrote:
+> On 10/27/21 1:46 AM, William Breathitt Gray wrote:
+> > On Sat, Oct 16, 2021 at 08:33:39PM -0500, David Lechner wrote:
+> >> This documents new unit timer sysfs attributes for the counter
+> >> subsystem.
 > >>
 > >> Signed-off-by: David Lechner <david@lechnology.com>
 > >=20
-> > I'll comment on the sysfs interface in the respective docs patch. Some
-> > comments regarding this patch below.
+> > Hello David,
 > >=20
->=20
-> ...
->=20
-> >> +static int ti_eqep_unit_timer_period_write(struct counter_device *cou=
-nter,
-> >> +					   u64 value)
-> >> +{
-> >> +	struct ti_eqep_cnt *priv =3D counter->priv;
-> >> +	u32 quprd;
-> >> +
-> >> +	/* convert nanoseconds to timer ticks */
-> >> +	quprd =3D value =3D mul_u64_u32_div(value, priv->sysclkout_rate, NSE=
-C_PER_SEC);
-> >> +	if (quprd !=3D value)
-> >> +		return -ERANGE;
-> >> +
-> >> +	/* protect against infinite unit timeout interrupts */
-> >> +	if (quprd =3D=3D 0)
-> >> +		return -EINVAL;
-> >=20
-> > I doubt there's any practical reason for a user to set the timer period
-> > to 0, but perhaps we should not try to protect users from themselves
-> > here. It's very obvious and expected that setting the timer period to 0
-> > results in timeouts as quickly as possible, so really the user should be
-> > left to reap the fruits of their decision regardless of how asinine that
-> > decision is.
->=20
-> Even if the operating system ceases operation because the interrupt
-> handler keeps running because clearing the interrupt has no effect
-> in this condition?
+> > The unit timer is effectively a Count in its own right, so instead of
+> > introducing new sysfs attributes you can just implement it as another
+> > Count in the driver. Count 0 is "QPOSCNT", so set the name of this new
+> > Count 1 as "Unit Timer" (or the datasheet naming if more apt) to
+> > differentiate the Counts. You can then provide the "unit_timer_enable",
+> > "unit_timer_period", and "unit_timer_time" functionalities as respective
+> > Count 1 extensions ("enable" and "period") and Count 1 "count".
 
-I don't disagree with you that configuring the device to repeatedly
-timeout without pause would be a waste of system resources. However, it
-is more appropriate for this protection to be located in a userspace
-application rather than the driver code here.
-
-The purpose of a driver is to expose the functionality of a device in an
-understandable and consistent manner. Drivers should not dictate what a
-user does with their device, but rather should help facilitate the
-user's control so that the device behaves as would be expected given
-such an interface.
-
-For this particular case, the device is capable of sending an interrupt
-when a timeout events occurs, and the timeout period can be adjusted;
-setting the timeout period lower and lower results in less and less time
-between timeout events. The behavior and result of setting the timeout
-period lower is well-defined and predictable; it is intuitive that
-configuring the timeout period to 0, the lowest value possible, results
-in the shortest time possible between timeouts: no pause at all.
-
-As long as the functionality of this device is exposed in such an
-understandable and consistent manner, the driver succeeds in serving its
-purpose. So I believe a timeout period of 0 is a valid configuration
-for this driver to allow, albeit a seemingly pointless one for users to
-actually choose. To that end, simply set the default value of QUPRD to
-non-zero on probe() as you do already in this patch and let the user be
-free to adjust if they so decide.
+Actually if the counter function here is COUNTER_FUNCTION_DECREASE, then
+instead of introducing a new "period" extension, define this as a
+"ceiling" extension; that's what ceiling represents in the Counter
+interface: "the upper limit for the respective counter", which is the
+period of a timer counting down to a timeout.
 
 William Breathitt Gray
 
---hJL1FEZlpoaElEeg
+> >=20
+> > If you believe it appropriate, you can provide the raw timer ticks via
+> > the Count 1 "count" while a nanoseconds interface is provided via a
+> > Count 1 extension "timeout" (or something similar).
+> >=20
+>=20
+> Sounds reasonable.
+>=20
+
+--79xH+X/itCG/Y5or
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF6Vb8ACgkQhvpINdm7
-VJLXcw/8DBoqyQVMSMUjudHYbWVbHN31fXpYvv0vcUwGEfOBb4hNcyBGopF/NpA1
-HfhcGN0gOrbX3wCRe7cMhVeJ9HMOUnZ2HGwm7ozyPhoirOZkDupZoD9dFnTXaSw2
-3mETKBXFX5TSMs0q1TgvAVycBwJycPtAXrrWV3K411hDDXE1TRLReZSWIt15rgIn
-vLQp+A0WlQP9/1mhv8ABkA2iXPkLTt2PiYyc8qqo5QfJXbH8EpP1bKMsse/8J59j
-8sOV4PDUGfLf5VxmYWPjxgkEvmqXUp6RnYzlVQ6Dp4AF/wfjPTKAq0PG4B0ANeE6
-2TZpvmJm+x33El8tR2sePynwLTDFTAkx4HnDaGOYAjsEG9Q006icB9iejNODRy/k
-+I7RCCpuU7X1VTkqc9c/M9gYv2sLM1xIzyTY7/VpFqPu1DZmHRCGxMUyhWvKoVO6
-LGQCdIxxPNlOD7TZwiyQYpNccqcJh9amVH68PKJtKAfVsCGdfs2+AGK7UieZaJuM
-C2mh/HTTEa/wnvs1FRBYsCxyCVL0f2mkHwF/EqBhnTfEK48BWw3VaRiMXPzpkT+Q
-kqWHYKUVIRQh1nouFyYBnmnJHjx7Qrydjf9mBnc0uGs/15r4C1V0qUs1aDAg6u2e
-pvccldIKPpFLIFWcdPKjsVKkbpHnKC8dR9WcPzr2+spLja6VWrE=
-=8g77
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF6WFAACgkQhvpINdm7
+VJJGaw/9FMQQqedX6WSzBBOZ4Rdrp6CWG/0QpTwrcCh//QK6p6xnOKWl/E0ra83Z
+HALAoo6k5KN+8Cq+6mYd/XGuKKacpeXREtnE9dy/Sbsa2RNHmYwODVKB+gQiC0BR
+QD6b+8eFEfW3h9x3vW7lvzwjV9UmCO83uqeHsZu2KU0jRUHjcxIiWeoWaMhaTNRx
+qltz1gGLi4BHoXNiA66AnqUc7QZUhmEjUU7N0fQ65hBC4NQEUNzSN1l+o6SrdBxu
+8MKipszR4Kz1SlPAMU4h/LZKUgOPuth1x/ptd1GpiSqrd2OaKT3seRnGUC4/Zkl7
+U03EZkzrJvodq75KeTq+ITansSDYABz1DcB7VYt2JdBIcjC4O8GBV/phivybeYHs
+Gopj2A4JmfjUbibQItFZiezEmTOkJ2icpZ+YNPnZRQMPKmpdNqtWS1PoPXLCzAYi
+yV49oUPD/BPISA7LrMU/cMyKrdkptrsek74ECa3N79eCWFbYzm6tLaTzI/mVjK/D
+crQbceWAAGftLPCVtYEIYdLwB24/vPW+CtcvulRXfnbJy/vo3Ouu7P5uXrYVISz/
+4CHqfneiC0UNdf/xtnMe+H5YRUGZpAvdGOcb95xFz0nJWIkeEpl/Nb5QKw9bhp1f
+ZLyvfvEvaz+lmbyWqZ5p/+0fiZdtzvZijfIdAaUPUPJrHNUav5w=
+=izg9
 -----END PGP SIGNATURE-----
 
---hJL1FEZlpoaElEeg--
+--79xH+X/itCG/Y5or--

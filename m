@@ -2,79 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8970F43E920
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Oct 2021 21:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF33643F241
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Oct 2021 00:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbhJ1TzR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Oct 2021 15:55:17 -0400
-Received: from www381.your-server.de ([78.46.137.84]:58168 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbhJ1TzR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 15:55:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=unEhKMWELovPqvf1Ykfw+b6GFq7qikv6XNXLkRDETFk=; b=UvT+sY8Adj74G6lon48o5eKEWt
-        npagaGyYEJCmIHW6m9Eq72o2KzUOB69nK21KFjQAnJ4F/Ja+3pD5kR2AQXPZwe/GmR8VrTdMinZ9m
-        i6onw03aqNVHtPvZ5iJ8XbFMwpSvBUgqCYdhm7L1MlkP6l0DW/wEKq6NGOOwgTKYJNLubga/kgpDO
-        9Bc11PILWBoeeVhXOdccUJSFlyxJdqVH+9jXySZ+QQxMJgwbx68M3oRjW3so+qjhfzi6OMTOAKLT9
-        g9Umq7Km/d4SeaLj/Zx2eryB0Wvay6ALiX3f4f0OwDXIBUZkfpS9v2mrWDSXisl286jYytkrZ+QAK
-        SZK9XR2A==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mgBSA-00090R-Uc; Thu, 28 Oct 2021 21:52:46 +0200
-Received: from [82.135.83.71] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mgBSA-000LMW-Ls; Thu, 28 Oct 2021 21:52:46 +0200
-Subject: Re: [PATCH 1/2] iio: mma8452: Fix trigger reference couting
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Martin Fuzzey <mfuzzey@parkeon.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
-References: <20211024092700.6844-1-lars@metafoo.de>
- <20211028150731.753d4e40@jic23-huawei>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <3bf78fdf-c6df-dd77-a1f1-61800c0ebe37@metafoo.de>
-Date:   Thu, 28 Oct 2021 21:52:46 +0200
+        id S231307AbhJ1WH0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Oct 2021 18:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51120 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231290AbhJ1WH0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Oct 2021 18:07:26 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26196C061570;
+        Thu, 28 Oct 2021 15:04:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=C0URAtIqTgzQHryIDaXXjHNMTGhauwHVxMJmkYTTzcw=; b=I3xholVEQwOxRuk+KBgytIi7NE
+        dMq2/VOKL87Gb1Z02gGctYBsEcSY3I/0ztJPKeD5K92k/tfLeikdTaARinMxo94EORTUUfXMZkwJr
+        eVDv3lUE0pBekA3+62d8Ev1/d2mDaf8EQoaIwp9Abqbh+x9xz8wTVnx+h+8mzIXmGWFDEgUwbV4Jm
+        0unwxjYpsw11aL5gbJB3l9lF36CU80XzT3Rb984X2VS4iANDp6QNNRZqFcPePm8wfPBrjeiRUNy2j
+        2iHpCgdAj1PIBPpTEO8L+YBOA1e/RUJV+MZPAq0L1bOgzawtbDnct82/QWdm62E9RcvAwL3uKZFnp
+        Yfi9E/hA==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mgDW0-009D9u-33; Thu, 28 Oct 2021 22:04:52 +0000
+Subject: Re: [v2 10/10] iio: imu: add BNO055 I2C driver
+To:     Andrea Merello <andrea.merello@gmail.com>, jic23@kernel.org,
+        mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
+        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
+        jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
+References: <20210715141742.15072-1-andrea.merello@gmail.com>
+ <20211028101840.24632-1-andrea.merello@gmail.com>
+ <20211028101840.24632-11-andrea.merello@gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <85ef90ad-0d3a-6cb7-529f-667562b2ad71@infradead.org>
+Date:   Thu, 28 Oct 2021 15:04:51 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20211028150731.753d4e40@jic23-huawei>
+In-Reply-To: <20211028101840.24632-11-andrea.merello@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26336/Thu Oct 28 10:21:55 2021)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/28/21 4:07 PM, Jonathan Cameron wrote:
-> On Sun, 24 Oct 2021 11:26:59 +0200
-> Lars-Peter Clausen <lars@metafoo.de> wrote:
->
->> The mma8452 driver directly assigns a trigger to the struct iio_dev. The
->> IIO core when done using this trigger will call `iio_trigger_put()` to drop
->> the reference count by 1.
->>
->> Without the matching `iio_trigger_get()` in the driver the reference count
->> can reach 0 too early, the trigger gets freed while still in use and a
->> use-after-free occurs.
->>
->> Fix this by getting a reference to the trigger before assigning it to the
->> IIO device.
->>
->> Fixes: ae6d9ce05691 ("iio: mma8452: Add support for interrupt driven triggers.")
->> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> Gah. I thought we'd gotten all these years ago. I guess this one slipped through
-> the net.
-Btw. we already have iio_trigger_set_immutable(), which handles the 
-reference counting. I was think of adding a iio(_device)_trigger_set() 
-that does the same except not setting the trig_readonly flag. And then 
-eventually move the trigger to iio_dev_opaque. Any concerns with this?
+On 10/28/21 3:18 AM, Andrea Merello wrote:
+> This path adds an I2C driver for communicating to a BNO055 IMU via I2C bus
+> and it enables the BNO055 core driver to work in this scenario.
+> 
+> Signed-off-by: Andrea Merello <andrea.merello@iit.it>
+> ---
+>   drivers/iio/imu/bno055/Kconfig      |  6 ++++
+>   drivers/iio/imu/bno055/Makefile     |  1 +
+>   drivers/iio/imu/bno055/bno055_i2c.c | 54 +++++++++++++++++++++++++++++
+>   3 files changed, 61 insertions(+)
+>   create mode 100644 drivers/iio/imu/bno055/bno055_i2c.c
+> 
+> diff --git a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
+> index 941e43f0368d..87200787d548 100644
+> --- a/drivers/iio/imu/bno055/Kconfig
+> +++ b/drivers/iio/imu/bno055/Kconfig
+> @@ -7,3 +7,9 @@ config BOSH_BNO055_SERIAL
+>   	tristate "Bosh BNO055 attached via serial bus"
+>   	depends on SERIAL_DEV_BUS
+>   	select BOSH_BNO055_IIO
+> +
+> +config BOSH_BNO055_I2C
+> +	tristate "Bosh BNO055 attached via I2C bus"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	select BOSH_BNO055_IIO
+
+Hi,
+
+The config entries that have user prompt strings should also
+have help text.  scripts/checkpatch.pl should have told you
+about that...
+
+-- 
+~Randy

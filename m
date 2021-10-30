@@ -2,102 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E081440A12
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Oct 2021 17:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC926440A25
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Oct 2021 18:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231936AbhJ3P57 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 30 Oct 2021 11:57:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58824 "EHLO mail.kernel.org"
+        id S231830AbhJ3QHH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Oct 2021 12:07:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59752 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231830AbhJ3P57 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 30 Oct 2021 11:57:59 -0400
+        id S231766AbhJ3QHH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 30 Oct 2021 12:07:07 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9AF1460ED3;
-        Sat, 30 Oct 2021 15:55:26 +0000 (UTC)
-Date:   Sat, 30 Oct 2021 16:59:54 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id 6D4C5601FF;
+        Sat, 30 Oct 2021 16:04:35 +0000 (UTC)
+Date:   Sat, 30 Oct 2021 17:09:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Cosmin Tanislav <demonsingur@gmail.com>,
-        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] iio: add adddac subdirectory
-Message-ID: <20211030165954.459b978f@jic23-huawei>
-In-Reply-To: <PH0PR03MB63660FDDC3504DD4ABD1D76999879@PH0PR03MB6366.namprd03.prod.outlook.com>
-References: <20211028134849.3664969-1-demonsingur@gmail.com>
-        <20211028135608.3666940-1-demonsingur@gmail.com>
-        <PH0PR03MB63660FDDC3504DD4ABD1D76999879@PH0PR03MB6366.namprd03.prod.outlook.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Gwendal Grignou <gwendal@chromium.org>, swboyd@chromium.org,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: Use .realbits to extend a small signed integer
+Message-ID: <20211030170903.68b7e561@jic23-huawei>
+In-Reply-To: <c71a2781-f5f6-0725-dbdf-aaa823883be1@metafoo.de>
+References: <20211030111827.1494139-1-gwendal@chromium.org>
+        <20211030111827.1494139-2-gwendal@chromium.org>
+        <c71a2781-f5f6-0725-dbdf-aaa823883be1@metafoo.de>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Oct 2021 08:00:05 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Sat, 30 Oct 2021 13:35:19 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> Hi,
+> On 10/30/21 1:18 PM, Gwendal Grignou wrote:
+> > When calling sign_extend32() on a channel, use its .realbit information
+> > to limit the number of bits to process, instead of a constant.
+> >
+> > Changed only simple sign_extend32() calls, when .realbits was defined in
+> > the same file. Use 'grep -r sign_extend32 $(grep -lr realbits drivers/iio/)'
+> > to locate the files.
+> >
+> > Some files were not processed:
+> > gyro/fxas21002c_core.c : function parameter changes needed.
+> > health/max30102.c: Incomplete channel definition.
+> > health/max30100.c  
 > 
-> > -----Original Message-----
-> > From: Cosmin Tanislav <demonsingur@gmail.com>
-> > Sent: Thursday, October 28, 2021 3:56 PM
-> > Cc: demonsingur@gmail.com; Tanislav, Cosmin
-> > <Cosmin.Tanislav@analog.com>; Lars-Peter Clausen
-> > <lars@metafoo.de>; Hennerich, Michael
-> > <Michael.Hennerich@analog.com>; Jonathan Cameron
-> > <jic23@kernel.org>; Rob Herring <robh+dt@kernel.org>; linux-
-> > iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> > kernel@vger.kernel.org
-> > Subject: [PATCH v2 1/3] iio: add adddac subdirectory
-> > 
-> > [External]
-> > 
-> > From: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> > 
-> > For IIO devices that expose both ADC and DAC functionality.
-> > 
-> > Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> > ---  
+> I think this is good work, but it seems a bit out of place in this 
+> series. I think it will be easier to get this reviewed and merged if it 
+> is submitted independently. It might make sense to only have the sx9310 
+> changes as part of this series and send the other ones as a separate patch.
 > 
-> One thing here that I'm not too sure is the naming of the directory.
-> I'm starting to see in ADI more and more of this highly integrated devices... For
-> example this one [1], is something we have someone already working one
-> and it has ADCs, DAC, amplifiers. So, I'm just wondering if now
-> it's not the time where we just have a generic enough place for these kind
-> of "combo" devices? Being that said, I have no idea about what name we could
-> give :)
+> What's also missing in the commit description is the motivation for 
+> this. The generated code will be a bit more complex, so there needs to 
+> be a good justification. E.g. having a single source of truth for this 
+> data and avoiding accidental mistakes.
 > 
-> [1]: https://www.analog.com/media/en/technical-documentation/data-sheets/AD7293.pdf
-> - Nuno Sá
+> The patch also uses `shift` were applicable, which is not mentioned in 
+> the commit dscription.
 
-Naming is always fun. I don't want to have combo start picking up IMUs so
-we need to be a bit careful.
+Be careful.  I have seen devices (with FIFOs) where the realbits doesn't
+necessarily match with a separate read path used for polled reads.
 
-We could take the approach we have done with proximity and light sensors of effectively
-declaring one type to the dominant one.  There it's a bit clearer though - you don't
-buy a proximity sensor if you want to just measure light levels.
+It is an option for the sca3000 for example but that's carrying a hack where
+ignore that and rely on some coincidental data alignment to pretend realbits
+is 13 when it's actually 11.
 
-Here there isn't always a dominant type.  The example here is titled input / output
-device so no preference of one over the other.  The GPIO stuff is kind of a feature
-bolted on, so ADDAC is generic enough.
-
-For the ad7293 it does call it a Power Amplifiers 'with' the other stuff so maybe
-just sticking to amplifier as the type is the way to go. 
-
-Meh, to a certain extent it doesn't matter - we can safely move these around
-once we have more of them in the tree.  The adt7316 is still in staging and
-is an ADDAC as well so I think we should put that category in for now.
-
-Jonathan
-
+Still in general it's a reasonable change but agree with Lars, separate series
+please.
+ 
 > 
+> 
+> > [...]
+> > diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
+> > index 1eb9e7b29e050..355854f0f59d2 100644
+> > --- a/drivers/iio/pressure/mpl3115.c
+> > +++ b/drivers/iio/pressure/mpl3115.c
+> > @@ -74,7 +74,7 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
+> >   			    int *val, int *val2, long mask)
+> >   {
+> >   	struct mpl3115_data *data = iio_priv(indio_dev);
+> > -	__be32 tmp = 0;
+> > +	__be16 tmp = 0;
+> >   	int ret;  
+> The be32 to be16 change might warrant its own patch. This is definitely 
+> changing the behavior of the driver. And I don't think it is correct the 
+> way its done. For the pressure data it is reading 3 bytes, which will 
+> cause a stack overflow.
+> >   
+> >   	switch (mask) {
+> > @@ -96,7 +96,7 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
+> >   			mutex_unlock(&data->lock);
+> >   			if (ret < 0)
+> >   				break;
+> > -			*val = be32_to_cpu(tmp) >> 12;
+> > +			*val = be32_to_cpu(tmp) >> chan->scan_type.shift;
+> >   			ret = IIO_VAL_INT;
+> >   			break;
+> >   		case IIO_TEMP: /* in 0.0625 celsius / LSB */
+> > @@ -111,7 +111,8 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
+> >   			mutex_unlock(&data->lock);
+> >   			if (ret < 0)
+> >   				break;
+> > -			*val = sign_extend32(be32_to_cpu(tmp) >> 20, 11);
+> > +			*val = sign_extend32(be16_to_cpu(tmp) >> chan->scan_type.shift,
+> > +					     chan->scan_type.realbits - 1);
+> >   			ret = IIO_VAL_INT;
+> >   			break;
+> >   		default:  
 > 
 

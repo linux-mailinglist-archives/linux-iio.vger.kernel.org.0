@@ -2,116 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC926440A25
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Oct 2021 18:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B5A440A39
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Oct 2021 18:40:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231830AbhJ3QHH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Oct 2021 12:07:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59752 "EHLO mail.kernel.org"
+        id S229845AbhJ3QnB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Oct 2021 12:43:01 -0400
+Received: from vern.gendns.com ([98.142.107.122]:33430 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231766AbhJ3QHH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 30 Oct 2021 12:07:07 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6D4C5601FF;
-        Sat, 30 Oct 2021 16:04:35 +0000 (UTC)
-Date:   Sat, 30 Oct 2021 17:09:03 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Gwendal Grignou <gwendal@chromium.org>, swboyd@chromium.org,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/5] iio: Use .realbits to extend a small signed integer
-Message-ID: <20211030170903.68b7e561@jic23-huawei>
-In-Reply-To: <c71a2781-f5f6-0725-dbdf-aaa823883be1@metafoo.de>
-References: <20211030111827.1494139-1-gwendal@chromium.org>
-        <20211030111827.1494139-2-gwendal@chromium.org>
-        <c71a2781-f5f6-0725-dbdf-aaa823883be1@metafoo.de>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S229694AbhJ3QnA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 30 Oct 2021 12:43:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=uamXSidjKkCn8xY6LAC2GoNAiGwksP7TQlMQJqx20Ms=; b=hPPV1QLCODnMO3kWcCkhMoMR6E
+        C4ku2VYCL4nIMKYJZtYkEkgWEwAl71miMYL1U0pVNkA4M0oUTkBXJY/nGnnrha30Bqp+qmW5FrG1/
+        fZPQgPxs6RZE2uR6ul9cR0p3OoGSymk6ew0eMptXpay/a7UYO8v7y4HhWAhmlixgdDomYEutmdmcr
+        Y9PmBdUXRBwQRSmJlo1pfxrqvLh6RW1KBZc8IRaraVdk2XDq6yu2fTZOrfwG3MIIuHbjJRnLTEnga
+        pIFg8BpoRKYymwUOE5xUHLEagm8hh+IatmxSjCjA6U/Q4hioqKDAw73tFdbxtuLjNTmswE01lOcXu
+        i9wC570Q==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:42744 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1mgrOv-0005Ok-4Q; Sat, 30 Oct 2021 12:40:28 -0400
+Subject: Re: [PATCH 4/8] docs: counter: add unit timer sysfs attributes
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
+        linux-kernel@vger.kernel.org
+References: <20211017013343.3385923-1-david@lechnology.com>
+ <20211017013343.3385923-5-david@lechnology.com> <YXj1xc6DdeOrUKjW@shinobu>
+ <6e96cdd9-d1f1-6861-59eb-c4e6b9a2ffb9@lechnology.com>
+ <YXpYUIUIQe+oxwXK@shinobu>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <d5d7454b-e0a0-7436-10d7-dcb402885479@lechnology.com>
+Date:   Sat, 30 Oct 2021 11:40:27 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <YXpYUIUIQe+oxwXK@shinobu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 30 Oct 2021 13:35:19 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On 10/28/21 2:59 AM, William Breathitt Gray wrote:
+> On Wed, Oct 27, 2021 at 10:30:36AM -0500, David Lechner wrote:
+>> On 10/27/21 1:46 AM, William Breathitt Gray wrote:
+>>> On Sat, Oct 16, 2021 at 08:33:39PM -0500, David Lechner wrote:
+>>>> This documents new unit timer sysfs attributes for the counter
+>>>> subsystem.
+>>>>
+>>>> Signed-off-by: David Lechner <david@lechnology.com>
+>>>
+>>> Hello David,
+>>>
+>>> The unit timer is effectively a Count in its own right, so instead of
+>>> introducing new sysfs attributes you can just implement it as another
+>>> Count in the driver. Count 0 is "QPOSCNT", so set the name of this new
+>>> Count 1 as "Unit Timer" (or the datasheet naming if more apt) to
+>>> differentiate the Counts. You can then provide the "unit_timer_enable",
+>>> "unit_timer_period", and "unit_timer_time" functionalities as respective
+>>> Count 1 extensions ("enable" and "period") and Count 1 "count".
+> 
+> Actually if the counter function here is COUNTER_FUNCTION_DECREASE, then
 
-> On 10/30/21 1:18 PM, Gwendal Grignou wrote:
-> > When calling sign_extend32() on a channel, use its .realbit information
-> > to limit the number of bits to process, instead of a constant.
-> >
-> > Changed only simple sign_extend32() calls, when .realbits was defined in
-> > the same file. Use 'grep -r sign_extend32 $(grep -lr realbits drivers/iio/)'
-> > to locate the files.
-> >
-> > Some files were not processed:
-> > gyro/fxas21002c_core.c : function parameter changes needed.
-> > health/max30102.c: Incomplete channel definition.
-> > health/max30100.c  
-> 
-> I think this is good work, but it seems a bit out of place in this 
-> series. I think it will be easier to get this reviewed and merged if it 
-> is submitted independently. It might make sense to only have the sx9310 
-> changes as part of this series and send the other ones as a separate patch.
-> 
-> What's also missing in the commit description is the motivation for 
-> this. The generated code will be a bit more complex, so there needs to 
-> be a good justification. E.g. having a single source of truth for this 
-> data and avoiding accidental mistakes.
-> 
-> The patch also uses `shift` were applicable, which is not mentioned in 
-> the commit dscription.
+It is an increasing counter.
 
-Be careful.  I have seen devices (with FIFOs) where the realbits doesn't
-necessarily match with a separate read path used for polled reads.
+> instead of introducing a new "period" extension, define this as a
+> "ceiling" extension; that's what ceiling represents in the Counter
+> interface: "the upper limit for the respective counter", which is the
+> period of a timer counting down to a timeout.
 
-It is an option for the sca3000 for example but that's carrying a hack where
-ignore that and rely on some coincidental data alignment to pretend realbits
-is 13 when it's actually 11.
+In one of the other patches, you made a comment about the semantics
+of ceiling with relation to the overflow event. We can indeed treat
+the timer as a counter and the period as the ceiling. However, the
+unit timer event occurs when the count is equal to the period (ceiling)
+whereas an overflow event occurs when the count exceeds the ceiling.
+So what would this event be called in generic counter terms? "timeout"
+doesn't seem right.
 
-Still in general it's a reasonable change but agree with Lars, separate series
-please.
- 
 > 
+> William Breathitt Gray
 > 
-> > [...]
-> > diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
-> > index 1eb9e7b29e050..355854f0f59d2 100644
-> > --- a/drivers/iio/pressure/mpl3115.c
-> > +++ b/drivers/iio/pressure/mpl3115.c
-> > @@ -74,7 +74,7 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
-> >   			    int *val, int *val2, long mask)
-> >   {
-> >   	struct mpl3115_data *data = iio_priv(indio_dev);
-> > -	__be32 tmp = 0;
-> > +	__be16 tmp = 0;
-> >   	int ret;  
-> The be32 to be16 change might warrant its own patch. This is definitely 
-> changing the behavior of the driver. And I don't think it is correct the 
-> way its done. For the pressure data it is reading 3 bytes, which will 
-> cause a stack overflow.
-> >   
-> >   	switch (mask) {
-> > @@ -96,7 +96,7 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
-> >   			mutex_unlock(&data->lock);
-> >   			if (ret < 0)
-> >   				break;
-> > -			*val = be32_to_cpu(tmp) >> 12;
-> > +			*val = be32_to_cpu(tmp) >> chan->scan_type.shift;
-> >   			ret = IIO_VAL_INT;
-> >   			break;
-> >   		case IIO_TEMP: /* in 0.0625 celsius / LSB */
-> > @@ -111,7 +111,8 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
-> >   			mutex_unlock(&data->lock);
-> >   			if (ret < 0)
-> >   				break;
-> > -			*val = sign_extend32(be32_to_cpu(tmp) >> 20, 11);
-> > +			*val = sign_extend32(be16_to_cpu(tmp) >> chan->scan_type.shift,
-> > +					     chan->scan_type.realbits - 1);
-> >   			ret = IIO_VAL_INT;
-> >   			break;
-> >   		default:  
-> 
+>>>
+>>> If you believe it appropriate, you can provide the raw timer ticks via
+>>> the Count 1 "count" while a nanoseconds interface is provided via a
+>>> Count 1 extension "timeout" (or something similar).
+>>>
+
+One area where this concept of treating a timer as a counter potentially
+breaks down is the issue of CPU frequency scaling. By treating the unit
+timer as a timer, then the kernel could take care of any changes in clock
+rate internally by automatically adjusting the prescalar and period on
+rate change events. But if we are just treating it as a counter, then we
+should probably just have an attribute that provides the clock rate and
+if we want to support CPU frequency scaling, add an event that indicates
+that the clock rate changed.
 

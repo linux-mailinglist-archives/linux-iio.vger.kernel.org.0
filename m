@@ -2,34 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D1D440A54
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Oct 2021 19:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C75DE440A8C
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Oct 2021 19:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229845AbhJ3RHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Oct 2021 13:07:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40348 "EHLO mail.kernel.org"
+        id S231462AbhJ3RW4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Oct 2021 13:22:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42430 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229694AbhJ3RG7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 30 Oct 2021 13:06:59 -0400
+        id S231134AbhJ3RW4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 30 Oct 2021 13:22:56 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 612DA60F21;
-        Sat, 30 Oct 2021 17:04:28 +0000 (UTC)
-Date:   Sat, 30 Oct 2021 18:08:56 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id C776C60F9B;
+        Sat, 30 Oct 2021 17:20:24 +0000 (UTC)
+Date:   Sat, 30 Oct 2021 18:24:52 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Martin Fuzzey <mfuzzey@parkeon.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     lars@metafoo.de, swboyd@chromium.org, andy.shevchenko@gmail.com,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: mma8452: Fix trigger reference couting
-Message-ID: <20211030180856.45345c1a@jic23-huawei>
-In-Reply-To: <86c1aa49-edc4-c02c-7ab7-4d075819a847@metafoo.de>
-References: <20211024092700.6844-1-lars@metafoo.de>
-        <20211028150731.753d4e40@jic23-huawei>
-        <3bf78fdf-c6df-dd77-a1f1-61800c0ebe37@metafoo.de>
-        <20211030160357.6191e2a8@jic23-huawei>
-        <86c1aa49-edc4-c02c-7ab7-4d075819a847@metafoo.de>
+Subject: Re: [PATCH 4/5] dt-bindings: iio: Add sx9324 binding
+Message-ID: <20211030182452.76712323@jic23-huawei>
+In-Reply-To: <20211030111827.1494139-5-gwendal@chromium.org>
+References: <20211030111827.1494139-1-gwendal@chromium.org>
+        <20211030111827.1494139-5-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,68 +34,196 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 30 Oct 2021 17:12:02 +0200
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Sat, 30 Oct 2021 04:18:26 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> On 10/30/21 5:03 PM, Jonathan Cameron wrote:
-> > On Thu, 28 Oct 2021 21:52:46 +0200
-> > Lars-Peter Clausen <lars@metafoo.de> wrote:
-> >  
-> >> On 10/28/21 4:07 PM, Jonathan Cameron wrote:  
-> >>> On Sun, 24 Oct 2021 11:26:59 +0200
-> >>> Lars-Peter Clausen <lars@metafoo.de> wrote:
-> >>>     
-> >>>> The mma8452 driver directly assigns a trigger to the struct iio_dev. The
-> >>>> IIO core when done using this trigger will call `iio_trigger_put()` to drop
-> >>>> the reference count by 1.
-> >>>>
-> >>>> Without the matching `iio_trigger_get()` in the driver the reference count
-> >>>> can reach 0 too early, the trigger gets freed while still in use and a
-> >>>> use-after-free occurs.
-> >>>>
-> >>>> Fix this by getting a reference to the trigger before assigning it to the
-> >>>> IIO device.
-> >>>>
-> >>>> Fixes: ae6d9ce05691 ("iio: mma8452: Add support for interrupt driven triggers.")
-> >>>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>  
-> >>> Gah. I thought we'd gotten all these years ago. I guess this one slipped through
-> >>> the net.  
-> >> Btw. we already have iio_trigger_set_immutable(), which handles the
-> >> reference counting. I was think of adding a iio(_device)_trigger_set()
-> >> that does the same except not setting the trig_readonly flag. And then
-> >> eventually move the trigger to iio_dev_opaque. Any concerns with this?  
-> > No concerns, seems like as sensible change given how things are evolving.
-> > Obviously some other stuff that would need changing before we can
-> > actually move trig.
-> >
-> > One early step would be to modify iio_trigger_notify_done() to take
-> > a struct iio_dev rather than a struct iio_trigger.  A job for a coccinelle
-> > script I think!  That function name might need a rethink along with the
-> > parameter change.  
+> Similar to SX9310, add biddings to setup sx9324 hardware properties.
+> SX9324 is a little different, introduce 4 phases to be configured in 2
+> pairs over 3 antennas.
 > 
-> That was my first idea, but then I was like why do we even have to call 
-> notify_done()? Can't we automate this, given all the bugs we had around 
-> this over the years.
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+This has a high degree of black magic.
 
-Maybe.   Originally thinking was that some devices would schedule work to
-complete the read so it might not correspond to IRQ_HANDLED.
+I'm curious - is there a fairly heavy weight userspace library interpreting
+the various readings?  If so I don't suppose it's available anywhere to look at?
+If you can point to any public info on this part that would also be great.
 
-I have no idea if there are any drivers still doing that though.
-
-> 
-> Sill work in progress: 
-> https://github.com/larsclausen/linux/commit/d6ed694c9e512e1f7f3b40ad06b153feca8d7bb1 
-> but I think this will work.
-> 
-> >
-> > Hmm. Looks like we have a few drivers passing indio_dev->trig to iio_trigger_poll
-> > as well which is a little odd.  mma8452 is one of them and it's not using
-> > an immutable trigger or validate_trigger() so unexpected results if anyone
-> > changes the trigger...  Possibly not fatal as the interrupt will probably
-> > not occur but not correct either...  
-> Yep, that's on my radar too. And one of the reasons to move the trigger 
-> to the opaque structure so this type of error can not happen.
-Indeed - the goal is good, but might take some doing to get there!
+Thanks,
 
 Jonathan
+
+> ---
+>  .../iio/proximity/semtech,sx9324.yaml         | 141 ++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> new file mode 100644
+> index 0000000000000..fe9edf15c16d4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> @@ -0,0 +1,141 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Semtech's SX9324 capacitive proximity sensor
+> +
+> +maintainers:
+> +  - Gwendal Grignou <gwendal@chromium.org>
+> +  - Daniel Campello <campello@chromium.org>
+> +
+> +description: |
+> +  Semtech's SX9324 proximity sensor.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - semtech,sx9324x
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description:
+> +      The sole interrupt generated by the device used to announce the
+> +      preceding reading request has finished and that data is
+> +      available or that a close/far proximity event has happened.
+No need to say sole given maxItems: 1
+Perhaps...
+
+	Generated by device to announce preceding read request has finished
+	and data is available or that a close/far proximity event has happened.
+
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Main power supply
+> +
+> +  svdd-supply:
+> +    description: Host interface power supply
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+
+Curious -  Do we have consumers of this?
+
+> +
+> +  semtech,ph0-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: |
+> +      Indicates how each CS pin is used during phase 0.
+> +      Each of the 3 pins have the following value -
+> +      0 : unused (high impedance)
+> +      1 : measured input
+> +      2 : dynamic shield
+> +      3 : grounded.
+> +      For instance, CS0 measured, CS1 shield and CS2 ground is [1, 2, 3]
+> +    items:
+> +      enum: [ 0, 1, 2, 3 ]
+> +    minItems: 3
+> +    maxItems: 3
+> +
+> +  semtech,ph1-pin:
+> +  semtech,ph2-pin:
+> +  semtech,ph3-pin:
+> +    Same as ph0-pin
+
+I'm curious - why would you chose different combinations?  I guess because of
+different wiring.  If that's the case, is there a documented 'right' choice
+for a given wiring.   I'm just wondering if we are better off describing
+what is connected to these pins and having the driver pick a valid control
+sequence.  That might simplify things.  If not then fair enough.
+
+> +
+> +  semtech,resolution01
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> +    description:
+> +      Capacitance measurement resolution. For phase 0 and 1.
+> +      Higher the number, higher the resolution.
+
+Can we not give something more meaningful than high is higher?
+I don't have the datasheet for this part and the 9330 that I'm
+looking at is rather unhelpful on this.  I have no idea how anyone
+using that datasheet would figure out what to set this to!
+
+> +    default: 4
+> +
+> +  semtech,resolution23
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> +    description:
+> +      Capacitance measurement resolution. For phase 2 and 3
+> +    default: 4
+> +
+> +  semtech,startup-sensor:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 1, 2, 3]
+> +    default: 0
+> +    description:
+> +      Phase used for start-up proximity detection.
+> +      It is used when we enable a phase to remove static offset and measure
+> +      only capacitance changes introduced by the user.
+> +
+> +  semtech,proxraw-strength01:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> +    default: 1
+> +    description:
+> +      PROXRAW filter strength for phase 0 and 1. A value of 0 represents off,i
+> +      and other values represent 1-1/N.
+> +
+> +  semtech,proxraw-strength23:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> +    default: 1
+> +    description:
+> +      PROXRAW filter strength for phase 2 and 3. A value of 0 represents off,i
+> +      and other values represent 1-1/N.
+> +
+> +  semtech,avg-pos-strength:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
+> +    default: 16
+> +    description:
+> +      Average positive filter strength. A value of 0 represents off and
+> +      UINT_MAX (4294967295) represents infinite. Other values
+> +      represent 1-1/N.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      proximity@28 {
+> +        compatible = "semtech,sx9310";
+> +        reg = <0x28>;
+> +        interrupt-parent = <&pio>;
+> +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
+> +        vdd-supply = <&pp3300_a>;
+> +        svdd-supply = <&pp1800_prox>;
+> +        #io-channel-cells = <1>;
+> +        semtech,ph0-pin = <1, 2, 3>;
+> +        semtech,ph1-pin = <3, 2, 1>;
+> +        semtech,ph2-pin = <1, 2, 3>;
+> +        semtech,ph3-pin = <3, 2, 1>;
+> +        semtech,resolution01 = 2;
+> +        semtech,resolution23 = 2;
+> +        semtech,startup-sensor = <1>;
+> +        semtech,proxraw-strength01 = <2>;
+> +        semtech,proxraw-strength23 = <2>;
+> +        semtech,avg-pos-strength = <64>;
+> +      };
+> +    };
 

@@ -2,126 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2214440F80
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Oct 2021 17:46:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE6D440F8A
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Oct 2021 17:49:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbhJaQtK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Oct 2021 12:49:10 -0400
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net ([162.243.161.220]:53720
-        "HELO zg8tmtyylji0my4xnjeumjiw.icoremail.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S229579AbhJaQtK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Oct 2021 12:49:10 -0400
-Received: from icoremail.net (unknown [10.12.1.20])
-        by hzbj-icmmx-2 (Coremail) with SMTP id AQAAfwBXd8eGyH5hkA7JBA--.60400S2;
-        Mon, 01 Nov 2021 00:47:02 +0800 (CST)
-Received: from ubuntu-laptop.lan (unknown [46.253.189.78])
-        by mail (Coremail) with SMTP id AQAAfwAnOe1kyH5hLzwAAA--.2684S3;
-        Mon, 01 Nov 2021 00:46:31 +0800 (CST)
-From:   Maslov Dmitry <maslovdmitry@seeed.cc>
-To:     jic23@kernel.org, linux-iio@vger.kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com, north_sea@qq.com, baozhu.zuo@seeed.cc,
-        jian.xiong@seeed.cc
-Cc:     Maslov Dmitry <maslovdmitry@seeed.cc>
-Subject: [PATCH v3] iio: light: ltr501: Added ltr303 driver support
-Date:   Sun, 31 Oct 2021 17:46:03 +0100
-Message-Id: <20211031164603.4343-1-maslovdmitry@seeed.cc>
-X-Mailer: git-send-email 2.25.1
+        id S229579AbhJaQwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Oct 2021 12:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229993AbhJaQwY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Oct 2021 12:52:24 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E03B3C061570
+        for <linux-iio@vger.kernel.org>; Sun, 31 Oct 2021 09:49:52 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id w10so16091711ilc.13
+        for <linux-iio@vger.kernel.org>; Sun, 31 Oct 2021 09:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BMVjxcd/zzRQYq1WTivnwAIgAwOjNTLkhJ5Ulnu2Uk8=;
+        b=PTto3LGR+d204eIOomzPjb4LyuBs4qAuiWVdDPgZ28UxvJnZmtOqSyp4cjuduOqPaZ
+         8zo/BbOnT1gckvw4o7BBChlql2ZdUdpbFF79ZyXx7WlGiy+TRzqQfTWH80hUSRdYCYqo
+         MsP5D3BFfcRMQGGTZKRb11Qa104OzHDn7iFzE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BMVjxcd/zzRQYq1WTivnwAIgAwOjNTLkhJ5Ulnu2Uk8=;
+        b=nA8aTyG36MXmc6f7IV0L4poNfXtX/yMdWf5SxWZDC9FG7XZM+/XmfqCZgvcX8JLxxK
+         IvGnDOZDDsvVgJrxu2I5sHKiEafJ9iSGXMcFDXFFKQ8FNj7Ft6y9nOjfSK6a4GFpFjTg
+         YsB+WZJ/6NFQS3qdMGdx7QqMteqiABZB2fr2DAKMfZkte8Kh3iNem5bA2b4gMuAWS8SG
+         FluEuRWHodTXP3cBoi2VVAdLI4yg141YEXxh4bI8ystchyuN5uHpu6TrxWDcn2bjmu4P
+         WxsMtaR/oOzOW86wPtixgZY7DZwaqvef4CsO4DrsH/XNK4+3dYP4ohojut1/DDlqEuRl
+         NBWQ==
+X-Gm-Message-State: AOAM532ukT/+xM/P+3AMO43jzMCzKdemZYR4VXeyQFdOsB+qe4ZiU1Oq
+        9pIHE5it10BR+JaLIwGwoeoXw6lxWDDs5pNvCEMoEA==
+X-Google-Smtp-Source: ABdhPJw/fWI4yBIyNitNSOkjyAfBNm7ZNia/c9sL3FDDYXh1FB6HiazF1EN89RoDXLaaWcyo1HYKuzu3zB4MFn/nry4=
+X-Received: by 2002:a05:6e02:148b:: with SMTP id n11mr16126184ilk.230.1635698992204;
+ Sun, 31 Oct 2021 09:49:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwAnOe1kyH5hLzwAAA--.2684S3
-X-CM-SenderInfo: xpdvz0pygpx31u162vxhhghubf/
-Authentication-Results: hzbj-icmmx-2; spf=neutral smtp.mail=maslovdmit
-        ry@seeed.cc;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxAr47Kw17Kr4rGrWDJryfCrg_yoW5Xr4kpF
-        13WF15WF1rXF1fu3Z8JFs7ZFy5GrsrC3yjvryxK347Za9xG34Dua43t3WYkFn3XrWaqr4S
-        qF9FvFy09F15GFUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-        UUUUU
+References: <20210926073028.11045-1-hui.liu@mediatek.com> <20210926073028.11045-2-hui.liu@mediatek.com>
+ <20210926123022.1b76eaae@jic23-huawei>
+In-Reply-To: <20210926123022.1b76eaae@jic23-huawei>
+From:   Hsin-Yi Wang <hsinyi@chromium.org>
+Date:   Mon, 1 Nov 2021 00:49:26 +0800
+Message-ID: <CAJMQK-hDN3xOTU0gcmDWaOKRwPk_h0E7=6nok45mrU3RvgbcHw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] iio: mtk-auxadc: fix case IIO_CHAN_INFO_PROCESSED
+To:     Hui-Liu Liu <hui.liu@mediatek.com>
+Cc:     robh+dt@kernel.org, lars@metafoo.de, pmeerw@pmeerw.net,
+        srv_heupstream@mediatek.com, zhiyong.tao@mediatek.com,
+        chun-hung.wu@mediatek.com, yingjoe.chen@mediatek.com,
+        seiya.wang@mediatek.com, ben.tseng@mediatek.com,
+        matthias.bgg@gmail.com, s.hauer@pengutronix.de,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Previously ltr501 driver supported a number of light and,
-proximity sensors including ltr501, ltr559 and ltr301.
-This adds support for another light sensor ltr303
-used in Seeed Studio reTerminal, a carrier board
-for Raspberry Pi 4 CM.
+On Sun, Sep 26, 2021 at 7:26 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sun, 26 Sep 2021 15:30:28 +0800
+> Hui-Liu Liu <hui.liu@mediatek.com> wrote:
+>
+> > From: Hui Liu <hui.liu@mediatek.com>
+> >
+> > The previous driver does't apply the necessary scaling to take the
+> > voltage range into account.
+> > We change readback value from raw data to input voltage to fix case
+> > IIO_CHAN_INFO_PROCESSED.
+> >
+> > Fixes: ace4cdfe67be ("iio: adc: mt2701: Add Mediatek auxadc driver for mt2701.")
+> > Signed-off-by: Hui Liu <hui.liu@mediatek.com>
+>
+Hi Hui Liu,
 
-Signed-off-by: Maslov Dmitry <maslovdmitry@seeed.cc>
----
- drivers/iio/light/ltr501.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+After this patch, mt8183 tboard thermal sensor[1] is getting incorrect value:
+Before the patch:
+/sys/class/thermal/thermal_zone0/temp:41488 (cpu)
+/sys/class/thermal/thermal_zone7/temp:35433 (tboard)
+/sys/class/thermal/thermal_zone8/temp:33709 (tboard)
 
-It is a fix of previous commit, that simplified ltr303 support
-and removed a lot of unnecessary code. Filename has also been removed
-from the file.
-Additionally, in v3 of the patch, unused ltr_max was removed
-and description of the driver was changed to more general, i.e.
-"LTR501 and similar ambient light and proximity sensors."
+After the patch:
+/sys/class/thermal/thermal_zone0/temp:40365 (cpu)
+/sys/class/thermal/thermal_zone7/temp:69781 (tboard)
+/sys/class/thermal/thermal_zone8/temp:69014 (tboard)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 7e51aaac0bf..4c8672547fd 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * ltr501.c - Support for Lite-On LTR501 ambient light and proximity sensor
-+ * Support for Lite-On LTR501 and similar ambient light and proximity sensors.
-  *
-  * Copyright 2014 Peter Meerwald <pmeerw@pmeerw.net>
-  *
-@@ -98,6 +98,7 @@ enum {
- 	ltr501 = 0,
- 	ltr559,
- 	ltr301,
-+	ltr303,
- };
- 
- struct ltr501_gain {
-@@ -1231,6 +1232,18 @@ static const struct ltr501_chip_info ltr501_chip_info_tbl[] = {
- 		.channels = ltr301_channels,
- 		.no_channels = ARRAY_SIZE(ltr301_channels),
- 	},
-+	[ltr303] = {
-+		.partid = 0x0A,
-+		.als_gain = ltr559_als_gain_tbl,
-+		.als_gain_tbl_size = ARRAY_SIZE(ltr559_als_gain_tbl),
-+		.als_mode_active = BIT(0),
-+		.als_gain_mask = BIT(2) | BIT(3) | BIT(4),
-+		.als_gain_shift = 2,
-+		.info = &ltr301_info,
-+		.info_no_irq = &ltr301_info_no_irq,
-+		.channels = ltr301_channels,
-+		.no_channels = ARRAY_SIZE(ltr301_channels),
-+	},
- };
- 
- static int ltr501_write_contr(struct ltr501_data *data, u8 als_val, u8 ps_val)
-@@ -1597,6 +1610,7 @@ static const struct acpi_device_id ltr_acpi_match[] = {
- 	{"LTER0501", ltr501},
- 	{"LTER0559", ltr559},
- 	{"LTER0301", ltr301},
-+	{"LTER0303", ltr303},
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
-@@ -1605,6 +1619,7 @@ static const struct i2c_device_id ltr501_id[] = {
- 	{ "ltr501", ltr501},
- 	{ "ltr559", ltr559},
- 	{ "ltr301", ltr301},
-+	{ "ltr303", ltr303},
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, ltr501_id);
-@@ -1613,6 +1628,7 @@ static const struct of_device_id ltr501_of_match[] = {
- 	{ .compatible = "liteon,ltr501", },
- 	{ .compatible = "liteon,ltr559", },
- 	{ .compatible = "liteon,ltr301", },
-+	{ .compatible = "liteon,ltr303", },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ltr501_of_match);
--- 
-2.25.1
+[1] https://elixir.bootlin.com/linux/v5.15-rc7/source/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi#L862
 
+>
+> _______________________________________________
+> Linux-mediatek mailing list
+> Linux-mediatek@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-mediatek

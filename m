@@ -2,69 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDBDB442129
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Nov 2021 20:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8623C4421C1
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Nov 2021 21:37:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbhKAT7d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Nov 2021 15:59:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbhKAT71 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Nov 2021 15:59:27 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7C2C061714
-        for <linux-iio@vger.kernel.org>; Mon,  1 Nov 2021 12:56:53 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id j28so13266936ila.1
-        for <linux-iio@vger.kernel.org>; Mon, 01 Nov 2021 12:56:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=AOZMT0NUobpHN7R7KMHeFUdB5AsC0u04KXbhEHGPXwc=;
-        b=a70OOHA6epYnku23xuC+CR1kXimRSEuPekSs4vIOMuf+JXRYGZAszaSC9AmqkdnBEY
-         ZdHkOul7y430Uw6acb0OqV8xq7J7JlFAwqBdD2nEDdt+cGYD8oq2rKeCZpYFcqPEzFj5
-         EWpzhNdHi2MsHDOpg3rGZbEgJhdNRPwDEs8cQ4p6NHNBydfZFcea8SHklTmtLUPXT1LD
-         sZaM22hILkLtZ1qccuQc+OznxtG5gyb8KIef52Ibj3jatT6wTQUwhdHiuFtyjnxkkp3N
-         H12Nx74kcqotU2VccfZJw/dW70dipq9VQwXknH/xdhnUz3zBLnIjemmIksTV6P3G0vni
-         1gxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=AOZMT0NUobpHN7R7KMHeFUdB5AsC0u04KXbhEHGPXwc=;
-        b=DP4g4MKo93GsUpneZU0UU9PYdhZotfuF3r48NyadaLyBMBYlnAOZ46hgZcX3/RhTCT
-         ht1c8zu+a0A3ICnH5bTEC2E6800WX9xOCNQgFneJDdK5OOs1lwfxixClcIb6RNLkiuLS
-         QEU9yaWTzvw+y7X2YDN/H1wefPfONACHp9lN1sYNQrVnRQ6tbWEXiBz76iSFWWQz5QD7
-         CecOMnDUIU1Tpd72n1gTRbAOV/dPtDCzPjBrNqJQ1F/hTg1SudQf4j97DTLLk69ILTHN
-         p7WjuVuehxZlv5Jrp9ELZNQtsA01w5ymlzHKOZaQ3dXASze+YGbm5YQQ4caA3ap+P9nt
-         VNxg==
-X-Gm-Message-State: AOAM531Let053u03tPUF62BM0iejNmoML6NI7n2YwhmAN7Y35XG50abq
-        A3BBJZmOOkOF7LnjjmF+R0/zMVqYmBSXU6762K4=
-X-Google-Smtp-Source: ABdhPJxpX16ZQQoeyiTiXWyBF4PtPeqkqtiPYAFjYv9HykPZXopn6F1m+cBVjLHfhYqBJGIlfGO7PxJwW47rRWxC3t8=
-X-Received: by 2002:a05:6e02:16c9:: with SMTP id 9mr21500038ilx.166.1635796613308;
- Mon, 01 Nov 2021 12:56:53 -0700 (PDT)
+        id S230246AbhKAUkR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 1 Nov 2021 16:40:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48336 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229541AbhKAUkQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 1 Nov 2021 16:40:16 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F358461053;
+        Mon,  1 Nov 2021 20:37:40 +0000 (UTC)
+Date:   Mon, 1 Nov 2021 20:42:12 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [RFC PATCH 00/11] IIO: Bring core header includes up to date.
+Message-ID: <20211101204212.0d1711b0@jic23-huawei>
+In-Reply-To: <20211101093722.000011ba@Huawei.com>
+References: <20211003153306.391766-1-jic23@kernel.org>
+        <20211031170854.6990d79e@jic23-huawei>
+        <20211031171206.75960513@jic23-huawei>
+        <CAHp75Vc3m8+iFX+aufv6f79GcR+GCFSrmnb8R95fYHng=tGE8g@mail.gmail.com>
+        <20211031205618.67cf9ffd@jic23-huawei>
+        <20211101093722.000011ba@Huawei.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:14cc:0:0:0:0 with HTTP; Mon, 1 Nov 2021 12:56:52
- -0700 (PDT)
-Reply-To: mauhin42@gmail.com
-From:   Maureen Hinckley <patrickkipngetich96@gmail.com>
-Date:   Mon, 1 Nov 2021 22:56:52 +0300
-Message-ID: <CADwW=dyDT9iCrfctssKWShBzY5qo8LY6OO=YQ76U0TGKYkUqKw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Hello,
 
-I am Maureen Hinckley and my foundation is donating ($2.2 Million.
-Dollars) to you. Contact us via my email at (mauhin42@gmail.com) for
-further details.
+...
 
-Best Regards,
-Mrs. Maureen Hinckley,
-Copyright =C2=A92021 The Maureen Hinckley Foundation All Rights Reserved.
+> > > > > Long term plan here is to bring consistency to includes with benefits
+> > > > > of resilience and hopefully reducing just how much code is actually pulled
+> > > > > in whilst compiling.      
+> > > >
+> > > > I forgot to mention that I've take a stricter view since doing this series
+> > > > so it needs an update even in the tree above. This mostly affects
+> > > > err.h, errno.h, stddef.h and types.h      
+> > > 
+> > > I don't think we need to include stddef.h to every C file, it should
+> > > be guaranteed via something like types.h or so.    
+> > 
+> > There are places with stddef.h but not types.h required. I debated which
+> > way to go on that and hence ended up with both for now, but it's obviously easy
+> > to tweak.
+
+Picking up on this particular example, I assumed it already would be included
+in something that was pretty much always present (such as types.h) but it isn't...
+
+So maybe I misinterpreted your comment and you are suggesting it would make
+sense to include stddef.h in types.h?
+
+Just looking at include/linux
+we have about 49 instances of stddef.h being included, 91 of types.h but only
+16 of both...
+
+From the few I looked at I suspect main reason it's needed is for the
+definition of NULL though lots of other headers are getting that indirectly.
+Naturally this is one of the mega list in kernel.h but at least there is
+no chance of a loop.
+
+I'm open to suggestions on how to proceed.
+
+Jonathan
+
+
+
+> > 
+> > It may be that long term we look to have a standard kernel iwyu mapping file.
+> > It's possible to build in a fair bit of flexibility but maybe we'll need to
+> > tweak the tool to allow us even more.
+> > 
+> > Jonathan
+> > 
+> >   
+> > >     
+> > > > I'll update those in that tree sometime this week.      
+> > >     
+> >   
+> 
+

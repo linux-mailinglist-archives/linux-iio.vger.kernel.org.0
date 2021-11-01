@@ -2,390 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3AE84412DE
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Nov 2021 06:11:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2E944133B
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Nov 2021 06:28:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbhKAFNp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Nov 2021 01:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43516 "EHLO
+        id S229948AbhKAFaf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Nov 2021 01:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbhKAFNo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Nov 2021 01:13:44 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18391C061714;
-        Sun, 31 Oct 2021 22:11:12 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id k4so997952plx.8;
-        Sun, 31 Oct 2021 22:11:12 -0700 (PDT)
+        with ESMTP id S229502AbhKAFaf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Nov 2021 01:30:35 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74456C061714;
+        Sun, 31 Oct 2021 22:28:02 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id b1so11809064pfm.6;
+        Sun, 31 Oct 2021 22:28:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=Q9cjegeF492FoufZbkEsnjMERaGLyhEaMGIR77XVmDE=;
-        b=aBUfg+SzPxiu7AvI0rcNNrWmH9uvjLkYrqq3XJYgZ2yqnCLurcj1f5lJeull5P0Vks
-         3bbcdiuNsaDgJcTZWeoJckYAF8kZSzg8NxRCAaeuuPSZ43lUsMLZhD+ief3r8BF94CaT
-         l1P26y3cEXh1Ko1uZK80efnOZjgPq//5eP19POXD+VLIgGNqA0CHguw6SPMO35wcBhrP
-         YyCRLh6la8r6kBBjAJ1axijN/w/SXnDYF9rfBqPSuNK1UjpZ1UFnnoGQh9IeHn1Rxh9j
-         ZJSErhzPyYAwe+Ccn02hZ5VgbCeqJoo0vtpo3MjinzfPiz3MS8zzfT/Vm8OmXBRMO2ec
-         BoVA==
+        bh=x97BekPRcHY1pmzWyeSNQW7Yc3qbeRmxf+KXg5Cyt/0=;
+        b=DqT0JrGtRGtMuziFBzPP3wjD55ScQ9Ji50JaSqI3p7kLh1b6AqGvZXw+ZWgxBuSs/U
+         DEow4ZLYh8N55WdDKbSbDssGi4Ky48fLBNhgeePtCxe/tjYOlglUqA+k3HZWVFJNMtx/
+         f6gTKNSXhoPhqzJY1i9ZT7QpySMqG3/7208TIMf3mOYXLvheXsYQil22et0X2HiiB6Ty
+         dFtn7Dw07SDJMU0QT7a+1PQcPwBfnnFP63Kcd9Jp8ub7yHAwTSAWw49M6IySPpp7OFnJ
+         x21IAq7Qel8nkQEqso6QjRbZNTO4U7MKoso5gjqb9cjN5GbgwoyWoRy+/ttHB+LZBadG
+         1X2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Q9cjegeF492FoufZbkEsnjMERaGLyhEaMGIR77XVmDE=;
-        b=ycoxLDoy3MkO4FFunkcp2jCCJhx5xdHgehg18PeIg1DxyHyzl5hDaxBVrUHYBPapiN
-         0nw7Y/epktbKgigRc5ZWxaYF6TDFVQl8QVmfWwa9JnOu0E+dXhMq5qmWrSAaEXLlT6HP
-         cvd3eq0dp96tWr0x1zKSXzthmOFFdjghmp7fFKqMvvf4uhv17KSjcG91OeOd7tkonzMR
-         OYS8wu1wfZTH7lsVlIAhZG06jBLVfuCal7TXqfT9re0OJcg22p/f3q6geVJOSCez4s/r
-         9jGRWYVUGiKJBJ+Ubmj/sY9bMjYaMh7qBwIUEkjPnZTYOGQs+BniVo5Lj3noBMQwTPf0
-         f0CQ==
-X-Gm-Message-State: AOAM531FDRuSJdKe8o3ovLSNj70QIhB80TKqIerM1JyMlXdisohlkj3w
-        /2nd80UEBiwEPGSpWP1e87XeybFonMo=
-X-Google-Smtp-Source: ABdhPJwWX/4TOThQntXEQjLdhWiYUp1ocwzYjqYyY5frthbtc4YjrMznQbpA+MXQnJbUKUZ/lPUD2A==
-X-Received: by 2002:a17:90b:4c0b:: with SMTP id na11mr14104568pjb.53.1635743471491;
-        Sun, 31 Oct 2021 22:11:11 -0700 (PDT)
+        bh=x97BekPRcHY1pmzWyeSNQW7Yc3qbeRmxf+KXg5Cyt/0=;
+        b=5Jc5Zdh/dW5HmLoIaeghJfhj+TD/Fuqg0tZgTJsMtNRhX8r+XK/WvCgaeG5UU4ncuo
+         WqqRriANGFDcdLVKifsxTpRqrboq+Dl88su+sOMGNIV8qMs0phUDLZ9H6r/Tx8W1Bco4
+         VI+Sr6UnPVHie6LjrFglKgDvo9dLHQ/6RFPRofIF2yV6JPoYaSmkpBM5DOdyNJG95K6J
+         WNAIWCGXvueL6i6JAmAUjVK7f4oxb1eokD2U4qhsYL31kHTng6/UVp19fsSNI3D+D1Of
+         CSap+IIKx4jlUMNWqxasLz16KhunpHVFXZQewMgCbSnIz7bJG28gXb1M2FPHsFwzk26t
+         FPVg==
+X-Gm-Message-State: AOAM530JxA4e2BM5hpze2AGSM3X+OL7jjg9oOSATaaTZu4UBJdn2XtYk
+        vXJZyNZ/7mdy8+NKLZ2l89uNbe0Tk34=
+X-Google-Smtp-Source: ABdhPJz7eD4dxgV4JE2nPYNZZ6Nl7USsDIw/sfxld/a9HfVCG5JLOzj6x22um5JLAfS2iG7S3sj4Jg==
+X-Received: by 2002:aa7:888d:0:b0:47c:128b:ee57 with SMTP id z13-20020aa7888d000000b0047c128bee57mr26724845pfe.81.1635744481602;
+        Sun, 31 Oct 2021 22:28:01 -0700 (PDT)
 Received: from shinobu ([156.146.35.76])
-        by smtp.gmail.com with ESMTPSA id 1sm13331147pfl.133.2021.10.31.22.11.08
+        by smtp.gmail.com with ESMTPSA id s2sm13293178pfe.215.2021.10.31.22.27.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Oct 2021 22:11:10 -0700 (PDT)
-Date:   Mon, 1 Nov 2021 14:11:06 +0900
+        Sun, 31 Oct 2021 22:28:00 -0700 (PDT)
+Date:   Mon, 1 Nov 2021 14:27:55 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
-        Robert Nelson <robertcnelson@gmail.com>,
+To:     David Lechner <david@lechnology.com>
+Cc:     linux-iio@vger.kernel.org, Robert Nelson <robertcnelson@gmail.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/8] docs: counter: add latch_mode and latched_count
- sysfs attributes
-Message-ID: <YX926qQ8ZMKmbx1z@shinobu>
+Subject: Re: [PATCH 4/8] docs: counter: add unit timer sysfs attributes
+Message-ID: <YX9620RskHAExvcc@shinobu>
 References: <20211017013343.3385923-1-david@lechnology.com>
- <20211017013343.3385923-7-david@lechnology.com>
- <YXkFzK0TA5zswSrQ@shinobu>
- <e660e9c5-a116-5450-8afb-1053a1504ab6@lechnology.com>
- <YXygyba/r/8+h+W3@shinobu>
- <20211030153939.44c8145d@jic23-huawei>
+ <20211017013343.3385923-5-david@lechnology.com>
+ <YXj1xc6DdeOrUKjW@shinobu>
+ <6e96cdd9-d1f1-6861-59eb-c4e6b9a2ffb9@lechnology.com>
+ <YXpYUIUIQe+oxwXK@shinobu>
+ <d5d7454b-e0a0-7436-10d7-dcb402885479@lechnology.com>
+ <YX9oTuLB1d6CqQOK@shinobu>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Yh8hmheFheEY9ofY"
+        protocol="application/pgp-signature"; boundary="zDtKk9OJ85v1seA2"
 Content-Disposition: inline
-In-Reply-To: <20211030153939.44c8145d@jic23-huawei>
+In-Reply-To: <YX9oTuLB1d6CqQOK@shinobu>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---Yh8hmheFheEY9ofY
+--zDtKk9OJ85v1seA2
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 30, 2021 at 03:39:39PM +0100, Jonathan Cameron wrote:
-> On Sat, 30 Oct 2021 10:32:57 +0900
-> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
->=20
-> > On Wed, Oct 27, 2021 at 12:00:24PM -0500, David Lechner wrote:
-> > > On 10/27/21 2:54 AM, William Breathitt Gray wrote: =20
-> > > > On Sat, Oct 16, 2021 at 08:33:41PM -0500, David Lechner wrote: =20
-> > > >> @@ -147,6 +150,14 @@ Description:
-> > > >>   			updates	the respective count. Quadrature encoding
-> > > >>   			determines the direction.
-> > > >>  =20
-> > > >> +What:		/sys/bus/counter/devices/counterX/countY/latched_count
-> > > >> +KernelVersion:	5.16
-> > > >> +Contact:	linux-iio@vger.kernel.org
-> > > >> +Description:
-> > > >> +		Latched count data of Count Y represented as a string. The value
-> > > >> +		is latched in based on the trigger selected by the
-> > > >> +		counterX/latch_mode attribute.
-> > > >> + =20
-> > > >=20
-> > > > Latches are pretty common components of devices, and not simply lim=
-ited
-> > > > to latching the count data. I wonder if it would be better to omit =
-the
-> > > > "_count" suffix in order to make this more general. Well, the name
-> > > > "latched_count" is suitable for counters so you probably don't need=
- to
-> > > > change it, but it's something to think about in the future.
-> > > >  =20
-> > >=20
-> > > I chose the name counterX/countY/latched_count since we already have
-> > > counterX/countY/count to read the same (not latched) count. This
-> > > indicates that they are the same quantity, just from a different
-> > > point in time.
-> > >=20
-> > > Also for consideration, this particular hardware actually has 3
-> > > independent latched counts. One is triggered by the selected
-> > > latched_mode. One is triggered by the index signal and one is
-> > > triggered by the strobe signal.
-> > >=20
-> > > The latter two are not implemented in this series, but if there were a
-> > > use for those, I would probably submit attributes index_latched_count
-> > > and strobe_latched_count. These are unaffected by the latch_mode.
-> > >=20
-> > > Similarly, the unit timer has a timer latch and a period latch. If we
-> > > change the unit timer to be a Count as suggested, then the latched
-> > > timer would basically be the same as latched_count. Both of these
-> > > are triggered by the selected latch_mode.
-> > >=20
-> > > So, I supposed if we wanted to keep things really generic, we would
-> > > want to introduce some sort of "latch trigger" component (synapse?).
-> > > There could theoretically be multiple configurable triggers, so
-> > > the proposed latch_mode might need to be made indexed or part of
-> > > an index component/extension. =20
-> >=20
-> > Aside from deriving their latched values from the current and historical
-> > count values, these latches don't seem to be related to Counters in an
-> > operational sense; i.e. they don't really fit into the Counter subsystem
-> > paradigm because they aren't functionally counters, but rather just use
-> > the count values here as source data for their own operations. As such,
-> > I'm not sure yet if they really belong in the Counter subsystem or
-> > somewhere else in the IIO subsystem.
->=20
-> In this particular case I think we are talking about latching counts rath=
+On Mon, Nov 01, 2021 at 01:08:46PM +0900, William Breathitt Gray wrote:
+> On Sat, Oct 30, 2021 at 11:40:27AM -0500, David Lechner wrote:
+> > On 10/28/21 2:59 AM, William Breathitt Gray wrote:
+> > > On Wed, Oct 27, 2021 at 10:30:36AM -0500, David Lechner wrote:
+> > >> On 10/27/21 1:46 AM, William Breathitt Gray wrote:
+> > >>> On Sat, Oct 16, 2021 at 08:33:39PM -0500, David Lechner wrote:
+> > >>>> This documents new unit timer sysfs attributes for the counter
+> > >>>> subsystem.
+> > >>>>
+> > >>>> Signed-off-by: David Lechner <david@lechnology.com>
+> > >>>
+> > >>> Hello David,
+> > >>>
+> > >>> The unit timer is effectively a Count in its own right, so instead =
+of
+> > >>> introducing new sysfs attributes you can just implement it as anoth=
 er
-> than something else?  So one event happens and we latch the count at that
-> point.
-
-It looks like the unit timer has latches for its time and period values
-as well IIUC, but at this patch only implements support for the count
-latch. I think if we were to implement support for these other latches,
-we would probably expose them in a similar way and just call them
-respectively latched_count, latched_period, etc.
-
-> The IIO equivalent is a trigger event driving data into a buffer.
-> There are a few examples of this though it's pretty rare.
-> The most general corner case is probably what we see with impact sensors.
-> In those cases we have data captured around an event (rather than a single
-> latched value).
->=20
-> They are rather complex beasts but the best we've managed is a special
-> trigger used only with that device and some control attributes to say what
-> is captured when the trigger fires.  Note this is a stetch in IIO because
-> normally triggers are one per sample...
-
-Yes, complexity is something I would like to avoid. I don't want to
-shoehorn functionality into the Counter subsystem if a simpler approach
-is possible. However, it may be good news to hear that these kind of
-complex devices are rarer, so a simple approach with the TI eQEP might
-be the best option.
-
+> > >>> Count in the driver. Count 0 is "QPOSCNT", so set the name of this =
+new
+> > >>> Count 1 as "Unit Timer" (or the datasheet naming if more apt) to
+> > >>> differentiate the Counts. You can then provide the "unit_timer_enab=
+le",
+> > >>> "unit_timer_period", and "unit_timer_time" functionalities as respe=
+ctive
+> > >>> Count 1 extensions ("enable" and "period") and Count 1 "count".
+> > >=20
+> > > Actually if the counter function here is COUNTER_FUNCTION_DECREASE, t=
+hen
 > >=20
-> > >  =20
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/name
-> > > >>   KernelVersion:	5.2
-> > > >>   Contact:	linux-iio@vger.kernel.org
-> > > >> @@ -209,6 +220,7 @@ What:		/sys/bus/counter/devices/counterX/count=
-Y/count_mode_component_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/direction_compon=
-ent_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/enable_component=
-_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/error_noise_comp=
-onent_id
-> > > >> +What:		/sys/bus/counter/devices/counterX/countY/latched_count_com=
-ponent_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/prescaler_compon=
-ent_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/preset_component=
-_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/countY/preset_enable_co=
-mponent_id
-> > > >> @@ -218,6 +230,7 @@ What:		/sys/bus/counter/devices/counterX/signa=
-lY/cable_fault_enable_component_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_pr=
-escaler_component_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_=
-component_id
-> > > >>   What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mod=
-e_component_id
-> > > >> +What:		/sys/bus/counter/devices/latch_mode_component_id
-> > > >>   What:		/sys/bus/counter/devices/unit_timer_enable_component_id
-> > > >>   What:		/sys/bus/counter/devices/unit_timer_period_component_id
-> > > >>   What:		/sys/bus/counter/devices/unit_timer_time_component_id =20
-> > >=20
-> > > Just noticing here, I missed the counterX in the device-level compone=
-nts.
-> > >  =20
-> > > >> @@ -244,6 +257,22 @@ Description:
-> > > >>   		counter_event data structures. The number of elements will be
-> > > >>   		rounded-up to a power of 2.
-> > > >>  =20
-> > > >> +What:		/sys/bus/counter/devices/counterX/latch_mode
-> > > >> +KernelVersion:	5.16
-> > > >> +Contact:	linux-iio@vger.kernel.org
-> > > >> +Description:
-> > > >> +		Read/write attribute that selects the trigger for latching
-> > > >> +		values. Valid values are device-specific (given by
-> > > >> +		latch_mode_available attribute) and may include:
-
-By the way, the latch_mode_available comment here can be removed as it's
-already obvious the respective *_available sysfs attribute is where the
-possible values are given.
-
-> > > >> +
-> > > >> +		"Read count":
-> > > >> +			Reading the countY/count attribute latches values.
-> > > >> +
-> > > >> +		"Unit timeout":
-> > > >> +			Unit timer timeout event latches values.
-> > > >> +
-> > > >> +		The latched values can be read from latched_* attributes.
-> > > >> + =20
-> > > >=20
-> > > > To make these modes more generic for use in future drivers, I sugge=
-st
-> > > > removing the "Unit " prefix and just leaving that mode as "Timeout"=
-=2E In
-> > > > a similar vein, rewording "Read count" to "Count read" would make t=
-his
-> > > > mode easier to understand in case a future driver introduces a mode
-> > > > called "Signal read" or similar.
-> > > >  =20
-> > >=20
-> > > Continuing my thoughts from above and taking this suggestion into
-> > > consideration...
-> > >=20
-> > > Maybe we need a /sys/bus/counter/devices/counterX/latchY component.
-> > > This would represent the trigger for a latch. For the TI eQEP in this
-> > > series, there are potentially 3 of these (only one implemented for
-> > > now).
-> > >=20
-> > > latchY would have a required `trigger` attribute that would describe
-> > > what triggers the latch. If the trigger is selectable, there would be
-> > > a `triggers_available` attribute that would list the possible trigger=
-s,
-> > > otherwise the `trigger` attribute would just be read-only. Available
-> > > triggers could could be "X read" where X is a fully qualified compone=
-nt
-> > > name, e.g. "Count0 count read" or a fully qualified event, e.g.
-> > > "Count1 overflow event" (this is unit timer timeout in generic counter
-> > > terms). But, there may be potential triggers that don't fit either
-> > > of these patterns.
-> > >=20
-> > > Although not currently needed, the triggers for the index and strobe
-> > > latches on the eQEP get more interesting. The `triggers_available` for
-> > > the index latch are "index rising edge", "index falling edge" and
-> > > "software" (this would require a `software_trigger` attribute that
-> > > would be written to trigger the latch). The `triggers_available` for
-> > > the strobe latch are "strobe rising edge" and "strobe rising edge if
-> > > direction is clockwise and strobe falling edge if direction is
-> > > counterclockwise".
-> > >=20
-> > > Circling back to the beginning, to read latched registers, there
-> > > would be attributes like counterX/countY/latchY_count instead of
-> > > the proposed counterX/countY/latched_count. So for the eQEP there
-> > > would be counter0/count0/latch0_count (triggered by reading
-> > > counter0/count0/count or counter0/count1 overflow event),
-> > > counter0/count0/latch1_count (triggered by index signal),
-> > > counter0/count0/latch2_count (triggered by strobe signal),
-> > > counter0/count1/latch0_count (unit timer latched timer trigger
-> > > by same trigger as counter0/count0/latch0_count) and
-> > > counter0/count0/latch0_ceiling (unit timer latched period
-> > > triggered by same trigger as counter0/count0/latch0_count). =20
+> > It is an increasing counter.
 > >=20
-> > The complexity of configuration here is a good indication that these
-> > latches deserve their own tree structure as you suggest. Furthermore, we
-> > see that there at least three of these latches available for this
-> > particular device, so just a single "latch_count" or similar will not be
-> > sufficient -- enumeration of the form /sys/bus/../latchY or similar
-> > would be prudent.
+> > > instead of introducing a new "period" extension, define this as a
+> > > "ceiling" extension; that's what ceiling represents in the Counter
+> > > interface: "the upper limit for the respective counter", which is the
+> > > period of a timer counting down to a timeout.
 > >=20
-> > Jonathan, perhaps you have some insight here. From a functional aspect,
-> > latches are not unique to counter devices, so I wonder if the IIO
-> > subsytem has already encountered similar functionality amongst its
-> > drivers. Essentially, a latch is just a memory buffer provided by the
-> > device.
+> > In one of the other patches, you made a comment about the semantics
+> > of ceiling with relation to the overflow event. We can indeed treat
+> > the timer as a counter and the period as the ceiling. However, the
+> > unit timer event occurs when the count is equal to the period (ceiling)
+> > whereas an overflow event occurs when the count exceeds the ceiling.
+> > So what would this event be called in generic counter terms? "timeout"
+> > doesn't seem right.
 >=20
-> As mentioned above, they exist but are fairly rare, unless you think
-> of time triggers as being in this category in which case any data
-> ready signal is basically like this.  Ignoring that common case,
-> we map them onto a device specific trigger (one that has a
-> validate_device callback to check it's being assigned to that right devic=
-e).
-> Another case where we do odd things like this is SoC ADCs that support to=
-uch
-> screen type functionality.  In those case we are grabbing data only when
-> the screen is touched.
+> Okay, so COUNTER_EVENT_THRESHOLD would be the respective Counter event
+> type for this behavior because the event triggers once a threshold is
+> reached (ceiling in this case).
 >=20
+> But implementing the unit timer as a counter might not be the best path
+> forward as you've mentioned below.
 >=20
+> > >=20
+> > > William Breathitt Gray
+> > >=20
+> > >>>
+> > >>> If you believe it appropriate, you can provide the raw timer ticks =
+via
+> > >>> the Count 1 "count" while a nanoseconds interface is provided via a
+> > >>> Count 1 extension "timeout" (or something similar).
+> > >>>
 > >=20
-> > For the TI eQEP device here, the buffer for each latch provides a single
-> > read-only value that is updated by the device; the update behavior can
-> > be configured by respective control registers. However, it's not so
-> > far-fetched to assume that there a other devices out that that have
-> > buffers spanning multiple latched values storing historical data.
+> > One area where this concept of treating a timer as a counter potentially
+> > breaks down is the issue of CPU frequency scaling. By treating the unit
+> > timer as a timer, then the kernel could take care of any changes in clo=
+ck
+> > rate internally by automatically adjusting the prescalar and period on
+> > rate change events. But if we are just treating it as a counter, then we
+> > should probably just have an attribute that provides the clock rate and
+> > if we want to support CPU frequency scaling, add an event that indicates
+> > that the clock rate changed.
 >=20
-> A fifo filled on 'index' event or similar would indeed be a reasonable
-> bit of hardware to build.  I've world with PLC code that does this sort
-> of things so the requirements are there (tracking products on a conveyor
-> belt would be a classic case - you latch the count when a light gate is
-> broken).
-
-I've constructed similar devices where I push the current count to a
-fifo to track a part's relative position to others on a conveyor belt.
-It's possible some quadrature encoding device out has a similar
-functionality, but I don't want to jump the gun and start developing an
-interface for this if those kinds of device are so rare as to not be
-worth the effort.
-
-> > Because a latch can theoretically provide any sort of data, not
-> > necessary count values, it seems reasonable that supporting latches
-> > would involve their own interface independent of the Counter paradigm.
-> > How that interface looks is the question. Should the TI eQEP latches
-> > here be exposed through some sort of generic latches interface, or
-> > would it be better to have a more abstract representation of what these
-> > latches are for; e.g. if these latches are used to measure speed, then
-> > some sort of IIO speedometer interface might be appropriate).
+> You're right, treating the unit timer as a counter might not be the most
+> appropriate interface. Because this is a timer afterall, perhaps
+> exposing this via the hrtimer API is better. You then have an existing
+> interface available designed for timer configuration, and you can
+> leverage the struct hrtimer function callback to handle your timeout
+> interrupts.
 >=20
-> I'd suggest trying to avoid being too generic about this.  There might
-> be some reason to do it in the future but trying to define interfaces
-> across subsystems is a pain.  More likely we'll get some bridging
-> type drivers to map between different abstractions if they are needed.
->=20
-> Jonathan
+> William Breathitt Gray
 
-I agree, after considering this some more I think it's best to keep this
-specific to the use case of the TI eQEP for now. If something more
-complex appears in the future then we can address the possibility of a
-deadicated interface, but for the time being I think simple extensions
-to the Counter subsystem will suffice.
-
-Instead of treating each latch with its own enumerated tree structure,
-let's go with the simple approach taken initially here:
-
-	* counterX/countY/latched_count
-	* counterX/latch_mode
-
-If desired, a latched_time can be implemented as well; the edge capture
-attributes can be exposed in a similar fashion (e.g. latched_period).
-
-Whether latch_mode belongs as a device extension or Count extension is
-something I'm still contemplating. If we expose the unit timer under its
-own counterX/countY, then latch_mode should be a device extension
-because latched_time would simply become latched_count for the unit
-timer. On the other hand, if unit timer is not exposed like that, then
-perhaps it makes more sense to move latch_mode to counterX/countY, and
-introduce latched_time and latched_period under there as well.
+Sorry, I think I meant the clockevents framework, not hrtimers. I'm not
+as familiar with timers but perhaps you know more than I do here.
 
 William Breathitt Gray
 
---Yh8hmheFheEY9ofY
+--zDtKk9OJ85v1seA2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF/dtkACgkQhvpINdm7
-VJKoAw/+IY3fVA20uTr2nohzRQBoCWwvk0uLZy5IjhzV4szWF/dPzpJ+s/QyiIZ/
-M9NAxYV/Jaj/GE/pn/jeIAyXvz3+lmWQZE7PMKtHoxOVIgrHOXCu+qXkIdEZb2Sq
-gU5oZti1JeJC32NeV3fN0lOPvuI4/9gE0gEB0ENVcWyXAxY+CHYaQeC/U7uE/97Y
-3GDotJtWLfKbuWVKwG2DTjsPOz1hrTMQyvSEgOZX5LKdtWiZ6z0lx6GQ92yRZWPi
-ErW3o2x2UjxWoDtqZtxgXUKdDl1y0nSHX008mxbl8dI9YX5w5lEMDyi5aKbMQn5O
-FJR6HuAz14t6+/1RrMdIYL0mRipfUzmhysY36S/Vzpg+dBbRnV7VmVm/mS2adxxo
-Uz9jNacdpIB6gFriQAsycW9WmT7ItcXYIOSunjH8mOkTh3kaNyVzityA5IdNMus+
-Mxbg7eZIAYXgA3wi5PQvDvNosaXZITpuDbpAjXDVVWUmEGoY/QS6w26m92MQyW7C
-TEy8ezoIEaiQcXtzE9Y5lX3KOCf78cFpHq2mqlhrBMqb0b4IyLd5NQ1Ul88Tyx/B
-0KboMnk2tSk0k6zGa/n0LZHA7Ee1Zn2nc8SbKrKlRbOiHrijlnb/FNrXdrYjB57t
-+JNcerC/TB+AjYVCuk+b8tQA3i0LFC+8L8N4iLfBel86seJI5sA=
-=8uN3
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmF/etsACgkQhvpINdm7
+VJLFFxAA3gV73WEkluyg0fvOt3hSVOeyc9JvpMpV68yZwFwmJF0k9fBEX7SaaTxO
+m8qMbWUxit4cTty3JaX0oOu6NYGS9VVlf8ZeJk2GoafhthQRKp4Dc4HgGDRxr8Gc
+2ZLBXeMc34IJAa1h+bJ5Dboh1nqEpWijhcKwsJ/Wk8/JWF/N6xjsiNl2AspFhoxE
++8Yv48sHTswMD6S5de7MU4qpy1QhEQRJPGr9Xg7K9onADTizTN1zdMckl/yJVA8f
+lEHU11xbWrMd8AWKG9cGFluIO6hyqky7HNktm+l2YB3VcB9tVrE+QyDyTIYBL2Q9
+T7TakUQx58/fDPkzOlTYe5a9RjiF0C8kJ0cxC7yctJhvuo9DZ6a7q2VcgvQal4AW
+kGAM+B9FNGI3lLC2Dn126xq3bNGecWFkDWsre4AL/0anUuazZsbJItJgVzB9INAW
+wjqfd6Xh7zHgWHlU6d2ntFIHvEoM4YMhlaIFNcRE7JNJkJl0RCeu+cdxIdxf3TE5
+qDaYrr2FIaTUPJlxHUNZDf5FOZrROUQHUroVmSdKC2VYUWagp9L3V5mYDkX/Diva
+if7ZrFjbFqglm4BZqtJSteBzDoHZQ2XNTqulChFsL8euvveIg8D9y4B+g/MCILOH
+Bk/IE58cUwLYwQpriHJuIhsah3FuyI9EuOFpmPyf6thfLvoCpbI=
+=kuFj
 -----END PGP SIGNATURE-----
 
---Yh8hmheFheEY9ofY--
+--zDtKk9OJ85v1seA2--

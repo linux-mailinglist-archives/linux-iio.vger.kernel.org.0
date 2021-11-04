@@ -2,100 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 106F3444EBD
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 07:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A21DF444F79
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 08:13:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230150AbhKDGXV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 02:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45922 "EHLO
+        id S230108AbhKDHPr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 03:15:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbhKDGXU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 02:23:20 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CF5C061714;
-        Wed,  3 Nov 2021 23:20:43 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id n23so4550896pgh.8;
-        Wed, 03 Nov 2021 23:20:43 -0700 (PDT)
+        with ESMTP id S230084AbhKDHPq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 03:15:46 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55048C061714
+        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 00:13:09 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id r28so4695152pga.0
+        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 00:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=JP6S7sr92Jyer+9L8eAiJicT/LJwG8SJ6BYhUMJ6aHM=;
-        b=IcgV7o8+8rJ7DcQwrRzNVgMqNNp5XihtxEh5LyXiqx8MheOHfVtwhQU/HTnXOtjEoO
-         Fl5f63adWsyyw2z98vnt4be175c6zG+YO5WgLzGhAMqBrGLPRz3ag8ZIMZmX0dsJ+ot/
-         teJc6fpAXpp34MKJawj6jIgYNZsXJ8g6n7r8j4VZGY0n25mdr8NU5iOsLKFXJsDrOOpv
-         LCpjc9rjG/mQmS38wyUQCVb9fgHImwH3ETvJ+WDhHe1LW42VrmquUC9dYMfukYb5YNzo
-         Nh7BJFnjXdhU0L4P+szYmWoS9azXHFXXkvL2ij8bjpySXdVe6wNEMC9seeJsyzQm0o7F
-         thCw==
+        bh=O5Nz1B5eLt7T/KXVZ9WyJWI1uBbrPbhN2+93MNCUUos=;
+        b=VzawAiJLAeukQsNjq6ptp/IJ4GFfFn7R6eawDWFJwRKzHynTIfUfH5OcO+W0fxj0Tn
+         lau/4k7jNHlBdDYmehXn5L8rHRvJ3C+9IWbZ/JDyCx7QixZVT0/9Mre8pZo1sdSEwCW2
+         B9b+7K8GBuRo9/MafI367s172I5q6awCNwyQ0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=JP6S7sr92Jyer+9L8eAiJicT/LJwG8SJ6BYhUMJ6aHM=;
-        b=WVWRUuoIG4lRhYPLIJMiuKU7B90jdYioEUGI/PH/qvRa8v+uiuhLVwPPGHeoJXoL6s
-         zjINAzPTpaT4mET+dyUVODLK02M/ZB2QuxEaEXZU5JgvNP32IM7dk4vBaNGKx98Ct5z/
-         zcRNdjR6SgMhvJVp6pnZ/1aBTYfjaYpONYGsWxQxMvilHP6ChtdIGkZPN8zWF0Z5ikiC
-         p6lCxqNQxqUV3zQHhffRTwafw/M/UbXBRvLwxUDYOq2AFX8feN9tNFKPxLMcGV7Ollxe
-         3ucr5UKLwfbUckc1GFNy888H/KreJiEi/QZs6D+j3wiEMdcHKoh/tVOK8GTlznco67V0
-         6PxQ==
-X-Gm-Message-State: AOAM533D3k/8nLJDCyZ7ApZfc5JCphWHegu5kRLLxneoKtbg5p76Z3fD
-        NRQZCff3XseNj1WO1TkJWv6eufD84jg=
-X-Google-Smtp-Source: ABdhPJygVtdOioU9zNQLo3BMYSvock5UlAt2XeihwskqObFeRrphfzmtzSFzZVusre9utreciyHY2g==
-X-Received: by 2002:a05:6a00:1a01:b0:44d:af99:19c9 with SMTP id g1-20020a056a001a0100b0044daf9919c9mr49013384pfv.36.1636006842749;
-        Wed, 03 Nov 2021 23:20:42 -0700 (PDT)
-Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
-        by smtp.gmail.com with ESMTPSA id s6sm4206012pfu.137.2021.11.03.23.20.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Nov 2021 23:20:42 -0700 (PDT)
-From:   davidcomponentone@gmail.com
-X-Google-Original-From: yang.guang5@zte.com.cn
-To:     jic23@kernel.org
-Cc:     davidcomponentone@gmail.com, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yang Guang <yang.guang5@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] tools: iio: use swap() to make code cleaner
-Date:   Thu,  4 Nov 2021 14:20:32 +0800
-Message-Id: <20211104062032.1505899-1-yang.guang5@zte.com.cn>
-X-Mailer: git-send-email 2.30.2
+        bh=O5Nz1B5eLt7T/KXVZ9WyJWI1uBbrPbhN2+93MNCUUos=;
+        b=Dfip7G0ujEnFbD8P9H4zojuTP2dVcst+fJhtoG5iIO1UCGDRpaqV4tMkqqjRFBQxpV
+         HldkZF9205sW9tW+O83Ml2eTCP4+i8+/t0NcaJwhKiOvCzgcKSz8ea+fpzB6u181k09M
+         0YhhWA6eWqdEjZejQW2i/hNzNHDU7DOOhHFRRsZA0A3A2yWwAyqqBz0WA3UvvCB/vDBr
+         0vVE0UvK65N87jxV7yJqCqsZ0h/GTbanJnka1daPVJyjXxYZZ0hgJL61NnRDnD5enG+H
+         eVpjDdZbjI5cEAe9Z1ebSSmf3f+UvTdTizUEGqdYM87vwnlOzykpOdDucZfqBrdxX41q
+         TGZg==
+X-Gm-Message-State: AOAM533PPB17VntGC+QpbU/NAXXRNjn9YgEmVA6gmzomHaqGj2yurWrS
+        D3tv3Rc/yrg8NlCBOETxX8jvug==
+X-Google-Smtp-Source: ABdhPJxnJyQGaJQ1m6XQ+1I5VsXm97JTBnSmTVzCufGHLO+sn0ntfDJ4/deGiXr4fQvhPfuKJZFshQ==
+X-Received: by 2002:a63:3d4a:: with SMTP id k71mr37799520pga.276.1636009988706;
+        Thu, 04 Nov 2021 00:13:08 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:b129:c9aa:6634:6c4c])
+        by smtp.gmail.com with UTF8SMTPSA id fw21sm6720727pjb.25.2021.11.04.00.13.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Nov 2021 00:13:07 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org
+Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v2 0/5] Expand Semtech SAR Sensors support
+Date:   Thu,  4 Nov 2021 00:12:58 -0700
+Message-Id: <20211104071303.3604314-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.33.1.1089.g2158813163f-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+Add a new Semtech SAR sensor SX9324.
+Instead of recopying 1/3 of the sx9310 driver, move common code in a new
+file. It will be used again for the next sensor, SX9360.
 
-Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-opencoding it.
+Major changes in v2:
+  Better interface between common code and drivers
+  Document SX9324 phase configuration
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
----
- tools/iio/iio_utils.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Gwendal Grignou (5):
+  iio: sx9310: Add frequency in read_avail
+  iio: sx9310: Extract common Semtech sensor logic
+  iio: proximity: Add SX9324 support
+  dt-bindings: iio: Add sx9324 binding
+  iio: sx9324: Add dt_bidding support
 
-diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index aadee6d34c74..7a56c41fbded 100644
---- a/tools/iio/iio_utils.c
-+++ b/tools/iio/iio_utils.c
-@@ -290,15 +290,12 @@ int iioutils_get_param_float(float *output, const char *param_name,
- 
- void bsort_channel_array_by_index(struct iio_channel_info *ci_array, int cnt)
- {
--	struct iio_channel_info temp;
- 	int x, y;
- 
- 	for (x = 0; x < cnt; x++)
- 		for (y = 0; y < (cnt - 1); y++)
- 			if (ci_array[y].index > ci_array[y + 1].index) {
--				temp = ci_array[y + 1];
--				ci_array[y + 1] = ci_array[y];
--				ci_array[y] = temp;
-+				swap(ci_array[y + 1], ci_array[y]);
- 			}
- }
- 
+ .../ABI/testing/sysfs-bus-iio-sx9324          |   29 +
+ .../iio/proximity/semtech,sx9324.yaml         |  140 +++
+ drivers/iio/proximity/Kconfig                 |   18 +
+ drivers/iio/proximity/Makefile                |    3 +-
+ drivers/iio/proximity/sx9310.c                |  705 ++---------
+ drivers/iio/proximity/sx9324.c                | 1088 +++++++++++++++++
+ drivers/iio/proximity/sx_common.c             |  575 +++++++++
+ drivers/iio/proximity/sx_common.h             |  158 +++
+ 8 files changed, 2112 insertions(+), 604 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9324
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+ create mode 100644 drivers/iio/proximity/sx9324.c
+ create mode 100644 drivers/iio/proximity/sx_common.c
+ create mode 100644 drivers/iio/proximity/sx_common.h
+
 -- 
-2.30.2
+2.33.1.1089.g2158813163f-goog
 

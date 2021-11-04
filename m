@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66BC0445026
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4C6445027
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbhKDI1A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 04:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45124 "EHLO
+        id S230335AbhKDI1B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 04:27:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbhKDI1A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:00 -0400
+        with ESMTP id S230084AbhKDI1B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:01 -0400
 Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705F5C061714
-        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:22 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id n85so621474pfd.10
-        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDF33C061714
+        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:23 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id u33so5122019pfg.8
+        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Feq0h+YQ890t+lGo5iwncpQJOuAUT7hzdpdax9qSy+4=;
-        b=N6rHksfRHzjuWEh27X1XAWR3aKYvrBtK1qMxXiKxTG9eCWdpc51FoJSfiRng6iA93o
-         q0DIkv0Jdk4EvwxxAaB1XliWZbMg38K6BOFErlWZiz0XFh1q/60+xQvXQufOzVUefcqX
-         361IaPHsCRPDmDG6OYcvHGce4QSFNJbZ4C3do=
+        bh=bh12gTIx46vyaIw8y+v4iTIFGiXlnzf9QVNIRa80mj8=;
+        b=W2JNMqpz6m9aCOtX+sl0dQ+5C97ljhFYmINFYx866Uk8H1mzzcno9zUmmD5BaalMkD
+         /Y3ybrWE2TGsuK6T9mDSHpY4ES9Hvwbv9VKHkupxgEwYBxkKhQCsOUn6dq2wjw23rLQm
+         1/qq3drkWoPeSzzfh4We7H4/9wKHBbw7fJfW0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Feq0h+YQ890t+lGo5iwncpQJOuAUT7hzdpdax9qSy+4=;
-        b=IbNk8RMrD/IEfP7B/DapcnS22IrI/rQJ9c8xQJfwLKOx0l4+KxXxJOCY0cidLMuXlY
-         R2uBeH/Zl8rTCWBM7zWOz5izndZPlIGAL/jvOUJQW4jFWGN5QW4bVLELb9JUe4XWVUQE
-         +ZJNUG4qmUGezAK7fumcjX/kLlsOkisEFsuWNOq7zYyZsD73Zzffh1mMkMmFf7YV3VyK
-         xvFVkJhBhNkFp3548S5ctsgI8rbNzZtyw3TK01VSKlrzWHvf4jV17GrodFhg4Ju836YG
-         GEQcd8da0LuLsayAjX13lgZn1rFsTceSlMBE3ub+zm9fsHOldCkRIRJsjn1NQABW29cY
-         GQUA==
-X-Gm-Message-State: AOAM531So0ml3kA0LsxK67Hds+xFrATPv+OY4frm86ha+tzIu1mv0g7w
-        Ve2aMLUkzWJQKY3HGxeDrPzPnw==
-X-Google-Smtp-Source: ABdhPJwYx0SKOT5r6073dAPNNYG4tUJmyhz3kLHXCGnDSaXoaTSw9ogUu3QnUd7bFi0gwkt6gk9iag==
-X-Received: by 2002:a63:8943:: with SMTP id v64mr22016990pgd.87.1636014261895;
-        Thu, 04 Nov 2021 01:24:21 -0700 (PDT)
+        bh=bh12gTIx46vyaIw8y+v4iTIFGiXlnzf9QVNIRa80mj8=;
+        b=wzA/MkyLGmIpq9eEX12rF99xRvUwCwBtrkmRW6IMHlSVIrHi7aUT4OXqI2pgv7UqqS
+         FZEb1lo8VxNuuQh0aMO8jobbSXVWE5Ggjq+GfQs39GtQySg+OC0rpmaqiMjnbuXI/rWS
+         kphbrT1cO6YQJ+W07FoLV6QxFcjXDHKGyPcYgHKrqmJsMH6X1l1rXXWlV5E8ywcb7YnE
+         8vm/XJmMi8b1Kfm6RsJqlPEn9WsfKoZUpKc1erg9MuiX2539N6hymQ2xYAsUzpEgxz/b
+         A7VBb0vIccQ5a/tscdNrxlqHiRbwGx3uATGK0VTBC8vXeoAKdjWI21fa+V9Jr62PHcFI
+         wt+Q==
+X-Gm-Message-State: AOAM5311hIaOmdHc55EOruB8M+62m+MwI59FPaQKYdnHcpIZ2L4Tbomz
+        SlV6MiklbUSjHQFZNc0hN7ycQw==
+X-Google-Smtp-Source: ABdhPJz63x2jRIxS+l+dcPUxdVnj4vgnWQVLTjHEy9y+qsf5FyvEKrNbqdZMkmRssC0+GMMWFf9Z7w==
+X-Received: by 2002:a63:8a43:: with SMTP id y64mr21723482pgd.113.1636014263326;
+        Thu, 04 Nov 2021 01:24:23 -0700 (PDT)
 Received: from localhost ([2620:15c:202:201:b129:c9aa:6634:6c4c])
-        by smtp.gmail.com with UTF8SMTPSA id p1sm4805837pfo.143.2021.11.04.01.24.21
+        by smtp.gmail.com with UTF8SMTPSA id q9sm4777423pfj.88.2021.11.04.01.24.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Nov 2021 01:24:21 -0700 (PDT)
+        Thu, 04 Nov 2021 01:24:23 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 01/13] iio: bma220: Use scan_type when processing raw data
-Date:   Thu,  4 Nov 2021 01:24:01 -0700
-Message-Id: <20211104082413.3681212-2-gwendal@chromium.org>
+Subject: [PATCH v2 02/13] iio: kxcjk-1013: Use scan_type when processing raw data
+Date:   Thu,  4 Nov 2021 01:24:02 -0700
+Message-Id: <20211104082413.3681212-3-gwendal@chromium.org>
 X-Mailer: git-send-email 2.33.1.1089.g2158813163f-goog
 In-Reply-To: <20211104082413.3681212-1-gwendal@chromium.org>
 References: <20211104082413.3681212-1-gwendal@chromium.org>
@@ -65,40 +65,23 @@ when reading elements directly using the raw sysfs attributes.
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/iio/accel/bma220_spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/accel/kxcjk-1013.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-index bc4c626e454d3..74024d7ce5ac2 100644
---- a/drivers/iio/accel/bma220_spi.c
-+++ b/drivers/iio/accel/bma220_spi.c
-@@ -27,7 +27,6 @@
- #define BMA220_CHIP_ID				0xDD
- #define BMA220_READ_MASK			BIT(7)
- #define BMA220_RANGE_MASK			GENMASK(1, 0)
--#define BMA220_DATA_SHIFT			2
- #define BMA220_SUSPEND_SLEEP			0xFF
- #define BMA220_SUSPEND_WAKE			0x00
- 
-@@ -45,7 +44,7 @@
- 		.sign = 's',						\
- 		.realbits = 6,						\
- 		.storagebits = 8,					\
--		.shift = BMA220_DATA_SHIFT,				\
-+		.shift = 2,						\
- 		.endianness = IIO_CPU,					\
- 	},								\
- }
-@@ -125,7 +124,8 @@ static int bma220_read_raw(struct iio_dev *indio_dev,
- 		ret = bma220_read_reg(data->spi_device, chan->address);
- 		if (ret < 0)
- 			return -EINVAL;
--		*val = sign_extend32(ret >> BMA220_DATA_SHIFT, 5);
-+		*val = sign_extend32(ret >> chan->scan_type.shift,
-+				     chan->scan_type.realbits - 1);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		ret = bma220_read_reg(data->spi_device, BMA220_REG_RANGE);
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index a51fdd3c9b5b5..88cf0c276893a 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -927,7 +927,8 @@ static int kxcjk1013_read_raw(struct iio_dev *indio_dev,
+ 				mutex_unlock(&data->mutex);
+ 				return ret;
+ 			}
+-			*val = sign_extend32(ret >> 4, 11);
++			*val = sign_extend32(ret >> chan->scan_type.shift,
++					     chan->scan_type.realbits - 1);
+ 			ret = kxcjk1013_set_power_state(data, false);
+ 		}
+ 		mutex_unlock(&data->mutex);
 -- 
 2.33.1.1089.g2158813163f-goog
 

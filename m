@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4810244502F
+	by mail.lfdr.de (Postfix) with ESMTP id 8B658445030
 	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230494AbhKDI1M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 04:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45180 "EHLO
+        id S230404AbhKDI1O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 04:27:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230478AbhKDI1L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:11 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C4EEC061714
-        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:34 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id g18so343927pfk.5
-        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:34 -0700 (PDT)
+        with ESMTP id S231147AbhKDI1M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:12 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F53EC06127A
+        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:35 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id r5so6034329pls.1
+        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=lc8uPyEyzTKLweKdBJnTSpt9yRwuF15SqjA0MLF4iFg=;
-        b=Vx0H17Sh9q0td9Jy4ofevsf4Mj5MEhDGTLbCEUAVX5duv6VDEA9i68gPyfwAuhWdJ8
-         jVyo2R92ZBu/ZiONrVcn3H8RqhYxuy06+Rz8lClp3MkPAENeUzfmY1jtQd1AeOLurCgG
-         izxiHrU4hGB5SgX6sX9zcwMNtGGIxMRK0SFTU=
+        bh=050XYfAs5h9fYsKsLiHkYANnHJbrZ8oMXRf8QMjyzYM=;
+        b=LEfQc7z7K4yFPsKkZw43TyrMwkqIgIAb8cVbRgknoflBNByrctsR1ctmR5ZmiS1WO3
+         zMm/TLOWgp/fhINi5jVJriHNYvaXSITzEaWjSrb0mv1iAzgEY0UOT767B2cZaQX3rfkz
+         dZheU6vOHmw0ZqW5hQ9LoXQQD4/hileC5/wG8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=lc8uPyEyzTKLweKdBJnTSpt9yRwuF15SqjA0MLF4iFg=;
-        b=l8aVEdChLEksPJoeq1OA/0i6BD/2Jk5gACnIPyOjdCHqd2mXxinL/J0MFOoXhfgY2N
-         XxaNeGSxGrSQGFdESd6tHCMWHSPQ1Q1su00PfrgEHAaeKAMxfYvNZnplGLT9F2FPV2LF
-         gp1JpkXRxeCCeVAVdDqCgRuemvW24eOVArM+Y9mPdm/KQ9rPBsYdYS/9we7zdHjl4kWi
-         gUZ0usERnJmmXWrtvcsyqL+0/lPGERnn3tXKZgSn2VinhiK8Gzr8UiaA6yYufW7aUq/d
-         ZtPf7BeR3y3gZW1n1LcQznLzyAUIsU75H9ONPCtVCIMJPBnfqE5KY75OicniXiCZIzIk
-         fEqA==
-X-Gm-Message-State: AOAM5304WcfVNskmSPhaFhP12osXP1SBFi9JLLtxlbUyWxZefW8JyomK
-        RmuxicJDyOn2GcelEheFqKu5iQ==
-X-Google-Smtp-Source: ABdhPJzp58s7+oItIKw5Ejd+TF6/4zMxlAhKAGVBdu3DMF+hgwXn4kPHevj2jBiq/0iJjbrFdf+dgQ==
-X-Received: by 2002:a63:874a:: with SMTP id i71mr24106957pge.81.1636014273552;
-        Thu, 04 Nov 2021 01:24:33 -0700 (PDT)
+        bh=050XYfAs5h9fYsKsLiHkYANnHJbrZ8oMXRf8QMjyzYM=;
+        b=qoQifI+dTrXj5+cPZAw2yWmPMGVUcEt+3FYJN2dK9jzxOso1InD5kCL1lBK8sQ7+et
+         ZBkWL3vrgke8161SMXfzYf1fvAB6Vc4oSLR+or3PzDgH5kw6INtEIO07yGPj4WrY4X13
+         S1uT/pD5iIsO4G64xkhipPeLhbRrRyob7JkLaPm2Y+Vbwl7IGVI+C0mZ5BeTsHA/IB7v
+         hj4iTKiEkQTRND9cOloMnhZa6pQM99TeBt4MuXy7nkqTbmj9d7R/d7is0jyp+esgp/G4
+         0IBH6EHBZYTl6wmIzEGq4num/XAV+R4R3V56g6+CAFa2yIyvg6M6xswsJevoitaRclIC
+         MQqw==
+X-Gm-Message-State: AOAM532CekEo43Bjsj8Sgqcv8QGqIG+kpkCmK6b1LyjY3DOnlptsvvqu
+        Lv1jEoPLY0UBfQRnPmfomw1Kkg==
+X-Google-Smtp-Source: ABdhPJwwDoy+8Sc0CKgnI0sbrwp8CBOOEsk5Jcd/LJes84xXHsxABGm784YFv0e6siH7EWlGO9AXAQ==
+X-Received: by 2002:a17:902:8605:b0:13f:7c1d:56d1 with SMTP id f5-20020a170902860500b0013f7c1d56d1mr43445764plo.57.1636014274872;
+        Thu, 04 Nov 2021 01:24:34 -0700 (PDT)
 Received: from localhost ([2620:15c:202:201:b129:c9aa:6634:6c4c])
-        by smtp.gmail.com with UTF8SMTPSA id p9sm4266718pfn.7.2021.11.04.01.24.32
+        by smtp.gmail.com with UTF8SMTPSA id bf19sm6839973pjb.6.2021.11.04.01.24.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Nov 2021 01:24:33 -0700 (PDT)
+        Thu, 04 Nov 2021 01:24:34 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 09/13] iio: ti-adc12138: Use scan_type when processing raw data
-Date:   Thu,  4 Nov 2021 01:24:09 -0700
-Message-Id: <20211104082413.3681212-10-gwendal@chromium.org>
+Subject: [PATCH v2 10/13] iio: mag3110: Use scan_type when processing raw data
+Date:   Thu,  4 Nov 2021 01:24:10 -0700
+Message-Id: <20211104082413.3681212-11-gwendal@chromium.org>
 X-Mailer: git-send-email 2.33.1.1089.g2158813163f-goog
 In-Reply-To: <20211104082413.3681212-1-gwendal@chromium.org>
 References: <20211104082413.3681212-1-gwendal@chromium.org>
@@ -65,23 +65,33 @@ when reading elements directly using the raw sysfs attributes.
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/iio/adc/ti-adc12138.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/magnetometer/mag3110.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-adc12138.c b/drivers/iio/adc/ti-adc12138.c
-index fcd5d39dd03ea..5b5d452105393 100644
---- a/drivers/iio/adc/ti-adc12138.c
-+++ b/drivers/iio/adc/ti-adc12138.c
-@@ -239,7 +239,8 @@ static int adc12138_read_raw(struct iio_dev *iio,
- 		if (ret)
- 			return ret;
- 
--		*value = sign_extend32(be16_to_cpu(data) >> 3, 12);
-+		*value = sign_extend32(be16_to_cpu(data) >> channel->scan_type.shift,
-+				       channel->scan_type.realbits - 1);
- 
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
+diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
+index c96415a1aeadd..17c62d806218d 100644
+--- a/drivers/iio/magnetometer/mag3110.c
++++ b/drivers/iio/magnetometer/mag3110.c
+@@ -291,7 +291,8 @@ static int mag3110_read_raw(struct iio_dev *indio_dev,
+ 			if (ret < 0)
+ 				goto release;
+ 			*val = sign_extend32(
+-				be16_to_cpu(buffer[chan->scan_index]), 15);
++				be16_to_cpu(buffer[chan->scan_index]),
++					    chan->scan_type.realbits - 1);
+ 			ret = IIO_VAL_INT;
+ 			break;
+ 		case IIO_TEMP: /* in 1 C / LSB */
+@@ -306,7 +307,8 @@ static int mag3110_read_raw(struct iio_dev *indio_dev,
+ 			mutex_unlock(&data->lock);
+ 			if (ret < 0)
+ 				goto release;
+-			*val = sign_extend32(ret, 7);
++			*val = sign_extend32(ret,
++					     chan->scan_type.realbits - 1);
+ 			ret = IIO_VAL_INT;
+ 			break;
+ 		default:
 -- 
 2.33.1.1089.g2158813163f-goog
 

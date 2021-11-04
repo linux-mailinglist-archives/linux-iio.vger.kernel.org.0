@@ -2,219 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDD344599A
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 19:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B66AD445C1F
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 23:25:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234166AbhKDSYx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 4 Nov 2021 14:24:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58316 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234121AbhKDSYx (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 4 Nov 2021 14:24:53 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E97B7611EF;
-        Thu,  4 Nov 2021 18:22:12 +0000 (UTC)
-Date:   Thu, 4 Nov 2021 18:26:47 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Sa, Nuno" <Nuno.Sa@analog.com>
-Subject: Re: [PATCH v3 2/2] dt-bindings: iio: frequency: add admv1013 doc
-Message-ID: <20211104182647.29ae2bc4@jic23-huawei>
-In-Reply-To: <CY4PR03MB3399682ABFC08090528FED2C9B8C9@CY4PR03MB3399.namprd03.prod.outlook.com>
-References: <20211101100420.70304-1-antoniu.miclaus@analog.com>
-        <20211101100420.70304-2-antoniu.miclaus@analog.com>
-        <YYF6cPSDroPz/wun@robh.at.kernel.org>
-        <CY4PR03MB3399E5DC1D8A966C7CFC8C049B8C9@CY4PR03MB3399.namprd03.prod.outlook.com>
-        <CY4PR03MB3399682ABFC08090528FED2C9B8C9@CY4PR03MB3399.namprd03.prod.outlook.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
+        id S231347AbhKDW2R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 18:28:17 -0400
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net ([162.243.161.220]:50095
+        "HELO zg8tmtyylji0my4xnjeumjiw.icoremail.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S230512AbhKDW2R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 18:28:17 -0400
+Received: from icoremail.net (unknown [10.12.1.20])
+        by hzbj-icmmx-1 (Coremail) with SMTP id AQAAfwAXq7ebXYRhodvmBg--.16678S2;
+        Fri, 05 Nov 2021 06:24:27 +0800 (CST)
+Received: by ajax-webmail-mail (Coremail) ; Fri, 5 Nov 2021 06:25:29 +0800
+ (GMT+08:00)
+X-Originating-IP: [46.253.189.78]
+Date:   Fri, 5 Nov 2021 06:25:29 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   "Dmitry Maslov" <maslovdmitry@seeed.cc>
+To:     "Jonathan Cameron" <jic23@kernel.org>
+Cc:     "Andy Shevchenko" <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>, north_sea@qq.com,
+        baozhu.zuo@seeed.cc, jian.xiong@seeed.cc
+Subject: Re: Re: [PATCH v3] iio: light: ltr501: Added ltr303 driver support
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210303(5f774024)
+ Copyright (c) 2002-2021 www.mailtech.cn mtdemo-icoremail
+In-Reply-To: <20211103182102.2232e680@jic23-huawei>
+References: <20211031164603.4343-1-maslovdmitry@seeed.cc>
+ <CAHp75Vd99uk+wZHpVyYEveNGTaK9Nj5-oYTRua2UhOKjtYnS_g@mail.gmail.com>
+ <1d537660.dd.17cdbca2bb6.Coremail.maslovdmitry@seeed.cc>
+ <CAHp75Vc+Yqcq=gtpMgzb5pDc9nuNbzzwVjfsTg20hZ7VfAQ88w@mail.gmail.com>
+ <6f764cb4.e6.17cdd1249ee.Coremail.maslovdmitry@seeed.cc>
+ <20211103182102.2232e680@jic23-huawei>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: PH4t8GZvb3Rlcl90eHQ9NDIxNToxMA==
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Message-ID: <62f8cd50.4.17ced0e99b4.Coremail.maslovdmitry@seeed.cc>
+X-Coremail-Locale: en_US
+X-CM-TRANSID: AQAAfwCXG2baXYRhEgIAAA--.9W
+X-CM-SenderInfo: xpdvz0pygpx31u162vxhhghubf/1tbiAQEBClQ9KecIJQAasb
+Authentication-Results: hzbj-icmmx-1; spf=neutral smtp.mail=maslovdmit
+        ry@seeed.cc;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxAr13ZryxKw4xGFW7Aw1fJFb_yoWrWFW5pa
+        ya9F4jkFn5Gr45CrWqvw40vFyFyr4fGr43Xr95t348Z398ury0va1xtF4Fgas8Zw4Ska4j
+        qrWYqr9xCwn8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+        DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+        UUUUU
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 3 Nov 2021 14:30:56 +0000
-"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
-
-> Example:
-> In the setup that we tested the driver, we had a clock chip that was hardware-routed only to the positive side of the local oscillator input (LOP pin) from admv1013.
-> 
-> Therefore, I think keeping the property in the DT might be useful.
-
-I think Rob's question was more general than that one property... See below.
-> 
-> Regards,
-> --
-> Antoniu Miclăuş
-> 
-> > -----Original Message-----
-> > From: Miclaus, Antoniu
-> > Sent: Wednesday, November 3, 2021 10:09 AM
-> > To: Rob Herring <robh@kernel.org>
-> > Cc: jic23@kernel.org; linux-iio@vger.kernel.org; devicetree@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; Sa, Nuno <Nuno.Sa@analog.com>
-> > Subject: RE: [PATCH v3 2/2] dt-bindings: iio: frequency: add admv1013 doc
-> > 
-> > Hello Rob,
-> > 
-> > These properties are fixed and available in the datasheet (binary format):
-> > https://www.analog.com/media/en/technical-documentation/data-
-> > sheets/ADMV1013.pdf
-> > 
-> > Please see Page 37 of 39, Table 15, QUAD_SE_MODE.
-> > 
-> > Regards,
-> > --
-> > Antoniu Miclăuş
-> >   
-> > > -----Original Message-----
-> > > From: Rob Herring <robh@kernel.org>
-> > > Sent: Tuesday, November 2, 2021 7:51 PM
-> > > To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
-> > > Cc: jic23@kernel.org; linux-iio@vger.kernel.org;  
-> > devicetree@vger.kernel.org;  
-> > > linux-kernel@vger.kernel.org; Sa, Nuno <Nuno.Sa@analog.com>
-> > > Subject: Re: [PATCH v3 2/2] dt-bindings: iio: frequency: add admv1013 doc
-> > >
-> > > [External]
-> > >
-> > > On Mon, Nov 01, 2021 at 12:04:20PM +0200, Antoniu Miclaus wrote:  
-> > > > Add device tree bindings for the ADMV1013 Upconverter.
-> > > >
-> > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > > > ---
-> > > >  .../bindings/iio/frequency/adi,admv1013.yaml  | 119  
-> > > ++++++++++++++++++  
-> > > >  1 file changed, 119 insertions(+)
-> > > >  create mode 100644  
-> > > Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml  
-> > > >
-> > > > diff --git  
-> > > a/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
-> > > b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml  
-> > > > new file mode 100644
-> > > > index 000000000000..47993253a586
-> > > > --- /dev/null
-> > > > +++  
-> > > b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml  
-> > > > @@ -0,0 +1,119 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id:  
-> > >  
-> > https://urldefense.com/v3/__http://devicetree.org/schemas/iio/frequency  
-> > >  
-> > /adi,admv1013.yaml*__;Iw!!A3Ni8CS0y2Y!uTDPalOgj6YS_vZ6bsDSbA_Qna6Q  
-> > > OwMpoRxzo6nn06i5TNuGWZEk9PvtbC6SKQGXrugy$  
-> > > > +$schema: https://urldefense.com/v3/__http://devicetree.org/meta-  
-> > >  
-> > schemas/core.yaml*__;Iw!!A3Ni8CS0y2Y!uTDPalOgj6YS_vZ6bsDSbA_Qna6Q  
-> > > OwMpoRxzo6nn06i5TNuGWZEk9PvtbC6SKYugV1fM$  
-> > > > +
-> > > > +title: ADMV1013 Microwave Upconverter
-> > > > +
-> > > > +maintainers:
-> > > > +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > > > +
-> > > > +description: |
-> > > > +   Wideband, microwave upconverter optimized for point to point  
-> > > microwave  
-> > > > +   radio designs operating in the 24 GHz to 44 GHz frequency range.
-> > > > +
-> > > > +   https://www.analog.com/en/products/admv1013.html
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum:
-> > > > +      - adi,admv1013
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  spi-max-frequency:
-> > > > +    maximum: 1000000
-> > > > +
-> > > > +  clocks:
-> > > > +    description:
-> > > > +      Definition of the external clock.
-> > > > +    minItems: 1
-> > > > +
-> > > > +  clock-names:
-> > > > +    items:
-> > > > +      - const: lo_in
-> > > > +
-> > > > +  clock-output-names:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  vcm-supply:
-> > > > +    description:
-> > > > +      Analog voltage regulator.
-> > > > +
-> > > > +  adi,vga-powerdown:
-> > > > +    description:
-> > > > +      Power Down the Voltage Gain Amplifier Circuit available at
-> > > > +      BG_RBIAS2 pin.
-> > > > +    type: boolean
-
-What wiring would make it sensible to always have this powered down?
-If we can describe that rather than vga-powerdown then that is what should
-be in the binding.  If there isn't any wiring based justification and this
-is just turning off part of the device, then it should not be in the binding.
-
-> > > > +
-> > > > +  adi,mixer-powerdown:
-> > > > +    description:
-> > > > +      Power Down the Mixer Circuit. Enable to put the block in
-> > > > +      a power down state.
-
-Same for all these other power downs.
-
-> > > > +    type: boolean
-> > > > +
-> > > > +  adi,quad-powerdown:
-> > > > +    description:
-> > > > +      Power Down the Quadrupler. Enable to put the block in
-> > > > +      a power down state.
-> > > > +    type: boolean
-> > > > +
-> > > > +  adi,bg-powerdown:
-> > > > +    description:
-> > > > +      Power Down the Transmitter Band Gap. Enable to put the part in
-> > > > +      a power down state.
-> > > > +    type: boolean
-> > > > +
-> > > > +  adi,mixer-if-enable:
-> > > > +    description:
-> > > > +      Enable the Intermediate Frequency Mode. Either IF Mode or I/Q  
-> > Mode  
-> > > > +      can be enabled at a time.
-> > > > +    type: boolean
-> > > > +
-> > > > +  adi,detector-enable:
-> > > > +    description:
-> > > > +      Enable the Envelope Detector available at output pins VENV_P and
-> > > > +      VENV_N. Disable to reduce power consumption.
-> > > > +    type: boolean
-> > > > +
-> > > > +  adi,quad-se-mode:
-> > > > +    description:
-> > > > +      Switch the LO path from differential to single-ended operation.
-> > > > +      Set value 6 for Single-Ended Mode, Negative Side Disabled.
-> > > > +      Set value 9 for Single-Ended Mode, Positive Side Disabled.
-> > > > +      Set value 12 for Differential Mode.
-> > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +    enum: [6, 9, 12]  
-> > >
-> > > All these vendor properties are fixed based on the board design or
-> > > something a user may want to change? The latter does not belong in DT.
-> > >
-> > > Rob  
+PiBGcm9tOiAiSm9uYXRoYW4gQ2FtZXJvbiIgPGppYzIzQGtlcm5lbC5vcmc+Cj4gU2VudCBUaW1l
+OiAyMDIxLTExLTAzIDIwOjIxOjAyIChXZWRuZXNkYXkpCj4gVG86ICJEbWl0cnkgTWFzbG92IiA8
+bWFzbG92ZG1pdHJ5QHNlZWVkLmNjPgo+IENjOiAiQW5keSBTaGV2Y2hlbmtvIiA8YW5keS5zaGV2
+Y2hlbmtvQGdtYWlsLmNvbT4sIGxpbnV4LWlpbyA8bGludXgtaWlvQHZnZXIua2VybmVsLm9yZz4s
+ICJMYXJzLVBldGVyIENsYXVzZW4iIDxsYXJzQG1ldGFmb28uZGU+LCBub3J0aF9zZWFAcXEuY29t
+LCBiYW96aHUuenVvQHNlZWVkLmNjLCBqaWFuLnhpb25nQHNlZWVkLmNjCj4gU3ViamVjdDogUmU6
+IFtQQVRDSCB2M10gaWlvOiBsaWdodDogbHRyNTAxOiBBZGRlZCBsdHIzMDMgZHJpdmVyIHN1cHBv
+cnQKCj4gPiA+ID4gPiA+IEBAIC0xNTk3LDYgKzE2MTAsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
+IGFjcGlfZGV2aWNlX2lkIGx0cl9hY3BpX21hdGNoW10gPSB7Cj4gPiA+ID4gPiA+ICAgICAgICAg
+eyJMVEVSMDUwMSIsIGx0cjUwMX0sCj4gPiA+ID4gPiA+ICAgICAgICAgeyJMVEVSMDU1OSIsIGx0
+cjU1OX0sCj4gPiA+ID4gPiA+ICAgICAgICAgeyJMVEVSMDMwMSIsIGx0cjMwMX0sCj4gPiA+ID4g
+PiA+ICsgICAgICAgeyJMVEVSMDMwMyIsIGx0cjMwM30sICAKPiA+ID4gPiA+Cj4gPiA+ID4gPiBB
+bnkgZXZpZGVuY2Ugb2YgdGhpcyBBQ1BJIElEIGJlaW5nIGluIHRoZSB3aWxkLCBwbGVhc2U/ICAK
+PiA+ID4gPgo+ID4gPiA+IEknbSBzb3JyeSwgSSBkbyBub3QgZXhhY3RseSB1bmRlcnN0YW5kIHRo
+ZSBxdWVzdGlvbi4gRG8geW91IG1lYW4gd2hlcmUgdGhhdCBwYXJ0aWN1bGFyIHNlbnNvciBpcyB1
+c2VkPyAgCj4gPiA+IAo+ID4gPiBDYW4geW91IHByb3ZpZGUgYSBuYW1lIG9mIHRoZSBtYWNoaW5l
+IHdoaWNoIGhhcyB0aGlzIElEIGluIGl0cyBEU0RUCj4gPiA+IHRhYmxlLCBwbGVhc2U/ICAKPiA+
+IAo+ID4gV2UncmUgc3VibWl0dGluZyB0aGlzIHBhdGNoIHNwZWNpZmljYWxseSBmb3IgcmVUZXJt
+aW5hbC4KPiA+IEhlcmUgaXMgRFRTIGZpbGUgZm9yIHRoZSByZVRlcm1pbmFsLCBjdXJyZW50bHkg
+YXdhaXRpbmcgbWVyZ2UgaW4gUmFzcGJlcnJ5IFBpIExpbnV4IGtlcm5lbAo+ID4gcmVwb3NpdG9y
+eS4KPiA+IGh0dHBzOi8vZ2l0aHViLmNvbS9yYXNwYmVycnlwaS9saW51eC9ibG9iLzZlZjczMjg3
+NWQ3MDVmZjE1Y2M0YzI1ZDRkMGEwZWVlODdkYzJhNTgvYXJjaC9hcm0vYm9vdC9kdHMvb3Zlcmxh
+eXMvc2VlZWQtcmV0ZXJtaW5hbC1jb3JlLW92ZXJsYXkuZHRzI0w5OQo+ID4gCj4gPiBTbywgd2hp
+bGUgYXQgdGhlIG1vbWVudCBBQ1BJIHBhcnQgaXMgbm90IGJlaW5nIHVzZWQsIGxhdGVyIHdlIG1p
+Z2h0IHVzZSB0aGlzIHNlbnNvciBmb3Igb3RoZXIsIHg4NiBiYXNlZAo+ID4gYm9hcmRzLCBmb3Ig
+ZXhhbXBsZSBPRFlTU0VZIC0gWDg2SjQxMjU4MDAuCj4gPiAKPiA+IElzIHRoZXJlIGEgcGFydGlj
+dWxhciByZWFzb24geW91IHRoaW5rIHRoaXMgcGFydCBzaG91bGQgYmUgb21pdHRlZCBmb3IgTFRS
+MzAzPwo+ID4gCj4gQUNQSSBJRHMgYXJlIHN1cHBvc2VkIHRvIGJlIG1hZGUgdXAgb2YgZWl0aGVy
+IGEgUE5QIGlkIG9yIEFDUEkgSUQgcmVnaXN0ZXJlZCB3aXRoCj4gVUVGSSBmb3J1bS4KPiAKPiBB
+IDQgbGV0dGVyIHZlcnNpb24gaXMgYW4gQUNQSSBJRCAoMyBsZXR0ZXJzIGluIFBOUCksIHNvIGl0
+IHNob3VsZCBiZSBpbiB0aGlzIHRhYmxlCj4gaHR0cHM6Ly91ZWZpLm9yZy9hY3BpX2lkX2xpc3QK
+PiAKPiBJdCdzIG5vdC4gIFNvIHRoYXQgbWVhbnMgdGhlIHByb3BlciBwcm9jZXNzIHdhc24ndCBm
+b2xsb3dlZC4gIElmIHlvdSB3ZXJlIHVzaW5nIHRoaXMKPiBJRCBvbiBhIHNlcnZlciwgY2hhbmNl
+cyBhcmUgd2UnZCBqdXN0IHRlbGwgeW91IGdvIGZpeCB5b3VyIGZpcm13YXJlIChpdCdzIGhhcHBl
+bmVkCj4gdG8gbWUgYW5kIHdlIGZpeGVkIGl0KS4gIEhvd2V2ZXIgdGhlIHNhZCB0cnV0aCBpcyBp
+biBjb25zdW1lciAvIGVtYmVkZGVkIGRldmljZXMgdGhhdAo+IG1heSBub3QgYmUgYSBwcmFjdGlj
+YWwgc29sdXRpb24uICBBcyBzdWNoLCBpZiB0aGUgSUQgd2FzIGtub3duIHRvIGJlIGluIHRoZSB3
+aWxkCj4gd2Ugd291bGQgcHJvYmFibHkgbGV0IGl0IGluLgo+IAo+IFVuZm9ydHVuYXRlbHkgSSBv
+bmx5IHJlYWxseSBnb3QgZmFtaWxpYXIgd2l0aCBBQ1BJIHNwZWNzIGluIHRoZSBsYXN0IDQgeWVh
+cnMKPiBhbmQgYmVmb3JlIHRoYXQgdGltZSBJIGRpZG4ndCBrbm93IHdoYXQgdGhlIHJ1bGVzIHdl
+cmUgLSBzbyBsZXQgYSBsb2FkIG9mIElEcyBpbi4KPiBTb21lIG9mIHRob3NlIElEcyBhcmUgaW4g
+dXNlIG9uIGhhcmR3YXJlIHRoYXQgaXMgb3V0IHRoZXJlIHNvIHdlIGhhdmUgdG8gY29udGludWUK
+PiBzdXBwb3J0aW5nIHRoZW0gb3IgaW50cm9kdWNlIGEgcmVncmVzc2lvbiBvbiB0aGF0IGhhcmR3
+YXJlLgo+IAo+IFRoZSBwcm9jZXNzIG9mIGFwcGx5aW5nIGZvciBhIFBOUCBvciBBQ1BJIElEIGlz
+bid0IHRoYXQgYmFkIGZvciBhIGNvbXBhbnkgLSB5b3UgYXNrCj4gZm9yIGEgcGFydGljdWxhciBJ
+RCBhbmQgcmVxdWVzdCBpcyB0aGVuIHNlbnQgZm9yIGEgcm91bmQgb2YgJ2hhcyBhbnlvbmUgYW4g
+b2JqZWN0aW9uJwo+IHRvIHRoZSBBU1dHIChJJ20gYSByYXRoZXIgaW5hY3RpdmUgbWVtYmVyIHNv
+IEkgc2VlIHRoZXNlIGV2ZXJ5IHdlZWsgb3Igc28pLgo+IEluc3RydWN0aW9ucyBhdCBodHRwczov
+L3VlZmkub3JnL1BOUF9BQ1BJX1JlZ2lzdHJ5Cj4gCj4gTm90ZSB0aGF0IHRoZXJlIHdvdWxkIGJl
+IHR3byBvcHRpb25zIGZvciBTZWVlZC4gIEVpdGhlciB5b3UgcGVyc3VhZGUgbGl0ZW9uIHRvIGFw
+cGx5Cj4gYW5kIHRoZW4gaXNzdWUgYW4gYXBwcm9wcmlhdGUgbnVtYmVyICh3aGljaCBtYXkgd2Vs
+bCBub3QgYmUgdGhlIHBhcnQgbnVtYmVyIC0gb2Z0ZW4KPiBwZW9wbGUganVzdCBzdGFydCBjb3Vu
+dGluZyBmcm9tIDAsIG9yIGFzc2lnbiByYW5nZXMgdG8gZGlmZmVyZW50IHBlb3BsZSBpbiB0aGUg
+Y29tcGFueQo+IHNvIHRoZXJlIGRvZXNuJ3QgbmVlZCB0byBiZSBhIGNlbnRyYWwgcmVnaXN0cnkp
+IG9yIHNlZWVkIGFwcGxpZXMgZm9yIGFuIEFDUEkgb3IgUE5QIElECj4gYW5kIHRoZW4gaXNzdWVz
+IElEcyBmb3IgYW55IHBhcnQgeW91IHdhbnQgdG8gc3VwcG9ydCBvbiBhbiBBQ1BJIHBsYXRmb3Jt
+IHRoYXQgZG9lc24ndAo+IHlldCBoYXZlIGFuIElEIGlzc3VlZCBieSB0aGUgc3VwcGxpZXIuCj4g
+Cj4gTm90ZSB0aGF0IGl0J3MgYWxzbyBjb21tb24gdG8gdXNlIHNvbWVvbmUgZWxzZSdzIElELiBP
+bmNlIGl0J3MgYXNzaWduZWQgdG8gYSBkZXZpY2UKPiBpdCBjYW4ndCBiZSByZXVzZWQgYW55d2F5
+IHNvIGlmIHNheSwgSW50ZWwgb3IgSGlzaWxpY29uIGhhZCBhc3NpZ25lZCBvbmUgdG8gYSBwYXJ0
+Cj4gYWxyZWFkeSB0aGVuIHlvdSBjb3VsZCBqdXN0IHJldXNlIGl0IGZvciB5b3VyIEFDUEkgcGxh
+dGZvcm1zLgo+IAo+IEhvcGUgdGhhdCBjbGVhcnMgdXAgaG93IHRoaXMgaXMgc3VwcG9zZWQgdG8g
+d29yay4KPiAKPiBBbHNvIG5vdGUgdGhhdCBldmVyeSBub3cgYW5kIHRoZW4gd2UgJ2d1ZXNzJyB0
+aGF0IElEcyBhcmUganVzdCBjdXQgYW5kIHBhc3RlCj4gam9icyBhbmQgcmVtb3ZlIHRoZW0uICBT
+byBmYXIgd2UndmUgb25seSBoaXQgb25lcyB0aGF0IHdlcmUgaW4gYWN0dWFsIHVzZSBhCj4gZmV3
+IHRpbWVzIC0gdGhlIG1ham9yaXR5IG9mIGludmFsaWQgb25lcyB3ZXJlbid0IGluIHVzZS4KPiAK
+VGhhbmsgeW91IGZvciB0YWtpbmcgeW91ciB0aW1lIHRvIHdyaXRlIHN1Y2ggZGV0YWlsZWQgZXhw
+bGFuYXRpb24hIFRoZSB3aG9sZSBzaXR1YXRpb24Kd2l0aCBBQ1BJL1BOUCBJRCBpcyBtdWNoIG1v
+cmUgY2xlYXIgdG8gbWUgbm93LgpBcyBJIG1lbnRpb25lZCBhYm92ZSwgY3VycmVudGx5IG91ciBt
+YWluIGdvYWwgaXMgYWRkaW5nIGRyaXZlcnMgbmVjZXNzYXJ5IHRvIHN1cHBvcnQKcmVUZXJtaW5h
+bCwgd2hpY2ggaXMgQVJNIHByb2Nlc3NvciBiYXNlZCBkZXZpY2UuIEl0IG1lYW5zIHRoYXQgYXMg
+b2Ygbm93LCB3ZSAKd29uJ3QgYmUgdXNpbmcgQUNQSS4gRG8geW91IHRoaW5rIGl0IGlzIHZhbGlk
+IG9wdGlvbiB0byBqdXN0IHJlbW92ZSB0aGF0IHBhcnQ/ClRoYXQgc2hvdWxkbid0IGFmZmVjdCBB
+Uk0gYmFzZWQgZGV2aWNlcyBhYmlsaXR5IHRvIGludGVyYWN0IHdpdGggdGhlIHNlbnNvci4KDQoN
+Cg0KDQoNCg==
 

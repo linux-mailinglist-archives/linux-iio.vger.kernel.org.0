@@ -2,275 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A150244594E
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 19:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED22A445962
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 19:10:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230403AbhKDSLF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 4 Nov 2021 14:11:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55216 "EHLO mail.kernel.org"
+        id S234093AbhKDSNU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 14:13:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55758 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231402AbhKDSLF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 4 Nov 2021 14:11:05 -0400
+        id S234102AbhKDSNP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 4 Nov 2021 14:13:15 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37BAB611C3;
-        Thu,  4 Nov 2021 18:08:25 +0000 (UTC)
-Date:   Thu, 4 Nov 2021 18:13:00 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 9989E60EC0;
+        Thu,  4 Nov 2021 18:10:35 +0000 (UTC)
+Date:   Thu, 4 Nov 2021 18:15:10 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     lars@metafoo.de, swboyd@chromium.org, andy.shevchenko@gmail.com,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH 4/5] dt-bindings: iio: Add sx9324 binding
-Message-ID: <20211104181300.5b8adc27@jic23-huawei>
-In-Reply-To: <CAPUE2uu0RGHCrOGzCoOZpayMwpiuna0Diegd6rBrmZ9eCGLpYw@mail.gmail.com>
+Subject: Re: [PATCH 3/5] iio: proximity: Add SX9324 support
+Message-ID: <20211104181510.2a4f31ed@jic23-huawei>
+In-Reply-To: <CAPUE2utpxe098AZEkAKnJDte7Kv8v3R44w71b0Tdba+vXskv2w@mail.gmail.com>
 References: <20211030111827.1494139-1-gwendal@chromium.org>
-        <20211030111827.1494139-5-gwendal@chromium.org>
-        <20211030182452.76712323@jic23-huawei>
-        <CAPUE2uu0RGHCrOGzCoOZpayMwpiuna0Diegd6rBrmZ9eCGLpYw@mail.gmail.com>
+        <20211030111827.1494139-4-gwendal@chromium.org>
+        <20211030180423.6451830e@jic23-huawei>
+        <CAPUE2utpxe098AZEkAKnJDte7Kv8v3R44w71b0Tdba+vXskv2w@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 4 Nov 2021 00:16:13 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+> > > +static ssize_t sx9324_phase_configuration_store(struct device *dev,
+> > > +                                             struct device_attribute *attr,
+> > > +                                             const char *buf,
+> > > +                                             size_t len)
+> > > +{
+> > > +     return -EINVAL;  
+> >
+> > Don't do this. If they are read only treat them correctly as such
+> > with appropriate permissions etc.  
+> used channel .ext_info instead.
 
-> On Sat, Oct 30, 2021 at 10:20 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Sat, 30 Oct 2021 04:18:26 -0700
-> > Gwendal Grignou <gwendal@chromium.org> wrote:
+Even better.
+
 > >  
-> > > Similar to SX9310, add biddings to setup sx9324 hardware properties.
-> > > SX9324 is a little different, introduce 4 phases to be configured in 2
-> > > pairs over 3 antennas.
-> > >
-> > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
-> > This has a high degree of black magic.
+> > > +}
+> > > +
+> > > +#define IIO_DEV_ATTR_PHASE_CONFIG(_idx) \
+> > > +IIO_DEVICE_ATTR(in_proximity_configuration##_idx, 0644, \
+> > > +             sx9324_phase_configuration_show, \
+> > > +             sx9324_phase_configuration_store, _idx)
+> > > +
+> > > +static IIO_DEV_ATTR_PHASE_CONFIG(0);
+> > > +static IIO_DEV_ATTR_PHASE_CONFIG(1);
+> > > +static IIO_DEV_ATTR_PHASE_CONFIG(2);
+> > > +static IIO_DEV_ATTR_PHASE_CONFIG(3);  
 > >
-> > I'm curious - is there a fairly heavy weight userspace library interpreting
-> > the various readings?  If so I don't suppose it's available anywhere to look at?
-> > If you can point to any public info on this part that would also be great.  
-> Actually, user space does not care about the measurement once the
-> sensor is set up correctly to match its antennas (gains, thresholds,
-> hysteresis). They are only used during development and there is a
-> little of black magic at that point.
-> Then user spaces care about the events (far/close) generated by the
-> sensor. See https://chromium.googlesource.com/chromiumos/platform2/+/main/power_manager/powerd/system/user_proximity_watcher.cc#47
+> > Documentation of these? I'm not going to comment on them without appropriate
+> > docs in
+> >
+> > Documentation/ABI/testing/
+> >
+> > Just wastes time figuring out what they are.  
+> It is not easy to explain without the doc (not released by semtech but
+> available at https://edit.wpgdadawant.com/uploads/news_file/program/2019/30184/tech_files/program_30184_suggest_other_file.pdf),
+> but let me try:
 > 
-
-Fair enough.  I'll just remember this as 'black magic' :)
-
-> >
-> > Thanks,
-> >
-> > Jonathan
-> >  
-> > > ---
-> > >  .../iio/proximity/semtech,sx9324.yaml         | 141 ++++++++++++++++++
-> > >  1 file changed, 141 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > > new file mode 100644
-> > > index 0000000000000..fe9edf15c16d4
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > > @@ -0,0 +1,141 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Semtech's SX9324 capacitive proximity sensor
-> > > +
-> > > +maintainers:
-> > > +  - Gwendal Grignou <gwendal@chromium.org>
-> > > +  - Daniel Campello <campello@chromium.org>
-> > > +
-> > > +description: |
-> > > +  Semtech's SX9324 proximity sensor.
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - semtech,sx9324x
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  interrupts:
-> > > +    description:
-> > > +      The sole interrupt generated by the device used to announce the
-> > > +      preceding reading request has finished and that data is
-> > > +      available or that a close/far proximity event has happened.  
-> > No need to say sole given maxItems: 1
-> > Perhaps...
-> >
-> >         Generated by device to announce preceding read request has finished
-> >         and data is available or that a close/far proximity event has happened.
-> >  
-> Done.
-> > > +    maxItems: 1
-> > > +
-> > > +  vdd-supply:
-> > > +    description: Main power supply
-> > > +
-> > > +  svdd-supply:
-> > > +    description: Host interface power supply
-> > > +
-> > > +  "#io-channel-cells":
-> > > +    const: 1  
-> >
-> > Curious -  Do we have consumers of this?  
-> I recopied them from sx9310. It looks standard for i2c devices.
-
-Should only be the case for devices that have or are likely to have
-in kernel IIO consumers.  Doesn't do any harm though and might be useful to
-someone so fine to leave it.
-
-
-> >  
-> > > +
-> > > +  semtech,ph0-pin:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > > +    description: |
-> > > +      Indicates how each CS pin is used during phase 0.
-> > > +      Each of the 3 pins have the following value -
-> > > +      0 : unused (high impedance)
-> > > +      1 : measured input
-> > > +      2 : dynamic shield
-> > > +      3 : grounded.
-> > > +      For instance, CS0 measured, CS1 shield and CS2 ground is [1, 2, 3]
-> > > +    items:
-> > > +      enum: [ 0, 1, 2, 3 ]
-> > > +    minItems: 3
-> > > +    maxItems: 3
-> > > +
-> > > +  semtech,ph1-pin:
-> > > +  semtech,ph2-pin:
-> > > +  semtech,ph3-pin:
-> > > +    Same as ph0-pin  
-> >
-> > I'm curious - why would you chose different combinations?  I guess because of
-> > different wiring.  If that's the case, is there a documented 'right' choice
-> > for a given wiring.   I'm just wondering if we are better off describing
-> > what is connected to these pins and having the driver pick a valid control
-> > sequence.  That might simplify things.  If not then fair enough.  
-> I explained in Documentation/ABI/testing/sysfs-bus-iio-sx9324 in the
-> previous patch.
-> The BIOS would communicate how the input pins are wired.
-
-So my reading here is that isn't quite true.  The BIOS is communicating
-what state we should put the pins into which is a function of how they
-are wired, but not a direct indication of that wiring.
-
-From point of view of someone using this device, I'd really want
-to be able to specify pin 1 to this part of the antenna etc and have
-the driver work out the settings for each step in the sequence that would
-work.
-
-If we don't have that information, or it is complex to map to a sequence then
-I can live with what you have here.
-
-> >  
-> > > +
-> > > +  semtech,resolution01
-> > > +    $ref: /schemas/types.yaml#definitions/uint32
-> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
-> > > +    description:
-> > > +      Capacitance measurement resolution. For phase 0 and 1.
-> > > +      Higher the number, higher the resolution.  
-> >
-> > Can we not give something more meaningful than high is higher?
-> > I don't have the datasheet for this part and the 9330 that I'm
-> > looking at is rather unhelpful on this.  I have no idea how anyone
-> > using that datasheet would figure out what to set this to!  
-> I don't have more info. It is tweaked during setup.
-
-Ah well - magic tweak it is :)
+> Each sensor has 3 inputs, CS0, CS1 and CS2. Hardware engineers decide
+> if the input is not connected (HZ), grounded (GD), connected to an
+> antenna where it can act as a base (DS - data shield), or measured
+> input (MI).
+> The sensor rotates measurement across 4 phases (PH0, PH1, PH2, PH3),
+> where the inputs are configured and then measured.
+> By default,  during the first phase, [PH0], CS0 is measured, while CS1
+> and CS2 are used as shields. `cat in_proximity0_mode` returns
+> "MI,DS,DS".
+> I did not make this change configurable: if the hardware designer
+> decided to ground or leave an input dangling, it does not make sense
+> to set it as a shield. [it can be changed if the need arises].
+> Having 4 phases allows different treatment of the input. For instance,
+> one phase could be used for object detection,the other for body
+> detection. Configuring each phase is not implemented yet.
+Ah. I read the emails backwards, this explanation is good - it's a
+combination of 'what is wired' and what you are trying to measure.
 
 > 
-> >  
-> > > +    default: 4
-> > > +
-> > > +  semtech,resolution23
-> > > +    $ref: /schemas/types.yaml#definitions/uint32
-> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
-> > > +    description:
-> > > +      Capacitance measurement resolution. For phase 2 and 3
-> > > +    default: 4
-> > > +
-> > > +  semtech,startup-sensor:
-> > > +    $ref: /schemas/types.yaml#definitions/uint32
-> > > +    enum: [0, 1, 2, 3]
-> > > +    default: 0
-> > > +    description:
-> > > +      Phase used for start-up proximity detection.
-> > > +      It is used when we enable a phase to remove static offset and measure
-> > > +      only capacitance changes introduced by the user.
-> > > +
-> > > +  semtech,proxraw-strength01:
-> > > +    $ref: /schemas/types.yaml#definitions/uint32
-> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
-> > > +    default: 1
-> > > +    description:
-> > > +      PROXRAW filter strength for phase 0 and 1. A value of 0 represents off,i
-> > > +      and other values represent 1-1/N.
-> > > +
-> > > +  semtech,proxraw-strength23:
-> > > +    $ref: /schemas/types.yaml#definitions/uint32
-> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
-> > > +    default: 1
-> > > +    description:
-> > > +      PROXRAW filter strength for phase 2 and 3. A value of 0 represents off,i
-> > > +      and other values represent 1-1/N.
-> > > +
-> > > +  semtech,avg-pos-strength:
-> > > +    $ref: /schemas/types.yaml#definitions/uint32
-> > > +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
-> > > +    default: 16
-> > > +    description:
-> > > +      Average positive filter strength. A value of 0 represents off and
-> > > +      UINT_MAX (4294967295) represents infinite. Other values
-> > > +      represent 1-1/N.
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +  - "#io-channel-cells"
-> > > +
-> > > +additionalProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > > +    i2c {
-> > > +      #address-cells = <1>;
-> > > +      #size-cells = <0>;
-> > > +      proximity@28 {
-> > > +        compatible = "semtech,sx9310";
-> > > +        reg = <0x28>;
-> > > +        interrupt-parent = <&pio>;
-> > > +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
-> > > +        vdd-supply = <&pp3300_a>;
-> > > +        svdd-supply = <&pp1800_prox>;
-> > > +        #io-channel-cells = <1>;
-> > > +        semtech,ph0-pin = <1, 2, 3>;
-> > > +        semtech,ph1-pin = <3, 2, 1>;
-> > > +        semtech,ph2-pin = <1, 2, 3>;
-> > > +        semtech,ph3-pin = <3, 2, 1>;
-> > > +        semtech,resolution01 = 2;
-> > > +        semtech,resolution23 = 2;
-> > > +        semtech,startup-sensor = <1>;
-> > > +        semtech,proxraw-strength01 = <2>;
-> > > +        semtech,proxraw-strength23 = <2>;
-> > > +        semtech,avg-pos-strength = <64>;
-> > > +      };
-> > > +    };  
-> >  
-
+> Add missing documentation in ABI/testing/sysfs-bus-iio-sx9324.

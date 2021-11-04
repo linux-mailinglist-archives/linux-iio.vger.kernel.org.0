@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62B5344502A
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3FA144502B
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230397AbhKDI1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 04:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
+        id S230084AbhKDI1H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 04:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbhKDI1F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:05 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61A0AC061714
-        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:28 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id y1so5954034plk.10
-        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:28 -0700 (PDT)
+        with ESMTP id S230404AbhKDI1H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:07 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E67EAC061714
+        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:29 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id k4so5980209plx.8
+        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=/9SRX06i76D4HI1nkgfBuD3aMtpTGwkvvOZTDSanavI=;
-        b=cEfrj58Pl0oapVNps6POcHoO4Z5DpMHypL62gbWxHtg6FMRFvcfhZtzhRU9KgOv1XF
-         6H8hzieG13aauBPFsxLNvyUHgFzD3bZQRcL9iF8oNDcSqLJ0syOhvPKnEBRp8BGzF0dg
-         Lf7UadaYTX8o27FrF756sxpDa+ZF/TVKM8HEQ=
+        bh=sfOVCvVYnXf5Qn6Otdy07nqhnP7h5NZHYQtwyvdfb7A=;
+        b=Rd5gMOrl7v4l2SaqlB65B6t+vB65mfcJyr0jERqpPJgliRwbBMHxERTdz7f6cocwtE
+         +xNpzQ10Pe60QjRVi+cc1zeN5ZHKMnZmBSHmYSUcXNA66bfFftZUajcDJ1N50NqCnxm0
+         xVsITl/OGcctT1rie4S4inUOAa7fbmmjfbT74=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=/9SRX06i76D4HI1nkgfBuD3aMtpTGwkvvOZTDSanavI=;
-        b=MSqLF2iO2WnSh4H9XY4PUhiUd+DDXCbbfougOlCoc0O3qvG0I2OADTDH1RTH44NWC5
-         AHwG5MzQFhZR3NUiBDXmJidYDyQhf+r4V+gT2jnvb2jJVDozHVT+w3OMx1XiY3G73Pgt
-         uPf6/23B8VuoXKtUekuUXRU4bSdsmBLXVOQH6DAAn6qhWTvgB/sSnkq9eBrdLRjw0JCb
-         yRTC5uOR9PvsjakgbiiKlz7zHAWMRaqcBHs/ASaAkWw+u3n7JRLr2KY9+kt85hJWw51g
-         617v7d4wePZ+aYnDIeLn3QPBuATHypzWYwAWxW9ke06AWlFEBBP0luy70U5fdazgfAlN
-         vL6Q==
-X-Gm-Message-State: AOAM531YCg5lfIPIgMJ3DA0Yghw+sX94VzMuElcmEs2OBP+YkeSj+SL9
-        1DJR1c2enySXmM9xwnHy3JC/Fg==
-X-Google-Smtp-Source: ABdhPJwdKSEj8gjIES/Pbf2sS2fGGEJ4Q/LzP5gzYP0tZ9VMfavgXmf3ld4bqj9lg9OG3EXrLTFEBQ==
-X-Received: by 2002:a17:903:32c2:b0:141:eed4:ec0a with SMTP id i2-20020a17090332c200b00141eed4ec0amr23066123plr.74.1636014267928;
-        Thu, 04 Nov 2021 01:24:27 -0700 (PDT)
+        bh=sfOVCvVYnXf5Qn6Otdy07nqhnP7h5NZHYQtwyvdfb7A=;
+        b=AWgySpWEgOz/0/fHpO8G5RLIyLYEnM+/7UYOjtCoGp6ceXApq4VO0JV/XUbYw1Qzs+
+         TOxPSxWmDKopBrsdDR9MIs+TzwfKsyspf0dxH8snxmLatutCZ4zkY5ovpURtZ1hl5GIY
+         tCnXQMyCSPuHFwSns9fJ2UtWC/LOac82oQh6reh1gKAJgR1C2CEPXbVFvpOQ6On5SEDH
+         wo9lxWOc0BOHe3gqs+YOsszo2UQrfEoYqop5Udl7V3H3Mp0vqmE2QciIfyYpj5v5TWZF
+         pXL9oqZJR7e3ZN+1Piv4/4mM0U4/baRKgKQHPAb4QayDkNT5IClYKGERNhwgC+D13Xef
+         6UEg==
+X-Gm-Message-State: AOAM5330/LFmJbAFLKKDC8iMIL8ZQT2NL6FhxEopd1XuckxjRsUBZAAk
+        e+12FoeuA7QlpwcF2T+t307OKj5nhLFy2A==
+X-Google-Smtp-Source: ABdhPJzbG5tE9QT0nAp7EYcXSqpIlUlK5fRIj1udr6ZmuKH0oSDRggqWLVlSMOMVT7sXYKU1fCl/oA==
+X-Received: by 2002:a17:902:d711:b0:141:efff:9f3 with SMTP id w17-20020a170902d71100b00141efff09f3mr22711064ply.48.1636014269493;
+        Thu, 04 Nov 2021 01:24:29 -0700 (PDT)
 Received: from localhost ([2620:15c:202:201:b129:c9aa:6634:6c4c])
-        by smtp.gmail.com with UTF8SMTPSA id c9sm3457251pgq.58.2021.11.04.01.24.26
+        by smtp.gmail.com with UTF8SMTPSA id w13sm6897039pjc.29.2021.11.04.01.24.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Nov 2021 01:24:27 -0700 (PDT)
+        Thu, 04 Nov 2021 01:24:29 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 05/13] iio: stk8312: Use scan_type when processing raw data
-Date:   Thu,  4 Nov 2021 01:24:05 -0700
-Message-Id: <20211104082413.3681212-6-gwendal@chromium.org>
+Subject: [PATCH v2 06/13] iio: stk8ba50: Use scan_type when processing raw data
+Date:   Thu,  4 Nov 2021 01:24:06 -0700
+Message-Id: <20211104082413.3681212-7-gwendal@chromium.org>
 X-Mailer: git-send-email 2.33.1.1089.g2158813163f-goog
 In-Reply-To: <20211104082413.3681212-1-gwendal@chromium.org>
 References: <20211104082413.3681212-1-gwendal@chromium.org>
@@ -65,22 +65,23 @@ when reading elements directly using the raw sysfs attributes.
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/iio/accel/stk8312.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/stk8ba50.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
-index 43c621d0f11e4..de0cdf8c1f94c 100644
---- a/drivers/iio/accel/stk8312.c
-+++ b/drivers/iio/accel/stk8312.c
-@@ -355,7 +355,7 @@ static int stk8312_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/accel/stk8ba50.c b/drivers/iio/accel/stk8ba50.c
+index e137a34b5c9a9..517c57ed9e949 100644
+--- a/drivers/iio/accel/stk8ba50.c
++++ b/drivers/iio/accel/stk8ba50.c
+@@ -227,7 +227,8 @@ static int stk8ba50_read_raw(struct iio_dev *indio_dev,
  			mutex_unlock(&data->lock);
- 			return ret;
+ 			return -EINVAL;
  		}
--		*val = sign_extend32(ret, 7);
-+		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
- 		ret = stk8312_set_mode(data,
- 				       data->mode & (~STK8312_MODE_ACTIVE));
+-		*val = sign_extend32(ret >> STK8BA50_DATA_SHIFT, 9);
++		*val = sign_extend32(ret >> chan->scan_type.shift,
++				     chan->scan_type.realbits - 1);
+ 		stk8ba50_set_power(data, STK8BA50_MODE_SUSPEND);
  		mutex_unlock(&data->lock);
+ 		return IIO_VAL_INT;
 -- 
 2.33.1.1089.g2158813163f-goog
 

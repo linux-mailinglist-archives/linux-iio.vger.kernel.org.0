@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A852C44502C
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9232944502D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 09:24:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230410AbhKDI1J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 04:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45164 "EHLO
+        id S230451AbhKDI1K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 04:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230404AbhKDI1I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:08 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E4DC061714
-        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:31 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id n8so6007919plf.4
-        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:31 -0700 (PDT)
+        with ESMTP id S230445AbhKDI1K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 04:27:10 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863C0C06127A
+        for <linux-iio@vger.kernel.org>; Thu,  4 Nov 2021 01:24:32 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id s136so4813447pgs.4
+        for <linux-iio@vger.kernel.org>; Thu, 04 Nov 2021 01:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=idY4qdu4LGBcB8a0Px2nHDOUUuSlRmvZ25ss85X1YpI=;
-        b=ShQFTjnAKSHGiBvAKzbOKDi7ud0H3QDxCHSYUMSs+71tyyfKOt0u1e8+3q9YWBwt6R
-         EqzPrFQCWnUDstK83rmExSpxNx+SPjhxF2X9Zw/8zF2F3tN1MjXiFPLvC7rF34VLCoA/
-         292i8gDxc/f4G/Kwnbs4FpOnEdKSuaabAUBsg=
+        bh=ji6JqzNTrcD6aFrkDMF+a46Vd/1TQkWuUyVLT3OJmZ0=;
+        b=h4bMu91NVku/k8RN9sOVqCcGi+SCr5N5sxM7Gfcaag4dkHSdp+SdkEP0UAPg5ZCjw2
+         XtE1WQpd9BDa1Yza2IVFREi3jTOwEwMzHYPZ9UxkloU2aRNRXbCOOKgisNKqi0SsUeyt
+         yvMAFSXV/Okf8AsJJoBOnNGwel8J0twbARV8k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=idY4qdu4LGBcB8a0Px2nHDOUUuSlRmvZ25ss85X1YpI=;
-        b=fDHgB0fG9Hoor7pz4pdHcNN+KsdZXtcDNoY87r9HgXJcJVBpqzReGiT4WBE/9w74D1
-         l0Uu0O2PgyLhp274KQjecaqppZDt/BzOapl8A4DQi53oLcelgIq2m6x0kEv8+sYqlXga
-         hPgkUsKincFe4S4Tj7QDajlajQ9y9Qp2QDm+3tiMCY1zr7BJZ/QTYZsPOqrKIGtCyB0k
-         YEf22lBOPReaSHZOk7/iObBMoBqUWMVDtxMrtW2wbsuNDIt1WeEZnS8CAcXAx1RMgeM7
-         lwOC6qP/dyAyAoYRqxpvRdlq4UWwPNJMWZ874mOcBFAHT3CikJfmghN9FxDoZ4aWJlbq
-         lt2w==
-X-Gm-Message-State: AOAM531ycE9TCMa4JJ8WWK9ROWUlY8U1F72EJVw3rn7u6cwmluMbHp2d
-        im5TNSeViqK92wQ60/niOKym1g==
-X-Google-Smtp-Source: ABdhPJwqXnGdBfDO9rD3t1ekzzZU6bTD7aoL50wj/yf1+y13SVU7jE6FBGggzw/OhuTfmZ30bPqPaA==
-X-Received: by 2002:a17:90a:408f:: with SMTP id l15mr20534011pjg.34.1636014270802;
-        Thu, 04 Nov 2021 01:24:30 -0700 (PDT)
+        bh=ji6JqzNTrcD6aFrkDMF+a46Vd/1TQkWuUyVLT3OJmZ0=;
+        b=L8tGOuYaEduycM7sUeVcae3R/Si9K5N4QH3iWgyMJRKRB8f/4AvZfpgABVNIJdcnFn
+         diLaj3YHvQ0sfJqZ0cKuCafDqIADRlCy43CQqB7gn1N8yq1Na+aGjm++HmVcZwRQbI39
+         iMoTBHthepJKP61XRF1co1eZDW13iFeDT+gJXT5dAdztrXhloNpkOBO084kz48wg/J2w
+         g2tpyESugcKKZCzNqiCrs9ro3Wsmso/90pjlPoDWfURirQsUQE6Gb3y5N7OJTQ70bO7g
+         q+fFhr34CPWE9uKl/yD+7TGiKrbSa9k1QGOIaqEWVKWRvzRI0ECuEn/6coJoKPf4RSd+
+         eknQ==
+X-Gm-Message-State: AOAM533GTieH14xHkuTtdCUSrOODHv4yvwoL41Wj7RJUTF1p9xe6cUZX
+        6+d0xxzyxXvKNhR/NkW0C/jSqPfhJv+uwg==
+X-Google-Smtp-Source: ABdhPJxacx36coGhhnpKfK8qMCUpPL2+nplUhikKP8ZVymm3Dxdz/VLcwrUh4ySugO6HI7YflMdd8A==
+X-Received: by 2002:a63:1441:: with SMTP id 1mr18073840pgu.66.1636014272061;
+        Thu, 04 Nov 2021 01:24:32 -0700 (PDT)
 Received: from localhost ([2620:15c:202:201:b129:c9aa:6634:6c4c])
-        by smtp.gmail.com with UTF8SMTPSA id g37sm3450693pgg.89.2021.11.04.01.24.30
+        by smtp.gmail.com with UTF8SMTPSA id k6sm4577852pfu.48.2021.11.04.01.24.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Nov 2021 01:24:30 -0700 (PDT)
+        Thu, 04 Nov 2021 01:24:31 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 07/13] iio: ad7266: Use scan_type when processing raw data
-Date:   Thu,  4 Nov 2021 01:24:07 -0700
-Message-Id: <20211104082413.3681212-8-gwendal@chromium.org>
+Subject: [PATCH v2 08/13] iio: at91-sama5d2: Use scan_type when processing raw data
+Date:   Thu,  4 Nov 2021 01:24:08 -0700
+Message-Id: <20211104082413.3681212-9-gwendal@chromium.org>
 X-Mailer: git-send-email 2.33.1.1089.g2158813163f-goog
 In-Reply-To: <20211104082413.3681212-1-gwendal@chromium.org>
 References: <20211104082413.3681212-1-gwendal@chromium.org>
@@ -65,23 +65,23 @@ when reading elements directly using the raw sysfs attributes.
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/iio/adc/ad7266.c | 3 ++-
+ drivers/iio/adc/at91-sama5d2_adc.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index a8ec3efd659ed..1d345d66742d8 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -159,7 +159,8 @@ static int ad7266_read_raw(struct iio_dev *indio_dev,
- 
- 		*val = (*val >> 2) & 0xfff;
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index 4c922ef634f8e..92a57cf10fba4 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -1586,7 +1586,8 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
+ 		*val = st->conversion_value;
+ 		ret = at91_adc_adjust_val_osr(st, val);
  		if (chan->scan_type.sign == 's')
 -			*val = sign_extend32(*val, 11);
 +			*val = sign_extend32(*val,
 +					     chan->scan_type.realbits - 1);
+ 		st->conversion_done = false;
+ 	}
  
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
 -- 
 2.33.1.1089.g2158813163f-goog
 

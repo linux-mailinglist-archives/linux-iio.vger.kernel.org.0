@@ -2,245 +2,275 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E39CA44593C
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 19:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A150244594E
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 19:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234020AbhKDSE7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 14:04:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54476 "EHLO mail.kernel.org"
+        id S230403AbhKDSLF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 4 Nov 2021 14:11:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55216 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233980AbhKDSE7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 4 Nov 2021 14:04:59 -0400
+        id S231402AbhKDSLF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 4 Nov 2021 14:11:05 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C4287611C0;
-        Thu,  4 Nov 2021 18:02:19 +0000 (UTC)
-Date:   Thu, 4 Nov 2021 18:06:55 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 37BAB611C3;
+        Thu,  4 Nov 2021 18:08:25 +0000 (UTC)
+Date:   Thu, 4 Nov 2021 18:13:00 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <Eugen.Hristev@microchip.com>
-Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/2] iio: at91-sama5d2: Fix incorrect cast to
- platform_device
-Message-ID: <20211104180655.0a4e71d4@jic23-huawei>
-In-Reply-To: <33f810ad-a12a-af2e-256e-ab63915b0f37@microchip.com>
-References: <20211019082929.30503-1-lars@metafoo.de>
-        <20211028153449.487fdaac@jic23-huawei>
-        <67c888ec-3f24-e92f-5840-24583138fa6d@microchip.com>
-        <33f810ad-a12a-af2e-256e-ab63915b0f37@microchip.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     lars@metafoo.de, swboyd@chromium.org, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 4/5] dt-bindings: iio: Add sx9324 binding
+Message-ID: <20211104181300.5b8adc27@jic23-huawei>
+In-Reply-To: <CAPUE2uu0RGHCrOGzCoOZpayMwpiuna0Diegd6rBrmZ9eCGLpYw@mail.gmail.com>
+References: <20211030111827.1494139-1-gwendal@chromium.org>
+        <20211030111827.1494139-5-gwendal@chromium.org>
+        <20211030182452.76712323@jic23-huawei>
+        <CAPUE2uu0RGHCrOGzCoOZpayMwpiuna0Diegd6rBrmZ9eCGLpYw@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 4 Nov 2021 12:30:57 +0000
-<Eugen.Hristev@microchip.com> wrote:
+On Thu, 4 Nov 2021 00:16:13 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> On 10/28/21 5:39 PM, Eugen Hristev - M18282 wrote:
-> > On 10/28/21 5:34 PM, Jonathan Cameron wrote:  
-> >> On Tue, 19 Oct 2021 10:29:28 +0200
-> >> Lars-Peter Clausen <lars@metafoo.de> wrote:
-> >>  
-> >>> The at91-sama5d2 driver calls `to_platform_device()` on a struct device
-> >>> that is part of a IIO device. This is incorrect since
-> >>> `to_platform_device()` must only be called on a struct device that is part
-> >>> of a platform device.
-> >>>
-> >>> The code still works by accident because non of the struct platform_device
-> >>> specific fields are accessed.
-> >>>
-> >>> Refactor the code a bit so that it behaves identically, but does not use
-> >>> the incorrect cast. This avoids accidentally adding undefined behavior in
-> >>> the future by assuming the `struct platform_device` is actually valid.
-> >>>
-> >>> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>  
-> >>
-> >> This makes me nervous for the reason you give below.
-> >> Looking for a response from Eugen or someone else with access to the device
-> >> before I apply this one.  
-> > 
-> > Hi,
-> > 
-> > I will take some time to test this on my setup. Thanks for the patch,
-> > and sorry for the delays !
-> > 
-> > Eugen  
+> On Sat, Oct 30, 2021 at 10:20 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Sat, 30 Oct 2021 04:18:26 -0700
+> > Gwendal Grignou <gwendal@chromium.org> wrote:
+> >  
+> > > Similar to SX9310, add biddings to setup sx9324 hardware properties.
+> > > SX9324 is a little different, introduce 4 phases to be configured in 2
+> > > pairs over 3 antennas.
+> > >
+> > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>  
+> > This has a high degree of black magic.
+> >
+> > I'm curious - is there a fairly heavy weight userspace library interpreting
+> > the various readings?  If so I don't suppose it's available anywhere to look at?
+> > If you can point to any public info on this part that would also be great.  
+> Actually, user space does not care about the measurement once the
+> sensor is set up correctly to match its antennas (gains, thresholds,
+> hysteresis). They are only used during development and there is a
+> little of black magic at that point.
+> Then user spaces care about the events (far/close) generated by the
+> sensor. See https://chromium.googlesource.com/chromiumos/platform2/+/main/power_manager/powerd/system/user_proximity_watcher.cc#47
 > 
-> Hello Jonathan and Lars,
-> 
-> Sorry for the delay,
-> 
-> I have applied the patches in my tree and tested basic DMA transfers 
-> (sanity checks) on my board.
-> It looks to be fine. Have not found any weird or non functioning behavior.
-> 
-> You can add my
-> Tested-by: Eugen Hristev <eugen.hristev@microchip.com>
-I've queued this up now, but hope Lars can address the questions below.
 
-Thanks,
+Fair enough.  I'll just remember this as 'black magic' :)
 
-Jonathan
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> > > ---
+> > >  .../iio/proximity/semtech,sx9324.yaml         | 141 ++++++++++++++++++
+> > >  1 file changed, 141 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> > > new file mode 100644
+> > > index 0000000000000..fe9edf15c16d4
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> > > @@ -0,0 +1,141 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Semtech's SX9324 capacitive proximity sensor
+> > > +
+> > > +maintainers:
+> > > +  - Gwendal Grignou <gwendal@chromium.org>
+> > > +  - Daniel Campello <campello@chromium.org>
+> > > +
+> > > +description: |
+> > > +  Semtech's SX9324 proximity sensor.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - semtech,sx9324x
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    description:
+> > > +      The sole interrupt generated by the device used to announce the
+> > > +      preceding reading request has finished and that data is
+> > > +      available or that a close/far proximity event has happened.  
+> > No need to say sole given maxItems: 1
+> > Perhaps...
+> >
+> >         Generated by device to announce preceding read request has finished
+> >         and data is available or that a close/far proximity event has happened.
+> >  
+> Done.
+> > > +    maxItems: 1
+> > > +
+> > > +  vdd-supply:
+> > > +    description: Main power supply
+> > > +
+> > > +  svdd-supply:
+> > > +    description: Host interface power supply
+> > > +
+> > > +  "#io-channel-cells":
+> > > +    const: 1  
+> >
+> > Curious -  Do we have consumers of this?  
+> I recopied them from sx9310. It looks standard for i2c devices.
+
+Should only be the case for devices that have or are likely to have
+in kernel IIO consumers.  Doesn't do any harm though and might be useful to
+someone so fine to leave it.
+
+
+> >  
+> > > +
+> > > +  semtech,ph0-pin:
+> > > +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> > > +    description: |
+> > > +      Indicates how each CS pin is used during phase 0.
+> > > +      Each of the 3 pins have the following value -
+> > > +      0 : unused (high impedance)
+> > > +      1 : measured input
+> > > +      2 : dynamic shield
+> > > +      3 : grounded.
+> > > +      For instance, CS0 measured, CS1 shield and CS2 ground is [1, 2, 3]
+> > > +    items:
+> > > +      enum: [ 0, 1, 2, 3 ]
+> > > +    minItems: 3
+> > > +    maxItems: 3
+> > > +
+> > > +  semtech,ph1-pin:
+> > > +  semtech,ph2-pin:
+> > > +  semtech,ph3-pin:
+> > > +    Same as ph0-pin  
+> >
+> > I'm curious - why would you chose different combinations?  I guess because of
+> > different wiring.  If that's the case, is there a documented 'right' choice
+> > for a given wiring.   I'm just wondering if we are better off describing
+> > what is connected to these pins and having the driver pick a valid control
+> > sequence.  That might simplify things.  If not then fair enough.  
+> I explained in Documentation/ABI/testing/sysfs-bus-iio-sx9324 in the
+> previous patch.
+> The BIOS would communicate how the input pins are wired.
+
+So my reading here is that isn't quite true.  The BIOS is communicating
+what state we should put the pins into which is a function of how they
+are wired, but not a direct indication of that wiring.
+
+From point of view of someone using this device, I'd really want
+to be able to specify pin 1 to this part of the antenna etc and have
+the driver work out the settings for each step in the sequence that would
+work.
+
+If we don't have that information, or it is complex to map to a sequence then
+I can live with what you have here.
+
+> >  
+> > > +
+> > > +  semtech,resolution01
+> > > +    $ref: /schemas/types.yaml#definitions/uint32
+> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> > > +    description:
+> > > +      Capacitance measurement resolution. For phase 0 and 1.
+> > > +      Higher the number, higher the resolution.  
+> >
+> > Can we not give something more meaningful than high is higher?
+> > I don't have the datasheet for this part and the 9330 that I'm
+> > looking at is rather unhelpful on this.  I have no idea how anyone
+> > using that datasheet would figure out what to set this to!  
+> I don't have more info. It is tweaked during setup.
+
+Ah well - magic tweak it is :)
 
 > 
-> About the query below,
-> >   
-> >>
-> >> Thanks,
-> >>
-> >> Jonathan
-> >>  
-> >>> ---
-> >>> The code is equivalent to before, but I'm a bit confused how this works.
-> >>> We call dma_request_chan() on the IIO device's struct device. Which should
-> >>> not yield any results.
-> >>>
-> >>> Eugen can you check if/why this works and see if a follow up patch using
-> >>> the right struct device (the platform_device's) to request the DMA channel
-> >>> makes sense?  
-> 
-> I do not fully understand the problem yet. Why should dma_request_chan 
-> on the iio dev should not yield any results? the dma channel is 
-> allocated and it worked so far.
-> 
-> I tried to following: save the pdev pointer in the state struct, and 
-> then use dma_request_chan on the pdev->dev . It still works and I could 
-> not find any difference in functionality in basic sanity checks.
-> 
-> I believe that the dma_request_chan wants a valid struct device. If it's 
-> iio's dev or platform device's dev, it doesn't seem to matter at the 
-> first glance.
-> 
-> Could you please detail a bit how it should be used ?
-> 
-> Thanks,
-> Eugen
-> 
-> >>> ---
-> >>>    drivers/iio/adc/at91-sama5d2_adc.c | 34 ++++++++++++++----------------
-> >>>    1 file changed, 16 insertions(+), 18 deletions(-)
-> >>>
-> >>> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> >>> index 4c922ef634f8..3841e7b6c81d 100644
-> >>> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> >>> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> >>> @@ -1661,10 +1661,9 @@ static int at91_adc_write_raw(struct iio_dev *indio_dev,
-> >>>         }
-> >>>    }
-> >>>
-> >>> -static void at91_adc_dma_init(struct platform_device *pdev)
-> >>> +static void at91_adc_dma_init(struct at91_adc_state *st)
-> >>>    {
-> >>> -     struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> >>> -     struct at91_adc_state *st = iio_priv(indio_dev);
-> >>> +     struct device *dev = &st->indio_dev->dev;
-> >>>         struct dma_slave_config config = {0};
-> >>>         /* we have 2 bytes for each channel */
-> >>>         unsigned int sample_size = st->soc_info.platform->nr_channels * 2;
-> >>> @@ -1679,9 +1678,9 @@ static void at91_adc_dma_init(struct platform_device *pdev)
-> >>>         if (st->dma_st.dma_chan)
-> >>>                 return;
-> >>>
-> >>> -     st->dma_st.dma_chan = dma_request_chan(&pdev->dev, "rx");
-> >>> +     st->dma_st.dma_chan = dma_request_chan(dev, "rx");
-> >>>         if (IS_ERR(st->dma_st.dma_chan))  {
-> >>> -             dev_info(&pdev->dev, "can't get DMA channel\n");
-> >>> +             dev_info(dev, "can't get DMA channel\n");
-> >>>                 st->dma_st.dma_chan = NULL;
-> >>>                 goto dma_exit;
-> >>>         }
-> >>> @@ -1691,7 +1690,7 @@ static void at91_adc_dma_init(struct platform_device *pdev)
-> >>>                                                &st->dma_st.rx_dma_buf,
-> >>>                                                GFP_KERNEL);
-> >>>         if (!st->dma_st.rx_buf) {
-> >>> -             dev_info(&pdev->dev, "can't allocate coherent DMA area\n");
-> >>> +             dev_info(dev, "can't allocate coherent DMA area\n");
-> >>>                 goto dma_chan_disable;
-> >>>         }
-> >>>
-> >>> @@ -1704,11 +1703,11 @@ static void at91_adc_dma_init(struct platform_device *pdev)
-> >>>         config.dst_maxburst = 1;
-> >>>
-> >>>         if (dmaengine_slave_config(st->dma_st.dma_chan, &config)) {
-> >>> -             dev_info(&pdev->dev, "can't configure DMA slave\n");
-> >>> +             dev_info(dev, "can't configure DMA slave\n");
-> >>>                 goto dma_free_area;
-> >>>         }
-> >>>
-> >>> -     dev_info(&pdev->dev, "using %s for rx DMA transfers\n",
-> >>> +     dev_info(dev, "using %s for rx DMA transfers\n",
-> >>>                  dma_chan_name(st->dma_st.dma_chan));
-> >>>
-> >>>         return;
-> >>> @@ -1720,13 +1719,12 @@ static void at91_adc_dma_init(struct platform_device *pdev)
-> >>>         dma_release_channel(st->dma_st.dma_chan);
-> >>>         st->dma_st.dma_chan = NULL;
-> >>>    dma_exit:
-> >>> -     dev_info(&pdev->dev, "continuing without DMA support\n");
-> >>> +     dev_info(dev, "continuing without DMA support\n");
-> >>>    }
-> >>>
-> >>> -static void at91_adc_dma_disable(struct platform_device *pdev)
-> >>> +static void at91_adc_dma_disable(struct at91_adc_state *st)
-> >>>    {
-> >>> -     struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> >>> -     struct at91_adc_state *st = iio_priv(indio_dev);
-> >>> +     struct device *dev = &st->indio_dev->dev;
-> >>>         /* we have 2 bytes for each channel */
-> >>>         unsigned int sample_size = st->soc_info.platform->nr_channels * 2;
-> >>>         unsigned int pages = DIV_ROUND_UP(AT91_HWFIFO_MAX_SIZE *
-> >>> @@ -1744,7 +1742,7 @@ static void at91_adc_dma_disable(struct platform_device *pdev)
-> >>>         dma_release_channel(st->dma_st.dma_chan);
-> >>>         st->dma_st.dma_chan = NULL;
-> >>>
-> >>> -     dev_info(&pdev->dev, "continuing without DMA support\n");
-> >>> +     dev_info(dev, "continuing without DMA support\n");
-> >>>    }
-> >>>
-> >>>    static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
-> >>> @@ -1770,9 +1768,9 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
-> >>>          */
-> >>>
-> >>>         if (val == 1)
-> >>> -             at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
-> >>> +             at91_adc_dma_disable(st);
-> >>>         else if (val > 1)
-> >>> -             at91_adc_dma_init(to_platform_device(&indio_dev->dev));
-> >>> +             at91_adc_dma_init(st);
-> >>>
-> >>>         /*
-> >>>          * We can start the DMA only after setting the watermark and
-> >>> @@ -1780,7 +1778,7 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
-> >>>          */
-> >>>         ret = at91_adc_buffer_prepare(indio_dev);
-> >>>         if (ret)
-> >>> -             at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
-> >>> +             at91_adc_dma_disable(st);
-> >>>
-> >>>         return ret;
-> >>>    }
-> >>> @@ -2077,7 +2075,7 @@ static int at91_adc_probe(struct platform_device *pdev)
-> >>>         return 0;
-> >>>
-> >>>    dma_disable:
-> >>> -     at91_adc_dma_disable(pdev);
-> >>> +     at91_adc_dma_disable(st);
-> >>>    per_clk_disable_unprepare:
-> >>>         clk_disable_unprepare(st->per_clk);
-> >>>    vref_disable:
-> >>> @@ -2094,7 +2092,7 @@ static int at91_adc_remove(struct platform_device *pdev)
-> >>>
-> >>>         iio_device_unregister(indio_dev);
-> >>>
-> >>> -     at91_adc_dma_disable(pdev);
-> >>> +     at91_adc_dma_disable(st);
-> >>>
-> >>>         clk_disable_unprepare(st->per_clk);
-> >>>  
-> >>  
-> >   
-> 
+> >  
+> > > +    default: 4
+> > > +
+> > > +  semtech,resolution23
+> > > +    $ref: /schemas/types.yaml#definitions/uint32
+> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> > > +    description:
+> > > +      Capacitance measurement resolution. For phase 2 and 3
+> > > +    default: 4
+> > > +
+> > > +  semtech,startup-sensor:
+> > > +    $ref: /schemas/types.yaml#definitions/uint32
+> > > +    enum: [0, 1, 2, 3]
+> > > +    default: 0
+> > > +    description:
+> > > +      Phase used for start-up proximity detection.
+> > > +      It is used when we enable a phase to remove static offset and measure
+> > > +      only capacitance changes introduced by the user.
+> > > +
+> > > +  semtech,proxraw-strength01:
+> > > +    $ref: /schemas/types.yaml#definitions/uint32
+> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> > > +    default: 1
+> > > +    description:
+> > > +      PROXRAW filter strength for phase 0 and 1. A value of 0 represents off,i
+> > > +      and other values represent 1-1/N.
+> > > +
+> > > +  semtech,proxraw-strength23:
+> > > +    $ref: /schemas/types.yaml#definitions/uint32
+> > > +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+> > > +    default: 1
+> > > +    description:
+> > > +      PROXRAW filter strength for phase 2 and 3. A value of 0 represents off,i
+> > > +      and other values represent 1-1/N.
+> > > +
+> > > +  semtech,avg-pos-strength:
+> > > +    $ref: /schemas/types.yaml#definitions/uint32
+> > > +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
+> > > +    default: 16
+> > > +    description:
+> > > +      Average positive filter strength. A value of 0 represents off and
+> > > +      UINT_MAX (4294967295) represents infinite. Other values
+> > > +      represent 1-1/N.
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - "#io-channel-cells"
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > > +    i2c {
+> > > +      #address-cells = <1>;
+> > > +      #size-cells = <0>;
+> > > +      proximity@28 {
+> > > +        compatible = "semtech,sx9310";
+> > > +        reg = <0x28>;
+> > > +        interrupt-parent = <&pio>;
+> > > +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
+> > > +        vdd-supply = <&pp3300_a>;
+> > > +        svdd-supply = <&pp1800_prox>;
+> > > +        #io-channel-cells = <1>;
+> > > +        semtech,ph0-pin = <1, 2, 3>;
+> > > +        semtech,ph1-pin = <3, 2, 1>;
+> > > +        semtech,ph2-pin = <1, 2, 3>;
+> > > +        semtech,ph3-pin = <3, 2, 1>;
+> > > +        semtech,resolution01 = 2;
+> > > +        semtech,resolution23 = 2;
+> > > +        semtech,startup-sensor = <1>;
+> > > +        semtech,proxraw-strength01 = <2>;
+> > > +        semtech,proxraw-strength23 = <2>;
+> > > +        semtech,avg-pos-strength = <64>;
+> > > +      };
+> > > +    };  
+> >  
 

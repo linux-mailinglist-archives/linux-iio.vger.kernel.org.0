@@ -2,107 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37CBC4462B8
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Nov 2021 12:30:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F191F446509
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Nov 2021 15:36:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232637AbhKELcc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Nov 2021 07:32:32 -0400
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:3922 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232477AbhKELc0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Nov 2021 07:32:26 -0400
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1A50Y995019438;
-        Fri, 5 Nov 2021 07:29:46 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3c4t6f2pmp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Nov 2021 07:29:46 -0400
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 1A5BTiJK018153
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 5 Nov 2021 07:29:45 -0400
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
- Fri, 5 Nov 2021 04:29:43 -0700
-Received: from zeus.spd.analog.com (10.66.68.11) by scsqmbx11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.2.858.5 via Frontend
- Transport; Fri, 5 Nov 2021 04:29:43 -0700
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.181])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1A5BTbk2016952;
-        Fri, 5 Nov 2021 07:29:41 -0400
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v4 3/3] Documentation:ABI:testing:admv1013: add ABI docs
-Date:   Fri, 5 Nov 2021 13:29:30 +0200
-Message-ID: <20211105112930.122017-4-antoniu.miclaus@analog.com>
+        id S233184AbhKEOjM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Nov 2021 10:39:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56944 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232865AbhKEOjL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Nov 2021 10:39:11 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69091C061714;
+        Fri,  5 Nov 2021 07:36:31 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id b12so14077004wrh.4;
+        Fri, 05 Nov 2021 07:36:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xvMjGcobnBgLs7ZPSv8hX0I0/4KkCNQdWW3Z/W7d/b4=;
+        b=IB25lQ1JPmF23njjHdeiU6z1mNDbFN6QEZH54rKox/jHMRLTohC1oewAkk/HCoXwr1
+         f/Xw4G2k/ESLpOWF/XSkRULZZra1jBpoSxnv7xZZuroh+Z5mI4JJes8OD38/9Qqc0uF7
+         ZZkS7DS4aa9qpR9DfjMujEsfZsmZDBTqvbJB7CC7tHRhToDMmQXaF1Gyazr0KBT1Xb6Q
+         /+YeDNG2q2RaMq2Jl9W1k6sJH4UNxOW9AdQiswxawhq/g//vOdfKkUhRBeObrP8c4xIr
+         J/UQr0JfjxbAqR0Awourre10x/eJULBPmHUjyS7ZgNGXGF/DnudTUIkXhFkgplqCi20E
+         AS/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xvMjGcobnBgLs7ZPSv8hX0I0/4KkCNQdWW3Z/W7d/b4=;
+        b=f+UYJiGSDS8EyfHe4N5iBNAujVIZO8ZCgDon7fPsb+vemwfjrolEigHgzh5Sa3zmk1
+         S9Go/B2MnzAuJSYZ54APgYALfCfsn31lnVxaUKOCOSuDzNjTy1AAGIf9u5Z1WDfYuXhf
+         4K/FatL76gM61/3Zfehn/qf8p4XoFaqKpCqSh463jITj4uJqzmzuaqwYJE7iqsqq2MB8
+         avRYTJaSVwnvBqOVkklOHN9PqfhxHjLxrDSwFUj0UkmNg6A4tITFxWQOyNa5S7748wpk
+         9Q1oqD/eejfnVFXDmrk84w0615treJBB/U6RuWvvKF3zLsJTRFljNTK5AmZ6o8Xckmtz
+         m7iw==
+X-Gm-Message-State: AOAM532QxFhBXtHx6RCAHhfWTlpJLlNqKQfWSfwUfr7Jpbdqs7g49Buw
+        mrQY/uWRoW36l/tjt28O8W3qj7rNYenJyw==
+X-Google-Smtp-Source: ABdhPJyeeJKJvHRvpLq0b+2TdSjZvOz0j8oKTFETeEWsdESJjCTyNXfeqK0D8zGKC3Q6zi3OVRleHg==
+X-Received: by 2002:adf:dc0d:: with SMTP id t13mr73158647wri.158.1636122990015;
+        Fri, 05 Nov 2021 07:36:30 -0700 (PDT)
+Received: from demon-pc.localdomain ([188.24.96.74])
+        by smtp.gmail.com with ESMTPSA id z5sm15140839wmp.26.2021.11.05.07.36.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Nov 2021 07:36:29 -0700 (PDT)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     demonsingur@gmail.com, cosmin.tanislav@analog.com,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: [PATCH v3 0/3] Add AD74413R driver
+Date:   Fri,  5 Nov 2021 16:35:47 +0200
+Message-Id: <20211105143550.1783528-1-demonsingur@gmail.com>
 X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211105112930.122017-1-antoniu.miclaus@analog.com>
-References: <20211105112930.122017-1-antoniu.miclaus@analog.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 25fAEDbZ74pFKj2nyww-Bf3sJFjEXCuv
-X-Proofpoint-ORIG-GUID: 25fAEDbZ74pFKj2nyww-Bf3sJFjEXCuv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-05_01,2021-11-03_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111050067
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add documentation for the use of the Local Oscillator Feedthrough Offset
-calibration.
+V1 -> V2
+ * sign off using company email
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- .../testing/sysfs-bus-iio-frequency-admv1013  | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+V2 -> V3
+ * replace gpo config firmware flag with one flag specifying whether gpo is in
+   comparator mode
+ * create two separate gpiochips, one output-only for GPO pins not in
+   comparator mode and one input-only for the value of digital input channels
+ * wire up all gpo functionalities using pinconf
+ * keep number of characters per line under 80
+ * rework locking
+ * do not invalidate other chip revisions
+ * do not set indio device parent
+ * print probe error for refin regulator
+ * move conversion from range register value to range / offset / raw offset
+   into separate function
+ * module.h -> mod_devicetable.h
+ * use generic firmware interface functions
+ * add comment regarding cache alignment
+ * add comment regarding ADC channels buffered read setup
+ * un-inline comment regarding 100us delay for conversion start
+ * inline return statements
+ * remove assignments to val2 where not necessary
+ * local_channels -> chans
+ * index -> i
+ * channel_config -> config
+ * IIO_ALTVOLTAGE -> IIO_VOLTAGE
+ * .info_mask_shared_by_type_available -> .info_mask_separate_available
+ * remove unlikely probe error messages
+ * use an array indexed by channel function for retrieving iio channels
+ * count iio channels while parsing
+ * move HART rate rejection outside of setter
+ * move channel function validation outside of setter
+ * use SPI messages for read and write
+ * validate DAC code earlier
+ * simplify switches to only handle existing iio channels
+ * pass indio_dev into functions needing access to it
+ * pass spi into devm_regmap_init
+ * dt-bindings: sort compatibles
+ * dt-bindings: remove driver word from description
+ * dt-bindings: remove refin supply description
+ * dt-bindings: specify channel function default value
+ * dt-bindings: remove maxItems from scalar value
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013 b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
-new file mode 100644
-index 000000000000..f52cd55a66c6
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
-@@ -0,0 +1,27 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_i_lo_feedthrough_offset_calib_positive
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write raw value for the Local Oscillatior Feedthrough Offset Calibration I Positive
-+		in the Intermediate Frequency mode.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_i_lo_feedthrough_offset_calib_negative
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write raw value for the Local Oscillatior Feedthrough Offset Calibration I Negative
-+		in the Intermediate Frequency mode.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_q_lo_feedthrough_offset_calib_positive
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write raw value for the Local Oscillatior Feedthrough Offset Calibration Q Positive
-+		in the Intermediate Frequency mode.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_q_lo_feedthrough_offset_calib_negative
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write raw value for the Local Oscillatior Feedthrough Offset Calibration Q Negative
-+		in the Intermediate Frequency mode.
+Cosmin Tanislav (3):
+  iio: add adddac subdirectory
+  dt-bindings: iio: add AD74413R
+  iio: addac: add AD74413R driver
+
+ .../bindings/iio/addac/adi,ad74413r.yaml      |  153 ++
+ MAINTAINERS                                   |    9 +
+ drivers/iio/Kconfig                           |    1 +
+ drivers/iio/Makefile                          |    1 +
+ drivers/iio/addac/Kconfig                     |   20 +
+ drivers/iio/addac/Makefile                    |    7 +
+ drivers/iio/addac/ad74413r.c                  | 1492 +++++++++++++++++
+ include/dt-bindings/iio/addac/adi,ad74413r.h  |   21 +
+ 8 files changed, 1704 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
+ create mode 100644 drivers/iio/addac/Kconfig
+ create mode 100644 drivers/iio/addac/Makefile
+ create mode 100644 drivers/iio/addac/ad74413r.c
+ create mode 100644 include/dt-bindings/iio/addac/adi,ad74413r.h
+
 -- 
 2.33.1
 

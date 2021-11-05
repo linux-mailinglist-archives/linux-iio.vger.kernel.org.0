@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30E624461EB
+	by mail.lfdr.de (Postfix) with ESMTP id 799C74461EC
 	for <lists+linux-iio@lfdr.de>; Fri,  5 Nov 2021 11:05:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233022AbhKEKH5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Nov 2021 06:07:57 -0400
+        id S233023AbhKEKIA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Nov 2021 06:08:00 -0400
 Received: from mail-eopbgr00131.outbound.protection.outlook.com ([40.107.0.131]:40677
         "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230110AbhKEKH4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 5 Nov 2021 06:07:56 -0400
+        id S233020AbhKEKH6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 5 Nov 2021 06:07:58 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NL0jJoAKqxR2bcWMiEtHj/4QS6sujQ2GM7vV68xTO2lxb8CEaZ+IitsE6yNSdpmeql0BnxwZTDzSxzpBprpSM6rOH3C69Eh4hEyQuMCl/EDKQTtJab6jFvEB+UQcgqP0QvBkUCPc1YEQFDR1pRAoLcabls+/UYpSFHzCf5xMHRtvoHB9EHpkor6ps4UydEdxN5b6PF2ni1SPWCj2oKOwbfLg/jLGD3tKxqvLZf+wuvsPvqVAVRA9iztzSYLMkfTr/rqGg3sd05+SfMA+3pY/aoWdr7TV7UdVbW6yu+b17bsGVxZo+DTOfgmlJ0KRsAe1o56eBe+J1tVAyfYPBAx+vQ==
+ b=CHiWmxDoBcuRMVoVfcqTRTQ0gsH2s+IxAdHjBRDFgIkUNA/GUuue3i8+HHtyi8nTG5NdRj/bpw/VXWIOPGfulHWtc7+YBbDdo4YxhuKuaEqDuczc1IS6rrQCeyP55pTKmwYp7DiUVv0jNEjnLuWWnR19iJPjOGdV6sVcHoe4kwl5ByhP0dxUbOPurKnTEv8ITUfGWzmtjYURkcEhkYKq3HjeVP8Im73GMdHnlcMzpeyvJ3YhYbA7RsvGTrtLtscRNUxeN1t2wWJ5ZVm3xAQ1HyWK0YjMVzG9IwSGAJOAXlrWOOCUFRGRV3Qj0a9wG6EtXk6DyniAduArjs9f4ey+QA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bJIKx321dXfzlohJiaY/g6yu7zZh35h04f/W0DgxFpI=;
- b=mTCl5qxgq91BgQAOwTkEyb0v6htJYk+HqHvOkEr71bNT21kbCtexYodHDc+AWM3tH0VAD986ZVg87LUNA8Iq4GGcmluCL0nb1DwKicjHTlrS5JT7vh7lsawWFRRHwTIPrwga5EW5Jh8Sdnrs6G9XmtIGd6slaVaHjC29Xptk2ASxHlZewrf6nfR4Sx+Ln8S6ciNWFisCfcLmdb+dOEs+3R3NxyvCr3CeOekVc17lmGdYOtv60NZHrRxlR+zUqoHL3Date62S2D/34bG6kDd0pkryYXMIBtPpigEoVfxPDOMSwjinKY0g+SQBdEub7UbdR8ssHB9ew4FLz3rQ364hWQ==
+ bh=hkkJJDhYYR6MuYqxa49kpWMwQ2oZt7drhRTwBrOqwRo=;
+ b=M/+yJoy9IQ3A2y/AAE/LwlbMSDMU7wezXGvGPYtkiM2Ndhof707B7hFcBEpQyeNYKDDH2DLzsw0hTVSeDdl8lNxa6NSlP/Csqy/NgDIvr1k7KXhOBSbutVznSh0iDjnozeXr1XTKY2OPCUQvyImwGh68KjETRXyu9IhUVusR0J+lhO/Mohl5pqlkwrkb5WemhYoOXtDOY8XjZvFOffeBKZGlnqwHemSzhaVzLTEXot7NIxXxhNziI5MLWm1Kc2d6HreGV5AkjHUmTMQ2zf66knFBhZruVxa5UVcERYNrgVmZ90zPixLWFHNBlB78MVdr70MvB9fNTG38YJmuhkeupg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=opensynergy.com; dmarc=pass action=none
  header.from=opensynergy.com; dkim=pass header.d=opensynergy.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=opensynergy.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bJIKx321dXfzlohJiaY/g6yu7zZh35h04f/W0DgxFpI=;
- b=H0as6YZvHOrQBXMivpnJgy/TQyD69WyIFoHSLc4vWLHy5MstD9ZsAkW8mhQayvriAyNSjhE0guJ0LblW+5Qg/Xd7aamRYODuR5PKxAoTPlJrScdRDFGTc5RFma7nsOegjXLWTGeHx1XXMbbtm1AjrMgKtomGQ/52FpntYVtOSqk=
+ bh=hkkJJDhYYR6MuYqxa49kpWMwQ2oZt7drhRTwBrOqwRo=;
+ b=KgDOqa/B6b6QFR7Umo27ca80ev0XuDe4uXp2q4Freiez6Lt6eH4QzDnPssW7C0ZlsecmZoH+jragkFSaknc0Hpkedh128UCCc6Oaq/EEAAqDXbRtBh0TBA6vGpGhbX7DObhqFR2v/3d6X/j2jtkD8dFQGF6QhKtGDVriPkFUReU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=opensynergy.com;
 From:   Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
@@ -34,82 +34,279 @@ To:     jbhayana@google.com, jic23@kernel.org
 Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, Vasyl.Vavrychuk@opensynergy.com,
         andy.shevchenko@gmail.com, andriy.tryshnivskyy@opensynergy.com
-Subject: [PATCH v1 0/2] iio: test: Add test for IIO_VAL_INT_64.
-Date:   Fri,  5 Nov 2021 12:04:59 +0200
-Message-Id: <20211105100501.1904-1-andriy.tryshnivskyy@opensynergy.com>
+Subject: [PATCH v1 1/2] iio: test: Add check against NULL for buffer in tests.
+Date:   Fri,  5 Nov 2021 12:05:00 +0200
+Message-Id: <20211105100501.1904-2-andriy.tryshnivskyy@opensynergy.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20211105100501.1904-1-andriy.tryshnivskyy@opensynergy.com>
+References: <20211105100501.1904-1-andriy.tryshnivskyy@opensynergy.com>
 Content-Type: text/plain
 X-ClientProxiedBy: AM5PR0602CA0006.eurprd06.prod.outlook.com
  (2603:10a6:203:a3::16) To AM6PR04MB6359.eurprd04.prod.outlook.com
  (2603:10a6:20b:fc::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ea15e4aa-1af6-4f02-d06d-08d9a043c35b
+X-MS-Office365-Filtering-Correlation-Id: 36b7db6c-3b10-4502-cb41-08d9a043c3e0
 X-MS-TrafficTypeDiagnostic: AM5PR0401MB2467:
-X-Microsoft-Antispam-PRVS: <AM5PR0401MB2467206658291239DB09405AE68E9@AM5PR0401MB2467.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:316;
+X-Microsoft-Antispam-PRVS: <AM5PR0401MB2467E340DF47EA88AD24C9B8E68E9@AM5PR0401MB2467.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2043;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lhHgI4t8BZelPY3mqjo7NcX9vY+5FHSUfztHtCFIpmqHKVDwQ2iP2RhSpIVjFBtAPk36ZXPqdH5fWe0+bVKgTy8qfGjjC7xxdEcF9mUdV9BYMq5ZSWQEXXLL1EoVxQFQ3u+Rikn4d8gE9cMsyXCbBQUeMyU2wqg8tNfP+FD4h1rCYJHSvxi4z3xnPhAzD8r3y6zxyp5hnSyOY9zYNhU/xdX5p+OV0EMGl1zo7pcNV3ZAY7z/3GQyc9UjgRm9t4oMDN9IccFXGvcUTeDcKRYFWAmXQTIrmFLvcZwd5zhIbjiRU7oJxATWmbrWh15Lpj94t248JqooxWz9TqQCShOtC0MjD67mrVKSTMF5y7bsIuFwecnEot3ZrRCoOUnXv/W7GYPxZGFHbDvRX9AtSrfQM8U3Ym2HQLTQdQTaPpeJ71yLehUuKA3NJCc3TTkV5DaYH1dETuy102CD3vaIjqOwkP+mtazMkxwYkdx5cZOus5qhSOWToETFsiV6AHyBm+3G4A6ipP2+wxv6vF/h70SsjGNzP4rtnz/fH7G2wBffIsAwJt3vYISX+sGHN2bUgpJfqW9Mjhwpl8WTGGtBwOxJ6NCZYLD5vLhI3QBhWFM0yiGKGobbJ936OBvXNPwO5l0Pb1UFosa0EOS/BGu0gBvBczDNc6AJDXTBLGzENvqnlSNs96HgLq1N+jyMxmcyK4aCqyljyd55pLK+/Ea+3fFliQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB6359.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(396003)(376002)(136003)(39840400004)(366004)(66476007)(8676002)(4744005)(66946007)(66556008)(83380400001)(8936002)(2906002)(316002)(42186006)(107886003)(4326008)(55236004)(86362001)(5660300002)(186003)(52116002)(508600001)(38350700002)(38100700002)(2616005)(1076003)(44832011)(36756003)(26005);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: OWbMt4im/Rvir4Qn/EGgpKTstsyBSxPrhARd/ZPz1erqfUud6hwmTafMN39YDFNIhrsRioj8ra85oqW28Wt59PPxc/CsAiobXzFBl4/tfRrURTlPPu1gpXJ6cvzR5KkhmVuK/xyaFDXuY8B0wFnyOCf2mdx6+HXt+jr7e8o58s1BVRy9mjMg2GU5kP7R6trdKinnpLcGXc48oXZNZlmKFXelok3OpH9NUPs2cjFYg73PYFyk6+NHdjYYPggvI/LsK+CWoQwLCi3d0EwvlYrnzxES0UgHMygRlEo8smVVl0lj+ocQ/zSPkb5TXDPRdxHQkPNbfNk5J9pDFt9jNCkiW0HP48mAxx8/1JAWbqpcu5LX5tkO4m8guahribci70OPD5lmzABns3xbRhO+tB82xzQiZb3dnofqn05Tx9P/QYUCT/DzkAfx7WqeMIi2YTvSpfrL6/6igFajRPKm3mE2FJIPUsg3m7I8mZ3deb0BCfeWs4HbAu3+2wHm8V6Z7KmPrMs/MD2IemLxab8waK3oZ+DBpuevM+ZSEA0Ekuuml/KG5yovBixhgYYYFUpyZkyk3zWtku6BiKl51UEXTzuCgzWdhFQEFVRH1efaZsVlkagAu4xAbeExob5KNx7tWQl9s9crK5SjqXk2K129HKrx11mzK79AplIgX1ADFKWD+I3Cz/llq9/vlvj5z/tYNT3k
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB6359.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(396003)(376002)(136003)(39840400004)(366004)(66476007)(8676002)(66946007)(66556008)(83380400001)(8936002)(2906002)(316002)(42186006)(107886003)(4326008)(55236004)(86362001)(5660300002)(186003)(52116002)(508600001)(38350700002)(38100700002)(2616005)(1076003)(44832011)(36756003)(26005);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NIhztm8goYiUeyK88rorxh//Z6QrqTTQ9v0NJNHHLUUE2rrSRI3vO6AEOjHG?=
- =?us-ascii?Q?9Un2niQfpPquA+t8WTSy9ELr1iNkN/5SSStqODmz7wgg832Vb5ZFH1Au1jQk?=
- =?us-ascii?Q?KTgDUOpU9zT1Hq4ZFfnEKPuh5mcg+4jzjnRfCO/BIrj+2yCykr+TqXClcZYx?=
- =?us-ascii?Q?rff+DZcP1EGUg0U2a7UVDba8lUEbxkOlqJlkeepUS40I51QRXzS4E9HSUL/2?=
- =?us-ascii?Q?oUQzS0uOF6sCbpSeVDFhYxe2V8AqxosfR3ZoWUxpwputOYrpfQ78CFeg+lwA?=
- =?us-ascii?Q?JCduPotI210B2b4lCfifLdBD6XDjBPZ8VbSUmlX//G+G7veqEj/LSnzzFyTX?=
- =?us-ascii?Q?DYJPquc3mssthoU7kidN/0aXOdwA0y6XxZlM0F+JIcH4Z9HKXanRCwpHTdXn?=
- =?us-ascii?Q?bCXSPScJ45l8GDZxA2Fgp/ML5DPoxdgSFqIwEH3Rt9FH+jcsVDa+VdESOo9/?=
- =?us-ascii?Q?ROjJzw6Wz1oDpiMofWKy+5re4wcvXgP50TH4wtAUFYtgDyeEjhvhA7xjobmI?=
- =?us-ascii?Q?ZwSpNpT4OlnPBlClPrmPjQ8Wu22Qj+YmOlNbOkZsxF0Fzst6I+BS5pq406An?=
- =?us-ascii?Q?zRTNi3rzSTJowsJdTGLI2k3/melDkdgq5ycZxIYCZGrWrARVTHcPl5qxy3E8?=
- =?us-ascii?Q?3BDc6znxw/vsqpkkk8Zm6n7X/f/s5T9Au0FqPUIGZV0TYqvOp69wWpuVxKPl?=
- =?us-ascii?Q?qksqugQl9msQLgI9SRFvhNySWQbKmSdNuQFfT7VZ7C2L5SMdu1G3iTHggZDO?=
- =?us-ascii?Q?XOvNsP9TU4r10V0meEXXfnd0GTfWRiJdALhLevfF+heUravG13aOtHuj4xCp?=
- =?us-ascii?Q?IwNqwH2PqsG3oR5YVQfgDlBiKR+UDEPrPaIpVF+QwiuWB+PNG7IeUwDghhRv?=
- =?us-ascii?Q?M6sGQQtWdCiLyW7SNAz5jJqTlHbafK/RfnhAPIjHUIou+ohv+2+Q+xA0w7tf?=
- =?us-ascii?Q?7/dZxbUo2hfhWafme/yWCHFIj/s6ncvn7N1Zwk2h8hYK2b94+//idBiKE9R2?=
- =?us-ascii?Q?JhkrH2G/6ijGn2quPmpO5VUCC832HyI+dnHQapb2BaT35Ta5fp4rqn17hNae?=
- =?us-ascii?Q?dNRg+jWxeAi0Dv+4F3WQN9GouCsd/xI8ryK9YgeHAPBy6Y1uzLTIBzDQ3JIX?=
- =?us-ascii?Q?UmtBrHYywmcmrdP4IVeUvBtxWSkgc59jnbSZhuE59zATrxnB46MuFH2itRVf?=
- =?us-ascii?Q?TKBTK+YyKaIPJfwydRUXFHDJdIf9tEQ4ryM3wPnxSnrox0SR92odF7Me6eoD?=
- =?us-ascii?Q?aHmpyIT/FS8cKnObiudF7V+d5zbmm3BYIjWje62MXVM/GLP62sqC9tXqFhOH?=
- =?us-ascii?Q?JcQ5/oHuN0buHTLxfkGKmtR7i+CNkQHuqlDOseA59qw3Lj7H6uLy5XN7aL1J?=
- =?us-ascii?Q?R7UY7obb6Zacoj0oUulirAe8mflwEaVw555q+m2MWnV77XIV3uI+U/q988SF?=
- =?us-ascii?Q?/6GIzZtFF58zf/Qd5sD4lq+P0E4oh/1oO+eJ6aW75rvhVx02/59aDScQ51tj?=
- =?us-ascii?Q?SFCKgFvGlgYWKApLswSjBgLHJSgQsiwox85o4bREeDhYJoEGtrqgbPEcGmFh?=
- =?us-ascii?Q?ldUkPCAIkwO7yUBb/uk9HVqJt1K6Qgz59x6/B3xV2nwKoWJUlCZ/s4zHMTes?=
- =?us-ascii?Q?Q1jNtQQ3ldGPjKTCALbZkkw=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?o8goalj4cV+AegfMHtDD5OZjJ2uEwM/krOiyFrEcckiLKo3JT2ExXBUWk7RB?=
+ =?us-ascii?Q?UQ2vHn5XDF4b3jq1/P16/xQsbyA8JL+1P5+iH9LEQO4wUFX0Ir3uvUYArdT2?=
+ =?us-ascii?Q?QsXpsq/UQcV7OHpa823CQ61LXJXhtUkQDYNTX8XX0nf3GK6/Hs5XKcsN04xB?=
+ =?us-ascii?Q?yyOAHRoTyHzHVbcq2aUrGs2UdJBvFArEumYc2aGFC55qRkDhKXMeIevheoKQ?=
+ =?us-ascii?Q?3XJvQv0DBaQxQNMFgYeWqegkHHFejDwiFRgJQYyWbg/DDR6jgAlivu4eLbfk?=
+ =?us-ascii?Q?FPSyJu6SXmYJ4bXDFJgbAnIYVTVmFHVVUC08wNV/JY/uMf4hR2VrzMkEYRAk?=
+ =?us-ascii?Q?m8UyTdbqgJUAlE9ZJ2umo0BA8jiLiUtqenEW5Z4wPgyI2b9wRI3B8q0cVR6a?=
+ =?us-ascii?Q?IeG+ohuIG0TSVexTJuSoGne9VF0rwhUkijFQhKG+keCLyF0oZ3zr2DUriwbk?=
+ =?us-ascii?Q?0hev3l9AoH6EByVy/lpj7gFmaVsk/QO/j5IGMZ0BOrFlIIOcJGXNhRRbxNrT?=
+ =?us-ascii?Q?rBH84dOxQ5mAzJgYhwt0U07Ul0Uu9uhUVPPG94N7Lh/LhJ4tsVl8WaKJO5fW?=
+ =?us-ascii?Q?Yfa40KROcA+GjJTw6Mlrxv0PZqmY4C8uVXu+hsaPkUacTVSDYjrpRrlIpaxK?=
+ =?us-ascii?Q?V7Gnb6RsBoYXe42di93teK0L2s/1W2RpI5MwQvRYkhgmMdVPAWxWptNF2SSj?=
+ =?us-ascii?Q?Hi/ggq0fDFAthZLfiv0sPLz88lvGISV0hrFZDUUU19CA2XyXyDRjfBAdSC79?=
+ =?us-ascii?Q?XnBeFkG5siyjR4yiTargOrSk3lpUq0ctVk33z+x1Inj20xXkw5IgiRQPyEwq?=
+ =?us-ascii?Q?fXE8jT19wCXV+8Gx3zcMHdAVKO4lkXJVIR2dLmfpBxlE6kzi9OYrniyYINDQ?=
+ =?us-ascii?Q?/0P/YVztugTuxk15uWtp9SEYr/o9oR3TaQyAv4TAsm9lE9Md3094o+RXtz+a?=
+ =?us-ascii?Q?k3uDTEtunvJPf9n/CwQOhl4W6clfYwaQd7dtjetBdSQnZ5pd5V4ogEF1Ro5v?=
+ =?us-ascii?Q?cdJlfc808qmPRrPue+F9xL7pkLF3aII6vrH4kejGmSN4aiv4M67KBLS+3UTr?=
+ =?us-ascii?Q?7yf7CmkVYVq9YXyfJ+Qncps7EdLaWfsXyDzbyWb0RvzFUd1+luPW9Nd1h/Vo?=
+ =?us-ascii?Q?/5bj7MlYZMz0nwnUDwmlQukKpFiue8jCDoyylUG5a9n8A3w/poEwrVVbZuve?=
+ =?us-ascii?Q?mWF0ASQeytGuZuK5FcVyQqBeI5EaCTjrB0/jz7Htyn1RQ6+dM8rJh0yowcjc?=
+ =?us-ascii?Q?0mEnNAH0e8ewi3wpyEcGEyALYKfs6QCk91BHuCcPKYe5k6Tcf7yRCmQzpCeJ?=
+ =?us-ascii?Q?2xZfw/mpRST6bAfjFr8WgUmxzDM0FTNQTKsccV1XbMYxe5r4dAo6OJMxAF/C?=
+ =?us-ascii?Q?XBY5FL/Nn3gesjDTpWsesYdE6KR6fSxZwBbHvyAJlWKEnZPwFlYkJoKZvU/k?=
+ =?us-ascii?Q?vQOS16/AKQk3DsMqqv3jJH6w7Pq9YmQCwnnQLxVeLfB8rfS/7X1GsFv1pGSN?=
+ =?us-ascii?Q?rkJCbzoEdrbg+Oy2pWSWQtmfvTpOi+IEKnNUFkubAYSM7/2uMRhKAtJcZo9l?=
+ =?us-ascii?Q?qTta7DQHivw9lvfC3jy/QaeKBuQan/eVNKrVDPe0ROTQT4a4Tx9HK7/dO/GA?=
+ =?us-ascii?Q?UreI1x6ixWDxc3M0N5X3JGM=3D?=
 X-OriginatorOrg: opensynergy.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea15e4aa-1af6-4f02-d06d-08d9a043c35b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36b7db6c-3b10-4502-cb41-08d9a043c3e0
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB6359.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2021 10:05:15.2701
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2021 10:05:16.1586
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 800fae25-9b1b-4edc-993d-c939c4e84a64
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4ZTpPrzFNvSuynz27A7HLMHTcVtSCuuNWy0Pz7wHAJzHkaa2OB5WtvNpFfPu7i9KpPDEehOSbKuL0ZOUl0OidA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FkjWvhuxLDcpLAU+1VcxhvmNBxF4B4BIFESN1utYbvAdjhtn9+Rg5OKJemvHWWJ0MAx0sUM+GgoL2RdlRPkqTw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR0401MB2467
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add test for IIO_VAL_INT_64.
-Add check against NULL for buffer in tests.
-Use ARRAY_SIZE(values) where it is possible.
+Add KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf) for every test.
+Also use ARRAY_SIZE(values) where it is possible.
 
-Andriy Tryshnivskyy (2):
-  iio: test: Add check against NULL for buffer in tests.
-  iio: test: Add test for IIO_VAL_INT_64.
+Signed-off-by: Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+---
+ drivers/iio/test/iio-test-format.c | 69 ++++++++++++++++++------------
+ 1 file changed, 42 insertions(+), 27 deletions(-)
 
- drivers/iio/test/iio-test-format.c | 123 ++++++++++++++++++++++-------
- 1 file changed, 96 insertions(+), 27 deletions(-)
-
-
-base-commit: 7d2a07b769330c34b4deabeed939325c77a7ec2f
+diff --git a/drivers/iio/test/iio-test-format.c b/drivers/iio/test/iio-test-format.c
+index f1e951eddb43..b746d00bc0ea 100644
+--- a/drivers/iio/test/iio-test-format.c
++++ b/drivers/iio/test/iio-test-format.c
+@@ -14,10 +14,13 @@
+ 
+ static void iio_test_iio_format_value_integer(struct kunit *test)
+ {
+-	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
++	char *buf;
+ 	int val;
+ 	int ret;
+ 
++	buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
++
+ 	val = 42;
+ 	ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "42\n");
+@@ -41,142 +44,154 @@ static void iio_test_iio_format_value_integer(struct kunit *test)
+ 
+ static void iio_test_iio_format_value_fixedpoint(struct kunit *test)
+ {
+-	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+ 	int values[2];
++	char *buf;
+ 	int ret;
+ 
++	buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
++
+ 	/* positive >= 1 */
+ 	values[0] = 1;
+ 	values[1] = 10;
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000010\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000010 dB\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000000010\n");
+ 
+ 	/* positive < 1 */
+ 	values[0] = 0;
+ 	values[1] = 12;
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000012\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000012 dB\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000012\n");
+ 
+ 	/* negative <= -1 */
+ 	values[0] = -1;
+ 	values[1] = 10;
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000010\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000010 dB\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000000010\n");
+ 
+ 	/* negative > -1 */
+ 	values[0] = 0;
+ 	values[1] = -123;
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000123\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000123 dB\n");
+ 
+-	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000000123\n");
+ }
+ 
+ static void iio_test_iio_format_value_fractional(struct kunit *test)
+ {
+-	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+ 	int values[2];
++	char *buf;
+ 	int ret;
+ 
++	buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
++
+ 	/* positive < 1 */
+ 	values[0] = 1;
+ 	values[1] = 10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.100000000\n");
+ 
+ 	/* positive >= 1 */
+ 	values[0] = 100;
+ 	values[1] = 3;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "33.333333333\n");
+ 
+ 	/* negative > -1 */
+ 	values[0] = -1;
+ 	values[1] = 1000000000;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000000001\n");
+ 
+ 	/* negative <= -1 */
+ 	values[0] = -200;
+ 	values[1] = 3;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-66.666666666\n");
+ 
+ 	/* Zero */
+ 	values[0] = 0;
+ 	values[1] = -10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000000\n");
+ }
+ 
+ static void iio_test_iio_format_value_fractional_log2(struct kunit *test)
+ {
+-	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+ 	int values[2];
++	char *buf;
+ 	int ret;
+ 
++	buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
++
+ 	/* positive < 1 */
+ 	values[0] = 123;
+ 	values[1] = 10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.120117187\n");
+ 
+ 	/* positive >= 1 */
+ 	values[0] = 1234567;
+ 	values[1] = 10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1205.631835937\n");
+ 
+ 	/* negative > -1 */
+ 	values[0] = -123;
+ 	values[1] = 10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.120117187\n");
+ 
+ 	/* negative <= -1 */
+ 	values[0] = -1234567;
+ 	values[1] = 10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1205.631835937\n");
+ 
+ 	/* Zero */
+ 	values[0] = 0;
+ 	values[1] = 10;
+-	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
++	ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000000\n");
+ }
+ 
+ static void iio_test_iio_format_value_multiple(struct kunit *test)
+ {
+-	char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+ 	int values[] = {1, -2, 3, -4, 5};
++	char *buf;
+ 	int ret;
+ 
++	buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
++
+ 	ret = iio_format_value(buf, IIO_VAL_INT_MULTIPLE,
+ 			       ARRAY_SIZE(values), values);
+ 	IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1 -2 3 -4 5 \n");
 -- 
 2.17.1
 

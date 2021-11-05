@@ -2,132 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B66AD445C1F
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Nov 2021 23:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44A48445DBA
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Nov 2021 03:00:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbhKDW2R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Nov 2021 18:28:17 -0400
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net ([162.243.161.220]:50095
-        "HELO zg8tmtyylji0my4xnjeumjiw.icoremail.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with SMTP id S230512AbhKDW2R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Nov 2021 18:28:17 -0400
-Received: from icoremail.net (unknown [10.12.1.20])
-        by hzbj-icmmx-1 (Coremail) with SMTP id AQAAfwAXq7ebXYRhodvmBg--.16678S2;
-        Fri, 05 Nov 2021 06:24:27 +0800 (CST)
-Received: by ajax-webmail-mail (Coremail) ; Fri, 5 Nov 2021 06:25:29 +0800
- (GMT+08:00)
-X-Originating-IP: [46.253.189.78]
-Date:   Fri, 5 Nov 2021 06:25:29 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   "Dmitry Maslov" <maslovdmitry@seeed.cc>
-To:     "Jonathan Cameron" <jic23@kernel.org>
-Cc:     "Andy Shevchenko" <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>, north_sea@qq.com,
-        baozhu.zuo@seeed.cc, jian.xiong@seeed.cc
-Subject: Re: Re: [PATCH v3] iio: light: ltr501: Added ltr303 driver support
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210303(5f774024)
- Copyright (c) 2002-2021 www.mailtech.cn mtdemo-icoremail
-In-Reply-To: <20211103182102.2232e680@jic23-huawei>
-References: <20211031164603.4343-1-maslovdmitry@seeed.cc>
- <CAHp75Vd99uk+wZHpVyYEveNGTaK9Nj5-oYTRua2UhOKjtYnS_g@mail.gmail.com>
- <1d537660.dd.17cdbca2bb6.Coremail.maslovdmitry@seeed.cc>
- <CAHp75Vc+Yqcq=gtpMgzb5pDc9nuNbzzwVjfsTg20hZ7VfAQ88w@mail.gmail.com>
- <6f764cb4.e6.17cdd1249ee.Coremail.maslovdmitry@seeed.cc>
- <20211103182102.2232e680@jic23-huawei>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: PH4t8GZvb3Rlcl90eHQ9NDIxNToxMA==
-Content-Type: text/plain; charset=UTF-8
+        id S229685AbhKECDa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Nov 2021 22:03:30 -0400
+Received: from smtp21.cstnet.cn ([159.226.251.21]:48228 "EHLO cstnet.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229596AbhKECDa (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 4 Nov 2021 22:03:30 -0400
+X-Greylist: delayed 323 seconds by postgrey-1.27 at vger.kernel.org; Thu, 04 Nov 2021 22:03:29 EDT
+Received: from localhost.localdomain (unknown [124.16.141.244])
+        by APP-01 (Coremail) with SMTP id qwCowACnPyD6joRhBc2SBg--.22848S2;
+        Fri, 05 Nov 2021 09:55:06 +0800 (CST)
+From:   Xu Wang <vulab@iscas.ac.cn>
+To:     prabhakar.mahadev-lad.rj@bp.renesas.com, jic23@kernel.org,
+        lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: rzg2l_adc: Remove unnecessary print function dev_err()
+Date:   Fri,  5 Nov 2021 01:55:04 +0000
+Message-Id: <20211105015504.39226-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-ID: <62f8cd50.4.17ced0e99b4.Coremail.maslovdmitry@seeed.cc>
-X-Coremail-Locale: en_US
-X-CM-TRANSID: AQAAfwCXG2baXYRhEgIAAA--.9W
-X-CM-SenderInfo: xpdvz0pygpx31u162vxhhghubf/1tbiAQEBClQ9KecIJQAasb
-Authentication-Results: hzbj-icmmx-1; spf=neutral smtp.mail=maslovdmit
-        ry@seeed.cc;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxAr13ZryxKw4xGFW7Aw1fJFb_yoWrWFW5pa
-        ya9F4jkFn5Gr45CrWqvw40vFyFyr4fGr43Xr95t348Z398ury0va1xtF4Fgas8Zw4Ska4j
-        qrWYqr9xCwn8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-        UUUUU
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qwCowACnPyD6joRhBc2SBg--.22848S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZrWrWF45KryUZFy7WrWfKrg_yoW3Jrc_Ka
+        1xZanxArWIkwsYyw1Utw43Zr92yayqqw4DCr1qyFW3KFy7KFnrZFyUZFs0yr4xu3y8Wa47
+        XF13WrySkr1fCjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb2kYjsxI4VWDJwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
+        cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
+        C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+        Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJV
+        W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc2xSY4AK67AK6w4l42xK
+        82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+        C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
+        MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMI
+        IF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2
+        z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8go7tUUUUU==
+X-Originating-IP: [124.16.141.244]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgkQA10TfuT6OgAAsI
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PiBGcm9tOiAiSm9uYXRoYW4gQ2FtZXJvbiIgPGppYzIzQGtlcm5lbC5vcmc+Cj4gU2VudCBUaW1l
-OiAyMDIxLTExLTAzIDIwOjIxOjAyIChXZWRuZXNkYXkpCj4gVG86ICJEbWl0cnkgTWFzbG92IiA8
-bWFzbG92ZG1pdHJ5QHNlZWVkLmNjPgo+IENjOiAiQW5keSBTaGV2Y2hlbmtvIiA8YW5keS5zaGV2
-Y2hlbmtvQGdtYWlsLmNvbT4sIGxpbnV4LWlpbyA8bGludXgtaWlvQHZnZXIua2VybmVsLm9yZz4s
-ICJMYXJzLVBldGVyIENsYXVzZW4iIDxsYXJzQG1ldGFmb28uZGU+LCBub3J0aF9zZWFAcXEuY29t
-LCBiYW96aHUuenVvQHNlZWVkLmNjLCBqaWFuLnhpb25nQHNlZWVkLmNjCj4gU3ViamVjdDogUmU6
-IFtQQVRDSCB2M10gaWlvOiBsaWdodDogbHRyNTAxOiBBZGRlZCBsdHIzMDMgZHJpdmVyIHN1cHBv
-cnQKCj4gPiA+ID4gPiA+IEBAIC0xNTk3LDYgKzE2MTAsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
-IGFjcGlfZGV2aWNlX2lkIGx0cl9hY3BpX21hdGNoW10gPSB7Cj4gPiA+ID4gPiA+ICAgICAgICAg
-eyJMVEVSMDUwMSIsIGx0cjUwMX0sCj4gPiA+ID4gPiA+ICAgICAgICAgeyJMVEVSMDU1OSIsIGx0
-cjU1OX0sCj4gPiA+ID4gPiA+ICAgICAgICAgeyJMVEVSMDMwMSIsIGx0cjMwMX0sCj4gPiA+ID4g
-PiA+ICsgICAgICAgeyJMVEVSMDMwMyIsIGx0cjMwM30sICAKPiA+ID4gPiA+Cj4gPiA+ID4gPiBB
-bnkgZXZpZGVuY2Ugb2YgdGhpcyBBQ1BJIElEIGJlaW5nIGluIHRoZSB3aWxkLCBwbGVhc2U/ICAK
-PiA+ID4gPgo+ID4gPiA+IEknbSBzb3JyeSwgSSBkbyBub3QgZXhhY3RseSB1bmRlcnN0YW5kIHRo
-ZSBxdWVzdGlvbi4gRG8geW91IG1lYW4gd2hlcmUgdGhhdCBwYXJ0aWN1bGFyIHNlbnNvciBpcyB1
-c2VkPyAgCj4gPiA+IAo+ID4gPiBDYW4geW91IHByb3ZpZGUgYSBuYW1lIG9mIHRoZSBtYWNoaW5l
-IHdoaWNoIGhhcyB0aGlzIElEIGluIGl0cyBEU0RUCj4gPiA+IHRhYmxlLCBwbGVhc2U/ICAKPiA+
-IAo+ID4gV2UncmUgc3VibWl0dGluZyB0aGlzIHBhdGNoIHNwZWNpZmljYWxseSBmb3IgcmVUZXJt
-aW5hbC4KPiA+IEhlcmUgaXMgRFRTIGZpbGUgZm9yIHRoZSByZVRlcm1pbmFsLCBjdXJyZW50bHkg
-YXdhaXRpbmcgbWVyZ2UgaW4gUmFzcGJlcnJ5IFBpIExpbnV4IGtlcm5lbAo+ID4gcmVwb3NpdG9y
-eS4KPiA+IGh0dHBzOi8vZ2l0aHViLmNvbS9yYXNwYmVycnlwaS9saW51eC9ibG9iLzZlZjczMjg3
-NWQ3MDVmZjE1Y2M0YzI1ZDRkMGEwZWVlODdkYzJhNTgvYXJjaC9hcm0vYm9vdC9kdHMvb3Zlcmxh
-eXMvc2VlZWQtcmV0ZXJtaW5hbC1jb3JlLW92ZXJsYXkuZHRzI0w5OQo+ID4gCj4gPiBTbywgd2hp
-bGUgYXQgdGhlIG1vbWVudCBBQ1BJIHBhcnQgaXMgbm90IGJlaW5nIHVzZWQsIGxhdGVyIHdlIG1p
-Z2h0IHVzZSB0aGlzIHNlbnNvciBmb3Igb3RoZXIsIHg4NiBiYXNlZAo+ID4gYm9hcmRzLCBmb3Ig
-ZXhhbXBsZSBPRFlTU0VZIC0gWDg2SjQxMjU4MDAuCj4gPiAKPiA+IElzIHRoZXJlIGEgcGFydGlj
-dWxhciByZWFzb24geW91IHRoaW5rIHRoaXMgcGFydCBzaG91bGQgYmUgb21pdHRlZCBmb3IgTFRS
-MzAzPwo+ID4gCj4gQUNQSSBJRHMgYXJlIHN1cHBvc2VkIHRvIGJlIG1hZGUgdXAgb2YgZWl0aGVy
-IGEgUE5QIGlkIG9yIEFDUEkgSUQgcmVnaXN0ZXJlZCB3aXRoCj4gVUVGSSBmb3J1bS4KPiAKPiBB
-IDQgbGV0dGVyIHZlcnNpb24gaXMgYW4gQUNQSSBJRCAoMyBsZXR0ZXJzIGluIFBOUCksIHNvIGl0
-IHNob3VsZCBiZSBpbiB0aGlzIHRhYmxlCj4gaHR0cHM6Ly91ZWZpLm9yZy9hY3BpX2lkX2xpc3QK
-PiAKPiBJdCdzIG5vdC4gIFNvIHRoYXQgbWVhbnMgdGhlIHByb3BlciBwcm9jZXNzIHdhc24ndCBm
-b2xsb3dlZC4gIElmIHlvdSB3ZXJlIHVzaW5nIHRoaXMKPiBJRCBvbiBhIHNlcnZlciwgY2hhbmNl
-cyBhcmUgd2UnZCBqdXN0IHRlbGwgeW91IGdvIGZpeCB5b3VyIGZpcm13YXJlIChpdCdzIGhhcHBl
-bmVkCj4gdG8gbWUgYW5kIHdlIGZpeGVkIGl0KS4gIEhvd2V2ZXIgdGhlIHNhZCB0cnV0aCBpcyBp
-biBjb25zdW1lciAvIGVtYmVkZGVkIGRldmljZXMgdGhhdAo+IG1heSBub3QgYmUgYSBwcmFjdGlj
-YWwgc29sdXRpb24uICBBcyBzdWNoLCBpZiB0aGUgSUQgd2FzIGtub3duIHRvIGJlIGluIHRoZSB3
-aWxkCj4gd2Ugd291bGQgcHJvYmFibHkgbGV0IGl0IGluLgo+IAo+IFVuZm9ydHVuYXRlbHkgSSBv
-bmx5IHJlYWxseSBnb3QgZmFtaWxpYXIgd2l0aCBBQ1BJIHNwZWNzIGluIHRoZSBsYXN0IDQgeWVh
-cnMKPiBhbmQgYmVmb3JlIHRoYXQgdGltZSBJIGRpZG4ndCBrbm93IHdoYXQgdGhlIHJ1bGVzIHdl
-cmUgLSBzbyBsZXQgYSBsb2FkIG9mIElEcyBpbi4KPiBTb21lIG9mIHRob3NlIElEcyBhcmUgaW4g
-dXNlIG9uIGhhcmR3YXJlIHRoYXQgaXMgb3V0IHRoZXJlIHNvIHdlIGhhdmUgdG8gY29udGludWUK
-PiBzdXBwb3J0aW5nIHRoZW0gb3IgaW50cm9kdWNlIGEgcmVncmVzc2lvbiBvbiB0aGF0IGhhcmR3
-YXJlLgo+IAo+IFRoZSBwcm9jZXNzIG9mIGFwcGx5aW5nIGZvciBhIFBOUCBvciBBQ1BJIElEIGlz
-bid0IHRoYXQgYmFkIGZvciBhIGNvbXBhbnkgLSB5b3UgYXNrCj4gZm9yIGEgcGFydGljdWxhciBJ
-RCBhbmQgcmVxdWVzdCBpcyB0aGVuIHNlbnQgZm9yIGEgcm91bmQgb2YgJ2hhcyBhbnlvbmUgYW4g
-b2JqZWN0aW9uJwo+IHRvIHRoZSBBU1dHIChJJ20gYSByYXRoZXIgaW5hY3RpdmUgbWVtYmVyIHNv
-IEkgc2VlIHRoZXNlIGV2ZXJ5IHdlZWsgb3Igc28pLgo+IEluc3RydWN0aW9ucyBhdCBodHRwczov
-L3VlZmkub3JnL1BOUF9BQ1BJX1JlZ2lzdHJ5Cj4gCj4gTm90ZSB0aGF0IHRoZXJlIHdvdWxkIGJl
-IHR3byBvcHRpb25zIGZvciBTZWVlZC4gIEVpdGhlciB5b3UgcGVyc3VhZGUgbGl0ZW9uIHRvIGFw
-cGx5Cj4gYW5kIHRoZW4gaXNzdWUgYW4gYXBwcm9wcmlhdGUgbnVtYmVyICh3aGljaCBtYXkgd2Vs
-bCBub3QgYmUgdGhlIHBhcnQgbnVtYmVyIC0gb2Z0ZW4KPiBwZW9wbGUganVzdCBzdGFydCBjb3Vu
-dGluZyBmcm9tIDAsIG9yIGFzc2lnbiByYW5nZXMgdG8gZGlmZmVyZW50IHBlb3BsZSBpbiB0aGUg
-Y29tcGFueQo+IHNvIHRoZXJlIGRvZXNuJ3QgbmVlZCB0byBiZSBhIGNlbnRyYWwgcmVnaXN0cnkp
-IG9yIHNlZWVkIGFwcGxpZXMgZm9yIGFuIEFDUEkgb3IgUE5QIElECj4gYW5kIHRoZW4gaXNzdWVz
-IElEcyBmb3IgYW55IHBhcnQgeW91IHdhbnQgdG8gc3VwcG9ydCBvbiBhbiBBQ1BJIHBsYXRmb3Jt
-IHRoYXQgZG9lc24ndAo+IHlldCBoYXZlIGFuIElEIGlzc3VlZCBieSB0aGUgc3VwcGxpZXIuCj4g
-Cj4gTm90ZSB0aGF0IGl0J3MgYWxzbyBjb21tb24gdG8gdXNlIHNvbWVvbmUgZWxzZSdzIElELiBP
-bmNlIGl0J3MgYXNzaWduZWQgdG8gYSBkZXZpY2UKPiBpdCBjYW4ndCBiZSByZXVzZWQgYW55d2F5
-IHNvIGlmIHNheSwgSW50ZWwgb3IgSGlzaWxpY29uIGhhZCBhc3NpZ25lZCBvbmUgdG8gYSBwYXJ0
-Cj4gYWxyZWFkeSB0aGVuIHlvdSBjb3VsZCBqdXN0IHJldXNlIGl0IGZvciB5b3VyIEFDUEkgcGxh
-dGZvcm1zLgo+IAo+IEhvcGUgdGhhdCBjbGVhcnMgdXAgaG93IHRoaXMgaXMgc3VwcG9zZWQgdG8g
-d29yay4KPiAKPiBBbHNvIG5vdGUgdGhhdCBldmVyeSBub3cgYW5kIHRoZW4gd2UgJ2d1ZXNzJyB0
-aGF0IElEcyBhcmUganVzdCBjdXQgYW5kIHBhc3RlCj4gam9icyBhbmQgcmVtb3ZlIHRoZW0uICBT
-byBmYXIgd2UndmUgb25seSBoaXQgb25lcyB0aGF0IHdlcmUgaW4gYWN0dWFsIHVzZSBhCj4gZmV3
-IHRpbWVzIC0gdGhlIG1ham9yaXR5IG9mIGludmFsaWQgb25lcyB3ZXJlbid0IGluIHVzZS4KPiAK
-VGhhbmsgeW91IGZvciB0YWtpbmcgeW91ciB0aW1lIHRvIHdyaXRlIHN1Y2ggZGV0YWlsZWQgZXhw
-bGFuYXRpb24hIFRoZSB3aG9sZSBzaXR1YXRpb24Kd2l0aCBBQ1BJL1BOUCBJRCBpcyBtdWNoIG1v
-cmUgY2xlYXIgdG8gbWUgbm93LgpBcyBJIG1lbnRpb25lZCBhYm92ZSwgY3VycmVudGx5IG91ciBt
-YWluIGdvYWwgaXMgYWRkaW5nIGRyaXZlcnMgbmVjZXNzYXJ5IHRvIHN1cHBvcnQKcmVUZXJtaW5h
-bCwgd2hpY2ggaXMgQVJNIHByb2Nlc3NvciBiYXNlZCBkZXZpY2UuIEl0IG1lYW5zIHRoYXQgYXMg
-b2Ygbm93LCB3ZSAKd29uJ3QgYmUgdXNpbmcgQUNQSS4gRG8geW91IHRoaW5rIGl0IGlzIHZhbGlk
-IG9wdGlvbiB0byBqdXN0IHJlbW92ZSB0aGF0IHBhcnQ/ClRoYXQgc2hvdWxkbid0IGFmZmVjdCBB
-Uk0gYmFzZWQgZGV2aWNlcyBhYmlsaXR5IHRvIGludGVyYWN0IHdpdGggdGhlIHNlbnNvci4KDQoN
-Cg0KDQoNCg==
+The print function dev_err() is redundant because
+platform_get_irq() already prints an error.
+
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ drivers/iio/adc/rzg2l_adc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+index 32fbf57c362f..9d5be52bd948 100644
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -506,10 +506,8 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "no irq resource\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_irq(dev, irq, rzg2l_adc_isr,
+ 			       0, dev_name(dev), adc);
+-- 
+2.25.1
 

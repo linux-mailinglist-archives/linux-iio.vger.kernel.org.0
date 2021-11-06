@@ -2,120 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44CA7446F67
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Nov 2021 18:42:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D925C446F74
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Nov 2021 18:49:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233226AbhKFRoz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Nov 2021 13:44:55 -0400
-Received: from azure-sdnproxy.icoremail.net ([52.229.168.213]:48849 "HELO
-        azure-sdnproxy-2.icoremail.net" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with SMTP id S229551AbhKFRoy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Nov 2021 13:44:54 -0400
-Received: from icoremail.net (unknown [10.12.1.20])
-        by hzbj-icmmx-1 (Coremail) with SMTP id AQAAfwB3SbYsvoZhpMIMBw--.18502S2;
-        Sun, 07 Nov 2021 01:41:00 +0800 (CST)
-Received: from ubuntu-laptop.lan (unknown [46.253.189.78])
-        by mail (Coremail) with SMTP id AQAAfwCX+JVnvoZhGWAAAA--.4681S3;
-        Sun, 07 Nov 2021 01:42:02 +0800 (CST)
-From:   Maslov Dmitry <maslovdmitry@seeed.cc>
-To:     jic23@kernel.org, linux-iio@vger.kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com, north_sea@qq.com, baozhu.zuo@seeed.cc,
-        jian.xiong@seeed.cc
-Cc:     Maslov Dmitry <maslovdmitry@seeed.cc>
-Subject: [PATCH v4] iio: light: ltr501: Added ltr303 driver support
-Date:   Sat,  6 Nov 2021 18:41:37 +0100
-Message-Id: <20211106174137.6783-1-maslovdmitry@seeed.cc>
-X-Mailer: git-send-email 2.25.1
+        id S232708AbhKFRwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Nov 2021 13:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231783AbhKFRwY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Nov 2021 13:52:24 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1673C061570;
+        Sat,  6 Nov 2021 10:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=p98X60FllSP44Lbfdicz/g7B4IYhfi07lOm/UAWCN1c=; b=umtFtwq0MW5enSXh0Pn/RIqbVN
+        oawwur3mMZgi/DqWLHGCdHV7oKPexxfJKKoIz0M3YsZRoiPcbQemcIFAGe+XfUb0FfZTPJRJsyMr1
+        WwnOK4J4Q/i+25JMIgEtY9H3fYW/ZKhNOV7Y3M1+xeGnftO5gtRrFgvgz/M2itOjpwMC8TlOucxW0
+        6kFDcHivssFjMSjqH/GHngXtNcYVkamgDXKpVLkuuEbAl6HgluivvUcIuOnRgfHrYja0G1yM/vLXX
+        LzTCC3kABD0HJVsbkZVHsRINzyPxI2UlWJdd2Yz/6Ob1rKkrub9f+sK7ntez15hbO2uCF5kKKQTNh
+        PCylU5yQ==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=merlin.infradead.org)
+        by merlin.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mjPov-008ZcK-TE; Sat, 06 Nov 2021 17:49:38 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
+Date:   Sat,  6 Nov 2021 10:49:32 -0700
+Message-Id: <20211106174932.15676-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwCX+JVnvoZhGWAAAA--.4681S3
-X-CM-SenderInfo: xpdvz0pygpx31u162vxhhghubf/
-Authentication-Results: hzbj-icmmx-1; spf=neutral smtp.mail=maslovdmit
-        ry@seeed.cc;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxAr47Kw17Kr4rGrWDJryfCrg_yoW5Gr43pF
-        W3uFy5WF1rZF1S93Z8JFn7ZFW5GrsrC3yjyryxK34UAa9xG34Dua43t3WYkF93Xry7Zr4F
-        qFsFvFy09a1UGFUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-        UUUUU
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Previously ltr501 driver supported a number of light and,
-proximity sensors including ltr501, ltr559 and ltr301.
-This adds support for another light sensor ltr303
-used in Seeed Studio reTerminal, a carrier board
-for Raspberry Pi 4 CM.
+MIPS does not always provide clk*() interfaces and there are no
+always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
+is not strong enough to prevent build errors.
 
-Signed-off-by: Maslov Dmitry <maslovdmitry@seeed.cc>
+Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
+since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
+BOARD setting), there are still the same build errors.
+
+It looks like depending on MACH_INGENIC_SOC is the only thing that is
+sufficient here in order to prevent build errors.
+
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
+
+Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Artur Rojek <contact@artur-rojek.eu>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: linux-mips@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/light/ltr501.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/iio/adc/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It is a fix of previous commits, that simplified ltr303 support
-and removed a lot of unnecessary code. Filename has also been removed
-from the file.
-Additionally, in v3 of the patch, unused ltr_max was removed
-and description of the driver was changed to more general, i.e.
-"LTR501 and similar ambient light and proximity sensors."
-In v4 of the patch, ltr303 entry was removed from ACPI match table,
-since ACPI ID is not present in acpi id list.
-
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 7e51aaac0bf..bab5b78f2e3 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * ltr501.c - Support for Lite-On LTR501 ambient light and proximity sensor
-+ * Support for Lite-On LTR501 and similar ambient light and proximity sensors.
-  *
-  * Copyright 2014 Peter Meerwald <pmeerw@pmeerw.net>
-  *
-@@ -98,6 +98,7 @@ enum {
- 	ltr501 = 0,
- 	ltr559,
- 	ltr301,
-+	ltr303,
- };
+--- linux-next-20211105.orig/drivers/iio/adc/Kconfig
++++ linux-next-20211105/drivers/iio/adc/Kconfig
+@@ -501,7 +501,7 @@ config INA2XX_ADC
  
- struct ltr501_gain {
-@@ -1231,6 +1232,18 @@ static const struct ltr501_chip_info ltr501_chip_info_tbl[] = {
- 		.channels = ltr301_channels,
- 		.no_channels = ARRAY_SIZE(ltr301_channels),
- 	},
-+	[ltr303] = {
-+		.partid = 0x0A,
-+		.als_gain = ltr559_als_gain_tbl,
-+		.als_gain_tbl_size = ARRAY_SIZE(ltr559_als_gain_tbl),
-+		.als_mode_active = BIT(0),
-+		.als_gain_mask = BIT(2) | BIT(3) | BIT(4),
-+		.als_gain_shift = 2,
-+		.info = &ltr301_info,
-+		.info_no_irq = &ltr301_info_no_irq,
-+		.channels = ltr301_channels,
-+		.no_channels = ARRAY_SIZE(ltr301_channels),
-+	},
- };
- 
- static int ltr501_write_contr(struct ltr501_data *data, u8 als_val, u8 ps_val)
-@@ -1605,6 +1618,7 @@ static const struct i2c_device_id ltr501_id[] = {
- 	{ "ltr501", ltr501},
- 	{ "ltr559", ltr559},
- 	{ "ltr301", ltr301},
-+	{ "ltr303", ltr303},
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, ltr501_id);
-@@ -1613,6 +1627,7 @@ static const struct of_device_id ltr501_of_match[] = {
- 	{ .compatible = "liteon,ltr501", },
- 	{ .compatible = "liteon,ltr559", },
- 	{ .compatible = "liteon,ltr301", },
-+	{ .compatible = "liteon,ltr303", },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ltr501_of_match);
--- 
-2.25.1
-
+ config INGENIC_ADC
+ 	tristate "Ingenic JZ47xx SoCs ADC driver"
+-	depends on MIPS || COMPILE_TEST
++	depends on MACH_INGENIC_SOC
+ 	select IIO_BUFFER
+ 	help
+ 	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC unit.

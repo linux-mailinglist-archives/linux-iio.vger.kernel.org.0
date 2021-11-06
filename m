@@ -2,112 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBAF446F65
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Nov 2021 18:41:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44CA7446F67
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Nov 2021 18:42:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234690AbhKFRmH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Nov 2021 13:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45758 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbhKFRmG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Nov 2021 13:42:06 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AEBCC061570;
-        Sat,  6 Nov 2021 10:39:25 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id v20so13038291plo.7;
-        Sat, 06 Nov 2021 10:39:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zYDP9ugQuQJcTY/clh1zo2X/w4ZLz6U2xXdQY6a8yeY=;
-        b=WKZJXVC46t7n70FfDfrwYHxfFmfDQovZOnbtGq9K5qD00SdE6CUFlUGumzKSpv7QUc
-         gi8TW8I9g58uxClrX5YrrmgXjWBQDN/I5753MgbhhxV1jNfOhms72SYJNlRHqoEAddo2
-         l+lgVVweYgasIqDXIXputHmOp6tAhR0A8yx4x52gr7/xb7+9YKlZmHHR2t9qC4BjTojl
-         Erwfu0ZipjIvSQVF/T+7N7EuizNiJRoF4jyUT7TughcVv4tNsnDRVh546r4MtMTxNQ5g
-         q1BMzKenv0ugljKf2WDszpuEIMbwNEmhdaYFp0PQuT/U3FQrunMT2PLRBXGaCDVIOzh0
-         RvZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zYDP9ugQuQJcTY/clh1zo2X/w4ZLz6U2xXdQY6a8yeY=;
-        b=yPj4PdGXtiP17fA2U9ZDQZoNnrzs8Y0X06L/B/+GUHIhv/qUCMY8R8ZCyR0UgEuArw
-         jSCEZclkhr2dq9IKq1vnmTCC610Rng02zMwiTQ5Xh3QVUmW6bmJD/YKxEh/NZnwicYZe
-         rUzs/SvHiXOC7pZCRs6z0U9UDcgrq/6vC5dqwIFhIEPXSHaE0xxYnkvnUiAwpYqVdPKr
-         9wHVXKf2Tj+dv5N/CAPN4Wp03ffb9f3JdHt6xaeCPgqswQsIzu2caFzS3ld6TQ/flxnV
-         E/1QdbyCjn47Eu56GJTM8ZzzGRQjjN04KJd4GkYHLYITWN1+YI6t1h1ac80+972OxoOW
-         1gLQ==
-X-Gm-Message-State: AOAM530aa3oCNiS5utNLU6E2OU/RtFlimPOHjy9nHaWPqyisbGg/m/na
-        Fz4kBvYHM3g4p8QZ7flXSQE=
-X-Google-Smtp-Source: ABdhPJzbobi7gjTq+5GlTtLWyDHB+itR4KszZmrXrlCZiJkCJs8+bpi+BIebCvRqASITy8yCU/xFkA==
-X-Received: by 2002:a17:90a:cd:: with SMTP id v13mr39174748pjd.81.1636220364855;
-        Sat, 06 Nov 2021 10:39:24 -0700 (PDT)
-Received: from localhost.localdomain ([49.156.65.8])
-        by smtp.googlemail.com with ESMTPSA id o185sm4859724pfg.113.2021.11.06.10.39.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Nov 2021 10:39:24 -0700 (PDT)
-From:   Puranjay Mohan <puranjay12@gmail.com>
-To:     gregkh@linuxfoundation.org, rafael@kernel.org,
-        linux-kernel@vger.kernel.org, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Cc:     Puranjay Mohan <puranjay12@gmail.com>
-Subject: [PATCH 1/1] device property: Add fwnode_irq_get_by_name
-Date:   Sat,  6 Nov 2021 23:09:09 +0530
-Message-Id: <20211106173909.34255-2-puranjay12@gmail.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20211106173909.34255-1-puranjay12@gmail.com>
-References: <20211106173909.34255-1-puranjay12@gmail.com>
+        id S233226AbhKFRoz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Nov 2021 13:44:55 -0400
+Received: from azure-sdnproxy.icoremail.net ([52.229.168.213]:48849 "HELO
+        azure-sdnproxy-2.icoremail.net" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with SMTP id S229551AbhKFRoy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Nov 2021 13:44:54 -0400
+Received: from icoremail.net (unknown [10.12.1.20])
+        by hzbj-icmmx-1 (Coremail) with SMTP id AQAAfwB3SbYsvoZhpMIMBw--.18502S2;
+        Sun, 07 Nov 2021 01:41:00 +0800 (CST)
+Received: from ubuntu-laptop.lan (unknown [46.253.189.78])
+        by mail (Coremail) with SMTP id AQAAfwCX+JVnvoZhGWAAAA--.4681S3;
+        Sun, 07 Nov 2021 01:42:02 +0800 (CST)
+From:   Maslov Dmitry <maslovdmitry@seeed.cc>
+To:     jic23@kernel.org, linux-iio@vger.kernel.org, lars@metafoo.de,
+        andy.shevchenko@gmail.com, north_sea@qq.com, baozhu.zuo@seeed.cc,
+        jian.xiong@seeed.cc
+Cc:     Maslov Dmitry <maslovdmitry@seeed.cc>
+Subject: [PATCH v4] iio: light: ltr501: Added ltr303 driver support
+Date:   Sat,  6 Nov 2021 18:41:37 +0100
+Message-Id: <20211106174137.6783-1-maslovdmitry@seeed.cc>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwCX+JVnvoZhGWAAAA--.4681S3
+X-CM-SenderInfo: xpdvz0pygpx31u162vxhhghubf/
+Authentication-Results: hzbj-icmmx-1; spf=neutral smtp.mail=maslovdmit
+        ry@seeed.cc;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxAr47Kw17Kr4rGrWDJryfCrg_yoW5Gr43pF
+        W3uFy5WF1rZF1S93Z8JFn7ZFW5GrsrC3yjyryxK34UAa9xG34Dua43t3WYkF93Xry7Zr4F
+        qFsFvFy09a1UGFUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+        DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+        UUUUU
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The fwnode framework did not have means to obtain the IRQ number from
-the name of a node.
-Add that now, in form of the fwnode_irq_get_by_name() function.
+Previously ltr501 driver supported a number of light and,
+proximity sensors including ltr501, ltr559 and ltr301.
+This adds support for another light sensor ltr303
+used in Seeed Studio reTerminal, a carrier board
+for Raspberry Pi 4 CM.
 
-Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+Signed-off-by: Maslov Dmitry <maslovdmitry@seeed.cc>
 ---
- drivers/base/property.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/iio/light/ltr501.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index f1f35b48ab8b..627e4e6d3ebd 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -958,6 +958,30 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
- }
- EXPORT_SYMBOL(fwnode_irq_get);
+It is a fix of previous commits, that simplified ltr303 support
+and removed a lot of unnecessary code. Filename has also been removed
+from the file.
+Additionally, in v3 of the patch, unused ltr_max was removed
+and description of the driver was changed to more general, i.e.
+"LTR501 and similar ambient light and proximity sensors."
+In v4 of the patch, ltr303 entry was removed from ACPI match table,
+since ACPI ID is not present in acpi id list.
+
+diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+index 7e51aaac0bf..bab5b78f2e3 100644
+--- a/drivers/iio/light/ltr501.c
++++ b/drivers/iio/light/ltr501.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * ltr501.c - Support for Lite-On LTR501 ambient light and proximity sensor
++ * Support for Lite-On LTR501 and similar ambient light and proximity sensors.
+  *
+  * Copyright 2014 Peter Meerwald <pmeerw@pmeerw.net>
+  *
+@@ -98,6 +98,7 @@ enum {
+ 	ltr501 = 0,
+ 	ltr559,
+ 	ltr301,
++	ltr303,
+ };
  
-+/**
-+ * fwnode_irq_get_by_name - Get IRQ directly from its name.
-+ * @fwnode:    Pointer to the firmware node
-+ * @name:      IRQ Name
-+ *
-+ * Returns Linux IRQ number on success. Other values are determined
-+ * accordingly to acpi_/of_ irq_get() operation.
-+ */
-+int fwnode_irq_get_by_name(const struct fwnode_handle *fwnode, const char *name)
-+{
-+	int index;
-+
-+	if (unlikely(!name))
-+		return -EINVAL;
-+
-+	index = of_property_match_string(to_of_node(fwnode), "interrupt-names",
-+					 name);
-+	if (index < 0)
-+		return index;
-+
-+	return fwnode_irq_get(fwnode, index);
-+}
-+EXPORT_SYMBOL(fwnode_irq_get_by_name);
-+
- /**
-  * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
-  * @fwnode: Pointer to the parent firmware node
+ struct ltr501_gain {
+@@ -1231,6 +1232,18 @@ static const struct ltr501_chip_info ltr501_chip_info_tbl[] = {
+ 		.channels = ltr301_channels,
+ 		.no_channels = ARRAY_SIZE(ltr301_channels),
+ 	},
++	[ltr303] = {
++		.partid = 0x0A,
++		.als_gain = ltr559_als_gain_tbl,
++		.als_gain_tbl_size = ARRAY_SIZE(ltr559_als_gain_tbl),
++		.als_mode_active = BIT(0),
++		.als_gain_mask = BIT(2) | BIT(3) | BIT(4),
++		.als_gain_shift = 2,
++		.info = &ltr301_info,
++		.info_no_irq = &ltr301_info_no_irq,
++		.channels = ltr301_channels,
++		.no_channels = ARRAY_SIZE(ltr301_channels),
++	},
+ };
+ 
+ static int ltr501_write_contr(struct ltr501_data *data, u8 als_val, u8 ps_val)
+@@ -1605,6 +1618,7 @@ static const struct i2c_device_id ltr501_id[] = {
+ 	{ "ltr501", ltr501},
+ 	{ "ltr559", ltr559},
+ 	{ "ltr301", ltr301},
++	{ "ltr303", ltr303},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, ltr501_id);
+@@ -1613,6 +1627,7 @@ static const struct of_device_id ltr501_of_match[] = {
+ 	{ .compatible = "liteon,ltr501", },
+ 	{ .compatible = "liteon,ltr559", },
+ 	{ .compatible = "liteon,ltr301", },
++	{ .compatible = "liteon,ltr303", },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ltr501_of_match);
 -- 
-2.30.1
+2.25.1
 

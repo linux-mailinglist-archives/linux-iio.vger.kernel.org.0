@@ -2,90 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D925C446F74
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Nov 2021 18:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AEE0447119
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Nov 2021 01:31:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232708AbhKFRwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Nov 2021 13:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
+        id S233602AbhKGAeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Nov 2021 20:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbhKFRwY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Nov 2021 13:52:24 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1673C061570;
-        Sat,  6 Nov 2021 10:49:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=p98X60FllSP44Lbfdicz/g7B4IYhfi07lOm/UAWCN1c=; b=umtFtwq0MW5enSXh0Pn/RIqbVN
-        oawwur3mMZgi/DqWLHGCdHV7oKPexxfJKKoIz0M3YsZRoiPcbQemcIFAGe+XfUb0FfZTPJRJsyMr1
-        WwnOK4J4Q/i+25JMIgEtY9H3fYW/ZKhNOV7Y3M1+xeGnftO5gtRrFgvgz/M2itOjpwMC8TlOucxW0
-        6kFDcHivssFjMSjqH/GHngXtNcYVkamgDXKpVLkuuEbAl6HgluivvUcIuOnRgfHrYja0G1yM/vLXX
-        LzTCC3kABD0HJVsbkZVHsRINzyPxI2UlWJdd2Yz/6Ob1rKkrub9f+sK7ntez15hbO2uCF5kKKQTNh
-        PCylU5yQ==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=merlin.infradead.org)
-        by merlin.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mjPov-008ZcK-TE; Sat, 06 Nov 2021 17:49:38 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
-Date:   Sat,  6 Nov 2021 10:49:32 -0700
-Message-Id: <20211106174932.15676-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        with ESMTP id S233597AbhKGAeW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Nov 2021 20:34:22 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74C4CC061714
+        for <linux-iio@vger.kernel.org>; Sat,  6 Nov 2021 17:31:40 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id x15so15764717edv.1
+        for <linux-iio@vger.kernel.org>; Sat, 06 Nov 2021 17:31:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=RQgVC+ltN8D/EW+qvOnxBd3BkC8aGKQOGFo20+oSs0k=;
+        b=Y/+OFYQLlDOJjZO1DPMTvJ40IRheem6dEmSC4aIcmGBGE+vJgmsXSTvlZwRuwBHaoY
+         y5+XNcx7NwmxhbjH74tAUFEpsYFF/4vCIe4FeF9mH811Wu0nxDKf4CsReBhwBtLDLC9N
+         99YGoHTzP+osnPSSj3LOta2NHWkrMRzJnZrXJ5w/SN6x7VxDsA6h0gVHJsGSFT3x017c
+         yztsvb2OIWiunQulsV/Um6P7IVDawuwUntG1awuJxGcWOnddipmvOuQKr8Sf1xq34mYI
+         tW84L+hEGr5veEcX7JItJwsN3iSOW5KIUFRvIRk6V9tonaY3x7skqGbMqAU0zvlJi8HU
+         0kTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=RQgVC+ltN8D/EW+qvOnxBd3BkC8aGKQOGFo20+oSs0k=;
+        b=sNj1Bp2sMycRBfegr8UI0U7GBBnrZcIv8iMnK+ybl4nhogMpyDgofo0tEnvwS2+zIE
+         YmVQfnK0+bBdnlVs4WpFFOETshMT8bkT1B1/X8o3IlwKBy8rHBmACbYeDF8F+Pio6xLD
+         IipT9tl58H46WjxH5Zr8XK8CY2S3R1gFyyxPgpuXdaAh+JCD0f/kcSBCYzqX6tBse9dL
+         OOTm19u69q3l2TBy+m5uv8aNHTjt35xxAYHWUxWn46q59RYSdtuGdJ3RduZ+2b87OIGa
+         GhybtOtylBiRJJ/DBd7P4CWyOaaS45P0/IFXCWYNnQ6DCXSMBnGvEvR4hSm6QwL2qnCK
+         nK2g==
+X-Gm-Message-State: AOAM533FPxV6jCb8rkWt0tUR+MhUHarjssDqOrlaaIQYzrve3gxU3t9r
+        xXXNP4pP/pDosteYFoTi6ebPcU0LT823U5LCFR8=
+X-Google-Smtp-Source: ABdhPJzgvL6/OZuVrKWPrNlby+0rjgCZlcBl70t7uOaC1qRe34BsHiowXqFp7bMMP9FRiE9Bngp5Db3chdyCXydl408=
+X-Received: by 2002:a17:906:180a:: with SMTP id v10mr83929713eje.112.1636245098446;
+ Sat, 06 Nov 2021 17:31:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Reply-To: millasmith7010@gmail.com
+Sender: lindahuigea7@gmail.com
+Received: by 2002:a17:907:628a:0:0:0:0 with HTTP; Sat, 6 Nov 2021 17:31:37
+ -0700 (PDT)
+From:   "Ms. Milla Smith" <millasth77@gmail.com>
+Date:   Sat, 6 Nov 2021 17:31:37 -0700
+X-Google-Sender-Auth: tfNrjC0N3kKBqmHY1Iw6-83vsuQ
+Message-ID: <CAAjJ7Wo97Fdc9sQkyH7iw5frKeaay+OURA4a1N6rczE1uUraTA@mail.gmail.com>
+Subject: compensation
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-MIPS does not always provide clk*() interfaces and there are no
-always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
-is not strong enough to prevent build errors.
+Dear Friend,
 
-Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
-since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
-BOARD setting), there are still the same build errors.
+I am sorry, but happy to inform you about my success in getting those
+funds transferred under the cooperation of a new partner from Vietnam.
+Though, I I tried my best to involve you in the business, but
+everything changed completely. Presently, I am in Vietnam for
+investment projects with my own share of the total sum. Meanwhile, I
+didn't forget your past efforts and attempts to assist me in
+transferring those funds despite that it failed us somehow.
 
-It looks like depending on MACH_INGENIC_SOC is the only thing that is
-sufficient here in order to prevent build errors.
+Now contact my secretary in Burkina Faso. Her name is Ms. Milla Smith.
+Her email address is  millasmith7010@gmail.com
 
-mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
-ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
-mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
-ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
+Ask her to send you the total sum of $450,000.00 which I kept for your
+compensation over the past efforts and attempts to assist me in this
+matter. I appreciated your efforts at that time very much. So feel
+free and contact my secretary Ms. Milla Smith and instruct her where
+to send the amount to you. Please, do let me know immediately you
+receive it so that wecan share joy after all the sufferings at that
+time.
 
-Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Artur Rojek <contact@artur-rojek.eu>
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: linux-mips@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/iio/adc/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+At the moment, I=E2=80=99m very busy here. Because of the investment projec=
+ts
+which I and my new partner are having at hand. Finally, remember that
+I had forwarded instructions to the secretary on your behalf to
+receive that money. So, feel free and get in touch with Ms. Milla
+Smith.
 
---- linux-next-20211105.orig/drivers/iio/adc/Kconfig
-+++ linux-next-20211105/drivers/iio/adc/Kconfig
-@@ -501,7 +501,7 @@ config INA2XX_ADC
- 
- config INGENIC_ADC
- 	tristate "Ingenic JZ47xx SoCs ADC driver"
--	depends on MIPS || COMPILE_TEST
-+	depends on MACH_INGENIC_SOC
- 	select IIO_BUFFER
- 	help
- 	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC unit.
+Extend my greetings to your family.
+
+
+Best regards,
+
+Yours brother
+Mr. Abu Salam
+Greetings from Vietnam

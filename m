@@ -2,76 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C543447E2B
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 11:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4F4447E73
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 12:05:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236862AbhKHKnf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Nov 2021 05:43:35 -0500
-Received: from mail-ua1-f52.google.com ([209.85.222.52]:43917 "EHLO
-        mail-ua1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230310AbhKHKnf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 05:43:35 -0500
-Received: by mail-ua1-f52.google.com with SMTP id v3so30452909uam.10;
-        Mon, 08 Nov 2021 02:40:51 -0800 (PST)
+        id S238968AbhKHLIh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Nov 2021 06:08:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238974AbhKHLI3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 06:08:29 -0500
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26382C061714;
+        Mon,  8 Nov 2021 03:05:45 -0800 (PST)
+Received: by mail-ua1-x936.google.com with SMTP id p37so29516815uae.8;
+        Mon, 08 Nov 2021 03:05:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=teGM/aRfgsF+v1uRkOKwMF4DSOKKVhKqEf5p4Z5SiaU=;
+        b=ZFRoTUThOk+PwhJrD1Eag/Ir8bvPTzXitLWo7Qm9cG6hDuajRaS2ubnIpafa8hqelx
+         WL1fNfta5V2hrroNvZl7LbQpF7RKN5VCsa+xO7FSCsfSuNMAainm2YA5tikS3fTjEUPS
+         S7nUbti/rK0oZP1HtN/XSxIxymWHxiWgH+ZPUlRC52qAjrfBrS8Syo1prKFyQ6DlVzln
+         5LDkWXVj5zr7B1fhibrk9qbyr+E/YxYr9pPfgdbsos4R5YM1hocn1dMvKBm3IZjjBO2b
+         Yn8nOBvKre4xDiI1eLzRKslQWYixvbxMRJUOumfHVZk+aCAbdz5QT9hQoQMfG7unHNdL
+         DBpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5wNov6GAlcKvQXnG0Wu/LU+lWR950kMLXxUaSyHwxmw=;
-        b=5yMb3PpxZibxEXcBGTPOZVzwGpgfspuKsnPCD445adeRGuXJKt0KQ/QTL1jiLg706F
-         8Q7gqieb7WZEnSRGKAi1w7kuiCrz5OT13adDFcqtiT5nH8aU3/MQfpNFTnf3U9Ukmcee
-         rNCMs2iuLJo1ChYqhcpFOjQIBwj9B0us4PTLxnukkU8kvRo1xFSu0exi+rpCxfxVW1p9
-         JrYk5w0QhI37HGaLWvDjKD4XS6PNqhXdmiqWmf5uKvf5Yi6ZcBFDekvmULCFEY6tBHN7
-         TxIePv9hek1IbOW440pPj5v+OivHwdfhGCSUFweiJhteB/RpBInS9VsikwUKAhC4Gubz
-         5QpQ==
-X-Gm-Message-State: AOAM530e/xFydqcGmjHPq8bxk7pCNatvEEJwIWHhc9XALoLtbZzZR/p3
-        1PYYuPcZ1oPhPnzuwdpHXZlYXH4K9hzCTg==
-X-Google-Smtp-Source: ABdhPJwdO5POiwjigQsDzY3OEKdI/AGPhBr0BnO9v9ZlAzniGH6Mp5SsDNmg9RSpIVfp9x4tjfmVCw==
-X-Received: by 2002:a05:6102:11ed:: with SMTP id e13mr76159500vsg.57.1636368050533;
-        Mon, 08 Nov 2021 02:40:50 -0800 (PST)
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com. [209.85.222.47])
-        by smtp.gmail.com with ESMTPSA id p69sm2773896uap.1.2021.11.08.02.40.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Nov 2021 02:40:50 -0800 (PST)
-Received: by mail-ua1-f47.google.com with SMTP id b17so30610858uas.0;
-        Mon, 08 Nov 2021 02:40:49 -0800 (PST)
-X-Received: by 2002:a67:c38f:: with SMTP id s15mr39316001vsj.50.1636368049727;
- Mon, 08 Nov 2021 02:40:49 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=teGM/aRfgsF+v1uRkOKwMF4DSOKKVhKqEf5p4Z5SiaU=;
+        b=VYf44b+g8j7e+ZzLqU77Ss/6QSnpvrsaBVhAVibDU2Z2XdEJMVoJdy/ZpN1tzNQLtw
+         UpFcLQP3jvDbWO2icV9ufzoKPPeYrkvzN4ECQDFJuM0Im5O6Su0K+bQqfuVrkQ4Ps2tJ
+         +TcP0ntwom7+ECHliaE/SOxTa3QlWSH1/mNjlgbV+KyOMZ5jRQVcdabQHUCrU1O7RzO7
+         jHwfunHjebyesB25/oa3fWN1F5XTNVcuoqouuQkQj8q19IB0bCBgI0rEmAtzW5TtaVWT
+         /Q9CWCY3MU/OFjb2DHNghAetj6a219cb/A2mMIyGLvQHxbPqHw9ALZENOnRTYR5a6IMD
+         7LgQ==
+X-Gm-Message-State: AOAM532ZZK+5gDqfN3JyzdK1ONH1f5+5RFnUCrSOv5dcT8SFLG48ZL19
+        M4r3DYgSGP2AEJNHqUj+031Jd2AJczdJb1afi/s=
+X-Google-Smtp-Source: ABdhPJzVAd63faUQ9SQu882FRAjDvxBCJF8XbXAIW/sxogjQqNvAFil9hhvBomoaLzfx7bRe0gBj4+p/TaTuRNYF97E=
+X-Received: by 2002:a05:6102:3166:: with SMTP id l6mr16896002vsm.51.1636369544315;
+ Mon, 08 Nov 2021 03:05:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20211105015504.39226-1-vulab@iscas.ac.cn>
-In-Reply-To: <20211105015504.39226-1-vulab@iscas.ac.cn>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 8 Nov 2021 11:40:38 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdX7CmiTW9y0pOytWaH8yoE8Aa=eOe7DRYAm97USZcMBNQ@mail.gmail.com>
-Message-ID: <CAMuHMdX7CmiTW9y0pOytWaH8yoE8Aa=eOe7DRYAm97USZcMBNQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: rzg2l_adc: Remove unnecessary print function dev_err()
-To:     Xu Wang <vulab@iscas.ac.cn>
-Cc:     "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+References: <20210715141742.15072-1-andrea.merello@gmail.com>
+ <20211028101840.24632-1-andrea.merello@gmail.com> <20211028101840.24632-2-andrea.merello@gmail.com>
+ <CAHp75VdPhNbr6Y7ethsmw_Bd7DZOi4cyFHubPpOxa1LXibkUCQ@mail.gmail.com>
+In-Reply-To: <CAHp75VdPhNbr6Y7ethsmw_Bd7DZOi4cyFHubPpOxa1LXibkUCQ@mail.gmail.com>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Mon, 8 Nov 2021 12:05:33 +0100
+Message-ID: <CAN8YU5OAdrivQuLAaQ8FyGbmGSR_Heb2Vz44PHgeQ=rrYuQBLQ@mail.gmail.com>
+Subject: Re: [v2 01/10] utils_macro: introduce find_closest_unsorted()
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        jmondi <jacopo@jmondi.org>,
+        Andrea Merello <andrea.merello@iit.it>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 5, 2021 at 3:02 AM Xu Wang <vulab@iscas.ac.cn> wrote:
-> The print function dev_err() is redundant because
-> platform_get_irq() already prints an error.
+Il giorno gio 28 ott 2021 alle ore 12:26 Andy Shevchenko
+<andy.shevchenko@gmail.com> ha scritto:
 >
-> Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+> On Thu, Oct 28, 2021 at 1:18 PM Andrea Merello <andrea.merello@gmail.com> wrote:
+> >
+> > This is similar to find_closest() and find_closest_descending(), but, it
+> > doesn't make any assumption about the array being ordered.
+>
+> Macros in general are not so welcoming.
+> Why do you do it as a macro?
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Honestly, I did that just because find_closest() and
+find_closest_descending() are macros (i.e. to be consistent wrt them).
+I see no drawbacks in making this a regular function indeed; just, do
+you have any advice about where should it live?
 
-Gr{oetje,eeting}s,
+> ...
+>
+> > +#include <linux/math.h>
+>
+> Wondering if the current header misses other inclusions it's a direct user of.
 
-                        Geert
+Looking at it, it seems that also __find_closest() actually needs
+math.h because it (apparently incorrectly[*]) uses
+DIV_ROUND_CLOSEST()..
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+[*]Indeed it seems there is another issue here about find_closest():
+for example it picks the 1st element while searching for "2" in an
+array like this: {1,2,..} ..This needs to be reported/fixed..
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
+
+> ...
+>
+> > +/**
+> > + * find_closest_unsorted - locate the closest element in a unsorted array
+>
+> an
+>
+> > + * @x: The reference value.
+> > + * @a: The array in which to look for the closest element.
+> > + * @as: Size of 'a'.
+> > + *
+> > + * Similar to find_closest() but 'a' has no requirement to being sorted
+> > + */
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

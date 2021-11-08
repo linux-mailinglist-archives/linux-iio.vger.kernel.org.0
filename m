@@ -2,137 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 705E7449D99
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 22:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEB15449DDD
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 22:19:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239772AbhKHVIh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Nov 2021 16:08:37 -0500
-Received: from mail-co1nam11on2066.outbound.protection.outlook.com ([40.107.220.66]:8353
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S239758AbhKHVIc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 8 Nov 2021 16:08:32 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=F97eEIov8syS+rvb001OD6KWZIVBNbPQji+VyrD67JqCLZBiUMdoTzPrrFdhxG7ngmGvAZnPjf5AWVXeEonxUPqny2N31iRRWEtIAinQAzRL4O1oGdFsSErhVIZgPQhgaZ5iybu7sP/4MxX+xK3NqMmQYY5+Yk+vAZtGSFSmSXmeDCG8e/gfa4UIP8tO0T7yyhSJIQas01BiyOt1ba6zWNY5QTLy8+xPwzWmDbCA8lzsCNYXXpY9vygHpdpYbKvlM0ca7u4UZzErDVlYa0A0lNWeqOK2b72SBdSaY3zp/rbs50/B/BE2CHpRSrkGSgUH0xas5J8X6Q334ZppX1T1tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P3PUW1DuRbUlyeth8cIQGVD+Ka3aIkAuacFplTu2g0E=;
- b=ZN2GvJ1p7p3jAlSGEy4KyeD5iCD8Rc2DHEdDhEM6cUCFsUIxsCExrmg54ZokfOUhfVDGBsuyhifFmxzBqDpFN9gyxoEqJNnhQcfD5pvuwHc1ggEcvSyHyRccz0+OxiK9PVvMwaoKLq9E8k91Qmo0YsfaIa+XGJn8dVC4DQ5m+drWnzKcRFvA50K0ipJ1R9IxvPsXndXSrSkZeXRr3LtPn0Nj46+gyTMWmLULI6xnlczlp4qp8IXdUWl72p0GGRh9XeBd/TXYBH7v90jGWZyhzgDRAypOmtbBrYEI+NN2CUdlGxZ1evEBbdwidLoCAMz/8Sy4hjt1s819Y/Sxb7x3Qg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.80.198) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P3PUW1DuRbUlyeth8cIQGVD+Ka3aIkAuacFplTu2g0E=;
- b=R+GGHHiSyPnsH9wG0VD4V0SHIQMcX0OyGFsczRaikO0x91U1/p1kQ47jPOBs1/wxs7dH9v1GczHZDLruN4SEozCtfZR/soupfLYkrbqgUDR90GA8LuSdKPfC7LRyz9xhPPC2g5Q6nuNMGzwoEPwkRVk/dCEf2S0QSFOjztQmO2A=
-Received: from DM6PR03CA0089.namprd03.prod.outlook.com (2603:10b6:5:333::22)
- by BYAPR02MB4917.namprd02.prod.outlook.com (2603:10b6:a03:47::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.13; Mon, 8 Nov
- 2021 21:05:44 +0000
-Received: from DM3NAM02FT026.eop-nam02.prod.protection.outlook.com
- (2603:10b6:5:333:cafe::69) by DM6PR03CA0089.outlook.office365.com
- (2603:10b6:5:333::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.10 via Frontend
- Transport; Mon, 8 Nov 2021 21:05:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.80.198)
- smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=pass action=none header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.80.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.80.198; helo=xir-pvapexch01.xlnx.xilinx.com;
-Received: from xir-pvapexch01.xlnx.xilinx.com (149.199.80.198) by
- DM3NAM02FT026.mail.protection.outlook.com (10.13.5.129) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4669.10 via Frontend Transport; Mon, 8 Nov 2021 21:05:44 +0000
-Received: from xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Mon, 8 Nov 2021 21:05:41 +0000
-Received: from smtp.xilinx.com (172.21.105.198) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Mon, 8 Nov 2021 21:05:41 +0000
-Envelope-to: anand.ashok.dumbre@xilinx.com,
- git@xilinx.com,
- michal.simek@xilinx.com,
- linux-kernel@vger.kernel.org,
- jic23@kernel.org,
- lars@metafoo.de,
- linux-iio@vger.kernel.org,
- pmeerw@pmeerw.net,
- devicetree@vger.kernel.org
-Received: from [10.71.188.1] (port=52274 helo=xiranandash40.xilinx.com)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1mkBpl-0008LJ-2x; Mon, 08 Nov 2021 21:05:41 +0000
-From:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-To:     <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>, <git@xilinx.com>,
-        <michal.simek@xilinx.com>, <pmeerw@pmeerw.net>,
-        <devicetree@vger.kernel.org>
-CC:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Subject: [PATCH v8 4/4] MAINTAINERS: Add maintainer for xilinx-ams
-Date:   Mon, 8 Nov 2021 21:05:09 +0000
-Message-ID: <20211108210509.29870-5-anand.ashok.dumbre@xilinx.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
-References: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
+        id S238849AbhKHVWX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Nov 2021 16:22:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49682 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239990AbhKHVVk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 16:21:40 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F44C061570;
+        Mon,  8 Nov 2021 13:18:55 -0800 (PST)
+Received: from zn.tnic (p200300ec2f3311007827e440708b1099.dip0.t-ipconnect.de [IPv6:2003:ec:2f33:1100:7827:e440:708b:1099])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E3BE71EC051F;
+        Mon,  8 Nov 2021 22:18:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1636406333;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=AU7V4fSHGUK4yNvIX3QFWGgL2mpvsQwlJrzk1EYTZE4=;
+        b=HI4wHVqdPFUaTmLfTawRP0YuILjCSvy0XvR7UY6GhjpkLZ7Jcpensq3GPz/wKuSVQPh/ah
+        JjfisFcmsOLL77YybjTfUcF4SOtfsMptjoCY2iNpL/QAVX8IlmhT4tll2zqUciAF4fFC2q
+        GhOxoJIWWV9UKbtfg9ziQ2wDV7UERPU=
+Date:   Mon, 8 Nov 2021 22:18:47 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        intel-gvt-dev@lists.freedesktop.org,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-edac@vger.kernel.org,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        linux-hyperv@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-leds <linux-leds@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        scsi <linux-scsi@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>, netdev <netdev@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v0 42/42] notifier: Return an error when callback is
+ already registered
+Message-ID: <YYmUN69Y7z9xITas@zn.tnic>
+References: <20211108101157.15189-1-bp@alien8.de>
+ <20211108101157.15189-43-bp@alien8.de>
+ <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com>
+ <YYkyUEqcsOwQMb1S@zn.tnic>
+ <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
+ <YYlJQYLiIrhjwOmT@zn.tnic>
+ <CAMuHMdXHikGrmUzuq0WG5JRHUUE=5zsaVCTF+e4TiHpM5tc5kA@mail.gmail.com>
+ <YYlOmd0AeA8DSluD@zn.tnic>
+ <20211108205926.GA1678880@rowland.harvard.edu>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5aa513c1-1dbf-405a-b769-08d9a2fb87c4
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4917:
-X-Microsoft-Antispam-PRVS: <BYAPR02MB49179F547067D7A01F82EA18A9919@BYAPR02MB4917.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z9TRx63/09N+tTVTNgqeF3eG2oBaHfwNdJSL7h0mAq7Z5n510ySXd4AqIX5jKuJvVZ4SH5HfTSxCzKv1Ea06ri8oRkvTd4Y1wFWXX1aBFPqD6pxirliJxPwzuQOt9m7BfdW+mTOmj/YJKtDd1j4SPhpjSL4Iisdf3j8rwBSwTNi+ul4Rtu16hybPB2Zad+n6n0zKgI7DM4DFpIosnlxCPDU+1gjhKu/PIZSwBj2bJUti4yKZIXFYatRGjL35/e3DUXTPDPmxiIjyZA8iDYTSE/4fQjdAhNhyjiKwmVppozJUIQonbQJNVlvkGNRqKUYNS0EmG4RPV/wrYXD/92dJK0AZDo84p3PH8jnYR2dqNrQkWNPzrfonqNANANtV3Vyvu5j+42BXZxBnS/8+cLSdLeKVT36081PNo3lgUgnc7X4Kw54qg8uPv1Bo8MkgXoc58Uv9l5WQKfX4RCLarbpWshZD4rPJ+Q5XG7lJhcGmB00GVAwqyDhI7cqQ8l8f/JJLAHG98RfVZQ9J0EpQmUdUR7AB9BEQ9okOJ7avMbrUcNfUTuhwdfD3auCaMPGQul6FXPbN22rUa0zAzQ9zN34MyPnhlc+HyYsmgN9ng2jc0mAL/fg8XEVwbbpo4FcjPEXqOlC4Zxr300V/706RxWBuSrf8OXCxXoLw1RqdJjAiKMrp7uv92Cx71lAAyMdHRH816+N3BUaBjS+Axx9vOnDrDnpDHM8LVjWwym/zPW0WoKP2MEXEJRNKBFyrBrPRAKOd
-X-Forefront-Antispam-Report: CIP:149.199.80.198;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:xir-pvapexch01.xlnx.xilinx.com;PTR:unknown-80-198.xilinx.com;CAT:NONE;SFS:(36840700001)(46966006)(426003)(4744005)(336012)(1076003)(8676002)(36860700001)(8936002)(26005)(70206006)(186003)(70586007)(82310400003)(107886003)(103116003)(2616005)(6666004)(508600001)(110136005)(36756003)(4326008)(47076005)(36906005)(316002)(356005)(9786002)(2906002)(7696005)(5660300002)(7636003)(102446001)(2101003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2021 21:05:44.5104
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5aa513c1-1dbf-405a-b769-08d9a2fb87c4
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.80.198];Helo=[xir-pvapexch01.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM3NAM02FT026.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4917
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211108205926.GA1678880@rowland.harvard.edu>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add maintaner entry for xilinx-ams driver.
+On Mon, Nov 08, 2021 at 03:59:26PM -0500, Alan Stern wrote:
+> Is there really any reason for returning an error code?  For example, is 
+> it anticipated that at some point in the future these registration calls 
+> might fail?
+> 
+> Currently, the only reason for failing...
 
-Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+Right, I believe with not making it return void we're leaving the door
+open for some, *hypothetical* future return values if we decide we need
+to return them too, at some point.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dcc1819ec84b..30de0ea64ac4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20640,6 +20640,13 @@ M:	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
- S:	Maintained
- F:	drivers/net/ethernet/xilinx/xilinx_axienet*
- 
-+XILINX AMS DRIVER
-+M:	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-+F:	drivers/iio/adc/xilinx-ams.c
-+
- XILINX CAN DRIVER
- M:	Appana Durga Kedareswara rao <appana.durga.rao@xilinx.com>
- R:	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Yes, I can't think of another fact to state besides that the callback
+was already registered or return success but who knows what we wanna do
+in the future...
+
+And so if we change them all to void now, I think it'll be a lot more
+churn to switch back to returning a non-void value and having the
+callers who choose to handle that value, do so again.
+
+So, long story short, keeping the retval - albeit not very useful right
+now - is probably easier.
+
+I hope I'm making some sense here.
+
 -- 
-2.17.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette

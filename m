@@ -2,146 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB7B044983D
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 16:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E21C144986A
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 16:33:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239204AbhKHP3F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Nov 2021 10:29:05 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:43806 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235860AbhKHP3F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 10:29:05 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1A89AWDh025830;
-        Mon, 8 Nov 2021 10:26:20 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3c711fsr8v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 08 Nov 2021 10:26:20 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 1A8FQJm0033165
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 8 Nov 2021 10:26:19 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Mon, 8 Nov 2021
- 10:26:18 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.858.5 via Frontend Transport;
- Mon, 8 Nov 2021 10:26:18 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.181])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1A8FQEqD023501;
-        Mon, 8 Nov 2021 10:26:16 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v2 2/2] dt-bindings:iio:amplifiers: add ad7293 doc
-Date:   Mon, 8 Nov 2021 17:22:38 +0200
-Message-ID: <20211108152238.189650-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211108152238.189650-1-antoniu.miclaus@analog.com>
-References: <20211108152238.189650-1-antoniu.miclaus@analog.com>
+        id S240929AbhKHPgF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Nov 2021 10:36:05 -0500
+Received: from mail-qt1-f172.google.com ([209.85.160.172]:43861 "EHLO
+        mail-qt1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240901AbhKHPgE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 10:36:04 -0500
+Received: by mail-qt1-f172.google.com with SMTP id 8so13954457qty.10;
+        Mon, 08 Nov 2021 07:33:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=x4ykPITI22sSh/L6reU4seHVLFfVjdO/v+W3/SN8DUg=;
+        b=AK5+ymHpBJW394fq5QAJLtdTA/ZOqD4CMNR9HBtKgBlKaocEikykm9zWu2Qq3FsTDL
+         IBKgKBLjeGow4SxpkJ3x2oRGNnBBM0NSZ7leYaUE+sCbLlU8e+JdCCmHwGdf11yTS7jj
+         INUpSYd8YTGwyay9k1OcwzYpdYcV9EphK2OvOUVV9gSZxXZxi4QIiBYrsZTyoOgrppre
+         0wprgxHXRXz//JJtuaBp7hB+dbvc/y85rRMUeNSC0zaCdkGtvZcR3mZvLtetjRGhVxNU
+         Kq48BbcYt3WMF9YTaLnfqSufIaTCw2FbfsTbHiFPM419cNwj86653TvYIoMnsf+J4fK+
+         gBYw==
+X-Gm-Message-State: AOAM533eiMtrTJQK05ouqSS0wCB8B6mKp/DGcpb7z8dQ92ZCTvl80eY0
+        jARg/oG42UJJhg0c3f7dAUMoRa5LWBurk5lZ
+X-Google-Smtp-Source: ABdhPJykPOH3YWmh1bWslDbzGH3og2HDnOT28nOQQhf2wbjOhuI4A+4quz4f35G+kzZC3Oinm8VRnw==
+X-Received: by 2002:ac8:5a4b:: with SMTP id o11mr304870qta.321.1636385597559;
+        Mon, 08 Nov 2021 07:33:17 -0800 (PST)
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
+        by smtp.gmail.com with ESMTPSA id i14sm11098927qti.25.2021.11.08.07.33.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Nov 2021 07:33:17 -0800 (PST)
+Received: by mail-yb1-f174.google.com with SMTP id v7so44765592ybq.0;
+        Mon, 08 Nov 2021 07:33:17 -0800 (PST)
+X-Received: by 2002:a9f:2c98:: with SMTP id w24mr725068uaj.89.1636385158322;
+ Mon, 08 Nov 2021 07:25:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: GaJg0lW7Pkmamm-XPa1sghMDKctRN8z5
-X-Proofpoint-GUID: GaJg0lW7Pkmamm-XPa1sghMDKctRN8z5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-08_05,2021-11-08_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- phishscore=0 priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111080095
+References: <20211108101157.15189-1-bp@alien8.de> <20211108101157.15189-43-bp@alien8.de>
+ <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com> <YYkyUEqcsOwQMb1S@zn.tnic>
+In-Reply-To: <YYkyUEqcsOwQMb1S@zn.tnic>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 8 Nov 2021 16:25:47 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
+Message-ID: <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
+Subject: Re: [PATCH v0 42/42] notifier: Return an error when callback is
+ already registered
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        intel-gvt-dev@lists.freedesktop.org,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-edac@vger.kernel.org,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        linux-hyperv@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-leds <linux-leds@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        scsi <linux-scsi@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>, netdev <netdev@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add device tree bindings for the AD7293 Power Amplifier.
+Hi Borislav,
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v2:
- - add support for AVDD and VDRIVE voltage regulators
- - add support for reset GPIO
- .../bindings/iio/amplifiers/adi,ad7293.yaml   | 64 +++++++++++++++++++
- 1 file changed, 64 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/amplifiers/adi,ad7293.yaml
+On Mon, Nov 8, 2021 at 3:21 PM Borislav Petkov <bp@alien8.de> wrote:
+> On Mon, Nov 08, 2021 at 03:07:03PM +0100, Geert Uytterhoeven wrote:
+> > I think the addition of __must_check is overkill, leading to the
+> > addition of useless error checks and message printing.
+>
+> See the WARN in notifier_chain_register() - it will already do "message
+> printing".
 
-diff --git a/Documentation/devicetree/bindings/iio/amplifiers/adi,ad7293.yaml b/Documentation/devicetree/bindings/iio/amplifiers/adi,ad7293.yaml
-new file mode 100644
-index 000000000000..9f1b2eb78af3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/amplifiers/adi,ad7293.yaml
-@@ -0,0 +1,64 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/amplifiers/adi,ad7293.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: AD7293 12-Bit Power Amplifier Current Controller with ADC,
-+       DACs, Temperature and Current Sensors
-+
-+maintainers:
-+  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-+
-+description: |
-+   Power Amplifier drain current controller containing functionality
-+   for general-purpose monitoring and control of current, voltage,
-+   and temperature, integrated into a single chip solution with an
-+   SPI-compatible interface.
-+
-+   https://www.analog.com/en/products/ad7293.html
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7293
-+
-+  avdd-supply:
-+    description:
-+      AVDD voltage regulator.
-+
-+  vdrive-supply:
-+    description:
-+      VDRIVE voltage regulator.
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-max-frequency:
-+    maximum: 1000000
-+
-+  reset-gpios: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - avdd-supply
-+  - vdrive-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      ad7293@0 {
-+        compatible = "adi,ad7293";
-+        reg = <0>;
-+        spi-max-frequency = <1000000>;
-+        avdd-supply = <&avdd>;
-+        vdrive-supply = <&vdrive>;
-+        reset-gpios = <&gpio 10 0>;
-+      };
-+    };
-+...
--- 
-2.33.1
+I mean the addition of useless error checks and message printing _to
+the callers_.
 
+> > Many callers call this where it cannot fail, and where nothing can
+> > be done in the very unlikely event that the call would ever start to
+> > fail.
+>
+> This is an attempt to remove this WARN() hack in
+> notifier_chain_register() and have the function return a proper error
+> value instead of this "Currently always returns zero." which is bad
+> design.
+>
+> Some of the registration functions around the tree check that retval and
+> some don't. So if "it cannot fail" those registration either should not
+> return a value or callers should check that return value - what we have
+> now doesn't make a whole lot of sense.
+
+With __must_check callers are required to check, even if they know
+it cannot fail.
+
+> Oh, and then fixing this should avoid stuff like:
+>
+> +       if (notifier_registered == false) {
+> +               mce_register_decode_chain(&amdgpu_bad_page_nb);
+> +               notifier_registered = true;
+> +       }
+>
+> from propagating in the code.
+
+That's unrelated to the addition of __must_check.
+
+I'm not against returning proper errors codes.  I'm against forcing
+callers to check things that cannot fail and to add individual error
+printing to each and every caller.
+
+Note that in other areas, we are moving in the other
+direction, to a centralized printing of error messages,
+cfr. e.g. commit 7723f4c5ecdb8d83 ("driver core: platform: Add an
+error message to platform_get_irq*()").
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,91 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 549A8449842
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 16:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A13B74498E0
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 17:02:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236668AbhKHP3e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Nov 2021 10:29:34 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4073 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235527AbhKHP3e (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 10:29:34 -0500
-Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HnvyD3kXYz67PN4;
-        Mon,  8 Nov 2021 23:23:16 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.15; Mon, 8 Nov 2021 16:26:47 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Mon, 8 Nov
- 2021 15:26:47 +0000
-Date:   Mon, 8 Nov 2021 15:26:46 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Hegbeli, Ciprian" <Ciprian.Hegbeli@analog.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Subject: Re: IIO interrupt mask access
-Message-ID: <20211108152646.00004ecb@Huawei.com>
-In-Reply-To: <BYAPR03MB4647767659DA0E143F9C919A97919@BYAPR03MB4647.namprd03.prod.outlook.com>
-References: <BYAPR03MB4647767659DA0E143F9C919A97919@BYAPR03MB4647.namprd03.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+        id S241130AbhKHQBz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Nov 2021 11:01:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236850AbhKHQBy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 11:01:54 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBA6DC061570;
+        Mon,  8 Nov 2021 07:59:09 -0800 (PST)
+Received: from zn.tnic (p200300ec2f331100b486bab6e60d7aaf.dip0.t-ipconnect.de [IPv6:2003:ec:2f33:1100:b486:bab6:e60d:7aaf])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 341131EC04DE;
+        Mon,  8 Nov 2021 16:59:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1636387148;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=JALJsenIQCt4BletZS/B+Zq0YBxBp6L9Ch45cvOw8XQ=;
+        b=LCBDSZEhct23FIVquhfAlhIS3MpLXm84rotG+ppp99dGMPWi9iJHGgKkfiFg0DoLQ+NSWf
+        ixY2Bl+WafqAknd6kFkKb4q9SvLPR/pI4iyCTMD6S/zki4CWzqH6/1ZBq8awazUNWt4Xi0
+        idSLz3mdlao9wfI9n1SzGKhLH2sR0dI=
+Date:   Mon, 8 Nov 2021 16:58:57 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Ayush Sawal <ayush.sawal@chelsio.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rohit Maheshwari <rohitm@chelsio.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+        intel-gvt-dev@lists.freedesktop.org,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-edac@vger.kernel.org,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        linux-hyperv@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-leds <linux-leds@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        scsi <linux-scsi@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>, netdev <netdev@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+        sparclinux <sparclinux@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v0 42/42] notifier: Return an error when callback is
+ already registered
+Message-ID: <YYlJQYLiIrhjwOmT@zn.tnic>
+References: <20211108101157.15189-1-bp@alien8.de>
+ <20211108101157.15189-43-bp@alien8.de>
+ <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com>
+ <YYkyUEqcsOwQMb1S@zn.tnic>
+ <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml754-chm.china.huawei.com (10.201.108.204) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdXiBEQyEXJagSfpH44hxVA2t0sDH7B7YubLGHrb2MJLLA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 8 Nov 2021 14:29:10 +0000
-"Hegbeli, Ciprian" <Ciprian.Hegbeli@analog.com> wrote:
+On Mon, Nov 08, 2021 at 04:25:47PM +0100, Geert Uytterhoeven wrote:
+> I'm not against returning proper errors codes.  I'm against forcing
+> callers to check things that cannot fail and to add individual error
+> printing to each and every caller.
 
->  for the ADE9078 (High Performance, Polyphase Energy Metering IC)
-> which has two interrupts with over 30 configurations modes in two 32
-> bit registers. Some of these flags can also be active at the same
-> time within the same register for the same interrupt. While handling
-> the interrupts is fairly straight forward, the challenge is to
-> dynamical configure them within the IIO framework.
+If you're against checking things at the callers, then the registration
+function should be void. IOW, those APIs are not optimally designed atm.
 
-The answer to this is very dependent on what those interrupts mean.
+> Note that in other areas, we are moving in the other direction,
+> to a centralized printing of error messages, cfr. e.g. commit
+> 7723f4c5ecdb8d83 ("driver core: platform: Add an error message to
+> platform_get_irq*()").
 
-I've taken a very quick look at STATUS0 and STATUS1 definitions to
-see what we have.
+Yes, thus my other idea to add a lower level __notifier_chain_register()
+to do the checking.
 
-Some of them look like they will map to triggers or possibly internal
-data capture events that we don't expose to userspace as they reflect
-periodic data updates (e.g. PWRRDY, DREADY)
+I'll see if I can convert those notifier registration functions to
+return void, in the process. But let's see what the others think first.
 
-Others look like they would be just about internal management of data
-flow, eg. COH_WFBB_FULL.  You 'might' be able to map the start of
-a waveform capture to the trigger interface. A little bit tricky to tell
-without reading a lot more of the datasheet than I have time for today.
-PAGE_FULL is something you'd probably not expose to userspace, but
-handle as a signal to retrieve data from the device and push it to
-a buffer or similar.
+Thanks for taking the time.
 
-Others are what we'd map to the IIO events interface, 
-MISMTC, REVRPA, RXIC etc Probably the timeout ones as well, though they
-need some thought.
+-- 
+Regards/Gruss,
+    Boris.
 
-CF1-4 are something related to calibration frequency.  I'm not sure
-if you would expose these as anything at all from this register.
-
-ERRORX tend to be things you'd leave on and wire up to some logging or similar,
-probably rate limited.  CRC stuff is driver internal, userspace doesn't care.
-
-RSTDONE is part of startup sequence, don't expose that to userspace.
-
-So it is very much case by case.   If you want more detailed answers
-you should write a short description of the individual interrupt source
-and how it is used in data capture etc.
-
-Hope that helps a little.
-
-Jonathan
+https://people.kernel.org/tglx/notes-about-netiquette

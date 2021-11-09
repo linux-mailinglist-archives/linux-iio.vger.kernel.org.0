@@ -2,147 +2,267 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B15A144AB18
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 11:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 666FD44AB6D
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 11:22:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbhKIKEN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 05:04:13 -0500
-Received: from mail-bn8nam12on2065.outbound.protection.outlook.com ([40.107.237.65]:28225
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229845AbhKIKEM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 9 Nov 2021 05:04:12 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TkYEdxHO2Wu8+zvgrERTcWQs4Xt52eN5e1pz6QtiooEbMb2mDqrlQGSyISZpPdo6xDbxRV9ZQGpdpIOdl8ngQTXeewvznXy05tJ2GKWFjZD3fLv5niskOMseHcO9j/YnIA6wRLahyfzK16eH1XYm/2tYb0jM5H84s9KmCaV0d+Wx3dDR3/KstwLIivEJcPePekQZKcbGIFy191uTjo0bmHnXuLJes5bK9wK3I8iPTFxzZWGAt7G6yRDfD+hvXKJqdjN5in4KJ2u4EhoDpmzdqkD7eLwnlqwLx5ZQdSnlZdyTixM/4nRUXq2fz/yoUVKfTp2MmChCljBrs3AWorouyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AZMXEkn9eJ6sftegG1+l6m0M8cd300kxq5P/v5l2Jjc=;
- b=oeWtvbV/8uBysUrFh7zt+EqdLVXEIXYCJw9FxayXUv3NjL5dTG8m423FA0YZKOQIJRaSSCqdGpvcpqsmgNdQFYdNVHqbXD1ncRGRObmbvvYxVmImY2dWrCTBpjxcswHL3J253og8pOm4J3KCnpupiEsWDty3NStYvq6ndRdTF2sMrwyhqQ2yrJNZ2YKV9WcxZufZfyNbNGGpwwAyEHdbPods8mn6fVqWv0iMsxGLilex2G2UbURcgtkLGsxZ+LweaNKpjaT23QgsLDK5MG2+CNO95OaYOlEuX67ZcGtimbQ6kwV1p6f2HAbxAv8cABG6DjZ48TCzi6xwwtZAwY8jhQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
+        id S245286AbhKIKZ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 05:25:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239354AbhKIKZZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 05:25:25 -0500
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E23C061764;
+        Tue,  9 Nov 2021 02:22:39 -0800 (PST)
+Received: by mail-ua1-x92f.google.com with SMTP id l43so37489160uad.4;
+        Tue, 09 Nov 2021 02:22:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AZMXEkn9eJ6sftegG1+l6m0M8cd300kxq5P/v5l2Jjc=;
- b=sKx7weBAdtqIJKvyINunPbecdLBmGaHFMEWIaS+u2O7/i3O1fr15x7vnuTCEuNQElno08AMpwLxG3ituLpzNZldIcJd6a5uQAXy47enyGb2JYOOttFfh3SOYOX8um4btnZOKXz6xfPjN9Og6YaQnk5iB+8pChKdZzdIHnxiA2+k=
-Received: from DM6PR02MB6923.namprd02.prod.outlook.com (2603:10b6:5:25e::8) by
- DM8PR02MB8137.namprd02.prod.outlook.com (2603:10b6:8:1a::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4690.15; Tue, 9 Nov 2021 10:01:25 +0000
-Received: from DM6PR02MB6923.namprd02.prod.outlook.com
- ([fe80::88ca:b598:cc07:bd0c]) by DM6PR02MB6923.namprd02.prod.outlook.com
- ([fe80::88ca:b598:cc07:bd0c%3]) with mapi id 15.20.4690.015; Tue, 9 Nov 2021
- 10:01:25 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Randy Dunlap <rdunlap@infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-CC:     Manish Narani <MNARANI@xilinx.com>
-Subject: RE: [PATCH v8 2/4] iio: adc: Add Xilinx AMS driver
-Thread-Topic: [PATCH v8 2/4] iio: adc: Add Xilinx AMS driver
-Thread-Index: AQHX1ORlUCJOSLcFoUKx28Qs+DOPj6v6PaIAgAC5whA=
-Date:   Tue, 9 Nov 2021 10:01:25 +0000
-Message-ID: <DM6PR02MB6923340A37113D2A5B801A83A9929@DM6PR02MB6923.namprd02.prod.outlook.com>
-References: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
- <20211108210509.29870-3-anand.ashok.dumbre@xilinx.com>
- <f81d00b2-8df1-8866-da4e-bedba13c34a2@infradead.org>
-In-Reply-To: <f81d00b2-8df1-8866-da4e-bedba13c34a2@infradead.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=xilinx.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ecb57837-1fb4-4d1a-2983-08d9a367e443
-x-ms-traffictypediagnostic: DM8PR02MB8137:
-x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-x-microsoft-antispam-prvs: <DM8PR02MB813758B17D9130EFEEF3805BA9929@DM8PR02MB8137.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: KiwIZz0TQYXg6xX4CzbYnluBuBrMkDdOCKK7aG2spi0blwv/8j2MdmHMhmPjZn/YVlnNzCE2dz8S6UWA//k6PyFrKvUAFrg11jr7mO0WsYtjG4hm/s8QTjI5MkDybQX2FxxOWzz+dnD93xb+SMITc6LMd4TQCe2yHxg1yfKWoLTpk/p/927nMf+DuIjSVO4Sm4SNm7GVYgR62YrgBnlYRTGbo+bB1AcnFeAS++fVXFAdD+tBzh3eayMAy3hxt6qgO6zNgM0zxeZvtCva3pTEUkUgeuA3fzHZlWG8uHGSrTjAidovDxeEwP8AC5pQaVzhMamN1GKfvXkALlGmV7o+wF2mbl+2iTXvTsPyyVvT704E4SqajiBEmh7I2souawFQbn6kmlQrYAbSNQnvkO1rv8vyie8Jhs1F3pzDsaapcXBOPvNF8JJ3alSrypFBX+dbKRtiCLwCau1U8yk9MsxPLW4to86mG6gH7jnlufeNVkRIbZn1Pus2ArqT4dk7oVO8/ta+/XYYiyZbBQ/Zgsk4xD2dDt5TQMIJ7oDznHiLSSjaDUvUXbAaTZZItqeuaskf+Zji+y4t4L/eyo199vNjpC/qOYNBNRu2wKeG9qUBR8ogmiuTk2wo8sI0Jo5xPdpwUZ8L7Ni8FFB56X9CU9w2NKUrqmnSzNillJ2gDT6MIGBfUoiax9plRbMTllSHrxT80tyGzOsAV6uxJ/16OGQ7rQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR02MB6923.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(38100700002)(122000001)(55016002)(38070700005)(86362001)(316002)(53546011)(186003)(64756008)(66946007)(110136005)(66446008)(66556008)(71200400001)(6506007)(66476007)(76116006)(2906002)(26005)(33656002)(7696005)(508600001)(8936002)(4744005)(107886003)(8676002)(9686003)(4326008)(52536014)(5660300002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZThsV084ODUreHlKd1JhRi9RMnh5VGRpWXZiOWcrWFg5ZjVicjYwWWhVOXVG?=
- =?utf-8?B?aGJwTUV4RVppTkQ0TGdveElxV005UGxXeVM3ZytxcTF5NFYzcGJJbEpYclM5?=
- =?utf-8?B?dy9HWVpCL1o3Z2NhV09UZFpMbW5uckhGNGpRZUYzdEFSTnNvR0tUNUpYS2do?=
- =?utf-8?B?d1VTTG9RQlVDVTYzVmN4OXZFTFhlR1B4SUVlcWVwZ3FMRFN4ZHhnSHdxMGRv?=
- =?utf-8?B?SHl1REF5eUNIUDdnQzRmYlBqK2lrdGVoYnBGZDVnRSt6ckx6SVdjaG5mVG1L?=
- =?utf-8?B?U01DaVltQVN0OWVoSUh3L1FUQzVhWmFqUUtXcG8rQUtoQnZ3Zmp6TXlTUFNM?=
- =?utf-8?B?OGR0cWpzZVI0R3RBbHdqVUw5elBvY3BVcGN3SWpoQXlMV05nSzZlNGlGWXJn?=
- =?utf-8?B?VlVwQ0d5WlF6ZHZZVHVUUzNqVlRLbE1TSHJheG9zbmtJVHRuS3cvY2xPZTlT?=
- =?utf-8?B?Rnc5MkFQeDVoMjViajRQS3RGTHc4NWdPR1dFQ1ZiYXhQVmlKY2xlNW5SSGM0?=
- =?utf-8?B?a0JpcW83ODd2RUVPd2hYMW5ablNzNFVZa3FOcE5TVGpwN1hPTS9vLzY0UUZW?=
- =?utf-8?B?Zm5SakM1bFUxY3lweUd1R3NpYzZFd2hsRUEyZ213NHVWclZ1dHpSVEgzYTFo?=
- =?utf-8?B?b2dSc2xmZ2dqTTBhY3F1RVBEK1gyWWs1bDFhU1l4N2QwcUZybHp5UHdSSnVz?=
- =?utf-8?B?MldwZFNtVStENFl2NGFBdElmZVhiWUhveWNtQ0llNVQwUXhKVEgvYm1nTCtK?=
- =?utf-8?B?Rmo5VWxWRGlLbkg4a3R5SkFwZEdGLzU5M1VGdUU0aFJqbXc0Q1dyNTU2Y0pK?=
- =?utf-8?B?QWtYOUVQN1JGQlV2NWpLQ21VSlhmM0R6QkpSYzdoTUM2R2tkVUgwcG9ZaWpP?=
- =?utf-8?B?WHYrMm16aUdiL2gyT285cCtjZytIM2RucmFLejl5cERhcWFlQjNtRzhLR0xn?=
- =?utf-8?B?aVZCSWdidWlVTzVXMXIvbjA3aWxCdXpCbG1ZQXhQYmg5cUx1Q2x2THNQWjFZ?=
- =?utf-8?B?TUtLRTQybEtVZmhUZFRrRXB1ZFVJU1p3REh3MnBYT0JOOVJIRzVLbnRpSVhL?=
- =?utf-8?B?dVhOV1JOSlVQQXN5SnhaTUV3UC9FWnZVeDNRMjZ4eVI4V3YxcTlFVm11cC9W?=
- =?utf-8?B?VHpIVjM0MjAyWFNON3RtSVFHcWwrT1J4NlZBQzA2MFROYUxXR0ZPYW9vWjZV?=
- =?utf-8?B?cjUvZmI5SmVuZW9hd2FFamhwemhXSXVRMDFOS3FaSGlCNC83VDVhc0xaTGtk?=
- =?utf-8?B?TEI1UHVCTXc5YTdwMjNDTEFNZXZDWkdFdWtTRWEreldwSVZXVTlNb3NlWWhO?=
- =?utf-8?B?RXkvRkg2NFBQalFuS0YrdnlvSDJjQVN5OGNOSjc1Y3hYb0YyU1VGZzJmTDJn?=
- =?utf-8?B?WU8yTUNwcmR5UUtjcEVvSHBuNkpnNUwyckxSbkp4bDV6a29XYWNtOVd6S2p6?=
- =?utf-8?B?YzBqOWNhd0xlaTRRcHZFMTlGWjIrelN6cXJmOEV4UGNPZm1TQnlvNUNuQXNr?=
- =?utf-8?B?NUJoM1VTWWliangvVGY2RktQWDY2aURnSmRQc2taNHBPWEZrYjdQTVhUajBD?=
- =?utf-8?B?enJqUU8xbGM3N1BtcWphV1dyK1UweUNLWGhFd2RUcmhQMDUyNG1EWUJHTEFX?=
- =?utf-8?B?OHhER0ZOTjM0aHoyc2g0dVNkbkNDZ00ybjRmb1U2eHNGQVZmcXFnd0x2V25E?=
- =?utf-8?B?NlV6Ym5adnhzQ1N2WUVuS1BvdGs1WDBISmlJZGd0eTBnbkFnWWttRFRhYzU0?=
- =?utf-8?B?b3kzTHQxYWFYLzNZai9IK1FwTzhrOW92WFo5QWVUUFZ6enJUUFVLbzdxOVdX?=
- =?utf-8?B?OSs2OWZXSFdwVWNCY1ZVSnp4R1JjU1BEYkJoalAzMnU3MVUyUTBqd29iTFRV?=
- =?utf-8?B?UU9VMGJpZVd5R2tleVRRaEw4eDZvOHlWMkVHL3RZZjI4Qjg2a1F1Q1ZMVWRM?=
- =?utf-8?B?L0c5WlZZVHNPY3U2K2V4Z01YZGxMRi9yU1pjbDhTZUZ3NmppRjJzSUtXR3Ux?=
- =?utf-8?B?ZTJ0dDVqSGxkKzRMM0lWODFzQ3hheEtjdTZpd2I2Y0xXbTdiS3BHZGZtY0RN?=
- =?utf-8?B?SGZCRGdRRkluelh5emJVR2FUTXk0L0JQZTd2cnM4S2ZzeFF0R2t5S0lkMFli?=
- =?utf-8?B?cTB1eG9yUE5xc0d5VTR1NFRVTTVSWVhXSXdxdWdYZVhoYnZnZjBHbWt1YnRH?=
- =?utf-8?Q?by8itobh2dwxyQQ6RCv0Ce4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=vva8IAmeo1NRxnpbmhH2YB7tVW1wA4zi5ZM2cQ8UIyc=;
+        b=U9cb5rQWGsXBE/hSv0ukfSHwQWRvadmVDr+flu9ZC2vH033KkkN43FzzA5ov9kg64K
+         LEuIlBq4xW6esj4iop4u6hQGpRwR7HG56aPYErZzh7+TyRERGCgxXCyB7v2I6453JYDK
+         5/BAfJo2bmAeNTVgsBE2O7j3GJmElJa5cG1anmXjkcrqkpB+/5BPm/si5nEe11tcvvPQ
+         dgJ6bgGA38M3uy6IzbgmzilSQlk755qy9PF00qUioBv1/u+vz/LFMWf8nARjewYaTWQx
+         TJvAuno30RGv+fnJohlpemEN/r5rSTA2qvS9rBaEUZJweIbQH4KK32TTAqp9jfat1Ias
+         ZYZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=vva8IAmeo1NRxnpbmhH2YB7tVW1wA4zi5ZM2cQ8UIyc=;
+        b=pLyNBfifW9QHXYCgdWn/BKnwzSZWtW5BU5TFfNMSuHNIkLje/5JLIxeogKItUatMfd
+         rBqRcNtWofXtDHxc7gq01jhvInPfgbzXTHOpKpr3B9Vl8TTzqc9EGRzIVoCALpMeMFE3
+         uGkIavVqtJ2mssjA51tgDqWQyygrYLaETRfw/3xiJPkcmj1toDE0PP5v3CeO0MdCnnYO
+         toFJlW6/+MUdxZfsbG10Dx0TKg5HkXDVXvWeGT8s4E9top6TwOV7/RNUa30gMPtwB3C/
+         gye3eJwa0KGy6//bUycRk5ei7CghdHipXFfztL5eseKcKLiD7RxUzUo4vOGMj1SsL2Yo
+         Qjvw==
+X-Gm-Message-State: AOAM531iCNmelf9wjxRs7LJ01vjVgToxF7xbqqYZS9EzJOPl6TduPPX6
+        NXNqJThYwcLQrhhPGejwaffWPib/fMElhpexaOQ=
+X-Google-Smtp-Source: ABdhPJyHkDXQg2hgr+5s1HEWwmyINRu+GBDF95LBNVofZBCn1XPLsjn3lXL+EAKm7ynGiUwCeVDmaL7zMOXLeqowCF8=
+X-Received: by 2002:a67:df07:: with SMTP id s7mr10113962vsk.42.1636453358634;
+ Tue, 09 Nov 2021 02:22:38 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB6923.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ecb57837-1fb4-4d1a-2983-08d9a367e443
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2021 10:01:25.0984
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pM+36xoacC7bpNrR0h1Ulwo3y5gJbudZTi2VpSKeLabwic2x55u9nTRw9W4WHxlLMHmWaAod0XZQ1VFlVAjIUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR02MB8137
+References: <20210715141742.15072-1-andrea.merello@gmail.com>
+ <20211028101840.24632-1-andrea.merello@gmail.com> <20211028101840.24632-7-andrea.merello@gmail.com>
+ <20211028120405.6ffb01d1@jic23-huawei>
+In-Reply-To: <20211028120405.6ffb01d1@jic23-huawei>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Tue, 9 Nov 2021 11:22:27 +0100
+Message-ID: <CAN8YU5Orbbzq-eDxmrR00xHwXQ=0LU2G3_yEtHGMkbVhmdcqgg@mail.gmail.com>
+Subject: Re: [v2 06/10] iio: document bno055 private sysfs attributes
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgUmFuZHksDQoNClRoYW5rcyBmb3IgcmV2aWV3aW5nLiANCg0KPiBPbiAxMS84LzIxIDE6MDUg
-UE0sIEFuYW5kIEFzaG9rIER1bWJyZSB3cm90ZToNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9p
-aW8vYWRjL0tjb25maWcgYi9kcml2ZXJzL2lpby9hZGMvS2NvbmZpZyBpbmRleA0KPiA+IGFmMTY4
-ZTFjOWZkYi4uNmQ3MTFmNDAxMzI2IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2FkYy9L
-Y29uZmlnDQo+ID4gKysrIGIvZHJpdmVycy9paW8vYWRjL0tjb25maWcNCj4gPiBAQCAtMTI3OCw0
-ICsxMjc4LDE5IEBAIGNvbmZpZyBYSUxJTlhfWEFEQw0KPiA+ICAgCSAgVGhlIGRyaXZlciBjYW4g
-YWxzbyBiZSBidWlsZCBhcyBhIG1vZHVsZS4gSWYgc28sIHRoZSBtb2R1bGUgd2lsbCBiZQ0KPiBj
-YWxsZWQNCj4gPiAgIAkgIHhpbGlueC14YWRjLg0KPiA+DQo+ID4gK2NvbmZpZyBYSUxJTlhfQU1T
-DQo+ID4gKwl0cmlzdGF0ZSAiWGlsaW54IEFNUyBkcml2ZXIiDQo+ID4gKwlkZXBlbmRzIG9uIEFS
-Q0hfWllOUU1QIHx8IENPTVBJTEVfVEVTVA0KPiA+ICsJZGVwZW5kcyBvbiBIQVNfSU9NRU0NCj4g
-PiArCWhlbHANCj4gPiArCSAgU2F5IHllcyBoZXJlIHRvIGhhdmUgc3VwcG9ydCBmb3IgdGhlIFhp
-bGlueCBBTVMgZm9yDQo+IFVsdHJhc2NhbGUvVWx0cmFzY2FsZSsNCj4gPiArCSAgU3lzdGVtIE1v
-bml0b3IuIFdpdGggdGhpcyB5b3UgY2FuIG1lYXN1cmUgYW5kIG1vbml0b3IgdGhlDQo+IFZvbHRh
-Z2VzIGFuZA0KPiA+ICsgICAgICAgICAgVGVtcGVyYXR1cmUgdmFsdWVzIG9uIHRoZSBTT0MuDQo+
-IA0KPiBUaGF0IGxhc3QgbGluZSBhYm92ZSBzaG91bGQgYmUgaW5kZW50ZWQgd2l0aCBvbmUgdGFi
-ICsgMiBzcGFjZXMgaW5zdGVhZCBvZiBhbGwNCj4gc3BhY2VzLg0KPiANCg0KQWggY3JhcCEgV2ls
-bCBmaXggaXQgaW4gdGhlIG5leHQgc2VyaWVzLg0KDQo+IC0tDQo+IH5SYW5keQ0KDQpUaGFua3Ms
-DQpBbmFuZCANCg==
+Few inline  comments; ok for the rest.
+
+Il giorno gio 28 ott 2021 alle ore 12:59 Jonathan Cameron
+<jic23@kernel.org> ha scritto:
+>
+> On Thu, 28 Oct 2021 12:18:36 +0200
+> Andrea Merello <andrea.merello@gmail.com> wrote:
+>
+> > This patch adds ABI documentation for bno055 driver private sysfs
+> > attributes.
+>
+> Hohum. As normal I dislike custom attributes but reality is these
+> don't map to anything 'standard' and I don't want them getting adopted
+> in places where the 'standard' approach works.
+>
+> So thinking a bit more on this, I wonder if we can fit it into standard
+> ABI.
+>
+> We can't use the normal range specification method of
+> _scale because it's internal to the device and the output reading is
+> unaffected.  The range specification via _raw_available would let us know
+> the range, but it is not writeable so..
+>
+> A control that changes the internal scaling of the sensor in a fashion
+> that is not visible to the outside world maps to calibscale.  Whilst
+> that was intended for little tweaks to the input signal (often front
+> end amplifier gain tweak) it works here.  It doesn't map through to
+> anything userspace is expected to apply.  That combined with
+> _raw_available to let us know what the result is should work?
+>
+> What do you think of that approach?  It's obviously a little more complex
+> to handle in the driver, but it does map to existing ABI and avoids
+> custom attributes etc.
+
+If I read the ABI documentation, then I would say that calibscale has
+nothing to do with this, but I think you have obviously a better
+feeling than me about what calibscale is really for. To be honest I've
+probably not a clear idea about what calibscale is indeed...
+
+In general, I would say that is better to stick to standard attributes
+when possible, and of course to avoid having the same thing mapped on
+random custom attributes in each driver, but IMO only up to the extent
+which doesn't  force something that is really something different to
+map on a standard thing just because of the sake of having as much
+standard things as possible... But all this is probably quite obvious,
+and it all depends on the above (i.e. is it calibscale fitting well in
+your opinion?) .. Up to you on this one..
+
+BTW I'm missing why this should complicate the driver.. I guess I'll
+find out if I'll implement it :)
+
+> >
+> > Signed-off-by: Andrea Merello <andrea.merello@iit.it>
+> > ---
+> >  .../ABI/testing/sysfs-bus-iio-bno055          | 84 +++++++++++++++++++
+> >  1 file changed, 84 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-bno055
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-bno055 b/Documentation/ABI/testing/sysfs-bus-iio-bno055
+> > new file mode 100644
+> > index 000000000000..930a70c5a858
+> > --- /dev/null
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-bno055
+> > @@ -0,0 +1,84 @@
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_accel_range
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Range for acceleration readings in G. Note that this does not
+> > +             affects the scale (which should be used when changing the
+> > +             maximum and minimum readable value affects also the reading
+> > +             scaling factor).
+>
+> Having this in G but the sensor output in m/s^2 seems inconsistent.
+>
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_anglvel_range
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Range for angular velocity readings in dps. Note that this does
+> > +             not affects the scale (which should be used when changing the
+> > +             maximum and minimum readable value affects also the reading
+> > +             scaling factor).
+>
+> Again, units need to match or this is going to be really confusing.
+>
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_accel_range_available
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             List of allowed values for in_accel_range attribute
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_anglvel_range_available
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             List of allowed values for in_anglvel_range attribute
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/fast_magnetometer_calibration_enable
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Can be 1 or 0. Enables/disables the "Fast Magnetometer
+> > +             Calibration" HW function.
+>
+> Naming needs to be consistent with the ABI.  This is a channel type specific function
+> and to match existing calibration related ABI naming it would be.
+>
+> in_magn_calibration_fast_enable
+>
+> Some of the others need renaming in a similar way.
+>
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/fusion_enable
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Can be 1 or 0. Enables/disables the "sensor fusion" (a.k.a.
+> > +             NDOF) HW function.
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_calibration_data
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Reports the binary calibration data blob for the IMU sensors.
+>
+> Why in_ ?  What channels does this apply to?
+>
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_accel
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
+> > +             Report the autocalibration status for the accelerometer sensor.
+>
+> For interfaces that really don't have any chance of generalising this one is terrible.
+> Any hope at all of mapping this to something numeric?
+>
+> in_accel_calibration_auto_status
+>
+>
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_gyro
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
+> > +             Reports the autocalibration status for the gyroscope sensor.
+>
+> in_angvel_calibration_auto_status
+> etc.
+>
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_magn
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
+> > +             Reports the autocalibration status for the magnetometer sensor.
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/in_autocalibration_status_sys
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Can be "Idle", "Bad", "Barely enough", "Fair", or "Good".
+> > +             Reports the status for the IMU overall autocalibration.
+> > +
+> > +What:                /sys/bus/iio/devices/iio:deviceX/unique_id
+>
+> Hmm. So normally we just dump these in the kernel log.  I guess you need it
+> here to associate a calibration blob with a particular sensor?
+
+Well, it was originally in kernel log, but putting in an attribute was
+one of the changes that has been requested for V2.
+It is needed by the user who copies the calibration data to the
+calibration file, in order for her/him to be able to properly name it
+(in case of more than 1 sensor on the same setup).
+
+> We could put it in label, but that would stop us using that for things like
+> positioning of the sensor.  So perhaps this is something that we should add
+> to the main ABI doc.  Probably as serial_number rather than unique ID though.
+
+OK, for renaming to "serial_number". I'm not sure they are
+conceptually the same thing, but I think it works anyway.
+Of course I can move its doc to the main file. Do you want a separate
+patch for this?
+
+> > +KernelVersion:       5.15
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             16-bytes, 2-digits-per-byte, HEX-string representing the sensor
+> > +             unique ID number.
+>

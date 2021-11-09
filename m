@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC21C44B606
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 23:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F80744B715
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 23:29:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344044AbhKIWYh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 17:24:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40468 "EHLO mail.kernel.org"
+        id S1344450AbhKIWcJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 17:32:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50446 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344083AbhKIWWg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 9 Nov 2021 17:22:36 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1A57D619EA;
-        Tue,  9 Nov 2021 22:18:36 +0000 (UTC)
+        id S240669AbhKIWaQ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 9 Nov 2021 17:30:16 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4293860E54;
+        Tue,  9 Nov 2021 22:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636496317;
+        s=k20201202; t=1636496443;
         bh=/muP2UIDb2cnSO54BuNa9JqODtLJYe/zlk6ygSqVLao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sWY7jpar138aPiheD+VerpgIC1TRsU0uUuOMssCl/HYxVJPBzMiRDcCGlpNTQsZiu
-         233t9iZzqCfuOnMvYedgrdqdoz0NEROfgfTCSznb3n5pjqF1eC8+jrnpSbhxEoNu0n
-         pjhJPZZ69E7OHgCFn1uaBrsYCJWYt3LfkVTtoxJRVgDX0JCEJY47Z8s6rpIg3A5TkG
-         PC8nTkKd8tWO4cTUA9DBH1R+pkQxum3SQmWMpsJ2xs7BmQvzq6Dey+DrtMNQY5UdfM
-         9awxsbMDTp6b8FG8Yz88xU/2jdxdnAn5FwmLzTT5ze19LIchIDf0s0twwCq3hcAt9b
-         ZBPTD6whX91pQ==
+        b=nzOWmUsoTP13wPuQFOnc8CervSs9UmJ93E7SbvLfMShfWScqcj15c1aZjgYreekAp
+         4jKGLOqwqUhYKbLXdYajVihw20wSNjbwrn0t28NLwWt8RbzP4nOXU2uq1cQ0uqf0Ti
+         Q9sJIIfq9j1nlUlmNzWjvGBne7Or5UB9HhduN6bPtrufqkREdHKfwfuqU0rsbo+caT
+         lb1W2zi+2JA4S1M/Mx3DMpAVcp4muOhQIA1dYRCNvVW00sZd33J4vtw1tQ7/AWU6aW
+         qAaPDZL6SARcF23kz+WfpRZDq1I/ENEIldkVsH0rrl97AVSsfRM9y8/Rk7/qVUrbjh
+         c2VBlmMB7g/1g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Teng Qi <starmiku1207184332@gmail.com>,
@@ -31,12 +31,12 @@ Cc:     Teng Qi <starmiku1207184332@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 66/82] iio: imu: st_lsm6dsx: Avoid potential array overflow in st_lsm6dsx_set_odr()
-Date:   Tue,  9 Nov 2021 17:16:24 -0500
-Message-Id: <20211109221641.1233217-66-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.14 62/75] iio: imu: st_lsm6dsx: Avoid potential array overflow in st_lsm6dsx_set_odr()
+Date:   Tue,  9 Nov 2021 17:18:52 -0500
+Message-Id: <20211109221905.1234094-62-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109221641.1233217-1-sashal@kernel.org>
-References: <20211109221641.1233217-1-sashal@kernel.org>
+In-Reply-To: <20211109221905.1234094-1-sashal@kernel.org>
+References: <20211109221905.1234094-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

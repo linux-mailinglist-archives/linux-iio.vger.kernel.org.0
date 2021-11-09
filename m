@@ -2,105 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E799244B819
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 23:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7D044B917
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 23:56:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345377AbhKIWkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 17:40:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60086 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345544AbhKIWiM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 9 Nov 2021 17:38:12 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7674961B22;
-        Tue,  9 Nov 2021 22:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636496585;
-        bh=RuXAnMAUReHuRn5YQmBLvHesUHnsrgsn60AyOpEc1dA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EQWQ46D+QtN9mgV+TL4jVCl4oILOdErDX0XSfDATpRDtoTdChuFmG0Wlk+SptW41o
-         KM9yvksp6OA3IX5FFUG04WGyyv1oKu4TQYMzzKOWyIveveLEj316UlBVkDD+2qYI9n
-         wB77KMrHCuJ+P0kX24tSC69HpmtZ8rZWT9zYPw09xOkEgYPoXwf6gZV0qXdN3A7UKI
-         WkgtHAaadNQ0C0o5P3wRvMm8W5fuOdBkm1RX0pPfh71231vcQaf5RoRGXdushZ2R7v
-         MAxUzcpA1tKdH6bkvp9ocEdKp6mRO4ciYGdEqlli/ZecSHlFeOApuZo4kN9BI/feeV
-         ztkfVyAivqAag==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Teng Qi <starmiku1207184332@gmail.com>,
-        TOTE Robot <oslab@tsinghua.edu.cn>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 27/30] iio: imu: st_lsm6dsx: Avoid potential array overflow in st_lsm6dsx_set_odr()
-Date:   Tue,  9 Nov 2021 17:22:21 -0500
-Message-Id: <20211109222224.1235388-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109222224.1235388-1-sashal@kernel.org>
-References: <20211109222224.1235388-1-sashal@kernel.org>
+        id S237402AbhKIW7a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 17:59:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237742AbhKIW71 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 17:59:27 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90817C097E91
+        for <linux-iio@vger.kernel.org>; Tue,  9 Nov 2021 14:43:12 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id v64so1392363ybi.5
+        for <linux-iio@vger.kernel.org>; Tue, 09 Nov 2021 14:43:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=E14wsnocZsNPMsjFRvpJekIeY+Vz8I74zIl8XM95qHY=;
+        b=QbagfwCP8UafCbTrbAyxDcOCArf0wenwUPJGXCk9+LFai5aEll8MPNAnOnKHA9p04u
+         j/l5awP1dE5+A0o6rR3+zYXPdDBlymOr+VZuy5FqU8KmkCBYxLuemDF0+eCZD/Zo/QIs
+         qsl8R0XdR5FP0X5zd7VRL7HMAHVe/ttj3tDJwKYVg6rciVlllUVJCURvHe3bI/u/P8dP
+         lSjUcOG0RJivSPsTksX1++LntdoRhlG1589fSAA/KNTn2QNUPHkhHWsJ53MRVxcz72QM
+         8ORusLrvoc7oH6vh7+Aqs67asfCiClBb6ABpyK2UPtbD67cgj/0krRE2+ykzEtb43j56
+         HNxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=E14wsnocZsNPMsjFRvpJekIeY+Vz8I74zIl8XM95qHY=;
+        b=WkJDzPXrRRaB7zNQ6Q2Wb5Wz5ESEzvZ//CZ8KvOkSrgkZk8UDbSu+dOv4alPjU7Kw6
+         t2eyx5MWJzH7BRU7l85npl07lpGXVtEZBW8Ww3nENqEc535Z/OwfaHw3f8VqsS+XrsIj
+         62UC6JCZPr4w04q28FPFLGAMBTcYs7x74tBOxdBFz7RJUkhHZrsXBeW5+2twr/rrMNoQ
+         XRRSmbBvY9s2X31mWWvf5C76HxEZvRwXImEODJzfBWNNPVIwCKAE/PzBcQYkHOqXx9/s
+         KsupQcahNyYntq5EjVbBhvtu1Ko7EKG7v9uwmlwLlf0mTSaN+0fct9T+p1zF4o6q7Uuu
+         XLfQ==
+X-Gm-Message-State: AOAM532uI5aAA6sMQCCg19VURfkcvjN3NykbNJ5+zWxCjfFDKZPhreWJ
+        WGwD1ekNGG+HR+Qg37eiSFBeqmgTVjOqgUl9e5udng==
+X-Google-Smtp-Source: ABdhPJy1awYRVTWTUHGP/Ep/Ov9QcLzj0ggJK4twrVUy3+OJAFCebsv6wIw14C0uifTK9bLEdYzpfCLv/lzQjrSw/gI=
+X-Received: by 2002:a25:dbd4:: with SMTP id g203mr11886892ybf.508.1636497791666;
+ Tue, 09 Nov 2021 14:43:11 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20211109200840.135019-1-puranjay12@gmail.com>
+In-Reply-To: <20211109200840.135019-1-puranjay12@gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Tue, 9 Nov 2021 14:42:35 -0800
+Message-ID: <CAGETcx9-WoAa8VbEPSthseYNz=L-gnoXLcHFtHrD_+yhQXmJnA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] device property: Adding fwnode_irq_get_byname()
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     gregkh@linuxfoundation.org, rafael@kernel.org,
+        heikki.krogerus@linux.intel.com, andriy.shevchenko@linux.intel.com,
+        kuba@kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Teng Qi <starmiku1207184332@gmail.com>
+On Tue, Nov 9, 2021 at 12:09 PM Puranjay Mohan <puranjay12@gmail.com> wrote:
+>
+> The first patch in this series adds the fwnode_irq_get_byname() which is
+> the generic version of the of_irq_get_byname(). It is used to get the
+> IRQ number from name of the interrupt.
+>
+> The second patch in this series uses the fwnode_irq_get_byname()
+> function in the IIO driver of the ADXL355 accelerometer. The driver has
+> been tested after applying this patch on a Raspberry PI. The ADXL355 was
+> connected to the Raspberry Pi using I2C and fwnode_irq_get_byname() was
+> used to get the IRQ number for the "DRDY" interrupt. Earlier this driver
+> was using of_irq_get_byname() to get this IRQ number.
 
-[ Upstream commit 94be878c882d8d784ff44c639bf55f3b029f85af ]
+Why do we need these changes though? Is there a non-OF device this
+driver would ever probe?
 
-The length of hw->settings->odr_table is 2 and ref_sensor->id is an enum
-variable whose value is between 0 and 5.
-However, the value ST_LSM6DSX_ID_MAX (i.e. 5) is not caught properly in
- switch (sensor->id) {
-
-If ref_sensor->id is ST_LSM6DSX_ID_MAX, an array overflow will ocurrs in
-function st_lsm6dsx_check_odr():
-  odr_table = &sensor->hw->settings->odr_table[sensor->id];
-
-and in function st_lsm6dsx_set_odr():
-  reg = &hw->settings->odr_table[ref_sensor->id].reg;
-
-To avoid this array overflow, handle ST_LSM6DSX_ID_GYRO explicitly and
-return -EINVAL for the default case.
-
-The enum value ST_LSM6DSX_ID_MAX is only present as an easy way to check
-the limit and as such is never used, however this is not locally obvious.
-
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/20211011114003.976221-1-starmiku1207184332@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 057a4b0100106..8850da8e25d69 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1015,6 +1015,8 @@ static int st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u16 req_odr)
- 	int err;
- 
- 	switch (sensor->id) {
-+	case ST_LSM6DSX_ID_GYRO:
-+		break;
- 	case ST_LSM6DSX_ID_EXT0:
- 	case ST_LSM6DSX_ID_EXT1:
- 	case ST_LSM6DSX_ID_EXT2:
-@@ -1040,8 +1042,8 @@ static int st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u16 req_odr)
- 		}
- 		break;
- 	}
--	default:
--		break;
-+	default: /* should never occur */
-+		return -EINVAL;
- 	}
- 
- 	if (req_odr > 0) {
--- 
-2.33.0
-
+-Saravana

@@ -2,155 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23EE944AB11
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 10:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B15A144AB18
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 11:01:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245034AbhKIKBT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 05:01:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51664 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243012AbhKIKBR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 05:01:17 -0500
-Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com [IPv6:2607:f8b0:4864:20::930])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AEF0C061764;
-        Tue,  9 Nov 2021 01:58:31 -0800 (PST)
-Received: by mail-ua1-x930.google.com with SMTP id az37so37393607uab.13;
-        Tue, 09 Nov 2021 01:58:31 -0800 (PST)
+        id S230472AbhKIKEN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 05:04:13 -0500
+Received: from mail-bn8nam12on2065.outbound.protection.outlook.com ([40.107.237.65]:28225
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229845AbhKIKEM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 9 Nov 2021 05:04:12 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TkYEdxHO2Wu8+zvgrERTcWQs4Xt52eN5e1pz6QtiooEbMb2mDqrlQGSyISZpPdo6xDbxRV9ZQGpdpIOdl8ngQTXeewvznXy05tJ2GKWFjZD3fLv5niskOMseHcO9j/YnIA6wRLahyfzK16eH1XYm/2tYb0jM5H84s9KmCaV0d+Wx3dDR3/KstwLIivEJcPePekQZKcbGIFy191uTjo0bmHnXuLJes5bK9wK3I8iPTFxzZWGAt7G6yRDfD+hvXKJqdjN5in4KJ2u4EhoDpmzdqkD7eLwnlqwLx5ZQdSnlZdyTixM/4nRUXq2fz/yoUVKfTp2MmChCljBrs3AWorouyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AZMXEkn9eJ6sftegG1+l6m0M8cd300kxq5P/v5l2Jjc=;
+ b=oeWtvbV/8uBysUrFh7zt+EqdLVXEIXYCJw9FxayXUv3NjL5dTG8m423FA0YZKOQIJRaSSCqdGpvcpqsmgNdQFYdNVHqbXD1ncRGRObmbvvYxVmImY2dWrCTBpjxcswHL3J253og8pOm4J3KCnpupiEsWDty3NStYvq6ndRdTF2sMrwyhqQ2yrJNZ2YKV9WcxZufZfyNbNGGpwwAyEHdbPods8mn6fVqWv0iMsxGLilex2G2UbURcgtkLGsxZ+LweaNKpjaT23QgsLDK5MG2+CNO95OaYOlEuX67ZcGtimbQ6kwV1p6f2HAbxAv8cABG6DjZ48TCzi6xwwtZAwY8jhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=6SCzafxlbGRyr2tFR/3yTcdmhOfLXB8smhgQj+VN/mM=;
-        b=VTkNp8JKdqfJwZbB9WiYq3hzv1C+MVgoeu4f0AgfS8nd/lX5XzvaAaAjoI4q22YWzH
-         34bUQWvpyuzmpqKNimm1GWvRZantxOdacjMp2MPvjLnUplnodIVlIY64ixYqBZ3B75at
-         b251cXbXFjz9C9QNRTzyBhD714W4Jl1AqEavwNYezSpJVU7R52lFrIH66Rds/f7HiwlI
-         38xUkNU/Z39tPL83FPYFATJtgL4H6Evr3txKrDkRceOhOU/ImoeuCrqpx7iYX411ZIDP
-         D5hY8C2nv4j7BSSrXvJk3XrvHquH0FshVs1A4FEIYL+Zbt4Ieo6DuYL+iulYixT+S6BJ
-         edVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=6SCzafxlbGRyr2tFR/3yTcdmhOfLXB8smhgQj+VN/mM=;
-        b=iKUDkpqj4tQxRRDS37SohRR6C2V+ZHgDbzM4IJl7phNyWQz5Egl2p+Mo6EPdUvM19q
-         V7gGj4a4un44PfPCRaCTa4VsquGTr165fG7xn8nd40nKI+sL9VrYq/phYs1jI7Ga9mfq
-         D2nuNQl+ojw3pYyQEp2Sjr6aESnViv4A7pmgWRoK27teY3jAm4pkf4bZBphAdomL5iwa
-         fsQ0QxRNX0Ito7r941KhU41OHVpPreDry9zC6GrbP6A5HFOsJPiZvuLvE9NQ/wRqcFQl
-         SKOKjuFEzNHCosl6MFUM0IybT7tkHnGNyDu/y+HJ/TICKUsfuWqEt3WXvgn/+1q9+yxI
-         zCbg==
-X-Gm-Message-State: AOAM532gF8c3RQpWXxFbcPNncvibdumaUcsiBfyPEHU9NJ+2YvhCqc40
-        CqFqi3zcSyzLKTcwHgAfqi1mCco4nR93EPXYowODQL7ErvM=
-X-Google-Smtp-Source: ABdhPJzlS1Ynl/Lq56tV64dzEqzYvWPv4HJJLkXeWWxceP6vLUbok+OHObpb4urfoRG72McMdMg8hg0yrJ5LOHnHO30=
-X-Received: by 2002:a9f:3d85:: with SMTP id c5mr8509886uai.12.1636451910511;
- Tue, 09 Nov 2021 01:58:30 -0800 (PST)
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AZMXEkn9eJ6sftegG1+l6m0M8cd300kxq5P/v5l2Jjc=;
+ b=sKx7weBAdtqIJKvyINunPbecdLBmGaHFMEWIaS+u2O7/i3O1fr15x7vnuTCEuNQElno08AMpwLxG3ituLpzNZldIcJd6a5uQAXy47enyGb2JYOOttFfh3SOYOX8um4btnZOKXz6xfPjN9Og6YaQnk5iB+8pChKdZzdIHnxiA2+k=
+Received: from DM6PR02MB6923.namprd02.prod.outlook.com (2603:10b6:5:25e::8) by
+ DM8PR02MB8137.namprd02.prod.outlook.com (2603:10b6:8:1a::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4690.15; Tue, 9 Nov 2021 10:01:25 +0000
+Received: from DM6PR02MB6923.namprd02.prod.outlook.com
+ ([fe80::88ca:b598:cc07:bd0c]) by DM6PR02MB6923.namprd02.prod.outlook.com
+ ([fe80::88ca:b598:cc07:bd0c%3]) with mapi id 15.20.4690.015; Tue, 9 Nov 2021
+ 10:01:25 +0000
+From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+CC:     Manish Narani <MNARANI@xilinx.com>
+Subject: RE: [PATCH v8 2/4] iio: adc: Add Xilinx AMS driver
+Thread-Topic: [PATCH v8 2/4] iio: adc: Add Xilinx AMS driver
+Thread-Index: AQHX1ORlUCJOSLcFoUKx28Qs+DOPj6v6PaIAgAC5whA=
+Date:   Tue, 9 Nov 2021 10:01:25 +0000
+Message-ID: <DM6PR02MB6923340A37113D2A5B801A83A9929@DM6PR02MB6923.namprd02.prod.outlook.com>
+References: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
+ <20211108210509.29870-3-anand.ashok.dumbre@xilinx.com>
+ <f81d00b2-8df1-8866-da4e-bedba13c34a2@infradead.org>
+In-Reply-To: <f81d00b2-8df1-8866-da4e-bedba13c34a2@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=xilinx.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ecb57837-1fb4-4d1a-2983-08d9a367e443
+x-ms-traffictypediagnostic: DM8PR02MB8137:
+x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+x-microsoft-antispam-prvs: <DM8PR02MB813758B17D9130EFEEF3805BA9929@DM8PR02MB8137.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4502;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: KiwIZz0TQYXg6xX4CzbYnluBuBrMkDdOCKK7aG2spi0blwv/8j2MdmHMhmPjZn/YVlnNzCE2dz8S6UWA//k6PyFrKvUAFrg11jr7mO0WsYtjG4hm/s8QTjI5MkDybQX2FxxOWzz+dnD93xb+SMITc6LMd4TQCe2yHxg1yfKWoLTpk/p/927nMf+DuIjSVO4Sm4SNm7GVYgR62YrgBnlYRTGbo+bB1AcnFeAS++fVXFAdD+tBzh3eayMAy3hxt6qgO6zNgM0zxeZvtCva3pTEUkUgeuA3fzHZlWG8uHGSrTjAidovDxeEwP8AC5pQaVzhMamN1GKfvXkALlGmV7o+wF2mbl+2iTXvTsPyyVvT704E4SqajiBEmh7I2souawFQbn6kmlQrYAbSNQnvkO1rv8vyie8Jhs1F3pzDsaapcXBOPvNF8JJ3alSrypFBX+dbKRtiCLwCau1U8yk9MsxPLW4to86mG6gH7jnlufeNVkRIbZn1Pus2ArqT4dk7oVO8/ta+/XYYiyZbBQ/Zgsk4xD2dDt5TQMIJ7oDznHiLSSjaDUvUXbAaTZZItqeuaskf+Zji+y4t4L/eyo199vNjpC/qOYNBNRu2wKeG9qUBR8ogmiuTk2wo8sI0Jo5xPdpwUZ8L7Ni8FFB56X9CU9w2NKUrqmnSzNillJ2gDT6MIGBfUoiax9plRbMTllSHrxT80tyGzOsAV6uxJ/16OGQ7rQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR02MB6923.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(38100700002)(122000001)(55016002)(38070700005)(86362001)(316002)(53546011)(186003)(64756008)(66946007)(110136005)(66446008)(66556008)(71200400001)(6506007)(66476007)(76116006)(2906002)(26005)(33656002)(7696005)(508600001)(8936002)(4744005)(107886003)(8676002)(9686003)(4326008)(52536014)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZThsV084ODUreHlKd1JhRi9RMnh5VGRpWXZiOWcrWFg5ZjVicjYwWWhVOXVG?=
+ =?utf-8?B?aGJwTUV4RVppTkQ0TGdveElxV005UGxXeVM3ZytxcTF5NFYzcGJJbEpYclM5?=
+ =?utf-8?B?dy9HWVpCL1o3Z2NhV09UZFpMbW5uckhGNGpRZUYzdEFSTnNvR0tUNUpYS2do?=
+ =?utf-8?B?d1VTTG9RQlVDVTYzVmN4OXZFTFhlR1B4SUVlcWVwZ3FMRFN4ZHhnSHdxMGRv?=
+ =?utf-8?B?SHl1REF5eUNIUDdnQzRmYlBqK2lrdGVoYnBGZDVnRSt6ckx6SVdjaG5mVG1L?=
+ =?utf-8?B?U01DaVltQVN0OWVoSUh3L1FUQzVhWmFqUUtXcG8rQUtoQnZ3Zmp6TXlTUFNM?=
+ =?utf-8?B?OGR0cWpzZVI0R3RBbHdqVUw5elBvY3BVcGN3SWpoQXlMV05nSzZlNGlGWXJn?=
+ =?utf-8?B?VlVwQ0d5WlF6ZHZZVHVUUzNqVlRLbE1TSHJheG9zbmtJVHRuS3cvY2xPZTlT?=
+ =?utf-8?B?Rnc5MkFQeDVoMjViajRQS3RGTHc4NWdPR1dFQ1ZiYXhQVmlKY2xlNW5SSGM0?=
+ =?utf-8?B?a0JpcW83ODd2RUVPd2hYMW5ablNzNFVZa3FOcE5TVGpwN1hPTS9vLzY0UUZW?=
+ =?utf-8?B?Zm5SakM1bFUxY3lweUd1R3NpYzZFd2hsRUEyZ213NHVWclZ1dHpSVEgzYTFo?=
+ =?utf-8?B?b2dSc2xmZ2dqTTBhY3F1RVBEK1gyWWs1bDFhU1l4N2QwcUZybHp5UHdSSnVz?=
+ =?utf-8?B?MldwZFNtVStENFl2NGFBdElmZVhiWUhveWNtQ0llNVQwUXhKVEgvYm1nTCtK?=
+ =?utf-8?B?Rmo5VWxWRGlLbkg4a3R5SkFwZEdGLzU5M1VGdUU0aFJqbXc0Q1dyNTU2Y0pK?=
+ =?utf-8?B?QWtYOUVQN1JGQlV2NWpLQ21VSlhmM0R6QkpSYzdoTUM2R2tkVUgwcG9ZaWpP?=
+ =?utf-8?B?WHYrMm16aUdiL2gyT285cCtjZytIM2RucmFLejl5cERhcWFlQjNtRzhLR0xn?=
+ =?utf-8?B?aVZCSWdidWlVTzVXMXIvbjA3aWxCdXpCbG1ZQXhQYmg5cUx1Q2x2THNQWjFZ?=
+ =?utf-8?B?TUtLRTQybEtVZmhUZFRrRXB1ZFVJU1p3REh3MnBYT0JOOVJIRzVLbnRpSVhL?=
+ =?utf-8?B?dVhOV1JOSlVQQXN5SnhaTUV3UC9FWnZVeDNRMjZ4eVI4V3YxcTlFVm11cC9W?=
+ =?utf-8?B?VHpIVjM0MjAyWFNON3RtSVFHcWwrT1J4NlZBQzA2MFROYUxXR0ZPYW9vWjZV?=
+ =?utf-8?B?cjUvZmI5SmVuZW9hd2FFamhwemhXSXVRMDFOS3FaSGlCNC83VDVhc0xaTGtk?=
+ =?utf-8?B?TEI1UHVCTXc5YTdwMjNDTEFNZXZDWkdFdWtTRWEreldwSVZXVTlNb3NlWWhO?=
+ =?utf-8?B?RXkvRkg2NFBQalFuS0YrdnlvSDJjQVN5OGNOSjc1Y3hYb0YyU1VGZzJmTDJn?=
+ =?utf-8?B?WU8yTUNwcmR5UUtjcEVvSHBuNkpnNUwyckxSbkp4bDV6a29XYWNtOVd6S2p6?=
+ =?utf-8?B?YzBqOWNhd0xlaTRRcHZFMTlGWjIrelN6cXJmOEV4UGNPZm1TQnlvNUNuQXNr?=
+ =?utf-8?B?NUJoM1VTWWliangvVGY2RktQWDY2aURnSmRQc2taNHBPWEZrYjdQTVhUajBD?=
+ =?utf-8?B?enJqUU8xbGM3N1BtcWphV1dyK1UweUNLWGhFd2RUcmhQMDUyNG1EWUJHTEFX?=
+ =?utf-8?B?OHhER0ZOTjM0aHoyc2g0dVNkbkNDZ00ybjRmb1U2eHNGQVZmcXFnd0x2V25E?=
+ =?utf-8?B?NlV6Ym5adnhzQ1N2WUVuS1BvdGs1WDBISmlJZGd0eTBnbkFnWWttRFRhYzU0?=
+ =?utf-8?B?b3kzTHQxYWFYLzNZai9IK1FwTzhrOW92WFo5QWVUUFZ6enJUUFVLbzdxOVdX?=
+ =?utf-8?B?OSs2OWZXSFdwVWNCY1ZVSnp4R1JjU1BEYkJoalAzMnU3MVUyUTBqd29iTFRV?=
+ =?utf-8?B?UU9VMGJpZVd5R2tleVRRaEw4eDZvOHlWMkVHL3RZZjI4Qjg2a1F1Q1ZMVWRM?=
+ =?utf-8?B?L0c5WlZZVHNPY3U2K2V4Z01YZGxMRi9yU1pjbDhTZUZ3NmppRjJzSUtXR3Ux?=
+ =?utf-8?B?ZTJ0dDVqSGxkKzRMM0lWODFzQ3hheEtjdTZpd2I2Y0xXbTdiS3BHZGZtY0RN?=
+ =?utf-8?B?SGZCRGdRRkluelh5emJVR2FUTXk0L0JQZTd2cnM4S2ZzeFF0R2t5S0lkMFli?=
+ =?utf-8?B?cTB1eG9yUE5xc0d5VTR1NFRVTTVSWVhXSXdxdWdYZVhoYnZnZjBHbWt1YnRH?=
+ =?utf-8?Q?by8itobh2dwxyQQ6RCv0Ce4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20210715141742.15072-1-andrea.merello@gmail.com>
- <20211028101840.24632-1-andrea.merello@gmail.com> <20211028101840.24632-5-andrea.merello@gmail.com>
- <20211028114557.5b4db778@jic23-huawei>
-In-Reply-To: <20211028114557.5b4db778@jic23-huawei>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Tue, 9 Nov 2021 10:58:19 +0100
-Message-ID: <CAN8YU5M1-tqXaAokjzZJ5aLY_PwK7-3O3PtEFEQ+ONwTLcK44Q@mail.gmail.com>
-Subject: Re: [v2 04/10] iio: add modifiers for linear acceleration
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB6923.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecb57837-1fb4-4d1a-2983-08d9a367e443
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2021 10:01:25.0984
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pM+36xoacC7bpNrR0h1Ulwo3y5gJbudZTi2VpSKeLabwic2x55u9nTRw9W4WHxlLMHmWaAod0XZQ1VFlVAjIUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR02MB8137
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno gio 28 ott 2021 alle ore 12:41 Jonathan Cameron
-<jic23@kernel.org> ha scritto:
->
-> On Thu, 28 Oct 2021 12:18:34 +0200
-> Andrea Merello <andrea.merello@gmail.com> wrote:
->
-> > This patch is preparatory for adding the Bosh BNO055 IMU driver.
-> > The said IMU can report raw accelerations (among x, y and z axis)
-> > as well as the so called "linear accelerations" (again, among x,
-> > y and z axis) which is basically the acceleration after subtracting
-> > gravity.
-> >
-> > This patch adds IIO_MOD_ACCEL_LINEAR_X, IIO_MOD_ACCEL_LINEAR_Y and
-> > IIO_MOD_ACCEL_LINEAR_Z modifiers to te IIO core.
-> >
-> > Signed-off-by: Andrea Merello <andrea.merello@iit.it>
->
-> They sometimes get forgotten but we should also update
-> tools/iio/iio_event_montitor.c to handle these new modifiers.
-
-I'm not so familiar with this tool, but it seems like it has to do
-with IIO events, which the bno055 driver doesn't use. On the other
-hand the modifiers I would add are not used by any other driver right
-now.
-
-So I would say that it would end up in adding things that I couldn't
-test.. Or is there any test infrastructure for this? It seems trivial,
-just a matter of a few defines, so it shouldn't be an issue indeed..
-
-> That can be a separate patch, but also fine to do it in this one.
->
-> > ---
-> >  drivers/iio/industrialio-core.c | 3 +++
-> >  include/uapi/linux/iio/types.h  | 4 +++-
-> >  2 files changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 2dbb37e09b8c..a79cb32207e4 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -134,6 +134,9 @@ static const char * const iio_modifier_names[] = {
-> >       [IIO_MOD_ETHANOL] = "ethanol",
-> >       [IIO_MOD_H2] = "h2",
-> >       [IIO_MOD_O2] = "o2",
-> > +     [IIO_MOD_ACCEL_LINEAR_X] = "linear_x",
-> > +     [IIO_MOD_ACCEL_LINEAR_Y] = "linear_y",
-> > +     [IIO_MOD_ACCEL_LINEAR_Z] = "linear_z"
-> >  };
-> >
-> >  /* relies on pairs of these shared then separate */
-> > diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> > index 48c13147c0a8..db00f7c45f48 100644
-> > --- a/include/uapi/linux/iio/types.h
-> > +++ b/include/uapi/linux/iio/types.h
-> > @@ -95,6 +95,9 @@ enum iio_modifier {
-> >       IIO_MOD_ETHANOL,
-> >       IIO_MOD_H2,
-> >       IIO_MOD_O2,
-> > +     IIO_MOD_ACCEL_LINEAR_X,
-> > +     IIO_MOD_ACCEL_LINEAR_Y,
-> > +     IIO_MOD_ACCEL_LINEAR_Z,
->
-> It might be useful for other channel types, so probably drop the ACCEL
-> part of the name.
->
-> I'll admit I can't immediately think of what, but you never know.. :)
-
-But in this case what should I write in the ABI documentation? If I
-state that this is something that makes the gravity not being included
-then isn't it intrinsically tied to be an acceleration?  Or, I do
-that, and if someone eventually finds another use, then she/he will
-change the ABI doc?
-
-> >  };
-> >
-> >  enum iio_event_type {
-> > @@ -114,4 +117,3 @@ enum iio_event_direction {
-> >  };
-> >
-> >  #endif /* _UAPI_IIO_TYPES_H_ */
-> > -
-> ?
->
->
+SGkgUmFuZHksDQoNClRoYW5rcyBmb3IgcmV2aWV3aW5nLiANCg0KPiBPbiAxMS84LzIxIDE6MDUg
+UE0sIEFuYW5kIEFzaG9rIER1bWJyZSB3cm90ZToNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9p
+aW8vYWRjL0tjb25maWcgYi9kcml2ZXJzL2lpby9hZGMvS2NvbmZpZyBpbmRleA0KPiA+IGFmMTY4
+ZTFjOWZkYi4uNmQ3MTFmNDAxMzI2IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2FkYy9L
+Y29uZmlnDQo+ID4gKysrIGIvZHJpdmVycy9paW8vYWRjL0tjb25maWcNCj4gPiBAQCAtMTI3OCw0
+ICsxMjc4LDE5IEBAIGNvbmZpZyBYSUxJTlhfWEFEQw0KPiA+ICAgCSAgVGhlIGRyaXZlciBjYW4g
+YWxzbyBiZSBidWlsZCBhcyBhIG1vZHVsZS4gSWYgc28sIHRoZSBtb2R1bGUgd2lsbCBiZQ0KPiBj
+YWxsZWQNCj4gPiAgIAkgIHhpbGlueC14YWRjLg0KPiA+DQo+ID4gK2NvbmZpZyBYSUxJTlhfQU1T
+DQo+ID4gKwl0cmlzdGF0ZSAiWGlsaW54IEFNUyBkcml2ZXIiDQo+ID4gKwlkZXBlbmRzIG9uIEFS
+Q0hfWllOUU1QIHx8IENPTVBJTEVfVEVTVA0KPiA+ICsJZGVwZW5kcyBvbiBIQVNfSU9NRU0NCj4g
+PiArCWhlbHANCj4gPiArCSAgU2F5IHllcyBoZXJlIHRvIGhhdmUgc3VwcG9ydCBmb3IgdGhlIFhp
+bGlueCBBTVMgZm9yDQo+IFVsdHJhc2NhbGUvVWx0cmFzY2FsZSsNCj4gPiArCSAgU3lzdGVtIE1v
+bml0b3IuIFdpdGggdGhpcyB5b3UgY2FuIG1lYXN1cmUgYW5kIG1vbml0b3IgdGhlDQo+IFZvbHRh
+Z2VzIGFuZA0KPiA+ICsgICAgICAgICAgVGVtcGVyYXR1cmUgdmFsdWVzIG9uIHRoZSBTT0MuDQo+
+IA0KPiBUaGF0IGxhc3QgbGluZSBhYm92ZSBzaG91bGQgYmUgaW5kZW50ZWQgd2l0aCBvbmUgdGFi
+ICsgMiBzcGFjZXMgaW5zdGVhZCBvZiBhbGwNCj4gc3BhY2VzLg0KPiANCg0KQWggY3JhcCEgV2ls
+bCBmaXggaXQgaW4gdGhlIG5leHQgc2VyaWVzLg0KDQo+IC0tDQo+IH5SYW5keQ0KDQpUaGFua3Ms
+DQpBbmFuZCANCg==

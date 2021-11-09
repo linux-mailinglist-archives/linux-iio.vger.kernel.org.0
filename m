@@ -2,27 +2,27 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92B7244B7C0
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 23:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E799244B819
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 23:37:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345403AbhKIWh2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 17:37:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55842 "EHLO mail.kernel.org"
+        id S1345377AbhKIWkP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 17:40:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60086 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344744AbhKIWf1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 9 Nov 2021 17:35:27 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E896360F42;
-        Tue,  9 Nov 2021 22:22:11 +0000 (UTC)
+        id S1345544AbhKIWiM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 9 Nov 2021 17:38:12 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7674961B22;
+        Tue,  9 Nov 2021 22:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636496532;
-        bh=T/VLGws0oxAJsjjoi9Cn7Me0fLjDhjG950pEH7pakLc=;
+        s=k20201202; t=1636496585;
+        bh=RuXAnMAUReHuRn5YQmBLvHesUHnsrgsn60AyOpEc1dA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gNSAIKYfveVI3W3IS/ncUPb3W0oQb26AXEsBHVfWC1C8Sv1oPF+FxpwcBV0wkw2h8
-         oet2CwvfpFgoPnabug4QVNSYiaDYji6ZOHbBo5nusqxwWHCGljOYGdRUFQp/SozPgj
-         p+cS1ESVQWzkaeYBVUsF0q5O6JJn2NvPc8GCMpc/DSrKQpLBseRv2bg+P/l800x/VZ
-         1WQ85Xw4yC7mETk43RF1gNOBLY+A/GptzL0bw0agwv0I0B5jjrZTJow+1L1hnSHDIj
-         X5ahFnzzbNMYNxg8F4pArOtNRu82WcnkkBLtVzzvZxBj9mBd4zb85djrxOR4XQlHkp
-         32s8N3LqTuPXg==
+        b=EQWQ46D+QtN9mgV+TL4jVCl4oILOdErDX0XSfDATpRDtoTdChuFmG0Wlk+SptW41o
+         KM9yvksp6OA3IX5FFUG04WGyyv1oKu4TQYMzzKOWyIveveLEj316UlBVkDD+2qYI9n
+         wB77KMrHCuJ+P0kX24tSC69HpmtZ8rZWT9zYPw09xOkEgYPoXwf6gZV0qXdN3A7UKI
+         WkgtHAaadNQ0C0o5P3wRvMm8W5fuOdBkm1RX0pPfh71231vcQaf5RoRGXdushZ2R7v
+         MAxUzcpA1tKdH6bkvp9ocEdKp6mRO4ciYGdEqlli/ZecSHlFeOApuZo4kN9BI/feeV
+         ztkfVyAivqAag==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Teng Qi <starmiku1207184332@gmail.com>,
@@ -31,12 +31,12 @@ Cc:     Teng Qi <starmiku1207184332@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 44/50] iio: imu: st_lsm6dsx: Avoid potential array overflow in st_lsm6dsx_set_odr()
-Date:   Tue,  9 Nov 2021 17:20:57 -0500
-Message-Id: <20211109222103.1234885-44-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 27/30] iio: imu: st_lsm6dsx: Avoid potential array overflow in st_lsm6dsx_set_odr()
+Date:   Tue,  9 Nov 2021 17:22:21 -0500
+Message-Id: <20211109222224.1235388-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109222103.1234885-1-sashal@kernel.org>
-References: <20211109222103.1234885-1-sashal@kernel.org>
+In-Reply-To: <20211109222224.1235388-1-sashal@kernel.org>
+References: <20211109222224.1235388-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 2ab1ac5a2412f..558ca3843bb95 100644
+index 057a4b0100106..8850da8e25d69 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1465,6 +1465,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
+@@ -1015,6 +1015,8 @@ static int st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u16 req_odr)
  	int err;
  
  	switch (sensor->id) {
@@ -90,7 +90,7 @@ index 2ab1ac5a2412f..558ca3843bb95 100644
  	case ST_LSM6DSX_ID_EXT0:
  	case ST_LSM6DSX_ID_EXT1:
  	case ST_LSM6DSX_ID_EXT2:
-@@ -1490,8 +1492,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
+@@ -1040,8 +1042,8 @@ static int st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u16 req_odr)
  		}
  		break;
  	}

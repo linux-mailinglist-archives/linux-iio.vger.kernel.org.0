@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61D5144B3C0
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 21:09:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F157544B3C3
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 21:09:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244167AbhKIUMA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 15:12:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49794 "EHLO
+        id S244176AbhKIUME (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 15:12:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244155AbhKIUL7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 15:11:59 -0500
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC52C061764;
-        Tue,  9 Nov 2021 12:09:13 -0800 (PST)
-Received: by mail-pl1-x62f.google.com with SMTP id n8so614670plf.4;
-        Tue, 09 Nov 2021 12:09:13 -0800 (PST)
+        with ESMTP id S244177AbhKIUME (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 15:12:04 -0500
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C423C061764;
+        Tue,  9 Nov 2021 12:09:18 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id p18so528195plf.13;
+        Tue, 09 Nov 2021 12:09:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2jHOBwgk7CygldU9JMNVpuRaDAV/j7iK1C6bIJrdBx8=;
-        b=ajfJrf22Dke3yVXyY1X9U/IubgRPx38qzfp/Z5fWd/u1oP1+6Sr3Gs1hfr2DuXXsSA
-         jyP4hvFSqMJKCmChAUL6V5V4EHiw0jxiSX1VR/vluDqGjHyIw8k7ok2pLBfh37VcSGuI
-         bF76rpDBw7ZNo1zm16MU36V3LPsdsPuuUcmnk1Y72GvtgARZ+YPAmwKOVX4EJog9YRG0
-         U8ti2ELr09ZiubL7lQ8FvjAy1HZ6Yb9Vuma2pwftEqjZyFOnAZQd9+sdWJL/evPipapP
-         zfvco6Q6kfIqorJ1viyImyV5zYp1LVFTcMbK4alwI8rvxcXu9/WfKqPstVDI4GcI4oQj
-         om5w==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=RsGpWx2S/87DVdjoCuYbitNOZpUNewFNueNRMEfcO1g=;
+        b=jLv9ggw+MucFmn8PHQE766gVFlv/br7ZayIMW8qBYBsHR8mnPC78dodPelFuGaPShA
+         RJ/2kFIHtHHrgr2PPTPrtB0xDqaWuaAFrejURfRW7hW9wEnI09ZxHjF4dI7XQL4fnstd
+         hJ+B/vqonqQHxu/dGIuddi5YRIoBMlLe5EadVhW0y9G3h2AMor3q64Zl9hdAFZi+DdzS
+         m6cV15y6JHBEu64mhYZFHT26y98M7UGVt/w2Fg3d2c81Fe8E+WK1WCQ86ZXqyV0V5OQS
+         FWgScIAEChA7vTRW8xyKrxGqwbgkQ6pVI+Lh7wJ8N4zaOLhyL3y6KBDtnCAIQYZSRkNA
+         4VKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2jHOBwgk7CygldU9JMNVpuRaDAV/j7iK1C6bIJrdBx8=;
-        b=AdwXAN4YSMjGi7hxh2OMH5RuzT8dvZBj7UNxwmt+ttGu8okxsVQL3Ct6BOyXLDwduH
-         sL6wmRnxqjheJilHN+PCa+jeXmacBnZRi122/Z9evppJrHtjWqhwsgdTKFerdbjYH5O3
-         RfSPd6m7ZGyFADdmQkz4vrQAFsc4HNcKoxYFc378YJs822yiDdJl+msA6nj68Vb3Yhjt
-         1fnz/NTFEApqrLe0YyAVf+GitwGO2/c7PphgA1BKAjNxRnChiiXNBz2S4PPbOlJxfh6U
-         FGxb6iQmbM5HnO5A5T1O+9jQlmvZx2vAkQtDr+6wFByvyqH+4mGz0Vl8pRhlz77O9PUB
-         XGzg==
-X-Gm-Message-State: AOAM531jg4HvDTE7+/5v7/Vh0e02zSYIma0EvruiqgMwupiv+qYKEfRz
-        kr1eHVsfTqnCksYurrF2IUY=
-X-Google-Smtp-Source: ABdhPJwhIBc/8jKwd7nFGat0y4KPvl8W1zNVSMY7appSq6oFnOX2aMWxa9mBtnA3U/dZa2yNe7C4YA==
-X-Received: by 2002:a17:90b:38c5:: with SMTP id nn5mr10079324pjb.220.1636488553080;
-        Tue, 09 Nov 2021 12:09:13 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=RsGpWx2S/87DVdjoCuYbitNOZpUNewFNueNRMEfcO1g=;
+        b=FB4zHfcaE7iu++KrIX8LfJDPu4wbsi1n4pNL2P9O4F/qMwxlxnbYD2qTrMaMZ41Jdq
+         yGvx1H8t81FrvS31ySpo+/wfoXk96qKclR3fg+nMc0d04juEQD+Az0wJsZensTRUB6cm
+         oQPBPNbRQ3WrSni8mtIAqrR9PTMeKN/JWMungSw5NvuMrpYR6QVxtjluXepG9DETa5NC
+         eqR2s1d3yHtncTc+NBsb/ukV5ZkJVc0CnOgFC3gG0MfyQHoCG15ree8bI0d/FtXzjMYL
+         FN5yJXjCxOk6VkimkiPi6fzxi9gs16UCzz95aYeftKhH+H+PnCHdjwhus3/yL+ozl6Tg
+         A9DA==
+X-Gm-Message-State: AOAM532ua0mbFGzB4c7Q3You87XbGKvWW8DK2TKJcejhYVF87YqViHtt
+        oyhQUJSUqrAKtBSjJPuyQbs=
+X-Google-Smtp-Source: ABdhPJwWavTOcdMBbMKadrTWZEdxmxo7onhGZXQ1LvqS4LrsAx29Msa/6j7wu+9ZNDuI4oE5tPUA7A==
+X-Received: by 2002:a17:90b:1b4d:: with SMTP id nv13mr10509336pjb.234.1636488557514;
+        Tue, 09 Nov 2021 12:09:17 -0800 (PST)
 Received: from localhost.localdomain ([27.255.248.134])
-        by smtp.googlemail.com with ESMTPSA id q10sm3103095pjd.0.2021.11.09.12.09.08
+        by smtp.googlemail.com with ESMTPSA id q10sm3103095pjd.0.2021.11.09.12.09.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Nov 2021 12:09:12 -0800 (PST)
+        Tue, 09 Nov 2021 12:09:17 -0800 (PST)
 From:   Puranjay Mohan <puranjay12@gmail.com>
 To:     gregkh@linuxfoundation.org, rafael@kernel.org,
         heikki.krogerus@linux.intel.com, andriy.shevchenko@linux.intel.com,
@@ -55,36 +55,75 @@ To:     gregkh@linuxfoundation.org, rafael@kernel.org,
         Michael.Hennerich@analog.com, jic23@kernel.org,
         linux-iio@vger.kernel.org
 Cc:     Puranjay Mohan <puranjay12@gmail.com>
-Subject: [PATCH v2 0/2] device property: Adding fwnode_irq_get_byname()
-Date:   Wed, 10 Nov 2021 01:38:38 +0530
-Message-Id: <20211109200840.135019-1-puranjay12@gmail.com>
+Subject: [PATCH v2 1/2] device property: Add fwnode_irq_get_byname()
+Date:   Wed, 10 Nov 2021 01:38:39 +0530
+Message-Id: <20211109200840.135019-2-puranjay12@gmail.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20211109200840.135019-1-puranjay12@gmail.com>
+References: <20211109200840.135019-1-puranjay12@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The first patch in this series adds the fwnode_irq_get_byname() which is
-the generic version of the of_irq_get_byname(). It is used to get the
-IRQ number from name of the interrupt.
+The fwnode framework did not have means to obtain the IRQ number from
+the name of a node.
+Add that now, in form of the fwnode_irq_get_byname() function.
 
-The second patch in this series uses the fwnode_irq_get_byname()
-function in the IIO driver of the ADXL355 accelerometer. The driver has
-been tested after applying this patch on a Raspberry PI. The ADXL355 was
-connected to the Raspberry Pi using I2C and fwnode_irq_get_byname() was
-used to get the IRQ number for the "DRDY" interrupt. Earlier this driver
-was using of_irq_get_byname() to get this IRQ number.
+Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
+---
+ drivers/base/property.c  | 23 +++++++++++++++++++++++
+ include/linux/property.h |  2 ++
+ 2 files changed, 25 insertions(+)
 
-Puranjay Mohan (2):
-  device property: Add fwnode_irq_get_byname()
-  iio: accel: adxl355: use fwnode_irq_get_byname()
-
- drivers/base/property.c          | 23 +++++++++++++++++++++++
- drivers/iio/accel/adxl355_core.c |  7 ++-----
- include/linux/property.h         |  2 ++
- 3 files changed, 27 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index f1f35b48ab8b..0d685c79b0e8 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -958,6 +958,29 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+ }
+ EXPORT_SYMBOL(fwnode_irq_get);
+ 
++/**
++ * fwnode_irq_get_byname - Get IRQ directly from its name.
++ * @fwnode:    Pointer to the firmware node
++ * @name:      IRQ Name
++ *
++ * Returns Linux IRQ number on success. Other values are determined
++ * accordingly to acpi_/of_ irq_get() operation.
++ */
++int fwnode_irq_get_byname(struct fwnode_handle *fwnode, const char *name)
++{
++	int index;
++
++	if (unlikely(!name))
++		return -EINVAL;
++
++	index = fwnode_property_match_string(fwnode, "interrupt-names", name);
++	if (index < 0)
++		return index;
++
++	return fwnode_irq_get(fwnode, index);
++}
++EXPORT_SYMBOL(fwnode_irq_get_byname);
++
+ /**
+  * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
+  * @fwnode: Pointer to the parent firmware node
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 88fa726a76df..9c6177597ba8 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -122,6 +122,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+ 
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+ 
++int fwnode_irq_get_byname(struct fwnode_handle *fwnode, const char *name);
++
+ unsigned int device_get_child_node_count(struct device *dev);
+ 
+ static inline bool device_property_read_bool(struct device *dev,
 -- 
 2.30.1
 

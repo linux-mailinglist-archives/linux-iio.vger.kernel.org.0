@@ -2,73 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8402D449ECE
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Nov 2021 23:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A67544A4FC
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Nov 2021 03:54:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240828AbhKHW6R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Nov 2021 17:58:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
+        id S241919AbhKIC4t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Nov 2021 21:56:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240822AbhKHW6Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 17:58:16 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35654C061570;
-        Mon,  8 Nov 2021 14:55:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=bHrIX9cB0So6z8v8dpE1wVEf+y8GwLRTo4Q7rtYefjY=; b=cs8IIcZXWaLgUzbYR7jhvU1yMU
-        Ce3ATRipt2+n1ZQPa2smT2RW/1jbgN5jn8o6Y4QBTcJ4FaWDbErV76r0WGskdHtL6PrBQFQJibCj8
-        PWvSo0VoAcbnm0Mk0Fjg/OV4i06PUrGGIOCFRzPAZ/VVdB/GGNOlammnV0CFqLEskuGZaEx8LNqBY
-        TVfNazOQ72GRtuDJocBLXf4gqUbD9rXafHwxI8+Qv450qjsMXiDihKLwQrrK9sztm7shoqh1N7koP
-        GwDveOp+DB7fz+ozCx6UzMQIeKkR/AsQWIJWBRi7/1CeYDZUAG9bEhj0A2HDvzqB5VYM+V96o2aVx
-        ShbEWTLg==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by merlin.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mkDXz-008jrU-Pg; Mon, 08 Nov 2021 22:55:28 +0000
-Subject: Re: [PATCH v8 2/4] iio: adc: Add Xilinx AMS driver
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
-        pmeerw@pmeerw.net, devicetree@vger.kernel.org
-Cc:     Manish Narani <manish.narani@xilinx.com>
-References: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
- <20211108210509.29870-3-anand.ashok.dumbre@xilinx.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <f81d00b2-8df1-8866-da4e-bedba13c34a2@infradead.org>
-Date:   Mon, 8 Nov 2021 14:55:22 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S241892AbhKIC4s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Nov 2021 21:56:48 -0500
+Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2CFC061767
+        for <linux-iio@vger.kernel.org>; Mon,  8 Nov 2021 18:54:03 -0800 (PST)
+Received: by mail-yb1-xb44.google.com with SMTP id e136so45803905ybc.4
+        for <linux-iio@vger.kernel.org>; Mon, 08 Nov 2021 18:54:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=i59oKnBN0pZnJO6iZmYEoo/M9vDmzM/I8JclJCYw/8M=;
+        b=EnYjSllB6b0BMLf9H2wPGFdyABBDEW+Hg8gfFKWfMB9wayiKoke96Zfgwezpx4hgVx
+         fFtfe4CXn/HKtd9BmEh5cCK5tPjUL/TPjB2hJ6vxTQMd6q0bakihlTApNyMy3SVGYAKn
+         aZbHCFP58KZshnCSxM+9k0NmUPW9BcJEd51PpKZisyxl7brS9W+luUyTX+YK5ApCAuI5
+         Zc6LuumoUIodsZ2oHCig1mETWFgjWy/1oCC7KcGytWa5Trs6RQRxN8/Dl61fcq2+OrN9
+         ubFpxRjLr6gWL5w9vXHHUDJVVqcw0xu7vJfx/kLYQ+/nvUZU+SV5n+3bz00++shdAkL+
+         kj6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=i59oKnBN0pZnJO6iZmYEoo/M9vDmzM/I8JclJCYw/8M=;
+        b=WyxIaa9R/Or7SojE/++e6un1N+JWI71VYFCBWTUK2vrUvrpOqa283ElEcGsADSdee3
+         qA00OJ29CPeg3uWbOBz76Ih2QNE0Labz7hLQ9UCFdKgDC/UacULuh+M4YviV4XxIQP4O
+         xrSwGVUTMPB0H0Nzz6r3WCewZ6vOZmeqp6b78xdfZLTRZ3pAh32NaCPjV9yIuVQTAsNE
+         e1XQPqv3SErc//qs1MzhyH2wmPrY8P/G4rriVNwwHR2J97gWW1fdkpN7LWzq/bVmwLjR
+         7OszTZqCEtaqGkqy+mL94YHKot28g/stZq03DBvA5HPP1ugcnAh5iag66EnDcKFDQvth
+         as6w==
+X-Gm-Message-State: AOAM533VC5N+mqy3E+kIFIbt45S5cj2ndKDvsZKTuZpi5D35FP8V35bH
+        4mRcwrH1EuCR/IFNJQFIpTNfb9VFAa2zcEFJzVU=
+X-Google-Smtp-Source: ABdhPJzgHVrHaOEFYUyB++QS4KWSXS96mLIRRlLBt1pttADSQDGKdzTNSQif30ezZ74oDQCXFKWQLKkaSyU2X7Ocg2g=
+X-Received: by 2002:a25:9847:: with SMTP id k7mr4793349ybo.170.1636426442008;
+ Mon, 08 Nov 2021 18:54:02 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20211108210509.29870-3-anand.ashok.dumbre@xilinx.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:7110:474e:b0:102:f4ac:664c with HTTP; Mon, 8 Nov 2021
+ 18:54:01 -0800 (PST)
+Reply-To: confianzayrentabilidad@gmail.com
+From:   "Mr. Yakubu Abubakar," <yakubuabubakar1884@gmail.com>
+Date:   Mon, 8 Nov 2021 18:54:01 -0800
+Message-ID: <CANt38eu=PWqtA-LiAT7ehoVkc88ptTSbRAC4dAnirJ5M17RPZQ@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/8/21 1:05 PM, Anand Ashok Dumbre wrote:
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index af168e1c9fdb..6d711f401326 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -1278,4 +1278,19 @@ config XILINX_XADC
->   	  The driver can also be build as a module. If so, the module will be called
->   	  xilinx-xadc.
->   
-> +config XILINX_AMS
-> +	tristate "Xilinx AMS driver"
-> +	depends on ARCH_ZYNQMP || COMPILE_TEST
-> +	depends on HAS_IOMEM
-> +	help
-> +	  Say yes here to have support for the Xilinx AMS for Ultrascale/Ultrascale+
-> +	  System Monitor. With this you can measure and monitor the Voltages and
-> +          Temperature values on the SOC.
-
-That last line above should be indented with one tab + 2 spaces
-instead of all spaces.
-
 -- 
-~Randy
+Greetings,
+I'm Mr. Yakubu Abubakar, please a huge amount of payment was made into
+your account. as soon as your respond is noted the payment
+confirmation slip will immediately send to you.  please do not
+hesitate to reply as soon as you receive this message. awaiting your
+urgent reply please.
+
+Thanks
+Mr. Yakubu Abubakar
+
+Best regards
+Prof. Dr Diane

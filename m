@@ -2,88 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E81544B9DA
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Nov 2021 02:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 617C744BA64
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Nov 2021 03:38:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbhKJBJz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 20:09:55 -0500
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:39554 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbhKJBJz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 20:09:55 -0500
-Received: by mail-ot1-f49.google.com with SMTP id r10-20020a056830080a00b0055c8fd2cebdso1413182ots.6;
-        Tue, 09 Nov 2021 17:07:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=XVy96mJGWAltgt7UegL9Otd1SwtIvQvMyrZTa4hhou0=;
-        b=Iptavy81VH3Oz99JI6L9poAiXb+yDSAIUf4HVyKpCMSVSoSB2gXt2pAKg+t+NWNHlP
-         hmjCFc3vDO1VJ59SAEIE0JLet/aEjdT3biTsyt46v91xKoocZa8LpOt4B8PU7MM0JGui
-         zpWZClJZt4oV+KieF4sNPEaKuMUV4qHln2njUSdEh1bCIqIg3E0Db3tBghipuM0b5I63
-         q0UBGmdwBkoQPm+GAM2VQRTWhwn444vjYxLWwzp7YYCgRiq6SPLORPnxuYIV89Fl6+7O
-         7v8DoaKedIDBP8CX2TDYN7fytmNo4g8jr5q1a1z8R4KFfRwjN/EWuPliQyjMocWQezUj
-         d+vg==
-X-Gm-Message-State: AOAM5336vjw3fvQXgOdR/gBatT88d/tTD1ZE7FWlB4s5Lw07JxAkX2+5
-        52GBf+Y/mf8vDzjcDtm4qF2b+bmYjQ==
-X-Google-Smtp-Source: ABdhPJx9pN6F8YVjrzduGrvQpecWUeRByej2GoCjnvs7ACsSkC/DZAwpGEuXa596mR8zK5CSZEnMUA==
-X-Received: by 2002:a9d:7b51:: with SMTP id f17mr6824298oto.88.1636506427801;
-        Tue, 09 Nov 2021 17:07:07 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id e2sm6919606ooh.40.2021.11.09.17.07.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Nov 2021 17:07:07 -0800 (PST)
-Received: (nullmailer pid 3016195 invoked by uid 1000);
-        Wed, 10 Nov 2021 01:07:06 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org
-In-Reply-To: <20211109123127.96399-4-antoniu.miclaus@analog.com>
-References: <20211109123127.96399-1-antoniu.miclaus@analog.com> <20211109123127.96399-4-antoniu.miclaus@analog.com>
-Subject: Re: [PATCH 3/4] dt-bindings:iio:filter: add admv8818 doc
-Date:   Tue, 09 Nov 2021 19:07:06 -0600
-Message-Id: <1636506426.248164.3016194.nullmailer@robh.at.kernel.org>
+        id S229813AbhKJCky (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Nov 2021 21:40:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229717AbhKJCky (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 21:40:54 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C53C061764;
+        Tue,  9 Nov 2021 18:38:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=QxQo/h2U23gdGIw9R8NukNTSdxsKwkzTqfGEtO3iS/U=; b=zd0WO8dX9x+6YrHZ0ZMnDqCZMi
+        6NqKBopFWlDG5V3Hy4XuIZHQHUaJXHtumanXUkGeNIb4XCdrJyNdhktwY1RzIetuDJ4t6csAKGyvP
+        GzUmDTX/9mMRO2YlHsumOwYOXqj5AMDOImPQFix+nFjIkbJzT/saGKZV/wy2xmN7DmcEd73SbJWM/
+        qasTvYfSlwGb+9vTYzUqXsQnJvSB0p/E2Of8AAZt3LdhszSnBqam11Oh0g6thYaFL9nbi7g64SPSm
+        eYzpoqPMM65sjwv9nkWaFfCrvJakZphzpJpgn27fc2UZ6SZpXbzkXuLMkn6Vm9GxEKGyItDdb55vz
+        wvuFGj4w==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=merlin.infradead.org)
+        by merlin.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1mkdUu-008qVu-BO; Wed, 10 Nov 2021 02:38:03 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v2] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
+Date:   Tue,  9 Nov 2021 18:37:55 -0800
+Message-Id: <20211110023755.27176-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 09 Nov 2021 14:31:26 +0200, Antoniu Miclaus wrote:
-> Add device tree bindings for the ADMV8818 Filter.
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
->  .../bindings/iio/filter/adi,admv8818.yaml     | 78 +++++++++++++++++++
->  1 file changed, 78 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> 
+MIPS does not always provide clk*() interfaces and there are no
+always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
+is not strong enough to prevent build errors.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
+since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
+BOARD setting), there are still the same build errors.
 
-yamllint warnings/errors:
+It looks like depending on MACH_INGENIC is the only thing that is
+sufficient here in order to prevent build errors.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml: properties:adi,bw-hz: '$ref' should not be valid under {'const': '$ref'}
-	hint: Standard unit suffix properties don't need a type $ref
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml: ignoring, error in schema: properties: adi,bw-hz
-warning: no schema found in file: ./Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-Documentation/devicetree/bindings/iio/filter/adi,admv8818.example.dt.yaml:0:0: /example-0/spi/admv8818@0: failed to match any schema with compatible: ['adi,admv8818']
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
 
-doc reference errors (make refcheckdocs):
+Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Artur Rojek <contact@artur-rojek.eu>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: linux-mips@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+v2: use MACH_INGENIC instead of MACH_INGENIC_SOC (thanks, Paul)
 
-See https://patchwork.ozlabs.org/patch/1552959
+ drivers/iio/adc/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+--- linux-next-20211105.orig/drivers/iio/adc/Kconfig
++++ linux-next-20211105/drivers/iio/adc/Kconfig
+@@ -501,7 +501,7 @@ config INA2XX_ADC
+ 
+ config INGENIC_ADC
+ 	tristate "Ingenic JZ47xx SoCs ADC driver"
+-	depends on MIPS || COMPILE_TEST
++	depends on MACH_INGENIC
+ 	select IIO_BUFFER
+ 	help
+ 	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC unit.

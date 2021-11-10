@@ -2,92 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 617C744BA64
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Nov 2021 03:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 216B744BCEF
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Nov 2021 09:32:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbhKJCky (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Nov 2021 21:40:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbhKJCky (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Nov 2021 21:40:54 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C53C061764;
-        Tue,  9 Nov 2021 18:38:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=QxQo/h2U23gdGIw9R8NukNTSdxsKwkzTqfGEtO3iS/U=; b=zd0WO8dX9x+6YrHZ0ZMnDqCZMi
-        6NqKBopFWlDG5V3Hy4XuIZHQHUaJXHtumanXUkGeNIb4XCdrJyNdhktwY1RzIetuDJ4t6csAKGyvP
-        GzUmDTX/9mMRO2YlHsumOwYOXqj5AMDOImPQFix+nFjIkbJzT/saGKZV/wy2xmN7DmcEd73SbJWM/
-        qasTvYfSlwGb+9vTYzUqXsQnJvSB0p/E2Of8AAZt3LdhszSnBqam11Oh0g6thYaFL9nbi7g64SPSm
-        eYzpoqPMM65sjwv9nkWaFfCrvJakZphzpJpgn27fc2UZ6SZpXbzkXuLMkn6Vm9GxEKGyItDdb55vz
-        wvuFGj4w==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=merlin.infradead.org)
-        by merlin.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mkdUu-008qVu-BO; Wed, 10 Nov 2021 02:38:03 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v2] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
-Date:   Tue,  9 Nov 2021 18:37:55 -0800
-Message-Id: <20211110023755.27176-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        id S230256AbhKJIfH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 10 Nov 2021 03:35:07 -0500
+Received: from mga01.intel.com ([192.55.52.88]:48154 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230053AbhKJIfH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 10 Nov 2021 03:35:07 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10163"; a="256313675"
+X-IronPort-AV: E=Sophos;i="5.87,223,1631602800"; 
+   d="scan'208";a="256313675"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 00:32:19 -0800
+X-IronPort-AV: E=Sophos;i="5.87,223,1631602800"; 
+   d="scan'208";a="589202538"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 00:32:17 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mkj1Z-005LwK-GT;
+        Wed, 10 Nov 2021 10:32:05 +0200
+Date:   Wed, 10 Nov 2021 10:32:05 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Puranjay Mohan <puranjay12@gmail.com>, gregkh@linuxfoundation.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com,
+        kuba@kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] device property: Adding fwnode_irq_get_byname()
+Message-ID: <YYuDhTlMIn9qxlvo@smile.fi.intel.com>
+References: <20211109200840.135019-1-puranjay12@gmail.com>
+ <CAGETcx9-WoAa8VbEPSthseYNz=L-gnoXLcHFtHrD_+yhQXmJnA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGETcx9-WoAa8VbEPSthseYNz=L-gnoXLcHFtHrD_+yhQXmJnA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-MIPS does not always provide clk*() interfaces and there are no
-always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
-is not strong enough to prevent build errors.
+On Tue, Nov 09, 2021 at 02:42:35PM -0800, Saravana Kannan wrote:
+> On Tue, Nov 9, 2021 at 12:09 PM Puranjay Mohan <puranjay12@gmail.com> wrote:
+> >
+> > The first patch in this series adds the fwnode_irq_get_byname() which is
+> > the generic version of the of_irq_get_byname(). It is used to get the
+> > IRQ number from name of the interrupt.
+> >
+> > The second patch in this series uses the fwnode_irq_get_byname()
+> > function in the IIO driver of the ADXL355 accelerometer. The driver has
+> > been tested after applying this patch on a Raspberry PI. The ADXL355 was
+> > connected to the Raspberry Pi using I2C and fwnode_irq_get_byname() was
+> > used to get the IRQ number for the "DRDY" interrupt. Earlier this driver
+> > was using of_irq_get_byname() to get this IRQ number.
+> 
+> Why do we need these changes though? Is there a non-OF device this
+> driver would ever probe?
 
-Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
-since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
-BOARD setting), there are still the same build errors.
+Strange question, TBH. All discrete component drivers are subject to
+be enumerated on any type of the systems. So, of course the answer
+to it "Definitely yes".
 
-It looks like depending on MACH_INGENIC is the only thing that is
-sufficient here in order to prevent build errors.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
-ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
-mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
-ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
 
-Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Artur Rojek <contact@artur-rojek.eu>
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: linux-mips@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
----
-v2: use MACH_INGENIC instead of MACH_INGENIC_SOC (thanks, Paul)
-
- drivers/iio/adc/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- linux-next-20211105.orig/drivers/iio/adc/Kconfig
-+++ linux-next-20211105/drivers/iio/adc/Kconfig
-@@ -501,7 +501,7 @@ config INA2XX_ADC
- 
- config INGENIC_ADC
- 	tristate "Ingenic JZ47xx SoCs ADC driver"
--	depends on MIPS || COMPILE_TEST
-+	depends on MACH_INGENIC
- 	select IIO_BUFFER
- 	help
- 	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC unit.

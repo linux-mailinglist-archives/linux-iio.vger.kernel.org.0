@@ -2,547 +2,194 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA18D44D78C
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Nov 2021 14:50:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B016044D792
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Nov 2021 14:50:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232033AbhKKNwu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Nov 2021 08:52:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46962 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbhKKNwt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Nov 2021 08:52:49 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0940C061766
-        for <linux-iio@vger.kernel.org>; Thu, 11 Nov 2021 05:50:00 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id w1so24463706edd.10
-        for <linux-iio@vger.kernel.org>; Thu, 11 Nov 2021 05:50:00 -0800 (PST)
+        id S233523AbhKKNxb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Nov 2021 08:53:31 -0500
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:32552 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233287AbhKKNx3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Nov 2021 08:53:29 -0500
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1ABBjaSh015127;
+        Thu, 11 Nov 2021 08:50:26 -0500
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2048.outbound.protection.outlook.com [104.47.66.48])
+        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3c89006sfx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 11 Nov 2021 08:50:26 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GXlfV5+yCXZVvyEc1e2I9c2muiEdWXDOPw7CsSF3smhoxWXpxzQ6Dtci8FI76HaXhjD2USd9buMUOcMnj3yJI4UiGXatyk15Bl49z4E/aYz8JHs55pgak+oIUq5VLXtHqHEdCHQ4F6zHU/x/jqMa3TefzKauTJ7P8aqm7xAlzpmlDh6oQSlt3c+DDU4NulySMRGpb0eVPpVBKH4DTz2Q4khTgOKNe5F7eiCebqRpKqwrb91GacJgV/4zxdhMq3EmdM+Ty2P/GF9R77BeuxeOvoq6ak7zAz9/BOaMUEteC4VgUAgc+ousQ+f9tnN6I8NUlXdW3qcZPg0J73/eMW3c1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ar3tjQ0Y8uH39q32Ht2K9QgMtqxA41iYRDyt8CxQz+c=;
+ b=N6vwMYPF07qKhcxSea447R3enhlef97rfJuREipY80kI0z+3mHpfY3xHVfgVCgIKrC6nmI+mm/pHllF+lQjCGb6EfUNimsBMjQCED+cdneb9p4+QpijhCnGKdpkBu4TFLvxsiPuUkwBp2UepR0HJe/RhETgBewe7PVWrAbbuwQ7T8TPz6xS3BEzOjQz4pM8D87mOfmLv+o3NsixUHjmWW35B+7w+7Ki9Y9bRNUEY6o+JvHp9hB7Ub49Wmt8BbS7Ei6t0pe+nGz+P9495A4EjmLWZCFduC5bEaRlnddE+tL9kcvjLXpRMAftA6oqnsWBYGFk6z2XzfGhb/xz4lg4cnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ficvgSjLgZPcFP6PFeICof6VymKGA90BPpVjo1xSdmE=;
-        b=pT9IrmrpYbHyJ8CvT8mLUzpNOX2+p0jSFijV2tj+l9Wetr4V1s0QcAPckWGUBrZK7V
-         ACylr+h08BLl09nVdyNGoO+Cwv0zaxVQ8QGrkQnLtcQPDsmPwccAy4MJjNj2ZJ4A17yx
-         1sXdn3R5/AajkGBTVxsQWEM9gtQZ31e00VWAU9kSEAs+KFcXPrj6pvz1Ca86lyEzfpsn
-         0XUdRgnoDbS+N6R3AodOWaPXbH6De1ZyCOfEaPvPCQjO5l31E4Ysrxh/32ex8+ZsH1Ae
-         7LNh0V8NpWmrW3V0fyBOSBBl5NLNaKstP2cHP9RnMDIVkWUrObw3644wZDaXBW21rAfM
-         /HDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ficvgSjLgZPcFP6PFeICof6VymKGA90BPpVjo1xSdmE=;
-        b=eIw0oMBlHjPxGxdqlg9UlQ4hrHgrbccaDb4zxsaKTrZG97PlFIBClJJrQn4OO34WdI
-         9Da0SIoqasOKLMmSz22GJOrNwRQA/UgOuapxBBo19stwelI12FIofBbeh+xFkROnShlS
-         KqgwI+UhGKwE8ID1iPH2BzZFlqJfHLWRi2+BSHVIviGKmL4nmjGxNlaogkInSeJBSR8y
-         gxDSjOxnYvCqOmaWK14fSUM23edAL04SSfZfo8OcN+5akegRT4yAKomrlhFhECYyXvcb
-         Kslwhot//jAzi1+euHfeQWTKUUvZI4Z7y0wympkXzOhmxNC6NKNfi3sxMSAjnDa9tkAt
-         Kiqg==
-X-Gm-Message-State: AOAM532idgbTMkbKC8mvYBQfEV3GQw73gkL3gKf3R2wptYRpMgO2AvLd
-        HaOXbcMFDithNRtzVZHHME0mRvkuDDPePYxFz7A=
-X-Google-Smtp-Source: ABdhPJzw7e5LXTPLP3L/NvNLi5VZDk/rrsYGUw6p6w3WJEJOL7fPlylnUMf788qaFWjBXrJy+969rLNHhfg6REVMaDQ=
-X-Received: by 2002:a50:8741:: with SMTP id 1mr4748561edv.119.1636638599079;
- Thu, 11 Nov 2021 05:49:59 -0800 (PST)
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ar3tjQ0Y8uH39q32Ht2K9QgMtqxA41iYRDyt8CxQz+c=;
+ b=PzTDf4U4XN/bhkTgIixZ4/v3jeEkKnJmDl5EWikN1sfeMekqHe32tsVovTUimI2eKRiNF1SmrftOEXD/dzK1wX/1HCzeQCvn1YDfVCZx2oGDsh2XnHG0PP4RPSd9bdZcJFxs35adcJjyt/bJ/sn1vsGAcQEQSCC82FwYX+2V9S4=
+Received: from PH0PR03MB6366.namprd03.prod.outlook.com (2603:10b6:510:ab::22)
+ by PH0PR03MB5717.namprd03.prod.outlook.com (2603:10b6:510:41::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.10; Thu, 11 Nov
+ 2021 13:50:24 +0000
+Received: from PH0PR03MB6366.namprd03.prod.outlook.com
+ ([fe80::e555:851:6adb:f73]) by PH0PR03MB6366.namprd03.prod.outlook.com
+ ([fe80::e555:851:6adb:f73%8]) with mapi id 15.20.4628.022; Thu, 11 Nov 2021
+ 13:50:24 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Nishant Malpani <nish.malpani25@gmail.com>,
+        "Jimenez, Kister" <Kister.Jimenez@analog.com>
+Subject: RE: [PATCH] iio: adxrs290: fix data signedness
+Thread-Topic: [PATCH] iio: adxrs290: fix data signedness
+Thread-Index: AQHX1vZjfUH8MzJrZk6MsNalI9zHn6v+RywAgAAQlhA=
+Date:   Thu, 11 Nov 2021 13:50:23 +0000
+Message-ID: <PH0PR03MB63661AD66C33F00FE4C4112299949@PH0PR03MB6366.namprd03.prod.outlook.com>
+References: <20211111121915.173616-1-nuno.sa@analog.com>
+ <CAHp75VdDBXehV0NTt15AOHdE5qqYn2k96+JkY1+nM+rReGWHUQ@mail.gmail.com>
+In-Reply-To: <CAHp75VdDBXehV0NTt15AOHdE5qqYn2k96+JkY1+nM+rReGWHUQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
+ =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
+ =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
+ =?utf-8?B?dE5HWTJOVGxpWmpFdE5ESm1OaTB4TVdWakxUaGlPV0l0WlRSaU9UZGhOMk5q?=
+ =?utf-8?B?TnpFd1hHRnRaUzEwWlhOMFhEUm1OalU1WW1ZekxUUXlaall0TVRGbFl5MDRZ?=
+ =?utf-8?B?amxpTFdVMFlqazNZVGRqWXpjeE1HSnZaSGt1ZEhoMElpQnplajBpTVRJd01p?=
+ =?utf-8?B?SWdkRDBpTVRNeU9ERXhNVEl5TWpFek56SXdNVE00SWlCb1BTSTVjWGhHU1hk?=
+ =?utf-8?B?bmNGVmlhWFl6VlVwVU4ySkJVVnB5VjBOVmVGazlJaUJwWkQwaUlpQmliRDBp?=
+ =?utf-8?B?TUNJZ1ltODlJakVpSUdOcFBTSmpRVUZCUVVWU1NGVXhVbE5TVlVaT1EyZFZR?=
+ =?utf-8?B?VUZGYjBOQlFVSkxSVTFWVWtFNVpsaEJWRk5vUTJKeWIzbDRZVzlPUzBWS2RY?=
+ =?utf-8?B?VnFURVp4WjBSQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCU0VG?=
+ =?utf-8?B?QlFVRkVZVUZSUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZC?=
+ =?utf-8?B?VVVGQ1FVRkJRVlpKUlhadlVVRkJRVUZCUVVGQlFVRkJRVUZCUVVvMFFVRkJR?=
+ =?utf-8?B?bWhCUjFGQllWRkNaa0ZJVFVGYVVVSnFRVWhWUVdOblFteEJSamhCWTBGQ2VV?=
+ =?utf-8?B?RkhPRUZoWjBKc1FVZE5RV1JCUW5wQlJqaEJXbWRDYUVGSGQwRmpkMEpzUVVZ?=
+ =?utf-8?B?NFFWcG5RblpCU0UxQllWRkNNRUZIYTBGa1owSnNRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkZRVUZCUVVGQlFVRkJRV2RCUVVG?=
+ =?utf-8?B?QlFVRnVaMEZCUVVkRlFWcEJRbkJCUmpoQlkzZENiRUZIVFVGa1VVSjVRVWRW?=
+ =?utf-8?B?UVZoM1FuZEJTRWxCWW5kQ2NVRkhWVUZaZDBJd1FVaE5RVmgzUWpCQlIydEJX?=
+ =?utf-8?B?bEZDZVVGRVJVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCVVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVOQlFVRkJRVUZEWlVGQlFVRlpVVUpyUVVkclFWaDNRbnBCUjFWQldY?=
+ =?utf-8?B?ZENNVUZJU1VGYVVVSm1RVWhCUVdOblFuWkJSMjlCV2xGQ2FrRklVVUZqZDBK?=
+ =?utf-8?B?bVFVaFJRV0ZSUW14QlNFbEJUV2RCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFrRkJRVUZCUVVGQlFVRkpRVUZCUVVGQlFUMDlJaTgrUEM5dFpYUmhQZz09?=
+x-dg-rorf: true
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=analog.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f3a7d7a7-0694-453a-f5ae-08d9a51a35e2
+x-ms-traffictypediagnostic: PH0PR03MB5717:
+x-microsoft-antispam-prvs: <PH0PR03MB57170792F238DD9425F6CE6D99949@PH0PR03MB5717.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2733;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: kyf7s6+joiIAXbY1/BJVhh1TyWXP28erSzbcHK9cFs9pxS2XjebfIfwSfZPnv7ev6jRrJx2aPk3ow4AHjxnjKmoNC622K6yxZWFNNyyiHm+aKY3z2kP09jBHECUXSnUE9tZok5KJHIzjkGKp7vauL9zx1cmpuQ8acbf2HcGGFpL2ZLLrmVce0jyi7XS1e1H5wMRTvO+5v58b6B70jJ+ecD81yBfHXwYQynn3+f+CWQysegAnhdK9QgdXKEuogYRdue2QqPXOLqRarEIgXJgtFrW5AFJiBvVqgy50MSe7mzdYjM6l5DqRAldD+iVncmfmE02gD0M7fhDqa3lmL/rZnNvkN3cxJsKo5fVjcHG1NU6D1MU6v9LihqJxsD2B2sLMGV2LQj8/AZfM9lxJBDS424JpMqlgU/daX15brmZoo5gZxWX65pCATRHs/mebPYPcKfOVXPJT1uTiUeu7bkLbv0zmZFMGbCbjh86yf3UmjTkJAHYDdKywzf3A4/X43fcA/daM5iUaWVrjvakgykchQWZIJHG6g0Op+7ltPxJ010T0Qe85oqpXgl3Oa5sfvxZgCO2iGfCZRdy5AIqnTULzQMCIhj/DEc5PfYOP7+YYBb8/rwomn5a/b759CRHs52qMGHcCv4N2XVmaRmxRgxbmkkALS4slpu0D1rSgaf+ULf+l7rAeYHsRQbeI/djSuH3sBxwQYVt/9O7FQhYcDexYsw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6366.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6506007)(38070700005)(5660300002)(7696005)(8936002)(53546011)(66556008)(66476007)(64756008)(83380400001)(66446008)(508600001)(6916009)(2906002)(122000001)(33656002)(186003)(8676002)(316002)(52536014)(107886003)(4326008)(4744005)(38100700002)(76116006)(66946007)(54906003)(9686003)(55016002)(86362001)(71200400001)(26005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dWJJd1hGWlQzZ29Ddk56cUJCN0NRYlRWNEZlMnNsME9HVDhnVDluTmxoT3No?=
+ =?utf-8?B?M0psMkFPVTBTNFN6Wi9hSmFrR29aS0tpakw1SjQ5ZkRFNzdkUm8vT01EUDNV?=
+ =?utf-8?B?Z1RoVWpxRmZpdFRHLzV3M0NESkFreXlkWnJMVTRwRVZiZ3Y1YWdMaFZEWExi?=
+ =?utf-8?B?ZHdzT2VXbUx3Z25KN0xoL0pUT0xyVXQ4OVdxV1RFNGM3U1N2T0YzZDYzYVlP?=
+ =?utf-8?B?RkpXQThPc2hiaEtnU0lpS1ArdlhLZFNqUUFxNFRXVFZzWS8xVDhRUWlDOTlU?=
+ =?utf-8?B?dVcva2E5azhhT2dTZGEva1YxT3JPczgyNW14Nk1XZ3FlYlhmUmhlSm83cVhD?=
+ =?utf-8?B?RkJvaVAzYWxaWXZzaDJLUjJOZUV0MlNra0diNXhzY29TN2JZZllSRDFrNzFU?=
+ =?utf-8?B?Ky8yTzRZRzVYL2dIOGtlVXU3REtmUHRQSnFBUW1acExFc1owakR2UW90Rm9Z?=
+ =?utf-8?B?Qm1HWUtCZ1hIYUxndFlwN1NOUXhXM1BSeFZCOWJaL01rVVRGZVBjVkRHUjlo?=
+ =?utf-8?B?Ulc4bzA5eHEwUUhmU3VxOHNXeFhhZ3d1TFJFZkNGY2MveHVBQlcwdHkxUTZp?=
+ =?utf-8?B?UU5oQ2NzcklMQmxZbTdqL3BIaUxhN052SDk3SlZoTG5UMCtRWi8yRll0RHNh?=
+ =?utf-8?B?b1NiZ0F5cTJhT3FFUThZRXVabnYvQkdHOGxtY2JNa2ZnbmVoTE9FMVAvY0xN?=
+ =?utf-8?B?ajNQdEUzS2xzTTF3aDBBL0tHTDFEbGRTYlJ4V0dvaVVJY0pwQTduQjZra2U2?=
+ =?utf-8?B?RXl0bE96NzlYQXNFR25lU25tVW13NmdEQVppQUJJWEM5OGdQRWYxOStnQ29C?=
+ =?utf-8?B?bkNqWHJyL2FHY2xleHNQTzhHK2F1L0xrSHlyb0hldlVERjdUalQ1SVJYVFpT?=
+ =?utf-8?B?NEU4alZFK2lXV0NybzVma0RxalJnR3VuVnJlNzNvazRHVEVOdmJWTkUzTnhz?=
+ =?utf-8?B?Nkgyd2pkdWg1dVFPNDBjenRHSDk0dHN2OENjeWVnb0JOUWJNTlhocHVPdFNU?=
+ =?utf-8?B?M2VPa3RJYk80MjNxY2E2M2luLytkNkxpTVJTMlR4Wk9tdmZiSFJYTEZ5ZG9u?=
+ =?utf-8?B?OEltVkE5ekgrbnp6bENaL253NVc0WEg1a3BkU0M1RVFnRnF4a3A4aG5MRDU4?=
+ =?utf-8?B?dGovWHo0c1RYMWp4dDltaStLa0prRXpXWm0vL3E5N1VReFZUaVRrVU1oTC83?=
+ =?utf-8?B?NE9aMXJpZldFSWNkd1M2QzNEM3RGVHZSUitpZkNMd2J3M1ZMeWkrZGlYSFRk?=
+ =?utf-8?B?RFdtWGsyUkRXNmVBbk1NV1drR2FwRHNYVVZDY1dVV3hvU3Z1cVRYWFdXMjRR?=
+ =?utf-8?B?enI2ODhoOVZHTmFoOVJ4RHJuSnVSTkVlaWV1SStKd2hKVTVTSjlSRDRWWjBN?=
+ =?utf-8?B?OXBiOW94eXVFcEdjWkJ1c1ZueW01MG5WWlo4aGJRNm5MYU9sejc0c0MrdUhE?=
+ =?utf-8?B?Y3VKVjhpRzlaR1hZOFZORnlmRDFQN2tiVWVXcDg4Y3dVRlMvZm5sQVppMDVk?=
+ =?utf-8?B?MVFFaXptbVArWDBmVEdGdS9ZOHdHcWF5YnhUZmJQdWVQRWlEbnlTSTVmcVFh?=
+ =?utf-8?B?MVUveFo4eEhwSXhITVMxMmduTGVZeXdWTktNNVVQTTJhbzlCdGt1UTZBaXFy?=
+ =?utf-8?B?SE16enRQVzZnQUwxQnJUZWhick5icXZIbGlWQ251aUh2SXVGei92Z0MzeWZh?=
+ =?utf-8?B?OEhIbFZRL3hDREhhcmg3clVxdnYvYS9uSkFXS3RIZnoxdTUvaEtqdVNaRHlL?=
+ =?utf-8?B?RG9oRUtlN1kzeHNVVVVBc042MGNubkRtY2F3TFlUMjZxbXM0WEhHRHVPK3JD?=
+ =?utf-8?B?bVdBOHcySE9XcElMQlZKRm9xc280QXdyUHl2WkNtTWphTjVyWkpyZ0JiMlY4?=
+ =?utf-8?B?V2EwR1YzZkt4bWovalU2YTFGc0ptdmcvKzdBQ1psckZBWTNTMEJhTFUwaDZH?=
+ =?utf-8?B?Z3JScTloNXg3WGN1MndsK1BKd2c0dzc2dDdkS3pKTWZ3NzNuWVJpcG9jRis0?=
+ =?utf-8?B?OS95TksyUXdjWUduNityR2UzR0UvTE4waDZrcEFFS3hYaEFSZllISFhTN2pL?=
+ =?utf-8?B?aSs1Z1pYNGcwYXlRWTBjc0hqZktKcnlYWGdjU3NWeE1HVG5ySm93eEtGSjlK?=
+ =?utf-8?B?bGpQRUkvWDZjaXZ1ZStycWMvV25UeHZtZ2dMMlBxNVRXdkJ6NW5KT0JDRUxK?=
+ =?utf-8?B?RXc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20211111110043.101891-1-nuno.sa@analog.com> <20211111110043.101891-2-nuno.sa@analog.com>
-In-Reply-To: <20211111110043.101891-2-nuno.sa@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 11 Nov 2021 15:49:14 +0200
-Message-ID: <CAHp75Ve3ZfFz5g4qH6HhuqaLKgqd058Jj-xY4=-e3ciG67cfRg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] iio: dac: add support for ltc2688
-To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6366.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3a7d7a7-0694-453a-f5ae-08d9a51a35e2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2021 13:50:23.9184
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4XF/l/oIjucmEcAykL2T0ka5trZfuBtWmT6k/nI/HYRqvUVXjrxif/5bL9rztDFAWW+E1tFhs3qdlOmiXR2Ugw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB5717
+X-Proofpoint-ORIG-GUID: 3cQdq1G6ZNVwzzSrUoHXRrBV9TCeCwBa
+X-Proofpoint-GUID: 3cQdq1G6ZNVwzzSrUoHXRrBV9TCeCwBa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-11_03,2021-11-11_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 phishscore=0
+ bulkscore=0 spamscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111110080
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 11, 2021 at 1:01 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->
-> The LTC2688 is a 16 channel, 16 bit, +-15V DAC with an integrated
-> precission reference. It is guaranteed monotonic and has built in
-
-precision
-
-> rail-to-rail output buffers that can source or sink up to 20 mA.
-
-It's in good shape, several comments below, though.
-
-...
-
-> +enum {
-> +       LTC2688_SPAN_RANGE_0V_5V,
-> +       LTC2688_SPAN_RANGE_M10V_10V,
-> +       LTC2688_SPAN_RANGE_M15V_15V,
-> +       /*
-> +        * These 2 were deliberately re-arranged to be the last items as =
-they
-> +        * have the same fs and we will just return 1 in read_available.
-
-WTH "fs" mean?
-
-> +        */
-> +       LTC2688_SPAN_RANGE_0V_10V,
-> +       LTC2688_SPAN_RANGE_M5V_5V,
-> +       LTC2688_SPAN_RANGE_MAX
-> +};
-
-...
-
-> +static const int ltc2688_off_tbl[LTC2688_SPAN_RANGE_MAX] =3D {
-> +       [LTC2688_SPAN_RANGE_0V_5V] =3D 0,
-> +       [LTC2688_SPAN_RANGE_M10V_10V] =3D -32768,
-> +       [LTC2688_SPAN_RANGE_M15V_15V] =3D -32768,
-
-> +       [LTC2688_SPAN_RANGE_0V_10V] =3D 0,
-> +       [LTC2688_SPAN_RANGE_M5V_5V] =3D -32768
-
-+ Comma
-
-Isn't it more natural to move them up by two lines?
-
-> +};
-> +
-> +static const int ltc2688_reg_val[LTC2688_SPAN_RANGE_MAX] =3D {
-> +       [LTC2688_SPAN_RANGE_0V_5V] =3D 0,
-> +       [LTC2688_SPAN_RANGE_M10V_10V] =3D 3,
-> +       [LTC2688_SPAN_RANGE_M15V_15V] =3D 4,
-> +       [LTC2688_SPAN_RANGE_0V_10V] =3D 1,
-> +       [LTC2688_SPAN_RANGE_M5V_5V] =3D 2
-
-As per above.
-
-> +};
-
-...
-
-> +static int ltc2688_span_set(const struct ltc2688_state *st, int c, int s=
-pan)
-> +{
-> +       const struct ltc2688_chan *chan =3D &st->channels[c];
-> +       u32 i =3D ARRAY_SIZE(chan->span_tbl);
-> +       int off =3D ltc2688_offset_avail[chan->offset_idx];
-
-> +       while (i--) {
-
-Can ARRAY_SIZE() give 0?
-If not, do {} while (--i); looks more natural.
-
-> +               if (span =3D=3D chan->span_tbl[i][1]) {
-> +                       /*
-> +                        * The selected scale needs to fit  the current o=
-ffset.
-> +                        * Note that for [0V 10V] and [-5V 5V], as the sc=
-ale is
-> +                        * the same, we will always succeed here. Hence i=
-f
-> +                        * someone really wants [0 10V] and does not set =
-the
-> +                        * offset to 0, then :man-shrugging:
-> +                        */
-> +                       if (off =3D=3D ltc2688_off_tbl[i]) {
-> +                               break;
-
-> +                       } else if (i < LTC2688_SPAN_RANGE_0V_10V) {
-
-Redundant 'else'.
-
-> +                               /*
-> +                                * At this point, only one offset is vali=
-d so we
-> +                                * already can assume error.
-> +                                */
-> +                               dev_err(&st->spi->dev, "Offset(%d) not va=
-lid for current scale(0.%09d)\n",
-> +                                       off, span);
-> +                               return -EPERM;
-> +                       }
-
-> +                       continue;
-
-Redundant, see below.
-
-> +               }
-
-> +               if (!i) {
-> +                       dev_err(&st->spi->dev, "span(%d) not available\n"=
-, span);
-> +                       return -EINVAL;
-> +               }
-
-This is invariant to the loop.
-
-> +       }
-> +
-> +       return regmap_update_bits(st->regmap, LTC2688_CMD_CH_SETTING(c),
-> +                                 LTC2688_CH_SPAN_MSK,
-> +                                 FIELD_PREP(LTC2688_CH_SPAN_MSK, ltc2688=
-_reg_val[i]));
-> +};
-
-...
-
-> +       if (off !=3D ltc2688_offset_avail[0] && off !=3D ltc2688_offset_a=
-vail[1])
-> +               return -EINVAL;
-
-Extra condition, See below.
-
-> +       if (off =3D=3D ltc2688_offset_avail[0])
-> +               chan->offset_idx =3D 0;
-> +       else
-
-else if
-
-> +               chan->offset_idx =3D 1;
-
-else
-  return -EINVAL;
-
-...
-
-> +       ret =3D regmap_read(st->regmap, reg, &regval);
-> +       if (ret < 0)
-
-Is it the first time you tested explicitly for a negative result?
-
-> +               return ret;
-
-...
-
-> +       return sprintf(buf, "%u\n", !!(regval & BIT(chan->channel)));
-
-sysfs_emit() ?
-
-> +}
-
-...
-
-> +       struct ltc2688_state *st =3D iio_priv(indio_dev);
-> +       bool en;
-> +       int ret;
-> +       u32 val =3D 0, reg;
-
-Reversed xmas tree order ?
-
-> +       ret =3D strtobool(buf, &en);
-
-kstrtobool()
-
-...
-
-> +       if (ret)
-> +               return ret;
-> +               break;
-
-What does this mean?
-
-...
-
-> +       "4",
-> +       "8",
-> +       "16",
-> +       "32",
-> +       "64",
-
-One line?
-
-...
-
-> +       "0",
-> +       "90",
-> +       "180",
-> +       "270",
-
-Ditto.
-
-...
-
-> +enum {
-> +       LTC2688_CHAN_MODE_TOGGLE,
-> +       LTC2688_CHAN_MODE_DITHER
-
-+ Comma.
-
-> +};
-
-...
-
-> +static const char * const ltc2688_clk_names[LTC2688_CHAN_TD_MAX] =3D {
-> +       "TGP1", "TGP2", "TGP3"
-
-In this notation, + comma.
-
-> +};
-
-...
-
-> +       for_each_set_bit(bit, &mask, ARRAY_SIZE(ltc2688_clk_names)) {
-> +               struct clk *clk;
-
-+ blank line
-
-> +               /*
-> +                * If a TGP pin is set, then we need to provide a valid c=
-lock at
-> +                * the pin.
-> +                */
-
-> +       }
-
-...
-
-> +       fwnode_for_each_available_child_node(fwnode, child) {
-> +               struct ltc2688_chan *chan;
-> +
-> +               ret =3D fwnode_property_read_u32(child, "reg", &reg);
-> +               if (ret) {
-> +                       fwnode_handle_put(child);
-
-> +                       return dev_err_probe(&st->spi->dev, ret,
-> +                                            "Failed to get reg property\=
-n");
-
-One line.
-
-> +               } else if (reg >=3D LTC2688_DAC_CHANNELS) {
-
-Redundant 'else'.
-
-> +                       fwnode_handle_put(child);
-> +                       return dev_err_probe(&st->spi->dev, -EINVAL,
-
-> +                                            "reg >=3D %d\n", LTC2688_DAC=
-_CHANNELS);
-
-The message is cryptic. Decrypt it for the user.
-
-> +               }
-> +
-> +               chan =3D &st->channels[reg];
-> +               ret =3D fwnode_property_read_u32(child, "adi,mode", &mode=
-);
-> +               if (!ret) {
-> +                       if (mode > LTC2688_CHAN_MODE_DITHER) {
-> +                               fwnode_handle_put(child);
-> +                               return dev_err_probe(&st->spi->dev, -EINV=
-AL,
-> +                                                    "chan mode inv value=
-(%d)\n",
-> +                                                    mode);
-> +                       }
-> +
-> +                       chan->dither_toggle =3D true;
-> +                       if (mode =3D=3D LTC2688_CHAN_MODE_TOGGLE) {
-> +                               ltc2688_channels[reg].ext_info =3D ltc268=
-8_toggle_ext_info;
-> +                       } else {
-> +                               ltc2688_channels[reg].ext_info =3D ltc268=
-8_dither_ext_info;
-> +                               /* enable dither mode */
-> +                               mask =3D LTC2688_CH_MODE_MSK;
-> +                               val =3D BIT(11);
-> +                       }
-> +               }
-> +
-> +               ret =3D fwnode_property_read_u32(child, "adi,toggle-dithe=
-r-input",
-> +                                              &clk_input);
-
-> +               if (!ret) {
-
-if (ret) {
-  if ...
-} else {
- ...
-}
-
-> +                       if (clk_input > LTC2688_CHAN_TD_TGP3) {
-> +                               fwnode_handle_put(child);
-> +                               return dev_err_probe(&st->spi->dev, -EINV=
-AL,
-> +                                                    "toggle-dither-input=
- inv value(%d)\n",
-> +                                                    clk_input);
-> +                       }
-> +
-> +                       clk_msk |=3D BIT(clk_input);
-> +                       mask |=3D LTC2688_CH_TD_SEL_MSK;
-> +                       /*
-> +                        * 0 means software toggle which we are not suppo=
-rting
-> +                        * for now. Hence the +1
-
-In all multi-line comments miseed (grammatical) period.
-
-> +                        */
-> +                       val |=3D FIELD_PREP(LTC2688_CH_TD_SEL_MSK, clk_in=
-put + 1);
-> +               } else if (chan->dither_toggle) {
-> +                       /*
-> +                        * As sw_toggle is not supported, we need to make=
- sure
-> +                        * a valid input is selected if toggle/dither mod=
-e is
-> +                        * requested
-> +                        */
-> +                       return dev_err_probe(&st->spi->dev, -EINVAL,
-> +                                            "toggle-dither set but no to=
-ggle-dither-input\n");
-> +               }
-
-> +               chan->overrange =3D fwnode_property_read_bool(child,
-> +                                                           "adi,overrang=
-e");
-
-One line?
-
-> +               if (chan->overrange) {
-> +                       val |=3D LTC2688_CH_OVERRANGE_MSK;
-> +                       mask |=3D BIT(3);
-> +               }
-> +
-> +               if (!mask)
-> +                       continue;
-> +
-> +               ret =3D regmap_update_bits(st->regmap,
-> +                                        LTC2688_CMD_CH_SETTING(reg), mas=
-k,
-> +                                        val);
-> +               if (ret) {
-> +                       fwnode_handle_put(child);
-> +                       return dev_err_probe(&st->spi->dev, -EINVAL,
-> +                                            "failed to set chan settings=
-\n");
-> +               }
-> +
-> +               mask =3D 0;
-> +               val =3D 0;
-> +       }
-
-...
-
-> +       int fs =3D ltc2688_span_helper[idx][1] - ltc2688_span_helper[idx]=
-[0];
-> +
-> +       if (chan->overrange)
-> +               fs =3D mult_frac(fs, 105, 100);
-> +
-> +       return fs;
-
-if (...)
- return ...
-?
-
-...
-
-> +       u32 c, i;
-
-In one case you use int or unsigned int if I'm not mistaken, here out
-of a sudden u32. Why? Please, be consistent over the code.
-
-...
-
-> +                       /* we will return IIO_VAL_INT_PLUS_NANO */
-> +                       s =3D DIV_ROUND_CLOSEST_ULL(st->vref * fs * 10000=
-00000ULL,
-> +                                                 4096 * 1 << 16);
-
-Can you make use of one of the SI prefixes here? (See unit.h)
-
-...
-
-> +       gpio =3D devm_gpiod_get_optional(&st->spi->dev, "reset", GPIOD_OU=
-T_HIGH);
-> +       if (IS_ERR(gpio))
-> +               return dev_err_probe(&st->spi->dev, PTR_ERR(gpio),
-> +                                    "Failed to get reset gpio");
-
-> +
-
-Redundant blank line.
-
-> +       if (gpio) {
-> +               usleep_range(1000, 1200);
-> +               /* bring device out of reset */
-> +               gpiod_set_value_cansleep(gpio, 0);
-
-> +       } else {
-
-I'm wondering why 'else'? Can't it be both? Why not?
-
-> +               ret =3D regmap_update_bits(st->regmap, LTC2688_CMD_CONFIG=
-_REG,
-> +                                        LTC2688_CONFIG_RST,
-> +                                        LTC2688_CONFIG_RST);
-> +               if (ret < 0)
-> +                       return ret;
-> +       }
-> +
-> +       usleep_range(10000, 12000);
-
-+ blank line, so the reader won't be confused about the function of this sl=
-eep.
-
-> +       ret =3D ltc2688_channel_config(st);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       if (vref) {
-> +               ret =3D regmap_update_bits(st->regmap, LTC2688_CMD_CONFIG=
-_REG,
-> +                                        LTC2688_CONFIG_EXT_REF, BIT(1));
-> +               if (ret < 0)
-
-These ' < 0' parts are inconsistent over the code.
-
-> +                       return ret;
-> +       }
-> +
-> +       ltc2688_span_avail_compute(st);
-> +       return 0;
-> +}
-
-...
-
-> +       /* ignoring the no op command */
-> +       .max_register =3D U16_MAX - 1
-
-Really?! Have you ever considered what burden you bring with this to
-one who accidentally or on purpose tries to dump registers via
-debugfs?
-
-...
-
-> +       st->regmap =3D devm_regmap_init(&spi->dev, NULL, st, &ltc2688_reg=
-map_config);
-
-I'm wondering why it's not a regmap SPI?
-
-> +       if (IS_ERR(st->regmap))
-> +               return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-> +                                    "Failed to init regmap");
-
-...
-
-> +       ret =3D ltc2688_regulator_supply_get(st, "vcc");
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret =3D ltc2688_regulator_supply_get(st, "iovcc");
-> +       if (ret)
-> +               return ret;
-
-Can bulk regulators be used?
-
-...
-
-> +               st->vref =3D ret / 1000;
-
-Make use of unit.h
-
---
-With Best Regards,
-Andy Shevchenko
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW5keSBTaGV2Y2hlbmtv
+IDxhbmR5LnNoZXZjaGVua29AZ21haWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgTm92ZW1iZXIg
+MTEsIDIwMjEgMTo0OSBQTQ0KPiBUbzogU2EsIE51bm8gPE51bm8uU2FAYW5hbG9nLmNvbT4NCj4g
+Q2M6IGxpbnV4LWlpbyA8bGludXgtaWlvQHZnZXIua2VybmVsLm9yZz47IEpvbmF0aGFuIENhbWVy
+b24NCj4gPGppYzIzQGtlcm5lbC5vcmc+OyBIZW5uZXJpY2gsIE1pY2hhZWwNCj4gPE1pY2hhZWwu
+SGVubmVyaWNoQGFuYWxvZy5jb20+OyBMYXJzLVBldGVyIENsYXVzZW4NCj4gPGxhcnNAbWV0YWZv
+by5kZT47IE5pc2hhbnQgTWFscGFuaSA8bmlzaC5tYWxwYW5pMjVAZ21haWwuY29tPjsNCj4gSmlt
+ZW5leiwgS2lzdGVyIDxLaXN0ZXIuSmltZW5lekBhbmFsb2cuY29tPg0KPiBTdWJqZWN0OiBSZTog
+W1BBVENIXSBpaW86IGFkeHJzMjkwOiBmaXggZGF0YSBzaWduZWRuZXNzDQo+IA0KPiBbRXh0ZXJu
+YWxdDQo+IA0KPiBPbiBUaHUsIE5vdiAxMSwgMjAyMSBhdCAyOjE5IFBNIE51bm8gU8OhIDxudW5v
+LnNhQGFuYWxvZy5jb20+DQo+IHdyb3RlOg0KPiA+DQo+ID4gRnJvbTogS2lzdGVyIEdlbmVzaXMg
+SmltZW5leiA8a2lzdGVyLmppbWVuZXpAYW5hbG9nLmNvbT4NCj4gPg0KPiA+IFByb3Blcmx5IHNp
+Z24tZXh0ZW5kIHRoZSByYXRlIGFuZCB0ZW1wZXJhdHVyZSBkYXRhLg0KPiANCj4gLi4uDQo+IA0K
+PiA+ICAgICAgICAgLyogZXh0cmFjdCBsb3dlciAxMiBiaXRzIHRlbXBlcmF0dXJlIHJlYWRpbmcg
+Ki8NCj4gPiAtICAgICAgICp2YWwgPSB0ZW1wICYgMHgwRkZGOw0KPiA+ICsgICAgICAgKnZhbCA9
+IHNpZ25fZXh0ZW5kMzIodGVtcCAmIDB4MEZGRiwgMTEpOw0KPiANCj4gV2hhdCByb2xlIGRvZXMg
+dGhlICcgJiAweDBGRkYnIHBhcnQgcGxheSBub3c/DQo+IElzbid0IGl0IHNpbXBseSBhIGR1cCAo
+cmVkdW5kYW50KSBwaWVjZT8NCg0KT29wcywgeW91J3JlIHJpZ2h0LiBJdCBzZXJ2ZXMgbm8gcHVy
+cG9zZSBhcyB3ZSBzaGlmdCBvdXQgdGhlIGJpdHMNCnRoYXQgd2UgZG8gbm90IGNhcmUuIE15IGZh
+dWx0LCBJIGp1c3QgYWN0ZWQgYXMgYSBib3QuLi4NCg0KLSBOdW5vIFPDoQ0K

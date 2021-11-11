@@ -2,110 +2,224 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BC1D44D85F
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Nov 2021 15:34:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A2E044D877
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Nov 2021 15:42:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232699AbhKKOhN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Nov 2021 09:37:13 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:45354 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231614AbhKKOhM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Nov 2021 09:37:12 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AB96uFV001080;
-        Thu, 11 Nov 2021 09:34:10 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3c88pqfhg1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 11 Nov 2021 09:34:10 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 1ABEY9bF016189
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 11 Nov 2021 09:34:09 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Thu, 11 Nov 2021
- 09:34:08 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.858.5 via Frontend
- Transport; Thu, 11 Nov 2021 09:34:08 -0500
-Received: from nsa.ad.analog.com ([10.44.3.52])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1ABEY6gP004493;
-        Thu, 11 Nov 2021 09:34:07 -0500
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Kister Genesis Jimenez <kister.jimenez@analog.com>
-Subject: [PATCH v2] iio: adxrs290: fix data signedness
-Date:   Thu, 11 Nov 2021 15:34:11 +0100
-Message-ID: <20211111143411.187090-1-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.33.1
+        id S231614AbhKKOp0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Nov 2021 09:45:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59350 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230177AbhKKOp0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Nov 2021 09:45:26 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7050C061766
+        for <linux-iio@vger.kernel.org>; Thu, 11 Nov 2021 06:42:36 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id w1so25112786edd.10
+        for <linux-iio@vger.kernel.org>; Thu, 11 Nov 2021 06:42:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=kDg41lEmKZLNV+ba6/XUqj+CHGsXr9mTNWa49sW5OGE=;
+        b=FQLiBp0TicgyWwewWMfUi0OIjIr7w/QJF+7uvtkbVjtuZF3zB7z4EN4KSpTMYZMLuf
+         IhlLct0uhwwW4sPQ/+fzI5ZoVz5xCIEFVwBB4cSJiOhBYhdTlKkxkH+RYaztvVuxuA8+
+         olbsxevFFD9Lkx1uJ0WAfdPC5S2Ig5oNFjS+SyXsXhnYPLGa89Ui/g/ZT+wuLwRFUKc1
+         3BCfiKN+6vyUFML3oNxHNZZrsgPPXhptpXan9blHUN4jv912IqQ3jMuwR0Zh/jximPKX
+         va866ccmMy7GkWawEMB+edh0nTgHp4WfOm6BEQxqDzF3ofHt76sV7Y4tNbooZECV0I2W
+         OLhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=kDg41lEmKZLNV+ba6/XUqj+CHGsXr9mTNWa49sW5OGE=;
+        b=QKoMyydONV0/DasyIo8HX6EvRLhrXHEaZR3SY3G0Ni5qEL/AGgQ1xkSD++zB2rRWBT
+         EJxdjWNxlXIFjP4D60FI1rS6Xzax7wK9aZ3c4XXDv3g4yYpObeFl2OMKMGT5us1P3BIL
+         +tm6AiJnannR6/HEkulVvIX+Rt7g50y9otiM90c4Zg+MfUfLhiZLYq7af26cuDklOEdz
+         VQwAjwH+0SKKEkBgUHRYSGhl4dtOBXmeSmTB0+RT8qsvieQC+DyQWqT182Pmdkfa1qST
+         GJEObOf8buDb77XytzhFaGQ+dOelH5jKUNcWMIhviTxbiRv4NBpSMzylyU7i7N4nLW4/
+         UWgQ==
+X-Gm-Message-State: AOAM531vL2PmbUKUQN6X043qCrl2eX5M6LAYXqSWFRYIoroSBg+772+Z
+        S7NhJ1Ha+s6IvwOV8JGPvuujg4QD7wRsVuwuLZ4=
+X-Google-Smtp-Source: ABdhPJzqB15q8wcu0paP+PAaJSI1URGG7SRNdymQj1k9AfSVe1mleDr+3jvvEjUJU35zBtsPf1fkg681rw8KDcVMSzs=
+X-Received: by 2002:a05:6402:207c:: with SMTP id bd28mr10724765edb.240.1636641755158;
+ Thu, 11 Nov 2021 06:42:35 -0800 (PST)
 MIME-Version: 1.0
+References: <20211111110043.101891-1-nuno.sa@analog.com> <20211111110043.101891-2-nuno.sa@analog.com>
+ <CAHp75Ve3ZfFz5g4qH6HhuqaLKgqd058Jj-xY4=-e3ciG67cfRg@mail.gmail.com> <PH0PR03MB6366576BD3950F5F5D2A403599949@PH0PR03MB6366.namprd03.prod.outlook.com>
+In-Reply-To: <PH0PR03MB6366576BD3950F5F5D2A403599949@PH0PR03MB6366.namprd03.prod.outlook.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 11 Nov 2021 16:41:51 +0200
+Message-ID: <CAHp75VfsMa7n8BVJvN36N02u+LKLO36tZNx4rdEzSGZ4HGGoMA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/1] iio: dac: add support for ltc2688
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: uzwUuKLRye_R-LOXCAgmDuCkZBtw7rfG
-X-Proofpoint-GUID: uzwUuKLRye_R-LOXCAgmDuCkZBtw7rfG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-11_04,2021-11-11_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- mlxlogscore=999 impostorscore=0 suspectscore=0 phishscore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111110082
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Kister Genesis Jimenez <kister.jimenez@analog.com>
+On Thu, Nov 11, 2021 at 4:30 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
+> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Sent: Thursday, November 11, 2021 2:49 PM
+> > On Thu, Nov 11, 2021 at 1:01 PM Nuno S=C3=A1 <nuno.sa@analog.com>
+> > wrote:
 
-Properly sign-extend the rate and temperature data.
+...
 
-Fixes: 2c8920fff1457 ("iio: gyro: Add driver support for ADXRS290")
-Signed-off-by: KJimenez <kister.jimenez@analog.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
-changes in v2:
- * removed redundant temp & 0xFFF.
+> > > +static const int ltc2688_off_tbl[LTC2688_SPAN_RANGE_MAX] =3D {
+> > > +       [LTC2688_SPAN_RANGE_0V_5V] =3D 0,
+> > > +       [LTC2688_SPAN_RANGE_M10V_10V] =3D -32768,
+> > > +       [LTC2688_SPAN_RANGE_M15V_15V] =3D -32768,
+> >
+> > > +       [LTC2688_SPAN_RANGE_0V_10V] =3D 0,
+> > > +       [LTC2688_SPAN_RANGE_M5V_5V] =3D -32768
+> >
+> > + Comma
+> >
+> > Isn't it more natural to move them up by two lines?
+>
+> There's a reason for this to be ordered like this.
 
- drivers/iio/gyro/adxrs290.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+I understand that for enum, but here it doesn't make any sense to me
+since you are addressing them by indices.
 
-diff --git a/drivers/iio/gyro/adxrs290.c b/drivers/iio/gyro/adxrs290.c
-index 3e0734ddafe3..600e9725da78 100644
---- a/drivers/iio/gyro/adxrs290.c
-+++ b/drivers/iio/gyro/adxrs290.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/bitfield.h>
-+#include <linux/bitops.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
-@@ -124,7 +125,7 @@ static int adxrs290_get_rate_data(struct iio_dev *indio_dev, const u8 cmd, int *
- 		goto err_unlock;
- 	}
- 
--	*val = temp;
-+	*val = sign_extend32(temp, 15);
- 
- err_unlock:
- 	mutex_unlock(&st->lock);
-@@ -146,7 +147,7 @@ static int adxrs290_get_temp_data(struct iio_dev *indio_dev, int *val)
- 	}
- 
- 	/* extract lower 12 bits temperature reading */
--	*val = temp & 0x0FFF;
-+	*val = sign_extend32(temp, 11);
- 
- err_unlock:
- 	mutex_unlock(&st->lock);
--- 
-2.33.1
+>  Anyways,
+> as I said in the cover letter I will probably remove all of these things
+> used to validate scale + offset pairs. I think is a bit overdone...
 
+> > > +};
+
+...
+
+> > > +                       if (off =3D=3D ltc2688_off_tbl[i]) {
+> > > +                               break;
+> >
+> > > +                       } else if (i < LTC2688_SPAN_RANGE_0V_10V) {
+> >
+> > Redundant 'else'.
+>
+> Why? Note that I really (where possible) want to make a distinction
+> between the errors...
+
+while () {
+  if ()
+    ...
+    break;
+  } else {
+    ...
+  }
+}
+
+Isn't it obvious?
+
+Same with
+
+if ()
+  return
+else
+  ...
+
+> > > +                       }
+
+...
+
+> > > +               ret =3D fwnode_property_read_u32(child, "reg", &reg);
+> > > +               if (ret) {
+> > > +                       fwnode_handle_put(child);
+> >
+> > > +                       return dev_err_probe(&st->spi->dev, ret,
+> > > +                                            "Failed to get reg prope=
+rty\n");
+> >
+> > One line.
+> >
+> > > +               } else if (reg >=3D LTC2688_DAC_CHANNELS) {
+> >
+> > Redundant 'else'.
+>
+> Do you mean?
+>
+> if (ret)
+>  ...
+>
+> if (reg >=3D LTC2688_DAC_CHANNELS)
+>  ....
+
+Yes.
+
+> > > +               }
+
+...
+
+> > > +               chan->overrange =3D fwnode_property_read_bool(child,
+> > > +                                                           "adi,over=
+range");
+> >
+> > One line?
+>
+> It will pass the 80 col limit. AFAIR, Jonathan prefers to keep it when it
+> does not hurt readability...
+
+I believe it will increase readability being located on one line.
+
+...
+
+> > > +       if (gpio) {
+> > > +               usleep_range(1000, 1200);
+> > > +               /* bring device out of reset */
+> > > +               gpiod_set_value_cansleep(gpio, 0);
+> >
+> > > +       } else {
+> >
+> > I'm wondering why 'else'? Can't it be both? Why not?
+>
+> Well, if we have the reset pin, then we reset using it. If there's
+> no pin, we use the SW reset. It's a common pattern that we already use
+> for example in the ADIS devices.
+
+Perhaps a comment in the code is needed.
+
+> > > +               ret =3D regmap_update_bits(st->regmap,
+> > LTC2688_CMD_CONFIG_REG,
+> > > +                                        LTC2688_CONFIG_RST,
+> > > +                                        LTC2688_CONFIG_RST);
+> > > +               if (ret < 0)
+> > > +                       return ret;
+> > > +       }
+
+...
+
+> > > +       /* ignoring the no op command */
+> > > +       .max_register =3D U16_MAX - 1
+> >
+> > Really?! Have you ever considered what burden you bring with this to
+> > one who accidentally or on purpose tries to dump registers via
+> > debugfs?
+>
+> Ups, this is completely wrong!! It should be U8_MAX...
+
+Ah, that explains!
+
+...
+
+> > > +       st->regmap =3D devm_regmap_init(&spi->dev, NULL, st,
+> > &ltc2688_regmap_config);
+> >
+> > I'm wondering why it's not a regmap SPI?
+>
+> The problem is on the read side... In the first transfer we write the com=
+mand/register
+> to read, then we need to release the CS pin so that the device executes t=
+he command,
+> and only then we read the data. AFAIK, the regmap spi implementation won'=
+t work like
+> this. I think CS is kept asserted the whole time...
+
+I believe it's configurable, no? Like the cs_change flag somewhere.
+Can you double check?
+
+--=20
+With Best Regards,
+Andy Shevchenko

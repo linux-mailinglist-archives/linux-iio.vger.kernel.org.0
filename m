@@ -2,176 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1D1B44E284
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 08:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C0044E9EE
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 16:20:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233799AbhKLHpg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Nov 2021 02:45:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233891AbhKLHpd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Nov 2021 02:45:33 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FCDC06120E
-        for <linux-iio@vger.kernel.org>; Thu, 11 Nov 2021 23:42:43 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id 67-20020a1c1946000000b0030d4c90fa87so6133356wmz.2
-        for <linux-iio@vger.kernel.org>; Thu, 11 Nov 2021 23:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=d4YpBbYWP9wG3LFBKWknnju7IW21BdQrAXLAFoUfJjk=;
-        b=L0G7vqzIu4OmVtWPcfcfA5NzLtPk2i0H7s2BzObNlHQTFEkm03sqk/2QHQ4kjpk9BH
-         XMXouE5QpmwrxFfo6B5ZLvuccwWWhT/w9Ko9Yi7L+7BfDDnicqyRLnT+TM8ck5H5bQEY
-         cyD6P6qfh9iWldNqTQR7o5UJ+sXkSMXyDzLNU6kkBq7ka/+ZuUqEk/qcSbQ3GxXC7kiU
-         cm9dyledHK9n0gr3crraQGaAfhd3vfTQwfXVu/kwmwojjE1dRCSgNEVgeiJJB70r7ke9
-         OYePQHHEPa/usZJXytv516/nCeAGVXFsmZBOHnIcNaOTOhsULeXowN7ikvsxKqOo/gxw
-         3O2A==
+        id S234295AbhKLPXI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Nov 2021 10:23:08 -0500
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:37530 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233793AbhKLPXE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Nov 2021 10:23:04 -0500
+Received: by mail-ot1-f50.google.com with SMTP id h19-20020a9d3e53000000b0056547b797b2so13432412otg.4;
+        Fri, 12 Nov 2021 07:20:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=d4YpBbYWP9wG3LFBKWknnju7IW21BdQrAXLAFoUfJjk=;
-        b=BEY5g70mt4RHzDXIkeHDmE4WOE7/YppfiDE0XG7+8UZtR2x8eNH2z3ZNWpQI5bG8Vr
-         5NXWvFwp4O3MX3OQzEToGqWtNbbEp1wDL3wg4DfkZbQsVqzk/DDhB3jzWkdcbCzqAPnn
-         RK09sVQIuBCuI8UrXL+/CQSO1UM9Gw/7cOhycgidwb6ssmtNBAS97Dc1+z2Pt5JcHlZR
-         gAanLw1SYkHa4RZFkj1AmmI+P9CjnqBSdhCP2Pnxs24cQBneft6VVl9jr9I2bxhgD97m
-         vG7hmdFwqiRcUGbloSzl7z1djnOHdon6iB5QC/BcKyECbhCi+u/jHYUdZ1DUqxRTHYdU
-         sN6w==
-X-Gm-Message-State: AOAM531jJc00qCdek6tXGYsuzcyAz+lYn+bxlu7F4WAjp4afAC0EafA5
-        JTCOYtNgjSmuNMfAWaIc7kKfew==
-X-Google-Smtp-Source: ABdhPJyYtg+MHn61GMl0MRFqSO/sm1wnHgrm7yORmq7WT7ihtvN7d0mp317CBhRDaom5mAlXGDszmg==
-X-Received: by 2002:a05:600c:2107:: with SMTP id u7mr32377342wml.82.1636702961238;
-        Thu, 11 Nov 2021 23:42:41 -0800 (PST)
-Received: from google.com ([95.148.6.174])
-        by smtp.gmail.com with ESMTPSA id q8sm4978469wrx.71.2021.11.11.23.42.38
+         :mime-version:content-disposition:in-reply-to;
+        bh=XL7WHChnykm1XEF7Yo39vqcbHAAH7PV5WQdRdC97D8s=;
+        b=j/kb4VzmWa3hc5pDznIKRehK+N59F1bNGOZtILMbDTe3ECF9L9oSczTWGculZbJN7Q
+         FTR3zKvhbHC0AzL7KtVIdZ1DAHokoMvRxMPvTUI4kujuZ+9WpDgXdObeSjKoyljLO/Jl
+         jC74L8E6lMvlKARedX87iiQrQb59txTzFTPhvdyReocvBKcAQM1Ce1nIxz35AzT2EDv4
+         gNyxwLdBW2gttXfinOuej3zyn6CQrEBkjc1biraEFVokoiPM10SDJmDyDK1CHFJuzxRU
+         0IP2w1oNCPtK9eVpNJW4+in3t0+u3gwwYOIS225FnC1C7V9PRTLCuPBzGjcd3nBTHXdW
+         TI4g==
+X-Gm-Message-State: AOAM5333tlPyoyh5irS3Pm3scWuX+6bvdlWtZW+4U1kdkyLMtm9eFJAJ
+        BcowvGKt4PfZm8AhjjJ5WCyim6o58w==
+X-Google-Smtp-Source: ABdhPJy8eBQbPOkE+3SSIRibQY8WLVPaKWMwduUfydGqT0FYX5JU0EsXU2XqNIyLKmS5Pu87s0EaTA==
+X-Received: by 2002:a9d:5190:: with SMTP id y16mr13227870otg.364.1636730413416;
+        Fri, 12 Nov 2021 07:20:13 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id g1sm1150338ooq.2.2021.11.12.07.20.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Nov 2021 23:42:40 -0800 (PST)
-Date:   Fri, 12 Nov 2021 07:42:37 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     patrice.chotard@foss.st.com, Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        alexandre torgue <alexandre.torgue@foss.st.com>,
-        jonathan cameron <jic23@kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        olivier moysan <olivier.moysan@foss.st.com>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        linux-mtd@lists.infradead.org, linux-watchdog@vger.kernel.org,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        maxime coquelin <mcoquelin.stm32@gmail.com>,
-        Matt Mackall <mpm@selenic.com>, vinod koul <vkoul@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        baolin wang <baolin.wang7@gmail.com>,
-        linux-spi@vger.kernel.org, david airlie <airlied@linux.ie>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        netdev@vger.kernel.org,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        ohad ben-cohen <ohad@wizery.com>, linux-gpio@vger.kernel.org,
-        Jose Abreu <joabreu@synopsys.com>,
-        Le Ray <erwan.leray@foss.st.com>,
-        herbert xu <herbert@gondor.apana.org.au>,
-        michael turquette <mturquette@baylibre.com>,
-        Christophe Kerello <christophe.kerello@foss.st.com>,
-        Gabriel Fernandez <gabriel.fernandez@foss.st.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Christophe Roullier <christophe.roullier@foss.st.com>,
-        linux-serial@vger.kernel.org, Amit Kucheria <amitk@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Ludovic Barre <ludovic.barre@foss.st.com>,
-        "david s . miller" <davem@davemloft.net>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        linux-i2c@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        thierry reding <thierry.reding@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        philippe cornu <philippe.cornu@foss.st.com>,
-        linux-rtc@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Hugues Fruchet <hugues.fruchet@foss.st.com>,
-        alsa-devel@alsa-project.org, Zhang Rui <rui.zhang@intel.com>,
-        linux-crypto@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-iio@vger.kernel.org, pascal Paillet <p.paillet@foss.st.com>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-        Fabien Dessenne <fabien.dessenne@foss.st.com>,
-        linux-pm@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        stephen boyd <sboyd@kernel.org>,
-        dillon min <dillon.minfei@gmail.com>,
-        devicetree@vger.kernel.org,
-        yannick fertre <yannick.fertre@foss.st.com>,
-        linux-kernel@vger.kernel.org,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        linux-phy@lists.infradead.org,
-        benjamin gaignard <benjamin.gaignard@linaro.org>,
-        sam ravnborg <sam@ravnborg.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-clk@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Richard Weinberger <richard@nod.at>,
-        Rob Herring <robh+dt@kernel.org>, Marek Vasut <marex@denx.de>,
-        arnaud pouliquen <arnaud.pouliquen@foss.st.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
-        daniel vetter <daniel@ffwll.ch>, Marc Zyngier <maz@kernel.org>,
-        bjorn andersson <bjorn.andersson@linaro.org>,
-        lars-peter clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 2/5] dt-bindings: mfd: timers: Update maintainers for
- st,stm32-timers
-Message-ID: <YY4a7ZxzhNq6Or+t@google.com>
-References: <20211110150144.18272-1-patrice.chotard@foss.st.com>
- <20211110150144.18272-3-patrice.chotard@foss.st.com>
- <YYwjPAoCtuM6iycz@robh.at.kernel.org>
+        Fri, 12 Nov 2021 07:20:12 -0800 (PST)
+Received: (nullmailer pid 2872324 invoked by uid 1000);
+        Fri, 12 Nov 2021 15:20:11 -0000
+Date:   Fri, 12 Nov 2021 09:20:11 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     lars@metafoo.de, pmeerw@pmeerw.net, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        michal.simek@xilinx.com, jic23@kernel.org, git@xilinx.com
+Subject: Re: [PATCH v8 3/4] dt-bindings: iio: adc: Add Xilinx AMS binding
+ documentation
+Message-ID: <YY6GK3K5B/cgdczY@robh.at.kernel.org>
+References: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
+ <20211108210509.29870-4-anand.ashok.dumbre@xilinx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YYwjPAoCtuM6iycz@robh.at.kernel.org>
+In-Reply-To: <20211108210509.29870-4-anand.ashok.dumbre@xilinx.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 10 Nov 2021, Rob Herring wrote:
-
-> On Wed, 10 Nov 2021 16:01:41 +0100, patrice.chotard@foss.st.com wrote:
-> > From: Patrice Chotard <patrice.chotard@foss.st.com>
-> > 
-> > Benjamin has left the company, remove his name from maintainers.
-> > 
-> > Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-> > ---
-> >  Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
+On Mon, 08 Nov 2021 21:05:08 +0000, Anand Ashok Dumbre wrote:
+> Xilinx AMS have several ADC channels that can be used for measurement of
+> different voltages and temperatures. Document the same in the bindings.
 > 
-> Lee indicated he was going to pick this one up, so:
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> ---
+>  .../bindings/iio/adc/xlnx,zynqmp-ams.yaml     | 227 ++++++++++++++++++
+>  1 file changed, 227 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
 > 
-> Acked-by: Rob Herring <robh@kernel.org>
 
-Since you already merged the treewide patch, you may as well take
-this too.  We'll work through any conflicts that may occur as a
-result.
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+If a tag was not added on purpose, please state why and what changed.
+

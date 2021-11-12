@@ -2,127 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7489E44EC37
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 18:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0EE44EC38
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 18:51:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235542AbhKLRxv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Nov 2021 12:53:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:26385 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235371AbhKLRxu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Nov 2021 12:53:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636739459;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=5d76gUdGn3UgVlG+TzxPQ8U5rPwd9xOEQ6cc6Tykom0=;
-        b=HboXumYX4fz80SLTC9uB5gIp63kyGWMLVV5cQpKbV2LnXqxENEHY3oLEmtCXhwC1rwEJ0P
-        tUGrdJcuINyYZg3Qp/4knLx9j1MTX35DxwNC36vRcxhtdqSpktyNqh0m5cahLRuq9GrplR
-        aA9oZkNRAmTlQ/jshUTMii6yzWqDfuQ=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-214-Eu-KxCSINp2dJT80-iSk8g-1; Fri, 12 Nov 2021 12:50:58 -0500
-X-MC-Unique: Eu-KxCSINp2dJT80-iSk8g-1
-Received: by mail-ed1-f71.google.com with SMTP id w18-20020a056402071200b003e61cbafdb4so644949edx.4
-        for <linux-iio@vger.kernel.org>; Fri, 12 Nov 2021 09:50:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=5d76gUdGn3UgVlG+TzxPQ8U5rPwd9xOEQ6cc6Tykom0=;
-        b=0+1cuZeq00BFqwYnAhrdtQsJpMULboybW2dKhlEn4EBbyoXUCeMZ72qD6EGE0IAjxF
-         Ymwb3AqWbp0pugv2gLDKBV+U5VMWKIIW0nI0e98QDpHUR6a7dLZwoH6Baa+5l6R62rvl
-         FdEsSXCt18P4mSedyo0n8Qh64K5Fwy2Hx/U5+i8XJHWLeWlE2TeMsh4E01xZST5hyvbe
-         eW3vJNPcp4ff76kPiTBvO1M7aH9k/3X4NjyofYZWAZ+gjTbFjZ6T/A1U9zrE0omxvKQ+
-         /9ueateMZtV/iXBN7GYyTwF3cPCIXLKmosKLwyO7MpeWp5LZS+nQfRT5iGwnHWkq9a/m
-         LZYQ==
-X-Gm-Message-State: AOAM531hYZR6f1Nc7Qf5JUCvfDwm77fTRBrnoLYurajrTHVB4AsA9Ybw
-        cwUMjY3iKYqdyTcIjf2HpYgV81w1QkzNtO4uS64DWP5dlveYjisWyjbU35c5kPUoWwfSQ6Kvrs8
-        QRn4a6PTG/moc8GwGDx3X
-X-Received: by 2002:a50:cc07:: with SMTP id m7mr23333703edi.356.1636739456902;
-        Fri, 12 Nov 2021 09:50:56 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzm/qstqkH3fHJ+QK9lWlN0FMiXMFk0S7JIQOmqIFQcY7ujdb2Fnnsw4D8yWJIfkxvNtS+oRg==
-X-Received: by 2002:a50:cc07:: with SMTP id m7mr23333680edi.356.1636739456766;
-        Fri, 12 Nov 2021 09:50:56 -0800 (PST)
-Received: from localhost (net-93-151-197-210.cust.vodafonedsl.it. [93.151.197.210])
-        by smtp.gmail.com with ESMTPSA id bo20sm3468495edb.31.2021.11.12.09.50.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Nov 2021 09:50:56 -0800 (PST)
-Date:   Fri, 12 Nov 2021 18:50:54 +0100
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>, linux-iio@vger.kernel.org,
-        mario.tesi@st.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] Documentation: dt: iio: st_lsm6dsx: add disable-shub
- property
-Message-ID: <YY6pfiWyrneKfPtq@lore-desk>
-References: <cover.1636552075.git.lorenzo@kernel.org>
- <c03385c4f862f04406dc4b5f15379c0be921c98a.1636552075.git.lorenzo@kernel.org>
- <20211112162847.782f806a@jic23-huawei>
+        id S235347AbhKLRyc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Nov 2021 12:54:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49662 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231919AbhKLRyc (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 12 Nov 2021 12:54:32 -0500
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5DD260EC0;
+        Fri, 12 Nov 2021 17:51:39 +0000 (UTC)
+Date:   Fri, 12 Nov 2021 17:56:25 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 4/4] iio:filter:admv8818: Add sysfs ABI documentation
+Message-ID: <20211112175625.4a9f393d@jic23-huawei>
+In-Reply-To: <20211109123127.96399-5-antoniu.miclaus@analog.com>
+References: <20211109123127.96399-1-antoniu.miclaus@analog.com>
+        <20211109123127.96399-5-antoniu.miclaus@analog.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="rYZ8JO5i7rdGq3vl"
-Content-Disposition: inline
-In-Reply-To: <20211112162847.782f806a@jic23-huawei>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 9 Nov 2021 14:31:27 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
---rYZ8JO5i7rdGq3vl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Add initial ABI documentation for admv8818 filter sysfs interfaces.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+>  .../ABI/testing/sysfs-bus-iio-filter-admv8818 | 60 +++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+> new file mode 100644
+> index 000000000000..7fa5b0819055
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+> @@ -0,0 +1,60 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_high_pass_3db_frequency
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		The cut-off frequency of the ADMV8818 high pass filter. The value is scaled using
+> +		the `out_altvoltageY_scale` attribute so that GHz frequencies are valid inputs,
+> +		The accepted range of values for the frequencies is between 1.75GHz and 19.9GHz.
+> +
+> +		The default value for the scale is 1000000, therefore MHz frequency values are
+> +		passed as input.
 
-> On Wed, 10 Nov 2021 15:42:33 +0100
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->=20
-> A bit more description here would be good.
->=20
-> Also suggestion from patch 1 carries through to maybe spell
-> out sensor-hub in the property name?
+I don't think this ABI really works unfortunately.  What we are talking here is a bunch of
+selectable filters and one high pass + one low pass filter max can be enabled at a time.
 
-ack, fine to me. I will fix it.
+So two options, we either have simply a single
+out_altvoltage_filter_low_pass_3db_frequency
+out_altvoltage_filter_high_pass_3db_frequency
+Probably both with index 0 and index free channels are a silly idea given it's fine to just have
+one with index 0.
 
-Regards,
-Lorenzo
+or if there is sufficient reason to setup a selectable set of options then
+we could look at indexed filters and a _symbol type selection which may seem
+odd but generalises fairly well from Phase Shift Keying type symbol stuff we
+have had before (though still in staging because no one has cleaned the drivers
+up yet).
 
->=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml =
-b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-> > index d9b3213318fb..502438f14e19 100644
-> > --- a/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml
-> > @@ -61,6 +61,10 @@ properties:
-> >      type: boolean
-> >      description: enable/disable internal i2c controller pullup resisto=
-rs.
-> > =20
-> > +  st,disable-shub:
-> > +    type: boolean
-> > +    description: enable/disable internal i2c controller.
-> > +
-> >    drive-open-drain:
-> >      type: boolean
-> >      description:
->=20
 
---rYZ8JO5i7rdGq3vl
-Content-Type: application/pgp-signature; name="signature.asc"
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_low_pass_3db_frequency
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		The cut-off frequency of the ADMV8818 low pass filter. The value is scaled using
+> +		the `out_altvoltageY_scale` attribute so that GHz frequencies are valid inputs,
+> +		The accepted range of values for the frequencies is between 2.05GHz and 18.85GHz.
+> +
+> +		The default value for the scale is 1000000, therefore MHz frequency values are
+> +		passed as input.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_scale
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Scale high pass and lowpass filter frequency values to Hz.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_mode_available
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading this returns the valid values that can be written to the
+> +		on_altvoltage0_mode attribute:
+> +
+> +		- auto -> enable/register the clock rate notifier
 
------BEGIN PGP SIGNATURE-----
+Hmm I'm wondering about the usecases of this.
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYY6pfgAKCRA6cBh0uS2t
-rMJzAPwL6o30XDFvvdkGK+c42qucOM8aOdPhgTHnJDqDtAOosgEAyE9idPLUHC1o
-vk7DYOLCx8JrLGUNChweljck5OJRFAM=
-=GhTi
------END PGP SIGNATURE-----
+If this is being used with a clk device, then I think only the notifier option makes much
+sense.  If it's not a clk that linux is aware of then manual makes more sense.
 
---rYZ8JO5i7rdGq3vl--
+> +		- manual -> disable/unregister the clock rate notifier
+> +		- bypass -> bypass LPF/HPF and disable/unregister the clock rate notifier
+
+This should be separate enable for the two filters though I think we've use the value 0
+to mean this in the past.  The bypasses look to be per filter anyway, so a single
+mode is insufficiently flexible.
+
+In the vast majority of cases, mode attributes are not used because they are always device
+specific and hence generic code has no idea what to do with them.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_mode
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		This attribute configures the filter mode.
+> +		Reading returns the actual mode.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_band_pass_bandwidth_3db_frequency
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Store the band pass bandwidth frequency value applied.
+> +		Reading returns the bandwidth frequency scaled.
+
+The device has no concept of bandpass that I can find so why are we introducing it?
+Let the user set the two filters to achieve this result.  Userspace can do the maths for us :)
+
+> +
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_band_pass_center_frequency
+> +KernelVersion:
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Store the band pass center frequency value applied.
+> +		Reading returns the center frequency scaled.
 

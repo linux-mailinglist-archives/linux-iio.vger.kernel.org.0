@@ -2,34 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB83644EBF0
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 18:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E8844EBFB
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 18:28:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235340AbhKLR1w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Nov 2021 12:27:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39078 "EHLO mail.kernel.org"
+        id S235429AbhKLRb1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Nov 2021 12:31:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41770 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233404AbhKLR1v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 12 Nov 2021 12:27:51 -0500
+        id S232231AbhKLRb1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 12 Nov 2021 12:31:27 -0500
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 08CA760F93;
-        Fri, 12 Nov 2021 17:24:57 +0000 (UTC)
-Date:   Fri, 12 Nov 2021 17:29:42 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 008BD60F42;
+        Fri, 12 Nov 2021 17:28:33 +0000 (UTC)
+Date:   Fri, 12 Nov 2021 17:33:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        Artur Rojek <contact@artur-rojek.eu>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-mips@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v2] iio/adc: ingenic: fix (MIPS) ingenic-adc build
- errors
-Message-ID: <20211112172942.04553027@jic23-huawei>
-In-Reply-To: <20211110023755.27176-1-rdunlap@infradead.org>
-References: <20211110023755.27176-1-rdunlap@infradead.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Teng Qi <starmiku1207184332@gmail.com>,
+        TOTE Robot <oslab@tsinghua.edu.cn>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.15 66/82] iio: imu: st_lsm6dsx: Avoid
+ potential array overflow in st_lsm6dsx_set_odr()
+Message-ID: <20211112173318.4369eacb@jic23-huawei>
+In-Reply-To: <20211109221641.1233217-66-sashal@kernel.org>
+References: <20211109221641.1233217-1-sashal@kernel.org>
+        <20211109221641.1233217-66-sashal@kernel.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -38,67 +39,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  9 Nov 2021 18:37:55 -0800
-Randy Dunlap <rdunlap@infradead.org> wrote:
+On Tue,  9 Nov 2021 17:16:24 -0500
+Sasha Levin <sashal@kernel.org> wrote:
 
-> MIPS does not always provide clk*() interfaces and there are no
-> always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
-> is not strong enough to prevent build errors.
+> From: Teng Qi <starmiku1207184332@gmail.com>
 > 
-> Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
-> since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
-> BOARD setting), there are still the same build errors.
+> [ Upstream commit 94be878c882d8d784ff44c639bf55f3b029f85af ]
 > 
-> It looks like depending on MACH_INGENIC is the only thing that is
-> sufficient here in order to prevent build errors.
+> The length of hw->settings->odr_table is 2 and ref_sensor->id is an enum
+> variable whose value is between 0 and 5.
+> However, the value ST_LSM6DSX_ID_MAX (i.e. 5) is not caught properly in
+>  switch (sensor->id) {
 > 
-> mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
-> ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
-> mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
-> ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
+> If ref_sensor->id is ST_LSM6DSX_ID_MAX, an array overflow will ocurrs in
+> function st_lsm6dsx_check_odr():
+>   odr_table = &sensor->hw->settings->odr_table[sensor->id];
 > 
-> Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Artur Rojek <contact@artur-rojek.eu>
-> Cc: Paul Cercueil <paul@crapouillou.net>
-> Cc: linux-mips@vger.kernel.org
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: linux-iio@vger.kernel.org
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> and in function st_lsm6dsx_set_odr():
+>   reg = &hw->settings->odr_table[ref_sensor->id].reg;
+> 
+> To avoid this array overflow, handle ST_LSM6DSX_ID_GYRO explicitly and
+> return -EINVAL for the default case.
+> 
+> The enum value ST_LSM6DSX_ID_MAX is only present as an easy way to check
+> the limit and as such is never used, however this is not locally obvious.
+> 
+> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+> Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Link: https://lore.kernel.org/r/20211011114003.976221-1-starmiku1207184332@gmail.com
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-I'm a bit confused.  There are stubs in include/linux/clk.h for these.
-Why do those not apply here? Are these platforms built with CONFIG_CLK but
-don't provide all the functions?
+This is really just noise for stable.  There wasn't a bug here though
+the change is doing some hardening and improving local readability by
+saving anyone having to confirm it can't occur by looking at the enum
+values.
 
-That sounds highly error prone and rather defeats the object of the
-stubs.  Could we either provide the missing stubs, or solve this some other
-way.  I'm not keen to massively cut the build coverage this driver is getting
-by dropping COMPILE_TEST if there is any route to avoid doing so.
-
-Based on the guess than any platform with clks must be able to turn them on
-I grepped for int clk_enable() and there seem to be only two possiblities
-bcm63xx and lantiq as sources of the build breakage.
+I don't mind it going into stable though if others feel it's worthwhile.
 
 Jonathan
 
 > ---
-> v2: use MACH_INGENIC instead of MACH_INGENIC_SOC (thanks, Paul)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
->  drivers/iio/adc/Kconfig |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- linux-next-20211105.orig/drivers/iio/adc/Kconfig
-> +++ linux-next-20211105/drivers/iio/adc/Kconfig
-> @@ -501,7 +501,7 @@ config INA2XX_ADC
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index db45f1fc0b817..8dbf744c5651f 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1279,6 +1279,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
+>  	int err;
 >  
->  config INGENIC_ADC
->  	tristate "Ingenic JZ47xx SoCs ADC driver"
-> -	depends on MIPS || COMPILE_TEST
-> +	depends on MACH_INGENIC
->  	select IIO_BUFFER
->  	help
->  	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC unit.
+>  	switch (sensor->id) {
+> +	case ST_LSM6DSX_ID_GYRO:
+> +		break;
+>  	case ST_LSM6DSX_ID_EXT0:
+>  	case ST_LSM6DSX_ID_EXT1:
+>  	case ST_LSM6DSX_ID_EXT2:
+> @@ -1304,8 +1306,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
+>  		}
+>  		break;
+>  	}
+> -	default:
+> -		break;
+> +	default: /* should never occur */
+> +		return -EINVAL;
+>  	}
+>  
+>  	if (req_odr > 0) {
 

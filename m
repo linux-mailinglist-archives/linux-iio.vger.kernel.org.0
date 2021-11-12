@@ -2,35 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E8844EBFB
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 18:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4608344EC00
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Nov 2021 18:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235429AbhKLRb1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Nov 2021 12:31:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41770 "EHLO mail.kernel.org"
+        id S235347AbhKLRe3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Nov 2021 12:34:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43946 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232231AbhKLRb1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 12 Nov 2021 12:31:27 -0500
+        id S233404AbhKLRe2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 12 Nov 2021 12:34:28 -0500
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 008BD60F42;
-        Fri, 12 Nov 2021 17:28:33 +0000 (UTC)
-Date:   Fri, 12 Nov 2021 17:33:18 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 8F3EF60FE7;
+        Fri, 12 Nov 2021 17:31:36 +0000 (UTC)
+Date:   Fri, 12 Nov 2021 17:36:21 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Teng Qi <starmiku1207184332@gmail.com>,
-        TOTE Robot <oslab@tsinghua.edu.cn>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.15 66/82] iio: imu: st_lsm6dsx: Avoid
- potential array overflow in st_lsm6dsx_set_odr()
-Message-ID: <20211112173318.4369eacb@jic23-huawei>
-In-Reply-To: <20211109221641.1233217-66-sashal@kernel.org>
-References: <20211109221641.1233217-1-sashal@kernel.org>
-        <20211109221641.1233217-66-sashal@kernel.org>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] iio: add filter subfolder
+Message-ID: <20211112173621.0ce23ef3@jic23-huawei>
+In-Reply-To: <20211109123127.96399-2-antoniu.miclaus@analog.com>
+References: <20211109123127.96399-1-antoniu.miclaus@analog.com>
+        <20211109123127.96399-2-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,73 +34,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  9 Nov 2021 17:16:24 -0500
-Sasha Levin <sashal@kernel.org> wrote:
+On Tue, 9 Nov 2021 14:31:24 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> From: Teng Qi <starmiku1207184332@gmail.com>
+> Add filter subfolder for IIO devices that handle filter functionality.
 > 
-> [ Upstream commit 94be878c882d8d784ff44c639bf55f3b029f85af ]
-> 
-> The length of hw->settings->odr_table is 2 and ref_sensor->id is an enum
-> variable whose value is between 0 and 5.
-> However, the value ST_LSM6DSX_ID_MAX (i.e. 5) is not caught properly in
->  switch (sensor->id) {
-> 
-> If ref_sensor->id is ST_LSM6DSX_ID_MAX, an array overflow will ocurrs in
-> function st_lsm6dsx_check_odr():
->   odr_table = &sensor->hw->settings->odr_table[sensor->id];
-> 
-> and in function st_lsm6dsx_set_odr():
->   reg = &hw->settings->odr_table[ref_sensor->id].reg;
-> 
-> To avoid this array overflow, handle ST_LSM6DSX_ID_GYRO explicitly and
-> return -EINVAL for the default case.
-> 
-> The enum value ST_LSM6DSX_ID_MAX is only present as an easy way to check
-> the limit and as such is never used, however this is not locally obvious.
-> 
-> Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-> Signed-off-by: Teng Qi <starmiku1207184332@gmail.com>
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> Link: https://lore.kernel.org/r/20211011114003.976221-1-starmiku1207184332@gmail.com
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-This is really just noise for stable.  There wasn't a bug here though
-the change is doing some hardening and improving local readability by
-saving anyone having to confirm it can't occur by looking at the enum
-values.
+Hi Antoniu,
 
-I don't mind it going into stable though if others feel it's worthwhile.
+Are we likely to see many filter drivers?  If not we could classify them
+as analog front ends and put them in the AFE directory?
+
+If there are going to be lots then I'm fine with a new directory.
 
 Jonathan
 
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/iio/Kconfig         | 1 +
+>  drivers/iio/Makefile        | 1 +
+>  drivers/iio/filter/Kconfig  | 8 ++++++++
+>  drivers/iio/filter/Makefile | 6 ++++++
+>  4 files changed, 16 insertions(+)
+>  create mode 100644 drivers/iio/filter/Kconfig
+>  create mode 100644 drivers/iio/filter/Makefile
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index db45f1fc0b817..8dbf744c5651f 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1279,6 +1279,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
->  	int err;
->  
->  	switch (sensor->id) {
-> +	case ST_LSM6DSX_ID_GYRO:
-> +		break;
->  	case ST_LSM6DSX_ID_EXT0:
->  	case ST_LSM6DSX_ID_EXT1:
->  	case ST_LSM6DSX_ID_EXT2:
-> @@ -1304,8 +1306,8 @@ st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u32 req_odr)
->  		}
->  		break;
->  	}
-> -	default:
-> -		break;
-> +	default: /* should never occur */
-> +		return -EINVAL;
->  	}
->  
->  	if (req_odr > 0) {
+> diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
+> index 2334ad249b46..3a496a28bad4 100644
+> --- a/drivers/iio/Kconfig
+> +++ b/drivers/iio/Kconfig
+> @@ -77,6 +77,7 @@ source "drivers/iio/chemical/Kconfig"
+>  source "drivers/iio/common/Kconfig"
+>  source "drivers/iio/dac/Kconfig"
+>  source "drivers/iio/dummy/Kconfig"
+> +source "drivers/iio/filter/Kconfig"
+>  source "drivers/iio/frequency/Kconfig"
+>  source "drivers/iio/gyro/Kconfig"
+>  source "drivers/iio/health/Kconfig"
+> diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
+> index 65e39bd4f934..97d2fbcf0950 100644
+> --- a/drivers/iio/Makefile
+> +++ b/drivers/iio/Makefile
+> @@ -24,6 +24,7 @@ obj-y += common/
+>  obj-y += dac/
+>  obj-y += dummy/
+>  obj-y += gyro/
+> +obj-y += filter/
+>  obj-y += frequency/
+>  obj-y += health/
+>  obj-y += humidity/
+> diff --git a/drivers/iio/filter/Kconfig b/drivers/iio/filter/Kconfig
+> new file mode 100644
+> index 000000000000..e268bba43852
+> --- /dev/null
+> +++ b/drivers/iio/filter/Kconfig
+> @@ -0,0 +1,8 @@
+> +#
+> +# Filter drivers
+> +#
+> +# When adding new entries keep the list in alphabetical order
+> +
+> +menu "Filters"
+> +
+> +endmenu
+> diff --git a/drivers/iio/filter/Makefile b/drivers/iio/filter/Makefile
+> new file mode 100644
+> index 000000000000..cc0892c01142
+> --- /dev/null
+> +++ b/drivers/iio/filter/Makefile
+> @@ -0,0 +1,6 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Makefile for industrial I/O Filter drivers
+> +#
+> +
+> +# When adding new entries keep the list in alphabetical order
 

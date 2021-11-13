@@ -2,149 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E4D44F03E
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Nov 2021 01:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8216144F22C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Nov 2021 09:34:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231618AbhKMAl7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Nov 2021 19:41:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38116 "EHLO
+        id S232925AbhKMIhe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Nov 2021 03:37:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231261AbhKMAl6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Nov 2021 19:41:58 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB8FC061766;
-        Fri, 12 Nov 2021 16:39:07 -0800 (PST)
+        with ESMTP id S230095AbhKMIhd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Nov 2021 03:37:33 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63B1C061766;
+        Sat, 13 Nov 2021 00:34:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=9F6EZOrW/lhMYi7EcqBru1PQUWPDNkoeRqS5mGSyWZw=; b=hoDesaA+I2w1OIc6ShXlvgMBji
-        iMDCyK6rTCzWPudpEEGC7jnloufAlcKCoOHS2kJRckQHyTKcUDBWir89D7Set/Ms7XgtOE47AsU90
-        Ja9b3Yet+Hg1F8ZCDADidObRWwCxxCx7iTgnbNSj45HiARhAhf2YO0EjLt90h3wFHsB1IuzZC4wzK
-        1JNoVPYJSPtDZjPZjeUAw/yooIDPxHxok/sXc2QuzETVukBS/fJUoVYi5O18G9bv70e+FEEJLn8xO
-        DfOXGCQ2npHHvjn8Oouap4H5YGTJY3mF0pgtMj5KJrCh7nl1R9wcLzto0vS5llVM/1dA7KQ09q4h2
-        EoAcL7JA==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mlh4T-00BwhH-Je; Sat, 13 Nov 2021 00:39:05 +0000
-Subject: Re: [PATCH v2] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=6SpImCaqZgDHAurHopXNKY5UNWFLoorRukjyWRRIR0U=; b=A73noCoSjs3BIZQFdjCMi1OuXz
+        52zbVClFhsvYKJv6m9ug+u27uLdYshoo86Qouq3JiK4sWlvDscyrWSvfy+3C0QEJOgofkR8Mynh7V
+        jCLcRyWiR4tfK8ll1CEYF+IZ4C5fy54EsPggQ0Sb7Sb3jUrSrTukMyYpSOzKcML03vh6mZYxnkN1D
+        YXkHElHu5mP2cvu8kZYFJxRWCxrJNbwEXiPmIG/iS79ejoElGIBiQRp24TRYiNz2EaeUFNDTVpv4D
+        AAgmZ9aEwMxOjRy5lpg7GYVZpuvihcA++5wxb/wCl0/4I4jBgSkODUnKkyJ3e0CmrtxMTQXn0WjJ6
+        V52jk+1w==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55604)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mloUe-0005vU-MI; Sat, 13 Nov 2021 08:34:36 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mloUa-0007Qg-Sq; Sat, 13 Nov 2021 08:34:32 +0000
+Date:   Sat, 13 Nov 2021 08:34:32 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
         Artur Rojek <contact@artur-rojek.eu>,
         Paul Cercueil <paul@crapouillou.net>,
         linux-mips@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH v2] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
+Message-ID: <YY94mLIM311/XiXU@shell.armlinux.org.uk>
 References: <20211110023755.27176-1-rdunlap@infradead.org>
  <20211112172942.04553027@jic23-huawei>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <dfc38220-c79a-f990-d025-c7f5344e0b9a@infradead.org>
-Date:   Fri, 12 Nov 2021 16:39:04 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ <dfc38220-c79a-f990-d025-c7f5344e0b9a@infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <20211112172942.04553027@jic23-huawei>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dfc38220-c79a-f990-d025-c7f5344e0b9a@infradead.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/12/21 9:29 AM, Jonathan Cameron wrote:
-> On Tue,  9 Nov 2021 18:37:55 -0800
-> Randy Dunlap <rdunlap@infradead.org> wrote:
+On Fri, Nov 12, 2021 at 04:39:04PM -0800, Randy Dunlap wrote:
+> On 11/12/21 9:29 AM, Jonathan Cameron wrote:
+> > On Tue,  9 Nov 2021 18:37:55 -0800
+> > Randy Dunlap <rdunlap@infradead.org> wrote:
+> > 
+> > > MIPS does not always provide clk*() interfaces and there are no
+> > > always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
+> > > is not strong enough to prevent build errors.
+> > > 
+> > > Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
+> > > since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
+> > > BOARD setting), there are still the same build errors.
+> > > 
+> > > It looks like depending on MACH_INGENIC is the only thing that is
+> > > sufficient here in order to prevent build errors.
+> > > 
+> > > mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+> > > ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+> > > mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+> > > ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
+> > > 
+> > > Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
+> > > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Cc: Artur Rojek <contact@artur-rojek.eu>
+> > > Cc: Paul Cercueil <paul@crapouillou.net>
+> > > Cc: linux-mips@vger.kernel.org
+> > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > > Cc: linux-iio@vger.kernel.org
+> > > Cc: Florian Fainelli <f.fainelli@gmail.com>
+> > > Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > 
+> > I'm a bit confused.  There are stubs in include/linux/clk.h for these.
+> > Why do those not apply here? Are these platforms built with CONFIG_CLK but
+> > don't provide all the functions?
+> > 
+> > That sounds highly error prone and rather defeats the object of the
+> > stubs.  Could we either provide the missing stubs, or solve this some other
+> > way.  I'm not keen to massively cut the build coverage this driver is getting
+> > by dropping COMPILE_TEST if there is any route to avoid doing so.
 > 
->> MIPS does not always provide clk*() interfaces and there are no
->> always-present stubs for them, so depending on "MIPS || COMPILE_TEST"
->> is not strong enough to prevent build errors.
->>
->> Likewise MACH_INGENIC_SOC || COMPILE_TEST is not strong enough
->> since if only COMPILE_TEST=y (with some other MIPS MACH_ or CPU or
->> BOARD setting), there are still the same build errors.
->>
->> It looks like depending on MACH_INGENIC is the only thing that is
->> sufficient here in order to prevent build errors.
->>
->> mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
->> ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
->> mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
->> ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
->>
->> Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Cc: Artur Rojek <contact@artur-rojek.eu>
->> Cc: Paul Cercueil <paul@crapouillou.net>
->> Cc: linux-mips@vger.kernel.org
->> Cc: Jonathan Cameron <jic23@kernel.org>
->> Cc: Lars-Peter Clausen <lars@metafoo.de>
->> Cc: linux-iio@vger.kernel.org
->> Cc: Florian Fainelli <f.fainelli@gmail.com>
->> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> I'm all for that (above), but it's a mess.
 > 
-> I'm a bit confused.  There are stubs in include/linux/clk.h for these.
-> Why do those not apply here? Are these platforms built with CONFIG_CLK but
-> don't provide all the functions?
+> > Based on the guess than any platform with clks must be able to turn them on
+> > I grepped for int clk_enable() and there seem to be only two possiblities
+> > bcm63xx and lantiq as sources of the build breakage.
 > 
-> That sounds highly error prone and rather defeats the object of the
-> stubs.  Could we either provide the missing stubs, or solve this some other
-> way.  I'm not keen to massively cut the build coverage this driver is getting
-> by dropping COMPILE_TEST if there is any route to avoid doing so.
-
-I'm all for that (above), but it's a mess.
-
-> Based on the guess than any platform with clks must be able to turn them on
-> I grepped for int clk_enable() and there seem to be only two possiblities
-> bcm63xx and lantiq as sources of the build breakage.
-
-CONFIG_BCM63XX=y
-# CONFIG_MACH_INGENIC_SOC is not set
-CONFIG_INGENIC_ADC=y
-CONFIG_HAVE_CLK=y
-
-
-According to the build error messages (above), clk_get_parent()
-is missing. Looking at <linux/clk.h>, for CONFIG_HAVE_CLK=y,
-there is a prototype for clk_get_parent(), and if CONFIG_HAVE_CLK
-is not set, there is a stub for it.
-
-Now look at drivers/clk/clk.c and drivers/clk/Makefile:
-
-clk_get_parent() is defined in clk.c, which is built when
-CONFIG_COMMON_CLK=y, but that is not set in this .config file.
-
-CONFIG_HAVE_CLK=y, but that doesn't get clk_get_parent()
-compiled.
-
-So to me it is a disparity or incongruity between HAVE_CLK and COMMON_CLK.
-
-Russell- do you have any suggestions for how to straighten
-this out?
-
-
-> Jonathan
+> CONFIG_BCM63XX=y
+> # CONFIG_MACH_INGENIC_SOC is not set
+> CONFIG_INGENIC_ADC=y
+> CONFIG_HAVE_CLK=y
 > 
->> ---
->> v2: use MACH_INGENIC instead of MACH_INGENIC_SOC (thanks, Paul)
->>
->>   drivers/iio/adc/Kconfig |    2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> --- linux-next-20211105.orig/drivers/iio/adc/Kconfig
->> +++ linux-next-20211105/drivers/iio/adc/Kconfig
->> @@ -501,7 +501,7 @@ config INA2XX_ADC
->>   
->>   config INGENIC_ADC
->>   	tristate "Ingenic JZ47xx SoCs ADC driver"
->> -	depends on MIPS || COMPILE_TEST
->> +	depends on MACH_INGENIC
->>   	select IIO_BUFFER
->>   	help
->>   	  Say yes here to build support for the Ingenic JZ47xx SoCs ADC unit.
 > 
+> According to the build error messages (above), clk_get_parent()
+> is missing. Looking at <linux/clk.h>, for CONFIG_HAVE_CLK=y,
+> there is a prototype for clk_get_parent(), and if CONFIG_HAVE_CLK
+> is not set, there is a stub for it.
+> 
+> Now look at drivers/clk/clk.c and drivers/clk/Makefile:
+> 
+> clk_get_parent() is defined in clk.c, which is built when
+> CONFIG_COMMON_CLK=y, but that is not set in this .config file.
+> 
+> CONFIG_HAVE_CLK=y, but that doesn't get clk_get_parent()
+> compiled.
+> 
+> So to me it is a disparity or incongruity between HAVE_CLK and COMMON_CLK.
 
+HAVE_CLK means we have the clk API implemented. COMMON_CLK is one such
+implementation, and HAVE_LEGACY_CLK is another group of implementations.
+
+BCM63XX has its own implementation and uses HAVE_LEGACY_CLK, which can
+be found in arch/mips/bcm63xx/clk.c.
+
+If it doesn't support parent clocks, then it should provide a stub
+clk_get_parent() that returns NULL at the very least.
 
 -- 
-~Randy
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!

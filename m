@@ -2,33 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDEA744F41D
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Nov 2021 17:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 369FC44F42C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Nov 2021 17:37:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236022AbhKMQ0z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Nov 2021 11:26:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49512 "EHLO mail.kernel.org"
+        id S235916AbhKMQkJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Nov 2021 11:40:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50338 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235980AbhKMQ0z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 13 Nov 2021 11:26:55 -0500
+        id S231912AbhKMQkJ (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 13 Nov 2021 11:40:09 -0500
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3302961077;
-        Sat, 13 Nov 2021 16:24:01 +0000 (UTC)
-Date:   Sat, 13 Nov 2021 16:28:47 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 37BB360EE7;
+        Sat, 13 Nov 2021 16:37:15 +0000 (UTC)
+Date:   Sat, 13 Nov 2021 16:42:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno Sa <Nuno.Sa@analog.com>,
-        Manuel Stahl <manuel.stahl@iis.fraunhofer.de>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: ad7768-1: Call iio_trigger_notify_done() on
- error
-Message-ID: <20211113162847.3f1eb11d@jic23-huawei>
-In-Reply-To: <20211101144055.13858-2-lars@metafoo.de>
-References: <20211101144055.13858-1-lars@metafoo.de>
-        <20211101144055.13858-2-lars@metafoo.de>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, <Eugen.Hristev@microchip.com>
+Subject: Re: [PATCH v2 08/13] iio: at91-sama5d2: Use scan_type when
+ processing raw data
+Message-ID: <20211113164201.60644fc4@jic23-huawei>
+In-Reply-To: <20211104082413.3681212-9-gwendal@chromium.org>
+References: <20211104082413.3681212-1-gwendal@chromium.org>
+        <20211104082413.3681212-9-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -37,53 +35,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  1 Nov 2021 15:40:55 +0100
-Lars-Peter Clausen <lars@metafoo.de> wrote:
+On Thu,  4 Nov 2021 01:24:08 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> IIO trigger handlers must call iio_trigger_notify_done() when done. This
-> must be done even when an error occurred. Otherwise the trigger will be
-> seen as busy indefinitely and the trigger handler will never be called
-> again.
+> Use channel definition as root of trust and replace constant
+> when reading elements directly using the raw sysfs attributes.
 > 
-> The ad7768-1 driver neglects to call iio_trigger_notify_done() when there
-> is an error reading the converter data. Fix this by making sure that
-> iio_trigger_notify_done() is included in the error exit path.
-> 
-> Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 
-Hi Lars,
+Hi Eugen,
 
-I've always meant to have a hard think about what we 'should' do in the event
-of an error in one of these trigger handlers.   Definitely don't want to get
-stuck so these patches make sense, but I'd also at somepoint like to explore
-if we should stop the device capture and do something like poison the kfifo
-output so that we know it was broken. 
+Gwendal's v2 crossed with your comments on this fixing an issue in 
+6794e23fa3fe ("iio: adc: at91-sama5d2_adc: add support for oversampling 
+resolution")
 
-Anyhow, a discussion for another day.
+You requested a separate fix to change the value to 13 then this on top
+of that.  I don't see why we can't go directly to this with an appropriately
+reworded message to say what is being fixed.  Am I missing something beyond
+the fix being more obvious if we just change the value?
 
-Applied these two to the fixes-togreg branch of iio.git and marked for stable.
+Whilst this is pending I've applied the rest of this series as it's only this
+one with open questions.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ad7768-1.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/adc/at91-sama5d2_adc.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 2c5c8a3672b2..aa42ba759fa1 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -480,8 +480,8 @@ static irqreturn_t ad7768_trigger_handler(int irq, void *p)
->  	iio_push_to_buffers_with_timestamp(indio_dev, &st->data.scan,
->  					   iio_get_time_ns(indio_dev));
+> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> index 4c922ef634f8e..92a57cf10fba4 100644
+> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> @@ -1586,7 +1586,8 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
+>  		*val = st->conversion_value;
+>  		ret = at91_adc_adjust_val_osr(st, val);
+>  		if (chan->scan_type.sign == 's')
+> -			*val = sign_extend32(*val, 11);
+> +			*val = sign_extend32(*val,
+> +					     chan->scan_type.realbits - 1);
+>  		st->conversion_done = false;
+>  	}
 >  
-> -	iio_trigger_notify_done(indio_dev->trig);
->  err_unlock:
-> +	iio_trigger_notify_done(indio_dev->trig);
->  	mutex_unlock(&st->lock);
->  
->  	return IRQ_HANDLED;
 

@@ -2,47 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9F044F92D
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Nov 2021 17:54:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C8A44FC5D
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Nov 2021 23:55:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235621AbhKNQ5Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Nov 2021 11:57:25 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51624 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231831AbhKNQ5Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 14 Nov 2021 11:57:25 -0500
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0A11C60C4D;
-        Sun, 14 Nov 2021 16:54:26 +0000 (UTC)
-Date:   Sun, 14 Nov 2021 16:59:13 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
+        id S234778AbhKNW6Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Nov 2021 17:58:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44862 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233569AbhKNW6M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Nov 2021 17:58:12 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8DF3C061746;
+        Sun, 14 Nov 2021 14:55:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=522taJi6xoI1oSlErZXqjEanXSw8p1Evt8R0PTr7T9Q=; b=AXlcil1N6dkH3p2EcMwi3ksaUD
+        iqo9pXx7QfUvGusYd3mJray/7fluS9trZfB+eeLIkcnZ46aKP7IF2AsrMwVuCunysGr36XmgP9DRG
+        p22p05hQgjd84r+vub1DsQdTShZkODb3sJsuzVNQgWgYN5jGLAEjz/tIi81C6ekizBtOadm7EXp8A
+        Qc4okktAUw9SiZjGrehgjkpw8p4F5+5C7wTDlWnRScTviWDj+X+H+3WkZyRUDdx9WeyKgBobRv+zP
+        nUaZcJ88IyVME5RnQ0WXqaoTXH5HYcUK6ztJSeQvakncjCoZEv5wcBdTuxVewiwld6486WAiPwFNX
+        gDRShPig==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55624)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mmOOw-0006wd-Mi; Sun, 14 Nov 2021 22:55:06 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mmOOr-0000RX-SN; Sun, 14 Nov 2021 22:55:01 +0000
+Date:   Sun, 14 Nov 2021 22:55:01 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
 To:     Randy Dunlap <rdunlap@infradead.org>
 Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
         Artur Rojek <contact@artur-rojek.eu>,
         Paul Cercueil <paul@crapouillou.net>,
-        linux-mips@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
         bcm-kernel-feedback-list@broadcom.com,
         Jonas Gorski <jonas.gorski@gmail.com>
 Subject: Re: [PATCH v3] mips: bcm63xx: add support for clk_get_parent()
-Message-ID: <20211114165913.55a90249@jic23-huawei>
-In-Reply-To: <20211114163444.21669-1-rdunlap@infradead.org>
+Message-ID: <YZGTxTHn3HuIhuSH@shell.armlinux.org.uk>
 References: <20211114163444.21669-1-rdunlap@infradead.org>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211114163444.21669-1-rdunlap@infradead.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 Nov 2021 08:34:44 -0800
-Randy Dunlap <rdunlap@infradead.org> wrote:
-
+On Sun, Nov 14, 2021 at 08:34:44AM -0800, Randy Dunlap wrote:
 > BCM63XX selects HAVE_LEGACY_CLK but does not provide/support
 > clk_get_parent(), so add a simple implementation of that
 > function so that callers of it will build without errors.
@@ -57,50 +73,10 @@ Randy Dunlap <rdunlap@infradead.org> wrote:
 > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 > Reported-by: kernel test robot <lkp@intel.com>
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-I wonder a bit if it makes sense to fix only the ones we hit given there
-look to be other missing definitions in this subarch.
-clk_has_parent() for example appears to also be missing.
+Thanks.
 
-Do we have the same issue with mips/lantiq?
-
-Jonathan
-
-
-> Cc: Artur Rojek <contact@artur-rojek.eu>
-> Cc: Paul Cercueil <paul@crapouillou.net>
-> Cc: linux-mips@vger.kernel.org
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: linux-iio@vger.kernel.org
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: Jonas Gorski <jonas.gorski@gmail.com>
-> ---
-> v1 and v2 were:
-> [PATCH] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
-> Fixes: 1a78daea107d ("IIO: add Ingenic JZ47xx ADC driver.")
-> 
->  arch/mips/bcm63xx/clk.c |    7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> --- linux-next-20211112.orig/arch/mips/bcm63xx/clk.c
-> +++ linux-next-20211112/arch/mips/bcm63xx/clk.c
-> @@ -381,6 +381,13 @@ void clk_disable(struct clk *clk)
->  
->  EXPORT_SYMBOL(clk_disable);
->  
-> +struct clk *clk_get_parent(struct clk *clk)
-> +{
-> +	return NULL;
-> +}
-> +
-> +EXPORT_SYMBOL(clk_get_parent);
-> +
->  unsigned long clk_get_rate(struct clk *clk)
->  {
->  	if (!clk)
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!

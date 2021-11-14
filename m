@@ -2,408 +2,230 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07FFE44F833
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Nov 2021 14:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E140044F8CF
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Nov 2021 16:45:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbhKNNur (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Nov 2021 08:50:47 -0500
-Received: from www381.your-server.de ([78.46.137.84]:53234 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230169AbhKNNum (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Nov 2021 08:50:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=tROnPjxjkGbewZuWgGefkd4wBynloibyaCEs0PLCCfE=; b=OzJeZfhEsEdhM8ycjt4VDJqiuu
-        3wwxSA6eZIgTmVIsha4Z8obFJj4ojqJaFW9qvCJyk7C1yU8io8YMf4mQ4W6gPujCUR9x88dKE9wAQ
-        JlAMRnMqbtXZ/Noj63ULOksUC3vFyBRIE/ZRsb13quNFr9JzPaqqZNT2vpHoc3HterATeY0fnPf7n
-        /3ht3VxvFniBRfWv9dcVpJ5BWVBXKf5BpM8bUCofIWmPReOwBBHn+31uDrfBjzY9MyaIBwtC4Y6Ae
-        d5nRpz1/BKhFhEvcO/+YaMQJ8Z9wVdHjPRf2FkaKUGP7kr6O/bTxiCEGHncnNaO5Io8yNWrMV9UHf
-        9Rm935wQ==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mmFrG-000DtK-Br; Sun, 14 Nov 2021 14:47:46 +0100
-Received: from [82.135.83.112] (helo=[192.168.178.20])
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mmFrG-000RpN-3u; Sun, 14 Nov 2021 14:47:46 +0100
-Subject: Re: [PATCH 1/2] iio: humidity: Add support for Sensirion SHTC3 sensor
-To:     Gilles Talis <gilles.talis@gmail.com>, jic23@kernel.org,
-        pmeerw@pmeerw.net, robh+dt@kernel.org, linux-iio@vger.kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211114132335.47651-1-gilles.talis@gmail.com>
- <20211114132335.47651-2-gilles.talis@gmail.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <b86bd1eb-8c05-2c54-4e05-e5d72ba3a890@metafoo.de>
-Date:   Sun, 14 Nov 2021 14:47:45 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S235473AbhKNPss (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Nov 2021 10:48:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43314 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236073AbhKNPsn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 14 Nov 2021 10:48:43 -0500
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 09E9560E94;
+        Sun, 14 Nov 2021 15:45:46 +0000 (UTC)
+Date:   Sun, 14 Nov 2021 15:50:33 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/3] dt-bindings: iio: frequency: add admv1013 doc
+Message-ID: <20211114155033.52056f69@jic23-huawei>
+In-Reply-To: <20211105112930.122017-3-antoniu.miclaus@analog.com>
+References: <20211105112930.122017-1-antoniu.miclaus@analog.com>
+        <20211105112930.122017-3-antoniu.miclaus@analog.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20211114132335.47651-2-gilles.talis@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26353/Sun Nov 14 10:19:38 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/14/21 2:23 PM, Gilles Talis wrote:
-> The SHTC3 is a digital humidity and temperature sensor.
-> It covers humidity measurement range from 0 to 100% relative humidity
-> and temperature measurement range from -45 to 125 deg C.
->
-> Datasheet: https://www.sensirion.com/file/datasheet_shtc3
->
-> Signed-off-by: Gilles Talis <gilles.talis@gmail.com>
+On Fri, 5 Nov 2021 13:29:29 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-Hi,
+> Add device tree bindings for the ADMV1013 Upconverter.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-Thanks for the path. This looks really good, very well written driver.
+My high frequency theory etc is rather rusty being nearly 20 years since I last
+looked at this stuff so I may have some interpretations below wrong...
 
-But we already have support for the shtc3 in the Linux kernel as part of 
-the hwmon framework, see drivers/hwmon/shtc1.c.
+My main concern here is that most of the powerdown entries prevent the device
+doing anything useful so as far as I can tell would make no sense to ever set.
 
-- Lars
+Jonathan
 
 > ---
->   drivers/iio/humidity/Kconfig  |  11 ++
->   drivers/iio/humidity/Makefile |   1 +
->   drivers/iio/humidity/shtc3.c  | 286 ++++++++++++++++++++++++++++++++++
->   3 files changed, 298 insertions(+)
->   create mode 100644 drivers/iio/humidity/shtc3.c
->
-> diff --git a/drivers/iio/humidity/Kconfig b/drivers/iio/humidity/Kconfig
-> index 2de5494e7c22..7aab6141c64b 100644
-> --- a/drivers/iio/humidity/Kconfig
-> +++ b/drivers/iio/humidity/Kconfig
-> @@ -98,6 +98,17 @@ config HTU21
->   	  This driver can also be built as a module. If so, the module will
->   	  be called htu21.
->   
-> +config SHTC3
-> +	tristate "Sensirion SHTC3 humidity and temperature sensor"
-> +	depends on I2C
-> +	select CRC8
-> +	help
-> +	  Say yes here to build support for the Sensirion SHTC3
-> +	  humidity and temperature sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called shtc3.
-> +
->   config SI7005
->   	tristate "SI7005 relative humidity and temperature sensor"
->   	depends on I2C
-> diff --git a/drivers/iio/humidity/Makefile b/drivers/iio/humidity/Makefile
-> index f19ff3de97c5..13020dfad1b3 100644
-> --- a/drivers/iio/humidity/Makefile
-> +++ b/drivers/iio/humidity/Makefile
-> @@ -16,6 +16,7 @@ obj-$(CONFIG_HTS221_I2C) += hts221_i2c.o
->   obj-$(CONFIG_HTS221_SPI) += hts221_spi.o
->   
->   obj-$(CONFIG_HTU21) += htu21.o
-> +obj-$(CONFIG_SHTC3) += shtc3.o
->   obj-$(CONFIG_SI7005) += si7005.o
->   obj-$(CONFIG_SI7020) += si7020.o
->   
-> diff --git a/drivers/iio/humidity/shtc3.c b/drivers/iio/humidity/shtc3.c
+>  .../bindings/iio/frequency/adi,admv1013.yaml  | 119 ++++++++++++++++++
+>  1 file changed, 119 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
 > new file mode 100644
-> index 000000000000..ec3d7215e378
+> index 000000000000..47993253a586
 > --- /dev/null
-> +++ b/drivers/iio/humidity/shtc3.c
-> @@ -0,0 +1,286 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Sensirion SHTC3 Humidity and Temperature Sensor
-> + *
-> + * Copyright (c) 2021 Gilles Talis <gilles.talis@gmail.com>
-> + *
-> + * Datasheet: https://www.sensirion.com/file/datasheet_shtc3
-> + *
-> + * I2C slave address: 0x70
-> + */
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv1013.yaml
+> @@ -0,0 +1,119 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,admv1013.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#include <linux/crc8.h>
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
+> +title: ADMV1013 Microwave Upconverter
 > +
-> +#include <linux/iio/iio.h>
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
 > +
-> +#define SHTC3_CMD(cmd_word)		cpu_to_be16(cmd_word)
-> +#define SHTC3_CMD_LEN			2
+> +description: |
+> +   Wideband, microwave upconverter optimized for point to point microwave
+> +   radio designs operating in the 24 GHz to 44 GHz frequency range.
 > +
-> +#define SHTC3_ID_MASK			0x083F
-> +#define SHTC3_ID			0x0807
+> +   https://www.analog.com/en/products/admv1013.html
 > +
-> +#define SHTC3_CRC8_POLYNOMIAL		0x31
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,admv1013
 > +
-> +enum shtc3_cmd {
-> +	SHTC3_CMD_GET_ID		= SHTC3_CMD(0xEFC8),
-> +	SHTC3_CMD_SOFT_RESET		= SHTC3_CMD(0x805D),
-> +	SHTC3_CMD_SLEEP			= SHTC3_CMD(0xB098),
-> +	SHTC3_CMD_WAKEUP		= SHTC3_CMD(0x3517),
-> +	/*
-> +	 * Run measurement, low-power mode, clock stretching
-> +	 * temperature first
-> +	 */
-> +	SHTC3_CMD_TEMP_MEAS_LP_CS	= SHTC3_CMD(0x6458),
-> +	/*
-> +	 * Run measurement, low-power mode, clock stretching
-> +	 * relative humidity first
-> +	 */
-> +	SHTC3_CMD_RH_MEAS_LP_CS		= SHTC3_CMD(0x44DE),
-> +};
+> +  reg:
+> +    maxItems: 1
 > +
-> +DECLARE_CRC8_TABLE(shtc3_crc8_tbl);
+> +  spi-max-frequency:
+> +    maximum: 1000000
 > +
-> +struct shtc3_rx_data {
-> +	__be16	data;
-> +	u8	crc;
-> +} __packed;
-> +
-> +static int shtc3_send_cmd(struct i2c_client *client, u16 cmd, u16 *data)
-> +{
-> +	int ret;
-> +	struct shtc3_rx_data rx_data;
-> +	u8 crc;
-> +
-> +	ret = i2c_master_send(client, (const char *)&cmd, SHTC3_CMD_LEN);
-> +	if (ret != SHTC3_CMD_LEN)
-> +		return -EIO;
-> +
-> +	/*
-> +	 * This is used to read temperature and humidity measurements
-> +	 * as well as the sensor ID.
-> +	 * Sensor sends 2 bytes of data followed by one byte of CRC
-> +	 */
-> +	if (data) {
-> +		ret = i2c_master_recv(client, (u8 *) &rx_data,
-> +					sizeof(struct shtc3_rx_data));
-> +		if (ret < 0)
-> +			return ret;
-> +		if (ret != sizeof(struct shtc3_rx_data))
-> +			return -EIO;
-> +
-> +		crc = crc8(shtc3_crc8_tbl, (u8 *)&rx_data.data,
-> +			    2, CRC8_INIT_VALUE);
-> +		if (crc != rx_data.crc)
-> +			return -EIO;
-> +
-> +		*data = be16_to_cpu(rx_data.data);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int shtc3_sleep(struct i2c_client *client)
-> +{
-> +	return shtc3_send_cmd(client, SHTC3_CMD_SLEEP, 0);
-> +}
-> +
-> +static int shtc3_wakeup(struct i2c_client *client)
-> +{
-> +	if (shtc3_send_cmd(client, SHTC3_CMD_WAKEUP, 0) < 0)
-> +		return -EIO;
-> +
-> +	/* Wait for device to wake up */
-> +	usleep_range(180, 240);
-> +
-> +	return 0;
-> +}
-> +
-> +static int shtc3_read_channel(struct i2c_client *client, bool temp)
-> +{
-> +	int ret;
-> +	u16 cmd;
-> +	u16 meas;
-> +
-> +	ret = shtc3_wakeup(client);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/*
-> +	 * Sensor sends back measurement results after measurement command
-> +	 * has been issued by the host.
-> +	 * Sensor sends 3 bytes (2 bytes of data + 1 byte of CRC) for each
-> +	 * channel sequentially
-> +	 * The command issued by the host determines the channel for which
-> +	 * the sensor will first send the data.
-> +	 * We select the channel for which we need the results
-> +	 * then only read back the 2 bytes corresponding to this channel.
-> +	 */
-> +	cmd = temp ? SHTC3_CMD_TEMP_MEAS_LP_CS : SHTC3_CMD_RH_MEAS_LP_CS;
-> +	ret = shtc3_send_cmd(client, cmd, &meas);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Go back to sleep */
-> +	shtc3_sleep(client);
-> +
-> +	return meas;
-> +}
-> +
-> +static int shtc3_read_raw(struct iio_dev *indio_dev,
-> +			   struct iio_chan_spec const *chan, int *val,
-> +			   int *val2, long mask)
-> +{
-> +	struct i2c_client **client = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = shtc3_read_channel(*client, (chan->type == IIO_TEMP));
-> +		if (ret < 0)
-> +			return ret;
-> +		*val = ret;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (chan->type == IIO_TEMP) {
-> +			*val = 2;
-> +			*val2 = 670000;
-> +		} else {
-> +			*val = 0;
-> +			*val2 = 1525;
-> +		}
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = -16852;
-> +		return IIO_VAL_INT;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static const struct iio_chan_spec shtc3_channels[] = {
-> +	{
-> +		.type = IIO_HUMIDITYRELATIVE,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_SCALE),
-> +	},
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
-> +	}
-> +};
-> +
-> +static const struct iio_info shtc3_info = {
-> +	.read_raw = shtc3_read_raw,
-> +};
-> +
-> +static int shtc3_verify_id(struct i2c_client *client)
-> +{
-> +	int ret;
-> +	u16 device_id;
-> +	u16 reg_val;
-> +
-> +	ret = shtc3_send_cmd(client, SHTC3_CMD_GET_ID, &reg_val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	device_id = reg_val & SHTC3_ID_MASK;
-> +	if (device_id != SHTC3_ID)
-> +		return -ENODEV;
-> +
-> +	return 0;
-> +}
-> +
-> +static int shtc3_reset(struct i2c_client *client)
-> +{
-> +	int ret;
-> +
-> +	ret = shtc3_send_cmd(client, SHTC3_CMD_SOFT_RESET, 0);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Wait for device to enter idle state */
-> +	usleep_range(180, 240);
-> +
-> +	return 0;
-> +}
-> +
-> +static int shtc3_setup(struct i2c_client *client)
-> +{
-> +	int ret;
-> +
-> +	ret = shtc3_verify_id(client);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "SHTC3 not found\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = shtc3_reset(client);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return shtc3_sleep(client);
-> +}
-> +
-> +static int shtc3_probe(struct i2c_client *client,
-> +			const struct i2c_device_id *id)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct i2c_client **data;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	*data = client;
-> +
-> +	indio_dev->name = dev_name(&client->dev);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &shtc3_info;
-> +	indio_dev->channels = shtc3_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(shtc3_channels);
-> +
-> +	crc8_populate_msb(shtc3_crc8_tbl, SHTC3_CRC8_POLYNOMIAL);
-> +
-> +	ret = shtc3_setup(client);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "SHTC3 setup failed\n");
-> +		return ret;
-> +	}
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
-> +}
-> +
-> +static const struct i2c_device_id shtc3_id[] = {
-> +	{ "shtc3", 0 },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, shtc3_id);
-> +
-> +static const struct of_device_id shtc3_dt_ids[] = {
-> +	{ .compatible = "sensirion,shtc3" },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, shtc3_dt_ids);
-> +
-> +static struct i2c_driver shtc3_driver = {
-> +	.driver = {
-> +		.name = "shtc3",
-> +		.of_match_table = shtc3_dt_ids,
-> +	},
-> +	.probe		= shtc3_probe,
-> +	.id_table	= shtc3_id,
-> +};
-> +
-> +module_i2c_driver(shtc3_driver);
-> +MODULE_DESCRIPTION("Sensirion SHTC3 Humidity and Temperature Sensor");
-> +MODULE_AUTHOR("Gilles Talis <gilles.talis@gmail.com>");
-> +MODULE_LICENSE("GPL");
+> +  clocks:
+> +    description:
+> +      Definition of the external clock.
 
+I mention elsewhere that this isn't exactly a clock in the normal sense
+given we are modulating a signal onto it's frequency multiplied form but
+meh I guess it might be fed by something looking clock like...
+
+> +    minItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: lo_in
+> +
+> +  clock-output-names:
+> +    maxItems: 1
+
+Does it actually make sense to handle the output as a clock? It has a multiple
+GHz bandwidth.
+
+> +
+> +  vcm-supply:
+> +    description:
+> +      Analog voltage regulator.
+
+> +
+> +  adi,vga-powerdown:
+> +    description:
+> +      Power Down the Voltage Gain Amplifier Circuit available at
+> +      BG_RBIAS2 pin.
+
+Is that all it does?  Datasheet is a bit vague, but I'm guessing this
+also leaves the device not doing anything useful so makes little sense
+to expose.
+
+> +    type: boolean
+> +
+> +  adi,mixer-powerdown:
+> +    description:
+> +      Power Down the Mixer Circuit. Enable to put the block in
+> +      a power down state.
+As below. Device doesn't do anything useful with the mixer disabled
+so I don't think this is something for DT.
+> +    type: boolean
+> +
+> +  adi,quad-powerdown:
+> +    description:
+> +      Power Down the Quadrupler. Enable to put the block in
+> +      a power down state.
+
+I'm struggling a bit with the affect of this when reading the datasheet, but
+I think it means the device is pointless as we have no LO signal and hence no
+output.  Hence I don't think we should have this in DT.
+
+> +    type: boolean
+> +
+> +  adi,bg-powerdown:
+> +    description:
+> +      Power Down the Transmitter Band Gap. Enable to put the part in
+> +      a power down state.
+> +    type: boolean
+Another one where I think disabling it in DT makes the device pointless.
+These are absolutely things you might want to wire up in power management
+callbacks, but not have in DT.
+
+> +
+> +  adi,mixer-if-enable:
+> +    description:
+> +      Enable the Intermediate Frequency Mode. Either IF Mode or I/Q Mode
+> +      can be enabled at a time.
+How do we enable IQ mode?   Is this better described as a choice of mode?
+IQ vs IF?  If so make it an appropriate enum rather than this which kind
+of suggests it's enabling the mixer which is not hte case.
+
+> +    type: boolean
+> +
+> +  adi,detector-enable:
+> +    description:
+> +      Enable the Envelope Detector available at output pins VENV_P and
+> +      VENV_N. Disable to reduce power consumption.
+
+So the reason you'd turn this off is it isn't wired to anything.  What might
+it be wired to?  My guess is it would be to an ADC, probably also wired to the
+host processor?   If so this should be represented as a consumer node of the
+ADC so that we can provide the envelope reading if it is wired up.  If it is
+not wired up then we turn it off.
+
+> +    type: boolean
+> +
+> +  adi,quad-se-mode:
+> +    description:
+> +      Switch the LO path from differential to single-ended operation.
+> +      Set value 6 for Single-Ended Mode, Negative Side Disabled.
+> +      Set value 9 for Single-Ended Mode, Positive Side Disabled.
+> +      Set value 12 for Differential Mode.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [6, 9, 12]
+
+Datasheet is rather unclear on this to my mind.  From the point of view
+of how it is used it is about the LO inputs, not the quadrupler at all,
+that just happens to be the first unit to care about this.
+I'm also not keen on magic numbers where they can be avoided and these
+are particularly 'magic'.
+
+So maybe
+adi,local-oscilator-mode
+enum [diff, se-pos, se-neg] 
+
+?
+> +
+> +  '#clock-cells':
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - vcm-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      admv1013@0{
+> +        compatible = "adi,admv1013";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        clocks = <&admv1013_lo>;
+> +        clock-names = "lo_in";
+> +        vcm-supply = <&vcm>;
+> +        adi,quad-se-mode = <12>;
+> +        adi,mixer-if-enable;
+> +        adi,detector-enable;
+> +      };
+> +    };
+> +...
 

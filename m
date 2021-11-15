@@ -2,99 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F14B4515B6
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 21:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78409452384
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 02:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239827AbhKOUtw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Nov 2021 15:49:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45398 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345099AbhKOT0Z (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 15 Nov 2021 14:26:25 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E4A5263719;
-        Mon, 15 Nov 2021 19:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1637003418;
-        bh=BwxPc7c1wjSTV7MEv9Nn62AA4PzI2jDHLDTmxs6KIlY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MwKQvLq/bLruM69kjCboNLIJbH4xE+WX97Xf0CWg7+iTgFZiBVsUw3wx76Lh9iNiq
-         bh4JG+W97lwQa+yLvG7aKhwpLS9EC0r/VQXLd6qJ+bWIp67GMi20vYfJXzD2nnyFv7
-         CLz/L23z3BeaLAdrx6uy3taxBnFj4lman52AZhnA=
-Date:   Mon, 15 Nov 2021 19:08:36 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
-Subject: Re: [PATCH] device property: Add fwnode_iomap()
-Message-ID: <YZKiJFpSU8kIK6Tq@kroah.com>
-References: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
+        id S1350747AbhKPB04 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Nov 2021 20:26:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33706 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243864AbhKOTIK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Nov 2021 14:08:10 -0500
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD438C06EDE1;
+        Mon, 15 Nov 2021 09:58:21 -0800 (PST)
+Received: from [2a04:4540:1401:b700:606b:3eee:8c1b:a587]
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1mmgF6-0005a6-Ay; Mon, 15 Nov 2021 18:58:08 +0100
+Message-ID: <4342c4de-b516-8992-a3f3-4eea7ff4de40@phrozen.org>
+Date:   Mon, 15 Nov 2021 18:58:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.1
+Subject: Re: [PATCH] mips: lantiq: add support for clk_get_parent()
+Content-Language: en-GB
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
+        linux-mips@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20211115012051.16302-1-rdunlap@infradead.org>
+From:   John Crispin <john@phrozen.org>
+In-Reply-To: <20211115012051.16302-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 15, 2021 at 05:38:19PM +0000, Anand Ashok Dumbre wrote:
-> This patch introduces a new helper routine - fwnode_iomap(),
-> which allows to map the memory mapped IO for a given device node.
+
+
+On 15.11.21 02:20, Randy Dunlap wrote:
+> Provide a simple implementation of clk_get_parent() in the
+> lantiq subarch so that callers of it will build without errors.
 > 
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> Fixes this build error:
+> ERROR: modpost: "clk_get_parent" [drivers/iio/adc/ingenic-adc.ko] undefined!
+> 
+> Fixes: 171bb2f19ed6 ("MIPS: Lantiq: Add initial support for Lantiq SoCs")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Cc: linux-mips@vger.kernel.org
+> Cc: John Crispin <john@phrozen.org>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: linux-iio@vger.kernel.org
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+Acked-by: John Crispin <john@phrozen.org>
+
+// we added the same fix for mips/ralink a while back
+
 > ---
->  drivers/base/property.c  | 15 +++++++++++++++
->  include/linux/property.h |  2 ++
->  2 files changed, 17 insertions(+)
+>   arch/mips/lantiq/clk.c |    6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/drivers/base/property.c b/drivers/base/property.c
-> index 453918eb7390..9323e9b5de02 100644
-> --- a/drivers/base/property.c
-> +++ b/drivers/base/property.c
-> @@ -1021,6 +1021,21 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
->  }
->  EXPORT_SYMBOL(fwnode_irq_get);
->  
-> +/**
-> + * fwnode_iomap - Maps the memory mapped IO for a given fwnode
-> + * @fwnode:	Pointer to the firmware node
-> + * @index:	Index of the IO range
-> + *
-> + * Returns a pointer to the mapped memory.
-> + */
-> +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index) {
-> +	if (is_of_node(fwnode))
-> +		return of_iomap(to_of_node(fwnode), index);
-> +
+> --- linux-next-20211112.orig/arch/mips/lantiq/clk.c
+> +++ linux-next-20211112/arch/mips/lantiq/clk.c
+> @@ -158,6 +158,12 @@ void clk_deactivate(struct clk *clk)
+>   }
+>   EXPORT_SYMBOL(clk_deactivate);
+>   
+> +struct clk *clk_get_parent(struct clk *clk)
+> +{
 > +	return NULL;
 > +}
-> +EXPORT_SYMBOL(fwnode_iomap);
+> +EXPORT_SYMBOL(clk_get_parent);
 > +
->  /**
->   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
->   * @fwnode: Pointer to the parent firmware node
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 357513a977e5..9bb0b0155402 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -121,6 +121,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
->  
->  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
->  
-> +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
-> +
->  unsigned int device_get_child_node_count(struct device *dev);
->  
->  static inline bool device_property_read_bool(struct device *dev,
-> -- 
-> 2.17.1
+>   static inline u32 get_counter_resolution(void)
+>   {
+>   	u32 res;
 > 
-
-Also, always run scripts/checkpatch.pl before sending patches out so you
-do not get grumpy maintainers telling you to run scripts/checkpatch.pl
-on your patches :)
-
-thanks,
-
-greg k-h

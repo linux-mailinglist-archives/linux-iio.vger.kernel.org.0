@@ -2,96 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B173A450D68
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 18:54:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F2C4515B3
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 21:47:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbhKOR5U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Nov 2021 12:57:20 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4097 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239176AbhKORyx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Nov 2021 12:54:53 -0500
-Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HtGrD5MLtz67VcZ;
-        Tue, 16 Nov 2021 01:48:12 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Mon, 15 Nov 2021 18:51:54 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 15 Nov
- 2021 17:51:53 +0000
-Date:   Mon, 15 Nov 2021 17:51:52 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        <linux-mips@vger.kernel.org>, John Crispin <john@phrozen.org>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        <linux-iio@vger.kernel.org>, Russell King <linux@armlinux.org.uk>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH] mips: lantiq: add support for clk_get_parent()
-Message-ID: <20211115175152.000030d6@Huawei.com>
-In-Reply-To: <20211115012051.16302-1-rdunlap@infradead.org>
-References: <20211115012051.16302-1-rdunlap@infradead.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        id S237317AbhKOUtm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Nov 2021 15:49:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45404 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1345094AbhKOT0X (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 15 Nov 2021 14:26:23 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EABF563717;
+        Mon, 15 Nov 2021 19:10:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1637003415;
+        bh=WUs8pbSJ4KTHev9vx8TYvymwy1+1LnfpNVarwYGx37E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=msLABvr0NvZFd4WIpbCxcon7xn/4MtxfBxQH3/1Kz05y99bz3vNUo+hQgZ6+XzLJN
+         DzzQOT07dcitAvIMFQlWLaHCeVjirt71h57eRypTsbpiO1olbZUI/j5fC0zNSfytZa
+         PIhwV68NjJKQNoTeJOZ5uQada9C1sDAY1MmSV2OA=
+Date:   Mon, 15 Nov 2021 19:08:02 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
+        rafael@kernel.org, linux-acpi@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH] device property: Add fwnode_iomap()
+Message-ID: <YZKiAgvnRdgAzkmA@kroah.com>
+References: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml733-chm.china.huawei.com (10.201.108.84) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211115173819.22778-1-anand.ashok.dumbre@xilinx.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 Nov 2021 17:20:51 -0800
-Randy Dunlap <rdunlap@infradead.org> wrote:
-
-> Provide a simple implementation of clk_get_parent() in the
-> lantiq subarch so that callers of it will build without errors.
+On Mon, Nov 15, 2021 at 05:38:19PM +0000, Anand Ashok Dumbre wrote:
+> This patch introduces a new helper routine - fwnode_iomap(),
+> which allows to map the memory mapped IO for a given device node.
 > 
-> Fixes this build error:
-> ERROR: modpost: "clk_get_parent" [drivers/iio/adc/ingenic-adc.ko] undefined!
-> 
-> Fixes: 171bb2f19ed6 ("MIPS: Lantiq: Add initial support for Lantiq SoCs")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Cc: linux-mips@vger.kernel.org
-> Cc: John Crispin <john@phrozen.org>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: linux-iio@vger.kernel.org
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Thanks for tidying this up.
-
-Jonathan
-
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 > ---
->  arch/mips/lantiq/clk.c |    6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> --- linux-next-20211112.orig/arch/mips/lantiq/clk.c
-> +++ linux-next-20211112/arch/mips/lantiq/clk.c
-> @@ -158,6 +158,12 @@ void clk_deactivate(struct clk *clk)
->  }
->  EXPORT_SYMBOL(clk_deactivate);
->  
-> +struct clk *clk_get_parent(struct clk *clk)
-> +{
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL(clk_get_parent);
-> +
->  static inline u32 get_counter_resolution(void)
->  {
->  	u32 res;
+>  drivers/base/property.c  | 15 +++++++++++++++
+>  include/linux/property.h |  2 ++
+>  2 files changed, 17 insertions(+)
+
+We can not add new api calls with no users, as there is no way to
+determine how the calls are being used.
+
+So please submit this as part of a patch series that shows it being
+used.
+
+thanks,
+
+greg k-h
 

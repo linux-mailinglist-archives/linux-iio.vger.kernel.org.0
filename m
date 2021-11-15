@@ -2,176 +2,1024 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 759FD450169
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 10:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C77A645026A
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 11:24:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236413AbhKOJdw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Nov 2021 04:33:52 -0500
-Received: from mail-co1nam11on2065.outbound.protection.outlook.com ([40.107.220.65]:49857
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237098AbhKOJdO (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 15 Nov 2021 04:33:14 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GXrluDYid9i0zt9hIwAAQpXhkBT/Tf0qIyT5wfBqsPrbY7eVYs3BmHOxCp8rRHard9LBICkbjNY6xKcNkZ9eLoFVqsESjVF8UUjHYI4vOkcjs8b6u9bmbvJdZgEi6CtiUHWGQ7Unl7AE9L4l9Kt9PgXWs0bgkXvM2O4dxxS1uiRwjjVRFg+iyviLY1nPnIHGcxkvkbXqosb2e7c8vcw9HGuQt11n3A5J7vfV7IEk61oRrmwKW4wRotyRh2vUDM7Ok3uajCVIOaww/N1Wbg86zPaU3K9XTsdAwSKU/TI2kXbU6Q5gHX0/0TgnPD7Y5TNSn5zBpGl+O6GidkySVLrh1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Z5L9bA8034Ns2ZSPwtvlBpRN7LN7UV0ctSf3f2nR4c=;
- b=XO4lTaOaHTiOJQY79MbIwWcxDy8owG0NYp11rXWtUiSMMMt2RvjBA31Yu9H1oZebWzo9VAL6gX2nuwhsiEIHmcM1tjJWCGiNvgwQJ6rg8EFIv+qnO9PGZ1uYi9mqqqbPLYFXVFefXUJDRvynu3PmS7yajk+bGmXxidLGMYiPM9aT7w/e9/PvwlLzbP9djp3cyOKXeswuBWDc2i5qz0k8qGMCMwjTT+5Bb5hW/aTQPJinbsFONBSafT5SZ962bZ3aTkc9nJb3xa3GUj48ntT6dwYoeTsvQpWX6dKW4rMhF38MV4aSuc1hUDjO72vxbFGNb18upOH3IiSbaMEKG6TxXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.62.198) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Z5L9bA8034Ns2ZSPwtvlBpRN7LN7UV0ctSf3f2nR4c=;
- b=ZcYt/MSs8bfzsQuNtzUqasPA7sKDrsOqGrsUEqVDTmWXJxRNLp0wqvZ1co442egwjWZlfQP3XdS3ndAhvNDlIZBmF9wRkG+EyaiMeEKeGAP8Xf0q5AN/R06guluBoQyQ1vXZvVqdXDdIMUw2C/Zzc4vWvqkRo9ggYyPrGkKk114=
-Received: from SN4PR0601CA0007.namprd06.prod.outlook.com
- (2603:10b6:803:2f::17) by MWHPR02MB2206.namprd02.prod.outlook.com
- (2603:10b6:300:5d::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.26; Mon, 15 Nov
- 2021 09:29:54 +0000
-Received: from SN1NAM02FT0018.eop-nam02.prod.protection.outlook.com
- (2603:10b6:803:2f:cafe::70) by SN4PR0601CA0007.outlook.office365.com
- (2603:10b6:803:2f::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.16 via Frontend
- Transport; Mon, 15 Nov 2021 09:29:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.62.198)
- smtp.mailfrom=xilinx.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.62.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.62.198; helo=xsj-pvapexch02.xlnx.xilinx.com;
-Received: from xsj-pvapexch02.xlnx.xilinx.com (149.199.62.198) by
- SN1NAM02FT0018.mail.protection.outlook.com (10.97.5.8) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4690.19 via Frontend Transport; Mon, 15 Nov 2021 09:29:53 +0000
-Received: from xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) by
- xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Mon, 15 Nov 2021 01:29:51 -0800
-Received: from smtp.xilinx.com (172.19.127.96) by
- xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Mon, 15 Nov 2021 01:29:51 -0800
-Envelope-to: git@xilinx.com,
- linux-kernel@vger.kernel.org,
- jic23@kernel.org,
- lars@metafoo.de,
- linux-iio@vger.kernel.org,
- pmeerw@pmeerw.net,
- devicetree@vger.kernel.org
-Received: from [10.254.241.49] (port=57586)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1mmYJD-0008CM-I8; Mon, 15 Nov 2021 01:29:51 -0800
-Message-ID: <5876573d-66aa-620e-538d-36a287900c7e@xilinx.com>
-Date:   Mon, 15 Nov 2021 10:29:48 +0100
+        id S231159AbhKOK1b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Nov 2021 05:27:31 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:48616 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237538AbhKOK1P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Nov 2021 05:27:15 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AF4NCB0007711;
+        Mon, 15 Nov 2021 05:24:13 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3cbgfu92t8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 Nov 2021 05:24:12 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 1AFAOBBe036769
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 15 Nov 2021 05:24:11 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
+ Mon, 15 Nov 2021 05:24:10 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5;
+ Mon, 15 Nov 2021 05:24:10 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.858.5 via Frontend Transport;
+ Mon, 15 Nov 2021 05:24:10 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.181])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1AFAO7FS016121;
+        Mon, 15 Nov 2021 05:24:08 -0500
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v3 1/2] iio:amplifiers:ad7293: add support for AD7293
+Date:   Mon, 15 Nov 2021 12:23:39 +0200
+Message-ID: <20211115102340.164547-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v8 1/4] arm64: zynqmp: DT: Add Xilinx AMS node
-Content-Language: en-US
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>, <git@xilinx.com>,
-        <michal.simek@xilinx.com>, <pmeerw@pmeerw.net>,
-        <devicetree@vger.kernel.org>
-CC:     Manish Narani <manish.narani@xilinx.com>
-References: <20211108210509.29870-1-anand.ashok.dumbre@xilinx.com>
- <20211108210509.29870-2-anand.ashok.dumbre@xilinx.com>
-From:   Michal Simek <michal.simek@xilinx.com>
-In-Reply-To: <20211108210509.29870-2-anand.ashok.dumbre@xilinx.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: de65a4f2-8f9f-4e96-921a-08d9a81a7b34
-X-MS-TrafficTypeDiagnostic: MWHPR02MB2206:
-X-Microsoft-Antispam-PRVS: <MWHPR02MB2206864A68872615A2714D87C6989@MWHPR02MB2206.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: exrYYrxCM1mm2WHWCrGerFXE7OyqxpLpLuR+n6uk9aaL51URe0KEFA64PIXuWyxsAd4kQ7T0lco7gogBpSXYYli9B5kTCWhPGgrkMR2X+8oU9FLYD6f8Kuep6tpePSbQ2f+7vRUk7vkzSENqMpkfzc0HjRxsRGiamBgQpXCcNQyAjzAnKlWPcoJNWUQ7pDtn2gGZas6BNgYHkNOi15jgpNZizzb8W+Dm2VUlIftYRsJNOILSHCJ5qTOSDzsOvEQII7IUddVfHEIliRoXp2eUn87LwIxD8jT8o2D2eKUJORw2FRcetniYVFcjOyGqhqWv/SJgovBRVJnRC7mi8gxlWCtklYVH5fi2AQIJVklWXrqoAYwwaRd9kYykQPUgkEY6HffBTCTbw+BVqMmTTobh3HNOdwIlW8tZr3vhVhBEHL3WpY0Xf3y7PsSTqlXqJT2toKuR5koz3H9L0xAov92CJ/oamvKUxRqzeY8+ar40IsHGZhIdXoEqUwlOZSivZlN+WiqJ2E/0oFpM1VFWUSHwfvCO611ty2V5iMoiqpXjw7Ru62zcq6mHROaWAKI3jJi2dSImqZABI9vvIicfW4wPi8wzx/J3+RLb69nK+skuPJoK7NrdfoRyBzgThbdgDadhkd8Wyrkt8iT0dTSfb4jZJWAhoX3v5uTOIVzsODCT6Z/u1N3kGf5nFwLJQf2vcA4ZsbPL3q4J8u4GcF7fld6qHOSUngeaqQMpBLF3yo0GtaOp7ydGW8y7WbIuWehZpv5tPNqsJWg2nNN+u40ecCAGKA==
-X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch02.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(36840700001)(46966006)(8936002)(36860700001)(356005)(70586007)(26005)(31696002)(186003)(9786002)(8676002)(31686004)(107886003)(4326008)(5660300002)(53546011)(2616005)(70206006)(6666004)(47076005)(44832011)(2906002)(82310400003)(36756003)(316002)(7636003)(36906005)(336012)(110136005)(83380400001)(508600001)(426003)(50156003)(2101003)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2021 09:29:53.8485
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: de65a4f2-8f9f-4e96-921a-08d9a81a7b34
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.62.198];Helo=[xsj-pvapexch02.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT0018.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR02MB2206
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 3EqY6RpyskYP7Ab9YmLAMZ6eioE7DJ61
+X-Proofpoint-GUID: 3EqY6RpyskYP7Ab9YmLAMZ6eioE7DJ61
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-15_09,2021-11-12_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ mlxscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ priorityscore=1501 suspectscore=0 clxscore=1015 impostorscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111150057
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The AD7293 is a Power Amplifier drain current controller
+containing functionality for general-purpose monitoring
+and control of current, voltage, and temperature, integrated
+into a single chip solution with an SPI-compatible interface.
 
+Datasheet:
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD7293.pdf
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v3:
+ - use `BIT()` macro for shifting
+ - return -EINVAL directly
+ drivers/iio/amplifiers/Kconfig  |  11 +
+ drivers/iio/amplifiers/Makefile |   1 +
+ drivers/iio/amplifiers/ad7293.c | 900 ++++++++++++++++++++++++++++++++
+ 3 files changed, 912 insertions(+)
+ create mode 100644 drivers/iio/amplifiers/ad7293.c
 
-On 11/8/21 22:05, Anand Ashok Dumbre wrote:
-> The Xilinx AMS includes an ADC as well as on-chip sensors that can be
-> used to sample external and monitor on-die operating conditions, such as
-> temperature and supply voltage levels.
-> 
-> Co-developed-by: Manish Narani <manish.narani@xilinx.com>
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-> ---
->   arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 26 +++++++++++++++++++++++++-
->   1 file changed, 25 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> index 28dccb891a53..b12e0cd0adfd 100644
-> --- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> +++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> @@ -1,4 +1,4 @@
-> -// SPDX-License-Identifier: GPL-2.0+
-> +// SPDX-License-Identifier: GPL-2.0
->   /*
->    * dts file for Xilinx ZynqMP
->    *
-> @@ -849,6 +849,30 @@
->   			timeout-sec = <10>;
->   		};
->   
-> +		xilinx_ams: ams@ffa50000 {
-> +			compatible = "xlnx,zynqmp-ams";
-> +			status = "disabled";
-> +			interrupt-parent = <&gic>;
-> +			interrupts = <0 56 4>;
-> +			reg = <0x0 0xffa50000 0x0 0x800>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +			#io-channel-cells = <1>;
-> +			ranges = <0 0 0xffa50800 0x800>;
-> +
-> +			ams_ps: ams-ps@0 {
-> +				compatible = "xlnx,zynqmp-ams-ps";
-> +				status = "disabled";
-> +				reg = <0 0x400>;
-> +			};
-> +
-> +			ams_pl: ams-pl@400 {
-> +				compatible = "xlnx,zynqmp-ams-pl";
-> +				status = "disabled";
-> +				reg = <0x400 0x400>;
-> +			};
-> +		};
-> +
->   		zynqmp_dpdma: dma-controller@fd4c0000 {
->   			compatible = "xlnx,zynqmp-dpdma";
->   			status = "disabled";
-> 
+diff --git a/drivers/iio/amplifiers/Kconfig b/drivers/iio/amplifiers/Kconfig
+index 5eb1357a9c78..c4ff0f123019 100644
+--- a/drivers/iio/amplifiers/Kconfig
++++ b/drivers/iio/amplifiers/Kconfig
+@@ -6,6 +6,17 @@
+ 
+ menu "Amplifiers"
+ 
++config AD7293
++	tristate "Analog Devices AD7293 Power Amplifier Current Controller"
++	depends on SPI
++	help
++	  Say yes here to build support for Analog Devices AD7293
++	  Power Amplifier Current Controller with
++	  ADC, DACs, and Temperature and Current Sensors
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called ad7293.
++
+ config AD8366
+ 	tristate "Analog Devices AD8366 and similar Gain Amplifiers"
+ 	depends on SPI
+diff --git a/drivers/iio/amplifiers/Makefile b/drivers/iio/amplifiers/Makefile
+index cb551d82f56b..ddfe007950d8 100644
+--- a/drivers/iio/amplifiers/Makefile
++++ b/drivers/iio/amplifiers/Makefile
+@@ -4,5 +4,6 @@
+ #
+ 
+ # When adding new entries keep the list in alphabetical order
++obj-$(CONFIG_AD7293) += ad7293.o
+ obj-$(CONFIG_AD8366) += ad8366.o
+ obj-$(CONFIG_HMC425) += hmc425a.o
+diff --git a/drivers/iio/amplifiers/ad7293.c b/drivers/iio/amplifiers/ad7293.c
+new file mode 100644
+index 000000000000..bc8de252f951
+--- /dev/null
++++ b/drivers/iio/amplifiers/ad7293.c
+@@ -0,0 +1,900 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * AD7293 driver
++ *
++ * Copyright 2021 Analog Devices Inc.
++ */
++
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/gpio/consumer.h>
++#include <linux/iio/iio.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#include <asm/unaligned.h>
++
++#define AD7293_R1B				BIT(16)
++#define AD7293_R2B				BIT(17)
++#define AD7293_PAGE_ADDR_MSK			GENMASK(15, 8)
++#define AD7293_PAGE(x)				FIELD_PREP(AD7293_PAGE_ADDR_MSK, x)
++
++/* AD7293 Register Map Common */
++#define AD7293_REG_NO_OP			(AD7293_R1B | AD7293_PAGE(0x0) | 0x0)
++#define AD7293_REG_PAGE_SELECT			(AD7293_R1B | AD7293_PAGE(0x0) | 0x1)
++#define AD7293_REG_CONV_CMD			(AD7293_R2B | AD7293_PAGE(0x0) | 0x2)
++#define AD7293_REG_RESULT			(AD7293_R1B | AD7293_PAGE(0x0) | 0x3)
++#define AD7293_REG_DAC_EN			(AD7293_R1B | AD7293_PAGE(0x0) | 0x4)
++#define AD7293_REG_DEVICE_ID			(AD7293_R2B | AD7293_PAGE(0x0) | 0xC)
++#define AD7293_REG_SOFT_RESET			(AD7293_R2B | AD7293_PAGE(0x0) | 0xF)
++
++/* AD7293 Register Map Page 0x0 */
++#define AD7293_REG_VIN0				(AD7293_R2B | AD7293_PAGE(0x0) | 0x10)
++#define AD7293_REG_VIN1				(AD7293_R2B | AD7293_PAGE(0x0) | 0x11)
++#define AD7293_REG_VIN2				(AD7293_R2B | AD7293_PAGE(0x0) | 0x12)
++#define AD7293_REG_VIN3				(AD7293_R2B | AD7293_PAGE(0x0) | 0x13)
++#define AD7293_REG_TSENSE_INT			(AD7293_R2B | AD7293_PAGE(0x0) | 0x20)
++#define AD7293_REG_TSENSE_D0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x21)
++#define AD7293_REG_TSENSE_D1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x22)
++#define AD7293_REG_ISENSE_0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x28)
++#define AD7293_REG_ISENSE_1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x29)
++#define AD7293_REG_ISENSE_2			(AD7293_R2B | AD7293_PAGE(0x0) | 0x2A)
++#define AD7293_REG_ISENSE_3			(AD7293_R2B | AD7293_PAGE(0x0) | 0x2B)
++#define AD7293_REG_UNI_VOUT0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x30)
++#define AD7293_REG_UNI_VOUT1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x31)
++#define AD7293_REG_UNI_VOUT2			(AD7293_R2B | AD7293_PAGE(0x0) | 0x32)
++#define AD7293_REG_UNI_VOUT3			(AD7293_R2B | AD7293_PAGE(0x0) | 0x33)
++#define AD7293_REG_BI_VOUT0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x34)
++#define AD7293_REG_BI_VOUT1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x35)
++#define AD7293_REG_BI_VOUT2			(AD7293_R2B | AD7293_PAGE(0x0) | 0x36)
++#define AD7293_REG_BI_VOUT3			(AD7293_R2B | AD7293_PAGE(0x0) | 0x37)
++
++/* AD7293 Register Map Page 0x1 */
++#define AD7293_REG_AVDD				(AD7293_R2B | AD7293_PAGE(0x1) | 0x10)
++#define AD7293_REG_DACVDD_UNI			(AD7293_R2B | AD7293_PAGE(0x1) | 0x11)
++#define AD7293_REG_DACVDD_BI			(AD7293_R2B | AD7293_PAGE(0x1) | 0x12)
++#define AD7293_REG_AVSS				(AD7293_R2B | AD7293_PAGE(0x1) | 0x13)
++#define AD7293_REG_BI_VOUT0_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x14)
++#define AD7293_REG_BI_VIOU1_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x15)
++#define AD7293_REG_BI_VOUT2_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x16)
++#define AD7293_REG_BI_VOUT3_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x17)
++#define AD7293_REG_RS0_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x28)
++#define AD7293_REG_RS1_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x29)
++#define AD7293_REG_RS2_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x2A)
++#define AD7293_REG_RS3_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x2B)
++
++/* AD7293 Register Map Page 0x2 */
++#define AD7293_REG_DIGITAL_OUT_EN		(AD7293_R2B | AD7293_PAGE(0x2) | 0x11)
++#define AD7293_REG_DIGITAL_INOUT_FUNC		(AD7293_R2B | AD7293_PAGE(0x2) | 0x12)
++#define AD7293_REG_DIGITAL_FUNC_POL		(AD7293_R2B | AD7293_PAGE(0x2) | 0x13)
++#define AD7293_REG_GENERAL			(AD7293_R2B | AD7293_PAGE(0x2) | 0x14)
++#define AD7293_REG_VINX_RANGE0			(AD7293_R2B | AD7293_PAGE(0x2) | 0x15)
++#define AD7293_REG_VINX_RANGE1			(AD7293_R2B | AD7293_PAGE(0x2) | 0x16)
++#define AD7293_REG_VINX_DIFF_SE			(AD7293_R2B | AD7293_PAGE(0x2) | 0x17)
++#define AD7293_REG_VINX_FILTER			(AD7293_R2B | AD7293_PAGE(0x2) | 0x18)
++#define AD7293_REG_BG_EN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x19)
++#define AD7293_REG_CONV_DELAY			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1A)
++#define AD7293_REG_TSENSE_BG_EN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1B)
++#define AD7293_REG_ISENSE_BG_EN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1C)
++#define AD7293_REG_ISENSE_GAIN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1D)
++#define AD7293_REG_DAC_SNOOZE_O			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1F)
++#define AD7293_REG_DAC_SNOOZE_1			(AD7293_R2B | AD7293_PAGE(0x2) | 0x20)
++#define AD7293_REG_RSX_MON_BG_EN		(AD7293_R2B | AD7293_PAGE(0x2) | 0x23)
++#define AD7293_REG_INTEGR_CL			(AD7293_R2B | AD7293_PAGE(0x2) | 0x28)
++#define AD7293_REG_PA_ON_CTRL			(AD7293_R2B | AD7293_PAGE(0x2) | 0x29)
++#define AD7293_REG_RAMP_TIME_0			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2A)
++#define AD7293_REG_RAMP_TIME_1			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2B)
++#define AD7293_REG_RAMP_TIME_2			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2C)
++#define AD7293_REG_RAMP_TIME_3			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2D)
++#define AD7293_REG_CL_FR_IT			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2E)
++#define AD7293_REG_INTX_AVSS_AVDD		(AD7293_R2B | AD7293_PAGE(0x2) | 0x2F)
++
++/* AD7293 Register Map Page 0x3 */
++#define AD7293_REG_VINX_SEQ			(AD7293_R2B | AD7293_PAGE(0x3) | 0x10)
++#define AD7293_REG_ISENSEX_TSENSEX_SEQ		(AD7293_R2B | AD7293_PAGE(0x3) | 0x11)
++#define AD7293_REG_RSX_MON_BI_VOUTX_SEQ		(AD7293_R2B | AD7293_PAGE(0x3) | 0x12)
++
++/* AD7293 Register Map Page 0xE */
++#define AD7293_REG_VIN0_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x10)
++#define AD7293_REG_VIN1_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x11)
++#define AD7293_REG_VIN2_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x12)
++#define AD7293_REG_VIN3_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x13)
++#define AD7293_REG_TSENSE_INT_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x20)
++#define AD7293_REG_TSENSE_D0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x21)
++#define AD7293_REG_TSENSE_D1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x22)
++#define AD7293_REG_ISENSE0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x28)
++#define AD7293_REG_ISENSE1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x29)
++#define AD7293_REG_ISENSE2_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x2A)
++#define AD7293_REG_ISENSE3_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x2B)
++#define AD7293_REG_UNI_VOUT0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x30)
++#define AD7293_REG_UNI_VOUT1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x31)
++#define AD7293_REG_UNI_VOUT2_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x32)
++#define AD7293_REG_UNI_VOUT3_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x33)
++#define AD7293_REG_BI_VOUT0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x34)
++#define AD7293_REG_BI_VOUT1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x35)
++#define AD7293_REG_BI_VOUT2_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x36)
++#define AD7293_REG_BI_VOUT3_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x37)
++
++/* AD7293 Miscellaneous Definitions */
++#define AD7293_READ				BIT(7)
++#define AD7293_TRANSF_LEN_MSK			GENMASK(17, 16)
++
++#define AD7293_REG_ADDR_MSK			GENMASK(7, 0)
++#define AD7293_REG_VOUT_OFFSET_MSK		GENMASK(5, 4)
++#define AD7293_REG_DATA_RAW_MSK			GENMASK(15, 4)
++#define AD7293_REG_VINX_RANGE_GET_CH_MSK(x, ch)	(((x) >> (ch)) & 0x1)
++#define AD7293_REG_VINX_RANGE_SET_CH_MSK(x, ch)	(((x) & 0x1) << (ch))
++#define AD7293_CHIP_ID				0x18
++
++enum ad7293_ch_type {
++	AD7293_ADC_VINX,
++	AD7293_ADC_TSENSE,
++	AD7293_ADC_ISENSE,
++	AD7293_DAC,
++};
++
++enum ad7293_max_offset {
++	AD7293_TSENSE_MIN_OFFSET_CH = 4,
++	AD7293_ISENSE_MIN_OFFSET_CH = 7,
++	AD7293_VOUT_MIN_OFFSET_CH = 11,
++	AD7293_VOUT_MAX_OFFSET_CH = 18,
++};
++
++static const int dac_offset_table[] = {0, 1, 2};
++
++static const int isense_gain_table[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
++
++static const int adc_range_table[] = {0, 1, 2, 3};
++
++struct ad7293_state {
++	struct spi_device *spi;
++	/* Protect against concurrent accesses to the device, page selection and data content */
++	struct mutex lock;
++	struct gpio_desc *gpio_reset;
++	struct regulator *reg_avdd;
++	struct regulator *reg_vdrive;
++	u8 page_select;
++	u8 data[3] ____cacheline_aligned;
++};
++
++static int ad7293_page_select(struct ad7293_state *st, unsigned int reg)
++{
++	int ret;
++
++	if (st->page_select != FIELD_GET(AD7293_PAGE_ADDR_MSK, reg)) {
++		st->data[0] = FIELD_GET(AD7293_REG_ADDR_MSK, AD7293_REG_PAGE_SELECT);
++		st->data[1] = FIELD_GET(AD7293_PAGE_ADDR_MSK, reg);
++
++		ret = spi_write(st->spi, &st->data[0], 2);
++		if (ret)
++			return ret;
++
++		st->page_select = FIELD_GET(AD7293_PAGE_ADDR_MSK, reg);
++	}
++
++	return 0;
++}
++
++static int __ad7293_spi_read(struct ad7293_state *st, unsigned int reg,
++			     u16 *val)
++{
++	int ret;
++	struct spi_transfer t = {0};
++
++	ret = ad7293_page_select(st, reg);
++	if (ret)
++		return ret;
++
++	st->data[0] = AD7293_READ | FIELD_GET(AD7293_REG_ADDR_MSK, reg);
++	st->data[1] = 0x0;
++	st->data[2] = 0x0;
++
++	t.tx_buf = &st->data[0];
++	t.rx_buf = &st->data[0];
++	t.len = 1 + FIELD_GET(AD7293_TRANSF_LEN_MSK, reg);
++
++	ret = spi_sync_transfer(st->spi, &t, 1);
++	if (ret)
++		return ret;
++
++	if (FIELD_GET(AD7293_TRANSF_LEN_MSK, reg) == 1)
++		*val = st->data[1];
++	else
++		*val = get_unaligned_be16(&st->data[1]);
++
++	return 0;
++}
++
++static int ad7293_spi_read(struct ad7293_state *st, unsigned int reg,
++			   u16 *val)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = __ad7293_spi_read(st, reg, val);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int __ad7293_spi_write(struct ad7293_state *st, unsigned int reg,
++			      u16 val)
++{
++	int ret;
++	unsigned int length = 1 + FIELD_GET(AD7293_TRANSF_LEN_MSK, reg);
++
++	ret = ad7293_page_select(st, reg);
++	if (ret)
++		return ret;
++
++	st->data[0] = FIELD_GET(AD7293_REG_ADDR_MSK, reg);
++
++	if (FIELD_GET(AD7293_TRANSF_LEN_MSK, reg) == 1)
++		st->data[1] = val;
++	else
++		put_unaligned_be16(val, &st->data[1]);
++
++	return spi_write(st->spi, &st->data[0], length);
++}
++
++static int ad7293_spi_write(struct ad7293_state *st, unsigned int reg,
++			    u16 val)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = __ad7293_spi_write(st, reg, val);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int __ad7293_spi_update_bits(struct ad7293_state *st, unsigned int reg,
++				    u16 mask, u16 val)
++{
++	int ret;
++	u16 data, temp;
++
++	ret = __ad7293_spi_read(st, reg, &data);
++	if (ret)
++		return ret;
++
++	temp = (data & ~mask) | (val & mask);
++
++	return __ad7293_spi_write(st, reg, temp);
++}
++
++static int ad7293_spi_update_bits(struct ad7293_state *st, unsigned int reg,
++				  u16 mask, u16 val)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = __ad7293_spi_update_bits(st, reg, mask, val);
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int ad7293_adc_get_scale(struct ad7293_state *st, unsigned int ch, u16 *range)
++{
++	int ret;
++	u16 data;
++
++	mutex_lock(&st->lock);
++
++	ret = __ad7293_spi_read(st, AD7293_REG_VINX_RANGE1, &data);
++	if (ret)
++		goto exit;
++
++	*range = AD7293_REG_VINX_RANGE_GET_CH_MSK(data, ch);
++
++	ret = __ad7293_spi_read(st, AD7293_REG_VINX_RANGE0, &data);
++	if (ret)
++		goto exit;
++
++	*range |= AD7293_REG_VINX_RANGE_GET_CH_MSK(data, ch) << 1;
++
++exit:
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int ad7293_adc_set_scale(struct ad7293_state *st, unsigned int ch, u16 range)
++{
++	int ret;
++	unsigned int ch_msk = BIT(ch);
++
++	mutex_lock(&st->lock);
++	ret = __ad7293_spi_update_bits(st, AD7293_REG_VINX_RANGE1, ch_msk,
++				       AD7293_REG_VINX_RANGE_SET_CH_MSK(range, ch));
++	if (ret)
++		goto exit;
++
++	ret = __ad7293_spi_update_bits(st, AD7293_REG_VINX_RANGE0, ch_msk,
++				       AD7293_REG_VINX_RANGE_SET_CH_MSK((range >> 1), ch));
++
++exit:
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int ad7293_get_offset(struct ad7293_state *st, unsigned int ch, u16 *offset)
++{
++	if (ch < AD7293_TSENSE_MIN_OFFSET_CH)
++		return ad7293_spi_read(st, AD7293_REG_VIN0_OFFSET + ch, offset);
++	else if (ch < AD7293_ISENSE_MIN_OFFSET_CH)
++		return ad7293_spi_read(st, AD7293_REG_TSENSE_INT_OFFSET + (ch - 4), offset);
++	else if (ch < AD7293_VOUT_MIN_OFFSET_CH)
++		return ad7293_spi_read(st, AD7293_REG_ISENSE0_OFFSET + (ch - 7), offset);
++	else if (ch <= AD7293_VOUT_MAX_OFFSET_CH)
++		return ad7293_spi_read(st, AD7293_REG_UNI_VOUT0_OFFSET + (ch - 11), offset);
++
++	return -EINVAL;
++}
++
++static int ad7293_set_offset(struct ad7293_state *st, unsigned int ch, u16 offset)
++{
++	if (ch < AD7293_TSENSE_MIN_OFFSET_CH)
++		return ad7293_spi_write(st, AD7293_REG_VIN0_OFFSET + ch, offset);
++	else if (ch < AD7293_ISENSE_MIN_OFFSET_CH)
++		return ad7293_spi_write(st, AD7293_REG_TSENSE_INT_OFFSET + (ch - AD7293_TSENSE_MIN_OFFSET_CH), offset);
++	else if (ch < AD7293_VOUT_MIN_OFFSET_CH)
++		return ad7293_spi_write(st, AD7293_REG_ISENSE0_OFFSET + (ch - AD7293_ISENSE_MIN_OFFSET_CH), offset);
++	else if (ch <= AD7293_VOUT_MAX_OFFSET_CH)
++		return ad7293_spi_update_bits(st, AD7293_REG_UNI_VOUT0_OFFSET + (ch - AD7293_VOUT_MIN_OFFSET_CH),
++						AD7293_REG_VOUT_OFFSET_MSK,
++						FIELD_PREP(AD7293_REG_VOUT_OFFSET_MSK, offset));
++
++	return -EINVAL;
++}
++
++static int ad7293_isense_set_scale(struct ad7293_state *st, unsigned int ch, u16 gain)
++{
++	unsigned int ch_msk = (0xf << (4 * ch));
++
++	return ad7293_spi_update_bits(st, AD7293_REG_ISENSE_GAIN, ch_msk, gain << (4 * ch));
++}
++
++static int ad7293_isense_get_scale(struct ad7293_state *st, unsigned int ch, u16 *gain)
++{
++	int ret;
++
++	ret = ad7293_spi_read(st, AD7293_REG_ISENSE_GAIN, gain);
++	if (ret)
++		return ret;
++
++	*gain = (*gain >> (4 * ch)) & 0xf;
++
++	return ret;
++}
++
++static int ad7293_dac_write_raw(struct ad7293_state *st, unsigned int ch, u16 raw)
++{
++	int ret;
++
++	mutex_lock(&st->lock);
++
++	ret = __ad7293_spi_update_bits(st, AD7293_REG_DAC_EN, BIT(ch), BIT(ch));
++	if (ret)
++		goto exit;
++
++	ret =  __ad7293_spi_write(st, AD7293_REG_UNI_VOUT0 + ch,
++				  FIELD_PREP(AD7293_REG_DATA_RAW_MSK, raw));
++
++exit:
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int ad7293_ch_read_raw(struct ad7293_state *st, enum ad7293_ch_type type, unsigned int ch,
++			      u16 *raw)
++{
++	int ret;
++	unsigned int reg_wr, reg_rd, data_wr;
++
++	switch (type) {
++	case AD7293_ADC_VINX:
++		reg_wr = AD7293_REG_VINX_SEQ;
++		reg_rd = AD7293_REG_VIN0 + ch;
++		data_wr = BIT(ch);
++
++		break;
++	case AD7293_ADC_TSENSE:
++		reg_wr = AD7293_REG_ISENSEX_TSENSEX_SEQ;
++		reg_rd = AD7293_REG_TSENSE_INT + ch;
++		data_wr = BIT(ch);
++
++		break;
++	case AD7293_ADC_ISENSE:
++		reg_wr = AD7293_REG_ISENSEX_TSENSEX_SEQ;
++		reg_rd = AD7293_REG_ISENSE_0 + ch;
++		data_wr = BIT(ch) << 8;
++
++		break;
++	case AD7293_DAC:
++		reg_rd = AD7293_REG_UNI_VOUT0 + ch;
++
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	mutex_lock(&st->lock);
++
++	if (type != AD7293_DAC) {
++		if (type == AD7293_ADC_TSENSE) {
++			ret = __ad7293_spi_write(st, AD7293_REG_TSENSE_BG_EN, BIT(ch));
++			if (ret)
++				goto exit;
++
++			usleep_range(9000, 9900);
++		} else if (type == AD7293_ADC_ISENSE) {
++			ret = __ad7293_spi_write(st, AD7293_REG_ISENSE_BG_EN, BIT(ch));
++			if (ret)
++				goto exit;
++
++			usleep_range(2000, 7000);
++		}
++
++		ret = __ad7293_spi_write(st, reg_wr, data_wr);
++		if (ret)
++			goto exit;
++
++		ret = __ad7293_spi_write(st, AD7293_REG_CONV_CMD, 0x82);
++		if (ret)
++			goto exit;
++	}
++
++	ret = __ad7293_spi_read(st, reg_rd, raw);
++
++	*raw = FIELD_GET(AD7293_REG_DATA_RAW_MSK, *raw);
++
++exit:
++	mutex_unlock(&st->lock);
++
++	return ret;
++}
++
++static int ad7293_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan,
++			   int *val, int *val2, long info)
++{
++	struct ad7293_state *st = iio_priv(indio_dev);
++	int ret;
++	u16 data;
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (chan->output)
++				ret =  ad7293_ch_read_raw(st, AD7293_DAC, chan->channel, &data);
++			else
++				ret =  ad7293_ch_read_raw(st, AD7293_ADC_VINX, chan->channel, &data);
++
++			break;
++		case IIO_CURRENT:
++			ret =  ad7293_ch_read_raw(st, AD7293_ADC_ISENSE, chan->channel, &data);
++
++			break;
++		case IIO_TEMP:
++			ret =  ad7293_ch_read_raw(st, AD7293_ADC_TSENSE, chan->channel, &data);
++
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		if (ret)
++			return ret;
++
++		*val = data;
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_OFFSET:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (chan->output) {
++				ret = ad7293_get_offset(st, chan->channel + AD7293_VOUT_MIN_OFFSET_CH, &data);
++
++				data = FIELD_GET(AD7293_REG_VOUT_OFFSET_MSK, data);
++			} else {
++				ret = ad7293_get_offset(st, chan->channel, &data);
++			}
++
++			break;
++		case IIO_CURRENT:
++			ret = ad7293_get_offset(st, chan->channel + AD7293_ISENSE_MIN_OFFSET_CH, &data);
++
++			break;
++		case IIO_TEMP:
++			ret = ad7293_get_offset(st, chan->channel + AD7293_TSENSE_MIN_OFFSET_CH, &data);
++
++			break;
++		default:
++			return -EINVAL;
++		}
++		if (ret)
++			return ret;
++
++		*val = data;
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			ret = ad7293_adc_get_scale(st, chan->channel, &data);
++			if (ret)
++				return ret;
++
++			*val = data;
++
++			return IIO_VAL_INT;
++		case IIO_CURRENT:
++			ret = ad7293_isense_get_scale(st, chan->channel, &data);
++			if (ret)
++				return ret;
++
++			*val = data;
++
++			return IIO_VAL_INT;
++		case IIO_TEMP:
++			*val = 1;
++			*val2 = 8;
++
++			return IIO_VAL_FRACTIONAL;
++		default:
++			return -EINVAL;
++		}
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7293_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long info)
++{
++	struct ad7293_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (!chan->output)
++				return -EINVAL;
++
++			return ad7293_dac_write_raw(st, chan->channel, val);
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_OFFSET:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (chan->output)
++				return ad7293_set_offset(st, chan->channel + AD7293_VOUT_MIN_OFFSET_CH, val);
++			else
++				return ad7293_set_offset(st, chan->channel, val);
++		case IIO_CURRENT:
++			return ad7293_set_offset(st, chan->channel + AD7293_ISENSE_MIN_OFFSET_CH, val);
++		case IIO_TEMP:
++			return ad7293_set_offset(st, chan->channel + AD7293_TSENSE_MIN_OFFSET_CH, val);
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			return ad7293_adc_set_scale(st, chan->channel, val);
++		case IIO_CURRENT:
++			return ad7293_isense_set_scale(st, chan->channel, val);
++		default:
++			return -EINVAL;
++		}
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7293_reg_access(struct iio_dev *indio_dev,
++			     unsigned int reg,
++			     unsigned int write_val,
++			     unsigned int *read_val)
++{
++	struct ad7293_state *st = iio_priv(indio_dev);
++	int ret;
++
++	if (read_val)
++		ret = ad7293_spi_read(st, reg, (u16 *)read_val);
++	else
++		ret = ad7293_spi_write(st, reg, (u16)write_val);
++
++	return ret;
++}
++
++static int ad7293_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long info)
++{
++	switch (info) {
++	case IIO_CHAN_INFO_OFFSET:
++		*vals = dac_offset_table;
++		*type = IIO_VAL_INT;
++		*length = ARRAY_SIZE(dac_offset_table);
++
++		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SCALE:
++		*type = IIO_VAL_INT;
++
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			*vals = adc_range_table;
++			*length = ARRAY_SIZE(adc_range_table);
++			break;
++		case IIO_CURRENT:
++			*vals = isense_gain_table;
++			*length = ARRAY_SIZE(isense_gain_table);
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++#define AD7293_CHAN_ADC(_channel) {				\
++	.type = IIO_VOLTAGE,					\
++	.output = 0,						\
++	.indexed = 1,						\
++	.channel = _channel,					\
++	.info_mask_separate =					\
++		BIT(IIO_CHAN_INFO_RAW) |			\
++		BIT(IIO_CHAN_INFO_SCALE) |			\
++		BIT(IIO_CHAN_INFO_OFFSET),			\
++	.info_mask_shared_by_type_available =			\
++		BIT(IIO_CHAN_INFO_SCALE)			\
++}
++
++#define AD7293_CHAN_DAC(_channel) {				\
++	.type = IIO_VOLTAGE,					\
++	.output = 1,						\
++	.indexed = 1,						\
++	.channel = _channel,					\
++	.info_mask_separate =					\
++		BIT(IIO_CHAN_INFO_RAW) |			\
++		BIT(IIO_CHAN_INFO_OFFSET),			\
++	.info_mask_shared_by_type_available =			\
++		BIT(IIO_CHAN_INFO_OFFSET),			\
++}
++
++#define AD7293_CHAN_ISENSE(_channel) {				\
++	.type = IIO_CURRENT,					\
++	.output = 0,						\
++	.indexed = 1,						\
++	.channel = _channel,					\
++	.info_mask_separate =					\
++		BIT(IIO_CHAN_INFO_RAW) |			\
++		BIT(IIO_CHAN_INFO_OFFSET) |			\
++		BIT(IIO_CHAN_INFO_SCALE),			\
++	.info_mask_shared_by_type_available =			\
++		BIT(IIO_CHAN_INFO_SCALE)			\
++}
++
++#define AD7293_CHAN_TEMP(_channel) {				\
++	.type = IIO_TEMP,					\
++	.output = 0,						\
++	.indexed = 1,						\
++	.channel = _channel,					\
++	.info_mask_separate =					\
++		BIT(IIO_CHAN_INFO_RAW) |			\
++		BIT(IIO_CHAN_INFO_OFFSET),			\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE)	\
++}
++
++static const struct iio_chan_spec ad7293_channels[] = {
++	AD7293_CHAN_ADC(0),
++	AD7293_CHAN_ADC(1),
++	AD7293_CHAN_ADC(2),
++	AD7293_CHAN_ADC(3),
++	AD7293_CHAN_ISENSE(0),
++	AD7293_CHAN_ISENSE(1),
++	AD7293_CHAN_ISENSE(2),
++	AD7293_CHAN_ISENSE(3),
++	AD7293_CHAN_TEMP(0),
++	AD7293_CHAN_TEMP(1),
++	AD7293_CHAN_TEMP(2),
++	AD7293_CHAN_DAC(0),
++	AD7293_CHAN_DAC(1),
++	AD7293_CHAN_DAC(2),
++	AD7293_CHAN_DAC(3),
++	AD7293_CHAN_DAC(4),
++	AD7293_CHAN_DAC(5),
++	AD7293_CHAN_DAC(6),
++	AD7293_CHAN_DAC(7)
++};
++
++static int ad7293_soft_reset(struct ad7293_state *st)
++{
++	int ret;
++
++	ret = __ad7293_spi_write(st, AD7293_REG_SOFT_RESET, 0x7293);
++	if (ret)
++		return ret;
++
++	return __ad7293_spi_write(st, AD7293_REG_SOFT_RESET, 0x0000);
++}
++
++static int ad7293_reset(struct ad7293_state *st)
++{
++	if (st->gpio_reset) {
++		gpiod_set_value(st->gpio_reset, 0);
++		usleep_range(100, 1000);
++		gpiod_set_value(st->gpio_reset, 1);
++		usleep_range(100, 1000);
++
++		return 0;
++	}
++
++	/* Perform a software reset */
++	return ad7293_soft_reset(st);
++}
++
++static int ad7293_properties_parse(struct ad7293_state *st)
++{
++	struct spi_device *spi = st->spi;
++
++	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
++						 GPIOD_OUT_HIGH);
++	if (IS_ERR(st->gpio_reset))
++		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_reset),
++				     "failed to get the reset GPIO\n");
++
++	st->reg_avdd = devm_regulator_get(&spi->dev, "avdd");
++	if (IS_ERR(st->reg_avdd))
++		return dev_err_probe(&spi->dev, PTR_ERR(st->reg_avdd),
++				     "failed to get the AVDD voltage\n");
++
++	st->reg_vdrive = devm_regulator_get(&spi->dev, "vdrive");
++	if (IS_ERR(st->reg_vdrive))
++		return dev_err_probe(&spi->dev, PTR_ERR(st->reg_vdrive),
++				     "failed to get the VDRIVE voltage\n");
++
++	return 0;
++}
++
++static void ad7293_reg_disable(void *data)
++{
++	regulator_disable(data);
++}
++
++static int ad7293_init(struct ad7293_state *st)
++{
++	int ret;
++	u16 chip_id;
++	struct spi_device *spi = st->spi;
++	unsigned int supply;
++
++	ret = ad7293_properties_parse(st);
++	if (ret)
++		return ret;
++
++	ret = ad7293_reset(st);
++	if (ret)
++		return ret;
++
++	ret = regulator_enable(st->reg_avdd);
++	if (ret) {
++		dev_err(&spi->dev, "Failed to enable specified AVDD Voltage!\n");
++		return ret;
++	}
++
++	ret = devm_add_action_or_reset(&spi->dev, ad7293_reg_disable,
++				       st->reg_avdd);
++	if (ret)
++		return ret;
++
++	ret = regulator_enable(st->reg_vdrive);
++	if (ret) {
++		dev_err(&spi->dev, "Failed to enable specified VDRIVE Voltage!\n");
++		return ret;
++	}
++
++	ret = devm_add_action_or_reset(&spi->dev, ad7293_reg_disable,
++				       st->reg_vdrive);
++	if (ret)
++		return ret;
++
++	supply = regulator_get_voltage(st->reg_avdd);
++	if (supply > 5500000 || supply < 4500000)
++		return -EINVAL;
++
++	supply = regulator_get_voltage(st->reg_vdrive);
++	if (supply > 5500000 || supply < 1700000)
++		return -EINVAL;
++
++	/* Check Chip ID */
++	ret = __ad7293_spi_read(st, AD7293_REG_DEVICE_ID, &chip_id);
++	if (ret)
++		return ret;
++
++	if (chip_id != AD7293_CHIP_ID) {
++		dev_err(&spi->dev, "Invalid Chip ID.\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static const struct iio_info ad7293_info = {
++	.read_raw = ad7293_read_raw,
++	.write_raw = ad7293_write_raw,
++	.read_avail = &ad7293_read_avail,
++	.debugfs_reg_access = &ad7293_reg_access,
++};
++
++static int ad7293_probe(struct spi_device *spi)
++{
++	struct iio_dev *indio_dev;
++	struct ad7293_state *st;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	indio_dev->info = &ad7293_info;
++	indio_dev->name = "ad7293";
++	indio_dev->channels = ad7293_channels;
++	indio_dev->num_channels = ARRAY_SIZE(ad7293_channels);
++
++	st->spi = spi;
++	st->page_select = 0;
++
++	mutex_init(&st->lock);
++
++	ret = ad7293_init(st);
++	if (ret)
++		return ret;
++
++	return devm_iio_device_register(&spi->dev, indio_dev);
++}
++
++static const struct spi_device_id ad7293_id[] = {
++	{ "ad7293", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(spi, ad7293_id);
++
++static const struct of_device_id ad7293_of_match[] = {
++	{ .compatible = "adi,ad7293" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, ad7293_of_match);
++
++static struct spi_driver ad7293_driver = {
++	.driver = {
++		.name = "ad7293",
++		.of_match_table = ad7293_of_match,
++	},
++	.probe = ad7293_probe,
++	.id_table = ad7293_id,
++};
++module_spi_driver(ad7293_driver);
++
++MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com");
++MODULE_DESCRIPTION("Analog Devices AD7293");
++MODULE_LICENSE("GPL v2");
+-- 
+2.33.1
 
-Please drop this patch from this series. When driver is applied this 
-patch will go via my xilinx soc tree.
-
-FYI: And dt binding patch should be the first.
-
-Thanks,
-Michal

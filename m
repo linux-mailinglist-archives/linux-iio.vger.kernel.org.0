@@ -2,92 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4CC4502EA
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 11:57:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CEF04502FE
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Nov 2021 12:01:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237649AbhKOLAB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Nov 2021 06:00:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35054 "EHLO
+        id S237726AbhKOLD6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Nov 2021 06:03:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237614AbhKOK7z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Nov 2021 05:59:55 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B74C061766;
-        Mon, 15 Nov 2021 02:56:58 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id g14so69944074edz.2;
-        Mon, 15 Nov 2021 02:56:58 -0800 (PST)
+        with ESMTP id S237776AbhKOLBf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Nov 2021 06:01:35 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2EDC061767
+        for <linux-iio@vger.kernel.org>; Mon, 15 Nov 2021 02:58:29 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id e3so33543251edu.4
+        for <linux-iio@vger.kernel.org>; Mon, 15 Nov 2021 02:58:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YDYBzQSzEJ8qNHR4ZSCbrzrerx288GE5+SdenhrJtwo=;
-        b=koHNRjUBM+K4JXhK8o7/c8mTysgJ8WMoNdETiqEKxq6knvNIIJFghL7hKWxvZoxaEn
-         au2adRjaG63ikjqIP2vvf3Sc3boJ26C/d73Ddt69PSE33rqgBDNP7W5F3RtxFBqO+ML3
-         ymqEvEcmLdyKOsjOKazH/DKzZLTbbXzChCLSUZztA/KqBCjm/4hkpB+5LMnw38N8dG3I
-         RXphJypdRYHTxOApQA/A3qOkN2/mLZhi5Yg5qo2APlw7p+ow8TQSGX3PV0Kp3NQL0W7H
-         BtqSZcNYqNtuVtw9qJFeZYENOL2w6iugDvQ9Qb5dvqcsRzqJoM/5VpC6pHng2wCck5rq
-         NcEA==
+         :cc:content-transfer-encoding;
+        bh=W7ElyeVUPPU9LKXMiMMgz6zNgMEvLtv3GY5xJWumrsM=;
+        b=B7OBpWcTi3Z5PvS4edgFAtNjOrwf8UKf1hIfSnvcLjCjTEIQ3EIsE17fxM9w0KJJ7W
+         12dexcf60rUIzu5rRsr97daOvVFz97LgMz0UrM4LQK7TazEQkVs/KjhiRa1fR/ryBagu
+         0vcZP6LTDiNUcURCP/prtqEr31bai95dVLDP9a9JAXG+URWXytJURT+Td4At85tpDhK7
+         gl7IIV41SozhHtRXJNL/kwlrd+u9A+zkPHGT/2AFeSbDohxb+vcnoRDt8jfioqtxiOtm
+         tylLpLaH0L2UBSkB4ZsR9HjUIyNhMoYpEb9B9cNYprD4SIqW91ukRCQ0nQGJLPRTx89F
+         brDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YDYBzQSzEJ8qNHR4ZSCbrzrerx288GE5+SdenhrJtwo=;
-        b=zp2Vv69k9BbTVMbf6QL5FWvJOH1rSACfAhcu+FSptti9meOpQVap4defPF12WDiZQj
-         cZN4FVZ9qfZbGcnCgYuBCx3BtKjjpatqJWGsbJpl2x3jmtEprZf8iE7ZmGlSMTpiT100
-         TG+Wghgdm7u/FvhkPKCiO0PpneWCdclpHrNlpxzV47C+0YmH+5lNk2s+B0lvdrZvoWwd
-         hemOHwG4vw9y4r4RPL9K0qDuAUPvkScJlPG4ADzSGLuVwyoFWwM5KiTEmHsMBZJpsBZ1
-         zHGt85X5dDGzW6hAnuccIOIS0nMXYS0Ct6v94FnpU/I+e7pcbbzk481BqkBUB0rHf++a
-         y8Ow==
-X-Gm-Message-State: AOAM531S4jfH8OmtgNSyBm9lnkC424A72bo6V3pZwpE5eA86l4F6xq7E
-        AihyZq6BIbsaNv6aVVYyNEmyAL++BUbR2ym8CgA=
-X-Google-Smtp-Source: ABdhPJye3W7NqMYwzh6/CcsriTOOKf5zQ3aL0EV7sB3dI0P+7ju9iw3c1FhF90DDWaDggEuTF4LWYqFgNq+UURsdJxU=
-X-Received: by 2002:a05:6402:84b:: with SMTP id b11mr25044783edz.107.1636973817335;
- Mon, 15 Nov 2021 02:56:57 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=W7ElyeVUPPU9LKXMiMMgz6zNgMEvLtv3GY5xJWumrsM=;
+        b=R9aTI5kBnwxwKZ0HElIy8lMUHuyl9F2mSGLy6aHujmCzvutKTwkrTLRIrLj9DdKyGJ
+         1OXvENvexLvDiEZ8pn2xGKELaxksR3xG05f6dVeBu0X0HNCxsyJp5pdBG8TonGmNRyj0
+         BUq/9H2V96sE++wKGnQG1lX7+tN5IxOaIzFFA1/hijrodI1+Edr4Qdi4vXtfBxydF4Jc
+         pqzANKVSRgmzHeRjtTka9jMAJrIhAnjfOrKP50NZItwW6BGIV2tSJ68r4Wgh9N2Ubhvf
+         hnzzYd9dqnNFvU6L7MEKz11B5KFEH6KrTLo586dJ4JS48FMBx/w8tilB05GYkwRd6gdP
+         vJNA==
+X-Gm-Message-State: AOAM532wQLk1OapViuEgYrY90c4CWe1tsz0PirGI1XCyAVH9CwvgnXVZ
+        pxTUgs39tva5foK9L2XU1AZV7LJHPNZOIWVfTuw=
+X-Google-Smtp-Source: ABdhPJzoK8lHO9O7IkYNEw+526nQnogtwhSjsVVqYXl/f1Qiw1OACN+ZNrNgnXX5wW9tuRncTltGTOLyzahKxrgpLS0=
+X-Received: by 2002:a50:fb09:: with SMTP id d9mr19602469edq.283.1636973908131;
+ Mon, 15 Nov 2021 02:58:28 -0800 (PST)
 MIME-Version: 1.0
-References: <20211115004218.13034-1-rdunlap@infradead.org>
-In-Reply-To: <20211115004218.13034-1-rdunlap@infradead.org>
+References: <20211115104147.18669-1-nuno.sa@analog.com>
+In-Reply-To: <20211115104147.18669-1-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 15 Nov 2021 12:56:14 +0200
-Message-ID: <CAHp75Vegc9bskv6DccJCBe1aYjB3mmqQHRbtD0vvYf_oxKi3eg@mail.gmail.com>
-Subject: Re: [PATCH v4] mips: bcm63xx: add support for clk_get_parent()
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>
+Date:   Mon, 15 Nov 2021 12:57:46 +0200
+Message-ID: <CAHp75Vc+AyaDmvssME39YO2LOY+yBb7QyNCnvNWJxYr-Of16ig@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: adxrs290: fix data signedness
+To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Nishant Malpani <nish.malpani25@gmail.com>,
+        Kister Genesis Jimenez <kister.jimenez@analog.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 15, 2021 at 2:42 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+On Mon, Nov 15, 2021 at 12:41 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>
+> From: Kister Genesis Jimenez <kister.jimenez@analog.com>
+>
+> Properly sign-extend the rate and temperature data.
 
-Just couple of side notes on the same topic (dropped people from Cc,
-just MLs are left):
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Fixes: 2c8920fff1457 ("iio: gyro: Add driver support for ADXRS290")
+> Signed-off-by: Kister Genesis Jimenez <kister.jimenez@analog.com>
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> ---
+> changes in v2:
+>  * removed redundant temp & 0xFFF.
+>
+> changes in v3:
+>  * full name in Signed-off-by tag.
+>
+>  drivers/iio/gyro/adxrs290.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/gyro/adxrs290.c b/drivers/iio/gyro/adxrs290.c
+> index 3e0734ddafe3..600e9725da78 100644
+> --- a/drivers/iio/gyro/adxrs290.c
+> +++ b/drivers/iio/gyro/adxrs290.c
+> @@ -7,6 +7,7 @@
+>   */
+>
+>  #include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+> @@ -124,7 +125,7 @@ static int adxrs290_get_rate_data(struct iio_dev *ind=
+io_dev, const u8 cmd, int *
+>                 goto err_unlock;
+>         }
+>
+> -       *val =3D temp;
+> +       *val =3D sign_extend32(temp, 15);
+>
+>  err_unlock:
+>         mutex_unlock(&st->lock);
+> @@ -146,7 +147,7 @@ static int adxrs290_get_temp_data(struct iio_dev *ind=
+io_dev, int *val)
+>         }
+>
+>         /* extract lower 12 bits temperature reading */
+> -       *val =3D temp & 0x0FFF;
+> +       *val =3D sign_extend32(temp, 11);
+>
+>  err_unlock:
+>         mutex_unlock(&st->lock);
+> --
+> 2.33.1
+>
 
-> Cc: Jonathan Cameron <jic23@kernel.org>
 
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Cc: Russell King <linux@armlinux.org.uk>
-
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-
-1/ `git format-patch`/`git send-email` will create the Cc list from
-all known tags, hence no need to repeat people in Cc.
-2/ Consider to use --cc and --to to avoid burden on the git history
-(sometimes people want to see it on mobile devices).
-
-For myself I wrote the script [1] to give me some smartness. Maybe you
-can find some ideas inside its implementation.
-
-[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
-
-
--- 
+--=20
 With Best Regards,
 Andy Shevchenko

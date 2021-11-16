@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E123B452D37
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 09:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45E8D452D48
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 09:56:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232505AbhKPI44 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Nov 2021 03:56:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47154 "EHLO
+        id S232552AbhKPI7H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Nov 2021 03:59:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbhKPI4y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 03:56:54 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88BC3C061746;
-        Tue, 16 Nov 2021 00:53:57 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id 8so5629093pfo.4;
-        Tue, 16 Nov 2021 00:53:57 -0800 (PST)
+        with ESMTP id S232741AbhKPI6S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 03:58:18 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5EFC061570;
+        Tue, 16 Nov 2021 00:55:16 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id h63so10122800pgc.12;
+        Tue, 16 Nov 2021 00:55:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8Y9YeuCW8eOOLIcu5yD/PfqnnbmLxrZV0z1wmw4Pn3w=;
-        b=gyzei4Avsij3HhAjJpCgZX9P7D4ljhzeYeLP1HN1Gi37X+O/Bamt9X6HJaKTKBk/m4
-         oZdCvKVrdYHcV5LrcDq6aK7Aq0ZLbUz8OWMeNFB20/yGQceuG6KytOI1e4KL0tiAihDR
-         mim4rj28ayYKY8sPPjcn24k+prv5s0mmWeB0W7hVdh7E/ZggeKKdSfFjOoxK4jMOg46S
-         dfoDSwVpqCTlq6tL9Miw4eH64Q5YCeLSIqJp6tAhxIoPwovgA81+7AldV5TW3t4GIkKs
-         dxpY2fdfSwIjgG9YC/McUsGtyLsHYXu3/enfmvqFO2M1GPemDB47h4IqEDjRNKrBPp3t
-         dX+g==
+        bh=9wuK2JM7pYYK7PmRiy77xGnegksjiUGl/GD+82KJ9KA=;
+        b=Rm01oHmLcVI99f59n7+IGw28B0Rc78Op12dy7tVzZi4kxvsJ1CAILkiXaIjkBOgtEz
+         UN+SCki7wYJpTktfu9lBsi65z2SfwCUIbZ06kev5ddroesDxySGdmsFsvyJtQIRJFnAk
+         wi9/LccrYn+H2BHaa4h0H0+JP8d1CKcOZVdd4pHj3Y0LkFx/Sx3BcaOE0Ea1cqxiqvhU
+         MqYT9nepvdI+lUXvnof57jn/CAqjdHsk7pn/VaztRRQuQv4WxsqD0WKVmAxjckk3S/3a
+         tqVOwC8fWaNGRDi59gRnt8/cNGm/svlj2WCaPBQ07WNWrMfFt4PH3AY5MeUbcKcC1ZJS
+         Nqtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8Y9YeuCW8eOOLIcu5yD/PfqnnbmLxrZV0z1wmw4Pn3w=;
-        b=uwWOR/pHeaCpbgiYTlrYYSqmHKd5hh6qEo2FQENTU3Q3qpgUWFEItS7peTEjEQDiwI
-         5bMWnHN1vdFwdPhSbFZxC51kmkrATQjKg9VuIX7YChCphr+mKSxkAiZvLtDugLDbFGBg
-         o0vWyD8/0GCQoGlIfGCHftwjkBuVwHKDYm3imKXkwnvDXZEgbPVcKGwj7Ra83PXuh/yw
-         rRlwIqqDcABFPJkBHxmPVvrC4TvuRxCLRC2VGkf0vaVhOZbs8dZ5U4YZV519IRnhOyu+
-         re9BGcKQ/CTsV58JXVveAE1es3zV24ex1aTqmuBjtHGsJp/9FeMyUiU5UJfPo0QGmPYd
-         OjTg==
-X-Gm-Message-State: AOAM533MIzggpM7zhfPbBvvJkl/8riB2XUX28b3jzl7ElKw1e/YuTG8q
-        Tuz1rRloCTn1BNglLELeQc0zvYGXSipyyrg4TU4=
-X-Google-Smtp-Source: ABdhPJx/cTDPSyzMW08pTOFtQdCPjm1pjXeUGXvBoLAkg+6Epn9RG5s9fWv7pooDAqPySAVqHbAZaN58Gv6ir8EWSx8=
-X-Received: by 2002:a65:6411:: with SMTP id a17mr3865937pgv.54.1637052837099;
- Tue, 16 Nov 2021 00:53:57 -0800 (PST)
+        bh=9wuK2JM7pYYK7PmRiy77xGnegksjiUGl/GD+82KJ9KA=;
+        b=a0kZU+7KcilIDSac5948dTrAqdaRFwUpCoWQjSEBGHtNWMxf8EoH+saBz6V7UYJUK1
+         l6jvD6N+tSQtaFG4LHfKAgnbVKQTF0Y+SspwMru+hJEIGVnrtPaGAINz9wgczANOfYl6
+         dndQUx3+OZXPmDCSqneDuTIZ5+qi/w005I7FoxXMXwec80RpYusn3/8I2Vgf7AySwzKv
+         IaIc63D58CfbgAF7cdUXfkL77Z8JvkHFgkwCoK8Q9Le4Xvn3SrMKwxoDRfLctkXRagRC
+         VYza3NcT1jbIRjkucZkDdtUN0OEYrRueHL06ukOcwNHjcaZ9x/+NWasHzvut+UadejBL
+         iJgQ==
+X-Gm-Message-State: AOAM530dZLD8jdo+3/bETsO4QboqpUkODjm7pF5ZDSpEVL+cenWqLCCG
+        ZxkC5tzoAZyZ0ufinCZ+g02znriU0rnCXMzfzDQ=
+X-Google-Smtp-Source: ABdhPJxz7J/5wr41dIgVdELYoASUX5KoLZMfrsXOIXE58Qew4a7xLyrP4bWVXmWoM2xBev3puPrNe9Un7aMisw7bZX8=
+X-Received: by 2002:a63:584e:: with SMTP id i14mr3798329pgm.356.1637052915589;
+ Tue, 16 Nov 2021 00:55:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20211115141925.60164-1-paul@crapouillou.net> <20211115141925.60164-6-paul@crapouillou.net>
-In-Reply-To: <20211115141925.60164-6-paul@crapouillou.net>
+References: <20211115141925.60164-1-paul@crapouillou.net> <20211115141925.60164-7-paul@crapouillou.net>
+In-Reply-To: <20211115141925.60164-7-paul@crapouillou.net>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 16 Nov 2021 10:53:45 +0200
-Message-ID: <CA+U=DsrXFTZa0cTe1ZtLM_JDxcQU=bQ1TFzam83XaD=whA5pmw@mail.gmail.com>
-Subject: Re: [PATCH 05/15] iio: buffer-dmaengine: Support specifying buffer direction
+Date:   Tue, 16 Nov 2021 10:55:04 +0200
+Message-ID: <CA+U=DspKfDmLhSg6fqz44w-BmmuP1Ju_RuMhS5+ZJXRUzq97fg@mail.gmail.com>
+Subject: Re: [PATCH 06/15] iio: buffer-dmaengine: Enable write support
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -66,111 +66,43 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Mon, Nov 15, 2021 at 4:20 PM Paul Cercueil <paul@crapouillou.net> wrote:
 >
-> Update the devm_iio_dmaengine_buffer_setup() function to support
-> specifying the buffer direction.
->
-> Update the iio_dmaengine_buffer_submit() function to handle input
-> buffers as well as output buffers.
+> Use the iio_dma_buffer_write() and iio_dma_buffer_space_available()
+> functions provided by the buffer-dma core, to enable write support in
+> the buffer-dmaengine code.
 >
 
+This is a bit related to the comment about
+iio_dma_buffer_space_available() in patch 4
+
+But otherwise:
 
 Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
 
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 > ---
->  drivers/iio/adc/adi-axi-adc.c                 |  3 ++-
->  .../buffer/industrialio-buffer-dmaengine.c    | 24 +++++++++++++++----
->  include/linux/iio/buffer-dmaengine.h          |  5 +++-
->  3 files changed, 25 insertions(+), 7 deletions(-)
+>  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index a73e3c2d212f..0a6f2c32b1b9 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -113,7 +113,8 @@ static int adi_axi_adc_config_dma_buffer(struct device *dev,
->                 dma_name = "rx";
->
->         return devm_iio_dmaengine_buffer_setup(indio_dev->dev.parent,
-> -                                              indio_dev, dma_name);
-> +                                              indio_dev, dma_name,
-> +                                              IIO_BUFFER_DIRECTION_IN);
->  }
->
->  static int adi_axi_adc_read_raw(struct iio_dev *indio_dev,
 > diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> index f8ce26a24c57..ac26b04aa4a9 100644
+> index ac26b04aa4a9..5cde8fd81c7f 100644
 > --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
 > +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> @@ -64,14 +64,25 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
->         struct dmaengine_buffer *dmaengine_buffer =
->                 iio_buffer_to_dmaengine_buffer(&queue->buffer);
->         struct dma_async_tx_descriptor *desc;
-> +       enum dma_transfer_direction dma_dir;
-> +       size_t max_size;
->         dma_cookie_t cookie;
+> @@ -123,12 +123,14 @@ static void iio_dmaengine_buffer_release(struct iio_buffer *buf)
 >
-> -       block->bytes_used = min(block->size, dmaengine_buffer->max_size);
-> -       block->bytes_used = round_down(block->bytes_used,
-> -                       dmaengine_buffer->align);
-> +       max_size = min(block->size, dmaengine_buffer->max_size);
-> +       max_size = round_down(max_size, dmaengine_buffer->align);
-> +
-> +       if (queue->buffer.direction == IIO_BUFFER_DIRECTION_IN) {
-> +               block->bytes_used = max_size;
-> +               dma_dir = DMA_DEV_TO_MEM;
-> +       } else {
-> +               dma_dir = DMA_MEM_TO_DEV;
-> +       }
-> +
-> +       if (!block->bytes_used || block->bytes_used > max_size)
-> +               return -EINVAL;
+>  static const struct iio_buffer_access_funcs iio_dmaengine_buffer_ops = {
+>         .read = iio_dma_buffer_read,
+> +       .write = iio_dma_buffer_write,
+>         .set_bytes_per_datum = iio_dma_buffer_set_bytes_per_datum,
+>         .set_length = iio_dma_buffer_set_length,
+>         .request_update = iio_dma_buffer_request_update,
+>         .enable = iio_dma_buffer_enable,
+>         .disable = iio_dma_buffer_disable,
+>         .data_available = iio_dma_buffer_data_available,
+> +       .space_available = iio_dma_buffer_space_available,
+>         .release = iio_dmaengine_buffer_release,
 >
->         desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
-> -               block->phys_addr, block->bytes_used, DMA_DEV_TO_MEM,
-> +               block->phys_addr, block->bytes_used, dma_dir,
->                 DMA_PREP_INTERRUPT);
->         if (!desc)
->                 return -ENOMEM;
-> @@ -275,7 +286,8 @@ static struct iio_buffer *devm_iio_dmaengine_buffer_alloc(struct device *dev,
->   */
->  int devm_iio_dmaengine_buffer_setup(struct device *dev,
->                                     struct iio_dev *indio_dev,
-> -                                   const char *channel)
-> +                                   const char *channel,
-> +                                   enum iio_buffer_direction dir)
->  {
->         struct iio_buffer *buffer;
->
-> @@ -286,6 +298,8 @@ int devm_iio_dmaengine_buffer_setup(struct device *dev,
->
->         indio_dev->modes |= INDIO_BUFFER_HARDWARE;
->
-> +       buffer->direction = dir;
-> +
->         return iio_device_attach_buffer(indio_dev, buffer);
->  }
->  EXPORT_SYMBOL_GPL(devm_iio_dmaengine_buffer_setup);
-> diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
-> index 5c355be89814..538d0479cdd6 100644
-> --- a/include/linux/iio/buffer-dmaengine.h
-> +++ b/include/linux/iio/buffer-dmaengine.h
-> @@ -7,11 +7,14 @@
->  #ifndef __IIO_DMAENGINE_H__
->  #define __IIO_DMAENGINE_H__
->
-> +#include <linux/iio/buffer.h>
-> +
->  struct iio_dev;
->  struct device;
->
->  int devm_iio_dmaengine_buffer_setup(struct device *dev,
->                                     struct iio_dev *indio_dev,
-> -                                   const char *channel);
-> +                                   const char *channel,
-> +                                   enum iio_buffer_direction dir);
->
->  #endif
+>         .modes = INDIO_BUFFER_HARDWARE,
 > --
 > 2.33.0
 >

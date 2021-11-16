@@ -2,179 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D49AB45378C
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 17:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C45A45385A
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 18:14:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232021AbhKPQe6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Nov 2021 11:34:58 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:39646 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231458AbhKPQe6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 11:34:58 -0500
-Received: from pendragon.ideasonboard.com (117.145-247-81.adsl-dyn.isp.belgacom.be [81.247.145.117])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 35C5CE7;
-        Tue, 16 Nov 2021 17:31:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1637080319;
-        bh=+WYwbvfzPhZ1OsBrofZ/kYexlWkgvCGLKqYe/xe6KJk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aDDkbEWfBONMw/ndSzWotFH79WN1Sz5JCfLWVZReKJbohWjZ4hfsZ/spdMa4dkA/m
-         dTbJQraBzmLwI/+aFgO/wxZobxUfu5Oh2WMMRuUtYRrBtODet52E1dMfPpofRcVc2p
-         1VSWoOoY976nTI9WJsjet1wp3Ry5Rub2lqrTwXPQ=
-Date:   Tue, 16 Nov 2021 18:31:36 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH 00/15] iio: buffer-dma: write() and new DMABUF based API
-Message-ID: <YZPc6HNOe6YOLE9k@pendragon.ideasonboard.com>
-References: <20211115141925.60164-1-paul@crapouillou.net>
- <YZJwnPbgCOdeKq6S@phenom.ffwll.local>
- <18CM2R.6UYFWJDX5UQD@crapouillou.net>
- <YZPWEU2zRCY0En4l@phenom.ffwll.local>
+        id S237607AbhKPRRq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Nov 2021 12:17:46 -0500
+Received: from mga02.intel.com ([134.134.136.20]:39628 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229509AbhKPRRp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 16 Nov 2021 12:17:45 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10169"; a="220949150"
+X-IronPort-AV: E=Sophos;i="5.87,239,1631602800"; 
+   d="scan'208";a="220949150"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2021 09:07:45 -0800
+X-IronPort-AV: E=Sophos;i="5.87,239,1631602800"; 
+   d="scan'208";a="472386445"
+Received: from smile.fi.intel.com ([10.237.72.184])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2021 09:07:42 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1mn1vi-007UvA-3l;
+        Tue, 16 Nov 2021 19:07:34 +0200
+Date:   Tue, 16 Nov 2021 19:07:33 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
+        gregkh@linuxfoundation.org, rafael@kernel.org,
+        linux-acpi@vger.kernel.org, heikki.krogerus@linux.intel.com
+Subject: Re: [PATCH v9 1/5] device property: Add fwnode_iomap()
+Message-ID: <YZPlVfYjXWiOm+Mg@smile.fi.intel.com>
+References: <20211116150842.1051-1-anand.ashok.dumbre@xilinx.com>
+ <20211116150842.1051-2-anand.ashok.dumbre@xilinx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YZPWEU2zRCY0En4l@phenom.ffwll.local>
+In-Reply-To: <20211116150842.1051-2-anand.ashok.dumbre@xilinx.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 16, 2021 at 05:02:25PM +0100, Daniel Vetter wrote:
-> On Mon, Nov 15, 2021 at 02:57:37PM +0000, Paul Cercueil wrote:
-> > Le lun., nov. 15 2021 at 15:37:16 +0100, Daniel Vetter a écrit :
-> > > On Mon, Nov 15, 2021 at 02:19:10PM +0000, Paul Cercueil wrote:
-> > > >  Hi Jonathan,
-> > > > 
-> > > >  This patchset introduces a new userspace interface based on DMABUF
-> > > >  objects, to complement the existing fileio based API.
-> > > > 
-> > > >  The advantage of this DMABUF based interface vs. the fileio
-> > > >  interface, is that it avoids an extra copy of the data between the
-> > > >  kernel and userspace. This is particularly userful for high-speed
-> > > >  devices which produce several megabytes or even gigabytes of data per
-> > > >  second.
-> > > > 
-> > > >  The first few patches [01/15] to [03/15] are not really related, but
-> > > >  allow to reduce the size of the patches that introduce the new API.
-> > > > 
-> > > >  Patch [04/15] to [06/15] enables write() support to the buffer-dma
-> > > >  implementation of the buffer API, to continue the work done by
-> > > >  Mihail Chindris.
-> > > > 
-> > > >  Patches [07/15] to [12/15] introduce the new DMABUF based API.
-> > > > 
-> > > >  Patches [13/15] and [14/15] add support for cyclic buffers, only through
-> > > >  the new API. A cyclic buffer will be repeated on the output until the
-> > > >  buffer is disabled.
-> > > > 
-> > > >  Patch [15/15] adds documentation about the new API.
-> > > > 
-> > > >  For now, the API allows you to alloc DMABUF objects and mmap() them
-> > > > to
-> > > >  read or write the samples. It does not yet allow to import DMABUFs
-> > > >  parented to other subsystems, but that should eventually be possible
-> > > >  once it's wired.
-> > > > 
-> > > >  This patchset is inspired by the "mmap interface" that was previously
-> > > >  submitted by Alexandru Ardelean and Lars-Peter Clausen, so it would be
-> > > >  great if I could get a review from you guys. Alexandru's commit was
-> > > >  signed with his @analog.com address but he doesn't work at ADI anymore,
-> > > >  so I believe I'll need him to sign with a new email.
-> > > 
-> > > Why dma-buf? dma-buf looks like something super generic and useful, until
-> > > you realize that there's a metric ton of gpu/accelerator bagage piled in.
-> > > So unless buffer sharing with a gpu/video/accel/whatever device is the
+On Tue, Nov 16, 2021 at 03:08:38PM +0000, Anand Ashok Dumbre wrote:
+> This patch introduces a new helper routine - fwnode_iomap(), which
+> allows to map the memory mapped IO for a given device node.
+> 
+> This implementation does not cover the ACPI case and may be expanded
+> in the future. The main purpose here is to be able to develop resource
+> provider agnostic drivers.
 
-And cameras (maybe they're included in "whatever" ?).
+Thanks! LGTM,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> > > goal here, and it's just for a convenient way to get at buffer handles,
-> > > this doesn't sound like a good idea.
-> > 
-> > Good question. The first reason is that a somewhat similar API was intented
-> > before[1], but refused upstream as it was kind of re-inventing the wheel.
-> > 
-> > The second reason, is that we want to be able to share buffers too, not with
-> > gpu/video but with the network (zctap) and in the future with USB
-> > (functionFS) too.
-> > 
-> > [1]: https://lore.kernel.org/linux-iio/20210217073638.21681-1-alexandru.ardelean@analog.com/T/
-> 
-> Hm is that code merged already in upstream already?
-> 
-> I know that dma-buf looks really generic, but like I said if there's no
-> need ever to interface with any of the gpu buffer sharing it might be
-> better to use something else (like get_user_pages maybe, would that work?).
+TWIMC I have some ideas about ACPI implementation. Just let this one
+settled first.
 
-Not GUP please. That brings another set of issues, especially when
-dealing with DMA, we've suffered enough from the USERPTR support in V4L2
-to avoid repeating this. Let's make dma-buf better instead.
-
-> > > Also if the idea is to this with gpus/accelerators then I'd really like to
-> > > see the full thing, since most likely at that point you also want
-> > > dma_fence. And once we talk dma_fence things get truly horrible from a
-> > > locking pov :-( Or well, just highly constrained and I get to review what
-> > > iio is doing with these buffers to make sure it all fits.
-> > 
-> > There is some dma_fence action in patch #10, which is enough for the
-> > userspace apps to use the API.
-> > 
-> > What "horribleness" are we talking about here? It doesn't look that scary to
-> > me, but I certainly don't have the complete picture.
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> ---
+>  drivers/base/property.c  | 16 ++++++++++++++++
+>  include/linux/property.h |  2 ++
+>  2 files changed, 18 insertions(+)
 > 
-> You need to annotate all the code involved in signalling that dma_fence
-> using dma_fence_begin/end_signalling, and then enable full lockdep and
-> everything.
+> diff --git a/drivers/base/property.c b/drivers/base/property.c
+> index 453918eb7390..d2cca7ffea18 100644
+> --- a/drivers/base/property.c
+> +++ b/drivers/base/property.c
+> @@ -1021,6 +1021,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+>  }
+>  EXPORT_SYMBOL(fwnode_irq_get);
+>  
+> +/**
+> + * fwnode_iomap - Maps the memory mapped IO for a given fwnode
+> + * @fwnode:	Pointer to the firmware node
+> + * @index:	Index of the IO range
+> + *
+> + * Returns a pointer to the mapped memory.
+> + */
+> +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
+> +{
+> +	if (is_of_node(fwnode))
+> +		return of_iomap(to_of_node(fwnode), index);
+> +
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL(fwnode_iomap);
+> +
+>  /**
+>   * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
+>   * @fwnode: Pointer to the parent firmware node
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 357513a977e5..9bb0b0155402 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -121,6 +121,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+>  
+>  int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+>  
+> +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
+> +
+>  unsigned int device_get_child_node_count(struct device *dev);
+>  
+>  static inline bool device_property_read_bool(struct device *dev,
+> -- 
+> 2.17.1
 > 
-> You can safely assume you'll find bugs, because we even have bugs about
-> this in gpu drivers (where that annotation isn't fully rolled out yet).
-> 
-> The tldr is that you can allocate memory in there. And a pile of other
-> restrictions, but not being able to allocate memory (well GFP_ATOMIC is
-> ok, but that can fail) is a very serious restriction.
-> -Daniel
-> 
-> > > >  Alexandru Ardelean (1):
-> > > >    iio: buffer-dma: split iio_dma_buffer_fileio_free() function
-> > > > 
-> > > >  Paul Cercueil (14):
-> > > >    iio: buffer-dma: Get rid of incoming/outgoing queues
-> > > >    iio: buffer-dma: Remove unused iio_buffer_block struct
-> > > >    iio: buffer-dma: Use round_down() instead of rounddown()
-> > > >    iio: buffer-dma: Enable buffer write support
-> > > >    iio: buffer-dmaengine: Support specifying buffer direction
-> > > >    iio: buffer-dmaengine: Enable write support
-> > > >    iio: core: Add new DMABUF interface infrastructure
-> > > >    iio: buffer-dma: Use DMABUFs instead of custom solution
-> > > >    iio: buffer-dma: Implement new DMABUF based userspace API
-> > > >    iio: buffer-dma: Boost performance using write-combine cache setting
-> > > >    iio: buffer-dmaengine: Support new DMABUF based userspace API
-> > > >    iio: core: Add support for cyclic buffers
-> > > >    iio: buffer-dmaengine: Add support for cyclic buffers
-> > > >    Documentation: iio: Document high-speed DMABUF based API
-> > > > 
-> > > >   Documentation/driver-api/dma-buf.rst          |   2 +
-> > > >   Documentation/iio/dmabuf_api.rst              |  94 +++
-> > > >   Documentation/iio/index.rst                   |   2 +
-> > > >   drivers/iio/adc/adi-axi-adc.c                 |   3 +-
-> > > >   drivers/iio/buffer/industrialio-buffer-dma.c  | 670 ++++++++++++++----
-> > > >   .../buffer/industrialio-buffer-dmaengine.c    |  42 +-
-> > > >   drivers/iio/industrialio-buffer.c             |  49 ++
-> > > >   include/linux/iio/buffer-dma.h                |  43 +-
-> > > >   include/linux/iio/buffer-dmaengine.h          |   5 +-
-> > > >   include/linux/iio/buffer_impl.h               |   8 +
-> > > >   include/uapi/linux/iio/buffer.h               |  30 +
-> > > >   11 files changed, 783 insertions(+), 165 deletions(-)
-> > > >   create mode 100644 Documentation/iio/dmabuf_api.rst
 
 -- 
-Regards,
+With Best Regards,
+Andy Shevchenko
 
-Laurent Pinchart
+

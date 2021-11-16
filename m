@@ -2,73 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2B7453489
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 15:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD97F45348B
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 15:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237666AbhKPOqW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Nov 2021 09:46:22 -0500
-Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:14420 "EHLO
+        id S237706AbhKPOq3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Nov 2021 09:46:29 -0500
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:17662 "EHLO
         mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237528AbhKPOqP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 09:46:15 -0500
+        by vger.kernel.org with ESMTP id S237517AbhKPOqQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 09:46:16 -0500
 Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AG9J6OV017378;
-        Tue, 16 Nov 2021 09:43:16 -0500
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2109.outbound.protection.outlook.com [104.47.58.109])
-        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3cbv2rcugm-1
+        by mx0b-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AG9FuAd016478;
+        Tue, 16 Nov 2021 09:43:18 -0500
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2104.outbound.protection.outlook.com [104.47.58.104])
+        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3cbv2rcugr-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 Nov 2021 09:43:15 -0500
+        Tue, 16 Nov 2021 09:43:17 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KFxyXOPQYu2X2oaoPtL4yVrP4Z7YZG0aL4eOToQv9u5uVy2pvlJPN71oLxovsOFJgJvcjWSJbrSW0HQGUp6nyO1Ed0eqIqSN1cNxIRu22LquwX6sjrF3TyJX7Wa4eZzCrHknfariM1onUnb+m5hUWlAlFepd6dpgLqRTuRCvwpIQ0CnINlNc+eM6gbhW8oaGnzVgH3RByQJtUDA6hxcFRK+XIGEh1FuIW5hLOqvpHi01K8VQa0/KLFU//ofE0OLt9ZEKSbCrdMjocLATtz8VoAnGsINKCBsFbHDuYebU/6DGEsy7HWpHmytYBDkRdjAuongQUJ+apx+459HPIMUh0g==
+ b=QR9ewHiUHv8OnPNilfjIbSIBnQvoiluS97qP1RPo0X3gk99cWmuvfUWECFeeTemHI0R6HmIdYafpCVnOMarWhTFiKCGuuaR7gzdZXRkl3cGtIYIwXUK+iN+b74dKsqgE3f2jms3elfWpG2bJMzDEgpZDd3jRyRmxYt9Jz+poHpbJH+sy6+uy/WK/tT3715heqdqzX4pdHmegy7EZDZKmqQWyVGaxVDGtANQiRZaEXA/T2nFBOi9fSzGFP891y5TxB2QtVtt4sb+MwHtC1BlWN/dnTFmNE4FZ6tOCu4GGdNTsSUJr0+0fxn0fE+vW4mzB+8OxR5T4sIo17/RbsEeS1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=13Add9PHKaLBHBzBbA3E9cE0ZByXBLDB5Eiue84CQDY=;
- b=P0+VpKPPlXP9eCsPw6n8eEHHG+jzoskRgdaHSd5bN6puyNDDxFouLaEyGIKify2v2x3+TNgf+1E8iLZ1xyCBmzeA+SMtJWL9O1VxctrCehc/vEUSZU3ADHZK/KfjbM1lBFS7v8B38FexJgQTzkrsKub3d9Y4fRpCxit2X12g+qEQaQEgN5uatS93m39404mhSioyPADIITF6NTcaijtwSaH9gDykwGygQTqusQOFnWCkMfbLKh+p8egUa/n1xz6/Poaj5rUvQrkMPRStl4RIeGK85mludCAv6gS0u/OfxjIZbHBuneg2AOOppmO7dn1zLyRsElh7jyJGnIuvPJg6+w==
+ bh=m8EH71NoIAsNt/WsREsTTZPcKokuMFUv97sNScTrma4=;
+ b=BXLQ9or/Gy3S5bT5CQXpGIq0vFR3MbYWZ9T+tyfooS5+Q5CG4HCQ2YMXo3zWCY+d/Gprl/Br1Zub1/6kTUVbU5BZ+I14k8MEJXTwGUPfu3Xzh1DqBIP4LCoLnQWjk7zsrxd3PuH/vEzM93wFMuBSrvM8WNEtlgpYPnFAxDUIpUEbshu7Ulm9gyCX1s7OCJ/3Xhdmkor+HkbvHKRwRN5emRPb7VBuIK7uD4PFX4rNFn26qRQatbdDf+zrBG3ufHzEzszRRzUtyyw5R4/mhyPeJupwEXNKwdSNZIO4T9ScFsdXBhnFOGkw3lFz707lDssRjbyTsnWfXNGksdriYN1I/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
  dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=13Add9PHKaLBHBzBbA3E9cE0ZByXBLDB5Eiue84CQDY=;
- b=FOVs9e8nFYELKSoVQ2cO9qAq5N/jwS0U4vmNxodR3Yo/UR1ymKX8tlcVj3m8l/Yr/txRFYGnygqe2ZFWbgKcTXrCT7cFLch8nvsqIm/0vhNw60Ip/h5I12Y/iFXMTdeyX1YXXpurdrjny1dqHEI2rSMQIqJBqZn2xyXe4L3ehiU=
+ bh=m8EH71NoIAsNt/WsREsTTZPcKokuMFUv97sNScTrma4=;
+ b=Pr/dLV19LCPLUMACSmevpgZO4xrqjIAAgKoLg+d9j79E7MYjD+MjPCqUvu1Pe8hd/Ypwl40Fpvrxn8n0ovZet5XIIbYzCTHFNyjpX2M8zEy1QHrQBo/eCVj21+wtKmTWnC1BCRBCoXOOAWnEyORvs2HsAzN+PeaUuJAumKHLi/U=
 Received: from CY4PR03MB3399.namprd03.prod.outlook.com (2603:10b6:910:57::13)
  by CY1PR03MB2139.namprd03.prod.outlook.com (2603:10b6:600:1::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.26; Tue, 16 Nov
- 2021 14:43:14 +0000
+ 2021 14:43:16 +0000
 Received: from CY4PR03MB3399.namprd03.prod.outlook.com
  ([fe80::70e8:1ee0:f071:3de5]) by CY4PR03MB3399.namprd03.prod.outlook.com
  ([fe80::70e8:1ee0:f071:3de5%5]) with mapi id 15.20.4713.019; Tue, 16 Nov 2021
- 14:43:14 +0000
+ 14:43:16 +0000
 From:   "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 3/4] dt-bindings:iio:filter: add admv8818 doc
-Thread-Topic: [PATCH 3/4] dt-bindings:iio:filter: add admv8818 doc
-Thread-Index: AQHX1WXROa8gBfces0OdmTnnZfx+/6wAL4SAgAYQw/A=
-Date:   Tue, 16 Nov 2021 14:43:14 +0000
-Message-ID: <CY4PR03MB339956D5EAA5D20C9D6579419B999@CY4PR03MB3399.namprd03.prod.outlook.com>
+Subject: RE: [PATCH 4/4] iio:filter:admv8818: Add sysfs ABI documentation
+Thread-Topic: [PATCH 4/4] iio:filter:admv8818: Add sysfs ABI documentation
+Thread-Index: AQHX1WXUh8uqCQuOgE+nA/Mnv7J7+KwAMmyAgAYQViA=
+Date:   Tue, 16 Nov 2021 14:43:16 +0000
+Message-ID: <CY4PR03MB3399908F8ED22DF23C89A09E9B999@CY4PR03MB3399.namprd03.prod.outlook.com>
 References: <20211109123127.96399-1-antoniu.miclaus@analog.com>
-        <20211109123127.96399-4-antoniu.miclaus@analog.com>
- <20211112174601.3c1f6b4b@jic23-huawei>
-In-Reply-To: <20211112174601.3c1f6b4b@jic23-huawei>
+        <20211109123127.96399-5-antoniu.miclaus@analog.com>
+ <20211112175625.4a9f393d@jic23-huawei>
+In-Reply-To: <20211112175625.4a9f393d@jic23-huawei>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-dg-ref: =?iso-8859-2?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcYW1pY2xhdX?=
  =?iso-8859-2?Q?NcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZi?=
- =?iso-8859-2?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy04NTI0ZDc5MS00NmViLTExZWMtYWJlZi?=
- =?iso-8859-2?Q?1kNDgxZDc1MDZkZGVcYW1lLXRlc3RcODUyNGQ3OTItNDZlYi0xMWVjLWFi?=
- =?iso-8859-2?Q?ZWYtZDQ4MWQ3NTA2ZGRlYm9keS50eHQiIHN6PSI0NjY1IiB0PSIxMzI4MT?=
- =?iso-8859-2?Q?U0NzM5MTk2MTg3MzciIGg9Im5UbU5CQUZHdDlKZDdxVTZEditGbURqR0kz?=
- =?iso-8859-2?Q?WT0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
- =?iso-8859-2?Q?5DZ1VBQUVvQ0FBQ3hicWRIK05yWEFZRGpuR0xpbzMwL2dPT2NZdUtqZlQ4?=
+ =?iso-8859-2?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy04NTI0ZDc5Ni00NmViLTExZWMtYWJlZi?=
+ =?iso-8859-2?Q?1kNDgxZDc1MDZkZGVcYW1lLXRlc3RcODUyNGQ3OTctNDZlYi0xMWVjLWFi?=
+ =?iso-8859-2?Q?ZWYtZDQ4MWQ3NTA2ZGRlYm9keS50eHQiIHN6PSI2MDA1IiB0PSIxMzI4MT?=
+ =?iso-8859-2?Q?U0NzM5MzYzOTM5NzEiIGg9InBpcGdMZzBKUjdWa25lOGZnQkh2R21qUFEx?=
+ =?iso-8859-2?Q?ST0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
+ =?iso-8859-2?Q?5DZ1VBQUVvQ0FBRHpacWRJK05yWEFSWSttZzN2RktJRUZqNmFEZThVb2dR?=
  =?iso-8859-2?Q?REFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQU?=
  =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBWFEvampRQUFBQUFBQUFBQUFB?=
  =?iso-8859-2?Q?QUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QU?=
@@ -88,62 +88,62 @@ x-dg-ref: =?iso-8859-2?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcYW1pY2x
  =?iso-8859-2?Q?QUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21ldGE+?=
 x-dg-rorf: 
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8b440263-6bd6-4075-b1fb-08d9a90f6b75
+x-ms-office365-filtering-correlation-id: 7f8c5895-f164-4c06-eeda-08d9a90f6cd9
 x-ms-traffictypediagnostic: CY1PR03MB2139:
-x-microsoft-antispam-prvs: <CY1PR03MB213976D2DDFFB7F16BE9D0E49B999@CY1PR03MB2139.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-microsoft-antispam-prvs: <CY1PR03MB2139220AC0B3D20492CFE3A99B999@CY1PR03MB2139.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: u6IOUAmt5L/FgYSV3VdCGvj8iik0nENgeGPt0Xq0ND/y4mOOKSjPCc30140m3asragk+l/YUjDH5kNrIG3JdQ4+iSQKO6FRFScPANcvjxMpXZhA7L/CPCToEWgtxA+UNQjd5Y637XY97m8jwqX42pCGE8e+EeIB2tVy89gqELbmucR6fEbmiqfs9+iGC0Z7jFJVdLXmvd0zVcace4E+QKGscfWTv1V/vNf5B4D4B+ycwpOFyFPPYhCjNWdOtZwmbTc4wN/d9KbA3UMdx2tUVnZuJEe4i7hk2Sq9Fg3Xx9aseNDXZilxpSWeg5kwlrb/nS7LhBeAiFQMJhVhRNH+q5usM5tqRmwn4zLyuZ2GsyvHOQWEx5+lDc+gHTRHHC9Ar+B75RpZBuQ1QATDB6PcUbmvwYyptM3lIswpG+jRJKnqWE1izn7yPln7tZzZeHygof66RzPhmwOVglZN/uvFiEI6M1IekvbEiyP7Uucsk/VIzgZ0DcuhqKuOSLhac3jgLqH5aw/JwdNYtA1eM7+PrpTSZO5MZUspV3Ppzq8hX0kuL6Dyf7XMyCgr6+QGX4hSdSniRMBsAAT2Ws+5o8sOqY4ahhBuE0KyimawNDPSw+SbZ0DYv3wam0KdCyTGFjMuCpiAwi/YNA4Sp1jXFAQ7ZyEIvH83H22aWvUvIRhlozTCjP44qpM4unl5yDxsYgEKIyTbJcw4a5u8C2CfEcJpoVXG4dAwIbPRIfUzhEgwE98nn78F4bsJejfUjTvs4A+40FoFKA3wL9FGHrWjtOKGnETZimy86ojdqOFZvJ6fzzo0WjtzGcTWcoFCAcbxDVCESVMqphVlL3re/f4RBdeqznA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3399.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6916009)(7696005)(52536014)(86362001)(26005)(5660300002)(66946007)(2906002)(66446008)(54906003)(64756008)(508600001)(186003)(76116006)(66476007)(8936002)(66556008)(966005)(71200400001)(83380400001)(4326008)(33656002)(53546011)(9686003)(55016002)(8676002)(6506007)(316002)(122000001)(38100700002)(66574015)(38070700005);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: eiCMtVxum8e1zI4yWGPzv6G/vHEFCMq/AA1gyHFitOiXJJ3y55pPM7vUDrJwXHmGUYAxiutxX/PGQvpqjkAjBrsjbEGdxlxxTJtXm1u4xAhtdyGCtwCHazIdPLpKrJrx1mkya354S2sJpr+eiYgKv9IAhTBFrEkGeXwChcofJuwOAUxUmmKQlievLKMIi7ZpwmIJl9nIWXOkfBUsWi0kBHTt69A0Otcgq5WuuIPtuK3x4XOeya6x49DwfXF67fmMcmM+MctbXne4xx++qu+MZOGHGZUzsibV/DLUPXTMVUD8Bza3cqoQMlIKVMTuj0oSRCNSLobbCgDEUBBi2KmpV4ktRYc9R3z4oam0dJ/U3etmh+MoijH/6kFN+ReDWIWqn4GIiTxdCMRhmbFsl4wJsa+jdOAROtYaKYR4Dn9DelF4mfXV6cTyu7jTaopCizBepbjBQ2HYT6zX29qRmSTgVHaDWp0HwpYjE1dH2m+OLAZFTfnYE6bWSVt3QJ+kyfm5xZFb3swypHR+2XSXyCkm8Zy+Fv2/wfZ4YTMeA6ZXYCTQQUBShgS7auxmDLSGRWVluvunw9ytNzP1ZTTtiIhl6fOgkenZAwMIuzDBhqicrcaIkqzfXm4KXpcn+xWG5X0tjLKymG8OIgohzNy9veToVHo4shAlG2z22qyx+MZ8tDCoHd84PUNbhTP3gHZsWu++HWkx7oF7jqTQYr/+ESsehA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3399.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6916009)(7696005)(52536014)(86362001)(26005)(5660300002)(66946007)(2906002)(66446008)(54906003)(64756008)(508600001)(186003)(76116006)(66476007)(8936002)(66556008)(71200400001)(83380400001)(4326008)(33656002)(53546011)(9686003)(55016002)(8676002)(6506007)(316002)(122000001)(38100700002)(66574015)(38070700005);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?hZnAywYx3sWKs/lDpe3bqXdy/4EHjvQTMv877DOPv15lO2UBMQAo+s+jae?=
- =?iso-8859-2?Q?zbWGG6nE9Y8zSpsYl058s9tnscKBMemUVjVjpjfNVu8bOTFqbX0sEazjcr?=
- =?iso-8859-2?Q?ic1ExIhJK3aYhfSAouqij/w966TamlFY2hjiVrRuETNbUQzMTdQQSbbGXG?=
- =?iso-8859-2?Q?wZXTnDO96XpbBOQqW4pUOR9MG4ut3FL1fD0QjOVZ/636iEroMcOVgyJp7L?=
- =?iso-8859-2?Q?nFLkWEFqjSvTyxliPu+Q+vZV0RccRI2c1ui5B8ZE6wBSz/FN1+SIEaKlhA?=
- =?iso-8859-2?Q?Zlx47Dqbt46gXtiBmDfRUFDY1l4wF7rrUIzJKFqFAblg8wwSgzBTDu8Pn+?=
- =?iso-8859-2?Q?Q0z2QLy27N1+LTRcYRueSRxKSgBc5lNaEqcW1cvCDwUhV/vhTegRd1y/wo?=
- =?iso-8859-2?Q?XSC7RCrHxVyc11LulI+E3E9t8WecUvC51FZiwZS5RtBnYPcRWmmvfqD00X?=
- =?iso-8859-2?Q?0H7+PM/gqcCD2AYiVHRTV27/yehpYYLv02yPu2xIFZsItQ0PzRTo0Bc/ZV?=
- =?iso-8859-2?Q?v0BNasIVmFS6NQhKVnp64K41j/tF4sqC08/zcFoPJNQWZIzCqOUoxc/pzw?=
- =?iso-8859-2?Q?yumB0ayv1Tgscd8ZM/G5L+xVtwx1Tl32v9guFpXxJgoolb2dAJkCaUGLkx?=
- =?iso-8859-2?Q?VJRWYIQcQM5Wj0PaVFkwUlllPpxUTUGVRRyTq8w7LrjjkQzAHzGZrnwQaH?=
- =?iso-8859-2?Q?MYBvJGv8f2V9C7xZcAqHWmY87bDsJhnV6mFGtGXQQ61r23itMzQMU8MUFK?=
- =?iso-8859-2?Q?+JCynci0j9YExbPoiPbgVY3yVA8AxgAhAeFO2vMDqVU+LjG7xwnLHGjL4z?=
- =?iso-8859-2?Q?zeHX9Ql2T7C6Q/aSok2Tnj3ofn/46hEzEmQGXv4sFct3xjJXdqexaUEOVV?=
- =?iso-8859-2?Q?5AwvGjAulZK7rDez+CzGpjuopQzqvoC3o0BUElZyGsvtK/ijNQETSc7BJD?=
- =?iso-8859-2?Q?QouGvwquSjJyiv4Qxhs3Y7/FBcC753FfUMoD/hIQvWKnpB7gsTdtm3yXFe?=
- =?iso-8859-2?Q?l+C8XZAiZLWmvpogc9AHVG0jzI+Htu7STZeGDpQtVOIKxbnrRrN4cu/tp5?=
- =?iso-8859-2?Q?vFwtKfpIghZ3G9F2bSVsr8P7Yft1fM0G2LdWDJRkFslREY+aeKSmpExO+l?=
- =?iso-8859-2?Q?MA4U9V2PPCH4WafMEj6+kkzfPFT2X97xjjutCEvbdxZ04cQMmg05Lo+JGo?=
- =?iso-8859-2?Q?G9NoxU2EHvWMpSL9VIoaqpVbgqREYAdFFqdcC/+fTP2j5xgBLD7ikAFWVT?=
- =?iso-8859-2?Q?3NJX8a0QVL3WEax86GiOAb2D5hThTvpUlQn66/vMeiQQv1boNgdNKbKBeq?=
- =?iso-8859-2?Q?evX9XcUsBh+eOI1Y6LVgcp4hiShREQhQhJYu4vy7ub/hsWE5W0fefuwaiZ?=
- =?iso-8859-2?Q?XvQSgvcFKENClWEOi7Mq2mdBha3PrVE6h5vdIlJwSj/jCN6S+DiOJSfnIX?=
- =?iso-8859-2?Q?cg7YXPJPkVdjpZAfroY7JgQ1u2+M0fxq43HU+LgmVeGSPD08RyeiFsZsYq?=
- =?iso-8859-2?Q?68WAF95CrIpxZC03zcxSsQiotu61FZawFwh1uB3Af5epKouKDkUfAOrYAZ?=
- =?iso-8859-2?Q?iSs/IV/54uMo+b7T4SN6tsRtE81hfyn89wbDoeGbKN3ZJnoF/RQwh24Ukv?=
- =?iso-8859-2?Q?NFK34dr9gzgGWLwUOtN+K2NERHQ81oFXJKPVNLyXrEuGf6eHwq8VZQ7QSi?=
- =?iso-8859-2?Q?5j7ZUzwIH0trgkPu405gcPghLIpuZir9unIMSD8C6FHs2tVvPFakbMK6S2?=
- =?iso-8859-2?Q?Poog=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?609CtTgmF/dN0REJ49G1YfFPZl8TcspRBKP0hVCkOjknX/K5g6x9j+aw99?=
+ =?iso-8859-2?Q?9hWUBZMhNy78NMMoE5v5dCp7vgnYh+nj8wxtsZvQ86SVuEuwBiGL/DxkKc?=
+ =?iso-8859-2?Q?v2DyGSlMdZfuPpd8rooUHyLiKUoJMgyZcTGwJafDoFJ92bgnZ66xDqEPWC?=
+ =?iso-8859-2?Q?iASySTVxgbq7H02Dpo0DBtEbdOWyGSS5UE6ZFqjbDW0T+Ra215ehxRBpdp?=
+ =?iso-8859-2?Q?Vxyhb9N0Wqp3If6rpp438rOOYjfzsYUgsMVTxX7dyJlQghwKyQsZ4JoeKB?=
+ =?iso-8859-2?Q?Vy8N2l8joaHHWW/brkWvmCC+qUgy0jPJviPHcBGBRT3qfR3DKs8sTg9i7Z?=
+ =?iso-8859-2?Q?WIjj5wFumQwHBuWfHj4/58B/yK8rUJVBKwdvWxMqr1leeXu9k8LqLEiJ7V?=
+ =?iso-8859-2?Q?lPHY6iSlDDjO6WAhc3Fi/2Nx+sLPmZvsCu613e5DhLixYCVnDyQZmJGL7f?=
+ =?iso-8859-2?Q?OwLfLRntZ4Eem/y0dpUjJNeZ6GMr7oFKiZIcD0Ws89YLA5TfyXct9ISZKy?=
+ =?iso-8859-2?Q?h+BYnnzjwpPsaexiZSYB4IXDKNqKCivwJGqNXuu5km+bSNBPsb6JtjnnIR?=
+ =?iso-8859-2?Q?JiuwYfkgfeZ+ke5SljW5j9Gl4dfHScBoOG0sJ2DdZMsZFQ26W4Ov9BDmmv?=
+ =?iso-8859-2?Q?UvEnoVJOzj+iHngeHc5RJMNEoeXLWAuV6vh2ceFP+ttiXKZ36NR5CtZBOh?=
+ =?iso-8859-2?Q?QOWMVa+uyEFqr76qrKvDE5W60oRb/Li6hM9Rs4bmyxguIOHuFQckisaKrC?=
+ =?iso-8859-2?Q?qx4Y/qCf8rSqS6aw69HHruSyqkW7MGkqzz5KCdRRo5HnL037Pt+3xU8vR5?=
+ =?iso-8859-2?Q?UwbZVuhBNfVJKXNQBiPrzqRj0GrMoEqFZciBAgL2jBazooYAKvs0+JTuHp?=
+ =?iso-8859-2?Q?aV+ICg3VVYPkDXWWurhsbIEmWzQuZTYocVuN2Is0aWiC4hLI40++U57oSK?=
+ =?iso-8859-2?Q?W+BUs5RNDwzPwarskS7KAfKLHY9fsHvAUhJ6+gsB7bW64oKT1NCxsbrONO?=
+ =?iso-8859-2?Q?tKcawN5s9p79PJM7XzS1K6E4xj0H7iGYbT0KO1JMlb+AIiVVbRpsk8M8Ly?=
+ =?iso-8859-2?Q?Vov05MTb5vk3s+qPu6It/rFt2r2ejCRQzaXFXxgyhuHq8UhM8XaOG2+Lam?=
+ =?iso-8859-2?Q?DIEehcLdBNHHNb1YXMca68MMAUnrKpRpxfz7NrDm4l3zaoa+ftnQwf2YLL?=
+ =?iso-8859-2?Q?KDMaBNgrrwP90j6Lbtb/5OGvAf/in/azuCIq41NEbPmJ3A7503DK88Kepp?=
+ =?iso-8859-2?Q?iJOHjL74M7DpSbqYlFlAyw7G+gvtEvXIvj8eIR/lhY0rZZqhiuPgZ5+/MW?=
+ =?iso-8859-2?Q?KjQuxDwt8NOCVFLVEEjqtqHJS6dvYNCwbaKk1fBVPUbW49l5hxzBVZgtaY?=
+ =?iso-8859-2?Q?ZXRuSt3gLEnw//1pPQtgwI23GXdY8G5e3fh7VQ/54D4CoxrYgm7b7LyfvM?=
+ =?iso-8859-2?Q?A8dV6UB4pnv/4lfzsmRGb8EdWl6oWbQ2eHz1V7exXBtKEUNlhqD8bzr4VJ?=
+ =?iso-8859-2?Q?SP+bBn0dKbzPbkc/WqmAT2sWbGNVEOIIFSC9oTALbxzg5s80OaSkpQvGiF?=
+ =?iso-8859-2?Q?uctyRU12W1Nxhbk3/6N/zxgh5u8K1M566poOjBGkoBE9iFcdP8pr8r0xO1?=
+ =?iso-8859-2?Q?FUTK7nzJ7UchWNBdWKx6zOtBMBUl9aj035s8pgkcj0upsmLaghqGv32YGK?=
+ =?iso-8859-2?Q?JmjrNgC7h7BfjKF00AmS+Y6Kq+3gEaKoTfxMfV+puGzyr1yZcx9y1Uz0xx?=
+ =?iso-8859-2?Q?kP+g=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: analog.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3399.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b440263-6bd6-4075-b1fb-08d9a90f6b75
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Nov 2021 14:43:14.1055
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7f8c5895-f164-4c06-eeda-08d9a90f6cd9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Nov 2021 14:43:16.4721
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1pZK4/bOOxr6QM9AveBQFEn6+EVhNxqfZHiZ4oHkQhlxnYS7kX3UyC6DzEV7uK9EyR6nstDBlAp9XwU6weKvuUxOZfrU1/uIUCQQUwOQLuY=
+X-MS-Exchange-CrossTenant-userprincipalname: SMHwgcfJkHgf3lbYKfCZgDzH21LHzZbwp/LvVwaaIx4IZ6RE2LXTXxjTdKwerQ1wT/8eXyidNYlfVMPVGZjzg9Sd3PZC5Z32oSoVoIp38vA=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR03MB2139
-X-Proofpoint-GUID: CC-RWWJHY8S-x0d5f0g1_hHC0rTma3oO
-X-Proofpoint-ORIG-GUID: CC-RWWJHY8S-x0d5f0g1_hHC0rTma3oO
+X-Proofpoint-GUID: gZVKHi3NGzVL6kTaA43_T1Hu3n21zc81
+X-Proofpoint-ORIG-GUID: gZVKHi3NGzVL6kTaA43_T1Hu3n21zc81
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
  definitions=2021-11-16_02,2021-11-16_01,2020-04-07_01
@@ -163,140 +163,181 @@ Antoniu Micl=E3u=BA
 
 > -----Original Message-----
 > From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Friday, November 12, 2021 7:46 PM
+> Sent: Friday, November 12, 2021 7:56 PM
 > To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
 > Cc: robh+dt@kernel.org; linux-iio@vger.kernel.org;
 > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH 3/4] dt-bindings:iio:filter: add admv8818 doc
+> Subject: Re: [PATCH 4/4] iio:filter:admv8818: Add sysfs ABI documentation
 >=20
 > [External]
 >=20
-> On Tue, 9 Nov 2021 14:31:26 +0200
+> On Tue, 9 Nov 2021 14:31:27 +0200
 > Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 >=20
-> > Add device tree bindings for the ADMV8818 Filter.
+> > Add initial ABI documentation for admv8818 filter sysfs interfaces.
 > >
 > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > > ---
-> >  .../bindings/iio/filter/adi,admv8818.yaml     | 78 +++++++++++++++++++
-> >  1 file changed, 78 insertions(+)
-> >  create mode 100644
-> Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+> >  .../ABI/testing/sysfs-bus-iio-filter-admv8818 | 60 +++++++++++++++++++
+> >  1 file changed, 60 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-filter-
+> admv8818
 > >
-> > diff --git
-> a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+> b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
 > > new file mode 100644
-> > index 000000000000..d581e236dbdc
+> > index 000000000000..7fa5b0819055
 > > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> > @@ -0,0 +1,78 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id:
-> https://urldefense.com/v3/__http://devicetree.org/schemas/iio/filter/adi,=
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+> > @@ -0,0 +1,60 @@
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_high_pass_3
+> db_frequency
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		The cut-off frequency of the ADMV8818 high pass filter. The
+> value is scaled using
+> > +		the `out_altvoltageY_scale` attribute so that GHz frequencies
+> are valid inputs,
+> > +		The accepted range of values for the frequencies is between
+> 1.75GHz and 19.9GHz.
+> > +
+> > +		The default value for the scale is 1000000, therefore MHz
+> frequency values are
+> > +		passed as input.
+>=20
+> I don't think this ABI really works unfortunately.  What we are talking h=
+ere is
+> a bunch of
+> selectable filters and one high pass + one low pass filter max can be ena=
+bled
+> at a time.
+>=20
+> So two options, we either have simply a single
+> out_altvoltage_filter_low_pass_3db_frequency
+> out_altvoltage_filter_high_pass_3db_frequency
+> Probably both with index 0 and index free channels are a silly idea given=
+ it's
+> fine to just have
+> one with index 0.
+>=20
+> or if there is sufficient reason to setup a selectable set of options the=
+n
+> we could look at indexed filters and a _symbol type selection which may
+> seem
+> odd but generalises fairly well from Phase Shift Keying type symbol stuff=
+ we
+> have had before (though still in staging because no one has cleaned the
+> drivers
+> up yet).
+>=20
+>=20
+> > +
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_low_pass_3
+> db_frequency
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		The cut-off frequency of the ADMV8818 low pass filter. The
+> value is scaled using
+> > +		the `out_altvoltageY_scale` attribute so that GHz frequencies
+> are valid inputs,
+> > +		The accepted range of values for the frequencies is between
+> 2.05GHz and 18.85GHz.
+> > +
+> > +		The default value for the scale is 1000000, therefore MHz
+> frequency values are
+> > +		passed as input.
+> > +
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_scale
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Scale high pass and lowpass filter frequency values to Hz.
+> > +
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_mode_available
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Reading this returns the valid values that can be written to
+> the
+> > +		on_altvoltage0_mode attribute:
+> > +
+> > +		- auto -> enable/register the clock rate notifier
+>=20
+> Hmm I'm wondering about the usecases of this.
+>=20
+> If this is being used with a clk device, then I think only the notifier o=
+ption
+> makes much
+> sense.  If it's not a clk that linux is aware of then manual makes more s=
+ense.
+>=20
+> > +		- manual -> disable/unregister the clock rate notifier
+> > +		- bypass -> bypass LPF/HPF and disable/unregister the clock
+> rate notifier
+>=20
+> This should be separate enable for the two filters though I think we've u=
+se
+> the value 0
+> to mean this in the past.  The bypasses look to be per filter anyway, so =
 a
-> dmv8818.yaml*__;Iw!!A3Ni8CS0y2Y!qkKokhmcgS0YEIy3uC6OfOOF7Bq3yE_r
-> Ny91yIkDRTXFe54x-cHq_BtsyzDOedLohB5D$
-> > +$schema: https://urldefense.com/v3/__http://devicetree.org/meta-
-> schemas/core.yaml*__;Iw!!A3Ni8CS0y2Y!qkKokhmcgS0YEIy3uC6OfOOF7Bq3
-> yE_rNy91yIkDRTXFe54x-cHq_BtsyzDOeYdHtx0a$
-> > +
-> > +title: ADMV8818 Digitally Tunable, High-Pass and Low-Pass Filter
-> > +
-> > +maintainers:
-> > +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > +
-> > +description: |
-> > +    Fully monolithic microwave integrated circuit (MMIC) that
-> > +    features a digitally selectable frequency of operation.
-> > +    The device features four independently controlled high-pass
-> > +    filters (HPFs) and four independently controlled low-pass filters
-> > +    (LPFs) that span the 2 GHz to 18 GHz frequency range.
-> > +
-> > +    https://www.analog.com/en/products/admv8818.html
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,admv8818
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  spi-max-frequency:
-> > +    maximum: 10000000
-> > +
-> > +  clocks:
-> > +    description:
-> > +      Definition of the external clock.
-> > +    minItems: 1
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: "rf_in"
+> single
+> mode is insufficiently flexible.
 >=20
-> Is this what we'd normally think of as a clock signal?  I'd not expect
-> a nice squarewave on that pin for example so this seems an odd way to
-> define it.
->=20
-The only actual use of this part, until now, was to filter the output of th=
-e following part:
-https://www.analog.com/en/products/adf5610.html
-This is the reason of using the clock framework in the driver. Moreover, th=
-e clock input is
-optional inside the driver.
-> > +
-> > +  clock-output-names:
-> > +    maxItems: 1
-> > +
-> > +  adi,bw-hz:
-> > +    description:
-> > +      Allows the user to increase the Bandpass Filter (BPF) bandwidth
-> > +      in Hz. Normally when invoked by the clk notifier, the driver
-> > +      sets the HPF cutoff close below the frequency and the LPF cutoff
-> > +      close above the frequency, and thus creating a BPF.
->=20
-> I don't understand this item at all.  Why do we need a control to
-> basically change how the other filter parameters are expressed?
+> In the vast majority of cases, mode attributes are not used because they =
+are
+> always device
+> specific and hence generic code has no idea what to do with them.
 >=20
 
-Indeed, this property was requested by the users of the application in whic=
-h this part was involved.
-Same goes for the filter modes and the bandwidth in the ABI documentation.
+As I mentioned also in the dt-bindings comments, these attributes were adde=
+d =20
+because they were requested by the users of the application in which this p=
+art
+was involved.
 
 If you think these attributes/properties are way too custom, I can drop the=
 m.
 
-Let me know your thoughts.
-> > +    $ref: /schemas/types.yaml#/definitions/uint64
+Same goes for the bandwidth attribute.
+
 > > +
-> > +  '#clock-cells':
-> > +    const: 0
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_mode
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		This attribute configures the filter mode.
+> > +		Reading returns the actual mode.
 > > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - clocks
-> > +  - clock-names
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_band_pass_
+> bandwidth_3db_frequency
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Store the band pass bandwidth frequency value applied.
+> > +		Reading returns the bandwidth frequency scaled.
+>=20
+> The device has no concept of bandpass that I can find so why are we
+> introducing it?
+> Let the user set the two filters to achieve this result.  Userspace can d=
+o the
+> maths for us :)
+>=20
 > > +
-> > +additionalProperties: false
 > > +
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <0>;
-> > +      admv8818@0 {
-> > +        compatible =3D "adi,admv8818";
-> > +        reg =3D <0>;
-> > +        spi-max-frequency =3D <10000000>;
-> > +        clocks =3D <&admv8818_rfin>;
-> > +        clock-names =3D "rf_in";
-> > +        adi,bw-hz =3D /bits/ 64 <600000000>;
-> > +      };
-> > +    };
-> > +...
-> > +
+> > +What:
+> 	/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_filter_band_pass_
+> center_frequency
+> > +KernelVersion:
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Store the band pass center frequency value applied.
+> > +		Reading returns the center frequency scaled.
 

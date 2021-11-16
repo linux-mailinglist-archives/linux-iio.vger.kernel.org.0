@@ -2,53 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55053452D53
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 09:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36355452D44
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Nov 2021 09:55:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232686AbhKPI7Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Nov 2021 03:59:25 -0500
-Received: from mail.bizjoindeal.pl ([80.211.97.164]:53160 "EHLO
-        mail.bizjoindeal.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232720AbhKPI7X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 03:59:23 -0500
-Received: by mail.bizjoindeal.pl (Postfix, from userid 1001)
-        id 93FB9A28BD; Tue, 16 Nov 2021 08:46:23 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizjoindeal.pl;
-        s=mail; t=1637052392;
-        bh=JZuQ1fK7zFtz2oeUB7Xfid9vb7kUywdmDd2OluR8ywA=;
-        h=Date:From:To:Subject:From;
-        b=tSHnU3E0K55SyY13InMRZ9imr+USb62/XuLi3wZJj1r8zaIaiXlE69vlTGBt++Q2b
-         u8OPKBEgdsJyeOPSzL6/T+6fPoRALyvW1Qt2izAnLj7ddyLgjdEnvRjVFa0WUsmZqo
-         +ftAoYl89h+5PtPY038fHCqX2sEHtufH7+k+ZX599CpMpbh+E2GCbnloYt7KaQyFNo
-         bt6ze2NaXR9fq1m/t79hNOQBMljNa0Yya8aeqHxng+fssSkMatl/lrlglHD6M34Gg5
-         SR59qR0UyyUKaJDbHmfrvySL8JiwMyYccuLIXcAkGeR5uDuWKMBfQHONqiaPnmDons
-         /DRdFz9XwUgIQ==
-Received: by mail.bizjoindeal.pl for <linux-iio@vger.kernel.org>; Tue, 16 Nov 2021 08:46:10 GMT
-Message-ID: <20211116074500-0.1.60.f089.0.7384hwtc59@bizjoindeal.pl>
-Date:   Tue, 16 Nov 2021 08:46:10 GMT
-From:   "Dorian Kwiatkowski" <dorian.kwiatkowski@bizjoindeal.pl>
-To:     <linux-iio@vger.kernel.org>
-Subject: Fotowoltaika dla firm
-X-Mailer: mail.bizjoindeal.pl
+        id S232627AbhKPI6C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Nov 2021 03:58:02 -0500
+Received: from elvis.franken.de ([193.175.24.41]:52966 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232602AbhKPI6B (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 16 Nov 2021 03:58:01 -0500
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1mmuF0-0006gG-01; Tue, 16 Nov 2021 09:54:58 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 0775BC2D9C; Tue, 16 Nov 2021 09:46:21 +0100 (CET)
+Date:   Tue, 16 Nov 2021 09:46:20 +0100
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v4] mips: bcm63xx: add support for clk_get_parent()
+Message-ID: <20211116084620.GB21168@alpha.franken.de>
+References: <20211115004218.13034-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211115004218.13034-1-rdunlap@infradead.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Sun, Nov 14, 2021 at 04:42:18PM -0800, Randy Dunlap wrote:
+> BCM63XX selects HAVE_LEGACY_CLK but does not provide/support
+> clk_get_parent(), so add a simple implementation of that
+> function so that callers of it will build without errors.
+> 
+> Fixes these build errors:
+> 
+> mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+> ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+> mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+> ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
+> 
+> Fixes: e7300d04bd08 ("MIPS: BCM63xx: Add support for the Broadcom BCM63xx family of SOCs." )
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Cc: Artur Rojek <contact@artur-rojek.eu>
+> Cc: Paul Cercueil <paul@crapouillou.net>
+> Cc: linux-mips@vger.kernel.org
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: linux-iio@vger.kernel.org
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: bcm-kernel-feedback-list@broadcom.com
+> Cc: Jonas Gorski <jonas.gorski@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+> v1 and v2 were:
+> [PATCH] iio/adc: ingenic: fix (MIPS) ingenic-adc build errors
+>   (limiting this driver to MACH_INGENIC in Kconfig)
+> v3: add clk_get_parent() to arch/mips/bcm63xx/clk.c
+> v4:
+>   add Fixes:, Suggested-by:, Reviewed-by: Acked-by:
+>   drop blank line between function and EXPORT_SYMBOL(); (Andy)
+> 
+>  arch/mips/bcm63xx/clk.c |    7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> --- linux-next-20211112.orig/arch/mips/bcm63xx/clk.c
+> +++ linux-next-20211112/arch/mips/bcm63xx/clk.c
+> @@ -381,6 +381,12 @@ void clk_disable(struct clk *clk)
+>  
+>  EXPORT_SYMBOL(clk_disable);
+>  
+> +struct clk *clk_get_parent(struct clk *clk)
+> +{
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL(clk_get_parent);
+> +
+>  unsigned long clk_get_rate(struct clk *clk)
+>  {
+>  	if (!clk)
 
-kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, poniewa=C5=BC dostrzegam mo=C5=BC=
-liwo=C5=9B=C4=87 redukcji op=C5=82at za pr=C4=85d.
+applied to mips-fixes.
 
-Odpowiednio dobrana instalacja fotowoltaiczna to rozwi=C4=85zanie, kt=C3=B3=
-re pozwala wygenerowa=C4=87 spore oszcz=C4=99dno=C5=9Bci w skali roku.
+Thomas.
 
-Chcia=C5=82bym porozmawia=C4=87 z Pa=C5=84stwem o tego typu rozwi=C4=85za=
-niu, a tak=C5=BCe przedstawi=C4=87 wst=C4=99pne kalkulacje.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani?
-
-Pozdrawiam,
-Dorian Kwiatkowski
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]

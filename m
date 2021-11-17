@@ -2,87 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8B60453E7B
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 03:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2322E4542DC
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 09:47:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231771AbhKQCaO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Nov 2021 21:30:14 -0500
-Received: from mail-oi1-f176.google.com ([209.85.167.176]:34502 "EHLO
-        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230411AbhKQCaO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Nov 2021 21:30:14 -0500
-Received: by mail-oi1-f176.google.com with SMTP id t19so2984420oij.1;
-        Tue, 16 Nov 2021 18:27:16 -0800 (PST)
+        id S233795AbhKQItd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Nov 2021 03:49:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233761AbhKQItd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Nov 2021 03:49:33 -0500
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31526C061570
+        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 00:46:35 -0800 (PST)
+Received: by mail-pf1-x42c.google.com with SMTP id o4so1972103pfp.13
+        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 00:46:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=s9PG5DSCz74qfh+pmwnVeSJ9WFAoH17DnygCPk7hgsY=;
+        b=giRqTpeIbTf0ZnIEQto7FUbhIxrhkFtc71FD9A31U84Qo4gfrm477XQ02Ri4/3Fuqn
+         270wp254m9O+yUUtjPPPW0C6pOb+708+hw4u1mDXFpa3v9jqWRVqA2x/jONlZMg+A9LX
+         YJdC+dqgTJyRojIt5LOzHFll0D3hb6xhGol7k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=/rart4BznLTgp+5QgTKxLDy9zh72t7U0cB9dGv2y30E=;
-        b=mw8ETxVT3ciwnrQF0bd6GR1JsJnd3X8DDXKnvUHoGQICHMnxc+e/efVjFnPhS+M9gp
-         AWwGOr9X2Qr/1jm3AauqWlJnQMCyUTdjDeLwOUVxU9tcYCHObXR4qKaZov0w/X90KvUs
-         VeW3UrcATddFxNRhXpB1W91l30Qa2dp/pyVcfNjDIq4MS2IuH6roq6bLGnlP+9TomDGH
-         JT9kVNWa3jC73h/70XT+g/c6J2AU+cyfH5D0OauGzMHYzNjqq/jIVQc5maENPRTUisXW
-         MusYdshO6JML6SdSksuDoj+7UXAhTb2kEA2+trM3Gwie6pXH6HIT1PhnBfiDReFKCl5o
-         xLEg==
-X-Gm-Message-State: AOAM533ISU6fv4o8OiXHr3rg0Z1U4tl9ED7qW5uugL+hUbHm11NpbJJf
-        Ugjid+CzYi+cNOoRg0IWKQmVGEbkcw==
-X-Google-Smtp-Source: ABdhPJyEGt6gNqiofKP2GdyaFo30VM6OCh/c6FkbUlTbt900tC790jErIISvrBp3/6snwpxK+9wZGg==
-X-Received: by 2002:a54:4584:: with SMTP id z4mr57334546oib.158.1637116035971;
-        Tue, 16 Nov 2021 18:27:15 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id 16sm4303322oix.46.2021.11.16.18.27.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Nov 2021 18:27:15 -0800 (PST)
-Received: (nullmailer pid 1207282 invoked by uid 1000);
-        Wed, 17 Nov 2021 02:27:10 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Iain Hunter <drhunter95@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        iain@hunterembedded.co.uk, linux-iio@vger.kernel.org
-In-Reply-To: <20211116155917.304294-1-drhunter95@gmail.com>
-References: <20211116155917.304294-1-drhunter95@gmail.com>
-Subject: Re: [PATCH v2 1/2] Add binding for IIO ADS1018
-Date:   Tue, 16 Nov 2021 20:27:10 -0600
-Message-Id: <1637116030.343220.1207281.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=s9PG5DSCz74qfh+pmwnVeSJ9WFAoH17DnygCPk7hgsY=;
+        b=L5AIK5j17M0wJedwV7tzHjhIH7hQcGZzQoKnyRQBcBVsl201tb93aUXR87c8woBIE0
+         43auu5g5WXZ2/nD+wFmLHkoFRF+hwzUGmEgbixm+DfqMPZJCNGmXzMHSfdDZDYz7iL9x
+         QCLGoovWdQUUIMawcDOyl4pRjDZsMao99X/fPs2NZ+K9plCf3y4PPfBJ3apwIPhTNNCd
+         qBVIYYHn8WYBenY57Ca6i/UR4SQ10UVucBdSTvQlaGcbKejJzqBTPyBiIn4FdVv8I/iF
+         8vCLQQtHsHzMOsq6FMiSuZNKbvs8zD5jE/TO6CyDsepCX8SHKn3D5vByAXXnjoyrXdjK
+         dL7w==
+X-Gm-Message-State: AOAM530B9dlN9l+O8TazoKN9KBlia6XG9pVpM03LBuxp6WWoAeb5J+1g
+        3LOp6cMN+FrLgrd8djBbN7olfA==
+X-Google-Smtp-Source: ABdhPJzwLslhBz+jslDZcbu4THQETMq8g+FoQeITEEjmHlE6S+K6AF0IO0TN2mrhN/BORVarZsDUiQ==
+X-Received: by 2002:a62:b418:0:b0:4a0:3696:dec0 with SMTP id h24-20020a62b418000000b004a03696dec0mr46216648pfn.73.1637138794695;
+        Wed, 17 Nov 2021 00:46:34 -0800 (PST)
+Received: from localhost ([2620:15c:202:201:327f:7baa:380e:33a3])
+        by smtp.gmail.com with UTF8SMTPSA id j1sm5684830pfu.47.2021.11.17.00.46.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Nov 2021 00:46:34 -0800 (PST)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org
+Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v3 0/5] Expand Semtech SAR Sensors support
+Date:   Wed, 17 Nov 2021 00:46:26 -0800
+Message-Id: <20211117084631.2820014-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.34.0.rc1.387.gb447b232ab-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 16 Nov 2021 15:58:58 +0000, Iain Hunter wrote:
-> v2 has me as suggested maintainer per Daniel's feedback.
-> 
-> Signed-off-by: Iain Hunter <drhunter95@gmail.com>
-> ---
->  .../bindings/iio/adc/ti,ads1018.yaml          | 109 ++++++++++++++++++
->  1 file changed, 109 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
-> 
+Add a new Semtech SAR sensor SX9324.
+Instead of recopying 1/3 of the sx9310 driver, move common code in a new
+file. It will be used again for the next sensor, SX9360.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Major changes in v3:
+  Fix some error in binding descriptions and setting
+  Fix invalid register constant name.
 
-yamllint warnings/errors:
+Major changes in v2:
+  Better interface between common code and drivers
+  Document SX9324 phase configuration
 
-dtschema/dtc warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml: $id: relative path/filename doesn't match actual path or filename
-	expected: http://devicetree.org/schemas/iio/adc/ti,ads1018.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml: duplicate '$id' value 'http://devicetree.org/schemas/iio/adc/ti,ads1015.yaml#'
+Gwendal Grignou (5):
+  iio: sx9310: Add frequency in read_avail
+  iio: sx9310: Extract common Semtech sensor logic
+  iio: proximity: Add SX9324 support
+  dt-bindings: iio: Add sx9324 binding
+  iio: sx9324: Add dt_bidding support
 
-doc reference errors (make refcheckdocs):
+ .../ABI/testing/sysfs-bus-iio-sx9324          |   28 +
+ .../iio/proximity/semtech,sx9324.yaml         |  136 ++
+ drivers/iio/proximity/Kconfig                 |   18 +
+ drivers/iio/proximity/Makefile                |    2 +
+ drivers/iio/proximity/sx9310.c                |  706 ++---------
+ drivers/iio/proximity/sx9324.c                | 1094 +++++++++++++++++
+ drivers/iio/proximity/sx_common.c             |  575 +++++++++
+ drivers/iio/proximity/sx_common.h             |  158 +++
+ 8 files changed, 2114 insertions(+), 603 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9324
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+ create mode 100644 drivers/iio/proximity/sx9324.c
+ create mode 100644 drivers/iio/proximity/sx_common.c
+ create mode 100644 drivers/iio/proximity/sx_common.h
 
-See https://patchwork.ozlabs.org/patch/1555907
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+-- 
+2.34.0.rc1.387.gb447b232ab-goog
 

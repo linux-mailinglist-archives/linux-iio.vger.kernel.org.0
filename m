@@ -2,202 +2,191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03B12454371
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 10:17:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A844543FC
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 10:41:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234922AbhKQJT7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Nov 2021 04:19:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41362 "EHLO
+        id S235416AbhKQJot (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Nov 2021 04:44:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234913AbhKQJT7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Nov 2021 04:19:59 -0500
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0872C061570
-        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 01:17:00 -0800 (PST)
-Received: by mail-pj1-x102c.google.com with SMTP id nh10-20020a17090b364a00b001a69adad5ebso2041177pjb.2
-        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 01:17:00 -0800 (PST)
+        with ESMTP id S235527AbhKQJol (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Nov 2021 04:44:41 -0500
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91C1C06121D;
+        Wed, 17 Nov 2021 01:41:28 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id i8-20020a7bc948000000b0030db7b70b6bso4240124wml.1;
+        Wed, 17 Nov 2021 01:41:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=SoEndHIjDS5QtqSn7nsE7eg2fEa1s+n7/6Rlza0ycT8=;
-        b=XuqSJRty05el1iJbLgH8rqQ3vmQE0AF49iWI5Is84X/DXS43PYzZFqGn7Jk3lVq2+m
-         VJ0kuPocPLyPXT3xVczfX7RgARqFmEFDmhFe8LYHPAc0b6Yiek4VDEwTqDrWYPibojSa
-         v+kNzF9vjFsfLxFYbPAUmxLsd8/6MCvZRoxsw=
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VpV9K7y9xbwVeUZlIBpQM+FwHcFAhfT6/Op5MFxhjjE=;
+        b=Ah+gaxAKVXxQYTpyery0Fvw4CYxf+yrRdZeHrkWPgxVQ3m6zCLe5kaXtHHC8uSiVsA
+         P59ptQ5LGo7lZwnwZpUM+rwU/OF4VTArUWuNHxVMk2wRfHCzVSZMg3DD7bxrRtSkMdWa
+         hCd9iFKkiYHzc5E9oy2dJ3ZCIhsr/XOoiuJb3ioOlj+5Pfiz7WIfmBQvVYinFU6WXgo4
+         c3ugHldx8ceRsa9oy7QMzo7Yf1rb+j0FZCH9MoUuAWYglkjDotQhuMYbzvHkb1AssgON
+         1h8Aer7AZE4CpB9s+Sgmxtk7A5NCvTctfkl1Q3rb3Qo3Pwk1whDdn/B0OX0F2mm73ry8
+         zTHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=SoEndHIjDS5QtqSn7nsE7eg2fEa1s+n7/6Rlza0ycT8=;
-        b=XOSh+eXgPFTtuNKBP42de5QM4aq9I+KDgI5FGA1tUDhHmJRkCaYlop9SrUx/Mhiczq
-         zT4OzZdN2X85B5Befhe2BxYVZX4ygfPXYYwhPYAKvxIE2NNITGLELGgvYAR/YESvdW4F
-         zEABePLMmggAZG6EIi0nVDARyGvePxWwQBgiF0MIP8hxKIGkUrY3zloZrU0ORqdqg5v0
-         BURckUXQq4KBVKWt8jZygEe70gvaunQTC20C7qvgEBhMmxbiThXLt3SsbgFvyEoLuj6t
-         bVhpXJFrLBdwiUP5pa4jy+GCRAMck/GwOxlVwprmUTFbWXcaJznlMQl17+EpivC40SwW
-         2gxw==
-X-Gm-Message-State: AOAM530EZaJmvvW+EADt1016LxZvod2s9ESgn+kon5MbVI385zUav3Zk
-        LpQOPzR9+Yd5AjIDMDxfBVoJMw==
-X-Google-Smtp-Source: ABdhPJwa1FmHLWiltGfNzlFKt3RnKD/br0ZUpwGiG78fnuYAEgByDLEIdIS+uZ9A8VaKIkw4yjSSJg==
-X-Received: by 2002:a17:90a:cb98:: with SMTP id a24mr7646019pju.153.1637140620451;
-        Wed, 17 Nov 2021 01:17:00 -0800 (PST)
-Received: from localhost ([2620:15c:202:201:327f:7baa:380e:33a3])
-        by smtp.gmail.com with UTF8SMTPSA id lx12sm5245417pjb.5.2021.11.17.01.16.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Nov 2021 01:17:00 -0800 (PST)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org
-Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH 3/3] iio: sx9360: Add dt-binding support
-Date:   Wed, 17 Nov 2021 01:16:53 -0800
-Message-Id: <20211117091653.2829677-4-gwendal@chromium.org>
-X-Mailer: git-send-email 2.34.0.rc1.387.gb447b232ab-goog
-In-Reply-To: <20211117091653.2829677-1-gwendal@chromium.org>
-References: <20211117091653.2829677-1-gwendal@chromium.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VpV9K7y9xbwVeUZlIBpQM+FwHcFAhfT6/Op5MFxhjjE=;
+        b=x/oWYu5lxQISvjZhp9F70bGHdgOoRHLeE7wuXwq5G0gAXjrYl0Rte+qjMYXMfrD3bz
+         lwh8Gpu5ug4YlAFXXWXhL+nBxFpFTPwhO4IIBUWQbhJ3u7n6pC1s8h9Kxyd9brLkNWGx
+         gNJy4j9nFp8D1ACPyMYSsFO0720UFHYuL10tToHHGdl8MDKxxZcYtKt1voEjov0gEgUY
+         kTzDq++OkPozUzAJdHZI5nTF2Xm7iYresqXF42GqDABS9P34HrxnMxdz//aOZsFmvzJJ
+         OqmblH5zP45K/c8je3q9ZpQrmY+6ZB57Xs9yeeiinrEqrdMoiUQqVw1Bk9E8/2Qxt+2S
+         BF0g==
+X-Gm-Message-State: AOAM533vWemUKGEEDy8CGp5NKXxPyxCmR6qhsuUreB/voAmPiCy5CP+c
+        P1xE9O+hjkbpgLzQAiX0ntk=
+X-Google-Smtp-Source: ABdhPJy6bQUEjNtHPqm4RaCwaeXGt2ZQXoRtN0pm6epuTa7oGmyQdGgpt8AZfNxEqhMsjay91G4vuA==
+X-Received: by 2002:a1c:21d7:: with SMTP id h206mr15728874wmh.60.1637142087270;
+        Wed, 17 Nov 2021 01:41:27 -0800 (PST)
+Received: from localhost.localdomain ([87.75.40.14])
+        by smtp.googlemail.com with ESMTPSA id l26sm5694314wms.15.2021.11.17.01.41.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Nov 2021 01:41:26 -0800 (PST)
+From:   Iain Hunter <drhunter95@gmail.com>
+Cc:     iain@hunterembedded.co.uk, Iain Hunter <drhunter95@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] Add binding for IIO ADS1018
+Date:   Wed, 17 Nov 2021 09:40:48 +0000
+Message-Id: <20211117094109.402397-1-drhunter95@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support to configure sx9360 from dt-binding, to match device
-hardware setup.
+v3 has me as suggested maintainer per Daniel's feedback and corrected id
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Signed-off-by: Iain Hunter <drhunter95@gmail.com>
 ---
- drivers/iio/proximity/sx9360.c | 85 +++++++++++++++++++++++++++++++++-
- 1 file changed, 84 insertions(+), 1 deletion(-)
+ .../bindings/iio/adc/ti,ads1018.yaml          | 109 ++++++++++++++++++
+ 1 file changed, 109 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
 
-diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-index 28e6bb44ae49cc..0ac955036bd2bd 100644
---- a/drivers/iio/proximity/sx9360.c
-+++ b/drivers/iio/proximity/sx9360.c
-@@ -60,7 +60,7 @@
- #define SX9360_REG_AFE_PARAM0_PHR	0x22
- #define SX9360_REG_AFE_PARAM1_PHR	0x23
- #define SX9360_REG_AFE_PARAM0_PHM	0x24
--#define SX9360_REG_AFE_PARAM0_RSVD		0x04
-+#define SX9360_REG_AFE_PARAM0_RSVD		0x08
- #define SX9360_REG_AFE_PARAM0_RESOLUTION_MASK	GENMASK(2, 0)
- #define SX9360_REG_AFE_PARAM0_RESOLUTION_128	0x02
- #define SX9360_REG_AFE_PARAM1_PHM	0x25
-@@ -71,6 +71,7 @@
- #define SX9360_REG_PROX_CTRL0_PHM	0x41
- #define SX9360_REG_PROX_CTRL0_GAIN_MASK	GENMASK(5, 3)
- #define SX9360_REG_PROX_CTRL0_GAIN_1		0x80
-+#define SX9360_REG_PROX_CTRL0_RAWFILT_MASK	GENMASK(2, 0)
- #define SX9360_REG_PROX_CTRL0_RAWFILT_1P50	0x01
- #define SX9360_REG_PROX_CTRL1		0x42
- #define SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_MASK	GENMASK(5, 3)
-@@ -645,6 +646,41 @@ static int sx9360_write_raw(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
- 
-+static const struct sx_common_reg_default sx9360_default_regs[] = {
-+	{ SX9360_REG_IRQ_MSK, 0x00 },
-+	{ SX9360_REG_IRQ_CFG, 0x00 },
-+	/*
-+	 * The lower 2 bits should not be set as it enable sensors measurements.
-+	 * Turning the detection on before the configuration values are set to
-+	 * good values can cause the device to return erroneous readings.
-+	 */
-+	{ SX9360_REG_GNRL_CTRL0, 0x00 },
-+	{ SX9360_REG_GNRL_CTRL1, 0x00 },
-+	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS },
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
+new file mode 100644
+index 000000000000..14345bfb71dc
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
+@@ -0,0 +1,109 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads1018.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	{ SX9360_REG_AFE_CTRL1, 0x00 },
-+	{ SX9360_REG_AFE_PARAM0_PHR, SX9360_REG_AFE_PARAM0_RSVD |
-+		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
-+	{ SX9360_REG_AFE_PARAM1_PHR, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
-+		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
-+	{ SX9360_REG_AFE_PARAM0_PHM, SX9360_REG_AFE_PARAM0_RSVD |
-+		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
-+	{ SX9360_REG_AFE_PARAM1_PHM, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
-+		SX9360_REG_AFE_PARAM1_FREQ_83_33HZ },
++title: TI ADS1018 4 channel I2C analog to digital converter
 +
-+	{ SX9360_REG_PROX_CTRL0_PHR, SX9360_REG_PROX_CTRL0_GAIN_1 |
-+		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
-+	{ SX9360_REG_PROX_CTRL0_PHM, SX9360_REG_PROX_CTRL0_GAIN_1 |
-+		SX9360_REG_PROX_CTRL0_RAWFILT_1P50 },
-+	{ SX9360_REG_PROX_CTRL1, SX9360_REG_PROX_CTRL1_AVGNEG_THRESH_16K },
-+	{ SX9360_REG_PROX_CTRL2, SX9360_REG_PROX_CTRL2_AVGDEB_2SAMPLES |
-+		SX9360_REG_PROX_CTRL2_AVGPOS_THRESH_16K },
-+	{ SX9360_REG_PROX_CTRL3, SX9360_REG_PROX_CTRL3_AVGNEG_FILT_2 |
-+		SX9360_REG_PROX_CTRL3_AVGPOS_FILT_256 },
-+	{ SX9360_REG_PROX_CTRL4, 0x00 },
-+	{ SX9360_REG_PROX_CTRL5, SX9360_REG_PROX_CTRL5_PROXTHRESH_32 },
-+};
++maintainers:
++  - Iain Hunter <iain@hunterembedded.co.uk>
 +
- /* Activate all channels and perform an initial compensation. */
- static int sx9360_init_compensation(struct iio_dev *indio_dev)
- {
-@@ -669,6 +705,51 @@ static int sx9360_init_compensation(struct iio_dev *indio_dev)
- 	return ret;
- }
- 
-+static const struct sx_common_reg_default *
-+sx9360_get_default_reg(struct device *dev, int idx,
-+		       struct sx_common_reg_default *reg_def)
-+{
-+	u32 raw = 0, pos = 0;
-+	int ret;
++description: |
++  Datasheet at: https://www.ti.com/lit/gpn/ads1018
++  Supports both single ended and differential channels.
 +
-+	memcpy(reg_def, &sx9360_default_regs[idx], sizeof(*reg_def));
-+	switch (reg_def->reg) {
-+	case SX9360_REG_AFE_PARAM0_PHR:
-+	case SX9360_REG_AFE_PARAM0_PHM:
-+		ret = device_property_read_u32(dev, "semtech,resolution", &raw);
-+		if (ret)
-+			break;
++properties:
++  compatible:
++    const: ti,ads1018
 +
-+		raw = ilog2(raw) - 3;
++  reg:
++    maxItems: 1
 +
-+		reg_def->def &= ~SX9360_REG_AFE_PARAM0_RESOLUTION_MASK;
-+		reg_def->def |= FIELD_PREP(SX9360_REG_AFE_PARAM0_RESOLUTION_MASK, raw);
-+		break;
-+	case SX9360_REG_PROX_CTRL0_PHR:
-+	case SX9360_REG_PROX_CTRL0_PHM:
-+		ret = device_property_read_u32(dev, "semtech,proxraw-strength", &raw);
-+		if (ret)
-+			break;
++  "#address-cells":
++    const: 1
 +
-+		reg_def->def &= ~SX9360_REG_PROX_CTRL0_RAWFILT_MASK;
-+		reg_def->def |= FIELD_PREP(SX9360_REG_PROX_CTRL0_RAWFILT_MASK, raw);
-+		break;
-+	case SX9360_REG_PROX_CTRL3:
-+		ret = device_property_read_u32(dev, "semtech,avg-pos-strength",
-+					       &pos);
-+		if (ret)
-+			break;
++  "#size-cells":
++    const: 0
 +
-+		/* Powers of 2, except for a gap between 16 and 64 */
-+		raw = clamp(ilog2(pos), 3, 11) - (pos >= 32 ? 4 : 3);
-+		reg_def->def &= ~SX9360_REG_PROX_CTRL3_AVGPOS_FILT_MASK;
-+		reg_def->def |= FIELD_PREP(SX9360_REG_PROX_CTRL3_AVGPOS_FILT_MASK, raw);
-+		break;
-+	}
++  "#io-channel-cells":
++    const: 1
 +
-+	return reg_def;
-+}
++required:
++  - compatible
++  - reg
++  - "#address-cells"
++  - "#size-cells"
 +
- static int sx9360_check_whoami(struct device *dev,
- 			       struct iio_dev *indio_dev)
- {
-@@ -710,12 +791,14 @@ static const struct sx_common_chip_info sx9360_chip_info = {
- 	.mask_enable_chan = SX9360_REG_GNRL_CTRL0_PHEN_MASK,
- 	.irq_msk_offset = 0,
- 	.num_channels = SX9360_NUM_CHANNELS,
-+	.num_default_regs = ARRAY_SIZE(sx9360_default_regs),
- 
- 	.ops = {
- 		.read_prox_data = sx9360_read_prox_data,
- 		.check_whoami = sx9360_check_whoami,
- 		.init_compensation = sx9360_init_compensation,
- 		.wait_for_sample = sx9360_wait_for_sample,
-+		.get_default_reg = sx9360_get_default_reg,
- 	},
- 
- 	.iio_channels = sx9360_channels,
++additionalProperties: false
++
++patternProperties:
++  "^channel@[0-7]+$":
++    type: object
++    description:
++      Child nodes needed for each channel that the platform uses.
++
++    properties:
++      reg:
++        description: |
++          0: Voltage over AIN0 and AIN1.
++          1: Voltage over AIN0 and AIN3.
++          2: Voltage over AIN1 and AIN3.
++          3: Voltage over AIN2 and AIN3.
++          4: Voltage over AIN0 and GND.
++          5: Voltage over AIN1 and GND.
++          6: Voltage over AIN2 and GND.
++          7: Voltage over AIN3 and GND.
++        items:
++          - minimum: 0
++            maximum: 7
++
++      ti,gain:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        minimum: 0
++        maximum: 5
++        description: |
++          pga is the programmable gain amplifier (values are full scale)
++          0: +/- 6.144 V
++          1: +/- 4.096 V
++          2: +/- 2.048 V (default)
++          3: +/- 1.024 V
++          4: +/- 0.512 V
++          5: +/- 0.256 V
++
++      ti,datarate:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        minimum: 0
++        maximum: 6
++        description: |
++          Data acquisition rate in samples per second
++          0: 128
++          1: 250
++          2: 490
++          3: 920
++          4: 1600 (default)
++          5: 2400
++          6: 3300
++
++    required:
++      - reg
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@1 {
++            compatible = "ti,ads1018";
++            reg = <0x1>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            channel@4 {
++              reg = <4>;
++              ti,gain = <3>;
++              ti,datarate = <5>;
++            };
++        };
++    };
++...
 -- 
-2.34.0.rc1.387.gb447b232ab-goog
+2.25.1
 

@@ -2,96 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2322E4542DC
+	by mail.lfdr.de (Postfix) with ESMTP id 57D374542DE
 	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 09:47:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233795AbhKQItd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Nov 2021 03:49:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        id S233802AbhKQItf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Nov 2021 03:49:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233761AbhKQItd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Nov 2021 03:49:33 -0500
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31526C061570
-        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 00:46:35 -0800 (PST)
-Received: by mail-pf1-x42c.google.com with SMTP id o4so1972103pfp.13
-        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 00:46:35 -0800 (PST)
+        with ESMTP id S233761AbhKQIte (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Nov 2021 03:49:34 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87B1C061570
+        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 00:46:36 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id n8so1540870plf.4
+        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 00:46:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=s9PG5DSCz74qfh+pmwnVeSJ9WFAoH17DnygCPk7hgsY=;
-        b=giRqTpeIbTf0ZnIEQto7FUbhIxrhkFtc71FD9A31U84Qo4gfrm477XQ02Ri4/3Fuqn
-         270wp254m9O+yUUtjPPPW0C6pOb+708+hw4u1mDXFpa3v9jqWRVqA2x/jONlZMg+A9LX
-         YJdC+dqgTJyRojIt5LOzHFll0D3hb6xhGol7k=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=nwrkKRZ25BCadhUfd5FLyYwqn70NOTaLp7qEqT6obF0=;
+        b=W2ejq99vaKseBnPQ7dbCJTlkJcDQoPaYk2cPZ8t8BfGGQJIrVgFgnrWCoI3da6sz6h
+         zGLBEunH0VLno2rE6c7lY8QLZ6BMLmWrXtrG0CrdPYgz5EyI3+JPyhVAuFRj9f3bYT8d
+         C8/h5Zm3DCEaTGnJkCQId5pLEg7yvfBLNHf0M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=s9PG5DSCz74qfh+pmwnVeSJ9WFAoH17DnygCPk7hgsY=;
-        b=L5AIK5j17M0wJedwV7tzHjhIH7hQcGZzQoKnyRQBcBVsl201tb93aUXR87c8woBIE0
-         43auu5g5WXZ2/nD+wFmLHkoFRF+hwzUGmEgbixm+DfqMPZJCNGmXzMHSfdDZDYz7iL9x
-         QCLGoovWdQUUIMawcDOyl4pRjDZsMao99X/fPs2NZ+K9plCf3y4PPfBJ3apwIPhTNNCd
-         qBVIYYHn8WYBenY57Ca6i/UR4SQ10UVucBdSTvQlaGcbKejJzqBTPyBiIn4FdVv8I/iF
-         8vCLQQtHsHzMOsq6FMiSuZNKbvs8zD5jE/TO6CyDsepCX8SHKn3D5vByAXXnjoyrXdjK
-         dL7w==
-X-Gm-Message-State: AOAM530B9dlN9l+O8TazoKN9KBlia6XG9pVpM03LBuxp6WWoAeb5J+1g
-        3LOp6cMN+FrLgrd8djBbN7olfA==
-X-Google-Smtp-Source: ABdhPJzwLslhBz+jslDZcbu4THQETMq8g+FoQeITEEjmHlE6S+K6AF0IO0TN2mrhN/BORVarZsDUiQ==
-X-Received: by 2002:a62:b418:0:b0:4a0:3696:dec0 with SMTP id h24-20020a62b418000000b004a03696dec0mr46216648pfn.73.1637138794695;
-        Wed, 17 Nov 2021 00:46:34 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=nwrkKRZ25BCadhUfd5FLyYwqn70NOTaLp7qEqT6obF0=;
+        b=HKYqcx+lKSeyL0tD8OqB1ByTg4IMgC4J4U20YxY79SEh2hnLbOj1VCHqNYj6M3o2d0
+         YkgrvyUxKmx0fK3fweadL/vu+s1s1HV8MVE86hZ9T/zS6FjAGD6BxOYympwc3VbLpCHc
+         BE1mmdnamzc+7RNuTFkEZ1+AgQv236o0EZBzg/BQgAsu5AMf5IW3+DJ9rBMgv02NdqOX
+         DxqaDQwHxVKZJ0XvD9EjiJSN1AznZO3/cp/7KXKnfVZVityYGgsCR4XSrUfg8zxiNSrn
+         dlJvJIfP/SLSr27Pnu+ih8sg+/75NW6MsyBOjAb86nN4HJ8EBtio/82E4zTTu+bYsYj4
+         83Og==
+X-Gm-Message-State: AOAM531qJSPQ6icoMsaFZ5HL1ES8r8bqweBpVsMJ41TDRs4GhBQzXdOx
+        qlGtBP3b2HzL+qGzlPznAsnczA==
+X-Google-Smtp-Source: ABdhPJymFUATsAQC7iTAaSDrrp5i78YJC0ifb5g8ay6/ozGkJPYmHWCoeTCjrZY6HDtP6+58Q/fjvg==
+X-Received: by 2002:a17:90b:190f:: with SMTP id mp15mr7475719pjb.210.1637138796170;
+        Wed, 17 Nov 2021 00:46:36 -0800 (PST)
 Received: from localhost ([2620:15c:202:201:327f:7baa:380e:33a3])
-        by smtp.gmail.com with UTF8SMTPSA id j1sm5684830pfu.47.2021.11.17.00.46.33
+        by smtp.gmail.com with UTF8SMTPSA id qe12sm5099315pjb.29.2021.11.17.00.46.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Nov 2021 00:46:34 -0800 (PST)
+        Wed, 17 Nov 2021 00:46:35 -0800 (PST)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v3 0/5] Expand Semtech SAR Sensors support
-Date:   Wed, 17 Nov 2021 00:46:26 -0800
-Message-Id: <20211117084631.2820014-1-gwendal@chromium.org>
+Subject: [PATCH v3 1/5] iio: sx9310: Add frequency in read_avail
+Date:   Wed, 17 Nov 2021 00:46:27 -0800
+Message-Id: <20211117084631.2820014-2-gwendal@chromium.org>
 X-Mailer: git-send-email 2.34.0.rc1.387.gb447b232ab-goog
+In-Reply-To: <20211117084631.2820014-1-gwendal@chromium.org>
+References: <20211117084631.2820014-1-gwendal@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add a new Semtech SAR sensor SX9324.
-Instead of recopying 1/3 of the sx9310 driver, move common code in a new
-file. It will be used again for the next sensor, SX9360.
+Instead of using IIO_DEV_ATTR_SAMP_FREQ_AVAIL sysfs attribute,
+add a _FREQ case in read_avail() to display the frequency table.
+No change to |sampling_frequency_available| was observed.
 
-Major changes in v3:
-  Fix some error in binding descriptions and setting
-  Fix invalid register constant name.
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+---
+No changes in v3
+New in v2.
 
-Major changes in v2:
-  Better interface between common code and drivers
-  Document SX9324 phase configuration
+ drivers/iio/proximity/sx9310.c | 33 +++++++--------------------------
+ 1 file changed, 7 insertions(+), 26 deletions(-)
 
-Gwendal Grignou (5):
-  iio: sx9310: Add frequency in read_avail
-  iio: sx9310: Extract common Semtech sensor logic
-  iio: proximity: Add SX9324 support
-  dt-bindings: iio: Add sx9324 binding
-  iio: sx9324: Add dt_bidding support
-
- .../ABI/testing/sysfs-bus-iio-sx9324          |   28 +
- .../iio/proximity/semtech,sx9324.yaml         |  136 ++
- drivers/iio/proximity/Kconfig                 |   18 +
- drivers/iio/proximity/Makefile                |    2 +
- drivers/iio/proximity/sx9310.c                |  706 ++---------
- drivers/iio/proximity/sx9324.c                | 1094 +++++++++++++++++
- drivers/iio/proximity/sx_common.c             |  575 +++++++++
- drivers/iio/proximity/sx_common.h             |  158 +++
- 8 files changed, 2114 insertions(+), 603 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9324
- create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
- create mode 100644 drivers/iio/proximity/sx9324.c
- create mode 100644 drivers/iio/proximity/sx_common.c
- create mode 100644 drivers/iio/proximity/sx_common.h
-
+diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+index a3fdb59b06d220..1647268b6471f1 100644
+--- a/drivers/iio/proximity/sx9310.c
++++ b/drivers/iio/proximity/sx9310.c
+@@ -196,6 +196,8 @@ static const struct iio_event_spec sx9310_events[] = {
+ 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+ 		.info_mask_separate_available =				 \
+ 			BIT(IIO_CHAN_INFO_HARDWAREGAIN),		 \
++		.info_mask_shared_by_all_available =			 \
++			BIT(IIO_CHAN_INFO_SAMP_FREQ),			 \
+ 		.indexed = 1,						 \
+ 		.channel = idx,						 \
+ 		.extend_name = name,					 \
+@@ -251,22 +253,6 @@ static const unsigned int sx9310_scan_period_table[] = {
+ 	400, 600, 800, 1000, 2000, 3000, 4000, 5000,
+ };
+ 
+-static ssize_t sx9310_show_samp_freq_avail(struct device *dev,
+-					   struct device_attribute *attr,
+-					   char *buf)
+-{
+-	size_t len = 0;
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(sx9310_samp_freq_table); i++)
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%d ",
+-				 sx9310_samp_freq_table[i].val,
+-				 sx9310_samp_freq_table[i].val2);
+-	buf[len - 1] = '\n';
+-	return len;
+-}
+-static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(sx9310_show_samp_freq_avail);
+-
+ static const struct regmap_range sx9310_writable_reg_ranges[] = {
+ 	regmap_reg_range(SX9310_REG_IRQ_MSK, SX9310_REG_IRQ_FUNC),
+ 	regmap_reg_range(SX9310_REG_PROX_CTRL0, SX9310_REG_PROX_CTRL19),
+@@ -562,6 +548,11 @@ static int sx9310_read_avail(struct iio_dev *indio_dev,
+ 		*length = ARRAY_SIZE(sx9310_gain_vals);
+ 		*vals = sx9310_gain_vals;
+ 		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		*length = ARRAY_SIZE(sx9310_samp_freq_table) * 2;
++		*vals = (int *)sx9310_samp_freq_table;
++		return IIO_AVAIL_LIST;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -1031,17 +1022,7 @@ static int sx9310_write_event_config(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
+-static struct attribute *sx9310_attributes[] = {
+-	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
+-	NULL
+-};
+-
+-static const struct attribute_group sx9310_attribute_group = {
+-	.attrs = sx9310_attributes,
+-};
+-
+ static const struct iio_info sx9310_info = {
+-	.attrs = &sx9310_attribute_group,
+ 	.read_raw = sx9310_read_raw,
+ 	.read_avail = sx9310_read_avail,
+ 	.read_event_value = sx9310_read_event_val,
 -- 
 2.34.0.rc1.387.gb447b232ab-goog
 

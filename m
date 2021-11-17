@@ -2,487 +2,186 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63951454E43
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 21:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 115F9455005
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 22:58:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232649AbhKQUGg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Nov 2021 15:06:36 -0500
-Received: from mga09.intel.com ([134.134.136.24]:8555 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231911AbhKQUGe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Nov 2021 15:06:34 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10171"; a="233878735"
-X-IronPort-AV: E=Sophos;i="5.87,241,1631602800"; 
-   d="scan'208";a="233878735"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2021 12:03:21 -0800
-X-IronPort-AV: E=Sophos;i="5.87,241,1631602800"; 
-   d="scan'208";a="672520728"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2021 12:03:17 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mnR98-007v6V-3b;
-        Wed, 17 Nov 2021 22:03:06 +0200
-Date:   Wed, 17 Nov 2021 22:03:05 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git@xilinx.com, michal.simek@xilinx.com,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        linux-acpi@vger.kernel.org, heikki.krogerus@linux.intel.com,
-        Manish Narani <manish.narani@xilinx.com>
-Subject: Re: [PATCH v10 3/5] iio: adc: Add Xilinx AMS driver
-Message-ID: <YZVf+Y/KxASvT2MU@smile.fi.intel.com>
-References: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
- <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
+        id S240992AbhKQWBc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Nov 2021 17:01:32 -0500
+Received: from mail-bn8nam11on2086.outbound.protection.outlook.com ([40.107.236.86]:23521
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S240952AbhKQWAt (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 17 Nov 2021 17:00:49 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mZFqT7DVvT6piFFUNtBr1ifqjeZkkPuzXUG9PfJ7JZascDvVzL81gz3+gL/3y+mmERN3V0TIfJL8oqQ0JbbNWikdQXLUZ3uhdZTVymb4X6QlnrN5tQ4sEKgdPnEDtqLG3mqT0+KIzV055txc2IgwUnm9jlxge4wCBjjYmTjN4DQ44n+l8iCbUOP1AD8V7b5kNJONVH8hqa38WHLPbYH6D5Tijc7YnGmGL94/e/c6hfOiAgenmPNk839wgqrdZsVLY4ZamcyabPPWYlJEdGAFGW16drt3cwTMKzsXXEfxxyGjvY2crZcsF1Jq4a6LgtxNXvXfiY4czKhCuKP5YXTspw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pg0LOrLBvl1X2Sps7ypCfTQRc6XdgyUtQnPPxrVvH4Q=;
+ b=ja/YH5UGvE0FUQ4XcF+ZmSD7TGTE9VTLzr3uAKFAwP1q/3Uoy0MxcMalpoLrt2/NkEyqbur4nV/H4EW8er8AlXeCd1FHR5Mnk8WhVZFNyy7ObU0Y5hTJuwa7bj4GzvjaM9rkVo8pA+ELamZXNcS6RvbM1j1F/A830DL0ytvvkL5kegxIevtwgD0t7s5DMowUjkNM4Qtv2i95Y57Kyg120Y4GD/wofY8gxQMc7pE54lmUZ/j76ABI44KpmsUJ4MtdkZISQNGmjWwBfar77Y+vwIsInFI/Zzcl3ty6Tj64cql2fAVK+aPEgPtSPEYBu/DqIGoRi8EWoHUTr8cw1Cs68w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pg0LOrLBvl1X2Sps7ypCfTQRc6XdgyUtQnPPxrVvH4Q=;
+ b=djuls1aK6PUrpZofIYY4TuoWgs5DxeF3oSjeTd8eeV5MMvBSUbWWLT7BSr03ytcwG3pSFslL2o2cZkyX+Qw9Bc8FMK7GT2SuzCpQ1WAASvUF5z1fsCmAF/Hjjq6lS4mtCfIYc2fafoPCOlW3fNsW2qNXXBoo9sV7LpXaNeGnAXU=
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
+ by BYAPR02MB4216.namprd02.prod.outlook.com (2603:10b6:a02:fc::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.26; Wed, 17 Nov
+ 2021 21:57:43 +0000
+Received: from BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::c8a:dfb7:e411:9ad]) by BY5PR02MB6916.namprd02.prod.outlook.com
+ ([fe80::c8a:dfb7:e411:9ad%8]) with mapi id 15.20.4713.021; Wed, 17 Nov 2021
+ 21:57:43 +0000
+From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Joe Perches <joe@perches.com>
+CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>
+Subject: RE: [PATCH v9 5/5] MAINTAINERS: Add maintainer for xilinx-ams
+Thread-Topic: [PATCH v9 5/5] MAINTAINERS: Add maintainer for xilinx-ams
+Thread-Index: AQHX2vvgYEKxlWeTO0uTBMdVPBYaeqwGbHyAgAFdvfCAAAxGAIAADWQAgAARr4CAAFBMkA==
+Date:   Wed, 17 Nov 2021 21:57:43 +0000
+Message-ID: <BY5PR02MB69169E3F24E8EBE3DD754AB1A99A9@BY5PR02MB6916.namprd02.prod.outlook.com>
+References: <20211116150842.1051-1-anand.ashok.dumbre@xilinx.com>
+ <20211116150842.1051-6-anand.ashok.dumbre@xilinx.com>
+ <YZPtW5igA8RBYLWv@smile.fi.intel.com>
+ <BY5PR02MB69168A6537474DF8948C3D0BA99A9@BY5PR02MB6916.namprd02.prod.outlook.com>
+ <CAHp75VdaO4+DxMn2eJx7t0_UFgrHGV2vgzXvRB=qwZi-ZpMaOA@mail.gmail.com>
+ <cf7ad8715a02f3a0e4fe0cd8a270585dcf84bb3a.camel@perches.com>
+ <CAHp75VfJBwCcFwbv6fgvwf=Q1UdFXwgNex-4GqKLcf=ZhuqGjw@mail.gmail.com>
+In-Reply-To: <CAHp75VfJBwCcFwbv6fgvwf=Q1UdFXwgNex-4GqKLcf=ZhuqGjw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=xilinx.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 28f0b967-35f9-434b-5717-08d9aa154871
+x-ms-traffictypediagnostic: BYAPR02MB4216:
+x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+x-microsoft-antispam-prvs: <BYAPR02MB4216CAFE462D60B7E3650827A99A9@BYAPR02MB4216.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: HGrhnwXFxe/h/FbMF5kZX7j3KTSCl25Fmdcf8gmv604qQBNhwMGWU+YfKOARpXHH3QfHgxVmSwHSbC01pRmYG0V/Tbul/SbbdBPJL+Rw1i4UIbbGi9mBP3jVr63qhDJ4ME4AoKDzFo6PL23qASecl+41IGdZhHkpz4sfsjHNKgM8ELqFJ+DMrlTtF5F5B0x0oR1ScTLgvSa7NH0lWauErGmnl9CamDrfmlNM88CF8rSLWu7hqkANhtlevQPUiSzdoak1GefKCg+OcKcP7QT49f3s7oZZWJSaLA81ATEvgUVj9/taw/rUm9zxORRpvPH2EJ84efAwfy7mvhcPBzBc8gJIAvBCD9gCDza6law1+h87nWNU6EztvUpa5SdCqtnQf3sElY/Y1La3kx+Ox2uJG69LTMOasov5X3kCjIRol4iPOqB93aZeU9Hi6nVa3VziDghbR/j3BMALyvP6ZHtFeDGOLzAoDuVI+D1/THo8ZkiiD9yIrWwTMwpclE8Xcs7pJR9+YzQgOUlXXZ8Lx+0jEtfRLcLeqmh4XbVFtjFZHz/ARTJyY/eQwGxYhymrOjmcGw1QLELu/WotyhGnuyOV7p1+MFG7PUEVRjocNQ20b2jkfcTCfh6Qdk+ljCuAvBXoTey5nQf/MGqJbE6DRRPz23/5MJbVJSM78k0i23P8YKseUeLdnN/ed3IK2ycR+i8ZiLHk0yTdH6sLfQXKwB/nnzAwMVYEL2QiTRNNNIKMF8JF3WVSsFli/0zBL4ykNdnlTf+Q9UneSK8hE4XSMlEFt3j93COzdSqC6KGxxs8/QEs=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(66946007)(8676002)(71200400001)(5660300002)(52536014)(66476007)(55016002)(66556008)(86362001)(966005)(8936002)(508600001)(38100700002)(64756008)(66446008)(76116006)(122000001)(316002)(110136005)(186003)(4001150100001)(54906003)(33656002)(7416002)(38070700005)(4326008)(9686003)(2906002)(53546011)(7696005)(6506007)(26005)(83380400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aVhZWU5yQzhzdEhyZ3RiNnZTdFdnUWNaa3hoVTFaTk5iemtXL3ZVRlRXSnNo?=
+ =?utf-8?B?Y0xFZmV5YnJ3QnY4cS8rVFM1YkZzMS9jQ0NrNGNXczg3bU1yUnRNV1luNk40?=
+ =?utf-8?B?Sm9XY0lvNHBiQzY2RjB6Q3VRN0t1YVpDWlc5THJzaE8vK3p3cFdlLy81L0RP?=
+ =?utf-8?B?SmhZTGRPMzdXSGxVOG5vMW1hTFlTOU9nQ0RMNmpKQ2VUQXZVZDlGUzBmcHEz?=
+ =?utf-8?B?K2JnOU9McUxBSUllWHdCSUk1aFJJQUs1ZlJDRTh5dUtsa0JCK08wMzBEd0c4?=
+ =?utf-8?B?T0NPZWpYRFJtUDZnbm5tZGhxZEtEZUM0bkQ2R3BjUkhFZ1VEVWlGTFlEblpj?=
+ =?utf-8?B?eFVFOUQwWW5OeTZ2UENmWW9UVXVWWi91dkpvQkttSHJxRUV4enZYVmw5cW5N?=
+ =?utf-8?B?SmlMazhZdnFsTy9WTVVPc2t1YU9HMmlyL3FCZU9qK3VQU3A3a3RDSENlZm9z?=
+ =?utf-8?B?V2s1RzdYYjFaRFdlL3ZkWjVvU1hjVUN2cTNQckM5UlVHNzJnRTAwamlKUEF4?=
+ =?utf-8?B?TExmN0NsbWZucG5YL3RtTlgraS9vQU90cjVmVzhnTkJrYllXaFYrUzVXSkZL?=
+ =?utf-8?B?dU5Rc2I5ZjF0UFpsRHRibkFHRk1nZ21oMzd1L09EZ2NiRnlsL0VjUlJxMGR3?=
+ =?utf-8?B?b2k2cWVQZWV1TzhHVXBkbDljWVZLTlNLUkxLTVRMeEM1ZlAzT2s0RS9STnor?=
+ =?utf-8?B?VllCWDNHSWc1bVFPb3RNR3A1OGxBVDdUMEoydXpQbklmN25qUGVBS1NuU2RJ?=
+ =?utf-8?B?OUVvQ0hTaDA3Tm4zZmFtMkdQRXNacjhTSWVPdGMySmR1S1BPd0NENTdDc1Ra?=
+ =?utf-8?B?OUUzemRMUzVjTmtPMEpvVmp1V3V4VVoyMEMvUm1hNDhZdFlzSW9rNDZlWEVq?=
+ =?utf-8?B?YWpoVkFRaFhhR1krTy8xT2U3Z2J3SWJLVFNzR21UL2FlSU5TcUJzNVdYQ3hx?=
+ =?utf-8?B?ZTh4RlNUOFM3ajZmcVhnUENXMWNteElYVC9GTm9LMkdSUzBDdGdyempURHJu?=
+ =?utf-8?B?SW80TEpMOXhsZWNBWWlCR3VuNUZXWDM0UitaT21sajdRRmJzZnhiMkFCME5n?=
+ =?utf-8?B?aVJiU2NvRG1qTjUySmZDY0xYK2ZIL3gwMWxEaXBaaXhYVTdiNmVRM1pLOTRy?=
+ =?utf-8?B?SVRHS1FWNWxNTWIrcGludDhiZjdqYmNSVnF5UDdnNm1rbHJUZ2JBR1c2UEZi?=
+ =?utf-8?B?UDZoRGgvRFRBVEJ4TVBkMXRSa3g2eGtMeUFMdVRRcGF3ZklUdXdLSkpQOWJJ?=
+ =?utf-8?B?SFNtdWxwV2xVL0xEVDN3SFF1MzJveUZTcTdXOGNvajhqL2VkUnlYUzcwNTRN?=
+ =?utf-8?B?YmpybWJCNGg1VHRBdE9XZDlRVjQzczJ1KzJFMm1SMEpUR0xRZmpmb2daV2hk?=
+ =?utf-8?B?bTVPQU5lelcrSkpTcVk3czFrZzFTS0hFV2IwQUVZSXlDVjJNSEdHQWt6WmNM?=
+ =?utf-8?B?bVQvK1BWZm13NXBlZnJFRzhnWTJFc1VNZEtsZFpma0I4bmtvOUtmZTZyczRC?=
+ =?utf-8?B?d0MzeWxGQmV1aFpVcFljZ0VQNHBPR0dqdERCdFBmeHVYdmpqOEZ5dmIwL3dq?=
+ =?utf-8?B?em41Y3huejlQT0d6OUplZUF6RTNsT3VUeWNoR0NLWHRtZ2FqT2R1Y2lhTC8v?=
+ =?utf-8?B?VWkyWWNyOUJGbjRiclUzMlg4d2RMSlU5TVArQ3p3M21NQ2dKSGV1ZFdHa1hi?=
+ =?utf-8?B?U1VlYXVRS3NzUEg4bHpJeWVEN0x5ZlVkOFhsb1VsN01zNVd0bHIxZHJPQW1t?=
+ =?utf-8?B?eTlvZ080bmpVdkJNVENkSU9HYXRwcU9LNnZGL1VCc0RiMllDOGZHSUplR2pU?=
+ =?utf-8?B?ZTgxRk9yTFJQZElOSmhpR0hyVHREcmVrd0VjTFNSVWp3cTMrTXRwNU5DUmpL?=
+ =?utf-8?B?NStGdjNZa3JCRTB2RlNBc0s3eW1aVUVXUUhuTEx2M241ZlArK3A4ZEFURXFE?=
+ =?utf-8?B?ZzJHMHBkQnBMNWhQUEdMbGJiNkt6ci9zYzI4VVBjYmxVaTRTeU52dEo4dU1H?=
+ =?utf-8?B?Z1htVHZ6aGtCSERwaVNWcTN2OFJKYTk2Y1FoQ1ZJZ0FubjZMYWVUL3YyTlVi?=
+ =?utf-8?B?Q25pc1orbkZQaThLcWNzZnhTeHQ5N1BCRHVENCszTkxqemhIVUUrbkw0UTFX?=
+ =?utf-8?B?TW9XekNzZ0pUbmRNaTRjd1huZWR4elcxS2RiTTV1WnRpR3dPVk0vc2pmYm1s?=
+ =?utf-8?Q?WFObQYpjS5FN4n798m2nCWY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28f0b967-35f9-434b-5717-08d9aa154871
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2021 21:57:43.5082
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9hjfInz9ihbZ0GhsBg2/Ws/g7T7xXKllbUeBwc/jQuIN6QxfQg3IgYmwmiGSb7HzawD+H9XTeWPoirSNrAOmhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4216
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 17, 2021 at 04:10:26PM +0000, Anand Ashok Dumbre wrote:
-> The AMS includes an ADC as well as on-chip sensors that can be used to
-> sample external voltages and monitor on-die operating conditions, such
-> as temperature and supply voltage levels. The AMS has two SYSMON blocks.
-> PL-SYSMON block is capable of monitoring off chip voltage and
-> temperature.
-> 
-> PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
-> from an external master. Out of these interfaces currently only DRP is
-> supported. Other block PS-SYSMON is memory mapped to PS.
-> 
-> The AMS can use internal channels to monitor voltage and temperature as
-> well as one primary and up to 16 auxiliary channels for measuring
-> external voltages.
-> 
-> The voltage and temperature monitoring channels also have event capability
-> which allows to generate an interrupt when their value falls below or
-> raises above a set threshold.
-
-Thanks for an update, my comments below.
-
-...
-
-Missed bitfields.h as kbuild bot noticed.
-
-> +#include <linux/bits.h>
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/overflow.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
-> +#include <linux/slab.h>
-
-...
-
-> +#define AMS_ALARM_THR_DIRECT_MASK	BIT(1)
-
-> +#define AMS_ALARM_THR_MIN		~(BIT(16) - 1)
-
-This is wrong. I already said it.
-
-> +#define AMS_ALARM_THR_MAX		(BIT(16) - 1)
-
-...
-
-> +enum ams_alarm_bit {
-> +	AMS_ALARM_BIT_TEMP,
-> +	AMS_ALARM_BIT_SUPPLY1,
-> +	AMS_ALARM_BIT_SUPPLY2,
-> +	AMS_ALARM_BIT_SUPPLY3,
-> +	AMS_ALARM_BIT_SUPPLY4,
-> +	AMS_ALARM_BIT_SUPPLY5,
-> +	AMS_ALARM_BIT_SUPPLY6,
-> +	AMS_ALARM_BIT_RESERVED,
-> +	AMS_ALARM_BIT_SUPPLY7,
-> +	AMS_ALARM_BIT_SUPPLY8,
-> +	AMS_ALARM_BIT_SUPPLY9,
-> +	AMS_ALARM_BIT_SUPPLY10,
-> +	AMS_ALARM_BIT_VCCAMS,
-> +	AMS_ALARM_BIT_TEMP_REMOTE
-
-+Comma, same to the rest where the last item is not a terminator one.
-
-> +};
-> +
-> +enum ams_seq {
-> +	AMS_SEQ_VCC_PSPLL,
-> +	AMS_SEQ_VCC_PSBATT,
-> +	AMS_SEQ_VCCINT,
-> +	AMS_SEQ_VCCBRAM,
-> +	AMS_SEQ_VCCAUX,
-> +	AMS_SEQ_PSDDRPLL,
-> +	AMS_SEQ_INTDDR
-
-...like here.
-
-> +};
-
-> +enum ams_ps_pl_seq {
-> +	AMS_SEQ_CALIB,
-> +	AMS_SEQ_RSVD_1,
-> +	AMS_SEQ_RSVD_2,
-> +	AMS_SEQ_TEST,
-> +	AMS_SEQ_RSVD_4,
-> +	AMS_SEQ_SUPPLY4,
-> +	AMS_SEQ_SUPPLY5,
-> +	AMS_SEQ_SUPPLY6,
-> +	AMS_SEQ_TEMP,
-> +	AMS_SEQ_SUPPLY2,
-> +	AMS_SEQ_SUPPLY1,
-> +	AMS_SEQ_VP_VN,
-> +	AMS_SEQ_VREFP,
-> +	AMS_SEQ_VREFN,
-> +	AMS_SEQ_SUPPLY3,
-> +	AMS_SEQ_CURRENT_MON,
-> +	AMS_SEQ_SUPPLY7,
-> +	AMS_SEQ_SUPPLY8,
-> +	AMS_SEQ_SUPPLY9,
-> +	AMS_SEQ_SUPPLY10,
-> +	AMS_SEQ_VCCAMS,
-> +	AMS_SEQ_TEMP_REMOTE,
-> +	AMS_SEQ_MAX
-
-...but not here!
-
-> +};
-
-...
-
-> +#define AMS_SEQ(x)		(AMS_SEQ_MAX + (x))
-> +#define AMS_VAUX_SEQ(x)		(AMS_SEQ_MAX + (x))
-
-What's the difference?
-
-> +#define AMS_PS_SEQ_MAX		AMS_SEQ_MAX
-
-Perhaps this should be above (for the sake of easier reading).
-
-> +#define PS_SEQ(x)		(x)
-> +#define PL_SEQ(x)		(AMS_PS_SEQ_MAX + (x))
-> +#define AMS_CTRL_SEQ_BASE	(AMS_PS_SEQ_MAX * 3)
-
-...
-
-> +		ret = readl_poll_timeout(ams->base + AMS_PS_CSTS, reg,
-> +					 (reg & expect), 0,
-
-Parentheses are not needed.
-WHy 0? Is it okay to load CPU like this?
-
-> +					 AMS_INIT_TIMEOUT_US);
-> +		if (ret)
-> +			return ret;
-
-...
-
-> +	if (ams->pl_base) {
-> +		reg = readl(ams->base + AMS_PL_CSTS);
-> +		if (reg == 0)
-
-> +			return (int) reg;
-
-I already said that this is wrong.
-
-> +		writel(AMS_PL_RESET_VALUE, ams->pl_base + AMS_VP_VN);
-> +
-> +		/* put sysmon in a default state */
-> +		ams_pl_update_reg(ams, AMS_REG_CONFIG1, AMS_CONF1_SEQ_MASK,
-> +				  AMS_CONF1_SEQ_DEFAULT);
-> +	}
-
-...
-
-> +	ret = readl_poll_timeout(ams->base + AMS_ISR_1, reg,
-> +				 (reg & expect), 0, AMS_INIT_TIMEOUT_US);
-> +	if (ret)
-> +		return ret;
-
-Same two comments as per above readl_poll_timeout() usage.
-
-...
-
-> +			ret = ams_read_vcc_reg(ams, chan->address, val);
-> +			if (ret) {
-> +				mutex_unlock(&ams->lock);
-> +				return -EINVAL;
-
-Shadowed error code.
-
-> +			}
-
-...
-
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		/* Only the temperature channel has an offset */
-> +		*val = AMS_TEMP_OFFSET;
-> +		return IIO_VAL_INT;
-> +	}
-
-> +	return -EINVAL;
-
-Why not keep it in the default case?
-
-…
-
-> +	switch (event) {
-> +	case AMS_ALARM_BIT_TEMP:
-> +		scan_index += AMS_SEQ_TEMP;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY1:
-> +		scan_index += AMS_SEQ_SUPPLY1;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY2:
-> +		scan_index += AMS_SEQ_SUPPLY2;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY3:
-> +		scan_index += AMS_SEQ_SUPPLY3;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY4:
-> +		scan_index += AMS_SEQ_SUPPLY4;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY5:
-> +		scan_index += AMS_SEQ_SUPPLY5;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY6:
-> +		scan_index += AMS_SEQ_SUPPLY6;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY7:
-> +		scan_index += AMS_SEQ_SUPPLY7;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY8:
-> +		scan_index += AMS_SEQ_SUPPLY8;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY9:
-> +		scan_index += AMS_SEQ_SUPPLY9;
-> +		break;
-> +	case AMS_ALARM_BIT_SUPPLY10:
-> +		scan_index += AMS_SEQ_SUPPLY10;
-> +		break;
-> +	case AMS_ALARM_BIT_VCCAMS:
-> +		scan_index += AMS_SEQ_VCCAMS;
-> +		break;
-> +	case AMS_ALARM_BIT_TEMP_REMOTE:
-> +		scan_index += AMS_SEQ_TEMP_REMOTE;
-> +		break;
-
-default: ?
-
-> +	}
-
-...
-
-> +	if (chan->type == IIO_TEMP) {
-> +		offset = ams_get_alarm_offset(chan->scan_index,
-> +					      IIO_EV_DIR_FALLING);
-
-One line?
-
-> +	}
-
-...
-
-> +	const struct iio_chan_spec *chan;
-> +
-> +	chan = ams_event_to_channel(indio_dev, event);
-
-Can be done in one line.
-
-
-> +	/* Only process alarms that are not masked */
-> +	isr0 &= ~((ams->intr_mask & AMS_ISR0_ALARM_MASK) | ams->masked_alarm);
-
-> +
-
-Redundant blank line.
-
-> +	if (!isr0) {
-> +		spin_unlock(&ams->intr_lock);
-> +		return IRQ_NONE;
-> +	}
-
-...
-
-> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE) |
-> +				BIT(IIO_EV_INFO_VALUE),
-
-One line?
-
-...
-
-> +	fwnode_for_each_child_node(chan_node, child) {
-> +		ret = fwnode_property_read_u32(child, "reg", &reg);
-
-> +		if (ret || reg > (AMS_PL_MAX_EXT_CHANNEL + 30))
-
-Too many parentheses.
-
-> +			continue;
-
-> +		memcpy(&channels[num_channels], &ams_pl_channels[reg +
-> +		       AMS_PL_MAX_FIXED_CHANNEL - 30], sizeof(*channels));
-> +
-> +		if (fwnode_property_read_bool(child, "xlnx,bipolar"))
-> +			channels[num_channels].scan_type.sign =	's';
-
-Use temporary variable for &channels[num_channels] in both cases.
-
-> +		num_channels++;
-> +	}
-
-...
-
-> +		memcpy(channels + num_channels, ams_ps_channels,
-> +		       sizeof(ams_ps_channels));
-
-Ditto.
-
-...
-
-> +		memcpy(channels + num_channels, ams_pl_channels,
-> +		       AMS_PL_MAX_FIXED_CHANNEL * sizeof(*channels));
-
-Ditto.
-
-...
-
-> +		memcpy(channels + num_channels, ams_ctrl_channels,
-> +		       sizeof(ams_ctrl_channels));
-
-Ditto.
-
-...
-
-> +static int ams_parse_firmware(struct iio_dev *indio_dev,
-> +			      struct platform_device *pdev)
-
-Why do you need second parameter? Doesn't indio_dev already have it?
-
-> +{
-> +	struct ams *ams = iio_priv(indio_dev);
-> +	struct iio_chan_spec *ams_channels, *dev_channels;
-> +	struct fwnode_handle *child = NULL, *fwnode = dev_fwnode(&pdev->dev);
-> +	size_t dev_chan_size, ams_chan_size, num_chan;
-> +	int ret, ch_cnt = 0, i, rising_off, falling_off;
-> +	unsigned int num_channels = 0;
-> +
-> +
-
-One blank line is enough.
-
-> +	num_chan = ARRAY_SIZE(ams_ps_channels) + ARRAY_SIZE(ams_pl_channels) +
-> +		ARRAY_SIZE(ams_ctrl_channels);
-
-> +	ams_chan_size = array_size(num_chan, sizeof(struct iio_chan_spec));
-> +	if (ams_chan_size == SIZE_MAX)
-> +		return -EINVAL;
-
-Why is this needed now since you are using kcalloc()?
-
-> +	/* Initialize buffer for channel specification */
-> +	ams_channels = kcalloc(num_chan, sizeof(struct iio_chan_spec), GFP_KERNEL);
-
-sizeof(*ams_channels)
-
-> +	if (!ams_channels)
-> +		return -ENOMEM;
-
-...
-
-> +			ret = ams_init_module(indio_dev, child,
-> +					      ams_channels + num_channels);
-
-One line?
-
-...
-
-> +				writel(AMS_ALARM_THR_MIN,
-> +				       ams->pl_base + falling_off);
-> +				writel(AMS_ALARM_THR_MAX,
-> +				       ams->pl_base + rising_off);
-
-Ditto.
-
-...
-
-> +				writel(AMS_ALARM_THR_MIN,
-> +				       ams->ps_base + falling_off);
-> +				writel(AMS_ALARM_THR_MAX,
-> +				       ams->ps_base + rising_off);
-
-Ditto.
-
-> +	dev_chan_size = array_size((size_t)num_channels, sizeof(struct iio_chan_spec));
-> +	if (dev_chan_size == SIZE_MAX)
-> +		return -EINVAL;
-
-Why is it needed now?
-
-> +	dev_channels = devm_kcalloc(&pdev->dev, (size_t)num_channels,
-
-Why casting?
-
-> +				    sizeof(struct iio_chan_spec), GFP_KERNEL);
-
-sizeof(*dev_channels)
-
-> +	if (!dev_channels) {
-> +		ret = -ENOMEM;
-> +		goto free_mem;
-> +	}
-
-> +	memcpy(dev_channels, ams_channels,
-> +	       sizeof(*ams_channels) * num_channels);
-
-Hmm... according to the code the num_channels can be less than or equal to
-num_chan. Hence, what you should use is the devm_krealloc_array().
-
-static inline void *devm_krealloc_aray(...)
-{
-	...see how krealloc_array() is defined...
-}
-
-No need to copy memory again.
-
-...
-
-> +	ret = 0;
-> +
-> +free_mem:
-> +	kfree(ams_channels);
-> +
-> +	return ret;
-
-This will go away after switching to devm_kmalloc_array() +
-devm_krealloc_array().
-
-...
-
-> +	ret = ams_parse_firmware(indio_dev, pdev);
-> +	if (ret) {
-> +		dev_err_probe(&pdev->dev, ret, "failure in parsing DT\n");
-> +		return ret;
-
-	return dev_err_probe(...);
-
-Ditto for the rest similar cases.
-
-> +	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+SGkgQW5keSwNCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3Lg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVz
+c2FnZS0tLS0tDQo+IEZyb206IEFuZHkgU2hldmNoZW5rbyA8YW5keS5zaGV2Y2hlbmtvQGdtYWls
+LmNvbT4NCj4gU2VudDogV2VkbmVzZGF5IDE3IE5vdmVtYmVyIDIwMjEgNTowOSBQTQ0KPiBUbzog
+Sm9lIFBlcmNoZXMgPGpvZUBwZXJjaGVzLmNvbT4NCj4gQ2M6IEFuYW5kIEFzaG9rIER1bWJyZSA8
+QU5BTkRBU0hAeGlsaW54LmNvbT47IEFuZHkgU2hldmNoZW5rbw0KPiA8YW5kcml5LnNoZXZjaGVu
+a29AbGludXguaW50ZWwuY29tPjsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gamlj
+MjNAa2VybmVsLm9yZzsgbGFyc0BtZXRhZm9vLmRlOyBsaW51eC1paW9Admdlci5rZXJuZWwub3Jn
+OyBnaXQNCj4gPGdpdEB4aWxpbnguY29tPjsgTWljaGFsIFNpbWVrIDxtaWNoYWxzQHhpbGlueC5j
+b20+Ow0KPiBncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7IGxp
+bnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOw0KPiBoZWlra2kua3JvZ2VydXNAbGludXguaW50ZWwu
+Y29tDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjkgNS81XSBNQUlOVEFJTkVSUzogQWRkIG1haW50
+YWluZXIgZm9yIHhpbGlueC1hbXMNCj4gDQo+IE9uIFdlZCwgTm92IDE3LCAyMDIxIGF0IDY6MDUg
+UE0gSm9lIFBlcmNoZXMgPGpvZUBwZXJjaGVzLmNvbT4gd3JvdGU6DQo+ID4gT24gV2VkLCAyMDIx
+LTExLTE3IGF0IDE3OjE3ICswMjAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6DQo+ID4gPiBPbiBX
+ZWQsIE5vdiAxNywgMjAyMSBhdCA1OjAwIFBNIEFuYW5kIEFzaG9rIER1bWJyZQ0KPiA8QU5BTkRB
+U0hAeGlsaW54LmNvbT4gd3JvdGU6DQo+ID4gPiA+ID4gRnJvbTogQW5keSBTaGV2Y2hlbmtvIDxh
+bmRyaXkuc2hldmNoZW5rb0BsaW51eC5pbnRlbC5jb20+DQo+ID4gPiA+ID4gU2VudDogVHVlc2Rh
+eSAxNiBOb3ZlbWJlciAyMDIxIDU6NDIgUE0gT24gVHVlLCBOb3YgMTYsIDIwMjEgYXQNCj4gPiA+
+ID4gPiAwMzowODo0MlBNICswMDAwLCBBbmFuZCBBc2hvayBEdW1icmUgd3JvdGU6DQo+IA0KPiAu
+Li4NCj4gDQo+ID4gPiA+ID4gSGF2ZSB5b3UgcnVuIGNoZWNrcGF0Y2g/DQo+ID4gPiA+DQo+ID4g
+PiA+IFllcyBJIGRpZC4NCj4gPiA+ID4gSSBkb24ndCBzZWUgYW55IGVycm9yIG9uIHRoaXMuDQo+
+ID4gPg0KPiA+ID4gSG1tLi4uIFBlcmhhcHMgaXQgbmVlZHMgYW4gdW5vYnZpb3VzIHBhcmFtZXRl
+cj8NCj4gPiA+IEpvZSwgWCBpcyBkZWZpbml0ZWx5IGFmdGVyIE0sIGFueSBpZGVhIHdoeSBjaGVj
+a3BhdGNoIGhhc24ndCBjYXVnaHQgdGhpcw0KPiB1cD8NCj4gPg0KPiA+IFRoaXMgaXMgdGhlIHN1
+Z2dlc3RlZCBwYXRjaCBiZWxvdyByaWdodD8NCj4gDQo+IENvcnJlY3QuDQo+IA0KPiA+IGh0dHBz
+Oi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyMTExMTYxNTA4NDIuMTA1MS02LQ0KPiBhbmFuZC5h
+c2hvay5kdW1icmVADQo+ID4geGlsaW54LmNvbS8NCj4gPg0KPiA+IEl0IGxvb2tzIE9LIHRvIG1l
+Lg0KPiANCj4gSG93IGNvbWU/IFNlZSBiZWxvdy4NCj4gDQo+ID4gV2hhdCBkbyB5b3UgdGhpbmsg
+Y2hlY2twYXRjaCBpcyBzdXBwb3NlZCB0byBmaW5kPw0KPiANCj4gWElMSU5YIEFYSSBFVEhFUk5F
+VCBEUklWRVINCj4gTTogICAgICBSYWRoZXkgU2h5YW0gUGFuZGV5IDxyYWRoZXkuc2h5YW0ucGFu
+ZGV5QHhpbGlueC5jb20+DQo+IFM6ICAgICAgTWFpbnRhaW5lZA0KPiBGOiAgICAgIGRyaXZlcnMv
+bmV0L2V0aGVybmV0L3hpbGlueC94aWxpbnhfYXhpZW5ldCoNCj4gDQo+IC0tPiBwYXRjaCBhZGRz
+IFhJTElOWCBBTVMgRFJJVkVSIGhlcmUgISEhDQo+IA0KPiBYSUxJTlggQ0FOIERSSVZFUg0KPiAN
+Cj4gVG8gbWUgQU1TIHNob3VsZCBwcmVjZWRlIEFYSSBhbmQgbm90IHRoZSBvdGhlciB3YXkgYXJv
+dW5kLiBBZ3JlZT8NCg0KR290IGl0ISBOZWVkcyB0byBiZSBhbHBoYWJldGljYWwuDQoNCj4gDQo+
+ID4gLS0tIGEvTUFJTlRBSU5FUlMNCj4gPiArKysgYi9NQUlOVEFJTkVSUw0KPiA+IEBAIC0yMDY0
+MCw2ICsyMDY0MCwxMyBAQCBNOiAgICAgUmFkaGV5IFNoeWFtIFBhbmRleQ0KPiA8cmFkaGV5LnNo
+eWFtLnBhbmRleUB4aWxpbnguY29tPg0KPiA+ICBTOiAgICAgTWFpbnRhaW5lZA0KPiA+ICBGOiAg
+ICAgZHJpdmVycy9uZXQvZXRoZXJuZXQveGlsaW54L3hpbGlueF9heGllbmV0Kg0KPiA+DQo+ID4g
+K1hJTElOWCBBTVMgRFJJVkVSDQo+ID4gK006ICAgICBBbmFuZCBBc2hvayBEdW1icmUgPGFuYW5k
+LmFzaG9rLmR1bWJyZUB4aWxpbnguY29tPg0KPiA+ICtMOiAgICAgbGludXgtaWlvQHZnZXIua2Vy
+bmVsLm9yZw0KPiA+ICtTOiAgICAgTWFpbnRhaW5lZA0KPiA+ICtGOiAgICAgRG9jdW1lbnRhdGlv
+bi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9hZGMveGxueCx6eW5xbXAtYW1zLnlhbWwNCj4gPiAr
+RjogICAgIGRyaXZlcnMvaWlvL2FkYy94aWxpbngtYW1zLmMNCj4gPiArDQo+ID4gIFhJTElOWCBD
+QU4gRFJJVkVSDQo+ID4gIE06ICAgICBBcHBhbmEgRHVyZ2EgS2VkYXJlc3dhcmEgcmFvIDxhcHBh
+bmEuZHVyZ2EucmFvQHhpbGlueC5jb20+DQo+ID4gIFI6ICAgICBOYWdhIFN1cmVzaGt1bWFyIFJl
+bGxpIDxuYWdhLnN1cmVzaGt1bWFyLnJlbGxpQHhpbGlueC5jb20+DQo+ID4gLS0NCj4gPiAyLjE3
+LjENCj4gPg0KPiA+DQo+ID4NCj4gDQo+IA0KPiAtLQ0KPiBXaXRoIEJlc3QgUmVnYXJkcywNCj4g
+QW5keSBTaGV2Y2hlbmtvDQoNClRoYW5rcywNCkFuYW5kDQo=

@@ -2,23 +2,23 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93990454A9E
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 17:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D85A5454AA4
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Nov 2021 17:10:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232475AbhKQQNo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Nov 2021 11:13:44 -0500
-Received: from mail-bn7nam10on2047.outbound.protection.outlook.com ([40.107.92.47]:4192
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        id S229841AbhKQQNs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 17 Nov 2021 11:13:48 -0500
+Received: from mail-mw2nam12on2073.outbound.protection.outlook.com ([40.107.244.73]:28096
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232000AbhKQQNl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 17 Nov 2021 11:13:41 -0500
+        id S232144AbhKQQNm (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 17 Nov 2021 11:13:42 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ocTL0vEV9dJ/Nk1xHYMtQRTXcnUtYOe9Oc/k+ieIDo0mTzllCV/CJbRbv8P/HHn72lKlBYi1CllcTa7pRNHgzESveBm3xECU1Yv3B5c9kVRskegkihL0miohLu40SoMy9TtUn+vHhQtLQWU4O18yG4wU6evRsfkYk52bNDl+62PDZ3ZPtRxhZuPZuubKdTshj7ZedIAglD2/00gC/U9H9rmsZNFJZdmSA+dyPD0Mm4njOHTmv2DgW0sfFsmZRWuCX46wp5SbzzalqbSQ9KbYbmFxjD/072J9ex8YhCTgdsKQOi0Wk/Q+9el/ZxaMeLx78LPH+TGV19cOsYof7hbfeg==
+ b=JngBKGsxe2uZMWvcqLvqSNkh1YkWTYFNEHW++CfCCdi6kVnyJpRzCiwSqHf+wM73DlB3Cg62AFxH5DNSkzgUYncRLAdv2HAWZuoHEEVlEI4NNBRlRqCPKCg3xF/3+8sadG07KBGRMIUW52KvOF9Z72vamHBRkjzhhLmEMrT5krhhjRaibbbF6gS69r+2d2rNzyHNqC8fwPbG5RuPbqlFeehaKSCGA7FHuc8sI06BsUxVf/CjlYdfP3j2KqDT8ZrkOJq3YIKUKzjKqUBZUUX3Wk4339MP/55vhozsArZLPpH7NPsjHsertBYozLq7tRTFZP052i0Ti4fIihvpv/YAbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SSI751JYy2fHcTvWBvHKZDmriM8Fec9AEZVhUTarips=;
- b=cNQNm+9uphEzMRSJIXvbcsYu3RS0snyj7Rv5nfoMhgb8RLTxkgX2oYaAXxCVkf9KO8S8DQuIAkRFOBW+lrerfE1XqmLMYwgAH9J+ksJsHFhYx5KYKnrvbLZNmgBCyI3+FxV26jZTNGPwfs+hSL/mF8ZaMHLXTrtf6EoP0IXzfy0M99ZTF67O8HIC7cwlUvw8CYzCoLBhirkIH79xvvekyBArBCc1I6yGfYgWfx3imltwulFA31nZHqn3q4bmVtjTFfU7dgnj8UBfW/qdKHNy8FilBpEQ/byAF6EkKzjUFKsmHDukH17RnuBnwySEGWNxeqLa18hUEgPHAhrPjnkP0w==
+ bh=JmVlCzmvuBcqkDONTtQyAXgD120L3C519ZQiyfjLWIw=;
+ b=Nh6IfSnw+QsXzqw+CcQiCf/JHrL4VAQk6Pvpdy48OoS98v1/pVE7d21mrdVO2nTMBibWHLHnL7HYcdJAvfW9jjgQV7uElj4CSR0nri/olTBsV/k7RfnnVOYP+C+ooR7YDSLl0nmHh21sB35QydqKWXWKI4mOzk2pGVdN+uNcQdBf8WB3IFru6STm9cQMu+/M65pvlVh4a9qUZuOUu8rOOZG6aTs+pdvye+WOwyw+hRIh8uyJm+tNRQOB2TlLuMFuBLeF6tXYqQdoHK1pnHaKiXmdplJ8AT/rrDehE2H6CPZD6Q4CuACa+1w/7n+2mxygxXFLtZln219npvPAsy5tyA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  149.199.80.198) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
@@ -26,18 +26,17 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SSI751JYy2fHcTvWBvHKZDmriM8Fec9AEZVhUTarips=;
- b=FB8gXBEZpAHUY7Uwd3HRDLnMyOfeTJNtTbGsVWr5C1+ghyjJbpbZxlwU/bLevserthu5GbesO5QRvThfm2nDGZNKHqDqWONgp5+9XGmkKaOL0oJZnrUxEDx31PPfE0UPEIlhOp9LsvD0JdLbHNWZCtHZYzO2wOwNbfsh2QuSXZA=
-Received: from SN2PR01CA0013.prod.exchangelabs.com (2603:10b6:804:2::23) by
- MN2PR02MB7103.namprd02.prod.outlook.com (2603:10b6:208:20e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.19; Wed, 17 Nov
- 2021 16:10:39 +0000
+ bh=JmVlCzmvuBcqkDONTtQyAXgD120L3C519ZQiyfjLWIw=;
+ b=og0agyO6t42UpmuJIpTsBTBSK+4uuAKeOAOZucNJrq6QIp8CaV0Yxo4onz4keFamiGJ83B0JQ9vMR7+/DWDbbNx/FGUjEBSRV/tkvFZdu6tp6QMcs+eIrArQXJjWT6aM+P9vF/3XioMLSeZdK2x1rJ902e8+iHMbpQepHO6rl1g=
+Received: from SN2PR01CA0012.prod.exchangelabs.com (2603:10b6:804:2::22) by
+ CH2PR02MB6759.namprd02.prod.outlook.com (2603:10b6:610:7c::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4713.21; Wed, 17 Nov 2021 16:10:40 +0000
 Received: from SN1NAM02FT0011.eop-nam02.prod.protection.outlook.com
- (2603:10b6:804:2:cafe::f5) by SN2PR01CA0013.outlook.office365.com
- (2603:10b6:804:2::23) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:804:2:cafe::a0) by SN2PR01CA0012.outlook.office365.com
+ (2603:10b6:804:2::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.19 via Frontend
- Transport; Wed, 17 Nov 2021 16:10:39 +0000
+ Transport; Wed, 17 Nov 2021 16:10:40 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.80.198)
  smtp.mailfrom=xilinx.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=xilinx.com;
@@ -47,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
 Received: from xir-pvapexch02.xlnx.xilinx.com (149.199.80.198) by
  SN1NAM02FT0011.mail.protection.outlook.com (10.97.5.171) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4690.19 via Frontend Transport; Wed, 17 Nov 2021 16:10:38 +0000
-Received: from xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) by
+ 15.20.4690.19 via Frontend Transport; Wed, 17 Nov 2021 16:10:40 +0000
+Received: from xir-pvapexch02.xlnx.xilinx.com (172.21.17.17) by
  xir-pvapexch02.xlnx.xilinx.com (172.21.17.17) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.14; Wed, 17 Nov 2021 16:10:36 +0000
 Received: from smtp.xilinx.com (172.21.105.197) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server id
+ xir-pvapexch02.xlnx.xilinx.com (172.21.17.17) with Microsoft SMTP Server id
  15.1.2176.14 via Frontend Transport; Wed, 17 Nov 2021 16:10:36 +0000
 Envelope-to: anand.ashok.dumbre@xilinx.com,
  git@xilinx.com,
@@ -70,7 +69,7 @@ Envelope-to: anand.ashok.dumbre@xilinx.com,
 Received: from [10.71.188.1] (port=38490 helo=xiranandash40.xilinx.com)
         by smtp.xilinx.com with esmtp (Exim 4.90)
         (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1mnNW1-0000gH-UY; Wed, 17 Nov 2021 16:10:30 +0000
+        id 1mnNW2-0000gH-1H; Wed, 17 Nov 2021 16:10:30 +0000
 From:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 To:     <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
         <lars@metafoo.de>, <linux-iio@vger.kernel.org>, <git@xilinx.com>,
@@ -79,155 +78,95 @@ To:     <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
         <andriy.shevchenko@linux.intel.com>,
         <heikki.krogerus@linux.intel.com>
 CC:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Subject: [PATCH v10 0/5] Add Xilinx AMS Driver
-Date:   Wed, 17 Nov 2021 16:10:23 +0000
-Message-ID: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
+Subject: [PATCH v10 1/5] device property: Add fwnode_iomap()
+Date:   Wed, 17 Nov 2021 16:10:24 +0000
+Message-ID: <20211117161028.11775-2-anand.ashok.dumbre@xilinx.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
+References: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5fe1256b-9a58-4925-ac07-08d9a9e4cc10
-X-MS-TrafficTypeDiagnostic: MN2PR02MB7103:
-X-Microsoft-Antispam-PRVS: <MN2PR02MB710343D365C4748CDD09E608A99A9@MN2PR02MB7103.namprd02.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: fa116cb6-51f4-4f59-e19e-08d9a9e4ccf0
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6759:
+X-Microsoft-Antispam-PRVS: <CH2PR02MB6759B25F66B35E3028F3A6FEA99A9@CH2PR02MB6759.namprd02.prod.outlook.com>
 X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Oob-TLC-OOBClassifiers: OLM:862;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: A4ZXGNBFwOJT/CDHX9RI82vOVuzHyGgXKEh9YAF9le3ZgZOndZ3frW4IDYRIKeW/WaTV4D5FFJ7mycbkkcoMcY7yYvMMTKnVNy+Itv9XC/jOsLOjh+NieYCFq/5m9XBakgVJgIDXpl5KHV93SQFEU2wVWVrlWP2CieVMKHe9imLGkhVNGBlt+g/ZRZL9genLL8MIY995XUR9kdaKu8iw45XI60rnmX4RTDg1rkfQCpkw15Hxwt8oLoI8p+z4LOpgceTSbO5r8e++AYdEctkte5bPkqyw69fkaUdMxSDxrPAXlFSVviBVt1KoT23RgZIA306cudJnDPzm/Zhnf7coGuWWGlHGbwjVkPT97ZLSim/JgeqrrezOTcxWd0Ot42tP8bGCLq56XU6QYPU98+kI3nOr4p7LzNd2OXVmVtCWASAXgyGOxIM7YpejKF3jxYSSCSddi25Ebfm8V5CsmQywHr5D3ghthIDMc8N/lJBkuXMeODF3Sn4g2PZ7NDkFMMZe4WR3Tf2swgmI3zrVWR4Hoei7m2obu0hMHPPKxNAB/hwLsMl2b2RJkVtXiBe1iygXxIDSCGS+IKA9M/x+IuLa6Z8qdx6VENZ0tDexIwCVOkYrJHLbQ2AsH5RRklh9C6oGDdvIK1x232RAKBoy6RsjyLt25Lc1IZt5/UBXYwGuipGsi0vIws7D11/yD9/n4Yv9vkK0j6MpwKu9sPZeUbEZr59uXSLvMkyn/HEI5qV0hR0aNj9alznxgebnjRHMBoIVYQkywBvK5uZwe2pwp6/NutthNfNn0jw6z65DsnHD5YQ=
-X-Forefront-Antispam-Report: CIP:149.199.80.198;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:xir-pvapexch02.xlnx.xilinx.com;PTR:unknown-80-198.xilinx.com;CAT:NONE;SFS:(46966006)(36840700001)(70586007)(107886003)(336012)(8676002)(4326008)(83380400001)(5660300002)(7636003)(7696005)(1076003)(36860700001)(8936002)(26005)(921005)(70206006)(356005)(47076005)(103116003)(186003)(508600001)(110136005)(9786002)(2906002)(36906005)(316002)(82310400003)(6666004)(426003)(2616005)(36756003)(102446001)(83996005)(2101003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 3Q6IAqYoD54m+uvR1mGRtw4/GXq8onMj+smqvX0GH3KjcHEPhHTNxog8Aj51idOhaXXdC0N81yvHIDavse0A8yW9AJDNH5G4CKMBhWwtxJCeQgwQV9crDGgNwU3zsyYFCYsIIiRuFBSoNgAzUZafDfUV2Y0ar4cisNnfgAJxn72JgR742M0OD8SblvcXAt2zfSQJv9AUZ3i8IIy77T46Mue4OLzgavd2a9pRV5kb09EAQZgQYggoKIvz55pMdzSmMQBbq/ivZSsKRJFj6nlWre7VJeF5u6CZrP4M/bCwx5V7ShqkDV25uHbXq2/Zm10bFxCDaIH5vHCcyfcAfK7blWm6Sp5DWwud1qnn1kevUVElRkkoqb0DMqMCe9hDvYr+6jKkLRCNf54riXK8T53CFEPp2BItMTl5Kj69v4CP53DuCBnq9KwBu5T14W72MZCij4jm62aIPdCuS8NjNFQhinJLJr3EUF0FgIk7zsA5zAIvrfa2xrkNNyKy0swFJjBvri9elUvrK2VrtVDO9GFmP1nmqB+R7oLQ0ivBZRl7MEJHmwWoLHcspFu31U86sCSB3RuIMMshHri56HGHgqc4U08h9l6dq5Pl5gPlyPUv8+ke5ZrK/SY9/KFfr4Qxkw6YrXe3OUR+LF6X5jWila1ZM43OoBzUqMUfBWeTovNHpuV8DuxEYJsZ/l0em67LjR5SR3BSwOpC/zdLCZPSybBA1p2RswVBRCheiSvE8Qk6ktRojrIzvj9cpNmVgP9VSeIes0jAlr4zqPSPoDMNiqMQ20pbBUXDbsmcx4erp9daqxA=
+X-Forefront-Antispam-Report: CIP:149.199.80.198;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:xir-pvapexch02.xlnx.xilinx.com;PTR:unknown-80-198.xilinx.com;CAT:NONE;SFS:(46966006)(36840700001)(921005)(356005)(2616005)(7636003)(6666004)(426003)(70586007)(5660300002)(336012)(1076003)(47076005)(107886003)(70206006)(8936002)(26005)(186003)(103116003)(4326008)(508600001)(7696005)(9786002)(36756003)(8676002)(82310400003)(36860700001)(2906002)(110136005)(316002)(36906005)(102446001)(83996005)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2021 16:10:38.8229
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2021 16:10:40.2923
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5fe1256b-9a58-4925-ac07-08d9a9e4cc10
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa116cb6-51f4-4f59-e19e-08d9a9e4ccf0
 X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.80.198];Helo=[xir-pvapexch02.xlnx.xilinx.com]
 X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT0011.eop-nam02.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB7103
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6759
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add Xilinx AMS driver which is used for Xilinx's ZynqMP AMS controller.
-This AMS driver is used to report various interface voltages and temperatures
-across the system.
-This driver will be used by iio-hwmon to repport voltages and temperatures
-across the system by using various channel interfaces.
-This driver handles AMS module including PS-Sysmon & PL-Sysmon. The binding
-documentation is added for understanding of AMS, PS, PL Sysmon Channels.
+This patch introduces a new helper routine - fwnode_iomap(), which
+allows to map the memory mapped IO for a given device node.
 
-Changes in v2:
-	- Added documentation for sysfs (Patch-2)
-	- Addressed code style review comments
-	- Patch-2 (Now it is Patch-3)
-		- Arranged the includes in alphabetical order
-		- Removed the wrapper 'ams_pl_write_reg()' and used writel
-		  instead
-		- Removed the unnecessary delay of 1ms and used polling of EOC
-		  instead
-		- Removed spin_lock and used mutex only.
-		- Used request_irq() instead of devm_request_irq() and handled
-		  respective error conditions
-		- Moved contents of xilinx-ams.h to inline with xilinx-ams.c
-	- Patch-1
-		- Addressed Documentation style comments
+This implementation does not cover the ACPI case and may be expanded
+in the future. The main purpose here is to be able to develop resource
+provider agnostic drivers.
 
-Changes in v3:
-	- Updated bindings document with the suggested modification in v2 review
-	- Removed documentation for sysfs
-	- Removed extended names for channels in the Xilinx AMS driver
-	- Modified dts to use ranges for child nodes
-	- Reduced address and size cells to 32-bit instead of 64-bit
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/base/property.c  | 16 ++++++++++++++++
+ include/linux/property.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-Changes in v4:
-	- Updated bindings document with the suggested modification in v3 review
-	- Changed the Device Tree property 'ranges' for child nodes
-	- Used Channel Numbers as 'reg' value in DT to avoid confusion
-	- Removed unused NULL arguments as suggested in v3 patch review
-	- Addressed comments on Device Tree property naming
-
-Changes in v5:
-	- Updated bindings document to the YAML format
-	- Updated bindings document with the suggested modification in v4 review
-	- Renamed iio_pl_info struct to iio_ams_info in Xilinx AMS driver
-	- Updated the Xilinx AMS driver to not use iio_priv_to_dev function
-	- Updated Xilinx AMS node to reflect the changes in bindings document
-	- Update MAINTAINERS file
-
-Changes in v6:
-	- Removed all tabs from bindings document.
-	- Removed the xlnx,ext-channels node from the device tree since
-	  it is not neeeded.
-	- Fixed unit addresses for ps-ams and pl-ams.
-	- Removed the names property from bindings.
-	- Fixed warnings from checkpatch.pl in the driver.
-	- devm_add_action_or_reset() used for exit/error path.
-	- devm_request_irq() for managed irq request instead of
-	  request_irq()
-
-Changes in v7:
-	- Added use of FIELD_PREP and FIELD_GET.
-	- Added the spinlocks back the v1 which were removed in v2 for
-	  no justifiable reason and replaced with the same mutex. This
-	  caused deadlocks.
-	- Removed the buffered mode information from channel config.
-	- Usage of wrapper functions for devm_add_action_or_reset
-	  callbacks to avoid typecasting functions.
-	- Usage of devm_platform_iremap_resource().
-	- Handled platform_get_irq() return values.
-	- Removed the remove() callback.
-	- Fixed the dt-bindings.
-
-Changes in v8:
-	- Replaced *_of_() APIs with fwnode.
-	- Added missing headers.
-	- Fixed documentation.
-	- Added devm_add_action_or_reset() for iounmap.
-	- Restructured read_raw function.
-	- Added helper functions.
-	- Usage of GENMASK for all masks.
-	- Added defaults for most switch cases. Some can't be added
-	  since the default will never occur.
-
-Changes in v9:
-	- Added a fwnode_iomap().
-	- Fixed Kconfig indentation.
-	- Added the overflow checks before memory allocation.
-	- Usage of fwnode_iomap() instead of iomap().
-	- Rename ams_parse_dt() to ams_parse_firmware().
-
-Changes in v10:
-	- Fixed licence in zynqmp.dtsi.
-	- Changed the macros to use BIT().
-	- Realign some code to fit within 100 chars.
-	- Modified readl_poll_timeout usage.
-	- Usage of array_size() instead of check_mul_overflow().
-	- Usage of dev_err_probe() instead of dev_err().
-	- Usage of kcalloc instead of kzalloc()
-
-
-Anand Ashok Dumbre (5):
-  device property: Add fwnode_iomap()
-  arm64: zynqmp: DT: Add Xilinx AMS node
-  iio: adc: Add Xilinx AMS driver
-  dt-bindings: iio: adc: Add Xilinx AMS binding documentation
-  MAINTAINERS: Add maintainer for xilinx-ams
-
- .../bindings/iio/adc/xlnx,zynqmp-ams.yaml     |  227 +++
- MAINTAINERS                                   |    7 +
- arch/arm64/boot/dts/xilinx/zynqmp.dtsi        |   24 +
- drivers/base/property.c                       |   16 +
- drivers/iio/adc/Kconfig                       |   15 +
- drivers/iio/adc/Makefile                      |    1 +
- drivers/iio/adc/xilinx-ams.c                  | 1447 +++++++++++++++++
- include/linux/property.h                      |    2 +
- 8 files changed, 1739 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
- create mode 100644 drivers/iio/adc/xilinx-ams.c
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index f1f35b48ab8b..f2e38be3a999 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -958,6 +958,22 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index)
+ }
+ EXPORT_SYMBOL(fwnode_irq_get);
+ 
++/**
++ * fwnode_iomap - Maps the memory mapped IO for a given fwnode
++ * @fwnode:	Pointer to the firmware node
++ * @index:	Index of the IO range
++ *
++ * Returns a pointer to the mapped memory.
++ */
++void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index)
++{
++	if (is_of_node(fwnode))
++		return of_iomap(to_of_node(fwnode), index);
++
++	return NULL;
++}
++EXPORT_SYMBOL(fwnode_iomap);
++
+ /**
+  * fwnode_graph_get_next_endpoint - Get next endpoint firmware node
+  * @fwnode: Pointer to the parent firmware node
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 88fa726a76df..6670d5a1ec2a 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -122,6 +122,8 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+ 
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+ 
++void __iomem *fwnode_iomap(struct fwnode_handle *fwnode, int index);
++
+ unsigned int device_get_child_node_count(struct device *dev);
+ 
+ static inline bool device_property_read_bool(struct device *dev,
 -- 
 2.17.1
 

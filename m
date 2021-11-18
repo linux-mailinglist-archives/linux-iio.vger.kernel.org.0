@@ -2,73 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB15C4550E8
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Nov 2021 00:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D4D4554E3
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Nov 2021 07:49:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241476AbhKQXJ6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 17 Nov 2021 18:09:58 -0500
-Received: from smtprelay0099.hostedemail.com ([216.40.44.99]:54040 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233161AbhKQXJ5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 17 Nov 2021 18:09:57 -0500
-Received: from omf09.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 0314418486701;
-        Wed, 17 Nov 2021 23:06:57 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id 2C054E00034E;
-        Wed, 17 Nov 2021 23:06:49 +0000 (UTC)
-Message-ID: <33ca60945b7945ff08ae295a4d683ebe99e41d46.camel@perches.com>
-Subject: Re: [PATCH v9 5/5] MAINTAINERS: Add maintainer for xilinx-ams
-From:   Joe Perches <joe@perches.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Anand Ashok Dumbre <ANANDASH@xilinx.com>,
-        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git <git@xilinx.com>,
-        Michal Simek <michals@xilinx.com>, gregkh@linuxfoundation.org,
-        rafael@kernel.org, linux-acpi@vger.kernel.org,
-        heikki.krogerus@linux.intel.com
-Date:   Wed, 17 Nov 2021 15:06:54 -0800
-In-Reply-To: <YZVX9R/TMvkPwuuF@smile.fi.intel.com>
-References: <20211116150842.1051-1-anand.ashok.dumbre@xilinx.com>
-         <20211116150842.1051-6-anand.ashok.dumbre@xilinx.com>
-         <YZPtW5igA8RBYLWv@smile.fi.intel.com>
-         <BY5PR02MB69168A6537474DF8948C3D0BA99A9@BY5PR02MB6916.namprd02.prod.outlook.com>
-         <CAHp75VdaO4+DxMn2eJx7t0_UFgrHGV2vgzXvRB=qwZi-ZpMaOA@mail.gmail.com>
-         <cf7ad8715a02f3a0e4fe0cd8a270585dcf84bb3a.camel@perches.com>
-         <CAHp75VfJBwCcFwbv6fgvwf=Q1UdFXwgNex-4GqKLcf=ZhuqGjw@mail.gmail.com>
-         <164612d20b252a28dda74f5058e0aacb@perches.com>
-         <YZVX9R/TMvkPwuuF@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1 
+        id S242636AbhKRGwX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Nov 2021 01:52:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52202 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242323AbhKRGwW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Nov 2021 01:52:22 -0500
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB71FC061570
+        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 22:49:22 -0800 (PST)
+Received: by mail-ot1-x335.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso9237079otf.12
+        for <linux-iio@vger.kernel.org>; Wed, 17 Nov 2021 22:49:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
+         :subject:to:cc;
+        bh=toCwT6GoOzYwa6FJM0P0fxHYrimq7fJiOH5vlvAVs5Q=;
+        b=JLFX9PPoNCel2Td9QeqODZWv5fROUE+aCyv/uJxfZTEZd2m83cDK7v6VRiYZ6pmvug
+         n6gyTJoZPKBpPHmW57hQnnlm+3Wv2gD1jTwkbqd4Lj+PWAUWU30UtMuYdJJZrL1+49GJ
+         fd/r2uBvMljndSPQ7UyB6YF115cm45TwOmjpg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from
+         :user-agent:date:message-id:subject:to:cc;
+        bh=toCwT6GoOzYwa6FJM0P0fxHYrimq7fJiOH5vlvAVs5Q=;
+        b=Z+5EQpMzjrAuhw1yqGHdUu7FMs5nL1ZtmJqXf5tAOnQEaIZOQMs5tVYnzgth/TflKT
+         piD+p+fDNfimK3O1PM8kipXmby0CXR/cTN5ZG0CnS2hJYi7MRbt4O4wQZFW0dwVHvd+t
+         4tuiXUUgOynY13xwelW9hPLz/M78sezSqm71FLO2gHMvjgruC5jfCRQ0WOB75Jz9vFAr
+         EGHO+An5eeVGqK9wgcQapeZRCwERcxgajIoedukPw/1iGFMFwBmNp9+/BplbQXycIZJN
+         UlVww6RW/s4j76pfXBZz/eBLfX1V06XsPapfdzns2xYiildJTm/kuUKhgF491UgiX+ui
+         nvmg==
+X-Gm-Message-State: AOAM531ij7e2wQh+iu/nmkWk2wUFfwnOgW9nb7aoEooqpbivLiq4lYGY
+        vxXc010gC2TJi8t6gK/IHTo1ew/Q5gAO4YWq4qyOE8LCqZE=
+X-Google-Smtp-Source: ABdhPJzPoRm0+6gN2ULZy8FnAQKGcTJfzVMatCc9QczLi9CBBDRYXbIhw4Tx1XU9Z8JNTaMN3CJaIV2CQmrQezMzDwk=
+X-Received: by 2002:a9d:2243:: with SMTP id o61mr7189754ota.126.1637218161863;
+ Wed, 17 Nov 2021 22:49:21 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 17 Nov 2021 22:49:21 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2C054E00034E
-X-Spam-Status: No, score=-3.40
-X-Stat-Signature: 5gonfoxuqwgckts6t7zg5ii6eb4g4ijk
-X-Rspamd-Server: rspamout02
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19+IFv9qylv3KP1O9JLcstv6VxH49IBE28=
-X-HE-Tag: 1637190409-49400
+In-Reply-To: <20211117084631.2820014-6-gwendal@chromium.org>
+References: <20211117084631.2820014-1-gwendal@chromium.org> <20211117084631.2820014-6-gwendal@chromium.org>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.9.1
+Date:   Wed, 17 Nov 2021 22:49:21 -0800
+Message-ID: <CAE-0n51iE2bYLUmkXxuwPcdQ7GkBW+bkeJEbNOWjbV5o1qjCvQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] iio: sx9324: Add dt_bidding support
+To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
+        lars@metafoo.de
+Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2021-11-17 at 21:28 +0200, Andy Shevchenko wrote:
-> On Wed, Nov 17, 2021 at 10:46:20AM -0800, Joe Perches wrote:
-> > On 2021-11-17 09:08, Andy Shevchenko wrote:
-> > > On Wed, Nov 17, 2021 at 6:05 PM Joe Perches <joe@perches.com> wrote:
-> > 
-> > > > What do you think checkpatch is supposed to find?
-> > 
-> > > To me AMS should precede AXI and not the other way around. Agree?
-> > 
-> > Sure but checkpatch just looks at patches and doesn't inspect the patched
-> > file, apply the patch then look at the result. The patch itself looks fine.
-> 
-> I see, checkpatch simply doesn't have such functionality and maintainers should
-> ask people to rung parse-maintainers.pl from time to time…
+Subject has a typo, maybe should be "dt binding support"
 
-I asked Linus to do that before every -rc1 and he demurred.
-
-https://lore.kernel.org/lkml/CAHk-=wjq68jF+fcSJYpRT3yS+=oOxaEFtYVmSjKb0RLbo7+JWw@mail.gmail.com/
-
-
+Quoting Gwendal Grignou (2021-11-17 00:46:31)
+> Based on bindings/iio/proximity/semtech,sx9324.yaml, implement
+> retrieving sensor hardware property and alter default values.
+>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>

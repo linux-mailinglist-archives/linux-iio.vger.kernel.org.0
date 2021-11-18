@@ -2,346 +2,440 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA31E455DB9
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Nov 2021 15:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0912455DCD
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Nov 2021 15:17:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232845AbhKRORr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Nov 2021 09:17:47 -0500
-Received: from mail-bn8nam11on2057.outbound.protection.outlook.com ([40.107.236.57]:51937
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231779AbhKRORq (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 18 Nov 2021 09:17:46 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mtO+nrmV7D+TYUKwuTszWS18PNvHIo0zzC8s+mF0HBg1MUXJEFGEdOY6+wDuad60bUlUdLT+TcvqVBaGAa70CQAIIibBDZJHwrlAq8wX9ZRXp46U+EMYs66zwczoO/4CDMVg2H4t7e3aLJLfWULDNM2nFvQEnMUSsBQoOA9xvV6fsT/LX5olzpgVDb9UeiMnYb4S83iZOxSypWVzWgMKg1CGKsBG7PzmHebZH3g32O0oyBfSVq+DCkAnK+inVzqeTRWHj8QI6JSfy/f3aCERm6HrA4UDFmzedxaoi5JfWKQl+mGy04B2olUmDFpZ+lJYbqmm7UJErcB5o01unV1F3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iXBoG8Lba+kuj/c5V1m5iEkVnNixbzbTQyQRTWvMjOY=;
- b=n+SL8NTe/HfUePlTXfFGDsY+QRkKGoEvn66BXuOnCW9AIuo5Ggh9G245h3pqr3cMs8lU0sLPA+HTi/YoktXAwVCBnwZJQwBQ4EMdXdGLavy2+CMqkpTjIR6p+4oIPAHDBqZnemYDmAG8b3/XUzlC5a9+XHkk2bjFksBWgjHaRB9+yNAV0vjilChspGuH0Zs1nZNY18ewObmVrRdbtTl8ES6Wv83gWcONs+1lrXayRJ86W6tB+7jwE13MH9AsiRDWvfbGi2GsDJ9tdQhhgj4aWKXtzoW/+3fYI9ALLKi35anLum361f7yBuG1uCotVVqNGJAsZ8EsNyEzXYQYcqPt+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iXBoG8Lba+kuj/c5V1m5iEkVnNixbzbTQyQRTWvMjOY=;
- b=HQ/j678nWeqqqzqz4J3n0tE0T4O4hUQwk+HgckVxbiLDnJ1A+JD0g7zJe0Xcvi8qFJ2IeDa+XdQnR3ES+JDUogDACwDBxhXHshL6HQF2fFCzxjy9fNZ7boviKZ3uZd7cFOzY3gDP1sGTNZ2NMwrDdb/lUFaZDeUUzJ4UrkLuxz8=
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
- by BYAPR02MB5464.namprd02.prod.outlook.com (2603:10b6:a03:95::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.22; Thu, 18 Nov
- 2021 14:14:42 +0000
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::c8a:dfb7:e411:9ad]) by BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::c8a:dfb7:e411:9ad%8]) with mapi id 15.20.4713.022; Thu, 18 Nov 2021
- 14:14:42 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
-        Manish Narani <MNARANI@xilinx.com>
-Subject: RE: [PATCH v10 3/5] iio: adc: Add Xilinx AMS driver
-Thread-Topic: [PATCH v10 3/5] iio: adc: Add Xilinx AMS driver
-Thread-Index: AQHX282sZu1pJFP81EiVfi9bN2U8cqwIJKiAgAD1PdA=
-Date:   Thu, 18 Nov 2021 14:14:41 +0000
-Message-ID: <BY5PR02MB6916A1C867FCD6C289E894A2A99B9@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
- <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
- <YZVf+Y/KxASvT2MU@smile.fi.intel.com>
-In-Reply-To: <YZVf+Y/KxASvT2MU@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=xilinx.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a9ae9aed-93f5-4ad7-ee6f-08d9aa9dc3bf
-x-ms-traffictypediagnostic: BYAPR02MB5464:
-x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-x-microsoft-antispam-prvs: <BYAPR02MB5464E258BFA61416955413BFA99B9@BYAPR02MB5464.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: wQu5xzV0ZDNaDljsmNuEcaMwYrDOLn/9vmRMGgK2H3rXK5a+EeY7qmn8ee+fhHfnYMIyFCA+X55Q4KBPOOiqoZLo+wcYrPGhqdZEkvUz2w2JD8UfN3RYkiteVd3OJC280LanI3WzMV3Fu6UDXW35pp5Zu0GrCD25Hj7l6ta63ctrjMaGC7xj45HJkySkMTgNOhQ6bFP7alcscnSjmUJVPXt/s/usLNR67wwpXx+sDbyUkxuh2ALyL0Noe9wPmk/zKigRTAHHSoBTjnVckpb0mQ9u4QSEsZ5s13lM7L8IwiWfSIl2hmKfEC5u2fAcU+mcKYVu6+Pszk4uPE43qCtezjgx+vdNvUXyCPV3DkaLwYd8CAvuUMd5FajY3Dsawl931gxKDfQlKiNpBViGRlvAvylf10PBxtHgonA1E/emwXcLQrXoxZjWFUcIxjD1KlJdAwy6uRcIFiihMSp4g8+hiPaNvQTSm7FU74XVl40kUn6seOvkdcPCHEDA1iYDfgQmqWRrYEXq7T/+jz6CWXelZe/vdok9H5o6vusY9wB6aM4UckQl1u5Erjg1GkCnlYvf88BugfgEjgP3fq/F1tvHWo/L/6qCWR7fDWyoPQpuh3sgZuVGHeVuhCBti5piDL3Zynj6pF4IWW6UXtu43mWe627OlBSQXE6Ur6Xu1mbTsogOcNszdXpoZ+R1NAVtdXylremQlC6yd06iLLmihYEYdA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(7416002)(122000001)(7696005)(52536014)(508600001)(2906002)(55016002)(26005)(4326008)(86362001)(5660300002)(38070700005)(107886003)(6916009)(38100700002)(8676002)(71200400001)(186003)(53546011)(64756008)(66476007)(66556008)(33656002)(66446008)(6506007)(8936002)(76116006)(83380400001)(316002)(66946007)(9686003)(30864003)(54906003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MGZMYjNVcWcyek9TUFNacWsyNkRTR0tKQU5HZW82TEk1QW5RSHZWSEZFbGpY?=
- =?utf-8?B?ZGhqV2VEK3gwOTVQckZJVFpRRGhqN21oSEIrREFmN3k0VGJDNFF4QTBkNVBP?=
- =?utf-8?B?QkdhNGFRdkRmSTJYV1ZpRGNNQWc3ZjFsbzYwR3NIWjAyc2duaXZ6OUE5MURh?=
- =?utf-8?B?RkZFL3Bva1Q0TC9SRHdRaU1VZmFzTFAzbHlXbCtTRHZYUXVDU0gveWxnTGcr?=
- =?utf-8?B?K3NST3k1M2RlblErL25pMzZvTXlXc2tGbi9ud2FHalV1amY4UG5QOUh3eEw0?=
- =?utf-8?B?TTQxakczTFlwTFh5V0JhZWJTdVFpeUY5WWc3Z250cXJvandlQ3UraWdwVEpi?=
- =?utf-8?B?SnlOYWN5Q2tYZXgrazhmakVnVjdSQWtlTGJzb0RTcEJ5b1gzYVNzUTVHMG1r?=
- =?utf-8?B?WElqRjNEbHVpOGNhN1lIcW1HdHEyUG9VSThhd05PajFQVmlIZ1FPRDBremhs?=
- =?utf-8?B?SlVjczJtQ0tRMG5EOExPdXFDbndZRnJwc0VsWVNrbUYwaFhaVWxJNVVCQnBI?=
- =?utf-8?B?aDgzVTRRRGZURkpBUWlidXlTeTNWOU0zcFVVZU9iQTFGNHV0SmUyM1pMODFL?=
- =?utf-8?B?SUZpMkI5ZTFweHFPNklrQ2drUmdsZmRNR2RyOC91MzliTFNQa0RCekVYQmxK?=
- =?utf-8?B?QUkxaTZjTmVZOFFUUjUwUGZOeFJMY0xENytYNjUzN0Vid1JrVlBtSUFoakFs?=
- =?utf-8?B?TmJKZTM5Y2l2eWhYU3FGOWhoODZlSjJiTVd4SkJ3L3Q3TVA1UDk2dndOaGZp?=
- =?utf-8?B?b0tNUFhuTWlzVHBZdzgvWStjTXZ0eWM2T0U1dW9CSXhDMnNWRGMyWUhnZW9q?=
- =?utf-8?B?NjFXcVY3MkxXUVBjeVhYTDlsQmlsQnN5cUJ0eTcvSG82L3pZNXRPaHRqSG1R?=
- =?utf-8?B?MDVjbnVGNzQwdENGa3FrcWhIZWU5dUx0M1loc2IzckYyOGx6NGtqRStsWTh1?=
- =?utf-8?B?ek4zcVFmcmhoODdVakJoMExjTXdsSTZvZkpQWGFWU0hsMmhkZ2ZkaXliMTFy?=
- =?utf-8?B?TS94VnRISmZ0NTg4MGNzWEgrRGNoak5XMUE0em42Qy9PcmNjWC9pL0FRcGMv?=
- =?utf-8?B?dmlXNzJKL2luUFZQRjBQUHhEZUg0aUpqOEhBWThROUFlQTN2bDJGaENnL2Vi?=
- =?utf-8?B?ZnR0c1U1MUVWVDlsNWordHFoLzVGMlpzQ0F5QzNZWGk0ay9KYnlJYUg5UlJn?=
- =?utf-8?B?dTRRV29veDRoSnljbk5ZNXNleXVtbU83Ni9KTzIzUUY2KzBiVUM4ZFk2WlNI?=
- =?utf-8?B?NngxYkZQMDg2eWlCN0dLTHVrcjg3cWxLSHVqamZOZDAxbEF4cHlpc2ZwZDVT?=
- =?utf-8?B?SEZrRVNxNHFqUDUyNUVFVU5wdkFiZFJ6bWRiSlo0UHhneGl0WTJzWGI3S1lk?=
- =?utf-8?B?OStPUVNEM2RidDNFK3FlcVNnNUZiNGEwUFZzTzdKa0dCeEN1dTdCYnNtSU9D?=
- =?utf-8?B?dHdKYVJqcHVDYkhHL0lpSVJCVysrVWNMWU9EVmdUZEQzdDQreE5qSUxta2ZB?=
- =?utf-8?B?SnJZazlBeUxYRDNTNW1kMnNBYksyczhMbjZwd016RVpTZWpzVGx1TWZ6Ukh3?=
- =?utf-8?B?WFpadERvb2RwQ0I4dFB6SEkyL3VGMS9xcHMxRTBjVFdCYXE2UzVvejdDa0hL?=
- =?utf-8?B?MkhpZUMrZW1uR0QvRGFxMktYZmlDMFRmYUhEMUlHYVBjZmpMSEwxYXNLcWdO?=
- =?utf-8?B?WUJjWG1oSVNSOVpNVE1WdmtDRm5xS05vR1prM01QUExXcDVMM3RqaDIyS005?=
- =?utf-8?B?b3hDSlVaV01wa1RLejA0a2p1UHdvckVxdlk0TjRTN2l2UHRSWU5YREFPWS81?=
- =?utf-8?B?cmIydWVqVDh5TlZCbDhFb0tXK2dlT2x6NXdsM3pURk92SGpUdnN3UUdlbis3?=
- =?utf-8?B?bUdmeWxROW5oY1JTL0ZVd0hZNmd2RzNtT3ZPL3Axb0hZTFNQeUF2ZEVaa0VG?=
- =?utf-8?B?dFhFejJOMFNydEhzeGk5QzVTN01qc3puekZJbVlFQWk3UjdNdlFxQWkxVGQr?=
- =?utf-8?B?aXRneGE4YjhSNEVpTnNzZHJOL2ZmN1pHTGdMbGYyU0Q5ZjlKVXFqZG1RVjFw?=
- =?utf-8?B?VnBRZzBWcHpGSlJjZWJmYlVBMEN3VWRjWFRGU3QxblBYSEh3eU5vZDg2TXVu?=
- =?utf-8?B?VkdJT2ZoUjVQWDl6RHNPMUl1Z0MxYUw3eEFmZFdWY3E4VFdlYWtOQ29VZ0c1?=
- =?utf-8?Q?T8TdEi7qQctCFKxSMvwgrlg=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S232940AbhKROU3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Nov 2021 09:20:29 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:2326 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232893AbhKROU2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Nov 2021 09:20:28 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AI7awUF025289;
+        Thu, 18 Nov 2021 09:17:21 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3cd5u5nfwj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 18 Nov 2021 09:17:20 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 1AIEHJGg005258
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 18 Nov 2021 09:17:19 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.858.5; Thu, 18 Nov 2021
+ 09:17:18 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.858.5 via Frontend
+ Transport; Thu, 18 Nov 2021 09:17:18 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.181])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1AIEHGdA020949;
+        Thu, 18 Nov 2021 09:17:17 -0500
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH] iio: expose shared parameter in IIO_ENUM_AVAILABLE
+Date:   Thu, 18 Nov 2021 16:17:09 +0200
+Message-ID: <20211118141709.64450-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.34.0
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9ae9aed-93f5-4ad7-ee6f-08d9aa9dc3bf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2021 14:14:41.8785
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LeRxbRuoEbIR8lj9niL2VrgSDMxHix4GB+pjfyKa+42l4yFSi1hOzcRinWI1HmH7R9QKi/wTTH4qPjXCqOvNCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB5464
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 2Q5LXS6tYb2ZYwdjBMUwBRS3WH17mrbb
+X-Proofpoint-ORIG-GUID: 2Q5LXS6tYb2ZYwdjBMUwBRS3WH17mrbb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-18_05,2021-11-17_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ adultscore=0 clxscore=1011 bulkscore=0 mlxlogscore=891 impostorscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2111180078
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGkgQW5keSwNCg0KVGhhbmtzIGZvciB5b3VyIHJldmlldy4NCg0KQXBvbG9naWVzIGZvciBzZW5k
-aW5nIHBhdGNoIHRvbyBzb29uLg0KSSBtaXNzZWQgeW91ciByZXBseSB0byBteSBwcmV2aW91cyBw
-YXRjaGVzLg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFuZHkgU2hl
-dmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBXZWRu
-ZXNkYXkgMTcgTm92ZW1iZXIgMjAyMSA4OjAzIFBNDQo+IFRvOiBBbmFuZCBBc2hvayBEdW1icmUg
-PEFOQU5EQVNIQHhpbGlueC5jb20+DQo+IENjOiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-OyBqaWMyM0BrZXJuZWwub3JnOyBsYXJzQG1ldGFmb28uZGU7IGxpbnV4LQ0KPiBpaW9Admdlci5r
-ZXJuZWwub3JnOyBnaXQgPGdpdEB4aWxpbnguY29tPjsgTWljaGFsIFNpbWVrDQo+IDxtaWNoYWxz
-QHhpbGlueC5jb20+OyBncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZzsgcmFmYWVsQGtlcm5lbC5v
-cmc7DQo+IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnOyBoZWlra2kua3JvZ2VydXNAbGludXgu
-aW50ZWwuY29tOyBNYW5pc2ggTmFyYW5pDQo+IDxNTkFSQU5JQHhpbGlueC5jb20+DQo+IFN1Ympl
-Y3Q6IFJlOiBbUEFUQ0ggdjEwIDMvNV0gaWlvOiBhZGM6IEFkZCBYaWxpbnggQU1TIGRyaXZlcg0K
-PiANCj4gT24gV2VkLCBOb3YgMTcsIDIwMjEgYXQgMDQ6MTA6MjZQTSArMDAwMCwgQW5hbmQgQXNo
-b2sgRHVtYnJlIHdyb3RlOg0KPiA+IFRoZSBBTVMgaW5jbHVkZXMgYW4gQURDIGFzIHdlbGwgYXMg
-b24tY2hpcCBzZW5zb3JzIHRoYXQgY2FuIGJlIHVzZWQgdG8NCj4gPiBzYW1wbGUgZXh0ZXJuYWwg
-dm9sdGFnZXMgYW5kIG1vbml0b3Igb24tZGllIG9wZXJhdGluZyBjb25kaXRpb25zLCBzdWNoDQo+
-ID4gYXMgdGVtcGVyYXR1cmUgYW5kIHN1cHBseSB2b2x0YWdlIGxldmVscy4gVGhlIEFNUyBoYXMg
-dHdvIFNZU01PTg0KPiBibG9ja3MuDQo+ID4gUEwtU1lTTU9OIGJsb2NrIGlzIGNhcGFibGUgb2Yg
-bW9uaXRvcmluZyBvZmYgY2hpcCB2b2x0YWdlIGFuZA0KPiA+IHRlbXBlcmF0dXJlLg0KPiA+DQo+
-ID4gUEwtU1lTTU9OIGJsb2NrIGhhcyBEUlAsIEpUQUcgYW5kIEkyQyBpbnRlcmZhY2UgdG8gZW5h
-YmxlIG1vbml0b3JpbmcNCj4gPiBmcm9tIGFuIGV4dGVybmFsIG1hc3Rlci4gT3V0IG9mIHRoZXNl
-IGludGVyZmFjZXMgY3VycmVudGx5IG9ubHkgRFJQIGlzDQo+ID4gc3VwcG9ydGVkLiBPdGhlciBi
-bG9jayBQUy1TWVNNT04gaXMgbWVtb3J5IG1hcHBlZCB0byBQUy4NCj4gPg0KPiA+IFRoZSBBTVMg
-Y2FuIHVzZSBpbnRlcm5hbCBjaGFubmVscyB0byBtb25pdG9yIHZvbHRhZ2UgYW5kIHRlbXBlcmF0
-dXJlDQo+ID4gYXMgd2VsbCBhcyBvbmUgcHJpbWFyeSBhbmQgdXAgdG8gMTYgYXV4aWxpYXJ5IGNo
-YW5uZWxzIGZvciBtZWFzdXJpbmcNCj4gPiBleHRlcm5hbCB2b2x0YWdlcy4NCj4gPg0KPiA+IFRo
-ZSB2b2x0YWdlIGFuZCB0ZW1wZXJhdHVyZSBtb25pdG9yaW5nIGNoYW5uZWxzIGFsc28gaGF2ZSBl
-dmVudA0KPiA+IGNhcGFiaWxpdHkgd2hpY2ggYWxsb3dzIHRvIGdlbmVyYXRlIGFuIGludGVycnVw
-dCB3aGVuIHRoZWlyIHZhbHVlDQo+ID4gZmFsbHMgYmVsb3cgb3IgcmFpc2VzIGFib3ZlIGEgc2V0
-IHRocmVzaG9sZC4NCj4gDQo+IFRoYW5rcyBmb3IgYW4gdXBkYXRlLCBteSBjb21tZW50cyBiZWxv
-dy4NCj4gDQo+IC4uLg0KPiANCj4gTWlzc2VkIGJpdGZpZWxkcy5oIGFzIGtidWlsZCBib3Qgbm90
-aWNlZC4NCj4gDQo+ID4gKyNpbmNsdWRlIDxsaW51eC9iaXRzLmg+DQo+ID4gKyNpbmNsdWRlIDxs
-aW51eC9jbGsuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2RlbGF5Lmg+DQo+ID4gKyNpbmNsdWRl
-IDxsaW51eC9pbnRlcnJ1cHQuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2lvLmg+DQo+ID4gKyNp
-bmNsdWRlIDxsaW51eC9pb3BvbGwuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5oPg0K
-PiA+ICsjaW5jbHVkZSA8bGludXgvbW9kdWxlLmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9tb2Rf
-ZGV2aWNldGFibGUuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L292ZXJmbG93Lmg+DQo+ID4gKyNp
-bmNsdWRlIDxsaW51eC9wbGF0Zm9ybV9kZXZpY2UuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L3By
-b3BlcnR5Lmg+DQo+ID4gKyNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+IA0KPiAuLi4NCj4gDQo+
-ID4gKyNkZWZpbmUgQU1TX0FMQVJNX1RIUl9ESVJFQ1RfTUFTSwlCSVQoMSkNCj4gDQo+ID4gKyNk
-ZWZpbmUgQU1TX0FMQVJNX1RIUl9NSU4JCX4oQklUKDE2KSAtIDEpDQo+IA0KPiBUaGlzIGlzIHdy
-b25nLiBJIGFscmVhZHkgc2FpZCBpdC4NCg0KWWVzLCB1bmRlcnN0b29kLg0KDQo+IA0KPiA+ICsj
-ZGVmaW5lIEFNU19BTEFSTV9USFJfTUFYCQkoQklUKDE2KSAtIDEpDQo+IA0KPiAuLi4NCj4gDQo+
-ID4gK2VudW0gYW1zX2FsYXJtX2JpdCB7DQo+ID4gKwlBTVNfQUxBUk1fQklUX1RFTVAsDQo+ID4g
-KwlBTVNfQUxBUk1fQklUX1NVUFBMWTEsDQo+ID4gKwlBTVNfQUxBUk1fQklUX1NVUFBMWTIsDQo+
-ID4gKwlBTVNfQUxBUk1fQklUX1NVUFBMWTMsDQo+ID4gKwlBTVNfQUxBUk1fQklUX1NVUFBMWTQs
-DQo+ID4gKwlBTVNfQUxBUk1fQklUX1NVUFBMWTUsDQo+ID4gKwlBTVNfQUxBUk1fQklUX1NVUFBM
-WTYsDQo+ID4gKwlBTVNfQUxBUk1fQklUX1JFU0VSVkVELA0KPiA+ICsJQU1TX0FMQVJNX0JJVF9T
-VVBQTFk3LA0KPiA+ICsJQU1TX0FMQVJNX0JJVF9TVVBQTFk4LA0KPiA+ICsJQU1TX0FMQVJNX0JJ
-VF9TVVBQTFk5LA0KPiA+ICsJQU1TX0FMQVJNX0JJVF9TVVBQTFkxMCwNCj4gPiArCUFNU19BTEFS
-TV9CSVRfVkNDQU1TLA0KPiA+ICsJQU1TX0FMQVJNX0JJVF9URU1QX1JFTU9URQ0KPiANCj4gK0Nv
-bW1hLCBzYW1lIHRvIHRoZSByZXN0IHdoZXJlIHRoZSBsYXN0IGl0ZW0gaXMgbm90IGEgdGVybWlu
-YXRvciBvbmUuDQoNCldpbGwgYWRkLg0KDQo+IA0KPiA+ICt9Ow0KPiA+ICsNCj4gPiArZW51bSBh
-bXNfc2VxIHsNCj4gPiArCUFNU19TRVFfVkNDX1BTUExMLA0KPiA+ICsJQU1TX1NFUV9WQ0NfUFNC
-QVRULA0KPiA+ICsJQU1TX1NFUV9WQ0NJTlQsDQo+ID4gKwlBTVNfU0VRX1ZDQ0JSQU0sDQo+ID4g
-KwlBTVNfU0VRX1ZDQ0FVWCwNCj4gPiArCUFNU19TRVFfUFNERFJQTEwsDQo+ID4gKwlBTVNfU0VR
-X0lOVEREUg0KPiANCj4gLi4ubGlrZSBoZXJlLg0KDQpXaWxsIGFkZC4NCg0KPiANCj4gPiArfTsN
-Cj4gDQo+ID4gK2VudW0gYW1zX3BzX3BsX3NlcSB7DQo+ID4gKwlBTVNfU0VRX0NBTElCLA0KPiA+
-ICsJQU1TX1NFUV9SU1ZEXzEsDQo+ID4gKwlBTVNfU0VRX1JTVkRfMiwNCj4gPiArCUFNU19TRVFf
-VEVTVCwNCj4gPiArCUFNU19TRVFfUlNWRF80LA0KPiA+ICsJQU1TX1NFUV9TVVBQTFk0LA0KPiA+
-ICsJQU1TX1NFUV9TVVBQTFk1LA0KPiA+ICsJQU1TX1NFUV9TVVBQTFk2LA0KPiA+ICsJQU1TX1NF
-UV9URU1QLA0KPiA+ICsJQU1TX1NFUV9TVVBQTFkyLA0KPiA+ICsJQU1TX1NFUV9TVVBQTFkxLA0K
-PiA+ICsJQU1TX1NFUV9WUF9WTiwNCj4gPiArCUFNU19TRVFfVlJFRlAsDQo+ID4gKwlBTVNfU0VR
-X1ZSRUZOLA0KPiA+ICsJQU1TX1NFUV9TVVBQTFkzLA0KPiA+ICsJQU1TX1NFUV9DVVJSRU5UX01P
-TiwNCj4gPiArCUFNU19TRVFfU1VQUExZNywNCj4gPiArCUFNU19TRVFfU1VQUExZOCwNCj4gPiAr
-CUFNU19TRVFfU1VQUExZOSwNCj4gPiArCUFNU19TRVFfU1VQUExZMTAsDQo+ID4gKwlBTVNfU0VR
-X1ZDQ0FNUywNCj4gPiArCUFNU19TRVFfVEVNUF9SRU1PVEUsDQo+ID4gKwlBTVNfU0VRX01BWA0K
-PiANCj4gLi4uYnV0IG5vdCBoZXJlIQ0KPiANCj4gPiArfTsNCj4gDQo+IC4uLg0KPiANCj4gPiAr
-I2RlZmluZSBBTVNfU0VRKHgpCQkoQU1TX1NFUV9NQVggKyAoeCkpDQo+ID4gKyNkZWZpbmUgQU1T
-X1ZBVVhfU0VRKHgpCQkoQU1TX1NFUV9NQVggKyAoeCkpDQo+IA0KPiBXaGF0J3MgdGhlIGRpZmZl
-cmVuY2U/DQoNCkkgd2lsbCByZW1vdmUgdGhlIEFNU19WQVVYX1NFUS4gVGhleSBhcmUgdGhlIHNh
-bWUgdGhpbmcuDQpJIGFtIG5vdCBzdXJlIHdoYXQgdGhlIGludGVudCBmcm9tIHRoZSBvcmlnaW5h
-bCBhdXRob3Igd2FzLg0KDQo+IA0KPiA+ICsjZGVmaW5lIEFNU19QU19TRVFfTUFYCQlBTVNfU0VR
-X01BWA0KPiANCj4gUGVyaGFwcyB0aGlzIHNob3VsZCBiZSBhYm92ZSAoZm9yIHRoZSBzYWtlIG9m
-IGVhc2llciByZWFkaW5nKS4NCg0KQWdyZWVkLiANCg0KPiANCj4gPiArI2RlZmluZSBQU19TRVEo
-eCkJCSh4KQ0KPiA+ICsjZGVmaW5lIFBMX1NFUSh4KQkJKEFNU19QU19TRVFfTUFYICsgKHgpKQ0K
-PiA+ICsjZGVmaW5lIEFNU19DVFJMX1NFUV9CQVNFCShBTVNfUFNfU0VRX01BWCAqIDMpDQo+IA0K
-PiAuLi4NCj4gDQo+ID4gKwkJcmV0ID0gcmVhZGxfcG9sbF90aW1lb3V0KGFtcy0+YmFzZSArIEFN
-U19QU19DU1RTLCByZWcsDQo+ID4gKwkJCQkJIChyZWcgJiBleHBlY3QpLCAwLA0KPiANCj4gUGFy
-ZW50aGVzZXMgYXJlIG5vdCBuZWVkZWQuDQo+IFdIeSAwPyBJcyBpdCBva2F5IHRvIGxvYWQgQ1BV
-IGxpa2UgdGhpcz8NCg0KTm8gaXRzIG5vdC4gDQoNCj4gDQo+ID4gKwkJCQkJIEFNU19JTklUX1RJ
-TUVPVVRfVVMpOw0KPiA+ICsJCWlmIChyZXQpDQo+ID4gKwkJCXJldHVybiByZXQ7DQo+IA0KPiAu
-Li4NCj4gDQo+ID4gKwlpZiAoYW1zLT5wbF9iYXNlKSB7DQo+ID4gKwkJcmVnID0gcmVhZGwoYW1z
-LT5iYXNlICsgQU1TX1BMX0NTVFMpOw0KPiA+ICsJCWlmIChyZWcgPT0gMCkNCj4gDQo+ID4gKwkJ
-CXJldHVybiAoaW50KSByZWc7DQo+IA0KPiBJIGFscmVhZHkgc2FpZCB0aGF0IHRoaXMgaXMgd3Jv
-bmcuDQo+IA0KPiA+ICsJCXdyaXRlbChBTVNfUExfUkVTRVRfVkFMVUUsIGFtcy0+cGxfYmFzZSAr
-DQo+IEFNU19WUF9WTik7DQo+ID4gKw0KPiA+ICsJCS8qIHB1dCBzeXNtb24gaW4gYSBkZWZhdWx0
-IHN0YXRlICovDQo+ID4gKwkJYW1zX3BsX3VwZGF0ZV9yZWcoYW1zLCBBTVNfUkVHX0NPTkZJRzEs
-DQo+IEFNU19DT05GMV9TRVFfTUFTSywNCj4gPiArCQkJCSAgQU1TX0NPTkYxX1NFUV9ERUZBVUxU
-KTsNCj4gPiArCX0NCj4gDQo+IC4uLg0KPiANCj4gPiArCXJldCA9IHJlYWRsX3BvbGxfdGltZW91
-dChhbXMtPmJhc2UgKyBBTVNfSVNSXzEsIHJlZywNCj4gPiArCQkJCSAocmVnICYgZXhwZWN0KSwg
-MCwgQU1TX0lOSVRfVElNRU9VVF9VUyk7DQo+ID4gKwlpZiAocmV0KQ0KPiA+ICsJCXJldHVybiBy
-ZXQ7DQo+IA0KPiBTYW1lIHR3byBjb21tZW50cyBhcyBwZXIgYWJvdmUgcmVhZGxfcG9sbF90aW1l
-b3V0KCkgdXNhZ2UuDQo+IA0KPiAuLi4NCj4gDQo+ID4gKwkJCXJldCA9IGFtc19yZWFkX3ZjY19y
-ZWcoYW1zLCBjaGFuLT5hZGRyZXNzLCB2YWwpOw0KPiA+ICsJCQlpZiAocmV0KSB7DQo+ID4gKwkJ
-CQltdXRleF91bmxvY2soJmFtcy0+bG9jayk7DQo+ID4gKwkJCQlyZXR1cm4gLUVJTlZBTDsNCj4g
-DQo+IFNoYWRvd2VkIGVycm9yIGNvZGUuDQoNCkkgZG9u4oCZdCB1bmRlcnN0YW5kLg0KDQo+IA0K
-PiA+ICsJCQl9DQo+IA0KPiAuLi4NCj4gDQo+ID4gKwljYXNlIElJT19DSEFOX0lORk9fT0ZGU0VU
-Og0KPiA+ICsJCS8qIE9ubHkgdGhlIHRlbXBlcmF0dXJlIGNoYW5uZWwgaGFzIGFuIG9mZnNldCAq
-Lw0KPiA+ICsJCSp2YWwgPSBBTVNfVEVNUF9PRkZTRVQ7DQo+ID4gKwkJcmV0dXJuIElJT19WQUxf
-SU5UOw0KPiA+ICsJfQ0KPiANCj4gPiArCXJldHVybiAtRUlOVkFMOw0KPiANCj4gV2h5IG5vdCBr
-ZWVwIGl0IGluIHRoZSBkZWZhdWx0IGNhc2U/DQoNCk9vcHMgbWlzc2VkIG9uZSB0aGVyZS4NCg0K
-PiANCj4g4oCmDQo+IA0KPiA+ICsJc3dpdGNoIChldmVudCkgew0KPiA+ICsJY2FzZSBBTVNfQUxB
-Uk1fQklUX1RFTVA6DQo+ID4gKwkJc2Nhbl9pbmRleCArPSBBTVNfU0VRX1RFTVA7DQo+ID4gKwkJ
-YnJlYWs7DQo+ID4gKwljYXNlIEFNU19BTEFSTV9CSVRfU1VQUExZMToNCj4gPiArCQlzY2FuX2lu
-ZGV4ICs9IEFNU19TRVFfU1VQUExZMTsNCj4gPiArCQlicmVhazsNCj4gPiArCWNhc2UgQU1TX0FM
-QVJNX0JJVF9TVVBQTFkyOg0KPiA+ICsJCXNjYW5faW5kZXggKz0gQU1TX1NFUV9TVVBQTFkyOw0K
-PiA+ICsJCWJyZWFrOw0KPiA+ICsJY2FzZSBBTVNfQUxBUk1fQklUX1NVUFBMWTM6DQo+ID4gKwkJ
-c2Nhbl9pbmRleCArPSBBTVNfU0VRX1NVUFBMWTM7DQo+ID4gKwkJYnJlYWs7DQo+ID4gKwljYXNl
-IEFNU19BTEFSTV9CSVRfU1VQUExZNDoNCj4gPiArCQlzY2FuX2luZGV4ICs9IEFNU19TRVFfU1VQ
-UExZNDsNCj4gPiArCQlicmVhazsNCj4gPiArCWNhc2UgQU1TX0FMQVJNX0JJVF9TVVBQTFk1Og0K
-PiA+ICsJCXNjYW5faW5kZXggKz0gQU1TX1NFUV9TVVBQTFk1Ow0KPiA+ICsJCWJyZWFrOw0KPiA+
-ICsJY2FzZSBBTVNfQUxBUk1fQklUX1NVUFBMWTY6DQo+ID4gKwkJc2Nhbl9pbmRleCArPSBBTVNf
-U0VRX1NVUFBMWTY7DQo+ID4gKwkJYnJlYWs7DQo+ID4gKwljYXNlIEFNU19BTEFSTV9CSVRfU1VQ
-UExZNzoNCj4gPiArCQlzY2FuX2luZGV4ICs9IEFNU19TRVFfU1VQUExZNzsNCj4gPiArCQlicmVh
-azsNCj4gPiArCWNhc2UgQU1TX0FMQVJNX0JJVF9TVVBQTFk4Og0KPiA+ICsJCXNjYW5faW5kZXgg
-Kz0gQU1TX1NFUV9TVVBQTFk4Ow0KPiA+ICsJCWJyZWFrOw0KPiA+ICsJY2FzZSBBTVNfQUxBUk1f
-QklUX1NVUFBMWTk6DQo+ID4gKwkJc2Nhbl9pbmRleCArPSBBTVNfU0VRX1NVUFBMWTk7DQo+ID4g
-KwkJYnJlYWs7DQo+ID4gKwljYXNlIEFNU19BTEFSTV9CSVRfU1VQUExZMTA6DQo+ID4gKwkJc2Nh
-bl9pbmRleCArPSBBTVNfU0VRX1NVUFBMWTEwOw0KPiA+ICsJCWJyZWFrOw0KPiA+ICsJY2FzZSBB
-TVNfQUxBUk1fQklUX1ZDQ0FNUzoNCj4gPiArCQlzY2FuX2luZGV4ICs9IEFNU19TRVFfVkNDQU1T
-Ow0KPiA+ICsJCWJyZWFrOw0KPiA+ICsJY2FzZSBBTVNfQUxBUk1fQklUX1RFTVBfUkVNT1RFOg0K
-PiA+ICsJCXNjYW5faW5kZXggKz0gQU1TX1NFUV9URU1QX1JFTU9URTsNCj4gPiArCQlicmVhazsN
-Cj4gDQo+IGRlZmF1bHQ6ID8NCg0KVGhpcyBpcyBsaW1pdGVkIGJ5IGh3IGJpdHMuDQpGb3IgZGVm
-YXVsdCBJIHdpbGwgdXNlIHRoZSBkZWZhdWx0IHNjYW5faW5kZXggdmFsdWUuDQpJcyB0aGF0IG9r
-Pw0KDQo+IA0KPiA+ICsJfQ0KPiANCj4gLi4uDQo+IA0KPiA+ICsJaWYgKGNoYW4tPnR5cGUgPT0g
-SUlPX1RFTVApIHsNCj4gPiArCQlvZmZzZXQgPSBhbXNfZ2V0X2FsYXJtX29mZnNldChjaGFuLT5z
-Y2FuX2luZGV4LA0KPiA+ICsJCQkJCSAgICAgIElJT19FVl9ESVJfRkFMTElORyk7DQo+IA0KPiBP
-bmUgbGluZT8NCg0KQWdyZWVkLiANCj4gDQo+ID4gKwl9DQo+IA0KPiAuLi4NCj4gDQo+ID4gKwlj
-b25zdCBzdHJ1Y3QgaWlvX2NoYW5fc3BlYyAqY2hhbjsNCj4gPiArDQo+ID4gKwljaGFuID0gYW1z
-X2V2ZW50X3RvX2NoYW5uZWwoaW5kaW9fZGV2LCBldmVudCk7DQo+IA0KPiBDYW4gYmUgZG9uZSBp
-biBvbmUgbGluZS4NCj4gDQo+IA0KPiA+ICsJLyogT25seSBwcm9jZXNzIGFsYXJtcyB0aGF0IGFy
-ZSBub3QgbWFza2VkICovDQo+ID4gKwlpc3IwICY9IH4oKGFtcy0+aW50cl9tYXNrICYgQU1TX0lT
-UjBfQUxBUk1fTUFTSykgfA0KPiA+ICthbXMtPm1hc2tlZF9hbGFybSk7DQo+IA0KPiA+ICsNCj4g
-DQo+IFJlZHVuZGFudCBibGFuayBsaW5lLg0KDQpBZ3JlZWQuDQoNCj4gDQo+ID4gKwlpZiAoIWlz
-cjApIHsNCj4gPiArCQlzcGluX3VubG9jaygmYW1zLT5pbnRyX2xvY2spOw0KPiA+ICsJCXJldHVy
-biBJUlFfTk9ORTsNCj4gPiArCX0NCj4gDQo+IC4uLg0KPiANCj4gPiArCQkubWFza19zZXBhcmF0
-ZSA9IEJJVChJSU9fRVZfSU5GT19FTkFCTEUpIHwNCj4gPiArCQkJCUJJVChJSU9fRVZfSU5GT19W
-QUxVRSksDQo+IA0KPiBPbmUgbGluZT8NCg0KQWdyZWVkLiANCj4gDQo+IC4uLg0KPiANCj4gPiAr
-CWZ3bm9kZV9mb3JfZWFjaF9jaGlsZF9ub2RlKGNoYW5fbm9kZSwgY2hpbGQpIHsNCj4gPiArCQly
-ZXQgPSBmd25vZGVfcHJvcGVydHlfcmVhZF91MzIoY2hpbGQsICJyZWciLCAmcmVnKTsNCj4gDQo+
-ID4gKwkJaWYgKHJldCB8fCByZWcgPiAoQU1TX1BMX01BWF9FWFRfQ0hBTk5FTCArIDMwKSkNCj4g
-DQo+IFRvbyBtYW55IHBhcmVudGhlc2VzLg0KDQpJcyBpdCBhIGdvb2QgcHJhY3RpY2UgdG8gbm90
-IGhhdmUgcGFyYW50aGVzZXMgYXJvdW5kIChBTVNfUExfTUFYX0VYVF9DSEFOTkVMICsgMzApID8N
-Cg0KPiANCj4gPiArCQkJY29udGludWU7DQo+IA0KPiA+ICsJCW1lbWNweSgmY2hhbm5lbHNbbnVt
-X2NoYW5uZWxzXSwgJmFtc19wbF9jaGFubmVsc1tyZWcNCj4gKw0KPiA+ICsJCSAgICAgICBBTVNf
-UExfTUFYX0ZJWEVEX0NIQU5ORUwgLSAzMF0sIHNpemVvZigqY2hhbm5lbHMpKTsNCj4gPiArDQo+
-ID4gKwkJaWYgKGZ3bm9kZV9wcm9wZXJ0eV9yZWFkX2Jvb2woY2hpbGQsICJ4bG54LGJpcG9sYXIi
-KSkNCj4gPiArCQkJY2hhbm5lbHNbbnVtX2NoYW5uZWxzXS5zY2FuX3R5cGUuc2lnbiA9CSdzJzsN
-Cj4gDQo+IFVzZSB0ZW1wb3JhcnkgdmFyaWFibGUgZm9yICZjaGFubmVsc1tudW1fY2hhbm5lbHNd
-IGluIGJvdGggY2FzZXMuDQoNCk1ha2VzIHNlbnNlLg0KDQo+IA0KPiA+ICsJCW51bV9jaGFubmVs
-cysrOw0KPiA+ICsJfQ0KPiANCj4gLi4uDQo+IA0KPiA+ICsJCW1lbWNweShjaGFubmVscyArIG51
-bV9jaGFubmVscywgYW1zX3BzX2NoYW5uZWxzLA0KPiA+ICsJCSAgICAgICBzaXplb2YoYW1zX3Bz
-X2NoYW5uZWxzKSk7DQo+IA0KPiBEaXR0by4NCj4gDQo+IC4uLg0KPiANCj4gPiArCQltZW1jcHko
-Y2hhbm5lbHMgKyBudW1fY2hhbm5lbHMsIGFtc19wbF9jaGFubmVscywNCj4gPiArCQkgICAgICAg
-QU1TX1BMX01BWF9GSVhFRF9DSEFOTkVMICogc2l6ZW9mKCpjaGFubmVscykpOw0KPiANCj4gRGl0
-dG8uDQo+IA0KPiAuLi4NCj4gDQo+ID4gKwkJbWVtY3B5KGNoYW5uZWxzICsgbnVtX2NoYW5uZWxz
-LCBhbXNfY3RybF9jaGFubmVscywNCj4gPiArCQkgICAgICAgc2l6ZW9mKGFtc19jdHJsX2NoYW5u
-ZWxzKSk7DQo+IA0KPiBEaXR0by4NCj4gDQoNCldpbGwgZG8gZm9yIGFsbCBjYXNlcy4NCg0KPiAu
-Li4NCj4gDQo+ID4gK3N0YXRpYyBpbnQgYW1zX3BhcnNlX2Zpcm13YXJlKHN0cnVjdCBpaW9fZGV2
-ICppbmRpb19kZXYsDQo+ID4gKwkJCSAgICAgIHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYp
-DQo+IA0KPiBXaHkgZG8geW91IG5lZWQgc2Vjb25kIHBhcmFtZXRlcj8gRG9lc24ndCBpbmRpb19k
-ZXYgYWxyZWFkeSBoYXZlIGl0Pw0KDQpXaWxsIGRvLg0KDQo+IA0KPiA+ICt7DQo+ID4gKwlzdHJ1
-Y3QgYW1zICphbXMgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiA+ICsJc3RydWN0IGlpb19jaGFu
-X3NwZWMgKmFtc19jaGFubmVscywgKmRldl9jaGFubmVsczsNCj4gPiArCXN0cnVjdCBmd25vZGVf
-aGFuZGxlICpjaGlsZCA9IE5VTEwsICpmd25vZGUgPQ0KPiBkZXZfZndub2RlKCZwZGV2LT5kZXYp
-Ow0KPiA+ICsJc2l6ZV90IGRldl9jaGFuX3NpemUsIGFtc19jaGFuX3NpemUsIG51bV9jaGFuOw0K
-PiA+ICsJaW50IHJldCwgY2hfY250ID0gMCwgaSwgcmlzaW5nX29mZiwgZmFsbGluZ19vZmY7DQo+
-ID4gKwl1bnNpZ25lZCBpbnQgbnVtX2NoYW5uZWxzID0gMDsNCj4gPiArDQo+ID4gKw0KPiANCj4g
-T25lIGJsYW5rIGxpbmUgaXMgZW5vdWdoLg0KDQpXaWxsIHJlbW92ZSBpdC4NCg0KPiANCj4gPiAr
-CW51bV9jaGFuID0gQVJSQVlfU0laRShhbXNfcHNfY2hhbm5lbHMpICsNCj4gQVJSQVlfU0laRShh
-bXNfcGxfY2hhbm5lbHMpICsNCj4gPiArCQlBUlJBWV9TSVpFKGFtc19jdHJsX2NoYW5uZWxzKTsN
-Cj4gDQo+ID4gKwlhbXNfY2hhbl9zaXplID0gYXJyYXlfc2l6ZShudW1fY2hhbiwgc2l6ZW9mKHN0
-cnVjdA0KPiBpaW9fY2hhbl9zcGVjKSk7DQo+ID4gKwlpZiAoYW1zX2NoYW5fc2l6ZSA9PSBTSVpF
-X01BWCkNCj4gPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gDQo+IFdoeSBpcyB0aGlzIG5lZWRlZCBu
-b3cgc2luY2UgeW91IGFyZSB1c2luZyBrY2FsbG9jKCk/DQo+IA0KPiA+ICsJLyogSW5pdGlhbGl6
-ZSBidWZmZXIgZm9yIGNoYW5uZWwgc3BlY2lmaWNhdGlvbiAqLw0KPiA+ICsJYW1zX2NoYW5uZWxz
-ID0ga2NhbGxvYyhudW1fY2hhbiwgc2l6ZW9mKHN0cnVjdCBpaW9fY2hhbl9zcGVjKSwNCj4gPiAr
-R0ZQX0tFUk5FTCk7DQo+IA0KPiBzaXplb2YoKmFtc19jaGFubmVscykNCj4gDQo+ID4gKwlpZiAo
-IWFtc19jaGFubmVscykNCj4gPiArCQlyZXR1cm4gLUVOT01FTTsNCj4gDQo+IC4uLg0KPiANCj4g
-PiArCQkJcmV0ID0gYW1zX2luaXRfbW9kdWxlKGluZGlvX2RldiwgY2hpbGQsDQo+ID4gKwkJCQkJ
-ICAgICAgYW1zX2NoYW5uZWxzICsgbnVtX2NoYW5uZWxzKTsNCj4gDQo+IE9uZSBsaW5lPw0KPiAN
-Cj4gLi4uDQo+IA0KPiA+ICsJCQkJd3JpdGVsKEFNU19BTEFSTV9USFJfTUlOLA0KPiA+ICsJCQkJ
-ICAgICAgIGFtcy0+cGxfYmFzZSArIGZhbGxpbmdfb2ZmKTsNCj4gPiArCQkJCXdyaXRlbChBTVNf
-QUxBUk1fVEhSX01BWCwNCj4gPiArCQkJCSAgICAgICBhbXMtPnBsX2Jhc2UgKyByaXNpbmdfb2Zm
-KTsNCj4gDQo+IERpdHRvLg0KPiANCj4gLi4uDQo+IA0KPiA+ICsJCQkJd3JpdGVsKEFNU19BTEFS
-TV9USFJfTUlOLA0KPiA+ICsJCQkJICAgICAgIGFtcy0+cHNfYmFzZSArIGZhbGxpbmdfb2ZmKTsN
-Cj4gPiArCQkJCXdyaXRlbChBTVNfQUxBUk1fVEhSX01BWCwNCj4gPiArCQkJCSAgICAgICBhbXMt
-PnBzX2Jhc2UgKyByaXNpbmdfb2ZmKTsNCj4gDQo+IERpdHRvLg0KPiANCj4gPiArCWRldl9jaGFu
-X3NpemUgPSBhcnJheV9zaXplKChzaXplX3QpbnVtX2NoYW5uZWxzLCBzaXplb2Yoc3RydWN0DQo+
-IGlpb19jaGFuX3NwZWMpKTsNCj4gPiArCWlmIChkZXZfY2hhbl9zaXplID09IFNJWkVfTUFYKQ0K
-PiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiANCj4gV2h5IGlzIGl0IG5lZWRlZCBub3c/DQo+IA0K
-PiA+ICsJZGV2X2NoYW5uZWxzID0gZGV2bV9rY2FsbG9jKCZwZGV2LT5kZXYsIChzaXplX3QpbnVt
-X2NoYW5uZWxzLA0KPiANCj4gV2h5IGNhc3Rpbmc/DQo+IA0KPiA+ICsJCQkJICAgIHNpemVvZihz
-dHJ1Y3QgaWlvX2NoYW5fc3BlYyksIEdGUF9LRVJORUwpOw0KPiANCj4gc2l6ZW9mKCpkZXZfY2hh
-bm5lbHMpDQo+IA0KPiA+ICsJaWYgKCFkZXZfY2hhbm5lbHMpIHsNCj4gPiArCQlyZXQgPSAtRU5P
-TUVNOw0KPiA+ICsJCWdvdG8gZnJlZV9tZW07DQo+ID4gKwl9DQo+IA0KPiA+ICsJbWVtY3B5KGRl
-dl9jaGFubmVscywgYW1zX2NoYW5uZWxzLA0KPiA+ICsJICAgICAgIHNpemVvZigqYW1zX2NoYW5u
-ZWxzKSAqIG51bV9jaGFubmVscyk7DQo+IA0KPiBIbW0uLi4gYWNjb3JkaW5nIHRvIHRoZSBjb2Rl
-IHRoZSBudW1fY2hhbm5lbHMgY2FuIGJlIGxlc3MgdGhhbiBvciBlcXVhbCB0bw0KPiBudW1fY2hh
-bi4gSGVuY2UsIHdoYXQgeW91IHNob3VsZCB1c2UgaXMgdGhlIGRldm1fa3JlYWxsb2NfYXJyYXko
-KS4NCj4gDQo+IHN0YXRpYyBpbmxpbmUgdm9pZCAqZGV2bV9rcmVhbGxvY19hcmF5KC4uLikgew0K
-PiAJLi4uc2VlIGhvdyBrcmVhbGxvY19hcnJheSgpIGlzIGRlZmluZWQuLi4NCj4gfQ0KPiANCj4g
-Tm8gbmVlZCB0byBjb3B5IG1lbW9yeSBhZ2Fpbi4NCg0KV2lsbCB0YWtlIGEgbG9vay4NCg0KPiAN
-Cj4gLi4uDQo+IA0KPiA+ICsJcmV0ID0gMDsNCj4gPiArDQo+ID4gK2ZyZWVfbWVtOg0KPiA+ICsJ
-a2ZyZWUoYW1zX2NoYW5uZWxzKTsNCj4gPiArDQo+ID4gKwlyZXR1cm4gcmV0Ow0KPiANCj4gVGhp
-cyB3aWxsIGdvIGF3YXkgYWZ0ZXIgc3dpdGNoaW5nIHRvIGRldm1fa21hbGxvY19hcnJheSgpICsN
-Cj4gZGV2bV9rcmVhbGxvY19hcnJheSgpLg0KPiANCj4gLi4uDQo+IA0KPiA+ICsJcmV0ID0gYW1z
-X3BhcnNlX2Zpcm13YXJlKGluZGlvX2RldiwgcGRldik7DQo+ID4gKwlpZiAocmV0KSB7DQo+ID4g
-KwkJZGV2X2Vycl9wcm9iZSgmcGRldi0+ZGV2LCByZXQsICJmYWlsdXJlIGluIHBhcnNpbmcgRFRc
-biIpOw0KPiA+ICsJCXJldHVybiByZXQ7DQo+IA0KPiAJcmV0dXJuIGRldl9lcnJfcHJvYmUoLi4u
-KTsNCj4gDQo+IERpdHRvIGZvciB0aGUgcmVzdCBzaW1pbGFyIGNhc2VzLg0KDQpTdXJlLg0KPiAN
-Cj4gPiArCX0NCj4gDQo+IC0tDQo+IFdpdGggQmVzdCBSZWdhcmRzLA0KPiBBbmR5IFNoZXZjaGVu
-a28NCj4gDQoNClRoYW5rcywNCkFuYW5kDQo=
+The shared parameter should be configurable based on its usage, and not
+constrained to IIO_SHARED_BY_TYPE.
+
+This patch aims to improve the flexibility in using the
+IIO_ENUM_AVAILABLE define and avoid redefining custom iio enums that
+expose the shared parameter.
+
+An example is the ad5766.c driver where IIO_ENUM_AVAILABLE_SHARED was
+defined in order to achieve `shared` parameter customization.
+
+The current state of the IIO_ENUM_AVAILABLE implementation will imply
+similar redefinitions each time a driver will require access to the
+`shared` parameter. An example would be admv1013 driver which will
+require custom device attribute for the frequency translation  modes:
+Quadrature I/Q mode and Intermediate frequency mode.
+
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ drivers/iio/accel/bma180.c                |  2 +-
+ drivers/iio/accel/mma9553.c               |  2 +-
+ drivers/iio/adc/ad7192.c                  |  2 +-
+ drivers/iio/adc/hi8435.c                  |  2 +-
+ drivers/iio/dac/ad5064.c                  |  4 ++--
+ drivers/iio/dac/ad5380.c                  |  2 +-
+ drivers/iio/dac/ad5446.c                  |  2 +-
+ drivers/iio/dac/ad5504.c                  |  2 +-
+ drivers/iio/dac/ad5624r_spi.c             |  2 +-
+ drivers/iio/dac/ad5686.c                  |  2 +-
+ drivers/iio/dac/ad5766.c                  | 13 ++-----------
+ drivers/iio/dac/ad5791.c                  |  2 +-
+ drivers/iio/dac/max5821.c                 |  2 +-
+ drivers/iio/dac/mcp4725.c                 |  8 ++++----
+ drivers/iio/dac/stm32-dac.c               |  2 +-
+ drivers/iio/dac/ti-dac082s085.c           |  2 +-
+ drivers/iio/dac/ti-dac5571.c              |  2 +-
+ drivers/iio/dac/ti-dac7311.c              |  2 +-
+ drivers/iio/magnetometer/hmc5843_core.c   |  4 ++--
+ drivers/iio/trigger/stm32-timer-trigger.c |  4 ++--
+ include/linux/iio/iio.h                   |  5 +++--
+ 21 files changed, 30 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+index 2edfcb4819b7..09496f358ad9 100644
+--- a/drivers/iio/accel/bma180.c
++++ b/drivers/iio/accel/bma180.c
+@@ -658,7 +658,7 @@ static const struct iio_chan_spec_ext_info bma023_ext_info[] = {
+ 
+ static const struct iio_chan_spec_ext_info bma180_ext_info[] = {
+ 	IIO_ENUM("power_mode", IIO_SHARED_BY_TYPE, &bma180_power_mode_enum),
+-	IIO_ENUM_AVAILABLE("power_mode", &bma180_power_mode_enum),
++	IIO_ENUM_AVAILABLE("power_mode", IIO_SHARED_BY_TYPE, &bma180_power_mode_enum),
+ 	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, bma180_accel_get_mount_matrix),
+ 	{ }
+ };
+diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
+index ba3ecb3b57dc..0570ab1cc064 100644
+--- a/drivers/iio/accel/mma9553.c
++++ b/drivers/iio/accel/mma9553.c
+@@ -917,7 +917,7 @@ static const struct iio_enum mma9553_calibgender_enum = {
+ 
+ static const struct iio_chan_spec_ext_info mma9553_ext_info[] = {
+ 	IIO_ENUM("calibgender", IIO_SHARED_BY_TYPE, &mma9553_calibgender_enum),
+-	IIO_ENUM_AVAILABLE("calibgender", &mma9553_calibgender_enum),
++	IIO_ENUM_AVAILABLE("calibgender", IIO_SHARED_BY_TYPE, &mma9553_calibgender_enum),
+ 	{},
+ };
+ 
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 2121a812b0c3..7cb1bd3ea375 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -257,7 +257,7 @@ static const struct iio_chan_spec_ext_info ad7192_calibsys_ext_info[] = {
+ 	},
+ 	IIO_ENUM("sys_calibration_mode", IIO_SEPARATE,
+ 		 &ad7192_syscalib_mode_enum),
+-	IIO_ENUM_AVAILABLE("sys_calibration_mode", &ad7192_syscalib_mode_enum),
++	IIO_ENUM_AVAILABLE("sys_calibration_mode", IIO_SHARED_BY_TYPE, &ad7192_syscalib_mode_enum),
+ 	{}
+ };
+ 
+diff --git a/drivers/iio/adc/hi8435.c b/drivers/iio/adc/hi8435.c
+index 8b353e26668e..e665e14c6e54 100644
+--- a/drivers/iio/adc/hi8435.c
++++ b/drivers/iio/adc/hi8435.c
+@@ -350,7 +350,7 @@ static const struct iio_enum hi8435_sensing_mode = {
+ 
+ static const struct iio_chan_spec_ext_info hi8435_ext_info[] = {
+ 	IIO_ENUM("sensing_mode", IIO_SEPARATE, &hi8435_sensing_mode),
+-	IIO_ENUM_AVAILABLE("sensing_mode", &hi8435_sensing_mode),
++	IIO_ENUM_AVAILABLE("sensing_mode", IIO_SHARED_BY_TYPE, &hi8435_sensing_mode),
+ 	{},
+ };
+ 
+diff --git a/drivers/iio/dac/ad5064.c b/drivers/iio/dac/ad5064.c
+index fd9cac4f6321..27ee2c63c5d4 100644
+--- a/drivers/iio/dac/ad5064.c
++++ b/drivers/iio/dac/ad5064.c
+@@ -377,7 +377,7 @@ static const struct iio_chan_spec_ext_info ad5064_ext_info[] = {
+ 		.shared = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad5064_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5064_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5064_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+@@ -389,7 +389,7 @@ static const struct iio_chan_spec_ext_info ltc2617_ext_info[] = {
+ 		.shared = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ltc2617_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ltc2617_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ltc2617_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
+index 8ca26bb4b62f..e38860a6a9f3 100644
+--- a/drivers/iio/dac/ad5380.c
++++ b/drivers/iio/dac/ad5380.c
+@@ -249,7 +249,7 @@ static const struct iio_chan_spec_ext_info ad5380_ext_info[] = {
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE,
+ 		 &ad5380_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5380_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5380_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+index 3cc5513a6cbf..1c9b54c012a7 100644
+--- a/drivers/iio/dac/ad5446.c
++++ b/drivers/iio/dac/ad5446.c
+@@ -142,7 +142,7 @@ static const struct iio_chan_spec_ext_info ad5446_ext_info_powerdown[] = {
+ 		.shared = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad5446_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5446_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5446_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ad5504.c b/drivers/iio/dac/ad5504.c
+index 19cdf9890d02..b631261efa97 100644
+--- a/drivers/iio/dac/ad5504.c
++++ b/drivers/iio/dac/ad5504.c
+@@ -241,7 +241,7 @@ static const struct iio_chan_spec_ext_info ad5504_ext_info[] = {
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE,
+ 		 &ad5504_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5504_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5504_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ad5624r_spi.c b/drivers/iio/dac/ad5624r_spi.c
+index 530529feebb5..3c98941b9f99 100644
+--- a/drivers/iio/dac/ad5624r_spi.c
++++ b/drivers/iio/dac/ad5624r_spi.c
+@@ -159,7 +159,7 @@ static const struct iio_chan_spec_ext_info ad5624r_ext_info[] = {
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE,
+ 		 &ad5624r_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5624r_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5624r_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
+index 8f001db775f4..e592a995f404 100644
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -184,7 +184,7 @@ static const struct iio_chan_spec_ext_info ad5686_ext_info[] = {
+ 		.shared = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad5686_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5686_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5686_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ad5766.c b/drivers/iio/dac/ad5766.c
+index b0d220c3a126..43189af2fb1f 100644
+--- a/drivers/iio/dac/ad5766.c
++++ b/drivers/iio/dac/ad5766.c
+@@ -426,14 +426,6 @@ static ssize_t ad5766_write_ext(struct iio_dev *indio_dev,
+ 	.shared = _shared, \
+ }
+ 
+-#define IIO_ENUM_AVAILABLE_SHARED(_name, _shared, _e) \
+-{ \
+-	.name = (_name "_available"), \
+-	.shared = _shared, \
+-	.read = iio_enum_available_read, \
+-	.private = (uintptr_t)(_e), \
+-}
+-
+ static const struct iio_chan_spec_ext_info ad5766_ext_info[] = {
+ 
+ 	_AD5766_CHAN_EXT_INFO("dither_enable", AD5766_DITHER_ENABLE,
+@@ -443,9 +435,8 @@ static const struct iio_chan_spec_ext_info ad5766_ext_info[] = {
+ 	_AD5766_CHAN_EXT_INFO("dither_source", AD5766_DITHER_SOURCE,
+ 			      IIO_SEPARATE),
+ 	IIO_ENUM("dither_scale", IIO_SEPARATE, &ad5766_dither_scale_enum),
+-	IIO_ENUM_AVAILABLE_SHARED("dither_scale",
+-				  IIO_SEPARATE,
+-				  &ad5766_dither_scale_enum),
++	IIO_ENUM_AVAILABLE("dither_scale", IIO_SEPARATE,
++			   &ad5766_dither_scale_enum),
+ 	{}
+ };
+ 
+diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
+index a0923b76e8b6..7b4579d73d18 100644
+--- a/drivers/iio/dac/ad5791.c
++++ b/drivers/iio/dac/ad5791.c
+@@ -285,7 +285,7 @@ static const struct iio_chan_spec_ext_info ad5791_ext_info[] = {
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE,
+ 		 &ad5791_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ad5791_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ad5791_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
+index 7da4710a6408..fce640b7f1c8 100644
+--- a/drivers/iio/dac/max5821.c
++++ b/drivers/iio/dac/max5821.c
+@@ -137,7 +137,7 @@ static const struct iio_chan_spec_ext_info max5821_ext_info[] = {
+ 		.shared = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &max5821_powerdown_mode_enum),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &max5821_powerdown_mode_enum),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &max5821_powerdown_mode_enum),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/mcp4725.c b/drivers/iio/dac/mcp4725.c
+index 34b14aafb630..98b2c2f10bf3 100644
+--- a/drivers/iio/dac/mcp4725.c
++++ b/drivers/iio/dac/mcp4725.c
+@@ -221,8 +221,8 @@ static const struct iio_chan_spec_ext_info mcp4725_ext_info[] = {
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE,
+ 			&mcp472x_powerdown_mode_enum[MCP4725]),
+-	IIO_ENUM_AVAILABLE("powerdown_mode",
+-			&mcp472x_powerdown_mode_enum[MCP4725]),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
++			   &mcp472x_powerdown_mode_enum[MCP4725]),
+ 	{ },
+ };
+ 
+@@ -235,8 +235,8 @@ static const struct iio_chan_spec_ext_info mcp4726_ext_info[] = {
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE,
+ 			&mcp472x_powerdown_mode_enum[MCP4726]),
+-	IIO_ENUM_AVAILABLE("powerdown_mode",
+-			&mcp472x_powerdown_mode_enum[MCP4726]),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
++			   &mcp472x_powerdown_mode_enum[MCP4726]),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
+index dd2e306824e7..cd71cc4553a7 100644
+--- a/drivers/iio/dac/stm32-dac.c
++++ b/drivers/iio/dac/stm32-dac.c
+@@ -246,7 +246,7 @@ static const struct iio_chan_spec_ext_info stm32_dac_ext_info[] = {
+ 		.shared = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &stm32_dac_powerdown_mode_en),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &stm32_dac_powerdown_mode_en),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &stm32_dac_powerdown_mode_en),
+ 	{},
+ };
+ 
+diff --git a/drivers/iio/dac/ti-dac082s085.c b/drivers/iio/dac/ti-dac082s085.c
+index 5c14bfb16521..6beda2193683 100644
+--- a/drivers/iio/dac/ti-dac082s085.c
++++ b/drivers/iio/dac/ti-dac082s085.c
+@@ -160,7 +160,7 @@ static const struct iio_chan_spec_ext_info ti_dac_ext_info[] = {
+ 		.shared	   = IIO_SHARED_BY_TYPE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE, &ti_dac_powerdown_mode),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ti_dac_powerdown_mode),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ti_dac_powerdown_mode),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
+index 546a4cf6c5ef..4a3b8d875518 100644
+--- a/drivers/iio/dac/ti-dac5571.c
++++ b/drivers/iio/dac/ti-dac5571.c
+@@ -212,7 +212,7 @@ static const struct iio_chan_spec_ext_info dac5571_ext_info[] = {
+ 		.shared	   = IIO_SEPARATE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &dac5571_powerdown_mode),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &dac5571_powerdown_mode),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &dac5571_powerdown_mode),
+ 	{},
+ };
+ 
+diff --git a/drivers/iio/dac/ti-dac7311.c b/drivers/iio/dac/ti-dac7311.c
+index 09218c3029f0..99f275829ec2 100644
+--- a/drivers/iio/dac/ti-dac7311.c
++++ b/drivers/iio/dac/ti-dac7311.c
+@@ -146,7 +146,7 @@ static const struct iio_chan_spec_ext_info ti_dac_ext_info[] = {
+ 		.shared	   = IIO_SHARED_BY_TYPE,
+ 	},
+ 	IIO_ENUM("powerdown_mode", IIO_SHARED_BY_TYPE, &ti_dac_powerdown_mode),
+-	IIO_ENUM_AVAILABLE("powerdown_mode", &ti_dac_powerdown_mode),
++	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE, &ti_dac_powerdown_mode),
+ 	{ },
+ };
+ 
+diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
+index f08726bf5ec3..4364d7fa066e 100644
+--- a/drivers/iio/magnetometer/hmc5843_core.c
++++ b/drivers/iio/magnetometer/hmc5843_core.c
+@@ -246,7 +246,7 @@ static const struct iio_enum hmc5843_meas_conf_enum = {
+ 
+ static const struct iio_chan_spec_ext_info hmc5843_ext_info[] = {
+ 	IIO_ENUM("meas_conf", IIO_SHARED_BY_TYPE, &hmc5843_meas_conf_enum),
+-	IIO_ENUM_AVAILABLE("meas_conf", &hmc5843_meas_conf_enum),
++	IIO_ENUM_AVAILABLE("meas_conf", IIO_SHARED_BY_TYPE, &hmc5843_meas_conf_enum),
+ 	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, hmc5843_get_mount_matrix),
+ 	{ }
+ };
+@@ -261,7 +261,7 @@ static const struct iio_enum hmc5983_meas_conf_enum = {
+ static const struct iio_chan_spec_ext_info hmc5983_ext_info[] = {
+ 	IIO_ENUM("meas_conf", IIO_SHARED_BY_TYPE, &hmc5983_meas_conf_enum),
+ 	IIO_ENUM_AVAILABLE("meas_conf", &hmc5983_meas_conf_enum),
+-	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, hmc5843_get_mount_matrix),
++	IIO_MOUNT_MATRIX(IIO_SHARED_BY_DIR, IIO_SHARED_BY_TYPE, hmc5843_get_mount_matrix),
+ 	{ }
+ };
+ 
+diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+index 33083877cd19..02b87b0f9d70 100644
+--- a/drivers/iio/trigger/stm32-timer-trigger.c
++++ b/drivers/iio/trigger/stm32-timer-trigger.c
+@@ -696,9 +696,9 @@ static const struct iio_chan_spec_ext_info stm32_trigger_count_info[] = {
+ 		.write = stm32_count_set_preset
+ 	},
+ 	IIO_ENUM("enable_mode", IIO_SEPARATE, &stm32_enable_mode_enum),
+-	IIO_ENUM_AVAILABLE("enable_mode", &stm32_enable_mode_enum),
++	IIO_ENUM_AVAILABLE("enable_mode", IIO_SHARED_BY_TYPE, &stm32_enable_mode_enum),
+ 	IIO_ENUM("trigger_mode", IIO_SEPARATE, &stm32_trigger_mode_enum),
+-	IIO_ENUM_AVAILABLE("trigger_mode", &stm32_trigger_mode_enum),
++	IIO_ENUM_AVAILABLE("trigger_mode", IIO_SHARED_BY_TYPE, &stm32_trigger_mode_enum),
+ 	{}
+ };
+ 
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 324561b7a5e8..07025d6b3de1 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -103,15 +103,16 @@ ssize_t iio_enum_write(struct iio_dev *indio_dev,
+ /**
+  * IIO_ENUM_AVAILABLE() - Initialize enum available extended channel attribute
+  * @_name:	Attribute name ("_available" will be appended to the name)
++ * @_shared:	Whether the attribute is shared between all channels
+  * @_e:		Pointer to an iio_enum struct
+  *
+  * Creates a read only attribute which lists all the available enum items in a
+  * space separated list. This should usually be used together with IIO_ENUM()
+  */
+-#define IIO_ENUM_AVAILABLE(_name, _e) \
++#define IIO_ENUM_AVAILABLE(_name, _shared, _e) \
+ { \
+ 	.name = (_name "_available"), \
+-	.shared = IIO_SHARED_BY_TYPE, \
++	.shared = _shared, \
+ 	.read = iio_enum_available_read, \
+ 	.private = (uintptr_t)(_e), \
+ }
+-- 
+2.34.0
+

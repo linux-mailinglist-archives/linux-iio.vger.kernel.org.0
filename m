@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D63456743
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Nov 2021 02:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DA24456747
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Nov 2021 02:08:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231895AbhKSBLF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Nov 2021 20:11:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48606 "EHLO
+        id S232373AbhKSBLp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Nov 2021 20:11:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233898AbhKSBLF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Nov 2021 20:11:05 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D494C06173E
-        for <linux-iio@vger.kernel.org>; Thu, 18 Nov 2021 17:08:04 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id s139so18267522oie.13
-        for <linux-iio@vger.kernel.org>; Thu, 18 Nov 2021 17:08:04 -0800 (PST)
+        with ESMTP id S231391AbhKSBLp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Nov 2021 20:11:45 -0500
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C25AC061574
+        for <linux-iio@vger.kernel.org>; Thu, 18 Nov 2021 17:08:44 -0800 (PST)
+Received: by mail-ot1-x335.google.com with SMTP id h16-20020a9d7990000000b0055c7ae44dd2so14156760otm.10
+        for <linux-iio@vger.kernel.org>; Thu, 18 Nov 2021 17:08:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:in-reply-to:references:from:user-agent:date:message-id
          :subject:to:cc;
-        bh=HzlmLdRv7zBGmGSAYySyLIbbB95E3MLqrkuqC8JA/XM=;
-        b=FDBPjDbjRGjXbBdMhZmcvKT8YGHGo13hfjIzzNgLx8UdDCyZUus7t4Nse+JUojWWFe
-         GDchOJCuadokMHXDoHnkvlZRwWPiTqOcsUHfigAJRcWj3TK0i1+LKCQBBhXQIweUgxQI
-         67UjZLvBXTlz3TX6YbJBoGrtPnhqgVN+ygdYQ=
+        bh=KPVdckZlM/ClPNOf5UPj8agvFxQs1ZhSV7NeGMvXwQw=;
+        b=m4D4Pvlp7ImnA2P7eiAmzSk0idaeXe/huYUlw3cz9b5/XbIQ4ixAQxmMgABy/Fm17H
+         YbNzYLsD3EC8NJDIke9jnEsTwGfKbJUTLXX4I0+Ne2RWMWsxDqhDXzYJCQLJPpKA16Q0
+         rrRx/dZ9OXjbiLvu/l4EtHAyuMbqU3HOHZHAg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:in-reply-to:references:from
          :user-agent:date:message-id:subject:to:cc;
-        bh=HzlmLdRv7zBGmGSAYySyLIbbB95E3MLqrkuqC8JA/XM=;
-        b=wDrjrgT2TYHq+5ERrivZB1QK59fupkTJZSzFGbeSC2Bq68BoSVF9u0EZclQTHPPWLQ
-         tnriQqSr9PmIBPaJNgD+l3/rASHRYLPfw/X9HHKY9BfB/Yj5R5wDyg8CFTlBlAAbjwrA
-         jUf8bY6EJgCc0NDhGhBgC3jCjr3LLkzLtHlN9VW1kAA0X6sVc3tTaEZWTeNxXzBtTZvy
-         qxLgaR83brZHZMGmzRK8sPiH6gK6EdZK9MIqf/PsPlK09DiDeon/P0CPGMdSCfj9J7oH
-         UpSdLG/Zg+Ssn04Vv9VtVTohHqB2Jh9qTpYSwPqPnmK6H8HECxgdeM2kHIKf5cYGhBlq
-         aJjw==
-X-Gm-Message-State: AOAM531NhSQ3ExaE01otUhz1uWX1mykmzi8k/E5eYySxz5qD2rMMeoWp
-        WRY8H5Gb8ZPIdAWMkq4iLBd5p8a+WJjKtSvjSMSBAQ==
-X-Google-Smtp-Source: ABdhPJziBjcygyjB/8a3oQYiIadTIjbdvrKb0M+ZQW+cSfCstjUJtAf3WlDNADE+XL/relZbVpuPMU4zmeGxy6fUnw8=
-X-Received: by 2002:aca:2319:: with SMTP id e25mr1335704oie.164.1637284084008;
- Thu, 18 Nov 2021 17:08:04 -0800 (PST)
+        bh=KPVdckZlM/ClPNOf5UPj8agvFxQs1ZhSV7NeGMvXwQw=;
+        b=0TdAzGuECBGj31ur1IC4+bzctpbd8hS/96jONN9wronxxxhOZnq4gCpcibnof9gSEv
+         X3cywpsN9SOwJbB20KtQ42yZOJ3n05SuN+5EopZd7cfe7Mm6aSOx+q/38sL0jl9MJWat
+         WstJOoX9WRNBO7BHiCDEEUJKWwXmCePEfsJ8MabVE1LqhKTjzuKs41oaHAXgRZz6nsv+
+         9Ic/nmVvsfBlvc5J2McOSC1eYlocoU+UNQB+A+Ce8ovHai1uLHZvyByq7hajmWanrTDt
+         rOnTb+hpqVd0nbwMyF4FmC1y3qO5P905CPKpkkosplk2YgrxhX4QdieIB2tAj+H9Qej5
+         ICMQ==
+X-Gm-Message-State: AOAM5316u6xAxIygfGuz0Q+SJw3LLJh2NhMiYVR2NJ3sscsdOoNAPNl6
+        wb+8sASNmjOH8ywPbGFmMq72Gr0goHcBXBcEmv9CTw==
+X-Google-Smtp-Source: ABdhPJyyDwIl023Kg2w2movbV70jbLyjO866NIxOZmdFJFUlzhhBzVKiE0UHkgL7hgI04s9Gh56C4gMksKpQwxVKR5s=
+X-Received: by 2002:a05:6830:30b7:: with SMTP id g23mr1255270ots.159.1637284123926;
+ Thu, 18 Nov 2021 17:08:43 -0800 (PST)
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 19 Nov 2021 02:08:03 +0100
+ HTTPREST; Fri, 19 Nov 2021 02:08:43 +0100
 MIME-Version: 1.0
-In-Reply-To: <20211117091653.2829677-3-gwendal@chromium.org>
-References: <20211117091653.2829677-1-gwendal@chromium.org> <20211117091653.2829677-3-gwendal@chromium.org>
+In-Reply-To: <20211117091653.2829677-4-gwendal@chromium.org>
+References: <20211117091653.2829677-1-gwendal@chromium.org> <20211117091653.2829677-4-gwendal@chromium.org>
 From:   Stephen Boyd <swboyd@chromium.org>
 User-Agent: alot/0.9.1
-Date:   Fri, 19 Nov 2021 02:08:03 +0100
-Message-ID: <CAE-0n52dU3GdG6X74vdTFkmzZbGkMc4ismnNH0MpKzSGQizv9Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] dt-bindings: iio: Add sx9360 binding
+Date:   Fri, 19 Nov 2021 02:08:43 +0100
+Message-ID: <CAE-0n527a5qRsdY-TRvSJnLecsXvw6ng5_yob__VYwRRTq5avA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: sx9360: Add dt-binding support
 To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
         lars@metafoo.de
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
@@ -58,104 +58,14 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-11-17 01:16:52)
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9360.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9360.yaml
-> new file mode 100644
-> index 00000000000000..011597f1e82b10
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9360.yaml
-> @@ -0,0 +1,91 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
+Quoting Gwendal Grignou (2021-11-17 01:16:53)
+> Add support to configure sx9360 from dt-binding, to match device
+> hardware setup.
+>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
 
-sx9360
+Why not squash this into the initial driver?
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Semtech's SX9360 capacitive proximity sensor
-> +
-> +maintainers:
-> +  - Gwendal Grignou <gwendal@chromium.org>
-> +  - Daniel Campello <campello@chromium.org>
-> +
-> +description: |
-> +  Semtech's SX9360 proximity sensor.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - semtech,sx9360
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      Generated by device to announce preceding read request has finished
-> +      and data is available or that a close/far proximity event has happened.
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Main power supply
-> +
-> +  svdd-supply:
-> +    description: Host interface power supply
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  semtech,resolution:
-> +    $ref: /schemas/types.yaml#definitions/uint32
-> +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
-> +    description:
-> +      Capacitance measurement resolution. For both phases, "reference" and
-> +      "measurement"
-> +      Higher the number, higher the resolution.
-> +    default: 128
-> +
-> +  semtech,proxraw-strength:
-> +    $ref: /schemas/types.yaml#definitions/uint32
-> +    min: 0
-> +    max: 7
-> +    default: 1
-> +    description:
-> +      PROXRAW filter strength for both phase. A value of 0 represents off,
-> +      and other values represent 1-1/2^N.
-> +
-> +  semtech,avg-pos-strength:
-> +    $ref: /schemas/types.yaml#definitions/uint32
-> +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
-> +    default: 16
-> +    description:
-> +      Average positive filter strength. A value of 0 represents off and
-> +      UINT_MAX (4294967295) represents infinite. Other values
-> +      represent 1-1/N.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#io-channel-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      proximity@28 {
-> +        compatible = "semtech,sx9310";
-
-semtech,sx9360
-
-> +        reg = <0x28>;
-> +        interrupt-parent = <&pio>;
-> +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
-> +        vdd-supply = <&pp3300_a>;
-> +        svdd-supply = <&pp1800_prox>;
-> +        #io-channel-cells = <1>;
-> +        semtech,resolution = 2;
-> +        semtech,proxraw-strength = <2>;
+>  drivers/iio/proximity/sx9360.c | 85 +++++++++++++++++++++++++++++++++-
+>  1 file changed, 84 insertions(+), 1 deletion(-)

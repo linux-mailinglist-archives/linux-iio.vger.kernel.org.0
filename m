@@ -2,279 +2,322 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39046457CD1
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 11:15:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4F1457CD3
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 11:16:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237260AbhKTKSS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Nov 2021 05:18:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40238 "EHLO
+        id S237263AbhKTKTW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Nov 2021 05:19:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237271AbhKTKSR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Nov 2021 05:18:17 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF618C061574
-        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:15:14 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id b11so10023110pld.12
-        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:15:14 -0800 (PST)
+        with ESMTP id S230503AbhKTKTV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Nov 2021 05:19:21 -0500
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9ECC061574
+        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:16:18 -0800 (PST)
+Received: by mail-il1-x130.google.com with SMTP id l8so12722788ilv.3
+        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:16:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Ov59tTXLXy8o0mGSZ9t8WySkz6c8q+1pC0UsAA5Ew14=;
-        b=C2A492dp6ePcJrtGHIMu+P8MdMBtnEzazFgXPhaqubpqD86iP3ZYltG3eRKbGOZxKt
-         7/TrokByEzrhz12S2DRKwK447KwEwcrOc7RefA8mVnx8GVhyYFphBgMMhf5WrltmPmQ4
-         +BzE1aytIxAqKu1WbTJXEfN4ovhvomcJ9JZM0=
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0+aqsR1CEbjSLmp4vazU2/LUWzbrBzligmx6H6KpXUs=;
+        b=MW1Obc7LzWrmltJbB1eL8yOhRQH0cJ3HhJY5rB34Nh/S00Dxtu/mhQg2/zxny2MVjE
+         oW+zRlntFcLThABB+OEkQnXc66XjOno3GFGtVtdJlXqyf7cqRpPYZlf6uBq59j3OppEy
+         Y4ysu/Kdrlu47GcmQnSGyL+q6Qsn7HyvYeuGU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Ov59tTXLXy8o0mGSZ9t8WySkz6c8q+1pC0UsAA5Ew14=;
-        b=u+ec5ODTB6ilrE8WEUUO9v36gbHcs0jTLOVSSn6P8WPIj9aREKXcc468/mXDn8SMx1
-         1ptDY4TUfGeE6Ua5hfiEHvB5+vHOh0QyPZfrxD3ML78I5/Z44K/CFF/uvV6YBDURsa0A
-         esnHpwPPj2kvGiSKpMx4UEgX/K9gnWmYC2Gkc0LEQHr2BCreZ4nmFV/WLP0HbFTuB3aO
-         Rbl/Rd3JdCORljMccTCzAcf9BuuprQtg4veKbg+wlA2oZJXsKED6VTTBgFMesy3ONqMV
-         AQfJjErJFRtpgN7eKlDDeLEhRmBjqBcrYdzM7M50CeBr+FgUaIudPNho7M8RU0FMgES5
-         Q/GA==
-X-Gm-Message-State: AOAM533qqGnK8qj+XSfUAKRqXgdX+RdxjptjLPwnMqmVOOyR8MxFfaxM
-        PXtkfhHr1zR7rFD9JiEWnVKbTg==
-X-Google-Smtp-Source: ABdhPJzq97EPjqN6U3MGF9JwzxvWOtYUhuF3tSBglXfftpWzXMye54u6t/t8X+VGO0E5a1yx8pRxyg==
-X-Received: by 2002:a17:90a:74c2:: with SMTP id p2mr8801967pjl.184.1637403314285;
-        Sat, 20 Nov 2021 02:15:14 -0800 (PST)
-Received: from localhost ([2620:15c:202:201:913f:8f64:e1fa:a751])
-        by smtp.gmail.com with UTF8SMTPSA id o22sm2530911pfu.45.2021.11.20.02.15.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Nov 2021 02:15:14 -0800 (PST)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org
-Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v4 5/5] iio: sx9324: Add dt_binding support
-Date:   Sat, 20 Nov 2021 02:15:01 -0800
-Message-Id: <20211120101501.1659549-6-gwendal@chromium.org>
-X-Mailer: git-send-email 2.34.0.rc2.393.gf8c9666880-goog
-In-Reply-To: <20211120101501.1659549-1-gwendal@chromium.org>
-References: <20211120101501.1659549-1-gwendal@chromium.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0+aqsR1CEbjSLmp4vazU2/LUWzbrBzligmx6H6KpXUs=;
+        b=ww4oTvnUtiIqmUknv1lNydRt9ATzNbH+9KqHEp2Q0HqGI5CeKc0drApD8c6VlzqxQp
+         6mA+NsQsEQWXWQqp/9BhKk60RCNjQpOcSAwk6uwiMPFc9tI2YFhXUOIB3oA+0Aoj43qC
+         B7sd24T+PnVIGYqZ67WFr0SO5VmtybFAbCJLKn3gKhHWkN4aP1lU9LBcXVbtlsQLYVPl
+         Q7InD02jccLqkPvFEIl1bJKpKEqpoQpxH/zyPB94qVf6ifSb2o140COersxfh9Z3k3ae
+         DiYCjbr4cZK9mhxqqPMlRqE+0NcMUx1L3LbNbLV7EaSHwbCg1Ixpt9jLm8L1x+4swHo/
+         z8mQ==
+X-Gm-Message-State: AOAM530BPXDvCfAcWtHuze/Ldwoak8jI3v6DiTSFyI0FZiNEUc4Msz+R
+        tKWTjNQlFUuMLcn/eCXDfiPDjWaqkF1IyyhOV6lfAQ==
+X-Google-Smtp-Source: ABdhPJxU/3dj62pbEcQU7E7ClIRzfbVb460ymYAPluddm5+4ZvPz0U3DsZ2gNUfmnWwquRYOKKxE3GdqdCDkAg7z+iM=
+X-Received: by 2002:a05:6e02:1848:: with SMTP id b8mr8653950ilv.299.1637403377632;
+ Sat, 20 Nov 2021 02:16:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211117084631.2820014-1-gwendal@chromium.org>
+ <20211117084631.2820014-3-gwendal@chromium.org> <CAE-0n52Vk7wdh3zCqcTTrVJOeRs48UcRpta-h=CSCm5u2LtFng@mail.gmail.com>
+In-Reply-To: <CAE-0n52Vk7wdh3zCqcTTrVJOeRs48UcRpta-h=CSCm5u2LtFng@mail.gmail.com>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Sat, 20 Nov 2021 02:16:07 -0800
+Message-ID: <CAPUE2ut+7FhNNtQJ7OT+nMk=eknvXu=Tiepy6Dfzs1jDr1kjzQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] iio: sx9310: Extract common Semtech sensor logic
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Based on bindings/iio/proximity/semtech,sx9324.yaml, implement
-retrieving sensor hardware property and alter default values.
+Thanks for attention to details,
+Gwendal.
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
-Changes in v4:
-- Fix spelling in commit title.
+On Wed, Nov 17, 2021 at 11:20 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> Quoting Gwendal Grignou (2021-11-17 00:46:28)
+> >  drivers/iio/proximity/Kconfig     |   4 +
+> >  drivers/iio/proximity/Makefile    |   1 +
+> >  drivers/iio/proximity/sx9310.c    | 677 +++++-------------------------
+> >  drivers/iio/proximity/sx_common.c | 575 +++++++++++++++++++++++++
+> >  drivers/iio/proximity/sx_common.h | 158 +++++++
+>
+> Does 'git format-patch -C' find that there's a bunch of code similarity
+> and reduces the patch size? It would be great to not have to re-review
+> this whole driver.
+I tried, unfortunately it looks like when the file is split, git is
+not able to reduce the patch size. I tried -C for 10% to 100%.
+>
+> >  5 files changed, 836 insertions(+), 579 deletions(-)
+> >  create mode 100644 drivers/iio/proximity/sx_common.c
+> >  create mode 100644 drivers/iio/proximity/sx_common.h
+> >
+> > diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> > index 1647268b6471f1..a621e892bf3314 100644
+> > --- a/drivers/iio/proximity/sx9310.c
+> > +++ b/drivers/iio/proximity/sx9310.c
+> > @@ -1490,7 +1009,7 @@ static int __maybe_unused sx9310_suspend(struct device *dev)
+> >  static int __maybe_unused sx9310_resume(struct device *dev)
+> >  {
+> >         struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> > -       struct sx9310_data *data = iio_priv(indio_dev);
+> > +       struct sx_common_data *data = iio_priv(indio_dev);
+> >         int ret;
+> >
+> >         mutex_lock(&data->mutex);
+> > @@ -1499,7 +1018,7 @@ static int __maybe_unused sx9310_resume(struct device *dev)
+> >                 goto out;
+> >
+> >         ret = regmap_write(data->regmap, SX9310_REG_PROX_CTRL0,
+> > -                          data->suspend_ctrl0);
+> > +                          data->suspend_ctrl);
+>
+> Any reason to drop the 0 on the end?
+Yes, the field suspend_ctrl is used by all the sensors, and it does
+not always save the content of REG_PROX_CTRL0 register.
+>
+> >
+> >  out:
+> >         mutex_unlock(&data->mutex);
+> > diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+> > new file mode 100644
+> > index 00000000000000..94dbd299357ffc
+> > --- /dev/null
+> > +++ b/drivers/iio/proximity/sx_common.c
+> > @@ -0,0 +1,575 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Copyright 2018 Google LLC.
+> > + *
+> > + * Driver for Semtech's SX9310/SX9311 capacitive proximity/button solution.
+> > + * Based on SX9500 driver and Semtech driver using the input framework
+> > + * <https://my.syncplicity.com/share/teouwsim8niiaud/
+> > + *          linux-driver-sx_common_NoSmartHSensing>.
+> > + * Reworked in April 2019 by Evan Green <evgreen@chromium.org>
+> > + * and in January 2020 by Daniel Campello <campello@chromium.org>.
+>
+> Is this from the sx9310 driver? Maybe leave that in sx9310 and just say
+> this is common semtech proximity sensor functionality.
+Done.
+>
+> > + */
+> > +
+> > +#include <linux/acpi.h>
+> > +#include <linux/bitfield.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/irq.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/mod_devicetable.h>
+>
+> Is this include used?
+No, and remove a few others as well.
+>
+> > +#include <linux/module.h>
+> > +#include <linux/pm.h>
+> > +#include <linux/property.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/consumer.h>
+> > +#include <linux/slab.h>
+> > +
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/events.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +
+> > +#include "sx_common.h"
+> [...]
+> > diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
+> > new file mode 100644
+> > index 00000000000000..7f4d696ca16d34
+> > --- /dev/null
+> > +++ b/drivers/iio/proximity/sx_common.h
+> > @@ -0,0 +1,158 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+> > + * Code shared between most Semtech SAR sensor driver.
+> > + */
+> > +
+> > +#ifndef IIO_SX_COMMON_H
+> > +#define IIO_SX_COMMON_H
+> > +
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/consumer.h>
+> > +
+> > +#define SX_COMMON_REG_IRQ_SRC                          0x00
+> > +
+> > +#define   SX9310_WHOAMI_VALUE                          0x01
+> > +#define   SX9311_WHOAMI_VALUE                          0x02
+> > +#define   SX9324_WHOAMI_VALUE                          0x23
+> > +#define   SX9360_WHOAMI_VALUE                          0x60
+>
+> Can these two new defines come in the patches that add support for those
+> chips?
+Done.
+>
+> > +
+> > +#define SX_COMMON_MAX_NUM_CHANNELS     4
+> > +static_assert(SX_COMMON_MAX_NUM_CHANNELS < BITS_PER_LONG);
+> > +
+> > +struct sx_common_data;
+> > +
+> > +struct sx_common_reg_default {
+> > +       u8 reg;
+> > +       u8 def;
+> > +};
+> > +
+> > +/** sx_common_ops: function pointers needed by common code
+>
+> The /** is on a line by itself for kernel-doc. Also missing 'struct'
+Done. Check with ./scripts/kernel-doc
+>
+> > + *
+> > + * List functions needed by common code to gather information or configure
+> > + * the sensor.
+> > + *
+> > + * @read_prox_data:    Function to read raw proximity data.
+> > + * @check_whoami:      Set device name based on whoami register.
+> > + * @init_compensation: Function to set initial compensation.
+> > + * @wait_for_sample:   When there are no physical IRQ, function to wait for a
+> > + *                     sample to be ready.
+>
+> Missing get_default_reg.
+Done, check with ./scripts/kernel-doc
+>
+> > + */
+> > +struct sx_common_ops {
+> > +       int (*read_prox_data)(struct sx_common_data *data,
+> > +                             const struct iio_chan_spec *chan, __be16 *val);
+> > +       int (*check_whoami)(struct device *dev, struct iio_dev *indio_dev);
+> > +       int (*init_compensation)(struct iio_dev *indio_dev);
+> > +       int (*wait_for_sample)(struct sx_common_data *data);
+> > +       const struct sx_common_reg_default  *
+> > +               (*get_default_reg)(struct device *dev, int idx,
+> > +                                  struct sx_common_reg_default *reg_def);
+> > +};
+> > +
+> > +/**
+> > + * struct sx_common_chip_info: Semtech Sensor private chip information
+> > + *
+> > + * @reg_stat:          Main status register address.
+> > + * @reg_irq_msk:       IRQ mask register address.
+> > + * @reg_enable_chan:   Address to enable/disable channels/phases.
+> > + * @reg_reset:         Reset register address.
+> > + *
+> > + * @mask_enable_chan:  Mask over the channels bits in the enable channel
+> > + *                     register.
+> > + * @irq_msk_offset:    Offset to enable interrupt in the IRQ mask
+> > + *                     register.
+> > + *
+> > + * @num_channels:      Number of channel/phase.
+> > + * @num_default_regs:  Number of internal registers that can be configured.
+> > + *
+> > + * @ops:               Private functions pointers.
+> > + *
+> > + * @iio_channels:      Description of exposed iio channels.
+> > + * @num_iio_channels:  Number of iio_channels.
+> > + * @iio_info:          iio_info structure for this driver.
+> > + *
+> > + */
+> > +struct sx_common_chip_info {
+> > +       unsigned int reg_stat;
+> > +       unsigned int reg_irq_msk;
+> > +       unsigned int reg_enable_chan;
+> > +       unsigned int reg_reset;
+> > +
+> > +       unsigned int mask_enable_chan;
+> > +       unsigned int irq_msk_offset;
+> > +       unsigned int num_channels;
+> > +       int num_default_regs;
+> > +
+> > +       struct sx_common_ops ops;
+> > +
+> > +       const struct iio_chan_spec *iio_channels;
+> > +       int num_iio_channels;
+> > +       struct iio_info iio_info;
+> > +};
+> > +
+> > +/**
+> > + * struct sx_common_data: Semtech Sensor private data structure.
+> > + *
+> > + * @info:              Structure defining sensor internals.
+> > + * @mutex:             Serialize access to registers and channel configuration.
+> > + * @num_channels:      Number of channel/phase.
+> > + * @completion:                completion object to wait for data acquisition.
+> > + * @client:            I2C client structure.
+> > + * @trig:              IIO trigger object.
+> > + * @regmap:            Register map.
+> > + *
+> > + * @num_default_regs:  Number of default registers to set at init.
+> > + * @supplies:          Power supplies object.
+> > + * @chan_prox_stat:    Last reading of the proximity status for each channel.
+> > + *                     We only send an event to user space when this changes.
+> > + * @trigger_enabled:   True when the device trigger is enabled.
+> > + *
+> > + * @buffer:            Bufffer to store raw samples.
+> > + * @suspend_ctrl:      Remember enabled channels and sample rate during suspend.
+> > + * @chan_read:         Bit field for each raw channel enabled.
+> > + * @chan_event:                Bit field for each event enabled.
+> > + *
+> > + */
+> > +struct sx_common_data {
+> > +       const struct sx_common_chip_info *info;
+>
+> Maybe 'chip_info' so we don't alias with the other 'info' in this patch,
+> iio_event_info? Similar comment wherever it's passed as 'info' to some
+> function.
+Done.
 
-Changes in v3:
-- Remove duplicate information.
-- Use intervals instead of enum.
-- Fix filter description.
 
-Changes in v2:
-- Fix interrupt documentation wording.
 
- drivers/iio/proximity/sx9324.c | 158 +++++++++++++++++++++++++++++++++
- 1 file changed, 158 insertions(+)
-
-diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-index 3858e70d7a86f6..26ab91676aba9e 100644
---- a/drivers/iio/proximity/sx9324.c
-+++ b/drivers/iio/proximity/sx9324.c
-@@ -83,6 +83,7 @@
- #define SX9324_REG_PROX_CTRL0		0x30
- #define SX9324_REG_PROX_CTRL0_GAIN_MASK	GENMASK(5, 3)
- #define SX9324_REG_PROX_CTRL0_GAIN_1		0x80
-+#define SX9324_REG_PROX_CTRL0_RAWFILT_MASK	GENMASK(2, 0)
- #define SX9324_REG_PROX_CTRL0_RAWFILT_1P50	0x01
- #define SX9324_REG_PROX_CTRL1		0x31
- #define SX9324_REG_PROX_CTRL2		0x32
-@@ -757,6 +758,74 @@ static int sx9324_write_raw(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
- 
-+static const struct sx_common_reg_default sx9324_default_regs[] = {
-+	{ SX9324_REG_IRQ_MSK, 0x00 },
-+	{ SX9324_REG_IRQ_CFG0, 0x00 },
-+	{ SX9324_REG_IRQ_CFG1, SX9324_REG_IRQ_CFG1_FAILCOND },
-+	{ SX9324_REG_IRQ_CFG2, 0x00 },
-+	{ SX9324_REG_GNRL_CTRL0, SX9324_REG_GNRL_CTRL0_SCANPERIOD_100MS },
-+	/*
-+	 * The lower 4 bits should not be set as it enable sensors measurements.
-+	 * Turning the detection on before the configuration values are set to
-+	 * good values can cause the device to return erroneous readings.
-+	 */
-+	{ SX9324_REG_GNRL_CTRL1, SX9324_REG_GNRL_CTRL1_PAUSECTRL },
-+
-+	{ SX9324_REG_AFE_CTRL0, 0x00 },
-+	{ SX9324_REG_AFE_CTRL3, 0x00 },
-+	{ SX9324_REG_AFE_CTRL4, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
-+		SX9324_REG_AFE_CTRL4_RES_100 },
-+	{ SX9324_REG_AFE_CTRL6, 0x00 },
-+	{ SX9324_REG_AFE_CTRL7, SX9324_REG_AFE_CTRL4_FREQ_83_33HZ |
-+		SX9324_REG_AFE_CTRL4_RES_100 },
-+
-+	/* TODO(gwendal): PHx use chip default or all grounded? */
-+	{ SX9324_REG_AFE_PH0, 0x29 },
-+	{ SX9324_REG_AFE_PH1, 0x26 },
-+	{ SX9324_REG_AFE_PH2, 0x1a },
-+	{ SX9324_REG_AFE_PH3, 0x16 },
-+
-+	{ SX9324_REG_AFE_CTRL8, SX9324_REG_AFE_CTRL8_RESFILTN_4KOHM },
-+	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1 },
-+
-+	{ SX9324_REG_PROX_CTRL0, SX9324_REG_PROX_CTRL0_GAIN_1 |
-+		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
-+	{ SX9324_REG_PROX_CTRL1, SX9324_REG_PROX_CTRL0_GAIN_1 |
-+		SX9324_REG_PROX_CTRL0_RAWFILT_1P50 },
-+	{ SX9324_REG_PROX_CTRL2, SX9324_REG_PROX_CTRL2_AVGNEG_THRESH_16K },
-+	{ SX9324_REG_PROX_CTRL3, SX9324_REG_PROX_CTRL3_AVGDEB_2SAMPLES |
-+		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K },
-+	{ SX9324_REG_PROX_CTRL4, SX9324_REG_PROX_CTRL4_AVGNEG_FILT_2 |
-+		SX9324_REG_PROX_CTRL3_AVGPOS_FILT_256 },
-+	{ SX9324_REG_PROX_CTRL5, 0x00 },
-+	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
-+	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
-+	{ SX9324_REG_ADV_CTRL0, 0x00 },
-+	{ SX9324_REG_ADV_CTRL1, 0x00 },
-+	{ SX9324_REG_ADV_CTRL2, 0x00 },
-+	{ SX9324_REG_ADV_CTRL3, 0x00 },
-+	{ SX9324_REG_ADV_CTRL4, 0x00 },
-+	{ SX9324_REG_ADV_CTRL5, SX9324_REG_ADV_CTRL5_STARTUP_SENSOR_1 |
-+		SX9324_REG_ADV_CTRL5_STARTUP_METHOD_1 },
-+	{ SX9324_REG_ADV_CTRL6, 0x00 },
-+	{ SX9324_REG_ADV_CTRL7, 0x00 },
-+	{ SX9324_REG_ADV_CTRL8, 0x00 },
-+	{ SX9324_REG_ADV_CTRL9, 0x00 },
-+	/* Body/Table threshold */
-+	{ SX9324_REG_ADV_CTRL10, 0x00 },
-+	{ SX9324_REG_ADV_CTRL11, 0x00 },
-+	{ SX9324_REG_ADV_CTRL12, 0x00 },
-+	/* TODO(gwendal): SAR currenly disabled */
-+	{ SX9324_REG_ADV_CTRL13, 0x00 },
-+	{ SX9324_REG_ADV_CTRL14, 0x00 },
-+	{ SX9324_REG_ADV_CTRL15, 0x00 },
-+	{ SX9324_REG_ADV_CTRL16, 0x00 },
-+	{ SX9324_REG_ADV_CTRL17, 0x00 },
-+	{ SX9324_REG_ADV_CTRL18, 0x00 },
-+	{ SX9324_REG_ADV_CTRL19, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
-+	{ SX9324_REG_ADV_CTRL20, SX9324_REG_ADV_CTRL19_HIGHT_FAILURE_THRESH_SATURATION },
-+};
-+
- /* Activate all channels and perform an initial compensation. */
- static int sx9324_init_compensation(struct iio_dev *indio_dev)
- {
-@@ -781,6 +850,93 @@ static int sx9324_init_compensation(struct iio_dev *indio_dev)
- 	return ret;
- }
- 
-+static const struct sx_common_reg_default *
-+sx9324_get_default_reg(struct device *dev, int idx,
-+		       struct sx_common_reg_default *reg_def)
-+{
-+#define SX9324_PIN_DEF "semtech,ph0-pin"
-+#define SX9324_RESOLUTION_DEF "semtech,resolution01"
-+#define SX9324_PROXRAW_DEF "semtech,proxraw-strength01"
-+	unsigned int pin_defs[SX9324_NUM_PINS];
-+	char prop[] = SX9324_PROXRAW_DEF;
-+	u32 start = 0, raw = 0, pos = 0;
-+	int ret, count, ph, pin;
-+
-+	memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
-+	switch (reg_def->reg) {
-+	case SX9324_REG_AFE_PH0:
-+	case SX9324_REG_AFE_PH1:
-+	case SX9324_REG_AFE_PH2:
-+	case SX9324_REG_AFE_PH3:
-+		ph = reg_def->reg - SX9324_REG_AFE_PH0;
-+		scnprintf(prop, ARRAY_SIZE(prop), "semtech,ph%d-pin", ph);
-+
-+		count = device_property_count_u32(dev, prop);
-+		if (count != ARRAY_SIZE(pin_defs))
-+			break;
-+		ret = device_property_read_u32_array(dev, prop, pin_defs,
-+						     ARRAY_SIZE(pin_defs));
-+		for (pin = 0; pin < SX9324_NUM_PINS; pin++)
-+			raw |= (pin_defs[pin] << (2 * pin)) &
-+			       SX9324_REG_AFE_PH0_PIN_MASK(pin);
-+		reg_def->def = raw;
-+		break;
-+	case SX9324_REG_AFE_CTRL4:
-+	case SX9324_REG_AFE_CTRL7:
-+		if (reg_def->reg == SX9324_REG_AFE_CTRL4)
-+			strncpy(prop, "semtech,resolution01", ARRAY_SIZE(prop));
-+		else
-+			strncpy(prop, "semtech,resolution23", ARRAY_SIZE(prop));
-+
-+		ret = device_property_read_u32(dev, prop, &raw);
-+		if (ret)
-+			break;
-+
-+		raw = ilog2(raw) - 3;
-+
-+		reg_def->def &= ~SX9324_REG_AFE_CTRL4_RESOLUTION_MASK;
-+		reg_def->def |= FIELD_PREP(SX9324_REG_AFE_CTRL4_RESOLUTION_MASK,
-+					   raw);
-+		break;
-+	case SX9324_REG_ADV_CTRL5:
-+		ret = device_property_read_u32(dev, "semtech,startup-sensor", &start);
-+		if (ret)
-+			break;
-+
-+		reg_def->def &= ~SX9324_REG_ADV_CTRL5_STARTUPSENS_MASK;
-+		reg_def->def |= FIELD_PREP(SX9324_REG_ADV_CTRL5_STARTUPSENS_MASK,
-+					   start);
-+		break;
-+	case SX9324_REG_PROX_CTRL4:
-+		ret = device_property_read_u32(dev, "semtech,avg-pos-strength", &pos);
-+		if (ret)
-+			break;
-+
-+		/* Powers of 2, except for a gap between 16 and 64 */
-+		raw = clamp(ilog2(pos), 3, 11) - (pos >= 32 ? 4 : 3);
-+
-+		reg_def->def &= ~SX9324_REG_PROX_CTRL4_AVGPOSFILT_MASK;
-+		reg_def->def |= FIELD_PREP(SX9324_REG_PROX_CTRL4_AVGPOSFILT_MASK,
-+					   raw);
-+		break;
-+	case SX9324_REG_PROX_CTRL0:
-+	case SX9324_REG_PROX_CTRL1:
-+		if (reg_def->reg == SX9324_REG_PROX_CTRL0)
-+			strncpy(prop, "semtech,proxraw-strength01", ARRAY_SIZE(prop));
-+		else
-+			strncpy(prop, "semtech,proxraw-strength23", ARRAY_SIZE(prop));
-+		ret = device_property_read_u32(dev, prop, &raw);
-+		if (ret)
-+			break;
-+
-+		reg_def->def &= ~SX9324_REG_PROX_CTRL0_RAWFILT_MASK;
-+		reg_def->def |= FIELD_PREP(SX9324_REG_PROX_CTRL0_RAWFILT_MASK,
-+					   raw);
-+		break;
-+	}
-+	return reg_def;
-+}
-+
- static int sx9324_check_whoami(struct device *dev,
- 			       struct iio_dev *indio_dev)
- {
-@@ -801,12 +957,14 @@ static const struct sx_common_chip_info sx9324_chip_info = {
- 	.mask_enable_chan = SX9324_REG_GNRL_CTRL1_PHEN_MASK,
- 	.irq_msk_offset = 3,
- 	.num_channels = SX9324_NUM_CHANNELS,
-+	.num_default_regs = ARRAY_SIZE(sx9324_default_regs),
- 
- 	.ops = {
- 		.read_prox_data = sx9324_read_prox_data,
- 		.check_whoami = sx9324_check_whoami,
- 		.init_compensation = sx9324_init_compensation,
- 		.wait_for_sample = sx9324_wait_for_sample,
-+		.get_default_reg = sx9324_get_default_reg,
- 	},
- 
- 	.iio_channels = sx9324_channels,
--- 
-2.34.0.rc2.393.gf8c9666880-goog
-
+>
+> > +
+> > +       struct mutex mutex;
+> > +       struct completion completion;
+> > +       struct i2c_client *client;
+> > +       struct iio_trigger *trig;
+> > +       struct regmap *regmap;
+> > +
+> > +       struct regulator_bulk_data supplies[2];
+> > +       unsigned long chan_prox_stat;
+> > +       bool trigger_enabled;
+> > +
+> > +       /* Ensure correct alignment of timestamp when present. */
+> > +       struct {
+> > +               __be16 channels[SX_COMMON_MAX_NUM_CHANNELS];
+> > +               s64 ts __aligned(8);
+> > +       } buffer;
+> > +
+> > +       unsigned int suspend_ctrl;
+> > +       unsigned long chan_read;
+> > +       unsigned long chan_event;
+> > +};
+> > +

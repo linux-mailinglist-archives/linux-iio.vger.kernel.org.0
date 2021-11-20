@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A64BE457CD6
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 11:16:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B02457CD7
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 11:16:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237271AbhKTKTc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Nov 2021 05:19:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40506 "EHLO
+        id S237276AbhKTKTi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Nov 2021 05:19:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230503AbhKTKTc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Nov 2021 05:19:32 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975F4C061574
-        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:16:29 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id k22so15916203iol.13
-        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:16:29 -0800 (PST)
+        with ESMTP id S230503AbhKTKTh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Nov 2021 05:19:37 -0500
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F73C061574
+        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:16:34 -0800 (PST)
+Received: by mail-io1-xd2c.google.com with SMTP id w22so16072547ioa.1
+        for <linux-iio@vger.kernel.org>; Sat, 20 Nov 2021 02:16:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=oZ/3nHlHPPS31PTKWg5i5NNhfONmlmWTcvkp4DHXzPU=;
-        b=A83bxnR9YkX1oysa254hus3myUjpU+qyWqSUPGQ+K4G/mAsc1CKTF5MRr+ZmbfuS2j
-         GCeQZG972uBKCEbSembeJFeggkwd0NjhQ3Y+W2l3KuikWAi6XSzO830lTSeq1FubgNHM
-         Sdw1C140dyLRYHzzstnEhHdcdFFX8pQnElF6A=
+        bh=luJxBIunwp5HtLgeMjpxnjM3IrUXs2waLGqNavG6cPc=;
+        b=HEvei7hjmOLgeDiiXRrup09gt0W/S9yUfp+TcGwsqh6sr/ryZJneQOydAMZOAdlCcz
+         z9FxqPhFakRZPvT+jcYbor+YvWG+Fenyvie4VU6M5qThPLQoJuNOI9/zn9nvFW3f8taq
+         U9y0dzLhKIYw6q3cOiLRcDHGiSE0e1JoDE908=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=oZ/3nHlHPPS31PTKWg5i5NNhfONmlmWTcvkp4DHXzPU=;
-        b=jaa9lIm57ZNojB/aH+pCq2BpxvM+KST01pvKjDwz/RBAfH6QL3DAJM7EfHOb4gUImB
-         4O8NSb4F7jjY2xOcydzioPFuQ5RCQjxEDoXtiYzCtNFofU0CvYIjusbhhCtzk1fzsrNR
-         CyyTymPptlJPVGx/kHLRX5qhZlCROhoq9m20gCsKrNjB6mg3Dld0y30XkL0ExxsDq+xv
-         PMF0uHIfzql7jwNcDTFQ/IVQJQX/lj8rGjPC3r2DlrZOcfjVirt+7GluaDPkzzglxA5Q
-         Xv54x/1x8b94Ajg3Lsmn5WG7eRGG3ssMk7mD2PR8TdkDaDt9/ZaBkhRLLhUpKVQvZmCv
-         AP3w==
-X-Gm-Message-State: AOAM530DJt7oY44pkn0HM7DIFSY+qwa61Qzz9FWO1c6PLPZtANXMNQ1k
-        0q0oPLWJDYwrgpJT2IVebWnKMrNeKdrSDITpsEIJSg==
-X-Google-Smtp-Source: ABdhPJzA3EYEUDKn9MwC+SgMYmRkZCMIc+UPWX+lbLvm8fq4VYwyWFdNMb2Q0L4DKNVbWx7K0AX4nNnDLGFisaiKK7I=
-X-Received: by 2002:a6b:2cc1:: with SMTP id s184mr10554877ios.63.1637403389026;
- Sat, 20 Nov 2021 02:16:29 -0800 (PST)
+        bh=luJxBIunwp5HtLgeMjpxnjM3IrUXs2waLGqNavG6cPc=;
+        b=b9i2uUDUjCoKx3zniIZ1wQx6hFEm6//qXTVVRggK8aQaMiuZhjlL5/04ZlGDr5HSZl
+         9TeyRuTZ+Ya18KSzzM7Au6zhAuDkp93Ax2kL7miGeuYy2bhrCG6fv5de81tR1gm3XYVn
+         jZ23/LjTRI25dqBPOE+6uj9+MjW7tNlBts/9070PF7Z2bKNyAPcUfJ3KaxiBRLK/csW/
+         gvPAQaLGYLab8MHRJMrMABHWTndEuTuuxlo4oE58vu/0e8a9X3L/hMuSb/j+CnDfDn5s
+         5ff/Ly453EclNaohYqWbK3HZJyuf9c3iV1hGTrCcOEkpn1JnSpWvH7fmS5lPNl0XEgzD
+         Y3vA==
+X-Gm-Message-State: AOAM532Jjy2YVGCkVG1PAhQ0Mypz2EhZGsLaaJIgeZ37x+RF6qN+/GSA
+        y7piBb/M65Fo8kZDGpb0CE0G6GxuFbP+3jS1FoAbCA==
+X-Google-Smtp-Source: ABdhPJw9IKaRIRECtAFFMZQlqInTXKfXcRKZou66MXgJZRR96ZB3yioLkR/BTqACPRcxi9JmsEl4jDUjE2uPWI1pVG0=
+X-Received: by 2002:a05:6602:8ce:: with SMTP id h14mr10165834ioz.177.1637403393991;
+ Sat, 20 Nov 2021 02:16:33 -0800 (PST)
 MIME-Version: 1.0
 References: <20211117084631.2820014-1-gwendal@chromium.org>
- <20211117084631.2820014-5-gwendal@chromium.org> <CAE-0n52C1bdALC_e=5WL_=j96NCrY=KnRYriYCvoZMqX3kOuNA@mail.gmail.com>
-In-Reply-To: <CAE-0n52C1bdALC_e=5WL_=j96NCrY=KnRYriYCvoZMqX3kOuNA@mail.gmail.com>
+ <20211117084631.2820014-6-gwendal@chromium.org> <CAE-0n51iE2bYLUmkXxuwPcdQ7GkBW+bkeJEbNOWjbV5o1qjCvQ@mail.gmail.com>
+In-Reply-To: <CAE-0n51iE2bYLUmkXxuwPcdQ7GkBW+bkeJEbNOWjbV5o1qjCvQ@mail.gmail.com>
 From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Sat, 20 Nov 2021 02:16:18 -0800
-Message-ID: <CAPUE2utQ2DhKX-B6TLwRz5uVJcpWmZhkAS6ivdYoRdYxSiftQA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] dt-bindings: iio: Add sx9324 binding
+Date:   Sat, 20 Nov 2021 02:16:23 -0800
+Message-ID: <CAPUE2uv_fAP5GbF=kn+qiNBfMb2vUhZwqNFs3Bta2Xu5OdzJHA@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] iio: sx9324: Add dt_bidding support
 To:     Stephen Boyd <swboyd@chromium.org>
 Cc:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
         linux-iio@vger.kernel.org
@@ -56,188 +56,14 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 17, 2021 at 10:55 PM Stephen Boyd <swboyd@chromium.org> wrote:
+On Wed, Nov 17, 2021 at 10:49 PM Stephen Boyd <swboyd@chromium.org> wrote:
 >
-> Quoting Gwendal Grignou (2021-11-17 00:46:30)
-> > diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > new file mode 100644
-> > index 00000000000000..5e2e684400e35a
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > @@ -0,0 +1,136 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9310.yaml#
->
-> Should be sx9324.yaml
-Done
->
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Semtech's SX9324 capacitive proximity sensor
-> > +
-> > +maintainers:
-> > +  - Gwendal Grignou <gwendal@chromium.org>
-> > +  - Daniel Campello <campello@chromium.org>
-> > +
-> > +description: |
-> > +  Semtech's SX9324 proximity sensor.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - semtech,sx9324
->
-> If there's only one compatible then it can be
->
->   compatible:
->     const: semtech,sx9324
-Done
->
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    description:
-> > +      Generated by device to announce preceding read request has finished
-> > +      and data is available or that a close/far proximity event has happened.
-> > +    maxItems: 1
-> > +
-> > +  vdd-supply:
-> > +    description: Main power supply
-> > +
-> > +  svdd-supply:
-> > +    description: Host interface power supply
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +  semtech,ph0-pin:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    description: |
-> > +      Indicates how each CS pin is used during phase 0.
-> > +      Each of the 3 pins have the following value -
->
-> Can you also indicate that the index of the array corresponds to each
-> channel?
-Done.
->
-> > +      0 : unused (high impedance)
-> > +      1 : measured input
-> > +      2 : dynamic shield
-> > +      3 : grounded.
-> > +      For instance, CS0 measured, CS1 shield and CS2 ground is [1, 2, 3]
-> > +    items:
-> > +      enum: [ 0, 1, 2, 3 ]
-> > +    minItems: 3
-> > +    maxItems: 3
-> > +
-> > +  semtech,ph1-pin:
-> > +  semtech,ph2-pin:
-> > +  semtech,ph3-pin:
-> > +    Same as ph0-pin
->
-> I'm fairly certain we need to duplicate the ph0-pin description each
-> time. And presumably ph1 is for phase 1?
-Fixed. Regarding duplicating description, there are other binding docs
-that do not recopy it. For instance,
-[Documentation/devicetree/bindings/input/touchscreen/edt-ft5x06.yaml],
-""" offset-x:
-    description: Same as offset, but applies ... """"
->
-> > +
-> > +  semtech,resolution01
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
-> > +    description:
-> > +      Capacitance measurement resolution. For phase 0 and 1.
-> > +      Higher the number, higher the resolution.
-> > +    default: 128
-> > +
-> > +  semtech,resolution23
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
-> > +    description:
-> > +      Capacitance measurement resolution. For phase 2 and 3
-> > +    default: 128
->
-> Can this be a single combined u32 array for each phase?
-But phases 0 and 1 [as well as 2 and 3] must have the same resolution.
-If we have an array of 4 entries, we would be tempted to use different
-resolutions for each phases.
->
-> > +
-> > +  semtech,startup-sensor:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [0, 1, 2, 3]
-> > +    default: 0
-> > +    description:
-> > +      Phase used for start-up proximity detection.
-> > +      It is used when we enable a phase to remove static offset and measure
-> > +      only capacitance changes introduced by the user.
-> > +
-> > +  semtech,proxraw-strength01:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    min: 0
-> > +    max: 7
-> > +    default: 1
-> > +    description:
-> > +      PROXRAW filter strength for phase 0 and 1. A value of 0 represents off,
-> > +      and other values represent 1-1/2^N.
-> > +
-> > +  semtech,proxraw-strength23:
-> > +    Same as proxraw-strength01, for phase 2 and 3.
->
-> Likewise, can this be combined into one array for all phases?
-See above.
->
-> > +
-> > +  semtech,avg-pos-strength:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
-> > +    default: 16
-> > +    description:
-> > +      Average positive filter strength. A value of 0 represents off and
-> > +      UINT_MAX (4294967295) represents infinite. Other values
-> > +      represent 1-1/N.
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - "#io-channel-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    i2c {
-> > +      #address-cells = <1>;
-> > +      #size-cells = <0>;
-> > +      proximity@28 {
-> > +        compatible = "semtech,sx9310";
->
-> Should be semtech,sx9324
+> Subject has a typo, maybe should be "dt binding support"
 Done.
 
 >
-> > +        reg = <0x28>;
-> > +        interrupt-parent = <&pio>;
-> > +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
-> > +        vdd-supply = <&pp3300_a>;
-> > +        svdd-supply = <&pp1800_prox>;
-> > +        #io-channel-cells = <1>;
-> > +        semtech,ph0-pin = <1, 2, 3>;
-> > +        semtech,ph1-pin = <3, 2, 1>;
-> > +        semtech,ph2-pin = <1, 2, 3>;
-> > +        semtech,ph3-pin = <3, 2, 1>;
-> > +        semtech,resolution01 = 2;
-> > +        semtech,resolution23 = 2;
-> > +        semtech,startup-sensor = <1>;
-> > +        semtech,proxraw-strength01 = <2>;
-> > +        semtech,proxraw-strength23 = <2>;
-> > +        semtech,avg-pos-strength = <64>;
-> > +      };
-> > +    };
+> Quoting Gwendal Grignou (2021-11-17 00:46:31)
+> > Based on bindings/iio/proximity/semtech,sx9324.yaml, implement
+> > retrieving sensor hardware property and alter default values.
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>

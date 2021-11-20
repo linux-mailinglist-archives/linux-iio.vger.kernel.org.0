@@ -2,31 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 462BE457F7E
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 17:27:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD672457F9A
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 17:49:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229897AbhKTQaE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Nov 2021 11:30:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56464 "EHLO mail.kernel.org"
+        id S231938AbhKTQwT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Nov 2021 11:52:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35982 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229861AbhKTQaE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 20 Nov 2021 11:30:04 -0500
+        id S230507AbhKTQwT (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Nov 2021 11:52:19 -0500
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 125F76056B;
-        Sat, 20 Nov 2021 16:26:58 +0000 (UTC)
-Date:   Sat, 20 Nov 2021 16:31:50 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id C48CF600D4;
+        Sat, 20 Nov 2021 16:49:12 +0000 (UTC)
+Date:   Sat, 20 Nov 2021 16:54:05 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cristian Pop <cristian.pop@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <robh+dt@kernel.org>
-Subject: Re: [PATCH v1 2/2] iio:frequency:admv4420.c: Add support for
- ADMV4420
-Message-ID: <20211120163150.4e208061@jic23-huawei>
-In-Reply-To: <20211119114011.75406-2-cristian.pop@analog.com>
-References: <20211119114011.75406-1-cristian.pop@analog.com>
-        <20211119114011.75406-2-cristian.pop@analog.com>
+To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Cc:     <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <git@xilinx.com>,
+        <michal.simek@xilinx.com>, <gregkh@linuxfoundation.org>,
+        <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        <heikki.krogerus@linux.intel.com>,
+        Manish Narani <manish.narani@xilinx.com>
+Subject: Re: [PATCH v10 3/5] iio: adc: Add Xilinx AMS driver
+Message-ID: <20211120165345.53de0d51@jic23-huawei>
+In-Reply-To: <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
+References: <20211117161028.11775-1-anand.ashok.dumbre@xilinx.com>
+        <20211117161028.11775-4-anand.ashok.dumbre@xilinx.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,331 +39,265 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Nov 2021 13:40:11 +0200
-Cristian Pop <cristian.pop@analog.com> wrote:
+On Wed, 17 Nov 2021 16:10:26 +0000
+Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com> wrote:
 
-> Add support for K Band Downconverter with Integrated
-> Fractional-N PLL and VCO.
-> More info:
-> https://www.analog.com/en/products/admv4420.html
-
-Datasheet: https://www.analog.com/en/products/admv4420.html
-
+> The AMS includes an ADC as well as on-chip sensors that can be used to
+> sample external voltages and monitor on-die operating conditions, such
+> as temperature and supply voltage levels. The AMS has two SYSMON blocks.
+> PL-SYSMON block is capable of monitoring off chip voltage and
+> temperature.
 > 
-> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> PL-SYSMON block has DRP, JTAG and I2C interface to enable monitoring
+> from an external master. Out of these interfaces currently only DRP is
+> supported. Other block PS-SYSMON is memory mapped to PS.
+> 
+> The AMS can use internal channels to monitor voltage and temperature as
+> well as one primary and up to 16 auxiliary channels for measuring
+> external voltages.
+> 
+> The voltage and temperature monitoring channels also have event capability
+> which allows to generate an interrupt when their value falls below or
+> raises above a set threshold.
+> 
+> Co-developed-by: Manish Narani <manish.narani@xilinx.com>
+> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 
-Having looked at the datasheet I'm not sure how we can realistically fit this
-into a remotely standard ABI.  A user would care about controlling the tuning
-frequency and that's not going to be trivial to describe.
-
-So having read this I'm not sure I understand why the IIO part of the driver
-is useful.  If the only interest is in fixed frequency operation why expose
-any standard(ish) userspace?
+A few minor additions from me to what Andy has noted.
 
 Thanks,
 
 Jonathan
 
-
-> ---
->  drivers/iio/frequency/Kconfig    |  10 +
->  drivers/iio/frequency/Makefile   |   1 +
->  drivers/iio/frequency/admv4420.c | 413 +++++++++++++++++++++++++++++++
->  3 files changed, 424 insertions(+)
->  create mode 100644 drivers/iio/frequency/admv4420.c
-...
-
-> +#include <linux/bitfield.h>
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index d3f53549720c..4a8f1833993b 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -115,4 +115,5 @@ obj-$(CONFIG_VF610_ADC) += vf610_adc.o
+>  obj-$(CONFIG_VIPERBOARD_ADC) += viperboard_adc.o
+>  xilinx-xadc-y := xilinx-xadc-core.o xilinx-xadc-events.o
+>  obj-$(CONFIG_XILINX_XADC) += xilinx-xadc.o
+> +obj-$(CONFIG_XILINX_AMS) += xilinx-ams.o
+>  obj-$(CONFIG_SD_ADC_MODULATOR) += sd_adc_modulator.o
+> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> new file mode 100644
+> index 000000000000..bb3876b51e3e
+> --- /dev/null
+> +++ b/drivers/iio/adc/xilinx-ams.c
+> @@ -0,0 +1,1447 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Xilinx AMS driver
+> + *
+> + *  Copyright (C) 2021 Xilinx, Inc.
+> + *
+> + *  Manish Narani <mnarani@xilinx.com>
+> + *  Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/overflow.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/slab.h>
+> +
+> +#include <linux/iio/events.h>
 > +#include <linux/iio/iio.h>
 > +#include <linux/iio/sysfs.h>
-
-Why this include?
-
-> +#include <linux/module.h>
-> +#include <linux/regmap.h>
-> +#include <linux/spi/spi.h>
+Used?
 > +
-> +
-> +#define ADMV4420_REFERENCE_IN_MODE(x)		(x << 1)
 
-Prefer to see these specified as masks and then defines for the values
-followed by use of FIELD_PREP to set the actual bits.
+...
 
-> +#define ADMV4420_REFERENCE_DOUBLER(x)		(x << 2)
-> +#define ADMV4420_REFERENCE_DIVIDE_BY_2_MASK	BIT(0)
-> +#define ADMV4420_REFERENCE_MODE_MASK		BIT(1)
-> +#define ADMV4420_REFERENCE_DOUBLER_MASK		BIT(2)
+> +/**
+> + * struct ams - Driver data for xilinx-ams
+> + * @base: physical base address of device
+> + * @ps_base: physical base address of PS device
+> + * @pl_base: physical base address of PL device
+> + * @clk: clocks associated with the device
+> + * @dev: pointer to device struct
+> + * @lock: to handle multiple user interaction
+> + * @intr_lock: to protect interrupt mask values
+> + * @alarm_mask: alarm configuration
+> + * @masked_alarm: currently masked due to alarm
+> + * @intr_mask: interrupt configuration
+> + * @ams_unmask_work: re-enables event once the event condition disappears
+> + *
+> + * This structure contains necessary state for Sysmon driver to operate
+> + */
+> +struct ams {
+> +	void __iomem *base;
+> +	void __iomem *ps_base;
+> +	void __iomem *pl_base;
+> +	struct clk *clk;
+> +	struct device *dev;
+> +	struct mutex lock;
+> +	spinlock_t intr_lock;
+> +	unsigned int alarm_mask;
+> +	unsigned int masked_alarm;
 
+Hmm. maybe a rename to make these two less confusing?
+Perhaps
+current_masked_alarm?
 
-> +
-> +struct admv4420_reference_block {
-> +	bool doubler_en;
-> +	bool divide_by_2_en;
-> +	bool ref_single_ended;
-> +	u32 freq_hz;
-> +	u32 divider;
+> +	u64 intr_mask;
+> +	struct delayed_work ams_unmask_work;
 > +};
 > +
-> +struct admv4420_n_counter {
-> +	u32 int_val;
-> +	u32 frac_val;
-> +	u32 mod_val;
-> +	u32 n_counter;
-> +};
-> +
+
+
+...
+
 
 > +
-> +static void admv4420_calc_vco_freq(struct admv4420_state *st)
+> +static void ams_handle_event(struct iio_dev *indio_dev, u32 event)
 > +{
-> +	u64 tmp;
+> +	const struct iio_chan_spec *chan;
 > +
-> +	tmp = div_u64((st->pfd_freq_hz * st->n_counter.frac_val), st->n_counter.mod_val);
-> +	tmp += st->pfd_freq_hz * st->n_counter.int_val;
-> +	st->vco_freq_hz = tmp;
+> +	chan = ams_event_to_channel(indio_dev, event);
+> +
+> +	if (chan->type == IIO_TEMP) {
+> +		/*
+> +		 * The temperature channel only supports over-temperature
+> +		 * events.
+> +		 */
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(chan->type, chan->channel,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +			iio_get_time_ns(indio_dev));
+> +	} else {
+> +		/*
+> +		 * For other channels we don't know whether it is a upper or
+> +		 * lower threshold event. Userspace will have to check the
+> +		 * channel value if it wants to know.
+> +		 */
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(chan->type, chan->channel,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_EITHER),
+> +			iio_get_time_ns(indio_dev));
+
+I think alignment is wrong here. iio_get_time_ns() should align with opening bracket as well.
+
+> +	}
 > +}
 > +
-> +static void admv4420_calc_pfd_freq(struct admv4420_state *st)
+
+...
+
+> +
+> +static int ams_parse_firmware(struct iio_dev *indio_dev,
+> +			      struct platform_device *pdev)
 > +{
-> +	u32 tmp;
-> +
-> +	tmp = st->ref_block.freq_hz * (st->ref_block.doubler_en ? 2 : 1);
-> +	tmp = DIV_ROUND_CLOSEST(tmp, st->ref_block.divider *
-> +				(st->ref_block.divide_by_2_en ? 2 : 1));
-> +	st->pfd_freq_hz = tmp;
-> +
-> +	admv4420_calc_vco_freq(st);
-> +	st->lo_freq_hz = st->vco_freq_hz * 2;
-> +}
-> +
-> +static int admv4420_set_n_counter(struct admv4420_state *st, u32 int_val, u32 frac_val, u32 mod_val)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_FRAC_H, FIELD_GET(ADMV4420_FRAC_H_MASK, frac_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_FRAC_M, FIELD_GET(ADMV4420_FRAC_M_MASK, frac_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_FRAC_L, FIELD_GET(ADMV4420_FRAC_L_MASK, frac_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_MOD_H, FIELD_GET(ADMV4420_MOD_H_MASK, mod_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_MOD_M, FIELD_GET(ADMV4420_MOD_M_MASK, mod_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_MOD_L, FIELD_GET(ADMV4420_MOD_L_MASK, mod_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_INT_H, FIELD_GET(ADMV4420_H_MASK, int_val));
-> +	if (ret)
-> +		return ret;
-> +
-> +	return regmap_write(st->regmap, ADMV4420_INT_L, FIELD_GET(ADMV4420_L_MASK, int_val));
-> +}
-> +
-> +static int admv4420_read_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int *val, int *val2, long info)
-> +{
-> +	struct admv4420_state *st = iio_priv(indio_dev);
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_FREQUENCY:
-> +		*val = div_u64(st->lo_freq_hz, 1000000);
-> +		div_u64_rem(st->lo_freq_hz, 1000000, val2);
+> +	struct ams *ams = iio_priv(indio_dev);
+> +	struct iio_chan_spec *ams_channels, *dev_channels;
+> +	struct fwnode_handle *child = NULL, *fwnode = dev_fwnode(&pdev->dev);
 
-Why is it useful to describe a fixed frequency via an IIO device?
+Where you have values being set, I'd prefer separate line per variable.
+Tends to be a little more readable and we need all the help we can get :)
 
+> +	size_t dev_chan_size, ams_chan_size, num_chan;
+> +	int ret, ch_cnt = 0, i, rising_off, falling_off;
+> +	unsigned int num_channels = 0;
+> +
 
+One blank line is almost always enough. Definitely is here.
 
 > +
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	default:
+> +	num_chan = ARRAY_SIZE(ams_ps_channels) + ARRAY_SIZE(ams_pl_channels) +
+> +		ARRAY_SIZE(ams_ctrl_channels);
+> +
+> +	ams_chan_size = array_size(num_chan, sizeof(struct iio_chan_spec));
+> +	if (ams_chan_size == SIZE_MAX)
 > +		return -EINVAL;
-> +	}
-> +}
 > +
-> +static const struct iio_info admv4420_info = {
-> +	.read_raw = admv4420_read_raw,
-> +	.debugfs_reg_access = &admv4420_reg_access,
-> +};
-> +
-> +#define ADMV4420_CHAN_LO(_channel) {				\
-> +	.type = IIO_ALTVOLTAGE,					\
-> +	.output = 0,						\
-> +	.indexed = 1,						\
-> +	.channel = _channel,					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_FREQUENCY)	\
-> +}
-> +
-> +static const struct iio_chan_spec admv4420_channels[] = {
-> +	ADMV4420_CHAN_LO(0),
-> +};
-> +
-> +static void admv4420_dt_parse(struct admv4420_state *st)
-> +{
-> +	struct spi_device *spi = st->spi;
-> +
-> +	st->ref_block.ref_single_ended = of_property_read_bool(spi->dev.of_node,
-> +							       "adi,ref_single_ended");
-> +	st->ref_block.doubler_en = of_property_read_bool(spi->dev.of_node, "adi,ref_doubler_en");
-> +	st->ref_block.divide_by_2_en = of_property_read_bool(spi->dev.of_node,
-> +							     "adi,ref_divide_by_2_en");
-> +	device_property_read_u32(&spi->dev, "adi,ref_freq_hz", &st->ref_block.freq_hz);
-> +	device_property_read_u32(&spi->dev, "adi,ref_divider", &st->ref_block.divider);
-> +	device_property_read_u32(&spi->dev, "adi,N_counter_int_val", &st->n_counter.int_val);
-> +	device_property_read_u32(&spi->dev, "adi,N_counter_frac_val", &st->n_counter.frac_val);
-> +	device_property_read_u32(&spi->dev, "adi,N_counter_mod_val", &st->n_counter.mod_val);
-> +	device_property_read_u32(&spi->dev, "adi,mux_sel", &st->mux_sel);
-> +}
-> +
-> +static int admv4420_setup(struct iio_dev *indio_dev)
-> +{
-> +	struct admv4420_state *st = iio_priv(indio_dev);
-> +	u32 val = 0;
-> +	int ret;
-> +
-> +	/* Software reset and activate SDO */
-> +	ret = regmap_write(st->regmap, ADMV4420_SPI_CONFIG_1,
-> +			   ADMV4420_SPI_CONFIG_1_SOFTRESET_ | ADMV4420_SPI_CONFIG_1_SOFTRESET);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_SCRATCHPAD, ADAR1000_SCRATCH_PAD_VAL_1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(st->regmap, ADMV4420_SCRATCHPAD, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (val != ADAR1000_SCRATCH_PAD_VAL_1) {
-> +		dev_err(indio_dev->dev.parent, "Failed ADMV4420 to read/write scratchpad %x ", val);
-
-Try to keep lines under 80 chars unless it hurts readability.  Breaking this one before
-the string doesn't hurt readability so please do so.
-
-> +		return -EIO;
-> +	}
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_SCRATCHPAD, ADAR1000_SCRATCH_PAD_VAL_2);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(st->regmap, ADMV4420_SCRATCHPAD, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (val != ADAR1000_SCRATCH_PAD_VAL_2) {
-> +		dev_err(indio_dev->dev.parent, "Failed ADMV4420 to read/write scratchpad %x ", val);
-> +		return -EIO;
-> +	}
-> +
-> +	st->ref_block.freq_hz = ADMV4420_DEF_REF_HZ;
-> +	st->ref_block.ref_single_ended = false;
-> +	st->ref_block.doubler_en = false;
-> +	st->ref_block.divide_by_2_en = false;
-> +	st->ref_block.divider = ADMV4420_DEF_REF_DIVIDER;
-> +
-> +	st->n_counter.int_val = ADMV4420_DEF_NC_INT;
-> +	st->n_counter.frac_val = ADMV4420_DEF_NC_FRAC;
-> +	st->n_counter.mod_val = ADMV4420_DEF_NC_MOD;
-> +
-> +	st->mux_sel = ADMV4420_LOCK_DTCT;
-> +
-> +	admv4420_dt_parse(st);
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_R_DIV_L,
-> +			   FIELD_GET(ADMV4420_L_MASK, st->ref_block.divider));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_R_DIV_H,
-> +			   FIELD_GET(ADMV4420_H_MASK, st->ref_block.divider));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_REFERENCE,
-> +			   st->ref_block.divide_by_2_en |
-> +			   ADMV4420_REFERENCE_IN_MODE(st->ref_block.ref_single_ended) |
-> +			   ADMV4420_REFERENCE_DOUBLER(st->ref_block.doubler_en));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = admv4420_set_n_counter(st, st->n_counter.int_val, st->n_counter.frac_val,
-> +				     st->n_counter.mod_val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_PLL_MUX_SEL, st->mux_sel);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(st->regmap, ADMV4420_ENABLES, ENABLE_PLL | ENABLE_LO | ENABLE_VCO |
-> +			   ENABLE_IFAMP | ENABLE_MIXER | ENABLE_LNA);
-> +	if (ret)
-> +		return ret;
-> +
-> +	admv4420_calc_pfd_freq(st);
-> +
-> +	return 0;
-> +}
-> +
-> +static int admv4420_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct admv4420_state *st;
-> +	struct regmap *regmap;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
+> +	/* Initialize buffer for channel specification */
+> +	ams_channels = kcalloc(num_chan, sizeof(struct iio_chan_spec), GFP_KERNEL);
+> +	if (!ams_channels)
 > +		return -ENOMEM;
 > +
-> +	regmap = devm_regmap_init_spi(spi, &admv4420_regmap_config);
-> +	if (IS_ERR(regmap)) {
-> +		dev_err(&spi->dev, "Error  ADMV4420 initializing spi regmap: %ld\n",
-> +			PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
+> +	if (fwnode_device_is_available(fwnode)) {
+> +		ret = ams_init_module(indio_dev, fwnode, ams_channels);
+> +		if (ret < 0)
+> +			goto free_mem;
+> +
+> +		num_channels += ret;
 > +	}
 > +
-> +	st = iio_priv(indio_dev);
-> +	st->spi = spi;
-> +	st->regmap = regmap;
-> +	mutex_init(&st->lock);
+> +	fwnode_for_each_child_node(fwnode, child) {
+> +		if (fwnode_device_is_available(child)) {
+> +			ret = ams_init_module(indio_dev, child,
+> +					      ams_channels + num_channels);
+> +			if (ret < 0) {
+> +				fwnode_handle_put(child);
+> +				goto free_mem;
+> +			}
 > +
-> +	indio_dev->dev.parent = &spi->dev;
-
-The IIO core should set that for you.
-
-> +	indio_dev->name = "admv4420";
-> +	indio_dev->info = &admv4420_info;
-> +	indio_dev->channels = admv4420_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(admv4420_channels);
-> +
-> +	ret = admv4420_setup(indio_dev);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Setup ADMV4420 failed (%d)\n", ret);
-> +		return ret;
+> +			num_channels += ret;
+> +		}
 > +	}
 > +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +	for (i = 0; i < num_channels; i++) {
+> +		ams_channels[i].channel = ch_cnt++;
+> +
+> +		if (ams_channels[i].scan_index < AMS_CTRL_SEQ_BASE) {
+> +			/* set threshold to max and min for each channel */
+> +			falling_off =
+> +				ams_get_alarm_offset(ams_channels[i].scan_index,
+> +						     IIO_EV_DIR_FALLING);
+> +			rising_off =
+> +				ams_get_alarm_offset(ams_channels[i].scan_index,
+> +						     IIO_EV_DIR_RISING);
+> +			if (ams_channels[i].scan_index >= AMS_PS_SEQ_MAX) {
+> +				writel(AMS_ALARM_THR_MIN,
+> +				       ams->pl_base + falling_off);
+> +				writel(AMS_ALARM_THR_MAX,
+> +				       ams->pl_base + rising_off);
+> +			} else {
+> +				writel(AMS_ALARM_THR_MIN,
+> +				       ams->ps_base + falling_off);
+> +				writel(AMS_ALARM_THR_MAX,
+> +				       ams->ps_base + rising_off);
+> +			}
+> +		}
+> +	}
+> +
+> +	dev_chan_size = array_size((size_t)num_channels, sizeof(struct iio_chan_spec));
+> +	if (dev_chan_size == SIZE_MAX)
+
+Why not goto free_mem for this error case?
+Obviously should never happen, but should handle the error anyway.
+
+> +		return -EINVAL;
+> +
+> +	dev_channels = devm_kcalloc(&pdev->dev, (size_t)num_channels,
+> +				    sizeof(struct iio_chan_spec), GFP_KERNEL);
+> +	if (!dev_channels) {
+> +		ret = -ENOMEM;
+> +		goto free_mem;
+> +	}
+> +
+> +	memcpy(dev_channels, ams_channels,
+> +	       sizeof(*ams_channels) * num_channels);
+> +	indio_dev->channels = dev_channels;
+> +	indio_dev->num_channels = num_channels;
+> +
+> +	ret = 0;
+> +
+> +free_mem:
+> +	kfree(ams_channels);
+> +
+> +	return ret;
 > +}
-> +
-
-> +
-> +MODULE_AUTHOR("Cristian Pop <cristian.pop@analog.com>");
-> +MODULE_DESCRIPTION("Analog Devices ADMV44200 K Band Downconverter");
-> +MODULE_LICENSE("Dual BSD/GPL");
-
 
 

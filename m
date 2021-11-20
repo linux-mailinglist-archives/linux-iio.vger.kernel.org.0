@@ -2,30 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C4D457EE5
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 16:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35202457EF5
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Nov 2021 16:28:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237027AbhKTPZW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Nov 2021 10:25:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40658 "EHLO mail.kernel.org"
+        id S231390AbhKTPbM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Nov 2021 10:31:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42172 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230038AbhKTPZV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 20 Nov 2021 10:25:21 -0500
+        id S229710AbhKTPbM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sat, 20 Nov 2021 10:31:12 -0500
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5CE05604DA;
-        Sat, 20 Nov 2021 15:22:16 +0000 (UTC)
-Date:   Sat, 20 Nov 2021 15:27:08 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C62D60EB4;
+        Sat, 20 Nov 2021 15:28:07 +0000 (UTC)
+Date:   Sat, 20 Nov 2021 15:32:59 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     lars@metafoo.de, swboyd@chromium.org, andy.shevchenko@gmail.com,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 3/5] iio: proximity: Add SX9324 support
-Message-ID: <20211120152708.39a566ce@jic23-huawei>
-In-Reply-To: <20211120101501.1659549-4-gwendal@chromium.org>
+Subject: Re: [PATCH v4 4/5] dt-bindings: iio: Add sx9324 binding
+Message-ID: <20211120153259.622d8fce@jic23-huawei>
+In-Reply-To: <20211120101501.1659549-5-gwendal@chromium.org>
 References: <20211120101501.1659549-1-gwendal@chromium.org>
-        <20211120101501.1659549-4-gwendal@chromium.org>
+        <20211120101501.1659549-5-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,354 +34,220 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 20 Nov 2021 02:14:59 -0800
+On Sat, 20 Nov 2021 02:15:00 -0800
 Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Semtech SAR sensor SX9324 is an evolution of the SX9310:
-> It has 4 phases that can be configure to capture and process data
-> from any of 3 CS pins and provide independent detection:
-> proximity, table proximity or body proximity.
-> 
-> Gather antenna data:
-> echo sx9324-dev3 > trigger/current_trigger
-> echo 1 > scan_elements/in_proximity0_en
-> echo 1 > buffer/enable
-> od -v -An --endian=big -t d2 -w2 /dev/iio\:device3
-> (at 10Hz, the default).
-> 
-> Trigger events:
-> Setting:
-> thresh_falling_period: 2 (events)
-> thresh_rising_period: 2 (events)
-> in_proximity0_thresh_either_value: 300
-> in_proximity0_thresh_either_hysteresis: 72
-> 
-> using iio_event_monitor /dev/iio\:deviceX, approaching my hand to the
-> antenna pad, I see:
-> ...
-> Event: time: 1634763907532035297, type: proximity, channel: 0, evtype:
-> thresh, direction: falling
-> Event: time: 1634763910138104640, type: proximity, channel: 0, evtype:
-> thresh, direction: rising
-> ...
+> Similar to SX9310, add biddings to setup sx9324 hardware properties.
+> SX9324 is a little different, introduce 4 phases to be configured in 2
+> pairs over 3 antennas.
 > 
 > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+
+No devicetree list or RobH in the to list so this won't get the review
+from them that it needs.  Fix that for v5.
+
+A few suggestions inline about consistency of property naming.
+I don't have particularly strong views on that though so could be persuaded
+what you have is better perhaps...
+
 > ---
-
-A few little things inline. Looks good otherwise,
-
-Jonathan
-
-
-> diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
-> index e88fc373c2c903..aaddf97f9b2192 100644
-> --- a/drivers/iio/proximity/Kconfig
-> +++ b/drivers/iio/proximity/Kconfig
-> @@ -129,6 +129,20 @@ config SX9310
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called sx9310.
->  
-> +config SX9324
-> +	tristate "SX9324 Semtech proximity sensor"
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
-> +	select REGMAP_I2C
-> +	select SX_COMMON
-> +	depends on I2C
-> +	help
-> +	  Say Y here to build a driver for Semtech's SX9324
-> +	  proximity/button sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called sx9324.
-> +
->  config SX9500
->  	tristate "SX9500 Semtech proximity sensor"
->  	select IIO_BUFFER
-> diff --git a/drivers/iio/proximity/Makefile b/drivers/iio/proximity/Makefile
-> index 2577fbce4144e5..cffe962b352718 100644
-> --- a/drivers/iio/proximity/Makefile
-> +++ b/drivers/iio/proximity/Makefile
-> @@ -14,6 +14,7 @@ obj-$(CONFIG_RFD77402)		+= rfd77402.o
->  obj-$(CONFIG_SRF04)		+= srf04.o
->  obj-$(CONFIG_SRF08)		+= srf08.o
->  obj-$(CONFIG_SX9310)		+= sx9310.o
-> +obj-$(CONFIG_SX9324)		+= sx9324.o
->  obj-$(CONFIG_SX_COMMON) 	+= sx_common.o
->  obj-$(CONFIG_SX9500)		+= sx9500.o
->  obj-$(CONFIG_VCNL3020)		+= vcnl3020.o
-> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> Changes in v4:
+> - Use const instead of single enum
+> - Specify ph0-pin better
+> - Recopy type information for phX-pin
+> - Fix cut and paste errors.
+> 
+> Changes in v3:
+> - Remove duplicate information.
+> - Use intervals instead of enum.
+> - Fix filter description.
+> 
+> Changes in v2:
+> - Fix interrupt documentation wording.
+> 
+>  .../iio/proximity/semtech,sx9324.yaml         | 161 ++++++++++++++++++
+>  1 file changed, 161 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
 > new file mode 100644
-> index 00000000000000..3858e70d7a86f6
+> index 00000000000000..70e4736fb1cc9a
 > --- /dev/null
-> +++ b/drivers/iio/proximity/sx9324.c
-> @@ -0,0 +1,916 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2021 Google LLC.
-> + *
-> + * Driver for Semtech's SX9324 capacitive proximity/button solution.
-> + * Based on SX9324 driver and copy of datasheet at:
-> + * https://edit.wpgdadawant.com/uploads/news_file/program/2019/30184/tech_files/program_30184_suggest_other_file.pdf
-> + *
-
-Unneeded blank line..
-
-> + */
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> @@ -0,0 +1,161 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9324.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +#include <linux/acpi.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/irq.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/kernel.h>
-> +#include <linux/log2.h>
-> +#include <linux/module.h>
-> +#include <linux/pm.h>
-> +#include <linux/regmap.h>
-> +#include <linux/slab.h>
+> +title: Semtech's SX9324 capacitive proximity sensor
 > +
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-
-As before, take a look at these (or run IWYU if you can) to prune
-out the unused headers.
-
-> +#include <linux/iio/trigger.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
+> +maintainers:
+> +  - Gwendal Grignou <gwendal@chromium.org>
+> +  - Daniel Campello <campello@chromium.org>
 > +
-> +#include "sx_common.h"
+> +description: |
+> +  Semtech's SX9324 proximity sensor.
 > +
-
-> +static int sx9324_read_prox_data(struct sx_common_data *data,
-> +				 const struct iio_chan_spec *chan,
-> +				 __be16 *val)
-> +{
-> +	int ret;
+> +properties:
+> +  compatible:
+> +    const: semtech,sx9324
 > +
-> +	ret = regmap_write(data->regmap, SX9324_REG_PHASE_SEL, chan->channel);
-> +	if (ret < 0)
-> +		return ret;
-
-A little inconsistent to check for < 0 for error here, but return directly the
-value of the function below.  Cleaner to have if (ret) here as well as regmap
-never returns positive from its read and write functions.
-
+> +  reg:
+> +    maxItems: 1
 > +
-> +	return regmap_bulk_read(data->regmap, chan->address, val, sizeof(*val));
-> +}
+> +  interrupts:
+> +    description:
+> +      Generated by device to announce preceding read request has finished
+> +      and data is available or that a close/far proximity event has happened.
+> +    maxItems: 1
 > +
-> +/*
-> + * If we have no interrupt support, we have to wait for a scan period
-> + * after enabling a channel to get a result.
-> + */
-> +static int sx9324_wait_for_sample(struct sx_common_data *data)
-> +{
-> +	int ret;
-> +	unsigned int val;
+> +  vdd-supply:
+> +    description: Main power supply
 > +
-> +	ret = regmap_read(data->regmap, SX9324_REG_GNRL_CTRL0, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +	val = FIELD_GET(SX9324_REG_GNRL_CTRL0_SCANPERIOD_MASK, val);
+> +  svdd-supply:
+> +    description: Host interface power supply
 > +
-> +	msleep(sx9324_scan_period_table[val]);
+> +  "#io-channel-cells":
+> +    const: 1
 > +
-> +	return 0;
-> +}
+> +  semtech,ph0-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: |
+> +      Array of 3 entries. Index represent the id of the CS pin.
+> +      Value indicates how each CS pin is used during phase 0.
+> +      Each of the 3 pins have the following value -
+> +      0 : unused (high impedance)
+> +      1 : measured input
+> +      2 : dynamic shield
+> +      3 : grounded.
+> +      For instance, CS0 measured, CS1 shield and CS2 ground is [1, 2, 3]
+> +    items:
+> +      enum: [ 0, 1, 2, 3 ]
+> +    minItems: 3
+> +    maxItems: 3
 > +
-
+> +  semtech,ph1-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: Same as ph0-pin for phase 1.
+> +    items:
+> +      enum: [ 0, 1, 2, 3 ]
+> +    minItems: 3
+> +    maxItems: 3
 > +
-> +static int sx9324_write_thresh(struct sx_common_data *data,
-> +			       const struct iio_chan_spec *chan, int _val)
-> +{
-> +	unsigned int reg, val = _val;
-> +	int ret;
+> +  semtech,ph2-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: Same as ph0-pin for phase 2.
+> +    items:
+> +      enum: [ 0, 1, 2, 3 ]
+> +    minItems: 3
+> +    maxItems: 3
 > +
-> +	reg = SX9324_REG_PROX_CTRL6 + chan->channel / 2;
-> +
-> +	if (val >= 1)
-> +		val = int_sqrt(2 * val);
-
-This is unusual enough that perhaps a comment on what the threshold maths is
-would be useful (I can't find the datasheet online to check this).
-
-> +
-> +	if (val > 0xff)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&data->mutex);
-> +	ret = regmap_write(data->regmap, reg, val);
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return ret;
-> +}
-> +
+> +  semtech,ph3-pin:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: Same as ph0-pin for phase 3.
+> +    items:
+> +      enum: [ 0, 1, 2, 3 ]
+> +    minItems: 3
+> +    maxItems: 3
 > +
 
-> +static int sx9324_check_whoami(struct device *dev,
-> +			       struct iio_dev *indio_dev)
-> +{
-> +	/*
-> +	 * Only one sensor for this driver. Assuming the device tree
-> +	 * is correct, just set the sensor name.
-
-If there is a whoami register, would be nice to check it. If not then
-say that here as it's a better reason than the driver only supporting one
-sensor..
-
-> +	 */
-> +	indio_dev->name = "sx9324";
-> +	return 0;
-> +}
-> +
-> +static const struct sx_common_chip_info sx9324_chip_info = {
-> +	.reg_stat = SX9324_REG_STAT0,
-> +	.reg_irq_msk = SX9324_REG_IRQ_MSK,
-> +	.reg_enable_chan = SX9324_REG_GNRL_CTRL1,
-> +	.reg_reset = SX9324_REG_RESET,
-> +
-> +	.mask_enable_chan = SX9324_REG_GNRL_CTRL1_PHEN_MASK,
-> +	.irq_msk_offset = 3,
-> +	.num_channels = SX9324_NUM_CHANNELS,
-> +
-> +	.ops = {
-> +		.read_prox_data = sx9324_read_prox_data,
-> +		.check_whoami = sx9324_check_whoami,
-> +		.init_compensation = sx9324_init_compensation,
-> +		.wait_for_sample = sx9324_wait_for_sample,
-> +	},
-> +
-> +	.iio_channels = sx9324_channels,
-> +	.num_iio_channels = ARRAY_SIZE(sx9324_channels),
-> +	.iio_info =  {
-> +		.read_raw = sx9324_read_raw,
-> +		.read_avail = sx9324_read_avail,
-> +		.read_event_value = sx9324_read_event_val,
-> +		.write_event_value = sx9324_write_event_val,
-> +		.write_raw = sx9324_write_raw,
-> +		.read_event_config = sx_common_read_event_config,
-> +		.write_event_config = sx_common_write_event_config,
-> +	},
-> +};
-> +
-> +static int sx9324_probe(struct i2c_client *client)
-> +{
-> +	return sx_common_probe(client, &sx9324_chip_info, &sx9324_regmap_config);
-> +}
-> +
-> +static int __maybe_unused sx9324_suspend(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> +	struct sx_common_data *data = iio_priv(indio_dev);
-> +	unsigned int regval;
-> +	int ret;
-> +
-> +	disable_irq_nosync(data->client->irq);
-> +
-> +	mutex_lock(&data->mutex);
-> +	ret = regmap_read(data->regmap, SX9324_REG_GNRL_CTRL1, &regval);
-> +
-> +	data->suspend_ctrl =
-> +		FIELD_GET(SX9324_REG_GNRL_CTRL1_PHEN_MASK, regval);
-
-Needs a comment on why it makes sense to use a value when the read failed particularly
-as the value is potentially uninitialized. I'm guessing this should be after the
-error check.
+One blank line only
 
 > +
-> +	if (ret < 0)
-> +		goto out;
-> +
-> +	/* Disable all phases, send the device to sleep. */
-> +	ret = regmap_write(data->regmap, SX9324_REG_GNRL_CTRL1, 0);
-> +
-> +out:
-> +	mutex_unlock(&data->mutex);
-> +	return ret;
-> +}
-> +
-> +static int __maybe_unused sx9324_resume(struct device *dev)
-> +{
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> +	struct sx_common_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	mutex_lock(&data->mutex);
-> +	ret = regmap_write(data->regmap, SX9324_REG_GNRL_CTRL1,
-> +			   data->suspend_ctrl | SX9324_REG_GNRL_CTRL1_PAUSECTRL);
-> +	mutex_unlock(&data->mutex);
-> +	if (ret)
-> +		return ret;
-> +
-> +	enable_irq(data->client->irq);
+> +  semtech,resolution01:
+Given phX naming above, maybe this should be
 
-Slight preference for blank lines before returns like this to distinguish
-them from being related to the previous block of code (unlikely error returns)
-Not important though if you'd rather not for some reason.
+     semtech,ph01-resolution
 
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops sx9324_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(sx9324_suspend, sx9324_resume)
-> +};
-> +
-> +static const struct acpi_device_id sx9324_acpi_match[] = {
-> +	{ "STH9324", SX9324_WHOAMI_VALUE},
+etc for consistency?  Rob may have a better idea for what would be consistent
+with other dt bindings here.
 
-Good, it's a probably valid ACPI entry as the PNP id is actually semtech :)
-
-As you are using ACPI_PTR() this should be __maybe_unused to avoid warnings.
-
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(acpi, sx9324_acpi_match);
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
+> +    description:
+> +      Capacitance measurement resolution. For phase 0 and 1.
+> +      Higher the number, higher the resolution.
+> +    default: 128
 > +
-> +static const struct of_device_id sx9324_of_match[] = {
-> +	{ .compatible = "semtech,sx9324", (void *)SX9324_WHOAMI_VALUE},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, sx9324_of_match);
+> +  semtech,resolution23:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
+> +    description:
+> +      Capacitance measurement resolution. For phase 2 and 3
+> +    default: 128
 > +
-> +static const struct i2c_device_id sx9324_id[] = {
-> +	{"sx9324", SX9324_WHOAMI_VALUE},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, sx9324_id);
-> +
-> +static struct i2c_driver sx9324_driver = {
-> +	.driver = {
-> +		.name	= "sx9324",
-> +		.acpi_match_table = ACPI_PTR(sx9324_acpi_match),
-> +		.of_match_table = of_match_ptr(sx9324_of_match),
+> +  semtech,startup-sensor:
 
-Please don't introduce of_match_ptr() I'm still trying to get rid of the
-existing cases of this. It breaks the ACPI / PRP0001 based probing for
-no significant advantage.
+Perhaps include ph in the name to make it clear this is setting the initial
+phase as per the descriptions above.
 
-Also, if you build this with CONFIG_OF disabled you'd get a warning about
-the unused table..
-
-> +		.pm = &sx9324_pm_ops,
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 1, 2, 3]
+> +    default: 0
+> +    description: |
+> +      Phase used for start-up proximity detection.
+> +      It is used when we enable a phase to remove static offset and measure
+> +      only capacitance changes introduced by the user.
 > +
-> +		/*
-> +		 * Lots of i2c transfers in probe + over 200 ms waiting in
-> +		 * sx9324_init_compensation() mean a slow probe; prefer async
-> +		 * so we don't delay boot if we're builtin to the kernel.
-> +		 */
-> +		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-> +	},
-> +	.probe_new	= sx9324_probe,
-> +	.id_table	= sx9324_id,
-> +};
-> +module_i2c_driver(sx9324_driver);
+> +  semtech,proxraw-strength01:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    min: 0
+> +    max: 7
+> +    default: 1
+> +    description:
+> +      PROXRAW filter strength for phase 0 and 1. A value of 0 represents off,
+> +      and other values represent 1-1/2^N.
 > +
-> +MODULE_AUTHOR("Gwendal Grignou <gwendal@chromium.org>");
-> +MODULE_DESCRIPTION("Driver for Semtech SX9324 proximity sensor");
-> +MODULE_LICENSE("GPL v2");
+> +  semtech,proxraw-strength23:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    min: 0
+> +    max: 7
+> +    default: 1
+> +    description:
+> +      Same as proxraw-strength01, for phase 2 and 3.
+> +
+> +  semtech,avg-pos-strength:
+> +    $ref: /schemas/types.yaml#definitions/uint32
+> +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
+> +    default: 16
+> +    description: |
+> +      Average positive filter strength. A value of 0 represents off and
+> +      UINT_MAX (4294967295) represents infinite. Other values
+> +      represent 1-1/N.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      proximity@28 {
+> +        compatible = "semtech,sx9324";
+> +        reg = <0x28>;
+> +        interrupt-parent = <&pio>;
+> +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
+> +        vdd-supply = <&pp3300_a>;
+> +        svdd-supply = <&pp1800_prox>;
+> +        #io-channel-cells = <1>;
+> +        semtech,ph0-pin = <1, 2, 3>;
+> +        semtech,ph1-pin = <3, 2, 1>;
+> +        semtech,ph2-pin = <1, 2, 3>;
+> +        semtech,ph3-pin = <3, 2, 1>;
+> +        semtech,resolution01 = 2;
+> +        semtech,resolution23 = 2;
+> +        semtech,startup-sensor = <1>;
+> +        semtech,proxraw-strength01 = <2>;
+> +        semtech,proxraw-strength23 = <2>;
+> +        semtech,avg-pos-strength = <64>;
+> +      };
+> +    };
 

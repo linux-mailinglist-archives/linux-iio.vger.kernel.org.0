@@ -2,34 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7651E45858A
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Nov 2021 18:46:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB37F4585B0
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Nov 2021 18:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238591AbhKURtj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 21 Nov 2021 12:49:39 -0500
-Received: from aposti.net ([89.234.176.197]:37180 "EHLO aposti.net"
+        id S238318AbhKUR4G convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 21 Nov 2021 12:56:06 -0500
+Received: from aposti.net ([89.234.176.197]:38718 "EHLO aposti.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238269AbhKURti (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Nov 2021 12:49:38 -0500
-Date:   Sun, 21 Nov 2021 17:46:21 +0000
+        id S238020AbhKUR4F (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Nov 2021 12:56:05 -0500
+Date:   Sun, 21 Nov 2021 17:52:48 +0000
 From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 15/15] Documentation: iio: Document high-speed DMABUF
- based API
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Subject: Re: [PATCH 01/15] iio: buffer-dma: Get rid of incoming/outgoing
+ queues
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Sumit Semwal <sumit.semwal@linaro.org>,
         Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linaro-mm-sig@lists.linaro.org
-Message-Id: <91OX2R.MG3TG0PKKKRK3@crapouillou.net>
-In-Reply-To: <20211121151026.0cc95f40@jic23-huawei>
+Message-Id: <0COX2R.BSNX3NW8N48T@crapouillou.net>
+In-Reply-To: <e2689f0d-dc16-2519-57df-d98caadb07b0@metafoo.de>
 References: <20211115141925.60164-1-paul@crapouillou.net>
-        <20211115142243.60605-1-paul@crapouillou.net>
-        <20211115142243.60605-4-paul@crapouillou.net>
-        <20211121151026.0cc95f40@jic23-huawei>
+        <20211115141925.60164-2-paul@crapouillou.net>
+        <e2689f0d-dc16-2519-57df-d98caadb07b0@metafoo.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: 8BIT
@@ -37,201 +36,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hi Lars,
 
-Le dim., nov. 21 2021 at 15:10:26 +0000, Jonathan Cameron 
-<jic23@kernel.org> a écrit :
-> On Mon, 15 Nov 2021 14:22:43 +0000
-> Paul Cercueil <paul@crapouillou.net> wrote:
-> 
->>  Document the new DMABUF based API.
+Le dim., nov. 21 2021 at 17:23:35 +0100, Lars-Peter Clausen 
+<lars@metafoo.de> a écrit :
+> On 11/15/21 3:19 PM, Paul Cercueil wrote:
+>> The buffer-dma code was using two queues, incoming and outgoing, to
+>> manage the state of the blocks in use.
 >> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> 
-> Hi Paul,
-> 
-> A few trivial things inline but looks good to me if we do end up 
-> using DMABUF
-> anyway.
-> 
-> Jonathan
-> 
->>  ---
->>   Documentation/driver-api/dma-buf.rst |  2 +
->>   Documentation/iio/dmabuf_api.rst     | 94 
->> ++++++++++++++++++++++++++++
->>   Documentation/iio/index.rst          |  2 +
->>   3 files changed, 98 insertions(+)
->>   create mode 100644 Documentation/iio/dmabuf_api.rst
+>> While this totally works, it adds some complexity to the code,
+>> especially since the code only manages 2 blocks. It is much easier to
+>> just check each block's state manually, and keep a counter for the 
+>> next
+>> block to dequeue.
 >> 
->>  diff --git a/Documentation/driver-api/dma-buf.rst 
->> b/Documentation/driver-api/dma-buf.rst
->>  index 2cd7db82d9fe..d3c9b58d2706 100644
->>  --- a/Documentation/driver-api/dma-buf.rst
->>  +++ b/Documentation/driver-api/dma-buf.rst
->>  @@ -1,3 +1,5 @@
->>  +.. _dma-buf:
->>  +
-> 
-> Why this change?
-
-I have this line in the file:
-For more information about manipulating DMABUF objects, see: 
-:ref:`dma-buf`.
-
-For the :ref: to work I need a label at the reference point, if I 
-understood correctly.
-
->>   Buffer Sharing and Synchronization
->>   ==================================
+>> Since the new DMABUF based API wouldn't use these incoming and 
+>> outgoing
+>> queues anyway, getting rid of them now makes the upcoming changes
+>> simpler.
 >> 
->>  diff --git a/Documentation/iio/dmabuf_api.rst 
->> b/Documentation/iio/dmabuf_api.rst
->>  new file mode 100644
->>  index 000000000000..b4e120a4ef0c
->>  --- /dev/null
->>  +++ b/Documentation/iio/dmabuf_api.rst
->>  @@ -0,0 +1,94 @@
->>  +===================================
->>  +High-speed DMABUF interface for IIO
->>  +===================================
->>  +
->>  +1. Overview
->>  +===========
->>  +
->>  +The Industrial I/O subsystem supports access to buffers through a 
->> file-based
->>  +interface, with read() and write() access calls through the IIO 
->> device's dev
->>  +node.
->>  +
->>  +It additionally supports a DMABUF based interface, where the 
->> userspace
->>  +application can allocate and append DMABUF objects to the buffer's 
->> queue.
-> 
-> I would note somewhere that this interface is optional for a given 
-> IIO driver.
-> I don't want people to start assuming their i2c ADC will support this 
-> and
-> wondering why it doesn't work :)
+>> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> The outgoing queue is going to be replaced by fences, but I think we 
+> need to keep the incoming queue.
 
-Their I2C ADC will support it, as long as the driver supports the 
-dmaengine buffer interface. I can make that explicit, yes.
+Blocks are always accessed in sequential order, so we now have a 
+"queue->next_dequeue" that cycles between the buffers allocated for 
+fileio.
 
->>  +
->>  +The advantage of this DMABUF based interface vs. the fileio
->>  +interface, is that it avoids an extra copy of the data between the
->>  +kernel and userspace. This is particularly userful for high-speed
->>  +devices which produce several megabytes or even gigabytes of data 
->> per
->>  +second.
->>  +
->>  +The data in this DMABUF interface is managed at the granularity of
->>  +DMABUF objects. Reducing the granularity from byte level to block 
->> level
->>  +is done to reduce the userspace-kernelspace synchronization 
->> overhead
->>  +since performing syscalls for each byte at a few Mbps is just not
->>  +feasible.
->>  +
->>  +This of course leads to a slightly increased latency. For this 
->> reason an
->>  +application can choose the size of the DMABUFs as well as how many 
->> it
->>  +allocates. E.g. two DMABUFs would be a traditional double buffering
->>  +scheme. But using a higher number might be necessary to avoid
->>  +underflow/overflow situations in the presence of scheduling 
->> latencies.
->>  +
->>  +2. User API
->>  +===========
->>  +
->>  +``IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req *)``
->>  +----------------------------------------------------------------
->>  +
->>  +Each call will allocate a new DMABUF object. The return value (if 
->> not
->>  +a negative errno value as error) will be the file descriptor of 
->> the new
->>  +DMABUF.
->>  +
->>  +``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *)``
->>  +--------------------------------------------------------
->>  +
->>  +Place the DMABUF object into the queue pending for hardware 
->> process.
->>  +
->>  +These two IOCTLs have to be performed on the IIO buffer's file
->>  +descriptor (either opened from the corresponding /dev/iio:deviceX, 
->> or
->>  +obtained using the `IIO_BUFFER_GET_FD_IOCTL` ioctl).
->>  +
->>  +3. Usage
->>  +========
->>  +
->>  +To access the data stored in a block by userspace the block must be
->>  +mapped to the process's memory. This is done by calling mmap() on 
->> the
->>  +DMABUF's file descriptor.
->>  +
->>  +Before accessing the data through the map, you must use the
->>  +DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
->>  +DMA_BUF_SYNC_START flag, to make sure that the data is available.
->>  +This call may block until the hardware is done with this block. 
->> Once
->>  +you are done reading or writing the data, you must use this ioctl 
->> again
->>  +with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF to the
->>  +kernel's queue.
->>  +
->>  +If you need to know when the hardware is done with a DMABUF, you 
->> can
->>  +poll its file descriptor for the EPOLLOUT event.
->>  +
->>  +Finally, to destroy a DMABUF object, simply call close() on its 
->> file
->>  +descriptor.
->>  +
->>  +For more information about manipulating DMABUF objects, see: 
->> :ref:`dma-buf`.
->>  +
->>  +A typical workflow for the new interface is:
->>  +
->>  +    for block in blocks:
->>  +      DMABUF_ALLOC block
->>  +      mmap block
->>  +
->>  +    enable buffer
->>  +
->>  +    while !done
->>  +      for block in blocks:
->>  +        DMABUF_ENQUEUE block
->>  +
->>  +        DMABUF_SYNC_START block
->>  +        process data
->>  +        DMABUF_SYNC_END block
->>  +
->>  +    disable buffer
->>  +
->>  +    for block in blocks:
->>  +      close block
->>  diff --git a/Documentation/iio/index.rst 
->> b/Documentation/iio/index.rst
->>  index 58b7a4ebac51..9ce799fbf262 100644
->>  --- a/Documentation/iio/index.rst
->>  +++ b/Documentation/iio/index.rst
->>  @@ -10,3 +10,5 @@ Industrial I/O
->>      iio_configfs
->> 
->>      ep93xx_adc
->>  +
->>  +   dmabuf_api
-> 
-> Given this is core stuff rather than driver specific, perhaps move it 
-> up a few lines?
+>> [...]
+>> @@ -442,28 +435,33 @@ EXPORT_SYMBOL_GPL(iio_dma_buffer_disable);
+>>   static void iio_dma_buffer_enqueue(struct iio_dma_buffer_queue 
+>> *queue,
+>>   	struct iio_dma_buffer_block *block)
+>>   {
+>> -	if (block->state == IIO_BLOCK_STATE_DEAD) {
+>> +	if (block->state == IIO_BLOCK_STATE_DEAD)
+>>   		iio_buffer_block_put(block);
+>> -	} else if (queue->active) {
+>> +	else if (queue->active)
+>>   		iio_dma_buffer_submit_block(queue, block);
+>> -	} else {
+>> +	else
+>>   		block->state = IIO_BLOCK_STATE_QUEUED;
+>> -		list_add_tail(&block->head, &queue->incoming);
+> If iio_dma_buffer_enqueue() is called with a dmabuf and the buffer is 
+> not active, it will be marked as queued, but we don't actually keep a 
+> reference to it anywhere. It will never be submitted to the DMA, and 
+> it will never be signaled as completed.
 
-Alright.
+We do keep a reference to the buffers, in the queue->fileio.blocks 
+array. When the buffer is enabled, all the blocks in that array that 
+are in the "queued" state will be submitted to the DMA.
 
 Cheers,
 -Paul

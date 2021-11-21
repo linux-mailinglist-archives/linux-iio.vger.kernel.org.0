@@ -2,21 +2,21 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C721458414
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Nov 2021 15:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C92AB458436
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Nov 2021 15:55:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237304AbhKUO3Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Nov 2021 09:29:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51900 "EHLO mail.kernel.org"
+        id S238255AbhKUO6w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Nov 2021 09:58:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55418 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236798AbhKUO3Q (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Nov 2021 09:29:16 -0500
+        id S238071AbhKUO6v (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Sun, 21 Nov 2021 09:58:51 -0500
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3DD81604E9;
-        Sun, 21 Nov 2021 14:26:08 +0000 (UTC)
-Date:   Sun, 21 Nov 2021 14:31:02 +0000
+        by mail.kernel.org (Postfix) with ESMTPSA id 972786069B;
+        Sun, 21 Nov 2021 14:55:44 +0000 (UTC)
+Date:   Sun, 21 Nov 2021 15:00:37 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
@@ -27,12 +27,12 @@ Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linaro-mm-sig@lists.linaro.org
-Subject: Re: [PATCH 07/15] iio: core: Add new DMABUF interface
- infrastructure
-Message-ID: <20211121143102.0ae208eb@jic23-huawei>
-In-Reply-To: <20211115141925.60164-8-paul@crapouillou.net>
+Subject: Re: [PATCH 11/15] iio: buffer-dma: Boost performance using
+ write-combine cache setting
+Message-ID: <20211121150037.2a606be0@jic23-huawei>
+In-Reply-To: <20211115141925.60164-12-paul@crapouillou.net>
 References: <20211115141925.60164-1-paul@crapouillou.net>
-        <20211115141925.60164-8-paul@crapouillou.net>
+        <20211115141925.60164-12-paul@crapouillou.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,234 +41,180 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 Nov 2021 14:19:17 +0000
+On Mon, 15 Nov 2021 14:19:21 +0000
 Paul Cercueil <paul@crapouillou.net> wrote:
 
-> Add the necessary infrastructure to the IIO core to support a new DMABUF
-> based interface.
-> 
-> The advantage of this new DMABUF based interface vs. the read()
-> interface, is that it avoids an extra copy of the data between the
-> kernel and userspace. This is particularly userful for high-speed
-> devices which produce several megabytes or even gigabytes of data per
-> second.
-> 
-> The data in this new DMABUF interface is managed at the granularity of
-> DMABUF objects. Reducing the granularity from byte level to block level
-> is done to reduce the userspace-kernelspace synchronization overhead
-> since performing syscalls for each byte at a few Mbps is just not
-> feasible.
-> 
-> This of course leads to a slightly increased latency. For this reason an
-> application can choose the size of the DMABUFs as well as how many it
-> allocates. E.g. two DMABUFs would be a traditional double buffering
-> scheme. But using a higher number might be necessary to avoid
-> underflow/overflow situations in the presence of scheduling latencies.
-> 
-> As part of the interface, 2 new IOCTLs have been added:
-> 
-> IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req *):
->  Each call will allocate a new DMABUF object. The return value (if not
->  a negative errno value as error) will be the file descriptor of the new
->  DMABUF.
-> 
-> IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *):
->  Place the DMABUF object into the queue pending for hardware process.
-> 
-> These two IOCTLs have to be performed on the IIO buffer's file
-> descriptor (either opened from the corresponding /dev/iio:deviceX, or
-> obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl).
+> We can be certain that the input buffers will only be accessed by
+> userspace for reading, and output buffers will mostly be accessed by
+> userspace for writing.
 
-Unrelated to this patch except tangentially.  Maybe we should enable
-new buffer features only on the IIO_BUFFER_GET_FD_IOCTL() route as
-we probably want to deprecate the old interfaces due to the it only
-supporting a single buffer / datastream per device.
-
-Possibly something for another day...
-
-Nothing to add on actual code...
-
-Jonathan
+Mostly?  Perhaps a little more info on why that's not 'only'.
 
 > 
-> To access the data stored in a block by userspace the block must be
-> mapped to the process's memory. This is done by calling mmap() on the
-> DMABUF's file descriptor.
+> Therefore, it makes more sense to use only fully cached input buffers,
+> and to use the write-combine cache coherency setting for output buffers.
 > 
-> Before accessing the data through the map, you must use the
-> DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
-> DMA_BUF_SYNC_START flag, to make sure that the data is available.
-> This call may block until the hardware is done with this block. Once
-> you are done reading or writing the data, you must use this ioctl again
-> with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF to the
-> kernel's queue.
+> This boosts performance, as the data written to the output buffers does
+> not have to be sync'd for coherency. It will halve performance if the
+> userspace application tries to read from the output buffer, but this
+> should never happen.
 > 
-> If you need to know when the hardware is done with a DMABUF, you can
-> poll its file descriptor for the EPOLLOUT event.
-> 
-> Finally, to destroy a DMABUF object, simply call close() on its file
-> descriptor.
-> 
-> A typical workflow for the new interface is:
-> 
->   for block in blocks:
->     DMABUF_ALLOC block
->     mmap block
-> 
->   enable buffer
-> 
->   while !done
->     for block in blocks:
->       DMABUF_ENQUEUE block
-> 
->       DMABUF_SYNC_START block
->       process data
->       DMABUF_SYNC_END block
-> 
->   disable buffer
-> 
->   for block in blocks:
->     close block
+> Since we don't need to sync the cache when disabling CPU access either
+> for input buffers or output buffers, the .end_cpu_access() callback can
+> be dropped completely.
+
+We have an odd mix of coherent and non coherent DMA in here as you noted,
+but are you sure this is safe on all platforms?
+
 > 
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+
+Any numbers to support this patch?  The mapping types are performance
+optimisations so nice to know how much of a difference they make.
+
+
 > ---
->  drivers/iio/industrialio-buffer.c | 44 +++++++++++++++++++++++++++++++
->  include/linux/iio/buffer_impl.h   |  8 ++++++
->  include/uapi/linux/iio/buffer.h   | 29 ++++++++++++++++++++
->  3 files changed, 81 insertions(+)
+>  drivers/iio/buffer/industrialio-buffer-dma.c | 82 +++++++++++++-------
+>  1 file changed, 54 insertions(+), 28 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index e180728914c0..30910e6c2346 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -17,6 +17,7 @@
->  #include <linux/fs.h>
->  #include <linux/cdev.h>
->  #include <linux/slab.h>
-> +#include <linux/mm.h>
->  #include <linux/poll.h>
->  #include <linux/sched/signal.h>
+> diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c b/drivers/iio/buffer/industrialio-buffer-dma.c
+> index 92356ee02f30..fb39054d8c15 100644
+> --- a/drivers/iio/buffer/industrialio-buffer-dma.c
+> +++ b/drivers/iio/buffer/industrialio-buffer-dma.c
+> @@ -229,8 +229,33 @@ static int iio_buffer_dma_buf_mmap(struct dma_buf *dbuf,
+>  	if (vma->vm_ops->open)
+>  		vma->vm_ops->open(vma);
 >  
-> @@ -1585,12 +1586,55 @@ static long iio_device_buffer_getfd(struct iio_dev *indio_dev, unsigned long arg
->  	return ret;
+> -	return dma_mmap_pages(dev, vma, vma->vm_end - vma->vm_start,
+> -			      virt_to_page(block->vaddr));
+> +	if (block->queue->buffer.direction == IIO_BUFFER_DIRECTION_IN) {
+> +		/*
+> +		 * With an input buffer, userspace will only read the data and
+> +		 * never write. We can mmap the buffer fully cached.
+> +		 */
+> +		return dma_mmap_pages(dev, vma, vma->vm_end - vma->vm_start,
+> +				      virt_to_page(block->vaddr));
+> +	} else {
+> +		/*
+> +		 * With an output buffer, userspace will only write the data
+> +		 * and should rarely (if never) read from it. It is better to
+> +		 * use write-combine in this case.
+> +		 */
+> +		return dma_mmap_wc(dev, vma, block->vaddr, block->phys_addr,
+> +				   vma->vm_end - vma->vm_start);
+> +	}
+> +}
+> +
+> +static void iio_dma_buffer_free_dmamem(struct iio_dma_buffer_block *block)
+> +{
+> +	struct device *dev = block->queue->dev;
+> +	size_t size = PAGE_ALIGN(block->size);
+> +
+> +	if (block->queue->buffer.direction == IIO_BUFFER_DIRECTION_IN)
+> +		dma_free_coherent(dev, size, block->vaddr, block->phys_addr);
+> +	else
+> +		dma_free_wc(dev, size, block->vaddr, block->phys_addr);
 >  }
 >  
-> +static int iio_buffer_enqueue_dmabuf(struct iio_buffer *buffer,
-> +				     struct iio_dmabuf __user *user_buf)
-> +{
-> +	struct iio_dmabuf dmabuf;
-> +
-> +	if (!buffer->access->enqueue_dmabuf)
-> +		return -EPERM;
-> +
-> +	if (copy_from_user(&dmabuf, user_buf, sizeof(dmabuf)))
-> +		return -EFAULT;
-> +
-> +	if (dmabuf.flags & ~IIO_BUFFER_DMABUF_SUPPORTED_FLAGS)
-> +		return -EINVAL;
-> +
-> +	return buffer->access->enqueue_dmabuf(buffer, &dmabuf);
-> +}
-> +
-> +static int iio_buffer_alloc_dmabuf(struct iio_buffer *buffer,
-> +				   struct iio_dmabuf_alloc_req __user *user_req)
-> +{
-> +	struct iio_dmabuf_alloc_req req;
-> +
-> +	if (!buffer->access->alloc_dmabuf)
-> +		return -EPERM;
-> +
-> +	if (copy_from_user(&req, user_req, sizeof(req)))
-> +		return -EFAULT;
-> +
-> +	if (req.resv)
-> +		return -EINVAL;
-> +
-> +	return buffer->access->alloc_dmabuf(buffer, &req);
-> +}
-> +
->  static long iio_device_buffer_ioctl(struct iio_dev *indio_dev, struct file *filp,
->  				    unsigned int cmd, unsigned long arg)
->  {
-> +	struct iio_dev_buffer_pair *ib = filp->private_data;
-> +	struct iio_buffer *buffer = ib->buffer;
-> +	void __user *_arg = (void __user *)arg;
-> +
->  	switch (cmd) {
->  	case IIO_BUFFER_GET_FD_IOCTL:
->  		return iio_device_buffer_getfd(indio_dev, arg);
-> +	case IIO_BUFFER_DMABUF_ALLOC_IOCTL:
-> +		return iio_buffer_alloc_dmabuf(buffer, _arg);
-> +	case IIO_BUFFER_DMABUF_ENQUEUE_IOCTL:
-> +		/* TODO: support non-blocking enqueue operation */
-> +		return iio_buffer_enqueue_dmabuf(buffer, _arg);
->  	default:
->  		return IIO_IOCTL_UNHANDLED;
->  	}
-> diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
-> index e2ca8ea23e19..728541bc2c63 100644
-> --- a/include/linux/iio/buffer_impl.h
-> +++ b/include/linux/iio/buffer_impl.h
-> @@ -39,6 +39,9 @@ struct iio_buffer;
->   *                      device stops sampling. Calles are balanced with @enable.
->   * @release:		called when the last reference to the buffer is dropped,
->   *			should free all resources allocated by the buffer.
-> + * @alloc_dmabuf:	called from userspace via ioctl to allocate one DMABUF.
-> + * @enqueue_dmabuf:	called from userspace via ioctl to queue this DMABUF
-> + *			object to this buffer. Requires a valid DMABUF fd.
->   * @modes:		Supported operating modes by this buffer type
->   * @flags:		A bitmask combination of INDIO_BUFFER_FLAG_*
->   *
-> @@ -68,6 +71,11 @@ struct iio_buffer_access_funcs {
+>  static void iio_buffer_dma_buf_release(struct dma_buf *dbuf)
+> @@ -243,9 +268,7 @@ static void iio_buffer_dma_buf_release(struct dma_buf *dbuf)
 >  
->  	void (*release)(struct iio_buffer *buffer);
+>  	mutex_lock(&queue->lock);
 >  
-> +	int (*alloc_dmabuf)(struct iio_buffer *buffer,
-> +			    struct iio_dmabuf_alloc_req *req);
-> +	int (*enqueue_dmabuf)(struct iio_buffer *buffer,
-> +			      struct iio_dmabuf *block);
-> +
->  	unsigned int modes;
->  	unsigned int flags;
+> -	dma_free_coherent(queue->dev, PAGE_ALIGN(block->size),
+> -			  block->vaddr, block->phys_addr);
+> -
+> +	iio_dma_buffer_free_dmamem(block);
+>  	kfree(block);
+>  
+>  	queue->num_blocks--;
+> @@ -268,19 +291,6 @@ static int iio_buffer_dma_buf_begin_cpu_access(struct dma_buf *dbuf,
+>  	return 0;
+>  }
+>  
+> -static int iio_buffer_dma_buf_end_cpu_access(struct dma_buf *dbuf,
+> -					     enum dma_data_direction dma_dir)
+> -{
+> -	struct iio_dma_buffer_block *block = dbuf->priv;
+> -	struct device *dev = block->queue->dev;
+> -
+> -	/* We only need to sync the cache for output buffers */
+> -	if (block->queue->buffer.direction == IIO_BUFFER_DIRECTION_OUT)
+> -		dma_sync_single_for_device(dev, block->phys_addr, block->size, dma_dir);
+> -
+> -	return 0;
+> -}
+> -
+>  static const struct dma_buf_ops iio_dma_buffer_dmabuf_ops = {
+>  	.attach			= iio_buffer_dma_buf_attach,
+>  	.map_dma_buf		= iio_buffer_dma_buf_map,
+> @@ -288,9 +298,28 @@ static const struct dma_buf_ops iio_dma_buffer_dmabuf_ops = {
+>  	.mmap			= iio_buffer_dma_buf_mmap,
+>  	.release		= iio_buffer_dma_buf_release,
+>  	.begin_cpu_access	= iio_buffer_dma_buf_begin_cpu_access,
+> -	.end_cpu_access		= iio_buffer_dma_buf_end_cpu_access,
 >  };
-> diff --git a/include/uapi/linux/iio/buffer.h b/include/uapi/linux/iio/buffer.h
-> index 13939032b3f6..e4621b926262 100644
-> --- a/include/uapi/linux/iio/buffer.h
-> +++ b/include/uapi/linux/iio/buffer.h
-> @@ -5,6 +5,35 @@
->  #ifndef _UAPI_IIO_BUFFER_H_
->  #define _UAPI_IIO_BUFFER_H_
 >  
-> +#include <linux/types.h>
+> +static int iio_dma_buffer_alloc_dmamem(struct iio_dma_buffer_block *block)
+> +{
+> +	struct device *dev = block->queue->dev;
+> +	size_t size = PAGE_ALIGN(block->size);
 > +
-> +#define IIO_BUFFER_DMABUF_SUPPORTED_FLAGS	0x00000000
+> +	if (block->queue->buffer.direction == IIO_BUFFER_DIRECTION_IN) {
+> +		block->vaddr = dma_alloc_coherent(dev, size,
+> +						  &block->phys_addr,
+> +						  GFP_KERNEL);
+> +	} else {
+> +		block->vaddr = dma_alloc_wc(dev, size,
+> +					    &block->phys_addr,
+> +					    GFP_KERNEL);
+> +	}
+> +	if (!block->vaddr)
+> +		return -ENOMEM;
 > +
-> +/**
-> + * struct iio_dmabuf_alloc_req - Descriptor for allocating IIO DMABUFs
-> + * @size:	the size of a single DMABUF
-> + * @resv:	reserved
-> + */
-> +struct iio_dmabuf_alloc_req {
-> +	__u64 size;
-> +	__u64 resv;
-> +};
+> +	return 0;
+> +}
 > +
-> +/**
-> + * struct iio_dmabuf - Descriptor for a single IIO DMABUF object
-> + * @fd:		file descriptor of the DMABUF object
-> + * @flags:	one or more IIO_BUFFER_DMABUF_* flags
-> + * @bytes_used:	number of bytes used in this DMABUF for the data transfer.
-> + *		If zero, the full buffer is used.
-> + */
-> +struct iio_dmabuf {
-> +	__u32 fd;
-> +	__u32 flags;
-> +	__u64 bytes_used;
-> +};
-> +
->  #define IIO_BUFFER_GET_FD_IOCTL			_IOWR('i', 0x91, int)
-> +#define IIO_BUFFER_DMABUF_ALLOC_IOCTL		_IOW('i', 0x92, struct iio_dmabuf_alloc_req)
-> +#define IIO_BUFFER_DMABUF_ENQUEUE_IOCTL		_IOW('i', 0x93, struct iio_dmabuf)
+>  static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
+>  	struct iio_dma_buffer_queue *queue, size_t size, bool fileio)
+>  {
+> @@ -303,12 +332,12 @@ static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
+>  	if (!block)
+>  		return ERR_PTR(-ENOMEM);
 >  
->  #endif /* _UAPI_IIO_BUFFER_H_ */
+> -	block->vaddr = dma_alloc_coherent(queue->dev, PAGE_ALIGN(size),
+> -		&block->phys_addr, GFP_KERNEL);
+> -	if (!block->vaddr) {
+> -		err = -ENOMEM;
+> +	block->size = size;
+> +	block->queue = queue;
+> +
+> +	err = iio_dma_buffer_alloc_dmamem(block);
+> +	if (err)
+>  		goto err_free_block;
+> -	}
+>  
+>  	einfo.ops = &iio_dma_buffer_dmabuf_ops;
+>  	einfo.size = PAGE_ALIGN(size);
+> @@ -322,10 +351,8 @@ static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
+>  	}
+>  
+>  	block->dmabuf = dmabuf;
+> -	block->size = size;
+>  	block->bytes_used = size;
+>  	block->state = IIO_BLOCK_STATE_DONE;
+> -	block->queue = queue;
+>  	block->fileio = fileio;
+>  	INIT_LIST_HEAD(&block->head);
+>  
+> @@ -338,8 +365,7 @@ static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
+>  	return block;
+>  
+>  err_free_dma:
+> -	dma_free_coherent(queue->dev, PAGE_ALIGN(size),
+> -			  block->vaddr, block->phys_addr);
+> +	iio_dma_buffer_free_dmamem(block);
+>  err_free_block:
+>  	kfree(block);
+>  	return ERR_PTR(err);
 

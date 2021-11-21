@@ -2,196 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15D7745844D
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Nov 2021 16:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C664584AD
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Nov 2021 17:23:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238370AbhKUPIk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Nov 2021 10:08:40 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56184 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232721AbhKUPIj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 21 Nov 2021 10:08:39 -0500
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 620A16069B;
-        Sun, 21 Nov 2021 15:05:32 +0000 (UTC)
-Date:   Sun, 21 Nov 2021 15:10:26 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
+        id S238461AbhKUQ0r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Nov 2021 11:26:47 -0500
+Received: from www381.your-server.de ([78.46.137.84]:34030 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237804AbhKUQ0r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Nov 2021 11:26:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=oZVCnlPC3T6cEUOtCE9ILr/4ExEi3Cvw3mp4gMnNg/4=; b=Q+8ikT8LHTflCRifKN7/GdmmFu
+        AjbGDFjvXhBwuj7G0SN3oOEl7CzyOJaxw3/NcsU4DV4aboW68kayZEtYcOFXbwvYwaD2HP+HkJjpp
+        VznB5LMl2SuskGBaIUi8Qo55mJaihRRvyxAveX1yMWcyNSXmoLpX/HaZi7Q/vnaxtEGOC/FCv1OT0
+        73052P+KU+aN/RkhrXeJYArqT4Z8/Fpwpx4fOTrMeF27eSJ9JV/0lY992WBqPpBdxhE1ZjdS4FgtI
+        pHr/ZD0kIwY7YC02lhb1vi4+hk0hyVzvoFPV96E+gtn2DvysrOt5Vr3KrXgyXxwHvNlqk3qkqtXEx
+        ln/6SXTg==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mopcu-0008HE-57; Sun, 21 Nov 2021 17:23:36 +0100
+Received: from [82.135.83.112] (helo=[192.168.178.20])
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mopct-000Qqa-T4; Sun, 21 Nov 2021 17:23:35 +0100
+Subject: Re: [PATCH 01/15] iio: buffer-dma: Get rid of incoming/outgoing
+ queues
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <jic23@kernel.org>
 Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linaro-mm-sig@lists.linaro.org
-Subject: Re: [PATCH 15/15] Documentation: iio: Document high-speed DMABUF
- based API
-Message-ID: <20211121151026.0cc95f40@jic23-huawei>
-In-Reply-To: <20211115142243.60605-4-paul@crapouillou.net>
 References: <20211115141925.60164-1-paul@crapouillou.net>
-        <20211115142243.60605-1-paul@crapouillou.net>
-        <20211115142243.60605-4-paul@crapouillou.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+ <20211115141925.60164-2-paul@crapouillou.net>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <e2689f0d-dc16-2519-57df-d98caadb07b0@metafoo.de>
+Date:   Sun, 21 Nov 2021 17:23:35 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20211115141925.60164-2-paul@crapouillou.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26360/Sun Nov 21 10:19:26 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 Nov 2021 14:22:43 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
-
-> Document the new DMABUF based API.
-> 
+On 11/15/21 3:19 PM, Paul Cercueil wrote:
+> The buffer-dma code was using two queues, incoming and outgoing, to
+> manage the state of the blocks in use.
+>
+> While this totally works, it adds some complexity to the code,
+> especially since the code only manages 2 blocks. It is much easier to
+> just check each block's state manually, and keep a counter for the next
+> block to dequeue.
+>
+> Since the new DMABUF based API wouldn't use these incoming and outgoing
+> queues anyway, getting rid of them now makes the upcoming changes
+> simpler.
+>
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-
-Hi Paul,
-
-A few trivial things inline but looks good to me if we do end up using DMABUF
-anyway.
-
-Jonathan
-
-> ---
->  Documentation/driver-api/dma-buf.rst |  2 +
->  Documentation/iio/dmabuf_api.rst     | 94 ++++++++++++++++++++++++++++
->  Documentation/iio/index.rst          |  2 +
->  3 files changed, 98 insertions(+)
->  create mode 100644 Documentation/iio/dmabuf_api.rst
-> 
-> diff --git a/Documentation/driver-api/dma-buf.rst b/Documentation/driver-api/dma-buf.rst
-> index 2cd7db82d9fe..d3c9b58d2706 100644
-> --- a/Documentation/driver-api/dma-buf.rst
-> +++ b/Documentation/driver-api/dma-buf.rst
-> @@ -1,3 +1,5 @@
-> +.. _dma-buf:
-> +
-
-Why this change?
-
->  Buffer Sharing and Synchronization
->  ==================================
->  
-> diff --git a/Documentation/iio/dmabuf_api.rst b/Documentation/iio/dmabuf_api.rst
-> new file mode 100644
-> index 000000000000..b4e120a4ef0c
-> --- /dev/null
-> +++ b/Documentation/iio/dmabuf_api.rst
-> @@ -0,0 +1,94 @@
-> +===================================
-> +High-speed DMABUF interface for IIO
-> +===================================
-> +
-> +1. Overview
-> +===========
-> +
-> +The Industrial I/O subsystem supports access to buffers through a file-based
-> +interface, with read() and write() access calls through the IIO device's dev
-> +node.
-> +
-> +It additionally supports a DMABUF based interface, where the userspace
-> +application can allocate and append DMABUF objects to the buffer's queue.
-
-I would note somewhere that this interface is optional for a given IIO driver.
-I don't want people to start assuming their i2c ADC will support this and
-wondering why it doesn't work :)
-
-> +
-> +The advantage of this DMABUF based interface vs. the fileio
-> +interface, is that it avoids an extra copy of the data between the
-> +kernel and userspace. This is particularly userful for high-speed
-> +devices which produce several megabytes or even gigabytes of data per
-> +second.
-> +
-> +The data in this DMABUF interface is managed at the granularity of
-> +DMABUF objects. Reducing the granularity from byte level to block level
-> +is done to reduce the userspace-kernelspace synchronization overhead
-> +since performing syscalls for each byte at a few Mbps is just not
-> +feasible.
-> +
-> +This of course leads to a slightly increased latency. For this reason an
-> +application can choose the size of the DMABUFs as well as how many it
-> +allocates. E.g. two DMABUFs would be a traditional double buffering
-> +scheme. But using a higher number might be necessary to avoid
-> +underflow/overflow situations in the presence of scheduling latencies.
-> +
-> +2. User API
-> +===========
-> +
-> +``IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req *)``
-> +----------------------------------------------------------------
-> +
-> +Each call will allocate a new DMABUF object. The return value (if not
-> +a negative errno value as error) will be the file descriptor of the new
-> +DMABUF.
-> +
-> +``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *)``
-> +--------------------------------------------------------
-> +
-> +Place the DMABUF object into the queue pending for hardware process.
-> +
-> +These two IOCTLs have to be performed on the IIO buffer's file
-> +descriptor (either opened from the corresponding /dev/iio:deviceX, or
-> +obtained using the `IIO_BUFFER_GET_FD_IOCTL` ioctl).
-> +
-> +3. Usage
-> +========
-> +
-> +To access the data stored in a block by userspace the block must be
-> +mapped to the process's memory. This is done by calling mmap() on the
-> +DMABUF's file descriptor.
-> +
-> +Before accessing the data through the map, you must use the
-> +DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
-> +DMA_BUF_SYNC_START flag, to make sure that the data is available.
-> +This call may block until the hardware is done with this block. Once
-> +you are done reading or writing the data, you must use this ioctl again
-> +with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF to the
-> +kernel's queue.
-> +
-> +If you need to know when the hardware is done with a DMABUF, you can
-> +poll its file descriptor for the EPOLLOUT event.
-> +
-> +Finally, to destroy a DMABUF object, simply call close() on its file
-> +descriptor.
-> +
-> +For more information about manipulating DMABUF objects, see: :ref:`dma-buf`.
-> +
-> +A typical workflow for the new interface is:
-> +
-> +    for block in blocks:
-> +      DMABUF_ALLOC block
-> +      mmap block
-> +
-> +    enable buffer
-> +
-> +    while !done
-> +      for block in blocks:
-> +        DMABUF_ENQUEUE block
-> +
-> +        DMABUF_SYNC_START block
-> +        process data
-> +        DMABUF_SYNC_END block
-> +
-> +    disable buffer
-> +
-> +    for block in blocks:
-> +      close block
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index 58b7a4ebac51..9ce799fbf262 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -10,3 +10,5 @@ Industrial I/O
->     iio_configfs
->  
->     ep93xx_adc
-> +
-> +   dmabuf_api
-
-Given this is core stuff rather than driver specific, perhaps move it up a few lines?
-
+The outgoing queue is going to be replaced by fences, but I think we 
+need to keep the incoming queue.
+> [...]
+> @@ -442,28 +435,33 @@ EXPORT_SYMBOL_GPL(iio_dma_buffer_disable);
+>   static void iio_dma_buffer_enqueue(struct iio_dma_buffer_queue *queue,
+>   	struct iio_dma_buffer_block *block)
+>   {
+> -	if (block->state == IIO_BLOCK_STATE_DEAD) {
+> +	if (block->state == IIO_BLOCK_STATE_DEAD)
+>   		iio_buffer_block_put(block);
+> -	} else if (queue->active) {
+> +	else if (queue->active)
+>   		iio_dma_buffer_submit_block(queue, block);
+> -	} else {
+> +	else
+>   		block->state = IIO_BLOCK_STATE_QUEUED;
+> -		list_add_tail(&block->head, &queue->incoming);
+If iio_dma_buffer_enqueue() is called with a dmabuf and the buffer is 
+not active, it will be marked as queued, but we don't actually keep a 
+reference to it anywhere. It will never be submitted to the DMA, and it 
+will never be signaled as completed.
 

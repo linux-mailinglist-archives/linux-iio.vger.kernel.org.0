@@ -2,148 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA814599D8
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 02:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9E3D459BD6
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 06:41:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232316AbhKWBz4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 22 Nov 2021 20:55:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231857AbhKWBzz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Nov 2021 20:55:55 -0500
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55CB0C061714
-        for <linux-iio@vger.kernel.org>; Mon, 22 Nov 2021 17:52:48 -0800 (PST)
-Received: by mail-io1-xd32.google.com with SMTP id z18so25890718iof.5
-        for <linux-iio@vger.kernel.org>; Mon, 22 Nov 2021 17:52:48 -0800 (PST)
+        id S232386AbhKWFou (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 00:44:50 -0500
+Received: from alexa-out.qualcomm.com ([129.46.98.28]:13087 "EHLO
+        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229569AbhKWFot (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 00:44:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=7Oi7YYe6mXZ9qFhiItC3cT+zBCj+1FGQIOXFSu9z5Og=;
-        b=EMJHfp61byAPVM0d+YSPglX9cQhq+7ayPyr9zRTzuSPcvvgnxyLMG1ltK8vjfaD0FU
-         tlPYxbO7NtBZeDgMPNcJJoHVx+Je8+bWQnN+DVWW1NrLrqmC5gQjAph9/LWH4uiuxcYY
-         wd41pmLNfefVdVvVpoPO9twaon39sVO4IspOU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=7Oi7YYe6mXZ9qFhiItC3cT+zBCj+1FGQIOXFSu9z5Og=;
-        b=fDG4xL97KITkesGWdXJUchWNIYhQVXka1ynDQoHfT52yqwxMvnfuh7CAeLVkuTqN6d
-         7A7m5S5AE8FsTTaWp5o3yZjYpgAofrOW0j16mdIdeZVcwV0CewBhZXXYsaxYsAYqSWrE
-         IisUxlUqnk4nemxUHisUF1AOCSpOcXir9HCr+ABUO3fh0jwQlWsxGchR5BRG6KcqRjjn
-         H71FQYvTdyeM6Paea0pyl5L2vCo7x5+hwvoX6xUTk5B1xzSqcFFlHnN/4FQASaYljAhI
-         V7HG/DBG14YZvgaFpcv8991UOTbMoKHsnlUdRDqM4KG0MevxZb3tndn5kil4Dg7GHvhH
-         +ZYA==
-X-Gm-Message-State: AOAM533kXZYo/ToSFz+oRxxlSddymti8Ufbw+vtfcmx8KReRiguxw1ZN
-        G/kwkCEOolKz5MGcI1AY8c4Ikg==
-X-Google-Smtp-Source: ABdhPJwFYEXqq9O3YpMuHp49czIlbhiXDJHljcLoM+vErOaDm/O2cJ+JlOI+DmxoJkJ4K5f7Ve5+nA==
-X-Received: by 2002:a05:6638:14ca:: with SMTP id l10mr1120728jak.107.1637632367373;
-        Mon, 22 Nov 2021 17:52:47 -0800 (PST)
-Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id d137sm6102931iof.16.2021.11.22.17.52.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Nov 2021 17:52:47 -0800 (PST)
-Message-ID: <5936f811-fa48-33e9-2a1a-66c68f74aa5e@ieee.org>
-Date:   Mon, 22 Nov 2021 19:52:43 -0600
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1637646102; x=1669182102;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=do2mX1IYLdhTF85SRnI3fSCwd5EsDMDOd+Ow9oL3y1k=;
+  b=twXjnC5IHFM6hf5YItopIbbFoQFfHTuBebdD1oIrdfibzfiJ+SOjKIW+
+   dr1G9MvF4Dsrhk9WxV89vSD2jMm/nz5poUJH9yue89K2sfKW+5mIUS3x0
+   XrN8TSQognQJhZezGlpgeGHIrYu2uty7Dj1J7MYf3UJoYmdQeDwUx/P7f
+   g=;
+Received: from ironmsg08-lv.qualcomm.com ([10.47.202.152])
+  by alexa-out.qualcomm.com with ESMTP; 22 Nov 2021 21:41:41 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg08-lv.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2021 21:41:40 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Mon, 22 Nov 2021 21:41:39 -0800
+Received: from [10.216.52.57] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Mon, 22 Nov
+ 2021 21:41:30 -0800
+Subject: Re: [PATCH V2 3/3] thermal: qcom: add support for PMIC5 Gen2 ADCTM
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <agross@kernel.org>, <bjorn.andersson@linaro.org>,
+        <devicetree@vger.kernel.org>, <mka@chromium.org>,
+        <robh+dt@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <manivannan.sadhasivam@linaro.org>,
+        <linus.walleij@linaro.org>, <quic_kgunda@quicinc.com>,
+        <quic_aghayal@quicinc.com>, <daniel.lezcano@linaro.org>,
+        <rui.zhang@intel.com>, <quic_subbaram@quicinc.com>,
+        <jic23@kernel.org>, <Jonathan.Cameron@huawei.com>,
+        <amitk@kernel.org>, Thara Gopinath <thara.gopinath@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>
+References: <1635264275-12530-1-git-send-email-quic_jprakash@quicinc.com>
+ <1635264275-12530-4-git-send-email-quic_jprakash@quicinc.com>
+ <e4099135-d453-3f16-5330-1925d38617aa@linaro.org>
+From:   Jishnu Prakash <quic_jprakash@quicinc.com>
+Message-ID: <67505d1d-7058-820b-d08e-48795306e044@quicinc.com>
+Date:   Tue, 23 Nov 2021 11:11:24 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
- helpers
+In-Reply-To: <e4099135-d453-3f16-5330-1925d38617aa@linaro.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-References: <cover.1637592133.git.geert+renesas@glider.be>
- <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
- <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-From:   Alex Elder <elder@ieee.org>
-In-Reply-To: <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/22/21 10:32 AM, Johannes Berg wrote:
-> On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
->> The existing FIELD_{GET,PREP}() macros are limited to compile-time
->> constants.  However, it is very common to prepare or extract bitfield
->> elements where the bitfield mask is not a compile-time constant.
+Hi Dmitry,
+
+On 10/27/2021 8:04 AM, Dmitry Baryshkov wrote:
+> On 26/10/2021 19:04, Jishnu Prakash wrote:
+>> Add support for PMIC5 Gen2 ADC_TM, used on PMIC7 chips. It is a
+>> close counterpart of PMIC7 ADC and has the same functionality as
+>> PMIC5 ADC_TM, for threshold monitoring and interrupt generation.
+>> It is present on PMK8350 alone, like PMIC7 ADC and can be used
+>> to monitor up to 8 ADC channels, from any of the PMIC7 PMICs
+>> having ADC on a target, through PBS(Programmable Boot Sequence).
 >>
-> 
-> I'm not sure it's really a good idea to add a third API here?
-> 
-> We have the upper-case (constant) versions, and already
-> {u32,...}_get_bits()/etc.
+>> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+>> ---
+>>   drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 418 
+>> +++++++++++++++++++++++++++++--
+>>   1 file changed, 399 insertions(+), 19 deletions(-)
+>>
+>>       unsigned int        hw_settle_time;
+>> +    unsigned int        decimation;    /* For Gen2 ADC_TM */
+>> +    unsigned int        avg_samples;    /* For Gen2 ADC_TM */
+>> +    bool            high_thr_en;        /* For Gen2 ADC_TM */
+>> +    bool            low_thr_en;        /* For Gen2 ADC_TM */
+>> +    bool            meas_en;        /* For Gen2 ADC_TM */
+>>       struct iio_channel    *iio;
+>>       struct adc_tm5_chip    *chip;
+>>       struct thermal_zone_device *tzd;
+>> @@ -123,9 +201,12 @@ struct adc_tm5_channel {
+>>    * @channels: array of ADC TM channel data.
+>>    * @nchannels: amount of channels defined/allocated
+>>    * @decimation: sampling rate supported for the channel.
+>> + *      Applies to all channels, used only on Gen1 ADC_TM.
+>>    * @avg_samples: ability to provide single result from the ADC
+>> - *    that is an average of multiple measurements.
+>> + *      that is an average of multiple measurements. Applies to all
+>> + *      channels, used only on Gen1 ADC_TM.
+>>    * @base: base address of TM registers.
+>> + * @adc_mutex_lock: ADC_TM mutex lock.
+>
+> Please specify that it is used only for gen2 and that it keeps written 
+> and cached channel setup in sync (feel free to correct this 
+> description according to your understanding, I might be wrong here).
 
-I've used these a lot (and personally prefer the lower-case ones).
 
-Your new macros don't do anything to ensure the field mask is
-of the right form, which is basically:  (2 ^ width - 1) << shift
-
-I really like the property that the field mask must be constant.
-
-That being said, I've had to use some strange coding patterns
-in order to adhere to the "const only" rule in a few cases.
-So if you can come up with a satisfactory naming scheme I'm
-all for it.
-
-					-Alex
+I'll add to the description in the next post.
 
 
+>>    */
+>>   struct adc_tm5_chip {
+>>       struct regmap        *regmap;
+>> @@ -136,14 +217,15 @@ struct adc_tm5_chip {
+>>       unsigned int        decimation;
+>>       unsigned int        avg_samples;
+>>       u16            base;
+>> +    struct mutex        adc_mutex_lock;
+>>   };
+>>   -static const struct adc_tm5_data adc_tm5_data_pmic = {
+>> -    .full_scale_code_volt = 0x70e4,
+>> -    .decimation = (unsigned int []) { 250, 420, 840 },
+>> -    .hw_settle = (unsigned int []) { 15, 100, 200, 300, 400, 500, 
+>> 600, 700,
+>> -                     1000, 2000, 4000, 8000, 16000, 32000,
+>> -                     64000, 128000 },
+>> +enum adc_tm_gen2_time_select {
+>> +    MEAS_INT_50MS = 0,
+>> +    MEAS_INT_100MS,
+>> +    MEAS_INT_1S,
+>> +    MEAS_INT_SET,
+>> +    MEAS_INT_NONE,
+>>   };
+>
+> Move this enum to the top, closer to the rest of definitions.
 
-> Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
-> architectures (afaict), so that seems a bit awkward.
-> 
-> Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
-> if it is indeed a constant? The __field_overflow() usage is already only
-> done if __builtin_constant_p(v), so I guess we can do the same with
-> __bad_mask()?
-> 
-> johannes
-> 
 
+Will move it in the next post
+
+
+>
+>>     static int adc_tm5_read(struct adc_tm5_chip *adc_tm, u16 offset, 
+>> u8 *data, int len)
+>> @@ -210,6 +292,61 @@ static irqreturn_t adc_tm5_isr(int irq, void *data)
+>>       return IRQ_HANDLED;
+>>   }
+>>   +static irqreturn_t adc_tm5_gen2_isr(int irq, void *data)
+>> +{
+>>           tzd = devm_thermal_zone_of_sensor_register(adc_tm->dev,
+>>                                  adc_tm->channels[i].channel,
+>>                                  &adc_tm->channels[i],
+>> -                               &adc_tm5_ops);
+>> +                               &adc_tm5_thermal_ops);
+>>           if (IS_ERR(tzd)) {
+>>               if (PTR_ERR(tzd) == -ENODEV) {
+>>                   dev_warn(adc_tm->dev, "thermal sensor on channel %d 
+>> is not used\n",
+>> @@ -395,6 +710,11 @@ static int adc_tm5_init(struct adc_tm5_chip *chip)
+>>           }
+>>       }
+>>   +    if (chip-->data->gen == ADC_TM5_GEN2) {
+>> +        mutex_init(&chip->adc_mutex_lock);
+>> +        return ret;
+>> +    }
+>> +
+>
+> Just init the mutex always, there is no need to be so picky in the 
+> init code.
+Will fix it in the next post.
+>
+>>       buf[0] = chip->decimation;
+>>       buf[1] = chip->avg_samples | ADC_TM5_FAST_AVG_EN;
+>>       buf[2] = ADC_TM5_TIMER1;
+>> @@ -415,7 +735,7 @@ static int adc_tm5_get_dt_channel_data(struct 
+>> adc_tm5_chip *adc_tm,
+>>                          struct device_node *node)
+>>       { }
+>>   };
+>>   MODULE_DEVICE_TABLE(of, adc_tm5_match_table);
+>>
+Thanks,
+Jishnu

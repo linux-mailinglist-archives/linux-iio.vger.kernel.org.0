@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 452C045ADE8
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 702F745ADEC
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239058AbhKWVJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:09:33 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40048 "EHLO mail.kernel.org"
+        id S239430AbhKWVJh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:09:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40054 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238022AbhKWVJb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:09:31 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 420AD60FED;
-        Tue, 23 Nov 2021 21:06:22 +0000 (UTC)
+        id S237964AbhKWVJe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:09:34 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EFFC16023D;
+        Tue, 23 Nov 2021 21:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701583;
-        bh=VLoubZjlIS5eHX4fjOA/NQuRCd8tIeG8I8+uigcgBkM=;
+        s=k20201202; t=1637701585;
+        bh=5jWEHRBmoLS7XJAh5YmBDGscoU22UHiZj6sFthn0gTI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M3huh4nLqwzuFHuFd9axJlLxJfp3rrpSxoVtgYcAXFQWgI+9nSH6UqXWTmEiq5YLc
-         29T1vhT9KmtSSFW5XUwI97szM7Uux/LQxzxbIa6YSvBchALzzuFrwT5y3xyPMGbBvf
-         Yd/Sa0xy1JbMSjRIqPcUIzlj9LcYQAcbCcPgoDCFkU5E7H6hl+C7YAqQw1FH7Ulg8M
-         MdM0jCloMYfqWRFC7J6w3IBijuRUyFUifMki0NuM2U9O/MU9Y8fFHG18/jLQR1puR5
-         XYOT88XN6nUGAwsl2B4McValtNpCyjyWzckKVRFwwRJ6tli/ap67yL3hRoP7PKPzmQ
-         42QfOlJe/UbbA==
+        b=I5X1H/iS3RIh2zFrb4qfSZihj8NNPIxlUW8SP0kku0GvUNWBQolEBwQQE7dFqtZ7A
+         gqV6U8+21UrhwT+eOz00hShlpS1dt6KIgYMEPP2rp4Bch3I1NNNssFo9I2BXl8lwNz
+         zpKl+8WW9iAVpwMTI3irnExguAJa7lhHJPzB75KJPshPgHmWlKVJSo3FwMeT+tqMEB
+         eFK3VWSzNsgrgEIpwbwriccAo3gTXPg2b4FuvrCLoUIHPd6Qa+ld5crWwC7OG9yRvX
+         ibxbXI26QuUotmt2tOW4vqQdiPUHf0frP8HAoPRvHcqeSlGAg01crbQL5jKx5/LMJZ
+         uefkB1zMr+uUw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 17/49] iio:adc:rcar: Switch from CONFIG_PM guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:09:47 +0000
-Message-Id: <20211123211019.2271440-18-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+Subject: [PATCH 18/49] iio:adc:rockchip: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:09:48 +0000
+Message-Id: <20211123211019.2271440-19-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -43,57 +44,59 @@ X-Mailing-List: linux-iio@vger.kernel.org
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 Letting the compiler remove these functions when the kernel is built
-without CONFIG_PM support is simpler and less error prone than the
-use of #ifdef based config guards.
+without CONFIG_PM_SLEEP support is simpler and less error prone than the
+use of ifdef based config guards.
 
 Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/rcar-gyroadc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+The pm_ptr() macro only removes the reference if CONFIG_PM is not
+set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
+will not always remove the pm_ops structure.
 
-diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-index a48895046408..947d72457066 100644
---- a/drivers/iio/adc/rcar-gyroadc.c
-+++ b/drivers/iio/adc/rcar-gyroadc.c
-@@ -578,8 +578,7 @@ static int rcar_gyroadc_remove(struct platform_device *pdev)
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+---
+ drivers/iio/adc/rockchip_saradc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
+index 14b8df4ca9c8..fb3b59d76a97 100644
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -481,8 +481,7 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
+ 	return devm_iio_device_register(&pdev->dev, indio_dev);
+ }
+ 
+-#ifdef CONFIG_PM_SLEEP
+-static int rockchip_saradc_suspend(struct device *dev)
++static __maybe_unused int rockchip_saradc_suspend(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct rockchip_saradc *info = iio_priv(indio_dev);
+@@ -494,7 +493,7 @@ static int rockchip_saradc_suspend(struct device *dev)
  	return 0;
  }
  
--#if defined(CONFIG_PM)
--static int rcar_gyroadc_suspend(struct device *dev)
-+static __maybe_unused int rcar_gyroadc_suspend(struct device *dev)
+-static int rockchip_saradc_resume(struct device *dev)
++static __maybe_unused int rockchip_saradc_resume(struct device *dev)
  {
  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct rcar_gyroadc *priv = iio_priv(indio_dev);
-@@ -589,7 +588,7 @@ static int rcar_gyroadc_suspend(struct device *dev)
- 	return 0;
- }
+ 	struct rockchip_saradc *info = iio_priv(indio_dev);
+@@ -514,7 +513,6 @@ static int rockchip_saradc_resume(struct device *dev)
  
--static int rcar_gyroadc_resume(struct device *dev)
-+static __maybe_unused int rcar_gyroadc_resume(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct rcar_gyroadc *priv = iio_priv(indio_dev);
-@@ -598,9 +597,8 @@ static int rcar_gyroadc_resume(struct device *dev)
- 
- 	return 0;
+ 	return ret;
  }
 -#endif
  
--static const struct dev_pm_ops rcar_gyroadc_pm_ops = {
-+static __maybe_unused  const struct dev_pm_ops rcar_gyroadc_pm_ops = {
- 	SET_RUNTIME_PM_OPS(rcar_gyroadc_suspend, rcar_gyroadc_resume, NULL)
- };
- 
-@@ -610,7 +608,7 @@ static struct platform_driver rcar_gyroadc_driver = {
- 	.driver         = {
- 		.name		= DRIVER_NAME,
- 		.of_match_table	= rcar_gyroadc_match,
--		.pm		= &rcar_gyroadc_pm_ops,
-+		.pm		= pm_ptr(&rcar_gyroadc_pm_ops),
+ static SIMPLE_DEV_PM_OPS(rockchip_saradc_pm_ops,
+ 			 rockchip_saradc_suspend, rockchip_saradc_resume);
+@@ -524,7 +522,7 @@ static struct platform_driver rockchip_saradc_driver = {
+ 	.driver		= {
+ 		.name	= "rockchip-saradc",
+ 		.of_match_table = rockchip_saradc_match,
+-		.pm	= &rockchip_saradc_pm_ops,
++		.pm	= pm_ptr(&rockchip_saradc_pm_ops),
  	},
  };
  

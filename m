@@ -2,147 +2,196 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D37DC45A7B7
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 17:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B4645AD34
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 21:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230356AbhKWQf2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 11:35:28 -0500
-Received: from mail-ua1-f42.google.com ([209.85.222.42]:42617 "EHLO
-        mail-ua1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234281AbhKWQf0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 11:35:26 -0500
-Received: by mail-ua1-f42.google.com with SMTP id t13so44868621uad.9;
-        Tue, 23 Nov 2021 08:32:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V9TIRszl8dgvuwgR6nhL0A0nOi/JDggQAeXQjF3xH3Y=;
-        b=VKa3hFWLqY+/OtL0PTiZF4DLCLK07pPe0KVvYhyaCA70YwmGx2rlsI70rE5kr2wyQ+
-         oIbnrtTqEn3FBcUYgddEGjtdeRfS//0v7fCaRwrQvT2ActbSi2gcXq/hd/LL+0YQFnlv
-         cVq2oMvcUEb2tzi6V8NgsoxiSc4aclMTECIV+gDdZYzNvR/7k0FHiX3aS2EUQjphSsru
-         rdlfwgpkaz9mzI+RNi1uORSHomLA4qn7ShemKnoi8eTbRQjZl+9+psihshJIKXEQq84N
-         bzv+Z8xL+bVZUAMjha+7vlUTt7P/d+POvoiu2VsmPEHqE3sqm+FvGcTojwSuj0BFz0hf
-         Xjsw==
-X-Gm-Message-State: AOAM5313FUF1F/RX6je30Rlo79WJCEgrxKZ0MwyBJMBNwRLok/0rTEuM
-        1TBqjYm04K+RU5Wg9G+IlXgFi0/2YwvTYwBM
-X-Google-Smtp-Source: ABdhPJyszXvo4yp8uEtdldHH020MjHk7hIZxcaJ+iT/idyXQC9pfreWyP51D4YgUbH6wWFmlQL4rfA==
-X-Received: by 2002:ab0:2508:: with SMTP id j8mr10526408uan.16.1637685137194;
-        Tue, 23 Nov 2021 08:32:17 -0800 (PST)
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
-        by smtp.gmail.com with ESMTPSA id s2sm6600879uap.7.2021.11.23.08.32.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Nov 2021 08:32:16 -0800 (PST)
-Received: by mail-ua1-f43.google.com with SMTP id t13so44868505uad.9;
-        Tue, 23 Nov 2021 08:32:16 -0800 (PST)
-X-Received: by 2002:a9f:3e01:: with SMTP id o1mr10338972uai.89.1637685125903;
- Tue, 23 Nov 2021 08:32:05 -0800 (PST)
+        id S237077AbhKWU0u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 15:26:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46010 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235541AbhKWU0t (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 15:26:49 -0500
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 56BB760F5A;
+        Tue, 23 Nov 2021 20:23:39 +0000 (UTC)
+Date:   Tue, 23 Nov 2021 20:28:35 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Liam Beguin <liambeguin@gmail.com>, lars@metafoo.de,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v9 00/14] iio: afe: add temperature rescaling support
+Message-ID: <20211123202835.71e57e41@jic23-huawei>
+In-Reply-To: <156bc2fa-6754-2350-4a12-ff25b23ae8a2@axentia.se>
+References: <20211115034334.1713050-1-liambeguin@gmail.com>
+        <156bc2fa-6754-2350-4a12-ff25b23ae8a2@axentia.se>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <cover.1637592133.git.geert+renesas@glider.be> <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
- <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
- <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com> <12825803045d1cec0df968f72a9ef2724a2548fb.camel@sipsolutions.net>
-In-Reply-To: <12825803045d1cec0df968f72a9ef2724a2548fb.camel@sipsolutions.net>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 23 Nov 2021 17:31:54 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXwhO30gy42tfGSsEgJAjDOAkQ_cUXMMiSBjMsUj0nqaA@mail.gmail.com>
-Message-ID: <CAMuHMdXwhO30gy42tfGSsEgJAjDOAkQ_cUXMMiSBjMsUj0nqaA@mail.gmail.com>
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}() helpers
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-iio@vger.kernel.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Johannes,
+On Mon, 22 Nov 2021 01:53:44 +0100
+Peter Rosin <peda@axentia.se> wrote:
 
-On Tue, Nov 23, 2021 at 5:21 PM Johannes Berg <johannes@sipsolutions.net> wrote:
-> On Tue, 2021-11-23 at 09:30 +0100, Geert Uytterhoeven wrote:
-> > > We have the upper-case (constant) versions, and already
-> > > {u32,...}_get_bits()/etc.
-> >
-> > These don't work for non-const masks.
->
-> Obviously, I know that. Still, just saying.
->
-> I'm actually in the opposite camp to you I guess - I much prefer the
-> typed versions (u32_get_bits() and friends) over the FIELD_GET() macros
-> that are more magic.
->
-> Mostly though that's because the typed ones also have le32_/be32_/...
-> variants, which are tremendously useful, and so I prefer to use them all
-> across. In fact, I have considered in the past to just remove the upper-
-> case macros entirely but ... no time I guess.
+> Hi Liam!
+> 
+> On 2021-11-15 04:43, Liam Beguin wrote:
+> > Hi Jonathan, Peter,
+> > 
+> > Apologies for not getting back to you sooner. I got caught up on other
+> > work and wasn't able to dedicate time to this earlier. Hopefully, this
+> > time around, I'll be able to get this to the finish line :-)
+> > 
+> > I left out IIO_VAL_INT overflows for now, so that I can focus on getting
+> > the rest of these changes pulled in, but I don't mind adding a patch for
+> > that later on.
+> > 
+> > This series focuses on adding temperature rescaling support to the IIO
+> > Analog Front End (AFE) driver.
+> > 
+> > The first few patches address minor bugs in IIO inkernel functions, and
+> > prepare the AFE driver for the additional features.
+> > 
+> > The main changes to the AFE driver include an initial Kunit test suite,
+> > support for IIO_VAL_INT_PLUS_{NANO,MICRO} scales, and support for RTDs
+> > and temperature transducer sensors.
+> > 
+> > Thanks for your time,  
+> 
+> And thanks for yours!
+> 
+> > Liam
+> > 
+> > Changes since v8:
+> > - reword comment
+> > - fix erroneous 64-bit division
+> > - optimize and use 32-bit divisions when values are know to not overflow
+> > - keep IIO_VAL_FRACTIONAL scale when possible, if not default to fixed
+> >   point  
+> 
+> This is not what is going on. Patch 9/14 will convert all fractional
+> scales to fixed point. But I would really like if you in the "reduce
+> risk of integer overflow" patch (8/14) would hold true to the above
+> and keep the fractional scale when possible and only fall back to
+> the less precise fractional-log case if any of the multiplications
+> needed for an exact fractional scale causes overflow.
+> 
+> The v8 discussion concluded that this was a valid approach, right?
+> 
+> I know you also said that the core exposes the scale with nano
+> precision in sysfs anyway, but that is not true for in-kernel
+> consumers. They have an easier time reading the "real" scale value
+> compared to going via the string representation of fixed point
+> returned from iio_format_value. At least the rescaler itself does so,
+> which means that chaining rescalers might suffer needless accuracy
+> degradation.
+> 
+> So, please add the overflow fallback thingy right away, it would make
+> me feel much better.
+> 
+> > - add test cases
+> > - use nano precision in test cases
+> > - simplify offset calculation in rtd_props()
+> > 
+> > Changes since v7:
+> > - drop gcd() logic in rescale_process_scale()
+> > - use div_s64() instead of do_div() for signed 64-bit divisions
+> > - combine IIO_VAL_FRACTIONAL and IIO_VAL_FRACTIONAL_LOG2 scale cases
+> > - switch to INT_PLUS_NANO when accuracy is lost with FRACTIONAL scales
+> > - rework test logic to allow for small relative error
+> > - rename test variables to align error output messages
+> > 
+> > Changes since v6:
+> > - rework IIO_VAL_INT_PLUS_{NANO,MICRO} based on Peter's suggestion
+> > - combine IIO_VAL_INT_PLUS_{NANO,MICRO} cases
+> > - add test cases for negative IIO_VAL_INT_PLUS_{NANO,MICRO} corner cases
+> > - force use of positive integers with gcd()
+> > - reduce risk of integer overflow in IIO_VAL_FRACTIONAL_LOG2
+> > - fix duplicate symbol build error
+> > - apply Reviewed-by
+> > 
+> > Changes since v5:
+> > - add include/linux/iio/afe/rescale.h
+> > - expose functions use to process scale and offset
+> > - add basic iio-rescale kunit test cases
+> > - fix integer overflow case
+> > - improve precision for IIO_VAL_FRACTIONAL_LOG2
+> > 
+> > Changes since v4:
+> > - only use gcd() when necessary in overflow mitigation
+> > - fix INT_PLUS_{MICRO,NANO} support
+> > - apply Reviewed-by
+> > - fix temperature-transducer bindings
+> > 
+> > Changes since v3:
+> > - drop unnecessary fallthrough statements
+> > - drop redundant local variables in some calculations
+> > - fix s64 divisions on 32bit platforms by using do_div
+> > - add comment describing iio-rescaler offset calculation
+> > - drop unnecessary MAINTAINERS entry
+> > 
+> > Changes since v2:
+> > - don't break implicit offset truncations
+> > - make a best effort to get a valid value for fractional types
+> > - drop return value change in iio_convert_raw_to_processed_unlocked()
+> > - don't rely on processed value for offset calculation
+> > - add INT_PLUS_{MICRO,NANO} support in iio-rescale
+> > - revert generic implementation in favor of temperature-sense-rtd and
+> >   temperature-transducer
+> > - add separate section to MAINTAINERS file
+> > 
+> > Changes since v1:
+> > - rebase on latest iio `testing` branch
+> > - also apply consumer scale on integer channel scale types
+> > - don't break implicit truncation in processed channel offset
+> >   calculation
+> > - drop temperature AFE flavors in favor of a simpler generic
+> >   implementation
+> > 
+> > Liam Beguin (14):
+> >   iio: inkern: apply consumer scale on IIO_VAL_INT cases
+> >   iio: inkern: apply consumer scale when no channel scale is available
+> >   iio: inkern: make a best effort on offset calculation
+> >   iio: afe: rescale: expose scale processing function
+> >   iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
+> >   iio: afe: rescale: add offset support
+> >   iio: afe: rescale: use s64 for temporary scale calculations
+> >   iio: afe: rescale: reduce risk of integer overflow
+> >   iio: afe: rescale: fix accuracy for small fractional scales  
+> 
+> Can you please swap the order of these two patches? (i.e. "reduce
+> risk..." and "fix accuracy...")
+> 
+> Basically, I think the accuracy of the IIO_VAL_FRACTIONAL_LOG2
+> case should be improved before the IIO_VAL_FRACTIONAL case is
+> joined with it. I.e. swap the order of 8/14 and 9/14 (or almost,
+> you need to also move the addition of the
+> scale_type == IIO_VAL_FRACTIONAL condition to the other patch in
+> order for it to make sense).
+> 
+> That's all I'm finding. But then again, I don't know what to do
+> about the 0day report on 10/14. It does say that it's a W=1
+> build, maybe we need not worry about it?
 
-OK, I have to think a bit about this.
-FTR, initially I didn't like the FIELD_{GET,PREP}() macros neither ;-)
+W=1 won't affect that undefined symbols error.
 
-> In fact, you have e.g. code in drivers/usb/chipidea/udc.c that does
-> things like cpu_to_le32(mul << __ffs(...)) - though in those cases it's
-> actually constant today, so you could already write it as
-> le32_encode_bits(...).
+I'd be cynical and assume it's a random issue, post a v10 perhaps
+with a note in the cover letter on this.
 
-Yeah, there are lots of opportunities for improvement for
-drivers/usb/chipidea/.  I didn't include a conversion patch for that
-driver, as it led me too deep into the rabbit hole, and I wanted to
-get something posted rather sooner than later...
+Jonathan
+> 
+> Cheers,
+> Peter
+> 
+> >   iio: test: add basic tests for the iio-rescale driver
+> >   iio: afe: rescale: add RTD temperature sensor support
+> >   iio: afe: rescale: add temperature transducers
+> >   dt-bindings: iio: afe: add bindings for temperature-sense-rtd
+> >   dt-bindings: iio: afe: add bindings for temperature transducers  
+> 
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

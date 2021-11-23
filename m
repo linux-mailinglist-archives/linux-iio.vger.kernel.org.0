@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A545845ADF9
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9B245ADFA
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239542AbhKWVKB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:10:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40288 "EHLO mail.kernel.org"
+        id S239569AbhKWVKD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:10:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239519AbhKWVKA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:10:00 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C5E516023D;
-        Tue, 23 Nov 2021 21:06:50 +0000 (UTC)
+        id S239519AbhKWVKC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:10:02 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D19B460FC3;
+        Tue, 23 Nov 2021 21:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701612;
-        bh=OqUrZbNfrw/lxzw5nXiwZa24qMe74byFZ+1ZbGr5xLg=;
+        s=k20201202; t=1637701614;
+        bh=MWnxfnxQN8e/ifm51CPV9IJI8JaJcetotdBLKgy3r78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FSCAHs07OzHNoic4yo0ilRMRzFfKPCcFKu8j3BZs1DVEfPsX7W1IimmZ/7gHCI5Ue
-         xhVsvV0XhCaEBCoQYTNZ1TfkiU5ohTZ3rVH0PUeCGYe07T7d7h1HM67PiThrA70IzT
-         8gIMbaYzEzB/B/cKoBjcCukgr1JGdfAd2bIbH3X8OFSzX+p4BVSKpXFtb1TYuNX013
-         awt7/yQi0byPToeiD39q8Kictgr0gCbuG5gelGWNzGuWQK+M3zGPJqLysiYmS/yZeZ
-         nYHmTIacMiiraCR7QuAj6g6c+QuSCiA1kjv0i5XoNYOLCDOiQZdyjcYr1eARm2uilx
-         KcCKIp0uu5LpQ==
+        b=JEyvTkNN3Z3VhHjuD2mbky/GglnmRnh2tKk8atyoXyi8MXiv1eoIwafSpVsEVQO5o
+         foW2EHuoAQj9iigWfhSKqL03v66HIs/CGKrYVOv2kymwVFMO5OdlmUpH/TxiE7uycV
+         jt9CZVansQfTWiHwiGoHLhaMddxyKOY7hmjOSdkx4hDUhN8u67617LQQ78i9a6QTFu
+         xCvcbJ5GUBh9KpNTNWnIb31M5eMMbJOi6fXBjEoQ1HOYJKhQhWodjhP748hzTSt2Xv
+         t3YOwFH+EdyJpfpgthKaD8/wo14STm43XkJQSmGpB+mbHcXo0VkFU5PFfoYotwCPL3
+         3QBCpoiWXnJXg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 31/49] iio:light:tcs3414: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:10:01 +0000
-Message-Id: <20211123211019.2271440-32-jic23@kernel.org>
+Subject: [PATCH 32/49] iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:10:02 +0000
+Message-Id: <20211123211019.2271440-33-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -55,47 +55,48 @@ will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/tcs3414.c | 8 +++-----
+ drivers/iio/light/tcs3472.c | 8 +++-----
  1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
-index b87222141429..e6e49054ddfa 100644
---- a/drivers/iio/light/tcs3414.c
-+++ b/drivers/iio/light/tcs3414.c
-@@ -345,22 +345,20 @@ static int tcs3414_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
+index 371c6a39a165..ff548a562fc2 100644
+--- a/drivers/iio/light/tcs3472.c
++++ b/drivers/iio/light/tcs3472.c
+@@ -572,15 +572,14 @@ static int tcs3472_remove(struct i2c_client *client)
+ 	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
--static int tcs3414_suspend(struct device *dev)
-+static __maybe_unused int tcs3414_suspend(struct device *dev)
+-static int tcs3472_suspend(struct device *dev)
++static __maybe_unused int tcs3472_suspend(struct device *dev)
  {
- 	struct tcs3414_data *data = iio_priv(i2c_get_clientdata(
+ 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
  		to_i2c_client(dev)));
- 	return tcs3414_powerdown(data);
+ 	return tcs3472_powerdown(data);
  }
  
--static int tcs3414_resume(struct device *dev)
-+static __maybe_unused int tcs3414_resume(struct device *dev)
+-static int tcs3472_resume(struct device *dev)
++static __maybe_unused int tcs3472_resume(struct device *dev)
  {
- 	struct tcs3414_data *data = iio_priv(i2c_get_clientdata(
+ 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
  		to_i2c_client(dev)));
- 	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
- 		data->control);
+@@ -598,7 +597,6 @@ static int tcs3472_resume(struct device *dev)
+ 
+ 	return ret;
  }
 -#endif
  
- static SIMPLE_DEV_PM_OPS(tcs3414_pm_ops, tcs3414_suspend, tcs3414_resume);
+ static SIMPLE_DEV_PM_OPS(tcs3472_pm_ops, tcs3472_suspend, tcs3472_resume);
  
-@@ -373,7 +371,7 @@ MODULE_DEVICE_TABLE(i2c, tcs3414_id);
- static struct i2c_driver tcs3414_driver = {
+@@ -611,7 +609,7 @@ MODULE_DEVICE_TABLE(i2c, tcs3472_id);
+ static struct i2c_driver tcs3472_driver = {
  	.driver = {
- 		.name	= TCS3414_DRV_NAME,
--		.pm	= &tcs3414_pm_ops,
-+		.pm	= pm_ptr(&tcs3414_pm_ops),
+ 		.name	= TCS3472_DRV_NAME,
+-		.pm	= &tcs3472_pm_ops,
++		.pm	= pm_ptr(&tcs3472_pm_ops),
  	},
- 	.probe		= tcs3414_probe,
- 	.id_table	= tcs3414_id,
+ 	.probe		= tcs3472_probe,
+ 	.remove		= tcs3472_remove,
 -- 
 2.34.0
 

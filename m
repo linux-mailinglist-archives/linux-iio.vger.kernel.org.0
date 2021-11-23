@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC4CB45ADE1
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C61A145ADE2
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234379AbhKWVJS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:09:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39932 "EHLO mail.kernel.org"
+        id S235026AbhKWVJU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:09:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39948 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234770AbhKWVJS (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:09:18 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 80DBB6023D;
-        Tue, 23 Nov 2021 21:06:08 +0000 (UTC)
+        id S234770AbhKWVJU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:09:20 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 587D161002;
+        Tue, 23 Nov 2021 21:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701569;
-        bh=YSAF/cR1QrA94lzb39v6u1KPLGp6BBtsaNFmQiq2Dfo=;
+        s=k20201202; t=1637701571;
+        bh=zmcemhX4xrSn50Y56+iehhczcDkGUI+jtEy/bGqjrdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=grV3/ghxjnujyqIagWH+N0DJiBfw1EQg/WpuFpb1aCnjAzB4oM40ar+Vsyd1QaNh4
-         2aA46b9410GmHrGyJRGnpOWekxWs410ZwM8d2GNhy1yjzo3tbr5Wl8wuzSVbxaFLha
-         fsveaMDGkqD0Qp86ifN/X5bVXDTI24Hfjc6PklhVG0WBoWoTyZGM4R/HdACuL9pizy
-         LKU9sJgm9Dlpe3INdKs6TC7g2jD784hqbqOjo6NFsHRMoY78xkltdWqAmmiUPEHGjT
-         sPn+v8a5hlVk7efGiKMqfZLlLv+CmGrrplnGy53TLtPRQpB/HUV7kXQcBqIm1n0E4l
-         j+qN4z2qTFlRw==
+        b=AJSpS7jzNYZADA/DY0/uh4mMLqoAFFIpXzKO7gyqhAmuIwiKYQ5h7PhqWuxeZ98tg
+         m7lwbGwGnfQA1qRNbEToDW2A+1jSZISXe/+g34Uvki6azTtb38negAzUabUGNEPDdg
+         7LbpkEbqrD6PeT/j9nK+NJK8H+2IocHwPPz7Uq/RKrn6YaepVMJRqTNhclSEi3XdST
+         kwv6cxmcai7O7jdR8bZeITn6kTLta9GA3vG8TYHyeoNBhgr7ggnUMrL56E5SIPZ0EU
+         NCGkbLaUmIdXIYZNBmEVKtpuw4yWUH7AzSxShNeDeAhT2zZhhc/71Qsum7xMBAi0n0
+         4I2fVt33vVlPA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 10/49] iio:accel:kxsd9: Switch from CONFIG_PM guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:09:40 +0000
-Message-Id: <20211123211019.2271440-11-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 11/49] iio:adc:ab8500: Switch from CONFIG_PM guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:09:41 +0000
+Message-Id: <20211123211019.2271440-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -50,71 +51,60 @@ Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/accel/kxsd9-i2c.c | 2 +-
- drivers/iio/accel/kxsd9-spi.c | 2 +-
- drivers/iio/accel/kxsd9.c     | 8 +++-----
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/iio/adc/ab8500-gpadc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/accel/kxsd9-i2c.c b/drivers/iio/accel/kxsd9-i2c.c
-index 274b41a6e603..ffe8066b4025 100644
---- a/drivers/iio/accel/kxsd9-i2c.c
-+++ b/drivers/iio/accel/kxsd9-i2c.c
-@@ -55,7 +55,7 @@ static struct i2c_driver kxsd9_i2c_driver = {
- 	.driver = {
- 		.name	= "kxsd9",
- 		.of_match_table = kxsd9_of_match,
--		.pm = &kxsd9_dev_pm_ops,
-+		.pm = pm_ptr(&kxsd9_dev_pm_ops),
- 	},
- 	.probe		= kxsd9_i2c_probe,
- 	.remove		= kxsd9_i2c_remove,
-diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
-index 441e6b764281..44edf39fc5ff 100644
---- a/drivers/iio/accel/kxsd9-spi.c
-+++ b/drivers/iio/accel/kxsd9-spi.c
-@@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, kxsd9_of_match);
- static struct spi_driver kxsd9_spi_driver = {
- 	.driver = {
- 		.name = "kxsd9",
--		.pm = &kxsd9_dev_pm_ops,
-+		.pm = pm_ptr(&kxsd9_dev_pm_ops),
- 		.of_match_table = kxsd9_of_match,
- 	},
- 	.probe = kxsd9_spi_probe,
-diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
-index 2faf85ca996e..f9954288914b 100644
---- a/drivers/iio/accel/kxsd9.c
-+++ b/drivers/iio/accel/kxsd9.c
-@@ -492,8 +492,7 @@ void kxsd9_common_remove(struct device *dev)
- }
- EXPORT_SYMBOL(kxsd9_common_remove);
+diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
+index 4c46a201d4ef..3905213e1bfa 100644
+--- a/drivers/iio/adc/ab8500-gpadc.c
++++ b/drivers/iio/adc/ab8500-gpadc.c
+@@ -942,8 +942,7 @@ static const struct iio_info ab8500_gpadc_info = {
+ 	.read_raw = ab8500_gpadc_read_raw,
+ };
  
 -#ifdef CONFIG_PM
--static int kxsd9_runtime_suspend(struct device *dev)
-+static __maybe_unused int kxsd9_runtime_suspend(struct device *dev)
+-static int ab8500_gpadc_runtime_suspend(struct device *dev)
++static __maybe_unused int ab8500_gpadc_runtime_suspend(struct device *dev)
  {
  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct kxsd9_state *st = iio_priv(indio_dev);
-@@ -501,16 +500,15 @@ static int kxsd9_runtime_suspend(struct device *dev)
- 	return kxsd9_power_down(st);
+ 	struct ab8500_gpadc *gpadc = iio_priv(indio_dev);
+@@ -953,7 +952,7 @@ static int ab8500_gpadc_runtime_suspend(struct device *dev)
+ 	return 0;
  }
  
--static int kxsd9_runtime_resume(struct device *dev)
-+static __maybe_unused int kxsd9_runtime_resume(struct device *dev)
+-static int ab8500_gpadc_runtime_resume(struct device *dev)
++static __maybe_unused int ab8500_gpadc_runtime_resume(struct device *dev)
  {
  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct kxsd9_state *st = iio_priv(indio_dev);
+ 	struct ab8500_gpadc *gpadc = iio_priv(indio_dev);
+@@ -965,7 +964,6 @@ static int ab8500_gpadc_runtime_resume(struct device *dev)
  
- 	return kxsd9_power_up(st);
+ 	return ret;
  }
--#endif /* CONFIG_PM */
+-#endif
  
--const struct dev_pm_ops kxsd9_dev_pm_ops = {
-+const __maybe_unused struct dev_pm_ops kxsd9_dev_pm_ops = {
+ /**
+  * ab8500_gpadc_parse_channel() - process devicetree channel configuration
+@@ -1199,7 +1197,7 @@ static int ab8500_gpadc_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static const struct dev_pm_ops ab8500_gpadc_pm_ops = {
++static __maybe_unused const struct dev_pm_ops ab8500_gpadc_pm_ops = {
  	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
  				pm_runtime_force_resume)
- 	SET_RUNTIME_PM_OPS(kxsd9_runtime_suspend,
+ 	SET_RUNTIME_PM_OPS(ab8500_gpadc_runtime_suspend,
+@@ -1212,7 +1210,7 @@ static struct platform_driver ab8500_gpadc_driver = {
+ 	.remove = ab8500_gpadc_remove,
+ 	.driver = {
+ 		.name = "ab8500-gpadc",
+-		.pm = &ab8500_gpadc_pm_ops,
++		.pm = pm_ptr(&ab8500_gpadc_pm_ops),
+ 	},
+ };
+ builtin_platform_driver(ab8500_gpadc_driver);
 -- 
 2.34.0
 

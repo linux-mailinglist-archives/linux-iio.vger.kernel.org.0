@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C868245ADFF
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:07:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5957C45AE03
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:07:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239706AbhKWVKW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:10:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40364 "EHLO mail.kernel.org"
+        id S239722AbhKWVK0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:10:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40372 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239711AbhKWVKN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:10:13 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 632F46023D;
-        Tue, 23 Nov 2021 21:07:03 +0000 (UTC)
+        id S239716AbhKWVKP (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:10:15 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6ED4260FC3;
+        Tue, 23 Nov 2021 21:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701624;
-        bh=pPyl3puDnQ2YVwDAg9Av2Db11yYm6u2B5Vk0Ez8BCMY=;
+        s=k20201202; t=1637701626;
+        bh=kztSKeAV/syJqtLcl2pqVaOWZUGwRM2EFsBo0VTIbTs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=de+U/FpRZNNmqe97RVGNlMZYygTp6bLLyXNfu748eyS/JJI9f17qvTo3siowCKyhx
-         glPVwfvj02kD5bpfevBNFdjhWE/+CAVR+xvuaWvApo6UkUbLkIpJOkTgqRddJcmaQ1
-         HSOVQalk6WzgfKqCIfaaW4YbwRgdrnc/ibw2VvUblMg1EVY0TeiA9d85Z2ao2ghhBW
-         mIGK7K4oTeti06WpiOfx8xV/qTFhwqxLVUJnwn9HUL2PYoGxFMORnoc1OJTwjeRyHl
-         /4D30k5/7Twfbmd5UvPCcq5xnggyLFzvHRYQsjgOHfGhYqm9Dr8er6HxhHVz72ShYd
-         QtgXUBl2dkBFw==
+        b=b3EbBgWprewG03SMm6wk43S6fn9pyBXRXut+Rmg//j+PHqBw2/pUPeSEuDhubt2vR
+         bA/3gLTCyr7+ewC3CVe5uE82DJqL4Y33hDKVHupWwt+rCGHObfWOOuTqDpYX2sxaz0
+         tkgywTUFhktnm25irADEBGSAifZCC+vra07w6TvNGUzYZgjjJikc68Ceoeb3Qh3RK9
+         ilDWG7b8L2UdkhSxZUp66nurrA95hfoEuoH7umdsOJ8nb8Yr5ZPbMDRzfG05eU+WnF
+         sg3IO/HI5T8dddIr4aymlpZRuteZyFX4/95ZAq3T796UFT86vQBOCYulrFSKXaBYTG
+         ZySC0XeUz4VgQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 37/49] iio:magn:hmc5843: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:10:07 +0000
-Message-Id: <20211123211019.2271440-38-jic23@kernel.org>
+Subject: [PATCH 38/49] iio:magn:mag3110: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:10:08 +0000
+Message-Id: <20211123211019.2271440-39-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -55,55 +55,52 @@ will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/magnetometer/hmc5843.h     | 5 -----
- drivers/iio/magnetometer/hmc5843_i2c.c | 2 +-
- drivers/iio/magnetometer/hmc5843_spi.c | 2 +-
- 3 files changed, 2 insertions(+), 7 deletions(-)
+ drivers/iio/magnetometer/mag3110.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
-index 9120c8bbf3dd..c3444f3ab1dc 100644
---- a/drivers/iio/magnetometer/hmc5843.h
-+++ b/drivers/iio/magnetometer/hmc5843.h
-@@ -55,13 +55,8 @@ void hmc5843_common_remove(struct device *dev);
- int hmc5843_common_suspend(struct device *dev);
- int hmc5843_common_resume(struct device *dev);
+diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
+index 17c62d806218..475fdff037f7 100644
+--- a/drivers/iio/magnetometer/mag3110.c
++++ b/drivers/iio/magnetometer/mag3110.c
+@@ -573,8 +573,7 @@ static int mag3110_remove(struct i2c_client *client)
+ 	return 0;
+ }
  
 -#ifdef CONFIG_PM_SLEEP
- static __maybe_unused SIMPLE_DEV_PM_OPS(hmc5843_pm_ops,
- 					hmc5843_common_suspend,
- 					hmc5843_common_resume);
--#define HMC5843_PM_OPS (&hmc5843_pm_ops)
+-static int mag3110_suspend(struct device *dev)
++static __maybe_unused int mag3110_suspend(struct device *dev)
+ {
+ 	struct mag3110_data *data = iio_priv(i2c_get_clientdata(
+ 		to_i2c_client(dev)));
+@@ -600,7 +599,7 @@ static int mag3110_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int mag3110_resume(struct device *dev)
++static __maybe_unused int mag3110_resume(struct device *dev)
+ {
+ 	struct mag3110_data *data = iio_priv(i2c_get_clientdata(
+ 		to_i2c_client(dev)));
+@@ -624,10 +623,6 @@ static int mag3110_resume(struct device *dev)
+ }
+ 
+ static SIMPLE_DEV_PM_OPS(mag3110_pm_ops, mag3110_suspend, mag3110_resume);
+-#define MAG3110_PM_OPS (&mag3110_pm_ops)
 -#else
--#define HMC5843_PM_OPS NULL
+-#define MAG3110_PM_OPS NULL
 -#endif
  
- #endif /* HMC5843_CORE_H */
-diff --git a/drivers/iio/magnetometer/hmc5843_i2c.c b/drivers/iio/magnetometer/hmc5843_i2c.c
-index bc6e12f1d521..a7359f439f10 100644
---- a/drivers/iio/magnetometer/hmc5843_i2c.c
-+++ b/drivers/iio/magnetometer/hmc5843_i2c.c
-@@ -93,7 +93,7 @@ MODULE_DEVICE_TABLE(of, hmc5843_of_match);
- static struct i2c_driver hmc5843_driver = {
+ static const struct i2c_device_id mag3110_id[] = {
+ 	{ "mag3110", 0 },
+@@ -645,7 +640,7 @@ static struct i2c_driver mag3110_driver = {
  	.driver = {
- 		.name	= "hmc5843",
--		.pm	= HMC5843_PM_OPS,
-+		.pm	= pm_ptr(&hmc5843_pm_ops),
- 		.of_match_table = hmc5843_of_match,
+ 		.name	= "mag3110",
+ 		.of_match_table = mag3110_of_match,
+-		.pm	= MAG3110_PM_OPS,
++		.pm	= pm_ptr(&mag3110_pm_ops),
  	},
- 	.id_table	= hmc5843_id,
-diff --git a/drivers/iio/magnetometer/hmc5843_spi.c b/drivers/iio/magnetometer/hmc5843_spi.c
-index 89cf59a62c28..c1bd2ff3c64a 100644
---- a/drivers/iio/magnetometer/hmc5843_spi.c
-+++ b/drivers/iio/magnetometer/hmc5843_spi.c
-@@ -90,7 +90,7 @@ MODULE_DEVICE_TABLE(spi, hmc5843_id);
- static struct spi_driver hmc5843_driver = {
- 		.driver = {
- 				.name = "hmc5843",
--				.pm = HMC5843_PM_OPS,
-+				.pm = pm_ptr(&hmc5843_pm_ops),
- 		},
- 		.id_table = hmc5843_id,
- 		.probe = hmc5843_spi_probe,
+ 	.probe = mag3110_probe,
+ 	.remove = mag3110_remove,
 -- 
 2.34.0
 

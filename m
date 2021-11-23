@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 544B4459E06
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 09:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79621459E3E
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 09:36:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233807AbhKWIdp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 03:33:45 -0500
-Received: from mail-pl1-f171.google.com ([209.85.214.171]:33687 "EHLO
-        mail-pl1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230516AbhKWIdp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 03:33:45 -0500
-Received: by mail-pl1-f171.google.com with SMTP id y7so16488285plp.0;
-        Tue, 23 Nov 2021 00:30:37 -0800 (PST)
+        id S234798AbhKWIjy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 03:39:54 -0500
+Received: from mail-pf1-f177.google.com ([209.85.210.177]:38702 "EHLO
+        mail-pf1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233911AbhKWIjx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 03:39:53 -0500
+Received: by mail-pf1-f177.google.com with SMTP id g18so18742942pfk.5;
+        Tue, 23 Nov 2021 00:36:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=tcMJT0SWmBGQBJ3SmOjoPLUb8FZNAvYeGhtoSVPIc5Y=;
-        b=VCwEKliL7vGRQmqGa4OMEbd1m3tRXMH4G3hTaAeVkGf6vCk+BkEwKON0qO4ojpIBu7
-         5S/RdfdBKMbTAP3mGoN+251WSN4Pwm8xoHQLwgCvGzqml9ewO+dTyZWiQV2YnuXx/Yhg
-         N7TZfP4FV0JTMOz0dfTOUmW8cZWl14TaywEiAwKhZfpsoXIpBKK3RGeNQbuwteft0deb
-         uGrSX4Ndb2OLiDQP3tKchxdSy4MxELRQmZz1QMt5WNHZY7m17ACOogdFlHjlR+G4H4aS
-         Sv0kDBU1DYI45fA1iO5iwjKbsy1aOvJLcVmgYavbHAFXvm6yuw/fsnK7EsoY6DqmYJdy
-         mo/Q==
-X-Gm-Message-State: AOAM533kPT0CAVTEBMKnvnV3a52WBPvXZ8G2ah3BroubBL9caLh/IMTz
-        Upra7T4xA08w3LqQso2MzT5FLDVYgcZlCg==
-X-Google-Smtp-Source: ABdhPJxqlamro1/ExJyGPSHWiNDEHJ4qDus6lyQwI/LLtsri6heukspgET3j/WYt8l2kuwABiNAxXw==
-X-Received: by 2002:a17:90b:4c4d:: with SMTP id np13mr724754pjb.233.1637656236892;
-        Tue, 23 Nov 2021 00:30:36 -0800 (PST)
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com. [209.85.215.171])
-        by smtp.gmail.com with ESMTPSA id ne7sm401026pjb.36.2021.11.23.00.30.36
+        bh=FgjXJ8P5x6753ZmnEdNgxnrYu2hwLrUsYessbs9ojVo=;
+        b=6658mnYGNQwqQmEDjlPo3znLOQEfgOzHdSus6KWXFVKYwu7zWi9pNohT4fK0jmGEDk
+         xiyuTgZB6oLHBbCpKiR1H5CzOH/DutGFi1hyiyMN9SFzzC61QVYqKLAI4d3RVSVr2os4
+         q7MTwZoC/48vT1amJkfO0uXme5b6YG7wM2vloZ1LEZAasKImO+nvq7eEpwPdNR+YtR+k
+         JieX/ILG8fH28X6hD+r1AfibuEZOqjEwub+dN1D6uRG+TAx9/VaGO4x1NVc+HXJ4QPA/
+         Q3oK5wq+eXVgIBUeShDyql2p+YMUn6tELhLbNeCZlJi1Q/lYjIZyJERHzXNFg1aKSfQa
+         0gyw==
+X-Gm-Message-State: AOAM532Gl5wxq1rdQ5Kuc/vCkH93Ougbo1cKa//5t67D0kWMMusrpcc/
+        b0Vlbq6Y4xeHUBc94H6QYAtrcmPHdVJAQg==
+X-Google-Smtp-Source: ABdhPJyd8QfC7Cy+/mmwqXLYGCzoHQwwEYBlNYTKQXB3doAopRICuRz5DDsjJ39sv+kJay1iSc3btg==
+X-Received: by 2002:a63:2245:: with SMTP id t5mr2589103pgm.436.1637656604742;
+        Tue, 23 Nov 2021 00:36:44 -0800 (PST)
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com. [209.85.210.171])
+        by smtp.gmail.com with ESMTPSA id k14sm8347539pga.65.2021.11.23.00.36.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Nov 2021 00:30:36 -0800 (PST)
-Received: by mail-pg1-f171.google.com with SMTP id q12so17660815pgh.5;
-        Tue, 23 Nov 2021 00:30:36 -0800 (PST)
-X-Received: by 2002:a67:af0a:: with SMTP id v10mr5521182vsl.35.1637656225413;
- Tue, 23 Nov 2021 00:30:25 -0800 (PST)
+        Tue, 23 Nov 2021 00:36:44 -0800 (PST)
+Received: by mail-pf1-f171.google.com with SMTP id o4so18720612pfp.13;
+        Tue, 23 Nov 2021 00:36:44 -0800 (PST)
+X-Received: by 2002:a67:c38f:: with SMTP id s15mr6604777vsj.50.1637656593105;
+ Tue, 23 Nov 2021 00:36:33 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1637592133.git.geert+renesas@glider.be> <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
- <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-In-Reply-To: <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+ <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net> <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 23 Nov 2021 09:30:14 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
-Message-ID: <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
+Date:   Tue, 23 Nov 2021 09:36:22 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
+Message-ID: <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
 Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}() helpers
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Tony Lindgren <tony@atomide.com>,
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
         Rajendra Nayak <rnayak@codeaurora.org>,
         Paul Walmsley <paul@pwsan.com>,
@@ -69,7 +70,6 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Ping-Ke Shih <pkshih@realtek.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -95,36 +95,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Johannes,
+Hi Jakub,
 
-On Mon, Nov 22, 2021 at 5:33 PM Johannes Berg <johannes@sipsolutions.net> wrote:
-> On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
-> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
-> > constants.  However, it is very common to prepare or extract bitfield
-> > elements where the bitfield mask is not a compile-time constant.
+On Tue, Nov 23, 2021 at 2:17 AM Jakub Kicinski <kuba@kernel.org> wrote:
+> On Mon, 22 Nov 2021 17:32:43 +0100 Johannes Berg wrote:
+> > On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
+> > > The existing FIELD_{GET,PREP}() macros are limited to compile-time
+> > > constants.  However, it is very common to prepare or extract bitfield
+> > > elements where the bitfield mask is not a compile-time constant.
 > >
+> > I'm not sure it's really a good idea to add a third API here?
 >
-> I'm not sure it's really a good idea to add a third API here?
+> +1
+
+Yeah, a smaller API is better.
+
+> > We have the upper-case (constant) versions, and already
+> > {u32,...}_get_bits()/etc.
+
+TBH, I don't like the *_get_bits() API: in general, u32_get_bits() does
+the same as FIELD_GET(), but the order of the parameters is different?
+(*_replace_bits() seems to be useful, though)
+
+That's why I picked field_{get,prep}().
+
+> > Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
+> > architectures (afaict), so that seems a bit awkward.
+> >
+> > Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
+> > if it is indeed a constant? The __field_overflow() usage is already only
+> > done if __builtin_constant_p(v), so I guess we can do the same with
+> > __bad_mask()?
 >
-> We have the upper-case (constant) versions, and already
-> {u32,...}_get_bits()/etc.
+> Either that or add decomposition macros. Are compilers still really bad
+> at passing small structs by value?
 
-These don't work for non-const masks.
-
-> Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
-> architectures (afaict), so that seems a bit awkward.
-
-That's a valid comment. Can be fixed by using a wrapper macro
-that checks if typeof(mask) == u64, and uses an __ffs64() version when
-needed.
-
-> Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
-> if it is indeed a constant? The __field_overflow() usage is already only
-> done if __builtin_constant_p(v), so I guess we can do the same with
-> __bad_mask()?
-
-Are all compilers smart enough to replace the division by
-field_multiplier(field) by a shift?
+Sorry, I don't get what you mean by adding decomposition macros.
+Can you please elaborate?
+Thanks!
 
 Gr{oetje,eeting}s,
 

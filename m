@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C68EC45ADDB
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8829B45ADDD
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbhKWVJO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S234224AbhKWVJO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Tue, 23 Nov 2021 16:09:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39880 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:39892 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234479AbhKWVJN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        id S234849AbhKWVJN (ORCPT <rfc822;linux-iio@vger.kernel.org>);
         Tue, 23 Nov 2021 16:09:13 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7C00C60FE6;
-        Tue, 23 Nov 2021 21:05:59 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BB08F60FE8;
+        Tue, 23 Nov 2021 21:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701561;
-        bh=rVzJEu9HkUXc7z2nTxYwPLNrr5h2cWKkNv8peMwL1pU=;
+        s=k20201202; t=1637701562;
+        bh=zjTDKYtu7+xOmlLzT29F3c1xP32583MjmftScP85638=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4XezPKU3QAEO2M4hwxelaIlizHaBhDUaZkw5IuTvmuaxOA14o8gqsJusPS+Brlhz
-         u/8mZF+pa9q8IWNwKySrfIdvLC27qk3Prlm6csw9X6xrUUU4olBi0uwdepfVqE6jTy
-         9GyB0p/Kyv780+m7VMoiIt5g2Yb/FcRfC5HVZaVlS1aZudqOnkahUJg/iC5RZ0/+rt
-         DJ3pBRJT/9TqptL5ZXqiBW1nsFvaqWTKEZ59DVICE1rAAefqbbJh0n/V4j1qTPtnQL
-         yfsz5ZfENqIuTHDG8mOWUwmPIChkO6A3ltfXzvPdWKunTq6UA9+1Z4rDrdVM7R9Lu8
-         Faa+6R6cpLC5g==
+        b=clc+6V/eR5Je7ci/0bD1TgQ964w/cA7TXaVUSUaCmQbrEF5kGBeK5eO2RDS7IG5cv
+         aOUsmvl5sC+uN0N3GLyyJqjvdvuPZOygh8H6NcR7SJ2wL45OoUhf0Jmuj0rZdKS5K2
+         HdjD9kjwLPflMKAuCPRrIPt9WUllh5qal3M7f63w4OnivHjXx0L5JyaUmn3VZo5bES
+         RqhN3XWqz3rboULcdVFr1b/YzLVgHawjEUemjwkUZbFSKzOKoMASFOQ8oSPXCSPtbh
+         UkSRypTt9UBi2CK0rA0BcP/MDqLlmsu84SXP0uAKNDImVyM+YGipd/boi32kLQ0H8o
+         kaMXm7NV56ixw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 05/49] iio:accel:mc3230: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:09:35 +0000
-Message-Id: <20211123211019.2271440-6-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 06/49] iio:accel:mma7660: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:09:36 +0000
+Message-Id: <20211123211019.2271440-7-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -55,51 +54,54 @@ set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
 will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/iio/accel/mc3230.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/iio/accel/mma7660.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/accel/mc3230.c b/drivers/iio/accel/mc3230.c
-index 735002b716f3..139c7f6839df 100644
---- a/drivers/iio/accel/mc3230.c
-+++ b/drivers/iio/accel/mc3230.c
-@@ -160,8 +160,7 @@ static int mc3230_remove(struct i2c_client *client)
- 	return mc3230_set_opcon(iio_priv(indio_dev), MC3230_MODE_OPCON_STANDBY);
+diff --git a/drivers/iio/accel/mma7660.c b/drivers/iio/accel/mma7660.c
+index 24b83ccdb950..e90463b88b91 100644
+--- a/drivers/iio/accel/mma7660.c
++++ b/drivers/iio/accel/mma7660.c
+@@ -222,8 +222,7 @@ static int mma7660_remove(struct i2c_client *client)
+ 	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
--static int mc3230_suspend(struct device *dev)
-+static __maybe_unused int mc3230_suspend(struct device *dev)
+-static int mma7660_suspend(struct device *dev)
++static __maybe_unused int mma7660_suspend(struct device *dev)
  {
- 	struct mc3230_data *data;
+ 	struct mma7660_data *data;
  
-@@ -170,7 +169,7 @@ static int mc3230_suspend(struct device *dev)
- 	return mc3230_set_opcon(data, MC3230_MODE_OPCON_STANDBY);
+@@ -232,7 +231,7 @@ static int mma7660_suspend(struct device *dev)
+ 	return mma7660_set_mode(data, MMA7660_MODE_STANDBY);
  }
  
--static int mc3230_resume(struct device *dev)
-+static __maybe_unused int mc3230_resume(struct device *dev)
+-static int mma7660_resume(struct device *dev)
++static __maybe_unused int mma7660_resume(struct device *dev)
  {
- 	struct mc3230_data *data;
+ 	struct mma7660_data *data;
  
-@@ -178,7 +177,6 @@ static int mc3230_resume(struct device *dev)
+@@ -243,11 +242,6 @@ static int mma7660_resume(struct device *dev)
  
- 	return mc3230_set_opcon(data, MC3230_MODE_OPCON_WAKE);
- }
+ static SIMPLE_DEV_PM_OPS(mma7660_pm_ops, mma7660_suspend, mma7660_resume);
+ 
+-#define MMA7660_PM_OPS (&mma7660_pm_ops)
+-#else
+-#define MMA7660_PM_OPS NULL
 -#endif
- 
- static SIMPLE_DEV_PM_OPS(mc3230_pm_ops, mc3230_suspend, mc3230_resume);
- 
-@@ -191,7 +189,7 @@ MODULE_DEVICE_TABLE(i2c, mc3230_i2c_id);
- static struct i2c_driver mc3230_driver = {
+-
+ static const struct i2c_device_id mma7660_i2c_id[] = {
+ 	{"mma7660", 0},
+ 	{}
+@@ -270,7 +264,7 @@ MODULE_DEVICE_TABLE(acpi, mma7660_acpi_id);
+ static struct i2c_driver mma7660_driver = {
  	.driver = {
- 		.name = "mc3230",
--		.pm = &mc3230_pm_ops,
-+		.pm = pm_ptr(&mc3230_pm_ops),
+ 		.name = "mma7660",
+-		.pm = MMA7660_PM_OPS,
++		.pm = pm_ptr(&mma7660_pm_ops),
+ 		.of_match_table = mma7660_of_match,
+ 		.acpi_match_table = ACPI_PTR(mma7660_acpi_id),
  	},
- 	.probe		= mc3230_probe,
- 	.remove		= mc3230_remove,
 -- 
 2.34.0
 

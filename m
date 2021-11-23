@@ -2,196 +2,277 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28B4645AD34
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 21:23:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7EB45ADD6
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:05:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237077AbhKWU0u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 15:26:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46010 "EHLO mail.kernel.org"
+        id S234219AbhKWVJA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:09:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39774 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235541AbhKWU0t (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 15:26:49 -0500
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 56BB760F5A;
-        Tue, 23 Nov 2021 20:23:39 +0000 (UTC)
-Date:   Tue, 23 Nov 2021 20:28:35 +0000
+        id S234200AbhKWVJA (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:09:00 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6187C6023D;
+        Tue, 23 Nov 2021 21:05:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637701551;
+        bh=zkpKaaOX32lV4HNWatRoEChQPa/PDtW8aIDHmyYcsUo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UxdZMxXhhKUXr7TGpCWBnT9vjnw4TXoxVxvxKyyjErwdkFwmRbrlNYN8DKBn1mNkw
+         9dJItXkORStom9okJBzUNPFTWWnfl3xqVaDXP2BMebvDT39/LqNHI3+USYPTqPZ5zO
+         40J8aZDSC+ACD28JBwIbAZm5u+UfNQlqb1zKno6DG1zuJtMH80v0ch0I0dOkpdATP8
+         EVxbdWofhQXLlNESa/MsuRjuvSKHATH+mQbgvBjWqyFIook9GV7XcGJlxNLGBaSRLI
+         gDv0ufwFYBzpWpjoEYIimS5HcIynNWMweZR/Pv3icSCptEAdzgjM+NOzSwjww+BayU
+         Xxw82MB11vmEw==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Liam Beguin <liambeguin@gmail.com>, lars@metafoo.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v9 00/14] iio: afe: add temperature rescaling support
-Message-ID: <20211123202835.71e57e41@jic23-huawei>
-In-Reply-To: <156bc2fa-6754-2350-4a12-ff25b23ae8a2@axentia.se>
-References: <20211115034334.1713050-1-liambeguin@gmail.com>
-        <156bc2fa-6754-2350-4a12-ff25b23ae8a2@axentia.se>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Anson Huang <anson.huang@nxp.com>,
+        Brian Masney <masneyb@onstation.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Martijn Braam <martijn@brixit.nl>,
+        Maslov Dmitry <maslovdmitry@seeed.cc>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
+        Vaishnav M A <vaishnav@beagleboard.org>
+Subject: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to __maybe_unused etc.
+Date:   Tue, 23 Nov 2021 21:09:30 +0000
+Message-Id: <20211123211019.2271440-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.34.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Nov 2021 01:53:44 +0100
-Peter Rosin <peda@axentia.se> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> Hi Liam!
-> 
-> On 2021-11-15 04:43, Liam Beguin wrote:
-> > Hi Jonathan, Peter,
-> > 
-> > Apologies for not getting back to you sooner. I got caught up on other
-> > work and wasn't able to dedicate time to this earlier. Hopefully, this
-> > time around, I'll be able to get this to the finish line :-)
-> > 
-> > I left out IIO_VAL_INT overflows for now, so that I can focus on getting
-> > the rest of these changes pulled in, but I don't mind adding a patch for
-> > that later on.
-> > 
-> > This series focuses on adding temperature rescaling support to the IIO
-> > Analog Front End (AFE) driver.
-> > 
-> > The first few patches address minor bugs in IIO inkernel functions, and
-> > prepare the AFE driver for the additional features.
-> > 
-> > The main changes to the AFE driver include an initial Kunit test suite,
-> > support for IIO_VAL_INT_PLUS_{NANO,MICRO} scales, and support for RTDs
-> > and temperature transducer sensors.
-> > 
-> > Thanks for your time,  
-> 
-> And thanks for yours!
-> 
-> > Liam
-> > 
-> > Changes since v8:
-> > - reword comment
-> > - fix erroneous 64-bit division
-> > - optimize and use 32-bit divisions when values are know to not overflow
-> > - keep IIO_VAL_FRACTIONAL scale when possible, if not default to fixed
-> >   point  
-> 
-> This is not what is going on. Patch 9/14 will convert all fractional
-> scales to fixed point. But I would really like if you in the "reduce
-> risk of integer overflow" patch (8/14) would hold true to the above
-> and keep the fractional scale when possible and only fall back to
-> the less precise fractional-log case if any of the multiplications
-> needed for an exact fractional scale causes overflow.
-> 
-> The v8 discussion concluded that this was a valid approach, right?
-> 
-> I know you also said that the core exposes the scale with nano
-> precision in sysfs anyway, but that is not true for in-kernel
-> consumers. They have an easier time reading the "real" scale value
-> compared to going via the string representation of fixed point
-> returned from iio_format_value. At least the rescaler itself does so,
-> which means that chaining rescalers might suffer needless accuracy
-> degradation.
-> 
-> So, please add the overflow fallback thingy right away, it would make
-> me feel much better.
-> 
-> > - add test cases
-> > - use nano precision in test cases
-> > - simplify offset calculation in rtd_props()
-> > 
-> > Changes since v7:
-> > - drop gcd() logic in rescale_process_scale()
-> > - use div_s64() instead of do_div() for signed 64-bit divisions
-> > - combine IIO_VAL_FRACTIONAL and IIO_VAL_FRACTIONAL_LOG2 scale cases
-> > - switch to INT_PLUS_NANO when accuracy is lost with FRACTIONAL scales
-> > - rework test logic to allow for small relative error
-> > - rename test variables to align error output messages
-> > 
-> > Changes since v6:
-> > - rework IIO_VAL_INT_PLUS_{NANO,MICRO} based on Peter's suggestion
-> > - combine IIO_VAL_INT_PLUS_{NANO,MICRO} cases
-> > - add test cases for negative IIO_VAL_INT_PLUS_{NANO,MICRO} corner cases
-> > - force use of positive integers with gcd()
-> > - reduce risk of integer overflow in IIO_VAL_FRACTIONAL_LOG2
-> > - fix duplicate symbol build error
-> > - apply Reviewed-by
-> > 
-> > Changes since v5:
-> > - add include/linux/iio/afe/rescale.h
-> > - expose functions use to process scale and offset
-> > - add basic iio-rescale kunit test cases
-> > - fix integer overflow case
-> > - improve precision for IIO_VAL_FRACTIONAL_LOG2
-> > 
-> > Changes since v4:
-> > - only use gcd() when necessary in overflow mitigation
-> > - fix INT_PLUS_{MICRO,NANO} support
-> > - apply Reviewed-by
-> > - fix temperature-transducer bindings
-> > 
-> > Changes since v3:
-> > - drop unnecessary fallthrough statements
-> > - drop redundant local variables in some calculations
-> > - fix s64 divisions on 32bit platforms by using do_div
-> > - add comment describing iio-rescaler offset calculation
-> > - drop unnecessary MAINTAINERS entry
-> > 
-> > Changes since v2:
-> > - don't break implicit offset truncations
-> > - make a best effort to get a valid value for fractional types
-> > - drop return value change in iio_convert_raw_to_processed_unlocked()
-> > - don't rely on processed value for offset calculation
-> > - add INT_PLUS_{MICRO,NANO} support in iio-rescale
-> > - revert generic implementation in favor of temperature-sense-rtd and
-> >   temperature-transducer
-> > - add separate section to MAINTAINERS file
-> > 
-> > Changes since v1:
-> > - rebase on latest iio `testing` branch
-> > - also apply consumer scale on integer channel scale types
-> > - don't break implicit truncation in processed channel offset
-> >   calculation
-> > - drop temperature AFE flavors in favor of a simpler generic
-> >   implementation
-> > 
-> > Liam Beguin (14):
-> >   iio: inkern: apply consumer scale on IIO_VAL_INT cases
-> >   iio: inkern: apply consumer scale when no channel scale is available
-> >   iio: inkern: make a best effort on offset calculation
-> >   iio: afe: rescale: expose scale processing function
-> >   iio: afe: rescale: add INT_PLUS_{MICRO,NANO} support
-> >   iio: afe: rescale: add offset support
-> >   iio: afe: rescale: use s64 for temporary scale calculations
-> >   iio: afe: rescale: reduce risk of integer overflow
-> >   iio: afe: rescale: fix accuracy for small fractional scales  
-> 
-> Can you please swap the order of these two patches? (i.e. "reduce
-> risk..." and "fix accuracy...")
-> 
-> Basically, I think the accuracy of the IIO_VAL_FRACTIONAL_LOG2
-> case should be improved before the IIO_VAL_FRACTIONAL case is
-> joined with it. I.e. swap the order of 8/14 and 9/14 (or almost,
-> you need to also move the addition of the
-> scale_type == IIO_VAL_FRACTIONAL condition to the other patch in
-> order for it to make sense).
-> 
-> That's all I'm finding. But then again, I don't know what to do
-> about the 0day report on 10/14. It does say that it's a W=1
-> build, maybe we need not worry about it?
+Note this series includes many drivers that are quite old and I'm not
+sure have active maintainers.  Hence if anyone has time to look at some
+of these beyond their own drivers and sanity check them it would be much
+appreciated!
 
-W=1 won't affect that undefined symbols error.
+Two motivations behind this set.
+1 - General code reduction and improvement in readability in these drivers.
+2 - Reduce change I'll have to ask people to change how they do this in
+    future patches.
 
-I'd be cynical and assume it's a random issue, post a v10 perhaps
-with a note in the cover letter on this.
+Mostly this is just a case of letting the compiler work out it can remove
+the PM related functions rather than using #ifdefs in the code to do so.
 
-Jonathan
-> 
-> Cheers,
-> Peter
-> 
-> >   iio: test: add basic tests for the iio-rescale driver
-> >   iio: afe: rescale: add RTD temperature sensor support
-> >   iio: afe: rescale: add temperature transducers
-> >   dt-bindings: iio: afe: add bindings for temperature-sense-rtd
-> >   dt-bindings: iio: afe: add bindings for temperature transducers  
-> 
+The __maybe_unused markings make it clear we are intentionally building
+functions that the compiler can see are unused and remove in some build
+configurations.
+
+The new pm_ptr() macro is rather convenient to got futher than many of
+the drivers were and when CONFIG_PM is not define ensure that the
+struct dev_pm_ops can also be removed.  Note there is a subtlty in that
+we only remove that whe CONFIG_PM is not defined whereas a few of these
+drivers were using CONFIG_PM_SLEEP which is a tighter condition (will
+remove the structure in more configurations).  I think that's a small
+price to pay for the convenience this macro brings.
+
+I did this set as one patch per driver, as personally I prefer that
+option for all but the most trivial patches because it makes backports
+that cross with this series simpler and also avoid the complex
+tag giving we get for sets touching code from many authors.
+
+All comments welcome.
+
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Anson Huang <anson.huang@nxp.com>
+Cc: Brian Masney <masneyb@onstation.org>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+Cc: Icenowy Zheng <icenowy@aosc.io>
+Cc: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Luca Weiss <luca@z3ntu.xyz>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Martijn Braam <martijn@brixit.nl>
+Cc: Maslov Dmitry <maslovdmitry@seeed.cc>
+Cc: Matt Ranostay <matt.ranostay@konsulko.com
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+Cc: Vaishnav M A <vaishnav@beagleboard.org>
+
+
+Jonathan Cameron (49):
+  iio:accel:da311: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:da280: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:dmard06: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:dmard10: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:mc3230: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:mma7660: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:mma9551: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:mma9553: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:stk8ba50: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:accel:kxsd9: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:ab8500: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:ad7606: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:at91-adc: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:palmas_gpadc: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:stm32:Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:rcar: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:rockchip: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:twl6030: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:adc:vf610: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:common:ssp: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:dac:vf610: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:apds9300: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:bh1780: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:light:cm3232: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:isl29018: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:isl29125: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:jsa1212: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:ltr501: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:stk3310: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:tcs3414: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:tsl2563: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:tsl4531: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:light:us5182: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:magn:ak8975: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:magn:hmc5843: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:magn:mag3110: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:magn:mmc35240: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:pressure:mpl3115: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:pressure:bmp280: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:proximity:as3935: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:proximity:pulsedlight: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:proximity:rfd77492: Switch from CONFIG_PM_SLEEP guards to pm_ptr()
+    / __maybe_unused
+  iio:proximity:sx9500: Switch from CONFIG_PM_SLEEP guards to pm_ptr() /
+    __maybe_unused
+  iio:temperature:tmp006: Switch from CONFIG_PM_SLEEP guards to pm_ptr()
+    / __maybe_unused
+  iio:temperature:tmp007: Switch from CONFIG_PM_SLEEP guards to pm_ptr()
+    / __maybe_unused
+  iio:gyro:mpu3050: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+  iio:chemical:atlas: Switch from CONFIG_PM guards to pm_ptr() /
+    __maybe_unused
+
+ drivers/iio/accel/da280.c                        |  6 ++----
+ drivers/iio/accel/da311.c                        |  8 +++-----
+ drivers/iio/accel/dmard06.c                      | 12 ++++--------
+ drivers/iio/accel/dmard10.c                      |  9 ++++-----
+ drivers/iio/accel/kxsd9-i2c.c                    |  2 +-
+ drivers/iio/accel/kxsd9-spi.c                    |  2 +-
+ drivers/iio/accel/kxsd9.c                        |  8 +++-----
+ drivers/iio/accel/mc3230.c                       |  8 +++-----
+ drivers/iio/accel/mma7660.c                      | 12 +++---------
+ drivers/iio/accel/mma9551.c                      | 16 ++++++----------
+ drivers/iio/accel/mma9553.c                      | 16 ++++++----------
+ drivers/iio/accel/stk8ba50.c                     | 12 +++---------
+ drivers/iio/adc/ab8500-gpadc.c                   | 10 ++++------
+ drivers/iio/adc/ad7606.c                         |  8 ++------
+ drivers/iio/adc/ad7606.h                         |  5 -----
+ drivers/iio/adc/ad7606_par.c                     |  2 +-
+ drivers/iio/adc/ad7606_spi.c                     |  2 +-
+ drivers/iio/adc/at91_adc.c                       |  8 +++-----
+ drivers/iio/adc/exynos_adc.c                     |  8 +++-----
+ drivers/iio/adc/palmas_gpadc.c                   | 14 ++++++--------
+ drivers/iio/adc/rcar-gyroadc.c                   | 10 ++++------
+ drivers/iio/adc/rockchip_saradc.c                |  8 +++-----
+ drivers/iio/adc/stm32-adc-core.c                 | 12 +++++-------
+ drivers/iio/adc/stm32-adc.c                      | 16 ++++++----------
+ drivers/iio/adc/twl6030-gpadc.c                  |  8 +++-----
+ drivers/iio/adc/vf610_adc.c                      |  8 +++-----
+ drivers/iio/chemical/atlas-sensor.c              | 10 ++++------
+ drivers/iio/common/ssp_sensors/ssp_dev.c         | 12 ++++--------
+ drivers/iio/dac/vf610_dac.c                      |  8 +++-----
+ drivers/iio/gyro/mpu3050-core.c                  |  8 +++-----
+ drivers/iio/gyro/mpu3050-i2c.c                   |  2 +-
+ drivers/iio/light/apds9300.c                     | 11 +++--------
+ drivers/iio/light/bh1780.c                       | 10 ++++------
+ drivers/iio/light/cm3232.c                       | 13 ++++---------
+ drivers/iio/light/isl29018.c                     | 11 +++--------
+ drivers/iio/light/isl29125.c                     |  8 +++-----
+ drivers/iio/light/jsa1212.c                      | 12 +++---------
+ drivers/iio/light/ltr501.c                       |  8 +++-----
+ drivers/iio/light/stk3310.c                      | 12 +++---------
+ drivers/iio/light/tcs3414.c                      |  8 +++-----
+ drivers/iio/light/tcs3472.c                      |  8 +++-----
+ drivers/iio/light/tsl2563.c                      | 11 +++--------
+ drivers/iio/light/tsl4531.c                      | 11 +++--------
+ drivers/iio/light/us5182d.c                      | 10 ++++------
+ drivers/iio/magnetometer/ak8975.c                | 10 ++++------
+ drivers/iio/magnetometer/hmc5843.h               |  5 -----
+ drivers/iio/magnetometer/hmc5843_i2c.c           |  2 +-
+ drivers/iio/magnetometer/hmc5843_spi.c           |  2 +-
+ drivers/iio/magnetometer/mag3110.c               | 11 +++--------
+ drivers/iio/magnetometer/mmc35240.c              | 12 ++++--------
+ drivers/iio/pressure/bmp280-core.c               |  6 ++----
+ drivers/iio/pressure/bmp280-i2c.c                |  2 +-
+ drivers/iio/pressure/bmp280-spi.c                |  2 +-
+ drivers/iio/pressure/mpl3115.c                   | 11 +++--------
+ drivers/iio/proximity/as3935.c                   | 12 +++---------
+ .../iio/proximity/pulsedlight-lidar-lite-v2.c    | 10 ++++------
+ drivers/iio/proximity/rfd77402.c                 |  8 +++-----
+ drivers/iio/proximity/sx9500.c                   | 12 ++++--------
+ drivers/iio/temperature/tmp006.c                 |  8 +++-----
+ drivers/iio/temperature/tmp007.c                 |  8 +++-----
+ 60 files changed, 180 insertions(+), 344 deletions(-)
+
+-- 
+2.34.0
 

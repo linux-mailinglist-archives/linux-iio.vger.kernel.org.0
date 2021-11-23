@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 702F745ADEC
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDE3045ADED
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239430AbhKWVJh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:09:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40054 "EHLO mail.kernel.org"
+        id S233020AbhKWVJi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:09:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40074 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237964AbhKWVJe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:09:34 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EFFC16023D;
-        Tue, 23 Nov 2021 21:06:23 +0000 (UTC)
+        id S239354AbhKWVJg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:09:36 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0953E60FD8;
+        Tue, 23 Nov 2021 21:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701585;
-        bh=5jWEHRBmoLS7XJAh5YmBDGscoU22UHiZj6sFthn0gTI=;
+        s=k20201202; t=1637701587;
+        bh=cWgAewwcG7AwiJvlgOKZku80b7MUw4/ViBFgjtFT0Zk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I5X1H/iS3RIh2zFrb4qfSZihj8NNPIxlUW8SP0kku0GvUNWBQolEBwQQE7dFqtZ7A
-         gqV6U8+21UrhwT+eOz00hShlpS1dt6KIgYMEPP2rp4Bch3I1NNNssFo9I2BXl8lwNz
-         zpKl+8WW9iAVpwMTI3irnExguAJa7lhHJPzB75KJPshPgHmWlKVJSo3FwMeT+tqMEB
-         eFK3VWSzNsgrgEIpwbwriccAo3gTXPg2b4FuvrCLoUIHPd6Qa+ld5crWwC7OG9yRvX
-         ibxbXI26QuUotmt2tOW4vqQdiPUHf0frP8HAoPRvHcqeSlGAg01crbQL5jKx5/LMJZ
-         uefkB1zMr+uUw==
+        b=pOk66eL568ywg0xpuD83hm+DTlMr5/BqTk17MGYbAet0oceCkZSBAp0zPC85QzmIJ
+         DYr8omtVCwEPOK5NPtvxapk/ULs/V3SBj1Tsj9MibSfA0g4T6S/b784SouNWW3kAAQ
+         VDx7UrP8rwWS2e98rfVeeLSqXZkj7Vug2Nhhg35MdWYlJWwX8SzdMVe/9IuP9hdLAi
+         s52xdx/hKfbs5jkpVEgoBUEZOA1nI1S6EWpEIL0LuuWA92RRvz9nnQrV1peWZI0ay3
+         dKai7VdItumm4Wpk4eR71fyuGPHBjeRepqOAyWgtOSIXhMxrHUwYdJJaUVHWm++z3z
+         tYieiLHhFybEQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
-Subject: [PATCH 18/49] iio:adc:rockchip: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:09:48 +0000
-Message-Id: <20211123211019.2271440-19-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 19/49] iio:adc:twl6030: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:09:49 +0000
+Message-Id: <20211123211019.2271440-20-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -55,51 +54,50 @@ set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
 will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
 ---
- drivers/iio/adc/rockchip_saradc.c | 8 +++-----
+ drivers/iio/adc/twl6030-gpadc.c | 8 +++-----
  1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index 14b8df4ca9c8..fb3b59d76a97 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -481,8 +481,7 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 	return devm_iio_device_register(&pdev->dev, indio_dev);
- }
- 
--#ifdef CONFIG_PM_SLEEP
--static int rockchip_saradc_suspend(struct device *dev)
-+static __maybe_unused int rockchip_saradc_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct rockchip_saradc *info = iio_priv(indio_dev);
-@@ -494,7 +493,7 @@ static int rockchip_saradc_suspend(struct device *dev)
+diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
+index afdb59e0b526..cf8e4ed749d1 100644
+--- a/drivers/iio/adc/twl6030-gpadc.c
++++ b/drivers/iio/adc/twl6030-gpadc.c
+@@ -944,8 +944,7 @@ static int twl6030_gpadc_remove(struct platform_device *pdev)
  	return 0;
  }
  
--static int rockchip_saradc_resume(struct device *dev)
-+static __maybe_unused int rockchip_saradc_resume(struct device *dev)
+-#ifdef CONFIG_PM_SLEEP
+-static int twl6030_gpadc_suspend(struct device *pdev)
++static __maybe_unused int twl6030_gpadc_suspend(struct device *pdev)
  {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct rockchip_saradc *info = iio_priv(indio_dev);
-@@ -514,7 +513,6 @@ static int rockchip_saradc_resume(struct device *dev)
+ 	int ret;
  
- 	return ret;
- }
--#endif
- 
- static SIMPLE_DEV_PM_OPS(rockchip_saradc_pm_ops,
- 			 rockchip_saradc_suspend, rockchip_saradc_resume);
-@@ -524,7 +522,7 @@ static struct platform_driver rockchip_saradc_driver = {
- 	.driver		= {
- 		.name	= "rockchip-saradc",
- 		.of_match_table = rockchip_saradc_match,
--		.pm	= &rockchip_saradc_pm_ops,
-+		.pm	= pm_ptr(&rockchip_saradc_pm_ops),
- 	},
+@@ -957,7 +956,7 @@ static int twl6030_gpadc_suspend(struct device *pdev)
+ 	return 0;
  };
  
+-static int twl6030_gpadc_resume(struct device *pdev)
++static __maybe_unused int twl6030_gpadc_resume(struct device *pdev)
+ {
+ 	int ret;
+ 
+@@ -968,7 +967,6 @@ static int twl6030_gpadc_resume(struct device *pdev)
+ 
+ 	return 0;
+ };
+-#endif
+ 
+ static SIMPLE_DEV_PM_OPS(twl6030_gpadc_pm_ops, twl6030_gpadc_suspend,
+ 					twl6030_gpadc_resume);
+@@ -978,7 +976,7 @@ static struct platform_driver twl6030_gpadc_driver = {
+ 	.remove		= twl6030_gpadc_remove,
+ 	.driver		= {
+ 		.name	= DRIVER_NAME,
+-		.pm	= &twl6030_gpadc_pm_ops,
++		.pm	= pm_ptr(&twl6030_gpadc_pm_ops),
+ 		.of_match_table = of_twl6030_match_tbl,
+ 	},
+ };
 -- 
 2.34.0
 

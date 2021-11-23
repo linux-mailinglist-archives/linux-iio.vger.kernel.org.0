@@ -2,35 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9B245ADFA
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0051845ADFB
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239569AbhKWVKD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:10:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40306 "EHLO mail.kernel.org"
+        id S239519AbhKWVKF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:10:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40320 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239519AbhKWVKC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:10:02 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D19B460FC3;
-        Tue, 23 Nov 2021 21:06:52 +0000 (UTC)
+        id S239571AbhKWVKF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:10:05 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C49B660FE8;
+        Tue, 23 Nov 2021 21:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701614;
-        bh=MWnxfnxQN8e/ifm51CPV9IJI8JaJcetotdBLKgy3r78=;
+        s=k20201202; t=1637701616;
+        bh=hodLaVDOQkVWgw05MUzW5K4MEOG8iM86rm9dYa8Yuds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JEyvTkNN3Z3VhHjuD2mbky/GglnmRnh2tKk8atyoXyi8MXiv1eoIwafSpVsEVQO5o
-         foW2EHuoAQj9iigWfhSKqL03v66HIs/CGKrYVOv2kymwVFMO5OdlmUpH/TxiE7uycV
-         jt9CZVansQfTWiHwiGoHLhaMddxyKOY7hmjOSdkx4hDUhN8u67617LQQ78i9a6QTFu
-         xCvcbJ5GUBh9KpNTNWnIb31M5eMMbJOi6fXBjEoQ1HOYJKhQhWodjhP748hzTSt2Xv
-         t3YOwFH+EdyJpfpgthKaD8/wo14STm43XkJQSmGpB+mbHcXo0VkFU5PFfoYotwCPL3
-         3QBCpoiWXnJXg==
+        b=QEWd4Z5/xIb52V5P24S++CHfXYyO14eLUezauJQb8yk1F/p0o0eT9Tid9DqatiMFM
+         zmoIln6j84Sq/XXpQUhJMzt6+JvtNBAH6FKAizFd0YtgS2X9LG0XmMuzGwc1xVqLtO
+         SMARO3Ww1CrwMlk468ytGmJUy3jhuc15lFXp2wV6LHhYZPEe0Z7Z1byfhFmZM9yXGo
+         tp5st9RcHlBcjrbdC4Pjtk4q662adBoC2XpQh7CZzgdywcjeLRHohMDMSylIOZOFmz
+         4W4iBGAuwpo430alj5hUmZt2XYxBnZdhUpZDqT7D2eBwfuDTpAfXEoUquuTUjA+NwH
+         lgJPIVHjBR5wg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 32/49] iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:10:02 +0000
-Message-Id: <20211123211019.2271440-33-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Vaishnav M A <vaishnav@beagleboard.org>
+Subject: [PATCH 33/49] iio:light:tsl2563: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:10:03 +0000
+Message-Id: <20211123211019.2271440-34-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -54,49 +55,54 @@ set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
 will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Vaishnav M A <vaishnav@beagleboard.org>
 ---
- drivers/iio/light/tcs3472.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/iio/light/tsl2563.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
-index 371c6a39a165..ff548a562fc2 100644
---- a/drivers/iio/light/tcs3472.c
-+++ b/drivers/iio/light/tcs3472.c
-@@ -572,15 +572,14 @@ static int tcs3472_remove(struct i2c_client *client)
+diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+index 5bf2bfbc5379..49a45c78603c 100644
+--- a/drivers/iio/light/tsl2563.c
++++ b/drivers/iio/light/tsl2563.c
+@@ -814,8 +814,7 @@ static int tsl2563_remove(struct i2c_client *client)
  	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
--static int tcs3472_suspend(struct device *dev)
-+static __maybe_unused int tcs3472_suspend(struct device *dev)
+-static int tsl2563_suspend(struct device *dev)
++static __maybe_unused int tsl2563_suspend(struct device *dev)
  {
- 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
- 		to_i2c_client(dev)));
- 	return tcs3472_powerdown(data);
- }
- 
--static int tcs3472_resume(struct device *dev)
-+static __maybe_unused int tcs3472_resume(struct device *dev)
- {
- 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
- 		to_i2c_client(dev)));
-@@ -598,7 +597,6 @@ static int tcs3472_resume(struct device *dev)
- 
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct tsl2563_chip *chip = iio_priv(indio_dev);
+@@ -834,7 +833,7 @@ static int tsl2563_suspend(struct device *dev)
  	return ret;
  }
+ 
+-static int tsl2563_resume(struct device *dev)
++static __maybe_unused int tsl2563_resume(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct tsl2563_chip *chip = iio_priv(indio_dev);
+@@ -858,10 +857,6 @@ static int tsl2563_resume(struct device *dev)
+ }
+ 
+ static SIMPLE_DEV_PM_OPS(tsl2563_pm_ops, tsl2563_suspend, tsl2563_resume);
+-#define TSL2563_PM_OPS (&tsl2563_pm_ops)
+-#else
+-#define TSL2563_PM_OPS NULL
 -#endif
  
- static SIMPLE_DEV_PM_OPS(tcs3472_pm_ops, tcs3472_suspend, tcs3472_resume);
- 
-@@ -611,7 +609,7 @@ MODULE_DEVICE_TABLE(i2c, tcs3472_id);
- static struct i2c_driver tcs3472_driver = {
+ static const struct i2c_device_id tsl2563_id[] = {
+ 	{ "tsl2560", 0 },
+@@ -885,7 +880,7 @@ static struct i2c_driver tsl2563_i2c_driver = {
  	.driver = {
- 		.name	= TCS3472_DRV_NAME,
--		.pm	= &tcs3472_pm_ops,
-+		.pm	= pm_ptr(&tcs3472_pm_ops),
+ 		.name	 = "tsl2563",
+ 		.of_match_table = tsl2563_of_match,
+-		.pm	= TSL2563_PM_OPS,
++		.pm	= pm_ptr(&tsl2563_pm_ops),
  	},
- 	.probe		= tcs3472_probe,
- 	.remove		= tcs3472_remove,
+ 	.probe		= tsl2563_probe,
+ 	.remove		= tsl2563_remove,
 -- 
 2.34.0
 

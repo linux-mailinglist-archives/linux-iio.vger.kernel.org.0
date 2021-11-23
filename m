@@ -2,36 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EF0545ADE5
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF0945ADE6
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235506AbhKWVJ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:09:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39998 "EHLO mail.kernel.org"
+        id S235362AbhKWVJ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:09:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40014 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234973AbhKWVJ0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:09:26 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7BE9460FE7;
-        Tue, 23 Nov 2021 21:06:16 +0000 (UTC)
+        id S234973AbhKWVJ2 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:09:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EAFE60FE8;
+        Tue, 23 Nov 2021 21:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701578;
-        bh=GJVBgA70mX58usfy/Ia5w9bcNgzV/TmHXttWscaRBuA=;
+        s=k20201202; t=1637701579;
+        bh=3zznP9KZoQH/pszZBJE+ZtaVR5de8ceJnZFvR9i0Igs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F7EqVKuvZItcOhz9A5hU6i+/MRwCknbjEpMA7YOeK9Hut1HLoM6akdVQuGnrZslq/
-         R68PXI7tFFt/dWKk/eoAGkJ2iFlyylFWiI6uCIPhYpoMrglq+UCJXHHyyTnS3yIWZs
-         jan9pr/FU424lTMfOOEA+5uItvOCz9NU2fUGTegIJPylUPxsx/Sw64rVvDV31e/ydb
-         N1xUlKPyFjR4ZcLOqPR5VOnSrNnGjVBzBJ6BFW9ZH/GoDlBPTdVfSr2MM/PDsuKvPP
-         QWqqlfFIiDvpuYWHg2UdqNL83twC48PbSn/IlWi9gXMzSz6ys4MChrVKKeujQT5wgn
-         YvDpttSDFdGkw==
+        b=ZEAyU8RTd5PoNSDzl4P+0cTr2AlsGeZ4vlhQwUkvTgoLRzDUSrVOo7KoOwbeRBIXb
+         Joy38bKFNRuUY0EHCAiBW2TmgBA9RbY3va5W3YyA5wnAQAHGt8GeXowM+PmJzfE2xJ
+         SNSYQpwOj7SLyl3nZSrx46HpW4dttOM93ZJO+6nIaZDr1GXEmsv2BoYdvhvz66sGcK
+         E2flt1vPvo5luT0PCXKjf/XzLYf6wPTHY9BEeQ0iSnpk4mx95RUnv0HKOiiQToaIA0
+         ePjWsc8/GFA3Vqzm4/F5W2YjmYWDNYZg8yQpRIw6wEA2zYF8a04W7SEgG8kUxT940+
+         9yULw6cmJnrpA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 14/49] iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:09:44 +0000
-Message-Id: <20211123211019.2271440-15-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 15/49] iio:adc:palmas_gpadc: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:09:45 +0000
+Message-Id: <20211123211019.2271440-16-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -55,51 +54,71 @@ set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
 will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/iio/adc/exynos_adc.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/iio/adc/palmas_gpadc.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 3b3868aa2533..01a801d325a9 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -968,8 +968,7 @@ static int exynos_adc_remove(struct platform_device *pdev)
+diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+index f9c8385c72d3..98d7764e0662 100644
+--- a/drivers/iio/adc/palmas_gpadc.c
++++ b/drivers/iio/adc/palmas_gpadc.c
+@@ -653,8 +653,7 @@ static int palmas_gpadc_remove(struct platform_device *pdev)
  	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
--static int exynos_adc_suspend(struct device *dev)
-+static __maybe_unused int exynos_adc_suspend(struct device *dev)
+-static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
++static __maybe_unused int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
+ {
+ 	int adc_period, conv;
+ 	int i;
+@@ -759,7 +758,7 @@ static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
+ 	return ret;
+ }
+ 
+-static int palmas_adc_wakeup_reset(struct palmas_gpadc *adc)
++static __maybe_unused int palmas_adc_wakeup_reset(struct palmas_gpadc *adc)
+ {
+ 	int ret;
+ 
+@@ -777,7 +776,7 @@ static int palmas_adc_wakeup_reset(struct palmas_gpadc *adc)
+ 	return ret;
+ }
+ 
+-static int palmas_gpadc_suspend(struct device *dev)
++static __maybe_unused int palmas_gpadc_suspend(struct device *dev)
  {
  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct exynos_adc *info = iio_priv(indio_dev);
-@@ -982,7 +981,7 @@ static int exynos_adc_suspend(struct device *dev)
+ 	struct palmas_gpadc *adc = iio_priv(indio_dev);
+@@ -800,7 +799,7 @@ static int palmas_gpadc_suspend(struct device *dev)
  	return 0;
  }
  
--static int exynos_adc_resume(struct device *dev)
-+static __maybe_unused int exynos_adc_resume(struct device *dev)
+-static int palmas_gpadc_resume(struct device *dev)
++static __maybe_unused int palmas_gpadc_resume(struct device *dev)
  {
  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct exynos_adc *info = iio_priv(indio_dev);
-@@ -1001,7 +1000,6 @@ static int exynos_adc_resume(struct device *dev)
+ 	struct palmas_gpadc *adc = iio_priv(indio_dev);
+@@ -822,9 +821,8 @@ static int palmas_gpadc_resume(struct device *dev)
  
  	return 0;
- }
+ };
 -#endif
  
- static SIMPLE_DEV_PM_OPS(exynos_adc_pm_ops,
- 			exynos_adc_suspend,
-@@ -1013,7 +1011,7 @@ static struct platform_driver exynos_adc_driver = {
- 	.driver		= {
- 		.name	= "exynos-adc",
- 		.of_match_table = exynos_adc_match,
--		.pm	= &exynos_adc_pm_ops,
-+		.pm	= pm_ptr(&exynos_adc_pm_ops),
+-static const struct dev_pm_ops palmas_pm_ops = {
++static __maybe_unused const struct dev_pm_ops palmas_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(palmas_gpadc_suspend,
+ 				palmas_gpadc_resume)
+ };
+@@ -840,7 +838,7 @@ static struct platform_driver palmas_gpadc_driver = {
+ 	.remove = palmas_gpadc_remove,
+ 	.driver = {
+ 		.name = MOD_NAME,
+-		.pm = &palmas_pm_ops,
++		.pm = pm_ptr(&palmas_pm_ops),
+ 		.of_match_table = of_palmas_gpadc_match_tbl,
  	},
  };
- 
 -- 
 2.34.0
 

@@ -2,36 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D511345ADF7
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 603D545ADF8
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 22:06:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239320AbhKWVJ4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 16:09:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40246 "EHLO mail.kernel.org"
+        id S239459AbhKWVJ7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 16:09:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40268 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239459AbhKWVJ4 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 16:09:56 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F3DBD60FC1;
-        Tue, 23 Nov 2021 21:06:45 +0000 (UTC)
+        id S239539AbhKWVJ6 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 16:09:58 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2445A60FD8;
+        Tue, 23 Nov 2021 21:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637701607;
-        bh=UYxuwQkI3/Lxj+mbASO4rnuQcbu8D+8LTICp4HksXT0=;
+        s=k20201202; t=1637701610;
+        bh=F/EJWo6E1jNEivAjaJledJVVyIbAhzPUs2zWFymEK54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=No4vWbxssgfeSgU7Vc3W3uVN/2yr0W+D4E4moG2LLcfIK92L6y8baR56G7fa55mBq
-         4Ndo2N6Ua4L9Xe8GXG8qdS6rWXVlSjbLyuYPZY0PUksHn2cHdTsFFOQGg16x//bYhy
-         sXAejhPojUny3QJYnZVx5FDh1qeGMAizpqlIGycyQd6R2Wv01BKU9JNnTN2ZPOEV5L
-         nlq5GqXt5FBsyDJu4XZB6W5yk88gYE5Pa2PuyYjZ3pL7FbuQ2TDRow5OF56Zf2FlYU
-         PwbvjDi6cigWmS9YnoDHAJZsXgv8c0ynK00lRKBRI4GdPWt2ccDV1Kh1B9Rv1OvWlS
-         GdM071vXMKODw==
+        b=a+L2wgkeRTpkKtl8d/fi0KDc+x0kMZvnvNX+EUqzfDRaX3DJ3g7X5dpgeT4XR+cSb
+         pvdy7XU+qFDGYFTaBcr3oFSvEOrC/NhPDRPvgyoVhk6WXBA9MA2qAxrsusmn5wrIoL
+         6soRsd5I9iQ7vO+iBe+mHdhFnIc7Qt9I9kadjPspXWCCV2XhfQXwx8HRDz6+vrGJ0l
+         dXjbIxq3b5yAI3DQ5UqQFfLbrpMp2EeowW7g/KwH9qJ08dkuis/BBGRx3tYtaSZ3CJ
+         EwN897E9PwRr5reiqzTPqF5oShRAQfoh01mGGqckSiopmD5gp/VXHqMFcRoHG39LiV
+         FF2PNXFR+6ZLw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>
-Subject: [PATCH 29/49] iio:light:ltr501: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
-Date:   Tue, 23 Nov 2021 21:09:59 +0000
-Message-Id: <20211123211019.2271440-30-jic23@kernel.org>
+        Icenowy Zheng <icenowy@aosc.io>, Luca Weiss <luca@z3ntu.xyz>,
+        Martijn Braam <martijn@brixit.nl>
+Subject: [PATCH 30/49] iio:light:stk3310: Switch from CONFIG_PM_SLEEP guards to pm_ptr() / __maybe_unused
+Date:   Tue, 23 Nov 2021 21:10:00 +0000
+Message-Id: <20211123211019.2271440-31-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.0
 In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
 References: <20211123211019.2271440-1-jic23@kernel.org>
@@ -55,50 +56,57 @@ set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
 will not always remove the pm_ops structure.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Maslov Dmitry <maslovdmitry@seeed.cc>
+Cc: Icenowy Zheng <icenowy@aosc.io>
+Cc: Luca Weiss <luca@z3ntu.xyz>
+Cc: Martijn Braam <martijn@brixit.nl>
 ---
- drivers/iio/light/ltr501.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/iio/light/stk3310.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index bab5b78f2e30..f64135a4bd0c 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1586,15 +1586,14 @@ static int ltr501_remove(struct i2c_client *client)
- 	return 0;
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index 07e91846307c..fc2d5ebf0d68 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -632,8 +632,7 @@ static int stk3310_remove(struct i2c_client *client)
+ 	return stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
  }
  
 -#ifdef CONFIG_PM_SLEEP
--static int ltr501_suspend(struct device *dev)
-+static __maybe_unused int ltr501_suspend(struct device *dev)
+-static int stk3310_suspend(struct device *dev)
++static __maybe_unused int stk3310_suspend(struct device *dev)
  {
- 	struct ltr501_data *data = iio_priv(i2c_get_clientdata(
- 					    to_i2c_client(dev)));
- 	return ltr501_powerdown(data);
+ 	struct stk3310_data *data;
+ 
+@@ -642,7 +641,7 @@ static int stk3310_suspend(struct device *dev)
+ 	return stk3310_set_state(data, STK3310_STATE_STANDBY);
  }
  
--static int ltr501_resume(struct device *dev)
-+static __maybe_unused int ltr501_resume(struct device *dev)
+-static int stk3310_resume(struct device *dev)
++static __maybe_unused int stk3310_resume(struct device *dev)
  {
- 	struct ltr501_data *data = iio_priv(i2c_get_clientdata(
- 					    to_i2c_client(dev)));
-@@ -1602,7 +1601,6 @@ static int ltr501_resume(struct device *dev)
- 	return ltr501_write_contr(data, data->als_contr,
- 		data->ps_contr);
- }
+ 	u8 state = 0;
+ 	struct stk3310_data *data;
+@@ -658,11 +657,6 @@ static int stk3310_resume(struct device *dev)
+ 
+ static SIMPLE_DEV_PM_OPS(stk3310_pm_ops, stk3310_suspend, stk3310_resume);
+ 
+-#define STK3310_PM_OPS (&stk3310_pm_ops)
+-#else
+-#define STK3310_PM_OPS NULL
 -#endif
- 
- static SIMPLE_DEV_PM_OPS(ltr501_pm_ops, ltr501_suspend, ltr501_resume);
- 
-@@ -1636,7 +1634,7 @@ static struct i2c_driver ltr501_driver = {
+-
+ static const struct i2c_device_id stk3310_i2c_id[] = {
+ 	{"STK3310", 0},
+ 	{"STK3311", 0},
+@@ -692,7 +686,7 @@ static struct i2c_driver stk3310_driver = {
  	.driver = {
- 		.name   = LTR501_DRV_NAME,
- 		.of_match_table = ltr501_of_match,
--		.pm	= &ltr501_pm_ops,
-+		.pm	= pm_ptr(&ltr501_pm_ops),
- 		.acpi_match_table = ACPI_PTR(ltr_acpi_match),
+ 		.name = "stk3310",
+ 		.of_match_table = stk3310_of_match,
+-		.pm = STK3310_PM_OPS,
++		.pm = pm_ptr(&stk3310_pm_ops),
+ 		.acpi_match_table = ACPI_PTR(stk3310_acpi_id),
  	},
- 	.probe  = ltr501_probe,
+ 	.probe =            stk3310_probe,
 -- 
 2.34.0
 

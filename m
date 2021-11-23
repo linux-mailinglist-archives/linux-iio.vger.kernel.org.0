@@ -2,50 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 844DD459DBC
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 09:20:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 544B4459E06
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Nov 2021 09:30:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbhKWIXz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 03:23:55 -0500
-Received: from mail-ot1-f43.google.com ([209.85.210.43]:37656 "EHLO
-        mail-ot1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230306AbhKWIXy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 03:23:54 -0500
-Received: by mail-ot1-f43.google.com with SMTP id h19-20020a9d3e53000000b0056547b797b2so32710152otg.4;
-        Tue, 23 Nov 2021 00:20:46 -0800 (PST)
+        id S233807AbhKWIdp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 03:33:45 -0500
+Received: from mail-pl1-f171.google.com ([209.85.214.171]:33687 "EHLO
+        mail-pl1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230516AbhKWIdp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 03:33:45 -0500
+Received: by mail-pl1-f171.google.com with SMTP id y7so16488285plp.0;
+        Tue, 23 Nov 2021 00:30:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EqDPz0+moIASV8/u18qtwgFpVhcXgwVMGWtajI5MBd0=;
-        b=1+BrM5ab/nAOx38mqOY5EiIsoIHJshvpzrms3mNltCT/grGe1DZiRFqVnUrv+a9REA
-         2qPEOov7jWklahWSboLBlrmFkoUaUHOaWx1uE0R9vh4iB59KD9l89nlcXVUCOkECXKgd
-         cEBS96wc07XGbbnq9bZP9lWJvngwo6AWkkysfpKr+B9I+5lmSSHTHpWHFVtNSMKsIBKw
-         ukPkFG0Akro9oKI2kp9YBVa0rqiQ+Wo3MLzZK+DZPRY9/lTC1ir7G+Haq0yfwB2tme4C
-         Okundo4drrFPwChrNvQ1V+wRsETxqQmoPKZvM7UURzHeV9FkH2J46OiH0MpiabeOHARU
-         LKbw==
-X-Gm-Message-State: AOAM531zV7a2Bi5IYbemDickJkqZB8l7tHzJQdvOQsCm6uVtO+D+qfUH
-        k0YwZlGAKBLKiVy2syvjFeMl6/qhwvqQ+A==
-X-Google-Smtp-Source: ABdhPJwe9sx059Wb7JhFyeXY/CngRgc5BHN/QDbA5X094r9QBlKhv/BTVKvqe6nOczniqpfZc40LFQ==
-X-Received: by 2002:a9d:19e3:: with SMTP id k90mr2701498otk.99.1637655646043;
-        Tue, 23 Nov 2021 00:20:46 -0800 (PST)
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com. [209.85.210.42])
-        by smtp.gmail.com with ESMTPSA id w19sm2408417oih.44.2021.11.23.00.20.45
+        bh=tcMJT0SWmBGQBJ3SmOjoPLUb8FZNAvYeGhtoSVPIc5Y=;
+        b=VCwEKliL7vGRQmqGa4OMEbd1m3tRXMH4G3hTaAeVkGf6vCk+BkEwKON0qO4ojpIBu7
+         5S/RdfdBKMbTAP3mGoN+251WSN4Pwm8xoHQLwgCvGzqml9ewO+dTyZWiQV2YnuXx/Yhg
+         N7TZfP4FV0JTMOz0dfTOUmW8cZWl14TaywEiAwKhZfpsoXIpBKK3RGeNQbuwteft0deb
+         uGrSX4Ndb2OLiDQP3tKchxdSy4MxELRQmZz1QMt5WNHZY7m17ACOogdFlHjlR+G4H4aS
+         Sv0kDBU1DYI45fA1iO5iwjKbsy1aOvJLcVmgYavbHAFXvm6yuw/fsnK7EsoY6DqmYJdy
+         mo/Q==
+X-Gm-Message-State: AOAM533kPT0CAVTEBMKnvnV3a52WBPvXZ8G2ah3BroubBL9caLh/IMTz
+        Upra7T4xA08w3LqQso2MzT5FLDVYgcZlCg==
+X-Google-Smtp-Source: ABdhPJxqlamro1/ExJyGPSHWiNDEHJ4qDus6lyQwI/LLtsri6heukspgET3j/WYt8l2kuwABiNAxXw==
+X-Received: by 2002:a17:90b:4c4d:: with SMTP id np13mr724754pjb.233.1637656236892;
+        Tue, 23 Nov 2021 00:30:36 -0800 (PST)
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com. [209.85.215.171])
+        by smtp.gmail.com with ESMTPSA id ne7sm401026pjb.36.2021.11.23.00.30.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Nov 2021 00:20:45 -0800 (PST)
-Received: by mail-ot1-f42.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso32654069otf.12;
-        Tue, 23 Nov 2021 00:20:45 -0800 (PST)
-X-Received: by 2002:a9f:248b:: with SMTP id 11mr5954157uar.14.1637655634916;
- Tue, 23 Nov 2021 00:20:34 -0800 (PST)
+        Tue, 23 Nov 2021 00:30:36 -0800 (PST)
+Received: by mail-pg1-f171.google.com with SMTP id q12so17660815pgh.5;
+        Tue, 23 Nov 2021 00:30:36 -0800 (PST)
+X-Received: by 2002:a67:af0a:: with SMTP id v10mr5521182vsl.35.1637656225413;
+ Tue, 23 Nov 2021 00:30:25 -0800 (PST)
 MIME-Version: 1.0
-References: <cover.1637592133.git.geert+renesas@glider.be> <YZvYW1ElW7ZYZNTC@piout.net>
-In-Reply-To: <YZvYW1ElW7ZYZNTC@piout.net>
+References: <cover.1637592133.git.geert+renesas@glider.be> <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
+ <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+In-Reply-To: <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 23 Nov 2021 09:20:23 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWKHoBWm2XQmKwB0q8Ya8KzpCgA29D0igXJrGY8=3e8_A@mail.gmail.com>
-Message-ID: <CAMuHMdWKHoBWm2XQmKwB0q8Ya8KzpCgA29D0igXJrGY8=3e8_A@mail.gmail.com>
-Subject: Re: [PATCH 00/17] Non-const bitfield helper conversions
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
+Date:   Tue, 23 Nov 2021 09:30:14 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
+Message-ID: <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
+Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}() helpers
+To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
         Rajendra Nayak <rnayak@codeaurora.org>,
@@ -53,6 +54,7 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Tero Kristo <kristo@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -93,26 +95,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Alexandre,
+Hi Johannes,
 
-On Mon, Nov 22, 2021 at 6:50 PM Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
-> On 22/11/2021 16:53:53+0100, Geert Uytterhoeven wrote:
+On Mon, Nov 22, 2021 at 5:33 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+> On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
 > > The existing FIELD_{GET,PREP}() macros are limited to compile-time
 > > constants.  However, it is very common to prepare or extract bitfield
 > > elements where the bitfield mask is not a compile-time constant.
-> > To avoid this limitation, the AT91 clock driver already has its own
-> > field_{prep,get}() macros.
+> >
 >
-> My understanding was that this (being compile time only) was actually
-> done on purpose. Did I misunderstand?
+> I'm not sure it's really a good idea to add a third API here?
+>
+> We have the upper-case (constant) versions, and already
+> {u32,...}_get_bits()/etc.
 
-Yes, it was done on purpose, to maximize type safety.
+These don't work for non-const masks.
 
-However, this imposes a severe limitation: we cannot use them in case
-the mask is non-const (i.e. stored in some data structure).  This
-is a quite common use-case, given the examples I found and converted,
-and given you added field_{get,prep}() to the AT91 clock driver.
+> Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
+> architectures (afaict), so that seems a bit awkward.
+
+That's a valid comment. Can be fixed by using a wrapper macro
+that checks if typeof(mask) == u64, and uses an __ffs64() version when
+needed.
+
+> Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
+> if it is indeed a constant? The __field_overflow() usage is already only
+> done if __builtin_constant_p(v), so I guess we can do the same with
+> __bad_mask()?
+
+Are all compilers smart enough to replace the division by
+field_multiplier(field) by a shift?
 
 Gr{oetje,eeting}s,
 

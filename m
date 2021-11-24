@@ -2,129 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F7845BC89
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 13:29:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A2345C515
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 14:52:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245083AbhKXMbL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 07:31:11 -0500
-Received: from mout.kundenserver.de ([212.227.126.134]:54321 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243783AbhKXM1P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 07:27:15 -0500
-Received: from mail-wr1-f48.google.com ([209.85.221.48]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MzkK9-1mUMKI48Bd-00vdYX for <linux-iio@vger.kernel.org>; Wed, 24 Nov 2021
- 13:24:04 +0100
-Received: by mail-wr1-f48.google.com with SMTP id l16so3847391wrp.11
-        for <linux-iio@vger.kernel.org>; Wed, 24 Nov 2021 04:24:03 -0800 (PST)
-X-Gm-Message-State: AOAM530Xj6Dfn7+aOHtVjOe3Ddfc7a40Dk+hnLeT0ZSp/loWq2Pwsman
-        FWoFvn/7Y9qJnGPkry+XAhcvr7lAwYub8RKex8w=
-X-Google-Smtp-Source: ABdhPJymgj6B5HkUwsge+KxmJCGsGh4l9wTgeQgqKwk9+Jb3Zo6D8PfdODSnhbvY8f5VMGDkAU7ZHJIAHBM29xBIRIU=
-X-Received: by 2002:adf:efc6:: with SMTP id i6mr18749818wrp.428.1637756643591;
- Wed, 24 Nov 2021 04:24:03 -0800 (PST)
-MIME-Version: 1.0
-References: <20211123211019.2271440-1-jic23@kernel.org> <KMP13R.I8M265PNR9RU@crapouillou.net>
- <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com> <20211124101113.000033c6@Huawei.com>
-In-Reply-To: <20211124101113.000033c6@Huawei.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 24 Nov 2021 13:23:47 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1OmBT2xNTHVp8f3=4TtwtC+6cvn27PCF-j0MMAriK+Hg@mail.gmail.com>
-Message-ID: <CAK8P3a1OmBT2xNTHVp8f3=4TtwtC+6cvn27PCF-j0MMAriK+Hg@mail.gmail.com>
-Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
- __maybe_unused etc.
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
+        id S1343943AbhKXNyz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 08:54:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41982 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1354738AbhKXNwy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 24 Nov 2021 08:52:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 017B66326C;
+        Wed, 24 Nov 2021 13:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1637759106;
+        bh=O4w7xfx7vGgbYdk0XerZNmUo+f6Xn5QlAquf3zUwW7s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=K0m2IQ5kLLXXTqmLUC6tC2sBZZF8bcb7AIYgqhjGhpXp1zQPGqxEFQUYjMJhQcgXw
+         Qn2ZyMZOBv0gFDOffuYb17UiZlpzDcpMm4SQ0W8jhFGEJrVfrEvQJx0PdQi0YHxjHK
+         8WFK31Vt9Afry5oIagQwSxJlhABS+FZ3E+FiriTw=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Artur Rojek <contact@artur-rojek.eu>,
         Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:JXECNgD5L3jT2KTHucHQ7A2Z9BYfKtUtcmEkDtdbaNF/xE+BMCq
- 4P91F/LtPbgbLJlUu1UcdeW6JstrYwlBcmKlsQY7633/PZb/WhTNVg5gAMJ6C6A+tG9VdN4
- 0hdxLT1E2B+pndHLasJx/0YjBnag+I583boRxOuq07ZeShEpa9uBEPH2ZBdc4QZfJQ8Mzvi
- t5pyU+YqJQi5duSBlm82Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1V0UqUs1ByI=:2BHEZBlthWljaUvfWA7+w2
- S48Y1T8y8XZPNOGRzPsVFyIsfxag6O1/k95CrkUySuV+AWAY7fD/9C5aCjdpdp9ZPlA2Jg6OA
- EhiyXY7YwDlvj2Eny16lfC0gHYaO9jbUJNu8q3Bag6XJa/pzYiOWpin5337nqirANS3fs+6vA
- UeV2txRQSTrB68Ezf21nAZD5RXUH3lk5OWbqY6/mdhqDT0zH7/Nt6FzFNWGFKMV5gqRmmTlFz
- MTA/UlWt3OFEVweuPcupmebA+mIDKIIouAe1zk7H0iSh1P6Zom7RI0G3gFHsjEe+4JU6jJfTB
- j5x14GGvjIMziM357By8MZ/tiUdOaVQRj8hGRLuxxA/80lgoFWsUAUcBSC2lrwT4uvfGjUun7
- BkIfca1JotkeGI4++I5K73EItsheQ1ef0ixhPTc3bkdYDD2iG1EdfUt+4zz9z79WdfJ0+rAoX
- c+FNn7uSyUx+TzO4G+sciqN0fYJhmA+Op+kbNZY62wJVBQSsN0eQqmNCVQz6Oy1VwCxjq1Kit
- RguGtfpp72Xls7B7tGe0pG1JHLVvAlWE2Tce2xfXsC4mYuioaDSVWKnMLPIFnjzNM3fnD/ndo
- zfAdyQn3g/c7wnqKjDHw+rdzS9DO72wb40HSYek2+Cm809T5DNpif9GvOKf3CaHoYu071T8em
- ouCSp3HW9x5Ykp/s57MAVko/G9iQTyPB7JmBg19octqFn9km0N7y1kG0ycsyBKPSwGA4iI+rh
- f6m7lL0EgKRUNbt/M+4d4bWcg9tz8iH/qoVTuN/g+K8gX6nvL8QqQ0mrQJupGBIP8dJP5ZGCv
- eUe/55k2GatwHrSQ6J/JvBI6walOK3tZ88iIraZei2mT8efjos=
+        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 135/279] mips: bcm63xx: add support for clk_get_parent()
+Date:   Wed, 24 Nov 2021 12:57:02 +0100
+Message-Id: <20211124115723.458019992@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.0
+In-Reply-To: <20211124115718.776172708@linuxfoundation.org>
+References: <20211124115718.776172708@linuxfoundation.org>
+User-Agent: quilt/0.66
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 24, 2021 at 11:11 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> On Wed, 24 Nov 2021 08:29:40 +0100 Arnd Bergmann <arnd@arndb.de> wrote:
-> >
-> > > The problem then is that the SET_*_PM_OPS macros are defined
-> > > differently according to CONFIG_PM, so their definition would need to
-> > > be changed to use the (redefined) pm_ptr() macro and a corresponding
-> > > pm_sleep_ptr() macro. Unfortunately since the SET_*_PM_OPS macros are
-> > > used everywhere with code wrapped around #ifdef CONFIG_PM guards, it
-> > > wouldn't be easy to change them, and it would just be easier to
-> > > introduce new macros.
-> >
-> > Right, this is what we've discussed multiple times, and I think everyone
-> > agreed we should do this, but so far we could not come up with a name
-> > for the new macro, and changing the macro in place is not practical unless
-> > we change hundreds of drivers in the same way as the iio series first.
->
-> Nasty indeed and I'm not sure how scriptable either as lots of subtle variants
-> unfortunately.
+From: Randy Dunlap <rdunlap@infradead.org>
 
-The minor variants (late, noirq) are actually the easy part, for the macros that
-have fewer users, we can just have one patch per macro that changes it treewide.
-For SET_SYSTEM_SLEEP_PM_OPS/SET_RUNTIME_PM_OPS and their
-DEV_PM_OPS variants, this would be a lot harder:
+[ Upstream commit e8f67482e5a4bc8d0b65d606d08cb60ee123b468 ]
 
-$ for i in SET_SYSTEM_SLEEP_PM_OPS SET_LATE_SYSTEM_SLEEP_PM_OPS
-SET_NOIRQ_SYSTEM_SLEEP_PM_OPS SET_RUNTIME_PM_OPS SIMPLE_DEV_PM_OPS
-UNIVERSAL_DEV_PM_OPS ; do echo `git grep -wl $i | wc  -l` $i ; done
+BCM63XX selects HAVE_LEGACY_CLK but does not provide/support
+clk_get_parent(), so add a simple implementation of that
+function so that callers of it will build without errors.
 
-459 SET_SYSTEM_SLEEP_PM_OPS
-51 SET_LATE_SYSTEM_SLEEP_PM_OPS
-59 SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
-497 SET_RUNTIME_PM_OPS
-797 SIMPLE_DEV_PM_OPS
-20 UNIVERSAL_DEV_PM_OPS
+Fixes these build errors:
 
-About half of those actually use an #ifdef, while the other half does
-not:
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
 
-$ git grep -wl 'SET_SYSTEM_SLEEP_PM_OPS\|SET_RUNTIME_PM_OPS\|SIMPLE_DEV_PM_OPS\|UNIVERSAL_DEV_PM_OPS'
- | xargs grep -l CONFIG_PM | wc -l
-712
-$ git grep -wl 'SET_SYSTEM_SLEEP_PM_OPS\|SET_RUNTIME_PM_OPS\|SIMPLE_DEV_PM_OPS\|UNIVERSAL_DEV_PM_OPS'
- | xargs grep -L CONFIG_PM | wc -l
-745
+Fixes: e7300d04bd08 ("MIPS: BCM63xx: Add support for the Broadcom BCM63xx family of SOCs." )
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: Artur Rojek <contact@artur-rojek.eu>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: linux-mips@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/bcm63xx/clk.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-If we rename the macros in the first half of this using a script, then we should
-be able to change the behavior of the normal macros to use the new pm_ptr().
+diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+index 5a3e325275d0d..1c91064cb448b 100644
+--- a/arch/mips/bcm63xx/clk.c
++++ b/arch/mips/bcm63xx/clk.c
+@@ -381,6 +381,12 @@ void clk_disable(struct clk *clk)
+ 
+ EXPORT_SYMBOL(clk_disable);
+ 
++struct clk *clk_get_parent(struct clk *clk)
++{
++	return NULL;
++}
++EXPORT_SYMBOL(clk_get_parent);
++
+ unsigned long clk_get_rate(struct clk *clk)
+ {
+ 	if (!clk)
+-- 
+2.33.0
 
-         Arnd
+
+

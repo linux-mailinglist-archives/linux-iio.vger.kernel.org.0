@@ -2,43 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5130445B7C4
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 10:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B53945B819
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 11:11:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230429AbhKXJwG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 24 Nov 2021 04:52:06 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4156 "EHLO
+        id S231335AbhKXKO1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 05:14:27 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4157 "EHLO
         frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229840AbhKXJwF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 04:52:05 -0500
-Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HzbmS2z43z67YnL;
-        Wed, 24 Nov 2021 17:48:24 +0800 (CST)
+        with ESMTP id S230515AbhKXKO1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 05:14:27 -0500
+Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4HzcGF5Xcqz67lcS;
+        Wed, 24 Nov 2021 18:10:45 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
+ fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Wed, 24 Nov 2021 10:48:54 +0100
+ 15.1.2308.20; Wed, 24 Nov 2021 11:11:15 +0100
 Received: from localhost (10.52.122.34) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 24 Nov
- 2021 09:48:53 +0000
-Date:   Wed, 24 Nov 2021 09:48:52 +0000
+ 2021 10:11:14 +0000
+Date:   Wed, 24 Nov 2021 10:11:13 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 02/49] iio:accel:da280: Switch from CONFIG_PM_SLEEP
- guards to pm_ptr() / __maybe_unused
-Message-ID: <20211124094852.00007897@Huawei.com>
-In-Reply-To: <SXP13R.7A93XDVR9X8I@crapouillou.net>
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <jic23@kernel.org>,
+        <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        Anson Huang <anson.huang@nxp.com>,
+        Brian Masney <masneyb@onstation.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        "Heiko Stuebner" <heiko.stuebner@theobroma-systems.com>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        "Krzysztof Kozlowski" <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Luca Weiss" <luca@z3ntu.xyz>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Martijn Braam <martijn@brixit.nl>,
+        Maslov Dmitry <maslovdmitry@seeed.cc>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
+        Vaishnav M A <vaishnav@beagleboard.org>
+Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
+ __maybe_unused etc.
+Message-ID: <20211124101113.000033c6@Huawei.com>
+In-Reply-To: <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
 References: <20211123211019.2271440-1-jic23@kernel.org>
-        <20211123211019.2271440-3-jic23@kernel.org>
-        <SXP13R.7A93XDVR9X8I@crapouillou.net>
+        <KMP13R.I8M265PNR9RU@crapouillou.net>
+        <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.52.122.34]
 X-ClientProxiedBy: lhreml731-chm.china.huawei.com (10.201.108.82) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -47,76 +66,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 23 Nov 2021 22:17:52 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Wed, 24 Nov 2021 08:29:40 +0100
+Arnd Bergmann <arnd@arndb.de> wrote:
 
-> Hi,
+> On Tue, Nov 23, 2021 at 11:11 PM Paul Cercueil <paul@crapouillou.net> wrote:
+> >
+> > One word about the pm_ptr() macro. Right now it's defined as:
+> >   #ifdef CONFIG_PM
+> >   #define pm_ptr(_ptr) (_ptr)
+> >   #else
+> >   #define pm_ptr(_ptr) NULL
+> >   #endif
+> >
+> > It could be possible to define it like this instead:
+> >   #define pm_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM), (_ptr))
+> >
+> > The difference is that if !CONFIG_PM, in the first case the (_ptr) is
+> > not visible by the compiler and the __maybe_unused is required, while
+> > in the second case the (_ptr) is always visible by the compiler, but
+> > discarded as dead code. The reason we'd want that is the same reason we
+> > use IS_ENABLED() instead of macro guards; and you wouldn't need the
+> > __maybe_unused attribute anywhere.  
 > 
-> Le mar., nov. 23 2021 at 21:09:32 +0000, Jonathan Cameron 
-> <jic23@kernel.org> a écrit :
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Letting the compiler remove these functions when the kernel is built
-> > without CONFIG_PM_SLEEP support is simpler and less error prone than 
-> > the
-> > use of #ifdef based config guards.
-> > 
-> > Removing instances of this approach from IIO also stops them being
-> > copied into new drivers.
-> > 
-> > The pm_ptr() macro only removes the reference if CONFIG_PM is not
-> > set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
-> > will not always remove the pm_ops structure.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> That sounds like a great idea. I see there are only 12 users of pm_ptr at
+> the moment, so auditing all of these should not be a problem.
 > 
-> No pm_ptr() for this one?
+> I gave it a brief look and found that we probably only need to fix
+> drivers/net/ethernet/realtek/r8169_main.c if we change the definition.
+
+Cool.  
+
 > 
+> > The problem then is that the SET_*_PM_OPS macros are defined
+> > differently according to CONFIG_PM, so their definition would need to
+> > be changed to use the (redefined) pm_ptr() macro and a corresponding
+> > pm_sleep_ptr() macro. Unfortunately since the SET_*_PM_OPS macros are
+> > used everywhere with code wrapped around #ifdef CONFIG_PM guards, it
+> > wouldn't be easy to change them, and it would just be easier to
+> > introduce new macros.  
+> 
+> Right, this is what we've discussed multiple times, and I think everyone
+> agreed we should do this, but so far we could not come up with a name
+> for the new macro, and changing the macro in place is not practical unless
+> we change hundreds of drivers in the same way as the iio series first.
 
-Gah. I changed my mind about this half way through doing this and
-decided to use it throughout rather than just in places that had
-defined the pm_ops out by hand.
+Nasty indeed and I'm not sure how scriptable either as lots of subtle variants
+unfortunately.
 
-Missed this one in the update!  Anyhow, easy fix :)
-
-Thanks,
+I'm cynical - don't need a good name.  *_OPS2 works fine for me as long as
+the docs are good. 
 
 Jonathan
 
-> -Paul
 > 
-> > ---
-> >  drivers/iio/accel/da280.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/da280.c b/drivers/iio/accel/da280.c
-> > index 9633bdae5fd4..91ac478891ce 100644
-> > --- a/drivers/iio/accel/da280.c
-> > +++ b/drivers/iio/accel/da280.c
-> > @@ -153,17 +153,15 @@ static int da280_probe(struct i2c_client 
-> > *client,
-> >  	return devm_iio_device_register(&client->dev, indio_dev);
-> >  }
-> > 
-> > -#ifdef CONFIG_PM_SLEEP
-> > -static int da280_suspend(struct device *dev)
-> > +static __maybe_unused int da280_suspend(struct device *dev)
-> >  {
-> >  	return da280_enable(to_i2c_client(dev), false);
-> >  }
-> > 
-> > -static int da280_resume(struct device *dev)
-> > +static __maybe_unused int da280_resume(struct device *dev)
-> >  {
-> >  	return da280_enable(to_i2c_client(dev), true);
-> >  }
-> > -#endif
-> > 
-> >  static SIMPLE_DEV_PM_OPS(da280_pm_ops, da280_suspend, da280_resume);
-> > 
-> > --
-> > 2.34.0
-> >   
-> 
-> 
+>        Arnd
 

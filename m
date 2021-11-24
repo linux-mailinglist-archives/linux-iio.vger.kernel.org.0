@@ -2,42 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C674D45C1AE
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 14:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D75F45C363
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 14:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348497AbhKXNUx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 08:20:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35226 "EHLO mail.kernel.org"
+        id S1350388AbhKXNiE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 08:38:04 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51370 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1349240AbhKXNSy (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 24 Nov 2021 08:18:54 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3647E61AE4;
-        Wed, 24 Nov 2021 12:45:53 +0000 (UTC)
+        id S1352461AbhKXNgB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 24 Nov 2021 08:36:01 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EBA8061C12;
+        Wed, 24 Nov 2021 12:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1637757953;
-        bh=lOINc8zJAMoX3k8oG/uZ9gevZh0lJ56ObrmXG8BE5yU=;
+        s=korg; t=1637758493;
+        bh=cbAkr7roA/XUOtkCmC8I3swOMtrHElogX+dp0d5mgIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ck2DmmB8jmSaS5t4ad5Q7xMBYOYFPZtlUBN6W0h7DAtN3QsVkUoRftKUEIEhUFnU3
-         dbvRwhvDUmz2Ehh7Bt8qA+0SexoGAv4JbygEmtuZkiTXrEpsjLfq3zkb0GjIc1nhtj
-         vHZJUi0r0iEHFRg7xXhg3c5HCzR8FbakW4qrW9Z4=
+        b=tdZtB97b4bU5TiusQi0rF4NTllf/ePkwm09iX5sSKSoIW9o+EjT/Mqe18YI9xrsv/
+         mzWTf5yum180nMpIPrjDWkSlksXaLBKBKqg4pouiTp0uJwFD2UKJLWR10ShXH+PgcL
+         xOwLMAr1jQHaZFJ/u6QhMkOPFuPbEgzpVw0cK3fg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
         "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        linux-mips@vger.kernel.org, John Crispin <john@phrozen.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Jonas Gorski <jonas.gorski@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 292/323] mips: lantiq: add support for clk_get_parent()
-Date:   Wed, 24 Nov 2021 12:58:02 +0100
-Message-Id: <20211124115728.764318250@linuxfoundation.org>
+Subject: [PATCH 5.10 089/154] mips: bcm63xx: add support for clk_get_parent()
+Date:   Wed, 24 Nov 2021 12:58:05 +0100
+Message-Id: <20211124115705.188942030@linuxfoundation.org>
 X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20211124115718.822024889@linuxfoundation.org>
-References: <20211124115718.822024889@linuxfoundation.org>
+In-Reply-To: <20211124115702.361983534@linuxfoundation.org>
+References: <20211124115702.361983534@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -48,39 +54,51 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit fc1aabb088860d6cf9dd03612b7a6f0de91ccac2 ]
+[ Upstream commit e8f67482e5a4bc8d0b65d606d08cb60ee123b468 ]
 
-Provide a simple implementation of clk_get_parent() in the
-lantiq subarch so that callers of it will build without errors.
+BCM63XX selects HAVE_LEGACY_CLK but does not provide/support
+clk_get_parent(), so add a simple implementation of that
+function so that callers of it will build without errors.
 
-Fixes this build error:
-ERROR: modpost: "clk_get_parent" [drivers/iio/adc/ingenic-adc.ko] undefined!
+Fixes these build errors:
 
-Fixes: 171bb2f19ed6 ("MIPS: Lantiq: Add initial support for Lantiq SoCs")
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
+
+Fixes: e7300d04bd08 ("MIPS: BCM63xx: Add support for the Broadcom BCM63xx family of SOCs." )
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
 Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: Artur Rojek <contact@artur-rojek.eu>
+Cc: Paul Cercueil <paul@crapouillou.net>
 Cc: linux-mips@vger.kernel.org
-Cc: John Crispin <john@phrozen.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
 Cc: linux-iio@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
 Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: John Crispin <john@phrozen.org>
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lantiq/clk.c | 6 ++++++
+ arch/mips/bcm63xx/clk.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/lantiq/clk.c b/arch/mips/lantiq/clk.c
-index a263d1b751ffe..a8e309dcd38d7 100644
---- a/arch/mips/lantiq/clk.c
-+++ b/arch/mips/lantiq/clk.c
-@@ -160,6 +160,12 @@ void clk_deactivate(struct clk *clk)
- }
- EXPORT_SYMBOL(clk_deactivate);
+diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+index 164115944a7fd..aba6e2d6a736c 100644
+--- a/arch/mips/bcm63xx/clk.c
++++ b/arch/mips/bcm63xx/clk.c
+@@ -381,6 +381,12 @@ void clk_disable(struct clk *clk)
+ 
+ EXPORT_SYMBOL(clk_disable);
  
 +struct clk *clk_get_parent(struct clk *clk)
 +{
@@ -88,9 +106,9 @@ index a263d1b751ffe..a8e309dcd38d7 100644
 +}
 +EXPORT_SYMBOL(clk_get_parent);
 +
- static inline u32 get_counter_resolution(void)
+ unsigned long clk_get_rate(struct clk *clk)
  {
- 	u32 res;
+ 	if (!clk)
 -- 
 2.33.0
 

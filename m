@@ -2,115 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5512645B55D
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 08:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FBAC45B62C
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 09:04:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236833AbhKXHdH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 02:33:07 -0500
-Received: from mout.kundenserver.de ([212.227.17.10]:35197 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbhKXHdG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 02:33:06 -0500
-Received: from mail-wm1-f41.google.com ([209.85.128.41]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MhToz-1mCLIt1i7v-00egs1 for <linux-iio@vger.kernel.org>; Wed, 24 Nov 2021
- 08:29:56 +0100
-Received: by mail-wm1-f41.google.com with SMTP id p27-20020a05600c1d9b00b0033bf8532855so1230653wms.3
-        for <linux-iio@vger.kernel.org>; Tue, 23 Nov 2021 23:29:56 -0800 (PST)
-X-Gm-Message-State: AOAM532yCg1jjiFa0ZUWltBdppfMmxduzDQtvR52aQe06uioleFYQdfi
-        ZNWAzlochZ2nYDoSRzv8zIvDeTf6n7RQFrk5r/k=
-X-Google-Smtp-Source: ABdhPJz6OFDas1rA8f9wgrNgk2WUDD0t+wUaaQ12GzQnSNdliTuEWCPfugSYLMu4k/nbixPoFc1uPAUWENo3wChtRko=
-X-Received: by 2002:a1c:770e:: with SMTP id t14mr11520712wmi.173.1637738996006;
- Tue, 23 Nov 2021 23:29:56 -0800 (PST)
-MIME-Version: 1.0
-References: <20211123211019.2271440-1-jic23@kernel.org> <KMP13R.I8M265PNR9RU@crapouillou.net>
-In-Reply-To: <KMP13R.I8M265PNR9RU@crapouillou.net>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 24 Nov 2021 08:29:40 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
-Message-ID: <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
-Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
- __maybe_unused etc.
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        id S241024AbhKXIHp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 03:07:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233552AbhKXIHo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 03:07:44 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5ACC061574;
+        Wed, 24 Nov 2021 00:04:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=A8apBARRFPbiSEW1ceN6aynN1mbMSw2kt4pRYV7bzUs=;
+        t=1637741075; x=1638950675; b=fOIugJ371/M3ZN3Jkyqas0ZROi7Mwh9OUvsSiN0uekx+Lw+
+        hrnOMtvjWKlMDr4UfmJSTwTkJQvgZQyijM3/YUstkBGgYIRqYx9qbJdenr/q9j4wL6SvNdu4k1gR6
+        mfdfeC7suQHGLHzOQE+mQHdaEABHb3cNkvYat3xVwnn/PNlJ/DLV+t1NGdIGZt9n88u4BnowfU97I
+        Z0hgJ6vpeuLSHtHp2DVhEDVGSzt4J/4fmEiY9LQNggHWOU60PKGn+6UAMV4kBFDMK86WBcezP/hFX
+        2r0Gi9h5YE7pNDQDrCeDqjaVyfnrzdjQ5KQLVwP1KgwPTxDaEYjiEGb0saU6Jl+Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mpnFW-0027Gb-B2;
+        Wed, 24 Nov 2021 09:03:26 +0100
+Message-ID: <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
+Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
+ helpers
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>,
-        Arnd Bergmann <arnd@arndb.de>
+        Tero Kristo <kristo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Date:   Wed, 24 Nov 2021 09:03:24 +0100
+In-Reply-To: <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+References: <cover.1637592133.git.geert+renesas@glider.be>
+         <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
+         <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+         <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
+         <637a4183861a1f2cdab52b7652bfa7ed33fbcdd2.camel@sipsolutions.net>
+         <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:MDK1L6xa1+aFj5I+0yhwuIi2Se1ZBBvKYc/25coAbArVzb/Q3Nk
- ihO8Q+N6kCS0CZEGLkEIYqmp01K6sp4bkv179qqzr2ipkb6frAzNqUxpRBKrsVYRPMjCjlQ
- IRquSRj+hGhC1cRCBtbTzFbBMRDHJDyatBiCU8eJyLnQYy7BGlJLuq5OU25Pu7Ym+/O7ck/
- cuGLDBMHaGQg/98nNvl/A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uH+rP9XIw3E=:/Zfb5GYuWder6xN8XYktQ7
- jHeKUajc2BuGjZL/Mj8LCeOqUUOesNjEzFfGFERkA4EHrv4BZWgZteeZ522km7xk/Jsm2hom8
- AF6NvrGUWV0yGr+qpmiFtvkRQaVayDbyMeZ5V214F4DTTAQceIxjgOsoh13Vx4S6+49XuBIJF
- fBB6QWZY6mN47nGvIt39NblAZ/Ei+xWm0VX5lJvJcmifyU8LQinqh8VU4QVDXz9I/04r1gYPT
- eLOYh1nBBGuH09Up3HuvSmvosCIaiZPyVgDyYipr7gdkJRWF1jtvXYinMd9Lbiylc/f2UhgZ0
- YZvcmTOBshRgxE01sVnaTbxFlx7NvHUsKCMwVR8vfYWRjn1X7odaKwlrZzMe+FG8INNruQbwB
- sWlS34q2Zjh3oYlS2NSxYhH7efKpDhhQcvAPr4xBM0cgZ7hfUD2i9mH9eYzffSXjJOcGMXkxO
- 9db7/N1V1mmYwKgkjoxH4LlLcixXZ6zfQuPCdQszpFaYOkJR599E7SnlIOCqsi708r4nQHmFP
- 6/HW2PMI9ikgSixy5apftzEnEw0S01RKpdAW4IgVX1C7WBWkx2HN5FK+C2IIaJog2x+KLvEAE
- ASVu96yJyAopAnajYMg/jXsbTd/DVqN2+Hu8l1eDYwBISUhhlOvQuRJM3l8JvT/mjZNjQg1o8
- ClpapqID7/mORTPQtluhbYMke4XZFDimeqtPw2t7bX8gj8/wV9JvIC2SQuhxXkaxO7aQ=
+User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 23, 2021 at 11:11 PM Paul Cercueil <paul@crapouillou.net> wrote:
->
-> One word about the pm_ptr() macro. Right now it's defined as:
->   #ifdef CONFIG_PM
->   #define pm_ptr(_ptr) (_ptr)
->   #else
->   #define pm_ptr(_ptr) NULL
->   #endif
->
-> It could be possible to define it like this instead:
->   #define pm_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM), (_ptr))
->
-> The difference is that if !CONFIG_PM, in the first case the (_ptr) is
-> not visible by the compiler and the __maybe_unused is required, while
-> in the second case the (_ptr) is always visible by the compiler, but
-> discarded as dead code. The reason we'd want that is the same reason we
-> use IS_ENABLED() instead of macro guards; and you wouldn't need the
-> __maybe_unused attribute anywhere.
+On Tue, 2021-11-23 at 15:49 -0800, Jakub Kicinski wrote:
+> On Tue, 23 Nov 2021 17:24:15 +0100 Johannes Berg wrote:
+> > > (*_replace_bits() seems to be useful, though)  
+> > 
+> > Indeed.
+> > 
+> > Also as I said in my other mail, the le32/be32/... variants are
+> > tremendously useful, and they fundamentally cannot be expressed with the
+> > FIELD_GET() or field_get() macros. IMHO this is a clear advantage to the
+> 
+> Can you elaborate?
 
-That sounds like a great idea. I see there are only 12 users of pm_ptr at
-the moment, so auditing all of these should not be a problem.
+Well, the way I see it, the only advantage of FIELD_GET() is that it
+will auto-determine the type (based on the mask type.) This cannot work
+if you need be/le conversions, because the be/le type annotations are
+invisible to the compiler.
 
-I gave it a brief look and found that we probably only need to fix
-drivers/net/ethernet/realtek/r8169_main.c if we change the definition.
+So obviously you could write a BE32_FIELD_GET(), but then really that's
+equivalent to be32_get_bits() - note you you have to actually specify
+the type in the macro name. I guess in theory you could make macros
+where the type is an argument (like FIELD_GET_TYPE(be32, ...)), but I
+don't see how that gains anything.
 
-> The problem then is that the SET_*_PM_OPS macros are defined
-> differently according to CONFIG_PM, so their definition would need to
-> be changed to use the (redefined) pm_ptr() macro and a corresponding
-> pm_sleep_ptr() macro. Unfortunately since the SET_*_PM_OPS macros are
-> used everywhere with code wrapped around #ifdef CONFIG_PM guards, it
-> wouldn't be easy to change them, and it would just be easier to
-> introduce new macros.
+> > typed versions, and if you ask me we should get rid of the FIELD_GETand
+> > FIELD_PREP entirely - difficult now, but at least let's not propagate
+> > that?
+> 
+> I don't see why.
 
-Right, this is what we've discussed multiple times, and I think everyone
-agreed we should do this, but so far we could not come up with a name
-for the new macro, and changing the macro in place is not practical unless
-we change hundreds of drivers in the same way as the iio series first.
+Just for being more regular, in the spirit of "there's exactly one
+correct way of doing it" :)
 
-       Arnd
+johannes

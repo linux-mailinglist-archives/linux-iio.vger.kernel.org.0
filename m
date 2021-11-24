@@ -2,39 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FBAC45B62C
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 09:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C1345B672
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 09:24:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241024AbhKXIHp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 03:07:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47698 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233552AbhKXIHo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 03:07:44 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5ACC061574;
-        Wed, 24 Nov 2021 00:04:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=A8apBARRFPbiSEW1ceN6aynN1mbMSw2kt4pRYV7bzUs=;
-        t=1637741075; x=1638950675; b=fOIugJ371/M3ZN3Jkyqas0ZROi7Mwh9OUvsSiN0uekx+Lw+
-        hrnOMtvjWKlMDr4UfmJSTwTkJQvgZQyijM3/YUstkBGgYIRqYx9qbJdenr/q9j4wL6SvNdu4k1gR6
-        mfdfeC7suQHGLHzOQE+mQHdaEABHb3cNkvYat3xVwnn/PNlJ/DLV+t1NGdIGZt9n88u4BnowfU97I
-        Z0hgJ6vpeuLSHtHp2DVhEDVGSzt4J/4fmEiY9LQNggHWOU60PKGn+6UAMV4kBFDMK86WBcezP/hFX
-        2r0Gi9h5YE7pNDQDrCeDqjaVyfnrzdjQ5KQLVwP1KgwPTxDaEYjiEGb0saU6Jl+Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mpnFW-0027Gb-B2;
-        Wed, 24 Nov 2021 09:03:26 +0100
-Message-ID: <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
- helpers
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        id S240697AbhKXI1a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 03:27:30 -0500
+Received: from so254-9.mailgun.net ([198.61.254.9]:61131 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241315AbhKXI13 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 03:27:29 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1637742260; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=DLx8xZfugkoYBeo1v25B565K1wJJHlGolp3uooimdG4=; b=bNsxTrQyq9uGwuB3f2LyEcxsvAp9kD/C4fNIuYqL7wdR0INGNqkdkYAL6AQiYP+HKysGkv73
+ CYHsPEgeVXDeFd7bJYmMA7Oz/1YUg44l72wHEEI5ntB8TnM3GEkzY/SvktnbEJA3SoSt3f0S
+ PcTzk1aHGKk317FKx2i3qMH1ytk=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI3Mzk1NyIsICJsaW51eC1paW9Admdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
+ 619df6b3e7d68470afb02448 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Nov 2021 08:24:19
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EBD19C4338F; Wed, 24 Nov 2021 08:24:18 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
+        autolearn=no autolearn_force=no version=3.4.0
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 02E23C4338F;
+        Wed, 24 Nov 2021 08:24:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 02E23C4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
         Rajendra Nayak <rnayak@codeaurora.org>,
@@ -55,8 +65,8 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Joel Stanley <joel@jms.id.au>,
         Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
         "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -77,54 +87,68 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
         alsa-devel@alsa-project.org
-Date:   Wed, 24 Nov 2021 09:03:24 +0100
-In-Reply-To: <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}() helpers
 References: <cover.1637592133.git.geert+renesas@glider.be>
-         <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
-         <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-         <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
-         <637a4183861a1f2cdab52b7652bfa7ed33fbcdd2.camel@sipsolutions.net>
-         <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
+        <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+        <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
+Date:   Wed, 24 Nov 2021 10:24:02 +0200
+In-Reply-To: <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
+        (Geert Uytterhoeven's message of "Tue, 23 Nov 2021 09:30:14 +0100")
+Message-ID: <87sfvm55ct.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2021-11-23 at 15:49 -0800, Jakub Kicinski wrote:
-> On Tue, 23 Nov 2021 17:24:15 +0100 Johannes Berg wrote:
-> > > (*_replace_bits() seems to be useful, though)  
-> > 
-> > Indeed.
-> > 
-> > Also as I said in my other mail, the le32/be32/... variants are
-> > tremendously useful, and they fundamentally cannot be expressed with the
-> > FIELD_GET() or field_get() macros. IMHO this is a clear advantage to the
-> 
-> Can you elaborate?
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
 
-Well, the way I see it, the only advantage of FIELD_GET() is that it
-will auto-determine the type (based on the mask type.) This cannot work
-if you need be/le conversions, because the be/le type annotations are
-invisible to the compiler.
+> Hi Johannes,
+>
+> On Mon, Nov 22, 2021 at 5:33 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>> On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
+>> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
+>> > constants.  However, it is very common to prepare or extract bitfield
+>> > elements where the bitfield mask is not a compile-time constant.
+>> >
+>>
+>> I'm not sure it's really a good idea to add a third API here?
+>>
+>> We have the upper-case (constant) versions, and already
+>> {u32,...}_get_bits()/etc.
+>
+> These don't work for non-const masks.
+>
+>> Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
+>> architectures (afaict), so that seems a bit awkward.
+>
+> That's a valid comment. Can be fixed by using a wrapper macro
+> that checks if typeof(mask) == u64, and uses an __ffs64() version when
+> needed.
+>
+>> Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
+>> if it is indeed a constant? The __field_overflow() usage is already only
+>> done if __builtin_constant_p(v), so I guess we can do the same with
+>> __bad_mask()?
+>
+> Are all compilers smart enough to replace the division by
+> field_multiplier(field) by a shift?
 
-So obviously you could write a BE32_FIELD_GET(), but then really that's
-equivalent to be32_get_bits() - note you you have to actually specify
-the type in the macro name. I guess in theory you could make macros
-where the type is an argument (like FIELD_GET_TYPE(be32, ...)), but I
-don't see how that gains anything.
+It looks like the answer is no as few weeks back I received a comment
+internally that a team is seeing a slow down with u32_get_bits():
 
-> > typed versions, and if you ask me we should get rid of the FIELD_GETand
-> > FIELD_PREP entirely - difficult now, but at least let's not propagate
-> > that?
-> 
-> I don't see why.
+"Time taken for executing both the macros/inline function (in terms of microseconds)
+(out of 3 Trails)
+FIELD_GET	: 32, 31, 32
+u32_get_bits	: 6379, 6664, 6558"
 
-Just for being more regular, in the spirit of "there's exactly one
-correct way of doing it" :)
+Sadly I didn't realise to ask what compiler they were using. But I still
+prefer {u32,...}_get_bits() over FIELD_GET(), they are just so much
+cleaner to use.
 
-johannes
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

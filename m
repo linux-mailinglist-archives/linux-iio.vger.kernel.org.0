@@ -2,30 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 37DDD45C6A6
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 15:07:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B3F145C7B6
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 15:41:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354665AbhKXOKf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 09:10:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53830 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1356052AbhKXOIj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 24 Nov 2021 09:08:39 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B124C6135F;
-        Wed, 24 Nov 2021 13:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637762378;
-        bh=qRP+clj8R/VdWhftZ8Y8X7gwjyLiR1Ndt0XMFQ1d99I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qwjskdleu3wFs5Bp+wvn7/HQgcncwjzNLbZJvm05oYaNrcYQTwWP5OPt4NA+r19ce
-         xvpj4Ygu81mu+0T0HClP6KV/QWjpcF9snHTHoGaG5tUeLxnTTWkLES0g3C2OG9fyHP
-         3gdMDDzRgjs1FxHFxipNVT3bu4+1WLgAMlUBkLt05N30IajW10WzN8g5y+5eK5i725
-         UrYk6tfyltIEGHPLMkyi6LuRszHy8ZTAL81DcgYxpSc8FxYZIzgFUL244Ub8IMFPQK
-         iyz4glX1RQI/lDwdXU9D49kB+bXi/+6kFMsXGuBY9Lzmn68zgSqocZJHLF6A/zwCj2
-         E8n91Zb/v+PWQ==
-Date:   Wed, 24 Nov 2021 05:59:35 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
+        id S1354265AbhKXOpE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 09:45:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354152AbhKXOpA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 09:45:00 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEC2C22459D;
+        Wed, 24 Nov 2021 06:09:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=ehMa9pgWHBM7TnvPMQnjh4s1Rj7IHG2tDkzpNOpErAk=;
+        t=1637762985; x=1638972585; b=MthxQG5X8zlcOYtgAwIU9XAMBQI61ts+APPLEFUMJz+6PiG
+        zUIDfprGfp4uITF1NHPqp59IOvbY2qbQvKsmKrAmOSyiRTJpvAzSI8dI7IczyJlHDF7LVP9OPgfvr
+        eJua/j9ZHIfCEKXrFs5QtXVPratkZb/y48R6jsbkq2eHfWNKOYqAkayzyCNoWrikwedZPxLKnZpJr
+        GQw4lIzPBkRJ52WXlcSFsGmXXuplrTEHAqT43Fh6JprXcW/w9LbOp2ChgZP8eY2U6fJIU/s3AtWPD
+        UbnXANwy5qujn3tf/p5fy/5XkPe4bNiFltzNVIlqVW+Px02LqlsM+PWowW2L7x2A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1mpsw9-002JSq-Fw;
+        Wed, 24 Nov 2021 15:07:49 +0100
+Message-ID: <eea90adf2d51326f6d0bf0b97834063752a35c3f.camel@sipsolutions.net>
+Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
+ helpers
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Tony Lindgren <tony@atomide.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -69,62 +77,60 @@ Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
         alsa-devel@alsa-project.org
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
- helpers
-Message-ID: <20211124055935.416dc472@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
+Date:   Wed, 24 Nov 2021 15:07:47 +0100
+In-Reply-To: <20211124055935.416dc472@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 References: <cover.1637592133.git.geert+renesas@glider.be>
-        <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
-        <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-        <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
-        <637a4183861a1f2cdab52b7652bfa7ed33fbcdd2.camel@sipsolutions.net>
-        <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
+         <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
+         <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+         <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
+         <637a4183861a1f2cdab52b7652bfa7ed33fbcdd2.camel@sipsolutions.net>
+         <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+         <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
+         <20211124055935.416dc472@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 24 Nov 2021 09:03:24 +0100 Johannes Berg wrote:
-> On Tue, 2021-11-23 at 15:49 -0800, Jakub Kicinski wrote:
-> > > Indeed.
-> > > 
-> > > Also as I said in my other mail, the le32/be32/... variants are
-> > > tremendously useful, and they fundamentally cannot be expressed with the
-> > > FIELD_GET() or field_get() macros. IMHO this is a clear advantage to the  
-> > 
-> > Can you elaborate?  
+On Wed, 2021-11-24 at 05:59 -0800, Jakub Kicinski wrote:
 > 
-> Well, the way I see it, the only advantage of FIELD_GET() is that it
-> will auto-determine the type (based on the mask type.) This cannot work
-> if you need be/le conversions, because the be/le type annotations are
-> invisible to the compiler.
+> FWIW I never found the be/le versions useful. Most of the time the data
+> comes from bus accessors which swap or is unaligned so you have to do
+> be/le_get_unaligned, which swaps. Plus if you access/set multiple
+> fields you'd swap them one by one which seems wasteful.
+
+Oh, we use them all the time in wifi!
+
+I'm not sure I'm too concerned about wasteful - actually in wifi most of
+the time it's little endian to start with, which matches the CPU for all
+practical uses of wifi (**), and often we just access one field or so.
+And anyway if we extract more than a single bit we need to swap anyway,
+and I hope if it's just a single bit the compiler will optimize since
+the one side is a constant? But whatever ...
+
+(**) I had a fight with big-endian ARM a few years ago just to get wifi
+tested on big-endian ...
+
+
+> Right now it seems the uppercase macros are more prevalent.
 > 
-> So obviously you could write a BE32_FIELD_GET(), but then really that's
-> equivalent to be32_get_bits() - note you you have to actually specify
-> the type in the macro name. I guess in theory you could make macros
-> where the type is an argument (like FIELD_GET_TYPE(be32, ...)), but I
-> don't see how that gains anything.
 
-Ah, that's what you meant! Thanks for spelling it out.
+Not in my world ;-)
 
-FWIW I never found the be/le versions useful. Most of the time the data
-comes from bus accessors which swap or is unaligned so you have to do
-be/le_get_unaligned, which swaps. Plus if you access/set multiple
-fields you'd swap them one by one which seems wasteful.
+$ git grep FIELD_GET -- ... | wc -l
+20
+$ git grep le32_get_bits -- ... | wc -l
+44
+$ git grep le16_get_bits -- ... | wc -l
+12
+$ git grep u8_get_bits -- ... | wc -l
+17
 
-> > > typed versions, and if you ask me we should get rid of the FIELD_GETand
-> > > FIELD_PREP entirely - difficult now, but at least let's not propagate
-> > > that?  
-> > 
-> > I don't see why.  
-> 
-> Just for being more regular, in the spirit of "there's exactly one
-> correct way of doing it" :)
+:-)
 
-Right now it seems the uppercase macros are more prevalent.
-
-Could just be because of the way the "swapping ones" are defined.
+johannes

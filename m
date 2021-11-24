@@ -2,24 +2,24 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4445D45BA8F
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 13:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E86845BC33
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 13:23:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242796AbhKXMMC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 07:12:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33504 "EHLO mail.kernel.org"
+        id S244606AbhKXM0p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 07:26:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42172 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242563AbhKXMJ7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 24 Nov 2021 07:09:59 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BC231610E6;
-        Wed, 24 Nov 2021 12:05:46 +0000 (UTC)
+        id S245204AbhKXMYp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 24 Nov 2021 07:24:45 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F39A361212;
+        Wed, 24 Nov 2021 12:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1637755547;
-        bh=0wATiQxK/PELoTDrmyyKDTMZwmyhzwmp5iHD7Zc9jhM=;
+        s=korg; t=1637756132;
+        bh=RhoA94I73Mc3zr+GgW0KUPpLbuIVtcYNDaZLZBT097k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iLoP31fKVOCQ5A6QP/3cC4LqT+oYwER2TJzYZFdgEShgRG2YQYajGZBTS1Hmn1Lz1
-         m5zUZpiX1uEixw02SygjKIV0hzVuVS3H8Axfu8pAMtYP30xxAnxoJAb/XnXt1YFLpX
-         jJD9tx3aw0i7X06hm6QoHcOc2EXQf74DvyEIJBBM=
+        b=EV3R13Tyu70V6PnO2jGxRN6L/wl0FFJcy5cnxHaGeELBBLDhMnnElmBhPvmShwItx
+         Fe/5x1oVNms8foRSkNbh1kilTcXGicbXJ6v5HsouKdbTiW7sbeChTs02OMPg/bKBEl
+         ld/0eyVrzpFJDLnsUX9Xuue9woQyfrNxMclNda+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.4 136/162] mips: bcm63xx: add support for clk_get_parent()
-Date:   Wed, 24 Nov 2021 12:57:19 +0100
-Message-Id: <20211124115702.687341359@linuxfoundation.org>
+Subject: [PATCH 4.9 183/207] mips: bcm63xx: add support for clk_get_parent()
+Date:   Wed, 24 Nov 2021 12:57:34 +0100
+Message-Id: <20211124115709.895922051@linuxfoundation.org>
 X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20211124115658.328640564@linuxfoundation.org>
-References: <20211124115658.328640564@linuxfoundation.org>
+In-Reply-To: <20211124115703.941380739@linuxfoundation.org>
+References: <20211124115703.941380739@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+)
 
 diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-index 637565284732d..ef268c9aac80d 100644
+index b49fc9cb9cad2..4f375050ab8e9 100644
 --- a/arch/mips/bcm63xx/clk.c
 +++ b/arch/mips/bcm63xx/clk.c
-@@ -333,6 +333,12 @@ void clk_disable(struct clk *clk)
+@@ -336,6 +336,12 @@ void clk_disable(struct clk *clk)
  
  EXPORT_SYMBOL(clk_disable);
  

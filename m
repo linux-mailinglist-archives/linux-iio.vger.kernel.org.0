@@ -2,97 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60FB745B28E
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 04:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3292C45B430
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 07:09:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbhKXDVk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 22:21:40 -0500
-Received: from mga17.intel.com ([192.55.52.151]:36879 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230274AbhKXDVj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 23 Nov 2021 22:21:39 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10177"; a="215901864"
-X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
-   d="scan'208";a="215901864"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 19:18:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
-   d="scan'208";a="607046314"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 23 Nov 2021 19:18:28 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1mpinj-0004EP-FQ; Wed, 24 Nov 2021 03:18:27 +0000
-Date:   Wed, 24 Nov 2021 11:18:18 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
-        robh+dt@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: Re: [PATCH v2 2/4] iio:filter:admv8818: add support for ADMV8818
-Message-ID: <202111241151.J9kfWWOf-lkp@intel.com>
-References: <20211123133900.133027-2-antoniu.miclaus@analog.com>
+        id S232378AbhKXGMW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 01:12:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50268 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229825AbhKXGMU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 01:12:20 -0500
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69483C061574;
+        Tue, 23 Nov 2021 22:09:11 -0800 (PST)
+Received: by mail-pj1-x1036.google.com with SMTP id iq11so1617378pjb.3;
+        Tue, 23 Nov 2021 22:09:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Ez3QVmY1XZw+pekgl/gvhcD1cD5LMLp7Mm2ELoCCbMI=;
+        b=h5CEV2+WsUwc8/HreAiVGYTBNHdZJ+zz53f3CxfyoOsAYuJAJxaDQxOPKYKZJbwvzb
+         AQvQcBL0hIC5eRbDa7CFXFUGxk0f1KqSDZUlyw8KSJbZPumqyhRei38HNwoqFvs2mc4O
+         sPn7UXTN+43PaDxJMQzhprWbRXhBU20um7i9F7hBhg7YuAEWsn6pmDGpBkfWQ0nIO9CK
+         qvRQKX6JFS6AtZVPmYVqCkLLIEE+J4G92Jqal7cFeZ9QMhdSfRSHT82frjwUZEHtj2mr
+         PpCA6r06L4jGbIfTFjSBHW9TphpigyXPdpRtAUaJnQ2s1CrJb82MkzWPzFZB9o8xGHWi
+         7p+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Ez3QVmY1XZw+pekgl/gvhcD1cD5LMLp7Mm2ELoCCbMI=;
+        b=GOMsyQW1sAWZnmf6VjOQVOIarXJRCWKDZdB/mR29Tf5A0rwlL64j2Jo6u1TqK2lVhK
+         3MfATAAzykDbP8ke7mQ13T+aBYHcGZuGng3QmPehih0dOHWofS2zwpx5J2fs+H4dOJ6U
+         e9u6UnE6NRprMhcjnuPPe51WauqlG7OsJtrcTSt6baL9RnogNYhHJxMKxY5t10x1AtqQ
+         lIZAyYNv+9an+MR9JdbH/TOv7iZUqzriZ5FZ2pOkSm3IV4E+ZhxEyCmvfdJymiPnSv9+
+         srzJyGkn8GSBwJlL6i6gZQMEAll0RuCVP+wKhpENQAIiT+W4FCSMqfgL+C4SEUmflhQD
+         th8w==
+X-Gm-Message-State: AOAM5317iarUPkGWr7etodJD/yLh4T0Azqto9y1R2MbxsxpzaILgKH80
+        628IU/wlsMlHMbhKkA8pdZQQRcpIz4YweUKX
+X-Google-Smtp-Source: ABdhPJyw/JF5kY8+OyLhjkD8kLe/zEuGlhEXXZQoIR5tyL0Qvk6c9jXAgMZe8x1TknF7rby6pGy7Zg==
+X-Received: by 2002:a17:902:c407:b0:142:28fe:668e with SMTP id k7-20020a170902c40700b0014228fe668emr14946555plk.31.1637734151024;
+        Tue, 23 Nov 2021 22:09:11 -0800 (PST)
+Received: from shinobu ([138.199.21.12])
+        by smtp.gmail.com with ESMTPSA id y130sm14122385pfg.202.2021.11.23.22.09.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Nov 2021 22:09:10 -0800 (PST)
+Date:   Wed, 24 Nov 2021 15:09:05 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
+Message-ID: <YZ3XAeYyfGblfaOi@shinobu>
+References: <20211123134540.416695-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="palXCgofjUSCif4g"
 Content-Disposition: inline
-In-Reply-To: <20211123133900.133027-2-antoniu.miclaus@analog.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20211123134540.416695-1-o.rempel@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Antoniu,
 
-Thank you for the patch! Yet something to improve:
+--palXCgofjUSCif4g
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on v5.16-rc2 next-20211123]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote:
+> Add counter_push_event() to notify user space about new pulses
+>=20
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/counter/interrupt-cnt.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-=
+cnt.c
+> index 8514a87fcbee..b237137b552b 100644
+> --- a/drivers/counter/interrupt-cnt.c
+> +++ b/drivers/counter/interrupt-cnt.c
+> @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int irq, void *dev=
+_id)
+> =20
+>  	atomic_inc(&priv->count);
+> =20
+> +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, 0);
+> +
+>  	return IRQ_HANDLED;
+>  }
+> =20
+> --=20
+> 2.30.2
 
-url:    https://github.com/0day-ci/linux/commits/Antoniu-Miclaus/iio-add-filter-subfolder/20211123-214053
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20211124/202111241151.J9kfWWOf-lkp@intel.com/config.gz)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/0day-ci/linux/commit/5785226a8e5139d7275a8213a19c4e8479eca28b
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Antoniu-Miclaus/iio-add-filter-subfolder/20211123-214053
-        git checkout 5785226a8e5139d7275a8213a19c4e8479eca28b
-        # save the config file to linux build tree
-        mkdir build_dir
-        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
+Hi Oleksij,
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+It looks like this is pushing a COUNTER_EVENT_OVERFLOW event every time
+an interrupt is handled, which I suspect is not what you want to happen.
+The COUNTER_EVENT_OVERFLOW event indicates a count value overflow event,
+so you'll need to check for a count value overflow before pushing the
+event.
 
-All errors (new ones prefixed by >>):
+It would be good idea to implement a ceiling extension as well (you can
+use the COUNTER_COMP_CEILING() macro) so that users can configure the
+particular point where the value overflows.
 
->> drivers/iio/filter/admv8818.c:469:74: error: macro "IIO_ENUM_AVAILABLE" passed 3 arguments, but takes just 2
-     469 |  IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
-         |                                                                          ^
-   In file included from drivers/iio/filter/admv8818.c:14:
-   include/linux/iio/iio.h:111: note: macro "IIO_ENUM_AVAILABLE" defined here
-     111 | #define IIO_ENUM_AVAILABLE(_name, _e) \
-         | 
->> drivers/iio/filter/admv8818.c:469:2: error: 'IIO_ENUM_AVAILABLE' undeclared here (not in a function)
-     469 |  IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
-         |  ^~~~~~~~~~~~~~~~~~
+William Breathitt Gray
 
+--palXCgofjUSCif4g
+Content-Type: application/pgp-signature; name="signature.asc"
 
-vim +/IIO_ENUM_AVAILABLE +469 drivers/iio/filter/admv8818.c
+-----BEGIN PGP SIGNATURE-----
 
-   466	
-   467	static const struct iio_chan_spec_ext_info admv8818_ext_info[] = {
-   468		IIO_ENUM("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
- > 469		IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
-   470		{ },
-   471	};
-   472	
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmGd1vMACgkQhvpINdm7
+VJKxmA//bXW8jn5mO+h9K3q21/57hhXT+8CzEcMMflP5qvx/IFqyufr36Ja/P3+Q
+gcrhQzriZp28cyNmMNrX6OBE5wnN8pD2pG5+GoOvzfyHDM7qAYPU1F52ISGMIJSv
+g1GXywDfe3vZriBMpr+ON5s0Lgp5MpMmII84kx9pVDU/Dp2nceuKAQ3GFcR5VHbW
+llvoQapQ44b0FZOPc9yehavUztn/ZJLObyhF5QQiU/kp2ol/smf218nbZj7b0ZJB
+/X3p+2rcp9njV3i9TWNR6E15eNrIEeueg29NYN1w8TtgCIhSsHIGkdp798uxFHu8
+ddfJA/tfZoHV+aAjC1V32ibCA+BVmXFHhZuCM2pWkC//FtQwVMsKkY2CHULAKM5P
+8sLCAWlRMHMkTPtOA1wNOOJwG7B62Ggz28gzQr05qJOyBdbS5kZ0w9lELmZJ3C1h
+A07LojlKSeMRHmI51aryw+NxVWnutdsIMwiSJr20pbNH75IadU7/sM+bKbEZzzv2
+DxUWl8M7U/P8rzEdxBbVOf7Ep226+iylaYm6uB5XioTK15BMqfPtD3AYQDcfQNjA
+0++53y+ZFOdce7V3qDgHnvD0d0/E+Fk2CPOT1ayhRTSB1hVfsFDUCtToSpt6Lv+1
+74nUXuHewLYQkCTl0Fmll7zwuhrqVLBI5cdKcK4ZJiCvp89yr6Q=
+=2/qt
+-----END PGP SIGNATURE-----
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+--palXCgofjUSCif4g--

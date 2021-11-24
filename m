@@ -2,135 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3F145C7B6
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 15:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DCE445C854
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 16:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354265AbhKXOpE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Nov 2021 09:45:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354152AbhKXOpA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Nov 2021 09:45:00 -0500
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEC2C22459D;
-        Wed, 24 Nov 2021 06:09:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-        Resent-Cc:Resent-Message-ID; bh=ehMa9pgWHBM7TnvPMQnjh4s1Rj7IHG2tDkzpNOpErAk=;
-        t=1637762985; x=1638972585; b=MthxQG5X8zlcOYtgAwIU9XAMBQI61ts+APPLEFUMJz+6PiG
-        zUIDfprGfp4uITF1NHPqp59IOvbY2qbQvKsmKrAmOSyiRTJpvAzSI8dI7IczyJlHDF7LVP9OPgfvr
-        eJua/j9ZHIfCEKXrFs5QtXVPratkZb/y48R6jsbkq2eHfWNKOYqAkayzyCNoWrikwedZPxLKnZpJr
-        GQw4lIzPBkRJ52WXlcSFsGmXXuplrTEHAqT43Fh6JprXcW/w9LbOp2ChgZP8eY2U6fJIU/s3AtWPD
-        UbnXANwy5qujn3tf/p5fy/5XkPe4bNiFltzNVIlqVW+Px02LqlsM+PWowW2L7x2A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.95)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1mpsw9-002JSq-Fw;
-        Wed, 24 Nov 2021 15:07:49 +0100
-Message-ID: <eea90adf2d51326f6d0bf0b97834063752a35c3f.camel@sipsolutions.net>
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
- helpers
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S231372AbhKXPNc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 24 Nov 2021 10:13:32 -0500
+Received: from aposti.net ([89.234.176.197]:52936 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232009AbhKXPNb (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 24 Nov 2021 10:13:31 -0500
+Date:   Wed, 24 Nov 2021 15:10:06 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
+ __maybe_unused etc.
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Anson Huang <anson.huang@nxp.com>,
+        Brian Masney <masneyb@onstation.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Date:   Wed, 24 Nov 2021 15:07:47 +0100
-In-Reply-To: <20211124055935.416dc472@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-References: <cover.1637592133.git.geert+renesas@glider.be>
-         <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
-         <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-         <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
-         <637a4183861a1f2cdab52b7652bfa7ed33fbcdd2.camel@sipsolutions.net>
-         <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-         <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
-         <20211124055935.416dc472@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
+        Luca Weiss <luca@z3ntu.xyz>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Martijn Braam <martijn@brixit.nl>,
+        Maslov Dmitry <maslovdmitry@seeed.cc>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
+        Vaishnav M A <vaishnav@beagleboard.org>
+Message-Id: <US033R.QUSODS2XXA5V3@crapouillou.net>
+In-Reply-To: <CAK8P3a1OmBT2xNTHVp8f3=4TtwtC+6cvn27PCF-j0MMAriK+Hg@mail.gmail.com>
+References: <20211123211019.2271440-1-jic23@kernel.org>
+        <KMP13R.I8M265PNR9RU@crapouillou.net>
+        <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
+        <20211124101113.000033c6@Huawei.com>
+        <CAK8P3a1OmBT2xNTHVp8f3=4TtwtC+6cvn27PCF-j0MMAriK+Hg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2021-11-24 at 05:59 -0800, Jakub Kicinski wrote:
+
+
+Le mer., nov. 24 2021 at 13:23:47 +0100, Arnd Bergmann <arnd@arndb.de> 
+a écrit :
+> On Wed, Nov 24, 2021 at 11:11 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+>>  On Wed, 24 Nov 2021 08:29:40 +0100 Arnd Bergmann <arnd@arndb.de> 
+>> wrote:
+>>  >
+>>  > > The problem then is that the SET_*_PM_OPS macros are defined
+>>  > > differently according to CONFIG_PM, so their definition would 
+>> need to
+>>  > > be changed to use the (redefined) pm_ptr() macro and a 
+>> corresponding
+>>  > > pm_sleep_ptr() macro. Unfortunately since the SET_*_PM_OPS 
+>> macros are
+>>  > > used everywhere with code wrapped around #ifdef CONFIG_PM 
+>> guards, it
+>>  > > wouldn't be easy to change them, and it would just be easier to
+>>  > > introduce new macros.
+>>  >
+>>  > Right, this is what we've discussed multiple times, and I think 
+>> everyone
+>>  > agreed we should do this, but so far we could not come up with a 
+>> name
+>>  > for the new macro, and changing the macro in place is not 
+>> practical unless
+>>  > we change hundreds of drivers in the same way as the iio series 
+>> first.
+>> 
+>>  Nasty indeed and I'm not sure how scriptable either as lots of 
+>> subtle variants
+>>  unfortunately.
 > 
-> FWIW I never found the be/le versions useful. Most of the time the data
-> comes from bus accessors which swap or is unaligned so you have to do
-> be/le_get_unaligned, which swaps. Plus if you access/set multiple
-> fields you'd swap them one by one which seems wasteful.
-
-Oh, we use them all the time in wifi!
-
-I'm not sure I'm too concerned about wasteful - actually in wifi most of
-the time it's little endian to start with, which matches the CPU for all
-practical uses of wifi (**), and often we just access one field or so.
-And anyway if we extract more than a single bit we need to swap anyway,
-and I hope if it's just a single bit the compiler will optimize since
-the one side is a constant? But whatever ...
-
-(**) I had a fight with big-endian ARM a few years ago just to get wifi
-tested on big-endian ...
-
-
-> Right now it seems the uppercase macros are more prevalent.
+> The minor variants (late, noirq) are actually the easy part, for the 
+> macros that
+> have fewer users, we can just have one patch per macro that changes 
+> it treewide.
+> For SET_SYSTEM_SLEEP_PM_OPS/SET_RUNTIME_PM_OPS and their
+> DEV_PM_OPS variants, this would be a lot harder:
 > 
+> $ for i in SET_SYSTEM_SLEEP_PM_OPS SET_LATE_SYSTEM_SLEEP_PM_OPS
+> SET_NOIRQ_SYSTEM_SLEEP_PM_OPS SET_RUNTIME_PM_OPS SIMPLE_DEV_PM_OPS
+> UNIVERSAL_DEV_PM_OPS ; do echo `git grep -wl $i | wc  -l` $i ; done
+> 
+> 459 SET_SYSTEM_SLEEP_PM_OPS
+> 51 SET_LATE_SYSTEM_SLEEP_PM_OPS
+> 59 SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
+> 497 SET_RUNTIME_PM_OPS
+> 797 SIMPLE_DEV_PM_OPS
+> 20 UNIVERSAL_DEV_PM_OPS
+> 
+> About half of those actually use an #ifdef, while the other half does
+> not:
+> 
+> $ git grep -wl 
+> 'SET_SYSTEM_SLEEP_PM_OPS\|SET_RUNTIME_PM_OPS\|SIMPLE_DEV_PM_OPS\|UNIVERSAL_DEV_PM_OPS'
+>  | xargs grep -l CONFIG_PM | wc -l
+> 712
+> $ git grep -wl 
+> 'SET_SYSTEM_SLEEP_PM_OPS\|SET_RUNTIME_PM_OPS\|SIMPLE_DEV_PM_OPS\|UNIVERSAL_DEV_PM_OPS'
+>  | xargs grep -L CONFIG_PM | wc -l
+> 745
+> 
+> If we rename the macros in the first half of this using a script, 
+> then we should
+> be able to change the behavior of the normal macros to use the new 
+> pm_ptr().
 
-Not in my world ;-)
+So you want to rename the current macros (to e.g. *_PM_OPS_LEGACY) 
+everywhere so that new ones can be defined?
 
-$ git grep FIELD_GET -- ... | wc -l
-20
-$ git grep le32_get_bits -- ... | wc -l
-44
-$ git grep le16_get_bits -- ... | wc -l
-12
-$ git grep u8_get_bits -- ... | wc -l
-17
+What about we introduce new macros, and just deprecate the old ones 
+(with e.g. a checkpatch warning)? That would be way less work.
 
-:-)
+-Paul
 
-johannes
+

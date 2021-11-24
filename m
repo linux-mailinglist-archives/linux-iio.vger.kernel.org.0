@@ -2,130 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B96245B8BA
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 11:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4445D45BA8F
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 13:12:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240912AbhKXLBg convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 24 Nov 2021 06:01:36 -0500
-Received: from aposti.net ([89.234.176.197]:38796 "EHLO aposti.net"
+        id S242796AbhKXMMC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Nov 2021 07:12:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33504 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236994AbhKXLBg (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 24 Nov 2021 06:01:36 -0500
-Date:   Wed, 24 Nov 2021 10:58:12 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
- __maybe_unused etc.
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jonathan Cameron <jic23@kernel.org>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Message-Id: <05P23R.KVOP6474F7SJ@crapouillou.net>
-In-Reply-To: <20211124101113.000033c6@Huawei.com>
-References: <20211123211019.2271440-1-jic23@kernel.org>
-        <KMP13R.I8M265PNR9RU@crapouillou.net>
-        <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
-        <20211124101113.000033c6@Huawei.com>
+        id S242563AbhKXMJ7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 24 Nov 2021 07:09:59 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BC231610E6;
+        Wed, 24 Nov 2021 12:05:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1637755547;
+        bh=0wATiQxK/PELoTDrmyyKDTMZwmyhzwmp5iHD7Zc9jhM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=iLoP31fKVOCQ5A6QP/3cC4LqT+oYwER2TJzYZFdgEShgRG2YQYajGZBTS1Hmn1Lz1
+         m5zUZpiX1uEixw02SygjKIV0hzVuVS3H8Axfu8pAMtYP30xxAnxoJAb/XnXt1YFLpX
+         jJD9tx3aw0i7X06hm6QoHcOc2EXQf74DvyEIJBBM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Artur Rojek <contact@artur-rojek.eu>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-mips@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.4 136/162] mips: bcm63xx: add support for clk_get_parent()
+Date:   Wed, 24 Nov 2021 12:57:19 +0100
+Message-Id: <20211124115702.687341359@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.0
+In-Reply-To: <20211124115658.328640564@linuxfoundation.org>
+References: <20211124115658.328640564@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Randy Dunlap <rdunlap@infradead.org>
 
+[ Upstream commit e8f67482e5a4bc8d0b65d606d08cb60ee123b468 ]
 
-Le mer., nov. 24 2021 at 10:11:13 +0000, Jonathan Cameron 
-<Jonathan.Cameron@Huawei.com> a écrit :
-> On Wed, 24 Nov 2021 08:29:40 +0100
-> Arnd Bergmann <arnd@arndb.de> wrote:
-> 
->>  On Tue, Nov 23, 2021 at 11:11 PM Paul Cercueil 
->> <paul@crapouillou.net> wrote:
->>  >
->>  > One word about the pm_ptr() macro. Right now it's defined as:
->>  >   #ifdef CONFIG_PM
->>  >   #define pm_ptr(_ptr) (_ptr)
->>  >   #else
->>  >   #define pm_ptr(_ptr) NULL
->>  >   #endif
->>  >
->>  > It could be possible to define it like this instead:
->>  >   #define pm_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM), (_ptr))
->>  >
->>  > The difference is that if !CONFIG_PM, in the first case the 
->> (_ptr) is
->>  > not visible by the compiler and the __maybe_unused is required, 
->> while
->>  > in the second case the (_ptr) is always visible by the compiler, 
->> but
->>  > discarded as dead code. The reason we'd want that is the same 
->> reason we
->>  > use IS_ENABLED() instead of macro guards; and you wouldn't need 
->> the
->>  > __maybe_unused attribute anywhere.
->> 
->>  That sounds like a great idea. I see there are only 12 users of 
->> pm_ptr at
->>  the moment, so auditing all of these should not be a problem.
->> 
->>  I gave it a brief look and found that we probably only need to fix
->>  drivers/net/ethernet/realtek/r8169_main.c if we change the 
->> definition.
-> 
-> Cool.
-> 
->> 
->>  > The problem then is that the SET_*_PM_OPS macros are defined
->>  > differently according to CONFIG_PM, so their definition would 
->> need to
->>  > be changed to use the (redefined) pm_ptr() macro and a 
->> corresponding
->>  > pm_sleep_ptr() macro. Unfortunately since the SET_*_PM_OPS macros 
->> are
->>  > used everywhere with code wrapped around #ifdef CONFIG_PM guards, 
->> it
->>  > wouldn't be easy to change them, and it would just be easier to
->>  > introduce new macros.
->> 
->>  Right, this is what we've discussed multiple times, and I think 
->> everyone
->>  agreed we should do this, but so far we could not come up with a 
->> name
->>  for the new macro, and changing the macro in place is not practical 
->> unless
->>  we change hundreds of drivers in the same way as the iio series 
->> first.
-> 
-> Nasty indeed and I'm not sure how scriptable either as lots of subtle 
-> variants
-> unfortunately.
-> 
-> I'm cynical - don't need a good name.  *_OPS2 works fine for me as 
-> long as
-> the docs are good.
+BCM63XX selects HAVE_LEGACY_CLK but does not provide/support
+clk_get_parent(), so add a simple implementation of that
+function so that callers of it will build without errors.
 
-We could just remove the SET_ prefix,
-SET_SYSTEM_SLEEP_PM_OPS -> SYSTEM_SLEEP_PM_OPS,
+Fixes these build errors:
 
-Or would that be too confusing?
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4770_adc_init_clk_div':
+ingenic-adc.c:(.text+0xe4): undefined reference to `clk_get_parent'
+mips-linux-ld: drivers/iio/adc/ingenic-adc.o: in function `jz4725b_adc_init_clk_div':
+ingenic-adc.c:(.text+0x1b8): undefined reference to `clk_get_parent'
 
--Paul
+Fixes: e7300d04bd08 ("MIPS: BCM63xx: Add support for the Broadcom BCM63xx family of SOCs." )
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: Artur Rojek <contact@artur-rojek.eu>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: linux-mips@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/bcm63xx/clk.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
+index 637565284732d..ef268c9aac80d 100644
+--- a/arch/mips/bcm63xx/clk.c
++++ b/arch/mips/bcm63xx/clk.c
+@@ -333,6 +333,12 @@ void clk_disable(struct clk *clk)
+ 
+ EXPORT_SYMBOL(clk_disable);
+ 
++struct clk *clk_get_parent(struct clk *clk)
++{
++	return NULL;
++}
++EXPORT_SYMBOL(clk_get_parent);
++
+ unsigned long clk_get_rate(struct clk *clk)
+ {
+ 	return clk->rate;
+-- 
+2.33.0
+
 
 

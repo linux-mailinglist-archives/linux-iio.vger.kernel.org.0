@@ -2,128 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1356B45B0F6
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 01:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60FB745B28E
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Nov 2021 04:18:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231816AbhKXBBu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Nov 2021 20:01:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:36717 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230026AbhKXBBu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Nov 2021 20:01:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637715521;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=I+AOGJqzXkRjiPKKyc56m1ImTVIuHv8K9Go66drprd4=;
-        b=Py0b3rcqw8cjt2S9Ma+YIoxGucwaaAksiOUidg1kglo5e6ZSmwJYx3FZEtaJydinqN6sSK
-        6t8yu1Euh4lK/xb5uYafl6YOjFzQn/gSkbk++UxIx1dEEliYZ+TQn6Pb6wEebcRYWR/zo9
-        HxgrZxgWEn+WmYjOK7Nz/PdDxU/7Rqk=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-471-IcB6hjpAO8aSm-7VjVWgdg-1; Tue, 23 Nov 2021 19:58:40 -0500
-X-MC-Unique: IcB6hjpAO8aSm-7VjVWgdg-1
-Received: by mail-qv1-f71.google.com with SMTP id g12-20020a0562141ccc00b003c0322ea7b6so620677qvd.19
-        for <linux-iio@vger.kernel.org>; Tue, 23 Nov 2021 16:58:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=I+AOGJqzXkRjiPKKyc56m1ImTVIuHv8K9Go66drprd4=;
-        b=Xob9Jo+0VGyOEeoL2uh/E6fAJno28T9DYoPWktrjfeFQN+X/Iatwh+5up0Rdykaiv6
-         biCzEuRPTjmsnyNDIKbSR7L/dNSYJy82vGVcvFlPxoGudVwml7RkBumNsc2S10ihQZ7j
-         tgx3J/66kycvAnMs1vYKQ6Q3AkForT5TflxKVPLJUmTGQA8M0B1sH3Zg2OQvhnjLr67n
-         zcDKiiHJM1VK9eLawne9gH7aFGcEEzHf8xAbsZNjzxqatNujlMIMpe0Jl7ZZ4Zv1Rwc1
-         XxU+1TQ47cZw06891uVUNhUwliGtEdoNBdaJywjqXfiYBozoYtm9U7SIkdeshHr5Pwj1
-         osDQ==
-X-Gm-Message-State: AOAM531LZ3VWkXA7XOezVT6bvTRBk12dmrsPG1s78eUeL6mee+IY3Tu1
-        t416bF7A9g1aAomnivaUBXL4VWH3m+yRlMe4kPGa4Vi3AWdS9TJX8PEur2JYLwJ9JduP0bVIdiq
-        Grug3ae6mCJJ5M88lk+0C
-X-Received: by 2002:a37:9244:: with SMTP id u65mr1857804qkd.46.1637715519549;
-        Tue, 23 Nov 2021 16:58:39 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwnwKvChimrTt548vjsEc06cmy8TXp1un48zvKQn5P9bU6ZC8gKPT2WU6NcOU/tQvM7IHAOiQ==
-X-Received: by 2002:a37:9244:: with SMTP id u65mr1857781qkd.46.1637715519351;
-        Tue, 23 Nov 2021 16:58:39 -0800 (PST)
-Received: from x1 (c-98-239-145-235.hsd1.wv.comcast.net. [98.239.145.235])
-        by smtp.gmail.com with ESMTPSA id u21sm7194985qtw.29.2021.11.23.16.58.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Nov 2021 16:58:38 -0800 (PST)
-Date:   Tue, 23 Nov 2021 19:58:37 -0500
-From:   Brian Masney <bmasney@redhat.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
- __maybe_unused etc.
-Message-ID: <YZ2OPcfTluJbJEqb@x1>
-References: <20211123211019.2271440-1-jic23@kernel.org>
+        id S233494AbhKXDVk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Nov 2021 22:21:40 -0500
+Received: from mga17.intel.com ([192.55.52.151]:36879 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230274AbhKXDVj (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 23 Nov 2021 22:21:39 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10177"; a="215901864"
+X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
+   d="scan'208";a="215901864"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2021 19:18:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,258,1631602800"; 
+   d="scan'208";a="607046314"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 23 Nov 2021 19:18:28 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mpinj-0004EP-FQ; Wed, 24 Nov 2021 03:18:27 +0000
+Date:   Wed, 24 Nov 2021 11:18:18 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+        robh+dt@kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     kbuild-all@lists.01.org,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v2 2/4] iio:filter:admv8818: add support for ADMV8818
+Message-ID: <202111241151.J9kfWWOf-lkp@intel.com>
+References: <20211123133900.133027-2-antoniu.miclaus@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211123211019.2271440-1-jic23@kernel.org>
-User-Agent: Mutt/2.0.7 (2021-05-04)
+In-Reply-To: <20211123133900.133027-2-antoniu.miclaus@analog.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 23, 2021 at 09:09:30PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Note this series includes many drivers that are quite old and I'm not
-> sure have active maintainers.  Hence if anyone has time to look at some
-> of these beyond their own drivers and sanity check them it would be much
-> appreciated!
-> 
-> Two motivations behind this set.
-> 1 - General code reduction and improvement in readability in these drivers.
-> 2 - Reduce change I'll have to ask people to change how they do this in
->     future patches.
-> 
-> Mostly this is just a case of letting the compiler work out it can remove
-> the PM related functions rather than using #ifdefs in the code to do so.
-> 
-> The __maybe_unused markings make it clear we are intentionally building
-> functions that the compiler can see are unused and remove in some build
-> configurations.
-> 
-> The new pm_ptr() macro is rather convenient to got futher than many of
-> the drivers were and when CONFIG_PM is not define ensure that the
-> struct dev_pm_ops can also be removed.  Note there is a subtlty in that
-> we only remove that whe CONFIG_PM is not defined whereas a few of these
-> drivers were using CONFIG_PM_SLEEP which is a tighter condition (will
-> remove the structure in more configurations).  I think that's a small
-> price to pay for the convenience this macro brings.
-> 
-> I did this set as one patch per driver, as personally I prefer that
-> option for all but the most trivial patches because it makes backports
-> that cross with this series simpler and also avoid the complex
-> tag giving we get for sets touching code from many authors.
-> 
-> All comments welcome.
+Hi Antoniu,
 
-Nice cleanup! Assuming that you add the missing pm_ptr() to patch 2
-(iio:accel:da280) you can add this to the series:
+Thank you for the patch! Yet something to improve:
 
-Reviewed-by: Brian Masney <bmasney@redhat.com>
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on v5.16-rc2 next-20211123]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
+url:    https://github.com/0day-ci/linux/commits/Antoniu-Miclaus/iio-add-filter-subfolder/20211123-214053
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20211124/202111241151.J9kfWWOf-lkp@intel.com/config.gz)
+compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
+reproduce (this is a W=1 build):
+        # https://github.com/0day-ci/linux/commit/5785226a8e5139d7275a8213a19c4e8479eca28b
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Antoniu-Miclaus/iio-add-filter-subfolder/20211123-214053
+        git checkout 5785226a8e5139d7275a8213a19c4e8479eca28b
+        # save the config file to linux build tree
+        mkdir build_dir
+        make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/filter/admv8818.c:469:74: error: macro "IIO_ENUM_AVAILABLE" passed 3 arguments, but takes just 2
+     469 |  IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
+         |                                                                          ^
+   In file included from drivers/iio/filter/admv8818.c:14:
+   include/linux/iio/iio.h:111: note: macro "IIO_ENUM_AVAILABLE" defined here
+     111 | #define IIO_ENUM_AVAILABLE(_name, _e) \
+         | 
+>> drivers/iio/filter/admv8818.c:469:2: error: 'IIO_ENUM_AVAILABLE' undeclared here (not in a function)
+     469 |  IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
+         |  ^~~~~~~~~~~~~~~~~~
+
+
+vim +/IIO_ENUM_AVAILABLE +469 drivers/iio/filter/admv8818.c
+
+   466	
+   467	static const struct iio_chan_spec_ext_info admv8818_ext_info[] = {
+   468		IIO_ENUM("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
+ > 469		IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_ALL, &admv8818_mode_enum),
+   470		{ },
+   471	};
+   472	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

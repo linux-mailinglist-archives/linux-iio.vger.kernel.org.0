@@ -2,148 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF9C45D598
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Nov 2021 08:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1760F45D682
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Nov 2021 09:53:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232991AbhKYHlD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Nov 2021 02:41:03 -0500
-Received: from protonic.xs4all.nl ([83.163.252.89]:38884 "EHLO
-        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235464AbhKYHjD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Nov 2021 02:39:03 -0500
-X-Greylist: delayed 510 seconds by postgrey-1.27 at vger.kernel.org; Thu, 25 Nov 2021 02:39:02 EST
-Received: from erd992 (erd988.prtnl [192.168.224.30])
-        by sparta.prtnl (Postfix) with ESMTP id E7E3E44A024F;
-        Thu, 25 Nov 2021 08:27:20 +0100 (CET)
-Date:   Thu, 25 Nov 2021 08:27:20 +0100
-From:   David Jander <david@protonic.nl>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>, david@lechnology.com
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-Message-ID: <20211125082720.13782d83@erd992>
-In-Reply-To: <YZ7tv79LQwLL7h3T@shinobu>
-References: <20211123134540.416695-1-o.rempel@pengutronix.de>
-        <YZ3XAeYyfGblfaOi@shinobu>
-        <20211124072720.GA30281@pengutronix.de>
-        <YZ7tv79LQwLL7h3T@shinobu>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S1353097AbhKYI4K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Nov 2021 03:56:10 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:49326
+        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1347563AbhKYIyJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Nov 2021 03:54:09 -0500
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 9898B40011
+        for <linux-iio@vger.kernel.org>; Thu, 25 Nov 2021 08:50:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1637830257;
+        bh=rMq/yk98ezdS8bnYknRMoSetJT9i558m+wVBJkqBkGw=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=QqLoko2EWvZ4HLwfFAAEyYxj03xP5NrTAA2lTr4fvkko7NpOLbfc30iNpsEy1j27O
+         nqRSyua5h/JOhDok3CmMN5alhJUCBPgT7/h9sGJ9tKHliVERHx8ESrx6m2X7fmLgOg
+         hBr+3TxKxFfclInJ/Glf4PgF/UKNMvyMVylkc18DChp0pypW/YF78sSNcDHB6bT9UZ
+         mOdGFEuA8SIyOp/HzMJJgVaLsANQA5ftoTIdPpsew/i+tveiGCslCDFE/yfaq/KChd
+         8mhTEINfwUR3dveH9Yi9A0PGVtPt2G69FPg1zdhxdnaO5EC/bnEZEWLG1S+sBU25fG
+         xzCMEJmoD4F6g==
+Received: by mail-wr1-f69.google.com with SMTP id q7-20020adff507000000b0017d160d35a8so978369wro.4
+        for <linux-iio@vger.kernel.org>; Thu, 25 Nov 2021 00:50:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=rMq/yk98ezdS8bnYknRMoSetJT9i558m+wVBJkqBkGw=;
+        b=WGJ+5aoXSfLV+hxN7M/z+3Tv5w1B7pjfOj/mytpYJHbnGcytzCNa+T9Czo2azVyjb6
+         Fx1ZJf5tofVBL9m/0fRYhgnlC3eLrtSPIzwNBZ84VDq17WCaxyz6+B/BPVhpgyHdaeXU
+         42SM8y9i80mtPFoE0+laHPlQgekoRNtOPtXBe/0ByFt6rbKdCq7Fedf+/z0vBEZu5Dz4
+         3cLFrfgfeZf5jOLsXXgI1rAH41sfCKDdh67jRkLRg3PnpQ5X+iVhP82inMOGoBM+jViA
+         iRkdRamMFgZFBK7U0lTwzZzUcrebvrb4C8N1/JRzbBJBIUACf9HMlu/b9jRBcZRkUuyS
+         HAmg==
+X-Gm-Message-State: AOAM531AuFTzve++L7WbLeEZPx4z6Cc8UaAwd8OBuSMOGxLHdGx5ugOW
+        CEN2jmkzgHY/rlO3cAAvfnCO6dP96CSYGNBDxaDFpXygkjPKIauQKTDMdZuyRv8tivOvQQp+3zZ
+        nFO8yEE0n0A8hoR2YZhp9Z9fIVhzMsKK8ac9KEA==
+X-Received: by 2002:a1c:2397:: with SMTP id j145mr5037144wmj.113.1637830257043;
+        Thu, 25 Nov 2021 00:50:57 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzIg5gk00RlUgUwNq9XX2NxvmIriFKGKUTPQ8OwTcuIN5EUmX2xh5Nvk/wEJSYT6PU3NKQbGA==
+X-Received: by 2002:a1c:2397:: with SMTP id j145mr5037120wmj.113.1637830256873;
+        Thu, 25 Nov 2021 00:50:56 -0800 (PST)
+Received: from [192.168.3.67] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
+        by smtp.gmail.com with ESMTPSA id g13sm2220199wmk.37.2021.11.25.00.50.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Nov 2021 00:50:56 -0800 (PST)
+Message-ID: <7f712176-e49e-696e-b47e-5c1ef9cf2391@canonical.com>
+Date:   Thu, 25 Nov 2021 09:50:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH 14/49] iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP
+ guards to pm_ptr() / __maybe_unused
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20211123211019.2271440-1-jic23@kernel.org>
+ <20211123211019.2271440-15-jic23@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20211123211019.2271440-15-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 25 Nov 2021 10:58:23 +0900
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-
-> On Wed, Nov 24, 2021 at 08:27:20AM +0100, Oleksij Rempel wrote:
-> > Hi William,
-> > 
-> > On Wed, Nov 24, 2021 at 03:09:05PM +0900, William Breathitt Gray wrote:  
-> > > On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote:  
-> > > > Add counter_push_event() to notify user space about new pulses
-> > > > 
-> > > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > > ---
-> > > >  drivers/counter/interrupt-cnt.c | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> > > > index 8514a87fcbee..b237137b552b 100644
-> > > > --- a/drivers/counter/interrupt-cnt.c
-> > > > +++ b/drivers/counter/interrupt-cnt.c
-> > > > @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int irq, void *dev_id)
-> > > >  
-> > > >  	atomic_inc(&priv->count);
-> > > >  
-> > > > +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, 0);
-> > > > +
-> > > >  	return IRQ_HANDLED;
-> > > >  }
-> > > >  
-> > > > -- 
-> > > > 2.30.2  
-> > > 
-> > > Hi Oleksij,
-> > > 
-> > > It looks like this is pushing a COUNTER_EVENT_OVERFLOW event every time
-> > > an interrupt is handled, which I suspect is not what you want to happen.
-> > > The COUNTER_EVENT_OVERFLOW event indicates a count value overflow event,
-> > > so you'll need to check for a count value overflow before pushing the
-> > > event.
-> > > 
-> > > It would be good idea to implement a ceiling extension as well (you can
-> > > use the COUNTER_COMP_CEILING() macro) so that users can configure the
-> > > particular point where the value overflows.  
-> > 
-> > Thank you!
-> > 
-> > What would be the best and resource effective strategy for periodically
-> > getting frequency of interrupts/pulses? This is actual information which is
-> > needed for my use case.
-> > 
-> > So far, I was pushing every event to the user space, which is working
-> > but probably not the most resource effective method of doing it.
-> > 
-> > Regards,
-> > Oleskij
-> > -- 
-> > Pengutronix e.K.                           |                             |
-> > Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |  
+On 23/11/2021 22:09, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> We could introduce a new Counter change-of-state event type which would
-> trigger whenever the count value changes, but I agree with you that this
-> is likely not the best way for us to derive the frequency of the
-> interrupts due to the indirection of handling and parsing the event
-> data.
+> Letting the compiler remove these functions when the kernel is built
+> without CONFIG_PM_SLEEP support is simpler and less error prone than the
+> use of #ifdef based config guards.
+> 
+> Removing instances of this approach from IIO also stops them being
+> copied into new drivers.
+> 
+> The pm_ptr() macro only removes the reference if CONFIG_PM is not
+> set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
+> will not always remove the pm_ops structure.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
+>  drivers/iio/adc/exynos_adc.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+> 
 
-Also something I am worried about, is the overhead it creates to generate such
-an event on each and every IRQ. Looking at counter_push_event(), I can see it
-using a spin-lock, besides quite a bit of code potentially being executed,
-depending on user-space. The lock can probably be held by non-IRQ code
-also, which can potentially introduce more latency and cause high-frequency
-interrupts to be delayed far too long. This particular driver uses
-atomic_inc() to increment a counter, which AFAIK on most machines should be a
-single instruction. The main application for this driver is to count pulses
-_fast_ with minimal CPU load. IMHO we should do better than potentially
-blocking on a spin-lock in IRQ context.
-I know this is akin to trying to do hard-real-time stuff in the kernel, but
-since its main application is for embedded systems that have a known and
-controllable interrupt environment most of the time, this can be done if one
-is careful to not do certain things in IRQ context, such as using locks.
+Looks good:
 
-> Instead, perhaps introducing a "frequency" or "period" Count extension
-> would make more sense here. This extension could report the value delta
-> between counts, or alternatively the time delta from which you can
-> derive frequency. Regarding implementation, you can store the previous
-> value in a variable, updating it whenever an interrupt occurs, and
-> compute the particular delta every time a read is requested by the user.
-
-The original version of this driver used a circular buffer that stored the
-timestamps of the last 'n' interrupts. A user-space read action would copy this
-buffer repeatedly (max tries --> fail) until two copies are identical to
-ensure integrity avoiding the use of locks. This is of course dead ugly and I
-was hoping for a better solution. But to be better IMHO it must avoid locks in
-IRQ context at all costs.
-Having a sample 'n' consecutive of time-stamps in user-space, made frequency
-calculation, filtering and glitch detection quite simple.
-
-> David Lechner is implementing something similar for the TI eQEP driver
-> to expose speed, so I'm CCing them here in case this is of interest to
-> them.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
 Best regards,
-
--- 
-David Jander
-Protonic Holland.
-
+Krzysztof

@@ -2,104 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1760F45D682
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Nov 2021 09:53:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3DB45D843
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Nov 2021 11:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353097AbhKYI4K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Nov 2021 03:56:10 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:49326
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1347563AbhKYIyJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Nov 2021 03:54:09 -0500
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 9898B40011
-        for <linux-iio@vger.kernel.org>; Thu, 25 Nov 2021 08:50:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1637830257;
-        bh=rMq/yk98ezdS8bnYknRMoSetJT9i558m+wVBJkqBkGw=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=QqLoko2EWvZ4HLwfFAAEyYxj03xP5NrTAA2lTr4fvkko7NpOLbfc30iNpsEy1j27O
-         nqRSyua5h/JOhDok3CmMN5alhJUCBPgT7/h9sGJ9tKHliVERHx8ESrx6m2X7fmLgOg
-         hBr+3TxKxFfclInJ/Glf4PgF/UKNMvyMVylkc18DChp0pypW/YF78sSNcDHB6bT9UZ
-         mOdGFEuA8SIyOp/HzMJJgVaLsANQA5ftoTIdPpsew/i+tveiGCslCDFE/yfaq/KChd
-         8mhTEINfwUR3dveH9Yi9A0PGVtPt2G69FPg1zdhxdnaO5EC/bnEZEWLG1S+sBU25fG
-         xzCMEJmoD4F6g==
-Received: by mail-wr1-f69.google.com with SMTP id q7-20020adff507000000b0017d160d35a8so978369wro.4
-        for <linux-iio@vger.kernel.org>; Thu, 25 Nov 2021 00:50:57 -0800 (PST)
+        id S1354489AbhKYKbS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Nov 2021 05:31:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245468AbhKYK3R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Nov 2021 05:29:17 -0500
+Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADFCC06173E
+        for <linux-iio@vger.kernel.org>; Thu, 25 Nov 2021 02:26:07 -0800 (PST)
+Received: by mail-ua1-x944.google.com with SMTP id y5so11230162ual.7
+        for <linux-iio@vger.kernel.org>; Thu, 25 Nov 2021 02:26:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=eibhgHyEnDty6prD7kw2qZTGk1uH223Sz/QXKL+fHLw=;
+        b=O8sZhZHWyJo0RctSCdszFDjX/cW9VL0bORiXtRvNYTdqwyyRF9fjr3cVTZNFlkLdfv
+         IsuygXyTWbZN+FoJYecc44f4WCPMVecAICkCc4fUIX6hEmex18+ZINymZNoX/5+vTFd4
+         4dD0o+mlay2pdcSqLCjuWSu7/WrqkaDB9Bc894Pf0ezErRut5aM4RJhCvHEpiVyNO9o/
+         GwQHqE7rWopm4CXoOggKJtH1xGuxBdPKY3MuOfXvbWfwSCDOHwmZTssNFUI5QtZRU7v0
+         1djVgMw/4X50UOZjjVu8UxUxDReK8Rus0Iz6MsyiiFYhURVojLPSEHPeCpbf9DRnwNd1
+         bLYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=rMq/yk98ezdS8bnYknRMoSetJT9i558m+wVBJkqBkGw=;
-        b=WGJ+5aoXSfLV+hxN7M/z+3Tv5w1B7pjfOj/mytpYJHbnGcytzCNa+T9Czo2azVyjb6
-         Fx1ZJf5tofVBL9m/0fRYhgnlC3eLrtSPIzwNBZ84VDq17WCaxyz6+B/BPVhpgyHdaeXU
-         42SM8y9i80mtPFoE0+laHPlQgekoRNtOPtXBe/0ByFt6rbKdCq7Fedf+/z0vBEZu5Dz4
-         3cLFrfgfeZf5jOLsXXgI1rAH41sfCKDdh67jRkLRg3PnpQ5X+iVhP82inMOGoBM+jViA
-         iRkdRamMFgZFBK7U0lTwzZzUcrebvrb4C8N1/JRzbBJBIUACf9HMlu/b9jRBcZRkUuyS
-         HAmg==
-X-Gm-Message-State: AOAM531AuFTzve++L7WbLeEZPx4z6Cc8UaAwd8OBuSMOGxLHdGx5ugOW
-        CEN2jmkzgHY/rlO3cAAvfnCO6dP96CSYGNBDxaDFpXygkjPKIauQKTDMdZuyRv8tivOvQQp+3zZ
-        nFO8yEE0n0A8hoR2YZhp9Z9fIVhzMsKK8ac9KEA==
-X-Received: by 2002:a1c:2397:: with SMTP id j145mr5037144wmj.113.1637830257043;
-        Thu, 25 Nov 2021 00:50:57 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzIg5gk00RlUgUwNq9XX2NxvmIriFKGKUTPQ8OwTcuIN5EUmX2xh5Nvk/wEJSYT6PU3NKQbGA==
-X-Received: by 2002:a1c:2397:: with SMTP id j145mr5037120wmj.113.1637830256873;
-        Thu, 25 Nov 2021 00:50:56 -0800 (PST)
-Received: from [192.168.3.67] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
-        by smtp.gmail.com with ESMTPSA id g13sm2220199wmk.37.2021.11.25.00.50.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Nov 2021 00:50:56 -0800 (PST)
-Message-ID: <7f712176-e49e-696e-b47e-5c1ef9cf2391@canonical.com>
-Date:   Thu, 25 Nov 2021 09:50:55 +0100
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=eibhgHyEnDty6prD7kw2qZTGk1uH223Sz/QXKL+fHLw=;
+        b=wonOyGSIg0YOaWvDIHxS3rUazQkHlMlmvEdPOz4nZFbqc3ajEiBFcjA9vxEPHemqj7
+         qiW8Sxcd0JAHnZME6E2C5Z51CayCXiLaK8nghf5u9RNgYfmpAPtTd4/QsOH6GWoRv4fs
+         6IXBjOpYvDmEWyY2ed9/sq4menSdctu0Zdmnj+CObyL3EgpXaIlCY4GryCIq5f1Wb9tz
+         wN8mvRycrJwlxZwH3y5eyu/7F2w/4W7boWlHp7sMxwG8TU+SlIPsoLDmnLIFNmBhqVAi
+         Pl/Rc4yHpWAwhRzIz3WwQmjMcfIe4NfGmn3d3gfczqujuYvezKMsa0zDJTyBXgsevO+K
+         o4GA==
+X-Gm-Message-State: AOAM531/mxEs8acx28sBEAM8gEF62Wit8OHtaNr0mJfEoQJI9z3jQG93
+        5DgKSeHCeLZ45J4NN0XVEg3GrArsLIatgyvQZjQ=
+X-Google-Smtp-Source: ABdhPJz7zcH01RO27XjwRjSN8IzmNHW9s4YwXtzzX1D3s1Nx36O2/cKvVJpdZELN2ViiP3GHZwhF0bohtItjIrLtllM=
+X-Received: by 2002:ab0:4868:: with SMTP id c37mr1043316uad.33.1637835965964;
+ Thu, 25 Nov 2021 02:26:05 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH 14/49] iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP
- guards to pm_ptr() / __maybe_unused
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20211123211019.2271440-1-jic23@kernel.org>
- <20211123211019.2271440-15-jic23@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20211123211019.2271440-15-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a9f:3648:0:0:0:0:0 with HTTP; Thu, 25 Nov 2021 02:26:05
+ -0800 (PST)
+Reply-To: msbelinaya892@gmail.com
+From:   msbelinaya <raymondmicheal973@gmail.com>
+Date:   Thu, 25 Nov 2021 10:26:05 +0000
+Message-ID: <CAHA9Ky=7mtEL7QL2b0K4pZVCt7gQV1GTFDeBQooFdS46iRN10A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 23/11/2021 22:09, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Letting the compiler remove these functions when the kernel is built
-> without CONFIG_PM_SLEEP support is simpler and less error prone than the
-> use of #ifdef based config guards.
-> 
-> Removing instances of this approach from IIO also stops them being
-> copied into new drivers.
-> 
-> The pm_ptr() macro only removes the reference if CONFIG_PM is not
-> set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
-> will not always remove the pm_ops structure.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  drivers/iio/adc/exynos_adc.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
+Ich biete meine Freundschaft an und glaube, dass Sie mich mit gutem
+Herzen akzeptieren werden. Ich wurde gedr=C3=A4ngt, Sie zu kontaktieren und
+zu sehen, wie wir einander am besten unterst=C3=BCtzen k=C3=B6nnen. Ich bin=
+ Frau
+Kodjovi Hegbor aus der T=C3=BCrkei und arbeite als Divisionsleiterin f=C3=
+=BCr
+Operationen bei der StandardBNP bank limited Turkey . Ich glaube, es
+ist der Wille Gottes, dass ich Ihnen jetzt begegnen werde. Ich habe
+ein wichtiges gesch=C3=A4ftliches Gespr=C3=A4ch, das ich mit Ihnen teilen
+m=C3=B6chte, von dem ich glaube, dass es Sie interessiert, da es mit Ihrem
+Nachnamen in Verbindung steht und Sie davon profitieren werden.
 
-Looks good:
+ Im Jahr 2006 hat ein B=C3=BCrger Ihres Landes ein Nicht-Residentenkonto
+f=C3=BCr 36 Monate des Kalenders im Wert von =C2=A38.400.000,00 bei meiner =
+Bank
+eingerichtet. Das Ablaufdatum f=C3=BCr diesen Einlagenvertrag war der 16.
+Januar 2009. Leider starb er w=C3=A4hrend einer Gesch=C3=A4ftsreise bei ein=
+em
+t=C3=B6dlichen Erdbeben am 12. Mai 2008 in Sichuan, China, bei dem
+mindestens 68.000 Menschen ums Leben kamen.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Das Management meiner Bank hat noch nichts von seinem Tod erfahren,
+ich wusste davon, weil er mein Freund war und ich sein Kontof=C3=BChrer
+war, als das Konto vor meiner Bef=C3=B6rderung er=C3=B6ffnet wurde. Jedoch =
+Herr
+ erw=C3=A4hnte bei der Kontoer=C3=B6ffnung keine n=C3=A4chsten Verwandten/E=
+rben, und
+er war nicht verheiratet und hatte keine Kinder. Letzte Woche hat
+meine Bankdirektion mich gebeten, Anweisungen zu geben, was mit seinen
+Geldern zu tun ist, wenn der Vertrag verl=C3=A4ngert werden soll.
 
-Best regards,
-Krzysztof
+Ich wei=C3=9F, dass dies passieren wird, und deshalb habe ich nach einem
+Mittel gesucht, um mit der Situation umzugehen, denn wenn meine
+Bankdirektoren wissen, dass sie tot sind und keinen Erben haben,
+werden sie das Geld f=C3=BCr ihren pers=C3=B6nlichen Gebrauch nehmen, also =
+Ich
+m=C3=B6chte nicht, dass so etwas passiert. Das war, als ich Ihren Nachnamen
+sah, ich war gl=C3=BCcklich und suche jetzt Ihre Mitarbeit, um Sie als Next
+of Kin/Erbe des Kontos zu pr=C3=A4sentieren, da Sie den gleichen Nachnamen
+wie er haben und meine Bankzentrale das Konto freigeben wird f=C3=BCr dich.
+Es besteht kein Risiko; die Transaktion wird im Rahmen einer legitimen
+Vereinbarung ausgef=C3=BChrt, die Sie vor Rechtsverletzungen sch=C3=BCtzt.
+
+Es ist besser, dass wir das Geld beanspruchen, als es den
+Bankdirektoren zu erlauben, es zu nehmen, sie sind bereits reich. Ich
+bin kein gieriger Mensch, daher schlage ich vor, dass wir das Geld zu
+gleichen Teilen teilen, 50/50% auf beide Parteien. Mein Anteil wird
+mir helfen, mein eigenes Unternehmen zu gr=C3=BCnden und den Erl=C3=B6s f=
+=C3=BCr
+wohlt=C3=A4tige Zwecke zu verwenden, was mein Traum war.
+
+Teilen Sie mir Ihre Meinung zu meinem Vorschlag mit, bitte ich brauche
+wirklich Ihre Hilfe bei dieser Transaktion. Ich habe Sie ausgew=C3=A4hlt,
+um mir zu helfen, nicht durch mein eigenes Tun, meine Liebe, sondern
+durch Gott wollte ich, dass Sie wissen, dass ich mir Zeit zum Beten
+genommen habe =C3=BCber diese Mitteilung, bevor ich Sie jemals kontaktiert
+habe, teilen Sie mir Ihre Meinung dazu mit und behandeln Sie diese
+Informationen bitte als STRENG GEHEIM. Nach Erhalt Ihrer Antwort,
+ausschlie=C3=9Flich =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse,
+msbelinaya892@gmail.com
+gibt Ihnen Details zur Transaktion. Und eine Kopie der
+Einlagenbescheinigung des Fonds sowie die Gr=C3=BCndungsurkunde der
+Gesellschaft, die den Fonds erstellt hat.
+Gott segne, in Erwartung Ihrer dringenden Antwort
+Mit freundlichen Gr=C3=BC=C3=9Fen
+Frau Kodjovi Hegbor
+msbelinaya892@gmail.com

@@ -2,37 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD349460027
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Nov 2021 17:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C6E460029
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Nov 2021 17:22:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240436AbhK0QYC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Nov 2021 11:24:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60774 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234435AbhK0QWB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Nov 2021 11:22:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68BABC06173E;
-        Sat, 27 Nov 2021 08:18:47 -0800 (PST)
+        id S231883AbhK0QZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Nov 2021 11:25:47 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:60416 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232089AbhK0QXr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Nov 2021 11:23:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06BEC60EC0;
-        Sat, 27 Nov 2021 16:18:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6E32AB82A02;
+        Sat, 27 Nov 2021 16:20:31 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 20B5EC53FAD;
-        Sat, 27 Nov 2021 16:18:43 +0000 (UTC)
-Date:   Sat, 27 Nov 2021 16:23:45 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id ECF8FC53FBF;
+        Sat, 27 Nov 2021 16:20:27 +0000 (UTC)
+Date:   Sat, 27 Nov 2021 16:25:28 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] iio:amplifiers:ad7293: add support for AD7293
-Message-ID: <20211127162345.66f5526f@jic23-huawei>
-In-Reply-To: <20211122133639.132972-1-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v4 2/2] dt-bindings:iio:amplifiers: add ad7293 doc
+Message-ID: <20211127162528.3da0b69b@jic23-huawei>
+In-Reply-To: <20211122133639.132972-2-antoniu.miclaus@analog.com>
 References: <20211122133639.132972-1-antoniu.miclaus@analog.com>
+        <20211122133639.132972-2-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,179 +39,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 22 Nov 2021 15:36:38 +0200
+On Mon, 22 Nov 2021 15:36:39 +0200
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> The AD7293 is a Power Amplifier drain current controller
-> containing functionality for general-purpose monitoring
-> and control of current, voltage, and temperature, integrated
-> into a single chip solution with an SPI-compatible interface.
+> Add device tree bindings for the AD7293 Power Amplifier.
 > 
-> Datasheet:
-> https://www.analog.com/media/en/technical-documentation/data-sheets/AD7293.pdf
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+
+One comment inline but very minor so if Rob + anyone else is
+happy with this we can leave that or I can tidy it up whilst applying.
+
+Thanks,
+
+Jonathan
+
 > ---
 > changes in v4:
->  - move driver to DAC directory, as suggested
->  - use local variable `length` where FIELD_GET is used multiple times
->  - return `IIO_AVAIL_LIST` directly, instead of break
->  - reduce number of lines in the channel definitions section
->  drivers/iio/dac/Kconfig  |  11 +
->  drivers/iio/dac/Makefile |   1 +
->  drivers/iio/dac/ad7293.c | 892 +++++++++++++++++++++++++++++++++++++++
->  3 files changed, 904 insertions(+)
->  create mode 100644 drivers/iio/dac/ad7293.c
+>  - set `avdd-supply: true`
+>  - set `maxItems` for reset-gpios
+>  .../bindings/iio/dac/adi,ad7293.yaml          | 63 +++++++++++++++++++
+>  1 file changed, 63 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad7293.yaml
 > 
-New day, new things spotted, but they are all very minor so assuming
-the dt patch gets a tag from Rob and no one else raises any concerns
-I can tidy these up whilst applying.
-
-Obviously if you do happen to do a v5 then handle these as well.
-
-
-...
-
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad7293.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad7293.yaml
+> new file mode 100644
+> index 000000000000..7951ffe8805b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad7293.yaml
+> @@ -0,0 +1,63 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/adi,ad7293.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +static int ad7293_set_offset(struct ad7293_state *st, unsigned int ch, u16 offset)
-> +{
-> +	if (ch < AD7293_TSENSE_MIN_OFFSET_CH)
-> +		return ad7293_spi_write(st, AD7293_REG_VIN0_OFFSET + ch, offset);
-> +	else if (ch < AD7293_ISENSE_MIN_OFFSET_CH)
-> +		return ad7293_spi_write(st, AD7293_REG_TSENSE_INT_OFFSET + (ch - AD7293_TSENSE_MIN_OFFSET_CH), offset);
-
-These are 'very' long lines. I'll tweak this whilst applying if you don't end up doing a v5 for any other reason.
-
-
-> +	else if (ch < AD7293_VOUT_MIN_OFFSET_CH)
-> +		return ad7293_spi_write(st, AD7293_REG_ISENSE0_OFFSET + (ch - AD7293_ISENSE_MIN_OFFSET_CH), offset);
-> +	else if (ch <= AD7293_VOUT_MAX_OFFSET_CH)
-> +		return ad7293_spi_update_bits(st, AD7293_REG_UNI_VOUT0_OFFSET + (ch - AD7293_VOUT_MIN_OFFSET_CH),
-> +						AD7293_REG_VOUT_OFFSET_MSK,
-> +						FIELD_PREP(AD7293_REG_VOUT_OFFSET_MSK, offset));
+> +title: AD7293 12-Bit Power Amplifier Current Controller with ADC,
+> +       DACs, Temperature and Current Sensors
 > +
-> +	return -EINVAL;
-> +}
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
 > +
-
-...
-
+> +description: |
+> +   Power Amplifier drain current controller containing functionality
+> +   for general-purpose monitoring and control of current, voltage,
+> +   and temperature, integrated into a single chip solution with an
+> +   SPI-compatible interface.
 > +
-> +static int ad7293_write_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int val, int val2, long info)
-> +{
-> +	struct ad7293_state *st = iio_priv(indio_dev);
+> +   https://www.analog.com/en/products/ad7293.html
 > +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_VOLTAGE:
-> +			if (!chan->output)
-> +				return -EINVAL;
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7293
 > +
-> +			return ad7293_dac_write_raw(st, chan->channel, val);
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		switch (chan->type) {
-> +		case IIO_VOLTAGE:
-> +			if (chan->output)
-> +				return ad7293_set_offset(st, chan->channel + AD7293_VOUT_MIN_OFFSET_CH, val);
+> +  avdd-supply: true
+> +
+> +  vdrive-supply:
+> +    description:
+> +      VDRIVE voltage regulator.
+Could do the same with this one as with the avdd.
 
-More long lines. I'll add some line breaks if I end up tidying this up whilst applying.
-Ideally we should still stay under 80 chars where it doesn't hurt readability and under
-100 in any case other than possibly a very long string that we don't want to break 
-because it will make it hard to grep for.
+Telling us something called vdrive-supply is the VDRIVE supply doesn't
+add much.  However, doesn't do that much harm either so I'm not that fussed.
 
-
-> +			else
-> +				return ad7293_set_offset(st, chan->channel, val);
-> +		case IIO_CURRENT:
-> +			return ad7293_set_offset(st, chan->channel + AD7293_ISENSE_MIN_OFFSET_CH, val);
-> +		case IIO_TEMP:
-> +			return ad7293_set_offset(st, chan->channel + AD7293_TSENSE_MIN_OFFSET_CH, val);
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_VOLTAGE:
-> +			return ad7293_adc_set_scale(st, chan->channel, val);
-> +		case IIO_CURRENT:
-> +			return ad7293_isense_set_scale(st, chan->channel, val);
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-...
+Jonathan
 
 > +
-> +static int ad7293_init(struct ad7293_state *st)
-> +{
-> +	int ret;
-> +	u16 chip_id;
-> +	struct spi_device *spi = st->spi;
-> +	unsigned int supply;
+> +  reset-gpios:
+> +    maxItems: 1
 > +
-> +	ret = ad7293_properties_parse(st);
-> +	if (ret)
-> +		return ret;
+> +  reg:
+> +    maxItems: 1
 > +
-> +	ret = ad7293_reset(st);
-> +	if (ret)
-> +		return ret;
+> +  spi-max-frequency:
+> +    maximum: 1000000
 > +
-> +	ret = regulator_enable(st->reg_avdd);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Failed to enable specified AVDD Voltage!\n");
-> +		return ret;
-> +	}
+> +required:
+> +  - compatible
+> +  - reg
+> +  - avdd-supply
+> +  - vdrive-supply
 > +
-> +	ret = devm_add_action_or_reset(&spi->dev, ad7293_reg_disable,
-> +				       st->reg_avdd);
-> +	if (ret)
-> +		return ret;
+> +additionalProperties: false
 > +
-> +	ret = regulator_enable(st->reg_vdrive);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Failed to enable specified VDRIVE Voltage!\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, ad7293_reg_disable,
-> +				       st->reg_vdrive);
-> +	if (ret)
-> +		return ret;
-> +
-> +	supply = regulator_get_voltage(st->reg_avdd);
+> +examples:
+> +  - |
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      ad7293@0 {
+> +        compatible = "adi,ad7293";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        avdd-supply = <&avdd>;
+> +        vdrive-supply = <&vdrive>;
+> +        reset-gpios = <&gpio 10 0>;
+> +      };
+> +    };
+> +...
 
-Missed this before, but regulator_get_voltage() returns a signed int
-and it can be an error code.  If that happens we should return that error
-rather than replacing it with -EINVAL.
-
-
-> +	if (supply > 5500000 || supply < 4500000)
-> +		return -EINVAL;
-> +
-> +	supply = regulator_get_voltage(st->reg_vdrive);
-> +	if (supply > 5500000 || supply < 1700000)
-> +		return -EINVAL;
-> +
-> +	/* Check Chip ID */
-> +	ret = __ad7293_spi_read(st, AD7293_REG_DEVICE_ID, &chip_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (chip_id != AD7293_CHIP_ID) {
-> +		dev_err(&spi->dev, "Invalid Chip ID.\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +

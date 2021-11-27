@@ -2,36 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0AF04600F9
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Nov 2021 19:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 335A74600FD
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Nov 2021 19:50:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355965AbhK0Stk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 27 Nov 2021 13:49:40 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:56352 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356014AbhK0Srj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Nov 2021 13:47:39 -0500
+        id S1355850AbhK0SxS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Nov 2021 13:53:18 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:60552 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355895AbhK0SvS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Nov 2021 13:51:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AAAEAB8091D;
-        Sat, 27 Nov 2021 18:44:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70A7960F06;
+        Sat, 27 Nov 2021 18:48:03 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 368C1C53FAD;
-        Sat, 27 Nov 2021 18:44:19 +0000 (UTC)
-Date:   Sat, 27 Nov 2021 18:49:20 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id 6F802C53FAD;
+        Sat, 27 Nov 2021 18:47:59 +0000 (UTC)
+Date:   Sat, 27 Nov 2021 18:53:00 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nikita Travkin <nikita@trvn.ru>
-Cc:     lars@metafoo.de, robh+dt@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: ltr501: Export near level property for
- proximity sensor
-Message-ID: <20211127184920.2a9c986d@jic23-huawei>
-In-Reply-To: <20211125125646.54831-2-nikita@trvn.ru>
-References: <20211125125646.54831-1-nikita@trvn.ru>
-        <20211125125646.54831-2-nikita@trvn.ru>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
+        jbhayana@google.com, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Vasyl.Vavrychuk@opensynergy.com
+Subject: Re: [PATCH v1 1/2] iio: test: Add check against NULL for buffer in
+ tests.
+Message-ID: <20211127185300.23b4f0df@jic23-huawei>
+In-Reply-To: <20211113165214.1e84a925@jic23-huawei>
+References: <20211105100501.1904-1-andriy.tryshnivskyy@opensynergy.com>
+        <20211105100501.1904-2-andriy.tryshnivskyy@opensynergy.com>
+        <CAHp75Ve7AoPaPUv699kEu3jMGRWTysLd932NZCfi8cjwuDmcOw@mail.gmail.com>
+        <20211113165214.1e84a925@jic23-huawei>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,89 +45,256 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 25 Nov 2021 17:56:46 +0500
-Nikita Travkin <nikita@trvn.ru> wrote:
+On Sat, 13 Nov 2021 16:52:14 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Userspace tools like iio-sensor-proxy need to know the proximity level
-> that should be considered "near". This value is hardware-specific and
-> can be defined via the devicetree. Allow the driver to export the near
-> level.
+> On Fri, 5 Nov 2021 12:16:40 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 > 
-> Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+> > On Fri, Nov 5, 2021 at 12:05 PM Andriy Tryshnivskyy
+> > <andriy.tryshnivskyy@opensynergy.com> wrote:  
+> > >
+> > > Add KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf) for every test.
+> > > Also use ARRAY_SIZE(values) where it is possible.    
+> > 
+> > Strictly speaking 'also' and similar in the commit message means you
+> > have to split. Here are two patches in one. But these are test cases
+> > and I don't care so much about the rules. Up to maintainers.  
+> 
+> Ideally I'd agree, but sometimes it's just not worth wasting anyones time
+> if both parts are mechanical as here.
+> 
+> Given this is Lars' code I'll leave a bit longer for him to give any tags
+> he wishes before picking it up.
+> 
+> Give me a poke if I seem to have lost it in a few weeks.  In theory I
+> shouldn't given I'm using patchwork as a backup tracker these days, but
+> meh - I've lost series before!
 
-Hi Nikita,
-
-This looks fine to me, but I'd like to leave a little time for others
-to look including DT review.
+Enough time I think. Applied to the togreg branch of iio.git and pushed out
+as testing for 0-day to have a quick sanity check.  I'll push it out so
+linux-next picks it up later in the week.
 
 Thanks,
 
 Jonathan
 
 > 
-> ---
-> The changes are mostly copied from vcnl4000 patchset introducing the
-> property:
-> https://lore.kernel.org/linux-iio/cover.1586094535.git.agx@sigxcpu.org/
-> ---
->  drivers/iio/light/ltr501.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+> Thanks,
 > 
-> diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-> index 64ba04c275e8..47d61ec2bb50 100644
-> --- a/drivers/iio/light/ltr501.c
-> +++ b/drivers/iio/light/ltr501.c
-> @@ -166,6 +166,7 @@ struct ltr501_data {
->  	struct regmap_field *reg_ps_rate;
->  	struct regmap_field *reg_als_prst;
->  	struct regmap_field *reg_ps_prst;
-> +	uint32_t near_level;
->  };
->  
->  static const struct ltr501_samp_table ltr501_als_samp_table[] = {
-> @@ -525,6 +526,25 @@ static int ltr501_write_intr_prst(struct ltr501_data *data,
->  	return -EINVAL;
->  }
->  
-> +static ssize_t ltr501_read_near_level(struct iio_dev *indio_dev,
-> +				      uintptr_t priv,
-> +				      const struct iio_chan_spec *chan,
-> +				      char *buf)
-> +{
-> +	struct ltr501_data *data = iio_priv(indio_dev);
-> +
-> +	return sprintf(buf, "%u\n", data->near_level);
-> +}
-> +
-> +static const struct iio_chan_spec_ext_info ltr501_ext_info[] = {
-> +	{
-> +		.name = "nearlevel",
-> +		.shared = IIO_SEPARATE,
-> +		.read = ltr501_read_near_level,
-> +	},
-> +	{ /* sentinel */ }
-> +};
-> +
->  static const struct iio_event_spec ltr501_als_event_spec[] = {
->  	{
->  		.type = IIO_EV_TYPE_THRESH,
-> @@ -609,6 +629,7 @@ static const struct iio_chan_spec ltr501_channels[] = {
->  		},
->  		.event_spec = ltr501_pxs_event_spec,
->  		.num_event_specs = ARRAY_SIZE(ltr501_pxs_event_spec),
-> +		.ext_info = ltr501_ext_info,
->  	},
->  	IIO_CHAN_SOFT_TIMESTAMP(3),
->  };
-> @@ -1531,6 +1552,10 @@ static int ltr501_probe(struct i2c_client *client,
->  	if ((partid >> 4) != data->chip_info->partid)
->  		return -ENODEV;
->  
-> +	if (device_property_read_u32(&client->dev, "proximity-near-level",
-> +				     &data->near_level))
-> +		data->near_level = 0;
-> +
->  	indio_dev->info = data->chip_info->info;
->  	indio_dev->channels = data->chip_info->channels;
->  	indio_dev->num_channels = data->chip_info->no_channels;
+> Jonathan
+> 
+> >   
+> > >
+> > > Signed-off-by: Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>
+> > > ---
+> > >  drivers/iio/test/iio-test-format.c | 69 ++++++++++++++++++------------
+> > >  1 file changed, 42 insertions(+), 27 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/test/iio-test-format.c b/drivers/iio/test/iio-test-format.c
+> > > index f1e951eddb43..b746d00bc0ea 100644
+> > > --- a/drivers/iio/test/iio-test-format.c
+> > > +++ b/drivers/iio/test/iio-test-format.c
+> > > @@ -14,10 +14,13 @@
+> > >
+> > >  static void iio_test_iio_format_value_integer(struct kunit *test)
+> > >  {
+> > > -       char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > > +       char *buf;
+> > >         int val;
+> > >         int ret;
+> > >
+> > > +       buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+> > > +
+> > >         val = 42;
+> > >         ret = iio_format_value(buf, IIO_VAL_INT, 1, &val);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "42\n");
+> > > @@ -41,142 +44,154 @@ static void iio_test_iio_format_value_integer(struct kunit *test)
+> > >
+> > >  static void iio_test_iio_format_value_fixedpoint(struct kunit *test)
+> > >  {
+> > > -       char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > >         int values[2];
+> > > +       char *buf;
+> > >         int ret;
+> > >
+> > > +       buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+> > > +
+> > >         /* positive >= 1 */
+> > >         values[0] = 1;
+> > >         values[1] = 10;
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000010\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000010 dB\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1.000000010\n");
+> > >
+> > >         /* positive < 1 */
+> > >         values[0] = 0;
+> > >         values[1] = 12;
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000012\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000012 dB\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000012\n");
+> > >
+> > >         /* negative <= -1 */
+> > >         values[0] = -1;
+> > >         values[1] = 10;
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000010\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000010 dB\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1.000000010\n");
+> > >
+> > >         /* negative > -1 */
+> > >         values[0] = 0;
+> > >         values[1] = -123;
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000123\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_MICRO_DB, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000123 dB\n");
+> > >
+> > > -       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_INT_PLUS_NANO, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000000123\n");
+> > >  }
+> > >
+> > >  static void iio_test_iio_format_value_fractional(struct kunit *test)
+> > >  {
+> > > -       char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > >         int values[2];
+> > > +       char *buf;
+> > >         int ret;
+> > >
+> > > +       buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+> > > +
+> > >         /* positive < 1 */
+> > >         values[0] = 1;
+> > >         values[1] = 10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.100000000\n");
+> > >
+> > >         /* positive >= 1 */
+> > >         values[0] = 100;
+> > >         values[1] = 3;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "33.333333333\n");
+> > >
+> > >         /* negative > -1 */
+> > >         values[0] = -1;
+> > >         values[1] = 1000000000;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.000000001\n");
+> > >
+> > >         /* negative <= -1 */
+> > >         values[0] = -200;
+> > >         values[1] = 3;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-66.666666666\n");
+> > >
+> > >         /* Zero */
+> > >         values[0] = 0;
+> > >         values[1] = -10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000000\n");
+> > >  }
+> > >
+> > >  static void iio_test_iio_format_value_fractional_log2(struct kunit *test)
+> > >  {
+> > > -       char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > >         int values[2];
+> > > +       char *buf;
+> > >         int ret;
+> > >
+> > > +       buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+> > > +
+> > >         /* positive < 1 */
+> > >         values[0] = 123;
+> > >         values[1] = 10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.120117187\n");
+> > >
+> > >         /* positive >= 1 */
+> > >         values[0] = 1234567;
+> > >         values[1] = 10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1205.631835937\n");
+> > >
+> > >         /* negative > -1 */
+> > >         values[0] = -123;
+> > >         values[1] = 10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-0.120117187\n");
+> > >
+> > >         /* negative <= -1 */
+> > >         values[0] = -1234567;
+> > >         values[1] = 10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "-1205.631835937\n");
+> > >
+> > >         /* Zero */
+> > >         values[0] = 0;
+> > >         values[1] = 10;
+> > > -       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, 2, values);
+> > > +       ret = iio_format_value(buf, IIO_VAL_FRACTIONAL_LOG2, ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "0.000000000\n");
+> > >  }
+> > >
+> > >  static void iio_test_iio_format_value_multiple(struct kunit *test)
+> > >  {
+> > > -       char *buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > >         int values[] = {1, -2, 3, -4, 5};
+> > > +       char *buf;
+> > >         int ret;
+> > >
+> > > +       buf = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+> > > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+> > > +
+> > >         ret = iio_format_value(buf, IIO_VAL_INT_MULTIPLE,
+> > >                                ARRAY_SIZE(values), values);
+> > >         IIO_TEST_FORMAT_EXPECT_EQ(test, buf, ret, "1 -2 3 -4 5 \n");
+> > > --
+> > > 2.17.1
+> > >    
+> > 
+> >   
+> 
 

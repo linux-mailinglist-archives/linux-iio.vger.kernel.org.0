@@ -2,62 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83D064600D5
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Nov 2021 19:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D5804600F5
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Nov 2021 19:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355893AbhK0SKX convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 27 Nov 2021 13:10:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355943AbhK0SIX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Nov 2021 13:08:23 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 308BCC061757
-        for <linux-iio@vger.kernel.org>; Sat, 27 Nov 2021 10:04:32 -0800 (PST)
+        id S244099AbhK0SrC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sat, 27 Nov 2021 13:47:02 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:58424 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239416AbhK0SpB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Nov 2021 13:45:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 767D1B80919
-        for <linux-iio@vger.kernel.org>; Sat, 27 Nov 2021 18:04:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5F6860F02;
+        Sat, 27 Nov 2021 18:41:46 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id BEBB3C53FAD;
-        Sat, 27 Nov 2021 18:04:22 +0000 (UTC)
-Date:   Sat, 27 Nov 2021 18:09:23 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id 002C4C53FAD;
+        Sat, 27 Nov 2021 18:41:41 +0000 (UTC)
+Date:   Sat, 27 Nov 2021 18:46:43 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
- __maybe_unused etc.
-Message-ID: <20211127180923.4cfce721@jic23-huawei>
-In-Reply-To: <US033R.QUSODS2XXA5V3@crapouillou.net>
-References: <20211123211019.2271440-1-jic23@kernel.org>
-        <KMP13R.I8M265PNR9RU@crapouillou.net>
-        <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
-        <20211124101113.000033c6@Huawei.com>
-        <CAK8P3a1OmBT2xNTHVp8f3=4TtwtC+6cvn27PCF-j0MMAriK+Hg@mail.gmail.com>
-        <US033R.QUSODS2XXA5V3@crapouillou.net>
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v6 3/3] iio: addac: add AD74413R driver
+Message-ID: <20211127184617.2a7c7c14@jic23-huawei>
+In-Reply-To: <20211126160219.674665-4-demonsingur@gmail.com>
+References: <20211126160219.674665-1-demonsingur@gmail.com>
+        <20211126160219.674665-4-demonsingur@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -66,98 +43,147 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 24 Nov 2021 15:10:06 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Fri, 26 Nov 2021 18:02:19 +0200
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> Le mer., nov. 24 2021 at 13:23:47 +0100, Arnd Bergmann <arnd@arndb.de> 
-> a écrit :
-> > On Wed, Nov 24, 2021 at 11:11 AM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:  
-> >>  On Wed, 24 Nov 2021 08:29:40 +0100 Arnd Bergmann <arnd@arndb.de> 
-> >> wrote:  
-> >>  >  
-> >>  > > The problem then is that the SET_*_PM_OPS macros are defined
-> >>  > > differently according to CONFIG_PM, so their definition would   
-> >> need to  
-> >>  > > be changed to use the (redefined) pm_ptr() macro and a   
-> >> corresponding  
-> >>  > > pm_sleep_ptr() macro. Unfortunately since the SET_*_PM_OPS   
-> >> macros are  
-> >>  > > used everywhere with code wrapped around #ifdef CONFIG_PM   
-> >> guards, it  
-> >>  > > wouldn't be easy to change them, and it would just be easier to
-> >>  > > introduce new macros.  
-> >>  >
-> >>  > Right, this is what we've discussed multiple times, and I think   
-> >> everyone  
-> >>  > agreed we should do this, but so far we could not come up with a   
-> >> name  
-> >>  > for the new macro, and changing the macro in place is not   
-> >> practical unless  
-> >>  > we change hundreds of drivers in the same way as the iio series   
-> >> first.
-> >> 
-> >>  Nasty indeed and I'm not sure how scriptable either as lots of 
-> >> subtle variants
-> >>  unfortunately.  
-> > 
-> > The minor variants (late, noirq) are actually the easy part, for the 
-> > macros that
-> > have fewer users, we can just have one patch per macro that changes 
-> > it treewide.
-> > For SET_SYSTEM_SLEEP_PM_OPS/SET_RUNTIME_PM_OPS and their
-> > DEV_PM_OPS variants, this would be a lot harder:
-> > 
-> > $ for i in SET_SYSTEM_SLEEP_PM_OPS SET_LATE_SYSTEM_SLEEP_PM_OPS
-> > SET_NOIRQ_SYSTEM_SLEEP_PM_OPS SET_RUNTIME_PM_OPS SIMPLE_DEV_PM_OPS
-> > UNIVERSAL_DEV_PM_OPS ; do echo `git grep -wl $i | wc  -l` $i ; done
-> > 
-> > 459 SET_SYSTEM_SLEEP_PM_OPS
-> > 51 SET_LATE_SYSTEM_SLEEP_PM_OPS
-> > 59 SET_NOIRQ_SYSTEM_SLEEP_PM_OPS
-> > 497 SET_RUNTIME_PM_OPS
-> > 797 SIMPLE_DEV_PM_OPS
-> > 20 UNIVERSAL_DEV_PM_OPS
-> > 
-> > About half of those actually use an #ifdef, while the other half does
-> > not:
-> > 
-> > $ git grep -wl 
-> > 'SET_SYSTEM_SLEEP_PM_OPS\|SET_RUNTIME_PM_OPS\|SIMPLE_DEV_PM_OPS\|UNIVERSAL_DEV_PM_OPS'
-> >  | xargs grep -l CONFIG_PM | wc -l
-> > 712
-> > $ git grep -wl 
-> > 'SET_SYSTEM_SLEEP_PM_OPS\|SET_RUNTIME_PM_OPS\|SIMPLE_DEV_PM_OPS\|UNIVERSAL_DEV_PM_OPS'
-> >  | xargs grep -L CONFIG_PM | wc -l
-> > 745
-> > 
-> > If we rename the macros in the first half of this using a script, 
-> > then we should
-> > be able to change the behavior of the normal macros to use the new 
-> > pm_ptr().  
+> The AD74412R and AD74413R are quad-channel software configurable input/output
+> solutions for building and process control applications. They contain
+> functionality for analog output, analog input, digital input, resistance
+> temperature detector, and thermocouple measurements integrated
+> into a single chip solution with an SPI interface.
+> The devices feature a 16-bit ADC and four configurable 13-bit DACs to provide
+> four configurable input/output channels and a suite of diagnostic functions.
+> The AD74413R differentiates itself from the AD74412R by being HART-compatible.
 > 
-> So you want to rename the current macros (to e.g. *_PM_OPS_LEGACY) 
-> everywhere so that new ones can be defined?
-> 
-> What about we introduce new macros, and just deprecate the old ones 
-> (with e.g. a checkpatch warning)? That would be way less work.
+> When configured with channel 0 as voltage output, channel 1 as current
+> output, channel 2 as voltage input and channel 3 as current input, the
+> following structure is created under the corresponding IIO device.
 
-Sounds like a sensible approach to me. If Arnd is happy with that we
-can move forwards and get the bikshedding on the naming started.
-
-As ever the true discussion won't start before there is a patch.
-
-I'm happy to hold this series for a bit on the basis it'll be simpler
-without all those __maybe_unused additions, but I don't want to be
-sitting on it for multiple cycles if it turns out this will take
-a while to move forwards.
-
-Thanks,
-
-Jonathan
+Thanks for the example. This definitely helps.  
 
 > 
-> -Paul
+> .
+> ├── in_current0_offset
+> ├── in_current0_raw
+> ├── in_current0_sampling_frequency
+
+The sampling frequency per channel is a bit unusual, but oddly enough that
+is how it is documented even when in sequence mode.  So I guess we should
+just live with it being strange...  Obviously the actual sampling frequency
+will be lower because we'll be measuring other things between each reading
+of this channel. Oh well. odd :)
+
+> ├── in_current0_sampling_frequency_available
+> ├── in_current0_scale
+> ├── in_voltage1_offset
+> ├── in_voltage1_raw
+> ├── in_voltage1_sampling_frequency
+> ├── in_voltage1_sampling_frequency_available
+> ├── in_voltage1_scale
+> ├── in_voltage2_offset
+> ├── in_voltage2_raw
+> ├── in_voltage2_sampling_frequency
+> ├── in_voltage2_sampling_frequency_available
+> ├── in_voltage2_scale
+> ├── in_current3_offset
+> ├── in_current3_raw
+> ├── in_current3_sampling_frequency
+> ├── in_current3_sampling_frequency_available
+> ├── in_current3_scale
+> ├── out_voltage0_raw
+> ├── out_voltage0_scale
+> ├── out_current1_raw
+> ├── out_current1_scale
+> ├── name
+> ├── buffer
+> │   ├── data_available
+> │   ├── enable
+> │   ├── length
+> │   └── watermark
+> └── scan_elements
+>     ├── in_current0_en
+>     ├── in_current0_index
+>     ├── in_current0_type
+>     ├── in_voltage1_en
+>     ├── in_voltage1_index
+>     ├── in_voltage1_type
+>     ├── in_voltage2_en
+>     ├── in_voltage2_index
+>     ├── in_voltage2_type
+>     ├── in_current3_en
+>     ├── in_current3_index
+>     └── in_current3_type
 > 
-> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+
+Unless I'm missing something, you are being overly cautious with the DMA
+buffer alignments. Forcing that for the first one only should be enough.
+> +};
+> +
+> +struct ad74413r_state {
+> +	struct ad74413r_channel_config	channel_configs[AD74413R_CHANNEL_MAX];
+> +	unsigned int			gpo_gpio_offsets[AD74413R_CHANNEL_MAX];
+> +	unsigned int			comp_gpio_offsets[AD74413R_CHANNEL_MAX];
+> +	struct gpio_chip		gpo_gpiochip;
+> +	struct gpio_chip		comp_gpiochip;
+> +	struct mutex			lock;
+> +	struct completion		adc_data_completion;
+> +	unsigned int			num_gpo_gpios;
+> +	unsigned int			num_comparator_gpios;
+> +	u32				rsense_resistance_ohms;
+> +
+> +	const struct ad74413r_chip_info	*chip_info;
+> +	struct spi_device		*spi;
+> +	struct regulator		*refin_reg;
+> +	struct regmap			*regmap;
+> +	struct device			*dev;
+> +	struct iio_trigger		*trig;
+> +
+> +	size_t			adc_active_channels;
+> +	struct spi_message	adc_samples_msg;
+> +	struct spi_transfer	adc_samples_xfer[AD74413R_CHANNEL_MAX + 1];
+> +
+> +	/*
+> +	 * DMA (thus cache coherency maintenance) requires the
+> +	 * transfer buffers to live in their own cache lines.
+> +	 */
+> +	struct {
+> +		u8 rx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
+> +		s64 timestamp;
+> +	} adc_samples_buf ____cacheline_aligned;
+> +
+> +	u8	adc_samples_tx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX]
+> +			____cacheline_aligned;
+
+I'm surprised I didn't mention this before but you only need to ensure that any
+memory used for DMA is not in a cacheline with memory used for other things that
+might change concurrently.
+
+I'm assuming there is only one DMA transaction going on to one piece of hardwre
+here so you should be fine with just forcing the alignment of adc_samples_buf
+to be ____cacheline_aligned.  That will ensure non of these DMA buffers share
+a line with anything other than each other.
+
+To give the short explanation of why we jump through these hoops.
+
+1) DMA transfer started - it grabs a whole cacheline because that is how this
+   particular platform works (even if it is doing DMA to just one byte)
+2) A flag or similar is updated in the same cacheline.
+3) The DMA transfer ends and the cacheline is entirely overwritten with
+   the data from the DAM and whatever was grabbed in step 1.
+
+So as long as we are only dealing with buffers in the same DMA transaction
+it will be safe for them to share cachelines.
+
+Note that we play games with the alignment of iio_priv() region at allocation
+to ensure that is appropriately aligned, such that when we align an element
+within it the alignment ends up right as well.  This case was so common
+it was worth the 'magic' handling to ensure we could embed DMA buffers.
+
+
+> +	u8	reg_tx_buf[AD74413R_FRAME_SIZE] ____cacheline_aligned;
+> +	u8	reg_rx_buf[AD74413R_FRAME_SIZE] ____cacheline_aligned;
+> +};
+
+
 

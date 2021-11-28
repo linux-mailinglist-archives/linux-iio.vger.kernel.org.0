@@ -2,40 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED22F4607FF
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 18:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E47B8460800
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 18:22:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345586AbhK1RZY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Nov 2021 12:25:24 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:35678 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358872AbhK1RXY (ORCPT
+        id S1346302AbhK1RZZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Nov 2021 12:25:25 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:56294 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1358876AbhK1RXY (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 12:23:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4D627B80B2F
-        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 17:20:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5DCC53FCB;
-        Sun, 28 Nov 2021 17:20:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75DD56103E
+        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 17:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AF6C53FC1;
+        Sun, 28 Nov 2021 17:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638120006;
-        bh=M4e12yLHtWRNH4HhQeaN64Rvd0MXe7DUgS09Gr+HST4=;
+        s=k20201202; t=1638120007;
+        bh=FRoGdIkDAOyOmcuRcysS449DkfmSWLO81MnDGGwXteY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yi0gaf3TdrqLBXg09nMPJn86FxEBqPGfLWZ6BGHbqV6mvFZtBMiWqNji1brUCH0y6
-         d6WQyfCgUCjIwFVqPa32gQAk2JaQZ673t+hCoVFzwMZ8qBNK/ImhIkc0qzwPnd5FCI
-         2hSFP4759xFfIoyqpsFkan485gQiRuPQG50ZIwK/6HKxayyYXazfwACc/c7bDnRVCg
-         pfzS3IKXDEKRscVIPfONidPaYhuXl6zf1JQewEU4wAwiKpuSQgtWuXq4SH5mcNoQs8
-         97H48mYoy3VW19Q92TtoHjBB25OY2IfEtg0JCIAeT8fX4oGJ+CAZs5DtOW3kc8kOj3
-         /Ep5Wd+8h28IA==
+        b=T0C9agFJpDx2Msw5ZAnHd44eecqiiIDSm0qabItl9ythKAfHssQ+lGgCjGcHuttVe
+         /KGSNImLLLg6lMJOLv1vHvUrxCZItXgZ94BmTZDwh9QqPWS18O5yQzuiuAkkShdYl3
+         BdaEqWGBgIRzgbwM9m7bvbEb2fMEyP+xs204e4gUFcZEN/mfsQm1ZBDR1Er6MJDN13
+         g227En0DGfDNTcKg0HpZca22HVW5QIxiShlSHq98F0bKpRNrgb4MZRS7pI32+c+lIn
+         tBemCEuRZIw9r/HCfoq/SuIDMIit1m24l8IV8ZGy/sUd2aKAjbcoucvD6INSZWSpKv
+         p1+dtaSM0+mRA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Arnd Bergmann <arnd@arndb.de>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 06/12] iio:dac:mcp4725: Suppress clang W=1 warning about pointer to enum conversion.
-Date:   Sun, 28 Nov 2021 17:24:39 +0000
-Message-Id: <20211128172445.2616166-7-jic23@kernel.org>
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Subject: [PATCH 07/12] iio:imu:inv_icm42600: Suppress clang W=1 warning about pointer to enum conversion.
+Date:   Sun, 28 Nov 2021 17:24:40 +0000
+Message-Id: <20211128172445.2616166-8-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211128172445.2616166-1-jic23@kernel.org>
 References: <20211128172445.2616166-1-jic23@kernel.org>
@@ -55,23 +56,38 @@ Link: https://lore.kernel.org/linux-media/CAK8P3a2ez6nEw4d+Mqa3XXAz0RFTZHunqqRj6
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 ---
- drivers/iio/dac/mcp4725.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/dac/mcp4725.c b/drivers/iio/dac/mcp4725.c
-index 98b2c2f10bf3..842bad57cb88 100644
---- a/drivers/iio/dac/mcp4725.c
-+++ b/drivers/iio/dac/mcp4725.c
-@@ -386,7 +386,7 @@ static int mcp4725_probe(struct i2c_client *client,
- 	i2c_set_clientdata(client, indio_dev);
- 	data->client = client;
- 	if (dev_fwnode(&client->dev))
--		data->id = (enum chip_id)device_get_match_data(&client->dev);
-+		data->id = (uintptr_t)device_get_match_data(&client->dev);
- 	else
- 		data->id = id->driver_data;
- 	pdata = dev_get_platdata(&client->dev);
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+index 85b1934cec60..33d9afb1ba91 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
+@@ -58,7 +58,7 @@ static int inv_icm42600_probe(struct i2c_client *client)
+ 	match = device_get_match_data(&client->dev);
+ 	if (!match)
+ 		return -EINVAL;
+-	chip = (enum inv_icm42600_chip)match;
++	chip = (uintptr_t)match;
+ 
+ 	regmap = devm_regmap_init_i2c(client, &inv_icm42600_regmap_config);
+ 	if (IS_ERR(regmap))
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+index 323789697a08..e6305e5fa975 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
+@@ -57,7 +57,7 @@ static int inv_icm42600_probe(struct spi_device *spi)
+ 	match = device_get_match_data(&spi->dev);
+ 	if (!match)
+ 		return -EINVAL;
+-	chip = (enum inv_icm42600_chip)match;
++	chip = (uintptr_t)match;
+ 
+ 	regmap = devm_regmap_init_spi(spi, &inv_icm42600_regmap_config);
+ 	if (IS_ERR(regmap))
 -- 
 2.34.1
 

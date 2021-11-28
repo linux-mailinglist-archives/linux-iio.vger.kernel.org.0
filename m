@@ -2,40 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 729A44607FD
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 18:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 366BA4607FE
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 18:22:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358684AbhK1RZQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Nov 2021 12:25:16 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:56222 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243536AbhK1RXQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 12:23:16 -0500
+        id S1345082AbhK1RZU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Nov 2021 12:25:20 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:35538 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345287AbhK1RXU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 12:23:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47FBC6103C
-        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 17:20:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0491AC53FC7;
-        Sun, 28 Nov 2021 17:19:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 41B20B80D29
+        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 17:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74552C53FCB;
+        Sun, 28 Nov 2021 17:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638119999;
-        bh=hxyDxNkAlWrD29JWy+EQN+hhFg7JvNbUY57VYrqbQhA=;
+        s=k20201202; t=1638120002;
+        bh=wWNWeyos2kXI7B8ZCXvjb517pr/rLsHgEl+6fqsoOD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QXW1vmh5UoWIuWyZKjzC6nzF6D4LV8XP0o8KZ5lrS7bGqhkfo2q10j9XaItDltTAY
-         avIzDhIlhhsY2KtRlJApzvuoXAEFJ5JF0QtNkGJ0DfoFZAJTv8aQJUpspHC55151WD
-         cQNJQWhQyedDUUopjZYZWC7rNLODzlpttVT10wEzTjgfPNadMvA8ccqW+lO5Lq9gIl
-         3muYFs5o6Iaq41gkY6sA0Ka9WhhNYOzZVDZX2K9UFyaS1QdRCMZVmVckXMe6GEaryM
-         X85evF2UXfOf9zgeM1pnfmAEFzz9YWdxsSbPh0nKIDz0CScunlBhK1u8+koBzZGgXS
-         GdkDRGdg2ntNA==
+        b=iPetb+/NPUX44MW9vfETvFNRc38HHqG868zxDkuvu0r9N1gVvCOG82ZykzPZnz2YU
+         q7mFRhBGA8wMYrngwLmKcfIWgmYH9KaLFPm3O4V84Yt4SEKIjgZGJwqjyqkvXtWxlQ
+         EMKhca08/GnMSoQA/sfb3bpf635eTxf2anSaCylJ2blyRwFc/P0MBg9XE+IUos0MH7
+         8ftS4jgZA72g3nVdokAsZyuwrsMMrPfqxaNSDiJrRpXWnuHkMTqKKmzbWlTOlWkjlR
+         y4m06sEBwwlJHrA8AAKek2XqD7IEfVcotiJIWM/zBJiMFGMVHAV8p+TsAgMCkI0CdJ
+         hbW+A7rSvbHqQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 03/12] iio:adc:rcar: Suppress clang W=1 warning about pointer to enum conversion.
-Date:   Sun, 28 Nov 2021 17:24:36 +0000
-Message-Id: <20211128172445.2616166-4-jic23@kernel.org>
+Subject: [PATCH 04/12] iio:adc:ti-ads1015: Suppress clang W=1 warning about pointer to enum conversion.
+Date:   Sun, 28 Nov 2021 17:24:37 +0000
+Message-Id: <20211128172445.2616166-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211128172445.2616166-1-jic23@kernel.org>
 References: <20211128172445.2616166-1-jic23@kernel.org>
@@ -56,23 +56,22 @@ Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- drivers/iio/adc/rcar-gyroadc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/adc/ti-ads1015.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-index a48895046408..727ea6c68049 100644
---- a/drivers/iio/adc/rcar-gyroadc.c
-+++ b/drivers/iio/adc/rcar-gyroadc.c
-@@ -511,8 +511,7 @@ static int rcar_gyroadc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index b92d4cd1b823..068efbce1710 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -950,7 +950,7 @@ static int ads1015_probe(struct i2c_client *client,
+ 	indio_dev->name = ADS1015_DRV_NAME;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
  
--	priv->model = (enum rcar_gyroadc_model)
--		of_device_get_match_data(&pdev->dev);
-+	priv->model = (uintptr_t)of_device_get_match_data(&pdev->dev);
- 
- 	platform_set_drvdata(pdev, indio_dev);
- 
+-	chip = (enum chip_ids)device_get_match_data(&client->dev);
++	chip = (uintptr_t)device_get_match_data(&client->dev);
+ 	if (chip == ADSXXXX)
+ 		chip = id->driver_data;
+ 	switch (chip) {
 -- 
 2.34.1
 

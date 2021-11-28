@@ -2,39 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0864E460954
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 20:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81259460955
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 20:24:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352847AbhK1T1N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Nov 2021 14:27:13 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:47778 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239721AbhK1TZN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 14:25:13 -0500
+        id S239721AbhK1T1R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Nov 2021 14:27:17 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58458 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1357661AbhK1TZQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 14:25:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D433E61118
-        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 19:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B58C004E1;
-        Sun, 28 Nov 2021 19:21:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9470B80D5E
+        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 19:21:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD37EC53FC7;
+        Sun, 28 Nov 2021 19:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638127316;
-        bh=yI4iIrJOf116Satm5JvC8WucjCvAuqgKBWIra0qeQ6c=;
+        s=k20201202; t=1638127318;
+        bh=YumZW9e9eO1+G4uWv8xobHj7a1kla7gjc+AG/KZsLr4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jEBYDObCfXpvir/6JH4rfHi+a4Bs864Gt3mwKwfunUHK8GIDFsWlSatmATtj7mnBr
-         Ud1rD83KtNsGMod5NEHN35k81MrAl+9wmjj5/zs/yf/aRgMy5aLNcF0wr82H5zpygq
-         NXSNicXmmdTcNLYdcwlpc/jMBIiLreFbJI9kFr1OKXvPxYm0tmuk82zomnusJEzQwm
-         oN8DX9MHhWmNRWAQ8ovjZYlNQ5FBgvimpzHZFw0g7c0764CRQI8NDPFb2jayZP/2ek
-         1zE7T/Jx1tGRu47xgyJqEEy1zJgWpSR/A7p7UhXqSD3PpR2WDI8mhLOuMZ82ed/wMH
-         6o9SOHLESx3xA==
+        b=tAlnrE1bFiZF2l4Mc8LyBdHmZPZbnYoEJC1+80V/dg3lQYg4pq/0eObWZoUaySr1E
+         4z04xyPMLqSHEF9pER4yeGIUYALtVFFsw2DYDE40gbtNTcgoltDd1Ztj3GlaF7Onm8
+         U9uT12qw6WD9/RlqoU4FwT32FhsKOY5B+oV1wFrUKJHEsOGNeH1u0dzyn9II2P3/Y0
+         7g84MrWyBLSfSPaVw6nCTiJw4/mTrormyFrtOLp8A/P2d3LrTay4ynP1AyW5DF3pBT
+         jx7/sHul9QUXus8sqoIRHirWU+fvN9WLWxU6O4vxILvDdvJpyl9tWVUIUHt9MLGTU8
+         ndOwEu99DX8jA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 07/12] iio:adc:max9611: Switch to generic firmware properties.
-Date:   Sun, 28 Nov 2021 19:26:30 +0000
-Message-Id: <20211128192635.2724359-8-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: [PATCH 08/12] iio:adc:mcp3911: Switch to generic firmware properties.
+Date:   Sun, 28 Nov 2021 19:26:31 +0000
+Message-Id: <20211128192635.2724359-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211128192635.2724359-1-jic23@kernel.org>
 References: <20211128192635.2724359-1-jic23@kernel.org>
@@ -46,82 +48,59 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Note the handling of the device tree node in this driver was somewhat
-unusual.  I have cleaned that up whilst also moving over to generic
-properties.
+This allows use of the driver with other types of firmware such as ACPI
+PRP0001 based probing.
 
-Part of a general attempt to move all IIO drivers over to generic
-firmware properties both as a general improvement and to avoid sources
-of cut and paste into future drivers.
+Also part of a general attempt to remove direct use of of_ specific
+accessors from IIO.
+
+Added an include for mod_devicetable.h whilst here to cover the
+struct of_device_id definition.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Kent Gustavsson <kent@minoris.se>
+Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- drivers/iio/adc/max9611.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/iio/adc/mcp3911.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
-index 052ab23f10b2..01a4275e9c46 100644
---- a/drivers/iio/adc/max9611.c
-+++ b/drivers/iio/adc/max9611.c
-@@ -22,7 +22,8 @@
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index e573da5397bb..f6895acb8838 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -10,6 +10,8 @@
+ #include <linux/err.h>
  #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
  #include <linux/module.h>
--#include <linux/of_device.h>
 +#include <linux/mod_devicetable.h>
 +#include <linux/property.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
  
- #define DRIVER_NAME			"max9611"
+@@ -200,12 +202,12 @@ static const struct iio_info mcp3911_info = {
+ 	.write_raw = mcp3911_write_raw,
+ };
  
-@@ -513,11 +514,9 @@ static int max9611_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
+-static int mcp3911_config(struct mcp3911 *adc, struct device_node *of_node)
++static int mcp3911_config(struct mcp3911 *adc, struct device *dev)
  {
- 	const char * const shunt_res_prop = "shunt-resistor-micro-ohms";
--	const struct device_node *of_node = client->dev.of_node;
--	const struct of_device_id *of_id =
--		of_match_device(max9611_of_table, &client->dev);
- 	struct max9611_dev *max9611;
- 	struct iio_dev *indio_dev;
-+	struct device *dev = &client->dev;
- 	unsigned int of_shunt;
+ 	u32 configreg;
  	int ret;
  
-@@ -528,15 +527,14 @@ static int max9611_probe(struct i2c_client *client,
- 	i2c_set_clientdata(client, indio_dev);
- 
- 	max9611			= iio_priv(indio_dev);
--	max9611->dev		= &client->dev;
-+	max9611->dev		= dev;
- 	max9611->i2c_client	= client;
- 	mutex_init(&max9611->lock);
- 
--	ret = of_property_read_u32(of_node, shunt_res_prop, &of_shunt);
-+	ret = device_property_read_u32(dev, shunt_res_prop, &of_shunt);
- 	if (ret) {
--		dev_err(&client->dev,
--			"Missing %s property for %pOF node\n",
--			shunt_res_prop, of_node);
-+		dev_err(dev, "Missing %s property for %pfw node\n",
-+			shunt_res_prop, dev_fwnode(dev));
- 		return ret;
+-	of_property_read_u32(of_node, "device-addr", &adc->dev_addr);
++	device_property_read_u32(dev, "device-addr", &adc->dev_addr);
+ 	if (adc->dev_addr > 3) {
+ 		dev_err(&adc->spi->dev,
+ 			"invalid device address (%i). Must be in range 0-3.\n",
+@@ -289,7 +291,7 @@ static int mcp3911_probe(struct spi_device *spi)
+ 		}
  	}
- 	max9611->shunt_resistor_uohm = of_shunt;
-@@ -545,13 +543,13 @@ static int max9611_probe(struct i2c_client *client,
+ 
+-	ret = mcp3911_config(adc, spi->dev.of_node);
++	ret = mcp3911_config(adc, &spi->dev);
  	if (ret)
- 		return ret;
+ 		goto clk_disable;
  
--	indio_dev->name		= of_id->data;
-+	indio_dev->name		= device_get_match_data(dev);
- 	indio_dev->modes	= INDIO_DIRECT_MODE;
- 	indio_dev->info		= &indio_info;
- 	indio_dev->channels	= max9611_channels;
- 	indio_dev->num_channels	= ARRAY_SIZE(max9611_channels);
- 
--	return devm_iio_device_register(&client->dev, indio_dev);
-+	return devm_iio_device_register(dev, indio_dev);
- }
- 
- static struct i2c_driver max9611_driver = {
 -- 
 2.34.1
 

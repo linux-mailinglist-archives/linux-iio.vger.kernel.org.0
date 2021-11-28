@@ -2,39 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8B4B460952
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 20:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02319460953
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 20:23:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352615AbhK1T1J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Nov 2021 14:27:09 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:58368 "EHLO
+        id S1352717AbhK1T1L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Nov 2021 14:27:11 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58396 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357631AbhK1TZJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 14:25:09 -0500
+        with ESMTP id S232488AbhK1TZL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 14:25:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EE4ECB80D2B
-        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 19:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E991C53FC1;
-        Sun, 28 Nov 2021 19:21:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D6868B80D5C
+        for <linux-iio@vger.kernel.org>; Sun, 28 Nov 2021 19:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01556C004E1;
+        Sun, 28 Nov 2021 19:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638127310;
-        bh=d8pMIP0ALW68m60IvtWGic1c6QVE2F82TtJyPirEqeA=;
+        s=k20201202; t=1638127312;
+        bh=9qYCC8V6k+4Zu0+atg1Pywtedf4adRJCpePGyZiH+Tg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sMuBEOxfAHgG9mvl4mneoNh5/o3YF//1vW7xxlnCp9sanvIK32QGzF9oi7yLsSS+R
-         E5jjOwKqfNKzYJI53Raf9yoN6l65eQnITtrjggzaeJ29A0PTMYV5OYayczhN1vqf4Q
-         4QGr5hpFmlHDI1veB9uoqsPDnlsiUjP4DPbqynfHPaHeusL4dF4B5D9u9lUNryDp8R
-         ieQ/ddyxH61xC4aBw2fgH2OB83X/5cCGGMLiwO0Ym5Cag9tBjXrEzKAMWKvvpMMjbk
-         K/biYpzJwenj5SAcRMnFDUgI1gDYLZ6IGQeWMhQk993MqJSe+HhIpP2r0XI+LZ+kLy
-         YVXokxZXv8TUw==
+        b=EJE5Ny9GiFHb1kJQNkz7d7j/lhMts01tzEy3vYqrMJUFwPKFW8uEB1NZncSjFUGXg
+         +rHUYouYj2NaiGB6iuULqAfVqSIboM7k4bnNn+Vn+gebuR6ua7VwhkYTpNsTB21IdD
+         ZQ/wYxKd2iOtvaavTJyaJHDg0QmGuIAgj8iCjNANOPbs6VxWLeNCtJiWE1sBfHmTC8
+         I7vW73CUkg2Xop0mM0j7EC6vipK9XkFlx3n0Io+cNmDlbN1JgVwRMmqCGkjx1bNZS0
+         sMTNX6bvUTeUF/yvo9rHKuVtHH1VDg5JImbdg4SMD7e9Lb/FQYcXv2/DRMMIQXoQUj
+         akPetOa3eQdgw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 04/12] iio:dac:lpc18xx_dac: Swap from of* to mod_devicetable.h
-Date:   Sun, 28 Nov 2021 19:26:27 +0000
-Message-Id: <20211128192635.2724359-5-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Chris Coffey <cmc@babblebit.net>
+Subject: [PATCH 05/12] iio:pot:mcp41010: Switch to generic firmware properties.
+Date:   Sun, 28 Nov 2021 19:26:28 +0000
+Message-Id: <20211128192635.2724359-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211128192635.2724359-1-jic23@kernel.org>
 References: <20211128192635.2724359-1-jic23@kernel.org>
@@ -46,28 +47,40 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This driver never used anything from the of specific headers.
-mod_devicetable.h provides the struct of_device_id definition.
+In this case it was only of_device_get_match_data() + header update.
+This enables use of other firmware types with no other changes, such
+as ACPI via the PRP0001 route.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Chris Coffey <cmc@babblebit.net>
 ---
- drivers/iio/dac/lpc18xx_dac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/potentiometer/mcp41010.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/dac/lpc18xx_dac.c b/drivers/iio/dac/lpc18xx_dac.c
-index 5502e4f62f0d..60467c6f2c6e 100644
---- a/drivers/iio/dac/lpc18xx_dac.c
-+++ b/drivers/iio/dac/lpc18xx_dac.c
-@@ -16,9 +16,8 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
+diff --git a/drivers/iio/potentiometer/mcp41010.c b/drivers/iio/potentiometer/mcp41010.c
+index 79ccac6d4be0..30a4594d4e11 100644
+--- a/drivers/iio/potentiometer/mcp41010.c
++++ b/drivers/iio/potentiometer/mcp41010.c
+@@ -21,9 +21,9 @@
+ #include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
  #include <linux/module.h>
 +#include <linux/mod_devicetable.h>
  #include <linux/mutex.h>
 -#include <linux/of.h>
 -#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/regulator/consumer.h>
++#include <linux/property.h>
+ #include <linux/spi/spi.h>
+ 
+ #define MCP41010_MAX_WIPERS	2
+@@ -146,7 +146,7 @@ static int mcp41010_probe(struct spi_device *spi)
+ 	data = iio_priv(indio_dev);
+ 	spi_set_drvdata(spi, indio_dev);
+ 	data->spi = spi;
+-	data->cfg = of_device_get_match_data(&spi->dev);
++	data->cfg = device_get_match_data(&spi->dev);
+ 	if (!data->cfg)
+ 		data->cfg = &mcp41010_cfg[spi_get_device_id(spi)->driver_data];
  
 -- 
 2.34.1

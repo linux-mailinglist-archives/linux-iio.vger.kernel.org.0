@@ -2,113 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71172460636
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 13:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E4346067F
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Nov 2021 14:28:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352596AbhK1Mt5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 28 Nov 2021 07:49:57 -0500
-Received: from aposti.net ([89.234.176.197]:46624 "EHLO aposti.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345845AbhK1Mr5 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sun, 28 Nov 2021 07:47:57 -0500
-Date:   Sun, 28 Nov 2021 12:44:23 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 00/49] iio: Tree wide switch from CONFIG_PM* to
- __maybe_unused etc.
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Message-Id: <ZP8A3R.E5LXPYJPNM112@crapouillou.net>
-In-Reply-To: <CAK8P3a2DNbkX4AbHGjtdKBFsS6-nffq16Tmvd3a3KLv0TKW=6w@mail.gmail.com>
-References: <20211123211019.2271440-1-jic23@kernel.org>
-        <KMP13R.I8M265PNR9RU@crapouillou.net>
-        <CAK8P3a3qs8fb1cMLu9WsFQmtff05zrpfmV--QZQta4_-Nt=MpA@mail.gmail.com>
-        <20211124101113.000033c6@Huawei.com>
-        <CAK8P3a1OmBT2xNTHVp8f3=4TtwtC+6cvn27PCF-j0MMAriK+Hg@mail.gmail.com>
-        <US033R.QUSODS2XXA5V3@crapouillou.net>
-        <20211127180923.4cfce721@jic23-huawei>
-        <CAK8P3a2DNbkX4AbHGjtdKBFsS6-nffq16Tmvd3a3KLv0TKW=6w@mail.gmail.com>
+        id S1352754AbhK1NbV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Nov 2021 08:31:21 -0500
+Received: from www381.your-server.de ([78.46.137.84]:54570 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346127AbhK1N3V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Nov 2021 08:29:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=z5cmO+w0Xv1Obso/iLfol1dI+hkAIwHqoz5lNKuJgZI=; b=P9whX+3qcnmMIQZQ1j9q62QIt4
+        PgNyt1JwbMkxu6edw637P9L/GO0D94vqRuAr+MU16jB/oKm9uU0zODxVe6IP1fUjdW6couujR4kmm
+        y3Fxfc6Kt9ToTQLLKE2nSOzIcr3v84pd4X2GSMQjvxybVxcbsv7Yr8ZyvRhM1cDhObakBsgkcfKHC
+        24qrhCy6m4gAa6V55LTpOrPsvl7d4bMZXvE7FYNJqS7TlQyFf8k2qxnDb+dYi50xrXDLNrMd9fdGh
+        gG2fo73GzaTP2AR0rPHa2N9ajr5IgbwuxQ4aTv1F/N0Nw/GiLAPyRP7GrkO/zwoxorX6wX89XjoDI
+        YGYj6U+g==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mrKBo-0006ie-G7; Sun, 28 Nov 2021 14:25:56 +0100
+Received: from [82.135.83.112] (helo=[192.168.178.20])
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mrKBo-000QTE-5M; Sun, 28 Nov 2021 14:25:56 +0100
+Subject: Re: [PATCH 11/15] iio: buffer-dma: Boost performance using
+ write-combine cache setting
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org
+References: <20211115141925.60164-1-paul@crapouillou.net>
+ <20211115141925.60164-12-paul@crapouillou.net>
+ <20211121150037.2a606be0@jic23-huawei> <8WNX2R.M4XE9MQC24W22@crapouillou.net>
+ <YX153R.0PENWW3ING7F1@crapouillou.net> <20211127160533.5259f486@jic23-huawei>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <e46c6f2d-26d7-64d2-ebfc-ff6dc78aad2f@metafoo.de>
+Date:   Sun, 28 Nov 2021 14:25:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20211127160533.5259f486@jic23-huawei>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26367/Sun Nov 28 10:19:58 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Arnd, Jonathan,
+On 11/27/21 5:05 PM, Jonathan Cameron wrote:
+>> Non-coherent mapping with no cache sync:
+>> - fileio:
+>>      read:	156 MiB/s
+>>      write:	123 MiB/s
+>> - dmabuf:
+>>      read:	234 MiB/s (capped by sample rate)
+>>      write:	182 MiB/s
+>>
+>> Non-coherent reads with no cache sync + write-combine writes:
+>> - fileio:
+>>      read:	156 MiB/s
+>>      write:	140 MiB/s
+>> - dmabuf:
+>>      read:	234 MiB/s (capped by sample rate)
+>>      write:	210 MiB/s
+>>
+>>
+>> A few things we can deduce from this:
+>>
+>> * Write-combine is not available on Zynq/ARM? If it was working, it
+>> should give a better performance than the coherent mapping, but it
+>> doesn't seem to do anything at all. At least it doesn't harm
+>> performance.
+> I'm not sure it's very relevant to this sort of streaming write.
+> If you write a sequence of addresses then nothing stops them getting combined
+> into a single write whether or not it is write-combining.
 
-Le dim., nov. 28 2021 at 10:17:55 +0100, Arnd Bergmann <arnd@arndb.de> 
-a écrit :
-> On Sat, Nov 27, 2021 at 7:09 PM Jonathan Cameron <jic23@kernel.org> 
-> wrote:
->>  On Wed, 24 Nov 2021 15:10:06 +0000 Paul Cercueil 
->> <paul@crapouillou.net> wrote:
->>  > Le mer., nov. 24 2021 at 13:23:47 +0100, Arnd Bergmann 
->> <arnd@arndb.de>
->>  >
->>  > So you want to rename the current macros (to e.g. *_PM_OPS_LEGACY)
->>  > everywhere so that new ones can be defined?
->>  >
->>  > What about we introduce new macros, and just deprecate the old 
->> ones
->>  > (with e.g. a checkpatch warning)? That would be way less work.
->> 
->>  Sounds like a sensible approach to me. If Arnd is happy with that we
->>  can move forwards and get the bikshedding on the naming started.
-> 
-> I suggested renaming the current macros as a way to avoid having to
-> come up with new names. If you have an idea for a new name that makes
-> sense in the long run, please just go ahead with that.
+There is a difference at which point they can get combined. With 
+write-combine they can be coalesced into a single transaction anywhere 
+in the interconnect, as early as the CPU itself. Without write-cobmine 
+the DDR controller might decide to combine them, but not earlier. This 
+can make a difference especially if the write is a narrow write, i.e. 
+the access size is smaller than the buswidth.
 
-Yes, I totally understand that. But renaming such a widespread macro 
-sounds like a huge undertaking...
-
-What about:
-
-#define SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)    \
-    .suspend = pm_sleep_ptr(suspend_fn),              \
-    .resume = pm_sleep_ptr(resume_fn),                \
-...
-
-#ifndef CONFIG_PM_SLEEP
-#define SET_SYSTEM_SLEEP_PM_OPS(a, b) SYSTEM_SLEEP_PM_OPS(a, b)
-#else
-#define SET_SYSTEM_SLEEP_PM_OPS(a, b)
-#endif
-
-
-#define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-static const struct dev_pm_ops name = {                       \
-    SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn),               \
-}
-
-
-SET_SYSTEM_SLEEP_PM_OPS -> SYSTEM_SLEEP_PM_OPS, with the old one now 
-defined from the new one;
-SIMPLE_DEV_PM_OPS -> DEFINE_SIMPLE_DEV_PM_OPS.
-
-Thoughts?
-
-Cheers,
--Paul
+Lets say you do 32-bit writes, but your bus is 64 bits wide. With WC two 
+32-bits can be combined into a 64-bit write. Without WC that is not 
+possible and you are potentially not using the bus to its fullest 
+capacity. This is especially true if the memory bus is wider than the 
+widest access size of the CPU.
 
 

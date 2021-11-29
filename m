@@ -2,67 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDAD146234F
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Nov 2021 22:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DF84627DE
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Nov 2021 00:12:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230340AbhK2Vbh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Nov 2021 16:31:37 -0500
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:36713 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbhK2V3h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Nov 2021 16:29:37 -0500
-Received: by mail-oi1-f178.google.com with SMTP id t23so37157066oiw.3;
-        Mon, 29 Nov 2021 13:26:19 -0800 (PST)
+        id S235852AbhK2XOT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Nov 2021 18:14:19 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:37442 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234385AbhK2XOD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Nov 2021 18:14:03 -0500
+Received: by mail-ot1-f54.google.com with SMTP id h19-20020a9d3e53000000b0056547b797b2so27702022otg.4;
+        Mon, 29 Nov 2021 15:10:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=xCkc+edsnuz578j3nM7LxocCQHXE8TQPUnChXmN1Bfk=;
-        b=AzpvJZWNOcCKykbQi1MGNuu0B1qkdsn2ALrU9P9qvOgW4ex25G6Hqd9VNLP/rW2iXF
-         T272gsZISHGcy6Bs5WgfhZ+9HxkGpskGlpDVnm3D82c7Ria+HKVo+CH7As9px8MECMWq
-         3x+sDFxQPdjYvpP4NwBU80tl/nIHYDneYKWeWWJFL48w2/XW8zVd1Grxyl6Syc9k7mOR
-         JfDrnSB/R4odBEA7g12odFWYkWoz9Fqt3GI0VDc3BEbH116NV8YJhzRskCsnxfNDZY0v
-         hnAXurk+F+pQk9YNBZ3GeqVLHE9XHhsTfhvemnXK+KpWvYBl50hNOMkMCkAdGh30cYXs
-         VMgA==
-X-Gm-Message-State: AOAM531CQCzC8L/qtpUuXJ+sT9AD+FYBIUw2mFK8NoAVosOwxcJfup9A
-        3FSiDqmfO7M5oT9hGf/5GE2WxBK7wQ==
-X-Google-Smtp-Source: ABdhPJxKZSsc0IJcsg3GjgSw0PgzgarXSf2BR/s4hyp+T38G0EdF0/6grP8nUqPDecJJnfdcItLSwg==
-X-Received: by 2002:a54:4486:: with SMTP id v6mr561266oiv.90.1638221178764;
-        Mon, 29 Nov 2021 13:26:18 -0800 (PST)
+        bh=77kfHfyKGJ2HztDbkf8db8E89hhLx3pJaRAlA+q2WdA=;
+        b=BUKv+/K/QOlJ3EiNiYDUcfiiLlbYtzZD5IFGjCaG/rR08pFkZsAj20+XC7YLKR9zjD
+         LKVGSP7wHQSLmvoTc8Lg1ewtzVQA7wYoWWlsuC5SW8SPfVcL0AeXXo3WC1rsTZDTHyKE
+         /9Ve6O3m0f6vWTZiZ4fFSAOC2g8m4sCj/r4543KjjdKUDNCEWBVv97zddHsNXZ3WnhKb
+         yOPh17NfB3QtBPbcbCSXAabFODSykx1yKNnRd7NM8TxA5LVosL1Wrev3YirT2zrWovaJ
+         CMgxxH5kuCm7SN9j27RnI2V9Um3QQExeCD7L7N7hANEuuxB4GYQsyE+TRNqLJP8QyCZQ
+         zhVg==
+X-Gm-Message-State: AOAM533IvD17lw5hZHedJG6KmF+7s9EOmB+ART+BXBkOQ3H3iJm6h8NH
+        JiUqONwwg3mVUZNllpAZftKR9I7mMQ==
+X-Google-Smtp-Source: ABdhPJzrS04xDvnfnIZ1XN9JO4RsOgrUAO7Dh8tTPy7CGy/xndNLVkSkQDhjeCH8MEhP+1xzk0C//w==
+X-Received: by 2002:a9d:390:: with SMTP id f16mr48399715otf.325.1638227444397;
+        Mon, 29 Nov 2021 15:10:44 -0800 (PST)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id x17sm2444712oot.30.2021.11.29.13.26.17
+        by smtp.gmail.com with ESMTPSA id j10sm2466931ooq.5.2021.11.29.15.10.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 13:26:18 -0800 (PST)
-Received: (nullmailer pid 637898 invoked by uid 1000);
-        Mon, 29 Nov 2021 21:26:17 -0000
-Date:   Mon, 29 Nov 2021 15:26:17 -0600
+        Mon, 29 Nov 2021 15:10:43 -0800 (PST)
+Received: (nullmailer pid 785298 invoked by uid 1000);
+        Mon, 29 Nov 2021 23:10:42 -0000
+Date:   Mon, 29 Nov 2021 17:10:42 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     jic23@kernel.org, lorenzo.bianconi@redhat.com,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        mario.tesi@st.com
-Subject: Re: [PATCH v2 2/2] Documentation: dt: iio: st_lsm6dsx: add
- disable-sensor-hub property
-Message-ID: <YaVFeYsGYVOBS65b@robh.at.kernel.org>
-References: <cover.1636816719.git.lorenzo@kernel.org>
- <54287a93922ac839501b776d288cc368aa81f0ab.1636816719.git.lorenzo@kernel.org>
+To:     Evgeny Boger <boger@wirenboard.com>
+Cc:     Maxime Ripard <maxime@cerno.tech>, linux-sunxi@lists.linux.dev,
+        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Quentin Schulz <foss@0leil.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        linux-iio@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: document TS voltage in AXP
+ PMICs
+Message-ID: <YaVd8j4fj69pmsnU@robh.at.kernel.org>
+References: <20211118141233.247907-1-boger@wirenboard.com>
+ <20211118141233.247907-3-boger@wirenboard.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <54287a93922ac839501b776d288cc368aa81f0ab.1636816719.git.lorenzo@kernel.org>
+In-Reply-To: <20211118141233.247907-3-boger@wirenboard.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 13 Nov 2021 16:23:15 +0100, Lorenzo Bianconi wrote:
-> Enable/disable internal i2c controller slave autoprobing at bootstrap.
-> Disable sensor-hub is useful if i2c controller clock/data lines are
-> connected through a pull-up with other chip lines (e.g. SDO/SA0).
+On Thu, 18 Nov 2021 17:12:33 +0300, Evgeny Boger wrote:
+> Most AXPxxx-based reference designs place a 10k NTC thermistor on a
+> TS pin. axp20x IIO driver now report the voltage of this pin via
+> additional IIO channel. Add new "ts_v" channel to the channel description.
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: Evgeny Boger <boger@wirenboard.com>
 > ---
->  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  .../devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml       | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>

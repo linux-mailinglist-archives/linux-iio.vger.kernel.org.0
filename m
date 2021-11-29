@@ -2,84 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A78D8461110
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Nov 2021 10:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 540F3461516
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Nov 2021 13:31:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244191AbhK2Jat (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Nov 2021 04:30:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243170AbhK2J2t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Nov 2021 04:28:49 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5382C061395
-        for <linux-iio@vger.kernel.org>; Mon, 29 Nov 2021 01:12:14 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id i5so35164419wrb.2
-        for <linux-iio@vger.kernel.org>; Mon, 29 Nov 2021 01:12:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blogsoutreach-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:from:reply-to:to:subject:content-transfer-encoding
-         :date:message-id;
-        bh=Q7qNBVtLEfLs5DBpQyguH+ZhZRYa6SP1l2xOa2ePsiw=;
-        b=8QtwA+ahsFT6Xcp/w4c6bIX8aUzxmfUp4LHkIqfiF1VjuvfyjrEn0S8zRsCnBm2Aly
-         cnLzeNcqiJ1O+THzDqeOvDINLRqN8V1xIXKd7yvn4FBIjoXJ6wbTaYR25p3/irWCosJD
-         VcVNI7C1sDBWnLWIiwrdpfHuFcqO30fuIzwSxnHc8lkMh7hQnrP5Zs6vmhlt48x3akdi
-         z3JaGqTYPkWwLCqJjMbYXQGLtHZ5PDY61GGH4HLXAwTajg9eWVFsuokfFkK3ggQRsGxb
-         vTRNY+24cjsqlU7y0MA3m88hjxPgCamoBLl0FMrnuuhxIRr/TnAmTIc3obPLLD/snYKo
-         vSEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:reply-to:to:subject
-         :content-transfer-encoding:date:message-id;
-        bh=Q7qNBVtLEfLs5DBpQyguH+ZhZRYa6SP1l2xOa2ePsiw=;
-        b=SYvP80eAHyt6XluheokSB+M6IdbVYDAyC4x2Nu1krd2FWiqJdngbyTWJvLoiNlGDHX
-         eX9QCv1gXMNBGGQi4xBNg2mM/H6JZbTJUUTP9HzpJrhBwTiTiBlgZShj0r/J4amsmHgl
-         9pI4I8XhzP37QwLQHP6Xi8YJwddK8ZHlmAJRc7zKc8j5UhSPFxODPiyHK3NrWBJQxNFz
-         rBGT/B4lAH0J0eXL79isIRt2it8B5jCL/7EP04Aojr1GUxiLaB1Hg96mBxB41Y0DKQMm
-         0PS1eqX6hWDWkYXTPjXEhA1PwSwE7A9D7yzbEAcWgDRiO9azijkr9aU74iW3jb7SMP22
-         cpmA==
-X-Gm-Message-State: AOAM531Abq/8oxX5FoF9rcMKRc93qE/Wg/r/xodVF1WKPVoQ3nhVLSOD
-        79gnIiXjpTBNKi5Yc3ojCTLAoXT6Nr34Kg==
-X-Google-Smtp-Source: ABdhPJzpMZLHuOQf6fqlQ87OlXf4A/25z9J5XraxTdCNhaf+FWLwVX4eMu4CNJIwzEZTmrn68/B23g==
-X-Received: by 2002:a5d:6e01:: with SMTP id h1mr31121027wrz.403.1638177133182;
-        Mon, 29 Nov 2021 01:12:13 -0800 (PST)
-Received: from 137.59.228.238 ([137.59.228.238])
-        by smtp.gmail.com with ESMTPSA id w22sm6528864wmi.27.2021.11.29.01.12.11
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 29 Nov 2021 01:12:12 -0800 (PST)
+        id S244158AbhK2Mer (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Nov 2021 07:34:47 -0500
+Received: from no-data ([111.160.120.54]:56313 "HELO 23.128.96.18"
+        rhost-flags-OK-FAIL-FAIL-FAIL) by vger.kernel.org with SMTP
+        id S236408AbhK2Mcp (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 29 Nov 2021 07:32:45 -0500
+X-Greylist: delayed 17613 seconds by postgrey-1.27 at vger.kernel.org; Mon, 29 Nov 2021 07:32:42 EST
+Received: from [178.88.101.204] by 23.128.96.18 with ESMTP id 23100309; Mon, 29 Nov 2021 11:27:27 -0100
+Message-ID: <h-i--tb4dc$84-$h-n4@8luckq0z2>
+From:    =?ISO-8859-1?Q?=20=22=C8=AB=BF=B5=C8=C6=B4=EB=B8=AE=22?= 
+         <hgds2142ajh@hanmail.net>
+Reply-To:  =?ISO-8859-1?Q?=20=22=C8=AB=BF=B5=C8=C6=B4=EB=B8=AE=22?= 
+           <hgds2142ajh@hanmail.net>
+To:     linux-nilfs@vger.kernel.org
+Subject:  =?ISO-8859-1?Q?=20=B1=B8=C0=CE/=B1=B8=C1=F7=C1=DF=C0=CC=BD=C3=B6?= =?ISO-8859-1?Q?=F3=B8?=
+        =?ISO-8859-1?Q?=E9?=  =?ISO-8859-1?Q?=20=B9=DD=B5=E5=BD=C3?=  =?ISO-8859-1?Q?=20=B9=E6=B9=AE=C7?=
+        =?ISO-8859-1?Q?=D8=BC=AD?=  =?ISO-8859-1?Q?=20=C8=AE=C0=CE=C7=D8=BA=B8=BC=BC=BF=E4.?= sna n 
+Date:   Mon, 29 Nov 2021 11:27:27 -0100
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
 MIME-Version: 1.0
-From:   "Michael" <michael@blogsoutreach.com>
-Reply-To: michael@blogsoutreach.com
-To:     linux-iio@vger.kernel.org
-Subject: Sponsored post
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Smart_Send_3_1_6
-Date:   Mon, 29 Nov 2021 14:11:56 -0800
-Message-ID: <1408241105816784231168@DELL-PC>
+Content-Type: multipart/alternative;
+        boundary="_B5D_DECAABC44A_BA_"
+X-Priority: 3
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
 
-I hope this email finds you well.
+--_B5D_DECAABC44A_BA_
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-I am sending this email to ask if you are interested in sponsored posts.
+<p>=BE=C8=B3=E7=C7=CF=BC=BC=BF=E4. =C8=B8=BF=F8=B4=D4=B5=E9~~~!!
+   <div>=B0=A8=B1=E2,=C4=DA=B7=CE=B3=AA
+=C1=B6=BD=C9=C7=CF=BD=C3=B0=ED=BF=E4=
+,</div>
+   <div>=C0=A5=BC=AD=C7=CE=C7=CF=B4=D9 =B1=B8=C0=CE/=B1=B8=C1=F7=BF=A1 =B0=
+=FC=C7=D1 =C1=C1=C0=BA =C1=A4=BA=B8=B0=A1 =C0=D6=BE=EE
+=B0=F8=C0=AF=C7=D5=B4=
+=CF=B4=D9.</div>
+   <div>
+      <br />=C1=F7=C1=BE/=C6=C4=C6=AE/=BA=D0=B7=F9=BA=B0=B7=CE
+=C6=C4=C6=AE=
+=C5=B8=C0=D3,=BE=CB=B9=D9,=C1=A4=C1=F7=BF=F8 =B1=B8=C0=CE
+=B1=B8=C1=F7=C0=CC=
+ =B0=A1=B4=C9=C7=D1
+   </div>
+   <div>=BE=E0 300=BF=A9=B0=B3 =BB=E7=C0=CC=C6=AE =C0=FC=BF=EB
+=BE=EE=C7=C3=
+=B8=AE=C4=C9=C0=CC=BC=C7=C0=D4=B4=CF=B4=D9.</div>
+   <div>
+      <br />=B4=A9=B1=BA=B0=A1 =B9=AB=BE=F9=C0=BB =C3=A3=B5=E7=C1=F6
+=B9=DD=
+=B5=E5=BD=C3 "=C0=E2=B9=EA=B5=E5 =C0=FC=BF=EB=BE=DB"=BF=A1=B4=C2 =C0=D6=B4=
+=D9=B0=ED =C0=DA=BD=C5=C7=D5=B4=CF=B4=D9.
+   </div>
+   <div>=B2=C0 =C7=D1=B9=F8 =B9=E6=B9=AE=C7=D8=BA=B8=BC=BC=BF=E4.</div>
+   <div>=B9=E6=B9=AE=C7=CF=B1=E2&gt;&gt;&gt; <a href=3D"https://soo.gd/TvW=
+c" target=3D"_blank">https://soo.gd/TvWc</a></div>
+   </p>
+cb jnkdjnph
+ 
+ 
+cxndm bk mrxzyjft
 
-We are searching for relevant sites and blogs for our clients.
+--_B5D_DECAABC44A_BA_--
 
-You will get 100% top notch content with 1 do follow link relevant to your =
-site niche.
-
-Please let me know how much do you charge per post=3F
-
-We will pay you through Paypal or Payoneer gateway as soon our article is p=
-ublished.
-
-Looking forward to building long-term business opportunities with you.
-
-Best Regards,
-
-michael

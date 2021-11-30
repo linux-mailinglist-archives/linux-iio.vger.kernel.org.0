@@ -2,139 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 709A3463E1E
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Nov 2021 19:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC2D463EAB
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Nov 2021 20:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239714AbhK3SzZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Nov 2021 13:55:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60876 "EHLO
+        id S234733AbhK3Th3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Nov 2021 14:37:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245609AbhK3SzY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Nov 2021 13:55:24 -0500
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2395C061574;
-        Tue, 30 Nov 2021 10:52:04 -0800 (PST)
-Received: by mail-qv1-xf30.google.com with SMTP id j9so18917481qvm.10;
-        Tue, 30 Nov 2021 10:52:04 -0800 (PST)
+        with ESMTP id S234398AbhK3Th3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Nov 2021 14:37:29 -0500
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC8DC061746
+        for <linux-iio@vger.kernel.org>; Tue, 30 Nov 2021 11:34:09 -0800 (PST)
+Received: by mail-qt1-x836.google.com with SMTP id v22so21369799qtx.8
+        for <linux-iio@vger.kernel.org>; Tue, 30 Nov 2021 11:34:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=HYgQcPIIPvgM39TNU0DivkMndXlTezB5uIXJqA5tLd8=;
-        b=A5okFLpjQuq0KmkSffiRYdczNaMLRLiw4xkqtk/X12nOP79VjQj4LODamzir5ivihO
-         fCA8pMC6tEijWYTXsmfGyinlqh5u3T4G9y69AC8S0IVzWqSqIuyiXtscyK64kQChMsR6
-         OU9OFwwexCMTLU9B5XtrQdbISvhWaVD0shrdrYUvGHgThGmflPCvYXxPayrLyeSvwPVG
-         3aopSX0FF1IX4fY1RBQIs7/Bfb3nzQbY/q7GUF5QPdJPKmlPRrkAG34TipreewHIt5eO
-         +xro/dszTRCLNpXwFPs6jvrXVdcb+ItqtB8bywC121mThUnc/Vm4iTxOBt+Norl/kRU3
-         Rfag==
+        d=beagleboard-org.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8zaMGeRfyPWwhrpK4hlWNibcjKi7zgMyl76pGBmvMas=;
+        b=DP2ZuuADuq4ve2aheQWcyU6KIsAFFdohg6gRu+JNuTgWBaJHh4dyY0DqWg0RR4gnc4
+         OTy9VDIdJLJkEF85AUC4qv13XTawi5y5pZPVhxbx90ekxARus/eDXWgariZmM4Vdcy6X
+         LkwuX4VoC/3O5HE9nh8Vt+H+/4SLrsCXA4MD2sGjZY+ubc7iMfjgLv5uVHQwj52Iev9b
+         4PR96btq4ixWChGuS5hOWnFNZpWraKrcG/xSx3QCq9zWMKlGu8xAXaWRgnNTfCphik5Y
+         miUb/4kNiBlOt0FRvTuTRdQRJajKrV4CGVnEqacvckgB1/0UHUrOIeHbkKFcBHQDrxmT
+         OhMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=HYgQcPIIPvgM39TNU0DivkMndXlTezB5uIXJqA5tLd8=;
-        b=KRER1RXVyHDmGstErgOBul4PMuBTLeGoqAsqVdUsu5HHymygKfZMvdyZSM0ZaieBWu
-         6J1VaMHAVcVoXm/bkPRYC3X8tDt6Kg/TKFeo2Z7ymK23yO9/BMXS5IK7rayZRMTcRvG5
-         W+HPld1y6YfzOfR6e/5bO79egx2EkqD1bcN7refZWkJIidcERzcFyiENO6x4Z5lA2P/e
-         HFnVrUGlTnyWA8Ob6ke1CHJWU4AGHRYJKZ7hqDBw5c4+8KEXXvWRBwsKfpd19Pakdh8j
-         rMKUsLVv7tDDhoiGrhY48UwlMWGwVXV5xqnJ4gjaaXPd836qlj2UQzYvHAa/fILgd7Il
-         GYkg==
-X-Gm-Message-State: AOAM533wPS97ABgqjECKkmWdLSC63oyMokhflcwD67gxotua6rKEzmxi
-        Eyf3FsDdAhYN8XRQ7tuElk/omg82vTs=
-X-Google-Smtp-Source: ABdhPJwp+bd+jO7MNGmPEsW94/xpc45CoZb+zOP+5/vzPsxmcVSt3EabGm+LV2pPqeCWtCaLpjeelg==
-X-Received: by 2002:a05:6214:27ee:: with SMTP id jt14mr783291qvb.47.1638298323789;
-        Tue, 30 Nov 2021 10:52:03 -0800 (PST)
-Received: from shaak (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id t11sm10387838qkp.56.2021.11.30.10.52.02
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8zaMGeRfyPWwhrpK4hlWNibcjKi7zgMyl76pGBmvMas=;
+        b=TZN+r2CgI349Em3zIX11lhjVECZ0sVKkArHi/sYQ8CBfkMMDcILcywVfK1BfE1Ix8S
+         Q9T6hqzfaqLQ6og5nSlLPvZvur98BoTZkm+JcbMSi0kSsh+/0n+o1usFLxcK68XFV7uO
+         S7WxV+frHw1crtvM42OI9ifRqhchTeiyasJ+Hcg1dttFQbiZIrXmxmo0JtrtwQU2WoVq
+         SPKlIkt/fh/0QCILklNqO9MI76BDXfu57xMRTPDUFHyrHJV3t2scmLGgKN1C5VI4Bpa0
+         00iv1/isWxU8TanLx7L+0vetb3rkviooic3EHCu+AkpT05rsTgqqgX2ieTsdHih0yLk2
+         iJ0Q==
+X-Gm-Message-State: AOAM530dCvFbFjhQSgGnKRSaZ9JDvMQ5JPXbL0LU5UiyM/VMFUsMbiJw
+        3LidIolTF1l0Ywzv8sNsVqigJw==
+X-Google-Smtp-Source: ABdhPJwI+s+jofwgDiLgAyn4mUWC4TGLN6gaMCv+15hzOQiD2tLr++nf1f8dALxgtr5e2WphXeKziw==
+X-Received: by 2002:a05:622a:14d1:: with SMTP id u17mr1610188qtx.579.1638300848931;
+        Tue, 30 Nov 2021 11:34:08 -0800 (PST)
+Received: from localhost.localdomain (c-68-36-215-189.hsd1.mi.comcast.net. [68.36.215.189])
+        by smtp.gmail.com with ESMTPSA id r20sm11104832qkp.21.2021.11.30.11.34.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Nov 2021 10:52:03 -0800 (PST)
-Date:   Tue, 30 Nov 2021 13:52:01 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v9 00/14] iio: afe: add temperature rescaling support
-Message-ID: <YaZy0Wk4Kzptt0SX@shaak>
-References: <20211115034334.1713050-1-liambeguin@gmail.com>
- <156bc2fa-6754-2350-4a12-ff25b23ae8a2@axentia.se>
- <YaKUmha11ft6gip2@shaak>
- <b9e1e804-fb59-660f-a9b8-ad6e20dd41aa@axentia.se>
+        Tue, 30 Nov 2021 11:34:08 -0800 (PST)
+From:   Jason Kridner <jkridner@beagleboard.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Jason Kridner <jkridner@beagleboard.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] counter: ti-eqep: Enable for TDA4VM/J721E
+Date:   Tue, 30 Nov 2021 14:33:46 -0500
+Message-Id: <20211130193346.678544-1-jkridner@beagleboard.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b9e1e804-fb59-660f-a9b8-ad6e20dd41aa@axentia.se>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Peter,
+Counter TI-EQEP was tested on TDA4VM/J721E SoC.
 
-On Sun, Nov 28, 2021 at 10:17:50AM +0100, Peter Rosin wrote:
-> Hi!
-> 
-> On 2021-11-27 21:27, Liam Beguin wrote:
-> > Hi Peter,
-> > 
-> > On Mon, Nov 22, 2021 at 01:53:44AM +0100, Peter Rosin wrote:
-> >> Hi Liam!
-> >>
-> >> On 2021-11-15 04:43, Liam Beguin wrote:
-> >>> Hi Jonathan, Peter,
-> 
-> snip
-> 
-> >>> - keep IIO_VAL_FRACTIONAL scale when possible, if not default to fixed
-> >>>   point
-> >>
-> >> This is not what is going on. Patch 9/14 will convert all fractional
-> >> scales to fixed point. But I would really like if you in the "reduce
-> >> risk of integer overflow" patch (8/14) would hold true to the above
-> >> and keep the fractional scale when possible and only fall back to
-> >> the less precise fractional-log case if any of the multiplications
-> >> needed for an exact fractional scale causes overflow.
-> > 
-> > Thanks for looking at these patches again.
-> > 
-> >> The v8 discussion concluded that this was a valid approach, right?
-> > 
-> > Yes, I remember you saying that you'd be more comfortable keeping the
-> > IIO_VAL_FRACTIONAL.
-> > 
-> >> I know you also said that the core exposes the scale with nano
-> >> precision in sysfs anyway, but that is not true for in-kernel
-> >> consumers. They have an easier time reading the "real" scale value
-> >> compared to going via the string representation of fixed point
-> >> returned from iio_format_value. At least the rescaler itself does so,
-> >> which means that chaining rescalers might suffer needless accuracy
-> >> degradation.
-> > 
-> > Agreed, that makes total sense.
-> > 
-> > If I'm not mistaken, the first condition in the case, if (!rem), will
-> > return IIO_VAL_FRACTIONAL if the division is exact, keeping all the
-> > precision. No?
-> 
-> Only if the resulting scale fits in nine decimals. That's never the
-> case if you have primes other than 2 and 5 in the denominator (after
-> eliminating gcd of course). Which mean that if you chain one rescaler
-> doing 1/3 and one doing 3/1, you would get a combined scale of
-> 0.999999999 instead of 3/3 if we take the approach of these patches.
-> 
-> So, what I'm after is that - for IIO_VAL_FRACTIONAL - not take the
-> multiply-by-1e9 code path /unless/ the existing fractional approach
-> overflows in either numerator or denominator (or both).
+Overlay used for testing EQEP0 and EQEP1:
 
-Understood, I'll update based on this.
+    &cbass_main {
+	#address-cells = <2>;
+	#size-cells = <2>;
 
-> Side note: The same could be done for IIO_VAL_INT when the numerator
-> overflows (since the denominator cannot overflow), but I guess that
-> can be done later.
+	eqep0: qep@3200000 {
+		compatible = "ti,am3352-eqep";
+		reg = <0 0x3200000 0 0x100>;
+		power-domains = <&k3_pds 94 TI_SCI_PD_EXCLUSIVE>;
+		clocks = <&k3_clks 94 0>;
+		clock-names = "eqep0-ficlk";
+		interrupts = <GIC_SPI 322 IRQ_TYPE_EDGE_RISING>;
+		interrupt-names = "eqep0";
+		symlink = "bone/eQEP0"; /* A - P9_42, B - P9_27 */
 
-Agreed, I don't mind working on this later but I'd like to focus on
-getting the current changes in first.
+		count_mode = <0>;
+		swap_input = <0>;
+		invert_qa = <1>;
+		invert_qb = <1>;
+		invert_qi = <0>;
+		invert_qs = <0>;
+	};
 
-Thanks,
-Liam
+	eqep1: qep@3210000 {
+		compatible = "ti,am3352-eqep";
+		reg = <0 0x3210000 0 0x100>;
+		power-domains = <&k3_pds 95 TI_SCI_PD_EXCLUSIVE>;
+		clocks = <&k3_clks 95 0>;
+		clock-names = "eqep1-ficlk";
+		interrupts = <GIC_SPI 323 IRQ_TYPE_EDGE_RISING>;
+		interrupt-names = "eqep1";
+		symlink = "bone/eQEP1"; /* A - P8_35, B - P8_33 */
 
-> Cheers,
-> Peter
+		count_mode = <0>;
+		swap_input = <0>;
+		invert_qa = <1>;
+		invert_qb = <1>;
+		invert_qi = <0>;
+		invert_qs = <0>;
+	};
+
+	eqep2: qep@3220000 {
+		status = "disabled";
+		compatible = "ti,am3352-eqep";
+		reg = <0 0x3220000 0 0x100>;
+		power-domains = <&k3_pds 96 TI_SCI_PD_EXCLUSIVE>;
+		clocks = <&k3_clks 96 0>;
+		clock-names = "eqep2-ficlk";
+		interrupts = <GIC_SPI 324 IRQ_TYPE_EDGE_RISING>;
+		interrupt-names = "eqep2";
+
+		count_mode = <0>;
+		swap_input = <0>;
+		invert_qa = <1>;
+		invert_qb = <1>;
+		invert_qi = <0>;
+		invert_qs = <0>;
+	};
+    };
+
+Signed-off-by: Jason Kridner <jkridner@beagleboard.org>
+---
+ drivers/counter/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+index 2de53ab0dd25..453490059c88 100644
+--- a/drivers/counter/Kconfig
++++ b/drivers/counter/Kconfig
+@@ -51,7 +51,7 @@ config STM32_LPTIMER_CNT
+ 
+ config TI_EQEP
+ 	tristate "TI eQEP counter driver"
+-	depends on (SOC_AM33XX || COMPILE_TEST)
++	depends on (SOC_AM33XX || ARCH_K3 || COMPILE_TEST)
+ 	select REGMAP_MMIO
+ 	help
+ 	  Select this option to enable the Texas Instruments Enhanced Quadrature
+-- 
+2.30.2
+

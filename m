@@ -2,130 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0832F464C48
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Dec 2021 12:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB1A6464CD0
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Dec 2021 12:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243468AbhLALGI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Dec 2021 06:06:08 -0500
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:47045 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbhLALGI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Dec 2021 06:06:08 -0500
-Received: (Authenticated sender: foss@0leil.net)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 529F11C0015;
-        Wed,  1 Dec 2021 11:02:43 +0000 (UTC)
-Date:   Wed, 1 Dec 2021 12:02:41 +0100
-From:   Quentin Schulz <foss+kernel@0leil.net>
-To:     Evgeny Boger <boger@wirenboard.com>
-Cc:     Samuel Holland <samuel@sholland.org>,
-        Maxime Ripard <maxime@cerno.tech>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        linux-sunxi@lists.linux.dev, Sebastian Reichel <sre@kernel.org>,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: document TS voltage in AXP
- PMICs
-Message-ID: <20211201110241.kts5caycdmzqtp3i@fiqs>
-References: <20211118141233.247907-1-boger@wirenboard.com>
- <20211118141233.247907-3-boger@wirenboard.com>
- <20211122104915.zism6uadgwxjz5d2@gilmour>
- <d1a18116-e198-1b26-d73a-36fbf31aaa81@wirenboard.com>
- <35630e89-4988-a6a9-b801-0e9e44419684@sholland.org>
- <206c2a66-42b9-7e07-66c3-6007b010c996@wirenboard.com>
+        id S1348993AbhLALhh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33520 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348936AbhLALhc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Dec 2021 06:37:32 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9A9C06175B
+        for <linux-iio@vger.kernel.org>; Wed,  1 Dec 2021 03:34:10 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id y14-20020a17090a2b4e00b001a5824f4918so20780101pjc.4
+        for <linux-iio@vger.kernel.org>; Wed, 01 Dec 2021 03:34:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
+         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
+         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
+         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
+         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
+         Af5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=WhCbPp7LDLhvBZ9co8Zncn3g5W6uOXPl9b3ZF92VIREVKUf9ugY36iZSy8Sv56Iep3
+         keM6UpEHOPiH2LhpCofwdGX8vPOnUpeGW00p4MpJ1p7+SYU4ZMANi4AGUHA7eUqP7nlf
+         9kNLBCJudAG7MSYLc1qdpNJJbijnrpe+7RXdvpxB0uacGyxyJj0+8jqbRoJt9NhINk//
+         E3/0YCw6BVh2DWlfsgt2sWijQvqWFBGt5lxJkzkOBCNeM+LqZVm5kVvevMLv70hBPx6L
+         jxH5qwIDU5OkxZYR0nd7+cX2EdZZfWNk5MHak5FEZuGLL0mrlwHsR0rr+cdi8skf4Otf
+         UHrQ==
+X-Gm-Message-State: AOAM533LUAAsM8yIt6WOXrTYHW8ukF+J+0yai+9uM317D6XyQpe/L0hF
+        DMUeMJexo76TM4lCubC5S+7jp9e5m0dQ4HLg6bQtFK6buNw=
+X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
+X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
+ Wed, 01 Dec 2021 03:33:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <206c2a66-42b9-7e07-66c3-6007b010c996@wirenboard.com>
+Sender: unitednationawardwinner@gmail.com
+Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:33:58 -0800
+X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
+Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi all,
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-On Tue, Nov 30, 2021 at 02:58:23AM +0300, Evgeny Boger wrote:
-> (added linux-pm@ list and maintainers)
-> 
-> 
-> Actually, on second though, I think it might be doable to add voltage to
-> temperature conversion to this driver.
-> 
-> I think since the NTC thermistor belongs to the battery, not charger, the
-> thermistor should be described in monitored battery node.
-> So I propose to extend battery node (power/supply/battery.yaml) by adding
-> something like:
-> 
-> thermistor-resistance-temp-table = <25 10000>, <35 6530>, ...;
-> 
-> This driver will then interpolate between points to report temperature.
-> 
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
 
-I disagree, I think it does not make much sense. This is already done by
-the NTC thermistor driver.
-The battery "subsystem" already provides operating-range-celsius and
-alert-celsius properties for that.
-Since the battery is linked to the AXP, all we need is to be able to ask
-the NTC thermistor driver to do the conversion from temperature to
-voltage of the two voltage values we get from the battery and use the
-result as threshold in the AXP registers.
-I wouldn't want to have the extrapolation done in two different places.
+Your Names: |
+Address: |
 
-I can see two ways of specifying that interation:
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
 
-battery -------------------> axp --------------------> ntc
-	min/max °C			request °C to V
-				 <--------------------
-					response V
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
 
-This however would require a phandle in the AXP to the NTC thermistor
-driver and I don't feel like it's that good of an idea?
-
-Another way would be to use the battery as a proxy for the voltage
-request to ntc.
-
-		     battery --------------------> axp
-				min/max °C
-ntc <--------------- 	     <--------------------
-	request °C to V		request °C to V
-    --------------->	     --------------------->
-	response V		response V
-
-This would require a phandle to the ntc thermistor in the battery node,
-which kind of makes sense to me. And since the AXP already has knowledge
-of the battery, it can request the appropriate value to the battery
-which then proxies it to and back from the ntc.
-
-Forgive me for my poor ASCII drawing skills :) hopefully it's good
-enough to convey my thoughts.
-
-> We can also adjust PMIC voltage thresholds based on this table and
-> "alert-celsius" property already described in battery.yaml.
-> 
-> I think the driver should report raw TS voltage as well, because the TS pin
-> can also be used as general-purpose ADC pin.
-> 
-
-Since the ntc anyway needs this raw TS voltage and that patch does that,
-I think it's fine. Specifically, re-using this pin as a general-purpose
-ADC won't impact the current patchset.
-
-What we'll need is to have a pinctrl driver for the few pins in the AXP
-which have multiple functions. But that's outside of the scope of this
-patchset.
-
-Regarding the injected current, I don't have enough knowledge in
-electronics to understand how this will change things in the thermistor
-since in the NTC thermistor driver there's no logic related to the
-actual current being injected. Maybe it is related to some operating
-value required by the NTC? I can't say unfortunately.
-
-We can continue this discussion but I don't think this should block this
-patch as I don't see the outcome of this discussion change anything in
-this patchset.
-
-Reviewed-by: Quentin Schulz <foss+kernel@0leil.net>
-
-Thanks!
-Quentin
+Regards.
+Mrs ORGIL BAATAR

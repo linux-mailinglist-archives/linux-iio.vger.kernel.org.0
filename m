@@ -2,66 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F3C464135
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Nov 2021 23:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A49F44649B7
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Dec 2021 09:31:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235357AbhK3WVX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Nov 2021 17:21:23 -0500
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:43637 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235295AbhK3WVW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Nov 2021 17:21:22 -0500
-Received: by mail-oi1-f173.google.com with SMTP id o4so44208849oia.10;
-        Tue, 30 Nov 2021 14:18:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=64PSQYR4mrOg5NMVu2GtkuhPXarpcvAI5FbGR86CFuE=;
-        b=A4bdvBFH+yR8xi2w4FL8IOYD/+bzSFp9rnTtK8MuKAX0q7O4fPuTwQt1MKlzSHoUdF
-         jo0o9Z3R/g2HxO2m9DfB6aLSe3qUy4x42KdmdCplMI4WuovtyvdBjnh8s/XKXcd0h6my
-         FLQ1zv6NEqOFoJBNEXDH+MZ1Spl7XMHhOTFhbwhvNDegK/3I3zKl3BNjFgluVK+Bz35Z
-         xp5tk7i2crBDZP/m0tB+w21AGL80gUXTivdZL1dFQTUNKiBjCmssZIjWxEatSj5RYvcA
-         iPbMbQBP4ic7o6Ce2FKXiZ7nF1WSKJmPox8kf+f/+Pa5IJT6y3UB89kEyF8Xp85+m/RT
-         /40g==
-X-Gm-Message-State: AOAM531GlaISKleutbtE9tVaFV13BNz7QTUzxC7ReJyXWPCAsCZtlzvx
-        rH6IlK1BnToBAA0SGGjRNw==
-X-Google-Smtp-Source: ABdhPJyEmRnCsSlO1MohjwD4S1U5XA1oYI4iwehAhMwrbMQZkaRGhcGfaYXjL4uP3BRncVX7qt7vKw==
-X-Received: by 2002:a05:6808:118a:: with SMTP id j10mr1902823oil.101.1638310682423;
-        Tue, 30 Nov 2021 14:18:02 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id bf17sm4305466oib.27.2021.11.30.14.18.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Nov 2021 14:18:01 -0800 (PST)
-Received: (nullmailer pid 3110035 invoked by uid 1000);
-        Tue, 30 Nov 2021 22:18:01 -0000
-Date:   Tue, 30 Nov 2021 16:18:01 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, robh+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] dt-bindings:iio:filter: add admv8818 doc
-Message-ID: <YaajGXF36Db1WurY@robh.at.kernel.org>
-References: <20211123133900.133027-1-antoniu.miclaus@analog.com>
- <20211123133900.133027-3-antoniu.miclaus@analog.com>
+        id S232664AbhLAIef (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Dec 2021 03:34:35 -0500
+Received: from mx22.baidu.com ([220.181.50.185]:52478 "EHLO baidu.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230433AbhLAIef (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 1 Dec 2021 03:34:35 -0500
+Received: from BC-Mail-Ex19.internal.baidu.com (unknown [172.31.51.13])
+        by Forcepoint Email with ESMTPS id 7E66084790FF601DCCD3;
+        Wed,  1 Dec 2021 16:31:00 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BC-Mail-Ex19.internal.baidu.com (172.31.51.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.20; Wed, 1 Dec 2021 16:31:00 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.20; Wed, 1 Dec 2021 16:30:59 +0800
+From:   Cai Huoqing <caihuoqing@baidu.com>
+To:     <jic23@kernel.org>, <festevam@gmail.com>, <linux-imx@nxp.com>,
+        <kernel@pengutronix.de>
+CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Cai Huoqing <caihuoqing@baidu.com>
+Subject: [PATCH] MAINTAINERS: Update i.MX 8QXP ADC info
+Date:   Wed, 1 Dec 2021 16:31:00 +0800
+Message-ID: <20211201083100.1587-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211123133900.133027-3-antoniu.miclaus@analog.com>
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BC-Mail-Ex13.internal.baidu.com (172.31.51.53) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 23 Nov 2021 15:38:59 +0200, Antoniu Miclaus wrote:
-> Add device tree bindings for the ADMV8818 Filter.
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v2:
->  - remove `bw-hz` dt property
->  .../bindings/iio/filter/adi,admv8818.yaml     | 69 +++++++++++++++++++
->  1 file changed, 69 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> 
+Update my email address to use developer mail address,
+because the old address will be dropped soon.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+And change the status from 'Supported' to 'Maintained' for me
+to look after this code without any payment now.
+
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+ MAINTAINERS | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9331225b7162..79b89056ecd9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13774,9 +13774,9 @@ F:	Documentation/devicetree/bindings/display/imx/nxp,imx8mq-dcss.yaml
+ F:	drivers/gpu/drm/imx/dcss/
+ 
+ NXP i.MX 8QXP ADC DRIVER
+-M:	Cai Huoqing <caihuoqing@baidu.com>
++M:	Cai Huoqing <cai.huoqing@linux.dev>
+ L:	linux-iio@vger.kernel.org
+-S:	Supported
++S:	Maintained
+ F:	Documentation/devicetree/bindings/iio/adc/nxp,imx8qxp-adc.yaml
+ F:	drivers/iio/adc/imx8qxp-adc.c
+ 
+-- 
+2.25.1
+

@@ -2,195 +2,1017 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99FB44663B8
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Dec 2021 13:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C35B466401
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Dec 2021 13:52:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347051AbhLBMhf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Dec 2021 07:37:35 -0500
-Received: from mail-co1nam11on2052.outbound.protection.outlook.com ([40.107.220.52]:2306
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1347032AbhLBMhe (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 2 Dec 2021 07:37:34 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iKT+ZG+73JQI8nB8AQ0DJM4b1YSobc9+S9wnBb8gPexReG1SUSpEOCFq4KzyYg9aWfcydDGcnketIMYnGr3Kj9B0O4u5/SMBdXLj5pJ4P1VEvDE32KinjJL6HJpCSE69dQFopYr1STFIT9B95iMnyvdTfk/tRoF3tvX4ZWp8115H6nWo4jp0IfCXK8baNefpHvEnwDarJoO6Wndv/in+/Q6ckrvzqv3wiYTy6DzZW2Jdf4IXLIsOUortJHuOzIhqXARDMamIRxTL2NNorZMgH3G5RgrEjuviVk3+LH9jhuS73QX4acn31pKe8QPstwj4AANhZwSRdbexlkgxMMIUew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hhaZ5jsrQ4u3I0svCiul5a5agD3k+wVz453yON9T81U=;
- b=S4qiyw2UwjklnoT7gUXYOtDrbd/l/PnXV9fvNbV7vt+Kz2W6PBi+UyGxQYrHXWYOAnFrJcsFXK5CCXkEbXzO4x2y1cGO27jFNwbSrOeZOgB4kqQh1ZW/cVb+NuE2R6rJP9JgsXo9ruRRZHvZn8wKEbZxZ+bXY7GrRT5EPWcCs+CPaw6oM93FlYnCItTTMFmUU+nB3yAuQVrOr1uPAsfwbaxqTCTjjolXTG3S5dc7ZEluaKOD2UhkdwreqG4n+GRT2JzRVw6PErpLxqGk1pBSf1lGzAjWz5Ov2x8Gf3hVN/0Yrg/LkSV4lsWxaJ/4wa7MW4TknIkS49G/L2I5XZE9FQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hhaZ5jsrQ4u3I0svCiul5a5agD3k+wVz453yON9T81U=;
- b=LzeRPaQsFLF4w+VaSFFX+Pa/ALwSMCwBBTrWz/V/RVDSrbUwQHvpC9VVAaUJKyUbDDFm8P5TRxqIa1tcNPhIeh3RyIpjp0I/FbocfIleL4M9vtaRsd+W16HZxAd+YLeWs91AOI4T2mHh6SstPMkFCh12pnFYW8JQ+AWaOr0akzA=
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com (2603:10b6:a03:234::18)
- by BY5PR02MB6819.namprd02.prod.outlook.com (2603:10b6:a03:202::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.11; Thu, 2 Dec
- 2021 12:34:10 +0000
-Received: from BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::8151:8728:8d6b:c3dc]) by BY5PR02MB6916.namprd02.prod.outlook.com
- ([fe80::8151:8728:8d6b:c3dc%5]) with mapi id 15.20.4755.016; Thu, 2 Dec 2021
- 12:34:10 +0000
-From:   Anand Ashok Dumbre <ANANDASH@xilinx.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>
-Subject: RE: [PATCH v11 1/5] device property: Add fwnode_iomap()
-Thread-Topic: [PATCH v11 1/5] device property: Add fwnode_iomap()
-Thread-Index: AQHX4YZBUvFrfnFzmkK2bRDvVWcrV6wUH/KAgAgekICAArbIYIAACAGAgAAjQwCAAA4IoA==
-Date:   Thu, 2 Dec 2021 12:34:10 +0000
-Message-ID: <BY5PR02MB691611E8D9DBC646847E3CE0A9699@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <20211124225407.17793-1-anand.ashok.dumbre@xilinx.com>
- <20211124225407.17793-2-anand.ashok.dumbre@xilinx.com>
- <YZ92mTURrFWZPUXp@smile.fi.intel.com>
- <DM6PR02MB69236DAEBED675DB929BB8ACA9679@DM6PR02MB6923.namprd02.prod.outlook.com>
- <BY5PR02MB6916F7BC6ACE5326DB92DB2BA9699@BY5PR02MB6916.namprd02.prod.outlook.com>
- <YaiTw1RVgxkOvFj8@smile.fi.intel.com>
- <BY5PR02MB6916174E242165D305192F2FA9699@BY5PR02MB6916.namprd02.prod.outlook.com>
-In-Reply-To: <BY5PR02MB6916174E242165D305192F2FA9699@BY5PR02MB6916.namprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=xilinx.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c00595fc-7e0c-4636-346e-08d9b5900a8e
-x-ms-traffictypediagnostic: BY5PR02MB6819:
-x-ld-processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-x-microsoft-antispam-prvs: <BY5PR02MB6819CD59D209701F509A8088A9699@BY5PR02MB6819.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: tAW57PP2IaGTWa2JlmlOKGx08TgE90zXmKWOSkf7XhpsJX/oOcF4MlGgkyFNGQHNmQ9YKhAEBMvbzLHLdMme+ayBn4zYrKya6lrdZetDuoQQ3kuWPNPTRTh3/mP98gZzTrj6ljdQ1R3GFns6VtXRilbBTO+Hz3f1Cg7BuT5L+DMXzSNt25EZO0q8Ke9EaAHl6Rar9poNM2TftXuQ9a0qHW7LixpGSsZo+jlgd6cVTj7kgb6hW6HDO+zBVPvHg5X0qOTbU487DOvXeTM2m1LkA9I7IOp9FvOVY5PaPIgfX7/XPXDVdQzC15TuFBkSt/cXEdQBdza0meXVB3CiGMf7q8t7MeZYH3UMXl/2ulAhjCXzb3lkCOva/TxYQSNPX5W3TtkfNnVlJcIrQ+RfdFhOykFp4xHaoBxxyYALSYJj7RHERIeOOsRQ4Ql8oPaO6MTV+BBGmI1mNviCtIDhcfSO2pk0ROW6qh9qYSM7Oin0toYLryu3F2eD78pqHWRhGvRPP0rdG5QokGvfYulcgsp2mNTk7GRWNG0BU68TywyiR2YkmSSU2lDGpr89+7V4dc1/CFk8clHjVRAAVfanhoAmd8klNIgorOS4MQyYfnU7zyBeCHKxNloUTvLmmVfkEQ2R0hrUIR/z6BY1+XO1b4w8nx9gR2EXPtJS8s/lyUd2Y5Os1KovRoZQuPH4vX/bmYX3cN55LV2KatCCv2Sk+dWYjA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR02MB6916.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(54906003)(66556008)(53546011)(8676002)(6916009)(66446008)(186003)(122000001)(52536014)(38070700005)(55016003)(64756008)(26005)(6506007)(2906002)(71200400001)(4326008)(508600001)(9686003)(316002)(66476007)(8936002)(66946007)(7416002)(5660300002)(7696005)(83380400001)(86362001)(2940100002)(76116006)(38100700002)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Td9lDcKynZsRtdOF9B1KZWgWgSERNtV8QLnNiv68OMoHSbWxgtyq10V7JfPh?=
- =?us-ascii?Q?qldTt+h5zB9u47s7WL6PMeNyjziuPN8pU+cUAuxV2LCbsqI+90/1iAgqr7a/?=
- =?us-ascii?Q?mwYEl8zA5qFM697jVVvW2n2lEt82inxqu8OtHPGZSRbgsjqhFItFRdGEZCil?=
- =?us-ascii?Q?VS8Mnox7zYEmZVJv4mqUjo/7TeNeg1ZFvRV7M6pF1fwoWRP6mAjpuFYLRiTK?=
- =?us-ascii?Q?tdBrBPLrzL63nXBKsnxNuJf6juo5tTd52Ot+fp5snQH8VpoKbrCsz5dZ7twQ?=
- =?us-ascii?Q?n+0e97nCP3PbgqagTQ7i8sfW80s8ZIMKFh8Q4AVN2It8kn5GFqGnp1WHeSbk?=
- =?us-ascii?Q?95iHCS2RjWg6Nv0cX/eltxVuWE4tIojF979LC9gZnYqzo7YN2w/Hz2kvlYC1?=
- =?us-ascii?Q?6Hc6OYfg/9Zy2v/TfmGFAtB3Fe9F6F2KaZseFkmU0y84ZwhH6Ngppbr/r6Ul?=
- =?us-ascii?Q?v7R84y/Nktl+ftFT4+BdEJLw7XPv2j0C8DtE+WkwPacTInYpKAo5XTXBXqoe?=
- =?us-ascii?Q?XJkS7GLGM9QjUajauAZ3XT8pvp1HgFY2rXnHq7WBX4E6e1QI5lrquvQlYvBt?=
- =?us-ascii?Q?ChHoP7EZoKMhFxx8w0YvSgAMWUIlAVj6shUyaDIG98ZserjDmvtVq+PlQp0A?=
- =?us-ascii?Q?33eW1sFOI1uGxGcR8ZvYTM7p0uBrSQsqUMI3ky92hoHsvHQ7ELVwGkrwwpc1?=
- =?us-ascii?Q?gHDU40IZ+tMPkvCgg8wIY/Et9SkpJm1kkmi7syVwzam8HZGF7xFeKuRmVr50?=
- =?us-ascii?Q?igDJsGncJywIZ92nA3vRvL/VOu+juguA6YUCXAIIzKkgtddKfKJKvTMnTvYL?=
- =?us-ascii?Q?pwaQVsfDjcZCSWzCr4+sroTpgzsLyUiYEk6iwGgZ3aj6DvlkjUGf1K+c4uA5?=
- =?us-ascii?Q?QQeOTmUA2DmuiUTqKQHAk8cP3ceAWkOI3dJqScKzmK1g4z4oB/fl9MVrkR83?=
- =?us-ascii?Q?qyDfsXTDx3H2gdr3uR0DcPqba/twFDVyzKAMDTEWSFJBp4Z0xTEnXvD7MMg1?=
- =?us-ascii?Q?l68NNzCG32530MqKVYb+gLNwTeBtfzwf2hIklaEiA9NHYe9IvsM8ejzKHZqD?=
- =?us-ascii?Q?8CX0SWu6yaobR1ZqMwQ55BY+TkQLnb5rXzk8Sz2haR0HQt2T3C5HTdiZ6eKy?=
- =?us-ascii?Q?c58R7rBNbtEsMDydvRvlmEk2aZPhaTYjSBjh7zxoxcdYC6fOMvRmIyhvmIN5?=
- =?us-ascii?Q?ScL4iiAaNUO+MykVhueh1Q56Vy+VJioAwjOhB0yMJJMdL6sYF20nI5hj88t4?=
- =?us-ascii?Q?y9wmKfwPA2U8jjtbary7bq2avGuZTl085PGT5l5hpxIQAY9BXJ67HxsWlf3m?=
- =?us-ascii?Q?Lli1va3CruCFjQKXF9rb3azMaclZ8Fx5tErVMszsUUw9SfpJh1zwxjYyCZaZ?=
- =?us-ascii?Q?b68aFf7ANS1M1jUzLLKt4lr9mGEkTMh+G/av060+sz3PN9UitBSAAMT61lXl?=
- =?us-ascii?Q?d30tOUYgIUCybU7Ca1eOEiwipMVKFFOrpPVo4b6uC4mNYb9zTePs5Y2G9aZv?=
- =?us-ascii?Q?VqlQgmwxlwOLgUZW4OYKtczD7EUxPECxZtdiiGuFYmx8n0T7+Cg3ZDBEr4gj?=
- =?us-ascii?Q?DjlZ5ut9ixaxPO6Y/QMMzugYJdVi3ZAqmsmjX7nz9ZEY9bygGXjRBpWM3tOD?=
- =?us-ascii?Q?ug=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1346567AbhLBMzv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Dec 2021 07:55:51 -0500
+Received: from out2.migadu.com ([188.165.223.204]:17676 "EHLO out2.migadu.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230001AbhLBMzu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 2 Dec 2021 07:55:50 -0500
+Date:   Thu, 2 Dec 2021 20:52:00 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1638449546;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/IaNmCOcgdtkqB2nyRdXHwV/y3uil89QWJDlRqw2hFA=;
+        b=B2ysc1ErFp9eEYT5zzYLMp0bAyIw5wGIEpKh9KpHIvzB9tVMIumq8tuHfBk0czvnBVwaco
+        BVc5A/UGsjW1dpqqpekobYY9zZi/5Xsp8SHCsUT8601Y1c4yA1Cm3KJdcMg12ej7eXIkNG
+        Ff0bvawYZWA8gTsQTxKGnt0G7wFQXyQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Cai Huoqing <cai.huoqing@linux.dev>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     jic23@kernel.org, robh+dt@kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/2] iio:dac:ad7293: add support for AD7293
+Message-ID: <20211202125200.GA11548@chq-T47>
+References: <20211202110139.189087-1-antoniu.miclaus@analog.com>
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6916.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c00595fc-7e0c-4636-346e-08d9b5900a8e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2021 12:34:10.5864
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8zw3W0umv5LGyikBRSo+l0oQpyI7pu1Sv+BZ6XRZTXCkflUYBYBHomB+dQB4IxmWUVgupNDyvv4hl/Rk2A2frg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR02MB6819
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211202110139.189087-1-antoniu.miclaus@analog.com>
+X-Migadu-Flow: FLOW_OUT
+X-Migadu-Auth-User: linux.dev
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Anand Ashok Dumbre <ANANDASH@xilinx.com>
-> Sent: Thursday 2 December 2021 11:47 AM
-> To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: linux-kernel@vger.kernel.org; jic23@kernel.org; lars@metafoo.de; linu=
-x-
-> iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
-> <michals@xilinx.com>; gregkh@linuxfoundation.org; rafael@kernel.org;
-> linux-acpi@vger.kernel.org; heikki.krogerus@linux.intel.com
-> Subject: RE: [PATCH v11 1/5] device property: Add fwnode_iomap()
->=20
-> > ...
-> >
-> > > > > > +void __iomem *fwnode_iomap(struct fwnode_handle *fwnode,
-> int
-> > > > > index) {
-> > > > >
-> > > > > > +	if (is_of_node(fwnode))
-> > > > > > +		return of_iomap(to_of_node(fwnode), index);
-> > > > >
-> > > > > It seems this part should be wrapped in some ifdeffery according
-> > > > > to kbuild bot report.
-> > > >
-> > > > I see that of_iomap is wrapped in #ifdef I will fix that and send
-> > > > a new
-> > patch.
-> > >
-> > > I am unable to reproduce the conditions for the error shown by the
-> > > kernel
-> > bot.
-> > > Not sure if I am doing something wrong. Any help/suggestion would be
-> > appreciated to fix this issue.
-> >
-> > Kbuild bot gives you a config file and command line with which it
-> > tried to build. It's quite rare that it gives you false positives (and
-> > here it's not the case, because you need to have ifdeffery like other
-> > APIs in this category have).
-> >
->=20
-> The problem is at the config file itself. I am unable to point to compile=
-r
-> correctly while running, make ARCH=3Ds390 test_defconfig
-> s390-linux-gcc: unknown compiler
-> scripts/Kconfig.include:44: Sorry, this compiler is not supported.
-> scripts/kconfig/Makefile:94: recipe for target 'test_defconfig' failed
-> make[1]: *** [test_defconfig] Error 1
-> Makefile:619: recipe for target 'test_defconfig' failed
-> make: *** [test_defconfig] Error 2
->=20
-> I have added the compiler binaries to the patch and set
-> CROSS_COMPILE=3Ds390-linux-
-
-I am able to build now, one of the build options was causing the problems.
-
->=20
-> > > > > > +	return NULL;
-> > > > > > +}
-> >
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
->=20
-> Thanks,
-> Anand
-
+On 02 12月 21 13:01:38, Antoniu Miclaus wrote:
+> The AD7293 is a Power Amplifier drain current controller
+> containing functionality for general-purpose monitoring
+> and control of current, voltage, and temperature, integrated
+> into a single chip solution with an SPI-compatible interface.
+> 
+> Datasheet:
+> https://www.analog.com/media/en/technical-documentation/data-sheets/AD7293.pdf
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v5:
+>  - perform error check for `regulator_get_voltage`
+>  - more characters per line adjustments
+>  drivers/iio/dac/Kconfig  |  11 +
+>  drivers/iio/dac/Makefile |   1 +
+>  drivers/iio/dac/ad7293.c | 909 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 921 insertions(+)
+>  create mode 100644 drivers/iio/dac/ad7293.c
+> 
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 75e1f2b48638..6206b90fc08f 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -221,6 +221,17 @@ config AD5791
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ad5791.
+>  
+> +config AD7293
+> +	tristate "Analog Devices AD7293 Power Amplifier Current Controller"
+> +	depends on SPI
+> +	help
+> +	  Say yes here to build support for Analog Devices AD7293
+> +	  Power Amplifier Current Controller with
+> +	  ADC, DACs, and Temperature and Current Sensors
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called ad7293.
+> +
+>  config AD7303
+>  	tristate "Analog Devices AD7303 DAC driver"
+>  	depends on SPI
+> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+> index 33e16f14902a..3c17246ee89b 100644
+> --- a/drivers/iio/dac/Makefile
+> +++ b/drivers/iio/dac/Makefile
+> @@ -25,6 +25,7 @@ obj-$(CONFIG_AD5791) += ad5791.o
+>  obj-$(CONFIG_AD5686) += ad5686.o
+>  obj-$(CONFIG_AD5686_SPI) += ad5686-spi.o
+>  obj-$(CONFIG_AD5696_I2C) += ad5696-i2c.o
+> +obj-$(CONFIG_AD7293) += ad7293.o
+>  obj-$(CONFIG_AD7303) += ad7303.o
+>  obj-$(CONFIG_AD8801) += ad8801.o
+>  obj-$(CONFIG_CIO_DAC) += cio-dac.o
+> diff --git a/drivers/iio/dac/ad7293.c b/drivers/iio/dac/ad7293.c
+> new file mode 100644
+> index 000000000000..b5770ff03258
+> --- /dev/null
+> +++ b/drivers/iio/dac/ad7293.c
+> @@ -0,0 +1,909 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * AD7293 driver
+> + *
+> + * Copyright 2021 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include <asm/unaligned.h>
+> +
+> +#define AD7293_R1B				BIT(16)
+> +#define AD7293_R2B				BIT(17)
+> +#define AD7293_PAGE_ADDR_MSK			GENMASK(15, 8)
+> +#define AD7293_PAGE(x)				FIELD_PREP(AD7293_PAGE_ADDR_MSK, x)
+> +
+> +/* AD7293 Register Map Common */
+> +#define AD7293_REG_NO_OP			(AD7293_R1B | AD7293_PAGE(0x0) | 0x0)
+remove unused register macro,  like this.
+> +#define AD7293_REG_PAGE_SELECT			(AD7293_R1B | AD7293_PAGE(0x0) | 0x1)
+> +#define AD7293_REG_CONV_CMD			(AD7293_R2B | AD7293_PAGE(0x0) | 0x2)
+> +#define AD7293_REG_RESULT			(AD7293_R1B | AD7293_PAGE(0x0) | 0x3)
+> +#define AD7293_REG_DAC_EN			(AD7293_R1B | AD7293_PAGE(0x0) | 0x4)
+> +#define AD7293_REG_DEVICE_ID			(AD7293_R2B | AD7293_PAGE(0x0) | 0xC)
+> +#define AD7293_REG_SOFT_RESET			(AD7293_R2B | AD7293_PAGE(0x0) | 0xF)
+> +
+> +/* AD7293 Register Map Page 0x0 */
+> +#define AD7293_REG_VIN0				(AD7293_R2B | AD7293_PAGE(0x0) | 0x10)
+> +#define AD7293_REG_VIN1				(AD7293_R2B | AD7293_PAGE(0x0) | 0x11)
+> +#define AD7293_REG_VIN2				(AD7293_R2B | AD7293_PAGE(0x0) | 0x12)
+> +#define AD7293_REG_VIN3				(AD7293_R2B | AD7293_PAGE(0x0) | 0x13)
+> +#define AD7293_REG_TSENSE_INT			(AD7293_R2B | AD7293_PAGE(0x0) | 0x20)
+> +#define AD7293_REG_TSENSE_D0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x21)
+> +#define AD7293_REG_TSENSE_D1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x22)
+> +#define AD7293_REG_ISENSE_0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x28)
+> +#define AD7293_REG_ISENSE_1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x29)
+> +#define AD7293_REG_ISENSE_2			(AD7293_R2B | AD7293_PAGE(0x0) | 0x2A)
+> +#define AD7293_REG_ISENSE_3			(AD7293_R2B | AD7293_PAGE(0x0) | 0x2B)
+> +#define AD7293_REG_UNI_VOUT0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x30)
+> +#define AD7293_REG_UNI_VOUT1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x31)
+> +#define AD7293_REG_UNI_VOUT2			(AD7293_R2B | AD7293_PAGE(0x0) | 0x32)
+> +#define AD7293_REG_UNI_VOUT3			(AD7293_R2B | AD7293_PAGE(0x0) | 0x33)
+> +#define AD7293_REG_BI_VOUT0			(AD7293_R2B | AD7293_PAGE(0x0) | 0x34)
+> +#define AD7293_REG_BI_VOUT1			(AD7293_R2B | AD7293_PAGE(0x0) | 0x35)
+> +#define AD7293_REG_BI_VOUT2			(AD7293_R2B | AD7293_PAGE(0x0) | 0x36)
+> +#define AD7293_REG_BI_VOUT3			(AD7293_R2B | AD7293_PAGE(0x0) | 0x37)
+> +
+> +/* AD7293 Register Map Page 0x1 */
+> +#define AD7293_REG_AVDD				(AD7293_R2B | AD7293_PAGE(0x1) | 0x10)
+> +#define AD7293_REG_DACVDD_UNI			(AD7293_R2B | AD7293_PAGE(0x1) | 0x11)
+> +#define AD7293_REG_DACVDD_BI			(AD7293_R2B | AD7293_PAGE(0x1) | 0x12)
+> +#define AD7293_REG_AVSS				(AD7293_R2B | AD7293_PAGE(0x1) | 0x13)
+> +#define AD7293_REG_BI_VOUT0_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x14)
+> +#define AD7293_REG_BI_VIOU1_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x15)
+> +#define AD7293_REG_BI_VOUT2_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x16)
+> +#define AD7293_REG_BI_VOUT3_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x17)
+> +#define AD7293_REG_RS0_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x28)
+the same here, not need to define all registers in the datasheet.
+Thanks,
+Cai
+> +#define AD7293_REG_RS1_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x29)
+> +#define AD7293_REG_RS2_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x2A)
+> +#define AD7293_REG_RS3_MON			(AD7293_R2B | AD7293_PAGE(0x1) | 0x2B)
+> +
+> +/* AD7293 Register Map Page 0x2 */
+> +#define AD7293_REG_DIGITAL_OUT_EN		(AD7293_R2B | AD7293_PAGE(0x2) | 0x11)
+> +#define AD7293_REG_DIGITAL_INOUT_FUNC		(AD7293_R2B | AD7293_PAGE(0x2) | 0x12)
+> +#define AD7293_REG_DIGITAL_FUNC_POL		(AD7293_R2B | AD7293_PAGE(0x2) | 0x13)
+> +#define AD7293_REG_GENERAL			(AD7293_R2B | AD7293_PAGE(0x2) | 0x14)
+> +#define AD7293_REG_VINX_RANGE0			(AD7293_R2B | AD7293_PAGE(0x2) | 0x15)
+> +#define AD7293_REG_VINX_RANGE1			(AD7293_R2B | AD7293_PAGE(0x2) | 0x16)
+> +#define AD7293_REG_VINX_DIFF_SE			(AD7293_R2B | AD7293_PAGE(0x2) | 0x17)
+> +#define AD7293_REG_VINX_FILTER			(AD7293_R2B | AD7293_PAGE(0x2) | 0x18)
+> +#define AD7293_REG_BG_EN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x19)
+> +#define AD7293_REG_CONV_DELAY			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1A)
+> +#define AD7293_REG_TSENSE_BG_EN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1B)
+> +#define AD7293_REG_ISENSE_BG_EN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1C)
+> +#define AD7293_REG_ISENSE_GAIN			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1D)
+> +#define AD7293_REG_DAC_SNOOZE_O			(AD7293_R2B | AD7293_PAGE(0x2) | 0x1F)
+> +#define AD7293_REG_DAC_SNOOZE_1			(AD7293_R2B | AD7293_PAGE(0x2) | 0x20)
+> +#define AD7293_REG_RSX_MON_BG_EN		(AD7293_R2B | AD7293_PAGE(0x2) | 0x23)
+> +#define AD7293_REG_INTEGR_CL			(AD7293_R2B | AD7293_PAGE(0x2) | 0x28)
+> +#define AD7293_REG_PA_ON_CTRL			(AD7293_R2B | AD7293_PAGE(0x2) | 0x29)
+> +#define AD7293_REG_RAMP_TIME_0			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2A)
+> +#define AD7293_REG_RAMP_TIME_1			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2B)
+> +#define AD7293_REG_RAMP_TIME_2			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2C)
+> +#define AD7293_REG_RAMP_TIME_3			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2D)
+> +#define AD7293_REG_CL_FR_IT			(AD7293_R2B | AD7293_PAGE(0x2) | 0x2E)
+> +#define AD7293_REG_INTX_AVSS_AVDD		(AD7293_R2B | AD7293_PAGE(0x2) | 0x2F)
+> +
+> +/* AD7293 Register Map Page 0x3 */
+> +#define AD7293_REG_VINX_SEQ			(AD7293_R2B | AD7293_PAGE(0x3) | 0x10)
+> +#define AD7293_REG_ISENSEX_TSENSEX_SEQ		(AD7293_R2B | AD7293_PAGE(0x3) | 0x11)
+> +#define AD7293_REG_RSX_MON_BI_VOUTX_SEQ		(AD7293_R2B | AD7293_PAGE(0x3) | 0x12)
+> +
+> +/* AD7293 Register Map Page 0xE */
+> +#define AD7293_REG_VIN0_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x10)
+> +#define AD7293_REG_VIN1_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x11)
+> +#define AD7293_REG_VIN2_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x12)
+> +#define AD7293_REG_VIN3_OFFSET			(AD7293_R1B | AD7293_PAGE(0xE) | 0x13)
+> +#define AD7293_REG_TSENSE_INT_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x20)
+> +#define AD7293_REG_TSENSE_D0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x21)
+> +#define AD7293_REG_TSENSE_D1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x22)
+> +#define AD7293_REG_ISENSE0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x28)
+> +#define AD7293_REG_ISENSE1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x29)
+> +#define AD7293_REG_ISENSE2_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x2A)
+> +#define AD7293_REG_ISENSE3_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x2B)
+> +#define AD7293_REG_UNI_VOUT0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x30)
+> +#define AD7293_REG_UNI_VOUT1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x31)
+> +#define AD7293_REG_UNI_VOUT2_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x32)
+> +#define AD7293_REG_UNI_VOUT3_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x33)
+> +#define AD7293_REG_BI_VOUT0_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x34)
+> +#define AD7293_REG_BI_VOUT1_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x35)
+> +#define AD7293_REG_BI_VOUT2_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x36)
+> +#define AD7293_REG_BI_VOUT3_OFFSET		(AD7293_R1B | AD7293_PAGE(0xE) | 0x37)
+> +
+> +/* AD7293 Miscellaneous Definitions */
+> +#define AD7293_READ				BIT(7)
+> +#define AD7293_TRANSF_LEN_MSK			GENMASK(17, 16)
+> +
+> +#define AD7293_REG_ADDR_MSK			GENMASK(7, 0)
+> +#define AD7293_REG_VOUT_OFFSET_MSK		GENMASK(5, 4)
+> +#define AD7293_REG_DATA_RAW_MSK			GENMASK(15, 4)
+> +#define AD7293_REG_VINX_RANGE_GET_CH_MSK(x, ch)	(((x) >> (ch)) & 0x1)
+> +#define AD7293_REG_VINX_RANGE_SET_CH_MSK(x, ch)	(((x) & 0x1) << (ch))
+> +#define AD7293_CHIP_ID				0x18
+> +
+> +enum ad7293_ch_type {
+> +	AD7293_ADC_VINX,
+> +	AD7293_ADC_TSENSE,
+> +	AD7293_ADC_ISENSE,
+> +	AD7293_DAC,
+> +};
+> +
+> +enum ad7293_max_offset {
+> +	AD7293_TSENSE_MIN_OFFSET_CH = 4,
+> +	AD7293_ISENSE_MIN_OFFSET_CH = 7,
+> +	AD7293_VOUT_MIN_OFFSET_CH = 11,
+> +	AD7293_VOUT_MAX_OFFSET_CH = 18,
+> +};
+> +
+> +static const int dac_offset_table[] = {0, 1, 2};
+> +
+> +static const int isense_gain_table[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+> +
+> +static const int adc_range_table[] = {0, 1, 2, 3};
+> +
+> +struct ad7293_state {
+> +	struct spi_device *spi;
+> +	/* Protect against concurrent accesses to the device, page selection and data content */
+> +	struct mutex lock;
+> +	struct gpio_desc *gpio_reset;
+> +	struct regulator *reg_avdd;
+> +	struct regulator *reg_vdrive;
+> +	u8 page_select;
+> +	u8 data[3] ____cacheline_aligned;
+> +};
+> +
+> +static int ad7293_page_select(struct ad7293_state *st, unsigned int reg)
+> +{
+> +	int ret;
+> +
+> +	if (st->page_select != FIELD_GET(AD7293_PAGE_ADDR_MSK, reg)) {
+> +		st->data[0] = FIELD_GET(AD7293_REG_ADDR_MSK, AD7293_REG_PAGE_SELECT);
+> +		st->data[1] = FIELD_GET(AD7293_PAGE_ADDR_MSK, reg);
+> +
+> +		ret = spi_write(st->spi, &st->data[0], 2);
+> +		if (ret)
+> +			return ret;
+> +
+> +		st->page_select = FIELD_GET(AD7293_PAGE_ADDR_MSK, reg);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __ad7293_spi_read(struct ad7293_state *st, unsigned int reg,
+> +			     u16 *val)
+> +{
+> +	int ret;
+> +	unsigned int length;
+> +	struct spi_transfer t = {0};
+> +
+> +	length = FIELD_GET(AD7293_TRANSF_LEN_MSK, reg);
+> +
+> +	ret = ad7293_page_select(st, reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->data[0] = AD7293_READ | FIELD_GET(AD7293_REG_ADDR_MSK, reg);
+> +	st->data[1] = 0x0;
+> +	st->data[2] = 0x0;
+> +
+> +	t.tx_buf = &st->data[0];
+> +	t.rx_buf = &st->data[0];
+> +	t.len = length + 1;
+> +
+> +	ret = spi_sync_transfer(st->spi, &t, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (length == 1)
+> +		*val = st->data[1];
+> +	else
+> +		*val = get_unaligned_be16(&st->data[1]);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad7293_spi_read(struct ad7293_state *st, unsigned int reg,
+> +			   u16 *val)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&st->lock);
+> +	ret = __ad7293_spi_read(st, reg, val);
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int __ad7293_spi_write(struct ad7293_state *st, unsigned int reg,
+> +			      u16 val)
+> +{
+> +	int ret;
+> +	unsigned int length;
+> +
+> +	length = FIELD_GET(AD7293_TRANSF_LEN_MSK, reg);
+> +
+> +	ret = ad7293_page_select(st, reg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->data[0] = FIELD_GET(AD7293_REG_ADDR_MSK, reg);
+> +
+> +	if (length == 1)
+> +		st->data[1] = val;
+> +	else
+> +		put_unaligned_be16(val, &st->data[1]);
+> +
+> +	return spi_write(st->spi, &st->data[0], length + 1);
+> +}
+> +
+> +static int ad7293_spi_write(struct ad7293_state *st, unsigned int reg,
+> +			    u16 val)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&st->lock);
+> +	ret = __ad7293_spi_write(st, reg, val);
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int __ad7293_spi_update_bits(struct ad7293_state *st, unsigned int reg,
+> +				    u16 mask, u16 val)
+> +{
+> +	int ret;
+> +	u16 data, temp;
+> +
+> +	ret = __ad7293_spi_read(st, reg, &data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	temp = (data & ~mask) | (val & mask);
+> +
+> +	return __ad7293_spi_write(st, reg, temp);
+> +}
+> +
+> +static int ad7293_spi_update_bits(struct ad7293_state *st, unsigned int reg,
+> +				  u16 mask, u16 val)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&st->lock);
+> +	ret = __ad7293_spi_update_bits(st, reg, mask, val);
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_adc_get_scale(struct ad7293_state *st, unsigned int ch, u16 *range)
+> +{
+> +	int ret;
+> +	u16 data;
+> +
+> +	mutex_lock(&st->lock);
+> +
+> +	ret = __ad7293_spi_read(st, AD7293_REG_VINX_RANGE1, &data);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	*range = AD7293_REG_VINX_RANGE_GET_CH_MSK(data, ch);
+> +
+> +	ret = __ad7293_spi_read(st, AD7293_REG_VINX_RANGE0, &data);
+> +	if (ret)
+> +		goto exit;
+> +
+> +	*range |= AD7293_REG_VINX_RANGE_GET_CH_MSK(data, ch) << 1;
+> +
+> +exit:
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_adc_set_scale(struct ad7293_state *st, unsigned int ch, u16 range)
+> +{
+> +	int ret;
+> +	unsigned int ch_msk = BIT(ch);
+> +
+> +	mutex_lock(&st->lock);
+> +	ret = __ad7293_spi_update_bits(st, AD7293_REG_VINX_RANGE1, ch_msk,
+> +				       AD7293_REG_VINX_RANGE_SET_CH_MSK(range, ch));
+> +	if (ret)
+> +		goto exit;
+> +
+> +	ret = __ad7293_spi_update_bits(st, AD7293_REG_VINX_RANGE0, ch_msk,
+> +				       AD7293_REG_VINX_RANGE_SET_CH_MSK((range >> 1), ch));
+> +
+> +exit:
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_get_offset(struct ad7293_state *st, unsigned int ch, u16 *offset)
+> +{
+> +	if (ch < AD7293_TSENSE_MIN_OFFSET_CH)
+> +		return ad7293_spi_read(st, AD7293_REG_VIN0_OFFSET + ch, offset);
+> +	else if (ch < AD7293_ISENSE_MIN_OFFSET_CH)
+> +		return ad7293_spi_read(st, AD7293_REG_TSENSE_INT_OFFSET + (ch - 4), offset);
+> +	else if (ch < AD7293_VOUT_MIN_OFFSET_CH)
+> +		return ad7293_spi_read(st, AD7293_REG_ISENSE0_OFFSET + (ch - 7), offset);
+> +	else if (ch <= AD7293_VOUT_MAX_OFFSET_CH)
+> +		return ad7293_spi_read(st, AD7293_REG_UNI_VOUT0_OFFSET + (ch - 11), offset);
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int ad7293_set_offset(struct ad7293_state *st, unsigned int ch, u16 offset)
+> +{
+> +	if (ch < AD7293_TSENSE_MIN_OFFSET_CH)
+> +		return ad7293_spi_write(st, AD7293_REG_VIN0_OFFSET + ch, offset);
+> +	else if (ch < AD7293_ISENSE_MIN_OFFSET_CH)
+> +		return ad7293_spi_write(st, AD7293_REG_TSENSE_INT_OFFSET +
+> +					(ch - AD7293_TSENSE_MIN_OFFSET_CH), offset);
+> +	else if (ch < AD7293_VOUT_MIN_OFFSET_CH)
+> +		return ad7293_spi_write(st, AD7293_REG_ISENSE0_OFFSET +
+> +					(ch - AD7293_ISENSE_MIN_OFFSET_CH), offset);
+> +	else if (ch <= AD7293_VOUT_MAX_OFFSET_CH)
+> +		return ad7293_spi_update_bits(st, AD7293_REG_UNI_VOUT0_OFFSET +
+> +						(ch - AD7293_VOUT_MIN_OFFSET_CH),
+> +						AD7293_REG_VOUT_OFFSET_MSK,
+> +						FIELD_PREP(AD7293_REG_VOUT_OFFSET_MSK, offset));
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int ad7293_isense_set_scale(struct ad7293_state *st, unsigned int ch, u16 gain)
+> +{
+> +	unsigned int ch_msk = (0xf << (4 * ch));
+> +
+> +	return ad7293_spi_update_bits(st, AD7293_REG_ISENSE_GAIN, ch_msk, gain << (4 * ch));
+> +}
+> +
+> +static int ad7293_isense_get_scale(struct ad7293_state *st, unsigned int ch, u16 *gain)
+> +{
+> +	int ret;
+> +
+> +	ret = ad7293_spi_read(st, AD7293_REG_ISENSE_GAIN, gain);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*gain = (*gain >> (4 * ch)) & 0xf;
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_dac_write_raw(struct ad7293_state *st, unsigned int ch, u16 raw)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&st->lock);
+> +
+> +	ret = __ad7293_spi_update_bits(st, AD7293_REG_DAC_EN, BIT(ch), BIT(ch));
+> +	if (ret)
+> +		goto exit;
+> +
+> +	ret =  __ad7293_spi_write(st, AD7293_REG_UNI_VOUT0 + ch,
+> +				  FIELD_PREP(AD7293_REG_DATA_RAW_MSK, raw));
+> +
+> +exit:
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_ch_read_raw(struct ad7293_state *st, enum ad7293_ch_type type, unsigned int ch,
+> +			      u16 *raw)
+> +{
+> +	int ret;
+> +	unsigned int reg_wr, reg_rd, data_wr;
+> +
+> +	switch (type) {
+> +	case AD7293_ADC_VINX:
+> +		reg_wr = AD7293_REG_VINX_SEQ;
+> +		reg_rd = AD7293_REG_VIN0 + ch;
+> +		data_wr = BIT(ch);
+> +
+> +		break;
+> +	case AD7293_ADC_TSENSE:
+> +		reg_wr = AD7293_REG_ISENSEX_TSENSEX_SEQ;
+> +		reg_rd = AD7293_REG_TSENSE_INT + ch;
+> +		data_wr = BIT(ch);
+> +
+> +		break;
+> +	case AD7293_ADC_ISENSE:
+> +		reg_wr = AD7293_REG_ISENSEX_TSENSEX_SEQ;
+> +		reg_rd = AD7293_REG_ISENSE_0 + ch;
+> +		data_wr = BIT(ch) << 8;
+> +
+> +		break;
+> +	case AD7293_DAC:
+> +		reg_rd = AD7293_REG_UNI_VOUT0 + ch;
+> +
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	mutex_lock(&st->lock);
+> +
+> +	if (type != AD7293_DAC) {
+> +		if (type == AD7293_ADC_TSENSE) {
+> +			ret = __ad7293_spi_write(st, AD7293_REG_TSENSE_BG_EN, BIT(ch));
+> +			if (ret)
+> +				goto exit;
+> +
+> +			usleep_range(9000, 9900);
+> +		} else if (type == AD7293_ADC_ISENSE) {
+> +			ret = __ad7293_spi_write(st, AD7293_REG_ISENSE_BG_EN, BIT(ch));
+> +			if (ret)
+> +				goto exit;
+> +
+> +			usleep_range(2000, 7000);
+> +		}
+> +
+> +		ret = __ad7293_spi_write(st, reg_wr, data_wr);
+> +		if (ret)
+> +			goto exit;
+> +
+> +		ret = __ad7293_spi_write(st, AD7293_REG_CONV_CMD, 0x82);
+> +		if (ret)
+> +			goto exit;
+> +	}
+> +
+> +	ret = __ad7293_spi_read(st, reg_rd, raw);
+> +
+> +	*raw = FIELD_GET(AD7293_REG_DATA_RAW_MSK, *raw);
+> +
+> +exit:
+> +	mutex_unlock(&st->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long info)
+> +{
+> +	struct ad7293_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +	u16 data;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			if (chan->output)
+> +				ret =  ad7293_ch_read_raw(st, AD7293_DAC, chan->channel, &data);
+> +			else
+> +				ret =  ad7293_ch_read_raw(st, AD7293_ADC_VINX, chan->channel, &data);
+> +
+> +			break;
+> +		case IIO_CURRENT:
+> +			ret =  ad7293_ch_read_raw(st, AD7293_ADC_ISENSE, chan->channel, &data);
+> +
+> +			break;
+> +		case IIO_TEMP:
+> +			ret =  ad7293_ch_read_raw(st, AD7293_ADC_TSENSE, chan->channel, &data);
+> +
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +
+> +		if (ret)
+> +			return ret;
+> +
+> +		*val = data;
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			if (chan->output) {
+> +				ret = ad7293_get_offset(st, chan->channel +
+> +							AD7293_VOUT_MIN_OFFSET_CH, &data);
+> +
+> +				data = FIELD_GET(AD7293_REG_VOUT_OFFSET_MSK, data);
+> +			} else {
+> +				ret = ad7293_get_offset(st, chan->channel, &data);
+> +			}
+> +
+> +			break;
+> +		case IIO_CURRENT:
+> +			ret = ad7293_get_offset(st, chan->channel +
+> +						AD7293_ISENSE_MIN_OFFSET_CH, &data);
+> +
+> +			break;
+> +		case IIO_TEMP:
+> +			ret = ad7293_get_offset(st, chan->channel +
+> +						AD7293_TSENSE_MIN_OFFSET_CH, &data);
+> +
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +		if (ret)
+> +			return ret;
+> +
+> +		*val = data;
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			ret = ad7293_adc_get_scale(st, chan->channel, &data);
+> +			if (ret)
+> +				return ret;
+> +
+> +			*val = data;
+> +
+> +			return IIO_VAL_INT;
+> +		case IIO_CURRENT:
+> +			ret = ad7293_isense_get_scale(st, chan->channel, &data);
+> +			if (ret)
+> +				return ret;
+> +
+> +			*val = data;
+> +
+> +			return IIO_VAL_INT;
+> +		case IIO_TEMP:
+> +			*val = 1;
+> +			*val2 = 8;
+> +
+> +			return IIO_VAL_FRACTIONAL;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad7293_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int val, int val2, long info)
+> +{
+> +	struct ad7293_state *st = iio_priv(indio_dev);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			if (!chan->output)
+> +				return -EINVAL;
+> +
+> +			return ad7293_dac_write_raw(st, chan->channel, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			if (chan->output)
+> +				return ad7293_set_offset(st, chan->channel +
+> +							 AD7293_VOUT_MIN_OFFSET_CH, val);
+> +			else
+> +				return ad7293_set_offset(st, chan->channel, val);
+> +		case IIO_CURRENT:
+> +			return ad7293_set_offset(st, chan->channel +
+> +						 AD7293_ISENSE_MIN_OFFSET_CH, val);
+> +		case IIO_TEMP:
+> +			return ad7293_set_offset(st, chan->channel +
+> +						 AD7293_TSENSE_MIN_OFFSET_CH, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_SCALE:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			return ad7293_adc_set_scale(st, chan->channel, val);
+> +		case IIO_CURRENT:
+> +			return ad7293_isense_set_scale(st, chan->channel, val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int ad7293_reg_access(struct iio_dev *indio_dev,
+> +			     unsigned int reg,
+> +			     unsigned int write_val,
+> +			     unsigned int *read_val)
+> +{
+> +	struct ad7293_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	if (read_val)
+> +		ret = ad7293_spi_read(st, reg, (u16 *)read_val);
+> +	else
+> +		ret = ad7293_spi_write(st, reg, (u16)write_val);
+> +
+> +	return ret;
+> +}
+> +
+> +static int ad7293_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     const int **vals, int *type, int *length,
+> +			     long info)
+> +{
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		*vals = dac_offset_table;
+> +		*type = IIO_VAL_INT;
+> +		*length = ARRAY_SIZE(dac_offset_table);
+> +
+> +		return IIO_AVAIL_LIST;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*type = IIO_VAL_INT;
+> +
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			*vals = adc_range_table;
+> +			*length = ARRAY_SIZE(adc_range_table);
+> +			return IIO_AVAIL_LIST;
+> +		case IIO_CURRENT:
+> +			*vals = isense_gain_table;
+> +			*length = ARRAY_SIZE(isense_gain_table);
+> +			return IIO_AVAIL_LIST;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +#define AD7293_CHAN_ADC(_channel) {						\
+> +	.type = IIO_VOLTAGE,							\
+> +	.output = 0,								\
+> +	.indexed = 1,								\
+> +	.channel = _channel,							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE) | \
+> +			      BIT(IIO_CHAN_INFO_OFFSET),			\
+> +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE)		\
+> +}
+> +
+> +#define AD7293_CHAN_DAC(_channel) {						\
+> +	.type = IIO_VOLTAGE,							\
+> +	.output = 1,								\
+> +	.indexed = 1,								\
+> +	.channel = _channel,							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_OFFSET), \
+> +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OFFSET)		\
+> +}
+> +
+> +#define AD7293_CHAN_ISENSE(_channel) {						\
+> +	.type = IIO_CURRENT,							\
+> +	.output = 0,								\
+> +	.indexed = 1,								\
+> +	.channel = _channel,							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_OFFSET) | \
+> +			      BIT(IIO_CHAN_INFO_SCALE),				\
+> +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE)		\
+> +}
+> +
+> +#define AD7293_CHAN_TEMP(_channel) {						\
+> +	.type = IIO_TEMP,							\
+> +	.output = 0,								\
+> +	.indexed = 1,								\
+> +	.channel = _channel,							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_OFFSET), \
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE)			\
+> +}
+> +
+> +static const struct iio_chan_spec ad7293_channels[] = {
+> +	AD7293_CHAN_ADC(0),
+> +	AD7293_CHAN_ADC(1),
+> +	AD7293_CHAN_ADC(2),
+> +	AD7293_CHAN_ADC(3),
+> +	AD7293_CHAN_ISENSE(0),
+> +	AD7293_CHAN_ISENSE(1),
+> +	AD7293_CHAN_ISENSE(2),
+> +	AD7293_CHAN_ISENSE(3),
+> +	AD7293_CHAN_TEMP(0),
+> +	AD7293_CHAN_TEMP(1),
+> +	AD7293_CHAN_TEMP(2),
+> +	AD7293_CHAN_DAC(0),
+> +	AD7293_CHAN_DAC(1),
+> +	AD7293_CHAN_DAC(2),
+> +	AD7293_CHAN_DAC(3),
+> +	AD7293_CHAN_DAC(4),
+> +	AD7293_CHAN_DAC(5),
+> +	AD7293_CHAN_DAC(6),
+> +	AD7293_CHAN_DAC(7)
+> +};
+> +
+> +static int ad7293_soft_reset(struct ad7293_state *st)
+> +{
+> +	int ret;
+> +
+> +	ret = __ad7293_spi_write(st, AD7293_REG_SOFT_RESET, 0x7293);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return __ad7293_spi_write(st, AD7293_REG_SOFT_RESET, 0x0000);
+> +}
+> +
+> +static int ad7293_reset(struct ad7293_state *st)
+> +{
+> +	if (st->gpio_reset) {
+> +		gpiod_set_value(st->gpio_reset, 0);
+> +		usleep_range(100, 1000);
+> +		gpiod_set_value(st->gpio_reset, 1);
+> +		usleep_range(100, 1000);
+> +
+> +		return 0;
+> +	}
+> +
+> +	/* Perform a software reset */
+> +	return ad7293_soft_reset(st);
+> +}
+> +
+> +static int ad7293_properties_parse(struct ad7293_state *st)
+> +{
+> +	struct spi_device *spi = st->spi;
+> +
+> +	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
+> +						 GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->gpio_reset))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_reset),
+> +				     "failed to get the reset GPIO\n");
+> +
+> +	st->reg_avdd = devm_regulator_get(&spi->dev, "avdd");
+> +	if (IS_ERR(st->reg_avdd))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->reg_avdd),
+> +				     "failed to get the AVDD voltage\n");
+> +
+> +	st->reg_vdrive = devm_regulator_get(&spi->dev, "vdrive");
+> +	if (IS_ERR(st->reg_vdrive))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->reg_vdrive),
+> +				     "failed to get the VDRIVE voltage\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static void ad7293_reg_disable(void *data)
+> +{
+> +	regulator_disable(data);
+> +}
+> +
+> +static int ad7293_init(struct ad7293_state *st)
+> +{
+> +	int ret;
+> +	u16 chip_id;
+> +	struct spi_device *spi = st->spi;
+> +
+> +	ret = ad7293_properties_parse(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad7293_reset(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regulator_enable(st->reg_avdd);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "Failed to enable specified AVDD Voltage!\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, ad7293_reg_disable,
+> +				       st->reg_avdd);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regulator_enable(st->reg_vdrive);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "Failed to enable specified VDRIVE Voltage!\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, ad7293_reg_disable,
+> +				       st->reg_vdrive);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regulator_get_voltage(st->reg_avdd);
+> +	if (ret < 0) {
+> +		dev_err(&spi->dev, "Failed to read avdd regulator: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	if (ret > 5500000 || ret < 4500000)
+> +		return -EINVAL;
+> +
+> +	ret = regulator_get_voltage(st->reg_vdrive);
+> +	if (ret < 0) {
+> +		dev_err(&spi->dev, "Failed to read vdrive regulator: %d\n", ret);
+> +		return ret;
+> +	}
+> +	if (ret > 5500000 || ret < 1700000)
+> +		return -EINVAL;
+> +
+> +	/* Check Chip ID */
+> +	ret = __ad7293_spi_read(st, AD7293_REG_DEVICE_ID, &chip_id);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (chip_id != AD7293_CHIP_ID) {
+> +		dev_err(&spi->dev, "Invalid Chip ID.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct iio_info ad7293_info = {
+> +	.read_raw = ad7293_read_raw,
+> +	.write_raw = ad7293_write_raw,
+> +	.read_avail = &ad7293_read_avail,
+> +	.debugfs_reg_access = &ad7293_reg_access,
+> +};
+> +
+> +static int ad7293_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct ad7293_state *st;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +
+> +	indio_dev->info = &ad7293_info;
+> +	indio_dev->name = "ad7293";
+> +	indio_dev->channels = ad7293_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ad7293_channels);
+> +
+> +	st->spi = spi;
+> +	st->page_select = 0;
+> +
+> +	mutex_init(&st->lock);
+> +
+> +	ret = ad7293_init(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static const struct spi_device_id ad7293_id[] = {
+> +	{ "ad7293", 0 },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(spi, ad7293_id);
+> +
+> +static const struct of_device_id ad7293_of_match[] = {
+> +	{ .compatible = "adi,ad7293" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, ad7293_of_match);
+> +
+> +static struct spi_driver ad7293_driver = {
+> +	.driver = {
+> +		.name = "ad7293",
+> +		.of_match_table = ad7293_of_match,
+> +	},
+> +	.probe = ad7293_probe,
+> +	.id_table = ad7293_id,
+> +};
+> +module_spi_driver(ad7293_driver);
+> +
+> +MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com");
+> +MODULE_DESCRIPTION("Analog Devices AD7293");
+> +MODULE_LICENSE("GPL v2");
+> -- 
+> 2.34.1
+> 

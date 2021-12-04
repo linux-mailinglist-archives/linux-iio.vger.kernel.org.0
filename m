@@ -2,140 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F07467F3F
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Dec 2021 22:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 783E34681DC
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Dec 2021 02:46:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383222AbhLCV1o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Dec 2021 16:27:44 -0500
-Received: from mail-mw2nam10on2084.outbound.protection.outlook.com ([40.107.94.84]:14113
-        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1383199AbhLCV1l (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 3 Dec 2021 16:27:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y5/y/7c0jNzW9MSlOIsDbSivc0XwROuvjOIf4GbYnHloDWRIjPYb1CxVNh76mtxAZTryzuUueRpFrq5JNWOZv5oPYeS3cwPOE+G7ycfHRfQSGyEZ56KmuU4jt/4kFn7e8DI+vynQwyB7DJXH1V2d5FsMm8rSqMAE92Mp2Rs7lWgjlDZ8OxpnNF1uqNOXFP0vbNJujpOiiit3+Y5Ws07BzdwYQd2jc3rlbp1Rf6zatDik9XL19m4LcoDEj/4uC5+jPGNsMO04hS/YFCp2ygmvQywCiitXrmiWwrShyghnopGJmL933K8ySgHtXjkEJh2o3SuvZ92JOX6/+nNY5HyBog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=my1jnLT6TU7SwBAdjPq4jOjjxnFQpEyXvE7/nxVtu3M=;
- b=PkJJe24FL65OMLnum/FHyJ1oMm2dT0D7tJgjLiC1WJ+HVtAC0B68vZYL6ubFGLGCyA3SiKLxhMA9OqNiUYd+LYtsLiqrUjBoBch2NTEl+jLUBQWtH/ATnq4xz7Um/A159PgB+dOBhdjuNBYNFxT5uQhoGX1HcdNY8jdgTxyPX2DxgiNANZMMLcGZOgdDtJt7ggBsnyEIv3u3Wz4s2wFXcSeizIyuSyYc87rAi/r5f1F542xyxKWv9RkZqltwkSYcRCl9TrEqH5eGxChJkF+lxTD1FjflRQEKwAVhXFlhnGAfplIPIUB8ViUzw3t4YrCnIxc3WlFYftfRqJo1lkEjXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.80.198) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
- dkim=none (message not signed); arc=none
+        id S1346115AbhLDBtr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Dec 2021 20:49:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37448 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231452AbhLDBtr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Dec 2021 20:49:47 -0500
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1DE5C061751;
+        Fri,  3 Dec 2021 17:46:22 -0800 (PST)
+Received: by mail-pl1-x62f.google.com with SMTP id p18so3256401plf.13;
+        Fri, 03 Dec 2021 17:46:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=my1jnLT6TU7SwBAdjPq4jOjjxnFQpEyXvE7/nxVtu3M=;
- b=H1307kaGvPHrmW+CC1NXavjbhhoGR39dUmKUR6RrdhXm1JrukNzZBiAUMiLq6vkeTNblB0WG83W4gRZF4nAEdAjW81V8XvQZV66VSusoeoJjW8KHfF//fiLrCwRATyqGvLZHlULjPbaylvQc3VHxml7vsXTg0IvO36WJbR9/+uE=
-Received: from SN7PR04CA0032.namprd04.prod.outlook.com (2603:10b6:806:120::7)
- by DM6PR02MB5964.namprd02.prod.outlook.com (2603:10b6:5:157::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.15; Fri, 3 Dec
- 2021 21:24:15 +0000
-Received: from SN1NAM02FT0034.eop-nam02.prod.protection.outlook.com
- (2603:10b6:806:120:cafe::fc) by SN7PR04CA0032.outlook.office365.com
- (2603:10b6:806:120::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.11 via Frontend
- Transport; Fri, 3 Dec 2021 21:24:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.80.198)
- smtp.mailfrom=xilinx.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.80.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.80.198; helo=xir-pvapexch01.xlnx.xilinx.com;
-Received: from xir-pvapexch01.xlnx.xilinx.com (149.199.80.198) by
- SN1NAM02FT0034.mail.protection.outlook.com (10.97.5.90) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4755.13 via Frontend Transport; Fri, 3 Dec 2021 21:24:14 +0000
-Received: from xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Fri, 3 Dec 2021 21:24:10 +0000
-Received: from smtp.xilinx.com (172.21.105.197) by
- xir-pvapexch01.xlnx.xilinx.com (172.21.17.15) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Fri, 3 Dec 2021 21:24:09 +0000
-Envelope-to: anand.ashok.dumbre@xilinx.com,
- git@xilinx.com,
- michals@xilinx.com,
- linux-kernel@vger.kernel.org,
- jic23@kernel.org,
- lars@metafoo.de,
- linux-iio@vger.kernel.org,
- gregkh@linuxfoundation.org,
- rafael@kernel.org,
- linux-acpi@vger.kernel.org,
- heikki.krogerus@linux.intel.com
-Received: from [10.71.188.1] (port=14741 helo=xiranandash40.xilinx.com)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <anand.ashok.dumbre@xilinx.com>)
-        id 1mtG2C-0005F8-CD; Fri, 03 Dec 2021 21:24:00 +0000
-From:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-To:     <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>, <git@xilinx.com>,
-        <michals@xilinx.com>, <gregkh@linuxfoundation.org>,
-        <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
-        <heikki.krogerus@linux.intel.com>
-CC:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Subject: [PATCH v12 5/5] MAINTAINERS: Add maintainer for xilinx-ams
-Date:   Fri, 3 Dec 2021 21:23:58 +0000
-Message-ID: <20211203212358.31444-6-anand.ashok.dumbre@xilinx.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
-References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5DWPJB5T9d6eLjilcsFjparqq5m5Bs4XW3dv5oWZcZE=;
+        b=A5fTjhkKcF3zMVkUdoOADHjKh5LHly+NONZ9szawXcAF85Lbo8szH42gDBdA5dgqvi
+         ybh7Wh3peMBUOGJdtaccyDHP+v+yn6N3jDEnfmCkBkbp/MN2sLQZfhCGXllof+Mn8DY5
+         446v1uqRSDny56onUOrh7+JeJ4mdenDmDyMh7/11UvRIDCT4MtpUqxgd+Cl1o22oflUj
+         05Z5psSONAuIQRsbl2ua5he5Ysf1kL4/yGz8rPH2+T6umpv1NZQp5RR/0UvU9tre8gMG
+         K8GZQXZozY1lpdV+w9w1Zzwd37giDT4PIVg2uEPLlAL/OoreecK4KglNt/I2Gfe0qiX/
+         NX/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5DWPJB5T9d6eLjilcsFjparqq5m5Bs4XW3dv5oWZcZE=;
+        b=2BX3B1gC9JeQacjA5F+n5kWD4YtUqnHpGR6Du58FcbBhJwnqvM+vwFgDICcVVNsw5E
+         UezdQ1m/s1654ZGrvYUFsW/LdvEkiRq9tDzChoJ3SPboWWUDOBP9zqgA7IZx4o9DFMVP
+         dcCDrSHz0vu/UliTgcRbTCnwYgULmEFI+F93ny3Hj5Nb6S2KymUTCqLxH6yYrAc8iVk5
+         DeAnaK8KOHylXpZ1clI1R/jgg3BMToGr4lDqA15CxlFO35F3BLagxBDfx5nO6JYVL1AM
+         0gAkVyCp04x2CIxCl/kWVQKMYMaloDlQHuItBvvW6cQAOgvW9NSMn+QQ4LIGv7cYMYU2
+         MfPQ==
+X-Gm-Message-State: AOAM531Zd5hscG6uXOB5tFw7Sk3dQY86LW0/5w7p7PFKNxH+1keYpQ3q
+        i46/snXEdokUYHHPp8gOgCVaiRNVMr6F3A==
+X-Google-Smtp-Source: ABdhPJy+J9awEAExhgaatQkDgCwvJq8uHLbiOJZSpO8h6/SHnUezxDjWB2vRD34RKvlnZUfxN9NpCw==
+X-Received: by 2002:a17:90b:4c4f:: with SMTP id np15mr18324239pjb.65.1638582382451;
+        Fri, 03 Dec 2021 17:46:22 -0800 (PST)
+Received: from shinobu ([37.120.154.45])
+        by smtp.gmail.com with ESMTPSA id a22sm4397533pfh.111.2021.12.03.17.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Dec 2021 17:46:21 -0800 (PST)
+Date:   Sat, 4 Dec 2021 10:46:17 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Jason Kridner <jkridner@beagleboard.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: ti-eqep: Enable for TDA4VM/J721E
+Message-ID: <YarIaXSfewK/nCZs@shinobu>
+References: <20211130193346.678544-1-jkridner@beagleboard.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8782428e-5c48-4c13-c8b4-08d9b6a341fa
-X-MS-TrafficTypeDiagnostic: DM6PR02MB5964:
-X-Microsoft-Antispam-PRVS: <DM6PR02MB596423C0C7A67C54E33BAF0EA96A9@DM6PR02MB5964.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wlkeh6e50w7hYDsYb4Q8+ncoS0HZyu4hiYT4nnPehott3d0gXnuJGlAIsWc66YoMuytRgmolNOl34jt7i/amkXn73nKgBO7eptuEt9gFLJyCGgsj3QcrqoOB7fZr9uqcJlUNT7F7sEB6Odhkt3nt++I4DyVlfv4PmS+xmE+ClxU4EQYH59UN/XiHhN2SAyjfUNqgUFPvYdLurQkbiOpsvJAsjF6GbeqEEwRA0Q0hqTcYAYspuZ6hauenKBivdEzdmLsq787ElO8SPYRwdmoBHs5uPyLfewAuEhe5MPkxdaVrCOaywPmR+b/hgS4M8azhvj95P5KN6opTdWmH7QLA+/YDb2UsyGokhsraeyiCqxRU7yeC2pNqwuFstebE8AudPTAEwZDFHJN3+wGE/FQTIyvz8ibJi7JuiJ2ayzus+RFiM3VkeWLFqJ4BDlF4Bds/6/L3BaiAPS61UFflUFeQ+3bWvTowXYnd2hho6CijJiXA79zjCES5R6a432dh6ER0z9rkQTNChAHOxp2Cw9k43UFSBKkGl/Kuwggfac6RGgxCj1zWiUxh9XjCHd4QwgvIKqDdQfLTtPasuBRX7OdvWUCjj/J3gjcI34cAB8msu8qIIPbnRP39lJKj0DtcdrLfsLVekijUQC9e3mZylb0K0aoyOmuWaiUbOfjxcIm1EV11eCS3adFh7Z1R3rOPYuyvDcn1PBGGgnSoHCfpGY4l2Q8Z1+AHp7nHNzSd/sWS4wjW2V6WgpUf2ao26Ys/2GG4HKrtUX/KL9a1/073HEPE8vbWlTebgZ9vUUgi0n7AgqA=
-X-Forefront-Antispam-Report: CIP:149.199.80.198;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:xir-pvapexch01.xlnx.xilinx.com;PTR:unknown-80-198.xilinx.com;CAT:NONE;SFS:(36840700001)(46966006)(70206006)(2616005)(70586007)(107886003)(47076005)(4744005)(186003)(26005)(2906002)(9786002)(8676002)(508600001)(103116003)(8936002)(336012)(426003)(82310400004)(7636003)(1076003)(356005)(110136005)(5660300002)(4326008)(316002)(36860700001)(921005)(36756003)(7696005)(102446001)(2101003)(83996005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2021 21:24:14.9858
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8782428e-5c48-4c13-c8b4-08d9b6a341fa
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.80.198];Helo=[xir-pvapexch01.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT0034.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB5964
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ytbyk5ErfLA/LQ3L"
+Content-Disposition: inline
+In-Reply-To: <20211130193346.678544-1-jkridner@beagleboard.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add maintaner entry for xilinx-ams driver.
 
-Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+--ytbyk5ErfLA/LQ3L
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7a2345ce8521..64d6a06b22f0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20862,6 +20862,13 @@ F:	fs/xfs/
- F:	include/uapi/linux/dqblk_xfs.h
- F:	include/uapi/linux/fsmap.h
- 
-+XILINX AMS DRIVER
-+M:	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-+F:	drivers/iio/adc/xilinx-ams.c
-+
- XILINX AXI ETHERNET DRIVER
- M:	Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
- S:	Maintained
--- 
-2.17.1
+On Tue, Nov 30, 2021 at 02:33:46PM -0500, Jason Kridner wrote:
+> Counter TI-EQEP was tested on TDA4VM/J721E SoC.
+>=20
+> Overlay used for testing EQEP0 and EQEP1:
+>=20
+>     &cbass_main {
+> 	#address-cells =3D <2>;
+> 	#size-cells =3D <2>;
+>=20
+> 	eqep0: qep@3200000 {
+> 		compatible =3D "ti,am3352-eqep";
+> 		reg =3D <0 0x3200000 0 0x100>;
+> 		power-domains =3D <&k3_pds 94 TI_SCI_PD_EXCLUSIVE>;
+> 		clocks =3D <&k3_clks 94 0>;
+> 		clock-names =3D "eqep0-ficlk";
+> 		interrupts =3D <GIC_SPI 322 IRQ_TYPE_EDGE_RISING>;
+> 		interrupt-names =3D "eqep0";
+> 		symlink =3D "bone/eQEP0"; /* A - P9_42, B - P9_27 */
+>=20
+> 		count_mode =3D <0>;
+> 		swap_input =3D <0>;
+> 		invert_qa =3D <1>;
+> 		invert_qb =3D <1>;
+> 		invert_qi =3D <0>;
+> 		invert_qs =3D <0>;
+> 	};
+>=20
+> 	eqep1: qep@3210000 {
+> 		compatible =3D "ti,am3352-eqep";
+> 		reg =3D <0 0x3210000 0 0x100>;
+> 		power-domains =3D <&k3_pds 95 TI_SCI_PD_EXCLUSIVE>;
+> 		clocks =3D <&k3_clks 95 0>;
+> 		clock-names =3D "eqep1-ficlk";
+> 		interrupts =3D <GIC_SPI 323 IRQ_TYPE_EDGE_RISING>;
+> 		interrupt-names =3D "eqep1";
+> 		symlink =3D "bone/eQEP1"; /* A - P8_35, B - P8_33 */
+>=20
+> 		count_mode =3D <0>;
+> 		swap_input =3D <0>;
+> 		invert_qa =3D <1>;
+> 		invert_qb =3D <1>;
+> 		invert_qi =3D <0>;
+> 		invert_qs =3D <0>;
+> 	};
+>=20
+> 	eqep2: qep@3220000 {
+> 		status =3D "disabled";
+> 		compatible =3D "ti,am3352-eqep";
+> 		reg =3D <0 0x3220000 0 0x100>;
+> 		power-domains =3D <&k3_pds 96 TI_SCI_PD_EXCLUSIVE>;
+> 		clocks =3D <&k3_clks 96 0>;
+> 		clock-names =3D "eqep2-ficlk";
+> 		interrupts =3D <GIC_SPI 324 IRQ_TYPE_EDGE_RISING>;
+> 		interrupt-names =3D "eqep2";
+>=20
+> 		count_mode =3D <0>;
+> 		swap_input =3D <0>;
+> 		invert_qa =3D <1>;
+> 		invert_qb =3D <1>;
+> 		invert_qi =3D <0>;
+> 		invert_qs =3D <0>;
+> 	};
+>     };
+>=20
+> Signed-off-by: Jason Kridner <jkridner@beagleboard.org>
 
+Hello Jason,
+
+The change in this patch is a simple architecture enablement so I don't
+have a problem with it given that it's been tested. However, I would
+like the commit message simplified as Nishanth recommends before we
+merge this patch, so please resubmit it to clean that up. Regardless,
+for the code change itself I'll give my ack.
+
+Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+
+> ---
+>  drivers/counter/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index 2de53ab0dd25..453490059c88 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -51,7 +51,7 @@ config STM32_LPTIMER_CNT
+> =20
+>  config TI_EQEP
+>  	tristate "TI eQEP counter driver"
+> -	depends on (SOC_AM33XX || COMPILE_TEST)
+> +	depends on (SOC_AM33XX || ARCH_K3 || COMPILE_TEST)
+>  	select REGMAP_MMIO
+>  	help
+>  	  Select this option to enable the Texas Instruments Enhanced Quadrature
+> --=20
+> 2.30.2
+>=20
+
+--ytbyk5ErfLA/LQ3L
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmGqyEkACgkQhvpINdm7
+VJIk8w/+M2rvWvbZoEfqexSfGV9Et/Td040UGwdDojE6tsRnftjhQESZqgSl45DS
+2OHUMWm26NWfKJeSjlTiaMa8/FhxkkszASZiAg0KAI0bT25RHTAHacUKbNcd3T54
+IWF/mk0sL+M75o/NF/EUT3d0pqgEFir8qWLlQ39o5p4gLhcahwUAk3a6lgF0AfiY
+tFbK8TzUhkaWqtVj5HajUhhuP8IiZvyRGfoREl4Es0awhMS0MdVQpWL2uLvHCJWn
+X5zMhWUoVs7s33y4UT1dG0dPVmbvY6XhuTh2a4QPyLrlVevqi2nzcW0gQPxjRoHi
+f03tjqrIz/46m61bk43eDASxEGJDGIU2MNcC6v4ay+pDkj7zpsHH8R55H2/kNV58
+vHARh9EQDfO1UVyTE+KicEec1NO/aZmAOhgGim0ChHRyPQgxojYtwAIrB0d8Ny/w
+h03rHp451q757LcZpX89bdbsl0wVxWISs7SRMimVSvwCF2ClusFrEwzlh4RFZYch
+qUD6Gbu71jYzNpk4g2vUxBL+OxLFjR2L95Lhdd4BZ62q3u725t+HELv7v4jD6aWX
+dzgIIii6c2mBGklmwrTSkkR2WZDNfyn10bYN8QUcSyFnJ/PD1ZCwxAKrryXtCl10
+NxRn149WFcS6Rxv2pBuPyVUUl82WzGMHlDlv8DcmwuBj/XME9VY=
+=oFUa
+-----END PGP SIGNATURE-----
+
+--ytbyk5ErfLA/LQ3L--

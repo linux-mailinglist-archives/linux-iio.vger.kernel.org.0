@@ -2,147 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25030468D0F
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Dec 2021 20:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5184E468D12
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Dec 2021 20:48:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238139AbhLETuI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Dec 2021 14:50:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48196 "EHLO
+        id S238210AbhLETvo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Dec 2021 14:51:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238125AbhLETuH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Dec 2021 14:50:07 -0500
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3603CC061751
-        for <linux-iio@vger.kernel.org>; Sun,  5 Dec 2021 11:46:40 -0800 (PST)
-Received: by mail-oi1-x22f.google.com with SMTP id 7so17447131oip.12
-        for <linux-iio@vger.kernel.org>; Sun, 05 Dec 2021 11:46:40 -0800 (PST)
+        with ESMTP id S233648AbhLETvo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Dec 2021 14:51:44 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7526AC061714;
+        Sun,  5 Dec 2021 11:48:16 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id x6so34229790edr.5;
+        Sun, 05 Dec 2021 11:48:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=EcFKiX7xbKqkQNXA7B58bii58XjgqxU59DDHx7WJlQI=;
-        b=fziO+LbTAROemtggbzAuNFIUyuvFQ5kz6OBRYrtdUf+LMsEIFXSHQQfHVpIzQQIsRJ
-         RCIEfxbp5qYZe1sSnJI2jSHYYAt4EFxJWHu+GWQAHTczGqgRPcSC5MYSeohUJ+/3ryI3
-         4lqXzXdptThMXbLjRC/5yivLLC7KkRHFo/8jRDMtPHYYoqf3umu9v1GOKn0V/G136Ej5
-         w7m9vyZNLObByWYGemLunYoNGPvRfAdpYDaBbO0CsVjxk7YjJGRzAj58wuJd0k684KrZ
-         8kMSBdE1p6blQoi27X7Sykps4xxBuwAvVDnm/HIDrW8/lTd9LSqElQ63W2NQ1j9yi7lA
-         xMLg==
+        bh=x4fF1nSTHBf3HTdpKCFdl3la1UMZb2JlN7zUcVFPI0Q=;
+        b=p2Aa7ze1cA+B7Je1fJf2L2fwd3q0Kxi7FvdtQskiHKb/loDhLVtuO4eo2BT+7loQJR
+         fHYaHl905UL8dHv7dNUzA3+QaYbxuoka6L3FKL+Xt+ui/fKtdgN8iS4t0n2DPYj0VSgB
+         fSLB6T37pZrh7fALYbn76jZAV83b+XlOQeUbCM0qTJdkMDlQsAcE91moa0z1J100Reiw
+         SrLOnX6UCdaop6DIerUP64l2raCBGNvGan6Ba3S9kbGl/4zlmOwz5JFDwGW5dS+aLstK
+         0G7pYVYSi2q9hmdZx1Ya5CVFUzk/B9YgoIYT/E2qskJa7wCWTbcOfCymsTqgjqKor0kR
+         bxlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=EcFKiX7xbKqkQNXA7B58bii58XjgqxU59DDHx7WJlQI=;
-        b=NM4xrf94KdxAPcRXtktpaifG10aDDCFW8x1tKquSbWtrCax3rSfikSczlwec4RY8Hq
-         ajWTNCkHb6BfLA+f5xNF5Xd5Ushuum1RbLFZE0aTF+pvEmxF2nK8QeUDJxDj4+493uBB
-         sCDx9YkZ2n75/g7Xh4FEL8ApqC07ayTZ5+tmNbwP4yKpuqYJ7enhtCktugEjiQgUkTsM
-         1EZnKTK5mXzdYaE99fQG/CbKsbktlyD0vIFOohyqva/ZW7k4b9ptcmT57vUtYBkwGNPn
-         3ztvBBqRqvdyAjFVOQV5YNnd23UrNVMtXSavJ2QcP0lfX6P8FfBuXIM0UeCYIviyfljw
-         LvpA==
-X-Gm-Message-State: AOAM533ofPanfbF32Phtpd+5PQNdSWlPfnL5F2K8dPh3OLifgNePasWi
-        /hOVJbYdCk2JZukfZNUWVFoHG6RbYe62Zvuhs5wrjQ==
-X-Google-Smtp-Source: ABdhPJwDo16TQrPKVqAGuE0uBJ0FxE7MYgH77QQwApEKH62cTw8KZncd3gIBXH/r97N6WrjrnctIHelwjHLoH3qrV28=
-X-Received: by 2002:aca:120f:: with SMTP id 15mr19749633ois.132.1638733599530;
- Sun, 05 Dec 2021 11:46:39 -0800 (PST)
+        bh=x4fF1nSTHBf3HTdpKCFdl3la1UMZb2JlN7zUcVFPI0Q=;
+        b=NaExmg1IGfZPq/8mO7f+1MrUOunM0hZGLaEa2blYYQmMvzWYdPDogNbneNLfg6196v
+         qAhPUNcMQTlHiSlFBwxXUbnsrhTiFr2Gfq34ii/uPagyp5QZw79PXM0Pya3WsSmrnutP
+         T5Ge1IjZHA7AP5nkMTnTTnfVrHGjUiQXnSU+PhomzNaJHqHnUsTuFbE8kbZwhQ0GO6e0
+         Vt/d58Eza4rNiXKK07nDwyIsT6MyxQyfs2RL9zHXPo61in2pQxzmQBegP3Hca3P4hoKM
+         oY8gP/BrUPDckkYO6nqgZV3ViRfW/MTuuf4cXkcEQGqnFzrtHFWHJzi75/F3voRLzPS8
+         fDNQ==
+X-Gm-Message-State: AOAM530ryJpVnLPOITbOsJ/4DHsq4jLavMVqUII0KCjzvazDFq7vLAnh
+        BEI2LwBoy/0okUuMDJW6KbEUks9dkUrVTf9MxSM=
+X-Google-Smtp-Source: ABdhPJzvgUKoM8Bu93028z3ABP72O9wxEG3S/N7Z8Pa+EoPj2gtw7MDRqftbOQe3WIrr2K0eb12UElxeCG+uGbwlNiE=
+X-Received: by 2002:a05:6402:270c:: with SMTP id y12mr47124784edd.258.1638733695046;
+ Sun, 05 Dec 2021 11:48:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20211118141233.247907-1-boger@wirenboard.com> <20211118141233.247907-3-boger@wirenboard.com>
- <20211122104915.zism6uadgwxjz5d2@gilmour> <d1a18116-e198-1b26-d73a-36fbf31aaa81@wirenboard.com>
- <35630e89-4988-a6a9-b801-0e9e44419684@sholland.org> <206c2a66-42b9-7e07-66c3-6007b010c996@wirenboard.com>
- <20211201110241.kts5caycdmzqtp3i@fiqs> <4fd167ed-d5dc-358a-00f5-6590f4c20a68@wirenboard.com>
- <20211203204754.2ucaiiwyrvbtwgbz@earth.universe> <20211204152621.4f15b3d0@jic23-huawei>
- <CACRpkdZ+WWz7JoyE3a1Ra8dx27YcHH6zRNcTmNJyX_vfcu0n7w@mail.gmail.com> <a45c37e5-caa3-e5e4-62d2-e2418ed95441@wirenboard.com>
-In-Reply-To: <a45c37e5-caa3-e5e4-62d2-e2418ed95441@wirenboard.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 5 Dec 2021 20:46:24 +0100
-Message-ID: <CACRpkdaxXQD-VxSg-zouRTwWJUQbVPJJRvEn8=kV-8BK77xrfQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: document TS voltage in AXP PMICs
-To:     Evgeny Boger <boger@wirenboard.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Quentin Schulz <foss+kernel@0leil.net>,
-        Samuel Holland <samuel@sholland.org>,
-        Maxime Ripard <maxime@cerno.tech>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>
+References: <20211205190101.26de4a57@jic23-huawei>
+In-Reply-To: <20211205190101.26de4a57@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 5 Dec 2021 21:47:38 +0200
+Message-ID: <CAHp75VeqVTnMyjbmfKhvgTVaj1G+gq6FXfVR4EZjXLjSdO7ETA@mail.gmail.com>
+Subject: Re: RFC: Should we have a device_for_each_available_child_node()?
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Dec 5, 2021 at 11:50 AM Evgeny Boger <boger@wirenboard.com> wrote:
+I think we need Rob here (or anybody with DT API knowledge) to explain
+this subtle detail you found, i.e. checking node for availability in
+of_fwnode_get_next_child_node(). This raises another question why do
+we have for_each_available_child_of_node() in the first place if it's
+equivalent (is it?) to for_each_child_of_node()/
 
-> >> Agreed those tables would be needed whatever the solution.  We might
-> >> stick to 'standard' tables for simple cases but someone will always wire
-> >> a circuit up that does something we haven't thought of.
-> > What we usually do is model the wiring in the device tree like we (I) have
-> > already done with much pain in:
-> > Documentation/devicetree/bindings/hwmon/ntc-thermistor.yaml
+On Sun, Dec 5, 2021 at 8:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> Earlier in this thread I mentioned our use case with AXP221s: we ended
-> up wiring 10k NTC in series with 12k fixed resistance.
-> The only reason was to work around poorly-designed AXP NTC detection
-> "feature", which would turn off protection whenever
-> the voltage on TS pin drops below 0.2V.
+> Hi All,
 >
-> How would you suggest to handle such a wiring?
-
-Correct me if I'm wrong but it is pretty standard to connect an extra
-resistor in series with a thermistor, for example batteries often have
-an BTI "Battery Type Indicator" resistor in series with the thermistor.
-
-If you check the NTC bindings:
-Documentation/devicetree/bindings/hwmon/ntc-thermistor.yaml
-they already cover this, in two different ways depending of how
-the voltage is measured and if the resistor is in series with the
-thermistor to ground or to VCC.
-
-The thermistor table goes in the driver for the 10k resistor
-and the 12k resistor is pullup-ohm or pulldown-ohm.
-
-> > battery: battery {
-> >          compatible = "simple-battery";
-> >
-> >          ntc-resistor {
-> >                  ...
-> >          };
-> > };
-> >
-> > For the Samsung batteries my plan is to spawn a platform device from inside the
-> > Samsung battery driver and add pull-down resistor value and
-> > compatible using software nodes from within the kernel.
+> This came up in review of
+> https://lore.kernel.org/linux-iio/20210725172458.487343-1-jic23@kernel.org/
+> which is a series converting a dt only driver over to generic properties.
+> I'm sending a separate email to raise the profile of the question rather
+> higher than it was buried in a driver review.
 >
-> In this example, the ntc-resistor node will be handled by current NTC
-> hwmon driver, right?
+> The original code used for_each_available_child_of_node(np, child)
+> and the patch converted it to device_for_each_child_node().
+>
+> Andy raised the question of whether it should have been
+> device_for_each_available_child_node() but that doesn't exist currently.
+>
+> Things get more interesting when you look at the implementation of
+> device_for_each_child_node() which uses device_get_next_child_node()
+> which in turn calls fwnode_get_next_child_node() which calls
+> the get_next_child_node() op and for of that is
+> of_fwnode_get_next_child_node() which uses of_get_next_available_child()
+> rather than of_get_next_child().
+>
+> So I think under the hood device_for_each_child_node() on of_ is going to
+> end up checking the node is available anyway.
+>
+> So this all seemed a little odd given there were obvious calls to use
+> if we wanted to separate the two cases for device tree and they weren't
+> the ones used.  However, if we conclude that there is a bug here and
+> the two cases should be handled separately then it will be really hard
+> to be sure no driver is relying on this behaviour.
+>
+> So, ultimately the question is:  Should I add a
+> device_for_each_available_child_node()?  It will be something like:
+>
+> struct fwnode_handle *device_get_next_child_node(struct device *dev,
+>                                                  struct fwnode_handle *child)
+> {
+>         const struct fwnode_handle *fwnode = dev_fwnode(dev);
+>         struct fwnode_handle *next;
+>
+>         /* Try to find a child in primary fwnode */
+>         next = fwnode_get_next_available_child_node(fwnode, child);
+>         if (next)
+>                 return next;
+>
+>         /* When no more children in primary, continue with secondary */
+>         if (fwnode && !IS_ERR_OR_NULL(fwnode->secondary))
+>                 next = fwnode_get_next_available_child_node(fwnode->secondary, child);
+>
+>         return next;
+> }
+>
+> #define device_for_each_child_node(dev, child)                          \
+>         for (child = device_get_next_available_child_node(dev, NULL); child;    \
+>              child = device_get_next_avaialble_child_node(dev, child))
+>
+> As far as I can tell it doesn't make any difference for my particular bit
+> of refactoring in the sense of I won't break anything that currently
+> works by using device_for_each_child_node() but it may cause issues with
+> other firmware by enumerating disabled child nodes.
+>
+> Jonathan
+>
+>
+>
+>
+>
 
-Yes
 
-> Frankly, I'm quite confused about hwmon vs iio choice in this case.
-> Wouldn't it be better to use iio here, say, by extending iio-afe?
-
-The hwmon driver uses IIO for voltage sampling. It is in the hwmon
-driver folder because the driver provides a temperature and for
-historical reasons: it was used for hwmon use cases.
-
-It is possible to refactor it to a driver in
-drivers/iio/temperature/* if so desired, and make sure all users
-are moved over and the Kconfig symbols are resolved to the
-new driver. After that it can be used by hwmon using the
-iio-to-hwmon bridge driver.
-
-It's just work, someone who want to fix it can step in and submit
-the patches and drive the change.
-
-> But you still need to describe the particular NTC model in device tree,
-> right?
-
-No. Drivers can spawn devices including fwnode properties that will
-work identical to a device spawn from a device tree node.
-
-We can instatiate an NTC as a subdevice of a battery without
-the need of sich a NTC node in the device tree, This is the
-ambition of the fwnode concept,
-
-Yours,
-Linus Walleij
+-- 
+With Best Regards,
+Andy Shevchenko

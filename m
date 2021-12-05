@@ -2,129 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1FE1468ADE
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Dec 2021 13:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D029E468AF6
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Dec 2021 14:09:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233839AbhLEMyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Dec 2021 07:54:46 -0500
-Received: from www381.your-server.de ([78.46.137.84]:34072 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233824AbhLEMyq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Dec 2021 07:54:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=4B9R5aNR2+yGaeXOtdmf367NiUqTcfXZW1td1Am4Adc=; b=i7bz+hSF+K0b9nrTbpDI5U2tCM
-        Qz5yZOBKSHkV+UiQsK+G1kuB9ENWIb4KUzZLwqljeInUp0PvG5AkSKoCH1qlN77f/swU6UYGI0P9E
-        C8TvHg/KHIWJC5HS/nsiVqX33Zc+D+crfJtxaZLQsSN992I/XUcPJ/E8FHbhZCgHeGIiKBmPqCg85
-        7AQIEk3LebRrCKkkRh9wp2UF/T1IWLQjVJ6RU20UQAV5aNvzijdF35slpg2/RgIIo3Tk5nZeWh8m2
-        ll1aZRBNzAAym7L5gZ1UrBDyPzxeR+HM9c1wTYGNZX64KVH7oBB7DGb1Te0Q7J6wf+1t1Tx0dKdMB
-        R3e7ERaw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mtqz8-000GvH-FP; Sun, 05 Dec 2021 13:51:18 +0100
-Received: from [2001:a61:2ba4:ec01:9e5c:8eff:fe01:8578] (helo=lars-desktop.fritz.box)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mtqz8-000Lj9-Ar; Sun, 05 Dec 2021 13:51:18 +0100
-From:   Lars-Peter Clausen <lars@metafoo.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH] iio: iio_device_alloc(): Remove unnecessary self drvdata
-Date:   Sun,  5 Dec 2021 13:50:52 +0100
-Message-Id: <20211205125052.58030-1-lars@metafoo.de>
-X-Mailer: git-send-email 2.30.2
+        id S234010AbhLENNG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Dec 2021 08:13:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46094 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233993AbhLENNG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Dec 2021 08:13:06 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3CAAC061714;
+        Sun,  5 Dec 2021 05:09:38 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id i12so7593130pfd.6;
+        Sun, 05 Dec 2021 05:09:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NaqU+Ioj6BvrVFh/LEwm0vIhxF9+0aODUByX7IbOzks=;
+        b=YqLM46NuyWowrqCekDD5ydizNRlyxESf3DDWC3iHnXmzXI1WhhNW2tQJb5tHhknn5y
+         u0zM6Nx3cg9g2TnsgvjiXzv6kjEeJNb2iVouyOlhDiJS2VP8CdO+M3sbfMlJZh6qFVC/
+         0j3N9jJ3C6UefMDwcH6+aoA73R8re7Idim8dGo5D5T3jy5/Hw3YNh4HoOAKb3VDnQHUF
+         rsm6EQ+GdOEr8Nxmt7tkmkv1BT38OMVRGN9s/snZbjnhEZogMIdw5WjxXMLWzz+kBWDu
+         owtZsRKsMiVD0otabzjyVibJAlihLGxB4Uvz8LlerNNXUvlVByGpYOfzRt6bZojwAutT
+         0KWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NaqU+Ioj6BvrVFh/LEwm0vIhxF9+0aODUByX7IbOzks=;
+        b=dsymSdWTUHmAOyYLhyQZoy7LWIjyyTo2b20qw5FmgUyOyl5Qk+vJL5eYM0qu5MexBE
+         Zf3BdP7XNysXF7Z9dwsPY59Hu8y6cz6Z2UlBjJSFuCe7K/NgWBWbIdZPjv5Ha4oDktNz
+         hJfmqgyKyArtoOxKEAnPHK7CpF6BXPcPWA0r/WiukEV4PktvBGXz0pm9K9689R8mCqjF
+         eq4HlurTZgPxOgiS6rKciNLaQXqvgqRfiWLKTEBsQsn0jVW2gS8J02gVqtWgdH2C9Uhd
+         sGuQc9LxuFS32S7pCV6BzoNuvzqJQNqbssAlsvsR6KnXovK6aryRYNRZ9Xp4qSnvOcjD
+         NOzg==
+X-Gm-Message-State: AOAM531pJQrLHyNzO55mrxpEJ3HUO5LAUK089ZKc+i9Fapsv/9lUTSPB
+        OGfAq5uEo4hrH5sVwojwoOWk8L6SA+RCtw==
+X-Google-Smtp-Source: ABdhPJzpdyI+vsSX0MSAr4ta1ORdWwGrg31E6VkhUxX/maZHxBKvpXdQqT11irE8RMiJlZ9mkbRORQ==
+X-Received: by 2002:a05:6a00:2444:b0:4ab:15b9:20e5 with SMTP id d4-20020a056a00244400b004ab15b920e5mr15582878pfj.0.1638709778420;
+        Sun, 05 Dec 2021 05:09:38 -0800 (PST)
+Received: from localhost.localdomain ([8.26.182.175])
+        by smtp.gmail.com with ESMTPSA id n16sm7367189pja.46.2021.12.05.05.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Dec 2021 05:09:37 -0800 (PST)
+From:   Yanteng Si <siyanteng01@gmail.com>
+X-Google-Original-From: Yanteng Si <siyanteng@loongson.cn>
+To:     vilhelm.gray@gmail.com
+Cc:     corbet@lwn.net, chenhuacai@kernel.org, linux-doc@vger.kernel.org,
+        linux-iio@vger.kernel.org, siyanteng01@gmail.com,
+        Yanteng Si <siyanteng@loongson.cn>
+Subject: [PATCH] counter: Add the necessary colons and indents to the comments of counter_compi
+Date:   Sun,  5 Dec 2021 21:08:16 +0800
+Message-Id: <20211205130816.4121898-1-siyanteng@loongson.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26374/Sun Dec  5 10:24:12 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Drvdata is typically used by drivers to attach driver specific data to a
-device. It is used to retrieve driver specific information when only the
-device to which the data is attached is available.
+Fix warning as:
 
-In the IIO core in the `iio_device_alloc()` function we call
-`iio_device_set_drvdata(indio_dev, indio_dev)`. This sets the drvdata of
-the IIO device to itself.
+linux-next/Documentation/driver-api/generic-counter:234: ./include/linux/counter.h:43: WARNING: Unexpected indentation.
+linux-next/Documentation/driver-api/generic-counter:234: ./include/linux/counter.h:45: WARNING: Block quote ends without a blank line; unexpected unindent.
 
-This is rather unnecessary since if we have a pointer to the IIO device to
-call `iio_device_get_drvdata()` on it we don't need to call the function
-since we already have the pointer. If we only have a pointer to the `struct
-device` we can use `dev_to_iio_dev()` to get the IIO device from it.
-
-Furthermore the drvdata is supposed to be reserved for drivers, so it
-should not be used by the IIO core in the first place.
-
-The `set_drvdata()` has been around from the very beginning of the IIO
-framework and back then it was used in the IIO device sysfs attribute
-handling code. But that was subsequently replaced with a `dev_to_iio_dev()`
-in commit e53f5ac52ec1 ("iio: Use dev_to_iio_dev()") and other cleanups.
-
-The self `set_drvdata()` is now no longer needed and can be removed.
-
-Verified that there no longer any users by checking for potential users
-using the following two coccinelle scripts and reviewing that none of the
-matches are problematic code.
-
-<smpl>
-@@
-struct iio_dev *iio_dev;
-expression dev;
-identifier fn !~ "(remove|resume|suspend)";
-@@
-fn(...)
-{
-...
-*iio_dev = dev_get_drvdata(dev)
-...
-}
-</smpl>
-
-<smpl>
-@r1@
-position p;
-struct iio_dev *indio_dev;
-identifier dev_fn =~ "^dev_";
-identifier devm_fn =~ "^devm_";
-@@
-(
- dev_fn
-|
- devm_fn
-)
- (&indio_dev@p->dev, ...)
-
-@@
-struct iio_dev *indio_dev;
-position p != r1.p;
-@@
-*&indio_dev@p->dev</smpl>
-
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
 ---
- drivers/iio/industrialio-core.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/linux/counter.h | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 20d5178ca073..409c278a4c2c 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1656,7 +1656,6 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	indio_dev->dev.type = &iio_device_type;
- 	indio_dev->dev.bus = &iio_bus_type;
- 	device_initialize(&indio_dev->dev);
--	iio_device_set_drvdata(indio_dev, (void *)indio_dev);
- 	mutex_init(&indio_dev->mlock);
- 	mutex_init(&iio_dev_opaque->info_exist_lock);
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index b7d0a00a61cf..dfbde2808998 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -38,64 +38,64 @@ enum counter_comp_type {
+  * @type:		Counter component data type
+  * @name:		device-specific component name
+  * @priv:		component-relevant data
+- * @action_read		Synapse action mode read callback. The read value of the
++ * @action_read:		Synapse action mode read callback. The read value of the
+  *			respective Synapse action mode should be passed back via
+  *			the action parameter.
+- * @device_u8_read	Device u8 component read callback. The read value of the
++ * @device_u8_read:		Device u8 component read callback. The read value of the
+  *			respective Device u8 component should be passed back via
+  *			the val parameter.
+- * @count_u8_read	Count u8 component read callback. The read value of the
++ * @count_u8_read:		Count u8 component read callback. The read value of the
+  *			respective Count u8 component should be passed back via
+  *			the val parameter.
+- * @signal_u8_read	Signal u8 component read callback. The read value of the
++ * @signal_u8_read:		Signal u8 component read callback. The read value of the
+  *			respective Signal u8 component should be passed back via
+  *			the val parameter.
+- * @device_u32_read	Device u32 component read callback. The read value of
++ * @device_u32_read:		Device u32 component read callback. The read value of
+  *			the respective Device u32 component should be passed
+  *			back via the val parameter.
+- * @count_u32_read	Count u32 component read callback. The read value of the
++ * @count_u32_read:		Count u32 component read callback. The read value of the
+  *			respective Count u32 component should be passed back via
+  *			the val parameter.
+- * @signal_u32_read	Signal u32 component read callback. The read value of
++ * @signal_u32_read:		Signal u32 component read callback. The read value of
+  *			the respective Signal u32 component should be passed
+  *			back via the val parameter.
+- * @device_u64_read	Device u64 component read callback. The read value of
++ * @device_u64_read:		Device u64 component read callback. The read value of
+  *			the respective Device u64 component should be passed
+  *			back via the val parameter.
+- * @count_u64_read	Count u64 component read callback. The read value of the
++ * @count_u64_read:		Count u64 component read callback. The read value of the
+  *			respective Count u64 component should be passed back via
+  *			the val parameter.
+- * @signal_u64_read	Signal u64 component read callback. The read value of
++ * @signal_u64_read:		Signal u64 component read callback. The read value of
+  *			the respective Signal u64 component should be passed
+  *			back via the val parameter.
+- * @action_write	Synapse action mode write callback. The write value of
++ * @action_write:		Synapse action mode write callback. The write value of
+  *			the respective Synapse action mode is passed via the
+  *			action parameter.
+- * @device_u8_write	Device u8 component write callback. The write value of
++ * @device_u8_write:		Device u8 component write callback. The write value of
+  *			the respective Device u8 component is passed via the val
+  *			parameter.
+- * @count_u8_write	Count u8 component write callback. The write value of
++ * @count_u8_write:		Count u8 component write callback. The write value of
+  *			the respective Count u8 component is passed via the val
+  *			parameter.
+- * @signal_u8_write	Signal u8 component write callback. The write value of
++ * @signal_u8_write:		Signal u8 component write callback. The write value of
+  *			the respective Signal u8 component is passed via the val
+  *			parameter.
+- * @device_u32_write	Device u32 component write callback. The write value of
++ * @device_u32_write:		Device u32 component write callback. The write value of
+  *			the respective Device u32 component is passed via the
+  *			val parameter.
+- * @count_u32_write	Count u32 component write callback. The write value of
++ * @count_u32_write:		Count u32 component write callback. The write value of
+  *			the respective Count u32 component is passed via the val
+  *			parameter.
+- * @signal_u32_write	Signal u32 component write callback. The write value of
++ * @signal_u32_write:		Signal u32 component write callback. The write value of
+  *			the respective Signal u32 component is passed via the
+  *			val parameter.
+- * @device_u64_write	Device u64 component write callback. The write value of
++ * @device_u64_write:		Device u64 component write callback. The write value of
+  *			the respective Device u64 component is passed via the
+  *			val parameter.
+- * @count_u64_write	Count u64 component write callback. The write value of
++ * @count_u64_write:		Count u64 component write callback. The write value of
+  *			the respective Count u64 component is passed via the val
+  *			parameter.
+- * @signal_u64_write	Signal u64 component write callback. The write value of
++ * @signal_u64_write:		Signal u64 component write callback. The write value of
+  *			the respective Signal u64 component is passed via the
+  *			val parameter.
+  */
 -- 
-2.30.2
+2.27.0
 

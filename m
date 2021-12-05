@@ -2,42 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE533468C3A
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Dec 2021 17:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D11468C3B
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Dec 2021 17:57:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236067AbhLERA0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Dec 2021 12:00:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39394 "EHLO
+        id S236080AbhLERA1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Dec 2021 12:00:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
         with ESMTP id S236074AbhLERA0 (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Dec 2021 12:00:26 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5CCC061714
-        for <linux-iio@vger.kernel.org>; Sun,  5 Dec 2021 08:56:58 -0800 (PST)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6099C061714
+        for <linux-iio@vger.kernel.org>; Sun,  5 Dec 2021 08:56:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A9F7CB80EC2
-        for <linux-iio@vger.kernel.org>; Sun,  5 Dec 2021 16:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05285C00446;
-        Sun,  5 Dec 2021 16:56:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 568176110F
+        for <linux-iio@vger.kernel.org>; Sun,  5 Dec 2021 16:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B9FC341C5;
+        Sun,  5 Dec 2021 16:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638723416;
-        bh=vcZPFArCzOiFb2J7uv0CsmosieDviEvZegAGTJz+LlU=;
+        s=k20201202; t=1638723418;
+        bh=vk/lsHRZySG2Er1cjeslS1V3JQmoJK2eW/Yz0duLaJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BY5mULROTmkvDH8umjdCVNSJ6Md+H6eiMjQsKikceO0yoEXJ1rRyRczrP1tQfQMq+
-         fludhnER8uNiFiSIibln3jzu3maHi5i8dGEy7JI3zdKfVAcVRp5AhbxjOVf2VmzOsg
-         d1Wd5PUJuPSzrMxf3FSvHFM7s/YejjPAVvIhSYwEbKhxtnHLpsUgqQArQnrYgFq5B0
-         Z2UebChsTC6xLGBXU/UfyiWgv5ZoogN6DAhGyPI202lVEo9QmofN3ySNXwRvqMtUjk
-         F17g927OSPZxug70Cv6hmFhCiH5NUmvsns827YboN/73CkgRQH7mrKyMcwa6pY0T5Q
-         6HiBFzEUtxjiQ==
+        b=GxxO3pi8tzjZZQmg/FjAJpvAKdthpJ/6BamkHHt9YpbxIrQaR1ZFXCC7byas9eZ/w
+         wUH7elfimhhh3zzzlMc8y+aF12TULoYlSfkM+m2qvy/V88ua0viT3XvKfNsU3xYYL8
+         CUECoXt2raXOi9MWpgna3kdgg+ctBExADGRmux71BjG3MZq9sc8z82oO0uVgHOo5tn
+         uKroiBIrS5dmESYuqGfO+1+ZtRPVlVdnZimckDeBFk2UuCHjux+tklzI1I+x3AMWOE
+         68FE+0Vr8qSQqm+1S+UsmuJ2wQnSW+6DDUawGhxZuG6iy7Z+5NH2xORHKRcnk5Jibw
+         QWAsiItanSOfg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 09/12] iio:adc:ti-adc12138: Switch to generic firmware properties and drop of_match_ptr
-Date:   Sun,  5 Dec 2021 17:01:37 +0000
-Message-Id: <20211205170140.2783914-10-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Peter Rosin <peda@axentia.se>
+Subject: [PATCH v3 10/12] iio:adc:envelope-detector: Switch from of headers to mod_devicetable.h
+Date:   Sun,  5 Dec 2021 17:01:38 +0000
+Message-Id: <20211205170140.2783914-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211205170140.2783914-1-jic23@kernel.org>
 References: <20211205170140.2783914-1-jic23@kernel.org>
@@ -49,71 +50,36 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This enables using the driver with other firmware types such
-as ACPI via PRP0001.
-
-Also part of a general attempt to move IIO drivers over to generic
-properties to avoid opportunities for cut and paste.
+There is nothing directly using of specific interfaces in this driver,
+so lets not include the headers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Peter Rosin <peda@axentia.se>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
+ drivers/iio/adc/envelope-detector.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-v3: Dropped of_match_ptr()
-
- drivers/iio/adc/ti-adc12138.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/adc/ti-adc12138.c b/drivers/iio/adc/ti-adc12138.c
-index 5b5d45210539..6eb62b564dae 100644
---- a/drivers/iio/adc/ti-adc12138.c
-+++ b/drivers/iio/adc/ti-adc12138.c
-@@ -11,6 +11,7 @@
- #include <linux/interrupt.h>
- #include <linux/completion.h>
- #include <linux/clk.h>
-+#include <linux/property.h>
- #include <linux/spi/spi.h>
+diff --git a/drivers/iio/adc/envelope-detector.c b/drivers/iio/adc/envelope-detector.c
+index d73eac36153f..e911c25d106d 100644
+--- a/drivers/iio/adc/envelope-detector.c
++++ b/drivers/iio/adc/envelope-detector.c
+@@ -31,14 +31,13 @@
+ #include <linux/err.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/mutex.h>
+ #include <linux/iio/consumer.h>
  #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
-@@ -430,8 +431,8 @@ static int adc12138_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	ret = of_property_read_u32(spi->dev.of_node, "ti,acquisition-time",
--				   &adc->acquisition_time);
-+	ret = device_property_read_u32(&spi->dev, "ti,acquisition-time",
-+				       &adc->acquisition_time);
- 	if (ret)
- 		adc->acquisition_time = 10;
- 
-@@ -517,8 +518,6 @@ static int adc12138_remove(struct spi_device *spi)
- 	return 0;
- }
- 
--#ifdef CONFIG_OF
--
- static const struct of_device_id adc12138_dt_ids[] = {
- 	{ .compatible = "ti,adc12130", },
- 	{ .compatible = "ti,adc12132", },
-@@ -527,8 +526,6 @@ static const struct of_device_id adc12138_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, adc12138_dt_ids);
- 
--#endif
--
- static const struct spi_device_id adc12138_id[] = {
- 	{ "adc12130", adc12130 },
- 	{ "adc12132", adc12132 },
-@@ -540,7 +537,7 @@ MODULE_DEVICE_TABLE(spi, adc12138_id);
- static struct spi_driver adc12138_driver = {
- 	.driver = {
- 		.name = "adc12138",
--		.of_match_table = of_match_ptr(adc12138_dt_ids),
-+		.of_match_table = adc12138_dt_ids,
- 	},
- 	.probe = adc12138_probe,
- 	.remove = adc12138_remove,
+ #include <linux/iio/sysfs.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+-#include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
 -- 
 2.34.1
 

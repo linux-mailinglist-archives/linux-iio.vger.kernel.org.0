@@ -2,389 +2,410 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D12FC4694BE
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Dec 2021 12:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BACD8469658
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Dec 2021 14:09:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239746AbhLFLL3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Dec 2021 06:11:29 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:35944 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236157AbhLFLL2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Dec 2021 06:11:28 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1B61eDLh025657;
-        Mon, 6 Dec 2021 06:07:58 -0500
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2105.outbound.protection.outlook.com [104.47.58.105])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3cr646h2q7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Dec 2021 06:07:58 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PDUfVrm5eWBHB0ooGCuGUY3u6JV0UNxV5lnah3T9cCIybvN0Vdi8DknZnMph9yvVy+Lp/Uy4BKHIHNsCJpl/vHQePhsYmNfM/PpSGSeaDOO8qsbmNjc8qx7ZaSqU+cvCi0nRVT6D86rEiuG0w5Perj8G7lNNcxosTAgXqekUD0L86E8Rb6eOsu+kTp4yjO4WA5Xh4ykBfEi02eGXJKEop8AUDLPSNDKevJiuOnVchDybZUR/k26Lbirp40eZjv2FOF5H2N2kSt7UKqKdoDt/g5lj6zccL+LEhQQg1gYKqenkJlxd+zwOS/4N2FglGZ7hZ7kdZ69tmnqfC+spWcBT7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YIhTWxRMSJAYp8rFM1hxUJNntfUw2MUK4AxM6VYLlAw=;
- b=jXC3011iJA0lTuoZiioBRnaGnDURCCLwaCefvY8f+c6SOOQWWCEHKpK2tlw1eHzaAocXdj4iolrVCDn4JC0MorhOGYyju5BAq+ngZKOxRPs1dKfi5JO+MJR+FgXWCsojsJreieuSt5srmQtht0pkfWN4lQOmuXYoo5THdRCtZ+QXoFtnuzULIqUFze/l9hlCyE5zOsNb2U72w/EY7zeXw48sVwEkc+3IrH3CLUR5/aXx+AiKoaOTcWnf1FhCWle5XMgzwfJni19TU5TxHt3nnPuDY5OYqMcY0x5XP4z2UBZeuyrXfMQh92dMiTCQVZIh9PlUqjjrHfCqQKhem9kN4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YIhTWxRMSJAYp8rFM1hxUJNntfUw2MUK4AxM6VYLlAw=;
- b=pEe3HBl06p+Ba0llLeQZZMCggoMPhKU0GX8NEASwdAQijad792gcj670p12KnzOGf7pTbmmIPu7b5UPUibXi90i96/1qMFaPRyqDekJREZxFku6diwApohaiY1KVeKinapM8RLBMojVINpdt6R0aDFjCfP0tvrd+OG4nd5Y++vI=
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com (2603:10b6:510:122::7)
- by PH0PR03MB6690.namprd03.prod.outlook.com (2603:10b6:510:111::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.20; Mon, 6 Dec
- 2021 11:07:55 +0000
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::5d02:4f14:9f83:6055]) by PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::5d02:4f14:9f83:6055%4]) with mapi id 15.20.4713.021; Mon, 6 Dec 2021
- 11:07:55 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: RE: [RFC PATCH 0/1] LTC2688 support
-Thread-Topic: [RFC PATCH 0/1] LTC2688 support
-Thread-Index: AQHX1uthp64f7v0trkGvKxQpqJcVI6wAEu4AgAQrh5CACbdVAIAOPJoQgANCw8CABOHegIABGPvQ
-Date:   Mon, 6 Dec 2021 11:07:55 +0000
-Message-ID: <PH0PR03MB6786E6E2CF68696C705A2592996D9@PH0PR03MB6786.namprd03.prod.outlook.com>
+        id S243842AbhLFNNW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 6 Dec 2021 08:13:22 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4207 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241808AbhLFNNW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Dec 2021 08:13:22 -0500
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4J73ZX5Lhqz688JN;
+        Mon,  6 Dec 2021 21:05:40 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 6 Dec 2021 14:09:49 +0100
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 6 Dec
+ 2021 13:09:49 +0000
+Date:   Mon, 6 Dec 2021 13:09:47 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [RFC PATCH 0/1] LTC2688 support
+Message-ID: <20211206130947.000070b3@Huawei.com>
+In-Reply-To: <PH0PR03MB6786E6E2CF68696C705A2592996D9@PH0PR03MB6786.namprd03.prod.outlook.com>
 References: <20211111110043.101891-1-nuno.sa@analog.com>
         <20211112161437.60dbc872@jic23-huawei>
         <PH0PR03MB6366BFFE85F122FED1B72BB499989@PH0PR03MB6366.namprd03.prod.outlook.com>
         <20211121121756.2297671a@jic23-huawei>
         <PH0PR03MB678687C50B21BD5E448E413699679@PH0PR03MB6786.namprd03.prod.outlook.com>
         <PH0PR03MB6786AB0F1BE42523D0F2AC0299699@PH0PR03MB6786.namprd03.prod.outlook.com>
- <20211205180339.1dfa83b9@jic23-huawei>
-In-Reply-To: <20211205180339.1dfa83b9@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
- =?utf-8?B?bk5jYm5OaFhHRndjR1JoZEdGY2NtOWhiV2x1WjF3d09XUTRORGxpTmkwek1t?=
- =?utf-8?B?UXpMVFJoTkRBdE9EVmxaUzAyWWpnMFltRXlPV1V6TldKY2JYTm5jMXh0YzJj?=
- =?utf-8?B?dFl6RTJPREpqTjJZdE5UWTROQzB4TVdWakxUaGlZVEF0Wm1NM056YzBNakZt?=
- =?utf-8?B?WTJGbFhHRnRaUzEwWlhOMFhHTXhOamd5WXpnd0xUVTJPRFF0TVRGbFl5MDRZ?=
- =?utf-8?B?bUV3TFdaak56YzNOREl4Wm1OaFpXSnZaSGt1ZEhoMElpQnplajBpTVRJek9E?=
- =?utf-8?B?SWlJSFE5SWpFek1qZ3pNall5TkRjek16WTFNRGM1TWlJZ2FEMGllR0phTkZG?=
- =?utf-8?B?RFRHRnpja0Z1YURGdlFVMDFkMFpLUm5OR1VHcHZQU0lnYVdROUlpSWdZbXc5?=
- =?utf-8?B?SWpBaUlHSnZQU0l4SWlCamFUMGlZMEZCUVVGRlVraFZNVkpUVWxWR1RrTm5W?=
- =?utf-8?B?VUZCUlc5RFFVRkNieTg1VTBSclpYSllRVk16UkZGMlJEWldibXB2VEdOT1F6?=
- =?utf-8?B?aFFjRmRsVDJkRVFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVo?=
- =?utf-8?B?QlFVRkJSR0ZCVVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVVZC?=
- =?utf-8?B?UVZGQlFrRkJRVUZXU1VWMmIxRkJRVUZCUVVGQlFVRkJRVUZCUVVGS05FRkJR?=
- =?utf-8?B?VUpvUVVkUlFXRlJRbVpCU0UxQldsRkNha0ZJVlVGalowSnNRVVk0UVdOQlFu?=
- =?utf-8?B?bEJSemhCWVdkQ2JFRkhUVUZrUVVKNlFVWTRRVnBuUW1oQlIzZEJZM2RDYkVG?=
- =?utf-8?B?R09FRmFaMEoyUVVoTlFXRlJRakJCUjJ0QlpHZENiRUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZCUVVGQlFVRkJRVUZuUVVG?=
- =?utf-8?B?QlFVRkJibWRCUVVGSFJVRmFRVUp3UVVZNFFXTjNRbXhCUjAxQlpGRkNlVUZI?=
- =?utf-8?B?VlVGWWQwSjNRVWhKUVdKM1FuRkJSMVZCV1hkQ01FRklUVUZZZDBJd1FVZHJR?=
- =?utf-8?B?VnBSUW5sQlJFVkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVZGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGRFFVRkJRVUZCUTJWQlFVRkJXVkZDYTBGSGEwRllkMEo2UVVkVlFW?=
- =?utf-8?B?bDNRakZCU0VsQldsRkNaa0ZJUVVGalowSjJRVWR2UVZwUlFtcEJTRkZCWTNk?=
- =?utf-8?B?Q1prRklVVUZoVVVKc1FVaEpRVTFuUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
- =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
- =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
- =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
- =?utf-8?Q?BQUJBQUFBQUFBQUFBSUFBQUFBQUE9PSIvPjwvbWV0YT4=3D?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f03794d8-a191-48c0-a4d0-08d9b8a8a76f
-x-ms-traffictypediagnostic: PH0PR03MB6690:EE_
-x-microsoft-antispam-prvs: <PH0PR03MB6690B37D6924382BEC7A1EC0996D9@PH0PR03MB6690.namprd03.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: NF/pV2/sfUlXyUylQI/SN8GdUQdnVfp+HQrSoiKQWYLgwgTTuEm4hhrR4jeDDFupHTSM1w1q00X20d+usS1GaXyS2MPNrEKOHX/iYyIrgul3yLcunchUuLJfl+aakIKYXocW0G+ViDQhnONTux6xiPUJn3JsAM3F9JqRwKBq8NzH9XgujnvVBGjxknjkZECUt11SImYzdtEzlgUJO4AXk/mXVQey215xL0yMjI9Yf/tw/5Pf9THhu8TxP5a/fHVStp0aafkyEC0CDIeTl00rD7oIbrpvoegAYtKpKTEHeON+0eONMjx0q+utJPdacIWUfWpKBXWSd/TKfgUgUU6L9f3f5ZrT8CKnM8gxXBmI6c3deP1xjUwSsalr3PXSxMW37jEW29BEVm2mIFvQtAsIrfIfLd0xWDHaJMxVjkGPAP2FeqntNvWMW5VTX3Obl02YuXN2Ig9/K8p+UhOqniquEsUasjS5tRkZLqpcZKOWbh/thDlmsDbm0i+7ZaGwa4chAvYTs6jy9bajZKBkmKkG/+jJ49gNUXWabChGW8nYrDcBo0gevmM9isBaERbu1qBHHA4Tp9n/+VpIgLWDJ+36vbdz7o2XehX0KSGBEG2ci4vQSyFDFkA/MfrOspzImQHEToNNiV/A1ceBj4SEbc9KKsh3BuDsAfF0H5scVhdQBqIDI8K9VQJdFoQIRm/IcP52QtiNlSNkHCElwrZ0UF7nJg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6786.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(38100700002)(6506007)(508600001)(71200400001)(2906002)(6916009)(33656002)(9686003)(122000001)(5660300002)(53546011)(8936002)(316002)(66446008)(64756008)(186003)(30864003)(66556008)(86362001)(66476007)(8676002)(66946007)(83380400001)(76116006)(4326008)(38070700005)(26005)(7696005)(52536014)(55016003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M3pENkRObWdFVGdmV1VMTituKzB2YU5lcXFhck83dUZKYVhYV0RnVDhYQkNZ?=
- =?utf-8?B?V3U1cHpqVEtsbXZzOW0rNDNxQ3VGcEdmOWF5S2N4ZGxOZDdhZVBjNitTa2xt?=
- =?utf-8?B?S25vRS9YN29YaVI0TEtKZGFqaVozeGxVUXJrWk5aZ1JlbFEyaFdwSGV5R2lX?=
- =?utf-8?B?WVRuNmIyU1VUMW56eFZDd0tSbDhueWhlNmdyN2JnOXVyL21wOGIyVkxPcWFa?=
- =?utf-8?B?VXF4TUpmNWlZWW92SWhQSHZxQ3diemdVNWJGejJXSHRuVzhNY2hPNUN0V1hD?=
- =?utf-8?B?MW5GSGVmZ05LL1BZUlBuei85Z0RWaUFkTVZBTmxXdnQzOUhsc1NxQmlEcG5V?=
- =?utf-8?B?OThUUFJrVE9MRXFOZXQ2QnM3V1lYcUNCQlE0SjRPTWlLYS8rTUgzTVNSTlpt?=
- =?utf-8?B?Zi9mMmRST3AvSnQvcHpZWDhpeXVUZGt1V2U2WFVsTUdGVWpnQnp3WVo5ZVhm?=
- =?utf-8?B?TW1vbEROQnp3ME0vNFJ3ckNtOUdMM1J3bFZUMFRUdUNhSDRHbGljTko0dVVx?=
- =?utf-8?B?OFY4NmhXMkQ3NVBJdVVvKzA1WUxsV0VYMDNwaFArelZpMVM3MmhxS3lRV28r?=
- =?utf-8?B?TklwTjdGMldxdWUzTWFUUHpXMWQ2dGUrTmJhRnBoY3B4blk2amhpcjU3VEFy?=
- =?utf-8?B?REROZFRFdXF6YU1oTWtKRllGNG1ZNUUveGtMYW1raFgrV0wzdVExUU5ObmtR?=
- =?utf-8?B?Slp0SDljb082eXRSaU95OU5wUlVqajJmZHJ5dmhwWWJOMWk4cWU3MnptcGlw?=
- =?utf-8?B?TXV4M2dxYkxUNndEWGpCVndRY2tSdGxpb3FBK3lEUk1KTEtzbkFiR2tySG9k?=
- =?utf-8?B?Vm5PYW9DdGE0ci8xRVlPY1lnY0ZoYjdMYXFJZnBKU2RxWUNwWkxhK3RsL0JU?=
- =?utf-8?B?NGdHTzZucGhyUnE4QW16YjZnNGFvajRhZFh6WEFpSkVCTUNpd1cyWkpPdE45?=
- =?utf-8?B?cDlRb0h3bW8xaHNTMHVWdmt6dlRISUw0akpVODE3dTR3T2xWQ1YxM2JndG5h?=
- =?utf-8?B?ZGgwa0xlOXdmQ0wyVW8rb3owMml5SWdZQ1Z3S3Vsb3M1c1I3Q2I3TXZObUYz?=
- =?utf-8?B?QUwxOUphMTVtSzhhL1lYVUlKVjFxLy83YTZaZEJpUythUEh0RFg4Q1luZHRz?=
- =?utf-8?B?TS9OQStwc1pYQzVwSGZlQWtCOGlkYTBtbEJ5bGpSSE9jSTZLejA0NGJwMmpr?=
- =?utf-8?B?NzRXWjk0cWZEdW9EbTlwTk9QUnE5dUhCcFdLYkswMGJQZlFrV0Y4SUNyUlZ1?=
- =?utf-8?B?RXFqVHg2U3oybDFDTnE5RmVKNldHSW91ckdXTmZBZk9VM0x6K1h3enFFZEYv?=
- =?utf-8?B?NUtpTkE3OVMzakhVdU9SdzFQTmpIU1VpOHBKSVVpbDczMXh4cGJqL2pzbnk4?=
- =?utf-8?B?NkxkK0V4MmxUYXd5MTgreUh0enEwZ1ZBK2hlcmVIeHdBaTc2WE1removNXZD?=
- =?utf-8?B?eUFSdnNDQlYwRXpYS0tDWFIxQkVvTFQ1TDNobHZMaXdGc1Vjc211N3Y4Uk5U?=
- =?utf-8?B?SUNnb3RFcFJnTWV2eVhsWHNkeUVjMHJ6ZjZCTlRiK3d3d1B5eDZDdWpZNFNi?=
- =?utf-8?B?SFoyRHptKzdqUlJHR0g4aFFtQXhZRkF4d3dBMlgrWVZUWGFQbDdyUkd2SmZh?=
- =?utf-8?B?ZVkrQVR0eTNvQ2RPcXJFOGplSnhSVDNxa0VWcXBXZGtKTGxGaXhsLzU4K1pk?=
- =?utf-8?B?WHhBTE4xbHJOM1kvVEVPZVZTck10S3BrSW9Hd3RiTGdTcVpJRGpyTXl1eHlw?=
- =?utf-8?B?TGR1RU9aamhTMjVTek4yOHZYR2cydUJpS0JsbWY1WVJFTHR6WE12OWZEMkFX?=
- =?utf-8?B?V1NDSHRieTR5M0p4T2pTZUpxbjU2aWt5Mm5pS3JWNm5uZ2lxaGpnSWlPbDRx?=
- =?utf-8?B?cmFaQ3JhQ00ySjJHK2pBcE43RjkxMjlNQk5mck8zRytOL01iVVBpSjRRdFlm?=
- =?utf-8?B?a25wSWlDZ1JVQjJ4UWZMK093SUFOeTN4MGNLcGRLQkt6ZGVpY0NwVndLOGhJ?=
- =?utf-8?B?bTd1cGtmT1pieVNrejZURWJIajlXN0tGNUE1U1N5cmxZdmd3L2NCK3pHWjF3?=
- =?utf-8?B?OHdPYWdCbmFWMFVsa1E0MHNKWHVPRENIYnFqR1FKZFZEZVgzNHNoZHlxL2RY?=
- =?utf-8?B?SXJLZ2tRNitLclpPa2tBRmtpM2xCaVl4bGoxc0VQempxS0NUby9zM09CS0wx?=
- =?utf-8?B?MVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        <20211205180339.1dfa83b9@jic23-huawei>
+        <PH0PR03MB6786E6E2CF68696C705A2592996D9@PH0PR03MB6786.namprd03.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6786.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f03794d8-a191-48c0-a4d0-08d9b8a8a76f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2021 11:07:55.1081
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WierjEOOzx+xIJYRnEzaodHV3p+iPIMLXWFf1OIns/s48EHiD6ghycPsA9qmsB3WoFwErUsREjicf5CX8q3AWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6690
-X-Proofpoint-ORIG-GUID: yNE0EJAMVNCh591fBw3_9pQMUVDdkZ0a
-X-Proofpoint-GUID: yNE0EJAMVNCh591fBw3_9pQMUVDdkZ0a
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2021-12-06_04,2021-12-06_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2112060066
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml746-chm.china.huawei.com (10.201.108.196) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxqaWMyM0BrZXJuZWwub3JnPg0KPiBTZW50OiBTdW5k
-YXksIERlY2VtYmVyIDUsIDIwMjEgNzowNCBQTQ0KPiBUbzogU2EsIE51bm8gPE51bm8uU2FAYW5h
-bG9nLmNvbT4NCj4gQ2M6IGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6
-IFtSRkMgUEFUQ0ggMC8xXSBMVEMyNjg4IHN1cHBvcnQNCj4gDQo+IFtFeHRlcm5hbF0NCj4gDQo+
-IE9uIFRodSwgMiBEZWMgMjAyMSAxNTozNzo0MCArMDAwMA0KPiAiU2EsIE51bm8iIDxOdW5vLlNh
-QGFuYWxvZy5jb20+IHdyb3RlOg0KPiANCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0t
-DQo+ID4gPiBGcm9tOiBTYSwgTnVubyA8TnVuby5TYUBhbmFsb2cuY29tPg0KPiA+ID4gU2VudDog
-VHVlc2RheSwgTm92ZW1iZXIgMzAsIDIwMjEgMzo0MyBQTQ0KPiA+ID4gVG86IEpvbmF0aGFuIENh
-bWVyb24gPGppYzIzQGtlcm5lbC5vcmc+DQo+ID4gPiBDYzogbGludXgtaWlvQHZnZXIua2VybmVs
-Lm9yZw0KPiA+ID4gU3ViamVjdDogUkU6IFtSRkMgUEFUQ0ggMC8xXSBMVEMyNjg4IHN1cHBvcnQN
-Cj4gPiA+DQo+ID4gPiBbRXh0ZXJuYWxdDQo+ID4gPg0KPiA+ID4NCj4gPiA+DQo+ID4gPiA+IC0t
-LS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiA+IEZyb206IEpvbmF0aGFuIENhbWVyb24g
-PGppYzIzQGtlcm5lbC5vcmc+DQo+ID4gPiA+IFNlbnQ6IFN1bmRheSwgTm92ZW1iZXIgMjEsIDIw
-MjEgMToxOCBQTQ0KPiA+ID4gPiBUbzogU2EsIE51bm8gPE51bm8uU2FAYW5hbG9nLmNvbT4NCj4g
-PiA+ID4gQ2M6IGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5vcmcNCj4gPiA+ID4gU3ViamVjdDogUmU6
-IFtSRkMgUEFUQ0ggMC8xXSBMVEMyNjg4IHN1cHBvcnQNCj4gPiA+ID4NCj4gPiA+ID4gW0V4dGVy
-bmFsXQ0KPiA+ID4gPg0KPiA+ID4gPiBPbiBNb24sIDE1IE5vdiAyMDIxIDEwOjI4OjUxICswMDAw
-DQo+ID4gPiA+ICJTYSwgTnVubyIgPE51bm8uU2FAYW5hbG9nLmNvbT4gd3JvdGU6DQo+ID4gPiA+
-DQo+ID4gPiA+ID4gSGkgSm9uYXRoYW4sDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBUaGFua3MgZm9y
-IHlvdXIgaW5wdXRzLi4uDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IEZyb206IEpvbmF0aGFuIENh
-bWVyb24gPGppYzIzQGtlcm5lbC5vcmc+DQo+ID4gPiA+ID4gPiBTZW50OiBGcmlkYXksIE5vdmVt
-YmVyIDEyLCAyMDIxIDU6MTUgUE0NCj4gPiA+ID4gPiA+IFRvOiBTYSwgTnVubyA8TnVuby5TYUBh
-bmFsb2cuY29tPg0KPiA+ID4gPiA+ID4gQ2M6IGxpbnV4LWlpb0B2Z2VyLmtlcm5lbC5vcmcNCj4g
-PiA+ID4gPiA+IFN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIDAvMV0gTFRDMjY4OCBzdXBwb3J0DQo+
-ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gW0V4dGVybmFsXQ0KPiA+ID4gPiA+ID4NCj4gPiA+ID4g
-PiA+IE9uIFRodSwgMTEgTm92IDIwMjEgMTI6MDA6NDIgKzAxMDANCj4gPiA+ID4gPiA+IE51bm8g
-U8OhIDxudW5vLnNhQGFuYWxvZy5jb20+IHdyb3RlOg0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+
-IEhpIE51bm8sDQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiBUaGUgcmVhc29uIHdoeSB0aGlz
-IGlzIGEgUkZDIGlzIGJlY2F1c2UgSSdtIHN0aWxsIHdhaXRpbmcgZm9yDQo+ID4gPiBwcm9wZXIN
-Cj4gPiA+ID4gSFcNCj4gPiA+ID4gPiA+ID4gdG8gdGVzdCB0aGlzIHRoaW5nLiBUaGUgcmVhc29u
-IHdoeSBJJ20gc2VuZGluZyB0aGlzIGFscmVhZHkgaXMNCj4gPiA+ID4gYmVjYXVzZQ0KPiA+ID4g
-PiA+ID4gPiB0aGVyZSdzIHNvbWUgbm9uIHVzdWFsIGZlYXR1cmVzIHdoaWNoIG1pZ2h0IHJlcXVp
-cmUgZXh0cmENCj4gQUJJLg0KPiA+ID4gPiA+ID4gSGVuY2UsDQo+ID4gPiA+ID4gPiA+IHdoaWxl
-IHdhaXRpbmcgSSB0aG91Z2h0IHdlIGNvdWxkIGFscmVhZHkgc3BlZWQgdXAgdGhlDQo+IHByb2Nl
-c3MNCj4gPiA+IGluDQo+ID4gPiA+ID4gPiByZWdhcmRzDQo+ID4gPiA+ID4gPiA+IHdpdGggdGhl
-IEFCSS4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBXaXNlIG1vdmUgYXMgdGhpcyBpcyBhbiB1
-bnVzdWFsIGJlYXN0IDopDQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4g
-PiBJIHN0aWxsIHB1c2hlZCB0aGUgZHJpdmVyIGJ1dCB0aGUgaW50ZW50IGhlcmUgaXMgbm90IHJl
-YWxseSB0bw0KPiA+ID4gcmV2aWV3DQo+ID4gPiA+IGl0Lg0KPiA+ID4gPiA+ID4gPiBOYXR1cmFs
-bHksIGlmIHNvbWVvbmUgYWxyZWFkeSB3YW50cyB0byBnaXZlIHNvbWUgZmVlZGJhY2ssDQo+ID4g
-PiA+IHRoYXQncw0KPiA+ID4gPiA+ID4gdmVyeQ0KPiA+ID4gPiA+ID4gPiBtdWNoIGFwcHJlY2lh
-dGVkIDopDQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiBOb3csIHRo
-ZXJlIGFyZSB0aHJlZSBtYWluIGludGVyZmFjZXMgZGVwZW5kaW5nIG9uIHRoZQ0KPiA+ID4gY2hh
-bm5lbA0KPiA+ID4gPiA+ID4gbW9kZToNCj4gPiA+ID4gPiA+ID4gIDEpIGRlZmF1bHQgKG5vIG5l
-dyBBQkkpDQo+ID4gPiA+ID4gPiA+ICAyKSB0b2dnbGUgbW9kZQ0KPiA+ID4gPiA+ID4gPiAgMykg
-ZGl0aGVyIG1vZGUNCj4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gVGhlIGNoYW5uZWwgbW9k
-ZSB3aWxsIGJlIGEgZGV2aWNldHJlZSBwcm9wZXJ0eSBhcyBpdCBkb2VzDQo+IG5vdA0KPiA+ID4g
-PiByZWFsbHkNCj4gPiA+ID4gPiA+ID4gbWFrZSBtdWNoIHNlbnNlIHRvIGNoYW5nZSBiZXR3ZWVu
-IG1vZGVzIGF0IHJ1bnRpbWUNCj4gZXZlbg0KPiA+ID4gPiBtb3JlDQo+ID4gPiA+ID4gPiBiZWNh
-dXNlIHRoZQ0KPiA+ID4gPiA+ID4gPiBwaWVjZSBvZiBIVyB3ZSBtaWdodCB3YW50IHRvIGNvbnRy
-b2wgd2l0aCBhIGNoYW5uZWwgbWlnaHQNCj4gYmUNCj4gPiA+ID4gPiA+IGRpZmZlcmVudA0KPiA+
-ID4gPiA+ID4gPiBkZXBlbmRpbmcgb24gdGhlIHNlbGVjdGVkIG1vZGUgKEknbSBmYWlybHkgc3Vy
-ZSBvbiB0aGlzDQo+ID4gPiBiZXR3ZWVuDQo+ID4gPiA+ID4gPiB0b2dnbGUNCj4gPiA+ID4gPiA+
-ID4gYW5kIG90aGVyIG1vZGVzIGJ1dCBub3Qgc28gc3VyZSBiZXR3ZWVuIGRpdGhlciBhbmQNCj4g
-ZGVmYXVsdA0KPiA+ID4gPiBtb2RlKS4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBJIGFncmVl
-IG9uIHRvZ2dsZSB2cyBkaXRoZXIgZGVmaW5pdGVseSBiZWluZyBkaWZmZXJlbnQsIGJ1dA0KPiBu
-b3JtYWwNCj4gPiA+ID4geW91DQo+ID4gPiA+ID4gPiBjb3VsZCBpbXBsZW1lbnQgZWl0aGVyIGFz
-IHNvZnR3YXJlIHRvZ2dsZSwgb3IgZGl0aGVyIHdpdGggYSAwDQo+ID4gPiA+ID4gPiBtYWduaXR1
-ZGUNCj4gPiA+ID4gPiA+IHNpbmUgd2F2ZS4gIFNvIG1pZ2h0IG5vdCBiZSB3b3J0aCBpbXBsZW1l
-bnRpbmcgZGVmYXVsdA0KPiBtb2RlIGF0DQo+ID4gPiA+IGFsbC4NCj4gPiA+ID4gPiA+IE5vIGhh
-cm0gaW4gZG9pbmcgc28gdGhvdWdoIGlmIHRoZXJlIGFyZSBhZHZhbnRhZ2VzIHRvIGhhdmluZw0K
-PiBpdC4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IE15IGZlZWxpbmcgaXMgdGhhdCB3ZSBjb3VsZCBw
-cm9iYWJseSBoYXZlIGRpdGhlciBhcyB0aGUgImRlZmF1bHQNCj4gPiA+ID4gbW9kZSIuDQo+ID4g
-PiA+ID4gTW9yZSBvbiB0aGlzIGJlbG93Li4uDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4NCj4g
-PiA+ID4gPiA+ID4gdG9nZ2xlIG1vZGUgc3BlY2lhbCBBQkk6DQo+ID4gPiA+ID4gPiA+DQo+ID4g
-PiA+ID4gPiA+ICAqIFRvZ2dsZSBvcGVyYXRpb24gZW5hYmxlcyBmYXN0IHN3aXRjaGluZyBvZiBh
-IERBQyBvdXRwdXQNCj4gPiA+ID4gYmV0d2Vlbg0KPiA+ID4gPiA+ID4gdHdvDQo+ID4gPiA+ID4g
-PiA+IGRpZmZlcmVudCBEQUMgY29kZXMgd2l0aG91dCBhbnkgU1BJIHRyYW5zYWN0aW9uLiBUd28g
-Y29kZXMNCj4gYXJlDQo+ID4gPiA+IHNldA0KPiA+ID4gPiA+ID4gaW4NCj4gPiA+ID4gPiA+ID4g
-aW5wdXRfYSBhbmQgaW5wdXRfYiBhbmQgdGhlbiB0aGUgb3V0cHV0IHN3aXRjaGVzDQo+IGFjY29y
-ZGluZyB0bw0KPiA+ID4gPiBhbg0KPiA+ID4gPiA+ID4gaW5wdXQNCj4gPiA+ID4gPiA+ID4gc2ln
-bmFsIChpbnB1dF9hIC0+IGNsayBoaWdoOyBpbnB1dF9iIC0+IGNsayBsb3cpLg0KPiA+ID4gPiA+
-ID4gPg0KPiA+ID4gPiA+ID4gPiBvdXRfdm9sdGFnZVlfaW5wdXRfcmVnaXN0ZXINCj4gPiA+ID4g
-PiA+ID4gIC0gc2VsZWN0cyBiZXR3ZWVuIGlucHV0X2EgYW5kIGlucHV0X2IuIEFmdGVyIHNlbGVj
-dGluZyBvbmUNCj4gPiA+ID4gcmVnaXN0ZXIsDQo+ID4gPiA+ID4gPiB3ZQ0KPiA+ID4gPiA+ID4g
-PiAgICBjYW4gd3JpdGUgdGhlIGRhYyBjb2RlIGluIG91dF92b2x0YWdlWV9yYXcuDQo+ID4gPiA+
-ID4gPiA+IG91dF92b2x0YWdlWV90b2dnbGVfZW4NCj4gPiA+ID4gPiA+ID4gIC0gRGlzYWJsZS9F
-bmFibGUgdG9nZ2xlIG1vZGUuIFRoZSByZWFzb24gd2h5IEkgdGhpbmsgdGhpcw0KPiBvbmUNCj4g
-PiA+IGlzDQo+ID4gPiA+ID4gPiA+ICAgIGltcG9ydGFudCBpcyBiZWNhdXNlIGlmIHdlIHdhbm5h
-IGNoYW5nZSB0aGUgMiBjb2Rlcywgd2UNCj4gPiA+ID4gc2hvdWxkDQo+ID4gPiA+ID4gPiBmaXJz
-dA0KPiA+ID4gPiA+ID4gPiAgICBkaXNhYmxlIHRoaXMsIHNldCB0aGUgY29kZXMgYW5kIG9ubHkg
-dGhlbiBlbmFibGUgdGhlIG1vZGUNCj4gPiA+ID4gYmFjay4uLg0KPiA+ID4gPiA+ID4gPiAgICBB
-cyBJJ20gd3JpdGluZyB0aGlzLCBJdCBraW5kIG9mIGNhbWUgdG8gbWUgdGhhdCB3ZSBjYW4NCj4g
-cHJvYmFibHkNCj4gPiA+ID4gPiA+ID4gICAgYWNoaWV2ZSB0aGlzIHdpdGggb3V0X3ZvbHRhZ2VZ
-X3Bvd2VyZG93biBhdHRyIChtYXliZQ0KPiA+ID4gdGFrZXMgYQ0KPiA+ID4gPiBiaXQNCj4gPiA+
-ID4gPiA+IG1vcmUNCj4gPiA+ID4gPiA+ID4gICAgdGltZSB0byBzZWUgdGhlIG91dHB1dHMgYnV0
-Li4uKQ0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IEhtbS4gVGhlc2UgY29ybmVyIGNhc2VzIGFs
-d2F5cyB0YWtlIGEgYml0IG9mIGZpZ3VyaW5nIG91dC4NCj4gV2hhdA0KPiA+ID4gPiB5b3UNCj4g
-PiA+ID4gPiA+IGhhdmUNCj4gPiA+ID4gPiA+IGhlcmUgaXMgYSBiaXQgJ2RldmljZSBzcGVjaWZp
-YycgZm9yIG15IGxpa2luZy4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBTbyB0aGVyZSBpcyBw
-cmVjZWRlbmNlIGZvciBBQkkgaW4gdGhpcyBhcmVhLCBvbiB0aGUgZnJlcXVlbmN5DQo+ID4gPiA+
-IGRldmljZXMNCj4gPiA+ID4gPiA+IGJ1dCBvbmx5DQo+ID4gPiA+ID4gPiBmb3IgZGV2aWNlcyB3
-ZSBzdGlsbCBoYXZlbid0IG1vdmVkIG91dCBvZiBzdGFnaW5nLiAgRm9yIHRob3NlDQo+IHdlDQo+
-ID4gPiA+ID4gPiBuZWVkZWQgYSBtZWFucw0KPiA+ID4gPiA+ID4gdG8gZGVmaW5lIHNlbGVjdGFi
-bGUgcGhhc2VzIGZvciBQU0sgLSB3aGVyZSB0aGUgc2VsZWN0aW9uIHdhcw0KPiA+ID4gPiBlaXRo
-ZXINCj4gPiA+ID4gPiA+IHNvZnR3YXJlIG9yLA0KPiA+ID4gPiA+ID4gbXVjaCBsaWtlIGhlcmUs
-IGEgc2VsZWN0aW9uIHBpbi4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBvdXRfYWx0dm90YWdl
-MF9waGFzZTAgZXRjDQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gc28gSSBndWVzcyB0aGUgZXF1
-aXZhbGVudCBoZXJlIHdvdWxkIGJlDQo+ID4gPiA+ID4gPiBvdXRfdm9sdGFnZVlfcmF3MA0KPiA+
-ID4gPiA+ID4gb3V0X3ZvbHRhZ2VZX3JhdzENCj4gPiA+ID4gPiA+IGFuZCB0aGUgc2VsZWN0aW9u
-IHdvdWxkIGJlIHZpYSBzb21ldGhpbmcgbGlrZQ0KPiA+ID4gPiA+ID4gb3V0X3ZvbHRhZ2VZX3N5
-bWJvbCAoMCBvciAxIGluIHRoaXMgY2FzZSkuIC0gbm90ZSB0aGlzIGlzIG9ubHkNCj4gPiA+ID4g
-PiA+IHJlbGV2YW50IGlmIHlvdSBoYXZlIHRoZSBzb2Z0d2FyZSB0b2dnbGUuIEFueSBlbmFibGUg
-bmVlZGVkDQo+IGZvcg0KPiA+ID4gPiA+ID4gc2V0dGluZw0KPiA+ID4gPiA+ID4gY2FuIGJlIGRv
-bmUgYXMgcGFydCBvZiB0aGUgd3JpdGUgc2VxdWVuY2UgZm9yIHRoZSAgcmF3MCAvDQo+IHJhdzEN
-Cj4gPiA+IGFuZA0KPiA+ID4gPiA+ID4gc2hvdWxkDQo+ID4gPiA+ID4gPiBpZGVhbGx5IG5vdCBi
-ZSBleHBvc2VkIHRvIHVzZXJzcGFjZSAoY29udHJvbHMgdGhhdCByZXF1aXJlDQo+ID4gPiBtYW51
-YWwNCj4gPiA+ID4gPiA+IHNlcXVlbmNpbmcNCj4gPiA+ID4gPiA+IHRlbmQgdG8gYmUgaGFyZCB0
-byB1c2UgLyBkb2N1bWVudCkuDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBZZWFoLCBJIHRob3VnaHQg
-YWJvdXQgdGhhdC4gSSB3YXMgZXZlbiB0aGlua2luZyBpbiBoYXZpbmcNCj4gc29tZXRoaW5nDQo+
-ID4gPiA+IGxpa2UNCj4gPiA+ID4gPiAqX2FtcGxpdHVkZSBmb3IgZGl0aGVyIG1vZGUuIEluIHNv
-bWUgY2FzZXMsIHdoZXJlIHdlIG1pZ2h0DQo+IGJlDQo+ID4gPiBsZWZ0DQo+ID4gPiA+ID4gaW4g
-c29tZSBub24gb2J2aW91cyBzdGF0ZSAoZWc6IG1vdmVkIHRoZSBzZWxlY3QgcmVnaXN0ZXIgdG8N
-Cj4gaW5wdXQgYg0KPiA+ID4gPiBhbmQNCj4gPiA+ID4gPiB0aGVuIHdlIGZhaWxlZCB0byBzZXQg
-dGhlIGNvZGU7KSwgSSBwcmVmZXIgdG8gbGVhdmUgdGhpbmdzIGFzDQo+IGZsZXhpYmxlDQo+ID4g
-PiBhcw0KPiA+ID4gPiA+IHBvc3NpYmxlIGZvciB1c2Vyc3BhY2UuIEJ1dCBJIGFncmVlIGl0IGFk
-ZHMgdXAgbW9yZSBjb21wbGV4aXR5DQo+IGFuZA0KPiA+ID4gaW4NCj4gPiA+ID4gPiB0aGlzIGNh
-c2UsIEkgY2FuIGp1c3QgYWx3YXlzIGdvIHRvICdpbnB1dF9hJyB3aGVuIHdyaXRpbmcgJ3JhdzAn
-Li4uDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IEhvd2V2ZXIsIEknbSBub3QgMTAwJSBzdXJlIGl0
-IHJlYWxseSBtYXBzIHRvIHRoaXMgY2FzZS4gIFdoYXQNCj4gZG8NCj4gPiA+ID4geW91DQo+ID4g
-PiA+ID4gPiB0aGluaz8NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IEkgdGhpbmsgaXQgY2FuIHdvcmsu
-IFRob3VnaCBvdXRfdm9sdGFnZVlfc3ltYm9sIHByb2JhYmx5DQo+IG5lZWRzIHRvDQo+ID4gPiA+
-IGJlDQo+ID4gPiA+ID4gc2hhcmVkIGJ5IHR5cGUgdG8gYmUgY29oZXJlbnQgd2l0aCB3aGF0IHdl
-IG1pZ2h0IGhhdmUgd2l0aA0KPiA+ID4gVEdQeC4NCj4gPiA+ID4NCj4gPiA+ID4gVGhhdCdzIGZp
-bmUuDQo+ID4gPiA+DQo+ID4gPiA+ID4gTm90ZSB0aGUgc3dfdG9nZ2xlIHJlZ2lzdGVyIGhhcyBh
-IGJpdCBtYXNrIG9mIHRoZSBjaGFubmVscyB3ZQ0KPiA+ID4gd2FudA0KPiA+ID4gPiB0bw0KPiA+
-ID4gPiA+IHRvZ2dsZSB3aGljaCBtZWFucyB3ZSBjYW4gdG9nZ2xlIG11bHRpcGxlIGNoYW5uZWxz
-IGF0IHRoZQ0KPiBzYW1lDQo+ID4gPiA+IHRpbWUuDQo+ID4gPiA+DQo+ID4gPiA+IFVzaW5nIHRo
-YXQgd2lyZWQgdXAgdG8gYnVmZmVyIG1vZGUgbWlnaHQgbWFrZSBzZW5zZS4gIFlvdSdkDQo+ID4g
-PiBwcm92aWRlDQo+ID4gPiA+IG11bHRpcGxlDQo+ID4gPiA+IGJ1ZmZlcnMgYW5kIGFsbG93IGNo
-YW5uZWxzIHRvIGJlIHNlbGVjdGVkIGludG8gb25lIG9mIHRoZW0gYXQgYQ0KPiB0aW1lLg0KPiA+
-ID4gPiBFYWNoDQo+ID4gPiA+IGJ1ZmZlciBpcyB0aGVuIHRpZWQgdG8gYSBkaWZmZXJlbnQgdG9n
-Z2xlIChUR1AwLCBUR1AxLCBldGMpDQo+ID4gPiA+DQo+ID4gPiA+IFRoZSBzYW1lIGNvdWxkIGJl
-IHRydWUgZm9yIHRoZSBzb2Z0d2FyZSB0b2dnbGUuICBJdCdsbCBnZXQgYSBiaXQNCj4gZmlkZGx5
-DQo+ID4gPiA+IHRob3VnaC4NCj4gPiA+ID4NCj4gPiA+ID4gUGVyaGFwcyB0aGlzIGlzIGFuIGFk
-dmFuY2VkIGZlYXR1cmUgdG8gdGhpbmsgYWJvdXQgbGF0ZXIuLi4NCj4gPiA+ID4NCj4gPiA+ID4g
-PiBJdCB3b3JrcyB0aGUgc2FtZSB3aXRoIFRHUHggaWYgeW91IG1hcCBtdWx0aXBsZSBjaGFubmVs
-cyB0bw0KPiB0aGUNCj4gPiA+ID4gc2FtZQ0KPiA+ID4gPiA+IHBpbi4NCj4gPiA+ID4gPg0KPiA+
-ID4gPiA+IFRoZXJlJ3MgYWxzbyB0aGUgcXVlc3Rpb24gb24gaG93IHRvIGhhbmRsZSB0aGlzIGlm
-IGEgVEdQeCBpcw0KPiA+ID4gcHJvdmlkZWQ/DQo+ID4gPiA+ID4gSSBndWVzcyBpdCB3aWxsIGp1
-c3Qgb3ZlcnJpZGUgdGhlIHBpbi4uLiBCdXQgbW9zdCBsaWtlbHkgaGF2aW5nIHRoZW0NCj4gPiA+
-IGJvdGgNCj4gPiA+ID4gPiBhdCB0aGUgc2FtZSB0aW1lIHdpbGwgbGVhZCB0byBub24gZGVzaXJl
-ZCByZXN1bHRzICh1bmxlc3Mgd2UNCj4gaGF2ZSBhDQo+ID4gPiA+ID4gd2F5IHRvIGdhdGUvdW5n
-YXRlIHRoZSBjbG9ja3MpLi4uDQo+ID4gPiA+IEkgZG9uJ3QgZm9sbG93IHRoaXMgYml0LiAgWW91
-IG1lYW4gVEdQeCBhbmQgc29mdHdhcmUgdG9nZ2xlLiBBcyBmYXINCj4gYXMgSQ0KPiA+ID4gPiBj
-YW4NCj4gPiA+ID4gdGVsbCBpdCdzIGFuIGVpdGhlci9vciB0aGluZyBwZXIgY2hhbm5lbC4NCj4g
-PiA+ID4NCj4gPiA+DQo+ID4gPiBIZXJlIEkgbWVhbnQgdGhhdCBpZiB3ZSBoYXZlIGEgVEdQeCBw
-aW4gYnVuZGxlZCB0byBzb21lDQo+IGNoYW5uZWwocykNCj4gPiA+IHdlDQo+ID4gPiBkbyBub3Qg
-d2FudCB0byBhbHNvIGRhbmNlIHdpdGggdGhlIHN3X3RvZ2dsZSBiaXQgb2YgdGhhdCBjaGFubmVs
-Lg0KPiA+DQo+ID4gSnVzdCBhIG5vdGUgb24gdGhpcy4gQWZ0ZXIgc3RhcnRpbmcgbXkgdGVzdHMg
-d2l0aCB0aGUgZGV2aWNlLCBJIGNhbg0KPiBhY3R1YWxseQ0KPiA+IHNheSB0aGF0IGlmIHdlIGhh
-dmUgYSBUR1B4IHNldCBpbiB0aGUgY2hhbm5lbCBzZXR0aW5ncyByZWdpc3RlciwgdGhlDQo+IGRl
-dmljZQ0KPiA+IHdpbGwgcHJldHR5IG11Y2ggaWdub3JlIHRoZSBzd190b2dnbGUgc2V0dGluZ3Mg
-Zm9yIHRoYXQgY2hhbm5lbC4gSQ0KPiBjb3VsZA0KPiA+IHNlZSB0aGF0IHRoZSBvdXRwdXQgdm9s
-dGFnZSB3YXMgbm90IHRvZ2dsaW5nIGF0IGFsbC4gQXMgc29vbiBhcyBJDQo+IHJlbW92ZWQNCj4g
-PiB0aGUgVEdQeCBzZXR0aW5nLCB0aGVuIGRhbmNpbmcgd2l0aCB0aGUgc3dfdG9nZ2xlIHN0YXJ0
-ZWQgdG8gd29yay4NCj4gU28sIGZvcg0KPiA+IHRoZSBIVyB0aGlzIGlzIG5vdCByZWFsbHkgYW4g
-aXNzdWUgYXMgaXQganVzdCBpZ25vcmVzIHRoZSBzd190b2dnbGUuIE9uIGENCj4gU1cNCj4gPiBw
-ZXJzcGVjdGl2ZSwgSSdtIHN0aWxsIG5vdCBzdXJlIGlmIEkganVzdCBpZ25vcmUgdGhpcyBhbmQg
-d3JpdGUgd2hhdGV2ZXINCj4gdGhlDQo+ID4gdXNlciBzZXRzIG9yIGlmIEkgcmV0dXJuIHNvbWUg
-ZXJyb3IgY29kZSBpbiB0aGUgY2FzZSBhIHVzZXIgdHJpZXMgdG8NCj4gdG9nZ2xlDQo+ID4gYSBj
-aGFubmVsIHdpdGggYSBiaW5kZWQgVEdQeC4gVGhlIGZpcnN0IG9uZSBpcyBhcHBlYWxpbmcgYXMg
-aXQgbWFrZXMNCj4gdGhlDQo+ID4gY29kZSBtdWNoIHNpbXBsZXIgd2hpbGUgT1RITyBpdCBtaWdo
-dCBtYWtlIHNlbnNlIHRvIGJlIHZlcmJvc2UNCj4gaGVyZQ0KPiA+IG90aGVyd2lzZSB0aGUgdXNl
-ciBtaWdodCB0aGluayBzb21ldGhpbmcgaXMgaGFwcGVuaW5nIHdoZW4gaXQNCj4gaXNuJ3QuLi4N
-Cj4gDQo+IElmIHdlIGFyZSBpbiBhIHN0YXRpYyBjb25maWd1cmF0aW9uIChzZWUgYmVsb3cpIHRo
-ZW4ganVzdCBkb24ndCBleHBvc2UNCj4gdGhlDQo+IHNvZnR3YXJlIHRvZ2dsZSBjb250cm9sLiAg
-Tm90IGhhdmluZyBhIGJpZyByZWQgYnV0dG9uIHRvIHByZXNzIGlzIHRoZQ0KPiBiZXN0IHdheSB0
-bw0KPiB0ZWxsIHVzZXJzcGFjZSB0byBub3QgcHJlc3MgdGhlIGJpZyByZWQgYnV0dG9uLi4uDQoN
-Cg0KSG1tLCBJIGdldCB5b3VyIHBvaW50IGFuZCB0aGF0J3MgdmFsaWQgaWYgSSBoYXZlIHRoZSBz
-d190b2dnbGUgYXMgYSBwZXINCmNoYW5uZWwgYXR0cmlidXRlLiBSaWdodCBub3csIEknbSBkb2lu
-ZyBpdCBhcyBzaGFyZWRfYnlfdHlwZS4gVGhlIHJlYXNvbiBpcw0KdGhlIHN3X3RvZ2dsaW5nIGlz
-IGRvbmUgYnkgd3JpdGluZyAxLzAgaW4gdGhlIHRvZ2dsZSByZWdpc3RlciBhbmQgdGhhdCByZWdp
-c3Rlcg0KaXMgYSBiaXRtYXNrIGJlaW5nIHRoZSBtYXNrIDE2Yml0cyB3aWRlLiBUaGlzIGFsbG93
-cyB5b3UgdG8gdG9nZ2xlIGNoYW5uZWxzDQphdCB0aGUgc2FtZSB0aW1lIGluIHRoZSBzYW1lIHdh
-eSB5b3UgY2FuIGRvIGl0IGlmLCBzYXksIHlvdSBtYXAgMiwzIG9yIG1vcmUNCmNoYW5uZWxzIHRv
-IHRoZSBzYW1lIFRHUHggcGluLg0KDQpIb3dldmVyLCBJJ20gYWxzbyBub3QgaGFwcHkgZm9yIGhh
-dmluZyB0aGlzIGFzIHNoYXJlZF9ieV90eXBlIGF0dHIuIE9uZSBvZg0KbXkgY29tcGxhaW5zIGlz
-IHRoYXQgaXQgbWFrZXMgaXQgbG9vayBsaWtlIGEgZGl0aGVyIGNhcGFibGUgY2hhbm5lbCB3aWxs
-IGFsc28NCnN1cHBvcnQgdGhpcyAoYW5kIHdlIGFscmVhZHkgYWdyZWVkIHRoYXQgc3dfdG9nZ2xl
-IGRvZXMgbm90IG1ha2Ugc2Vuc2UNCmZvciBkaXRoZXIgbW9kZTsgc28gZG8gbm90IGV4cG9zZSBp
-dCkuIEZvciBpbnN0YW5jZSB0aGUgb3V0cHV0IG9mIA0KJ2lpb19hdHRyJyAgb24gYSBkaXRoZXIg
-ZW5hYmxlZCBjaGFubmVsIGlzOg0KDQpgYGANCnJvb3RAYW5hbG9nOn4jIGlpb19hdHRyIC1jIGx0
-YzI2ODggdm9sdGFnZTANCmRldiAnbHRjMjY4OCcsIGNoYW5uZWwgJ3ZvbHRhZ2UwJyAob3V0cHV0
-KSwgYXR0ciAnY2FsaWJiaWFzJywgdmFsdWUgJzAnDQpkZXYgJ2x0YzI2ODgnLCBjaGFubmVsICd2
-b2x0YWdlMCcgKG91dHB1dCksIGF0dHIgJ2NhbGlic2NhbGUnLCB2YWx1ZSAnMCcNCmRldiAnbHRj
-MjY4OCcsIGNoYW5uZWwgJ3ZvbHRhZ2UwJyAob3V0cHV0KSwgYXR0ciAnZGl0aGVyX2VuJywgdmFs
-dWUgJzAnDQpkZXYgJ2x0YzI2ODgnLCBjaGFubmVsICd2b2x0YWdlMCcgKG91dHB1dCksIGF0dHIg
-J2RpdGhlcl9mcmVxdWVuY3knLCB2YWx1ZSAnMzI3NjgnDQpkZXYgJ2x0YzI2ODgnLCBjaGFubmVs
-ICd2b2x0YWdlMCcgKG91dHB1dCksIGF0dHIgJ2RpdGhlcl9mcmVxdWVuY3lfYXZhaWxhYmxlJywg
-dmFsdWUgJzMyNzY4IDE2Mzg0IDgxOTIgNDA5NiAyMDQ4Jw0KZGV2ICdsdGMyNjg4JywgY2hhbm5l
-bCAndm9sdGFnZTAnIChvdXRwdXQpLCBhdHRyICdkaXRoZXJfcGhhc2UnLCB2YWx1ZSAnMCcNCmRl
-diAnbHRjMjY4OCcsIGNoYW5uZWwgJ3ZvbHRhZ2UwJyAob3V0cHV0KSwgYXR0ciAnZGl0aGVyX3Bo
-YXNlX2F2YWlsYWJsZScsIHZhbHVlICcwIDkwIDE4MCAyNzAnDQpkZXYgJ2x0YzI2ODgnLCBjaGFu
-bmVsICd2b2x0YWdlMCcgKG91dHB1dCksIGF0dHIgJ2RpdGhlcl9yYXcnLCB2YWx1ZSAnMCcNCmRl
-diAnbHRjMjY4OCcsIGNoYW5uZWwgJ3ZvbHRhZ2UwJyAob3V0cHV0KSwgYXR0ciAnZGl0aGVyX3Jh
-d19hdmFpbGFibGUnLCB2YWx1ZSAnWzAgMSA2NTUzNV0nDQpkZXYgJ2x0YzI2ODgnLCBjaGFubmVs
-ICd2b2x0YWdlMCcgKG91dHB1dCksIGF0dHIgJ29mZnNldCcsIHZhbHVlICcwJw0KZGV2ICdsdGMy
-Njg4JywgY2hhbm5lbCAndm9sdGFnZTAnIChvdXRwdXQpLCBhdHRyICdwb3dlcmRvd24nLCB2YWx1
-ZSAnMCcNCmRldiAnbHRjMjY4OCcsIGNoYW5uZWwgJ3ZvbHRhZ2UwJyAob3V0cHV0KSwgYXR0ciAn
-cmF3JywgdmFsdWUgJzAnDQpkZXYgJ2x0YzI2ODgnLCBjaGFubmVsICd2b2x0YWdlMCcgKG91dHB1
-dCksIGF0dHIgJ3Jhd19hdmFpbGFibGUnLCB2YWx1ZSAnWzAgMSA2NTUzNV0nDQpkZXYgJ2x0YzI2
-ODgnLCBjaGFubmVsICd2b2x0YWdlMCcgKG91dHB1dCksIGF0dHIgJ3NjYWxlJywgdmFsdWUgJzAu
-MDc2MjkzOTQ1Jw0KZGV2ICdsdGMyNjg4JywgY2hhbm5lbCAndm9sdGFnZTAnIChvdXRwdXQpLCBh
-dHRyICdzeW1ib2wnLCB2YWx1ZSAnMCcNCmBgYA0KDQpTbyB5b3UgY2FuIHNlZSB0aGF0IHN5bWJv
-bCBhdHRyIHdoaWNoIGRvZXMgbm90IG1ha2Ugc2Vuc2UgdG8gYmUgdGhlcmUuIEFuZCBpdCdzDQpk
-ZWZpbml0ZWx5IG5vdCBzb21ldGhpbmcgd3JvbmcgaW4gdGhlIGlpb19hdHRyIGFwcCBhcyB0aGUg
-YXR0ciBpcyBzaGFyZWQgYnkgdHlwZS4NCg0KQWxzbywgYXMgeW91IHN1Z2dlc3RlZCwgbm90IGhh
-dmluZyB0aGUgc3ltYm9sIGF0dHIgd2hlbiBpdCBkb2VzIG5vdCBtYWtlIHNlbnNlDQp0byBoYXZl
-IGl0IGFsc28gbWFrZXMgYSBsb3Qgb2Ygc2Vuc2UgdG8gbWUgYW5kIHRoYXQgaXMgb25lIG1vcmUg
-cGx1cyBwb2ludCB0byBoYXZlDQp0aGlzIGFzIGEgcGVyIGNoYW5uZWwgdGhpbmcuDQoNCkFueXdh
-eXMsIEkgd2lsbCBwcm9iYWJseSBzZW5kIHRoZSBwYXRjaCB3aXRoIHRoaW5ncyBhcyBJIGhhdmUg
-bm93IHNvIHlvdSBjYW4NCmhhdmUgYSBmZWxsaW5nIG9mIGhvdyBpdCBsb29rcyBsaWtlLiBVbmxl
-c3MgeW91IGFscmVhZHkgdGVsbCBtZSB0byBqdXN0IG5vdCBoYXZlIGl0DQphcyBhIHNoYXJlZF9i
-eV90eXBlIGF0dHIgKHdoaWNoIEknbSBnZXR0aW5nIG1vcmUgYW5kIG1vcmUgY29udmluY2VkIG9u
-IG15IG93bjsNCkkgZ3Vlc3MgSSBqdXN0IG5lZWQgYW4gZXh0cmEgcHVzaCA6RCkuDQoNCi0gTnVu
-byBTw6ENCg==
+On Mon, 6 Dec 2021 11:07:55 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, December 5, 2021 7:04 PM
+> > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > Cc: linux-iio@vger.kernel.org
+> > Subject: Re: [RFC PATCH 0/1] LTC2688 support
+> > 
+> > [External]
+> > 
+> > On Thu, 2 Dec 2021 15:37:40 +0000
+> > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> >   
+> > > > -----Original Message-----
+> > > > From: Sa, Nuno <Nuno.Sa@analog.com>
+> > > > Sent: Tuesday, November 30, 2021 3:43 PM
+> > > > To: Jonathan Cameron <jic23@kernel.org>
+> > > > Cc: linux-iio@vger.kernel.org
+> > > > Subject: RE: [RFC PATCH 0/1] LTC2688 support
+> > > >
+> > > > [External]
+> > > >
+> > > >
+> > > >  
+> > > > > -----Original Message-----
+> > > > > From: Jonathan Cameron <jic23@kernel.org>
+> > > > > Sent: Sunday, November 21, 2021 1:18 PM
+> > > > > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > > > > Cc: linux-iio@vger.kernel.org
+> > > > > Subject: Re: [RFC PATCH 0/1] LTC2688 support
+> > > > >
+> > > > > [External]
+> > > > >
+> > > > > On Mon, 15 Nov 2021 10:28:51 +0000
+> > > > > "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+> > > > >  
+> > > > > > Hi Jonathan,
+> > > > > >
+> > > > > > Thanks for your inputs...
+> > > > > >  
+> > > > > > > From: Jonathan Cameron <jic23@kernel.org>
+> > > > > > > Sent: Friday, November 12, 2021 5:15 PM
+> > > > > > > To: Sa, Nuno <Nuno.Sa@analog.com>
+> > > > > > > Cc: linux-iio@vger.kernel.org
+> > > > > > > Subject: Re: [RFC PATCH 0/1] LTC2688 support
+> > > > > > >
+> > > > > > > [External]
+> > > > > > >
+> > > > > > > On Thu, 11 Nov 2021 12:00:42 +0100
+> > > > > > > Nuno Sá <nuno.sa@analog.com> wrote:
+> > > > > > >
+> > > > > > > Hi Nuno,
+> > > > > > >  
+> > > > > > > > The reason why this is a RFC is because I'm still waiting for  
+> > > > proper  
+> > > > > HW  
+> > > > > > > > to test this thing. The reason why I'm sending this already is  
+> > > > > because  
+> > > > > > > > there's some non usual features which might require extra  
+> > ABI.  
+> > > > > > > Hence,  
+> > > > > > > > while waiting I thought we could already speed up the  
+> > process  
+> > > > in  
+> > > > > > > regards  
+> > > > > > > > with the ABI.  
+> > > > > > >
+> > > > > > > Wise move as this is an unusual beast :)
+> > > > > > >  
+> > > > > > > >
+> > > > > > > > I still pushed the driver but the intent here is not really to  
+> > > > review  
+> > > > > it.  
+> > > > > > > > Naturally, if someone already wants to give some feedback,  
+> > > > > that's  
+> > > > > > > very  
+> > > > > > > > much appreciated :)  
+> > > > > > >  
+> > > > > > > >
+> > > > > > > > Now, there are three main interfaces depending on the  
+> > > > channel  
+> > > > > > > mode:  
+> > > > > > > >  1) default (no new ABI)
+> > > > > > > >  2) toggle mode
+> > > > > > > >  3) dither mode
+> > > > > > > >
+> > > > > > > > The channel mode will be a devicetree property as it does  
+> > not  
+> > > > > really  
+> > > > > > > > make much sense to change between modes at runtime  
+> > even  
+> > > > > more  
+> > > > > > > because the  
+> > > > > > > > piece of HW we might want to control with a channel might  
+> > be  
+> > > > > > > different  
+> > > > > > > > depending on the selected mode (I'm fairly sure on this  
+> > > > between  
+> > > > > > > toggle  
+> > > > > > > > and other modes but not so sure between dither and  
+> > default  
+> > > > > mode).  
+> > > > > > >
+> > > > > > > I agree on toggle vs dither definitely being different, but  
+> > normal  
+> > > > > you  
+> > > > > > > could implement either as software toggle, or dither with a 0
+> > > > > > > magnitude
+> > > > > > > sine wave.  So might not be worth implementing default  
+> > mode at  
+> > > > > all.  
+> > > > > > > No harm in doing so though if there are advantages to having  
+> > it.  
+> > > > > >
+> > > > > > My feeling is that we could probably have dither as the "default  
+> > > > > mode".  
+> > > > > > More on this below...
+> > > > > >  
+> > > > > > > >
+> > > > > > > > toggle mode special ABI:
+> > > > > > > >
+> > > > > > > >  * Toggle operation enables fast switching of a DAC output  
+> > > > > between  
+> > > > > > > two  
+> > > > > > > > different DAC codes without any SPI transaction. Two codes  
+> > are  
+> > > > > set  
+> > > > > > > in  
+> > > > > > > > input_a and input_b and then the output switches  
+> > according to  
+> > > > > an  
+> > > > > > > input  
+> > > > > > > > signal (input_a -> clk high; input_b -> clk low).
+> > > > > > > >
+> > > > > > > > out_voltageY_input_register
+> > > > > > > >  - selects between input_a and input_b. After selecting one  
+> > > > > register,  
+> > > > > > > we  
+> > > > > > > >    can write the dac code in out_voltageY_raw.
+> > > > > > > > out_voltageY_toggle_en
+> > > > > > > >  - Disable/Enable toggle mode. The reason why I think this  
+> > one  
+> > > > is  
+> > > > > > > >    important is because if we wanna change the 2 codes, we  
+> > > > > should  
+> > > > > > > first  
+> > > > > > > >    disable this, set the codes and only then enable the mode  
+> > > > > back...  
+> > > > > > > >    As I'm writing this, It kind of came to me that we can  
+> > probably  
+> > > > > > > >    achieve this with out_voltageY_powerdown attr (maybe  
+> > > > takes a  
+> > > > > bit  
+> > > > > > > more  
+> > > > > > > >    time to see the outputs but...)  
+> > > > > > >
+> > > > > > > Hmm. These corner cases always take a bit of figuring out.  
+> > What  
+> > > > > you  
+> > > > > > > have
+> > > > > > > here is a bit 'device specific' for my liking.
+> > > > > > >
+> > > > > > > So there is precedence for ABI in this area, on the frequency  
+> > > > > devices  
+> > > > > > > but only
+> > > > > > > for devices we still haven't moved out of staging.  For those  
+> > we  
+> > > > > > > needed a means
+> > > > > > > to define selectable phases for PSK - where the selection was  
+> > > > > either  
+> > > > > > > software or,
+> > > > > > > much like here, a selection pin.
+> > > > > > >
+> > > > > > > out_altvotage0_phase0 etc
+> > > > > > >
+> > > > > > > so I guess the equivalent here would be
+> > > > > > > out_voltageY_raw0
+> > > > > > > out_voltageY_raw1
+> > > > > > > and the selection would be via something like
+> > > > > > > out_voltageY_symbol (0 or 1 in this case). - note this is only
+> > > > > > > relevant if you have the software toggle. Any enable needed  
+> > for  
+> > > > > > > setting
+> > > > > > > can be done as part of the write sequence for the  raw0 /  
+> > raw1  
+> > > > and  
+> > > > > > > should
+> > > > > > > ideally not be exposed to userspace (controls that require  
+> > > > manual  
+> > > > > > > sequencing
+> > > > > > > tend to be hard to use / document).  
+> > > > > >
+> > > > > > Yeah, I thought about that. I was even thinking in having  
+> > something  
+> > > > > like  
+> > > > > > *_amplitude for dither mode. In some cases, where we might  
+> > be  
+> > > > left  
+> > > > > > in some non obvious state (eg: moved the select register to  
+> > input b  
+> > > > > and  
+> > > > > > then we failed to set the code;), I prefer to leave things as  
+> > flexible  
+> > > > as  
+> > > > > > possible for userspace. But I agree it adds up more complexity  
+> > and  
+> > > > in  
+> > > > > > this case, I can just always go to 'input_a' when writing 'raw0'...
+> > > > > >  
+> > > > > > > However, I'm not 100% sure it really maps to this case.  What  
+> > do  
+> > > > > you  
+> > > > > > > think?  
+> > > > > >
+> > > > > > I think it can work. Though out_voltageY_symbol probably  
+> > needs to  
+> > > > > be  
+> > > > > > shared by type to be coherent with what we might have with  
+> > > > TGPx.  
+> > > > >
+> > > > > That's fine.
+> > > > >  
+> > > > > > Note the sw_toggle register has a bit mask of the channels we  
+> > > > want  
+> > > > > to  
+> > > > > > toggle which means we can toggle multiple channels at the  
+> > same  
+> > > > > time.
+> > > > >
+> > > > > Using that wired up to buffer mode might make sense.  You'd  
+> > > > provide  
+> > > > > multiple
+> > > > > buffers and allow channels to be selected into one of them at a  
+> > time.  
+> > > > > Each
+> > > > > buffer is then tied to a different toggle (TGP0, TGP1, etc)
+> > > > >
+> > > > > The same could be true for the software toggle.  It'll get a bit  
+> > fiddly  
+> > > > > though.
+> > > > >
+> > > > > Perhaps this is an advanced feature to think about later...
+> > > > >  
+> > > > > > It works the same with TGPx if you map multiple channels to  
+> > the  
+> > > > > same  
+> > > > > > pin.
+> > > > > >
+> > > > > > There's also the question on how to handle this if a TGPx is  
+> > > > provided?  
+> > > > > > I guess it will just override the pin... But most likely having them  
+> > > > both  
+> > > > > > at the same time will lead to non desired results (unless we  
+> > have a  
+> > > > > > way to gate/ungate the clocks)...  
+> > > > > I don't follow this bit.  You mean TGPx and software toggle. As far  
+> > as I  
+> > > > > can
+> > > > > tell it's an either/or thing per channel.
+> > > > >  
+> > > >
+> > > > Here I meant that if we have a TGPx pin bundled to some  
+> > channel(s)  
+> > > > we
+> > > > do not want to also dance with the sw_toggle bit of that channel.  
+> > >
+> > > Just a note on this. After starting my tests with the device, I can  
+> > actually  
+> > > say that if we have a TGPx set in the channel settings register, the  
+> > device  
+> > > will pretty much ignore the sw_toggle settings for that channel. I  
+> > could  
+> > > see that the output voltage was not toggling at all. As soon as I  
+> > removed  
+> > > the TGPx setting, then dancing with the sw_toggle started to work.  
+> > So, for  
+> > > the HW this is not really an issue as it just ignores the sw_toggle. On a  
+> > SW  
+> > > perspective, I'm still not sure if I just ignore this and write whatever  
+> > the  
+> > > user sets or if I return some error code in the case a user tries to  
+> > toggle  
+> > > a channel with a binded TGPx. The first one is appealing as it makes  
+> > the  
+> > > code much simpler while OTHO it might make sense to be verbose  
+> > here  
+> > > otherwise the user might think something is happening when it  
+> > isn't...
+> > 
+> > If we are in a static configuration (see below) then just don't expose
+> > the
+> > software toggle control.  Not having a big red button to press is the
+> > best way to
+> > tell userspace to not press the big red button...  
+> 
+> 
+> Hmm, I get your point and that's valid if I have the sw_toggle as a per
+> channel attribute. Right now, I'm doing it as shared_by_type. The reason is
+> the sw_toggling is done by writing 1/0 in the toggle register and that register
+> is a bitmask being the mask 16bits wide. This allows you to toggle channels
+> at the same time in the same way you can do it if, say, you map 2,3 or more
+> channels to the same TGPx pin.
+
+Hmm. That will be tricky to support in a remotely 'general' way.
+
+> 
+> However, I'm also not happy for having this as shared_by_type attr. One of
+> my complains is that it makes it look like a dither capable channel will also
+> support this (and we already agreed that sw_toggle does not make sense
+> for dither mode; so do not expose it). For instance the output of 
+> 'iio_attr'  on a dither enabled channel is:
+> 
+> ```
+> root@analog:~# iio_attr -c ltc2688 voltage0
+> dev 'ltc2688', channel 'voltage0' (output), attr 'calibbias', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'calibscale', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_en', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_frequency', value '32768'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_frequency_available', value '32768 16384 8192 4096 2048'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_phase', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_phase_available', value '0 90 180 270'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_raw', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'dither_raw_available', value '[0 1 65535]'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'offset', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'powerdown', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'raw', value '0'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'raw_available', value '[0 1 65535]'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'scale', value '0.076293945'
+> dev 'ltc2688', channel 'voltage0' (output), attr 'symbol', value '0'
+> ```
+> 
+> So you can see that symbol attr which does not make sense to be there. And it's
+> definitely not something wrong in the iio_attr app as the attr is shared by type.
+> 
+> Also, as you suggested, not having the symbol attr when it does not make sense
+> to have it also makes a lot of sense to me and that is one more plus point to have
+> this as a per channel thing.
+> 
+> Anyways, I will probably send the patch with things as I have now so you can
+> have a felling of how it looks like. Unless you already tell me to just not have it
+> as a shared_by_type attr (which I'm getting more and more convinced on my own;
+> I guess I just need an extra push :D).
+
+Shared by type indeed doesn't work as it's a subset - however we would need
+a means to indicate what subset is used if we want to allow single write
+to toggle multiple.   Mind you - the moment we get to multiple channels
+this should probably be using the chrdev route rather than sysfs and I'm
+not sure how that would map to this at all.
+
+So for now maybe take the view that software control of this is a weird feature
+anyway so make it per channel?
+
+Jonathan
+
+> 
+> - Nuno Sá
+

@@ -2,56 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E124698CD
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Dec 2021 15:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 474D8469932
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Dec 2021 15:39:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344198AbhLFO24 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Dec 2021 09:28:56 -0500
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:33603 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236352AbhLFO2z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Dec 2021 09:28:55 -0500
-Received: by mail-ot1-f45.google.com with SMTP id 35-20020a9d08a6000000b00579cd5e605eso13893586otf.0;
-        Mon, 06 Dec 2021 06:25:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=88917iC6H5nhElQ9x7+CfadIV2a1jWVz9fN629up9wg=;
-        b=yprw048BUl+IrxAYWjZJFINkJazyDon6sJUD8UOSfQEZhdyMkwHgiw9IL/zhaHVBdt
-         VdcLJQD5fvx3hkbvAM0NH/VCcjFjZU96e2AC3h62DVo+yVrn/TPezOcfJqt+ncDBDNkA
-         s/qqaUd/7P431aHhTejULorHcP6Zm4HENp+pr2ABQcAQnIEprP6sz1i8p/yDjhO3pyzz
-         hsM7i14ni03wvhAVPRUqHvHTwzD/sj/GY2csHBagdkqJ6KWGcIdo9zRJkpiDtBrGrtfU
-         qOfeeC7IKe9mk0/IJihoWM9ytIQjLAdZu10wj4b0rJm98GyzeYSf58OxJlXI+pIiX1nk
-         +DTA==
-X-Gm-Message-State: AOAM5324VlHMAlXwUo0FAdMNUoAmKn3cN2zIrlAvylkS4dXzLX/nmup9
-        BTSEc+WtuNji9SlSxdcRBQ==
-X-Google-Smtp-Source: ABdhPJzlufPMb8glq0YPKYZhLUskox6MWUfr0g1UpoGFhyfBL+HiJUm0R4QTKML3VOEMR4qh5LLQQw==
-X-Received: by 2002:a05:6830:1e8f:: with SMTP id n15mr29243378otr.259.1638800726030;
-        Mon, 06 Dec 2021 06:25:26 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id x13sm2218912otr.58.2021.12.06.06.25.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Dec 2021 06:25:25 -0800 (PST)
-Received: (nullmailer pid 1976296 invoked by uid 1000);
-        Mon, 06 Dec 2021 14:25:22 -0000
-From:   Rob Herring <robh@kernel.org>
+        id S245281AbhLFOnU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Dec 2021 09:43:20 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4213 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245057AbhLFOnU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Dec 2021 09:43:20 -0500
+Received: from fraeml709-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4J75dx3bmTz67Cqn;
+        Mon,  6 Dec 2021 22:38:45 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml709-chm.china.huawei.com (10.206.15.37) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 6 Dec 2021 15:39:49 +0100
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 6 Dec
+ 2021 14:39:48 +0000
+Date:   Mon, 6 Dec 2021 14:39:47 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
+CC:     <cosmin.tanislav@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
+        Rob Herring <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: accel: add ADXL367
+Message-ID: <20211206143934.000017b8@Huawei.com>
 In-Reply-To: <20211206105403.53049-1-cosmin.tanislav@analog.com>
 References: <20211206105403.53049-1-cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: accel: add ADXL367
-Date:   Mon, 06 Dec 2021 08:25:22 -0600
-Message-Id: <1638800722.501713.1976295.nullmailer@robh.at.kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml746-chm.china.huawei.com (10.201.108.196) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 06 Dec 2021 12:54:02 +0200, Cosmin Tanislav wrote:
+On Mon,  6 Dec 2021 12:54:02 +0200
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
+
 > The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
 > 
 > The ADXL367 does not alias input signals to achieve ultralow power
@@ -66,33 +63,121 @@ On Mon, 06 Dec 2021 12:54:02 +0200, Cosmin Tanislav wrote:
 > of an additional analog input.
 > 
 > Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+
+Hi Cosmin,
+
+Given how often we get patches later to add regulators for devices like
+these I'd like them supported from the start.
+
+I'm guessing it needs power, but how many supplies? I'm not sure as doesn't
+seem to be a public datasheet yet.
+
 > ---
 >  .../bindings/iio/accel/adi,adxl367.yaml       | 79 +++++++++++++++++++
 >  1 file changed, 79 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml b/Docu`mentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+> new file mode 100644
+> index 000000000000..1bf9e1602480
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/accel/adi,adxl367.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices ADXL367 3-Axis Digital Accelerometer
+> +
+> +maintainers:
+> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+> +
+> +description: |
+> +  The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+> +
+> +  The ADXL367 does not alias input signals by to achieve ultralow power
+> +  consumption, it samples the full bandwidth of the sensor at all
+> +  data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+> +  with a resolution of 0.25mg/LSB on the +-2 g range.
+> +
+> +  In addition to its ultralow power consumption, the ADXL367
+> +  has many features to enable true system level power reduction.
+> +  It includes a deep multimode output FIFO, a built-in micropower
+> +  temperature sensor, and an internal ADC for synchronous conversion
+> +  of an additional analog input.
+> +    https://www.analog.com/en/products/adxl367.html
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+"We can't find that page". I guess this driver is running slightly ahead
+of the datasheet being made public.
 
-yamllint warnings/errors:
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adxl367
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/accel/adi,adxl367.example.dt.yaml: adxl367@0: 'spi-max-frequency' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+spi-max-frequency: true
 
-doc reference errors (make refcheckdocs):
+to fix the issue Rob's bot reported.
 
-See https://patchwork.ozlabs.org/patch/1563904
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      adxl367@53 {
+> +        compatible = "adi,adxl367";
+> +        reg = <0x53>;
+> +        interrupt-parent = <&gpio>;
+> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +      };
+> +    };
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      cs-gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
+> +      status = "okay";
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+We don't normally list status in example bindings.
+Also, the cs-gpio is part of the spi master binding
+so no need to have it here as we are showing how the
+actual device binding works.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+That should let you drop the gpio.h header.
 
-pip3 install dtschema --upgrade
 
-Please check and re-submit.
+> +
+> +      adxl367@0 {
+> +        compatible = "adi,adxl367";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        interrupt-parent = <&gpio>;
+> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +      };
+> +    };
 

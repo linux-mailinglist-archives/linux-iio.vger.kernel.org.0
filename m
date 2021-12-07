@@ -2,156 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0F1946C274
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 19:10:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B0A46C3B1
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 20:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235845AbhLGSOY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Dec 2021 13:14:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42182 "EHLO
+        id S235184AbhLGTe0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Dec 2021 14:34:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240457AbhLGSOX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 13:14:23 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CBEC061574
-        for <linux-iio@vger.kernel.org>; Tue,  7 Dec 2021 10:10:52 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1muevT-0005QS-4V; Tue, 07 Dec 2021 19:10:51 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1muevR-003GZI-3v; Tue, 07 Dec 2021 19:10:48 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1muevP-0004QJ-OO; Tue, 07 Dec 2021 19:10:47 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH RFC] counter: Expand API with a function for an exact timestamp
-Date:   Tue,  7 Dec 2021 19:10:45 +0100
-Message-Id: <20211207181045.1246688-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S234947AbhLGTe0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 14:34:26 -0500
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421C7C061574
+        for <linux-iio@vger.kernel.org>; Tue,  7 Dec 2021 11:30:55 -0800 (PST)
+Received: by mail-lj1-x22f.google.com with SMTP id z8so25898ljz.9
+        for <linux-iio@vger.kernel.org>; Tue, 07 Dec 2021 11:30:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=QKYilOdP7Yf7mqn/vZMcw/Iu8J+Ul6GWSBNFIKCT6CA=;
+        b=SyZIJL4QrYXNhJqZ+3Pj9tY20aBtQLHnPCzyCGf7s+heb+IDZ9vJIdUZ8/hFpXF5Or
+         irdJIU1/zKefBqAj2HvSJp1PM9lcoN9saFL+VzUZCn6qPgQ1WYE689EsziN2TVzWZukp
+         y9R4idfCMjKMe3lOErG1hmiZZynCEEilF6sp9gdF0pFursXNZmi5EeIBPvRb5tG8hVNP
+         fpD65SBn3zlQbIxtiWdi72zywheC1d5pCmFjvcGbEQd24ke7h7vDJNfqW9xrC4MJJwOf
+         Gz+VTN0ihrnzaGhTH/TvNjQPdhCnHabFRDXftldIwNZ3tuTKrgwRlBDsHqW/PFRqLg9a
+         9NNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=QKYilOdP7Yf7mqn/vZMcw/Iu8J+Ul6GWSBNFIKCT6CA=;
+        b=MsrmIrAsTXWy8U/Fpt03CSpsqnFShqICnfl/WoGQUWtNcYXDJpE+1Q8us0wbcGth46
+         GhIJK68grf0fC9B5vNFNrQbKfdmdAEvrqyMKt/tqJ1qEc4v5Hn5LMrXrs90bpDWGBAth
+         vvMNvs1mWgO7O3pXPEhVd3l+ovN2pnX/OCTDHwqCl+SQ1AUWTNa9ZiTaL+xykZma6XyW
+         5wccsrRAl1ZL/Dl8pHFIRdGTNJgPlu7W4T4X/YjJiFneipEi18ebOU99N5rf8+dJDOha
+         21F0mhG7lEo4vHVDJuCr8xIVybrQbN9QDGRL6XRbarcDF1ZlGPDrcwASQc8usbO4SZtF
+         evnA==
+X-Gm-Message-State: AOAM5315zKLfQhZxbAb4lONmatHBTx9TNZCOD2XNxGGEfRardx8K8Xsi
+        x2Rp7zxm1HQ/b0pcoWfdHbYnUCsnb6w=
+X-Google-Smtp-Source: ABdhPJyHKEsTcIGsV0eyu2e2vG2Uqty+hEtIBKgPptaM4gpisJ6f5enOLqJnuVP0nG9+k7xt2nFhEA==
+X-Received: by 2002:a2e:a7c8:: with SMTP id x8mr44052216ljp.524.1638905453570;
+        Tue, 07 Dec 2021 11:30:53 -0800 (PST)
+Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id v7sm43511ljd.31.2021.12.07.11.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Dec 2021 11:30:52 -0800 (PST)
+Date:   Tue, 7 Dec 2021 20:31:01 +0100
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kent Gustavsson <kent@minoris.se>
+Subject: Re: [PATCH v3 08/12] iio:adc:mcp3911: Switch to generic firmware
+ properties.
+Message-ID: <Ya+2UABHGpgYv29y@gmail.com>
+References: <20211205170140.2783914-1-jic23@kernel.org>
+ <20211205170140.2783914-9-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=NlKp1LK5v6xBCY+aNO8ybbv99ZeVpfy/fnmv/YwRJlQ=; m=bcFT8/le/Z563Yj+LzD3tdxG2XjNkioc5qyc9EZfryg=; p=jdEeJY70HJ0askaIZhRPa7rYx3iIbKtzW42Q5kL9YuY=; g=7d4bcac9999d9238c4bfa99bc790dd7b0ed7f359
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmGvo6EACgkQwfwUeK3K7AnfgAf/WFN vbI4GEYXCOMjBxgv0jdD07G01mHG4lRfkVyt4Uox+1sKwebEtaPFcHqZ1313ORrCZ61E0tSffMXu+ wnU4pmzOquGg9puFzM6b5t1KqabnKshUMHWK+F2NNXuHsNTj5Ki9145FShLm/Pe/5YtPgbamfcaVI 7OoYLUMWp4ry5Dna9DBX+vix3fp0LoEhoIB9i445ByXJaRtHD4W2GyZJSvFFDvnA1oeUmmV0JrTR0 thjUe1vqHXO8vJlpvebya4gB5Syq+qAGPaoZBxLpKP4aPv77+ctXYw6n+SNWPSpUYzR1M2UmoEi0s inZVufqz8VCjSIXpm49WbN92BfznvSQ==
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ZOfRchu6gDg2rPZ1"
+Content-Disposition: inline
+In-Reply-To: <20211205170140.2783914-9-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Some hardware units capture a timestamp for the counted event. To
-increase precision add a variant of counter_push_event() that allows
-passing this timestamp.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
+--ZOfRchu6gDg2rPZ1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-the difficulty is that the captured timer value is in a unit different
-from the one provided by ktime_get_ns(). So maybe some helper functions
-will be needed to convert the local timer value to a ktime timestamp?
+On Sun, Dec 05, 2021 at 05:01:36PM +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> This allows use of the driver with other types of firmware such as ACPI
+> PRP0001 based probing.
+>=20
+> Also part of a general attempt to remove direct use of of_ specific
+> accessors from IIO.
+>=20
+> Added an include for mod_devicetable.h whilst here to cover the
+> struct of_device_id definition.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-So usage would be something like:
+Reviewed-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-	ktime_now = ktime_get_ns();
-	local_now = readl(CNT);
-	local_event = readl(...);
+--ZOfRchu6gDg2rPZ1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	ktime_event = ktime_now - (local_now - local_event) * somefactor >> someshift;
+-----BEGIN PGP SIGNATURE-----
 
-	counter_push_event_ts(count, event, channel, ktime_event);
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmGvtnAACgkQiIBOb1ld
+UjJCaxAAyOUBmpn1zA/cRvaz314o3cWtP6XWMXL7QuhFGVj+jrrDhvvR4FsZa4P7
+KuPTPwy3BQYDIqcE5cQ64KlDBcjoX2HBdpeg8bv9NRdLyO+3PimGc5vDq1QHcf3I
+/xm6YMztnOPLaRrGWDeLHfVunZ6JowKG4iAK4EodOZg3exXQmM+dlHTO2BL9oe09
+hPGC+/OoY9HE37hVsILPdQgOHQfQXyZ6Ih2AQWBN4C/qMyaa5lrKCOYsave+JuVa
+JFa0NTmpucFiHuwRt6GIRLDKBYgvsFfWquKUFDdKfAZSnloznqZLM1aheFwt/Hqo
+lrZ5GtVll4C2HrMQmQgr2+brsQ7Zg0NM1+s2DdB52n0xl9S4rhKmZ9YQUWUC0UEG
+8NbuJ7NFSDq7fXr7bAiE1nlx1ei9cfpxY75HYDTEWtFuBylcyiiZ1RBm5k1+cjyl
+Y4lJ8C4tKj4KcMikZgnQoYcRKnS2+f0+n/BaaMfWYt0B+v4EQ63MkDh7gJhrYpvs
+HZW9Mpn+MAlzku3h9VdJtKOYPMcHN534SHLX1t7CTnN1Ada8EADH4g45ONLTZHVA
+7A04WSZ6lBo8xpCX1SI82pqZZPaalocLWbBwnGBtfey8/ZuJ4jgBaQN9EDqjFvlG
+T/095og0oA+LsVQK0Kx2RCOYFg69LvlzDG3Rfm2MTBH41glP2Eo=
+=nOep
+-----END PGP SIGNATURE-----
 
-This improves the precision because irq latency doesn't influence
-the resulting timestamp. The precision then only depends on the timer
-resolution and the delay between ktime_get_ns() and readl(CNT);
-
-I don't have a driver (yet) that makes use of this, the hardware where
-this will matter will be stm32mp1.
-
-Best regards
-Uwe
-
- drivers/counter/counter-chrdev.c | 25 +++++++++++++++++++++----
- include/linux/counter.h          |  2 ++
- 2 files changed, 23 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
-index b7c62f957a6a..6381f7246d59 100644
---- a/drivers/counter/counter-chrdev.c
-+++ b/drivers/counter/counter-chrdev.c
-@@ -521,16 +521,17 @@ static int counter_get_data(struct counter_device *const counter,
- }
- 
- /**
-- * counter_push_event - queue event for userspace reading
-+ * counter_push_event_ts - queue event with a timestamp for userspace reading
-  * @counter:	pointer to Counter structure
-  * @event:	triggered event
-  * @channel:	event channel
-+ * @timestamp:	the ktime when the event occurred
-  *
-  * Note: If no one is watching for the respective event, it is silently
-  * discarded.
-  */
--void counter_push_event(struct counter_device *const counter, const u8 event,
--			const u8 channel)
-+void counter_push_event_ts(struct counter_device *const counter, const u8 event,
-+			   const u8 channel, u64 timestamp)
- {
- 	struct counter_event ev;
- 	unsigned int copied = 0;
-@@ -538,7 +539,7 @@ void counter_push_event(struct counter_device *const counter, const u8 event,
- 	struct counter_event_node *event_node;
- 	struct counter_comp_node *comp_node;
- 
--	ev.timestamp = ktime_get_ns();
-+	ev.timestamp = timestamp;
- 	ev.watch.event = event;
- 	ev.watch.channel = channel;
- 
-@@ -570,4 +571,20 @@ void counter_push_event(struct counter_device *const counter, const u8 event,
- 	if (copied)
- 		wake_up_poll(&counter->events_wait, EPOLLIN);
- }
-+EXPORT_SYMBOL_GPL(counter_push_event_ts);
-+
-+/**
-+ * counter_push_event - queue event for userspace reading
-+ * @counter:	pointer to Counter structure
-+ * @event:	triggered event
-+ * @channel:	event channel
-+ *
-+ * Note: If no one is watching for the respective event, it is silently
-+ * discarded.
-+ */
-+void counter_push_event(struct counter_device *const counter, const u8 event,
-+			const u8 channel)
-+{
-+	counter_push_event_ts(counter, event, channel, ktime_get_ns());
-+}
- EXPORT_SYMBOL_GPL(counter_push_event);
-diff --git a/include/linux/counter.h b/include/linux/counter.h
-index b7d0a00a61cf..596e7e58e463 100644
---- a/include/linux/counter.h
-+++ b/include/linux/counter.h
-@@ -333,6 +333,8 @@ int counter_register(struct counter_device *const counter);
- void counter_unregister(struct counter_device *const counter);
- int devm_counter_register(struct device *dev,
- 			  struct counter_device *const counter);
-+void counter_push_event_ts(struct counter_device *const counter, const u8 event,
-+			   const u8 channel, u64 timestamp)
- void counter_push_event(struct counter_device *const counter, const u8 event,
- 			const u8 channel);
- 
--- 
-2.30.2
-
+--ZOfRchu6gDg2rPZ1--

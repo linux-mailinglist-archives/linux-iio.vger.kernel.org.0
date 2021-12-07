@@ -2,69 +2,178 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 405FB46AB08
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Dec 2021 22:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B8046B381
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 08:16:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356083AbhLFV4B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Dec 2021 16:56:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355942AbhLFVz5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Dec 2021 16:55:57 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6191DC0698C2
-        for <linux-iio@vger.kernel.org>; Mon,  6 Dec 2021 13:52:28 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id y68so35342080ybe.1
-        for <linux-iio@vger.kernel.org>; Mon, 06 Dec 2021 13:52:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=U+wvXPwvhucTVlxnfZp7fdTxV1dqI6RrlYLlpej7n+A=;
-        b=A1drCu8/2EbCOqmoAFbJDuTr6v9X1LmPHk/OZr8jE5hpKtRWwd08YftifjBdbkXJUg
-         dmrMD5WSKv18qutIqdGjNuPq33qR9tmxMr9qPeukt9J7LC69eKS2z+NZ4jJJz9Xtr7VM
-         jC33eODMlgpvkNPoFT/fkcQ5Ake3Jxog6ZGc+wYd8KVA/hwp9vT00V5vDhH8f8XpX511
-         CA37p7jeqg1wSNk8BIPAwxzAjlidFTEmA5f+i1k6RS9O1Y3GhbXkQcI2oJ0W64HiQtwM
-         GlnIl/ToQ7+vQb78XcGhn3MvkzRXguXM0naRpVrVrb/310ivxeU424UB6QtcXPlhpNhp
-         WgQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=U+wvXPwvhucTVlxnfZp7fdTxV1dqI6RrlYLlpej7n+A=;
-        b=ZJQ2OZEvYZvJDydId1hzVzLKAMxV2PC2bObWbxA1ljFRh+g9vORXtGrLlDi05eeXjw
-         caLkz9lcSOoB5sGrwwhsBVIfg/pE/A3GAA9zG1tqTaVyiBKHLjJ5Y9HKKRmfc7k6iXHv
-         t/pArBtnlTeqsSZEF1g8uWVLteke2AV1sJvrbnV+RNtp+VtbLt4XNA2fxgF4/qahxMb+
-         00K6nb7HIODg+legY952r0wL5ElSB100ILdV69kR7B2mPFlCArD/SY0Vb2ngYBj97W+b
-         DrGhtytl6kTLUXZ2y707TpbFDrWESf2K/6nilDlUgmPUwzB6PBoBg59V4H0THGrDzvbj
-         pMKg==
-X-Gm-Message-State: AOAM531JbkBsiLNAdxErjEalF8wcFvYSU4iAMwAEWGqYTHzuAYgdOXd6
-        zsefBp32tzwA4yJ70LNDmy+Myg0UO/+vtFYUMT8=
-X-Google-Smtp-Source: ABdhPJwGP4XOziDvK97TQZ20UXdtswrtdpCxtQSBPll8g3OW2CZQ6HzzHIFnus1Qmz6FEozwBECx4TP8w+380fssLDk=
-X-Received: by 2002:a25:ad06:: with SMTP id y6mr43839851ybi.278.1638827547324;
- Mon, 06 Dec 2021 13:52:27 -0800 (PST)
+        id S229670AbhLGHTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Dec 2021 02:19:35 -0500
+Received: from protonic.xs4all.nl ([83.163.252.89]:41128 "EHLO
+        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229596AbhLGHTe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 02:19:34 -0500
+Received: from erd992 (erd988.prtnl [192.168.224.30])
+        by sparta.prtnl (Postfix) with ESMTP id 0BB6C44A024F;
+        Tue,  7 Dec 2021 08:16:03 +0100 (CET)
+Date:   Tue, 7 Dec 2021 08:16:02 +0100
+From:   David Jander <david@protonic.nl>
+To:     David Lechner <david@lechnology.com>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
+Message-ID: <20211207081602.45b1423c@erd992>
+In-Reply-To: <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
+References: <20211123134540.416695-1-o.rempel@pengutronix.de>
+        <YZ3XAeYyfGblfaOi@shinobu>
+        <20211124072720.GA30281@pengutronix.de>
+        <YZ7tv79LQwLL7h3T@shinobu>
+        <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a05:7110:91a4:b0:fe:6c12:9189 with HTTP; Mon, 6 Dec 2021
- 13:52:26 -0800 (PST)
-Reply-To: mauhin13@gmail.com
-From:   Maureen Hinckley <bonfacemuchoki111@gmail.com>
-Date:   Tue, 7 Dec 2021 00:52:26 +0300
-Message-ID: <CAGdddHJh=8bNKeNqihaaKsrWmz89kWsSk7ZPf1twu3_Ru7LkMg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Hello,
 
-I am Maureen Hinckley and my foundation is donating ($2.2 Million.
-Dollars) to you. Contact us via my email at (mauhin13@gmail.com) for
-further details.
+Hi David,
 
-Best Regards,
-Mrs. Maureen Hinckley,
-Copyright =C2=A92021 The Maureen Hinckley Foundation All Rights Reserved.
+On Mon, 6 Dec 2021 13:24:18 -0600
+David Lechner <david@lechnology.com> wrote:
+
+> On 11/24/21 7:58 PM, William Breathitt Gray wrote:
+> > On Wed, Nov 24, 2021 at 08:27:20AM +0100, Oleksij Rempel wrote:  
+> >> Hi William,
+> >>
+> >> On Wed, Nov 24, 2021 at 03:09:05PM +0900, William Breathitt Gray wrote:  
+> >>> On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote:  
+> >>>> Add counter_push_event() to notify user space about new pulses
+> >>>>
+> >>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> >>>> ---
+> >>>>   drivers/counter/interrupt-cnt.c | 2 ++
+> >>>>   1 file changed, 2 insertions(+)
+> >>>>
+> >>>> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+> >>>> index 8514a87fcbee..b237137b552b 100644
+> >>>> --- a/drivers/counter/interrupt-cnt.c
+> >>>> +++ b/drivers/counter/interrupt-cnt.c
+> >>>> @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int irq, void *dev_id)
+> >>>>   
+> >>>>   	atomic_inc(&priv->count);
+> >>>>   
+> >>>> +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, 0);
+> >>>> +
+> >>>>   	return IRQ_HANDLED;
+> >>>>   }
+> >>>>   
+> >>>> -- 
+> >>>> 2.30.2  
+> >>>
+> >>> Hi Oleksij,
+> >>>
+> >>> It looks like this is pushing a COUNTER_EVENT_OVERFLOW event every time
+> >>> an interrupt is handled, which I suspect is not what you want to happen.
+> >>> The COUNTER_EVENT_OVERFLOW event indicates a count value overflow event,
+> >>> so you'll need to check for a count value overflow before pushing the
+> >>> event.
+> >>>
+> >>> It would be good idea to implement a ceiling extension as well (you can
+> >>> use the COUNTER_COMP_CEILING() macro) so that users can configure the
+> >>> particular point where the value overflows.  
+> >>
+> >> Thank you!
+> >>
+> >> What would be the best and resource effective strategy for periodically
+> >> getting frequency of interrupts/pulses? This is actual information which is
+> >> needed for my use case.
+> >>
+> >> So far, I was pushing every event to the user space, which is working
+> >> but probably not the most resource effective method of doing it.
+> >>
+> >> Regards,
+> >> Oleskij
+> >> -- 
+> >> Pengutronix e.K.                           |                             |
+> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |  
+> > 
+> > We could introduce a new Counter change-of-state event type which would
+> > trigger whenever the count value changes, but I agree with you that this
+> > is likely not the best way for us to derive the frequency of the
+> > interrupts due to the indirection of handling and parsing the event
+> > data.
+> > 
+> > Instead, perhaps introducing a "frequency" or "period" Count extension
+> > would make more sense here. This extension could report the value delta
+> > between counts, or alternatively the time delta from which you can
+> > derive frequency. Regarding implementation, you can store the previous
+> > value in a variable, updating it whenever an interrupt occurs, and
+> > compute the particular delta every time a read is requested by the user.
+> > 
+> > David Lechner is implementing something similar for the TI eQEP driver
+> > to expose speed, so I'm CCing them here in case this is of interest to
+> > them.
+> >   
+> 
+> Based on my experience, I would recommend that counter drivers be as
+> "thin" as possible. They shouldn't try to provide any information that
+> the hardware itself doesn't provide. In other words, the kernel should
+> provide userspace the information needed to calculate the speed/rate
+> but not try to do the actual calculation in the kernel. Inevitably
+> there are nuances for specific use cases that can't all possibly be
+> handled by such an implementation.
+
+I completely agree with this. While interrupts aren't really meant for
+measuring frequency, and this being somewhat of a mis-use of something, it is
+still possible to do and very useful in many cases. That said, while the
+counter framework is AFAIK the best fit for this, the main use-case for this
+driver is measuring wheel speed (and similar "speeds"). For this, the minimum
+amount of information the driver needs to provide user-space with to do
+reliable calculations, is high-resolution time-stamps of GPIO events. A simple
+counter is not suited, because there can be glitches that need to be detected.
+If user-space gets a buffer full of consecutive time-stamps (don't need to be
+all of them, just a sample of n consecutive timestamps), as well as total
+count, all needed calculations, glitch filtering, low-pass filtering, etc...
+can be done in user-space just fine.
+
+> I've tried using gpio interrupts to try to calculate speed/rate in
+> the kernel before and it simply doesn't work reliably. Interrupts
+> get missed and the calculation will be off.
+
+Exactly. Been there, done that.
+For reliable speed calculations of a mechanical system, the properties of the
+mechanical system need to be known, like physical limits of accelerations,
+maximum (or minimum) speed, etc. The minimum set of input data needed by a
+user-space application to do these calculations is total pulse count in
+addition to a buffer of timestamps of n consecutive input events (raising or
+falling edges on GPIO). So IMHO this is what the driver should provide, and
+in the most resource-efficient way possible. This particular driver will be
+used 3 times on the same SoC, with each up to 10-15k pulses per second. That
+is a lot of interrupts for an embedded system, so they better consume as
+little resources as possible. Filling a ring buffer with timestamps should be
+possible, as long as no locking is involved. Locks in IRQ context must be
+avoided at all costs, specially in this case.
+
+> For really slow counts (i.e. 1 count/second), I can see a use for
+> generating an event on each count though. For high rates, I would
+> just read the count every 100ms in usespace and divide the change in
+> the number of counts by the time period to get the rate.
+
+For slow counts, I agree, but for high rates, I don't (see above). There can
+be glitches and false events that can (and must) be effectively filtered out.
+For that user-space needs to know the time of each event during the
+measurement period.
+
+Best regards,
+
+-- 
+David Jander
+Protonic Holland.

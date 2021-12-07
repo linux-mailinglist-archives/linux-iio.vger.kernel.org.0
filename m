@@ -2,77 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D83046C07F
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 17:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 739FA46C0F0
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 17:50:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234656AbhLGQRO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Dec 2021 11:17:14 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4227 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234668AbhLGQRN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 11:17:13 -0500
-Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4J7lg02jXrz67Pyr;
-        Wed,  8 Dec 2021 00:11:56 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 7 Dec 2021 17:13:40 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Tue, 7 Dec
- 2021 16:13:39 +0000
-Date:   Tue, 7 Dec 2021 16:13:38 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Henk <yoda@deathstar2.nl>
-CC:     linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: iio display large numbers
-Message-ID: <20211207161338.000012bd@Huawei.com>
-In-Reply-To: <9bd04e6d-7418-9d01-6e80-52fd7e84086f@deathstar2.nl>
-References: <9bd04e6d-7418-9d01-6e80-52fd7e84086f@deathstar2.nl>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        id S239061AbhLGQxi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Dec 2021 11:53:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51200 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234890AbhLGQxi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 11:53:38 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29A1C061574
+        for <linux-iio@vger.kernel.org>; Tue,  7 Dec 2021 08:50:07 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id r11so59132008edd.9
+        for <linux-iio@vger.kernel.org>; Tue, 07 Dec 2021 08:50:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=l4M25RUeS9aCUtSGNgcSHv8fdxUXdgMD4+Gi24GzVRE=;
+        b=ksyCLPgC2Zavp91zXjaHct3YMqSd2wbHOqLONUIWCZLDI9KYwLSYpbT1YfWuB8NwNO
+         Y0NRjtB14+RHG+aQK3UiazssoUqEROtcHdFzd+CtWJPpMO+ZiC5+DTEDJKuG2XAtxs6Q
+         XNdxknntjm6nSSgdT4gxb6VnJI+FycxLWolzzG9a+GX7ytDTtxWZGIK3Opto3ShNfsg5
+         psr3FpIfIzzdebwLP3HF5d/IVe/R78eXXN6WQsYD1jVuKcvvBk5Y0agwoaAd2UHZEDoy
+         wBScI/nOoC1cidLwsR3o1tm40oLWz1Mmc9225mMA5kYcAv7G6h7t7BNp/ZCmSrxH9SJY
+         9kyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=l4M25RUeS9aCUtSGNgcSHv8fdxUXdgMD4+Gi24GzVRE=;
+        b=3uMplbuwzKDdQsUreTiGH/ScLdyoeJ2qhe3HarR5GkfwcllTEyruxJiETteCWSkr8y
+         RM2CCDwlR+xRmcE14hrLw8cN4MdAfuspyF4HHZ7d91ye9fOPjMVRh6vcSYIrllR0sCTH
+         WlMf1EyjxovKDL1pFWuShvEeGos9+7syuqEHx7JNwwBnnCPGOzV2VlHs0I5YFkD5j9dj
+         dbucNANfMAbpFbZyw8kvIb5DLZl4FkgEFpVl0dCW+YQ4meO5PtDUpFKk9+Nh6jJvQ6m0
+         gBsI+qDd+iW8Ka3JmY9RW1gzopA/I1r5SQwPdmqlOSoqYYL9AsZLqeuOMa8edpD8jfuE
+         LZUw==
+X-Gm-Message-State: AOAM532ub03SQTUdpyjWWIFpa7J55b11mkzypIqq5AzDnavQHo1rvB6B
+        3dOPPa4gs1e2ag6WJEBnDZZUmrShs37iNROqHK0=
+X-Google-Smtp-Source: ABdhPJz53LMgJDqLuRrlgwxoDrtPaK5BfVXwRWcekQWzp0xUf7lo9CgMxXABsKsQT/moToDXQ9V3y9lhmWCQ8Imtg+I=
+X-Received: by 2002:a17:907:3e8a:: with SMTP id hs10mr630047ejc.404.1638895806323;
+ Tue, 07 Dec 2021 08:50:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml708-chm.china.huawei.com (10.201.108.57) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Received: by 2002:a54:2ecf:0:0:0:0:0 with HTTP; Tue, 7 Dec 2021 08:50:05 -0800 (PST)
+Reply-To: lisshuuu1@gmail.com
+From:   MS LISA HUGH <olivier.folly0@gmail.com>
+Date:   Tue, 7 Dec 2021 17:50:05 +0100
+Message-ID: <CAG_GOAuYcLA4EEBUokYkvfdjSPCM_=xwbrtP-Pn9B8WgvDDKUA@mail.gmail.com>
+Subject: YOU HAVE THE DETAILS AS SOON I HEAR FROM YOU(Ms Lisa Hugh)
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 7 Dec 2021 13:40:19 +0100
-Henk <yoda@deathstar2.nl> wrote:
+Dear Friend,
 
-> Hi,
-> 
-> I derived the LTC6951 driver from an existing analog devices LTC6952 driver.
-> However for my situation this clock synthesis/buffer uses quite large 
-> output frequencies (2.5GHz) which does not fit in the IIO_VAL_INT size 
-> when retrieved with iio_info.
-> 
-> I wonder if there is a way to represent such long integers within the 
-> iio_framework. I believe currently there isn't right?
-> 
-> Regards,
-> 
-> Henk
-> 
+I am Ms Lisa Hugh accountant and files keeping by profession with the bank.
 
-Two options for this.  If the thing we are controlling is the raw channel then
-we have the option to provide _scale reflecting the fact that a large value
-e.g. GHz is not normally controlled at a Hz granularity.
+I need Your help for the assistance transferring of ($4,500,000,00
+,U.S.DOLLARS)to your bank
 
-Where that doesn't apply or the range is really very big we do have the
-slightly nasty option of IIO_VAL_INT_64
+account with your co-operation for both of us benefit.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=6bb835f3d00467c9a5e35f4955afa29df96a404e
-
-This is very new, so not in mainline yet, though it is queued up for the
-next merge window and should be linux-next.
-
-Hope that helps,
-
-Jonathan
+Please send the follow below,
+1)AGE....2)TELEPHONE NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
+Thanks.
+Ms Lisa Hugh

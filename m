@@ -2,178 +2,231 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4B8046B381
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 08:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C5146B4F0
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Dec 2021 08:58:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbhLGHTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Dec 2021 02:19:35 -0500
-Received: from protonic.xs4all.nl ([83.163.252.89]:41128 "EHLO
-        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbhLGHTe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 02:19:34 -0500
-Received: from erd992 (erd988.prtnl [192.168.224.30])
-        by sparta.prtnl (Postfix) with ESMTP id 0BB6C44A024F;
-        Tue,  7 Dec 2021 08:16:03 +0100 (CET)
-Date:   Tue, 7 Dec 2021 08:16:02 +0100
-From:   David Jander <david@protonic.nl>
-To:     David Lechner <david@lechnology.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-Message-ID: <20211207081602.45b1423c@erd992>
-In-Reply-To: <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
-References: <20211123134540.416695-1-o.rempel@pengutronix.de>
-        <YZ3XAeYyfGblfaOi@shinobu>
-        <20211124072720.GA30281@pengutronix.de>
-        <YZ7tv79LQwLL7h3T@shinobu>
-        <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S231819AbhLGIBu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Dec 2021 03:01:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36490 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231779AbhLGIBt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Dec 2021 03:01:49 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9101C061746;
+        Mon,  6 Dec 2021 23:58:18 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id v1so53513968edx.2;
+        Mon, 06 Dec 2021 23:58:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language
+         :from:to:cc:references:in-reply-to:content-transfer-encoding;
+        bh=kTaTuvnIiWNkFaP7T7hHXwJ1u4DZben5tJJBLE03q0c=;
+        b=dZ69FQ/SNx7mYp/5yxGgxgHib5YqgDi7/5hrNwk1GhoFhmtxg9x5lWvp4VhYXf4a7h
+         vQTBs6rxYYr6Zy7Wc5b01I1mspXkc/zEMPcVU20ryVEMKExgdkiRYtdYfTvPqDkq2cXM
+         t/IC4OcdWzmANvs9zGFZxpV+06q8m/ZlNbp2hEag9efbvK8Bz/xTd6n9TIBSMKuemEiq
+         s0hGaG5rgqQ2xm63OxeitYIJrf2LeqFX/HE81wmm+8gwQ3FNSUPBvtlFPyNde1/hO3mK
+         0XRcyKFp9wocd9gSvUGIrNooI4M7f6+yKWBzQV+qjt6rbIxQBqrPXNEr93w/6Jhp6P/C
+         MwcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:from:to:cc:references:in-reply-to
+         :content-transfer-encoding;
+        bh=kTaTuvnIiWNkFaP7T7hHXwJ1u4DZben5tJJBLE03q0c=;
+        b=nfik/Ics6Nvw7Rr6qsSEdec1/BlwvYXx5PwDHQoKRUdZwd34udcdfswKVBxC+O+qPv
+         kPO3HIRQsWY28iXFVrkH/JPUba3USNRCvmrtkfMy0puLl0ytX32ppm366nGJfdnvjkLN
+         LjiiqfvCpB5VRLKLlUAVTpGtlJeYCEXCfMnloDx7aeu7YWNqI5Zjp5NBSTCMMWlvEpgo
+         wP4L/BX+LPAeeWMmOZAnWswbjhQsdomxwlsrdo8aOx4q2X/m8yhdkFWKWiu2YlVXGi+A
+         wWs/ZVHxpHxWoFGrPvInzA8SvPY9NSRcfnTOLNr/sO6mvpWl49bjxMLjql23SH5NNm56
+         TGYQ==
+X-Gm-Message-State: AOAM531bNyjOxcR+sSuBydRpd3Kte++txTR/tB3nbJVlNzCHSISmnzyY
+        fRCfKJJLGiyiEFKsjrta+rc=
+X-Google-Smtp-Source: ABdhPJyDkQQQvbY2XGEm3D9QugAHX4eIsOsoJkEnM1BHQ25u7vnwxXy6xo76zYRMl9Y2cLjArqTScg==
+X-Received: by 2002:aa7:c714:: with SMTP id i20mr6754402edq.180.1638863897366;
+        Mon, 06 Dec 2021 23:58:17 -0800 (PST)
+Received: from [192.168.0.182] ([188.24.96.74])
+        by smtp.gmail.com with ESMTPSA id e19sm9461455edu.47.2021.12.06.23.58.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Dec 2021 23:58:16 -0800 (PST)
+Message-ID: <982d5463-0cbf-3275-8f9a-6c3680337738@gmail.com>
+Date:   Tue, 7 Dec 2021 09:58:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: accel: add ADXL367
+Content-Language: en-US
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211206105403.53049-1-cosmin.tanislav@analog.com>
+ <20211206143934.000017b8@Huawei.com>
+ <1f23cc46-47b7-e00d-40d3-ec2083928759@gmail.com>
+In-Reply-To: <1f23cc46-47b7-e00d-40d3-ec2083928759@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-Hi David,
 
-On Mon, 6 Dec 2021 13:24:18 -0600
-David Lechner <david@lechnology.com> wrote:
-
-> On 11/24/21 7:58 PM, William Breathitt Gray wrote:
-> > On Wed, Nov 24, 2021 at 08:27:20AM +0100, Oleksij Rempel wrote:  
-> >> Hi William,
-> >>
-> >> On Wed, Nov 24, 2021 at 03:09:05PM +0900, William Breathitt Gray wrote:  
-> >>> On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote:  
-> >>>> Add counter_push_event() to notify user space about new pulses
-> >>>>
-> >>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> >>>> ---
-> >>>>   drivers/counter/interrupt-cnt.c | 2 ++
-> >>>>   1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> >>>> index 8514a87fcbee..b237137b552b 100644
-> >>>> --- a/drivers/counter/interrupt-cnt.c
-> >>>> +++ b/drivers/counter/interrupt-cnt.c
-> >>>> @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int irq, void *dev_id)
-> >>>>   
-> >>>>   	atomic_inc(&priv->count);
-> >>>>   
-> >>>> +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, 0);
-> >>>> +
-> >>>>   	return IRQ_HANDLED;
-> >>>>   }
-> >>>>   
-> >>>> -- 
-> >>>> 2.30.2  
-> >>>
-> >>> Hi Oleksij,
-> >>>
-> >>> It looks like this is pushing a COUNTER_EVENT_OVERFLOW event every time
-> >>> an interrupt is handled, which I suspect is not what you want to happen.
-> >>> The COUNTER_EVENT_OVERFLOW event indicates a count value overflow event,
-> >>> so you'll need to check for a count value overflow before pushing the
-> >>> event.
-> >>>
-> >>> It would be good idea to implement a ceiling extension as well (you can
-> >>> use the COUNTER_COMP_CEILING() macro) so that users can configure the
-> >>> particular point where the value overflows.  
-> >>
-> >> Thank you!
-> >>
-> >> What would be the best and resource effective strategy for periodically
-> >> getting frequency of interrupts/pulses? This is actual information which is
-> >> needed for my use case.
-> >>
-> >> So far, I was pushing every event to the user space, which is working
-> >> but probably not the most resource effective method of doing it.
-> >>
-> >> Regards,
-> >> Oleskij
-> >> -- 
-> >> Pengutronix e.K.                           |                             |
-> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |  
-> > 
-> > We could introduce a new Counter change-of-state event type which would
-> > trigger whenever the count value changes, but I agree with you that this
-> > is likely not the best way for us to derive the frequency of the
-> > interrupts due to the indirection of handling and parsing the event
-> > data.
-> > 
-> > Instead, perhaps introducing a "frequency" or "period" Count extension
-> > would make more sense here. This extension could report the value delta
-> > between counts, or alternatively the time delta from which you can
-> > derive frequency. Regarding implementation, you can store the previous
-> > value in a variable, updating it whenever an interrupt occurs, and
-> > compute the particular delta every time a read is requested by the user.
-> > 
-> > David Lechner is implementing something similar for the TI eQEP driver
-> > to expose speed, so I'm CCing them here in case this is of interest to
-> > them.
-> >   
+On 12/6/21 21:31, Cosmin Tanislav wrote:
 > 
-> Based on my experience, I would recommend that counter drivers be as
-> "thin" as possible. They shouldn't try to provide any information that
-> the hardware itself doesn't provide. In other words, the kernel should
-> provide userspace the information needed to calculate the speed/rate
-> but not try to do the actual calculation in the kernel. Inevitably
-> there are nuances for specific use cases that can't all possibly be
-> handled by such an implementation.
+> 
+> On 12/6/21 16:39, Jonathan Cameron wrote:
+>> On Mon,  6 Dec 2021 12:54:02 +0200
+>> Cosmin Tanislav <demonsingur@gmail.com> wrote:
+>>
+>>> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+>>>
+>>> The ADXL367 does not alias input signals to achieve ultralow power
+>>> consumption, it samples the full bandwidth of the sensor at all
+>>> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+>>> with a resolution of 0.25mg/LSB on the +-2 g range.
+>>>
+>>> In addition to its ultralow power consumption, the ADXL367
+>>> has many features to enable true system level power reduction.
+>>> It includes a deep multimode output FIFO, a built-in micropower
+>>> temperature sensor, and an internal ADC for synchronous conversion
+>>> of an additional analog input.
+>>>
+>>> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+>>
+>> Hi Cosmin,
+>>
+>> Given how often we get patches later to add regulators for devices like
+>> these I'd like them supported from the start.
+>>
+>> I'm guessing it needs power, but how many supplies? I'm not sure as 
+>> doesn't
+>> seem to be a public datasheet yet.
+> 
+> I'll add them. For the note, it has two supplies, one being the main one 
+> and another one for the io.
+> 
 
-I completely agree with this. While interrupts aren't really meant for
-measuring frequency, and this being somewhat of a mis-use of something, it is
-still possible to do and very useful in many cases. That said, while the
-counter framework is AFAIK the best fit for this, the main use-case for this
-driver is measuring wheel speed (and similar "speeds"). For this, the minimum
-amount of information the driver needs to provide user-space with to do
-reliable calculations, is high-resolution time-stamps of GPIO events. A simple
-counter is not suited, because there can be glitches that need to be detected.
-If user-space gets a buffer full of consecutive time-stamps (don't need to be
-all of them, just a sample of n consecutive timestamps), as well as total
-count, all needed calculations, glitch filtering, low-pass filtering, etc...
-can be done in user-space just fine.
+One question I have is whether I should disable the regulators on system
+suspend. If I do, I should also use a regmap cache so I can re-apply all
+registers on resume...
 
-> I've tried using gpio interrupts to try to calculate speed/rate in
-> the kernel before and it simply doesn't work reliably. Interrupts
-> get missed and the calculation will be off.
-
-Exactly. Been there, done that.
-For reliable speed calculations of a mechanical system, the properties of the
-mechanical system need to be known, like physical limits of accelerations,
-maximum (or minimum) speed, etc. The minimum set of input data needed by a
-user-space application to do these calculations is total pulse count in
-addition to a buffer of timestamps of n consecutive input events (raising or
-falling edges on GPIO). So IMHO this is what the driver should provide, and
-in the most resource-efficient way possible. This particular driver will be
-used 3 times on the same SoC, with each up to 10-15k pulses per second. That
-is a lot of interrupts for an embedded system, so they better consume as
-little resources as possible. Filling a ring buffer with timestamps should be
-possible, as long as no locking is involved. Locks in IRQ context must be
-avoided at all costs, specially in this case.
-
-> For really slow counts (i.e. 1 count/second), I can see a use for
-> generating an event on each count though. For high rates, I would
-> just read the count every 100ms in usespace and divide the change in
-> the number of counts by the time period to get the rate.
-
-For slow counts, I agree, but for high rates, I don't (see above). There can
-be glitches and false events that can (and must) be effectively filtered out.
-For that user-space needs to know the time of each event during the
-measurement period.
-
-Best regards,
-
--- 
-David Jander
-Protonic Holland.
+>>
+>>> ---
+>>>   .../bindings/iio/accel/adi,adxl367.yaml       | 79 +++++++++++++++++++
+>>>   1 file changed, 79 insertions(+)
+>>>   create mode 100644 
+>>> Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+>>>
+>>> diff --git 
+>>> a/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml 
+>>> b/Docu`mentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+>>> new file mode 100644
+>>> index 000000000000..1bf9e1602480
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+>>> @@ -0,0 +1,79 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/iio/accel/adi,adxl367.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Analog Devices ADXL367 3-Axis Digital Accelerometer
+>>> +
+>>> +maintainers:
+>>> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+>>> +
+>>> +description: |
+>>> +  The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+>>> +
+>>> +  The ADXL367 does not alias input signals by to achieve ultralow power
+>>> +  consumption, it samples the full bandwidth of the sensor at all
+>>> +  data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+>>> +  with a resolution of 0.25mg/LSB on the +-2 g range.
+>>> +
+>>> +  In addition to its ultralow power consumption, the ADXL367
+>>> +  has many features to enable true system level power reduction.
+>>> +  It includes a deep multimode output FIFO, a built-in micropower
+>>> +  temperature sensor, and an internal ADC for synchronous conversion
+>>> +  of an additional analog input.
+>>> +    https://www.analog.com/en/products/adxl367.html
+>>
+>> "We can't find that page". I guess this driver is running slightly ahead
+>> of the datasheet being made public.
+> 
+> Yeah, the datasheet and product page isn't out yet.
+> 
+>>
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - adi,adxl367
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  interrupts:
+>>> +    maxItems: 1
+>>
+>> spi-max-frequency: true
+>>
+>> to fix the issue Rob's bot reported.
+>>
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - reg
+>>> +  - interrupts
+>>> +
+>>> +additionalProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    #include <dt-bindings/gpio/gpio.h>
+>>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>> +
+>>> +    i2c {
+>>> +      #address-cells = <1>;
+>>> +      #size-cells = <0>;
+>>> +
+>>> +      adxl367@53 {
+>>> +        compatible = "adi,adxl367";
+>>> +        reg = <0x53>;
+>>> +        interrupt-parent = <&gpio>;
+>>> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+>>> +      };
+>>> +    };
+>>> +  - |
+>>> +    #include <dt-bindings/gpio/gpio.h>
+>>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>> +
+>>> +    spi {
+>>> +      #address-cells = <1>;
+>>> +      #size-cells = <0>;
+>>> +
+>>> +      cs-gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
+>>> +      status = "okay";
+>>
+>> We don't normally list status in example bindings.
+>> Also, the cs-gpio is part of the spi master binding
+>> so no need to have it here as we are showing how the
+>> actual device binding works.
+>>
+>> That should let you drop the gpio.h header.
+>>
+> Interestingly, you forgot to say this for my AD74413R driver.
+> 
+>>
+>>> +
+>>> +      adxl367@0 {
+>>> +        compatible = "adi,adxl367";
+>>> +        reg = <0>;
+>>> +        spi-max-frequency = <1000000>;
+>>> +        interrupt-parent = <&gpio>;
+>>> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+>>> +      };
+>>> +    };
+>>

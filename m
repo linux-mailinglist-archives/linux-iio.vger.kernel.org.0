@@ -2,271 +2,263 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 337C946CE54
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Dec 2021 08:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F23D46CE77
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Dec 2021 08:43:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240639AbhLHHZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Dec 2021 02:25:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55204 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240199AbhLHHZr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Dec 2021 02:25:47 -0500
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C38AC061574
-        for <linux-iio@vger.kernel.org>; Tue,  7 Dec 2021 23:22:16 -0800 (PST)
-Received: by mail-io1-xd2f.google.com with SMTP id 14so1829644ioe.2
-        for <linux-iio@vger.kernel.org>; Tue, 07 Dec 2021 23:22:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I8JmcggFnRKzbTH7VEx1kayDWaOV/lgpkD7s/ofbGg8=;
-        b=I7QZQW6H8U+yKCjH+YJ0rqdYXrci8uiYeTUbALQdBpQXNzCaEWqgLASzqX6O/nwj8D
-         3yOkcF5Xv9VCQbMszPlG/T4hBw8OdayD4aOx9EeMTrmBHe2YoI5G1Ghzf7IQYkqmasU7
-         NbeYt8iWdUDwAmvuo1pIqWuwkQixoc2Cw6t6g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=I8JmcggFnRKzbTH7VEx1kayDWaOV/lgpkD7s/ofbGg8=;
-        b=cwjuaQfBC7BIE4hoNGn5VYj/sKxWxRnwzDMMgfScapAjRhksqqHs8zmwmVCb0W62rd
-         fQdFO5/uPQ3+2yttpmeXXykY417mixZ/jOllUnjtl5tp8axcScavIgAP9gGYGjKQ+GZv
-         ydcWaurnNrH81WJQ29bGKRw5pUqr8BjR1NR6oVlMxorRJnjiK6IZBxaP4OasFU8Xu0tK
-         GYNBuW0gBgb28xnD7ZNPxEDUxfaN4nxHXbgw+dc40BKJ5C+MBZozWsUgdjW9rXd6FgqW
-         KobuKpUV2PLLBpOHa9z9FluApszgKZ+oey8HxmYPIZRyjNTkrlZh0yFok1GgzyOb6LXV
-         oOmg==
-X-Gm-Message-State: AOAM533MYb17zAiLAEgaEaBEW+MqqjOnVREYFB515GIHYhMwr7r3Ddjx
-        Zdn0DbKi9Y+2xJ6nrE6ZOmA7E0uawWipE5KBD2hBQA==
-X-Google-Smtp-Source: ABdhPJyo5Tr6qVYiAXKv4dkXejHYsdpA0lUOx6EH7RMnI0wz8q5tsoZIlFka3t4Wr7qYwi3954U50Y+blUe08R1qtpo=
-X-Received: by 2002:a05:6602:8ce:: with SMTP id h14mr3915950ioz.177.1638948135681;
- Tue, 07 Dec 2021 23:22:15 -0800 (PST)
+        id S231469AbhLHHrD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Dec 2021 02:47:03 -0500
+Received: from ms.asus.com ([103.10.4.13]:32863 "EHLO ms.asus.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244568AbhLHHrC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 8 Dec 2021 02:47:02 -0500
+X-Greylist: delayed 428 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Dec 2021 02:47:01 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=asus.com; i=@asus.com; q=dns/txt; s=asuscom;
+  t=1638949411; x=1670485411;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=iaj2hLM1tL6ReehP89nYJaQQVqYai7AoeHP92gOTk/0=;
+  b=H6azM1eri1aTm6FPv/K31oy7D4CDf9WfppgZXAmNowG6AOueQm72mv7S
+   AnafIBCK5ILp+cPEfkvuUW/rIoKJcr+82F3yYbHWVY3s1S/yCpPUJVcGx
+   lVVSPQHeC2HZQ9eU03zoClwaGxGYrDThRbvEJMw510aDpumlML2c+jlnE
+   U=;
+IronPort-Data: A9a23:Q8N4AquXqn3yFTtHSH1bOJGkXOfnVDlfMUV32f8akzHdYApBsoF/q
+ tZmKT/UbKnfZGvwfd1+bYrl8BxSsJbXmNE1G1A/pSoxEHwR9ZOVVN+UEBz9bniYRiHhZBs8t
+ p1BMLEsDyyWolv0/ErF3m3J8CEUOZmgH+a6UKidUsxIbVcMpB0J0HqPpsZi6mJWqYnha++yk
+ Y6qyyHvEAfNN+lcaTp8Bwqr8XuDjdyq0N8qlgVWicNj5Tcyo0Io4Kc3fsldGZdYrr58RYZWT
+ 86bpF2wE/iwEx0FUrtJmZ6jGqEGryK70aFjRRO6VoD76iWuqBDe3Y47c9oDeEYP0Q6zsN9j0
+ NEXuMLueyoma/ikdOQ1C3G0EglCBehryJ/tZEbn6oqYyFfedXbwhfx1EVpe0Y8wo7ktRzsUs
+ 6JecW1lghOr3opaxJqYV+99j8IsG+fiOqsWoWx7izreCJ7KRLiYG/+atYECgV/cgOhwEKbhO
+ fUJSwFdMj79PzZ/ZF0tIogxybLAan7XNmcwREiujag26DKI5A98yr7gNJzSYNPibcFUmFuI4
+ 2PH+EznDRwAct+S0zyI9jSrnOCntQH8XosOFLS+sNVjhVCJwWo7CAAfSla65/K+jyaWeM9ZO
+ kUS9R0ApK4a/UWmSd+7VBq95mKb1jYVXdZBVfY65R+GyqfS4AGxCW0NTzoHY9sj3PLaXhQ2z
+ hqEj9PjQCI36/ueTmiF8LqI6zqpJDN9wXI+WBLohDAtu7HLyLzfRDqWJjq/OMZZVuHIJAw=
+IronPort-HdrOrdr: A9a23:SYKob6xSgR1W02JBCIRaKrPxVOgkLtp133Aq2lEZdPULSKOlfp
+ GV8MjziyWYtN9IYgBbpTiBUJPwI080hqQFnLX5Wo3SEDUO2VHYYb2KgrGSpQEIdxefygcZ79
+ YaT0EcMqy+MbEZt7eC3ODQKb9Jq7PokZxAx92ut0uFJTsaMp2IhD0JbzpzZ3cGIzWucqBJcK
+ Z0iPA3xAaISDAyVICWF3MFV+/Mq5ngj5T9eyMLABYh9U2nkS6owKSSKWnX4j4uFxd0hZsy+2
+ nMlAL0oo+5teug9xPa32jPq7xLhdrazMdZDsDksLlVFtyssHfpWG1SYczBgNkHmpDr1L/sqq
+ iJn/4UBbUx15oWRBDznfKi4Xin7N9k0Q6f9bbRuwqdnSW+fkNjNyKK7bgpKScwKCIbzYtBON
+ gg5RPEi3INZymwwxgUo7PzJkFXfo/dmwt+rQbW50YvD7f3r9dq3N0iFQpuYek9NTO/54Y9HO
+ Z0CsbAoP5QbFOBdnjc+nJi2dq2Qx0Ib1+7q2U5y7qoOgJt7TlEJoojtb4it2ZF8Ih4R4hP5u
+ zCPKgtnLZSTtUOZaY4AOsaW8O4BmHEXBqJaQupUB7aPbBCP2iIp4/84b0z6u3vcJsUzIEqkJ
+ CEVF9Dr2Y9d0/nFMXL1pxW9RLGRnm7QF3Wu4pjzok8vqe5SKvgMCWFRlxrm8y8o+8HCsmeQP
+ q3MII+OY6VEYIvI/c84+TTYegjFZAuarxhhj9gYSP+niviEPyYitDm
+Received: from tp-exhb-v03.corpnet.asus ([172.22.6.15])
+  by ms.asus.com with ESMTP; 08 Dec 2021 15:36:19 +0800
+Received: from TP-EXHB-V02.corpnet.asus (172.22.6.14) by
+ TP-EXHB-V03.corpnet.asus (172.22.6.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.12; Wed, 8 Dec 2021 15:36:17 +0800
+Received: from APC01-HK2-obe.outbound.protection.outlook.com (104.47.124.57)
+ by TP-EXHB-V02.corpnet.asus (172.22.6.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.12 via Frontend Transport; Wed, 8 Dec 2021 15:36:17 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ohB05zPwTzcNfDEsLXbrCZtOTHLQjYkmKNwL0HMCIBPzyzc+r6nAw1ZDDflcS3tjEL9UhxEbg+Q5padO/JISort/wZFy38epgDzCyf13zYhmxhKfXR2gvZjBeLmMHdV43x4wnk2uT8p6noXCYLT+okoHBzNtfJpHs/FLKsne+9eOghjE9M1tRcP+FaqcFian3QQBy2cqP5hXEZAsAs5nOKV7270p1EUzTio1tqO6LDabsZTg2ZD/BQMd4Qf4cFE9W1VfVtCd1GoACVrdWdFdv5ewvNXTGAYQB4l0oD3zSrWnE0awoO5fLMC8yp4L8+xy5xSHSTiYOYV3GheUvN9kVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jc0mZGU5M1VQailRv0hIxBnxgJGt4+SWljvhAGDNQKY=;
+ b=DmoZXViFiQLqTQ8ZSzPMhUqphGOBjJWGM4jZxr/MXhg2fZO5SAOMptKScPhNMl1TKbl16P+snJZvX20RsFUTzBQYI0d6MimoNzKm2uX5swu/FolkOflabOKCgDVuFb7XQPnjOIBusdxsxOeNsgACR13/Z3tYhNwfOFKQwWxa5pMyPE0HWyNBR8rI/nFv3+VC9eriKa6JTwJLy30Rmbl5Thwjf0AC4CmfBeCOrwAA31wmNzkEA3I3C0hoBvgB7ED6zCoNUhpWGgmsMwrRl2r8HxEPa7Lm+X0CZTjjXmNSKy+0LVTRF0M4yf0Na8YMse+V+w7NukAjjK3RfUEprrdsZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=asus.com; dmarc=pass action=none header.from=asus.com;
+ dkim=pass header.d=asus.com; arc=none
+Received: from HK0PR04MB3074.apcprd04.prod.outlook.com (2603:1096:203:8b::17)
+ by HKAPR04MB4100.apcprd04.prod.outlook.com (2603:1096:203:de::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.11; Wed, 8 Dec
+ 2021 07:36:17 +0000
+Received: from HK0PR04MB3074.apcprd04.prod.outlook.com
+ ([fe80::7c61:80d6:63b9:96c8]) by HK0PR04MB3074.apcprd04.prod.outlook.com
+ ([fe80::7c61:80d6:63b9:96c8%4]) with mapi id 15.20.4755.024; Wed, 8 Dec 2021
+ 07:36:17 +0000
+From:   =?big5?B?S3VueWFuZyBGYW4orVOpW7StKQ==?= <Kunyang_Fan@asus.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kunyang Fan <Kunyang_Fan@aaeon.com.tw>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: RE: [PATCH v2] iio: adc: ti-adc081c: Partial revert of removal of
+ ACPI IDs
+Thread-Topic: [PATCH v2] iio: adc: ti-adc081c: Partial revert of removal of
+ ACPI IDs
+Thread-Index: AQHX6fzFBPNQ/1TCh0OM8qg40ONKj6woOAVw
+Date:   Wed, 8 Dec 2021 07:36:16 +0000
+Message-ID: <HK0PR04MB3074C424090A590237DC4173F66F9@HK0PR04MB3074.apcprd04.prod.outlook.com>
+References: <20211205172728.2826512-1-jic23@kernel.org>
+In-Reply-To: <20211205172728.2826512-1-jic23@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=asus.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 91c9cf7f-900b-4efc-8096-08d9ba1d6b86
+x-ms-traffictypediagnostic: HKAPR04MB4100:EE_
+x-microsoft-antispam-prvs: <HKAPR04MB410083253F027663F2132A80F66F9@HKAPR04MB4100.apcprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: p/sTJNXnObBKyDJ/qArfFiPau8k7h31MxlWtkEMC88KuF/glN/QZGOYc4IU9OkPe/1xtYiMYaNfEBRMr5RGiyU+XMaI3hj6fmQrKUT0gGzejOus0NtT+iKchDkaimD/JCgwUJ5qvnZnhTfZGmhKKvAcDJXnMI+Xrl+7sNKxbXT3a4wztm6QD5FpubCufZDBIfh6urBvpU3MYU+zhJsxesf4iCqgbQ1Idwo9Br86j2pHFtFyupkCP3CJimzE9Q3bjoYxSl+9W9h46dNpLfGsy2xGpdLfZQyiLsk6LhDHAb7n6HHkWDUXEzc74oSH0LKRdsoZ3WMfm+TKxAdh5z8uws+v0YnTq9paqZZ2ljf3LctFWtG4QuthVK0HceGrAr4zodfenr6etfVGhmV7kqhSVjldIE2PQtdm4/M0N/rOXNslVqVw+R+MUqWUMOmguLE4wWP5WLZeg11ieSLSg73z7MVF6flX2FJfR2IBu5B6tEpAwVeME+qcjYCPY3ZjIT4Pr7l/uX824+oIPZJEZDOnXY10UdWLWoQqboQLRy8l4zSSOv/o0y61WJKlaokX0Uuk3GvHhwm5FtE1vzJrKTLPX+n6FlMBDXDe31pTtC7Vn4OCEg6GOhVwdtMZwZiAuqaySbBLwcvlrOpK0LSSh2dEaECrhCv05XwexdA7OWhvvNh9zUBfrJ3rQO0YZARKKi0PjjYVfYj8RgpPbVVgvTIpfMg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK0PR04MB3074.apcprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(66946007)(66476007)(66556008)(64756008)(66446008)(85182001)(76116006)(4326008)(7696005)(86362001)(508600001)(8676002)(52536014)(8936002)(5660300002)(53546011)(38100700002)(33656002)(83380400001)(26005)(2906002)(186003)(110136005)(38070700005)(55016003)(9686003)(316002)(55236004)(122000001)(6506007)(71200400001)(54906003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?big5?B?VHFENml3eFlWTUwyaUdlb09HVmlUK3BLNWR2WW0zRHRVNXNhSG1wRG1vZTFMUy9W?=
+ =?big5?B?OHBmYjBEeEkvQXhTeU5OMmhtTWhwWTFMQmtxZEdKYnhvTFBTdmcvNHRDbUxrNEZS?=
+ =?big5?B?UDZlT2xpYVZMd0lLa0tPandmOERqOFh1QnFmR1FkaXVYRFhRMVFNc3R1eUd2VkYy?=
+ =?big5?B?ZVpPYzBrejltSDE2ZTRqYmc2Tk9lZmg5bFZQQ0JXeE5hQ2t6OGhBOUFkZWVTdFI3?=
+ =?big5?B?VzNTZk1xQUhGcTRCNlMvdXQzcWtwenNad0x5Vy9tSytobjNpRk9XTVJlSmxrbXJC?=
+ =?big5?B?SEttZ1ArMzFWY055dU9tOS8vOFNFd3lFNXVWN3lhZlpNSUFKc0ZzYXpPRXN1Z1RN?=
+ =?big5?B?UVFqRDQ0MjNFVjJybVJHUXg0U3JzWHBScEhMeWF1akpaY1VaNmhPSkUvQ3VnS1FF?=
+ =?big5?B?bVRUTTVxMmlDemFrL0tYajZoL0RGdFhBMk9yTEtSWHdNNnVKYUFZNTFkbDFRdzRI?=
+ =?big5?B?UWNFVG1McG1TTlN4WnNJekVENXpWWlBONVdhZmpSMnBETkZIc0t3a2FhLytCeDRw?=
+ =?big5?B?TU9yOVBGWWdPdVRwNHlpTGN2TmNPNmo4K05BajBTZDRCdHFFc1hESGZmMGhSUzVo?=
+ =?big5?B?NXpJS082dTcyajU1d3ROQ2EzUU1LT2UzYVJLVCsyc3dIZGNMUEp4L1lxcWFXZG81?=
+ =?big5?B?UC9zaFRYYjd3Wm5Sc29CWHBFWmc3MVdmRWRIVU9QeUZSa2FIOW1VYWdmNjNHTTc1?=
+ =?big5?B?c0YrOWpuV3JXRXBjaDBvZ010cDl1RDg0bEdZNzBXdWsydFNhZlN3c0NOOWFVV0xq?=
+ =?big5?B?T1VrWElBQ2lBSkpwa2F3aHN6c1I1YldHTjNVU3VNWUFJK2tXU1B6T1g1N0syRmJQ?=
+ =?big5?B?alIwMDFnbWthUktSVFUzNHd1OW9NSFpTOHR0Q1FLWk4xYk1xSjRmTzdiRzh5STNS?=
+ =?big5?B?bHBmMlFOUE5WZFVmRUNUeTR2VW82UlNNUjM0UDlsV25sR251ekZiYmY1a2E0VDVK?=
+ =?big5?B?RDFUeHd6MjF5cDhsNFhra3dMbjVvc2NkaENCR2JFT0lXMHgrQzd6Z1JPajdJOHls?=
+ =?big5?B?c2VFdS9KMFJsZXNhS1ZkQW5LbUhXUGkyeTdITFczTjVhdnliSnFjOERxOFpaUTFJ?=
+ =?big5?B?d0paSGVoeUxlSmJ0U293U1kwWXZNdTlpS0V5UWd0T1NFdkNOWVhFVXZsSk9lSGpQ?=
+ =?big5?B?VjFDNW05U1pkcW9VOEkrSWZ3WmhEQVNPcG1MaWlKMGR4dGpPMllNbzZ2SnpZSkRS?=
+ =?big5?B?S3NvK2lwSEtNZnBySnQwZTdMWTZkWldpdm84eGFpRnN2WjYyS0s0ZHgvbk1pekJD?=
+ =?big5?B?bzRYcjZXYlkrOGVmOVdBV3VkQTZlQ0ZnMWNpWGFFV1I1bzEwNThHWDcyRmhzdm85?=
+ =?big5?B?NVNMblQ4UkhHdmNoNWlURGJScGZSeTZVcVMrSzMwc3RScUw0MFduQlUxTkF1c2Ji?=
+ =?big5?B?M29yOFFBTnV1dm9vSWt6dlJUdTJReVVjRGF6UDdhNzF1OFdqNE9xdXdDYzFLaUts?=
+ =?big5?B?VlhUQ2VRa1NWYTlmZGxIUUpsU0paclFvYnlwaU81dEVwQVQyL2xDdGxOR3ZHMldn?=
+ =?big5?B?YmlwdUg0emxGczQ2bkJjenNmTkxLS1UwQ2RJemlwU1RkTlNrS25vT2luWU9hOWUz?=
+ =?big5?B?UmEzUWl3OXp6TFN5Y3c5YmpMV0dnN0hnQWR1L0psbHVHWVl1dEN1Wks4bG42Yk81?=
+ =?big5?B?a2JkMWp0YnYyeUZ5ZnczcHNqYnh3bk5kaUpkQ2hqeXkrMGdTbEpFblpPdUhDL243?=
+ =?big5?B?Tm9mbjhMUDIzMm1tZ0syS2V1TUtDUG1NOUlpV0ZTWVBwSzZsK0VTTWtKY3dubTRm?=
+ =?big5?B?bHJ2MVNueEF1b2JueDBmL2NNZGFoaXZKTzdQbXVGMjJ6UlJPeHZzVDZ6eGJnb0E0?=
+ =?big5?B?SStoZk02dkM1TDl1YW9PamV6VVptc1N3SGhUemdKK0x3WW9rejNqVWVzMER0TVRH?=
+ =?big5?B?ekhJWkVXWkQyanpKcHc3bUE1cDJ5UHFHMlVnMXdrTTJ5UStVU0ZRemRURktHR0dz?=
+ =?big5?B?bnFMTmxYOFdDdzVHWGRoeG1QMFY2UlJFNmtycndxOFUreTlKRlA3VE81MjJzaSt2?=
+ =?big5?B?S2QvdFRndFR1K0lJTC94dlIxOHNobGRpZkd1UzVYN1dYWFFRZTdXeFJLWDhwNmdM?=
+ =?big5?Q?XIK0h/TRByU=3D?=
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20211208004311.3098571-1-gwendal@chromium.org>
- <20211208004311.3098571-5-gwendal@chromium.org> <CAE-0n50Jz0qu+8tog3ex5K+LL4fBTxOxnM0u5TNq5E8M+kRNAQ@mail.gmail.com>
-In-Reply-To: <CAE-0n50Jz0qu+8tog3ex5K+LL4fBTxOxnM0u5TNq5E8M+kRNAQ@mail.gmail.com>
-From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Tue, 7 Dec 2021 23:22:04 -0800
-Message-ID: <CAPUE2uuZ0-ABtgOBY=XXCXAe3hyS552a3XsNt1PwCZz_nYk0-g@mail.gmail.com>
-Subject: Re: [PATCH v5 4/5] dt-bindings: iio: Add sx9324 binding
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: HK0PR04MB3074.apcprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91c9cf7f-900b-4efc-8096-08d9ba1d6b86
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Dec 2021 07:36:16.8371
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 301f59c4-c269-4a66-8a8c-f5daab211fa3
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 51bEoWxm6dV0ki/yVy1OrW/mXVFxwW74bsqJRA32pVC2qHGd1LE4/QC9y/6Y09wR6WBpi7c3VLIxC85x22I6og==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HKAPR04MB4100
+X-OriginatorOrg: ASUS.com
+X-TM-AS-Product-Ver: SMEX-14.0.0.3092-8.6.1018-26576.003
+X-TM-AS-Result: No-10--4.448200-8.000000
+X-TMASE-MatchedRID: a3sLnpBpvfTUL3YCMmnG4n4neC0h7SADeLLCA0PD7aiOzyCsYRwNaaM1
+        Rf5ziKCELhWUaZ1wNMn4z7jNUGQc7KpgOS+9uknUiVJZi91I9Jj5bVQl8A2Yjif0DxhZHOwycni
+        zzGGR+O5YOFrTWedzh4+YHqhT05WB3vEvNzASBh30VCHd+VQiHnnJuTC2P+O+fRxk2H9BzeoRKc
+        /cnVC2p4EqYSFLDR861QF2Iaww5bzxlOJuQNHlfSZm6wdY+F8KSExQHIFQcStQdwGfvSIlB6lO2
+        ekqlDI6bdC2AN9fc4mAh5c6tbeBzuD+oPZsJMwpHWRJEfGP5nlMVCcj56k8hgWqvFWg3Xg6uhPG
+        CgMVI1iZIbl2h8fygwBCocw4nnhx9IKRKjO372ED2WXLXdz+AUcA1Ouvduu8kQ0JIWWubu/T/pF
+        zauZLmUyl9ggbAv9c70oN5r+E83tLZ1IB8rtu2Z4CIKY/Hg3AwWulRtvvYxT/Xb69jmA6tQU5rQ
+        /jDZbqjoczmuoPCq3i44HPXTrMToqGgZaWW49CYzd7yZcZ6jiRGy1XitxYXqqKW2GKyNKE0cN/t
+        +QigJdf8CfR312NHURbjmfG0sfPwHD0XhkbuzZzloxQudlFT/XnUyc3kkvb4uuYo4M+pOhghixY
+        hrO7v4iiSiO3Fb3zlExlQIQeRG0=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--4.448200-8.000000
+X-TMASE-Version: SMEX-14.0.0.3092-8.6.1018-26576.003
+X-TM-SNTS-SMTP: 7FF659FC0979232BE884929FC90FE04503DEBF3FD24D8CC4779F6A68E8AF86262000:9
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 7, 2021 at 8:42 PM Stephen Boyd <swboyd@chromium.org> wrote:
->
-> +Rob *crosses fingers*
->
-> Quoting Gwendal Grignou (2021-12-07 16:43:10)
-> > Similar to SX9310, add biddings to setup sx9324 hardware properties.
-> > SX9324 is a little different, introduce 4 phases to be configured in 2
-> > pairs over 3 antennas.
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> > ---
-> > Changes in v5:
-> > - Use consistent field naming, prefixed with phX.
-> >
-> > Changes in v4:
-> > - Use const instead of single enum
-> > - Specify ph0-pin better
-> > - Recopy type information for phX-pin
-> > - Fix cut and paste errors.
-> >
-> > Changes in v3:
-> > - Remove duplicate information.
-> > - Use intervals instead of enum.
-> > - Fix filter description.
-> >
-> > Changes in v2:
-> > - Fix interrupt documentation wording.
-> >
-> >  .../iio/proximity/semtech,sx9324.yaml         | 161 ++++++++++++++++++
->
-> Please add Rob for dt binding review. I'm not sure if the
-> semi-autonomous robot runs without Cc robh+dt
->
-> >  1 file changed, 161 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > new file mode 100644
-> > index 00000000000000..ac9581b0d31364
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > @@ -0,0 +1,161 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/proximity/semtech,sx9324.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Semtech's SX9324 capacitive proximity sensor
-> > +
-> > +maintainers:
-> > +  - Gwendal Grignou <gwendal@chromium.org>
-> > +  - Daniel Campello <campello@chromium.org>
-> > +
-> > +description: |
-> > +  Semtech's SX9324 proximity sensor.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: semtech,sx9324
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    description:
-> > +      Generated by device to announce preceding read request has finished
-> > +      and data is available or that a close/far proximity event has happened.
-> > +    maxItems: 1
-> > +
-> > +  vdd-supply:
-> > +    description: Main power supply
-> > +
-> > +  svdd-supply:
-> > +    description: Host interface power supply
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +  semtech,ph0-pin:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    description: |
-> > +      Array of 3 entries. Index represent the id of the CS pin.
-> > +      Value indicates how each CS pin is used during phase 0.
-> > +      Each of the 3 pins have the following value -
-> > +      0 : unused (high impedance)
-> > +      1 : measured input
-> > +      2 : dynamic shield
-> > +      3 : grounded.
-> > +      For instance, CS0 measured, CS1 shield and CS2 ground is [1, 2, 3]
-> > +    items:
-> > +      enum: [ 0, 1, 2, 3 ]
-> > +    minItems: 3
-> > +    maxItems: 3
-> > +
-> > +  semtech,ph1-pin:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    description: Same as ph0-pin for phase 1.
-> > +    items:
-> > +      enum: [ 0, 1, 2, 3 ]
-> > +    minItems: 3
-> > +    maxItems: 3
-> > +
-> > +  semtech,ph2-pin:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    description: Same as ph0-pin for phase 2.
-> > +    items:
-> > +      enum: [ 0, 1, 2, 3 ]
-> > +    minItems: 3
-> > +    maxItems: 3
-> > +
-> > +  semtech,ph3-pin:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    description: Same as ph0-pin for phase 3.
-> > +    items:
-> > +      enum: [ 0, 1, 2, 3 ]
-> > +    minItems: 3
-> > +    maxItems: 3
-> > +
-> > +
-> > +  semtech,ph01-resolution:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
-> > +    description:
-> > +      Capacitance measurement resolution. For phase 0 and 1.
-> > +      Higher the number, higher the resolution.
-> > +    default: 128
-> > +
-> > +  semtech,ph23-resolution:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [8, 16, 32, 64, 128, 256, 512, 1024]
-> > +    description:
-> > +      Capacitance measurement resolution. For phase 2 and 3
-> > +    default: 128
-> > +
-> > +  semtech,startup-sensor:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [0, 1, 2, 3]
-> > +    default: 0
-> > +    description: |
-> > +      Phase used for start-up proximity detection.
-> > +      It is used when we enable a phase to remove static offset and measure
-> > +      only capacitance changes introduced by the user.
-> > +
-> > +  semtech,ph01-proxraw-strength:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    min: 0
-> > +    max: 7
-> > +    default: 1
-> > +    description:
-> > +      PROXRAW filter strength for phase 0 and 1. A value of 0 represents off,
-> > +      and other values represent 1-1/2^N.
-> > +
-> > +  semtech,ph23-proxraw-strength:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    min: 0
-> > +    max: 7
-> > +    default: 1
-> > +    description:
-> > +      Same as proxraw-strength01, for phase 2 and 3.
->
-> We could have a single property then that uses index 0 for phase 0 and 1
-> and index 1 for phase 2 and 3 if we're worried about them being
-> different between the two joined phases. Same comment applies to the
-> resolution.
->
-> > +
-> > +  semtech,avg-pos-strength:
-> > +    $ref: /schemas/types.yaml#definitions/uint32
-> > +    enum: [0, 16, 64, 128, 256, 512, 1024, 4294967295]
-> > +    default: 16
-> > +    description: |
-> > +      Average positive filter strength. A value of 0 represents off and
-> > +      UINT_MAX (4294967295) represents infinite. Other values
-> > +      represent 1-1/N.
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - "#io-channel-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    i2c {
-> > +      #address-cells = <1>;
-> > +      #size-cells = <0>;
-> > +      proximity@28 {
-> > +        compatible = "semtech,sx9324";
-> > +        reg = <0x28>;
-> > +        interrupt-parent = <&pio>;
-> > +        interrupts = <5 IRQ_TYPE_LEVEL_LOW 5>;
-> > +        vdd-supply = <&pp3300_a>;
-> > +        svdd-supply = <&pp1800_prox>;
-> > +        #io-channel-cells = <1>;
-> > +        semtech,ph0-pin = <1, 2, 3>;
-> > +        semtech,ph1-pin = <3, 2, 1>;
-> > +        semtech,ph2-pin = <1, 2, 3>;
-> > +        semtech,ph3-pin = <3, 2, 1>;
->
-> The comma should be removed. Have you run 'make dt_binding_check'?
-I did not, and it spotted a lot of errors. I will resend this patch.
->
-> > +        semtech,ph01-resolution = 2;
-> > +        semtech,ph23-resolution = 2;
-> > +        semtech,startup-sensor = <1>;
-> > +        semtech,ph01-proxraw-strength = <2>;
-> > +        semtech,ph23-proxraw-strength = <2>;
-> > +        semtech,avg-pos-strength = <64>;
-> > +      };
-> > +    };
+SGkgSm9uYXRoYW4sDQoNClRoaXMgcGF0Y2ggaXMgbG9va2VkIGdvb2QgdG8gbWUsIGFuZCBJIHVz
+ZWQgb3VyIHByb2R1Y3QgVVAtZXh0cmVtZWkxMSB0byB2ZXJpZnkgQURDIEFEQzA4MUMgZnVuY3Rp
+b24uDQoNClRoYW5rcywNCg0KS3VueWFuZw0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
+RnJvbTogSm9uYXRoYW4gQ2FtZXJvbiA8amljMjNAa2VybmVsLm9yZz4NClNlbnQ6IE1vbmRheSwg
+RGVjZW1iZXIgNiwgMjAyMSAxOjI3IEFNDQpUbzogbGludXgtaWlvQHZnZXIua2VybmVsLm9yZw0K
+Q2M6IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT47IEt1bnlh
+bmcgRmFuIDxLdW55YW5nX0ZhbkBhYWVvbi5jb20udHc+OyBBbmR5IFNoZXZjaGVua28gPGFuZHku
+c2hldmNoZW5rb0BnbWFpbC5jb20+DQpTdWJqZWN0OiBbUEFUQ0ggdjJdIGlpbzogYWRjOiB0aS1h
+ZGMwODFjOiBQYXJ0aWFsIHJldmVydCBvZiByZW1vdmFsIG9mIEFDUEkgSURzDQoNCkZyb206IEpv
+bmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCg0KVW5mb3J0dWFu
+YXRlbHkgYSBub24gc3RhbmRhcmRzIGNvbXBsaWFudCBBQ1BJIElEIGlzIGtub3duIHRvIGJlIGlu
+IHRoZSB3aWxkIG9uIHNvbWUgQUFFT04gYm9hcmRzLg0KDQpQYXJ0bHkgcmV2ZXJ0IHRoZSByZW1v
+dmFsIG9mIHRoZXNlIElEcyBzbyB0aGF0IEFEQzA4MUMgd2lsbCBhZ2FpbiB3b3JrICsgYWRkIGEg
+Y29tbWVudCB0byB0aGF0IGFmZmVjdCBmb3IgZnV0dXJlIHJlZmVyZW5jZS4NCg0KV2hpbHN0IGhl
+cmUgdXNlIGdlbmVyaWMgZmlybXdhcmUgcHJvcGVydGllcyByYXRoZXIgdGhhbiB0aGUgQUNQSSBz
+cGVjaWZpYyBoYW5kbGluZyBwcmV2aW91c2x5IGZvdW5kIGluIHRoaXMgZHJpdmVyLg0KDQpSZXBv
+cnRlZC1ieTogS3VueWFuZyBGYW4gPEt1bnlhbmdfRmFuQGFhZW9uLmNvbS50dz4NCkZpeGVzOiBj
+NDU4YjdjYTNmZDAgKCJpaW86YWRjOnRpLWFkYzA4MWM6IERyb3AgQUNQSSBpZHMgdGhhdCBzZWVt
+IHZlcnkgdW5saWtlbHkgdG8gYmUgb2ZmaWNpYWwuIikNClNpZ25lZC1vZmYtYnk6IEpvbmF0aGFu
+IENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCkNjOiBBbmR5IFNoZXZjaGVu
+a28gPGFuZHkuc2hldmNoZW5rb0BnbWFpbC5jb20+DQotLS0NCg0KTG9va2luZyBpZGVhbGx5IGZv
+ciBhIHRlc3RlZC1ieSBmb3IgdGhpcyBmcm9tIEt1bnlhbmcgRmFuLg0KDQp2MjogVXNlIGdlbmVy
+aWMgZmlybXdhcmUgcHJvcGVydGllcyBhcyBBbmR5IFNoZXZjaGVua28gcmlnaHRseSBzdWdnZXN0
+ZWQuDQpJIHRvb2sgaXQgYSBiaXQgZnVydGhlciB0aGFuIHN0cmljdGx5IG5lY2Vzc2FyeSBhcyBJ
+IGRvbid0IGxpa2UgcHV0dGluZyBlbnVtcyBpbiB0aGUgZHJpdmVyX2RhdGEgb25seSB0byB1c2Ug
+dGhlbSB0byBpbmRleCBhIHRhYmxlIHdoZW4gd2UgY291bGQganVzdCB1c2UgdGhlIHBvaW50ZXJz
+IGRpcmVjdGx5Lg0KDQpOb3RlIHRoaXMgZHJpdmVyIGRvZXMgaGF2ZSBkZXZpY2UgdHJlZSBiaW5k
+aW5nIGRvY3VtZW50YXRpb24gYnV0IHRoYXQncyBhIGpvYiBmb3IgYW5vdGhlciBkYXkuICBPciBt
+YXliZSBsYXRlciB0b2RheSBpZiBJIGdldCByZWFsbHkgYm9yZWQgdGhpcyBldmVuaW5nIDopDQoN
+CiBkcml2ZXJzL2lpby9hZGMvdGktYWRjMDgxYy5jIHwgMjIgKysrKysrKysrKysrKysrKystLS0t
+LQ0KIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vYWRjL3RpLWFkYzA4MWMuYyBiL2RyaXZlcnMvaWlvL2Fk
+Yy90aS1hZGMwODFjLmMgaW5kZXggMTZmYzYwOGRiMzZhLi5iZDQ4YjA3M2U3MjAgMTAwNjQ0DQot
+LS0gYS9kcml2ZXJzL2lpby9hZGMvdGktYWRjMDgxYy5jDQorKysgYi9kcml2ZXJzL2lpby9hZGMv
+dGktYWRjMDgxYy5jDQpAQCAtMTksNiArMTksNyBAQA0KICNpbmNsdWRlIDxsaW51eC9pMmMuaD4N
+CiAjaW5jbHVkZSA8bGludXgvbW9kdWxlLmg+DQogI2luY2x1ZGUgPGxpbnV4L21vZF9kZXZpY2V0
+YWJsZS5oPg0KKyNpbmNsdWRlIDxsaW51eC9wcm9wZXJ0eS5oPg0KDQogI2luY2x1ZGUgPGxpbnV4
+L2lpby9paW8uaD4NCiAjaW5jbHVkZSA8bGludXgvaWlvL2J1ZmZlci5oPg0KQEAgLTE1NiwxMyAr
+MTU3LDE2IEBAIHN0YXRpYyBpbnQgYWRjMDgxY19wcm9iZShzdHJ1Y3QgaTJjX2NsaWVudCAqY2xp
+ZW50LCAgew0KICAgICAgICBzdHJ1Y3QgaWlvX2RldiAqaWlvOw0KICAgICAgICBzdHJ1Y3QgYWRj
+MDgxYyAqYWRjOw0KLSAgICAgICBzdHJ1Y3QgYWRjeHgxY19tb2RlbCAqbW9kZWw7DQorICAgICAg
+IGNvbnN0IHN0cnVjdCBhZGN4eDFjX21vZGVsICptb2RlbDsNCiAgICAgICAgaW50IGVycjsNCg0K
+ICAgICAgICBpZiAoIWkyY19jaGVja19mdW5jdGlvbmFsaXR5KGNsaWVudC0+YWRhcHRlciwgSTJD
+X0ZVTkNfU01CVVNfV09SRF9EQVRBKSkNCiAgICAgICAgICAgICAgICByZXR1cm4gLUVPUE5PVFNV
+UFA7DQoNCi0gICAgICAgbW9kZWwgPSAmYWRjeHgxY19tb2RlbHNbaWQtPmRyaXZlcl9kYXRhXTsN
+CisgICAgICAgaWYgKGRldl9md25vZGUoJmNsaWVudC0+ZGV2KSkNCisgICAgICAgICAgICAgICBt
+b2RlbCA9IGRldmljZV9nZXRfbWF0Y2hfZGF0YSgmY2xpZW50LT5kZXYpOw0KKyAgICAgICBlbHNl
+DQorICAgICAgICAgICAgICAgbW9kZWwgPSAmYWRjeHgxY19tb2RlbHNbaWQtPmRyaXZlcl9kYXRh
+XTsNCg0KICAgICAgICBpaW8gPSBkZXZtX2lpb19kZXZpY2VfYWxsb2MoJmNsaWVudC0+ZGV2LCBz
+aXplb2YoKmFkYykpOw0KICAgICAgICBpZiAoIWlpbykNCkBAIC0yMTAsMTAgKzIxNCwxNyBAQCBz
+dGF0aWMgY29uc3Qgc3RydWN0IGkyY19kZXZpY2VfaWQgYWRjMDgxY19pZFtdID0geyAgfTsgIE1P
+RFVMRV9ERVZJQ0VfVEFCTEUoaTJjLCBhZGMwODFjX2lkKTsNCg0KK3N0YXRpYyBjb25zdCBzdHJ1
+Y3QgYWNwaV9kZXZpY2VfaWQgYWRjMDgxY19hY3BpX21hdGNoW10gPSB7DQorICAgICAgIC8qIFVz
+ZWQgb24gc29tZSBBQUVPTiBib2FyZHMgKi8NCisgICAgICAgeyAiQURDMDgxQyIsIChrZXJuZWxf
+dWxvbmdfdCkmYWRjeHgxY19tb2RlbHNbQURDMDgxQ10gfSwNCisgICAgICAgeyB9DQorfTsNCitN
+T0RVTEVfREVWSUNFX1RBQkxFKGFjcGksIGFkYzA4MWNfYWNwaV9tYXRjaCk7DQorDQogc3RhdGlj
+IGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgYWRjMDgxY19vZl9tYXRjaFtdID0gew0KLSAgICAg
+ICB7IC5jb21wYXRpYmxlID0gInRpLGFkYzA4MWMiIH0sDQotICAgICAgIHsgLmNvbXBhdGlibGUg
+PSAidGksYWRjMTAxYyIgfSwNCi0gICAgICAgeyAuY29tcGF0aWJsZSA9ICJ0aSxhZGMxMjFjIiB9
+LA0KKyAgICAgICB7IC5jb21wYXRpYmxlID0gInRpLGFkYzA4MWMiLCAuZGF0YSA9ICZhZGN4eDFj
+X21vZGVsc1tBREMwODFDXSB9LA0KKyAgICAgICB7IC5jb21wYXRpYmxlID0gInRpLGFkYzEwMWMi
+LCAuZGF0YSA9ICZhZGN4eDFjX21vZGVsc1tBREMxMDFDXSB9LA0KKyAgICAgICB7IC5jb21wYXRp
+YmxlID0gInRpLGFkYzEyMWMiLCAuZGF0YSA9ICZhZGN4eDFjX21vZGVsc1tBREMxMjFDXSB9LA0K
+ICAgICAgICB7IH0NCiB9Ow0KIE1PRFVMRV9ERVZJQ0VfVEFCTEUob2YsIGFkYzA4MWNfb2ZfbWF0
+Y2gpOyBAQCAtMjIyLDYgKzIzMyw3IEBAIHN0YXRpYyBzdHJ1Y3QgaTJjX2RyaXZlciBhZGMwODFj
+X2RyaXZlciA9IHsNCiAgICAgICAgLmRyaXZlciA9IHsNCiAgICAgICAgICAgICAgICAubmFtZSA9
+ICJhZGMwODFjIiwNCiAgICAgICAgICAgICAgICAub2ZfbWF0Y2hfdGFibGUgPSBhZGMwODFjX29m
+X21hdGNoLA0KKyAgICAgICAgICAgICAgIC5hY3BpX21hdGNoX3RhYmxlID0gYWRjMDgxY19hY3Bp
+X21hdGNoLA0KICAgICAgICB9LA0KICAgICAgICAucHJvYmUgPSBhZGMwODFjX3Byb2JlLA0KICAg
+ICAgICAuaWRfdGFibGUgPSBhZGMwODFjX2lkLA0KLS0NCjIuMzQuMQ0KDQo8cD48L3A+DQoNCj09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09DQpUaGlzIGVtYWlsIGFuZCBhbnkgYXR0YWNobWVudHMgdG8gaXQgY29u
+dGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gYW5kIGFyZSBpbnRlbmRlZCBzb2xlbHkgZm9y
+IHRoZSB1c2Ugb2YgdGhlIGluZGl2aWR1YWwgdG8gd2hvbSBpdCBpcyBhZGRyZXNzZWQuSWYgeW91
+IGFyZSBub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCBvciByZWNlaXZlIGl0IGFjY2lkZW50YWxs
+eSwgcGxlYXNlIGltbWVkaWF0ZWx5IG5vdGlmeSB0aGUgc2VuZGVyIGJ5IGUtbWFpbCBhbmQgZGVs
+ZXRlIHRoZSBtZXNzYWdlIGFuZCBhbnkgYXR0YWNobWVudHMgZnJvbSB5b3VyIGNvbXB1dGVyIHN5
+c3RlbSwgYW5kIGRlc3Ryb3kgYWxsIGhhcmQgY29waWVzLiBJZiBhbnksIHBsZWFzZSBiZSBhZHZp
+c2VkIHRoYXQgYW55IHVuYXV0aG9yaXplZCBkaXNjbG9zdXJlLCBjb3B5aW5nLCBkaXN0cmlidXRp
+b24gb3IgYW55IGFjdGlvbiB0YWtlbiBvciBvbWl0dGVkIGluIHJlbGlhbmNlIG9uIHRoaXMsIGlz
+IGlsbGVnYWwgYW5kIHByb2hpYml0ZWQuIEZ1cnRoZXJtb3JlLCBhbnkgdmlld3Mgb3Igb3Bpbmlv
+bnMgZXhwcmVzc2VkIGFyZSBzb2xlbHkgdGhvc2Ugb2YgdGhlIGF1dGhvciBhbmQgZG8gbm90IHJl
+cHJlc2VudCB0aG9zZSBvZiBBU1VTVGVLLiBUaGFuayB5b3UgZm9yIHlvdXIgY29vcGVyYXRpb24u
+DQo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PQ0K

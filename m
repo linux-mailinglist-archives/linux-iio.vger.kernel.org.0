@@ -2,145 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F3C46D087
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Dec 2021 11:05:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD24446D337
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Dec 2021 13:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbhLHKJV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 8 Dec 2021 05:09:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
+        id S231618AbhLHM05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Dec 2021 07:26:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbhLHKJV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Dec 2021 05:09:21 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 897F7C0617A2
-        for <linux-iio@vger.kernel.org>; Wed,  8 Dec 2021 02:05:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229531AbhLHM04 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Dec 2021 07:26:56 -0500
+Received: from outbound.soverin.net (outbound.soverin.net [IPv6:2a01:4f8:fff0:2d:8::215])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C79C061746
+        for <linux-iio@vger.kernel.org>; Wed,  8 Dec 2021 04:23:24 -0800 (PST)
+Received: from smtp.freedom.nl (unknown [10.10.3.84])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id CE735CE20CC
-        for <linux-iio@vger.kernel.org>; Wed,  8 Dec 2021 10:05:47 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 4822FC00446;
-        Wed,  8 Dec 2021 10:05:44 +0000 (UTC)
-Date:   Wed, 8 Dec 2021 10:10:50 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] 2nd set of IIO fixes for 5.16
-Message-ID: <20211208101050.50ef90e8@jic23-huawei>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        by outbound.soverin.net (Postfix) with ESMTPS id 36EFB600FA;
+        Wed,  8 Dec 2021 12:23:22 +0000 (UTC)
+Received: from smtp.freedom.nl (smtp.freedom.nl [116.202.127.71]) by soverin.net
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=deathstar2.nl;
+        s=soverin; t=1638966200;
+        bh=XxY2t2xchkuR4MCA/ynO/NAPsgVwFX99FhKGRJWXxG8=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=XuSJX0B9oK64Cu+0sZX8nlzUAN8CT9P0MDMw/Q9pLN6PpXuGGQjiSTqB2Qt2z9AT1
+         pTa4GrPoUHdOpGtVLJTvV0M2a18ZdbWbqCTdLDBDz6XfTSDA5+/JJ1sjbXawD3MqFA
+         hms4QFmYG5xxe0znrXrB24i8L6wcFN4eGHDpcop6WIQtSZzquu2vFzHb00eltdtZt/
+         hIEVcswymSQKqXQdRGAaU0KpmGfdhG8+T/Y7HqWPV4KbVhdgpc7irTWBXSwACQXaOJ
+         MZsD/3sSp1bEUCwbWPborhgoje/iIY8h1vMoxWj7foUeyMAih0LTrfVA38eYwdukhO
+         pH+XKMth/F8lA==
+Subject: Re: iio display large numbers
+To:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+References: <9bd04e6d-7418-9d01-6e80-52fd7e84086f@deathstar2.nl>
+ <20211207161338.000012bd@Huawei.com>
+ <CAHp75VdB5vquGKnHSZhkLJDnUTXo68-mvHsRfPg+eqgb8pueTA@mail.gmail.com>
+ <CA+U=DsrD1S0QMFXgjf4tNUmprS5j40hv2Jhp+ykbYqn70V2mJw@mail.gmail.com>
+From:   Henk <yoda@deathstar2.nl>
+Organization: DeathStar2
+Message-ID: <9a48b2f6-2e20-35c3-7856-cfc019cdd94c@deathstar2.nl>
+Date:   Wed, 8 Dec 2021 13:23:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <CA+U=DsrD1S0QMFXgjf4tNUmprS5j40hv2Jhp+ykbYqn70V2mJw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf:
+Hi,
 
-  Linux 5.16-rc1 (2021-11-14 13:56:52 -0800)
+Wouldn't it be an option to extend the IIO framework with a unit 
+description like Hz, kHz, MHz, GHz....
+Otherwise I am happy with the IIO_VAL_INT_64 for the time being.
 
-are available in the Git repository at:
+Btw... software developers should not decide which precision is a real 
+world issue or not :) but only decide to support the need.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.16b
+For the time being it is a bit stupid that my 2.5 GHz output from my 
+LTC6951 shows up as a negative frequency :)
 
-for you to fetch changes up to 893621e0606747c5bbefcaf2794d12c7aa6212b7:
+Regards,
 
-  iio: trigger: stm32-timer: fix MODULE_ALIAS (2021-12-04 15:37:02 +0000)
+Henk Medenblik
 
-----------------------------------------------------------------
-2nd set of IIO fixes for 5.16
 
-Note 1st set were before the merge window.
+On 12/8/21 10:49 AM, Alexandru Ardelean wrote:
+> On Wed, Dec 8, 2021 at 11:33 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+>> On Wed, Dec 8, 2021 at 2:56 AM Jonathan Cameron
+>> <Jonathan.Cameron@huawei.com> wrote:
+>>> On Tue, 7 Dec 2021 13:40:19 +0100
+>>> Henk <yoda@deathstar2.nl> wrote:
+>> ...
+>>
+>>> Two options for this.  If the thing we are controlling is the raw channel then
+>>> we have the option to provide _scale reflecting the fact that a large value
+>>> e.g. GHz is not normally controlled at a Hz granularity.
+>> But some sensors can be really high-precision ones, although I
+>> couldn't imagine a value that requires more than 32-bit for that in
+>> general engineering. Where one may ask for more is something like very
+>> precise physics experiments in CERN :-)
+> Yeah, and this is where IIO and some sensors and clock generators seem to go.
+> Research and military, 5G networks, aerospace, etc.
+>
+> It's a bit tricky to pin certain sub-systems (for some of them).
+> Like, the clock-framework can only represent up to 4 (or 2) billion HZ
+> (I forget if it's u32 or i32).
+> So, this creates limitations/discussions with some clock-chips and
+> where they need to go (IIO or CCF).
+>
+> On the other end, there was a discussion [a few months back] about
+> needing lower than nano scales in IIO.
+>
+> So, this opens up a new set of discussions, like:
+> 1. How should people use Linux for these types of devices?
+> 1a. Should people use Linux for these types of devices?
+> 2. [If 1 is Yes, then] Which sub-system to use?
+> 3. Once a sub-system has been chosen, how to do it?
+> 3a. Extend the common framework (and how?) to support these new sets of devices?
+> 3b. Or do some custom attributes?
+>
+> On point 3, a lot of times 3b is the chosen route [by chip vendors],
+> because these new chips seem to come out faster than the ability to
+> extend these common frameworks.
+>
+> To me, it has become obvious [a few years ago] that the Linux kernel
+> has been very good at serving computing needs mostly targeted towards
+> data-centers (big physical servers, lots of VMs, networking and all).
+>
+> We're probably going to see more of these specialized devices trying
+> to slowly pop up.
+>
+> And it will be an interesting journey to see (after all of it unfolds).
+>
+>>> Where that doesn't apply or the range is really very big we do have the
+>>> slightly nasty option of IIO_VAL_INT_64
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=6bb835f3d00467c9a5e35f4955afa29df96a404e
+>>>
+>>> This is very new, so not in mainline yet, though it is queued up for the
+>>> next merge window and should be linux-next.
+>>
+>>
+>> --
+>> With Best Regards,
+>> Andy Shevchenko
 
-Biggest set in here fix what happens when things go wrong in
-the interrupt handlers for an IIO trigger.
+-- 
+“Do. Or do not. There is no try.”...
 
-Otherwise normal mix of recent and ancient bugs.
-
-trigger core
- - Fix reference counting bug that was preventing the iio_trig
-   structures from being released.
-adxrs290
- - Correctly sign extend the rate and temperature data.
-at91-sama5d2
- - Fix sign extension from the wrong bit and use the scan_type
-   values to avoid it being open coded in two places (which were
-   out of sync)
-axp20x_adc
- - Fix current reporting bit depth.
-dln2-adc
- - Fix a lock ordering issue and lockdep complaint that results.
- - Add error handling for failure to register the trigger.
-imx8qxp
- - Wrong config dependency
-kxcjk-1013
- - Potential leak due to wrong guard on cleanup.
-ltr501, kxsd9, stk3310, itg3200, ad7768
- - Don't return error codes from interrupt handler and call
-   iio_trigger_notify_done() on all paths to avoid leaving
-   trigger disabled on an intermittent fault.
-mma8452
- - Fix missing iio_trigger_get() that could lead to use after free.
-stm32
- - Fix a current leak.
- - Avoid null pointer derefence on defer_probe error due to wrong
-   struct device being passed.
-stm32-timer
- - Drop space in MODULE_ALIAS.
-
-----------------------------------------------------------------
-Alyssa Ross (1):
-      iio: trigger: stm32-timer: fix MODULE_ALIAS
-
-Evgeny Boger (1):
-      iio: adc: axp20x_adc: fix charging current reporting on AXP22x
-
-Fabrice Gasnier (1):
-      iio: adc: stm32: fix a current leak by resetting pcsel before disabling vdda
-
-Gwendal Grignou (1):
-      iio: at91-sama5d2: Fix incorrect sign extension
-
-Kister Genesis Jimenez (1):
-      iio: gyro: adxrs290: fix data signedness
-
-Lars-Peter Clausen (8):
-      iio: ltr501: Don't return error code in trigger handler
-      iio: kxsd9: Don't return error code in trigger handler
-      iio: stk3310: Don't return error code in interrupt handler
-      iio: mma8452: Fix trigger reference couting
-      iio: trigger: Fix reference counting
-      iio: dln2: Check return value of devm_iio_trigger_register()
-      iio: itg3200: Call iio_trigger_notify_done() on error
-      iio: ad7768-1: Call iio_trigger_notify_done() on error
-
-Lukas Bulwahn (1):
-      iio: imx8qxp-adc: fix dependency to the intended ARCH_MXC config
-
-Noralf Trønnes (1):
-      iio: dln2-adc: Fix lockdep complaint
-
-Olivier Moysan (1):
-      iio: adc: stm32: fix null pointer on defer_probe error
-
-Yang Yingliang (1):
-      iio: accel: kxcjk-1013: Fix possible memory leak in probe and remove
-
- drivers/iio/accel/kxcjk-1013.c            |  5 ++---
- drivers/iio/accel/kxsd9.c                 |  6 +++---
- drivers/iio/accel/mma8452.c               |  2 +-
- drivers/iio/adc/Kconfig                   |  2 +-
- drivers/iio/adc/ad7768-1.c                |  2 +-
- drivers/iio/adc/at91-sama5d2_adc.c        |  3 ++-
- drivers/iio/adc/axp20x_adc.c              | 18 +++---------------
- drivers/iio/adc/dln2-adc.c                | 21 ++++++++++++---------
- drivers/iio/adc/stm32-adc.c               |  3 ++-
- drivers/iio/gyro/adxrs290.c               |  5 +++--
- drivers/iio/gyro/itg3200_buffer.c         |  2 +-
- drivers/iio/industrialio-trigger.c        |  1 -
- drivers/iio/light/ltr501.c                |  2 +-
- drivers/iio/light/stk3310.c               |  6 +++---
- drivers/iio/trigger/stm32-timer-trigger.c |  2 +-
- 15 files changed, 36 insertions(+), 44 deletions(-)

@@ -2,272 +2,263 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 99F9946D4B0
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Dec 2021 14:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E410846D4F5
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Dec 2021 14:59:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234673AbhLHNsY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Dec 2021 08:48:24 -0500
-Received: from mail-oo1-f44.google.com ([209.85.161.44]:44879 "EHLO
-        mail-oo1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234664AbhLHNsU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Dec 2021 08:48:20 -0500
-Received: by mail-oo1-f44.google.com with SMTP id t9-20020a4a8589000000b002c5c4d19723so810293ooh.11;
-        Wed, 08 Dec 2021 05:44:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=bGYILhGKiOz1OwrfVDoygkYtWCyIstR2qaWFjn+VxLE=;
-        b=HRU4lKDIT/WDSvAZG+Jw6234pYrA9v9O8mXp2PrFkmbqLskq6a/r08UgVDaY6UV0Ct
-         dXN/pJy9RfO/Ss+jJDsiOqzX0f8y/qzxtdwQQc2IC/zb81jrolUNfgmymMRg/Sah7GDl
-         c0JMVckHpthgQbfsjI7MRtIdFYkof3M6i4sqwKS3OJ67NSui6ULjZcu3NI0qt6tCiOaM
-         NeLPpHgmReh6/wI7IghEg5miGi+iB/Ro4qK0/UGBuT/lDi6F+KnAJEJ0sMdnl+6bpNWk
-         2GLhFhFYCK2HRdv1fZvlyZyey08HlOo255wR4cAzpyPCLf0Zj0Szm9PVJE/rmyrHSpJt
-         kStg==
-X-Gm-Message-State: AOAM531B0dWU8TczCNansvUVSVwisuTSGtho0iMgR5fUaH0H00qOgL35
-        WOWXLrc0rO86bnOaoyzc0A==
-X-Google-Smtp-Source: ABdhPJzJYI9dabKVh7ZALOHjcahemXR4MVEdi0zmW+neS40YFgfCxk0d7/kBLE6Hg6GCMxOHsp3PTg==
-X-Received: by 2002:a4a:d1b3:: with SMTP id z19mr30579325oor.14.1638971088201;
-        Wed, 08 Dec 2021 05:44:48 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id e14sm588501oie.7.2021.12.08.05.44.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Dec 2021 05:44:47 -0800 (PST)
-Received: (nullmailer pid 3857732 invoked by uid 1000);
-        Wed, 08 Dec 2021 13:44:28 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     swboyd@chromium.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com, jic23@kernel.org
-In-Reply-To: <20211208004311.3098571-5-gwendal@chromium.org>
-References: <20211208004311.3098571-1-gwendal@chromium.org> <20211208004311.3098571-5-gwendal@chromium.org>
-Subject: Re: [PATCH v5 4/5] dt-bindings: iio: Add sx9324 binding
-Date:   Wed, 08 Dec 2021 07:44:28 -0600
-Message-Id: <1638971068.743379.3857731.nullmailer@robh.at.kernel.org>
+        id S234512AbhLHOCm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Dec 2021 09:02:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229490AbhLHOCm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Dec 2021 09:02:42 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 697EAC061746
+        for <linux-iio@vger.kernel.org>; Wed,  8 Dec 2021 05:59:10 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1muxTM-0003RN-WC; Wed, 08 Dec 2021 14:59:05 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1muxTL-003Pmj-Ms; Wed, 08 Dec 2021 14:59:02 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1muxTK-0001f2-Lh; Wed, 08 Dec 2021 14:59:02 +0100
+Date:   Wed, 8 Dec 2021 14:59:02 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     David Jander <david@protonic.nl>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
+Message-ID: <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
+References: <20211123134540.416695-1-o.rempel@pengutronix.de>
+ <YZ3XAeYyfGblfaOi@shinobu>
+ <20211124072720.GA30281@pengutronix.de>
+ <YZ7tv79LQwLL7h3T@shinobu>
+ <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
+ <20211207081602.45b1423c@erd992>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mkfxf4qp7vifqjee"
+Content-Disposition: inline
+In-Reply-To: <20211207081602.45b1423c@erd992>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 07 Dec 2021 16:43:10 -0800, Gwendal Grignou wrote:
-> Similar to SX9310, add biddings to setup sx9324 hardware properties.
-> SX9324 is a little different, introduce 4 phases to be configured in 2
-> pairs over 3 antennas.
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
-> Changes in v5:
-> - Use consistent field naming, prefixed with phX.
-> 
-> Changes in v4:
-> - Use const instead of single enum
-> - Specify ph0-pin better
-> - Recopy type information for phX-pin
-> - Fix cut and paste errors.
-> 
-> Changes in v3:
-> - Remove duplicate information.
-> - Use intervals instead of enum.
-> - Fix filter description.
-> 
-> Changes in v2:
-> - Fix interrupt documentation wording.
-> 
->  .../iio/proximity/semtech,sx9324.yaml         | 161 ++++++++++++++++++
->  1 file changed, 161 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+--mkfxf4qp7vifqjee
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-yamllint warnings/errors:
+Hello David,
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph01-proxraw-strength: 'min' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph01-proxraw-strength: 'max' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph23-proxraw-strength: 'min' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph23-proxraw-strength: 'max' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,avg-pos-strength: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', 'enum', '$ref' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', '$ref' were unexpected)
-		hint: A vendor string property with exact values has an implicit type
-	'/schemas/types.yaml#definitions/uint32' does not match 'types.yaml#/definitions/'
-		hint: A vendor property needs a $ref to types.yaml
-	0 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	16 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	64 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	128 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	256 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	512 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	1024 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	4294967295 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph01-proxraw-strength: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('min', 'max', 'default', '$ref' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph01-proxraw-strength: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	'/schemas/types.yaml#definitions/uint32' does not match 'types.yaml#/definitions/'
-		hint: A vendor property needs a $ref to types.yaml
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph23-resolution: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', 'enum', '$ref' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', '$ref' were unexpected)
-		hint: A vendor string property with exact values has an implicit type
-	'/schemas/types.yaml#definitions/uint32' does not match 'types.yaml#/definitions/'
-		hint: A vendor property needs a $ref to types.yaml
-	8 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	16 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	32 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	64 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	128 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	256 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	512 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	1024 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph23-proxraw-strength: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('min', 'max', 'default', '$ref' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph23-proxraw-strength: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	'/schemas/types.yaml#definitions/uint32' does not match 'types.yaml#/definitions/'
-		hint: A vendor property needs a $ref to types.yaml
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,ph01-resolution: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', 'enum', '$ref' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', '$ref' were unexpected)
-		hint: A vendor string property with exact values has an implicit type
-	'/schemas/types.yaml#definitions/uint32' does not match 'types.yaml#/definitions/'
-		hint: A vendor property needs a $ref to types.yaml
-	8 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	16 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	32 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	64 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	128 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	256 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	512 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	1024 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: properties:semtech,startup-sensor: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', 'enum', '$ref' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('default', '$ref' were unexpected)
-		hint: A vendor string property with exact values has an implicit type
-	'/schemas/types.yaml#definitions/uint32' does not match 'types.yaml#/definitions/'
-		hint: A vendor property needs a $ref to types.yaml
-	0 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	1 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	2 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	3 is not of type 'string'
-		hint: A vendor string property with exact values has an implicit type
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml: ignoring, error in schema: properties: semtech,ph23-proxraw-strength
-warning: no schema found in file: ./Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-Error: Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.example.dts:31.33-34 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:373: Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1413: dt_binding_check] Error 2
+On Tue, Dec 07, 2021 at 08:16:02AM +0100, David Jander wrote:
+> On Mon, 6 Dec 2021 13:24:18 -0600
+> David Lechner <david@lechnology.com> wrote:
+>=20
+> > On 11/24/21 7:58 PM, William Breathitt Gray wrote:
+> > > On Wed, Nov 24, 2021 at 08:27:20AM +0100, Oleksij Rempel wrote: =20
+> > >> Hi William,
+> > >>
+> > >> On Wed, Nov 24, 2021 at 03:09:05PM +0900, William Breathitt Gray wro=
+te: =20
+> > >>> On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote: =20
+> > >>>> Add counter_push_event() to notify user space about new pulses
+> > >>>>
+> > >>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > >>>> ---
+> > >>>>   drivers/counter/interrupt-cnt.c | 2 ++
+> > >>>>   1 file changed, 2 insertions(+)
+> > >>>>
+> > >>>> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/int=
+errupt-cnt.c
+> > >>>> index 8514a87fcbee..b237137b552b 100644
+> > >>>> --- a/drivers/counter/interrupt-cnt.c
+> > >>>> +++ b/drivers/counter/interrupt-cnt.c
+> > >>>> @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int irq, vo=
+id *dev_id)
+> > >>>>  =20
+> > >>>>   	atomic_inc(&priv->count);
+> > >>>>  =20
+> > >>>> +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, 0);
+> > >>>> +
+> > >>>>   	return IRQ_HANDLED;
+> > >>>>   }
+> > >>>>  =20
+> > >>>> --=20
+> > >>>> 2.30.2 =20
+> > >>>
+> > >>> Hi Oleksij,
+> > >>>
+> > >>> It looks like this is pushing a COUNTER_EVENT_OVERFLOW event every =
+time
+> > >>> an interrupt is handled, which I suspect is not what you want to ha=
+ppen.
+> > >>> The COUNTER_EVENT_OVERFLOW event indicates a count value overflow e=
+vent,
+> > >>> so you'll need to check for a count value overflow before pushing t=
+he
+> > >>> event.
+> > >>>
+> > >>> It would be good idea to implement a ceiling extension as well (you=
+ can
+> > >>> use the COUNTER_COMP_CEILING() macro) so that users can configure t=
+he
+> > >>> particular point where the value overflows. =20
+> > >>
+> > >> Thank you!
+> > >>
+> > >> What would be the best and resource effective strategy for periodica=
+lly
+> > >> getting frequency of interrupts/pulses? This is actual information w=
+hich is
+> > >> needed for my use case.
+> > >>
+> > >> So far, I was pushing every event to the user space, which is working
+> > >> but probably not the most resource effective method of doing it.
+> > >>
+> > >> Regards,
+> > >> Oleskij
+> > >> --=20
+> > >> Pengutronix e.K.                           |                        =
+     |
+> > >> Steuerwalder Str. 21                       | http://www.pengutronix.=
+de/  |
+> > >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-=
+0    |
+> > >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-=
+5555 | =20
+> > >=20
+> > > We could introduce a new Counter change-of-state event type which wou=
+ld
+> > > trigger whenever the count value changes, but I agree with you that t=
+his
+> > > is likely not the best way for us to derive the frequency of the
+> > > interrupts due to the indirection of handling and parsing the event
+> > > data.
+> > >=20
+> > > Instead, perhaps introducing a "frequency" or "period" Count extension
+> > > would make more sense here. This extension could report the value del=
+ta
+> > > between counts, or alternatively the time delta from which you can
+> > > derive frequency. Regarding implementation, you can store the previous
+> > > value in a variable, updating it whenever an interrupt occurs, and
+> > > compute the particular delta every time a read is requested by the us=
+er.
+> > >=20
+> > > David Lechner is implementing something similar for the TI eQEP driver
+> > > to expose speed, so I'm CCing them here in case this is of interest to
+> > > them.
+> > >  =20
+> >=20
+> > Based on my experience, I would recommend that counter drivers be as
+> > "thin" as possible. They shouldn't try to provide any information that
+> > the hardware itself doesn't provide. In other words, the kernel should
+> > provide userspace the information needed to calculate the speed/rate
+> > but not try to do the actual calculation in the kernel. Inevitably
+> > there are nuances for specific use cases that can't all possibly be
+> > handled by such an implementation.
+>=20
+> I completely agree with this. While interrupts aren't really meant for
+> measuring frequency, and this being somewhat of a mis-use of something, i=
+t is
+> still possible to do and very useful in many cases. That said, while the
+> counter framework is AFAIK the best fit for this, the main use-case for t=
+his
+> driver is measuring wheel speed (and similar "speeds"). For this, the min=
+imum
+> amount of information the driver needs to provide user-space with to do
+> reliable calculations, is high-resolution time-stamps of GPIO events. A s=
+imple
+> counter is not suited, because there can be glitches that need to be dete=
+cted.
+> If user-space gets a buffer full of consecutive time-stamps (don't need t=
+o be
+> all of them, just a sample of n consecutive timestamps), as well as total
+> count, all needed calculations, glitch filtering, low-pass filtering, etc=
+=2E..
+> can be done in user-space just fine.
+>=20
+> > I've tried using gpio interrupts to try to calculate speed/rate in
+> > the kernel before and it simply doesn't work reliably. Interrupts
+> > get missed and the calculation will be off.
+>=20
+> Exactly. Been there, done that.
+> For reliable speed calculations of a mechanical system, the properties of=
+ the
+> mechanical system need to be known, like physical limits of accelerations,
+> maximum (or minimum) speed, etc. The minimum set of input data needed by a
+> user-space application to do these calculations is total pulse count in
+> addition to a buffer of timestamps of n consecutive input events (raising=
+ or
+> falling edges on GPIO). So IMHO this is what the driver should provide, a=
+nd
+> in the most resource-efficient way possible. This particular driver will =
+be
+> used 3 times on the same SoC, with each up to 10-15k pulses per second. T=
+hat
+> is a lot of interrupts for an embedded system, so they better consume as
+> little resources as possible. Filling a ring buffer with timestamps shoul=
+d be
+> possible, as long as no locking is involved. Locks in IRQ context must be
+> avoided at all costs, specially in this case.
+>=20
+> > For really slow counts (i.e. 1 count/second), I can see a use for
+> > generating an event on each count though. For high rates, I would
+> > just read the count every 100ms in usespace and divide the change in
+> > the number of counts by the time period to get the rate.
+>=20
+> For slow counts, I agree, but for high rates, I don't (see above). There =
+can
+> be glitches and false events that can (and must) be effectively filtered =
+out.
+> For that user-space needs to know the time of each event during the
+> measurement period.
 
-doc reference errors (make refcheckdocs):
-Documentation/Makefile:39: The 'sphinx-build' command was not found. Make sure you have Sphinx installed and in PATH, or set the SPHINXBUILD make variable to point to the full path of the 'sphinx-build' executable.
+No sure I understood the problem here. If you keep the driver as is and
+in userspace just read out the counter value twice and measure the time
+between the reads[1], you can calculate the average frequency of the
+event in userspace.
 
-Detected OS: DISTRIB_ID=Ubuntu
-DISTRIB_RELEASE=20.04
-DISTRIB_CODENAME=focal
-DISTRIB_DESCRIPTION="Ubuntu 20.04.3 LTS".
-Warning: better to also install "convert".
-Warning: better to also install "dot".
-Warning: better to also install "dvipng".
-ERROR: please install "ensurepip", otherwise, build won't work.
-Warning: better to also install "fonts-dejavu".
-Warning: better to also install "fonts-noto-cjk".
-Warning: better to also install "latexmk".
-Warning: better to also install "rsvg-convert".
-Warning: better to also install "xelatex".
-You should run:
+Isn't that good enough?
 
-	sudo apt-get install imagemagick graphviz dvipng python3-venv fonts-dejavu fonts-noto-cjk latexmk librsvg2-bin texlive-xetex
-note: If you want pdf, you need at least Sphinx 2.4.4.
-To upgrade Sphinx, use:
+Best regards
+Uwe
 
-Can't build as 2 mandatory dependencies are missing at ./scripts/sphinx-pre-install line 953.
-	/usr/bin/python3 -m venv sphinx_2.4.4
-	. sphinx_2.4.4/bin/activate
-	pip install -r ./Documentation/sphinx/requirements.txt
+[1] maybe support this timing by providing a timestamp with the read
+    value to reduce timing jitter.
 
-If you want to exit the virtualenv, you can use:
-	deactivate
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-See https://patchwork.ozlabs.org/patch/1565029
+--mkfxf4qp7vifqjee
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+-----BEGIN PGP SIGNATURE-----
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmGwuiMACgkQwfwUeK3K
+7AkzqQf9H805qI3GrlxiNoK2zp/ScyCZ8YbXwZ8dKt9uEsSyKPdwPcRW2cPrMMLj
+dUTKBEs5m4Z48mp+whQPoa+2M5+UbUWHkLThhHaa0G+RSjRfn1Ei8r7qjVV0RXhp
+4Ex+3DHlAYyUxN0vyqWb9lVzf1QHySWCnkxOn0wOnWglz/XlwHM7glD5qAqcnsPY
++RGELJac3pg5jL265FBKsnuXGCqvt+/7NuUJy79pULvwxI+Dhk+GKW6RsZIEqDlQ
+r0DMG3j+KNoSUTaupzzzwVZ0Xo4lYB0RFXNLPYJeB4DWJH4WRVTjz24yDCOnb4Jj
+iHgn8BvvPw7p9xkfKozodO9VmlDBDA==
+=s5Z5
+-----END PGP SIGNATURE-----
 
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+--mkfxf4qp7vifqjee--

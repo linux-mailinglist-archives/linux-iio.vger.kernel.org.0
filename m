@@ -2,115 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF224471B80
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Dec 2021 17:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5129C471B84
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Dec 2021 17:17:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231590AbhLLQOr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Dec 2021 11:14:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36610 "EHLO
+        id S231602AbhLLQRH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 12 Dec 2021 11:17:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231533AbhLLQOq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Dec 2021 11:14:46 -0500
-Received: from balrog.mythic-beasts.com (balrog.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 902CBC061714
-        for <linux-iio@vger.kernel.org>; Sun, 12 Dec 2021 08:14:46 -0800 (PST)
-Received: from [81.101.6.87] (port=48018 helo=jic23-huawei)
-        by balrog.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        with ESMTP id S231533AbhLLQRG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Dec 2021 11:17:06 -0500
+Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9BC8C061714
+        for <linux-iio@vger.kernel.org>; Sun, 12 Dec 2021 08:17:06 -0800 (PST)
+Received: from [81.101.6.87] (port=52562 helo=jic23-huawei)
+        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1mwRUm-00089K-SC; Sun, 12 Dec 2021 16:14:45 +0000
-Date:   Sun, 12 Dec 2021 16:19:58 +0000
+        id 1mwRX6-0006j9-Kr; Sun, 12 Dec 2021 16:17:05 +0000
+Date:   Sun, 12 Dec 2021 16:22:21 +0000
 From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 00/12] IIO: More of to generic fw conversions.
-Message-ID: <20211212161935.49d2414c@jic23-huawei>
-In-Reply-To: <20211205170140.2783914-1-jic23@kernel.org>
-References: <20211205170140.2783914-1-jic23@kernel.org>
+To:     "Kunyang =?UTF-8?B?RmFu?=(=?UTF-8?B?6IyD5Z2k5o+a?=)" 
+        <Kunyang_Fan@asus.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kunyang Fan <Kunyang_Fan@aaeon.com.tw>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v2] iio: adc: ti-adc081c: Partial revert of removal of
+ ACPI IDs
+Message-ID: <20211212162153.28810ff0@jic23-huawei>
+In-Reply-To: <HK0PR04MB3074C424090A590237DC4173F66F9@HK0PR04MB3074.apcprd04.prod.outlook.com>
+References: <20211205172728.2826512-1-jic23@kernel.org>
+        <HK0PR04MB3074C424090A590237DC4173F66F9@HK0PR04MB3074.apcprd04.prod.outlook.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 4
-X-Spam-Status: No, score=0.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-BlackCat-Spam-Score: 19
+X-Spam-Status: No, score=1.9
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  5 Dec 2021 17:01:28 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 8 Dec 2021 07:36:16 +0000
+Kunyang Fan(范坤揚) <Kunyang_Fan@asus.com> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Hi Jonathan,
 > 
-> v3: Thanks to Andy Shevchenko for review + added tags.
-> 
-> patch 1: Moved the dev_fwnode() check into the ad5755_parse_fw() function
-> which simplifies the handling where it is calls. Also added blank line.
-> patch 8: Dropped the struct device pointer being passed to mcp3911_config()
-> as it is available as adc->spi->dev.
-> patch 9: drop the of_match_pttr()
-> patch 12: Clarify that the OF dependencies being removed in this patch
-> were never needed for these drivers.
-> 
-> v2: Drop platform data from ad5755 as suggested by Lars.
->     Collect tags.
-> 
-> I'm being naughty because I have a busy week ahead and not sure
-> when I'll get back to this series.  So whilst I'd normally say leave
-> a series for other reviews for at least a few days here they are, one
-> day later :)
-> 
-> Nothing particularly special about this series, just a few
-> more drifvers converted and related header and Kconfig
-> dependency cleanups.
-> 
-> For now I'm focussing mostly on standalone parts rather than
-> those integrated in SoCs.
-> 
-> Any feedback welcome.
-Series applied to the togreg branch of iio.git.
+> This patch is looked good to me, and I used our product UP-extremei11 to verify ADC ADC081C function.
 
-I'll add a follow up to patch 1 as per discussion with Andy to my
-todo list if no one else gets to it.
+Hi Kunayang,
+
+If you could give a formal Tested-by tag that would be great.
+
+I'm running a bit slow this this weekend so will try
+to pick up outstanding patches mid week.
 
 Thanks,
 
 Jonathan
 
 > 
+> Thanks,
 > 
+> Kunyang
 > 
-> Jonathan Cameron (12):
->   iio:dac:ad5755: Switch to generic firmware properties and drop pdata
->   iio:dac:ad5758: Drop unused of specific headers.
->   iio:dac:dpot-dac: Swap of.h for mod_devicetable.h
->   iio:dac:lpc18xx_dac: Swap from of* to mod_devicetable.h
->   iio:pot:mcp41010: Switch to generic firmware properties.
->   iio:light:cm3605: Switch to generic firmware properties.
->   iio:adc:max9611: Switch to generic firmware properties.
->   iio:adc:mcp3911: Switch to generic firmware properties.
->   iio:adc:ti-adc12138: Switch to generic firmware properties and drop
->     of_match_ptr
->   iio:adc:envelope-detector: Switch from of headers to mod_devicetable.h
->   iio:adc:ti-ads124s08: Drop dependency on OF.
->   iio:adc/dac:Kconfig: Update to drop OF dependencies.
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Monday, December 6, 2021 1:27 AM
+> To: linux-iio@vger.kernel.org
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Kunyang Fan <Kunyang_Fan@aaeon.com.tw>; Andy Shevchenko <andy.shevchenko@gmail.com>
+> Subject: [PATCH v2] iio: adc: ti-adc081c: Partial revert of removal of ACPI IDs
 > 
->  drivers/iio/adc/Kconfig              |   6 +-
->  drivers/iio/adc/envelope-detector.c  |   3 +-
->  drivers/iio/adc/max9611.c            |  20 ++--
->  drivers/iio/adc/mcp3911.c            |   9 +-
->  drivers/iio/adc/ti-adc12138.c        |  11 +-
->  drivers/iio/adc/ti-ads124s08.c       |   3 +-
->  drivers/iio/dac/Kconfig              |   1 -
->  drivers/iio/dac/ad5755.c             | 152 ++++++++++++++++++++-------
->  drivers/iio/dac/ad5758.c             |   3 +-
->  drivers/iio/dac/dpot-dac.c           |   2 +-
->  drivers/iio/dac/lpc18xx_dac.c        |   3 +-
->  drivers/iio/light/cm3605.c           |   6 +-
->  drivers/iio/potentiometer/mcp41010.c |   6 +-
->  include/linux/platform_data/ad5755.h | 102 ------------------
->  14 files changed, 149 insertions(+), 178 deletions(-)
->  delete mode 100644 include/linux/platform_data/ad5755.h
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
+> Unfortuanately a non standards compliant ACPI ID is known to be in the wild on some AAEON boards.
+> 
+> Partly revert the removal of these IDs so that ADC081C will again work + add a comment to that affect for future reference.
+> 
+> Whilst here use generic firmware properties rather than the ACPI specific handling previously found in this driver.
+> 
+> Reported-by: Kunyang Fan <Kunyang_Fan@aaeon.com.tw>
+> Fixes: c458b7ca3fd0 ("iio:adc:ti-adc081c: Drop ACPI ids that seem very unlikely to be official.")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ---
+> 
+> Looking ideally for a tested-by for this from Kunyang Fan.
+> 
+> v2: Use generic firmware properties as Andy Shevchenko rightly suggested.
+> I took it a bit further than strictly necessary as I don't like putting enums in the driver_data only to use them to index a table when we could just use the pointers directly.
+> 
+> Note this driver does have device tree binding documentation but that's a job for another day.  Or maybe later today if I get really bored this evening :)
+> 
+>  drivers/iio/adc/ti-adc081c.c | 22 +++++++++++++++++-----
+>  1 file changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-adc081c.c b/drivers/iio/adc/ti-adc081c.c index 16fc608db36a..bd48b073e720 100644
+> --- a/drivers/iio/adc/ti-adc081c.c
+> +++ b/drivers/iio/adc/ti-adc081c.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/i2c.h>
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+> +#include <linux/property.h>
+> 
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> @@ -156,13 +157,16 @@ static int adc081c_probe(struct i2c_client *client,  {
+>         struct iio_dev *iio;
+>         struct adc081c *adc;
+> -       struct adcxx1c_model *model;
+> +       const struct adcxx1c_model *model;
+>         int err;
+> 
+>         if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+>                 return -EOPNOTSUPP;
+> 
+> -       model = &adcxx1c_models[id->driver_data];
+> +       if (dev_fwnode(&client->dev))
+> +               model = device_get_match_data(&client->dev);
+> +       else
+> +               model = &adcxx1c_models[id->driver_data];
+> 
+>         iio = devm_iio_device_alloc(&client->dev, sizeof(*adc));
+>         if (!iio)
+> @@ -210,10 +214,17 @@ static const struct i2c_device_id adc081c_id[] = {  };  MODULE_DEVICE_TABLE(i2c, adc081c_id);
+> 
+> +static const struct acpi_device_id adc081c_acpi_match[] = {
+> +       /* Used on some AAEON boards */
+> +       { "ADC081C", (kernel_ulong_t)&adcxx1c_models[ADC081C] },
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, adc081c_acpi_match);
+> +
+>  static const struct of_device_id adc081c_of_match[] = {
+> -       { .compatible = "ti,adc081c" },
+> -       { .compatible = "ti,adc101c" },
+> -       { .compatible = "ti,adc121c" },
+> +       { .compatible = "ti,adc081c", .data = &adcxx1c_models[ADC081C] },
+> +       { .compatible = "ti,adc101c", .data = &adcxx1c_models[ADC101C] },
+> +       { .compatible = "ti,adc121c", .data = &adcxx1c_models[ADC121C] },
+>         { }
+>  };
+>  MODULE_DEVICE_TABLE(of, adc081c_of_match); @@ -222,6 +233,7 @@ static struct i2c_driver adc081c_driver = {
+>         .driver = {
+>                 .name = "adc081c",
+>                 .of_match_table = adc081c_of_match,
+> +               .acpi_match_table = adc081c_acpi_match,
+>         },
+>         .probe = adc081c_probe,
+>         .id_table = adc081c_id,
+> --
+> 2.34.1
+> 
+> <p></p>
+> 
+> ===================================================================================================================================
+> This email and any attachments to it contain confidential information and are intended solely for the use of the individual to whom it is addressed.If you are not the intended recipient or receive it accidentally, please immediately notify the sender by e-mail and delete the message and any attachments from your computer system, and destroy all hard copies. If any, please be advised that any unauthorized disclosure, copying, distribution or any action taken or omitted in reliance on this, is illegal and prohibited. Furthermore, any views or opinions expressed are solely those of the author and do not represent those of ASUSTeK. Thank you for your cooperation.
+> ===================================================================================================================================
 

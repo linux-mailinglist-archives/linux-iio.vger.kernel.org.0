@@ -2,1274 +2,1478 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30320471C0A
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Dec 2021 19:07:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAE3F471C8B
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Dec 2021 20:25:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbhLLSHP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Dec 2021 13:07:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60966 "EHLO
+        id S229688AbhLLTZv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Dec 2021 14:25:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230468AbhLLSHO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Dec 2021 13:07:14 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B37CEC061751;
-        Sun, 12 Dec 2021 10:07:13 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02BDEB80D5F;
-        Sun, 12 Dec 2021 18:07:12 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 0E175C341C6;
-        Sun, 12 Dec 2021 18:07:04 +0000 (UTC)
-Date:   Sun, 12 Dec 2021 18:12:24 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        john.stultz@linaro.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 3/7] iio: adc: qcom-spmi-rradc: introduce round robin
- adc
-Message-ID: <20211212181224.6aead071@jic23-huawei>
-In-Reply-To: <20211211022224.3488860-4-caleb@connolly.tech>
-References: <20211211022224.3488860-1-caleb@connolly.tech>
-        <20211211022224.3488860-4-caleb@connolly.tech>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        with ESMTP id S229600AbhLLTZu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Dec 2021 14:25:50 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64D4C061714;
+        Sun, 12 Dec 2021 11:25:49 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id g14so44911141edb.8;
+        Sun, 12 Dec 2021 11:25:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=JPzdmpqoYoAFERa5LeEMjDCR0lXszDh6qbutozfzMl4=;
+        b=h881vA/X54JarW2CPQe3KxViUwtohBGT7UU1YymZfQOs1N7uDgSlGGm9bkxgshSZZR
+         xrhCTejxgNpsD/+JiRlTEF18sUlHKl5kddtkd1kPYM/xaPWP/YPLTiKPF2d9DD69Op2S
+         n7RF9rTPsxLVGPTYcdlPiUFs3Gks50teCHVmF7oSnkxIYWATd7ZcyPA6Yi0/oQ524S+E
+         7HyBYE+GvYM38badDL5H26oToQDw4s4yjQFz8mmZHiirFEU2i6UDLtCnMReDJg14mfPe
+         tHfRuCyMi3uEY/RnjR4fE+QKP6ADrK98T8XStrrIlQlHtgru00kZUfAIaPi8ZrkatXr4
+         1zOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=JPzdmpqoYoAFERa5LeEMjDCR0lXszDh6qbutozfzMl4=;
+        b=3Zu9Rw58ybX6NRPZr2GU87Xo6oEIqAHCZQYlXFTc7wnkctl3u4qZe89ePXzxbe1IgO
+         BXvyKEO6Q83OkryVkgLrFxml5gWjZWKLjxQv0C6e05JFKgpa3HgugO+zsaoluTBePhCR
+         nmTvr7A50MoW96WQ5jpIKvgQx9BoObG+12GQACw2haO78W6/5QVjt/duBfOaSZFpfIWe
+         FZlQuKaL85hU1eqqLvo5Wf56E5LN31Ac5SlaDYllT9lZB6zY6U8OFtSvY6nniTBv0TS9
+         P2J39RDbNn12dBD2ufzJOuzVScZbTZlT9FqrOLeWJ5aopdqLsb0OtUxOerwi+IyDZdtj
+         Y03Q==
+X-Gm-Message-State: AOAM533o82VE+h5/6MY92AmmtJtdhqtLSKVhkQpmdMj37PgDNp1w5G8o
+        2+mXQDhKwYADOiGnf1v99EFo3Gp8SiU=
+X-Google-Smtp-Source: ABdhPJxtk0vqeifPJQ12FZFnSKy6wxxT+vZ/ccET7b1Znqtn+7GKxNmMKRFUos6Kf19fudes1tR8YA==
+X-Received: by 2002:a17:907:98f6:: with SMTP id ke22mr38987175ejc.500.1639337147831;
+        Sun, 12 Dec 2021 11:25:47 -0800 (PST)
+Received: from [192.168.0.182] ([188.24.42.157])
+        by smtp.gmail.com with ESMTPSA id hv17sm4851073ejc.71.2021.12.12.11.25.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Dec 2021 11:25:47 -0800 (PST)
+Message-ID: <32968eda-e243-5420-77e5-41dd16f1e870@gmail.com>
+Date:   Sun, 12 Dec 2021 21:25:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2 2/2] iio: accel: add ADXL367 driver
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211207094337.59300-1-cosmin.tanislav@analog.com>
+ <20211207094337.59300-3-cosmin.tanislav@analog.com>
+ <20211212170433.467b93a9@jic23-huawei>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <20211212170433.467b93a9@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 11 Dec 2021 02:22:20 +0000
-Caleb Connolly <caleb.connolly@linaro.org> wrote:
 
-> From: Caleb Connolly <caleb.connolly@linaro.org>
+
+On 12/12/21 19:04, Jonathan Cameron wrote:
+> On Tue,  7 Dec 2021 11:43:37 +0200
+> Cosmin Tanislav <demonsingur@gmail.com> wrote:
 > 
-> The Round Robin ADC is responsible for reading data about the rate of
-> charge from the USB or DC in jacks, it can also read the battery
-> ID (resistence) and some temperatures. It is found on the PMI8998 and
-> PM660 Qualcomm PMICs.
+>> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+>>
+>> The ADXL367 does not alias input signals to achieve ultralow power
+>> consumption, it samples the full bandwidth of the sensor at all
+>> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+>> with a resolution of 0.25mg/LSB on the +-2 g range.
+>>
+>> In addition to its ultralow power consumption, the ADXL367
+>> has many features to enable true system level power reduction.
+>> It includes a deep multimode output FIFO, a built-in micropower
+>> temperature sensor, and an internal ADC for synchronous conversion
+>> of an additional analog input.
+>>
+>> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> Hi Cosmin,
 > 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-
-Hi Caleb,
-
-Welcome to IIO.
-
-Comments inline,
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/Kconfig           |   13 +
->  drivers/iio/adc/Makefile          |    1 +
->  drivers/iio/adc/qcom-spmi-rradc.c | 1020 +++++++++++++++++++++++++++++
->  3 files changed, 1034 insertions(+)
->  create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
+> I'd gotten half way through this on v1, but not had a chance to finish
+> an initial review. I've cut and paste over comments, and added more stuff
+> but it is possible some of them don't make complete sense any more.
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 8bf5b62a73f4..d7765b177cd3 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -812,6 +812,19 @@ config QCOM_PM8XXX_XOADC
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called qcom-pm8xxx-xoadc.
->  
-> +config QCOM_SPMI_RRADC
-> +	tristate "Qualcomm SPMI RRADC"
-> +	depends on MFD_SPMI_PMIC
-> +	help
-> +	  This is for the PMIC Round Robin ADC driver.
-> +
-> +	  This driver exposes the battery ID resistor, battery thermal, PMIC die
-> +	  temperature, charger USB in and DC in voltage and current.
-> +
-> +	  To compile this driver as a module, choose M here: the module will
-> +	  be called qcom-qpmi-rradc.
-> +
-> +
->  config QCOM_SPMI_IADC
->  	tristate "Qualcomm SPMI PMIC current ADC"
->  	depends on SPMI
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index d3f53549720c..ca8bad549175 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -77,6 +77,7 @@ obj-$(CONFIG_NPCM_ADC) += npcm_adc.o
->  obj-$(CONFIG_PALMAS_GPADC) += palmas_gpadc.o
->  obj-$(CONFIG_QCOM_SPMI_ADC5) += qcom-spmi-adc5.o
->  obj-$(CONFIG_QCOM_SPMI_IADC) += qcom-spmi-iadc.o
-> +obj-$(CONFIG_QCOM_SPMI_RRADC) += qcom-spmi-rradc.o
->  obj-$(CONFIG_QCOM_VADC_COMMON) += qcom-vadc-common.o
->  obj-$(CONFIG_QCOM_SPMI_VADC) += qcom-spmi-vadc.o
->  obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
-> diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
-> new file mode 100644
-> index 000000000000..ce2bbb8c5c25
-> --- /dev/null
-> +++ b/drivers/iio/adc/qcom-spmi-rradc.c
-> @@ -0,0 +1,1020 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2021 Linaro Limited.
-> + *  Author: Caleb Connolly <caleb.connolly@linaro.org>
-> + *
-> + * This driver is for the Round Robin ADC found in the pmi8998 and pm660 PMICs.
-> + */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/types.h>
-> +#include <linux/kernel.h>
-> +#include <linux/math64.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/power_supply.h>
-?
-
-> +#include <linux/regmap.h>
-> +#include <linux/spmi.h>
-> +#include <linux/types.h>
-> +#include <soc/qcom/qcom-pmic.h>
-> +
-> +#define RR_ADC_EN_CTL				0x46
-> +#define RR_ADC_SKIN_TEMP_LSB			0x50
-> +#define RR_ADC_SKIN_TEMP_MSB			0x51
-> +#define RR_ADC_RR_ADC_CTL			0x52
-> +#define RR_ADC_ADC_CTL_CONTINUOUS_SEL		BIT(3)
-> +#define RR_ADC_ADC_LOG				0x53
-> +#define RR_ADC_ADC_LOG_CLR_CTRL			BIT(0)
-> +
-> +#define RR_ADC_FAKE_BATT_LOW_LSB		0x58
-> +#define RR_ADC_FAKE_BATT_LOW_MSB		0x59
-> +#define RR_ADC_FAKE_BATT_HIGH_LSB		0x5A
-> +#define RR_ADC_FAKE_BATT_HIGH_MSB		0x5B
-> +
-> +#define RR_ADC_BATT_ID_CTRL			0x60
-> +#define RR_ADC_BATT_ID_CTRL_CHANNEL_CONV	BIT(0)
-> +#define RR_ADC_BATT_ID_TRIGGER			0x61
-> +#define RR_ADC_BATT_ID_TRIGGER_CTL		BIT(0)
-> +#define RR_ADC_BATT_ID_STS			0x62
-> +#define RR_ADC_BATT_ID_CFG			0x63
-> +#define RR_ADC_BATT_ID_5_LSB			0x66
-> +#define RR_ADC_BATT_ID_5_MSB			0x67
-> +#define RR_ADC_BATT_ID_15_LSB			0x68
-> +#define RR_ADC_BATT_ID_15_MSB			0x69
-> +#define RR_ADC_BATT_ID_150_LSB			0x6A
-> +#define RR_ADC_BATT_ID_150_MSB			0x6B
-> +
-> +#define RR_ADC_BATT_THERM_CTRL			0x70
-> +#define RR_ADC_BATT_THERM_TRIGGER		0x71
-> +#define RR_ADC_BATT_THERM_STS			0x72
-> +#define RR_ADC_BATT_THERM_CFG			0x73
-> +#define RR_ADC_BATT_THERM_LSB			0x74
-> +#define RR_ADC_BATT_THERM_MSB			0x75
-> +#define RR_ADC_BATT_THERM_FREQ			0x76
-> +
-> +#define RR_ADC_AUX_THERM_CTRL			0x80
-> +#define RR_ADC_AUX_THERM_TRIGGER		0x81
-> +#define RR_ADC_AUX_THERM_STS			0x82
-> +#define RR_ADC_AUX_THERM_CFG			0x83
-> +#define RR_ADC_AUX_THERM_LSB			0x84
-> +#define RR_ADC_AUX_THERM_MSB			0x85
-> +
-> +#define RR_ADC_SKIN_HOT				0x86
-> +#define RR_ADC_SKIN_TOO_HOT			0x87
-> +
-> +#define RR_ADC_AUX_THERM_C1			0x88
-> +#define RR_ADC_AUX_THERM_C2			0x89
-> +#define RR_ADC_AUX_THERM_C3			0x8A
-> +#define RR_ADC_AUX_THERM_HALF_RANGE		0x8B
-> +
-> +#define RR_ADC_USB_IN_V_CTRL			0x90
-> +#define RR_ADC_USB_IN_V_TRIGGER			0x91
-> +#define RR_ADC_USB_IN_V_EVERY_CYCLE		BIT(7)
-> +#define RR_ADC_USB_IN_V_STS			0x92
-> +#define RR_ADC_USB_IN_V_LSB			0x94
-> +#define RR_ADC_USB_IN_V_MSB			0x95
-> +#define RR_ADC_USB_IN_I_CTRL			0x98
-> +#define RR_ADC_USB_IN_I_TRIGGER			0x99
-> +#define RR_ADC_USB_IN_I_STS			0x9A
-> +#define RR_ADC_USB_IN_I_LSB			0x9C
-> +#define RR_ADC_USB_IN_I_MSB			0x9D
-> +
-> +#define RR_ADC_DC_IN_V_CTRL			0xA0
-> +#define RR_ADC_DC_IN_V_TRIGGER			0xA1
-> +#define RR_ADC_DC_IN_V_STS			0xA2
-> +#define RR_ADC_DC_IN_V_LSB			0xA4
-> +#define RR_ADC_DC_IN_V_MSB			0xA5
-> +#define RR_ADC_DC_IN_I_CTRL			0xA8
-> +#define RR_ADC_DC_IN_I_TRIGGER			0xA9
-> +#define RR_ADC_DC_IN_I_STS			0xAA
-> +#define RR_ADC_DC_IN_I_LSB			0xAC
-> +#define RR_ADC_DC_IN_I_MSB			0xAD
-> +
-> +#define RR_ADC_PMI_DIE_TEMP_CTRL		0xB0
-> +#define RR_ADC_PMI_DIE_TEMP_TRIGGER		0xB1
-> +#define RR_ADC_PMI_DIE_TEMP_STS			0xB2
-> +#define RR_ADC_PMI_DIE_TEMP_CFG			0xB3
-> +#define RR_ADC_PMI_DIE_TEMP_LSB			0xB4
-> +#define RR_ADC_PMI_DIE_TEMP_MSB			0xB5
-> +
-> +#define RR_ADC_CHARGER_TEMP_CTRL		0xB8
-> +#define RR_ADC_CHARGER_TEMP_TRIGGER		0xB9
-> +#define RR_ADC_CHARGER_TEMP_STS			0xBA
-> +#define RR_ADC_CHARGER_TEMP_CFG			0xBB
-> +#define RR_ADC_CHARGER_TEMP_LSB			0xBC
-> +#define RR_ADC_CHARGER_TEMP_MSB			0xBD
-> +#define RR_ADC_CHARGER_HOT			0xBE
-> +#define RR_ADC_CHARGER_TOO_HOT			0xBF
-> +
-> +#define RR_ADC_GPIO_CTRL			0xC0
-> +#define RR_ADC_GPIO_TRIGGER			0xC1
-> +#define RR_ADC_GPIO_STS				0xC2
-> +#define RR_ADC_GPIO_LSB				0xC4
-> +#define RR_ADC_GPIO_MSB				0xC5
-> +
-> +#define RR_ADC_ATEST_CTRL			0xC8
-> +#define RR_ADC_ATEST_TRIGGER			0xC9
-> +#define RR_ADC_ATEST_STS			0xCA
-> +#define RR_ADC_ATEST_LSB			0xCC
-> +#define RR_ADC_ATEST_MSB			0xCD
-> +#define RR_ADC_SEC_ACCESS			0xD0
-> +
-> +#define RR_ADC_PERPH_RESET_CTL2			0xD9
-> +#define RR_ADC_PERPH_RESET_CTL3			0xDA
-> +#define RR_ADC_PERPH_RESET_CTL4			0xDB
-> +#define RR_ADC_INT_TEST1			0xE0
-> +#define RR_ADC_INT_TEST_VAL			0xE1
-> +
-> +#define RR_ADC_TM_TRIGGER_CTRLS			0xE2
-> +#define RR_ADC_TM_ADC_CTRLS			0xE3
-> +#define RR_ADC_TM_CNL_CTRL			0xE4
-> +#define RR_ADC_TM_BATT_ID_CTRL			0xE5
-> +#define RR_ADC_TM_THERM_CTRL			0xE6
-> +#define RR_ADC_TM_CONV_STS			0xE7
-> +#define RR_ADC_TM_ADC_READ_LSB			0xE8
-> +#define RR_ADC_TM_ADC_READ_MSB			0xE9
-> +#define RR_ADC_TM_ATEST_MUX_1			0xEA
-> +#define RR_ADC_TM_ATEST_MUX_2			0xEB
-> +#define RR_ADC_TM_REFERENCES			0xED
-> +#define RR_ADC_TM_MISC_CTL			0xEE
-> +#define RR_ADC_TM_RR_CTRL			0xEF
-> +
-> +#define RR_ADC_BATT_ID_5_MA			5
-> +#define RR_ADC_BATT_ID_15_MA			15
-> +#define RR_ADC_BATT_ID_150_MA			150
-Defines that define from something with the number in it to a number 
-are usually not that helpful.  Just use the values and ensure
-the variable naming makes units etc clear.
-
-> +#define RR_ADC_BATT_ID_RANGE			820
-> +
-> +#define RR_ADC_BITS				10
-> +#define RR_ADC_MAX_READINGS			(1 << RR_ADC_BITS)
-
-What is this?  I'd expect ADC_MAX_READINGS to be the number of
-readings, whereas I suspect it's maximum value?
-
-> +#define RR_ADC_FS_VOLTAGE_MV			2500
-> +
-> +/* BATT_THERM 0.25K/LSB */
-> +#define RR_ADC_BATT_THERM_LSB_K			4
-> +
-> +#define RR_ADC_TEMP_FS_VOLTAGE_NUM		5000000
-> +#define RR_ADC_TEMP_FS_VOLTAGE_DEN		3
-> +#define RR_ADC_DIE_TEMP_OFFSET			601400
-> +#define RR_ADC_DIE_TEMP_SLOPE			2
-> +#define RR_ADC_DIE_TEMP_OFFSET_MILLI_DEGC	25000
-> +
-> +#define RR_ADC_CHG_TEMP_GF_OFFSET_UV		1303168
-> +#define RR_ADC_CHG_TEMP_GF_SLOPE_UV_PER_C	3784
-> +#define RR_ADC_CHG_TEMP_SMIC_OFFSET_UV		1338433
-> +#define RR_ADC_CHG_TEMP_SMIC_SLOPE_UV_PER_C	3655
-> +#define RR_ADC_CHG_TEMP_660_GF_OFFSET_UV	1309001
-> +#define RR_ADC_CHG_TEMP_660_GF_SLOPE_UV_PER_C	3403
-> +#define RR_ADC_CHG_TEMP_660_SMIC_OFFSET_UV	1295898
-> +#define RR_ADC_CHG_TEMP_660_SMIC_SLOPE_UV_PER_C	3596
-> +#define RR_ADC_CHG_TEMP_660_MGNA_OFFSET_UV	1314779
-> +#define RR_ADC_CHG_TEMP_660_MGNA_SLOPE_UV_PER_C	3496
-> +#define RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC	25000
-> +#define RR_ADC_CHG_THRESHOLD_SCALE		4
-> +
-> +#define RR_ADC_VOLT_INPUT_FACTOR		8
-> +#define RR_ADC_CURR_INPUT_FACTOR		2000
-> +#define RR_ADC_CURR_USBIN_INPUT_FACTOR_MIL	1886
-> +#define RR_ADC_CURR_USBIN_660_FACTOR_MIL	9
-> +#define RR_ADC_CURR_USBIN_660_UV_VAL		579500
-> +
-> +#define RR_ADC_SCALE_MILLI_FACTOR		1000
-
-There are standard kernel defines for things like this.
-see linux/units.h
-
-
-> +#define RR_ADC_KELVINMIL_CELSIUSMIL		273150
-
-Also in linux/units.h
-
-> +
-> +#define RR_ADC_GPIO_FS_RANGE			5000
-> +#define RR_ADC_COHERENT_CHECK_RETRY		5
-> +#define RR_ADC_MAX_CONTINUOUS_BUFFER_LEN	16
-> +
-> +#define RR_ADC_STS_CHANNEL_READING_MASK		0x3
-> +#define RR_ADC_STS_CHANNEL_STS			0x2
-> +
-> +#define RR_ADC_CONV_TIME_MIN_US			499
-> +#define RR_ADC_CONV_TIME_MAX_US			501
-Can't see where these are used. I was wondering why they would make
-sense so went looking :)
-
-> +#define RR_ADC_CONV_MAX_RETRY_CNT		100
-
-Things like retry counts need a comment justifying the value.
-Maybe you tried smaller values and sometimes it failed or something
-like that?  100 is a lot of retries.
-
-> +#define RR_ADC_TP_REV_VERSION1			21
-> +#define RR_ADC_TP_REV_VERSION2			29
-> +#define RR_ADC_TP_REV_VERSION3			32
-> +
-> +#define BATT_ID_SETTLE_SHIFT			5
-> +#define RRADC_BATT_ID_DELAY_MAX			8
-> +
-> +/*
-> + * Used to index rradc_chip.chans[] array.
-
-Not sure the comment adds much as if anyone cares they can grep :)
-
-> + */
-> +enum rradc_channel_id {
-> +	RR_ADC_BATT_ID = 0,
-> +	RR_ADC_BATT_THERM,
-> +	RR_ADC_SKIN_TEMP,
-> +	RR_ADC_USBIN_I,
-> +	RR_ADC_USBIN_V,
-> +	RR_ADC_DCIN_I,
-> +	RR_ADC_DCIN_V,
-> +	RR_ADC_DIE_TEMP,
-> +	RR_ADC_CHG_TEMP,
-> +	RR_ADC_GPIO,
-> +	RR_ADC_CHG_HOT_TEMP,
-> +	RR_ADC_CHG_TOO_HOT_TEMP,
-> +	RR_ADC_SKIN_HOT_TEMP,
-> +	RR_ADC_SKIN_TOO_HOT_TEMP,
-> +	RR_ADC_MAX
-> +};
-> +
-> +struct rradc_chip;
-> +
-> +/**
-> + * struct rradc_channel - rradc channel data
-> + * @datasheet_name:	Name of the channel
-> + * @type:		Channel type
-> + * @info_mask:		Channel mask
-> + * @enabled:		Enable/disable flag
-> + * @lsb:		Channel least significant byte
-> + * @msb:		Channel most significant byte
-> + * @status:		Channel status address
-> + * @size:		number of bytes to read
-> + * @trigger_addr:	Trigger address
-> + * @trigger_mask:	Trigger mask
-> + * @scale:		Channel scale callback
-> + */
-> +struct rradc_channel {
-> +	const char			*datasheet_name;
-> +	enum iio_chan_type		type;
-> +	long				info_mask;
-> +	bool				enabled;
-> +	u8				lsb;
-> +	u8				msb;
-> +	u8				status;
-> +	int				size;
-> +	int				trigger_addr;
-> +	int				trigger_mask;
-> +	int (*scale)(struct rradc_chip *chip, u16 adc_code, int *result);
-> +};
-> +
-> +struct rradc_chip {
-> +	struct device			*dev;
-> +	struct qcom_spmi_pmic		*pmic;
-> +	struct mutex			lock;
-> +	struct regmap			*regmap;
-> +	u32				base;
-> +	int				batt_id_delay;
-> +	struct iio_chan_spec		*iio_chans;
-> +	unsigned int			nchannels;
-> +	struct rradc_channel		*chans;
-> +	u16				batt_id_data;
-> +};
-> +
-> +static const int batt_id_delays[] = {0, 1, 4, 12, 20, 40, 60, 80};
-> +
-> +static int rradc_masked_write(struct rradc_chip *chip, u16 addr, u8 mask,
-> +						u8 val)
-
-I'm not sure this wrapper adds anything significantly useful.
-Would prefer you just called regmap_update_bits() inline.
-
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_update_bits(chip->regmap, chip->base + addr,
-> +								mask, val);
-> +	if (ret) {
-> +		dev_err(chip->dev, "spmi write failed: addr=%03X, ret=%d\n", addr, ret);
-> +		return ret;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int rradc_read(struct rradc_chip *chip, u16 addr, u8 *data, int len)
-
-I'm hoping the device will provide atomic reads of single registers?
-If so, just use a regmap_read() for cases where len = 1.
-Keep this magic for the more complex cases.
-
-> +{
-> +	int ret = 0, retry_cnt = 0, i = 0;
-> +	u8 data_check[RR_ADC_MAX_CONTINUOUS_BUFFER_LEN];
-> +	bool coherent_err = false;
-> +
-> +	if (len > RR_ADC_MAX_CONTINUOUS_BUFFER_LEN) {
-> +		dev_err(chip->dev, "Increase the buffer length\n");
-
-That's not very helpful as a user is going to wonder how to do that and
-assume there is some control somewhere for it...
-
-> +		return -EINVAL;
-> +	}
-> +
-> +	while (retry_cnt < RR_ADC_COHERENT_CHECK_RETRY) {
-> +		ret = regmap_bulk_read(chip->regmap, chip->base + addr,
-> +							data, len);
-> +		if (ret < 0) {
-> +			dev_err(chip->dev, "rr_adc reg 0x%x failed :%d\n", addr, ret);
-> +			return ret;
-> +		}
-> +
-> +		ret = regmap_bulk_read(chip->regmap, chip->base + addr,
-> +							data_check, len);
-> +		if (ret < 0) {
-> +			dev_err(chip->dev, "rr_adc reg 0x%x failed :%d\n", addr, ret);
-> +			return ret;
-> +		}
-> +
-> +		for (i = 0; i < len; i++) {
-> +			if (data[i] != data_check[i])
-> +				coherent_err = true;
-
-if (memcmp() != 0)?
-
-> +		}
-> +
-> +		if (coherent_err) {
-> +			retry_cnt++;
-> +			coherent_err = false;
-> +			dev_dbg(chip->dev, "%s() retry_cnt = %d\n", __func__, retry_cnt);
-> +		} else {
-
-I'd flip this
-
-		if (!coherent_err)
-			break;
-
-		retry_cnt++;
-		coherent_err = false; //I'd move this before the checking loop above...
-
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (retry_cnt == RR_ADC_COHERENT_CHECK_RETRY)
-> +		dev_err(chip->dev, "Retry exceeded for coherrency check\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int rradc_get_fab_coeff(struct rradc_chip *chip,
-> +		int64_t *offset, int64_t *slope)
-> +{
-> +	if (chip->pmic->subtype == PM660_SUBTYPE) {
-> +		switch (chip->pmic->fab_id) {
-> +		case PM660_FAB_ID_GF:
-> +			*offset = RR_ADC_CHG_TEMP_660_GF_OFFSET_UV;
-> +			*slope = RR_ADC_CHG_TEMP_660_GF_SLOPE_UV_PER_C;
-> +			break;
-> +		case PM660_FAB_ID_TSMC:
-> +			*offset = RR_ADC_CHG_TEMP_660_SMIC_OFFSET_UV;
-> +			*slope = RR_ADC_CHG_TEMP_660_SMIC_SLOPE_UV_PER_C;
-> +			break;
-> +		default:
-> +			*offset = RR_ADC_CHG_TEMP_660_MGNA_OFFSET_UV;
-> +			*slope = RR_ADC_CHG_TEMP_660_MGNA_SLOPE_UV_PER_C;
-> +	}
-
-Indent of this bracket is wrong.
-
-> +	} else if (chip->pmic->subtype == PMI8998_SUBTYPE) {
-> +		switch (chip->pmic->fab_id) {
-> +		case PMI8998_FAB_ID_GF:
-> +			*offset = RR_ADC_CHG_TEMP_GF_OFFSET_UV;
-> +			*slope = RR_ADC_CHG_TEMP_GF_SLOPE_UV_PER_C;
-> +			break;
-> +		case PMI8998_FAB_ID_SMIC:
-> +			*offset = RR_ADC_CHG_TEMP_SMIC_OFFSET_UV;
-> +			*slope = RR_ADC_CHG_TEMP_SMIC_SLOPE_UV_PER_C;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	} else {
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_batt_id(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_ohms)
-> +{
-> +	uint32_t current_value;
-> +	int64_t r_id;
-> +
-> +	current_value = chip->batt_id_data;
-> +	r_id = ((int64_t)adc_code * RR_ADC_FS_VOLTAGE_MV);
-> +	r_id = div64_s64(r_id, (RR_ADC_MAX_READINGS * current_value));
-> +	*result_ohms = (r_id * RR_ADC_SCALE_MILLI_FACTOR);
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_therm(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_millidegc)
-> +{
-> +	int64_t temp;
-> +
-> +	/* K = code/4 */
-> +	temp = ((int64_t)adc_code * RR_ADC_SCALE_MILLI_FACTOR);
-> +	temp = div64_s64(temp, RR_ADC_BATT_THERM_LSB_K);
-> +	*result_millidegc = temp - RR_ADC_KELVINMIL_CELSIUSMIL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_volt(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_uv)
-> +{
-> +	int64_t uv = 0;
-> +
-> +	/* 8x input attenuation; 2.5V ADC full scale */
-> +	uv = ((int64_t)adc_code * RR_ADC_VOLT_INPUT_FACTOR);
-> +	uv *= (RR_ADC_FS_VOLTAGE_MV * RR_ADC_SCALE_MILLI_FACTOR);
-> +	uv = div64_s64(uv, RR_ADC_MAX_READINGS);
-> +	*result_uv = uv;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_usbin_curr(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_ua)
-> +{
-> +	int64_t ua = 0;
-> +
-> +	/* scale * V/A; 2.5V ADC full scale */
-> +	ua = ((int64_t)adc_code * RR_ADC_CURR_USBIN_INPUT_FACTOR_MIL);
-> +	ua *= (RR_ADC_FS_VOLTAGE_MV * RR_ADC_SCALE_MILLI_FACTOR);
-> +	ua = div64_s64(ua, (RR_ADC_MAX_READINGS * 10));
-> +	*result_ua = ua;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_dcin_curr(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_ua)
-> +{
-> +	int64_t ua = 0;
-> +
-> +	/* 0.5 V/A; 2.5V ADC full scale */
-> +	ua = ((int64_t)adc_code * RR_ADC_CURR_INPUT_FACTOR);
-> +	ua *= (RR_ADC_FS_VOLTAGE_MV * RR_ADC_SCALE_MILLI_FACTOR);
-> +	ua = div64_s64(ua, (RR_ADC_MAX_READINGS * 1000));
-> +	*result_ua = ua;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_die_temp(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_millidegc)
-> +{
-> +	int64_t temp = 0;
-> +
-> +	temp = ((int64_t)adc_code * RR_ADC_TEMP_FS_VOLTAGE_NUM);
-> +	temp = div64_s64(temp, (RR_ADC_TEMP_FS_VOLTAGE_DEN *
-> +					RR_ADC_MAX_READINGS));
-> +	temp -= RR_ADC_DIE_TEMP_OFFSET;
-> +	temp = div64_s64(temp, RR_ADC_DIE_TEMP_SLOPE);
-> +	temp += RR_ADC_DIE_TEMP_OFFSET_MILLI_DEGC;
-> +	*result_millidegc = temp;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_chg_temp_hot(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_millidegc)
-> +{
-> +	int64_t uv = 0, offset = 0, slope = 0;
-> +	int ret = 0;
-> +
-> +	ret = rradc_get_fab_coeff(chip, &offset, &slope);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Unable to get fab id coefficients\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	uv = (int64_t) adc_code * RR_ADC_CHG_THRESHOLD_SCALE;
-> +	uv = uv * RR_ADC_TEMP_FS_VOLTAGE_NUM;
-> +	uv = div64_s64(uv, (RR_ADC_TEMP_FS_VOLTAGE_DEN *
-> +					RR_ADC_MAX_READINGS));
-> +	uv = offset - uv;
-> +	uv = div64_s64((uv * RR_ADC_SCALE_MILLI_FACTOR), slope);
-> +	uv = uv + RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC;
-> +	*result_millidegc = uv;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_skin_temp_hot(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_millidegc)
-> +{
-> +	int64_t temp = 0;
-More initialization that isn't needed I'll not bother raising this again but pleas
-clear out all instances in v2.
-> +
-> +	temp = (int64_t) adc_code;
-> +	temp = div64_s64(temp, 2);
-> +	temp = temp - 30;
-> +	temp *= RR_ADC_SCALE_MILLI_FACTOR;
-
-There is little benefit in having so many lines here. Combine at least some of them.
-
-> +	*result_millidegc = temp;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_chg_temp(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_millidegc)
-> +{
-> +	int64_t uv = 0, offset = 0, slope = 0;
-> +	int ret = 0;
-> +
-> +	ret = rradc_get_fab_coeff(chip, &offset, &slope);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Unable to get fab id coefficients\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	uv = ((int64_t) adc_code * RR_ADC_TEMP_FS_VOLTAGE_NUM);
-> +	uv = div64_s64(uv, (RR_ADC_TEMP_FS_VOLTAGE_DEN *
-> +					RR_ADC_MAX_READINGS));
-> +	uv = offset - uv;
-> +	uv = div64_s64((uv * RR_ADC_SCALE_MILLI_FACTOR), slope);
-> +	uv += RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC;
-> +	*result_millidegc = uv;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_post_process_gpio(struct rradc_chip *chip, u16 adc_code,
-> +			int *result_mv)
-> +{
-> +	int64_t mv = 0;
-> +
-> +	/* 5V ADC full scale, 10 bit */
-> +	mv = ((int64_t)adc_code * RR_ADC_GPIO_FS_RANGE);
-> +	mv = div64_s64(mv, RR_ADC_MAX_READINGS);
-
-this returns an s64, so if you want to be safe you'll need to clamp it to range of
-the int. It is probably fine, but that doesn't mean the various static analysis
-tools will be able to tell.
-
-> +	*result_mv = mv;
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_enable_continuous_mode(struct rradc_chip *chip)
-> +{
-> +	int ret = 0;
-> +
-> +	/* Clear channel log */
-> +	ret = rradc_masked_write(chip, RR_ADC_ADC_LOG,
-> +			RR_ADC_ADC_LOG_CLR_CTRL,
-> +			RR_ADC_ADC_LOG_CLR_CTRL);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "log ctrl update to clear failed:%d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = rradc_masked_write(chip, RR_ADC_ADC_LOG,
-> +		RR_ADC_ADC_LOG_CLR_CTRL, 0);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "log ctrl update to not clear failed:%d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	/* Switch to continuous mode */
-> +	ret = rradc_masked_write(chip, RR_ADC_RR_ADC_CTL,
-> +		RR_ADC_ADC_CTL_CONTINUOUS_SEL,
-> +		RR_ADC_ADC_CTL_CONTINUOUS_SEL);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Update to continuous mode failed:%d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int rradc_disable_continuous_mode(struct rradc_chip *chip)
-> +{
-> +	int ret = 0;
-> +
-> +	/* Switch to non continuous mode */
-> +	ret = rradc_masked_write(chip, RR_ADC_RR_ADC_CTL,
-> +			RR_ADC_ADC_CTL_CONTINUOUS_SEL, 0);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Update to non-continuous mode failed:%d\n", ret);
-> +		return ret;
-
-Drop this as we'll return ret anyway in next line.  Do the same
-for similar cases throughout the driver.
-
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static bool rradc_is_ready(struct rradc_chip *chip,
-> +		enum rradc_channel_id chan_id)
-> +{
-> +	struct rradc_channel *chan = &chip->chans[chan_id];
-> +	int ret = 0;
-> +	u8 status = 0, mask;
-> +
-> +	/* BATT_ID STS bit does not get set initially */
-> +	switch (chan_id) {
-> +	case RR_ADC_BATT_ID:
-> +		mask = RR_ADC_STS_CHANNEL_STS;
-> +		break;
-> +	default:
-> +		mask = RR_ADC_STS_CHANNEL_READING_MASK;
-> +		break;
-> +	}
-> +
-> +	ret = rradc_read(chip, chan->status, &status, 1);
-> +	if (ret < 0 || !(status & mask)) {
-> +		dev_dbg(chip->dev, "Chip not ready, ret=%d\n", status);
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +static int rradc_read_status_in_cont_mode(struct rradc_chip *chip,
-> +		enum rradc_channel_id chan_id)
-Run checkpatch over this + sparse at very least.
-
-One thing you'll get is warnings about parameter alignment which
-should be aligned with opening brackets.
-
-> +{
-> +	struct rradc_channel *chan = &chip->chans[chan_id];
-> +	int ret = 0;
-
-As below.  Nothing should be initialized where the value is unused.
-
-> +
-> +	ret = rradc_masked_write(chip, chan->trigger_addr,
-> +				chan->trigger_mask,
-
-Don't wrap lines unless they are over 80 chars unwrapped.
-
-> +				chan->trigger_mask);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Failed to apply trigger for channel '%s' ret=%d\n",
-> +			chan->datasheet_name, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = rradc_enable_continuous_mode(chip);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Failed to switch to continuous mode\n");
-> +		goto disable_trigger;
-> +	}
-> +
-> +	if (!rradc_is_ready(chip, chan_id))
-> +		dev_err(chip->dev, "%s() channel isn't ready: %d\n", __func__, ret);
-> +
-> +	ret = rradc_disable_continuous_mode(chip);
-> +	if (ret < 0)
-> +		dev_err(chip->dev, "Failed to switch to non continuous mode\n");
-> +
-> +disable_trigger:
-> +	ret = rradc_masked_write(chip, chan->trigger_addr,
-> +				chan->trigger_mask,
-> +				0);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Failed to apply trigger for channel '%s' ret=%d\n",
-> +			chan->datasheet_name, ret);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
-> +		enum rradc_channel_id chan_id, u16 *data)
-> +{
-> +	int ret = 0, batt_id_delay;
-
-Check for any initializations that aren't needed.
-
-> +
-> +	ret = rradc_masked_write(chip, RR_ADC_BATT_ID_CTRL,
-> +				RR_ADC_BATT_ID_CTRL_CHANNEL_CONV,
-> +				RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "Enabling BATT ID channel failed:%d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	if (chip->batt_id_delay != -EINVAL) {
-> +		batt_id_delay = chip->batt_id_delay << BATT_ID_SETTLE_SHIFT;
-
-Using FIELD_PREP() and FIELD_GET() to set up fields within registers.
-That way you can fully specify the field using just a mask.
-
-> +		ret = rradc_masked_write(chip, RR_ADC_BATT_ID_CFG,
-> +				batt_id_delay, batt_id_delay);
-> +		if (ret < 0)
-> +			dev_err(chip->dev, "BATT_ID settling time config failed:%d\n", ret);
-
-Why not error out?
-
-> +	}
-> +
-> +	ret = rradc_masked_write(chip, RR_ADC_BATT_ID_TRIGGER,
-> +				RR_ADC_BATT_ID_TRIGGER_CTL,
-> +				RR_ADC_BATT_ID_TRIGGER_CTL);
-> +	if (ret < 0) {
-> +		dev_err(chip->dev, "BATT_ID trigger set failed:%d\n", ret);
-> +		goto out_disable_batt_id;
-> +	}
-> +
-> +	ret = rradc_read_status_in_cont_mode(chip, chan_id);
-> +	if (ret < 0)
-> +		dev_err(chip->dev, "Error reading in continuous mode:%d\n", ret);
-
-The mixture of error out and continue regardless is inconsistent.  If there is
-a reason for this, then comments needed.
-
-> +
-> +	ret = rradc_masked_write(chip, RR_ADC_BATT_ID_TRIGGER,
-> +			RR_ADC_BATT_ID_TRIGGER_CTL, 0);
-> +	if (ret < 0)
-> +		dev_err(chip->dev, "BATT_ID trigger re-set failed:%d\n", ret);
-> +
-> +out_disable_batt_id:
-> +	ret = rradc_masked_write(chip, RR_ADC_BATT_ID_CTRL,
-> +				RR_ADC_BATT_ID_CTRL_CHANNEL_CONV, 0);
-> +	if (ret < 0)
-> +		dev_err(chip->dev, "Disabling BATT ID channel failed:%d\n", ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static int rradc_do_conversion(struct rradc_chip *chip, enum rradc_channel_id chan_id, u16 *data)
-> +{
-> +	struct rradc_channel *chan = &chip->chans[chan_id];
-> +	int ret = 0;
-> +	u8 buf[6];
-> +	u16 batt_id_5 = 0, batt_id_15 = 0, batt_id_150 = 0;
-
-Push these into the branch where they are used.
-
-> +
-> +	mutex_lock(&chip->lock);
-> +
-> +	/*
-> +	 * First we need to do channel specific configuration.
-
-As below, no need to talk us through things we can see from the code.
-
-> +	 */
-> +	switch (chan_id) {
-> +	case RR_ADC_BATT_ID:
-> +		ret = rradc_prepare_batt_id_conversion(chip, chan_id, data);
-> +		if (ret < 0) {
-> +			dev_err(chip->dev, "Battery ID conversion failed:%d\n", ret);
-> +			goto unlock_out;
-> +		}
-> +		break;
-> +
-> +	case RR_ADC_USBIN_V:
-> +	case RR_ADC_DIE_TEMP:
-> +		ret = rradc_read_status_in_cont_mode(chip, chan_id);
-> +		if (ret < 0) {
-> +			dev_err(chip->dev, "Error reading in continuous mode:%d\n", ret);
-> +			goto unlock_out;
-> +		}
-> +		break;
-> +	case RR_ADC_CHG_HOT_TEMP:
-> +	case RR_ADC_CHG_TOO_HOT_TEMP:
-> +	case RR_ADC_SKIN_HOT_TEMP:
-> +	case RR_ADC_SKIN_TOO_HOT_TEMP:
-> +		break;
-> +	default:
-> +		if (!rradc_is_ready(chip, chan_id)) {
-> +			dev_err(chip->dev, "%s() channel '%s' is not ready\n", __func__,
-> +				chan->datasheet_name);
-> +			ret = -ENODATA;
-> +			goto unlock_out;
-> +		}
-> +		break;
-> +	}
-> +
-> +	/*
-> +	 * Then we can read the data.
-
-Check to see if the comments add information.  Given function is called rradc_read() I don't think
-this one does.  Comments rot over time, so use them only where they provide
-significant benefit.
-
-> +	 */
-> +	ret = rradc_read(chip, chan->lsb, buf, chan->size);
-> +	if (ret) {
-> +		dev_err(chip->dev, "read data failed\n");
-> +		goto unlock_out;
-> +	}
-> +
-> +	/*
-> +	 * For the battery ID we read the register for every ID ADC and then
-> +	 * see which one is actually connected.
-> +	 */
-> +	if (chan_id == RR_ADC_BATT_ID) {
-> +		batt_id_150 = (buf[5] << 8) | buf[4];
-
-get_unaligned_le16()  Though given the values always seem to
-be le16, maybe just change the type of buf so you can access them
-directly.
-
-> +		batt_id_15 = (buf[3] << 8) | buf[2];
-> +		batt_id_5 = (buf[1] << 8) | buf[0];
-> +		if ((!batt_id_150) && (!batt_id_15) && (!batt_id_5)) {
-
-Probably better to drop the excess brackets in here.
-
-> +			dev_err(chip->dev, "Invalid batt_id values with all zeros\n");
-> +			ret = -EINVAL;
-> +			goto unlock_out;
-> +		}
-> +
-> +		if (batt_id_150 <= RR_ADC_BATT_ID_RANGE) {
-> +			*data = batt_id_150;
-> +			chip->batt_id_data = RR_ADC_BATT_ID_150_MA;
-> +		} else if (batt_id_15 <= RR_ADC_BATT_ID_RANGE) {
-> +			*data = batt_id_15;
-> +			chip->batt_id_data = RR_ADC_BATT_ID_15_MA;
-> +		} else {
-> +			*data = batt_id_5;
-> +			chip->batt_id_data = RR_ADC_BATT_ID_5_MA;
-> +		}
-> +	} else {
-> +		/*
-> +		 * All of the other channels are either 1 or 2 bytes.
-> +		 * We can rely on the second byte being 0 for 1-byte channels.
-> +		 */
-> +		*data = (buf[1] << 8) | buf[0];
-
-		get_unaligned_le16()
-
-> +	}
-> +
-> +unlock_out:
-> +	mutex_unlock(&chip->lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int rradc_read_raw(struct iio_dev *indio_dev,
-> +			 struct iio_chan_spec const *chan_spec, int *val, int *val2,
-> +			 long mask)
-> +{
-> +	struct rradc_chip *chip = iio_priv(indio_dev);
-> +	struct rradc_channel *chan;
-> +	int ret;
-> +	u16 adc_code;
-> +
-> +	if (chan_spec->address >= RR_ADC_MAX) {
-> +		dev_err(chip->dev, "Invalid channel index:%ld\n", chan_spec->address);
-> +		return -EINVAL;
-> +	}
-> +
-> +	chan = &chip->chans[chan_spec->address];
-> +	ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
-> +	if (ret < 0)
-> +		return ret;
-> +	dev_dbg(chip->dev, "channel: %s, raw adc value = %d\n", chan->datasheet_name, adc_code);
-
-Consider dropping these dev_dbg() as I'd just count them as noise at this point.
-
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		*val = (int) adc_code;
-
-That cast shouldn't be needed.
-
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		chan->scale(chip, adc_code, val);
-> +		dev_dbg(chip->dev, "%s() processed chan_id = %ld, data = %d, ret = %d",
-> +			__func__, chan_spec->address, *val, ret);
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info rradc_info = {
-> +	.read_raw	= &rradc_read_raw,
-
-Don't use tab alignment in cases like this. It comes back to bite us far too often.
-	.read_raw = &rradc_read_raw,
-
-> +};
-> +
-> +#define CHAN_INIT(_name, _type, _mask, _scale, _lsb, _msb, _sts, _bytes, _trig, _trig_mask) \
-> +	{ \
-> +		.datasheet_name = _name, \
-> +		.type = _type, \
-> +		.info_mask = _mask, \
-> +		.scale = _scale, \
-> +		.lsb = _lsb, \
-> +		.msb = _msb, \
-> +		.status = _sts, \
-> +		.enabled = true, \
-> +		.size = _bytes, \
-> +		.trigger_addr = _trig, \
-> +		.trigger_mask = _trig_mask, \
-> +	}
-> +
-> +static int rradc_init_channels(struct rradc_chip *chip)
-> +{
-> +	int i = 0;
-> +
-> +	chip->nchannels = RR_ADC_MAX;
-
-At least at first glance it looks to me like everything in here is static.
-If so then I'd much prefer to see this whole thing converted to static const
-data rather than dynamic allocation and a function filling in the values.
-
-
-> +	chip->chans = devm_kcalloc(chip->dev, chip->nchannels,
-> +			sizeof(*chip->chans), GFP_KERNEL);
-> +	if (!chip->chans)
-> +		return -ENOMEM;
-> +
-> +	chip->iio_chans = devm_kcalloc(chip->dev, chip->nchannels,
-> +				       sizeof(*chip->iio_chans), GFP_KERNEL);
-> +	if (!chip->iio_chans)
-> +		return -ENOMEM;
-> +
-> +	chip->chans[RR_ADC_BATT_ID] =
-> +		(struct rradc_channel) CHAN_INIT("batt_id", IIO_RESISTANCE,
-> +			BIT(IIO_CHAN_INFO_PROCESSED), rradc_post_process_batt_id,
-> +			RR_ADC_BATT_ID_5_LSB, RR_ADC_BATT_ID_5_MSB, RR_ADC_BATT_ID_STS, 6,
-> +			RR_ADC_BATT_ID_TRIGGER, RR_ADC_BATT_ID_TRIGGER_CTL);
-> +	chip->chans[RR_ADC_BATT_THERM] =
-> +		(struct rradc_channel) CHAN_INIT("batt_therm", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_RAW), rradc_post_process_therm,
-> +			RR_ADC_BATT_THERM_LSB, RR_ADC_BATT_THERM_MSB, RR_ADC_BATT_THERM_STS, 2,
-> +			RR_ADC_BATT_THERM_TRIGGER, RR_ADC_BATT_THERM_TRIGGER);
-> +	chip->chans[RR_ADC_SKIN_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("skin_temp", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_therm,
-> +			RR_ADC_SKIN_TEMP_LSB, RR_ADC_SKIN_TEMP_MSB, RR_ADC_AUX_THERM_STS, 2,
-> +			RR_ADC_AUX_THERM_TRIGGER, RR_ADC_AUX_THERM_TRIGGER);
-> +	chip->chans[RR_ADC_USBIN_I] =
-> +		(struct rradc_channel) CHAN_INIT("usbin_i", IIO_CURRENT,
-> +			BIT(IIO_CHAN_INFO_PROCESSED), rradc_post_process_usbin_curr,
-> +			RR_ADC_USB_IN_I_LSB, RR_ADC_USB_IN_I_MSB, RR_ADC_USB_IN_I_STS, 2,
-> +			RR_ADC_USB_IN_I_TRIGGER, RR_ADC_USB_IN_I_TRIGGER);
-> +	chip->chans[RR_ADC_USBIN_V] =
-> +		(struct rradc_channel) CHAN_INIT("usbin_v", IIO_VOLTAGE,
-> +			BIT(IIO_CHAN_INFO_PROCESSED), rradc_post_process_volt,
-> +			RR_ADC_USB_IN_V_LSB, RR_ADC_USB_IN_V_MSB, RR_ADC_USB_IN_V_STS, 2,
-> +			RR_ADC_USB_IN_V_TRIGGER, RR_ADC_USB_IN_V_EVERY_CYCLE);
-> +	chip->chans[RR_ADC_DCIN_I] =
-> +		(struct rradc_channel) CHAN_INIT("dcin_i", IIO_CURRENT,
-> +			BIT(IIO_CHAN_INFO_PROCESSED), rradc_post_process_dcin_curr,
-> +			RR_ADC_DC_IN_I_LSB, RR_ADC_DC_IN_I_MSB, RR_ADC_DC_IN_I_STS, 2,
-> +			RR_ADC_DC_IN_I_TRIGGER, RR_ADC_DC_IN_I_TRIGGER);
-> +	chip->chans[RR_ADC_DCIN_V] =
-> +		(struct rradc_channel) CHAN_INIT("dcin_v", IIO_VOLTAGE,
-> +			BIT(IIO_CHAN_INFO_PROCESSED), rradc_post_process_volt,
-> +			RR_ADC_DC_IN_V_LSB, RR_ADC_DC_IN_V_MSB, RR_ADC_DC_IN_V_STS, 2,
-> +			RR_ADC_DC_IN_V_TRIGGER, RR_ADC_DC_IN_V_TRIGGER);
-> +	chip->chans[RR_ADC_DIE_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("die_temp", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_die_temp,
-> +			RR_ADC_PMI_DIE_TEMP_LSB, RR_ADC_PMI_DIE_TEMP_MSB, RR_ADC_PMI_DIE_TEMP_STS,
-> +			2, RR_ADC_PMI_DIE_TEMP_TRIGGER,
-> +			RR_ADC_PMI_DIE_TEMP_TRIGGER);
-> +	chip->chans[RR_ADC_CHG_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("chg_temp", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_chg_temp,
-> +			RR_ADC_CHARGER_TEMP_LSB, RR_ADC_CHARGER_TEMP_MSB,
-> +			RR_ADC_CHARGER_TEMP_STS, 2, RR_ADC_CHARGER_TEMP_TRIGGER,
-> +			RR_ADC_CHARGER_TEMP_TRIGGER);
-> +	chip->chans[RR_ADC_GPIO] =
-> +		(struct rradc_channel) CHAN_INIT("gpio", IIO_VOLTAGE,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_gpio,
-> +			RR_ADC_GPIO_LSB, RR_ADC_GPIO_MSB, RR_ADC_GPIO_STS, 2,
-> +			RR_ADC_GPIO_TRIGGER, RR_ADC_GPIO_TRIGGER);
-> +	chip->chans[RR_ADC_CHG_HOT_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("chg_temp_hot", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_chg_temp_hot,
-> +			RR_ADC_CHARGER_HOT, RR_ADC_CHARGER_HOT, RR_ADC_CHARGER_TEMP_STS, 1,
-> +			RR_ADC_CHARGER_TEMP_TRIGGER, RR_ADC_CHARGER_TEMP_TRIGGER);
-> +	chip->chans[RR_ADC_CHG_TOO_HOT_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("chg_temp_too_hot", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_chg_temp_hot,
-> +			RR_ADC_CHARGER_TOO_HOT, RR_ADC_CHARGER_TOO_HOT, RR_ADC_CHARGER_TEMP_STS, 1,
-> +			RR_ADC_CHARGER_TEMP_TRIGGER, RR_ADC_CHARGER_TEMP_TRIGGER);
-> +	chip->chans[RR_ADC_SKIN_HOT_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("skin_temp_hot", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_skin_temp_hot,
-> +			RR_ADC_SKIN_HOT, RR_ADC_SKIN_HOT, RR_ADC_AUX_THERM_STS, 1,
-> +			RR_ADC_AUX_THERM_TRIGGER, RR_ADC_AUX_THERM_TRIGGER);
-> +	chip->chans[RR_ADC_SKIN_TOO_HOT_TEMP] =
-> +		(struct rradc_channel) CHAN_INIT("skin_temp_too_hot", IIO_TEMP,
-> +			BIT(IIO_CHAN_INFO_PROCESSED) | BIT(IIO_CHAN_INFO_PROCESSED),
-> +			rradc_post_process_skin_temp_hot,
-> +			RR_ADC_SKIN_TOO_HOT, RR_ADC_SKIN_TOO_HOT, RR_ADC_AUX_THERM_STS, 1,
-> +			RR_ADC_AUX_THERM_TRIGGER, RR_ADC_AUX_THERM_TRIGGER);
-> +
-> +	for (i = 0; i < RR_ADC_MAX; i++) {
-> +		chip->iio_chans[i].datasheet_name = chip->chans[i].datasheet_name;
-
-I don't get the reason behind having two copies of most of this stuff. Just fill it in directly.
-As mentioned above - even better if you just have a nice static const array.
-
-> +		chip->iio_chans[i].extend_name = chip->chans[i].datasheet_name;
-> +		chip->iio_chans[i].info_mask_separate = chip->chans[i].info_mask;
-> +		chip->iio_chans[i].type = chip->chans[i].type;
-> +		chip->iio_chans[i].address = i;
-> +		chip->iio_chans[i].channel = i;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int rradc_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *node = pdev->dev.of_node;
-> +	struct device *dev = &pdev->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct rradc_chip *chip;
-> +	int ret = 0, i;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*chip));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	chip = iio_priv(indio_dev);
-> +	chip->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-> +	if (!chip->regmap) {
-> +		dev_err(dev, "Couldn't get parent's regmap\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	chip->dev = dev;
-> +	mutex_init(&chip->lock);
-> +
-> +	/* Get the peripheral address */
-> +	ret = of_property_read_u32(node, "reg", &chip->base);
-
-Whilst it's fairly unlikely anyone will use this with firmware other than
-dt, please use the generic device properties from
-include/linux/property.h instead of the of specific ones.
-
-
-> +	if (ret < 0) {
-> +		dev_err(chip->dev,
-> +			"Couldn't find reg in node = %s ret = %d\n",
-> +			node->name, ret);
-> +		return ret;
-> +	}
-> +
-> +	chip->batt_id_delay = -EINVAL;
-> +	ret = of_property_read_u32(node, "qcom,batt-id-delay-ms",
-> +			&chip->batt_id_delay);
-> +	if (!ret) {
-> +		for (i = 0; i < RRADC_BATT_ID_DELAY_MAX; i++) {
-> +			if (chip->batt_id_delay == batt_id_delays[i])
-> +				break;
-> +		}
-> +		if (i == RRADC_BATT_ID_DELAY_MAX)
-> +			chip->batt_id_delay = -EINVAL;
-> +	}
-> +
-> +	/* Get the PMIC revision ID, we need to handle some varying coefficients */
-> +	chip->pmic = (struct qcom_spmi_pmic *)
-> +		spmi_device_get_drvdata(to_spmi_device(pdev->dev.parent));
-> +	qcom_pmic_print_info(chip->dev, chip->pmic);
-> +
-> +	ret = rradc_init_channels(chip);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Couldn't initialize channels\n");
-> +		return ret;
-> +	}
-> +
-> +	indio_dev->dev.parent = dev;
-> +	indio_dev->dev.of_node = node;
-
-IIRC the IIO core should set both of these for you.
-
-> +	indio_dev->name = pdev->name;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &rradc_info;
-> +	indio_dev->channels = chip->iio_chans;
-> +	indio_dev->num_channels = chip->nchannels;
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	return ret;
-
-	return devm_iio_device_register()
-
-> +}
-> +
-
-
+> Anyhow, various comments inline.
+> 
+> Thanks,
+> 
+> Jonathan
+
+Could you also take a look at the question asked in the cover letter 
+about locking?
+
+> 
+>> ---
+>>   MAINTAINERS                     |   11 +
+>>   drivers/iio/accel/Kconfig       |   27 +
+>>   drivers/iio/accel/Makefile      |    3 +
+>>   drivers/iio/accel/adxl367.c     | 1696 +++++++++++++++++++++++++++++++
+>>   drivers/iio/accel/adxl367.h     |   24 +
+>>   drivers/iio/accel/adxl367_i2c.c |   89 ++
+>>   drivers/iio/accel/adxl367_spi.c |  151 +++
+>>   7 files changed, 2001 insertions(+)
+>>   create mode 100644 drivers/iio/accel/adxl367.c
+>>   create mode 100644 drivers/iio/accel/adxl367.h
+>>   create mode 100644 drivers/iio/accel/adxl367_i2c.c
+>>   create mode 100644 drivers/iio/accel/adxl367_spi.c
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 57fb0f19ee08..72b06fb62a87 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -605,6 +605,17 @@ F:	drivers/iio/accel/adxl355_core.c
+>>   F:	drivers/iio/accel/adxl355_i2c.c
+>>   F:	drivers/iio/accel/adxl355_spi.c
+>>   
+>> +ADXL367 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+>> +M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> +L:	linux-iio@vger.kernel.org
+>> +S:	Supported
+>> +W:	http://ez.analog.com/community/linux-device-drivers
+>> +F:	Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+>> +F:	drivers/iio/accel/adxl367.c
+>> +F:	drivers/iio/accel/adxl367.h
+>> +F:	drivers/iio/accel/adxl367_i2c.c
+>> +F:	drivers/iio/accel/adxl367_spi.c
+> wild card would be shorter and seems unlikely to match anything else in
+> that directory
+> 
+> drivers/iio/accel/adxl367*
+> 
+>> +
+>>   ADXL372 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+>>   M:	Michael Hennerich <michael.hennerich@analog.com>
+>>   S:	Supported
+>> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+>> index 49587c992a6d..18dd21692739 100644
+>> --- a/drivers/iio/accel/Kconfig
+>> +++ b/drivers/iio/accel/Kconfig
+>> @@ -123,6 +123,33 @@ config ADXL355_SPI
+>>   	  will be called adxl355_spi and you will also get adxl355_core
+>>   	  for the core module.
+>>   
+>> +config ADXL367
+>> +	tristate
+>> +	select IIO_BUFFER
+>> +	select IIO_TRIGGERED_BUFFER
+>> +
+>> +config ADXL367_SPI
+>> +	tristate "Analog Devices ADXL367 3-Axis Accelerometer SPI Driver"
+>> +	depends on SPI
+>> +	select ADXL367
+>> +	select REGMAP_SPI
+>> +	help
+>> +	  Say yes here to add support for the Analog Devices ADXL367 triaxial
+>> +	  acceleration sensor.
+>> +	  To compile this driver as a module, choose M here: the
+>> +	  module will be called adxl367_spi.
+>> +
+>> +config ADXL367_I2C
+>> +	tristate "Analog Devices ADXL367 3-Axis Accelerometer I2C Driver"
+>> +	depends on I2C
+>> +	select ADXL367
+>> +	select REGMAP_I2C
+>> +	help
+>> +	  Say yes here to add support for the Analog Devices ADXL367 triaxial
+>> +	  acceleration sensor.
+>> +	  To compile this driver as a module, choose M here: the
+>> +	  module will be called adxl367_i2c.
+>> +
+>>   config ADXL372
+>>   	tristate
+>>   	select IIO_BUFFER
+>> diff --git a/drivers/iio/accel/Makefile b/drivers/iio/accel/Makefile
+>> index d03e2f6bba08..4d8792668838 100644
+>> --- a/drivers/iio/accel/Makefile
+>> +++ b/drivers/iio/accel/Makefile
+>> @@ -15,6 +15,9 @@ obj-$(CONFIG_ADXL345_SPI) += adxl345_spi.o
+>>   obj-$(CONFIG_ADXL355) += adxl355_core.o
+>>   obj-$(CONFIG_ADXL355_I2C) += adxl355_i2c.o
+>>   obj-$(CONFIG_ADXL355_SPI) += adxl355_spi.o
+>> +obj-$(CONFIG_ADXL367) += adxl367.o
+>> +obj-$(CONFIG_ADXL367_I2C) += adxl367_i2c.o
+>> +obj-$(CONFIG_ADXL367_SPI) += adxl367_spi.o
+>>   obj-$(CONFIG_ADXL372) += adxl372.o
+>>   obj-$(CONFIG_ADXL372_I2C) += adxl372_i2c.o
+>>   obj-$(CONFIG_ADXL372_SPI) += adxl372_spi.o
+>> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+>> new file mode 100644
+>> index 000000000000..df8d859e5483
+>> --- /dev/null
+>> +++ b/drivers/iio/accel/adxl367.c
+>> @@ -0,0 +1,1696 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> +/*
+>> + * Copyright (C) 2021 Analog Devices, Inc.
+>> + * Author: Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> + */
+>> +
+>> +#include <asm/unaligned.h>
+> 
+> Usual asm includes put after linux/*
+> 
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bitops.h>
+>> +#include <linux/iio/buffer.h>
+>> +#include <linux/iio/events.h>
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/iio/sysfs.h>
+>> +#include <linux/iio/trigger.h>
+>> +#include <linux/iio/trigger_consumer.h>
+>> +#include <linux/iio/triggered_buffer.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/irq.h>
+>> +#include <linux/module.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/regulator/consumer.h>
+>> +
+>> +#include "adxl367.h"
+>> +
+>> +#define ADXL367_REG_DEVID		0x00
+>> +#define ADXL367_DEVID_AD		0xAD
+>> +
+>> +#define ADXL367_REG_STATUS		0x0B
+>> +#define ADXL367_STATUS_FIFO_FULL_MASK	BIT(2)
+>> +#define ADXL367_STATUS_ACT_MASK		BIT(4)
+>> +#define ADXL367_STATUS_INACT_MASK	BIT(5)
+>> +
+>> +#define ADXL367_REG_FIFO_ENT_L		0x0C
+>> +#define ADXL367_REG_FIFO_ENT_H		0x0D
+>> +#define ADXL367_FIFO_ENT_H_MASK		GENMASK(1, 0)
+>> +
+>> +#define ADXL367_REG_X_DATA_H		0x0E
+>> +#define ADXL367_REG_X_DATA_L		0x0F
+> 
+> Drop those registers you will only access implicitly unless you think
+> the registers being here is particularly useful?
+> 
+
+I only kept them as reference as to what registers are implicitly read.
+
+>> +#define ADXL367_REG_Y_DATA_H		0x10
+>> +#define ADXL367_REG_Y_DATA_L		0x11
+>> +#define ADXL367_REG_Z_DATA_H		0x12
+>> +#define ADXL367_REG_Z_DATA_L		0x13
+>> +#define ADXL367_REG_TEMP_DATA_H		0x14
+>> +#define ADXL367_REG_TEMP_DATA_L		0x15
+>> +#define ADXL367_REG_EX_ADC_DATA_H	0x16
+>> +#define ADXL367_REG_EX_ADC_DATA_L	0x17
+>> +
+>> +#define ADXL367_TEMP_25C		165
+>> +#define ADXL367_TEMP_PER_C		54
+>> +
+>> +#define ADXL367_VOLTAGE_OFFSET		8192
+>> +#define ADXL367_VOLTAGE_MAX_MV		1000
+>> +#define ADXL367_VOLTAGE_MAX_RAW		GENMASK(13, 0)
+>> +
+>> +#define ADXL367_REG_RESET		0x1F
+>> +#define ADXL367_RESET_CODE		0x52
+>> +
+>> +#define ADXL367_REG_THRESH_ACT_H	0x20
+>> +#define ADXL367_REG_THRESH_ACT_L	0x21
+>> +#define ADXL367_REG_THRESH_INACT_H	0x23
+>> +#define ADXL367_REG_THRESH_INACT_L	0x24
+>> +#define ADXL367_THRESH_MAX		GENMASK(12, 0)
+>> +#define ADXL367_THRESH_VAL_H_MASK	GENMASK(12, 6)
+>> +#define ADXL367_THRESH_H_MASK		GENMASK(6, 0)
+>> +#define ADXL367_THRESH_VAL_L_MASK	GENMASK(5, 0)
+>> +#define ADXL367_THRESH_L_MASK		GENMASK(7, 2)
+>> +
+>> +#define ADXL367_REG_TIME_ACT		0x22
+>> +#define ADXL367_REG_TIME_INACT_H	0x25
+>> +#define ADXL367_REG_TIME_INACT_L	0x26
+>> +#define ADXL367_TIME_ACT_MAX		GENMASK(7, 0)
+>> +#define ADXL367_TIME_INACT_MAX		GENMASK(15, 0)
+>> +#define ADXL367_TIME_INACT_VAL_H_MASK	GENMASK(15, 8)
+>> +#define ADXL367_TIME_INACT_H_MASK	GENMASK(7, 0)
+>> +#define ADXL367_TIME_INACT_VAL_L_MASK	GENMASK(7, 0)
+>> +#define ADXL367_TIME_INACT_L_MASK	GENMASK(7, 0)
+>> +
+>> +#define ADXL367_REG_ACT_INACT_CTL	0x27
+>> +#define ADXL367_ACT_EN_MASK		GENMASK(1, 0)
+>> +#define ADXL367_ACT_LINKLOOP_MASK	GENMASK(5, 4)
+>> +
+>> +#define ADXL367_REG_FIFO_CTL		0x28
+>> +#define ADXL367_FIFO_CTL_FORMAT_MASK	GENMASK(6, 3)
+>> +#define ADXL367_FIFO_CTL_MODE_MASK	GENMASK(1, 0)
+>> +
+>> +#define ADXL367_REG_FIFO_SAMPLES	0x29
+>> +#define ADXL367_FIFO_SIZE		512
+>> +#define ADXL367_FIFO_MAX_WATERMARK	511
+>> +
+>> +#define ADXL367_SAMPLES_VAL_H_MASK	BIT(8)
+>> +#define ADXL367_SAMPLES_H_MASK		BIT(2)
+>> +#define ADXL367_SAMPLES_VAL_L_MASK	GENMASK(7, 0)
+>> +#define ADXL367_SAMPLES_L_MASK		GENMASK(7, 0)
+>> +
+>> +#define ADXL367_REG_INT1_MAP		0x2A
+>> +#define ADXL367_INT_INACT_MASK		BIT(5)
+>> +#define ADXL367_INT_ACT_MASK		BIT(4)
+>> +#define ADXL367_INT_FIFO_FULL_MASK	BIT(2)
+>> +
+>> +#define ADXL367_REG_FILTER_CTL		0x2C
+>> +#define ADXL367_FILTER_CTL_RANGE_MASK	GENMASK(7, 6)
+>> +#define ADXL367_2G_RANGE_1G		4095
+>> +#define ADXL367_2G_RANGE_100MG		409
+>> +#define ADXL367_FILTER_CTL_ODR_MASK	GENMASK(2, 0)
+>> +
+>> +#define ADXL367_REG_POWER_CTL		0x2D
+>> +#define ADXL367_POWER_CTL_MODE_MASK	GENMASK(1, 0)
+>> +
+>> +#define ADXL367_REG_ADC_CTL		0x3C
+>> +#define ADXL367_REG_TEMP_CTL		0x3D
+>> +#define ADXL367_ADC_EN_MASK		BIT(0)
+>> +
+>> +enum adxl367_adc_mode {
+>> +	ADXL367_ADC_MODE_NONE,
+>> +	ADXL367_ADC_MODE_TEMP,
+>> +	ADXL367_ADC_MODE_EX,
+>> +};
+>> +
+>> +enum adxl367_range {
+>> +	ADXL367_2G_RANGE,
+>> +	ADXL367_4G_RANGE,
+>> +	ADXL367_8G_RANGE,
+>> +};
+>> +
+>> +enum adxl367_fifo_mode {
+>> +	ADXL367_FIFO_MODE_DISABLED = 0b00,
+>> +	ADXL367_FIFO_MODE_STREAM = 0b10,
+>> +};
+>> +
+>> +enum adxl367_fifo_format {
+>> +	ADXL367_FIFO_FORMAT_XYZ,
+>> +	ADXL367_FIFO_FORMAT_X,
+>> +	ADXL367_FIFO_FORMAT_Y,
+>> +	ADXL367_FIFO_FORMAT_Z,
+>> +	ADXL367_FIFO_FORMAT_XYZT,
+>> +	ADXL367_FIFO_FORMAT_XT,
+>> +	ADXL367_FIFO_FORMAT_YT,
+>> +	ADXL367_FIFO_FORMAT_ZT,
+>> +	ADXL367_FIFO_FORMAT_XYZA,
+>> +	ADXL367_FIFO_FORMAT_XA,
+>> +	ADXL367_FIFO_FORMAT_YA,
+>> +	ADXL367_FIFO_FORMAT_ZA,
+>> +};
+>> +
+>> +enum adxl367_op_mode {
+>> +	ADXL367_OP_STANDBY = 0b00,
+>> +	ADXL367_OP_MEASURE = 0b10,
+>> +};
+>> +
+>> +enum adxl367_act_proc_mode {
+>> +	ADXL367_LOOPED = 0b11,
+>> +};
+>> +
+>> +enum adxl367_act_en_mode {
+>> +	ADXL367_ACT_DISABLED = 0b00,
+>> +	ADCL367_ACT_REF_ENABLED = 0b11,
+>> +};
+>> +
+>> +enum adxl367_activity_type {
+>> +	ADXL367_ACTIVITY,
+>> +	ADXL367_INACTIVITY,
+>> +};
+>> +
+>> +enum adxl367_odr {
+>> +	ADXL367_ODR_12P5HZ,
+>> +	ADXL367_ODR_25HZ,
+>> +	ADXL367_ODR_50HZ,
+>> +	ADXL367_ODR_100HZ,
+>> +	ADXL367_ODR_200HZ,
+>> +	ADXL367_ODR_400HZ,
+>> +};
+>> +
+>> +enum {
+>> +	ADXL367_VDD_REGULATOR,
+>> +	ADXL367_VDDIO_REGULATOR,
+>> +	ADXL367_MAX_REGULATORS,
+>> +};
+>> +
+>> +struct adxl367_state {
+>> +	const struct adxl367_ops	*ops;
+>> +	void				*context;
+>> +
+>> +	struct device			*dev;
+>> +	struct regmap			*regmap;
+>> +	struct iio_trigger		*dready_trig;
+>> +
+>> +	struct regulator_bulk_data	regulators[ADXL367_MAX_REGULATORS];
+>> +
+>> +	/*
+>> +	 * Synchronize access to members of driver state, and ensure atomicity
+>> +	 * of consecutive regmap operations.
+>> +	 */
+>> +	struct mutex		lock;
+>> +
+>> +	enum adxl367_odr	odr;
+>> +	enum adxl367_range	range;
+>> +	enum adxl367_adc_mode	adc_mode;
+>> +
+>> +	unsigned int	act_threshold;
+>> +	unsigned int	act_time_ms;
+>> +	unsigned int	inact_threshold;
+>> +	unsigned int	inact_time_ms;
+>> +
+>> +	unsigned int	fifo_set_size;
+>> +	unsigned int	fifo_watermark;
+>> +
+>> +	__be16		fifo_buf[ADXL367_FIFO_SIZE] ____cacheline_aligned;
+>> +	__be16		sample_buf;
+>> +	u8		status_buf[3];
+>> +};
+>> +
+>> +static const unsigned int adxl367_threshold_h_reg_tbl[] = {
+>> +	[ADXL367_ACTIVITY]   = ADXL367_REG_THRESH_ACT_H,
+>> +	[ADXL367_INACTIVITY] = ADXL367_REG_THRESH_INACT_H,
+>> +};
+>> +
+>> +static const unsigned int adxl367_act_en_shift_tbl[] = {
+>> +	[ADXL367_ACTIVITY]   = 0,
+>> +	[ADXL367_INACTIVITY] = 2,
+>> +};
+>> +
+>> +static const unsigned int adxl367_act_int_mask_tbl[] = {
+>> +	[ADXL367_ACTIVITY]   = ADXL367_INT_ACT_MASK,
+>> +	[ADXL367_INACTIVITY] = ADXL367_INT_INACT_MASK,
+>> +};
+>> +
+>> +static const int adxl367_samp_freq_tbl[][2] = {
+>> +	[ADXL367_ODR_12P5HZ] = {12, 500000},
+>> +	[ADXL367_ODR_25HZ]   = {25, 0},
+>> +	[ADXL367_ODR_50HZ]   = {50, 0},
+>> +	[ADXL367_ODR_100HZ]  = {100, 0},
+>> +	[ADXL367_ODR_200HZ]  = {200, 0},
+>> +	[ADXL367_ODR_400HZ]  = {400, 0},
+>> +};
+>> +
+>> +static const int adxl367_time_scale_tbl[] = {
+>> +	[ADXL367_ODR_12P5HZ] = 1,
+>> +	[ADXL367_ODR_25HZ]   = 2,
+>> +	[ADXL367_ODR_50HZ]   = 4,
+>> +	[ADXL367_ODR_100HZ]  = 8,
+>> +	[ADXL367_ODR_200HZ]  = 16,
+>> +	[ADXL367_ODR_400HZ]  = 32,
+>> +};
+>> +
+>> +/* (g * 2) * 9.80665 * 1000000 / (2^14 - 1) */
+>> +static const int adxl367_range_scale_tbl[][2] = {
+>> +	[ADXL367_2G_RANGE] = {0, 2394347},
+>> +	[ADXL367_4G_RANGE] = {0, 4788695},
+>> +	[ADXL367_8G_RANGE] = {0, 9577391},
+>> +};
+>> +
+>> +static const int adxl367_range_scale_factor_tbl[] = {
+>> +	[ADXL367_2G_RANGE] = 1,
+>> +	[ADXL367_4G_RANGE] = 2,
+>> +	[ADXL367_8G_RANGE] = 4,
+>> +};
+>> +
+>> +enum {
+>> +	ADXL367_X_CHANNEL_INDEX,
+>> +	ADXL367_Y_CHANNEL_INDEX,
+>> +	ADXL367_Z_CHANNEL_INDEX,
+>> +	ADXL367_TEMP_CHANNEL_INDEX,
+>> +	ADXL367_EX_ADC_CHANNEL_INDEX
+>> +};
+>> +
+>> +#define ADXL367_X_CHANNEL_MASK		BIT(ADXL367_X_CHANNEL_INDEX)
+>> +#define ADXL367_Y_CHANNEL_MASK		BIT(ADXL367_Y_CHANNEL_INDEX)
+>> +#define ADXL367_Z_CHANNEL_MASK		BIT(ADXL367_Z_CHANNEL_INDEX)
+>> +#define ADXL367_TEMP_CHANNEL_MASK	BIT(ADXL367_TEMP_CHANNEL_INDEX)
+>> +#define ADXL367_EX_ADC_CHANNEL_MASK	BIT(ADXL367_EX_ADC_CHANNEL_INDEX)
+>> +
+>> +static const unsigned long adxl367_channel_masks[] = {
+> 
+> If these are the valid masks and can be easily laid out like this why
+> not use the core support for available_scan_masks and
+> the demux it provides?
+
+Mostly because I need to run the same validation in
+update_scan_mode to figure out the fifo format.
+I would just be running the same function twice.
+
+> 
+>> +	[ADXL367_FIFO_FORMAT_XYZ]  = ADXL367_X_CHANNEL_MASK
+>> +				     | ADXL367_Y_CHANNEL_MASK
+>> +				     | ADXL367_Z_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_X]    = ADXL367_X_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_Y]    = ADXL367_Y_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_Z]    = ADXL367_Z_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_XYZT] = ADXL367_X_CHANNEL_MASK
+>> +				     | ADXL367_Y_CHANNEL_MASK
+>> +				     | ADXL367_Z_CHANNEL_MASK
+>> +				     | ADXL367_TEMP_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_XT]   = ADXL367_X_CHANNEL_MASK
+>> +				     | ADXL367_TEMP_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_YT]   = ADXL367_Y_CHANNEL_MASK
+>> +				     | ADXL367_TEMP_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_ZT]   = ADXL367_Z_CHANNEL_MASK
+>> +				     | ADXL367_TEMP_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_XYZA] = ADXL367_X_CHANNEL_MASK
+>> +				     | ADXL367_Y_CHANNEL_MASK
+>> +				     | ADXL367_Z_CHANNEL_MASK
+>> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_XA]   = ADXL367_X_CHANNEL_MASK
+>> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_YA]   = ADXL367_Y_CHANNEL_MASK
+>> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+>> +	[ADXL367_FIFO_FORMAT_ZA]   = ADXL367_Z_CHANNEL_MASK
+>> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+>> +};
+>> +
+>> +static int adxl367_set_measure_en(struct adxl367_state *st, bool en)
+>> +{
+>> +	enum adxl367_op_mode op_mode = en ? ADXL367_OP_MEASURE
+>> +					  : ADXL367_OP_STANDBY;
+>> +	int ret;
+>> +
+>> +	ret = regmap_update_bits(st->regmap, ADXL367_REG_POWER_CTL,
+>> +				 ADXL367_POWER_CTL_MODE_MASK,
+>> +				 FIELD_PREP(ADXL367_POWER_CTL_MODE_MASK,
+>> +					    op_mode));
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/*
+>> +	 * Wait for acceleration output to settle after entering
+>> +	 * measure mode.
+>> +	 */
+>> +	if (en)
+>> +		msleep(100);
+> 
+> This is interesting.  Worth thinking about how to make this work with
+> runtime_pm and autosuspend.  My guess is you should enable autosuspend
+> with maybe a a 1 second delay if not doing fifo based capture.
+> 
+> That is fine as a follow up patch when someone needs it as the handling
+> will be a little complex given you need it to be off for some paths.
+> 
+
+Take into account that measurement mode also needs to be enabled if
+activity events are expected, which would limit the cases in which
+I could disable measurement mode as a power management feature.
+
+I thought of another thing regarding this delay. I could store
+a timestamp of when measurement mode was turned on, and only
+sleep when acquiring data, if needed. 100ms might have already
+passed by the time the data acquisition functions are called.
+
+>> +
+>> +	return 0;
+>> +}
+> 
+>> +static int _adxl367_set_act_threshold(struct adxl367_state *st,
+>> +				      enum adxl367_activity_type act,
+>> +				      unsigned int threshold)
+>> +{
+>> +	u8 reg = adxl367_threshold_h_reg_tbl[act];
+>> +	struct reg_sequence reg_seq[] = {
+>> +		{ reg },
+>> +		{ reg + 1 },
+>> +	};
+>> +	int ret;
+>> +
+>> +	if (threshold > ADXL367_THRESH_MAX)
+>> +		return -EINVAL;
+>> +
+>> +	reg_seq[0].def = FIELD_PREP(ADXL367_THRESH_H_MASK,
+>> +				    FIELD_GET(ADXL367_THRESH_VAL_H_MASK,
+>> +					      threshold));
+>> +	reg_seq[1].def = FIELD_PREP(ADXL367_THRESH_L_MASK,
+>> +				    FIELD_GET(ADXL367_THRESH_VAL_L_MASK,
+>> +					      threshold));
+>> +
+>> +	ret = regmap_multi_reg_write(st->regmap, reg_seq, ARRAY_SIZE(reg_seq));
+>> +	if (ret)
+>> +		return ret;
+> 
+> Given addresses are sequential you should be fine with regmap_bulk_write() I think?
+
+Using regmap_bulk_write would mean allocating a DMA-safe buffer 
+somewhere, and it would not be that useful for this one use only.
+
+> 
+>> +
+>> +	if (act == ADXL367_ACTIVITY)
+>> +		st->act_threshold = threshold;
+>> +	else
+>> +		st->inact_threshold = threshold;
+>> +
+>> +	return 0;
+>> +}
+>> +
+> 
+> 
+> ...
+> 
+> 
+>   +
+>> +static void adxl367_push_event(struct iio_dev *indio_dev, s64 timestamp,
+>> +			       u8 status)
+>> +{
+>> +	unsigned int ev_dir;
+>> +
+>> +	if (FIELD_GET(ADXL367_STATUS_ACT_MASK, status))
+>> +		ev_dir = IIO_EV_DIR_RISING;
+>> +	else if (FIELD_GET(ADXL367_STATUS_INACT_MASK, status))
+>> +		ev_dir = IIO_EV_DIR_FALLING;
+>> +	else
+>> +		return;
+>> +
+>> +	iio_push_event(indio_dev,
+>> +		       IIO_MOD_EVENT_CODE(IIO_ACCEL, 0, IIO_MOD_X_OR_Y_OR_Z,
+>> +					  IIO_EV_TYPE_THRESH, ev_dir),
+>> +		       timestamp);
+>> +}
+>> +
+>> +static void adxl367_push_fifo_data(struct iio_dev *indio_dev, u8 status,
+>> +				   u16 fifo_entries)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +	int ret;
+>> +	int i;
+>> +
+>> +	if (!FIELD_GET(ADXL367_STATUS_FIFO_FULL_MASK, status))
+>> +		return;
+>> +
+>> +	ret = st->ops->read_fifo(st->context, st->fifo_buf, fifo_entries);
+>> +	if (ret)
+>> +		return;
+>> +
+>> +	for (i = 0; i < fifo_entries; i += st->fifo_set_size)
+>> +		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
+>> +}
+>> +
+>> +static irqreturn_t adxl367_trigger_handler(int irq, void  *p)
+>> +{
+>> +	struct iio_poll_func *pf = p;
+>> +	struct iio_dev *indio_dev = pf->indio_dev;
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +	u16 fifo_entries;
+>> +	u8 status;
+>> +	int ret;
+>> +
+>> +	ret = adxl367_get_status(st, &status, &fifo_entries);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	adxl367_push_event(indio_dev, iio_get_time_ns(indio_dev), status);
+>> +	adxl367_push_fifo_data(indio_dev, status, fifo_entries);
+> 
+> This flow doesn't look right. We shouldn't be looking at events in
+> a trigger handler.  (assuming this isn't a triggered event device - i.e.
+> doesn't have any event interrupts - but those are extremely rare).
+> 
+> The push_events() should probably be in the top level interrupt handler
+> (e.g. one that calls iio_poll_trigger())  Here you are using
+> iio_trigger_generic_data_rdy_poll() which you should not do if
+> the signal indicates other types of interrupt source (here the events).
+> 
+> So have a custom interrupt handling routine for that. As you need to
+> do a bus read it will need to be a threaded handler and call
+> iio_trigger_poll_chained() if fifo_entries > 0
+> 
+> Also, if nothing is set in status (i.e. it's  spurious interrupt
+> you should return IRQ_NONE;
+> 
+> As noted below, for a case like this it is common to just not have
+> a trigger at all.
+
+Okay, I'll fix it.
+
+> 
+>> +
+>> +out:
+>> +	iio_trigger_notify_done(indio_dev->trig);
+> Calling this when you were actually dealing with a threshold event
+> is a very bad idea as it will result in wrong reference counts.
+> 
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>> +static int adxl367_reg_access(struct iio_dev *indio_dev,
+>> +			      unsigned int reg,
+>> +			      unsigned int writeval,
+>> +			      unsigned int *readval)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +
+>> +	if (readval)
+>> +		return regmap_read(st->regmap, reg, readval);
+>> +	else
+>> +		return regmap_write(st->regmap, reg, writeval);
+>> +}
+>> +
+>> +static int adxl367_read_raw(struct iio_dev *indio_dev,
+>> +			    struct iio_chan_spec const *chan,
+>> +			    int *val, int *val2, long info)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +
+>> +	switch (info) {
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		return adxl367_read_sample(indio_dev, chan, val);
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		switch (chan->type) {
+>> +		case IIO_ACCEL:
+>> +			mutex_lock(&st->lock);
+>> +			*val = adxl367_range_scale_tbl[st->range][0];
+>> +			*val2 = adxl367_range_scale_tbl[st->range][1];
+>> +			mutex_unlock(&st->lock);
+>> +			return IIO_VAL_INT_PLUS_NANO;
+>> +		case IIO_TEMP:
+>> +			*val = 1;
+>> +			*val2 = ADXL367_TEMP_PER_C;
+>> +			return IIO_VAL_FRACTIONAL;
+>> +		case IIO_VOLTAGE:
+>> +			*val = ADXL367_VOLTAGE_MAX_MV;
+>> +			*val2 = ADXL367_VOLTAGE_MAX_RAW;
+>> +			return IIO_VAL_FRACTIONAL;
+>> +		default:
+>> +			return -EINVAL;
+>> +		}
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		switch (chan->type) {
+>> +		case IIO_TEMP:
+>> +			*val = 25 * ADXL367_TEMP_PER_C - ADXL367_TEMP_25C;
+>> +			return IIO_VAL_INT;
+>> +		case IIO_VOLTAGE:
+>> +			*val = ADXL367_VOLTAGE_OFFSET;
+>> +			return IIO_VAL_INT;
+>> +		default:
+>> +			return -EINVAL;
+>> +		}
+>> +	case IIO_CHAN_INFO_SAMP_FREQ:
+>> +		mutex_lock(&st->lock);
+>> +		*val = adxl367_samp_freq_tbl[st->odr][0];
+>> +		*val2 = adxl367_samp_freq_tbl[st->odr][1];
+>> +		mutex_unlock(&st->lock);
+>> +		return IIO_VAL_INT_PLUS_MICRO;
+>> +	case IIO_CHAN_INFO_ENABLE:
+> 
+> Ah. you are using enable to pick between temp and ex.
+> Why?  Do it on the channel read, or based on the active_scan_mask
+> when enabling the buffer.
+> 
+> If that's slower than it would otherwise be, such is life. Reading
+> via sysfs is slow anyway and for the buffered path you will only
+> be doing this once.
+> 
+I'm aware this is a bit ugly but I wasn't sure how to go about it.
+Yes, enabling the channels automatically is cleaner for the user, but it 
+is undocumented how much time the ADC data takes to settle after 
+enabling it.
+
+>> +		switch (chan->type) {
+>> +		case IIO_TEMP:
+>> +			mutex_lock(&st->lock);
+>> +			*val = st->adc_mode == ADXL367_ADC_MODE_TEMP;
+>> +			mutex_unlock(&st->lock);
+>> +			return IIO_VAL_INT;
+>> +		case IIO_VOLTAGE:
+>> +			mutex_lock(&st->lock);
+>> +			*val = st->adc_mode == ADXL367_ADC_MODE_EX;
+>> +			mutex_unlock(&st->lock);
+>> +			return IIO_VAL_INT;
+>> +		default:
+>> +			return -EINVAL;
+>> +		}
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static int adxl367_write_raw(struct iio_dev *indio_dev,
+>> +			     struct iio_chan_spec const *chan,
+>> +			     int val, int val2, long info)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	switch (info) {
+>> +	case IIO_CHAN_INFO_SAMP_FREQ: {
+>> +		enum adxl367_odr odr;
+>> +
+>> +		ret = adxl367_find_odr(st, val, val2, &odr);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		return adxl367_set_odr(st, odr);
+> 
+> You currently let this happen whilst buffered mode is running.
+> Given it is going to turn off measurement for a bit that seems
+> like a bad plan.  I think you want to us iio_device_claim_direct_mode()
+> etc in here to ensure that these can only be changed when the buffered
+> capture is disabled.
+> 
+
+Sure.
+
+>> +	}
+>> +	case IIO_CHAN_INFO_SCALE: {
+>> +		enum adxl367_range range;
+>> +
+>> +		ret = adxl367_find_range(st, val, val2, &range);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		return adxl367_set_range(st, range);
+>> +	}
+>> +	case IIO_CHAN_INFO_ENABLE:
+>> +		return adxl367_set_chan_en(st, chan->type, val);
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+> 
+>> +
+>> +static int adxl367_find_mask_fifo_format(const unsigned long *scan_mask,
+>> +					 enum adxl367_fifo_format *fifo_format)
+>> +{
+>> +	size_t size = ARRAY_SIZE(adxl367_channel_masks);
+>> +	int i;
+> 
+> As mentioned elsewhere I'm not keen on this slight variant of the core
+> handling of available_scan_masks.  If there is a reason it's necessary
+> then clear comments needed.
+> 
+>> +
+>> +	for (i = 0; i < size; i++)
+>> +		if (*scan_mask == adxl367_channel_masks[i])
+>> +			break;
+>> +
+>> +	if (i == size)
+>> +		return false;
+>> +
+>> +	*fifo_format = i;
+>> +
+>> +	return true;
+>> +}
+>> +
+>> +static bool adxl367_validate_scan_mask(struct iio_dev *indio_dev,
+>> +				       const unsigned long *scan_mask)
+>> +{
+>> +	struct adxl367_state *st  = iio_priv(indio_dev);
+>> +	enum adxl367_adc_mode mode;
+>> +
+>> +	mutex_lock(&st->lock);
+>> +	mode = st->adc_mode;
+>> +	mutex_unlock(&st->lock);
+>> +
+>> +	if ((*scan_mask & ADXL367_TEMP_CHANNEL_MASK) &&
+>> +	    mode != ADXL367_ADC_MODE_TEMP)
+>> +		return false;
+>> +
+>> +	if ((*scan_mask & ADXL367_EX_ADC_CHANNEL_MASK) &&
+>> +	    mode != ADXL367_ADC_MODE_EX)
+>> +		return false;
+>> +
+>> +	return true;
+>> +}
+>> +
+>> +static int adxl367_update_scan_mode(struct iio_dev *indio_dev,
+>> +				    const unsigned long *active_scan_mask)
+>> +{
+>> +	struct adxl367_state *st  = iio_priv(indio_dev);
+>> +	enum adxl367_fifo_format fifo_format;
+>> +	unsigned int fifo_set_size;
+>> +	int ret;
+>> +
+>> +	if (!adxl367_find_mask_fifo_format(active_scan_mask, &fifo_format))
+>> +		return -EINVAL;
+>> +
+>> +	fifo_set_size = bitmap_weight(active_scan_mask, indio_dev->masklength);
+>> +
+>> +	mutex_lock(&st->lock);
+>> +
+>> +	ret = adxl367_set_measure_en(st, false);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_fifo_format(st, fifo_format);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_fifo_set_size(st, fifo_set_size);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_measure_en(st, true);
+>> +
+>> +out:
+>> +	mutex_unlock(&st->lock);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int adxl367_buffer_postenable(struct iio_dev *indio_dev)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	mutex_lock(&st->lock);
+>> +
+>> +	ret = adxl367_set_measure_en(st, false);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_fifo_full_interrupt_en(st, true);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_fifo_mode(st, ADXL367_FIFO_MODE_STREAM);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_measure_en(st, true);
+>> +
+>> +out:
+>> +	mutex_unlock(&st->lock);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int adxl367_buffer_predisable(struct iio_dev *indio_dev)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	mutex_lock(&st->lock);
+>> +
+>> +	ret = adxl367_set_measure_en(st, false);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_fifo_mode(st, ADXL367_FIFO_MODE_DISABLED);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_fifo_full_interrupt_en(st, false);
+> 
+> Does the device not have a watermark interrupt? Interrupts that only fire
+> on full usually mean data will be lost.
+> Or is this just a naming question?
+> 
+
+Yeah, it's just a naming issue. BIT 2 is for sure the watermark status 
+bit. I'll fix it.
+
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = adxl367_set_measure_en(st, true);
+>> +
+>> +out:
+>> +	mutex_unlock(&st->lock);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int adxl367_validate_trigger(struct iio_dev *indio_dev,
+>> +				    struct iio_trigger *trig)
+>> +{
+>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>> +
+>> +	if (st->dready_trig != trig)
+>> +		return -EINVAL;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static const struct iio_buffer_setup_ops adxl367_buffer_ops = {
+>> +	.postenable = adxl367_buffer_postenable,
+>> +	.predisable = adxl367_buffer_predisable,
+>> +	.validate_scan_mask = adxl367_validate_scan_mask,
+>> +};
+>> +
+>> +static const struct iio_trigger_ops adxl367_trigger_ops = {
+>> +	.validate_device = &iio_trigger_validate_own_device,
+>> +};
+>> +
+>> +static const struct iio_info adxl367_info = {
+>> +	.validate_trigger = adxl367_validate_trigger,
+> 
+> So, a trigger that is only useful for a single device matched to a
+> device that can only use a single trigger is normally a bit pointless.
+> 
+> Consider just not having a trigger at all. It's perfectly acceptable
+> to not bother when fifos are involved.  The trigger is not terribly
+> useful after all.  The exceptions to this are when we have multiple
+> triggers provided by the sensor and might want to switch between
+> them. Is that going to be true here?
+> 
+
+No, I don't think it will be the case. I'll remove the trigger.
+
+>> +	.read_raw = adxl367_read_raw,
+>> +	.write_raw = adxl367_write_raw,
+>> +	.write_raw_get_fmt = adxl367_write_raw_get_fmt,
+>> +	.read_avail = adxl367_read_avail,
+>> +	.read_event_config = adxl367_read_event_config,
+>> +	.write_event_config = adxl367_write_event_config,
+>> +	.read_event_value = adxl367_read_event_value,
+>> +	.write_event_value = adxl367_write_event_value,
+>> +	.debugfs_reg_access = adxl367_reg_access,
+>> +	.hwfifo_set_watermark = adxl367_set_watermark,
+>> +	.update_scan_mode = adxl367_update_scan_mode,
+>> +};
+>> +
+>> +#define ADXL367_EVENT(_dir) {						\
+>> +	.type = IIO_EV_TYPE_THRESH,					\
+>> +	.dir = (_dir),							\
+>> +	.mask_shared_by_all = BIT(IIO_EV_INFO_ENABLE) |			\
+>> +			      BIT(IIO_EV_INFO_PERIOD) |			\
+>> +			      BIT(IIO_EV_INFO_VALUE),			\
+>> +}
+>> +
+>> +static const struct iio_event_spec adxl367_events[] = {
+>> +	ADXL367_EVENT(IIO_EV_DIR_RISING),
+> 
+> It will cost little to just have these expanded here and may slightly help
+> readability.
+> 
+
+Sure.
+
+>> +	ADXL367_EVENT(IIO_EV_DIR_FALLING),
+>> +};
+>> +
+>> +#define ADXL367_14BIT_SCAN_INFO(index)					\
+>> +	.scan_index = (index),						\
+> 
+> I would duplicate this in each of the macros below.  Too many layers of nested
+> macros just make things harder to follow.
+> 
+
+Sure.
+
+>> +	.scan_type = {							\
+>> +		.sign = 's',						\
+>> +		.realbits = 14,						\
+>> +		.storagebits = 16,					\
+>> +		.shift = 2,						\
+>> +		.endianness = IIO_BE,					\
+>> +	}
+>> +
+>> +#define ADXL367_ACCEL_CHANNEL(index, reg, axis) {			\
+>> +	.type = IIO_ACCEL,						\
+>> +	.address = (reg),						\
+>> +	.modified = 1,							\
+>> +	.channel2 = IIO_MOD_##axis,					\
+>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
+>> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
+>> +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE),	\
+>> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+>> +	.info_mask_shared_by_all_available =				\
+>> +			BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
+>> +	.event_spec = adxl367_events,					\
+>> +	.num_event_specs = ARRAY_SIZE(adxl367_events),			\
+>> +	ADXL367_14BIT_SCAN_INFO(index),					\
+>> +}
+>> +
+>> +#define ADXL367_CHANNEL(index, reg, _type) {				\
+>> +	.type = (_type),						\
+>> +	.address = (reg),						\
+>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+>> +			      BIT(IIO_CHAN_INFO_ENABLE) |		\
+> 
+> Enable is rather unusual.  Why do you need it?
+> Normally we only use it for output channels, or those that do something like
+> counting steps.
+> 
+> 
+>> +			      BIT(IIO_CHAN_INFO_OFFSET) |		\
+>> +			      BIT(IIO_CHAN_INFO_SCALE),			\
+>> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+>> +	ADXL367_14BIT_SCAN_INFO(index),					\
+>> +}
+>> +
+>> +static const struct iio_chan_spec adxl367_channels[] = {
+>> +	ADXL367_ACCEL_CHANNEL(ADXL367_X_CHANNEL_INDEX, ADXL367_REG_X_DATA_H, X),
+>> +	ADXL367_ACCEL_CHANNEL(ADXL367_Y_CHANNEL_INDEX, ADXL367_REG_Y_DATA_H, Y),
+>> +	ADXL367_ACCEL_CHANNEL(ADXL367_Z_CHANNEL_INDEX, ADXL367_REG_Z_DATA_H, Z),
+>> +	ADXL367_CHANNEL(ADXL367_TEMP_CHANNEL_INDEX, ADXL367_REG_TEMP_DATA_H,
+>> +			IIO_TEMP),
+>> +	ADXL367_CHANNEL(ADXL367_EX_ADC_CHANNEL_INDEX, ADXL367_REG_EX_ADC_DATA_H,
+>> +			IIO_VOLTAGE),
+>> +};
+>> +
+> 
+> ...
+> 
+>> +static int adxl367_verify_devid(struct adxl367_state *st)
+>> +{
+>> +	unsigned int val;
+>> +	int ret;
+>> +
+>> +	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (val != ADXL367_DEVID_AD) {
+>> +		return dev_err_probe(st->dev, -ENODEV,
+>> +				     "Invalid device id 0x%02X\n", val);
+> 
+> Good to also print what was expected.
+> 
+
+Sure.
+
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+> 
+> ...
+> 
+>> +static void adxl367_disable_regulators(void *data)
+>> +{
+>> +	struct adxl367_state *st = data;
+>> +
+>> +	regulator_bulk_disable(ARRAY_SIZE(st->regulators), st->regulators);
+>> +}
+>> +
+>> +int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
+>> +		  void *context, struct regmap *regmap, int irq,
+>> +		  const char *name)
+> 
+> As mentioned below, don't pass the name.
+> 
+>> +{
+>> +	struct iio_dev *indio_dev;
+>> +	struct adxl367_state *st;
+>> +	int ret;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+>> +	if (!indio_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	st = iio_priv(indio_dev);
+>> +	st->dev = dev;
+>> +	st->regmap = regmap;
+>> +	st->context = context;
+>> +	st->ops = ops;
+>> +
+>> +	mutex_init(&st->lock);
+>> +
+>> +	indio_dev->channels = adxl367_channels;
+>> +	indio_dev->num_channels = ARRAY_SIZE(adxl367_channels);
+>> +	indio_dev->name = name;
+>> +	indio_dev->info = &adxl367_info;
+>> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_HARDWARE;
+> 
+> 
+> BUFFER_HARDWARE is hardly ever used.  Why use it here?  From a software
+> point we are pushing the data through a fifo so we don't need to set this.
+> 
+>> +
+>> +	st->regulators[ADXL367_VDD_REGULATOR].supply = "vdd";
+>> +	st->regulators[ADXL367_VDDIO_REGULATOR].supply = "vddio";
+> 
+> I'm not sure it's worth bothering with the enum here.
+> 	st->regulators[0].supply = "vdd";
+> 	st->regulators[1].supply = "vddio"; is simple to read anyway.
+> 
+
+I'll also inline the ADXL367_MAX_REGULATORS macro, it's only used in one
+place since I use ARRAY_SIZE everywhere else.
+
+>> +
+>> +	ret = devm_regulator_bulk_get(st->dev, ARRAY_SIZE(st->regulators),
+>> +				      st->regulators);
+>> +	if (ret)
+>> +		return dev_err_probe(st->dev, ret,
+>> +				     "Failed to get regulators\n");
+>> +
+>> +	ret = regulator_bulk_enable(ARRAY_SIZE(st->regulators), st->regulators);
+>> +	if (ret)
+>> +		return dev_err_probe(st->dev, ret,
+>> +				     "Failed to enable regulators\n");
+>> +
+>> +	ret = devm_add_action_or_reset(st->dev, adxl367_disable_regulators, st);
+>> +	if (ret)
+>> +		return dev_err_probe(st->dev, ret,
+>> +				     "Failed to add regulators disable action\n");
+>> +
+>> +	ret = adxl367_verify_devid(st);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = adxl367_reset(st);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = adxl367_setup(st);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = devm_iio_triggered_buffer_setup_ext(dev, indio_dev, NULL,
+>> +						  adxl367_trigger_handler,
+>> +						  IIO_BUFFER_DIRECTION_IN,
+>> +						  &adxl367_buffer_ops,
+>> +						  adxl367_fifo_attributes);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	st->dready_trig = devm_iio_trigger_alloc(st->dev, "%s-dev%d",
+>> +						 indio_dev->name,
+>> +						 iio_device_id(indio_dev));
+>> +	if (!st->dready_trig)
+>> +		return -ENOMEM;
+>> +
+>> +	st->dready_trig->ops = &adxl367_trigger_ops;
+>> +	iio_trigger_set_drvdata(st->dready_trig, indio_dev);
+>> +
+>> +	ret = devm_iio_trigger_register(st->dev, st->dready_trig);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	indio_dev->trig = iio_trigger_get(st->dready_trig);
+>> +
+>> +	if (!irq)
+>> +		return -EINVAL;
+>> +
+>> +	ret = devm_request_threaded_irq(st->dev, irq,
+>> +					iio_trigger_generic_data_rdy_poll,
+>> +					NULL, IRQF_ONESHOT, indio_dev->name,
+>> +					st->dready_trig);
+>> +	if (ret)
+>> +		return dev_err_probe(st->dev, ret, "Failed to request irq\n");
+>> +
+>> +	return devm_iio_device_register(dev, indio_dev);
+>> +}
+>> +EXPORT_SYMBOL_GPL(adxl367_probe);
+>> +
+>> +MODULE_AUTHOR("Cosmin Tanislav <cosmin.tanislav@analog.com>");
+>> +MODULE_DESCRIPTION("Analog Devices ADXL367 3-axis accelerometer driver");
+>> +MODULE_LICENSE("GPL");
+> 
+> ...
+> 
+> 
+>> diff --git a/drivers/iio/accel/adxl367_spi.c b/drivers/iio/accel/adxl367_spi.c
+>> new file mode 100644
+>> index 000000000000..9d29054f956d
+>> --- /dev/null
+>> +++ b/drivers/iio/accel/adxl367_spi.c
+>> @@ -0,0 +1,151 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> +/*
+>> + * Copyright (C) 2021 Analog Devices, Inc.
+>> + * Author: Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> + */
+>> +
+>> +#include <linux/mod_devicetable.h>
+>> +#include <linux/module.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/of.h>
+> 
+> why?  In a modern driver it's usually a bad sign to see
+> an include of any particular firmware for properties + I don't think this file uses any
+> relevant interfaces.
+> 
+> 
+
+This is probably a remnant from the driver I used as a template, ADXL372.
+
+>> +#include <linux/spi/spi.h>
+>> +
+>> +#include "adxl367.h"
+>> +
+>> +#define ADXL367_SPI_WRITE_COMMAND	0x0A
+>> +#define ADXL367_SPI_READ_COMMAND	0x0B
+>> +#define ADXL367_SPI_FIFO_COMMAND	0x0D
+>> +
+>> +struct adxl367_spi_state {
+>> +	struct spi_device	*spi;
+>> +
+>> +	struct spi_message	reg_write_msg;
+>> +	struct spi_transfer	reg_write_xfer[2];
+>> +
+>> +	struct spi_message	reg_read_msg;
+>> +	struct spi_transfer	reg_read_xfer[2];
+>> +
+>> +	struct spi_message	fifo_msg;
+>> +	struct spi_transfer	fifo_xfer[2];
+>> +
+>> +	/*
+>> +	 * DMA (thus cache coherency maintenance) requires the
+>> +	 * transfer buffers to live in their own cache lines.
+>> +	 */
+>> +	u8			reg_write_tx_buf[1] ____cacheline_aligned;
+>> +	u8			reg_read_tx_buf[2];
+>> +	u8			fifo_tx_buf[1];
+>> +};
+>> +
+>> +static int adxl367_read_fifo(void *context, __be16 *fifo_buf,
+>> +			     unsigned int fifo_entries)
+>> +{
+>> +	struct adxl367_spi_state *st = context;
+>> +
+>> +	st->fifo_xfer[1].rx_buf = fifo_buf;
+>> +	st->fifo_xfer[1].len = fifo_entries * sizeof(*fifo_buf);
+>> +
+> 
+> For this fifo case, I'm fine with it being more complex.
+> 
+> 
+>> +	return spi_sync(st->spi, &st->fifo_msg);
+>> +}
+>> +
+>> +static int adxl367_read(void *context, const void *reg_buf, size_t reg_size,
+>> +			void *val_buf, size_t val_size)
+>> +{
+>> +	struct adxl367_spi_state *st = context;
+>> +	u8 reg = ((u8 *)reg_buf)[0];
+> 
+> Keep it const for the cast.
+> 
+>   +
+>> +	st->reg_read_tx_buf[1] = reg;
+>> +	st->reg_read_xfer[1].rx_buf = val_buf;
+>> +	st->reg_read_xfer[1].len = val_size;
+>> +
+> 
+> For this one it would be not much costly to  just use spi_write_then_read()
+> and end up with a few more copies.
+
+Which would mean I'd have to create a u8[2] here, fill it with the 
+command and register, then call spi_write_then_read, which will also 
+copy both buffers (for the second time, depending on which regmap API 
+calls this function, it might have been copied before) into DMA safe 
+buffers, and which might also have to allocate the DMA-safe buffers if 
+the pre-allocated buffer is already in use or too small. The assumption 
+that it "would be not much costly" only takes into account the current 
+usecase, which doesn't read more than 3 bytes at a time. But who knows 
+how this driver might be modified / used in the future.
+
+In my head, these are enough disadvantages to just prepare an 
+spi_message beforehand and only have to fill in the newly supplied data. 
+I don't find the usage of spi_message to make the data being transfered 
+much harder to understand.
+
+I usually just do as you say to make sure the process goes smoothly and 
+we can get the driver merged faster, but sometimes I just think it is 
+worth discussing. I'm sure you can recognize that some of this stuff is 
+just a matter of opinion.
+
+> 
+>> +	return spi_sync(st->spi, &st->reg_read_msg);
+>> +}
+>> +
+>> +static int adxl367_write(void *context, const void *val_buf, size_t val_size)
+>> +{
+>> +	struct adxl367_spi_state *st = context;
+>> +
+>> +	st->reg_write_xfer[1].tx_buf = val_buf;
+>> +	st->reg_write_xfer[1].len = val_size;
+> 
+> I'm in two minds about whether it is worth the complexity you have here.
+> You could just copy a few more things for the small read/write cases and
+> not bother with the pre setup etc.
+> 
+> This is particular so because you aren't messing with cs_change or
+> anything like that so I assume the write could be a single transfer.
+> 
+The write case would mean that I'd have to limit the maximum raw write 
+size, or allocate a buffer dynamically to also fit the command in the 
+write buffer.
+
+>> +
+>> +	return spi_sync(st->spi, &st->reg_write_msg);
+>> +}
+>> +
+>> +static struct regmap_bus adxl367_spi_regmap_bus = {
+>> +	.read = adxl367_read,
+>> +	.write = adxl367_write,
+>> +};
+>> +
+>> +static const struct regmap_config adxl367_spi_regmap_config = {
+>> +	.reg_bits = 8,
+>> +	.val_bits = 8,
+>> +};
+>> +
+>> +static const struct adxl367_ops adxl367_spi_ops = {
+>> +	.read_fifo = adxl367_read_fifo,
+>> +};
+>> +
+>> +static int adxl367_spi_probe(struct spi_device *spi)
+>> +{
+>> +	const struct spi_device_id *id = spi_get_device_id(spi);
+>> +	struct adxl367_spi_state *st;
+>> +	struct regmap *regmap;
+>> +
+>> +	st = devm_kzalloc(&spi->dev, sizeof(*st), GFP_KERNEL);
+>> +	if (!st)
+>> +		return -ENOMEM;
+>> +
+>> +	st->spi = spi;
+>> +
+>> +	st->reg_write_tx_buf[0] = ADXL367_SPI_WRITE_COMMAND;
+>> +	st->reg_write_xfer[0].tx_buf = st->reg_write_tx_buf;
+>> +	st->reg_write_xfer[0].len = sizeof(st->reg_write_tx_buf);
+>> +	spi_message_init_with_transfers(&st->reg_write_msg,
+>> +					st->reg_write_xfer, 2);
+>> +
+>> +	st->reg_read_tx_buf[0] = ADXL367_SPI_READ_COMMAND;
+>> +	st->reg_read_xfer[0].tx_buf = st->reg_read_tx_buf;
+>> +	st->reg_read_xfer[0].len = sizeof(st->reg_read_tx_buf);
+>> +	spi_message_init_with_transfers(&st->reg_read_msg,
+>> +					st->reg_read_xfer, 2);
+>> +
+>> +	st->fifo_tx_buf[0] = ADXL367_SPI_FIFO_COMMAND;
+>> +	st->fifo_xfer[0].tx_buf = st->fifo_tx_buf;
+>> +	st->fifo_xfer[0].len = sizeof(st->fifo_tx_buf);
+>> +	spi_message_init_with_transfers(&st->fifo_msg, st->fifo_xfer, 2);
+>> +
+>> +	regmap = devm_regmap_init(&spi->dev, &adxl367_spi_regmap_bus, st,
+>> +				  &adxl367_spi_regmap_config);
+>> +	if (IS_ERR(regmap))
+>> +		return PTR_ERR(regmap);
+>> +
+>> +	return adxl367_probe(&spi->dev, &adxl367_spi_ops, st, regmap, spi->irq,
+>> +			     id->name);
+> 
+> While the driver is just supporting one part, I would prefer the name
+> was hard coded.  When adding additional part support, I doubt the name be
+> what you want to parse through.
+> 
+
+Sure. This is just how other drivers for similar chips were written.
+
+>> +}
+>> +
+>> +static const struct spi_device_id adxl367_spi_id[] = {
+>> +	{ "adxl367", 0 },
+>> +	{ },
+>> +};
+>> +MODULE_DEVICE_TABLE(spi, adxl367_spi_id);
+>> +
+>> +static const struct of_device_id adxl367_of_match[] = {
+>> +	{ .compatible = "adi,adxl367" },
+>> +	{ },
+>> +};
+>> +MODULE_DEVICE_TABLE(of, adxl367_of_match);
+>> +
+>> +static struct spi_driver adxl367_spi_driver = {
+>> +	.driver = {
+>> +		.name = "adxl367_spi",
+>> +		.of_match_table = adxl367_of_match,
+>> +	},
+>> +	.probe = adxl367_spi_probe,
+>> +	.id_table = adxl367_spi_id,
+>> +};
+>> +
+>> +module_spi_driver(adxl367_spi_driver);
+>> +
+>> +MODULE_AUTHOR("Cosmin Tanislav <cosmin.tanislav@analog.com>");
+>> +MODULE_DESCRIPTION("Analog Devices ADXL367 3-axis accelerometer SPI driver");
+>> +MODULE_LICENSE("GPL");
+> 

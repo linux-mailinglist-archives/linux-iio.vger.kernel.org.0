@@ -2,77 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D39472432
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 10:35:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D92E5472AE2
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 12:08:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234286AbhLMJez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Dec 2021 04:34:55 -0500
-Received: from out162-62-57-252.mail.qq.com ([162.62.57.252]:51731 "EHLO
-        out162-62-57-252.mail.qq.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234006AbhLMJeK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 04:34:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1639388046;
-        bh=iXySGmvIpQzWI4D8XoRDI/HDa44G0b/wjLssIbrND2Y=;
-        h=From:To:Cc:Subject:Date;
-        b=vtrLOvyIZRc2JObKi2Ie1E2wqL/WKgmDsR9rt3EvMVPF7VgQR5zR1aYpJOD/vcfS3
-         9TkuEf18ezZutoHP878VygBBq9Ldj6EZ4P716C1bg+IzsPd76LdWvvToG63gh48z5N
-         /hQrFTAnEx/f4t17i65H8nDC89izL7TXAFuxCjP4=
-Received: from localhost.localdomain ([218.197.153.188])
-        by newxmesmtplogicsvrsza7.qq.com (NewEsmtp) with SMTP
-        id 4A50DAE9; Mon, 13 Dec 2021 17:18:37 +0800
-X-QQ-mid: xmsmtpt1639387117tv1l2czg7
-Message-ID: <tencent_4014A4E1394AA4FF7620EBCC47B9701C9D08@qq.com>
-X-QQ-XMAILINFO: N+Pibzc9GW0I8UZfkKkQBKlPoY+0TlzoUtocKK4tFyfEBMoXbI50fZyFESnScU
-         0aZQXXywfx3UuluRRhwsxmniB3jT72eazqKn7h53K5MGfR/Xf2QRIj3PuBqt2T01rANVrNlseQOJ
-         90+g5vDpL2lo37cPH/hDpkEDTYd5SSjIZCCV1K/akp83YR9MmylU3yp5T/1ezmfGq1IkEzwUJ3CS
-         UK+73Ng2VmvzgXeSnwH22yoDeFxijoe4gr+YjGKseBZXYGd2ds8aXvMbFS6vxLAEvCZlNLA6cmz9
-         0vGRo5/CfApBqlNb4rQmtl8at8/YUIU1zo1qDFOHcQFxrlxYnBAUABv1MXZ6dBDJPG/bFJUJxFH3
-         a3SXdNAykTuixGyeQgeYB6jwjnwuVeUk8fHLrJ+Z0gX6MTneN+ZHsP723+EbV8lUsw+CQDVPoB68
-         pqDmDcoZLKTlCOaom9cwNnOvh5PFQdGVGtoVaUuABSSyDSVNjg+xHOMNLwmn9fyuXwATPDz77kaJ
-         d0RDOOY2CH6RFm7Y8EJjeqOagDmVe8BmiXnSFUezGGKZCnOet4R+pPTvfMdNTsgGmN1wkCuuh9G0
-         ZI4SbWV/W/cL80nNcf8evTbzWd1Dh7ue3NAIUzMqbsDZb2lWtPcVl8wi5bIC+3zgMIJoB4gyk5Ug
-         E7PaCUOsSptxZHry2YU0FC96Eh2axet6d3NWWMGjaD0cqDWeWzE6QzAyzWg0suAgCEtfzGS/Ma7P
-         MFiFIS3a1m+gil/MkXeu0xUme91y/XsAhVl/CiUfE4qGIPXHKVWRsDLbOsBhJ2j6fw3LeB03v0IG
-         4ornMto8LJ3EAnwTxPIK+6YUN6DbSmQaJdJxHMhY2ON+6BCSITO8B9dvlfu5T6AOqvEoiovI/+bq
-         +elOrbYZwbdRLJOoD6nc0+vzRSTfbvaSpPCBjC0JAddwL+Ih4fPBWX6//G4ZpPPg==
-From:   Xiaoke Wang <xkernel.wang@foxmail.com>
-To:     jic23@kernel.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Xiaoke Wang <xkernel.wang@foxmail.com>
-Subject: [PATCH] iio: dummy: iio_simple_dummy: check the return value of kstrdup()
-Date:   Mon, 13 Dec 2021 17:18:21 +0800
-X-OQ-MSGID: <20211213091821.4803-1-xkernel.wang@foxmail.com>
-X-Mailer: git-send-email 2.33.0.windows.2
+        id S231589AbhLMLI5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Dec 2021 06:08:57 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:49280 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229644AbhLMLI5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 06:08:57 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1BD3hWx0021575;
+        Mon, 13 Dec 2021 06:08:38 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3cwc4kkm3b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Dec 2021 06:08:38 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 1BDB8bwY057234
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 13 Dec 2021 06:08:37 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 13 Dec
+ 2021 06:08:36 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 13 Dec 2021 06:08:36 -0500
+Received: from ubuntuservermchindri.ad.analog.com ([10.32.225.18])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 1BDB8XLY017333;
+        Mon, 13 Dec 2021 06:08:33 -0500
+From:   Mihail Chindris <mihail.chindris@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC:     <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <dragos.bogdan@analog.com>, <alexandru.ardelean@analog.com>,
+        Mihail Chindris <mihail.chindris@analog.com>
+Subject: [PATCH v7 0/2] drivers:iio:dac: Add AD3552R driver support
+Date:   Mon, 13 Dec 2021 11:08:23 +0000
+Message-ID: <20211213110825.244347-1-mihail.chindris@analog.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: G-wjsQvBxjLPMMQM576g6m8p1hRJ91OJ
+X-Proofpoint-ORIG-GUID: G-wjsQvBxjLPMMQM576g6m8p1hRJ91OJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-13_04,2021-12-13_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=590 malwarescore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2112130072
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-kstrdup() is also a memory allocation-related function, it return NULL
-when some memory errors happen. So it is better to check the return
-value of it so to catch the memory error in time.
+Changelog v6 -> v7:
+  - https://lore.kernel.org/all/20211129152254.1645-1-mihail.chindris@analog.com/
+  - Fix yaml errors
+  - Fix yaml styling (blank lines and indentation)
+  - set adi,output-range-microvolt: true
 
-Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
----
- drivers/iio/dummy/iio_simple_dummy.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Changelog v5 -> v6:
+  - https://lore.kernel.org/all/20211108082447.116663-1-mihail.chindris@analog.com/
+  - Add dt maintainers (forgotten on previous emails)
+  - (1 << 7) -> BIT(7)
+  - Remove buf_data from ad3552r_desc to use spi_write_then_read and update lock comment
+  - Remove useless comments
+  - Remove unused mask from ad3552r_configure_custom_gain
+  - In ad3552r_configure_device refactor regulator code, add regulator_enable
+     and add ad3552r_reg_disable
+  - Remove unused code like: 
+      AD3552R_CH_TRIGGER_SOFTWARE_LDAC and AD3552R_CH_HW_LDAC_MASK
 
-diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
-index c0b7ef9..a5e8071 100644
---- a/drivers/iio/dummy/iio_simple_dummy.c
-+++ b/drivers/iio/dummy/iio_simple_dummy.c
-@@ -616,6 +616,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	 *    indio_dev->name = spi_get_device_id(spi)->name;
- 	 */
- 	indio_dev->name = kstrdup(name, GFP_KERNEL);
-+	if (!indio_dev->name) {
-+		ret = -ENOMEM;
-+		goto error_free_device;
-+	}
- 
- 	/* Provide description of available channels */
- 	indio_dev->channels = iio_dummy_channels;
+Changelog v4 -> v5:
+  - https://lore.kernel.org/all/20211022120427.99516-1-mihail.chindris@analog.com
+  - Add changelog for previous version
+  - Extend lock comment
+  - Remove unused variable is_custom
+
+Changelog v3 -> v4:
+  - https://lore.kernel.org/all/20211021070924.18626-1-mihail.chindris@analog.com
+  - Remove trigger.h
+  - Use dev_err_probe only where needed
+  - Add comment about buff size
+  - Fix mutex order
+  - Return from all switch cases
+  - Return int in ad3552r_read_reg_wrapper
+  - Add goto put_child where missing
+  - Restructure ad3552r_write_codes
+  - Move ad3552r_write_codes nex to ad3552r_trigger_handler
+  - Use memcpy and memcmp in ad3552r_write_codes
+  - Remove endieness functions in ad3552r_write_codes
+
+Changelog v2 -> v3:
+  - https://lore.kernel.org/all/20211008123909.1901-1-mihail.chindris@analog.com
+  - Order compatilbe in alphabetic order
+  - Fix comments in yaml
+  - Grup struct by types
+  - Drop usless "if (err)"
+  - Handle error in ad3552r_read_reg_wrapper
+  - ad3552r_find_range: u32 -> s32
+  - Add fwnode_handle_put(custom_gain_child); in good path too
+  - Vals[0] -> val
+  - Fix: fwnode_handle_put in ad3552r_configure_device
+  - Fix indio_dev->name
+  - Rename custom_gain_child -> gain_child
+  - Remove intermediary functions and write code inline where possible
+  - Add ad3552r_field_prep helper function
+  - Dev_err -> dev_warn for vref supply check
+  - Replace dev_err with dev_err_probe
+  - Remove channel for simultaneous update and do update mask register if both
+    channels values are the same.
+
+Changelog v0 -> v2:
+  - Split https://lore.kernel.org/all/20210820165927.4524-1-mihail.chindris@analog.com
+    and move ad3552r driver to this serie.
+  - Remove precision_mode abi
+  - Remove adi,synch_channels dt property
+  - Use vref-supply instead of adi,vref-select
+  - Remove unimplemented spi modes
+  - Change output-range format and use enums
+  - Update description for custom-output-range-config to be more clear
+  - Add datasheet tag
+  - Use GENMASK for defines
+  - Remove tomicro define
+  - Use get_unaligned_be16 and put_unaligned_be16
+  - Remove unnecessary checks
+  - Add comment for AD3552R_CH_DAC_PAGE channel
+  - Fix indent
+  - Remove irq trigger
+  - Remove irelevant checks
+  - Rename ad3552r_read_reg_pool to ad3552r_read_reg_wrapper.
+  - Add support for ad3542r
+
+V0:
+  * Add ad3552r example to https://lore.kernel.org/linux-iio/20210219124012.92897-1-alexandru.ardelean@analog.com
+
+Mihail Chindris (2):
+  dt-bindings: iio: dac: Add adi,ad3552r.yaml
+  drivers:iio:dac: Add AD3552R driver support
+
+ .../bindings/iio/dac/adi,ad3552r.yaml         |  217 ++++
+ drivers/iio/dac/Kconfig                       |   10 +
+ drivers/iio/dac/Makefile                      |    1 +
+ drivers/iio/dac/ad3552r.c                     | 1138 +++++++++++++++++
+ 4 files changed, 1366 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+ create mode 100644 drivers/iio/dac/ad3552r.c
+
+
+base-commit: 29adf99733e95621dfbebaf9ae548b4da8316aaf
 -- 
+2.27.0
+

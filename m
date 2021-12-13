@@ -2,101 +2,174 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61AA4472B81
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 12:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CDD5472BB5
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 12:43:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbhLMLeX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Dec 2021 06:34:23 -0500
-Received: from www381.your-server.de ([78.46.137.84]:40310 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232562AbhLMLeX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 06:34:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=KFfrL7tchd3VQzoip5NprnryMqESCMxCPR4jMuHmN3Y=; b=PtJ5x9X5GFq5e39UsHWKoQ/s+D
-        vMaEmN3GRDCeTlzSU5n8/j4hpu83k3oOfIC4DANGz/IRIPoseaDZ8W0TE8dGCHx3bjxBL4e0Y3tip
-        S+gfNn9qzIbV2VCL7+jy44NBJFJQ47NDUOKXPONs3ZWFYeJOUiunaUtHa62X9vtaJiiRB9EoxhyjY
-        n/MW8zOxCMYeCh86Xeks9/I/UHTFOG0rvp46N64bKJVTCE5l4GXP9kh+HE3/LwlRDZcY5IcRx7Ym8
-        C4OaMH4VNhX1m+lK0M18aTD9aIAvps0gl4IrW4MgFN4X57MMJeG6WSAd9f7dYXmmWZEl2t57Lui6r
-        XqxyYe+Q==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1mwjb2-00031o-59; Mon, 13 Dec 2021 12:34:20 +0100
-Received: from [2001:a61:2aa6:c001:9e5c:8eff:fe01:8578]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        id S232728AbhLMLnf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Dec 2021 06:43:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57300 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231463AbhLMLne (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 06:43:34 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A896AC061574
+        for <linux-iio@vger.kernel.org>; Mon, 13 Dec 2021 03:43:34 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1mwjb1-000HZ2-VA; Mon, 13 Dec 2021 12:34:20 +0100
-Subject: Re: [PATCH v2 0/2] Add ADXL367 driver
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211207094337.59300-1-cosmin.tanislav@analog.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <fbf1bc12-5013-0b09-a6f4-a602f0afbe70@metafoo.de>
-Date:   Mon, 13 Dec 2021 12:34:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mwjjw-00079I-GT; Mon, 13 Dec 2021 12:43:32 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mwjju-004IlV-8u; Mon, 13 Dec 2021 12:43:29 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mwjjt-00027A-BS; Mon, 13 Dec 2021 12:43:29 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: [PATCH] counter: ti-eqep: Use container_of instead of struct counter_device::priv
+Date:   Mon, 13 Dec 2021 12:43:12 +0100
+Message-Id: <20211213114312.1406562-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20211207094337.59300-1-cosmin.tanislav@analog.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=2vlFU+eqwS9veDOtlDpdAxKEuDo83KhQdLwHLGFe+dg=; m=FNxM8XON3yPSC37Azgc7BAi0QseP+ddPj8+Jc+Fmvks=; p=ToLiUo9JbuW9MKjyCTzjhJdpYDvBg97FdWHRg/JnmlE=; g=9459ad8bc78190558df9123f8bebe28ca1c396ea
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmG3Mc0ACgkQwfwUeK3K7Ak5DQgAgy6 QahQMvhDIOiVUc2sMaSRam9BfqlS9+FCrtbiCiZVD2/36ftqwlIinr1j510xmPH3O4d+oWjyz3pHr Oj/+SReeL/zqzMl/W77Yd2OR6QuIvXRnPSux8yns8fxxdB0exI9kuKaVLy5lQ9xlVdUw+P4ZtKUiG bPUR9QvWexreypGAy8QJsTvOW3HUVtQNJUcXX4SKXTGSip0szFsXsdGryEyRnwwmpIvBUUn8Vq8Qc a5vnwLNHcbmWjZs6zAhDQiTfxTFLFunePOe+5u8xnUbOc4DwT1RYNHQIIHU1quldUvMqaGW4crClb EovWn3S1sFG4WeWf7TkmbQ/FrkMINHQ==
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26385/Mon Dec 13 10:38:12 2021)
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/7/21 10:43 AM, Cosmin Tanislav wrote:
-> I have one question that is not actually specific to this driver but would
-> help me clear up some issues.
->
-> I used mutex_lock and mutex_unlock when accessing anything in driver's
-> state that could potentially be written by another process in parallel.
->
-> I heard mixed opinions about this. Some people said that it is not
-> necessary to lock everywhere because loads and stores for data with size
-> smaller or equal than register size would be done in one single atomic
-> instruction.
->
-> On the other hand, I also heard that this is not true unless WRITE_ONCE
-> and READ_ONCE is used.
->
-> It felt weird using WRITE_ONCE and READ_ONCE in this driver, so I kept
-> using mutexes.
->
-> Could I get some opinions on this matter?
+Using counter->priv is a memory read and so more expensive than
+container_of which is only an addition. (In this case even a noop
+because the offset is 0.)
 
-What you wrote sums it up very well. READ_ONCE/WRITE_ONCE are required 
-for correctness when no lock is used. The compiler is allowed to do all 
-sorts of optimizations that could break multi-threading, when 
-READ_ONCE/WRITE_ONCE is not used. E.g.
+So container_of is expected to be a tad faster, it's type-safe, and
+produces smaller code (ARCH=arm allmodconfig):
 
-if (x)
-   foo->bar = 10;
-else
-   foo->bar = 20;
+	$ source/scripts/bloat-o-meter drivers/counter/ti-eqep.o-pre drivers/counter/ti-eqep.o
+	add/remove: 0/0 grow/shrink: 0/9 up/down: 0/-108 (-108)
+	Function                                     old     new   delta
+	ti_eqep_position_enable_write                132     120     -12
+	ti_eqep_position_enable_read                 260     248     -12
+	ti_eqep_position_ceiling_write               132     120     -12
+	ti_eqep_position_ceiling_read                236     224     -12
+	ti_eqep_function_write                       220     208     -12
+	ti_eqep_function_read                        372     360     -12
+	ti_eqep_count_write                          312     300     -12
+	ti_eqep_count_read                           236     224     -12
+	ti_eqep_action_read                          664     652     -12
+	Total: Before=4598, After=4490, chg -2.35%
 
-Could be implemented as
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/counter/ti-eqep.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-foo->bar = 20;
-if (x)
-   foo->bar = 10;
+diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
+index 09817c953f9a..9e0e46bca4c2 100644
+--- a/drivers/counter/ti-eqep.c
++++ b/drivers/counter/ti-eqep.c
+@@ -87,10 +87,15 @@ struct ti_eqep_cnt {
+ 	struct regmap *regmap16;
+ };
+ 
++static struct ti_eqep_cnt *ti_eqep_count_from_counter(struct counter_device *counter)
++{
++	return container_of(counter, struct ti_eqep_cnt, counter);
++}
++
+ static int ti_eqep_count_read(struct counter_device *counter,
+ 			      struct counter_count *count, u64 *val)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	u32 cnt;
+ 
+ 	regmap_read(priv->regmap32, QPOSCNT, &cnt);
+@@ -102,7 +107,7 @@ static int ti_eqep_count_read(struct counter_device *counter,
+ static int ti_eqep_count_write(struct counter_device *counter,
+ 			       struct counter_count *count, u64 val)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	u32 max;
+ 
+ 	regmap_read(priv->regmap32, QPOSMAX, &max);
+@@ -116,7 +121,7 @@ static int ti_eqep_function_read(struct counter_device *counter,
+ 				 struct counter_count *count,
+ 				 enum counter_function *function)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	u32 qdecctl;
+ 
+ 	regmap_read(priv->regmap16, QDECCTL, &qdecctl);
+@@ -143,7 +148,7 @@ static int ti_eqep_function_write(struct counter_device *counter,
+ 				  struct counter_count *count,
+ 				  enum counter_function function)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	enum ti_eqep_count_func qsrc;
+ 
+ 	switch (function) {
+@@ -173,7 +178,7 @@ static int ti_eqep_action_read(struct counter_device *counter,
+ 			       struct counter_synapse *synapse,
+ 			       enum counter_synapse_action *action)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	enum counter_function function;
+ 	u32 qdecctl;
+ 	int err;
+@@ -245,7 +250,7 @@ static int ti_eqep_position_ceiling_read(struct counter_device *counter,
+ 					 struct counter_count *count,
+ 					 u64 *ceiling)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	u32 qposmax;
+ 
+ 	regmap_read(priv->regmap32, QPOSMAX, &qposmax);
+@@ -259,7 +264,7 @@ static int ti_eqep_position_ceiling_write(struct counter_device *counter,
+ 					  struct counter_count *count,
+ 					  u64 ceiling)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 
+ 	if (ceiling != (u32)ceiling)
+ 		return -ERANGE;
+@@ -272,7 +277,7 @@ static int ti_eqep_position_ceiling_write(struct counter_device *counter,
+ static int ti_eqep_position_enable_read(struct counter_device *counter,
+ 					struct counter_count *count, u8 *enable)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 	u32 qepctl;
+ 
+ 	regmap_read(priv->regmap16, QEPCTL, &qepctl);
+@@ -285,7 +290,7 @@ static int ti_eqep_position_enable_read(struct counter_device *counter,
+ static int ti_eqep_position_enable_write(struct counter_device *counter,
+ 					 struct counter_count *count, u8 enable)
+ {
+-	struct ti_eqep_cnt *priv = counter->priv;
++	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
+ 
+ 	regmap_write_bits(priv->regmap16, QEPCTL, QEPCTL_PHEN, enable ? -1 : 0);
+ 
 
-In the absence of multi-threading the result will be the same. But if 
-another thread reads foo->bar just at the right time it will read the 
-incorrect 20.
+base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+-- 
+2.30.2
 
-For simple things like `foo->bar = x;` it is unlikely that the compiler 
-will do anything other than the single store. But it could and the code 
-is not correct without the WRITE_ONCE.
-
-Using a mutex is OK, since non of this is performance critical.

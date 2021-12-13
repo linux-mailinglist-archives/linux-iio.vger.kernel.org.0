@@ -2,174 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CDD5472BB5
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 12:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7F8472C0A
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 13:12:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232728AbhLMLnf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Dec 2021 06:43:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57300 "EHLO
+        id S236462AbhLMMMf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Dec 2021 07:12:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231463AbhLMLne (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 06:43:34 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A896AC061574
-        for <linux-iio@vger.kernel.org>; Mon, 13 Dec 2021 03:43:34 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mwjjw-00079I-GT; Mon, 13 Dec 2021 12:43:32 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mwjju-004IlV-8u; Mon, 13 Dec 2021 12:43:29 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mwjjt-00027A-BS; Mon, 13 Dec 2021 12:43:29 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: [PATCH] counter: ti-eqep: Use container_of instead of struct counter_device::priv
-Date:   Mon, 13 Dec 2021 12:43:12 +0100
-Message-Id: <20211213114312.1406562-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S236049AbhLMMMf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 07:12:35 -0500
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C62DC06173F
+        for <linux-iio@vger.kernel.org>; Mon, 13 Dec 2021 04:12:35 -0800 (PST)
+Received: by mail-qt1-x842.google.com with SMTP id p19so14858781qtw.12
+        for <linux-iio@vger.kernel.org>; Mon, 13 Dec 2021 04:12:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=I1sSEl7MKenQr/9UZ1q6fl+zmivFRoZ6Iw3ttDOsvog=;
+        b=Q0vLzZrIRKJDBKR9GlrL/WUa9GMo9qzmvbQpBNWTcJCoSGFJTLvk6qeeDicc9Wx7oQ
+         IOL8rjXEj76pZT4ixnMfPEUShlsvpIik8zUfUbOInKyg4ubc12V3DBKvT5rjF/zwmHz7
+         /0XRE1f+BRpdzOYQsw9ENPwOciNWbtc5/fr+yZfJU/k4uUevym+JHBQzzZE7ofgpr5GX
+         dIGgJWHWMKSm3JDNH1nBfKoYk5a54htWlESAAxHjurtCEmfttxmlD9hR9lqsIkQ9xzhI
+         uhYoP6tNuNJLvjCTukiftOBgWv2hadzC06TSxraVtxlfWHJ7fFyadspxpuNis9Zm4hOG
+         TZnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=I1sSEl7MKenQr/9UZ1q6fl+zmivFRoZ6Iw3ttDOsvog=;
+        b=uI/PD52cU6TAIl32ezvIriy8yRnBQFilEzIPO8MRDzBsOG02ZxAsVoev0z7Hyc7fAh
+         rIl+pTwrCKrRFt5MzYCLXMAQI3Yqq1uq1ks+P/nnv1YbMU8w6Qjhtp8kjSftD/6z+Z0+
+         tgZH+vDUN3je7Gutt81meEF0ZeFVn+BHmMHf4qACghxuwoYyqYnJuQveFsSP7O63A9DF
+         teslPxdCB8qru4qfVQ9fqNXAZifzCfI84H05QEHagJ9365XtLOkgLg8vk20aD8dTrVxN
+         v/p8uYkQs3d0Pm+X9KEYuSAOy2UqPpffX4vhuPRv6VQ8O3249WDoqdhPz1wEUcfuQ68D
+         Qrjg==
+X-Gm-Message-State: AOAM530S6wo6EhDkodXV8+sE8/tW2euMzXPUANS0z2BcySHaU4SGm+W5
+        zIH/YYAKclN6o2esDunRhIBgpTxi5jmBW/EsW7E=
+X-Google-Smtp-Source: ABdhPJxFDM9qtdU3a6wQCrg0ikress6ag/E1sOPeyK7OH+tcV8D713A+SeLFb9j4Gn6qfQ8dP/ALpsE7YhamBCiJl0g=
+X-Received: by 2002:a05:622a:186:: with SMTP id s6mr46297109qtw.477.1639397554234;
+ Mon, 13 Dec 2021 04:12:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=2vlFU+eqwS9veDOtlDpdAxKEuDo83KhQdLwHLGFe+dg=; m=FNxM8XON3yPSC37Azgc7BAi0QseP+ddPj8+Jc+Fmvks=; p=ToLiUo9JbuW9MKjyCTzjhJdpYDvBg97FdWHRg/JnmlE=; g=9459ad8bc78190558df9123f8bebe28ca1c396ea
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmG3Mc0ACgkQwfwUeK3K7Ak5DQgAgy6 QahQMvhDIOiVUc2sMaSRam9BfqlS9+FCrtbiCiZVD2/36ftqwlIinr1j510xmPH3O4d+oWjyz3pHr Oj/+SReeL/zqzMl/W77Yd2OR6QuIvXRnPSux8yns8fxxdB0exI9kuKaVLy5lQ9xlVdUw+P4ZtKUiG bPUR9QvWexreypGAy8QJsTvOW3HUVtQNJUcXX4SKXTGSip0szFsXsdGryEyRnwwmpIvBUUn8Vq8Qc a5vnwLNHcbmWjZs6zAhDQiTfxTFLFunePOe+5u8xnUbOc4DwT1RYNHQIIHU1quldUvMqaGW4crClb EovWn3S1sFG4WeWf7TkmbQ/FrkMINHQ==
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Received: by 2002:ac8:5f83:0:0:0:0:0 with HTTP; Mon, 13 Dec 2021 04:12:34
+ -0800 (PST)
+Reply-To: kjude081@gmail.com
+From:   Jude Kane <karimrahinatou@gmail.com>
+Date:   Mon, 13 Dec 2021 12:12:34 +0000
+Message-ID: <CADcZNrmOyATy_+Z4SQMAC+WfbiRHWuaEXP-Phq5-OAkOQYB6mQ@mail.gmail.com>
+Subject: Dear .
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Using counter->priv is a memory read and so more expensive than
-container_of which is only an addition. (In this case even a noop
-because the offset is 0.)
+Dear .
 
-So container_of is expected to be a tad faster, it's type-safe, and
-produces smaller code (ARCH=arm allmodconfig):
+Please I am a solicitor at law and personal attorney to your late relative, a
+national of your country. Who died here in the year 2018, with his
+wife and their
+only daughter. I have contacted you as the beneficiary/next of kin to his
+estate fund valued at Twenty Million Five Hundred Thousand United States
+Dollars ($20,500.000) However he deposited the fund before his death. Your
+immediate/urgent attention is highly needed and don't fail to call me now.
 
-	$ source/scripts/bloat-o-meter drivers/counter/ti-eqep.o-pre drivers/counter/ti-eqep.o
-	add/remove: 0/0 grow/shrink: 0/9 up/down: 0/-108 (-108)
-	Function                                     old     new   delta
-	ti_eqep_position_enable_write                132     120     -12
-	ti_eqep_position_enable_read                 260     248     -12
-	ti_eqep_position_ceiling_write               132     120     -12
-	ti_eqep_position_ceiling_read                236     224     -12
-	ti_eqep_function_write                       220     208     -12
-	ti_eqep_function_read                        372     360     -12
-	ti_eqep_count_write                          312     300     -12
-	ti_eqep_count_read                           236     224     -12
-	ti_eqep_action_read                          664     652     -12
-	Total: Before=4598, After=4490, chg -2.35%
+Call me for more information and directive. You are also advised to provide the
+listed information below.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/counter/ti-eqep.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+First and last name:
+Address:
+City:
+Country:
+Phone number:
+Occupation:
+Age:
+Email:
 
-diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
-index 09817c953f9a..9e0e46bca4c2 100644
---- a/drivers/counter/ti-eqep.c
-+++ b/drivers/counter/ti-eqep.c
-@@ -87,10 +87,15 @@ struct ti_eqep_cnt {
- 	struct regmap *regmap16;
- };
- 
-+static struct ti_eqep_cnt *ti_eqep_count_from_counter(struct counter_device *counter)
-+{
-+	return container_of(counter, struct ti_eqep_cnt, counter);
-+}
-+
- static int ti_eqep_count_read(struct counter_device *counter,
- 			      struct counter_count *count, u64 *val)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	u32 cnt;
- 
- 	regmap_read(priv->regmap32, QPOSCNT, &cnt);
-@@ -102,7 +107,7 @@ static int ti_eqep_count_read(struct counter_device *counter,
- static int ti_eqep_count_write(struct counter_device *counter,
- 			       struct counter_count *count, u64 val)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	u32 max;
- 
- 	regmap_read(priv->regmap32, QPOSMAX, &max);
-@@ -116,7 +121,7 @@ static int ti_eqep_function_read(struct counter_device *counter,
- 				 struct counter_count *count,
- 				 enum counter_function *function)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	u32 qdecctl;
- 
- 	regmap_read(priv->regmap16, QDECCTL, &qdecctl);
-@@ -143,7 +148,7 @@ static int ti_eqep_function_write(struct counter_device *counter,
- 				  struct counter_count *count,
- 				  enum counter_function function)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	enum ti_eqep_count_func qsrc;
- 
- 	switch (function) {
-@@ -173,7 +178,7 @@ static int ti_eqep_action_read(struct counter_device *counter,
- 			       struct counter_synapse *synapse,
- 			       enum counter_synapse_action *action)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	enum counter_function function;
- 	u32 qdecctl;
- 	int err;
-@@ -245,7 +250,7 @@ static int ti_eqep_position_ceiling_read(struct counter_device *counter,
- 					 struct counter_count *count,
- 					 u64 *ceiling)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	u32 qposmax;
- 
- 	regmap_read(priv->regmap32, QPOSMAX, &qposmax);
-@@ -259,7 +264,7 @@ static int ti_eqep_position_ceiling_write(struct counter_device *counter,
- 					  struct counter_count *count,
- 					  u64 ceiling)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 
- 	if (ceiling != (u32)ceiling)
- 		return -ERANGE;
-@@ -272,7 +277,7 @@ static int ti_eqep_position_ceiling_write(struct counter_device *counter,
- static int ti_eqep_position_enable_read(struct counter_device *counter,
- 					struct counter_count *count, u8 *enable)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 	u32 qepctl;
- 
- 	regmap_read(priv->regmap16, QEPCTL, &qepctl);
-@@ -285,7 +290,7 @@ static int ti_eqep_position_enable_read(struct counter_device *counter,
- static int ti_eqep_position_enable_write(struct counter_device *counter,
- 					 struct counter_count *count, u8 enable)
- {
--	struct ti_eqep_cnt *priv = counter->priv;
-+	struct ti_eqep_cnt *priv = ti_eqep_count_from_counter(counter);
- 
- 	regmap_write_bits(priv->regmap16, QEPCTL, QEPCTL_PHEN, enable ? -1 : 0);
- 
+Contact me on this email: kjude081@gmail.com
 
-base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
--- 
-2.30.2
+I look forward to hearing from you asap.
 
+With Kind Regards,
+
+Jude Kane ESQ
+74 Rue du Segbe
+Lome, Togo
+Telephone:. +22897508769

@@ -2,151 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A9621472374
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 10:04:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D39472432
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Dec 2021 10:35:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233550AbhLMJEv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Dec 2021 04:04:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47416 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233546AbhLMJEv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 04:04:51 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF79FC061574
-        for <linux-iio@vger.kernel.org>; Mon, 13 Dec 2021 01:04:50 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mwhGL-00049J-8V; Mon, 13 Dec 2021 10:04:49 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mwhGL-004HSm-8N; Mon, 13 Dec 2021 10:04:48 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1mwhGK-0001co-BI; Mon, 13 Dec 2021 10:04:48 +0100
-Date:   Mon, 13 Dec 2021 10:04:48 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH RFC] counter: Expand API with a function for an exact
- timestamp
-Message-ID: <20211213090448.mpxlxkjwhujsuobe@pengutronix.de>
-References: <20211207181045.1246688-1-u.kleine-koenig@pengutronix.de>
- <Ybb5B0AI5EWCagOV@shinobu>
+        id S234286AbhLMJez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Dec 2021 04:34:55 -0500
+Received: from out162-62-57-252.mail.qq.com ([162.62.57.252]:51731 "EHLO
+        out162-62-57-252.mail.qq.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234006AbhLMJeK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Dec 2021 04:34:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1639388046;
+        bh=iXySGmvIpQzWI4D8XoRDI/HDa44G0b/wjLssIbrND2Y=;
+        h=From:To:Cc:Subject:Date;
+        b=vtrLOvyIZRc2JObKi2Ie1E2wqL/WKgmDsR9rt3EvMVPF7VgQR5zR1aYpJOD/vcfS3
+         9TkuEf18ezZutoHP878VygBBq9Ldj6EZ4P716C1bg+IzsPd76LdWvvToG63gh48z5N
+         /hQrFTAnEx/f4t17i65H8nDC89izL7TXAFuxCjP4=
+Received: from localhost.localdomain ([218.197.153.188])
+        by newxmesmtplogicsvrsza7.qq.com (NewEsmtp) with SMTP
+        id 4A50DAE9; Mon, 13 Dec 2021 17:18:37 +0800
+X-QQ-mid: xmsmtpt1639387117tv1l2czg7
+Message-ID: <tencent_4014A4E1394AA4FF7620EBCC47B9701C9D08@qq.com>
+X-QQ-XMAILINFO: N+Pibzc9GW0I8UZfkKkQBKlPoY+0TlzoUtocKK4tFyfEBMoXbI50fZyFESnScU
+         0aZQXXywfx3UuluRRhwsxmniB3jT72eazqKn7h53K5MGfR/Xf2QRIj3PuBqt2T01rANVrNlseQOJ
+         90+g5vDpL2lo37cPH/hDpkEDTYd5SSjIZCCV1K/akp83YR9MmylU3yp5T/1ezmfGq1IkEzwUJ3CS
+         UK+73Ng2VmvzgXeSnwH22yoDeFxijoe4gr+YjGKseBZXYGd2ds8aXvMbFS6vxLAEvCZlNLA6cmz9
+         0vGRo5/CfApBqlNb4rQmtl8at8/YUIU1zo1qDFOHcQFxrlxYnBAUABv1MXZ6dBDJPG/bFJUJxFH3
+         a3SXdNAykTuixGyeQgeYB6jwjnwuVeUk8fHLrJ+Z0gX6MTneN+ZHsP723+EbV8lUsw+CQDVPoB68
+         pqDmDcoZLKTlCOaom9cwNnOvh5PFQdGVGtoVaUuABSSyDSVNjg+xHOMNLwmn9fyuXwATPDz77kaJ
+         d0RDOOY2CH6RFm7Y8EJjeqOagDmVe8BmiXnSFUezGGKZCnOet4R+pPTvfMdNTsgGmN1wkCuuh9G0
+         ZI4SbWV/W/cL80nNcf8evTbzWd1Dh7ue3NAIUzMqbsDZb2lWtPcVl8wi5bIC+3zgMIJoB4gyk5Ug
+         E7PaCUOsSptxZHry2YU0FC96Eh2axet6d3NWWMGjaD0cqDWeWzE6QzAyzWg0suAgCEtfzGS/Ma7P
+         MFiFIS3a1m+gil/MkXeu0xUme91y/XsAhVl/CiUfE4qGIPXHKVWRsDLbOsBhJ2j6fw3LeB03v0IG
+         4ornMto8LJ3EAnwTxPIK+6YUN6DbSmQaJdJxHMhY2ON+6BCSITO8B9dvlfu5T6AOqvEoiovI/+bq
+         +elOrbYZwbdRLJOoD6nc0+vzRSTfbvaSpPCBjC0JAddwL+Ih4fPBWX6//G4ZpPPg==
+From:   Xiaoke Wang <xkernel.wang@foxmail.com>
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Xiaoke Wang <xkernel.wang@foxmail.com>
+Subject: [PATCH] iio: dummy: iio_simple_dummy: check the return value of kstrdup()
+Date:   Mon, 13 Dec 2021 17:18:21 +0800
+X-OQ-MSGID: <20211213091821.4803-1-xkernel.wang@foxmail.com>
+X-Mailer: git-send-email 2.33.0.windows.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="75ib7hbycgegdzh2"
-Content-Disposition: inline
-In-Reply-To: <Ybb5B0AI5EWCagOV@shinobu>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+kstrdup() is also a memory allocation-related function, it return NULL
+when some memory errors happen. So it is better to check the return
+value of it so to catch the memory error in time.
 
---75ib7hbycgegdzh2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
+---
+ drivers/iio/dummy/iio_simple_dummy.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Hello William,
-
-On Mon, Dec 13, 2021 at 04:40:55PM +0900, William Breathitt Gray wrote:
-> On Tue, Dec 07, 2021 at 07:10:45PM +0100, Uwe Kleine-K=F6nig wrote:
-> > Some hardware units capture a timestamp for the counted event. To
-> > increase precision add a variant of counter_push_event() that allows
-> > passing this timestamp.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> > Hello,
-> >=20
-> > the difficulty is that the captured timer value is in a unit different
-> > from the one provided by ktime_get_ns(). So maybe some helper functions
-> > will be needed to convert the local timer value to a ktime timestamp?
-> >=20
-> > So usage would be something like:
-> >=20
-> > 	ktime_now =3D ktime_get_ns();
-> > 	local_now =3D readl(CNT);
-> > 	local_event =3D readl(...);
-> >=20
-> > 	ktime_event =3D ktime_now - (local_now - local_event) * somefactor >> =
-someshift;
-> >=20
-> > 	counter_push_event_ts(count, event, channel, ktime_event);
-> >=20
-> > This improves the precision because irq latency doesn't influence
-> > the resulting timestamp. The precision then only depends on the timer
-> > resolution and the delay between ktime_get_ns() and readl(CNT);
-> >=20
-> > I don't have a driver (yet) that makes use of this, the hardware where
-> > this will matter will be stm32mp1.
->=20
-> Precision logging of counter events was one of the main motivations for
-> the creation of the Counter character device interface, so if we can
-> reduce the jitter of the timestamp by utilizing hardware-provided
-> values, I'm all for it. That being said, we should take care in deciding
-> how to expose this data in the Counter interfaces because not all
-> devices support such functionality and yet users should expect a
-> standard data format to code against.
->=20
-> Considering this, I think it better to keep the struct counter_event
-> timestamp the way it is right now as ktime_get_ns() so that users have a
-> consistent way to retrieve the timestamp of when the Counter event was
-> pushed to the queue.
-
-Isn't it totally irrelevant to userspace when the event was pushed to
-the queue? I claim userspace is only ever interested when the event
-happend and the queue is only an implementation detail of the counter
-framework. The documentation for the timestamp member of struct
-counter_event is
-
-	best estimate of time of event occurrence, in nanoseconds
-
-=2E That looks sane, and following that, the best estimate is the hw
-timestamp?!
-
-(Well, if you experience high latencies, the timestamp of the queuing
-might be interesting for debugging, but in this case I'd prefer tracing
-support over exposing implementation details in the API.)
-
-> In order to support the hardware-provided
-> timestamp, how about exposing local_event and local_now as Counter
-> extensions? You can set a watches for the local timestamps to log them
-> into the queue with each event, then perform the ktime_event calculation
-> in userspace using the struct counter_event timestamp value.
-
-An upside of your suggestion is that calculating the ktime for the event
-isn't done unless userspace needs it. Still I'd prefer to use .timestamp
-for an as-accurate-as-possible information for the event.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---75ib7hbycgegdzh2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmG3DK0ACgkQwfwUeK3K
-7An3MQf8CPmfAZyLdzK4wHwM0j3chEzJW4xnka+eMWkmelLdSrRYmXiLBZEeWphZ
-E9TE/J9/gEzEPiCEpuANErg+Wx6/vtjxvbfBYKzeo+5JokGmnVJOi4hBiuCMPyqW
-FofY8o1AJsIziYBYNP5TFunbv5UiNAOtH15LDQPVr6kf86a3d2SKaiWH4sW0gHmY
-fEUHrox2dAQvJppbleu/wfKNqOIMVZ8jaLC/lfC424mvgS7WhfP/Nh32TwMeihfg
-RSRZkVT8/vplh+ZRmeMQuEyH15uGHViHvH207lq3VWtAn47RCZicgW7vqE0eYooh
-1etbysVaYGFdG/7S2ojDkR7gyeqn1g==
-=a3Cn
------END PGP SIGNATURE-----
-
---75ib7hbycgegdzh2--
+diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
+index c0b7ef9..a5e8071 100644
+--- a/drivers/iio/dummy/iio_simple_dummy.c
++++ b/drivers/iio/dummy/iio_simple_dummy.c
+@@ -616,6 +616,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	 *    indio_dev->name = spi_get_device_id(spi)->name;
+ 	 */
+ 	indio_dev->name = kstrdup(name, GFP_KERNEL);
++	if (!indio_dev->name) {
++		ret = -ENOMEM;
++		goto error_free_device;
++	}
+ 
+ 	/* Provide description of available channels */
+ 	indio_dev->channels = iio_dummy_channels;
+-- 

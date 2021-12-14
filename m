@@ -2,84 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE1A24748B7
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Dec 2021 18:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8640F4748D3
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Dec 2021 18:05:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233650AbhLNRCn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Dec 2021 12:02:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40942 "EHLO
+        id S233681AbhLNRFZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Dec 2021 12:05:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233565AbhLNRCn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Dec 2021 12:02:43 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3760FC061574
-        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 09:02:43 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id x3-20020a05683000c300b0057a5318c517so21462044oto.13
-        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 09:02:43 -0800 (PST)
+        with ESMTP id S233666AbhLNRFZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Dec 2021 12:05:25 -0500
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E12C061574
+        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 09:05:25 -0800 (PST)
+Received: by mail-qv1-xf36.google.com with SMTP id s9so17780268qvk.12
+        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 09:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KSsXNz3QYERscFqfJuTWMQZJwUXAy/j9f5RStY/7zVE=;
-        b=qG9xWb5WKc83Ihow5bvTqxm8tU5t6uACWJCg5M7GhVh/CsQRco0PqzMYulr9p06GOR
-         NGxe/YZOPchCRu5+AQBnH48RjLQKsY0q7zeOO/KdATOn6Fa3jMdGWwQPi1WYKwtDg2iU
-         V3vDi3deaXsiFffb1pkIftI9mF4ME0PsR7T/+b7xc1zoefAwXdanYUTtAGdH9YzdIXeb
-         9nE/Z3ZQG3tLlUgUzOBEZQf9PaYSizMPprJnRRy3RdHN0w/8FIn3EdJQ7/WTsHDngbag
-         m1JcJHEX5giqC93uFqDrV3QtsSMPZh5Pp9FK+50SHdYqLeK025AVBivirbJS7ZGHDEsO
-         Pb7w==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IPD+nA3FQoeMZhYwAqvzDnXwLmfZ4bVPPX3shdoFEYI=;
+        b=fBlipuT4Hf/kisdkWmQu0HTGFsJDTovSOBaF/AlE5ypvY3PF73I6O4DBmwv0myqL9S
+         KfOhJPrC72MJQ/VTQnijskDRH+DY2ea4SiaqXUcG4R8H0720d4BsMbTcFYp2wheguIp/
+         SZgiJZKr9F3YeeLHj8HBdPjhoox3DODpI0Uo2yHMZwulpX5JLm4bFYX3Wkb+9Df2OPEK
+         JL5VsVJP7fMORf6qW8Xwt7m0OtXeSIs+EEgZ/aqniPpsDvAAmkKcgA24Gxs6U+jLuTvs
+         /pdqQgqLuIJCOBdmlZnkTlcDJNyYnv04oftpISZYnLxOt+QqjitVDQFU7uPiZTrrMRv7
+         LaRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KSsXNz3QYERscFqfJuTWMQZJwUXAy/j9f5RStY/7zVE=;
-        b=yo/c/bzsYjQ/zavW3vcXeNo+kMxsniG1SnNRAPuVUpmuzZvunzN6KkiZT72+uSBulv
-         uuaDLlNOUpFUYJz+UfaQUyup+N8CCHo2x+ucdn8eKxavtDo1YNNQOAP8IqmbmDAolK9c
-         AnLjDgF5gjEqZ/h32VGs6HWpiOcuRSFxFxnBsULBUJ607m56XcvbFmjh9jLUvVr2JraI
-         WJkgFeys8PQE/5to5DQ7Kc97VnZPZzRILXTk03W0iNQK7uJiDvmdddgEOpqSDKBe7jRe
-         WPuC01Ssbh3PvdUNAEU47hGtNFl3u/0zGU8nbeSO8zzbNMBr61JLDF0b0yEyEMHd+Wc8
-         gtBg==
-X-Gm-Message-State: AOAM530Q+S58igOHI8TN3JVXaS0Ag0sHvDy7eMKsk6ZsIO34K3LuK7TD
-        wkMRMMb0idN8x2Z8fqA1deQD6Jxq70oPldZP+5c=
-X-Google-Smtp-Source: ABdhPJzRcXWhcHsckDvFLQ6lqwdHov78+ea9IZainA3zsZOig+2G4Q2tcdYFijNzAfcxYnDoiyrpoheiGpFD/v2b/FE=
-X-Received: by 2002:a9d:69ce:: with SMTP id v14mr5188794oto.312.1639501362594;
- Tue, 14 Dec 2021 09:02:42 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IPD+nA3FQoeMZhYwAqvzDnXwLmfZ4bVPPX3shdoFEYI=;
+        b=GY1trVmUPmubi453ya/DgGam10+44Q4ku8CY5Cu+nKVL1cwThJV3MwLfEYnnWe0l4F
+         5s+i/x/9Kv+8aa0df+Ru6yO45PhgCZQVT1DLReq8l9J7B8h/UdiwvPSuzaTwqznQQz/5
+         T4JDCMdKap1oBrhUhvnqMNbiZV4k3m0HBUts8oGf5jruqNoElZMVXpK5btG4JAQQQkuR
+         7HXhf1WG9hg7DrI5Wr/cCPRv+pMBPY2gsaYRu6PH7CEksOBvqgjVb+2kJrgfvmURia0w
+         knB4JqkTBsYPZrxKtKYxZqiog0/sj+CiySqp9cFVBn/BX0v2g80aASP74z1lHWXkRpHs
+         eMtw==
+X-Gm-Message-State: AOAM530lxrflMwNTMH9lVhc3WgSN4D9+hEb+1HE5x/o0CRkqO0fDf0Va
+        nONNZV6/Xvc8G1ViNUE0C+Y=
+X-Google-Smtp-Source: ABdhPJwt3YGTvNVAgdzXC0RnPpsJFmA2HKCHIZu3RgeEd/269E3Re6JtYBxiqqbMQk6nHOfDpo4mDw==
+X-Received: by 2002:ad4:5a13:: with SMTP id ei19mr6605993qvb.129.1639501524281;
+        Tue, 14 Dec 2021 09:05:24 -0800 (PST)
+Received: from marsc.168.1.7 ([2804:30c:b14:b100:c080:51c0:2de2:c68a])
+        by smtp.gmail.com with ESMTPSA id x17sm350314qta.66.2021.12.14.09.05.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Dec 2021 09:05:23 -0800 (PST)
+Date:   Tue, 14 Dec 2021 14:05:20 -0300
+From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Nuno Sa <Nuno.Sa@analog.com>,
+        lars@metafoo.de, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 03/17] staging:iio:adc:ad7280a: rename _read() to
+ _read_reg()
+Message-ID: <YbjO0PBtuiq34Wa1@marsc.168.1.7>
+References: <20211205202710.2847005-1-jic23@kernel.org>
+ <20211205202710.2847005-4-jic23@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a9d:7cc3:0:0:0:0:0 with HTTP; Tue, 14 Dec 2021 09:02:42
- -0800 (PST)
-Reply-To: drrhanannahenry@gmail.com
-From:   Dr rahama henry <hdrrahama@gmail.com>
-Date:   Tue, 14 Dec 2021 18:02:42 +0100
-Message-ID: <CAN8oO=6jXw26rddxkDbrnNDKubStKCqA4r3+5wYZP3xZ99vDPg@mail.gmail.com>
-Subject: HELLO
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211205202710.2847005-4-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-Dear Friend.
+On 12/05, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> This avoids possible confusion with read back of the channel conversions.
+> These two types of reads are of difference sizes with resulting differences
+> in the data layout of the response from the hardware.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-My names are Dr Rhama a banker in one of the bank in my country
-African. I Hoped that you will not expose or betray this trust and
-confident that i am about to repose on you for the mutual benefit of
-our both families. I need your urgent assistance in transferring the
-sum of $5.5 million U.S into your account. Please I would like you to
-keep this proposal as a top secret, I will give more details , my
-picture, family picture and working ID will send to you, For Expenses
-Am the one to take care of expenses, it is my responsibility for
-expenses. As soon as i hear from you i will give you more detail also
-the next thing to do.
-
-Please indicate your willingness by sending the below information for
-more clarification and easy communication.
-For more details, Contact me for more details.
-(1) Your Full Name...............................
-(2) Your Age And Sex............................
-(3) Your Contact Address..................
-(4) Your Private Phone N0..........
-(5) Your Country Of Origin..................
-(6) Your Occupation.........................
-
-Trusting to hear from you immediately.
-Thanks & Best Regards,
-Dr Rhama Henry
+> ---
+>  drivers/staging/iio/adc/ad7280a.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
+> index d169c8a7b5f1..4d866e5fe43c 100644
+> --- a/drivers/staging/iio/adc/ad7280a.c
+> +++ b/drivers/staging/iio/adc/ad7280a.c
+> @@ -224,8 +224,8 @@ static int ad7280_write(struct ad7280_state *st, unsigned int devaddr,
+>  	return spi_write(st->spi, &st->buf[0], 4);
+>  }
+>  
+> -static int ad7280_read(struct ad7280_state *st, unsigned int devaddr,
+> -		       unsigned int addr)
+> +static int ad7280_read_reg(struct ad7280_state *st, unsigned int devaddr,
+> +			   unsigned int addr)
+>  {
+>  	int ret;
+>  	unsigned int tmp;
+> @@ -476,8 +476,8 @@ static ssize_t ad7280_show_balance_timer(struct device *dev,
+>  	unsigned int msecs;
+>  
+>  	mutex_lock(&st->lock);
+> -	ret = ad7280_read(st, this_attr->address >> 8,
+> -			  this_attr->address & 0xFF);
+> +	ret = ad7280_read_reg(st, this_attr->address >> 8,
+> +			      this_attr->address & 0xFF);
+>  	mutex_unlock(&st->lock);
+>  
+>  	if (ret < 0)
+> -- 
+> 2.34.1
+> 

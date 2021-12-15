@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1B6E475047
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 02:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9953947504D
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 02:13:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238975AbhLOBF1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Dec 2021 20:05:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37662 "EHLO
+        id S239124AbhLOBGR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Dec 2021 20:06:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239204AbhLOBEx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Dec 2021 20:04:53 -0500
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF69C0613A5
-        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 17:03:47 -0800 (PST)
-Received: by mail-ot1-x32e.google.com with SMTP id x3-20020a05683000c300b0057a5318c517so22854708oto.13
-        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 17:03:47 -0800 (PST)
+        with ESMTP id S238958AbhLOBGE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Dec 2021 20:06:04 -0500
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62C1C061756
+        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 17:06:03 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso22905647otf.12
+        for <linux-iio@vger.kernel.org>; Tue, 14 Dec 2021 17:06:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:in-reply-to:references:from:user-agent:date:message-id
          :subject:to:cc;
-        bh=ZKQQy+YOvLBBZMbtug479K7pxDYFArd8y1/laB7D3DI=;
-        b=lwiId9WZTQgfibEg0ojNz7xGBNrxurlOBbuacrxx7RPna4A4ksa5yCkcMraFM9UFD+
-         RfrvGzSl0Q78kQhB8P7H+usmPVbMyFdI3pqQjueDW+lgqvq92JnqwAeNQQkn3MHpz2Jg
-         /TSiRlJBbEz3KHwmex2KoB5zV7HtDBqPZx05Q=
+        bh=EV9VNit3Ie6/js7xF+Gy1n5TkhbZ0vT+OvSfp69j0fA=;
+        b=JhjQvFEspDQho4syOWl5+LoAayzRGMWh+dxYGiE/9ZQGmtCXD1939lqWlnypqAPoW1
+         LJ6NEvKw27lj2CEzpAL50l2nqTKXKvf7PEVmeGfVZ1SV32yWE/t8JGCKrdzCFDyA3c5q
+         50SLeNo8GerTtU8pvx/LgZmcLBMaZTq2ZTfes=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:in-reply-to:references:from
          :user-agent:date:message-id:subject:to:cc;
-        bh=ZKQQy+YOvLBBZMbtug479K7pxDYFArd8y1/laB7D3DI=;
-        b=21hRNgeOdfhP94GcDGf7ZLKD9Yw2/YUzoESVcQrlaMEY7DfokIpSDGj2uQxkqyqDml
-         gJk0ybK2HgC4ebZKCcH14m/XuIjN89Y9l9J14Peatj6bxah7RdqBpz5h5ksUC1QAFDXN
-         Lz/26dWp4RXVcQdAD3JkZtV9OsXnOGS77uHf8dHj2OlMGm4lyZct4EXlKJT/ypzxE6hy
-         6HaFIV9WjVS6nq6J+j475EbxpK1Rd7VPMD9ZVcVoulF07Td9YeYNeZsa1LyDb3E4RAbp
-         Pw/yDLxCUZLa0yL3d5ZimrsbyLIxtx6z6aV3zJ8HSq8UtBl8Lwp3SfSrGayQ/DBHkaC1
-         c29w==
-X-Gm-Message-State: AOAM532zfnAd3FMIk7aJyN15UstSqUmEa0ODAX4Vgk00gG9oRCt8+hTy
-        6dEYnV3USQRZFee2cGhFnOygyRdmrjEEazpeC93bPg==
-X-Google-Smtp-Source: ABdhPJxgQB+wpjHFaW+E1+QdAZ0kvEgzT6Ilxp55tRA6GKubEVjBc+YOf5sT3QPN0edcDr8IWUs7oEbdlylt3s1AJc0=
-X-Received: by 2002:a9d:70ce:: with SMTP id w14mr6811626otj.77.1639530227336;
- Tue, 14 Dec 2021 17:03:47 -0800 (PST)
+        bh=EV9VNit3Ie6/js7xF+Gy1n5TkhbZ0vT+OvSfp69j0fA=;
+        b=bWu2C9JnPXmGZBX+8dQUUoiPCx6fs6V25ePtZvQdBkWa+IDzxLxkSwQVy7PoVrLQT2
+         3pzriA+ep36+OcgkuvhjMEhHQ3B/KXr8LGBlDzluL5ekC6aZG+NUZ1YUyh0eje2LHBfV
+         G9AzSGIRC5c7MLgEeJB7DzMbTQ2+7Fh1p79N5j8Z17/7wNVg1VWfbDNzWs8lJuYdSBSn
+         84B2B36WALps/byo28vrOMN27C/9E1evv9eCiqKKbCyKE7kza1oWqk7Z5tVBOEvEsItF
+         Np9+xQ861KUwRmQOZk2EfkhCjhnZmjUSXS8mkYeap6eCWEa7xoQRWopX4/x1scuK40XF
+         dECg==
+X-Gm-Message-State: AOAM530g9jtTb4YA3PhSif6HBBa6eDujlt2Upd2CmFMRzHCsOJB9S/4q
+        OrBF9MjfcbVlFb+E3SeqHGzKlnQOV6i8nUGS1thgYIiQbhQ=
+X-Google-Smtp-Source: ABdhPJwR3ToiA9ofDQfo27y8cz61kcGq6dekDuLMjoMisWOzzadIBfIK2gv/xrshhYhKB+OWP2e+L5xEu8S4Tdu2X3A=
+X-Received: by 2002:a05:6830:30b7:: with SMTP id g23mr6743583ots.159.1639530363272;
+ Tue, 14 Dec 2021 17:06:03 -0800 (PST)
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 15 Dec 2021 02:03:46 +0100
+ HTTPREST; Wed, 15 Dec 2021 02:06:02 +0100
 MIME-Version: 1.0
-In-Reply-To: <20211210192328.2844060-5-gwendal@chromium.org>
-References: <20211210192328.2844060-1-gwendal@chromium.org> <20211210192328.2844060-5-gwendal@chromium.org>
+In-Reply-To: <20211210192328.2844060-2-gwendal@chromium.org>
+References: <20211210192328.2844060-1-gwendal@chromium.org> <20211210192328.2844060-2-gwendal@chromium.org>
 From:   Stephen Boyd <swboyd@chromium.org>
 User-Agent: alot/0.9.1
-Date:   Wed, 15 Dec 2021 02:03:46 +0100
-Message-ID: <CAE-0n50MKqqk_WZZ+vo7-AqrOwqLvbM+sr1p=_jW-i+fv7a4LA@mail.gmail.com>
-Subject: Re: [PATCH v7 4/5] dt-bindings: iio: Add sx9324 binding
+Date:   Wed, 15 Dec 2021 02:06:02 +0100
+Message-ID: <CAE-0n50z5MN-pJoCbnKkF-KWxCg+E--rudKo5bJgd+aXPd12+A@mail.gmail.com>
+Subject: Re: [PATCH v7 1/5] iio: sx9310: Add frequency in read_avail
 To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
         lars@metafoo.de, robh+dt@kernel.org
 Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
@@ -59,10 +59,10 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2021-12-10 11:23:27)
-> Similar to SX9310, add biddings to setup sx9324 hardware properties.
-> SX9324 is a little different, introduce 4 phases to be configured in 2
-> pairs over 3 antennas.
+Quoting Gwendal Grignou (2021-12-10 11:23:24)
+> Instead of using IIO_DEV_ATTR_SAMP_FREQ_AVAIL sysfs attribute,
+> add a _FREQ case in read_avail() to display the frequency table.
+> No change to |sampling_frequency_available| was observed.
 >
 > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > ---

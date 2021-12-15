@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF70F475B96
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 16:15:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A63475B97
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 16:15:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243833AbhLOPNt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S232448AbhLOPNt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 15 Dec 2021 10:13:49 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:34045 "EHLO
+Received: from relay12.mail.gandi.net ([217.70.178.232]:60965 "EHLO
         relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232448AbhLOPNs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 10:13:48 -0500
+        with ESMTP id S243834AbhLOPNt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 10:13:49 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 632C3200011;
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 13A3A20000B;
         Wed, 15 Dec 2021 15:13:47 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
 Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 03/10] iio: magnetometer: rm3100: Stop abusing the ->currentmode
-Date:   Wed, 15 Dec 2021 16:13:37 +0100
-Message-Id: <20211215151344.163036-4-miquel.raynal@bootlin.com>
+Subject: [PATCH 04/10] iio: adc: stm32-dfsdm: Avoid dereferencing ->currentmode
+Date:   Wed, 15 Dec 2021 16:13:38 +0100
+Message-Id: <20211215151344.163036-5-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211215151344.163036-1-miquel.raynal@bootlin.com>
 References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
@@ -32,60 +32,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is an internal variable for the core, here it is set to a "default"
-value by the driver in order to later be able to perform checks against
-it. None of this is needed because this check actually cares about the
-buffers being enabled or not. So it is an unproper side-channel access
-to the information "are the buffers enabled?", returned officially by
-the iio_buffer_enabled() helper. Use this helper instead.
+This is an internal variable of the core, let's use the
+iio_buffer_enabled() helper which is exported for the following purpose:
+telling if the current mode is a buffered mode, which is precisely what
+this driver looks for.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/iio/magnetometer/rm3100-core.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/iio/adc/stm32-dfsdm-adc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index 13914273c999..be0057f82218 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -141,18 +141,10 @@ static irqreturn_t rm3100_irq_handler(int irq, void *d)
- 	struct iio_dev *indio_dev = d;
- 	struct rm3100_data *data = iio_priv(indio_dev);
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index 1cfefb3b5e56..a3b8827d3bbf 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -466,8 +466,7 @@ static int stm32_dfsdm_channels_configure(struct iio_dev *indio_dev,
+ 	 * In continuous mode, use fast mode configuration,
+ 	 * if it provides a better resolution.
+ 	 */
+-	if (adc->nconv == 1 && !trig &&
+-	    (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)) {
++	if (adc->nconv == 1 && !trig && iio_buffer_enabled(indio_dev)) {
+ 		if (fl->flo[1].res >= fl->flo[0].res) {
+ 			fl->fast = 1;
+ 			flo = &fl->flo[1];
+@@ -562,7 +561,7 @@ static int stm32_dfsdm_filter_configure(struct iio_dev *indio_dev,
+ 		cr1 = DFSDM_CR1_RCH(chan->channel);
  
--	switch (indio_dev->currentmode) {
--	case INDIO_DIRECT_MODE:
-+	if (!iio_buffer_enabled(indio_dev))
- 		complete(&data->measuring_done);
--		break;
--	case INDIO_BUFFER_TRIGGERED:
-+	else
- 		iio_trigger_poll(data->drdy_trig);
--		break;
--	default:
--		dev_err(indio_dev->dev.parent,
--			"device mode out of control, current mode: %d",
--			indio_dev->currentmode);
--	}
+ 		/* Continuous conversions triggered by SPI clk in buffer mode */
+-		if (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)
++		if (iio_buffer_enabled(indio_dev))
+ 			cr1 |= DFSDM_CR1_RCONT(1);
  
- 	return IRQ_WAKE_THREAD;
- }
-@@ -377,7 +369,7 @@ static int rm3100_set_samp_freq(struct iio_dev *indio_dev, int val, int val2)
- 			goto unlock_return;
- 	}
- 
--	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {
-+	if (iio_buffer_enabled(indio_dev)) {
- 		/* Writing TMRC registers requires CMM reset. */
- 		ret = regmap_write(regmap, RM3100_REG_CMM, 0);
- 		if (ret < 0)
-@@ -553,7 +545,6 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
- 	indio_dev->channels = rm3100_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(rm3100_channels);
- 	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
--	indio_dev->currentmode = INDIO_DIRECT_MODE;
- 
- 	if (!irq)
- 		data->use_interrupt = false;
+ 		cr1 |= DFSDM_CR1_RSYNC(fl->sync_mode);
 -- 
 2.27.0
 

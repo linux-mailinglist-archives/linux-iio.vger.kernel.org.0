@@ -2,103 +2,171 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80FCE475B9D
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 16:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC6BE475C52
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 16:54:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243846AbhLOPN4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Dec 2021 10:13:56 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:54155 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243843AbhLOPNz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 10:13:55 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 37057200016;
-        Wed, 15 Dec 2021 15:13:54 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 10/10] iio: core: Clarify the modes
-Date:   Wed, 15 Dec 2021 16:13:44 +0100
-Message-Id: <20211215151344.163036-11-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
+        id S244219AbhLOPya (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Dec 2021 10:54:30 -0500
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:33281 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232935AbhLOPy2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 10:54:28 -0500
+Received: by mail-oi1-f169.google.com with SMTP id q25so32363469oiw.0;
+        Wed, 15 Dec 2021 07:54:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=zB05uvrK2/mEzUciLS+bKWO3c1fIFvaHWmaH0UeNMm0=;
+        b=L2OOvxRWlr5XcmMxkNZNAplyxrSJoAsx58LkWN2vWwBcSGqZ0QgKhZ/89hL2Njto9p
+         GLReNoJKIDEsOMKL8972qqoavZZMMKLFflTnsiSLA06EobfukbYWz64tUgKWOntufY4x
+         y/w4H0Nxy7qwxhhSn9WBwytwRz8CRqVX3Md1RRQqEWo3VmD8O/xmjVenM6WcFFJGew5R
+         +3JlKDXGomxpIol4eRPD611pz/3DMeO81P68suJpq2+pSb7C5zk2b+PmENBZHGWASlW5
+         Kg7dEP+EYTNgxZzYo5/9FvJQILbduWNvo1IrnDmYMOtga0Y/AODD41nfN0WrdAeHE25E
+         E5Yg==
+X-Gm-Message-State: AOAM5316ypkrVX0vARsoKivQ4d67cdwISfUV5Ge4qFl/b9yMR1pu8vjX
+        45OjbzfZ3N2llgU17oMHgg==
+X-Google-Smtp-Source: ABdhPJwt3PSmVOrPf+jSGTFmZdNW9R948zXLu1Xbxnf227I08Idq9IEqxexRuf6nOoZ0FYrn277B6Q==
+X-Received: by 2002:aca:d606:: with SMTP id n6mr383859oig.76.1639583668114;
+        Wed, 15 Dec 2021 07:54:28 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id c9sm528923oog.43.2021.12.15.07.54.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 07:54:27 -0800 (PST)
+Received: (nullmailer pid 1383662 invoked by uid 1000);
+        Wed, 15 Dec 2021 15:54:26 -0000
+Date:   Wed, 15 Dec 2021 09:54:26 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: accel: add ADXL367
+Message-ID: <YboPssR4TaxBFkBq@robh.at.kernel.org>
+References: <20211207094337.59300-1-cosmin.tanislav@analog.com>
+ <20211207094337.59300-2-cosmin.tanislav@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211207094337.59300-2-cosmin.tanislav@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As part of a previous discussion with Jonathan Cameron [1], it appeared
-necessary to clarify the meaning of each mode so that new developers
-could understand better what they should use or not use and when.
+On Tue, Dec 07, 2021 at 11:43:36AM +0200, Cosmin Tanislav wrote:
+> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+> 
+> The ADXL367 does not alias input signals to achieve ultralow power
+> consumption, it samples the full bandwidth of the sensor at all
+> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+> with a resolution of 0.25mg/LSB on the +-2 g range.
+> 
+> In addition to its ultralow power consumption, the ADXL367
+> has many features to enable true system level power reduction.
+> It includes a deep multimode output FIFO, a built-in micropower
+> temperature sensor, and an internal ADC for synchronous conversion
+> of an additional analog input.
+> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> ---
+>  .../bindings/iio/accel/adi,adxl367.yaml       | 79 +++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+> new file mode 100644
+> index 000000000000..b3c140dfbe2f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/accel/adi,adxl367.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices ADXL367 3-Axis Digital Accelerometer
+> +
+> +maintainers:
+> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+> +
+> +description: |
+> +  The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+> +
+> +  The ADXL367 does not alias input signals by to achieve ultralow power
+> +  consumption, it samples the full bandwidth of the sensor at all
+> +  data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+> +  with a resolution of 0.25mg/LSB on the +-2 g range.
+> +
+> +  In addition to its ultralow power consumption, the ADXL367
+> +  has many features to enable true system level power reduction.
+> +  It includes a deep multimode output FIFO, a built-in micropower
+> +  temperature sensor, and an internal ADC for synchronous conversion
+> +  of an additional analog input.
+> +    https://www.analog.com/en/products/adxl367.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adxl367
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency: true
+> +
+> +  vdd-supply: true
+> +  vddio-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      adxl367@53 {
+> +        compatible = "adi,adxl367";
+> +        reg = <0x53>;
+> +        interrupt-parent = <&gpio>;
+> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +      };
+> +    };
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      adxl367@0 {
 
-The idea of renaming these modes as been let aside because naming is a
-big deal and requires a lot of thinking. So for now let's focus on
-correctly explaining what each mode implies.
+accelerometer@0
 
-[1] https://lore.kernel.org/linux-iio/20210930165510.2295e6c4@jic23-huawei/
+With that,
 
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- include/linux/iio/iio.h | 40 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index d04ab89fa0c2..75b561fd63d0 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -314,7 +314,45 @@ static inline bool iio_channel_has_available(const struct iio_chan_spec *chan,
- s64 iio_get_time_ns(const struct iio_dev *indio_dev);
- unsigned int iio_get_time_res(const struct iio_dev *indio_dev);
- 
--/* Device operating modes */
-+/**
-+ * Device operating modes
-+ * @INDIO_DIRECT_MODE: There is an access to the last single value available.
-+ * On most devices, this is a single-shot read. On some devices with data
-+ * streams without an 'on-demand' function, this might also be the 'last value'
-+ * feature. Above all, this mode internally means that we are not in any of the
-+ * other modes, and sysfs reads will definitely work.
-+ * Device drivers are pleased to inquire the core about this mode.
-+ * @INDIO_BUFFER_TRIGGERED: Most common mode when dealing with kfifo buffers.
-+ * It indicates that there is an explicit trigger that must be used. This
-+ * requests the core to attach a poll function when enabling the buffer, which
-+ * is indicated by the _TRIGGERED suffix.
-+ * The core will ensure this mode is set when registering a triggered buffer.
-+ * @INDIO_BUFFER_SOFTWARE: Another kfifo buffer mode, but not event triggered.
-+ * No poll function can be attached because there is no triggered infrastructure
-+ * we can use to cause capture. There is a kfifo that the hardware will fill,
-+ * but not "one scan at a time", just like in a continuous stream. This means
-+ * the core will not attach any poll function when enabling the buffer.
-+ * The core will ensure this mode is set when registering a simple kfifo buffer.
-+ * @INDIO_BUFFER_HARDWARE: For specific hardware, if unsure do not use this mode.
-+ * Same as above but this time the buffer is not a kfifo where we have direct
-+ * access to the data. Instead, the consumer driver must access the data through
-+ * side-channels (or DMA when there is no demux possible in software).
-+ * The core will ensure this mode is set when registering a dmaengine buffer.
-+ * @INDIO_EVENT_TRIGGERED: Very specific, do not use this mode.
-+ * Triggers usually refer to an external event which will start data capture.
-+ * Here it is kind of the opposite as, a particular state of the data might
-+ * produce an event which can be considered as an event. We don't necessarily
-+ * have access to the data itself, but to the event produced. For example, this
-+ * can be a threshold detector. The internal path of this mode is very close to
-+ * the INDIO_BUFFER_TRIGGERED mode.
-+ * The core will ensure this mode is set when registering a triggered event.
-+ * @INDIO_HARDWARE_TRIGGERED: STM32 specific mode, do not use it.
-+ * Here, triggers can result in data capture and can be routed to multiple
-+ * hardware components, which make them close to regular triggers in the way
-+ * they must be managed by the core, but without the entire interrupts/poll
-+ * functions burden. All of this is irrelevant as it is all hardware mediated
-+ * and distributed.
-+ */
- #define INDIO_DIRECT_MODE		0x01
- #define INDIO_BUFFER_TRIGGERED		0x02
- #define INDIO_BUFFER_SOFTWARE		0x04
--- 
-2.27.0
-
+> +        compatible = "adi,adxl367";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        interrupt-parent = <&gpio>;
+> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> +      };
+> +    };
+> -- 
+> 2.34.1
+> 
+> 

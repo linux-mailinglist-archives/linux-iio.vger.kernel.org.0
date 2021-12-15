@@ -2,259 +2,249 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 548354754D6
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 10:08:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6089747562C
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 11:23:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236211AbhLOJIz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 15 Dec 2021 04:08:55 -0500
-Received: from protonic.xs4all.nl ([83.163.252.89]:53872 "EHLO
-        protonic.xs4all.nl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230104AbhLOJIz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 04:08:55 -0500
-Received: from erd992 (erd988.prtnl [192.168.224.30])
-        by sparta.prtnl (Postfix) with ESMTP id 2AB8E44A0250;
-        Wed, 15 Dec 2021 10:08:53 +0100 (CET)
-Date:   Wed, 15 Dec 2021 10:08:53 +0100
-From:   David Jander <david@protonic.nl>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>,
-        David Lechner <david@lechnology.com>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-Message-ID: <20211215100853.11f9262d@erd992>
-In-Reply-To: <Ybmr2kCLScuGZ41h@shinobu>
-References: <20211123134540.416695-1-o.rempel@pengutronix.de>
-        <YZ3XAeYyfGblfaOi@shinobu>
-        <20211124072720.GA30281@pengutronix.de>
-        <YZ7tv79LQwLL7h3T@shinobu>
-        <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
-        <20211207081602.45b1423c@erd992>
-        <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
-        <20211208171035.6ad117af@erd992>
-        <Ybmr2kCLScuGZ41h@shinobu>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S236522AbhLOKX5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Dec 2021 05:23:57 -0500
+Received: from www381.your-server.de ([78.46.137.84]:44272 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233789AbhLOKX5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 05:23:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=EHkoHCM4/akmiX+GQlxsqrqfd96puN1iG/rN61e+Rz0=; b=Y+tGjTuyZsdqnD8H0Gh66ZCDOW
+        0XjqD8MF8QGMDsspr/JnrOsDT6mLypgS0FUn4Ci8x6y3DvLJQ/8PXZlh3EtEDIMWkewk8wUdo7xH9
+        bO+MvFWbcS0uLUBI+NTb/yyOikBnOKoWmmdXH8LKe9hJyE3TsrU3GMi5UztFH3E0yGeaKe9G416TU
+        3atWgLPUL5vq0QVrGukTey9caX3LtL2yfztEZVUjkR3xzf4q/bJAacNFEWHeS20ojrZKW/6A5ESrB
+        Lmw4RcZ5Zi7SrjKD8MmcyG49zsYIcTPgnlypwWZiW895h6BpKJCkiHPvkVrKH598hqn009WZHhyfb
+        uSWQoFJQ==;
+Received: from [78.46.152.42] (helo=sslproxy04.your-server.de)
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mxRRz-00056B-31; Wed, 15 Dec 2021 11:23:55 +0100
+Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578]
+        by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mxRRy-000OCI-Ti; Wed, 15 Dec 2021 11:23:54 +0100
+Subject: Re: [PATCH 1/3] iio: dac: add support for ltc2688
+To:     =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+References: <20211214165608.7903-1-nuno.sa@analog.com>
+ <20211214165608.7903-2-nuno.sa@analog.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <001b1c03-3d46-291f-e732-21514a9fd721@metafoo.de>
+Date:   Wed, 15 Dec 2021 11:23:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20211214165608.7903-2-nuno.sa@analog.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26388/Wed Dec 15 08:24:21 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 12/14/21 5:56 PM, Nuno Sá wrote:
+> The LTC2688 is a 16 channel, 16 bit, +-15V DAC with an integrated
+> precision reference. It is guaranteed monotonic and has built in
+> rail-to-rail output buffers that can source or sink up to 20 mA.
 
-Dear William,
+Looks very good!
 
-On Wed, 15 Dec 2021 17:48:26 +0900
-William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
+Although I'm not sure what to make of the `raw1` API. Maybe it makes 
+sense to submit an initial version of this driver without the toggle 
+API. And then have a follow up discussion how to define the API for 
+this. This will not be the only DAC that has this feature so it would be 
+a good idea to come up with a common API.
 
-> On Wed, Dec 08, 2021 at 05:10:35PM +0100, David Jander wrote:
-> > 
-> > Dear Uwe,
-> > 
-> > On Wed, 8 Dec 2021 14:59:02 +0100
-> > Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
-> >   
-> > > Hello David,
-> > > 
-> > > On Tue, Dec 07, 2021 at 08:16:02AM +0100, David Jander wrote:  
-> > > > On Mon, 6 Dec 2021 13:24:18 -0600
-> > > > David Lechner <david@lechnology.com> wrote:
-> > > >     
-> > > > > On 11/24/21 7:58 PM, William Breathitt Gray wrote:    
-> > > > > > On Wed, Nov 24, 2021 at 08:27:20AM +0100, Oleksij Rempel wrote:      
-> > > > > >> Hi William,
-> > > > > >>
-> > > > > >> On Wed, Nov 24, 2021 at 03:09:05PM +0900, William Breathitt Gray wrote:      
-> > > > > >>> On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote:      
-> > > > > >>>> Add counter_push_event() to notify user space about new pulses
-> > > > > >>>>
-> > > > > >>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > > > >>>> ---
-> > > > > >>>>   drivers/counter/interrupt-cnt.c | 2 ++
-> > > > > >>>>   1 file changed, 2 insertions(+)
-> > > > > >>>>
-> > > > > >>>> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-> > > > > >>>> index 8514a87fcbee..b237137b552b 100644
-> > > > > >>>> --- a/drivers/counter/interrupt-cnt.c
-> > > > > >>>> +++ b/drivers/counter/interrupt-cnt.c
-> > > > > >>>> @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int irq, void *dev_id)
-> > > > > >>>>   
-> > > > > >>>>   	atomic_inc(&priv->count);
-> > > > > >>>>   
-> > > > > >>>> +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, 0);
-> > > > > >>>> +
-> > > > > >>>>   	return IRQ_HANDLED;
-> > > > > >>>>   }
-> > > > > >>>>   
-> > > > > >>>> -- 
-> > > > > >>>> 2.30.2      
-> > > > > >>>
-> > > > > >>> Hi Oleksij,
-> > > > > >>>
-> > > > > >>> It looks like this is pushing a COUNTER_EVENT_OVERFLOW event every time
-> > > > > >>> an interrupt is handled, which I suspect is not what you want to happen.
-> > > > > >>> The COUNTER_EVENT_OVERFLOW event indicates a count value overflow event,
-> > > > > >>> so you'll need to check for a count value overflow before pushing the
-> > > > > >>> event.
-> > > > > >>>
-> > > > > >>> It would be good idea to implement a ceiling extension as well (you can
-> > > > > >>> use the COUNTER_COMP_CEILING() macro) so that users can configure the
-> > > > > >>> particular point where the value overflows.      
-> > > > > >>
-> > > > > >> Thank you!
-> > > > > >>
-> > > > > >> What would be the best and resource effective strategy for periodically
-> > > > > >> getting frequency of interrupts/pulses? This is actual information which is
-> > > > > >> needed for my use case.
-> > > > > >>
-> > > > > >> So far, I was pushing every event to the user space, which is working
-> > > > > >> but probably not the most resource effective method of doing it.
-> > > > > >>
-> > > > > >> Regards,
-> > > > > >> Oleskij
-> > > > > >> -- 
-> > > > > >> Pengutronix e.K.                           |                             |
-> > > > > >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> > > > > >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> > > > > >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |      
-> > > > > > 
-> > > > > > We could introduce a new Counter change-of-state event type which would
-> > > > > > trigger whenever the count value changes, but I agree with you that this
-> > > > > > is likely not the best way for us to derive the frequency of the
-> > > > > > interrupts due to the indirection of handling and parsing the event
-> > > > > > data.
-> > > > > > 
-> > > > > > Instead, perhaps introducing a "frequency" or "period" Count extension
-> > > > > > would make more sense here. This extension could report the value delta
-> > > > > > between counts, or alternatively the time delta from which you can
-> > > > > > derive frequency. Regarding implementation, you can store the previous
-> > > > > > value in a variable, updating it whenever an interrupt occurs, and
-> > > > > > compute the particular delta every time a read is requested by the user.
-> > > > > > 
-> > > > > > David Lechner is implementing something similar for the TI eQEP driver
-> > > > > > to expose speed, so I'm CCing them here in case this is of interest to
-> > > > > > them.
-> > > > > >       
-> > > > > 
-> > > > > Based on my experience, I would recommend that counter drivers be as
-> > > > > "thin" as possible. They shouldn't try to provide any information that
-> > > > > the hardware itself doesn't provide. In other words, the kernel should
-> > > > > provide userspace the information needed to calculate the speed/rate
-> > > > > but not try to do the actual calculation in the kernel. Inevitably
-> > > > > there are nuances for specific use cases that can't all possibly be
-> > > > > handled by such an implementation.    
-> > > > 
-> > > > I completely agree with this. While interrupts aren't really meant for
-> > > > measuring frequency, and this being somewhat of a mis-use of something, it is
-> > > > still possible to do and very useful in many cases. That said, while the
-> > > > counter framework is AFAIK the best fit for this, the main use-case for this
-> > > > driver is measuring wheel speed (and similar "speeds"). For this, the minimum
-> > > > amount of information the driver needs to provide user-space with to do
-> > > > reliable calculations, is high-resolution time-stamps of GPIO events. A simple
-> > > > counter is not suited, because there can be glitches that need to be detected.
-> > > > If user-space gets a buffer full of consecutive time-stamps (don't need to be
-> > > > all of them, just a sample of n consecutive timestamps), as well as total
-> > > > count, all needed calculations, glitch filtering, low-pass filtering, etc...
-> > > > can be done in user-space just fine.
-> > > >     
-> > > > > I've tried using gpio interrupts to try to calculate speed/rate in
-> > > > > the kernel before and it simply doesn't work reliably. Interrupts
-> > > > > get missed and the calculation will be off.    
-> > > > 
-> > > > Exactly. Been there, done that.
-> > > > For reliable speed calculations of a mechanical system, the properties of the
-> > > > mechanical system need to be known, like physical limits of accelerations,
-> > > > maximum (or minimum) speed, etc. The minimum set of input data needed by a
-> > > > user-space application to do these calculations is total pulse count in
-> > > > addition to a buffer of timestamps of n consecutive input events (raising or
-> > > > falling edges on GPIO). So IMHO this is what the driver should provide, and
-> > > > in the most resource-efficient way possible. This particular driver will be
-> > > > used 3 times on the same SoC, with each up to 10-15k pulses per second. That
-> > > > is a lot of interrupts for an embedded system, so they better consume as
-> > > > little resources as possible. Filling a ring buffer with timestamps should be
-> > > > possible, as long as no locking is involved. Locks in IRQ context must be
-> > > > avoided at all costs, specially in this case.
-> > > >     
-> > > > > For really slow counts (i.e. 1 count/second), I can see a use for
-> > > > > generating an event on each count though. For high rates, I would
-> > > > > just read the count every 100ms in usespace and divide the change in
-> > > > > the number of counts by the time period to get the rate.    
-> > > > 
-> > > > For slow counts, I agree, but for high rates, I don't (see above). There can
-> > > > be glitches and false events that can (and must) be effectively filtered out.
-> > > > For that user-space needs to know the time of each event during the
-> > > > measurement period.    
-> > > 
-> > > No sure I understood the problem here. If you keep the driver as is and
-> > > in userspace just read out the counter value twice and measure the time
-> > > between the reads[1], you can calculate the average frequency of the
-> > > event in userspace.
-> > > 
-> > > Isn't that good enough?  
-> > 
-> > No, I'm afraid it isn't, for two reasons:
-> > 
-> > 1. These counters are often used in environments, where glitches can and do
-> > happen. So sometimes there are fake events. The only way to tell fake from
-> > real pulses, is to filter them. Unfortunately you need the timestamps of each
-> > event for that.
-> > 
-> > 2. Another reason for having time-stamps is the case when the frequency is low
-> > and one still requires fast accurate measurements. In that case timestamps
-> > provide a way of accurately measuring period time.
-> > 
-> > Best regards,
-> > 
-> > -- 
-> > David Jander
-> > Protonic Holland.  
-> 
-> Keeping drivers focused on just exposing the hardware data and
-> functionality is likely the best path to choose, so my earlier
-> suggestion of a "frequency" extension would better be left for userspace
-> to handle.
 
-I agree.
+>
+> [...]
+> +
+> +static int ltc2688_spi_read(void *context, const void *reg, size_t reg_size,
+> +			    void *val, size_t val_size)
+> +{
+> +	struct ltc2688_state *st = context;
+> +	struct spi_transfer xfers[] = {
+> +		{
+> +			.tx_buf = reg,
+> +			.bits_per_word = 8,
+> +			/*
+> +			 * This means that @val will also be part of the
+> +			 * transfer as there's no pad bits. That's fine as these
+> +			 * bits are don't care for the device and we fill
+> +			 * @val with the proper value afterwards. Using regmap
+> +			 * pad bits to get reg_size right would just make the
+> +			 * write part more cumbersome than this...
+> +			 */
+This is making assumptions about the memory layout in the regmap core. 
+This could change in the future and then this driver breaks. It is 
+better to not assume that reg is part of a larger buffer.
+> +			.len = reg_size + 2,
+> +			.cs_change = 1,
+> +		}, {
+> +			.tx_buf = st->tx_data,
+> +			.rx_buf = st->rx_data,
+> +			.bits_per_word = 8,
+> +			.len = 3,
+> +		},
+> +	};
+> +	int ret;
+> +
+> +	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+> +	if (ret)
+> +		return ret;
+> +
+> +	memcpy(val, &st->rx_data[1], val_size);
+> +
+> +	return 0;
+> +}
+> [...]
+> +
+> +static int ltc2688_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan, int val,
+> +			     int val2, long mask)
+Using mask for the variable name is a relic from the days when it used 
+to be a mask. For new drivers it is better to use `info`. Same for the 
+other functions.
+> [...]
+> +
+> +static const char * const ltc2688_dither_phase[] = {
+> +	"0", "90", "180", "270",
+> +};
+Usually we use radians for phase values. Although that would make for a 
+bit of an awkward API in this case.
+> +
+> [...]
+> +/*
+> + * For toggle mode we only expose the symbol attr (sw_toggle) in case a TGPx is
+> + * not provided in dts.
+> + */
+> +#define LTC2688_CHAN_TOGGLE(t, name) ({							\
+> +	static const struct iio_chan_spec_ext_info t ## _ext_info[] = {			\
+> +		LTC2688_CHAN_EXT_INFO("raw1", LTC2688_INPUT_B, IIO_SEPARATE),		\
+> +		LTC2688_CHAN_EXT_INFO("toggle_en", LTC2688_DITHER_TOGGLE_ENABLE,	\
+> +				      IIO_SEPARATE),					\
+> +		LTC2688_CHAN_EXT_INFO("powerdown", LTC2688_POWERDOWN, IIO_SEPARATE),	\
+> +		LTC2688_CHAN_EXT_INFO(name, LTC2688_SW_TOGGLE, IIO_SEPARATE),		\
+> +		{}									\
+> +	};										\
+> +	t ## _ext_info;									\
+> +})
 
-> So in order to enable userspace to derive frequency, you need reliable
-> timestamps for enough consecutive events to provide an adequate size
-> sample of data on which to perform filtering and other such operations.
+This macro is a bit strange since it declares a static, but is called in 
+a function. It might be better to declare the two types of ext_infos 
+statically and then reference them by name from within the function.
 
-Ack.
+> [...]
+> +
+> +static int ltc2688_tgp_setup(struct ltc2688_state *st, long clk_mask,
+> +			     const struct ltc2688_dither_helper *tgp)
+> +{
+> +	int ret, bit;
+> +
+> +	for_each_set_bit(bit, &clk_mask, LTC2688_CHAN_TD_MAX) {
+clk_mask should be unsigned long
+> [...]
+> +
+> +static int ltc2688_span_lookup(const struct ltc2688_state *st, int min, int max)
+> +{
+> +	u32 span;
+Nit: Why u32 and not unsigned int? The size doesn't seem to be important 
+for the loop variable.
+> +
+> +	for (span = 0; span < ARRAY_SIZE(ltc2688_span_helper); span++) {
+> +		if (min == ltc2688_span_helper[span][0] &&
+> +		    max == ltc2688_span_helper[span][1])
+> +			return span;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int ltc2688_channel_config(struct ltc2688_state *st)
+> +{
+> +	struct fwnode_handle *fwnode = dev_fwnode(&st->spi->dev), *child;
+> +	struct ltc2688_dither_helper tgp[LTC2688_CHAN_TD_MAX] = {0};
+> +	u32 reg, clk_input, val, mask, tmp[2];
+> +	unsigned long clk_msk = 0;
+> +	int ret, span;
+> +
+> +	fwnode_for_each_available_child_node(fwnode, child) {
+> [...]
+> +		chan = &st->channels[reg];
+> +		if (fwnode_property_read_bool(child, "adi,toggle-mode")) {
+> +			chan->toggle_chan = true;
+> +			/* assume sw toggle ABI */
+> +			ltc2688_channels[reg].ext_info = LTC2688_CHAN_TOGGLE(__s, "symbol");
+Updating ltc2688_channels at runtime will break if you have multiple 
+instances of the device with a different configuration. You need to 
+kmemdup() the channel array.
+> +		}
+> +[...]
+> +	return ltc2688_tgp_setup(st, clk_msk, tgp);
+> +}
+> +
+> +static int ltc2688_setup(struct ltc2688_state *st, struct regulator *vref)
+> +{
+> +	struct gpio_desc *gpio;
+> +	int ret;
+> +
+> +	/*
+> +	 * If we have a reset pin, use that to reset the board, If not, use
+> +	 * the reset bit.
+> +	 */
+Looking at the datasheet I do not see a reset pin on the chip.
+> +	gpio = devm_gpiod_get_optional(&st->spi->dev, "reset", GPIOD_OUT_HIGH);
+Usually when we have a reset which is active low we define it in the DT 
+as active low rather than doing the inversion in the driver.
+> +	if (IS_ERR(gpio))
+> +		return dev_err_probe(&st->spi->dev, PTR_ERR(gpio),
+> +				     "Failed to get reset gpio");
+> +	if (gpio) {
+> +		usleep_range(1000, 1200);
+> +		/* bring device out of reset */
+> +		gpiod_set_value_cansleep(gpio, 0);
+> +	} else {
+> +		ret = regmap_update_bits(st->regmap, LTC2688_CMD_CONFIG,
+> +					 LTC2688_CONFIG_RST,
+> +					 LTC2688_CONFIG_RST);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+> +
+> +	usleep_range(10000, 12000);
+> +
+> +	ret = ltc2688_channel_config(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!vref)
+> +		return 0;
+> +
+> +	return regmap_update_bits(st->regmap, LTC2688_CMD_CONFIG,
+> +				  LTC2688_CONFIG_EXT_REF, BIT(1));
 
-> If we add a COUNTER_EVENT_CHANGE_OF_STATE or similar, every count change
-> will generate an event with a logged timestamp. Is the problem with this
-> solution primarily that the Counter event queue is currently utilizing
-> spinlocks for synchronization?
+This is a bit confusing since you are using LTC2688_CONFIG_EXT_REF for 
+the mask and BIT(1) for the value, even though both are the same.
 
-Yes. Basically, since one can expect a very high amount of IRQs, it seems
-paramount to eliminate any source of latency (spinlocks, etc...) from
-interrupt context as well as to keep CPU load as low as technically possible.
+There is a new API regmap_set_bits()/regmap_clear_bits() that allows you 
+to write this in a more compact way. There are a few other places in the 
+driver where they can be used as well.
 
-If a spinlock is used, and at 10kHz pulses, on a moderately fast embedded SoC,
-it is IMHO quite possible to have user-space cause the spinlock to be held for
-more than 100 microseconds, thus causing a pulse to be missed. Not to mention
-slight jitter introduced to the timestamps that can cause user-space to falsely
-filter out events (a software PLL that doesn't correctly lock).
-
-The ideal ISR in this case would only take a timestamp from a hardware TSC (or
-similarly latency-free direct source) and put it into a circular buffer
-without using locks, and maybe increase an unsigned long counter value (atomic
-operation if MB's are correctly used) and nothing else.
-If, for example, such a solution would require user-space access CPU
-load (complexity) to increase by a factor of 10 or even more (in order to
-avoid locks), this is likely still preferable, since the ISR is executed maybe
-1000+ times more often than user-space accessing the driver.
-
-Best regards,
-
--- 
-David Jander
-Protonic Holland.
+> +}
+> [...]
+> +
 

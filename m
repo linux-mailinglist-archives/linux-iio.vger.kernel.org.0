@@ -2,171 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC6BE475C52
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 16:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3148F475C79
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 16:58:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244219AbhLOPya (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Dec 2021 10:54:30 -0500
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:33281 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbhLOPy2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 10:54:28 -0500
-Received: by mail-oi1-f169.google.com with SMTP id q25so32363469oiw.0;
-        Wed, 15 Dec 2021 07:54:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=zB05uvrK2/mEzUciLS+bKWO3c1fIFvaHWmaH0UeNMm0=;
-        b=L2OOvxRWlr5XcmMxkNZNAplyxrSJoAsx58LkWN2vWwBcSGqZ0QgKhZ/89hL2Njto9p
-         GLReNoJKIDEsOMKL8972qqoavZZMMKLFflTnsiSLA06EobfukbYWz64tUgKWOntufY4x
-         y/w4H0Nxy7qwxhhSn9WBwytwRz8CRqVX3Md1RRQqEWo3VmD8O/xmjVenM6WcFFJGew5R
-         +3JlKDXGomxpIol4eRPD611pz/3DMeO81P68suJpq2+pSb7C5zk2b+PmENBZHGWASlW5
-         Kg7dEP+EYTNgxZzYo5/9FvJQILbduWNvo1IrnDmYMOtga0Y/AODD41nfN0WrdAeHE25E
-         E5Yg==
-X-Gm-Message-State: AOAM5316ypkrVX0vARsoKivQ4d67cdwISfUV5Ge4qFl/b9yMR1pu8vjX
-        45OjbzfZ3N2llgU17oMHgg==
-X-Google-Smtp-Source: ABdhPJwt3PSmVOrPf+jSGTFmZdNW9R948zXLu1Xbxnf227I08Idq9IEqxexRuf6nOoZ0FYrn277B6Q==
-X-Received: by 2002:aca:d606:: with SMTP id n6mr383859oig.76.1639583668114;
-        Wed, 15 Dec 2021 07:54:28 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id c9sm528923oog.43.2021.12.15.07.54.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 07:54:27 -0800 (PST)
-Received: (nullmailer pid 1383662 invoked by uid 1000);
-        Wed, 15 Dec 2021 15:54:26 -0000
-Date:   Wed, 15 Dec 2021 09:54:26 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: accel: add ADXL367
-Message-ID: <YboPssR4TaxBFkBq@robh.at.kernel.org>
-References: <20211207094337.59300-1-cosmin.tanislav@analog.com>
- <20211207094337.59300-2-cosmin.tanislav@analog.com>
+        id S244325AbhLOP61 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Dec 2021 10:58:27 -0500
+Received: from www381.your-server.de ([78.46.137.84]:35008 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232587AbhLOP61 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 10:58:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=cZWRdJxrfYuBDkjFQ06ZtWygZVQNYRIu8tcXd8sLwQg=; b=EeU8BpCI5fdtXLOl1whnT5vqcE
+        AnYgH6/Crj6QyafrMsIcOnKiKjjDznDFTA1G83QoRpdoareST1rHY6oapEA3/NO+wimX6O0X/5kDW
+        7JxcTvnBwkHNtpecLFseF3069ijXc1AOsfDYSNNvFcWM9XoOh1PB51Acmfw4ZdNb9NvqziGOJjwau
+        G/8y2u371HzxmZGOHlcnENuA1kk9iHWXNgPf0WNxfDpeQfcttxqVKHJE32aFoKdWXEP40tUY8blZU
+        b/VJmeyclNQrff2Q5ggAVXFJVREAXXt5hSFYBfHMKPH1OG/9ERNgGfqzYmSP2Wp2vzHUPP73xt6wt
+        +NVesgdA==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1mxWfg-000FpF-NW; Wed, 15 Dec 2021 16:58:24 +0100
+Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578]
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1mxWfg-000THC-Fg; Wed, 15 Dec 2021 16:58:24 +0100
+Subject: Re: [PATCH 1/3] iio: dac: add support for ltc2688
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>
+References: <20211214165608.7903-1-nuno.sa@analog.com>
+ <20211214165608.7903-2-nuno.sa@analog.com>
+ <001b1c03-3d46-291f-e732-21514a9fd721@metafoo.de>
+ <PH0PR03MB67862614BE38CEA3A5C5831599769@PH0PR03MB6786.namprd03.prod.outlook.com>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <b6c526db-9a21-37c7-70bd-c4de708de566@metafoo.de>
+Date:   Wed, 15 Dec 2021 16:58:24 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211207094337.59300-2-cosmin.tanislav@analog.com>
+In-Reply-To: <PH0PR03MB67862614BE38CEA3A5C5831599769@PH0PR03MB6786.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26388/Wed Dec 15 08:24:21 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 07, 2021 at 11:43:36AM +0200, Cosmin Tanislav wrote:
-> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
-> 
-> The ADXL367 does not alias input signals to achieve ultralow power
-> consumption, it samples the full bandwidth of the sensor at all
-> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
-> with a resolution of 0.25mg/LSB on the +-2 g range.
-> 
-> In addition to its ultralow power consumption, the ADXL367
-> has many features to enable true system level power reduction.
-> It includes a deep multimode output FIFO, a built-in micropower
-> temperature sensor, and an internal ADC for synchronous conversion
-> of an additional analog input.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  .../bindings/iio/accel/adi,adxl367.yaml       | 79 +++++++++++++++++++
->  1 file changed, 79 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
-> new file mode 100644
-> index 000000000000..b3c140dfbe2f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
-> @@ -0,0 +1,79 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/accel/adi,adxl367.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADXL367 3-Axis Digital Accelerometer
-> +
-> +maintainers:
-> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
-> +
-> +description: |
-> +  The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
-> +
-> +  The ADXL367 does not alias input signals by to achieve ultralow power
-> +  consumption, it samples the full bandwidth of the sensor at all
-> +  data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
-> +  with a resolution of 0.25mg/LSB on the +-2 g range.
-> +
-> +  In addition to its ultralow power consumption, the ADXL367
-> +  has many features to enable true system level power reduction.
-> +  It includes a deep multimode output FIFO, a built-in micropower
-> +  temperature sensor, and an internal ADC for synchronous conversion
-> +  of an additional analog input.
-> +    https://www.analog.com/en/products/adxl367.html
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adxl367
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency: true
-> +
-> +  vdd-supply: true
-> +  vddio-supply: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      adxl367@53 {
-> +        compatible = "adi,adxl367";
-> +        reg = <0x53>;
-> +        interrupt-parent = <&gpio>;
-> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
-> +      };
-> +    };
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      adxl367@0 {
+On 12/15/21 2:40 PM, Sa, Nuno wrote:
+>
+>>> +		}
+>>> +[...]
+>>> +	return ltc2688_tgp_setup(st, clk_msk, tgp);
+>>> +}
+>>> +
+>>> +static int ltc2688_setup(struct ltc2688_state *st, struct regulator
+>> *vref)
+>>> +{
+>>> +	struct gpio_desc *gpio;
+>>> +	int ret;
+>>> +
+>>> +	/*
+>>> +	 * If we have a reset pin, use that to reset the board, If not, use
+>>> +	 * the reset bit.
+>>> +	 */
+>> Looking at the datasheet I do not see a reset pin on the chip.
+> IIRC, it's called CLR... But looking at it again if feels like a reset pin but
+> without directly saying so in the datasheet.
+ok, but then the gpio should be called "clr" and not "reset".
+>
+>>> +	gpio = devm_gpiod_get_optional(&st->spi->dev, "reset",
+>> GPIOD_OUT_HIGH);
+>> Usually when we have a reset which is active low we define it in the DT
+>> as active low rather than doing the inversion in the driver.
+> And that's how I tested it in dts. The ' GPIOD_OUT_HIGH' is to request
+> it in the asserted state and then we just have to de-assert it to take it
+> out of reset. It's actually the same pattern used in the adis lib. IIRC,
+> you were actually the one to suggest this :)
+I'm stupid... just read it the wrong way, code is correct the way it is
+>>> +	if (IS_ERR(gpio))
+>>> +		return dev_err_probe(&st->spi->dev, PTR_ERR(gpio),
+>>> +				     "Failed to get reset gpio");
+>>> +	if (gpio) {
+>>> +		usleep_range(1000, 1200);
+>>> +		/* bring device out of reset */
+>>> +		gpiod_set_value_cansleep(gpio, 0);
+>>> +	} else {
+>>> +		ret = regmap_update_bits(st->regmap,
+>> LTC2688_CMD_CONFIG,
+>>> +					 LTC2688_CONFIG_RST,
+>>> +					 LTC2688_CONFIG_RST);
+>>> +		if (ret < 0)
+>>> +			return ret;
+>>> +	}
+>>> +
+>>> +	usleep_range(10000, 12000);
+>>> +
+>>> +	ret = ltc2688_channel_config(st);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>> +	if (!vref)
+>>> +		return 0;
+>>> +
+>>> +	return regmap_update_bits(st->regmap,
+>> LTC2688_CMD_CONFIG,
+>>> +				  LTC2688_CONFIG_EXT_REF, BIT(1));
+>> This is a bit confusing since you are using LTC2688_CONFIG_EXT_REF
+>> for
+>> the mask and BIT(1) for the value, even though both are the same.
+> I tried to be more or less consistent. So, for masks I used a define and
+> for the actually value I used the "raw" BIT, FIELD_PREP, FIELD_GET as
+> I think Jonathan prefers that way. If that's also the preferred way for masks,
+> I'm happy to update it.
 
-accelerometer@0
+Just 5 lines above you use the define for both the mask and the value :)
 
-With that,
+I don't think it is a good idea to use raw BIT(x) in the code. They are 
+just as magic of a value as writing 0x8. There is no way for a reviewer 
+to quickly see whether that BIT(x) actually is the right value for the mask.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+If you wanted to go the FIELD_PREP route you could write this as
 
-> +        compatible = "adi,adxl367";
-> +        reg = <0>;
-> +        spi-max-frequency = <1000000>;
-> +        interrupt-parent = <&gpio>;
-> +        interrupts = <25 IRQ_TYPE_EDGE_RISING>;
-> +      };
-> +    };
-> -- 
-> 2.34.1
-> 
-> 
+..., LTC2688_CONFIG_EXT_REF, FIELD_PREP(LTC2688_CONFIG_EXT_REF, 1)
+
+But my personal preference is just to pass the mask as the value when 
+changing a single bit value. Makes it clear that it is a single bit 
+field and you are setting it. Or just use regmap_set_bits().
+
+>> There is a new API regmap_set_bits()/regmap_clear_bits() that allows
+>> you
+>> to write this in a more compact way. There are a few other places in
+>> the
+>> driver where they can be used as well.
+> Hmm, will look at the new API...
+>
+> - Nuno Sá
+
+

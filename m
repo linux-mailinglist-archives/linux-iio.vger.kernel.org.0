@@ -2,252 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 578BF476493
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 22:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C4C47666E
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 00:23:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbhLOVak (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Dec 2021 16:30:40 -0500
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:33686 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbhLOVaj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 16:30:39 -0500
-Received: by mail-oi1-f178.google.com with SMTP id q25so33639013oiw.0;
-        Wed, 15 Dec 2021 13:30:39 -0800 (PST)
+        id S231873AbhLOXXY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Dec 2021 18:23:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34680 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231833AbhLOXXY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 18:23:24 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F197EC06173E
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 15:23:23 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id g19so22032976pfb.8
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 15:23:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CUP5pV4LbjbL6ChpTJEV6t+0KAeGUNhk4yeQuFtZ/xA=;
+        b=Ws+rXqdD6928Ay/PkMMSzT9wQHS0j5pi/XTU6+k+VIqcxZBLkmWpp5S+Y9esKdsNkk
+         W7ehpnlaeyFNppGMujWC0hLvjEZHmI7k8iO6sce67sw+hJ0VikA0/af6PIjqMYWfIqm9
+         6TO+YBPwY5vWJ+CV60DZX2tXReWXtwDvUz5jg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=71Gp03jRiryB5KlI1n8Wnc0U8QAX3fnZRt25VdiZuBo=;
-        b=tHlymVHHLNByWKGI+RjhaX9vQLynJh7wfzvQpLzv8UXsxKupwI69DOHj/gn8OTqhjH
-         q/WV412s6We58wKwPRmA2Db/LfdC9O5Cro4Pb8/h8GFNU0Pgyv+TxX6jzQGZzORCD0qc
-         lPu3OzTBU+VsqtIuyDU3HpRqeVjuMNmDMc0PNwM7IagR/ALjaDD1BLcK05oNmdyJAY2M
-         G76c8XeRtBqnSFCxore47tAmMBYLTtMyL73JEJVLtVgscDooHnNJ6R9P0Ox+NkWAvMQH
-         9CVtE9bjTzw/13wCJcihkkfSiXXhMqc5zFLxNZ1aGyafXri2iw5zep+e2ro+7/aZc5rr
-         shtw==
-X-Gm-Message-State: AOAM530wIEC1Rm2ZgGWw9TsED7Maylkw28/cdbcFcGqCHrt1V6GwYwVe
-        3gDvxlFL5StzOotuegSrkg==
-X-Google-Smtp-Source: ABdhPJxdmd/8ZvJ3qYwAxySWWmPMSv7BTFEjtBH1pfRP230PqCDa/kn7gsnk93iJ8zxTIff7p7nznA==
-X-Received: by 2002:a54:4809:: with SMTP id j9mr1652970oij.59.1639603839107;
-        Wed, 15 Dec 2021 13:30:39 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id bb7sm780218oob.14.2021.12.15.13.30.37
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CUP5pV4LbjbL6ChpTJEV6t+0KAeGUNhk4yeQuFtZ/xA=;
+        b=Wxq2fI+hv/BBlObfBUijXhh5T2UWGQm7eBA1Swer30/9mW7I0WmqSGqjlUKkOvvYDK
+         wuf5etC2idRfPh2mLnwbzvfDZ/5wSTk5Ff413e2DXKVyUOp/ScqqCLZzxujPZx4YOjnn
+         tVPvaHcJ2q4t9YyuIVGf5GDL4hZQlNwycE4fPW05XpauQyX7otAZOSuGTIlgj2FHD/Dv
+         fyA+Nap/+/SaenQpjNyLYMn5IVN2GWWg9OPVM418A1W0js6vQF1aVOItGmX7d8F0XqwX
+         TkIPszLRKa1wvcqIuWf1lc78R0gYc8omsOHrzQjPoLm2s5PPgjiwX2j3MGlo1Iy1hQz1
+         VTIQ==
+X-Gm-Message-State: AOAM531FFORUnhL27nNd5s8CGM+TiUR8qY1xEsXYyG9pnC8/dakF0+ze
+        Px+y4SqkJ9qaOxnPnObV6Lw3AQ==
+X-Google-Smtp-Source: ABdhPJzqO0/IPXNwz2AlY7ytkYuVi/RaN7Jxgnt3LGSyOxd9ozEXsC2NQNtE2BU7fgql2RtkN7zJfA==
+X-Received: by 2002:a63:db14:: with SMTP id e20mr9656006pgg.177.1639610603355;
+        Wed, 15 Dec 2021 15:23:23 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id l14sm3166142pgj.16.2021.12.15.15.23.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 13:30:38 -0800 (PST)
-Received: (nullmailer pid 1873369 invoked by uid 1000);
-        Wed, 15 Dec 2021 21:30:37 -0000
-Date:   Wed, 15 Dec 2021 15:30:37 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Wed, 15 Dec 2021 15:23:23 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH 3/3] dt-bindings: iio: Add ltc2688 documentation
-Message-ID: <YbpefZY2lqtgLpUV@robh.at.kernel.org>
-References: <20211214165608.7903-1-nuno.sa@analog.com>
- <20211214165608.7903-4-nuno.sa@analog.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Subject: [PATCH] iio: addac: Do not reference negative array offsets
+Date:   Wed, 15 Dec 2021 15:23:20 -0800
+Message-Id: <20211215232321.2069314-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2147; h=from:subject; bh=Ug++7VdcHQcDDwReQr4ZZ2ULLBwyzvNrHrJYpH65vb8=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhunjokBc4G+Gp61s8YXcf4TMtGIMymQWs9kymrw0s eVyhA6SJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYbp46AAKCRCJcvTf3G3AJoGwD/ 9Hyty00effkGKmBLJYH8X7GwBl/3KmCr8nA4gf+PRO19CR/YrVhsIitp4v+RuqxsMvuRk2h+ZEYfSR +O46ycFY77Adcs1fTLdmHvNrl+swH0cfnnubMkQmc4TFVJQtyrrG8PWi7rIy4Qyj8RNuKiZQljDu8m VJC+uKkRd6oaayIJYWGjNJrlN73qASgk82bdFMo0YtvOPvNZYXngctZ545RpWGf/jh1hLV+mMsM41d CRE7iegJUpPEOHEamFn/pVRAs/aZ6YW1hdo9W/qGY8aYIJu45Dgy+f+Dcg9UU//QCy+HYmukHX9017 yhKssf9r5WQAM0TYWCMhqb3NaRERQBPZ17C+PO1IkSv2GZG6Eg+r/iFa2Ixsi5f6u+KpX2X29K2M+e PlzC92z9DpXHVdeOQ954dP5nVmn12JlrWwC4hieW+y3tibw76MbSBEjiqWBHjf5NtuH2GMG2wtnAa2 kCQe7GCmcUUc5PZFWlcJy5CK4S39C/pgWb5v+n/dHjMBjpnZmqrvz83zkNeNwfyKMxBY/iVIcOjhOx VlJ/zUYaem2f85axHsfd0octFuSXyWTrfrtDql/qror9JBtwoS8A30Zf5t5xvN9+oEkjKFftYeJSyJ m3rUzjl75PgfjPGWt+Qj5BlVWado8vMvbh2X6MYhwdBeboXXOr8H+c7kuCsA==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211214165608.7903-4-nuno.sa@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 14, 2021 at 05:56:08PM +0100, Nuno Sá wrote:
-> Document the LTC2688 devicetree properties.
-> 
-> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-> ---
->  .../bindings/iio/dac/adi,ltc2688.yaml         | 146 ++++++++++++++++++
->  MAINTAINERS                                   |   1 +
->  2 files changed, 147 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
-> new file mode 100644
-> index 000000000000..7919cd8ec7c9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
-> @@ -0,0 +1,146 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/adi,ltc2688.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices LTC2688 DAC
-> +
-> +maintainers:
-> +  - Nuno Sá <nuno.sa@analog.com>
-> +
-> +description: |
-> +  Analog Devices LTC2688 16 channel, 16 bit, +-15V DAC
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2688.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ltc2688
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vcc-supply:
-> +    description: Analog Supply Voltage Input.
-> +
-> +  iovcc-supply:
-> +    description: Digital Input/Output Supply Voltage.
-> +
-> +  vref-supply:
-> +    description:
-> +      Reference Input/Output. The voltage at the REF pin sets the full-scale
-> +      range of all channels. By default, the internal reference is routed to
-> +      this pin.
-> +
-> +  reset-gpios:
-> +    description:
-> +      If specified, it will be asserted during driver probe. As the line is
-> +      active low, it should be marked GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 1
-> +    maxItems: 3
-> +
-> +  clock-names:
-> +    minItems: 1
-> +    maxItems: 3
-> +    items:
-> +      enum: [TGP1, TGP2, TGP3]
+Instead of aiming rx_buf at an invalid array-boundary-crossing location,
+just skip the first assignment. Seen when building with -Warray-bounds:
 
-pattern: '^TGP[1-3]$'
+drivers/iio/addac/ad74413r.c: In function 'ad74413r_update_scan_mode':
+drivers/iio/addac/ad74413r.c:843:22: warning: array subscript -4 is below array bounds of 'u8[16]' { aka 'unsigned char[16]'} [-Warray-bounds]
+  843 |         u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 * AD74413R_FRAME_SIZE];
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/iio/addac/ad74413r.c:84:20: note: while referencing 'rx_buf'
+   84 |                 u8 rx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
+      |                    ^~~~~~
 
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^channel@([0-9]|1[0-5])$":
-> +    type: object
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number representing the DAC output channel.
-> +        maximum: 15
-> +
-> +      adi,toggle-mode:
-> +        description:
-> +          Set the channel as a toggle enabled channel. Toggle operation enables
-> +          fast switching of a DAC output between two different DAC codes without
-> +          any SPI transaction. It will result in a different ABI for the
-> +          channel.
-> +        type: boolean
-> +
-> +      adi,output-range-millivolt:
+Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/iio/addac/ad74413r.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Not one of the defined units. Use '-microvolt'
-> +        description:
-> +          Specify the channel output full scale range. Allowed values are
-> +            <0 5000>
-> +            <0 10000>
-> +            <-5000 5000>
-> +            <-10000 10000>
-> +            <-15000 15000>
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index cbd9aa9b399a..b0a6d8ee5133 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -840,7 +840,7 @@ static int ad74413r_update_scan_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad74413r_state *st = iio_priv(indio_dev);
+ 	struct spi_transfer *xfer = st->adc_samples_xfer;
+-	u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 * AD74413R_FRAME_SIZE];
++	u8 *rx_buf = st->adc_samples_buf.rx_buf;
+ 	u8 *tx_buf = st->adc_samples_tx_buf;
+ 	unsigned int channel;
+ 	int ret;
+@@ -877,9 +877,8 @@ static int ad74413r_update_scan_mode(struct iio_dev *indio_dev,
+ 		if (ret)
+ 			goto out;
+ 
+-		st->adc_active_channels++;
+ 
+-		if (xfer == st->adc_samples_xfer)
++		if (xfer == st->adc_samples_xfer || st->adc_active_channels == 0)
+ 			xfer->rx_buf = NULL;
+ 		else
+ 			xfer->rx_buf = rx_buf;
+@@ -896,7 +895,10 @@ static int ad74413r_update_scan_mode(struct iio_dev *indio_dev,
+ 
+ 		xfer++;
+ 		tx_buf += AD74413R_FRAME_SIZE;
+-		rx_buf += AD74413R_FRAME_SIZE;
++		if (st->adc_active_channels)
++			rx_buf += AD74413R_FRAME_SIZE;
++
++		st->adc_active_channels++;
+ 	}
+ 
+ 	xfer->rx_buf = rx_buf;
+-- 
+2.30.2
 
-Looks like constraints.
-
-items:
-  - enum: [ -15000, -10000, -5000, 0 ]
-  - enum: [ 5000, 10000, 15000 ]
-
-though that will need to all be x1000.
-
-> +        $ref: /schemas/types.yaml#/definitions/int32-array
-
-And drop the type.
-
-> +
-> +      adi,overrange:
-> +        description: Enable 5% overrange over the selected full scale range.
-> +        type: boolean
-> +
-> +      adi,toggle-dither-input:
-> +        description:
-> +          Selects the TGPx pin to be associated with this channel. This setting
-> +          only makes sense for toggle or dither enabled channels. If
-> +          @adi,toggle-mode is not set and this property is given, the channel is
-> +          assumed to be a dither capable channel. Note that multiple channels
-> +          can be mapped to the same pin. If this setting is given, the
-> +          respective @clock must also be provided. Mappings between this and
-> +          clocks
-> +            0 - TGP1
-> +            1 - TGP2
-> +            2 - TGP3
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2]
-> +
-> +    required:
-> +      - reg
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +
-> +    spi {
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +          ltc2688: ltc2688@0 {
-> +                  compatible = "adi,ltc2688";
-> +                  reg = <0>;
-> +
-> +                  vcc-supply = <&vcc>;
-> +                  iovcc-supply = <&vcc>;
-> +                  vref-supply = <&vref>;
-> +
-> +                  clocks = <&clock_tgp2>;
-> +                  clock-names = "TGP2";
-> +
-> +                  #address-cells = <1>;
-> +                  #size-cells = <0>;
-> +                  channel@0 {
-> +                          reg = <0>;
-> +                          adi,toggle-mode;
-> +                          adi,overrange;
-> +                  };
-> +
-> +                  channel@1 {
-> +                          reg = <1>;
-> +                          adi,output-range-millivolt = <(-10000) 10000>;
-> +                          adi,toggle-dither-input = <2>;
-> +                  };
-> +          };
-> +    };
-> +
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 61b1eaad4611..4ee2a1b6bf62 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11168,6 +11168,7 @@ L:	linux-iio@vger.kernel.org
->  S:	Supported
->  W:	http://ez.analog.com/community/linux-device-drivers
->  F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
-> +F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
->  F:	drivers/iio/dac/ltc2688.c
->  
->  LTC2947 HARDWARE MONITOR DRIVER
-> -- 
-> 2.17.1
-> 
-> 

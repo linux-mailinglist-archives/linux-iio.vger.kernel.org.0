@@ -2,73 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F2B4476252
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 20:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1869A4762AA
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Dec 2021 21:09:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233906AbhLOT4j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Dec 2021 14:56:39 -0500
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:39873 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229791AbhLOT4j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 14:56:39 -0500
-Received: by mail-ot1-f49.google.com with SMTP id r10-20020a056830080a00b0055c8fd2cebdso26220695ots.6;
-        Wed, 15 Dec 2021 11:56:38 -0800 (PST)
+        id S234481AbhLOUJF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Dec 2021 15:09:05 -0500
+Received: from mail-oo1-f41.google.com ([209.85.161.41]:38407 "EHLO
+        mail-oo1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234378AbhLOUJF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 15:09:05 -0500
+Received: by mail-oo1-f41.google.com with SMTP id w15-20020a4a9d0f000000b002c5cfa80e84so6246072ooj.5;
+        Wed, 15 Dec 2021 12:09:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=rc75QnNGJmNS7Cbebb+pY8RDy1d28+BSSxCtW4SecuI=;
-        b=gEizBTR33a1S3bh2Zt7v2sHpuCPXzc86v5+CZm0YUxHqRyW8z5GPIbvHpz0Ki3zNXM
-         2Uw/3pTaM5+XccsawKq33kNfF4vZKI+gzDbwV9qOmPZKt89Hq6PwS8oq4k+6gzKsVhNP
-         sXMmTGAtw8/FLOBFHj104YxCTGVxbRqhH6AnBaOShjuJk6RESE9JCCMnat9uqKCiJENi
-         dNo/FuZrpF6TjWSxAYvBFbnhebdoeg6JnNQYft25K9T/u5+BmeszcF+KySZw5e3bbWuB
-         UziQJTu0iGpJmScRJ6vPWXiaYsFJWEh0jsCV9AUhhu4vBw4j7JMDEokbxcvjMrWlfUgi
-         iceQ==
-X-Gm-Message-State: AOAM530feeJ6KAuqy+H+XGb7FPsIzI+m3Gl2DR8IYpS4kUueQTbUU0cB
-        YNXmSmfsS2jCdWiKboexwrAq2jCcWA==
-X-Google-Smtp-Source: ABdhPJzrQNwX1PWtVKEQVvXrLOMZ8C9c+duQoIn7Gf9bM82Fcc1FZELEJd5svYbn2v5KVWFulAvMXQ==
-X-Received: by 2002:a05:6830:2431:: with SMTP id k17mr10212639ots.220.1639598198475;
-        Wed, 15 Dec 2021 11:56:38 -0800 (PST)
+        bh=yJpJ0ljbGWntpa5UwL50FK9KD8X/vANdlV/FONVM9ds=;
+        b=s5znhuRaos7E2Clv7t0WPydLevkiZro6grGakWWksagVszVSq4gWAU3tMORTq7sp7X
+         jTjnYaFEWx2cYjKP7EVKyxavocTs1mVyCeWBJY91CKLgfHgftppCYjUKCNLU0jeJjpm4
+         YW3Rx4efDj16hdYSBaKb8xkjlXlI/jg87VkVLTFYCJq4f9aUNjFJjonkrOsfbjfb9wpa
+         jfB2oT1Z592s3Fuh6LNMC/kRdZbSmvtGQzwuUoJix/oB/dyEE1CGGekFDyfm8BADEc3N
+         6GiFj5cQ/6FwuKic9OPUrCnb2umOCUT9f7ZuGZpBu7NMyG3Eg3zH3odb35pvZskLZ3xT
+         cJnQ==
+X-Gm-Message-State: AOAM5306zY8IlJbkMs3e1Q28zT7gWeo4twAYACDzrD7PkJbKim/kT4aQ
+        D9hBYsZmrde9wB6QMWknXQ==
+X-Google-Smtp-Source: ABdhPJypLiLChB+k3nUOy2G12jHepV/leXslIqzeyY6CoofbDkLv89dy6aKtACQZUBQ88KagLqRONQ==
+X-Received: by 2002:a4a:a641:: with SMTP id j1mr8696199oom.63.1639598945005;
+        Wed, 15 Dec 2021 12:09:05 -0800 (PST)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id o2sm602213oik.11.2021.12.15.11.56.37
+        by smtp.gmail.com with ESMTPSA id w71sm525463oiw.6.2021.12.15.12.09.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 11:56:37 -0800 (PST)
-Received: (nullmailer pid 1733483 invoked by uid 1000);
-        Wed, 15 Dec 2021 19:56:36 -0000
-Date:   Wed, 15 Dec 2021 13:56:36 -0600
+        Wed, 15 Dec 2021 12:09:04 -0800 (PST)
+Received: (nullmailer pid 1752705 invoked by uid 1000);
+        Wed, 15 Dec 2021 20:09:03 -0000
+Date:   Wed, 15 Dec 2021 14:09:03 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     linux-iio@vger.kernel.org, amit.pundir@linaro.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, john.stultz@linaro.org,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>, sumit.semwal@linaro.org
-Subject: Re: [PATCH 2/7] dt-bindings: iio: adc: document qcom-spmi-rradc
-Message-ID: <YbpIdF/z3w6DAKH3@robh.at.kernel.org>
-References: <20211211022224.3488860-1-caleb@connolly.tech>
- <20211211022224.3488860-3-caleb@connolly.tech>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     robh+dt@kernel.org, lars@metafoo.de, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, andy.shevchenko@gmail.com,
+        swboyd@chromium.org, jic23@kernel.org
+Subject: Re: [PATCH v3 3/4] dt-bindings: iio: Add sx9360 binding
+Message-ID: <YbpLX0VVrakPBOUs@robh.at.kernel.org>
+References: <20211213024057.3824985-1-gwendal@chromium.org>
+ <20211213024057.3824985-4-gwendal@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211211022224.3488860-3-caleb@connolly.tech>
+In-Reply-To: <20211213024057.3824985-4-gwendal@chromium.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 11 Dec 2021 02:22:19 +0000, Caleb Connolly wrote:
-> From: Caleb Connolly <caleb.connolly@linaro.org>
+On Sun, 12 Dec 2021 18:40:56 -0800, Gwendal Grignou wrote:
+> Add binding to configure Semtech sx9360 sensor.
+> It is a simpler version of sx9324.
 > 
-> Add dt-binding docs for the Qualcomm SPMI RRADC found in PMICs like
-> PMI8998 and PMI8994
-> 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > ---
->  .../bindings/iio/adc/qcom,spmi-rradc.yaml     | 54 +++++++++++++++++++
->  1 file changed, 54 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+> Changes since v2:
+> - Use const instead of single enum.
+> - Use proper syntax for maximum/minimum
+> - Fix spelling errors.
+> 
+> Changes since v1:
+> - Fix cut and paste error.
+> - Add . at end of sentence.
+> 
+>  .../iio/proximity/semtech,sx9360.yaml         | 89 +++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9360.yaml
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>

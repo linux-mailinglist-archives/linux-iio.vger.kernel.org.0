@@ -2,35 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE14476BC8
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 09:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B93FC476BBD
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 09:18:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbhLPIVO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 16 Dec 2021 03:21:14 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:45335 "EHLO
-        mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbhLPIVO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 03:21:14 -0500
-Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 33BE8D3992
-        for <linux-iio@vger.kernel.org>; Thu, 16 Dec 2021 08:16:15 +0000 (UTC)
+        id S229511AbhLPIST convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 16 Dec 2021 03:18:19 -0500
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:49125 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229471AbhLPIST (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 03:18:19 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 9E5CDFF810;
-        Thu, 16 Dec 2021 08:15:53 +0000 (UTC)
-Date:   Thu, 16 Dec 2021 09:15:52 +0100
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 7B0B4E000D;
+        Thu, 16 Dec 2021 08:18:17 +0000 (UTC)
+Date:   Thu, 16 Dec 2021 09:18:16 +0100
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Alexandru Ardelean <ardeleanalex@gmail.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 02/10] iio: core: Enhance the kernel doc of modes and
- currentmodes iio_dev entries
-Message-ID: <20211216091552.0917520f@xps13>
-In-Reply-To: <CA+U=Dsq_HewmCchxauGe6YKpWaNBAb5rP3xvzNQ6K7n7KpbpvA@mail.gmail.com>
+Subject: Re: [PATCH 03/10] iio: magnetometer: rm3100: Stop abusing the
+ ->currentmode
+Message-ID: <20211216091816.456acb9e@xps13>
+In-Reply-To: <CA+U=DsrSBP4pd24jSjHg-F5ifQLjkmBPt6VJHDrr1c1f93s5_A@mail.gmail.com>
 References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-        <20211215151344.163036-3-miquel.raynal@bootlin.com>
-        <CA+U=Dsq_HewmCchxauGe6YKpWaNBAb5rP3xvzNQ6K7n7KpbpvA@mail.gmail.com>
+        <20211215151344.163036-4-miquel.raynal@bootlin.com>
+        <CA+U=DsrSBP4pd24jSjHg-F5ifQLjkmBPt6VJHDrr1c1f93s5_A@mail.gmail.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -42,52 +39,95 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Alexandru,
 
-ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 08:24:51 +0200:
+ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 08:40:12 +0200:
 
 > On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
 > <miquel.raynal@bootlin.com> wrote:
 > >
-> > Let's provide more details about these two variables because their
-> > understanding may not be straightforward for someone not used to the IIO
-> > subsystem internal logic. The different modes will soon be also be more
-> > documented for the same reason.
+> > This is an internal variable for the core, here it is set to a "default"
+> > value by the driver in order to later be able to perform checks against
+> > it. None of this is needed because this check actually cares about the
+> > buffers being enabled or not. So it is an unproper side-channel access
+> > to the information "are the buffers enabled?", returned officially by
+> > the iio_buffer_enabled() helper. Use this helper instead.  
+> 
+> A few comments inline.
+> 
 > >
 > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > > ---
-> >  include/linux/iio/iio.h | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
+> >  drivers/iio/magnetometer/rm3100-core.c | 15 +++------------
+> >  1 file changed, 3 insertions(+), 12 deletions(-)
 > >
-> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > index 06433c2c2968..0312da2e83f8 100644
-> > --- a/include/linux/iio/iio.h
-> > +++ b/include/linux/iio/iio.h
-> > @@ -487,8 +487,14 @@ struct iio_buffer_setup_ops {
+> > diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
+> > index 13914273c999..be0057f82218 100644
+> > --- a/drivers/iio/magnetometer/rm3100-core.c
+> > +++ b/drivers/iio/magnetometer/rm3100-core.c
+> > @@ -141,18 +141,10 @@ static irqreturn_t rm3100_irq_handler(int irq, void *d)
+> >         struct iio_dev *indio_dev = d;
+> >         struct rm3100_data *data = iio_priv(indio_dev);
 > >
-> >  /**
-> >   * struct iio_dev - industrial I/O device
-> > - * @modes:             [DRIVER] operating modes supported by device
-> > - * @currentmode:       [INTERN] current operating mode
-> > + * @modes:             [DRIVER] list of operating modes supported by the IIO  
+> > -       switch (indio_dev->currentmode) {
+> > -       case INDIO_DIRECT_MODE:
+> > +       if (!iio_buffer_enabled(indio_dev))
+> >                 complete(&data->measuring_done);
+> > -               break;
+> > -       case INDIO_BUFFER_TRIGGERED:  
 > 
-> I'd argue that it may make sense to highlight that this list of modes
-> is represented as a bitmask.
-> When reading docs, it may not be obvious at first (I guess).
+> This is one of those semantic changes that looks correct, but may end
+> up getting comments that it should be validated by someone with
+> hardware [and for good reason].
+> Especially in places like Ref1 (below).
 
-That is a good idea. I'll add this to the next iteration.
+I think here we are pretty safe assuming that the change will not break
+the driver because this is a construction that is very common in IIO
+drivers.
 
-> > + *                     device, this list should be initialized before
-> > + *                     registering the IIO device and can be filed up by the
-> > + *                     IIO core depending on the features advertised by the
-> > + *                     driver during other steps of the registration
-> > + * @currentmode:       [INTERN] operating mode currently in use, may be
-> > + *                     eventually checked by device drivers but should be
-> > + *                     considered read-only as this is a core internal bit
-> >   * @dev:               [DRIVER] device structure, should be assigned a parent
-> >   *                     and owner
-> >   * @buffer:            [DRIVER] any buffer present
+Below, as stated in the cover letter, this is just my own
+understanding and I'll happily drop the change if someone
+thinks/observes this is unsafe.
+
+> But I guess the iio_get_internal_mode() helper could still be used.
+> I guess I'd wait for more opinions on this.
+> 
+> > +       else
+> >                 iio_trigger_poll(data->drdy_trig);
+> > -               break;
+> > -       default:
+> > -               dev_err(indio_dev->dev.parent,
+> > -                       "device mode out of control, current mode: %d",
+> > -                       indio_dev->currentmode);
+> > -       }
+> >
+> >         return IRQ_WAKE_THREAD;
+> >  }
+> > @@ -377,7 +369,7 @@ static int rm3100_set_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+> >                         goto unlock_return;
+> >         }
+> >
+> > -       if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED) {  
+> 
+> Ref1
+> 
+> > +       if (iio_buffer_enabled(indio_dev)) {
+> >                 /* Writing TMRC registers requires CMM reset. */
+> >                 ret = regmap_write(regmap, RM3100_REG_CMM, 0);
+> >                 if (ret < 0)
+> > @@ -553,7 +545,6 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
+> >         indio_dev->channels = rm3100_channels;
+> >         indio_dev->num_channels = ARRAY_SIZE(rm3100_channels);
+> >         indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
+> > -       indio_dev->currentmode = INDIO_DIRECT_MODE;  
+> 
+> This is fine :)
+> 
+> >
+> >         if (!irq)
+> >                 data->use_interrupt = false;
 > > --
 > > 2.27.0
 > >  
+
 
 Thanks,
 Miquèl

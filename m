@@ -2,261 +2,237 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D7924767E8
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 03:25:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F6B447697C
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 06:25:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232885AbhLPCZ5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Dec 2021 21:25:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
+        id S233707AbhLPFZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 00:25:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230021AbhLPCZ4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Dec 2021 21:25:56 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70027C061574;
-        Wed, 15 Dec 2021 18:25:56 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id v203so60485694ybe.6;
-        Wed, 15 Dec 2021 18:25:56 -0800 (PST)
+        with ESMTP id S233706AbhLPFZI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 00:25:08 -0500
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3859C061574
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 21:25:08 -0800 (PST)
+Received: by mail-pf1-x42c.google.com with SMTP id i12so22655322pfd.6
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 21:25:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=bbbiGuKMoQF+c/eQBHahQYSMBkkuf99zfiE+nnf5DBM=;
-        b=gqChIAC2vhx4Gq7PmfcPnI4hQyggxJ/GQ3Hr2Y9k/v4tOcyfv0Ybd0ilmzYF/R/cv/
-         Y61rCKEYiyn47MHUXzkJD4RfZOkWKlOyILA7moal+R86kh1avm8p/xU7t58uScNiJXZA
-         IAS1dhHEp2A0YWKhvFrs5KDh9Lt+14YRezC27QLlBE/OE2FSOJkUAd1t1Bro9yO98E1i
-         kwidbz5jIyBSmGu8BDdUfVFZ4OTanIg+SqsZtSRi/rs4P72xM03+lu/VEVvJNiYOJ3kZ
-         1HHc/kX+1QI7vZJPrvG3/CcmIG13BqHd409LWQy9HReEUlyhlqIuYSnIhoEhYCGMhx5o
-         pJQg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=kZuCP7Co0gYO1HOFUqe1FLCUCRr1072AxVaWOi86RyM=;
+        b=VBmV4aqFmfLnNqhFjjnhZ27kFZI0aGpIdsWy6snCDK864RlEUEavI9kQ5g8EMLAxoh
+         CvBydy6KBa8np1OZbsjbZC6PwvQICR8FQdiffJ3/VclAsUJu6vu9gNIZc1uk2ukHQYlm
+         OViaknDW6ZgX9cOIdYJhVzRtnW6pvcjXK6caPJ+H+rxorkBwpE3f//frjE3c9y2NteUM
+         mrYPFoQQrGbgtZDx2zKioUFcyZLB1mXnS3xVSaGOQFnQFojPaeepg8CMh/COssEIr7+x
+         wSQm53xoE/UDt13KGbVHL7S4IO7702u2DhYkAKAI+O7AnbMttjx26nJqZzL5ObZLfS/p
+         G7lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=bbbiGuKMoQF+c/eQBHahQYSMBkkuf99zfiE+nnf5DBM=;
-        b=TUbzr8eNMPqGxlVZnSbgD0fN+nh6O/m5Qr5PChfWaXWGSX6qfDImW/ar6gTyIE+dme
-         POTdo7cmn6NZ1ZIQOL9/gb5Q796Z5MzQKqq+g/2ZMoSiHIoUu6MC501qdW1oh1KYUXXQ
-         aGYZncLiw/8SthC65yAYCCcpLwGgNw8kNpsLxAQORjbcyu6ICUJvLIn2uBz5V3uh2jy+
-         xVkdhoqe93bJIpNRyu08v1UHMQawH/ISBErljABDNfzHOCv1QGHcYF08fLLhKZvUyGHA
-         8dI1DS+SsGilBipIalcbcsHhxV/KrIK2GZ+hyqwz+AMX8+Jha8Jgwz42tKPPQumzR8gy
-         eAlQ==
-X-Gm-Message-State: AOAM5338rUEo6k96SLXk9SAJ+51sxVIdh4Xijtlrw+Rkufl3KnBpGxJQ
-        yOS/uI8iPPQ8gkfREtITIowM0z5xpj7kcRLNN64=
-X-Google-Smtp-Source: ABdhPJxZQbzsSw+cnW4IXlby0+XmnLrwXcEgPjY79c4pj270yPgkxGJYKW5covLdygtTouCz4PODmyVD39QV2dCBeAc=
-X-Received: by 2002:a05:6902:154b:: with SMTP id r11mr11702124ybu.298.1639621555602;
- Wed, 15 Dec 2021 18:25:55 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=kZuCP7Co0gYO1HOFUqe1FLCUCRr1072AxVaWOi86RyM=;
+        b=5eYVOajPv8rRGyYjg9fhNHhm1oD34Rx/WuoBWgqH6FP2GZFKbgpopbNb2xCdNR1RZH
+         IlIYdlxoJzkZbykLPn9bmKQuBly5cDycflMoMUeuKItxAO4w+HTX++xDTO0mqn0YKCvv
+         Rm9iEygasAPC8PjapXEstPjYskt7vhw00hTG0q6rSZdxvgLfAJTDV7zdJRJUDOitm+Fn
+         tJfFTKnwnKTUuwUtxAij1Bg/JrRTowNuGTs8VtPg0hm9JuQXaKzaH2VcrRaPMMPregbn
+         lZ4dT6iugRvqi54p9/ujARZlAiUlYZl2uBuZL+ARRsmhL/CwC/HzylC/g1gCF8pPebYM
+         Ea4g==
+X-Gm-Message-State: AOAM532XR55FBcAlZiH2Z9bEJyl2OfdzPAnQ5nwbIFHcgio/P2OPGai3
+        s2ZN+F5d2BFvSmCXPlCxB1VfjF1KLDxajw==
+X-Google-Smtp-Source: ABdhPJxeVW9K6Qvucfr1DAZnj0M2/G3AMVmXgtXKr/YWQ3jXBzdevCMsUjts84HH/ZHdBtQDa9mDfA==
+X-Received: by 2002:a05:6a00:1a53:b0:4b1:7ab:9b5 with SMTP id h19-20020a056a001a5300b004b107ab09b5mr12371765pfv.29.1639632308135;
+        Wed, 15 Dec 2021 21:25:08 -0800 (PST)
+Received: from shinobu ([37.120.154.45])
+        by smtp.gmail.com with ESMTPSA id v25sm4382654pfg.175.2021.12.15.21.25.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 21:25:07 -0800 (PST)
+Date:   Thu, 16 Dec 2021 14:25:03 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: Re: [PATCH] counter: ti-eqep: Use container_of instead of struct
+ counter_device::priv
+Message-ID: <YbrNr20FBb+ZMShv@shinobu>
+References: <20211213114312.1406562-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-References: <20211211115315.2255384-1-siyanteng@loongson.cn> <Ybmk0s47ZqpXV2xy@shinobu>
-In-Reply-To: <Ybmk0s47ZqpXV2xy@shinobu>
-From:   yanteng si <siyanteng01@gmail.com>
-Date:   Thu, 16 Dec 2021 10:25:44 +0800
-Message-ID: <CAEensMwHXo-1Fy8VgDE05qSOLEbuRLfLaKN15y=ce+f_SFyYqw@mail.gmail.com>
-Subject: Re: [PATCH v2] counter: Add the necessary colons and indents to the
- comments of counter_compi
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="589yszANg6TAMqXB"
+Content-Disposition: inline
+In-Reply-To: <20211213114312.1406562-1-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-William Breathitt Gray <vilhelm.gray@gmail.com> =E4=BA=8E2021=E5=B9=B412=E6=
-=9C=8815=E6=97=A5=E5=91=A8=E4=B8=89 16:18=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Sat, Dec 11, 2021 at 07:53:15PM +0800, Yanteng Si wrote:
-> > From: Yanteng Si <siyanteng01@gmail.com>
-> >
-> > Since aaec1a0f76ec ("counter: Internalize sysfs interface code") introd=
-uce a warning as:
-> >
-> > linux-next/Documentation/driver-api/generic-counter:234: ./include/linu=
-x/counter.h:43: WARNING: Unexpected indentation.
-> > linux-next/Documentation/driver-api/generic-counter:234: ./include/linu=
-x/counter.h:45: WARNING: Block quote ends without a blank line; unexpected =
-unindent.
-> >
-> > Add the necessary colons and indents.
-> >
-> > Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
->
-> Hi Yanteng,
->
-> Thank you for resubmitting this patch with a reference to the commit
-> that introduced the bug. I'll pick this patch up and submit it later
-> with the rest of the Counter changes for this cycle.
->
-> For future patches, please add information about which commit a patch
-> fixes by using the Fixes tag. For example, this patch would have the
-> following Fixes tag above your Signed-off-by tag.
->
-> Fixes: aaec1a0f76ec ("counter: Internalize sysfs interface code")
->
-> I'll add that Fixes tag for you as I pick this up so you won't need to
-> resubmit this patch again. :-)
-OK!  Thanks!  >_<
 
-Thanks
-Yanteng
->
-> Thanks,
->
-> William Breathitt Gray
->
-> > ---
-> >  include/linux/counter.h | 40 ++++++++++++++++++++--------------------
-> >  1 file changed, 20 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/include/linux/counter.h b/include/linux/counter.h
-> > index b7d0a00a61cf..dfbde2808998 100644
-> > --- a/include/linux/counter.h
-> > +++ b/include/linux/counter.h
-> > @@ -38,64 +38,64 @@ enum counter_comp_type {
-> >   * @type:            Counter component data type
-> >   * @name:            device-specific component name
-> >   * @priv:            component-relevant data
-> > - * @action_read              Synapse action mode read callback. The re=
-ad value of the
-> > + * @action_read:             Synapse action mode read callback. The re=
-ad value of the
-> >   *                   respective Synapse action mode should be passed b=
-ack via
-> >   *                   the action parameter.
-> > - * @device_u8_read   Device u8 component read callback. The read value=
- of the
-> > + * @device_u8_read:          Device u8 component read callback. The re=
-ad value of the
-> >   *                   respective Device u8 component should be passed b=
-ack via
-> >   *                   the val parameter.
-> > - * @count_u8_read    Count u8 component read callback. The read value =
-of the
-> > + * @count_u8_read:           Count u8 component read callback. The rea=
-d value of the
-> >   *                   respective Count u8 component should be passed ba=
-ck via
-> >   *                   the val parameter.
-> > - * @signal_u8_read   Signal u8 component read callback. The read value=
- of the
-> > + * @signal_u8_read:          Signal u8 component read callback. The re=
-ad value of the
-> >   *                   respective Signal u8 component should be passed b=
-ack via
-> >   *                   the val parameter.
-> > - * @device_u32_read  Device u32 component read callback. The read valu=
-e of
-> > + * @device_u32_read:         Device u32 component read callback. The r=
-ead value of
-> >   *                   the respective Device u32 component should be pas=
-sed
-> >   *                   back via the val parameter.
-> > - * @count_u32_read   Count u32 component read callback. The read value=
- of the
-> > + * @count_u32_read:          Count u32 component read callback. The re=
-ad value of the
-> >   *                   respective Count u32 component should be passed b=
-ack via
-> >   *                   the val parameter.
-> > - * @signal_u32_read  Signal u32 component read callback. The read valu=
-e of
-> > + * @signal_u32_read:         Signal u32 component read callback. The r=
-ead value of
-> >   *                   the respective Signal u32 component should be pas=
-sed
-> >   *                   back via the val parameter.
-> > - * @device_u64_read  Device u64 component read callback. The read valu=
-e of
-> > + * @device_u64_read:         Device u64 component read callback. The r=
-ead value of
-> >   *                   the respective Device u64 component should be pas=
-sed
-> >   *                   back via the val parameter.
-> > - * @count_u64_read   Count u64 component read callback. The read value=
- of the
-> > + * @count_u64_read:          Count u64 component read callback. The re=
-ad value of the
-> >   *                   respective Count u64 component should be passed b=
-ack via
-> >   *                   the val parameter.
-> > - * @signal_u64_read  Signal u64 component read callback. The read valu=
-e of
-> > + * @signal_u64_read:         Signal u64 component read callback. The r=
-ead value of
-> >   *                   the respective Signal u64 component should be pas=
-sed
-> >   *                   back via the val parameter.
-> > - * @action_write     Synapse action mode write callback. The write val=
-ue of
-> > + * @action_write:            Synapse action mode write callback. The w=
-rite value of
-> >   *                   the respective Synapse action mode is passed via =
-the
-> >   *                   action parameter.
-> > - * @device_u8_write  Device u8 component write callback. The write val=
-ue of
-> > + * @device_u8_write:         Device u8 component write callback. The w=
-rite value of
-> >   *                   the respective Device u8 component is passed via =
-the val
-> >   *                   parameter.
-> > - * @count_u8_write   Count u8 component write callback. The write valu=
-e of
-> > + * @count_u8_write:          Count u8 component write callback. The wr=
-ite value of
-> >   *                   the respective Count u8 component is passed via t=
-he val
-> >   *                   parameter.
-> > - * @signal_u8_write  Signal u8 component write callback. The write val=
-ue of
-> > + * @signal_u8_write:         Signal u8 component write callback. The w=
-rite value of
-> >   *                   the respective Signal u8 component is passed via =
-the val
-> >   *                   parameter.
-> > - * @device_u32_write Device u32 component write callback. The write va=
-lue of
-> > + * @device_u32_write:                Device u32 component write callba=
-ck. The write value of
-> >   *                   the respective Device u32 component is passed via=
- the
-> >   *                   val parameter.
-> > - * @count_u32_write  Count u32 component write callback. The write val=
-ue of
-> > + * @count_u32_write:         Count u32 component write callback. The w=
-rite value of
-> >   *                   the respective Count u32 component is passed via =
-the val
-> >   *                   parameter.
-> > - * @signal_u32_write Signal u32 component write callback. The write va=
-lue of
-> > + * @signal_u32_write:                Signal u32 component write callba=
-ck. The write value of
-> >   *                   the respective Signal u32 component is passed via=
- the
-> >   *                   val parameter.
-> > - * @device_u64_write Device u64 component write callback. The write va=
-lue of
-> > + * @device_u64_write:                Device u64 component write callba=
-ck. The write value of
-> >   *                   the respective Device u64 component is passed via=
- the
-> >   *                   val parameter.
-> > - * @count_u64_write  Count u64 component write callback. The write val=
-ue of
-> > + * @count_u64_write:         Count u64 component write callback. The w=
-rite value of
-> >   *                   the respective Count u64 component is passed via =
-the val
-> >   *                   parameter.
-> > - * @signal_u64_write Signal u64 component write callback. The write va=
-lue of
-> > + * @signal_u64_write:                Signal u64 component write callba=
-ck. The write value of
-> >   *                   the respective Signal u64 component is passed via=
- the
-> >   *                   val parameter.
-> >   */
-> > --
-> > 2.27.0
-> >
+--589yszANg6TAMqXB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Dec 13, 2021 at 12:43:12PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> Using counter->priv is a memory read and so more expensive than
+> container_of which is only an addition. (In this case even a noop
+> because the offset is 0.)
+>=20
+> So container_of is expected to be a tad faster, it's type-safe, and
+> produces smaller code (ARCH=3Darm allmodconfig):
+>=20
+> 	$ source/scripts/bloat-o-meter drivers/counter/ti-eqep.o-pre drivers/cou=
+nter/ti-eqep.o
+> 	add/remove: 0/0 grow/shrink: 0/9 up/down: 0/-108 (-108)
+> 	Function                                     old     new   delta
+> 	ti_eqep_position_enable_write                132     120     -12
+> 	ti_eqep_position_enable_read                 260     248     -12
+> 	ti_eqep_position_ceiling_write               132     120     -12
+> 	ti_eqep_position_ceiling_read                236     224     -12
+> 	ti_eqep_function_write                       220     208     -12
+> 	ti_eqep_function_read                        372     360     -12
+> 	ti_eqep_count_write                          312     300     -12
+> 	ti_eqep_count_read                           236     224     -12
+> 	ti_eqep_action_read                          664     652     -12
+> 	Total: Before=3D4598, After=3D4490, chg -2.35%
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+
+I'll pick this up and submit it with the rest of the Counter changes for
+this cycle.
+
+Thanks,
+
+William Breathitt Gray
+
+> ---
+>  drivers/counter/ti-eqep.c | 23 ++++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
+> index 09817c953f9a..9e0e46bca4c2 100644
+> --- a/drivers/counter/ti-eqep.c
+> +++ b/drivers/counter/ti-eqep.c
+> @@ -87,10 +87,15 @@ struct ti_eqep_cnt {
+>  	struct regmap *regmap16;
+>  };
+> =20
+> +static struct ti_eqep_cnt *ti_eqep_count_from_counter(struct counter_dev=
+ice *counter)
+> +{
+> +	return container_of(counter, struct ti_eqep_cnt, counter);
+> +}
+> +
+>  static int ti_eqep_count_read(struct counter_device *counter,
+>  			      struct counter_count *count, u64 *val)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	u32 cnt;
+> =20
+>  	regmap_read(priv->regmap32, QPOSCNT, &cnt);
+> @@ -102,7 +107,7 @@ static int ti_eqep_count_read(struct counter_device *=
+counter,
+>  static int ti_eqep_count_write(struct counter_device *counter,
+>  			       struct counter_count *count, u64 val)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	u32 max;
+> =20
+>  	regmap_read(priv->regmap32, QPOSMAX, &max);
+> @@ -116,7 +121,7 @@ static int ti_eqep_function_read(struct counter_devic=
+e *counter,
+>  				 struct counter_count *count,
+>  				 enum counter_function *function)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	u32 qdecctl;
+> =20
+>  	regmap_read(priv->regmap16, QDECCTL, &qdecctl);
+> @@ -143,7 +148,7 @@ static int ti_eqep_function_write(struct counter_devi=
+ce *counter,
+>  				  struct counter_count *count,
+>  				  enum counter_function function)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	enum ti_eqep_count_func qsrc;
+> =20
+>  	switch (function) {
+> @@ -173,7 +178,7 @@ static int ti_eqep_action_read(struct counter_device =
+*counter,
+>  			       struct counter_synapse *synapse,
+>  			       enum counter_synapse_action *action)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	enum counter_function function;
+>  	u32 qdecctl;
+>  	int err;
+> @@ -245,7 +250,7 @@ static int ti_eqep_position_ceiling_read(struct count=
+er_device *counter,
+>  					 struct counter_count *count,
+>  					 u64 *ceiling)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	u32 qposmax;
+> =20
+>  	regmap_read(priv->regmap32, QPOSMAX, &qposmax);
+> @@ -259,7 +264,7 @@ static int ti_eqep_position_ceiling_write(struct coun=
+ter_device *counter,
+>  					  struct counter_count *count,
+>  					  u64 ceiling)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+> =20
+>  	if (ceiling !=3D (u32)ceiling)
+>  		return -ERANGE;
+> @@ -272,7 +277,7 @@ static int ti_eqep_position_ceiling_write(struct coun=
+ter_device *counter,
+>  static int ti_eqep_position_enable_read(struct counter_device *counter,
+>  					struct counter_count *count, u8 *enable)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+>  	u32 qepctl;
+> =20
+>  	regmap_read(priv->regmap16, QEPCTL, &qepctl);
+> @@ -285,7 +290,7 @@ static int ti_eqep_position_enable_read(struct counte=
+r_device *counter,
+>  static int ti_eqep_position_enable_write(struct counter_device *counter,
+>  					 struct counter_count *count, u8 enable)
+>  {
+> -	struct ti_eqep_cnt *priv =3D counter->priv;
+> +	struct ti_eqep_cnt *priv =3D ti_eqep_count_from_counter(counter);
+> =20
+>  	regmap_write_bits(priv->regmap16, QEPCTL, QEPCTL_PHEN, enable ? -1 : 0);
+> =20
+>=20
+> base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+> --=20
+> 2.30.2
+>=20
+
+--589yszANg6TAMqXB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmG6zZkACgkQhvpINdm7
+VJIFiA//SlCtuWiPbCm076AJxUxrTfyA3/kcXp3XhsWKjKfKRPk1qR7QNJDu2Tmy
+Y/xbHrfPVy7HgQ1Ur5jjqDtIB+Q2IxGZbHyrV89X9nwU5Wxlg/IoTiFuhtc4Y4+c
+6Hp5g4hvdVI92EgOaM1CzeWVlzEOoBCV5XOJUgE0llpYafEFqL73WeW3+lb47U/L
+0l6sJGHq4ReEfR6NLwSlK+2Tr0Xxz5MbrLBbI/ceFkci+6eaLvdByZj6vyt0UJ38
+7q3G7fa/p5jO3flQPTKlEL9qyLV9mzmQk8YZr9GmwsNlh+duMPN/Qvzr7amcbszh
+1N0nredfg0BQSFtsn+Kgn6iqp7JaVXHgF9vN3EFSPSd8c626HKKJjOtw8lVpfA3j
+JN2NsaB4YMnQ0nYa6E6s3W6UYZHHqVb7+O8ksluZsmKOxL1cGuJOC69q9ds0uxRs
+BTdGtZc5PXhri2XUWE1Bo9uhpKRudCuWWfTnOpoR3C0wXjJkVevXU3aIUyBD6RTV
+PsXRwq+FoSEqVhkmBkOjPBtQL4hA/tzt85e7nfpK5HqbEoq5RDMLuqg4n0Jfsiue
+4tcmJFJSrU5045FP1LaCls98cUNAcKtzBv+Qbp4WYqTsZYBWp3jICSuAAhgBnBzK
+3U+gcFOlvwOlJjmHpk16zaaP2wFQXGNnh/mOpyenwaSIeVHbwtM=
+=CICC
+-----END PGP SIGNATURE-----
+
+--589yszANg6TAMqXB--

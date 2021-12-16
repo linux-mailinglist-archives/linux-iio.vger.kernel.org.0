@@ -2,33 +2,34 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79DD247763C
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 16:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86C8F477663
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 16:54:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238649AbhLPPpP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 10:45:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33232 "EHLO
+        id S232882AbhLPPyE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 10:54:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238648AbhLPPpO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 10:45:14 -0500
-Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAECC06173E;
-        Thu, 16 Dec 2021 07:45:14 -0800 (PST)
-Received: from [81.101.6.87] (port=52576 helo=jic23-huawei)
-        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        with ESMTP id S230358AbhLPPyE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 10:54:04 -0500
+Received: from balrog.mythic-beasts.com (balrog.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30C1C061574;
+        Thu, 16 Dec 2021 07:54:03 -0800 (PST)
+Received: from [81.101.6.87] (port=48030 helo=jic23-huawei)
+        by balrog.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1mxswM-0004ph-NI; Thu, 16 Dec 2021 15:45:07 +0000
-Date:   Thu, 16 Dec 2021 15:50:29 +0000
+        id 1mxt4r-0003CW-P1; Thu, 16 Dec 2021 15:53:58 +0000
+Date:   Thu, 16 Dec 2021 15:59:18 +0000
 From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     robh+dt@kernel.org, lars@metafoo.de, swboyd@chromium.org,
         andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 0/5] Expand Semtech SAR Sensors support
-Message-ID: <20211216155015.7013eff9@jic23-huawei>
-In-Reply-To: <20211210192328.2844060-1-gwendal@chromium.org>
-References: <20211210192328.2844060-1-gwendal@chromium.org>
+Subject: Re: [PATCH v3 1/4] iio: add IIO_MOD_REFERENCE modifier
+Message-ID: <20211216155905.1fac607c@jic23-huawei>
+In-Reply-To: <20211213024057.3824985-2-gwendal@chromium.org>
+References: <20211213024057.3824985-1-gwendal@chromium.org>
+        <20211213024057.3824985-2-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,69 +40,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Dec 2021 11:23:23 -0800
+On Sun, 12 Dec 2021 18:40:54 -0800
 Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Add a new Semtech SAR sensor SX9324.
-> Instead of recopying 1/3 of the sx9310 driver, move common code in a new
-> file. It will be used again for the next sensor, SX9360.
+> Add modifier IIO_MOD_REFERENCE for reporting sx9360 reference
+> proximity measurement.
+> All modifier must be defined for libiio to recognize
+> |in_proximity_reference| as a channel.
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Hmm. So the question is whether this is a valid modifier.
 
-Series applied to the togreg branch of iio.git and pushed out as testing
-to let 0-day have a poke at it and see what it can find that we missed.
+I'm not totally convinced, because I can see we might well
+get stacking cases say
 
-Thanks,
+iio_concentration_o2_reference
 
-Jonathan
+However we do have precedence with 'ambient' which applies
+to temperature sensors.
 
+The alternative here would be to have it as a normal indexed
+channel but with a label saying it is the reference.
+
+Would that work for this case?  If I were doing the ambient
+case again I'd use label for that as well, but label is a more
+recent addition to the ABI.
+
+> ---
+> New in v3.
 > 
-> Major changes in v7:
->   Fix one remaining syntax error in device tree binding documentation.
+>  drivers/iio/industrialio-core.c | 1 +
+>  include/uapi/linux/iio/types.h  | 1 +
+>  2 files changed, 2 insertions(+)
 > 
-> Major changes in v6:
->   Fix syntax errors in device tree binding documentation.
->   Drop of_match_ptr and ACPI_PTR protections.
->   Fix unused variable warning.
-> 
-> Major changes in v5:
->   Use iwyu to cleanup include files.
->   Use dev_err_probe() in probe routine
->   Add attribute to shift irq status register, not common among all
->     sensors.
->   Fix long line.
-> 
-> Major changes in v4:
->   Use chip_info instead of info in common data.
->   Returns an error when setting negative sysfs entries
->   Fix cut and paste errors, credit.
-> 
-> Major changes in v3:
->   Fix some error in binding descriptions and setting
->   Fix invalid register constant name.
-> 
-> Major changes in v2:
->   Better interface between common code and drivers
->   Document SX9324 phase configuration
-> 
-> Gwendal Grignou (5):
->   iio: sx9310: Add frequency in read_avail
->   iio: sx9310: Extract common Semtech sensor logic
->   iio: proximity: Add SX9324 support
->   dt-bindings: iio: Add sx9324 binding
->   iio: sx9324: Add dt_binding support
-> 
->  .../ABI/testing/sysfs-bus-iio-sx9324          |   28 +
->  .../iio/proximity/semtech,sx9324.yaml         |  161 +++
->  drivers/iio/proximity/Kconfig                 |   18 +
->  drivers/iio/proximity/Makefile                |    2 +
->  drivers/iio/proximity/sx9310.c                |  714 ++---------
->  drivers/iio/proximity/sx9324.c                | 1076 +++++++++++++++++
->  drivers/iio/proximity/sx_common.c             |  576 +++++++++
->  drivers/iio/proximity/sx_common.h             |  163 +++
->  8 files changed, 2127 insertions(+), 611 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9324
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
->  create mode 100644 drivers/iio/proximity/sx9324.c
->  create mode 100644 drivers/iio/proximity/sx_common.c
->  create mode 100644 drivers/iio/proximity/sx_common.h
-> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 20d5178ca0739a..2b272f54de8ae9 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -134,6 +134,7 @@ static const char * const iio_modifier_names[] = {
+>  	[IIO_MOD_ETHANOL] = "ethanol",
+>  	[IIO_MOD_H2] = "h2",
+>  	[IIO_MOD_O2] = "o2",
+> +	[IIO_MOD_REFERENCE] = "reference",
+>  };
+>  
+>  /* relies on pairs of these shared then separate */
+> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
+> index 48c13147c0a870..aa83a9b578502a 100644
+> --- a/include/uapi/linux/iio/types.h
+> +++ b/include/uapi/linux/iio/types.h
+> @@ -95,6 +95,7 @@ enum iio_modifier {
+>  	IIO_MOD_ETHANOL,
+>  	IIO_MOD_H2,
+>  	IIO_MOD_O2,
+> +	IIO_MOD_REFERENCE,
+>  };
+>  
+>  enum iio_event_type {
 

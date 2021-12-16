@@ -2,111 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA3A476A97
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 07:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F44F476B06
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 08:18:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbhLPGrP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 01:47:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48342 "EHLO
+        id S229818AbhLPHQr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 02:16:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbhLPGrO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 01:47:14 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A1BC061574
-        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 22:47:14 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id z6so18686320plk.6
-        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 22:47:14 -0800 (PST)
+        with ESMTP id S229452AbhLPHQr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 02:16:47 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1927BC061574
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 23:16:47 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id u17so18726291plg.9
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 23:16:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rTit9p8NyKOvTsmw7vrWI4i/VrfsNvd4fgjmxOGm7Bw=;
-        b=IpdU/X1fGrKgTQD+G+guDWrb0Hq78lenQ0uCWRyTjfRxHncHOY0uZ1C+ILvtwMxUb5
-         /e4h0J1IPg3cpgTQC8L3v77G+w5kmFX8PzOc+JGf7+dDAZnqU3kG4fU4dq3UQ0g+sGjF
-         WokRZuPr2u9+JfukaZomU7hzCJMOSZRSdunbvYOV5RZ/CE8mFzfiJ3ksoy9qz/NfWtKu
-         1mZwYwiQ2uCWiveJB3DfRo5ut1oHASwE3ck2oMq+GnDPMBjgCA9AbLYmZhv+ArXpLmA0
-         Daa/+a0JX3N9ZuCYiEV0ZD0nJdT7JglDF0F8fl6FpUb0tAosg+DNiZY47vpzg6W8ucI3
-         gEuw==
+         :cc:content-transfer-encoding;
+        bh=sOGgtTvCATSHQGLexpvDJJINJ2PSOy0IILmJVv9FMbY=;
+        b=l8TbPU7mFGoe47xzTNzm8pcU32TPFkr4k3eA9qlmSMBvsoBFWo+eVca5QCy1LiZ1Ie
+         jaSM/eN6WWmcDrjPWRSx6SvHWh35IUdJhEnYKgLHWhDZB6+Iyb3OvCCzmvpHuSlv7pkC
+         jQGJ2fn3B/X8cQEg+cnDIl0XLq0M1eGQVKX+okqSr0QWYVyGzQrF+1k3KHPvhYHSZJqv
+         fir/KDP/QHRRteHADpbE4PcXr06x93q8EU0DF9DJjZojZ/6WnaYILmjlIQxzOL3DbGxW
+         i3PZozxUTZDdhnsGJpqHdqXBQskG+xIJcVE+uW7jSvliFZc2abjevpTtGaPs5Vp8gPbS
+         5Hsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rTit9p8NyKOvTsmw7vrWI4i/VrfsNvd4fgjmxOGm7Bw=;
-        b=5GgG6U1ph88k7ftMZbkHBdFAjL1iE4UM5OPKfiRrU9K83X7pHvHQCtltYytnAYlXGV
-         mfRqys8q21XoJCkQyVBzB0wlGZuNH4y/1I2wQhSyvZ0E2NodlZa8ze6Vehp6rvoSDaPC
-         mY7iFEa+eZPFgtGEtDFhhYFhEe3Mx38Ixpj51wcKg5a5Uf2ZSgV3fHVUy0M/L/taDrXR
-         lMmbRJCCvSaGwM5DdhqCcO2bz0Q+2HXvqmOvlBqSM6BHDdv/mZfMxeMF79qjaAfJ6qaf
-         YBrDbZSq4z23EjZhjiXaEHq33PzZySUKLvxmXDupXdcO2h4j2nHUiEvoyxBIr3mVSbwY
-         qGkg==
-X-Gm-Message-State: AOAM530tG0U6NI+Ab9yWHA75VgKLokekj65gRkyh+zLcxArzV5EiWy7U
-        rFC9drv7LZcRfRYlX4YPGAYHziQDxFwqn0qRKsE=
-X-Google-Smtp-Source: ABdhPJygj5OcTn39vcEJLKeVLlMxpz7iYeBn04D6lbu0PMAIUV557iE4QFPx0PLrwxZmAL2qAtZWrvd4SjJdq6rY1SQ=
-X-Received: by 2002:a17:90a:3d42:: with SMTP id o2mr4381412pjf.150.1639637233593;
- Wed, 15 Dec 2021 22:47:13 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=sOGgtTvCATSHQGLexpvDJJINJ2PSOy0IILmJVv9FMbY=;
+        b=PxcTi6nwjuI/1vrgfD9TiuiFOTTOmJwrx1y4+whOj3YrGz+FIfC+Zcl/WWD8Noy8jq
+         picrww1S00FpIYQCmsYPFClQGl9NWPw3CfNFcb0aL6gEY+7XdjVNR8T+taGI7R2J3nB/
+         5Gm03jYExPEb+11XDdUHmYQQ/PkxCe8jm77iMd1KYSgJM8BwywXUTbVIvld07XYdGmAf
+         KaycXcaYrMDkAquVw3iwelfctSlpUKHomVSvcX72SnSDm4KhV/n/M1D1gbHr9DX/zI/o
+         0CtN9WCzhwFkvwEG4b57uFh7LCim5Qz9gm2WMeYgu1k2rLqracbGowSAXZdzBAK7lLAv
+         PynQ==
+X-Gm-Message-State: AOAM533d39HxDq1rAMYj1ncZWLx5Au98AS4f/1iD0BLBbRoxESK3Kdab
+        kULRLlhnw+tY3lK9B77tv8BG3YT8/FFR9ThYi9Yhd1mdeYPEKg==
+X-Google-Smtp-Source: ABdhPJwxvE1rWeaEK/knRgSyWTmxlolwklvKfMOiSUbqzr5fIN9/nw4XAS8S/LvgnEbCm2cv7hFYqUumNDG2EW5ueVo=
+X-Received: by 2002:a17:90a:3d42:: with SMTP id o2mr4492911pjf.150.1639639006542;
+ Wed, 15 Dec 2021 23:16:46 -0800 (PST)
 MIME-Version: 1.0
-References: <20211215151344.163036-1-miquel.raynal@bootlin.com> <20211215151344.163036-5-miquel.raynal@bootlin.com>
-In-Reply-To: <20211215151344.163036-5-miquel.raynal@bootlin.com>
+References: <20211215151344.163036-1-miquel.raynal@bootlin.com> <20211215151344.163036-6-miquel.raynal@bootlin.com>
+In-Reply-To: <20211215151344.163036-6-miquel.raynal@bootlin.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 16 Dec 2021 08:47:02 +0200
-Message-ID: <CA+U=DspvsLxYyhrvNfEBGPKuJ1a6-L=WjnQE-hvjMVp2g-9nxQ@mail.gmail.com>
-Subject: Re: [PATCH 04/10] iio: adc: stm32-dfsdm: Avoid dereferencing ->currentmode
+Date:   Thu, 16 Dec 2021 09:16:34 +0200
+Message-ID: <CA+U=DsoVieRnfm6K-Oeva7poGBU+GbxfnS6uoRpc9=qihq6+Rw@mail.gmail.com>
+Subject: Re: [PATCH 05/10] iio: st_sensors: Use iio_device_claim/release_direct_mode()
+ when relevant
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 15, 2021 at 10:03 PM Miquel Raynal
+On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
 <miquel.raynal@bootlin.com> wrote:
 >
-> This is an internal variable of the core, let's use the
-> iio_buffer_enabled() helper which is exported for the following purpose:
-> telling if the current mode is a buffered mode, which is precisely what
-> this driver looks for.
+> The st_sensors_core driver hardcodes the content of the
+> iio_device_claim_direct_mode() and iio_device_release_direct_mode()
+> helpers. Let's get rid of this handcrafted implementation and use the
+> proper core helpers instead. Additionally, this lowers the tab level
+> (which is always good) and prevents the use of the ->currentmode
+> variable which is not supposed to be used like this anyway.
 >
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > ---
->  drivers/iio/adc/stm32-dfsdm-adc.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++++----------
+>  1 file changed, 13 insertions(+), 15 deletions(-)
 >
-> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-> index 1cfefb3b5e56..a3b8827d3bbf 100644
-> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> @@ -466,8 +466,7 @@ static int stm32_dfsdm_channels_configure(struct iio_dev *indio_dev,
->          * In continuous mode, use fast mode configuration,
->          * if it provides a better resolution.
->          */
-> -       if (adc->nconv == 1 && !trig &&
-> -           (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)) {
-> +       if (adc->nconv == 1 && !trig && iio_buffer_enabled(indio_dev)) {
-
-This may become tricky if other modes get added later.
-STM does a relatively good job in updating and re-using their drivers
-(even if some of them do look quirky sometimes).
-
-So, the question here would be: is "iio_buffer_enabled(indio_dev)"
-going to be valid [in this place] once INDIO_BUFFER_TRIGGERED or
-INDIO_BUFFER_HARDWARE get added?
-
-I'd also ping some STM people for some feedback, acks or testing.
-
->                 if (fl->flo[1].res >= fl->flo[0].res) {
->                         fl->fast = 1;
->                         flo = &fl->flo[1];
-> @@ -562,7 +561,7 @@ static int stm32_dfsdm_filter_configure(struct iio_dev *indio_dev,
->                 cr1 = DFSDM_CR1_RCH(chan->channel);
+> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/ii=
+o/common/st_sensors/st_sensors_core.c
+> index 1de395bda03e..e57e85c06f4b 100644
+> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
+> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+> @@ -549,26 +549,24 @@ int st_sensors_read_info_raw(struct iio_dev *indio_=
+dev,
+>         int err;
+>         struct st_sensor_data *sdata =3D iio_priv(indio_dev);
 >
->                 /* Continuous conversions triggered by SPI clk in buffer mode */
-> -               if (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)
-> +               if (iio_buffer_enabled(indio_dev))
->                         cr1 |= DFSDM_CR1_RCONT(1);
+> -       mutex_lock(&indio_dev->mlock);
+> -       if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
+> -               err =3D -EBUSY;
+> +       err =3D iio_device_claim_direct_mode(indio_dev);
+
+I'm afraid, for this driver, we would first need a cleanup of
+indio_dev->mlock usage.
+Or at least that's how I would start it.
+i.e. remove the indio_dev->mlock and replace it with it's own
+mutex/lock in all places (except this one).
+
+The whole story about mlock is a bit old.
+As I was told, it was initially defined in the iio_dev object, but not
+very strictly controlled during review [of drivers].
+Drivers kept using it (as a convenience lock).
+It was later defined to be an IIO framework lock.
+Now, there's a (slow) ongoing work to move mlock inside the
+iio_dev_opaque struct, and make each driver use it's own lock, OR use
+iio_device_{claim,release}_direct_mode() where appropriate.
+
+FWIW: this change could go in as-is.
+But there's still the point of implementing another lock on the
+st_sensor_data type.
+I would try to split this work into another [parallel] series, because
+otherwise [if fitted into this series] it would just grow and be
+slow-to-review series.
+But =C2=AF\_(=E3=83=84)_/=C2=AF
+
+> +       if (err)
+> +               return err;
+> +
+> +       err =3D st_sensors_set_enable(indio_dev, true);
+> +       if (err < 0)
+>                 goto out;
+> -       } else {
+> -               err =3D st_sensors_set_enable(indio_dev, true);
+> -               if (err < 0)
+> -                       goto out;
 >
->                 cr1 |= DFSDM_CR1_RSYNC(fl->sync_mode);
+> -               msleep((sdata->sensor_settings->bootime * 1000) / sdata->=
+odr);
+> -               err =3D st_sensors_read_axis_data(indio_dev, ch, val);
+> -               if (err < 0)
+> -                       goto out;
+> +       msleep((sdata->sensor_settings->bootime * 1000) / sdata->odr);
+> +       err =3D st_sensors_read_axis_data(indio_dev, ch, val);
+> +       if (err < 0)
+> +               goto out;
+>
+> -               *val =3D *val >> ch->scan_type.shift;
+> +       *val =3D *val >> ch->scan_type.shift;
+>
+> -               err =3D st_sensors_set_enable(indio_dev, false);
+> -       }
+> +       err =3D st_sensors_set_enable(indio_dev, false);
+>  out:
+> -       mutex_unlock(&indio_dev->mlock);
+> +       iio_device_release_direct_mode(indio_dev);
+>
+>         return err;
+>  }
 > --
 > 2.27.0
 >

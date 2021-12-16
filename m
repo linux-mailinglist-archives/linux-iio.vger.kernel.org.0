@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8201D477A03
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 18:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20C41477A47
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 18:16:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239847AbhLPRJo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 12:09:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54798 "EHLO
+        id S240085AbhLPRQK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 12:16:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235904AbhLPRJn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 12:09:43 -0500
+        with ESMTP id S233283AbhLPRQK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 12:16:10 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71AA3C061574;
-        Thu, 16 Dec 2021 09:09:43 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53697C061574;
+        Thu, 16 Dec 2021 09:16:10 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2DEABB82365;
-        Thu, 16 Dec 2021 17:09:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 43D2FB82365;
+        Thu, 16 Dec 2021 17:16:07 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 51364C36AE4;
-        Thu, 16 Dec 2021 17:09:39 +0000 (UTC)
-Date:   Thu, 16 Dec 2021 17:15:04 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id 0D07EC36AE0;
+        Thu, 16 Dec 2021 17:16:03 +0000 (UTC)
+Date:   Thu, 16 Dec 2021 17:21:27 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 3/3] Documentation:ABI:testing:admv1013: add ABI docs
-Message-ID: <20211216171504.382214ee@jic23-huawei>
-In-Reply-To: <20211206154845.268445-3-antoniu.miclaus@analog.com>
-References: <20211206154845.268445-1-antoniu.miclaus@analog.com>
-        <20211206154845.268445-3-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v3 4/4] iio:filter:admv8818: Add sysfs ABI documentation
+Message-ID: <20211216172127.74371d2e@jic23-huawei>
+In-Reply-To: <20211207155445.247444-4-antoniu.miclaus@analog.com>
+References: <20211207155445.247444-1-antoniu.miclaus@analog.com>
+        <20211207155445.247444-4-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -42,77 +42,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Dec 2021 17:48:45 +0200
+On Tue, 7 Dec 2021 17:54:45 +0200
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Add documentation for the use of the Local Oscillator Feedthrough Offset
-> calibration.
+> Add initial ABI documentation for admv8818 filter sysfs interfaces.
 > 
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+
+Hi Antoniu
+
+Please make sure to include change logs for all the patches - or a summary in
+a cover letter is also fine.
 > ---
-> changes in v6:
->  - update iio channels
->  - remove frequency mode
->  .../testing/sysfs-bus-iio-frequency-admv1013  | 38 +++++++++++++++++++
->  1 file changed, 38 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+
+I made an unclear comment in v2 review.
+What I meant to request for the 3db_frequency was that you added a
+line to the main sysfs-bus-iio documentation in the 3db_frequency block to
+cover it's use with out_altvoltageX_filter_high_base_3db_frequency
+
+
+>  .../ABI/testing/sysfs-bus-iio-filter-admv8818    | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013 b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
 > new file mode 100644
-> index 000000000000..3be68dd54ed4
+> index 000000000000..f6c035752639
 > --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1013
-> @@ -0,0 +1,38 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-1_i_phase
-
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+> @@ -0,0 +1,16 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/filter_mode_available
 > +KernelVersion:
 
-Please fill these in. We might need to update them, but better to be out by one cycle
-rather than have them blank I think.
+As per other review, please fill these in.  I'll never remember to do it whilst
+applying so just take a guess and update if we cross into the next cycle during review.
 
 > +Contact:	linux-iio@vger.kernel.org
 > +Description:
-> +		Read/write value for the Local Oscillatior path quadrature I phase shift.
-
-As per patch 1 review.  The open issue here is phase has defined units as radians
-but we don't know what the scaling of this is beyond vague hints in the datasheet.
-So maybe we need to expand the ABI to allow for calibphase?  Much like calibbias in
-general we'd assume that was of unknown scaling...
-
-I'm fully open to other suggestions as I'm not particularly happy with any options
-I've thought of for this.
-
+> +		Reading this returns the valid values that can be written to the
+> +		on_altvoltage0_mode attribute:
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0-1_i_phase
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write value for the Local Oscillatior path quadrature Q phase shift.
+> +		- auto -> Adjust bandpass filter to track changes in input clock rate.
+> +		- manual -> disable/unregister the clock rate notifier / input clock tracking.
 > +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_i_calibbias
+> +What:		/sys/bus/iio/devices/iio:deviceX/filter_mode
 > +KernelVersion:
 > +Contact:	linux-iio@vger.kernel.org
 > +Description:
-> +		Read/write value for the Local Oscillatior Feedthrough Offset Calibration I Positive
-> +		side.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_q_calibbias
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write value for the Local Oscillatior Feedthrough Offset Calibration Q Positive side.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage1_i_calibbias
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write raw value for the Local Oscillatior Feedthrough Offset Calibration I Negative
-> +		side.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage1_q_calibbias
-> +KernelVersion:
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Read/write raw value for the Local Oscillatior Feedthrough Offset Calibration Q Negative
-> +		side.
+> +		This attribute configures the filter mode.
+> +		Reading returns the actual mode.
 

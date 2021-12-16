@@ -2,231 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93E3C47704B
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 12:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B784477078
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 12:42:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231783AbhLPLb6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 06:31:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57688 "EHLO
+        id S233057AbhLPLmQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 06:42:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbhLPLb5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 06:31:57 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A6CC061574;
-        Thu, 16 Dec 2021 03:31:57 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2833D61D70;
-        Thu, 16 Dec 2021 11:31:57 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id EEF84C36AE2;
-        Thu, 16 Dec 2021 11:31:52 +0000 (UTC)
-Date:   Thu, 16 Dec 2021 11:37:17 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Anand Ashok Dumbre <ANANDASH@xilinx.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        git <git@xilinx.com>, Michal Simek <michals@xilinx.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        'Anand Dumbre' <ananddumbre8@gmail.com>
-Subject: Re: [PATCH v12 0/5] Add Xilinx AMS Driver
-Message-ID: <20211216113717.1c0e43dc@jic23-huawei>
-In-Reply-To: <BY5PR02MB691657682B94F4D3DBDA007EA9769@BY5PR02MB6916.namprd02.prod.outlook.com>
-References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
-        <BY5PR02MB691657682B94F4D3DBDA007EA9769@BY5PR02MB6916.namprd02.prod.outlook.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        with ESMTP id S232724AbhLPLmL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 06:42:11 -0500
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90CE8C061756
+        for <linux-iio@vger.kernel.org>; Thu, 16 Dec 2021 03:42:06 -0800 (PST)
+Received: by mail-qt1-x830.google.com with SMTP id o17so25131977qtk.1
+        for <linux-iio@vger.kernel.org>; Thu, 16 Dec 2021 03:42:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=DbH1Ji01P93LyTzDoauO1Rc48sDWVtdwnBGUamxeb8T/9DnmNwFlL0JvNxtTxnIik8
+         AF4fiOnh94EFQzdZz8KJBnzwauC2lZM0yNVUv4pWHip6opgPog4u/vluZhPJXjw78vDA
+         f6sh/ed1OxoJ1g1t7gzdPodwSxTC5c4DgCybEoK61DXARfmFs8snxFiiIRa/Iu1/hNzN
+         fZIim177r1ShSprd0HKY5DfawS5hKhFwBWxLO3U7SnQ0mHNCzrBDbHpz1jt5tPoBjmr8
+         7Ae3NOwI9TZO/6l6pkdqJZg2o0eCT7Tj9ACDNqagtOISwltP3H2yXXWnIzZMI4wBc7By
+         rM9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
+        b=EN2oZfuhuyWqmnrtT4dTzT6/O/hrIG1V3vtPB8PdnGvjibGuQY8By65JhGEpIcqbnB
+         KTc2tsrg8Ky/619YLo+56q+EfCC4PJ0AZqGy9fKfaHVzfUGaICxeJN6maxRwOY3jiNhX
+         747PugK61vKZIx2l6hhw1Og/qsiOfZeW018j+alIYh3mPxfw4CT6jqkveHLpZHRC1jYu
+         MGclPu0f8lMU9shbsQYH/lzyWaskywrc7ivsyJCIal439UwfHv5LCZZ+WXIIuD9jLn6C
+         B00LVZB4QOTuytn9EAy4cT+5ISLgah5v1AtSLPypi47HLFU2wvgA9fLl4any5HRfLksF
+         MHRg==
+X-Gm-Message-State: AOAM533WG3EE5IO186i882apn2Tyi0vZY3Qto32BEGyPECiLrnQgibIN
+        RrXdTwTpBe0wf7iQFlSjD3r8DRoXmgoTK3N0oFY=
+X-Google-Smtp-Source: ABdhPJyrnf396a9ziJGBm+8eiYGOgUpOQ7p2/85GJukkUSbvGu1la687iolipeGN8a/w1GmTH3LvDnglSFpjsilKeBU=
+X-Received: by 2002:a05:622a:510:: with SMTP id l16mr16475505qtx.619.1639654925163;
+ Thu, 16 Dec 2021 03:42:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:04
+ -0800 (PST)
+Reply-To: selviasantiago1@gmail.com
+From:   Selvia Santiago <mariamatinez119@gmail.com>
+Date:   Thu, 16 Dec 2021 11:42:04 +0000
+Message-ID: <CAONDhKNqZ3ja5a2mdpyxiYfPYVQwq_MdxvhX-F--7sW9gxb1ZQ@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Dec 2021 12:11:21 +0000
-Anand Ashok Dumbre <ANANDASH@xilinx.com> wrote:
+-- 
+Urgent
 
-> Ping!
+I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
+suffering from long time illness (Cancer), there is funds I inherited
+from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
+Million Dollars) which he deposited in bank before his death, I need a
+honest and Faithful person that can use these funds for humanity work.
 
-Other than ideally getting a few more eyes on the stuff in drivers/base
-I'm fine with this series.
+I took this decision because I don't have any child that will inherit
+this money and I don't want a situation where this money will be used
+in an ungodly way. That is why I am taking this decision, and my
+doctor has confirmed to me that I have less than two weeks to live,
+having known my condition I decided to donate this fund to a charity
+or individual that will utilize this money to assist the poor and the
+needy in accordance to my instructions.
 
-Thanks,
+I want you to use 70% of this funds for orphanages, school, church,
+widows, propagating the word and other humanity works,The remaining
+30% should be yours for your efforts as the new beneficiary.
 
-Jonathan
+Please if you would be able to use these funds for humanity work
+kindly reply me. As soon as I have received your response, I will give
+you further directives on how you are to go about the claims of the
+said funds.
 
-> 
-> > -----Original Message-----
-> > From: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-> > Sent: Friday 3 December 2021 9:24 PM
-> > To: linux-kernel@vger.kernel.org; jic23@kernel.org; lars@metafoo.de; linux-
-> > iio@vger.kernel.org; git <git@xilinx.com>; Michal Simek
-> > <michals@xilinx.com>; gregkh@linuxfoundation.org; rafael@kernel.org;
-> > linux-acpi@vger.kernel.org; heikki.krogerus@linux.intel.com
-> > Cc: Anand Ashok Dumbre <ANANDASH@xilinx.com>
-> > Subject: [PATCH v12 0/5] Add Xilinx AMS Driver
-> > 
-> > Add Xilinx AMS driver which is used for Xilinx's ZynqMP AMS controller.
-> > This AMS driver is used to report various interface voltages and
-> > temperatures across the system.
-> > This driver will be used by iio-hwmon to repport voltages and temperatures
-> > across the system by using various channel interfaces.
-> > This driver handles AMS module including PS-Sysmon & PL-Sysmon. The
-> > binding documentation is added for understanding of AMS, PS, PL Sysmon
-> > Channels.
-> > 
-> > Changes in v2:
-> > 	- Added documentation for sysfs (Patch-2)
-> > 	- Addressed code style review comments
-> > 	- Patch-2 (Now it is Patch-3)
-> > 		- Arranged the includes in alphabetical order
-> > 		- Removed the wrapper 'ams_pl_write_reg()' and used writel
-> > 		  instead
-> > 		- Removed the unnecessary delay of 1ms and used polling of
-> > EOC
-> > 		  instead
-> > 		- Removed spin_lock and used mutex only.
-> > 		- Used request_irq() instead of devm_request_irq() and
-> > handled
-> > 		  respective error conditions
-> > 		- Moved contents of xilinx-ams.h to inline with xilinx-ams.c
-> > 	- Patch-1
-> > 		- Addressed Documentation style comments
-> > 
-> > Changes in v3:
-> > 	- Updated bindings document with the suggested modification in v2
-> > review
-> > 	- Removed documentation for sysfs
-> > 	- Removed extended names for channels in the Xilinx AMS driver
-> > 	- Modified dts to use ranges for child nodes
-> > 	- Reduced address and size cells to 32-bit instead of 64-bit
-> > 
-> > Changes in v4:
-> > 	- Updated bindings document with the suggested modification in v3
-> > review
-> > 	- Changed the Device Tree property 'ranges' for child nodes
-> > 	- Used Channel Numbers as 'reg' value in DT to avoid confusion
-> > 	- Removed unused NULL arguments as suggested in v3 patch review
-> > 	- Addressed comments on Device Tree property naming
-> > 
-> > Changes in v5:
-> > 	- Updated bindings document to the YAML format
-> > 	- Updated bindings document with the suggested modification in v4
-> > review
-> > 	- Renamed iio_pl_info struct to iio_ams_info in Xilinx AMS driver
-> > 	- Updated the Xilinx AMS driver to not use iio_priv_to_dev function
-> > 	- Updated Xilinx AMS node to reflect the changes in bindings
-> > document
-> > 	- Update MAINTAINERS file
-> > 
-> > Changes in v6:
-> > 	- Removed all tabs from bindings document.
-> > 	- Removed the xlnx,ext-channels node from the device tree since
-> > 	  it is not neeeded.
-> > 	- Fixed unit addresses for ps-ams and pl-ams.
-> > 	- Removed the names property from bindings.
-> > 	- Fixed warnings from checkpatch.pl in the driver.
-> > 	- devm_add_action_or_reset() used for exit/error path.
-> > 	- devm_request_irq() for managed irq request instead of
-> > 	  request_irq()
-> > 
-> > Changes in v7:
-> > 	- Added use of FIELD_PREP and FIELD_GET.
-> > 	- Added the spinlocks back the v1 which were removed in v2 for
-> > 	  no justifiable reason and replaced with the same mutex. This
-> > 	  caused deadlocks.
-> > 	- Removed the buffered mode information from channel config.
-> > 	- Usage of wrapper functions for devm_add_action_or_reset
-> > 	  callbacks to avoid typecasting functions.
-> > 	- Usage of devm_platform_iremap_resource().
-> > 	- Handled platform_get_irq() return values.
-> > 	- Removed the remove() callback.
-> > 	- Fixed the dt-bindings.
-> > 
-> > Changes in v8:
-> > 	- Replaced *_of_() APIs with fwnode.
-> > 	- Added missing headers.
-> > 	- Fixed documentation.
-> > 	- Added devm_add_action_or_reset() for iounmap.
-> > 	- Restructured read_raw function.
-> > 	- Added helper functions.
-> > 	- Usage of GENMASK for all masks.
-> > 	- Added defaults for most switch cases. Some can't be added
-> > 	  since the default will never occur.
-> > 
-> > Changes in v9:
-> > 	- Added a fwnode_iomap().
-> > 	- Fixed Kconfig indentation.
-> > 	- Added the overflow checks before memory allocation.
-> > 	- Usage of fwnode_iomap() instead of iomap().
-> > 	- Rename ams_parse_dt() to ams_parse_firmware().
-> > 
-> > Changes in v10:
-> > 	- Fixed licence in zynqmp.dtsi.
-> > 	- Changed the macros to use BIT().
-> > 	- Realign some code to fit within 100 chars.
-> > 	- Modified readl_poll_timeout usage.
-> > 	- Usage of array_size() instead of check_mul_overflow().
-> > 	- Usage of dev_err_probe() instead of dev_err().
-> > 	- Usage of kcalloc instead of kzalloc()
-> > 
-> > Changes in v11:
-> > 	- Added missing bitfield.h.
-> > 	- Fixed AMS_ALARM_THR_MIN macro.
-> > 	- Added terminators to enums where necessary.
-> > 	- Added explicit values as suggested to enums.
-> > 	- Removed redundant macros.
-> > 	- Added delay value for readl_poll_timeout.
-> > 	- Corrected shadowed error return.
-> > 	- Corrected formatting errors.
-> > 	- Added default cases where missing.
-> > 	- Made ams_parse_firmware() a single parameter functions.
-> > 	- Usage of devm_kcalloc() and devm_krealloc().
-> > 	- Directly returning from dev_err_probe().
-> > 	- Renamed masked_alarm to current_masked_alarm.
-> > 
-> > Changes in v12:
-> > 	- GENMASK_ULL usage for 64bit values.
-> > 	- Added ams_iounmap_ps and amsiomap_pl instead of generic
-> > 	  function.
-> > 	- Hex values to use all capital letters.
-> > 	- Fixed a case of wrong kernel doc.
-> > 	- Modified macro voltage names to reflect the scale.
-> > 	- Maximize single line usage wherever possible.
-> > 	- Handling of fwnode_iomap when CONFIG_OF_ADDRESS is not
-> > 	  enabled.
-> > 	- ams_read_raw() - Reduce the size of switch statements by
-> > 	  using helper functions for IIO_CHAN_INFO_SCALE.
-> > 	- ams_read_raw() - Mutex unlocking in a single place using goto.
-> > 
-> > Anand Ashok Dumbre (5):
-> >   device property: Add fwnode_iomap()
-> >   arm64: zynqmp: DT: Add Xilinx AMS node
-> >   iio: adc: Add Xilinx AMS driver
-> >   dt-bindings: iio: adc: Add Xilinx AMS binding documentation
-> >   MAINTAINERS: Add maintainer for xilinx-ams
-> > 
-> >  .../bindings/iio/adc/xlnx,zynqmp-ams.yaml     |  227 +++
-> >  MAINTAINERS                                   |    7 +
-> >  arch/arm64/boot/dts/xilinx/zynqmp.dtsi        |   24 +
-> >  drivers/base/property.c                       |   16 +
-> >  drivers/iio/adc/Kconfig                       |   15 +
-> >  drivers/iio/adc/Makefile                      |    1 +
-> >  drivers/iio/adc/xilinx-ams.c                  | 1450 +++++++++++++++++
-> >  include/linux/property.h                      |    2 +
-> >  8 files changed, 1742 insertions(+)
-> >  create mode 100644
-> > Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-> >  create mode 100644 drivers/iio/adc/xilinx-ams.c
-> > 
-> > --
-> > 2.17.1  
-> 
-
+Remain blessed.
+Mrs Selvia Santiago.

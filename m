@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB24C477BF9
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 19:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13E19477BFA
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 19:52:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236385AbhLPSw1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S236394AbhLPSw1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Thu, 16 Dec 2021 13:52:27 -0500
-Received: from www381.your-server.de ([78.46.137.84]:47640 "EHLO
+Received: from www381.your-server.de ([78.46.137.84]:47648 "EHLO
         www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236394AbhLPSwY (ORCPT
+        with ESMTP id S236396AbhLPSwY (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 13:52:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:
-        Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References;
-        bh=yd63Uuar7R9bVhU6VBQ6acM6BrVP2cx0ml6/ZCjWJkI=; b=UqRaLFU4VigRm2geGI9fSM/07j
-        csNtW/eKkZxi40sOZ4dxv63mlTT7q0ybt4+Ho7Ta4xd5we6SHi5vn1Jn4gu7YjoOrpj72Wp/p8fMs
-        0T1NaeKhlyOVxVF40wwx4xNNaRFGWtWg6FljUEkh68saSRBdCRsLm30T25VgHSpkNxPzCPhdpdJ99
-        HfmxXJ3Cunwms2Pup3br9zJioWPSLisyFa1TWF9Z+4OuB8D/QmjXxiVOGgFS61vFvjWTCvcJ2Q7d8
-        b/0JtARydDce+7DN+K0zlWgji0IFv9DJko2kVBdu8FSFmZNylPx+EqOxmmZRJoXM4srlUrwIVSKLZ
-        kcZuS1Yw==;
+         s=default2002; h=Content-Transfer-Encoding:MIME-Version:References:
+        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=r+U1xhyssSTBOXzzkSA+bcC9nDbJhc561YC9ShPSarQ=; b=MuH/a/p7z3BiS9KtQbEo8op+fD
+        P+QGbyyQOIxWgC4wSp5Xu8QwutcdfTAo/OOq1APqlqI+hE409k9WWqJI9tSz9jpRc8P8QU3tOCIrW
+        ++3UUsdeVmrtcgNcTEBZ3/wkhk6X3AZEFb4K2R6qaqPzg86pymPJzU8MbJ4wSPXeuuT6g8vRcEK+N
+        Oq1iNOxh4NQdqIMrVBE2Imd331jDhRcWCuwvvEGCTJKEfBXXt+1EKSa1eSrkRP8atQoOg891+IiyP
+        WPXZckZkMBbO75rsLsBL3De5COHnX1Q495EI/qvCfSTpC+1zOeDdndHkTwNN4RcGuo0pFtXCSfBge
+        vgo3PBYg==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
         by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <lars@metafoo.de>)
-        id 1mxvra-000ARv-01; Thu, 16 Dec 2021 19:52:22 +0100
+        id 1mxvra-000ARw-6p; Thu, 16 Dec 2021 19:52:22 +0100
 Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578] (helo=lars-desktop.fritz.box)
         by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <lars@metafoo.de>)
-        id 1mxvrZ-000HSt-LE; Thu, 16 Dec 2021 19:52:21 +0100
+        id 1mxvrZ-000HSt-Sj; Thu, 16 Dec 2021 19:52:21 +0100
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -46,10 +46,12 @@ Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
         Jacopo Mondi <jacopo+renesas@jmondi.org>,
         Ludovic Tancerel <ludovic.tancerel@maplehightech.com>,
         linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 00/13] iio: Use sysfs_emit()
-Date:   Thu, 16 Dec 2021 19:52:04 +0100
-Message-Id: <20211216185217.1054495-1-lars@metafoo.de>
+Subject: [PATCH 01/13] iio: core: Use sysfs_emit()
+Date:   Thu, 16 Dec 2021 19:52:05 +0100
+Message-Id: <20211216185217.1054495-2-lars@metafoo.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211216185217.1054495-1-lars@metafoo.de>
+References: <20211216185217.1054495-1-lars@metafoo.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Sender: lars@metafoo.de
@@ -58,49 +60,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I started the sysfs_emit() conversion during the last end-of-year break
-starting with the IIO core. It is end-of-year break again, so here is a bit
-more.
+sysfs_emit() is preferred over raw s*printf() for sysfs attributes since it
+knows about the sysfs buffer specifics and has some built-in checks for
+size and alignment.
 
-This series contains conversions for simple users which all follow the
-pattern of `return sprintf(....)` or similar. The series also only covers
-cases where the attributes are completely custom and can not be converted
-to use iio_read_raw or iio_read_available. These other cases will be
-handled seperately by converting them to use the IIO APIs rather than
-device attributes. But this requires a bit more validation work than the
-simple straigh forward conversions.
+This patch converts the places in the IIO core that follow the pattern of
 
-Lars-Peter Clausen (13):
-  iio: core: Use sysfs_emit()
-  iio: dmaengine-buffer: Use sysfs_emit()
-  iio: ad7192: Use sysfs_emit()
-  iio: ad9523: Use sysfs_emit()
-  iio: as3935: Use sysfs_emit()
-  iio: ina2xx-adc: sysfs_emit()
-  iio: lm3533: Use sysfs_emit()
-  iio: max31856: Use sysfs_emit()
-  iio: max31865: Use sysfs_emit()
-  iio: max9611: Use sysfs_emit()
-  iio: ms_sensors: Use sysfs_emit()
-  iio: scd4x: Use sysfs_emit()
-  iio: sps30: Use sysfs_emit()
+   return s*printf(...)
 
- drivers/iio/adc/ad7192.c                           | 4 ++--
- drivers/iio/adc/ina2xx-adc.c                       | 2 +-
- drivers/iio/adc/max9611.c                          | 2 +-
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 2 +-
- drivers/iio/chemical/scd4x.c                       | 2 +-
- drivers/iio/chemical/sps30.c                       | 2 +-
- drivers/iio/common/ms_sensors/ms_sensors_i2c.c     | 4 ++--
- drivers/iio/frequency/ad9523.c                     | 2 +-
- drivers/iio/industrialio-buffer.c                  | 4 ++--
- drivers/iio/industrialio-core.c                    | 2 +-
- drivers/iio/light/lm3533-als.c                     | 6 +++---
- drivers/iio/proximity/as3935.c                     | 4 ++--
- drivers/iio/temperature/max31856.c                 | 4 ++--
- drivers/iio/temperature/max31865.c                 | 4 ++--
- 14 files changed, 22 insertions(+), 22 deletions(-)
+to
 
+   return sysfs_emit(...)
+
+This covers the new places that have been introduced where sprintf() is
+used for formatting sysfs output since the last time this was done in
+commit 83ca56b663cf ("iio: core: Use sysfs_emit() (trivial bits)").
+
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ drivers/iio/industrialio-buffer.c | 4 ++--
+ drivers/iio/industrialio-core.c   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 94eb9f6cf128..f7721553a938 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1383,9 +1383,9 @@ static ssize_t direction_show(struct device *dev,
+ 
+ 	switch (buffer->direction) {
+ 	case IIO_BUFFER_DIRECTION_IN:
+-		return sprintf(buf, "in\n");
++		return sysfs_emit(buf, "in\n");
+ 	case IIO_BUFFER_DIRECTION_OUT:
+-		return sprintf(buf, "out\n");
++		return sysfs_emit(buf, "out\n");
+ 	default:
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 20d5178ca073..25144383865c 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -747,7 +747,7 @@ static ssize_t iio_read_channel_label(struct device *dev,
+ 		return indio_dev->info->read_label(indio_dev, this_attr->c, buf);
+ 
+ 	if (this_attr->c->extend_name)
+-		return sprintf(buf, "%s\n", this_attr->c->extend_name);
++		return sysfs_emit(buf, "%s\n", this_attr->c->extend_name);
+ 
+ 	return -EINVAL;
+ }
 -- 
 2.30.2
 

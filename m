@@ -2,449 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB269477D8A
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 21:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B42DF4780A1
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 00:32:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241515AbhLPU1I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 15:27:08 -0500
-Received: from relay9-d.mail.gandi.net ([217.70.183.199]:55537 "EHLO
-        relay9-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241436AbhLPU1A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 15:27:00 -0500
-Received: (Authenticated sender: frank@zago.net)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 8A39EFF807;
-        Thu, 16 Dec 2021 20:26:57 +0000 (UTC)
-From:   frank zago <frank@zago.net>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        frank zago <frank@zago.net>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: position: Add support for ams AS5600 angle sensor
-Date:   Thu, 16 Dec 2021 14:26:51 -0600
-Message-Id: <20211216202651.120172-1-frank@zago.net>
-X-Mailer: git-send-email 2.32.0
+        id S229682AbhLPXcA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 18:32:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57752 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229605AbhLPXb5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 18:31:57 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273C9C061574
+        for <linux-iio@vger.kernel.org>; Thu, 16 Dec 2021 15:31:56 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id a23so450516pgm.4
+        for <linux-iio@vger.kernel.org>; Thu, 16 Dec 2021 15:31:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IYkVdXAMM1FGo0JX0Zyjvw3eVz4fHmPEoGytHWrnI5c=;
+        b=PgnIfzveoQ6x4Jvi5FmmxKVioNLW1OLLfa4ZJltyBjjCgzNe+fF2qDrHX/1/0OzWm4
+         6ltqQnDVctpJlDs9/o7E+hVb3fd5UynfGqKNzmGVNewKmxKoZxmNRPXOwJMttObuYR1o
+         vzPjXXwRhWRAqSMnTsz2ZxBfN0oXEMl+rA7UicomdllJ9M154FToNLqfFkO4uhwauhp3
+         7jPDCZpVm+XyFu9oTngfm3oET9GWRghQa/ePSPJbVtTQF0SHlFjO0wLNwj8LkVOgvhW0
+         ZJQg8dpnDbbj2IO8PPdSjOY28b3nXn9CzdiLIO2gmOWjK2zyEOVFFauT7dpQFelo964d
+         kzZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IYkVdXAMM1FGo0JX0Zyjvw3eVz4fHmPEoGytHWrnI5c=;
+        b=M4Ki6Ie5JFx3iEi+SehuuH2TLz1eCs9Swq4aEKfArNOjkHRuEChmAfPOx5em3ZpGTm
+         ME8DPMNfrZdNWLtMpG7p6VIJDckHJIFSLQS231nrdbt81s2TZFCMZn2LocQMkpr4h8Qe
+         b+cwoev+4+J417IapqOSnLxMynJAHWxpQg1N7iw6DFmC4SZkv3f3kS2JKFXtfQeKLWHs
+         BcaGcs5qep/CWZPItOGSGLxqTRTioe2jtzjDRg91qT2KDz+Zdmc3RWTtRP6BaLakuLdl
+         S1S3c5l044HIA4J6z1nqvbdlttg6dCK+HAwZav66AHr6u/3xCLtM4KXROk10TiuFwwaV
+         ylIA==
+X-Gm-Message-State: AOAM5301HvdXAjKnrzVsJbrCVDU34aAJ7al4txogyZIvMxbetB5jro41
+        ILm9cXm8Bvd/9Lli/WqfIO7w3rNuJUVY/A==
+X-Google-Smtp-Source: ABdhPJweR0wNYahF3PVyFgAmoctgdVsbedrHe+iVKWwFS0mFQh4MdOAO+Rr96SGfLiYaQmFacC/c8A==
+X-Received: by 2002:a63:5b1e:: with SMTP id p30mr453659pgb.288.1639697515621;
+        Thu, 16 Dec 2021 15:31:55 -0800 (PST)
+Received: from shinobu ([37.120.154.44])
+        by smtp.gmail.com with ESMTPSA id pg14sm4222737pjb.37.2021.12.16.15.31.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Dec 2021 15:31:54 -0800 (PST)
+Date:   Fri, 17 Dec 2021 08:31:49 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     linux-iio@vger.kernel.org, David Lechner <david@lechnology.com>,
+        kernel@pengutronix.de
+Subject: Re: [PATCH] counter: ti-eqep: Use container_of instead of struct
+ counter_device::priv
+Message-ID: <YbvMZUKj0V+W0pEv@shinobu>
+References: <20211213114312.1406562-1-u.kleine-koenig@pengutronix.de>
+ <YbrNr20FBb+ZMShv@shinobu>
+ <20211216104915.62qfwjal5bz3x7g7@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="BZkDPSvlzJ4nFggh"
+Content-Disposition: inline
+In-Reply-To: <20211216104915.62qfwjal5bz3x7g7@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AS5600 is a Hall-based rotary magnetic position sensor using
-planar sensors that convert the magnetic field component perpendicular
-to the surface of the chip into a voltage, or a numerical value
-available through i2c.
 
-The driver registers the chip as an IIO_ANGL device. It also exposes
-the various registers through sysfs.
+--BZkDPSvlzJ4nFggh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: frank zago <frank@zago.net>
----
+On Thu, Dec 16, 2021 at 11:49:15AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> hello William,
+>=20
+> On Thu, Dec 16, 2021 at 02:25:03PM +0900, William Breathitt Gray wrote:
+> > On Mon, Dec 13, 2021 at 12:43:12PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > Using counter->priv is a memory read and so more expensive than
+> > > container_of which is only an addition. (In this case even a noop
+> > > because the offset is 0.)
+> > >=20
+> > > So container_of is expected to be a tad faster, it's type-safe, and
+> > > produces smaller code (ARCH=3Darm allmodconfig):
+> > >=20
+> > > 	$ source/scripts/bloat-o-meter drivers/counter/ti-eqep.o-pre drivers=
+/counter/ti-eqep.o
+> > > 	add/remove: 0/0 grow/shrink: 0/9 up/down: 0/-108 (-108)
+> > > 	Function                                     old     new   delta
+> > > 	ti_eqep_position_enable_write                132     120     -12
+> > > 	ti_eqep_position_enable_read                 260     248     -12
+> > > 	ti_eqep_position_ceiling_write               132     120     -12
+> > > 	ti_eqep_position_ceiling_read                236     224     -12
+> > > 	ti_eqep_function_write                       220     208     -12
+> > > 	ti_eqep_function_read                        372     360     -12
+> > > 	ti_eqep_count_write                          312     300     -12
+> > > 	ti_eqep_count_read                           236     224     -12
+> > > 	ti_eqep_action_read                          664     652     -12
+> > > 	Total: Before=3D4598, After=3D4490, chg -2.35%
+> > >=20
+> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> >=20
+> > I'll pick this up and submit it with the rest of the Counter changes for
+> > this cycle.
+>=20
+> This is great. The same transformation could be done for the other
+> drivers using the priv pointer. Then priv could be removed from struct
+> counter_device. Good idea?
 
-I'm not certain the values the driver return to IIO are correct. The
-angle returned by the chip is a value in 0..4095, and that's what the
-driver returns. The sysfs doc says it should be in radian.
+Sure, that sounds reasonable. Create a patchset with the changes, CC the
+respective driver maintainers, and we'll see if we can merge those too.
 
-Also it's unclear to me how I should define the scale.
+William Breathitt Gray
+
+>=20
+> A quick prototype patch yields:
+>=20
+> drivers/counter/104-quad-8.o
+>   add/remove: 0/0 grow/shrink: 5/17 up/down: 76/-172 (-96)
+>   Total: Before=3D11802, After=3D11706, chg -0.81%
+> drivers/counter/ftm-quaddec.o
+>   add/remove: 0/0 grow/shrink: 0/5 up/down: 0/-60 (-60)
+>   Total: Before=3D5096, After=3D5036, chg -1.18%
+> drivers/counter/intel-qep.o
+>   add/remove: 0/0 grow/shrink: 0/10 up/down: 0/-116 (-116)
+>   Total: Before=3D4867, After=3D4751, chg -2.38%
+> drivers/counter/interrupt-cnt.o
+>   add/remove: 0/0 grow/shrink: 0/6 up/down: 0/-60 (-60)
+>   Total: Before=3D2841, After=3D2781, chg -2.11%
+> drivers/counter/microchip-tcb-capture.o
+>   add/remove: 0/0 grow/shrink: 1/6 up/down: 12/-68 (-56)
+>   Total: Before=3D5920, After=3D5864, chg -0.95%
+> drivers/counter/stm32-lptimer-cnt.o
+>   add/remove: 0/0 grow/shrink: 0/10 up/down: 0/-140 (-140)
+>   Total: Before=3D6458, After=3D6318, chg -2.17%
+> drivers/counter/stm32-timer-cnt.o
+>   add/remove: 0/0 grow/shrink: 0/11 up/down: 0/-132 (-132)
+>   Total: Before=3D5504, After=3D5372, chg -2.40%
+> drivers/counter/ti-eqep.o
+>   add/remove: 0/0 grow/shrink: 0/10 up/down: 0/-120 (-120)
+>   Total: Before=3D4598, After=3D4478, chg -2.61%
+>=20
+> (the ti-eqep object file got a bit smaller, probably because I removed
+> the priv member from struct counter_device.)
+>=20
+> Best regards
+> Uwe
+>=20
+> --=20
+> Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig       =
+     |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
 
- .../ABI/testing/sysfs-bus-iio-position-as5600 |  38 +++
- drivers/iio/position/Kconfig                  |  10 +
- drivers/iio/position/Makefile                 |   1 +
- drivers/iio/position/as5600.c                 | 309 ++++++++++++++++++
- 4 files changed, 358 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-position-as5600
- create mode 100644 drivers/iio/position/as5600.c
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-position-as5600 b/Documentation/ABI/testing/sysfs-bus-iio-position-as5600
-new file mode 100644
-index 000000000000..d0d9c794529b
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-position-as5600
-@@ -0,0 +1,38 @@
-+What:		sys/bus/iio/devices/iio:deviceX/in_angl0_raw
-+KernelVersion:	TBD
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+	Returns the unscaled and unmodified angle
-+
-+What:		sys/bus/iio/devices/iio:deviceX/in_angl1_raw
-+KernelVersion:	TBD
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+	Returns the scaled and modified angle, as affected by the
-+	zpos/mpos/mang values.
-+
-+What:		sys/bus/iio/devices/iio:deviceX/agc
-+What:		sys/bus/iio/devices/iio:deviceX/conf_fth
-+What:		sys/bus/iio/devices/iio:deviceX/conf_hyst
-+What:		sys/bus/iio/devices/iio:deviceX/conf_outs
-+What:		sys/bus/iio/devices/iio:deviceX/conf_pm
-+What:		sys/bus/iio/devices/iio:deviceX/conf_pwmf
-+What:		sys/bus/iio/devices/iio:deviceX/conf_sf
-+What:		sys/bus/iio/devices/iio:deviceX/conf_wd
-+What:		sys/bus/iio/devices/iio:deviceX/magnitude
-+What:		sys/bus/iio/devices/iio:deviceX/mang
-+What:		sys/bus/iio/devices/iio:deviceX/mpos
-+What:		sys/bus/iio/devices/iio:deviceX/status_md
-+What:		sys/bus/iio/devices/iio:deviceX/status_mh
-+What:		sys/bus/iio/devices/iio:deviceX/status_ml
-+What:		sys/bus/iio/devices/iio:deviceX/zmco
-+What:		sys/bus/iio/devices/iio:deviceX/zpos
-+KernelVersion:	TBD
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+	Read and write the ams AS5600 internal registers and their
-+	fields. zpos/mpos can be used to create a subset of the 0-360
-+	degree range. status_md will tell whether the magnet is
-+	detected. Check the datasheet
-+	(https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf)
-+	for more information.
-diff --git a/drivers/iio/position/Kconfig b/drivers/iio/position/Kconfig
-index 1576a6380b53..111ed551ae79 100644
---- a/drivers/iio/position/Kconfig
-+++ b/drivers/iio/position/Kconfig
-@@ -6,6 +6,16 @@
+--BZkDPSvlzJ4nFggh
+Content-Type: application/pgp-signature; name="signature.asc"
 
- menu "Linear and angular position sensors"
+-----BEGIN PGP SIGNATURE-----
 
-+config AS5600
-+	tristate "ams AS5600 angular position sensor"
-+	depends on I2C
-+	help
-+	  Say Y here if you want to build support for the ams 5600
-+	  12-Bit Programmable Contactless Potentiometer.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called as5600.
-+
- config IQS624_POS
- 	tristate "Azoteq IQS624/625 angular position sensors"
- 	depends on MFD_IQS62X || COMPILE_TEST
-diff --git a/drivers/iio/position/Makefile b/drivers/iio/position/Makefile
-index d70902f2979d..53930681e6a4 100644
---- a/drivers/iio/position/Makefile
-+++ b/drivers/iio/position/Makefile
-@@ -4,5 +4,6 @@
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmG7zFsACgkQhvpINdm7
+VJKp+RAAvnmbmdybOyb+JXGpQAepzIFk16eBmYHtyb1lV65k7i6dCfJc25pBpLdg
+gbL+L4SyRy+ddZd5FTFIdGC9r8ovcd9c6pO0+kVx0TP8oYR+HiWPXr0YcSdpVlwN
+g0X936M9TDy4ZG2X7HCI5+CRF1/m+gC3VWD8yvYQDw/Fowoh0kF0uNyTWlWIjd33
+4inV9LGx09Z+Zdn7gFHV8A3uAmpQOQIiJbYzSzc5K8tPtTQ3ZjwdFhbppcPq+ELF
+3wrq1fJUwxW+hVmLBGPk3OSb17Y5kHMyxFaZ+A8uXSVZ7g7Gm0ryHwqUyG9xGnkW
+LWciakM1Ghbr2wC3IjBiRDYdmTljMay1QznDj7T2LCeaQRr7ZJohN3i5eP092VD8
+++Pn+lyGIZIsCYF8xW+995AgHF9Itr85zquKW0697xHhi9z8V9CzXd2jm021LCDU
+G4OFwEVs9XvEZHq1yMbwZtdh3ybrOXFkDSHNTNJMfdQZEtWR0ExYrEKWrpx2muk5
+5ImMPXTXQjy4nEJi4nodV9lJCJWRoroHO6jHa4qRFsxTi5JWhBlXh7uVbO/OjUuG
+hdlkeuOjYgf2TilORF0LYbChFLO70BSkCKYfmehajEB2JpF7MAYLTcjp/sTrl3rV
+1e0rC7P8OzUtXlXbbaDzO6tfVqLjDuHr4fiT3gMeJNvv+bwDefw=
+=T7Jt
+-----END PGP SIGNATURE-----
 
- # When adding new entries keep the list in alphabetical order
-
-+obj-$(CONFIG_AS5600)		+= as5600.o
- obj-$(CONFIG_HID_SENSOR_CUSTOM_INTEL_HINGE) += hid-sensor-custom-intel-hinge.o
- obj-$(CONFIG_IQS624_POS)	+= iqs624-pos.o
-diff --git a/drivers/iio/position/as5600.c b/drivers/iio/position/as5600.c
-new file mode 100644
-index 000000000000..2b160fd3a795
---- /dev/null
-+++ b/drivers/iio/position/as5600.c
-@@ -0,0 +1,309 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * ams AS5600 -- 12-Bit Programmable Contactless Potentiometer
-+ *
-+ * Copyright 2021, Frank Zago
-+ *
-+ * datasheet v1.06 (2018-Jun-20):
-+ *    https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
-+ *
-+ * The rotating magnet is installed from 0.5mm to 3mm parallel to and
-+ * above the chip.
-+ *
-+ * The raw angle value returned by the chip is [0..4095]. The channel
-+ * 0 (in_angl0_raw) returns the unscaled and unmodified angle, always
-+ * covering the 360 degrees. The channel 1 returns the chip adjusted
-+ * angle, covering from 18 to 360 degrees, as modified by its
-+ * ZPOS/MPOS/MANG values,
-+ *
-+ * ZPOS and MPOS can be programmed through their sysfs entries. The
-+ * MANG register doesn't appear to be programmable without flashing
-+ * the chip.
-+ *
-+ * If the DIR pin is grounded, angles will increase when the magnet is
-+ * turned clockwise. If DIR is connected to Vcc, it will be the opposite.
-+ *
-+ * Permanent programming of the MPOS/ZPOS/MANG/CONF registers is not
-+ * implemented.
-+ *
-+ * The i2c address of the device is 0x36.
-+ */
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/i2c.h>
-+#include <linux/delay.h>
-+
-+/* Registers and their fields, as defined in the datasheet */
-+#define REG_ZMCO 0x00
-+#define   REG_ZMCO_ZMCO GENMASK(1, 0)
-+#define REG_ZPOS 0x01
-+#define   REG_ZPOS_ZPOS GENMASK(11, 0)
-+#define REG_MPOS 0x03
-+#define   REG_MPOS_MPOS GENMASK(11, 0)
-+#define REG_MANG 0x05
-+#define   REG_MANG_MANG GENMASK(11, 0)
-+#define REG_CONF 0x07
-+#define   REG_CONF_PM   GENMASK(1, 0)
-+#define   REG_CONF_HYST GENMASK(3, 2)
-+#define   REG_CONF_OUTS GENMASK(5, 4)
-+#define   REG_CONF_PWMF GENMASK(7, 6)
-+#define   REG_CONF_SF   GENMASK(9, 8)
-+#define   REG_CONF_FTH  GENMASK(12, 10)
-+#define   REG_CONF_WD   BIT(13)
-+#define REG_STATUS 0x0b
-+#define   REG_STATUS_MH BIT(3)
-+#define   REG_STATUS_ML BIT(4)
-+#define   REG_STATUS_MD BIT(5)
-+#define REG_RAW_ANGLE 0x0c
-+#define   REG_RAW_ANGLE_ANGLE GENMASK(11, 0)
-+#define REG_ANGLE 0x0e
-+#define   REG_ANGLE_ANGLE GENMASK(11, 0)
-+#define REG_AGC 0x1a
-+#define   REG_AGC_AGC GENMASK(7, 0)
-+#define REG_MAGNITUDE 0x1b
-+#define   REG_MAGNITUDE_MAGNITUDE GENMASK(11, 0)
-+#define REG_BURN 0xff
-+
-+/* To simplify some code, the register index and each fields bitmask
-+ * are encoded in the address field of the sysfs attributes and
-+ * iio_chan_spec. field_get and field_prep are runtime versions of the
-+ * FIELD_GET/FIELD_PREP macros.
-+ */
-+#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
-+#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
-+
-+#define to_address(reg, field) ((REG_##reg << 16) | REG_##reg##_##field)
-+#define reg_from_address(address) (address >> 16)
-+#define mask_from_address(address) (address & 0xffff)
-+
-+struct as5600_priv {
-+	struct iio_dev *iio_dev;
-+	struct i2c_client *client;
-+};
-+
-+static int as5600_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *chan,
-+			   int *val, int *val2, long mask)
-+{
-+	struct as5600_priv *priv = iio_priv(indio_dev);
-+	u16 bitmask;
-+	s32 angle;
-+	u16 reg;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		reg = reg_from_address(chan->address);
-+		bitmask = mask_from_address(chan->address);
-+		angle = i2c_smbus_read_word_swapped(priv->client, reg);
-+		if (angle < 0)
-+			return angle;
-+		*val = field_get(bitmask, angle);
-+
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 4095;
-+
-+		return IIO_VAL_INT;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static ssize_t rs5600_attr_show(struct device *dev,
-+				struct device_attribute *attr, char *buf)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct as5600_priv *priv = iio_priv(indio_dev);
-+	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-+	unsigned int reg = reg_from_address(this_attr->address);
-+	unsigned int mask = mask_from_address(this_attr->address);
-+	int ret;
-+
-+	switch (reg) {
-+	case REG_ZMCO:
-+	case REG_STATUS:
-+	case REG_AGC:
-+		ret = i2c_smbus_read_byte_data(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+		return sysfs_emit(buf, "%u\n", field_get(mask, ret));
-+
-+	case REG_ZPOS:
-+	case REG_MPOS:
-+	case REG_MANG:
-+	case REG_CONF:
-+	case REG_MAGNITUDE:
-+		ret = i2c_smbus_read_word_swapped(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+		return sysfs_emit(buf, "%u\n", field_get(mask, ret));
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static ssize_t rs5600_attr_store(struct device *dev,
-+				 struct device_attribute *attr,
-+				 const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-+	struct as5600_priv *priv = iio_priv(indio_dev);
-+	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-+	unsigned int reg = reg_from_address(this_attr->address);
-+	unsigned int mask = mask_from_address(this_attr->address);
-+	u16 val_in;
-+	u16 out;
-+	int ret;
-+
-+	ret = kstrtou16(buf, 0, &val_in);
-+	if (ret)
-+		return ret;
-+
-+	switch (reg) {
-+	case REG_ZPOS:
-+	case REG_MPOS:
-+	case REG_CONF:
-+		/* Read then write, as per spec */
-+		ret = i2c_smbus_read_word_swapped(priv->client, reg);
-+		if (ret < 0)
-+			return ret;
-+
-+		out = ret & ~mask;
-+		out |= field_prep(mask, val_in);
-+
-+		ret = i2c_smbus_write_word_swapped(priv->client, reg, out);
-+		if (ret < 0)
-+			return ret;
-+		break;
-+	}
-+
-+	return len;
-+}
-+
-+#define AS5600_ATTR_RO(name, reg, field)				\
-+	IIO_DEVICE_ATTR(name, 0444, rs5600_attr_show, NULL, to_address(reg, field))
-+
-+#define AS5600_ATTR_RW(name, reg, field)				\
-+	IIO_DEVICE_ATTR(name, 0644, rs5600_attr_show, rs5600_attr_store, \
-+			to_address(reg, field))
-+
-+static AS5600_ATTR_RO(zmco, ZMCO, ZMCO);
-+static AS5600_ATTR_RO(conf_pm, CONF, PM);
-+static AS5600_ATTR_RO(conf_hyst, CONF, HYST);
-+static AS5600_ATTR_RO(conf_outs, CONF, OUTS);
-+static AS5600_ATTR_RO(conf_pwmf, CONF, PWMF);
-+static AS5600_ATTR_RO(conf_sf, CONF, SF);
-+static AS5600_ATTR_RO(conf_fth, CONF, FTH);
-+static AS5600_ATTR_RO(conf_wd, CONF, WD);
-+static AS5600_ATTR_RO(mang, MANG, MANG);
-+static AS5600_ATTR_RO(status_mh, STATUS, MH);
-+static AS5600_ATTR_RO(status_ml, STATUS, ML);
-+static AS5600_ATTR_RO(status_md, STATUS, MD);
-+static AS5600_ATTR_RO(agc, AGC, AGC);
-+static AS5600_ATTR_RO(magnitude, MAGNITUDE, MAGNITUDE);
-+
-+static AS5600_ATTR_RW(zpos, ZPOS, ZPOS);
-+static AS5600_ATTR_RW(mpos, MPOS, MPOS);
-+
-+static struct attribute *as5600_attributes[] = {
-+	&iio_dev_attr_zmco.dev_attr.attr,
-+	&iio_dev_attr_zpos.dev_attr.attr,
-+	&iio_dev_attr_mpos.dev_attr.attr,
-+	&iio_dev_attr_mang.dev_attr.attr,
-+	&iio_dev_attr_conf_pm.dev_attr.attr,
-+	&iio_dev_attr_conf_hyst.dev_attr.attr,
-+	&iio_dev_attr_conf_outs.dev_attr.attr,
-+	&iio_dev_attr_conf_pwmf.dev_attr.attr,
-+	&iio_dev_attr_conf_sf.dev_attr.attr,
-+	&iio_dev_attr_conf_fth.dev_attr.attr,
-+	&iio_dev_attr_conf_wd.dev_attr.attr,
-+	&iio_dev_attr_status_mh.dev_attr.attr,
-+	&iio_dev_attr_status_ml.dev_attr.attr,
-+	&iio_dev_attr_status_md.dev_attr.attr,
-+	&iio_dev_attr_agc.dev_attr.attr,
-+	&iio_dev_attr_magnitude.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group as5600_attr_group = {
-+	.attrs = as5600_attributes,
-+};
-+
-+static const struct iio_chan_spec as5600_channels[] = {
-+	{
-+		.type = IIO_ANGL,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_SCALE),
-+		.indexed = 1,
-+		.channel = 0,
-+		.address = to_address(RAW_ANGLE, ANGLE),
-+	},
-+	{
-+		.type = IIO_ANGL,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_SCALE),
-+		.indexed = 1,
-+		.channel = 1,
-+		.address = to_address(ANGLE, ANGLE),
-+	},
-+};
-+
-+static const struct iio_info as5600_info = {
-+	.read_raw = &as5600_read_raw,
-+	.attrs = &as5600_attr_group,
-+};
-+
-+static int as5600_probe(struct i2c_client *client,
-+			const struct i2c_device_id *id)
-+{
-+	struct as5600_priv *priv;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*priv));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	priv = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	priv->client = client;
-+
-+	indio_dev->info = &as5600_info;
-+	indio_dev->name = "as5600";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = as5600_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(as5600_channels);
-+
-+	ret = i2c_smbus_read_byte_data(client, REG_STATUS);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* No magnet present could be a problem. */
-+	if ((ret & REG_STATUS_MD) == 0)
-+		dev_warn(&client->dev, "Magnet not detected\n");
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct i2c_device_id as5600_i2c_id[] = {
-+	{"as5600", 0},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, as5600_i2c_id);
-+
-+static struct i2c_driver as5600_driver = {
-+	.driver = {
-+		.name = "as5600_i2c",
-+	},
-+	.probe = as5600_probe,
-+	.id_table   = as5600_i2c_id,
-+};
-+
-+module_i2c_driver(as5600_driver);
-+
-+MODULE_AUTHOR("Frank Zago <frank@zago.net>");
-+MODULE_DESCRIPTION("ams AS5600 Contactless Potentiometer");
-+MODULE_LICENSE("GPL");
---
-2.32.0
+--BZkDPSvlzJ4nFggh--

@@ -2,92 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2079477917
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 17:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4865D477944
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 17:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229996AbhLPQa4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 11:30:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        id S230405AbhLPQfp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 11:35:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239114AbhLPQaz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 11:30:55 -0500
-Received: from balrog.mythic-beasts.com (balrog.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BBAAC061574
-        for <linux-iio@vger.kernel.org>; Thu, 16 Dec 2021 08:30:55 -0800 (PST)
-Received: from [81.101.6.87] (port=48036 helo=jic23-huawei)
-        by balrog.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        with ESMTP id S229962AbhLPQfp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 11:35:45 -0500
+Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 535C5C061574;
+        Thu, 16 Dec 2021 08:35:45 -0800 (PST)
+Received: from [81.101.6.87] (port=52584 helo=jic23-huawei)
+        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1mxteb-0001z0-75; Thu, 16 Dec 2021 16:30:53 +0000
-Date:   Thu, 16 Dec 2021 16:36:14 +0000
+        id 1mxtjH-0006oe-Di; Thu, 16 Dec 2021 16:35:39 +0000
+Date:   Thu, 16 Dec 2021 16:41:00 +0000
 From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Marc Titinger <mtitinger@baylibre.com>,
-        Matt Ranostay <mranostay@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/3] iio: as3935: Remove unnecessary cast
-Message-ID: <20211216163606.2590bcc3@jic23-huawei>
-In-Reply-To: <CAHp75VdDB92KGALRhBoepmBZQiXqUK7n4AmpM4mbSxKDku0f8Q@mail.gmail.com>
-References: <20211209161730.396848-1-lars@metafoo.de>
-        <CAHp75VdDB92KGALRhBoepmBZQiXqUK7n4AmpM4mbSxKDku0f8Q@mail.gmail.com>
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     <festevam@gmail.com>, <linux-imx@nxp.com>, <kernel@pengutronix.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] mailmap: Update email address for Cai Huoqing
+Message-ID: <20211216164051.10225276@jic23-huawei>
+In-Reply-To: <20211206025034.2729-1-caihuoqing@baidu.com>
+References: <20211206025034.2729-1-caihuoqing@baidu.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 4
-X-Spam-Status: No, score=0.4
+X-BlackCat-Spam-Score: 19
+X-Spam-Status: No, score=1.9
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Dec 2021 00:13:49 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 6 Dec 2021 10:50:34 +0800
+Cai Huoqing <caihuoqing@baidu.com> wrote:
 
-> On Thursday, December 9, 2021, Lars-Peter Clausen <lars@metafoo.de> wrote:
+> The caihuoqing@baidu.com would be deprecated and use cai.huoqing@linux.dev
+> as the main email address.
 > 
-> > `buf` is cast to a const char *, but `buf` is already a const char *, so
-> > the case is unnecessary.
-> >
-> > Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> > ---
-> >  drivers/iio/proximity/as3935.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/
-> > as3935.c
-> > index d62766b6b39e..51f4f92ae84a 100644
-> > --- a/drivers/iio/proximity/as3935.c
-> > +++ b/drivers/iio/proximity/as3935.c
-> > @@ -133,7 +133,7 @@ static ssize_t as3935_sensor_sensitivity_store(struct
-> > device *dev,
-> >         unsigned long val;
-> >         int ret;
-> >
-> > -       ret = kstrtoul((const char *) buf, 10, &val);
-> > +       ret = kstrtoul(buf, 10, &val);
-> >         if (ret)
-> >                 return -EINVAL;  
-> 
-> 
-> 
-> A bit out of scope, but this eventually should be
-> 
-Agreed this could do with a follow up, as should the other one you
-point out, but in the spirit of single purpose series I've applied
-this set to the togreg branch of iio.git - pushed out as testing
-and look forward to the follow ups ;)
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+
+Which maintainer wants to pick this one up?  I can take it via iio if that
+is fine with others.
+
+Thanks,
 
 Jonathan
 
->   return ret;
+
+> ---
+>  .mailmap | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> 
-> 
-> >
-> > --
-> > 2.30.2
-> >
-> >  
-> 
+> diff --git a/.mailmap b/.mailmap
+> index a83599921b1a..f82b0378df7c 100644
+> --- a/.mailmap
+> +++ b/.mailmap
+> @@ -68,6 +68,7 @@ Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@bootlin.com>
+>  Boris Brezillon <bbrezillon@kernel.org> <boris.brezillon@free-electrons.com>
+>  Brian Avery <b.avery@hp.com>
+>  Brian King <brking@us.ibm.com>
+> +Cai Huoqing <cai.huoqing@linux.dev> <caihuoqing@baidu.com>
+>  Changbin Du <changbin.du@intel.com> <changbin.du@gmail.com>
+>  Changbin Du <changbin.du@intel.com> <changbin.du@intel.com>
+>  Chao Yu <chao@kernel.org> <chao2.yu@samsung.com>
 

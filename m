@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F198E476A50
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 07:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A61A476A57
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 07:25:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234050AbhLPGXR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 01:23:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
+        id S234086AbhLPGZD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 01:25:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234048AbhLPGXR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 01:23:17 -0500
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E319C061574
-        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 22:23:17 -0800 (PST)
-Received: by mail-pj1-x1036.google.com with SMTP id np6-20020a17090b4c4600b001a90b011e06so21624394pjb.5
-        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 22:23:17 -0800 (PST)
+        with ESMTP id S234060AbhLPGZD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 01:25:03 -0500
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2BDDC061574
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 22:25:02 -0800 (PST)
+Received: by mail-pl1-x632.google.com with SMTP id m24so18610928pls.10
+        for <linux-iio@vger.kernel.org>; Wed, 15 Dec 2021 22:25:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HVI2NKrHVTvcW6GUaxXsCBRxeYW7KB585ntOpwS+PNM=;
-        b=GxD8LhXXRC/P7oGHKB5JdLsUHuNAPTru9hgUMrPdLwOFFBE+qnv6ZblTuPE0zokiZb
-         lKqF+vp5acPySCwCNpuPtHG/uPHq9Ay8TCB1j1E/B60ZhEM2QhBBsZuozOq0oN+5Qt+T
-         fbrx0zWht1xpZ/BREKGaxsgpncor67c6kvICy0eP5t7l5t1cnoyePDMXyp7fEHQNB0hW
-         CGcVHf5UA2iJn0hSVFtapLcdwZzsnlOvRI/5ycqzyfzj8TfdpHgC8dVfb6QWnPpq/FHr
-         n2SCehaIFmcsp5N0AaJvQoEUDldEsAMS/KTyhbULxU2wcRixTGS9DfWWunlszq3VF3n0
-         tqXw==
+        bh=OQPjXKQSXu2LvyD7s+gkBn/8M6TFkGGwRB59oSCDPwA=;
+        b=G5oLw5rAubJixi65/UXsCMsBN8rX3HNmvIbgteqMG1co0nbQWjYkTyWzrutVrQfxBV
+         lwuqdMUvIEsbKZ3ddgkxrJoMqKhYWqg7lfNzG704OxbRqzCVjaYQwQUShbOFuVyTJI2s
+         tQEh6rw1uYJBzi4GNJqrpgaLSCvLrO9+JPCfvEnco6OQdlLeKtf1TCHDEQ6hx6ZAw7KM
+         MrDhrUeri9RvEDaNq8JOj2e+t8SZ1RszsMYPVLfHGhLb1xP2IK8B8NJV2kIteaAd7+IB
+         ltaNqvY1Vg+ByGgdnvSmA5hwCvKXB6MlaiYt12W5bdUhngmZ924V0+c9aEmlRLIdjk5I
+         n8JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HVI2NKrHVTvcW6GUaxXsCBRxeYW7KB585ntOpwS+PNM=;
-        b=MwzbwzFFQGo9ebfsgLh6ICv7XSWYf+dYRbaD/LFJB+ss1sJ+jNOq8BuRqxA7bRsmuG
-         jb3J0wA5uwIJ2aUF8b10834Msth2xZi5s4odpsmZNXHwQyFLqAlzd6qxGH/zdmsy/pEG
-         TudV/+2jtb/wm8I7bpHdVLemNmTVOYPFyEIZcLYtZmld0NOLoMvPeHe1vO76bnPHQPyO
-         j5+TSfVXQKh/nV4ADCoWG/jg3yBeUjpc3IUiyqcUvjdSiZI0LncB4n1jpN2dyB3MwKh2
-         oC0Q5EAQPfKJ7Vm9HE6KhIKOaU69AR8NNPwwsd/TqoVZ0COlFQ17qRnFf2i7VJftDCr5
-         jORA==
-X-Gm-Message-State: AOAM530GgjUR2fes7jYZ5ya7r+CAHC1x0BUTT4zHnRlELNXFSWfiX2YI
-        b3IR78sKD0bfOty+nmQVDzLN2g1KWFDYSDVUf4KXgHCScsw=
-X-Google-Smtp-Source: ABdhPJz2am10ME+subur1bmRf1XMOL6C16S+wySTnX3Gq2v4N4aqbjwH9y4NRue0yo/hrr+XPx1D4HCO5Q443smlxdA=
-X-Received: by 2002:a17:902:7b88:b0:148:91ab:be83 with SMTP id
- w8-20020a1709027b8800b0014891abbe83mr12653044pll.88.1639635796805; Wed, 15
- Dec 2021 22:23:16 -0800 (PST)
+        bh=OQPjXKQSXu2LvyD7s+gkBn/8M6TFkGGwRB59oSCDPwA=;
+        b=lJL4m/dn5iqAikSxVWPo1+IQiUkbA4KOnIiRKYIRImv3fnsfHZ4FsefzV7mWbLUkUh
+         7YY5X4F7Vag0i429Xkc3co1BF2S724YHSNOXgbInvU+RF2OHMOOkUDgp+3C988wM5Pi4
+         z1uswlVsCjiQoYuSVHPK+3jTP4wRoIKsgtRdE1o6PsbrT0be+8De/w7UJAmlupjauqky
+         e8hopjISG8HcLomPqIN/rPjCezmfC4lp1K7fhF14A5icAZfEl8wWvM+RjxdXUDFvoSRl
+         tqobNibnosLhU1xBZ563WAix1K2C61/yHKUn5kwprp4KIjUxsW1qFOSX/gAfWUUnkpM2
+         ujjQ==
+X-Gm-Message-State: AOAM531Xw3g0Z5wtdUBghPmAlL+0wAeOa9HFtZmpbe15i9C4y8Di+Tw1
+        Lb1aMx2hju5UiUdTEHgjpRL4LbMQ99nqTvliHD4=
+X-Google-Smtp-Source: ABdhPJxmFfzXOJlN+xVoQdiDzOLU5cqqGDM0dNT8Whxb+6ARNmAQDFHB3SVc491Slbtw2cKwco9nx70Rngva8LSlKQ8=
+X-Received: by 2002:a17:90b:30d7:: with SMTP id hi23mr4217442pjb.81.1639635902414;
+ Wed, 15 Dec 2021 22:25:02 -0800 (PST)
 MIME-Version: 1.0
-References: <20211215151344.163036-1-miquel.raynal@bootlin.com> <20211215151344.163036-2-miquel.raynal@bootlin.com>
-In-Reply-To: <20211215151344.163036-2-miquel.raynal@bootlin.com>
+References: <20211215151344.163036-1-miquel.raynal@bootlin.com> <20211215151344.163036-3-miquel.raynal@bootlin.com>
+In-Reply-To: <20211215151344.163036-3-miquel.raynal@bootlin.com>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 16 Dec 2021 08:23:05 +0200
-Message-ID: <CA+U=DsrrCQir166YQTk+D9Y1QfHO5rCh42DkCiLSeaB02KYoAQ@mail.gmail.com>
-Subject: Re: [PATCH 01/10] iio: core: Fix the kernel doc regarding the
- currentmode iio_dev entry
+Date:   Thu, 16 Dec 2021 08:24:51 +0200
+Message-ID: <CA+U=Dsq_HewmCchxauGe6YKpWaNBAb5rP3xvzNQ6K7n7KpbpvA@mail.gmail.com>
+Subject: Re: [PATCH 02/10] iio: core: Enhance the kernel doc of modes and
+ currentmodes iio_dev entries
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -65,27 +64,39 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
 <miquel.raynal@bootlin.com> wrote:
 >
-> This is an internal variable, which should be accessed in a very
-> sporadic way and in no case changed by any device driver.
-
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
-
+> Let's provide more details about these two variables because their
+> understanding may not be straightforward for someone not used to the IIO
+> subsystem internal logic. The different modes will soon be also be more
+> documented for the same reason.
 >
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > ---
->  include/linux/iio/iio.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/linux/iio/iio.h | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 >
 > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 324561b7a5e8..06433c2c2968 100644
+> index 06433c2c2968..0312da2e83f8 100644
 > --- a/include/linux/iio/iio.h
 > +++ b/include/linux/iio/iio.h
-> @@ -488,7 +488,7 @@ struct iio_buffer_setup_ops {
+> @@ -487,8 +487,14 @@ struct iio_buffer_setup_ops {
+>
 >  /**
 >   * struct iio_dev - industrial I/O device
->   * @modes:             [DRIVER] operating modes supported by device
-> - * @currentmode:       [DRIVER] current operating mode
-> + * @currentmode:       [INTERN] current operating mode
+> - * @modes:             [DRIVER] operating modes supported by device
+> - * @currentmode:       [INTERN] current operating mode
+> + * @modes:             [DRIVER] list of operating modes supported by the IIO
+
+I'd argue that it may make sense to highlight that this list of modes
+is represented as a bitmask.
+When reading docs, it may not be obvious at first (I guess).
+
+> + *                     device, this list should be initialized before
+> + *                     registering the IIO device and can be filed up by the
+> + *                     IIO core depending on the features advertised by the
+> + *                     driver during other steps of the registration
+> + * @currentmode:       [INTERN] operating mode currently in use, may be
+> + *                     eventually checked by device drivers but should be
+> + *                     considered read-only as this is a core internal bit
 >   * @dev:               [DRIVER] device structure, should be assigned a parent
 >   *                     and owner
 >   * @buffer:            [DRIVER] any buffer present

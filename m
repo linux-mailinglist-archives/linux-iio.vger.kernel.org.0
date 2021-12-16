@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13487477BF5
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 19:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD24477BFB
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Dec 2021 19:52:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236376AbhLPSwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 13:52:25 -0500
-Received: from www381.your-server.de ([78.46.137.84]:47624 "EHLO
+        id S236428AbhLPSw1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Dec 2021 13:52:27 -0500
+Received: from www381.your-server.de ([78.46.137.84]:47646 "EHLO
         www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236343AbhLPSwY (ORCPT
+        with ESMTP id S236404AbhLPSwY (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 13:52:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
          s=default2002; h=Content-Transfer-Encoding:MIME-Version:References:
         In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
         Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
         Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=4kuUEpQU78qLO/yQEkNwNzCVPsFNFf8sfMxWcmFuQjQ=; b=YQc9Xgc5V2Lgzp7upm2tKDC29x
-        FlUx93KB62UBcHeOdmNJ6j1bSQ6dNYrQC1u431LluJAh7H1kHxjX1beCi533K56wz2MkIeyhJEqd4
-        Ljnvrx21wc5631RRPK8lmmtJHvPEFtCd47fzSMACFOklN26XTUOhtU4mve92o8CAe3qwerJV+Kd6P
-        qXHOIuFQuJuhduGtrBrxtLFdRXYiNMPEFo09Oz55BWHd7G7x6+umsJJjXwfNzmcyLpdqk2M8J4fM8
-        vy9vDYU+AJfhsM7w4a/uq+zrKxgXIdeK74mFdVicA8dRJRTz3D2YMCoaZhOtJCR0+jW4eU2g8NejF
-        N/xjq+/w==;
+        bh=BBaC//QzMa0MkeC/oNIh9AeCy5tSskx0B8Tv7sgSUEo=; b=S2WVY1Vy7o/+sC4cDnD+6yljpW
+        9Em50yTymWGtqvaOcaYI/L/RXQeyOLDE3sJDW1Y17aNQlQn53vfbLLtBFbmqZycTNk2/UFQeXP2QC
+        QEBej5MPa8BmWQPenABToQRuehZd3u7Cmq7t5sMg7xQ6mT9mUHgwqyq12mFz/geRKZjH/MtSLmMhU
+        AJqcIRirsd/ylMif2C/tHYgoHNfxbx0Tn6cllcqWOOohFSpLl0AMNdRcXVk9sijP285MW3aKKgy60
+        R7GqRGO7vTiW99HnwPZtj2H4DZLLzBJ221buPqvRbRLFyJ5LxSYvn0BX9SPt3sPPwpUxBGcq1+mU7
+        tbT2lGmw==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
         by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92.3)
         (envelope-from <lars@metafoo.de>)
-        id 1mxvra-000AS4-Lp; Thu, 16 Dec 2021 19:52:22 +0100
+        id 1mxvra-000AS7-T5; Thu, 16 Dec 2021 19:52:22 +0100
 Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578] (helo=lars-desktop.fritz.box)
         by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <lars@metafoo.de>)
-        id 1mxvra-000HSt-BE; Thu, 16 Dec 2021 19:52:22 +0100
+        id 1mxvra-000HSt-IY; Thu, 16 Dec 2021 19:52:22 +0100
 From:   Lars-Peter Clausen <lars@metafoo.de>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -46,9 +46,9 @@ Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
         Jacopo Mondi <jacopo+renesas@jmondi.org>,
         Ludovic Tancerel <ludovic.tancerel@maplehightech.com>,
         linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH 03/13] iio: ad7192: Use sysfs_emit()
-Date:   Thu, 16 Dec 2021 19:52:07 +0100
-Message-Id: <20211216185217.1054495-4-lars@metafoo.de>
+Subject: [PATCH 04/13] iio: ad9523: Use sysfs_emit()
+Date:   Thu, 16 Dec 2021 19:52:08 +0100
+Message-Id: <20211216185217.1054495-5-lars@metafoo.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211216185217.1054495-1-lars@metafoo.de>
 References: <20211216185217.1054495-1-lars@metafoo.de>
@@ -64,36 +64,27 @@ sysfs_emit() is preferred over raw s*printf() for sysfs attributes since it
 knows about the sysfs buffer specifics and has some built-in checks for
 size and alignment.
 
-Use sysfs_emit() to format the custom `ac_excication` and `bridge_swtich`
-attributes of the ad7192 driver.
+Use sysfs_emit() to format the custom device attributes of the ad9523
+driver.
 
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 ---
- drivers/iio/adc/ad7192.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/frequency/ad9523.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index cc990205f306..47d3f56edcbc 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -433,7 +433,7 @@ static ssize_t ad7192_show_ac_excitation(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7192_state *st = iio_priv(indio_dev);
- 
--	return sprintf(buf, "%d\n", !!(st->mode & AD7192_MODE_ACX));
-+	return sysfs_emit(buf, "%d\n", !!(st->mode & AD7192_MODE_ACX));
- }
- 
- static ssize_t ad7192_show_bridge_switch(struct device *dev,
-@@ -443,7 +443,7 @@ static ssize_t ad7192_show_bridge_switch(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7192_state *st = iio_priv(indio_dev);
- 
--	return sprintf(buf, "%d\n", !!(st->gpocon & AD7192_GPOCON_BPDSW));
-+	return sysfs_emit(buf, "%d\n", !!(st->gpocon & AD7192_GPOCON_BPDSW));
- }
- 
- static ssize_t ad7192_set(struct device *dev,
+diff --git a/drivers/iio/frequency/ad9523.c b/drivers/iio/frequency/ad9523.c
+index bdb0bc3b12dd..a0f92c336fc4 100644
+--- a/drivers/iio/frequency/ad9523.c
++++ b/drivers/iio/frequency/ad9523.c
+@@ -551,7 +551,7 @@ static ssize_t ad9523_show(struct device *dev,
+ 	mutex_lock(&st->lock);
+ 	ret = ad9523_read(indio_dev, AD9523_READBACK_0);
+ 	if (ret >= 0) {
+-		ret = sprintf(buf, "%d\n", !!(ret & (1 <<
++		ret = sysfs_emit(buf, "%d\n", !!(ret & (1 <<
+ 			(u32)this_attr->address)));
+ 	}
+ 	mutex_unlock(&st->lock);
 -- 
 2.30.2
 

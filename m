@@ -2,74 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F45C4785AA
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 08:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7264786AF
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 10:04:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230224AbhLQHlM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Dec 2021 02:41:12 -0500
-Received: from mga01.intel.com ([192.55.52.88]:20314 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229725AbhLQHlM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 17 Dec 2021 02:41:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639726872; x=1671262872;
-  h=from:to:cc:subject:date:message-id;
-  bh=1dLPK95x3eU2yzo1L8SF2MlB2t5nsUGwVoHTt5tWHBA=;
-  b=i/cPL8FYNv22vF+Y8z4Mpv3yOF9KXIHLxgDlBAP+Aad+BSGt5Rl5sw38
-   uYmsCprwnYxX87eL/CRTWw1I/LbPKd4cXLxMuiTCAYgGhr/ibVzrHaHFO
-   faJznsvx5mVOOVThSAfurQJ8wFo8+VLTt5q9Vqfm6N0dEh/su7/hC7/wG
-   6EjTaG66256NREZDZfWgpobfVuUXMia5qoA6cpNFd39AIwKTgxBX7Dter
-   UuRlCFjsANpxN8cq4BpB6ABdIZvNSszsbV4tgOylXaBbxIjVNwh5Jsygm
-   A61B5KqOemvE1TDSVfEPOfsctxhy3q0QkdxUfuYIbNpxAnH823GBURisM
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10200"; a="263872883"
-X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
-   d="scan'208";a="263872883"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 23:41:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
-   d="scan'208";a="506669099"
-Received: from host.sh.intel.com ([10.239.154.115])
-  by orsmga007.jf.intel.com with ESMTP; 16 Dec 2021 23:41:09 -0800
-From:   Ye Xiang <xiang.ye@intel.com>
-To:     jikos@kernel.org, jic23@kernel.org,
-        srinivas.pandruvada@linux.intel.com
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
-Subject: [PATCH] HID: intel-ish-hid: ipc: Specify no cache snooping on TGL and ADL
-Date:   Fri, 17 Dec 2021 15:45:41 +0800
-Message-Id: <20211217074541.4705-1-xiang.ye@intel.com>
-X-Mailer: git-send-email 2.17.1
+        id S232297AbhLQJE5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Dec 2021 04:04:57 -0500
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:48003 "EHLO
+        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229712AbhLQJE5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Dec 2021 04:04:57 -0500
+Received: (Authenticated sender: jacopo@jmondi.org)
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 30CEB1C000E;
+        Fri, 17 Dec 2021 09:04:50 +0000 (UTC)
+Date:   Fri, 17 Dec 2021 10:05:43 +0100
+From:   Jacopo Mondi <jacopo@jmondi.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Roan van Dijk <roan@protonic.nl>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
+        Marc Titinger <mtitinger@baylibre.com>,
+        Matt Ranostay <mranostay@gmail.com>,
+        Johan Hovold <johan@kernel.org>,
+        Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>,
+        Navin Sankar Velliangiri <navin@linumiz.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Ludovic Tancerel <ludovic.tancerel@maplehightech.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 10/13] iio: max9611: Use sysfs_emit()
+Message-ID: <20211217090543.4w3n6nfxxbemqnhb@uno.localdomain>
+References: <20211216185217.1054495-1-lars@metafoo.de>
+ <20211216185217.1054495-11-lars@metafoo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211216185217.1054495-11-lars@metafoo.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Specify that both TGL and ADL don't support DMA cache snooping.
+Hi Lars-Peter,
 
-Signed-off-by: Ye Xiang <xiang.ye@intel.com>
----
- drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On Thu, Dec 16, 2021 at 07:52:14PM +0100, Lars-Peter Clausen wrote:
+> sysfs_emit() is preferred over raw s*printf() for sysfs attributes since it
+> knows about the sysfs buffer specifics and has some built-in checks for
+> size and alignment.
+>
+> Use sysfs_emit() to format the custom `in_power_shunt_resistor` and
+> `in_current_shunt_resistor` device attributes of the max9611 driver.
+>
+> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index 45e0c7b1c9ec..8ccb246b0114 100644
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -909,7 +909,11 @@ static uint32_t ish_ipc_get_header(struct ishtp_device *dev, int length,
-  */
- static bool _dma_no_cache_snooping(struct ishtp_device *dev)
- {
--	return dev->pdev->device == EHL_Ax_DEVICE_ID;
-+	return (dev->pdev->device == EHL_Ax_DEVICE_ID ||
-+		dev->pdev->device == TGL_LP_DEVICE_ID ||
-+		dev->pdev->device == TGL_H_DEVICE_ID ||
-+		dev->pdev->device == ADL_S_DEVICE_ID ||
-+		dev->pdev->device == ADL_P_DEVICE_ID);
- }
- 
- static const struct ishtp_hw_ops ish_hw_ops = {
--- 
-2.17.1
+Looks good, I just wonder if a dependency on the CONFIG_SYSFS symbol
+should now be added...
 
+Thanks
+   j
+
+> ---
+>  drivers/iio/adc/max9611.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/max9611.c b/drivers/iio/adc/max9611.c
+> index 01a4275e9c46..f982f00303dc 100644
+> --- a/drivers/iio/adc/max9611.c
+> +++ b/drivers/iio/adc/max9611.c
+> @@ -429,7 +429,7 @@ static ssize_t max9611_shunt_resistor_show(struct device *dev,
+>  	i = max9611->shunt_resistor_uohm / 1000000;
+>  	r = max9611->shunt_resistor_uohm % 1000000;
+>
+> -	return sprintf(buf, "%u.%06u\n", i, r);
+> +	return sysfs_emit(buf, "%u.%06u\n", i, r);
+>  }
+>
+>  static IIO_DEVICE_ATTR(in_power_shunt_resistor, 0444,
+> --
+> 2.30.2
+>

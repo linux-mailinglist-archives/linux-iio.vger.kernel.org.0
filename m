@@ -2,121 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D2F44783C8
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 04:50:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F45C4785AA
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 08:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232549AbhLQDuB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Dec 2021 22:50:01 -0500
-Received: from out162-62-57-252.mail.qq.com ([162.62.57.252]:45135 "EHLO
-        out162-62-57-252.mail.qq.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230426AbhLQDuB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Dec 2021 22:50:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1639712998;
-        bh=Y5C1Oy7HePuCeUWI/JcEuK7VYUM29jY2xRbaqqIBPm0=;
-        h=From:To:Cc:Subject:Date;
-        b=uBbGFClyO4MNLvuyS9R8Mns9eWbxX0EcMhH/BT0VCB305nzz8eHGUW/uhACl+xZW/
-         qwX5gs+vNUQKw7y9wgpVwfcK2CSFcDyml/zR6EjWUb6pe/6PNMYuWIViUygUFGVwG6
-         qx+bvHUEaexu9iMeJJV6Mw8JkhayfitLS1NZhLTI=
-Received: from localhost.localdomain ([218.197.153.188])
-        by newxmesmtplogicsvrszc6.qq.com (NewEsmtp) with SMTP
-        id C2620A0F; Fri, 17 Dec 2021 11:48:38 +0800
-X-QQ-mid: xmsmtpt1639712918ta5cvz6iy
-Message-ID: <tencent_E14226FC5CC9EF3F18C480D9249783C39B05@qq.com>
-X-QQ-XMAILINFO: NzOHSugmTg7X+KikSiSMQqO7lq77jNkYNHD4glxE9ZdxJfaHwTrT7x8UGlDw2u
-         znYh3oj/QzagAtLkxeIVwiiMJDb8Uy3DnBTHDuE1xirEQkIi0161weBNJN2UMELvNeXEskDK0CGK
-         lbcktlrSHwNpb0AK/NccjSu0m4KFV6+0sWIlFlgWYz5MOHqhA+XRQYP+yEFsCKNviIb/rjGhUx6A
-         t644z5attidOmdqBaH4HxXqRRMoXT04/8jVTMJONStMVPkpdkanztoInAGO7ipsXYMBpm14SSwEh
-         SQEFXJlb/5aga632co2mO2W34c9aJQOWzG+d6/ag/3k7zMWaI8csbclY25coPFO+eqK2H+8M6emT
-         3S0JLbXQX6HIu7sT3zTeqFN2udPdlZzWA47R9aJY+1zWRhu81oFcmtbD2NPjfvqvZuR9EroSd1t1
-         AJsEmGhrlFwPImY226Um96MBIRdR/7ckkfX0TbTNTdgvD3tLK7pfK7aaYjuZtLlxJNC5kZi7EoUr
-         H5YtylfajZYJ1qlpXUSyiFTJU1J1jD43poR3t2L8fPj5m9RDSidVRe7AOj7KJ0NqFUnccd4yF2a1
-         CbN4tM28XBrPJ1kZUHsYy9jnDL8ah44/bgyqLUHZZINO1TBYbNeHknBxEy7FAeEMX+R2DMYEOAML
-         pZ/6WWB8OSDmPv2Eqt54WGfsO/hmbKlterP9v13QuFCia5Jp6cz2x2bnbMAlGNo+X2m7MCoTuMWk
-         41KWQFBmpOY1HnguKoBjqzLIbq1Iqiou9OnPxWd/+4Kb2DWQ9HHrpCOkCAGMM/uJw8AnOmc87yXw
-         UZVUS7/KzyZOnUX3+ScoI5nIBh/pRD8j9iJQHatluPp5cqmUaSJVZjvsinD3g6QNNQIjD0283QuY
-         V63WMlOa4AZz9wj6WwZ/c=
-From:   xkernel.wang@foxmail.com
-To:     jic23@kernel.org, jic23@jic23.retrosnub.co.uk
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Xiaoke Wang <xkernel.wang@foxmail.com>
-Subject: [PATCH v2] iio: dummy: iio_simple_dummy: check the return value of kstrdup()
-Date:   Fri, 17 Dec 2021 11:48:28 +0800
-X-OQ-MSGID: <20211217034828.494-1-xkernel.wang@foxmail.com>
-X-Mailer: git-send-email 2.33.0.windows.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S230224AbhLQHlM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Dec 2021 02:41:12 -0500
+Received: from mga01.intel.com ([192.55.52.88]:20314 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229725AbhLQHlM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 17 Dec 2021 02:41:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1639726872; x=1671262872;
+  h=from:to:cc:subject:date:message-id;
+  bh=1dLPK95x3eU2yzo1L8SF2MlB2t5nsUGwVoHTt5tWHBA=;
+  b=i/cPL8FYNv22vF+Y8z4Mpv3yOF9KXIHLxgDlBAP+Aad+BSGt5Rl5sw38
+   uYmsCprwnYxX87eL/CRTWw1I/LbPKd4cXLxMuiTCAYgGhr/ibVzrHaHFO
+   faJznsvx5mVOOVThSAfurQJ8wFo8+VLTt5q9Vqfm6N0dEh/su7/hC7/wG
+   6EjTaG66256NREZDZfWgpobfVuUXMia5qoA6cpNFd39AIwKTgxBX7Dter
+   UuRlCFjsANpxN8cq4BpB6ABdIZvNSszsbV4tgOylXaBbxIjVNwh5Jsygm
+   A61B5KqOemvE1TDSVfEPOfsctxhy3q0QkdxUfuYIbNpxAnH823GBURisM
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10200"; a="263872883"
+X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
+   d="scan'208";a="263872883"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2021 23:41:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
+   d="scan'208";a="506669099"
+Received: from host.sh.intel.com ([10.239.154.115])
+  by orsmga007.jf.intel.com with ESMTP; 16 Dec 2021 23:41:09 -0800
+From:   Ye Xiang <xiang.ye@intel.com>
+To:     jikos@kernel.org, jic23@kernel.org,
+        srinivas.pandruvada@linux.intel.com
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ye Xiang <xiang.ye@intel.com>
+Subject: [PATCH] HID: intel-ish-hid: ipc: Specify no cache snooping on TGL and ADL
+Date:   Fri, 17 Dec 2021 15:45:41 +0800
+Message-Id: <20211217074541.4705-1-xiang.ye@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Xiaoke Wang <xkernel.wang@foxmail.com>
+Specify that both TGL and ADL don't support DMA cache snooping.
 
-kstrdup() is also a memory allocation-related function, it return NULL
-when some memory errors happen. So it is better to check the return
-value of it so to catch the memory error in time. Besides, there should
-have a kfree() to clear up the allocation if we get a failure later in
-this function to prevent memory leak.
-
-Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
+Signed-off-by: Ye Xiang <xiang.ye@intel.com>
 ---
-Changelog:
-1. Clean up some error labels(error_ret & error_kzalloc), directly make
-them reflect what they are clearing up and return.
-2. Clear up indio_dev->name on error path. I put that under label 
-`error_free_device`, as kfree(NULL) is safe. Or I may need to add an
-another label as the traget of `goto`.
-Note: Suggestions are from Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
----
- drivers/iio/dummy/iio_simple_dummy.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
-index c0b7ef9..430c12a 100644
---- a/drivers/iio/dummy/iio_simple_dummy.c
-+++ b/drivers/iio/dummy/iio_simple_dummy.c
-@@ -577,7 +577,7 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	swd = kzalloc(sizeof(*swd), GFP_KERNEL);
- 	if (!swd) {
- 		ret = -ENOMEM;
--		goto error_kzalloc;
-+		return ERR_PTR(ret);
- 	}
- 	/*
- 	 * Allocate an IIO device.
-@@ -589,8 +589,9 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	 */
- 	indio_dev = iio_device_alloc(parent, sizeof(*st));
- 	if (!indio_dev) {
-+		kfree(swd);
- 		ret = -ENOMEM;
--		goto error_ret;
-+		return ERR_PTR(ret);
- 	}
- 
- 	st = iio_priv(indio_dev);
-@@ -616,6 +617,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	 *    indio_dev->name = spi_get_device_id(spi)->name;
- 	 */
- 	indio_dev->name = kstrdup(name, GFP_KERNEL);
-+	if (!indio_dev->name) {
-+		ret = -ENOMEM;
-+		goto error_free_device;
-+	}
- 
- 	/* Provide description of available channels */
- 	indio_dev->channels = iio_dummy_channels;
-@@ -650,10 +655,9 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- error_unregister_events:
- 	iio_simple_dummy_events_unregister(indio_dev);
- error_free_device:
-+	kfree(indio_dev->name);
- 	iio_device_free(indio_dev);
--error_ret:
- 	kfree(swd);
--error_kzalloc:
- 	return ERR_PTR(ret);
+diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
+index 45e0c7b1c9ec..8ccb246b0114 100644
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -909,7 +909,11 @@ static uint32_t ish_ipc_get_header(struct ishtp_device *dev, int length,
+  */
+ static bool _dma_no_cache_snooping(struct ishtp_device *dev)
+ {
+-	return dev->pdev->device == EHL_Ax_DEVICE_ID;
++	return (dev->pdev->device == EHL_Ax_DEVICE_ID ||
++		dev->pdev->device == TGL_LP_DEVICE_ID ||
++		dev->pdev->device == TGL_H_DEVICE_ID ||
++		dev->pdev->device == ADL_S_DEVICE_ID ||
++		dev->pdev->device == ADL_P_DEVICE_ID);
  }
  
+ static const struct ishtp_hw_ops ish_hw_ops = {
 -- 
+2.17.1
+

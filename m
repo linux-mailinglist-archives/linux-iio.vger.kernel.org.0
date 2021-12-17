@@ -2,70 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08AFD478B66
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 13:33:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B61478CA7
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 14:48:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236290AbhLQMdJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Dec 2021 07:33:09 -0500
-Received: from mga04.intel.com ([192.55.52.120]:2609 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236284AbhLQMdI (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 17 Dec 2021 07:33:08 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10200"; a="238488180"
-X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
-   d="scan'208";a="238488180"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2021 04:33:08 -0800
-X-IronPort-AV: E=Sophos;i="5.88,213,1635231600"; 
-   d="scan'208";a="465108799"
-Received: from jvowlesx-mobl.amr.corp.intel.com ([10.212.181.65])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2021 04:33:07 -0800
-Message-ID: <4d8308f4a3249b662536371e14e6cd6ef723f5a9.camel@linux.intel.com>
-Subject: Re: [PATCH] HID: intel-ish-hid: ipc: Specify no cache snooping on
- TGL and ADL
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Ye Xiang <xiang.ye@intel.com>, jikos@kernel.org, jic23@kernel.org
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 17 Dec 2021 04:33:07 -0800
-In-Reply-To: <20211217074541.4705-1-xiang.ye@intel.com>
-References: <20211217074541.4705-1-xiang.ye@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S232882AbhLQNsV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Dec 2021 08:48:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32860 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231431AbhLQNsU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Dec 2021 08:48:20 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22AA3C061574;
+        Fri, 17 Dec 2021 05:48:20 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id t5so8244023edd.0;
+        Fri, 17 Dec 2021 05:48:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:cc
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=/rICO5mcbr2uBdaq/pPN0Bzn1efilMAT4ffUPiNCdb4=;
+        b=niK6deEqJGX3pg286cNmQ9HHOyxiyV+34zA5fBnxdTrZxG80dSDl25Yt/kerta3of9
+         Plhif4lOuCWSd0kUTiIIc1N2mNfH7/inEDUIWiGiuGdofLDbfYIeb6hzy3LMA0/40muC
+         DcZLWMllWo+71GIhfH7dwvV6Nd6mOBy+UfB+rlcRKEcd0JZHdV3EX1C3N7OviZ1t3DyM
+         ykFt8SG8k1/NN/4CxCrf4YsszyI/aIroqGsDbFO07jXlK9Xg2lY7nPYTovXW3eSPvJrv
+         jNjibCQCkphKZs0DQNEpKFYD1cvFm7QaUVIq43R/vSevE4/3F+Q0g3adnHoasalM9NVA
+         Ht7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=/rICO5mcbr2uBdaq/pPN0Bzn1efilMAT4ffUPiNCdb4=;
+        b=KYDZ3kUcJ/bHLiJ4qHEJAodq7xpOe/deoT/lsi9s1MamxbRDHVFn5x0azbzDmrbbs+
+         C9iRd5OCl0RM+BdLmJP7YR7jR1pEZEI09jpz7gohiQb1/sE5Fr0uhpASZGM23j+jYtBK
+         f2LgW8xqgSxiUlSQoQYFYqJN9IE+77Za+7ckhUNvQaxj5aTWrpNOtmIwF5HTXUxPzyf5
+         n/wDlGymD0pmfsy3imNwQDFXfp32/oRe6ibtm4N882yEHEezSeSBZapcpL43eszs5KGZ
+         +cKe7PSMaqLhTYGMGJmqPaEuiyCeDZ4weHu62uFUfENexvJPscKlF0/k0h6IRHx8ohuD
+         tYPA==
+X-Gm-Message-State: AOAM530kyVcu42yUCkhD3ttK7p6t3II+RxKdEnVp5XqSa2PHlLshNE8t
+        GuEVlDJsCdMw2C+p+8nGS+Y=
+X-Google-Smtp-Source: ABdhPJz8kpeSeEqV+gbTHHylwxMzMKKnOuwGN+saTNc06iXRlh4VOWQuvIO2ZcaqE77jsn876PtusA==
+X-Received: by 2002:a17:907:9605:: with SMTP id gb5mr2676709ejc.685.1639748898753;
+        Fri, 17 Dec 2021 05:48:18 -0800 (PST)
+Received: from [192.168.0.182] ([188.24.42.157])
+        by smtp.gmail.com with ESMTPSA id c3sm1254624edr.33.2021.12.17.05.48.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Dec 2021 05:48:18 -0800 (PST)
+Message-ID: <365d71d5-6ba5-2012-e8ab-f790bc7173eb@gmail.com>
+Date:   Fri, 17 Dec 2021 15:48:18 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v3 0/2] Add ADXL367 driver
+Content-Language: en-US
+Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211217114548.1659721-1-cosmin.tanislav@analog.com>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <20211217114548.1659721-1-cosmin.tanislav@analog.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2021-12-17 at 15:45 +0800, Ye Xiang wrote:
-> Specify that both TGL and ADL don't support DMA cache snooping.
+
+V2 -> V3
+  * limit number of fifo entries read to multiple of set size to avoid
+    data unalignment
+
+On 12/17/21 13:45, Cosmin Tanislav wrote:
+> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
 > 
-> Signed-off-by: Ye Xiang <xiang.ye@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-
-> ---
->  drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+> The ADXL367 does not alias input signals to achieve ultralow power
+> consumption, it samples the full bandwidth of the sensor at all
+> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+> with a resolution of 0.25mg/LSB on the +-2 g range.
 > 
-> diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-
-> ish-hid/ipc/ipc.c
-> index 45e0c7b1c9ec..8ccb246b0114 100644
-> --- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-> +++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-> @@ -909,7 +909,11 @@ static uint32_t ish_ipc_get_header(struct
-> ishtp_device *dev, int length,
->   */
->  static bool _dma_no_cache_snooping(struct ishtp_device *dev)
->  {
-> -       return dev->pdev->device == EHL_Ax_DEVICE_ID;
-> +       return (dev->pdev->device == EHL_Ax_DEVICE_ID ||
-> +               dev->pdev->device == TGL_LP_DEVICE_ID ||
-> +               dev->pdev->device == TGL_H_DEVICE_ID ||
-> +               dev->pdev->device == ADL_S_DEVICE_ID ||
-> +               dev->pdev->device == ADL_P_DEVICE_ID);
->  }
->  
->  static const struct ishtp_hw_ops ish_hw_ops = {
-
-
+> In addition to its ultralow power consumption, the ADXL367
+> has many features to enable true system level power reduction.
+> It includes a deep multimode output FIFO, a built-in micropower
+> temperature sensor, and an internal ADC for synchronous conversion
+> of an additional analog input.
+> 
+> V1 -> V2
+>   * add support for vdd and vddio supplies
+>   * lock fifo_watermark retrieval
+>   * fix indentation of sysfs_emit for fifo_mode
+>   * dt-bindings: add spi-max-frequency: true
+>   * dt-bindings: remove cs-gpios property
+>   * dt-bindings: remove status property
+>   * dt-bindings: add support for vdd
+> 
+> V2 -> V3
+>   * MAINTAINERS: use wildcard for adxl367
+>   * dt-bindings: adxl367@addr -> accelerometer@addr
+>   * put asm include after linux includes
+>   * drop registers accessed implicitly
+>   * fifo_full -> fifo_watermark
+>   * print expected device id
+>   * remove INDIO_BUFFER_HARDWARE
+>   * inline ADXL367_EVENT macro
+>   * inline ADXL367_14BIT_SCAN_INFO
+>   * inline regulator enum
+>   * remove of.h in spi driver
+>   * cast const void * to const u8 * in spi read
+>   * switch to trigger-less buffer
+>   * increase reset time as advised by hardware team
+>   * let iio framework validate available channel masks
+>   * enable adc or temp channel automatically on single read
+>   * wait for 100ms after enabling adc or temp for output
+>     to settle on single read (waiting on hardware team input)
+>   * enable adc or temp channel automatically on buffered read
+>   * claim direct mode when setting range
+>   * claim direct mode when setting odr
+>   * claim direct mode when setting event config
+>   * sort status masks in descending bit order
+>   * hardcode indio_dev name
+>   * add some comments regarding spi message layout
+>   * use bulk_write for activity and inactivity threshold
+>   * use bulk_write for inactivity time
+>   * use bool as return type of fifo format finding function
+>   * remove shift from channels scan type
+> 
+> Cosmin Tanislav (2):
+>    dt-bindings: iio: accel: add ADXL367
+>    iio: accel: add ADXL367 driver
+> 
+>   .../bindings/iio/accel/adi,adxl367.yaml       |   79 +
+>   MAINTAINERS                                   |    8 +
+>   drivers/iio/accel/Kconfig                     |   27 +
+>   drivers/iio/accel/Makefile                    |    3 +
+>   drivers/iio/accel/adxl367.c                   | 1617 +++++++++++++++++
+>   drivers/iio/accel/adxl367.h                   |   23 +
+>   drivers/iio/accel/adxl367_i2c.c               |   89 +
+>   drivers/iio/accel/adxl367_spi.c               |  163 ++
+>   8 files changed, 2009 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+>   create mode 100644 drivers/iio/accel/adxl367.c
+>   create mode 100644 drivers/iio/accel/adxl367.h
+>   create mode 100644 drivers/iio/accel/adxl367_i2c.c
+>   create mode 100644 drivers/iio/accel/adxl367_spi.c
+> 

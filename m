@@ -2,92 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D3347898B
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 12:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9AEA478A50
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 12:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235272AbhLQLM5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Dec 2021 06:12:57 -0500
-Received: from www381.your-server.de ([78.46.137.84]:48190 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233227AbhLQLM4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Dec 2021 06:12:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:Reply-To:Cc:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=M1qZmw40PXqMqrgw+K/36cyB5pi+79BF89HAxnb27ZE=; b=S509tAKUYo/17+1G2Ncqyxaslx
-        uY1E867+vfu+1Wzcia4YP8zow7ElragPp3abADLhtVzYS0qILz+DqmgnxIqSeOD7RrbGzCPS4ZHFn
-        3T5EQAQtJRmCXmYMkwXHT1yBuwXptwYZN/eIn/jnGHfZyc5DXJWEiDJ7V/azPA91AUJL+m1cYg1hm
-        4QyvDmRVvNTnSYH+LdvQ1olmXrJoBSaZ10ae1b9azMpRjJ9q2AQvBbAbuB+CUsBDK7/Bol4lMs0VL
-        rV4FVK93Y2fEvr99dn+RHrNipsUNJZrkhpe4Z+u8aZTyNOxDYuUbYhGQpXGNcxOutRxDBORTiOpEJ
-        mOiURiBA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1myBAV-0001XN-OA; Fri, 17 Dec 2021 12:12:55 +0100
-Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578]
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1myBAV-000Lsg-L6; Fri, 17 Dec 2021 12:12:55 +0100
-Subject: Re: iio_hwmon meaningful names
-To:     Henk Medenblik <yoda@deathstar2.nl>, linux-iio@vger.kernel.org
-References: <e723786f-abd2-86ac-7eb8-f5e92c63b31c@deathstar2.nl>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <a38dd056-3bab-5b0e-724d-7b17f8f6ba05@metafoo.de>
-Date:   Fri, 17 Dec 2021 12:12:54 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S235626AbhLQLpv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Dec 2021 06:45:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60966 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233332AbhLQLpv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Dec 2021 06:45:51 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3B2C061574;
+        Fri, 17 Dec 2021 03:45:50 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id z29so6711739edl.7;
+        Fri, 17 Dec 2021 03:45:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2Apv33f8CeP+v3Q4IBt73EAFtV6m4mVAZZ5ncRZ9Iy8=;
+        b=JN6YJYr/mNLhAqmvBm1HP/HIN+CsrQ+JXEEDfrR+99XvgLOwLsVU6kgc3CRm7uKF9P
+         gDi5ISLdmmDZwbm5qoR1O1B5M7P4mAeaz3rzaLyhIDOUQFy2C+UItPfQgjV6HcvJAD2c
+         LaXLgqFx+zpJtZ18oqbrwtLUGgsoTn/PzS/xRSte6XwSi7BU1zttgmLvX+pR4yOWFZDh
+         Jfbx1w4Q9iSBQhMvo+t5U+ihuHRQ3n/p6JSLLeAmJlUZ29VpY1V0gOGsZvhQoEQJSOsj
+         FTfpQWqphKdDEwZLx51zA4zoZJPIOtYc+LAbOdlH9/KmBN/e28YcW9LkSHwX+gAogwtj
+         HqQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2Apv33f8CeP+v3Q4IBt73EAFtV6m4mVAZZ5ncRZ9Iy8=;
+        b=Y4bWyY2JbirXoGoYKVe0sUxzIcV0IE7fkTOxl0Ey0jUybVGX/YNQAGwvlIV5Q5WMdy
+         Pq2GLbZJQsfDAo9hkxo5MP2BIUbBXjzt4RLee6ssZDK4Z8SYhFbRJDx4Z61KBjmEYZRj
+         upAp+g3siKAgezMjkYN5NeNvHzwvpNgSkL6TQXeTdIJYD14ajxmYPjwMaKpljewK+Jlw
+         BCLcLNL3EXog2c+eM+cchLpi0p2EX20NDJFi524R0bC+34wzpQiymPDNu44RDdTyUQOT
+         U9yNtaN3dqmRK4eTme9lMadMLI5i5FXTEVqyivuKujlGxIDYwS8N75CCvG4hqdncB7pJ
+         kZ+g==
+X-Gm-Message-State: AOAM530uJ/4G+v9tbi2WOesM3qiYpNPw9RfMtkbH+QcLOKOmeJV71a2L
+        5V2j3l7m9iuOn71Hh7OTjcw=
+X-Google-Smtp-Source: ABdhPJwWbCuCqfZw0ZeX19bp2oQ98Q/jdnwz+N5FBXzQHwH7/pKSxKaERPrdVNXrzDoe8AMYJ7/aPw==
+X-Received: by 2002:a50:bae2:: with SMTP id x89mr2488341ede.337.1639741549449;
+        Fri, 17 Dec 2021 03:45:49 -0800 (PST)
+Received: from demon-pc.localdomain ([188.24.42.157])
+        by smtp.gmail.com with ESMTPSA id 12sm2748410eja.187.2021.12.17.03.45.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Dec 2021 03:45:49 -0800 (PST)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+X-Google-Original-From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Cc:     cosmin.tanislav@analog.com, demonsingur@gmail.com,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] Add ADXL367 driver
+Date:   Fri, 17 Dec 2021 13:45:46 +0200
+Message-Id: <20211217114548.1659721-1-cosmin.tanislav@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <e723786f-abd2-86ac-7eb8-f5e92c63b31c@deathstar2.nl>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26390/Fri Dec 17 10:20:34 2021)
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/17/21 11:46 AM, Henk Medenblik wrote:
-> Hi,
->
-> Did anyone ever asked for meaningful names for the iio-hwmon readout?
-> I integrated the Xilinx AMS block which now shows up  through the 
-> sensors readout as:
->
-> iio_hwmon-isa-0000
-> Adapter: ISA adapter
-> in1:           1.19 V
-> in2:         357.00 mV
-> in3:         860.00 mV
-> in4:         859.00 mV
-> in5:           1.78 V
-> in6:           1.78 V
-> in7:         842.00 mV
-> temp1:        +45.0 C
-> temp2:        +44.4 C
-> temp3:       -280.2 C
->
-> But I believe an option to make more sense of in1 - in7 and 
-> temp1-temp3 would be a nice addition. 
+The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
 
-IIO recently gained supported for attaching a descriptive label to a 
-channel[1]. The hwmon framework has a similar mechanism where a driver 
-can report a label for a channel.
+The ADXL367 does not alias input signals to achieve ultralow power
+consumption, it samples the full bandwidth of the sensor at all
+data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+with a resolution of 0.25mg/LSB on the +-2 g range.
 
-But the IIO hwmon bridge doesn't have support for handling labels yet. 
-But if you are interested in this feature this might be a nice small 
-project to work on.
+In addition to its ultralow power consumption, the ADXL367
+has many features to enable true system level power reduction.
+It includes a deep multimode output FIFO, a built-in micropower
+temperature sensor, and an internal ADC for synchronous conversion
+of an additional analog input.
 
-hwmon also has the sensors.conf which allows to provide labels for 
-channels through a userspace configuration file[2].
+V1 -> V2
+ * add support for vdd and vddio supplies
+ * lock fifo_watermark retrieval
+ * fix indentation of sysfs_emit for fifo_mode
+ * dt-bindings: add spi-max-frequency: true
+ * dt-bindings: remove cs-gpios property
+ * dt-bindings: remove status property
+ * dt-bindings: add support for vdd
 
-- Lars
+V2 -> V3
+ * MAINTAINERS: use wildcard for adxl367
+ * dt-bindings: adxl367@addr -> accelerometer@addr
+ * put asm include after linux includes
+ * drop registers accessed implicitly
+ * fifo_full -> fifo_watermark
+ * print expected device id
+ * remove INDIO_BUFFER_HARDWARE
+ * inline ADXL367_EVENT macro
+ * inline ADXL367_14BIT_SCAN_INFO
+ * inline regulator enum
+ * remove of.h in spi driver
+ * cast const void * to const u8 * in spi read
+ * switch to trigger-less buffer
+ * increase reset time as advised by hardware team
+ * let iio framework validate available channel masks
+ * enable adc or temp channel automatically on single read
+ * wait for 100ms after enabling adc or temp for output
+   to settle on single read (waiting on hardware team input)
+ * enable adc or temp channel automatically on buffered read
+ * claim direct mode when setting range
+ * claim direct mode when setting odr
+ * claim direct mode when setting event config
+ * sort status masks in descending bit order
+ * hardcode indio_dev name
+ * add some comments regarding spi message layout
+ * use bulk_write for activity and inactivity threshold
+ * use bulk_write for inactivity time
+ * use bool as return type of fifo format finding function
+ * remove shift from channels scan type
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1d4ef9b39ebec
-[2] https://linux.die.net/man/5/sensors.conf
+Cosmin Tanislav (2):
+  dt-bindings: iio: accel: add ADXL367
+  iio: accel: add ADXL367 driver
+
+ .../bindings/iio/accel/adi,adxl367.yaml       |   79 +
+ MAINTAINERS                                   |    8 +
+ drivers/iio/accel/Kconfig                     |   27 +
+ drivers/iio/accel/Makefile                    |    3 +
+ drivers/iio/accel/adxl367.c                   | 1617 +++++++++++++++++
+ drivers/iio/accel/adxl367.h                   |   23 +
+ drivers/iio/accel/adxl367_i2c.c               |   89 +
+ drivers/iio/accel/adxl367_spi.c               |  163 ++
+ 8 files changed, 2009 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+ create mode 100644 drivers/iio/accel/adxl367.c
+ create mode 100644 drivers/iio/accel/adxl367.h
+ create mode 100644 drivers/iio/accel/adxl367_i2c.c
+ create mode 100644 drivers/iio/accel/adxl367_spi.c
+
+-- 
+2.34.1
 

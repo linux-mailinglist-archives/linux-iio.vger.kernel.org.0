@@ -2,65 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA63D479C89
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Dec 2021 21:18:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FF35479C8A
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Dec 2021 21:21:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234110AbhLRUS0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Dec 2021 15:18:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42802 "EHLO
+        id S234115AbhLRUV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Dec 2021 15:21:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234086AbhLRUSZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Dec 2021 15:18:25 -0500
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94968C061574
-        for <linux-iio@vger.kernel.org>; Sat, 18 Dec 2021 12:18:25 -0800 (PST)
-Received: by mail-qv1-xf2a.google.com with SMTP id eq6so5657141qvb.7
-        for <linux-iio@vger.kernel.org>; Sat, 18 Dec 2021 12:18:25 -0800 (PST)
+        with ESMTP id S234086AbhLRUV5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Dec 2021 15:21:57 -0500
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99695C061574
+        for <linux-iio@vger.kernel.org>; Sat, 18 Dec 2021 12:21:57 -0800 (PST)
+Received: by mail-qk1-x72d.google.com with SMTP id 193so5618746qkh.10
+        for <linux-iio@vger.kernel.org>; Sat, 18 Dec 2021 12:21:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=je+PCD5tjRlXqdwyftDvVm0We2tcZ0dCr5G4YhS6hbY=;
-        b=Ftkk1+QEBOnDxfMX04/F7Q/ntbMMkd4Zpja+48yxQLOwz9/nv1Y1eqLGc1iA4KG3n4
-         jffCfJ3GL13u/HaAilX4659ssPmcx1o/Qbknh+Ijd+nd6D6H7om3okxZo/1QWjiO08wA
-         DOkMk//4KVY6Cwo1EZhi4NMNIfwcCeOVGpGjRtfhKE03fwcuxVMO+UeIN8dqBHNuOz8m
-         xQzYE1cc59r1+pPmXGDBOoD7NdyDWZ7gw7hNMGFp4DUwz/VK/81BpXpt/5FUZs5+Dr3Y
-         4weKM/98aeEOmi0KZbSMGglWO5BdY3TmNKtyFaOV4wdnYJU5QhtobPOiiSPtwuOSraJn
-         dEZg==
+        bh=AfkGemvMvzy1UoVuGAka1wLotWeaP+pAXJqQMQroBNw=;
+        b=MlbYGiCZlww6+uiSysXq9bSATo0x9bmll6F+sUal/DM0PYWYFEKDcGQ4iboBXE2OeO
+         esNUhT4Fbudw07jiGNcSYQYP20f0zXa8g4hIrliPDLnUOxsbzaVNe14GWmOSgn0My885
+         XTSYhwl8SNtsOPJkdiScRLEI0coc3j6IcLmPoD+D3d0+B1YuDEv1ykbxFVGiOfx+63MK
+         JEvWzcAZUpWqhwKSABRCgHYWajZ3LgNlbXu++M2+ut+VgU8ZkFns8vE2zfJQxK9TJkgm
+         5fH/L4dR8vxLpw2GGSeni++9dpGrclMqfiMEbBER75HO4JLDkpdh1paJnRLXAHhxscJ9
+         TMIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=je+PCD5tjRlXqdwyftDvVm0We2tcZ0dCr5G4YhS6hbY=;
-        b=wAp11CDJ5uP/mtDsO2fj/HxVV26iLd1/9UOSevEPU4OCkc7SlXk9uKw/hEoNk3lh6B
-         OYSz3s2d5kOaSZxdrrIH4pwYD23YP6cXDHlwr+wXx9dB4mFHoganoCIU9VkmYp42KTnY
-         ZUaQOiUqpE5UtgUVCHImT2f80xSvSJcIkp5/mfnCz/jN+9/313pNj/I+WxLuf40Kkn6Q
-         hsqAbr9Q0fRvIsMi1FG+k3StJrrrDzWYiYnr1cH20rcj9Qq2ivhGS+BnRBJn6EDxLKdb
-         EjI0cA+Zn7KJpnIVl+MG3OE5P0STvBOcDEf9mTzXtPgo7hnfLil3eErITMmuZAN/ElLQ
-         xlSQ==
-X-Gm-Message-State: AOAM532bp4EzwzehFlf4peZqs/Wb6Wrr3oLq+pDaPS/3KWN+n6GaOx14
-        ETHYPWifyO8m2yX05fpayQw=
-X-Google-Smtp-Source: ABdhPJx9AV7/0s12s9yhpU2XP8OZ9/U1GLOzORvmAFtPpm2P/lyi2A0N1l0J0xcXH0cPS2PI8j/Amw==
-X-Received: by 2002:a05:6214:19e1:: with SMTP id q1mr5995682qvc.115.1639858704613;
-        Sat, 18 Dec 2021 12:18:24 -0800 (PST)
+        bh=AfkGemvMvzy1UoVuGAka1wLotWeaP+pAXJqQMQroBNw=;
+        b=lWhtuXTYXbUXOOD3cMeIz00pLI2Y+IYXPvN5wJ2euIWZT/tAJqpFMgu5sgIiLSnx/z
+         5hmnSggTDg9tFvEhKFWnRE6FkRH4Y3v61XzAT+H5qARhJ67WWYFse5lDSd8JtQT8GsLp
+         qJgIqnSCbNc2sYIeocxvclTnc4hoxXD0u6KznjhoPHkzUIyCdJ+55uW5UM/uVnKG3Jc2
+         4YeGKsFVGefY7H6JsRbp61f1LL5lpyPgt/sVGPZ9XpZRI/WTEqz1T/lLfmMaH0yNdjo8
+         +jHeWhhqOyZnlQDqzF8cPeYFEGQ/lNoUq/sBMOt87+bETn80A6wcJUSslgXvvsyzBHIJ
+         AUeQ==
+X-Gm-Message-State: AOAM532YQ+7ueV/YGfS3Ic/mvzm05en3V1kc0srv9t8XAEJQ2QW1h+4P
+        ++XaKZ1UKEAExUsZj/IVPdnmiwjZ4NM=
+X-Google-Smtp-Source: ABdhPJwwFLTSMdTiWLTrvOMedQF6iZi/XqJz5F3zKXF2BZhJ6PYSUbdqX5Z5A4iBVgdMTGGFVTwgpw==
+X-Received: by 2002:a05:620a:191a:: with SMTP id bj26mr5588325qkb.37.1639858916562;
+        Sat, 18 Dec 2021 12:21:56 -0800 (PST)
 Received: from marsc.168.1.7 ([2804:30c:b14:b100:c080:51c0:2de2:c68a])
-        by smtp.gmail.com with ESMTPSA id o4sm7356574qkh.107.2021.12.18.12.18.23
+        by smtp.gmail.com with ESMTPSA id x13sm8299399qkp.102.2021.12.18.12.21.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Dec 2021 12:18:24 -0800 (PST)
-Date:   Sat, 18 Dec 2021 17:18:21 -0300
+        Sat, 18 Dec 2021 12:21:56 -0800 (PST)
+Date:   Sat, 18 Dec 2021 17:21:52 -0300
 From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, Nuno Sa <Nuno.Sa@analog.com>,
         lars@metafoo.de, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 08/17] staging:iio:adc:ad7280a: Drop unused timestamp
- channel.
-Message-ID: <Yb5CDWYR2ir4ORSe@marsc.168.1.7>
+Subject: Re: [PATCH v2 09/17] staging:iio:adc:ad7280a: Trivial comment
+ formatting cleanup
+Message-ID: <Yb5C4FyHsQSnUYE6@marsc.168.1.7>
 References: <20211205202710.2847005-1-jic23@kernel.org>
- <20211205202710.2847005-9-jic23@kernel.org>
+ <20211205202710.2847005-10-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211205202710.2847005-9-jic23@kernel.org>
+In-Reply-To: <20211205202710.2847005-10-jic23@kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,56 +68,67 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On 12/05, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> The driver doesn't support buffered mode, so a timestamp channel that
-> is entirely hidden from userspace without buffer mode is rather pointless.
-> Drop it.
+> IIO uses the
+> /*
+>  * stuff
+>  * more stuff
+>  */
+> 
+> multi-line style, so use that here as well.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
 > ---
->  drivers/staging/iio/adc/ad7280a.c | 14 +-------------
->  1 file changed, 1 insertion(+), 13 deletions(-)
+>  drivers/staging/iio/adc/ad7280a.c | 21 +++++++++++----------
+>  1 file changed, 11 insertions(+), 10 deletions(-)
 > 
 > diff --git a/drivers/staging/iio/adc/ad7280a.c b/drivers/staging/iio/adc/ad7280a.c
-> index 032d6430bebf..58bddd07df0c 100644
+> index 58bddd07df0c..b186dda03432 100644
 > --- a/drivers/staging/iio/adc/ad7280a.c
 > +++ b/drivers/staging/iio/adc/ad7280a.c
-> @@ -613,16 +613,6 @@ static void ad7280_total_voltage_channel_init(struct iio_chan_spec *chan,
->  	chan->scan_type.storagebits = 32;
+> @@ -139,9 +139,10 @@ static unsigned int ad7280a_devaddr(unsigned int addr)
+>  	       ((addr & 0x10) >> 4);
 >  }
 >  
-> -static void ad7280_timestamp_channel_init(struct iio_chan_spec *chan, int cnt)
-> -{
-> -	chan->type = IIO_TIMESTAMP;
-> -	chan->channel = -1;
-> -	chan->scan_index = cnt;
-> -	chan->scan_type.sign = 's';
-> -	chan->scan_type.realbits = 64;
-> -	chan->scan_type.storagebits = 64;
-> -}
-> -
->  static void ad7280_init_dev_channels(struct ad7280_state *st, int dev, int *cnt)
->  {
->  	int addr, ch, i;
-> @@ -650,7 +640,7 @@ static int ad7280_channel_init(struct ad7280_state *st)
->  {
->  	int dev, cnt = 0;
+> -/* During a read a valid write is mandatory.
+> - * So writing to the highest available address (Address 0x1F)
+> - * and setting the address all parts bit to 0 is recommended
+> +/*
+> + * During a read a valid write is mandatory.
+> + * So writing to the highest available address (Address 0x1F) and setting the
+> + * address all parts bit to 0 is recommended.
+>   * So the TXVAL is AD7280A_DEVADDR_ALL + CRC
+>   */
+>  #define AD7280A_READ_TXVAL	0xF800030A
+> @@ -180,7 +181,7 @@ static unsigned char ad7280_calc_crc8(unsigned char *crc_tab, unsigned int val)
+>  	crc = crc_tab[val >> 16 & 0xFF];
+>  	crc = crc_tab[crc ^ (val >> 8 & 0xFF)];
 >  
-> -	st->channels = devm_kcalloc(&st->spi->dev, (st->slave_num + 1) * 12 + 2,
-> +	st->channels = devm_kcalloc(&st->spi->dev, (st->slave_num + 1) * 12 + 1,
->  				    sizeof(*st->channels), GFP_KERNEL);
->  	if (!st->channels)
->  		return -ENOMEM;
-> @@ -659,8 +649,6 @@ static int ad7280_channel_init(struct ad7280_state *st)
->  		ad7280_init_dev_channels(st, dev, &cnt);
->  
->  	ad7280_total_voltage_channel_init(&st->channels[cnt], cnt, dev);
-> -	cnt++;
-> -	ad7280_timestamp_channel_init(&st->channels[cnt], cnt);
->  
->  	return cnt + 1;
+> -	return  crc ^ (val & 0xFF);
+> +	return crc ^ (val & 0xFF);
 >  }
+>  
+>  static int ad7280_check_crc(struct ad7280_state *st, unsigned int val)
+> @@ -193,12 +194,12 @@ static int ad7280_check_crc(struct ad7280_state *st, unsigned int val)
+>  	return 0;
+>  }
+>  
+> -/* After initiating a conversion sequence we need to wait until the
+> - * conversion is done. The delay is typically in the range of 15..30 us
+> - * however depending an the number of devices in the daisy chain and the
+> - * number of averages taken, conversion delays and acquisition time options
+> - * it may take up to 250us, in this case we better sleep instead of busy
+> - * wait.
+> +/*
+> + * After initiating a conversion sequence we need to wait until the conversion
+> + * is done. The delay is typically in the range of 15..30us however depending on
+> + * the number of devices in the daisy chain, the number of averages taken,
+> + * conversion delays and acquisition time options it may take up to 250us, in
+> + * this case we better sleep instead of busy wait.
+>   */
+>  
+>  static void ad7280_delay(struct ad7280_state *st)
 > -- 
 > 2.34.1
 > 

@@ -2,122 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB1E479566
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Dec 2021 21:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC4844797BD
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Dec 2021 01:18:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237634AbhLQUYX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Dec 2021 15:24:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41610 "EHLO
+        id S229874AbhLRASA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Dec 2021 19:18:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbhLQUYW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Dec 2021 15:24:22 -0500
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA2AC061574
-        for <linux-iio@vger.kernel.org>; Fri, 17 Dec 2021 12:24:22 -0800 (PST)
-Received: by mail-il1-x136.google.com with SMTP id f17so2544926ilj.11
-        for <linux-iio@vger.kernel.org>; Fri, 17 Dec 2021 12:24:22 -0800 (PST)
+        with ESMTP id S229643AbhLRASA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Dec 2021 19:18:00 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A1FC061574
+        for <linux-iio@vger.kernel.org>; Fri, 17 Dec 2021 16:18:00 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id n15-20020a17090a394f00b001b0f6d6468eso7115224pjf.3
+        for <linux-iio@vger.kernel.org>; Fri, 17 Dec 2021 16:18:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0RPlLAADCWMblEKj6QzqpFSkD5gFMewlPA251bUBwtQ=;
-        b=LuwKVSsbkKvsf8d8/SqKhtlPxz78bmCSgZhGhZOi0HR50/t6V6wMgjIyl907bZxAlj
-         y0q1ve/4tOJTVI7GVfXy3zPy+GxVVi8XBZTaRu+nFh4rLMTCtbhcWuORWORQjofdOmdS
-         5Mn1ngTpFMh1bsNcJKVGK4sJDDd6vEIjwNARY=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pVe7XCr4nT9em+BXzD672MiHlPyY/4VHpVz9xpH21MI=;
+        b=aHCWe0L2y3XBaHAFl/kt3PBebuGtyhlAmn4/3Wcmoj5mXdAPjoOod4mPG+LBCQw0Xz
+         UOeKVzVWTGK3ICD8EtZaUhNAcZH2Jkrhg/zXEolWjXvmXNy41NAB+3CxhbzSC+gUekhY
+         rNkpkq5wr+00I4VdtRDlDJ7bQw2AOAllcK/rg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0RPlLAADCWMblEKj6QzqpFSkD5gFMewlPA251bUBwtQ=;
-        b=kclr4lWlUBFQGXvmewqXo2/Fx40eCtIDtzrhaGMWvYWh3rNH6KTn8+Wg4wGF1SROjh
-         OkXB1bQHdebrB/cXfyi++IzeJaz+GPWvqz3brRt6D5ZtR2c5m2y8UNIUk2fukY4g0qu6
-         G5LV/yhaZtEvZxDM2IrpZmjIWBxlPUQoW1vgyOEQo1NPrXS1m86M2Qy6ZMrLjlk5Ne5W
-         Zvcyjef31u9F2dbVinms+fnA7foox4Pq6PNBHwl50uIE0GRmaH2swInw2TFyhHjYIbMQ
-         b5ojKzvvxpz51q5DLLDhhIlze/6D3AfAXqe+g0gJk6Krefo0MSD85iqfNqLXy3QWM4tx
-         A3gw==
-X-Gm-Message-State: AOAM530tFGvEm227iPp/k7pEXnNcA2tkcWAPSbDf0G0nbgj2v0Tzv+qW
-        KWVBNBGEZqmhfBOhMrmK4ts2v/a4gf8YgNXXgrCOSg==
-X-Google-Smtp-Source: ABdhPJwXqMZFvAkBkyNmxNyOSySXNqoBZqPD6QRi7zTVWpSIlpuRrpjsXt9IjGGcpa5Yy1YXfSFwd/fKoBiSidJVnHE=
-X-Received: by 2002:a92:c089:: with SMTP id h9mr2410498ile.289.1639772661621;
- Fri, 17 Dec 2021 12:24:21 -0800 (PST)
-MIME-Version: 1.0
-References: <20211213024057.3824985-1-gwendal@chromium.org>
- <20211213024057.3824985-2-gwendal@chromium.org> <20211216155905.1fac607c@jic23-huawei>
-In-Reply-To: <20211216155905.1fac607c@jic23-huawei>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pVe7XCr4nT9em+BXzD672MiHlPyY/4VHpVz9xpH21MI=;
+        b=ZMwd1jWf5X1H9H61WulYk0moPhkkq7jvPY35S5GNPIK+t3xpkVV/I43cGSsFWOratO
+         sexHmda2AtKPAdlRSGfGFlVjaeq/qFpOG6sQKTdCAkuzQlKAYlispfeRl3Igx5vHaUU4
+         pf6+C9VHYay8cuMPGlpDuhHcycQnOx8wauh42xbsC6o9cMwtVcBNUfr2DX/OR5wat9NJ
+         Gvl+4t/y3zdpvR1NyGWbF1gS2rFRC8YEsX7e31A/cvU3OhFCD16oTgdNnhsn/5GRZaER
+         EroxRKebKGiS3ok8n4rBjGmYlDbPkRH5nK+ToqXpLvyukjLASep1kycygPDnChQqXXPo
+         qJmQ==
+X-Gm-Message-State: AOAM533PFQd0CuBoYWH7FUbCaNwbNrjDrQMfZ5qSWxPjRs9U0qj4FsIh
+        ZF65i2m43hnVDjLVw7fXgE25LA==
+X-Google-Smtp-Source: ABdhPJw0i1zqNmaBrDMYu2VMXPDzB4O0jFNwpGB327TJ382oF/kv+rNDgyMm9vHhvTiQu7OP5i7OXg==
+X-Received: by 2002:a17:90b:3b4d:: with SMTP id ot13mr14794954pjb.127.1639786679586;
+        Fri, 17 Dec 2021 16:17:59 -0800 (PST)
+Received: from localhost ([2620:15c:202:201:2bc8:cefc:f407:829])
+        by smtp.gmail.com with UTF8SMTPSA id g19sm7593633pfc.145.2021.12.17.16.17.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Dec 2021 16:17:59 -0800 (PST)
 From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Fri, 17 Dec 2021 12:24:10 -0800
-Message-ID: <CAPUE2utoztf+LUsO4zKrRgVz862Bj1UyDsqSVT-1T5ANMkp8ag@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] iio: add IIO_MOD_REFERENCE modifier
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     robh+dt@kernel.org, lars@metafoo.de, swboyd@chromium.org,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     jic23@kernel.org, lars@metafoo.de, swboyd@chromium.org
+Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v8 0/5] Expand Semtech SAR Sensors support
+Date:   Fri, 17 Dec 2021 16:17:50 -0800
+Message-Id: <20211218001755.3096807-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.34.1.173.g76aa8bc2d0-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Dec 16, 2021 at 7:54 AM Jonathan Cameron
-<jic23@jic23.retrosnub.co.uk> wrote:
->
-> On Sun, 12 Dec 2021 18:40:54 -0800
-> Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> > Add modifier IIO_MOD_REFERENCE for reporting sx9360 reference
-> > proximity measurement.
-> > All modifier must be defined for libiio to recognize
-> > |in_proximity_reference| as a channel.
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> Hmm. So the question is whether this is a valid modifier.
->
-> I'm not totally convinced, because I can see we might well
-> get stacking cases say
->
-> iio_concentration_o2_reference
->
-> However we do have precedence with 'ambient' which applies
-> to temperature sensors.
->
-> The alternative here would be to have it as a normal indexed
-> channel but with a label saying it is the reference.
->
-> Would that work for this case?  If I were doing the ambient
-> case again I'd use label for that as well, but label is a more
-> recent addition to the ABI.
-That would work, I am submitting a v4 without IIO_MOD_REFERENCE.
+Add a new Semtech SAR sensor SX9324.
+Instead of recopying 1/3 of the sx9310 driver, move common code in a new
+file. It will be used again for the next sensor, SX9360.
 
-Gwendal.
->
-> > ---
-> > New in v3.
-> >
-> >  drivers/iio/industrialio-core.c | 1 +
-> >  include/uapi/linux/iio/types.h  | 1 +
-> >  2 files changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 20d5178ca0739a..2b272f54de8ae9 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -134,6 +134,7 @@ static const char * const iio_modifier_names[] = {
-> >       [IIO_MOD_ETHANOL] = "ethanol",
-> >       [IIO_MOD_H2] = "h2",
-> >       [IIO_MOD_O2] = "o2",
-> > +     [IIO_MOD_REFERENCE] = "reference",
-> >  };
-> >
-> >  /* relies on pairs of these shared then separate */
-> > diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> > index 48c13147c0a870..aa83a9b578502a 100644
-> > --- a/include/uapi/linux/iio/types.h
-> > +++ b/include/uapi/linux/iio/types.h
-> > @@ -95,6 +95,7 @@ enum iio_modifier {
-> >       IIO_MOD_ETHANOL,
-> >       IIO_MOD_H2,
-> >       IIO_MOD_O2,
-> > +     IIO_MOD_REFERENCE,
-> >  };
-> >
-> >  enum iio_event_type {
->
+Major changes in v8:
+  Fix mismatch between documentation and code (setting vs setup)
+  Use dev_get_drvdata to access iio device structure.
+
+Major changes in v7:
+  Fix one remaining syntax error in device tree binding documentation.
+
+Major changes in v6:
+  Fix syntax errors in device tree binding documentation.
+  Drop of_match_ptr and ACPI_PTR protections.
+  Fix unused variable warning.
+
+Major changes in v5:
+  Use iwyu to cleanup include files.
+  Use dev_err_probe() in probe routine
+  Add attribute to shift irq status register, not common among all
+    sensors.
+  Fix long line.
+
+Major changes in v4:
+  Use chip_info instead of info in common data.
+  Returns an error when setting negative sysfs entries
+  Fix cut and paste errors, credit.
+
+Major changes in v3:
+  Fix some error in binding descriptions and setting
+  Fix invalid register constant name.
+
+Major changes in v2:
+  Better interface between common code and drivers
+  Document SX9324 phase configuration
+
+Gwendal Grignou (5):
+  iio: sx9310: Add frequency in read_avail
+  iio: sx9310: Extract common Semtech sensor logic
+  iio: proximity: Add SX9324 support
+  dt-bindings: iio: Add sx9324 binding
+  iio: sx9324: Add dt_binding support
+
+ .../ABI/testing/sysfs-bus-iio-sx9324          |   28 +
+ .../iio/proximity/semtech,sx9324.yaml         |  161 +++
+ drivers/iio/proximity/Kconfig                 |   20 +
+ drivers/iio/proximity/Makefile                |    2 +
+ drivers/iio/proximity/sx9310.c                |  717 ++---------
+ drivers/iio/proximity/sx9324.c                | 1074 +++++++++++++++++
+ drivers/iio/proximity/sx_common.c             |  576 +++++++++
+ drivers/iio/proximity/sx_common.h             |  163 +++
+ 8 files changed, 2127 insertions(+), 614 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9324
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+ create mode 100644 drivers/iio/proximity/sx9324.c
+ create mode 100644 drivers/iio/proximity/sx_common.c
+ create mode 100644 drivers/iio/proximity/sx_common.h
+
+-- 
+2.34.1.173.g76aa8bc2d0-goog
+

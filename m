@@ -2,201 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1036947A2D4
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Dec 2021 23:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B577F47A9EE
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Dec 2021 13:51:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236983AbhLSWkV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Dec 2021 17:40:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44758 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236951AbhLSWkS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Dec 2021 17:40:18 -0500
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4152EC061748;
-        Sun, 19 Dec 2021 14:40:17 -0800 (PST)
-Received: by mail-qk1-x72f.google.com with SMTP id d2so7736158qki.12;
-        Sun, 19 Dec 2021 14:40:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Khru1gNSAZVb2dMG+TO7z4gJTe9dnuvVrFQcYhc9czQ=;
-        b=WsEqPUjGfo//u6VT36ZrYmJPvGEm4hx9/IFexQrithneVoUGf8VxWCAx/XIo1r0SPu
-         4fi4wp08yrz44eSCzhgW28U0IWMSVrShEO2ncIqIoC13zmkZ5LFRy/HSsXEhgiT8xUMT
-         i3OkdnkCODvpNsE85EjQtFn0+g6EynTPO52hQvzA6Uh+3oIOvwv/2OYIALCMH5qZAgkI
-         qUQBncALtgk8XOwIcC9UVHHDiPkYRoxARxSfbVM1ukNPPkZkyvTVGHf/fMQuvTMTDS2c
-         ON2E3Z8pFdz7ePbnK21+bnQT5AFDJeEQwJKd5AQW7w0ZWTIoC8X1UD+Ub1Peur9+shQt
-         G63w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Khru1gNSAZVb2dMG+TO7z4gJTe9dnuvVrFQcYhc9czQ=;
-        b=j18q+8GuNFHQim81q1O96qy3RyD/KEjo+pDmwFnzwPtJzQLg6UJtPJU0Jym8TobarI
-         xg7Fvo6dTNZurUfb3jq4lZZ2N4gPBacXLQQ5bVFxNZ/F/YFuXvzFGgv9mHPSmqS2b7Lg
-         hZ8+PQW7Y7bNHoobbh4V9h/mAJOZ7d3ormbocsoCXmO8x1MrlOWBLR/weLa7F2CLrVX8
-         4y5v2qc8q83lIa6KTTnRrQJsljDjNFJQI19g7KWcOcpzra3pxw01hUYB4azyVhSnyJw9
-         r1jtQW8DBIAvIcQMkOoymRBuVYhhxHfuQ2lI2FTyazUdgh7HxtsmxpC1LME4lNArA6I3
-         QU1Q==
-X-Gm-Message-State: AOAM532zb1bhnYD4uqjbJZhRqdbP5Wfp77ApIpFiTP8zhc8Wb4zGYA26
-        RKE6TXT2vjf9hQQUDraLSc5I8YkFaZM=
-X-Google-Smtp-Source: ABdhPJwQgfjCoKy9BYKWYqV/ba6iVihTNFU+djy2tpXeyPWZcw/o9OQXlNQd6/3/jTvMlxi7NqGRRQ==
-X-Received: by 2002:a05:620a:22d7:: with SMTP id o23mr7996385qki.222.1639953615632;
-        Sun, 19 Dec 2021 14:40:15 -0800 (PST)
-Received: from shaak.xiphos.ca (198-48-202-89.cpe.pppoe.ca. [198.48.202.89])
-        by smtp.gmail.com with ESMTPSA id q7sm4591880qkl.72.2021.12.19.14.40.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Dec 2021 14:40:15 -0800 (PST)
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
-        lars@metafoo.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v10 14/14] dt-bindings: iio: afe: add bindings for temperature transducers
-Date:   Sun, 19 Dec 2021 17:39:53 -0500
-Message-Id: <20211219223953.16074-15-liambeguin@gmail.com>
-X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20211219223953.16074-1-liambeguin@gmail.com>
-References: <20211219223953.16074-1-liambeguin@gmail.com>
+        id S231726AbhLTMvv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Dec 2021 07:51:51 -0500
+Received: from first.geanix.com ([116.203.34.67]:37710 "EHLO first.geanix.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230262AbhLTMvv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 20 Dec 2021 07:51:51 -0500
+Received: from zen.. (unknown [185.17.218.86])
+        by first.geanix.com (Postfix) with ESMTPSA id DC1C3E1BF7;
+        Mon, 20 Dec 2021 12:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1640004709; bh=62MRtNmRLcQ+JmE+hQkZiDxM4sg8EdiLGL0Ju+euTjs=;
+        h=From:To:Cc:Subject:Date;
+        b=aezF4s6pojtGCsnXZTEyBG3KwD3kXCxrF0n49TsldntfSQu47BYB2E3jrSOnoZA39
+         bXPHDzTXeCjb9VChuJjQ9wRQs3U+tyICZ156qNNGbrqzuFPYUQd6Q9pnf10JMqTdTp
+         vOn4obMg9Juzl2iQZJSu+6sCPeIzUV9hZ67ZMiY/Gs2c+hGxMTYw67/+9xuer//aXU
+         RQpc+3RQ1KUYBYehdlTHbEzWqtE6DoWRV2ihAqObD3nFGIkMW4vRymBgf0XXguLevf
+         KEKd+Gh13aMB62SYeRadrZjAvhJX7bJIRzIycKvORmeCtK2yXRJzMW0SLNl+39KkLR
+         pdMCU0ztr5XMA==
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: accel: fxls8962af: add padding to regmap for SPI
+Date:   Mon, 20 Dec 2021 13:51:43 +0100
+Message-Id: <20211220125144.3630539-1-sean@geanix.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
+        autolearn=disabled version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on 13e2a5895688
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Liam Beguin <lvb@xiphos.com>
+Add missing don't care padding between address and
+data for SPI transfers
 
-An ADC is often used to measure other quantities indirectly.
-This binding describe one case, the measurement of a temperature
-through a temperature transducer (either voltage or current).
-
-Signed-off-by: Liam Beguin <lvb@xiphos.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
 ---
- .../iio/afe/temperature-transducer.yaml       | 114 ++++++++++++++++++
- 1 file changed, 114 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+ drivers/iio/accel/fxls8962af-core.c | 12 ++++++++++--
+ drivers/iio/accel/fxls8962af-i2c.c  |  2 +-
+ drivers/iio/accel/fxls8962af-spi.c  |  2 +-
+ drivers/iio/accel/fxls8962af.h      |  3 ++-
+ 4 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-new file mode 100644
-index 000000000000..cfbf5350db27
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-@@ -0,0 +1,114 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index 32989d91b982..f7fd9e046588 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -173,12 +173,20 @@ struct fxls8962af_data {
+ 	u16 upper_thres;
+ };
+ 
+-const struct regmap_config fxls8962af_regmap_conf = {
++const struct regmap_config fxls8962af_i2c_regmap_conf = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+ 	.max_register = FXLS8962AF_MAX_REG,
+ };
+-EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
++EXPORT_SYMBOL_GPL(fxls8962af_i2c_regmap_conf);
 +
-+title: Temperature Transducer
-+
-+maintainers:
-+  - Liam Beguin <liambeguin@gmail.com>
-+
-+description: |
-+  A temperature transducer is a device that converts a thermal quantity
-+  into any other physical quantity. This binding applies to temperature to
-+  voltage (like the LTC2997), and temperature to current (like the AD590)
-+  linear transducers.
-+  In both cases these are assumed to be connected to a voltage ADC.
-+
-+  When an io-channel measures the output voltage of a temperature analog front
-+  end such as a temperature transducer, the interesting measurement is almost
-+  always the corresponding temperature, not the voltage output. This binding
-+  describes such a circuit.
-+
-+  The general transfer function here is (using SI units)
-+    V(T) = Rsense * Isense(T)
-+    T = (Isense(T) / alpha) + offset
-+    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
-+
-+  When using a temperature to voltage transducer, Rsense is set to 1.
-+
-+  The following circuits show a temperature to current and a temperature to
-+  voltage transducer that can be used with this binding.
-+
-+           VCC
-+          -----
-+            |
-+        +---+---+
-+        | AD590 |                               VCC
-+        +---+---+                              -----
-+            |                                    |
-+            V proportional to T             +----+----+
-+            |                          D+ --+         |
-+            +---- Vout                      | LTC2997 +--- Vout
-+            |                          D- --+         |
-+        +---+----+                          +---------+
-+        | Rsense |                               |
-+        +---+----+                             -----
-+            |                                   GND
-+          -----
-+           GND
-+
-+properties:
-+  compatible:
-+    const: temperature-transducer
-+
-+  io-channels:
-+    maxItems: 1
-+    description: |
-+      Channel node of a voltage io-channel.
-+
-+  '#io-channel-cells':
-+    const: 0
-+
-+  sense-offset-millicelsius:
-+    description: |
-+      Temperature offset.
-+      This offset is commonly used to convert from Kelvins to degrees Celsius.
-+      In that case, sense-offset-millicelsius would be set to <(-273150)>.
-+    default: 0
-+
-+  sense-resistor-ohms:
-+    description: |
-+      The sense resistor.
-+      By default sense-resistor-ohms cancels out the resistor making the
-+      circuit behave like a temperature transducer.
-+    default: 1
-+
-+  alpha-ppm-per-celsius:
-+    description: |
-+      Sometimes referred to as output gain, slope, or temperature coefficient.
-+
-+      alpha is expressed in parts per million which can be micro-amps per
-+      degrees Celsius or micro-volts per degrees Celsius. The is the main
-+      characteristic of a temperature transducer and should be stated in the
-+      datasheet.
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - io-channels
-+  - alpha-ppm-per-celsius
-+
-+examples:
-+  - |
-+    ad950: temperature-sensor-0 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 3>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        sense-resistor-ohms = <8060>;
-+        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
-+    };
-+  - |
-+    znq_tmp: temperature-sensor-1 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 2>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
-+    };
-+...
++const struct regmap_config fxls8962af_spi_regmap_conf = {
++	.reg_bits = 8,
++	.pad_bits = 8,
++	.val_bits = 8,
++	.max_register = FXLS8962AF_MAX_REG,
++};
++EXPORT_SYMBOL_GPL(fxls8962af_spi_regmap_conf);
+ 
+ enum {
+ 	fxls8962af_idx_x,
+diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
+index cfb004b20455..6bde9891effb 100644
+--- a/drivers/iio/accel/fxls8962af-i2c.c
++++ b/drivers/iio/accel/fxls8962af-i2c.c
+@@ -18,7 +18,7 @@ static int fxls8962af_probe(struct i2c_client *client)
+ {
+ 	struct regmap *regmap;
+ 
+-	regmap = devm_regmap_init_i2c(client, &fxls8962af_regmap_conf);
++	regmap = devm_regmap_init_i2c(client, &fxls8962af_i2c_regmap_conf);
+ 	if (IS_ERR(regmap)) {
+ 		dev_err(&client->dev, "Failed to initialize i2c regmap\n");
+ 		return PTR_ERR(regmap);
+diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
+index 57108d3d480b..6f4dff3238d3 100644
+--- a/drivers/iio/accel/fxls8962af-spi.c
++++ b/drivers/iio/accel/fxls8962af-spi.c
+@@ -18,7 +18,7 @@ static int fxls8962af_probe(struct spi_device *spi)
+ {
+ 	struct regmap *regmap;
+ 
+-	regmap = devm_regmap_init_spi(spi, &fxls8962af_regmap_conf);
++	regmap = devm_regmap_init_spi(spi, &fxls8962af_spi_regmap_conf);
+ 	if (IS_ERR(regmap)) {
+ 		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
+ 		return PTR_ERR(regmap);
+diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
+index b67572c3ef06..9cbe98c3ba9a 100644
+--- a/drivers/iio/accel/fxls8962af.h
++++ b/drivers/iio/accel/fxls8962af.h
+@@ -17,6 +17,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
+ int fxls8962af_core_remove(struct device *dev);
+ 
+ extern const struct dev_pm_ops fxls8962af_pm_ops;
+-extern const struct regmap_config fxls8962af_regmap_conf;
++extern const struct regmap_config fxls8962af_i2c_regmap_conf;
++extern const struct regmap_config fxls8962af_spi_regmap_conf;
+ 
+ #endif				/* _FXLS8962AF_H_ */
 -- 
-2.34.0
+2.34.1
 

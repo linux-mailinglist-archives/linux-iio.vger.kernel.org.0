@@ -2,68 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2214047BBAF
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 09:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7111C47BB6C
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 09:03:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234518AbhLUITM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Dec 2021 03:19:12 -0500
-Received: from inva020.nxp.com ([92.121.34.13]:45024 "EHLO inva020.nxp.com"
+        id S235393AbhLUIDw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Dec 2021 03:03:52 -0500
+Received: from mga02.intel.com ([134.134.136.20]:43348 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234213AbhLUITM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 21 Dec 2021 03:19:12 -0500
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D7BD91A1965;
-        Tue, 21 Dec 2021 09:19:10 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A0DBE1A1145;
-        Tue, 21 Dec 2021 09:19:10 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 14D39183AD6D;
-        Tue, 21 Dec 2021 16:19:09 +0800 (+08)
-From:   haibo.chen@nxp.com
-To:     jic23@kernel.org, cai.huoqing@linux.dev, robh+dt@kernel.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org, linux-imx@nxp.com,
-        devicetree@vger.kernel.org, haibo.chen@nxp.com,
-        shawnguo@kernel.org, festevam@gmail.com
-Subject: [PATCH 2/2] dt-bindings:iio:adc: update the maintainer of vf610-adc
-Date:   Tue, 21 Dec 2021 15:50:00 +0800
-Message-Id: <1640073000-32629-2-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1640073000-32629-1-git-send-email-haibo.chen@nxp.com>
-References: <1640073000-32629-1-git-send-email-haibo.chen@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+        id S235383AbhLUIDv (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 21 Dec 2021 03:03:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640073831; x=1671609831;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=41Ve57LH9vKZVkmrFdgNEo5ROhFavgNxMAwyZUJAA3g=;
+  b=ReRiju6WMjirNb7Fwpa5QPqzc94UL3DpNgVC6aFqv6tEbx6Dc/VTd30d
+   jKn7tTI8nwiOZuzeaOyRhEY/jNezBwb4HFa0zWPnNTIvIJbkdfu9FFGZm
+   MMVTeXkbSPJwX0us+5gKfWqdnIFm2gHvDpfhKWm0rOmAl7FUt6ZCoYAjv
+   dCxi3hU67HTjwYTceWntGkGs+lR9qWsOVbSvW3wdbjQIEAuibiP6Ickhg
+   Anh02Ui/lP/xsJn7Sc2pQCtxvERnrGXWb/5G/IJJXG+7CP6BuzUGgZ53N
+   EziCa88U0ogE72VHM9lrjS4w6OdqZs4uA3Hi1nBpG0XNaL4kJnIs8OCPc
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10204"; a="227640800"
+X-IronPort-AV: E=Sophos;i="5.88,222,1635231600"; 
+   d="scan'208";a="227640800"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2021 00:03:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,222,1635231600"; 
+   d="scan'208";a="684580945"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+  by orsmga005.jf.intel.com with ESMTP; 21 Dec 2021 00:03:49 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1mza7g-0008qw-HR; Tue, 21 Dec 2021 08:03:48 +0000
+Date:   Tue, 21 Dec 2021 16:03:39 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Liam Beguin <liambeguin@gmail.com>, peda@axentia.se,
+        jic23@kernel.org, lars@metafoo.de
+Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH v10 10/14] iio: test: add basic tests for the iio-rescale
+ driver
+Message-ID: <202112211530.JHHCLDOr-lkp@intel.com>
+References: <20211219223953.16074-11-liambeguin@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211219223953.16074-11-liambeguin@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+Hi Liam,
 
-Drop Fugang Duan as the vf610-adc maintainer, and add my self as
-the maintainer.
+Thank you for the patch! Yet something to improve:
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+[auto build test ERROR on 2b6bff0b122785f09cfbdc34b1aa9edceea6e4c1]
+
+url:    https://github.com/0day-ci/linux/commits/Liam-Beguin/iio-afe-add-temperature-rescaling-support/20211220-064048
+base:   2b6bff0b122785f09cfbdc34b1aa9edceea6e4c1
+config: mips-randconfig-r026-20211220 (https://download.01.org/0day-ci/archive/20211221/202112211530.JHHCLDOr-lkp@intel.com/config)
+compiler: mipsel-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/833188fad2d37f1e40f56eb7286d6dd2e1a2ced5
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Liam-Beguin/iio-afe-add-temperature-rescaling-support/20211220-064048
+        git checkout 833188fad2d37f1e40f56eb7286d6dd2e1a2ced5
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=mips SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   mipsel-linux-ld: drivers/iio/test/iio-test-rescale.o: in function `iio_rescale_test_offset':
+>> iio-test-rescale.c:(.text+0x48): undefined reference to `kunit_kmalloc_array'
+>> mipsel-linux-ld: iio-test-rescale.c:(.text+0xc4): undefined reference to `kunit_binary_assert_format'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0xc8): undefined reference to `kunit_binary_assert_format'
+>> mipsel-linux-ld: iio-test-rescale.c:(.text+0x13c): undefined reference to `kunit_do_assertion'
+>> mipsel-linux-ld: iio-test-rescale.c:(.text+0x15c): undefined reference to `kunit_binary_str_assert_format'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x160): undefined reference to `kunit_binary_str_assert_format'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x1b0): undefined reference to `kunit_do_assertion'
+   mipsel-linux-ld: drivers/iio/test/iio-test-rescale.o: in function `iio_rescale_test_scale':
+   iio-test-rescale.c:(.text+0x40c): undefined reference to `kunit_kmalloc_array'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x490): undefined reference to `kunit_binary_assert_format'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x4c0): undefined reference to `kunit_binary_assert_format'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x4f0): undefined reference to `kunit_do_assertion'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x6a4): undefined reference to `kunit_do_assertion'
+   mipsel-linux-ld: iio-test-rescale.c:(.text+0x718): undefined reference to `kunit_do_assertion'
+
 ---
-
-Fugang Duan already leave NXP, his mail address is dropped. And He can't
-keep maintain this driver.
-
----
- Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml b/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
-index 1ca571056ea9..925f355cc21f 100644
---- a/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml
-@@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: ADC found on Freescale vf610 and similar SoCs
- 
- maintainers:
--  - Fugang Duan <fugang.duan@nxp.com>
-+  - Haibo Chen <haibo.chen@nxp.com>
- 
- description:
-   ADCs found on vf610/i.MX6slx and upward SoCs from Freescale.
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

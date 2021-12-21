@@ -2,60 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AE1F47BE40
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 11:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5161147BE5E
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 11:47:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233721AbhLUKoG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Dec 2021 05:44:06 -0500
-Received: from aposti.net ([89.234.176.197]:53538 "EHLO aposti.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230132AbhLUKoG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 21 Dec 2021 05:44:06 -0500
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH] dt-bindings: iio: Document "label" property
-Date:   Tue, 21 Dec 2021 10:43:54 +0000
-Message-Id: <20211221104354.35073-1-paul@crapouillou.net>
+        id S234110AbhLUKrD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Dec 2021 05:47:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51018 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231523AbhLUKrD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 05:47:03 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5F2C061574
+        for <linux-iio@vger.kernel.org>; Tue, 21 Dec 2021 02:47:02 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mzcel-0005B7-VS; Tue, 21 Dec 2021 11:46:08 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mzceh-005nfr-LC; Tue, 21 Dec 2021 11:46:02 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mzceg-0004BP-Dm; Tue, 21 Dec 2021 11:46:02 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        David Lechner <david@lechnology.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 0/8] counter: Remove struct counter_device::priv
+Date:   Tue, 21 Dec 2021 11:45:38 +0100
+Message-Id: <20211221104546.214066-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-All iio devices can have a label, which will be carried on to userspace
-as a sysfs attribute. This is useful when having several iio devices
-that represent different instances of the same hardware, as the name
-attribute would then not be enough to differentiate between them.
+Hello,
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- Documentation/devicetree/bindings/iio/common.yaml | 8 ++++++++
- 1 file changed, 8 insertions(+)
+similar to patch
+https://lore.kernel.org/r/4bde7cbd9e43a5909208102094444219d3154466.1640072891.git.vilhelm.gray@gmail.com
+the usage of struct counter_device::priv can be replaced by
+container_of which improves type safety and code size.
 
-diff --git a/Documentation/devicetree/bindings/iio/common.yaml b/Documentation/devicetree/bindings/iio/common.yaml
-index f845b41d74c4..a90ad7718ecf 100644
---- a/Documentation/devicetree/bindings/iio/common.yaml
-+++ b/Documentation/devicetree/bindings/iio/common.yaml
-@@ -32,6 +32,14 @@ properties:
-       considered 'near' to the device (an object is near to the
-       sensor).
- 
-+  label:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: |
-+      All iio devices can have a label, which will be carried on to userspace
-+      as a sysfs attribute. This is useful when having several iio devices that
-+      represent different instances of the same hardware, as the name attribute
-+      would then not be enough to differentiate between them.
-+
- additionalProperties: true
- 
- ...
+This series depends on above patch, converts the remaining drivers and
+finally drops struct counter_device::priv.
+
+This series was compile tested using ARCH=arm allmodconfig with the
+following change:
+
+ config 104_QUAD_8
+        tristate "ACCES 104-QUAD-8 driver"
+-       depends on PC104 && X86
++       depends on PC104 && X86 || COMPILE_TEST
+        select ISA_BUS_API
+
+in drivers/counter/Kconfig.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (8):
+  counter: 104-quad-8: Use container_of instead of struct
+    counter_device::priv
+  counter: ftm-quaddec: Use container_of instead of struct
+    counter_device::priv
+  counter: intel-qeb: Use container_of instead of struct
+    counter_device::priv
+  counter: interrupt-cnt: Use container_of instead of struct
+    counter_device::priv
+  counter: microchip-tcp-capture: Use container_of instead of struct
+    counter_device::priv
+  counter: stm32-lptimer-cnt: Use container_of instead of struct
+    counter_device::priv
+  counter: stm32-timer-cnt: Use container_of instead of struct
+    counter_device::priv
+  counter: Remove unused member from struct counter_device
+
+ drivers/counter/104-quad-8.c            | 64 +++++++++++++------------
+ drivers/counter/ftm-quaddec.c           | 14 ++++--
+ drivers/counter/intel-qep.c             | 24 ++++++----
+ drivers/counter/interrupt-cnt.c         | 16 ++++---
+ drivers/counter/microchip-tcb-capture.c | 18 ++++---
+ drivers/counter/stm32-lptimer-cnt.c     | 24 ++++++----
+ drivers/counter/stm32-timer-cnt.c       | 24 ++++++----
+ drivers/counter/ti-eqep.c               |  1 -
+ include/linux/counter.h                 |  3 --
+ 9 files changed, 106 insertions(+), 82 deletions(-)
+
+
+base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+prerequisite-patch-id: 9459ad8bc78190558df9123f8bebe28ca1c396ea
 -- 
-2.34.1
+2.33.0
 

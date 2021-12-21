@@ -2,99 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 280FB47C564
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 18:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE7A47C5D3
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 19:09:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240624AbhLURuZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Dec 2021 12:50:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36840 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234272AbhLURuY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 12:50:24 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42253C061574;
-        Tue, 21 Dec 2021 09:50:24 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id a1so13547729qtx.11;
-        Tue, 21 Dec 2021 09:50:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=XXCtO0JFViUQ4+LHr/arkANJI9x3qLGM5DbuHmIW9MU=;
-        b=cqdR1FXALBsdAIeIV8vtSvxZ70JS3zhSNmmMXFZ+JH/4m2aL7sBmKnqBDR+urVXOb8
-         q4R8Uksz5dAgQ4gfrUnGf3gpmHO7hsN8EE+//PW30tBu2+5JIDFz3oC4re/lO0Ml18Ot
-         A8ujRtbPFwddS5kFLaNldkEN+N09qZydmxaUmZysCFtyrZGRW8BbfuwiVZRxjeYph0vU
-         MM24J1HKxS8jMYboQAtW7osZFku7lSxThL5i9dcc0jBo2f5lm0HQweVqfdd7W7icoJC9
-         NQU+8bOAMS1rhI3wRj9XTMclESA369bYgx3FL8SODJBwYCnlr4zcK7R+RQcjfRhWxKUb
-         JQiA==
+        id S232127AbhLUSJD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Dec 2021 13:09:03 -0500
+Received: from mail-qv1-f48.google.com ([209.85.219.48]:39826 "EHLO
+        mail-qv1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236910AbhLUSJD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 13:09:03 -0500
+Received: by mail-qv1-f48.google.com with SMTP id g15so8873qvi.6;
+        Tue, 21 Dec 2021 10:09:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=XXCtO0JFViUQ4+LHr/arkANJI9x3qLGM5DbuHmIW9MU=;
-        b=5nGgZG2Zin3/qWjT3mSsDC651aclN87h32OhBPg1Z2T7rz+f90rYo3NtXHrAFmlOP3
-         s/AKXiA2qACUyGY+HgL3cA275MhrvDUKJ2Rjh7P0UYSS7BJDNYBLm18CGczlsveci7fw
-         KxfpwEqsvOdNiJY49QBo1aH7Si4x13INygahH/7aqYjfxsfMWMNH/A3uQUmK5tcVOTAy
-         rSXWT6+ZD3Icu5fNlS9df2pdZxfecqmsHQmY+S3vJgahAD3X4pQqJn1sITWyj/SC4Ox5
-         QTsJ8aH/fQK2uz9bpqKvSzNk0/ewubjRqbq/KpdrgqjuqIolcnxL0/5OJ0HnofgRqprb
-         gE2g==
-X-Gm-Message-State: AOAM532aaudu2Ar3ITaGQzZKNzRBz85QAxliIfKlUvjzEqpgGB3QqXGa
-        QF6sRyYWgYXTM2gdU+Kob1w=
-X-Google-Smtp-Source: ABdhPJyeulBwLEh9V+XaacXqpvSjj6KHvXBaAAnnedu0bOYFuAneCqi9bMrqxJk9NI3BIhYZGBLMaw==
-X-Received: by 2002:ac8:4459:: with SMTP id m25mr3185735qtn.659.1640109023435;
-        Tue, 21 Dec 2021 09:50:23 -0800 (PST)
-Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id t3sm782344qtc.7.2021.12.21.09.50.21
+        bh=GbwuGuR9jfAEfWHT8YPJNc9cTjP1HSl8uRhaJJDjW80=;
+        b=jWRtbK83gzfd/qBddHl77Dqs6PTRx5rdmQC5j6SmwePWQQQi8hA5Nqi84xPoz/QbOe
+         e2b7vy5tuzL507V99emzVjCrDVs1BqOUcAwgEzM4iLYmIpk40L5d5TIMnsPeDXbVUD18
+         6975/xjKDR0rt/Q8MTvy0zyabi6OiAtYPoWGDPO1LdFAbr9fQprqvC3McQgqlpVYXeDd
+         sR+PgC9WLNr8FudFGOJ++hd8pQwfAfO+qxCWMbNy6kudZRvh4wf15BQnls1x8mApIYQ7
+         bUojW5UO3AwFeyR20gdMSsQAsb0pTXqRAeMpCbmPoSNCJVCnTZz8YgxP+8+hPsS222I6
+         SKiw==
+X-Gm-Message-State: AOAM530EgvrDLNogknc/QW54ddqmzYnnidhPVuStrgDYrRnIbEmikbYo
+        P8FU7cLvqZEWHz3wHGoBVQ==
+X-Google-Smtp-Source: ABdhPJwQakcHH+jQK4zwEgDoG3F8/3Wzg7wCEt07ZDVyOcZ+SKAixTM0lG4z2HhmqkeTvEtJf+ZGeg==
+X-Received: by 2002:a05:6214:27ee:: with SMTP id jt14mr3449666qvb.119.1640110141686;
+        Tue, 21 Dec 2021 10:09:01 -0800 (PST)
+Received: from robh.at.kernel.org ([24.55.105.145])
+        by smtp.gmail.com with ESMTPSA id l22sm17069921qtj.68.2021.12.21.10.09.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Dec 2021 09:50:22 -0800 (PST)
-Date:   Tue, 21 Dec 2021 12:50:20 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v10 03/14] iio: inkern: make a best effort on offset
- calculation
-Message-ID: <YcIT3BSIKJKVWAgN@shaak>
-References: <20211219223953.16074-1-liambeguin@gmail.com>
- <20211219223953.16074-4-liambeguin@gmail.com>
- <CAHp75Ve_vv619-UxdBN+xhWGm32tCJkkN3epVRgCiLF7p6xMOw@mail.gmail.com>
+        Tue, 21 Dec 2021 10:09:01 -0800 (PST)
+Received: (nullmailer pid 1513560 invoked by uid 1000);
+        Tue, 21 Dec 2021 18:08:58 -0000
+Date:   Tue, 21 Dec 2021 14:08:58 -0400
+From:   Rob Herring <robh@kernel.org>
+To:     Eugen Hristev <eugen.hristev@microchip.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, jic23@kernel.org,
+        linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: atmel,sama5d2-adc: make
+ atmel,trigger-edge-type non-mandatory
+Message-ID: <YcIYOh6TmtVElt05@robh.at.kernel.org>
+References: <20211217095401.583821-1-eugen.hristev@microchip.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHp75Ve_vv619-UxdBN+xhWGm32tCJkkN3epVRgCiLF7p6xMOw@mail.gmail.com>
+In-Reply-To: <20211217095401.583821-1-eugen.hristev@microchip.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
-
-On Tue, Dec 21, 2021 at 07:42:31AM +0200, Andy Shevchenko wrote:
-> On Mon, Dec 20, 2021 at 11:17 AM Liam Beguin <liambeguin@gmail.com> wrote:
-> >
-> > From: Liam Beguin <lvb@xiphos.com>
-> >
-> > iio_convert_raw_to_processed_unlocked() assumes the offset is an
-> > integer. Make a best effort to get a valid offset value for fractional
-> > cases without breaking implicit truncations.
+On Fri, 17 Dec 2021 11:54:01 +0200, Eugen Hristev wrote:
+> The atmel,trigger-edge-type was never imposed by the driver.
+> Make things right and remove this property from the mandatory list.
+> This will not break existing nodes because according to the binding they
+> should have this property.
+> However, the driver does not impose it and it works without it, the property
+> selects the trigger type, and without it, the driver will have no trigger
+> available, which is the case on some boards which do not have access
+> to the trigger pin.
+> This will avoid generating this warning for example:
 > 
-> ...
+> */arch/arm/boot/dts/at91-sama7g5ek.dt.yaml: adc@e1000000: 'atmel,trigger-edge-type' is a required property
 > 
-> > +                       offset_val /= (1 << offset_val2);
-> 
-> Besides potentially being problematic (if arg is 31 for the left
-> shift) why not simply
-> 
-> _val >>= _val2;
 
-That is safer, and more elegant! I'll update.
-
-Thanks,
-Liam
-
-> --
-> With Best Regards,
-> Andy Shevchenko
+Acked-by: Rob Herring <robh@kernel.org>

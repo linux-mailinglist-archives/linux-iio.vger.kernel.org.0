@@ -2,76 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14BE647C0B1
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 14:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A9C47C0B5
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 14:23:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235220AbhLUNUm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Dec 2021 08:20:42 -0500
-Received: from out0.migadu.com ([94.23.1.103]:17122 "EHLO out0.migadu.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234517AbhLUNUl (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 21 Dec 2021 08:20:41 -0500
-Date:   Tue, 21 Dec 2021 21:20:14 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1640092838;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=twaNG892K9y8e8rzCfGiHag1faP2p2akd8FKCMT4vm8=;
-        b=Z2K9jyZh76mwG1LPNYvd6x+4KRPLS28SE3DHl5Dn0pqKxbNSb+XryhG22aMYBXzNjYWf0G
-        3MiHUlD0L8K7RifWXIPcoi1ps8ou5cIpVGNQjHgrF3y1tnwGT5OswftA/+npE0eOIbKkjT
-        OxK7ZN6Vi9TIS2c34L/D5C8heT/3RdA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Cai Huoqing <cai.huoqing@linux.dev>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH] iio:addac:ad74413r: Fix uninitialized ret in a path that
- won't be hit.
-Message-ID: <20211221132014.GA27963@chq-T47>
-References: <20211220164726.3136307-1-jic23@kernel.org>
+        id S238163AbhLUNX0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Dec 2021 08:23:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234517AbhLUNXZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 08:23:25 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A7AC061574
+        for <linux-iio@vger.kernel.org>; Tue, 21 Dec 2021 05:23:25 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mzf6e-0001mV-M1; Tue, 21 Dec 2021 14:23:04 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mzf6Z-005pOs-Vx; Tue, 21 Dec 2021 14:22:59 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1mzf6Y-0004cW-MI; Tue, 21 Dec 2021 14:22:58 +0100
+Date:   Tue, 21 Dec 2021 14:22:58 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        David Lechner <david@lechnology.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 0/8] counter: Remove struct counter_device::priv
+Message-ID: <20211221132258.472t537373vto7bz@pengutronix.de>
+References: <20211221104546.214066-1-u.kleine-koenig@pengutronix.de>
+ <dadb79b2-ac21-1899-48b9-1c6723afb1b4@metafoo.de>
+ <20211221113542.rl4aburbzzrgs3km@pengutronix.de>
+ <65009237-7e61-21aa-60cd-b7f7e0bb2f91@metafoo.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="vzpyvvyijl5eeftp"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211220164726.3136307-1-jic23@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Migadu-Auth-User: linux.dev
+In-Reply-To: <65009237-7e61-21aa-60cd-b7f7e0bb2f91@metafoo.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 20 12月 21 16:47:26, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> I don't believe it's possible to hit this, because we drop
-> out of __iio_update_buffers() earlier in the event of an empty
-> list.  However, that is not visible to the compiler so lets
-> return an error if we do hit the loop with an empty bitmask.
-> 
-> Fixes: 5d97d9e9a703 ("iio: addac: ad74413r: fix off by one in ad74413r_parse_channel_config()")
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  drivers/iio/addac/ad74413r.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> index 289d254943e1..5271073bb74e 100644
-> --- a/drivers/iio/addac/ad74413r.c
-> +++ b/drivers/iio/addac/ad74413r.c
-> @@ -843,7 +843,7 @@ static int ad74413r_update_scan_mode(struct iio_dev *indio_dev,
->  	u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 * AD74413R_FRAME_SIZE];
->  	u8 *tx_buf = st->adc_samples_tx_buf;
->  	unsigned int channel;
-> -	int ret;
-> +	int ret = -EINVAL;
-Reviewed-by: Cai Huoqing <cai.huoqing@linux.dev>
->  
->  	mutex_lock(&st->lock);
->  
-> -- 
-> 2.34.1
-> 
+
+--vzpyvvyijl5eeftp
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Dec 21, 2021 at 01:04:50PM +0100, Lars-Peter Clausen wrote:
+> On 12/21/21 12:35 PM, Uwe Kleine-K=F6nig wrote:
+> > On Tue, Dec 21, 2021 at 12:12:12PM +0100, Lars-Peter Clausen wrote:
+> > > On 12/21/21 11:45 AM, Uwe Kleine-K=F6nig wrote:
+> > > > similar to patch
+> > > > https://lore.kernel.org/r/4bde7cbd9e43a5909208102094444219d3154466.=
+1640072891.git.vilhelm.gray@gmail.com
+> > > > the usage of struct counter_device::priv can be replaced by
+> > > > container_of which improves type safety and code size.
+> > > >=20
+> > > > This series depends on above patch, converts the remaining drivers =
+and
+> > > > finally drops struct counter_device::priv.
+> > > Not sure if this is such a good idea. struct counter_device should no=
+t be
+> > > embedded in the drivers state struct in the first place.
+> > Just to mention it: My patch series didn't change this, this was already
+> > broken before.
+>=20
+> I know, but this series has to be reverted when the framework is fixed.
+
+All drivers have to be touched. With my patch series you have to modify
+one function in each driver, without my patch you have touch nearly
+every function.
+
+*shrug*
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--vzpyvvyijl5eeftp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHB1S8ACgkQwfwUeK3K
+7AmdXwf8C/nqQs80YpTkc4NkxCBn5t8pVGv+QO/f/a3ZRQJQhBqVXCT9t21L2/Qn
+qhAyte5adQCclwmGbNBF6yCbeaOcpPUnOKTLkGFSRwZmegufiplQ22mC0jPbR0En
+kQ0/Gbipbw/bIpUqDfCF7FE+0n5dY/Vbb6vlaiqnKhAGS0mxC/9BKVEaK/m4OJ+Z
+vybjLOuICI1O/c+NW67/y2yuzktrpAE4i8mOl/yRxV5WbRGB7qVJR6veB0weU4+v
+c2lzI/l9AZGDGX6tzon+SYHrKg8FFzFlU9ivITHC6orIAuwj4Dx0nraqycQI94wu
+vG9kWmiQUwVgW5zv0R3jDOsksS3lOg==
+=xdQv
+-----END PGP SIGNATURE-----
+
+--vzpyvvyijl5eeftp--

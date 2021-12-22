@@ -2,110 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7378047D6F9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 19:38:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6138147D72B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 19:51:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344771AbhLVSiw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 13:38:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34190 "EHLO
+        id S1344910AbhLVSv1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 13:51:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233997AbhLVSiw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 13:38:52 -0500
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F0B0C061574;
-        Wed, 22 Dec 2021 10:38:52 -0800 (PST)
-Received: by mail-qv1-xf36.google.com with SMTP id r6so3067574qvr.13;
-        Wed, 22 Dec 2021 10:38:52 -0800 (PST)
+        with ESMTP id S1344899AbhLVSv0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 13:51:26 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D243C061574;
+        Wed, 22 Dec 2021 10:51:26 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id bm14so12253824edb.5;
+        Wed, 22 Dec 2021 10:51:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Nf5MgBjXqmTQasO6KZdp2Qw6UGHqoTSrSt9BT1Gsnd4=;
-        b=TV2EmI7uhCw68jYA9t1cerE/vqxUO5eKp98LCALYoUvvrtXrvZLRIMjKaYrdlL3/36
-         X1tjwqYFo0DO97WxkR7o33UfwVyJSJogDkBFjt+YjtGd5I4lS20oZdMng49Ygut4BOJh
-         MdeY8wSUVzsmGPg4qCIYm/cpA4XFJbn2G3uvFQWZvwmLbns3t4luMtyYIO41ZZG/fFKy
-         L9tYXjBHiaPqrrsnD65TbeF47Pkw9eUqwe9VsgI6SJb6XbM2cfErxBDRfyKuWuDyap3r
-         IaWOjzWjU6hmsn65FEZvS2AsxqZc5FcqSg2vr6xPJmpT3ut6pVH4AuC7ghzBq6Pr0PVs
-         zTkw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KYTh2CwssS/3FtePDunwZjTT7AQdZfmbx8r4C9A/7rk=;
+        b=NkCq+PT+dxAtqEM4hO3GIGerh5pEAHRJ/tvQvHEAIqTVPFb1VzvT5vbB/p603Mc3TX
+         Ma5ejfdhhqTPhqiK+LanVD9cR6xKmKUWkgKx68Qr33HeuZeEgsDo5oJ0xhAuWKjD82XY
+         uPK9MpnzYeaiZfev1navurWuAW/b2be/zz1EFNhb/l6N7BHAY1r+mdJcK0z4piVR3Swz
+         Qc4KJqFuNZBxbocb0TcAIRAJgfMadSLBGB63cJfqxoTo6t2J6tdEOdbL7NIx5kKq9uyd
+         rGIU+f4MRcwGnDTl9W5JY7YUL8TJFgLbQZgUHQ5gxobtloyQqPkEj4zCxsIyp0ynaYoU
+         EVig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Nf5MgBjXqmTQasO6KZdp2Qw6UGHqoTSrSt9BT1Gsnd4=;
-        b=a3eG9Pu9jtKeMziMQ9FZgSuSSsbmYsECZ1tp4LFesvG7k3MPk94SYR/dNWufeoCYzj
-         67/RoDd3aoGKFmvI3D/q0oAJjZbLJWSDhsexxjE8RAWlb4xd9M/4UNUc3vOUyYJUoeVJ
-         LRLZFPc91i4Hgd6KdBdVpi/EWpBc5rDvSFwaTurORsK1Bg+NEhvtv7G12Q6BGn31WkRH
-         pTPgEvDnW8ZwYWAeJRNziqno+BpW0cIihnleEyEhiJvhr5+OerOngfQ+WCxZ2zt8bfv1
-         RTGfOJ9IWJAsodHXLTKktvl5HGMhESO4XYaJ61Thdx+5XiajbKonvQ65clyn0Di4x2fl
-         jItQ==
-X-Gm-Message-State: AOAM532fvjWubICvy7O+LpZy1C6rcCFwW2WDc9VQzHzK/jMTQBGm4AST
-        l6hHrWc6lBF79O8/u6sPp04=
-X-Google-Smtp-Source: ABdhPJwMUNy/FD+LSUG8fSt+A9sruxy6dsJ/uwwEFxfr394TsSBDePVrWrQBgiewiBYOCJzaydGJBA==
-X-Received: by 2002:a05:6214:2a8e:: with SMTP id jr14mr3578976qvb.75.1640198331459;
-        Wed, 22 Dec 2021 10:38:51 -0800 (PST)
-Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id n129sm2241061qkn.64.2021.12.22.10.38.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Dec 2021 10:38:50 -0800 (PST)
-Date:   Wed, 22 Dec 2021 13:38:47 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v11 09/15] iio: afe: rescale: reduce risk of integer
- overflow
-Message-ID: <YcNwt5RFMNFUimD/@shaak>
-References: <20211222034646.222189-1-liambeguin@gmail.com>
- <20211222034646.222189-10-liambeguin@gmail.com>
- <CAHp75Vc0aWrFtNK1ZkHkwP62zNXQJaDcn9pc8Uhfq0kOnWzmJg@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KYTh2CwssS/3FtePDunwZjTT7AQdZfmbx8r4C9A/7rk=;
+        b=BEN3X0XVKFRXQpVUtoa1+1PYYUNEqhbxCPW171Hg2QjntrRZjHTcYmx8KrcXGZ8Pbr
+         kPQCxcU9ln3h6xNJI4+tcjdagZ10Xxw61WfTxJ+cRn/YEbaFcNTNQxViDDkADEbu6eSJ
+         M0bgkeG+fG42l/jQ6DEH3ucNBRhH2Q9GyIeZjwvYtngnt+2qutlqPNPpfTCm9pWZMg3R
+         DiTqjUmrRUThvp+Tfm5o5zhGldAFrF6fhROdz+yY7oscEKn4GWEU3fQ3JyGYTq6w/yTK
+         QKcdwfLzgxG0aihjWjp3iI21RwA+IGtz7+0KsODjgIktuv2YZWwPM53J4Mo3l484I7yy
+         cpOw==
+X-Gm-Message-State: AOAM532y2bNI5UaZzBuEwnkdxpXAJhKJs4izTrq72hg9uwyyZ7kVvSvk
+        5F4NXSiHeMeyPRMF+yVZrm8uWayiHxYzYQBHVNQ=
+X-Google-Smtp-Source: ABdhPJyCRsdCg1paGM0b6KJFzrwBvF+whD52FtJVNqLzVlcBfwUrtUieqKtiF4oFQWciu1uukzbB/kN0jiZfv0E3pl4=
+X-Received: by 2002:a17:907:97cd:: with SMTP id js13mr2183968ejc.497.1640199084990;
+ Wed, 22 Dec 2021 10:51:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vc0aWrFtNK1ZkHkwP62zNXQJaDcn9pc8Uhfq0kOnWzmJg@mail.gmail.com>
+References: <YcIpAKV7Cmi0o7PU@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <YcIpAKV7Cmi0o7PU@debian-BULLSEYE-live-builder-AMD64>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 22 Dec 2021 20:49:26 +0200
+Message-ID: <CAHp75VcU8B8fydh874p6HpgGXXRYvNGdphH=i17JHB3DYJ1JZQ@mail.gmail.com>
+Subject: Re: [PATCH] drivers:iio:dac make expression evaluation 64-bit
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 02:29:04PM +0200, Andy Shevchenko wrote:
-> On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
-> >
-> > From: Liam Beguin <lvb@xiphos.com>
-> >
-> > Reduce the risk of integer overflow by doing the scale calculation on
-> > a 64-bit integer. Since the rescaling is only performed on *val, reuse
-> > the IIO_VAL_FRACTIONAL_LOG2 case.
-> 
-> ...
-> 
-> > -               tmp = 1 << *val2;
-> 
-> At some point this should be BIT()
+On Wed, Dec 22, 2021 at 5:59 PM Muhammad Usama Anjum
+<usama.anjum@collabora.com> wrote:
+>
+> Two 32-bit values are being evaluated using 32-bit arithmetic and then
+> passed to s64 type. It is wrong. Expression should be evaluated using
+> 64-bit arithmetic and then passed.
 
-I'm not against changing this, but (to me at least) 1 << *val2 seems
-more explicit as we're not working with bitfields. No?
+...
 
-> Rule of thumb (in accordance with C standard), always use unsigned
-> value as left operand of the _left_ shift.
+>         dac->ch_data[ch].scale_dec = DIV_ROUND_CLOSEST((s64)rem * 1000000,
+>                                                         65536);
 
-Right, that makes sense! In practice though, since we'll most likely
-never use higher bits of *val2 with IIO_VAL_FRACTIONAL_LOG2, would it be
-enough to simply typecast?
+Shouldn't the above be fixed as well? Has anybody tried to compile on
+32-bit arch this?
 
-	tmp = 1 << (unsigned int)*val2;
+> -       dac->ch_data[ch].offset_int = div_s64_rem(v_min * 65536, span, &rem);
+> +       dac->ch_data[ch].offset_int = div_s64_rem(v_min * 65536L, span, &rem);
+>         tmp = (s64)rem * 1000000;
+>         dac->ch_data[ch].offset_dec = div_s64(tmp, span);
+>  }
 
-Cheers,
-Liam
-
-> > +               if (scale_type == IIO_VAL_FRACTIONAL)
-> > +                       tmp = *val2;
-> > +               else
-> > +                       tmp = 1 << *val2;
-> 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+-- 
+With Best Regards,
+Andy Shevchenko

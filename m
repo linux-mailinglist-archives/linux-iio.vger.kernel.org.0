@@ -2,160 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 913C047D61B
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 18:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A27047D658
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 19:13:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344430AbhLVRwS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 12:52:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51706 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344469AbhLVRwR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 12:52:17 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53719C061747
-        for <linux-iio@vger.kernel.org>; Wed, 22 Dec 2021 09:52:17 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n05mK-00038x-DV; Wed, 22 Dec 2021 18:51:52 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n05mG-0062lA-7p; Wed, 22 Dec 2021 18:51:47 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n05mF-0002sK-4h; Wed, 22 Dec 2021 18:51:47 +0100
-Date:   Wed, 22 Dec 2021 18:51:39 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        David Lechner <david@lechnology.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Patrick Havelange <patrick.havelange@essensium.com>,
-        Syed Nayyar Waris <syednwaris@gmail.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 0/8] counter: Remove struct counter_device::priv
-Message-ID: <20211222175139.6smiezanuduod6fm@pengutronix.de>
-References: <20211221104546.214066-1-u.kleine-koenig@pengutronix.de>
- <dadb79b2-ac21-1899-48b9-1c6723afb1b4@metafoo.de>
- <20211221113542.rl4aburbzzrgs3km@pengutronix.de>
- <65009237-7e61-21aa-60cd-b7f7e0bb2f91@metafoo.de>
+        id S234798AbhLVSNg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 13:13:36 -0500
+Received: from mail-qk1-f170.google.com ([209.85.222.170]:36660 "EHLO
+        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233546AbhLVSNf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 13:13:35 -0500
+Received: by mail-qk1-f170.google.com with SMTP id i130so2125285qke.3;
+        Wed, 22 Dec 2021 10:13:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=1vM+X4HcbixZ8QJIGmktJgMcYQkhz0YWRNaFywDlSok=;
+        b=Hw2XqzOCJcKNO6UmMliNDmXpuy7uc5zhQJfClKLj2njye4GRUdtIRqO7OpJAQxvd0B
+         OyoIFzBmoGwKePv5sg0YjGuuzhNoeXTRR36+OAbvMM75Y2b5En71ezRzGYh8CcQKWNtf
+         lwZZc52oyFEZFFPs8k85l55K5SEh0Hu7jEw4T9wCXNETA3i1iI3JhRTnLM7ntuCtSzgh
+         t2g/MabRSqETqp8z2YWq3+TJwCrdwAMI7gwlWcswZEe9l0GqE7Mr6lpQuiMeNr8vEbaa
+         Db44toY44TeIGOHkuID1yEJCdNxR+yPLW5UYRF09fTMCo0Ka3CYXPJIHMazY64c8b5rj
+         ozyQ==
+X-Gm-Message-State: AOAM531s5WINEO8F5kHv22h12TcQUX+kroDa528r5X4XtKJv6PlJ2zo7
+        FC2eD+yrY5aQjG1fRD9/kQ==
+X-Google-Smtp-Source: ABdhPJz2TY1HWqHFcqHe6AGH3EbiwO4F0rIHKL7w324aXSN34Cjlve95xI73IVAziukYLx5jhWTVAw==
+X-Received: by 2002:a37:6587:: with SMTP id z129mr2942886qkb.384.1640196815059;
+        Wed, 22 Dec 2021 10:13:35 -0800 (PST)
+Received: from robh.at.kernel.org ([24.55.105.145])
+        by smtp.gmail.com with ESMTPSA id j14sm2536014qkp.28.2021.12.22.10.13.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Dec 2021 10:13:34 -0800 (PST)
+Received: (nullmailer pid 2439455 invoked by uid 1000);
+        Wed, 22 Dec 2021 18:13:33 -0000
+Date:   Wed, 22 Dec 2021 14:13:33 -0400
+From:   Rob Herring <robh@kernel.org>
+To:     haibo.chen@nxp.com
+Cc:     robh+dt@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
+        cai.huoqing@linux.dev, festevam@gmail.com,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-imx@nxp.com, jic23@kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings:iio:adc: update the maintainer of
+ vf610-adc
+Message-ID: <YcNqzbjeXf5nY4A3@robh.at.kernel.org>
+References: <1640073000-32629-1-git-send-email-haibo.chen@nxp.com>
+ <1640073000-32629-2-git-send-email-haibo.chen@nxp.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="asrj6mdmugq3ovqq"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <65009237-7e61-21aa-60cd-b7f7e0bb2f91@metafoo.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <1640073000-32629-2-git-send-email-haibo.chen@nxp.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 21 Dec 2021 15:50:00 +0800, haibo.chen@nxp.com wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
+> 
+> Drop Fugang Duan as the vf610-adc maintainer, and add my self as
+> the maintainer.
+> 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> ---
+> 
+> Fugang Duan already leave NXP, his mail address is dropped. And He can't
+> keep maintain this driver.
+> 
+> ---
+>  Documentation/devicetree/bindings/iio/adc/fsl,vf610-adc.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
---asrj6mdmugq3ovqq
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hello,
-
-On Tue, Dec 21, 2021 at 01:04:50PM +0100, Lars-Peter Clausen wrote:
-> On 12/21/21 12:35 PM, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Dec 21, 2021 at 12:12:12PM +0100, Lars-Peter Clausen wrote:
-> > > On 12/21/21 11:45 AM, Uwe Kleine-K=F6nig wrote:
-> > > > similar to patch
-> > > > https://lore.kernel.org/r/4bde7cbd9e43a5909208102094444219d3154466.=
-1640072891.git.vilhelm.gray@gmail.com
-> > > > the usage of struct counter_device::priv can be replaced by
-> > > > container_of which improves type safety and code size.
-> > > >=20
-> > > > This series depends on above patch, converts the remaining drivers =
-and
-> > > > finally drops struct counter_device::priv.
-> > > Not sure if this is such a good idea. struct counter_device should no=
-t be
-> > > embedded in the drivers state struct in the first place.
-> > Just to mention it: My patch series didn't change this, this was already
-> > broken before.
-> I know, but this series has to be reverted when the framework is fixed.
-> >=20
-> > > struct counter_device contains a struct device, which is a reference =
-counted
-> > > object. But by embedding it in the driver state struct the life time =
-of both
-> > > the struct counter_device and and struct device are bound to the life=
- time
-> > > of the driver state struct.
-> > >=20
-> > > Which means the struct device memory can get freed before the last re=
-ference
-> > > is dropped, which leads to a use-after-free and undefined behavior.
-> > Well, the driver struct is allocated using devm_kzalloc for all drivers.
->=20
-> devm_kzalloc() doesn't make a difference. The managed memory is freed when
-> the parent device is unbound/removed. There may very well be reference to
-> the counter_device at this point.
->=20
-> > So I think it's not *very* urgent to fix. Still you're right, this
-> > should be addressed.
->=20
-> Yes and no, this can trivially be used for privilege escalation, but then
-> again on systems with a counter_device probably everything runs as root
-> anyway.
-
-I could provoke an oops with the following shell command:
-
-
-	{ sleep 5; echo bang; } > /dev/counter0 & sleep 1; echo 40000000.timer:cou=
-nter > /sys/bus/platform/drivers/stm32-timer-counter/unbind
-
-I have a protype here to split counter_register() into counter_alloc() +
-counter_add(), but I didn't convert a driver to it yet. If you want to
-take a look, it's currently available from
-
-	https://git.pengutronix.de/git/ukl/linux counter-dev-livetime
-
-(or if you prefer a webif:
-
-	https://git.pengutronix.de/cgit/ukl/linux/log/?h=3Dcounter-dev-livetime
-
-). I planned to just invest a two or so hours to fix this. But the plan
-failed (one reason is that v5.16-rc6 failed to boot on the stm32mp1 I
-work on and I bisected that first.)
-
-Maybe I find some time between the years to get this forward a bit.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---asrj6mdmugq3ovqq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHDZagACgkQwfwUeK3K
-7AkNqQf/fIe5zz5fAatnqj+QS3OUWmufUxx3MXg1a8ghQ2E3sdiTgIbgICfg94Cq
-6OqkCvh4W9HBpMUQbVHPtpaxHBRA6UQqOxfcKYcOvaq4HAY+8roCYKMKbBqMEnIY
-CY/7CB2s9xCv3cedWaVwtnpM3pVO862mMvGwv7HEZgVcj6wXDFSYXMCZUcZ2yPXc
-UTs25lC4sJ9Y1txUFHHiE767NJ9O8itmTwsZ5tj7zY/SaVKwVKSwl1SCEyK6pCmW
-DmxCK83zAZnlBfnEe7hA97x+dd3vtWbmMTAVuaU17gp2I7O6s5jQcCLvWQBPn7XD
-4Cl3Ox6CVJcgiHvVgLaL9aXQCqQ7TQ==
-=8UkX
------END PGP SIGNATURE-----
-
---asrj6mdmugq3ovqq--
+Acked-by: Rob Herring <robh@kernel.org>

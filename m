@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F07347D1D9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 13:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F35F147D243
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 13:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240458AbhLVMkO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 07:40:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37198 "EHLO
+        id S241010AbhLVMnJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 07:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233073AbhLVMkO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 07:40:14 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC69C061574;
-        Wed, 22 Dec 2021 04:40:13 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id w16so8068628edc.11;
-        Wed, 22 Dec 2021 04:40:13 -0800 (PST)
+        with ESMTP id S244989AbhLVMmg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 07:42:36 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89221C061757;
+        Wed, 22 Dec 2021 04:42:35 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id bm14so8187115edb.5;
+        Wed, 22 Dec 2021 04:42:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/3we7U5LcUazMGSwOo/jCUNu/Z/IZrx6owVs1sXCGNU=;
-        b=Liuneh8q2xKHO2+PIe0dy2fGqEu/ES6bhQwGdBvGcLKxSuf9wqTaYUHVtl/naFgMnx
-         8yuTfxBdbZEIxx6EzBBIAuJJ+1EgyHQm/O0ZSZdueGr1Vw7EX29temBhcqF4WxXZe7jC
-         ueyiyMhVS3t36m6op0s6V3dHGxkaVCHWTCj7pxVUu0FchH0k8Y8UKY2fC/ONUI+AfzuV
-         4Pa0ZjguTQE4xkHt0o3eaB0Vd+EC4e7jOmo0G1Ws1m0/HEnqA5kHD8ltIZjwD7NaSUDw
-         fK/0dM3LRFHkPMv8Uyqu8Z9nrd78fojl5uoUaA750JMu84idKg0EMblh5sGhKd3A2E/w
-         FaAg==
+        bh=0PHB2DbyuqWjb8kOPRMCAabVl++BybmOaXAT1jQnLdE=;
+        b=A3aSKk0zsqKWt+N5dbDvZnR4TsIGtDoP9kAPs5+0kxYIEBmxB6Vb/Yx6Kj3y+jETgw
+         quiZ6gPo4KKWywQ13342Mc1UOABJvfvMy4hpHwZ5A/MOZF1HOgvsle0lS6fl5aBBp4P9
+         xtzENL4wML613CCYM7STBCQ0tzXknUbL+THotmvNnPTe5ZE7nlHR8UgBp2EnArNwpTGH
+         4qpXzwiz9ejiflfBFWSXCtR0ouvspEnaAn3c1T6k/gXGrBDxUdg2OFmcSaiOVO9OxTgD
+         JZs26eFkCWL/8NncABavxU5CeWI9FK1uJAEzDrur7Vbq9D8kJTedLY4aZqFcjRG+1X8y
+         iiCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/3we7U5LcUazMGSwOo/jCUNu/Z/IZrx6owVs1sXCGNU=;
-        b=L849YOgf2mULpeU3BVxTk8FI8zqwqP1D5DXSe3c9FBJHmo0oeuYtnyAqgPjQuSJgkF
-         aWYKQq5AB04Z1+B6iON+Szr5G6nvwKrK9rW4n0ncEC8DktaT37A5vGJDB+AF/lp+1pBP
-         TgKQSSmhH6qjZil0BxJLKCa5YJ02f0QY8Bk49GvcRgnRr4c10yciLzqG3Y8K0kr0vN3I
-         9XSGf/PDXlHBqNUYtdu4hvEKuA/hcFE45pDQSPXOwPqp9AbQybdUFqSzuU+tiY01Satc
-         qS923AcWMpUEgEPORrVlaINxfnAed3he5WTeuqeK4JlShlgk58iAFx/I9T7kYRhh1lz8
-         bVqw==
-X-Gm-Message-State: AOAM531U1IT8ZjmOVW1JWhWejcZFs/7GwY6ac0zAIO2uV7tt2tdpnk3s
-        wBSl/cyxcEtJ99RABp79ezukgGecWZKwnPFdvXs=
-X-Google-Smtp-Source: ABdhPJxReAOg2unycC4N1KbyWWK7SHYagXoLLqRd1kla0Z8iXoq/yoKYbOs0BbHleOYcvuPxgk7pT2YSGXfMR1W25so=
-X-Received: by 2002:a05:6402:849:: with SMTP id b9mr1298568edz.258.1640176812095;
- Wed, 22 Dec 2021 04:40:12 -0800 (PST)
+        bh=0PHB2DbyuqWjb8kOPRMCAabVl++BybmOaXAT1jQnLdE=;
+        b=E8+f42v+bOH+BXxkzT4xCQq+5QmFedj1Jq1F424s7hBLkYCTR0JcIvaYQxnuM1higN
+         U8ncnVmEtfRcphUK19M1RLGAzh7zK+OROaDKIAZP8aMxfzG+YWOzklIrIgxE+1jYzuGo
+         n9VuoG+dGV2zA4SQhtLxQofESh9N6qn6lfMWkzgqfwzQrM+K1Srculgy6vZeSAdMPFmR
+         RP/dQ2RLHAPU1eZP26EWioB7p9qQOorztxUHUmiKMRQDTW1oihsu+8zzi2aY7kagvrl+
+         ZDo2wMrdafvn2Ol1hKLRuHRpb/kvmmWy7p/KmXl+wlafLgnGsYVAarSCN+AKAVREAsLf
+         M2cw==
+X-Gm-Message-State: AOAM533msJtbJHDKsaI9iXhEtj+0MZ4pyyzD42V+TlH7DsHAeJxJTOh4
+        +Kp2bh5sV5JQAOpxhNSoJBg5XzhNLKiwZMe7Uqk=
+X-Google-Smtp-Source: ABdhPJwhAUvQ/IAad0o9VyMvINqUtW7Yn7BvDa5bqAfmkvgWiK1Qh0+09stpi2FbCU9QA3buCd3YEhZkroARzxwUrYo=
+X-Received: by 2002:a17:907:6d8d:: with SMTP id sb13mr2360256ejc.132.1640176953787;
+ Wed, 22 Dec 2021 04:42:33 -0800 (PST)
 MIME-Version: 1.0
-References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-12-liambeguin@gmail.com>
-In-Reply-To: <20211222034646.222189-12-liambeguin@gmail.com>
+References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-14-liambeguin@gmail.com>
+In-Reply-To: <20211222034646.222189-14-liambeguin@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Dec 2021 14:38:13 +0200
-Message-ID: <CAHp75Ve4RuJLMdpdKe14nobuZHRNKA7tWt4yE82+noF5p+xxpw@mail.gmail.com>
-Subject: Re: [PATCH v11 11/15] iio: test: add basic tests for the iio-rescale driver
+Date:   Wed, 22 Dec 2021 14:40:35 +0200
+Message-ID: <CAHp75VfC5-C1JuY4r_26tR7ds-f=S6BCPNde=TEBbWNW6hBrnQ@mail.gmail.com>
+Subject: Re: [PATCH v11 13/15] iio: afe: rescale: add temperature transducers
 To:     Liam Beguin <liambeguin@gmail.com>
 Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -66,35 +66,20 @@ On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
 >
 > From: Liam Beguin <lvb@xiphos.com>
 >
-> The iio-rescale driver supports various combinations of scale types and
-> offsets. These can often result in large integer multiplications. Make
-> sure these calculations are done right by adding a set of kunit test
-> cases that build on top of iio-test-format.
+> A temperature transducer is a device that converts a thermal quantity
+> into any other physical quantity. This patch add support for temperature
+
+This patch add --> Add a
+
+> to voltage (like the LTC2997) and temperature to current (like the
+> AD590) linear transducers.
+> In both cases these are assumed to be connected to a voltage ADC.
 
 ...
 
-> +       int fract_mult = 100000000LL;
+> +       rescale->numerator = MICRO;
 
-Perhaps also change to use the prefix?
-
-...
-
-> +       *nano = (s64)tmp * 10 * fract_mult + tmp2;
-
-I'm also puzzled what the meaning of the 10 is here?
-
-...
-
-> +       err = 1000000 * abs(exp - real);
-
-Prefix?
-
-...
-
-> +       err = div64_u64(err, abs(exp));
-> +       return (int)err;
-
-return div64_u64();
+Same comment, please double check we imply 10^-6 and not 10^6 here.
 
 -- 
 With Best Regards,

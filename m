@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12ACA47D781
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 20:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D92C47D7E4
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 20:42:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235859AbhLVTNk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 14:13:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42382 "EHLO
+        id S237855AbhLVTmP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 14:42:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234913AbhLVTNj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 14:13:39 -0500
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47DD0C061574;
-        Wed, 22 Dec 2021 11:13:39 -0800 (PST)
-Received: by mail-qt1-x82e.google.com with SMTP id q14so2831334qtx.10;
-        Wed, 22 Dec 2021 11:13:39 -0800 (PST)
+        with ESMTP id S231352AbhLVTmO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 14:42:14 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073F2C061574;
+        Wed, 22 Dec 2021 11:42:14 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id l17so2909810qtk.7;
+        Wed, 22 Dec 2021 11:42:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=wqw4Csw6qZshE12s1pYlPJOaQv5WDALPakxDCEsMC0E=;
-        b=iWSZ9MZRac4lr9Bc8dNkgqGJSwe4YRtLf4xm6ZGxlzisWWu+INYtwBVh8eleUyD5bQ
-         NpZlzrZ/RgG69av+Ak6mlzN2A1UKKAeeIGabGN+T9VGbbxv0yft1AvttkNZUIL7p+80W
-         hfKFRzy9F4+CHbFF4Gzdrx8Vj1oyGwOs3oyxL6SUs71HDZ8H3SxNtnyPJufqXdaDr5gu
-         ATbIjL6j5aQ8ed7bBc8QZO43OB5vHh8LQhZaImP9e5MRjElmPg9BQedjzxRjRka2L+FP
-         TJweNJru/JkZCoHYQs0Crz5+BU3wlwrdYx5/43WtbONviEs8LIpc0RdoyHWsOgr+6BnE
-         FkKA==
+        bh=r5plYkDKDQhkLjCFvQaIPKKi/bkznMOuAEcbc1q96jE=;
+        b=cdv5W5aKxAgD7OFo+6buOuhuxg4SVAPYaZIAiu3wnE5kz2UOObg8AqvilUHM1GJMPj
+         Bx0ZWvqPE4n7a9i27DRDuII3npxs7dck2N1SHui+T9/aayi9+IxivnjvaYrkTbrUz+K7
+         R2htEu5XKVRD6C4UWfvDIYabzs6CWrTMZnGjvGJ8U4KhbOjnYjHJ/kCftqh6cx66czf+
+         9FtFqRo7nihjnk1mt0AdLZHOwQdoLRua05zJhbb9KUWG0QlYCJr2pmhGcHthjdEtxB3U
+         bGLecWkSibZsvgIawCs7lmdhyOjhZ0Ow8YjfOIuqo5tZnVX5ocx53fuiekJmtBbRVwzD
+         XfGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=wqw4Csw6qZshE12s1pYlPJOaQv5WDALPakxDCEsMC0E=;
-        b=jAeVo0jPIxWKhPDVkt+oZRDN9/+mJFx3rMwe1XMsl9BkBqzBg4IJpAYJdCUDm9P05J
-         x7phle1Y62Ux1uSWJ/UovCFD7YtCJqBm0jG/xsT5cbtRweqJ7fcts+gMSbW+bs4S4qAv
-         CsVDMI/x5Gxka7bTedDW7D7Z54XSp1uJxEZdEcIWKcRkz8Qed59fhxdK+kfPUI5v3Xpw
-         ny2RzTSkbKvHQhSGY73R9bn6v1yx5XCWTog6C8dZBOyfyg+AD3IUCIpD1li9nKRynHII
-         HlCWNqWUrqy59RWscbQUMWb+0SAaYU3h6eG4eO6EWHPdDHE67geZS8c7m9zjGyupnfgq
-         PyNg==
-X-Gm-Message-State: AOAM533+9D46+QTXdbwZRhi6u2v2wFMqzZs4oaPLev7aHiYx3HJDLxz2
-        XR69kpc8FD3IkWCCuyFVpbQ=
-X-Google-Smtp-Source: ABdhPJzMAZN9PefC3l8mbgN/lL2Fr9Hu2xQIr8mr1qd9Xv/9JrRw5X9U0G8nSTMMdKEtTW3+eu5NVg==
-X-Received: by 2002:a05:622a:134f:: with SMTP id w15mr3282155qtk.561.1640200418501;
-        Wed, 22 Dec 2021 11:13:38 -0800 (PST)
+        bh=r5plYkDKDQhkLjCFvQaIPKKi/bkznMOuAEcbc1q96jE=;
+        b=rrWIjP4FDMMp3cWhY0PFWLmhTL0Yvswf1OIIsoEg9kNcedOV0nd4LkCzJ7PIiMVwbT
+         Rs2DXhNPF4+A7TIz81rZ54y71hjBIQJ5RPRbG5jiO8KUKqQ31ig/pVFdxyZ6KW5QGdqe
+         jOScKecB1sIqQHh4GP5Ng2AlchnKU7AmJa6r0Mt2D5v3MfDcZyUZ0O3PxqjmVSGXFyev
+         N33K8ptKksrLI8/IBUrxrI8zgR8FV3lZA5TW7Dtwbztksl1mtD5Qmnx4v1WNBEMtQW24
+         6ar8F6O2kqkS07dKXH1ISIB0PbYUkhCb3Ahgf45rowPyW9BGvwNwOS2vLPu7A8s7WmUV
+         on9w==
+X-Gm-Message-State: AOAM531wOBG5TCKaWbOInNl/ANm3atltUgKs/e2PfiVFXckPUBHeTa9z
+        SvRP2IaCxVCwZNMTHyJm1RQ=
+X-Google-Smtp-Source: ABdhPJyxJWiGGi3Ni8qP0vVgP+6/LKLjawF/7omDc90qxOdts15hm53TwwDJ30g6cxVqZyFPgB1rUA==
+X-Received: by 2002:a05:622a:50a:: with SMTP id l10mr3361160qtx.491.1640202133241;
+        Wed, 22 Dec 2021 11:42:13 -0800 (PST)
 Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id bs16sm2687874qkb.45.2021.12.22.11.13.36
+        by smtp.gmail.com with ESMTPSA id u21sm2359241qke.95.2021.12.22.11.42.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Dec 2021 11:13:37 -0800 (PST)
-Date:   Wed, 22 Dec 2021 14:13:35 -0500
+        Wed, 22 Dec 2021 11:42:12 -0800 (PST)
+Date:   Wed, 22 Dec 2021 14:42:10 -0500
 From:   Liam Beguin <liambeguin@gmail.com>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
@@ -56,64 +56,71 @@ Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v11 11/15] iio: test: add basic tests for the iio-rescale
- driver
-Message-ID: <YcN43+L77t/EoKKf@shaak>
+Subject: Re: [PATCH v11 04/15] iio: afe: rescale: expose scale processing
+ function
+Message-ID: <YcN/kkazUGyyazNF@shaak>
 References: <20211222034646.222189-1-liambeguin@gmail.com>
- <20211222034646.222189-12-liambeguin@gmail.com>
- <CAHp75Ve4RuJLMdpdKe14nobuZHRNKA7tWt4yE82+noF5p+xxpw@mail.gmail.com>
+ <20211222034646.222189-5-liambeguin@gmail.com>
+ <CAHp75Vc009o5EunYP3QAB8up8hMrRL7oNax7cjphCFVUgSKXRw@mail.gmail.com>
+ <YcNscJ/fQhI7h6Uq@shaak>
+ <CAHp75Vf6iN7yEdubKFkf+fXupVTco-toZN=a5+KNXG4Yv6oT3Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHp75Ve4RuJLMdpdKe14nobuZHRNKA7tWt4yE82+noF5p+xxpw@mail.gmail.com>
+In-Reply-To: <CAHp75Vf6iN7yEdubKFkf+fXupVTco-toZN=a5+KNXG4Yv6oT3Q@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 02:38:13PM +0200, Andy Shevchenko wrote:
-> On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
+On Wed, Dec 22, 2021 at 08:52:30PM +0200, Andy Shevchenko wrote:
+> On Wed, Dec 22, 2021 at 8:20 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> > On Wed, Dec 22, 2021 at 12:21:01PM +0200, Andy Shevchenko wrote:
+> > > On Wed, Dec 22, 2021 at 5:46 AM Liam Beguin <liambeguin@gmail.com> wrote:
+> 
+> ...
+> 
+> > > >  #include <linux/iio/consumer.h>
+> > > >  #include <linux/iio/iio.h>
+> > > > +#include <linux/iio/afe/rescale.h>
+> > >
+> > > It should go before the consumer.h, no?
 > >
-> > From: Liam Beguin <lvb@xiphos.com>
+> > I don't mind making the change, but why should it go before consumer.h?
+> 
+> 'a' is earlier than 'c' in the alphabet, no?
+> 
+> ...
+> 
+> > > And I would rather move the entire IIO group of headers...
 > >
-> > The iio-rescale driver supports various combinations of scale types and
-> > offsets. These can often result in large integer multiplications. Make
-> > sure these calculations are done right by adding a set of kunit test
-> > cases that build on top of iio-test-format.
+> > I can do that too. Do we have a convention for the ordering of #includes?
+> > What's usually the rule/guideline for this?
+> 
+> Guidelines suggest sorting without clear instructions. But in IIO and
+> pin control I suggest people use this kind of grouping.
+
+Understood, will update.
+
+> > > >  #include <linux/module.h>
+> > > >  #include <linux/of.h>
+> > > >  #include <linux/of_device.h>
+> > > >  #include <linux/platform_device.h>
+> > > >  #include <linux/property.h>
+> > >
+> > > ... somewhere here (with blank line above).
+> > >
+> > > > -struct rescale;
 > 
 > ...
 > 
-> > +       int fract_mult = 100000000LL;
+> > > Missed types.h and forward declarations like
+> > > struct device;
+> >
+> > Okay. will add linux/types.h
 > 
-> Perhaps also change to use the prefix?
+> What about forward declaration?
 
-Argh.. I missed this file. Sorry, will update.
-
-> ...
-> 
-> > +       *nano = (s64)tmp * 10 * fract_mult + tmp2;
-> 
-> I'm also puzzled what the meaning of the 10 is here?
-
-That comes from iio_str_to_fixpoint().
-I sould've added a comment to make it more explicit as details escape me
-right now...  Will fix.
-
-> ...
-> 
-> > +       err = 1000000 * abs(exp - real);
-> 
-> Prefix?
-
-Ok
-
-> ...
-> 
-> > +       err = div64_u64(err, abs(exp));
-> > +       return (int)err;
-> 
-> return div64_u64();
-
-will do.
+I'm not sure I understand what you mean here.
 
 Cheers,
 Liam

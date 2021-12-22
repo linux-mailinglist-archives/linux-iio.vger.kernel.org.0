@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F18F947D736
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 19:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBF6147D73E
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 19:58:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234390AbhLVSya (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 13:54:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37776 "EHLO
+        id S236369AbhLVS6N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 13:58:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344925AbhLVSya (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 13:54:30 -0500
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE805C061574;
-        Wed, 22 Dec 2021 10:54:29 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id y22so12351222edq.2;
-        Wed, 22 Dec 2021 10:54:29 -0800 (PST)
+        with ESMTP id S236238AbhLVS6M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 13:58:12 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00858C061574;
+        Wed, 22 Dec 2021 10:58:11 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id j21so12282475edt.9;
+        Wed, 22 Dec 2021 10:58:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=D2jS399/It1fJ+Sb/NuhbTruLk9QV9W0IDo5OUKxHQ4=;
-        b=quc6TH6kAsqvBlyeSfQvY+pgIS8cnQqk2L7/gS9HqKXcicJpJyyvszpr4JBEzuvttL
-         94mR1Ilg8TkyFXHtNj5vb6DhjyBuVtlV2wCYyAjSiHTkjNqsWY4kDao4nVSD1OrU5/dX
-         AbSYSy2v5Dwi4M962EvMoZbanfgrbdPkhDMZpnGkACm3mwgJw5Cx8h+XWXKsuwPTDbim
-         FexfGncIb3SzTZnvnZ/wdJ+VOAh2ox1EO8ytQ9pkdI9qU+yqksekz0FcgYlLj+kp1JHZ
-         ZuLfCQ+EEVmDdL2mGRNrj1cIC7nO6PiijFlMR8OToTrEBX6ZuVcHo/lxCMX4XXrYbkk2
-         SafA==
+        bh=7ppTWoNw/SvYfQ8yN9sAbiCb5gyXtWnMFHU4MmkszZk=;
+        b=I3fvn32nODrKGIT7BE1xY0AvSp69lNgwMNmJlOjht6+LJDFHTnXoNAf2/22fTlb6z3
+         aYFI6rFNxqc9L0uRWsyxRZKcI6JqwG7n46ws+s2EaPDC7+S1KYYWfl6l7deB/93hpDOi
+         CaKLs4uWIHDMWF3l7wVhPKq8Ipa4yZpc1GigxOTHichXlFnRkP+STphTYr4qEmTkJnA7
+         n2ipTQDhBvZbbPkpix6E2rCDI54PxS48jgES66drhNUYrE5CTtDtKkTU+hF8GmF5XeIa
+         z9x0VbxOSUHP5W4ZZp44Zb9OZrQxWeq5fYUZJL6yeHLlzBL/8BiW7CGTijFRS7FxNnef
+         NJhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=D2jS399/It1fJ+Sb/NuhbTruLk9QV9W0IDo5OUKxHQ4=;
-        b=rNqe5YO00rct3OwPsooxIFdlJGIGVWmhhlBaOud7qv9ttsCZQDiPpT3JtQI+qCl6PK
-         bGUNUa7YSkvMNqX9tHvPoyHSsYrG3SkxsfOzjqC5Pg+XhlC1DCkGFiTrPfWH86WYqVAY
-         En0yi+J8mWrPPGJ6/rS6k36TfuBr7iwk9CqzB41SYJJiua4NBrr8Y46n4hofqhHUPsVZ
-         aOAy3c567z9n44O3WCJuQ2wwSxr69mXekDLjp6OCnoH8XcO669PbJY5QvQ4K1o34ymbE
-         0umrZ30mGbOqEezfycvUXD7ZbcXEFMbPSesLUw8MJIWryVBZXJYgKK2xPgJwDENQYYi8
-         QH8w==
-X-Gm-Message-State: AOAM531hS3n2dWaxquwAnAaiD7zwCU1tObmUAtBVjYLM+eSo/VIZx7ef
-        YX4+5eog05VoKTZsY1+vh0bDZl0pG1sskxJ4z7K1gEfc+Gk=
-X-Google-Smtp-Source: ABdhPJzKwc9fnChtXEWF+d2DdQwtLWvq8Wo1rOo3bA+Derw5cFqXnv01TCR2WoGenae340ckXOOUIGwFKWps9x5jrYg=
-X-Received: by 2002:aa7:cd75:: with SMTP id ca21mr4026016edb.242.1640199268479;
- Wed, 22 Dec 2021 10:54:28 -0800 (PST)
+        bh=7ppTWoNw/SvYfQ8yN9sAbiCb5gyXtWnMFHU4MmkszZk=;
+        b=08YYAZ9pF7m0363R0UWRecDFksvYk78LfqSpUVazegTk6hWuJQQqtL1WK2aWualYrk
+         hOyU/D83Oq3YTcL6+8lJ7ufbYAhwyx8KWiAbdtEFPZbUF+aYbWlCJRinJMeYqVkBvmp+
+         xUEn+9mYovsJF/ezckcPeqFQz7uAbCjeFF7L0HqwHQKiJzULjYoCl4ZGspEBIDiBA0rT
+         AjPSQHXkPI304/yyZfIzU8EsGM3SBOT8D7SqPfltNICKIPxbJ1RqHCXXmd0JUvu/r4sT
+         w87FfORhQX0aiKUXQw8K3bXBRSzVBB3UUMY4RQjrXxhnjxMcepszt+noXbUfV+YoPg8n
+         FUNA==
+X-Gm-Message-State: AOAM531+7+iSjW6JY2JHkELK6pU8rfcyi2wnHE/Px+rk0TrzpHUUH4zn
+        OffWoKEiuiAt1BrWYba+KN01WgKHhTsNMIlrvT43yOd5TJM=
+X-Google-Smtp-Source: ABdhPJzETwlP1NAvbuZy6XjI89z/T19jmu3VOi2WR34ilGYFKNh6vSRJfKdGeejiEf1IaLiuFoIDPD/dwz4YR7ajVzU=
+X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr3451905ejj.636.1640199490574;
+ Wed, 22 Dec 2021 10:58:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-5-liambeguin@gmail.com>
- <CAHp75Vc009o5EunYP3QAB8up8hMrRL7oNax7cjphCFVUgSKXRw@mail.gmail.com> <YcNscJ/fQhI7h6Uq@shaak>
-In-Reply-To: <YcNscJ/fQhI7h6Uq@shaak>
+References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-10-liambeguin@gmail.com>
+ <CAHp75Vc0aWrFtNK1ZkHkwP62zNXQJaDcn9pc8Uhfq0kOnWzmJg@mail.gmail.com> <YcNwt5RFMNFUimD/@shaak>
+In-Reply-To: <YcNwt5RFMNFUimD/@shaak>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Dec 2021 20:52:30 +0200
-Message-ID: <CAHp75Vf6iN7yEdubKFkf+fXupVTco-toZN=a5+KNXG4Yv6oT3Q@mail.gmail.com>
-Subject: Re: [PATCH v11 04/15] iio: afe: rescale: expose scale processing function
+Date:   Wed, 22 Dec 2021 20:56:12 +0200
+Message-ID: <CAHp75VdrLTNLWZRgWkLXD23RAF28zh29XybywAPyMtb=GNxXbw@mail.gmail.com>
+Subject: Re: [PATCH v11 09/15] iio: afe: rescale: reduce risk of integer overflow
 To:     Liam Beguin <liambeguin@gmail.com>
 Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -63,50 +63,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 8:20 PM Liam Beguin <liambeguin@gmail.com> wrote:
-> On Wed, Dec 22, 2021 at 12:21:01PM +0200, Andy Shevchenko wrote:
-> > On Wed, Dec 22, 2021 at 5:46 AM Liam Beguin <liambeguin@gmail.com> wrote:
+On Wed, Dec 22, 2021 at 8:38 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> On Wed, Dec 22, 2021 at 02:29:04PM +0200, Andy Shevchenko wrote:
+> > On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
 
 ...
 
-> > >  #include <linux/iio/consumer.h>
-> > >  #include <linux/iio/iio.h>
-> > > +#include <linux/iio/afe/rescale.h>
+> > > -               tmp = 1 << *val2;
 > >
-> > It should go before the consumer.h, no?
+> > At some point this should be BIT()
+
+Forgot to add, If it's 64-bit, then BIT_ULL().
+
+> I'm not against changing this, but (to me at least) 1 << *val2 seems
+> more explicit as we're not working with bitfields. No?
+
+You may add a comment. You may use int_pow(), but it will be suboptimal.
+
+> > Rule of thumb (in accordance with C standard), always use unsigned
+> > value as left operand of the _left_ shift.
 >
-> I don't mind making the change, but why should it go before consumer.h?
-
-'a' is earlier than 'c' in the alphabet, no?
-
-...
-
-> > And I would rather move the entire IIO group of headers...
+> Right, that makes sense! In practice though, since we'll most likely
+> never use higher bits of *val2 with IIO_VAL_FRACTIONAL_LOG2, would it be
+> enough to simply typecast?
 >
-> I can do that too. Do we have a convention for the ordering of #includes?
-> What's usually the rule/guideline for this?
+>         tmp = 1 << (unsigned int)*val2;
 
-Guidelines suggest sorting without clear instructions. But in IIO and
-pin control I suggest people use this kind of grouping.
-
-> > >  #include <linux/module.h>
-> > >  #include <linux/of.h>
-> > >  #include <linux/of_device.h>
-> > >  #include <linux/platform_device.h>
-> > >  #include <linux/property.h>
-> >
-> > ... somewhere here (with blank line above).
-> >
-> > > -struct rescale;
-
-...
-
-> > Missed types.h and forward declarations like
-> > struct device;
->
-> Okay. will add linux/types.h
-
-What about forward declaration?
+No, it's about the _left_ operand.
+I haven't checked if tmp is 64-bit, then even that would be still wrong.
 
 -- 
 With Best Regards,

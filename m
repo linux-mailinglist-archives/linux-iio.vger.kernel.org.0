@@ -2,72 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B2D047C768
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Dec 2021 20:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D86647CB57
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 03:28:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239247AbhLUTUn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Dec 2021 14:20:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58484 "EHLO
+        id S238638AbhLVC2v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Dec 2021 21:28:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233354AbhLUTUm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 14:20:42 -0500
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C7BC061574;
-        Tue, 21 Dec 2021 11:20:42 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: usama.anjum)
-        with ESMTPSA id 80F221F42C82
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
-        t=1640114439; bh=5HlfVhipWFs2W1k7528IgRRoCTk0yWR3iwopOn1wo+c=;
-        h=Date:From:To:Cc:Subject:From;
-        b=ehHxAsLx/S3nY1+gV41HuiPGFjdGXi3bzC40wvoLCwOlbeKi7L0ARTchZXIW+UB4P
-         +FNYjJX2fIGjufeBiENKWPtffq7iadL3oU+dyK8qMUW4wcP2kG4/ng8T4HwBNtCKrc
-         ESL/xbE2MnBnSZnSBE/v6wOOxWxj7pqfbvKkgh7/xRiMe6deZP9UB9O1Y0pCi4vGDE
-         1PlkVk2Dxfi+xBRjZ4US+uEbY7jQaRvAFItFtEQvaIB7vUnBzZWalKeIBws/6IPzJ6
-         Zr3LTITRoM382vdpBdrVOesaQW0AH/EbsLOb35NSnlVfk61A0LdrepdezamysM+PdV
-         RQV0RcyBNs8jw==
-Date:   Wed, 22 Dec 2021 00:20:32 +0500
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Mihail Chindris <mihail.chindris@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Cc:     usama.anjum@collabora.com, kernel@collabora.com,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] drivers:iio:dac make expression evaluation 64-bit
-Message-ID: <YcIpAKV7Cmi0o7PU@debian-BULLSEYE-live-builder-AMD64>
+        with ESMTP id S237775AbhLVC2u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 21:28:50 -0500
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D50C061574;
+        Tue, 21 Dec 2021 18:28:49 -0800 (PST)
+Received: by mail-qt1-x82e.google.com with SMTP id f9so683496qtk.4;
+        Tue, 21 Dec 2021 18:28:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=lBbJ0cNNlYj6EJvQfd0q1bNDKSk0QFiEWVowekGezSc=;
+        b=nKTtXIAQv8OY5SnLYPIKNbxRbp/nsYZuehcQVCtQ3j1R86ExUTbR1f+MvE75lvRYpy
+         IqWmcsdG9pcey/vn11uxa+8hkcRxqWMaGIH9xykoOJvBrW1DviuSEKZrTWu06c4sH2F0
+         QFKuYgdQ9FladRPzBuDMEvkz+L5+mAXaC5gd4E9cN76wuvsFztQNHmmlgvfgXMmDbek/
+         ztK4t2xxutn3DuKY8kVDU7GT/3kaexLgG1kdQmZDw431j2F0LsVSJxSrNBK6NLzUr/Lm
+         akNQqlo/o7faBeeMXbyN4UW+UtXgiOMPrwWjw1St+4ILGjA+8ipdfZ5RaKG5DsAoAqlP
+         8/HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=lBbJ0cNNlYj6EJvQfd0q1bNDKSk0QFiEWVowekGezSc=;
+        b=JGThm4Vrc0pG0Hy7odOCXz4CR/PWqRUUQ2FaYnwGwVQ9cDBM3cRgxMPa5lPqD6E0Wg
+         0NLHZnbnWE0X8lL5ia9laByQjBRWQVxDo39ZFWpoQFTq9GZ/Ctlvq80dhvySEOkhe0xH
+         duyRIjZ1Kd4AoPYc/543hkCI9pdUIp/G7hCErHk0a+lgUq7Ci+pukCjl4eRQFUVJGZgi
+         j59kwpJciV2Ug8NQNkTv5kvKqqaUE+RRtKdLnUXohaawFAKfHN359xesykNcTRpG/9RO
+         fRTpDkq4m9A6IffZihnTGlCYktwvQrtxS4xbOim1cJ4SKMRiqbmfD9ETyT/+QmDHlFHV
+         F+pw==
+X-Gm-Message-State: AOAM533yAVuh/jTtrwVO5Fp3QTBSqTDFuVh0Z12pDSnhin4NQ1n9OSt7
+        KkWZdsy6C4d2RT4Bxn7jhaKNArUMGE4=
+X-Google-Smtp-Source: ABdhPJxXlgfDLzoTmYUKxRVp7zI7rqyERG0y1sWq4DcxIpqUsRf3PDeggg69og3JMVFqRXKvaa3+bQ==
+X-Received: by 2002:ac8:7345:: with SMTP id q5mr823587qtp.410.1640140128984;
+        Tue, 21 Dec 2021 18:28:48 -0800 (PST)
+Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
+        by smtp.gmail.com with ESMTPSA id s4sm755522qko.47.2021.12.21.18.28.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Dec 2021 18:28:48 -0800 (PST)
+Date:   Tue, 21 Dec 2021 21:28:45 -0500
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "peda@axentia.se" <peda@axentia.se>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH v10 04/14] iio: afe: rescale: expose scale processing
+ function
+Message-ID: <YcKNXaVXrkdgDMTz@shaak>
+References: <20211219223953.16074-1-liambeguin@gmail.com>
+ <20211219223953.16074-5-liambeguin@gmail.com>
+ <CAHp75VdfPf6FMvkGqhhQg5e5XE1cgE-K8seobe5n0yGarnPGtQ@mail.gmail.com>
+ <CAHp75VcRH9ZGYuXteT2WQWqr8sch3EsSYu_AYtNx2jEJY76tow@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAHp75VcRH9ZGYuXteT2WQWqr8sch3EsSYu_AYtNx2jEJY76tow@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Two 32-bit values are being evaluated using 32-bit arithmetic and then
-passed to s64 type. It is wrong. Expression should be evaluated using
-64-bit arithmetic and then passed.
+Hi Andy,
 
-Fixes: 8f2b54824b ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
- drivers/iio/dac/ad3552r.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Dec 21, 2021 at 07:43:52AM +0200, Andy Shevchenko wrote:
+> On Tue, Dec 21, 2021 at 7:20 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Monday, December 20, 2021, Liam Beguin <liambeguin@gmail.com> wrote:
+> 
+> ...
+> 
+> >> +               tmp = *val * 1000000000LL;
+> >
+> > I see this is the original code, but perhaps use proper SI multipliers here and there?
+> 
+> I mean in a separate change.
 
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index 97f13c0b9631..b03d3c7cd4c4 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -770,7 +770,7 @@ static void ad3552r_calc_gain_and_offset(struct ad3552r_desc *dac, s32 ch)
- 	dac->ch_data[ch].scale_dec = DIV_ROUND_CLOSEST((s64)rem * 1000000,
- 							65536);
- 
--	dac->ch_data[ch].offset_int = div_s64_rem(v_min * 65536, span, &rem);
-+	dac->ch_data[ch].offset_int = div_s64_rem(v_min * 65536L, span, &rem);
- 	tmp = (s64)rem * 1000000;
- 	dac->ch_data[ch].offset_dec = div_s64(tmp, span);
- }
--- 
-2.30.2
+Will do!
 
+I'll add a separate patch to convert existing multipliers, and will
+fixup the ones I'm adding.
+
+Cheers,
+Liam
+
+> >> +               do_div(tmp, 1000000000LL);
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko

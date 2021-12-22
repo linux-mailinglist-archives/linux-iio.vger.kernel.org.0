@@ -2,85 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F35F147D243
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 13:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 913C047D61B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 18:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241010AbhLVMnJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 07:43:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
+        id S1344430AbhLVRwS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 12:52:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244989AbhLVMmg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 07:42:36 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89221C061757;
-        Wed, 22 Dec 2021 04:42:35 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id bm14so8187115edb.5;
-        Wed, 22 Dec 2021 04:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0PHB2DbyuqWjb8kOPRMCAabVl++BybmOaXAT1jQnLdE=;
-        b=A3aSKk0zsqKWt+N5dbDvZnR4TsIGtDoP9kAPs5+0kxYIEBmxB6Vb/Yx6Kj3y+jETgw
-         quiZ6gPo4KKWywQ13342Mc1UOABJvfvMy4hpHwZ5A/MOZF1HOgvsle0lS6fl5aBBp4P9
-         xtzENL4wML613CCYM7STBCQ0tzXknUbL+THotmvNnPTe5ZE7nlHR8UgBp2EnArNwpTGH
-         4qpXzwiz9ejiflfBFWSXCtR0ouvspEnaAn3c1T6k/gXGrBDxUdg2OFmcSaiOVO9OxTgD
-         JZs26eFkCWL/8NncABavxU5CeWI9FK1uJAEzDrur7Vbq9D8kJTedLY4aZqFcjRG+1X8y
-         iiCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0PHB2DbyuqWjb8kOPRMCAabVl++BybmOaXAT1jQnLdE=;
-        b=E8+f42v+bOH+BXxkzT4xCQq+5QmFedj1Jq1F424s7hBLkYCTR0JcIvaYQxnuM1higN
-         U8ncnVmEtfRcphUK19M1RLGAzh7zK+OROaDKIAZP8aMxfzG+YWOzklIrIgxE+1jYzuGo
-         n9VuoG+dGV2zA4SQhtLxQofESh9N6qn6lfMWkzgqfwzQrM+K1Srculgy6vZeSAdMPFmR
-         RP/dQ2RLHAPU1eZP26EWioB7p9qQOorztxUHUmiKMRQDTW1oihsu+8zzi2aY7kagvrl+
-         ZDo2wMrdafvn2Ol1hKLRuHRpb/kvmmWy7p/KmXl+wlafLgnGsYVAarSCN+AKAVREAsLf
-         M2cw==
-X-Gm-Message-State: AOAM533msJtbJHDKsaI9iXhEtj+0MZ4pyyzD42V+TlH7DsHAeJxJTOh4
-        +Kp2bh5sV5JQAOpxhNSoJBg5XzhNLKiwZMe7Uqk=
-X-Google-Smtp-Source: ABdhPJwhAUvQ/IAad0o9VyMvINqUtW7Yn7BvDa5bqAfmkvgWiK1Qh0+09stpi2FbCU9QA3buCd3YEhZkroARzxwUrYo=
-X-Received: by 2002:a17:907:6d8d:: with SMTP id sb13mr2360256ejc.132.1640176953787;
- Wed, 22 Dec 2021 04:42:33 -0800 (PST)
+        with ESMTP id S1344469AbhLVRwR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 12:52:17 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53719C061747
+        for <linux-iio@vger.kernel.org>; Wed, 22 Dec 2021 09:52:17 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n05mK-00038x-DV; Wed, 22 Dec 2021 18:51:52 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n05mG-0062lA-7p; Wed, 22 Dec 2021 18:51:47 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n05mF-0002sK-4h; Wed, 22 Dec 2021 18:51:47 +0100
+Date:   Wed, 22 Dec 2021 18:51:39 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        David Lechner <david@lechnology.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 0/8] counter: Remove struct counter_device::priv
+Message-ID: <20211222175139.6smiezanuduod6fm@pengutronix.de>
+References: <20211221104546.214066-1-u.kleine-koenig@pengutronix.de>
+ <dadb79b2-ac21-1899-48b9-1c6723afb1b4@metafoo.de>
+ <20211221113542.rl4aburbzzrgs3km@pengutronix.de>
+ <65009237-7e61-21aa-60cd-b7f7e0bb2f91@metafoo.de>
 MIME-Version: 1.0
-References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-14-liambeguin@gmail.com>
-In-Reply-To: <20211222034646.222189-14-liambeguin@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Dec 2021 14:40:35 +0200
-Message-ID: <CAHp75VfC5-C1JuY4r_26tR7ds-f=S6BCPNde=TEBbWNW6hBrnQ@mail.gmail.com>
-Subject: Re: [PATCH v11 13/15] iio: afe: rescale: add temperature transducers
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="asrj6mdmugq3ovqq"
+Content-Disposition: inline
+In-Reply-To: <65009237-7e61-21aa-60cd-b7f7e0bb2f91@metafoo.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
->
-> From: Liam Beguin <lvb@xiphos.com>
->
-> A temperature transducer is a device that converts a thermal quantity
-> into any other physical quantity. This patch add support for temperature
 
-This patch add --> Add a
+--asrj6mdmugq3ovqq
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> to voltage (like the LTC2997) and temperature to current (like the
-> AD590) linear transducers.
-> In both cases these are assumed to be connected to a voltage ADC.
+Hello,
 
-...
+On Tue, Dec 21, 2021 at 01:04:50PM +0100, Lars-Peter Clausen wrote:
+> On 12/21/21 12:35 PM, Uwe Kleine-K=F6nig wrote:
+> > On Tue, Dec 21, 2021 at 12:12:12PM +0100, Lars-Peter Clausen wrote:
+> > > On 12/21/21 11:45 AM, Uwe Kleine-K=F6nig wrote:
+> > > > similar to patch
+> > > > https://lore.kernel.org/r/4bde7cbd9e43a5909208102094444219d3154466.=
+1640072891.git.vilhelm.gray@gmail.com
+> > > > the usage of struct counter_device::priv can be replaced by
+> > > > container_of which improves type safety and code size.
+> > > >=20
+> > > > This series depends on above patch, converts the remaining drivers =
+and
+> > > > finally drops struct counter_device::priv.
+> > > Not sure if this is such a good idea. struct counter_device should no=
+t be
+> > > embedded in the drivers state struct in the first place.
+> > Just to mention it: My patch series didn't change this, this was already
+> > broken before.
+> I know, but this series has to be reverted when the framework is fixed.
+> >=20
+> > > struct counter_device contains a struct device, which is a reference =
+counted
+> > > object. But by embedding it in the driver state struct the life time =
+of both
+> > > the struct counter_device and and struct device are bound to the life=
+ time
+> > > of the driver state struct.
+> > >=20
+> > > Which means the struct device memory can get freed before the last re=
+ference
+> > > is dropped, which leads to a use-after-free and undefined behavior.
+> > Well, the driver struct is allocated using devm_kzalloc for all drivers.
+>=20
+> devm_kzalloc() doesn't make a difference. The managed memory is freed when
+> the parent device is unbound/removed. There may very well be reference to
+> the counter_device at this point.
+>=20
+> > So I think it's not *very* urgent to fix. Still you're right, this
+> > should be addressed.
+>=20
+> Yes and no, this can trivially be used for privilege escalation, but then
+> again on systems with a counter_device probably everything runs as root
+> anyway.
 
-> +       rescale->numerator = MICRO;
+I could provoke an oops with the following shell command:
 
-Same comment, please double check we imply 10^-6 and not 10^6 here.
 
--- 
-With Best Regards,
-Andy Shevchenko
+	{ sleep 5; echo bang; } > /dev/counter0 & sleep 1; echo 40000000.timer:cou=
+nter > /sys/bus/platform/drivers/stm32-timer-counter/unbind
+
+I have a protype here to split counter_register() into counter_alloc() +
+counter_add(), but I didn't convert a driver to it yet. If you want to
+take a look, it's currently available from
+
+	https://git.pengutronix.de/git/ukl/linux counter-dev-livetime
+
+(or if you prefer a webif:
+
+	https://git.pengutronix.de/cgit/ukl/linux/log/?h=3Dcounter-dev-livetime
+
+). I planned to just invest a two or so hours to fix this. But the plan
+failed (one reason is that v5.16-rc6 failed to boot on the stm32mp1 I
+work on and I bisected that first.)
+
+Maybe I find some time between the years to get this forward a bit.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--asrj6mdmugq3ovqq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHDZagACgkQwfwUeK3K
+7AkNqQf/fIe5zz5fAatnqj+QS3OUWmufUxx3MXg1a8ghQ2E3sdiTgIbgICfg94Cq
+6OqkCvh4W9HBpMUQbVHPtpaxHBRA6UQqOxfcKYcOvaq4HAY+8roCYKMKbBqMEnIY
+CY/7CB2s9xCv3cedWaVwtnpM3pVO862mMvGwv7HEZgVcj6wXDFSYXMCZUcZ2yPXc
+UTs25lC4sJ9Y1txUFHHiE767NJ9O8itmTwsZ5tj7zY/SaVKwVKSwl1SCEyK6pCmW
+DmxCK83zAZnlBfnEe7hA97x+dd3vtWbmMTAVuaU17gp2I7O6s5jQcCLvWQBPn7XD
+4Cl3Ox6CVJcgiHvVgLaL9aXQCqQ7TQ==
+=8UkX
+-----END PGP SIGNATURE-----
+
+--asrj6mdmugq3ovqq--

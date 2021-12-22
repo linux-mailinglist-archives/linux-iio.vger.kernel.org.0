@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C3EB47D1CB
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 13:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F07347D1D9
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 13:40:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240663AbhLVMfx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 07:35:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36178 "EHLO
+        id S240458AbhLVMkO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 07:40:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234110AbhLVMfx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 07:35:53 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F17BC061574;
-        Wed, 22 Dec 2021 04:35:52 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id b13so8058935edd.8;
-        Wed, 22 Dec 2021 04:35:52 -0800 (PST)
+        with ESMTP id S233073AbhLVMkO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 07:40:14 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC69C061574;
+        Wed, 22 Dec 2021 04:40:13 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id w16so8068628edc.11;
+        Wed, 22 Dec 2021 04:40:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=37cmTFk9Mn8yVGgefCEUxfQ2BLBsyDY2ddr/2hwTMYw=;
-        b=JbOxgJ6PwvF9yR5ROx3FQOEe59iEZ+CPCdSM1KbFs9aMkGYSXxrOTspeMC2qNGkD3p
-         qkluDU3s0Nous9hAxBz1WvHInu6CX/+xeKdYyO8S9Toij+CZX0rrCTh6jGJxJN7RkkXB
-         0q7bdnwsX/nmWJwOPsfN4gN8soWj/X0BFPDm2z+5TnCsntHKi2QJg19XHyy9pykx9riy
-         YrU90ogM3MjA8OC/Z7TlbWw7DKw/WFA1tjb6o5peonMv5wTDiegzTo55C3P9LEa4L8z2
-         kifZ9angmc83TjHMoQ6V4QDnAEdNipqAwh2RYNrpKwWeJ0HJNSn0Zr9Q5Y22DL7pihm/
-         Cleg==
+        bh=/3we7U5LcUazMGSwOo/jCUNu/Z/IZrx6owVs1sXCGNU=;
+        b=Liuneh8q2xKHO2+PIe0dy2fGqEu/ES6bhQwGdBvGcLKxSuf9wqTaYUHVtl/naFgMnx
+         8yuTfxBdbZEIxx6EzBBIAuJJ+1EgyHQm/O0ZSZdueGr1Vw7EX29temBhcqF4WxXZe7jC
+         ueyiyMhVS3t36m6op0s6V3dHGxkaVCHWTCj7pxVUu0FchH0k8Y8UKY2fC/ONUI+AfzuV
+         4Pa0ZjguTQE4xkHt0o3eaB0Vd+EC4e7jOmo0G1Ws1m0/HEnqA5kHD8ltIZjwD7NaSUDw
+         fK/0dM3LRFHkPMv8Uyqu8Z9nrd78fojl5uoUaA750JMu84idKg0EMblh5sGhKd3A2E/w
+         FaAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=37cmTFk9Mn8yVGgefCEUxfQ2BLBsyDY2ddr/2hwTMYw=;
-        b=ZMXMu0q+XDvf4/hUuSUP756XqLE36uXeQA/MChb5rIFjlX9AalO00tjqPIoD4vzsfg
-         eh0MkJ/+DtjT1AWMIut6BDavzYqrvQJlBFO4LTY3aVWWCZgQQodNz6dCv6p7wIUHixas
-         pGM1pCIukd3EpFfg9SL7aLXo6LC6j8nTdH/KkrL0s9UnWhVg4gsNxwwiN2VsCg+7fdQ3
-         NSoziBL0EQr3vc6gdWv/e8U7MvnaWrP/9xrHwn0nzbVPh+SIkgDawQ8QjN9uVawxh611
-         GFrLZflTzs54JnmPLlqRqt/9gnWKdZHReld/hdCRhOak9TZ3Ux5zc5ywH4dIo2zuoYbe
-         BsAA==
-X-Gm-Message-State: AOAM530rp2tE515UOQWOLe9kJX435+l3rG2aA7FcWkgO/M/OkpZanxSc
-        OE1AKYzcpFGp+cJfzkHINRNV6odmxMNqWbSHX3U=
-X-Google-Smtp-Source: ABdhPJw7SOX9VoeJ9Bjbc8AgEbKpVhvXD6YzEfF4kpqtRjMx1JNkxfKzHIMsglslxNYX1VzIsNpRZLAt8ba7dmiLJBw=
-X-Received: by 2002:a05:6402:849:: with SMTP id b9mr1283557edz.258.1640176551197;
- Wed, 22 Dec 2021 04:35:51 -0800 (PST)
+        bh=/3we7U5LcUazMGSwOo/jCUNu/Z/IZrx6owVs1sXCGNU=;
+        b=L849YOgf2mULpeU3BVxTk8FI8zqwqP1D5DXSe3c9FBJHmo0oeuYtnyAqgPjQuSJgkF
+         aWYKQq5AB04Z1+B6iON+Szr5G6nvwKrK9rW4n0ncEC8DktaT37A5vGJDB+AF/lp+1pBP
+         TgKQSSmhH6qjZil0BxJLKCa5YJ02f0QY8Bk49GvcRgnRr4c10yciLzqG3Y8K0kr0vN3I
+         9XSGf/PDXlHBqNUYtdu4hvEKuA/hcFE45pDQSPXOwPqp9AbQybdUFqSzuU+tiY01Satc
+         qS923AcWMpUEgEPORrVlaINxfnAed3he5WTeuqeK4JlShlgk58iAFx/I9T7kYRhh1lz8
+         bVqw==
+X-Gm-Message-State: AOAM531U1IT8ZjmOVW1JWhWejcZFs/7GwY6ac0zAIO2uV7tt2tdpnk3s
+        wBSl/cyxcEtJ99RABp79ezukgGecWZKwnPFdvXs=
+X-Google-Smtp-Source: ABdhPJxReAOg2unycC4N1KbyWWK7SHYagXoLLqRd1kla0Z8iXoq/yoKYbOs0BbHleOYcvuPxgk7pT2YSGXfMR1W25so=
+X-Received: by 2002:a05:6402:849:: with SMTP id b9mr1298568edz.258.1640176812095;
+ Wed, 22 Dec 2021 04:40:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-11-liambeguin@gmail.com>
-In-Reply-To: <20211222034646.222189-11-liambeguin@gmail.com>
+References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-12-liambeguin@gmail.com>
+In-Reply-To: <20211222034646.222189-12-liambeguin@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Dec 2021 14:33:52 +0200
-Message-ID: <CAHp75VeGNuYiqqHzv9cAbHKy-h3dnazf2YEvgJ4fwb88wgY48w@mail.gmail.com>
-Subject: Re: [PATCH v11 10/15] iio: afe: rescale: make use of units.h
+Date:   Wed, 22 Dec 2021 14:38:13 +0200
+Message-ID: <CAHp75Ve4RuJLMdpdKe14nobuZHRNKA7tWt4yE82+noF5p+xxpw@mail.gmail.com>
+Subject: Re: [PATCH v11 11/15] iio: test: add basic tests for the iio-rescale driver
 To:     Liam Beguin <liambeguin@gmail.com>
 Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -66,35 +66,35 @@ On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
 >
 > From: Liam Beguin <lvb@xiphos.com>
 >
-> Make use of well-defined SI metric prefixes to improve code readability.
+> The iio-rescale driver supports various combinations of scale types and
+> offsets. These can often result in large integer multiplications. Make
+> sure these calculations are done right by adding a set of kunit test
+> cases that build on top of iio-test-format.
 
 ...
 
->         case IIO_VAL_FRACTIONAL_LOG2:
-> -               tmp = (s64)*val * 1000000000LL;
-> +               tmp = (s64)*val * NANO;
->                 tmp = div_s64(tmp, rescale->denominator);
->                 tmp *= rescale->numerator;
->
-> -               tmp = div_s64_rem(tmp, 1000000000LL, &rem);
-> +               tmp = div_s64_rem(tmp, NANO, &rem);
->                 *val = tmp;
+> +       int fract_mult = 100000000LL;
 
-Thanks! The important part of this conversion is to get one trick,
-i.e. NANO and GIGA are both represented by 10^9. We need to be sure
-that here we use the proper sign of the power of these numbers. So
-please double check in all cases that the chosen SI prefixes are
-correct from the power sign point of view, e.g. it is 10^-9 and not
-10^9 or otherwise.
+Perhaps also change to use the prefix?
 
 ...
 
->                 *val2 = rem / (int)tmp;
->                 if (rem2)
-> -                       *val2 += div_s64((s64)rem2 * 1000000000LL, tmp);
-> +                       *val2 += div_s64((s64)rem2 * NANO, tmp);
+> +       *nano = (s64)tmp * 10 * fract_mult + tmp2;
 
-Ditto here and for the rest
+I'm also puzzled what the meaning of the 10 is here?
+
+...
+
+> +       err = 1000000 * abs(exp - real);
+
+Prefix?
+
+...
+
+> +       err = div64_u64(err, abs(exp));
+> +       return (int)err;
+
+return div64_u64();
 
 -- 
 With Best Regards,

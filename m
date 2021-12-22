@@ -2,202 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7342F47CBF3
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 04:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5832847CFD8
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 11:21:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242342AbhLVDrl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Dec 2021 22:47:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58250 "EHLO
+        id S244117AbhLVKVk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 05:21:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242256AbhLVDrR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Dec 2021 22:47:17 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70066C06179B;
-        Tue, 21 Dec 2021 19:47:15 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id q14so781759qtx.10;
-        Tue, 21 Dec 2021 19:47:15 -0800 (PST)
+        with ESMTP id S236558AbhLVKVj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 05:21:39 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7F2C061574;
+        Wed, 22 Dec 2021 02:21:38 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id w16so6602123edc.11;
+        Wed, 22 Dec 2021 02:21:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ARAnJI6Kh01POg+Ick5UifmHWpptElTSf8hWc/xW4rk=;
-        b=qrKQYNM01OmYGNwiEumMzJI2RKwmWGl9S7s0/lQWjTKdH5UL5x6SLz/rp8eDMS8iA+
-         tv/sVFL7nyglLeL4FGH1o0fgx8FHnhWW3tJzS3lwkOGrgApZf4VqY6/uMMmuPIVLIN9+
-         wJfp59I0mwbH/4vxINubgHFyp6KQ/FpR30mVALeF4WNCgoEwb8LxKjzbW28/ljTiLFpz
-         2FNaUQHvmPxXKC26hbjaxcQhcqgxT89A18LyI3yBJJPbQAKBY0e8cgdVdJvo+VRQ4nHz
-         fdDq6/AhL7/J43MDAldfK1tZiDhUJ3FfJ7a+FUTtmEDhksMP3g5l1hRPbgwlsiAt60ig
-         YGEg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TU7dyJKQKtUa7Bp992pXfOwL0ZeVphvql4VDb9W1uSE=;
+        b=SCwI4pttJkVZfAaYOFBQTFCh9jhK4Le26UvobhIjJsqDrdonlYFwSwOMIimkKd/R1z
+         mdk/5wsw+IaUIzNPQGMTQ+XPRHwprMcWxWYEAoPWH68XaRgwSRLJ7Wjzn5TQNhGY7QZi
+         GoSPR2bqv4Z9dDNWkZXhq9MzEs7aIkwUsDJXU8o+ucThFyA2aXQKZlv/uDw4vjDbWCP+
+         LWwqk3gugDPJoihlT4xy6joCOtPF8bCiYjX8qvONLhmsGnOKlHqtK+t4I+/fEXUSyph7
+         oSB75AYAd5TG0SRzGVkPC55wdQ13W9Gdsan+TDbm1V5cykis8pjK+Kl/eC6QDtM0lJrg
+         cr1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ARAnJI6Kh01POg+Ick5UifmHWpptElTSf8hWc/xW4rk=;
-        b=14n+ya3AoB+K0TMU8XH0hhuKI7SyGgdGMeggeo5A+3MiQYc4c7WU3dHC7Q7qg1ZMJq
-         9m7x3XaRDxIbUkp+UdIvAL/FNPzkOak/LGuhU1wSU4f8MRSdmiRJAxx8FHXQiiA7xPio
-         Wn8oI0ulbwPhJFLx5UQYGQvrlmQyw+07qZ4LmpGyX0pO4F2vHTdVh52ppYzr6Wpn7xCb
-         lfpSKp0Tobp2d1R36vC4wdV29G5Il4QHCcGOmPEpTZ0g/5EjTOgZyzuZGKdcTwbUwulJ
-         Wg9gTrH5dYsW+BPsnEIW2hT0PTDBfRZEX2gC6axoCO/iLl3F32ulLU20xijOOyeq9SxS
-         P1Ew==
-X-Gm-Message-State: AOAM531Z+NvcSC5FUytpWaYZRu8aBpCSz/jvUsCzUhhlN4n3sib7QvS+
-        pctI9wMS0T5ARtzjA95agAU=
-X-Google-Smtp-Source: ABdhPJxFsmX3sr4HFJa9Sw7ZNXfOdpEMfIQ/Jauo/9P56Y+mJ7W2h4yGPbeARlaej/Ut/JVBNiGK5Q==
-X-Received: by 2002:a05:622a:346:: with SMTP id r6mr928005qtw.78.1640144834592;
-        Tue, 21 Dec 2021 19:47:14 -0800 (PST)
-Received: from shaak.xiphos.ca (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id f18sm918944qko.34.2021.12.21.19.47.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Dec 2021 19:47:14 -0800 (PST)
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
-        andy.shevchenko@gmail.com, lars@metafoo.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v11 15/15] dt-bindings: iio: afe: add bindings for temperature transducers
-Date:   Tue, 21 Dec 2021 22:46:46 -0500
-Message-Id: <20211222034646.222189-16-liambeguin@gmail.com>
-X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20211222034646.222189-1-liambeguin@gmail.com>
-References: <20211222034646.222189-1-liambeguin@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TU7dyJKQKtUa7Bp992pXfOwL0ZeVphvql4VDb9W1uSE=;
+        b=OaJwzFt2+To/rWsjdq1qxsJHyiIEcYx9WaXasSGcSRRyUTTHLupJ0YooBj7vpKYn0N
+         I29B0D7uipBzB9q3BJDVlb3045htkG3jI1xCO4d2VeF3pcO4gKS0QF4TP5cwVph4pAsq
+         NfcvU8Ri+ZFT0InCeAMLWtd9xW9X+p/KpWEnQ192UXO49cnOB+cOIadNU0AKLGsmGNAn
+         8Pylkd3uP/A8WwIhbt1nwCw3l0tz84hBU/BQ1IO+dI3suhm4YkK4EB2u0YZPTu0t4lOF
+         yIT4z2Bkqy7GlCfH4kdvZxFocTlOVjDOTtSxq/3Wr0/P4ZfNXN9JG5YLhEAbu1FxsFln
+         4EEw==
+X-Gm-Message-State: AOAM533r9bzrLECk3uVjFSHCAIK85qdbXZzUke+YrwQROXBcUzFLg1Oy
+        IOVJUjOnviyKaKA6uDRD1aoVpJruMULbCvYbOa9+wIzFyGD+lA==
+X-Google-Smtp-Source: ABdhPJyhZIjLhbrjZZCaoOxbVuoWLmJbZAnmJRjj4wvpf/lS3YOi45QDeSykT7cyVLSPJKuIhSWkbWt3De4HN6hyx1g=
+X-Received: by 2002:aa7:cd75:: with SMTP id ca21mr2204212edb.242.1640168497416;
+ Wed, 22 Dec 2021 02:21:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-5-liambeguin@gmail.com>
+In-Reply-To: <20211222034646.222189-5-liambeguin@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 22 Dec 2021 12:21:01 +0200
+Message-ID: <CAHp75Vc009o5EunYP3QAB8up8hMrRL7oNax7cjphCFVUgSKXRw@mail.gmail.com>
+Subject: Re: [PATCH v11 04/15] iio: afe: rescale: expose scale processing function
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Liam Beguin <lvb@xiphos.com>
+On Wed, Dec 22, 2021 at 5:46 AM Liam Beguin <liambeguin@gmail.com> wrote:
+>
+> From: Liam Beguin <lvb@xiphos.com>
+>
+> In preparation for the addition of kunit tests, expose the logic
+> responsible for combining channel scales.
 
-An ADC is often used to measure other quantities indirectly.
-This binding describe one case, the measurement of a temperature
-through a temperature transducer (either voltage or current).
+...
 
-Signed-off-by: Liam Beguin <lvb@xiphos.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Peter Rosin <peda@axentia.se>
----
- .../iio/afe/temperature-transducer.yaml       | 114 ++++++++++++++++++
- 1 file changed, 114 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+>  #include <linux/gcd.h>
+>  #include <linux/iio/consumer.h>
+>  #include <linux/iio/iio.h>
+> +#include <linux/iio/afe/rescale.h>
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-new file mode 100644
-index 000000000000..cfbf5350db27
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-@@ -0,0 +1,114 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Temperature Transducer
-+
-+maintainers:
-+  - Liam Beguin <liambeguin@gmail.com>
-+
-+description: |
-+  A temperature transducer is a device that converts a thermal quantity
-+  into any other physical quantity. This binding applies to temperature to
-+  voltage (like the LTC2997), and temperature to current (like the AD590)
-+  linear transducers.
-+  In both cases these are assumed to be connected to a voltage ADC.
-+
-+  When an io-channel measures the output voltage of a temperature analog front
-+  end such as a temperature transducer, the interesting measurement is almost
-+  always the corresponding temperature, not the voltage output. This binding
-+  describes such a circuit.
-+
-+  The general transfer function here is (using SI units)
-+    V(T) = Rsense * Isense(T)
-+    T = (Isense(T) / alpha) + offset
-+    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
-+
-+  When using a temperature to voltage transducer, Rsense is set to 1.
-+
-+  The following circuits show a temperature to current and a temperature to
-+  voltage transducer that can be used with this binding.
-+
-+           VCC
-+          -----
-+            |
-+        +---+---+
-+        | AD590 |                               VCC
-+        +---+---+                              -----
-+            |                                    |
-+            V proportional to T             +----+----+
-+            |                          D+ --+         |
-+            +---- Vout                      | LTC2997 +--- Vout
-+            |                          D- --+         |
-+        +---+----+                          +---------+
-+        | Rsense |                               |
-+        +---+----+                             -----
-+            |                                   GND
-+          -----
-+           GND
-+
-+properties:
-+  compatible:
-+    const: temperature-transducer
-+
-+  io-channels:
-+    maxItems: 1
-+    description: |
-+      Channel node of a voltage io-channel.
-+
-+  '#io-channel-cells':
-+    const: 0
-+
-+  sense-offset-millicelsius:
-+    description: |
-+      Temperature offset.
-+      This offset is commonly used to convert from Kelvins to degrees Celsius.
-+      In that case, sense-offset-millicelsius would be set to <(-273150)>.
-+    default: 0
-+
-+  sense-resistor-ohms:
-+    description: |
-+      The sense resistor.
-+      By default sense-resistor-ohms cancels out the resistor making the
-+      circuit behave like a temperature transducer.
-+    default: 1
-+
-+  alpha-ppm-per-celsius:
-+    description: |
-+      Sometimes referred to as output gain, slope, or temperature coefficient.
-+
-+      alpha is expressed in parts per million which can be micro-amps per
-+      degrees Celsius or micro-volts per degrees Celsius. The is the main
-+      characteristic of a temperature transducer and should be stated in the
-+      datasheet.
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - io-channels
-+  - alpha-ppm-per-celsius
-+
-+examples:
-+  - |
-+    ad950: temperature-sensor-0 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 3>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        sense-resistor-ohms = <8060>;
-+        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
-+    };
-+  - |
-+    znq_tmp: temperature-sensor-1 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 2>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
-+    };
-+...
+It should go before the consumer.h, no?
+
+And I would rather move the entire IIO group of headers...
+
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/property.h>
+
+... somewhere here (with blank line above).
+
+>
+> -struct rescale;
+
+...
+
+> +#ifndef __IIO_RESCALE_H__
+> +#define __IIO_RESCALE_H__
+> +
+> +#include <linux/iio/iio.h>
+
+Missed types.h and forward declarations like
+struct device;
+
 -- 
-2.34.0
-
+With Best Regards,
+Andy Shevchenko

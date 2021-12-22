@@ -2,105 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5832847CFD8
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 11:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 822AA47D08C
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 12:12:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244117AbhLVKVk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 05:21:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33602 "EHLO
+        id S235492AbhLVLMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Dec 2021 06:12:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236558AbhLVKVj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 05:21:39 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7F2C061574;
-        Wed, 22 Dec 2021 02:21:38 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id w16so6602123edc.11;
-        Wed, 22 Dec 2021 02:21:38 -0800 (PST)
+        with ESMTP id S229970AbhLVLMu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 06:12:50 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9ECC061574
+        for <linux-iio@vger.kernel.org>; Wed, 22 Dec 2021 03:12:49 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id g11so4634540lfu.2
+        for <linux-iio@vger.kernel.org>; Wed, 22 Dec 2021 03:12:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TU7dyJKQKtUa7Bp992pXfOwL0ZeVphvql4VDb9W1uSE=;
-        b=SCwI4pttJkVZfAaYOFBQTFCh9jhK4Le26UvobhIjJsqDrdonlYFwSwOMIimkKd/R1z
-         mdk/5wsw+IaUIzNPQGMTQ+XPRHwprMcWxWYEAoPWH68XaRgwSRLJ7Wjzn5TQNhGY7QZi
-         GoSPR2bqv4Z9dDNWkZXhq9MzEs7aIkwUsDJXU8o+ucThFyA2aXQKZlv/uDw4vjDbWCP+
-         LWwqk3gugDPJoihlT4xy6joCOtPF8bCiYjX8qvONLhmsGnOKlHqtK+t4I+/fEXUSyph7
-         oSB75AYAd5TG0SRzGVkPC55wdQ13W9Gdsan+TDbm1V5cykis8pjK+Kl/eC6QDtM0lJrg
-         cr1A==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=D2uGUnQwiQEQEOfYAr686Ldd6bWriaB9hJLk0O0gOzM=;
+        b=OGPZmItF4An+dQtRSrLe/AmLvPfekXjkwYHguvWd+nLhTdhcN/tvyOc2lMjG4joB0c
+         p7rDjorsQjuLp/a82LC7KjpJ1SYwpH2qLcPJ83eDh9DiyPGYPd1uugwK7WaEXm2vZAdj
+         S6n/zrrFBF9WwT56rspkoJLRsNNZkFncvA55Nu2FhBsdI9kaTEs+9V5mvv8ll5jMiJSX
+         7BRICKttqyPDkkhIhinyrF+SBCb0ayEcvmbQwc3ZCoFGRwicSuvPI0g9GR7FL9lkH8He
+         Tb/XBL/4zp5IFVk8TaqvJK6ZiaGzVBYIAn5elz3y1LtvA0MJdxOwTFlAgJuPcO61e9ck
+         PnAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TU7dyJKQKtUa7Bp992pXfOwL0ZeVphvql4VDb9W1uSE=;
-        b=OaJwzFt2+To/rWsjdq1qxsJHyiIEcYx9WaXasSGcSRRyUTTHLupJ0YooBj7vpKYn0N
-         I29B0D7uipBzB9q3BJDVlb3045htkG3jI1xCO4d2VeF3pcO4gKS0QF4TP5cwVph4pAsq
-         NfcvU8Ri+ZFT0InCeAMLWtd9xW9X+p/KpWEnQ192UXO49cnOB+cOIadNU0AKLGsmGNAn
-         8Pylkd3uP/A8WwIhbt1nwCw3l0tz84hBU/BQ1IO+dI3suhm4YkK4EB2u0YZPTu0t4lOF
-         yIT4z2Bkqy7GlCfH4kdvZxFocTlOVjDOTtSxq/3Wr0/P4ZfNXN9JG5YLhEAbu1FxsFln
-         4EEw==
-X-Gm-Message-State: AOAM533r9bzrLECk3uVjFSHCAIK85qdbXZzUke+YrwQROXBcUzFLg1Oy
-        IOVJUjOnviyKaKA6uDRD1aoVpJruMULbCvYbOa9+wIzFyGD+lA==
-X-Google-Smtp-Source: ABdhPJyhZIjLhbrjZZCaoOxbVuoWLmJbZAnmJRjj4wvpf/lS3YOi45QDeSykT7cyVLSPJKuIhSWkbWt3De4HN6hyx1g=
-X-Received: by 2002:aa7:cd75:: with SMTP id ca21mr2204212edb.242.1640168497416;
- Wed, 22 Dec 2021 02:21:37 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=D2uGUnQwiQEQEOfYAr686Ldd6bWriaB9hJLk0O0gOzM=;
+        b=BpuKm5kDG2B2guIZq823DbgBkwz58oUVuvK9kmgEWOyxPH8CGAFW7gcldHTb7MfW4g
+         omXEDKoGRudTiyZib6PYNbxQGw6IPpLz4dQnU/FhgitlmCJlzDxPDbt3J1uShviaX5b2
+         bvwwDp16aeXdQtzz63uIqklJdrugu1M6HveNw1Mc728iPVXdsbYlzlzl07W/qYQG2IOO
+         c6VVutgVX+3UtPE8GXbGCSurgWqxXSsmqMtvASw8BA4ltq1Bbhl9iUv7nXVaGiHANvTq
+         P3nnFWgUQcuANldXRnXU/CoNTLWULgxnf3jcbch2v5lsbgoSnhN+p4505PnB1SHTq73m
+         +T1g==
+X-Gm-Message-State: AOAM533JTROatcziIX3GkpSmKbnsuJgIt+A1OPMow4zFtEeba/GwPOR6
+        37is5EnLLCrCm6ip5+6uzDxOlGCGuBDdUki48Q==
+X-Google-Smtp-Source: ABdhPJzpVatGT9Miz9EF7Z+oGwG88yyNnzywGSEnCtZDqdJk1nRRr0h8fWOAt8S9Sv/EtOWVFY7RflK95hpCMFV9YSI=
+X-Received: by 2002:a19:5201:: with SMTP id m1mr2111363lfb.367.1640171567937;
+ Wed, 22 Dec 2021 03:12:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-5-liambeguin@gmail.com>
-In-Reply-To: <20211222034646.222189-5-liambeguin@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Dec 2021 12:21:01 +0200
-Message-ID: <CAHp75Vc009o5EunYP3QAB8up8hMrRL7oNax7cjphCFVUgSKXRw@mail.gmail.com>
-Subject: Re: [PATCH v11 04/15] iio: afe: rescale: expose scale processing function
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
+Received: by 2002:a05:6504:30bc:0:0:0:0 with HTTP; Wed, 22 Dec 2021 03:12:47
+ -0800 (PST)
+Reply-To: evelyngaby76@gmail.com
+From:   Evelyn Gaby <evelyngaby313@gmail.com>
+Date:   Wed, 22 Dec 2021 11:12:47 +0000
+Message-ID: <CAA63f6xb2b74SiZNAY6g1vhRsT8GicPmzJ5JsLmTX66ASsP+DA@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 5:46 AM Liam Beguin <liambeguin@gmail.com> wrote:
->
-> From: Liam Beguin <lvb@xiphos.com>
->
-> In preparation for the addition of kunit tests, expose the logic
-> responsible for combining channel scales.
+.
+Please get back to me for more details,
+I like to disclose something very important to you,
 
-...
-
->  #include <linux/gcd.h>
->  #include <linux/iio/consumer.h>
->  #include <linux/iio/iio.h>
-> +#include <linux/iio/afe/rescale.h>
-
-It should go before the consumer.h, no?
-
-And I would rather move the entire IIO group of headers...
-
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-
-... somewhere here (with blank line above).
-
->
-> -struct rescale;
-
-...
-
-> +#ifndef __IIO_RESCALE_H__
-> +#define __IIO_RESCALE_H__
-> +
-> +#include <linux/iio/iio.h>
-
-Missed types.h and forward declarations like
-struct device;
-
--- 
-With Best Regards,
-Andy Shevchenko
+Mrs Evelyn Gaby.

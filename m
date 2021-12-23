@@ -2,115 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C982047D8CF
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Dec 2021 22:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C30D47E00F
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Dec 2021 08:57:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233501AbhLVVeY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Dec 2021 16:34:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231946AbhLVVeY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Dec 2021 16:34:24 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1612CC061574;
-        Wed, 22 Dec 2021 13:34:24 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id y22so13721298edq.2;
-        Wed, 22 Dec 2021 13:34:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BQlQlYrZXdOlmemUUXiF4Fhovo2L1S/LzruvfN712uY=;
-        b=br4b7Dx3l6Zfp65HGNkqUIOl6r/hzzYAYN2NdDkPMpX0mGBSMDJh7KeVbsx8yT7QTR
-         Ex5+LyzbOoGmM//h1zL/FSTfdOe6Im+MWg49HVf3yg0R61kP3Y4ryyBzk3qPUHMuLnvE
-         oPbLLiZQ0ICHlTkTsV/f3gkmZAXBsjODurvhCCGiWRTdWUBXffBYlYWUy9a9IGxc2MlP
-         dbQqsqsHrMtP/0ClN2GWH2W7SCveLV5d4s9e9o6A0FeDoxwJamNN+Slbgn/To6H8sf/z
-         vkyb+1skGRbW4rNR8rLLokkhnvZSNqQm/ZCCBgd5L24nIKTJ9kQRO/sDk8MZUUqO6bkO
-         /C0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BQlQlYrZXdOlmemUUXiF4Fhovo2L1S/LzruvfN712uY=;
-        b=cSO+MUVeHSSJsRGUzqA7H5lmjZH3qlnBHdbCsbALbH8Op3BbtwVLh96XGzXlqJ3UlA
-         2Kgoh5VrGkVHo6PdyL6ZkCbmvW9up7VFLzh62WEd1g/1/R9T1Uh0IRINUQNGHouIdvMp
-         DyOgSP/hi3XVe3vZdXhp+MjN/gTzh8q1oe5bGrjK0DK76FtE+YJqtBlEdLot52KNtddg
-         sdZlFw33ZXV/AJMuF4wXM05azUE5IyGC+ibEpVmQ7qoihZzLQoxvKXQuO9jSR+n4dq2x
-         FFbYwfgxvA0ZTQoefQOldO0kw4CfHdtk8K1ft6dNmVHDMJftgzU+zFJOOkvezjLHTnKr
-         RS9Q==
-X-Gm-Message-State: AOAM530MWS9bifgi+BFR7W7Lns8LIczDQY4mt+E3598fFFAqyrP4iOEI
-        1t3Wn+Vz3GCYwvxJy99LUcQylId/n1aYTqXSpXk=
-X-Google-Smtp-Source: ABdhPJxPcjYs5SH3P+Dvg2BhIowtF8SCyB4m0E2WIuGCd+CxC0ZdFvR74vmCCjoZgGk3P++JhhtkmIQ57SBR0JaSFUc=
-X-Received: by 2002:a17:906:c450:: with SMTP id ck16mr3745748ejb.579.1640208862599;
- Wed, 22 Dec 2021 13:34:22 -0800 (PST)
+        id S241794AbhLWH46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Dec 2021 02:56:58 -0500
+Received: from mail.BETTERBIZ.PL ([45.86.209.138]:58570 "EHLO
+        mail.betterbiz.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242646AbhLWH46 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Dec 2021 02:56:58 -0500
+X-Greylist: delayed 570 seconds by postgrey-1.27 at vger.kernel.org; Thu, 23 Dec 2021 02:56:58 EST
+Received: by mail.betterbiz.pl (Postfix, from userid 1001)
+        id 07D1E82737; Thu, 23 Dec 2021 02:45:44 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=betterbiz.pl; s=mail;
+        t=1640245634; bh=07NAgW1e0WiNB9zqagiM2BnwZfWBCpNa2E4+ccxBPgw=;
+        h=Date:From:To:Subject:From;
+        b=EiczuZHk4sAXUFMsA8UIMS+gSRLCMRMGdL7qmek5aEOBaIMmGauU6uNf2ma49Mdcv
+         4kcrCo48vbeSWy8nnyDQQhQD79IrzlyHlDNp0wRioYIiTnoGrx4fR7a8ATT6hT4/7Z
+         GXyJ9kykf6Zjf6/WoY4crEM/WOqyktjlsVTtECveGOtj1ZxM5A4TqL65ZT521JlzVD
+         ipF25zMX1jnfYp/ubsFfckngV60yFqYOMnNXrELZ9Yd6E5httyZQuAbDUwXQS1b5NE
+         VSJpm1AU/gJsG7BS4NcNQy1rretkPqJ98FC7AJRCzgb901Uu1n3UERGulK0Z96QT3J
+         hElkOa11gsVGw==
+Received: by mail.betterbiz.pl for <linux-iio@vger.kernel.org>; Thu, 23 Dec 2021 07:45:38 GMT
+Message-ID: <20211223024500-0.1.f.zb8.0.43edmjq62g@betterbiz.pl>
+Date:   Thu, 23 Dec 2021 07:45:38 GMT
+From:   "Jakub Daroch" <jakub.daroch@betterbiz.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.betterbiz.pl
 MIME-Version: 1.0
-References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-10-liambeguin@gmail.com>
- <CAHp75Vc0aWrFtNK1ZkHkwP62zNXQJaDcn9pc8Uhfq0kOnWzmJg@mail.gmail.com>
- <YcNwt5RFMNFUimD/@shaak> <CAHp75VdrLTNLWZRgWkLXD23RAF28zh29XybywAPyMtb=GNxXbw@mail.gmail.com>
- <YcODglDWiknz2oeV@shaak>
-In-Reply-To: <YcODglDWiknz2oeV@shaak>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 22 Dec 2021 23:32:24 +0200
-Message-ID: <CAHp75Vejfr_S7iK7fAvs7ELxE1TJUECvmKv0-G5Zwunyc6nDQA@mail.gmail.com>
-Subject: Re: [PATCH v11 09/15] iio: afe: rescale: reduce risk of integer overflow
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 9:59 PM Liam Beguin <liambeguin@gmail.com> wrote:
-> On Wed, Dec 22, 2021 at 08:56:12PM +0200, Andy Shevchenko wrote:
-> > On Wed, Dec 22, 2021 at 8:38 PM Liam Beguin <liambeguin@gmail.com> wrote:
-> > > On Wed, Dec 22, 2021 at 02:29:04PM +0200, Andy Shevchenko wrote:
-> > > > On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
+Dzie=C5=84 dobry,
 
-...
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-> > > > > -               tmp = 1 << *val2;
-> > > >
-> > > > At some point this should be BIT()
-> >
-> > Forgot to add, If it's 64-bit, then BIT_ULL().
-> >
-> > > I'm not against changing this, but (to me at least) 1 << *val2 seems
-> > > more explicit as we're not working with bitfields. No?
-> >
-> > You may add a comment. You may use int_pow(), but it will be suboptimal.
-> >
-> > > > Rule of thumb (in accordance with C standard), always use unsigned
-> > > > value as left operand of the _left_ shift.
-> > >
-> > > Right, that makes sense! In practice though, since we'll most likely
-> > > never use higher bits of *val2 with IIO_VAL_FRACTIONAL_LOG2, would it be
-> > > enough to simply typecast?
-> > >
-> > >         tmp = 1 << (unsigned int)*val2;
-> >
-> > No, it's about the _left_ operand.
-> > I haven't checked if tmp is 64-bit, then even that would be still wrong.
->
-> Okay so your recommendation is to not use a left shift?
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-No, I recommend not to use int type as a _leftside_ operand.
-BIT() / BIT_ULL() does a left shift anyway.
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
 
-> I can look into that but given how unlikely it is to fall into those bad
-> cases, I'd rather keep things as they are. Would that be okay?
 
-> Also, I don't think using BIT() or BIT_ULL() would address this as they
-> both do the same shift, with no extra checks.
-
-They do slightly different versions of it. They use an unsigned int type.
-
-Open coded or not, it's up to you. Just convert to unsigned int.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Pozdrawiam,
+Jakub Daroch

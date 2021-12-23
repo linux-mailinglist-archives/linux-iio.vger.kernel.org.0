@@ -2,84 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E0747E413
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Dec 2021 14:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1198A47E667
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Dec 2021 17:34:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348384AbhLWN06 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Dec 2021 08:26:58 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:52550 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348338AbhLWN05 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Dec 2021 08:26:57 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A153161E51
-        for <linux-iio@vger.kernel.org>; Thu, 23 Dec 2021 13:26:57 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 3AEF7C36AE5;
-        Thu, 23 Dec 2021 13:26:52 +0000 (UTC)
-Date:   Thu, 23 Dec 2021 13:32:28 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Roan van Dijk <roan@protonic.nl>,
-        Tomasz Duszynski <tduszyns@gmail.com>,
-        Marc Titinger <mtitinger@baylibre.com>,
-        Matt Ranostay <mranostay@gmail.com>,
-        Johan Hovold <johan@kernel.org>,
-        Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>,
-        Navin Sankar Velliangiri <navin@linumiz.com>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Ludovic Tancerel <ludovic.tancerel@maplehightech.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 04/13] iio: ad9523: Use sysfs_emit()
-Message-ID: <20211223133228.5ae582af@jic23-huawei>
-In-Reply-To: <20211216185217.1054495-5-lars@metafoo.de>
-References: <20211216185217.1054495-1-lars@metafoo.de>
-        <20211216185217.1054495-5-lars@metafoo.de>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S244178AbhLWQek (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Dec 2021 11:34:40 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:58262 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233590AbhLWQek (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Dec 2021 11:34:40 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: usama.anjum)
+        with ESMTPSA id 699541F45B18
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1640277278;
+        bh=Qo+8Q9CJpQIhlE37DynQZg8KW/eg5KmMXgQTR0EeLUs=;
+        h=Cc:Subject:To:References:From:Date:In-Reply-To:From;
+        b=BLVUJPuxMbd94dwn1Daihkw53sEhoukJCWGyYokVY8sTmFGs7EimMEEo1GyN12XJ0
+         R+ncjYSJblKcHMjqkwv6yLdz6+aKw+5I+tNhrsP6d7UAn+GN9cWg2Rn6Q8Bu59NMxp
+         Jl9Xv+9XyXGtD1xdP2dc/ueH2YYfLc/OntXbYhYnmcLwpa95DP537xerY40wfcx60w
+         dV57xor6wz2/dUFWarjgNuUek/JQ+Be91ChXmeE/ukJBVxcroESqeuRTxtZlESruPw
+         IusaZc+5ZnMKZbmZ1PJHdhb/aDhVZ0e7BwsRoiWElrX2jsqo5DtM1CllXscEQMxfPq
+         9OziiFJ16IGnA==
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] drivers:iio:dac make expression evaluation 64-bit
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <YcIpAKV7Cmi0o7PU@debian-BULLSEYE-live-builder-AMD64>
+ <CAHp75VcU8B8fydh874p6HpgGXXRYvNGdphH=i17JHB3DYJ1JZQ@mail.gmail.com>
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+Message-ID: <eb59f405-24c6-69b8-beb1-465bfb783f61@collabora.com>
+Date:   Thu, 23 Dec 2021 21:34:30 +0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <CAHp75VcU8B8fydh874p6HpgGXXRYvNGdphH=i17JHB3DYJ1JZQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Dec 2021 19:52:08 +0100
-Lars-Peter Clausen <lars@metafoo.de> wrote:
-
-> sysfs_emit() is preferred over raw s*printf() for sysfs attributes since it
-> knows about the sysfs buffer specifics and has some built-in checks for
-> size and alignment.
+On 12/22/21 11:49 PM, Andy Shevchenko wrote:
+> On Wed, Dec 22, 2021 at 5:59 PM Muhammad Usama Anjum
+> <usama.anjum@collabora.com> wrote:
+>>
+>> Two 32-bit values are being evaluated using 32-bit arithmetic and then
+>> passed to s64 type. It is wrong. Expression should be evaluated using
+>> 64-bit arithmetic and then passed.
 > 
-> Use sysfs_emit() to format the custom device attributes of the ad9523
-> driver.
+> ...
 > 
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> ---
->  drivers/iio/frequency/ad9523.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>>         dac->ch_data[ch].scale_dec = DIV_ROUND_CLOSEST((s64)rem * 1000000,
+>>                                                         65536);
 > 
-> diff --git a/drivers/iio/frequency/ad9523.c b/drivers/iio/frequency/ad9523.c
-> index bdb0bc3b12dd..a0f92c336fc4 100644
-> --- a/drivers/iio/frequency/ad9523.c
-> +++ b/drivers/iio/frequency/ad9523.c
-> @@ -551,7 +551,7 @@ static ssize_t ad9523_show(struct device *dev,
->  	mutex_lock(&st->lock);
->  	ret = ad9523_read(indio_dev, AD9523_READBACK_0);
->  	if (ret >= 0) {
-> -		ret = sprintf(buf, "%d\n", !!(ret & (1 <<
-> +		ret = sysfs_emit(buf, "%d\n", !!(ret & (1 <<
->  			(u32)this_attr->address)));
-
-Obviously not due to this patch, but that's some horrible line breaking.
-I might just tidy that up whilst applying this - or send a follow up to
-do it.
-
->  	}
->  	mutex_unlock(&st->lock);
-
+> Shouldn't the above be fixed as well? Has anybody tried to compile on
+> 32-bit arch this?
+No, it correct already. In this case, rem is being typecasted to s64 and
+then multiplied with a 32-bit number, 1000000. Thus 64-bit arithmetic is
+being performed here.

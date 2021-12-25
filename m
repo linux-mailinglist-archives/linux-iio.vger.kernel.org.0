@@ -2,111 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1FE47F431
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Dec 2021 19:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5484747F448
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Dec 2021 20:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232632AbhLYSFA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Dec 2021 13:05:00 -0500
-Received: from relay3-d.mail.gandi.net ([217.70.183.195]:55785 "EHLO
-        relay3-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbhLYSFA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Dec 2021 13:05:00 -0500
-Received: (Authenticated sender: frank@zago.net)
-        by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 7952760002;
-        Sat, 25 Dec 2021 18:04:57 +0000 (UTC)
-Message-ID: <d949f737-7cb8-e466-06c7-b3fd7efadfd7@zago.net>
-Date:   Sat, 25 Dec 2021 12:04:55 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH] iio: position: Add support for ams AS5600 angle sensor
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
+        id S232714AbhLYTHF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Dec 2021 14:07:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53556 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232694AbhLYTHF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Dec 2021 14:07:05 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32A22C061401
+        for <linux-iio@vger.kernel.org>; Sat, 25 Dec 2021 11:07:05 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n1CNh-0002HF-K0; Sat, 25 Dec 2021 20:07:01 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n1CNf-006bir-0t; Sat, 25 Dec 2021 20:06:58 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n1CNd-00009c-HE; Sat, 25 Dec 2021 20:06:57 +0100
+Date:   Sat, 25 Dec 2021 20:06:54 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Marc Kleine-Budde <mkl@pengutronix.de>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211216202651.120172-1-frank@zago.net>
- <20211223132800.682a56d2@jic23-huawei>
-From:   Frank Zago <frank@zago.net>
-In-Reply-To: <20211223132800.682a56d2@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v1 13/23] counter: Provide alternative counter
+ registration functions
+Message-ID: <20211225190654.btegjjkynzyikpqr@pengutronix.de>
+References: <20211225161056.682797-1-u.kleine-koenig@pengutronix.de>
+ <20211225161056.682797-14-u.kleine-koenig@pengutronix.de>
+ <20211225163451.iwwn7u7bku4r4nk4@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qlts5rp2zfs4hfyk"
+Content-Disposition: inline
+In-Reply-To: <20211225163451.iwwn7u7bku4r4nk4@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonaathan,
 
->> +What:		sys/bus/iio/devices/iio:deviceX/agc
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_fth
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_hyst
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_outs
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_pm
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_pwmf
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_sf
->> +What:		sys/bus/iio/devices/iio:deviceX/conf_wd
->> +What:		sys/bus/iio/devices/iio:deviceX/magnitude
->> +What:		sys/bus/iio/devices/iio:deviceX/mang
->> +What:		sys/bus/iio/devices/iio:deviceX/mpos
->> +What:		sys/bus/iio/devices/iio:deviceX/status_md
->> +What:		sys/bus/iio/devices/iio:deviceX/status_mh
->> +What:		sys/bus/iio/devices/iio:deviceX/status_ml
->> +What:		sys/bus/iio/devices/iio:deviceX/zmco
->> +What:		sys/bus/iio/devices/iio:deviceX/zpos
->> +KernelVersion:	TBD
->> +Contact:	linux-iio@vger.kernel.org
->> +Description:
->> +	Read and write the ams AS5600 internal registers and their
->> +	fields. zpos/mpos can be used to create a subset of the 0-360
->> +	degree range. status_md will tell whether the magnet is
->> +	detected. Check the datasheet
->> +	(https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf)
->> +	for more information.
-> 
-> No to this lot.  If you need raw register access it needs to be debugfs
-> not sysfs.  IIO provides a standard way of doing that.
-> (just grep debugfs and you will find lots of examples).
+--qlts5rp2zfs4hfyk
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I've moved them all to debugfs, but I think this is abusing what debugfs
-is for. It may not be mounted on a system after all.
+On Sat, Dec 25, 2021 at 05:34:51PM +0100, Marc Kleine-Budde wrote:
+> On 25.12.2021 17:10:46, Uwe Kleine-K=F6nig wrote:
+> > The current implementation gets device lifetime tracking wrong. The
+> > problem is that allocation of struct counter_device is controlled by the
+> > individual drivers but this structure contains a struct device that
+> > might have to live longer than a driver is bound. As a result a command
+> > sequence like:
+> >=20
+> > 	{ sleep 5; echo bang; } > /dev/counter0 &
+> > 	sleep 1;
+> > 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-co=
+unter/unbind
+> >=20
+> > can keep a reference to the struct device and unbinding results in
+> > freeing the memory occupied by this device resulting in an oops.
+> >=20
+> > This commit provides two new functions (plus some helpers):
+> >  - counter_alloc() to allocate a struct counter_device that is
+> >    automatically freed once the embedded struct device is released
+> >  - counter_add() to register such a device.
+> >=20
+> > Note that this commit doesn't fix any issues, all drivers have to be
+> > converted to these new functions to correct the lifetime problems.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  drivers/counter/counter-core.c | 149 ++++++++++++++++++++++++++++++++-
+> >  include/linux/counter.h        |  15 ++++
+> >  2 files changed, 163 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
+ore.c
+> > index 00c41f28c101..17a93e6c018a 100644
+> > --- a/drivers/counter/counter-core.c
+> > +++ b/drivers/counter/counter-core.c
+> > @@ -15,6 +15,7 @@
+> >  #include <linux/kdev_t.h>
+> >  #include <linux/module.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/slab.h>
+> >  #include <linux/types.h>
+> >  #include <linux/wait.h>
+> > =20
+> > @@ -24,6 +25,11 @@
+> >  /* Provides a unique ID for each counter device */
+> >  static DEFINE_IDA(counter_ida);
+> > =20
+> > +struct counter_device_allochelper {
+> > +	struct counter_device counter;
+> > +	unsigned long privdata[0];
+> > +};
+>=20
+> Is this a use case for DECLARE_FLEX_ARRAY()?
 
-Why not have a namespace in sysfs for things specific to a device that
-can't be abstracted to other devices?
+Probably I want to drop the 0 to make this c99 instead of c89 gcc
+extention. I didn't know DECLARE_FLEX_ARRAY, not sure if this is more
+beneficial.
 
->> + * The rotating magnet is installed from 0.5mm to 3mm parallel to and
->> + * above the chip.
->> + *
->> + * The raw angle value returned by the chip is [0..4095]. The channel
->> + * 0 (in_angl0_raw) returns the unscaled and unmodified angle, always
->> + * covering the 360 degrees. The channel 1 returns the chip adjusted
->> + * angle, covering from 18 to 360 degrees, as modified by its
->> + * ZPOS/MPOS/MANG values,
-> 
-> So, the raw case is simple, the other one more complex.
-> 
-> I think zpos maps well to offset in iio terms. Mpos is harder because
-> we don't typically define a maximum value for a channel. I'm also not
-> sure what the point is in either of these unless MANG is used and
-> as you observer that is not exposed (good thing too given limited write cycles).
-> Without MANG you might as well just do it in userspace - unless the DAC or PWM
-> outputs are of interest...
+Anyhow, having said that, the loop hooping with struct
+counter_device_allochelper can maybe be replaced by some addition and
+pointer alignment. At least that's how it's done in netdev_priv().
 
-zpos/mpos define an arc in the circle. Physically that could reflect a
-rotating button that can't do full circles. I've documented that a bit in v2.
+I'm open to whatever William and/or Greg prefers.
 
-I'm unclear how MANG works, as I haven't been able to set it. My only option 
-would be to flash it (OTP) it to a value to my only device.
+One thing we/they might want to decide quickly is if the fixes included
+here should go into v5.16. Maybe it's too late in the cycle and given
+the problem isn't actually new, maybe fix this for v5.17? (It's as old
+as the counter framework which was included first in v5.2-rc1 in Apr
+2019.) Iff this is considered important enough to go into 5.16, maybe we
+should discuss privdata[0] vs privdata[] vs DECLARE_FLEX_ARRAY only
+later?
 
+Best regards
+Uwe
 
->> +	ret = i2c_smbus_read_byte_data(client, REG_STATUS);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	/* No magnet present could be a problem. */
-> 
-> :) Good understatement.  Why not just fail the probe if this occurs?
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-I left that in place, since I think it could be possible for the magnet to
-not be present when the driver loads, for instance some sort of door could be
-opened. Also it doesn't break anything besides not returning an valid angle.
+--qlts5rp2zfs4hfyk
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Frank
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHHa8sACgkQwfwUeK3K
+7AnTAAf/b13CmmKGa3MqBdHjwt5g/kpe6oIf2sQzVd4icPwYVZ6j2Bk/iS15FUfZ
+E9RwB98//UC+yIJ0gZkXyREAMlq0I2XVdNhu0XqNtXwywtM9tUXXbyA+GVPRqJfO
+WbzcBssCyl5syJ9yoVFIvC7gna+86WIimqctfxz5yNjh+KO/LF5Ouz6JeojeQig/
+M0RSSyolBkeUz3g9LjBfvBJW7r2YD1VFtxp95n+iu1BGVBhqvemu9KGBLCEQCZ2n
+VW5a4UIz0muDFJqrvpm+ZPxQACzuMAu9DaFvD7LusKZdI2MgqVpTPlPrUh7o0Dpp
+5tyRRYoxd4bM7wjhh/s+C4ymxRm0qA==
+=WlHE
+-----END PGP SIGNATURE-----
+
+--qlts5rp2zfs4hfyk--

@@ -2,231 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E5A847F3BC
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Dec 2021 17:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93D4947F3CD
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Dec 2021 17:20:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232212AbhLYQLQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Dec 2021 11:11:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
+        id S232231AbhLYQTy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Dec 2021 11:19:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232217AbhLYQLO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Dec 2021 11:11:14 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05093C061761
-        for <linux-iio@vger.kernel.org>; Sat, 25 Dec 2021 08:11:13 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n19dV-0008Dx-Tp; Sat, 25 Dec 2021 17:11:09 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n19dV-006ahm-2Y; Sat, 25 Dec 2021 17:11:08 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n19dU-0007iP-81; Sat, 25 Dec 2021 17:11:08 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        kernel@pengutronix.de
-Subject: [PATCH v1 23/23] counter: remove old and now unused registration API
-Date:   Sat, 25 Dec 2021 17:10:56 +0100
-Message-Id: <20211225161056.682797-24-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211225161056.682797-1-u.kleine-koenig@pengutronix.de>
-References: <20211225161056.682797-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S229987AbhLYQTy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Dec 2021 11:19:54 -0500
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04683C061401;
+        Sat, 25 Dec 2021 08:19:53 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id m21so45480349edc.0;
+        Sat, 25 Dec 2021 08:19:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UsdPYpm1DtVrhyxxHtm/LRi0HP6GcDMlcCiYeTd9gAY=;
+        b=DBuPiQjuMuhPNfWWQy6bNRFOKdcwLTJbYbtu/VPNqL3NITwnLHm8oXZzVoJtbbVLt6
+         gpYl5Vtji8Iht7Py1LIjWZqa9dIDF9hYVFFmqQ6qSmO0Id8rORquYHO/TzWmFHKTFemr
+         aEDWcXGKPWv4m91k6JnPHImDeQuBFmVPv0JF42/9QZ+8Hnpsh+V14gl1YbGGF0R0I3lc
+         HvP1QwBGMmhhGzzAIoXhPMRJe8B6lpR0P6Fw0VtF/iy2GIPmVVGu8lHkoDg1YHpdHIHl
+         +kcm5hYi/PXeXaKAhBfdonoTLABlwFqY/AL2AcYMkXzBIqM6ygL31I50+Jj1cweN63jS
+         myMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UsdPYpm1DtVrhyxxHtm/LRi0HP6GcDMlcCiYeTd9gAY=;
+        b=yNu5yQRG1F70Ig/0zckGv62IV1y9fTmSwFWpHFbIkpl3oMGva8DKc2bAQ4cU5tkI4Q
+         r+zW3alUvwMYQ0/kFZHSCnhvsDYf8Azh+/Hefbwx1xqGVid1ua7EcB/nR9rARBFgLhdZ
+         blHAr+pA2Yel3iBzhYv8dzf8/H/fFZ/N5oSxazB8OTm7dWd9oQF4OFcJQnQLL8gDeG4W
+         Zn/WD9nlyNVQ5V05n3HgeGvU/QuMfiSXT+4DLarCFXR9y8vvNAoCbhMD5OTM7XrzMEg5
+         uHsAS8r1A1S3zErZXuCz+GZaKuFHD+DT8zDwA249qbm2cSOIofxQywVqutvrtSQeq+Ws
+         12zg==
+X-Gm-Message-State: AOAM53004N4LA1SMtCOJQdmgi1h440GWN21J9gqLKTIv0MybifHcpOpF
+        3Gm1vWwXQOZXv8FChObkCGmpPzfNHZl9cxlqta8=
+X-Google-Smtp-Source: ABdhPJxGyNpikOCL5/GEECxckYkRk1Ur/E/IGIyu2LWJJKZsC3jsfXtHUs+THG9Fy/XdQiG4nntekHnYWpiwsFhqzBg=
+X-Received: by 2002:a05:6402:4301:: with SMTP id m1mr9059887edc.125.1640449192335;
+ Sat, 25 Dec 2021 08:19:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=v1mp6rCzIVBpbYSrlhxQ5kWmzXQJcXt8ddmzIs5vMu0=; m=mBWXU7BZZXM1Z7XyqYl2vUCKa8aqBlhUhH6bjf/FbzM=; p=N7qWzAZqP7yt6MiOKXZLl0cVRDsLDBNigVapscXjRFc=; g=47a3e6aee4dcc447b2a74a8f574c7775a6939540
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHHQocACgkQwfwUeK3K7Angcwf9FN1 JNaIk/JZDQMydQU9Z7ogQ72L90Do891tEyry8Mi8IoyTmhIyqWuqQkjDekvG4vj29JRmjW8CVaB9Y lRA4rUi32VPQbjZjnkaYGNGngF6OP/e1epBrcgUaQvJmiB60VRC+JpHnJgJZJnMStzuTvnFr836iy GUVXFVi0Wk4TgzqjxlSLm2bIXp7tDSdhyQJouTqajG3bd+q9qEAUIhdQ6/mG3iooMtrmtGOXSKjA8 h0WfGC9TIm+JWDXYTsUgM9dCVn1GdGuq2lOCqd79z9xy5LCJzrs+CgZMyQ6AvstKnjIae98Aj4tyN Mg/GoNquG7HupanZKalmJ6T/f4ffR1Q==
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+References: <20211224145903.368999-1-kai.heng.feng@canonical.com>
+ <CAHp75Vd3RhVUe_Yoz-fPErzYcV=+gtOVsxNTmn2_52JbSUaMaA@mail.gmail.com> <CAAd53p7bu=+bs5c2Y1LQLC7fPLUihNX_QHw-yOh=fUKUdXWWhg@mail.gmail.com>
+In-Reply-To: <CAAd53p7bu=+bs5c2Y1LQLC7fPLUihNX_QHw-yOh=fUKUdXWWhg@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 25 Dec 2021 18:19:16 +0200
+Message-ID: <CAHp75VeVFcaJJeacDCMBEaAVNXUgEF_oaHWXUpHobAYX4EmBuQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: humidity: hdc100x: Add ACPI HID table
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Chris Lesiak <chris.lesiak@licor.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Usage of counter_register() yields issues in device lifetime tracking. All
-drivers were converted to the new API, so the old one can go away.
+On Sat, Dec 25, 2021 at 3:05 PM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+> On Sat, Dec 25, 2021 at 7:32 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Friday, December 24, 2021, Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
+> >>
+> >> x86 boards may use ACPI HID "HDC1010" to for hdc100x device.
+> >>
+> >> So add an ACPI match table for that accordingly.
+> >
+> > No. We do not add abusing IDs blindly.
+> > Why this is in use? Is the creative creator of that informed that is an ACPI spec abuse?
+>
+> Can you please elaborate more on this topic? How is this an ACPI spec abuse?
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/counter/counter-core.c | 97 ++--------------------------------
- include/linux/counter.h        | 12 -----
- 2 files changed, 4 insertions(+), 105 deletions(-)
+Yes, https://uefi.org/PNP_ACPI_Registry has links to PNP and ACPI ID registries.
+Note, the main differences between them are:
+- PNP uses 3-letter vendor ID, ACPI uses 4-letter
+- PNP is in maintenance mode and shouldn't be expanded
 
-diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
-index 17a93e6c018a..cdc6004a7e77 100644
---- a/drivers/counter/counter-core.c
-+++ b/drivers/counter/counter-core.c
-@@ -38,8 +38,7 @@ static void counter_device_release(struct device *dev)
- 	counter_chrdev_remove(counter);
- 	ida_free(&counter_ida, dev->id);
- 
--	if (!counter->legacy_device)
--		kfree(container_of(counter, struct counter_device_allochelper, counter));
-+	kfree(container_of(counter, struct counter_device_allochelper, counter));
- }
- 
- static struct device_type counter_device_type = {
-@@ -62,76 +61,13 @@ static dev_t counter_devt;
-  */
- void *counter_priv(const struct counter_device *const counter)
- {
--	if (counter->legacy_device) {
--		return counter->priv;
--	} else {
--		struct counter_device_allochelper *ch =
--			container_of(counter, struct counter_device_allochelper, counter);
-+	struct counter_device_allochelper *ch =
-+		container_of(counter, struct counter_device_allochelper, counter);
- 
--		return &ch->privdata;
--	}
-+	return &ch->privdata;
- }
- EXPORT_SYMBOL_GPL(counter_priv);
- 
--/**
-- * counter_register - register Counter to the system
-- * @counter:	pointer to Counter to register
-- *
-- * This function registers a Counter to the system. A sysfs "counter" directory
-- * will be created and populated with sysfs attributes correlating with the
-- * Counter Signals, Synapses, and Counts respectively.
-- *
-- * RETURNS:
-- * 0 on success, negative error number on failure.
-- */
--int counter_register(struct counter_device *const counter)
--{
--	struct device *const dev = &counter->dev;
--	int id;
--	int err;
--
--	counter->legacy_device = true;
--
--	/* Acquire unique ID */
--	id = ida_alloc(&counter_ida, GFP_KERNEL);
--	if (id < 0)
--		return id;
--
--	mutex_init(&counter->ops_exist_lock);
--
--	/* Configure device structure for Counter */
--	dev->id = id;
--	dev->type = &counter_device_type;
--	dev->bus = &counter_bus_type;
--	dev->devt = MKDEV(MAJOR(counter_devt), id);
--	if (counter->parent) {
--		dev->parent = counter->parent;
--		dev->of_node = counter->parent->of_node;
--	}
--	device_initialize(dev);
--
--	err = counter_sysfs_add(counter);
--	if (err < 0)
--		goto err_free_id;
--
--	err = counter_chrdev_add(counter);
--	if (err < 0)
--		goto err_free_id;
--
--	err = cdev_device_add(&counter->chrdev, dev);
--	if (err < 0)
--		goto err_remove_chrdev;
--
--	return 0;
--
--err_remove_chrdev:
--	counter_chrdev_remove(counter);
--err_free_id:
--	put_device(dev);
--	return err;
--}
--EXPORT_SYMBOL_GPL(counter_register);
--
- /**
-  * counter_alloc - allocate a counter_device
-  * @sizeof_priv: size of the driver private data
-@@ -255,31 +191,6 @@ static void devm_counter_release(void *counter)
- 	counter_unregister(counter);
- }
- 
--/**
-- * devm_counter_register - Resource-managed counter_register
-- * @dev:	device to allocate counter_device for
-- * @counter:	pointer to Counter to register
-- *
-- * Managed counter_register. The Counter registered with this function is
-- * automatically unregistered on driver detach. This function calls
-- * counter_register internally. Refer to that function for more information.
-- *
-- * RETURNS:
-- * 0 on success, negative error number on failure.
-- */
--int devm_counter_register(struct device *dev,
--			  struct counter_device *const counter)
--{
--	int err;
--
--	err = counter_register(counter);
--	if (err < 0)
--		return err;
--
--	return devm_add_action_or_reset(dev, devm_counter_release, counter);
--}
--EXPORT_SYMBOL_GPL(devm_counter_register);
--
- static void devm_counter_put(void *counter)
- {
- 	counter_put(counter);
-diff --git a/include/linux/counter.h b/include/linux/counter.h
-index f1350a43cd48..9afa0f1e9cea 100644
---- a/include/linux/counter.h
-+++ b/include/linux/counter.h
-@@ -314,8 +314,6 @@ struct counter_device {
- 	struct counter_comp *ext;
- 	size_t num_ext;
- 
--	void *priv;
--
- 	struct device dev;
- 	struct cdev chrdev;
- 	struct list_head events_list;
-@@ -327,25 +325,15 @@ struct counter_device {
- 	spinlock_t events_in_lock;
- 	struct mutex events_out_lock;
- 	struct mutex ops_exist_lock;
--
--	/*
--	 * This can go away once all drivers are converted to
--	 * counter_alloc()/counter_add().
--	 */
--	bool legacy_device;
- };
- 
- void *counter_priv(const struct counter_device *const counter);
- 
--int counter_register(struct counter_device *const counter);
--
- struct counter_device *counter_alloc(size_t sizeof_priv);
- void counter_put(struct counter_device *const counter);
- int counter_add(struct counter_device *const counter);
- 
- void counter_unregister(struct counter_device *const counter);
--int devm_counter_register(struct device *dev,
--			  struct counter_device *const counter);
- struct counter_device *devm_counter_alloc(struct device *dev,
- 					  size_t sizeof_priv);
- int devm_counter_add(struct device *dev,
+So, Since above should formally satisfy the PNP ID, the HDC is not a
+TI vendor ID in the PNP ID registry.
+
+The section in the spec that refers to it:
+https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#hid-hardware-id
+
+> I did suggest them to use PRP0001, but I also don't think this is an abuse.
+
+The PRP0001 is not an abuse per se, but rather it is highly _not_
+recommended for a production use.
+
+> > What devices are those? Is it available on the market? Where is the link to DSDT?
+>
+> It's not on the market yet.
+
+Thank God!
+
+> Do you need the full DSDT? Or just the
+> part of the ACPI device?
+> I'll need approve from customer to disclose these info.
+
+This is a requirement only for the devices on the market when nobody
+prevented the disaster from becoming... Since it's not yet, no need
+for it.
+
+> > Does TI has an ID for that?
+>
+> I was told by customer this is approved by TI.
+
+How can TI approve that for "HARDCOM ELEKTRONIK & DATATEKNIK"? Is
+there evidence that this company has been bought by TI or TI got full
+rights on their IPs?
+
+ACPI: TEXAS INSTRUMENTS TXNW
+PNP: TEXAS INSTURMENTS TXN
+(seems a typo in the company's name, but it should be notified to the
+appropriate channels)
+
+So, the ID should start with one of the above, and not HDC as far as I
+understood.
+
+PNP: TEXAS MICROSYSTEM TMI
+This one probably is not related, but I'm not informed.
+
+I would like you (and your customer) to point to my blog post on the
+topic and it explains how the things should be done with the ACPI IDs:
+https://andy-shev.dreamwidth.org/151340.html
+
+Hope this will help and be resolved soon.
+
 -- 
-2.33.0
-
+With Best Regards,
+Andy Shevchenko

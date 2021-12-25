@@ -2,137 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D4947F3CD
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Dec 2021 17:20:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F2AA47F3D7
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Dec 2021 17:35:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232231AbhLYQTy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Dec 2021 11:19:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
+        id S232278AbhLYQfD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Dec 2021 11:35:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229987AbhLYQTy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Dec 2021 11:19:54 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04683C061401;
-        Sat, 25 Dec 2021 08:19:53 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id m21so45480349edc.0;
-        Sat, 25 Dec 2021 08:19:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UsdPYpm1DtVrhyxxHtm/LRi0HP6GcDMlcCiYeTd9gAY=;
-        b=DBuPiQjuMuhPNfWWQy6bNRFOKdcwLTJbYbtu/VPNqL3NITwnLHm8oXZzVoJtbbVLt6
-         gpYl5Vtji8Iht7Py1LIjWZqa9dIDF9hYVFFmqQ6qSmO0Id8rORquYHO/TzWmFHKTFemr
-         aEDWcXGKPWv4m91k6JnPHImDeQuBFmVPv0JF42/9QZ+8Hnpsh+V14gl1YbGGF0R0I3lc
-         HvP1QwBGMmhhGzzAIoXhPMRJe8B6lpR0P6Fw0VtF/iy2GIPmVVGu8lHkoDg1YHpdHIHl
-         +kcm5hYi/PXeXaKAhBfdonoTLABlwFqY/AL2AcYMkXzBIqM6ygL31I50+Jj1cweN63jS
-         myMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UsdPYpm1DtVrhyxxHtm/LRi0HP6GcDMlcCiYeTd9gAY=;
-        b=yNu5yQRG1F70Ig/0zckGv62IV1y9fTmSwFWpHFbIkpl3oMGva8DKc2bAQ4cU5tkI4Q
-         r+zW3alUvwMYQ0/kFZHSCnhvsDYf8Azh+/Hefbwx1xqGVid1ua7EcB/nR9rARBFgLhdZ
-         blHAr+pA2Yel3iBzhYv8dzf8/H/fFZ/N5oSxazB8OTm7dWd9oQF4OFcJQnQLL8gDeG4W
-         Zn/WD9nlyNVQ5V05n3HgeGvU/QuMfiSXT+4DLarCFXR9y8vvNAoCbhMD5OTM7XrzMEg5
-         uHsAS8r1A1S3zErZXuCz+GZaKuFHD+DT8zDwA249qbm2cSOIofxQywVqutvrtSQeq+Ws
-         12zg==
-X-Gm-Message-State: AOAM53004N4LA1SMtCOJQdmgi1h440GWN21J9gqLKTIv0MybifHcpOpF
-        3Gm1vWwXQOZXv8FChObkCGmpPzfNHZl9cxlqta8=
-X-Google-Smtp-Source: ABdhPJxGyNpikOCL5/GEECxckYkRk1Ur/E/IGIyu2LWJJKZsC3jsfXtHUs+THG9Fy/XdQiG4nntekHnYWpiwsFhqzBg=
-X-Received: by 2002:a05:6402:4301:: with SMTP id m1mr9059887edc.125.1640449192335;
- Sat, 25 Dec 2021 08:19:52 -0800 (PST)
+        with ESMTP id S229987AbhLYQfC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Dec 2021 11:35:02 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 623B5C061401
+        for <linux-iio@vger.kernel.org>; Sat, 25 Dec 2021 08:35:02 -0800 (PST)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1n1A0U-00028k-Gn; Sat, 25 Dec 2021 17:34:54 +0100
+Received: from pengutronix.de (2a03-f580-87bc-d400-b4ef-4811-d475-81e0.ip6.dokom21.de [IPv6:2a03:f580:87bc:d400:b4ef:4811:d475:81e0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id 941E46CB20E;
+        Sat, 25 Dec 2021 16:34:52 +0000 (UTC)
+Date:   Sat, 25 Dec 2021 17:34:51 +0100
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v1 13/23] counter: Provide alternative counter
+ registration functions
+Message-ID: <20211225163451.iwwn7u7bku4r4nk4@pengutronix.de>
+References: <20211225161056.682797-1-u.kleine-koenig@pengutronix.de>
+ <20211225161056.682797-14-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-References: <20211224145903.368999-1-kai.heng.feng@canonical.com>
- <CAHp75Vd3RhVUe_Yoz-fPErzYcV=+gtOVsxNTmn2_52JbSUaMaA@mail.gmail.com> <CAAd53p7bu=+bs5c2Y1LQLC7fPLUihNX_QHw-yOh=fUKUdXWWhg@mail.gmail.com>
-In-Reply-To: <CAAd53p7bu=+bs5c2Y1LQLC7fPLUihNX_QHw-yOh=fUKUdXWWhg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 25 Dec 2021 18:19:16 +0200
-Message-ID: <CAHp75VeVFcaJJeacDCMBEaAVNXUgEF_oaHWXUpHobAYX4EmBuQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: humidity: hdc100x: Add ACPI HID table
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Chris Lesiak <chris.lesiak@licor.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="h2ny3jxmfdnwwyyc"
+Content-Disposition: inline
+In-Reply-To: <20211225161056.682797-14-u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Dec 25, 2021 at 3:05 PM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
-> On Sat, Dec 25, 2021 at 7:32 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Friday, December 24, 2021, Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
-> >>
-> >> x86 boards may use ACPI HID "HDC1010" to for hdc100x device.
-> >>
-> >> So add an ACPI match table for that accordingly.
-> >
-> > No. We do not add abusing IDs blindly.
-> > Why this is in use? Is the creative creator of that informed that is an ACPI spec abuse?
->
-> Can you please elaborate more on this topic? How is this an ACPI spec abuse?
 
-Yes, https://uefi.org/PNP_ACPI_Registry has links to PNP and ACPI ID registries.
-Note, the main differences between them are:
-- PNP uses 3-letter vendor ID, ACPI uses 4-letter
-- PNP is in maintenance mode and shouldn't be expanded
+--h2ny3jxmfdnwwyyc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So, Since above should formally satisfy the PNP ID, the HDC is not a
-TI vendor ID in the PNP ID registry.
+On 25.12.2021 17:10:46, Uwe Kleine-K=C3=B6nig wrote:
+> The current implementation gets device lifetime tracking wrong. The
+> problem is that allocation of struct counter_device is controlled by the
+> individual drivers but this structure contains a struct device that
+> might have to live longer than a driver is bound. As a result a command
+> sequence like:
+>=20
+> 	{ sleep 5; echo bang; } > /dev/counter0 &
+> 	sleep 1;
+> 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-coun=
+ter/unbind
+>=20
+> can keep a reference to the struct device and unbinding results in
+> freeing the memory occupied by this device resulting in an oops.
+>=20
+> This commit provides two new functions (plus some helpers):
+>  - counter_alloc() to allocate a struct counter_device that is
+>    automatically freed once the embedded struct device is released
+>  - counter_add() to register such a device.
+>=20
+> Note that this commit doesn't fix any issues, all drivers have to be
+> converted to these new functions to correct the lifetime problems.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/counter/counter-core.c | 149 ++++++++++++++++++++++++++++++++-
+>  include/linux/counter.h        |  15 ++++
+>  2 files changed, 163 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
+e.c
+> index 00c41f28c101..17a93e6c018a 100644
+> --- a/drivers/counter/counter-core.c
+> +++ b/drivers/counter/counter-core.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/kdev_t.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+> +#include <linux/slab.h>
+>  #include <linux/types.h>
+>  #include <linux/wait.h>
+> =20
+> @@ -24,6 +25,11 @@
+>  /* Provides a unique ID for each counter device */
+>  static DEFINE_IDA(counter_ida);
+> =20
+> +struct counter_device_allochelper {
+> +	struct counter_device counter;
+> +	unsigned long privdata[0];
+> +};
 
-The section in the spec that refers to it:
-https://uefi.org/specs/ACPI/6.4/06_Device_Configuration/Device_Configuration.html#hid-hardware-id
+Is this a use case for DECLARE_FLEX_ARRAY()?
 
-> I did suggest them to use PRP0001, but I also don't think this is an abuse.
+Marc
 
-The PRP0001 is not an abuse per se, but rather it is highly _not_
-recommended for a production use.
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
 
-> > What devices are those? Is it available on the market? Where is the link to DSDT?
->
-> It's not on the market yet.
+--h2ny3jxmfdnwwyyc
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thank God!
+-----BEGIN PGP SIGNATURE-----
 
-> Do you need the full DSDT? Or just the
-> part of the ACPI device?
-> I'll need approve from customer to disclose these info.
+iQEzBAABCgAdFiEEK3kIWJt9yTYMP3ehqclaivrt76kFAmHHSCgACgkQqclaivrt
+76m9Sgf/SmijATNN8YczoqCVkgUjairDuRzTj19kbGKukAuHgca7LLV7iAjVbamE
+4O7Ukt2oDRRvknrNBmYSHbSzYVPTua39iuoiMl4DWQSppiarPjEED5TwvejkaI/U
+wckssd9mW66QlyvIUuWIjUgTAkpNqjp9iYpupcIcE620RZGnUsQs3TrcnefhFJQL
+HT/zDTrbQn/jeB27TMo2/8RqUcihyBPFUqMMJFflLQwXfFgZLs4c8AAL217XXUD5
+SIuV5qJxdOPbEtiNHCl68VE01xdTdCB1ttLsiBWgziHa6TtwZduGhvjMGBSBdzst
+g7wPizUXXXImNddjBDDjEIKlR0JXiA==
+=pk3X
+-----END PGP SIGNATURE-----
 
-This is a requirement only for the devices on the market when nobody
-prevented the disaster from becoming... Since it's not yet, no need
-for it.
-
-> > Does TI has an ID for that?
->
-> I was told by customer this is approved by TI.
-
-How can TI approve that for "HARDCOM ELEKTRONIK & DATATEKNIK"? Is
-there evidence that this company has been bought by TI or TI got full
-rights on their IPs?
-
-ACPI: TEXAS INSTRUMENTS TXNW
-PNP: TEXAS INSTURMENTS TXN
-(seems a typo in the company's name, but it should be notified to the
-appropriate channels)
-
-So, the ID should start with one of the above, and not HDC as far as I
-understood.
-
-PNP: TEXAS MICROSYSTEM TMI
-This one probably is not related, but I'm not informed.
-
-I would like you (and your customer) to point to my blog post on the
-topic and it explains how the things should be done with the ACPI IDs:
-https://andy-shev.dreamwidth.org/151340.html
-
-Hope this will help and be resolved soon.
-
--- 
-With Best Regards,
-Andy Shevchenko
+--h2ny3jxmfdnwwyyc--

@@ -2,103 +2,250 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC49C47FC57
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Dec 2021 12:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 870B247FC87
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Dec 2021 13:17:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236522AbhL0LxF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Dec 2021 06:53:05 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:53920 "EHLO
-        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233644AbhL0LxF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Dec 2021 06:53:05 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id EB5D8CE0EF0;
-        Mon, 27 Dec 2021 11:53:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94117C36AEA;
-        Mon, 27 Dec 2021 11:53:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640605982;
-        bh=ZxiIva1jE9faop/ZsprofhcwQ/y/+Bk9xGDjZkcmpKo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JkiTyM2LqbPgxURYEL6nE77yFrxFgyShyEsEErYQhizyrKWU7VL1//v2lWOoCXdbT
-         vMRWuXN3CL/dXRXxTORcsSdCsIGbN4KBb16ExnbHV6wZ/Mdu1dSrXzxYVccUY5ikSh
-         eXbpv5IC1obKpIF24bmPVKe3YfymlUzSg98Cthu0=
-Date:   Mon, 27 Dec 2021 12:52:59 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        kernel@pengutronix.de,
+        id S233761AbhL0MRB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Dec 2021 07:17:01 -0500
+Received: from www381.your-server.de ([78.46.137.84]:55306 "EHLO
+        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233695AbhL0MRB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Dec 2021 07:17:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=jdcCyU+oQzxZ8PdQytmggyUxsG3MZfW7C6pREoHgr5w=; b=W11LW5cMo2EphSF6porGhxyPcH
+        Grce/iVKriqZD8rGIG3l5jrg7Nx3PlZ/tUzwGizAIqHjpAYsUUpmpTBqDXRzwQyBQWJJyUELe38z3
+        VcnFRcim9iBkKULqfyHX35C4uyA2FuouVhmi5ZpX4UW8NA1tTkK8aGEoES7FykjzkDecCaz1uXP16
+        K8RERHd1OLuSk2tyF0izctj6LgLAZ8t/EAjo2R5ku7MKBcI/MLgOPc2DxKz1SUIudHWz7r1gOftSp
+        AtWv20T0OOgfCA8kAohvqmtG8u3nmq2urL7wTr+n7mS30A8gdzY5cFhvAO07YjKgSNMYuWR4w4z+M
+        kVr1EO4Q==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1n1ovx-0009Fg-L6; Mon, 27 Dec 2021 13:16:57 +0100
+Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578]
+        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1n1ovx-000Oie-Cf; Mon, 27 Dec 2021 13:16:57 +0100
+Subject: Re: [PATCH v2 13/23] counter: Provide alternative counter
+ registration functions
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     kernel@pengutronix.de,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 04/23] counter: Provide a wrapper to access device
- private data
-Message-ID: <YcmpG78dI2nT/N8z@kroah.com>
+        linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
- <20211227094526.698714-5-u.kleine-koenig@pengutronix.de>
- <YcmdNr8Y1jcMCwQQ@kroah.com>
- <cb583f3f-2cf9-2de5-8beb-da7c11ff1481@metafoo.de>
+ <20211227094526.698714-14-u.kleine-koenig@pengutronix.de>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+Message-ID: <2053a9ea-a647-89f4-497c-1141ac3e0fa7@metafoo.de>
+Date:   Mon, 27 Dec 2021 13:16:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20211227094526.698714-14-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cb583f3f-2cf9-2de5-8beb-da7c11ff1481@metafoo.de>
+Content-Language: en-US
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.3/26404/Mon Dec 27 10:34:40 2021)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Dec 27, 2021 at 12:34:28PM +0100, Lars-Peter Clausen wrote:
-> On 12/27/21 12:02 PM, Greg Kroah-Hartman wrote:
-> > On Mon, Dec 27, 2021 at 10:45:07AM +0100, Uwe Kleine-König wrote:
-> > > For now this just wraps accessing struct counter_device::priv. However
-> > > this is about to change and converting drivers to this helper
-> > > individually makes fixing device lifetime issues result in easier to
-> > > review patches.
-> > > 
-> > > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > > ---
-> > >   drivers/counter/counter-core.c | 12 ++++++++++++
-> > >   include/linux/counter.h        |  2 ++
-> > >   2 files changed, 14 insertions(+)
-> > > 
-> > > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
-> > > index f053a43c6c04..00c41f28c101 100644
-> > > --- a/drivers/counter/counter-core.c
-> > > +++ b/drivers/counter/counter-core.c
-> > > @@ -45,6 +45,18 @@ static struct bus_type counter_bus_type = {
-> > >   static dev_t counter_devt;
-> > > +/**
-> > > + * counter_priv - access counter device private data
-> > > + * @counter: counter device
-> > > + *
-> > > + * Get the counter device private data
-> > > + */
-> > > +void *counter_priv(const struct counter_device *const counter)
-> > > +{
-> > > +	return counter->priv;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(counter_priv);
-> > Shouldn't this be usin gdev_get_drvdata() and using the private data
-> > pointer that is already on the struct device structure itself?  The void
-> > *priv; should be dropped from struct counter_device entirely.
-> > 
-> > Oh ick, I just now looked at 'struct counter_device', there are other
-> > reference counting issues in there (hint, struct cdev has a reference
-> > count...)  But that's independent of this patch series...
-> This is not a problem. The struct cdev holds a reference to the struct dev.
-> This allows them to use the same allocation. As long as there is a reference
-> to the cdev there will be a reference to the dev and the memory will be kept
-> alive.
+On 12/27/21 10:45 AM, Uwe Kleine-KÃ¶nig wrote:
+> The current implementation gets device lifetime tracking wrong. The
+> problem is that allocation of struct counter_device is controlled by the
+> individual drivers but this structure contains a struct device that
+> might have to live longer than a driver is bound. As a result a command
+> sequence like:
+>
+> 	{ sleep 5; echo bang; } > /dev/counter0 &
+> 	sleep 1;
+> 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-counter/unbind
+>
+> can keep a reference to the struct device and unbinding results in
+> freeing the memory occupied by this device resulting in an oops.
+>
+> This commit provides two new functions (plus some helpers):
+>   - counter_alloc() to allocate a struct counter_device that is
+>     automatically freed once the embedded struct device is released
+>   - counter_add() to register such a device.
+>
+> Note that this commit doesn't fix any issues, all drivers have to be
+> converted to these new functions to correct the lifetime problems.
+Nice work!
 
-Ick, a cdev shouldn't be doing stuff like that, but I see how people
-like to use it that way :(
 
-Ok, it's fine for now, but yet-another-reaason why the cdev api is a
-mess in places...
+> [...]
+> @@ -24,6 +25,11 @@
+>   /* Provides a unique ID for each counter device */
+>   static DEFINE_IDA(counter_ida);
+>   
+> +struct counter_device_allochelper {
+> +	struct counter_device counter;
+> +	unsigned long privdata[];
 
-thanks,
+The normal k*alloc functions guarantee that the allocation is cacheline 
+aligned. Without that for example the ____cacheline_aligned attribute 
+will not work correctly. And while it is unlikely that a counter driver 
+will need for example DMA memory I think it is still good practice to 
+guarantee this here to avoid bad surprises. There are two ways of doing 
+this.
 
-greg k-h
+Make privdata ____cacheline_aligned like in the memstick framework[1]. 
+The downside is that this will reserve padding for the allocation, even 
+if no private data is allocated.
+
+The alternative is to do something similar to IIO[2] which only 
+allocates the padding if there actually is any private data requested. 
+The disadvantage of that is that the code is a bit more cumbersome. And 
+most drivers will want to have some private data anyway so it might not 
+be worth it.
+
+[1] 
+https://elixir.bootlin.com/linux/v5.16-rc7/source/include/linux/memstick.h#L292
+[2] 
+https://elixir.bootlin.com/linux/v5.16-rc7/source/drivers/iio/industrialio-core.c#L1638
+
+> [...]
+> +struct counter_device *counter_alloc(size_t sizeof_priv)
+I'd add a parent parameter here since with the devm_ variant we have to 
+pass it anyway and this allows to slightly reduce the boilerplate code 
+in the driver where the parent field of the counter has to be initialized.
+> +{
+> +	struct counter_device_allochelper *ch;
+> +	struct counter_device *counter;
+> +	struct device *dev;
+> +	int id, err;
+> +
+> +	ch = kzalloc(sizeof(*ch) + sizeof_priv, GFP_KERNEL);
+> +	if (!ch) {
+> +		err = -ENOMEM;
+> +		goto err_alloc_ch;
+> +	}
+> +
+> +	counter = &ch->counter;
+> +	dev = &counter->dev;
+> +
+> +	/* Acquire unique ID */
+> +	err = ida_alloc(&counter_ida, GFP_KERNEL);
+> +	if (err < 0) {
+> +		goto err_ida_alloc;
+> +	}
+There is a inconsistency whether braces are used for single statement 
+`if`s in this patch.
+> +	dev->id = err;
+> +
+> +	err = counter_chrdev_add(counter);
+> +	if (err < 0)
+> +		goto err_chrdev_add;
+> +
+> +	device_initialize(dev);
+> +	/* Configure device structure for Counter */
+> +	dev->type = &counter_device_type;
+> +	dev->bus = &counter_bus_type;
+> +	dev->devt = MKDEV(MAJOR(counter_devt), id);
+> +
+> +	mutex_init(&counter->ops_exist_lock);
+> +
+> +	return counter;
+> +
+> +err_chrdev_add:
+> +
+> +	ida_free(&counter_ida, dev->id);
+> +err_ida_alloc:
+> +
+> +	kfree(ch);
+> +err_alloc_ch:
+> +
+> +	return ERR_PTR(err);
+> +}
+> +EXPORT_SYMBOL_GPL(counter_alloc);
+> +
+> +void counter_put(struct counter_device *counter)
+> +{
+> +	put_device(&counter->dev);
+> +}
+> +
+> +/**
+> + * counter_add - complete registration of a counter
+> + * @counter: the counter to add
+> + *
+> + * This is part two of counter registration.
+> + *
+> + * If this succeeds, call counter_unregister() to get rid of the counter_device again.
+> + */
+> +int counter_add(struct counter_device *counter)
+> +{
+> +	int err;
+> +	struct device *dev = &counter->dev;
+> +
+> +	get_device(&counter->dev);
+
+This get_device() is not needed. device_add() will also add a reference, 
+so you increment the reference count by 2 when calling counter_add().
+
+It is only needed to balance the put_device() in counter_unregister(). 
+I'd add a `counter->legacy_device` around that put_device() and then 
+remove it in the last patch.
+
+The extra get_device() here is also leaked on the error paths, so 
+removing it will allow to keep the errors paths as they are.
+
+> +
+> +	if (counter->parent) {
+> +		dev->parent = counter->parent;
+> +		dev->of_node = counter->parent->of_node;
+> +	}
+> +
+> +	err = counter_sysfs_add(counter);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	/* implies device_add(dev) */
+> +	err = cdev_device_add(&counter->chrdev, dev);
+> +
+> +	return err;
+return cdev_device_add(...).
+> +struct counter_device *devm_counter_alloc(struct device *dev, size_t sizeof_priv)
+API Documentation?
+> +{
+> +	struct counter_device *counter;
+> +	int err;
+> +
+> +	counter = counter_alloc(sizeof_priv);
+> +	if (IS_ERR(counter))
+> +		return counter;
+> +
+> +	err = devm_add_action_or_reset(dev, devm_counter_put, counter);
+> +	if (err < 0)
+> +		return ERR_PTR(err);
+> +
+> +	return counter;
+> +}
+> +EXPORT_SYMBOL_GPL(devm_counter_alloc);
+> +
+> +int devm_counter_add(struct device *dev,
+> +		     struct counter_device *const counter)
+> +{
+API Documentation?
+> +	int err;
+> +
+> +	err = counter_add(counter);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	return devm_add_action_or_reset(dev, devm_counter_release, counter);
+> +}
+> +EXPORT_SYMBOL_GPL(devm_counter_add);
+> +
+>   #define COUNTER_DEV_MAX 256
+>   
+

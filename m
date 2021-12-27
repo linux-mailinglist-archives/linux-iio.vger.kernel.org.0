@@ -2,128 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CEA647FC4B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Dec 2021 12:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC49C47FC57
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Dec 2021 12:53:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233735AbhL0Lof (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Dec 2021 06:44:35 -0500
-Received: from www381.your-server.de ([78.46.137.84]:52948 "EHLO
-        www381.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233644AbhL0Loe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Dec 2021 06:44:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=psg5+Dzo96XOyu7fltrYHxLgWyC+qu6AQZNSG2ZMtgs=; b=keAm/q9HABjsLb7g6jrhdBWE5c
-        dJSkF5AwA0j5e/ucIuwaJJbM7lNSBFQGocvK32YBJxKL4I+pI17vJtmFGy4GufYI0IX1EU1yoGxRY
-        4HMHUaCQIQTQjpUns7fCTa3Ud+xSysPokKzUcVKXfvhuekGFc67zY7upXEvWkOsHXQspVCxi3GgI7
-        F+U27+Tg9glyPcNsbpHqD7DZytnQbdYMKJB0ogiHmIj/quJdlWGYrn1/OsctOCET9Klli6kbODccc
-        tPHLOMhZ+nj/2V3X0hS56arKgAW4cgKd7tSbB+DnecbX0hq4Axp4kP2pji2U9zSrgOO51q6PiVLq5
-        xp4T5lgw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1n1oQY-0003Ye-6b; Mon, 27 Dec 2021 12:44:30 +0100
-Received: from [2001:a61:2bc8:8501:9e5c:8eff:fe01:8578]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1n1oQX-000QdJ-UA; Mon, 27 Dec 2021 12:44:29 +0100
-Subject: Re: [PATCH v2 16/23] counter: interrupt-cnt: Convert to new counter
- registration
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        id S236522AbhL0LxF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Dec 2021 06:53:05 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:53920 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233644AbhL0LxF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Dec 2021 06:53:05 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id EB5D8CE0EF0;
+        Mon, 27 Dec 2021 11:53:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94117C36AEA;
+        Mon, 27 Dec 2021 11:53:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1640605982;
+        bh=ZxiIva1jE9faop/ZsprofhcwQ/y/+Bk9xGDjZkcmpKo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JkiTyM2LqbPgxURYEL6nE77yFrxFgyShyEsEErYQhizyrKWU7VL1//v2lWOoCXdbT
+         vMRWuXN3CL/dXRXxTORcsSdCsIGbN4KBb16ExnbHV6wZ/Mdu1dSrXzxYVccUY5ikSh
+         eXbpv5IC1obKpIF24bmPVKe3YfymlUzSg98Cthu0=
+Date:   Mon, 27 Dec 2021 12:52:59 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
         kernel@pengutronix.de,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Oleksij Rempel <linux@rempel-privat.de>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 04/23] counter: Provide a wrapper to access device
+ private data
+Message-ID: <YcmpG78dI2nT/N8z@kroah.com>
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
- <20211227094526.698714-17-u.kleine-koenig@pengutronix.de>
- <YcmcdftX3YO06nD1@kroah.com>
- <7e3a4a67-4e97-8660-9437-0250588d5e5e@metafoo.de>
- <YcmkwaeHBy9Jca+2@kroah.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-Message-ID: <c9300c02-2704-4f46-9e1f-74665e6b6f8b@metafoo.de>
-Date:   Mon, 27 Dec 2021 12:44:29 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ <20211227094526.698714-5-u.kleine-koenig@pengutronix.de>
+ <YcmdNr8Y1jcMCwQQ@kroah.com>
+ <cb583f3f-2cf9-2de5-8beb-da7c11ff1481@metafoo.de>
 MIME-Version: 1.0
-In-Reply-To: <YcmkwaeHBy9Jca+2@kroah.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26404/Mon Dec 27 10:34:40 2021)
+In-Reply-To: <cb583f3f-2cf9-2de5-8beb-da7c11ff1481@metafoo.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/27/21 12:34 PM, Greg Kroah-Hartman wrote:
-> On Mon, Dec 27, 2021 at 12:21:14PM +0100, Lars-Peter Clausen wrote:
->> On 12/27/21 11:59 AM, Greg Kroah-Hartman wrote:
->>> On Mon, Dec 27, 2021 at 10:45:19AM +0100, Uwe Kleine-KÃ¶nig wrote:
->>>> This fixes device lifetime issues where it was possible to free a live
->>>> struct device.
->>>>
->>>> Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
->>>> Signed-off-by: Uwe Kleine-KÃ¶nig <u.kleine-koenig@pengutronix.de>
->>>> ---
->>>>    drivers/counter/interrupt-cnt.c | 28 ++++++++++++++++------------
->>>>    1 file changed, 16 insertions(+), 12 deletions(-)
->>>>
->>>> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
->>>> index 4bf706ef46e2..9e99702470c2 100644
->>>> --- a/drivers/counter/interrupt-cnt.c
->>>> +++ b/drivers/counter/interrupt-cnt.c
->>>> @@ -16,7 +16,6 @@
->>>>    struct interrupt_cnt_priv {
->>>>    	atomic_t count;
->>>> -	struct counter_device counter;
->>>>    	struct gpio_desc *gpio;
->>>>    	int irq;
->>>>    	bool enabled;
->>>> @@ -148,12 +147,14 @@ static const struct counter_ops interrupt_cnt_ops = {
->>>>    static int interrupt_cnt_probe(struct platform_device *pdev)
->>>>    {
->>>>    	struct device *dev = &pdev->dev;
->>>> +	struct counter_device *counter;
->>>>    	struct interrupt_cnt_priv *priv;
->>>>    	int ret;
->>>> -	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
->>>> -	if (!priv)
->>>> +	counter = devm_counter_alloc(dev, sizeof(*priv));
->>> I just picked one of these patches at random, nothing specific about
->>> this driver...
->>>
->>> You can not have a 'struct device' in memory allocated by devm_*()
->>> functions for the obvious reason that now that memory is being
->>> controlled by a reference count that is OUTSIDE of the structure itself.
->>>
->>> So while your goal might be good here, this is not the correct solution
->>> at all, sorry.
->> Before this patch the memory for the struct device was devm_kzalloc'ed.
->> Which as you point out is a bug.
->>
->> After this patch the memory is reference counted and will be freed when the
->> last reference is dropped, in the release callback of the struct device.
->>
->> The alloc function is still a devm_ function, but on 'free' it will only
->> drop the reference to the struct device that it holds. This is a very common
->> pattern that is used by basically any driver subsystem in the kernel.
-> Then it is not a real devm_() call, let's not call it that please as it
-> is obviously very confusing :)
->
-> Just call it counter_alloc(), or , counter_create(), or something a bit
-> more in line with the rest of all driver subsystems.
+On Mon, Dec 27, 2021 at 12:34:28PM +0100, Lars-Peter Clausen wrote:
+> On 12/27/21 12:02 PM, Greg Kroah-Hartman wrote:
+> > On Mon, Dec 27, 2021 at 10:45:07AM +0100, Uwe Kleine-König wrote:
+> > > For now this just wraps accessing struct counter_device::priv. However
+> > > this is about to change and converting drivers to this helper
+> > > individually makes fixing device lifetime issues result in easier to
+> > > review patches.
+> > > 
+> > > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > > ---
+> > >   drivers/counter/counter-core.c | 12 ++++++++++++
+> > >   include/linux/counter.h        |  2 ++
+> > >   2 files changed, 14 insertions(+)
+> > > 
+> > > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+> > > index f053a43c6c04..00c41f28c101 100644
+> > > --- a/drivers/counter/counter-core.c
+> > > +++ b/drivers/counter/counter-core.c
+> > > @@ -45,6 +45,18 @@ static struct bus_type counter_bus_type = {
+> > >   static dev_t counter_devt;
+> > > +/**
+> > > + * counter_priv - access counter device private data
+> > > + * @counter: counter device
+> > > + *
+> > > + * Get the counter device private data
+> > > + */
+> > > +void *counter_priv(const struct counter_device *const counter)
+> > > +{
+> > > +	return counter->priv;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(counter_priv);
+> > Shouldn't this be usin gdev_get_drvdata() and using the private data
+> > pointer that is already on the struct device structure itself?  The void
+> > *priv; should be dropped from struct counter_device entirely.
+> > 
+> > Oh ick, I just now looked at 'struct counter_device', there are other
+> > reference counting issues in there (hint, struct cdev has a reference
+> > count...)  But that's independent of this patch series...
+> This is not a problem. The struct cdev holds a reference to the struct dev.
+> This allows them to use the same allocation. As long as there is a reference
+> to the cdev there will be a reference to the dev and the memory will be kept
+> alive.
 
-But all the other driver subsystems call this kind of function devm_... :)
+Ick, a cdev shouldn't be doing stuff like that, but I see how people
+like to use it that way :(
 
-Usually for everything you call in probe() you need a corresponding 
-action in remove(). With the devm_... function is remove action will be 
-automatically called.
+Ok, it's fine for now, but yet-another-reaason why the cdev api is a
+mess in places...
 
+thanks,
+
+greg k-h

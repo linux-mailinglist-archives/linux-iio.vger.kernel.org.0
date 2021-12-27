@@ -2,53 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DCB347FB2B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Dec 2021 09:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB4B47FB8C
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Dec 2021 10:46:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232699AbhL0Izw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Dec 2021 03:55:52 -0500
-Received: from mail.portyid.pl ([192.36.61.58]:39916 "EHLO mail.portyid.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232561AbhL0Izw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 27 Dec 2021 03:55:52 -0500
-X-Greylist: delayed 334 seconds by postgrey-1.27 at vger.kernel.org; Mon, 27 Dec 2021 03:55:51 EST
-Received: by mail.portyid.pl (Postfix, from userid 1001)
-        id 0464B40D8F; Mon, 27 Dec 2021 09:50:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=portyid.pl; s=mail;
-        t=1640595017; bh=RZjfFpT9KGSFHXuIOzTjcb+Gwkun4EXriv7y2I0PG0A=;
-        h=Date:From:To:Subject:From;
-        b=G1b/67A5ndZITjE7pQUg8Bx/mYXK5aP3mJikcv1VHhjglGKaydkZm3Se9NN53C84H
-         AyTIkspIbPKXjOWr1SuPhO8WzkBfOu1wzSSkyJ6uXKCqkyTsMQRKk9l4IEBmorANiM
-         rwZfC+/9mTAuSP2Q9ua3CdoPa/boBgCC0l6ZfIDOMCM+K2AMAVe9Itd97hFSheqly2
-         fbU3JKZTFbFQhRYkEHKjAS0RxZKGJ8Yg2SsUgYLnsVBpAn1wtIKuoMf2Svp+xu8x80
-         iD2Atk6tzivxug+aNCr6lcIJBRLWzfLixRs8RsPsId6TdJDUrdbskEob1LLsyBv0hE
-         1rsjT7QxTmiPg==
-Received: by mail.portyid.pl for <linux-iio@vger.kernel.org>; Mon, 27 Dec 2021 08:50:05 GMT
-Message-ID: <20211227084500-0.1.u.2i5h.0.nf2328p7im@portyid.pl>
-Date:   Mon, 27 Dec 2021 08:50:05 GMT
-From:   =?UTF-8?Q? "Pawe=C5=82_Jasi=C5=84ski" ?= 
-        <pawel.jasinski@portyid.pl>
-To:     <linux-iio@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.portyid.pl
+        id S235992AbhL0JqJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Dec 2021 04:46:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235990AbhL0JqA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Dec 2021 04:46:00 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00591C06173E
+        for <linux-iio@vger.kernel.org>; Mon, 27 Dec 2021 01:45:59 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n1mZY-0006Y9-6Y; Mon, 27 Dec 2021 10:45:40 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n1mZR-006u8i-S2; Mon, 27 Dec 2021 10:45:33 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n1mZQ-0005TD-NW; Mon, 27 Dec 2021 10:45:32 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        David Lechner <david@lechnology.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        "Felipe Balbi (Intel)" <balbi@kernel.org>,
+        Raymond Tan <raymond.tan@intel.com>,
+        Benjamin Gaignard <benjamin.gaignard@st.com>
+Subject: [PATCH v2 00/23] counter: cleanups and device lifetime fixes
+Date:   Mon, 27 Dec 2021 10:45:03 +0100
+Message-Id: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Patch-Hashes: v=1; h=sha256; i=SxVgmXbyxjhEaCeg8YYh/d1GfTLHDyxY3rU5Ni7M7q8=; m=lDJ9oimaumvVMf6LuLDghZ8q49IJcoSs+Sh0dJ8yevo=; p=DgO0boJVbutOmTZZAuLM5idPKK18eYUUS1wpOK5FECg=; g=8c2a373fe70a4d470ffff53a680efaa861272d9e
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de; s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6; b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHJiuoACgkQwfwUeK3K7AkFWAgAldZ dB/+zZX+l5ITGgWnHQcAJrg+Grz44RoG8IrgeiOl36wHN2Ggc6V0LU5o7FWX607kCD4Z6U1BpQao7 80ARSmTSk+R0F1nsoxm8J/81ZeVWeJ3sEHsPwjhm3UCCM5moEBL9AO4X/2rxcR8C0VT8UY2gmtEi4 kB/abt0l0zRSLUN9uSY0B97/7anGy+0vmk1JNlJ8sZKNPdJnKFpPg8P6XioDzbmihCO8JpaXNf39p BsOT7hNrtguXrRMVYtduBTJ48YDZVjnVH++VPhBz4SCHFpZfJ80KuQ+SJg2cMXZ8pq6djb+gXA2Ah sO8b/MWdPTzYBFwr7u/U+cxc/vEXnYQ==
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hello,
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+this is v2 of this series, it's goal is to fix struct device lifetime issues as
+pointed out in patch #13. The patches up to patch #12 are only prepatory and
+cleanup patches. Patch #13 provides the needed functions to fix the issues in
+all drivers (patches #15 to #22). The last patch removes the then unused API
+calls.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+The changes compared to v1 is only build fixes that I missed to include in v1,
+they were only in my working copy. Additionally I changed:
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index cdc6004a7e77..3f7dc5718423 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -27,7 +27,7 @@ static DEFINE_IDA(counter_ida);
+ 
+ struct counter_device_allochelper {
+ 	struct counter_device counter;
+-	unsigned long privdata[0];
++	unsigned long privdata[];
+ };
+ 
+ static void counter_device_release(struct device *dev)
+
+The stm32-timer-cnt driver was used to test
+this series, the other drivers are only compile tested.
 
 
-Pozdrawiam
-Pawe=C5=82 Jasi=C5=84ski
+To complete the information from the v1 thread: There are a few more
+issues I found while working on this patch set:
+
+ - 104_QUAD_8 depends on X86, but compiles fine on ARCH=arm. Maybe
+   adding support for COMPILE_TEST would be a good idea.
+
+ - 104-quad-8.c uses devm_request_irq() and (now) devm_counter_add(). On
+   unbind an irq might be pending which results in quad8_irq_handler()
+   calling counter_push_event() for a counter that is already
+   unregistered. (The issue exists also without my changes.)
+
+ - I think intel-qep.c makes the counter unfunctional in
+   intel_qep_remove before the counter is unregistered.
+
+ - I wonder why counter is a bus and not a class device type. There is
+   no driver that would ever bind a counter device, is there? So
+   /sys/bus/counter/driver is always empty.
+
+Do whatever you want with this list, I won't address these in the near
+future.
+
+Uwe Kleine-König (23):
+  counter: Use container_of instead of drvdata to track counter_device
+  counter: ftm-quaddec: Drop unused platform_set_drvdata()
+  counter: microchip-tcb-capture: Drop unused platform_set_drvdata()
+  counter: Provide a wrapper to access device private data
+  counter: 104-quad-8: Convert to counter_priv() wrapper
+  counter: interrupt-cnt: Convert to counter_priv() wrapper
+  counter: microchip-tcb-capture: Convert to counter_priv() wrapper
+  counter: intel-qep: Convert to counter_priv() wrapper
+  counter: ftm-quaddec: Convert to counter_priv() wrapper
+  counter: ti-eqep: Convert to counter_priv() wrapper
+  counter: stm32-lptimer-cnt: Convert to counter_priv() wrapper
+  counter: stm32-timer-cnt: Convert to counter_priv() wrapper
+  counter: Provide alternative counter registration functions
+  counter: Update documentation for new counter registration functions
+  counter: 104-quad-8: Convert to new counter registration
+  counter: interrupt-cnt: Convert to new counter registration
+  counter: intel-qep: Convert to new counter registration
+  counter: ftm-quaddec: Convert to new counter registration
+  counter: microchip-tcb-capture: Convert to new counter registration
+  counter: stm32-timer-cnt: Convert to new counter registration
+  counter: stm32-lptimer-cnt: Convert to new counter registration
+  counter: ti-eqep: Convert to new counter registration
+  counter: remove old and now unused registration API
+
+ Documentation/driver-api/generic-counter.rst |  10 +-
+ drivers/counter/104-quad-8.c                 |  93 +++++-----
+ drivers/counter/counter-core.c               | 168 +++++++++++++------
+ drivers/counter/ftm-quaddec.c                |  37 ++--
+ drivers/counter/intel-qep.c                  |  46 ++---
+ drivers/counter/interrupt-cnt.c              |  38 +++--
+ drivers/counter/microchip-tcb-capture.c      |  44 ++---
+ drivers/counter/stm32-lptimer-cnt.c          |  51 +++---
+ drivers/counter/stm32-timer-cnt.c            |  48 +++---
+ drivers/counter/ti-eqep.c                    |  47 +++---
+ include/linux/counter.h                      |  15 +-
+ 11 files changed, 348 insertions(+), 249 deletions(-)
+
+
+base-commit: a7904a538933c525096ca2ccde1e60d0ee62c08e
+-- 
+2.33.0
+

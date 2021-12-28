@@ -2,111 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35A88480871
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Dec 2021 11:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B7FC480892
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Dec 2021 11:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbhL1Kcz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Dec 2021 05:32:55 -0500
-Received: from mail-ua1-f52.google.com ([209.85.222.52]:34735 "EHLO
-        mail-ua1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230112AbhL1Kcz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Dec 2021 05:32:55 -0500
-Received: by mail-ua1-f52.google.com with SMTP id t18so23757107uaj.1;
-        Tue, 28 Dec 2021 02:32:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QQ0Ut1LNrzqnM5tmiaXKSEzqL3RAAlFvcxdwMLjQ2+M=;
-        b=YtwGj6HDczm+318a3fD4djy/5R56T3bRMpgOBElC5z0xhNyjvBHC85chsggVjVjUFm
-         dXOVby4aHIajfKF6GJx1L1PjbjjgjPp8lEl3tF1AOieEtKWLqTJI2dtBSQS0qYbFPCkP
-         c8E5MJojCLPlgAiQyQLmcGUPgmgLMzyyDQgvvgd6bbyP0LC2jykQAaVGajETWcoBbYsI
-         GG7EPkOlflHpUXUTahvqqIn7qeGzNfTvZd7qyfxaONdPQhY2Nf7hrUnCKciQbagUIvyg
-         HAdmAi8OyuMWHLzejVXM0JtYgLAyy914ZSmGQSnZeYpTDmw7HxifK2OBXOjQh/Daj7Bm
-         cyoQ==
-X-Gm-Message-State: AOAM532Br5N2Pkx4pegzT/38+psD5H2VIUrKHOXr6Rl0zjjTY/c25GCu
-        2hSFoOTKs5nEecGILvuV1BLoGyyQHgoTUA==
-X-Google-Smtp-Source: ABdhPJzZfuu5eF+cN8IGp+ovdIotknnU1YrfXK0z/H51YX9ppsYE1Ak9XfEdN9RaxVD9FtLGZMm6RQ==
-X-Received: by 2002:a67:ee1a:: with SMTP id f26mr5176551vsp.51.1640687573896;
-        Tue, 28 Dec 2021 02:32:53 -0800 (PST)
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com. [209.85.221.181])
-        by smtp.gmail.com with ESMTPSA id y17sm3630597uaa.9.2021.12.28.02.32.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Dec 2021 02:32:53 -0800 (PST)
-Received: by mail-vk1-f181.google.com with SMTP id o2so10096350vkn.0;
-        Tue, 28 Dec 2021 02:32:53 -0800 (PST)
-X-Received: by 2002:ac5:c853:: with SMTP id g19mr6363163vkm.20.1640687573214;
- Tue, 28 Dec 2021 02:32:53 -0800 (PST)
-MIME-Version: 1.0
-References: <20211227164317.4146918-1-schnelle@linux.ibm.com> <20211227164317.4146918-13-schnelle@linux.ibm.com>
-In-Reply-To: <20211227164317.4146918-13-schnelle@linux.ibm.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 28 Dec 2021 11:32:42 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXDL6XXfohzJFTTV6tR=gg=bcCQq935eKUbNaNLHp9xiw@mail.gmail.com>
-Message-ID: <CAMuHMdXDL6XXfohzJFTTV6tR=gg=bcCQq935eKUbNaNLHp9xiw@mail.gmail.com>
-Subject: Re: [RFC 12/32] iio: adc: Kconfig: add HAS_IOPORT dependencies
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        John Garry <john.garry@huawei.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S236325AbhL1K4o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Dec 2021 05:56:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236324AbhL1K4o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Dec 2021 05:56:44 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DEF4C06173E
+        for <linux-iio@vger.kernel.org>; Tue, 28 Dec 2021 02:56:43 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n2A9c-0000Pd-2N; Tue, 28 Dec 2021 11:56:28 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n2A9Z-00767t-I2; Tue, 28 Dec 2021 11:56:24 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n2A9Y-0001YW-Fb; Tue, 28 Dec 2021 11:56:24 +0100
+Date:   Tue, 28 Dec 2021 11:56:21 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        "Felipe Balbi (Intel)" <balbi@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-csky@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Raymond Tan <raymond.tan@intel.com>, linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 17/23] counter: intel-qep: Convert to new counter
+ registration
+Message-ID: <20211228105621.3mfrvwlkj4n5qhar@pengutronix.de>
+References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
+ <20211227094526.698714-18-u.kleine-koenig@pengutronix.de>
+ <162c710f-4fa2-1cb4-e332-83e33e510e42@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="s76ubklshzglq5px"
+Content-Disposition: inline
+In-Reply-To: <162c710f-4fa2-1cb4-e332-83e33e510e42@linux.intel.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Niklas,
 
-On Mon, Dec 27, 2021 at 5:53 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
-> In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
-> not being declared. We thus need to add HAS_IOPORT as dependency for
-> those drivers using them.
->
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+--s76ubklshzglq5px
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for your patch!
+On Mon, Dec 27, 2021 at 05:02:39PM +0200, Jarkko Nikula wrote:
+> On 12/27/21 11:45, Uwe Kleine-K=F6nig wrote:
+> > This fixes device lifetime issues where it was possible to free a live
+> > struct device.
+> >=20
+> > Fixes: b711f687a1c1 ("counter: Add support for Intel Quadrature Encoder=
+ Peripheral")
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >   drivers/counter/intel-qep.c | 28 ++++++++++++++++------------
+> >   1 file changed, 16 insertions(+), 12 deletions(-)
+> >=20
+> Should the Fixes tag rather be b6c50affda59 ("counter: Add character devi=
+ce
+> interface") instead of when each drivers were introduced? I mean was it
+> possible to hit the issue before /dev/counter was introduced?
 
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -119,7 +119,7 @@ config AD7606
->
->  config AD7606_IFACE_PARALLEL
->         tristate "Analog Devices AD7606 ADC driver with parallel interface support"
-> -       depends on HAS_IOMEM
-> +       depends on HAS_IOPORT
+I'm not sure if there is an issue before this, but it was already wrong
+before for sure. Maybe it's possible to hold a reference somehow via
+sysfs?
 
-While this driver uses ins[bw](), this seems unrelated to legacy
-I/O space, as the driver maps a MMIO region.  Probably different
-accessors should be used instead.
+The thought that made me tag the individual driver commits was: With the
+approach used to fix the issue all drivers need to be modified and an
+unconverted driver doesn't benefit from the availability of
+counter_alloc() / counter_add() if it isn't used. So all trees that
+include b711f687a1c1 but not "counter: intel-qep: Convert to new counter
+registration" are broken (more or less exploitable). So I think the
+added Fixes line is the right choice.
 
-Note that this driver has no in-tree users. Same for the SPI variant,
-but at least that one has modern json-schema DT bindings ;-)
+Best regards
+Uwe
 
->         select AD7606
->         help
->           Say yes here to build parallel interface support for Analog Devices:
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-Gr{oetje,eeting}s,
+--s76ubklshzglq5px
+Content-Type: application/pgp-signature; name="signature.asc"
 
-                        Geert
+-----BEGIN PGP SIGNATURE-----
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHK7VEACgkQwfwUeK3K
+7Am7uwgAijWYzC6uycCmk8uRZHAtDVQbiHIogJeBYPl41chd2R6+cJga7T+eyEiT
+W0hBfnyroNAoVM4nEJd883goCMMDEzGOfLYJEJ/QiYrDbYJBbI+rV0WyJhtutICb
+huLc7WrhLNNCAIOJMAT/ApHiCjB6+PRGKs+YBKRgnv3FSYUKttnEnnWpmfV0iJ7r
+Mr2osLj4Sc3ijVu/Tiyg5wrHZT1Vtyfhlk8A/kiQYtNPCBDiNWVWrfb/zrbKfkSS
+k2T+1I8OXwuhS7TD89YEic8wfGlAka9akvfbOUPLGs0L7zdJG5mnNMbrYQkieVXg
+mPI0b0ZzaKxoai7H4jQbB+rBP4+qLQ==
+=qwU+
+-----END PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--s76ubklshzglq5px--

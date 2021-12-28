@@ -2,26 +2,26 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 616DA480C18
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Dec 2021 18:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 869BE480C1A
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Dec 2021 18:32:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236196AbhL1Rbb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 28 Dec 2021 12:31:31 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:32850 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231489AbhL1Rbb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Dec 2021 12:31:31 -0500
+        id S236155AbhL1Rch convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 28 Dec 2021 12:32:37 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:40006 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231489AbhL1Rch (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Dec 2021 12:32:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 39626B8125E;
-        Tue, 28 Dec 2021 17:31:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 31BB3612DB;
+        Tue, 28 Dec 2021 17:32:37 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 1A1BDC36AE8;
-        Tue, 28 Dec 2021 17:31:24 +0000 (UTC)
-Date:   Tue, 28 Dec 2021 17:37:09 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id 18D97C36AE8;
+        Tue, 28 Dec 2021 17:32:32 +0000 (UTC)
+Date:   Tue, 28 Dec 2021 17:38:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
         <u.kleine-koenig@pengutronix.de>
@@ -31,14 +31,14 @@ Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
         linux-iio@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org,
-        Patrick Havelange <patrick.havelange@essensium.com>,
-        Syed Nayyar Waris <syednwaris@gmail.com>
-Subject: Re: [PATCH v2 02/23] counter: ftm-quaddec: Drop unused
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 03/23] counter: microchip-tcb-capture: Drop unused
  platform_set_drvdata()
-Message-ID: <20211228173709.326b3a2a@jic23-huawei>
-In-Reply-To: <20211227094526.698714-3-u.kleine-koenig@pengutronix.de>
+Message-ID: <20211228173818.418ab922@jic23-huawei>
+In-Reply-To: <20211227094526.698714-4-u.kleine-koenig@pengutronix.de>
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
-        <20211227094526.698714-3-u.kleine-koenig@pengutronix.de>
+        <20211227094526.698714-4-u.kleine-koenig@pengutronix.de>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -47,30 +47,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Dec 2021 10:45:05 +0100
+On Mon, 27 Dec 2021 10:45:06 +0100
 Uwe Kleine-König         <u.kleine-koenig@pengutronix.de> wrote:
 
 > The driver doesn't ever use platform_get_drvdata, so drop this unused
 > call.
 > 
 > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+FWIW sanity checked it is indeed not used that I can see.
+
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
->  drivers/counter/ftm-quaddec.c | 2 --
+>  drivers/counter/microchip-tcb-capture.c | 2 --
 >  1 file changed, 2 deletions(-)
 > 
-> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
-> index 5ef0478709cd..9272f7b58beb 100644
-> --- a/drivers/counter/ftm-quaddec.c
-> +++ b/drivers/counter/ftm-quaddec.c
-> @@ -269,8 +269,6 @@ static int ftm_quaddec_probe(struct platform_device *pdev)
->  	if (!ftm)
+> diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+> index 0ab1b2716784..bb69f2e0ba93 100644
+> --- a/drivers/counter/microchip-tcb-capture.c
+> +++ b/drivers/counter/microchip-tcb-capture.c
+> @@ -307,8 +307,6 @@ static int mchp_tc_probe(struct platform_device *pdev)
+>  	if (!priv)
 >  		return -ENOMEM;
 >  
-> -	platform_set_drvdata(pdev, ftm);
+> -	platform_set_drvdata(pdev, priv);
 > -
->  	io = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	if (!io) {
->  		dev_err(&pdev->dev, "Failed to get memory region\n");
+>  	match = of_match_node(atmel_tc_of_match, np->parent);
+>  	tcb_config = match->data;
+>  	if (!tcb_config) {
 

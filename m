@@ -2,441 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A3B5481141
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 10:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7CE448116E
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 10:51:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235092AbhL2J0P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Dec 2021 04:26:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52196 "EHLO
+        id S239609AbhL2Jv6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Dec 2021 04:51:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235075AbhL2J0P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 04:26:15 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8A7C061574;
-        Wed, 29 Dec 2021 01:26:14 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id rj2-20020a17090b3e8200b001b1944bad25so19393122pjb.5;
-        Wed, 29 Dec 2021 01:26:14 -0800 (PST)
+        with ESMTP id S234237AbhL2Jv6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 04:51:58 -0500
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAAFC061574
+        for <linux-iio@vger.kernel.org>; Wed, 29 Dec 2021 01:51:57 -0800 (PST)
+Received: by mail-ua1-x934.google.com with SMTP id v14so18782298uau.2
+        for <linux-iio@vger.kernel.org>; Wed, 29 Dec 2021 01:51:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=+uyGXw2zMR+CQvA02b6eWYiIEZYNRtMbr7nnxVAIWwk=;
-        b=bekzznyzgM3MYdfVqXgQtC/qBZNrAflRmpK0KtRurBIiQjioQCJLDoaGUM7GFDI7SV
-         6GHX/af/BPwJfOMlzpHigrFajqsHVrBDzR7vq6YbPJFAMFtnAwNVe/vUX8T7k7TOx0K1
-         nnlknXi1x2Uw7cqmJC4CHCbR2vaH1gVed9Mp+dH3l5a1Le7jT+vsfqOaAQDKYJS2sUrO
-         iDmBNscC1YS2EgCo/AWV1q5waRmyX1FbV5Tt9x7keOArm609AuYI1PwkhEOrD8lEUSoW
-         Ilq2tSEmxU3s66MXrpB5R8c3TftdcNRsM9sqKhpfrdPDn5snH1AUBwsWpO5uLzvl2WNL
-         SJ5g==
+        h=mime-version:reply-to:from:date:message-id:subject:to:cc;
+        bh=AnfDVyJVKDScRfEFsJB+9knAraXNeCc8DQi6K59/RYk=;
+        b=SPRCG1qBfPpuyGFgRckxYrXBX8GiewUbmINLUvW2utS3EMMzeg7DdoEVybFi++deCk
+         TvQcybnC7EiFfAWjeiQcDvtw8cWtRfkSj9jrmsTiRWUJhhBAhbrtvIThupzkTmVra0Rd
+         /iFwgYd2SFiDyQcQtwvko0Q/AVI02HexVLeHgkTVonAtc7voH6wALQOfHPlRQ2AVOyzD
+         /AkYOMjD+GnlhvVqscJPxaq5MIDc/UDdgJqgrPh0EzSJb/bD68jSTELXbqRcuvFJfilV
+         l3hfpRyF5s8qdiQcB3/6JwobS7dkUUPHZ47HG2jzzGtx7o1yK1Mn7UrXSC12kUFBLl4E
+         9IlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+uyGXw2zMR+CQvA02b6eWYiIEZYNRtMbr7nnxVAIWwk=;
-        b=fs4DIyre5ogHwDBOYJPtpLRAfQbUANN5IjDw8cD1hbp4/NwziaqQJfMcWer2rK4ZdY
-         4+bmB+Dxrg4S6+r8iNmsKr24efcWgGEL3usrjLFFTXMP3DDwSoNaq2rmFx7JPFZNnIMf
-         rCiFw1WiElDty0U0PUi14R1Pmk0CeCtf/ij4RY8EUmCUl3/grQHlDuxe1nUgUKxm4P5p
-         NUQn5CScguJBD4sQwibMXwxcL7w7b/Td9i+FWf5xy2BzyAxTZV2kXl6nDoNLabetAiFI
-         mXrsUhe+JSPJwuRHrWMNhjkaX7JlhG72MHeAVYwr3L6cCUy7CLxWOHb+8ML2d/TWxDyN
-         oObw==
-X-Gm-Message-State: AOAM5328KEIcjy+L64jDd492eRnJLupCqCJxLGyfnNPz23mWGKBsoXs1
-        MUHZ4Zz7yFmkMH0h/ipv3LY=
-X-Google-Smtp-Source: ABdhPJzTZN0pOJRIUuycspkwpR7VSKxFJBl10iNPMXUuhapX9rhuVI7AahMk2UhwpwgrBq1s4LXo3A==
-X-Received: by 2002:a17:902:9303:b0:149:a17a:5333 with SMTP id bc3-20020a170902930300b00149a17a5333mr210935plb.12.1640769974000;
-        Wed, 29 Dec 2021 01:26:14 -0800 (PST)
-Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id i11sm23263050pfq.206.2021.12.29.01.26.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Dec 2021 01:26:12 -0800 (PST)
-Date:   Wed, 29 Dec 2021 18:26:06 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     David Lechner <david@lechnology.com>
-Cc:     David Jander <david@protonic.nl>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-Message-ID: <Ycwprv+uiGXD1Yzs@shinobu>
-References: <20211124072720.GA30281@pengutronix.de>
- <YZ7tv79LQwLL7h3T@shinobu>
- <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
- <20211207081602.45b1423c@erd992>
- <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
- <20211208171035.6ad117af@erd992>
- <Ybmr2kCLScuGZ41h@shinobu>
- <20211215100853.11f9262d@erd992>
- <YcaZEKbzRbX982YW@shinobu>
- <7a717808-2a06-975b-cd91-5362b784d0bf@lechnology.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=AnfDVyJVKDScRfEFsJB+9knAraXNeCc8DQi6K59/RYk=;
+        b=zMP66bLYvv8aHIgm9upW3cjbiO/h8lAs5CbLuJwFTzSHyEgUYQiAgE0MPXZRbXhGfC
+         +Wb6aXb4Gyx/nUKP/n5oJYrd6wwxfMGPRI9lWl4nshO8xUl3Yg2LyAT9V+vJf6YDdhUK
+         CT2175A5VJUMtR5usvYgODGMER3mu4jftsxEHto8S2vVCq6VAX1+VCm/d5nEHQS0Obor
+         uw3tqh1dlVbymHBJLW30bS4n9LI7M2TpeW4hJIesCli8/hRklIPfi4DiXyIn5jWJO4UW
+         m1zdhBPumaMjUqstZT7e+VTkb4BtXSG+vwHN5zXPAJPGNSGtMqzOCN4ZDy/58ebw4aGa
+         3NFA==
+X-Gm-Message-State: AOAM533dS57mYjLuoiXNu5gZMk/r6gINccTh1cSF5L/ikldmLaktGqTU
+        Wr0kS5SG8GxuxXPVTkftOAoUeSIwUs1lhDAiQpY=
+X-Google-Smtp-Source: ABdhPJxTS9ItL3nGpBYce0Va+MB1K5+zCjQHIXnWebLmZxlAd0JoeGJ8iIjdLCM44hOuO04XwuKffj6nIyI9yNUzmMY=
+X-Received: by 2002:a05:6102:903:: with SMTP id x3mr7992339vsh.41.1640771516725;
+ Wed, 29 Dec 2021 01:51:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="p2jTihH0GNWct0ev"
-Content-Disposition: inline
-In-Reply-To: <7a717808-2a06-975b-cd91-5362b784d0bf@lechnology.com>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Wed, 29 Dec 2021 10:51:45 +0100
+Message-ID: <CAN8YU5NSyqLrhX_SUYP3Jm1gqmNXgoZC2wKx-s=qnkL6bawN-Q@mail.gmail.com>
+Subject: [Oops] IIO git tree since f73f7f4da5818 (iio: buffer: add ioctl() to
+ support opening extra buffers for IIO device)
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "Ardelean, Alexandru" <alexandru.ardelean@analog.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi!
 
---p2jTihH0GNWct0ev
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+After rebasing my tree on latest iio git tree I got an Oops [0] on
+rmmod of my wip driver, then I reproduced it also with iio-dummy
+driver; this has been bisected to f73f7f4da5818 (iio: buffer: add
+ioctl() to support opening extra buffers for IIO device).
 
-On Mon, Dec 27, 2021 at 09:16:31AM -0600, David Lechner wrote:
-> On 12/24/21 10:07 PM, William Breathitt Gray wrote:
-> > On Wed, Dec 15, 2021 at 10:08:53AM +0100, David Jander wrote:
-> >>
-> >> Dear William,
-> >>
-> >> On Wed, 15 Dec 2021 17:48:26 +0900
-> >> William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
-> >>
-> >>> On Wed, Dec 08, 2021 at 05:10:35PM +0100, David Jander wrote:
-> >>>>
-> >>>> Dear Uwe,
-> >>>>
-> >>>> On Wed, 8 Dec 2021 14:59:02 +0100
-> >>>> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
-> >>>>   =20
-> >>>>> Hello David,
-> >>>>>
-> >>>>> On Tue, Dec 07, 2021 at 08:16:02AM +0100, David Jander wrote:
-> >>>>>> On Mon, 6 Dec 2021 13:24:18 -0600
-> >>>>>> David Lechner <david@lechnology.com> wrote:
-> >>>>>>     =20
-> >>>>>>> On 11/24/21 7:58 PM, William Breathitt Gray wrote:
-> >>>>>>>> On Wed, Nov 24, 2021 at 08:27:20AM +0100, Oleksij Rempel wrote:
-> >>>>>>>>> Hi William,
-> >>>>>>>>>
-> >>>>>>>>> On Wed, Nov 24, 2021 at 03:09:05PM +0900, William Breathitt Gra=
-y wrote:
-> >>>>>>>>>> On Tue, Nov 23, 2021 at 02:45:40PM +0100, Oleksij Rempel wrote:
-> >>>>>>>>>>> Add counter_push_event() to notify user space about new pulses
-> >>>>>>>>>>>
-> >>>>>>>>>>> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> >>>>>>>>>>> ---
-> >>>>>>>>>>>    drivers/counter/interrupt-cnt.c | 2 ++
-> >>>>>>>>>>>    1 file changed, 2 insertions(+)
-> >>>>>>>>>>>
-> >>>>>>>>>>> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counte=
-r/interrupt-cnt.c
-> >>>>>>>>>>> index 8514a87fcbee..b237137b552b 100644
-> >>>>>>>>>>> --- a/drivers/counter/interrupt-cnt.c
-> >>>>>>>>>>> +++ b/drivers/counter/interrupt-cnt.c
-> >>>>>>>>>>> @@ -31,6 +31,8 @@ static irqreturn_t interrupt_cnt_isr(int ir=
-q, void *dev_id)
-> >>>>>>>>>>>   =20
-> >>>>>>>>>>>    	atomic_inc(&priv->count);
-> >>>>>>>>>>>   =20
-> >>>>>>>>>>> +	counter_push_event(&priv->counter, COUNTER_EVENT_OVERFLOW, =
-0);
-> >>>>>>>>>>> +
-> >>>>>>>>>>>    	return IRQ_HANDLED;
-> >>>>>>>>>>>    }
-> >>>>>>>>>>>   =20
-> >>>>>>>>>>> --=20
-> >>>>>>>>>>> 2.30.2
-> >>>>>>>>>>
-> >>>>>>>>>> Hi Oleksij,
-> >>>>>>>>>>
-> >>>>>>>>>> It looks like this is pushing a COUNTER_EVENT_OVERFLOW event e=
-very time
-> >>>>>>>>>> an interrupt is handled, which I suspect is not what you want =
-to happen.
-> >>>>>>>>>> The COUNTER_EVENT_OVERFLOW event indicates a count value overf=
-low event,
-> >>>>>>>>>> so you'll need to check for a count value overflow before push=
-ing the
-> >>>>>>>>>> event.
-> >>>>>>>>>>
-> >>>>>>>>>> It would be good idea to implement a ceiling extension as well=
- (you can
-> >>>>>>>>>> use the COUNTER_COMP_CEILING() macro) so that users can config=
-ure the
-> >>>>>>>>>> particular point where the value overflows.
-> >>>>>>>>>
-> >>>>>>>>> Thank you!
-> >>>>>>>>>
-> >>>>>>>>> What would be the best and resource effective strategy for peri=
-odically
-> >>>>>>>>> getting frequency of interrupts/pulses? This is actual informat=
-ion which is
-> >>>>>>>>> needed for my use case.
-> >>>>>>>>>
-> >>>>>>>>> So far, I was pushing every event to the user space, which is w=
-orking
-> >>>>>>>>> but probably not the most resource effective method of doing it.
-> >>>>>>>>>
-> >>>>>>>>> Regards,
-> >>>>>>>>> Oleskij
-> >>>>>>>>> --=20
-> >>>>>>>>> Pengutronix e.K.                           |                   =
-          |
-> >>>>>>>>> Steuerwalder Str. 21                       | http://www.pengutr=
-onix.de/  |
-> >>>>>>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-20=
-6917-0    |
-> >>>>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-20=
-6917-5555 |
-> >>>>>>>>
-> >>>>>>>> We could introduce a new Counter change-of-state event type whic=
-h would
-> >>>>>>>> trigger whenever the count value changes, but I agree with you t=
-hat this
-> >>>>>>>> is likely not the best way for us to derive the frequency of the
-> >>>>>>>> interrupts due to the indirection of handling and parsing the ev=
-ent
-> >>>>>>>> data.
-> >>>>>>>>
-> >>>>>>>> Instead, perhaps introducing a "frequency" or "period" Count ext=
-ension
-> >>>>>>>> would make more sense here. This extension could report the valu=
-e delta
-> >>>>>>>> between counts, or alternatively the time delta from which you c=
-an
-> >>>>>>>> derive frequency. Regarding implementation, you can store the pr=
-evious
-> >>>>>>>> value in a variable, updating it whenever an interrupt occurs, a=
-nd
-> >>>>>>>> compute the particular delta every time a read is requested by t=
-he user.
-> >>>>>>>>
-> >>>>>>>> David Lechner is implementing something similar for the TI eQEP =
-driver
-> >>>>>>>> to expose speed, so I'm CCing them here in case this is of inter=
-est to
-> >>>>>>>> them.
-> >>>>>>>>       =20
-> >>>>>>>
-> >>>>>>> Based on my experience, I would recommend that counter drivers be=
- as
-> >>>>>>> "thin" as possible. They shouldn't try to provide any information=
- that
-> >>>>>>> the hardware itself doesn't provide. In other words, the kernel s=
-hould
-> >>>>>>> provide userspace the information needed to calculate the speed/r=
-ate
-> >>>>>>> but not try to do the actual calculation in the kernel. Inevitably
-> >>>>>>> there are nuances for specific use cases that can't all possibly =
-be
-> >>>>>>> handled by such an implementation.
-> >>>>>>
-> >>>>>> I completely agree with this. While interrupts aren't really meant=
- for
-> >>>>>> measuring frequency, and this being somewhat of a mis-use of somet=
-hing, it is
-> >>>>>> still possible to do and very useful in many cases. That said, whi=
-le the
-> >>>>>> counter framework is AFAIK the best fit for this, the main use-cas=
-e for this
-> >>>>>> driver is measuring wheel speed (and similar "speeds"). For this, =
-the minimum
-> >>>>>> amount of information the driver needs to provide user-space with =
-to do
-> >>>>>> reliable calculations, is high-resolution time-stamps of GPIO even=
-ts. A simple
-> >>>>>> counter is not suited, because there can be glitches that need to =
-be detected.
-> >>>>>> If user-space gets a buffer full of consecutive time-stamps (don't=
- need to be
-> >>>>>> all of them, just a sample of n consecutive timestamps), as well a=
-s total
-> >>>>>> count, all needed calculations, glitch filtering, low-pass filteri=
-ng, etc...
-> >>>>>> can be done in user-space just fine.
-> >>>>>>     =20
-> >>>>>>> I've tried using gpio interrupts to try to calculate speed/rate in
-> >>>>>>> the kernel before and it simply doesn't work reliably. Interrupts
-> >>>>>>> get missed and the calculation will be off.
-> >>>>>>
-> >>>>>> Exactly. Been there, done that.
-> >>>>>> For reliable speed calculations of a mechanical system, the proper=
-ties of the
-> >>>>>> mechanical system need to be known, like physical limits of accele=
-rations,
-> >>>>>> maximum (or minimum) speed, etc. The minimum set of input data nee=
-ded by a
-> >>>>>> user-space application to do these calculations is total pulse cou=
-nt in
-> >>>>>> addition to a buffer of timestamps of n consecutive input events (=
-raising or
-> >>>>>> falling edges on GPIO). So IMHO this is what the driver should pro=
-vide, and
-> >>>>>> in the most resource-efficient way possible. This particular drive=
-r will be
-> >>>>>> used 3 times on the same SoC, with each up to 10-15k pulses per se=
-cond. That
-> >>>>>> is a lot of interrupts for an embedded system, so they better cons=
-ume as
-> >>>>>> little resources as possible. Filling a ring buffer with timestamp=
-s should be
-> >>>>>> possible, as long as no locking is involved. Locks in IRQ context =
-must be
-> >>>>>> avoided at all costs, specially in this case.
-> >>>>>>     =20
-> >>>>>>> For really slow counts (i.e. 1 count/second), I can see a use for
-> >>>>>>> generating an event on each count though. For high rates, I would
-> >>>>>>> just read the count every 100ms in usespace and divide the change=
- in
-> >>>>>>> the number of counts by the time period to get the rate.
-> >>>>>>
-> >>>>>> For slow counts, I agree, but for high rates, I don't (see above).=
- There can
-> >>>>>> be glitches and false events that can (and must) be effectively fi=
-ltered out.
-> >>>>>> For that user-space needs to know the time of each event during the
-> >>>>>> measurement period.
-> >>>>>
-> >>>>> No sure I understood the problem here. If you keep the driver as is=
- and
-> >>>>> in userspace just read out the counter value twice and measure the =
-time
-> >>>>> between the reads[1], you can calculate the average frequency of the
-> >>>>> event in userspace.
-> >>>>>
-> >>>>> Isn't that good enough?
-> >>>>
-> >>>> No, I'm afraid it isn't, for two reasons:
-> >>>>
-> >>>> 1. These counters are often used in environments, where glitches can=
- and do
-> >>>> happen. So sometimes there are fake events. The only way to tell fak=
-e from
-> >>>> real pulses, is to filter them. Unfortunately you need the timestamp=
-s of each
-> >>>> event for that.
-> >>>>
-> >>>> 2. Another reason for having time-stamps is the case when the freque=
-ncy is low
-> >>>> and one still requires fast accurate measurements. In that case time=
-stamps
-> >>>> provide a way of accurately measuring period time.
-> >>>>
-> >>>> Best regards,
-> >>>>
-> >>>> --=20
-> >>>> David Jander
-> >>>> Protonic Holland.
-> >>>
-> >>> Keeping drivers focused on just exposing the hardware data and
-> >>> functionality is likely the best path to choose, so my earlier
-> >>> suggestion of a "frequency" extension would better be left for usersp=
-ace
-> >>> to handle.
-> >>
-> >> I agree.
-> >>
-> >>> So in order to enable userspace to derive frequency, you need reliable
-> >>> timestamps for enough consecutive events to provide an adequate size
-> >>> sample of data on which to perform filtering and other such operation=
-s.
-> >>
-> >> Ack.
-> >>
-> >>> If we add a COUNTER_EVENT_CHANGE_OF_STATE or similar, every count cha=
-nge
-> >>> will generate an event with a logged timestamp. Is the problem with t=
-his
-> >>> solution primarily that the Counter event queue is currently utilizing
-> >>> spinlocks for synchronization?
-> >>
-> >> Yes. Basically, since one can expect a very high amount of IRQs, it se=
-ems
-> >> paramount to eliminate any source of latency (spinlocks, etc...) from
-> >> interrupt context as well as to keep CPU load as low as technically po=
-ssible.
-> >>
-> >> If a spinlock is used, and at 10kHz pulses, on a moderately fast embed=
-ded SoC,
-> >> it is IMHO quite possible to have user-space cause the spinlock to be =
-held for
-> >> more than 100 microseconds, thus causing a pulse to be missed. Not to =
-mention
-> >> slight jitter introduced to the timestamps that can cause user-space t=
-o falsely
-> >> filter out events (a software PLL that doesn't correctly lock).
-> >>
-> >> The ideal ISR in this case would only take a timestamp from a hardware=
- TSC (or
-> >> similarly latency-free direct source) and put it into a circular buffer
-> >> without using locks, and maybe increase an unsigned long counter value=
- (atomic
-> >> operation if MB's are correctly used) and nothing else.
-> >> If, for example, such a solution would require user-space access CPU
-> >> load (complexity) to increase by a factor of 10 or even more (in order=
- to
-> >> avoid locks), this is likely still preferable, since the ISR is execut=
-ed maybe
-> >> 1000+ times more often than user-space accessing the driver.
-> >>
-> >> Best regards,
-> >>
-> >> --=20
-> >> David Jander
-> >> Protonic Holland.
-> >=20
-> > So the counter_push_event() function interacts with two spinlocks:
-> > events_list_lock and events_in_lock. The events_list_lock spinlock is
-> > necessary because userspace can modify the events_list list via the
-> > counter_enable_events() and counter_disable_events() functions. The
-> > events_in_lock spinlock is necessary because userspace can modify the
-> > events kfifo via the counter_events_queue_size_write() function.
-> >=20
-> > A lockless solution for this might be possible if the driver maintains
-> > its own circular buffer as you suggest. The driver's IRQ handler can
-> > write to this circular buffer without calling the counter_push_event()
-> > function, and then flush the buffer to the Counter character device via
-> > a userspace write to a "flush_events" sysfs attribute or similar; this
-> > eliminates the need for the events_in_lock spinlock. The state of the
-> > events_list list can be captured in the driver's events_configure()
-> > callback and stored locally in the driver for reference, thus
-> > eliminating the need for the events_list_lock; interrupts can be
-> > disabled before the driver's local copy of events_list is modified.
-> >=20
-> > With only one reader and one writer operating on the driver's buffer,
-> > you can use the normal kfifo_in and kfifo_out calls for lockless
-> > operations. Perhaps that is a way forward for this problem.
-> >=20
->=20
-> Would it be possible to make it so that userspace can't modify the
-> events_list when IRQs are enabled? Then we wouldn't have to add asecond e=
-vent buffer.
->=20
-> IIRC, the only operations that modify events_list are when another
-> list replaces events_list when events are enabled and when
-> events_list is cleared when events are disabled. So as long as the
-> ordering is right with respect to enabling and disabling IRQs, it
-> seems like the spin lock should not be needed.
+To reproduce, you need  CONFIG_IIO_SIMPLE_DUMMY_BUFFER=y
 
-I think that could work. If IRQs are always disabled before events_list
-is modified, then there is never a risk of interacting with an invalid
-events_list and thus counter_push_events() won't need spinlocks. When
-IRQs are disabled we miss any possible events, but we are missing those
-already anyway when the events_list is modified.
+Then:
+root@localhost:/home/ubuntu# insmod iio_dummy.ko
+root@localhost:/home/ubuntu# mkdir /sys/kernel/config/iio/devices/dummy/mydummy
+root@localhost:/home/ubuntu# rmdir /sys/kernel/config/iio/devices/dummy/mydummy
+Segmentation fault
 
-William Breathitt Gray
+I'm not familiar with IIO internals design, so I've gathered some
+clues (right below) and I'm just reporting this :)
 
---p2jTihH0GNWct0ev
-Content-Type: application/pgp-signature; name="signature.asc"
+My suspect is about a doubled list_del() on the buffer ioctl handler:
+iio_device_unregister() loops on iio_dev_opaque->ioctl_handlers and
+deletes all elements, then it calls also
+iio_buffers_free_sysfs_and_mask() which in turn tries to unregister
+the buffer ioctl handler causing list_del() to be invoked again. Here
+the element being deleted has LIST_POISON1 and LIST_POISON2 as its
+next and prev ptrs.
 
------BEGIN PGP SIGNATURE-----
+Commenting out any of the two list deletions avoids the Oops and makes
+things apparently work again.
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMKaIACgkQhvpINdm7
-VJICRhAAmQxOO314MYpRGtRJcms5b8pfnavCYMcGhhXx+oqJFG6dSpOm1tjC5GzE
-Nrng5yB/IgDHxFN76teaStOZqjHnQwhNzHXAV+BSfevpNY4XFkSWgHScJmkW2gSj
-oY38ts2bVrq0FN3L900Xg2HA6vzeL19wYBoyUqeb/EK2UENdTNtne+gH3plRJB0z
-J7Q0Pi2o+y6uctVCo69MOEVgbGVG/lYC3rc9FxFL9uJPM1dlmSCa1bd4j/t6nmtt
-EmPptQnLHW8xYzG3PGcyg/F7xAI61dmYraA+rrLIGZRED/hxG6CHOioA3m5Gtjhu
-9bV16UfsQ/N0WicrI9SPzyw5FZkAhcRRG3EwbO4GzMK1sHa4FSjoWUQbsxok8PGQ
-u5IUrqoBm6AVh2+mTa44OIY8pJg8hwakOZprDUZ18n8LorBz5fXGQpojU32HU0as
-zIp1xjYaIqSM76TIiQ4LTsJwGqVQD17HaE3HIN311PPXXTWFqmOMDHhiMUV/Dv24
-oIHIJgJ3ZutpWriFCJ740elosz7uu/wcfgBwN90gEeW+dI4QMVoxR8nmJGT3Xq6d
-aS4Eo2od6YatMt8kEHpVT+GwjRXeQllSqRRmtZED+i5EijSsIsJNL5GK5JEpVRWH
-qbGQJYqntyjeirKzvCp9adJ8dzdg+GQYW4hd/q9y64xnupDV6qc=
-=SKsK
------END PGP SIGNATURE-----
+Thanks,
+Andrea
 
---p2jTihH0GNWct0ev--
+[0]
+[  234.343644] 8<--- cut here ---
+[  234.346832] Unable to handle kernel NULL pointer dereference at
+virtual address 00000104
+[  234.355016] pgd = (ptrval)
+[  234.357763] [00000104] *pgd=3bc6c831
+[  234.361302] Internal error: Oops: 817 [#1] SMP ARM
+[  234.366131] Modules linked in: iio_dummy industrialio_sw_device
+[last unloaded: iio_dummy]
+[  234.374425] CPU: 0 PID: 410 Comm: rmdir Not tainted 5.13.0-rc1+ #25
+[  234.380692] Hardware name: Xilinx Zynq Platform
+[  234.385153] PC is at iio_device_ioctl_handler_unregister+0x24/0x38
+[  234.391401] LR is at iio_buffers_free_sysfs_and_mask+0x2c/0x78
+[  234.397226] pc : [<c08c5ec8>]    lr : [<c08cac38>]    psr: 20070013
+[  234.403419] sp : c3283e10  ip : 00000100  fp : c3283e1c
+[  234.408636] r10: 00000000  r9 : c283bc00  r8 : c2d8abb0
+[  234.413907] r7 : 00000100  r6 : c28d1800  r5 : c28d1800  r4 : c28d1a10
+[  234.420451] r3 : 00000122  r2 : 00000100  r1 : 00000122  r0 : c2311e80
+[  234.426976] Flags: nzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+[  234.434127] Control: 18c5387d  Table: 0328404a  DAC: 00000051
+[  234.439860] Register r0 information: slab kmalloc-64 start c2311e80
+pointer offset 0 size 64
+[  234.448338] Register r1 information: non-paged memory
+[  234.453389] Register r2 information: non-paged memory
+[  234.458439] Register r3 information: non-paged memory
+[  234.463490] Register r4 information: slab kmalloc-1k start c28d1800
+pointer offset 528 size 1024
+[  234.472319] Register r5 information: slab kmalloc-1k start c28d1800
+pointer offset 0 size 1024
+[  234.480963] Register r6 information: slab kmalloc-1k start c28d1800
+pointer offset 0 size 1024
+[  234.489608] Register r7 information: non-paged memory
+[  234.494677] Register r8 information: slab dentry start c2d8abb0
+pointer offset 0 size 36
+[  234.502805] Register r9 information: slab kmalloc-128 start
+c283bc00 pointer offset 0 size 128
+[  234.511450] Register r10 information: NULL pointer
+[  234.516169] Register r11 information: non-slab/vmalloc memory
+[  234.521901] Register r12 information: non-paged memory
+[  234.527025] Process rmdir (pid: 410, stack limit = 0x(ptrval))
+[  234.532924] Stack: (0xc3283e10 to 0xc3284000)
+[  234.537292] 3e00:                                     c3283e3c
+c3283e20 c08cac38 c08c5eb0
+[  234.545476] 3e20: c28d1a10 c28d1800 00000122 00000100 c3283e5c
+c3283e40 c08c4a08 c08cac18
+[  234.553678] 3e40: c28d1800 bf002040 c11fec04 c2318bc0 c3283e74
+c3283e60 bf000020 c08c4964
+[  234.561862] 3e60: bf002000 bf002040 c3283e8c c3283e78 bf008024
+bf00000c c283be08 bf002040
+[  234.570064] 3e80: c3283ea4 c3283e90 bf008050 bf00800c c283be08
+bf002040 c3283eb4 c3283ea8
+[  234.578248] 3ea0: c0387de0 bf00803c c3283efc c3283eb8 c0388a34
+c0387dac c2c26178 00000000
+[  234.586451] 3ec0: c1104ec8 c11febb4 c3283efc 6e9cda98 c02ec2c8
+c2d8abb0 c2c27be8 00000000
+[  234.594634] 3ee0: c3283f50 ffffff9c c1104ec8 c3283f44 c3283f2c
+c3283f00 c02ed64c c038882c
+[  234.602763] 3f00: c02ed30c c02ed278 c15d6000 00000000 00000000
+c15d6000 00000000 00000000
+[  234.611002] 3f20: c3283f94 c3283f30 c02f18a4 c02ed5dc c3283f50
+c3283f44 fffffe30 c2d8abb0
+[  234.619186] 3f40: c1105584 00000000 c2430250 c2d8acc0 da1a2e65
+00000007 c15d6035 b6f09000
+[  234.627388] 3f60: c02f03a8 6e9cda98 00000001 00014d40 00026179
+beecf7d9 00000028 c0100244
+[  234.635572] 3f80: c3282000 00000028 c3283fa4 c3283f98 c02f1900
+c02f1720 00000000 c3283fa8
+[  234.643775] 3fa0: c0100060 c02f18e0 00014d40 00026179 beecf7d9
+beecf694 00000000 00000001
+[  234.651885] 3fc0: 00014d40 00026179 beecf7d9 00000028 00026168
+0001497c 00014d54 00026174
+[  234.660124] 3fe0: b6f11401 beecf4fc 00011183 b6f11406 00070030
+beecf7d9 00000000 00000000
+[  234.668308] Backtrace:
+[  234.670759] [<c08c5ea4>] (iio_device_ioctl_handler_unregister) from
+[<c08cac38>] (iio_buffers_free_sysfs_and_mask+0x2c/0x78)
+[  234.682021] [<c08cac0c>] (iio_buffers_free_sysfs_and_mask) from
+[<c08c4a08>] (iio_device_unregister+0xb0/0xb4)
+[  234.692048]  r7:00000100 r6:00000122 r5:c28d1800 r4:c28d1a10
+[  234.697707] [<c08c4958>] (iio_device_unregister) from [<bf000020>]
+(iio_dummy_remove+0x20/0x40 [iio_dummy])
+[  234.707421]  r7:c2318bc0 r6:c11fec04 r5:bf002040 r4:c28d1800
+[  234.713135] [<bf000000>] (iio_dummy_remove [iio_dummy]) from
+[<bf008024>] (iio_sw_device_destroy+0x24/0x30
+[industrialio_sw_device])
+[  234.725097]  r5:bf002040 r4:bf002000
+[  234.728581] [<bf008000>] (iio_sw_device_destroy
+[industrialio_sw_device]) from [<bf008050>]
+(device_drop_group+0x20/0x2c [industrialio_sw_device])
+[  234.741705]  r5:bf002040 r4:c283be08
+[  234.745336] [<bf008030>] (device_drop_group
+[industrialio_sw_device]) from [<c0387de0>]
+(client_drop_item+0x40/0x54)
+[  234.755897]  r5:bf002040 r4:c283be08
+[  234.759473] [<c0387da0>] (client_drop_item) from [<c0388a34>]
+(configfs_rmdir+0x214/0x300)
+[  234.767768] [<c0388820>] (configfs_rmdir) from [<c02ed64c>]
+(vfs_rmdir+0x7c/0x1b4)
+[  234.775380]  r10:c3283f44 r9:c1104ec8 r8:ffffff9c r7:c3283f50
+r6:00000000 r5:c2c27be8
+[  234.783140]  r4:c2d8abb0
+[  234.785721] [<c02ed5d0>] (vfs_rmdir) from [<c02f18a4>] (do_rmdir+0x190/0x1c0)
+[  234.792872]  r6:00000000 r5:00000000 r4:c15d6000
+[  234.797499] [<c02f1714>] (do_rmdir) from [<c02f1900>] (sys_rmdir+0x2c/0x30)
+[  234.804411]  r10:00000028 r9:c3282000 r8:c0100244 r7:00000028
+r6:beecf7d9 r5:00026179
+[  234.812300]  r4:00014d40
+[  234.814825] [<c02f18d4>] (sys_rmdir) from [<c0100060>]
+(ret_fast_syscall+0x0/0x2c)
+[  234.822419] Exception stack(0xc3283fa8 to 0xc3283ff0)
+[  234.827488] 3fa0:                   00014d40 00026179 beecf7d9
+beecf694 00000000 00000001
+[  234.835598] 3fc0: 00014d40 00026179 beecf7d9 00000028 00026168
+0001497c 00014d54 00026174
+[  234.843837] 3fe0: b6f11401 beecf4fc 00011183 b6f11406
+[  234.848888] Code: e5903004 e5902000 e3a0cc01 e3001122 (e5823004)
+[  234.855062] ---[ end trace 0d5ead677fab1719 ]---

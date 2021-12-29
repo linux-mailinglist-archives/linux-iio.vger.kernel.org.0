@@ -2,381 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3EB94810DA
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 09:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E974810E3
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 09:19:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239232AbhL2IN4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Dec 2021 03:13:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36390 "EHLO
+        id S239247AbhL2ITY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Dec 2021 03:19:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239231AbhL2IN4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 03:13:56 -0500
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00F72C061574;
-        Wed, 29 Dec 2021 00:13:55 -0800 (PST)
-Received: by mail-pl1-x62e.google.com with SMTP id h1so12140808pls.11;
-        Wed, 29 Dec 2021 00:13:55 -0800 (PST)
+        with ESMTP id S231653AbhL2ITY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 03:19:24 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355F5C061574;
+        Wed, 29 Dec 2021 00:19:24 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id mj19so17947558pjb.3;
+        Wed, 29 Dec 2021 00:19:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=yGJ3O71LENUOMwQEYz5IKGKFEXlWRMZ+WBWHqHmXGj8=;
-        b=P9m9O0z50Jnk2WOC+SxuvYyiYm10PgYpB4vih3EroMVPKNwlLXJgk6OgEn4FEFcy0M
-         9JOegxxFyM6dUh5fyNLnafig7UMBsmjtgEfXuQm3q5fVJ7zrct3iqJXUbXu57QPb2CkF
-         PLCh2wxCoszSP1e9ZUaZvIHT+L+O0CrWEDeQvVyDhjpvXNTXKekKrvXtRj6ezqJpFuIF
-         J7vjwB/+IvLiCMJZJVmUKqB7ICGNlz0zthNLLoanzE67z4wJ7pNTYknX6NxahT1THHWV
-         LKZppzCyp2oxy0d++8MGnfC8TE4ElMK/zpa1O8jCBJvRojRVKzE3vf5UsYy/WaDaWkc1
-         uCvg==
+        bh=zPn0YNREPKaJClRU8OUBuv5V6sERBqg4ufLucMLumk0=;
+        b=mgzk9DsAP0eR2g9ltO0Q8KG/EEd3W+u0rVeQ7HKBKvJW3pljnb8rh2yJ3/ojrUD1BT
+         SQyfMGWGPDaoNMgp6jDTxPloykAPJX18xYaMeLoB3u1OwUOPVacreMs6GqBFrSJBk+3Z
+         S51bnQpHj3MkOMUgvTMQhtKz/xzVQNzicpvms+Pz8QLGsR2Oy4fjUG47pelSmUoi2El0
+         3nHvf/b7nZcOsbCstq1DppY9ihBtCtzUQJErA0IiHyxrI0ph0HSAMWiArD8vrT2FMHIX
+         g6GCDfZOo2AvbLjt+Yd7Zk0bNwcEvG6QO2mdangBLDu7g1CgNvRx1GKo+tjFq3UcUMIe
+         /B3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=yGJ3O71LENUOMwQEYz5IKGKFEXlWRMZ+WBWHqHmXGj8=;
-        b=r2O35brjxuVxccqb8wuv7wKyxy/4alMv+jhEImJsrN0Jk7gHUZUA6N5eHDNbnwpkZ1
-         3m3+nVGdLUfQqjC4YGqbXMCTZ2mbvdE9lTdKbvi4gUGAs3qIkeaVUMTFXav+2HU4rHr5
-         QMso9KwjsBABA9Kz6Gj999sgnwv/54WYQhawlerH9KrviPsKySAe7RRSe0fGY08Yp1zm
-         3toA7RV8alXGGnwFMfEnNeQi3somVLMsDe8V+W7lwvmpFD+lkAPFKYhmCTi3WHJe6YDn
-         T3aK/q6PnS7LEqhFjsgjoXvnhDstAet27M6nc0J0nTlBTYOdgxM2ExqRf5LtYnPA7AKS
-         O6Mw==
-X-Gm-Message-State: AOAM530iq2POAOacTQXSypvYtgpfjZuhlZ+OzmxiIQKV+hB/CVMc73Wo
-        kJBXhX5kbVEyYYnQE1CUDyQ=
-X-Google-Smtp-Source: ABdhPJxbWF8H3PicsdIBuEdYKsL2ZtXQF4nF3CDXucnw2BiVoZbTTq8G4c4B8pvpff0dj0PuNk4TGA==
-X-Received: by 2002:a17:90a:5781:: with SMTP id g1mr30872517pji.236.1640765635369;
-        Wed, 29 Dec 2021 00:13:55 -0800 (PST)
+        bh=zPn0YNREPKaJClRU8OUBuv5V6sERBqg4ufLucMLumk0=;
+        b=zC+Ja5Q4EQIVICx+xdx/TEyDVlosJMTYpiRbiMH1IyB0U9DlJewRSrG7N+Wk/LSzmO
+         SVYG7VuE/26vyOlWbN3h3seUGxHSvUF7hdryyU9ilOTz8tgYT7VSztink7K45ttwmsf5
+         sX9ai50zZSKHy4es6yuNRqEHg8IkiDhennMTriofPxQJbYltxAvWgbd+YOm3lhd7enLe
+         YthgU1XyO6yZWx6DVZcaZnwlWQZ+FvCOzrxMabWG4ux50gyrURtjCDhb4153+7IiSey/
+         plEmeCYR1oB7OXDOGJjvnsxQz2plCpydL7W9X8uJYKQFeYU8FIotMW3+jgXI7mV/663u
+         hg7A==
+X-Gm-Message-State: AOAM5321NbGYsfzzgjEAJd4PsK01oZ9aNg+9uJloPo+jkQ6+qWe4xz4+
+        A4ICBfDTpjXZgWJvtJKn+xg=
+X-Google-Smtp-Source: ABdhPJzl70tcYj6SxenoavRIdG+UzS83FufJNpSHgFmxCilmYnGvctYhJblG/SxSlYdUMNP5HZMMAg==
+X-Received: by 2002:a17:90a:28c4:: with SMTP id f62mr30673551pjd.207.1640765963703;
+        Wed, 29 Dec 2021 00:19:23 -0800 (PST)
 Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id s12sm25325757pfg.148.2021.12.29.00.13.51
+        by smtp.gmail.com with ESMTPSA id o11sm20885308pjs.9.2021.12.29.00.19.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Dec 2021 00:13:54 -0800 (PST)
-Date:   Wed, 29 Dec 2021 17:13:48 +0900
+        Wed, 29 Dec 2021 00:19:23 -0800 (PST)
+Date:   Wed, 29 Dec 2021 17:19:16 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-iio@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 13/23] counter: Provide alternative counter
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 14/23] counter: Update documentation for new counter
  registration functions
-Message-ID: <YcwYvGtZmjizmEuZ@shinobu>
+Message-ID: <YcwaBLxR5Q0u7Pbh@shinobu>
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
- <20211227094526.698714-14-u.kleine-koenig@pengutronix.de>
+ <20211227094526.698714-15-u.kleine-koenig@pengutronix.de>
+ <20211228181222.72ab998c@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gR/93N8d2rVLQZxp"
+        protocol="application/pgp-signature"; boundary="geXJ3MLhspaaBqeG"
 Content-Disposition: inline
-In-Reply-To: <20211227094526.698714-14-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211228181222.72ab998c@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---gR/93N8d2rVLQZxp
+--geXJ3MLhspaaBqeG
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 27, 2021 at 10:45:16AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> The current implementation gets device lifetime tracking wrong. The
-> problem is that allocation of struct counter_device is controlled by the
-> individual drivers but this structure contains a struct device that
-> might have to live longer than a driver is bound. As a result a command
-> sequence like:
+On Tue, Dec 28, 2021 at 06:12:22PM +0000, Jonathan Cameron wrote:
+> On Mon, 27 Dec 2021 10:45:17 +0100
+> Uwe Kleine-K=C3=B6nig         <u.kleine-koenig@pengutronix.de> wrote:
 >=20
-> 	{ sleep 5; echo bang; } > /dev/counter0 &
-> 	sleep 1;
-> 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-coun=
-ter/unbind
+> > In order to replace the counter registration API also update the
+> > documentation to the new way.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> Fine either way, but a suggestion below.
 >=20
-> can keep a reference to the struct device and unbinding results in
-> freeing the memory occupied by this device resulting in an oops.
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> This commit provides two new functions (plus some helpers):
->  - counter_alloc() to allocate a struct counter_device that is
->    automatically freed once the embedded struct device is released
->  - counter_add() to register such a device.
+> > ---
+> >  Documentation/driver-api/generic-counter.rst | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/Documentation/driver-api/generic-counter.rst b/Documentati=
+on/driver-api/generic-counter.rst
+> > index 1b487a331467..991b180c7b47 100644
+> > --- a/Documentation/driver-api/generic-counter.rst
+> > +++ b/Documentation/driver-api/generic-counter.rst
+> > @@ -262,11 +262,11 @@ order to communicate with the device: to read and=
+ write various Signals
+> >  and Counts, and to set and get the "action mode" and "function mode" f=
+or
+> >  various Synapses and Counts respectively.
+> > =20
+> > -A defined counter_device structure may be registered to the system by
+> > -passing it to the counter_register function, and unregistered by passi=
+ng
+> > -it to the counter_unregister function. Similarly, the
+> > -devm_counter_register function may be used if device memory-managed
+> > -registration is desired.
+> > +A counter_device structure is supposed to be allocated using counter_a=
+lloc()
+> > +and may be registered to the system by passing it to the counter_add()
+> > +function, and unregistered by passing it to the counter_unregister fun=
+ction.
 >=20
-> Note that this commit doesn't fix any issues, all drivers have to be
-> converted to these new functions to correct the lifetime problems.
+> I'd avoid the supposed to and the odd vague use of structure in the origin
+> text and just go with
 >=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> A struct counter_device is allocated using counter_alloc()...
 
-I agree with the approach taken in this patch, and I don't have much to
-add after the suggestions Lars-Peter and Jonathan have already given. So
-assuming those are addressed in the next version I expect to Ack this
-patch as well.
+I like this simpler wording as well.
 
-> ---
->  drivers/counter/counter-core.c | 149 ++++++++++++++++++++++++++++++++-
->  include/linux/counter.h        |  15 ++++
->  2 files changed, 163 insertions(+), 1 deletion(-)
+Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+
 >=20
-> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
-e.c
-> index 00c41f28c101..8261567b6272 100644
-> --- a/drivers/counter/counter-core.c
-> +++ b/drivers/counter/counter-core.c
-> @@ -15,6 +15,7 @@
->  #include <linux/kdev_t.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
-> +#include <linux/slab.h>
->  #include <linux/types.h>
->  #include <linux/wait.h>
-> =20
-> @@ -24,6 +25,11 @@
->  /* Provides a unique ID for each counter device */
->  static DEFINE_IDA(counter_ida);
-> =20
-> +struct counter_device_allochelper {
-> +	struct counter_device counter;
-> +	unsigned long privdata[];
-> +};
-> +
->  static void counter_device_release(struct device *dev)
->  {
->  	struct counter_device *const counter =3D
-> @@ -31,6 +37,9 @@ static void counter_device_release(struct device *dev)
-> =20
->  	counter_chrdev_remove(counter);
->  	ida_free(&counter_ida, dev->id);
-> +
-> +	if (!counter->legacy_device)
-> +		kfree(container_of(counter, struct counter_device_allochelper, counter=
-));
->  }
-> =20
->  static struct device_type counter_device_type =3D {
-> @@ -53,7 +62,14 @@ static dev_t counter_devt;
->   */
->  void *counter_priv(const struct counter_device *const counter)
->  {
-> -	return counter->priv;
-> +	if (counter->legacy_device) {
-> +		return counter->priv;
-> +	} else {
-> +		struct counter_device_allochelper *ch =3D
-> +			container_of(counter, struct counter_device_allochelper, counter);
-> +
-> +		return &ch->privdata;
-> +	}
->  }
->  EXPORT_SYMBOL_GPL(counter_priv);
-> =20
-> @@ -74,6 +90,8 @@ int counter_register(struct counter_device *const count=
-er)
->  	int id;
->  	int err;
-> =20
-> +	counter->legacy_device =3D true;
-> +
->  	/* Acquire unique ID */
->  	id =3D ida_alloc(&counter_ida, GFP_KERNEL);
->  	if (id < 0)
-> @@ -114,6 +132,100 @@ int counter_register(struct counter_device *const c=
-ounter)
->  }
->  EXPORT_SYMBOL_GPL(counter_register);
-> =20
-> +/**
-> + * counter_alloc - allocate a counter_device
-> + * @sizeof_priv: size of the driver private data
-> + *
-> + * This is part one of counter registration. The structure is allocated
-> + * dynamically to ensure the right lifetime for the embedded struct devi=
-ce.
-> + *
-> + * If this succeeds, call counter_put() to get rid of the counter_device=
- again.
-> + */
-> +struct counter_device *counter_alloc(size_t sizeof_priv)
-> +{
-> +	struct counter_device_allochelper *ch;
-> +	struct counter_device *counter;
-> +	struct device *dev;
-> +	int id, err;
-> +
-> +	ch =3D kzalloc(sizeof(*ch) + sizeof_priv, GFP_KERNEL);
-> +	if (!ch) {
-> +		err =3D -ENOMEM;
-> +		goto err_alloc_ch;
-> +	}
-> +
-> +	counter =3D &ch->counter;
-> +	dev =3D &counter->dev;
-> +
-> +	/* Acquire unique ID */
-> +	err =3D ida_alloc(&counter_ida, GFP_KERNEL);
-> +	if (err < 0) {
-> +		goto err_ida_alloc;
-> +	}
-> +	dev->id =3D err;
-> +
-> +	err =3D counter_chrdev_add(counter);
-> +	if (err < 0)
-> +		goto err_chrdev_add;
-> +
-> +	device_initialize(dev);
-> +	/* Configure device structure for Counter */
-> +	dev->type =3D &counter_device_type;
-> +	dev->bus =3D &counter_bus_type;
-> +	dev->devt =3D MKDEV(MAJOR(counter_devt), id);
-> +
-> +	mutex_init(&counter->ops_exist_lock);
-> +
-> +	return counter;
-> +
-> +err_chrdev_add:
-> +
-> +	ida_free(&counter_ida, dev->id);
-> +err_ida_alloc:
-> +
-> +	kfree(ch);
-> +err_alloc_ch:
-> +
-> +	return ERR_PTR(err);
-> +}
-> +EXPORT_SYMBOL_GPL(counter_alloc);
-> +
-> +void counter_put(struct counter_device *counter)
-> +{
-> +	put_device(&counter->dev);
-> +}
-> +
-> +/**
-> + * counter_add - complete registration of a counter
-> + * @counter: the counter to add
-> + *
-> + * This is part two of counter registration.
-> + *
-> + * If this succeeds, call counter_unregister() to get rid of the counter=
-_device again.
-> + */
-> +int counter_add(struct counter_device *counter)
-> +{
-> +	int err;
-> +	struct device *dev =3D &counter->dev;
-> +
-> +	get_device(&counter->dev);
-> +
-> +	if (counter->parent) {
-> +		dev->parent =3D counter->parent;
-> +		dev->of_node =3D counter->parent->of_node;
-> +	}
-> +
-> +	err =3D counter_sysfs_add(counter);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	/* implies device_add(dev) */
-> +	err =3D cdev_device_add(&counter->chrdev, dev);
-> +
-> +	return err;
-> +}
-> +EXPORT_SYMBOL_GPL(counter_add);
-> +
->  /**
->   * counter_unregister - unregister Counter from the system
->   * @counter:	pointer to Counter to unregister
-> @@ -168,6 +280,41 @@ int devm_counter_register(struct device *dev,
->  }
->  EXPORT_SYMBOL_GPL(devm_counter_register);
-> =20
-> +static void devm_counter_put(void *counter)
-> +{
-> +	counter_put(counter);
-> +}
-> +
-> +struct counter_device *devm_counter_alloc(struct device *dev, size_t siz=
-eof_priv)
-> +{
-> +	struct counter_device *counter;
-> +	int err;
-> +
-> +	counter =3D counter_alloc(sizeof_priv);
-> +	if (IS_ERR(counter))
-> +		return counter;
-> +
-> +	err =3D devm_add_action_or_reset(dev, devm_counter_put, counter);
-> +	if (err < 0)
-> +		return ERR_PTR(err);
-> +
-> +	return counter;
-> +}
-> +EXPORT_SYMBOL_GPL(devm_counter_alloc);
-> +
-> +int devm_counter_add(struct device *dev,
-> +		     struct counter_device *const counter)
-> +{
-> +	int err;
-> +
-> +	err =3D counter_add(counter);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	return devm_add_action_or_reset(dev, devm_counter_release, counter);
-> +}
-> +EXPORT_SYMBOL_GPL(devm_counter_add);
-> +
->  #define COUNTER_DEV_MAX 256
-> =20
->  static int __init counter_init(void)
-> diff --git a/include/linux/counter.h b/include/linux/counter.h
-> index 8daaa38c71d8..f1350a43cd48 100644
-> --- a/include/linux/counter.h
-> +++ b/include/linux/counter.h
-> @@ -327,14 +327,29 @@ struct counter_device {
->  	spinlock_t events_in_lock;
->  	struct mutex events_out_lock;
->  	struct mutex ops_exist_lock;
-> +
-> +	/*
-> +	 * This can go away once all drivers are converted to
-> +	 * counter_alloc()/counter_add().
-> +	 */
-> +	bool legacy_device;
->  };
-> =20
->  void *counter_priv(const struct counter_device *const counter);
-> =20
->  int counter_register(struct counter_device *const counter);
-> +
-> +struct counter_device *counter_alloc(size_t sizeof_priv);
-> +void counter_put(struct counter_device *const counter);
-> +int counter_add(struct counter_device *const counter);
-> +
->  void counter_unregister(struct counter_device *const counter);
->  int devm_counter_register(struct device *dev,
->  			  struct counter_device *const counter);
-> +struct counter_device *devm_counter_alloc(struct device *dev,
-> +					  size_t sizeof_priv);
-> +int devm_counter_add(struct device *dev,
-> +		     struct counter_device *const counter);
->  void counter_push_event(struct counter_device *const counter, const u8 e=
-vent,
->  			const u8 channel);
-> =20
-> --=20
-> 2.33.0
+>=20
+> > +There are device managed variants of these functions: devm_counter_all=
+oc() and
+> > +devm_counter_add().
+> > =20
+> >  The struct counter_comp structure is used to define counter extensions
+> >  for Signals, Synapses, and Counts.
 >=20
 
---gR/93N8d2rVLQZxp
+--geXJ3MLhspaaBqeG
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMGLwACgkQhvpINdm7
-VJItTBAAn9r8ZjYDLu1PfeD0mLM2NCiDP+SMwyfOBT4nxGNOLE6v0bs2jaKgGAlA
-v+vaA2+/rKznzt3Aw6BfQKCuB+uJoJ4WIRV2OUqM/ziEE3JQqKXSPEnE2Iv3YION
-cZF1E3hrL87Mz6YzUu6lDFxTjGU6wK7wZggoScHiPNk+BnldKbilvj+9gNmwoZu+
-UAkWOQoyNujycG7WCtOQ72HE3sDrH0VacPaocgXrJ+YBzP9DQj/PwR9V0KwxIOOA
-lmjpSLLZB/01XZe/FSk57KWnI3MAXWmjqGhaXR7eQ3wVwzV5WATJtBnP4TXiQ1Qs
-Y4yIkjb9/w3fD6dFV266Im5nTLSfIFrQzVpYUtIxsP8tQ+2vG5jC6baoSHSlMIuv
-D+cR1DMjNi5ppoa5iZ68fENdEJm9em9I/KUAN1faRyCGsx202Bj9Dol86qAjxKVh
-6k4/mErP1YNN/xf9nKR01XeGs++OVAVF/riWj45mChl7TdzfoUr4j/DBgFTw2bVb
-BSNkJEXQcV4JD6wDdmxGhXQFfaWoc54+HzwP7I4zL3QY1Abt4iYqLsu+lb7PzeOR
-2w8FLhuxveu0dVXCiWRYqc/3s05Sw+7bNE741tU9XwYbepOd78d97Byfcvr0kAOr
-qZuKXp6AqOFk6kV2YOciMjiLcrED0iZAPAXrfektZyGUP3DnvkA=
-=TA0s
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMGgMACgkQhvpINdm7
+VJKEHxAAiM4FpOf1LHAPzY0VW7ZrYmEIyT1WH9atJ4dbXN8JeDRS6OklfZfHcH07
+ZYjulTVrOKg3dEWSil6xQqESAj8tSVtrfotEM8VOD+4x+v0pXGU7u2tgBnlEPcP1
+cB1ze+RvUqGO584fStC81q4huvosT9Jnd/iSd/XzGBVeOj2AY2r0dQjGQygLNuk2
+M2gGv+jvF7ZbZNoqXBl/GlHLuLTeiEcoOXL5YG2d2p7grHUpIPWhPZIsqTS+LjcI
+4oiSKx3MXlYfDYCKmQrIuocOLowkB3rLUAmsBLjOR9SCOqQq/spQeRhzWGQYjEwZ
+E2IB+6F6xQBAzq6wzMjtkRqjUdtJtg/4hFVouaf3PkTB/QVBrSOIeFd7jVPbZaIy
++4kedob1brY0mxLiOE7Z0cGzNS/Hn0UnwZhduvEaGZLh1rVlIWDQnLLf7NdGpraz
+oVnhEkZGsGzp9TUZdT84E5LDoAHnrTWHr41VmtneIPH1yMiQIi6XrAmGABnolbJR
+8rq5Ob915k9U6A6bfQf6XwLGhZPKNBm0BnxBYr5JcfaXEVdX99TmkQPlA4N4+zpC
+pJ5NeZlHEsnj8JtjKFDPX5Us0zPOTd3lBuirkVLnLf423d5QzPyDgj57ripIT+ZN
+gw2m4kENozFwiRX0cwPzxbbSqTZh1ZBqWsNBZ/IfSMnK7rnewVo=
+=2iIA
 -----END PGP SIGNATURE-----
 
---gR/93N8d2rVLQZxp--
+--geXJ3MLhspaaBqeG--

@@ -2,229 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB9A481546
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 17:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2BA1481582
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 18:00:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240898AbhL2Qt0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Dec 2021 11:49:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37574 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237478AbhL2Qt0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 11:49:26 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BD9C061574
-        for <linux-iio@vger.kernel.org>; Wed, 29 Dec 2021 08:49:26 -0800 (PST)
+        id S236427AbhL2RAj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 29 Dec 2021 12:00:39 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:42344 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236385AbhL2RAj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 12:00:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BBA961520
-        for <linux-iio@vger.kernel.org>; Wed, 29 Dec 2021 16:49:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1B3C5B81904;
+        Wed, 29 Dec 2021 17:00:38 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id 9F571C36AE9;
-        Wed, 29 Dec 2021 16:49:23 +0000 (UTC)
-Date:   Wed, 29 Dec 2021 16:55:08 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id 0DEA7C36AE7;
+        Wed, 29 Dec 2021 17:00:33 +0000 (UTC)
+Date:   Wed, 29 Dec 2021 17:06:12 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [Oops] IIO git tree since f73f7f4da5818 (iio: buffer: add
- ioctl() to support opening extra buffers for IIO device)
-Message-ID: <20211229165508.62434f1a@jic23-huawei>
-In-Reply-To: <CAN8YU5O6btkqA2iUc4Qj-M9sjk89LpnpCzjp8UJnQOQs3pJDLw@mail.gmail.com>
-References: <CAN8YU5NSyqLrhX_SUYP3Jm1gqmNXgoZC2wKx-s=qnkL6bawN-Q@mail.gmail.com>
-        <CAN8YU5O6btkqA2iUc4Qj-M9sjk89LpnpCzjp8UJnQOQs3pJDLw@mail.gmail.com>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        linux-iio@vger.kernel.org, kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 13/23] counter: Provide alternative counter
+ registration functions
+Message-ID: <20211229170612.1dffa818@jic23-huawei>
+In-Reply-To: <20211229154441.38045-14-u.kleine-koenig@pengutronix.de>
+References: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
+        <20211229154441.38045-14-u.kleine-koenig@pengutronix.de>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 29 Dec 2021 12:34:00 +0100
-Andrea Merello <andrea.merello@gmail.com> wrote:
+On Wed, 29 Dec 2021 16:44:31 +0100
+Uwe Kleine-König         <u.kleine-koenig@pengutronix.de> wrote:
 
-> Please ignore my previous report in this thread: I got a mail failure
-> from the commit author address and this made me suspicious; I
-> discovered that I rebased on an apparently stale branch (master branch
-> from iio tree). I just rebased on a more recent one, and the Oops is
-> gone.
+> The current implementation gets device lifetime tracking wrong. The
+> problem is that allocation of struct counter_device is controlled by the
+> individual drivers but this structure contains a struct device that
+> might have to live longer than a driver is bound. As a result a command
+> sequence like:
 > 
-> Sorry for the extra noise :( I should have checked this better.. My apologies..
+> 	{ sleep 5; echo bang; } > /dev/counter0 &
+> 	sleep 1;
+> 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-counter/unbind
 > 
-> BTW, Jonathan, on which tree/branch do you want IIO patches to be rebased onto?
-
-Typically the togreg branch (which merges through Greg KH's char-misc these days).
-Note that is sometimes a week behind what I've said I've applied (more during merge
-windows) as I push out first as testing to let 0-day run it's build tests against
-the tree.
-
-I'm rather lax at remembering to push out master so it gets stale as you've
-discovered (sorry about that!). In theory it would be -rc1 or char-misc-next
-depending on where we are in the cycle.
-
-If there isn't much going on around a given driver or core code, then rc1 of
-the current cycle is a good base as well (that's what I use for the tree for
-the first pull request to Greg each cycle - second one gets rebased onto his
-tree after he's taken that first pull request to pick up any merge conflict
-resolution Greg has had to do.
-
-Jonathan
-
+> can keep a reference to the struct device and unbinding results in
+> freeing the memory occupied by this device resulting in an oops.
 > 
-> Andrea
+> This commit provides two new functions (plus some helpers):
+>  - counter_alloc() to allocate a struct counter_device that is
+>    automatically freed once the embedded struct device is released
+>  - counter_add() to register such a device.
 > 
-> Il giorno mer 29 dic 2021 alle ore 10:51 Andrea Merello
-> <andrea.merello@gmail.com> ha scritto:
-> >
-> > Hi!
-> >
-> > After rebasing my tree on latest iio git tree I got an Oops [0] on
-> > rmmod of my wip driver, then I reproduced it also with iio-dummy
-> > driver; this has been bisected to f73f7f4da5818 (iio: buffer: add
-> > ioctl() to support opening extra buffers for IIO device).
-> >
-> > To reproduce, you need  CONFIG_IIO_SIMPLE_DUMMY_BUFFER=y
-> >
-> > Then:
-> > root@localhost:/home/ubuntu# insmod iio_dummy.ko
-> > root@localhost:/home/ubuntu# mkdir /sys/kernel/config/iio/devices/dummy/mydummy
-> > root@localhost:/home/ubuntu# rmdir /sys/kernel/config/iio/devices/dummy/mydummy
-> > Segmentation fault
-> >
-> > I'm not familiar with IIO internals design, so I've gathered some
-> > clues (right below) and I'm just reporting this :)
-> >
-> > My suspect is about a doubled list_del() on the buffer ioctl handler:
-> > iio_device_unregister() loops on iio_dev_opaque->ioctl_handlers and
-> > deletes all elements, then it calls also
-> > iio_buffers_free_sysfs_and_mask() which in turn tries to unregister
-> > the buffer ioctl handler causing list_del() to be invoked again. Here
-> > the element being deleted has LIST_POISON1 and LIST_POISON2 as its
-> > next and prev ptrs.
-> >
-> > Commenting out any of the two list deletions avoids the Oops and makes
-> > things apparently work again.
-> >
-> > Thanks,
-> > Andrea
-> >
-> > [0]
-> > [  234.343644] 8<--- cut here ---
-> > [  234.346832] Unable to handle kernel NULL pointer dereference at
-> > virtual address 00000104
-> > [  234.355016] pgd = (ptrval)
-> > [  234.357763] [00000104] *pgd=3bc6c831
-> > [  234.361302] Internal error: Oops: 817 [#1] SMP ARM
-> > [  234.366131] Modules linked in: iio_dummy industrialio_sw_device
-> > [last unloaded: iio_dummy]
-> > [  234.374425] CPU: 0 PID: 410 Comm: rmdir Not tainted 5.13.0-rc1+ #25
-> > [  234.380692] Hardware name: Xilinx Zynq Platform
-> > [  234.385153] PC is at iio_device_ioctl_handler_unregister+0x24/0x38
-> > [  234.391401] LR is at iio_buffers_free_sysfs_and_mask+0x2c/0x78
-> > [  234.397226] pc : [<c08c5ec8>]    lr : [<c08cac38>]    psr: 20070013
-> > [  234.403419] sp : c3283e10  ip : 00000100  fp : c3283e1c
-> > [  234.408636] r10: 00000000  r9 : c283bc00  r8 : c2d8abb0
-> > [  234.413907] r7 : 00000100  r6 : c28d1800  r5 : c28d1800  r4 : c28d1a10
-> > [  234.420451] r3 : 00000122  r2 : 00000100  r1 : 00000122  r0 : c2311e80
-> > [  234.426976] Flags: nzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-> > [  234.434127] Control: 18c5387d  Table: 0328404a  DAC: 00000051
-> > [  234.439860] Register r0 information: slab kmalloc-64 start c2311e80
-> > pointer offset 0 size 64
-> > [  234.448338] Register r1 information: non-paged memory
-> > [  234.453389] Register r2 information: non-paged memory
-> > [  234.458439] Register r3 information: non-paged memory
-> > [  234.463490] Register r4 information: slab kmalloc-1k start c28d1800
-> > pointer offset 528 size 1024
-> > [  234.472319] Register r5 information: slab kmalloc-1k start c28d1800
-> > pointer offset 0 size 1024
-> > [  234.480963] Register r6 information: slab kmalloc-1k start c28d1800
-> > pointer offset 0 size 1024
-> > [  234.489608] Register r7 information: non-paged memory
-> > [  234.494677] Register r8 information: slab dentry start c2d8abb0
-> > pointer offset 0 size 36
-> > [  234.502805] Register r9 information: slab kmalloc-128 start
-> > c283bc00 pointer offset 0 size 128
-> > [  234.511450] Register r10 information: NULL pointer
-> > [  234.516169] Register r11 information: non-slab/vmalloc memory
-> > [  234.521901] Register r12 information: non-paged memory
-> > [  234.527025] Process rmdir (pid: 410, stack limit = 0x(ptrval))
-> > [  234.532924] Stack: (0xc3283e10 to 0xc3284000)
-> > [  234.537292] 3e00:                                     c3283e3c
-> > c3283e20 c08cac38 c08c5eb0
-> > [  234.545476] 3e20: c28d1a10 c28d1800 00000122 00000100 c3283e5c
-> > c3283e40 c08c4a08 c08cac18
-> > [  234.553678] 3e40: c28d1800 bf002040 c11fec04 c2318bc0 c3283e74
-> > c3283e60 bf000020 c08c4964
-> > [  234.561862] 3e60: bf002000 bf002040 c3283e8c c3283e78 bf008024
-> > bf00000c c283be08 bf002040
-> > [  234.570064] 3e80: c3283ea4 c3283e90 bf008050 bf00800c c283be08
-> > bf002040 c3283eb4 c3283ea8
-> > [  234.578248] 3ea0: c0387de0 bf00803c c3283efc c3283eb8 c0388a34
-> > c0387dac c2c26178 00000000
-> > [  234.586451] 3ec0: c1104ec8 c11febb4 c3283efc 6e9cda98 c02ec2c8
-> > c2d8abb0 c2c27be8 00000000
-> > [  234.594634] 3ee0: c3283f50 ffffff9c c1104ec8 c3283f44 c3283f2c
-> > c3283f00 c02ed64c c038882c
-> > [  234.602763] 3f00: c02ed30c c02ed278 c15d6000 00000000 00000000
-> > c15d6000 00000000 00000000
-> > [  234.611002] 3f20: c3283f94 c3283f30 c02f18a4 c02ed5dc c3283f50
-> > c3283f44 fffffe30 c2d8abb0
-> > [  234.619186] 3f40: c1105584 00000000 c2430250 c2d8acc0 da1a2e65
-> > 00000007 c15d6035 b6f09000
-> > [  234.627388] 3f60: c02f03a8 6e9cda98 00000001 00014d40 00026179
-> > beecf7d9 00000028 c0100244
-> > [  234.635572] 3f80: c3282000 00000028 c3283fa4 c3283f98 c02f1900
-> > c02f1720 00000000 c3283fa8
-> > [  234.643775] 3fa0: c0100060 c02f18e0 00014d40 00026179 beecf7d9
-> > beecf694 00000000 00000001
-> > [  234.651885] 3fc0: 00014d40 00026179 beecf7d9 00000028 00026168
-> > 0001497c 00014d54 00026174
-> > [  234.660124] 3fe0: b6f11401 beecf4fc 00011183 b6f11406 00070030
-> > beecf7d9 00000000 00000000
-> > [  234.668308] Backtrace:
-> > [  234.670759] [<c08c5ea4>] (iio_device_ioctl_handler_unregister) from
-> > [<c08cac38>] (iio_buffers_free_sysfs_and_mask+0x2c/0x78)
-> > [  234.682021] [<c08cac0c>] (iio_buffers_free_sysfs_and_mask) from
-> > [<c08c4a08>] (iio_device_unregister+0xb0/0xb4)
-> > [  234.692048]  r7:00000100 r6:00000122 r5:c28d1800 r4:c28d1a10
-> > [  234.697707] [<c08c4958>] (iio_device_unregister) from [<bf000020>]
-> > (iio_dummy_remove+0x20/0x40 [iio_dummy])
-> > [  234.707421]  r7:c2318bc0 r6:c11fec04 r5:bf002040 r4:c28d1800
-> > [  234.713135] [<bf000000>] (iio_dummy_remove [iio_dummy]) from
-> > [<bf008024>] (iio_sw_device_destroy+0x24/0x30
-> > [industrialio_sw_device])
-> > [  234.725097]  r5:bf002040 r4:bf002000
-> > [  234.728581] [<bf008000>] (iio_sw_device_destroy
-> > [industrialio_sw_device]) from [<bf008050>]
-> > (device_drop_group+0x20/0x2c [industrialio_sw_device])
-> > [  234.741705]  r5:bf002040 r4:c283be08
-> > [  234.745336] [<bf008030>] (device_drop_group
-> > [industrialio_sw_device]) from [<c0387de0>]
-> > (client_drop_item+0x40/0x54)
-> > [  234.755897]  r5:bf002040 r4:c283be08
-> > [  234.759473] [<c0387da0>] (client_drop_item) from [<c0388a34>]
-> > (configfs_rmdir+0x214/0x300)
-> > [  234.767768] [<c0388820>] (configfs_rmdir) from [<c02ed64c>]
-> > (vfs_rmdir+0x7c/0x1b4)
-> > [  234.775380]  r10:c3283f44 r9:c1104ec8 r8:ffffff9c r7:c3283f50
-> > r6:00000000 r5:c2c27be8
-> > [  234.783140]  r4:c2d8abb0
-> > [  234.785721] [<c02ed5d0>] (vfs_rmdir) from [<c02f18a4>] (do_rmdir+0x190/0x1c0)
-> > [  234.792872]  r6:00000000 r5:00000000 r4:c15d6000
-> > [  234.797499] [<c02f1714>] (do_rmdir) from [<c02f1900>] (sys_rmdir+0x2c/0x30)
-> > [  234.804411]  r10:00000028 r9:c3282000 r8:c0100244 r7:00000028
-> > r6:beecf7d9 r5:00026179
-> > [  234.812300]  r4:00014d40
-> > [  234.814825] [<c02f18d4>] (sys_rmdir) from [<c0100060>]
-> > (ret_fast_syscall+0x0/0x2c)
-> > [  234.822419] Exception stack(0xc3283fa8 to 0xc3283ff0)
-> > [  234.827488] 3fa0:                   00014d40 00026179 beecf7d9
-> > beecf694 00000000 00000001
-> > [  234.835598] 3fc0: 00014d40 00026179 beecf7d9 00000028 00026168
-> > 0001497c 00014d54 00026174
-> > [  234.843837] 3fe0: b6f11401 beecf4fc 00011183 b6f11406
-> > [  234.848888] Code: e5903004 e5902000 e3a0cc01 e3001122 (e5823004)
-> > [  234.855062] ---[ end trace 0d5ead677fab1719 ]---  
+> Note that this commit doesn't fix any issues, all drivers have to be
+> converted to these new functions to correct the lifetime problems.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Basically fine - a few trivial comments inline that I'm not that fussed
+about whether you take notice of or not. As such
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+
+I'd have liked to have seen a change log here. Quite a few comments on this
+one and not all had 'obvious' resolutions.
+
+>  drivers/counter/counter-core.c | 168 ++++++++++++++++++++++++++++++++-
+>  include/linux/counter.h        |  15 +++
+>  2 files changed, 181 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+> index 00c41f28c101..b3fa15bbcbdb 100644
+> --- a/drivers/counter/counter-core.c
+> +++ b/drivers/counter/counter-core.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/kdev_t.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+> +#include <linux/slab.h>
+>  #include <linux/types.h>
+>  #include <linux/wait.h>
+>  
+> @@ -24,6 +25,16 @@
+>  /* Provides a unique ID for each counter device */
+>  static DEFINE_IDA(counter_ida);
+>  
+> +struct counter_device_allochelper {
+> +	struct counter_device counter;
+> +
+> +	/*
+> +	 * This is cache line aligned to ensure private data behaves like if it
+> +	 * were kmalloced separately.
+> +	 */
+> +	unsigned long privdata[] ____cacheline_aligned;
+
+Change log for the patch would have made it easier to see you decided
+to make this change after the discussion in v2.
+
+> +};
+> +
+
+...
+
+>  
+> +/**
+> + * counter_alloc - allocate a counter_device
+> + * @sizeof_priv: size of the driver private data
+> + *
+> + * This is part one of counter registration. The structure is allocated
+> + * dynamically to ensure the right lifetime for the embedded struct device.
+> + *
+> + * If this succeeds, call counter_put() to get rid of the counter_device again.
+> + */
+> +struct counter_device *counter_alloc(size_t sizeof_priv)
+> +{
+> +	struct counter_device_allochelper *ch;
+> +	struct counter_device *counter;
+> +	struct device *dev;
+> +	int err;
+> +
+> +	ch = kzalloc(sizeof(*ch) + sizeof_priv, GFP_KERNEL);
+> +	if (!ch) {
+> +		err = -ENOMEM;
+> +		goto err_alloc_ch;
+
+Slight preference for a direct return here even though it means
+replicating the ERR_PTR() statement.  Makes for one less error
+path where a reviewer has to go see what is being done.
+
+> +	}
+> +
+> +	counter = &ch->counter;
+> +	dev = &counter->dev;
+> +
+> +	/* Acquire unique ID */
+> +	err = ida_alloc(&counter_ida, GFP_KERNEL);
+> +	if (err < 0)
+> +		goto err_ida_alloc;
+> +	dev->id = err;
+> +
+> +	mutex_init(&counter->ops_exist_lock);
+> +	dev->type = &counter_device_type;
+> +	dev->bus = &counter_bus_type;
+> +	dev->devt = MKDEV(MAJOR(counter_devt), dev->id);
+> +
+> +	err = counter_chrdev_add(counter);
+> +	if (err < 0)
+> +		goto err_chrdev_add;
+> +
+> +	device_initialize(dev);
+> +
+> +	return counter;
+> +
+> +err_chrdev_add:
+> +
+Nitpick: Unusual spacing (to my eye anyway). I wouldn't expect to see a blank line after a label
+as the label indentation makes a visual separation anyway.
+
+> +	ida_free(&counter_ida, dev->id);
+> +err_ida_alloc:
+> +
+> +	kfree(ch);
+> +err_alloc_ch:
+> +
+> +	return ERR_PTR(err);
+> +}
+> +EXPORT_SYMBOL_GPL(counter_alloc);
 

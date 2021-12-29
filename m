@@ -2,212 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B743F480D56
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Dec 2021 22:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35FA7481078
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 07:38:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbhL1VVg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Dec 2021 16:21:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S238974AbhL2Git (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Dec 2021 01:38:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbhL1VVg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Dec 2021 16:21:36 -0500
-Received: from haggis.mythic-beasts.com (haggis.mythic-beasts.com [IPv6:2a00:1098:0:86:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1491C061574;
-        Tue, 28 Dec 2021 13:21:35 -0800 (PST)
-Received: from [81.101.6.87] (port=39594 helo=jic23-huawei)
-        by haggis.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1n2JuX-0008Il-6v; Tue, 28 Dec 2021 21:21:33 +0000
-Date:   Tue, 28 Dec 2021 21:27:18 +0000
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Frank Zago <frank@zago.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        with ESMTP id S234572AbhL2Gis (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 01:38:48 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F837C061574;
+        Tue, 28 Dec 2021 22:38:48 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id s1so16250675pga.5;
+        Tue, 28 Dec 2021 22:38:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=/+dmvARaO0wX79dFiLV+nr8xNseqJI8BiPl8kOY5rlo=;
+        b=ZyuD1RTGlNAJyTqHzXmJg0Fx4jBDo96BKExgRcY16G9oUrkHhTUo2vR8EEL2uMylwu
+         19nUkPPN1Tql/v5S7r7CbA6QexX0DHhV87rUQ24kMZuo36YSLu8uqztsb84DH1Z/Pbgy
+         IZ578+Us8E9xcdAB7bd8nq0qPLAcMJQmD6VXvVtcYXGjut3tMakZuwjP98zulLsLofec
+         A7wUDW0xckU5ThkHp5h7vPX02ANNCtainIEOPvsoT3czBYKUi41zUH29moCJuJb7jD5W
+         tLv/fZN1b+YMX0owg+rMWB4rdIOFV3aHN+7iQ7VOTuDa2O0N6pdaE/LbJcurJXYLmPAT
+         P4HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/+dmvARaO0wX79dFiLV+nr8xNseqJI8BiPl8kOY5rlo=;
+        b=4/P91pMNUxawJoyW3aPkieu+QwXgAKNFCHHuL32qV/r1PJoe5IrN389kyjKCuYp+Eb
+         gmv5d3jhOYfz2ugHLE7/1mIG5ICboO/DauHVThtRyLyJyU9JBf3yboIRjkT2lldZ2+1n
+         WWwYwnZ2EifkAU8rRmncMw+gwYbL+AnQSqtvO5zR23zrZZutCdNfPocM5AOpH3n/g2/a
+         V1kqPBErIxi7ul5yps3Wj15t7S3ka+8u5IZQL+VGjkT7y8dW1L5FJlcn4FE/MVnc6k8W
+         93igYgdKeYBXwrDAj95TY7jI4A6VNHzUFYFC4eTlPmU0yYOVSRxyaeuScnoAKHG1msaK
+         adww==
+X-Gm-Message-State: AOAM5329paGhBAQ9sUQ6oG8MCAwFxzsWMWiQ134EQAOgMuGfxSWeVaPl
+        bVHhwlVikIOEWxZjcv1ruOA=
+X-Google-Smtp-Source: ABdhPJwJHz7Xb+VlJFRu6ejPTC7t9pQ9Aa5D16gWyW1uScjSTKNgmdoqEfaXBAz8L3/PrwkpZ+Cw3A==
+X-Received: by 2002:a05:6a00:992:b0:4ba:ca25:ca0f with SMTP id u18-20020a056a00099200b004baca25ca0fmr25486819pfg.44.1640759927896;
+        Tue, 28 Dec 2021 22:38:47 -0800 (PST)
+Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
+        by smtp.gmail.com with ESMTPSA id n71sm22652267pfd.50.2021.12.28.22.38.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Dec 2021 22:38:47 -0800 (PST)
+Date:   Wed, 29 Dec 2021 15:38:40 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: position: Add support for ams AS5600 angle sensor
-Message-ID: <20211228212709.3c039cca@jic23-huawei>
-In-Reply-To: <d949f737-7cb8-e466-06c7-b3fd7efadfd7@zago.net>
-References: <20211216202651.120172-1-frank@zago.net>
-        <20211223132800.682a56d2@jic23-huawei>
-        <d949f737-7cb8-e466-06c7-b3fd7efadfd7@zago.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+Subject: Re: [PATCH v2 01/23] counter: Use container_of instead of drvdata to
+ track counter_device
+Message-ID: <YcwCcBtdMKAvnCwM@shinobu>
+References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
+ <20211227094526.698714-2-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 4
-X-Spam-Status: No, score=0.4
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="WTvz+wxjL/4uBLQm"
+Content-Disposition: inline
+In-Reply-To: <20211227094526.698714-2-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 25 Dec 2021 12:04:55 -0600
-Frank Zago <frank@zago.net> wrote:
 
-> Hi Jonaathan,
-Hi Frank,
+--WTvz+wxjL/4uBLQm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
+On Mon, Dec 27, 2021 at 10:45:04AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> The counter core uses drvdata to find a struct counter_device from a
+> struct device. However as the device is a member of struct counter_device,
+> the lookup can be done faster (and a bit type safe) using container_of.
+>=20
+> There are no other users of drvdata, so the call to dev_set_drvdata can
+> go away, too.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-See below. I've taken a closer look at how we might map these to standard
-interfaces.
+Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
-> >> +What:		sys/bus/iio/devices/iio:deviceX/agc
-magn_hardwaregain
-  We have similar hardwaregain for things like time of flight sensors where
-  we are changing the gain on a light sensor so as to measure a pulse timing.
-  Hence it is gain on a signal needed to measure what we are interested in rather
-  than the type of the channel etc.  This seems very similar.
+> ---
+>  drivers/counter/counter-core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
+e.c
+> index 5acc54539623..f053a43c6c04 100644
+> --- a/drivers/counter/counter-core.c
+> +++ b/drivers/counter/counter-core.c
+> @@ -26,7 +26,8 @@ static DEFINE_IDA(counter_ida);
+> =20
+>  static void counter_device_release(struct device *dev)
+>  {
+> -	struct counter_device *const counter =3D dev_get_drvdata(dev);
+> +	struct counter_device *const counter =3D
+> +		container_of(dev, struct counter_device, dev);
+> =20
+>  	counter_chrdev_remove(counter);
+>  	ida_free(&counter_ida, dev->id);
+> @@ -78,7 +79,6 @@ int counter_register(struct counter_device *const count=
+er)
+>  		dev->of_node =3D counter->parent->of_node;
+>  	}
+>  	device_initialize(dev);
+> -	dev_set_drvdata(dev, counter);
+> =20
+>  	err =3D counter_sysfs_add(counter);
+>  	if (err < 0)
+> --=20
+> 2.33.0
+>=20
 
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_fth
-Hmm. This filter is unusual, but we should still be looking to map it
-to an extension of our existing filtering ABI.
+--WTvz+wxjL/4uBLQm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_hyst
-We have hystersis defined for events. I'm fine with defining it also for
-the raw signal which what I think this is.
-in_magn_hysteresis  For now do it using extended_info as we are running
-short on bits in the info_mask bitmaps and I don't know how common this will
-be...
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMAmQACgkQhvpINdm7
+VJLhoRAA1awIOpM+/ZjFSO9uo2UlhAAS47AmLL8iQsMS3jmHgxts0wXc7lpmEn+G
+vm9OziM32ZjLPkuvAX4oXG8TMLn2tWv1Rzx7JPiPgwL+qZI4QCwkZMQEqNEegaFh
+LabmP/dl0EwjR30qSIbAyCKdMNoPtmk8xwJmMuZ/Fu2xxIGsiekDsOhdK6dSZCkb
+E3youbzkRizKcTGG+udXgDsu8i6G6CsCB7hjgpmRcaKboVPRyxet2PA3XVyElycN
+wsG1FtlpOd4rebqInjqTMB3mnRslr1qAWvfzEA3eW+/KLNHWWcKnrpMb88OWwzWx
+8L92mcQKrGaTYPr778+YkbrSPWFa8Noecn72JfH3E9WMC9XOqgGL6FRAmv5RVDmE
+SPdt7jJ6mQ6X/JWWGKqD0RqhIjj0C2AzxFj5K3uGyvgnf/V8Qt1Fq2E6t6uFKqRI
+1tJ9mxkEu6libBF6hDQrYAG25+neIxHZtYgwwgY/ytAs3Dex8DZm2CYyeavMRPzZ
+Kcog+jmVZd69nweHRdUSsVRFBGJD0s5kfsOsAopT6PmCaZbDqIfLTUZdUxzyDrrJ
+DH9opqkyZZyWPX5S+82u4OICg9j9AcswrZmcEW4Yx8irfyVmZRWTgQdCxRsAzj9f
+4mNnOe05yVi45qCEK7sr6skxU/hsDNE9IhD8CW2Arh57yJrwvs4=
+=7A2O
+-----END PGP SIGNATURE-----
 
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_outs
-This is about analog output which will depend on board circuitry (what it
-is wired up to). Hence belongs in firmware e.g. Device tree bindings
-No userspace control (other than via debugfs)
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_pm
-
-So this trades off polling time against supply current.  A simple mapping for
-this would be to use SAMP_FREQ as 1/polling_time.  Provide available
-as well so we know what can be selected.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_pwmf
-Another thing related to external circuitry.  So should be in DT not
-userspce control.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_sf
-More filter control.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/conf_wd
-This is a kind of hardware equivalent of autosuspend in runtime pm.
-I'd ignore it for now as hard to control in a generic way so reality
-is little userspace code will use it.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/magnitude
-You could possibly output this as in_voltage0_raw if it's useful to be
-able to read it.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/mang
-> >> +What:		sys/bus/iio/devices/iio:deviceX/mpos
-These map to offset and scale values though as you mention mang is tricky
-to test.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/status_md
-> >> +What:		sys/bus/iio/devices/iio:deviceX/status_mh
-> >> +What:		sys/bus/iio/devices/iio:deviceX/status_ml
-These 3 need some thought but whatever we chose needs to at least
-be generic enough that other sensors that use an external magnet
-(I have one around here somewhere that is similar to this device)
-can use the same interface.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/zmco
-This one I'd print at boot - it's useful for people to be able to
-check but I'm not sure it's much use at runtime.
-
-> >> +What:		sys/bus/iio/devices/iio:deviceX/zpos
-> >> +KernelVersion:	TBD
-> >> +Contact:	linux-iio@vger.kernel.org
-> >> +Description:
-> >> +	Read and write the ams AS5600 internal registers and their
-> >> +	fields. zpos/mpos can be used to create a subset of the 0-360
-> >> +	degree range. status_md will tell whether the magnet is
-> >> +	detected. Check the datasheet
-> >> +	(https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf)
-> >> +	for more information.  
-> > 
-> > No to this lot.  If you need raw register access it needs to be debugfs
-> > not sysfs.  IIO provides a standard way of doing that.
-> > (just grep debugfs and you will find lots of examples).  
-> 
-> I've moved them all to debugfs, but I think this is abusing what debugfs
-> is for. It may not be mounted on a system after all.
-
-Absolutely and these controls should not generally be available like this.
-If you have a reason to expose them to userspace for general usage then 
-we need to come up with a way to map them to an interface that is generic.
-
-> 
-> Why not have a namespace in sysfs for things specific to a device that
-> can't be abstracted to other devices?
-
-If we go that way we basically end up loosing all the advantage of having
-a subsystem.  It is more effort to figure out how to map things but it can
-almost always be done. Driver specific interfaces sometimes exist for
-a few things that we don't expect to see on other devices, but they still
-have to fit within the general framework of the ABI so that, if we are wrong
-and they do turn up on multiple devices, we have the right ABI to make
-generic when it is needed (this happens quite often).
-
-One corner case that is hard to define generic interfaces for is error status
-conditions as those are often a feature of the implementation rather than anything
-generic (wire fell out or as you have it here magnet too weak /strong / missing).
-Even there we need to think about how to name them so they could be reused by
-similar devices.
-
-anyhow, I've added some mappings above.
-
-> 
-> >> + * The rotating magnet is installed from 0.5mm to 3mm parallel to and
-> >> + * above the chip.
-> >> + *
-> >> + * The raw angle value returned by the chip is [0..4095]. The channel
-> >> + * 0 (in_angl0_raw) returns the unscaled and unmodified angle, always
-> >> + * covering the 360 degrees. The channel 1 returns the chip adjusted
-> >> + * angle, covering from 18 to 360 degrees, as modified by its
-> >> + * ZPOS/MPOS/MANG values,  
-> > 
-> > So, the raw case is simple, the other one more complex.
-> > 
-> > I think zpos maps well to offset in iio terms. Mpos is harder because
-> > we don't typically define a maximum value for a channel. I'm also not
-> > sure what the point is in either of these unless MANG is used and
-> > as you observer that is not exposed (good thing too given limited write cycles).
-> > Without MANG you might as well just do it in userspace - unless the DAC or PWM
-> > outputs are of interest...  
-> 
-> zpos/mpos define an arc in the circle. Physically that could reflect a
-> rotating button that can't do full circles. I've documented that a bit in v2.
-
-If it can't do full circles, then you won't get values beyond the limits.  So
-what this is doing is clamping the value to enforce that - maybe the button gets
-a bit squishy and can go a little beyond the limit?
-That's easily done in userspace as well.
-
-> 
-> I'm unclear how MANG works, as I haven't been able to set it. My only option 
-> would be to flash it (OTP) it to a value to my only device.
-
-Understood.  Those features are always a pain because we don't want to expose
-them to userspace in general.  Often the best plan is to only read them anyway
-and rely on factory calibration for the device that is making use of them having
-set them appropriately.
-
-> 
-> 
-> >> +	ret = i2c_smbus_read_byte_data(client, REG_STATUS);
-> >> +	if (ret < 0)
-> >> +		return ret;
-> >> +
-> >> +	/* No magnet present could be a problem. */  
-> > 
-> > :) Good understatement.  Why not just fail the probe if this occurs?  
-> 
-> I left that in place, since I think it could be possible for the magnet to
-> not be present when the driver loads, for instance some sort of door could be
-> opened. Also it doesn't break anything besides not returning an valid angle.
-
-Fair enough.
-
-> 
-> Frank
-
+--WTvz+wxjL/4uBLQm--

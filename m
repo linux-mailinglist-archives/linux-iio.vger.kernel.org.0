@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E76B4810B4
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 08:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE3844810B9
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 08:36:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239129AbhL2Hf5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Dec 2021 02:35:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56410 "EHLO
+        id S239155AbhL2Hg4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Dec 2021 02:36:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbhL2Hf5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 02:35:57 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E124BC061574;
-        Tue, 28 Dec 2021 23:35:56 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id h1so12083856pls.11;
-        Tue, 28 Dec 2021 23:35:56 -0800 (PST)
+        with ESMTP id S239157AbhL2Hgz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 02:36:55 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE45FC06173E;
+        Tue, 28 Dec 2021 23:36:55 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id i6so9291703pla.0;
+        Tue, 28 Dec 2021 23:36:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=VCTE/twRgiKjq5SmMjjWKYf6C2niB6VMNqEBKuI+5Bc=;
-        b=fuAUoxBJCe/z/xdvCwLKVjgi0DteF3P3H6MwvGNoi0z6WdBsd+laDfDRhdiKEN9YTS
-         6dgeloGDX/r3wB5/pOtCgPofGSCozHHnnYPIT6W80MJVh6GZFodDtQ6V699amZTb/o3M
-         ghtHBnvg522vsZdRF2cVAKhMDil0vYCmpzie0Q6tWun1Zz9K7CTC4sXOSR05SwL/1YH7
-         OrENfG7EPElcMBFLKpz0TeZdYZCY7rMoRAMB2N6aSGuzmzQ/n6dj4vkbR/y4Go73x4a8
-         etB0cOyuae4nRjSS95HCFtnNppV/5UgOR/iN5oGWh7mjxPbQH6E0c8cXx0kDzXqrzPuJ
-         BHQg==
+        bh=Zs/GVRqeKa79+ZvaYojti+jCFFp4hFnSa7ptWWiB0sc=;
+        b=Y3hF0TBVV3GohHneQ5WAI/Fu4ZIF3i6HW3e7423kPc1Ldo3z2WvMzmacnzLoYfsYFn
+         UQufyIQxehf5juWwrmNDSXY1AH4kFvpfCFxR7axLi9Ap+A9y7JqADpo90DSRq+fxWg0u
+         h6gyWMnZ7qQzucTGmDYI4QklBQAzg4Z0+JFodvVIKPYY19ojRzJPVHTRnlBgXEh39Svt
+         zjYglnVGCIUfGi1nR3mclvEwasJ+fXXjnuZfn29lTFqx82UiEzmYnBen2N9G4cf8o5Hd
+         Y+q+UWeeBz6LHy0hA98r+eWTR6poK+M34nZZ+tKHReq0fS0QgPJ2fFgRgjtCA3c6VW+B
+         kyQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=VCTE/twRgiKjq5SmMjjWKYf6C2niB6VMNqEBKuI+5Bc=;
-        b=yK2zR8GSgrpxvfRwd4z09z+JCn27dPgZXQ7GEvdvYGFcR+mfGAfEP8AXkZI6mzdJpy
-         BeTwdOVGmFjy9igOstCGD6TriiiWqdIne/n2/hiPqgEncGgcWyAug207lqjV1WJ+K+vQ
-         Bivi79DdoedgA3DBTFTwPKwILoJiO5CLCnQNm3Gp3CVMEaxnSOc3mn4bsE+AcWgq4NWC
-         nSaI/MiDovZraNNC21Rc9qyj2rF9WTf9hWueZMsqFuMsFMOLKErZmCOn/e8ShkuWctob
-         YKlxtgbcUqGpt6yFC/JqT+SHKo79BUM4aidORsBmA+iX79PxXWFFA966JM0GHr7HK3TE
-         lzcQ==
-X-Gm-Message-State: AOAM533r885t1gr0R0nv3S0lGQUSUXjQI9IBMMG6pqjGXLtGSBSwJeNd
-        o/EgfRzTk4UoGdJFyG/tBdo=
-X-Google-Smtp-Source: ABdhPJwCBggQzJGNpuuWC5V2rLsxVmyoElb47KQyDS0pROYjwf0Fy9wNShRLjDJHiSEcLvp24AR/2Q==
-X-Received: by 2002:a17:902:f68e:b0:148:c0d1:605f with SMTP id l14-20020a170902f68e00b00148c0d1605fmr24980306plg.19.1640763356498;
-        Tue, 28 Dec 2021 23:35:56 -0800 (PST)
+        bh=Zs/GVRqeKa79+ZvaYojti+jCFFp4hFnSa7ptWWiB0sc=;
+        b=EZm4kq3v+1rXdmicMk8FHi+ZCHjkY0ihvQUXwThWGkwUzNBjATSzi63NbF7O0biaAP
+         YGj+OrkaqZxI5LXqSiGNSI8K+itZcYsUcYv49mo1g9KmZsuzcZSdu84oIDODzafZ6eVt
+         pvpbg2UjL+BLC3VJPh9YeVqKwlp0NAMrWSZ9TlHTtc40dYtxCoYPnCjLwoFXRiYtUQbm
+         oA9eGVTwe32TGaUztzn0ANZT99iVQfUlD+k1wNduTtGQwMALQwd7ujai5IRvQQdqLzHz
+         nx/heynVs6gNH1rAI/MIAN4uZyvo+qRaBDaafzt5vEiOXqzwDDzCieSQAFym/FyPWTD6
+         KrqQ==
+X-Gm-Message-State: AOAM532dfxLNUzRUT00BjHbLlWW3DYljcxCHnbYnLsZf17IatUC9KKwb
+        fSW9KBF+oA1ztIx5fp7z+AU=
+X-Google-Smtp-Source: ABdhPJwGR8DxjUqzkQlMRpvpApTn7tiAWCjTqUVCdvt3xK6KzhpjEmj7CJaJBFoNlaDiC87SsmeRtA==
+X-Received: by 2002:a17:903:2306:b0:149:296:c9e1 with SMTP id d6-20020a170903230600b001490296c9e1mr25101371plh.10.1640763415419;
+        Tue, 28 Dec 2021 23:36:55 -0800 (PST)
 Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id k23sm1532332pji.3.2021.12.28.23.35.52
+        by smtp.gmail.com with ESMTPSA id f16sm24571958pfj.6.2021.12.28.23.36.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Dec 2021 23:35:55 -0800 (PST)
-Date:   Wed, 29 Dec 2021 16:35:48 +0900
+        Tue, 28 Dec 2021 23:36:54 -0800 (PST)
+Date:   Wed, 29 Dec 2021 16:36:38 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
@@ -55,30 +55,29 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
         linux-iio@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        "Felipe Balbi (Intel)" <balbi@kernel.org>,
-        Raymond Tan <raymond.tan@intel.com>
-Subject: Re: [PATCH v2 08/23] counter: intel-qep: Convert to counter_priv()
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Syed Nayyar Waris <syednwaris@gmail.com>
+Subject: Re: [PATCH v2 09/23] counter: ftm-quaddec: Convert to counter_priv()
  wrapper
-Message-ID: <YcwP1JeLETPd6dqK@shinobu>
+Message-ID: <YcwQBjD4e9qVKL+2@shinobu>
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
- <20211227094526.698714-9-u.kleine-koenig@pengutronix.de>
+ <20211227094526.698714-10-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gft/vq9VWUrba0rI"
+        protocol="application/pgp-signature"; boundary="5GfMtX2wQyLOwk+v"
 Content-Disposition: inline
-In-Reply-To: <20211227094526.698714-9-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211227094526.698714-10-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---gft/vq9VWUrba0rI
+--5GfMtX2wQyLOwk+v
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 27, 2021 at 10:45:11AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+On Mon, Dec 27, 2021 at 10:45:12AM +0100, Uwe Kleine-K=C3=B6nig wrote:
 > This is a straight forward conversion to the new counter_priv() wrapper.
 >=20
 > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
@@ -86,124 +85,75 @@ On Mon, Dec 27, 2021 at 10:45:11AM +0100, Uwe Kleine-K=C3=B6nig wrote:
 Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
 > ---
->  drivers/counter/intel-qep.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>  drivers/counter/ftm-quaddec.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
-> index 0924d16de6e2..8f84a48508ac 100644
-> --- a/drivers/counter/intel-qep.c
-> +++ b/drivers/counter/intel-qep.c
-> @@ -109,7 +109,7 @@ static void intel_qep_init(struct intel_qep *qep)
->  static int intel_qep_count_read(struct counter_device *counter,
->  				struct counter_count *count, u64 *val)
+> diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
+> index 9272f7b58beb..f5d92df6a611 100644
+> --- a/drivers/counter/ftm-quaddec.c
+> +++ b/drivers/counter/ftm-quaddec.c
+> @@ -118,7 +118,7 @@ static void ftm_quaddec_disable(void *ftm)
+>  static int ftm_quaddec_get_prescaler(struct counter_device *counter,
+>  				     struct counter_count *count, u32 *cnt_mode)
 >  {
-> -	struct intel_qep *const qep =3D counter->priv;
-> +	struct intel_qep *const qep =3D counter_priv(counter);
+> -	struct ftm_quaddec *ftm =3D counter->priv;
+> +	struct ftm_quaddec *ftm =3D counter_priv(counter);
+>  	uint32_t scflags;
 > =20
->  	pm_runtime_get_sync(qep->dev);
->  	*val =3D intel_qep_readl(qep, INTEL_QEPCOUNT);
-> @@ -176,7 +176,7 @@ static struct counter_synapse intel_qep_count_synapse=
-s[] =3D {
->  static int intel_qep_ceiling_read(struct counter_device *counter,
->  				  struct counter_count *count, u64 *ceiling)
+>  	ftm_read(ftm, FTM_SC, &scflags);
+> @@ -131,7 +131,7 @@ static int ftm_quaddec_get_prescaler(struct counter_d=
+evice *counter,
+>  static int ftm_quaddec_set_prescaler(struct counter_device *counter,
+>  				     struct counter_count *count, u32 cnt_mode)
 >  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
+> -	struct ftm_quaddec *ftm =3D counter->priv;
+> +	struct ftm_quaddec *ftm =3D counter_priv(counter);
 > =20
->  	pm_runtime_get_sync(qep->dev);
->  	*ceiling =3D intel_qep_readl(qep, INTEL_QEPMAX);
-> @@ -188,7 +188,7 @@ static int intel_qep_ceiling_read(struct counter_devi=
+>  	mutex_lock(&ftm->ftm_quaddec_mutex);
+> =20
+> @@ -162,7 +162,7 @@ static int ftm_quaddec_count_read(struct counter_devi=
 ce *counter,
->  static int intel_qep_ceiling_write(struct counter_device *counter,
->  				   struct counter_count *count, u64 max)
+>  				  struct counter_count *count,
+>  				  u64 *val)
 >  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
->  	int ret =3D 0;
+> -	struct ftm_quaddec *const ftm =3D counter->priv;
+> +	struct ftm_quaddec *const ftm =3D counter_priv(counter);
+>  	uint32_t cntval;
 > =20
->  	/* Intel QEP ceiling configuration only supports 32-bit values */
-> @@ -213,7 +213,7 @@ static int intel_qep_ceiling_write(struct counter_dev=
+>  	ftm_read(ftm, FTM_CNT, &cntval);
+> @@ -176,7 +176,7 @@ static int ftm_quaddec_count_write(struct counter_dev=
 ice *counter,
->  static int intel_qep_enable_read(struct counter_device *counter,
->  				 struct counter_count *count, u8 *enable)
+>  				   struct counter_count *count,
+>  				   const u64 val)
 >  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
+> -	struct ftm_quaddec *const ftm =3D counter->priv;
+> +	struct ftm_quaddec *const ftm =3D counter_priv(counter);
 > =20
->  	*enable =3D qep->enabled;
-> =20
-> @@ -223,7 +223,7 @@ static int intel_qep_enable_read(struct counter_devic=
-e *counter,
->  static int intel_qep_enable_write(struct counter_device *counter,
->  				  struct counter_count *count, u8 val)
->  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
->  	u32 reg;
->  	bool changed;
-> =20
-> @@ -256,7 +256,7 @@ static int intel_qep_spike_filter_ns_read(struct coun=
-ter_device *counter,
->  					  struct counter_count *count,
->  					  u64 *length)
->  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
->  	u32 reg;
-> =20
->  	pm_runtime_get_sync(qep->dev);
-> @@ -277,7 +277,7 @@ static int intel_qep_spike_filter_ns_write(struct cou=
-nter_device *counter,
->  					   struct counter_count *count,
->  					   u64 length)
->  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
->  	u32 reg;
->  	bool enable;
->  	int ret =3D 0;
-> @@ -326,7 +326,7 @@ static int intel_qep_preset_enable_read(struct counte=
-r_device *counter,
->  					struct counter_count *count,
->  					u8 *preset_enable)
->  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
->  	u32 reg;
-> =20
->  	pm_runtime_get_sync(qep->dev);
-> @@ -341,7 +341,7 @@ static int intel_qep_preset_enable_read(struct counte=
-r_device *counter,
->  static int intel_qep_preset_enable_write(struct counter_device *counter,
->  					 struct counter_count *count, u8 val)
->  {
-> -	struct intel_qep *qep =3D counter->priv;
-> +	struct intel_qep *qep =3D counter_priv(counter);
->  	u32 reg;
->  	int ret =3D 0;
-> =20
+>  	if (val !=3D 0) {
+>  		dev_warn(&ftm->pdev->dev, "Can only accept '0' as new counter value\n"=
+);
 > --=20
 > 2.33.0
 >=20
 
---gft/vq9VWUrba0rI
+--5GfMtX2wQyLOwk+v
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMD9QACgkQhvpINdm7
-VJKxdw/8CkDVm7FJNc8iSD/i47jH47pn08S3bebCMuaOeWZuP0N4V4S4Mloa93W7
-giI4XxflDBiGJmV2HBAAlqomPAj38YrEfVJESSl3A1ishT/8aSzBSUBRTkBtZyQY
-wudbrj7DmbCU2KJz3CPtQKy3tk6J8AUkeGVBPv0cj22goViW8e1KDaZgEbWJlA0v
-4kcEBbEGKEXH96E76raxaw3mIyAOKa/wuoIGkROhQQQ8WP/vY6P0JO2BFzffLGMu
-aIBphBsUq0mPWGoiwXfCWGYgYmlAbj9Jk1hN1q2odM9zYpQFAEhdrYmz6Rcpq+Fe
-DeXP8j8HKQVIMgrF4kp9qqmG6cMuwFhZcrSxegOHudpMsgK061hvyipc0t7nNzHM
-bQusKyAH5jEq8TjbGvr073LJQa4gYgIRVUCSl5/ksSjIkCnqQqonOXaTs3IympGY
-qbHKDVqrLdc4vW0uuBrn+pSFWjJ4k27ByPW9u2dilUBqWu7jFA2RqcV7hbjdUFq4
-Ya4CYfZd9M5QnV21UqBgDdf9Mxf/o12sN/3EYBCzxhWz4oJ11VMA1cZibK7q3aVh
-4GajrZWRa9SiyzIqT0IGmpQatispXCdyo4KvCwgw1brQTTLs/IGxYO/VACO7V5C9
-GOFz+amL0dJCf5XYDGeQ69uVfcgLeNhKMs1S8dEImGErf6J+gPk=
-=UdbV
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMEAYACgkQhvpINdm7
+VJLorhAAueGE1YkCbKcBJ0GkQ+ziTvzAXz3WH+zh1GtwVCa5OmKLbrnSGlk8f+6P
+Z7i1tBXu+MUEfAbD6ThQ73EjtHEGzsdjRYvKjVJ1Iuzp5k8SYZFWvuoif2NHi4iV
+xGQJ5WJbfGWW0E4Hs16DAuTpkchVudBLtlO7WZtMrQNI4xlXFbrh1M80WsGM6KvC
+suyDju2tAJjSlTqpF1kEhFwccG1dkyAkL+je8KNe7QBVS1Q28/arPXC+YfY6TS69
+I3/Tf0uwougtSNAGSxJJtbPIcF6n8CQKUqQUw1C7jfsh7F8T51NHoVkF2VHw80QZ
+5jJoRO/gXdrO3xqa9pFFLNW4apDJk8BJn3yxhHRA69ihxpUIOIFwmFL5MhgMCe9e
++cidCTsTqcyja5f/choSbanq1YhxEkvsm2xm3rbhiefo+sK1DHtrNNdHhi1BeLE6
+HciAs6lSqPNKI/JKhZKZunHTNuboCnE2nAAkYorZjCP0nOKsv6lbfH/eQ0L7BJkA
+9yYrYHqMZWOAvdGnAVRT3XP+aKpXk4oO0PrLIeE3/TRE5Zz5gFf5nDunvkaimOgx
+3FkRGK7sHw8ILzKTvrhaUgD4fxRLT98MgxoipdboHVS/C6QKqTfDM5JjfapmAJ3T
+FvY/mY9t0lUJcoS8inAiPCoD81jTNlsQMBJ9HPCvTanImuqTx94=
+=S9bS
 -----END PGP SIGNATURE-----
 
---gft/vq9VWUrba0rI--
+--5GfMtX2wQyLOwk+v--

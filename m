@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C039F4810EB
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 09:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7644810EE
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 09:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239288AbhL2IY7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Dec 2021 03:24:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38800 "EHLO
+        id S239312AbhL2I16 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Dec 2021 03:27:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239301AbhL2IY6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 03:24:58 -0500
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17397C061574;
-        Wed, 29 Dec 2021 00:24:58 -0800 (PST)
-Received: by mail-pg1-x533.google.com with SMTP id 8so17926631pgc.10;
-        Wed, 29 Dec 2021 00:24:58 -0800 (PST)
+        with ESMTP id S239286AbhL2I16 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 03:27:58 -0500
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB0FFC061574;
+        Wed, 29 Dec 2021 00:27:57 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id u16so15380278plg.9;
+        Wed, 29 Dec 2021 00:27:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=QpP/fOriBZU5ALSsMR2nG6nas4HRpsPyxC6YF62Vx2c=;
-        b=j9uk9JUnpjUOt7dfQ0yEMwROmUlxswBEgQCdu4WYyUITfpiyc7auX0Pgn5fOV2R7ei
-         9JITfROw17uDqW5qsQ531P6n5elQei7UkzyhNUO84HQy9t7jkiXcjgWFk0d6v7WEk5Vx
-         ZNwRsg2aXzqeqVb9zv8pt66zlbdTHoR0FhYTRHqDXoWtFFnh9LhtDDLNcn+DuipaFqNo
-         2QSMe9G2Lq5e9QWLE4agY1yWk3dRaKZlF46nqOinBn9XwhRs9oFvBNmNxpeUUxUNFMnW
-         jaT70CyirQYjE8TY6a1rAsLhOF07OqKa7HD95qyPAzboke6/2MFzz3xk+mByESK0NHw5
-         DjUQ==
+        bh=+8C1GU84TDl6ORwgS/V5ZpMNMQj/nCZJT8zkT7dQ4gI=;
+        b=H4VnVQenjBnmrI0yxneT63Tf9K8F1Om3xon9Ih5Q5rym2mgkLNhhLUVyEZcanqxDrb
+         +w10vpte+o9VuM4fWvY0DfSD2Kqo5cKuuzqlllEWFEwYzLKPnebhfXk/jcXaaVRQjxfW
+         GLTNav/8WJrrVnlT6dwl2feRPz2gqkigOnRFYsQtYwP2qXvw6Sz2wHdY04k7NOo6sQ/i
+         VC1Qhz9LjaqqALodqr7hsKDYbXbA3hV6MIFfTeow9u28rn9KIbj55FoOa310IOZV504H
+         rP7glBERfvV3Yu+e+OszwSQNJo1JpQgNVSUhngufBhYNKxb68f08D5FRo6X/wxkK84+D
+         vACQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=QpP/fOriBZU5ALSsMR2nG6nas4HRpsPyxC6YF62Vx2c=;
-        b=gUhgdyPDt7LpTVs+1UuOzrLZYT7vCrbUiLtXQd+S1xAg7e7LUEB8cWs56fE8EYVMMx
-         GTsUfvq/i3NSHwSMlkV0iRkX2OrEBB3kaR1G/tEL83pu1Co5D1EP1QzKO1s3gahV0XOT
-         QwtXCpQ0x/6PovPhL+/OJBDKwtN7ukfB9WXdlSDOEg5eipAzdaus9D+iEdBNQfUOXs4l
-         Em4IYnhFNP86XSadQiw/hV+1DeYoLAiwRINflzLv0SWBiy+b6ElK5rJ3shFrz18vhGCT
-         TNQ84XI2yQIBIcAA+SUaEPuZG8KvHzJoRHeD/wRBDV+JNSorIqSlE0oiCujzyKsJKPBq
-         Lhlg==
-X-Gm-Message-State: AOAM532sDquvuRo4BW+NLj2qyad8gRVYGA9OE8wgZICWvCNuDmXTTawn
-        xNb9vsZEk+BWLm2jMu9/kQA=
-X-Google-Smtp-Source: ABdhPJwp4Mbfnq7k5Ae139Iz9pgVH9KiPzPlPjR/lvARyi1hXbsvcxB9aoQadOGHCvqwkKAgd57Dhg==
-X-Received: by 2002:a63:4b42:: with SMTP id k2mr22285997pgl.591.1640766297574;
-        Wed, 29 Dec 2021 00:24:57 -0800 (PST)
+        bh=+8C1GU84TDl6ORwgS/V5ZpMNMQj/nCZJT8zkT7dQ4gI=;
+        b=ZkYRn02nIV5PRA56B4lOVpr4jMGtAJ6cCUZX8GpYVi8VmJ6riLg+37/5PhOxg1njRf
+         Sk3i60RM6rIa6zg1AnO2qqFwoxrqpQJ+IUY9kKAty/cCzU9fcJHCsbJg0HAxFZ1Df0zk
+         8eJyGsa2YiLwXapiZVTYFaTb0FMLqh0LB997UNYnZaScq1guRMmGwAuyIjhpei1oOR/g
+         XnYThY7E7wead01P10kGZuxZkkBn23XPnCaLJ6mEDvI+LQz/HVqeWJFt8W7WrpFesib6
+         72LxUs29BadiCU0a46ZFrIzBzTuFeKFsX7JvHa1IYC5wUCMtrfsuFmDoJp5dHUepJOZL
+         hIAg==
+X-Gm-Message-State: AOAM533KogCnRYhPZCa+WyomX/5PsapIYBrFeENKo1h1hWNGp2p9zaI+
+        3Tsoqaw143Sj5brmXUubAhY=
+X-Google-Smtp-Source: ABdhPJxDprPVuZBtmOGAGsyhIilvyJSKXNz3f9l/O5qIz8y5x1faD1+17Jfy7YtUORwsgLD5wcTfVw==
+X-Received: by 2002:a17:90a:628c:: with SMTP id d12mr31383951pjj.75.1640766477412;
+        Wed, 29 Dec 2021 00:27:57 -0800 (PST)
 Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id h17sm18905710pfv.217.2021.12.29.00.24.53
+        by smtp.gmail.com with ESMTPSA id o11sm23893526pfu.150.2021.12.29.00.27.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Dec 2021 00:24:56 -0800 (PST)
-Date:   Wed, 29 Dec 2021 17:24:50 +0900
+        Wed, 29 Dec 2021 00:27:56 -0800 (PST)
+Date:   Wed, 29 Dec 2021 17:27:45 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
 To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
@@ -55,67 +55,62 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
         linux-iio@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org,
-        Syed Nayyar Waris <syednwaris@gmail.com>
-Subject: Re: [PATCH v2 15/23] counter: 104-quad-8: Convert to new counter
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH v2 16/23] counter: interrupt-cnt: Convert to new counter
  registration
-Message-ID: <YcwbUmZSeyH7rCu8@shinobu>
+Message-ID: <YcwcAaAnxHF02bzf@shinobu>
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
- <20211227094526.698714-16-u.kleine-koenig@pengutronix.de>
+ <20211227094526.698714-17-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="b0Pn/YUYWlXUcX5U"
+        protocol="application/pgp-signature"; boundary="eWPHf4Ld+wG5Q4gS"
 Content-Disposition: inline
-In-Reply-To: <20211227094526.698714-16-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211227094526.698714-17-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---b0Pn/YUYWlXUcX5U
+--eWPHf4Ld+wG5Q4gS
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 27, 2021 at 10:45:18AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+On Mon, Dec 27, 2021 at 10:45:19AM +0100, Uwe Kleine-K=C3=B6nig wrote:
 > This fixes device lifetime issues where it was possible to free a live
 > struct device.
 >=20
-> Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface =
-support")
+> Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
 > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
 Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
 > ---
->  drivers/counter/104-quad-8.c | 30 +++++++++++++++++-------------
->  1 file changed, 17 insertions(+), 13 deletions(-)
+>  drivers/counter/interrupt-cnt.c | 28 ++++++++++++++++------------
+>  1 file changed, 16 insertions(+), 12 deletions(-)
 >=20
-> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-> index 6e5286cd1d4e..4315b14f239e 100644
-> --- a/drivers/counter/104-quad-8.c
-> +++ b/drivers/counter/104-quad-8.c
-> @@ -52,7 +52,6 @@ MODULE_PARM_DESC(irq, "ACCES 104-QUAD-8 interrupt line =
-numbers");
->   */
->  struct quad8 {
->  	spinlock_t lock;
-> -	struct counter_device counter;
->  	unsigned int fck_prescaler[QUAD8_NUM_COUNTERS];
->  	unsigned int preset[QUAD8_NUM_COUNTERS];
->  	unsigned int count_mode[QUAD8_NUM_COUNTERS];
-> @@ -1127,6 +1126,7 @@ static irqreturn_t quad8_irq_handler(int irq, void =
-*private)
+> diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-=
+cnt.c
+> index 4bf706ef46e2..9e99702470c2 100644
+> --- a/drivers/counter/interrupt-cnt.c
+> +++ b/drivers/counter/interrupt-cnt.c
+> @@ -16,7 +16,6 @@
 > =20
->  static int quad8_probe(struct device *dev, unsigned int id)
+>  struct interrupt_cnt_priv {
+>  	atomic_t count;
+> -	struct counter_device counter;
+>  	struct gpio_desc *gpio;
+>  	int irq;
+>  	bool enabled;
+> @@ -148,12 +147,14 @@ static const struct counter_ops interrupt_cnt_ops =
+=3D {
+>  static int interrupt_cnt_probe(struct platform_device *pdev)
 >  {
+>  	struct device *dev =3D &pdev->dev;
 > +	struct counter_device *counter;
->  	struct quad8 *priv;
->  	int i, j;
->  	unsigned int base_offset;
-> @@ -1138,19 +1138,19 @@ static int quad8_probe(struct device *dev, unsign=
-ed int id)
->  		return -EBUSY;
->  	}
+>  	struct interrupt_cnt_priv *priv;
+>  	int ret;
 > =20
 > -	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 > -	if (!priv)
@@ -124,66 +119,76 @@ ed int id)
 >  		return -ENOMEM;
 > +	priv =3D counter_priv(counter);
 > =20
->  	/* Initialize Counter device and driver data */
+>  	priv->irq =3D platform_get_irq_optional(pdev,  0);
+>  	if (priv->irq =3D=3D -ENXIO)
+> @@ -184,8 +185,8 @@ static int interrupt_cnt_probe(struct platform_device=
+ *pdev)
+>  	if (!priv->signals.name)
+>  		return -ENOMEM;
+> =20
+> -	priv->counter.signals =3D &priv->signals;
+> -	priv->counter.num_signals =3D 1;
+> +	counter->signals =3D &priv->signals;
+> +	counter->num_signals =3D 1;
+> =20
+>  	priv->synapses.actions_list =3D interrupt_cnt_synapse_actions;
+>  	priv->synapses.num_actions =3D ARRAY_SIZE(interrupt_cnt_synapse_actions=
+);
+> @@ -199,12 +200,11 @@ static int interrupt_cnt_probe(struct platform_devi=
+ce *pdev)
+>  	priv->cnts.ext =3D interrupt_cnt_ext;
+>  	priv->cnts.num_ext =3D ARRAY_SIZE(interrupt_cnt_ext);
+> =20
+> -	priv->counter.priv =3D priv;
 > -	priv->counter.name =3D dev_name(dev);
 > -	priv->counter.parent =3D dev;
-> -	priv->counter.ops =3D &quad8_ops;
-> -	priv->counter.counts =3D quad8_counts;
-> -	priv->counter.num_counts =3D ARRAY_SIZE(quad8_counts);
-> -	priv->counter.signals =3D quad8_signals;
-> -	priv->counter.num_signals =3D ARRAY_SIZE(quad8_signals);
-> -	priv->counter.priv =3D priv;
+> -	priv->counter.ops =3D &interrupt_cnt_ops;
+> -	priv->counter.counts =3D &priv->cnts;
+> -	priv->counter.num_counts =3D 1;
 > +	counter->name =3D dev_name(dev);
 > +	counter->parent =3D dev;
-> +	counter->ops =3D &quad8_ops;
-> +	counter->counts =3D quad8_counts;
-> +	counter->num_counts =3D ARRAY_SIZE(quad8_counts);
-> +	counter->signals =3D quad8_signals;
-> +	counter->num_signals =3D ARRAY_SIZE(quad8_signals);
->  	priv->base =3D base[id];
+> +	counter->ops =3D &interrupt_cnt_ops;
+> +	counter->counts =3D &priv->cnts;
+> +	counter->num_counts =3D 1;
 > =20
->  	spin_lock_init(&priv->lock);
-> @@ -1192,11 +1192,15 @@ static int quad8_probe(struct device *dev, unsign=
-ed int id)
->  	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base[id] + QUAD8_REG_CHAN_OP);
-> =20
->  	err =3D devm_request_irq(dev, irq[id], quad8_irq_handler, IRQF_SHARED,
-> -			       priv->counter.name, priv);
-> +			       counter->name, priv);
->  	if (err)
->  		return err;
+>  	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+>  	ret =3D devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+> @@ -213,7 +213,11 @@ static int interrupt_cnt_probe(struct platform_devic=
+e *pdev)
+>  	if (ret)
+>  		return ret;
 > =20
 > -	return devm_counter_register(dev, &priv->counter);
-> +	err =3D devm_counter_add(dev, counter);
-> +	if (err < 0)
-> +		return dev_err_probe(dev, err, "Failed to add counter\n");
+> +	ret =3D devm_counter_add(dev, counter);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to add counter\n");
 > +
 > +	return 0;
 >  }
 > =20
->  static struct isa_driver quad8_driver =3D {
+>  static const struct of_device_id interrupt_cnt_of_match[] =3D {
 > --=20
 > 2.33.0
 >=20
 
---b0Pn/YUYWlXUcX5U
+--eWPHf4Ld+wG5Q4gS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMG1IACgkQhvpINdm7
-VJKviA//TFuL86vhMGP/85sfUOR24yFk8nS6XilVQIUQ2914ptmh7slh9ozIkcQd
-xdt2Ji35skjmPDhvoHSb6fj3q69E8gqrD3F9vEpcuKToj61xD1ZxbpIzDV5Hw8xP
-dL3bCH4ol/UMH2Bnz+9iIWpG2o3sTKTnyhDElsNwEHjzsAXoftXlZVqCs8ZudQxc
-zjnVxc3Lnh+OtqRKctedUM3veucgA4Vm11bDypUvLyi/5eT2Hc2IFUbQ0i8mW16H
-21T2GyTb1NVQahMMk3Pl8HB0AZAn/C/Iw1MPZBoUULj0E7fh0eZm514XCKXGLkSj
-+Cw15z+Yj32dXXiOnzY0fyNJjGdFxyi/mtC0dJOky3OWfsUGQZe+Y7LxgZcGP8gg
-ikGIaMMtQHJZt5UY4LHwOy88DIi4pMbPv72CR5XdbrVSxKCJzjzJJ4qNQ+zhk0pj
-CHIoswJ7cdVb++7Hx4BLpjr8YxlKwPt72XVwqIGhdZOTNaUs4/9JrIDLI1y1tyW8
-iW/fCdcgMD9p+ylnnWE3HTLUkttZKLs+bx0VdcZTOE4seDr6HKTBh595r9b4BFNY
-PrOL25inHSplnYqqmcePK5NA0HGGoD+zpAlKKeYDmhY7azEF/sVl0ygqb/yGBN+j
-RIR3mduv+H085Qld5iB6Bz136CG5Tuz6ysAdK8M8iRZkLipTAc4=
-=02za
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMHAEACgkQhvpINdm7
+VJJotBAAwp/Mq2GkFaK6GjeBujDhlm5xzLgw+hBIy609y2+Rl6/5ol0tptM9NPWP
+mzWI0hS4L/pIWGnz7PHYGgT7c682Mv/GecUgTYVRDSLEIn8oPJEAsywdLt2MrBdi
+0JmxL7YBcJN3ZDGDDqffk6sJ1P4789wFHGzEsRwTgtUYhHuIZf2B+yqhVj7sDagT
+FlFJq3c/P9zzKTuBV5mbkCQaaJ921TGcoYtVhuFNIqgRHPOQEvoNBuJHhpEciDF2
+UjcsH5PgPETlUHg7cmvNVcgMc/sit3jHRfptDyIn3p5KP6CMaq1JWSGB7/Z8HJg8
+Bp+4JmtBv3i1QSQ/T7pcTxdFlw08X2iNx37NH07TFbk37f7JRmj1K/movPZawZkb
+chblp2c5vwabw1FLwzW6q2/bxqYi9jRE/X2oSCXIXnRnhIwJf8wlTI3+RjI4wWu3
+1/wKu2C65Cv6dbSsabCNUk1nHqFT7tmRr65gjWG9S0y3SYJ76ZZkqwSLgTNUQ5td
+91TMevOxweHHADlCD7LZpSGhtL0ZCtcrsDtofzhfNUNZSqkDTGeKfCESIbYa/CS4
+EEks7xMz5yotdXhfA/ckrkmtX31rIaq/D4eDtKh82eDDN/GWPeNQ1xWGCTUtH7PA
+XVxdl4W2ZJUPGTuHHLKVj7WwQWpeotwbYhT+x/zPvy2m6QafCqs=
+=lvRq
 -----END PGP SIGNATURE-----
 
---b0Pn/YUYWlXUcX5U--
+--eWPHf4Ld+wG5Q4gS--

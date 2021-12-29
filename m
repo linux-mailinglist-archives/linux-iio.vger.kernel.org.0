@@ -2,159 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E974810E3
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 09:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C039F4810EB
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Dec 2021 09:25:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239247AbhL2ITY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Dec 2021 03:19:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37610 "EHLO
+        id S239288AbhL2IY7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Dec 2021 03:24:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231653AbhL2ITY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 03:19:24 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 355F5C061574;
-        Wed, 29 Dec 2021 00:19:24 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id mj19so17947558pjb.3;
-        Wed, 29 Dec 2021 00:19:24 -0800 (PST)
+        with ESMTP id S239301AbhL2IY6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Dec 2021 03:24:58 -0500
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17397C061574;
+        Wed, 29 Dec 2021 00:24:58 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id 8so17926631pgc.10;
+        Wed, 29 Dec 2021 00:24:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=zPn0YNREPKaJClRU8OUBuv5V6sERBqg4ufLucMLumk0=;
-        b=mgzk9DsAP0eR2g9ltO0Q8KG/EEd3W+u0rVeQ7HKBKvJW3pljnb8rh2yJ3/ojrUD1BT
-         SQyfMGWGPDaoNMgp6jDTxPloykAPJX18xYaMeLoB3u1OwUOPVacreMs6GqBFrSJBk+3Z
-         S51bnQpHj3MkOMUgvTMQhtKz/xzVQNzicpvms+Pz8QLGsR2Oy4fjUG47pelSmUoi2El0
-         3nHvf/b7nZcOsbCstq1DppY9ihBtCtzUQJErA0IiHyxrI0ph0HSAMWiArD8vrT2FMHIX
-         g6GCDfZOo2AvbLjt+Yd7Zk0bNwcEvG6QO2mdangBLDu7g1CgNvRx1GKo+tjFq3UcUMIe
-         /B3Q==
+        bh=QpP/fOriBZU5ALSsMR2nG6nas4HRpsPyxC6YF62Vx2c=;
+        b=j9uk9JUnpjUOt7dfQ0yEMwROmUlxswBEgQCdu4WYyUITfpiyc7auX0Pgn5fOV2R7ei
+         9JITfROw17uDqW5qsQ531P6n5elQei7UkzyhNUO84HQy9t7jkiXcjgWFk0d6v7WEk5Vx
+         ZNwRsg2aXzqeqVb9zv8pt66zlbdTHoR0FhYTRHqDXoWtFFnh9LhtDDLNcn+DuipaFqNo
+         2QSMe9G2Lq5e9QWLE4agY1yWk3dRaKZlF46nqOinBn9XwhRs9oFvBNmNxpeUUxUNFMnW
+         jaT70CyirQYjE8TY6a1rAsLhOF07OqKa7HD95qyPAzboke6/2MFzz3xk+mByESK0NHw5
+         DjUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=zPn0YNREPKaJClRU8OUBuv5V6sERBqg4ufLucMLumk0=;
-        b=zC+Ja5Q4EQIVICx+xdx/TEyDVlosJMTYpiRbiMH1IyB0U9DlJewRSrG7N+Wk/LSzmO
-         SVYG7VuE/26vyOlWbN3h3seUGxHSvUF7hdryyU9ilOTz8tgYT7VSztink7K45ttwmsf5
-         sX9ai50zZSKHy4es6yuNRqEHg8IkiDhennMTriofPxQJbYltxAvWgbd+YOm3lhd7enLe
-         YthgU1XyO6yZWx6DVZcaZnwlWQZ+FvCOzrxMabWG4ux50gyrURtjCDhb4153+7IiSey/
-         plEmeCYR1oB7OXDOGJjvnsxQz2plCpydL7W9X8uJYKQFeYU8FIotMW3+jgXI7mV/663u
-         hg7A==
-X-Gm-Message-State: AOAM5321NbGYsfzzgjEAJd4PsK01oZ9aNg+9uJloPo+jkQ6+qWe4xz4+
-        A4ICBfDTpjXZgWJvtJKn+xg=
-X-Google-Smtp-Source: ABdhPJzl70tcYj6SxenoavRIdG+UzS83FufJNpSHgFmxCilmYnGvctYhJblG/SxSlYdUMNP5HZMMAg==
-X-Received: by 2002:a17:90a:28c4:: with SMTP id f62mr30673551pjd.207.1640765963703;
-        Wed, 29 Dec 2021 00:19:23 -0800 (PST)
+        bh=QpP/fOriBZU5ALSsMR2nG6nas4HRpsPyxC6YF62Vx2c=;
+        b=gUhgdyPDt7LpTVs+1UuOzrLZYT7vCrbUiLtXQd+S1xAg7e7LUEB8cWs56fE8EYVMMx
+         GTsUfvq/i3NSHwSMlkV0iRkX2OrEBB3kaR1G/tEL83pu1Co5D1EP1QzKO1s3gahV0XOT
+         QwtXCpQ0x/6PovPhL+/OJBDKwtN7ukfB9WXdlSDOEg5eipAzdaus9D+iEdBNQfUOXs4l
+         Em4IYnhFNP86XSadQiw/hV+1DeYoLAiwRINflzLv0SWBiy+b6ElK5rJ3shFrz18vhGCT
+         TNQ84XI2yQIBIcAA+SUaEPuZG8KvHzJoRHeD/wRBDV+JNSorIqSlE0oiCujzyKsJKPBq
+         Lhlg==
+X-Gm-Message-State: AOAM532sDquvuRo4BW+NLj2qyad8gRVYGA9OE8wgZICWvCNuDmXTTawn
+        xNb9vsZEk+BWLm2jMu9/kQA=
+X-Google-Smtp-Source: ABdhPJwp4Mbfnq7k5Ae139Iz9pgVH9KiPzPlPjR/lvARyi1hXbsvcxB9aoQadOGHCvqwkKAgd57Dhg==
+X-Received: by 2002:a63:4b42:: with SMTP id k2mr22285997pgl.591.1640766297574;
+        Wed, 29 Dec 2021 00:24:57 -0800 (PST)
 Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id o11sm20885308pjs.9.2021.12.29.00.19.19
+        by smtp.gmail.com with ESMTPSA id h17sm18905710pfv.217.2021.12.29.00.24.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Dec 2021 00:19:23 -0800 (PST)
-Date:   Wed, 29 Dec 2021 17:19:16 +0900
+        Wed, 29 Dec 2021 00:24:56 -0800 (PST)
+Date:   Wed, 29 Dec 2021 17:24:50 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-iio@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 14/23] counter: Update documentation for new counter
- registration functions
-Message-ID: <YcwaBLxR5Q0u7Pbh@shinobu>
+        linux-kernel@vger.kernel.org,
+        Syed Nayyar Waris <syednwaris@gmail.com>
+Subject: Re: [PATCH v2 15/23] counter: 104-quad-8: Convert to new counter
+ registration
+Message-ID: <YcwbUmZSeyH7rCu8@shinobu>
 References: <20211227094526.698714-1-u.kleine-koenig@pengutronix.de>
- <20211227094526.698714-15-u.kleine-koenig@pengutronix.de>
- <20211228181222.72ab998c@jic23-huawei>
+ <20211227094526.698714-16-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="geXJ3MLhspaaBqeG"
+        protocol="application/pgp-signature"; boundary="b0Pn/YUYWlXUcX5U"
 Content-Disposition: inline
-In-Reply-To: <20211228181222.72ab998c@jic23-huawei>
+In-Reply-To: <20211227094526.698714-16-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---geXJ3MLhspaaBqeG
+--b0Pn/YUYWlXUcX5U
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 28, 2021 at 06:12:22PM +0000, Jonathan Cameron wrote:
-> On Mon, 27 Dec 2021 10:45:17 +0100
-> Uwe Kleine-K=C3=B6nig         <u.kleine-koenig@pengutronix.de> wrote:
+On Mon, Dec 27, 2021 at 10:45:18AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> This fixes device lifetime issues where it was possible to free a live
+> struct device.
 >=20
-> > In order to replace the counter registration API also update the
-> > documentation to the new way.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> Fine either way, but a suggestion below.
->=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> > ---
-> >  Documentation/driver-api/generic-counter.rst | 10 +++++-----
-> >  1 file changed, 5 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/Documentation/driver-api/generic-counter.rst b/Documentati=
-on/driver-api/generic-counter.rst
-> > index 1b487a331467..991b180c7b47 100644
-> > --- a/Documentation/driver-api/generic-counter.rst
-> > +++ b/Documentation/driver-api/generic-counter.rst
-> > @@ -262,11 +262,11 @@ order to communicate with the device: to read and=
- write various Signals
-> >  and Counts, and to set and get the "action mode" and "function mode" f=
-or
-> >  various Synapses and Counts respectively.
-> > =20
-> > -A defined counter_device structure may be registered to the system by
-> > -passing it to the counter_register function, and unregistered by passi=
-ng
-> > -it to the counter_unregister function. Similarly, the
-> > -devm_counter_register function may be used if device memory-managed
-> > -registration is desired.
-> > +A counter_device structure is supposed to be allocated using counter_a=
-lloc()
-> > +and may be registered to the system by passing it to the counter_add()
-> > +function, and unregistered by passing it to the counter_unregister fun=
-ction.
->=20
-> I'd avoid the supposed to and the odd vague use of structure in the origin
-> text and just go with
->=20
-> A struct counter_device is allocated using counter_alloc()...
-
-I like this simpler wording as well.
+> Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface =
+support")
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
 Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
+> ---
+>  drivers/counter/104-quad-8.c | 30 +++++++++++++++++-------------
+>  1 file changed, 17 insertions(+), 13 deletions(-)
 >=20
->=20
-> > +There are device managed variants of these functions: devm_counter_all=
-oc() and
-> > +devm_counter_add().
-> > =20
-> >  The struct counter_comp structure is used to define counter extensions
-> >  for Signals, Synapses, and Counts.
+> diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+> index 6e5286cd1d4e..4315b14f239e 100644
+> --- a/drivers/counter/104-quad-8.c
+> +++ b/drivers/counter/104-quad-8.c
+> @@ -52,7 +52,6 @@ MODULE_PARM_DESC(irq, "ACCES 104-QUAD-8 interrupt line =
+numbers");
+>   */
+>  struct quad8 {
+>  	spinlock_t lock;
+> -	struct counter_device counter;
+>  	unsigned int fck_prescaler[QUAD8_NUM_COUNTERS];
+>  	unsigned int preset[QUAD8_NUM_COUNTERS];
+>  	unsigned int count_mode[QUAD8_NUM_COUNTERS];
+> @@ -1127,6 +1126,7 @@ static irqreturn_t quad8_irq_handler(int irq, void =
+*private)
+> =20
+>  static int quad8_probe(struct device *dev, unsigned int id)
+>  {
+> +	struct counter_device *counter;
+>  	struct quad8 *priv;
+>  	int i, j;
+>  	unsigned int base_offset;
+> @@ -1138,19 +1138,19 @@ static int quad8_probe(struct device *dev, unsign=
+ed int id)
+>  		return -EBUSY;
+>  	}
+> =20
+> -	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> -	if (!priv)
+> +	counter =3D devm_counter_alloc(dev, sizeof(*priv));
+> +	if (!counter)
+>  		return -ENOMEM;
+> +	priv =3D counter_priv(counter);
+> =20
+>  	/* Initialize Counter device and driver data */
+> -	priv->counter.name =3D dev_name(dev);
+> -	priv->counter.parent =3D dev;
+> -	priv->counter.ops =3D &quad8_ops;
+> -	priv->counter.counts =3D quad8_counts;
+> -	priv->counter.num_counts =3D ARRAY_SIZE(quad8_counts);
+> -	priv->counter.signals =3D quad8_signals;
+> -	priv->counter.num_signals =3D ARRAY_SIZE(quad8_signals);
+> -	priv->counter.priv =3D priv;
+> +	counter->name =3D dev_name(dev);
+> +	counter->parent =3D dev;
+> +	counter->ops =3D &quad8_ops;
+> +	counter->counts =3D quad8_counts;
+> +	counter->num_counts =3D ARRAY_SIZE(quad8_counts);
+> +	counter->signals =3D quad8_signals;
+> +	counter->num_signals =3D ARRAY_SIZE(quad8_signals);
+>  	priv->base =3D base[id];
+> =20
+>  	spin_lock_init(&priv->lock);
+> @@ -1192,11 +1192,15 @@ static int quad8_probe(struct device *dev, unsign=
+ed int id)
+>  	outb(QUAD8_CHAN_OP_ENABLE_INTERRUPT_FUNC, base[id] + QUAD8_REG_CHAN_OP);
+> =20
+>  	err =3D devm_request_irq(dev, irq[id], quad8_irq_handler, IRQF_SHARED,
+> -			       priv->counter.name, priv);
+> +			       counter->name, priv);
+>  	if (err)
+>  		return err;
+> =20
+> -	return devm_counter_register(dev, &priv->counter);
+> +	err =3D devm_counter_add(dev, counter);
+> +	if (err < 0)
+> +		return dev_err_probe(dev, err, "Failed to add counter\n");
+> +
+> +	return 0;
+>  }
+> =20
+>  static struct isa_driver quad8_driver =3D {
+> --=20
+> 2.33.0
 >=20
 
---geXJ3MLhspaaBqeG
+--b0Pn/YUYWlXUcX5U
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMGgMACgkQhvpINdm7
-VJKEHxAAiM4FpOf1LHAPzY0VW7ZrYmEIyT1WH9atJ4dbXN8JeDRS6OklfZfHcH07
-ZYjulTVrOKg3dEWSil6xQqESAj8tSVtrfotEM8VOD+4x+v0pXGU7u2tgBnlEPcP1
-cB1ze+RvUqGO584fStC81q4huvosT9Jnd/iSd/XzGBVeOj2AY2r0dQjGQygLNuk2
-M2gGv+jvF7ZbZNoqXBl/GlHLuLTeiEcoOXL5YG2d2p7grHUpIPWhPZIsqTS+LjcI
-4oiSKx3MXlYfDYCKmQrIuocOLowkB3rLUAmsBLjOR9SCOqQq/spQeRhzWGQYjEwZ
-E2IB+6F6xQBAzq6wzMjtkRqjUdtJtg/4hFVouaf3PkTB/QVBrSOIeFd7jVPbZaIy
-+4kedob1brY0mxLiOE7Z0cGzNS/Hn0UnwZhduvEaGZLh1rVlIWDQnLLf7NdGpraz
-oVnhEkZGsGzp9TUZdT84E5LDoAHnrTWHr41VmtneIPH1yMiQIi6XrAmGABnolbJR
-8rq5Ob915k9U6A6bfQf6XwLGhZPKNBm0BnxBYr5JcfaXEVdX99TmkQPlA4N4+zpC
-pJ5NeZlHEsnj8JtjKFDPX5Us0zPOTd3lBuirkVLnLf423d5QzPyDgj57ripIT+ZN
-gw2m4kENozFwiRX0cwPzxbbSqTZh1ZBqWsNBZ/IfSMnK7rnewVo=
-=2iIA
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHMG1IACgkQhvpINdm7
+VJKviA//TFuL86vhMGP/85sfUOR24yFk8nS6XilVQIUQ2914ptmh7slh9ozIkcQd
+xdt2Ji35skjmPDhvoHSb6fj3q69E8gqrD3F9vEpcuKToj61xD1ZxbpIzDV5Hw8xP
+dL3bCH4ol/UMH2Bnz+9iIWpG2o3sTKTnyhDElsNwEHjzsAXoftXlZVqCs8ZudQxc
+zjnVxc3Lnh+OtqRKctedUM3veucgA4Vm11bDypUvLyi/5eT2Hc2IFUbQ0i8mW16H
+21T2GyTb1NVQahMMk3Pl8HB0AZAn/C/Iw1MPZBoUULj0E7fh0eZm514XCKXGLkSj
++Cw15z+Yj32dXXiOnzY0fyNJjGdFxyi/mtC0dJOky3OWfsUGQZe+Y7LxgZcGP8gg
+ikGIaMMtQHJZt5UY4LHwOy88DIi4pMbPv72CR5XdbrVSxKCJzjzJJ4qNQ+zhk0pj
+CHIoswJ7cdVb++7Hx4BLpjr8YxlKwPt72XVwqIGhdZOTNaUs4/9JrIDLI1y1tyW8
+iW/fCdcgMD9p+ylnnWE3HTLUkttZKLs+bx0VdcZTOE4seDr6HKTBh595r9b4BFNY
+PrOL25inHSplnYqqmcePK5NA0HGGoD+zpAlKKeYDmhY7azEF/sVl0ygqb/yGBN+j
+RIR3mduv+H085Qld5iB6Bz136CG5Tuz6ysAdK8M8iRZkLipTAc4=
+=02za
 -----END PGP SIGNATURE-----
 
---geXJ3MLhspaaBqeG--
+--b0Pn/YUYWlXUcX5U--

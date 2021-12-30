@@ -2,77 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44048481E51
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 17:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BBF481E9F
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 18:31:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241347AbhL3Qpi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Dec 2021 11:45:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41368 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240031AbhL3Qph (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 11:45:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C112C061574;
-        Thu, 30 Dec 2021 08:45:37 -0800 (PST)
+        id S233688AbhL3RbD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Dec 2021 12:31:03 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:58074 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231702AbhL3RbC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 12:31:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25EB3616FF;
-        Thu, 30 Dec 2021 16:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA4DC36AE9;
-        Thu, 30 Dec 2021 16:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640882736;
-        bh=kdssX1byXxDeDWcE2+JpAQwaEjllqvPxeFbjcqxyKuU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cfVYl6pPHWLruTmlhVrgr4GdkrFUU8Felvxf5zxVCjLfhmZVqAhgQeOlJbl3kKuUL
-         wiCseSwR5Btl1bKASzhEJ5fqZwEe7SOxg0Wg7sVvXA5m5LLCfkOqREOo5aB2FlPD0Q
-         gZFsvDyxOTQaBpj4LnoUfM8WB/+1naA/yILoUg84=
-Date:   Thu, 30 Dec 2021 17:44:41 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Patrick Havelange <patrick.havelange@essensium.com>,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Syed Nayyar Waris <syednwaris@gmail.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Raymond Tan <raymond.tan@intel.com>,
-        "Felipe Balbi (Intel)" <balbi@kernel.org>,
-        David Lechner <david@lechnology.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 00/23] counter: cleanups and device lifetime fixes
-Message-ID: <Yc3h+fROLZwTFoOU@kroah.com>
-References: <20211230150300.72196-1-u.kleine-koenig@pengutronix.de>
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0854ACE1C36
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 17:31:01 +0000 (UTC)
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.kernel.org (Postfix) with ESMTPSA id 15D83C36AE7
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 17:30:57 +0000 (UTC)
+Date:   Thu, 30 Dec 2021 17:36:39 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Subject: IIO tree closed for new stuff for 5.17.
+Message-ID: <20211230173639.578663b6@jic23-huawei>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211230150300.72196-1-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Dec 30, 2021 at 04:02:37PM +0100, Uwe Kleine-König wrote:
-> Hello,
-> 
-> On Thu, Dec 30, 2021 at 02:19:25PM +0100, Greg Kroah-Hartman wrote:
-> > Please rebase and resend the series against my char-misc-next branch.
-> 
-> this series is just v3 taken via b4 to collect the latest acks into
-> account and then rebased to Greg's char-misc-next.
+Hi all,
 
-That worked, now queued up.
+As the 5.17b pull request stated, I've taken a somewhat
+conservative view of patches that came in very close to or during
+the holidays that affect some IIO reviewers and contributors.
 
-thanks,
+Anyhow, anything other than fixes will now being 5.18 material.
+As such I've been a bit slow replying to some patch series and will catch up
+with outstanding stuff before the merge window closes.
 
-greg k-h
+There are some fixes already on the list, and I'll look to gather
+those up for a pull just after rc1.
+
+Thanks and Happy New Year.
+
+Jonathan

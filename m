@@ -2,101 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9B4D481C6D
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 14:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FFEA481D49
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 15:52:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239546AbhL3NTk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Dec 2021 08:19:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
+        id S231915AbhL3Owu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 30 Dec 2021 09:52:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233897AbhL3NTf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 08:19:35 -0500
+        with ESMTP id S229912AbhL3Ows (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 09:52:48 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8762C061574;
-        Thu, 30 Dec 2021 05:19:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC91C061574;
+        Thu, 30 Dec 2021 06:52:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 60B4F616D2;
-        Thu, 30 Dec 2021 13:19:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44040C36AEA;
-        Thu, 30 Dec 2021 13:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1640870373;
-        bh=ZOW008UJxd8/AHVoXx1p3xvPXuC7Bcr4U9YOzazELzY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yefZIJhLqQoPxRVrtzVS2XI6CWTOLdgHEkGZephF+fcWsaAhx86SlxW0FYu5k/KR4
-         m3Ux9ZtzrNymhHYq8ReOFS88MynDYPgfEIejoPAeT9Pfg+u8yS4lD/keqv5OC1hGH+
-         Zt0NDEmAo0xXhoWJXWRUtmmzKO6qIF9asqKFp7Hk=
-Date:   Thu, 30 Dec 2021 14:19:25 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE033616F1;
+        Thu, 30 Dec 2021 14:52:47 +0000 (UTC)
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.kernel.org (Postfix) with ESMTPSA id 290A5C36AE9;
+        Thu, 30 Dec 2021 14:52:40 +0000 (UTC)
+Date:   Thu, 30 Dec 2021 14:58:26 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
         <u.kleine-koenig@pengutronix.de>
 Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        linux-iio@vger.kernel.org, kernel@pengutronix.de,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        David Lechner <david@lechnology.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Syed Nayyar Waris <syednwaris@gmail.com>
-Subject: Re: [PATCH v3 05/23] counter: 104-quad-8: Convert to counter_priv()
- wrapper
-Message-ID: <Yc2x3ffQN05tcTrO@kroah.com>
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Subject: Re: [PATCH v3 00/23] counter: cleanups and device lifetime fixes
+Message-ID: <20211230145826.7f23becb@jic23-huawei>
+In-Reply-To: <20211230085351.pywngltvdam25emx@pengutronix.de>
 References: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
- <20211229154441.38045-6-u.kleine-koenig@pengutronix.de>
+        <20211230085351.pywngltvdam25emx@pengutronix.de>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211229154441.38045-6-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 29, 2021 at 04:44:23PM +0100, Uwe Kleine-König wrote:
-> This is a straight forward conversion to the new counter_priv() wrapper.
+On Thu, 30 Dec 2021 09:53:51 +0100
+Uwe Kleine-KÃ¶nig <u.kleine-koenig@pengutronix.de> wrote:
+
+> Hello,
 > 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/counter/104-quad-8.c | 58 ++++++++++++++++++------------------
->  1 file changed, 29 insertions(+), 29 deletions(-)
+> On Wed, Dec 29, 2021 at 04:44:18PM +0100, Uwe Kleine-KÃ¶nig wrote:
+> > this is v3 of my series to fix device lifetime issues in the counter
+> > framework. This hopefully addresses all things pointed out for v2.
+> > 
+> > Note this depends on 60f07e74f86b (which is in next) now. Full diffstat
+> > below.
+> > 
+> > Things that could be further improved:
+> > 
+> > [...]
+> > 
+> > Uwe Kleine-KÃ¶nig (23):
+> >   counter: Use container_of instead of drvdata to track counter_device
+> >   counter: ftm-quaddec: Drop unused platform_set_drvdata()
+> >   counter: microchip-tcb-capture: Drop unused platform_set_drvdata()
+> >   counter: Provide a wrapper to access device private data
+> >   counter: 104-quad-8: Convert to counter_priv() wrapper
+> >   counter: interrupt-cnt: Convert to counter_priv() wrapper
+> >   counter: microchip-tcb-capture: Convert to counter_priv() wrapper
+> >   counter: intel-qep: Convert to counter_priv() wrapper
+> >   counter: ftm-quaddec: Convert to counter_priv() wrapper
+> >   counter: ti-eqep: Convert to counter_priv() wrapper
+> >   counter: stm32-lptimer-cnt: Convert to counter_priv() wrapper
+> >   counter: stm32-timer-cnt: Convert to counter_priv() wrapper
+> >   counter: Provide alternative counter registration functions
+> >   counter: Update documentation for new counter registration functions
+> >   counter: 104-quad-8: Convert to new counter registration
+> >   counter: interrupt-cnt: Convert to new counter registration
+> >   counter: intel-qep: Convert to new counter registration
+> >   counter: ftm-quaddec: Convert to new counter registration
+> >   counter: microchip-tcb-capture: Convert to new counter registration
+> >   counter: stm32-timer-cnt: Convert to new counter registration
+> >   counter: stm32-lptimer-cnt: Convert to new counter registration
+> >   counter: ti-eqep: Convert to new counter registration
+> >   counter: remove old and now unused registration API
+> > 
+> >  Documentation/driver-api/generic-counter.rst |  10 +-
+> >  drivers/counter/104-quad-8.c                 |  93 +++++-----
+> >  drivers/counter/counter-core.c               | 186 ++++++++++++++-----
+> >  drivers/counter/ftm-quaddec.c                |  36 ++--
+> >  drivers/counter/intel-qep.c                  |  46 ++---
+> >  drivers/counter/interrupt-cnt.c              |  38 ++--
+> >  drivers/counter/microchip-tcb-capture.c      |  44 ++---
+> >  drivers/counter/stm32-lptimer-cnt.c          |  51 ++---
+> >  drivers/counter/stm32-timer-cnt.c            |  48 ++---
+> >  drivers/counter/ti-eqep.c                    |  31 ++--
+> >  include/linux/counter.h                      |  15 +-
+> >  11 files changed, 356 insertions(+), 242 deletions(-)
+> > 
+> > Range-diff against v2:
+> > [...]
+> > 
+> > base-commit: a7904a538933c525096ca2ccde1e60d0ee62c08e
+> > prerequisite-patch-id: 9459ad8bc78190558df9123f8bebe28ca1c396ea  
+> 
+> All patches have a blessing by at least one of William and Jonathan.
 
-This patch fails to apply to my tree:
+For future reference (may be fine this time) William has final say on counter
+stuff as the maintainer so treat my input as just another set of eyes.
 
-checking file drivers/counter/104-quad-8.c
-Hunk #1 succeeded at 112 (offset -1 lines).
-Hunk #2 succeeded at 130 (offset -1 lines).
-Hunk #3 succeeded at 162 (offset -1 lines).
-Hunk #4 succeeded at 212 (offset -1 lines).
-Hunk #5 succeeded at 242 (offset -1 lines).
-Hunk #6 succeeded at 304 (offset -1 lines).
-Hunk #7 succeeded at 334 (offset -1 lines).
-Hunk #8 succeeded at 397 with fuzz 1 (offset -2 lines).
-Hunk #9 FAILED at 442.
-Hunk #10 succeeded at 495 (offset -2 lines).
-Hunk #11 succeeded at 507 (offset -2 lines).
-Hunk #12 succeeded at 536 (offset -2 lines).
-Hunk #13 succeeded at 548 (offset -2 lines).
-Hunk #14 succeeded at 587 (offset -2 lines).
-Hunk #15 succeeded at 612 (offset -2 lines).
-Hunk #16 succeeded at 659 (offset -2 lines).
-Hunk #17 succeeded at 669 (offset -2 lines).
-Hunk #18 succeeded at 697 (offset -2 lines).
-Hunk #19 succeeded at 708 (offset -2 lines).
-Hunk #20 succeeded at 734 (offset -2 lines).
-Hunk #21 succeeded at 753 (offset -2 lines).
-Hunk #22 succeeded at 778 (offset -2 lines).
-Hunk #23 succeeded at 805 (offset -2 lines).
-Hunk #24 succeeded at 816 (offset -2 lines).
-Hunk #25 succeeded at 843 (offset -2 lines).
-Hunk #26 succeeded at 873 (offset -2 lines).
-Hunk #27 succeeded at 885 (offset -2 lines).
-Hunk #28 succeeded at 911 (offset -2 lines).
-Hunk #29 succeeded at 922 (offset -2 lines).
-1 out of 29 hunks FAILED
+Anyhow, plenty of time for any necessary fixes during the RCs so shouldn't
+be a problem.
 
-Please rebase and resend the series against my char-misc-next branch.
+Jonathan
 
-thanks,
 
-greg k-h
+> The prerequisite commit (60f07e74f86b) is in Greg's char-misc-next branch.
+> 
+> Assuming noone still finds a problem in this series that requires me to
+> respin I wonder who will pick it up? Greg?
+> 
+> Given that it fixes a possible use-after-free in all counter drivers,
+> I'd like to see it hit before v5.17-rc1. For 5.16 it's probably too
+> late.
+> 
+> Best regards
+> Uwe
+> 
+

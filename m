@@ -2,40 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D87481FE3
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 20:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C87A481FE4
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 20:28:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241898AbhL3T2I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Dec 2021 14:28:08 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:44128 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241904AbhL3T2I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 14:28:08 -0500
+        id S241943AbhL3T2L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Dec 2021 14:28:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49412 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241904AbhL3T2L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 14:28:11 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE46C061574
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 11:28:10 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 50756B81741
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 19:28:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E47FC36AE7;
-        Thu, 30 Dec 2021 19:28:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 972CAB81741
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 19:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE948C36AE9;
+        Thu, 30 Dec 2021 19:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640892486;
-        bh=FvFvBQk/9GlForEkyDRpjEsfEFlyhZv7cRUsPGDCNA0=;
+        s=k20201202; t=1640892488;
+        bh=ZUmNdhr6+YB0CqItQ2IhziY3TGgGKjlQf6JjbT+lwsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jiz4k+ARhcXYMqv2AOpmJFVld7E7g06RvJunDYQGAuZ5qDGmswBurJu3LGMdBNJQk
-         NFB+O8T9wSmChp9x7MDv2BEt0ft74TQOLq5YFjWahECvD8Vns3Wn1yfGFfWCH//9j+
-         Xbz7zg76Rk14TkzhPFDvmSxJOKkvyHccDhmj5HGStKr7VPi3AXCsJKtxS498m2gyX5
-         DgVrvYGirWaC2rKK7uKdugu5xEORM1BmuCML3+1KtLFsrYIdz5nahiUKhvUTcUnxhU
-         mvhrLqrP9hzuLJJwzS2BEJn1M7wu4FwfnV+7Uv+WSVGzYEfOC2Dd6hSdB2/q5EdmJp
-         UD1/jvqNpJRig==
+        b=AEUHtfDXySs/GJTl0GscwC5SCe27E0vJFg++tXXDJ7kSZCX4x0hsFlomLSkmB7OM1
+         IHk51Olg/I2LHFeFtt26+uKnGDAYAHG2Ogjvhfv5/Yp3IuvECwzyKsprk5c9+FmCOq
+         avZbvv4bbI9X3uQiZgukGGROVpa4ggMpodbdxOucmBJHJAOZb2iA42CjOAtiHN9u1/
+         AQ05Pwq1ixgJti8uXWr8AItIwx9FfPjV+bRh+ICBBH4GWjCUTpwBGprMHYVD3aJcYB
+         YjTUm9YF+rb5DPcojwKTlwtFUyZNupUkDYZcfyjaQqMq4Eh8u8Qj1XxcrtZzA5GG7V
+         rMiKQQsSdyx4A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/13] iio:accel:adxl372: Move exports into ADXL372 namespace
-Date:   Thu, 30 Dec 2021 19:33:26 +0000
-Message-Id: <20211230193331.283503-9-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH 09/13] iio:accel:bmc150: Move exports into BMC150 namespace
+Date:   Thu, 30 Dec 2021 19:33:27 +0000
+Message-Id: <20211230193331.283503-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211230193331.283503-1-jic23@kernel.org>
 References: <20211230193331.283503-1-jic23@kernel.org>
@@ -54,52 +58,71 @@ bus modules.
 For more info see https://lwn.net/Articles/760045/
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 ---
- drivers/iio/accel/adxl372.c     | 4 ++--
- drivers/iio/accel/adxl372_i2c.c | 1 +
- drivers/iio/accel/adxl372_spi.c | 1 +
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/accel/bmc150-accel-core.c | 8 ++++----
+ drivers/iio/accel/bmc150-accel-i2c.c  | 1 +
+ drivers/iio/accel/bmc150-accel-spi.c  | 1 +
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-index 758952584f8c..dde6a6ead746 100644
---- a/drivers/iio/accel/adxl372.c
-+++ b/drivers/iio/accel/adxl372.c
-@@ -1176,7 +1176,7 @@ bool adxl372_readable_noinc_reg(struct device *dev, unsigned int reg)
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index e6081dd0a880..711928d626c5 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -203,7 +203,7 @@ const struct regmap_config bmc150_regmap_conf = {
+ 	.val_bits = 8,
+ 	.max_register = 0x3f,
+ };
+-EXPORT_SYMBOL_GPL(bmc150_regmap_conf);
++EXPORT_SYMBOL_NS_GPL(bmc150_regmap_conf, BMC150);
+ 
+ static int bmc150_accel_set_mode(struct bmc150_accel_data *data,
+ 				 enum bmc150_power_modes mode,
+@@ -1798,7 +1798,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(bmc150_accel_core_probe);
++EXPORT_SYMBOL_NS_GPL(bmc150_accel_core_probe, BMC150);
+ 
+ void bmc150_accel_core_remove(struct device *dev)
  {
- 	return (reg == ADXL372_FIFO_DATA);
+@@ -1821,7 +1821,7 @@ void bmc150_accel_core_remove(struct device *dev)
+ 	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
+ 			       data->regulators);
  }
--EXPORT_SYMBOL_GPL(adxl372_readable_noinc_reg);
-+EXPORT_SYMBOL_NS_GPL(adxl372_readable_noinc_reg, ADXL372);
+-EXPORT_SYMBOL_GPL(bmc150_accel_core_remove);
++EXPORT_SYMBOL_NS_GPL(bmc150_accel_core_remove, BMC150);
  
- int adxl372_probe(struct device *dev, struct regmap *regmap,
- 		  int irq, const char *name)
-@@ -1260,7 +1260,7 @@ int adxl372_probe(struct device *dev, struct regmap *regmap,
+ #ifdef CONFIG_PM_SLEEP
+ static int bmc150_accel_suspend(struct device *dev)
+@@ -1896,7 +1896,7 @@ const struct dev_pm_ops bmc150_accel_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(bmc150_accel_runtime_suspend,
+ 			   bmc150_accel_runtime_resume, NULL)
+ };
+-EXPORT_SYMBOL_GPL(bmc150_accel_pm_ops);
++EXPORT_SYMBOL_NS_GPL(bmc150_accel_pm_ops, BMC150);
  
- 	return devm_iio_device_register(dev, indio_dev);
- }
--EXPORT_SYMBOL_GPL(adxl372_probe);
-+EXPORT_SYMBOL_NS_GPL(adxl372_probe, ADXL372);
- 
- MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
- MODULE_DESCRIPTION("Analog Devices ADXL372 3-axis accelerometer driver");
-diff --git a/drivers/iio/accel/adxl372_i2c.c b/drivers/iio/accel/adxl372_i2c.c
-index 9a07ab3d151a..62ade11a0def 100644
---- a/drivers/iio/accel/adxl372_i2c.c
-+++ b/drivers/iio/accel/adxl372_i2c.c
-@@ -67,3 +67,4 @@ module_i2c_driver(adxl372_i2c_driver);
- MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
- MODULE_DESCRIPTION("Analog Devices ADXL372 3-axis accelerometer I2C driver");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(ADXL372);
-diff --git a/drivers/iio/accel/adxl372_spi.c b/drivers/iio/accel/adxl372_spi.c
-index 1f1352fee99a..a7b49fbfa520 100644
---- a/drivers/iio/accel/adxl372_spi.c
-+++ b/drivers/iio/accel/adxl372_spi.c
-@@ -59,3 +59,4 @@ module_spi_driver(adxl372_spi_driver);
- MODULE_AUTHOR("Stefan Popa <stefan.popa@analog.com>");
- MODULE_DESCRIPTION("Analog Devices ADXL372 3-axis accelerometer SPI driver");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(ADXL372);
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/accel/bmc150-accel-i2c.c b/drivers/iio/accel/bmc150-accel-i2c.c
+index 9e52df9a8f07..e5d10e7be332 100644
+--- a/drivers/iio/accel/bmc150-accel-i2c.c
++++ b/drivers/iio/accel/bmc150-accel-i2c.c
+@@ -280,3 +280,4 @@ module_i2c_driver(bmc150_accel_driver);
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("BMC150 I2C accelerometer driver");
++MODULE_IMPORT_NS(BMC150);
+diff --git a/drivers/iio/accel/bmc150-accel-spi.c b/drivers/iio/accel/bmc150-accel-spi.c
+index 11559567cb39..e6d05f3625b7 100644
+--- a/drivers/iio/accel/bmc150-accel-spi.c
++++ b/drivers/iio/accel/bmc150-accel-spi.c
+@@ -84,3 +84,4 @@ module_spi_driver(bmc150_accel_driver);
+ MODULE_AUTHOR("Markus Pargmann <mpa@pengutronix.de>");
+ MODULE_LICENSE("GPL v2");
+ MODULE_DESCRIPTION("BMC150 SPI accelerometer driver");
++MODULE_IMPORT_NS(BMC150);
 -- 
 2.34.1
 

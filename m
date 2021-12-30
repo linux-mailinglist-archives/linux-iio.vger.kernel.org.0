@@ -2,153 +2,261 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7EC481992
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 06:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A520481AC5
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 09:38:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbhL3FPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Dec 2021 00:15:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58718 "EHLO
+        id S237763AbhL3IiY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Dec 2021 03:38:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231319AbhL3FPb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 00:15:31 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86C39C06173E
-        for <linux-iio@vger.kernel.org>; Wed, 29 Dec 2021 21:15:31 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id x6so28197214iol.13
-        for <linux-iio@vger.kernel.org>; Wed, 29 Dec 2021 21:15:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qxGE0+rjWPjDYY2GkTmBJ28xwLSzN3QC/S2I0pikjnw=;
-        b=KGXrrchcqSZzKbrql1zzJa10QeGbK4BYWs6kiUQSzs4jXvx+DgQQorCwrshKlk/9wp
-         reTwDgainibD2qkXC6fhWGXmOVK2j8rlTKpPWETxA5gOkntojjBaxkiw5Hz49cCv9AEC
-         2PwxaRS2ZBTINO7+MVrPMRBlvUAmkg2OxgFkM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qxGE0+rjWPjDYY2GkTmBJ28xwLSzN3QC/S2I0pikjnw=;
-        b=LKd4jwTEzC5w5f6d5mSmL8mO1ro52TQ8rne/0fR9vzpYFZRF04O0vpKkI87l+j4Xar
-         MkCwjZvVr3FPpssVtLK/tecH/jCxmZiSAVla5XTruduRAnWy0NrH5QLQ89kxEJ1rzhUK
-         kiAMGrOuuo3G9TDiFdvzUp9T6Ue4r3WQJGb6Lq+kCX6QMKdpMP1B6ZF3XjRmpMSqiPcp
-         JnOk/GcEckJnsqq1tHpjbhB6tl0j5Ud367IS2shTJndjuI2bT9AfyK7X2kTU47iyULxF
-         ie/3GTRYSztcyUCBGrpxvHZcc1If2tAMLlX/pCl2YOHKfmSxC8awCLgKl5XIh8rbRh0s
-         XgQQ==
-X-Gm-Message-State: AOAM531mrYECLzxb2ikBuuLw6kNFRNCCQAnuFUGUFR3+MEE7VSf8p8rD
-        ahlZ5VVOF/KZFwEPUkmfOCZFdX5S9RFZl8qQOfmbOO3vMKQ=
-X-Google-Smtp-Source: ABdhPJzKVKzpsHiEmUY8cW4kURWwcpzUUDm1ytTFXI9lXD4E/iijmJwBCLDkJorIjXIkOz5pp2r5uBb5PNE6NUX5QBA=
-X-Received: by 2002:a05:6638:23a:: with SMTP id f26mr13421651jaq.222.1640841330579;
- Wed, 29 Dec 2021 21:15:30 -0800 (PST)
-MIME-Version: 1.0
-References: <20211218002705.3099096-1-gwendal@chromium.org>
- <20211218002705.3099096-2-gwendal@chromium.org> <20211221130019.36b12ac2@jic23-huawei>
-In-Reply-To: <20211221130019.36b12ac2@jic23-huawei>
-From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Wed, 29 Dec 2021 21:15:18 -0800
-Message-ID: <CAPUE2uvKyP9FUDEYGOg8gu1b08x2h2ZQAgOXFDX2QRRjne3M-Q@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] iio: proximity: Add sx9360 support
+        with ESMTP id S231140AbhL3IiY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 03:38:24 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9859C061574
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 00:38:23 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n2qx2-0008SW-Vl; Thu, 30 Dec 2021 09:38:21 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n2qx0-007S9d-5b; Thu, 30 Dec 2021 09:38:17 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n2qwz-0004Fr-3F; Thu, 30 Dec 2021 09:38:17 +0100
+Date:   Thu, 30 Dec 2021 09:38:13 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, swboyd@chromium.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     linux-iio@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 13/23] counter: Provide alternative counter
+ registration functions
+Message-ID: <20211230083813.ucalnkvmct7uc2rm@pengutronix.de>
+References: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
+ <20211229154441.38045-14-u.kleine-koenig@pengutronix.de>
+ <20211229170612.1dffa818@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="25ghiofyk574a42m"
+Content-Disposition: inline
+In-Reply-To: <20211229170612.1dffa818@jic23-huawei>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 21, 2021 at 4:54 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Fri, 17 Dec 2021 16:27:03 -0800
-> Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> > A simplified version of SX9324, it only have one pin and
-> > 2 phases (aka channels).
-> > Only one event is presented.
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> > Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-> > ---
-> > Changes since v3:
-> > - Remove "reference" as a new modifier: it is not needed, indexed
-> >   channels and labels are used instead.
-> > - Use dev_get_drvdata to access iio device structure.
-> > - Use already calculated local variable
-> > - Use default: clause to return when possible.
-> >
-> > Changes since v2:
-> > - Fix issues reported during sx9324 driver review:
-> >   - fix include with iwyu
-> >   - Remove call to ACPI_PTR to prevent unused variable warning.
-> > - Fix panic when setting frequency to 0.
-> > - Add offset to decipher interrupt register
-> > - Fix default register value.
-> >
-> > Changes since v1:
-> > - Remove SX9360_DRIVER_NAME
-> > - Simplify whoami function
-> > - Define WHOAMI register value internally.
-> > - Handle negative values when setting sysfs parameters.
-> >
-> >  drivers/iio/proximity/Kconfig  |  14 +
-> >  drivers/iio/proximity/Makefile |   1 +
-> >  drivers/iio/proximity/sx9360.c | 816 +++++++++++++++++++++++++++++++++
-> >  3 files changed, 831 insertions(+)
-> >  create mode 100644 drivers/iio/proximity/sx9360.c
-> >
-> Hi Gwendal,
->
-> A few trivial things that I'd just have tidied up whilst applying except
-> that this is dependent on the earlier series anyway so I can't apply yet.
->
+
+--25ghiofyk574a42m
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hello Jonathan,
+
+On Wed, Dec 29, 2021 at 05:06:12PM +0000, Jonathan Cameron wrote:
+> On Wed, 29 Dec 2021 16:44:31 +0100
+> Uwe Kleine-K=F6nig         <u.kleine-koenig@pengutronix.de> wrote:
+>=20
+> > The current implementation gets device lifetime tracking wrong. The
+> > problem is that allocation of struct counter_device is controlled by the
+> > individual drivers but this structure contains a struct device that
+> > might have to live longer than a driver is bound. As a result a command
+> > sequence like:
+> >=20
+> > 	{ sleep 5; echo bang; } > /dev/counter0 &
+> > 	sleep 1;
+> > 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-co=
+unter/unbind
+> >=20
+> > can keep a reference to the struct device and unbinding results in
+> > freeing the memory occupied by this device resulting in an oops.
+> >=20
+> > This commit provides two new functions (plus some helpers):
+> >  - counter_alloc() to allocate a struct counter_device that is
+> >    automatically freed once the embedded struct device is released
+> >  - counter_add() to register such a device.
+> >=20
+> > Note that this commit doesn't fix any issues, all drivers have to be
+> > converted to these new functions to correct the lifetime problems.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Basically fine - a few trivial comments inline that I'm not that fussed
+> about whether you take notice of or not. As such
+>=20
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Thanks.
+
+> I'd have liked to have seen a change log here. Quite a few comments on th=
+is
+> one and not all had 'obvious' resolutions.
+
+yeah, should have been a bit less lazy and comment a bit more than the
+range diff in the cover letter.
+
+To catch up:
+
+ - privdata is now cache line aligned
+ - consistent bracing for oneline if blocks
+ - fixed the warning by the 0day bot which explained that only one
+   device can be bound
+ - reordered the body of counter_add() to better match
+   counter_register()
+ - Add an EXPORT_SYMBOL_GPL(counter_put);
+ - Drop one pair of get_device/put_device
+ - kernel doc for devm_counter_a{lloc,dd}
+
+> >  drivers/counter/counter-core.c | 168 ++++++++++++++++++++++++++++++++-
+> >  include/linux/counter.h        |  15 +++
+> >  2 files changed, 181 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
+ore.c
+> > index 00c41f28c101..b3fa15bbcbdb 100644
+> > --- a/drivers/counter/counter-core.c
+> > +++ b/drivers/counter/counter-core.c
+> > @@ -15,6 +15,7 @@
+> >  #include <linux/kdev_t.h>
+> >  #include <linux/module.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/slab.h>
+> >  #include <linux/types.h>
+> >  #include <linux/wait.h>
+> > =20
+> > @@ -24,6 +25,16 @@
+> >  /* Provides a unique ID for each counter device */
+> >  static DEFINE_IDA(counter_ida);
+> > =20
+> > +struct counter_device_allochelper {
+> > +	struct counter_device counter;
 > > +
-> > +/*
-> > + * Each entry contains the integer part (val) and the fractional part, in micro
-> > + * seconds. It conforms to the IIO output IIO_VAL_INT_PLUS_MICRO.
+> > +	/*
+> > +	 * This is cache line aligned to ensure private data behaves like if =
+it
+> > +	 * were kmalloced separately.
+> > +	 */
+> > +	unsigned long privdata[] ____cacheline_aligned;
+>=20
+> Change log for the patch would have made it easier to see you decided
+> to make this change after the discussion in v2.
+
+Yeah, this was a wim of the moment after I saw that this usually only
+results in a 32 byte alignment.
+
+> > +};
+> > +
+>=20
+> ...
+>=20
+> > =20
+> > +/**
+> > + * counter_alloc - allocate a counter_device
+> > + * @sizeof_priv: size of the driver private data
 > > + *
-> > + * The frequency control register holds the period, with a ~2ms increment.
-> > + * Therefore the smallest frequency is 4MHz / (2047 * 8192),
-> > + * The fastest is 4MHz / 8192.
-> > + * The interval is not linear, but given there is 2047 possible value,
-> > + * Returns the fake increment of (Max-Min)/2047
+> > + * This is part one of counter registration. The structure is allocated
+> > + * dynamically to ensure the right lifetime for the embedded struct de=
+vice.
 > > + *
->
-> Trivial, but this blank line doesn't add anything so please remove.
-Remove some in sx_common.h as well.
->
+> > + * If this succeeds, call counter_put() to get rid of the counter_devi=
+ce again.
 > > + */
-> > +static const struct {
-> > +     int val;
-> > +     int val2;
-> > +} sx9360_samp_freq_interval[] = {
-> > +     {0, 281250},  /* 4MHz / (8192 * 2047) */
-> > +     {0, 281250},
-> > +     {448, 281250},  /* 4MHz / 8192 */
-> > +};
-> > +
-> ...
->
->
-> > +static int sx9360_read_label(struct iio_dev *iio_dev, const struct iio_chan_spec *chan,
-> > +                          char *label)
+> > +struct counter_device *counter_alloc(size_t sizeof_priv)
 > > +{
-> > +     return snprintf(label, PAGE_SIZE, "%s\n", sx9360_channel_labels[chan->channel]);
+> > +	struct counter_device_allochelper *ch;
+> > +	struct counter_device *counter;
+> > +	struct device *dev;
+> > +	int err;
+> > +
+> > +	ch =3D kzalloc(sizeof(*ch) + sizeof_priv, GFP_KERNEL);
+> > +	if (!ch) {
+> > +		err =3D -ENOMEM;
+> > +		goto err_alloc_ch;
+>=20
+> Slight preference for a direct return here even though it means
+> replicating the ERR_PTR() statement.  Makes for one less error
+> path where a reviewer has to go see what is being done.
+
+I'll consider it if it comes to a v4.
+
+> > +	}
+> > +
+> > +	counter =3D &ch->counter;
+> > +	dev =3D &counter->dev;
+> > +
+> > +	/* Acquire unique ID */
+> > +	err =3D ida_alloc(&counter_ida, GFP_KERNEL);
+> > +	if (err < 0)
+> > +		goto err_ida_alloc;
+> > +	dev->id =3D err;
+> > +
+> > +	mutex_init(&counter->ops_exist_lock);
+> > +	dev->type =3D &counter_device_type;
+> > +	dev->bus =3D &counter_bus_type;
+> > +	dev->devt =3D MKDEV(MAJOR(counter_devt), dev->id);
+> > +
+> > +	err =3D counter_chrdev_add(counter);
+> > +	if (err < 0)
+> > +		goto err_chrdev_add;
+> > +
+> > +	device_initialize(dev);
+> > +
+> > +	return counter;
+> > +
+> > +err_chrdev_add:
 >
-> Trivial but preference for sysfs_emit()
-> (Andy noted this for the other driver in a more complex case so I did a quick
-> search for repeats)
-Fixed in other patches as well.
->
+> Nitpick: Unusual spacing (to my eye anyway). I wouldn't expect to see a b=
+lank line after a label
+> as the label indentation makes a visual separation anyway.
+
+I know this is unusual, but I like this approach. The error label is
+named after what failed (instead of the more usual what has to be undone
+first) and then it's grouped to the matching undo-function.
+
+See
+https://lore.kernel.org/linux-pwm/20201106093435.4mlr6ujivvkzkd5z@pengutron=
+ix.de
+for a more verbose reasoning (which however failed to convince my fellow
+pwm maintainers :-\).
+
+> > +   ida_free(&counter_ida, dev->id);
+> > +err_ida_alloc:
+> > +
+> > +   kfree(ch);
+> > +err_alloc_ch:
+> > +
+> > +   return ERR_PTR(err);
 > > +}
-> > +
->
->
-> ...
->
-> > +
-> > +static const struct dev_pm_ops sx9360_pm_ops = {
-> > +     SET_SYSTEM_SLEEP_PM_OPS(sx9360_suspend, sx9360_resume)
-> > +};
->
-> static SIMPLE_DEV_PM_OPS(sx9360_pm_ops, sx9360_suspend, sx9360_resume);
-Fix in sx9310/24 and 60 driver as well.
->
->
+
+Best regards and thanks for your feedback,
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--25ghiofyk574a42m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHNb/IACgkQwfwUeK3K
+7AnBDgf/RJzJcZOFgNO45cWb2wOSAS8Z0vwcKQzTsGJ9zi2Z6sY81Ffed44AeEQc
+OzUzAFT1Rmn/WsXOOgDM8BY6EviZNYuXcLpQQoQXmlmlucDRsLzulj0jh9cOuJds
+bKj5CF6aGsBY67XrrmrAuK7RJ3T6zMpkOtc/VD6Ylb9StbO+yAlUTSgBv20q1fx5
+enqcSIkelWXW+QFfw/dqeB+3D2z83bSt/IQvnuARvzJcnkvggPK3OdIkco/aPgx9
+ZTApBHopuC9fc/WgtpTgoOTLCpXphEm2f5/+xCMttK4XENcgzokTe9T2rMKyxLe1
+rO5A9sLyiRjmv8S2pcK6SOXxXLHjQA==
+=eYfM
+-----END PGP SIGNATURE-----
+
+--25ghiofyk574a42m--

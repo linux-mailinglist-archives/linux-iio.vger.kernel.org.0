@@ -2,51 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A520481AC5
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 09:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE6FA481AE9
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 09:54:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237763AbhL3IiY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Dec 2021 03:38:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
+        id S237702AbhL3IyX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Dec 2021 03:54:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231140AbhL3IiY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 03:38:24 -0500
+        with ESMTP id S229567AbhL3IyX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 03:54:23 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9859C061574
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 00:38:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99226C061574
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 00:54:22 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1n2qx2-0008SW-Vl; Thu, 30 Dec 2021 09:38:21 +0100
+        id 1n2rCN-0001Ho-RK; Thu, 30 Dec 2021 09:54:11 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1n2qx0-007S9d-5b; Thu, 30 Dec 2021 09:38:17 +0100
+        id 1n2rCI-007SB9-Oz; Thu, 30 Dec 2021 09:54:06 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1n2qwz-0004Fr-3F; Thu, 30 Dec 2021 09:38:17 +0100
-Date:   Thu, 30 Dec 2021 09:38:13 +0100
+        id 1n2rCH-00052f-Q5; Thu, 30 Dec 2021 09:54:05 +0100
+Date:   Thu, 30 Dec 2021 09:53:51 +0100
 From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        kernel@pengutronix.de,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 13/23] counter: Provide alternative counter
- registration functions
-Message-ID: <20211230083813.ucalnkvmct7uc2rm@pengutronix.de>
+Cc:     Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        David Lechner <david@lechnology.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Syed Nayyar Waris <syednwaris@gmail.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Subject: Re: [PATCH v3 00/23] counter: cleanups and device lifetime fixes
+Message-ID: <20211230085351.pywngltvdam25emx@pengutronix.de>
 References: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
- <20211229154441.38045-14-u.kleine-koenig@pengutronix.de>
- <20211229170612.1dffa818@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="25ghiofyk574a42m"
+        protocol="application/pgp-signature"; boundary="7z7zb2yi7csslu7s"
 Content-Disposition: inline
-In-Reply-To: <20211229170612.1dffa818@jic23-huawei>
+In-Reply-To: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
@@ -56,207 +63,98 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---25ghiofyk574a42m
+--7z7zb2yi7csslu7s
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello Jonathan,
+Hello,
 
-On Wed, Dec 29, 2021 at 05:06:12PM +0000, Jonathan Cameron wrote:
-> On Wed, 29 Dec 2021 16:44:31 +0100
-> Uwe Kleine-K=F6nig         <u.kleine-koenig@pengutronix.de> wrote:
+On Wed, Dec 29, 2021 at 04:44:18PM +0100, Uwe Kleine-K=F6nig wrote:
+> this is v3 of my series to fix device lifetime issues in the counter
+> framework. This hopefully addresses all things pointed out for v2.
 >=20
-> > The current implementation gets device lifetime tracking wrong. The
-> > problem is that allocation of struct counter_device is controlled by the
-> > individual drivers but this structure contains a struct device that
-> > might have to live longer than a driver is bound. As a result a command
-> > sequence like:
-> >=20
-> > 	{ sleep 5; echo bang; } > /dev/counter0 &
-> > 	sleep 1;
-> > 	echo 40000000.timer:counter > /sys/bus/platform/drivers/stm32-timer-co=
-unter/unbind
-> >=20
-> > can keep a reference to the struct device and unbinding results in
-> > freeing the memory occupied by this device resulting in an oops.
-> >=20
-> > This commit provides two new functions (plus some helpers):
-> >  - counter_alloc() to allocate a struct counter_device that is
-> >    automatically freed once the embedded struct device is released
-> >  - counter_add() to register such a device.
-> >=20
-> > Note that this commit doesn't fix any issues, all drivers have to be
-> > converted to these new functions to correct the lifetime problems.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Basically fine - a few trivial comments inline that I'm not that fussed
-> about whether you take notice of or not. As such
+> Note this depends on 60f07e74f86b (which is in next) now. Full diffstat
+> below.
 >=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Thanks.
-
-> I'd have liked to have seen a change log here. Quite a few comments on th=
-is
-> one and not all had 'obvious' resolutions.
-
-yeah, should have been a bit less lazy and comment a bit more than the
-range diff in the cover letter.
-
-To catch up:
-
- - privdata is now cache line aligned
- - consistent bracing for oneline if blocks
- - fixed the warning by the 0day bot which explained that only one
-   device can be bound
- - reordered the body of counter_add() to better match
-   counter_register()
- - Add an EXPORT_SYMBOL_GPL(counter_put);
- - Drop one pair of get_device/put_device
- - kernel doc for devm_counter_a{lloc,dd}
-
-> >  drivers/counter/counter-core.c | 168 ++++++++++++++++++++++++++++++++-
-> >  include/linux/counter.h        |  15 +++
-> >  2 files changed, 181 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
-ore.c
-> > index 00c41f28c101..b3fa15bbcbdb 100644
-> > --- a/drivers/counter/counter-core.c
-> > +++ b/drivers/counter/counter-core.c
-> > @@ -15,6 +15,7 @@
-> >  #include <linux/kdev_t.h>
-> >  #include <linux/module.h>
-> >  #include <linux/mutex.h>
-> > +#include <linux/slab.h>
-> >  #include <linux/types.h>
-> >  #include <linux/wait.h>
-> > =20
-> > @@ -24,6 +25,16 @@
-> >  /* Provides a unique ID for each counter device */
-> >  static DEFINE_IDA(counter_ida);
-> > =20
-> > +struct counter_device_allochelper {
-> > +	struct counter_device counter;
-> > +
-> > +	/*
-> > +	 * This is cache line aligned to ensure private data behaves like if =
-it
-> > +	 * were kmalloced separately.
-> > +	 */
-> > +	unsigned long privdata[] ____cacheline_aligned;
+> Things that could be further improved:
 >=20
-> Change log for the patch would have made it easier to see you decided
-> to make this change after the discussion in v2.
-
-Yeah, this was a wim of the moment after I saw that this usually only
-results in a 32 byte alignment.
-
-> > +};
-> > +
+> [...]
 >=20
-> ...
+> Uwe Kleine-K=F6nig (23):
+>   counter: Use container_of instead of drvdata to track counter_device
+>   counter: ftm-quaddec: Drop unused platform_set_drvdata()
+>   counter: microchip-tcb-capture: Drop unused platform_set_drvdata()
+>   counter: Provide a wrapper to access device private data
+>   counter: 104-quad-8: Convert to counter_priv() wrapper
+>   counter: interrupt-cnt: Convert to counter_priv() wrapper
+>   counter: microchip-tcb-capture: Convert to counter_priv() wrapper
+>   counter: intel-qep: Convert to counter_priv() wrapper
+>   counter: ftm-quaddec: Convert to counter_priv() wrapper
+>   counter: ti-eqep: Convert to counter_priv() wrapper
+>   counter: stm32-lptimer-cnt: Convert to counter_priv() wrapper
+>   counter: stm32-timer-cnt: Convert to counter_priv() wrapper
+>   counter: Provide alternative counter registration functions
+>   counter: Update documentation for new counter registration functions
+>   counter: 104-quad-8: Convert to new counter registration
+>   counter: interrupt-cnt: Convert to new counter registration
+>   counter: intel-qep: Convert to new counter registration
+>   counter: ftm-quaddec: Convert to new counter registration
+>   counter: microchip-tcb-capture: Convert to new counter registration
+>   counter: stm32-timer-cnt: Convert to new counter registration
+>   counter: stm32-lptimer-cnt: Convert to new counter registration
+>   counter: ti-eqep: Convert to new counter registration
+>   counter: remove old and now unused registration API
 >=20
-> > =20
-> > +/**
-> > + * counter_alloc - allocate a counter_device
-> > + * @sizeof_priv: size of the driver private data
-> > + *
-> > + * This is part one of counter registration. The structure is allocated
-> > + * dynamically to ensure the right lifetime for the embedded struct de=
-vice.
-> > + *
-> > + * If this succeeds, call counter_put() to get rid of the counter_devi=
-ce again.
-> > + */
-> > +struct counter_device *counter_alloc(size_t sizeof_priv)
-> > +{
-> > +	struct counter_device_allochelper *ch;
-> > +	struct counter_device *counter;
-> > +	struct device *dev;
-> > +	int err;
-> > +
-> > +	ch =3D kzalloc(sizeof(*ch) + sizeof_priv, GFP_KERNEL);
-> > +	if (!ch) {
-> > +		err =3D -ENOMEM;
-> > +		goto err_alloc_ch;
+>  Documentation/driver-api/generic-counter.rst |  10 +-
+>  drivers/counter/104-quad-8.c                 |  93 +++++-----
+>  drivers/counter/counter-core.c               | 186 ++++++++++++++-----
+>  drivers/counter/ftm-quaddec.c                |  36 ++--
+>  drivers/counter/intel-qep.c                  |  46 ++---
+>  drivers/counter/interrupt-cnt.c              |  38 ++--
+>  drivers/counter/microchip-tcb-capture.c      |  44 ++---
+>  drivers/counter/stm32-lptimer-cnt.c          |  51 ++---
+>  drivers/counter/stm32-timer-cnt.c            |  48 ++---
+>  drivers/counter/ti-eqep.c                    |  31 ++--
+>  include/linux/counter.h                      |  15 +-
+>  11 files changed, 356 insertions(+), 242 deletions(-)
 >=20
-> Slight preference for a direct return here even though it means
-> replicating the ERR_PTR() statement.  Makes for one less error
-> path where a reviewer has to go see what is being done.
+> Range-diff against v2:
+> [...]
+>=20
+> base-commit: a7904a538933c525096ca2ccde1e60d0ee62c08e
+> prerequisite-patch-id: 9459ad8bc78190558df9123f8bebe28ca1c396ea
 
-I'll consider it if it comes to a v4.
+All patches have a blessing by at least one of William and Jonathan.
+The prerequisite commit (60f07e74f86b) is in Greg's char-misc-next branch.
 
-> > +	}
-> > +
-> > +	counter =3D &ch->counter;
-> > +	dev =3D &counter->dev;
-> > +
-> > +	/* Acquire unique ID */
-> > +	err =3D ida_alloc(&counter_ida, GFP_KERNEL);
-> > +	if (err < 0)
-> > +		goto err_ida_alloc;
-> > +	dev->id =3D err;
-> > +
-> > +	mutex_init(&counter->ops_exist_lock);
-> > +	dev->type =3D &counter_device_type;
-> > +	dev->bus =3D &counter_bus_type;
-> > +	dev->devt =3D MKDEV(MAJOR(counter_devt), dev->id);
-> > +
-> > +	err =3D counter_chrdev_add(counter);
-> > +	if (err < 0)
-> > +		goto err_chrdev_add;
-> > +
-> > +	device_initialize(dev);
-> > +
-> > +	return counter;
-> > +
-> > +err_chrdev_add:
->
-> Nitpick: Unusual spacing (to my eye anyway). I wouldn't expect to see a b=
-lank line after a label
-> as the label indentation makes a visual separation anyway.
+Assuming noone still finds a problem in this series that requires me to
+respin I wonder who will pick it up? Greg?
 
-I know this is unusual, but I like this approach. The error label is
-named after what failed (instead of the more usual what has to be undone
-first) and then it's grouped to the matching undo-function.
+Given that it fixes a possible use-after-free in all counter drivers,
+I'd like to see it hit before v5.17-rc1. For 5.16 it's probably too
+late.
 
-See
-https://lore.kernel.org/linux-pwm/20201106093435.4mlr6ujivvkzkd5z@pengutron=
-ix.de
-for a more verbose reasoning (which however failed to convince my fellow
-pwm maintainers :-\).
-
-> > +   ida_free(&counter_ida, dev->id);
-> > +err_ida_alloc:
-> > +
-> > +   kfree(ch);
-> > +err_alloc_ch:
-> > +
-> > +   return ERR_PTR(err);
-> > +}
-
-Best regards and thanks for your feedback,
+Best regards
 Uwe
 
 --=20
 Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---25ghiofyk574a42m
+--7z7zb2yi7csslu7s
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHNb/IACgkQwfwUeK3K
-7AnBDgf/RJzJcZOFgNO45cWb2wOSAS8Z0vwcKQzTsGJ9zi2Z6sY81Ffed44AeEQc
-OzUzAFT1Rmn/WsXOOgDM8BY6EviZNYuXcLpQQoQXmlmlucDRsLzulj0jh9cOuJds
-bKj5CF6aGsBY67XrrmrAuK7RJ3T6zMpkOtc/VD6Ylb9StbO+yAlUTSgBv20q1fx5
-enqcSIkelWXW+QFfw/dqeB+3D2z83bSt/IQvnuARvzJcnkvggPK3OdIkco/aPgx9
-ZTApBHopuC9fc/WgtpTgoOTLCpXphEm2f5/+xCMttK4XENcgzokTe9T2rMKyxLe1
-rO5A9sLyiRjmv8S2pcK6SOXxXLHjQA==
-=eYfM
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHNc5sACgkQwfwUeK3K
+7AmHGwf/cW+uf1nbbMoCP+vuGJBcf8R3c4fj5eEs6StdeeqHl+4a9zmWUm2lRpK/
+nP641JA+KRobAEsp6GzoUMT+XZiVK+Vkq5oUl6SzYDi9E7ngcCIHcFX0KGeleAJO
+NbucXfodd1UyRSnJxuHAJtgV+SqqWzitl0Bcnk6aEEAvfmxsagEzAWTaEZbtlBpS
+qyoUpE7RdVKCS6D7YSTEgvDXizq1LCIouqvlVOQJeSYgtVlMAZhNI5sED9Powoer
+qogiBqD/ct96Khptz+zvZgyivhlKY2bOZQj2J7Or+FR7qvTx/unx2IA1j9US6Khx
+tsgbEo6PmHqbM2kCu/bkI06NRS7lcw==
+=asmE
 -----END PGP SIGNATURE-----
 
---25ghiofyk574a42m--
+--7z7zb2yi7csslu7s--

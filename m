@@ -2,57 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3B0482249
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 06:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C29E48224A
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 06:47:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232130AbhLaFql (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Dec 2021 00:46:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42242 "EHLO
+        id S232132AbhLaFru (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Dec 2021 00:47:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229934AbhLaFql (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 00:46:41 -0500
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA70C061574
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:46:41 -0800 (PST)
-Received: by mail-io1-xd2f.google.com with SMTP id u8so31863699iol.5
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:46:41 -0800 (PST)
+        with ESMTP id S231708AbhLaFrt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 00:47:49 -0500
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC58C061574
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:47:49 -0800 (PST)
+Received: by mail-io1-xd31.google.com with SMTP id l3so29569236iol.10
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:47:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=6UrwMi4B2In5zIIZdw3Z68EpyO2JkBjBC3luTVDDH9k=;
-        b=W6BXkaqjITzhRIM0xEtgaivFCGoGedlUooIJO36S4W6+E4r/lQXMo2rFFcvOwQL1qJ
-         ZPn0z9dcWZhWpxFYBpwyNvxSy3qbsV+u1lWRCD9BKESSh9dMMBFl5LGMx72lcyGNw0rw
-         OGoRgd1BIgupj6VJMo8R4AUuj7O4QPrJTz7q4=
+        bh=lsgRudN+nTzBf3hKzqJ2JNpBMAEnS0NNkPZdhTUTMGw=;
+        b=K+FaJrp8bNV5y8xe68t8UWyyFSD+l6LcN3ALpfxQ1W81bA3YJrF6Bwhply/Fh0cL51
+         10GC58APy2ULbCk3zRuBsMXsQGx4Xh5rZZKXLtb88f9j3d0gF5gx+vTNN4NmkZlnrFzH
+         XrlkPHxdRyy37FzOsyBeUdZSlyp0jUzRe6kNg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=6UrwMi4B2In5zIIZdw3Z68EpyO2JkBjBC3luTVDDH9k=;
-        b=JHuP8oOaaySa3RtRlKDWnHjc9Q2nJBYXs3Lk2j4m8YWQ+AoiXIkGSpJXWQf31aTpBM
-         d9vYMiKiQC5092EAuSg1kO6Pf8lti7LcGRghvt9N0PQI42gd3B5cUP5OA/BnEPL4HDAp
-         UOK3H9H/KbynCj7csMb1Hn5HH2ph9qeItip0/SI6y3IK/CXF0irLEgABVi4rIIDzG0SI
-         mYkUYec1njsbdLKQm9EdW0tHBIpIgazTaGcrsKheXNHkXgQ96U9JZ/gnApM2m+Oo82uW
-         RU9O0IQyrrrcDdKeU0C6Ng7xPrIVvRpaBH0SwsXLGeBXyY+dSCJDGnuro8+gelkgTzhR
-         tbsA==
-X-Gm-Message-State: AOAM531f2yWTAi6txp5fEnx3vXPIJle7HUApBXlAVQCNlguakc9oNrOR
-        A9tIqMoFWev5gmmS2BAbUSAsftF/lqZDqkIrmxkVIA==
-X-Google-Smtp-Source: ABdhPJyD/cO0dtUFSivBM/jyxbJt9J18xFSW/SNVA9Vn4Uldzdyhnjo/RI43FyqXcp5gtEBFSpmGRQqipt4R5ck0wKE=
-X-Received: by 2002:a6b:3b51:: with SMTP id i78mr15113569ioa.63.1640929600576;
- Thu, 30 Dec 2021 21:46:40 -0800 (PST)
+        bh=lsgRudN+nTzBf3hKzqJ2JNpBMAEnS0NNkPZdhTUTMGw=;
+        b=to7vG9xqaQHUuls4LMN3FsPikIk7vPIaSe8LJhnccQHzs2tQAX/Q7hfXFeolnUKWsv
+         8xfisJa9pvKI5rwXELLW47pSpHRfzixqZ8PmT4GSX82tCOSKaitLwYnzb4t9HbDzAnKg
+         GHcJi6PXxhDIB75SGe0RZxI4sqt44ev/UPhIJU7Gz/j5QwPczLBW7jJ4rl1ttcRzhEUB
+         X9AgmWHtGWkejmbNzC6VH7cCd7uR0l546je0kK/9EViU3QGSBGcdVgMleDg1UmUuDSPX
+         3hMKGz/dGVmmP8DoZE4vqOngnnrjavToiUaArNmJ5ss1Bw7G016qilMR/X2xMg90Ph22
+         GU8A==
+X-Gm-Message-State: AOAM533JDPENFRKZ8XHJein7mVWGpIdcd80G2RQh4dwxGlKjUaxP8Is6
+        omat81fyIAOCG/kO5yDqmGN2loNz7mL0y6dfitAhxBRC2g7qqQ==
+X-Google-Smtp-Source: ABdhPJxlHNKh+hviRtzYMgqFQoym3Wv6WTGfyIh/YK9q9HyRqIp8t1PJPr3zJPYOvj9I0FYoVYNwr9xyb9cuC4D1J2A=
+X-Received: by 2002:a05:6638:23a:: with SMTP id f26mr15570631jaq.222.1640929668950;
+ Thu, 30 Dec 2021 21:47:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20211230174911.78291-1-jic23@kernel.org> <20211230174911.78291-4-jic23@kernel.org>
-In-Reply-To: <20211230174911.78291-4-jic23@kernel.org>
+References: <20211230174911.78291-1-jic23@kernel.org> <20211230174911.78291-5-jic23@kernel.org>
+In-Reply-To: <20211230174911.78291-5-jic23@kernel.org>
 From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Thu, 30 Dec 2021 21:46:28 -0800
-Message-ID: <CAPUE2us0gTQ9BGrLCwpkL45cB04fGKc-GP3J3TPAktBGfgA7tg@mail.gmail.com>
-Subject: Re: [PATCH 03/16] iio:light:vcnl4035: Trivial whitespace cleanup to
- add space before }
+Date:   Thu, 30 Dec 2021 21:47:37 -0800
+Message-ID: <CAPUE2uvMLUMOMUi83bpm9CAJH5W1OMfj5iiFT4AwXpaNROBjug@mail.gmail.com>
+Subject: Re: [PATCH 04/16] iio:light:us5182: White space cleanup of spacing
+ around {} in id tables
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Parthiban Nallathambi <pn@denx.de>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -62,29 +61,38 @@ On Thu, Dec 30, 2021 at 9:43 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Having a space after the { and not one before the } is inconsistent and
-> I'd rather not have examples of this that get copied into new drivers.
+> The spacing in this driver was inconsistent so make sure we have a space
+> after { and before } for the two id tables.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Parthiban Nallathambi <pn@denx.de>
 > ---
 Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
->  drivers/iio/light/vcnl4035.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/light/us5182d.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-> index 0db306ee910e..da2bf622a67b 100644
-> --- a/drivers/iio/light/vcnl4035.c
-> +++ b/drivers/iio/light/vcnl4035.c
-> @@ -651,7 +651,7 @@ static const struct dev_pm_ops vcnl4035_pm_ops = {
+> diff --git a/drivers/iio/light/us5182d.c b/drivers/iio/light/us5182d.c
+> index 96e4a66ddf28..1492aaf8d84c 100644
+> --- a/drivers/iio/light/us5182d.c
+> +++ b/drivers/iio/light/us5182d.c
+> @@ -947,15 +947,15 @@ static const struct dev_pm_ops us5182d_pm_ops = {
 >  };
 >
->  static const struct i2c_device_id vcnl4035_id[] = {
-> -       { "vcnl4035", 0},
-> +       { "vcnl4035", 0 },
->         { }
+>  static const struct acpi_device_id us5182d_acpi_match[] = {
+> -       { "USD5182", 0},
+> +       { "USD5182", 0 },
+>         {}
 >  };
->  MODULE_DEVICE_TABLE(i2c, vcnl4035_id);
+>
+>  MODULE_DEVICE_TABLE(acpi, us5182d_acpi_match);
+>
+>  static const struct i2c_device_id us5182d_id[] = {
+> -               {"usd5182", 0},
+> -               {}
+> +       { "usd5182", 0 },
+> +       {}
+>  };
+>
+>  MODULE_DEVICE_TABLE(i2c, us5182d_id);
 > --
 > 2.34.1
 >

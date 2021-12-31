@@ -2,57 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FC6482256
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 06:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACFE3482257
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 06:49:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232695AbhLaFta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Dec 2021 00:49:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42846 "EHLO
+        id S232705AbhLaFtq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Dec 2021 00:49:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231708AbhLaFta (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 00:49:30 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A05DC061574
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:30 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id p65so31918930iof.3
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:30 -0800 (PST)
+        with ESMTP id S231708AbhLaFtq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 00:49:46 -0500
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF67C061574
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:45 -0800 (PST)
+Received: by mail-io1-xd2d.google.com with SMTP id 19so31281099ioz.4
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Qxf1WVHg5sM8/ppth64tIpYmCJr7akG7YkvOsZIytnw=;
-        b=hz9rvJW7O3dcm46veC9qQWaF4pfY0l5TZLt8cZS0TIX84XQ5xVg9UNs8yzdJbEjntZ
-         zP13T4sYrvS3Co8OYlVTQdQc5A+O6SwP8BqCSQCuM+ORiToVkfl7JzSEZHA7Y8kCFqID
-         mwjFY6S2MGvW9867cWxZmJ+f46jsnU3B+73yw=
+        bh=RzQqh9cswy8IbQyehJ1D8uKH+CR3njWvzlKw8pCqZME=;
+        b=MrJGPGNj59tWQrCXJtB23TF9rc9ydIrAvmeq0bJoK1DQSrZYHwe0s5MnugZWNxemac
+         aJX+S/4y4V8tZ6UdaS+pYt+Tzpl4s11xDYJk4FRitHx3BXcBrHXR0hSFftbuyWYEpJoc
+         v3KCrpGKLxfl4bVt/fRhlqFiXUEO9efRFJ7fU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Qxf1WVHg5sM8/ppth64tIpYmCJr7akG7YkvOsZIytnw=;
-        b=OB5P/oXe5f0lcV3nzxOIn74DTcueh8u/JWphzvC2j37Xz0vDDdsf4crwM+kog8iJLu
-         g+qSiaAnK2Srkykw9pfBbp9SFzA0AYt0EOJ78rG34TkaxYPghxKWb84ocq945GLnTLIW
-         KC6Uc708ffk4+/JiNIRusKNSvFSs/6VwGmxcWxo8v5dj+7HS0n1zFWAVFPTqXNmADFM1
-         xbxsRXjp1XSQTNjs9MOQ6LuwsCoHA3giqkPFfQu9sbhugPOuroD6uiNKW8bgdibx/eIx
-         S383teqni0cVWnvywyLj++iXlXaKMc6gzvGawsA/+e8QNuEaZQ2NxBKweqo2OnOqYe+L
-         MR8Q==
-X-Gm-Message-State: AOAM531pw0wXgJGuZepewZkXtS3X0kh80eEOPi9X6hZKnBNS6XygMASa
-        bmPLFARa90JeG7oUG6mzO83TjqL9VFBSdI4+ReAmJg==
-X-Google-Smtp-Source: ABdhPJxllCsUi3gHWL+gxEKQW0FAEcG0JDks7uXufTodoey9h69Bs9HvTjlFbNm8jLtq6jVcgC1k9jGvoRHLvLsho9c=
-X-Received: by 2002:a05:6638:1302:: with SMTP id r2mr14340673jad.37.1640929769376;
- Thu, 30 Dec 2021 21:49:29 -0800 (PST)
+        bh=RzQqh9cswy8IbQyehJ1D8uKH+CR3njWvzlKw8pCqZME=;
+        b=tburzvinQp8j4UfMlKSqTirpszR6YFzqaTao1jhMX1g4yw2P/I73e4fG81EZvvnUr/
+         j4XEot28Pi9urhXUv63jEK0RRLptaUyoxcP4sEET+BC00jkoDo85lQVcz7krYbTlhsFP
+         UUDuzt99ZvQxILVrlj3mMFHplScWFbpod6DmYXJyhsjKsBYPrzSTmR9hUgRrZ06qjKj9
+         ad7GJDkC4b82T9/UHW69T7QVitc7zwzva9wLonBEdtVEXZtiOd3AAW0tF1Cpi95L64vn
+         qbGc4M3exPBeaImFsZt6c8OAWzs39KJqT+6rW1XXbYCWOzzRiPjRbHjvYRUJceKb83uP
+         gt7w==
+X-Gm-Message-State: AOAM532/OReydgZJyTvjrrNZOsTC9F672IpFhO+QOF7VcTl6GDefOY4d
+        aBBxWnrgMIjOkv9mtw4TbXC7mK37OJwBKEvKXdInjg==
+X-Google-Smtp-Source: ABdhPJx/CxWSMOaykgbPuZhuMpjSlkPwwcyNA/6UpU1w65sO0dHSy4TcXBDi8PTjmhyAxAh6ECUbjjWIIKcBUVetzPA=
+X-Received: by 2002:a02:2aca:: with SMTP id w193mr16115885jaw.240.1640929785035;
+ Thu, 30 Dec 2021 21:49:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20211230174911.78291-1-jic23@kernel.org> <20211230174911.78291-11-jic23@kernel.org>
-In-Reply-To: <20211230174911.78291-11-jic23@kernel.org>
+References: <20211230174911.78291-1-jic23@kernel.org> <20211230174911.78291-12-jic23@kernel.org>
+In-Reply-To: <20211230174911.78291-12-jic23@kernel.org>
 From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Thu, 30 Dec 2021 21:49:17 -0800
-Message-ID: <CAPUE2uunMzDM5Sfia3SL36FkUznm4QRr3xwYC8GDju=fnUBbVQ@mail.gmail.com>
-Subject: Re: [PATCH 10/16] iio:frequency:admv1013: White space cleanup of
- spacing around {} in id tables
+Date:   Thu, 30 Dec 2021 21:49:33 -0800
+Message-ID: <CAPUE2usPuEH-j5Hu8fy2n=VcRbw-Z_yk2AcNpVkOKdBjz4q2mA@mail.gmail.com>
+Subject: Re: [PATCH 11/16] iio:adc:mt6577_auxadc: Tidy up white space around
+ {} in id tables
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
+        Hui Liu <hui.liu@mediatek.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
@@ -62,30 +63,38 @@ On Thu, Dec 30, 2021 at 9:44 AM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> The spacing was inconsistent with a space after the { but not
-> before the }. Tidy this up to avoid providing a bad example to copy into
-> new drivers.
+> Previously inconsistent with space after { and not before }.
+> Tidy that up to avoid providing a bad example to copy into new drivers.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Cc: Zhiyong Tao <zhiyong.tao@mediatek.com>
+> Cc: Hui Liu <hui.liu@mediatek.com>
 > ---
 Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
->  drivers/iio/frequency/admv1013.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/adc/mt6577_auxadc.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
-> index 6cdeb50143af..849a9ea7ebe5 100644
-> --- a/drivers/iio/frequency/admv1013.c
-> +++ b/drivers/iio/frequency/admv1013.c
-> @@ -630,7 +630,7 @@ static int admv1013_probe(struct spi_device *spi)
->  }
+> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
+> index d4fccd52ef08..327fff96c6c8 100644
+> --- a/drivers/iio/adc/mt6577_auxadc.c
+> +++ b/drivers/iio/adc/mt6577_auxadc.c
+> @@ -330,11 +330,11 @@ static SIMPLE_DEV_PM_OPS(mt6577_auxadc_pm_ops,
+>                          mt6577_auxadc_resume);
 >
->  static const struct spi_device_id admv1013_id[] = {
-> -       { "admv1013", 0},
-> +       { "admv1013", 0 },
->         {}
+>  static const struct of_device_id mt6577_auxadc_of_match[] = {
+> -       { .compatible = "mediatek,mt2701-auxadc", .data = &mt8173_compat},
+> -       { .compatible = "mediatek,mt2712-auxadc", .data = &mt8173_compat},
+> -       { .compatible = "mediatek,mt7622-auxadc", .data = &mt8173_compat},
+> -       { .compatible = "mediatek,mt8173-auxadc", .data = &mt8173_compat},
+> -       { .compatible = "mediatek,mt6765-auxadc", .data = &mt6765_compat},
+> +       { .compatible = "mediatek,mt2701-auxadc", .data = &mt8173_compat },
+> +       { .compatible = "mediatek,mt2712-auxadc", .data = &mt8173_compat },
+> +       { .compatible = "mediatek,mt7622-auxadc", .data = &mt8173_compat },
+> +       { .compatible = "mediatek,mt8173-auxadc", .data = &mt8173_compat },
+> +       { .compatible = "mediatek,mt6765-auxadc", .data = &mt6765_compat },
+>         { }
 >  };
->  MODULE_DEVICE_TABLE(spi, admv1013_id);
+>  MODULE_DEVICE_TABLE(of, mt6577_auxadc_of_match);
 > --
 > 2.34.1
 >

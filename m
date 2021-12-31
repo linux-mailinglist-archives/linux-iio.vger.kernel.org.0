@@ -2,91 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47D4D48203E
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Dec 2021 21:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92BE348214D
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 02:40:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242069AbhL3UVp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Dec 2021 15:21:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240824AbhL3UVp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Dec 2021 15:21:45 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91371C061574
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 12:21:44 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id p13so20277200lfh.13
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 12:21:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=1M8/pTBgCNgjw7luW/ryskM/W2c2sEhJd4G0NuDPzic=;
-        b=uEWW7EVWI310VES8xhKfslDh5Cp3e8UmjZaE4B4JX1PlZQxbbh2WKTiuK+R4hVf9lq
-         ZAJZ60ki/0unTuVTuV0SgraOfDuL17Kk/WZ4U6I7vJGrPtw0f2aff3NK6YaBYfA/MKUp
-         78tlfZQJqWA2HKp5fw5iF1A0Qx3Z1tl9x+MoJrlPxUWnGeA+2bBdRWv530c3kiWZTkLA
-         3dB9CvbQw87bDwUTzBRnFWrI6u+LoihHWpldM0QU89gVXMKNhJcLb54qHAKMwU/koCB9
-         lR+wm8O32VOdpo4zZFqF0osyYiZFU5metIpcCcQkNuGZYSAR8NdF7nXF7FHt0E4ChgWi
-         mayg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=1M8/pTBgCNgjw7luW/ryskM/W2c2sEhJd4G0NuDPzic=;
-        b=D4G/UZMRfhiqVf9YKmAQpOuh96QlilkEH7OhVqmcRsQ7cHNoOnRNTEzq6YiS0rJ5Qh
-         JXSfB4C2y6G46oWxv71JMunbGkKL+aDOqFP92BTBmefonclKrT6fUusfvILSP0rEYRQs
-         4UnEHrdrS+cCY9SLjIz68cZvJSGj0T4qy6E7IhhjIGD8CVidGW/DCiive8sPg5AUKijs
-         cKl4GZf3J2fOOWGecZfdvtzrV47u8NinnUzpS/pooehEcmv7EUUIwx/9b8jEsUAMRERi
-         LzUXbexkCkuo/WYVaTa36wv5rSv8ORgX/PUvF4ow8Ipqb/3pNPwnDW6dRJbI+SP52ICC
-         w2GQ==
-X-Gm-Message-State: AOAM533OEphMznCzgU45N/iyWkfeIy94a8oeD3pMjYtGC3Bwyf78p63S
-        yQNOtyTtm3N+ryYsc9DKFzjmSzYiO7sbf9ssHDw=
-X-Google-Smtp-Source: ABdhPJzENm5qQ8Ns7IwaTB5kH4JuYy5gGwHSWr9o0LIB82dnjwMsqW87ieTydkDAPvVCk6bHVFU04g==
-X-Received: by 2002:ac2:490f:: with SMTP id n15mr12551770lfi.141.1640895702792;
-        Thu, 30 Dec 2021 12:21:42 -0800 (PST)
-Received: from [192.168.112.17] (nikaet.starlink.ru. [94.141.168.29])
-        by smtp.gmail.com with ESMTPSA id p27sm2566749lfa.295.2021.12.30.12.21.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Dec 2021 12:21:42 -0800 (PST)
-Subject: Re: [PATCH] iio: stm: don't always auto-enable I2C and SPI interface
- drivers
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20211229072916.2567155-1-nikita.yoush@cogentembedded.com>
- <CAHp75VfKcKyc8fdu0XnaYYnY2UP+27=8hKJMtzwH5755Cw=sww@mail.gmail.com>
-From:   Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Message-ID: <4d8e2b87-3196-0cf4-6096-885b446b3aa7@cogentembedded.com>
-Date:   Thu, 30 Dec 2021 23:21:41 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S242475AbhLaBku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Dec 2021 20:40:50 -0500
+Received: from mga12.intel.com ([192.55.52.136]:2320 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242471AbhLaBku (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 30 Dec 2021 20:40:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1640914850; x=1672450850;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+voAV5Ml5uccIDrkO+cZwxrej74x2+pLSY/HOAVywCg=;
+  b=SdQLHQWoZenX3AYmXkyNHdnomjwgbDxJHHaHvIEa/cugd1dIRtdneQoU
+   9fjCQc7poS4x2WT3iqh7ywMKvyPFWZ+tRGIORA964KoX8BME6EEhOGgNG
+   +ch+5vsOaeBsrKry/Y+uVaKV8QVwgJX1+x/F0s+C3JyIlBr10PkcpURZo
+   +OkVzXudQmxRyQZsO0FLS3dNb4gScHJdTrx4uUA3QosntvyeN+F56W5au
+   CkV643n5NtXA9kvU6sLKgrJ+XTfZrFmJSd+Db4LzSGKD1uxOcwiaBojdT
+   5DuaSQvLZS7ZWshaTMS9sw69JWkmEYXQ6Ie2KzLJENH7sF7Ozks3oRKSJ
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10213"; a="221752706"
+X-IronPort-AV: E=Sophos;i="5.88,250,1635231600"; 
+   d="scan'208";a="221752706"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2021 17:40:49 -0800
+X-IronPort-AV: E=Sophos;i="5.88,250,1635231600"; 
+   d="scan'208";a="487033486"
+Received: from dganta-mobl1.amr.corp.intel.com ([10.212.232.245])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2021 17:40:49 -0800
+Message-ID: <6d38b7334daa472c7d59380e69766f8776c7b3cb.camel@linux.intel.com>
+Subject: Re: [PATCH 09/13] iio:accel:bmc150: Move exports into BMC150
+ namespace
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Date:   Thu, 30 Dec 2021 17:40:49 -0800
+In-Reply-To: <20211230193331.283503-10-jic23@kernel.org>
+References: <20211230193331.283503-1-jic23@kernel.org>
+         <20211230193331.283503-10-jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VfKcKyc8fdu0XnaYYnY2UP+27=8hKJMtzwH5755Cw=sww@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-      This patch makes I2C and SPI interface drivers for STMicroelectronics
->     sensor chips individually selectable via Kconfig.
+On Thu, 2021-12-30 at 19:33 +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
->     The default is kept unchanged - I2C and SPI interface drivers are still
->     selected by default if the corresponding bus support is available.
+> To avoid unnecessary pollution of the global symbol namespace move the
+> driver core exports into their own namespace and import that into the
+> two
+> bus modules.
 > 
->     However, the patch makes it is possible to explicitly disable drivers
->     that are not needed for particular 
+> For more info see https://lwn.net/Articles/760045/
 > 
-> NAK if users need now manually update their .config / defconfigs.
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-No they don't need to update anything.
-And 'make oldconfig' will be old.
+> ---
+>  drivers/iio/accel/bmc150-accel-core.c | 8 ++++----
+>  drivers/iio/accel/bmc150-accel-i2c.c  | 1 +
+>  drivers/iio/accel/bmc150-accel-spi.c  | 1 +
+>  3 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/bmc150-accel-core.c
+> b/drivers/iio/accel/bmc150-accel-core.c
+> index e6081dd0a880..711928d626c5 100644
+> --- a/drivers/iio/accel/bmc150-accel-core.c
+> +++ b/drivers/iio/accel/bmc150-accel-core.c
+> @@ -203,7 +203,7 @@ const struct regmap_config bmc150_regmap_conf = {
+>         .val_bits = 8,
+>         .max_register = 0x3f,
+>  };
+> -EXPORT_SYMBOL_GPL(bmc150_regmap_conf);
+> +EXPORT_SYMBOL_NS_GPL(bmc150_regmap_conf, BMC150);
+>  
+>  static int bmc150_accel_set_mode(struct bmc150_accel_data *data,
+>                                  enum bmc150_power_modes mode,
+> @@ -1798,7 +1798,7 @@ int bmc150_accel_core_probe(struct device *dev,
+> struct regmap *regmap, int irq,
+>  
+>         return ret;
+>  }
+> -EXPORT_SYMBOL_GPL(bmc150_accel_core_probe);
+> +EXPORT_SYMBOL_NS_GPL(bmc150_accel_core_probe, BMC150);
+>  
+>  void bmc150_accel_core_remove(struct device *dev)
+>  {
+> @@ -1821,7 +1821,7 @@ void bmc150_accel_core_remove(struct device *dev)
+>         regulator_bulk_disable(ARRAY_SIZE(data->regulators),
+>                                data->regulators);
+>  }
+> -EXPORT_SYMBOL_GPL(bmc150_accel_core_remove);
+> +EXPORT_SYMBOL_NS_GPL(bmc150_accel_core_remove, BMC150);
+>  
+>  #ifdef CONFIG_PM_SLEEP
+>  static int bmc150_accel_suspend(struct device *dev)
+> @@ -1896,7 +1896,7 @@ const struct dev_pm_ops bmc150_accel_pm_ops = {
+>         SET_RUNTIME_PM_OPS(bmc150_accel_runtime_suspend,
+>                            bmc150_accel_runtime_resume, NULL)
+>  };
+> -EXPORT_SYMBOL_GPL(bmc150_accel_pm_ops);
+> +EXPORT_SYMBOL_NS_GPL(bmc150_accel_pm_ops, BMC150);
+>  
+>  MODULE_AUTHOR("Srinivas Pandruvada <
+> srinivas.pandruvada@linux.intel.com>");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/accel/bmc150-accel-i2c.c
+> b/drivers/iio/accel/bmc150-accel-i2c.c
+> index 9e52df9a8f07..e5d10e7be332 100644
+> --- a/drivers/iio/accel/bmc150-accel-i2c.c
+> +++ b/drivers/iio/accel/bmc150-accel-i2c.c
+> @@ -280,3 +280,4 @@ module_i2c_driver(bmc150_accel_driver);
+>  MODULE_AUTHOR("Srinivas Pandruvada <
+> srinivas.pandruvada@linux.intel.com>");
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_DESCRIPTION("BMC150 I2C accelerometer driver");
+> +MODULE_IMPORT_NS(BMC150);
+> diff --git a/drivers/iio/accel/bmc150-accel-spi.c
+> b/drivers/iio/accel/bmc150-accel-spi.c
+> index 11559567cb39..e6d05f3625b7 100644
+> --- a/drivers/iio/accel/bmc150-accel-spi.c
+> +++ b/drivers/iio/accel/bmc150-accel-spi.c
+> @@ -84,3 +84,4 @@ module_spi_driver(bmc150_accel_driver);
+>  MODULE_AUTHOR("Markus Pargmann <mpa@pengutronix.de>");
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_DESCRIPTION("BMC150 SPI accelerometer driver");
+> +MODULE_IMPORT_NS(BMC150);
 
-The config will only change after a manual action.
+

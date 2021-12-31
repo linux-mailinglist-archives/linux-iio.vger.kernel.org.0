@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26624482254
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 06:49:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E123482255
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 06:49:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232606AbhLaFtD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 31 Dec 2021 00:49:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42750 "EHLO
+        id S232681AbhLaFtS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 31 Dec 2021 00:49:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231708AbhLaFtC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 00:49:02 -0500
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBBDC061574
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:02 -0800 (PST)
-Received: by mail-io1-xd2c.google.com with SMTP id l3so29571041iol.10
-        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:02 -0800 (PST)
+        with ESMTP id S231708AbhLaFtR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 00:49:17 -0500
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97ED5C061574
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:17 -0800 (PST)
+Received: by mail-io1-xd31.google.com with SMTP id p65so31918714iof.3
+        for <linux-iio@vger.kernel.org>; Thu, 30 Dec 2021 21:49:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=mLYiS2VeOB0rwDrdg+cJMbUUfl2cE1z8SIqy4Oie4wc=;
-        b=NzJJaqzmQZGCSdjSI760ZmseVsJAb99Mbr5cRReQXMAJq9o05Hll+HQ6vIZjlWfUBt
-         MmsAGmNQg40yDe0NN+BYV5hjk3kYQTScR3NRlYoW2A6E4kR+TAsdMkG+ROQSDBVMWJay
-         aGYZi9KUE3KieqHei29YINyf2+v0KzOa1zDQA=
+        bh=nq39ADJitqN2qQkSjjGOWalNzpI5UcRydAd9ZEherYE=;
+        b=g+4ezeM7Gp1C2gdx11vsxvCypbtSjUY3NIJAs9DzAkpPGZ8XI/0wkUYqZsYzffg4FX
+         /U+ehYLTlzq/KTr2s4eKgkvdAGxb7rpZqRwK75fqR3qPNSRB6rCDLU1jSXJbjj2n/F6i
+         wse02nCT0lJPSQXU+GNA5fY6WtSY0M+tAsclQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=mLYiS2VeOB0rwDrdg+cJMbUUfl2cE1z8SIqy4Oie4wc=;
-        b=lDXjayB9brl2I1hWatDMGCvstEaPblhqMp27av4pvw/9J7tPQTYG3DBhk/vybTQ9Bg
-         I8s+noShivM4RpKCzIPs/EBvoyr4r/rS2alebV3Hadupm1PrJsM3zOXxft164RKVHWOA
-         60nUKEc5mfTghj/jq8PCjoLPkCShHUpY27ZLepBXewg04Ly2rsNtKlU6h0m2bMNN3s+J
-         HZkMMovR0aJcCIkMoqnt588TuNQrcJ3uECW4ORxX6LFBzup5x6/NATFhU5LGnRUZwGHu
-         TbukyzTxK/JhLnsx/5xqNe1M4ALq2HLi509GXq/8+QtOdF8EoJAXWBQlrf4ELBKvD30S
-         QnRA==
-X-Gm-Message-State: AOAM5321yD8XwjQ/XDX85R8x45ldEQSmzxXOQGPtLZhy/+9tMRqPfrTT
-        99olg1uUnJEM9RQQfwObqZ+r5goObOStW0psQXQ9mQ==
-X-Google-Smtp-Source: ABdhPJwy9Cxu/jgKRYpqtakm5CNf2EiBkBbN2HRgsFWBXB1llo+7wD0e6Hk4g14V/jhKz5fNsARmToUpVg00nlen7LM=
-X-Received: by 2002:a6b:dc10:: with SMTP id s16mr15266910ioc.131.1640929741985;
- Thu, 30 Dec 2021 21:49:01 -0800 (PST)
+        bh=nq39ADJitqN2qQkSjjGOWalNzpI5UcRydAd9ZEherYE=;
+        b=AHk86Qw1zn1SXdSstqHx5WiNbwO6ZhyE921jA2zFM3tnJLgpPU7nDRRjXCn7b6pNl8
+         lLY9TW9gGNDVrTFMuOQNKl7NatRJpQQorqkkUz5pA+0rDuJ00ISy/omETd5aaPC9pVoo
+         +PZUXGyGjQG7yzYKdOblK1W6ezVl0Y3eXiWLkMOK4wI6wOSRX6zSyBPRJ4f66zs71Cly
+         lEtcW58Jwvi1wXmhOm8KSXd7nKPZy6joL1Iywc4M0YjUa+OYeXZnolevsDiJKNLxo5t0
+         bDNGqytTtO3mM+VPET7vjZlPZ5fE6DGFvC/x/ndsyPJtBTQnrMqJJDCiXvBM4mk+3EEF
+         KTew==
+X-Gm-Message-State: AOAM531oMbVA4h2L2tqdCoLUnC9fk1lnjk0sMoc/2Yds/mAFRKqHCS5P
+        Bui/4Avd4rjZPj+g4s+MMm3XYdpXB0tqHLnVp6JVHG7iEPzHig==
+X-Google-Smtp-Source: ABdhPJyrlWfCSZlHGELbtwwQLmgMK/e3Ulta+ux+SGjSxltafUOPR+hjWw/yaRWjYxi7rsf4lyb0XQHxm9uxaWU6vTE=
+X-Received: by 2002:a02:ba8b:: with SMTP id g11mr14813329jao.20.1640929757035;
+ Thu, 30 Dec 2021 21:49:17 -0800 (PST)
 MIME-Version: 1.0
-References: <20211230174911.78291-1-jic23@kernel.org> <20211230174911.78291-9-jic23@kernel.org>
-In-Reply-To: <20211230174911.78291-9-jic23@kernel.org>
+References: <20211230174911.78291-1-jic23@kernel.org> <20211230174911.78291-10-jic23@kernel.org>
+In-Reply-To: <20211230174911.78291-10-jic23@kernel.org>
 From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Thu, 30 Dec 2021 21:48:50 -0800
-Message-ID: <CAPUE2uutLVbWGVsPSG67dJo1jjmkpxTSEuQ8CCpmStzwx7+hAA@mail.gmail.com>
-Subject: Re: [PATCH 08/16] iio:proximity:srf04: White space cleanup of spacing
+Date:   Thu, 30 Dec 2021 21:49:05 -0800
+Message-ID: <CAPUE2uuy47iTn_XN-eAFV_pQQsQajr4H0JDANtMLAMyeOjJpFw@mail.gmail.com>
+Subject: Re: [PATCH 09/16] iio:proximity:srf08: White space cleanup of spacing
  around {} in id tables
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org,
@@ -70,29 +70,23 @@ On Thu, Dec 30, 2021 at 9:44 AM Jonathan Cameron <jic23@kernel.org> wrote:
 > Cc: Andreas Klinger <ak@it-klinger.de>
 > ---
 Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
->  drivers/iio/proximity/srf04.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>  drivers/iio/proximity/srf08.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
-> index fe88b2bb60bc..4e6286765f01 100644
-> --- a/drivers/iio/proximity/srf04.c
-> +++ b/drivers/iio/proximity/srf04.c
-> @@ -235,12 +235,12 @@ static const struct iio_chan_spec srf04_chan_spec[] = {
->  };
+> diff --git a/drivers/iio/proximity/srf08.c b/drivers/iio/proximity/srf08.c
+> index 9b0886760f76..ac1ab7e89d4e 100644
+> --- a/drivers/iio/proximity/srf08.c
+> +++ b/drivers/iio/proximity/srf08.c
+> @@ -528,9 +528,9 @@ static int srf08_probe(struct i2c_client *client,
+>  }
 >
->  static const struct of_device_id of_srf04_match[] = {
-> -       { .compatible = "devantech,srf04", .data = &srf04_cfg},
-> -       { .compatible = "maxbotix,mb1000", .data = &mb_lv_cfg},
-> -       { .compatible = "maxbotix,mb1010", .data = &mb_lv_cfg},
-> -       { .compatible = "maxbotix,mb1020", .data = &mb_lv_cfg},
-> -       { .compatible = "maxbotix,mb1030", .data = &mb_lv_cfg},
-> -       { .compatible = "maxbotix,mb1040", .data = &mb_lv_cfg},
-> +       { .compatible = "devantech,srf04", .data = &srf04_cfg },
-> +       { .compatible = "maxbotix,mb1000", .data = &mb_lv_cfg },
-> +       { .compatible = "maxbotix,mb1010", .data = &mb_lv_cfg },
-> +       { .compatible = "maxbotix,mb1020", .data = &mb_lv_cfg },
-> +       { .compatible = "maxbotix,mb1030", .data = &mb_lv_cfg },
-> +       { .compatible = "maxbotix,mb1040", .data = &mb_lv_cfg },
+>  static const struct of_device_id of_srf08_match[] = {
+> -       { .compatible = "devantech,srf02", (void *)SRF02},
+> -       { .compatible = "devantech,srf08", (void *)SRF08},
+> -       { .compatible = "devantech,srf10", (void *)SRF10},
+> +       { .compatible = "devantech,srf02", (void *)SRF02 },
+> +       { .compatible = "devantech,srf08", (void *)SRF08 },
+> +       { .compatible = "devantech,srf10", (void *)SRF10 },
 >         {},
 >  };
 >

@@ -2,161 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 19C5848258A
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Dec 2021 19:35:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3D714827ED
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Jan 2022 17:22:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230501AbhLaSfE convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 31 Dec 2021 13:35:04 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:33600 "EHLO
+        id S232525AbiAAQWE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Jan 2022 11:22:04 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:53136 "EHLO
         dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbhLaSfD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 31 Dec 2021 13:35:03 -0500
+        with ESMTP id S232519AbiAAQWE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Jan 2022 11:22:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C55A261811
-        for <linux-iio@vger.kernel.org>; Fri, 31 Dec 2021 18:35:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FC3D60B4A
+        for <linux-iio@vger.kernel.org>; Sat,  1 Jan 2022 16:22:03 +0000 (UTC)
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id AA087C36AE9;
-        Fri, 31 Dec 2021 18:34:59 +0000 (UTC)
-Date:   Fri, 31 Dec 2021 18:40:41 +0000
+        by smtp.kernel.org (Postfix) with ESMTPSA id A1AAAC36AE9;
+        Sat,  1 Jan 2022 16:22:00 +0000 (UTC)
+Date:   Sat, 1 Jan 2022 16:27:48 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
+To:     linux-iio@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 02/13] iio:accel:mma7455_core: Move exports into MMA7455
- namespace
-Message-ID: <20211231184041.63e74af9@jic23-huawei>
-In-Reply-To: <20211231104147.n35r6hkdi7cljjss@pengutronix.de>
-References: <20211230193331.283503-1-jic23@kernel.org>
-        <20211230193331.283503-3-jic23@kernel.org>
-        <20211231104147.n35r6hkdi7cljjss@pengutronix.de>
+Subject: Re: [PATCH 12/49] iio:adc:ad7606: Switch from CONFIG_PM_SLEEP
+ guards to pm_ptr() / __maybe_unused
+Message-ID: <20220101162748.1f99ad6b@jic23-huawei>
+In-Reply-To: <20211123211019.2271440-13-jic23@kernel.org>
+References: <20211123211019.2271440-1-jic23@kernel.org>
+        <20211123211019.2271440-13-jic23@kernel.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 31 Dec 2021 11:41:47 +0100
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
+On Tue, 23 Nov 2021 21:09:42 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Thu, Dec 30, 2021 at 07:33:20PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > In order to avoid unnecessary pollution of the global symbol namespace
-> > move the core mma7455 functions into an mma7455 specific namespace and
-> > import that into the two bus modules.
-> > 
-> > For more information see https://lwn.net/Articles/760045/
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Hi Uwe,
-
-> > ---
-> >  drivers/iio/accel/mma7455_core.c | 6 +++---
-> >  drivers/iio/accel/mma7455_i2c.c  | 1 +
-> >  drivers/iio/accel/mma7455_spi.c  | 1 +
-> >  3 files changed, 5 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/mma7455_core.c b/drivers/iio/accel/mma7455_core.c
-> > index e6739ba74edf..4ece5e83a8ab 100644
-> > --- a/drivers/iio/accel/mma7455_core.c
-> > +++ b/drivers/iio/accel/mma7455_core.c
-> > @@ -238,7 +238,7 @@ const struct regmap_config mma7455_core_regmap = {
-> >  	.val_bits = 8,
-> >  	.max_register = MMA7455_REG_TW,
-> >  };
-> > -EXPORT_SYMBOL_GPL(mma7455_core_regmap);
-> > +EXPORT_SYMBOL_NS_GPL(mma7455_core_regmap, MMA7455);
-> >  
-> >  int mma7455_core_probe(struct device *dev, struct regmap *regmap,
-> >  		       const char *name)
-> > @@ -293,7 +293,7 @@ int mma7455_core_probe(struct device *dev, struct regmap *regmap,
-> >  
-> >  	return 0;
-> >  }
-> > -EXPORT_SYMBOL_GPL(mma7455_core_probe);
-> > +EXPORT_SYMBOL_NS_GPL(mma7455_core_probe, MMA7455);
-> >  
-> >  void mma7455_core_remove(struct device *dev)
-> >  {
-> > @@ -306,7 +306,7 @@ void mma7455_core_remove(struct device *dev)
-> >  	regmap_write(mma7455->regmap, MMA7455_REG_MCTL,
-> >  		     MMA7455_MCTL_MODE_STANDBY);
-> >  }
-> > -EXPORT_SYMBOL_GPL(mma7455_core_remove);
-> > +EXPORT_SYMBOL_NS_GPL(mma7455_core_remove, MMA7455);  
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> There is a more subtile way to do this. Up to you to judge which you
-> prefer:
+> Letting the compiler remove these functions when the kernel is built
+> without CONFIG_PM_SLEEP support is simpler and less error prone than the
+> use of #ifdef based config guards.
 > 
-> 	#define DEFAULT_SYMBOL_NAMESPACE MMA7455
+> Removing instances of this approach from IIO also stops them being
+> copied into new drivers.
 > 
-> and then use plain EXPORT_SYMBOL_GPL. This way you automatically switch
-> all export statements in this file. (The #define has to be before
-> #include <linux/export.h>.)
-
-There was some discussion around doing this via makefiles for the CXL
-subsystem (I believe it is done with USB for historical reasons) and general
-view was that explicit statement was preferred.
-
-https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/commit/drivers/cxl/core?h=next&id=affec782742e08a7469ef81d7d0a4ae9d1345dfd
-
-Was the outcome of that discussion though right now I can't find
-the thread that lead to that patch.
-
-Argument there was that it can be helpful to have it really
-obvious in the code that a symbol is only intended for
-limited access.
-
+> The pm_ptr() macro only removes the reference if CONFIG_PM is not
+> set. It is possible for CONFIG_PM=y without CONFIG_SLEEP, so this
+> will not always remove the pm_ops structure.
 > 
-> >  MODULE_AUTHOR("Joachim Eastwood <manabian@gmail.com>");
-> >  MODULE_DESCRIPTION("Freescale MMA7455L core accelerometer driver");
-> > diff --git a/drivers/iio/accel/mma7455_i2c.c b/drivers/iio/accel/mma7455_i2c.c
-> > index 8a5256516f9f..b7a3d5da8f87 100644
-> > --- a/drivers/iio/accel/mma7455_i2c.c
-> > +++ b/drivers/iio/accel/mma7455_i2c.c
-> > @@ -61,3 +61,4 @@ module_i2c_driver(mma7455_i2c_driver);
-> >  MODULE_AUTHOR("Joachim Eastwood <manabian@gmail.com>");
-> >  MODULE_DESCRIPTION("Freescale MMA7455L I2C accelerometer driver");
-> >  MODULE_LICENSE("GPL v2");
-> > +MODULE_IMPORT_NS(MMA7455);
-> > diff --git a/drivers/iio/accel/mma7455_spi.c b/drivers/iio/accel/mma7455_spi.c
-> > index ecf690692dcc..cc17755a1026 100644
-> > --- a/drivers/iio/accel/mma7455_spi.c
-> > +++ b/drivers/iio/accel/mma7455_spi.c
-> > @@ -49,3 +49,4 @@ module_spi_driver(mma7455_spi_driver);
-> >  MODULE_AUTHOR("Joachim Eastwood <manabian@gmail.com>");
-> >  MODULE_DESCRIPTION("Freescale MMA7455L SPI accelerometer driver");
-> >  MODULE_LICENSE("GPL v2");
-> > +MODULE_IMPORT_NS(MMA7455);  
-> 
-> If you put this into the header near the declaration of the functions
-> exported in this namespace, you only need one instead of two.
-> 
-> Anyhow, I think this is much a question of personal taste which to
-> prefer, so understand this mail just as a hint about alternatives, not a
-> request to change.
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I'll comment here as this patch won't exist in v2.
 
-Interesting point on this.  I'm not sure what preferred option will be
-and the one thing we want to be is consistent so people know where to
-look for these lines.
+Given the structure is exported from one module to others, the
+compiler can't remove it automatically.  Hence this one really does
+need the CONFIG_PM_SLEEP guards.
 
-Let's see if we get any additional opinions on this. So far the only
-header in tree that has one of these is the ltc2497 from your series a
-while back.  So definitely not common yet...  Early days though ;)
+Not sure what I was thinking when I wrote this!
 
 Jonathan
+
+> ---
+>  drivers/iio/adc/ad7606.c     | 8 ++------
+>  drivers/iio/adc/ad7606.h     | 5 -----
+>  drivers/iio/adc/ad7606_par.c | 2 +-
+>  drivers/iio/adc/ad7606_spi.c | 2 +-
+>  4 files changed, 4 insertions(+), 13 deletions(-)
 > 
-> Best regards and happy new year,
-> Uwe
-> 
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index 0a60ecc69d38..16a013aad20f 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -695,9 +695,7 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+>  }
+>  EXPORT_SYMBOL_GPL(ad7606_probe);
+>  
+> -#ifdef CONFIG_PM_SLEEP
+> -
+> -static int ad7606_suspend(struct device *dev)
+> +static __maybe_unused int ad7606_suspend(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+> @@ -710,7 +708,7 @@ static int ad7606_suspend(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int ad7606_resume(struct device *dev)
+> +static __maybe_unused int ad7606_resume(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+> @@ -727,8 +725,6 @@ static int ad7606_resume(struct device *dev)
+>  SIMPLE_DEV_PM_OPS(ad7606_pm_ops, ad7606_suspend, ad7606_resume);
+>  EXPORT_SYMBOL_GPL(ad7606_pm_ops);
+>  
+> -#endif
+> -
+>  MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
+>  MODULE_DESCRIPTION("Analog Devices AD7606 ADC");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+> index 9350ef1f63b5..fd545836790e 100644
+> --- a/drivers/iio/adc/ad7606.h
+> +++ b/drivers/iio/adc/ad7606.h
+> @@ -162,11 +162,6 @@ enum ad7606_supported_device_ids {
+>  	ID_AD7616,
+>  };
+>  
+> -#ifdef CONFIG_PM_SLEEP
+>  extern const struct dev_pm_ops ad7606_pm_ops;
+> -#define AD7606_PM_OPS (&ad7606_pm_ops)
+> -#else
+> -#define AD7606_PM_OPS NULL
+> -#endif
+>  
+>  #endif /* IIO_ADC_AD7606_H_ */
+> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+> index f732b3ac7878..60be3fb4ae39 100644
+> --- a/drivers/iio/adc/ad7606_par.c
+> +++ b/drivers/iio/adc/ad7606_par.c
+> @@ -92,7 +92,7 @@ static struct platform_driver ad7606_driver = {
+>  	.id_table = ad7606_driver_ids,
+>  	.driver = {
+>  		.name = "ad7606",
+> -		.pm = AD7606_PM_OPS,
+> +		.pm = pm_ptr(&ad7606_pm_ops),
+>  		.of_match_table = ad7606_of_match,
+>  	},
+>  };
+> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+> index 29945ad07dca..8cc525b4b960 100644
+> --- a/drivers/iio/adc/ad7606_spi.c
+> +++ b/drivers/iio/adc/ad7606_spi.c
+> @@ -352,7 +352,7 @@ static struct spi_driver ad7606_driver = {
+>  	.driver = {
+>  		.name = "ad7606",
+>  		.of_match_table = ad7606_of_match,
+> -		.pm = AD7606_PM_OPS,
+> +		.pm = pm_ptr(&ad7606_pm_ops),
+>  	},
+>  	.probe = ad7606_spi_probe,
+>  	.id_table = ad7606_id_table,
 

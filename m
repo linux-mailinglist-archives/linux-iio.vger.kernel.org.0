@@ -2,32 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A21F0482B3D
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD436482B3E
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:52:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232371AbiABMwP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:52:15 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:42510 "EHLO
+        id S232262AbiABMwS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:52:18 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:42532 "EHLO
         dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232372AbiABMwP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:52:15 -0500
+        with ESMTP id S232279AbiABMwS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:52:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28B1260DB7
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F0C36AEE;
-        Sun,  2 Jan 2022 12:52:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A79E660DB7
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:52:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38ABFC36AE7;
+        Sun,  2 Jan 2022 12:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127934;
-        bh=WnlP3Vb44vJMXTs8gAC08Z8FdES2VCfcNz5QDCKAVJg=;
+        s=k20201202; t=1641127937;
+        bh=Bf/pd/fiOKd/DtOINUcGbJE/viay5VGBRp0xOn+FqNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jayjra7dO334s1Apg5KciIn8iciy85kE0eMm2ROrkmHOXZ2C5RWTRCRD+4G+yFF68
-         UKFKwU1Nb84fUF94yooQFYhQgj56u4qBqak2urpwKN10A7P6hMoj6OD0xbl5wVm97x
-         2NvHe2cociMXbexC0EcdwZy4BWjAI79P+qA1EvIuRzU0fuMaBUaGfNwsEtmLfwyPhF
-         FVvtGM8qEkV3mD+32RHG27rDbKMlPQAiCOSgXR5CCzsjK0XyaQpAwz1f0EXrre+FWh
-         3FmR7nLtbbCOFJs0vCr7mS15cZvQJSoINwrBo87RDeLranlc3RqT8wRUqoyZNvQkAS
-         7LS/kA1sfXZbQ==
+        b=OH4otGdEkvTpyPFLM6OXc1sI0ZLLYNmkDjiZmZAUpq0e6Jq9G+d88HqHeM+IsOMwj
+         zFqFPwQKdK1B/V7Qgzd6TwTVOrVRfmUjbSmMSJODLubGF4in+/TkyQKPitHB27abX0
+         gwkjU0/AAJWVvSFyrCYeu8XlI2PEwX78PGyJ6S222H+F1L9f5kQG2kz466XRhd0hTA
+         Rg8QHBV82sDfPF0zv7Szfovs/SxAj0w0KcNkYY0LlQzFEc0xWHSUOMKDgwIVuSGBY3
+         UZPSRi2dXay943BBAHiu6UZVEObQVMH9uYIJQydEl6UtJOy7WmSPauqt4ZSTuqb/kd
+         4cHLC4ojf5QuQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
@@ -35,9 +35,9 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 30/51] iio:light:tcs3414: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun,  2 Jan 2022 12:55:56 +0000
-Message-Id: <20220102125617.1259804-31-jic23@kernel.org>
+Subject: [PATCH v2 31/51] iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun,  2 Jan 2022 12:55:57 +0000
+Message-Id: <20220102125617.1259804-32-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
 References: <20220102125617.1259804-1-jic23@kernel.org>
@@ -58,41 +58,41 @@ copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/tcs3414.c | 6 ++----
+ drivers/iio/light/tcs3472.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/light/tcs3414.c b/drivers/iio/light/tcs3414.c
-index b87222141429..3e0944c3e36f 100644
---- a/drivers/iio/light/tcs3414.c
-+++ b/drivers/iio/light/tcs3414.c
-@@ -345,7 +345,6 @@ static int tcs3414_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
+index 371c6a39a165..a886b1cd11ce 100644
+--- a/drivers/iio/light/tcs3472.c
++++ b/drivers/iio/light/tcs3472.c
+@@ -572,7 +572,6 @@ static int tcs3472_remove(struct i2c_client *client)
+ 	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int tcs3414_suspend(struct device *dev)
+ static int tcs3472_suspend(struct device *dev)
  {
- 	struct tcs3414_data *data = iio_priv(i2c_get_clientdata(
-@@ -360,9 +359,8 @@ static int tcs3414_resume(struct device *dev)
- 	return i2c_smbus_write_byte_data(data->client, TCS3414_CONTROL,
- 		data->control);
+ 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
+@@ -598,9 +597,8 @@ static int tcs3472_resume(struct device *dev)
+ 
+ 	return ret;
  }
 -#endif
  
--static SIMPLE_DEV_PM_OPS(tcs3414_pm_ops, tcs3414_suspend, tcs3414_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(tcs3414_pm_ops, tcs3414_suspend, tcs3414_resume);
+-static SIMPLE_DEV_PM_OPS(tcs3472_pm_ops, tcs3472_suspend, tcs3472_resume);
++DEFINE_SIMPLE_DEV_PM_OPS(tcs3472_pm_ops, tcs3472_suspend, tcs3472_resume);
  
- static const struct i2c_device_id tcs3414_id[] = {
- 	{ "tcs3414", 0 },
-@@ -373,7 +371,7 @@ MODULE_DEVICE_TABLE(i2c, tcs3414_id);
- static struct i2c_driver tcs3414_driver = {
+ static const struct i2c_device_id tcs3472_id[] = {
+ 	{ "tcs3472", 0 },
+@@ -611,7 +609,7 @@ MODULE_DEVICE_TABLE(i2c, tcs3472_id);
+ static struct i2c_driver tcs3472_driver = {
  	.driver = {
- 		.name	= TCS3414_DRV_NAME,
--		.pm	= &tcs3414_pm_ops,
-+		.pm	= pm_sleep_ptr(&tcs3414_pm_ops),
+ 		.name	= TCS3472_DRV_NAME,
+-		.pm	= &tcs3472_pm_ops,
++		.pm	= pm_sleep_ptr(&tcs3472_pm_ops),
  	},
- 	.probe		= tcs3414_probe,
- 	.id_table	= tcs3414_id,
+ 	.probe		= tcs3472_probe,
+ 	.remove		= tcs3472_remove,
 -- 
 2.34.1
 

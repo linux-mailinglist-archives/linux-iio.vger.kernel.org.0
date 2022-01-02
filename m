@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58537482B4B
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3750482B4C
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:53:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232384AbiABMw4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:52:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
+        id S232233AbiABMxB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:53:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbiABMw4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:52:56 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684C5C061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:52:56 -0800 (PST)
+        with ESMTP id S229800AbiABMxA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:53:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C19C061574
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:53:00 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0656960E9A
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:52:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B211DC36AEE;
-        Sun,  2 Jan 2022 12:52:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 20D77B80CFC
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:52:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8BDC36AF1;
+        Sun,  2 Jan 2022 12:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127975;
-        bh=RTGuq52F8z6ExADzGunQn3KRLpzrAb/KpNyG7Otixlw=;
+        s=k20201202; t=1641127977;
+        bh=lA3Ngi7s/856LrQ5xGdzJnLsQjiAr4PRqnBU1S6Sc84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c/C1oe8dMLsoMNFuZRpb9efR7mAx6SUD5l+fbApF7mP0f96th7IRGZIgj26Te6LEy
-         DNP7JIKs2IxfDmO+mPveDlUG9ctyIfQptJVpgon0VUJBA62KinkHk7qaUBYD0H0FVG
-         gySD/+uZdlVugCaJQJfzy+SdVA5WqTj9pNZPYvLJDAAJYSU9brjcgSLatag38EL+dD
-         XZBArNG9mwETp0LRiABISjwzGCa7VVdETJrqqyuofoybrBibuRBzDR4FQ8SSzJfKIo
-         /dflgNWbwg8iqaWee2jjDQq1XL4iWrz/rZG+cu1VFT2Bu8Mpwu/J11hy1UsZ7ClVUf
-         xToa/rKraWezQ==
+        b=Ft5sDpgTzEuFbCAdxsvPDUJ1jK+qDPvGf0SFRi9sQoNSsrm/9bYxp/nFByHGl3nhZ
+         80E1V4oCDHTLEM7CC9CSX8kBY8DvkUJbNZLLv+JqqFAFJybGpGKNMZ1pTsjppgs3qD
+         M9ycnIvDu/8p+YmyJxX0+9D2DLirsnjmW+cxN/PeljuVfEO/jWQL/l9RzQnGn+05Th
+         FtUGenUGJ2rdAN4S1DbZTTYtZmePGe90bkyyLsA/YTaA2LwUvA/PM9aa077loG1Thl
+         guwfJfKgyiOLJusi2xntB3ZAl+kkT6oEOgkad2ijMkE6KLcDoLOGIMCAohHZYM09GN
+         Ak2Xw5vSz4QJw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
@@ -38,10 +38,10 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Manivannan Sadhasivam <mani@kernel.org>
-Subject: [PATCH v2 44/51] iio:temperature:tmp007: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun,  2 Jan 2022 12:56:10 +0000
-Message-Id: <20220102125617.1259804-45-jic23@kernel.org>
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH v2 45/51] iio:chemical:atlas: Switch from CONFIG_PM guards to pm_ptr() etc
+Date:   Sun,  2 Jan 2022 12:56:11 +0000
+Message-Id: <20220102125617.1259804-46-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
 References: <20220102125617.1259804-1-jic23@kernel.org>
@@ -54,50 +54,51 @@ X-Mailing-List: linux-iio@vger.kernel.org
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 Letting the compiler remove these functions when the kernel is built
-without CONFIG_PM_SLEEP support is simpler and less error prone than the
+without CONFIG_PM support is simpler and less error prone than the
 use of #ifdef based config guards.
 
 Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
+Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>
 ---
- drivers/iio/temperature/tmp007.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/chemical/atlas-sensor.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/temperature/tmp007.c b/drivers/iio/temperature/tmp007.c
-index b422371a4674..f7a040f0ee4c 100644
---- a/drivers/iio/temperature/tmp007.c
-+++ b/drivers/iio/temperature/tmp007.c
-@@ -537,7 +537,6 @@ static int tmp007_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
+index 04b44a327614..c489d5593ba0 100644
+--- a/drivers/iio/chemical/atlas-sensor.c
++++ b/drivers/iio/chemical/atlas-sensor.c
+@@ -737,7 +737,6 @@ static int atlas_remove(struct i2c_client *client)
+ 	return atlas_set_powermode(data, 0);
  }
  
--#ifdef CONFIG_PM_SLEEP
- static int tmp007_suspend(struct device *dev)
+-#ifdef CONFIG_PM
+ static int atlas_runtime_suspend(struct device *dev)
  {
- 	struct tmp007_data *data = iio_priv(i2c_get_clientdata(
-@@ -554,9 +553,8 @@ static int tmp007_resume(struct device *dev)
- 	return i2c_smbus_write_word_swapped(data->client, TMP007_CONFIG,
- 			data->config | TMP007_CONFIG_CONV_EN);
+ 	struct atlas_data *data =
+@@ -753,18 +752,16 @@ static int atlas_runtime_resume(struct device *dev)
+ 
+ 	return atlas_set_powermode(data, 1);
  }
 -#endif
  
--static SIMPLE_DEV_PM_OPS(tmp007_pm_ops, tmp007_suspend, tmp007_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(tmp007_pm_ops, tmp007_suspend, tmp007_resume);
+ static const struct dev_pm_ops atlas_pm_ops = {
+-	SET_RUNTIME_PM_OPS(atlas_runtime_suspend,
+-			   atlas_runtime_resume, NULL)
++	RUNTIME_PM_OPS(atlas_runtime_suspend, atlas_runtime_resume, NULL)
+ };
  
- static const struct of_device_id tmp007_of_match[] = {
- 	{ .compatible = "ti,tmp007", },
-@@ -574,7 +572,7 @@ static struct i2c_driver tmp007_driver = {
+ static struct i2c_driver atlas_driver = {
  	.driver = {
- 		.name	= "tmp007",
- 		.of_match_table = tmp007_of_match,
--		.pm	= &tmp007_pm_ops,
-+		.pm	= pm_sleep_ptr(&tmp007_pm_ops),
+ 		.name	= ATLAS_DRV_NAME,
+ 		.of_match_table	= atlas_dt_ids,
+-		.pm	= &atlas_pm_ops,
++		.pm	= pm_ptr(&atlas_pm_ops),
  	},
- 	.probe		= tmp007_probe,
- 	.id_table	= tmp007_id,
+ 	.probe		= atlas_probe,
+ 	.remove		= atlas_remove,
 -- 
 2.34.1
 

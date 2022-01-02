@@ -2,82 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7C81482A60
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 07:58:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EDDA482A63
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 08:02:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232841AbiABG6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 01:58:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53940 "EHLO
+        id S230374AbiABHCh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 02:02:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbiABG6S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 01:58:18 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F1FC061574
-        for <linux-iio@vger.kernel.org>; Sat,  1 Jan 2022 22:58:17 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id k21so68714603lfu.0
-        for <linux-iio@vger.kernel.org>; Sat, 01 Jan 2022 22:58:17 -0800 (PST)
+        with ESMTP id S229503AbiABHCg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 02:02:36 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45056C061574
+        for <linux-iio@vger.kernel.org>; Sat,  1 Jan 2022 23:02:36 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id x6so15847978lfa.5
+        for <linux-iio@vger.kernel.org>; Sat, 01 Jan 2022 23:02:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=H+bzcq7UB/JKHMA/9ptkzQiF8Wl9Ixq3bTrtRrhmcT8=;
-        b=lzM10FZ7WYbYyOsCLKkpfOndn11lDxow/Qfdl6Bn5iLWJFIJO42/JimqwEa2OjfJOD
-         x11hlXL8Jk+hquHkuX1fKtqOU0OZ2TGM8RSEgdG7jH1MstjpxaMcDJw7Rm3D7QLGWhdI
-         A2GR7ikBt2Buzk/Cz+pOtPZaGLJXK5tlbOseK/p8YVObC6VslDGqoeztxKMs/60bmqvx
-         a+dU2E/hSGjsX6y8c1izCswQ9//NYsfNlnxlxF8KFi5GsbMO++JVO0c5F+vaY92CsH7D
-         4nSh2nJHLpWZaaPac8RQVGQaBys1ZVr9tvQh1E9viF5bV9tNISd08ZGrjcmxfyIS5Ei9
-         fAaw==
+        bh=tvv0DgV9NgQ98HHlvA9A23WiX/m5Ked1q7rAcv1JoHI=;
+        b=FgxbBkHr4ssahA/LRHFCPhZGIzGGh1341x5GTN/imnarLCCW4gGvqu2iXqbXg5m98o
+         9k5PH/+9+Fdsg0V6Ttl4BoYb2rYkpXbxTAQYaCiRZrFOXXPakp70wO/1ix5QvBk0D4/V
+         qui1GWGTszsMzRAe6VYNzhquU4sW+OLZEdRR2rJfTcun2rXIGWIQAVu+cMgT8pvael1K
+         FUeGabpXt8suJQnA8g5VlOhUzFSNAQ1rs6eH1DePr7thrCTh7vWuZjnTAVy3ceNlK31E
+         xUj3kvapPgj0YjumCo0S+uCHy0EV0rBmo651gqIwtQ7dVkoILjsQD1NhEUnSo7AlmGpB
+         iCcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=H+bzcq7UB/JKHMA/9ptkzQiF8Wl9Ixq3bTrtRrhmcT8=;
-        b=3VV5jKQB5IRxHoUoRIEE5eSVcDTk/19UKYeX0hKbrrG1RoVJDwM8VtgCIA4chbg2sW
-         DZ0au9IJNQy4/XumtYq5rW7L4ot9AIm+uU9Kd39g9w2h2uZiu0kjr5en5MoDExGCmau7
-         An5sUNEM4dUpepAdHh/JB+/7akYcB65UniFP8BPrNE5YF+FbAmoEwvarDPcPHhEC9TvW
-         c1eSedh359ozM+LDRIOvj6ATcCgaOPCwkAwOE8LoA2g8QFQAO+yTfmfjZiexMFP3JUMY
-         GtqexcEmQqO2bXeLfFpmI4lLen49hkec8uyGuRkc0vr1amspzGkHbBfdckgeztF5G6LV
-         jI1A==
-X-Gm-Message-State: AOAM532DdB36qI0hz63WECm6nKVdkoHlzXrL3Oz+UOoxmUbxIQ9eMGXx
-        7GomkyjoX+S+BPA8A2nd7QagAsNeEy3WER2cQ89VVA==
-X-Google-Smtp-Source: ABdhPJxN8uIycDVKUm8aCKymqldTy/kjpLcv0AELPhelzfJM1eaHoBvEXPJBja1wzuE4wwkseu4aNsbkGLPj6f0iNEg=
-X-Received: by 2002:a05:6512:39ce:: with SMTP id k14mr19142392lfu.508.1641106696001;
- Sat, 01 Jan 2022 22:58:16 -0800 (PST)
+        bh=tvv0DgV9NgQ98HHlvA9A23WiX/m5Ked1q7rAcv1JoHI=;
+        b=vXZkwCNJiwnDMDPasr5SHcoYXjfwQ1O2FFc+5/f+6UB7u81BlYX+7a+a9QC3oc1/98
+         0ZWJKPSrSH2dGro1dxxMVcCvfBoy2t/NtCEWbK6UAjmsC8Y4gjnGGlF3Ir+dWKuesV5y
+         z7za92KTPzTy0Y4RCYXlhPx2ECMZODyhYLariFGPBzGirX5IC759eSYnXXuuh9EczvAz
+         MyNzdIDmMt8jD3Z6PTXo6TlGPkgDlPbiRU/O/q5x54zUlMO7qLJ/qIzd/GBrSzba2sML
+         mHr9uiFNoQuzPb80LuzH27CtmOH6wbkV70dyl2yXz0nFMHVmK3+kP3IVbTkMDMARQhPb
+         5goQ==
+X-Gm-Message-State: AOAM5339rNE849STgzlUHmy3wsKbm2roR76rfVCaq96bolkJSer9O9Ph
+        4RLdZCS8okM9WcERZctYIFDXI3OsqJC2JC/L7eLI7g==
+X-Google-Smtp-Source: ABdhPJxOYkFHnmRn3PYBTBsgCRCoJd7PFWfeRGQ56+8AZELiRbmsztgXlZvIJs8EwHLTIxk38f21bTkC+UzdQ7Xg7Nk=
+X-Received: by 2002:a05:6512:750:: with SMTP id c16mr37738865lfs.622.1641106954440;
+ Sat, 01 Jan 2022 23:02:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20211230193331.283503-1-jic23@kernel.org> <20211230193331.283503-13-jic23@kernel.org>
-In-Reply-To: <20211230193331.283503-13-jic23@kernel.org>
+References: <20211229072916.2567155-1-nikita.yoush@cogentembedded.com>
+In-Reply-To: <20211229072916.2567155-1-nikita.yoush@cogentembedded.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:58:03 +0100
-Message-ID: <CACRpkdbwL-P__D4kbZs+HOsSNEvVLf-_cwXTUrOUijpFETGb=Q@mail.gmail.com>
-Subject: Re: [PATCH 12/13] iio:st-sensors: Remove duplicate MODULE_*
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Denis Ciocca <denis.ciocca@st.com>
+Date:   Sun, 2 Jan 2022 08:02:21 +0100
+Message-ID: <CACRpkdYcR7SA1bfzAtMBpXZiXZeZnV8hWGddx26VvvKwiZC4Sw@mail.gmail.com>
+Subject: Re: [PATCH] iio: stm: don't always auto-enable I2C and SPI interface drivers
+To:     Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Dec 30, 2021 at 8:28 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, Dec 29, 2021 at 8:29 AM Nikita Yushchenko
+<nikita.yoush@cogentembedded.com> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> The core module and type specific core modules are made up of
-> several files. There is no benefit in duplicating the MODULE_* macros
-> in each file so remove them.
->
-> Noticed whilst adding MODULE_IMPORT_NS() as I missed some files and
-> it still worked, making it clear not all of these blocks were needed.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Denis Ciocca <denis.ciocca@st.com>
+>  config IIO_ST_ACCEL_I2C_3AXIS
+> -       tristate
+> -       depends on IIO_ST_ACCEL_3AXIS
+> -       depends on IIO_ST_SENSORS_I2C
+> +       tristate "STMicroelectronics accelerometers 3-Axis I2C Interface"
+> +       depends on (I2C && IIO_ST_ACCEL_3AXIS)
+> +       default y if (I2C && IIO_ST_ACCEL_3AXIS)
+> +       select IIO_ST_SENSORS_I2C
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+This thing that a Kconfig symbol is made to depend on itself just
+boggles my head but it wouldn't surprise me if KConfig is this weird :(
+
+I CCed Arnd who knows KConfig a bit better than anyone I know.
 
 Yours,
 Linus Walleij

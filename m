@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56457482B23
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5682D482B24
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232356AbiABMvG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:51:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44760 "EHLO
+        id S232359AbiABMvJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:51:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbiABMvF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:51:05 -0500
+        with ESMTP id S229658AbiABMvI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:51:08 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8480EC061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:51:05 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA17C061574
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:51:08 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4CED7B80D61
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B755C36AEE;
-        Sun,  2 Jan 2022 12:51:00 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0ECB7B80D63
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:51:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1BFC36AE7;
+        Sun,  2 Jan 2022 12:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127863;
-        bh=o7lqiSwj9bEqy5RTn/pCfP4IzoQ2vcNtSOCLIJZCZpU=;
+        s=k20201202; t=1641127865;
+        bh=J9oO+je7d9RNkd2uZILlh3K7YF6mQhwBZjNY6JmOd8I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jTcENiGvZP1q+xowH0RkDEgy1KWFV8jftToUoT5MVsFA704lNeI8gB200r8kxDUl9
-         Gn7dkzoBIQGJbxx2z3qv3ZdGtLmM1lJmYTQ4pOaa7+Lt2DfKsaRULqa8ULkc7M184n
-         JICd0tbgFzXntpzGrW99Vi4k8BLuHObMpO2CN19R5Gb2KRxCoXF66aKoDtJlJAx5UV
-         8AiLUDLPOlH2RgBKZNboNQBlc/yAtkuCyF5O0LmWQ+O5NkGPa9h2jMltVADsBGjzOd
-         7M4x+FxI9WYBcbNwZ4neK0kVH4kuiLgocRl6zvypklTqaEcnWEGVe6+2YhsZUtV+a1
-         YG7Xw/ULG0VKg==
+        b=P3valWOeNb+DEmBE+ZmRPPcUm5TfvvIwVSEo0Wt78ZwLBUsPoh/UuASzKfz78sh4M
+         7ORAuAKd3J9Ba7M7UklRlkjou4gKYXtR288IZ9kitYxDbG9agiAeLVwr3nfXBDXlyr
+         Z21uJm3YFy1jXKAfXeNRH6lJhB52xj5qOv1iw51UPBj9QdpplK3RgaFnAn/rRFmHod
+         92Fj/Wd5QK7GTOrSFuUvAuj2epBJ/ZaAQlqyMRPy+iWWkeHygk8HDYen/CMiupLqqX
+         L0H3Lu+XfJ6oJpQu71yvfo6VqGvpZmdWd9taHGjkC8P35+e0rUnZ5uZnj0VSQ7EVi2
+         i6q6hJHfOBr+Q==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 04/51] iio:accel:dmard10: Switch from CONFIG_PM guards to pm_sleep_ptr() etc
-Date:   Sun,  2 Jan 2022 12:55:30 +0000
-Message-Id: <20220102125617.1259804-5-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH v2 05/51] iio:accel:mc3230: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun,  2 Jan 2022 12:55:31 +0000
+Message-Id: <20220102125617.1259804-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
 References: <20220102125617.1259804-1-jic23@kernel.org>
@@ -60,50 +61,43 @@ Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/iio/accel/dmard10.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/iio/accel/mc3230.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/accel/dmard10.c b/drivers/iio/accel/dmard10.c
-index f9f173eec202..bef21aa2aeb5 100644
---- a/drivers/iio/accel/dmard10.c
-+++ b/drivers/iio/accel/dmard10.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/module.h>
-+#include <linux/compiler.h>
- #include <linux/i2c.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -218,7 +219,6 @@ static int dmard10_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/drivers/iio/accel/mc3230.c b/drivers/iio/accel/mc3230.c
+index 735002b716f3..09647706756a 100644
+--- a/drivers/iio/accel/mc3230.c
++++ b/drivers/iio/accel/mc3230.c
+@@ -160,7 +160,6 @@ static int mc3230_remove(struct i2c_client *client)
+ 	return mc3230_set_opcon(iio_priv(indio_dev), MC3230_MODE_OPCON_STANDBY);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int dmard10_suspend(struct device *dev)
+ static int mc3230_suspend(struct device *dev)
  {
- 	return dmard10_shutdown(to_i2c_client(dev));
-@@ -228,9 +228,8 @@ static int dmard10_resume(struct device *dev)
- {
- 	return dmard10_reset(to_i2c_client(dev));
+ 	struct mc3230_data *data;
+@@ -178,9 +177,8 @@ static int mc3230_resume(struct device *dev)
+ 
+ 	return mc3230_set_opcon(data, MC3230_MODE_OPCON_WAKE);
  }
 -#endif
  
--static SIMPLE_DEV_PM_OPS(dmard10_pm_ops, dmard10_suspend, dmard10_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(dmard10_pm_ops, dmard10_suspend, dmard10_resume);
+-static SIMPLE_DEV_PM_OPS(mc3230_pm_ops, mc3230_suspend, mc3230_resume);
++DEFINE_SIMPLE_DEV_PM_OPS(mc3230_pm_ops, mc3230_suspend, mc3230_resume);
  
- static const struct i2c_device_id dmard10_i2c_id[] = {
- 	{"dmard10", 0},
-@@ -241,7 +240,7 @@ MODULE_DEVICE_TABLE(i2c, dmard10_i2c_id);
- static struct i2c_driver dmard10_driver = {
+ static const struct i2c_device_id mc3230_i2c_id[] = {
+ 	{"mc3230", 0},
+@@ -191,7 +189,7 @@ MODULE_DEVICE_TABLE(i2c, mc3230_i2c_id);
+ static struct i2c_driver mc3230_driver = {
  	.driver = {
- 		.name = "dmard10",
--		.pm = &dmard10_pm_ops,
-+		.pm = pm_sleep_ptr(&dmard10_pm_ops),
+ 		.name = "mc3230",
+-		.pm = &mc3230_pm_ops,
++		.pm = pm_sleep_ptr(&mc3230_pm_ops),
  	},
- 	.probe		= dmard10_probe,
- 	.id_table	= dmard10_i2c_id,
+ 	.probe		= mc3230_probe,
+ 	.remove		= mc3230_remove,
 -- 
 2.34.1
 

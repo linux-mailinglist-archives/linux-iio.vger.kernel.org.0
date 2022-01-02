@@ -2,35 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B92B482B3B
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DCAC482B3C
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232369AbiABMwM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:52:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45012 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232363AbiABMwL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:52:11 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C75C061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:52:11 -0800 (PST)
+        id S232363AbiABMwO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:52:14 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:50822 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232371AbiABMwO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:52:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6EF8BB80D61
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:52:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40622C36AF0;
-        Sun,  2 Jan 2022 12:52:07 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 82474B80CFC
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982E1C36AEF;
+        Sun,  2 Jan 2022 12:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127929;
-        bh=9NnJ2ODFpPcmHDmuc4kajl0/dcmK4qqhOi2wuxxJugI=;
+        s=k20201202; t=1641127932;
+        bh=OYXPc+gRbfWU+eZ65WIQfsD549fa2w+MG+zmau1eB4w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UcZ8rMibw1ndXMJORYF5e5gcPHZLIHJPKVesdoXh289L/TquL9vxkMNhy0xZOclq7
-         c1slgpZl5oyw69GoE+ucw/tNmNrUutA3cb5f02pmqQa33pS0PagSD6aGLpieqtw1Sq
-         j3To8eI1s2NgXBWqJjqWzyqtEdd6k8y60LsP0Ya3IpMJeH21RriD2+lUaEn1A4YZsK
-         mrUtQcdXrxbIkyijHo7DAQGcDp5+qxn3BPx0Z7ryOyyTzSL8au2Hd7k7xWi4MtldUt
-         yHefQrG6quaFoFGmFl02JC9rv+tSD3V6/Fwep4dNZBR0MOsBZR8W0rrpM87KfvvvWK
-         OkyC6GHDkRIog==
+        b=vI8oxpPajPmwj+QoTS2WSreOt4hh5e++ETWkaVb30dP7ukXu1I8ItKOEbh9K1RKgW
+         1xZ6fF3SeezjvzuaS+k4P035VEgBUUqf73Oa1wp+uU14y9T4GeflwkJ7zbPqHEOsRB
+         O8Lm5t5sqqR/NdVs3MMo6IebaER9Erj6eJcQrt3Yoyc12LBmvjxH/A4+ToyBVZccWV
+         481pz19gJYr4AJW/nWPT2zeuRiHoQgDXwkUGsYJtXjLcKW4b+iQWRjTtEWTzXGZKGA
+         BVq312+1h1yad5OOV36qSmmTd0NjXhd69sg10hjrk8y8PwFzqfHhgYKYzMr6unR53l
+         MxMj9eRPlLYwQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
@@ -38,10 +35,11 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>
-Subject: [PATCH v2 28/51] iio:light:ltr501: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun,  2 Jan 2022 12:55:54 +0000
-Message-Id: <20220102125617.1259804-29-jic23@kernel.org>
+        Icenowy Zheng <icenowy@aosc.io>, Luca Weiss <luca@z3ntu.xyz>,
+        Martijn Braam <martijn@brixit.nl>
+Subject: [PATCH v2 29/51] iio:light:stk3310: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun,  2 Jan 2022 12:55:55 +0000
+Message-Id: <20220102125617.1259804-30-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
 References: <20220102125617.1259804-1-jic23@kernel.org>
@@ -61,43 +59,48 @@ Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Maslov Dmitry <maslovdmitry@seeed.cc>
+Cc: Icenowy Zheng <icenowy@aosc.io>
+Cc: Luca Weiss <luca@z3ntu.xyz>
+Cc: Martijn Braam <martijn@brixit.nl>
 ---
- drivers/iio/light/ltr501.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/light/stk3310.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 47d61ec2bb50..08d03101653f 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1611,7 +1611,6 @@ static int ltr501_remove(struct i2c_client *client)
- 	return 0;
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index fc63856ed54d..36f8227ac800 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -632,7 +632,6 @@ static int stk3310_remove(struct i2c_client *client)
+ 	return stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int ltr501_suspend(struct device *dev)
+ static int stk3310_suspend(struct device *dev)
  {
- 	struct ltr501_data *data = iio_priv(i2c_get_clientdata(
-@@ -1627,9 +1626,8 @@ static int ltr501_resume(struct device *dev)
- 	return ltr501_write_contr(data, data->als_contr,
- 		data->ps_contr);
+ 	struct stk3310_data *data;
+@@ -656,12 +655,7 @@ static int stk3310_resume(struct device *dev)
+ 	return stk3310_set_state(data, state);
  }
+ 
+-static SIMPLE_DEV_PM_OPS(stk3310_pm_ops, stk3310_suspend, stk3310_resume);
+-
+-#define STK3310_PM_OPS (&stk3310_pm_ops)
+-#else
+-#define STK3310_PM_OPS NULL
 -#endif
++DEFINE_SIMPLE_DEV_PM_OPS(stk3310_pm_ops, stk3310_suspend, stk3310_resume);
  
--static SIMPLE_DEV_PM_OPS(ltr501_pm_ops, ltr501_suspend, ltr501_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(ltr501_pm_ops, ltr501_suspend, ltr501_resume);
- 
- static const struct acpi_device_id ltr_acpi_match[] = {
- 	{"LTER0501", ltr501},
-@@ -1661,7 +1659,7 @@ static struct i2c_driver ltr501_driver = {
+ static const struct i2c_device_id stk3310_i2c_id[] = {
+ 	{"STK3310", 0},
+@@ -692,7 +686,7 @@ static struct i2c_driver stk3310_driver = {
  	.driver = {
- 		.name   = LTR501_DRV_NAME,
- 		.of_match_table = ltr501_of_match,
--		.pm	= &ltr501_pm_ops,
-+		.pm	= pm_sleep_ptr(&ltr501_pm_ops),
- 		.acpi_match_table = ACPI_PTR(ltr_acpi_match),
+ 		.name = "stk3310",
+ 		.of_match_table = stk3310_of_match,
+-		.pm = STK3310_PM_OPS,
++		.pm = pm_sleep_ptr(&stk3310_pm_ops),
+ 		.acpi_match_table = ACPI_PTR(stk3310_acpi_id),
  	},
- 	.probe  = ltr501_probe,
+ 	.probe =            stk3310_probe,
 -- 
 2.34.1
 

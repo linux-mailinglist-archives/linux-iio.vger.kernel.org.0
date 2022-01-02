@@ -2,116 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A86482B52
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC54482B77
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 14:50:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232392AbiABMxR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:53:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbiABMxQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:53:16 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 976DBC061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:53:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 53388B80CFC
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:53:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF721C36AEE;
-        Sun,  2 Jan 2022 12:53:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127994;
-        bh=NXGCqhpA4V02FvHV/HtPTdxXUoCgs599E1Ecxm7h+2M=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P8Q3bAyOK3gmYc1pveXXs2DE4rMXbXy+efOafBD83tuNNY7Bm9l30ZRjHt/oKono2
-         SJtSGDVhEFDynjII+mdqoXeR5XzlLID4BU7d+Z0Wtf67Zj6IKm3L/eIW+1hJ1OXuwh
-         3VNbM2fLrf/8/Qwz8X3rKWteSPCAHf+cYh6AplQZBt4Lywyf8BlNLmsr3TsxiKTu1I
-         szEa3TvYpeQOXlxjQg4Rrug17jYgXhIoimfkdXnxCJIIob+oPseBsEhsMwoZJt2tuf
-         +WKpSsJWYavMotSaNcwC6ZjWDlhSB4WrAmVrtwRvaCHmij5UJQiA6BPR7aFEdvpJ9F
-         TJJpsMlsvkEnQ==
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Crt Mori <cmo@melexis.com>
-Subject: [PATCH v2 51/51] iio:temperature:mlx90614: Switch from CONFIG_PM* guards to pm_ptr() etc
-Date:   Sun,  2 Jan 2022 12:56:17 +0000
-Message-Id: <20220102125617.1259804-52-jic23@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
-References: <20220102125617.1259804-1-jic23@kernel.org>
+        id S231887AbiABNuS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 08:50:18 -0500
+Received: from mout.kundenserver.de ([212.227.17.10]:56821 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232862AbiABNuS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 08:50:18 -0500
+Received: from mail-wm1-f42.google.com ([209.85.128.42]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MiJdI-1mRwsA13Ac-00fPG5; Sun, 02 Jan 2022 14:50:16 +0100
+Received: by mail-wm1-f42.google.com with SMTP id b73so20051691wmd.0;
+        Sun, 02 Jan 2022 05:50:16 -0800 (PST)
+X-Gm-Message-State: AOAM5324g8K+jh3VaJBvkVVRUzBVjeRcMncIvvUFlvKKZB4nXL/HtOQg
+        9It2aam8jkTGW8eHXt7KyNvUYkRFZKc8hpymONc=
+X-Google-Smtp-Source: ABdhPJyBExhPDKd/O9vrBRVKwV03zh2sjTNfK9yfgAYQ14ISPxmj4TeEYwQZGwiWUmgdy3AH9plc+YWhOvCK0m/vwMk=
+X-Received: by 2002:a7b:c448:: with SMTP id l8mr35431267wmi.173.1641131415841;
+ Sun, 02 Jan 2022 05:50:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211229072916.2567155-1-nikita.yoush@cogentembedded.com> <CACRpkdYcR7SA1bfzAtMBpXZiXZeZnV8hWGddx26VvvKwiZC4Sw@mail.gmail.com>
+In-Reply-To: <CACRpkdYcR7SA1bfzAtMBpXZiXZeZnV8hWGddx26VvvKwiZC4Sw@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Sun, 2 Jan 2022 08:49:58 -0500
+X-Gmail-Original-Message-ID: <CAK8P3a0zH1Xpx6qKNOpQN-po=fisAikAai_7X+2+f9zUDjFLLw@mail.gmail.com>
+Message-ID: <CAK8P3a0zH1Xpx6qKNOpQN-po=fisAikAai_7X+2+f9zUDjFLLw@mail.gmail.com>
+Subject: Re: [PATCH] iio: stm: don't always auto-enable I2C and SPI interface drivers
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:1K4DA7hxOAImVuoxIz/c8QJNg5lAtaMtdEwFrA+M6lMND3BVj7o
+ 7ejK7ziftQHH7w0BPB7rSzGo4VOC34dkGuItk0ULRV6OzFOPHxhjYHrcZy55InBnweaGZAq
+ i2eS+IPkFa0tZdNWGQaTHYs/zwS6ZMB7dR6AC9Bz3ZqFFa8X4suEmT/Kx2XBFMFhJChJBU0
+ AaYBdPnXCfAaCfw6LZCGw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QPIzJ4sTiJY=:AUUF8BZ8dNT6aq/VmNbF4f
+ BBnNfqaOjjogznECpRDtEdYNCyRCyh78LP8sixozP+ewPI+doRewGc2XW0g2sfuo7txmjR7or
+ vpWYHjSZplVlmGoaAgliwWe+43+CkD4BXHcJpwoc3pUGhRV16tnobmdNz5XM18nhN83RKwNeA
+ iflKSiRTHN0uUTUzf5GOHR6WwZhDDPMxNCPUK8MRp2P6IKd+mETKSqAL1yOkMDYZJHr96gyd6
+ WW3g+OQqt32i3oki9d+BEB+B4VQXpQWeSfNZoRTPgHaOS2qwLKT7gXFpv2RrtEu9xP5+RTprn
+ tZ5Tz2UDNI/cRk5Xa+eO9WWkyNVzBzJk0bo7M5j/2EM3my2au/BNBjoimYZcnh0jV0ijjOY2m
+ OfkUFXGPmzs6Cv0xmvS2kVP2hHL2fGRaPFtJpLbwKOvL+CtB1bslaTyP4JqQT/vFMqnFq2i3y
+ l9yrNqmT1WjUbYkGmjHQpH6WgFcRWX38NCzLcfR1If4BPKG1fbGED8Qfip4G3lYbwaLVKaBw1
+ imJlFxbesSiZiaKSexGrXsp7EU7JuNJtMmU2KJgwZApEl9KGGvkRo/hbz/giJ8dl+pTO74tom
+ BJtuRnKAhTtaBAPjEy+HHpvi6NqXGHYypA6LYKtWR6og2sQEGkWtm2YumChZ//uvW+DZMTfa8
+ aEzn5PV+PJ68mEI43PPVBkwwycjjv+V5oqCjJcWP79+bJEMwalSJ0M23Aezd+Xagu5g+PudQR
+ c1vk9Rt1rK/ZFr0BB89/Bj/sGLa7yzmlaT2v7yhlDbclAza81AGCWGQC1ehs6ZkU0LI2h2Kf0
+ ygA5hpq4h48UtzoOGgb1u9+OO0w6dBjBe72M1VqwY9IkIp5/m8=
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, Jan 2, 2022 at 2:02 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> On Wed, Dec 29, 2021 at 8:29 AM Nikita Yushchenko
+> <nikita.yoush@cogentembedded.com> wrote:
+>
+> >  config IIO_ST_ACCEL_I2C_3AXIS
+> > -       tristate
+> > -       depends on IIO_ST_ACCEL_3AXIS
+> > -       depends on IIO_ST_SENSORS_I2C
+> > +       tristate "STMicroelectronics accelerometers 3-Axis I2C Interface"
+> > +       depends on (I2C && IIO_ST_ACCEL_3AXIS)
+> > +       default y if (I2C && IIO_ST_ACCEL_3AXIS)
+> > +       select IIO_ST_SENSORS_I2C
+>
+> This thing that a Kconfig symbol is made to depend on itself just
+> boggles my head but it wouldn't surprise me if KConfig is this weird :(
+>
+> I CCed Arnd who knows KConfig a bit better than anyone I know.
 
-Letting the compiler remove these functions when the kernel is built
-without one or  more of CONFIG_PM/CONFIG_PM_SLEEP support is simpler and
-less error prone than the use of #ifdef based config guards.
+It looks fine to me, the only thing I'd change is to write the default as
 
-Removing instances of this approach from IIO also stops them being
-copied into new drivers.
+           default I2C && IIO_ST_SENSORS_I2C
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Crt Mori <cmo@melexis.com>
----
- drivers/iio/temperature/mlx90614.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+rather than 'default y', which is less intuitive for the case where one
+of the dependencies is =m.
 
-diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-index afcb10ea7c44..c253a5315988 100644
---- a/drivers/iio/temperature/mlx90614.c
-+++ b/drivers/iio/temperature/mlx90614.c
-@@ -600,7 +600,6 @@ static const struct of_device_id mlx90614_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, mlx90614_of_match);
- 
--#ifdef CONFIG_PM_SLEEP
- static int mlx90614_pm_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-@@ -630,9 +629,7 @@ static int mlx90614_pm_resume(struct device *dev)
- 
- 	return 0;
- }
--#endif
- 
--#ifdef CONFIG_PM
- static int mlx90614_pm_runtime_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-@@ -648,19 +645,18 @@ static int mlx90614_pm_runtime_resume(struct device *dev)
- 
- 	return mlx90614_wakeup(data);
- }
--#endif
- 
- static const struct dev_pm_ops mlx90614_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(mlx90614_pm_suspend, mlx90614_pm_resume)
--	SET_RUNTIME_PM_OPS(mlx90614_pm_runtime_suspend,
--			   mlx90614_pm_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(mlx90614_pm_suspend, mlx90614_pm_resume)
-+	RUNTIME_PM_OPS(mlx90614_pm_runtime_suspend,
-+		       mlx90614_pm_runtime_resume, NULL)
- };
- 
- static struct i2c_driver mlx90614_driver = {
- 	.driver = {
- 		.name	= "mlx90614",
- 		.of_match_table = mlx90614_of_match,
--		.pm	= &mlx90614_pm_ops,
-+		.pm	= pm_ptr(&mlx90614_pm_ops),
- 	},
- 	.probe = mlx90614_probe,
- 	.remove = mlx90614_remove,
--- 
-2.34.1
-
+      Arnd

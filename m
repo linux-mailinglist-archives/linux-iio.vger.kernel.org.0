@@ -2,46 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 072A0482B2C
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:51:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37E8B482B2D
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:51:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232284AbiABMvb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:51:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232135AbiABMva (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:51:30 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76851C061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:51:30 -0800 (PST)
+        id S232303AbiABMvd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:51:33 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:50416 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232135AbiABMvc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:51:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 31472B80D62
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F14AC36AEF;
-        Sun,  2 Jan 2022 12:51:25 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A51DCB80CFC
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:51:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF20C36AE7;
+        Sun,  2 Jan 2022 12:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127887;
-        bh=ataQ0/NG715KiJXcZnH0xXTgucOdo1SjJj0JC6r7EM0=;
+        s=k20201202; t=1641127890;
+        bh=Z6RFNiEAUiFuHZEi26BB2FYS2FkecMuqX6mAxKfmueE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EeWQeW6o2hjZs5R99kyNJbrl7gkeHFqi+PgdTaxZMAV4ItSNEoNms13lXIAowQgw2
-         rNoE645qksMNR1VyXOUmNCt4T0Nz/F2fcybxBCHL0XzepTr67mbvANImtCM6hxP6Ma
-         Ub++uowO6JWwp9d+IsC6LleSJoPCyeGZxcvovLKGk8qITzvkzvINa/S5+eQwnxW56j
-         mu8riUo3urVBvWqqKn8NlCFlk8+rovGhkb5n81+fnyWDzSB403wKM+lMY9mdsgzZVp
-         Pqzz6PC8PEO26t0vYecaiFDfoe1md038BHfjSGtVz19+0nlWldIXFafZOgAlV6RUwi
-         /VlFvT9oM4jpg==
+        b=FZB/Kb2w5Dj88S+WokjZKwFxgK0hWd9XGoAyavqYv0/kt3PaKppeuG1Y6aje+pexf
+         J2EkYnabnT1C/7cqeNp1xHw1U7UKZVfQUbBagn1Z4xPYX2LMeUWQq3Mbb2/F9IUelZ
+         5TCjfA7seAiqiLaHbMDHDWkLPMJySd+ppGH5lt4Ph92nrjaVg2XVZyx5JnculFqEEB
+         9L8dkW7Yd2YzJr5ZPkVgDU2nECmUi483dPsm8TdexqOvq+S73ryFufdi87rStItmcz
+         PPqQ9WmKpWqqdGjWLwfypOmIX4QWPPlCxJ8u1+/F8MU3HHyYJPwQrWs2Jy8lmAdbwo
+         zR56z+V/HcH0A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: [PATCH v2 13/51] iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
-Date:   Sun,  2 Jan 2022 12:55:39 +0000
-Message-Id: <20220102125617.1259804-14-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 14/51] iio:adc:palmas_gpadc: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+Date:   Sun,  2 Jan 2022 12:55:40 +0000
+Message-Id: <20220102125617.1259804-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
 References: <20220102125617.1259804-1-jic23@kernel.org>
@@ -60,48 +56,51 @@ use of #ifdef based config guards.
 Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In this case SIMPLE_DEV_PM_OPS() could have been used previously.
+Now we have DEFINE_SIMPLE_DEV_PM_OPS() which also deals with letting
+the compiler remove the structure and functions so use that instead.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/exynos_adc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/iio/adc/palmas_gpadc.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 3b3868aa2533..166a6436e36f 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -968,7 +968,6 @@ static int exynos_adc_remove(struct platform_device *pdev)
+diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+index f9c8385c72d3..a8febe487b2b 100644
+--- a/drivers/iio/adc/palmas_gpadc.c
++++ b/drivers/iio/adc/palmas_gpadc.c
+@@ -653,7 +653,6 @@ static int palmas_gpadc_remove(struct platform_device *pdev)
  	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int exynos_adc_suspend(struct device *dev)
+ static int palmas_adc_wakeup_configure(struct palmas_gpadc *adc)
  {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-@@ -1001,11 +1000,10 @@ static int exynos_adc_resume(struct device *dev)
+ 	int adc_period, conv;
+@@ -822,12 +821,9 @@ static int palmas_gpadc_resume(struct device *dev)
  
  	return 0;
- }
+ };
 -#endif
  
--static SIMPLE_DEV_PM_OPS(exynos_adc_pm_ops,
--			exynos_adc_suspend,
--			exynos_adc_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(exynos_adc_pm_ops,
-+			 exynos_adc_suspend,
-+			 exynos_adc_resume);
+-static const struct dev_pm_ops palmas_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(palmas_gpadc_suspend,
+-				palmas_gpadc_resume)
+-};
++DEFINE_SIMPLE_DEV_PM_OPS(palmas_pm_ops, palmas_gpadc_suspend,
++			 palmas_gpadc_resume);
  
- static struct platform_driver exynos_adc_driver = {
- 	.probe		= exynos_adc_probe,
-@@ -1013,7 +1011,7 @@ static struct platform_driver exynos_adc_driver = {
- 	.driver		= {
- 		.name	= "exynos-adc",
- 		.of_match_table = exynos_adc_match,
--		.pm	= &exynos_adc_pm_ops,
-+		.pm	= pm_sleep_ptr(&exynos_adc_pm_ops),
+ static const struct of_device_id of_palmas_gpadc_match_tbl[] = {
+ 	{ .compatible = "ti,palmas-gpadc", },
+@@ -840,7 +836,7 @@ static struct platform_driver palmas_gpadc_driver = {
+ 	.remove = palmas_gpadc_remove,
+ 	.driver = {
+ 		.name = MOD_NAME,
+-		.pm = &palmas_pm_ops,
++		.pm = pm_sleep_ptr(&palmas_pm_ops),
+ 		.of_match_table = of_palmas_gpadc_match_tbl,
  	},
  };
- 
 -- 
 2.34.1
 

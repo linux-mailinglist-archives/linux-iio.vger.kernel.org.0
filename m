@@ -2,83 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 278AB482A5F
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 07:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C81482A60
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 07:58:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232839AbiABG5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 01:57:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53770 "EHLO
+        id S232841AbiABG6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 01:58:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbiABG5a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 01:57:30 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51B09C061574
-        for <linux-iio@vger.kernel.org>; Sat,  1 Jan 2022 22:57:30 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id h2so58098737lfv.9
-        for <linux-iio@vger.kernel.org>; Sat, 01 Jan 2022 22:57:30 -0800 (PST)
+        with ESMTP id S230374AbiABG6S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 01:58:18 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7F1FC061574
+        for <linux-iio@vger.kernel.org>; Sat,  1 Jan 2022 22:58:17 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id k21so68714603lfu.0
+        for <linux-iio@vger.kernel.org>; Sat, 01 Jan 2022 22:58:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=jgvINhNLUS9ouJWSXS29IEZEjftN82fIlZJjcxzbPrE=;
-        b=e8QR3/EBmQ+H+vvm8HnNMXYb2LiU/upr/aLtZAPt7mPIvkRModbl+XGEED6mIge6bk
-         Us1oi4Wr9sUydBDGwC+atfssk8K0/1Tiy3vWLilFbM9drW4IHjl3cvmoVO7J2Qmcb0nB
-         Hy6c4HmDqPMuxNWz51KOSDnz5N+rBsf753i6CNYi72HLc+b1DmdCZWc+/F9V9LF8CNhM
-         q+Q7bFrOiCdwGy1LIGdLxY7crtG5W9VwhSMKapom0Hyuw0F5+Xja8UtgVtu5+dssbmoj
-         cu0iigQviFMsfdwIQpexifEYXwbLpTL9giWgCq40kwjwASM+S2VV7cbNOgeh7BlEujpr
-         TsbA==
+        bh=H+bzcq7UB/JKHMA/9ptkzQiF8Wl9Ixq3bTrtRrhmcT8=;
+        b=lzM10FZ7WYbYyOsCLKkpfOndn11lDxow/Qfdl6Bn5iLWJFIJO42/JimqwEa2OjfJOD
+         x11hlXL8Jk+hquHkuX1fKtqOU0OZ2TGM8RSEgdG7jH1MstjpxaMcDJw7Rm3D7QLGWhdI
+         A2GR7ikBt2Buzk/Cz+pOtPZaGLJXK5tlbOseK/p8YVObC6VslDGqoeztxKMs/60bmqvx
+         a+dU2E/hSGjsX6y8c1izCswQ9//NYsfNlnxlxF8KFi5GsbMO++JVO0c5F+vaY92CsH7D
+         4nSh2nJHLpWZaaPac8RQVGQaBys1ZVr9tvQh1E9viF5bV9tNISd08ZGrjcmxfyIS5Ei9
+         fAaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=jgvINhNLUS9ouJWSXS29IEZEjftN82fIlZJjcxzbPrE=;
-        b=USd4W1BC6xyLq3h+e8rjLTOBtG+YrKYvocydlTLLSrdPz+7nWGCwRYNfg4Qj4s/Ows
-         TdUbD6OmM8B/HjPZ4ozalv+cgu9Fz2tnXxDVw4yfmNdcLXXlPnK2Pg9f4w+wYt0Vapuc
-         iZ4+hJDBXU/KKXeLIkWdbgOjvlgCk6PSTHM6ZnO27uIertnneSxOjHV9QaqGDPphZ1t7
-         Rgv8HtkecpfPe6ugrV6DUd2HrIvBtloGPF1NBWqM5IEbt+WPg7jXplsrn/E7uHoH+inp
-         lQiJ6VLaWJHfRrc9gMEH1U9yUYgVb8p2SBI+QDM0ROEaIZMoh5YW2zi2EPAO36DkLs7f
-         Tspw==
-X-Gm-Message-State: AOAM531VQVrnL4JLumOuWpSRURH46ftvQEQrHsesqno2M/Pt5s86d/LQ
-        NFSqFh8e8rKRDtAy9cg5u5FuKDv58tE4lWuYo3I2Lg==
-X-Google-Smtp-Source: ABdhPJzsVlVjZUNwiqYZtZ2Q8HEdxcJ03NDqZ4/bDDHl91429NviVmMx/Ynn4SZ8sR+m3iVXa0Ar8tLe5YzGwTrlWXk=
-X-Received: by 2002:a05:6512:2303:: with SMTP id o3mr36890823lfu.362.1641106648659;
- Sat, 01 Jan 2022 22:57:28 -0800 (PST)
+        bh=H+bzcq7UB/JKHMA/9ptkzQiF8Wl9Ixq3bTrtRrhmcT8=;
+        b=3VV5jKQB5IRxHoUoRIEE5eSVcDTk/19UKYeX0hKbrrG1RoVJDwM8VtgCIA4chbg2sW
+         DZ0au9IJNQy4/XumtYq5rW7L4ot9AIm+uU9Kd39g9w2h2uZiu0kjr5en5MoDExGCmau7
+         An5sUNEM4dUpepAdHh/JB+/7akYcB65UniFP8BPrNE5YF+FbAmoEwvarDPcPHhEC9TvW
+         c1eSedh359ozM+LDRIOvj6ATcCgaOPCwkAwOE8LoA2g8QFQAO+yTfmfjZiexMFP3JUMY
+         GtqexcEmQqO2bXeLfFpmI4lLen49hkec8uyGuRkc0vr1amspzGkHbBfdckgeztF5G6LV
+         jI1A==
+X-Gm-Message-State: AOAM532DdB36qI0hz63WECm6nKVdkoHlzXrL3Oz+UOoxmUbxIQ9eMGXx
+        7GomkyjoX+S+BPA8A2nd7QagAsNeEy3WER2cQ89VVA==
+X-Google-Smtp-Source: ABdhPJxN8uIycDVKUm8aCKymqldTy/kjpLcv0AELPhelzfJM1eaHoBvEXPJBja1wzuE4wwkseu4aNsbkGLPj6f0iNEg=
+X-Received: by 2002:a05:6512:39ce:: with SMTP id k14mr19142392lfu.508.1641106696001;
+ Sat, 01 Jan 2022 22:58:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20211230193331.283503-1-jic23@kernel.org>
-In-Reply-To: <20211230193331.283503-1-jic23@kernel.org>
+References: <20211230193331.283503-1-jic23@kernel.org> <20211230193331.283503-13-jic23@kernel.org>
+In-Reply-To: <20211230193331.283503-13-jic23@kernel.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 2 Jan 2022 07:57:16 +0100
-Message-ID: <CACRpkdbRtsZHzPsfLcQCSwSh5mfcbt73asH8wwk3A-t+UZigJA@mail.gmail.com>
-Subject: Re: [PATCH 00/13] IIO: accel/st-sensors move into separate symbol namespaces
+Date:   Sun, 2 Jan 2022 07:58:03 +0100
+Message-ID: <CACRpkdbwL-P__D4kbZs+HOsSNEvVLf-_cwXTUrOUijpFETGb=Q@mail.gmail.com>
+Subject: Re: [PATCH 12/13] iio:st-sensors: Remove duplicate MODULE_*
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Gwendal Grignou <gwendal@chromium.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Sean Nyekjaer <sean@geanix.com>,
         Denis Ciocca <denis.ciocca@st.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Dec 30, 2021 at 8:27 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, Dec 30, 2021 at 8:28 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-> https://lwn.net/Articles/760045/ provides a good overview of this feature
-> and why it might be used.  In this particular case we fall under the multi
-> module case.  For each group of modules, I've moved the exports into
-> an independent namespace.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Whilst I'm not entirely sure it is worth the noise of moving the main
-> IIO exports into a namespace, it is definitely worthwhile for these small
-> clusters of related modules (typically a core + i2c and spi modules).
+> The core module and type specific core modules are made up of
+> several files. There is no benefit in duplicating the MODULE_* macros
+> in each file so remove them.
+>
+> Noticed whilst adding MODULE_IMPORT_NS() as I missed some files and
+> it still worked, making it clear not all of these blocks were needed.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Denis Ciocca <denis.ciocca@st.com>
 
-That's clever. Something similar can be done elsewhere in the kernel
-too.
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,

@@ -2,35 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF30C482B4D
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66EF5482B4E
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:53:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232387AbiABMxC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:53:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbiABMxB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:53:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D94C061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:53:01 -0800 (PST)
+        id S229699AbiABMxE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:53:04 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:43092 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229800AbiABMxD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:53:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2817F60DB7
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:53:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725E1C36AE7;
-        Sun,  2 Jan 2022 12:52:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93C4460E9A
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:53:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF8AC36AEF;
+        Sun,  2 Jan 2022 12:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641127980;
-        bh=bnWvFctZXx/SWLo2yWO3MfCmGW7XgjkIULl4o+2FpkM=;
+        s=k20201202; t=1641127983;
+        bh=EBKsbqi/xnSuX+xKn8qJJDhcpjMG4aDqCZs4UXVnHMM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CRNe9036YOpBXnuEBWihDoARwLW0CO72qa43ERmC862btZbHkbUFj5FWXIVDP3tm9
-         hVGdUawgY0yGtDFv5Thv7vlwvwukCJ5wKBrDVxeTTnFsa2tCLY8Zj0KSWJqPZq76l/
-         mduEBwSREjAH3Pf++erjthTpnKtUmsDijz8aBbqUti4HTvI4YNnVJBMSB+becR5xQS
-         o63GnYsTk5qGawS/jJcGoG+76R/Q6LQg2KTzGsWYDhsguYRE8wrA9YBHg6LS5n0NQJ
-         PHP6k8O/1Ofv2Zn/wsfrO2b59kfvaK7E1jHTczlBILja1zdB6ZRJVWKnRxUpxKJqHh
-         hkKLyDvp0bSUA==
+        b=UpqAvqrFmR2As39WAiOp1I27iVFlBK321tqT0zGSGg8Dg29ecnN0brA/BAdLcjqTf
+         aNPVWsxAk+6aeNl23Vn75pFuIR/Rp9eC2Lv3aIsuGgHVVNK2wR8pScfgL7SHNT6y0m
+         PglhSXKX2QIBrhIfGkvuBrgxozJoZRWR97sqpweA6+C8t8MYHgv11tcvxTiszrbW02
+         wG7j23qdmohf8lUH0Wl58GLxGj9y6v94+aujXRdtmPUSg2NbqFG9zQGSKqOR6VHC1f
+         JmTr3h3L3Y3pPvAW1GQKchhYSMjGdfZBrdYzpI8TjOLT+Dw0qES8+/NEK6Kgd3zzzC
+         4iZTHw4qdZ0rg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
@@ -38,9 +35,9 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 46/51] iio:accel:stk8312: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun,  2 Jan 2022 12:56:12 +0000
-Message-Id: <20220102125617.1259804-47-jic23@kernel.org>
+Subject: [PATCH v2 47/51] iio:accel:bma180: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun,  2 Jan 2022 12:56:13 +0000
+Message-Id: <20220102125617.1259804-48-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220102125617.1259804-1-jic23@kernel.org>
 References: <20220102125617.1259804-1-jic23@kernel.org>
@@ -61,44 +58,43 @@ copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/stk8312.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/iio/accel/bma180.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/accel/stk8312.c b/drivers/iio/accel/stk8312.c
-index de0cdf8c1f94..48d9090862e0 100644
---- a/drivers/iio/accel/stk8312.c
-+++ b/drivers/iio/accel/stk8312.c
-@@ -611,7 +611,6 @@ static int stk8312_remove(struct i2c_client *client)
- 	return stk8312_set_mode(data, STK8312_MODE_STANDBY);
+diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+index d8a454c266d5..4d99c61bec82 100644
+--- a/drivers/iio/accel/bma180.c
++++ b/drivers/iio/accel/bma180.c
+@@ -1065,7 +1065,6 @@ static int bma180_remove(struct i2c_client *client)
+ 	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int stk8312_suspend(struct device *dev)
+ static int bma180_suspend(struct device *dev)
  {
- 	struct stk8312_data *data;
-@@ -630,12 +629,7 @@ static int stk8312_resume(struct device *dev)
- 	return stk8312_set_mode(data, data->mode | STK8312_MODE_ACTIVE);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+@@ -1092,11 +1091,7 @@ static int bma180_resume(struct device *dev)
+ 	return ret;
  }
  
--static SIMPLE_DEV_PM_OPS(stk8312_pm_ops, stk8312_suspend, stk8312_resume);
--
--#define STK8312_PM_OPS (&stk8312_pm_ops)
+-static SIMPLE_DEV_PM_OPS(bma180_pm_ops, bma180_suspend, bma180_resume);
+-#define BMA180_PM_OPS (&bma180_pm_ops)
 -#else
--#define STK8312_PM_OPS NULL
+-#define BMA180_PM_OPS NULL
 -#endif
-+DEFINE_SIMPLE_DEV_PM_OPS(stk8312_pm_ops, stk8312_suspend, stk8312_resume);
++DEFINE_SIMPLE_DEV_PM_OPS(bma180_pm_ops, bma180_suspend, bma180_resume);
  
- static const struct i2c_device_id stk8312_i2c_id[] = {
- 	/* Deprecated in favour of lowercase form */
-@@ -648,7 +642,7 @@ MODULE_DEVICE_TABLE(i2c, stk8312_i2c_id);
- static struct i2c_driver stk8312_driver = {
+ static const struct i2c_device_id bma180_ids[] = {
+ 	{ "bma023", BMA023 },
+@@ -1137,7 +1132,7 @@ MODULE_DEVICE_TABLE(of, bma180_of_match);
+ static struct i2c_driver bma180_driver = {
  	.driver = {
- 		.name = STK8312_DRIVER_NAME,
--		.pm = STK8312_PM_OPS,
-+		.pm = pm_sleep_ptr(&stk8312_pm_ops),
+ 		.name	= "bma180",
+-		.pm	= BMA180_PM_OPS,
++		.pm	= pm_sleep_ptr(&bma180_pm_ops),
+ 		.of_match_table = bma180_of_match,
  	},
- 	.probe =            stk8312_probe,
- 	.remove =           stk8312_remove,
+ 	.probe		= bma180_probe,
 -- 
 2.34.1
 

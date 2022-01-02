@@ -2,265 +2,295 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EEB7482B1A
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 374A1482B1F
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 13:50:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231528AbiABMsD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Jan 2022 07:48:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbiABMsD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:48:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A5DC061574
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 04:48:03 -0800 (PST)
+        id S231451AbiABMu4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Jan 2022 07:50:56 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:50042 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229658AbiABMuz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Jan 2022 07:50:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E30660E9A
-        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:48:02 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id A454AC36AEE;
-        Sun,  2 Jan 2022 12:47:59 +0000 (UTC)
-Date:   Sun, 2 Jan 2022 12:53:41 +0000
+        by ams.source.kernel.org (Postfix) with ESMTPS id 57DCDB80D61
+        for <linux-iio@vger.kernel.org>; Sun,  2 Jan 2022 12:50:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B900DC36AEE;
+        Sun,  2 Jan 2022 12:50:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641127853;
+        bh=2v9lfT36H8aYFxQyJs0lHyNgZmyubOYtuY2vHkYuPs4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iSBs64KcGtcP5s1lgjViZH2f21ev9Wnd5D/idYQvEmuC4K06A6tjAWuoCzXVwIKt9
+         BL6/U1X+VR2eDyCMqiAZIliSIl+b56HyyHbQpS6x1hv9tQ+Jtz9JPEyDfMHWrhmEMX
+         JdwuS/j3JnMhn1kUP3yx2LwWvCyfuZ33WbvW+UFWZWO0NAnWlye4hdbhD0zRFoGELY
+         vdkOJ6oY5lpsmSkuB9S7Fgsc8GX3nwkDDpkLpi5Nh45ts0f8oKj6kRXURSm08vtchF
+         JjubsqhrZx1AyU4OCgtXx04Bo9qpMUDlh74nC2cES8lqfR6RQoY7kdHT5sOm6YCQP+
+         f6PZKfZZmNT+A==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     lars@metafoo.de, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] drivers/iio: Use SIMPLE_DEV_PM_OPS when possible
-Message-ID: <20220102125341.6b4133e0@jic23-huawei>
-In-Reply-To: <20220102055333.338456-1-gwendal@chromium.org>
-References: <20220102055333.338456-1-gwendal@chromium.org>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Anson Huang <anson.huang@nxp.com>,
+        Brian Masney <masneyb@onstation.org>,
+        Crt Mori <cmo@melexis.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
+        Icenowy Zheng <icenowy@aosc.io>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Martijn Braam <martijn@brixit.nl>,
+        Maslov Dmitry <maslovdmitry@seeed.cc>,
+        Mikko Koivunen <mikko.koivunen@fi.rohmeurope.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
+        Vaishnav M A <vaishnav@beagleboard.org>
+Subject: [PATCH v2 00/51] iio: Tree wide switch from CONFIG_PM* to pm_[sleep]_ptr etc.
+Date:   Sun,  2 Jan 2022 12:55:26 +0000
+Message-Id: <20220102125617.1259804-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  1 Jan 2022 21:53:33 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> Use SIMPLE_DEV_PM_OPS macro instead of "const struct dev_pm_ops...".
-> Use spatch and sed to fix the drivers. A simple .cocci file is used:
-> @Replacement@
-> identifier operation;
-> expression suspend, resume;
-> @@
-> - const struct dev_pm_ops operation = { SYSTEM_SLEEP_PM_OPS(suspend, resume) };
-> + gg_fc operation = gg_arg(suspend, resume);
-> 
-> spatch -sp_file simple.cocci -dir drivers/iio | patch -p 1 -drivers/iio/
-> sed -i 's/gg_fc \(.*\) = gg_arg(/SIMPLE_DEV_PM_OPS(\1, /' \
-> $(git diff --name-only)
-> 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Previously "iio: Tree wide switch from CONFIG_PM* to __maybe_unused etc."
 
-Hi Gwendal,
+Note I've kept tags given for v1 having concluded the changes were fairly
+minor, but if anyone wants me to drop a tag let me know (it was a bit
+borderline in my view).
 
-Rather unfortunate timing.
+I have a follow up series to convert the existing cases that looked like the
+results of the v1 version of this series but will sit on that until this
+has had some review given this set is already rather too large.  For those
+I'll probably do some groupings rather than one patch per file.
+
+In the discussion of v1 Paul proposed a change to how pm_ptr() and
+related macros are defined to remove the need to mark the various
+functions as __maybe_unused.  That culminated in the patch:
 
 https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=1a3c7bb088266fa2db017be299f91f1c1894c857
-is queued up for the merge window.
 
-That changes the way most of these should be done.  I'll be sending out
-a first series covering the CONFIG_PM* ones shortly and have
-patches queued behind those to convert the majority of these.
+which is currently queued up by Rafael in the linux-pm tree for the
+merge window.  This series depends on that patch.
 
-A couple of them will still be possibly worthwhile changing after
-those series (the ones where symbol is exported), but
-I believe the plan is to eventually drop SIMPLE_DEV_PM_OPS()
-once the tree is converted to DEFINE_SIMPLE_DEV_PM_OPS / pm[_sleep]_ptr()
-so introducing more cases may be a bad idea even if they
-temporarily remove some boilerplate.
+So the main changes since v1:
 
-Thanks,
+* Drop all the __maybe_unused markings
+* Switch from SIMPLE_DEV_PM_OPS() to DEFINE_SIMPLE_DEV_PM_OPS()
+* Switch from SET_RUNTIME_PM_OPS() to RUNTIME_PM_OPS()
+* Switch from SET_SYSTEM_SLEEP_PM_OPS() to SYSTEM_SLEEP_PM_OPS()
+* Use pm_sleep_ptr() with DEFINE_SIMPLE_DEV_PM_OPS() cases
+* Use pm_ptr() with al other cases
+* Drop patches change cases where the dev_pm_ops structure is exported
+  to other modules as the compiler can't remove those cases automatically
+  and more thought is needed.
+* Add some additional drivers that I'd missed on the first round.
 
-Jonathan
+Note this does not cover all cases of CONFIG_PM* in IIO as some are
+considerably more complicated and this approach may not be suitable.
 
+Overall motivation for the series remains the same as for V1:
+* Code reduction and improvement in readability.
+* Reduce the chance I'll have to ask people to change how they do
+  this in future drivers (cut and paste fun)
 
-> ---
->  drivers/iio/adc/palmas_gpadc.c               | 5 +----
->  drivers/iio/common/ssp_sensors/ssp_dev.c     | 4 +---
->  drivers/iio/dac/stm32-dac.c                  | 5 ++---
->  drivers/iio/humidity/hts221_core.c           | 4 +---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 4 +---
->  drivers/iio/light/cm3232.c                   | 3 +--
->  drivers/iio/light/cm3605.c                   | 5 +----
->  drivers/iio/light/st_uvis25_core.c           | 4 +---
->  drivers/iio/magnetometer/mmc35240.c          | 4 +---
->  drivers/iio/proximity/sx9310.c               | 4 +---
->  drivers/iio/proximity/sx9500.c               | 4 +---
->  11 files changed, 12 insertions(+), 34 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> index f9c8385c72d3d9..558861bd342279 100644
-> --- a/drivers/iio/adc/palmas_gpadc.c
-> +++ b/drivers/iio/adc/palmas_gpadc.c
-> @@ -824,10 +824,7 @@ static int palmas_gpadc_resume(struct device *dev)
->  };
->  #endif
->  
-> -static const struct dev_pm_ops palmas_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(palmas_gpadc_suspend,
-> -				palmas_gpadc_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(palmas_pm_ops, palmas_gpadc_suspend, palmas_gpadc_resume);
->  
->  static const struct of_device_id of_palmas_gpadc_match_tbl[] = {
->  	{ .compatible = "ti,palmas-gpadc", },
-> diff --git a/drivers/iio/common/ssp_sensors/ssp_dev.c b/drivers/iio/common/ssp_sensors/ssp_dev.c
-> index 1aee8710003817..4ce08283ca9f1a 100644
-> --- a/drivers/iio/common/ssp_sensors/ssp_dev.c
-> +++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
-> @@ -663,9 +663,7 @@ static int ssp_resume(struct device *dev)
->  }
->  #endif /* CONFIG_PM_SLEEP */
->  
-> -static const struct dev_pm_ops ssp_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(ssp_suspend, ssp_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(ssp_pm_ops, ssp_suspend, ssp_resume);
->  
->  static struct spi_driver ssp_driver = {
->  	.probe = ssp_probe,
-> diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
-> index cd71cc4553a730..c94208a9a6cad6 100644
-> --- a/drivers/iio/dac/stm32-dac.c
-> +++ b/drivers/iio/dac/stm32-dac.c
-> @@ -386,9 +386,8 @@ static int __maybe_unused stm32_dac_suspend(struct device *dev)
->  	return pm_runtime_force_suspend(dev);
->  }
->  
-> -static const struct dev_pm_ops stm32_dac_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(stm32_dac_suspend, pm_runtime_force_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(stm32_dac_pm_ops, stm32_dac_suspend,
-> +				       pm_runtime_force_resume);
->  
->  static const struct of_device_id stm32_dac_of_match[] = {
->  	{ .compatible = "st,stm32-dac", },
-> diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
-> index 6a39615b696114..ccba2f253a5b8a 100644
-> --- a/drivers/iio/humidity/hts221_core.c
-> +++ b/drivers/iio/humidity/hts221_core.c
-> @@ -694,9 +694,7 @@ static int __maybe_unused hts221_resume(struct device *dev)
->  	return err;
->  }
->  
-> -const struct dev_pm_ops hts221_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(hts221_suspend, hts221_resume)
-> -};
-> +SIMPLE_DEV_PM_OPS(hts221_pm_ops, hts221_suspend, hts221_resume);
->  EXPORT_SYMBOL(hts221_pm_ops);
->  
->  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 727b4b6ac69663..10a84b3c7b6889 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2358,9 +2358,7 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
->  	return err;
->  }
->  
-> -const struct dev_pm_ops st_lsm6dsx_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(st_lsm6dsx_suspend, st_lsm6dsx_resume)
-> -};
-> +SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend, st_lsm6dsx_resume);
->  EXPORT_SYMBOL(st_lsm6dsx_pm_ops);
->  
->  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
-> diff --git a/drivers/iio/light/cm3232.c b/drivers/iio/light/cm3232.c
-> index 18a410340dc563..7e6aaefe382674 100644
-> --- a/drivers/iio/light/cm3232.c
-> +++ b/drivers/iio/light/cm3232.c
-> @@ -403,8 +403,7 @@ static int cm3232_resume(struct device *dev)
->  	return ret;
->  }
->  
-> -static const struct dev_pm_ops cm3232_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(cm3232_suspend, cm3232_resume)};
-> +static SIMPLE_DEV_PM_OPS(cm3232_pm_ops, cm3232_suspend, cm3232_resume);
->  #endif
->  
->  MODULE_DEVICE_TABLE(i2c, cm3232_id);
-> diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
-> index 50d34a98839c0e..7b1d27286ba3b0 100644
-> --- a/drivers/iio/light/cm3605.c
-> +++ b/drivers/iio/light/cm3605.c
-> @@ -303,10 +303,7 @@ static int __maybe_unused cm3605_pm_resume(struct device *dev)
->  	return 0;
->  }
->  
-> -static const struct dev_pm_ops cm3605_dev_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(cm3605_pm_suspend,
-> -				cm3605_pm_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(cm3605_dev_pm_ops, cm3605_pm_suspend, cm3605_pm_resume);
->  
->  static const struct of_device_id cm3605_of_match[] = {
->  	{.compatible = "capella,cm3605"},
-> diff --git a/drivers/iio/light/st_uvis25_core.c b/drivers/iio/light/st_uvis25_core.c
-> index 41a2ce5a2d5388..997432a0b2dca0 100644
-> --- a/drivers/iio/light/st_uvis25_core.c
-> +++ b/drivers/iio/light/st_uvis25_core.c
-> @@ -346,9 +346,7 @@ static int __maybe_unused st_uvis25_resume(struct device *dev)
->  	return 0;
->  }
->  
-> -const struct dev_pm_ops st_uvis25_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(st_uvis25_suspend, st_uvis25_resume)
-> -};
-> +SIMPLE_DEV_PM_OPS(st_uvis25_pm_ops, st_uvis25_suspend, st_uvis25_resume);
->  EXPORT_SYMBOL(st_uvis25_pm_ops);
->  
->  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>");
-> diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
-> index 65f3d1ed0d597f..0a1ada247bfbfd 100644
-> --- a/drivers/iio/magnetometer/mmc35240.c
-> +++ b/drivers/iio/magnetometer/mmc35240.c
-> @@ -550,9 +550,7 @@ static int mmc35240_resume(struct device *dev)
->  }
->  #endif
->  
-> -static const struct dev_pm_ops mmc35240_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(mmc35240_suspend, mmc35240_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(mmc35240_pm_ops, mmc35240_suspend, mmc35240_resume);
->  
->  static const struct of_device_id mmc35240_of_match[] = {
->  	{ .compatible = "memsic,mmc35240", },
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index a3fdb59b06d220..13b340de40b76b 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -1529,9 +1529,7 @@ static int __maybe_unused sx9310_resume(struct device *dev)
->  	return 0;
->  }
->  
-> -static const struct dev_pm_ops sx9310_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(sx9310_suspend, sx9310_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(sx9310_pm_ops, sx9310_suspend, sx9310_resume);
->  
->  static const struct acpi_device_id sx9310_acpi_match[] = {
->  	{ "STH9310", SX9310_WHOAMI_VALUE },
-> diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
-> index 3e4ddb2e8c2bd8..39a32fc5c096d5 100644
-> --- a/drivers/iio/proximity/sx9500.c
-> +++ b/drivers/iio/proximity/sx9500.c
-> @@ -1032,9 +1032,7 @@ static int sx9500_resume(struct device *dev)
->  }
->  #endif /* CONFIG_PM_SLEEP */
->  
-> -static const struct dev_pm_ops sx9500_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(sx9500_suspend, sx9500_resume)
-> -};
-> +static SIMPLE_DEV_PM_OPS(sx9500_pm_ops, sx9500_suspend, sx9500_resume);
->  
->  static const struct acpi_device_id sx9500_acpi_match[] = {
->  	{"SSX9500", 0},
+Note that in some cases letting the compiler remove the code results
+in small reductions in module size, particularly when CONFIG_PM_SLEEP
+is not defined.
+
+I've kept this at one patch per driver as personally I prefer to
+do this for all but most trivial of patches as it makes backports that
+cross with this series simpler (though they will now require the
+dependency called out above). It also avoids the complexity of tagging
+when people wish to call out the subset they have reviewed.
+
+Note there are drivers in here where the author has probably moved
+onto other things, so if people have time to review patches in addition
+to those I've explicitly cc'd them on that would be great!
+
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Anson Huang <anson.huang@nxp.com>
+Cc: Brian Masney <masneyb@onstation.org>
+Cc: Crt Mori <cmo@melexis.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
+Cc: Icenowy Zheng <icenowy@aosc.io>
+Cc: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Luca Weiss <luca@z3ntu.xyz>
+Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Martijn Braam <martijn@brixit.nl>
+Cc: Maslov Dmitry <maslovdmitry@seeed.cc>
+Cc: Matt Ranostay <matt.ranostay@konsulko.com
+Cc: Mikko Koivunen <mikko.koivunen@fi.rohmeurope.com>
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+Cc: Vaishnav M A <vaishnav@beagleboard.org>
+
+Jonathan Cameron (51):
+  iio:accel:da311: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:accel:da280: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:accel:dmard06: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:accel:dmard10: Switch from CONFIG_PM guards to pm_sleep_ptr() etc
+  iio:accel:mc3230: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:accel:mma7660: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr()
+  iio:accel:mma9551: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:accel:mma9553: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:accel:stk8ba50: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:accel:kxsd9: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:adc:ab8500: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:adc:at91-adc: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr()
+  iio:adc:palmas_gpadc: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr()
+  iio:adc:stm32:Switch from CONFIG_PM guards to pm_ptr()
+  iio:adc:rcar: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:adc:rockchip: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:adc:twl6030: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:adc:vf610: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:common:ssp: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:dac:vf610: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:light:apds9300: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:bh1780: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:light:cm3232: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:light:isl29018: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr()
+  iio:light:isl29125: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:jsa1212: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:ltr501: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:light:stk3310: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:tcs3414: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:tsl2563: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:tsl4531: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:light:us5182: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:magn:ak8975: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:magn:mag3110: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:magn:mmc35240: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:pressure:mpl3115: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:proximity:as3935: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:proximity:pulsedlight: Switch from CONFIG_PM guards to pm_ptr()
+    etc
+  iio:proximity:rfd77492: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:proximity:sx9500: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:temperature:tmp006: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:temperature:tmp007: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:chemical:atlas: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:accel:stk8312: Switch from CONFIG_PM_SLEEP guards to
+    pm_sleep_ptr() etc
+  iio:accel:bma180: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:dac:m62332: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+    etc
+  iio:imu:kmx61: Switch from CONFIG_PM* guards to pm_ptr() etc
+  iio:light:rpr0521: Switch from CONFIG_PM guards to pm_ptr() etc
+  iio:temperature:mlx90614: Switch from CONFIG_PM* guards to pm_ptr()
+    etc
+
+ drivers/iio/accel/bma180.c                        |  9 ++-------
+ drivers/iio/accel/da280.c                         |  6 ++----
+ drivers/iio/accel/da311.c                         |  6 ++----
+ drivers/iio/accel/dmard06.c                       | 10 +++-------
+ drivers/iio/accel/dmard10.c                       |  7 +++----
+ drivers/iio/accel/kxsd9-i2c.c                     |  2 +-
+ drivers/iio/accel/kxsd9-spi.c                     |  2 +-
+ drivers/iio/accel/kxsd9.c                         |  8 ++------
+ drivers/iio/accel/mc3230.c                        |  6 ++----
+ drivers/iio/accel/mma7660.c                       | 10 ++--------
+ drivers/iio/accel/mma9551.c                       | 11 +++--------
+ drivers/iio/accel/mma9553.c                       | 11 +++--------
+ drivers/iio/accel/stk8312.c                       | 10 ++--------
+ drivers/iio/accel/stk8ba50.c                      | 10 ++--------
+ drivers/iio/adc/ab8500-gpadc.c                    | 12 ++++--------
+ drivers/iio/adc/at91_adc.c                        |  6 ++----
+ drivers/iio/adc/exynos_adc.c                      | 10 ++++------
+ drivers/iio/adc/palmas_gpadc.c                    | 10 +++-------
+ drivers/iio/adc/rcar-gyroadc.c                    |  6 ++----
+ drivers/iio/adc/rockchip_saradc.c                 |  6 ++----
+ drivers/iio/adc/stm32-adc-core.c                  | 13 +++++--------
+ drivers/iio/adc/stm32-adc.c                       | 12 ++++--------
+ drivers/iio/adc/twl6030-gpadc.c                   |  8 +++-----
+ drivers/iio/adc/vf610_adc.c                       |  6 ++----
+ drivers/iio/chemical/atlas-sensor.c               |  7 ++-----
+ drivers/iio/common/ssp_sensors/ssp_dev.c          |  8 ++------
+ drivers/iio/dac/m62332.c                          |  9 ++-------
+ drivers/iio/dac/vf610_dac.c                       |  6 ++----
+ drivers/iio/imu/kmx61.c                           | 10 +++-------
+ drivers/iio/light/apds9300.c                      |  9 ++-------
+ drivers/iio/light/bh1780.c                        | 10 +++-------
+ drivers/iio/light/cm3232.c                        |  9 ++-------
+ drivers/iio/light/isl29018.c                      |  9 ++-------
+ drivers/iio/light/isl29125.c                      |  6 ++----
+ drivers/iio/light/jsa1212.c                       | 10 ++--------
+ drivers/iio/light/ltr501.c                        |  6 ++----
+ drivers/iio/light/rpr0521.c                       |  7 ++-----
+ drivers/iio/light/stk3310.c                       | 10 ++--------
+ drivers/iio/light/tcs3414.c                       |  6 ++----
+ drivers/iio/light/tcs3472.c                       |  6 ++----
+ drivers/iio/light/tsl2563.c                       |  9 ++-------
+ drivers/iio/light/tsl4531.c                       |  9 ++-------
+ drivers/iio/light/us5182d.c                       |  8 +++-----
+ drivers/iio/magnetometer/ak8975.c                 | 10 +++-------
+ drivers/iio/magnetometer/mag3110.c                |  9 ++-------
+ drivers/iio/magnetometer/mmc35240.c               |  8 ++------
+ drivers/iio/pressure/mpl3115.c                    |  9 ++-------
+ drivers/iio/proximity/as3935.c                    | 10 ++--------
+ drivers/iio/proximity/pulsedlight-lidar-lite-v2.c |  7 ++-----
+ drivers/iio/proximity/rfd77402.c                  |  6 ++----
+ drivers/iio/proximity/sx9500.c                    |  8 ++------
+ drivers/iio/temperature/mlx90614.c                | 12 ++++--------
+ drivers/iio/temperature/tmp006.c                  |  6 ++----
+ drivers/iio/temperature/tmp007.c                  |  6 ++----
+ 54 files changed, 127 insertions(+), 315 deletions(-)
+
+-- 
+2.34.1
 

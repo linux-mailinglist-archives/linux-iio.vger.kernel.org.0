@@ -2,88 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 284324828AA
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Jan 2022 23:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB07B4828E3
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jan 2022 02:14:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232807AbiAAWB7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Jan 2022 17:01:59 -0500
-Received: from mail-ua1-f47.google.com ([209.85.222.47]:36823 "EHLO
-        mail-ua1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232802AbiAAWB5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Jan 2022 17:01:57 -0500
-Received: by mail-ua1-f47.google.com with SMTP id r15so52007059uao.3;
-        Sat, 01 Jan 2022 14:01:56 -0800 (PST)
+        id S229496AbiABBOu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Jan 2022 20:14:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229448AbiABBOu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Jan 2022 20:14:50 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C375EC061574
+        for <linux-iio@vger.kernel.org>; Sat,  1 Jan 2022 17:14:49 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id e128so36570722iof.1
+        for <linux-iio@vger.kernel.org>; Sat, 01 Jan 2022 17:14:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VcXyh7XmBRx3yvGMyxEOjGfzWyKBmIbtugkjX8jJClE=;
+        b=Y8jVuUCFoUO7bKV6czxt+/BMI0lKgmeTfm029/sZeu6s5HEzWnYahNZuX8FZD0j6lM
+         2r/D0Xdsc/c0zevcCiKqlIfuLN0b98ZsSx4eZSUU1nK0+ztSE/l7DUJVeiKxNWoR1WNF
+         F+tTF61Vea0LwR1m6A3jQQQWFPzpLWM9lXz/g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=ib7VxLrH+wz9KcO4aEP5G0wyP6h6Sx532OQ1mK/6MNA=;
-        b=lDuLo15UmbtIdpgbcbTCSTycm5SyFXAEeZwgP51xgZit+og/MGEsnhTsnEJTA/eK34
-         0Mvdbn+bvINR+Xc1KhpCjsXC2BOjGtFgjOuPr6PU0sxnKyivyqCmkEF0FaLtiPXkHmcW
-         hapa6x0mOimZOr2dPUYnNOT5ftPwdDnf5/xFP/BiKXa8QN7Ai6LgLATvNg3NISacQn8W
-         Cf2j/kizHs67knbGY+eVSTi418GJemCHyUK+RlEpuAnzi/mu++um+Ksmc8YFkujOBm70
-         nil4VJGkZM2YbcbePtHBny6+/A1bSVgG0uBIcSsyamOogd1R9bjRJ7KO6bczurOx6utT
-         q0SQ==
-X-Gm-Message-State: AOAM5307t+Y4mQp6yzUksX9cB34rmahMSkhl4Y6Mx+Pd5eOMoG9Usakh
-        Y7o5RQehls2R8uY1i80VxyJRou2uVV7b
-X-Google-Smtp-Source: ABdhPJwf0BdYPyh284WfH5DaVslcyK+esQPXh84kVI+AYK2HFSTsPjwU9ipp4CkPSPV4rx8fj3uvkg==
-X-Received: by 2002:a9f:3f08:: with SMTP id h8mr12967902uaj.128.1641074516353;
-        Sat, 01 Jan 2022 14:01:56 -0800 (PST)
-Received: from robh.at.kernel.org ([209.91.235.3])
-        by smtp.gmail.com with ESMTPSA id u33sm5942815uau.7.2022.01.01.14.01.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Jan 2022 14:01:55 -0800 (PST)
-Received: (nullmailer pid 839553 invoked by uid 1000);
-        Sat, 01 Jan 2022 22:01:44 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Iain Hunter <drhunter95@gmail.com>
-Cc:     iain@hunterembedded.co.uk, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211231131951.1245508-1-drhunter95@gmail.com>
-References: <20211231131951.1245508-1-drhunter95@gmail.com>
-Subject: Re: [PATCH v4 1/2] Add binding for ti,adc1018. It allows selection of channel as a Device Tree property
-Date:   Sat, 01 Jan 2022 18:01:44 -0400
-Message-Id: <1641074504.089913.839552.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VcXyh7XmBRx3yvGMyxEOjGfzWyKBmIbtugkjX8jJClE=;
+        b=QGfULMlYyz3gv23QiOrRNUx977jjO4SIO1shSWJ0AfC5vCFu4TdD+HIIlLxVC2Y0Yz
+         bDxYb6Qi4lYTv5Ps3S4HEo3UyzPgAV12ggO2rdr11vZWHAp4WoCo/sodNZKsTNiGTyH6
+         1edxY83YYqm9c49Mg/PwRvwMWzOjKASC7j7+gPAHTO7bswMd0KE0eOzFFsXh6vhRnEvD
+         q5FTPVfWG+cpGWnInPtBcEaecOo8/synPh0ZVOH9EB2ZpxP5vn9ZPCZ/ceCuG4DZDICY
+         XWzCT+2yZm63d1DfhAtmpmS8O4nTk+475l+cyTgBYUd07CvdgGGadHQ1O+5DTXVK/85r
+         Flmg==
+X-Gm-Message-State: AOAM532HRxSMO1+SUtwEo1InulOIEoKRNJJHQxxcBhWJVbA8/VXSwCmQ
+        Osi9veSMfBrMcePBTGDE8vfhEWDmqCphfmoQsCgcqBh74ME=
+X-Google-Smtp-Source: ABdhPJze1UZhSiPJ1R2NmjamOOtpKUSK3HEJtBS63Uyr378Eow/hAnGltL1hcfQNT+7c7cQPVFJiS429xVOqyTjgDJE=
+X-Received: by 2002:a05:6638:23a:: with SMTP id f26mr18590239jaq.222.1641086088283;
+ Sat, 01 Jan 2022 17:14:48 -0800 (PST)
+MIME-Version: 1.0
+References: <20211218001755.3096807-1-gwendal@chromium.org>
+ <20211218001755.3096807-3-gwendal@chromium.org> <CAHp75Vf_4nRXZ66_EwLU+wrK278Hb+z3ZOtRnQ_1PqCQ_Mcceg@mail.gmail.com>
+ <20211221124536.5250d5a3@jic23-huawei>
+In-Reply-To: <20211221124536.5250d5a3@jic23-huawei>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Sat, 1 Jan 2022 17:14:37 -0800
+Message-ID: <CAPUE2utK7=iryp94_ZFfZtaqQGqzs7x_Vj1xJ4OZVLBcPkL7Pg@mail.gmail.com>
+Subject: Re: [PATCH v8 2/5] iio: sx9310: Extract common Semtech sensor logic
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>, swboyd@chromium.org,
+        linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 31 Dec 2021 13:19:15 +0000, Iain Hunter wrote:
-> New binding file uses the adc.yaml to define channel selection
-> 
-> Signed-off-by: Iain Hunter <drhunter95@gmail.com>
-> ---
->  .../bindings/iio/adc/ti,ads1018.yaml          | 126 ++++++++++++++++++
->  1 file changed, 126 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
-> 
-
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/iio/adc/ti,ads1018.example.dts:24.19-31.15: Warning (spi_bus_reg): /example-0/spi/adc@1: SPI bus unit address format error, expected "0"
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads1018.example.dt.yaml: adc@1: 'ti,adc-channels' does not match any of the regexes: '^channel@([0-3])$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads1018.example.dt.yaml: adc@0: 'ti,adc-diff-channels' does not match any of the regexes: '^channel@([0-3])$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1574373
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+On Tue, Dec 21, 2021 at 4:40 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sat, 18 Dec 2021 15:54:05 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+I am sorry, I forgot your comments. I submitted a v10.
+>
+> > On Sat, Dec 18, 2021 at 11:58 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+> > >
+> > > Before adding new Semtech sensors, move common logic to all Semtech SAR
+> > > sensor in its own file:
+> > > - interface with IIO subsystem,
+> > > - interrupt management,
+> > > - channel access conrol,
+> > > - event processing.
+> > >
+> > > The change adds a bidirectional interface between sx93xx and sx_common.
+> >
+> > ...
+> >
+> > > +/* All Semtech SAR sensor have IRQ bit in same order. */
+> >
+> > sensors
+> > in the same
+done
+> >
+> > ...
+> >
+> > > +EXPORT_SYMBOL_GPL(sx_common_events);
+> >
+> > Here and in other places, can we switch to NS variants of the
+> > EXPORT_SYMBOL_GPL()?
+done
+>
+> We haven't yet done this for similar cases, but I agree it is
+> definitely a nice to have when we have a helper / core module
+> like this.  Given the editorial stuff in here means Gwendal
+> is going to be rolling a v9 this seems a good time to start.
+>
+> As time allows we'll look to convert over similar modules in the
+> general interests of reducing namespace pollution.
+>
+> Ultimately I'd like to move the IIO core to a namespace as well
+> but that is a messy job and there are several things ahead of
+> if that will cause mass driver churn.
+>
+> Jonathan
+>
+>
+> >
+> > ...
+> >
+> > > +/**
+> > > + * sx_common_probe() - Common setup for Semtech SAR sensor
+> >
+> > > + *
+> >
+> > Here and in all similar cases, remove this redundant blank line.
+Done.
+> >
+> > > + * @client:            I2C client object
+> > > + * @chip_info:         Semtech sensor chip information.
+> > > + * @regmap_config:     Sensor registers map configuration.
+> > > + */
+> >
+> > ...
+> >
+> > > +#include <linux/types.h>
+> > > +#include <linux/iio/iio.h>
+> > > +#include <linux/iio/types.h>
+> > > +#include <linux/regulator/consumer.h>
+> >
+> > Perhaps grouped and ordered?
+> >
+> > + blank line.
+Done
+> >
+> > > +struct device;
+> > > +struct i2c_client;
+> > > +struct regmap_config;
+> > > +struct sx_common_data;
+> >
+> > ...
+> >
+> > > + * @num_channels:      Number of channel/phase.
+> >
+> > channels or phases
+In IIO architecture, the sensor presents X channels. Buf in Semtech
+datasheet, they are named phases. Settle on channel, with an
+explanation at the first occurence.
+> >
+> > ...
+> >
+> > > + * @buffer:            Bufffer to store raw samples.
+> >
+> > Buffer
+Done
+> >
+> >
+>

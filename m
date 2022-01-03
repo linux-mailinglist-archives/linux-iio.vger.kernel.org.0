@@ -2,107 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4265A482E5E
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jan 2022 07:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3F4482F5A
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jan 2022 10:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231671AbiACGEA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Jan 2022 01:04:00 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:49098 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiACGD7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jan 2022 01:03:59 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 73490B80B27
-        for <linux-iio@vger.kernel.org>; Mon,  3 Jan 2022 06:03:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74784C36AE9;
-        Mon,  3 Jan 2022 06:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641189837;
-        bh=hKBexFXkQWive8cffNKZoy2NQT8FThXSLqT7pfoxMYI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gMNl7fyRakDAh/5TXOjPq9nfVrgmIBvWTRyj8iVMU15nkWBYOPvJXNhNBFMRBpzGN
-         lKyjF9u+hir6U8wpAKr2XCgezdgkH7lK1kmEEiP9ULtWx/AlOH9W90iMXKmQlmuj/5
-         qxoZWB1OnKoXmwmdWQnt1hhaFyGzFmeIFG0A88Ka7nsSoF7XW5QZz1Vlpueqh9nHgv
-         P/8xMviBWkHeNJrCG9KPP32O45a3Y9ErDzwEj0qCX9bOUUaHjbUt5EB/4e1xtOjjqt
-         EAmHcqyCnWB0Elmhw2JAga+PXSpDp3krjczO7Fl7SqlT7lO7q71Fen9lFhiVCHACrW
-         qI5NCEXNS3+Lw==
-Date:   Mon, 3 Jan 2022 11:33:50 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 44/51] iio:temperature:tmp007: Switch from
- CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Message-ID: <20220103060350.GC3581@thinkpad>
-References: <20220102125617.1259804-1-jic23@kernel.org>
- <20220102125617.1259804-45-jic23@kernel.org>
+        id S231167AbiACJWx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Jan 2022 04:22:53 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:20740 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231158AbiACJWx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Jan 2022 04:22:53 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 2038J5QT012996;
+        Mon, 3 Jan 2022 04:22:45 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dbwhb03kb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 03 Jan 2022 04:22:45 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 2039MiF3034281
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 3 Jan 2022 04:22:44 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 3 Jan 2022 04:22:43 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 3 Jan 2022 04:22:40 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 3 Jan 2022 04:22:40 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.181])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2039Maul025546;
+        Mon, 3 Jan 2022 04:22:37 -0500
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH 0/3]
+Date:   Mon, 3 Jan 2022 11:21:58 +0200
+Message-ID: <20220103092201.21576-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220102125617.1259804-45-jic23@kernel.org>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: ZuSMYRvAS8LYNllUb_7fjbn-TG24XLzG
+X-Proofpoint-GUID: ZuSMYRvAS8LYNllUb_7fjbn-TG24XLzG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-03_03,2022-01-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201030063
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 02, 2022 at 12:56:10PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Letting the compiler remove these functions when the kernel is built
-> without CONFIG_PM_SLEEP support is simpler and less error prone than the
-> use of #ifdef based config guards.
-> 
-> Removing instances of this approach from IIO also stops them being
-> copied into new drivers.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The ADMV1014 is a silicon germanium (SiGe), wideband,
+microwave downconverter optimized for point to point microwave
+radio designs operating in the 24 GHz to 44 GHz frequency range.
 
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Datasheet:
+https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1014.pdf
 
-Thanks,
-Mani
+NOTE:
+Currently depends on 64-bit architecture since the input
+clock that server as Local Oscillator should support values
+in the range 24 GHz to 44 GHz.
 
-> Cc: Manivannan Sadhasivam <mani@kernel.org>
-> ---
->  drivers/iio/temperature/tmp007.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/temperature/tmp007.c b/drivers/iio/temperature/tmp007.c
-> index b422371a4674..f7a040f0ee4c 100644
-> --- a/drivers/iio/temperature/tmp007.c
-> +++ b/drivers/iio/temperature/tmp007.c
-> @@ -537,7 +537,6 @@ static int tmp007_probe(struct i2c_client *client,
->  	return devm_iio_device_register(&client->dev, indio_dev);
->  }
->  
-> -#ifdef CONFIG_PM_SLEEP
->  static int tmp007_suspend(struct device *dev)
->  {
->  	struct tmp007_data *data = iio_priv(i2c_get_clientdata(
-> @@ -554,9 +553,8 @@ static int tmp007_resume(struct device *dev)
->  	return i2c_smbus_write_word_swapped(data->client, TMP007_CONFIG,
->  			data->config | TMP007_CONFIG_CONV_EN);
->  }
-> -#endif
->  
-> -static SIMPLE_DEV_PM_OPS(tmp007_pm_ops, tmp007_suspend, tmp007_resume);
-> +DEFINE_SIMPLE_DEV_PM_OPS(tmp007_pm_ops, tmp007_suspend, tmp007_resume);
->  
->  static const struct of_device_id tmp007_of_match[] = {
->  	{ .compatible = "ti,tmp007", },
-> @@ -574,7 +572,7 @@ static struct i2c_driver tmp007_driver = {
->  	.driver = {
->  		.name	= "tmp007",
->  		.of_match_table = tmp007_of_match,
-> -		.pm	= &tmp007_pm_ops,
-> +		.pm	= pm_sleep_ptr(&tmp007_pm_ops),
->  	},
->  	.probe		= tmp007_probe,
->  	.id_table	= tmp007_id,
-> -- 
-> 2.34.1
-> 
+We might need some scaling implementation in the clock
+framework so that u64 types are supported when using 32-bit
+architectures.
+
+Antoniu Miclaus (3):
+  iio:frequency:admv1014: add support for ADMV1014
+  dt-bindings:iio:frequency: add admv1014 doc
+  Documentation:ABI:testing:admv1014: add ABI docs
+
+ .../testing/sysfs-bus-iio-frequency-admv1014  |  23 +
+ .../bindings/iio/frequency/adi,admv1014.yaml  |  97 +++
+ drivers/iio/frequency/Kconfig                 |  10 +
+ drivers/iio/frequency/Makefile                |   1 +
+ drivers/iio/frequency/admv1014.c              | 784 ++++++++++++++++++
+ 5 files changed, 915 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
+ create mode 100644 drivers/iio/frequency/admv1014.c
+
+-- 
+2.34.1
+

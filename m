@@ -2,66 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 547444849B1
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jan 2022 22:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5F4484A05
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jan 2022 22:42:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233258AbiADVJ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Jan 2022 16:09:29 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:35812 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232036AbiADVJ3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jan 2022 16:09:29 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: usama.anjum)
-        with ESMTPSA id 2FAAC1F43DE3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1641330567;
-        bh=S9/BYZv6PF/gittsjCjf6Ha+s2qRbnqJMTXw19zodsE=;
-        h=Date:From:To:Cc:Subject:From;
-        b=VlLXUvcijE8ot99aTIGJvj3yIPDf48f9CB5DQLS09WTm+98nYwVtQZ5JBxe/IzSlC
-         4ZVCFpa1hASJFuRYiiUYyWgoXjZE5ZJQAoNinGYqYQNQSZF55Aj9B5bWcxFbR0kgRn
-         m5dDs6NngW9biq7l4l1G1gp5xOiNRcQJH3B3dNz0H6G1SiEyJ1nySqJnjfPoc2v0My
-         6bLyk2TRNmejgVZ6QubIz/JuP2767HkYLLKgX5e64W+AYJB+PXE0qnY+fHWkhugH5Q
-         b5Zzqchjp8zaRbR1PqpnWY9uFRqQ4FkiYEIzwKGsVxLzaz9QdeR7TykbrrKSjaY/9a
-         6PXTb7d6J5J6Q==
-Date:   Wed, 5 Jan 2022 02:09:20 +0500
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        id S234462AbiADVmW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Jan 2022 16:42:22 -0500
+Received: from aposti.net ([89.234.176.197]:52028 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233569AbiADVmW (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 4 Jan 2022 16:42:22 -0500
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Cc:     usama.anjum@collabora.com
-Subject: [PATCH] iio: frequency: admv1013: remove the always true condition
-Message-ID: <YdS3gJYtECMaDDjA@debian-BULLSEYE-live-builder-AMD64>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
+        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-pm@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH 0/8] DEV_PM_OPS macros rework
+Date:   Tue,  4 Jan 2022 21:42:06 +0000
+Message-Id: <20220104214214.198843-1-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-unsigned int variable is always greater than or equal to zero. Make the
-if condition simple.
+Hi,
 
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
- drivers/iio/frequency/admv1013.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This set of commits rework a bit the *_DEV_PM_OPS() macros that were
+introduced recently.
 
-diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
-index 6cdeb50143af..3f3c478e9baa 100644
---- a/drivers/iio/frequency/admv1013.c
-+++ b/drivers/iio/frequency/admv1013.c
-@@ -348,7 +348,7 @@ static int admv1013_update_mixer_vgate(struct admv1013_state *st)
- 
- 	vcm = regulator_get_voltage(st->reg);
- 
--	if (vcm >= 0 && vcm < 1800000)
-+	if (vcm < 1800000)
- 		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
- 	else if (vcm > 1800000 && vcm < 2600000)
- 		mixer_vgate = (2375 * vcm / 1000000 + 125) / 100;
+- Remove the DEFINE_UNIVERSAL_DEV_PM_OPS() macro, since I highly doubt
+  anything is going to use it. The macro it replaces
+  (UNIVERSAL_DEV_PM_OPS) seems to only be used incorrectly in code that
+  hasn't been updated in ages.
+
+- Remove the static qualifier in DEFINE_SIMPLE_DEV_PM_OPS, so that the
+  macro is more in line with what's done elsewhere in the kernel.
+
+- Add a DEFINE_RUNTIME_DEV_PM_OPS() macro, for use with drivers that use
+  runtime PM, and use runtime_pm_force_suspend/runtime_pm_force_resume
+  as their system sleep callbacks.
+
+- Add EXPORT_*_DEV_PM_OPS macros, which can be used for when the
+  underlying dev_pm_ops is to be exported. With CONFIG_PM set, the
+  symbol is exported as you would expect. With CONFIG_PM disabled, the
+  dev_pm_ops is garbage-collected along with the suspend/resume
+  callbacks.
+
+- Update the two places which used DEFINE_SIMPLE_DEV_PM_OPS, to add back
+  the "static" qualifier that was stripped from the macro.
+
+- Update one driver to use EXPORT_RUNTIME_DEV_PM_OPS(), just to showcase
+  how to use this macro in the case where a dev_pm_ops is to be
+  exported.
+  Note that the driver itself is GPL, and the symbol is only used within
+  a GPL driver, so I would assume the symbol would be exported as GPL.
+  But it was not the case in the original code, so I did not change the
+  behaviour.
+
+Feedback welcome.
+
+Cheers,
+-Paul
+
+
+Paul Cercueil (8):
+  PM: core: Remove DEFINE_UNIVERSAL_DEV_PM_OPS() macro
+  PM: core: Remove static qualifier in DEFINE_SIMPLE_DEV_PM_OPS macro
+  PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS macros
+  PM: runtime: Add DEFINE_RUNTIME_DEV_PM_OPS() macro
+  PM: runtime: Add EXPORT[_GPL]_RUNTIME_DEV_PM_OPS macros
+  mmc: mxc: Make dev_pm_ops struct static
+  mmc: jz4740: Make dev_pm_ops struct static
+  iio: gyro: mpu3050: Use new PM macros
+
+ drivers/iio/gyro/mpu3050-core.c | 13 +++-----
+ drivers/iio/gyro/mpu3050-i2c.c  |  2 +-
+ drivers/mmc/host/jz4740_mmc.c   |  4 +--
+ drivers/mmc/host/mxcmmc.c       |  2 +-
+ include/linux/pm.h              | 53 +++++++++++++++++++++++----------
+ include/linux/pm_runtime.h      | 21 +++++++++++++
+ 6 files changed, 67 insertions(+), 28 deletions(-)
+
 -- 
-2.30.2
+2.34.1
 

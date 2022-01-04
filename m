@@ -2,81 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E47E7484772
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jan 2022 19:06:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 547444849B1
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jan 2022 22:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234515AbiADSG4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Jan 2022 13:06:56 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:38451 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234483AbiADSGz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jan 2022 13:06:55 -0500
-Received: from mail-wm1-f46.google.com ([209.85.128.46]) by
- mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M8QiW-1n0QUI1AC8-004T9F for <linux-iio@vger.kernel.org>; Tue, 04 Jan 2022
- 19:06:54 +0100
-Received: by mail-wm1-f46.google.com with SMTP id n19-20020a7bc5d3000000b003466ef16375so150953wmk.1
-        for <linux-iio@vger.kernel.org>; Tue, 04 Jan 2022 10:06:54 -0800 (PST)
-X-Gm-Message-State: AOAM5308Tb/FPpvNvSa/VhmdGVOtp2vAv2j4eHGfbz++dd8LC3DRw/M8
-        pd7EttX10jrnuDiPFwHDUZarAphh7BjsrbSb5Us=
-X-Google-Smtp-Source: ABdhPJxPUtP+CFOHGKPn0LaLlTMVIioVVHNDU/sk685eDw1HvcNtpNS7jWUZofNEVp3AAQsBV2GlYFUjfneCXCt6D2E=
-X-Received: by 2002:a7b:c198:: with SMTP id y24mr42641682wmi.1.1641319613972;
- Tue, 04 Jan 2022 10:06:53 -0800 (PST)
+        id S233258AbiADVJ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Jan 2022 16:09:29 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:35812 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232036AbiADVJ3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jan 2022 16:09:29 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: usama.anjum)
+        with ESMTPSA id 2FAAC1F43DE3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1641330567;
+        bh=S9/BYZv6PF/gittsjCjf6Ha+s2qRbnqJMTXw19zodsE=;
+        h=Date:From:To:Cc:Subject:From;
+        b=VlLXUvcijE8ot99aTIGJvj3yIPDf48f9CB5DQLS09WTm+98nYwVtQZ5JBxe/IzSlC
+         4ZVCFpa1hASJFuRYiiUYyWgoXjZE5ZJQAoNinGYqYQNQSZF55Aj9B5bWcxFbR0kgRn
+         m5dDs6NngW9biq7l4l1G1gp5xOiNRcQJH3B3dNz0H6G1SiEyJ1nySqJnjfPoc2v0My
+         6bLyk2TRNmejgVZ6QubIz/JuP2767HkYLLKgX5e64W+AYJB+PXE0qnY+fHWkhugH5Q
+         b5Zzqchjp8zaRbR1PqpnWY9uFRqQ4FkiYEIzwKGsVxLzaz9QdeR7TykbrrKSjaY/9a
+         6PXTb7d6J5J6Q==
+Date:   Wed, 5 Jan 2022 02:09:20 +0500
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Cc:     usama.anjum@collabora.com
+Subject: [PATCH] iio: frequency: admv1013: remove the always true condition
+Message-ID: <YdS3gJYtECMaDDjA@debian-BULLSEYE-live-builder-AMD64>
 MIME-Version: 1.0
-References: <20220102125617.1259804-1-jic23@kernel.org> <20220102125617.1259804-2-jic23@kernel.org>
- <CAK8P3a20AatvTxHEXfTpMWD8RJtLbJiTLbhiKJgQrn+KXYG8zw@mail.gmail.com>
- <20220103152444.0e22e971@jic23-huawei> <CAK8P3a0OSU8Pz2=92ZQ2+uOXSoumRMPLEZM1zthsaYuZb162Kw@mail.gmail.com>
- <20220104141601.00005ed8@Huawei.com> <O2Y65R.THAX75MFFTRJ1@crapouillou.net>
-In-Reply-To: <O2Y65R.THAX75MFFTRJ1@crapouillou.net>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 4 Jan 2022 13:06:40 -0500
-X-Gmail-Original-Message-ID: <CAK8P3a2dcxZ7a5vgjyMO7xMxu-R3iUsvAn_VwFm3uPmNunAiVw@mail.gmail.com>
-Message-ID: <CAK8P3a2dcxZ7a5vgjyMO7xMxu-R3iUsvAn_VwFm3uPmNunAiVw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/51] iio:accel:da311: Switch from CONFIG_PM_SLEEP
- guards to pm_sleep_ptr() etc
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:bvV/QqQ8sgu3Df59g7baa2Xhf3eXybEqWFS1NKcCg+nXdT/S4a6
- kQfAoUtYQr8Ko36MaQCVB9WfsPMadtLI8BwP/6CSnpUq/y+lGifCY0spwyD5GpIaXxjSFOH
- +WfPCBUGiSG4Kir84MAWUvVhYFxvmqcnotBRl7IInR9N6v/Hntk5/h8bBQ52dIPPUEilox7
- jmuw0+LEGEgW1Zgf0xG7A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0F+/rb1g4b8=:JD+wS4GkUvzOueMYhnX3Lv
- Fr9WJNUnGca36Kf97WbZUEWSm0HENqma+l5BsZ6Jz/uWGDoDIjMoarNMj/RZp8gvTfgbl12OW
- trP1MY6ndWntnfRfI7jaWCCrQBNkMh31p6gkI5GBuKLi0+tM6Nd27EJqaBvgfJ4S39PUZYhF6
- YTy96vaRW9qePeogYmaZ1ZMCHVSbKjSq/apdaaG2jMZubVk6vPJq5GCopjmNqSpSX8rQmDRHM
- Pd2uwztiLfbK7mVu073ljBUedSO2uRC4l05hSwL3zwSve8Kt26grtbQYZ/b9lJaHA1EFPOA6j
- nJxWZobwkrnY44LjfvdBDLgNXU0Amr1dWfu+CjQydLgRBj6MHeGNITQNcsQYnBCP4kbWQqkvY
- PYOo0UKCbbp3w21Eep2zaVvchU7mX8r/oq/o3KhDn6vwWLvilM9S60DC7QQ6rw/N3UoIUjW5f
- sUtwrzfrUMmOp8xprMKWMyGR649Xyvm2nwqa3x2gg48Bvs4cZNICKUVBn+yY/Tp0tfFJbS1Pv
- eSL5v3GhKsK96kcHeCfYulYRAKk6NkH7ZJF3BLvDSHyNXV19UBui7T5Hgu+VtjhtdmQV88mAW
- QgBrOxMve3wwd5OkEBVOg4GM9c6W3cPy3Q7DG7F8/6WctALQ1/rdAWoIUMdgnSgvYPJrfdbhT
- L58VsOmHIk9DdJSvChV4VYX5lwurwX/LYmz7Soe96hXL+4eNDasN2bbUOhOg6ukZNCibHwk65
- Qm2EOh/3v4QkH3Vv6qjZFgZ4frsaP0mLM+HHOgJiwo4wtjAg7N0nwtlTMvv69C82HknICcIhi
- x4npLB7pRIeGGReXis6NJEzakNowtKptl/ZNfcEWMYzoe9fptM=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 4, 2022 at 10:08 AM Paul Cercueil <paul@crapouillou.net> wrote:
-> Le mar., janv. 4 2022 at 14:16:01 +0000, Jonathan Cameron
-> >
-> > Paul, over to you for reasoning.  If we are going to change this
-> > now is the time before they get significant use and we end up having
-> > to add static to lots of places.
->
-> I have an idea on how to tackle automatic dead code removal on exported
-> dev_pm_ops symbols. It means introducing a separate
-> EXPORTED_SIMPLE_DEV_PM_OPS(), so the current DEFINE_SIMPLE_DEV_PM_OPS()
-> macro could keep the "static". Unless you still think it's a bad idea,
-> then in this case we can remove it.
+unsigned int variable is always greater than or equal to zero. Make the
+if condition simple.
 
-I would prefer removing the implicit 'static' if only for consistency reasons,
-which to me outweighs the simplicity aspect in this case.
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+ drivers/iio/frequency/admv1013.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-         Arnd
+diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+index 6cdeb50143af..3f3c478e9baa 100644
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -348,7 +348,7 @@ static int admv1013_update_mixer_vgate(struct admv1013_state *st)
+ 
+ 	vcm = regulator_get_voltage(st->reg);
+ 
+-	if (vcm >= 0 && vcm < 1800000)
++	if (vcm < 1800000)
+ 		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
+ 	else if (vcm > 1800000 && vcm < 2600000)
+ 		mixer_vgate = (2375 * vcm / 1000000 + 125) / 100;
+-- 
+2.30.2
+

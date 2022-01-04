@@ -2,101 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1BC8484114
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jan 2022 12:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33CA3484326
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jan 2022 15:15:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbiADLmx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Jan 2022 06:42:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbiADLmx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jan 2022 06:42:53 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CACC061761;
-        Tue,  4 Jan 2022 03:42:53 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id p37so62498973uae.8;
-        Tue, 04 Jan 2022 03:42:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=m4rgCak0Y9ZrCMU21woyKJsa31R1qg64vWqt4VKQQ3k=;
-        b=IzCpAbYVZioYR9Od9vcrXsOz6Mi3CGFvj2dtqdCPKx1W6FmfGj0huYuuqOtX3PJnYg
-         Xb+sBVLM2XBMUl7yC+jG5cK+gcGE8E+DfkxfGCSB4MNCesajwW651JonNCF+M20ens52
-         OEPLvLLVVyCqQTad3RAudM1ODcBBL/w3r6uSbWuGso4CPYfdv0ZPIs44n9zwJ4JzMahU
-         /VjuMw3uPfkMrtHeMOCvgyJScygWCd5fcgxcyFesevMJUm2P1sWzhNgQGArXZPt6MTQV
-         5XL/3qe6vU1IOfK8ukgSUGA9sdvUEVxfrP9qL+Sv7xDYKosV5MTy5AWdnqQVOfwPzl8q
-         8x6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=m4rgCak0Y9ZrCMU21woyKJsa31R1qg64vWqt4VKQQ3k=;
-        b=2n+3USbNyGrfnj/hhnaw4U6S5b2O+bUuzamYEEUg7lsqpMOhUCIlsdctI62F8yHniW
-         VwjnJZdIEXiv245DzUBwp3NGM5YfFjZPgnXg7T3/kGRKHuNrw9ZE64IlE0oHqOGd+Yor
-         ptblnnFB2MZguJUb0ewlGpq+Z49N/X8wkRe6JTwwjtw/PgPy2iEdPUuogLfCqOnqcuPd
-         6ZHznw0PEnOlp41+2+/b6eq+9RQlqBh4P7VUBGcwFjCVJoTtqSMg5mj7sOrWfuhXro2d
-         c0+0mSckK859ILm2BHW4cMBezdKuBiJJo9ER9XwRNUaea7yAL4jzSq9+g1sp9Bys5YZL
-         Y9KQ==
-X-Gm-Message-State: AOAM532UzBDHQXFfyX8vksS36oePL/9+OpJdXNKt7uzQKGZA5DKgrhsx
-        T9nruKek41NnO5Dy1ackYmJt6leAqWPW31kuewk=
-X-Google-Smtp-Source: ABdhPJwpwLdODTduulsppAKKohovKvY52jZQdN90JjMhEfBtMauArOtpJ1OgyT2Kg236K47JxfkmG4BmK+qquIIz/PY=
-X-Received: by 2002:ab0:48d1:: with SMTP id y17mr649108uac.12.1641296572254;
- Tue, 04 Jan 2022 03:42:52 -0800 (PST)
+        id S232779AbiADOP6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Jan 2022 09:15:58 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4332 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230361AbiADOP5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Jan 2022 09:15:57 -0500
+Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JSvjP3f3vz67NN6;
+        Tue,  4 Jan 2022 22:13:29 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Tue, 4 Jan 2022 15:15:55 +0100
+Received: from localhost (10.47.90.49) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 4 Jan
+ 2022 14:15:54 +0000
+Date:   Tue, 4 Jan 2022 14:16:01 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Paul Cercueil" <paul@crapouillou.net>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: Re: [PATCH v2 01/51] iio:accel:da311: Switch from CONFIG_PM_SLEEP
+ guards to pm_sleep_ptr() etc
+Message-ID: <20220104141601.00005ed8@Huawei.com>
+In-Reply-To: <CAK8P3a0OSU8Pz2=92ZQ2+uOXSoumRMPLEZM1zthsaYuZb162Kw@mail.gmail.com>
+References: <20220102125617.1259804-1-jic23@kernel.org>
+        <20220102125617.1259804-2-jic23@kernel.org>
+        <CAK8P3a20AatvTxHEXfTpMWD8RJtLbJiTLbhiKJgQrn+KXYG8zw@mail.gmail.com>
+        <20220103152444.0e22e971@jic23-huawei>
+        <CAK8P3a0OSU8Pz2=92ZQ2+uOXSoumRMPLEZM1zthsaYuZb162Kw@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20210715141742.15072-1-andrea.merello@gmail.com>
- <20211028101840.24632-1-andrea.merello@gmail.com> <20211028101840.24632-7-andrea.merello@gmail.com>
- <20211028120405.6ffb01d1@jic23-huawei> <CAN8YU5Orbbzq-eDxmrR00xHwXQ=0LU2G3_yEtHGMkbVhmdcqgg@mail.gmail.com>
- <20211114162032.425ab36d@jic23-huawei>
-In-Reply-To: <20211114162032.425ab36d@jic23-huawei>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Tue, 4 Jan 2022 12:42:40 +0100
-Message-ID: <CAN8YU5NO5mcrPa5ZCB3XnAb=3N3cyXZUT=gH5G+EbnM-En0a3Q@mail.gmail.com>
-Subject: Re: [v2 06/10] iio: document bno055 private sysfs attributes
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.90.49]
+X-ClientProxiedBy: lhreml747-chm.china.huawei.com (10.201.108.197) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sorry for the huge delay...
+On Mon, 3 Jan 2022 12:58:46 -0500
+Arnd Bergmann <arnd@arndb.de> wrote:
 
-> There is still a units question though.  Should we express the ranges
-> in _processed or _raw units?  Or do we make it explicit and call it
-> rangeprocessed for example?  For some devices the range will naturally
-> be expressed as the range of ADC raw values, so there is definite room
-> for confusion if we don't make it clear in the name.
->
-> I'm open to other suggestions of how we name this to avoid falling into
-> any heffalump traps.
+> On Mon, Jan 3, 2022 at 10:24 AM Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Sun, 2 Jan 2022 09:15:06 -0500 Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > That came up in discussion of the patch series introducing this macro
+> > https://lore.kernel.org/linux-pm/20211216110936.6ccd07d3@jic23-huawei/
+> >
+> > Most of the cases that don't define it as static
+> > also export the symbol for use by other modules so the approach of letting
+> > the compiler detect it as dead code won't always work.
+> >
+> > Exceptions from a bit of grepping are
+> > net/ethernet/broadcom/bnx2x/
+> > scsi/esas2r/esas2r_init.c
+> >   not sure on reasoning behind the file splits in these drivers
+> >   but definitely looks like it we could just merge a few files
+> >   and let this be static + the compiler remove it neatly.
+> >
+> > vs 17 cases where the symbol is exported and more cleverness will
+> > be needed.  
+> 
+> I don't see why exporting the symbol makes a difference at all, either
+> it is needed in another file or it is not.
 
-You are right: this might lead to confusion.. Making it explicit in
-the name seems a good idea.
+Ah. My reasoning was that the purpose behind that patch set (letting
+compiler remove the functions etc when unused) was not applicable in EXPORT*
+cases.  However, I'd neglected that the DEFINE_SIMPLE_DEV_PM_OPS()
+macro is probably useful anyway as those cases would need CONFIG_PM*
+guards if they want to remove the code when PM stuff isn't enabled.
 
-I've looked at other iio sysfs attributes in the DOC.  It seems  that
-"thesh" and "roc" attributes allows for both preprocessed and raw
-data: I found e.g. "<type>[Y][_name]_<raw|input>_thresh_value", but
-the related "what" entries written above all seem to omit both "_raw"
-and "_input"; I don't understand why.
+> 
+> I think it would be more natural to not include 'static' in the macro,
+> that is certainly what all other macros like this do, and it's still
+> trivial to add 'static' manually, but impossible to remove it.
 
-In any case, maybe we can stick to that already-existent naming schema?
+IIRC there are other cases like this, but it was exactly this somewhat
+unusual element that made me raise the question in the original discussion.
 
-Assuming the pattern is correct, then wouldn't it be
-"in_accel_raw_range"  (or "in_accel_x_raw_range", in case it could
-have different values for each axis) or "in_accel_input_range" in case
-range applies to preprocessed vals, etc ?
+Paul, over to you for reasoning.  If we are going to change this
+now is the time before they get significant use and we end up having
+to add static to lots of places.
 
+Jonathan
 
-Andrea
+> 
+>        Arnd
+

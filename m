@@ -2,109 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0429048585A
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 19:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD4C648586C
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 19:34:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243005AbiAESbl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jan 2022 13:31:41 -0500
-Received: from aposti.net ([89.234.176.197]:41922 "EHLO aposti.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243023AbiAESbR (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 5 Jan 2022 13:31:17 -0500
-From:   Paul Cercueil <paul@crapouillou.net>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        id S243034AbiAESeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jan 2022 13:34:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41972 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243015AbiAESeT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 13:34:19 -0500
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71790C0611FD
+        for <linux-iio@vger.kernel.org>; Wed,  5 Jan 2022 10:34:19 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id k18so48143190wrg.11
+        for <linux-iio@vger.kernel.org>; Wed, 05 Jan 2022 10:34:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QjBi5fYeFYGkdoj528/DSOwlrW5ixEJe9Vn+jZ4Y8b8=;
+        b=UPDHMyCzqHNAX+Ppou+LwYpU+ElAEjcIANhveWVZJWYcUwl2rDuEarF3CEblJhNKNl
+         eV/5svevFAcjv/+IylVQq42nyECZptMbb8OdRyRkSAO6KcwxenL2BGcL2QfCWMUKwh8t
+         JNl1fFk1lESeYeBdkHTILsVnt7dSAEosM29ingFnolVIRcFYFZtuL/iDW1lGvMZa8Cui
+         W9ELcZCNIXvbt8V+xMHZYSYnxZl0Mv1iMkLjsTfgpUyIp0L2W+RQESUuvSVhkevdHJ+s
+         Eqpnk34Ce/sHsI7oTXQ7L7X5Tehf6DOaHVtEiVABkF7FDcxHL98l/JjFRWNMqRNur1cu
+         UmgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QjBi5fYeFYGkdoj528/DSOwlrW5ixEJe9Vn+jZ4Y8b8=;
+        b=1AsUIKkq7ONCJ/e7S2QtW2cXyDnTiSdGh4gBx8j1oSsFg0DCL+fShxJLvLBR5ML3VB
+         v6moT3CzrCpgA6VUPC1Sx9saE6jrDeqg63bXe+l8xAf8cSFFZidQ0CzHlYC7aleWKxxS
+         7gt3l9Vi4ngMHbdJhL7jsQVq56p8sx5BheJ+QQyn0oUtHT+n1HwqaE/S226BVU+kvRLB
+         Zyi0i4U02eW66rfpVBc3hjvwOot1M4DykfKqkSGw0hE7h9Vztf5lDxsZfWQiC2lpXQr1
+         RWF9oEWy0zQlveeeSJjoUkHx5vH5sCJhSt1Ddtxp1Z4WKaiKVrfZJCidjp21HQlAtD2n
+         h+NA==
+X-Gm-Message-State: AOAM533eaEzuJ1AKhUkBMSDRAqImhhTuW4k9mcvXycCcJaFqDbMjiaag
+        xu3dfMDeYWXd9rTGZGQbYuCVqA==
+X-Google-Smtp-Source: ABdhPJxR+M9AgXVXxAlo3/HZTapEmtTjnt56e0VZivXQ3ykVou0kKKoSkty37wMyWuP1j9swClUl4g==
+X-Received: by 2002:a05:6000:18cd:: with SMTP id w13mr20860167wrq.199.1641407657954;
+        Wed, 05 Jan 2022 10:34:17 -0800 (PST)
+Received: from localhost.localdomain ([81.178.195.252])
+        by smtp.gmail.com with ESMTPSA id o1sm3272215wmc.38.2022.01.05.10.34.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jan 2022 10:34:17 -0800 (PST)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pm@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2 6/6] iio: pressure: bmp280: Use new PM macros
-Date:   Wed,  5 Jan 2022 18:29:39 +0000
-Message-Id: <20220105182939.106885-7-paul@crapouillou.net>
-In-Reply-To: <20220105182939.106885-1-paul@crapouillou.net>
-References: <20220105182939.106885-1-paul@crapouillou.net>
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Cc:     sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org
+Subject: [PATCH v2 0/7] iio: adc: introduce Qualcomm SPMI Round Robin ADC
+Date:   Wed,  5 Jan 2022 18:33:46 +0000
+Message-Id: <20220105183353.2505744-1-caleb.connolly@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use the new EXPORT_RUNTIME_DEV_PM_OPS() macro. It allows the underlying
-dev_pm_ops struct as well as the suspend/resume callbacks to be detected
-as dead code in the case where CONFIG_PM is disabled, without having to
-wrap everything inside #ifdef CONFIG_PM guards.
+The RRADC is responsible for reading data about the current and
+voltage from the USB or DC in jacks, it can also read the battery
+ID (resistence) and some temperatures. It is found on the PMI8998 and
+PM660 Qualcomm PMICs.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
+The RRADC has to calibrate some ADC values based on which chip fab
+the PMIC was produced in, to facilitate this the patch
+("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
+exposes the PMIC revision information as a struct and registers it
+as driver data in the Qualcomm SPMI PMIC driver so that it can be 
+read by the RRADC.
 
-Notes:
-    v2: New patch
+Changes since v1:
+ * Rework the RRADC driver based on Jonathan's feedback
+ * Pick up Rob's reviewed by for the dt-binding patch.
 
- drivers/iio/pressure/bmp280-core.c | 11 ++---------
- drivers/iio/pressure/bmp280-i2c.c  |  2 +-
- drivers/iio/pressure/bmp280-spi.c  |  2 +-
- 3 files changed, 4 insertions(+), 11 deletions(-)
+Caleb Connolly (7):
+  mfd: qcom-spmi-pmic: expose the PMIC revid information to clients
+  dt-bindings: iio: adc: document qcom-spmi-rradc
+  iio: adc: qcom-spmi-rradc: introduce round robin adc
+  arm64: dts: qcom: pmi8998: add rradc node
+  arm64: dts: qcom: sdm845-oneplus: enable rradc
+  arm64: dts: qcom: sdm845-db845c: enable rradc
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: enable RRADC
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 6b7da40f99c8..bf8167f43c56 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1138,7 +1138,6 @@ int bmp280_common_probe(struct device *dev,
- }
- EXPORT_SYMBOL(bmp280_common_probe);
- 
--#ifdef CONFIG_PM
- static int bmp280_runtime_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-@@ -1159,15 +1158,9 @@ static int bmp280_runtime_resume(struct device *dev)
- 	usleep_range(data->start_up_time, data->start_up_time + 100);
- 	return data->chip_info->chip_config(data);
- }
--#endif /* CONFIG_PM */
- 
--const struct dev_pm_ops bmp280_dev_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
--	SET_RUNTIME_PM_OPS(bmp280_runtime_suspend,
--			   bmp280_runtime_resume, NULL)
--};
--EXPORT_SYMBOL(bmp280_dev_pm_ops);
-+EXPORT_RUNTIME_DEV_PM_OPS(bmp280_dev_pm_ops, bmp280_runtime_suspend,
-+			  bmp280_runtime_resume, NULL);
- 
- MODULE_AUTHOR("Vlad Dogaru <vlad.dogaru@intel.com>");
- MODULE_DESCRIPTION("Driver for Bosch Sensortec BMP180/BMP280 pressure and temperature sensor");
-diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
-index 8b03ea15c0d0..35045bd92846 100644
---- a/drivers/iio/pressure/bmp280-i2c.c
-+++ b/drivers/iio/pressure/bmp280-i2c.c
-@@ -58,7 +58,7 @@ static struct i2c_driver bmp280_i2c_driver = {
- 	.driver = {
- 		.name	= "bmp280",
- 		.of_match_table = bmp280_of_i2c_match,
--		.pm = &bmp280_dev_pm_ops,
-+		.pm = pm_ptr(&bmp280_dev_pm_ops),
- 	},
- 	.probe		= bmp280_i2c_probe,
- 	.id_table	= bmp280_i2c_id,
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 625b86878ad8..41f6cc56d229 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -109,7 +109,7 @@ static struct spi_driver bmp280_spi_driver = {
- 	.driver = {
- 		.name = "bmp280",
- 		.of_match_table = bmp280_of_spi_match,
--		.pm = &bmp280_dev_pm_ops,
-+		.pm = pm_ptr(&bmp280_dev_pm_ops),
- 	},
- 	.id_table = bmp280_spi_id,
- 	.probe = bmp280_spi_probe,
+ .../bindings/iio/adc/qcom,spmi-rradc.yaml     |   54 +
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi         |    8 +
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts    |    4 +
+ .../boot/dts/qcom/sdm845-oneplus-common.dtsi  |    4 +
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts |    4 +
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/qcom-spmi-rradc.c             | 1070 +++++++++++++++++
+ drivers/mfd/qcom-spmi-pmic.c                  |  108 +-
+ include/soc/qcom/qcom-pmic.h                  |   63 +
+ 10 files changed, 1272 insertions(+), 57 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+ create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
+ create mode 100644 include/soc/qcom/qcom-pmic.h
+
 -- 
 2.34.1
 

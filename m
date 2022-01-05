@@ -2,126 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E954850F8
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 11:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE23B485164
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 11:48:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239364AbiAEKRy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Jan 2022 05:17:54 -0500
-Received: from aposti.net ([89.234.176.197]:49148 "EHLO aposti.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239352AbiAEKRw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 5 Jan 2022 05:17:52 -0500
-Date:   Wed, 05 Jan 2022 10:17:40 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 8/8] iio: gyro: mpu3050: Use new PM macros
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S239495AbiAEKsu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Jan 2022 05:48:50 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4344 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239492AbiAEKss (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 05:48:48 -0500
+Received: from fraeml744-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JTR3r61jWz67kM8;
+        Wed,  5 Jan 2022 18:46:16 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml744-chm.china.huawei.com (10.206.15.225) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Wed, 5 Jan 2022 11:48:45 +0100
+Received: from localhost (10.47.83.118) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 5 Jan
+ 2022 10:48:44 +0000
+Date:   Wed, 5 Jan 2022 10:48:50 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+CC:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Message-Id: <G9F85R.NKLOHGES4L8G@crapouillou.net>
-In-Reply-To: <20220105101106.00005ae0@Huawei.com>
+        "Arnd Bergmann" <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
+        Pavel Machek <pavel@ucw.cz>, <list@opendingux.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 3/8] PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS macros
+Message-ID: <20220105104850.00006e98@Huawei.com>
+In-Reply-To: <06F85R.46PNU7YFWD631@crapouillou.net>
 References: <20220104214214.198843-1-paul@crapouillou.net>
-        <20220104214214.198843-9-paul@crapouillou.net>
-        <20220105101106.00005ae0@Huawei.com>
+        <20220104214214.198843-4-paul@crapouillou.net>
+        <20220105100332.000001c1@Huawei.com>
+        <06F85R.46PNU7YFWD631@crapouillou.net>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.47.83.118]
+X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 5 Jan 2022 10:15:36 +0000
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-
-Le mer., janv. 5 2022 at 10:11:06 +0000, Jonathan Cameron 
-<Jonathan.Cameron@Huawei.com> a écrit :
-> On Tue, 4 Jan 2022 21:42:14 +0000
-> Paul Cercueil <paul@crapouillou.net> wrote:
+> Hi Jonathan,
 > 
->>  Use the new EXPORT_RUNTIME_DEV_PM_OPS() macro. It allows the 
->> underlying
->>  dev_pm_ops struct as well as the suspend/resume callbacks to be 
->> detected
->>  as dead code in the case where CONFIG_PM is disabled, without 
->> having to
->>  wrap everything inside #ifdef CONFIG_PM guards.
->> 
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Le mer., janv. 5 2022 at 10:03:32 +0000, Jonathan Cameron 
+> <Jonathan.Cameron@Huawei.com> a écrit :
+> > On Tue, 4 Jan 2022 21:42:09 +0000
+> > Paul Cercueil <paul@crapouillou.net> wrote:
+> >   
+> >>  These macros are defined conditionally, according to CONFIG_PM:
+> >>  - if CONFIG_PM is enabled, these macros resolve to
+> >>    DEFINE_SIMPLE_DEV_PM_OPS(), and the dev_pm_ops symbol will be
+> >>    exported.
+> >> 
+> >>  - if CONFIG_PM is disabled, these macros will result in a dummy 
+> >> static
+> >>    dev_pm_ops to be created with the __maybe_unused flag. The 
+> >> dev_pm_ops
+> >>    will then be discarded by the compiler, along with the provided
+> >>    callback functions if they are not used anywhere else.
+> >> 
+> >>  In the second case, the symbol is not exported, which should be
+> >>  perfectly fine - users of the symbol should all use the pm_ptr() or
+> >>  pm_sleep_ptr() macro, so the dev_pm_ops marked as "extern" in the
+> >>  client's code will never be accessed.
+> >> 
+> >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> >>  ---
+> >>   include/linux/pm.h | 33 ++++++++++++++++++++++++++++++---
+> >>   1 file changed, 30 insertions(+), 3 deletions(-)
+> >> 
+> >>  diff --git a/include/linux/pm.h b/include/linux/pm.h
+> >>  index 389e600df233..a1ce29566aea 100644
+> >>  --- a/include/linux/pm.h
+> >>  +++ b/include/linux/pm.h
+> >>  @@ -8,6 +8,7 @@
+> >>   #ifndef _LINUX_PM_H
+> >>   #define _LINUX_PM_H
+> >> 
+> >>  +#include <linux/export.h>
+> >>   #include <linux/list.h>
+> >>   #include <linux/workqueue.h>
+> >>   #include <linux/spinlock.h>
+> >>  @@ -357,14 +358,40 @@ struct dev_pm_ops {
+> >>   #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
+> >>   #endif
+> >> 
+> >>  +#define _DEFINE_DEV_PM_OPS(name, \
+> >>  +			   suspend_fn, resume_fn, \
+> >>  +			   runtime_suspend_fn, runtime_resume_fn, idle_fn) \
+> >>  +const struct dev_pm_ops name = { \
+> >>  +	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+> >>  +	RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, idle_fn) \
+> >>  +}
+> >>  +  
+> > 
+> > one blank line probably enough.
+> >   
+> >>  +
+> >>   /*
+> >>    * Use this if you want to use the same suspend and resume 
+> >> callbacks for suspend
+> >>    * to RAM and hibernation.
+> >>    */
+> >>   #define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+> >>  -const struct dev_pm_ops name = { \
+> >>  -	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+> >>  -}
+> >>  +	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
+> >>  +
+> >>  +#ifdef CONFIG_PM
+> >>  +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+> >> runtime_suspend_fn, \
+> >>  +			   runtime_resume_fn, idle_fn, sec) \
+> >>  +	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+> >> runtime_suspend_fn, \
+> >>  +			   runtime_resume_fn, idle_fn); \
+> >>  +	_EXPORT_SYMBOL(name, sec)
+> >>  +#else
+> >>  +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+> >> runtime_suspend_fn, \
+> >>  +			   runtime_resume_fn, idle_fn, sec) \
+> >>  +static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, 
+> >> suspend_fn, \
+> >>  +					 resume_fn, runtime_suspend_fn, \
+> >>  +					 runtime_resume_fn, idle_fn)
+> >>  +#endif
+> >>  +
+> >>  +#define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+> >>  +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, 
+> >> "")
+> >>  +#define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+> >>  +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, 
+> >> "_gpl")  
+> > 
+> > So you can get away with these two cases because the 
+> > SYSTEM_SLEEP_PM_OPS() all have
+> > pm_sleep_ptr() wrappers.  However, _EXPORT_DEV_PM_OPS() could be used 
+> > directly and
+> > would require __maybe_unused for the RUNTIME_PM_OPS() parameters 
+> > which isn't ideal.  
 > 
-> Hohum - bad choice of example. These shouldn't be exported as only 
-> used within
-> the same module ;)  No one ever wrote the other bus interface (and 
-> the part is
-> ancient so I can't see it happening now) hence whilst there are two 
-> files, they
-> are built into a single module.  There is a comment about this in the 
-> Makefile.
+> I don't see why. On both cases (CONFIG_PM enabled/disabled) the 
+> runtime-PM callbacks are referenced directly, so at no point do they 
+> appear as unused; therefore __maybe_unused is not needed.
 
-Ok - then I'll drop this patch and try to find a better driver to 
-showcase this.
+Ah. I'd miss followed things through. Indeed the 'magic' __static_xxx_pm_ops
+structure maintains a reference that the compiler can then remove.
+On the plus side, turned out I'd not done a full set of tests with my
+own patch set and found one bug in that :)
 
-Cheers,
--Paul
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
->>  ---
->>   drivers/iio/gyro/mpu3050-core.c | 13 ++++---------
->>   drivers/iio/gyro/mpu3050-i2c.c  |  2 +-
->>   2 files changed, 5 insertions(+), 10 deletions(-)
->> 
->>  diff --git a/drivers/iio/gyro/mpu3050-core.c 
->> b/drivers/iio/gyro/mpu3050-core.c
->>  index ea387efab62d..7d6721e268fe 100644
->>  --- a/drivers/iio/gyro/mpu3050-core.c
->>  +++ b/drivers/iio/gyro/mpu3050-core.c
->>  @@ -1281,7 +1281,6 @@ int mpu3050_common_remove(struct device *dev)
->>   }
->>   EXPORT_SYMBOL(mpu3050_common_remove);
->> 
->>  -#ifdef CONFIG_PM
->>   static int mpu3050_runtime_suspend(struct device *dev)
->>   {
->>   	return mpu3050_power_down(iio_priv(dev_get_drvdata(dev)));
->>  @@ -1291,15 +1290,11 @@ static int mpu3050_runtime_resume(struct 
->> device *dev)
->>   {
->>   	return mpu3050_power_up(iio_priv(dev_get_drvdata(dev)));
->>   }
->>  -#endif /* CONFIG_PM */
->> 
->>  -const struct dev_pm_ops mpu3050_dev_pm_ops = {
->>  -	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
->>  -				pm_runtime_force_resume)
->>  -	SET_RUNTIME_PM_OPS(mpu3050_runtime_suspend,
->>  -			   mpu3050_runtime_resume, NULL)
->>  -};
->>  -EXPORT_SYMBOL(mpu3050_dev_pm_ops);
->>  +EXPORT_RUNTIME_DEV_PM_OPS(mpu3050_dev_pm_ops,
->>  +			  mpu3050_runtime_suspend,
->>  +			  mpu3050_runtime_resume,
->>  +			  NULL);
->> 
->>   MODULE_AUTHOR("Linus Walleij");
->>   MODULE_DESCRIPTION("MPU3050 gyroscope driver");
->>  diff --git a/drivers/iio/gyro/mpu3050-i2c.c 
->> b/drivers/iio/gyro/mpu3050-i2c.c
->>  index ef5bcbc4b45b..820133cad601 100644
->>  --- a/drivers/iio/gyro/mpu3050-i2c.c
->>  +++ b/drivers/iio/gyro/mpu3050-i2c.c
->>  @@ -114,7 +114,7 @@ static struct i2c_driver mpu3050_i2c_driver = {
->>   	.driver = {
->>   		.of_match_table = mpu3050_i2c_of_match,
->>   		.name = "mpu3050-i2c",
->>  -		.pm = &mpu3050_dev_pm_ops,
->>  +		.pm = pm_ptr(&mpu3050_dev_pm_ops),
->>   	},
->>   };
->>   module_i2c_driver(mpu3050_i2c_driver);
 > 
-
+> Cheers,
+> -Paul
+> 
+> > Maybe I'm missing some reason that isn't a problem though as easy to 
+> > get lost in
+> > these macros. :)
+> > 
+> > You could argue that the _ is meant to indicate that macro shouldn't 
+> > be used directly
+> > but I'm not that optimistic.
+> > 
+> > Jonathan
+> > 
+> > 
+> >   
+> >> 
+> >>   /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+> >>   #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \  
+> >   
+> 
+> 
 

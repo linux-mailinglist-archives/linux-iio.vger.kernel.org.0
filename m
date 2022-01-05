@@ -2,94 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AADB48503F
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 10:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41405485061
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 10:52:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239002AbiAEJl6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jan 2022 04:41:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32968 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234299AbiAEJl4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 04:41:56 -0500
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D9CC061761;
-        Wed,  5 Jan 2022 01:41:56 -0800 (PST)
-Received: by mail-pg1-x52a.google.com with SMTP id 200so35076400pgg.3;
-        Wed, 05 Jan 2022 01:41:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ij2/PEZo/kB0cy8ZkQ9Gkx/6WmFNfo8g3EBz9u3NBx8=;
-        b=cEGp9N3L4a1guOCLM5EC5ayuIr6DJyN6zCBP10+Cp3OJdLKfIkB5FSCNvO6J1Bn50Z
-         fgW4kkc5b1LWym4Ci3AKTd0Htkvf4o1EY8zbQQlyivqSr/MXRSyo08ChcMRvsbpYtmGj
-         LPOz6cn6s+dmmOBDwkwXykCwzsiNtT1ZHr17954oxoC1viDqB8C4ps5ATV2qQ1C+GzIB
-         uPHyZXGqGnGn7yLrzUbhSh/BZYW3O6Izp3uP2zjTke6RKnhdYiZKLtkMfgCahBO13B8V
-         wX3ZjPynfP5Z7tSt/Wn4y7dLVIDXnWXozhp1PufkWe3hQ3Mg6TxVvG5e3R97MRU9ecV+
-         oD9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ij2/PEZo/kB0cy8ZkQ9Gkx/6WmFNfo8g3EBz9u3NBx8=;
-        b=TiM/soUQXy3T8GOIip3VITzplW5I0xQZ112YcNRdI7Fn+QrNWcyv5b4e0sMGz5GRE8
-         kcWLoMXmDUx2m4Szl8WeBBZdRKsyig7JcAptBeTUHA1RGItZky+diTOSBQibsHNtB3DW
-         J6BQ0t8S2pQ5UZhojz6arg6O7WWCy3skCMxE+Ovm4bUkxerbx655ZIvimAHkPqslw0vP
-         Jtcm9zDIlcAvHd+wQe6G9vqrid1Q0I23tU/BwOVKgSiPyVbse65jGh77/x/JYgJr8FVs
-         oNPU3oCNaFm6e6FhtZ4RT7qsouEoWyCf3HKNvWTpRNqYAkZkZmgTdtB3+rSa5B4SDDM+
-         1IMA==
-X-Gm-Message-State: AOAM533Pmk96l62vBPII2FozG77hyMWOluq1LfdbbUWxaXwaqmzrkwoG
-        ABz7/w5FQE4/bzetrPFy5zA=
-X-Google-Smtp-Source: ABdhPJzG0tqkZDjvl0SUw8BDNySrbL7XL9YwE5JAgtBSjUAV/Tt2slIcygusBs1lZxyjHb/SxkufMQ==
-X-Received: by 2002:a05:6a00:a94:b0:44c:ecb2:6018 with SMTP id b20-20020a056a000a9400b0044cecb26018mr54850347pfl.57.1641375716364;
-        Wed, 05 Jan 2022 01:41:56 -0800 (PST)
-Received: from localhost.localdomain (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id c17sm1988453pjs.34.2022.01.05.01.41.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jan 2022 01:41:55 -0800 (PST)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Jonathan.Cameron@huawei.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        u.kleine-koenig@pengutronix.de,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Syed Nayyar Waris <syednwaris@gmail.com>
-Subject: [PATCH] counter: 104-quad-8: Add COMPILE_TEST depends
-Date:   Wed,  5 Jan 2022 18:41:37 +0900
-Message-Id: <20220105094137.259111-1-vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.33.1
+        id S229773AbiAEJwu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jan 2022 04:52:50 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4335 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229755AbiAEJwt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 04:52:49 -0500
+Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JTPqG33Ygz67XhV;
+        Wed,  5 Jan 2022 17:50:18 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.20; Wed, 5 Jan 2022 10:52:46 +0100
+Received: from localhost (10.47.83.118) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 5 Jan
+ 2022 09:52:45 +0000
+Date:   Wed, 5 Jan 2022 09:52:52 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+CC:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Arnd Bergmann" <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
+        Pavel Machek <pavel@ucw.cz>, <list@opendingux.net>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 1/8] PM: core: Remove DEFINE_UNIVERSAL_DEV_PM_OPS()
+ macro
+Message-ID: <20220105095252.00007f7f@Huawei.com>
+In-Reply-To: <20220104214214.198843-2-paul@crapouillou.net>
+References: <20220104214214.198843-1-paul@crapouillou.net>
+        <20220104214214.198843-2-paul@crapouillou.net>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.83.118]
+X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-104_QUAD_8 depends on X86, but compiles fine on ARCH=arm. This patch
-adds support for COMPILE_TEST which is useful for compile testing code
-changes to the driver and Counter subsystem.
+On Tue, 4 Jan 2022 21:42:07 +0000
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: Syed Nayyar Waris <syednwaris@gmail.com>
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- drivers/counter/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
+> for both runtime PM and system sleep, which is very likely to be a
+> mistake, as a system sleep can be triggered while a given device is
+> already PM-suspended, which would cause the suspend callback to be
+> called twice.
+> 
+> The amount of users of UNIVERSAL_DEV_PM_OPS() is also tiny (16
+> occurences) compared to the number of places where
+> SET_SYSTEM_SLEEP_PM_OPS() is used with pm_runtime_force_suspend() and
+> pm_runtime_force_resume(), which makes me think that none of these cases
+> are actually valid.
+> 
+> As this macro is currently unused, remove it before someone starts to
+> use it in yet another invalid case.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+I suspect there are cases where calling suspend twice doesn't matter, but
+it does seem unlikely to be particularly helpful.
 
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index 3dcdb681c4e4..5edd155f1911 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -14,7 +14,7 @@ if COUNTER
- 
- config 104_QUAD_8
- 	tristate "ACCES 104-QUAD-8 driver"
--	depends on PC104 && X86
-+	depends on (PC104 && X86) || COMPILE_TEST
- 	select ISA_BUS_API
- 	help
- 	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
+So, makes sense to drop this unless there is some subtlety I'm missing.
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-base-commit: 088879292a0a3672a6acc9215174fbc355ed3daa
--- 
-2.33.1
+> ---
+>  include/linux/pm.h | 19 ++++++-------------
+>  1 file changed, 6 insertions(+), 13 deletions(-)
+> 
+> diff --git a/include/linux/pm.h b/include/linux/pm.h
+> index e1e9402180b9..31bbaafb06d2 100644
+> --- a/include/linux/pm.h
+> +++ b/include/linux/pm.h
+> @@ -366,6 +366,12 @@ static const struct dev_pm_ops name = { \
+>  	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>  }
+>  
+> +/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+> +#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+> +const struct dev_pm_ops __maybe_unused name = { \
+> +	SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+> +}
+> +
+>  /*
+>   * Use this for defining a set of PM operations to be used in all situations
+>   * (system suspend, hibernation or runtime PM).
+> @@ -379,19 +385,6 @@ static const struct dev_pm_ops name = { \
+>   * .resume_early(), to the same routines as .runtime_suspend() and
+>   * .runtime_resume(), respectively (and analogously for hibernation).
+>   */
+> -#define DEFINE_UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
+> -static const struct dev_pm_ops name = { \
+> -	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+> -	RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
+> -}
+> -
+> -/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+> -#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+> -const struct dev_pm_ops __maybe_unused name = { \
+> -	SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+> -}
+> -
+> -/* Deprecated. Use DEFINE_UNIVERSAL_DEV_PM_OPS() instead. */
+>  #define UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
+>  const struct dev_pm_ops __maybe_unused name = { \
+>  	SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
 

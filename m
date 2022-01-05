@@ -2,128 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA0494850F3
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 11:17:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E954850F8
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 11:17:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239350AbiAEKRn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jan 2022 05:17:43 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4343 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239340AbiAEKRf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 05:17:35 -0500
-Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JTQK409VWz67twb;
-        Wed,  5 Jan 2022 18:12:40 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.20; Wed, 5 Jan 2022 11:17:32 +0100
-Received: from localhost (10.47.83.118) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 5 Jan
- 2022 10:17:31 +0000
-Date:   Wed, 5 Jan 2022 10:17:37 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        id S239364AbiAEKRy convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Jan 2022 05:17:54 -0500
+Received: from aposti.net ([89.234.176.197]:49148 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239352AbiAEKRw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 5 Jan 2022 05:17:52 -0500
+Date:   Wed, 05 Jan 2022 10:17:40 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 8/8] iio: gyro: mpu3050: Use new PM macros
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
-        "Arnd Bergmann" <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, <list@opendingux.net>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mips@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 0/8] DEV_PM_OPS macros rework
-Message-ID: <20220105101737.00000957@Huawei.com>
-In-Reply-To: <20220104214214.198843-1-paul@crapouillou.net>
+        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
+        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Message-Id: <G9F85R.NKLOHGES4L8G@crapouillou.net>
+In-Reply-To: <20220105101106.00005ae0@Huawei.com>
 References: <20220104214214.198843-1-paul@crapouillou.net>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        <20220104214214.198843-9-paul@crapouillou.net>
+        <20220105101106.00005ae0@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.83.118]
-X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 4 Jan 2022 21:42:06 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
 
-> Hi,
-> 
-> This set of commits rework a bit the *_DEV_PM_OPS() macros that were
-> introduced recently.
-> 
-> - Remove the DEFINE_UNIVERSAL_DEV_PM_OPS() macro, since I highly doubt
->   anything is going to use it. The macro it replaces
->   (UNIVERSAL_DEV_PM_OPS) seems to only be used incorrectly in code that
->   hasn't been updated in ages.
-> 
-> - Remove the static qualifier in DEFINE_SIMPLE_DEV_PM_OPS, so that the
->   macro is more in line with what's done elsewhere in the kernel.
-> 
-> - Add a DEFINE_RUNTIME_DEV_PM_OPS() macro, for use with drivers that use
->   runtime PM, and use runtime_pm_force_suspend/runtime_pm_force_resume
->   as their system sleep callbacks.
-> 
-> - Add EXPORT_*_DEV_PM_OPS macros, which can be used for when the
->   underlying dev_pm_ops is to be exported. With CONFIG_PM set, the
->   symbol is exported as you would expect. With CONFIG_PM disabled, the
->   dev_pm_ops is garbage-collected along with the suspend/resume
->   callbacks.
-> 
-> - Update the two places which used DEFINE_SIMPLE_DEV_PM_OPS, to add back
->   the "static" qualifier that was stripped from the macro.
-> 
-> - Update one driver to use EXPORT_RUNTIME_DEV_PM_OPS(), just to showcase
->   how to use this macro in the case where a dev_pm_ops is to be
->   exported.
->   Note that the driver itself is GPL, and the symbol is only used within
->   a GPL driver, so I would assume the symbol would be exported as GPL.
->   But it was not the case in the original code, so I did not change the
->   behaviour.
-> 
-> Feedback welcome.
 
-Comments on individual patches (in particular bad pick for that final example ;)
+Le mer., janv. 5 2022 at 10:11:06 +0000, Jonathan Cameron 
+<Jonathan.Cameron@Huawei.com> a écrit :
+> On Tue, 4 Jan 2022 21:42:14 +0000
+> Paul Cercueil <paul@crapouillou.net> wrote:
+> 
+>>  Use the new EXPORT_RUNTIME_DEV_PM_OPS() macro. It allows the 
+>> underlying
+>>  dev_pm_ops struct as well as the suspend/resume callbacks to be 
+>> detected
+>>  as dead code in the case where CONFIG_PM is disabled, without 
+>> having to
+>>  wrap everything inside #ifdef CONFIG_PM guards.
+>> 
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> 
+> Hohum - bad choice of example. These shouldn't be exported as only 
+> used within
+> the same module ;)  No one ever wrote the other bus interface (and 
+> the part is
+> ancient so I can't see it happening now) hence whilst there are two 
+> files, they
+> are built into a single module.  There is a comment about this in the 
+> Makefile.
 
-Given how late we are in the cycle, I'd argue we 'need' patches 2 (+ 5,6 which
-should probably be all one patch to avoid introducing then fixing a warning in
-different patches).  The others could wait for the following cycle if needed.
+Ok - then I'll drop this patch and try to find a better driver to 
+showcase this.
 
-It would slow down a few patches I have queued up behind this, but most of them
-would be unaffected so it wouldn't annoy me too much. Can't speak for others
-however!
+Cheers,
+-Paul
 
-Jonathan
+>>  ---
+>>   drivers/iio/gyro/mpu3050-core.c | 13 ++++---------
+>>   drivers/iio/gyro/mpu3050-i2c.c  |  2 +-
+>>   2 files changed, 5 insertions(+), 10 deletions(-)
+>> 
+>>  diff --git a/drivers/iio/gyro/mpu3050-core.c 
+>> b/drivers/iio/gyro/mpu3050-core.c
+>>  index ea387efab62d..7d6721e268fe 100644
+>>  --- a/drivers/iio/gyro/mpu3050-core.c
+>>  +++ b/drivers/iio/gyro/mpu3050-core.c
+>>  @@ -1281,7 +1281,6 @@ int mpu3050_common_remove(struct device *dev)
+>>   }
+>>   EXPORT_SYMBOL(mpu3050_common_remove);
+>> 
+>>  -#ifdef CONFIG_PM
+>>   static int mpu3050_runtime_suspend(struct device *dev)
+>>   {
+>>   	return mpu3050_power_down(iio_priv(dev_get_drvdata(dev)));
+>>  @@ -1291,15 +1290,11 @@ static int mpu3050_runtime_resume(struct 
+>> device *dev)
+>>   {
+>>   	return mpu3050_power_up(iio_priv(dev_get_drvdata(dev)));
+>>   }
+>>  -#endif /* CONFIG_PM */
+>> 
+>>  -const struct dev_pm_ops mpu3050_dev_pm_ops = {
+>>  -	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+>>  -				pm_runtime_force_resume)
+>>  -	SET_RUNTIME_PM_OPS(mpu3050_runtime_suspend,
+>>  -			   mpu3050_runtime_resume, NULL)
+>>  -};
+>>  -EXPORT_SYMBOL(mpu3050_dev_pm_ops);
+>>  +EXPORT_RUNTIME_DEV_PM_OPS(mpu3050_dev_pm_ops,
+>>  +			  mpu3050_runtime_suspend,
+>>  +			  mpu3050_runtime_resume,
+>>  +			  NULL);
+>> 
+>>   MODULE_AUTHOR("Linus Walleij");
+>>   MODULE_DESCRIPTION("MPU3050 gyroscope driver");
+>>  diff --git a/drivers/iio/gyro/mpu3050-i2c.c 
+>> b/drivers/iio/gyro/mpu3050-i2c.c
+>>  index ef5bcbc4b45b..820133cad601 100644
+>>  --- a/drivers/iio/gyro/mpu3050-i2c.c
+>>  +++ b/drivers/iio/gyro/mpu3050-i2c.c
+>>  @@ -114,7 +114,7 @@ static struct i2c_driver mpu3050_i2c_driver = {
+>>   	.driver = {
+>>   		.of_match_table = mpu3050_i2c_of_match,
+>>   		.name = "mpu3050-i2c",
+>>  -		.pm = &mpu3050_dev_pm_ops,
+>>  +		.pm = pm_ptr(&mpu3050_dev_pm_ops),
+>>   	},
+>>   };
+>>   module_i2c_driver(mpu3050_i2c_driver);
+> 
 
-> 
-> Cheers,
-> -Paul
-> 
-> 
-> Paul Cercueil (8):
->   PM: core: Remove DEFINE_UNIVERSAL_DEV_PM_OPS() macro
->   PM: core: Remove static qualifier in DEFINE_SIMPLE_DEV_PM_OPS macro
->   PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS macros
->   PM: runtime: Add DEFINE_RUNTIME_DEV_PM_OPS() macro
->   PM: runtime: Add EXPORT[_GPL]_RUNTIME_DEV_PM_OPS macros
->   mmc: mxc: Make dev_pm_ops struct static
->   mmc: jz4740: Make dev_pm_ops struct static
->   iio: gyro: mpu3050: Use new PM macros
-> 
->  drivers/iio/gyro/mpu3050-core.c | 13 +++-----
->  drivers/iio/gyro/mpu3050-i2c.c  |  2 +-
->  drivers/mmc/host/jz4740_mmc.c   |  4 +--
->  drivers/mmc/host/mxcmmc.c       |  2 +-
->  include/linux/pm.h              | 53 +++++++++++++++++++++++----------
->  include/linux/pm_runtime.h      | 21 +++++++++++++
->  6 files changed, 67 insertions(+), 28 deletions(-)
-> 
 

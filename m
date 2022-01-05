@@ -2,127 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA582485760
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 18:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B09E4857DA
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 19:02:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242376AbiAERhx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 5 Jan 2022 12:37:53 -0500
-Received: from mail-qk1-f181.google.com ([209.85.222.181]:41938 "EHLO
-        mail-qk1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242352AbiAERhu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 12:37:50 -0500
-Received: by mail-qk1-f181.google.com with SMTP id m2so129202qkd.8;
-        Wed, 05 Jan 2022 09:37:50 -0800 (PST)
+        id S242668AbiAESCV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jan 2022 13:02:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34578 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242669AbiAESCR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 13:02:17 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE338C061201
+        for <linux-iio@vger.kernel.org>; Wed,  5 Jan 2022 10:02:16 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id s15so51331pfk.6
+        for <linux-iio@vger.kernel.org>; Wed, 05 Jan 2022 10:02:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=S4xBlIXwe6Ivsos8VDAdi5+QbDpQQkpq7vuCWanUwHM=;
+        b=DKpykNKzFqpD6wtU0kd3SCoVApdmj+8Wn9hZhJEynVJTQrApPdzCUzY9RdRRhPQcTJ
+         Jmu2AjPiza5T60QeIidYoh6wiQb+SzvyIf8eMj2yYz/b1fTtjeWpZrG0zy1yBI5xtH9o
+         J1UsO9XHjtSONDmqzVt3dchS5BCZ/sZvxQ9ao=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=8iMxZbYhfPLFLAuvqMnsUDcM1IC6NSwNdZv/+r1Rp4Y=;
-        b=MHcEdheI0Q2YZ12dJdARtR06TTk0QalqkkZaQuRDTyyipvWyhAPQ9IRGWteCt2HQt2
-         RCXI3p6lkz0RUutizgjWUEdBIoqXiTninpZ3Ohi4sYxeqfeGVyrvgzaUJEXbgaorrZy8
-         eifrVcNZLk8ohznFPdbgGWW9D7SpBgxtPrKDdUaUhNXRMj6WrGC203OizRA9Nwv+ldC8
-         2TZh6nDDNvhx86ZcAbXjCdNwFy2g9PvytYY6OHCMOkfhtdbNUTc2Cq/1GdcYmiXFIB4A
-         Y2EmDogfYCWaQHX9uTdTtScVzfwYawGhs5/irqFLQf856ywHPZuFbq3ibmfMBZXvwnsN
-         miaw==
-X-Gm-Message-State: AOAM533re8+tpUukFwc6FqPAj/gAEoGQUpVsVOJqTZnMf+lnagBUDa7Y
-        ohsSMTDknrzYpzsVci4Nt8yIlcGYK2G80lbods4=
-X-Google-Smtp-Source: ABdhPJyDibxYQx6ZXe8eRF/pirxkLKXUwRwwLCT3iu3yxbLgxLNS8nlIUrgpSs6otTbM9fnjhlssLhP+3cEw9CFRia4=
-X-Received: by 2002:a37:b702:: with SMTP id h2mr39893403qkf.135.1641404269688;
- Wed, 05 Jan 2022 09:37:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20220104214214.198843-1-paul@crapouillou.net> <20220105101737.00000957@Huawei.com>
- <TLW85R.NW4VI31QKSEJ3@crapouillou.net>
-In-Reply-To: <TLW85R.NW4VI31QKSEJ3@crapouillou.net>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 5 Jan 2022 18:37:38 +0100
-Message-ID: <CAJZ5v0hmsmBeL4sHLwotsD6VmV3BO=UWzZwEtq-jH0N+53psFQ@mail.gmail.com>
-Subject: Re: [PATCH 0/8] DEV_PM_OPS macros rework
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=S4xBlIXwe6Ivsos8VDAdi5+QbDpQQkpq7vuCWanUwHM=;
+        b=enckahiKIUl/0oWdH0OkJnNTIwK94NUYRADthZcCV/4BRYjUsNLuy+LkkSp843ZMCd
+         /SGXdWP3NNq3v9Jo9xUr7uSqdNjDrV24kGcrAeQAdtXV0LxwE+zm8+lOy9QGm3Ic0Uy3
+         U79W/Kr/KVZ7Sy6dJrPXM7MV5Z7rmEWRm6aNzvD8gf4hP+cX7jR7b0gL8TW0L5/4KBFL
+         91YhzEh68KS9Tsl6xHha+XKoabtiPDSoX5y0oBZ86RLGITGGAudxFKy6jMrLdKwjKRu0
+         yoYw4cAQWG9vgHnLYWzkaBdqSf61nOA6fNR8nWqyeNCpMym6DltQceWw/uDcfyVT5uqJ
+         +Vng==
+X-Gm-Message-State: AOAM530Zj1vKgKrA0BMwm0WNUzEJ5B4sU1bk+A/ozrlBizcDYPZTzlHY
+        QLz/dp0hRA4YO5Bud41YJV5VFQ==
+X-Google-Smtp-Source: ABdhPJxKtkiY2qS8/bDmJwa91au0gi21nej2Y/DnGQWFiHtISxkCmRgUbXb7Cb3ILaJKV3U+pFy7WQ==
+X-Received: by 2002:a63:8042:: with SMTP id j63mr50086308pgd.292.1641405736461;
+        Wed, 05 Jan 2022 10:02:16 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id c24sm28499040pgj.57.2022.01.05.10.02.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jan 2022 10:02:16 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
-        linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH v2] iio: addac: Do not reference negative array offsets
+Date:   Wed,  5 Jan 2022 10:02:14 -0800
+Message-Id: <20220105180214.2435001-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2254; h=from:subject; bh=sGHoQxGNcT2Kv4+f7h+VZ51sTNIi0mtsXNE1v+t3ApI=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBh1d0lM+4aPs0jyUT1zIY3p2331EZ11B0G+kBU0nyj Jcsj1AWJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYdXdJQAKCRCJcvTf3G3AJvGfD/ 0Ut8I5/wxM912CDP+SrbegTwNbdz3eNsh2P4jKCPXaOmJ8sY8BBFtUAqEnWjGwWq2CVRKstBsYiAZl /+NwcXCNPt5VrLaEUI+GtZOGiTN8qml6bh0/LN+VF1iFGqTmXr8MgT0/dK///ubvK2gcVZfecWhoX8 7L3vHNHmSb3pwcbHyrMQMvoHa3jGjj8sjNr6v/F12SOfGFB7boVa87MVcNIDcng14m4bGQY0LamHlO ecKlMRMMBJSCDMFk0CzFWIWqg4yBT0ggv+n52uKlMBvCNHMoudn0gv3ld3EWuUSNV4kOHVJfLY+He+ vbiRN3Wy+AOIT5taUrYH50SqGp9Rk4Nx5Tz+HAHU+67CsBNmBLcRytkkujt7v2/9UZ/IQ3nW7vLvOf 2GlaGJ5eLCwCwKCnPnIyfSjyoeHgLeSbGRwzaQkjjU8uURk6eEP0oRgbUS0CUs1EIBPB7ODEI5AKW6 zs1E5JseyeKBsjVi8S6AwyYDoH6XWQrwqTqh/1p1FKbyRNIBKe7ykQjxfH/xTtx1H5GAaQU104tY3u eEDzC0AR6WV/sSRw8nIQWbHhb6tURMGErU6hqRKXFM0dY6x5Pcs5XgROqRe66RGmmzGpz6LWK3Kdn1 +pAtH455SfdNcYuFLILhyAWfNiRpYKAuKMV4kX0Uy5UozDVsUe4uyllFkLoA==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jan 5, 2022 at 5:32 PM Paul Cercueil <paul@crapouillou.net> wrote:
->
->
->
-> Le mer., janv. 5 2022 at 10:17:37 +0000, Jonathan Cameron
-> <Jonathan.Cameron@Huawei.com> a écrit :
-> > On Tue, 4 Jan 2022 21:42:06 +0000
-> > Paul Cercueil <paul@crapouillou.net> wrote:
-> >
-> >>  Hi,
-> >>
-> >>  This set of commits rework a bit the *_DEV_PM_OPS() macros that were
-> >>  introduced recently.
-> >>
-> >>  - Remove the DEFINE_UNIVERSAL_DEV_PM_OPS() macro, since I highly
-> >> doubt
-> >>    anything is going to use it. The macro it replaces
-> >>    (UNIVERSAL_DEV_PM_OPS) seems to only be used incorrectly in code
-> >> that
-> >>    hasn't been updated in ages.
-> >>
-> >>  - Remove the static qualifier in DEFINE_SIMPLE_DEV_PM_OPS, so that
-> >> the
-> >>    macro is more in line with what's done elsewhere in the kernel.
-> >>
-> >>  - Add a DEFINE_RUNTIME_DEV_PM_OPS() macro, for use with drivers
-> >> that use
-> >>    runtime PM, and use
-> >> runtime_pm_force_suspend/runtime_pm_force_resume
-> >>    as their system sleep callbacks.
-> >>
-> >>  - Add EXPORT_*_DEV_PM_OPS macros, which can be used for when the
-> >>    underlying dev_pm_ops is to be exported. With CONFIG_PM set, the
-> >>    symbol is exported as you would expect. With CONFIG_PM disabled,
-> >> the
-> >>    dev_pm_ops is garbage-collected along with the suspend/resume
-> >>    callbacks.
-> >>
-> >>  - Update the two places which used DEFINE_SIMPLE_DEV_PM_OPS, to add
-> >> back
-> >>    the "static" qualifier that was stripped from the macro.
-> >>
-> >>  - Update one driver to use EXPORT_RUNTIME_DEV_PM_OPS(), just to
-> >> showcase
-> >>    how to use this macro in the case where a dev_pm_ops is to be
-> >>    exported.
-> >>    Note that the driver itself is GPL, and the symbol is only used
-> >> within
-> >>    a GPL driver, so I would assume the symbol would be exported as
-> >> GPL.
-> >>    But it was not the case in the original code, so I did not change
-> >> the
-> >>    behaviour.
-> >>
-> >>  Feedback welcome.
-> >
-> > Comments on individual patches (in particular bad pick for that final
-> > example ;)
-> >
-> > Given how late we are in the cycle, I'd argue we 'need' patches 2 (+
-> > 5,6 which
-> > should probably be all one patch to avoid introducing then fixing a
-> > warning in
-> > different patches).  The others could wait for the following cycle if
-> > needed.
->
-> Ok, should I V2 with patches 2/5/6 merged together?
+Instead of aiming rx_buf at an invalid array-boundary-crossing location,
+just skip the first increment. Fixes this warning seen when building
+with -Warray-bounds:
 
-Yes, please!
+drivers/iio/addac/ad74413r.c: In function 'ad74413r_update_scan_mode':
+drivers/iio/addac/ad74413r.c:843:22: warning: array subscript -4 is below array bounds of 'u8[16]' { aka 'unsigned char[16]'} [-Warray-bounds]
+  843 |         u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 * AD74413R_FRAME_SIZE];
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/iio/addac/ad74413r.c:84:20: note: while referencing 'rx_buf'
+   84 |                 u8 rx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
+      |                    ^~~~~~
+
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+v1: https://lore.kernel.org/lkml/20211215232321.2069314-1-keescook@chromium.org/
+v2:
+ - use "xfer" for checking "first through the loop"
+---
+ drivers/iio/addac/ad74413r.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index 5271073bb74e..aba9a643a4ca 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -840,7 +840,7 @@ static int ad74413r_update_scan_mode(struct iio_dev *indio_dev,
+ {
+ 	struct ad74413r_state *st = iio_priv(indio_dev);
+ 	struct spi_transfer *xfer = st->adc_samples_xfer;
+-	u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 * AD74413R_FRAME_SIZE];
++	u8 *rx_buf = st->adc_samples_buf.rx_buf;
+ 	u8 *tx_buf = st->adc_samples_tx_buf;
+ 	unsigned int channel;
+ 	int ret = -EINVAL;
+@@ -894,9 +894,10 @@ static int ad74413r_update_scan_mode(struct iio_dev *indio_dev,
+ 
+ 		spi_message_add_tail(xfer, &st->adc_samples_msg);
+ 
+-		xfer++;
+ 		tx_buf += AD74413R_FRAME_SIZE;
+-		rx_buf += AD74413R_FRAME_SIZE;
++		if (xfer != st->adc_samples_xfer)
++			rx_buf += AD74413R_FRAME_SIZE;
++		xfer++;
+ 	}
+ 
+ 	xfer->rx_buf = rx_buf;
+-- 
+2.30.2
+

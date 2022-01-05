@@ -2,494 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82FA24858A2
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 19:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8AFA485A62
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 22:06:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243158AbiAESoB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jan 2022 13:44:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44294 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238501AbiAESoB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 13:44:01 -0500
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D696BC061245
-        for <linux-iio@vger.kernel.org>; Wed,  5 Jan 2022 10:44:00 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id s6so278423ioj.0
-        for <linux-iio@vger.kernel.org>; Wed, 05 Jan 2022 10:44:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=82yM7MWUZkqtH17qiQkr5q0zAg2+UbghCc6PB9Zh5QM=;
-        b=R1KG+DeKNxNbX76imn4QRov1Osh7/J/8okwreFVOgtppiibJfdfkxXuKE2IG3mnblT
-         aJGl5ocfe0lEfUgB53txR8pMP7CCH3hYAuilKIO1YMRbt9hV+aX2sAyVdB9IpINqfzMw
-         2FD8NpR1LCFTzpMAKeLP/hpru8mamGDzdSfHA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=82yM7MWUZkqtH17qiQkr5q0zAg2+UbghCc6PB9Zh5QM=;
-        b=QS9JvD4UCJGQBbhELJoTG4TfDCKei6TjxjuCveqhl2v+VPR/PLQhMUBUuwcjU1I8NX
-         kBITEb7bwFZeVQvr0YiuH19uY3+zxROPvuPY+hyOoc/13FD0t+FekIE+v9Favz/5Rgqr
-         /x5gcfq9S2/ygbgLW5+gVVUUeWmDy45p+4aNtzop7IorlYxUNUbDtq7/cp0xOgX/y3jx
-         1pX/jaL/Gx9pPWhKak+Sk304cU6U9FOdIQcutd82SwLMvZibI8ldpJyjrB/thduH1Gkr
-         K2jy0aPBbapL/ht+8wfc+Ha04exFoG6oeya8k5Vn0CEITfQBCUb/Z9ophA52rzhbiAzv
-         CoxQ==
-X-Gm-Message-State: AOAM533zYhpiSegKDFa46HLfWpM7rpNsh2SRgunuFxzUXFNnV28Z/9sX
-        RCY0F/S+8jUCQODTOAzs0ORF1XDW1Gb0C+8zMIbhtA==
-X-Google-Smtp-Source: ABdhPJyxO3a2sUUvqtyL7aICX/emBRyEC+1i356TlkZiUx+9lulPP9GWGR6RhGw6begTEKd4ZVjPo6frlLyBYEOKh0M=
-X-Received: by 2002:a05:6638:23a:: with SMTP id f26mr26570755jaq.222.1641408240180;
- Wed, 05 Jan 2022 10:44:00 -0800 (PST)
+        id S244305AbiAEVGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jan 2022 16:06:01 -0500
+Received: from mga07.intel.com ([134.134.136.100]:49459 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231715AbiAEVF7 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 5 Jan 2022 16:05:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641416759; x=1672952759;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hkH35YbzF4YPt3ygjqNj8GfRVNnWzk1Z4UqheHX4CcU=;
+  b=EjRbnF1csDdv6cErtwmoonnGJry40WAdxZi2jcr3KeDxTv8sXvdZU59Z
+   uaRK0w3B6QgZENps76sab8pnCaQZRDKpIHUo9byZQT+8lpNEXecR/6A9K
+   2sp4LCHhE2SJVF5bYH24+D4ZAdYRYQBLsjj8t/C9uecYIv9TVZnx4CY6G
+   nMDkxLwaLNrU/iw8uhF/jYk6crE63Cu2K/8m8bNqMvCq4C6PnLuXCzD7P
+   IPvCWE28gcJ/IOet5HJIoE1AKCuTMrH7qXwYAOdc2NZ2h0l8akygYA7hr
+   ed/Zl5vIt+1PqMyBS3S4ghlzvq511Qknj3GzeoebrBZDeGSMV9I3xqAbB
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10217"; a="305887357"
+X-IronPort-AV: E=Sophos;i="5.88,264,1635231600"; 
+   d="scan'208";a="305887357"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2022 13:05:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,264,1635231600"; 
+   d="scan'208";a="621280687"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 05 Jan 2022 13:05:54 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1n5DTl-000H2W-QE; Wed, 05 Jan 2022 21:05:53 +0000
+Date:   Thu, 6 Jan 2022 05:05:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     kbuild-all@lists.01.org
+Subject: Re: [PATCH v2 3/7] iio: adc: qcom-spmi-rradc: introduce round robin
+ adc
+Message-ID: <202201060438.QiDzs9rA-lkp@intel.com>
+References: <20220105183353.2505744-4-caleb.connolly@linaro.org>
 MIME-Version: 1.0
-References: <20211230193331.283503-1-jic23@kernel.org> <20211230193331.283503-14-jic23@kernel.org>
-In-Reply-To: <20211230193331.283503-14-jic23@kernel.org>
-From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Wed, 5 Jan 2022 10:43:49 -0800
-Message-ID: <CAPUE2uvay_vh5q_Dw7Xct1HpgMup6MMnoS1w5e1bghh2r75b2Q@mail.gmail.com>
-Subject: Re: [PATCH 13/13] iio:st-sensors: Move exports into ST_SENSORS namespace
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Denis Ciocca <denis.ciocca@st.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220105183353.2505744-4-caleb.connolly@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Dec 30, 2021 at 11:28 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> To avoid unnecessary pollution of the global symbol namespace move the
-> driver core and type specific core exports into their a new namespace
-> and import that where needed.
->
-> For more info see https://lwn.net/Articles/760045/
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Denis Ciocca <denis.ciocca@st.com>
-Code looks good, but the naming "ST_SENSORS" is not consistent with
-existing namespaces already present in the iio subsystem:
-12f13d1faead808 ("iio: hid-sensors: lighten exported symbols by moving
-to IIO_HID namespace") has introduced IIO_HID_ATTRIBUTES and IIO_HID.
+Hi Caleb,
 
-Would IIO_ST make more sense?
+Thank you for the patch! Yet something to improve:
 
-Gwendal.
+[auto build test ERROR on robh/for-next]
+[also build test ERROR on jic23-iio/togreg lee-mfd/for-mfd-next v5.16-rc8 next-20220105]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> ---
->  drivers/iio/accel/st_accel_core.c             |  5 ++--
->  drivers/iio/accel/st_accel_i2c.c              |  1 +
->  drivers/iio/accel/st_accel_spi.c              |  1 +
->  .../iio/common/st_sensors/st_sensors_buffer.c |  2 +-
->  .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++++----------
->  .../iio/common/st_sensors/st_sensors_i2c.c    |  2 +-
->  .../iio/common/st_sensors/st_sensors_spi.c    |  2 +-
->  .../common/st_sensors/st_sensors_trigger.c    |  4 +--
->  drivers/iio/gyro/st_gyro_core.c               |  5 ++--
->  drivers/iio/gyro/st_gyro_i2c.c                |  1 +
->  drivers/iio/gyro/st_gyro_spi.c                |  1 +
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  |  3 +-
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  1 +
->  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  1 +
->  drivers/iio/magnetometer/st_magn_core.c       |  5 ++--
->  drivers/iio/magnetometer/st_magn_i2c.c        |  1 +
->  drivers/iio/magnetometer/st_magn_spi.c        |  1 +
->  drivers/iio/pressure/st_pressure_core.c       |  5 ++--
->  drivers/iio/pressure/st_pressure_i2c.c        |  1 +
->  drivers/iio/pressure/st_pressure_spi.c        |  1 +
->  20 files changed, 43 insertions(+), 28 deletions(-)
->
-> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-> index 31ea19d0ba71..4bb4ce081d45 100644
-> --- a/drivers/iio/accel/st_accel_core.c
-> +++ b/drivers/iio/accel/st_accel_core.c
-> @@ -1329,7 +1329,7 @@ const struct st_sensor_settings *st_accel_get_settings(const char *name)
->
->         return &st_accel_sensors_settings[index];
->  }
-> -EXPORT_SYMBOL(st_accel_get_settings);
-> +EXPORT_SYMBOL_NS(st_accel_get_settings, ST_SENSORS);
->
->  int st_accel_common_probe(struct iio_dev *indio_dev)
->  {
-> @@ -1383,8 +1383,9 @@ int st_accel_common_probe(struct iio_dev *indio_dev)
->
->         return devm_iio_device_register(parent, indio_dev);
->  }
-> -EXPORT_SYMBOL(st_accel_common_probe);
-> +EXPORT_SYMBOL_NS(st_accel_common_probe, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics accelerometers driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
-> index c0ce78eebad9..88b2b1767bf2 100644
-> --- a/drivers/iio/accel/st_accel_i2c.c
-> +++ b/drivers/iio/accel/st_accel_i2c.c
-> @@ -194,3 +194,4 @@ module_i2c_driver(st_accel_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics accelerometers i2c driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
-> index b74a1c6d03de..cecd6a38949e 100644
-> --- a/drivers/iio/accel/st_accel_spi.c
-> +++ b/drivers/iio/accel/st_accel_spi.c
-> @@ -164,3 +164,4 @@ module_spi_driver(st_accel_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics accelerometers spi driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_buffer.c b/drivers/iio/common/st_sensors/st_sensors_buffer.c
-> index 5f2b1fb95fd7..668f825f22a6 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_buffer.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_buffer.c
-> @@ -76,4 +76,4 @@ irqreturn_t st_sensors_trigger_handler(int irq, void *p)
->
->         return IRQ_HANDLED;
->  }
-> -EXPORT_SYMBOL(st_sensors_trigger_handler);
-> +EXPORT_SYMBOL_NS(st_sensors_trigger_handler, ST_SENSORS);
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-> index eb452d0c423c..2708a5e9b43d 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> @@ -46,7 +46,7 @@ int st_sensors_debugfs_reg_access(struct iio_dev *indio_dev,
->
->         return 0;
->  }
-> -EXPORT_SYMBOL(st_sensors_debugfs_reg_access);
-> +EXPORT_SYMBOL_NS(st_sensors_debugfs_reg_access, ST_SENSORS);
->
->  static int st_sensors_match_odr(struct st_sensor_settings *sensor_settings,
->                         unsigned int odr, struct st_sensor_odr_avl *odr_out)
-> @@ -106,7 +106,7 @@ int st_sensors_set_odr(struct iio_dev *indio_dev, unsigned int odr)
->  st_sensors_match_odr_error:
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_set_odr);
-> +EXPORT_SYMBOL_NS(st_sensors_set_odr, ST_SENSORS);
->
->  static int st_sensors_match_fs(struct st_sensor_settings *sensor_settings,
->                                         unsigned int fs, int *index_fs_avl)
-> @@ -199,7 +199,7 @@ int st_sensors_set_enable(struct iio_dev *indio_dev, bool enable)
->  set_enable_error:
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_set_enable);
-> +EXPORT_SYMBOL_NS(st_sensors_set_enable, ST_SENSORS);
->
->  int st_sensors_set_axis_enable(struct iio_dev *indio_dev, u8 axis_enable)
->  {
-> @@ -213,7 +213,7 @@ int st_sensors_set_axis_enable(struct iio_dev *indio_dev, u8 axis_enable)
->                                 axis_enable);
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_set_axis_enable);
-> +EXPORT_SYMBOL_NS(st_sensors_set_axis_enable, ST_SENSORS);
->
->  static void st_reg_disable(void *reg)
->  {
-> @@ -257,7 +257,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
->
->         return devm_add_action_or_reset(parent, st_reg_disable, pdata->vdd_io);
->  }
-> -EXPORT_SYMBOL(st_sensors_power_enable);
-> +EXPORT_SYMBOL_NS(st_sensors_power_enable, ST_SENSORS);
->
->  static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
->                                         struct st_sensors_platform_data *pdata)
-> @@ -352,7 +352,7 @@ void st_sensors_dev_name_probe(struct device *dev, char *name, int len)
->         /* The name from the match takes precedence if present */
->         strlcpy(name, match, len);
->  }
-> -EXPORT_SYMBOL(st_sensors_dev_name_probe);
-> +EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, ST_SENSORS);
->
->  int st_sensors_init_sensor(struct iio_dev *indio_dev,
->                                         struct st_sensors_platform_data *pdata)
-> @@ -437,7 +437,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
->
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_init_sensor);
-> +EXPORT_SYMBOL_NS(st_sensors_init_sensor, ST_SENSORS);
->
->  int st_sensors_set_dataready_irq(struct iio_dev *indio_dev, bool enable)
->  {
-> @@ -486,7 +486,7 @@ int st_sensors_set_dataready_irq(struct iio_dev *indio_dev, bool enable)
->  st_accel_set_dataready_irq_error:
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_set_dataready_irq);
-> +EXPORT_SYMBOL_NS(st_sensors_set_dataready_irq, ST_SENSORS);
->
->  int st_sensors_set_fullscale_by_gain(struct iio_dev *indio_dev, int scale)
->  {
-> @@ -509,7 +509,7 @@ int st_sensors_set_fullscale_by_gain(struct iio_dev *indio_dev, int scale)
->  st_sensors_match_scale_error:
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_set_fullscale_by_gain);
-> +EXPORT_SYMBOL_NS(st_sensors_set_fullscale_by_gain, ST_SENSORS);
->
->  static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
->                                      struct iio_chan_spec const *ch, int *data)
-> @@ -572,7 +572,7 @@ int st_sensors_read_info_raw(struct iio_dev *indio_dev,
->
->         return err;
->  }
-> -EXPORT_SYMBOL(st_sensors_read_info_raw);
-> +EXPORT_SYMBOL_NS(st_sensors_read_info_raw, ST_SENSORS);
->
->  /*
->   * st_sensors_get_settings_index() - get index of the sensor settings for a
-> @@ -599,7 +599,7 @@ int st_sensors_get_settings_index(const char *name,
->
->         return -ENODEV;
->  }
-> -EXPORT_SYMBOL(st_sensors_get_settings_index);
-> +EXPORT_SYMBOL_NS(st_sensors_get_settings_index, ST_SENSORS);
->
->  /*
->   * st_sensors_verify_id() - verify sensor ID (WhoAmI) is matching with the
-> @@ -632,7 +632,7 @@ int st_sensors_verify_id(struct iio_dev *indio_dev)
->
->         return 0;
->  }
-> -EXPORT_SYMBOL(st_sensors_verify_id);
-> +EXPORT_SYMBOL_NS(st_sensors_verify_id, ST_SENSORS);
->
->  ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
->                                 struct device_attribute *attr, char *buf)
-> @@ -654,7 +654,7 @@ ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
->
->         return len;
->  }
-> -EXPORT_SYMBOL(st_sensors_sysfs_sampling_frequency_avail);
-> +EXPORT_SYMBOL_NS(st_sensors_sysfs_sampling_frequency_avail, ST_SENSORS);
->
->  ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
->                                 struct device_attribute *attr, char *buf)
-> @@ -678,7 +678,7 @@ ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
->
->         return len;
->  }
-> -EXPORT_SYMBOL(st_sensors_sysfs_scale_avail);
-> +EXPORT_SYMBOL_NS(st_sensors_sysfs_scale_avail, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics ST-sensors core");
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_i2c.c b/drivers/iio/common/st_sensors/st_sensors_i2c.c
-> index 18bd3c3d99bc..7f9fcc84e032 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_i2c.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_i2c.c
-> @@ -61,7 +61,7 @@ int st_sensors_i2c_configure(struct iio_dev *indio_dev,
->
->         return 0;
->  }
-> -EXPORT_SYMBOL(st_sensors_i2c_configure);
-> +EXPORT_SYMBOL_NS(st_sensors_i2c_configure, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics ST-sensors i2c driver");
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_spi.c b/drivers/iio/common/st_sensors/st_sensors_spi.c
-> index 7c60050e90dc..bf3893d619ee 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_spi.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_spi.c
-> @@ -113,7 +113,7 @@ int st_sensors_spi_configure(struct iio_dev *indio_dev,
->
->         return 0;
->  }
-> -EXPORT_SYMBOL(st_sensors_spi_configure);
-> +EXPORT_SYMBOL_NS(st_sensors_spi_configure, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics ST-sensors spi driver");
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> index ab7a5a24fa6e..1f382d011146 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-> @@ -227,7 +227,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
->
->         return 0;
->  }
-> -EXPORT_SYMBOL(st_sensors_allocate_trigger);
-> +EXPORT_SYMBOL_NS(st_sensors_allocate_trigger, ST_SENSORS);
->
->  int st_sensors_validate_device(struct iio_trigger *trig,
->                                struct iio_dev *indio_dev)
-> @@ -239,4 +239,4 @@ int st_sensors_validate_device(struct iio_trigger *trig,
->
->         return 0;
->  }
-> -EXPORT_SYMBOL(st_sensors_validate_device);
-> +EXPORT_SYMBOL_NS(st_sensors_validate_device, ST_SENSORS);
-> diff --git a/drivers/iio/gyro/st_gyro_core.c b/drivers/iio/gyro/st_gyro_core.c
-> index 201050b76fe5..fe599f909806 100644
-> --- a/drivers/iio/gyro/st_gyro_core.c
-> +++ b/drivers/iio/gyro/st_gyro_core.c
-> @@ -472,7 +472,7 @@ const struct st_sensor_settings *st_gyro_get_settings(const char *name)
->
->         return &st_gyro_sensors_settings[index];
->  }
-> -EXPORT_SYMBOL(st_gyro_get_settings);
-> +EXPORT_SYMBOL_NS(st_gyro_get_settings, ST_SENSORS);
->
->  int st_gyro_common_probe(struct iio_dev *indio_dev)
->  {
-> @@ -518,8 +518,9 @@ int st_gyro_common_probe(struct iio_dev *indio_dev)
->
->         return devm_iio_device_register(parent, indio_dev);
->  }
-> -EXPORT_SYMBOL(st_gyro_common_probe);
-> +EXPORT_SYMBOL_NS(st_gyro_common_probe, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics gyroscopes driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/gyro/st_gyro_i2c.c b/drivers/iio/gyro/st_gyro_i2c.c
-> index 163c7ba300c1..4784ad819f73 100644
-> --- a/drivers/iio/gyro/st_gyro_i2c.c
-> +++ b/drivers/iio/gyro/st_gyro_i2c.c
-> @@ -120,3 +120,4 @@ module_i2c_driver(st_gyro_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics gyroscopes i2c driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/gyro/st_gyro_spi.c b/drivers/iio/gyro/st_gyro_spi.c
-> index b0023f9b9771..4c6b8b15f894 100644
-> --- a/drivers/iio/gyro/st_gyro_spi.c
-> +++ b/drivers/iio/gyro/st_gyro_spi.c
-> @@ -124,3 +124,4 @@ module_spi_driver(st_gyro_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics gyroscopes spi driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
-> index 9fb06b7cde3c..48fbd3905074 100644
-> --- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
-> +++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c
-> @@ -142,8 +142,9 @@ int st_lsm9ds0_probe(struct st_lsm9ds0 *lsm9ds0, struct regmap *regmap)
->         /* Setup magnetometer device */
->         return st_lsm9ds0_probe_magn(lsm9ds0, regmap);
->  }
-> -EXPORT_SYMBOL_GPL(st_lsm9ds0_probe);
-> +EXPORT_SYMBOL_NS_GPL(st_lsm9ds0_probe, ST_SENSORS);
->
->  MODULE_AUTHOR("Andy Shevchenko <andriy.shevchenko@linux.intel.com>");
->  MODULE_DESCRIPTION("STMicroelectronics LSM9DS0 IMU core driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-> index 8f205c477e6f..019b16809f84 100644
-> --- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-> +++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-> @@ -77,3 +77,4 @@ module_i2c_driver(st_lsm9ds0_driver);
->  MODULE_AUTHOR("Andy Shevchenko <andriy.shevchenko@linux.intel.com>");
->  MODULE_DESCRIPTION("STMicroelectronics LSM9DS0 IMU I2C driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-> index 0ddfa53166af..4d631bcb7f41 100644
-> --- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-> +++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-> @@ -76,3 +76,4 @@ module_spi_driver(st_lsm9ds0_driver);
->  MODULE_AUTHOR("Andy Shevchenko <andriy.shevchenko@linux.intel.com>");
->  MODULE_DESCRIPTION("STMicroelectronics LSM9DS0 IMU SPI driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/magnetometer/st_magn_core.c b/drivers/iio/magnetometer/st_magn_core.c
-> index 0806a1e65ce4..9f126361b5f0 100644
-> --- a/drivers/iio/magnetometer/st_magn_core.c
-> +++ b/drivers/iio/magnetometer/st_magn_core.c
-> @@ -606,7 +606,7 @@ const struct st_sensor_settings *st_magn_get_settings(const char *name)
->
->         return &st_magn_sensors_settings[index];
->  }
-> -EXPORT_SYMBOL(st_magn_get_settings);
-> +EXPORT_SYMBOL_NS(st_magn_get_settings, ST_SENSORS);
->
->  int st_magn_common_probe(struct iio_dev *indio_dev)
->  {
-> @@ -653,8 +653,9 @@ int st_magn_common_probe(struct iio_dev *indio_dev)
->
->         return devm_iio_device_register(parent, indio_dev);
->  }
-> -EXPORT_SYMBOL(st_magn_common_probe);
-> +EXPORT_SYMBOL_NS(st_magn_common_probe, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics magnetometers driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/magnetometer/st_magn_i2c.c b/drivers/iio/magnetometer/st_magn_i2c.c
-> index 7237711fc09b..f4a07d89543e 100644
-> --- a/drivers/iio/magnetometer/st_magn_i2c.c
-> +++ b/drivers/iio/magnetometer/st_magn_i2c.c
-> @@ -115,3 +115,4 @@ module_i2c_driver(st_magn_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics magnetometers i2c driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/magnetometer/st_magn_spi.c b/drivers/iio/magnetometer/st_magn_spi.c
-> index 489d4462862f..316a1d6c1647 100644
-> --- a/drivers/iio/magnetometer/st_magn_spi.c
-> +++ b/drivers/iio/magnetometer/st_magn_spi.c
-> @@ -106,3 +106,4 @@ module_spi_driver(st_magn_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics magnetometers spi driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/pressure/st_pressure_core.c b/drivers/iio/pressure/st_pressure_core.c
-> index 26a1ee43d56e..14524d8c9783 100644
-> --- a/drivers/iio/pressure/st_pressure_core.c
-> +++ b/drivers/iio/pressure/st_pressure_core.c
-> @@ -672,7 +672,7 @@ const struct st_sensor_settings *st_press_get_settings(const char *name)
->
->         return &st_press_sensors_settings[index];
->  }
-> -EXPORT_SYMBOL(st_press_get_settings);
-> +EXPORT_SYMBOL_NS(st_press_get_settings, ST_SENSORS);
->
->  int st_press_common_probe(struct iio_dev *indio_dev)
->  {
-> @@ -724,8 +724,9 @@ int st_press_common_probe(struct iio_dev *indio_dev)
->
->         return devm_iio_device_register(parent, indio_dev);
->  }
-> -EXPORT_SYMBOL(st_press_common_probe);
-> +EXPORT_SYMBOL_NS(st_press_common_probe, ST_SENSORS);
->
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics pressures driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/pressure/st_pressure_i2c.c b/drivers/iio/pressure/st_pressure_i2c.c
-> index 1939e999a427..3ce69a14fc69 100644
-> --- a/drivers/iio/pressure/st_pressure_i2c.c
-> +++ b/drivers/iio/pressure/st_pressure_i2c.c
-> @@ -120,3 +120,4 @@ module_i2c_driver(st_press_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics pressures i2c driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> diff --git a/drivers/iio/pressure/st_pressure_spi.c b/drivers/iio/pressure/st_pressure_spi.c
-> index d6fc954e28f8..a5302f95e82b 100644
-> --- a/drivers/iio/pressure/st_pressure_spi.c
-> +++ b/drivers/iio/pressure/st_pressure_spi.c
-> @@ -118,3 +118,4 @@ module_spi_driver(st_press_driver);
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics pressures spi driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(ST_SENSORS);
-> --
-> 2.34.1
->
+url:    https://github.com/0day-ci/linux/commits/Caleb-Connolly/iio-adc-introduce-Qualcomm-SPMI-Round-Robin-ADC/20220106-023716
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20220106/202201060438.QiDzs9rA-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/167368793a009e8c1ce75b0b8b0965a4574af527
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Caleb-Connolly/iio-adc-introduce-Qualcomm-SPMI-Round-Robin-ADC/20220106-023716
+        git checkout 167368793a009e8c1ce75b0b8b0965a4574af527
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=sh SHELL=/bin/bash drivers/iio/adc/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   drivers/iio/adc/qcom-spmi-rradc.c: In function 'rradc_prepare_batt_id_conversion':
+>> drivers/iio/adc/qcom-spmi-rradc.c:624:25: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
+     624 |                         FIELD_PREP(BATT_ID_SETTLE_MASK, chip->batt_id_delay);
+         |                         ^~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/FIELD_PREP +624 drivers/iio/adc/qcom-spmi-rradc.c
+
+   607	
+   608	static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
+   609						    enum rradc_channel_id chan_id,
+   610						    u16 *data)
+   611	{
+   612		int ret, batt_id_delay;
+   613	
+   614		ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
+   615					 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV,
+   616					 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
+   617		if (ret < 0) {
+   618			dev_err(chip->dev, "Enabling BATT ID channel failed:%d\n", ret);
+   619			return ret;
+   620		}
+   621	
+   622		if (chip->batt_id_delay != -EINVAL) {
+   623			batt_id_delay =
+ > 624				FIELD_PREP(BATT_ID_SETTLE_MASK, chip->batt_id_delay);
+   625			ret = regmap_update_bits(chip->regmap,
+   626						 chip->base + RR_ADC_BATT_ID_CFG,
+   627						 batt_id_delay, batt_id_delay);
+   628			if (ret < 0) {
+   629				dev_err(chip->dev,
+   630					"BATT_ID settling time config failed:%d\n",
+   631					ret);
+   632				goto out_disable_batt_id;
+   633			}
+   634		}
+   635	
+   636		ret = regmap_update_bits(chip->regmap,
+   637					 chip->base + RR_ADC_BATT_ID_TRIGGER,
+   638					 RR_ADC_TRIGGER_CTL, RR_ADC_TRIGGER_CTL);
+   639		if (ret < 0) {
+   640			dev_err(chip->dev, "BATT_ID trigger set failed:%d\n", ret);
+   641			goto out_disable_batt_id;
+   642		}
+   643	
+   644		ret = rradc_read_status_in_cont_mode(chip, chan_id);
+   645		if (ret < 0)
+   646			dev_err(chip->dev, "Error reading in continuous mode:%d\n",
+   647				ret);
+   648	
+   649		/*
+   650		 * Reset registers back to default values
+   651		 */
+   652		ret = regmap_update_bits(chip->regmap,
+   653					 chip->base + RR_ADC_BATT_ID_TRIGGER,
+   654					 RR_ADC_TRIGGER_CTL, 0);
+   655		if (ret < 0)
+   656			dev_err(chip->dev, "BATT_ID trigger re-set failed:%d\n", ret);
+   657	
+   658	out_disable_batt_id:
+   659		ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
+   660					 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV, 0);
+   661		if (ret < 0)
+   662			dev_err(chip->dev, "Disabling BATT ID channel failed:%d\n",
+   663				ret);
+   664	
+   665		return ret;
+   666	}
+   667	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

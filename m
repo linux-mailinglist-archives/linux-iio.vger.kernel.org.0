@@ -2,108 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A0248526C
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 13:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4505485317
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jan 2022 13:57:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235925AbiAEM1L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jan 2022 07:27:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42088 "EHLO
+        id S229485AbiAEM4n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jan 2022 07:56:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235383AbiAEM1L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 07:27:11 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA24C061761;
-        Wed,  5 Jan 2022 04:27:11 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id l10-20020a17090a384a00b001b22190e075so3683891pjf.3;
-        Wed, 05 Jan 2022 04:27:11 -0800 (PST)
+        with ESMTP id S235965AbiAEM4j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 07:56:39 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3382C061761;
+        Wed,  5 Jan 2022 04:56:39 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id l15so14468216pls.7;
+        Wed, 05 Jan 2022 04:56:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=46NaslxK0CBDuwzO8TgoSL/HvMffOQFuGj0G156NG9Y=;
-        b=AuZGzoAweBdideoPYcdrbQkwx6fL2cTcKzJAX2gyfQjLYRP4dn8i02BYKdOb5vDvvH
-         8jr02hE+gYyX11wKLfkYa5v24SpCdxIqt53VJJuOvoWIFDPnCyOSAKw0I+XmDh5iMUDM
-         8k1JHhDC/kCynJSybsJZP2CJfmScBlFht/usEpADpuTcLNfs0rn5HJDvbaToQADcB/rd
-         /M+xJX7+5/pbJk1AhMAL49nymj3Jw5O3Lsf1GrycseHFydb6NjW2PidXp6HkEiRFf/31
-         cMyZpnurYYr+YRSqk3BZBwLix6K7t4oGnyom4R0jKlssCAIXGmmTAibArHOEf6eh5Uc1
-         9DDw==
+        h=from:to:cc:subject:date:message-id;
+        bh=pPTnnFDZ1+dEAgEFTmiqXGXGW+Zq8maAM3d4dtNv7OA=;
+        b=leB0DAAq2hFztVJ5MxPombH0DHMtJsPeNZcp5d01NlhrPBbKTW3jP6+r2Y28OdSUeF
+         wYbtG1N8aX308FVEcDPsFiSFU3DJIUX9cEOVC0tDVF54rIKPkN95xCfiHgLuMTn1Oupt
+         Zz2WauHS0VjOA5Cbboxq2y/WW5Fla6r1TJSjnnU5N6LNobk57QQeAsb7l3hwWu/yNLrw
+         ryrJWb49cj2r+G+Vmuc9xbWku39dEHl2loZkt0xEb5j1jueJorhoHfEfrlitvBvtSDEa
+         qT8tLw3oc/6H8kYRBjhYRP4Sxo3raluCTXsfE/mFD5/PF1LsdDnqZltuFd99dMNX648D
+         vCtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=46NaslxK0CBDuwzO8TgoSL/HvMffOQFuGj0G156NG9Y=;
-        b=mhevZUGtchH67EtnmqjCAo25BLByvmpeQDw99rX5RF/HAWJKE4vf2j0+Q5i6gdgelv
-         oTyTKmhPJBO6TGP+UHc3in9eI2rx9gnDDigksRpWqXOdd/hTIhOKLXBKVbY3OW7LZN1d
-         V76bWLTxYWn3cuvBHtFJtWlCsaDzKhpSX1GA33MPZMNZoYDsrzxbmg0pPPt0Jzw2K/qr
-         QddDXwZXGaRJ0cEtjB0BA+wS2ia7CTf3hRj0zEW4vT06erZJ1gc4IAnJS8TANee1yz+E
-         e+pLX0ckJQrNQNwwefAxS33m+rW+JFSumcMrEil21Vk2yyjVSiBrB0jL8nHMNHqfkBrT
-         mSIg==
-X-Gm-Message-State: AOAM530UavrO92kxajmmE7+llGunh57eHIFk8okEiI7XVN6xh+8zciLl
-        P12Mg4fcMdgkh8ttUqsq4sgnJZMRJEI=
-X-Google-Smtp-Source: ABdhPJyC/OHGcK2uRp88D7Xgu7YxzGc7toAP+uUSoc/+MTPRoOPstE5p7tqoPOqBYflo6CGErcW+LA==
-X-Received: by 2002:a17:90a:c210:: with SMTP id e16mr3836129pjt.90.1641385630830;
-        Wed, 05 Jan 2022 04:27:10 -0800 (PST)
-Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id k8sm49233784pfu.72.2022.01.05.04.27.07
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=pPTnnFDZ1+dEAgEFTmiqXGXGW+Zq8maAM3d4dtNv7OA=;
+        b=uaXyIoAMwq5uBTxwQUdHIWMKAwCN+JQXWMH0A+A4kzC7YSrRlDgG3MKR8HgqTbKTsH
+         p+71pVY5I7rJhAvvcHChBAMVOtwjAbYfmtrLBnlFdBCmO1iCcfS+Ul4VWCMaVV+rmGhi
+         2DpPJdcet/GL7b0G4u2HXvJu4mkwlyQaVIz3ZGevvV9rz/wY+yXQj5DNSa9wbAqONaHd
+         FvHghg9JdEKOibOyMtpR120xVVT67VWH5h+Tg1qwsp8KsjQaULcWIcK4rT7OIaAKua5x
+         fiO22zIJPlGwZ0L1k60jJoJ7dszrd7DuW1st4InBPWgvmqH2MPsd6V+dW1AKzLugCP6s
+         g7SA==
+X-Gm-Message-State: AOAM533HzS4FpOkQ3AN6294kUvgW971A11SRykKw+e5E+MdwstxYkbIz
+        n2yy6NaIeDgASFsboFT5gR8=
+X-Google-Smtp-Source: ABdhPJzb29eoxT4uPyOXr7pcJfdD/DEWfaOS6qbIEeFyE1HmRX//qrtlQRHC37vJBqPyTnGruCZreQ==
+X-Received: by 2002:a17:902:9894:b0:149:8a72:98ae with SMTP id s20-20020a170902989400b001498a7298aemr38401469plp.132.1641387399257;
+        Wed, 05 Jan 2022 04:56:39 -0800 (PST)
+Received: from localhost.localdomain ([159.226.95.43])
+        by smtp.googlemail.com with ESMTPSA id d17sm42901005pfl.125.2022.01.05.04.56.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jan 2022 04:27:09 -0800 (PST)
-Date:   Wed, 5 Jan 2022 21:26:58 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH v3 00/23] counter: cleanups and device lifetime fixes
-Message-ID: <YdWOkn2Gtd7FSYmR@shinobu>
-References: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7aArQOflsA51RSk6"
-Content-Disposition: inline
-In-Reply-To: <20211229154441.38045-1-u.kleine-koenig@pengutronix.de>
+        Wed, 05 Jan 2022 04:56:39 -0800 (PST)
+From:   Miaoqian Lin <linmq006@gmail.com>
+Cc:     linmq006@gmail.com, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Adriana Reus <adi.reus@gmail.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: gyro: bmg160: Fix error handling in bmg160_core_probe
+Date:   Wed,  5 Jan 2022 12:56:30 +0000
+Message-Id: <20220105125633.21989-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.17.1
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The pm_runtime_enable will increase power disable depth.
+If the probe fails, we should use pm_runtime_disable() to balance
+pm_runtime_enable(). In the PM Runtime docs:
+    Drivers in ->remove() callback should undo the runtime PM changes done
+    in ->probe(). Usually this means calling pm_runtime_disable(),
+    pm_runtime_dont_use_autosuspend() etc.
+We should do this in error handling.
 
---7aArQOflsA51RSk6
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 7d0ead5 ("iio: Reconcile operation order between iio_register/unregister and pm functions")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/iio/gyro/bmg160_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-On Wed, Dec 29, 2021 at 04:44:18PM +0100, Uwe Kleine-K=C3=B6nig wrote:
->  - I think intel-qep.c makes the counter unfunctional in
->    intel_qep_remove before the counter is unregistered.
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index 17b939a367ad..81a6d09788bd 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -1188,11 +1188,14 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	ret = iio_device_register(indio_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "unable to register iio device\n");
+-		goto err_buffer_cleanup;
++		goto err_pm_cleanup;
+ 	}
+ 
+ 	return 0;
+ 
++err_pm_cleanup:
++	pm_runtime_dont_use_autosuspend(dev);
++	pm_runtime_disable(dev);
+ err_buffer_cleanup:
+ 	iio_triggered_buffer_cleanup(indio_dev);
+ err_trigger_unregister:
+-- 
+2.17.1
 
-Hello Uwe,
-
-Would you elaborate some more on this? I think intel_qep_remove() is
-only called after the counter is unregistered because the struct
-counter_device parent is set to &pci->dev in intel_qep_probe(). Am I
-misunderstanding the removal path?
-
-Thanks,
-
-William Breathitt Gray
-
---7aArQOflsA51RSk6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHVjocACgkQhvpINdm7
-VJLp1Q//ev76+YaOvx1nSrhlqo7QTyCV0pU6DFUBoZu0imahFYInkRiud0z7X/v/
-cc7aNEEbYnb0zJEMDGwgDXthBwkwCoWuLPC90j5b3BqcDE1DcEnDaASIgs2PDpSE
-9bLRfFbJDNqrRzL4rmxyehbbgfjI/o4SH+bp7JzuOck5xAgleCKx1X/KbXW91eec
-BBAZEpy6MH2IM6AX+bPA5pIh75wu1PQt/wLwXMk/ZIK8ATqNxIqlmlzAz8SPnqhj
-6KxXIRZMHHVHcLT3THC6Sn++HHE0UPokF88Zxk5H/QA4aks2RbklzHsxLGsOD/k7
-dCIFqB2Ll3bM4goqKPySVLJMXQmj+nwZENZyy8hpiaMn+ZNjrtkjEPskiUfqwBSe
-DS5xmmHujd1+MEVhSJzqbNFcbR6fnH7BWv8UZNEApA0F1GTLgtWpW4ASMrxm4fsq
-XmOFrjrXNPBtpOGDGAjh2kb/nFQGLKOTi75JhUw5yZKCljNiRUFzfhuiMSUSZLbp
-Rt6tuXe46e5oB8IzHwG9AhcUvwhHlbWPvTWLm+4KeS+5Rxqk6DbVk2sKStJiLTgT
-+reCFi7agu3bEisb+3wA0aEbasqNxozZUWGFmZ1po06G36OD143ZI/FGMf5NUhkZ
-FyOMu441A9SD0Pi5IaXCr5a/L7zOT2ChT9cUKs1Fkx6tyIsXzwc=
-=3xlF
------END PGP SIGNATURE-----
-
---7aArQOflsA51RSk6--

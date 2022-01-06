@@ -2,238 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 535BA4863AA
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 12:23:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ED384864B5
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 14:00:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238402AbiAFLXS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jan 2022 06:23:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
+        id S238832AbiAFNAL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jan 2022 08:00:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238363AbiAFLXS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 06:23:18 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55CE8C061245;
-        Thu,  6 Jan 2022 03:23:18 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id a11-20020a17090a854b00b001b11aae38d6so2848866pjw.2;
-        Thu, 06 Jan 2022 03:23:18 -0800 (PST)
+        with ESMTP id S238827AbiAFNAK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 08:00:10 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7572CC061245;
+        Thu,  6 Jan 2022 05:00:10 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id m13so2410749pji.3;
+        Thu, 06 Jan 2022 05:00:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8FX0A5Kbtc/SDjrZH5+V6SgTQIDB1WRtKLBXqBVTtUc=;
-        b=GZBZi5rk3OlCgYpSq7FsQoQDSsN14AOJc+eQKL8IdMiz3kNtGMobKJnl/7UnskJEib
-         SXbjbP5TCDhG+2UsCJirhdlHgCvKxLBtG3kg+Y9SR9tM3TXrDyGqPtrnpukXJwrqCVA5
-         FMSwZdEWxmZdtZjX9yJnSFgBUaQpyWuXT4OKI6FeU9faWsu19/J2tcgHyiEzyT4Z4+sK
-         eLrPYkiiQKRc3w7DsuFUNxXkhGZrbT92dAHXrqXrW0rjQ688ITR0mUkOScYStqq6YZW7
-         nDXGUELQi9RXyV883Ue8swOrDYECDuRXrzx6vUbnznmMd1Be4iJSot29Lh9faW96/oMD
-         1MbQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HGq3ShW2TTQdgs+pbYsqrAkWXmM8JdNsZZVvPiYmWKw=;
+        b=S5GuvVdSsndX1HCvgu99dl1b0+yb/LWHzBknETYeUEwz5SNpj1WvKZsPiU/oFfqqAJ
+         z2w+uLuO2Fktgt0CqKXRBVmo7821oc+ZFHO7BpJ28MmMcXtHdVwJZoblMJ8wjaB4HC3N
+         GdeuDC3ER/8CmeCFExawkuYuHVIVQ3fI8I0m3ZUp31STGaFn7clxn0D4/rFo7e8xgDl4
+         N13/GJTQHBNR2/FBBNdT/qfUCMSn5gWXD+2G7rYHmnwr/pSvTNcf8684knxJHQ2d0wue
+         VPzR1afnhCYhc/l7IWNOQJBaVfbLQKp4LJm2P1Em6QU9mCEXecNc12XgnNNDNcodO7G+
+         qQ4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=8FX0A5Kbtc/SDjrZH5+V6SgTQIDB1WRtKLBXqBVTtUc=;
-        b=uC7TEHckgTCtRk+w45UuNSzQfJC97pVF2T8V0J+A2Qis9tsh5s6WNM8z1qZUHgp6vE
-         KmVyrcQinSfDSg//sRspOIlBz4TxtsrJKezDWiNknrkiF/1cec7RShFAXQ0tTdcN9S7e
-         y8bDq+DrsXktYVvBj2o6KjaKG5uHg1bn1xdnCzNA9LyW2fij5bjYFsQKYW57HOXQxU+H
-         ULDUCpv4mM/0da8pMGrrsZkbM65RffOf0oZ1Z2m0uVkTqb+DP3zl1UfqPpDGhE55AVQm
-         SArOBso77Ls7Sa6KuYT7AgIDJF9B9MokFaEGpdzyj/Us1+ecaz/vHaC6y+vSra9KsPTy
-         +Gqg==
-X-Gm-Message-State: AOAM5306XxmBT88mkm3S98kO0NsylqBZC8PkjRqXlAWSQRZjpKrKl4wD
-        n2fphq6eVNgg3LKvUpl3tSt20u+VMVz2G4xV
-X-Google-Smtp-Source: ABdhPJyg5v4WJc6YsBawDBHbjsHdrrbFy0oIR/D6LZggwbw8tAMMz3z8qgE/37xlfi4N/4zdsC78Xg==
-X-Received: by 2002:a17:90b:314e:: with SMTP id ip14mr9512736pjb.171.1641468196794;
-        Thu, 06 Jan 2022 03:23:16 -0800 (PST)
-Received: from localhost.localdomain ([159.226.95.43])
-        by smtp.googlemail.com with ESMTPSA id l11sm2342117pfu.115.2022.01.06.03.23.13
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HGq3ShW2TTQdgs+pbYsqrAkWXmM8JdNsZZVvPiYmWKw=;
+        b=5URJ9NQrzg8XCIbTILY02yPjT7NKyAEs9H5AimqpRZrwckwVNeizl+1626B9vFT6cQ
+         Mh0V3pppcGIxml5i3EEq0e5UeYWTrwGHHbeCb6PaqZFu0j69Urf1XvFd57VMD8U+pdu/
+         xbMZYbYl2P0Kq0gjI2z5z/pBtzGV15G9eEHmlxwlIPEbpjpbnEinPwakcqh49M03P22F
+         wwoWZGfBX1MZzrXrG0bfULKUKU40yutvWphvOp9Hxc4RluQXFpmFSY9AKIthRpQdYB0k
+         +jh8lQZNjWKjI3xaPMjRz64Ok4eobk0+59pnk8McpJE+aYYwSy3c0NNjdcy3Z79jknHa
+         QKlA==
+X-Gm-Message-State: AOAM53024tTKMJBk0aJYftaqJNpemPBqyQbcRgKi+ZdE1ae40EmQh79h
+        XaswpQ299hAUnqrKcO/9xFVUQIXJqyjsCQ==
+X-Google-Smtp-Source: ABdhPJzrWLCKt28CCVACH5wx3Z9oJR6uXcvKjjwKNC2oMisaqwnXkajkF6v2W8QWOFDARz1vweDSWg==
+X-Received: by 2002:a17:903:191:b0:148:e4d3:e8a9 with SMTP id z17-20020a170903019100b00148e4d3e8a9mr57994598plg.101.1641474010037;
+        Thu, 06 Jan 2022 05:00:10 -0800 (PST)
+Received: from tj10039pcu.spreadtrum.com ([117.18.48.102])
+        by smtp.gmail.com with ESMTPSA id g14sm2052583pgp.76.2022.01.06.05.00.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jan 2022 03:23:16 -0800 (PST)
-From:   Miaoqian Lin <linmq006@gmail.com>
-To:     andriy.shevchenko@linux.intel.com
-Cc:     adi.reus@gmail.com, ardeleanalex@gmail.com, gwendal@chromium.org,
-        jic23@kernel.org, lars@metafoo.de, linmq006@gmail.com,
-        linus.walleij@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stephan@gerhold.net
-Subject: [PATCH v2] iio: Fix error handling for PM
-Date:   Thu,  6 Jan 2022 11:23:09 +0000
-Message-Id: <20220106112309.16879-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <YdWjHWowWXy01zaE@smile.fi.intel.com>
-References: <YdWjHWowWXy01zaE@smile.fi.intel.com>
+        Thu, 06 Jan 2022 05:00:09 -0800 (PST)
+From:   Cixi Geng <gengcixi@gmail.com>
+To:     orsonzhai@gmail.com, baolin.wang7@gmail.com, zhang.lyra@gmail.com,
+        jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        lgirdwood@gmail.com, broonie@kernel.org
+Cc:     yuming.zhu1@unisoc.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] iio: adc: sc27xx: adjust structure and add PMIC's support
+Date:   Thu,  6 Jan 2022 20:59:40 +0800
+Message-Id: <20220106125947.139523-1-gengcixi@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The pm_runtime_enable will increase power disable depth.
-If the probe fails, we should use pm_runtime_disable() to balance
-pm_runtime_enable(). In the PM Runtime docs:
-    Drivers in ->remove() callback should undo the runtime PM changes done
-    in ->probe(). Usually this means calling pm_runtime_disable(),
-    pm_runtime_dont_use_autosuspend() etc.
-We should do this in error handling.
+From: Cixi Geng <cixi.geng1@unisoc.com>
 
-Fix this problem for the following drivers: bmc150, bmg160, kmx61,
-kxcj-1013, mma9551, mma9553.
+this patchset add a sc27xx_adc_variant_data structure
+and add sc272*,sc273* and ump9620 PMIC support.
+also add ump9620 PMIC suspend and resume pm implement.
 
-Fixes: 7d0ead5c3f00 ("iio: Reconcile operation order between iio_register/unregister and pm functions")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
-Changes in v2:
-- fix the fixes tag
-- fix similar problems introduced by the same commit
----
- drivers/iio/accel/bmc150-accel-core.c  | 5 ++++-
- drivers/iio/accel/kxcjk-1013.c         | 5 ++++-
- drivers/iio/accel/mma9551.c            | 5 ++++-
- drivers/iio/accel/mma9553.c            | 5 ++++-
- drivers/iio/gyro/bmg160_core.c         | 5 ++++-
- drivers/iio/imu/kmx61.c                | 5 ++++-
- drivers/iio/magnetometer/bmc150_magn.c | 5 +++--
- 7 files changed, 27 insertions(+), 8 deletions(-)
+Cixi Geng (7):
+  dt-bindings:iio:adc: add sprd,ump9620-adc dtbindings
+  iio: adc: sc27xx: fix read big scale voltage not right
+  iio: adc: sc27xx: structure adjuststment and optimization
+  iio: adc: sc27xx: add support for PMIC sc2720 and sc2721
+  iio: adc: sc27xx: add support for PMIC sc2730
+  iio: adc: sc27xx: add support for PMIC ump9620
+  iio: adc: sc27xx: add Ump9620 ADC suspend and resume pm support
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index b0678c351e82..c3a2b4c0b3b2 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -1783,11 +1783,14 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Unable to register iio device\n");
--		goto err_trigger_unregister;
-+		goto err_pm_cleanup;
- 	}
- 
- 	return 0;
- 
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(dev);
-+	pm_runtime_disable(dev);
- err_trigger_unregister:
- 	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
- err_buffer_cleanup:
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index 24c9387c2968..ba6c8ca488b1 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -1589,11 +1589,14 @@ static int kxcjk1013_probe(struct i2c_client *client,
- 	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "unable to register iio device\n");
--		goto err_buffer_cleanup;
-+		goto err_pm_cleanup;
- 	}
- 
- 	return 0;
- 
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(&client->dev);
-+	pm_runtime_disable(&client->dev);
- err_buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
- err_trigger_unregister:
-diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
-index 4c359fb05480..c53a3398b14c 100644
---- a/drivers/iio/accel/mma9551.c
-+++ b/drivers/iio/accel/mma9551.c
-@@ -495,11 +495,14 @@ static int mma9551_probe(struct i2c_client *client,
- 	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "unable to register iio device\n");
--		goto out_poweroff;
-+		goto err_pm_cleanup;
- 	}
- 
- 	return 0;
- 
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(&client->dev);
-+	pm_runtime_disable(&client->dev);
- out_poweroff:
- 	mma9551_set_device_state(client, false);
- 
-diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-index ba3ecb3b57dc..1599b75724d4 100644
---- a/drivers/iio/accel/mma9553.c
-+++ b/drivers/iio/accel/mma9553.c
-@@ -1134,12 +1134,15 @@ static int mma9553_probe(struct i2c_client *client,
- 	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "unable to register iio device\n");
--		goto out_poweroff;
-+		goto err_pm_cleanup;
- 	}
- 
- 	dev_dbg(&indio_dev->dev, "Registered device %s\n", name);
- 	return 0;
- 
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(&client->dev);
-+	pm_runtime_disable(&client->dev);
- out_poweroff:
- 	mma9551_set_device_state(client, false);
- 	return ret;
-diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
-index 17b939a367ad..81a6d09788bd 100644
---- a/drivers/iio/gyro/bmg160_core.c
-+++ b/drivers/iio/gyro/bmg160_core.c
-@@ -1188,11 +1188,14 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
- 	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "unable to register iio device\n");
--		goto err_buffer_cleanup;
-+		goto err_pm_cleanup;
- 	}
- 
- 	return 0;
- 
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(dev);
-+	pm_runtime_disable(dev);
- err_buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
- err_trigger_unregister:
-diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
-index 1dabfd615dab..f89724481df9 100644
---- a/drivers/iio/imu/kmx61.c
-+++ b/drivers/iio/imu/kmx61.c
-@@ -1385,7 +1385,7 @@ static int kmx61_probe(struct i2c_client *client,
- 	ret = iio_device_register(data->acc_indio_dev);
- 	if (ret < 0) {
- 		dev_err(&client->dev, "Failed to register acc iio device\n");
--		goto err_buffer_cleanup_mag;
-+		goto err_pm_cleanup;
- 	}
- 
- 	ret = iio_device_register(data->mag_indio_dev);
-@@ -1398,6 +1398,9 @@ static int kmx61_probe(struct i2c_client *client,
- 
- err_iio_unregister_acc:
- 	iio_device_unregister(data->acc_indio_dev);
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(&client->dev);
-+	pm_runtime_disable(&client->dev);
- err_buffer_cleanup_mag:
- 	if (client->irq > 0)
- 		iio_triggered_buffer_cleanup(data->mag_indio_dev);
-diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-index f96f53175349..3d4d21f979fa 100644
---- a/drivers/iio/magnetometer/bmc150_magn.c
-+++ b/drivers/iio/magnetometer/bmc150_magn.c
-@@ -962,13 +962,14 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
- 	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "unable to register iio device\n");
--		goto err_disable_runtime_pm;
-+		goto err_pm_cleanup;
- 	}
- 
- 	dev_dbg(dev, "Registered device %s\n", name);
- 	return 0;
- 
--err_disable_runtime_pm:
-+err_pm_cleanup:
-+	pm_runtime_dont_use_autosuspend(dev);
- 	pm_runtime_disable(dev);
- err_buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
+ .../bindings/iio/adc/sprd,sc2720-adc.yaml     |  19 +
+ drivers/iio/adc/sc27xx_adc.c                  | 767 +++++++++++++++++-
+ 2 files changed, 759 insertions(+), 27 deletions(-)
+
 -- 
-2.17.1
+2.25.1
 

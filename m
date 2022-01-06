@@ -2,93 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C59BC4868BE
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 18:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FFED4869BF
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 19:25:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241891AbiAFRjn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jan 2022 12:39:43 -0500
-Received: from mail-oo1-f54.google.com ([209.85.161.54]:42684 "EHLO
-        mail-oo1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242182AbiAFRjm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 12:39:42 -0500
-Received: by mail-oo1-f54.google.com with SMTP id y13-20020a4a624d000000b002daae38b0b5so824124oog.9;
-        Thu, 06 Jan 2022 09:39:41 -0800 (PST)
+        id S242737AbiAFSZd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jan 2022 13:25:33 -0500
+Received: from mail-oo1-f42.google.com ([209.85.161.42]:45604 "EHLO
+        mail-oo1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242739AbiAFSZb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 13:25:31 -0500
+Received: by mail-oo1-f42.google.com with SMTP id l10-20020a4a840a000000b002dc09752694so852250oog.12;
+        Thu, 06 Jan 2022 10:25:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=LTH0gxxPTzrpGqblk9l5CWXYgHHQ9ZotfUBcWF1DvpM=;
-        b=oPpV4Y9EFDQGG+sNCKhwvw9xkckE6JV2ESvWBcGsnosKOsGIYmE4oxYnnoYZntTQVE
-         Yg8lIsH0IyC5qduo+wYguNX0YoF3tWGR+lYLbhC7W9bfkoYWhetTOXfpaecvnOT0mCVK
-         Bd4XMX/kYcBRWtatqkpBHI9Fi3TErhbehB8VnN5OarU6DVTewIfwX9qMIFNM76h0W4py
-         N9X6NDoBb3JAL9vJ2VeNx0j2OnsfLOKYLDDJUo4vfMYahVVuRffBS71Hd1rokzmDbdwz
-         y/jNss7AemLJGpbMQ2niF5qbrwR+ozeESzUgAgfWUraI1UPOxXSXy15RcAPIVXeyaaql
-         xmKA==
-X-Gm-Message-State: AOAM532TlL8WoXXHFreSYqqOJcTUyVMX/B+gqx/EUpjPtZS/BH4Z6yBH
-        V/QcRdnp/eOublANOx4KccQORv+XbA==
-X-Google-Smtp-Source: ABdhPJzyP3uuOjPrPqhC3d1Qqu7NKHHwGoHsgf/2aYa8QFCfQy1jTMC6nDHxXabAKYUx+wyz030djA==
-X-Received: by 2002:a4a:8701:: with SMTP id z1mr38966341ooh.68.1641490781532;
-        Thu, 06 Jan 2022 09:39:41 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id u14sm449787ote.62.2022.01.06.09.39.40
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+1b8xpRYxZ8vmZgumm9JuvwJZHTxs74RlVPJnbYxN54=;
+        b=6LQ8G/u5/vITcAYomYrGqQaDApTOEOLmMl3h7OnqqropHSE7xvNWq63vaBLvtwXswF
+         FfEzdIWy0ekLFia7xkKe2l0c2RYSO31UPFpArrjo7L9v2K+ncZn85NBqc+KeCB6i30Uc
+         yP64NfxASa/44MvvqS8auIUn/4c58h8h6jkAtBbho4pgdI3JLu+Orp3379tTIYOYCuy5
+         X4OohLx9VxFitUpeV044pr7vyWdiR1G31hTBF+s6L2ts/1SQ5J+eTWMy/chUITm0qWeX
+         K6KpV32nUImzqAtYIMl7iHkXCPiexX9Ljnq4cA8XNod020y1KFy+CJVkJ5inUaJAGdMo
+         IakA==
+X-Gm-Message-State: AOAM531byy0GLEkxd1eN53FW/Imem5cGprnGFM4zGWLiTr9qz7untqmc
+        ZvfxUawAROYDRyVBvQ8nTLlgdDakUQ==
+X-Google-Smtp-Source: ABdhPJxOg9d7S+nH7Ow7Pl1QUcRGuNmgke+MFJ4NpJB8DgqESzYqHfSD7oJu/egfBzNw/9xjD79V1A==
+X-Received: by 2002:a4a:be90:: with SMTP id o16mr36439739oop.28.1641493531034;
+        Thu, 06 Jan 2022 10:25:31 -0800 (PST)
+Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.googlemail.com with ESMTPSA id r13sm484949oth.21.2022.01.06.10.25.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jan 2022 09:39:41 -0800 (PST)
-Received: (nullmailer pid 1361796 invoked by uid 1000);
-        Thu, 06 Jan 2022 17:39:39 -0000
+        Thu, 06 Jan 2022 10:25:30 -0800 (PST)
 From:   Rob Herring <robh@kernel.org>
-To:     Cixi Geng <gengcixi@gmail.com>
-Cc:     lgirdwood@gmail.com, lars@metafoo.de, jic23@kernel.org,
-        baolin.wang7@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, zhang.lyra@gmail.com,
-        orsonzhai@gmail.com, yuming.zhu1@unisoc.com
-In-Reply-To: <20220106125947.139523-2-gengcixi@gmail.com>
-References: <20220106125947.139523-1-gengcixi@gmail.com> <20220106125947.139523-2-gengcixi@gmail.com>
-Subject: Re: [PATCH 1/7] dt-bindings:iio:adc: add sprd,ump9620-adc dtbindings
-Date:   Thu, 06 Jan 2022 11:39:39 -0600
-Message-Id: <1641490779.987704.1361793.nullmailer@robh.at.kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio/adc: ti,palmas-gpadc: Split interrupt fields in example
+Date:   Thu,  6 Jan 2022 12:25:11 -0600
+Message-Id: <20220106182518.1435497-3-robh@kernel.org>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 06 Jan 2022 20:59:41 +0800, Cixi Geng wrote:
-> From: Cixi Geng <cixi.geng1@unisoc.com>
-> 
-> sprd,ump9620-adc is one variant of sc27xx series, add ump9620 in
-> dtbindings.
-> 
-> Signed-off-by: Chunyan Zhang <zhang.lyra@gmail.com>
-> Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-> ---
->  .../bindings/iio/adc/sprd,sc2720-adc.yaml     | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
+Best practice for multi-cell property values is to bracket each multi-cell
+value.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ .../devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml        | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml: else: 'nvmem-cell-names' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml: then: 'nvmem-cell-names' is not one of ['$ref', 'additionalItems', 'additionalProperties', 'allOf', 'anyOf', 'const', 'contains', 'default', 'dependencies', 'dependentRequired', 'dependentSchemas', 'deprecated', 'description', 'else', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'items', 'if', 'minItems', 'minimum', 'maxItems', 'maximum', 'multipleOf', 'not', 'oneOf', 'pattern', 'patternProperties', 'properties', 'required', 'then', 'type', 'typeSize', 'unevaluatedProperties', 'uniqueItems']
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml: ignoring, error in schema: else
-Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example.dt.yaml:0:0: /example-0/pmic/adc@480: failed to match any schema with compatible: ['sprd,sc2731-adc']
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1576074
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
+index 7b895784e008..57a31356082e 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,palmas-gpadc.yaml
+@@ -74,9 +74,9 @@ examples:
+         compatible = "ti,twl6035-pmic", "ti,palmas-pmic";
+         adc {
+             compatible = "ti,palmas-gpadc";
+-            interrupts = <18 0
+-                          16 0
+-                          17 0>;
++            interrupts = <18 0>,
++                         <16 0>,
++                         <17 0>;
+             #io-channel-cells = <1>;
+             ti,channel0-current-microamp = <5>;
+             ti,channel3-current-microamp = <10>;
+-- 
+2.32.0
 

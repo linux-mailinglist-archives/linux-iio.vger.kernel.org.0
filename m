@@ -2,41 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08719485F8C
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 05:13:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38DCD485FF9
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 05:44:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232216AbiAFENP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Jan 2022 23:13:15 -0500
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:35978
+        id S233688AbiAFEoD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Jan 2022 23:44:03 -0500
+Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:37256
         "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232228AbiAFENP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 23:13:15 -0500
+        by vger.kernel.org with ESMTP id S233603AbiAFEoC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Jan 2022 23:44:02 -0500
 Received: from localhost.localdomain (1-171-96-105.dynamic-ip.hinet.net [1.171.96.105])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 2CF1340004;
-        Thu,  6 Jan 2022 04:13:03 +0000 (UTC)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id A496040CED;
+        Thu,  6 Jan 2022 04:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1641442387;
-        bh=VoTmhA7NUUNc/uB6IQmih/xqmEaFhzeTWWfbBBkxzE8=;
+        s=20210705; t=1641444241;
+        bh=v1m8fDLVLBd2SowK4trAWWm+oRBVv5lqjh+ZEx1aNLc=;
         h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=L0EeAUCh4cxxC4lGY96cC7jA9vng84AuWvDi7RM5X44onf8Y5/5P8Xic8c4N9Xx/q
-         fD7NdtuLwfTqfLuQuuthnKb+nh4xuc0doeo4j5P7vuYIhkHMdFh1PqSoroBBbJSO3g
-         feOYuNMsoDBzJzEyw7DgB1mz2FwxNAh8fHQai1SZ1etDILiYbep4DLIf/ZYjlzFbcw
-         P3oFs9jh7j5162vj/04a08h38cBf0PYWdYglRNDJVsllRZ8ohACZ/Isnm668JOL/+x
-         cQQjjfmPkpWn28cgPtWoDkLd/cpko2NrMxonxz0jGBkqD7sn/2i+ViSicZCFlD67al
-         r5c0crFtz1QWw==
+        b=RmpyxZtdWp1Wq/n1LbDNekvDiKsjET00jJuRuOLzUAvvTsaKfhoyup+DrdVP0n+o7
+         Q0zawm92fdvfnkgDfgaQrYxQpEI2GzWNQuM/KgMHTFXAheu2qPwdxxR2RP7YbWIdHD
+         5oEtEz47ruK91m1YmkBQKAFvF6TKGFdp95TPO5KrtAy+PW8xp8rDgXPXyEJpPG57Fk
+         WqP4uJb285kCGEnrz1+NmcbuTxrKopAVt+Lmu7Ozfms1GcnnEMvk2NcytgKu7wrXlo
+         SwbAqERWAE0Zz1mVH/c0FeFGVaZ9l90K+s49SumCq6RSmGjDwq/MGUE8HahPFJWY4y
+         ZwA7bcYcUj4Gw==
 From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     jic23@kernel.org, lars@metafoo.de
+To:     jic23@kernel.org, eajames@linux.ibm.com
 Cc:     andy.shevchenko@gmail.com,
         Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Chris Lesiak <chris.lesiak@licor.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: humidity: hdc100x: Add ACPI HID table
-Date:   Thu,  6 Jan 2022 12:12:56 +0800
-Message-Id: <20220106041257.927664-1-kai.heng.feng@canonical.com>
+Subject: [PATCH] iio: dps310: Add ACPI HID table
+Date:   Thu,  6 Jan 2022 12:43:50 +0800
+Message-Id: <20220106044350.930087-1-kai.heng.feng@canonical.com>
 X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -44,42 +43,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-x86 boards may use ACPI HID "TXN1010" to for hdc100x device.
+x86 boards may use ACPI HID "IFX3100" to for dps310 device.
 
 So add an ACPI match table for that accordingly.
 
 Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
-v2:
- - Change the ID to follow ACPI Spec
- - Add __maybe_unused to avoid compiler warning
-
- drivers/iio/humidity/hdc100x.c | 8 ++++++++
+ drivers/iio/pressure/dps310.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 9e0fce917ce4c..c6c71ca1d2017 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -417,10 +417,18 @@ static const struct of_device_id hdc100x_dt_ids[] = {
+diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+index 0730380ceb692..ad5920b107e63 100644
+--- a/drivers/iio/pressure/dps310.c
++++ b/drivers/iio/pressure/dps310.c
+@@ -812,9 +812,17 @@ static const struct i2c_device_id dps310_id[] = {
  };
- MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
+ MODULE_DEVICE_TABLE(i2c, dps310_id);
  
-+static const struct acpi_device_id __maybe_unused hdc100x_acpi_match[] = {
-+	{ "TXN1010" },
++static const struct acpi_device_id __maybe_unused dps310_acpi_match[] = {
++	{ "IFX3100" },
 +	{ },
 +};
 +
-+MODULE_DEVICE_TABLE(acpi, hdc100x_acpi_match);
++MODULE_DEVICE_TABLE(acpi, dps310_acpi_match);
 +
- static struct i2c_driver hdc100x_driver = {
+ static struct i2c_driver dps310_driver = {
  	.driver = {
- 		.name	= "hdc100x",
- 		.of_match_table = hdc100x_dt_ids,
-+		.acpi_match_table = ACPI_PTR(hdc100x_acpi_match),
+ 		.name = DPS310_DEV_NAME,
++		.acpi_match_table = ACPI_PTR(dps310_acpi_match),
  	},
- 	.probe = hdc100x_probe,
- 	.id_table = hdc100x_id,
+ 	.probe = dps310_probe,
+ 	.id_table = dps310_id,
 -- 
 2.33.1
 

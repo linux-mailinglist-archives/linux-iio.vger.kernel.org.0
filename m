@@ -2,73 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC4448661E
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 15:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E17548663F
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jan 2022 15:43:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240116AbiAFOeI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jan 2022 09:34:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
+        id S240055AbiAFOnn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jan 2022 09:43:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240163AbiAFOeH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 09:34:07 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E054C061245;
-        Thu,  6 Jan 2022 06:34:07 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id 30so8546754edv.3;
-        Thu, 06 Jan 2022 06:34:07 -0800 (PST)
+        with ESMTP id S239677AbiAFOnm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 09:43:42 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C295C061245
+        for <linux-iio@vger.kernel.org>; Thu,  6 Jan 2022 06:43:42 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id m21so10492192edc.0
+        for <linux-iio@vger.kernel.org>; Thu, 06 Jan 2022 06:43:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FobZFKR3ktosOzan7NztFj7JY9CFV7TYjbXDVZknTnA=;
-        b=f0G+OVXckKpe5TRarnXTa3N7O2i0E+LM+JlAKrQda7V3sjkTpF4q0cDofAtWsOK13w
-         y+LCfACqK/Ppr5Pvtrz5B30r5bBSM9rM/RBbd/6mwVdD19QblWDSXuF6DzE5Eiy9vSJS
-         CVkfatmoyyBRu3f3J//6BNWXJxvtdKsmqcPChx1joxQ+Un76/Ln0YSWWICQnYId4M9+W
-         ubYQrQCvzh2rIbB1wbaBeFlq5HjEsFPLHuWe+rijpIrdjvBWXQl9b3M1rI1xQ/sfe4Hi
-         t4IMgx+pbGrGlM+LYT8CNbtnDsmG7ekkCwuUbRmBxAtXIJTBy4XOX1teN0R0b7r/l23d
-         koGw==
+        bh=L9PVki9YoUZusEiSyxrAuehqQ5tJSUbTdhYvQyRox3s=;
+        b=K6rrtpfL1J7LQP3iPc6fGPlqO3PdkYLaJ0fAqqbFEPTqm3CWW9EbEYPxCujHtlSPnx
+         m+x32Gh5KOC1JwZZVaD0mShSF/9vf0PUSrZVChPfaKL0fKVXEhvKoW4so8h6Mo/Bgt7b
+         fj5XUja4/5BfHjaoYoMmUgseqgsFYAX94sYEYzvGi8//0LNPPwQTRHP5iZevDlK2nWus
+         TJnnfvOcZCSpeOnQhL32BqIxZeDUcYBd0TTzVDgPdSRvTBj14QpupcifAFxMk/0rBKGd
+         NmO3kvRREZft9vI6THockr4AHRFnj3vT2HD6mxOdvLZp5HN2PzjD3HJh4K9Afopf3tKH
+         ENCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FobZFKR3ktosOzan7NztFj7JY9CFV7TYjbXDVZknTnA=;
-        b=ennaD7LikLZdYD4IYVj3NtsyapvHFx+g6ph6ZNIbIG0QaEjnTZ5V6A4x+sHQYKqNbx
-         SNawSUCXhe7mh00fScpAl00CydUNWXoOvzE4Gvn3dJ/74ZGpxjc4pat9aqRiulCuXJrP
-         WoRvcK+qz9UG8bwABFJoou/FnClfEtkDLVR5uguFLaMtnUx73iZV+RkUphXiOFBhPumf
-         dQvKouVb9I36J6jZ/WwEZZZC9K9GkpFzTHTeX+ZctzkmuXb9yrAKF0Fij/l7SyDKjXia
-         7RQlmLvc+rLiDEDQZJdmc5ZH+4q0u3yL8cgPhu4DVZ3mfoUAx2z9WQTSabCtKQMBHtNR
-         +RvQ==
-X-Gm-Message-State: AOAM531E+nM2zODKcAp3VJSK+3uLnMAs/O6iv+DkEgdgis04DHvIFNSQ
-        1EtZaMm56xGXoMv6XmPyCf6ZsfJctrryV7fLSPfcyD1PfrZLhg==
-X-Google-Smtp-Source: ABdhPJxFTTW5eEBwAQwjqvLVigTgsAyHhGmbRbQOwdT2va/JiYwDVTaHsnL0gfkBoGo103l3it4k7dOOl//rChRNfRA=
-X-Received: by 2002:a05:6402:2693:: with SMTP id w19mr56420317edd.158.1641479646167;
- Thu, 06 Jan 2022 06:34:06 -0800 (PST)
+        bh=L9PVki9YoUZusEiSyxrAuehqQ5tJSUbTdhYvQyRox3s=;
+        b=0wlrS6LnM1ESEfovAd6J1EnDzN+UGxgz6uuHrDkhT2rlmUiCUKN6BnfO6qs5gPRW3l
+         dseGHF7I1lFwrPcQanrX5kSObOAvAGjgcNfMMIJ2trgkhLHXdUU8/KIXjXKTa9maZF2p
+         XRyeeN8y52WfM4k8Xlb11NKPls2gLyrqIVhW9MONZlEqNhkwHyuecoMp8rTigAEH58sJ
+         FsD2tAXG/wyKXRDJ5jINhjjvP3u/EYlj8jTZM5MHU3bqTC2c94E9YopHXDzXxKKs2BXI
+         drHr5AAXDF1L35J0smW/yXyhaunobAfjfXTTQM48CY3PCbskxF5GK0TRruZVvKLubcgQ
+         vI/A==
+X-Gm-Message-State: AOAM531iTNoxdsMcIvqga6cU3Eo4MUesS+8rvJ/BM5cwv/F7g5/rS6Yk
+        aSAtAPKweYGEJpaBOhEkuNuLTF2L9A9K7H2/hkQ=
+X-Google-Smtp-Source: ABdhPJwwEVYYuS3KzkIMpdVHHZjURlKwEvDgcLCG04Uv6AtRdVihUdXSFf0g2JSnEzX6r/kWQz+BKefPbVXPrZYJpo0=
+X-Received: by 2002:a17:907:97cd:: with SMTP id js13mr46264847ejc.497.1641480212262;
+ Thu, 06 Jan 2022 06:43:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20220106044350.930087-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20220106044350.930087-1-kai.heng.feng@canonical.com>
+References: <20211230193331.283503-1-jic23@kernel.org> <20211230193331.283503-14-jic23@kernel.org>
+ <CAPUE2uvay_vh5q_Dw7Xct1HpgMup6MMnoS1w5e1bghh2r75b2Q@mail.gmail.com> <20220106134127.000035f0@Huawei.com>
+In-Reply-To: <20220106134127.000035f0@Huawei.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 6 Jan 2022 16:33:30 +0200
-Message-ID: <CAHp75VektuiaaR-MKJPXMXGUXj5wXrKtp7bqdAUqhfojdSnmJw@mail.gmail.com>
-Subject: Re: [PATCH] iio: dps310: Add ACPI HID table
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Eddie James <eajames@linux.ibm.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Date:   Thu, 6 Jan 2022 16:42:56 +0200
+Message-ID: <CAHp75VcQjdgLe2fX23g9UOneQXQrrkGWwpTqD=0bgq+K3B+ZNw@mail.gmail.com>
+Subject: Re: [PATCH 13/13] iio:st-sensors: Move exports into ST_SENSORS namespace
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Denis Ciocca <denis.ciocca@st.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jan 6, 2022 at 6:44 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
->
-> x86 boards may use ACPI HID "IFX3100" to for dps310 device.
->
-> So add an ACPI match table for that accordingly.
+On Thu, Jan 6, 2022 at 3:41 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+> On Wed, 5 Jan 2022 10:43:49 -0800
+> Gwendal Grignou <gwendal@chromium.org> wrote:
+> > On Thu, Dec 30, 2021 at 11:28 AM Jonathan Cameron <jic23@kernel.org> wrote:
 
-All the same comments as per hdc100x patch.
+> Could do IIO_ST_SENSORS perhaps?
+
+You guys beat me up to it, I also came here to make the very same comment.
++1 to IIO_ST_SENSORS.
 
 -- 
 With Best Regards,

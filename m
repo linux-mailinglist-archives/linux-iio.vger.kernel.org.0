@@ -2,99 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D996487128
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 04:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E664871B7
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 05:14:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345808AbiAGDUg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 6 Jan 2022 22:20:36 -0500
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:34358 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344897AbiAGDUg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 22:20:36 -0500
-Received: by mail-oi1-f181.google.com with SMTP id r131so6539469oig.1;
-        Thu, 06 Jan 2022 19:20:35 -0800 (PST)
+        id S1346051AbiAGEOR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 6 Jan 2022 23:14:17 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:32808
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1346021AbiAGEOQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 6 Jan 2022 23:14:16 -0500
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id F1E553F225
+        for <linux-iio@vger.kernel.org>; Fri,  7 Jan 2022 04:14:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1641528855;
+        bh=KN7zr37vFNHmq3As7p02jWEskyOVas7n+GBnbQV3xBM=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=fYK4teS+CJ4Yp0rLxtCVz7X4DrN0k2vyrJUY94JdKaq+mSdzdA7M94TTw6/gzJW4h
+         POBDSvZj86xeFHBqK8bkBxS/X4u6XucZbWZGci+0jDNzZt5oDfH5bGTGSP1gLw7UBd
+         GftyjmGhEqwDu1m+Qs+4B8fwBewdkCP7ymlfQrQr8njQKe/561euPOHWoVvrGmEKSD
+         5st0hgf1mLwcz5I7baX8hFbN5SnVWNblJDw5vZDn40uklRD7d74dJ18DNvuih41HPB
+         shpwBydcFc7+X26wJLxuccUwO9/aCQ1sGHFnRZR+HqBtQFAf7V/QZjZeP8kU3q9BxP
+         WS8tgUpnnZ8tg==
+Received: by mail-oo1-f69.google.com with SMTP id s14-20020a4aa54e000000b002db004adebdso2806654oom.4
+        for <linux-iio@vger.kernel.org>; Thu, 06 Jan 2022 20:14:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xcznktkJ1RYJEtl2X8NHggtUN6UgM0jAUxrx7u5OfmU=;
-        b=XgQqy2ECMu/4C2hMfET/OPYhMmtV1NOMNdBFgg79a4nHctocy63VoC/HRK7jMeF1JP
-         scLZGcjuHB5hOG53B+zWxVi1SkqVBehKfzoc24Kxr3XcSCCCvNoWK8HHA4z19d8rYI+x
-         qVPDQyoKwqvZiabzzdun9obJZXaAVUvKz/2rV/HG3VTH6nq71Y2PjGQHysY0kA3frUbR
-         RwEywcxcfpcaJok88Zsdm7dDgLBDJaAsH/y4YxohfIfW/X+bXeHZXLxRkKv7ncqiczGJ
-         BL3tLBs9JiUWTuvmJdEVmpCveNE9ZB6dCgJyMvJdURJuIxmLkri0zbZtG34cYQ/W8JmB
-         /VWA==
-X-Gm-Message-State: AOAM530oHLsoxJ2qm4s0r+EHty/GE/N0PSAq1vLa+MrWp4E6fTD2DLX9
-        JBGrNIXczhGYdCNkeYeql2w+jZJxzA==
-X-Google-Smtp-Source: ABdhPJzkfDZsJe0Ec4+qpKI0hXa2NFntKTcAzP1stxz5Nm4ujZoYDwby6QDk1u9/7k8pSZln1obcKQ==
-X-Received: by 2002:a05:6808:208e:: with SMTP id s14mr8803729oiw.170.1641525635296;
-        Thu, 06 Jan 2022 19:20:35 -0800 (PST)
-Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.googlemail.com with ESMTPSA id c3sm820747oiw.8.2022.01.06.19.20.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jan 2022 19:20:34 -0800 (PST)
-From:   Rob Herring <robh@kernel.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: adi,ltc2983: Fix 64-bit property sizes
-Date:   Thu,  6 Jan 2022 21:20:26 -0600
-Message-Id: <20220107032026.2408196-1-robh@kernel.org>
-X-Mailer: git-send-email 2.32.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KN7zr37vFNHmq3As7p02jWEskyOVas7n+GBnbQV3xBM=;
+        b=UeKaYo036cInYeBCTyckzACN8VPsWaXFJiIiIRrGoql5S3PhxFc8S+gydcrzESFk1a
+         Ube4AMqn7Zr1MOXMFan11SA+1tmMny3hNatbI6t5tgixpjRz+BVoKwzOQ53Y/j/Jrfbp
+         jS6HrfQGpPdCOV3NCnG7vj4J3dExmwxKu3xWDkPrBulsyS9Qw/yHVoMsX3CT1RVDqWZD
+         fOhfQMqE51rziiK8Xt4m3EbIBPYtMYFWjGj3V3g9DiHzl87QbtBBEainnH8cpZaIjm8F
+         7hWmkL9n7/8D6F80Y6YkieWoJesZtXKr1b77xavwmvuY09X7YIkkyPbxf+bH7RLJIW4G
+         RzEQ==
+X-Gm-Message-State: AOAM532kR2GsMrXAY6cbhxBvtTvwx2jE4MqWGg/ZawNd19DOKMf6uvkB
+        kmqFizoAA0uUPI8YD3tqvGKrEbYeB7s+ik676VBshD5b6xiTtfiQhRt3u7mnCdLrvxBP4/LD+sb
+        cbpqKQC3M36sND7QR9FtIi3bB6YI0ZsO1+8VPr0zO0A0znAKPe5QyIQ==
+X-Received: by 2002:a9d:6e8d:: with SMTP id a13mr3325107otr.269.1641528854877;
+        Thu, 06 Jan 2022 20:14:14 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwXyFaB7Xi1kpQZoP4YuMgov2PjKuP7iY/5uQwXAbieQMuxBCtvmJXJocnDAGSO2UZ5hq8oOuPWkcbUdahDf4o=
+X-Received: by 2002:a9d:6e8d:: with SMTP id a13mr3325099otr.269.1641528854653;
+ Thu, 06 Jan 2022 20:14:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220106041257.927664-1-kai.heng.feng@canonical.com> <CAHp75VdxV+4_yxJv1H1MZPpu02e2gHUkP55dduUqN7QJ2j6aGg@mail.gmail.com>
+In-Reply-To: <CAHp75VdxV+4_yxJv1H1MZPpu02e2gHUkP55dduUqN7QJ2j6aGg@mail.gmail.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Fri, 7 Jan 2022 12:14:03 +0800
+Message-ID: <CAAd53p4nUDtuVmkFCqv2R1KEvGYQyLu+ibxJOsoUZs-SM6LuHw@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: humidity: hdc100x: Add ACPI HID table
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Chris Lesiak <chris.lesiak@licor.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The '/bits/ 64' notation applies the next <> list of values. Another <> list
-is encoded as 32-bits by default. IOW, each <> list needs to be preceeded
-with '/bits/ 64'.
+On Thu, Jan 6, 2022 at 10:33 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Thu, Jan 6, 2022 at 6:13 AM Kai-Heng Feng
+> <kai.heng.feng@canonical.com> wrote:
+> >
+> > x86 boards may use ACPI HID "TXN1010" to for hdc100x device.
+>
+> to for --> for the
 
-While the dts format allows this, as a rule we don't mix sizes for DT
-properties since all size information is lost in the dtb file.
+Will correct it.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- .../bindings/iio/temperature/adi,ltc2983.yaml | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+>
+> > So add an ACPI match table for that accordingly.
+>
+> ...
+>
+> >  - Change the ID to follow ACPI Spec
+>
+> Is there any evidence Texas Instrument allocated this ID, or you just
+> created it yourself?
+> Please, add an excerpt from email from them to confirm this.
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-index 0f79d9a01c49..722781aa4697 100644
---- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-@@ -448,17 +448,17 @@ examples:
-                         reg = <20>;
-                         adi,sensor-type = <9>; //custom thermocouple
-                         adi,single-ended;
--                        adi,custom-thermocouple = /bits/ 64
--                                 <(-50220000) 0>,
--                                 <(-30200000) 99100000>,
--                                 <(-5300000) 135400000>,
--                                 <0 273150000>,
--                                 <40200000 361200000>,
--                                 <55300000 522100000>,
--                                 <88300000 720300000>,
--                                 <132200000 811200000>,
--                                 <188700000 922500000>,
--                                 <460400000 1000000000>; //10 pairs
-+                        adi,custom-thermocouple =
-+                                 /bits/ 64 <(-50220000) 0>,
-+                                 /bits/ 64 <(-30200000) 99100000>,
-+                                 /bits/ 64 <(-5300000) 135400000>,
-+                                 /bits/ 64 <0 273150000>,
-+                                 /bits/ 64 <40200000 361200000>,
-+                                 /bits/ 64 <55300000 522100000>,
-+                                 /bits/ 64 <88300000 720300000>,
-+                                 /bits/ 64 <132200000 811200000>,
-+                                 /bits/ 64 <188700000 922500000>,
-+                                 /bits/ 64 <460400000 1000000000>; //10 pairs
-                };
- 
-         };
--- 
-2.32.0
+Sure, let me ask our customer to provide the excerpt.
 
+>
+> ...
+>
+> > +static const struct acpi_device_id __maybe_unused hdc100x_acpi_match[] = {
+> > +       { "TXN1010" },
+>
+> > +       { },
+>
+> No comma is needed.
+
+Got it.
+
+>
+> > +};
+>
+> > +
+>
+> No blank line is needed.
+
+Will update.
+
+>
+> > +MODULE_DEVICE_TABLE(acpi, hdc100x_acpi_match);
+>
+> ...
+>
+> > +               .acpi_match_table = ACPI_PTR(hdc100x_acpi_match),
+>
+> It's the wrong usage of ACPI_PTR().
+
+Can you please explain a bit more?
+
+ACPI_PTR() turns the value to NULL when ACPI is not enabled, seems to
+be correct?
+Not to mention most other drivers also use ACPI_PTR() for acpi_match_table.
+
+>
+> >         },
+>
+> All the comments are applicable to all your patches. Some of them I
+> already commented on and even kbuild bot has sent you a complaint.
+
+That one should be solved by adding __maybe_unused to acpi_device_id array.
+
+Kai-Heng
+
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

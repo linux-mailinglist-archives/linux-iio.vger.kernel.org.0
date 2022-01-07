@@ -2,69 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03447487B5B
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 18:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BDD487B8A
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 18:39:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240043AbiAGR0A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Jan 2022 12:26:00 -0500
-Received: from relmlor2.renesas.com ([210.160.252.172]:49627 "EHLO
-        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S232166AbiAGR0A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Jan 2022 12:26:00 -0500
-X-IronPort-AV: E=Sophos;i="5.88,270,1635174000"; 
-   d="scan'208";a="106368109"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 08 Jan 2022 02:25:58 +0900
-Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id DF1BC40BA839;
-        Sat,  8 Jan 2022 02:25:56 +0900 (JST)
-From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        id S240274AbiAGRjl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 7 Jan 2022 12:39:41 -0500
+Received: from aposti.net ([89.234.176.197]:47836 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240245AbiAGRjk (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Jan 2022 12:39:40 -0500
+Date:   Fri, 07 Jan 2022 17:39:27 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v2 1/6] PM: core: Remove DEFINE_UNIVERSAL_DEV_PM_OPS()
+ macro
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        Pavel Machek <pavel@denx.de>,
-        linux-renesas-soc@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: rzg2l_adc: Fix typo
-Date:   Fri,  7 Jan 2022 17:25:29 +0000
-Message-Id: <20220107172529.12361-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.17.1
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
+        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Jonathan Cameron <jonathan.cameron@huawei.com>
+Message-Id: <R1PC5R.M6H5LAMRKZ9P@crapouillou.net>
+In-Reply-To: <CAPDyKFpPOsoxBbamJWoAso_8cEb--Y1i4zDAnnTQ00EkSySVLQ@mail.gmail.com>
+References: <20220105182939.106885-1-paul@crapouillou.net>
+        <20220105182939.106885-2-paul@crapouillou.net>
+        <CAPDyKFqiVTcsr03SqCzZsTraivrnM4YxKxPQ7dMmt14dT1uiCQ@mail.gmail.com>
+        <U5MC5R.JX72XLGEKI8P@crapouillou.net>
+        <CAPDyKFpPOsoxBbamJWoAso_8cEb--Y1i4zDAnnTQ00EkSySVLQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix typo RZG2L_ADSMP_DEFUALT_SAMPLING -> RZG2L_ADSMP_DEFAULT_SAMPLING.
 
-Reported-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/iio/adc/rzg2l_adc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 32fbf57c362f..aa56cd2e3de2 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -55,7 +55,7 @@
- #define RZG2L_ADCR(n)			(0x30 + ((n) * 0x4))
- #define RZG2L_ADCR_AD_MASK		GENMASK(11, 0)
- 
--#define RZG2L_ADSMP_DEFUALT_SAMPLING	0x578
-+#define RZG2L_ADSMP_DEFAULT_SAMPLING	0x578
- 
- #define RZG2L_ADC_MAX_CHANNELS		8
- #define RZG2L_ADC_CHN_MASK		0x7
-@@ -395,7 +395,7 @@ static int rzg2l_adc_hw_init(struct rzg2l_adc *adc)
- 	reg &= ~RZG2L_ADM3_ADIL_MASK;
- 	reg &= ~RZG2L_ADM3_ADCMP_MASK;
- 	reg &= ~RZG2L_ADM3_ADSMP_MASK;
--	reg |= (RZG2L_ADM3_ADCMP_E | RZG2L_ADSMP_DEFUALT_SAMPLING);
-+	reg |= (RZG2L_ADM3_ADCMP_E | RZG2L_ADSMP_DEFAULT_SAMPLING);
- 	rzg2l_adc_writel(adc, RZG2L_ADM(3), reg);
- 
- exit_hw_init:
--- 
-2.17.1
+Le ven., janv. 7 2022 at 17:40:57 +0100, Ulf Hansson 
+<ulf.hansson@linaro.org> a écrit :
+> On Fri, 7 Jan 2022 at 17:37, Paul Cercueil <paul@crapouillou.net> 
+> wrote:
+>> 
+>>  Hi Ulf,
+>> 
+>>  Le ven., janv. 7 2022 at 17:26:07 +0100, Ulf Hansson
+>>  <ulf.hansson@linaro.org> a écrit :
+>>  > On Wed, 5 Jan 2022 at 19:29, Paul Cercueil <paul@crapouillou.net>
+>>  > wrote:
+>>  >>
+>>  >>  The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided
+>>  >> callbacks
+>>  >>  for both runtime PM and system sleep, which is very likely to 
+>> be a
+>>  >>  mistake, as a system sleep can be triggered while a given 
+>> device is
+>>  >>  already PM-suspended, which would cause the suspend callback to 
+>> be
+>>  >>  called twice.
+>>  >>
+>>  >>  The amount of users of UNIVERSAL_DEV_PM_OPS() is also tiny (16
+>>  >>  occurences) compared to the number of places where
+>>  >>  SET_SYSTEM_SLEEP_PM_OPS() is used with 
+>> pm_runtime_force_suspend()
+>>  >> and
+>>  >>  pm_runtime_force_resume(), which makes me think that none of 
+>> these
+>>  >> cases
+>>  >>  are actually valid.
+>>  >>
+>>  >>  As this macro is currently unused, remove it before someone 
+>> starts
+>>  >> to
+>>  >>  use it in yet another invalid case.
+>>  >
+>>  > I assume you refer to DEFINE_UNIVERSAL_DEV_PM_OPS here. Can you
+>>  > perhaps make that more clear?
+>> 
+>>  I can.
+>> 
+>>  >>
+>>  >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  >>  Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>  >>  ---
+>>  >>
+>>  >>  Notes:
+>>  >>      v2: No change
+>>  >>
+>>  >>   include/linux/pm.h | 19 ++++++-------------
+>>  >>   1 file changed, 6 insertions(+), 13 deletions(-)
+>>  >>
+>>  >>  diff --git a/include/linux/pm.h b/include/linux/pm.h
+>>  >>  index e1e9402180b9..31bbaafb06d2 100644
+>>  >>  --- a/include/linux/pm.h
+>>  >>  +++ b/include/linux/pm.h
+>>  >>  @@ -366,6 +366,12 @@ static const struct dev_pm_ops name = { \
+>>  >>          SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  >>   }
+>>  >>
+>>  >>  +/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+>>  >>  +#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>>  >>  +const struct dev_pm_ops __maybe_unused name = { \
+>>  >>  +       SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  >>  +}
+>>  >>  +
+>>  >>   /*
+>>  >>    * Use this for defining a set of PM operations to be used in 
+>> all
+>>  >> situations
+>>  >>    * (system suspend, hibernation or runtime PM).
+>>  >>  @@ -379,19 +385,6 @@ static const struct dev_pm_ops name = { \
+>>  >>    * .resume_early(), to the same routines as .runtime_suspend() 
+>> and
+>>  >>    * .runtime_resume(), respectively (and analogously for
+>>  >> hibernation).
+>>  >>    */
+>>  >>  -#define DEFINE_UNIVERSAL_DEV_PM_OPS(name, suspend_fn, 
+>> resume_fn,
+>>  >> idle_fn) \
+>>  >>  -static const struct dev_pm_ops name = { \
+>>  >>  -       SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  >>  -       RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
+>>  >>  -}
+>>  >>  -
+>>  >>  -/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+>>  >>  -#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>>  >>  -const struct dev_pm_ops __maybe_unused name = { \
+>>  >>  -       SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  >>  -}
+>>  >>  -
+>>  >>  -/* Deprecated. Use DEFINE_UNIVERSAL_DEV_PM_OPS() instead. */
+>>  >
+>>  > Shouldn't this macro be deprecated any more?
+>> 
+>>  I can only deprecate it if there is an alternative for it. The
+>>  alternative is DEFINE_RUNTIME_DEV_PM_OPS() which is added in patch 
+>> 4/6.
+> 
+> I don't think we need an immediate alternative to leave it 
+> deprecated, do we?
+> 
+> My point is, a user can still combine the macros in a way so that it
+> doesn't need to use the UNIVERSAL_DEV_PM_OPS.
+
+Ok. I'll leave it deprecated in that patch then.
+
+Cheers,
+-Paul
+
+>>  >>   #define UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+>> idle_fn)
+>>  >> \
+>>  >>   const struct dev_pm_ops __maybe_unused name = { \
+>>  >>          SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  >>  --
+> 
+> Kind regards
+> Uffe
+
 

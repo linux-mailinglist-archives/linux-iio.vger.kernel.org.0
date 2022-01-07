@@ -2,243 +2,184 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17203487743
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 13:01:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9614487973
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 16:02:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237410AbiAGMBH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Jan 2022 07:01:07 -0500
-Received: from mga11.intel.com ([192.55.52.93]:54093 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230064AbiAGMBH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 7 Jan 2022 07:01:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641556867; x=1673092867;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=heSDGCNywvZzzqIbhUmNfkHqbvb5bJzIwb1qtihvehM=;
-  b=Tak9LzTVFEQ5KpAjg9bbqhWiV5vLm/dcYsjH0089QYkqG4l/CR9wE96A
-   KwdXz68xIZzkgvglXwDEI0oX2BMo5JrJcrZhqVH6NZ37Cul2QQEvZgjkV
-   /UJ41a/eIjdQGoOhsPybX7xNbvhjpH5cmp6wxpcvCAkCFDphc+DVbIgd/
-   Gu996U8NZROwYR5K+nJ7YAkn8EBu8E41scDS5jYWz1C6KJxTbtNIfl4l0
-   QiiruPhd0zCYYXbLCAj7QfTCgsrKVmyjfoSxMlL75th1VmgMOUbPhdSkN
-   NApq03q2jbk2dpdvcnKSA7GjYgKo2WnPaddL1y7484MLwzeQoBOiYfoYE
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10219"; a="240407162"
-X-IronPort-AV: E=Sophos;i="5.88,269,1635231600"; 
-   d="scan'208";a="240407162"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2022 04:01:06 -0800
-X-IronPort-AV: E=Sophos;i="5.88,269,1635231600"; 
-   d="scan'208";a="689763914"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2022 04:01:03 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1n5nuN-007MdL-Dk;
-        Fri, 07 Jan 2022 13:59:47 +0200
-Date:   Fri, 7 Jan 2022 13:59:47 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Miaoqian Lin <linmq006@gmail.com>
-Cc:     adi.reus@gmail.com, ardeleanalex@gmail.com, gwendal@chromium.org,
-        jic23@kernel.org, lars@metafoo.de, linus.walleij@linaro.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stephan@gerhold.net
-Subject: Re: [PATCH v2] iio: Fix error handling for PM
-Message-ID: <YdgrMwCkqzOG8j/j@smile.fi.intel.com>
-References: <YdWjHWowWXy01zaE@smile.fi.intel.com>
- <20220106112309.16879-1-linmq006@gmail.com>
+        id S1348006AbiAGPB7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 7 Jan 2022 10:01:59 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:39540 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1348009AbiAGPBw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Jan 2022 10:01:52 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 2076TtG6032285;
+        Fri, 7 Jan 2022 10:01:33 -0500
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2107.outbound.protection.outlook.com [104.47.58.107])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3de4uyau7m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 07 Jan 2022 10:01:33 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AjQNqCy4bzw0G9psextwcm18ZakGBvHVa0K7D+ifrLtp79P8YPoG4jRRIrhtNk8lNJtmYrUZvqNrUZ6refQmwMdLeIm/3A7xMHpu5Nn3PpGeVdmKT/9DsYNM+2UDZ2n+YR7As1G82P1Uej3V0+hRWqUpeDq+76LwibrhCR4G6mEKPOqAmxvtPX6Sm7Imf56A+IyFVd7qZEebFXHRoeNudxmo6JPi+m+E0tRlLf38SgeM8tqm1UB3zc2XNkq8JuoJFNp79DdgjK+9pPV3FOfplCegjFDAGkTavQm889kHzt7wDFUodswLToEVyIKmqzRvg/NCvffY8ZjH8dF9vIxRkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dDPLjIYkxQCk+k8tvg/Dn17uaHzC4ymMnCzaG+ssZBs=;
+ b=aJxXa2vSHBNg6z3jcH2oQszmhYwVsaagcc5twCp7nAPMT+F/MrmHXVGxmU/HnKp2bVLx0bOjRdCxbRbjxmGjILjWMfu3wsHG0/oYZsWfYa+dz4wIoedzgq1BRGjYsAe8Eu1b5JMv7i+GCraG0cOUQFOdtaACLHin5W4DJZf9fBXjxdf+eu/foiReHlQcLyvyWCJ6R+brAMCTMloCS4t+dJbPErCm8Zhg0lO0azYDJW+2KcBLkjCwqC0CdFjxCMNy3rZTV1VxtdX07iXNuA54QQwTlHIAc9LUiRtSUXuF1ItUEnPdibEvoTm36oQ2R+rHlZ54e+diRypxYPWRC0i63Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dDPLjIYkxQCk+k8tvg/Dn17uaHzC4ymMnCzaG+ssZBs=;
+ b=TUcvZ2jNfUSvc0IvNvJqEtqRVP2Jxv3ZLIVfCOkQKxyNVklm3icY023P0c/UMJ1tG2iTAKMzaqzoxgPtwvVizG8QUZJvYJZZ8QSAab+EiLAufeI3KxBx1quxF9SqpxA9XXyWakB/ynNPGXpKYz3fXWgImBEbDqRv/1e4XRQY4AQ=
+Received: from PH0PR03MB6786.namprd03.prod.outlook.com (2603:10b6:510:122::7)
+ by PH0PR03MB6494.namprd03.prod.outlook.com (2603:10b6:510:b5::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.7; Fri, 7 Jan
+ 2022 15:01:30 +0000
+Received: from PH0PR03MB6786.namprd03.prod.outlook.com
+ ([fe80::c5c3:7910:36e8:73a5]) by PH0PR03MB6786.namprd03.prod.outlook.com
+ ([fe80::c5c3:7910:36e8:73a5%5]) with mapi id 15.20.4844.016; Fri, 7 Jan 2022
+ 15:01:29 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Rob Herring <robh@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] dt-bindings: iio: adi,ltc2983: Fix 64-bit property sizes
+Thread-Topic: [PATCH] dt-bindings: iio: adi,ltc2983: Fix 64-bit property sizes
+Thread-Index: AQHYA3WLKA0PDpwuYkujdvnCjsZ+HqxXp8Gg
+Date:   Fri, 7 Jan 2022 15:01:29 +0000
+Message-ID: <PH0PR03MB67866DD9F266C44A8B4CA87D994D9@PH0PR03MB6786.namprd03.prod.outlook.com>
+References: <20220107032026.2408196-1-robh@kernel.org>
+In-Reply-To: <20220107032026.2408196-1-robh@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctYjA2MDRhZjYtNmZjYS0xMWVjLThiYjEtZmM3Nz?=
+ =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XGIwNjA0YWY4LTZmY2EtMTFlYy04YmIxLWZj?=
+ =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iOTg5IiB0PSIxMzI4NjA0MTI4OD?=
+ =?iso-8859-1?Q?Q5Nzk2MjkiIGg9IkQyT2JoeHphQS9sUTJmcU54YzRZYmdoUEVVTT0iIGlk?=
+ =?iso-8859-1?Q?PSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQU?=
+ =?iso-8859-1?Q?VvQ0FBQ3RqN2h5MXdQWUFWU09rN1J2cFRwUlZJNlR0RytsT2xFREFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFFQUFRQUJBQUFBVklFdm9RQUFBQUFBQUFBQUFBQUFBSjRB?=
+ =?iso-8859-1?Q?QUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQm?=
+ =?iso-8859-1?Q?xBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdr?=
+ =?iso-8859-1?Q?QWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWk?=
+ =?iso-8859-1?Q?FCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBB?=
+ =?iso-8859-1?Q?SE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQVlRQmtBR2tBWHdC?=
+ =?iso-8859-1?Q?ekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUUJqQUhRQWN3QmZBSF?=
+ =?iso-8859-1?Q?FBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21ldGE+?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 58781cc9-d002-4028-b53d-08d9d1ee960c
+x-ms-traffictypediagnostic: PH0PR03MB6494:EE_
+x-microsoft-antispam-prvs: <PH0PR03MB64940B9F9C4E596F0AD6DD73994D9@PH0PR03MB6494.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4714;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: nCrHyho3UyvNROWeNAHtswpsvdY7ksgMfcumpDBbwm0nOZorLmcAOoDrtZHKv7SgOxNSg96JuHTCfNfiysRnEgxOABIcw6Zicra9Oh0+gybhheqrbXuG9DyUN57f/1Q2/I2QZh0uUnc4QLKkYJebtECoiTAcgsA9ErxkA1G3OzKELCeFezLjGtmhgjsymNyt8C2jo35vDaXmA7Z/CiQ5ig09fSu1cGNq5USTML93pHAH82lZg5FAHQHWB6n6LhqhX1aQYjRj5lJo9BdgzxVZWqIPR4NXQv8HitFAx1X17iNHOKOoH0+ax5wN18E8UrzV5DpMAy+PDnwd86fiBpN9y1C8nSBTSvdXD3Dar8wf6VRk0ZkMFy8OfF0j6VOzQsVRYA0v6XyBl2NyxuzlW6F/cuOR1/EEM+76i/4zFBEKjRpVNt/zYkA9xJ7BYk9EQM8d58ZgYqrTuH6c0k2YBtbVzCJDjY4aDznXIlU9a2VEYrm+q9H3Ev7d3sXZkWVR3PsBhjbF9MtlTPCQs6ecfEm0YCvagwoTqVDBFjjYDs69F53bVAcBTq8A4QC1FjhxYaBsSStWjg6TfJXIJjK2JbVwoBZ2fKiADioRw3li849d/poF7sttf4/UG/wug2NdrQhte/0UmwNkeOKWjVLZto7QQbH7AEZX9mfneL41Af5h+WXLWO8sjXLOjRKtZEBLqTaNb2BRfNSbWCbRKQSnPdXzLw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6786.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(7696005)(54906003)(110136005)(6506007)(53546011)(8676002)(186003)(122000001)(55016003)(2906002)(71200400001)(8936002)(33656002)(86362001)(316002)(38070700005)(4326008)(508600001)(66476007)(66556008)(66446008)(66946007)(64756008)(76116006)(4744005)(5660300002)(52536014)(38100700002)(9686003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?n6T/MqBiIbLYoskSVRR32JzTtdHtiDrQmfFBcSvm9/c7TL7TueRrxUPyPY?=
+ =?iso-8859-1?Q?dto84fespqkoFrcA8wq1RPw8hjYCFGHOvBqZkwbsGJoGhWdNFbKaiYADwL?=
+ =?iso-8859-1?Q?xdpTLV5Fm8BxwotP23288RemUFh78vWn5u1CP/3bPuprWML5fHrHcM/Puc?=
+ =?iso-8859-1?Q?ljIX4VWL63x2pyJ3eX96Mno+UQy50B8a+h+qZIG4MkAF/mjSRtDwq6U27A?=
+ =?iso-8859-1?Q?evhrG/Y08S4hV69VMgubVHIPWsnxplrJibzk+2vC+RZawAWJxDdRONBFGo?=
+ =?iso-8859-1?Q?WQZ9kdHZR1oZKDzlnGG5z4ZloihTE144ePJZo0vYGBRIe+IJACJHibkjBE?=
+ =?iso-8859-1?Q?quwj9fc8f0iogw8tY7J5l+az4DplOhYKmj/A35bNPwWCHxBmTSAxvVWheG?=
+ =?iso-8859-1?Q?vFINbS4qacmBYfouDChjkeCxAwl8S6x5JAyZNYf3GNQXA9dKtzvdZjuKkP?=
+ =?iso-8859-1?Q?fFOpCayeN9J8KDKyfZPY2PzU3ijgd6eJ8qcDEFZ7ggnwMl3/QfWp/s2rJw?=
+ =?iso-8859-1?Q?lkdRR/pYLG47GtVEnvrtQBn8ViNuzX5m3nIVZVteRYxBrpj/AjRyscMYSP?=
+ =?iso-8859-1?Q?sgZo379S6z9paS1q1uOd98BUxwYQnkNYC7By5URZANAjsFFHLsvESVNeEl?=
+ =?iso-8859-1?Q?B39j4GytDTrKPfDrDuR0IZeaomWT1OZYGvXC3LjjSoTnbjq1+FwHitvYvk?=
+ =?iso-8859-1?Q?N7ocOkiA44AaEUIxx2A94tKFX2tFqdyGwFAZSzUevQjhSqyk9g9tTmoQxW?=
+ =?iso-8859-1?Q?URkzN+Pjwiupwdm+mkBFYfecSWmgvZ6swp5ebMamaWhWV6EA9wngGjxVHe?=
+ =?iso-8859-1?Q?ijU+Khrs+Qoxqk7NhxC1Lhj4GvajzLJoliQz1ycibhBS7MQoObduZAQLtG?=
+ =?iso-8859-1?Q?0OMztWXPdxYlGAw/3dF+Ppy24jPzPRf5TdVqR5vR8imvGRLEwNWo20zgMf?=
+ =?iso-8859-1?Q?pMyB8VjYr1XCPIUYWaKhyrTUYauNhyWundlGBBVF1Jdk2f+H2LuzbVGb0C?=
+ =?iso-8859-1?Q?eWdxpmoxm4+ijexp6w+WcofEecygaQKo4ySoM2NY+k+13hfzssjt0Q93Kn?=
+ =?iso-8859-1?Q?TlvQjQzSmumiLP3dAQjhJHp1AHR7/gR94ozYsDQUdW9LZGkg/53U6XKvQL?=
+ =?iso-8859-1?Q?+u/Y19AAQnhNvS3aqqPguXPCeJdhBFIwvvgSKbUYxs7sufHc18/xEKgJ9w?=
+ =?iso-8859-1?Q?0MSroeXxryVJDJVagFL1EUBr2fdX04YUMSi9+uMu2IQQqcWCsMvw5PkL+6?=
+ =?iso-8859-1?Q?cmfphvo9GWU0p3HXPI+B3i1OkWI7fDQS+qn4PQreeeK9hdLBNxLOwx22t2?=
+ =?iso-8859-1?Q?ZCx0nT0UY4+NZZAL/IMt4MwFAT6T6AS+xIJY4b+K7CQfznA8mMq7KfVgeb?=
+ =?iso-8859-1?Q?683c+Yccf5TVFImkl4NMf+efuP53VaoYqaxP5a2d71i5COsuwqmoNJoWD+?=
+ =?iso-8859-1?Q?qHW15DPUzkQ9mXPZdp0029IpAdDM0SBQAg9VAZGs4G9nqV76kylOLYUTRR?=
+ =?iso-8859-1?Q?KgWDqKL41zTqEefE/TYf9rupVng8R/7/dt22Oa08oTKDBmqC/NY1svDL6w?=
+ =?iso-8859-1?Q?+WylRiP0Xo0GIsgys13wUSlJPoJ34Z/kgLq2fY05oQ8vUyYmDJVnu9DGYg?=
+ =?iso-8859-1?Q?Lm+IhYatGVMBw4rnKkDojt7DcFydoRQutWtaYJxBi/cr0poZ2eg3TKpqLS?=
+ =?iso-8859-1?Q?VfI//NkeB6MBOferM1B51fdu2LNhAr8f/BYNxWJ/sLgGrDOx8MQTm5P4+s?=
+ =?iso-8859-1?Q?TztzcaIoRvGCOfUWul3j/V8ok=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220106112309.16879-1-linmq006@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6786.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58781cc9-d002-4028-b53d-08d9d1ee960c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jan 2022 15:01:29.8308
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IJXmBobvNGIG6SVU0FtaKA3k0HjLUSfHQWbyUk1OjdhuOdNrzBYjgTDXAxIEDovnfpSXcQCeRPjMNoJTikNxww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6494
+X-Proofpoint-GUID: TxfPqCXkqFJ3weVhN8Vjkwu7XJosCo6u
+X-Proofpoint-ORIG-GUID: TxfPqCXkqFJ3weVhN8Vjkwu7XJosCo6u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-07_06,2022-01-07_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 mlxlogscore=999
+ adultscore=0 spamscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201070103
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jan 06, 2022 at 11:23:09AM +0000, Miaoqian Lin wrote:
-> The pm_runtime_enable will increase power disable depth.
-> If the probe fails, we should use pm_runtime_disable() to balance
-> pm_runtime_enable(). In the PM Runtime docs:
->     Drivers in ->remove() callback should undo the runtime PM changes done
->     in ->probe(). Usually this means calling pm_runtime_disable(),
->     pm_runtime_dont_use_autosuspend() etc.
-> We should do this in error handling.
-> 
-> Fix this problem for the following drivers: bmc150, bmg160, kmx61,
-> kxcj-1013, mma9551, mma9553.
+> From: Rob Herring <robh@kernel.org>
+> Sent: Friday, January 7, 2022 4:20 AM
+> To: Lars-Peter Clausen <lars@metafoo.de>; Hennerich, Michael
+> <Michael.Hennerich@analog.com>; Sa, Nuno
+> <Nuno.Sa@analog.com>; Jonathan Cameron <jic23@kernel.org>
+> Cc: linux-iio@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Subject: [PATCH] dt-bindings: iio: adi,ltc2983: Fix 64-bit property sizes
+>=20
+> [External]
+>=20
+> The '/bits/ 64' notation applies the next <> list of values. Another <>
+> list
+> is encoded as 32-bits by default. IOW, each <> list needs to be
+> preceeded
+> with '/bits/ 64'.
+>=20
+> While the dts format allows this, as a rule we don't mix sizes for DT
+> properties since all size information is lost in the dtb file.
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-LGTM, FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno S=E1 <nuno.sa@analog.com>
 
-> Fixes: 7d0ead5c3f00 ("iio: Reconcile operation order between iio_register/unregister and pm functions")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
-> Changes in v2:
-> - fix the fixes tag
-> - fix similar problems introduced by the same commit
-> ---
->  drivers/iio/accel/bmc150-accel-core.c  | 5 ++++-
->  drivers/iio/accel/kxcjk-1013.c         | 5 ++++-
->  drivers/iio/accel/mma9551.c            | 5 ++++-
->  drivers/iio/accel/mma9553.c            | 5 ++++-
->  drivers/iio/gyro/bmg160_core.c         | 5 ++++-
->  drivers/iio/imu/kmx61.c                | 5 ++++-
->  drivers/iio/magnetometer/bmc150_magn.c | 5 +++--
->  7 files changed, 27 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> index b0678c351e82..c3a2b4c0b3b2 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -1783,11 +1783,14 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  	ret = iio_device_register(indio_dev);
->  	if (ret < 0) {
->  		dev_err(dev, "Unable to register iio device\n");
-> -		goto err_trigger_unregister;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	return 0;
->  
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(dev);
-> +	pm_runtime_disable(dev);
->  err_trigger_unregister:
->  	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
->  err_buffer_cleanup:
-> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-> index 24c9387c2968..ba6c8ca488b1 100644
-> --- a/drivers/iio/accel/kxcjk-1013.c
-> +++ b/drivers/iio/accel/kxcjk-1013.c
-> @@ -1589,11 +1589,14 @@ static int kxcjk1013_probe(struct i2c_client *client,
->  	ret = iio_device_register(indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev, "unable to register iio device\n");
-> -		goto err_buffer_cleanup;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	return 0;
->  
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(&client->dev);
-> +	pm_runtime_disable(&client->dev);
->  err_buffer_cleanup:
->  	iio_triggered_buffer_cleanup(indio_dev);
->  err_trigger_unregister:
-> diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
-> index 4c359fb05480..c53a3398b14c 100644
-> --- a/drivers/iio/accel/mma9551.c
-> +++ b/drivers/iio/accel/mma9551.c
-> @@ -495,11 +495,14 @@ static int mma9551_probe(struct i2c_client *client,
->  	ret = iio_device_register(indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev, "unable to register iio device\n");
-> -		goto out_poweroff;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	return 0;
->  
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(&client->dev);
-> +	pm_runtime_disable(&client->dev);
->  out_poweroff:
->  	mma9551_set_device_state(client, false);
->  
-> diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
-> index ba3ecb3b57dc..1599b75724d4 100644
-> --- a/drivers/iio/accel/mma9553.c
-> +++ b/drivers/iio/accel/mma9553.c
-> @@ -1134,12 +1134,15 @@ static int mma9553_probe(struct i2c_client *client,
->  	ret = iio_device_register(indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev, "unable to register iio device\n");
-> -		goto out_poweroff;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	dev_dbg(&indio_dev->dev, "Registered device %s\n", name);
->  	return 0;
->  
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(&client->dev);
-> +	pm_runtime_disable(&client->dev);
->  out_poweroff:
->  	mma9551_set_device_state(client, false);
->  	return ret;
-> diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
-> index 17b939a367ad..81a6d09788bd 100644
-> --- a/drivers/iio/gyro/bmg160_core.c
-> +++ b/drivers/iio/gyro/bmg160_core.c
-> @@ -1188,11 +1188,14 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  	ret = iio_device_register(indio_dev);
->  	if (ret < 0) {
->  		dev_err(dev, "unable to register iio device\n");
-> -		goto err_buffer_cleanup;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	return 0;
->  
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(dev);
-> +	pm_runtime_disable(dev);
->  err_buffer_cleanup:
->  	iio_triggered_buffer_cleanup(indio_dev);
->  err_trigger_unregister:
-> diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
-> index 1dabfd615dab..f89724481df9 100644
-> --- a/drivers/iio/imu/kmx61.c
-> +++ b/drivers/iio/imu/kmx61.c
-> @@ -1385,7 +1385,7 @@ static int kmx61_probe(struct i2c_client *client,
->  	ret = iio_device_register(data->acc_indio_dev);
->  	if (ret < 0) {
->  		dev_err(&client->dev, "Failed to register acc iio device\n");
-> -		goto err_buffer_cleanup_mag;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	ret = iio_device_register(data->mag_indio_dev);
-> @@ -1398,6 +1398,9 @@ static int kmx61_probe(struct i2c_client *client,
->  
->  err_iio_unregister_acc:
->  	iio_device_unregister(data->acc_indio_dev);
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(&client->dev);
-> +	pm_runtime_disable(&client->dev);
->  err_buffer_cleanup_mag:
->  	if (client->irq > 0)
->  		iio_triggered_buffer_cleanup(data->mag_indio_dev);
-> diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-> index f96f53175349..3d4d21f979fa 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn.c
-> +++ b/drivers/iio/magnetometer/bmc150_magn.c
-> @@ -962,13 +962,14 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
->  	ret = iio_device_register(indio_dev);
->  	if (ret < 0) {
->  		dev_err(dev, "unable to register iio device\n");
-> -		goto err_disable_runtime_pm;
-> +		goto err_pm_cleanup;
->  	}
->  
->  	dev_dbg(dev, "Registered device %s\n", name);
->  	return 0;
->  
-> -err_disable_runtime_pm:
-> +err_pm_cleanup:
-> +	pm_runtime_dont_use_autosuspend(dev);
->  	pm_runtime_disable(dev);
->  err_buffer_cleanup:
->  	iio_triggered_buffer_cleanup(indio_dev);
-> -- 
-> 2.17.1
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Thanks!
+- Nuno S=E1
 

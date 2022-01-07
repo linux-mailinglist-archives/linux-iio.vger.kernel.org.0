@@ -2,16 +2,18 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD072487C0D
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 19:18:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9394487C18
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 19:21:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348811AbiAGSSb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Jan 2022 13:18:31 -0500
-Received: from aposti.net ([89.234.176.197]:54334 "EHLO aposti.net"
+        id S240776AbiAGSVC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 7 Jan 2022 13:21:02 -0500
+Received: from aposti.net ([89.234.176.197]:55030 "EHLO aposti.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348826AbiAGSS1 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 7 Jan 2022 13:18:27 -0500
+        id S240599AbiAGSVB (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Jan 2022 13:21:01 -0500
+Date:   Fri, 07 Jan 2022 18:20:44 +0000
 From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v3 0/6] DEV_PM_OPS macros rework v3
 To:     "Rafael J . Wysocki" <rafael@kernel.org>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -21,93 +23,28 @@ Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pm@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 6/6] iio: pressure: bmp280: Use new PM macros
-Date:   Fri,  7 Jan 2022 18:17:23 +0000
-Message-Id: <20220107181723.54392-7-paul@crapouillou.net>
+        linux-pm@vger.kernel.org
+Message-Id: <KYQC5R.1KGGF7OLTKZV3@crapouillou.net>
 In-Reply-To: <20220107181723.54392-1-paul@crapouillou.net>
 References: <20220107181723.54392-1-paul@crapouillou.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use the new EXPORT_RUNTIME_DEV_PM_OPS() macro. It allows the underlying
-dev_pm_ops struct as well as the suspend/resume callbacks to be detected
-as dead code in the case where CONFIG_PM is disabled, without having to
-wrap everything inside #ifdef CONFIG_PM guards.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
 
-Notes:
-    v2: New patch
-    v3: No change
+Le ven., janv. 7 2022 at 18:17:17 +0000, Paul Cercueil 
+<paul@crapouillou.net> a écrit :
+> Hi,
+> 
+> A V2 of my patchset that tweaks a bit the *_DEV_PM_OPS() macros that
+> were introduced recently.
 
- drivers/iio/pressure/bmp280-core.c | 11 ++---------
- drivers/iio/pressure/bmp280-i2c.c  |  2 +-
- drivers/iio/pressure/bmp280-spi.c  |  2 +-
- 3 files changed, 4 insertions(+), 11 deletions(-)
+I meant V3 here. Bad copy-paste.
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 6b7da40f99c8..bf8167f43c56 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1138,7 +1138,6 @@ int bmp280_common_probe(struct device *dev,
- }
- EXPORT_SYMBOL(bmp280_common_probe);
- 
--#ifdef CONFIG_PM
- static int bmp280_runtime_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-@@ -1159,15 +1158,9 @@ static int bmp280_runtime_resume(struct device *dev)
- 	usleep_range(data->start_up_time, data->start_up_time + 100);
- 	return data->chip_info->chip_config(data);
- }
--#endif /* CONFIG_PM */
- 
--const struct dev_pm_ops bmp280_dev_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
--	SET_RUNTIME_PM_OPS(bmp280_runtime_suspend,
--			   bmp280_runtime_resume, NULL)
--};
--EXPORT_SYMBOL(bmp280_dev_pm_ops);
-+EXPORT_RUNTIME_DEV_PM_OPS(bmp280_dev_pm_ops, bmp280_runtime_suspend,
-+			  bmp280_runtime_resume, NULL);
- 
- MODULE_AUTHOR("Vlad Dogaru <vlad.dogaru@intel.com>");
- MODULE_DESCRIPTION("Driver for Bosch Sensortec BMP180/BMP280 pressure and temperature sensor");
-diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
-index 8b03ea15c0d0..35045bd92846 100644
---- a/drivers/iio/pressure/bmp280-i2c.c
-+++ b/drivers/iio/pressure/bmp280-i2c.c
-@@ -58,7 +58,7 @@ static struct i2c_driver bmp280_i2c_driver = {
- 	.driver = {
- 		.name	= "bmp280",
- 		.of_match_table = bmp280_of_i2c_match,
--		.pm = &bmp280_dev_pm_ops,
-+		.pm = pm_ptr(&bmp280_dev_pm_ops),
- 	},
- 	.probe		= bmp280_i2c_probe,
- 	.id_table	= bmp280_i2c_id,
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 625b86878ad8..41f6cc56d229 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -109,7 +109,7 @@ static struct spi_driver bmp280_spi_driver = {
- 	.driver = {
- 		.name = "bmp280",
- 		.of_match_table = bmp280_of_spi_match,
--		.pm = &bmp280_dev_pm_ops,
-+		.pm = pm_ptr(&bmp280_dev_pm_ops),
- 	},
- 	.id_table = bmp280_spi_id,
- 	.probe = bmp280_spi_probe,
--- 
-2.34.1
+-Paul
+
 

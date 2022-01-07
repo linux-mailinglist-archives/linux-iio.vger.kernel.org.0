@@ -2,56 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D66C487A91
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 17:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21CB4487A9F
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jan 2022 17:43:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348317AbiAGQli (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 7 Jan 2022 11:41:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348310AbiAGQlh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 7 Jan 2022 11:41:37 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34587C06173E
-        for <linux-iio@vger.kernel.org>; Fri,  7 Jan 2022 08:41:37 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id g11so17586103lfu.2
-        for <linux-iio@vger.kernel.org>; Fri, 07 Jan 2022 08:41:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=lTPT+dmitAwGRTDpzwc7mnELnHJUbVyQmNF2pcaF2Rk=;
-        b=KtS3RNn1icDvaY9ZzuRxXHNPuGylv0dSCZKVjIIDd6vHzWs6kpR0ZBUDiVtG73eArI
-         McFELeIhUMda/AhvYaNLZfpGjhlEkQLWK1B1hTXo9deamXDJLqapkp8ix5OO7ngEAPOS
-         eInarUcF55ZCpr+RI/neVDNBNJjCh0wfIpzOTc0ZhGZXdgTpF7A9hIkJnfBspnPET2tr
-         XiN6m9bI00j5QEGe/Zb/+qFT1miZw1YhtOZE7KBfuVjJYjW95VWG7ti9yvWG9vOfLQl1
-         RNy781dpeNYrPOc+jp7g9ANTA0Ly0ZSOAJyTEYPE3DDlEsG8c8QXCjv69KKWsFxNVu2D
-         h0Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=lTPT+dmitAwGRTDpzwc7mnELnHJUbVyQmNF2pcaF2Rk=;
-        b=j5O9xfEfAqxBK2xeHVHXReF0nxXB8p5MExX5PIc2A7FppL+TzS3oUCyPuwySCozXxJ
-         rSxI3tkHirRq37RMDRRXRL+pQExnU/oicFZ208DuRMSGjNANgtPK/rYCIT2/KxCL6Yi1
-         54hfSB1tIm2YbP8/AoAKPesS+4BJQFuBIIfDgjFrdcgypGmEAdBUOjH9tfSdNIK/VjYy
-         WXiiPYoxUM9tcT5rlA8gY7gcyM5UilWjQMScRzJMFugsfm9WgkR7DfEwoyM0CBWfc0gd
-         lIsjg/2+63UQ9hNsDRI07JcDpWdsrwFC9zulgdbEvjvBag8v2Y5pinrHj5vDjsLwxuMT
-         pqAg==
-X-Gm-Message-State: AOAM531zpQVAAf9pzjhf1MfJ9HTN+oCaX/Iy6RahVP7rx62slEhW00Sx
-        oSmFTmwoLsVQXzWvir+Fna+zgYp3BxXwfr6FUWJupQ==
-X-Google-Smtp-Source: ABdhPJxbhUQOb/mZfl38h0bjdFgpQVIZe3t1jhXR02261NU1P2OO61nqv+CT8apVEmppCWYjizWWOy5cItgzHBi90sU=
-X-Received: by 2002:a05:6512:310e:: with SMTP id n14mr55308857lfb.167.1641573694001;
- Fri, 07 Jan 2022 08:41:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20220105182939.106885-1-paul@crapouillou.net> <20220105182939.106885-2-paul@crapouillou.net>
- <CAPDyKFqiVTcsr03SqCzZsTraivrnM4YxKxPQ7dMmt14dT1uiCQ@mail.gmail.com> <U5MC5R.JX72XLGEKI8P@crapouillou.net>
-In-Reply-To: <U5MC5R.JX72XLGEKI8P@crapouillou.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 7 Jan 2022 17:40:57 +0100
-Message-ID: <CAPDyKFpPOsoxBbamJWoAso_8cEb--Y1i4zDAnnTQ00EkSySVLQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] PM: core: Remove DEFINE_UNIVERSAL_DEV_PM_OPS() macro
-To:     Paul Cercueil <paul@crapouillou.net>
+        id S1348329AbiAGQnu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 7 Jan 2022 11:43:50 -0500
+Received: from aposti.net ([89.234.176.197]:40182 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240038AbiAGQnu (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Fri, 7 Jan 2022 11:43:50 -0500
+Date:   Fri, 07 Jan 2022 16:43:37 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v2 3/6] PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS
+ macros
+To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,114 +26,139 @@ Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-pm@vger.kernel.org,
         Jonathan Cameron <jonathan.cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <PGMC5R.ZEUF4DPAECD7@crapouillou.net>
+In-Reply-To: <CAPDyKFpUUPzqonNBrFq68h8QOVxardvf2q7AuEQVeUJ-S2726A@mail.gmail.com>
+References: <20220105182939.106885-1-paul@crapouillou.net>
+        <20220105182939.106885-4-paul@crapouillou.net>
+        <CAPDyKFpUUPzqonNBrFq68h8QOVxardvf2q7AuEQVeUJ-S2726A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 7 Jan 2022 at 17:37, Paul Cercueil <paul@crapouillou.net> wrote:
->
-> Hi Ulf,
->
-> Le ven., janv. 7 2022 at 17:26:07 +0100, Ulf Hansson
-> <ulf.hansson@linaro.org> a =C3=A9crit :
-> > On Wed, 5 Jan 2022 at 19:29, Paul Cercueil <paul@crapouillou.net>
-> > wrote:
-> >>
-> >>  The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided
-> >> callbacks
-> >>  for both runtime PM and system sleep, which is very likely to be a
-> >>  mistake, as a system sleep can be triggered while a given device is
-> >>  already PM-suspended, which would cause the suspend callback to be
-> >>  called twice.
-> >>
-> >>  The amount of users of UNIVERSAL_DEV_PM_OPS() is also tiny (16
-> >>  occurences) compared to the number of places where
-> >>  SET_SYSTEM_SLEEP_PM_OPS() is used with pm_runtime_force_suspend()
-> >> and
-> >>  pm_runtime_force_resume(), which makes me think that none of these
-> >> cases
-> >>  are actually valid.
-> >>
-> >>  As this macro is currently unused, remove it before someone starts
-> >> to
-> >>  use it in yet another invalid case.
-> >
-> > I assume you refer to DEFINE_UNIVERSAL_DEV_PM_OPS here. Can you
-> > perhaps make that more clear?
->
-> I can.
->
-> >>
-> >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> >>  Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >>  ---
-> >>
-> >>  Notes:
-> >>      v2: No change
-> >>
-> >>   include/linux/pm.h | 19 ++++++-------------
-> >>   1 file changed, 6 insertions(+), 13 deletions(-)
-> >>
-> >>  diff --git a/include/linux/pm.h b/include/linux/pm.h
-> >>  index e1e9402180b9..31bbaafb06d2 100644
-> >>  --- a/include/linux/pm.h
-> >>  +++ b/include/linux/pm.h
-> >>  @@ -366,6 +366,12 @@ static const struct dev_pm_ops name =3D { \
-> >>          SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> >>   }
-> >>
-> >>  +/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
-> >>  +#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> >>  +const struct dev_pm_ops __maybe_unused name =3D { \
-> >>  +       SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> >>  +}
-> >>  +
-> >>   /*
-> >>    * Use this for defining a set of PM operations to be used in all
-> >> situations
-> >>    * (system suspend, hibernation or runtime PM).
-> >>  @@ -379,19 +385,6 @@ static const struct dev_pm_ops name =3D { \
-> >>    * .resume_early(), to the same routines as .runtime_suspend() and
-> >>    * .runtime_resume(), respectively (and analogously for
-> >> hibernation).
-> >>    */
-> >>  -#define DEFINE_UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn,
-> >> idle_fn) \
-> >>  -static const struct dev_pm_ops name =3D { \
-> >>  -       SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> >>  -       RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
-> >>  -}
-> >>  -
-> >>  -/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
-> >>  -#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> >>  -const struct dev_pm_ops __maybe_unused name =3D { \
-> >>  -       SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> >>  -}
-> >>  -
-> >>  -/* Deprecated. Use DEFINE_UNIVERSAL_DEV_PM_OPS() instead. */
-> >
-> > Shouldn't this macro be deprecated any more?
->
-> I can only deprecate it if there is an alternative for it. The
-> alternative is DEFINE_RUNTIME_DEV_PM_OPS() which is added in patch 4/6.
 
-I don't think we need an immediate alternative to leave it deprecated, do w=
-e?
 
-My point is, a user can still combine the macros in a way so that it
-doesn't need to use the UNIVERSAL_DEV_PM_OPS.
+Le ven., janv. 7 2022 at 17:33:04 +0100, Ulf Hansson 
+<ulf.hansson@linaro.org> a écrit :
+> On Wed, 5 Jan 2022 at 19:30, Paul Cercueil <paul@crapouillou.net> 
+> wrote:
+>> 
+>>  These macros are defined conditionally, according to CONFIG_PM:
+>>  - if CONFIG_PM is enabled, these macros resolve to
+>>    DEFINE_SIMPLE_DEV_PM_OPS(), and the dev_pm_ops symbol will be
+>>    exported.
+>> 
+>>  - if CONFIG_PM is disabled, these macros will result in a dummy 
+>> static
+>>    dev_pm_ops to be created with the __maybe_unused flag. The 
+>> dev_pm_ops
+>>    will then be discarded by the compiler, along with the provided
+>>    callback functions if they are not used anywhere else.
+>> 
+>>  In the second case, the symbol is not exported, which should be
+>>  perfectly fine - users of the symbol should all use the pm_ptr() or
+>>  pm_sleep_ptr() macro, so the dev_pm_ops marked as "extern" in the
+>>  client's code will never be accessed.
+> 
+> How common is it to export the dev_pm_ops? Do we really need a macro 
+> for this?
 
->
-> Cheers,
-> -Paul
->
-> >>   #define UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn)
-> >> \
-> >>   const struct dev_pm_ops __maybe_unused name =3D { \
-> >>          SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> >>  --
+$ rgrep EXPORT_SYMBOL drivers/ |grep pm_ops |wc -l
+44
 
-Kind regards
-Uffe
+That should be enough to justify a macro.
+
+Cheers,
+-Paul
+
+> 
+> The similar comment/question applies for patch5.
+> 
+>> 
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Kind regards
+> Uffe
+> 
+>>  ---
+>> 
+>>  Notes:
+>>      v2: Remove useless empty line
+>> 
+>>   include/linux/pm.h | 32 +++++++++++++++++++++++++++++---
+>>   1 file changed, 29 insertions(+), 3 deletions(-)
+>> 
+>>  diff --git a/include/linux/pm.h b/include/linux/pm.h
+>>  index 389e600df233..b82f40e701ab 100644
+>>  --- a/include/linux/pm.h
+>>  +++ b/include/linux/pm.h
+>>  @@ -8,6 +8,7 @@
+>>   #ifndef _LINUX_PM_H
+>>   #define _LINUX_PM_H
+>> 
+>>  +#include <linux/export.h>
+>>   #include <linux/list.h>
+>>   #include <linux/workqueue.h>
+>>   #include <linux/spinlock.h>
+>>  @@ -357,14 +358,39 @@ struct dev_pm_ops {
+>>   #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
+>>   #endif
+>> 
+>>  +#define _DEFINE_DEV_PM_OPS(name, \
+>>  +                          suspend_fn, resume_fn, \
+>>  +                          runtime_suspend_fn, runtime_resume_fn, 
+>> idle_fn) \
+>>  +const struct dev_pm_ops name = { \
+>>  +       SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  +       RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, 
+>> idle_fn) \
+>>  +}
+>>  +
+>>   /*
+>>    * Use this if you want to use the same suspend and resume 
+>> callbacks for suspend
+>>    * to RAM and hibernation.
+>>    */
+>>   #define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>>  -const struct dev_pm_ops name = { \
+>>  -       SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>>  -}
+>>  +       _DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, 
+>> NULL)
+>>  +
+>>  +#ifdef CONFIG_PM
+>>  +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+>> runtime_suspend_fn, \
+>>  +                          runtime_resume_fn, idle_fn, sec) \
+>>  +       _DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+>> runtime_suspend_fn, \
+>>  +                          runtime_resume_fn, idle_fn); \
+>>  +       _EXPORT_SYMBOL(name, sec)
+>>  +#else
+>>  +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, 
+>> runtime_suspend_fn, \
+>>  +                          runtime_resume_fn, idle_fn, sec) \
+>>  +static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, 
+>> suspend_fn, \
+>>  +                                        resume_fn, 
+>> runtime_suspend_fn, \
+>>  +                                        runtime_resume_fn, idle_fn)
+>>  +#endif
+>>  +
+>>  +#define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>>  +       _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, 
+>> NULL, "")
+>>  +#define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>>  +       _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, 
+>> NULL, "_gpl")
+>> 
+>>   /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+>>   #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>>  --
+>>  2.34.1
+>> 
+
+

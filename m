@@ -2,152 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 35CD44884F6
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jan 2022 18:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABA14488522
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jan 2022 18:56:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232158AbiAHRdz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jan 2022 12:33:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35596 "EHLO
+        id S232303AbiAHR4A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 8 Jan 2022 12:56:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230402AbiAHRdy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jan 2022 12:33:54 -0500
-Received: from balrog.mythic-beasts.com (balrog.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E46DC06173F;
-        Sat,  8 Jan 2022 09:33:53 -0800 (PST)
-Received: from [81.101.6.87] (port=34286 helo=jic23-huawei)
-        by balrog.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1n6Faq-0001DM-Oj; Sat, 08 Jan 2022 17:33:33 +0000
-Date:   Sat, 8 Jan 2022 17:38:51 +0000
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, list@opendingux.net,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 3/6] PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS
- macros
-Message-ID: <20220108173825.08ebf8ba@jic23-huawei>
-In-Reply-To: <20220107181723.54392-4-paul@crapouillou.net>
-References: <20220107181723.54392-1-paul@crapouillou.net>
-        <20220107181723.54392-4-paul@crapouillou.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        with ESMTP id S230249AbiAHR4A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jan 2022 12:56:00 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C24C06173F;
+        Sat,  8 Jan 2022 09:55:59 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id q25so26848717edb.2;
+        Sat, 08 Jan 2022 09:55:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0R/bgHibWfpOUod24j2qh0CJvdTR+UyHQ+DqSW1KNwE=;
+        b=dPjmlSA+WNP7T5KefRwHVClkd+mr1+2I49hq8DHoAknmoibMR1HoB0UlbIyZKWgvdV
+         30KjdjCVWb0lQmA8EmiPSWz0r6VYErWWOADkmN1ymNXSVu0cRVnr3phkIbhmIzV7qnPB
+         b9yb/8gyAhnh/RogZYdQLvfnNJ8WrQgU2IYgqJTkFWHano8i+a7LGu0q7b94nOZ4ZGYI
+         gIK7hQFIAo+FgyW+tdZfQsSS8zM2nTz/oaqYheOicRzXqT5+bfb/RAtD3qC/KYXiDHgZ
+         Ogu19m8lDUvgt81A8XCvitUbcZAfbGoQHcM0uwCM4A19/p5QSApGjO2+F6rcmsK7Zvhd
+         Zv5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0R/bgHibWfpOUod24j2qh0CJvdTR+UyHQ+DqSW1KNwE=;
+        b=drooantsfoDw4iiehDWAJl+CksBHWtXzqt1Lbfm61eLkmCaocbiSsAH2FqO7y152pX
+         KcO7737u5L9gIyTHv29aGRbmB1LdvtU6zSTnIa4ZUn4pCTg/Oi4hAFwmMtSe6thknnWA
+         744cIvSqrJXD27x3/DEwAlJV7W6c7NWUbjuLgYhVmxutKGc1p9VKSTHBmcBgc7KL+K6l
+         dkkG9LPVE3d/k461cPavyxhZ4BWzM4xRAVpQJxQK7FJOBu21pdq9O29G7CE2moZLQ+Uq
+         DfitGq6GdH/I4JWLdmiYFhh39Hl6PQqDhmonavjv3nEsax20qCeyYwIgHvDkKs5ZiD3A
+         xo+Q==
+X-Gm-Message-State: AOAM532ixie6aaJtcHZXfj8/aSbOGAdO95185F1yN2TaPZ83Sg2AMdUM
+        hJM6q0QoVePqvjpbi7CsJ84D7LYjOCr37MAoJBc=
+X-Google-Smtp-Source: ABdhPJzPY6YaQFWOIUsr6/FJDSgMARqplrEy1CQeW74Ko264I1NgTsElZM6z/nm9LvaHb9vCOWD7Ic5GS/CuIMQ+Mjs=
+X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr52569474ejj.636.1641664557628;
+ Sat, 08 Jan 2022 09:55:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 19
-X-Spam-Status: No, score=1.9
+References: <20211222034646.222189-1-liambeguin@gmail.com> <20211222034646.222189-10-liambeguin@gmail.com>
+ <CAHp75Vc0aWrFtNK1ZkHkwP62zNXQJaDcn9pc8Uhfq0kOnWzmJg@mail.gmail.com>
+ <YcNwt5RFMNFUimD/@shaak> <CAHp75VdrLTNLWZRgWkLXD23RAF28zh29XybywAPyMtb=GNxXbw@mail.gmail.com>
+ <YcODglDWiknz2oeV@shaak> <CAHp75Vejfr_S7iK7fAvs7ELxE1TJUECvmKv0-G5Zwunyc6nDQA@mail.gmail.com>
+ <Ydm9K3Zx3jPPv70B@shaak>
+In-Reply-To: <Ydm9K3Zx3jPPv70B@shaak>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 8 Jan 2022 19:55:21 +0200
+Message-ID: <CAHp75Ve5-W7vRGBMaz8jh5DvOCyTovdKaRR_5iB7S7epiWQmfA@mail.gmail.com>
+Subject: Re: [PATCH v11 09/15] iio: afe: rescale: reduce risk of integer overflow
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  7 Jan 2022 18:17:20 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Sat, Jan 8, 2022 at 6:34 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> On Wed, Dec 22, 2021 at 11:32:24PM +0200, Andy Shevchenko wrote:
+> > On Wed, Dec 22, 2021 at 9:59 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> > > On Wed, Dec 22, 2021 at 08:56:12PM +0200, Andy Shevchenko wrote:
+> > > > On Wed, Dec 22, 2021 at 8:38 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> > > > > On Wed, Dec 22, 2021 at 02:29:04PM +0200, Andy Shevchenko wrote:
+> > > > > > On Wed, Dec 22, 2021 at 5:47 AM Liam Beguin <liambeguin@gmail.com> wrote:
 
-> These macros are defined conditionally, according to CONFIG_PM:
-> - if CONFIG_PM is enabled, these macros resolve to
->   DEFINE_SIMPLE_DEV_PM_OPS(), and the dev_pm_ops symbol will be
->   exported.
-> 
-> - if CONFIG_PM is disabled, these macros will result in a dummy static
->   dev_pm_ops to be created with the __maybe_unused flag. The dev_pm_ops
->   will then be discarded by the compiler, along with the provided
->   callback functions if they are not used anywhere else.
-> 
-> In the second case, the symbol is not exported, which should be
-> perfectly fine - users of the symbol should all use the pm_ptr() or
-> pm_sleep_ptr() macro, so the dev_pm_ops marked as "extern" in the
-> client's code will never be accessed.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+...
 
-Hi Paul,
+> > > > > > > -               tmp = 1 << *val2;
+> > > > > >
+> > > > > > At some point this should be BIT()
+> > > >
+> > > > Forgot to add, If it's 64-bit, then BIT_ULL().
+> > > >
+> > > > > I'm not against changing this, but (to me at least) 1 << *val2 seems
+> > > > > more explicit as we're not working with bitfields. No?
+> > > >
+> > > > You may add a comment. You may use int_pow(), but it will be suboptimal.
+> > > >
+> > > > > > Rule of thumb (in accordance with C standard), always use unsigned
+> > > > > > value as left operand of the _left_ shift.
+> > > > >
+> > > > > Right, that makes sense! In practice though, since we'll most likely
+> > > > > never use higher bits of *val2 with IIO_VAL_FRACTIONAL_LOG2, would it be
+> > > > > enough to simply typecast?
+> > > > >
+> > > > >         tmp = 1 << (unsigned int)*val2;
+> > > >
+> > > > No, it's about the _left_ operand.
+> > > > I haven't checked if tmp is 64-bit, then even that would be still wrong.
+> > >
+> > > Okay so your recommendation is to not use a left shift?
+> >
+> > No, I recommend not to use int type as a _leftside_ operand.
+> > BIT() / BIT_ULL() does a left shift anyway.
+>
+> Oh, got it. Sorry for misreading your message.
+> would something like this be good enough?
+>
+>         s64 tmp;
+>         u64 tmp2;
 
-Can definitely be a follow up rather than needing to be in this series
-but an EXPORT_NS_[_GPL]_SIMPLE_DEV_PM_OPS() will be needed as I suspect
-a lot of the places that export pm_ops structures will have their exports
-moved to a namespace at somepoint.
+>         tmp2 = 1 << *val2;
 
-That can easily go in with the first user though rather than needing
-to be rushed in now.
+This still has a UB according to the C standard. That's why
+BIT()/BIT_ULL() is preferable to use since they don't have such
+issues. You may open code it, of course (since I remember you wished
+to show that this is not a bit, but a number).
 
-Jonathan
+>         tmp = tmp2;
 
-> ---
-> 
-> Notes:
->     v2: Remove useless empty line
->     v3: - Reorder the code to have non-private macros together in the file
->         - Add comment about the necesity to use the new export macro when
->           the dev_pm_ops has to be exported
-> 
->  include/linux/pm.h | 35 ++++++++++++++++++++++++++++++++---
->  1 file changed, 32 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/pm.h b/include/linux/pm.h
-> index 8e13387e70ec..8279af2c538a 100644
-> --- a/include/linux/pm.h
-> +++ b/include/linux/pm.h
-> @@ -8,6 +8,7 @@
->  #ifndef _LINUX_PM_H
->  #define _LINUX_PM_H
->  
-> +#include <linux/export.h>
->  #include <linux/list.h>
->  #include <linux/workqueue.h>
->  #include <linux/spinlock.h>
-> @@ -357,14 +358,42 @@ struct dev_pm_ops {
->  #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
->  #endif
->  
-> +#define _DEFINE_DEV_PM_OPS(name, \
-> +			   suspend_fn, resume_fn, \
-> +			   runtime_suspend_fn, runtime_resume_fn, idle_fn) \
-> +const struct dev_pm_ops name = { \
-> +	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> +	RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, idle_fn) \
-> +}
-> +
-> +#ifdef CONFIG_PM
-> +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> +			   runtime_resume_fn, idle_fn, sec) \
-> +	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> +			   runtime_resume_fn, idle_fn); \
-> +	_EXPORT_SYMBOL(name, sec)
-> +#else
-> +#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> +			   runtime_resume_fn, idle_fn, sec) \
-> +static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
-> +					 resume_fn, runtime_suspend_fn, \
-> +					 runtime_resume_fn, idle_fn)
-> +#endif
-> +
->  /*
->   * Use this if you want to use the same suspend and resume callbacks for suspend
->   * to RAM and hibernation.
-> + *
-> + * If the underlying dev_pm_ops struct symbol has to be exported, use
-> + * EXPORT_SIMPLE_DEV_PM_OPS() or EXPORT_GPL_SIMPLE_DEV_PM_OPS() instead.
->   */
->  #define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> -const struct dev_pm_ops name = { \
-> -	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
-> -}
-> +	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
-> +
-> +#define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "")
-> +#define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl")
->  
->  /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
->  #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+> How can I validate this?
 
+By understanding the C standard? I dunno, actually. GCC will generate
+correct code, it's just a special warning you may get when supplying a
+parameter (Linux kernel doesn't use that one even on W=2 IIRC).
+
+-Wshift-overflow=2
+
+> > > I can look into that but given how unlikely it is to fall into those bad
+> > > cases, I'd rather keep things as they are. Would that be okay?
+> >
+> > > Also, I don't think using BIT() or BIT_ULL() would address this as they
+> > > both do the same shift, with no extra checks.
+> >
+> > They do slightly different versions of it. They use an unsigned int type.
+> >
+> > Open coded or not, it's up to you. Just convert to unsigned int.
+
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -2,163 +2,275 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D5FD488A44
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jan 2022 16:35:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AE4488A46
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jan 2022 16:38:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235913AbiAIPfv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Jan 2022 10:35:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:35435 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231642AbiAIPfv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jan 2022 10:35:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1641742550;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OISolA07lAEXu3SciQEzFRjvL1qyK4ZBffrvsGOgRIg=;
-        b=MdpIDwtvr5xxsrcDWRJ8tquJnJl2WFEibq5rIQB1UBG5zfCXX2OC/z0c20sH6U5fZUUBVG
-        9wVskTO0vmbZSdA6flNQXLraEe1hd6jsnKHjyA7wFsy/kqQQsaVvvpp/SgnvwSKY1EDLsD
-        14RLxbhrvtYyEuNtp4ZJj2eNWAjkCv0=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-634-IVjVf-mXOHa_zIPcw9UanQ-1; Sun, 09 Jan 2022 10:35:49 -0500
-X-MC-Unique: IVjVf-mXOHa_zIPcw9UanQ-1
-Received: by mail-ed1-f72.google.com with SMTP id y10-20020a056402358a00b003f88b132849so8331321edc.0
-        for <linux-iio@vger.kernel.org>; Sun, 09 Jan 2022 07:35:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=OISolA07lAEXu3SciQEzFRjvL1qyK4ZBffrvsGOgRIg=;
-        b=a8tKH4Xp8DItNX1xfz/s5w6ctYdkE8+CDLMNQ7NEzAOje9bDzSPaetj/Zo7UW8zXFj
-         MNNDbdxrhzmur37/Auu/O+zwS0K/NH4gC4QPRI0h+qUvRZEox4vBAC2Y8ptbJkml8ttw
-         8IbklOhhpLo9y4ro92ScI6vlFJS5n613hLEWobmHttHtRJQhmji7UoNMFkRl2yaHfKSA
-         8sm9F1bc6bpXxpm/YaRisv54l/oQfiOmzhIVFKM+CwS0v/+e00GYq3qX3GAe8d3QxM/i
-         yCa+lqalzQDN6Lsqjjk0OH/tuo867DhZ1TdweX+v5Fx57OeSkzLs4OA1q08C/hQ1GPm7
-         SnWA==
-X-Gm-Message-State: AOAM5308jQJwJEf3KQIlbqIVvGZiNhICqN3OpIROpbeIkxJCIrlGAdoC
-        YgYuAi1cNla7py8zaOTsEdL5SalXymMERLmW8mSKFg58GWo8NHPZsjgxjDrwEZMJfut/l6Ody3+
-        H6BC7daegXFuzZ1q5oA3J
-X-Received: by 2002:a50:9e0f:: with SMTP id z15mr71006255ede.278.1641742547676;
-        Sun, 09 Jan 2022 07:35:47 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJz6+Ut8MXcM0LruUmoqR94sTrSyh9cNfhPFikVL/IpCxhbteEcX5XFcoKeEVZ+Q/l5xFYhssg==
-X-Received: by 2002:a50:9e0f:: with SMTP id z15mr71006246ede.278.1641742547530;
-        Sun, 09 Jan 2022 07:35:47 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
-        by smtp.gmail.com with ESMTPSA id gb17sm797986ejc.25.2022.01.09.07.35.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Jan 2022 07:35:47 -0800 (PST)
-Message-ID: <25fd03a5-4b85-a112-1897-0a6d662aa88d@redhat.com>
-Date:   Sun, 9 Jan 2022 16:35:46 +0100
+        id S232647AbiAIPiQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Sun, 9 Jan 2022 10:38:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231642AbiAIPiQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jan 2022 10:38:16 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EBBC06173F;
+        Sun,  9 Jan 2022 07:38:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1A468B80C72;
+        Sun,  9 Jan 2022 15:38:14 +0000 (UTC)
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.kernel.org (Postfix) with ESMTPSA id BC791C36AEB;
+        Sun,  9 Jan 2022 15:38:09 +0000 (UTC)
+Date:   Sun, 9 Jan 2022 15:44:04 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: adc: tsc2046: rework the trigger state
+ machine
+Message-ID: <20220109154404.75e0ed2f@jic23-huawei>
+In-Reply-To: <20220107074017.2762347-1-o.rempel@pengutronix.de>
+References: <20220107074017.2762347-1-o.rempel@pengutronix.de>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] iio: mma8452: Fix probe failing when an i2c_device_id is
- used
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-References: <20220106111414.66421-1-hdegoede@redhat.com>
- <20220109151043.54d92a79@jic23-huawei>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20220109151043.54d92a79@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Fri,  7 Jan 2022 08:40:17 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-On 1/9/22 16:10, Jonathan Cameron wrote:
-> On Thu,  6 Jan 2022 12:14:14 +0100
-> Hans de Goede <hdegoede@redhat.com> wrote:
+> Initially this was designed to:
+> | Fix sleeping in atomic context warning and a deadlock after iio_trigger_poll()
+> | call
+> |
+> | If iio_trigger_poll() is called after IRQ was disabled, we will call
+> | reenable_trigger() directly from hard IRQ or hrtimer context instead of
+> | IRQ thread. In this case we will run in to multiple issue as sleeping in atomic
+> | context and a deadlock.
+> |
+> | To avoid this issue, rework the trigger to use state machine. All state
+> | changes are done over the hrtimer, so it allows us to drop fsleep() and
+> | avoid the deadlock.
 > 
->> The mma8452_driver declares both of_match_table and i2c_driver.id_table
->> match-tables, but its probe() function only checked for of matches.
->>
->> Add support for i2c_device_id matches. This fixes the driver not loading
->> on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
->> instantiated by platform code using an i2c_device_id.
->>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> Hi Hans,
+> This issue was fixed by: 9020ef659885 ("iio: trigger: Fix a scheduling
+> whilst atomic issue seen on tsc2046").
 > 
-> At some point we'll want to get rid of the of_ specific stuff in here in
-> favour of generic firmware properties and I suspect at that time we'll
-> move the device name into the chip_info_table[] entries so that we
-> can just use device_get_match_data()
+> Even if the root cause of this issue probably will and can be fixed in the iio
+> core, this patch can be seen as clean-up to provide better internal state
+> machine.
+
+Probably want to update this text?
+
+A few comments below.
 > 
-> In the meantime this fix looks good to me.  Is there an appropriate
-> Fixes: tag?
+> Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
 
-I did a quick dive in the git history and the of_match_device() ||
-return -ENODEV behavior was introduced in:
+From above isn't this now fixed?  The cleanup here is just making things easier
+to follow I think...
 
-c3cdd6e48e35 ("iio: mma8452: refactor for seperating chip specific data")
-
-Regards,
-
-Hans
-
-
-
-
->> ---
->>  drivers/iio/accel/mma8452.c | 23 +++++++++++++++--------
->>  1 file changed, 15 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
->> index 09c7f10fefb6..c82841c0a7b3 100644
->> --- a/drivers/iio/accel/mma8452.c
->> +++ b/drivers/iio/accel/mma8452.c
->> @@ -1523,12 +1523,7 @@ static int mma8452_probe(struct i2c_client *client,
->>  	struct iio_dev *indio_dev;
->>  	int ret;
->>  	const struct of_device_id *match;
->> -
->> -	match = of_match_device(mma8452_dt_ids, &client->dev);
->> -	if (!match) {
->> -		dev_err(&client->dev, "unknown device model\n");
->> -		return -ENODEV;
->> -	}
->> +	const char *compatible;
->>  
->>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->>  	if (!indio_dev)
->> @@ -1537,7 +1532,19 @@ static int mma8452_probe(struct i2c_client *client,
->>  	data = iio_priv(indio_dev);
->>  	data->client = client;
->>  	mutex_init(&data->lock);
->> -	data->chip_info = match->data;
->> +
->> +	if (id) {
->> +		compatible = id->name;
->> +		data->chip_info = &mma_chip_info_table[id->driver_data];
->> +	} else {
->> +		match = of_match_device(mma8452_dt_ids, &client->dev);
->> +		if (!match) {
->> +			dev_err(&client->dev, "unknown device model\n");
->> +			return -ENODEV;
->> +		}
->> +		compatible = match->compatible;
->> +		data->chip_info = match->data;
->> +	}
->>  
->>  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
->>  	if (IS_ERR(data->vdd_reg))
->> @@ -1581,7 +1588,7 @@ static int mma8452_probe(struct i2c_client *client,
->>  	}
->>  
->>  	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
->> -		 match->compatible, data->chip_info->chip_id);
->> +		 compatible, data->chip_info->chip_id);
->>  
->>  	i2c_set_clientdata(client, indio_dev);
->>  	indio_dev->info = &mma8452_info;
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/iio/adc/ti-tsc2046.c | 102 ++++++++++++++++++++---------------
+>  1 file changed, 58 insertions(+), 44 deletions(-)
 > 
+> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> index d84ae6b008c1..91f6bd5effe7 100644
+> --- a/drivers/iio/adc/ti-tsc2046.c
+> +++ b/drivers/iio/adc/ti-tsc2046.c
+> @@ -123,14 +123,21 @@ struct tsc2046_adc_ch_cfg {
+>  	unsigned int oversampling_ratio;
+>  };
+>  
+> +enum tsc2046_state {
+> +	TSC2046_STATE_STANDBY,
+> +	TSC2046_STATE_ENABLE_IRQ_POLL,
+> +	TSC2046_STATE_POLL,
+> +	TSC2046_STATE_ENABLE_IRQ,
+> +};
+> +
+>  struct tsc2046_adc_priv {
+>  	struct spi_device *spi;
+>  	const struct tsc2046_adc_dcfg *dcfg;
+>  
+>  	struct iio_trigger *trig;
+>  	struct hrtimer trig_timer;
+> -	spinlock_t trig_lock;
+> -	unsigned int trig_more_count;
+> +	enum tsc2046_state state;
+> +	spinlock_t state_lock;
+>  
+>  	struct spi_transfer xfer;
+>  	struct spi_message msg;
+> @@ -411,21 +418,47 @@ static const struct iio_info tsc2046_adc_info = {
+>  	.update_scan_mode = tsc2046_adc_update_scan_mode,
+>  };
+>  
+> -static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
+> +static enum hrtimer_restart tsc2046_adc_timer(struct hrtimer *hrtimer)
+>  {
+>  	struct tsc2046_adc_priv *priv = container_of(hrtimer,
+>  						     struct tsc2046_adc_priv,
+>  						     trig_timer);
+>  	unsigned long flags;
+>  
+> -	spin_lock_irqsave(&priv->trig_lock, flags);
+> -
+> -	disable_irq_nosync(priv->spi->irq);
+> -
+> -	priv->trig_more_count++;
+> -	iio_trigger_poll(priv->trig);
+> -
+> -	spin_unlock_irqrestore(&priv->trig_lock, flags);
+> +	spin_lock_irqsave(&priv->state_lock, flags);
+> +	switch (priv->state) {
+> +	case TSC2046_STATE_ENABLE_IRQ_POLL:
+> +		/*
+> +		 * IRQ handler called iio_trigger_poll() to sample ADC.
+> +		 * Here we
+> +		 * - re-enable IRQs
+> +		 * - start hrtimer for timeout if no IRQ will occur
+> +		 */
+> +		priv->state = TSC2046_STATE_POLL;
+> +		enable_irq(priv->spi->irq);
+
+I comment on this below, but I'm not sure why you don't move the enable_irq()
+here out of this timer function and then have the first entry of the timer
+go directly to TSC2046_STATE_POLL after a longer initial wait.
+
+It's been a long time since I looked at this, so perhaps I'm missing the
+point.  What you have here works as far as I can see, it just seems to push
+more than necessary into the state machine.
+
+> +		hrtimer_start(&priv->trig_timer,
+> +			      ns_to_ktime(priv->scan_interval_us *
+> +					  NSEC_PER_USEC),
+> +			      HRTIMER_MODE_REL_SOFT);
+> +		break;
+> +	case TSC2046_STATE_POLL:
+> +		disable_irq_nosync(priv->spi->irq);
+> +		priv->state = TSC2046_STATE_ENABLE_IRQ;
+> +		/* iio_trigger_poll() starts hrtimer */
+> +		iio_trigger_poll(priv->trig);
+> +		break;
+> +	case TSC2046_STATE_ENABLE_IRQ:
+> +		priv->state = TSC2046_STATE_STANDBY;
+> +		enable_irq(priv->spi->irq);
+> +		break;
+> +	case TSC2046_STATE_STANDBY:
+> +		fallthrough;
+> +	default:
+> +		dev_warn(&priv->spi->dev, "Got unexpected state: %i\n",
+> +			 priv->state);
+> +		break;
+> +	}
+> +	spin_unlock_irqrestore(&priv->state_lock, flags);
+>  
+>  	return HRTIMER_NORESTART;
+>  }
+> @@ -434,16 +467,17 @@ static irqreturn_t tsc2046_adc_irq(int irq, void *dev_id)
+>  {
+>  	struct iio_dev *indio_dev = dev_id;
+>  	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+> -
+> -	spin_lock(&priv->trig_lock);
+> +	unsigned long flags;
+>  
+>  	hrtimer_try_to_cancel(&priv->trig_timer);
+>  
+> -	priv->trig_more_count = 0;
+> +	spin_lock_irqsave(&priv->state_lock, flags);x`
+>  	disable_irq_nosync(priv->spi->irq);
+> -	iio_trigger_poll(priv->trig);
+> +	priv->state = TSC2046_STATE_ENABLE_IRQ_POLL;
+>  
+> -	spin_unlock(&priv->trig_lock);
+> +	/* iio_trigger_poll() starts hrtimer */
+> +	iio_trigger_poll(priv->trig);
+> +	spin_unlock_irqrestore(&priv->state_lock, flags);
+>  
+>  	return IRQ_HANDLED;
+>  }
+> @@ -452,37 +486,16 @@ static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
+>  {
+>  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+>  	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+> -	unsigned long flags;
+> -	int delta;
+> +	ktime_t tim;
+>  
+>  	/*
+>  	 * We can sample it as fast as we can, but usually we do not need so
+>  	 * many samples. Reduce the sample rate for default (touchscreen) use
+>  	 * case.
+> -	 * Currently we do not need a highly precise sample rate. It is enough
+> -	 * to have calculated numbers.
+> -	 */
+> -	delta = priv->scan_interval_us - priv->time_per_scan_us;
+> -	if (delta > 0)
+> -		fsleep(delta);
+> -
+> -	spin_lock_irqsave(&priv->trig_lock, flags);
+> -
+> -	/*
+> -	 * We need to trigger at least one extra sample to detect state
+> -	 * difference on ADC side.
+>  	 */
+> -	if (!priv->trig_more_count) {
+> -		int timeout_ms = DIV_ROUND_UP(priv->scan_interval_us,
+> -					      USEC_PER_MSEC);
+> -
+> -		hrtimer_start(&priv->trig_timer, ms_to_ktime(timeout_ms),
+> -			      HRTIMER_MODE_REL_SOFT);
+> -	}
+> -
+> -	enable_irq(priv->spi->irq);
+> -
+> -	spin_unlock_irqrestore(&priv->trig_lock, flags);
+> +	tim = ns_to_ktime((priv->scan_interval_us - priv->time_per_scan_us) *
+> +			  NSEC_PER_USEC);
+> +	hrtimer_start(&priv->trig_timer, tim, HRTIMER_MODE_REL_SOFT);
+
+This moves enabling the irq to the first instance of the timer - is that ever too late?
+
+>  }
+>  
+>  static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
+> @@ -493,8 +506,8 @@ static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
+>  	if (enable) {
+>  		enable_irq(priv->spi->irq);
+>  	} else {
+> +		hrtimer_cancel(&priv->trig_timer);
+
+So this will wait for the callback to finish.  However, is there a chance
+of an interrupt just after this but before disable_irq that ends up
+starting the timer again?
+
+>  		disable_irq(priv->spi->irq);
+> -		hrtimer_try_to_cancel(&priv->trig_timer);
+>  	}
+>  
+>  	return 0;
+> @@ -668,10 +681,11 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+>  	iio_trigger_set_drvdata(trig, indio_dev);
+>  	trig->ops = &tsc2046_adc_trigger_ops;
+>  
+> -	spin_lock_init(&priv->trig_lock);
+> +	spin_lock_init(&priv->state_lock);
+> +	priv->state = TSC2046_STATE_STANDBY;
+>  	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
+>  		     HRTIMER_MODE_REL_SOFT);
+> -	priv->trig_timer.function = tsc2046_adc_trig_more;
+> +	priv->trig_timer.function = tsc2046_adc_timer;
+>  
+>  	ret = devm_iio_trigger_register(dev, trig);
+>  	if (ret) {
 

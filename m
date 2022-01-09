@@ -2,99 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 247CF488A24
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jan 2022 16:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5FD488A44
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jan 2022 16:35:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233147AbiAIPUH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Jan 2022 10:20:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbiAIPUG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jan 2022 10:20:06 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A35C06173F;
-        Sun,  9 Jan 2022 07:20:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 38EDDB80D51;
-        Sun,  9 Jan 2022 15:20:05 +0000 (UTC)
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.kernel.org (Postfix) with ESMTPSA id A529EC36AEB;
-        Sun,  9 Jan 2022 15:20:01 +0000 (UTC)
-Date:   Sun, 9 Jan 2022 15:25:57 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: adc: tsc2046: fix memory corruption by
- preventing array overflow
-Message-ID: <20220109152557.74f06d2d@jic23-huawei>
-In-Reply-To: <20220107081401.2816357-1-o.rempel@pengutronix.de>
-References: <20220107081401.2816357-1-o.rempel@pengutronix.de>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        id S235913AbiAIPfv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Jan 2022 10:35:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:35435 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231642AbiAIPfv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jan 2022 10:35:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1641742550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=OISolA07lAEXu3SciQEzFRjvL1qyK4ZBffrvsGOgRIg=;
+        b=MdpIDwtvr5xxsrcDWRJ8tquJnJl2WFEibq5rIQB1UBG5zfCXX2OC/z0c20sH6U5fZUUBVG
+        9wVskTO0vmbZSdA6flNQXLraEe1hd6jsnKHjyA7wFsy/kqQQsaVvvpp/SgnvwSKY1EDLsD
+        14RLxbhrvtYyEuNtp4ZJj2eNWAjkCv0=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-634-IVjVf-mXOHa_zIPcw9UanQ-1; Sun, 09 Jan 2022 10:35:49 -0500
+X-MC-Unique: IVjVf-mXOHa_zIPcw9UanQ-1
+Received: by mail-ed1-f72.google.com with SMTP id y10-20020a056402358a00b003f88b132849so8331321edc.0
+        for <linux-iio@vger.kernel.org>; Sun, 09 Jan 2022 07:35:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=OISolA07lAEXu3SciQEzFRjvL1qyK4ZBffrvsGOgRIg=;
+        b=a8tKH4Xp8DItNX1xfz/s5w6ctYdkE8+CDLMNQ7NEzAOje9bDzSPaetj/Zo7UW8zXFj
+         MNNDbdxrhzmur37/Auu/O+zwS0K/NH4gC4QPRI0h+qUvRZEox4vBAC2Y8ptbJkml8ttw
+         8IbklOhhpLo9y4ro92ScI6vlFJS5n613hLEWobmHttHtRJQhmji7UoNMFkRl2yaHfKSA
+         8sm9F1bc6bpXxpm/YaRisv54l/oQfiOmzhIVFKM+CwS0v/+e00GYq3qX3GAe8d3QxM/i
+         yCa+lqalzQDN6Lsqjjk0OH/tuo867DhZ1TdweX+v5Fx57OeSkzLs4OA1q08C/hQ1GPm7
+         SnWA==
+X-Gm-Message-State: AOAM5308jQJwJEf3KQIlbqIVvGZiNhICqN3OpIROpbeIkxJCIrlGAdoC
+        YgYuAi1cNla7py8zaOTsEdL5SalXymMERLmW8mSKFg58GWo8NHPZsjgxjDrwEZMJfut/l6Ody3+
+        H6BC7daegXFuzZ1q5oA3J
+X-Received: by 2002:a50:9e0f:: with SMTP id z15mr71006255ede.278.1641742547676;
+        Sun, 09 Jan 2022 07:35:47 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJz6+Ut8MXcM0LruUmoqR94sTrSyh9cNfhPFikVL/IpCxhbteEcX5XFcoKeEVZ+Q/l5xFYhssg==
+X-Received: by 2002:a50:9e0f:: with SMTP id z15mr71006246ede.278.1641742547530;
+        Sun, 09 Jan 2022 07:35:47 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1? (2001-1c00-0c1e-bf00-1db8-22d3-1bc9-8ca1.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1db8:22d3:1bc9:8ca1])
+        by smtp.gmail.com with ESMTPSA id gb17sm797986ejc.25.2022.01.09.07.35.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Jan 2022 07:35:47 -0800 (PST)
+Message-ID: <25fd03a5-4b85-a112-1897-0a6d662aa88d@redhat.com>
+Date:   Sun, 9 Jan 2022 16:35:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] iio: mma8452: Fix probe failing when an i2c_device_id is
+ used
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+References: <20220106111414.66421-1-hdegoede@redhat.com>
+ <20220109151043.54d92a79@jic23-huawei>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20220109151043.54d92a79@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  7 Jan 2022 09:14:01 +0100
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+Hi,
 
-> On one side we have indio_dev->num_channels includes all physical channels +
-> timestamp channel. On other side we have an array allocated only for
-> physical channels. So, fix memory corruption by ARRAY_SIZE() instead of
-> num_channels variable.
+On 1/9/22 16:10, Jonathan Cameron wrote:
+> On Thu,  6 Jan 2022 12:14:14 +0100
+> Hans de Goede <hdegoede@redhat.com> wrote:
 > 
-> Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Hi Olesij,
-
-Have you managed to make this occur, or is it inspection only?
-
-I 'think' (it's been a while since I looked at the particular code) that the timestamp
-bit in active_scan_mask will never actually be set because we handle that as a
-separate flag.
-
-So it is indeed an efficiency improvement to not check that bit but I don't think
-it's a bug to do so.  More than possible I'm missing something though!
-
-This one had me quite worried when I first read it because this is a very common
-pattern to see in IIO drivers.
-
-Jonathan
-
-> ---
->  drivers/iio/adc/ti-tsc2046.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>> The mma8452_driver declares both of_match_table and i2c_driver.id_table
+>> match-tables, but its probe() function only checked for of matches.
+>>
+>> Add support for i2c_device_id matches. This fixes the driver not loading
+>> on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
+>> instantiated by platform code using an i2c_device_id.
+>>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> Hi Hans,
 > 
-> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-> index 91f6bd5effe7..8126084616e6 100644
-> --- a/drivers/iio/adc/ti-tsc2046.c
-> +++ b/drivers/iio/adc/ti-tsc2046.c
-> @@ -395,7 +395,7 @@ static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
->  	mutex_lock(&priv->slock);
->  
->  	size = 0;
-> -	for_each_set_bit(ch_idx, active_scan_mask, indio_dev->num_channels) {
-> +	for_each_set_bit(ch_idx, active_scan_mask, ARRAY_SIZE(priv->l)) {
->  		size += tsc2046_adc_group_set_layout(priv, group, ch_idx);
->  		tsc2046_adc_group_set_cmd(priv, group, ch_idx);
->  		group++;
-> @@ -561,7 +561,7 @@ static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
->  	 * enabled.
->  	 */
->  	size = 0;
-> -	for (ch_idx = 0; ch_idx < priv->dcfg->num_channels; ch_idx++)
-> +	for (ch_idx = 0; ch_idx < ARRAY_SIZE(priv->l); ch_idx++)
->  		size += tsc2046_adc_group_set_layout(priv, ch_idx, ch_idx);
->  
->  	priv->tx = devm_kzalloc(&priv->spi->dev, size, GFP_KERNEL);
+> At some point we'll want to get rid of the of_ specific stuff in here in
+> favour of generic firmware properties and I suspect at that time we'll
+> move the device name into the chip_info_table[] entries so that we
+> can just use device_get_match_data()
+> 
+> In the meantime this fix looks good to me.  Is there an appropriate
+> Fixes: tag?
+
+I did a quick dive in the git history and the of_match_device() ||
+return -ENODEV behavior was introduced in:
+
+c3cdd6e48e35 ("iio: mma8452: refactor for seperating chip specific data")
+
+Regards,
+
+Hans
+
+
+
+
+>> ---
+>>  drivers/iio/accel/mma8452.c | 23 +++++++++++++++--------
+>>  1 file changed, 15 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+>> index 09c7f10fefb6..c82841c0a7b3 100644
+>> --- a/drivers/iio/accel/mma8452.c
+>> +++ b/drivers/iio/accel/mma8452.c
+>> @@ -1523,12 +1523,7 @@ static int mma8452_probe(struct i2c_client *client,
+>>  	struct iio_dev *indio_dev;
+>>  	int ret;
+>>  	const struct of_device_id *match;
+>> -
+>> -	match = of_match_device(mma8452_dt_ids, &client->dev);
+>> -	if (!match) {
+>> -		dev_err(&client->dev, "unknown device model\n");
+>> -		return -ENODEV;
+>> -	}
+>> +	const char *compatible;
+>>  
+>>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>>  	if (!indio_dev)
+>> @@ -1537,7 +1532,19 @@ static int mma8452_probe(struct i2c_client *client,
+>>  	data = iio_priv(indio_dev);
+>>  	data->client = client;
+>>  	mutex_init(&data->lock);
+>> -	data->chip_info = match->data;
+>> +
+>> +	if (id) {
+>> +		compatible = id->name;
+>> +		data->chip_info = &mma_chip_info_table[id->driver_data];
+>> +	} else {
+>> +		match = of_match_device(mma8452_dt_ids, &client->dev);
+>> +		if (!match) {
+>> +			dev_err(&client->dev, "unknown device model\n");
+>> +			return -ENODEV;
+>> +		}
+>> +		compatible = match->compatible;
+>> +		data->chip_info = match->data;
+>> +	}
+>>  
+>>  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+>>  	if (IS_ERR(data->vdd_reg))
+>> @@ -1581,7 +1588,7 @@ static int mma8452_probe(struct i2c_client *client,
+>>  	}
+>>  
+>>  	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
+>> -		 match->compatible, data->chip_info->chip_id);
+>> +		 compatible, data->chip_info->chip_id);
+>>  
+>>  	i2c_set_clientdata(client, indio_dev);
+>>  	indio_dev->info = &mma8452_info;
+> 
 

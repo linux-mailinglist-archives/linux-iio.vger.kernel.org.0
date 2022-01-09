@@ -2,200 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB12C48862D
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jan 2022 21:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E4F04888C3
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jan 2022 11:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233007AbiAHUyO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 8 Jan 2022 15:54:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50916 "EHLO
+        id S231963AbiAIKqN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Jan 2022 05:46:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233171AbiAHUx6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 8 Jan 2022 15:53:58 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F770C061763;
-        Sat,  8 Jan 2022 12:53:53 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id bp39so9570624qtb.6;
-        Sat, 08 Jan 2022 12:53:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1iY9Z6nxGuMrblVO4UQYMXVHJL6H5huSq3eeUbaBoIY=;
-        b=m4OsGMd/UUpI/hzhFvRhmejWMAe330FeHORHkKnNdXejyL7pKY0hzKalTaxP1Ah1Od
-         YI/ncXbVChN3DZYDEAPXICS4eWv5yiIOUYi3ZGHMxYxEPjoi+9pmReJduhoaO8HDNCru
-         7WUXkOyrYeRvV6EM3fvDZeBx6EFPA2c9qlMBHB6jyE8RVi9BzFMANDVXLvE2t6NGQYtB
-         cmFmN8yDQ+X+qGWARBMzpBy68DOlicmIYY4AdPBKTPaI9lscy3kN9HQPpoLPaAEbL6Wn
-         vcsDenX37jqmJW7mt5MsyOHrUamLJMkC5LW7w5NRIDXBV7s1jVjk1nm7Gr/tRdWdirko
-         Bg2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1iY9Z6nxGuMrblVO4UQYMXVHJL6H5huSq3eeUbaBoIY=;
-        b=oXlcTU7zBZ1eQ6B1UJYQ9EftRBgNlZuQVa+2/0cqNLSsC5RGE4YTMw3Q42xLtGgv34
-         AdXZAmHBMa6ak8qFo/pzZZYuCHUhYzo63JuF/QCikQ/qCxmLzSv5wiHHuzS5b6uyXSRV
-         ZJ6fFXWOpOwzMmLIG0pFW9FWNp5wgYYeP3hdwcK6szvqZONd0Cc8v6dfqYQ+PrS+zNAk
-         o3K8woXjkL6LQoRxJ3ZadYEeJMaKh462vTqtEyEQR0dzS1Hlwjjiuku5ejTbh2g8DEfa
-         0ukMtC6aFrmdXMHeZEwKZz020wN5eJfVoiYfcBnG3V88V+3Nv+HQFOeNwzjM6ECOoY1/
-         0Nbg==
-X-Gm-Message-State: AOAM533TYJPlqjmOXogCtV7RuHYdLnGx85xgkYIR1b1bEEthDoT6Ku0d
-        V51hyw5bFUUqqJeuKvS4Lj8=
-X-Google-Smtp-Source: ABdhPJw8W9zSUtuQ9Yn7T8AGM60e9YkZH1RAD8IHFtS5SSRM53FS4tAAf/YxXwBvAnwZZk5Jg1fYlA==
-X-Received: by 2002:a05:622a:1713:: with SMTP id h19mr61036653qtk.464.1641675232255;
-        Sat, 08 Jan 2022 12:53:52 -0800 (PST)
-Received: from shaak.. (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id p16sm1650377qtx.19.2022.01.08.12.53.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Jan 2022 12:53:51 -0800 (PST)
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
-        andy.shevchenko@gmail.com, lars@metafoo.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v12 16/16] dt-bindings: iio: afe: add bindings for temperature transducers
-Date:   Sat,  8 Jan 2022 15:53:19 -0500
-Message-Id: <20220108205319.2046348-17-liambeguin@gmail.com>
-X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20220108205319.2046348-1-liambeguin@gmail.com>
-References: <20220108205319.2046348-1-liambeguin@gmail.com>
+        with ESMTP id S229604AbiAIKqN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Jan 2022 05:46:13 -0500
+Received: from balrog.mythic-beasts.com (balrog.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF35AC06173F
+        for <linux-iio@vger.kernel.org>; Sun,  9 Jan 2022 02:46:12 -0800 (PST)
+Received: from [81.101.6.87] (port=35362 helo=jic23-huawei)
+        by balrog.mythic-beasts.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <jic23@jic23.retrosnub.co.uk>)
+        id 1n6ViA-000467-HC; Sun, 09 Jan 2022 10:46:10 +0000
+Date:   Sun, 9 Jan 2022 10:52:01 +0000
+From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v10 0/5] Expand Semtech SAR Sensors support
+Message-ID: <20220109105135.59464216@jic23-huawei>
+In-Reply-To: <20220101203817.290512-1-gwendal@chromium.org>
+References: <20220101203817.290512-1-gwendal@chromium.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-BlackCat-Spam-Score: 4
+X-Spam-Status: No, score=0.4
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-An ADC is often used to measure other quantities indirectly.
-This binding describe one case, the measurement of a temperature
-through a temperature transducer (either voltage or current).
+On Sat,  1 Jan 2022 12:38:12 -0800
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Peter Rosin <peda@axentia.se>
----
- .../iio/afe/temperature-transducer.yaml       | 114 ++++++++++++++++++
- 1 file changed, 114 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+> Add a new Semtech SAR sensor SX9324.
+> Instead of recopying 1/3 of the sx9310 driver, move common code in a new
+> file. It will be used again for the next sensor, SX9360.
+Series applied to the togreg branch of iio.git.
+Until the merge window is done this will only be pushed out as testing
+and I'll be rebasing on rc1 once available.
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-new file mode 100644
-index 000000000000..cfbf5350db27
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-@@ -0,0 +1,114 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Temperature Transducer
-+
-+maintainers:
-+  - Liam Beguin <liambeguin@gmail.com>
-+
-+description: |
-+  A temperature transducer is a device that converts a thermal quantity
-+  into any other physical quantity. This binding applies to temperature to
-+  voltage (like the LTC2997), and temperature to current (like the AD590)
-+  linear transducers.
-+  In both cases these are assumed to be connected to a voltage ADC.
-+
-+  When an io-channel measures the output voltage of a temperature analog front
-+  end such as a temperature transducer, the interesting measurement is almost
-+  always the corresponding temperature, not the voltage output. This binding
-+  describes such a circuit.
-+
-+  The general transfer function here is (using SI units)
-+    V(T) = Rsense * Isense(T)
-+    T = (Isense(T) / alpha) + offset
-+    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
-+
-+  When using a temperature to voltage transducer, Rsense is set to 1.
-+
-+  The following circuits show a temperature to current and a temperature to
-+  voltage transducer that can be used with this binding.
-+
-+           VCC
-+          -----
-+            |
-+        +---+---+
-+        | AD590 |                               VCC
-+        +---+---+                              -----
-+            |                                    |
-+            V proportional to T             +----+----+
-+            |                          D+ --+         |
-+            +---- Vout                      | LTC2997 +--- Vout
-+            |                          D- --+         |
-+        +---+----+                          +---------+
-+        | Rsense |                               |
-+        +---+----+                             -----
-+            |                                   GND
-+          -----
-+           GND
-+
-+properties:
-+  compatible:
-+    const: temperature-transducer
-+
-+  io-channels:
-+    maxItems: 1
-+    description: |
-+      Channel node of a voltage io-channel.
-+
-+  '#io-channel-cells':
-+    const: 0
-+
-+  sense-offset-millicelsius:
-+    description: |
-+      Temperature offset.
-+      This offset is commonly used to convert from Kelvins to degrees Celsius.
-+      In that case, sense-offset-millicelsius would be set to <(-273150)>.
-+    default: 0
-+
-+  sense-resistor-ohms:
-+    description: |
-+      The sense resistor.
-+      By default sense-resistor-ohms cancels out the resistor making the
-+      circuit behave like a temperature transducer.
-+    default: 1
-+
-+  alpha-ppm-per-celsius:
-+    description: |
-+      Sometimes referred to as output gain, slope, or temperature coefficient.
-+
-+      alpha is expressed in parts per million which can be micro-amps per
-+      degrees Celsius or micro-volts per degrees Celsius. The is the main
-+      characteristic of a temperature transducer and should be stated in the
-+      datasheet.
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - io-channels
-+  - alpha-ppm-per-celsius
-+
-+examples:
-+  - |
-+    ad950: temperature-sensor-0 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 3>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        sense-resistor-ohms = <8060>;
-+        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
-+    };
-+  - |
-+    znq_tmp: temperature-sensor-1 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 2>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
-+    };
-+...
--- 
-2.34.0
+Thanks,
+
+Jonathan
+
+> 
+> Major changes in v10:
+>   Fix spelling in comment, unnecessary empty lines.
+>   Add symbol namespace.
+> Major changes in v9:
+>   Use simple pm macro
+>   Unify use of returning on default
+>   Add space before '}'
+>   Use sysfs_emit instead of printf.
+> 
+> Major changes in v8:
+>   Fix mismatch between documentation and code (setting vs setup)
+>   Use dev_get_drvdata to access iio device structure.
+> 
+> Major changes in v7:
+>   Fix one remaining syntax error in device tree binding documentation.
+> 
+> Major changes in v6:
+>   Fix syntax errors in device tree binding documentation.
+>   Drop of_match_ptr and ACPI_PTR protections.
+>   Fix unused variable warning.
+> 
+> Major changes in v5:
+>   Use iwyu to cleanup include files.
+>   Use dev_err_probe() in probe routine
+>   Add attribute to shift irq status register, not common among all
+>     sensors.
+>   Fix long line.
+> 
+> Major changes in v4:
+>   Use chip_info instead of info in common data.
+>   Returns an error when setting negative sysfs entries
+>   Fix cut and paste errors, credit.
+> 
+> Major changes in v3:
+>   Fix some error in binding descriptions and setting
+>   Fix invalid register constant name.
+> 
+> Major changes in v2:
+>   Better interface between common code and drivers
+>   Document SX9324 phase configuration
+> 
+> Gwendal Grignou (5):
+>   iio: sx9310: Add frequency in read_avail
+>   iio: sx9310: Extract common Semtech sensor logic
+>   iio: proximity: Add SX9324 support
+>   dt-bindings: iio: Add sx9324 binding
+>   iio: sx9324: Add dt_binding support
+> 
+>  .../ABI/testing/sysfs-bus-iio-sx9324          |   28 +
+>  .../iio/proximity/semtech,sx9324.yaml         |  161 +++
+>  drivers/iio/proximity/Kconfig                 |   20 +
+>  drivers/iio/proximity/Makefile                |    2 +
+>  drivers/iio/proximity/sx9310.c                |  741 ++----------
+>  drivers/iio/proximity/sx9324.c                | 1068 +++++++++++++++++
+>  drivers/iio/proximity/sx_common.c             |  572 +++++++++
+>  drivers/iio/proximity/sx_common.h             |  157 +++
+>  8 files changed, 2120 insertions(+), 629 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-sx9324
+>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+>  create mode 100644 drivers/iio/proximity/sx9324.c
+>  create mode 100644 drivers/iio/proximity/sx_common.c
+>  create mode 100644 drivers/iio/proximity/sx_common.h
+> 
 

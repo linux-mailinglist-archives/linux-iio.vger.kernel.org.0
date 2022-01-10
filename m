@@ -2,101 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C888E4890A0
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 08:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B43864893BC
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 09:39:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239185AbiAJHTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 02:19:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46940 "EHLO
+        id S241378AbiAJIie (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 03:38:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233081AbiAJHTw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 02:19:52 -0500
+        with ESMTP id S241618AbiAJIgb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 03:36:31 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF99FC06173F
-        for <linux-iio@vger.kernel.org>; Sun,  9 Jan 2022 23:19:51 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E25C06118A
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 00:36:30 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n6oy1-0003iZ-RM; Mon, 10 Jan 2022 08:19:45 +0100
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n6oy1-00022Z-Ab; Mon, 10 Jan 2022 08:19:45 +0100
-Date:   Mon, 10 Jan 2022 08:19:45 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n6qAH-0005bt-1h; Mon, 10 Jan 2022 09:36:29 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n6qAF-009URQ-6A; Mon, 10 Jan 2022 09:36:26 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n6qAD-0003xw-Rb; Mon, 10 Jan 2022 09:36:25 +0100
+Date:   Mon, 10 Jan 2022 09:36:25 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>
-Subject: Re: [PATCH v1 1/1] iio: adc: tsc2046: fix memory corruption by
- preventing array overflow
-Message-ID: <20220110071945.GB3326@pengutronix.de>
-References: <20220107081401.2816357-1-o.rempel@pengutronix.de>
- <20220109152557.74f06d2d@jic23-huawei>
+        Syed Nayyar Waris <syednwaris@gmail.com>
+Subject: Re: [PATCH] counter: 104-quad-8: Add COMPILE_TEST depends
+Message-ID: <20220110083625.5ue7k54h3fcujak6@pengutronix.de>
+References: <20220105094137.259111-1-vilhelm.gray@gmail.com>
+ <20220109212251.xzwilquctuij5lev@pengutronix.de>
+ <YdvF0teoR/ymJJ7e@shinobu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uyrcota5ecpueb4e"
 Content-Disposition: inline
-In-Reply-To: <20220109152557.74f06d2d@jic23-huawei>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 08:05:41 up 30 days, 15:51, 44 users,  load average: 0.25, 0.45,
- 0.31
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ore@pengutronix.de
+In-Reply-To: <YdvF0teoR/ymJJ7e@shinobu>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
 
-On Sun, Jan 09, 2022 at 03:25:57PM +0000, Jonathan Cameron wrote:
-> On Fri,  7 Jan 2022 09:14:01 +0100
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > On one side we have indio_dev->num_channels includes all physical channels +
-> > timestamp channel. On other side we have an array allocated only for
-> > physical channels. So, fix memory corruption by ARRAY_SIZE() instead of
-> > num_channels variable.
-> > 
-> > Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Hi Olesij,
-> 
-> Have you managed to make this occur, or is it inspection only?
+--uyrcota5ecpueb4e
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes, this bug has eaten my rx_one and tx_one pointers on probe. I wonted
-to use this buffers for read_raw and noticed that they do not exist.
+On Mon, Jan 10, 2022 at 02:36:54PM +0900, William Breathitt Gray wrote:
+> On Sun, Jan 09, 2022 at 10:22:51PM +0100, Uwe Kleine-K=F6nig wrote:
+> > On Wed, Jan 05, 2022 at 06:41:37PM +0900, William Breathitt Gray wrote:
+> > > 104_QUAD_8 depends on X86, but compiles fine on ARCH=3Darm. This patch
+> > > adds support for COMPILE_TEST which is useful for compile testing code
+> > > changes to the driver and Counter subsystem.
+> > >=20
+> > > Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > > Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> > > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+> > > ---
+> > >  drivers/counter/Kconfig | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> > > index 3dcdb681c4e4..5edd155f1911 100644
+> > > --- a/drivers/counter/Kconfig
+> > > +++ b/drivers/counter/Kconfig
+> > > @@ -14,7 +14,7 @@ if COUNTER
+> > > =20
+> > >  config 104_QUAD_8
+> > >  	tristate "ACCES 104-QUAD-8 driver"
+> > > -	depends on PC104 && X86
+> > > +	depends on (PC104 && X86) || COMPILE_TEST
+> >=20
+> > The driver uses inb and friends. Without looking I wonder if there is
+> > something like HAVE_IO or similar this needs to depend on for that?
+> >=20
+> > Best regards
+> > Uwe
+> >=20
+> > --=20
+> > Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
+    |
+> > Industrial Linux Solutions                 | https://www.pengutronix.de=
+/ |
+>=20
+> If I'm not mistaken, on unsupported architectures include/linux/io.h
+> will pull in include/asm-generic/io.h which has default implementations
+> for inb and friends if they are not otherwise defined. It doesn't look
+> like these default implementations are guarded by a Kconfig setting so
+> we should be fine in this case.
 
-> I 'think' (it's been a while since I looked at the particular code) that the timestamp
-> bit in active_scan_mask will never actually be set because we handle that as a
-> separate flag.
+Looks right, thanks for checking
 
-I didn't tested if active_scan_mask will trigger this issue as well, but
-It it looked safer to me, to avoid this issue in both places. Even if on
-of it is only theoretical.
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-> So it is indeed an efficiency improvement to not check that bit but I don't think
-> it's a bug to do so.  More than possible I'm missing something though!
-> 
-> This one had me quite worried when I first read it because this is a very common
-> pattern to see in IIO drivers.
+Best regards
+Uwe
 
-I was thinking about this as well, because big part of this code was
-inspired by other drivers. But i didn't reviewed other places so far.
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--uyrcota5ecpueb4e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHb8AYACgkQwfwUeK3K
+7AkU0gf/Tou5aDo6o6Ys29KstpcB9cNlDIlSafetB4vgWSlqsbcB/vscAlyIRZIW
+fRyfB0stIfYA2uUwIlFv2TgF863ltYoGi9plEPvBeG8dSvZWhEh9p/9d5YSGsV2m
+mkprDXAdfqKrCyTBlubobzoSpkPrleRHRcf1K17bBvSKj2zc7Jcq8Rq4pb4s39i6
+oWTK9ZgoOycJNREIMgzX9SrETn/CWqVeUv+dSlI0byNEm97sLO8mAs9yFBIhQtRx
+eJkmq4TvAuiqW7yXMoL/knuFfmi1G6tDqRLlyeFIEQEi/ygz3tKUStMenJ/tzPov
+qp/+xQcmQGbpyuNrnu/jEfTbPUcxmA==
+=3/m+
+-----END PGP SIGNATURE-----
+
+--uyrcota5ecpueb4e--

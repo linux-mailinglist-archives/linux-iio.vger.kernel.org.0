@@ -2,83 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 639DC489CD4
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 16:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 063BC489DEA
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 17:55:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236634AbiAJPy0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 10:54:26 -0500
-Received: from mga01.intel.com ([192.55.52.88]:50108 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236627AbiAJPy0 (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 Jan 2022 10:54:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641830066; x=1673366066;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rX4Yeo72fBejr7EJ901BTYv9hMR6JNoo7ubEPirAX/4=;
-  b=jRLP6ZF4dTgCf8yn7Nzdo4BSEIOfY5KupehSp510JoqvpHHeSvuNIyZf
-   gWT2mjEe6H530kNN4DABAjhxPQpv56/twoe5qbq09+ZVl2nY/AbWX9CMs
-   7W8zBjYQw4JPL/lXxoL/yvxSEYBNcPWusK1aipLbeywU5j71S9iAkUlTo
-   ZNVpeFH2Mriy2PWx/UFIna5fI3yvshygZWELbfl2b3dhqm+kVWW0M0wzp
-   QuclCLnOJFLkOefGp4oDHbmGs+NBqtl2UqOCgzVuN/iQAG2Fw751cpAVa
-   +Vpk7+5vElQUU36zcobRPlqArLm4/6LOS/GJbC3LYZFh4jQ7RpZ2O2usV
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10222"; a="267581623"
-X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
-   d="scan'208";a="267581623"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 07:54:25 -0800
-X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
-   d="scan'208";a="490034711"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 07:54:23 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1n6wyr-008v0u-2w;
-        Mon, 10 Jan 2022 17:53:09 +0200
-Date:   Mon, 10 Jan 2022 17:53:08 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: st_sensors: don't always auto-enable I2C and SPI
- interface drivers
-Message-ID: <YdxWZEz1GXXxQ+7h@smile.fi.intel.com>
-References: <20220110152432.3799227-1-nikita.yoush@cogentembedded.com>
+        id S237817AbiAJQzx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 11:55:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237774AbiAJQzx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 11:55:53 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04F6DC06173F;
+        Mon, 10 Jan 2022 08:55:53 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id a18so55048527edj.7;
+        Mon, 10 Jan 2022 08:55:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=98sup9AskCi3qrpoRgt3k45yyLCXHbNb1fOzgOiWQkI=;
+        b=Hp7as+pB7scND40+9zHOS+E/0vGqM6rA6MKw9Kg6M+3YOoLRyTiO09jylvzughqCNl
+         RPfQZ2HiuaX2I4ubtPFrSBUvi+TPKHDz1pitpJvJiAAy3UNORJFRVcN4Sgl2kdPRqRJO
+         IuyZfCS/R+kHZOADbXOH+WOqjqIUVlQUia3lWUTAO0f1FoY6Aw7fm/WSpZUGzeKVclQ5
+         x685KEGl2QewISnn7Hd4/q2cSYYwm1p65FAc3LPnrdhvq4dHN91opjguTjSQq/+3Xg1l
+         663z+AFaNqacmZna540Pt2maEFVge5sgBBOjmvw8tDS0yYyu9dysUhcUeQ8rELhf9h34
+         PQ3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=98sup9AskCi3qrpoRgt3k45yyLCXHbNb1fOzgOiWQkI=;
+        b=N2ibwQNb7UpUa01ma4f15AyBV9ArVN4sI7f4YAsxB6ubLJp04lHPP1qTwb4dtKVNuT
+         MDctBzErc7Y2PuJmyHGqggKGDkqBC1D3uvx1VQ/G3gtX4RrcjVMx++rWAswrErTGMbtf
+         +QCv5UdVDMiuGgt3CT6kkGbHoOo/h+pK7SxQgJpxzzDWuEFAN0OfusdLjfW6p/eknljH
+         undZf/S+5ZFNDXHRAp16chzTk3Su/T9LsRkbU4dbPBU7hVz+uXxIzd+x7Czsxxk5OT5n
+         qCzqZdkRjikMlHduoHw8d5c2g+K1SO56zQOI6lzYUJpNGwI6W+zabET+D1zaKkyWJf4V
+         Glzw==
+X-Gm-Message-State: AOAM532Hm6/1/crZOIhL2jCUoITGqnvhNZAxm5uAexi4CJmFRAgHOUA8
+        MqiHAzPGbPFdXa2lmWkkLjo=
+X-Google-Smtp-Source: ABdhPJycxsU5KRss6M8Wbj7exc5lQ/SLX2+xO6gdhTVoJNFRrXue40+X1zvsip5ZCR3B7BYXY6F5ig==
+X-Received: by 2002:a17:906:d78a:: with SMTP id pj10mr518641ejb.72.1641833751673;
+        Mon, 10 Jan 2022 08:55:51 -0800 (PST)
+Received: from [192.168.0.182] ([79.119.107.253])
+        by smtp.gmail.com with ESMTPSA id hs32sm2399662ejc.180.2022.01.10.08.55.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jan 2022 08:55:51 -0800 (PST)
+Message-ID: <953f1539-a4fc-ab8e-bcf9-287ac91ba42b@gmail.com>
+Date:   Mon, 10 Jan 2022 18:55:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220110152432.3799227-1-nikita.yoush@cogentembedded.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH 3/3] iio: addac: ad74413r: correct comparator gpio getters
+ mask usage
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+References: <20220106062255.3208817-1-cosmin.tanislav@analog.com>
+ <20220106062255.3208817-3-cosmin.tanislav@analog.com>
+ <CAHp75Vcq76iaHHp2oXFsaE4d_+EGH87DxQRYu7Ys-adN_4mmUw@mail.gmail.com>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <CAHp75Vcq76iaHHp2oXFsaE4d_+EGH87DxQRYu7Ys-adN_4mmUw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jan 10, 2022 at 06:24:32PM +0300, Nikita Yushchenko wrote:
-> This patch makes I2C and SPI interface drivers for STMicroelectronics
-> sensor chips individually selectable via Kconfig.
+
+
+On 1/9/22 14:13, Andy Shevchenko wrote:
+> On Fri, Jan 7, 2022 at 7:34 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+>>
+>> The value of the GPIOs is currently altered using offsets rather
+>> than masks. Make use the BIT macro to turn the offsets into masks.
 > 
-> The default is kept unchanged - I2C and SPI interface drivers are still
-> selected by default if the corresponding bus support is available.
+> of the
 > 
-> However, the patch makes it possible to explicitly disable drivers
-> that are not needed for a particular target.
+> ...
+> 
+>> -       status &= AD74413R_DIN_COMP_OUT_SHIFT_X(real_offset);
+>> +       status &= BIT(real_offset);
+> 
+> But this is completely different.
 
-...
+What do you mean by this is completely different?
 
-The same question as per v2.
+It was broken before, it is fixed now. Indeed, I'm missing
+the Fixes tag, if that's what you meant.
 
-> +	default I2C && IIO_ST_ACCEL_3AXIS
+> 
+>> +       bitmap_zero(bits, chip->ngpio);
+>> +
+>>          for_each_set_bit(offset, mask, chip->ngpio) {
+>>                  unsigned int real_offset = st->comp_gpio_offsets[offset];
+>>
+>>                  if (val & BIT(real_offset))
+>> -                       *bits |= offset;
+>> +                       *bits |= BIT(offset);
+> 
+> So, how was it working before? If it fixes, it should go with the
+> Fixes tag and before patch 2.
+> 
+>>          }
+> 
+> On top of that, you may try to see if one of bitmap_*() APIs can be
+> suitable here to perform the above in a more optimal way.
+> (At least this conditional can be replaced with __asign_bit() call,
+> but I think refactoring the entire loop may reveal a better approach)
+> 
 
-What will be the results when I2C=y and the second ones =m?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I can replace the if and bitmap_zero with __assign_bit, as you
+suggested. I'm not familiar with bitmap APIs, do you have a suggestion?

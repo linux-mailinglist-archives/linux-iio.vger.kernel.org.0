@@ -2,106 +2,377 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F66489BF4
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 16:14:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB77489C19
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 16:24:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236025AbiAJPOT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 10:14:19 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:64230 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232537AbiAJPOS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 10:14:18 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20A858vt023154;
-        Mon, 10 Jan 2022 10:14:17 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dggyqrya8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Jan 2022 10:14:17 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 20AFEGJj007952
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 10 Jan 2022 10:14:16 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 10 Jan 2022 10:14:15 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 10 Jan 2022 10:14:15 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 10 Jan 2022 10:14:15 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.181])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20AFE3Cd010248;
-        Mon, 10 Jan 2022 10:14:10 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v2 3/3] Documentation:ABI:testing:admv1014: add ABI docs
-Date:   Mon, 10 Jan 2022 17:13:50 +0200
-Message-ID: <20220110151350.164095-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220110151350.164095-1-antoniu.miclaus@analog.com>
-References: <20220110151350.164095-1-antoniu.miclaus@analog.com>
+        id S233631AbiAJPYp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 10:24:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232453AbiAJPYo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 10:24:44 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51884C06173F
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 07:24:44 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id g11so45596645lfu.2
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 07:24:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SmGpIUYPGfq7r0tjUD14kvvapZq1RugGUrx8T+t9NVs=;
+        b=HNyARwMotY1CcWJrXm65UidpPjhRPwmfqRkAuugcPvb91YnppgEmeP/FsIp7drwrEP
+         QvWz1P9xhBmC9AsUtQhpedA50GdcYiUbOpqgn3gybiM5tUOkJwrHyoF1d6KzQKGI6Lh1
+         OsLhF0M/lZxgb2TDq4U8pWdC9LzlA49gEVnPcQXmUrxmDMfhE3rd3K0dssOUYVzq8XuK
+         o5l9aKTTXbyrUXx8DgvxBdyndDcbO+rDC+HbrLHtDrhGjt2Err/s18rnJmMCQZvOVAbI
+         HOkqH5mWSkkdp85+/wgTkg2LUhhzAv+2boAfx2G2GGRvmjsK5Tjp1eTiCfku+VpKSfA1
+         d46A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SmGpIUYPGfq7r0tjUD14kvvapZq1RugGUrx8T+t9NVs=;
+        b=Y3DO3MPHrLkLBfLJchLGsF4S3E1iO4PKnbES5g6gpflZdC+FefOOzS7PHM0uQYAKyV
+         kS8apK7b2OrPFqTtJPetdJK7iFl/KJKlihWn1f4lOKQBtFqcQFVB1UeXenUwye53BwkI
+         TetFrHTdsMN6FeM53oilzailm0dAVn0E2I6dtTh1oVD7Q/t3TR2kNTkml/DVntm55E05
+         DRNI7AEM8PR7bAx43FFO6mfXe9wWWXpATNY2vAgFkyNc8XPDK+C8tGhIc8vDU+PHQqed
+         yhiBWqgPy1h+omW6Ei8pkBtARHtc9AR22YvqdXf5+hf5gzSSWxQtW5PbgBk5d9IZFKCo
+         DERw==
+X-Gm-Message-State: AOAM532cgCPK87dnmKaG4WAbgU6sZPlAb5oSH0xbMtaZ/5oiMPO4MD/O
+        bN6tDdZP8MBaN2VZAYkTZyknsg==
+X-Google-Smtp-Source: ABdhPJxdSDIVQeu3eljLHQE1q/Js5/7IxmPE8FzBmt8cxK6iezuX3zTSkpZmazscP3puhQNR+eWiAA==
+X-Received: by 2002:a05:6512:3f17:: with SMTP id y23mr186018lfa.176.1641828282428;
+        Mon, 10 Jan 2022 07:24:42 -0800 (PST)
+Received: from cobook.home (nikaet.starlink.ru. [94.141.168.29])
+        by smtp.gmail.com with ESMTPSA id x14sm1081732ljh.15.2022.01.10.07.24.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jan 2022 07:24:41 -0800 (PST)
+From:   Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Cai Huoqing <caihuoqing@baidu.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Subject: [PATCH v3] iio: st_sensors: don't always auto-enable I2C and SPI interface drivers
+Date:   Mon, 10 Jan 2022 18:24:32 +0300
+Message-Id: <20220110152432.3799227-1-nikita.yoush@cogentembedded.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: rD1nN8M4TbmwRZyE79GRrVs9fLJWCNAk
-X-Proofpoint-GUID: rD1nN8M4TbmwRZyE79GRrVs9fLJWCNAk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-10_06,2022-01-10_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201100107
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add documentation for the use of the Digital Attenuator gain.
+This patch makes I2C and SPI interface drivers for STMicroelectronics
+sensor chips individually selectable via Kconfig.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+The default is kept unchanged - I2C and SPI interface drivers are still
+selected by default if the corresponding bus support is available.
+
+However, the patch makes it possible to explicitly disable drivers
+that are not needed for a particular target.
+
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 ---
- .../testing/sysfs-bus-iio-frequency-admv1014  | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
+Changes since v2:
+- fix subject and spelling in the commit message
+Changes since v1:
+- use "default XXX" instead of "default y if XXX", per suggestion by
+  Arnd Bergmann
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014 b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
-new file mode 100644
-index 000000000000..5bcd96d77f45
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
-@@ -0,0 +1,23 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_i_calibscale_coarse
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write value for the digital attenuator gain (IF_I) with coarse steps.
+ drivers/iio/accel/Kconfig             | 35 ++++++++++++++-----------
+ drivers/iio/common/st_sensors/Kconfig |  2 --
+ drivers/iio/gyro/Kconfig              | 37 ++++++++++++++++-----------
+ drivers/iio/imu/st_lsm9ds0/Kconfig    | 28 +++++++++++++++-----
+ drivers/iio/magnetometer/Kconfig      | 35 ++++++++++++++-----------
+ drivers/iio/pressure/Kconfig          | 35 ++++++++++++++-----------
+ 6 files changed, 104 insertions(+), 68 deletions(-)
+
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index 49587c992a6d..eb17ca40e08a 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -349,8 +349,6 @@ config IIO_ST_ACCEL_3AXIS
+ 	depends on !SENSORS_LIS3_I2C
+ 	depends on !SENSORS_LIS3_SPI
+ 	select IIO_ST_SENSORS_CORE
+-	select IIO_ST_ACCEL_I2C_3AXIS if (I2C)
+-	select IIO_ST_ACCEL_SPI_3AXIS if (SPI_MASTER)
+ 	select IIO_TRIGGERED_BUFFER if (IIO_BUFFER)
+ 	help
+ 	  Say yes here to build support for STMicroelectronics accelerometers:
+@@ -358,23 +356,30 @@ config IIO_ST_ACCEL_3AXIS
+ 	  LIS331DLH, LSM303DL, LSM303DLM, LSM330, LIS2DH12, H3LIS331DL,
+ 	  LNG2DM, LIS3DE, LIS2DE12, LIS2HH12
+ 
+-	  This driver can also be built as a module. If so, these modules
+-	  will be created:
+-	  - st_accel (core functions for the driver [it is mandatory]);
+-	  - st_accel_i2c (necessary for the I2C devices [optional*]);
+-	  - st_accel_spi (necessary for the SPI devices [optional*]);
+-
+-	  (*) one of these is necessary to do something.
++	  Also need to enable at least one of I2C and SPI interface drivers
++	  below.
+ 
+ config IIO_ST_ACCEL_I2C_3AXIS
+-	tristate
+-	depends on IIO_ST_ACCEL_3AXIS
+-	depends on IIO_ST_SENSORS_I2C
++	tristate "STMicroelectronics accelerometers 3-Axis I2C Interface"
++	depends on I2C && IIO_ST_ACCEL_3AXIS
++	default I2C && IIO_ST_ACCEL_3AXIS
++	select IIO_ST_SENSORS_I2C
++	help
++	  Build support for STMicroelectronics accelerometers I2C interface.
 +
-+What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_q_calibscale_coarse
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write value for the digital attenuator gain (IF_Q) with coarse steps.
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_accel_i2c.
+ 
+ config IIO_ST_ACCEL_SPI_3AXIS
+-	tristate
+-	depends on IIO_ST_ACCEL_3AXIS
+-	depends on IIO_ST_SENSORS_SPI
++	tristate "STMicroelectronics accelerometers 3-Axis SPI Interface"
++	depends on SPI_MASTER && IIO_ST_ACCEL_3AXIS
++	default SPI_MASTER && IIO_ST_ACCEL_3AXIS
++	select IIO_ST_SENSORS_SPI
++	help
++	  Build support for STMicroelectronics accelerometers SPI interface.
 +
-+What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_i_calibscale_fine
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write value for the digital attenuator gain (IF_I) with fine steps.
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_accel_spi.
+ 
+ config KXSD9
+ 	tristate "Kionix KXSD9 Accelerometer Driver"
+diff --git a/drivers/iio/common/st_sensors/Kconfig b/drivers/iio/common/st_sensors/Kconfig
+index 9364ec7a811f..eda8f347fda5 100644
+--- a/drivers/iio/common/st_sensors/Kconfig
++++ b/drivers/iio/common/st_sensors/Kconfig
+@@ -13,5 +13,3 @@ config IIO_ST_SENSORS_SPI
+ 
+ config IIO_ST_SENSORS_CORE
+ 	tristate
+-	select IIO_ST_SENSORS_I2C if I2C
+-	select IIO_ST_SENSORS_SPI if SPI_MASTER
+diff --git a/drivers/iio/gyro/Kconfig b/drivers/iio/gyro/Kconfig
+index a672f7d12bbb..97b86c4a53a6 100644
+--- a/drivers/iio/gyro/Kconfig
++++ b/drivers/iio/gyro/Kconfig
+@@ -139,30 +139,37 @@ config IIO_ST_GYRO_3AXIS
+ 	tristate "STMicroelectronics gyroscopes 3-Axis Driver"
+ 	depends on (I2C || SPI_MASTER) && SYSFS
+ 	select IIO_ST_SENSORS_CORE
+-	select IIO_ST_GYRO_I2C_3AXIS if (I2C)
+-	select IIO_ST_GYRO_SPI_3AXIS if (SPI_MASTER)
+ 	select IIO_TRIGGERED_BUFFER if (IIO_BUFFER)
+ 	help
+ 	  Say yes here to build support for STMicroelectronics gyroscopes:
+ 	  L3G4200D, LSM330DL, L3GD20, LSM330DLC, L3G4IS, LSM330, LSM9DS0.
+ 
+-	  This driver can also be built as a module. If so, these modules
+-	  will be created:
+-	  - st_gyro (core functions for the driver [it is mandatory]);
+-	  - st_gyro_i2c (necessary for the I2C devices [optional*]);
+-	  - st_gyro_spi (necessary for the SPI devices [optional*]);
+-
+-	  (*) one of these is necessary to do something.
++	  Also need to enable at least one of I2C and SPI interface drivers
++	  below.
+ 
+ config IIO_ST_GYRO_I2C_3AXIS
+-	tristate
+-	depends on IIO_ST_GYRO_3AXIS
+-	depends on IIO_ST_SENSORS_I2C
++	tristate "STMicroelectronics gyroscopes 3-Axis I2C Interface"
++	depends on I2C && IIO_ST_GYRO_3AXIS
++	default I2C && IIO_ST_GYRO_3AXIS
++	select IIO_ST_SENSORS_I2C
++	help
++	  Build support for STMicroelectronics gyroscopes I2C interface.
 +
-+What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_q_calibscale_fine
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Read/write value for the digital attenuator gain (IF_Q) with fine steps.
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_gyro_i2c.
++
+ 
+ config IIO_ST_GYRO_SPI_3AXIS
+-	tristate
+-	depends on IIO_ST_GYRO_3AXIS
+-	depends on IIO_ST_SENSORS_SPI
++	tristate "STMicroelectronics gyroscopes 3-Axis SPI Interface"
++	depends on SPI_MASTER && IIO_ST_GYRO_3AXIS
++	default SPI_MASTER && IIO_ST_GYRO_3AXIS
++	select IIO_ST_SENSORS_SPI
++	help
++	  Build support for STMicroelectronics gyroscopes SPI interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_gyro_spi.
++
+ 
+ config ITG3200
+ 	tristate "InvenSense ITG3200 Digital 3-Axis Gyroscope I2C driver"
+diff --git a/drivers/iio/imu/st_lsm9ds0/Kconfig b/drivers/iio/imu/st_lsm9ds0/Kconfig
+index 53b7017014f8..d29558edee60 100644
+--- a/drivers/iio/imu/st_lsm9ds0/Kconfig
++++ b/drivers/iio/imu/st_lsm9ds0/Kconfig
+@@ -5,8 +5,6 @@ config IIO_ST_LSM9DS0
+ 	depends on (I2C || SPI_MASTER) && SYSFS
+ 	depends on !SENSORS_LIS3_I2C
+ 	depends on !SENSORS_LIS3_SPI
+-	select IIO_ST_LSM9DS0_I2C if I2C
+-	select IIO_ST_LSM9DS0_SPI if SPI_MASTER
+ 	select IIO_ST_ACCEL_3AXIS
+ 	select IIO_ST_MAGN_3AXIS
+ 
+@@ -17,12 +15,30 @@ config IIO_ST_LSM9DS0
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called st_lsm9ds0.
+ 
++	  Also need to enable at least one of I2C and SPI interface drivers
++
+ config IIO_ST_LSM9DS0_I2C
+-	tristate
+-	depends on IIO_ST_LSM9DS0
++	tristate "STMicroelectronics LSM9DS0 IMU I2C interface"
++	depends on I2C && IIO_ST_LSM9DS0
++	default I2C && IIO_ST_LSM9DS0
++	select IIO_ST_ACCEL_I2C_3AXIS
++	select IIO_ST_MAGN_I2C_3AXIS
+ 	select REGMAP_I2C
++	help
++	  Build support for STMicroelectronics LSM9DS0 IMU I2C interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_lsm9ds0_i2c.
+ 
+ config IIO_ST_LSM9DS0_SPI
+-	tristate
+-	depends on IIO_ST_LSM9DS0
++	tristate "STMicroelectronics LSM9DS0 IMU SPI interface"
++	depends on SPI_MASTER && IIO_ST_LSM9DS0
++	default SPI_MASTER && IIO_ST_LSM9DS0
++	select IIO_ST_ACCEL_SPI_3AXIS
++	select IIO_ST_MAGN_SPI_3AXIS
+ 	select REGMAP_SPI
++	help
++	  Build support for STMicroelectronics LSM9DS0 IMU I2C interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_lsm9ds0_spi.
+diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
+index 565ee41ccb3a..54445365c4bc 100644
+--- a/drivers/iio/magnetometer/Kconfig
++++ b/drivers/iio/magnetometer/Kconfig
+@@ -117,30 +117,35 @@ config IIO_ST_MAGN_3AXIS
+ 	tristate "STMicroelectronics magnetometers 3-Axis Driver"
+ 	depends on (I2C || SPI_MASTER) && SYSFS
+ 	select IIO_ST_SENSORS_CORE
+-	select IIO_ST_MAGN_I2C_3AXIS if (I2C)
+-	select IIO_ST_MAGN_SPI_3AXIS if (SPI_MASTER)
+ 	select IIO_TRIGGERED_BUFFER if (IIO_BUFFER)
+ 	help
+ 	  Say yes here to build support for STMicroelectronics magnetometers:
+ 	  LSM303DLHC, LSM303DLM, LIS3MDL.
+ 
+-	  This driver can also be built as a module. If so, these modules
+-	  will be created:
+-	  - st_magn (core functions for the driver [it is mandatory]);
+-	  - st_magn_i2c (necessary for the I2C devices [optional*]);
+-	  - st_magn_spi (necessary for the SPI devices [optional*]);
+-
+-	  (*) one of these is necessary to do something.
++	  Also need to enable at least one of I2C and SPI interface drivers
++	  below.
+ 
+ config IIO_ST_MAGN_I2C_3AXIS
+-	tristate
+-	depends on IIO_ST_MAGN_3AXIS
+-	depends on IIO_ST_SENSORS_I2C
++	tristate "STMicroelectronics magnetometers 3-Axis I2C Interface"
++	depends on I2C && IIO_ST_MAGN_3AXIS
++	default I2C && IIO_ST_MAGN_3AXIS
++	select IIO_ST_SENSORS_I2C
++	help
++	  Build support for STMicroelectronics magnetometers I2C interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_magn_i2c.
+ 
+ config IIO_ST_MAGN_SPI_3AXIS
+-	tristate
+-	depends on IIO_ST_MAGN_3AXIS
+-	depends on IIO_ST_SENSORS_SPI
++	tristate "STMicroelectronics magnetometers 3-Axis SPI Interface"
++	depends on SPI_MASTER && IIO_ST_MAGN_3AXIS
++	default SPI_MASTER && IIO_ST_MAGN_3AXIS
++	select IIO_ST_SENSORS_SPI
++	help
++	  Build support for STMicroelectronics magnetometers SPI interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_magn_spi.
+ 
+ config SENSORS_HMC5843
+ 	tristate
+diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
+index fc0d3cfca418..0ff756cea63a 100644
+--- a/drivers/iio/pressure/Kconfig
++++ b/drivers/iio/pressure/Kconfig
+@@ -194,30 +194,35 @@ config IIO_ST_PRESS
+ 	tristate "STMicroelectronics pressure sensor Driver"
+ 	depends on (I2C || SPI_MASTER) && SYSFS
+ 	select IIO_ST_SENSORS_CORE
+-	select IIO_ST_PRESS_I2C if (I2C)
+-	select IIO_ST_PRESS_SPI if (SPI_MASTER)
+ 	select IIO_TRIGGERED_BUFFER if (IIO_BUFFER)
+ 	help
+ 	  Say yes here to build support for STMicroelectronics pressure
+ 	  sensors: LPS001WP, LPS25H, LPS331AP, LPS22HB, LPS22HH.
+ 
+-	  This driver can also be built as a module. If so, these modules
+-	  will be created:
+-	  - st_pressure (core functions for the driver [it is mandatory]);
+-	  - st_pressure_i2c (necessary for the I2C devices [optional*]);
+-	  - st_pressure_spi (necessary for the SPI devices [optional*]);
+-
+-	  (*) one of these is necessary to do something.
++	  Also need to enable at least one of I2C and SPI interface drivers
++	  below.
+ 
+ config IIO_ST_PRESS_I2C
+-	tristate
+-	depends on IIO_ST_PRESS
+-	depends on IIO_ST_SENSORS_I2C
++	tristate "STMicroelectronics pressure sensor I2C Interface"
++	depends on I2C && IIO_ST_PRESS
++	default I2C && IIO_ST_PRESS
++	select IIO_ST_SENSORS_I2C
++	help
++	  Build support for STMicroelectronics pressure sensor I2C interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_pressure_i2c.
+ 
+ config IIO_ST_PRESS_SPI
+-	tristate
+-	depends on IIO_ST_PRESS
+-	depends on IIO_ST_SENSORS_SPI
++	tristate "STMicroelectronics pressure sensor SPI Interface"
++	depends on SPI_MASTER && IIO_ST_PRESS
++	default SPI_MASTER && IIO_ST_PRESS
++	select IIO_ST_SENSORS_SPI
++	help
++	  Build support for STMicroelectronics pressure sensor SPI interface.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called st_pressure_spi.
+ 
+ config T5403
+ 	tristate "EPCOS T5403 digital barometric pressure sensor driver"
 -- 
-2.34.1
+2.30.2
 

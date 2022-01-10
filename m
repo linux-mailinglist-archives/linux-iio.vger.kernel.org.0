@@ -2,119 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E203489DFB
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 18:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76CE3489EF9
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 19:17:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237879AbiAJREj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 12:04:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237327AbiAJREj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 12:04:39 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0BCCC06173F
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 09:04:38 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id g26so46645305lfv.11
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 09:04:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=OucdhFM6jmRjO7w+OrNatwgwUpKYYH6g9Yld4XK2Xmc=;
-        b=g1AU2ibnkdn+3RKmRbjZoA1vqG851dJHx0gr8btWYcOcLUTzGwsXLY3UO/bT6XQmbf
-         Pzc9ywoA8RT3kjR4zow5XwhZJQFBermQ0sVfsz6NFY8cZM2KuGlJikJAERPMjPwpx0ji
-         hjFcUujoeKs1BHcc5f5sB+V7mkL1A8KQxxFjjA/KSY+KqaZOmB6d3LD/Pl3rMuMxuo3x
-         sGCcdrGkbdNYjnKD/T6qYm5SVcD0UAT8dHjouwt83j4DfbrZkZfKp2p6IVuQcenLr7hB
-         kG681C+JY/4xwdm90Lk3TyiQYB4A5Q73twENVIJ/H/IAJ7ixYxPbiWZlmPupxjH0x+2W
-         wACg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=OucdhFM6jmRjO7w+OrNatwgwUpKYYH6g9Yld4XK2Xmc=;
-        b=Q0oB4fIuv7IyCSD4v3I5TaaRkxu5COFn5LdBE3LTqbhtBfiXttZxSgPrmbr/qfVaY3
-         3d0dMqq9SmO8CjIfeRghG2N6k568jS8m+bxTykt7cgn4AmpsvBK/cNyeb2b+hE+vFVbT
-         vQ2JkeyjVQtT3DprwwmuXJ1KFzZV8o1VkHLGJM+hj9B8vTTo2oWF2TvSwtE9srkDW4q2
-         u2MKN2WOn+0D46ttC8geqN9pvTWTgNpUpQGk39vpExWn+hovjBbvpXQUjnqXa+FYWvro
-         Md1Ogtngm+DjA2i6SojLw1/kxpWxICWn6EKWjBTMX7jmBzZieW7Kikh5nRTivueQ+AWi
-         4jaw==
-X-Gm-Message-State: AOAM531OtRJeZ0w5lCKJrRnXZw1rDPzm1Zd6pqtrhGtBZKJVrp1u7CSS
-        wtjNbjNjrPW6kJJ3IerFI+W0RA==
-X-Google-Smtp-Source: ABdhPJzwHX4zS4POTMojF63lfj+cMn0gL12hekHszIWUXM6zc+DtvhI8YpaygfUI77VoNFID8vpetw==
-X-Received: by 2002:a05:651c:994:: with SMTP id b20mr291726ljq.70.1641834276991;
-        Mon, 10 Jan 2022 09:04:36 -0800 (PST)
-Received: from [192.168.112.17] (nikaet.starlink.ru. [94.141.168.29])
-        by smtp.gmail.com with ESMTPSA id y7sm1079782lfb.272.2022.01.10.09.04.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jan 2022 09:04:36 -0800 (PST)
-Message-ID: <0f7d5c44-2119-97ba-5a3e-7f0f40d41605@cogentembedded.com>
-Date:   Mon, 10 Jan 2022 20:04:35 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH v3] iio: st_sensors: don't always auto-enable I2C and SPI
- interface drivers
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
+        id S238899AbiAJSRJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 13:17:09 -0500
+Received: from mga05.intel.com ([192.55.52.43]:29178 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238848AbiAJSRG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 10 Jan 2022 13:17:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1641838626; x=1673374626;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=n2VU3KcLS5khnCS9/8zTHtmWmBczUON+c54f03UlPBw=;
+  b=Ii9FVykU6s1pNH/x+8wQhwbOQPqWrBM+i9q+L2KLnXQwArib72EKq1oD
+   6g7FSJtzBpM9uW7X5T00fKPDAAQ0YYlbYCq163YIqZ0DtKWmioAxHntnC
+   Fkyrf0J2+w5ZMxZRm991C/7R+Zs2NU4xqtiqSnT9KFbB4HXPe9V1DatYz
+   EeYDU79N4tGoopcmCE/IHZv4Zdj8LXwOSpQ8wks2FhwcA8veFRScoWRtr
+   6nrJK08m+dzb+NC9gdt85k+24JtFO77xn1w0rkmaEJIplqqE7/vPxX058
+   gPOtjIWUt7QBsOFLkJApx1GNNQa4AKuS8If2KmMvD3wR5/GCE2hGAWvnC
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10222"; a="329630526"
+X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
+   d="scan'208";a="329630526"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 10:17:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
+   d="scan'208";a="622759584"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 10 Jan 2022 10:17:01 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id C9ED3120; Mon, 10 Jan 2022 20:17:12 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20220110152432.3799227-1-nikita.yoush@cogentembedded.com>
- <YdxWZEz1GXXxQ+7h@smile.fi.intel.com>
-From:   Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-In-Reply-To: <YdxWZEz1GXXxQ+7h@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Rosin <peda@axentia.se>
+Subject: [PATCH v1 1/5] math.h: Introduce data types for fractional numbers
+Date:   Mon, 10 Jan 2022 20:17:07 +0200
+Message-Id: <20220110181711.65054-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Introduce a macro to produce data types like
 
+	struct TYPE_fract {
+		__TYPE numerator;
+		__TYPE denominator;
+	};
 
-10.01.2022 18:53, Andy Shevchenko wrote:
-> On Mon, Jan 10, 2022 at 06:24:32PM +0300, Nikita Yushchenko wrote:
->> This patch makes I2C and SPI interface drivers for STMicroelectronics
->> sensor chips individually selectable via Kconfig.
->>
->> The default is kept unchanged - I2C and SPI interface drivers are still
->> selected by default if the corresponding bus support is available.
->>
->> However, the patch makes it possible to explicitly disable drivers
->> that are not needed for a particular target.
-> 
-> ...
-> 
-> The same question as per v2.
-> 
->> +	default I2C && IIO_ST_ACCEL_3AXIS
-> 
-> What will be the results when I2C=y and the second ones =m?
+to be used in the code wherever it's needed.
 
-$ grep CONFIG_I2C= .config
-CONFIG_I2C=y
-$ grep IIO_ST_ACCEL .config
-CONFIG_IIO_ST_ACCEL_3AXIS=m
-CONFIG_IIO_ST_ACCEL_I2C_3AXIS=m
-# CONFIG_IIO_ST_ACCEL_SPI_3AXIS is not set
+In the following changes convert some users to it.
 
-$ vim .config
-<remove CONFIG_IIO_ST_ACCEL_I2C_3AXIS line>
-$ grep IIO_ST_ACCEL .config
-CONFIG_IIO_ST_ACCEL_3AXIS=m
-# CONFIG_IIO_ST_ACCEL_SPI_3AXIS is not set
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
 
-$ make menuconfig
-<immediately exit>
+May be pulled via IIO tree.
 
-$ grep IIO_ST_ACCEL .config
-CONFIG_IIO_ST_ACCEL_3AXIS=m
-CONFIG_IIO_ST_ACCEL_I2C_3AXIS=m
-# CONFIG_IIO_ST_ACCEL_SPI_3AXIS is not set
+ include/linux/math.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-CONFIG_IIO_ST_ACCEL_I2C_3AXIS was set to =m by default. I believe this is correct behavior.
+diff --git a/include/linux/math.h b/include/linux/math.h
+index 53674a327e39..439b8f0b9ebd 100644
+--- a/include/linux/math.h
++++ b/include/linux/math.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_MATH_H
+ #define _LINUX_MATH_H
+ 
++#include <linux/types.h>
+ #include <asm/div64.h>
+ #include <uapi/linux/kernel.h>
+ 
+@@ -106,6 +107,17 @@
+ }							\
+ )
+ 
++#define __STRUCT_FRACT(type)				\
++struct type##_fract {					\
++	__##type numerator;				\
++	__##type denominator;				\
++};
++__STRUCT_FRACT(s16)
++__STRUCT_FRACT(u16)
++__STRUCT_FRACT(s32)
++__STRUCT_FRACT(u32)
++#undef __STRUCT_FRACT
++
+ /*
+  * Multiplies an integer by a fraction, while avoiding unnecessary
+  * overflow or loss of precision.
+-- 
+2.34.1
 
-Nikita

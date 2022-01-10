@@ -2,115 +2,405 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32127489F26
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 19:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 179E3489F60
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 19:41:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239098AbiAJSYM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 13:24:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60234 "EHLO
+        id S241563AbiAJSlS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 13:41:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239088AbiAJSYL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 13:24:11 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A986C06173F;
-        Mon, 10 Jan 2022 10:24:11 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id c71so45572041edf.6;
-        Mon, 10 Jan 2022 10:24:11 -0800 (PST)
+        with ESMTP id S241507AbiAJSlM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 13:41:12 -0500
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC494C061756
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 10:41:11 -0800 (PST)
+Received: by mail-oi1-x22c.google.com with SMTP id v124so12636802oie.0
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 10:41:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+OBKlMrGeRwIefZjUnO53bTZIl+uI828EXtV9Nyw2sk=;
-        b=etturC84fe4kezIFLvLDguzVmw3WtSl1PjQhSslQESVDw15acoPKNOEyn2KDaMzbh0
-         eKVXnyMxtUxw1lzjA6bH0ZFmr8JW+CHBmoK3HetA3iYGVhshyWHK1X4vbyZ6dCdMwDs4
-         fiDKOcj6jt3eO2eBqSxltrQ8J/Hs6VgiVnPCGN2CQqQp2F7zh+ziQgT2xDv06bbguSOI
-         Z6/M29xIJGy4MpKMx+MYSlOKZiaPQ1FPOSOs3VDiJP0jxVhRaQhvbhnoO3mWB73d/Oi9
-         UAoJImpUxyeqtPwm93dKmyJOvI6RP6YQcSRkBLRWu8Npbbsx54fh2FyZ91IJXDkFYrTa
-         ds0g==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=p5QMknA8tOLAY9s9dTBzuIVAS12kbyGU2Ryi9GwiRoM=;
+        b=niDUswhNo3PCLcm/3ji54to4wvBe0PLNunGnTCKFcl6YZh2E36FxNhyd+8/rkj6mKc
+         ojOxLdFF1/WeETpmf5YWzuxg6Q/y6kCBm2d6Aj3g0dwr7wObUOkZ/vqN04LGt37PLRVO
+         8fXmK5SSKfdcC2ZzlNviuLhS16wv6dS6eBrxd0zd2UmiAVjhfTWcTNPuk/evWVXYj1IZ
+         0zop4HYnQe7QekEGMfNy0KPazjrczfaTpQi4dNut6AjPtN0o36RshOnPkxTKWeFhM5tk
+         QHiwmof23AqmLKYV4C75TMPKtYsQ87SVB90SZoQ1HRNn1cmJbD1KPfoL7PhCjUzWdCK1
+         NKhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+OBKlMrGeRwIefZjUnO53bTZIl+uI828EXtV9Nyw2sk=;
-        b=OGNWmvWbkCLtcT17igyqNv3nRlvaD7FDVUV9hhEBb9z2U8lDjxZuGjgMPcZ54jKPx+
-         ffByXdiYlYLgKvOsNySKXkTfIQgravmQcVpPGBN2/oPKGBXUf/eX5tcZMrh9ACW63dRy
-         hBMwK35OU5foFcyORMU+I5lsWxPM90BBS5uyZn2qW63teln3WsBC4UKr5zZnN2XZRWSo
-         OORek1eMC46sVCurFo0Us8wMe7YbaT8GUvliBSKnRn4qUhMmup2TaHWPBDtC4hCDJCTD
-         fro+Enj2sxGOt5w1ISThG0QU8LJzoWXTdm+hnXpBhxgMWesfCPUD1ttrDhp8+txLkrwk
-         FkSg==
-X-Gm-Message-State: AOAM5332FUBftCa3dRSbp6qrzVucrD3kmUWtTd1Vzbnyvu7zm5Qx5UdQ
-        /hY3s/vFoyecMeD67fmjMQiYLDRnrFM46LPgpz2uZANtq2w=
-X-Google-Smtp-Source: ABdhPJxDtUnFS0ICcjJjaUcy6GqZkIiQUUUJ1CXLBLx6+TORFdiGKNjZrq2NLGQCVYpdw4GkjRi2LHxnXMFlvgV1yyo=
-X-Received: by 2002:a17:907:97cd:: with SMTP id js13mr639572ejc.497.1641839049368;
- Mon, 10 Jan 2022 10:24:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20220106062255.3208817-1-cosmin.tanislav@analog.com>
- <20220106062255.3208817-3-cosmin.tanislav@analog.com> <CAHp75Vcq76iaHHp2oXFsaE4d_+EGH87DxQRYu7Ys-adN_4mmUw@mail.gmail.com>
- <953f1539-a4fc-ab8e-bcf9-287ac91ba42b@gmail.com>
-In-Reply-To: <953f1539-a4fc-ab8e-bcf9-287ac91ba42b@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 10 Jan 2022 20:22:20 +0200
-Message-ID: <CAHp75Vc=+378EzDsibOaHRHCUoR8jBLO8ZZgf-G1i6N6Jm-AOg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iio: addac: ad74413r: correct comparator gpio getters
- mask usage
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=p5QMknA8tOLAY9s9dTBzuIVAS12kbyGU2Ryi9GwiRoM=;
+        b=ljDECMm6LEElDio0rplgth3i0Lr/9tMuG7JgO2bLPYFn6F7tda+/JX7Zfhq7oZXV7S
+         K1yyH8mMyli2Dm6HgLuWMfJ/naug+9aMS1mZcySRN7Ki9car2S37d3zu58l22DldtcyL
+         eoQKBGvWYMKKH0VyCPAJK+cQZ/UyD2Fp1vtEvKraObp9dZ+1cDwmwYQA6tI+98eeoX2B
+         H8blUTmea8YO76BFDGGPlYR/OGNVxJbQtBAi8qPXTdRZHbrNL6AJOaNcTBQWy1MWPIm+
+         xu634fDklLDYzqgsFUxgAcFdhVIAQjgdOr195GI4fpRbV3QljWdDmWLV3XTwOWuIcbcY
+         xBog==
+X-Gm-Message-State: AOAM531teiqOjX27irLc4FIusvjuuMbV55COOuCL6vi6xXqOo54KNw8c
+        UG+e2uiRN6D/2Gfb/Pfl6k+3fQ==
+X-Google-Smtp-Source: ABdhPJzNwPt5g/pwbdQ7XzU/8OQ0pYOekmiNLmdPKXrW3ek0nBkI/+wYIdvxbu0LNnwtq+2XlC9/tg==
+X-Received: by 2002:a05:6808:1248:: with SMTP id o8mr550904oiv.157.1641840070911;
+        Mon, 10 Jan 2022 10:41:10 -0800 (PST)
+Received: from ripper (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id n26sm1459596ooc.48.2022.01.10.10.41.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jan 2022 10:41:10 -0800 (PST)
+Date:   Mon, 10 Jan 2022 10:41:55 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Andy Gross <agross@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, sumit.semwal@linaro.org,
+        amit.pundir@linaro.org, john.stultz@linaro.org
+Subject: Re: [PATCH v3 1/7] mfd: qcom-spmi-pmic: expose the PMIC revid
+ information to clients
+Message-ID: <Ydx98+VkJOlUnkl5@ripper>
+References: <20220106173131.3279580-1-caleb.connolly@linaro.org>
+ <20220106173131.3279580-2-caleb.connolly@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220106173131.3279580-2-caleb.connolly@linaro.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jan 10, 2022 at 6:55 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
-> On 1/9/22 14:13, Andy Shevchenko wrote:
-> > On Fri, Jan 7, 2022 at 7:34 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+On Thu 06 Jan 09:31 PST 2022, Caleb Connolly wrote:
 
-...
+> Some PMIC functions such as the RRADC need to be aware of the PMIC
+> chip revision information to implement errata or otherwise adjust
+> behaviour, export the PMIC information to enable this.
+> 
+> This is specifically required to enable the RRADC to adjust
+> coefficients based on which chip fab the PMIC was produced in,
+> this can vary per unique device and therefore has to be read at
+> runtime.
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+>  drivers/mfd/qcom-spmi-pmic.c | 108 +++++++++++++++++------------------
+>  include/soc/qcom/qcom-pmic.h |  63 ++++++++++++++++++++
+>  2 files changed, 114 insertions(+), 57 deletions(-)
+>  create mode 100644 include/soc/qcom/qcom-pmic.h
+> 
+> diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
+> index 1cacc00aa6c9..6b75c2f52b74 100644
+> --- a/drivers/mfd/qcom-spmi-pmic.c
+> +++ b/drivers/mfd/qcom-spmi-pmic.c
+> @@ -3,51 +3,24 @@
+>   * Copyright (c) 2014, The Linux Foundation. All rights reserved.
+>   */
+>  
+> +#include <linux/device.h>
+> +#include <linux/gfp.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/slab.h>
+>  #include <linux/spmi.h>
+>  #include <linux/regmap.h>
+>  #include <linux/of_platform.h>
+> +#include <soc/qcom/qcom-pmic.h>
+>  
+>  #define PMIC_REV2		0x101
+>  #define PMIC_REV3		0x102
+>  #define PMIC_REV4		0x103
+>  #define PMIC_TYPE		0x104
+>  #define PMIC_SUBTYPE		0x105
+> -
+> +#define PMIC_FAB_ID		0x1f2
+>  #define PMIC_TYPE_VALUE		0x51
+>  
+> -#define COMMON_SUBTYPE		0x00
+> -#define PM8941_SUBTYPE		0x01
+> -#define PM8841_SUBTYPE		0x02
+> -#define PM8019_SUBTYPE		0x03
+> -#define PM8226_SUBTYPE		0x04
+> -#define PM8110_SUBTYPE		0x05
+> -#define PMA8084_SUBTYPE		0x06
+> -#define PMI8962_SUBTYPE		0x07
+> -#define PMD9635_SUBTYPE		0x08
+> -#define PM8994_SUBTYPE		0x09
+> -#define PMI8994_SUBTYPE		0x0a
+> -#define PM8916_SUBTYPE		0x0b
+> -#define PM8004_SUBTYPE		0x0c
+> -#define PM8909_SUBTYPE		0x0d
+> -#define PM8028_SUBTYPE		0x0e
+> -#define PM8901_SUBTYPE		0x0f
+> -#define PM8950_SUBTYPE		0x10
+> -#define PMI8950_SUBTYPE		0x11
+> -#define PM8998_SUBTYPE		0x14
+> -#define PMI8998_SUBTYPE		0x15
+> -#define PM8005_SUBTYPE		0x18
+> -#define PM660L_SUBTYPE		0x1A
+> -#define PM660_SUBTYPE		0x1B
+> -#define PM8150_SUBTYPE		0x1E
+> -#define PM8150L_SUBTYPE		0x1f
+> -#define PM8150B_SUBTYPE		0x20
+> -#define PMK8002_SUBTYPE		0x21
+> -#define PM8009_SUBTYPE		0x24
+> -#define PM8150C_SUBTYPE		0x26
+> -#define SMB2351_SUBTYPE		0x29
+> -
+>  static const struct of_device_id pmic_spmi_id_table[] = {
+>  	{ .compatible = "qcom,pm660",     .data = (void *)PM660_SUBTYPE },
+>  	{ .compatible = "qcom,pm660l",    .data = (void *)PM660L_SUBTYPE },
+> @@ -81,42 +54,47 @@ static const struct of_device_id pmic_spmi_id_table[] = {
+>  	{ }
+>  };
+>  
+> -static void pmic_spmi_show_revid(struct regmap *map, struct device *dev)
+> +static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
 
-> >> -       status &= AD74413R_DIN_COMP_OUT_SHIFT_X(real_offset);
-> >> +       status &= BIT(real_offset);
-> >
-> > But this is completely different.
->
-> What do you mean by this is completely different?
->
-> It was broken before, it is fixed now. Indeed, I'm missing
-> the Fixes tag, if that's what you meant.
+You changed the return type to int, but ignore the returned value in the
+caller.
 
-Yeah, I explained myself below. I think you got the idea.
+> +				 struct qcom_spmi_pmic *pmic)
+>  {
+> -	unsigned int rev2, minor, major, type, subtype;
+> -	const char *name = "unknown";
+>  	int ret, i;
+>  
+> -	ret = regmap_read(map, PMIC_TYPE, &type);
+> +	ret = regmap_read(map, PMIC_TYPE, &pmic->type);
+>  	if (ret < 0)
+> -		return;
+> +		return ret;
+>  
+> -	if (type != PMIC_TYPE_VALUE)
+> -		return;
+> +	if (pmic->type != PMIC_TYPE_VALUE)
+> +		return ret;
+>  
+> -	ret = regmap_read(map, PMIC_SUBTYPE, &subtype);
+> +	ret = regmap_read(map, PMIC_SUBTYPE, &pmic->subtype);
+>  	if (ret < 0)
+> -		return;
+> +		return ret;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(pmic_spmi_id_table); i++) {
+> -		if (subtype == (unsigned long)pmic_spmi_id_table[i].data)
+> +		if (pmic->subtype == (unsigned long)pmic_spmi_id_table[i].data)
+>  			break;
+>  	}
+>  
+>  	if (i != ARRAY_SIZE(pmic_spmi_id_table))
+> -		name = pmic_spmi_id_table[i].compatible;
+> +		pmic->name = devm_kstrdup_const(dev, pmic_spmi_id_table[i].compatible, GFP_KERNEL);
+>  
+> -	ret = regmap_read(map, PMIC_REV2, &rev2);
+> +	ret = regmap_read(map, PMIC_REV2, &pmic->rev2);
+>  	if (ret < 0)
+> -		return;
+> +		return ret;
+>  
+> -	ret = regmap_read(map, PMIC_REV3, &minor);
+> +	ret = regmap_read(map, PMIC_REV3, &pmic->minor);
+>  	if (ret < 0)
+> -		return;
+> +		return ret;
+>  
+> -	ret = regmap_read(map, PMIC_REV4, &major);
+> +	ret = regmap_read(map, PMIC_REV4, &pmic->major);
+>  	if (ret < 0)
+> -		return;
+> +		return ret;
+> +
+> +	if (pmic->subtype == PMI8998_SUBTYPE || pmic->subtype == PM660_SUBTYPE) {
 
-...
+The rest of the patch just stuffs the existing information into a
+different container, but this adds new information. Even though it's
+trivial, how about moving that to a separate patch to keep it separate
+from the other changes?
 
-> >> +       bitmap_zero(bits, chip->ngpio);
-> >> +
-> >>          for_each_set_bit(offset, mask, chip->ngpio) {
-> >>                  unsigned int real_offset = st->comp_gpio_offsets[offset];
-> >>
-> >>                  if (val & BIT(real_offset))
-> >> -                       *bits |= offset;
-> >> +                       *bits |= BIT(offset);
-> >
-> > So, how was it working before? If it fixes, it should go with the
-> > Fixes tag and before patch 2.
-> >
-> > On top of that, you may try to see if one of bitmap_*() APIs can be
-> > suitable here to perform the above in a more optimal way.
-> > (At least this conditional can be replaced with __asign_bit() call,
-> > but I think refactoring the entire loop may reveal a better approach)
->
-> I can replace the if and bitmap_zero with __assign_bit, as you
-> suggested. I'm not familiar with bitmap APIs, do you have a suggestion?
+> +		ret = regmap_read(map, PMIC_FAB_ID, &pmic->fab_id);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
+>  
+>  	/*
+>  	 * In early versions of PM8941 and PM8226, the major revision number
+> @@ -124,14 +102,14 @@ static void pmic_spmi_show_revid(struct regmap *map, struct device *dev)
+>  	 * Increment the major revision number here if the chip is an early
+>  	 * version of PM8941 or PM8226.
+>  	 */
+> -	if ((subtype == PM8941_SUBTYPE || subtype == PM8226_SUBTYPE) &&
+> -	    major < 0x02)
+> -		major++;
+> +	if ((pmic->subtype == PM8941_SUBTYPE || pmic->subtype == PM8226_SUBTYPE) &&
+> +	    pmic->major < 0x02)
+> +		pmic->major++;
+>  
+> -	if (subtype == PM8110_SUBTYPE)
+> -		minor = rev2;
+> +	if (pmic->subtype == PM8110_SUBTYPE)
+> +		pmic->minor = pmic->rev2;
+>  
+> -	dev_dbg(dev, "%x: %s v%d.%d\n", subtype, name, major, minor);
+> +	return 0;
+>  }
+>  
+>  static const struct regmap_config spmi_regmap_config = {
+> @@ -144,22 +122,38 @@ static const struct regmap_config spmi_regmap_config = {
+>  static int pmic_spmi_probe(struct spmi_device *sdev)
+>  {
+>  	struct regmap *regmap;
+> +	struct qcom_spmi_pmic *pmic;
+>  
+>  	regmap = devm_regmap_init_spmi_ext(sdev, &spmi_regmap_config);
+>  	if (IS_ERR(regmap))
+>  		return PTR_ERR(regmap);
+>  
+> +	pmic = devm_kzalloc(&sdev->dev, sizeof(*pmic), GFP_KERNEL);
+> +	if (!pmic)
+> +		return -ENOMEM;
+> +
+>  	/* Only the first slave id for a PMIC contains this information */
+> -	if (sdev->usid % 2 == 0)
+> -		pmic_spmi_show_revid(regmap, &sdev->dev);
+> +	if (sdev->usid % 2 == 0) {
+> +		pmic_spmi_load_revid(regmap, &sdev->dev, pmic);
+> +		spmi_device_set_drvdata(sdev, pmic);
 
-For now I'm lacking any new suggestions. If you don't see any better
-approaches, let's go with __assign_bit().
+In your answer to Jonathan, you say that the way child drivers can get
+the PMIC version information is to dev_get_drvdata() on their parent.
 
--- 
-With Best Regards,
-Andy Shevchenko
+But each PMIC has two USIDs (to give us 17bits address space), and you
+only assign the drvdata on the first one. So any devices sitting in the
+second USID would be unable to acquire the drvdata.
+
+
+Also, rather than having child drivers "blindly" pull out the struct
+qcom_spmi_pmic pointer out of a void * drvdata, how about adding a
+function in this driver that they can call with their struct device * -
+which traverses the parent hierarchy, checking if it finds a device
+with the pmic_spmi_driver driver and then return the struct.
+
+That way you hide the drvdata usage from your users and there's much
+less risk that they get hold of the wrong drvdata.
+
+> +		qcom_pmic_print_info(&sdev->dev, pmic);
+
+Please don't dev_info hardware version information, there's enough stuff
+in the kernel log already.
+
+> +	}
+>  
+>  	return devm_of_platform_populate(&sdev->dev);
+>  }
+>  
+> +static void pmic_spmi_remove(struct spmi_device *sdev)
+> +{
+> +	struct qcom_spmi_pmic *pmic = spmi_device_get_drvdata(sdev);
+> +
+> +	kfree(pmic->name);
+
+This name was allocated using devm_kstrdup_const(), which means that as
+soon as you return from remove() it will be automatically freed.
+
+PS. I think the correct free function (if you want to release a
+devm_kstrdup_const() allocation) would be devm_kfree_const(), but I'm
+not able to find such function...
+
+> +}
+> +
+>  MODULE_DEVICE_TABLE(of, pmic_spmi_id_table);
+>  
+>  static struct spmi_driver pmic_spmi_driver = {
+>  	.probe = pmic_spmi_probe,
+> +	.remove = pmic_spmi_remove,
+>  	.driver = {
+>  		.name = "pmic-spmi",
+>  		.of_match_table = pmic_spmi_id_table,
+> diff --git a/include/soc/qcom/qcom-pmic.h b/include/soc/qcom/qcom-pmic.h
+
+Do you know if the ssbi PMICs provide similar information? Presumably
+though they would need different drivers anyways. So perhaps name this
+qcom-spmi-pmic.h just to be clear?
+
+> new file mode 100644
+> index 000000000000..59114988582d
+> --- /dev/null
+> +++ b/include/soc/qcom/qcom-pmic.h
+> @@ -0,0 +1,63 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/* Copyright (c) 2021 Linaro. All rights reserved.
+> + * Copyright (c) 2021 Caleb Connolly <caleb.connolly@linaro.org>
+> + */
+> +
+> +#ifndef __QCOM_PMIC_H__
+> +#define __QCOM_PMIC_H__
+> +
+> +#define COMMON_SUBTYPE		0x00
+> +#define PM8941_SUBTYPE		0x01
+> +#define PM8841_SUBTYPE		0x02
+> +#define PM8019_SUBTYPE		0x03
+> +#define PM8226_SUBTYPE		0x04
+> +#define PM8110_SUBTYPE		0x05
+> +#define PMA8084_SUBTYPE		0x06
+> +#define PMI8962_SUBTYPE		0x07
+> +#define PMD9635_SUBTYPE		0x08
+> +#define PM8994_SUBTYPE		0x09
+> +#define PMI8994_SUBTYPE		0x0a
+> +#define PM8916_SUBTYPE		0x0b
+> +#define PM8004_SUBTYPE		0x0c
+> +#define PM8909_SUBTYPE		0x0d
+> +#define PM8028_SUBTYPE		0x0e
+> +#define PM8901_SUBTYPE		0x0f
+> +#define PM8950_SUBTYPE		0x10
+> +#define PMI8950_SUBTYPE		0x11
+> +#define PM8998_SUBTYPE		0x14
+> +#define PMI8998_SUBTYPE		0x15
+> +#define PM8005_SUBTYPE		0x18
+> +#define PM660L_SUBTYPE		0x1A
+> +#define PM660_SUBTYPE		0x1B
+> +#define PM8150_SUBTYPE		0x1E
+> +#define PM8150L_SUBTYPE		0x1f
+> +#define PM8150B_SUBTYPE		0x20
+> +#define PMK8002_SUBTYPE		0x21
+> +#define PM8009_SUBTYPE		0x24
+> +#define PM8150C_SUBTYPE		0x26
+> +#define SMB2351_SUBTYPE		0x29
+> +
+> +#define PMI8998_FAB_ID_SMIC	0x11
+> +#define PMI8998_FAB_ID_GF	0x30
+> +
+> +#define PM660_FAB_ID_GF		0x0
+> +#define PM660_FAB_ID_TSMC	0x2
+> +#define PM660_FAB_ID_MX		0x3
+> +
+> +struct qcom_spmi_pmic {
+> +	unsigned int type;
+> +	unsigned int subtype;
+> +	unsigned int major;
+> +	unsigned int minor;
+> +	unsigned int rev2;
+> +	unsigned int fab_id;
+> +	const char *name;
+> +};
+> +
+> +static inline void qcom_pmic_print_info(struct device *dev, struct qcom_spmi_pmic *pmic)
+
+It's only in specific cases that this information is useful to people
+reading the kernel log and putting it in the include file seems to
+suggest that multiple drivers would want to print this information.
+
+I think you should move it back into the spmi driver to avoid this.
+
+Regards,
+Bjorn
+
+> +{
+> +	dev_info(dev, "%x: %s v%d.%d\n",
+> +		pmic->subtype, pmic->name, pmic->major, pmic->minor);
+> +}
+> +
+> +#endif /* __QCOM_PMIC_H__ */
+> -- 
+> 2.34.1
+> 

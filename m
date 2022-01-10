@@ -2,92 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE614895E8
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 11:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 584214896FB
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 12:07:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243585AbiAJKBf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 05:01:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56878 "EHLO
+        id S244421AbiAJLHo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 06:07:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243561AbiAJKBd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 05:01:33 -0500
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06467C061756;
-        Mon, 10 Jan 2022 02:01:33 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id 1D5A31F43727
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1641808891;
-        bh=fRV4dFn3irT6J0vQoA0RItda1+ceONurgTgIO7cm5k4=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=S1cpCYLYuHJTUi+1Ij27MvLzhLfJzzBU6Ah2/Yx4I54IibcqHQeuSt5R+8Nt/tvrD
-         rW3IDIp8sg8abc/RN/Pdi6a8/YM9e7MiWJ9UUcy0aXlfm9XCdomlezxR//Kbyy33kR
-         z10C2eem3vaJX34/id0pr+iNsvge5bBY9r1Opd/TuSp5hK3KQ563yQ3wpmlWb6UQNU
-         n14B4rSZ9RU23aeFU1C0IhPFVJ9KqJGxBytMwbCVpgwDStFWrSdC2aJYpcx0Vv3JDJ
-         hUT5bakZDqAuPWLmvEbMlrbapxe0+yphptydHpbXx42I70WqPVLZ1KX1vAcXzbiDFz
-         FklGFVbuLazaA==
-Subject: Re: [PATCH v1 2/2] iio: adc: mt8186: Add compatible node for mt8186
-To:     Guodong Liu <guodong.liu@mediatek.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        Project_Global_Chrome_Upstream_Group@mediatek.com
-References: <20220110084841.575-1-guodong.liu@mediatek.com>
- <20220110084841.575-2-guodong.liu@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Message-ID: <292950d7-d057-4e66-5d0d-a5144f50f2ce@collabora.com>
-Date:   Mon, 10 Jan 2022 11:01:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        with ESMTP id S244420AbiAJLHh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 06:07:37 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D28C061748;
+        Mon, 10 Jan 2022 03:07:36 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id q25so43391102edb.2;
+        Mon, 10 Jan 2022 03:07:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=he/R3Z0mxeByAmq12pzMewiN4Rzgf12JiYvzrsrEGrA=;
+        b=hS2shLvL+GHJaqJ0aanryf6/X8+QltBMpM9pKVb8wdYXa6jMlRy1F9iQx9G+9N14xx
+         j5xCMC7fFSnvGiwyIS6dtf4OdNUun8wDlOvadcUKWkG6fhKeFthdUNPFSUXACeKzpIJC
+         CGqhb+DRx2379mgb6EefwIHefVwC1KhYypCauq7rxxxKUaLk/nAqcGEeesIupK+B4zXT
+         S5KlGTqSvSzS8EWCARGEWbE1yuGN/t0MllZUs485ClS6U92hfmEbEjSIRvSeissXd7Ri
+         pknhuXSO2r/TlJY6tBEtwq9VEeuqm01fFo4JbucCci2HJjaX49HlY2En2ze0WRYz8dt5
+         +U3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=he/R3Z0mxeByAmq12pzMewiN4Rzgf12JiYvzrsrEGrA=;
+        b=PFiKcETsknDieggpVeUhWgrZqrSuKdPED5HA7e2a08G3lnzsbnQFrHNuEkdGz36GOi
+         iStR+7Jkvdozv0dGvKdq3uNfqSocT0MmSKP2bQvVbIdJWdYcO1ByU61EjddTSr/+XVMF
+         S7N+xJFC8xMmQtFbf8wDMZ7KR6JcHMGMEPHwKUY9RskOlSq238N7rd0ocj/3yLZYeAd/
+         8P7+20aSZ5Xc1bnfiDXNxFEL8G1pfh46TwkDbT9ydTJIXDGclhZiK9rlg1/I+4bQMWmn
+         yqmJqHGDBundw5KJFIwcIuM6vPHfDaJqNrbKJ0F+bRV6O6L/xK+8fpcXVKW3gkGmcn6W
+         lmfw==
+X-Gm-Message-State: AOAM531EAGrw/aAUZIICkyGjix356wq9n/fiT5Es1qlyz9KSYp2z0MVn
+        OCCdnWBDIr0YUJjGL8jQw9/vJ90PyEK5bH9HWbc=
+X-Google-Smtp-Source: ABdhPJwXdkbSUcWuHHd7MLqZaW6aVwLYP9a5QUocFvToL9VRPU2AMhJpYaJn7xWGlM1YSGkcNy6izCsZ8shqlYkuJl8=
+X-Received: by 2002:a05:6402:34cb:: with SMTP id w11mr52430edc.158.1641812855397;
+ Mon, 10 Jan 2022 03:07:35 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220110084841.575-2-guodong.liu@mediatek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20220109124326.3696775-1-nikita.yoush@cogentembedded.com>
+In-Reply-To: <20220109124326.3696775-1-nikita.yoush@cogentembedded.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 10 Jan 2022 13:05:47 +0200
+Message-ID: <CAHp75VcF2Xg4dz7Ea1L653wRqAgSJZvbwua1oWzw-Lsqttxvng@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: stm: don't always auto-enable I2C and SPI
+ interface drivers
+To:     Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 10/01/22 09:48, Guodong Liu ha scritto:
-> This commit adds mt8186 compatible node.
-> 
-> Signed-off-by: Guodong Liu <guodong.liu@mediatek.com>
+On Mon, Jan 10, 2022 at 9:30 AM Nikita Yushchenko
+<nikita.yoush@cogentembedded.com> wrote:
+>
+> This patch makes I2C and SPI interface drivers for STMicroelectronics
+> sensor chips individually selectable via Kconfig.
+>
+> The default is kept unchanged - I2C and SPI interface drivers are still
+> selected by default if the corresponding bus support is available.
+>
+> However, the patch makes it is possible to explicitly disable drivers
 
-Acked-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+it possible
 
-> ---
->   drivers/iio/adc/mt6577_auxadc.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/mt6577_auxadc.c b/drivers/iio/adc/mt6577_auxadc.c
-> index d4fccd52ef08..fb08d761589a 100644
-> --- a/drivers/iio/adc/mt6577_auxadc.c
-> +++ b/drivers/iio/adc/mt6577_auxadc.c
-> @@ -46,6 +46,11 @@ struct mt6577_auxadc_device {
->   	const struct mtk_auxadc_compatible *dev_comp;
->   };
->   
-> +static const struct mtk_auxadc_compatible mt8186_compat = {
-> +	.sample_data_cali = false,
-> +	.check_global_idle = false,
-> +};
-> +
->   static const struct mtk_auxadc_compatible mt8173_compat = {
->   	.sample_data_cali = false,
->   	.check_global_idle = true,
-> @@ -334,6 +339,7 @@ static const struct of_device_id mt6577_auxadc_of_match[] = {
->   	{ .compatible = "mediatek,mt2712-auxadc", .data = &mt8173_compat},
->   	{ .compatible = "mediatek,mt7622-auxadc", .data = &mt8173_compat},
->   	{ .compatible = "mediatek,mt8173-auxadc", .data = &mt8173_compat},
-> +	{ .compatible = "mediatek,mt8186-auxadc", .data = &mt8186_compat},
->   	{ .compatible = "mediatek,mt6765-auxadc", .data = &mt6765_compat},
->   	{ }
->   };
-> 
+> that are not needed for particular target.
+
+a particular
+
+...
+
+>  config IIO_ST_LSM9DS0_I2C
+
+> +       tristate "STMicroelectronics LSM9DS0 IMU I2C interface"
+> +       depends on I2C && IIO_ST_LSM9DS0
+
+> +       default I2C && IIO_ST_LSM9DS0
+
+Have you tested this for the case
+I2C=y
+IIO_ST_LSM9DS0=m
+
+So, what is the result?
+
+-- 
+With Best Regards,
+Andy Shevchenko

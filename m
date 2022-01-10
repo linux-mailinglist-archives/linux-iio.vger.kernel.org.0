@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6647A48987A
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 13:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9910448987F
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 13:21:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245420AbiAJMUP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 07:20:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
+        id S245434AbiAJMVV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 07:21:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245402AbiAJMTz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 07:19:55 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C60C06175B
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 04:19:54 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id d3so17277996lfv.13
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 04:19:54 -0800 (PST)
+        with ESMTP id S245437AbiAJMU3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 07:20:29 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44319C061759
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 04:20:28 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id d3so17283471lfv.13
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 04:20:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MDC9MBEjp6c17/86zespiJo5xQbtvKHVX6cjPao7rRQ=;
-        b=jGIUfvfOPF0OmVBWIwKao22Tzp6qqKbnrVBOE7wsH9EKtNgh/m0jtKgy+ci411bce0
-         NbeWz5FN6rmmWvGIhO5GHluJdD9rHbB92oUcD2cIaGw5WUpGsnmbLMWuBpq763QNe4lj
-         lfuccdhmlBRR4pQMIwp2GzklPb0fxOL0lmotLOiLCjoagyy0FIINqFXKRqRo+Uba5Ypr
-         eqQ9Qjq72SfhDaZbYC+enhPdedTkOhK39vZOB8o/YhKEV6d9Ub0VW+/7ZgtTSaGqGlXN
-         ot1OPFD/lFiISlylg774qwTh0czw0HqARYvc0/I3B3ApQOgbIr4e1J5t/MBw2D17JK0m
-         Mqkw==
+        bh=e+gczxkrQRD/dQ/jBxW7gRFcfdkPGHbr2WDGhZJZLJk=;
+        b=DQ6s1LJZPoFp6X8JefkipbzDh1yGPvq/kl1jdeBlsANQVeciRIMsENC9zSQpWhq78S
+         DkLgBNC+TfpIiuLamGmaYI/Vw+fFUzv/+tb+8WxqADvgFfapxzYO4Y8o9htnFCBX5XVo
+         OkoRHRNuvnooWK+eUM4gZoQbnEN8JAsKaL10RXyO2vt8XnLdQYPDpo7tZCO6GM3DYVOm
+         tjfM6SUY+MOaFz4ShgbZ/qWOxrpITTHFtNmjLiv35EOj/NFFeExH71NRmpgJ5F8Tu46A
+         vdgmSyZmLYeu7KK0Gm99B96rrE4Ktc0hKeRwx7PDGEbuDL1cXCMk8lJnFm6c9CCgcdez
+         CFJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MDC9MBEjp6c17/86zespiJo5xQbtvKHVX6cjPao7rRQ=;
-        b=cN5wZUtLoLsF5Tm4OHEwsrXXsFAat4PxgVDZ0UOHVsgvElCzGq4orKt08U1n2JBbPu
-         yYxnqLja1Tv+ngv5dD6xVv8ZivXNZObgZbE/0CV8psDfJD/kXkfrU8Xpgxfnvav/w8RX
-         9bNS0yU2+RfTsWMVTxpMY/EoZJaHkHu5rfAWWSYqIDuQHqrUsC85NeRfrOWgjjTKiyxX
-         wQxYRvch5jrWKdMvYZT+AWKL4zkoeonSzldWrpCVUqfMCxX1cMt774MZK3S9ZrLG44Lh
-         OCL62Zn7Mhq8KBqH0O2/hLuH7YWHw/pQ06Qlhj1kbSpdSlfvqkmMZ2gYZxUIE04RVfe3
-         eoEA==
-X-Gm-Message-State: AOAM533GrBeUcE89zW2TILjenVZLjSn1NHrJFh4xmPM0/DtPcbgcQSsy
-        vy8yHYiRmCAxVsKp3Zmf0MJKXP1CytVZ/SSXxub3Ow==
-X-Google-Smtp-Source: ABdhPJy1C50fectbijLg4DCD2D5ERyiL+ri6Nr17WrnwGBIfoqEH4v11ebD4j6YRrSJcQVjIPoUW6mX/5tyJbrqH8HY=
-X-Received: by 2002:a19:6748:: with SMTP id e8mr35584329lfj.358.1641817192502;
- Mon, 10 Jan 2022 04:19:52 -0800 (PST)
+        bh=e+gczxkrQRD/dQ/jBxW7gRFcfdkPGHbr2WDGhZJZLJk=;
+        b=dYUfetoDY0/Mhi+rx/8YfKiON+VHagaZanSm9LbUmmhFQaUywl2oAM+0+UMAhz54km
+         1qEVhJNHXcNpycUh6K6GJFgQBE0lOkTqMoTl+320wSRi9+4HHMsOZ4IHZjmyGQXd5/mA
+         ES05g8+TiACnb3fbD9Mfwh4RUVroRDRvC5UxLJ23tTVD1EFD2rBpprILNlFCUvrZAltL
+         J8x9EEsoa7LS+PZ2zKQPPRSgJLn12ZIgzgWMbp+LqXGHxGn5gxs0DuGVdQRBh2BCXo5P
+         ghYdRXWtC7No3u1xQ2pozGwulOHt76aUaB2/RCm21XgT+mTLdOD07aq3bZ1uDeNQ1gOI
+         i+Zw==
+X-Gm-Message-State: AOAM533GA3mbCXnrCQIKYi3S4SWmWXtgCvsuxKCH+KeJPMAok42VXqBL
+        42/Bb/waNr8APjn5IXkL+9KDq0OH7JCOEjocTrUasA==
+X-Google-Smtp-Source: ABdhPJwHuXQxrdr9hK3bUVDPLAm90cjss/wNF/ISoPLrywRMtIzRfPeLJ7C3G8WRGhNdQHZCB3M+ZVJPLMsNh8wGOzg=
+X-Received: by 2002:a2e:9659:: with SMTP id z25mr59418630ljh.16.1641817226570;
+ Mon, 10 Jan 2022 04:20:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20220107181723.54392-1-paul@crapouillou.net> <20220107181723.54392-6-paul@crapouillou.net>
-In-Reply-To: <20220107181723.54392-6-paul@crapouillou.net>
+References: <20220107181723.54392-1-paul@crapouillou.net> <20220107181723.54392-7-paul@crapouillou.net>
+In-Reply-To: <20220107181723.54392-7-paul@crapouillou.net>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 10 Jan 2022 13:19:16 +0100
-Message-ID: <CAPDyKFozm+w+vhbeChzdh4PN73Xra3V0+ip7NBTG4Cnb9grGxg@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] PM: runtime: Add EXPORT[_GPL]_RUNTIME_DEV_PM_OPS macros
+Date:   Mon, 10 Jan 2022 13:19:50 +0100
+Message-ID: <CAPDyKFoA6Jj_xdRtvgahue7cSWrW1HOX=1=-9COwiZqRrRd7bw@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] iio: pressure: bmp280: Use new PM macros
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -66,10 +66,12 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 7 Jan 2022 at 19:17, Paul Cercueil <paul@crapouillou.net> wrote:
+On Fri, 7 Jan 2022 at 19:18, Paul Cercueil <paul@crapouillou.net> wrote:
 >
-> Similar to EXPORT[_GPL]_SIMPLE_DEV_PM_OPS, but for users with runtime-PM
-> suspend/resume callbacks.
+> Use the new EXPORT_RUNTIME_DEV_PM_OPS() macro. It allows the underlying
+> dev_pm_ops struct as well as the suspend/resume callbacks to be detected
+> as dead code in the case where CONFIG_PM is disabled, without having to
+> wrap everything inside #ifdef CONFIG_PM guards.
 >
 > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -82,40 +84,70 @@ Uffe
 > ---
 >
 > Notes:
->     v2: No change
->     v3: Add comment about the necesity to use the new export macro when
->         the dev_pm_ops has to be exported
+>     v2: New patch
+>     v3: No change
 >
->  include/linux/pm_runtime.h | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  drivers/iio/pressure/bmp280-core.c | 11 ++---------
+>  drivers/iio/pressure/bmp280-i2c.c  |  2 +-
+>  drivers/iio/pressure/bmp280-spi.c  |  2 +-
+>  3 files changed, 4 insertions(+), 11 deletions(-)
 >
-> diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-> index 4af454d29281..9f09601c465a 100644
-> --- a/include/linux/pm_runtime.h
-> +++ b/include/linux/pm_runtime.h
-> @@ -30,12 +30,22 @@
->   * macro, which uses the provided callbacks for both runtime PM and system
->   * sleep, while DEFINE_RUNTIME_DEV_PM_OPS() uses pm_runtime_force_suspend()
->   * and pm_runtime_force_resume() for its system sleep callbacks.
-> + *
-> + * If the underlying dev_pm_ops struct symbol has to be exported, use
-> + * EXPORT_RUNTIME_DEV_PM_OPS() or EXPORT_GPL_RUNTIME_DEV_PM_OPS() instead.
->   */
->  #define DEFINE_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
->         _DEFINE_DEV_PM_OPS(name, pm_runtime_force_suspend, \
->                            pm_runtime_force_resume, suspend_fn, \
->                            resume_fn, idle_fn)
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index 6b7da40f99c8..bf8167f43c56 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -1138,7 +1138,6 @@ int bmp280_common_probe(struct device *dev,
+>  }
+>  EXPORT_SYMBOL(bmp280_common_probe);
 >
-> +#define EXPORT_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
-> +       _EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-> +                          suspend_fn, resume_fn, idle_fn, "")
-> +#define EXPORT_GPL_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
-> +       _EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-> +                          suspend_fn, resume_fn, idle_fn, "_gpl")
-> +
->  #ifdef CONFIG_PM
->  extern struct workqueue_struct *pm_wq;
+> -#ifdef CONFIG_PM
+>  static int bmp280_runtime_suspend(struct device *dev)
+>  {
+>         struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> @@ -1159,15 +1158,9 @@ static int bmp280_runtime_resume(struct device *dev)
+>         usleep_range(data->start_up_time, data->start_up_time + 100);
+>         return data->chip_info->chip_config(data);
+>  }
+> -#endif /* CONFIG_PM */
 >
+> -const struct dev_pm_ops bmp280_dev_pm_ops = {
+> -       SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+> -                               pm_runtime_force_resume)
+> -       SET_RUNTIME_PM_OPS(bmp280_runtime_suspend,
+> -                          bmp280_runtime_resume, NULL)
+> -};
+> -EXPORT_SYMBOL(bmp280_dev_pm_ops);
+> +EXPORT_RUNTIME_DEV_PM_OPS(bmp280_dev_pm_ops, bmp280_runtime_suspend,
+> +                         bmp280_runtime_resume, NULL);
+>
+>  MODULE_AUTHOR("Vlad Dogaru <vlad.dogaru@intel.com>");
+>  MODULE_DESCRIPTION("Driver for Bosch Sensortec BMP180/BMP280 pressure and temperature sensor");
+> diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
+> index 8b03ea15c0d0..35045bd92846 100644
+> --- a/drivers/iio/pressure/bmp280-i2c.c
+> +++ b/drivers/iio/pressure/bmp280-i2c.c
+> @@ -58,7 +58,7 @@ static struct i2c_driver bmp280_i2c_driver = {
+>         .driver = {
+>                 .name   = "bmp280",
+>                 .of_match_table = bmp280_of_i2c_match,
+> -               .pm = &bmp280_dev_pm_ops,
+> +               .pm = pm_ptr(&bmp280_dev_pm_ops),
+>         },
+>         .probe          = bmp280_i2c_probe,
+>         .id_table       = bmp280_i2c_id,
+> diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+> index 625b86878ad8..41f6cc56d229 100644
+> --- a/drivers/iio/pressure/bmp280-spi.c
+> +++ b/drivers/iio/pressure/bmp280-spi.c
+> @@ -109,7 +109,7 @@ static struct spi_driver bmp280_spi_driver = {
+>         .driver = {
+>                 .name = "bmp280",
+>                 .of_match_table = bmp280_of_spi_match,
+> -               .pm = &bmp280_dev_pm_ops,
+> +               .pm = pm_ptr(&bmp280_dev_pm_ops),
+>         },
+>         .id_table = bmp280_spi_id,
+>         .probe = bmp280_spi_probe,
 > --
 > 2.34.1
 >

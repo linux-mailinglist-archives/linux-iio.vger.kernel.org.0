@@ -2,120 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB14D48A265
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 23:05:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A058448A316
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 23:43:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345138AbiAJWFc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 17:05:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56274 "EHLO
+        id S245010AbiAJWn2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 17:43:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345233AbiAJWFa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 17:05:30 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C819FC061748;
-        Mon, 10 Jan 2022 14:05:29 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id o6so59438646edc.4;
-        Mon, 10 Jan 2022 14:05:29 -0800 (PST)
+        with ESMTP id S242232AbiAJWn2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 17:43:28 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E137DC06173F;
+        Mon, 10 Jan 2022 14:43:27 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id b13so6377249edn.0;
+        Mon, 10 Jan 2022 14:43:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=7qTgRogzHIjz3RKxh1ZqDUQUFjrtnjfdm+rxB2VFGYs=;
-        b=jJ9d1QXcjM+7clYoRP5Td1uYItfEqQb4ShBVPtPj6HuvwR00zICme3sSDdgxCbadEe
-         Bjc42QV3Gl80hYuV0KGzdPsbYuM7o7ZbXJHJzx1uhBwZcw87sy7BmgxdXzRJF9p7TZYP
-         ugvkeJvVSu1mdlM+kl813dxorQfucU4sCybsn+h123M+q665Vlg+S3fqMRM31WCIhajO
-         YMYP+6Wpv1g2W7oPSdCYxM6GPIdG0D8UUrXYzewpvhPmLjgV05nIhX55gHJL0vm3/w3Z
-         j4MikSKqB7XJiLoUwWhaiKpXRDRA94EO1fquWXpOjD8JLYZElIwouZ3sFMqmkYLvV67M
-         pOJA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=L3nxE3NC5WQDqgbf8XFAFwIX0VBGrF90p5azUyWILT4=;
+        b=Q5ZQv10zp3VNrYs+xmNHMiyRP1a2adc8JMePB7WgIxkIWC1ebUCav34Yy7x4vT8T1a
+         fNmEuQRENYEcQaDKe+tb50yTLW8A6sMKrkg8FHbCBLQwODEgQdMPpkXbzfFxjIzUP3St
+         G0EQLRJWAuRtRzYNU6AQrYk0odaF/F8YJUN9m7K1TNGkyCsDYEnOdfzxfkR5f99bCwV6
+         eI5/5bBKiwLgHTM7JBY0wJ6DhX3VHFtDjO4H2yjoKlrqp4X3/aZXAGhZaZSc2YaT8Cbh
+         A/hZGxwnMdzMB0TR9l5dAvpHxbML3bddktBaLlatf7fbji3w2fxrYDEO4BAVXdwFgQvA
+         CSjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7qTgRogzHIjz3RKxh1ZqDUQUFjrtnjfdm+rxB2VFGYs=;
-        b=yH/65bBYphjh1Sr/U0ZGTPKQSHTqS4VLVzAaiHRLirW0ukNBoiwZ7EIbTQKRSyztTC
-         bE+DScv1Zu96xSWqamfjF11WIn0LlK+WiWCc2PtLCUBirneRe7hFcWfnIO79KcdCGs9o
-         ypZRUen8uolnWwET73bX6liKTub1aIcfwjZeX36QPGtD1D3l6vrViWBON/D/L6y+XLkg
-         VOrfC5YeUK82+VUDeaVFcE/T1EnkKVrRq+0mExsBdVPqm32FNwAmigM3QxEefbulrbxc
-         WXr0Ut3xHztdeyuXNmXlJ5br/57Lx6qCCV1rtoQ7p+AoX0Xa5sPOB/IKE7xMICzv2Bf+
-         QqLg==
-X-Gm-Message-State: AOAM533MOuxxGLF6fgoKtffxfmSpM4GZgE4UW8HjFcaMeBt/D9rnrn97
-        lSybpf591C1nPT39wufIJZB4ddftg6MZBg==
-X-Google-Smtp-Source: ABdhPJyKxkpzHy/amPKgIYRSwC/0jEiQlHDkAMQtXuLZJ1l0MTo+6gbVaqNZI0TVTR12hi7xgVsbNg==
-X-Received: by 2002:aa7:d383:: with SMTP id x3mr1609957edq.392.1641852328423;
-        Mon, 10 Jan 2022 14:05:28 -0800 (PST)
-Received: from demon-pc.localdomain ([79.119.107.253])
-        by smtp.gmail.com with ESMTPSA id q21sm2842672ejn.107.2022.01.10.14.05.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jan 2022 14:05:28 -0800 (PST)
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-X-Google-Original-From: Cosmin Tanislav <cosmin.tanislav@analog.com>
-To:     andy.shevchenko@gmail.com
-Cc:     cosmin.tanislav@analog.com, demonsingur@gmail.com,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
-Subject: [PATCH v2 3/3] iio: addac: ad74413r: correct comparator gpio getters mask usage
-Date:   Tue, 11 Jan 2022 00:05:09 +0200
-Message-Id: <20220110220509.3527402-3-cosmin.tanislav@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220110220509.3527402-1-cosmin.tanislav@analog.com>
-References: <20220110220509.3527402-1-cosmin.tanislav@analog.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=L3nxE3NC5WQDqgbf8XFAFwIX0VBGrF90p5azUyWILT4=;
+        b=pCLI09XnTfxlRY3y86jkRwqdkhdCkEST1c3SIOKiUJwjMa19Kwdoo5nJCDOBkjSlRg
+         +YFnul+Rf1n6XnsMtEPpAhEJhjCACQIt58Tab3Y6mDCWOTTtYsqqqqw4RtWvMsrHWeq+
+         pzmiz9EJNCkW6lMEF2PLGy3AExQHFOpLrufCpPSWy2dwmCoFZn3Gmc2G4U54IhWvXkXh
+         ghUWnmD9kvFkX2uMWnqa9NgRhsp/ClaC3PNGRk+cNm3oM1csC7widCcp01GmmkIdLc9K
+         aKFYfYHVGeEHKiGjXoQD7YJWPFyUhb6wSFxgcfmved5CPPlSVfeXpcEOnGIDoQAaVZhZ
+         zdkw==
+X-Gm-Message-State: AOAM530VlgYSnbC6fLFTlpJVUdfUAMuV2wVfHfL54EHU7HE2+9SYpmNy
+        32shsvmh5dTVeDlKIwHUCC9RY5ODEYU=
+X-Google-Smtp-Source: ABdhPJx0WcBMaEnnloeLRUVE7kGac9jBsy225Jeg5JdKah764Ugg2FyIJUfNXq6GALvPiV1M1vqOQg==
+X-Received: by 2002:a17:906:87c9:: with SMTP id zb9mr1428769ejb.49.1641854606489;
+        Mon, 10 Jan 2022 14:43:26 -0800 (PST)
+Received: from [192.168.0.182] ([79.119.107.253])
+        by smtp.gmail.com with ESMTPSA id d15sm4228688edv.44.2022.01.10.14.43.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jan 2022 14:43:26 -0800 (PST)
+Message-ID: <ab212905-2377-040b-ce8a-2cef3ae13002@gmail.com>
+Date:   Tue, 11 Jan 2022 00:43:25 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH v3 2/2] iio: accel: add ADXL367 driver
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>,
+        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20211217114548.1659721-1-cosmin.tanislav@analog.com>
+ <20211217114548.1659721-3-cosmin.tanislav@analog.com>
+ <20211223130100.059231d6@jic23-huawei>
+ <edb634a17ba04f4cb5e77fa3b5c69358@analog.com>
+ <20211228205757.7654cb66@jic23-huawei>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <20211228205757.7654cb66@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The value of the GPIOs is currently altered using offsets rather
-than masks. Make use of __assign_bit and the BIT macro to turn
-the offsets into masks.
 
-Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
-Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
----
-V1 -> V2
- * add Fixes tag
- * use __assign_bit
- * remove bitmap_zero
----
- drivers/iio/addac/ad74413r.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index 3d089c0b6f7a..8a8d60e592a8 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -134,7 +134,6 @@ struct ad74413r_state {
- #define AD74413R_CH_EN_MASK(x)		BIT(x)
- 
- #define AD74413R_REG_DIN_COMP_OUT		0x25
--#define AD74413R_DIN_COMP_OUT_SHIFT_X(x)	x
- 
- #define AD74413R_REG_ADC_RESULT_X(x)	(0x26 + (x))
- #define AD74413R_ADC_RESULT_MAX		GENMASK(15, 0)
-@@ -316,7 +315,7 @@ static int ad74413r_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	if (ret)
- 		return ret;
- 
--	status &= AD74413R_DIN_COMP_OUT_SHIFT_X(real_offset);
-+	status &= BIT(real_offset);
- 
- 	return status ? 1 : 0;
- }
-@@ -336,9 +335,7 @@ static int ad74413r_gpio_get_multiple(struct gpio_chip *chip,
- 
- 	for_each_set_bit(offset, mask, chip->ngpio) {
- 		unsigned int real_offset = st->comp_gpio_offsets[offset];
--
--		if (val & BIT(real_offset))
--			*bits |= offset;
-+		__assign_bit(offset, bits, val & BIT(real_offset));
- 	}
- 
- 	return ret;
--- 
-2.34.1
+On 12/28/21 22:58, Jonathan Cameron wrote:
+> Hi Cosmin,
+> 
+> Happy New year for a few day's time.
+> 
+>>> ...
+>>>    
+>>>> +
+>>>> +static bool adxl367_push_event(struct iio_dev *indio_dev, u8 status)
+>>>> +{
+>>>> +	unsigned int ev_dir;
+>>>> +
+>>>> +	if (FIELD_GET(ADXL367_STATUS_ACT_MASK, status))
+>>>> +		ev_dir = IIO_EV_DIR_RISING;
+>>>> +	else if (FIELD_GET(ADXL367_STATUS_INACT_MASK, status))
+>>>> +		ev_dir = IIO_EV_DIR_FALLING;
+>>>> +	else
+>>>> +		return false;
+>>>> +
+>>>> +	iio_push_event(indio_dev,
+>>>> +		       IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+>>> IIO_MOD_X_OR_Y_OR_Z,
+>>>> +					  IIO_EV_TYPE_THRESH, ev_dir),
+>>> This is unusual for event detection as it's a simple or of separately
+>>> applied thresholds on X, Y and Z axes.  Given the effect of gravity that
+>>> means you have to set the thresholds very wide.
+>>>
+>>> Also, I'd expect these to be magnitudes, not THRESH - no data sheet that
+>>> I can find though so can't be sure.
+>>>    
+>>
+>> Actually, the chip has a referenced, and an absolute mode. We use reference mode
+>> in this driver, as configured in write_event_config.
+>> The motion detection details are about the same as ADXL362 (page 14).
+>> https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL362.pdf
+> 
+> Interesting.  We should figure out some way to make that clear to userspace
+> given right now it has no way of knowing that and might set inappropriate limits
+> without that information.
+> 
 
+Any suggestions on how I should do this?
+
+> It's kind of similar to some of the adaptive thresholds, just that it uses
+> the value at a particular moment.
+> 
+> Worth noting that for the adxl362 at least the maths is
+> ABS(Acceleration - reference) > Threshold which is a magnitude not a threshold
+> unless you want to represent it as a pair of thresholds (above and below) which
+> gets fiddly as I assume there is only one control
+> 
+
+Indeed. I didn't catch onto the difference between magnitude and
+threshold. So, I should use IIO_EV_TYPE_MAG rather than
+IIO_EV_TYPE_THRESH? Or IIO_EV_TYPE_MAG_ADAPTIVE? The ABI doesn't
+describe these too well.
+
+>>
+>>
+>>>> +		       iio_get_time_ns(indio_dev));
+>>>> +
+>>>> +	return true;
+>>>> +}
+> 
+> ...
+> 
+>>>> +static int adxl367_write_event_config(struct iio_dev *indio_dev,
+>>>> +				      const struct iio_chan_spec *chan,
+>>>> +				      enum iio_event_type type,
+>>>> +				      enum iio_event_direction dir,
+>>>> +				      int state)
+>>>> +{
+>>>> +	struct adxl367_state *st = iio_priv(indio_dev);
+>>>> +	enum adxl367_activity_type act;
+>>>> +	int ret;
+>>>> +
+>>>> +	switch (dir) {
+>>>> +	case IIO_EV_DIR_RISING:
+>>>> +		act = ADXL367_ACTIVITY;
+>>>> +		break;
+>>>> +	case IIO_EV_DIR_FALLING:
+>>>> +		act = ADXL367_INACTIVITY;
+>>>> +		break;
+>>>> +	default:
+>>>> +		return -EINVAL;
+>>>> +	}
+>>>> +
+>>>> +	ret = iio_device_claim_direct_mode(indio_dev);
+>>>
+>>> It's unusual (though not unheard of) to have events that cannot be enabled
+>>> at the same time as a fifo.  If that's true here, please add some comments
+>>> to explain why.  Or is this just about the impact of having to disable
+>>> the measurement to turn it on and the resulting interruption of data
+>>> capture?
+>>>
+>>> If so that needs more thought as we have a situation where you can (I think)
+>>> have events as long as you enable them before the fifo based capture is
+>>> started,
+>>> but cannot enable them after.
+>>>    
+>>
+>> That is indeed the case. You mentioned in a previous patchset that various
+>> attributes could toggle measurement mode while the FIFO capture was running,
+>> so I checked all the possible places where that could happen and added claim
+>> direct mode. Not too nice, but it's the nature of the chip...
+> 
+> Hmm. I'm not sure what the right thing to do here is. Maybe we need a docs update
+> to explicitly call out that this might happen for the event enables?  Calling
+> it out for all devices is fine because all we are doing is saying userspace would
+> ideally cope with this situation and make the decision to disable the buffered
+> mode if it wants to enable events then reenable it afterwards if that is what
+> is desired.
+
+By docs you mean the ABI file?
+
+> 
+> Jonathan
+> 
+> 

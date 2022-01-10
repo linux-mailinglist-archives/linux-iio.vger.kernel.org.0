@@ -2,101 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47DE7489F87
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 19:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4E7489F9C
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 19:51:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241666AbiAJStG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 13:49:06 -0500
-Received: from mga17.intel.com ([192.55.52.151]:44428 "EHLO mga17.intel.com"
+        id S242047AbiAJSvo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 13:51:44 -0500
+Received: from mga04.intel.com ([192.55.52.120]:18507 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241634AbiAJStF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 10 Jan 2022 13:49:05 -0500
+        id S241986AbiAJSvo (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 10 Jan 2022 13:51:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641840545; x=1673376545;
+  t=1641840704; x=1673376704;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=kJR2yg22myL6ML4Xc2QvmpKpufnRhYemZbmvBGy7u/I=;
-  b=S8hOiLfgIDed14fY6I+n62Dpq2xdsXdHnEs2xsj1Fy/YEYwnNH8RTr2K
-   cGGMx8b+7AqtHI5VbLasGJoH8WRDTcgV0t/dCMb5Ve+51PyXGdJB1LsNu
-   ntcwNrDe0QKK1EJD31lL1wZasATSvuHqnv8cGTWl40qUuL0bIC8quEboq
-   BATWgtmssdsWPr1k4kxlWrdgODWcbz/KOkdTG3l2jEvqrSVKlSnXVjZJn
-   o9Y8EJF8ZwHLQS8ZjQvu2fEZPIDGAUugNAHv3b8W+v6NLfPQVKwped1oP
-   B7K4+2r/ahjirfMdtwoFOlhlPlBphe9dHlSvKQnmqdnA3DiXYplf+M8bg
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="223993243"
+  bh=fWcyZfu0zV/E0m/O9x2TQoChBExtoI+yu9H4BVJDPSs=;
+  b=N1AG7oW/fb1f6NZnvghhQDx0aGJw8Xc3nP7nyKsLMYywYrjQsk/zzFop
+   t7hkN1KvLgnfmeFmFKL+fBbe3Y/wIHDNG2ByZb2ZhH+ILgyjc6Cddy6mx
+   Br5ukJL5UUBw6tb+NiGE2wjn0VKxw5TbJcm6D2YUirRpOxXLn+bQ4rTjQ
+   rPNob3LAVlqLE4867mc/RsL1y3zhmIPYf+sX0xezg/c4HDt33qKZ96a5U
+   R0JpiTyq3NnWmR7Mhz+oPqTRHUzG+mOVVUKRVhrUkNsfOsGWWw+6JUZ2V
+   IP13MMHYCXMQCjwjmftEoe8FMyOvAnat3vLssLs8NQuhRqa+RP7mdYGgj
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="242111264"
 X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
-   d="scan'208";a="223993243"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 10:48:46 -0800
+   d="scan'208";a="242111264"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 10:51:44 -0800
 X-IronPort-AV: E=Sophos;i="5.88,277,1635231600"; 
-   d="scan'208";a="558079445"
+   d="scan'208";a="575917216"
 Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 10:48:44 -0800
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2022 10:51:41 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.95)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1n6zhZ-008z3k-PR;
-        Mon, 10 Jan 2022 20:47:29 +0200
-Date:   Mon, 10 Jan 2022 20:47:29 +0200
+        id 1n6zkQ-008z5l-SX;
+        Mon, 10 Jan 2022 20:50:26 +0200
+Date:   Mon, 10 Jan 2022 20:50:26 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Cai Huoqing <caihuoqing@baidu.com>, linux-iio@vger.kernel.org,
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] iio: st_sensors: don't always auto-enable I2C and SPI
- interface drivers
-Message-ID: <Ydx/Qam3mCl416JP@smile.fi.intel.com>
-References: <20220110152432.3799227-1-nikita.yoush@cogentembedded.com>
- <YdxWZEz1GXXxQ+7h@smile.fi.intel.com>
- <0f7d5c44-2119-97ba-5a3e-7f0f40d41605@cogentembedded.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Rosin <peda@axentia.se>
+Subject: Re: [PATCH v1 4/5] iio: adc: qcom-vadc-common: Re-use generic struct
+ u32_fract
+Message-ID: <Ydx/8vZj1jvkkkm0@smile.fi.intel.com>
+References: <20220110181711.65054-1-andriy.shevchenko@linux.intel.com>
+ <20220110181711.65054-4-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0f7d5c44-2119-97ba-5a3e-7f0f40d41605@cogentembedded.com>
+In-Reply-To: <20220110181711.65054-4-andriy.shevchenko@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jan 10, 2022 at 08:04:35PM +0300, Nikita Yushchenko wrote:
-> 10.01.2022 18:53, Andy Shevchenko wrote:
-> > On Mon, Jan 10, 2022 at 06:24:32PM +0300, Nikita Yushchenko wrote:
+On Mon, Jan 10, 2022 at 08:17:10PM +0200, Andy Shevchenko wrote:
+> Instead of custom data type re-use generic struct u32_fract.
+> No changes intended.
 
 ...
 
-> > The same question as per v2.
-> > 
-> > > +	default I2C && IIO_ST_ACCEL_3AXIS
-> > 
-> > What will be the results when I2C=y and the second ones =m?
-> 
-> $ grep CONFIG_I2C= .config
-> CONFIG_I2C=y
-> $ grep IIO_ST_ACCEL .config
-> CONFIG_IIO_ST_ACCEL_3AXIS=m
-> CONFIG_IIO_ST_ACCEL_I2C_3AXIS=m
-> # CONFIG_IIO_ST_ACCEL_SPI_3AXIS is not set
-> 
-> $ vim .config
-> <remove CONFIG_IIO_ST_ACCEL_I2C_3AXIS line>
-> $ grep IIO_ST_ACCEL .config
-> CONFIG_IIO_ST_ACCEL_3AXIS=m
-> # CONFIG_IIO_ST_ACCEL_SPI_3AXIS is not set
-> 
-> $ make menuconfig
-> <immediately exit>
-> 
-> $ grep IIO_ST_ACCEL .config
-> CONFIG_IIO_ST_ACCEL_3AXIS=m
-> CONFIG_IIO_ST_ACCEL_I2C_3AXIS=m
-> # CONFIG_IIO_ST_ACCEL_SPI_3AXIS is not set
-> 
-> CONFIG_IIO_ST_ACCEL_I2C_3AXIS was set to =m by default. I believe this is correct behavior.
+> -/**
+> - * struct vadc_prescale_ratio - Represent scaling ratio for ADC input.
+> - * @num: the inverse numerator of the gain applied to the input channel.
+> - * @den: the inverse denominator of the gain applied to the input channel.
+> - */
+> -struct vadc_prescale_ratio {
+> -	u32 num;
+> -	u32 den;
+> -};
 
-Yes, thanks for confirming.
+Definitely forgot to compile this one.
 
 -- 
 With Best Regards,

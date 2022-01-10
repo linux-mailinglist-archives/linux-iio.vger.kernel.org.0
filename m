@@ -2,221 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B8B4898BF
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 13:39:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EAE43489978
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jan 2022 14:12:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245594AbiAJMjN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Jan 2022 07:39:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36742 "EHLO
+        id S231794AbiAJNL6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Jan 2022 08:11:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236630AbiAJMjK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 07:39:10 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3180CC061748
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 04:39:10 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n6tx1-0007Gd-W2; Mon, 10 Jan 2022 13:39:03 +0100
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n6tx1-00083y-CO; Mon, 10 Jan 2022 13:39:03 +0100
-Date:   Mon, 10 Jan 2022 13:39:03 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>
-Subject: Re: [PATCH v1 1/1] iio: adc: tsc2046: rework the trigger state
- machine
-Message-ID: <20220110123903.GC3326@pengutronix.de>
-References: <20220107074017.2762347-1-o.rempel@pengutronix.de>
- <20220109154404.75e0ed2f@jic23-huawei>
+        with ESMTP id S231421AbiAJNLr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Jan 2022 08:11:47 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE6CC061757
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 05:11:46 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id b7so24234363edj.9
+        for <linux-iio@vger.kernel.org>; Mon, 10 Jan 2022 05:11:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=Bgie3w5lZXcUpEJsNUNnYT9D80sz6831OKMgWSWMpAMR4c04HQM1hwHkoZ1AqHgJ5M
+         pQJfhFBsNTGc+jfMsWTuSDXhNBe5XPwJ8/UQZKbYcWTDQ68Eu4MBBVsHf0V3Baa+27Pp
+         IUJW/950IUGNsTto2NnsTW49/Cy4Vf+KfgzDT0+KZ2gcb/QkEKg3LEIj8qPJpiII0Qbk
+         buE3CbPl0T8T6omQLXT3KYJBxN98pPIrfxDam1Qs0diPFN43pWVugWbd8LU8WaIGviK3
+         O/t/NLMKhR03EdE8rMi5c8T5epCw09Yzc4YmAU5QrO9ZaREbayNwAtpm1SWYSR1IiBuY
+         5w9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=E35HX/+zTWWghAifKhiOh3IW9G9M1QTneL5Fvk1sETEBsXZ/uR7NCz925n+DyP7XY/
+         aQGFxLU5/fctfLKrJ1MgXLaMJhyeIT41WMIuupaRkU/mM7QC2Bhg1/G9yFG1siAloX/+
+         iYGO47wYXpboHBqZW+nBhtCNy3/2bgpSN2ll/WZbmHNyCUKWe1kUVTEnQDWrHjCNEQcE
+         Z/euUzGs/vUzG9gFhup1x/vfeNO/h3yqDzZdw1DJVeVlN097cTf/w0za4mqQc+ZwxofG
+         hh+fBWOgzpQ/8pDrPzVKNazsVrKMq15irmK4eSXCii4L7Fg1DIgW/KvoQcGkfM1Srd9b
+         3Q5g==
+X-Gm-Message-State: AOAM530O5iOZqWMhjXc8Pb+vbppeU1+D89G6YKmbifbDfpGVkWgmw9p+
+        G1akZq1Uf186Ip5MjRyM7h1cZN8PwIH0uQ+H3RsvPrGwxfw=
+X-Google-Smtp-Source: ABdhPJyUuzfRq9+VAp3YIslVsNF7E8r6u+SDvjtiaFw6sfTA9uOxrmlrl9JDay/jDh10uqplhgk07a+YHTpM3Ge0znw=
+X-Received: by 2002:ac2:4c51:: with SMTP id o17mr60639917lfk.558.1641820293776;
+ Mon, 10 Jan 2022 05:11:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220109154404.75e0ed2f@jic23-huawei>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:12:59 up 30 days, 16:58, 71 users,  load average: 0.10, 0.15,
- 0.15
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:11:32
+ -0800 (PST)
+Reply-To: gtbank107@yahoo.com
+From:   Barr Robert Richter <westernunion.benin982@gmail.com>
+Date:   Mon, 10 Jan 2022 14:11:32 +0100
+Message-ID: <CAP=nHBK9zHzp_=-EVswWQiLxEoc+HV4oqddgtnEqf-9qYab_4Q@mail.gmail.com>
+Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 09, 2022 at 03:44:04PM +0000, Jonathan Cameron wrote:
-> On Fri,  7 Jan 2022 08:40:17 +0100
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > Initially this was designed to:
-> > | Fix sleeping in atomic context warning and a deadlock after iio_trigger_poll()
-> > | call
-> > |
-> > | If iio_trigger_poll() is called after IRQ was disabled, we will call
-> > | reenable_trigger() directly from hard IRQ or hrtimer context instead of
-> > | IRQ thread. In this case we will run in to multiple issue as sleeping in atomic
-> > | context and a deadlock.
-> > |
-> > | To avoid this issue, rework the trigger to use state machine. All state
-> > | changes are done over the hrtimer, so it allows us to drop fsleep() and
-> > | avoid the deadlock.
-> > 
-> > This issue was fixed by: 9020ef659885 ("iio: trigger: Fix a scheduling
-> > whilst atomic issue seen on tsc2046").
-> > 
-> > Even if the root cause of this issue probably will and can be fixed in the iio
-> > core, this patch can be seen as clean-up to provide better internal state
-> > machine.
-> 
-> Probably want to update this text?
+Attn,Dear
+I need you to know that the fear of the LORD is
+the beginning of wisdom, and knowledge of the Holy One is
+understanding. As power of God Most High. And This is the confidence
+we have in approaching God, that if we ask anything according to his
+will, he hears us. I will make you know that Slow and steady wins the race.
+It is your turn to receive your overdue compensation funds total
+amount $18.5Milion  USD.
+I actualized that you will receive your transfer today without any more delay
+No More fee OK, Believe me , I am your Attorney standing here on your favor.
+I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
+And She told me that your transfer is ready today
 
-ack
+So the Bank Asked you to contact them immediately by re-confirming
+your Bank details asap.
+Because this is the Only thing holding this transfer
+If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
+For we are the ones trying to protect your funds here
+and make sure that your funds is secure.
+So Promisingly, I am here to assure you, that Grate Miracle is coming on
+your way, and this funds total amount of $18.500,000 is your
+compensation, entitlement inheritance overdue funds on your name.
+Which you cannot let anything delay you from receiving your funds now,
 
-> A few comments below.
-> > 
-> > Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
-> 
-> From above isn't this now fixed?  The cleanup here is just making things easier
-> to follow I think...
+Finally i advised you to try your possible best and contact Gt Bank Benin
+once you get this message to receive your transfer $18.5 USD today.
+I know that a journey of thousand miles begins with a single step.
+Always put your best foot forward
+Try as hard as you can, God give you best.
+take my advice and follow the due process of your payment, the
+transfer will be released to
+you smoothly without any hitches or hindrance.
 
-done
+Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
+transfer amount of $18.5m US Dollars
+It was deposited and registered to your name this morning.
+Contact the Bank now to know when they will transfer to your
+country today
 
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > ---
-> >  drivers/iio/adc/ti-tsc2046.c | 102 ++++++++++++++++++++---------------
-> >  1 file changed, 58 insertions(+), 44 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-> > index d84ae6b008c1..91f6bd5effe7 100644
-> > --- a/drivers/iio/adc/ti-tsc2046.c
-> > +++ b/drivers/iio/adc/ti-tsc2046.c
-> > @@ -123,14 +123,21 @@ struct tsc2046_adc_ch_cfg {
-> >  	unsigned int oversampling_ratio;
-> >  };
-> >  
-> > +enum tsc2046_state {
-> > +	TSC2046_STATE_STANDBY,
-> > +	TSC2046_STATE_ENABLE_IRQ_POLL,
-> > +	TSC2046_STATE_POLL,
-> > +	TSC2046_STATE_ENABLE_IRQ,
-> > +};
-> > +
-> >  struct tsc2046_adc_priv {
-> >  	struct spi_device *spi;
-> >  	const struct tsc2046_adc_dcfg *dcfg;
-> >  
-> >  	struct iio_trigger *trig;
-> >  	struct hrtimer trig_timer;
-> > -	spinlock_t trig_lock;
-> > -	unsigned int trig_more_count;
-> > +	enum tsc2046_state state;
-> > +	spinlock_t state_lock;
-> >  
-> >  	struct spi_transfer xfer;
-> >  	struct spi_message msg;
-> > @@ -411,21 +418,47 @@ static const struct iio_info tsc2046_adc_info = {
-> >  	.update_scan_mode = tsc2046_adc_update_scan_mode,
-> >  };
-> >  
-> > -static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
-> > +static enum hrtimer_restart tsc2046_adc_timer(struct hrtimer *hrtimer)
-> >  {
-> >  	struct tsc2046_adc_priv *priv = container_of(hrtimer,
-> >  						     struct tsc2046_adc_priv,
-> >  						     trig_timer);
-> >  	unsigned long flags;
-> >  
-> > -	spin_lock_irqsave(&priv->trig_lock, flags);
-> > -
-> > -	disable_irq_nosync(priv->spi->irq);
-> > -
-> > -	priv->trig_more_count++;
-> > -	iio_trigger_poll(priv->trig);
-> > -
-> > -	spin_unlock_irqrestore(&priv->trig_lock, flags);
-> > +	spin_lock_irqsave(&priv->state_lock, flags);
-> > +	switch (priv->state) {
-> > +	case TSC2046_STATE_ENABLE_IRQ_POLL:
-> > +		/*
-> > +		 * IRQ handler called iio_trigger_poll() to sample ADC.
-> > +		 * Here we
-> > +		 * - re-enable IRQs
-> > +		 * - start hrtimer for timeout if no IRQ will occur
-> > +		 */
-> > +		priv->state = TSC2046_STATE_POLL;
-> > +		enable_irq(priv->spi->irq);
-> 
-> I comment on this below, but I'm not sure why you don't move the enable_irq()
-> here out of this timer function and then have the first entry of the timer
-> go directly to TSC2046_STATE_POLL after a longer initial wait.
+Email id: gtbank107@yahoo.com
+Tel/mobile, +229 99069872
+Contact person, Mrs Mary Gate,Director Gt bank-Benin.
+Among the blind the one-eyed man is king
 
-Hm... yes. You are right.
+As you sow, so you shall reap, i want you to receive your funds
+Best things in life are free
+Send to her your Bank Details as i listed here.
 
-> It's been a long time since I looked at this, so perhaps I'm missing the
-> point.  What you have here works as far as I can see, it just seems to push
-> more than necessary into the state machine.
+Your account name-------------
+Your Bank Name----------------
+Account Number----------
+your Bank address----------
+Country-----------
+Your private phone number---------
+Routing Numbers-------------
+Swift Code-----------
 
-The IRQ line is a level shifter connected to one of channels muxed to the core
-ADC. If we switch internal muxer to different channel, the IRQ line will
-change the state.
+Note, Your funds is %100 Percent ready for
+transfer.
+Everything you do remember that Good things come to those who wait.
+I have done this work for you with my personally effort, Honesty is
+the best policy.
+now your transfer is currently deposited with paying bank this morning.
+It is by the grace of God that I received Christ, having known the truth.
+I had no choice than to do what is lawful and justice in the
+sight of God for eternal life and in the sight of man for witness of
+God & His Mercies and glory upon my life.
 
-So, we need a trigger which:
-- do not triggers if we do ADC readings.
-- keeps triggering as long as we have some state changes on the IRQ line
-- trigger only with specific rate
-- still triggers for some amount of time after last interrupt event was
-  detected. Current implementation is doing only one extra read.
+send this needed bank details to the bank today, so that you receive
+your transfer today as
+it is available for your confirmation today.
+Please do your best as a serious person and send the fee urgent, Note
+that this transfer of $18.500.000 M USD is a Gift from God to Bless
+you.
 
-I reworked it a bit, will send new patch soon.
+If you did not contact the bank urgent, finally the Bank will release
+your transfer of $18.500.000M USD to  Mr. David Bollen as your
+representative.
+So not allow another to claim your Money.
+Thanks For your Understanding.
 
-> > +		hrtimer_start(&priv->trig_timer,
-> > +			      ns_to_ktime(priv->scan_interval_us *
-> > +					  NSEC_PER_USEC),
-> > +			      HRTIMER_MODE_REL_SOFT);
-> > +		break;
-
-
-> > -
-> > -	spin_unlock_irqrestore(&priv->trig_lock, flags);
-> > +	tim = ns_to_ktime((priv->scan_interval_us - priv->time_per_scan_us) *
-> > +			  NSEC_PER_USEC);
-> > +	hrtimer_start(&priv->trig_timer, tim, HRTIMER_MODE_REL_SOFT);
-> 
-> This moves enabling the irq to the first instance of the timer - is that ever too late?
-
-no, we should disable IRQ if we do readings anyway.
-
-> >  }
-> >  
-> >  static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
-> > @@ -493,8 +506,8 @@ static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
-> >  	if (enable) {
-> >  		enable_irq(priv->spi->irq);
-> >  	} else {
-> > +		hrtimer_cancel(&priv->trig_timer);
-> 
-> So this will wait for the callback to finish.  However, is there a chance
-> of an interrupt just after this but before disable_irq that ends up
-> starting the timer again?
-
-Yes, you are right. I'll rework it.
-
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Barr Robert Richter, UN Attorney At Law Court-Benin

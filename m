@@ -2,55 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29AA548AA62
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 10:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D72FF48AA6A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 10:24:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349241AbiAKJXP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 04:23:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
+        id S237037AbiAKJYN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 04:24:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349224AbiAKJXP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 04:23:15 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92A6EC06173F;
-        Tue, 11 Jan 2022 01:23:14 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id o6so64594813edc.4;
-        Tue, 11 Jan 2022 01:23:14 -0800 (PST)
+        with ESMTP id S236844AbiAKJYM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 04:24:12 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7BAC06173F;
+        Tue, 11 Jan 2022 01:24:12 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id b13so11219600edn.0;
+        Tue, 11 Jan 2022 01:24:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FdmddZoLPqnTqmjCQ4od3WcJNa5BhdUvuEmcIx7UK40=;
-        b=BBIkrzV9hu3XILNZw6ejZtSs4TWoRA23764jFCMQKfcQeTy5pE0W4KHtdmUOKHbqG4
-         ++KrEeS5dkXYmA1fB1QRfjDc3mhkDByTOLmAWA92B+zZ2E45CoZ4jQ0sm0xMsPDXOiuz
-         Hjp+AgPlYlFFbF0neRDeZEuJi67S9jFTkavKTrBqY9by5cJsKB6VfFfEKSFD5cK3C/Ky
-         DKpiGZhIsHEqqWKvILrG9YpGsLGy9c30RugN7tR0S9i181pugGPG2dI07kfR2gBKgqki
-         ZqDuG4QPZ9RyqRdPLHz1IW3rbTek96iG5ciZa8EqKoUNCDPzBmONiiygmPjLpEFjexv1
-         cWNw==
+        bh=NQi7Ep1KiyxJ3mVBc/kJlrYc61FZbFHiGPtZ65wHCRg=;
+        b=kSjmkxADbqD68jbTxflsuPZG+aF1bHD2SB1jwsYrn+W7Yw3++LkqaSnccAwwLUUpy5
+         9sTXKlbfan9oTLbgy5HWPkptDltNky2EP626hfazHEocbVmlxTZWSRa90RcPD9Gmzsbt
+         yZQFqgMb0FAzbxbiMEiDn3XyUiwwbMsk7QVOkJUvRVJ6bidKtYTg/6QMO/x5fzAF1OFU
+         6pSSc6lQkg8fUoq7ip2WljV9hp9Jd48RxUEME+sdixJqf5tRTjWBKojU6BZxHG8JTWv0
+         NZ96ySx4Yb9k/f3aq1nYfi0OLH6WGsFiCUX3KKRK5U1aGTSCrFKGUQD1qF0WqOGPcEax
+         Gx+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FdmddZoLPqnTqmjCQ4od3WcJNa5BhdUvuEmcIx7UK40=;
-        b=TU8sAPGf/oMuOxWCUVSVTCpsFk8uqsNMDDiFor7LdelCm7zD7VK22sKxtuO/0wqmTX
-         m7xD1ZoBbKRf5WpjdmWPSEWKV2lxCKfHuBMLsfG97FudCW3CISBmSEPlGFCO9eJG+gCy
-         LGwCRxM6Z7cUL/D0PphBgOZDfYCNMeFv4u43ypV8/TjVwSTfGFQAAO1i/+LgqF0MUSbS
-         cWjNa/wBNEIzGcaJotoAXZDjsW0hMKhT7u5cQZuG5K/YbJyz7QI827A1T8V8HU8G5XWg
-         mSJ7Y4qpqDWHuyfkIzahYKrBgLuOqh94G/RrdRjOXMRrxXH59D0KSLcN5y2kCLyrxPdo
-         MaQA==
-X-Gm-Message-State: AOAM531nvDSlbycx3dmS0OnQPWBwre72nGPHgWEgdphMO5u9RFaCVkFU
-        jq/DTp29D04RIO25vKmYCGEB5Ou3dE/ZKrJNEL4=
-X-Google-Smtp-Source: ABdhPJwpyWAE46cJUBpIFpUJdmN6NrsJkFYy8FePhQLt7goonuQk/AzaB1hCqVEHLFwriCPBnXLy58qJJ+O1++W3Ma4=
-X-Received: by 2002:a17:906:3ed0:: with SMTP id d16mr2876393ejj.636.1641892993058;
- Tue, 11 Jan 2022 01:23:13 -0800 (PST)
+        bh=NQi7Ep1KiyxJ3mVBc/kJlrYc61FZbFHiGPtZ65wHCRg=;
+        b=Gm+yGlqWfwv+nLDTM8R6PXgOgnX8fBiOtPdXSnwMHbMZqfRZuTpvRd+BWa7vZ5Zg3i
+         tmQqR8ZZsczFGsurZcur9lK+M7SSP4+RhH5djTyrK9d40+WNGnEKMslkH4Zh7YU1pkXr
+         VHZPkuJryhQUp/pZjIYv8xFqlCeSs9xWIXr06dKwZ4qCR0acEPwyXRLojDydRqbu9kCv
+         pyl03TOhZ9zvNeK6exZgttthoh7dMwA7kRT09z6sDvGl5kHLzNa4g05unBQst1N5d5+N
+         U6d5TQ3VLhh3NkD+7Uj1wLohRLRWxUbFPeeNek1jGMFl54bvy5aHDrrLjDnyyAAuQ44y
+         ZBaA==
+X-Gm-Message-State: AOAM530sTuUBKBEVa61v15u5xJo/aE+fdJeF9MJOMBbnhl7b0M6gkKmc
+        rwl9M3CqGzrjIseIF8ej5UlUJlcTUPNoyzZIxLw=
+X-Google-Smtp-Source: ABdhPJyQc8tbOUnYe/GojCvUfeQf3A0KXlZK8tE3xXzky8gsO3WBJSuSMN8dvPY4B1kecD3OVwePwa4odspxYieqS+w=
+X-Received: by 2002:a17:907:97cd:: with SMTP id js13mr2750714ejc.497.1641893050880;
+ Tue, 11 Jan 2022 01:24:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20220111074703.3677392-1-cosmin.tanislav@analog.com> <20220111074703.3677392-2-cosmin.tanislav@analog.com>
-In-Reply-To: <20220111074703.3677392-2-cosmin.tanislav@analog.com>
+References: <20220111074703.3677392-1-cosmin.tanislav@analog.com> <20220111074703.3677392-3-cosmin.tanislav@analog.com>
+In-Reply-To: <20220111074703.3677392-3-cosmin.tanislav@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 11 Jan 2022 11:21:25 +0200
-Message-ID: <CAHp75VeyJY3K+UgwXqkkRkPRHgbQhbFVRmjrzKb0-xwc=yC2NA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] iio: addac: ad74413r: correct comparator gpio
- getters mask usage
+Date:   Tue, 11 Jan 2022 11:22:23 +0200
+Message-ID: <CAHp75VeVRwbMhQp-oBYM7yVzL_ma0jRu3ESEjz19zLQDFWyzkA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: addac: ad74413r: for_each_set_bit_from -> for_each_set_bit
 To:     Cosmin Tanislav <demonsingur@gmail.com>
 Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -68,62 +67,12 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Tue, Jan 11, 2022 at 9:47 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
 >
-> The value of the GPIOs is currently altered using offsets rather
-> than masks. Make use of __assign_bit and the BIT macro to turn
-> the offsets into masks.
+> The starting bit is always zero, it doesn't make much sense to
+> use for_each_set_bit_from. Replace it with for_each_set_bit
+> which doesn't start from a particular bit.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
-> V1 -> V2
->  * add Fixes tag
->  * use __assign_bit
->  * remove bitmap_zero
->
-> V2 -> V3
->  * add back line between real_offset declaration and __assign_bit call
->  * move before patch 2
-> ---
->  drivers/iio/addac/ad74413r.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> index 6ea3cd933d05..b13cd5407df3 100644
-> --- a/drivers/iio/addac/ad74413r.c
-> +++ b/drivers/iio/addac/ad74413r.c
-> @@ -134,7 +134,6 @@ struct ad74413r_state {
->  #define AD74413R_CH_EN_MASK(x)         BIT(x)
->
->  #define AD74413R_REG_DIN_COMP_OUT              0x25
-> -#define AD74413R_DIN_COMP_OUT_SHIFT_X(x)       x
->
->  #define AD74413R_REG_ADC_RESULT_X(x)   (0x26 + (x))
->  #define AD74413R_ADC_RESULT_MAX                GENMASK(15, 0)
-> @@ -316,7 +315,7 @@ static int ad74413r_gpio_get(struct gpio_chip *chip, unsigned int offset)
->         if (ret)
->                 return ret;
->
-> -       status &= AD74413R_DIN_COMP_OUT_SHIFT_X(real_offset);
-> +       status &= BIT(real_offset);
->
->         return status ? 1 : 0;
->  }
-> @@ -337,8 +336,7 @@ static int ad74413r_gpio_get_multiple(struct gpio_chip *chip,
->         for_each_set_bit_from(offset, mask, chip->ngpio) {
->                 unsigned int real_offset = st->comp_gpio_offsets[offset];
->
-> -               if (val & BIT(real_offset))
-> -                       *bits |= offset;
-> +               __assign_bit(offset, bits, val & BIT(real_offset));
->         }
->
->         return ret;
-> --
-> 2.34.1
->
-
+We refer to the function() like this.
+But no need to resend, I hope Jonathan may amend this when applying.
 
 -- 
 With Best Regards,

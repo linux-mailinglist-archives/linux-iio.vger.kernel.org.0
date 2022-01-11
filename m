@@ -2,246 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC9648AE9E
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 14:41:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF6C148AF9D
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 15:33:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240720AbiAKNld (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 08:41:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45236 "EHLO
+        id S242107AbiAKOdn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 09:33:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240683AbiAKNl0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 08:41:26 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA6AC061751
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jan 2022 05:41:26 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n7HOq-00066c-Cc; Tue, 11 Jan 2022 14:41:20 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n7HOp-00EMbL-Qc; Tue, 11 Jan 2022 14:41:19 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v2 1/1] iio: adc: tsc2046: add .read_raw support
-Date:   Tue, 11 Jan 2022 14:41:18 +0100
-Message-Id: <20220111134118.3423422-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S240845AbiAKOdn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 09:33:43 -0500
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CEDEC06173F;
+        Tue, 11 Jan 2022 06:33:43 -0800 (PST)
+Received: by mail-qv1-xf2b.google.com with SMTP id fo11so18469066qvb.4;
+        Tue, 11 Jan 2022 06:33:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=qB2djtGD1hxaP7G4jORmDPeGTXVhGoKRKBRlWclrIhQ=;
+        b=Te3hb8DmPGiSA2KdYMWN/gzL6+L5ZjxcE+Nc1AjO8Xt8pliJOMUugiSLC146zLEFH9
+         n34fRaesqq8N3VVRRUdyHSV3bply69Ytsdb66QFJvhV7kfPm+KZenM4ugLQuA2X8nogs
+         d/Kn1nlUrCEqDUXYBCrYKzq7ScY5A6wRq1B/Y7wxxCjc8719zTHXzy1oK9VZHXcY/Dew
+         ixKwcYlhFfL+aJoS5baGhVhkBJZarB5ey97T1qU0dgHRum+gs2FLCRvC/9BiO9SIhvA+
+         5Um2OIUJbZqnJk4p2OW7Py83ZMZl4xlZhncSKGNUqGyEpl41XqNh5JOGSWGD27sXu9Cz
+         eC1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=qB2djtGD1hxaP7G4jORmDPeGTXVhGoKRKBRlWclrIhQ=;
+        b=zeE2WGenLsU5B03z/DPSMvfyxaLSasjTvjWGR5wU4azGT0x3UYSG0zV2quYtCcXpxG
+         TOk6N+TtIKqlsgH+KQ0rXogIS5G+8QK1XicWwtIKcYOhzmYCcHzPlYKBkOd1+K+d3abd
+         9kWJaoRLs79Jdj0g/XqT9IHf8TeRRzyykRMr7eBYaz2aT+3lpAxixHIIUAczkMyEMJTG
+         pu4SURc+zyidZmJFLRYXwcjS47R8emdRp2amNSzm0L22sc2V5+7tB93DZIdHMCw0Sj5N
+         hW5WCBq4UGTDMS1zNTNewdhxPBQJxP/UoNcJ44AH3WHHG7DxLokuo8tRDfxItreuw21p
+         TtMQ==
+X-Gm-Message-State: AOAM532EC9cCx0ImIa6fWNyjsgWcEBNSm8jbJmr3u0jLfTVb6byloONz
+        capW8i3kOU5aBoQwKqmuyyA=
+X-Google-Smtp-Source: ABdhPJwRDT+thhWsUzuSkCSHEmm6JDp8W5FFjDjHhHYNgAuu1e39JzqEStoEo1vuy0yxBb51btAd2A==
+X-Received: by 2002:ad4:596b:: with SMTP id eq11mr3867618qvb.16.1641911622049;
+        Tue, 11 Jan 2022 06:33:42 -0800 (PST)
+Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
+        by smtp.gmail.com with ESMTPSA id s21sm4768339qta.11.2022.01.11.06.33.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jan 2022 06:33:41 -0800 (PST)
+Date:   Tue, 11 Jan 2022 09:33:38 -0500
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v12 07/16] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
+ support
+Message-ID: <Yd2VQkwle2+IiEAZ@shaak>
+References: <20220108205319.2046348-1-liambeguin@gmail.com>
+ <20220108205319.2046348-8-liambeguin@gmail.com>
+ <CAHp75Vdi2bvCEtxpezt5L5JhO=8D+Za++CbQ8AximFaLnxnqyg@mail.gmail.com>
+ <8046b39f-28c1-7e46-e27c-6b9bc8824e21@axentia.se>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8046b39f-28c1-7e46-e27c-6b9bc8824e21@axentia.se>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add read_raw() support to make use of iio_hwmon and other iio clients.
+On Sun, Jan 09, 2022 at 09:20:09PM +0100, Peter Rosin wrote:
+> Hi!
+> 
+> On 2022-01-09 13:48, Andy Shevchenko wrote:
+> > On Sat, Jan 8, 2022 at 10:53 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> >>
+> >> Some ADCs use IIO_VAL_INT_PLUS_{NANO,MICRO} scale types.
+> >> Add support for these to allow using the iio-rescaler with them.
+> > 
+> > ...
+> > 
+> >> +               mult = scale_type == IIO_VAL_INT_PLUS_NANO ? GIGA : MEGA;
+> >> +
+> >> +               /*
+> >> +                * For IIO_VAL_INT_PLUS_{MICRO,NANO} scale types if either *val
+> >> +                * OR *val2 is negative the schan scale is negative, i.e.
+> >> +                * *val = 1 and *val2 = -0.5 yields -1.5 not -0.5.
+> >> +                */
+> >> +               neg = *val < 0 || *val2 < 0;
+> >> +
+> >> +               tmp = (s64)abs(*val) * abs(rescale->numerator);
+> >> +               *val = div_s64_rem(tmp, abs(rescale->denominator), &rem);
+> >> +
+> >> +               tmp = (s64)rem * mult + (s64)abs(*val2) * abs(rescale->numerator);
+> >> +               tmp = div_s64(tmp, abs(rescale->denominator));
+> > 
+> > Isn't it too many repetitive abs() calls?
+> > 
+> > What about
+> > 
+> > // Create a macro and use for u16 (struct rn5t618_channel_ratios), s16
+> > (struct twl4030_prescale_divider_ratios), s32 (can be reused in struct
+> > rescale)
+> > struct u32_fract {
+> >   u32 numerator;
+> >   u32 denominator;
+> > };
+> > // (potential reuse in struct hclge_ptp_cycle) and so on...
+> > 
+> >   struct u32_fract fract = {
+> >     .numerator = abs(rescale->numerator),
+> >     .denominator = abs(rescale->denominator),
+> >   };
+> > 
+> > // obviously we can add a macro/inliner to abs() the fract struct and
+> > return original sign
+> > 
+> > and reuse fract.numerator, fract.denominator?
+> 
+> This feels a bit excessive when the "problem" is two extra abs calls.
+> I don't think the code will get any easier to read by changing
+> abs(rescale->denominator) into fract.denominator and with my maintainer
+> hat on, I vote for just letting the compiler exercise its CSE engine.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/iio/adc/ti-tsc2046.c | 115 ++++++++++++++++++++++++++++-------
- 1 file changed, 94 insertions(+), 21 deletions(-)
+I agree with Peter here, and would rather keep it as is.
 
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-index c373da11bff1..59ab6622d6a2 100644
---- a/drivers/iio/adc/ti-tsc2046.c
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -86,6 +86,7 @@
- #define TI_TSC2046_EXT_POLL_CNT			3
- #define TI_TSC2046_POLL_CNT \
- 	(TI_TSC2046_MIN_POLL_CNT + TI_TSC2046_EXT_POLL_CNT)
-+#define TI_TSC2046_INT_VREF			2500
- 
- /* Represents a HW sample */
- struct tsc2046_adc_atom {
-@@ -166,9 +167,6 @@ struct tsc2046_adc_priv {
- 	struct tsc2046_adc_atom *rx;
- 	struct tsc2046_adc_atom *tx;
- 
--	struct tsc2046_adc_atom *rx_one;
--	struct tsc2046_adc_atom *tx_one;
--
- 	unsigned int count;
- 	unsigned int groups;
- 	u32 effective_speed_hz;
-@@ -184,6 +182,8 @@ struct tsc2046_adc_priv {
- 	.type = IIO_VOLTAGE,					\
- 	.indexed = 1,						\
- 	.channel = index,					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
- 	.datasheet_name = "#name",				\
- 	.scan_index = index,					\
- 	.scan_type = {						\
-@@ -247,6 +247,14 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
- 	else
- 		pd = 0;
- 
-+	switch (ch_idx) {
-+	case TI_TSC2046_ADDR_TEMP1:
-+	case TI_TSC2046_ADDR_AUX:
-+	case TI_TSC2046_ADDR_VBAT:
-+	case TI_TSC2046_ADDR_TEMP0:
-+		pd |= TI_TSC2046_SER | TI_TSC2046_PD1_VREF_ON;
-+	}
-+
- 	return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
- }
- 
-@@ -258,16 +266,47 @@ static u16 tsc2046_adc_get_value(struct tsc2046_adc_atom *buf)
- static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
- 				u32 *effective_speed_hz)
- {
-+	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
-+	struct tsc2046_adc_atom *rx_buf, *tx_buf;
-+	unsigned int val, val_normalized = 0;
-+	int ret, i, count_skip = 0, max_count;
- 	struct spi_transfer xfer;
- 	struct spi_message msg;
--	int ret;
-+	u8 cmd;
-+
-+	if (!effective_speed_hz) {
-+		count_skip = tsc2046_adc_time_to_count(priv, ch->settling_time_us);
-+		max_count = count_skip + ch->oversampling_ratio;
-+	} else {
-+		max_count = 1;
-+	}
-+
-+	tx_buf = kcalloc(max_count, sizeof(*tx_buf), GFP_KERNEL);
-+	if (!tx_buf)
-+		return -ENOMEM;
-+
-+	rx_buf = kcalloc(max_count, sizeof(*rx_buf), GFP_KERNEL);
-+	if (!rx_buf) {
-+		ret = -ENOMEM;
-+		goto free_tx;
-+	}
-+
-+	/*
-+	 * Do not enable automatic power down on working samples. Otherwise the
-+	 * plates will never be completely charged.
-+	 */
-+	cmd = tsc2046_adc_get_cmd(priv, ch_idx, true);
-+
-+	for (i = 0; i < max_count - 1; i++)
-+		tx_buf[i].cmd = cmd;
-+
-+	/* automatically power down on last sample */
-+	tx_buf[i].cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
- 
- 	memset(&xfer, 0, sizeof(xfer));
--	priv->tx_one->cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
--	priv->tx_one->data = 0;
--	xfer.tx_buf = priv->tx_one;
--	xfer.rx_buf = priv->rx_one;
--	xfer.len = sizeof(*priv->tx_one);
-+	xfer.tx_buf = tx_buf;
-+	xfer.rx_buf = rx_buf;
-+	xfer.len = sizeof(*tx_buf) * max_count;
- 	spi_message_init_with_transfers(&msg, &xfer, 1);
- 
- 	/*
-@@ -278,13 +317,25 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
- 	if (ret) {
- 		dev_err_ratelimited(&priv->spi->dev, "SPI transfer failed %pe\n",
- 				    ERR_PTR(ret));
--		return ret;
-+		goto free_bufs;
- 	}
- 
- 	if (effective_speed_hz)
- 		*effective_speed_hz = xfer.effective_speed_hz;
- 
--	return tsc2046_adc_get_value(priv->rx_one);
-+	for (i = 0; i < max_count - count_skip; i++) {
-+		val = tsc2046_adc_get_value(&rx_buf[count_skip + i]);
-+		val_normalized += val;
-+	}
-+
-+	ret = DIV_ROUND_UP(val_normalized, max_count - count_skip);
-+
-+free_bufs:
-+	kfree(rx_buf);
-+free_tx:
-+	kfree(tx_buf);
-+
-+	return ret;
- }
- 
- static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
-@@ -391,6 +442,37 @@ static irqreturn_t tsc2046_adc_trigger_handler(int irq, void *p)
- 	return IRQ_HANDLED;
- }
- 
-+static int tsc2046_adc_read_raw(struct iio_dev *indio_dev,
-+				struct iio_chan_spec const *chan,
-+				int *val, int *val2, long m)
-+{
-+	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (m) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = tsc2046_adc_read_one(priv, chan->channel, NULL);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = ret;
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		/*
-+		 * Note: the TSC2046 has internal voltage divider on the VBAT
-+		 * line. This divider can be influenced by external divider.
-+		 * So, it is better to use external voltage-divider driver
-+		 * instead, which is calculating complete chain.
-+		 */
-+		*val = TI_TSC2046_INT_VREF;
-+		*val2 = chan->scan_type.realbits;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	}
-+
-+	return -EINVAL;
-+}
-+
- static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
- 					const unsigned long *active_scan_mask)
- {
-@@ -421,6 +503,7 @@ static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
- }
- 
- static const struct iio_info tsc2046_adc_info = {
-+	.read_raw	  = tsc2046_adc_read_raw,
- 	.update_scan_mode = tsc2046_adc_update_scan_mode,
- };
- 
-@@ -562,16 +645,6 @@ static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
- 	size_t size;
- 	int ret;
- 
--	priv->tx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->tx_one),
--				    GFP_KERNEL);
--	if (!priv->tx_one)
--		return -ENOMEM;
--
--	priv->rx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->rx_one),
--				    GFP_KERNEL);
--	if (!priv->rx_one)
--		return -ENOMEM;
--
- 	/*
- 	 * Make dummy read to set initial power state and get real SPI clock
- 	 * freq. It seems to be not important which channel is used for this
--- 
-2.30.2
+Liam
 
+> Cheers,
+> Peter

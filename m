@@ -2,338 +2,294 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 716D248ACED
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 12:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A368348AE1D
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 14:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239166AbiAKLrb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 06:47:31 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:47422 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238505AbiAKLra (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 06:47:30 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20B8B6EA009803;
-        Tue, 11 Jan 2022 06:47:28 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dggyquq9q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 11 Jan 2022 06:47:28 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 20BBlRSR032578
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 11 Jan 2022 06:47:27 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 11 Jan
- 2022 06:47:26 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 11 Jan 2022 06:47:26 -0500
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20BBlFJr029369;
-        Tue, 11 Jan 2022 06:47:21 -0500
-From:   Cristian Pop <cristian.pop@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
-        <robh+dt@kernel.org>, Cristian Pop <cristian.pop@analog.com>
-Subject: [PATCH v2 2/2] one-bit-adc-dac: Add initial version of one bit ADC-DAC
-Date:   Tue, 11 Jan 2022 13:59:19 +0200
-Message-ID: <20220111115919.14645-2-cristian.pop@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220111115919.14645-1-cristian.pop@analog.com>
-References: <20220111115919.14645-1-cristian.pop@analog.com>
+        id S240262AbiAKNEN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 08:04:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239831AbiAKNEN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 08:04:13 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4C5C06173F
+        for <linux-iio@vger.kernel.org>; Tue, 11 Jan 2022 05:04:12 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1n7Gom-0001Dn-3J; Tue, 11 Jan 2022 14:04:04 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1n7Gol-00EHkV-0r; Tue, 11 Jan 2022 14:04:03 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v2 1/1] iio: adc: tsc2046: rework the trigger state machine
+Date:   Tue, 11 Jan 2022 14:04:02 +0100
+Message-Id: <20220111130402.3404769-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: dQLPrU3GIVfF0baYim7KR547hXodBC8_
-X-Proofpoint-GUID: dQLPrU3GIVfF0baYim7KR547hXodBC8_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-11_04,2022-01-11_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201110070
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This allows remote reading and writing of the GPIOs. This is useful in
-application that run on another PC, at system level, where multiple iio
-devices and GPIO devices are integrated together.
+Initially this was designed to:
+| Fix sleeping in atomic context warning and a deadlock after iio_trigger_poll()
+| call
+|
+| If iio_trigger_poll() is called after IRQ was disabled, we will call
+| reenable_trigger() directly from hard IRQ or hrtimer context instead of
+| IRQ thread. In this case we will run in to multiple issue as sleeping in atomic
+| context and a deadlock.
+|
+| To avoid this issue, rework the trigger to use state machine. All state
+| changes are done over the hrtimer, so it allows us to drop fsleep() and
+| avoid the deadlock.
 
-Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+Since this issue was fixed by: 9020ef659885 ("iio: trigger: Fix a scheduling
+whilst atomic issue seen on tsc2046"). This patch is a cleanup to make
+state machine easier to follow.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/iio/addac/Kconfig           |   8 +
- drivers/iio/addac/Makefile          |   1 +
- drivers/iio/addac/one-bit-adc-dac.c | 229 ++++++++++++++++++++++++++++
- 3 files changed, 238 insertions(+)
- create mode 100644 drivers/iio/addac/one-bit-adc-dac.c
+ drivers/iio/adc/ti-tsc2046.c | 144 ++++++++++++++++++++++++-----------
+ 1 file changed, 98 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
-index 138492362f20..5f311f4a747e 100644
---- a/drivers/iio/addac/Kconfig
-+++ b/drivers/iio/addac/Kconfig
-@@ -17,4 +17,12 @@ config AD74413R
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called ad74413r.
+diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+index e8fc4d01f30b..c373da11bff1 100644
+--- a/drivers/iio/adc/ti-tsc2046.c
++++ b/drivers/iio/adc/ti-tsc2046.c
+@@ -82,6 +82,10 @@
+ #define TI_TSC2046_DATA_12BIT			GENMASK(14, 3)
  
-+config ONE_BIT_ADC_DAC
-+	tristate "ONE_BIT_ADC_DAC driver"
-+	help
-+	  Say yes here to build support for ONE_BIT_ADC_DAC driver.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called one-bit-adc-dac.
-+
- endmenu
-diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
-index cfd4bbe64ad3..0a33f0706b55 100644
---- a/drivers/iio/addac/Makefile
-+++ b/drivers/iio/addac/Makefile
-@@ -5,3 +5,4 @@
+ #define TI_TSC2046_MAX_CHAN			8
++#define TI_TSC2046_MIN_POLL_CNT			3
++#define TI_TSC2046_EXT_POLL_CNT			3
++#define TI_TSC2046_POLL_CNT \
++	(TI_TSC2046_MIN_POLL_CNT + TI_TSC2046_EXT_POLL_CNT)
  
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_AD74413R) += ad74413r.o
-+obj-$(CONFIG_ONE_BIT_ADC_DAC) += one-bit-adc-dac.o
-diff --git a/drivers/iio/addac/one-bit-adc-dac.c b/drivers/iio/addac/one-bit-adc-dac.c
-new file mode 100644
-index 000000000000..5680de594429
---- /dev/null
-+++ b/drivers/iio/addac/one-bit-adc-dac.c
-@@ -0,0 +1,229 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-+/*
-+ * one-bit-adc-dac
-+ *
-+ * Copyright 2022 Analog Devices Inc.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/iio/iio.h>
-+#include <linux/platform_device.h>
-+#include <linux/gpio/consumer.h>
-+
-+enum ch_direction {
-+	CH_IN,
-+	CH_OUT,
+ /* Represents a HW sample */
+ struct tsc2046_adc_atom {
+@@ -123,14 +127,23 @@ struct tsc2046_adc_ch_cfg {
+ 	unsigned int oversampling_ratio;
+ };
+ 
++enum tsc2046_state {
++	TSC2046_STATE_SHUTDOWN,
++	TSC2046_STATE_STANDBY,
++	TSC2046_STATE_POLL,
++	TSC2046_STATE_POLL_IRQ_DISABLE,
++	TSC2046_STATE_ENABLE_IRQ,
 +};
 +
-+struct one_bit_adc_dac_state {
-+	int			in_num_ch;
-+	int			out_num_ch;
-+	struct platform_device  *pdev;
-+	struct gpio_descs       *in_gpio_descs;
-+	struct gpio_descs       *out_gpio_descs;
-+	const char		**labels;
-+};
+ struct tsc2046_adc_priv {
+ 	struct spi_device *spi;
+ 	const struct tsc2046_adc_dcfg *dcfg;
+ 
+ 	struct iio_trigger *trig;
+ 	struct hrtimer trig_timer;
+-	spinlock_t trig_lock;
+-	unsigned int trig_more_count;
++	enum tsc2046_state state;
++	int poll_cnt;
++	spinlock_t state_lock;
+ 
+ 	struct spi_transfer xfer;
+ 	struct spi_message msg;
+@@ -411,21 +424,62 @@ static const struct iio_info tsc2046_adc_info = {
+ 	.update_scan_mode = tsc2046_adc_update_scan_mode,
+ };
+ 
+-static enum hrtimer_restart tsc2046_adc_trig_more(struct hrtimer *hrtimer)
++static enum hrtimer_restart tsc2046_adc_timer(struct hrtimer *hrtimer)
+ {
+ 	struct tsc2046_adc_priv *priv = container_of(hrtimer,
+ 						     struct tsc2046_adc_priv,
+ 						     trig_timer);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&priv->trig_lock, flags);
+-
+-	disable_irq_nosync(priv->spi->irq);
+-
+-	priv->trig_more_count++;
+-	iio_trigger_poll(priv->trig);
++	/* This state machine should address following challenges :
++	 * - the interrupt source is based on level shifter attached to the X
++	 *   channel of ADC. It will change the state every time we switch
++	 *   between channels. So, we need to disable IRQ if we do
++	 *   iio_trigger_poll().
++	 * - we should do iio_trigger_poll() at some reduced sample rate
++	 * - we should still trigger for some amount of time after last
++	 *   interrupt with enabled IRQ was processed.
++	 */
+ 
+-	spin_unlock_irqrestore(&priv->trig_lock, flags);
++	spin_lock_irqsave(&priv->state_lock, flags);
++	switch (priv->state) {
++	case TSC2046_STATE_ENABLE_IRQ:
++		if (priv->poll_cnt < TI_TSC2046_POLL_CNT) {
++			priv->poll_cnt++;
++			hrtimer_start(&priv->trig_timer,
++				      ns_to_ktime(priv->scan_interval_us *
++						  NSEC_PER_USEC),
++				      HRTIMER_MODE_REL_SOFT);
 +
-+static int one_bit_adc_dac_read_raw(struct iio_dev *indio_dev,
-+	const struct iio_chan_spec *chan, int *val, int *val2, long info)
-+{
-+	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
-+	struct gpio_descs *descs;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		if (chan->output)
-+			descs = st->out_gpio_descs;
-+		else
-+			descs = st->in_gpio_descs;
-+		*val = gpiod_get_value_cansleep(descs->desc[chan->channel]);
-+
-+		return IIO_VAL_INT;
++			if (priv->poll_cnt >= TI_TSC2046_MIN_POLL_CNT) {
++				priv->state = TSC2046_STATE_POLL_IRQ_DISABLE;
++				enable_irq(priv->spi->irq);
++			} else {
++				priv->state = TSC2046_STATE_POLL;
++			}
++		} else {
++			priv->state = TSC2046_STATE_STANDBY;
++			enable_irq(priv->spi->irq);
++		}
++		break;
++	case TSC2046_STATE_POLL_IRQ_DISABLE:
++		disable_irq_nosync(priv->spi->irq);
++		fallthrough;
++	case TSC2046_STATE_POLL:
++		priv->state = TSC2046_STATE_ENABLE_IRQ;
++		/* iio_trigger_poll() starts hrtimer */
++		iio_trigger_poll(priv->trig);
++		break;
++	case TSC2046_STATE_SHUTDOWN:
++		break;
++	case TSC2046_STATE_STANDBY:
++		fallthrough;
 +	default:
-+		return -EINVAL;
++		dev_warn(&priv->spi->dev, "Got unexpected state: %i\n",
++			 priv->state);
++		break;
 +	}
-+}
-+
-+static int one_bit_adc_dac_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val,
-+			    int val2,
-+			    long info)
-+{
-+	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
-+	int channel = chan->channel;
-+
-+	if (!chan->output)
-+		return 0;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		gpiod_set_value_cansleep(st->out_gpio_descs->desc[channel], val);
-+
-+		return 0;
-+	default:
-+		return -EINVAL;
++	spin_unlock_irqrestore(&priv->state_lock, flags);
+ 
+ 	return HRTIMER_NORESTART;
+ }
+@@ -434,16 +488,20 @@ static irqreturn_t tsc2046_adc_irq(int irq, void *dev_id)
+ {
+ 	struct iio_dev *indio_dev = dev_id;
+ 	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+-
+-	spin_lock(&priv->trig_lock);
++	unsigned long flags;
+ 
+ 	hrtimer_try_to_cancel(&priv->trig_timer);
+ 
+-	priv->trig_more_count = 0;
+-	disable_irq_nosync(priv->spi->irq);
+-	iio_trigger_poll(priv->trig);
++	spin_lock_irqsave(&priv->state_lock, flags);
++	if (priv->state != TSC2046_STATE_SHUTDOWN) {
++		priv->state = TSC2046_STATE_ENABLE_IRQ;
++		priv->poll_cnt = 0;
+ 
+-	spin_unlock(&priv->trig_lock);
++		/* iio_trigger_poll() starts hrtimer */
++		disable_irq_nosync(priv->spi->irq);
++		iio_trigger_poll(priv->trig);
 +	}
-+}
++	spin_unlock_irqrestore(&priv->state_lock, flags);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -452,49 +510,42 @@ static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
+ {
+ 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+ 	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+-	unsigned long flags;
+-	int delta;
++	ktime_t tim;
+ 
+ 	/*
+ 	 * We can sample it as fast as we can, but usually we do not need so
+ 	 * many samples. Reduce the sample rate for default (touchscreen) use
+ 	 * case.
+-	 * Currently we do not need a highly precise sample rate. It is enough
+-	 * to have calculated numbers.
+-	 */
+-	delta = priv->scan_interval_us - priv->time_per_scan_us;
+-	if (delta > 0)
+-		fsleep(delta);
+-
+-	spin_lock_irqsave(&priv->trig_lock, flags);
+-
+-	/*
+-	 * We need to trigger at least one extra sample to detect state
+-	 * difference on ADC side.
+ 	 */
+-	if (!priv->trig_more_count) {
+-		int timeout_ms = DIV_ROUND_UP(priv->scan_interval_us,
+-					      USEC_PER_MSEC);
+-
+-		hrtimer_start(&priv->trig_timer, ms_to_ktime(timeout_ms),
+-			      HRTIMER_MODE_REL_SOFT);
+-	}
+-
+-	enable_irq(priv->spi->irq);
+-
+-	spin_unlock_irqrestore(&priv->trig_lock, flags);
++	tim = ns_to_ktime((priv->scan_interval_us - priv->time_per_scan_us) *
++			  NSEC_PER_USEC);
++	hrtimer_start(&priv->trig_timer, tim, HRTIMER_MODE_REL_SOFT);
+ }
+ 
+ static int tsc2046_adc_set_trigger_state(struct iio_trigger *trig, bool enable)
+ {
+ 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+ 	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
++	unsigned long flags;
+ 
+ 	if (enable) {
+-		enable_irq(priv->spi->irq);
++		spin_lock_irqsave(&priv->state_lock, flags);
++		if (priv->state == TSC2046_STATE_SHUTDOWN) {
++			priv->state = TSC2046_STATE_STANDBY;
++			enable_irq(priv->spi->irq);
++		}
++		spin_unlock_irqrestore(&priv->state_lock, flags);
+ 	} else {
+-		disable_irq(priv->spi->irq);
+-		hrtimer_try_to_cancel(&priv->trig_timer);
++		spin_lock_irqsave(&priv->state_lock, flags);
 +
-+static int one_bit_adc_dac_read_label(struct iio_dev *indio_dev,
-+	const struct iio_chan_spec *chan, char *label)
-+{
-+	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
-+	int ch;
++		if (priv->state == TSC2046_STATE_STANDBY ||
++		    priv->state == TSC2046_STATE_POLL_IRQ_DISABLE)
++			disable_irq_nosync(priv->spi->irq);
 +
-+	if (chan->output)
-+		ch = chan->channel + st->in_num_ch;
-+	else
-+		ch = chan->channel;
++		priv->state = TSC2046_STATE_SHUTDOWN;
++		spin_unlock_irqrestore(&priv->state_lock, flags);
 +
-+	return sprintf(label, "%s\n", st->labels[ch]);
-+}
-+
-+static const struct iio_info one_bit_adc_dac_info = {
-+	.read_raw = &one_bit_adc_dac_read_raw,
-+	.write_raw = &one_bit_adc_dac_write_raw,
-+	.read_label = &one_bit_adc_dac_read_label,
-+};
-+
-+static int one_bit_adc_dac_set_ch(struct iio_chan_spec *channels,
-+					int num_ch,
-+					enum ch_direction direction)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_ch; i++) {
-+		channels[i].type = IIO_VOLTAGE;
-+		channels[i].indexed = 1;
-+		channels[i].channel = i;
-+		channels[i].info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-+		channels[i].output = direction;
-+	}
-+
-+	return 0;
-+}
-+
-+static int one_bit_adc_dac_set_channel_label(struct iio_dev *indio_dev,
-+						struct iio_chan_spec *channels,
-+						int num_channels)
-+{
-+	struct device *device = indio_dev->dev.parent;
-+	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
-+	struct fwnode_handle *fwnode;
-+	struct fwnode_handle *child;
-+	struct iio_chan_spec *chan;
-+	const char *label;
-+	int crt_ch = 0, child_num, i = 0;
-+
-+	fwnode = dev_fwnode(device);
-+	child_num = device_get_child_node_count(device);
-+
-+	st->labels = devm_kzalloc(device, sizeof(*st->labels) * child_num, GFP_KERNEL);
-+	if (!st->labels)
-+		return -ENOMEM;
-+
-+	i = child_num;
-+	fwnode_for_each_child_node(fwnode, child) {
-+		if (fwnode_property_read_u32(child, "reg", &crt_ch))
-+			continue;
-+
-+		if (crt_ch >= num_channels)
-+			continue;
-+
-+		if (fwnode_property_read_string(child, "label", &label))
-+			continue;
-+
-+		chan = &channels[crt_ch];
-+		st->labels[--i] = label;
-+	}
-+
-+	return 0;
-+}
-+
-+static int one_bit_adc_dac_parse_dt(struct iio_dev *indio_dev)
-+{
-+	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
-+	struct iio_chan_spec *channels;
-+	int ret, in_num_ch = 0, out_num_ch = 0;
-+
-+	st->in_gpio_descs = devm_gpiod_get_array_optional(&st->pdev->dev, "in", GPIOD_IN);
-+	if (IS_ERR(st->in_gpio_descs))
-+		return PTR_ERR(st->in_gpio_descs);
-+
-+	if (st->in_gpio_descs)
-+		in_num_ch = st->in_gpio_descs->ndescs;
-+
-+	st->out_gpio_descs = devm_gpiod_get_array_optional(&st->pdev->dev, "out", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->out_gpio_descs))
-+		return PTR_ERR(st->out_gpio_descs);
-+
-+	if (st->out_gpio_descs)
-+		out_num_ch = st->out_gpio_descs->ndescs;
-+	st->in_num_ch = in_num_ch;
-+	st->out_num_ch = out_num_ch;
-+
-+	channels = devm_kcalloc(indio_dev->dev.parent, in_num_ch + out_num_ch,
-+				sizeof(*channels), GFP_KERNEL);
-+	if (!channels)
-+		return -ENOMEM;
-+
-+	ret = one_bit_adc_dac_set_ch(&channels[0], in_num_ch, CH_IN);
-+	if (ret)
-+		return ret;
-+
-+	ret = one_bit_adc_dac_set_ch(&channels[in_num_ch], out_num_ch, CH_OUT);
-+	if (ret)
-+		return ret;
-+
-+	ret = one_bit_adc_dac_set_channel_label(indio_dev, channels, in_num_ch + out_num_ch);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->channels = channels;
-+	indio_dev->num_channels = in_num_ch + out_num_ch;
-+
-+	return 0;
-+}
-+
-+static int one_bit_adc_dac_probe(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev;
-+	struct one_bit_adc_dac_state *st;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+	st->pdev = pdev;
-+	indio_dev->name = "one-bit-adc-dac";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &one_bit_adc_dac_info;
-+
-+	ret = one_bit_adc_dac_parse_dt(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(indio_dev->dev.parent, indio_dev);
-+}
-+
-+static const struct of_device_id one_bit_adc_dac_dt_match[] = {
-+	{ .compatible = "one-bit-adc-dac" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, one_bit_adc_dac_dt_match);
-+
-+static struct platform_driver one_bit_adc_dac_driver = {
-+	.driver = {
-+		.name = "one-bit-adc-dac",
-+		.of_match_table = one_bit_adc_dac_dt_match,
-+	},
-+	.probe = one_bit_adc_dac_probe,
-+};
-+module_platform_driver(one_bit_adc_dac_driver);
-+
-+MODULE_AUTHOR("Cristian Pop <cristian.pop@analog.com>");
-+MODULE_DESCRIPTION("One bit ADC DAC converter");
-+MODULE_LICENSE("Dual BSD/GPL");
-\ No newline at end of file
++		hrtimer_cancel(&priv->trig_timer);
+ 	}
+ 
+ 	return 0;
+@@ -668,10 +719,11 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+ 	iio_trigger_set_drvdata(trig, indio_dev);
+ 	trig->ops = &tsc2046_adc_trigger_ops;
+ 
+-	spin_lock_init(&priv->trig_lock);
++	spin_lock_init(&priv->state_lock);
++	priv->state = TSC2046_STATE_SHUTDOWN;
+ 	hrtimer_init(&priv->trig_timer, CLOCK_MONOTONIC,
+ 		     HRTIMER_MODE_REL_SOFT);
+-	priv->trig_timer.function = tsc2046_adc_trig_more;
++	priv->trig_timer.function = tsc2046_adc_timer;
+ 
+ 	ret = devm_iio_trigger_register(dev, trig);
+ 	if (ret) {
 -- 
-2.17.1
+2.30.2
 

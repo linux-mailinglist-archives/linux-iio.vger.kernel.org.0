@@ -2,195 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B033748BA65
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 23:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B71348BAF1
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 23:49:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345025AbiAKWC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 17:02:59 -0500
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:34553 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343842AbiAKWC7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 17:02:59 -0500
-Received: by mail-oi1-f180.google.com with SMTP id r131so997868oig.1;
-        Tue, 11 Jan 2022 14:02:59 -0800 (PST)
+        id S1345720AbiAKWtB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 17:49:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33568 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230248AbiAKWtA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 17:49:00 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C443C06173F;
+        Tue, 11 Jan 2022 14:49:00 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id l10-20020a17090a384a00b001b22190e075so8109691pjf.3;
+        Tue, 11 Jan 2022 14:49:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=21jKrUVkF66YiKV2sXrARGR2A/0nZBDfj7NXOCvKelA=;
+        b=nXisYx8ZBeSjDj6qmYeFs0Yqef21/FqVlz4k8H5KmfMkzOYxFEblle1Nw19AdU847l
+         Gct9CO6zeDGHSpuXie0DfjveD1MAWSmSfMXa8rhbHd02jBDtBcIiWSEQpXK8zcRT8dWK
+         n8kNWQ0FqN21whTeiWu+pTSLMjVIYQfMgv3vkDxCnoWMmbKssGELswfHxYHbvdkt4sdK
+         AsEGzajg9HvNp2ODegvDffZT0mggKx2eCDS6GZ8oWMiHs5MKA9lFPjcqItSlAszGrD8R
+         6PQqsY0rqSPkCikGk3rVcT/BNmInBqtQLkmFbFsSg3dwHGyWprJSmCIC+6PEojD43FZ6
+         Oc3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=SzcggNXrl+/nvnyNoDfUICfrCjf9o6dGiDjvwXyMqlU=;
-        b=ZHdHFKZdtX3TVcByzZ7iyNE8EDr1d9T2QnneDK46fS1chqSeCMyHmc8DRJ9varvfrw
-         hDtvdDqIwey/9yNBbNfK/y24LGaRQtAxTPtyeoaRILfKz27ftwez0ZChY/lN11H9GFk+
-         U1dghNJpUKo/XlfGNrcyw3P0IwJa2QAqFHySLy38+lvpm+917qIi2LZAzdGhsvbR7HYQ
-         C4ZnZnvrBIALRkl/TiOyPJWTq7ap/RnmYfxfMAlfn5ePeg/Rfd4FM46H+2DoFvCpUqKa
-         C9tUKKvhzO4pctTMXUuLEmYDY53U/zjM8vFX9urMn+X7Sn5DBrI1EDigQIJiZmZP9OCp
-         4fQg==
-X-Gm-Message-State: AOAM533sGu51+LhXZmTHx+s+UtdLaBO2wdWucw+fPdPbYhp98ammRNA4
-        cEaRZ9QB9bGxFid54EBLz0FIh8bK5g==
-X-Google-Smtp-Source: ABdhPJy9tSOjgmQ2GN+VKcOL/vf6bOsG38+XJvZa3GbKbRmrs5Uxp1HgGdX4SPbn93MDf9qW2pd3Cw==
-X-Received: by 2002:a05:6808:138e:: with SMTP id c14mr3307430oiw.55.1641938578643;
-        Tue, 11 Jan 2022 14:02:58 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id l1sm2250342oti.51.2022.01.11.14.02.57
+        bh=21jKrUVkF66YiKV2sXrARGR2A/0nZBDfj7NXOCvKelA=;
+        b=bKknW1Ils4lfW26XklnI/YmNiRPBM9jhw6DNs+uJCDDXaHbduwo62PoJdlaIdpiVdd
+         Vs74yJcQ/1dvxqGeUC/1EosY7eNdvweLPsAMlSRSUkIEEGS2ZMI57qgTlDSwoNcNJwGz
+         1Z1aQSEi3NxXreVMk6PkF+jROfYAQrVE0VTOQGuEccj6UHliEGkV7PYdVw/wYwK/6WzB
+         ZAvR85r0YxCaTrMCG/WUVJooCyyIAOg6vRGuEpZzD/QxLE5lgK+P7Hm9KhMaW0mfOc7A
+         KvEK7ygtmN9IzjlZ8qkv3PPGqkpHEdCQZtLuANpdBGEVzNiNMHI+sziD99jfcsSUwBSZ
+         ihFA==
+X-Gm-Message-State: AOAM533g20JS3vhsQhay6xzhOLJw7O7BtsXLq3NtRc9ORfodv3kurMuH
+        +xOS3jB4yuc/KxgPLYcqhNk=
+X-Google-Smtp-Source: ABdhPJxVdugbSGoBel+nf3MnQAUyXgpAyv9vsTtOpLV+sv1ywOHc+fsJPl/QAC+Cnj+s/sBPTuan6g==
+X-Received: by 2002:a63:a1a:: with SMTP id 26mr5909913pgk.212.1641941339672;
+        Tue, 11 Jan 2022 14:48:59 -0800 (PST)
+Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
+        by smtp.gmail.com with ESMTPSA id v15sm651825pfu.203.2022.01.11.14.48.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jan 2022 14:02:58 -0800 (PST)
-Received: (nullmailer pid 3582417 invoked by uid 1000);
-        Tue, 11 Jan 2022 22:02:57 -0000
-Date:   Tue, 11 Jan 2022 16:02:57 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Cristian Pop <cristian.pop@analog.com>
-Cc:     linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jic23@kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: one-bit-adc-dac yaml
- documentation
-Message-ID: <Yd3+kSr5xtL53jUQ@robh.at.kernel.org>
-References: <20220111115919.14645-1-cristian.pop@analog.com>
+        Tue, 11 Jan 2022 14:48:58 -0800 (PST)
+Date:   Wed, 12 Jan 2022 07:48:53 +0900
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] counter: fix an IS_ERR() vs NULL bug
+Message-ID: <Yd4JVSTUcFVFNhaJ@shinobu>
+References: <20220111173243.GA2192@kili>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="oLfUn8xMOtC9EV9z"
 Content-Disposition: inline
-In-Reply-To: <20220111115919.14645-1-cristian.pop@analog.com>
+In-Reply-To: <20220111173243.GA2192@kili>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 11, 2022 at 01:59:18PM +0200, Cristian Pop wrote:
-> This adds device tree bindings for the one-bit-adc-dac.
 
-I have no idea what a one-bit-adc-dac is. Please describe or provide a 
-reference to what this h/w looks like.
+--oLfUn8xMOtC9EV9z
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
-> V1->V2                                                                     
+On Tue, Jan 11, 2022 at 08:32:43PM +0300, Dan Carpenter wrote:
+> There are 8 callers for devm_counter_alloc() and they all check for NULL
+> instead of error pointers.  I think NULL is the better thing to return
+> for allocation functions so update counter_alloc() and devm_counter_alloc=
+()
+> to return NULL instead of error pointers.
+>=20
+> Fixes: c18e2760308e ("counter: Provide alternative counter registration f=
+unctions")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-This belongs below the '---'
+Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
->  - I am aware of the recommendation of rename/move this driver. Should we  
->    consider "drivers/io/gpio.c"?                                           
->  - Add .yaml file                                                          
->  - Remove blank lines, remove unnecessary coma                             
->  - Remove macros for channels                                              
->  - Check if channel is input for write_raw                                 
->  - Use labels instead of extend_name                                       
->  - Fix channel indexing                                                    
->  - Use "sizeof(*channels)" in devm_kcalloc()                               
->  - Remove assignment: " indio_dev->dev.parent = &pdev->dev;"               
->  - Remove "platform_set_drvdata"                                           
->  - Remove "adi" from compatible string since is not ADI specific driver.
 > ---
->  .../bindings/iio/addac/one-bit-adc-dac.yaml   | 89 +++++++++++++++++++
->  1 file changed, 89 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml b/Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
-> new file mode 100644
-> index 000000000000..dbed0f3b1ca4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
-> @@ -0,0 +1,89 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2020 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/addac/one-bit-adc-dac.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices one bit ADC DAC driver
-> +
-> +maintainers:
-> +  - Cristian Pop <cristian.pop@analog.com>
-> +
-> +description: |
-> +  One bit ADC DAC driver
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,one-bit-adc-dac
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  in-gpios:
-> +    description: Input GPIOs
-> +
-> +  out-gpios:
-> +    description: Output GPIOs
+> v2: make additional style changes
+>=20
+>  drivers/counter/counter-core.c | 15 ++++++---------
+>  1 file changed, 6 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
+e.c
+> index 7e0957eea094..869894b74741 100644
+> --- a/drivers/counter/counter-core.c
+> +++ b/drivers/counter/counter-core.c
+> @@ -90,10 +90,8 @@ struct counter_device *counter_alloc(size_t sizeof_pri=
+v)
+>  	int err;
+> =20
+>  	ch =3D kzalloc(sizeof(*ch) + sizeof_priv, GFP_KERNEL);
+> -	if (!ch) {
+> -		err =3D -ENOMEM;
+> -		goto err_alloc_ch;
+> -	}
+> +	if (!ch)
+> +		return NULL;
+> =20
+>  	counter =3D &ch->counter;
+>  	dev =3D &counter->dev;
+> @@ -123,9 +121,8 @@ struct counter_device *counter_alloc(size_t sizeof_pr=
+iv)
+>  err_ida_alloc:
+> =20
+>  	kfree(ch);
+> -err_alloc_ch:
+> =20
+> -	return ERR_PTR(err);
+> +	return NULL;
+>  }
+>  EXPORT_SYMBOL_GPL(counter_alloc);
+> =20
+> @@ -208,12 +205,12 @@ struct counter_device *devm_counter_alloc(struct de=
+vice *dev, size_t sizeof_priv
+>  	int err;
+> =20
+>  	counter =3D counter_alloc(sizeof_priv);
+> -	if (IS_ERR(counter))
+> -		return counter;
+> +	if (!counter)
+> +		return NULL;
+> =20
+>  	err =3D devm_add_action_or_reset(dev, devm_counter_put, counter);
+>  	if (err < 0)
+> -		return ERR_PTR(err);
+> +		return NULL;
+> =20
+>  	return counter;
+>  }
+> --=20
+> 2.20.1
+>=20
 
-No constraints on how many GPIOs?
+--oLfUn8xMOtC9EV9z
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +
-> +required:
-> +  - compatible
-> +  - in-gpios
-> +  - out-gpios
-> +
-> +patternProperties:
-> +  "^channel@([0-9]|1[0-5])$":
-> +    type: object
-> +    description: |
-> +      Represents the external channels which are connected to the ADDAC.
-> +
-> +    properties:
-> +      reg:
-> +        maxItems: 1
-> +        description: |
-> +          The channel number.
-> +
-> +      label:
-> +        description: |
-> +          Unique name to identify which channel this is.
-> +
-> +    required:
-> +      - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    one-bit-adc-dac@0 {
-> +        compatible = "one-bit-adc-dac";
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        in-gpios = <&gpio 17 0>, <&gpio 27 0>;
-> +        out-gpios = <&gpio 23 0>, <&gpio 24 0>;
-> +
-> +        channel@0 {
-> +          reg = <0>;
+-----BEGIN PGP SIGNATURE-----
 
-What does '0' correspond to?
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmHeCUoACgkQhvpINdm7
+VJIVuA//SVLH57LkeS1FkN5e+LkoLiZFN2RImHGDSdhRQnsWLB1lssun+R79IZJz
+3G3ZrW6uy2AKq13kYDNxBeZmgKH1fHwLWgBsyErHU0BRkrJZExZVlULHEbVPFW6F
+58FO5RHTFxPLl6VdLmjD99IC1nMPYvoGhgJ+qJdhwTOupErvDxw9jVDq6CvNTTEv
+H5aiAt5LLSaNqSFw+QT01EMe2Q5N3FMQWqwjnox3FnJPp8AEsN9Tlzo4gr3q8ne9
+2zUf4ias2w5CDLAsRj6CJlxEXwokViRljIXGPem4eF0LRXqo3Fl695qwo/XPY9kk
+pcJ0JV/hl9RVHyo2sXNU/NS7rv0IiVT0TXtL91b8+zYywxnzrArF0XliPta+VKwI
+QCrSzmi7UV4u1zSHH3Webn+RTpUlGBVYPPoyPBYevWLzrfw5GvJ86a8godwKGXXf
+HltY1sVb3av180/f2l9VbPOgLitiIAyg6zwSU6OrpHin7cIlo+oInJuLCQtncCtI
+JtLdRuAZNGXJQcepePS916OHLAK7we7BJHZ/U3qM1VKnIHeQDZJuB5WRFbuwlmIi
+8FNz9egAUZ1z4g0wk+EzWoz18whgM35jCGbfWznFRDFT6iKlikSqoPSLfoCk+CPP
+cBRpEKEkwiLJyN9GYEvZIg6ia+hogkjH3ta9zdrefYzX9GxF59k=
+=9Edj
+-----END PGP SIGNATURE-----
 
-> +          label = "i_17";
-
-Why is this needed? 'label' is supposed to correspond to physical 
-labelling of ports. IOW, for identification by humans looking at the 
-device.
-
-This all looks duplicated from information in in-gpios and out-gpios.
-
-> +        };
-> +
-> +        channel@1 {
-> +          reg = <1>;
-> +          label = "i_27";
-> +        };
-> +
-> +        channel@2 {
-> +          reg = <2>;
-> +          label = "o_23";
-> +        };
-> +
-> +        channel@3 {
-> +          reg = <3>;
-> +          label = "o_24";
-> +        };
-> +    };
-> -- 
-> 2.17.1
-> 
-> 
+--oLfUn8xMOtC9EV9z--

@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF20048A862
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 08:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCAC48A867
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 08:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348513AbiAKH0W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 02:26:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44268 "EHLO
+        id S235196AbiAKH3S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 02:29:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235242AbiAKH0W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 02:26:22 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B9B5C06173F;
-        Mon, 10 Jan 2022 23:26:21 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id i5so9812157edf.9;
-        Mon, 10 Jan 2022 23:26:21 -0800 (PST)
+        with ESMTP id S234583AbiAKH3S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 02:29:18 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B87BCC06173F;
+        Mon, 10 Jan 2022 23:29:17 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id m4so21968557edb.10;
+        Mon, 10 Jan 2022 23:29:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=fDLulooVhTwdWu5IC9b6xR2D6h2T6qJ3J7YaDkUvjm4=;
-        b=ccZ80P5Hl5G0RYcdsxN3DGKso8W3ulMLkR9UlyGJTfkvBhOqKXf3RvNnaDX5QTOzWm
-         J1C6+acpoCM425NpJ5qd3pj3Rhtl39yEfWGb0e9Q7Az38xcgykrAgiODA8JHWcCaCNrM
-         JKhcw3/1Eqlw1yXC6K7A9xiAEFv5H/QJZk68eQ/i0SzB2dy1VJWFFZYK01GHbKZPKdRw
-         1P6Zc2Iw+wPn/D8LqjEqqzV/ohxrlNC4rm7wIPG+Md36yp61+rTaNL0zKPJZygdECLpE
-         eu97peA/1eoJto6CrFMWDz34z01Q5CmWXtjWHT3ic2G2KD668PaD39nNPtg4ngcCbfBE
-         ujhg==
+        bh=12jsSOU5ZNxy84ETQ5LSrudrwcQeLCeYfKiSaDp1ftY=;
+        b=hjbl3rn/DvVDqV9U+a5izOL62rKLOSaKxYvpUKendFVHeuuIfK0nSd0ebg7bffAEnL
+         f4Gh5h4GFaoaNlaWAMlM2rmOgVaEoxubrRsoZOwkvQSl01hmX3W5t6R1RJ6U68XLHMxK
+         YZkQK8j6PSHjZSMO00ixmcDx2Z/6/Iuox8WRAUXwn0xWClXpRYIbo7RoqD9pmigVcKBB
+         D6r3xUfWAEWS3UDxruurk38lYYr4yD80e0jljnCTnGwsRu/Yot/7zoRDndnXbyS4wRVt
+         c9SnFr2Wi1obbMTyGR8Rnay0TkXx6S059ewkHftkAkkMWlg84l+XU2bFJXZ5le5Abwa6
+         xRkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=fDLulooVhTwdWu5IC9b6xR2D6h2T6qJ3J7YaDkUvjm4=;
-        b=ettZJkLpIreWfRCkgD72YNYx/JSuf2/Vu9ZC0pbHXHnRGMJ95ylCBq7LUocO42cwMs
-         5kS8NTq30i3KYd6VgtxWYm7eWwPrFIV6WgmqO2GM9WPzxn7sKPJDAHWfaXZ1rBnhugnW
-         6n8WvIWEnWAU2Runywr5NCosjxj76WiwBvoXVbzTPGFSLIddB2JXkjG3hiePPL54Xw2G
-         wUy+EOCot56gKvZrMgGUZZqSkkwtiWGuVEvRg0YiJHbKL4SK9JyjcTQ0wInWk4hjxqGF
-         MSDQ2bCFf2gC04yrGmkpgxldvnDA/DR6WCtU8eM8ELK4FiNZoUSwwbb1V9x9kb+lPQWw
-         QQrw==
-X-Gm-Message-State: AOAM532VCIPPlE/SvA0Tlc0vDn4l1CCKL8ciUsVKPnRv54uKtD3gPPcs
-        h1QnGaYeFlgUIf7IeeTo/hE=
-X-Google-Smtp-Source: ABdhPJychsDJWROU/7NKf1dMNbo5YoW1zTnNkyU5Zrhc0ooNcqJPbrY1HoKQzVHtGkkM3kik89/Jnw==
-X-Received: by 2002:a17:906:2b8a:: with SMTP id m10mr2544856ejg.479.1641885980190;
-        Mon, 10 Jan 2022 23:26:20 -0800 (PST)
+        bh=12jsSOU5ZNxy84ETQ5LSrudrwcQeLCeYfKiSaDp1ftY=;
+        b=MR5GHwgvTFGFx5oqk5eDKrucRSMizuLx5+DO4tRGXOb2eAlWSsC1KRJK0XWdaRCX3a
+         YALQHli0CEKe18rXTFOPuCCl+7ZtzAxkHR3UCfrCeRG9Js0SykvuotogrVghf8pqk+me
+         RHzQo0nHqtdPZf6nQ85m7D7bpi/y2P9F1cfBfYHZd0MUsDCT2prdCRwoNbeAbr3stVNM
+         HlZxklK+qwCOIew2shL+pGWnuH4TCx+BKJ904bYtgBnu/wGMqGnzvlqNAJtdbZzg5GPS
+         le/i43bfwDUoF8dk1FbRP+EbpCXjzgCTSmZL3c1IQxKoIr7rnTmNW/KGa3CEs1yIk2P7
+         93zw==
+X-Gm-Message-State: AOAM5322T7pqDiebPc1UuV4dB/IOH3eKBHXzaWTc08c3ZVq9iz4xJzpm
+        e2It91crE6wFCbUeJs8J/s0=
+X-Google-Smtp-Source: ABdhPJzZAeYEy5k8zkJyHiJB7jbeV8xIKIsvwPQztjRd7ouQe7D3cvPQ5dk924wzjHCCdmVgAiBICw==
+X-Received: by 2002:a05:6402:160d:: with SMTP id f13mr3128349edv.247.1641886156356;
+        Mon, 10 Jan 2022 23:29:16 -0800 (PST)
 Received: from [192.168.0.182] ([79.119.107.253])
-        by smtp.gmail.com with ESMTPSA id r17sm3284811eje.15.2022.01.10.23.26.19
+        by smtp.gmail.com with ESMTPSA id v16sm4708637edc.4.2022.01.10.23.29.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jan 2022 23:26:19 -0800 (PST)
-Message-ID: <892aa3e1-7613-ee17-2784-4e295ab27100@gmail.com>
-Date:   Tue, 11 Jan 2022 09:26:19 +0200
+        Mon, 10 Jan 2022 23:29:16 -0800 (PST)
+Message-ID: <9d98ad20-617d-b57f-3b87-e001b6999fba@gmail.com>
+Date:   Tue, 11 Jan 2022 09:29:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.4.1
@@ -69,9 +69,9 @@ Cc:     "cosmin.tanislav@analog.com" <cosmin.tanislav@analog.com>,
         "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
 References: <20220110220509.3527402-1-cosmin.tanislav@analog.com>
  <20220110220509.3527402-3-cosmin.tanislav@analog.com>
- <CAHp75VezW0DTvjLb6wOOf+skCv5-bDV38ozNaCq1wX+Oekarfw@mail.gmail.com>
+ <CAHp75VckhARFUX3F0F7MLiHzpdqgKiVpDxoYNZVwSsB7ZK2=hQ@mail.gmail.com>
 From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <CAHp75VezW0DTvjLb6wOOf+skCv5-bDV38ozNaCq1wX+Oekarfw@mail.gmail.com>
+In-Reply-To: <CAHp75VckhARFUX3F0F7MLiHzpdqgKiVpDxoYNZVwSsB7ZK2=hQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -80,7 +80,7 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 1/11/22 01:12, Andy Shevchenko wrote:
+On 1/11/22 01:14, Andy Shevchenko wrote:
 > 
 > 
 > On Tuesday, January 11, 2022, Cosmin Tanislav <demonsingur@gmail.com 
@@ -91,14 +91,6 @@ On 1/11/22 01:12, Andy Shevchenko wrote:
 >     the offsets into masks.
 > 
 >     Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
-> 
-> 
-> 
-> Ss i told you this should go _before_ patch 2.
-
-Sorry, I missed your comment on this.
-
-> 
 >     Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com
 >     <mailto:cosmin.tanislav@analog.com>>
 >     ---
@@ -138,7 +130,15 @@ Sorry, I missed your comment on this.
 >              for_each_set_bit(offset, mask, chip->ngpio) {
 >                      unsigned int real_offset =
 >     st->comp_gpio_offsets[offset];
+> 
 >     -
+> 
+> 
+> This blank line should be kept. Isn’t checkpatch complaining about?
+
+Nope, doesn't seem to, even with the --strict option.
+
+> 
 >     -               if (val & BIT(real_offset))
 >     -                       *bits |= offset;
 >     +               __assign_bit(offset, bits, val & BIT(real_offset));

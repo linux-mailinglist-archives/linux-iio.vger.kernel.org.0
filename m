@@ -2,118 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A25C48AE34
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 14:13:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D2748AE50
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 14:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240325AbiAKNNH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 08:13:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
+        id S240428AbiAKNSz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 08:18:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240320AbiAKNNG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 08:13:06 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 245ACC061748
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jan 2022 05:13:06 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id m1so22948020lfq.4
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jan 2022 05:13:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=wirenboard-com.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=HexBkH7IffTlCvDylw+G6ZVzQ2BUVoFgl2mC3mgeHX8=;
-        b=5Wf3hap5AZRbMO2KtXQL6Y/jtuLHF9cg2HUFpAtgmKsD+p5kYZvdbE38ZfdUKWqoDy
-         dddQcy60+sYew/kg53hMXSXTHQjdZqvAlt4vz0bNRIjKj6hgwaG+Tc0A/fzTzWe14lDG
-         xUUeGMhRRDnme/GsZyHE6NrbpE7D4eYX2ktBooxJsHkHwyML4Bqvpap7v4qYru4YFGmp
-         jNvI4/kXGnU2JKBfOajZazXxr7yQTrS8q18F16HP2HC+keyobwHKixpZPf0epN5qgZrr
-         CLqmXogtTcuJ/7eKyPOKdJOv6tvaQTJIFzI4n+/EqIJEjzfU8p0UlMtq9ePBgVl9la8D
-         HF3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=HexBkH7IffTlCvDylw+G6ZVzQ2BUVoFgl2mC3mgeHX8=;
-        b=YcvlWQbVuO5vrH5Jvz4H4St7/hjCz1TQI47gpuGHLXtSAInpUDqbI+e1fie1BaIDhr
-         hhBgOEYrYiN4s0nZRR9TnqZi1G6F9Vth4n/pfTKx6vV369q6zY3tqi+fbh6bDdQNnkKV
-         pBIlPfOOpNJhtEJvm36dAuIZJl3Hwh3LxUbAwJc7FONr3mpKmS8GGTzDdnFtThV65dRH
-         pfiyA56oako4vatTUN+BFlvccIJI2lijHh5V8rUe4lyPLL/nsuCtcPQR1idtT0rlw36D
-         GQoCnNhtcxrNyIRPIhSUY6eFPxUqlTOt0mStjxPkxXdI+shdUKIuxFmXFKtfg4wAGi6/
-         Zzhg==
-X-Gm-Message-State: AOAM532FbR26as7MOpL20bED8Naact3d6C3k8N24XhABIk5h36ba1BUa
-        qwwzmSXK+5cxzylaHpAynp6q/VF2d8gtDw==
-X-Google-Smtp-Source: ABdhPJz5CmqUsI8AwKAkSmuFVrJyv0PTq2BHqKKwqEDZ0HMGLPjd3R4ayPll7KW5YV+J701nrFEFeA==
-X-Received: by 2002:a05:6512:3445:: with SMTP id j5mr3250433lfr.30.1641906784075;
-        Tue, 11 Jan 2022 05:13:04 -0800 (PST)
-Received: from [192.168.1.213] (81.5.110.253.dhcp.mipt-telecom.ru. [81.5.110.253])
-        by smtp.googlemail.com with ESMTPSA id i9sm1331120lfe.195.2022.01.11.05.13.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jan 2022 05:13:03 -0800 (PST)
-Subject: Re: [PATCH 1/3] iio: adc: sun4i-gpadc-iio: no temp sensor on R40
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Maxime Ripard <maxime@cerno.tech>
-Cc:     Chen-Yu Tsai <wens@csie.org>, linux-sunxi@lists.linux.dev,
-        Lee Jones <lee.jones@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-References: <20211119191456.510435-1-boger@wirenboard.com>
- <20211119191456.510435-2-boger@wirenboard.com>
- <20211122091132.yjudzei3bdqmnxq6@gilmour>
- <20211122124115.00005186@Huawei.com>
-From:   Evgeny Boger <boger@wirenboard.com>
-Message-ID: <85db7e8a-2b9a-7e44-ec96-b804201a3491@wirenboard.com>
-Date:   Tue, 11 Jan 2022 16:13:02 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S240416AbiAKNSz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 08:18:55 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D60C061748
+        for <linux-iio@vger.kernel.org>; Tue, 11 Jan 2022 05:18:54 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1n7H32-0003aP-TC; Tue, 11 Jan 2022 14:18:48 +0100
+Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1n7H32-0004av-5M; Tue, 11 Jan 2022 14:18:48 +0100
+Date:   Tue, 11 Jan 2022 14:18:48 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: adc: tsc2046: add .read_raw support
+Message-ID: <20220111131848.GE3326@pengutronix.de>
+References: <20220107093527.3046331-1-o.rempel@pengutronix.de>
+ <20220109155956.003167f1@jic23-huawei>
 MIME-Version: 1.0
-In-Reply-To: <20211122124115.00005186@Huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-GB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220109155956.003167f1@jic23-huawei>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 14:04:41 up 31 days, 21:50, 72 users,  load average: 0.07, 0.27,
+ 0.27
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Jonathan,
 
-22.11.2021 15:41, Jonathan Cameron пишет:
-> On Mon, 22 Nov 2021 10:11:32 +0100
-> Maxime Ripard <maxime@cerno.tech> wrote:
->
->> On Fri, Nov 19, 2021 at 10:14:54PM +0300, Evgeny Boger wrote:
->>> R40 SoC has touchscreen controller also serving as general-purpose ADC.
->>> The hardware is very similar to A31, except that R40 has separate
->>> calibrated thermal sensor IP (handled by sun8i_thermal).
->>>
->>> Despite the temperature sensor in the RTP is never mentioned in
->>> the R40 family user manuals, it appears to be working. However,
->>> it's not very useful as it lacks calibration data and there is another
->>> fully functioning temperature sensor anyway.
->>>
->>> This patch disables the temperature sensor in RTP/GPADC IP on R40.
->>>
->>> The reason for disabling the temperature sensor is that the IP
->>> needs to be switched back and forth between RTP and GPADC modes for
->>> temperature measurements. Not only this introduces delays, but it also
->>> disturbs external circuitry by injecting current into ADC inputs.
->>>
->>> Signed-off-by: Evgeny Boger <boger@wirenboard.com>
->> Acked-by: Maxime Ripard <maxime@cerno.tech>
-> +Cc linux-iio@vger.kernel.org
->
-> I'm fine with this and assuming Lee is happy to pick it up + send
-> me an immutable branch in case anything crosses with it this cycle..
->
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sun, Jan 09, 2022 at 04:00:09PM +0000, Jonathan Cameron wrote:
+> On Fri,  7 Jan 2022 10:35:27 +0100
+> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> 
+> > Add read_raw() support to make use of iio_hwmon and other iio clients.
+> > 
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Hi Oleksij
+> 
+> Main questions in here are around settling time and the interface used for that.
+> 
+> > ---
+> >  drivers/iio/adc/ti-tsc2046.c | 114 ++++++++++++++++++++++++++++++++---
+> >  1 file changed, 106 insertions(+), 8 deletions(-)
+> > 
+> > @@ -252,16 +266,47 @@ static u16 tsc2046_adc_get_value(struct tsc2046_adc_atom *buf)
+> >  static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
+> >  				u32 *effective_speed_hz)
+> >  {
+> > +	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
+> > +	struct tsc2046_adc_atom *rx_buf, *tx_buf;
+> > +	unsigned int val, val_normalized = 0;
+> > +	int ret, i, count_skip = 0, max_count;
+> >  	struct spi_transfer xfer;
+> >  	struct spi_message msg;
+> > -	int ret;
+> > +	u8 cmd;
+> > +
+> > +	if (!effective_speed_hz) {
+> > +		count_skip = tsc2046_adc_time_to_count(priv, ch->settling_time_us);
+> > +		max_count = count_skip + ch->oversampling_ratio;
+> > +	} else {
+> > +		max_count = 1;
+> > +	}
+> > +
+> > +	tx_buf = kcalloc(max_count, sizeof(*tx_buf), GFP_KERNEL);
+> > +	if (!tx_buf)
+> > +		return -ENOMEM;
+> > +
+> > +	rx_buf = kcalloc(max_count, sizeof(*rx_buf), GFP_KERNEL);
+> > +	if (!rx_buf) {
+> > +		ret = -ENOMEM;
+> > +		goto free_tx;
+> > +	}
+> 
+> I guess these are fine to do everytime because you expect this to be used in
+> paths which aren't called at a particularly high frequency?
 
-Hi Jonathan!
+Yes, this was my assumption as well. Instead of preallocating buffer of
+max size, I hope it is less ugly.
 
-Is there anything else I should do to make this patch series accepted?
+> These buffers could get rather large so maybe you need a cap on settling time?
 
+What do you mean by "cap on settling"?
 
-> Thanks,
->
-> Jonathan
->
->> Maxime
->>
+> 
+> > +
+> > +	/*
+> > +	 * Do not enable automatic power down on working samples. Otherwise the
+> > +	 * plates will never be completely charged.
+> > +	 */
+> > +	cmd = tsc2046_adc_get_cmd(priv, ch_idx, true);
+> > +
+> > +	for (i = 0; i < max_count - 1; i++)
+> > +		tx_buf[i].cmd = cmd;
+> > +
+> > +	/* automatically power down on last sample */
+> > +	tx_buf[i].cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
+> >  
+> >  	memset(&xfer, 0, sizeof(xfer));
+> > -	priv->tx_one->cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
+> > -	priv->tx_one->data = 0;
+> > -	xfer.tx_buf = priv->tx_one;
+> > -	xfer.rx_buf = priv->rx_one;
+> 
+> Are these used for anything else?  If not probably need to drop them and
+> their allocation.
 
+done
+
+> > -	xfer.len = sizeof(*priv->tx_one);
+> > +	xfer.tx_buf = tx_buf;
+> > +	xfer.rx_buf = rx_buf;
+> > +	xfer.len = sizeof(*tx_buf) * max_count;
+> 
+> This could be very big and more than possible some spi controllers will fail
+> it (or does the SPI core handle splitting very large transfers?)  Maybe a loop
+> is needed with smaller fixed size transfers?
+
+I can't exclude possible issue with some of SPI drivers. But SPI level
+optimizations should be done on SPI driver or framework level.
+
+> >  	spi_message_init_with_transfers(&msg, &xfer, 1);
+> >  
+> >  	/*
+> > @@ -272,13 +317,25 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
+> >  	if (ret) {
+> >  		dev_err_ratelimited(&priv->spi->dev, "SPI transfer failed %pe\n",
+> >  				    ERR_PTR(ret));
+> > +		*val2 = chan->scan_type.realbits;
+> > +		return IIO_VAL_FRACTIONAL_LOG2;
+> > +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> > +		*val = priv->ch_cfg[chan->channel].oversampling_ratio;
+> > +		return IIO_VAL_INT;
+> > +	case IIO_CHAN_INFO_DEBOUNCE_COUNT:
+> 
+> These are unusual. I think they've only been used for the more literal bounce suppression
+> of a human step counting algorithm.
+> 
+> I'd probably not expect to see the both even if we decide this is applicable.
+
+Ok, i do not need this information so far. I'll remove it
+
+> > +		*val = tsc2046_adc_time_to_count(priv,
+> > +				priv->ch_cfg[chan->channel].settling_time_us);
+> 
+> Setting time is often about external circuitry so it's a bit unusual to expose
+> it to userspace rather than making it a device tree property and just making
+> sure the driver doesn't provide a reading until appropriate debounce has passed.
+> Here is coming from DT anyway, so what benefit do these two read only channel
+> properties provide?
+
+No benefit. Will remove it.
+
+Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

@@ -2,94 +2,195 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F124A48B8AF
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 21:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B033748BA65
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 23:03:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242704AbiAKUeM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 15:34:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58300 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231598AbiAKUeK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 15:34:10 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67823C06173F
-        for <linux-iio@vger.kernel.org>; Tue, 11 Jan 2022 12:34:10 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n7NqG-0005KV-Gq; Tue, 11 Jan 2022 21:34:04 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n7Nq9-009liu-K5; Tue, 11 Jan 2022 21:33:56 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n7Nq8-0000bZ-M8; Tue, 11 Jan 2022 21:33:56 +0100
-Date:   Tue, 11 Jan 2022 21:33:56 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] counter: fix an IS_ERR() vs NULL bug
-Message-ID: <20220111203356.cnzpo4uyhnybm5cp@pengutronix.de>
-References: <20220111173243.GA2192@kili>
+        id S1345025AbiAKWC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 17:02:59 -0500
+Received: from mail-oi1-f180.google.com ([209.85.167.180]:34553 "EHLO
+        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343842AbiAKWC7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 17:02:59 -0500
+Received: by mail-oi1-f180.google.com with SMTP id r131so997868oig.1;
+        Tue, 11 Jan 2022 14:02:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=SzcggNXrl+/nvnyNoDfUICfrCjf9o6dGiDjvwXyMqlU=;
+        b=ZHdHFKZdtX3TVcByzZ7iyNE8EDr1d9T2QnneDK46fS1chqSeCMyHmc8DRJ9varvfrw
+         hDtvdDqIwey/9yNBbNfK/y24LGaRQtAxTPtyeoaRILfKz27ftwez0ZChY/lN11H9GFk+
+         U1dghNJpUKo/XlfGNrcyw3P0IwJa2QAqFHySLy38+lvpm+917qIi2LZAzdGhsvbR7HYQ
+         C4ZnZnvrBIALRkl/TiOyPJWTq7ap/RnmYfxfMAlfn5ePeg/Rfd4FM46H+2DoFvCpUqKa
+         C9tUKKvhzO4pctTMXUuLEmYDY53U/zjM8vFX9urMn+X7Sn5DBrI1EDigQIJiZmZP9OCp
+         4fQg==
+X-Gm-Message-State: AOAM533sGu51+LhXZmTHx+s+UtdLaBO2wdWucw+fPdPbYhp98ammRNA4
+        cEaRZ9QB9bGxFid54EBLz0FIh8bK5g==
+X-Google-Smtp-Source: ABdhPJy9tSOjgmQ2GN+VKcOL/vf6bOsG38+XJvZa3GbKbRmrs5Uxp1HgGdX4SPbn93MDf9qW2pd3Cw==
+X-Received: by 2002:a05:6808:138e:: with SMTP id c14mr3307430oiw.55.1641938578643;
+        Tue, 11 Jan 2022 14:02:58 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id l1sm2250342oti.51.2022.01.11.14.02.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jan 2022 14:02:58 -0800 (PST)
+Received: (nullmailer pid 3582417 invoked by uid 1000);
+        Tue, 11 Jan 2022 22:02:57 -0000
+Date:   Tue, 11 Jan 2022 16:02:57 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jic23@kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: one-bit-adc-dac yaml
+ documentation
+Message-ID: <Yd3+kSr5xtL53jUQ@robh.at.kernel.org>
+References: <20220111115919.14645-1-cristian.pop@analog.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kxuycue2yzjofszy"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220111173243.GA2192@kili>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20220111115919.14645-1-cristian.pop@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, Jan 11, 2022 at 01:59:18PM +0200, Cristian Pop wrote:
+> This adds device tree bindings for the one-bit-adc-dac.
 
---kxuycue2yzjofszy
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I have no idea what a one-bit-adc-dac is. Please describe or provide a 
+reference to what this h/w looks like.
 
-On Tue, Jan 11, 2022 at 08:32:43PM +0300, Dan Carpenter wrote:
-> There are 8 callers for devm_counter_alloc() and they all check for NULL
-> instead of error pointers.  I think NULL is the better thing to return
-> for allocation functions so update counter_alloc() and devm_counter_alloc=
-()
-> to return NULL instead of error pointers.
->=20
-> Fixes: c18e2760308e ("counter: Provide alternative counter registration f=
-unctions")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> V1->V2                                                                     
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+This belongs below the '---'
 
-Thanks
-Uwe
+>  - I am aware of the recommendation of rename/move this driver. Should we  
+>    consider "drivers/io/gpio.c"?                                           
+>  - Add .yaml file                                                          
+>  - Remove blank lines, remove unnecessary coma                             
+>  - Remove macros for channels                                              
+>  - Check if channel is input for write_raw                                 
+>  - Use labels instead of extend_name                                       
+>  - Fix channel indexing                                                    
+>  - Use "sizeof(*channels)" in devm_kcalloc()                               
+>  - Remove assignment: " indio_dev->dev.parent = &pdev->dev;"               
+>  - Remove "platform_set_drvdata"                                           
+>  - Remove "adi" from compatible string since is not ADI specific driver.
+> ---
+>  .../bindings/iio/addac/one-bit-adc-dac.yaml   | 89 +++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml b/Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
+> new file mode 100644
+> index 000000000000..dbed0f3b1ca4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
+> @@ -0,0 +1,89 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2020 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/addac/one-bit-adc-dac.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices one bit ADC DAC driver
+> +
+> +maintainers:
+> +  - Cristian Pop <cristian.pop@analog.com>
+> +
+> +description: |
+> +  One bit ADC DAC driver
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,one-bit-adc-dac
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  in-gpios:
+> +    description: Input GPIOs
+> +
+> +  out-gpios:
+> +    description: Output GPIOs
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+No constraints on how many GPIOs?
 
---kxuycue2yzjofszy
-Content-Type: application/pgp-signature; name="signature.asc"
+> +
+> +required:
+> +  - compatible
+> +  - in-gpios
+> +  - out-gpios
+> +
+> +patternProperties:
+> +  "^channel@([0-9]|1[0-5])$":
+> +    type: object
+> +    description: |
+> +      Represents the external channels which are connected to the ADDAC.
+> +
+> +    properties:
+> +      reg:
+> +        maxItems: 1
+> +        description: |
+> +          The channel number.
+> +
+> +      label:
+> +        description: |
+> +          Unique name to identify which channel this is.
+> +
+> +    required:
+> +      - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    one-bit-adc-dac@0 {
+> +        compatible = "one-bit-adc-dac";
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        in-gpios = <&gpio 17 0>, <&gpio 27 0>;
+> +        out-gpios = <&gpio 23 0>, <&gpio 24 0>;
+> +
+> +        channel@0 {
+> +          reg = <0>;
 
------BEGIN PGP SIGNATURE-----
+What does '0' correspond to?
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHd6a8ACgkQwfwUeK3K
-7Al9Iwf/WB14l+fGxcxwVADyOlw6ROsynRA+lFE0XfZnX2xqSR6j49wb9axN9LEv
-NC55VyFV3gYSX3Hqmeeqt+FzwxY4kuvydtB2olZwr8Tx88OKSKN6I+dByp8zSLql
-M42Hw5N+vJCX0eae379VFBzFGO9e5sZHjeUQngy1anRztQYNO2woQhKO+1WintrR
-gLgJwnYCcw5W6xQ+e1jAz92rGadfczIwGoANrU/BDqGtBiIixX8LEwc3Q18wdOEs
-PQ27vixCeuesXui0wdyRjk5OR8ghMFijTpVXI8OtERU36j7wsy7ou3oFf16AK1kL
-CpU/FxpraV8XwIivYLZD6oyS/5sYnA==
-=7eoW
------END PGP SIGNATURE-----
+> +          label = "i_17";
 
---kxuycue2yzjofszy--
+Why is this needed? 'label' is supposed to correspond to physical 
+labelling of ports. IOW, for identification by humans looking at the 
+device.
+
+This all looks duplicated from information in in-gpios and out-gpios.
+
+> +        };
+> +
+> +        channel@1 {
+> +          reg = <1>;
+> +          label = "i_27";
+> +        };
+> +
+> +        channel@2 {
+> +          reg = <2>;
+> +          label = "o_23";
+> +        };
+> +
+> +        channel@3 {
+> +          reg = <3>;
+> +          label = "o_24";
+> +        };
+> +    };
+> -- 
+> 2.17.1
+> 
+> 

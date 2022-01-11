@@ -2,115 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0119E48AFCD
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 15:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 565C648B09A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Jan 2022 16:15:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240873AbiAKOnx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Jan 2022 09:43:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59914 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233944AbiAKOnx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 09:43:53 -0500
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08782C06173F;
-        Tue, 11 Jan 2022 06:43:53 -0800 (PST)
-Received: by mail-qv1-xf34.google.com with SMTP id 15so3375246qvp.12;
-        Tue, 11 Jan 2022 06:43:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=1VSQxPEnyKxjPycIz8yIdliFZqgD/ZbY2jUfYCItQXE=;
-        b=e0BZU1usKUdamK1k5Ht+R/+7td3nOKWgPXOrIQUgKJ6LDA8OaOS0pvjL85Ch8M6CRc
-         I86tsG4/Quhuubfod2BmYyRgdL0mxd0TCEBoBZ2PGOXLwP7B6LzhpNKTfdH0yVrdqvNj
-         JmAOPgevOm8QOk9tPSLFTaLwfy4ZSBOW6vFdQ3Vp9EIVC7SHCSQS8NFRpsQduSdGoo8Y
-         fmCqogcDNu1aMx4YCwMb5UuF28OGFi4xbqITDqCVATTAQ1Sm6vH7B2kwkJAGCcUXf/+E
-         IlzfJPRFKRDY9tsedjCkmWKdsFG7XogzJrdm4B56q0Dt29eHmC/pvqJyCtqPDHDK215+
-         fhJg==
+        id S1343537AbiAKPO6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Jan 2022 10:14:58 -0500
+Received: from mail-oo1-f46.google.com ([209.85.161.46]:38423 "EHLO
+        mail-oo1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343535AbiAKPO4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Jan 2022 10:14:56 -0500
+Received: by mail-oo1-f46.google.com with SMTP id w15-20020a4a9d0f000000b002c5cfa80e84so4508314ooj.5;
+        Tue, 11 Jan 2022 07:14:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1VSQxPEnyKxjPycIz8yIdliFZqgD/ZbY2jUfYCItQXE=;
-        b=kxAgj/n2vVdIuyMfo3l9AVnGLtT3zLvcdYt4OMPAANI/AglpRM1rUNpiOLiNUPj+Uf
-         Y2NK6kcI+A/GUSxaE4Xo6ajYuwSpSzWze6rOgtI59XGB7XRRd5sBOJ8VR25fjORgoum6
-         0Za8ll7Lso4nG5fMUNQ8D53yC4moLjvLTC1wRxDWqFx8mKSN+xKTro6m361DulYHCZI8
-         sgGA08v6HtTRxfHRdn57ZIKAHrqEtTtXDVNU2h6NWJdGVc+uxeOykFxMh2E5hW1+yL+V
-         nE9NqlpSvqLFCfIsZwvDaxp/Bf0wYhJSdQeXYzIgLyr9nCZZOlYb2VkpZ0EekbCeJlkY
-         pkrw==
-X-Gm-Message-State: AOAM530pyTO5n8hyLTuoyA3SmtIkAFNi4yhxV6+t7ZyoaVeXKD9XagTH
-        p+zrOBJ6x/z9Q+TRN9s9m9U=
-X-Google-Smtp-Source: ABdhPJzN69V45Ry4h9LVVfj/OBYrKHAGt/8ewnQQrINr4Yq0TGldOs4GMC29uYMruU0w/LNDhXrw+g==
-X-Received: by 2002:a05:6214:76a:: with SMTP id f10mr4301105qvz.54.1641912232213;
-        Tue, 11 Jan 2022 06:43:52 -0800 (PST)
-Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id w12sm2457798qtj.64.2022.01.11.06.43.50
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=+Ve86bAGdGykE9lQJLEQz82ky5oOJ7dhVkEvbIarDHo=;
+        b=kzBvxLXj49gN2gI33lHYfi4AQbKBb5ZATzINsmkPQBFx2bLrCLSVAIhOFFoFjrPFNY
+         fLhV7XAeCGsvUmoWAcH4hQO4sPw7m7e1yN6Y7pIzOd+rojxqawkYVVPylFxawRr1FnBq
+         iQE/KKwG4hSGKwLQ3qwAGQ5bR4xVTvWb8jioXdDSCftw7h/aBaRjWU2fvwq3/+qTf1xd
+         HiHUS4YPiioerT7Ur20BgIUnc0wzHxNfG+aKZqbsAdwgY/7Nbo0rvvmLhfCMSktQtN2B
+         NAVjLC5lJdSHnBcFcXZGIlFzYNdgFU4CeVOJT8gWRlXJa8+379zQBGmAPRRDy3vUKFHY
+         HHKw==
+X-Gm-Message-State: AOAM5310Rc9Uib0yLWqSruuADkUtSG0/d634ZXEnvGRovXz7B4JJOU67
+        NFj1QHPcKTI5U5iFK81UPQ==
+X-Google-Smtp-Source: ABdhPJzjz2Fl/tJM014yyLIjAKIl2z4NYeuhqHWYT1P04MdAmWcunSWmcc2GwFcYCq5ubVq1ltr1WA==
+X-Received: by 2002:a4a:9446:: with SMTP id j6mr3393880ooi.87.1641914095662;
+        Tue, 11 Jan 2022 07:14:55 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id b17sm2165131ots.66.2022.01.11.07.14.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jan 2022 06:43:51 -0800 (PST)
-Date:   Tue, 11 Jan 2022 09:43:49 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v12 06/16] iio: afe: rescale: expose scale processing
- function
-Message-ID: <Yd2XpUgKzqYnZVdS@shaak>
-References: <20220108205319.2046348-1-liambeguin@gmail.com>
- <20220108205319.2046348-7-liambeguin@gmail.com>
- <CAHp75VdVBQPG0Qbo9H5Sro0-Uhr683WhWor9P2MXZ5a18HfRgA@mail.gmail.com>
- <25cab0ad-f282-9cf8-df8a-1d288cb80cd1@axentia.se>
- <0eaf35a7-20cc-408f-5df1-978cff99f629@axentia.se>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0eaf35a7-20cc-408f-5df1-978cff99f629@axentia.se>
+        Tue, 11 Jan 2022 07:14:55 -0800 (PST)
+Received: (nullmailer pid 2944760 invoked by uid 1000);
+        Tue, 11 Jan 2022 15:14:49 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     robh+dt@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jic23@kernel.org,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
+In-Reply-To: <20220111115919.14645-1-cristian.pop@analog.com>
+References: <20220111115919.14645-1-cristian.pop@analog.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: one-bit-adc-dac yaml documentation
+Date:   Tue, 11 Jan 2022 09:14:49 -0600
+Message-Id: <1641914089.194827.2944759.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 09, 2022 at 09:25:53PM +0100, Peter Rosin wrote:
+On Tue, 11 Jan 2022 13:59:18 +0200, Cristian Pop wrote:
+> This adds device tree bindings for the one-bit-adc-dac.
 > 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> V1->V2
+>  - I am aware of the recommendation of rename/move this driver. Should we
+>    consider "drivers/io/gpio.c"?
+>  - Add .yaml file
+>  - Remove blank lines, remove unnecessary coma
+>  - Remove macros for channels
+>  - Check if channel is input for write_raw
+>  - Use labels instead of extend_name
+>  - Fix channel indexing
+>  - Use "sizeof(*channels)" in devm_kcalloc()
+>  - Remove assignment: " indio_dev->dev.parent = &pdev->dev;"
+>  - Remove "platform_set_drvdata"
+>  - Remove "adi" from compatible string since is not ADI specific driver.
+> ---
+>  .../bindings/iio/addac/one-bit-adc-dac.yaml   | 89 +++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.yaml
 > 
-> On 2022-01-09 21:19, Peter Rosin wrote:
-> > On 2022-01-09 14:07, Andy Shevchenko wrote:
-> >> On Sat, Jan 8, 2022 at 10:53 PM Liam Beguin <liambeguin@gmail.com> wrote:
-> >>>
-> >>> In preparation for the addition of kunit tests, expose the logic
-> >>> responsible for combining channel scales.
-> >>
-> >> ...
-> >>
-> >>> +/*
-> >>> + * Copyright (C) 2021 Liam Beguin <liambeguin@gmail.com>
-> >>> + */
-> >>
-> >> Despite the Rb tag by the author of the code the above is wrong.
-> >> Please do not steal others work :-) (The smiley due to my believe that
-> >> you have done this undeliberately)
-> >>
-> >>  * IIO rescale driver
-> >>  *
-> >>  * Copyright (C) 2018 Axentia Technologies AB
-> >>  *
-> >>  * Author: Peter Rosin <peda@axentia.se>
-> >>
-> > 
-> > For the record, I did notice this myself but did let it slide. It's only
-> > a trivial header, and is it even copyrightable? Shrug...
-> 
-> Oh, and by the way Liam, feel free to add a copyright line to the
-> iio-rescale.c file somewhere in the series if you like (if you didn't
-> already). You've certainly deserved it...
 
-Thanks Peter! Sure, I'll add it somewhere in the series.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Cheers,
-Liam
+yamllint warnings/errors:
 
-> Cheers,
-> Peter
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.example.dts:19.27-47.11: Warning (unit_address_vs_reg): /example-0/one-bit-adc-dac@0: node has a unit name, but no reg or ranges property
+Documentation/devicetree/bindings/iio/addac/one-bit-adc-dac.example.dt.yaml:0:0: /example-0/one-bit-adc-dac@0: failed to match any schema with compatible: ['one-bit-adc-dac']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1578401
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

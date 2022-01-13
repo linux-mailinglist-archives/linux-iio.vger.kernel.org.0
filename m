@@ -2,188 +2,208 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C190348DFFE
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jan 2022 22:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD93748E08F
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jan 2022 23:44:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233279AbiAMV5s convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 13 Jan 2022 16:57:48 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5638 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232985AbiAMV5r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Jan 2022 16:57:47 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20DKUdsR027614;
-        Thu, 13 Jan 2022 16:57:26 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dj0k5vjcr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jan 2022 16:57:25 -0500
-Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 20DLse1P009765;
-        Thu, 13 Jan 2022 16:57:25 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dj0k5vjcn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Jan 2022 16:57:25 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 20DLvNZT041894
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 13 Jan 2022 16:57:23 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 13 Jan
- 2022 16:57:22 -0500
-Received: from ASHBMBX9.ad.analog.com ([fe80::5d54:bde3:ae3a:70bb]) by
- ASHBMBX9.ad.analog.com ([fe80::5d54:bde3:ae3a:70bb%20]) with mapi id
- 15.02.0986.014; Thu, 13 Jan 2022 16:57:22 -0500
-From:   "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>
-To:     Kees Cook <keescook@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-CC:     "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        id S232512AbiAMWoT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Jan 2022 17:44:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235318AbiAMWoT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Jan 2022 17:44:19 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B21C06161C
+        for <linux-iio@vger.kernel.org>; Thu, 13 Jan 2022 14:44:18 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n88oe-0007pY-PW; Thu, 13 Jan 2022 23:43:32 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n88oS-00A973-DR; Thu, 13 Jan 2022 23:43:19 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n88oR-0000VL-8T; Thu, 13 Jan 2022 23:43:19 +0100
+Date:   Thu, 13 Jan 2022 23:43:19 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc:     Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        KVM list <kvm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: RE: [PATCH v2] iio: addac: ad74413r: Do not reference negative array
- offsets
-Thread-Topic: [PATCH v2] iio: addac: ad74413r: Do not reference negative array
- offsets
-Thread-Index: AQHYB/PhZsR0gqWiSk2h2Z3Z9M1zDqxhgPYg
-Date:   Thu, 13 Jan 2022 21:57:22 +0000
-Message-ID: <8e6a081daeb54be38fdd658c796ec120@analog.com>
-References: <20220112203456.3950884-1-keescook@chromium.org>
-In-Reply-To: <20220112203456.3950884-1-keescook@chromium.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcY3RhbmlzbGFc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy1jNzkwNDViNi03NGJiLTExZWMtYjZkNS00MTU2?=
- =?us-ascii?Q?NDUwMDAwMzBcYW1lLXRlc3RcYzc5MDQ1YjgtNzRiYi0xMWVjLWI2ZDUtNDE1?=
- =?us-ascii?Q?NjQ1MDAwMDMwYm9keS50eHQiIHN6PSIzMzAwIiB0PSIxMzI4NjU4NDY0MDc2?=
- =?us-ascii?Q?MjkyMjciIGg9IlNSTHM4N0wyQksrZk5aOERuYmFtbVpMSUlTVT0iIGlkPSIi?=
- =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
- =?us-ascii?Q?Q3JpZWlKeUFqWUFlOStWYi9VQTRWTDczNVZ2OVFEaFVzREFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFRQUJBQUFBVklFdm9RQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
- =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
- =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
- =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
- =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
- =?us-ascii?Q?dGE+?=
-x-dg-rorf: true
-x-originating-ip: [10.32.224.39]
-x-adiruleop-newscl: Rule Triggered
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Amit Kucheria <amitk@kernel.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Guenter Roeck <groeck@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-phy@lists.infradead.org, netdev@vger.kernel.org,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        platform-driver-x86@vger.kernel.org,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Corey Minyard <minyard@acm.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        openipmi-developer@lists.sourceforge.net,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Richard Weinberger <richard@nod.at>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Eric Auger <eric.auger@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Zha Qipeng <qipeng.zha@intel.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        linux-mediatek@lists.infradead.org,
+        Brian Norris <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] driver core: platform: Rename
+ platform_get_irq_optional() to platform_get_irq_silent()
+Message-ID: <20220113224319.akljsjtu7ps75vun@pengutronix.de>
+References: <CAMuHMdWK3RKVXRzMASN4HaYfLckdS7rBvSopafq+iPADtGEUzA@mail.gmail.com>
+ <20220112085009.dbasceh3obfok5dc@pengutronix.de>
+ <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
+ <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
+ <Yd9L9SZ+g13iyKab@sirena.org.uk>
+ <20220113110831.wvwbm75hbfysbn2d@pengutronix.de>
+ <YeA7CjOyJFkpuhz/@sirena.org.uk>
+ <20220113194358.xnnbhsoyetihterb@pengutronix.de>
+ <YeCI47ltlWzjzjYy@sirena.org.uk>
+ <1df04d74-8aa2-11f1-54e9-34d0e8f4e58b@omp.ru>
 MIME-Version: 1.0
-X-Proofpoint-GUID: WVOoT-p8GNM3EipZlYpV3JAPzINjmD0q
-X-Proofpoint-ORIG-GUID: woJTYeWF4q6t1m8UWy_euaXCo5cicPKi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-13_10,2022-01-13_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 bulkscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201130135
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7tuoe52njhyotvsc"
+Content-Disposition: inline
+In-Reply-To: <1df04d74-8aa2-11f1-54e9-34d0e8f4e58b@omp.ru>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Reviewed-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 
-> -----Original Message-----
-> From: Kees Cook <keescook@chromium.org>
-> Sent: Wednesday, January 12, 2022 10:35 PM
-> To: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Kees Cook <keescook@chromium.org>; Hennerich, Michael
-> <Michael.Hennerich@analog.com>; Jonathan Cameron <jic23@kernel.org>;
-> linux-iio@vger.kernel.org; Tanislav, Cosmin <Cosmin.Tanislav@analog.com>;
-> Jonathan Cameron <Jonathan.Cameron@huawei.com>; Linus Walleij
-> <linus.walleij@linaro.org>; linux-kernel@vger.kernel.org; linux-
-> hardening@vger.kernel.org
-> Subject: [PATCH v2] iio: addac: ad74413r: Do not reference negative array
-> offsets
-> 
-> [External]
-> 
-> Instead of aiming rx_buf at an invalid array-boundary-crossing location,
-> just skip the first increment. Seen when building with -Warray-bounds:
-> 
-> drivers/iio/addac/ad74413r.c: In function 'ad74413r_update_scan_mode':
-> drivers/iio/addac/ad74413r.c:843:22: warning: array subscript -4 is below
-> array bounds of 'u8[16]' { aka 'unsigned char[16]'} [-Warray-bounds]
->   843 |         u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 *
-> AD74413R_FRAME_SIZE];
->       |
-> ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/iio/addac/ad74413r.c:84:20: note: while referencing 'rx_buf'
->    84 |                 u8 rx_buf[AD74413R_FRAME_SIZE *
-> AD74413R_CHANNEL_MAX];
->       |                    ^~~~~~
-> 
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: linux-iio@vger.kernel.org
-> Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
-> Reviewed-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
-> v1: https://urldefense.com/v3/__https://lore.kernel.org/linux-
-> hardening/20220105180214.2435001-1-
-> keescook@chromium.org/__;!!A3Ni8CS0y2Y!oWs0KcGPANFn-
-> L0qJPZgP47AQIYpBXJxg5LHiLDFGa_-SI2DwmSMzjgl3ehyu-8JYPgq$
-> v2:
->  - Update commit Subject prefix
->  - add Reviewed-by
-> ---
->  drivers/iio/addac/ad74413r.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> index 5271073bb74e..aba9a643a4ca 100644
-> --- a/drivers/iio/addac/ad74413r.c
-> +++ b/drivers/iio/addac/ad74413r.c
-> @@ -840,7 +840,7 @@ static int ad74413r_update_scan_mode(struct iio_dev
-> *indio_dev,
->  {
->  	struct ad74413r_state *st = iio_priv(indio_dev);
->  	struct spi_transfer *xfer = st->adc_samples_xfer;
-> -	u8 *rx_buf = &st->adc_samples_buf.rx_buf[-1 *
-> AD74413R_FRAME_SIZE];
-> +	u8 *rx_buf = st->adc_samples_buf.rx_buf;
->  	u8 *tx_buf = st->adc_samples_tx_buf;
->  	unsigned int channel;
->  	int ret = -EINVAL;
-> @@ -894,9 +894,10 @@ static int ad74413r_update_scan_mode(struct
-> iio_dev *indio_dev,
-> 
->  		spi_message_add_tail(xfer, &st->adc_samples_msg);
-> 
-> -		xfer++;
->  		tx_buf += AD74413R_FRAME_SIZE;
-> -		rx_buf += AD74413R_FRAME_SIZE;
-> +		if (xfer != st->adc_samples_xfer)
-> +			rx_buf += AD74413R_FRAME_SIZE;
-> +		xfer++;
->  	}
-> 
->  	xfer->rx_buf = rx_buf;
-> --
-> 2.30.2
+--7tuoe52njhyotvsc
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jan 13, 2022 at 11:57:43PM +0300, Sergey Shtylyov wrote:
+> On 1/13/22 11:17 PM, Mark Brown wrote:
+>=20
+> >> The subsystems regulator, clk and gpio have the concept of a dummy
+> >> resource. For regulator, clk and gpio there is a semantic difference
+> >> between the regular _get() function and the _get_optional() variant.
+> >> (One might return the dummy resource, the other won't. Unfortunately
+> >> which one implements which isn't the same for these three.) The
+> >> difference between platform_get_irq() and platform_get_irq_optional() =
+is
+> >> only that the former might emit an error message and the later won't.
+>=20
+>    This is only a current difference but I'm still going to return 0 ISO
+> -ENXIO from latform_get_irq_optional(), no way I'd leave that -ENXIO there
+> alone... :-)
+
+This would address a bit of the critic in my commit log. But as 0 isn't
+a dummy value like the dummy values that exist for clk, gpiod and
+regulator I still think that the naming is a bad idea because it's not
+in the spirit of the other *_get_optional functions.
+
+Seeing you say that -ENXIO is a bad return value for
+platform_get_irq_optional() and 0 should be used instead, I wonder why
+not changing platform_get_irq() to return 0 instead of -ENXIO, too.
+This question is for now only about a sensible semantic. That actually
+changing platform_get_irq() is probably harder than changing
+platform_get_irq_optional() is a different story.
+
+If only platform_get_irq_optional() is changed and given that the
+callers have to do something like:
+
+	if (this_irq_exists()):
+		... (e.g. request_irq)
+	else:
+		... (e.g. setup polling)
+
+I really think it's a bad idea that this_irq_exists() has to be
+different for platform_get_irq() vs. platform_get_irq_optional().
+
+> > Reviewed-by: Mark Brown <broonie@kernel.org>
+>=20
+>    Hm... I'm seeing a tag bit not seeing the patch itself...
+
+See https://lore.kernel.org/all/20220113194358.xnnbhsoyetihterb@pengutronix=
+=2Ede/
+
+This is just a tree-wide
+s/platform_get_irq_optional/platform_get_irq_silent/ + a macro to not
+break callers of platform_get_irq_optional().
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--7tuoe52njhyotvsc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHgqwMACgkQwfwUeK3K
+7AlyrggAnnNuI35GvxF5VtWAxjQVEMBwQAZzFN2zmbCN56PVqEEi+hrB3o4qCrg5
+RVngj3mJZBBvnB/EPzv0cg7FWq2/jPiopb8JGnPMf2HyN6pE6vQRw/vgdCAw1tSa
+Z1uE/p+FA63qrrD0UrCjr+6bQaobnf20ljmXq6EmZ6oPXvcQLnTureudQD0YJdII
+xZcTKIPC5wH7+yFedZzk1AovNre37jVzG74IzyB6Bbk4Jl22v8GJ8Nq3VUP7x2jE
+Ps6AsNLRubU3vuJ1T43P8/yY0B7PRiyRHvXS+N/qCCf44UuRmpvKziXUP2vnspWR
+9RIT5bkqqtknA+dRrLt/xWijFiViOQ==
+=EM1y
+-----END PGP SIGNATURE-----
+
+--7tuoe52njhyotvsc--

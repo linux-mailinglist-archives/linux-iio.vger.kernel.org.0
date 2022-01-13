@@ -2,347 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2647B48D045
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jan 2022 02:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B7448D653
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jan 2022 12:09:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbiAMByZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Jan 2022 20:54:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34968 "EHLO
+        id S229571AbiAMLJu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Jan 2022 06:09:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbiAMByY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Jan 2022 20:54:24 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F676C06173F;
-        Wed, 12 Jan 2022 17:54:24 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id ay4-20020a05600c1e0400b0034a81a94607so1802712wmb.1;
-        Wed, 12 Jan 2022 17:54:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=nk7OH+nOiRxeK+/bJunmQEJyfwz+0sa8qIG16MO4xZ8=;
-        b=QMwC23ZSc0Xwq9R4i37vWfNRm4kkKetWYWqAdriZlNa9SKArjmXeyoFnzToU7pfSg+
-         d5g4Z7l7ajuA9Lbck2zE1Ll9kncGhhaQrorYK5Q3qACK2d2jtJpfbTaWGoDuQQ4qhnSg
-         PPLch2b96md9ToEDfwXpM11Sk6K1MS15825lgmu52hT2Ivr70TQ+k1ChXpTcTezslypx
-         5MfMe+hzowz3/EgsbvV2ZM5MClOztfKjw1D7D2wouW8i6XWQieQUnd4xF+2pwxL0sIWL
-         OzFVh7OYWkk8TIHg3aFDjqw4Kwdjmfu8jyaPY81ROCmx5sqx1IMugwirwax2DQmr+loh
-         Ybvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nk7OH+nOiRxeK+/bJunmQEJyfwz+0sa8qIG16MO4xZ8=;
-        b=5zdXTSt0wHBW8m9WSXa+JCyJT/TyytKbuL5QoajHd7+PfPb0FIMzAbI67VS7MvSpuK
-         s0SrQF5TsOorB5tSh6Mu23iUL1YFF6oOifEf8WiTHdgwBHCCr2JHjyLN3c0rM+rL6Qmw
-         xyPhPNpA3SDjtiPVauBO0t6zS90ciWKvKT3MBt7Lyq9TP+aAafQq32psTUt6kc5+mIYo
-         W/sZVwDuW5E2F7fsOfHuLj3Zwmu9htJLRsdfQm8J3VUH0pc9P24savBaZhe6LyS2M2yN
-         8QSNtid207Z7VMstZhHECuOJvDXwfFfg9c6qKLOyzIquJl+VGbV9NOlvlb9B01y4l4dW
-         Sygg==
-X-Gm-Message-State: AOAM533SLXbhLRmpAJBwE6SFwaAvJ6hXz0ce75OzAanSKfDAbGsexwYL
-        1/2e6BXsuwfdMzEej5pbZxpqKBlJ3DDpgw60W3Q=
-X-Google-Smtp-Source: ABdhPJz0wYdsqmkdfAue8Q70i6h82CifssqNeOwi2IqNDIICb7OzR9D32moJHfqvOUaVA8tPtXz4ljQZlqD0pO3XxAs=
-X-Received: by 2002:a1c:770b:: with SMTP id t11mr1776414wmi.61.1642038862648;
- Wed, 12 Jan 2022 17:54:22 -0800 (PST)
+        with ESMTP id S230045AbiAMLJu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Jan 2022 06:09:50 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DEF8C061748
+        for <linux-iio@vger.kernel.org>; Thu, 13 Jan 2022 03:09:50 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n7xyF-0006Q7-HJ; Thu, 13 Jan 2022 12:08:43 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n7xy5-00A3Hi-BT; Thu, 13 Jan 2022 12:08:32 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n7xy3-0005lb-Nu; Thu, 13 Jan 2022 12:08:31 +0100
+Date:   Thu, 13 Jan 2022 12:08:31 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        KVM list <kvm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Guenter Roeck <groeck@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-phy@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        platform-driver-x86@vger.kernel.org,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Corey Minyard <minyard@acm.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Borislav Petkov <bp@alien8.de>,
+        Eric Auger <eric.auger@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        openipmi-developer@lists.sourceforge.net,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Richard Weinberger <richard@nod.at>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        netdev@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Zha Qipeng <qipeng.zha@intel.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        linux-mediatek@lists.infradead.org,
+        Brian Norris <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/2] platform: make platform_get_irq_optional() optional
+Message-ID: <20220113110831.wvwbm75hbfysbn2d@pengutronix.de>
+References: <20220110195449.12448-1-s.shtylyov@omp.ru>
+ <20220110195449.12448-2-s.shtylyov@omp.ru>
+ <20220110201014.mtajyrfcfznfhyqm@pengutronix.de>
+ <YdyilpjC6rtz6toJ@lunn.ch>
+ <CAMuHMdWK3RKVXRzMASN4HaYfLckdS7rBvSopafq+iPADtGEUzA@mail.gmail.com>
+ <20220112085009.dbasceh3obfok5dc@pengutronix.de>
+ <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
+ <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
+ <Yd9L9SZ+g13iyKab@sirena.org.uk>
 MIME-Version: 1.0
-References: <20220106125947.139523-1-gengcixi@gmail.com> <20220106125947.139523-4-gengcixi@gmail.com>
- <CADBw62pBCdrbRspTV9Yck4DP8DE=ECGmEtD74NOtm1YRT3DM8w@mail.gmail.com>
-In-Reply-To: <CADBw62pBCdrbRspTV9Yck4DP8DE=ECGmEtD74NOtm1YRT3DM8w@mail.gmail.com>
-From:   Cixi Geng <gengcixi@gmail.com>
-Date:   Thu, 13 Jan 2022 09:53:25 +0800
-Message-ID: <CAF12kFu6O-gfiqp4j24zxC_GqCwJ2Q5KGYYaCtnagmUFB_bsVg@mail.gmail.com>
-Subject: Re: [PATCH 3/7] iio: adc: sc27xx: structure adjuststment and optimization
-To:     Baolin Wang <baolin.wang7@gmail.com>
-Cc:     Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>, jic23@kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, lgirdwood@gmail.com,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
-        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
-        Devicetree List <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zcdy7nemyxfoojub"
+Content-Disposition: inline
+In-Reply-To: <Yd9L9SZ+g13iyKab@sirena.org.uk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=887=E6=
-=97=A5=E5=91=A8=E4=BA=94 15:03=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Thu, Jan 6, 2022 at 9:00 PM Cixi Geng <gengcixi@gmail.com> wrote:
-> >
-> > From: Cixi Geng <cixi.geng1@unisoc.com>
-> >
-> > Introduce one variant device data structure to be compatible
-> > with SC2731 PMIC since it has different scale and ratio calculation
-> > and so on.
-> >
-> > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
-> > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-> > ---
-> >  drivers/iio/adc/sc27xx_adc.c | 94 ++++++++++++++++++++++++++++++------
-> >  1 file changed, 79 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.=
-c
-> > index aee076c8e2b1..d2712e54ee79 100644
-> > --- a/drivers/iio/adc/sc27xx_adc.c
-> > +++ b/drivers/iio/adc/sc27xx_adc.c
-> > @@ -12,9 +12,9 @@
-> >  #include <linux/slab.h>
-> >
-> >  /* PMIC global registers definition */
-> > -#define SC27XX_MODULE_EN               0xc08
-> > +#define SC2731_MODULE_EN               0xc08
-> >  #define SC27XX_MODULE_ADC_EN           BIT(5)
-> > -#define SC27XX_ARM_CLK_EN              0xc10
-> > +#define SC2731_ARM_CLK_EN              0xc10
-> >  #define SC27XX_CLK_ADC_EN              BIT(5)
-> >  #define SC27XX_CLK_ADC_CLK_EN          BIT(6)
-> >
-> > @@ -78,6 +78,23 @@ struct sc27xx_adc_data {
-> >         int channel_scale[SC27XX_ADC_CHANNEL_MAX];
-> >         u32 base;
-> >         int irq;
-> > +       const struct sc27xx_adc_variant_data *var_data;
-> > +};
-> > +
-> > +/*
-> > + * Since different PMICs of SC27xx series can have different
-> > + * address and ratio, we should save ratio config and base
-> > + * in the device data structure.
-> > + */
-> > +struct sc27xx_adc_variant_data {
-> > +       u32 module_en;
-> > +       u32 clk_en;
-> > +       u32 scale_shift;
-> > +       u32 scale_mask;
-> > +       const struct sc27xx_adc_linear_graph *bscale_cal;
-> > +       const struct sc27xx_adc_linear_graph *sscale_cal;
-> > +       void (*init_scale)(struct sc27xx_adc_data *data);
-> > +       int (*get_ratio)(int channel, int scale);
-> >  };
-> >
-> >  struct sc27xx_adc_linear_graph {
-> > @@ -103,6 +120,16 @@ static struct sc27xx_adc_linear_graph small_scale_=
-graph =3D {
-> >         100, 341,
-> >  };
-> >
-> > +static const struct sc27xx_adc_linear_graph sc2731_big_scale_graph_cal=
-ib =3D {
-> > +       4200, 850,
-> > +       3600, 728,
-> > +};
-> > +
-> > +static const struct sc27xx_adc_linear_graph sc2731_small_scale_graph_c=
-alib =3D {
-> > +       1000, 838,
-> > +       100, 84,
-> > +};
->
-> The original big_scale_graph_calib and small_scale_graph_calib are for
-> SC2731 PMIC, why add new structure definition for SC2731?
->
-> > +
-> >  static const struct sc27xx_adc_linear_graph big_scale_graph_calib =3D =
-{
-> >         4200, 856,
-> >         3600, 733,
-> > @@ -130,11 +157,11 @@ static int sc27xx_adc_scale_calibration(struct sc=
-27xx_adc_data *data,
-> >         size_t len;
-> >
-> >         if (big_scale) {
-> > -               calib_graph =3D &big_scale_graph_calib;
-> > +               calib_graph =3D data->var_data->bscale_cal;
-> >                 graph =3D &big_scale_graph;
-> >                 cell_name =3D "big_scale_calib";
-> >         } else {
-> > -               calib_graph =3D &small_scale_graph_calib;
-> > +               calib_graph =3D data->var_data->sscale_cal;
-> >                 graph =3D &small_scale_graph;
-> >                 cell_name =3D "small_scale_calib";
-> >         }
-> > @@ -160,7 +187,7 @@ static int sc27xx_adc_scale_calibration(struct sc27=
-xx_adc_data *data,
-> >         return 0;
-> >  }
-> >
-> > -static int sc27xx_adc_get_ratio(int channel, int scale)
-> > +static int sc2731_adc_get_ratio(int channel, int scale)
-> >  {
-> >         switch (channel) {
-> >         case 1:
-> > @@ -185,6 +212,21 @@ static int sc27xx_adc_get_ratio(int channel, int s=
-cale)
-> >         return SC27XX_VOLT_RATIO(1, 1);
-> >  }
-> >
-> > +/*
-> > + * According to the datasheet set specific value on some channel.
-> > + */
-> > +static void sc2731_adc_scale_init(struct sc27xx_adc_data *data)
-> > +{
-> > +       int i;
-> > +
-> > +       for (i =3D 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
-> > +               if (i =3D=3D 5)
-> > +                       data->channel_scale[i] =3D 1;
-> > +               else
-> > +                       data->channel_scale[i] =3D 0;
-> > +       }
-> > +}
->
-> This is unnecessary I think, please see sc27xx_adc_write_raw() that
-> can set the channel scale.
-Did you mean that all the PMIC's scale_init function should put into
-the sc27xx_adc_write_raw?
-but the scale_init is all different by each PMIC, if implemented in
-the write_raw, will add a lot of
-if or switch_case branch
->
-> > +
-> >  static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
-> >                            int scale, int *val)
-> >  {
-> > @@ -208,10 +250,11 @@ static int sc27xx_adc_read(struct sc27xx_adc_data=
- *data, int channel,
-> >                 goto disable_adc;
-> >
-> >         /* Configure the channel id and scale */
-> > -       tmp =3D (scale << SC27XX_ADC_SCALE_SHIFT) & SC27XX_ADC_SCALE_MA=
-SK;
-> > +       tmp =3D (scale << data->var_data->scale_shift) & data->var_data=
-->scale_mask;
-> >         tmp |=3D channel & SC27XX_ADC_CHN_ID_MASK;
-> >         ret =3D regmap_update_bits(data->regmap, data->base + SC27XX_AD=
-C_CH_CFG,
-> > -                                SC27XX_ADC_CHN_ID_MASK | SC27XX_ADC_SC=
-ALE_MASK,
-> > +                                SC27XX_ADC_CHN_ID_MASK |
-> > +                                data->var_data->scale_mask,
-> >                                  tmp);
-> >         if (ret)
-> >                 goto disable_adc;
-> > @@ -262,8 +305,9 @@ static void sc27xx_adc_volt_ratio(struct sc27xx_adc=
-_data *data,
-> >                                   int channel, int scale,
-> >                                   u32 *div_numerator, u32 *div_denomina=
-tor)
-> >  {
-> > -       u32 ratio =3D sc27xx_adc_get_ratio(channel, scale);
-> > +       u32 ratio;
-> >
-> > +       ratio =3D data->var_data->get_ratio(channel, scale);
-> >         *div_numerator =3D ratio >> SC27XX_RATIO_NUMERATOR_OFFSET;
-> >         *div_denominator =3D ratio & SC27XX_RATIO_DENOMINATOR_MASK;
-> >  }
-> > @@ -432,13 +476,13 @@ static int sc27xx_adc_enable(struct sc27xx_adc_da=
-ta *data)
-> >  {
-> >         int ret;
-> >
-> > -       ret =3D regmap_update_bits(data->regmap, SC27XX_MODULE_EN,
-> > +       ret =3D regmap_update_bits(data->regmap, data->var_data->module=
-_en,
-> >                                  SC27XX_MODULE_ADC_EN, SC27XX_MODULE_AD=
-C_EN);
-> >         if (ret)
-> >                 return ret;
-> >
-> >         /* Enable ADC work clock and controller clock */
-> > -       ret =3D regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
-> > +       ret =3D regmap_update_bits(data->regmap, data->var_data->clk_en=
-,
-> >                                  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK=
-_EN,
-> >                                  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK=
-_EN);
-> >         if (ret)
-> > @@ -456,10 +500,10 @@ static int sc27xx_adc_enable(struct sc27xx_adc_da=
-ta *data)
-> >         return 0;
-> >
-> >  disable_clk:
-> > -       regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->clk_en,
-> >                            SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0=
-);
-> >  disable_adc:
-> > -       regmap_update_bits(data->regmap, SC27XX_MODULE_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->module_en,
-> >                            SC27XX_MODULE_ADC_EN, 0);
-> >
-> >         return ret;
-> > @@ -470,21 +514,39 @@ static void sc27xx_adc_disable(void *_data)
-> >         struct sc27xx_adc_data *data =3D _data;
-> >
-> >         /* Disable ADC work clock and controller clock */
-> > -       regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->clk_en,
-> >                            SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0=
-);
-> >
-> > -       regmap_update_bits(data->regmap, SC27XX_MODULE_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->module_en,
-> >                            SC27XX_MODULE_ADC_EN, 0);
-> >  }
-> >
-> > +static const struct sc27xx_adc_variant_data sc2731_data =3D {
-> > +       .module_en =3D SC2731_MODULE_EN,
-> > +       .clk_en =3D SC2731_ARM_CLK_EN,
-> > +       .scale_shift =3D SC27XX_ADC_SCALE_SHIFT,
-> > +       .scale_mask =3D SC27XX_ADC_SCALE_MASK,
-> > +       .bscale_cal =3D &sc2731_big_scale_graph_calib,
-> > +       .sscale_cal =3D &sc2731_small_scale_graph_calib,
-> > +       .init_scale =3D sc2731_adc_scale_init,
-> > +       .get_ratio =3D sc2731_adc_get_ratio,
-> > +};
-> > +
-> >  static int sc27xx_adc_probe(struct platform_device *pdev)
-> >  {
-> >         struct device *dev =3D &pdev->dev;
-> >         struct device_node *np =3D dev->of_node;
-> >         struct sc27xx_adc_data *sc27xx_data;
-> > +       const struct sc27xx_adc_variant_data *pdata;
-> >         struct iio_dev *indio_dev;
-> >         int ret;
-> >
-> > +       pdata =3D of_device_get_match_data(dev);
-> > +       if (!pdata) {
-> > +               dev_err(dev, "No matching driver data found\n");
-> > +               return -EINVAL;
-> > +       }
-> > +
-> >         indio_dev =3D devm_iio_device_alloc(dev, sizeof(*sc27xx_data));
-> >         if (!indio_dev)
-> >                 return -ENOMEM;
-> > @@ -520,6 +582,8 @@ static int sc27xx_adc_probe(struct platform_device =
-*pdev)
-> >         }
-> >
-> >         sc27xx_data->dev =3D dev;
-> > +       sc27xx_data->var_data =3D pdata;
-> > +       sc27xx_data->var_data->init_scale(sc27xx_data);
-> >
-> >         ret =3D sc27xx_adc_enable(sc27xx_data);
-> >         if (ret) {
-> > @@ -546,7 +610,7 @@ static int sc27xx_adc_probe(struct platform_device =
-*pdev)
-> >  }
-> >
-> >  static const struct of_device_id sc27xx_adc_of_match[] =3D {
-> > -       { .compatible =3D "sprd,sc2731-adc", },
-> > +       { .compatible =3D "sprd,sc2731-adc", .data =3D &sc2731_data},
-> >         { }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, sc27xx_adc_of_match);
-> > --
-> > 2.25.1
-> >
->
->
-> --
-> Baolin Wang
+
+--zcdy7nemyxfoojub
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Jan 12, 2022 at 09:45:25PM +0000, Mark Brown wrote:
+> On Wed, Jan 12, 2022 at 10:31:21PM +0100, Uwe Kleine-K=F6nig wrote:
+> > On Wed, Jan 12, 2022 at 11:27:02AM +0100, Geert Uytterhoeven wrote:
+>=20
+> (Do we really need *all* the CCs here?)
+
+It's probably counteractive to finding an agreement because there are
+too many opinions on that matter. But I didn't dare to strip it down,
+too :-)
+
+> > That convinces me, that platform_get_irq_optional() is a bad name. The
+> > only difference to platform_get_irq is that it's silent. And returning
+> > a dummy irq value (which would make it aligned with the other _optional
+> > functions) isn't possible.
+>=20
+> There is regulator_get_optional() which is I believe the earliest of
+> these APIs, it doesn't return a dummy either (and is silent too) - this
+> is because regulator_get() does return a dummy since it's the vastly
+> common case that regulators must be physically present and them not
+> being found is due to there being an error in the system description.
+> It's unfortunate that we've ended up with these two different senses for
+> _optional(), people frequently get tripped up by it.
+
+Yeah, I tripped over that one already, too. And according to my counting
+this results in three different senses now :-\ :
+
+ a) regulator
+    regulator_get returns a dummy, regulator_get_optional returns ERR_PTR(-=
+ENODEV)
+ b) clk + gpiod
+    ..._get returns ERR_PTR(-ENODEV), ..._get_optional returns a dummy
+ c) platform_get_irq()
+    platform_get_irq_optional() is just a silent variant of
+    platform_get_irq(); the return values are identical.
+   =20
+This is all very unfortunate. In my eyes b) is the most sensible
+sense, but the past showed that we don't agree here. (The most annoying
+part of regulator_get is the warning that is emitted that regularily
+makes customers ask what happens here and if this is fixable.)
+
+I think at least c) is easy to resolve because
+platform_get_irq_optional() isn't that old yet and mechanically
+replacing it by platform_get_irq_silent() should be easy and safe.
+And this is orthogonal to the discussion if -ENOXIO is a sensible return
+value and if it's as easy as it could be to work with errors on irq
+lookups.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--zcdy7nemyxfoojub
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHgCCsACgkQwfwUeK3K
+7AktbAf/UzNin6+fnXTmkdrTvXWaXCV8TB76EIUtIdNWwJEjmXxWes5jyBpp/jXj
+7gSmYT3gi4oK0wjB6dKmqF6jba5/RPL4cdS6/8iQDp32Xey0hzWymBPENLc/Nxt5
+Ge81cdot6EFxqSkuW1Zbe55wzmNUmEsez7+e+8gJAviPB6zQndDE/zAkwxczzb04
+GfD6Uixgm4a29NwXNIignwNm8pACez/px2A8cVhILZ8135X0rdwYM17BiQtfM5Uq
+s2hZsLfxWm9ZvdyxA7gGvsfefPmiPfS3k/HWagHMDB8nQq4vqnMmPTu01YJs34dM
++ycJZkglW3eJnCZ9Fr5sjnuP6uLExw==
+=5Hn7
+-----END PGP SIGNATURE-----
+
+--zcdy7nemyxfoojub--

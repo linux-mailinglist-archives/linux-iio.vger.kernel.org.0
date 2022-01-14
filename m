@@ -2,107 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1682348E86F
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jan 2022 11:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D299048E8EB
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jan 2022 12:09:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240446AbiANKlC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Jan 2022 05:41:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54492 "EHLO
+        id S232258AbiANLJK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Jan 2022 06:09:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240451AbiANKlC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jan 2022 05:41:02 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15093C061574
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 02:41:02 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id g81so22752065ybg.10
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 02:41:02 -0800 (PST)
+        with ESMTP id S229704AbiANLJK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jan 2022 06:09:10 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97444C06173F
+        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 03:09:09 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id bu18so6086425lfb.5
+        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 03:09:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=08UG9ldMiIKdmS2iZih9on1+nM9rLQX/zKMslKeCB3s=;
-        b=aHjdnLxz/QWUYFmxumDSX+IoQOOQjPY3oampwvWsBO/SeymheTfbRcvia3W9k3Lhn5
-         FDh3UwXKjIkVu7B1g0IBIr4/4CmNYEEV5eFTuANkxqP26hDDLZkTTw1OeDnm4NJuFBB5
-         YKTpq2WZX5Ql2+ojPiwuXnF3MkjTY7jOQnq7A0+9tsX/i8qfRNCazrg2TtP4UhXI+pWp
-         RU1twqp97RmLnh+KYRp4Bz2zhux8v8wGmrTRWyUok0icq8I8h05KucyYUyxFFT796Rjk
-         qVE15uz08w7pFIyxCOIlC8nznOKxYJRM68CHHxF6JMQGQtfUJ+/1oLyEtJSa1mCdXgQh
-         ILdA==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=qoFhEWfzeCanmU1NlDxKMq9/mEUKswrPwi1OhL1zoLk=;
+        b=YmbBeArk7IiC2j1qUwQZHIWM466MKhdgW1ww4Y+bbBUGs/j31IIMTHFq5iIFQicMyr
+         lNXmdfPRdwpDy+M/vmOVGlN4GAqqCXQ3le9OuXYpDC53Jcrz0XJ2KLuIw5yMrE/Sy3ua
+         S1u4aDmKJ1do/Q2hgNsMp7mZlLT/uMQp4qdv+Hu9HVA+wJk1D1lnob1NXNz0GPY6cXlQ
+         31fltz7Ha9hTd/niyTauCbVTK7+eWentPn+MolFrPEuizoUYnB7WSlj+i7fDawURhsiS
+         sA58+XcqKwajOAOYOIwup3M5QXmql0frSr8USbnRqmx+g6ERbKh94a52PGp9DV/Mlvfk
+         dF+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=08UG9ldMiIKdmS2iZih9on1+nM9rLQX/zKMslKeCB3s=;
-        b=uIeM6iAv/8CIJ817gGKEHLgpGrgiCq2G4Jyrg8vNX0wyfxo/HIwrvrFCCKLP/bC2b0
-         2Jms3osaS3ZGSAo8sA0ToAfb8V7McxlHbVdiMnLAEiTLddodGOihYVrRjaq2j7/PsIJ9
-         OPVuNR+55ljODMLrEN2LuJClv7ERZi5ckz3Td4fNkvUTzk/wDevs4Amm4VFcoklfTrxx
-         1gfrPcd9OgR3eo7nR9aV6vzIU86uHVNRWTIFtzzCPwtzPN7xcrNnmct7VFbt6qdjpPX9
-         716iF+IDTQrAiLsfCQVChPwDQOiY0fhmgNBfvBN+Sfl7rGPsJpuJRhe2nCEfhJRArGPe
-         Tedw==
-X-Gm-Message-State: AOAM530zuwJVB9FEHYGS+g8bgU9cc00aH6aPZT+MbXCc2zsgmaHm9Ino
-        IjEx82M5WrhjpeEvJqVie6a5J8ZEbW4zO41p2IY=
-X-Google-Smtp-Source: ABdhPJybVjpc+vYJ0jG8Wj3Zx+6QaxwKBQQWY7TNUOdm4GEDdhxEZsVAl5u+kqbJapsnSa82lKL4b3YvG08kjVY5XJg=
-X-Received: by 2002:a25:c8c3:: with SMTP id y186mr11668332ybf.20.1642156861342;
- Fri, 14 Jan 2022 02:41:01 -0800 (PST)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=qoFhEWfzeCanmU1NlDxKMq9/mEUKswrPwi1OhL1zoLk=;
+        b=B7giJ/E2lrVa/IKaS1VTOnW6VaQRzR6pbpJWV69dlNARw/vJ+IMNMAp0H3rVgeyal1
+         xnzP3MngtP1yzTH/2aLcAaBPufJPvPVUPqk12UEuMXRnvnZid7TB2bArA3XcalzYnFoc
+         9N1/xJcDAq/7SNpqfDggmK0aiHWgrCOBpxMo5t+41h7ylNYctHbDwh9tgn7RmjwwquN9
+         9cai0gbisaNnBg8WQH5uID+rsEpH98VItwD/ZUgjuDAa0bTYuX+qBDGTUZ2uUa/TLg3V
+         tx2L2B/MnSKHRutZx126CJzwrywiEZHljPZfICFRtvg8liWm41avM3JRYLIfeScE3cvP
+         +2LQ==
+X-Gm-Message-State: AOAM532UPUGIlm/5FUSNcUP8IOc0EWFfUnkf6Evj9R1Z5gWX4v0Eaaft
+        qIdN91+lXNBz8bmOQtDpTytbzv+6Kp5C4idIVSo=
+X-Google-Smtp-Source: ABdhPJzfnys5j0UaKzbKHMIh3A4ZmkDl/ILleD01s5wKW1FxE3hTrbSrWlaga1emqSKgQfIsstfc5XhoEAYrDvVjQ+g=
+X-Received: by 2002:ac2:59d0:: with SMTP id x16mr6869616lfn.47.1642158547975;
+ Fri, 14 Jan 2022 03:09:07 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7000:7e42:0:0:0:0 with HTTP; Fri, 14 Jan 2022 02:41:00
+Sender: micheallover32@gmail.com
+Received: by 2002:a05:6512:39d2:0:0:0:0 with HTTP; Fri, 14 Jan 2022 03:09:07
  -0800 (PST)
-Reply-To: fahham.abuahmad1971@aol.com
-From:   "Mr. Amir Aziz" <imfbenin16@gmail.com>
-Date:   Fri, 14 Jan 2022 11:41:00 +0100
-Message-ID: <CAE0dybEMXgQS2_zkQP=rPQuBaERC_6xY4SbQBRDazoYeDhCNuQ@mail.gmail.com>
-Subject: Dear friend Contact my secretary
+From:   Alary Jean Claude <claudealaryjean@gmail.com>
+Date:   Fri, 14 Jan 2022 11:09:07 +0000
+X-Google-Sender-Auth: u3ZL2rS5Dj598Tv9uBHvuiwKPjQ
+Message-ID: <CAMaa8atSTGw=FZHNTtHqh=G81dD0ksUm4ko0QD_rXTbfAJddow@mail.gmail.com>
+Subject: please i really need your urgent assistance.
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear friend Contact my secretary
+Hello My Beloved,
+With due respect to your person and much sincerity of purpose I wish
+to write to you today, seeking for your urgent assistance in this
+humanitarian investment project to be established in your country for
+the mutual benefit of the orphans and the less privileged ones. My
+names are Mrs.Alary Jean Claude, a dying widow hospitalized undergoing
+treatment for brain tumor disease, I hope that you will not expose or
+betray this belief and confidence that I am about to delegate to you
+for the mutual benefit of the orphans and the less privileged ones. My
+late husband made a substantial deposit with the Bank which I have
+Strong-Willed to hand over and entrust the sum of ($
+12,000.000,Dollar) in the account under your guardianship for you to
+invest it into any social charitable project in your country. Based on
+my present health status I am permanently indisposed to handle
+finances or any financial related project.
 
+With this intention, I am determined to contact you in order to
+sustain and assist me as my rightful beneficiary and claim the money
+for humanitarian purposes for the mutual benefits of the less
+privileged ones. Because If the fund remains unclaimed with the bank I
+pass away, those gluttonous bank executives will place the fund as an
+unclaimed Fund and share it among themselves for their selfish and
+worthless ventures. In this regard, I will be grateful for your kind
+acceptance to carry out this transaction and fulfill my final wish in
+implementing the charitable project in your country as it requires
+absolute trust and devotion without any failure. Meanwhile It will be
+my pleasure to compensate you as my Investment Manager/Partner with
+40% percent of the total amount as commission/share just for you to
+take this charitable project serious and handle it with sincerity of
+mind, showing honesty and attention in our communication and in every
+aspect of this project, While 60% of the money will be invested into
+the charity project.
 
-I am sorry to tell you about my successes getting the fund remitted
-through a co-operation of new business partner from U-Emirates I tried
-my possible best to involves you=E2=80=99re in Gold and Diamond business,
-Almighty decided whole conditions I am presently in Bangladesh for
-project/investments with my owner percentage share of total fund sum
-
-I don=E2=80=99t forget you past attempts/effort for assists me in remittanc=
-e
-of the fund despite that it=E2=80=99s failed us that period time
-
-You should contact my secretary in Burkina Faso his Name. Mr. fahham
-abuahmad and his Email.  fahham.abuahmad1971@aol.com
-
-Tell/advice him to send you ATM Visa Card sum of (USD $2,500,000) I
-kept for your compensations in all past attempts/effort you made for
-assist me in past I so much appreciated your assist/effort during the
-period time so feel free get in touch with my secretary his name Mr.
-fahham abuahmad instructs him where to send the ATM Visa Card worth of
-(USD $2,500,000) to you.
-
-This amount is me and my new partner contributed it to offered you
-amount (USD $1,500,000) is from my own percentage share then my new
-partner offered you (USD $1,000,000) from his own percentage share
-because I explained everything to him that you are the first person I
-contacted who assisting me but you couldn=E2=80=99t make it he says okay
-there=E2=80=99s no problem
-
-Now you should keep everything secret/confidential for my successfully
-because I know that it was only you knew how I made this money in life
-so kept everything secret/confidential, I hope you understood reason
-why this big amount of money was kept for you??
-
-Please du inform me immediately you received the ATM Visa Card sum of
-(USD $2,500,000) so that we will share our joys after all suffering at
-past time period, am here because I and my new partner having big
-investment projects at hands now
-
-You should remembered that I have forward instructions to the
-secretary on your behalf to send the ATM Visa Card to you immediately,
-so feel free to contact my secretary so that he will send the ATM Visa
-Card sum of Two Million Five-Hundred Thousand United State Dollars
-(USD $2,500,000) to you immediately without delay.
-
-Yours faithfully
-Mr. Amir Aziz
+Thank you very much for your kind consideration and I will be happy to
+receive your prompt response for further correspondence.
+May the peace of God be with you.
+Yours beloved Sister in Christ Mrs. Alary Jean Claude.

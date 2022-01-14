@@ -2,263 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1588C48F0FE
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jan 2022 21:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 112F948F199
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jan 2022 21:40:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244267AbiANUaj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Jan 2022 15:30:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48656 "EHLO
+        id S244331AbiANUk2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Jan 2022 15:40:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239832AbiANUaj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jan 2022 15:30:39 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C97C06161C
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 12:30:39 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n8TCl-0001fN-N3; Fri, 14 Jan 2022 21:29:47 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n8TCi-00AJbq-3s; Fri, 14 Jan 2022 21:29:43 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n8TCg-0002hC-MP; Fri, 14 Jan 2022 21:29:42 +0100
-Date:   Fri, 14 Jan 2022 21:29:39 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>
-Cc:     Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        KVM list <kvm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Guenter Roeck <groeck@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-phy@lists.infradead.org, netdev@vger.kernel.org,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        openipmi-developer@lists.sourceforge.net,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Zha Qipeng <qipeng.zha@intel.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        linux-mediatek@lists.infradead.org,
-        Brian Norris <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] driver core: platform: Rename
- platform_get_irq_optional() to platform_get_irq_silent()
-Message-ID: <20220114202939.5kq5ud5opfosjlyc@pengutronix.de>
-References: <YdyilpjC6rtz6toJ@lunn.ch>
- <CAMuHMdWK3RKVXRzMASN4HaYfLckdS7rBvSopafq+iPADtGEUzA@mail.gmail.com>
- <20220112085009.dbasceh3obfok5dc@pengutronix.de>
- <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
- <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
- <Yd9L9SZ+g13iyKab@sirena.org.uk>
- <20220113110831.wvwbm75hbfysbn2d@pengutronix.de>
- <YeA7CjOyJFkpuhz/@sirena.org.uk>
- <20220113194358.xnnbhsoyetihterb@pengutronix.de>
- <386a7f56-38c8-229c-4fec-4b38a77c4121@omp.ru>
+        with ESMTP id S240427AbiANUk1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jan 2022 15:40:27 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BEB3C061574
+        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 12:40:27 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id u11so8902107plh.13
+        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 12:40:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=G49uyF04SzydB1vzAY+E31hczTm54zcW/R1I5M04ZyU=;
+        b=qaXgMbehXEQvpt6e3xTP5lyQ2QIDsq19yRkByMLVX6kSY9BBnPIol+8lgi1h5uzLax
+         UQ6wjfZCRVl+f5+/qI1ZAsE3+O25AqD6PkzWfb3EHMA411/Rm1XPfq/HBGkzGycBoBXx
+         dK3EfuHmPddol1s1ioi/3/30+Lhy3Dp5D07X1R0QmKfkxxqNe0HzF3pn3exRijg1DpNd
+         pa+19vTWhQEN3Hz23qgoV58q6DzcY4Ws3bWIsx+z8RmwQG82SqqM4fkfc3JKqagpfcPs
+         V2vNhNrz1S7U9AWV/6j5z6bHnsmI8h6PdTSnWt0UpNJTdQSfLt/yLZ6XWpyi5mPYu2ds
+         /8Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=G49uyF04SzydB1vzAY+E31hczTm54zcW/R1I5M04ZyU=;
+        b=h69v2JSw/JcwiqcrKl0O12ber+dp6rFAcDqsOjnP9Isw4wdvdIcSZz9aFWPpJ5I8Gy
+         JnCRjeHaWNiQl729j7MfF0JCpuYmmV0P7PUWMof5LLQ8I9CrTcuJzQwbncM6lx2zkM9I
+         XZW6XGUy72pZkoaxjL6xkS7GrjV/L2Z/6eBWrOXoAmK+3AKsKF/estEuqzuHDjvcs92s
+         ZwKQud0g8OScThlj+0IKgi/ADpG+KxfqijBUCnXwM0HkzrrlLX7GHTP9ugLiw2I8WmiD
+         Z9DVy/ustzeZpwdu1Ruzc7l0T7OlmI3kFyHNo/y2wIhQdz75Q4nG6n0mUWnH/afVuGz9
+         UmhA==
+X-Gm-Message-State: AOAM532lol0mJUeAI2or/LwmOr6hNR6PkuxK5j23puu4UCVotfGtXuVo
+        N4HYg3y6OipJK8ueZwUwxOFLz0MR0uRAN1Yz8yg=
+X-Google-Smtp-Source: ABdhPJxnhZkWCB5DsCbxpVbUSPouyN3d525l+3tKdgqX7nGKZlanJlGh1FYwCrv/+yp1AT8m1I+xzBE7G/J1IW86q1M=
+X-Received: by 2002:a17:902:8643:b0:149:8141:4a69 with SMTP id
+ y3-20020a170902864300b0014981414a69mr11058894plt.88.1642192827181; Fri, 14
+ Jan 2022 12:40:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gs4ynp4fq77e5cup"
-Content-Disposition: inline
-In-Reply-To: <386a7f56-38c8-229c-4fec-4b38a77c4121@omp.ru>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Received: by 2002:a05:6a20:3d90:b0:68:a30f:aa45 with HTTP; Fri, 14 Jan 2022
+ 12:40:26 -0800 (PST)
+Reply-To: mrs.mcompola333@gmail.com
+From:   "mrs.mcompola" <mcompola444@gmail.com>
+Date:   Fri, 14 Jan 2022 12:40:26 -0800
+Message-ID: <CAHp=Bybk8Lc9QBLG+601RwYXKdefOoisYpV8-_ck6w-f8DY3gQ@mail.gmail.com>
+Subject: dear frinds incase my connession is not good
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Dear Friend, My present internet connection is very slow in case you
+received my email in your spam
 
---gs4ynp4fq77e5cup
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+How are you today?.With due respect to your person and much sincerity
+of purpose,Well it is a pleasure to contact you on this regard and i
+pray that this will turn out to be everlasting relationship for both
+of us. However it's just my urgent need for a Foreign partner that
+made me to contact you for this Transaction,I got your contact from
+internet, while searching for a reliable someone that I can go into
+partnership with. I am Mrs.mcompola, from  BURKINA FASO, West
+Africa .Presently i work in the Bank as bill and exchange manager.
 
-On Fri, Jan 14, 2022 at 10:45:38PM +0300, Sergey Shtylyov wrote:
-> On 1/13/22 10:43 PM, Uwe Kleine-K=F6nig wrote:
->=20
-> > The subsystems regulator, clk and gpio have the concept of a dummy
-> > resource. For regulator, clk and gpio there is a semantic difference
-> > between the regular _get() function and the _get_optional() variant.
-> > (One might return the dummy resource, the other won't. Unfortunately
-> > which one implements which isn't the same for these three.) The
-> > difference between platform_get_irq() and platform_get_irq_optional() is
-> > only that the former might emit an error message and the later won't.
-> >=20
-> > To prevent people's expectations that there is a semantic difference
-> > between these too, rename platform_get_irq_optional() to
-> > platform_get_irq_silent() to make the actual difference more obvious.
-> >=20
-> > The #define for the old name can and should be removed once all patches
-> > currently in flux still relying on platform_get_irq_optional() are
-> > fixed.
->=20
->    Hm... I'm afraid that with this #define they would never get fixed... =
-:-)
+I have the opportunity of transferring the left over fund $5.4 Million
+us dollars of one of my Bank clients who died in the collapsing of the
+world trade center on september 11th 2001.I have placed this fund to
+and escrow account without name of beneficiary.i will use my position
+here in the bank to effect a hitch free transfer of the fund to your
+bank account and there will be no trace.
 
-I will care for it.
+I agree that 40% of this money will be for you as my foriegn
+partner,50% for me while 10% will be for the expenses that will occur
+in this transaction .If you are really interested in my proposal
+further details of the Transfer will be forwarded unto you as soon as
+I receive your willingness mail for successful transfer.
 
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> > Hello,
-> >=20
-> > On Thu, Jan 13, 2022 at 02:45:30PM +0000, Mark Brown wrote:
-> >> On Thu, Jan 13, 2022 at 12:08:31PM +0100, Uwe Kleine-K=F6nig wrote:
-> >>
-> >>> This is all very unfortunate. In my eyes b) is the most sensible
-> >>> sense, but the past showed that we don't agree here. (The most annoyi=
-ng
-> >>> part of regulator_get is the warning that is emitted that regularily
-> >>> makes customers ask what happens here and if this is fixable.)
-> >>
-> >> Fortunately it can be fixed, and it's safer to clearly specify things.
-> >> The prints are there because when the description is wrong enough to
-> >> cause things to blow up we can fail to boot or run messily and
-> >> forgetting to describe some supplies (or typoing so they haven't done
-> >> that) and people were having a hard time figuring out what might've
-> >> happened.
-> >=20
-> > Yes, that's right. I sent a patch for such a warning in 2019 and pinged
-> > occationally. Still waiting for it to be merged :-\
-> > (https://lore.kernel.org/r/20190625100412.11815-1-u.kleine-koenig@pengu=
-tronix.de)
-> >=20
-> >>> I think at least c) is easy to resolve because
-> >>> platform_get_irq_optional() isn't that old yet and mechanically
-> >>> replacing it by platform_get_irq_silent() should be easy and safe.
-> >>> And this is orthogonal to the discussion if -ENOXIO is a sensible ret=
-urn
-> >>> value and if it's as easy as it could be to work with errors on irq
-> >>> lookups.
-> >>
-> >> It'd certainly be good to name anything that doesn't correspond to one
-> >> of the existing semantics for the API (!) something different rather
-> >> than adding yet another potentially overloaded meaning.
-> >=20
-> > It seems we're (at least) three who agree about this. Here is a patch
-> > fixing the name.
->=20
->    I can't say I genrally agree with this patch...
-
-Yes, I didn't count you to the three people signaling agreement.
-
-> [...]
-> > diff --git a/include/linux/platform_device.h b/include/linux/platform_d=
-evice.h
-> > index 7c96f169d274..6d495f15f717 100644
-> > --- a/include/linux/platform_device.h
-> > +++ b/include/linux/platform_device.h
-> > @@ -69,7 +69,14 @@ extern void __iomem *
-> >  devm_platform_ioremap_resource_byname(struct platform_device *pdev,
-> >  				      const char *name);
-> >  extern int platform_get_irq(struct platform_device *, unsigned int);
-> > -extern int platform_get_irq_optional(struct platform_device *, unsigne=
-d int);
-> > +extern int platform_get_irq_silent(struct platform_device *, unsigned =
-int);
-> > +
-> > +/*
-> > + * platform_get_irq_optional was recently renamed to platform_get_irq_=
-silent.
-> > + * Fixup users to not break patches that were created before the renam=
-e.
-> > + */
-> > +#define platform_get_irq_optional(pdev, index) platform_get_irq_silent=
-(pdev, index)
-> > +
->=20
->    Yeah, why bother fixing if it compiles anyway?
-
-The plan is to remove the define in one or two kernel releases. The idea
-is only to not break patches that are currently in next.
-
->    I think an inline wrapper with an indication to gcc that the function =
-is deprecated
-> (I just forgot how it should look) would be better instead...
-
-The deprecated function annotation is generally frowned upon. See
-771c035372a0.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---gs4ynp4fq77e5cup
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHh3S8ACgkQwfwUeK3K
-7AkDXQf/U5FAV2AAfHdpPoYhXkPobJeAf5Dqsq9HthaQ/4EsbgoDzhwXUQuRqgGp
-s3l08rbKnPAXvuz91TT4s4P4EfflDVbvLMELaacliZW9A2Zubif0kRa5i7noZtww
-bMiLnHbf6jZNoGKWayBhA0I+mD3ItG2bJkiZMPC9EauwofQRd5TZEOFEnf0MOQYR
-WDceoBK0StFIaNP+azd2h5Mkfo+sy70ZLX3i1E5+f2X9Iac4pOldU5N65ldsgg9N
-AVzKdnYk6h5IpXqZaytMAGpMn9j4OQHJGDLA8zo0jjwjnK+1JHnoGFwlJO43H0af
-61XlzqllsW1diNuTEAhAtFOrNwsDYQ==
-=Iw62
------END PGP SIGNATURE-----
-
---gs4ynp4fq77e5cup--
+Yours Faithfully,
+mrs.mcompola333@gmail.com

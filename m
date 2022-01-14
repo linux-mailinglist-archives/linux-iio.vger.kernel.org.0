@@ -2,95 +2,148 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D299048E8EB
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jan 2022 12:09:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B136D48E939
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jan 2022 12:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232258AbiANLJK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Jan 2022 06:09:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32774 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbiANLJK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jan 2022 06:09:10 -0500
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97444C06173F
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 03:09:09 -0800 (PST)
-Received: by mail-lf1-x143.google.com with SMTP id bu18so6086425lfb.5
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jan 2022 03:09:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=qoFhEWfzeCanmU1NlDxKMq9/mEUKswrPwi1OhL1zoLk=;
-        b=YmbBeArk7IiC2j1qUwQZHIWM466MKhdgW1ww4Y+bbBUGs/j31IIMTHFq5iIFQicMyr
-         lNXmdfPRdwpDy+M/vmOVGlN4GAqqCXQ3le9OuXYpDC53Jcrz0XJ2KLuIw5yMrE/Sy3ua
-         S1u4aDmKJ1do/Q2hgNsMp7mZlLT/uMQp4qdv+Hu9HVA+wJk1D1lnob1NXNz0GPY6cXlQ
-         31fltz7Ha9hTd/niyTauCbVTK7+eWentPn+MolFrPEuizoUYnB7WSlj+i7fDawURhsiS
-         sA58+XcqKwajOAOYOIwup3M5QXmql0frSr8USbnRqmx+g6ERbKh94a52PGp9DV/Mlvfk
-         dF+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=qoFhEWfzeCanmU1NlDxKMq9/mEUKswrPwi1OhL1zoLk=;
-        b=B7giJ/E2lrVa/IKaS1VTOnW6VaQRzR6pbpJWV69dlNARw/vJ+IMNMAp0H3rVgeyal1
-         xnzP3MngtP1yzTH/2aLcAaBPufJPvPVUPqk12UEuMXRnvnZid7TB2bArA3XcalzYnFoc
-         9N1/xJcDAq/7SNpqfDggmK0aiHWgrCOBpxMo5t+41h7ylNYctHbDwh9tgn7RmjwwquN9
-         9cai0gbisaNnBg8WQH5uID+rsEpH98VItwD/ZUgjuDAa0bTYuX+qBDGTUZ2uUa/TLg3V
-         tx2L2B/MnSKHRutZx126CJzwrywiEZHljPZfICFRtvg8liWm41avM3JRYLIfeScE3cvP
-         +2LQ==
-X-Gm-Message-State: AOAM532UPUGIlm/5FUSNcUP8IOc0EWFfUnkf6Evj9R1Z5gWX4v0Eaaft
-        qIdN91+lXNBz8bmOQtDpTytbzv+6Kp5C4idIVSo=
-X-Google-Smtp-Source: ABdhPJzfnys5j0UaKzbKHMIh3A4ZmkDl/ILleD01s5wKW1FxE3hTrbSrWlaga1emqSKgQfIsstfc5XhoEAYrDvVjQ+g=
-X-Received: by 2002:ac2:59d0:: with SMTP id x16mr6869616lfn.47.1642158547975;
- Fri, 14 Jan 2022 03:09:07 -0800 (PST)
+        id S240746AbiANLe1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Jan 2022 06:34:27 -0500
+Received: from mxout01.lancloud.ru ([45.84.86.81]:56428 "EHLO
+        mxout01.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236513AbiANLe0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Jan 2022 06:34:26 -0500
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 0230320DD201
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+Subject: Re: [PATCH] driver core: platform: Rename platform_get_irq_optional()
+ to platform_get_irq_silent()
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+To:     Mark Brown <broonie@kernel.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+CC:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        KVM list <kvm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <linux-iio@vger.kernel.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        "ALSA Development Mailing List" <alsa-devel@alsa-project.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Guenter Roeck <groeck@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        <linux-phy@lists.infradead.org>, Jiri Slaby <jirislaby@kernel.org>,
+        <openipmi-developer@lists.sourceforge.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Bartosz Golaszewski" <brgl@bgdev.pl>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Corey Minyard <minyard@acm.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        "William Breathitt Gray" <vilhelm.gray@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Tony Luck <tony.luck@intel.com>,
+        "Borislav Petkov" <bp@alien8.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        <platform-driver-x86@vger.kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        <linux-edac@vger.kernel.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        "Eric Auger" <eric.auger@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Cornelia Huck <cohuck@redhat.com>,
+        "Linux MMC List" <linux-mmc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Zha Qipeng <qipeng.zha@intel.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Richard Weinberger <richard@nod.at>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        <linux-mediatek@lists.infradead.org>,
+        "Brian Norris" <computersforpeace@gmail.com>,
+        <netdev@vger.kernel.org>
+References: <20220110201014.mtajyrfcfznfhyqm@pengutronix.de>
+ <YdyilpjC6rtz6toJ@lunn.ch>
+ <CAMuHMdWK3RKVXRzMASN4HaYfLckdS7rBvSopafq+iPADtGEUzA@mail.gmail.com>
+ <20220112085009.dbasceh3obfok5dc@pengutronix.de>
+ <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
+ <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
+ <Yd9L9SZ+g13iyKab@sirena.org.uk>
+ <20220113110831.wvwbm75hbfysbn2d@pengutronix.de>
+ <YeA7CjOyJFkpuhz/@sirena.org.uk>
+ <20220113194358.xnnbhsoyetihterb@pengutronix.de>
+ <YeCI47ltlWzjzjYy@sirena.org.uk>
+ <1df04d74-8aa2-11f1-54e9-34d0e8f4e58b@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <fba81d0d-c7e3-394d-5929-1706ac9ef5b7@omp.ru>
+Date:   Fri, 14 Jan 2022 14:34:16 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Sender: micheallover32@gmail.com
-Received: by 2002:a05:6512:39d2:0:0:0:0 with HTTP; Fri, 14 Jan 2022 03:09:07
- -0800 (PST)
-From:   Alary Jean Claude <claudealaryjean@gmail.com>
-Date:   Fri, 14 Jan 2022 11:09:07 +0000
-X-Google-Sender-Auth: u3ZL2rS5Dj598Tv9uBHvuiwKPjQ
-Message-ID: <CAMaa8atSTGw=FZHNTtHqh=G81dD0ksUm4ko0QD_rXTbfAJddow@mail.gmail.com>
-Subject: please i really need your urgent assistance.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1df04d74-8aa2-11f1-54e9-34d0e8f4e58b@omp.ru>
+Content-Type: text/plain; charset="windows-1252"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello My Beloved,
-With due respect to your person and much sincerity of purpose I wish
-to write to you today, seeking for your urgent assistance in this
-humanitarian investment project to be established in your country for
-the mutual benefit of the orphans and the less privileged ones. My
-names are Mrs.Alary Jean Claude, a dying widow hospitalized undergoing
-treatment for brain tumor disease, I hope that you will not expose or
-betray this belief and confidence that I am about to delegate to you
-for the mutual benefit of the orphans and the less privileged ones. My
-late husband made a substantial deposit with the Bank which I have
-Strong-Willed to hand over and entrust the sum of ($
-12,000.000,Dollar) in the account under your guardianship for you to
-invest it into any social charitable project in your country. Based on
-my present health status I am permanently indisposed to handle
-finances or any financial related project.
+On 1/13/22 11:57 PM, Sergey Shtylyov wrote:
 
-With this intention, I am determined to contact you in order to
-sustain and assist me as my rightful beneficiary and claim the money
-for humanitarian purposes for the mutual benefits of the less
-privileged ones. Because If the fund remains unclaimed with the bank I
-pass away, those gluttonous bank executives will place the fund as an
-unclaimed Fund and share it among themselves for their selfish and
-worthless ventures. In this regard, I will be grateful for your kind
-acceptance to carry out this transaction and fulfill my final wish in
-implementing the charitable project in your country as it requires
-absolute trust and devotion without any failure. Meanwhile It will be
-my pleasure to compensate you as my Investment Manager/Partner with
-40% percent of the total amount as commission/share just for you to
-take this charitable project serious and handle it with sincerity of
-mind, showing honesty and attention in our communication and in every
-aspect of this project, While 60% of the money will be invested into
-the charity project.
+>>> The subsystems regulator, clk and gpio have the concept of a dummy
+>>> resource. For regulator, clk and gpio there is a semantic difference
+>>> between the regular _get() function and the _get_optional() variant.
+>>> (One might return the dummy resource, the other won't. Unfortunately
+>>> which one implements which isn't the same for these three.) The
+>>> difference between platform_get_irq() and platform_get_irq_optional() is
+>>> only that the former might emit an error message and the later won't.
+> 
+>    This is only a current difference but I'm still going to return 0 ISO
+> -ENXIO from latform_get_irq_optional(), no way I'd leave that -ENXIO there
 
-Thank you very much for your kind consideration and I will be happy to
-receive your prompt response for further correspondence.
-May the peace of God be with you.
-Yours beloved Sister in Christ Mrs. Alary Jean Claude.
+   platform.
+
+> alone... :-)
+> 
+>> Reviewed-by: Mark Brown <broonie@kernel.org>
+> 
+>    Hm... I'm seeing a tag bit not seeing the patch itself...
+
+   Grr, my mail server tossed it into the spam folder... :-(
+
+MBR, Sergey

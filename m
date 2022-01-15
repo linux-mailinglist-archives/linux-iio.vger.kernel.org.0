@@ -2,166 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD4448F8AE
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 19:15:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5BE48F8A6
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 19:11:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232561AbiAOSPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Jan 2022 13:15:33 -0500
-Received: from mga01.intel.com ([192.55.52.88]:57563 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231278AbiAOSPd (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Sat, 15 Jan 2022 13:15:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642270533; x=1673806533;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kIwoazCFR7DJjHKdzbRi05ynIhAGB8XqO7nxwNlhL54=;
-  b=b5zriw5W1W2KkLDQbfj1imo/xsWR8vk+/XDRJr93PgN6K6Yc1u/gYvlF
-   zoaHEDAO3zfOi3E4p2TJNdzTThMnAUckefGwbR0NpiRk71hZRv9zkrb3W
-   I/AKRfFHIz1cSDmQRU4o0wR9ld3EC/yZ8WFypXrbWISZYTFJ0JMhzvH+0
-   CrBdld4UItqX2WRvFY4DhUVqEdGOx43V+KyxJVB80H5f1nRcmJBOg7wDW
-   pYV2W14nQNJvlgns4TkMpE9E3wECWGys6fAd+njlTgMswl7yF+S+5R3wa
-   9J5TJPcwopyx5VlXkQT1r/KrDBY8vK4uDTo526wl46iinV+/m8qq+uNnG
-   A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10228"; a="268801627"
-X-IronPort-AV: E=Sophos;i="5.88,290,1635231600"; 
-   d="scan'208";a="268801627"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2022 10:15:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,290,1635231600"; 
-   d="scan'208";a="476139453"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 15 Jan 2022 10:15:30 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1n8naM-000ABy-6P; Sat, 15 Jan 2022 18:15:30 +0000
-Date:   Sun, 16 Jan 2022 02:15:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v2 1/3] iio: dac: add support for ltc2688
-Message-ID: <202201160237.Mxs5GYw3-lkp@intel.com>
-References: <20220115092705.491-2-nuno.sa@analog.com>
+        id S233376AbiAOSLC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Jan 2022 13:11:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231278AbiAOSLB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 13:11:01 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F74C061574;
+        Sat, 15 Jan 2022 10:11:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5E64AB80A89;
+        Sat, 15 Jan 2022 18:11:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA03BC36AE7;
+        Sat, 15 Jan 2022 18:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642270259;
+        bh=2PWywdObtfGp7J3+7ngcsnTM6kfub2PBBTbBnzm4lhE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=s3eJH/ugwNk+p8MbDxFSC9LnvnGfzEsg4QII/QRBsvsG+LEOx/PuNeSj6b60sS/Yy
+         BG9Je6wEtPmHM9ROXxw9QGXrUKeZgVZ5OX+y/CGwneG+mr5VOUlDjk5zeTQGAmYkOL
+         HouggdMpMT8ZCr6LlYrSCFoRgJm4bzJs8qJ+cXD0GxbbSnaE95rX9CJiDOxyVTM1V+
+         qiNS1D9bHHj0FGH7hkjf28pN8RDigxWCTbOSgoRN17xq6/P4tMBpYrXp39AZRlsmzn
+         yUeW9tJbIzWLg+1J2qbRiIwBlTYgd0AwffFN6tf+vK5W/UEWja61rGZRWk6gJJN+a+
+         Oipiw7V9To3tg==
+Date:   Sat, 15 Jan 2022 18:16:59 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>
+Subject: Re: [PATCH v1 1/1] iio: adc: tsc2046: fix memory corruption by
+ preventing array overflow
+Message-ID: <20220115181659.0c759ec5@jic23-huawei>
+In-Reply-To: <20220110071945.GB3326@pengutronix.de>
+References: <20220107081401.2816357-1-o.rempel@pengutronix.de>
+        <20220109152557.74f06d2d@jic23-huawei>
+        <20220110071945.GB3326@pengutronix.de>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220115092705.491-2-nuno.sa@analog.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi "Nuno,
+On Mon, 10 Jan 2022 08:19:45 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-I love your patch! Yet something to improve:
+> Hi Jonathan,
+> 
+> On Sun, Jan 09, 2022 at 03:25:57PM +0000, Jonathan Cameron wrote:
+> > On Fri,  7 Jan 2022 09:14:01 +0100
+> > Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+> >   
+> > > On one side we have indio_dev->num_channels includes all physical channels +
+> > > timestamp channel. On other side we have an array allocated only for
+> > > physical channels. So, fix memory corruption by ARRAY_SIZE() instead of
+> > > num_channels variable.
+> > > 
+> > > Fixes: 9374e8f5a38d ("iio: adc: add ADC driver for the TI TSC2046 controller")
+> > > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>  
+> > Hi Olesij,
+> > 
+> > Have you managed to make this occur, or is it inspection only?  
+> 
+> Yes, this bug has eaten my rx_one and tx_one pointers on probe. I wonted
+> to use this buffers for read_raw and noticed that they do not exist.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on robh/for-next linus/master v5.16 next-20220115]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+I got hung up on the first case and failed to notice the second one was
+entirely different :(
 
-url:    https://github.com/0day-ci/linux/commits/Nuno-S/Add-support-for-LTC2688/20220115-172930
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20220116/202201160237.Mxs5GYw3-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/d91bcc420e0c6077053e559f676fa4ae76114ba5
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Nuno-S/Add-support-for-LTC2688/20220115-172930
-        git checkout d91bcc420e0c6077053e559f676fa4ae76114ba5
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=alpha SHELL=/bin/bash
+> 
+> > I 'think' (it's been a while since I looked at the particular code) that the timestamp
+> > bit in active_scan_mask will never actually be set because we handle that as a
+> > separate flag.  
+> 
+> I didn't tested if active_scan_mask will trigger this issue as well, but
+> It it looked safer to me, to avoid this issue in both places. Even if on
+> of it is only theoretical.
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+It certainly does no harm to not check a bit that is never set, so I'm fine with
+the change - just don't want to have lots of 'fixes' for this in other drivers
+adding noise and pointless backports.  This one is fine because we need the
+other part of the patch anyway.
 
-All errors (new ones prefixed by >>):
-
->> drivers/iio/dac/ltc2688.c:590:18: error: initialization of 'ssize_t (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'long int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} from incompatible pointer type 'int (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} [-Werror=incompatible-pointer-types]
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:604:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     604 |         LTC2688_CHAN_EXT_INFO("toggle_en", LTC2688_CMD_TOGGLE_DITHER_EN,
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/dac/ltc2688.c:590:18: note: (near initialization for 'ltc2688_toggle_sym_ext_info[2].write')
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:604:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     604 |         LTC2688_CHAN_EXT_INFO("toggle_en", LTC2688_CMD_TOGGLE_DITHER_EN,
-         |         ^~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/dac/ltc2688.c:590:18: error: initialization of 'ssize_t (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'long int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} from incompatible pointer type 'int (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} [-Werror=incompatible-pointer-types]
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:619:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     619 |         LTC2688_CHAN_EXT_INFO("toggle_en", LTC2688_CMD_TOGGLE_DITHER_EN,
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/dac/ltc2688.c:590:18: note: (near initialization for 'ltc2688_toggle_ext_info[2].write')
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:619:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     619 |         LTC2688_CHAN_EXT_INFO("toggle_en", LTC2688_CMD_TOGGLE_DITHER_EN,
-         |         ^~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/dac/ltc2688.c:590:18: error: initialization of 'ssize_t (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'long int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} from incompatible pointer type 'int (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} [-Werror=incompatible-pointer-types]
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:639:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     639 |         LTC2688_CHAN_EXT_INFO("dither_frequency", 0, IIO_SEPARATE,
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/dac/ltc2688.c:590:18: note: (near initialization for 'ltc2688_dither_ext_info[3].write')
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:639:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     639 |         LTC2688_CHAN_EXT_INFO("dither_frequency", 0, IIO_SEPARATE,
-         |         ^~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/dac/ltc2688.c:590:18: error: initialization of 'ssize_t (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'long int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} from incompatible pointer type 'int (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} [-Werror=incompatible-pointer-types]
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:641:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     641 |         LTC2688_CHAN_EXT_INFO("dither_frequency_available",
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/dac/ltc2688.c:590:18: note: (near initialization for 'ltc2688_dither_ext_info[4].write')
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:641:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     641 |         LTC2688_CHAN_EXT_INFO("dither_frequency_available",
-         |         ^~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/dac/ltc2688.c:590:18: error: initialization of 'ssize_t (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'long int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} from incompatible pointer type 'int (*)(struct iio_dev *, uintptr_t,  const struct iio_chan_spec *, const char *, size_t)' {aka 'int (*)(struct iio_dev *, long unsigned int,  const struct iio_chan_spec *, const char *, long unsigned int)'} [-Werror=incompatible-pointer-types]
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:647:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     647 |         LTC2688_CHAN_EXT_INFO("dither_en", LTC2688_CMD_TOGGLE_DITHER_EN,
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/dac/ltc2688.c:590:18: note: (near initialization for 'ltc2688_dither_ext_info[7].write')
-     590 |         .write = (_write),                                              \
-         |                  ^
-   drivers/iio/dac/ltc2688.c:647:9: note: in expansion of macro 'LTC2688_CHAN_EXT_INFO'
-     647 |         LTC2688_CHAN_EXT_INFO("dither_en", LTC2688_CMD_TOGGLE_DITHER_EN,
-         |         ^~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+Jonathan
 
 
-vim +590 drivers/iio/dac/ltc2688.c
+> 
+> > So it is indeed an efficiency improvement to not check that bit but I don't think
+> > it's a bug to do so.  More than possible I'm missing something though!
+> > 
+> > This one had me quite worried when I first read it because this is a very common
+> > pattern to see in IIO drivers.  
+> 
+> I was thinking about this as well, because big part of this code was
+> inspired by other drivers. But i didn't reviewed other places so far.
+> 
+> Regards,
+> Oleksij
 
-   586	
-   587	#define LTC2688_CHAN_EXT_INFO(_name, _what, _shared, _read, _write) {	\
-   588		.name = _name,							\
-   589		.read = (_read),						\
- > 590		.write = (_write),						\
-   591		.private = (_what),						\
-   592		.shared = (_shared),						\
-   593	}
-   594	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org

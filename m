@@ -2,48 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B597B48F7D7
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 17:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F155B48F7F5
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 17:47:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbiAOQcg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Jan 2022 11:32:36 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:41210 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230098AbiAOQcg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 11:32:36 -0500
+        id S232184AbiAOQp5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Jan 2022 11:45:57 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:48296 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233185AbiAOQpv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 11:45:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C72B60E1F
-        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 16:32:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A74FC36AE7;
-        Sat, 15 Jan 2022 16:32:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5333CB8092B
+        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 16:45:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C45CC36AE7;
+        Sat, 15 Jan 2022 16:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642264355;
-        bh=0n7mkktvL4gdjJgJ43XSoYJl3IdO/f0EUSM4IP/JSNo=;
+        s=k20201202; t=1642265147;
+        bh=b71v2yPvNrGr6ImojCLFTpt1J+c0ei59t1DBW+xuANQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JvaqWAn/H2xkPAZcs1GEtDjQC0hPP4Hn/WabIDk4EhlvAhPUv8kjEqm/9kjh5VVig
-         DNoS+hwEwr2lrq+QHvYdP2dBAnPsFQUl8Y7UMwfqcismZRu3es5iUtS1HfI2MbMDJ0
-         +wHVcpkfWLHwCPBnGTh2oLkQboNjbyJLXE+z2eS+yCr4C8dDRD9TIjYGNbPxsIU/qS
-         HXNfO3DPjn8H8JUA/4nHiISbgYdruV8t67Z/AlYd1pMcMdy87Z6e63AoqtC9F/1nIQ
-         M0C5vvS6Z/BJWJdre5SRfkNE4B02fJ+EHZvENOyx6J3ZvEhRMfIcQszQCU8Cjsx4oI
-         qs1zUxEbGcZEA==
-Date:   Sat, 15 Jan 2022 16:38:34 +0000
+        b=Tr1aXAtOaEvzKh3PbgEBdwZ9SZqS5LqABhmU2GFLJ0UfvNFHa0RXF1OkBbiN424gV
+         3S4lf6ra8SElIXcVb/ILtNSygM36w9v/+qOLMkrIkulSgkxef5ejTKy3LEb8+WuJ79
+         If6OWKPYpHImJ4nE02Jnfx67ICadj6q43qcy2A/gyX6cGqI/PxwCl8MkoHfARCk7xH
+         m310r4kve6VtS2Aa9rdUXK2pwlfWTw+lAwo3FNDEzhCU4KcBik0M155XdHvYL4dNYn
+         0oe96XIVV7Oa9ILiSoxXM0WrV2xH+wKGbats7r+0LoxXf5Pa9ZSEX+jOUoNlH8ml6W
+         CJCdL8GEOjhKQ==
+Date:   Sat, 15 Jan 2022 16:51:48 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Denis Ciocca <denis.ciocca@st.com>
-Subject: Re: [PATCH 05/10] iio: st_sensors: Use
- iio_device_claim/release_direct_mode() when relevant
-Message-ID: <20220115163834.1d9ac991@jic23-huawei>
-In-Reply-To: <20211216093243.42fd0c88@xps13>
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 06/10] iio: core: Hide read accesses to
+ iio_dev->currentmode
+Message-ID: <20220115165148.50206e07@jic23-huawei>
+In-Reply-To: <20211216093757.114f46cf@xps13>
 References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-        <20211215151344.163036-6-miquel.raynal@bootlin.com>
-        <CA+U=DsoVieRnfm6K-Oeva7poGBU+GbxfnS6uoRpc9=qihq6+Rw@mail.gmail.com>
-        <20211216093243.42fd0c88@xps13>
+        <20211215151344.163036-7-miquel.raynal@bootlin.com>
+        <CA+U=DsrD6pqpYs=D_YtkwJntcUCjUJi8qS49Dg5nLTC9yqvWZA@mail.gmail.com>
+        <20211216093757.114f46cf@xps13>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,166 +51,225 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Dec 2021 09:32:43 +0100
+On Thu, 16 Dec 2021 09:37:57 +0100
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Hello Alexandru,
+> Hi Alexandru,
 >=20
-> ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 09:16:34 +0200:
+> ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 09:38:17 +0200:
 >=20
 > > On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
 > > <miquel.raynal@bootlin.com> wrote: =20
 > > >
-> > > The st_sensors_core driver hardcodes the content of the
-> > > iio_device_claim_direct_mode() and iio_device_release_direct_mode()
-> > > helpers. Let's get rid of this handcrafted implementation and use the
-> > > proper core helpers instead. Additionally, this lowers the tab level
-> > > (which is always good) and prevents the use of the ->currentmode
-> > > variable which is not supposed to be used like this anyway.
-> > >
+> > > In order to later move this variable within the opaque structure, let=
+'s
+> > > create a helper for accessing it in read-only mode. This helper will =
+be
+> > > exposed and kept accessible for the few drivers that could need it. T=
+he
+> > > write access to this variable however should be fully reserved to the
+> > > core so in a second step we will add another helper, not exported to =
+the
+> > > device drivers.   =20
+> >=20
+> > The naming needs a bit of discussion.
+> > I would have gone for iio_dev_get_current_mode() or something like that=
+. =20
+>=20
+> I honestly tried both, but it appeared important to me to name it
+> "internal" so that people are not too tempted to use it in the first
+> place. Other advises are welcome, I an definitely switch to
+> iio_dev_get/set_current_mode() if it is preferred.
+
+There are valid reasons to use it (such as the cases you have below)
+so I think the iio_device_get_current_mode() naming is probably best.
+Note long form of dev as more consistent with existing functions.
+They could all have been iio_dev_* but given they aren't let us
+keep to full device for consistency.
+
+>=20
+> > And I would probably not use this helper inside the IIO core stuff
+> > (i.e. drivers/iio/industrialio-*.c files)
+> > Mostly because [if now used only in IIO core] it makes the
+> > "indio_dev->currentmode" assignment and access easier to trace. =20
+>=20
+> I think you meant in a later review that this was fine given the fact
+> that a setter helper was also introduced. The goal behind using a
+> helper literally everywhere was to avoid introducing an indirect access
+> to the opaque structure everywhere, and do this final change almost
+> transparently for the users.
+>=20
+> > There's also the change that accessing "indio_dev->currentmode"
+> > becomes a function-symbol which has rules at link-time and may add
+> > some new jmp/ret instructions.
+> > But It doesn't look like this is used in any fast-paths, so it's not
+> > an issue as much. =20
+>=20
+> I was also tempted to do that in the first place but this does not work
+> anymore as soon as the variable is moved to the opaque structure (only
+> the setter, which is internal to the core, may end up in the
+> iio-opaque.h header). Otherwise we would end up exporting the opaque
+> header from iio.h which is truly not what we want.
+
+My reading of Alex's comment was he was only referring to the core code
+changes (which already have visibility of the opaque structure).
+
+Also, the only case where I can see this being an issue is the
+
+iio_buffer_enabled call.  Given you are adding a function call to that
+anyway, might as well just move that implementation down into a non
+inline function and export the symbol.  We pay the minor cost either way.
+
+
+>=20
 > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > > > ---
-> > >  .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++++--------=
---
-> > >  1 file changed, 13 insertions(+), 15 deletions(-)
+> > >  drivers/iio/accel/bmc150-accel-core.c |  4 ++--
+> > >  drivers/iio/adc/at91-sama5d2_adc.c    |  4 ++--
+> > >  drivers/iio/industrialio-buffer.c     |  6 +++---
+> > >  drivers/iio/industrialio-core.c       | 11 +++++++++++
+> > >  drivers/iio/industrialio-trigger.c    |  2 +-
+> > >  include/linux/iio/iio.h               |  9 ++++++---
+> > >  6 files changed, 25 insertions(+), 11 deletions(-)
 > > >
-> > > diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/driver=
-s/iio/common/st_sensors/st_sensors_core.c
-> > > index 1de395bda03e..e57e85c06f4b 100644
-> > > --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> > > +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> > > @@ -549,26 +549,24 @@ int st_sensors_read_info_raw(struct iio_dev *in=
-dio_dev,
-> > >         int err;
-> > >         struct st_sensor_data *sdata =3D iio_priv(indio_dev);
+
+
+> > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industri=
+alio-buffer.c
+> > > index e180728914c0..f4dbab7c44fa 100644
+> > > --- a/drivers/iio/industrialio-buffer.c
+> > > +++ b/drivers/iio/industrialio-buffer.c
+> > > @@ -1101,7 +1101,7 @@ static int iio_enable_buffers(struct iio_dev *i=
+ndio_dev,
+> > >                         goto err_disable_buffers;
+> > >         }
 > > >
-> > > -       mutex_lock(&indio_dev->mlock);
 > > > -       if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
-> > > -               err =3D -EBUSY;
-> > > +       err =3D iio_device_claim_direct_mode(indio_dev);   =20
-> >=20
-> > I'm afraid, for this driver, we would first need a cleanup of
-> > indio_dev->mlock usage.
-> > Or at least that's how I would start it.
-> > i.e. remove the indio_dev->mlock and replace it with it's own
-> > mutex/lock in all places (except this one).
-> >=20
-> > The whole story about mlock is a bit old.
-> > As I was told, it was initially defined in the iio_dev object, but not
-> > very strictly controlled during review [of drivers].
-> > Drivers kept using it (as a convenience lock).
-> > It was later defined to be an IIO framework lock. =20
+> > > +       if (iio_get_internal_mode(indio_dev) =3D=3D INDIO_BUFFER_TRIG=
+GERED) {
+
+This function can already see both iio_dev and iio_dev_opaque structures so
+I think I'd prefer to keep the direct access.
+
+> > >                 ret =3D iio_trigger_attach_poll_func(indio_dev->trig,
+> > >                                                    indio_dev->pollfun=
+c);
+> > >                 if (ret)
+> > > @@ -1120,7 +1120,7 @@ static int iio_enable_buffers(struct iio_dev *i=
+ndio_dev,
+> > >         return 0;
+> > >
+> > >  err_detach_pollfunc:
+> > > -       if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
+> > > +       if (iio_get_internal_mode(indio_dev) =3D=3D INDIO_BUFFER_TRIG=
+GERED) {
+> > >                 iio_trigger_detach_poll_func(indio_dev->trig,
+> > >                                              indio_dev->pollfunc);
+> > >         }
+> > > @@ -1162,7 +1162,7 @@ static int iio_disable_buffers(struct iio_dev *=
+indio_dev)
+> > >                         ret =3D ret2;
+
+Same for this function
+
+> > >         }
+> > >
+> > > -       if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
+> > > +       if (iio_get_internal_mode(indio_dev) =3D=3D INDIO_BUFFER_TRIG=
+GERED) {
+> > >                 iio_trigger_detach_poll_func(indio_dev->trig,
+> > >                                              indio_dev->pollfunc);
+> > >         }
+> > > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrial=
+io-core.c
+> > > index 463a63d5bf56..a1d6e30d034a 100644
+> > > --- a/drivers/iio/industrialio-core.c
+> > > +++ b/drivers/iio/industrialio-core.c
+> > > @@ -2057,6 +2057,17 @@ void iio_device_release_direct_mode(struct iio=
+_dev *indio_dev)
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
+> > >
+> > > +/**
+> > > + * iio_get_internal_mode() - helper function providing read-only acc=
+ess to the
+> > > + *                          opaque @currentmode variable
+> > > + * @indio_dev:         IIO device structure for device
+> > > + **/
+
+I was going to complain and say this should be */ but
+then checked and see we have a random mixture in this file... Hohum. one fo=
+r the
+list of things to tidy up when someone is really bored...
+
+> > > +int iio_get_internal_mode(struct iio_dev *indio_dev)
+> > > +{
+> > > +       return indio_dev->currentmode;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(iio_get_internal_mode);
+> > > +
+> > >  subsys_initcall(iio_init);
+> > >  module_exit(iio_exit);
+> > >
+> > > diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industr=
+ialio-trigger.c
+> > > index b23caa2f2aa1..71b07d6111d6 100644
+> > > --- a/drivers/iio/industrialio-trigger.c
+> > > +++ b/drivers/iio/industrialio-trigger.c
+> > > @@ -411,7 +411,7 @@ static ssize_t iio_trigger_write_current(struct d=
+evice *dev,
+> > >         int ret;
+> > >
+> > >         mutex_lock(&indio_dev->mlock);
+> > > -       if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
+Also already has visibility of the opaque structure.
+
+> > > +       if (iio_get_internal_mode(indio_dev) =3D=3D INDIO_BUFFER_TRIG=
+GERED) {
+> > >                 mutex_unlock(&indio_dev->mlock);
+> > >                 return -EBUSY;
+> > >         }
+> > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > > index 0312da2e83f8..dcab17f44552 100644
+> > > --- a/include/linux/iio/iio.h
+> > > +++ b/include/linux/iio/iio.h
+> > > @@ -677,15 +677,18 @@ struct iio_dev *devm_iio_device_alloc(struct de=
+vice *parent, int sizeof_priv);
+> > >  __printf(2, 3)
+> > >  struct iio_trigger *devm_iio_trigger_alloc(struct device *parent,
+> > >                                            const char *fmt, ...);
+> > > +
+> > > +int iio_get_internal_mode(struct iio_dev *indio_dev);
+> > > +
+> > >  /**
+> > >   * iio_buffer_enabled() - helper function to test if the buffer is e=
+nabled
+> > >   * @indio_dev:         IIO device structure for device
+> > >   **/
+> > >  static inline bool iio_buffer_enabled(struct iio_dev *indio_dev)
+> > >  {
+> > > -       return indio_dev->currentmode
+> > > -               & (INDIO_BUFFER_TRIGGERED | INDIO_BUFFER_HARDWARE |
+> > > -                  INDIO_BUFFER_SOFTWARE);
+> > > +       return iio_get_internal_mode(indio_dev) &
+So this is the one place we have to use it given the function is inline.
+
+However, the fact we then end up with an function that can't be inlined any=
+way
+suggests we should move this implementation out of the header as there is
+no benefit in having it here.  Hopefully no one will mind the perf impact
+of this (seems unlikely but you never know...)
+
+> > > +               (INDIO_BUFFER_TRIGGERED | INDIO_BUFFER_HARDWARE |
+> > > +                INDIO_BUFFER_SOFTWARE);
+> > >  }
+> > >
+> > >  /**
+> > > --
+> > > 2.27.0
+> > >   =20
 >=20
-> I see, thanks for the explanation!
-
-That's accurate.  Historical mistakes and all :)
-We've been unwinding this for at least 5 years now so most of the simple
-cases are now gone, though it seems not all of them!
-
->=20
-> > Now, there's a (slow) ongoing work to move mlock inside the
-> > iio_dev_opaque struct, and make each driver use it's own lock, OR use
-> > iio_device_{claim,release}_direct_mode() where appropriate.
-> >=20
-> > FWIW: this change could go in as-is. =20
->=20
-> /me breathes :-)
->=20
-> > But there's still the point of implementing another lock on the
-> > st_sensor_data type.
-> > I would try to split this work into another [parallel] series, because
-> > otherwise [if fitted into this series] it would just grow and be
-> > slow-to-review series.
-> > But =C2=AF\_(=E3=83=84)_/=C2=AF =20
->=20
-> To be honest, my first goal was to document the modes enumeration.
-> Then, I realized currentmodes was also needing a bit of explanations as
-> well. Jonathan added that there were misuses with this variable. I then
-> tried to reduce it's overall use (when not particularly needed) and I
-> ended up doing this much bigger series, because every commit prepares
-> the field for the next one.
->=20
-> The situation in this driver is (as you truly report):
-> - the mlock is correctly used in the read_raw hook but everything is
->   hardcoded
-> - the mlock is abused everywhere else
->=20
-> I am very sorry but I am not willing to entirely rework this driver
-> because it's not the point of my series, I don't have the hardware and
-> I know this would led to yet another series of changes, which I will
-> have no time to handle >.<
->=20
-> My goal here is to reduce the usage count of currentmodes across all
-> the device driver. This addresses the former point and I think it's
-> completely valid because a series doing exactly what you request would
-> definitely do this in two distinct steps as well O:-)
-
-+CC some folks who are active on this driver (there are lots of them
-as it covers some very common devices). For now I've +cc Denis but there
-are others you should add to a v2.
-
-Hmm. Question is whether doing this change in isolation from the more
-general cleanup of mlock is a good move. It won't be obvious what
-can race if someone comes along later trying to remove mlock usage...
-
-One perhaps non obvious thing is at that a driver should not rely in
-any way on the implementation of iio_device_claim/release_direct_mode().
-It's only documented characteristics is it will fail to claim if we
-are in buffered mode and that it prevents races with a transition to
-buffered modes.
-
-This particular read_raw path doesn't seem to use any shared
-state (buffer is allocated in st_sensors_read_axis_data) but it
-is turning the power on and off which is potentially fairly nasty
-(and interestingly does rely on shared state - see later).
-
-So it should use a local lock as well as mlock to prevent multiple
-calls of st_sensors_read_info_raw racing with each other.
-(claim_direct doesn't guarantee that because it's an implementation
-detail that a driver should rely on - right now as it's open coded
-we can know it is safe).
-
-I took a quick look at what other mlock usage we do have...
-
-The other cases in st_sensors_core.c should at most have been
-iio_device_claim_direct_mode() etc.  Right now they'll block indefinitely
-on a read of relevant _avail which is not good!
-
-However, not clear why they even need to do that as they are simply
-listing sdata->sensor_settings->odr.odr_avl etc which is const
-data for a give device type.  So I'm fairly sure we could just drop those
-two cases.
-
-The mlock use in st_accel_core.c is again dubious as it will block
-indefinitely if the buffer is enabled...=20
-
-So why is it here?  Probably
-1) Avoid changing sampling frequency whilst buffer is running which
-should be an iio_device_claim_direct_mode()
-2) There is some state that might potentially want keeping in sync - which
-would benefit from a local lock.  In particular sdata->odr which is
-a local cache of the output data rate is used in st_sensors_set_enable()
-which it could race with (if we can't rely on claim_direct())...
-
-This last one is why I don't think we can do this function in isolation.
-
-Sorry :(
-
-On the plus side it's not that hard to fix as:
-1) Drop the protection on _avail functions - it seems to be pointless.
-2) Add a new lock that actually only ensures device setting for ODR is
-   atomic wrt to the cached value.
-
-Plenty of folks to test.   I'm happy to roll the patch if you want me
-to, but as it's a precursor to your series perhaps better that you do.
-
-I'm sure one of the people who have made changes to this driver recently
-will help with testing.
-
-Jonathan
-
 >=20
 > Thanks,
 > Miqu=C3=A8l
->=20
 

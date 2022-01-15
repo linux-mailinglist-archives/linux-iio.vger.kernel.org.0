@@ -2,49 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2881448F823
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 18:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91C4448F876
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 18:24:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230491AbiAORGs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Jan 2022 12:06:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36572 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbiAORGs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 12:06:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998F0C061574
-        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 09:06:47 -0800 (PST)
+        id S229499AbiAORYu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Jan 2022 12:24:50 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:34118 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229490AbiAORYt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 12:24:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3476FB80952
-        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 17:06:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6212EC36AEA;
-        Sat, 15 Jan 2022 17:06:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5273360EDC
+        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 17:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF91C36AE3;
+        Sat, 15 Jan 2022 17:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642266404;
-        bh=ugsCqJz6P34YLYMY0n4zrvXVYx/LYQIIY5hWdCjvJuU=;
+        s=k20201202; t=1642267488;
+        bh=KvSjdtVUyAOBHK6y8rj5xZbgt/pVqlJ0h26SvC5poEo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=h44v4kdfPvWCgazVxg2zpvX58n5/+OJVVRA+juQx/slubLYGn6HdWDmQiQVOx5a6J
-         MyyfyxrJtzevDoW5NDEYz5qhY1IYLd9UnlnOiNhsMR5LzgJ53HWr6FSmZffe8mEWBM
-         T2HogodpQtrs44njgl7fADHe58dV2y+T2X1so8XuquqPMtLDXXeBuJlSNj4+d4ULpX
-         sglnnNqNlp4zd3Pm/7qq7sSg+VYbVoE2LTfhKnfIbbM1ZdhjSj8hLRfxCgz58n/Xh2
-         kUhMRD+6Ov7CkSb/ICdKO4F0C/Ja7Z2KMnPeucG+ciuJBbvW0ssSYeBwSqdkEndMLY
-         VqMnKlZE2PF5g==
-Date:   Sat, 15 Jan 2022 17:12:46 +0000
+        b=ZZgmvT4XTPVIQ8jSCgRYeNSCjOfKk/PBDNGhQNMFVDmU1kH9rUGg3oFTQtCCN+jcS
+         AG2yrsHdS1mA36ZSEjkDjmaV9xEx3CfE9R3xbkiN17y/sbpFbeQiOW+O9zvOgwzkUK
+         DvyodaYfzcfRozzZdRppKm4VwngwQxo7STruLY2zkGVWI0ml7F4nizXmcK6W2DMdjy
+         yZNrKjuC5P/IAYO/BheugudZ9TbbUlFmSySSnCgs1NSdCftPCkOe5KfCfU/RRXizAW
+         9GzezFNKzpdvZUTgzuTzrDZL57a7G8R+mcEqF1M2elOLF+6cSZNfufqBTFr7Mb8Ggo
+         BrmTiRwhFsv+A==
+Date:   Sat, 15 Jan 2022 17:30:50 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexandru Ardelean <ardeleanalex@gmail.com>
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 09/10] iio: core: Simplify the registration of kfifo
- buffers
-Message-ID: <20220115171246.59915cd2@jic23-huawei>
-In-Reply-To: <CA+U=Dsoi2jPgqrqmbdq7GBknUiR9Y30t_tDQQo3ps3M2EmdsFw@mail.gmail.com>
+Subject: Re: [PATCH 10/10] iio: core: Clarify the modes
+Message-ID: <20220115173050.3501e20c@jic23-huawei>
+In-Reply-To: <20211215151344.163036-11-miquel.raynal@bootlin.com>
 References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-        <20211215151344.163036-10-miquel.raynal@bootlin.com>
-        <CA+U=Dsoi2jPgqrqmbdq7GBknUiR9Y30t_tDQQo3ps3M2EmdsFw@mail.gmail.com>
+        <20211215151344.163036-11-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,309 +46,133 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Dec 2021 09:52:38 +0200
-Alexandru Ardelean <ardeleanalex@gmail.com> wrote:
+On Wed, 15 Dec 2021 16:13:44 +0100
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
-> <miquel.raynal@bootlin.com> wrote:
-> >
-> > Among all the users of the kfifo buffers, no one uses the
-> > INDIO_BUFFER_HARDWARE mode. So let's take this as a general rule and
-> > simplify a little bit the internals - overall the documentation - by
-> > eliminating unused specific cases. Use the INDIO_BUFFER_SOFTWARE mode by
-> > default with kfifo buffers, which will basically mimic what all the "non
-> > direct" modes do.
-> >  
+> As part of a previous discussion with Jonathan Cameron [1], it appeared
+> necessary to clarify the meaning of each mode so that new developers
+> could understand better what they should use or not use and when.
 > 
-> I think this patch here (and 10/10) can be part of a separate series.
-> This discussion is important enough to have it's own series.
-> It's a bit of an API discussion.
->
-One question inline.
- 
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >  drivers/iio/accel/fxls8962af-core.c                  |  1 -
-> >  drivers/iio/accel/sca3000.c                          |  1 -
-> >  drivers/iio/accel/ssp_accel_sensor.c                 |  1 -
-> >  drivers/iio/adc/ina2xx-adc.c                         |  1 -
-> >  drivers/iio/adc/ti_am335x_adc.c                      |  4 +---
-> >  drivers/iio/buffer/kfifo_buf.c                       | 12 ++----------
-> >  .../common/cros_ec_sensors/cros_ec_sensors_core.c    |  3 +--
-> >  drivers/iio/common/scmi_sensors/scmi_iio.c           |  1 -
-> >  drivers/iio/gyro/ssp_gyro_sensor.c                   |  1 -
-> >  drivers/iio/health/max30100.c                        |  1 -
-> >  drivers/iio/health/max30102.c                        |  1 -
-> >  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c    |  1 -
-> >  drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c     |  1 -
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c       |  1 -
-> >  drivers/iio/light/apds9960.c                         |  1 -
-> >  drivers/staging/iio/impedance-analyzer/ad5933.c      |  1 -
-> >  include/linux/iio/kfifo_buf.h                        |  5 ++---
-> >  17 files changed, 6 insertions(+), 31 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> > index 32989d91b982..cf494937a346 100644
-> > --- a/drivers/iio/accel/fxls8962af-core.c
-> > +++ b/drivers/iio/accel/fxls8962af-core.c
-> > @@ -1209,7 +1209,6 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
-> >                         return ret;
-> >
-> >                 ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
-> > -                                                 INDIO_BUFFER_SOFTWARE,
-> >                                                   &fxls8962af_buffer_ops);
-> >                 if (ret)
-> >                         return ret;
-> > diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-> > index c6b75308148a..a65a05f1208b 100644
-> > --- a/drivers/iio/accel/sca3000.c
-> > +++ b/drivers/iio/accel/sca3000.c
-> > @@ -1465,7 +1465,6 @@ static int sca3000_probe(struct spi_device *spi)
-> >         indio_dev->modes = INDIO_DIRECT_MODE;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&spi->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &sca3000_ring_setup_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/iio/accel/ssp_accel_sensor.c b/drivers/iio/accel/ssp_accel_sensor.c
-> > index 04dcb2b657ee..d20f8d299c11 100644
-> > --- a/drivers/iio/accel/ssp_accel_sensor.c
-> > +++ b/drivers/iio/accel/ssp_accel_sensor.c
-> > @@ -113,7 +113,6 @@ static int ssp_accel_probe(struct platform_device *pdev)
-> >         indio_dev->available_scan_masks = ssp_accel_scan_mask;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&pdev->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &ssp_accel_buffer_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-> > index a4b2ff9e0dd5..013d2d586df1 100644
-> > --- a/drivers/iio/adc/ina2xx-adc.c
-> > +++ b/drivers/iio/adc/ina2xx-adc.c
-> > @@ -1030,7 +1030,6 @@ static int ina2xx_probe(struct i2c_client *client,
-> >         indio_dev->name = id->name;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &ina2xx_setup_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-> > index dbdc1ef48566..567d43a30955 100644
-> > --- a/drivers/iio/adc/ti_am335x_adc.c
-> > +++ b/drivers/iio/adc/ti_am335x_adc.c
-> > @@ -376,9 +376,7 @@ static int tiadc_iio_buffered_hardware_setup(struct device *dev,
-> >  {
-> >         int ret;
-> >
-> > -       ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> > -                                         setup_ops);
-> > +       ret = devm_iio_kfifo_buffer_setup(dev, indio_dev, setup_ops);
-> >         if (ret)
-> >                 return ret;
-> >
-> > diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
-> > index 416d35a61ae2..f17473e06ee8 100644
-> > --- a/drivers/iio/buffer/kfifo_buf.c
-> > +++ b/drivers/iio/buffer/kfifo_buf.c
-> > @@ -197,7 +197,7 @@ static const struct iio_buffer_access_funcs kfifo_access_funcs = {
-> >         .set_length = &iio_set_length_kfifo,
-> >         .release = &iio_kfifo_buffer_release,
-> >
-> > -       .modes = INDIO_BUFFER_SOFTWARE | INDIO_BUFFER_TRIGGERED,
-> > +       .modes = INDIO_BUFFER_SOFTWARE,
+> The idea of renaming these modes as been let aside because naming is a
+> big deal and requires a lot of thinking. So for now let's focus on
+> correctly explaining what each mode implies.
+> 
+> [1] https://lore.kernel.org/linux-iio/20210930165510.2295e6c4@jic23-huawei/
+> 
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>  include/linux/iio/iio.h | 40 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 39 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index d04ab89fa0c2..75b561fd63d0 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -314,7 +314,45 @@ static inline bool iio_channel_has_available(const struct iio_chan_spec *chan,
+>  s64 iio_get_time_ns(const struct iio_dev *indio_dev);
+>  unsigned int iio_get_time_res(const struct iio_dev *indio_dev);
+>  
+> -/* Device operating modes */
+> +/**
+> + * Device operating modes
+> + * @INDIO_DIRECT_MODE: There is an access to the last single value available.
 
-Why is this safe to do?  Don't we need triggered buffers to match mode
-when used with a kfifo?
+I'd avoid 'last' as not obvious wrt to what time point.  Perhaps use something
+horrible like "timely"?
 
-If I'm remembering / reading how the mode matching works, this breaks the
-industrialio-triggered-buffer.c case where it sets the mode to
-INDIO_BUFFER_TRIGGERED (mostly I think to make sure we get a warning in
-iio_verify_update() if no trigger is supplied - I can't remember what other
-difference it makes (or if it does).
+> + * On most devices, this is a single-shot read. On some devices with data
+> + * streams without an 'on-demand' function, this might also be the 'last value'
+> + * feature. Above all, this mode internally means that we are not in any of the
+> + * other modes, and sysfs reads will definitely work.
+
+Should work ;)  They might fail for a wide variety of other reasons.
+
+> + * Device drivers are pleased to inquire the core about this mode.
+Not totally sure what you mean here.  Perhaps
+Device drivers should inform the core if they support this mode.
+
+> + * @INDIO_BUFFER_TRIGGERED: Most common mode when dealing with kfifo buffers.
+
+Avoid "common". That may well change in future as fifos are become increasingly
+common on devices over time.  Perhaps just drop this first sentence.
+
+> + * It indicates that there is an explicit trigger that must be used. This
+
+Indicates that an explicit trigger is required. (subtle difference from what you
+wrote in that you kind of imply there is only one possible choice)
+
+> + * requests the core to attach a poll function when enabling the buffer, which
+> + * is indicated by the _TRIGGERED suffix.
+> + * The core will ensure this mode is set when registering a triggered buffer.
+
+I'd call out the function name (mostly to be inline with below where you need
+to because there isn't a particularly good way to describe what it is doing).
+
+> + * @INDIO_BUFFER_SOFTWARE: Another kfifo buffer mode, but not event triggered.
+> + * No poll function can be attached because there is no triggered infrastructure
+> + * we can use to cause capture. There is a kfifo that the hardware will fill,
+> + * but not "one scan at a time", just like in a continuous stream.
+
+No real relationship to a continuous stream that I can see.  Perhaps something like
+"Typically hardware will have a buffer that can hold multiple scans. Software may
+ read one or more scans at a single time and push the available data to a Kfifo."
+
+> This means
+> + * the core will not attach any poll function when enabling the buffer.
+> + * The core will ensure this mode is set when registering a simple kfifo buffer.
+
+I'd call out the function name here.  The above registers a kfifo as well which is
+pretty simple...
+
+> + * @INDIO_BUFFER_HARDWARE: For specific hardware, if unsure do not use this mode.
+> + * Same as above but this time the buffer is not a kfifo where we have direct
+> + * access to the data. Instead, the consumer driver must access the data through
+> + * side-channels 
+What do you mean by side-channels here?  That term gets over used - perhaps
+"non software visible channels"
+
+ + (or DMA when there is no demux possible in software).
+> + * The core will ensure this mode is set when registering a dmaengine buffer.
+
+> + * @INDIO_EVENT_TRIGGERED: Very specific, do not use this mode.
+
+:) That's harsh.. If you happen to be supporting hardware that works this way
+it's a valid setting.  Perhaps we'd be safe to say:
+"Very unusual."
+
+> + * Triggers usually refer to an external event which will start data capture.
+> + * Here it is kind of the opposite as, a particular state of the data might
+> + * produce an event which can be considered as an event. We don't necessarily
+> + * have access to the data itself, but to the event produced. For example, this
+> + * can be a threshold detector. The internal path of this mode is very close to
+> + * the INDIO_BUFFER_TRIGGERED mode.
+> + * The core will ensure this mode is set when registering a triggered event.
+> + * @INDIO_HARDWARE_TRIGGERED: STM32 specific mode, do not use it.
+
+I'd avoid that comment because it'll rot when some other hardware needs something
+like this.  Again, perhaps "Very rare / unusual." will be enough to put people
+off using it.
+
+> + * Here, triggers can result in data capture and can be routed to multiple
+> + * hardware components, which make them close to regular triggers in the way
+> + * they must be managed by the core, but without the entire interrupts/poll
+> + * functions burden. All of this is irrelevant as it is all hardware mediated
+> + * and distributed.
+
+"All this" is not totally clear.  Interrupts are irrelevant as the data flow
+is hardware mediated and distributed.
+
+Nice descriptions in general.  Nature of these things is without a straw man
+to poke holes in I'd never get around to documenting this very much
+appreciated that you took the time to figure all the weird corners out and
+write this up.
+
+Jonathan
 
 
-
-> >  };
-> >
-> >  struct iio_buffer *iio_kfifo_allocate(void)
-> > @@ -259,8 +259,6 @@ static struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev)
-> >   * devm_iio_kfifo_buffer_setup_ext - Allocate a kfifo buffer & attach it to an IIO device
-> >   * @dev: Device object to which to attach the life-time of this kfifo buffer
-> >   * @indio_dev: The device the buffer should be attached to
-> > - * @mode_flags: The mode flags for this buffer (INDIO_BUFFER_SOFTWARE and/or
-> > - *             INDIO_BUFFER_TRIGGERED).
-> >   * @setup_ops: The setup_ops required to configure the HW part of the buffer (optional)
-> >   * @buffer_attrs: Extra sysfs buffer attributes for this IIO buffer
-> >   *
-> > @@ -271,22 +269,16 @@ static struct iio_buffer *devm_iio_kfifo_allocate(struct device *dev)
-> >   */
-> >  int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
-> >                                     struct iio_dev *indio_dev,
-> > -                                   int mode_flags,
-> >                                     const struct iio_buffer_setup_ops *setup_ops,
-> >                                     const struct attribute **buffer_attrs)
-> >  {
-> >         struct iio_buffer *buffer;
-> >
-> > -       if (!mode_flags)
-> > -               return -EINVAL;
-> > -
-> >         buffer = devm_iio_kfifo_allocate(dev);
-> >         if (!buffer)
-> >                 return -ENOMEM;
-> >
-> > -       mode_flags &= kfifo_access_funcs.modes;
-> > -
-> > -       indio_dev->modes |= mode_flags;
-> > +       indio_dev->modes |= INDIO_BUFFER_SOFTWARE;
-> >         indio_dev->setup_ops = setup_ops;
-> >
-> >         buffer->attrs = buffer_attrs;
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > index b2725c6adc7f..a4cf1d9a8a49 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > @@ -333,8 +333,7 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >                          * We can not use trigger here, as events are generated
-> >                          * as soon as sample_frequency is set.
-> >                          */
-> > -                       ret = devm_iio_kfifo_buffer_setup_ext(dev, indio_dev,
-> > -                                                             INDIO_BUFFER_SOFTWARE, NULL,
-> > +                       ret = devm_iio_kfifo_buffer_setup_ext(dev, indio_dev, NULL,
-> >                                                               cros_ec_sensor_fifo_attributes);
-> >                         if (ret)
-> >                                 return ret;
-> > diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> > index 7cf2bf282cef..792807b2894f 100644
-> > --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-> > +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> > @@ -631,7 +631,6 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
-> >
-> >                 err = devm_iio_kfifo_buffer_setup(&scmi_iio_dev->dev,
-> >                                                   scmi_iio_dev,
-> > -                                                 INDIO_BUFFER_SOFTWARE,
-> >                                                   &scmi_iio_buffer_ops);
-> >                 if (err < 0) {
-> >                         dev_err(dev,
-> > diff --git a/drivers/iio/gyro/ssp_gyro_sensor.c b/drivers/iio/gyro/ssp_gyro_sensor.c
-> > index 46ed12771d2f..eebc036717af 100644
-> > --- a/drivers/iio/gyro/ssp_gyro_sensor.c
-> > +++ b/drivers/iio/gyro/ssp_gyro_sensor.c
-> > @@ -113,7 +113,6 @@ static int ssp_gyro_probe(struct platform_device *pdev)
-> >         indio_dev->available_scan_masks = ssp_gyro_scan_mask;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&pdev->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &ssp_gyro_buffer_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-> > index 36ba7611d9ce..ad5717965223 100644
-> > --- a/drivers/iio/health/max30100.c
-> > +++ b/drivers/iio/health/max30100.c
-> > @@ -433,7 +433,6 @@ static int max30100_probe(struct i2c_client *client,
-> >         indio_dev->modes = INDIO_DIRECT_MODE;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &max30100_buffer_setup_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
-> > index 2292876c55e2..abbcef563807 100644
-> > --- a/drivers/iio/health/max30102.c
-> > +++ b/drivers/iio/health/max30102.c
-> > @@ -542,7 +542,6 @@ static int max30102_probe(struct i2c_client *client,
-> >         }
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &max30102_buffer_setup_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> > index 383cc3250342..c3f433ad3af6 100644
-> > --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> > +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-> > @@ -731,7 +731,6 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
-> >         indio_dev->available_scan_masks = inv_icm42600_accel_scan_masks;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &inv_icm42600_buffer_ops);
-> >         if (ret)
-> >                 return ERR_PTR(ret);
-> > diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> > index cec1dd0e0464..9d94a8518e3c 100644
-> > --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> > +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-> > @@ -743,7 +743,6 @@ struct iio_dev *inv_icm42600_gyro_init(struct inv_icm42600_state *st)
-> >         indio_dev->setup_ops = &inv_icm42600_buffer_ops;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &inv_icm42600_buffer_ops);
-> >         if (ret)
-> >                 return ERR_PTR(ret);
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > index 16730a780964..f80c62849d30 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > @@ -746,7 +746,6 @@ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
-> >                         continue;
-> >
-> >                 ret = devm_iio_kfifo_buffer_setup(hw->dev, hw->iio_devs[i],
-> > -                                                 INDIO_BUFFER_SOFTWARE,
-> >                                                   &st_lsm6dsx_buffer_ops);
-> >                 if (ret)
-> >                         return ret;
-> > diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
-> > index 4141c0fa7bc4..09b831f9f40b 100644
-> > --- a/drivers/iio/light/apds9960.c
-> > +++ b/drivers/iio/light/apds9960.c
-> > @@ -1003,7 +1003,6 @@ static int apds9960_probe(struct i2c_client *client,
-> >         indio_dev->modes = INDIO_DIRECT_MODE;
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &apds9960_buffer_setup_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > index 793918e1c45f..f177b20f0f2d 100644
-> > --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > @@ -749,7 +749,6 @@ static int ad5933_probe(struct i2c_client *client,
-> >         indio_dev->num_channels = ARRAY_SIZE(ad5933_channels);
-> >
-> >         ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
-> > -                                         INDIO_BUFFER_SOFTWARE,
-> >                                           &ad5933_ring_setup_ops);
-> >         if (ret)
-> >                 return ret;
-> > diff --git a/include/linux/iio/kfifo_buf.h b/include/linux/iio/kfifo_buf.h
-> > index ccd2ceae7b25..8a83fb58232d 100644
-> > --- a/include/linux/iio/kfifo_buf.h
-> > +++ b/include/linux/iio/kfifo_buf.h
-> > @@ -12,11 +12,10 @@ void iio_kfifo_free(struct iio_buffer *r);
-> >
-> >  int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
-> >                                     struct iio_dev *indio_dev,
-> > -                                   int mode_flags,
-> >                                     const struct iio_buffer_setup_ops *setup_ops,
-> >                                     const struct attribute **buffer_attrs);
-> >
-> > -#define devm_iio_kfifo_buffer_setup(dev, indio_dev, mode_flags, setup_ops)     \
-> > -       devm_iio_kfifo_buffer_setup_ext((dev), (indio_dev), (mode_flags), (setup_ops), NULL)
-> > +#define devm_iio_kfifo_buffer_setup(dev, indio_dev, setup_ops) \
-> > +       devm_iio_kfifo_buffer_setup_ext((dev), (indio_dev), (setup_ops), NULL)
-> >
-> >  #endif
-> > --
-> > 2.27.0
-> >  
+> + */
+>  #define INDIO_DIRECT_MODE		0x01
+>  #define INDIO_BUFFER_TRIGGERED		0x02
+>  #define INDIO_BUFFER_SOFTWARE		0x04
 

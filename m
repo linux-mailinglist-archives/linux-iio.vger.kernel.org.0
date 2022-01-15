@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8039948F7B1
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 17:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B597B48F7D7
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jan 2022 17:32:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233025AbiAOQAW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Jan 2022 11:00:22 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:37262 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbiAOQAV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 11:00:21 -0500
+        id S230202AbiAOQcg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Jan 2022 11:32:36 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:41210 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230098AbiAOQcg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Jan 2022 11:32:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4D675B8006F
-        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 16:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139C9C36AE7;
-        Sat, 15 Jan 2022 16:00:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C72B60E1F
+        for <linux-iio@vger.kernel.org>; Sat, 15 Jan 2022 16:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A74FC36AE7;
+        Sat, 15 Jan 2022 16:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642262419;
-        bh=TKAuM9giM/b9GInKwXWZoJp01kR88xFdITWTaHjz5XA=;
+        s=k20201202; t=1642264355;
+        bh=0n7mkktvL4gdjJgJ43XSoYJl3IdO/f0EUSM4IP/JSNo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jQSqBDRLQKyflRdRg9+2usdjC2s7XpCRTRhl05BTUaZbF5mpvtDi4z1DKeSNxl10r
-         dc9cJq4/63OQJo984gDIdK2y0rImA++wBE3/2sVeB9ke/Po8q1H0xyBxTVbzqzr+n5
-         4b81lOrC3leefp3gNM10rCCrxVULrVeElM+VQzeXudWDaqk+yucXYtJ4HepQuhf2t9
-         mDzZP98TFQN+RN+kqom4rmnTDF8lmdSZ4wcJgxATMUoXUETS9p+asY29tR93GeJ/w8
-         qfu8/kthgQY1lSFxpla20vmf9H0QlZ1f+DacOW1xnNwsebM8wPBV8j1/dJ4NMv3HuM
-         88/DQWAoRaJ+w==
-Date:   Sat, 15 Jan 2022 16:06:19 +0000
+        b=JvaqWAn/H2xkPAZcs1GEtDjQC0hPP4Hn/WabIDk4EhlvAhPUv8kjEqm/9kjh5VVig
+         DNoS+hwEwr2lrq+QHvYdP2dBAnPsFQUl8Y7UMwfqcismZRu3es5iUtS1HfI2MbMDJ0
+         +wHVcpkfWLHwCPBnGTh2oLkQboNjbyJLXE+z2eS+yCr4C8dDRD9TIjYGNbPxsIU/qS
+         HXNfO3DPjn8H8JUA/4nHiISbgYdruV8t67Z/AlYd1pMcMdy87Z6e63AoqtC9F/1nIQ
+         M0C5vvS6Z/BJWJdre5SRfkNE4B02fJ+EHZvENOyx6J3ZvEhRMfIcQszQCU8Cjsx4oI
+         qs1zUxEbGcZEA==
+Date:   Sat, 15 Jan 2022 16:38:34 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: Re: [PATCH 04/10] iio: adc: stm32-dfsdm: Avoid dereferencing
- ->currentmode
-Message-ID: <20220115160619.746a9246@jic23-huawei>
-In-Reply-To: <20211216092235.56e69441@xps13>
+        Denis Ciocca <denis.ciocca@st.com>
+Subject: Re: [PATCH 05/10] iio: st_sensors: Use
+ iio_device_claim/release_direct_mode() when relevant
+Message-ID: <20220115163834.1d9ac991@jic23-huawei>
+In-Reply-To: <20211216093243.42fd0c88@xps13>
 References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-        <20211215151344.163036-5-miquel.raynal@bootlin.com>
-        <CA+U=DspvsLxYyhrvNfEBGPKuJ1a6-L=WjnQE-hvjMVp2g-9nxQ@mail.gmail.com>
-        <20211216092235.56e69441@xps13>
+        <20211215151344.163036-6-miquel.raynal@bootlin.com>
+        <CA+U=DsoVieRnfm6K-Oeva7poGBU+GbxfnS6uoRpc9=qihq6+Rw@mail.gmail.com>
+        <20211216093243.42fd0c88@xps13>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,96 +52,166 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Dec 2021 09:22:35 +0100
+On Thu, 16 Dec 2021 09:32:43 +0100
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Hi Alexandru,
+> Hello Alexandru,
 >=20
-> ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 08:47:02 +0200:
+> ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 09:16:34 +0200:
 >=20
-> > On Wed, Dec 15, 2021 at 10:03 PM Miquel Raynal
+> > On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
 > > <miquel.raynal@bootlin.com> wrote: =20
 > > >
-> > > This is an internal variable of the core, let's use the
-> > > iio_buffer_enabled() helper which is exported for the following purpo=
-se:
-> > > telling if the current mode is a buffered mode, which is precisely wh=
-at
-> > > this driver looks for.
+> > > The st_sensors_core driver hardcodes the content of the
+> > > iio_device_claim_direct_mode() and iio_device_release_direct_mode()
+> > > helpers. Let's get rid of this handcrafted implementation and use the
+> > > proper core helpers instead. Additionally, this lowers the tab level
+> > > (which is always good) and prevents the use of the ->currentmode
+> > > variable which is not supposed to be used like this anyway.
 > > >
 > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > > > ---
-> > >  drivers/iio/adc/stm32-dfsdm-adc.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > >  .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++++--------=
+--
+> > >  1 file changed, 13 insertions(+), 15 deletions(-)
 > > >
-> > > diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm3=
-2-dfsdm-adc.c
-> > > index 1cfefb3b5e56..a3b8827d3bbf 100644
-> > > --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> > > +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> > > @@ -466,8 +466,7 @@ static int stm32_dfsdm_channels_configure(struct =
-iio_dev *indio_dev,
-> > >          * In continuous mode, use fast mode configuration,
-> > >          * if it provides a better resolution.
-> > >          */
-> > > -       if (adc->nconv =3D=3D 1 && !trig &&
-> > > -           (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)) {
-> > > +       if (adc->nconv =3D=3D 1 && !trig && iio_buffer_enabled(indio_=
-dev)) {   =20
+> > > diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/driver=
+s/iio/common/st_sensors/st_sensors_core.c
+> > > index 1de395bda03e..e57e85c06f4b 100644
+> > > --- a/drivers/iio/common/st_sensors/st_sensors_core.c
+> > > +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+> > > @@ -549,26 +549,24 @@ int st_sensors_read_info_raw(struct iio_dev *in=
+dio_dev,
+> > >         int err;
+> > >         struct st_sensor_data *sdata =3D iio_priv(indio_dev);
+> > >
+> > > -       mutex_lock(&indio_dev->mlock);
+> > > -       if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
+> > > -               err =3D -EBUSY;
+> > > +       err =3D iio_device_claim_direct_mode(indio_dev);   =20
 > >=20
-> > This may become tricky if other modes get added later.
-> > STM does a relatively good job in updating and re-using their drivers
-> > (even if some of them do look quirky sometimes).
-
-Their hardware is crazy/complicated so tends to push the limits!
-
+> > I'm afraid, for this driver, we would first need a cleanup of
+> > indio_dev->mlock usage.
+> > Or at least that's how I would start it.
+> > i.e. remove the indio_dev->mlock and replace it with it's own
+> > mutex/lock in all places (except this one).
 > >=20
-> > So, the question here would be: is "iio_buffer_enabled(indio_dev)"
-> > going to be valid [in this place] once INDIO_BUFFER_TRIGGERED or
-> > INDIO_BUFFER_HARDWARE get added? =20
+> > The whole story about mlock is a bit old.
+> > As I was told, it was initially defined in the iio_dev object, but not
+> > very strictly controlled during review [of drivers].
+> > Drivers kept using it (as a convenience lock).
+> > It was later defined to be an IIO framework lock. =20
 >=20
-> I would argue, is this a real problem? Today iio_buffer_enabled() seem
-> to handle well what this driver is expecting. If tomorrow someone adds
-> another mode, that is his/her responsibility to state "okay, this
-> section is not common to all buffer styles *anymore*, so we need to do
-> a more fine grained check against ->currentmodes than
-> iio_buffer_enabled() does". In that case using the ->currentmodes
-> getter would be the right way to go, but only at that particular
-> moment, not today.
+> I see, thanks for the explanation!
 
-It should be isolated to this driver, so I think it is fine to use
-the broader check today, but I'll leave this to the st folks as
-it's their driver and I don't feel that strongly about it.
+That's accurate.  Historical mistakes and all :)
+We've been unwinding this for at least 5 years now so most of the simple
+cases are now gone, though it seems not all of them!
 
 >=20
+> > Now, there's a (slow) ongoing work to move mlock inside the
+> > iio_dev_opaque struct, and make each driver use it's own lock, OR use
+> > iio_device_{claim,release}_direct_mode() where appropriate.
 > >=20
-> > I'd also ping some STM people for some feedback, acks or testing.
-
-Definitely on this - they are an active bunch who do a great job of looking
-after these drivers.  I've cc'd Fabrice. Make sure he (and possibly some
-others are on v2 cc list).
-
-
-> >  =20
-> > >                 if (fl->flo[1].res >=3D fl->flo[0].res) {
-> > >                         fl->fast =3D 1;
-> > >                         flo =3D &fl->flo[1];
-> > > @@ -562,7 +561,7 @@ static int stm32_dfsdm_filter_configure(struct ii=
-o_dev *indio_dev,
-> > >                 cr1 =3D DFSDM_CR1_RCH(chan->channel);
-> > >
-> > >                 /* Continuous conversions triggered by SPI clk in buf=
-fer mode */
-> > > -               if (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)
-> > > +               if (iio_buffer_enabled(indio_dev))
-> > >                         cr1 |=3D DFSDM_CR1_RCONT(1);
-> > >
-> > >                 cr1 |=3D DFSDM_CR1_RSYNC(fl->sync_mode);
-> > > --
-> > > 2.27.0
-> > >   =20
+> > FWIW: this change could go in as-is. =20
 >=20
+> /me breathes :-)
+>=20
+> > But there's still the point of implementing another lock on the
+> > st_sensor_data type.
+> > I would try to split this work into another [parallel] series, because
+> > otherwise [if fitted into this series] it would just grow and be
+> > slow-to-review series.
+> > But =C2=AF\_(=E3=83=84)_/=C2=AF =20
+>=20
+> To be honest, my first goal was to document the modes enumeration.
+> Then, I realized currentmodes was also needing a bit of explanations as
+> well. Jonathan added that there were misuses with this variable. I then
+> tried to reduce it's overall use (when not particularly needed) and I
+> ended up doing this much bigger series, because every commit prepares
+> the field for the next one.
+>=20
+> The situation in this driver is (as you truly report):
+> - the mlock is correctly used in the read_raw hook but everything is
+>   hardcoded
+> - the mlock is abused everywhere else
+>=20
+> I am very sorry but I am not willing to entirely rework this driver
+> because it's not the point of my series, I don't have the hardware and
+> I know this would led to yet another series of changes, which I will
+> have no time to handle >.<
+>=20
+> My goal here is to reduce the usage count of currentmodes across all
+> the device driver. This addresses the former point and I think it's
+> completely valid because a series doing exactly what you request would
+> definitely do this in two distinct steps as well O:-)
+
++CC some folks who are active on this driver (there are lots of them
+as it covers some very common devices). For now I've +cc Denis but there
+are others you should add to a v2.
+
+Hmm. Question is whether doing this change in isolation from the more
+general cleanup of mlock is a good move. It won't be obvious what
+can race if someone comes along later trying to remove mlock usage...
+
+One perhaps non obvious thing is at that a driver should not rely in
+any way on the implementation of iio_device_claim/release_direct_mode().
+It's only documented characteristics is it will fail to claim if we
+are in buffered mode and that it prevents races with a transition to
+buffered modes.
+
+This particular read_raw path doesn't seem to use any shared
+state (buffer is allocated in st_sensors_read_axis_data) but it
+is turning the power on and off which is potentially fairly nasty
+(and interestingly does rely on shared state - see later).
+
+So it should use a local lock as well as mlock to prevent multiple
+calls of st_sensors_read_info_raw racing with each other.
+(claim_direct doesn't guarantee that because it's an implementation
+detail that a driver should rely on - right now as it's open coded
+we can know it is safe).
+
+I took a quick look at what other mlock usage we do have...
+
+The other cases in st_sensors_core.c should at most have been
+iio_device_claim_direct_mode() etc.  Right now they'll block indefinitely
+on a read of relevant _avail which is not good!
+
+However, not clear why they even need to do that as they are simply
+listing sdata->sensor_settings->odr.odr_avl etc which is const
+data for a give device type.  So I'm fairly sure we could just drop those
+two cases.
+
+The mlock use in st_accel_core.c is again dubious as it will block
+indefinitely if the buffer is enabled...=20
+
+So why is it here?  Probably
+1) Avoid changing sampling frequency whilst buffer is running which
+should be an iio_device_claim_direct_mode()
+2) There is some state that might potentially want keeping in sync - which
+would benefit from a local lock.  In particular sdata->odr which is
+a local cache of the output data rate is used in st_sensors_set_enable()
+which it could race with (if we can't rely on claim_direct())...
+
+This last one is why I don't think we can do this function in isolation.
+
+Sorry :(
+
+On the plus side it's not that hard to fix as:
+1) Drop the protection on _avail functions - it seems to be pointless.
+2) Add a new lock that actually only ensures device setting for ODR is
+   atomic wrt to the cached value.
+
+Plenty of folks to test.   I'm happy to roll the patch if you want me
+to, but as it's a precursor to your series perhaps better that you do.
+
+I'm sure one of the people who have made changes to this driver recently
+will help with testing.
+
+Jonathan
+
 >=20
 > Thanks,
 > Miqu=C3=A8l
+>=20
 

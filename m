@@ -2,111 +2,167 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A80FC48FE2C
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 18:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE23548FE42
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 18:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235888AbiAPR2a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jan 2022 12:28:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233486AbiAPR23 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 12:28:29 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D820AC061574;
-        Sun, 16 Jan 2022 09:28:28 -0800 (PST)
+        id S235925AbiAPR7k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jan 2022 12:59:40 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:58260 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230174AbiAPR7j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 12:59:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A0D860F95;
-        Sun, 16 Jan 2022 17:28:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE98CC36AE9;
-        Sun, 16 Jan 2022 17:28:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4288260DFD
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 17:59:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F9CC36AE7;
+        Sun, 16 Jan 2022 17:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642354107;
-        bh=mP/g/7ilC25AmVavPQA58iZQQiKw+DamgQZsALJsWMI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cMIN9T/pQ0d7TWYMi5n8Rg36AYTC7U/8aRDQVHMS8iha/2V9nf1rVx0kOuDdH9SUp
-         591u6ZiHgCTOug8eVbh07GkEoJDW6q/d8Q088ejUsNTvDgNZIBkPSQ3ykt2fIrrtQm
-         wnqHSKd4o4jkF2NK9ohiebRdDdJj19jPC4/rmQTKFd3TljKMRrqjsCp7/wriPFkneu
-         m48cF7txJnfMbO33i+lkhnNmcS6hWjcukg7BHlZg2Qf9xV+ITtfj6sUXj+NOvzfhPd
-         UKmA18GNyQS2NBzZbWwRS+PFBZ1gRahVUcV9ETwt0Rre6eJnQjfqyf9qRmtAE51QH/
-         9dqvU2xCwKWVQ==
-Date:   Sun, 16 Jan 2022 17:34:29 +0000
+        s=k20201202; t=1642355978;
+        bh=Alzuqbtg2nUG7vxUfblvzbfbTWqpq1VEwCCgQ9W/oT0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=r8ha5J7FdGx2jxmjHT/Ge6E4HUNJQ6BLgTjWlQCQcPkh5QPINsIAn1btOBLkmonoZ
+         h2NX4XBWShuECa2FLHpgRma78i9Bv7V1x6UhAseALjlxIgIYR+OGaLn8VsqAMnbiXt
+         +b3xalF6CcAcBM1Wkj6EPM3CBbP34rzmB8nqQTluFXsLRjlKGvuArF+wFA93bhtgDJ
+         ac9q9lVrIkel1RB9athhnpf/NQsn6VXJuK1vpzg0U7D80ChEziMS7mMS4vGh/7hQ4/
+         FLSG9nv400RXYJvgK2Wvs34tKKQqkicgWfrBJ/IxeAJqZdnYToE33FCYERT8g/Te+Q
+         PdDzx/GC+PIHA==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 0/3] Add support for LTC2688
-Message-ID: <20220116173429.698919f7@jic23-huawei>
-In-Reply-To: <20220115092705.491-1-nuno.sa@analog.com>
-References: <20220115092705.491-1-nuno.sa@analog.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Denis Ciocca <denis.ciocca@st.com>
+Subject: [PATCH v2 00/13] IIO: accel/st-sensors move into separate symbol namespaces
+Date:   Sun, 16 Jan 2022 18:05:22 +0000
+Message-Id: <20220116180535.2367780-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
+Changes since v1:
+* Add IIO_ prefix to namespaces.
 
->   * Have a clock property per channel. Note that we this I moved to OF
-> since we now have to use 'devm_get_clk_from_child()' which is using
-> device_node. Note that I could use 'to_of_node()' but mixing of.h and
-> property.h does not feel like a good idea.
+https://lwn.net/Articles/760045/ provides a good overview of this feature
+and why it might be used.  In this particular case we fall under the multi
+module case.  For each group of modules, I've moved the exports into
+an independent namespace.
 
-Ah, that's unfortunate given the clk is only needed in certain modes...
+Whilst I'm not entirely sure it is worth the noise of moving the main
+IIO exports into a namespace, it is definitely worthwhile for these small
+clusters of related modules (typically a core + i2c and spi modules).
 
-Andy/Rafael/Rob, any thoughts on how we should handle this?  Obviously
-ACPI and clocks is generally a no go, but in this particular case we
-aren't looking at a power management related use of clocks, but rather
-using the clk framework to provide a way to control one of our inputs
-used to generate the output dithered signal...  If the device just its
-own clock then we'd just control it directly with no problems, but it uses
-and external source.
+I've just done those within drivers/accel (including all of st-sensors as
+I did not want to do that piecemeal) as an initial set to get feedback on
+what people think of the approach and in particular naming of the namespaces.
 
-We don't know of anyone actually looking at this device in conjunction with
-ACPI so maybe just using dt specific calls for now rather than generic
-firmware properties is the best we can do.
+As you can see it is a straight forward change to makes so I'll do the
+rest of the IIO drivers once we are agreed on the generic details.
+Note that I'll be expecting this for any new cases of this pattern going
+forwards.
 
-Thanks,
+Includes a small diversion in st-sensors where we had a bunch of duplicated
+MODULE_* macros for some of the core modules which were made up of multiple
+c files.
 
-Jonathan
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Lucas Stankus <lucas.p.stankus@gmail.com>
+Cc: Puranjay Mohan <puranjay12@gmail.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: Sean Nyekjaer <sean@geanix.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Denis Ciocca <denis.ciocca@st.com>
 
->=20
->  ABI:
->   * Added out_voltageY_raw0 ABI for toggle mode;
->   * Added out_voltageY_dither_offset.
->=20
->  Bindings:
->   * Use standard microvolt unit;
->   * Added constrains for adi,output-range-microvolt and removed negative
-> values from the dts example;
->   * Moved clocks to the channel object;
->   * Dropped clock-names;
->   * Add a dependency between 'adi,toggle-dither-input' and 'clocks'.
-> =20
-> [1]: https://marc.info/?l=3Dlinux-iio&m=3D163662843603265&w=3D2
->=20
-> Nuno S=C3=A1 (3):
->   iio: dac: add support for ltc2688
->   iio: ABI: add ABI file for the LTC2688 DAC
->   dt-bindings: iio: Add ltc2688 documentation
->=20
->  .../ABI/testing/sysfs-bus-iio-dac-ltc2688     |   80 ++
->  .../bindings/iio/dac/adi,ltc2688.yaml         |  147 +++
->  MAINTAINERS                                   |    9 +
->  drivers/iio/dac/Kconfig                       |   11 +
->  drivers/iio/dac/Makefile                      |    1 +
->  drivers/iio/dac/ltc2688.c                     | 1070 +++++++++++++++++
->  6 files changed, 1318 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2688=
-.yaml
->  create mode 100644 drivers/iio/dac/ltc2688.c
->=20
+Jonathan Cameron (13):
+  iio:accel:mma9551_core: Move exports into IIO_MMA9551 namespace
+  iio:accel:mma7455_core: Move exports into IIO_MMA7455 namespace
+  iio:accel:kxsd9: Move exports into IIO_KDSD9 namespace
+  iio:accel:bma400: Move exports into IIO_BMA400 namespace
+  iio:accel:adxl313: Move exports into IIO_ADXL313 namespace
+  iio:accel:adxl345: Move exports into IIO_ADXL345 namespace
+  iio:accel:adxl355: Move exports into IIO_ADXL355 namespace
+  iio:accel:adxl372: Move exports into IIO_ADXL372 namespace
+  iio:accel:bmc150: Move exports into IIO_BMC150 namespace
+  iio:accel:bmi088: Move exports into IIO_BMI088 namespace
+  iio:accel:fxl8962af: Move exports into IIO_FXL8962AF namespace
+  iio:st-sensors: Remove duplicate MODULE_*
+  iio:st-sensors: Move exports into IIO_ST_SENSORS namespace
+
+ drivers/iio/accel/adxl313_core.c              |  6 ++--
+ drivers/iio/accel/adxl313_i2c.c               |  1 +
+ drivers/iio/accel/adxl313_spi.c               |  1 +
+ drivers/iio/accel/adxl345_core.c              |  2 +-
+ drivers/iio/accel/adxl345_i2c.c               |  1 +
+ drivers/iio/accel/adxl345_spi.c               |  1 +
+ drivers/iio/accel/adxl355_core.c              |  6 ++--
+ drivers/iio/accel/adxl355_i2c.c               |  1 +
+ drivers/iio/accel/adxl355_spi.c               |  1 +
+ drivers/iio/accel/adxl372.c                   |  4 +--
+ drivers/iio/accel/adxl372_i2c.c               |  1 +
+ drivers/iio/accel/adxl372_spi.c               |  1 +
+ drivers/iio/accel/bma400_core.c               |  6 ++--
+ drivers/iio/accel/bma400_i2c.c                |  1 +
+ drivers/iio/accel/bma400_spi.c                |  1 +
+ drivers/iio/accel/bmc150-accel-core.c         |  8 ++---
+ drivers/iio/accel/bmc150-accel-i2c.c          |  1 +
+ drivers/iio/accel/bmc150-accel-spi.c          |  1 +
+ drivers/iio/accel/bmi088-accel-core.c         |  8 ++---
+ drivers/iio/accel/bmi088-accel-spi.c          |  1 +
+ drivers/iio/accel/fxls8962af-core.c           |  6 ++--
+ drivers/iio/accel/fxls8962af-i2c.c            |  1 +
+ drivers/iio/accel/fxls8962af-spi.c            |  1 +
+ drivers/iio/accel/kxsd9-i2c.c                 |  1 +
+ drivers/iio/accel/kxsd9-spi.c                 |  1 +
+ drivers/iio/accel/kxsd9.c                     |  6 ++--
+ drivers/iio/accel/mma7455_core.c              |  6 ++--
+ drivers/iio/accel/mma7455_i2c.c               |  1 +
+ drivers/iio/accel/mma7455_spi.c               |  1 +
+ drivers/iio/accel/mma9551.c                   |  1 +
+ drivers/iio/accel/mma9551_core.c              | 36 +++++++++----------
+ drivers/iio/accel/mma9553.c                   |  1 +
+ drivers/iio/accel/st_accel_buffer.c           |  5 ---
+ drivers/iio/accel/st_accel_core.c             |  5 +--
+ drivers/iio/accel/st_accel_i2c.c              |  1 +
+ drivers/iio/accel/st_accel_spi.c              |  1 +
+ .../iio/common/st_sensors/st_sensors_buffer.c |  7 +---
+ .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++--------
+ .../iio/common/st_sensors/st_sensors_i2c.c    |  2 +-
+ .../iio/common/st_sensors/st_sensors_spi.c    |  2 +-
+ .../common/st_sensors/st_sensors_trigger.c    |  9 ++---
+ drivers/iio/gyro/st_gyro_buffer.c             |  4 ---
+ drivers/iio/gyro/st_gyro_core.c               |  5 +--
+ drivers/iio/gyro/st_gyro_i2c.c                |  1 +
+ drivers/iio/gyro/st_gyro_spi.c                |  1 +
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  |  3 +-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  1 +
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  1 +
+ drivers/iio/magnetometer/st_magn_buffer.c     |  4 ---
+ drivers/iio/magnetometer/st_magn_core.c       |  5 +--
+ drivers/iio/magnetometer/st_magn_i2c.c        |  1 +
+ drivers/iio/magnetometer/st_magn_spi.c        |  1 +
+ drivers/iio/pressure/st_pressure_buffer.c     |  5 ---
+ drivers/iio/pressure/st_pressure_core.c       |  5 +--
+ drivers/iio/pressure/st_pressure_i2c.c        |  1 +
+ drivers/iio/pressure/st_pressure_spi.c        |  1 +
+ 56 files changed, 111 insertions(+), 103 deletions(-)
+
+-- 
+2.34.1
 

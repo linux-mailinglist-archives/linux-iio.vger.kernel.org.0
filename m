@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A615648FE4C
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 19:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7195E48FE4D
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 19:00:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235946AbiAPSAB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jan 2022 13:00:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47918 "EHLO
+        id S231282AbiAPSAH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jan 2022 13:00:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235947AbiAPSAB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 13:00:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D169C061574
-        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 10:00:01 -0800 (PST)
+        with ESMTP id S235947AbiAPSAF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 13:00:05 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C327AC061574
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 10:00:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A280560FA3
-        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 18:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ACCC36AEF;
-        Sun, 16 Jan 2022 17:59:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8D7BFB80D89
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 18:00:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15D0C36AE9;
+        Sun, 16 Jan 2022 18:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642356000;
-        bh=6U3Y7NvIdr0cda4F5d9INCRglPe5fQfWl5yVNn8DvB8=;
+        s=k20201202; t=1642356002;
+        bh=dPQxO9dlZ6MF6rh4iEw6F7gslmtnyyWZG9tE+mdc5m4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dSf9AFJ2HtFb5QGQyTSi4X1lvUcPWz2WTwe4Aclqn0H+tYlrZ2dfmYHjId1vYu+xa
-         l90z4amsSZqj7BtipLGC17/lkLW2FP/pr7+UjhNW/vgIE2SLsHkyvp425T6ryDlVTW
-         vODxG3pRHzKgRlJGmjn+gcQtrqIrUkRdIPllZozLI6ohmZXdSKZxuso+QkJ2dZN4m7
-         cTJ9HLJMD9K4UcIlKjq0qOGbqe9307U+xe0tq+zhhJ+nMySRftch+KjfEEcaILx6mo
-         JkAiuCJPyUewfxMqlHkQsw5ZvLTxs2qDaog1NkG5X9EgRB5c/G+3eAhIqWBl1w/kWp
-         bER8cbJes/AIQ==
+        b=b0kTnw5/h1n9BA8UZSv1vez3ep3f5uQraqN+dRP2diAQxOjc4Ix6Fporp0XltBoBO
+         mhkfpwFnXkG3Rj2oq7dcqnMU6Oz3JEtVuVn66f5kh9aPIuEALrVI8ZtreHTyX+ny3j
+         FkQwmdl4mlpWTpesRyfNhUl36Zj8oR+KcqopMHmiB3OeH8i4B6/XFQZ12k+lAHoeOO
+         fwBvfp3quwUC5enBT57ZYLZzV8O+j0w+3KhDW/2Q9lduEom6KmgHRhN8OZ83NX+2Fs
+         Gj9KFpPC1k5w9NXUtuestBuS+P8xyIzD8yIC+fuUJH7d3uTF1ViGm/z5/Zvb6Jv/2U
+         0QQLppoGDYe8w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Gwendal Grignou <gwendal@chromium.org>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>
-Subject: [PATCH v2 10/13] iio:accel:bmi088: Move exports into IIO_BMI088 namespace
-Date:   Sun, 16 Jan 2022 18:05:32 +0000
-Message-Id: <20220116180535.2367780-11-jic23@kernel.org>
+        Sean Nyekjaer <sean@geanix.com>
+Subject: [PATCH v2 11/13] iio:accel:fxl8962af: Move exports into IIO_FXL8962AF namespace
+Date:   Sun, 16 Jan 2022 18:05:33 +0000
+Message-Id: <20220116180535.2367780-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220116180535.2367780-1-jic23@kernel.org>
 References: <20220116180535.2367780-1-jic23@kernel.org>
@@ -59,61 +59,62 @@ bus modules.
 For more info see https://lwn.net/Articles/760045/
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Mike Looijmans <mike.looijmans@topic.nl>
+Cc: Sean Nyekjaer <sean@geanix.com>
 ---
- drivers/iio/accel/bmi088-accel-core.c | 8 ++++----
- drivers/iio/accel/bmi088-accel-spi.c  | 1 +
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/accel/fxls8962af-core.c | 6 +++---
+ drivers/iio/accel/fxls8962af-i2c.c  | 1 +
+ drivers/iio/accel/fxls8962af-spi.c  | 1 +
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-index d74465214feb..8b2728bbcade 100644
---- a/drivers/iio/accel/bmi088-accel-core.c
-+++ b/drivers/iio/accel/bmi088-accel-core.c
-@@ -146,7 +146,7 @@ const struct regmap_config bmi088_regmap_conf = {
- 	.volatile_table = &bmi088_volatile_table,
- 	.cache_type = REGCACHE_RBTREE,
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index 32989d91b982..8e763dbf096b 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -178,7 +178,7 @@ const struct regmap_config fxls8962af_regmap_conf = {
+ 	.val_bits = 8,
+ 	.max_register = FXLS8962AF_MAX_REG,
  };
--EXPORT_SYMBOL_GPL(bmi088_regmap_conf);
-+EXPORT_SYMBOL_NS_GPL(bmi088_regmap_conf, IIO_BMI088);
+-EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
++EXPORT_SYMBOL_NS_GPL(fxls8962af_regmap_conf, IIO_FXLS8962AF);
  
- static int bmi088_accel_power_up(struct bmi088_accel_data *data)
- {
-@@ -533,7 +533,7 @@ int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
+ enum {
+ 	fxls8962af_idx_x,
+@@ -1232,7 +1232,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
  
- 	return ret;
+ 	return devm_iio_device_register(dev, indio_dev);
  }
--EXPORT_SYMBOL_GPL(bmi088_accel_core_probe);
-+EXPORT_SYMBOL_NS_GPL(bmi088_accel_core_probe, IIO_BMI088);
+-EXPORT_SYMBOL_GPL(fxls8962af_core_probe);
++EXPORT_SYMBOL_NS_GPL(fxls8962af_core_probe, IIO_FXLS8962AF);
  
- 
- void bmi088_accel_core_remove(struct device *dev)
-@@ -547,7 +547,7 @@ void bmi088_accel_core_remove(struct device *dev)
- 	pm_runtime_set_suspended(dev);
- 	bmi088_accel_power_down(data);
- }
--EXPORT_SYMBOL_GPL(bmi088_accel_core_remove);
-+EXPORT_SYMBOL_NS_GPL(bmi088_accel_core_remove, IIO_BMI088);
- 
- static int __maybe_unused bmi088_accel_runtime_suspend(struct device *dev)
+ static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
  {
-@@ -571,7 +571,7 @@ const struct dev_pm_ops bmi088_accel_pm_ops = {
- 	SET_RUNTIME_PM_OPS(bmi088_accel_runtime_suspend,
- 			   bmi088_accel_runtime_resume, NULL)
+@@ -1298,7 +1298,7 @@ const struct dev_pm_ops fxls8962af_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
+ 			   fxls8962af_runtime_resume, NULL)
  };
--EXPORT_SYMBOL_GPL(bmi088_accel_pm_ops);
-+EXPORT_SYMBOL_NS_GPL(bmi088_accel_pm_ops, IIO_BMI088);
+-EXPORT_SYMBOL_GPL(fxls8962af_pm_ops);
++EXPORT_SYMBOL_NS_GPL(fxls8962af_pm_ops, IIO_FXLS8962AF);
  
- MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
+ MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+ MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer driver");
+diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
+index cfb004b20455..7e0ecd3bf0d9 100644
+--- a/drivers/iio/accel/fxls8962af-i2c.c
++++ b/drivers/iio/accel/fxls8962af-i2c.c
+@@ -55,3 +55,4 @@ module_i2c_driver(fxls8962af_driver);
+ MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+ MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer i2c driver");
  MODULE_LICENSE("GPL v2");
-diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
-index 758ad2f12896..961e87a927c4 100644
---- a/drivers/iio/accel/bmi088-accel-spi.c
-+++ b/drivers/iio/accel/bmi088-accel-spi.c
-@@ -83,3 +83,4 @@ module_spi_driver(bmi088_accel_driver);
- MODULE_AUTHOR("Niek van Agt <niek.van.agt@topicproducts.com>");
++MODULE_IMPORT_NS(IIO_FXLS8962AF);
+diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
+index 57108d3d480b..0357d54d47cc 100644
+--- a/drivers/iio/accel/fxls8962af-spi.c
++++ b/drivers/iio/accel/fxls8962af-spi.c
+@@ -55,3 +55,4 @@ module_spi_driver(fxls8962af_driver);
+ MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+ MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer spi driver");
  MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("BMI088 accelerometer driver (SPI)");
-+MODULE_IMPORT_NS(IIO_BMI088);
++MODULE_IMPORT_NS(IIO_FXLS8962AF);
 -- 
 2.34.1
 

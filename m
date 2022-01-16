@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7195E48FE4D
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 19:00:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC5148FE4E
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 19:00:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbiAPSAH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jan 2022 13:00:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47938 "EHLO
+        id S235947AbiAPSAI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Jan 2022 13:00:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235947AbiAPSAF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 13:00:05 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C327AC061574
-        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 10:00:04 -0800 (PST)
+        with ESMTP id S235948AbiAPSAG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 13:00:06 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126D0C06161C
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 10:00:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8D7BFB80D89
-        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 18:00:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15D0C36AE9;
-        Sun, 16 Jan 2022 18:00:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A88B760FA6
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jan 2022 18:00:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C00C36AF2;
+        Sun, 16 Jan 2022 18:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642356002;
-        bh=dPQxO9dlZ6MF6rh4iEw6F7gslmtnyyWZG9tE+mdc5m4=;
+        s=k20201202; t=1642356005;
+        bh=X6+w6AuVXCb00WfbyFqGZv+obeYZTLSGezrbVqN5iSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b0kTnw5/h1n9BA8UZSv1vez3ep3f5uQraqN+dRP2diAQxOjc4Ix6Fporp0XltBoBO
-         mhkfpwFnXkG3Rj2oq7dcqnMU6Oz3JEtVuVn66f5kh9aPIuEALrVI8ZtreHTyX+ny3j
-         FkQwmdl4mlpWTpesRyfNhUl36Zj8oR+KcqopMHmiB3OeH8i4B6/XFQZ12k+lAHoeOO
-         fwBvfp3quwUC5enBT57ZYLZzV8O+j0w+3KhDW/2Q9lduEom6KmgHRhN8OZ83NX+2Fs
-         Gj9KFpPC1k5w9NXUtuestBuS+P8xyIzD8yIC+fuUJH7d3uTF1ViGm/z5/Zvb6Jv/2U
-         0QQLppoGDYe8w==
+        b=ITt8f4WFgbPPKxX2wulMkYkOQ/NGMXzmp6bLNGhKnqJIQ/rvFrxnS/Ez3BVWiaIDj
+         oUiUBtLiGdLCsJhqVkZUksR8rSR+Q/Hs8ZYOeHi0iKBE+vCxgvNKI+vhiZ3ByZ4B7C
+         nTM/4OWg+RYQL3GXCD5sVMNK+uZb5qs6QXiHFR+SwTGPKFhbouNWrpB/vQom5c0nfC
+         xrCx2zECrJT8cunwErFyd5YhpEx7zCp8eq5dAj26wjWIRleBHGBd6MINa39vjDS7kJ
+         JJoSEOwyVyPxSSWRXHlRl2CJLBA0jkoSLUoEnob9l9GP3QsBk27XRA+Fp9PBpW4S1X
+         Am5ujeDXOLtQw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Gwendal Grignou <gwendal@chromium.org>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH v2 11/13] iio:accel:fxl8962af: Move exports into IIO_FXL8962AF namespace
-Date:   Sun, 16 Jan 2022 18:05:33 +0000
-Message-Id: <20220116180535.2367780-12-jic23@kernel.org>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Denis Ciocca <denis.ciocca@st.com>
+Subject: [PATCH v2 12/13] iio:st-sensors: Remove duplicate MODULE_*
+Date:   Sun, 16 Jan 2022 18:05:34 +0000
+Message-Id: <20220116180535.2367780-13-jic23@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220116180535.2367780-1-jic23@kernel.org>
 References: <20220116180535.2367780-1-jic23@kernel.org>
@@ -52,69 +53,145 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-To avoid unnecessary pollution of the global symbol namespace move the
-driver core exports into their own namespace and import that into the two
-bus modules.
+The core module and type specific core modules are made up of
+several files. There is no benefit in duplicating the MODULE_* macros
+in each file so remove them.
 
-For more info see https://lwn.net/Articles/760045/
+Noticed whilst adding MODULE_IMPORT_NS() as I missed some files and
+it still worked, making it clear not all of these blocks were needed.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Sean Nyekjaer <sean@geanix.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Denis Ciocca <denis.ciocca@st.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/accel/fxls8962af-core.c | 6 +++---
- drivers/iio/accel/fxls8962af-i2c.c  | 1 +
- drivers/iio/accel/fxls8962af-spi.c  | 1 +
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/accel/st_accel_buffer.c                | 5 -----
+ drivers/iio/common/st_sensors/st_sensors_buffer.c  | 5 -----
+ drivers/iio/common/st_sensors/st_sensors_trigger.c | 5 -----
+ drivers/iio/gyro/st_gyro_buffer.c                  | 4 ----
+ drivers/iio/magnetometer/st_magn_buffer.c          | 4 ----
+ drivers/iio/pressure/st_pressure_buffer.c          | 5 -----
+ 6 files changed, 28 deletions(-)
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 32989d91b982..8e763dbf096b 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -178,7 +178,7 @@ const struct regmap_config fxls8962af_regmap_conf = {
- 	.val_bits = 8,
- 	.max_register = FXLS8962AF_MAX_REG,
- };
--EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
-+EXPORT_SYMBOL_NS_GPL(fxls8962af_regmap_conf, IIO_FXLS8962AF);
+diff --git a/drivers/iio/accel/st_accel_buffer.c b/drivers/iio/accel/st_accel_buffer.c
+index fc82fa83f1fb..b2977ae19b69 100644
+--- a/drivers/iio/accel/st_accel_buffer.c
++++ b/drivers/iio/accel/st_accel_buffer.c
+@@ -7,7 +7,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
  
- enum {
- 	fxls8962af_idx_x,
-@@ -1232,7 +1232,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
- 
- 	return devm_iio_device_register(dev, indio_dev);
+-#include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -65,7 +64,3 @@ int st_accel_allocate_ring(struct iio_dev *indio_dev)
+ 	return devm_iio_triggered_buffer_setup(indio_dev->dev.parent, indio_dev,
+ 		NULL, &st_sensors_trigger_handler, &st_accel_buffer_setup_ops);
  }
--EXPORT_SYMBOL_GPL(fxls8962af_core_probe);
-+EXPORT_SYMBOL_NS_GPL(fxls8962af_core_probe, IIO_FXLS8962AF);
+-
+-MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+-MODULE_DESCRIPTION("STMicroelectronics accelerometers buffer");
+-MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/common/st_sensors/st_sensors_buffer.c b/drivers/iio/common/st_sensors/st_sensors_buffer.c
+index dccc471e79da..5f2b1fb95fd7 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_buffer.c
++++ b/drivers/iio/common/st_sensors/st_sensors_buffer.c
+@@ -8,7 +8,6 @@
+  */
  
- static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
- {
-@@ -1298,7 +1298,7 @@ const struct dev_pm_ops fxls8962af_pm_ops = {
- 	SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
- 			   fxls8962af_runtime_resume, NULL)
- };
--EXPORT_SYMBOL_GPL(fxls8962af_pm_ops);
-+EXPORT_SYMBOL_NS_GPL(fxls8962af_pm_ops, IIO_FXLS8962AF);
+ #include <linux/kernel.h>
+-#include <linux/module.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/trigger.h>
+ #include <linux/interrupt.h>
+@@ -78,7 +77,3 @@ irqreturn_t st_sensors_trigger_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
+ }
+ EXPORT_SYMBOL(st_sensors_trigger_handler);
+-
+-MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+-MODULE_DESCRIPTION("STMicroelectronics ST-sensors buffer");
+-MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+index 392d74449886..ab7a5a24fa6e 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
++++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
+@@ -8,7 +8,6 @@
+  */
  
- MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
- MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer driver");
-diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-index cfb004b20455..7e0ecd3bf0d9 100644
---- a/drivers/iio/accel/fxls8962af-i2c.c
-+++ b/drivers/iio/accel/fxls8962af-i2c.c
-@@ -55,3 +55,4 @@ module_i2c_driver(fxls8962af_driver);
- MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
- MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer i2c driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(IIO_FXLS8962AF);
-diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
-index 57108d3d480b..0357d54d47cc 100644
---- a/drivers/iio/accel/fxls8962af-spi.c
-+++ b/drivers/iio/accel/fxls8962af-spi.c
-@@ -55,3 +55,4 @@ module_spi_driver(fxls8962af_driver);
- MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
- MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer spi driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(IIO_FXLS8962AF);
+ #include <linux/kernel.h>
+-#include <linux/module.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/trigger.h>
+ #include <linux/interrupt.h>
+@@ -241,7 +240,3 @@ int st_sensors_validate_device(struct iio_trigger *trig,
+ 	return 0;
+ }
+ EXPORT_SYMBOL(st_sensors_validate_device);
+-
+-MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+-MODULE_DESCRIPTION("STMicroelectronics ST-sensors trigger");
+-MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/gyro/st_gyro_buffer.c b/drivers/iio/gyro/st_gyro_buffer.c
+index 4ae33ef25b9c..1ebfe7aa6c96 100644
+--- a/drivers/iio/gyro/st_gyro_buffer.c
++++ b/drivers/iio/gyro/st_gyro_buffer.c
+@@ -7,7 +7,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
+ 
+-#include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -65,6 +64,3 @@ int st_gyro_allocate_ring(struct iio_dev *indio_dev)
+ 		NULL, &st_sensors_trigger_handler, &st_gyro_buffer_setup_ops);
+ }
+ 
+-MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+-MODULE_DESCRIPTION("STMicroelectronics gyroscopes buffer");
+-MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/magnetometer/st_magn_buffer.c b/drivers/iio/magnetometer/st_magn_buffer.c
+index cb43ccda808d..79987f42e8d9 100644
+--- a/drivers/iio/magnetometer/st_magn_buffer.c
++++ b/drivers/iio/magnetometer/st_magn_buffer.c
+@@ -7,7 +7,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
+ 
+-#include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -45,6 +44,3 @@ int st_magn_allocate_ring(struct iio_dev *indio_dev)
+ 		NULL, &st_sensors_trigger_handler, &st_magn_buffer_setup_ops);
+ }
+ 
+-MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+-MODULE_DESCRIPTION("STMicroelectronics magnetometers buffer");
+-MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/pressure/st_pressure_buffer.c b/drivers/iio/pressure/st_pressure_buffer.c
+index 25dbd5476b26..0dbf357c2c22 100644
+--- a/drivers/iio/pressure/st_pressure_buffer.c
++++ b/drivers/iio/pressure/st_pressure_buffer.c
+@@ -7,7 +7,6 @@
+  * Denis Ciocca <denis.ciocca@st.com>
+  */
+ 
+-#include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/buffer.h>
+@@ -44,7 +43,3 @@ int st_press_allocate_ring(struct iio_dev *indio_dev)
+ 	return devm_iio_triggered_buffer_setup(indio_dev->dev.parent, indio_dev,
+ 		NULL, &st_sensors_trigger_handler, &st_press_buffer_setup_ops);
+ }
+-
+-MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+-MODULE_DESCRIPTION("STMicroelectronics pressures buffer");
+-MODULE_LICENSE("GPL v2");
 -- 
 2.34.1
 

@@ -2,76 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CA44903D3
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 09:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F30874903EC
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 09:34:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238163AbiAQI3E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jan 2022 03:29:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40290 "EHLO
+        id S238281AbiAQIej (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jan 2022 03:34:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238159AbiAQI3D (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 03:29:03 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73041C06173F
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jan 2022 00:29:03 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n9NNm-0007eS-Fs; Mon, 17 Jan 2022 09:28:54 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1n9NNl-00E8vt-QK; Mon, 17 Jan 2022 09:28:53 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
+        with ESMTP id S238257AbiAQIeh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 03:34:37 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE586C061574;
+        Mon, 17 Jan 2022 00:34:36 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: usama.anjum)
+        with ESMTPSA id B4D1B1F4135B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1642408475;
+        bh=xoK0jv3NtU8ZkFPzIzfvCTtQcjyKWM9goIUF47mzE/o=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=IqPEoxEtxahmxn6slrmLI5kbao8z63Jjv3ia08ySyB2cwgvYAjuXWtX/zfe6H8SVu
+         LVU6yeTfN5PyztamR8/+VsrtSEok9fHjGiQKH/Q4VQD9k+eO3ktHcOimWf9KPHA/tJ
+         35gFyCbIUM2qBZgGg0rjph6PN1V7dqTh2/ukELJ8pcrqXjaTITDGaTZZIJyC1NHSGR
+         yfOEyKC5i1RUhzJeePiBaWs/vG2NG2RXQ8bmKxDzt+WdoGX/79A3IxpjQmZQXZ0Nga
+         ZyFxn3DJ55nAST/jHMH4Woogxhc79M2UKW7WOexmE/UBYqDKp+QqCJ4xTkOihpaKBb
+         VmRwclfcTAidQ==
+Message-ID: <b5b69eac10039de1b287df90279f464bd70e1de0.camel@collabora.com>
+Subject: Re: [PATCH] iio: frequency: admv1013: remove the always true
+ condition
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v3 2/2] iio: adc: tsc2046: add sanity check to avoid to big allocations
-Date:   Mon, 17 Jan 2022 09:28:52 +0100
-Message-Id: <20220117082852.3370869-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220117082852.3370869-1-o.rempel@pengutronix.de>
-References: <20220117082852.3370869-1-o.rempel@pengutronix.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Muhammad Usama Anjum <usama.anjum@collabora.com>
+Date:   Mon, 17 Jan 2022 13:34:28 +0500
+In-Reply-To: <20220115180941.709a667a@jic23-huawei>
+References: <YdS3gJYtECMaDDjA@debian-BULLSEYE-live-builder-AMD64>
+         <20220115180941.709a667a@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To avoid problematic devicetree configurations. Set allocation limit
-with error message and suggestion on what can be done to solve this
-issue.
+On Sat, 2022-01-15 at 18:09 +0000, Jonathan Cameron wrote:
+> On Wed, 5 Jan 2022 02:09:20 +0500
+> Muhammad Usama Anjum <usama.anjum@collabora.com> wrote:
+> 
+> > unsigned int variable is always greater than or equal to zero. Make the
+> > if condition simple.
+> > 
+> > Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> Hi,
+> 
+> + CC Antoniu and this should have a Fixes tag.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/iio/adc/ti-tsc2046.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Please let me know if I should send a V2 with this tag included.
 
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-index 95771ceba206..55b35570ad8b 100644
---- a/drivers/iio/adc/ti-tsc2046.c
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -679,6 +679,12 @@ static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
- 	for (ch_idx = 0; ch_idx < ARRAY_SIZE(priv->l); ch_idx++)
- 		size += tsc2046_adc_group_set_layout(priv, ch_idx, ch_idx);
- 
-+	if (size > PAGE_SIZE) {
-+		dev_err(&priv->spi->dev,
-+			"Calculated scan buffer is too big. Try to reduce spi-max-frequency, settling-time-us or oversampling-ratio\n");
-+		return -ENOSPC;
-+	}
-+
- 	priv->tx = devm_kzalloc(&priv->spi->dev, size, GFP_KERNEL);
- 	if (!priv->tx)
- 		return -ENOMEM;
--- 
-2.30.2
+Thanks,
+Usama
+> > ---
+> >  drivers/iio/frequency/admv1013.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+> > index 6cdeb50143af..3f3c478e9baa 100644
+> > --- a/drivers/iio/frequency/admv1013.c
+> > +++ b/drivers/iio/frequency/admv1013.c
+> > @@ -348,7 +348,7 @@ static int admv1013_update_mixer_vgate(struct admv1013_state *st)
+> >  
+> > 
+> > 
+> > 
+> >  	vcm = regulator_get_voltage(st->reg);
+> >  
+> > 
+> > 
+> > 
+> > -	if (vcm >= 0 && vcm < 1800000)
+> > +	if (vcm < 1800000)
+> >  		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
+> >  	else if (vcm > 1800000 && vcm < 2600000)
+> >  		mixer_vgate = (2375 * vcm / 1000000 + 125) / 100;
+> 
+
 

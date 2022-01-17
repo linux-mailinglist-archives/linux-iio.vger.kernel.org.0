@@ -2,134 +2,249 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CE1490314
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 08:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3444903D5
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 09:29:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237490AbiAQHqG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jan 2022 02:46:06 -0500
-Received: from first.geanix.com ([116.203.34.67]:37718 "EHLO first.geanix.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235289AbiAQHqF (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Mon, 17 Jan 2022 02:46:05 -0500
-Received: from skn-laptop.hadsten (unknown [185.233.254.173])
-        by first.geanix.com (Postfix) with ESMTPSA id DFC6EE1C31;
-        Mon, 17 Jan 2022 07:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1642405562; bh=wBNx6sRPedjd7oOlbFst7M+VLUAgT59jpgSY1ikPP7U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=X32/OMSHN+GNr6594QlDkAddn6aARUQ1QKGj8fUVBstkMGs+FA4lP9BUWueau77iX
-         ckhZCgHWi+gxefyNHYedwWppXP1H0eZ/jeNtxXnI+9UtQNTw72JfP5n+jMNY1e6ykD
-         buFEJ9Y66eWy1AAxHnpMgxM39c9B+tDdYP8/rMm+fr1Bkaj7wBuappalehl+QO60ws
-         XaBU1p1kJkx5RXls+hvFqkle5XTX08rZ9Z7w+dSkWa+kPWy+S7L5S/3FKSpxaeZHf2
-         OgfeCtU16vTkYijkNia5yKlSdAjjRtMT4Tn9g4POFtJFBaR+1YKBt4Ck2LD2o2vhMP
-         S2++UnNkCNCsg==
-Date:   Mon, 17 Jan 2022 08:46:00 +0100
-From:   Sean Nyekjaer <sean@geanix.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: fxls8962af: add padding to regmap for SPI
-Message-ID: <20220117074600.gmfonh35ptx6kqbs@skn-laptop.hadsten>
-References: <20211220125144.3630539-1-sean@geanix.com>
+        id S238183AbiAQI3I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jan 2022 03:29:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40294 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238168AbiAQI3E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 03:29:04 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58898C061574
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jan 2022 00:29:04 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1n9NNm-0007eR-Fs; Mon, 17 Jan 2022 09:28:54 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1n9NNl-00E8vk-5R; Mon, 17 Jan 2022 09:28:53 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v3 1/2] iio: adc: tsc2046: add .read_raw support
+Date:   Mon, 17 Jan 2022 09:28:51 +0100
+Message-Id: <20220117082852.3370869-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211220125144.3630539-1-sean@geanix.com>
-X-Spam-Status: No, score=-3.1 required=4.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,URIBL_BLOCKED
-        autolearn=disabled version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on 13e2a5895688
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Dec 20, 2021 at 01:51:43PM +0100, Sean Nyekjaer wrote:
-> Add missing don't care padding between address and
-> data for SPI transfers
-> 
-> Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->  drivers/iio/accel/fxls8962af-core.c | 12 ++++++++++--
->  drivers/iio/accel/fxls8962af-i2c.c  |  2 +-
->  drivers/iio/accel/fxls8962af-spi.c  |  2 +-
->  drivers/iio/accel/fxls8962af.h      |  3 ++-
->  4 files changed, 14 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> index 32989d91b982..f7fd9e046588 100644
-> --- a/drivers/iio/accel/fxls8962af-core.c
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -173,12 +173,20 @@ struct fxls8962af_data {
->  	u16 upper_thres;
->  };
->  
-> -const struct regmap_config fxls8962af_regmap_conf = {
-> +const struct regmap_config fxls8962af_i2c_regmap_conf = {
->  	.reg_bits = 8,
->  	.val_bits = 8,
->  	.max_register = FXLS8962AF_MAX_REG,
->  };
-> -EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
-> +EXPORT_SYMBOL_GPL(fxls8962af_i2c_regmap_conf);
-> +
-> +const struct regmap_config fxls8962af_spi_regmap_conf = {
-> +	.reg_bits = 8,
-> +	.pad_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = FXLS8962AF_MAX_REG,
-> +};
-> +EXPORT_SYMBOL_GPL(fxls8962af_spi_regmap_conf);
->  
->  enum {
->  	fxls8962af_idx_x,
-> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-> index cfb004b20455..6bde9891effb 100644
-> --- a/drivers/iio/accel/fxls8962af-i2c.c
-> +++ b/drivers/iio/accel/fxls8962af-i2c.c
-> @@ -18,7 +18,7 @@ static int fxls8962af_probe(struct i2c_client *client)
->  {
->  	struct regmap *regmap;
->  
-> -	regmap = devm_regmap_init_i2c(client, &fxls8962af_regmap_conf);
-> +	regmap = devm_regmap_init_i2c(client, &fxls8962af_i2c_regmap_conf);
->  	if (IS_ERR(regmap)) {
->  		dev_err(&client->dev, "Failed to initialize i2c regmap\n");
->  		return PTR_ERR(regmap);
-> diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
-> index 57108d3d480b..6f4dff3238d3 100644
-> --- a/drivers/iio/accel/fxls8962af-spi.c
-> +++ b/drivers/iio/accel/fxls8962af-spi.c
-> @@ -18,7 +18,7 @@ static int fxls8962af_probe(struct spi_device *spi)
->  {
->  	struct regmap *regmap;
->  
-> -	regmap = devm_regmap_init_spi(spi, &fxls8962af_regmap_conf);
-> +	regmap = devm_regmap_init_spi(spi, &fxls8962af_spi_regmap_conf);
->  	if (IS_ERR(regmap)) {
->  		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
->  		return PTR_ERR(regmap);
-> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
-> index b67572c3ef06..9cbe98c3ba9a 100644
-> --- a/drivers/iio/accel/fxls8962af.h
-> +++ b/drivers/iio/accel/fxls8962af.h
-> @@ -17,6 +17,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
->  int fxls8962af_core_remove(struct device *dev);
->  
->  extern const struct dev_pm_ops fxls8962af_pm_ops;
-> -extern const struct regmap_config fxls8962af_regmap_conf;
-> +extern const struct regmap_config fxls8962af_i2c_regmap_conf;
-> +extern const struct regmap_config fxls8962af_spi_regmap_conf;
->  
->  #endif				/* _FXLS8962AF_H_ */
-> -- 
-> 2.34.1
-> 
+Add read_raw() support to make use of iio_hwmon and other iio clients.
 
-Hi Jonathan,
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/iio/adc/ti-tsc2046.c | 118 ++++++++++++++++++++++++++++-------
+ 1 file changed, 97 insertions(+), 21 deletions(-)
 
-Did you have time to look at this?
+diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+index 7ac1fc4b04c2..95771ceba206 100644
+--- a/drivers/iio/adc/ti-tsc2046.c
++++ b/drivers/iio/adc/ti-tsc2046.c
+@@ -86,6 +86,7 @@
+ #define TI_TSC2046_EXT_POLL_CNT			3
+ #define TI_TSC2046_POLL_CNT \
+ 	(TI_TSC2046_MIN_POLL_CNT + TI_TSC2046_EXT_POLL_CNT)
++#define TI_TSC2046_INT_VREF			2500
+ 
+ /* Represents a HW sample */
+ struct tsc2046_adc_atom {
+@@ -166,9 +167,6 @@ struct tsc2046_adc_priv {
+ 	struct tsc2046_adc_atom *rx;
+ 	struct tsc2046_adc_atom *tx;
+ 
+-	struct tsc2046_adc_atom *rx_one;
+-	struct tsc2046_adc_atom *tx_one;
+-
+ 	unsigned int count;
+ 	unsigned int groups;
+ 	u32 effective_speed_hz;
+@@ -184,6 +182,8 @@ struct tsc2046_adc_priv {
+ 	.type = IIO_VOLTAGE,					\
+ 	.indexed = 1,						\
+ 	.channel = index,					\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+ 	.datasheet_name = "#name",				\
+ 	.scan_index = index,					\
+ 	.scan_type = {						\
+@@ -247,6 +247,14 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
+ 	else
+ 		pd = 0;
+ 
++	switch (ch_idx) {
++	case TI_TSC2046_ADDR_TEMP1:
++	case TI_TSC2046_ADDR_AUX:
++	case TI_TSC2046_ADDR_VBAT:
++	case TI_TSC2046_ADDR_TEMP0:
++		pd |= TI_TSC2046_SER | TI_TSC2046_PD1_VREF_ON;
++	}
++
+ 	return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
+ }
+ 
+@@ -258,16 +266,50 @@ static u16 tsc2046_adc_get_value(struct tsc2046_adc_atom *buf)
+ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
+ 				u32 *effective_speed_hz)
+ {
++	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
++	struct tsc2046_adc_atom *rx_buf, *tx_buf;
++	unsigned int val, val_normalized = 0;
++	int ret, i, count_skip = 0, max_count;
+ 	struct spi_transfer xfer;
+ 	struct spi_message msg;
+-	int ret;
++	u8 cmd;
++
++	if (!effective_speed_hz) {
++		count_skip = tsc2046_adc_time_to_count(priv, ch->settling_time_us);
++		max_count = count_skip + ch->oversampling_ratio;
++	} else {
++		max_count = 1;
++	}
++
++	if (sizeof(*tx_buf) * max_count > PAGE_SIZE)
++		return -ENOSPC;
++
++	tx_buf = kcalloc(max_count, sizeof(*tx_buf), GFP_KERNEL);
++	if (!tx_buf)
++		return -ENOMEM;
++
++	rx_buf = kcalloc(max_count, sizeof(*rx_buf), GFP_KERNEL);
++	if (!rx_buf) {
++		ret = -ENOMEM;
++		goto free_tx;
++	}
++
++	/*
++	 * Do not enable automatic power down on working samples. Otherwise the
++	 * plates will never be completely charged.
++	 */
++	cmd = tsc2046_adc_get_cmd(priv, ch_idx, true);
++
++	for (i = 0; i < max_count - 1; i++)
++		tx_buf[i].cmd = cmd;
++
++	/* automatically power down on last sample */
++	tx_buf[i].cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
+ 
+ 	memset(&xfer, 0, sizeof(xfer));
+-	priv->tx_one->cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
+-	priv->tx_one->data = 0;
+-	xfer.tx_buf = priv->tx_one;
+-	xfer.rx_buf = priv->rx_one;
+-	xfer.len = sizeof(*priv->tx_one);
++	xfer.tx_buf = tx_buf;
++	xfer.rx_buf = rx_buf;
++	xfer.len = sizeof(*tx_buf) * max_count;
+ 	spi_message_init_with_transfers(&msg, &xfer, 1);
+ 
+ 	/*
+@@ -278,13 +320,25 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
+ 	if (ret) {
+ 		dev_err_ratelimited(&priv->spi->dev, "SPI transfer failed %pe\n",
+ 				    ERR_PTR(ret));
+-		return ret;
++		goto free_bufs;
+ 	}
+ 
+ 	if (effective_speed_hz)
+ 		*effective_speed_hz = xfer.effective_speed_hz;
+ 
+-	return tsc2046_adc_get_value(priv->rx_one);
++	for (i = 0; i < max_count - count_skip; i++) {
++		val = tsc2046_adc_get_value(&rx_buf[count_skip + i]);
++		val_normalized += val;
++	}
++
++	ret = DIV_ROUND_UP(val_normalized, max_count - count_skip);
++
++free_bufs:
++	kfree(rx_buf);
++free_tx:
++	kfree(tx_buf);
++
++	return ret;
+ }
+ 
+ static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
+@@ -391,6 +445,37 @@ static irqreturn_t tsc2046_adc_trigger_handler(int irq, void *p)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int tsc2046_adc_read_raw(struct iio_dev *indio_dev,
++				struct iio_chan_spec const *chan,
++				int *val, int *val2, long m)
++{
++	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
++	int ret;
++
++	switch (m) {
++	case IIO_CHAN_INFO_RAW:
++		ret = tsc2046_adc_read_one(priv, chan->channel, NULL);
++		if (ret < 0)
++			return ret;
++
++		*val = ret;
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		/*
++		 * Note: the TSC2046 has internal voltage divider on the VBAT
++		 * line. This divider can be influenced by external divider.
++		 * So, it is better to use external voltage-divider driver
++		 * instead, which is calculating complete chain.
++		 */
++		*val = TI_TSC2046_INT_VREF;
++		*val2 = chan->scan_type.realbits;
++		return IIO_VAL_FRACTIONAL_LOG2;
++	}
++
++	return -EINVAL;
++}
++
+ static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
+ 					const unsigned long *active_scan_mask)
+ {
+@@ -421,6 +506,7 @@ static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
+ }
+ 
+ static const struct iio_info tsc2046_adc_info = {
++	.read_raw	  = tsc2046_adc_read_raw,
+ 	.update_scan_mode = tsc2046_adc_update_scan_mode,
+ };
+ 
+@@ -563,16 +649,6 @@ static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
+ 	size_t size;
+ 	int ret;
+ 
+-	priv->tx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->tx_one),
+-				    GFP_KERNEL);
+-	if (!priv->tx_one)
+-		return -ENOMEM;
+-
+-	priv->rx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->rx_one),
+-				    GFP_KERNEL);
+-	if (!priv->rx_one)
+-		return -ENOMEM;
+-
+ 	/*
+ 	 * Make dummy read to set initial power state and get real SPI clock
+ 	 * freq. It seems to be not important which channel is used for this
+-- 
+2.30.2
 
-/Sean

@@ -2,75 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 336AE490AEE
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 15:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EB0C490C97
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 17:41:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231187AbiAQO5r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jan 2022 09:57:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44684 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbiAQO5r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 09:57:47 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA841C061574
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jan 2022 06:57:46 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id s30so58631419lfo.7
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jan 2022 06:57:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Vw83fkEEICsk8cXVRF4hd6kspazzqozligmgHkDbaoI=;
-        b=lCdQVFYeg4XSeRcHvXROP7hbZUqqHEFQg/ax9Xzn8aCEOppBR+HNzR1RBAWcdk8zBZ
-         sHgoi2tGuwBSUWDKhjmTnpWtqEdLi/bw0AeOCahUchM9pWrSpiymfXD60YcE7pz16S72
-         vCcpEUBe+AmaX1gCNV5DaMfGBhye3bUKjDCSMZPOSHjm/DqX0v31yXwHkBbetG+NnTpG
-         dR7yNKJech+iDRdjXWpi6Dnomo9+hU/cznUhqu0Boiii4Gcyxw70oS9pCZlQWxdWNDSk
-         pughCAvyhdgpJbc0CnOK7u5TQzWNxmmZ4viRc0ducv3aVmonOoCO0qo6GB205+iHDXk5
-         cMLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Vw83fkEEICsk8cXVRF4hd6kspazzqozligmgHkDbaoI=;
-        b=ddO4PswYictsKl5sPkT/LJyvtJyBXOlWrQiWED6VVHcusXtSwla9Z+S3EyjakKoXOF
-         CAym5+Y7JP23DRDiKhbNOLMpntvec9rd6mDYqFH1KrjQWNitYHRvB1/E0NYBR++h1Moh
-         NOWbEh8/n+KuF1pDTUwB/gd9NYi5+Qn+1oXMjaae14uz3OO3dYLzQhB57t0O2tZhwHAx
-         qQNkEqatOOjzaO2peVMaCb4nFl1FEUT5Gk9uO9Md+tx/bTcZU8Amybw5nAcKyXyjQ2NC
-         gQiJWa8hYRUeIuSeI45UV43Ryj1KyAuteT9yL+VF9Xb8p4+mBOZvT9+EOGifaf665DnQ
-         KHaQ==
-X-Gm-Message-State: AOAM533jxesJSYiDgtpFyFF8hak+W0TameppOqrttL30N4BpuEXgaU+u
-        DbZYIpFXt2Sm6ZGMf5/GC+1X3KBBjKNJbETM6vI=
-X-Google-Smtp-Source: ABdhPJx+Y6aztqU1g2fIhNs9KsXX2uLgGhfqOZAOov08K3yvRbKoQWlq6rQ9juJn1fiyS+cLGdG/ZGrJkmC7gvfPtlk=
-X-Received: by 2002:a05:6512:ea7:: with SMTP id bi39mr16977182lfb.312.1642431465002;
- Mon, 17 Jan 2022 06:57:45 -0800 (PST)
+        id S241110AbiAQQlO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jan 2022 11:41:14 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:30830 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237683AbiAQQlO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 11:41:14 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20HE5ahC022577;
+        Mon, 17 Jan 2022 11:41:06 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dn4wyhqnb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 17 Jan 2022 11:41:05 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 20HGf43T064958
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 17 Jan 2022 11:41:04 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 17 Jan 2022 11:41:03 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 17 Jan 2022 11:41:03 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 17 Jan 2022 11:41:03 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20HGes81012846;
+        Mon, 17 Jan 2022 11:40:56 -0500
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, Cristian Pop <cristian.pop@analog.com>
+Subject: [PATCH v1 1/2] dt:bindings:iio:frequency: Add ADMV4420 doc
+Date:   Mon, 17 Jan 2022 18:52:46 +0200
+Message-ID: <20220117165247.15718-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:ac2:4344:0:0:0:0:0 with HTTP; Mon, 17 Jan 2022 06:57:44
- -0800 (PST)
-Reply-To: advocate.barisozdogans@gmail.com
-From:   INFOR <kpakpovivief@gmail.com>
-Date:   Mon, 17 Jan 2022 14:57:44 +0000
-Message-ID: <CAK_MbQfuRJ0TDajG_exKPFpiTo0wGT_g7rmffvv6U+L9W4eayg@mail.gmail.com>
-Subject: HI
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: NvqntSvOezvVh2VyCaZ45n6amTrluZ6P
+X-Proofpoint-ORIG-GUID: NvqntSvOezvVh2VyCaZ45n6amTrluZ6P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-17_07,2022-01-14_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ mlxlogscore=999 priorityscore=1501 suspectscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201170105
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
-    Happy New Year. How are you?
-Did you have a chance to check my old email?
-I understand your busy schedule, so don't worry. Please reply as soon
-as possible.
-Thanks and best regards,
-Baris Ozdogan
+Add device tree bindings for the ADMV4420 K band downconverter.
 
-Hola,
-   Feliz a=C3=B1o nuevo. =C2=BFC=C3=B3mo est=C3=A1s?
-=C2=BFTuviste la oportunidad de revisar mi correo electr=C3=B3nico anterior=
-?
-Entiendo tu apretada agenda, as=C3=AD que no te preocupes. Por favor
-responda tan pronto como sea posible.
-Gracias y saludos cordiales,
-Baris =C3=96zdogan
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+---
+ .../bindings/iio/frequency/adi,admv4420.yaml  | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+new file mode 100644
+index 000000000000..f26af2718f23
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,admv4420.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ADMV4420 K Band Downconverter
++
++maintainers:
++- Cristian Pop <cristian.pop@analog.com>
++
++description: |
++    The ADMV4420 is a highly integrated, double balanced, active
++    mixer with an integrated fractional-N synthesizer, ideally suited
++    for next generation K band satellite communications
++properties:
++  compatible:
++    enum:
++      - adi,admv4420
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 1000000
++
++  adi,lo_freq_hz:
++    description: LO Frequency
++    $ref: /schemas/types.yaml#/definitions/uint64
++
++  adi,ref_ext_single_ended_en:
++    description: External reference selected.
++    type: boolean
++
++required:
++- compatible
++- reg
++
++additionalProperties: false
++
++examples:
++- |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      admv4420@0 {
++        compatible = "adi,admv4420";
++        reg = <0>;
++        spi-max-frequency = <1000000>;
++        adi,lo_freq_hz = /bits/ 64 <16743700000>;
++        adi,ref_ext_single_ended_en;
++      };
++    };
++...
+-- 
+2.17.1
+

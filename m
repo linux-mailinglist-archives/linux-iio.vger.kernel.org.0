@@ -2,97 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E530248FF12
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jan 2022 22:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E8D4901DE
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 07:15:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233648AbiAPVZy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Jan 2022 16:25:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35604 "EHLO
+        id S234612AbiAQGPc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jan 2022 01:15:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229802AbiAPVZy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Jan 2022 16:25:54 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65845C061574;
-        Sun, 16 Jan 2022 13:25:53 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id k15so57272190edk.13;
-        Sun, 16 Jan 2022 13:25:53 -0800 (PST)
+        with ESMTP id S234488AbiAQGPc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 01:15:32 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC44CC061574;
+        Sun, 16 Jan 2022 22:15:31 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id c190so16941356qkg.9;
+        Sun, 16 Jan 2022 22:15:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dkHqHGWDMO2S8ErOMYU2TYQtBD+QqkroZ/Io7kj/iR4=;
-        b=BrRDtjxRT60E15V2/0H4zOS3YU6bnNJC81ILKU/s1ZI7siQBj3ev/WBMpB4xYuVcRX
-         2/AY4rX3RwN77jVRjT0u5FKf/RAiSX5VY9fxp2BVSwtjFDeVOChO9zOmmo2H/VQwSyW/
-         vOwADbFk+8gNKq5No2mffBwSUYdpdce3mOE/1oxANNIU/TD5Jh9kgbaWYzFZFKYxrHly
-         H9U2jjYzPsVFNUoqzYAYA2OU50WRJMfrWBJYE/Tq88bgHiTHC9gb1I6p+vnKoYsDf9Jp
-         yNm7g9660wQfR34zXtNeWZBfEKDui1o3BbyhI+3Hlb0LGuWtl7Dz944v/w72DmfLy8cM
-         o6OA==
+         :cc:content-transfer-encoding;
+        bh=miI/KTSUJYn7JPetqRU0AB1f5MN5qyavg3LuiL7Shbo=;
+        b=eJgC/w4tZZIDx/VIS/oo7EKER6fTg2++v8jMnNLwXrYepPhpSfGzdOKQE0t1dO3smU
+         3TVeZWbQvadozW9FI2I/3eOLZhv73z7lmeod4a45ssJxwEvzY4wENIJOLXiFh4uGjIHK
+         TM3AwlFaNdw4PS9wVGPPvGYvvEevf1m1JFvtJsaPkLJsSmy/i+ee/8g6PJ/oUDAO62Dk
+         8mzsT3NquVi1dwtxPZeiv1/ef09SpO6yDfK/qONFYGdLqhcwILwYjmBgdpzoh633ZMoa
+         Vb6hH9MU35hsUr4fKA0M5uP03a3tnf2xVs+MQzqTqOb62BtnxY3s0nREbZNx5l36CVMc
+         kSgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dkHqHGWDMO2S8ErOMYU2TYQtBD+QqkroZ/Io7kj/iR4=;
-        b=Dwh8jheXqeOEeHRL2qUdHwci8vteaV3WTH0vOpqvgc2ZXtlxA6B6vJTylil62QL3ls
-         Oy3Ub58d3Uan1/Jv05wGzsr+96HVAkBih0zDm6BKXcXwJ/YPfCyMadJgTOJdKJl6dITp
-         0kD5zk7pc78Y7wASRt5B2I25N+Bn8KM5A+ZXt7ziAsgr7ceAMtYbVjmKDQE7aOnmOU3C
-         hv/LpF4KSPEJ8TbaVaiwc6ht3K5bIgW0l3mRMzmMkmBfoBfpEQTmU95DH9nqIyeVAJn6
-         By54skWIdX1076XTLvlrypJ/HRtU1VbrDMfY5lvqp6fQnBdfe8qgTHcD3Hd2ACGLpRsU
-         zZKw==
-X-Gm-Message-State: AOAM530CDV0U3ZjGhlpGxO4d/pnrnjRG7fms0xEQq6PapRNrgoyTi6Fx
-        ZPdeJowEeEvZyK5hSwniqg0kGC8pHeXOgnzjs5uKjTkKLfPTGw==
-X-Google-Smtp-Source: ABdhPJw3izEHJeXRQXktWVVbIEMep10jJrLdsI2kPye/SIoyiHeQDSW1tOwc0xglXUGVQmeO1UFHTbDCLDdwSieiwSs=
-X-Received: by 2002:a17:906:8693:: with SMTP id g19mr9445928ejx.579.1642368351891;
- Sun, 16 Jan 2022 13:25:51 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=miI/KTSUJYn7JPetqRU0AB1f5MN5qyavg3LuiL7Shbo=;
+        b=GxK/cFcCzb25urJ/fVMajcxdcZU9qzwhSnobOVnLobvNdPXzuWtESkWPMI/pu7TTjV
+         KG/xfY6CK0qiymRl5w4CLpWCH1mT4OzY5H1IpAUpDmOj7GBPr3Gz/K1vNR43tAK5qnmY
+         /uX0qqD91DMj4fZmjwZvxL3fGS/wBzV3CH9y8EIEuzDZBP408vQO9RKoPdPm9Mw8UmhW
+         cy6T8MJ3CKWmQG4EmjKokmmEX0pEfr8R1/pbwLarQCUWWhiRzv5uY9o5+6r0zTUigbaD
+         +zb/2k7z7B/769rHw5xq8joKZhJoqgRQucUetg3c77OM0rsfz/WbUg4QP5UA3uj7dZGQ
+         lIPw==
+X-Gm-Message-State: AOAM531nanSw5/a5BRUiXb2gzxT18Ir/YdBAabm0VpIY4u7OpuTtdTCn
+        dgb/qdx8atUXo5QHW8SBKSh7X+7fQdpyhkvRgF8u+0wSjFo=
+X-Google-Smtp-Source: ABdhPJzQgpI2hG3be8BoUkulLrMdaE7te+AnDNiAOVWbFaB0wPvEmwxQA+mFS38TyMQZvDqZGmXf7CTlolhW6OPQoVQ=
+X-Received: by 2002:a05:620a:470b:: with SMTP id bs11mr2825914qkb.210.1642400130779;
+ Sun, 16 Jan 2022 22:15:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20220115092705.491-1-nuno.sa@analog.com> <20220116173429.698919f7@jic23-huawei>
-In-Reply-To: <20220116173429.698919f7@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 16 Jan 2022 23:25:15 +0200
-Message-ID: <CAHp75VczFs8QpsY7tuB-h4X=H54nyjABA4qDSmpQ+FRYAHZdrA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Add support for LTC2688
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+References: <20220106125947.139523-1-gengcixi@gmail.com> <20220106125947.139523-4-gengcixi@gmail.com>
+ <CADBw62pBCdrbRspTV9Yck4DP8DE=ECGmEtD74NOtm1YRT3DM8w@mail.gmail.com> <CAF12kFu6O-gfiqp4j24zxC_GqCwJ2Q5KGYYaCtnagmUFB_bsVg@mail.gmail.com>
+In-Reply-To: <CAF12kFu6O-gfiqp4j24zxC_GqCwJ2Q5KGYYaCtnagmUFB_bsVg@mail.gmail.com>
+From:   Baolin Wang <baolin.wang7@gmail.com>
+Date:   Mon, 17 Jan 2022 14:16:10 +0800
+Message-ID: <CADBw62rSdWN-L8HbnyMrUNp=x0pDdKR6MyKO4yfu00MnrN4L-g@mail.gmail.com>
+Subject: Re: [PATCH 3/7] iio: adc: sc27xx: structure adjuststment and optimization
+To:     Cixi Geng <gengcixi@gmail.com>
+Cc:     Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>, jic23@kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
+        Rob Herring <robh+dt@kernel.org>, lgirdwood@gmail.com,
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
+        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 16, 2022 at 7:28 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, Jan 13, 2022 at 9:54 AM Cixi Geng <gengcixi@gmail.com> wrote:
 >
->
->
-> >   * Have a clock property per channel. Note that we this I moved to OF
-> > since we now have to use 'devm_get_clk_from_child()' which is using
-> > device_node. Note that I could use 'to_of_node()' but mixing of.h and
-> > property.h does not feel like a good idea.
->
-> Ah, that's unfortunate given the clk is only needed in certain modes...
->
-> Andy/Rafael/Rob, any thoughts on how we should handle this?  Obviously
-> ACPI and clocks is generally a no go, but in this particular case we
-> aren't looking at a power management related use of clocks, but rather
-> using the clk framework to provide a way to control one of our inputs
-> used to generate the output dithered signal...  If the device just its
-> own clock then we'd just control it directly with no problems, but it uses
-> and external source.
->
-> We don't know of anyone actually looking at this device in conjunction with
-> ACPI so maybe just using dt specific calls for now rather than generic
-> firmware properties is the best we can do.
+> Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=887=E6=
+=97=A5=E5=91=A8=E4=BA=94 15:03=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > On Thu, Jan 6, 2022 at 9:00 PM Cixi Geng <gengcixi@gmail.com> wrote:
+> > >
+> > > From: Cixi Geng <cixi.geng1@unisoc.com>
+> > >
+> > > Introduce one variant device data structure to be compatible
+> > > with SC2731 PMIC since it has different scale and ratio calculation
+> > > and so on.
+> > >
+> > > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
+> > > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+> > > ---
+> > >  drivers/iio/adc/sc27xx_adc.c | 94 ++++++++++++++++++++++++++++++----=
+--
+> > >  1 file changed, 79 insertions(+), 15 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_ad=
+c.c
+> > > index aee076c8e2b1..d2712e54ee79 100644
+> > > --- a/drivers/iio/adc/sc27xx_adc.c
+> > > +++ b/drivers/iio/adc/sc27xx_adc.c
+> > > @@ -12,9 +12,9 @@
+> > >  #include <linux/slab.h>
+> > >
+> > >  /* PMIC global registers definition */
+> > > -#define SC27XX_MODULE_EN               0xc08
+> > > +#define SC2731_MODULE_EN               0xc08
+> > >  #define SC27XX_MODULE_ADC_EN           BIT(5)
+> > > -#define SC27XX_ARM_CLK_EN              0xc10
+> > > +#define SC2731_ARM_CLK_EN              0xc10
+> > >  #define SC27XX_CLK_ADC_EN              BIT(5)
+> > >  #define SC27XX_CLK_ADC_CLK_EN          BIT(6)
+> > >
+> > > @@ -78,6 +78,23 @@ struct sc27xx_adc_data {
+> > >         int channel_scale[SC27XX_ADC_CHANNEL_MAX];
+> > >         u32 base;
+> > >         int irq;
+> > > +       const struct sc27xx_adc_variant_data *var_data;
+> > > +};
+> > > +
+> > > +/*
+> > > + * Since different PMICs of SC27xx series can have different
+> > > + * address and ratio, we should save ratio config and base
+> > > + * in the device data structure.
+> > > + */
+> > > +struct sc27xx_adc_variant_data {
+> > > +       u32 module_en;
+> > > +       u32 clk_en;
+> > > +       u32 scale_shift;
+> > > +       u32 scale_mask;
+> > > +       const struct sc27xx_adc_linear_graph *bscale_cal;
+> > > +       const struct sc27xx_adc_linear_graph *sscale_cal;
+> > > +       void (*init_scale)(struct sc27xx_adc_data *data);
+> > > +       int (*get_ratio)(int channel, int scale);
+> > >  };
+> > >
+> > >  struct sc27xx_adc_linear_graph {
+> > > @@ -103,6 +120,16 @@ static struct sc27xx_adc_linear_graph small_scal=
+e_graph =3D {
+> > >         100, 341,
+> > >  };
+> > >
+> > > +static const struct sc27xx_adc_linear_graph sc2731_big_scale_graph_c=
+alib =3D {
+> > > +       4200, 850,
+> > > +       3600, 728,
+> > > +};
+> > > +
+> > > +static const struct sc27xx_adc_linear_graph sc2731_small_scale_graph=
+_calib =3D {
+> > > +       1000, 838,
+> > > +       100, 84,
+> > > +};
+> >
+> > The original big_scale_graph_calib and small_scale_graph_calib are for
+> > SC2731 PMIC, why add new structure definition for SC2731?
+> >
+> > > +
+> > >  static const struct sc27xx_adc_linear_graph big_scale_graph_calib =
+=3D {
+> > >         4200, 856,
+> > >         3600, 733,
+> > > @@ -130,11 +157,11 @@ static int sc27xx_adc_scale_calibration(struct =
+sc27xx_adc_data *data,
+> > >         size_t len;
+> > >
+> > >         if (big_scale) {
+> > > -               calib_graph =3D &big_scale_graph_calib;
+> > > +               calib_graph =3D data->var_data->bscale_cal;
+> > >                 graph =3D &big_scale_graph;
+> > >                 cell_name =3D "big_scale_calib";
+> > >         } else {
+> > > -               calib_graph =3D &small_scale_graph_calib;
+> > > +               calib_graph =3D data->var_data->sscale_cal;
+> > >                 graph =3D &small_scale_graph;
+> > >                 cell_name =3D "small_scale_calib";
+> > >         }
+> > > @@ -160,7 +187,7 @@ static int sc27xx_adc_scale_calibration(struct sc=
+27xx_adc_data *data,
+> > >         return 0;
+> > >  }
+> > >
+> > > -static int sc27xx_adc_get_ratio(int channel, int scale)
+> > > +static int sc2731_adc_get_ratio(int channel, int scale)
+> > >  {
+> > >         switch (channel) {
+> > >         case 1:
+> > > @@ -185,6 +212,21 @@ static int sc27xx_adc_get_ratio(int channel, int=
+ scale)
+> > >         return SC27XX_VOLT_RATIO(1, 1);
+> > >  }
+> > >
+> > > +/*
+> > > + * According to the datasheet set specific value on some channel.
+> > > + */
+> > > +static void sc2731_adc_scale_init(struct sc27xx_adc_data *data)
+> > > +{
+> > > +       int i;
+> > > +
+> > > +       for (i =3D 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
+> > > +               if (i =3D=3D 5)
+> > > +                       data->channel_scale[i] =3D 1;
+> > > +               else
+> > > +                       data->channel_scale[i] =3D 0;
+> > > +       }
+> > > +}
+> >
+> > This is unnecessary I think, please see sc27xx_adc_write_raw() that
+> > can set the channel scale.
+> Did you mean that all the PMIC's scale_init function should put into
+> the sc27xx_adc_write_raw?
 
-The problem is the CCF is so OF-centric and maintainer(s) seems
-skeptical about switching it to use fwnode APIs (they wanted, last
-time I tried, to show how exactly it will be used, so here is your
-chance!), but OTOH switching to fwnode API is a half made road,
-because for ACPI we might need a glue layer which may be way too
-tricky to be considered as a part of this series.
+No.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> but the scale_init is all different by each PMIC, if implemented in
+> the write_raw, will add a lot of
+> if or switch_case branch
+
+What I mean is we should follow the original method to set the channel
+scale by iio_info. Please also refer to other drivers how ot handle
+the channel scale.
+
+--=20
+Baolin Wang

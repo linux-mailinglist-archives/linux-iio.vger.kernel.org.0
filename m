@@ -2,228 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E40E64904BE
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 10:25:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 654B34904FF
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jan 2022 10:37:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235624AbiAQJZo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Jan 2022 04:25:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53268 "EHLO
+        id S233143AbiAQJhq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Jan 2022 04:37:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235626AbiAQJZn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 04:25:43 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF5AC061574
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jan 2022 01:25:43 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n9OFv-0006KR-Ei; Mon, 17 Jan 2022 10:24:51 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n9OFp-00AnDX-Gd; Mon, 17 Jan 2022 10:24:44 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1n9OFo-0002fs-6r; Mon, 17 Jan 2022 10:24:44 +0100
-Date:   Mon, 17 Jan 2022 10:24:44 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>, Andrew Lunn <andrew@lunn.ch>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        KVM list <kvm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Guenter Roeck <groeck@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-phy@lists.infradead.org, netdev@vger.kernel.org,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        platform-driver-x86@vger.kernel.org,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Takashi Iwai <tiwai@suse.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        openipmi-developer@lists.sourceforge.net,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Zha Qipeng <qipeng.zha@intel.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        linux-mediatek@lists.infradead.org,
-        Brian Norris <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/2] platform: make platform_get_irq_optional() optional
-Message-ID: <20220117092444.opoedfcf5k5u6otq@pengutronix.de>
-References: <20220112085009.dbasceh3obfok5dc@pengutronix.de>
- <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
- <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
- <Yd9L9SZ+g13iyKab@sirena.org.uk>
- <29f0c65d-77f2-e5b2-f6cc-422add8a707d@omp.ru>
- <20220114092557.jrkfx7ihg26ekzci@pengutronix.de>
- <61b80939-357d-14f5-df99-b8d102a4e1a1@omp.ru>
- <20220114202226.ugzklxv4wzr6egwj@pengutronix.de>
- <c9026f17-2b3f-ee94-0ea3-5630f981fbc1@omp.ru>
- <CAMuHMdXVbRudGs69f9ZzaP1PXhteDNZiXA658eMFAwP4nr9r3w@mail.gmail.com>
+        with ESMTP id S235783AbiAQJhq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Jan 2022 04:37:46 -0500
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D533C061574;
+        Mon, 17 Jan 2022 01:37:46 -0800 (PST)
+Received: by mail-ua1-x92a.google.com with SMTP id p1so29263905uap.9;
+        Mon, 17 Jan 2022 01:37:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=uMQ1EIF4RSxPhUl0TWMfaZBTRoZ1vCSmX3Nwyu9qX8M=;
+        b=Xbqd782sX51xz52Pu4oPlcgnsZHNH7eODQEq10xb3SAyWtlnRFim3gCeMLGai3guzY
+         lB3XAo5tIXRvyZL2F7qjnu9uiiPB0k8R0av3D8RuZOUv91nh6HQCVLbrIhesbPRwrIei
+         DQTQLEzVK1bgfVM2t5WGY5+OpHvbAPGLyibVKrHrhL6k5ugYes+BcTXoDO4SyQVsFbKB
+         JkehUEXjihrc+Z+9lsZ2yvF6vdOAEgaNzSpkLPhDklxZoMpAFsn8QlMmsfZFD6CxtZwO
+         mVX3iQrp7t67upMpiEwELNGAA2y7Lbfv+bgXKg8Bof8j5ra1Jnknidm5WzhO7t0YbhXF
+         0Kzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=uMQ1EIF4RSxPhUl0TWMfaZBTRoZ1vCSmX3Nwyu9qX8M=;
+        b=4fnkgYaClp4vnW2vZJpQamAOCHa5NdmvAU78Po+YjPf0NayXR1KfGWuGjkr7iQ7c8u
+         5OStAW0mukTDQiaAJk4RvZwayB63xLh0SeLyVfWIlJYrnNpRbqSiEhFImtaFfTgCIU1L
+         wVdF+m2fY6+3SLwy7HAQ1Uvnh1nATcYKzSVa1dR7iTDGG3G8NQHtMaojaknxoqrrGgjG
+         /1iCorQE4MzXgX91O49XO7IpPBKd5SnJm89ki/sW5I78dJdqD1NqmO10PM9BjCe3z2zK
+         kE9P8wjuDie/FXB9MpzlaVf/jrWudOqP5PQOpnviFhIDjN3jFzCXOV1Aou5LQFCG6gQ/
+         d/mQ==
+X-Gm-Message-State: AOAM531Cc8H63mIQsooQ4UdJU1zV7QQ1RGYJ6ggeol9sHTShZ+IsZevF
+        EYhEHVUqC9VeZ4ZAvXLbkvLkVY7unR0F4Fxkiyg=
+X-Google-Smtp-Source: ABdhPJz1nOfG1fYXxt25g4Te+KL3K+cs+UqU3JBn/2jq8iRHbWUWaYCgU/42gNiIQaKxB3S9wpGa+K8sWP/RrsHh9o0=
+X-Received: by 2002:ab0:702a:: with SMTP id u10mr7066269ual.91.1642412264776;
+ Mon, 17 Jan 2022 01:37:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ycu5k3o6g2lyq6o4"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXVbRudGs69f9ZzaP1PXhteDNZiXA658eMFAwP4nr9r3w@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+References: <20210715141742.15072-1-andrea.merello@gmail.com>
+ <20211028101840.24632-1-andrea.merello@gmail.com> <20211028101840.24632-7-andrea.merello@gmail.com>
+ <20211028120405.6ffb01d1@jic23-huawei> <CAN8YU5Orbbzq-eDxmrR00xHwXQ=0LU2G3_yEtHGMkbVhmdcqgg@mail.gmail.com>
+ <20211114162032.425ab36d@jic23-huawei> <CAN8YU5NO5mcrPa5ZCB3XnAb=3N3cyXZUT=gH5G+EbnM-En0a3Q@mail.gmail.com>
+ <20220115152749.173b7172@jic23-huawei>
+In-Reply-To: <20220115152749.173b7172@jic23-huawei>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Mon, 17 Jan 2022 10:37:33 +0100
+Message-ID: <CAN8YU5OT44Wz813tKA62-Dvq3=VoTcoyVE__5UuRw+i7+B7i8w@mail.gmail.com>
+Subject: Re: [v2 06/10] iio: document bno055 private sysfs attributes
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Trivial inline comments below. Beside that, I've found another
+pleasing issue with this "range" thing on this device..
 
---ycu5k3o6g2lyq6o4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+One one hand, things seem to always work as we discussed for the
+accelerometer (i.e. range doesn't affect the scale; the HW always
+provides readings in the same scale, but with different range and
+precision) on the other hand, the gyroscope behavior depends by the
+internal IMU firmware version.. great..
 
-Hello Geert,
+Stock firmware has a bug[0], so that the "range" gyroscope registers
+do change the scale indeed. AFAICT stock firmware is the one you find
+in most (all?) breakout boards, which are usually available (and which
+I'm using right now for this driver mainlining attempt). Upgrading
+firmware looks like a rather obscure process that AFAICT can be done
+only in some specific USB-stick demo-board ("shuttle board") or with
+maybe with FAE assistance on custom developed boards [1] (i.e. maybe
+can be done by some professional user; I would say not for most
+people).
 
-On Mon, Jan 17, 2022 at 09:41:42AM +0100, Geert Uytterhoeven wrote:
-> On Sat, Jan 15, 2022 at 9:22 PM Sergey Shtylyov <s.shtylyov@omp.ru> wrote:
-> > On 1/14/22 11:22 PM, Uwe Kleine-K=F6nig wrote:
-> > > You have to understand that for clk (and regulator and gpiod) NULL is=
- a
-> > > valid descriptor that can actually be used, it just has no effect. So
-> > > this is a convenience value for the case "If the clk/regulator/gpiod =
-in
-> > > question isn't available, there is nothing to do". This is what makes
-> > > clk_get_optional() and the others really useful and justifies their
-> > > existence. This doesn't apply to platform_get_irq_optional().
+So, I'm now wondering how to handle this... I really want to support
+the stock FW, which seems the most widespread, and the one I have
+right now; I'd say this means: the accelerometer thing will still work
+as we discussed (i.e. the range attribute thing), while the gyro will
+have writeable scale, and a (ro) scale_available attrib. But what
+about the gyro range thing? Should I drop it, or keep it as
+informative read-only?
+
+Then I could also support the new firmware (which I cannot test right
+now with my actual breakout board, but I might see whether I could get
+a board with an updated IMU), keeping also the current driver behavior
+(i.e. range stuff).
+
+But the question is: in either cases (new vs old fw) should the
+non-necessary attributes disappear or they may just be RO or locked
+(i.e. scale_available for new FW and range stuff for the old one)?
+
+Any thoughts and advice on this whole thing would be very welcome :)
+my current inclination anyway now tends to be: go on supporting only
+the stock FW (i.e. the board I have here now) and eventually add
+support for the new fw later on, after merge.
+
+[0] https://community.bosch-sensortec.com/t5/MEMS-sensors-forum/BNO055-Wrong-sensitivity-resolution-in-datasheet/td-p/10266
+[1] https://community.bosch-sensortec.com/t5/MEMS-sensors-forum/BNO055-Software-Version/td-p/14001
+
+> > I've looked at other iio sysfs attributes in the DOC.  It seems  that
+> > "thesh" and "roc" attributes allows for both preprocessed and raw
+> > data: I found e.g. "<type>[Y][_name]_<raw|input>_thresh_value", but
+> > the related "what" entries written above all seem to omit both "_raw"
+> > and "_input"; I don't understand why.
+>
+> Excellent point.  That documentation is garbage.  Events are meant
+> to pick it up implicitly from the related channel _raw or _input.
+> I don't remember them ever having raw or input in their naming but
+> it's possible they did right at the beginning before the ABI was anywhere
+> near stable.  Gah. I dread to think how long that that has been wrong.
+
+Ok, great :)
+
+> So I think range_raw postfix is the best bet.
+
+Will go with this, thanks.
+
+> Jonathan
+>
+>
+>
+>
+>
 > >
-> >    I do understand that. However, IRQs are a different beast with their
-> > own justifications...
->=20
-> > > clk_get_optional() is sane and sensible for cases where the clk might=
- be
-> > > absent and it helps you because you don't have to differentiate betwe=
-en
-> > > "not found" and "there is an actual resource".
-> > >
-> > > The reason for platform_get_irq_optional()'s existence is just that
-> > > platform_get_irq() emits an error message which is wrong or suboptimal
+>
 > >
-> >    I think you are very wrong here. The real reason is to simplify the
-> > callers.
->=20
-> Indeed.
-
-The commit that introduced platform_get_irq_optional() said:
-
-	Introduce a new platform_get_irq_optional() that works much like
-	platform_get_irq() but does not output an error on failure to
-	find the interrupt.
-
-So the author of 8973ea47901c81a1912bd05f1577bed9b5b52506 failed to
-mention the real reason? Or look at
-31a8d8fa84c51d3ab00bf059158d5de6178cf890:
-
-	[...] use platform_get_irq_optional() to get second/third IRQ
-	which are optional to avoid below error message during probe:
-	[...]
-
-Look through the output of
-
-	git log -Splatform_get_irq_optional
-
-to find several more of these.
-
-Also I fail to see how a caller of (today's) platform_get_irq_optional()
-is simpler than a caller of platform_get_irq() given that there is no
-semantic difference between the two. Please show me a single
-conversion from platform_get_irq to platform_get_irq_optional that
-yielded a simplification.
-
-So you need some more effort to convince me of your POV.
-
-> Even for clocks, you cannot assume that you can always blindly use
-> the returned dummy (actually a NULL pointer) to call into the clk
-> API.  While this works fine for simple use cases, where you just
-> want to enable/disable an optional clock (clk_prepare_enable() and
-> clk_disable_unprepare()), it does not work for more complex use cases.
-
-Agreed. But for clks and gpiods and regulators the simple case is quite
-usual. For irqs it isn't.
-
-And if you cannot blindly use the dummy, then you're not the targetted
-caller of *_get_optional() and should better use *_get() and handle
--ENODEV explicitly.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ycu5k3o6g2lyq6o4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmHlNdMACgkQwfwUeK3K
-7AkbyQf/dzwfw39nzRfi8yss0CiqoAU/yS+7MsnZvnWGKQxcIojgK1OX/xdxiMKI
-C4HnYtImt4dRHJdZDTL5+BWmwrkKo3ytJl8YRHBffgzQdKfAXOit1Pce623dbYvd
-wKJedLR6H9VXuTa1ULEvTnC0cXupHaoxjvQbKkUhlz/PahrhX91+dNJcoWTB6eB2
-YSb6MMcqwMFJ6y2P4pDKDoCf0RNjt8EzTKMWUdx1zcCrqT+wDzA0Ub0UvM7EpUXn
-ziLd4JEC+3SxJZvr2Y8jPQUGb4RMr+Z20vfEOG154m+zZ5lZe7Pcp1ggo6wb+fZ9
-qM6JVYjExAvA43UcTTna2uSeE/+nfA==
-=gHVT
------END PGP SIGNATURE-----
-
---ycu5k3o6g2lyq6o4--
+> > Andrea
+>

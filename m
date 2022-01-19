@@ -2,246 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2156493E1C
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jan 2022 17:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DFF493F32
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jan 2022 18:42:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356121AbiASQMj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jan 2022 11:12:39 -0500
-Received: from mxout04.lancloud.ru ([45.84.86.114]:42292 "EHLO
-        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355919AbiASQMe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jan 2022 11:12:34 -0500
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru AA47520A2ADD
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Subject: Re: [PATCH 1/2] platform: make platform_get_irq_optional() optional
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>
-CC:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        KVM list <kvm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        <linux-iio@vger.kernel.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        "ALSA Development Mailing List" <alsa-devel@alsa-project.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Guenter Roeck <groeck@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        <linux-phy@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        <platform-driver-x86@vger.kernel.org>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        "Saravanan Sekar" <sravanhome@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        "Mark Brown" <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
-        Takashi Iwai <tiwai@suse.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <openipmi-developer@lists.sourceforge.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Benson Leung <bleung@chromium.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        <linux-edac@vger.kernel.org>, "Tony Luck" <tony.luck@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        netdev <netdev@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Cornelia Huck <cohuck@redhat.com>,
-        "Linux MMC List" <linux-mmc@vger.kernel.org>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        "James Morse" <james.morse@arm.com>,
-        Zha Qipeng <qipeng.zha@intel.com>,
-        "Sebastian Reichel" <sre@kernel.org>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        <linux-mediatek@lists.infradead.org>,
-        "Brian Norris" <computersforpeace@gmail.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-References: <20220117092444.opoedfcf5k5u6otq@pengutronix.de>
- <CAMuHMdUgZUeraHadRAi2Z=DV+NuNBrKPkmAKsvFvir2MuquVoA@mail.gmail.com>
- <20220117114923.d5vajgitxneec7j7@pengutronix.de>
- <CAMuHMdWCKERO20R2iVHq8P=BaoauoBAtiampWzfMRYihi3Sb0g@mail.gmail.com>
- <20220117170609.yxaamvqdkivs56ju@pengutronix.de>
- <CAMuHMdXbuZqEpYivyS6hkaRN+CwTOGaHq_OROwVAWvDD6OXODQ@mail.gmail.com>
- <20220118090913.pjumkq4zf4iqtlha@pengutronix.de>
- <CAMuHMdUW8+Y_=uszD+JOZO3Lpa9oDayk+GO+cg276i2f2T285w@mail.gmail.com>
- <20220118120806.pbjsat4ulg3vnhsh@pengutronix.de>
- <CAMuHMdWkwV9XE_R5FZ=jPtDwLpDbEngG6+X2JmiDJCZJZvUjYA@mail.gmail.com>
- <20220118142945.6y3rmvzt44pjpr4z@pengutronix.de>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <6370798a-7a7e-243d-99f9-09bf772ddbac@omp.ru>
-Date:   Wed, 19 Jan 2022 19:12:23 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S1356474AbiASRm4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Jan 2022 12:42:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348133AbiASRmz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jan 2022 12:42:55 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DAEC061574
+        for <linux-iio@vger.kernel.org>; Wed, 19 Jan 2022 09:42:54 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id q141-20020a1ca793000000b00347b48dfb53so7202891wme.0
+        for <linux-iio@vger.kernel.org>; Wed, 19 Jan 2022 09:42:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=OegbDPdXm3sV0Rvdu8S4fL7eXlxzhuHMWuEq/Y9oGpw=;
+        b=FRqsTopmLNQWeJMYKN9m9ZbfoVKW0+n1Xvnrt4g/w1013FQM0Z+3zU/g4yTBb2h3sx
+         ij0tkqkuwaoyc909S+9ckn43iYmmBfqxZ/JqsQI+SPp2wfoFjZ4a3VvXADhLQdoCKqEe
+         6lycmMJ0Es1pSl7cqYHy6+mS4fDVjaY7K+uEYfCxdVKLLq0tRKg+5N2gvjR8ZdAsnWXY
+         Poz1EGfSWWUs64K/dnD19QlAZRG14/6Z/IZpqa1y2RYEy5WLhPcARz3v2Ga/FPiwlkx4
+         vhE5O414ebBRT5jqt1vfA/AzbnLmaW++8twO3QNW2jtbFWxSmKPh3SfJxkX2ASZbigDg
+         s9ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=OegbDPdXm3sV0Rvdu8S4fL7eXlxzhuHMWuEq/Y9oGpw=;
+        b=l6UTdEl5F13HaGSAKnspGjJ9QJyo7/JQ8+oqVDmCBfpBTb0kIlQo/IplXJ0JexZ2TZ
+         cyN9oz7sZq9i1TeGxLl9jwlciW6h+QLLqOqguqi8te0QnUAfmJROKkYdJkE5SvBv9LMo
+         HWFSYQJ8gxWiNtPSQIh5h0CPvP76GLhmzbow0PnYLkOPKg6K38OllT/OzX6eS7mFFUHC
+         E3D5H7BsvDoSwv+G5nANGIqm8augAo5YJRWKv3rtTuLFm8jCCQZAJlVIs3BMsO08SayS
+         93o75oWshPXYEY2FJpTBdctC5IiqmeR3p3wyEgMWayZtYv9/yc+7GFhOI3artzXeVzlR
+         28OQ==
+X-Gm-Message-State: AOAM531N0ZKS23IVsfL5YMkDB6EKz5zxdD2cWzFqTuqb4oA/tvDXKEUe
+        FUWG9oxarUrpFZgyNncFEHXMpA==
+X-Google-Smtp-Source: ABdhPJxVYEBLDcVZw2238uOiXYZ+lN+sQ1uikswfKycmpoS9k3JMLNBS3/RjGpr/sGNXgww775ixxA==
+X-Received: by 2002:a05:6000:1709:: with SMTP id n9mr4480560wrc.10.1642614173119;
+        Wed, 19 Jan 2022 09:42:53 -0800 (PST)
+Received: from [192.168.0.30] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
+        by smtp.gmail.com with ESMTPSA id l19sm235843wmq.7.2022.01.19.09.42.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jan 2022 09:42:52 -0800 (PST)
+Message-ID: <d0d42804-f437-e964-1c0d-4eb65e76db6c@linaro.org>
+Date:   Wed, 19 Jan 2022 17:42:51 +0000
 MIME-Version: 1.0
-In-Reply-To: <20220118142945.6y3rmvzt44pjpr4z@pengutronix.de>
-Content-Type: text/plain; charset="windows-1252"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH v3 3/7] iio: adc: qcom-spmi-rradc: introduce round robin
+ adc
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
- LFEX1907.lancloud.ru (fd00:f066::207)
+To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, sumit.semwal@linaro.org,
+        amit.pundir@linaro.org, john.stultz@linaro.org
+References: <20220106173131.3279580-1-caleb.connolly@linaro.org>
+ <20220106173131.3279580-4-caleb.connolly@linaro.org>
+ <20220109172948.76dbb1fa@jic23-huawei>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20220109172948.76dbb1fa@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 1/18/22 5:29 PM, Uwe Kleine-König wrote:
 
->> nst the magic not-found value (so no implementation detail magic
->>>>> leaks into the caller code) and just pass it to the next API function=
->> .
->>>>> (And my expectation would be that if you chose to represent not-found=
->>  by
->>>>> (void *)66 instead of NULL, you won't have to adapt any user, just th=
->> e
->>>>> framework internal checks. This is a good thing!)
->>>>
->>>> Ah, there is the wrong assumption: drivers sometimes do need to know
->>>> if the resource was found, and thus do need to know about (void *)66,
->>>> -ENODEV, or -ENXIO.  I already gave examples for IRQ and clk before.
->>>> I can imagine these exist for gpiod and regulator, too, as soon as
->>>> you go beyond the trivial "enable" and "disable" use-cases.
->>>
->>> My premise is that every user who has to check for "not found"
->>> explicitly should not use (clk|gpiod)_get_optional() but
->>> (clk|gpiod)_get() and do proper (and explicit) error handling for
->>> -ENODEV. (clk|gpiod)_get_optional() is only for these trivial use-cases.
->>>
->>>> And 0/NULL vs. > 0 is the natural check here: missing, but not
->>>> an error.
->>>
->>> For me it it 100% irrelevant if "not found" is an error for the query
->>> function or not. I just have to be able to check for "not found" and
->>> react accordingly.
->>>
->>> And adding a function
->>>
->>>         def platform_get_irq_opional():
->>>                 ret =3D platform_get_irq()
->>>                 if ret =3D=3D -ENXIO:
->>>                         return 0
->>>                 return ret
->>>
->>> it's not a useful addition to the API if I cannot use 0 as a dummy
->>> because it doesn't simplify the caller enough to justify the additional
->>> function.
->>>
->>> The only thing I need to be able is to distinguish the cases "there is
->>> an irq", "there is no irq" and anything else is "there is a problem I
->>> cannot handle and so forward it to my caller". The semantic of
->>> platform_get_irq() is able to satisfy this requirement[1], so why introdu=
->> ce
->>> platform_get_irq_opional() for the small advantage that I can check for
->>> not-found using
->>>
->>>         if (!irq)
->>>
->>> instead of
->>>
->>>         if (irq !=3D -ENXIO)
->>>
->>> ? The semantic of platform_get_irq() is easier ("Either a usable
->>> non-negative irq number or a negative error number") compared to
->>> platform_get_irq_optional() ("Either a usable positive irq number or a
->>> negative error number or 0 meaning not found"). Usage of
->>> platform_get_irq() isn't harder or more expensive (neither for a human
->>> reader nor for a maching running the resulting compiled code).
->>> For a human reader
->>>
->>>         if (irq !=3D -ENXIO)
->>>
->>> is even easier to understand because for
->>>
->>>         if (!irq)
->>>
->>> they have to check where the value comes from, see it's
->>> platform_get_irq_optional() and understand that 0 means not-found.
+
+On 09/01/2022 17:29, Jonathan Cameron wrote:
+> On Thu,  6 Jan 2022 17:31:27 +0000
+> Caleb Connolly <caleb.connolly@linaro.org> wrote:
+> 
+>> The Round Robin ADC is responsible for reading data about the rate of
+>> charge from the USB or DC in jacks, it can also read the battery
+>> ID (resistence) and some temperatures. It is found on the PMI8998 and
+>> PM660 Qualcomm PMICs.
 >>
->> "vIRQ zero does not exist."
+>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Hi Calib,
+Hi Jonathan,
+
+I've spent some time on this and mostly reworked things, thanks a lot for
+your feedback, it's been quite interesting to learn about IIO. :)
+
+Quite a few of the channels fit well into the (adc_code + offset) * scale format,
+however the one you commented on "rradc_post_process_chg_temp()" doesn't seem to
+fit, it requires multiple steps of applying offsets and scale and I haven't been
+able to re-arrange it to work sensibly.
+
+I noticed the calibbias properties which seems like something I should expose
+for "rradc_get_fab_coeff()"?
+
+Could you point me in the right direction here? For reference my WIP tree can be
+found here: https://github.com/aospm/linux/commits/upstreaming/spmi-rradc
+
+I also tried switching to labels, but I found that when I drop the extend_name
+property the driver fails to probe because multiple channels end up with the same
+name in sysfs (e.g. "in_temp_raw"). I've read through the docs and looked at a few
+other drivers but I wasn't able to find out what I'm missing for this to work.
+
+I've snipped to the relevant bits below.
+
+Kind regards,
+Caleb
 > 
-> With that statement in mind I would expect that a function that gives me
-> an (v)irq number never returns 0.
+> Various things inline but biggest is probably that in IIO we prefer
+> if possible to make application of offsets and scales a job for the caller,
+> either userspace or in kernel callers. This allows them to maintain precision
+> better if they need to further transform the data.
 > 
->>> This function just adds overhead because as a irq framework user I have
->>> to understand another function. For me the added benefit is too small to
->>> justify the additional function. And you break out-of-tree drivers.
->>> These are all no major counter arguments, but as the advantage isn't
->>> major either, they still matter.
->>>
->>> Best regards
->>> Uwe
->>>
->>> [1] the only annoying thing is the error message.
+> Jonathan
+> 
+>> ---
+>>   drivers/iio/adc/Kconfig           |   13 +
+>>   drivers/iio/adc/Makefile          |    1 +
+>>   drivers/iio/adc/qcom-spmi-rradc.c | 1070 +++++++++++++++++++++++++++++
+>>   3 files changed, 1084 insertions(+)
+>>   create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
 >>
->> So there's still a need for two functions.
+
+[snip]
+
+>> +static int rradc_post_process_chg_temp(struct rradc_chip *chip, u16 adc_code,
+>> +				       int *result_millidegc)
+>> +{
+>> +	int64_t uv, offset, slope;
+>> +	int ret;
+>> +
+>> +	ret = rradc_get_fab_coeff(chip, &offset, &slope);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "Unable to get fab id coefficients\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	uv = ((int64_t)adc_code * RR_ADC_TEMP_FS_VOLTAGE_NUM);
+>> +	uv = div64_s64(uv,
+>> +		       (RR_ADC_TEMP_FS_VOLTAGE_DEN * RR_ADC_CHAN_MAX_VALUE));
+>> +	uv = offset - uv;
+>> +	uv = div64_s64((uv * MILLI), slope);
+>> +	uv += RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC;
+>> +	*result_millidegc = (int)uv;
 > 
-> Or a single function not emitting an error message together with the
-> callers being responsible for calling dev_err().
+> Marginally harder than the one below, but this is still looking like it can
+> be well expressed as an offset + scale.  Thus making the tedious maths
+> userspaces or callers problem.  I'm working backwards hence won't comment on
+> similar before this point. Key is to transform whatever maths you have into
 > 
-> So the options in my preference order (first is best) are:
+> (adc_code + offset) * scale then expose offset and scale as well as the
+> raw value.  The right maths will get done for in kernel users and
+> userspace can do it nicely with floating point.
 > 
->  - Remove the printk from platform_get_irq() and remove
->    platform_get_irq_optional();
+>> +
+>> +	return 0;
+>> +}
 
-   Strong NAK here:
-- dev_err() in our function saves a lot of (repeatable!) comments;
-- we've already discussed that it's more optimal to check againt 0 than
-  against -ENXIO in the callers.
+[snip]
 
->  - Rename platform_get_irq_optional() to platform_get_irq_silently()
-
-   NAK as well. We'd better off complaining about irq < 0 in this function.
-
->  - Keep platform_get_irq_optional() as is
-
-   NAK, it's suboptimal in the call sites.
-
->  - Collect underpants
+>> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX] = {
+>> +	{
+>> +		.extend_name = "batt_id",
 > 
->  - ?
+> We recently introduced channel labels to try and avoid the need for
+> extend_name.  The problem with extend_name is that generic software then
+> has trouble parsing the resulting sysfs files as they can have very
+> freeform naming.  Moving it to label makes that much easier.  Note that
+> there is code to give a default label of extend_name to work around
+> this problem for older drivers.
+> 
+>> +		.type = IIO_RESISTANCE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
+>> +		.address = RR_ADC_BATT_ID,
+>> +	},
 
-   You're on your own here. :-)
+> 
+> Thanks,
+> 
+> Jonathan
 
->  - Change semantic of platform_get_irq_optional()
-
-   Yes, we should change the semantics if it serves our goals better. 
-
-> Best regards
-> Uwe
-
-MBR, Sergey
+-- 
+Kind Regards,
+Caleb (they/them)

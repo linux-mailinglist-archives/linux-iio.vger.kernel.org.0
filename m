@@ -2,192 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1DFF493F32
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jan 2022 18:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19803493FE5
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jan 2022 19:30:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356474AbiASRm4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jan 2022 12:42:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348133AbiASRmz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jan 2022 12:42:55 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DAEC061574
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jan 2022 09:42:54 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id q141-20020a1ca793000000b00347b48dfb53so7202891wme.0
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jan 2022 09:42:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=OegbDPdXm3sV0Rvdu8S4fL7eXlxzhuHMWuEq/Y9oGpw=;
-        b=FRqsTopmLNQWeJMYKN9m9ZbfoVKW0+n1Xvnrt4g/w1013FQM0Z+3zU/g4yTBb2h3sx
-         ij0tkqkuwaoyc909S+9ckn43iYmmBfqxZ/JqsQI+SPp2wfoFjZ4a3VvXADhLQdoCKqEe
-         6lycmMJ0Es1pSl7cqYHy6+mS4fDVjaY7K+uEYfCxdVKLLq0tRKg+5N2gvjR8ZdAsnWXY
-         Poz1EGfSWWUs64K/dnD19QlAZRG14/6Z/IZpqa1y2RYEy5WLhPcARz3v2Ga/FPiwlkx4
-         vhE5O414ebBRT5jqt1vfA/AzbnLmaW++8twO3QNW2jtbFWxSmKPh3SfJxkX2ASZbigDg
-         s9ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=OegbDPdXm3sV0Rvdu8S4fL7eXlxzhuHMWuEq/Y9oGpw=;
-        b=l6UTdEl5F13HaGSAKnspGjJ9QJyo7/JQ8+oqVDmCBfpBTb0kIlQo/IplXJ0JexZ2TZ
-         cyN9oz7sZq9i1TeGxLl9jwlciW6h+QLLqOqguqi8te0QnUAfmJROKkYdJkE5SvBv9LMo
-         HWFSYQJ8gxWiNtPSQIh5h0CPvP76GLhmzbow0PnYLkOPKg6K38OllT/OzX6eS7mFFUHC
-         E3D5H7BsvDoSwv+G5nANGIqm8augAo5YJRWKv3rtTuLFm8jCCQZAJlVIs3BMsO08SayS
-         93o75oWshPXYEY2FJpTBdctC5IiqmeR3p3wyEgMWayZtYv9/yc+7GFhOI3artzXeVzlR
-         28OQ==
-X-Gm-Message-State: AOAM531N0ZKS23IVsfL5YMkDB6EKz5zxdD2cWzFqTuqb4oA/tvDXKEUe
-        FUWG9oxarUrpFZgyNncFEHXMpA==
-X-Google-Smtp-Source: ABdhPJxVYEBLDcVZw2238uOiXYZ+lN+sQ1uikswfKycmpoS9k3JMLNBS3/RjGpr/sGNXgww775ixxA==
-X-Received: by 2002:a05:6000:1709:: with SMTP id n9mr4480560wrc.10.1642614173119;
-        Wed, 19 Jan 2022 09:42:53 -0800 (PST)
-Received: from [192.168.0.30] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id l19sm235843wmq.7.2022.01.19.09.42.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 09:42:52 -0800 (PST)
-Message-ID: <d0d42804-f437-e964-1c0d-4eb65e76db6c@linaro.org>
-Date:   Wed, 19 Jan 2022 17:42:51 +0000
+        id S1356752AbiASS3m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Jan 2022 13:29:42 -0500
+Received: from mxout02.lancloud.ru ([45.84.86.82]:60414 "EHLO
+        mxout02.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1356737AbiASS3l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jan 2022 13:29:41 -0500
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru EFD8920BF006
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: Re: [PATCH 1/2] platform: make platform_get_irq_optional() optional
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>
+CC:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        KVM list <kvm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <linux-iio@vger.kernel.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        "ALSA Development Mailing List" <alsa-devel@alsa-project.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Guenter Roeck <groeck@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        <linux-phy@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        <platform-driver-x86@vger.kernel.org>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        "Saravanan Sekar" <sravanhome@gmail.com>,
+        Corey Minyard <minyard@acm.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        "Mark Brown" <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Takashi Iwai <tiwai@suse.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <openipmi-developer@lists.sourceforge.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Benson Leung <bleung@chromium.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        <linux-edac@vger.kernel.org>, "Tony Luck" <tony.luck@intel.com>,
+        Richard Weinberger <richard@nod.at>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Eric Auger <eric.auger@redhat.com>,
+        netdev <netdev@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Cornelia Huck <cohuck@redhat.com>,
+        "Linux MMC List" <linux-mmc@vger.kernel.org>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        "James Morse" <james.morse@arm.com>,
+        Zha Qipeng <qipeng.zha@intel.com>,
+        "Sebastian Reichel" <sre@kernel.org>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        <linux-mediatek@lists.infradead.org>,
+        "Brian Norris" <computersforpeace@gmail.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+References: <20220117092444.opoedfcf5k5u6otq@pengutronix.de>
+ <CAMuHMdUgZUeraHadRAi2Z=DV+NuNBrKPkmAKsvFvir2MuquVoA@mail.gmail.com>
+ <20220117114923.d5vajgitxneec7j7@pengutronix.de>
+ <CAMuHMdWCKERO20R2iVHq8P=BaoauoBAtiampWzfMRYihi3Sb0g@mail.gmail.com>
+ <20220117170609.yxaamvqdkivs56ju@pengutronix.de>
+ <CAMuHMdXbuZqEpYivyS6hkaRN+CwTOGaHq_OROwVAWvDD6OXODQ@mail.gmail.com>
+ <20220118090913.pjumkq4zf4iqtlha@pengutronix.de>
+ <CAMuHMdUW8+Y_=uszD+JOZO3Lpa9oDayk+GO+cg276i2f2T285w@mail.gmail.com>
+ <20220118120806.pbjsat4ulg3vnhsh@pengutronix.de>
+ <CAMuHMdWkwV9XE_R5FZ=jPtDwLpDbEngG6+X2JmiDJCZJZvUjYA@mail.gmail.com>
+ <20220118142945.6y3rmvzt44pjpr4z@pengutronix.de>
+ <6370798a-7a7e-243d-99f9-09bf772ddbac@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <96ff907a-4ad2-5b2e-9bcc-09592d65a6df@omp.ru>
+Date:   Wed, 19 Jan 2022 21:29:28 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH v3 3/7] iio: adc: qcom-spmi-rradc: introduce round robin
- adc
+In-Reply-To: <6370798a-7a7e-243d-99f9-09bf772ddbac@omp.ru>
+Content-Type: text/plain; charset="windows-1252"
 Content-Language: en-US
-To:     Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, sumit.semwal@linaro.org,
-        amit.pundir@linaro.org, john.stultz@linaro.org
-References: <20220106173131.3279580-1-caleb.connolly@linaro.org>
- <20220106173131.3279580-4-caleb.connolly@linaro.org>
- <20220109172948.76dbb1fa@jic23-huawei>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20220109172948.76dbb1fa@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 1/19/22 7:12 PM, Sergey Shtylyov wrote:
 
-
-On 09/01/2022 17:29, Jonathan Cameron wrote:
-> On Thu,  6 Jan 2022 17:31:27 +0000
-> Caleb Connolly <caleb.connolly@linaro.org> wrote:
-> 
->> The Round Robin ADC is responsible for reading data about the rate of
->> charge from the USB or DC in jacks, it can also read the battery
->> ID (resistence) and some temperatures. It is found on the PMI8998 and
->> PM660 Qualcomm PMICs.
+[...]
+>>> So there's still a need for two functions.
 >>
->> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-> Hi Calib,
-Hi Jonathan,
-
-I've spent some time on this and mostly reworked things, thanks a lot for
-your feedback, it's been quite interesting to learn about IIO. :)
-
-Quite a few of the channels fit well into the (adc_code + offset) * scale format,
-however the one you commented on "rradc_post_process_chg_temp()" doesn't seem to
-fit, it requires multiple steps of applying offsets and scale and I haven't been
-able to re-arrange it to work sensibly.
-
-I noticed the calibbias properties which seems like something I should expose
-for "rradc_get_fab_coeff()"?
-
-Could you point me in the right direction here? For reference my WIP tree can be
-found here: https://github.com/aospm/linux/commits/upstreaming/spmi-rradc
-
-I also tried switching to labels, but I found that when I drop the extend_name
-property the driver fails to probe because multiple channels end up with the same
-name in sysfs (e.g. "in_temp_raw"). I've read through the docs and looked at a few
-other drivers but I wasn't able to find out what I'm missing for this to work.
-
-I've snipped to the relevant bits below.
-
-Kind regards,
-Caleb
-> 
-> Various things inline but biggest is probably that in IIO we prefer
-> if possible to make application of offsets and scales a job for the caller,
-> either userspace or in kernel callers. This allows them to maintain precision
-> better if they need to further transform the data.
-> 
-> Jonathan
-> 
->> ---
->>   drivers/iio/adc/Kconfig           |   13 +
->>   drivers/iio/adc/Makefile          |    1 +
->>   drivers/iio/adc/qcom-spmi-rradc.c | 1070 +++++++++++++++++++++++++++++
->>   3 files changed, 1084 insertions(+)
->>   create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
+>> Or a single function not emitting an error message together with the
+>> callers being responsible for calling dev_err().
 >>
+>> So the options in my preference order (first is best) are:
+>>
+>>  - Remove the printk from platform_get_irq() and remove
+>>    platform_get_irq_optional();
+> 
+>    Strong NAK here:
+> - dev_err() in our function saves a lot of (repeatable!) comments;
 
-[snip]
+   s/comments/code/.
+   Actually, I think I can accept the removal of dev_err_probe() in platform_get_irq()
+as this is not a common practice anyway (yet? :-))...
 
->> +static int rradc_post_process_chg_temp(struct rradc_chip *chip, u16 adc_code,
->> +				       int *result_millidegc)
->> +{
->> +	int64_t uv, offset, slope;
->> +	int ret;
->> +
->> +	ret = rradc_get_fab_coeff(chip, &offset, &slope);
->> +	if (ret < 0) {
->> +		dev_err(chip->dev, "Unable to get fab id coefficients\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	uv = ((int64_t)adc_code * RR_ADC_TEMP_FS_VOLTAGE_NUM);
->> +	uv = div64_s64(uv,
->> +		       (RR_ADC_TEMP_FS_VOLTAGE_DEN * RR_ADC_CHAN_MAX_VALUE));
->> +	uv = offset - uv;
->> +	uv = div64_s64((uv * MILLI), slope);
->> +	uv += RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC;
->> +	*result_millidegc = (int)uv;
-> 
-> Marginally harder than the one below, but this is still looking like it can
-> be well expressed as an offset + scale.  Thus making the tedious maths
-> userspaces or callers problem.  I'm working backwards hence won't comment on
-> similar before this point. Key is to transform whatever maths you have into
-> 
-> (adc_code + offset) * scale then expose offset and scale as well as the
-> raw value.  The right maths will get done for in kernel users and
-> userspace can do it nicely with floating point.
-> 
->> +
->> +	return 0;
->> +}
+> - we've already discussed that it's more optimal to check againt 0 than
 
-[snip]
+   Against. :-)
 
->> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX] = {
->> +	{
->> +		.extend_name = "batt_id",
-> 
-> We recently introduced channel labels to try and avoid the need for
-> extend_name.  The problem with extend_name is that generic software then
-> has trouble parsing the resulting sysfs files as they can have very
-> freeform naming.  Moving it to label makes that much easier.  Note that
-> there is code to give a default label of extend_name to work around
-> this problem for older drivers.
-> 
->> +		.type = IIO_RESISTANCE,
->> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
->> +		.address = RR_ADC_BATT_ID,
->> +	},
+>   against -ENXIO in the callers.
 
-> 
-> Thanks,
-> 
-> Jonathan
+   And we also aim to be the error code agnostic in the callers...
 
--- 
-Kind Regards,
-Caleb (they/them)
+>>  - Rename platform_get_irq_optional() to platform_get_irq_silently()
+> 
+>    NAK as well. We'd better off complaining about irq < 0 in this function.
+
+>>  - Keep platform_get_irq_optional() as is
+> 
+>    NAK, it's suboptimal in the call sites.
+
+   s/in/on/.
+
+[...]
+
+>> Best regards
+>> Uwe
+
+MBR, Sergey

@@ -2,116 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A66824939EE
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jan 2022 12:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CAE7493B62
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jan 2022 14:47:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354345AbiASLvX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Jan 2022 06:51:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37322 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354337AbiASLvW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jan 2022 06:51:22 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF1FC061574
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jan 2022 03:51:22 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mtr@pengutronix.de>)
-        id 1nA9Uh-000380-KK; Wed, 19 Jan 2022 12:51:15 +0100
-Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mtr@pengutronix.de>)
-        id 1nA9Uf-0006vc-Qw; Wed, 19 Jan 2022 12:51:13 +0100
-Date:   Wed, 19 Jan 2022 12:51:13 +0100
-From:   Michael Tretter <m.tretter@pengutronix.de>
-To:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
-Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, git@xilinx.com, michals@xilinx.com,
-        gregkh@linuxfoundation.org, rafael@kernel.org,
-        linux-acpi@vger.kernel.org, heikki.krogerus@linux.intel.com,
-        Manish Narani <manish.narani@xilinx.com>
-Subject: Re: [PATCH v12 2/5] arm64: zynqmp: DT: Add Xilinx AMS node
-Message-ID: <20220119115113.GA26036@pengutronix.de>
-References: <20211203212358.31444-1-anand.ashok.dumbre@xilinx.com>
- <20211203212358.31444-3-anand.ashok.dumbre@xilinx.com>
+        id S1354887AbiASNrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Jan 2022 08:47:20 -0500
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:41914 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236230AbiASNrT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Jan 2022 08:47:19 -0500
+Received: by mail-ot1-f53.google.com with SMTP id a12-20020a0568301dcc00b005919e149b4cso3123881otj.8;
+        Wed, 19 Jan 2022 05:47:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4lbHUREH8Nb6sbGTV6EknyNbmczeBBVZ9XP6lLLWfQc=;
+        b=Z3qU7/4pctLM/E6bmTgv2WO71gzFLGTPQ4llPYiQD/ca2zFHdKCgE6c9kNNnyOHwAu
+         wSiWuKTGRU3nhdswJK+LLdUdp8yBpmGWD2jYUklaQSHXVCc7Bc8bDkW93ofF5q1MwaxU
+         N6Ug+5a7tiZSjZe94wjD4phDtmEgts4pJwwzISVU66xSJT8m11efIAiVWez67ehGAzqb
+         GvadkGjyv0FoOSe9EvsYyBIJVfUJGQ7dm48vw78Y30zFId8c1hUNPaCoKsmmtcDVLpWb
+         oLc86eFQCQmrgqKXTIrKGd1VdU1gpokcgHiqGBckjFnVJ/V9lA1B6rcW+Us6kfveGubF
+         pCUw==
+X-Gm-Message-State: AOAM532/hF98Z9h3VQIjTE+4tv5+lZB1rYfj+97EYCiaTm1nVC/Z1Mvg
+        MWi4C5RgjWE38runSKXQgw==
+X-Google-Smtp-Source: ABdhPJwDjr7szNDp5zhXx+HBPJmqwidp4YYQnLFH2R2fwaY8oZO7dmYKINnpSjcsZJOGLNt21ZIjjw==
+X-Received: by 2002:a05:6830:2645:: with SMTP id f5mr3688318otu.20.1642600039207;
+        Wed, 19 Jan 2022 05:47:19 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id s9sm5284320oov.4.2022.01.19.05.47.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jan 2022 05:47:18 -0800 (PST)
+Received: (nullmailer pid 3452035 invoked by uid 1000);
+        Wed, 19 Jan 2022 13:47:17 -0000
+Date:   Wed, 19 Jan 2022 07:47:17 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jic23@kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] dt:bindings:iio:frequency: Add ADMV4420 doc
+Message-ID: <YegWZe4lSok84gyW@robh.at.kernel.org>
+References: <20220117165247.15718-1-cristian.pop@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211203212358.31444-3-anand.ashok.dumbre@xilinx.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 12:47:25 up 39 days, 20:32, 81 users,  load average: 1.32, 1.28,
- 1.00
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: mtr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+In-Reply-To: <20220117165247.15718-1-cristian.pop@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 03 Dec 2021 21:23:55 +0000, Anand Ashok Dumbre wrote:
-> The Xilinx AMS includes an ADC as well as on-chip sensors that can be
-> used to sample external and monitor on-die operating conditions, such as
-> temperature and supply voltage levels.
+On Mon, Jan 17, 2022 at 06:52:46PM +0200, Cristian Pop wrote:
+> Add device tree bindings for the ADMV4420 K band downconverter.
 > 
-> Co-developed-by: Manish Narani <manish.narani@xilinx.com>
-> Signed-off-by: Manish Narani <manish.narani@xilinx.com>
-> Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 > ---
->  arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
+>  .../bindings/iio/frequency/adi,admv4420.yaml  | 54 +++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
 > 
-> diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> index 74e66443e4ce..ab96708fe65e 100644
-> --- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> +++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-> @@ -878,6 +878,30 @@
->  			timeout-sec = <10>;
->  		};
->  
-> +		xilinx_ams: ams@ffa50000 {
-> +			compatible = "xlnx,zynqmp-ams";
-> +			status = "disabled";
-> +			interrupt-parent = <&gic>;
-> +			interrupts = <0 56 4>;
-> +			reg = <0x0 0xffa50000 0x0 0x800>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +			#io-channel-cells = <1>;
-> +			ranges = <0 0 0xffa50800 0x800>;
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+> new file mode 100644
+> index 000000000000..f26af2718f23
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+> @@ -0,0 +1,54 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,admv4420.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +			ams_ps: ams-ps@0 {
-> +				compatible = "xlnx,zynqmp-ams-ps";
-> +				status = "disabled";
-> +				reg = <0 0x400>;
-> +			};
+> +title: ADMV4420 K Band Downconverter
 > +
-> +			ams_pl: ams-pl@400 {
-> +				compatible = "xlnx,zynqmp-ams-pl";
-> +				status = "disabled";
-> +				reg = <0x400 0x400>;
-> +			};
-> +		};
+> +maintainers:
+> +- Cristian Pop <cristian.pop@analog.com>
 > +
+> +description: |
 
-The patch should also add the xilinx_ams node to
-arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi as:
+Don't need '|' when there is no formatting to preserve.
 
-	&xilinx_ams {
-		clocks = <&zynqmp_clk AMS_REF>;
-	};
+> +    The ADMV4420 is a highly integrated, double balanced, active
+> +    mixer with an integrated fractional-N synthesizer, ideally suited
+> +    for next generation K band satellite communications
 
-Otherwise the driver fails to find the clock during probe.
+Blank line.
 
-Michael
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,admv4420
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 1000000
+> +
+> +  adi,lo_freq_hz:
 
->  		zynqmp_dpdma: dma-controller@fd4c0000 {
->  			compatible = "xlnx,zynqmp-dpdma";
->  			status = "disabled";
+s/_/-/
+
+> +    description: LO Frequency
+> +    $ref: /schemas/types.yaml#/definitions/uint64
+> +
+> +  adi,ref_ext_single_ended_en:
+
+s/_/-/
+
+> +    description: External reference selected.
+> +    type: boolean
+> +
+> +required:
+> +- compatible
+> +- reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +- |
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      admv4420@0 {
+> +        compatible = "adi,admv4420";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        adi,lo_freq_hz = /bits/ 64 <16743700000>;
+> +        adi,ref_ext_single_ended_en;
+> +      };
+> +    };
+> +...
 > -- 
 > 2.17.1
+> 
+> 

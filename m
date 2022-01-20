@@ -2,55 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E00A494D3A
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jan 2022 12:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 613D54950E2
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jan 2022 16:04:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231778AbiATLlg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jan 2022 06:41:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49892 "EHLO
+        id S1346257AbiATPE3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jan 2022 10:04:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231609AbiATLlg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jan 2022 06:41:36 -0500
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F9BC061574;
-        Thu, 20 Jan 2022 03:41:35 -0800 (PST)
-Received: by mail-oo1-xc35.google.com with SMTP id p11-20020a4adfcb000000b002dd4a3e84beso2089418ood.4;
-        Thu, 20 Jan 2022 03:41:35 -0800 (PST)
+        with ESMTP id S1346172AbiATPE2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jan 2022 10:04:28 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62376C061574
+        for <linux-iio@vger.kernel.org>; Thu, 20 Jan 2022 07:04:28 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id n8so12677731wmk.3
+        for <linux-iio@vger.kernel.org>; Thu, 20 Jan 2022 07:04:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Fodk+9GW+hT7jfC255jsfPt58onxdEeUfIkK8XqDsdU=;
-        b=WdUH7oHIpGmQ8SPtqwrJiPo6uU40+yyqDTObz92VJVqIUVRbR/huWlPO+OEemREe1i
-         W9li5UVN0/fik/d4eAlyLgEX2/q5da611IuIaKDdoY15R9ZrZollWwzX5od8VagBrQSv
-         J0n4ZsDqh0BW9s+QtmPtIeiM+MR8L6dJ20J9EVfNSvgWA0OJaO3j0Mbanao+KVsXKHgA
-         RG7gZr1jNrv8Bx0fJNHQv5wL4DSy+KS/9M2nbNzgkJ9ph8tz3VZqI6FL4XjwwDTAHWE+
-         EIvmkUrl81al3gQqJqYZCImLkVNhjGaA657N8RJmJHw951cE2ADMlFHohM1vbsHACUUj
-         15sw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=+Aq1htCCe4J+KaYbiBgsGd/SMns1HeFPyllEeH0HLrE=;
+        b=xDCfSkp4gVRyMCsNHMACNwvOjOLWGCCFvpl6FBksdSeKoOo8g6aWif0LxVqFjOA8K6
+         SwgwL+uPlvH6X5/3gjhPYOvsH4UENcXKqKMQwxp9hLNBjiXf0PgD2pYGZNtl0Gm1VHL3
+         WWOxhUf62gw61bEpmXA/voFCTI40ph5VuEWl+kUuds7jetvsgWyBD+vzhqGGncSGVSRI
+         9QZqQzq+AOO1prrNXCDR9JIoLxWQBDBZRS2iSbsPNDuF6app0wb5qr0ONR+r9OQ1KkcN
+         wViG/TyNyKD76jQEnzEXS6zldfkxblvIY691z0e8gIOaMgOGOnNPslRA/xTk6un6u4Ix
+         yZzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Fodk+9GW+hT7jfC255jsfPt58onxdEeUfIkK8XqDsdU=;
-        b=Zh3rBzjvQLYoeGnHEUc4KwPhW60pm8y8FaLTJIMw2WyWkItsrkIOpyQhR/53mw6vZZ
-         US2h6sIUJiZvvjBLvNFhF3axNuL8N+8xQbqViL/OBlVz6QVT9LphIB/CXOGWyq/FY+1h
-         tbk7SB+wtDDRAI+Pi822FApSB3z5FczvQrLtnglGZucgo4XgS1pNySh9HvplOLyQ9LBF
-         kEpggG1fIAfPSWYVAZw8DUvwSm1sqVFpwc70NHdWaVa+WYCWVL9d9Mvr7msadhXN+Kga
-         eB45aXiuGtdxiAXiJ3gqdakxxqUHaE5lebSeCfUXSD0zEd001uZoffEKyExj2wLwbHdH
-         isQg==
-X-Gm-Message-State: AOAM531b0IVge3Hn39KD4RYz1hBOvz2xs+Ni7l8Al49CSmzGWIWc0Bum
-        mzkIBfLjyQpRhIDxPvG4SvdGxT5+9f5Mx/jK3x4=
-X-Google-Smtp-Source: ABdhPJyP1IfasnEpm5ZNB/lJD5ftcs9/ELkgDdsDowFlQRyxkRt4OJYwHHz6cCY6j3nkhbn8c3SAq/Q8lMLf1UPjlws=
-X-Received: by 2002:a05:6808:1b25:: with SMTP id bx37mr7085479oib.129.1642678895086;
- Thu, 20 Jan 2022 03:41:35 -0800 (PST)
-MIME-Version: 1.0
-References: <20220120104009.159147-1-krzysztof.kozlowski@canonical.com> <20220120104009.159147-2-krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20220120104009.159147-2-krzysztof.kozlowski@canonical.com>
-From:   Enric Balletbo Serra <eballetbo@gmail.com>
-Date:   Thu, 20 Jan 2022 12:41:23 +0100
-Message-ID: <CAFqH_53T+w9gmbTLCt_c4ZR7=NV21hL4Hh0zn4pwm4Pqb0_L=g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: google, cros-ec: drop Enric Balletbo i
- Serra from maintainers
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=+Aq1htCCe4J+KaYbiBgsGd/SMns1HeFPyllEeH0HLrE=;
+        b=YtEqLPoicDTHLpXqRHXCJVF7BT+uVUwsqlAlLNQmR7eD66WugxTJyme+rcg9sy9NN5
+         1/etZxXYHco2ntIUKsy1L/dTUD8rdiDIgHDfvYWXR4YnjuRCm1ChN1wq89zSzA2ey95g
+         YBmD4KQfNj3FYF/y5xEf8LhfASOdtlj3OQ/FqKvtl/z9SudpGcUF7iwg0QyPpiXRhmVq
+         3R5EaINn9fb8nxCF+l5p4hDLez3o94ZSfJAsOpBs17vLeFLYj2Ju152V9/bTTKTciARj
+         R6sGh4Ux3Uslm/KolmTGoOuRBkBE3U4pJRYkCv6KFReFAVWXNrZRXnz5Cqt/RMI5e1Z7
+         BeEw==
+X-Gm-Message-State: AOAM530pnxoxpBujrCtG0kETDyM7ebF/edhuiiH9a9yO5R01JxZuYVlH
+        yuQ9ng4Ykj+Oaxak6WN57sDMJA==
+X-Google-Smtp-Source: ABdhPJxyBL43fH2rXCx547on3ZZXkYJE/PFoHnZpDzKy6MwUXjE0eMc+fSxR2ii4QVcAX1EUgjzuxg==
+X-Received: by 2002:a1c:7205:: with SMTP id n5mr8271022wmc.35.1642691066931;
+        Thu, 20 Jan 2022 07:04:26 -0800 (PST)
+Received: from google.com (cpc106310-bagu17-2-0-cust853.1-3.cable.virginm.net. [86.15.223.86])
+        by smtp.gmail.com with ESMTPSA id bg23sm3487872wmb.5.2022.01.20.07.04.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jan 2022 07:04:26 -0800 (PST)
+Date:   Thu, 20 Jan 2022 15:04:24 +0000
+From:   Lee Jones <lee.jones@linaro.org>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
@@ -61,112 +60,51 @@ Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
         Andrzej Hajda <andrzej.hajda@intel.com>,
         Neil Armstrong <narmstrong@baylibre.com>,
         Nicolas Boichat <drinkcat@chromium.org>,
         Simon Glass <sjg@chromium.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-i2c@vger.kernel.org, linux-iio <linux-iio@vger.kernel.org>,
-        Linux Input <linux-input@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings: google,cros-ec: drop Enric Balletbo i
+ Serra from maintainers
+Message-ID: <Yel5+DiQoOtV7x6Q@google.com>
+References: <20220120104009.159147-1-krzysztof.kozlowski@canonical.com>
+ <20220120104009.159147-2-krzysztof.kozlowski@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220120104009.159147-2-krzysztof.kozlowski@canonical.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Thu, 20 Jan 2022, Krzysztof Kozlowski wrote:
 
-Missatge de Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-del dia dj., 20 de gen. 2022 a les 11:40:
->
 > Enric Balletbo i Serra emails bounce:
->
+> 
 >   <enric.balletbo@collabora.com>: Recipient address rejected: User unknown in  local recipient table
->
+> 
 > so drop him from the maintainers, similarly to commit 3119c28634dd
 > ("MAINTAINERS: Chrome: Drop Enric Balletbo i Serra").
->
+> 
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-
-I'm fine with the removal as I don't have access anymore to this
-hardware so it doesn't really make sense to be there. Sorry for not
-sending the patches myself before.
-
-Acked-by: Enric Balletbo i Serra <eballetbo@kernel.org>
-
-Best regards,
-  Enric
-
 > ---
 >  .../devicetree/bindings/extcon/extcon-usbc-cros-ec.yaml          | 1 -
 >  .../devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml       | 1 -
 >  .../bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml    | 1 -
 >  Documentation/devicetree/bindings/input/google,cros-ec-keyb.yaml | 1 -
+
 >  Documentation/devicetree/bindings/mfd/google,cros-ec.yaml        | 1 -
+
+Acked-by: Lee Jones <lee.jones@linaro.org>
+
 >  5 files changed, 5 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.yaml b/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.yaml
-> index 20e1ccfc8630..2d82b44268db 100644
-> --- a/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.yaml
-> +++ b/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.yaml
-> @@ -8,7 +8,6 @@ title: ChromeOS EC USB Type-C cable and accessories detection
->
->  maintainers:
->    - Benson Leung <bleung@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->
->  description: |
->    On ChromeOS systems with USB Type C ports, the ChromeOS Embedded Controller is
-> diff --git a/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml b/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-> index b386e4128a79..6e1c70e9275e 100644
-> --- a/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-> +++ b/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-> @@ -10,7 +10,6 @@ title: I2C bus that tunnels through the ChromeOS EC (cros-ec)
->  maintainers:
->    - Doug Anderson <dianders@chromium.org>
->    - Benson Leung <bleung@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->
->  description: |
->    On some ChromeOS board designs we've got a connection to the EC
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
-> index 099b4be927d4..00e3b59641d2 100644
-> --- a/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
-> +++ b/Documentation/devicetree/bindings/iio/proximity/google,cros-ec-mkbp-proximity.yaml
-> @@ -10,7 +10,6 @@ title: ChromeOS EC MKBP Proximity Sensor
->  maintainers:
->    - Stephen Boyd <swboyd@chromium.org>
->    - Benson Leung <bleung@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->
->  description: |
->    Google's ChromeOS EC sometimes has the ability to detect user proximity.
-> diff --git a/Documentation/devicetree/bindings/input/google,cros-ec-keyb.yaml b/Documentation/devicetree/bindings/input/google,cros-ec-keyb.yaml
-> index 5377b232fa10..e8f137abb03c 100644
-> --- a/Documentation/devicetree/bindings/input/google,cros-ec-keyb.yaml
-> +++ b/Documentation/devicetree/bindings/input/google,cros-ec-keyb.yaml
-> @@ -10,7 +10,6 @@ title: ChromeOS EC Keyboard
->  maintainers:
->    - Simon Glass <sjg@chromium.org>
->    - Benson Leung <bleung@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->
->  description: |
->    Google's ChromeOS EC Keyboard is a simple matrix keyboard
-> diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> index e9c46430fd8a..66a995bbbbe9 100644
-> --- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-> @@ -8,7 +8,6 @@ title: ChromeOS Embedded Controller
->
->  maintainers:
->    - Benson Leung <bleung@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->    - Guenter Roeck <groeck@chromium.org>
->
->  description:
-> --
-> 2.32.0
->
+
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

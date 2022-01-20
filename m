@@ -2,86 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B927495670
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jan 2022 23:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6BB495700
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jan 2022 00:33:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378059AbiATWqL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jan 2022 17:46:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60352 "EHLO
+        id S1348025AbiATXdS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jan 2022 18:33:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237405AbiATWqK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jan 2022 17:46:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18BFC061574;
-        Thu, 20 Jan 2022 14:46:10 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6F2D1B81E89;
-        Thu, 20 Jan 2022 22:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA52C340E0;
-        Thu, 20 Jan 2022 22:46:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642718768;
-        bh=fdSAFRvqmhbMcbD/TihbFGAN81CMJEMp6Widv9tEMRQ=;
-        h=Date:From:To:Cc:Subject:From;
-        b=JFhkN479sXx1J9LQsgx+M1Vg8kuj6cGz6XxwjqEFvYfEcd3ClfMhtiuxLlDPXVtUH
-         /GD2Jd2BIL4EKOvvPTsMu3QPOikvobu6Bx9R7ENvYNW/MuPBkYyGwU72srIhibTJZf
-         jGJzOgGSR3sxdtx1FtWPih+25ed9nUDTTAYo4tAHnTswPs+iLeuPReN7+tKBAaqEEy
-         cIgzBa3tOBF9D0ciaNh6zrefe9PdZ7tnqySXatThfVe6UkoGxq5Mk5aQLXY/c5Z0cI
-         CwyrsfstB3oh8jlYur642lvHAEVQKRtxr7Y4GRcLwZ2JxwPCVkhQ2NnnrkVlOKonB3
-         BURD6097dlfsg==
-Date:   Thu, 20 Jan 2022 16:52:43 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        with ESMTP id S1347893AbiATXdR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jan 2022 18:33:17 -0500
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF470C061401
+        for <linux-iio@vger.kernel.org>; Thu, 20 Jan 2022 15:33:16 -0800 (PST)
+Received: by mail-pg1-x531.google.com with SMTP id e9so3158136pgn.4
+        for <linux-iio@vger.kernel.org>; Thu, 20 Jan 2022 15:33:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=6MVnd0IKMjHWYEmmxJTDcJXHRZaug6BXKl0q4y+4uMI=;
+        b=M9ya/H2QbKv+DT6FgaakqIC7dPcTc7oBL8mueaQ0XgNOxObwAaAKgcB0lyUZLXBG7u
+         KI3aBLqztwvYNviAd8c3qHAA2Ci7JceCJf/EeToAOEi1/gmk55Vz6LuYrtq83sfONgnA
+         2zL8A2asbnOXokDvljLlJqjWxiODlniiTpBhM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=6MVnd0IKMjHWYEmmxJTDcJXHRZaug6BXKl0q4y+4uMI=;
+        b=v+Wwf3zHFdognH3FfYmrSJoN30ghVNjqhcICv0+51Tz0rgMvYuC7bS9Ob3Qoulx+R6
+         wIZaUNka0VUZO8fykScxpCerrqunivzwOymUFfe+z+ezpI+cpHk7UFDxPMR8OII8PnO5
+         DfzNFJQdO3ho4A8g4HLCtNHNVe5RZOhXdMAuOiD10D9dt9a48PehpXnIboUVrLe3zAja
+         9vdbG7EAAJMk8AjbLpMeMw3CA88QghF8/boFeVI5YwRw4SnEnKXU2j3laNAhIqvsCGiA
+         WfQ3XuRb8l3VkMAsf+14JjgZd9ubYheqFabrmrLbPSFkhT/WZtaPs42+r/hAhKkAcwuu
+         7eew==
+X-Gm-Message-State: AOAM533xLBdHXtzDx4H/9SmhWRCFcjFxrNwnsThbXKFXIwRKXbyvTMDL
+        iWa3B09pFhphksOOeQX/PrMTLw==
+X-Google-Smtp-Source: ABdhPJwASg0kPCe1MkR2JePEm9F4SawZKuWOOIcp69MU41InM7haztXd7PayUp+v6dppVLa6KqOrYg==
+X-Received: by 2002:a65:5a8c:: with SMTP id c12mr923567pgt.54.1642721596146;
+        Thu, 20 Jan 2022 15:33:16 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id bt6sm5274341pjb.3.2022.01.20.15.33.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jan 2022 15:33:15 -0800 (PST)
+Date:   Thu, 20 Jan 2022 15:33:14 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hardening@vger.kernel.org
-Subject: [PATCH][next] iio: hw_consumer: Use struct_size() helper in kzalloc()
-Message-ID: <20220120225243.GA37225@embeddedor>
+Subject: Re: [PATCH][next] iio: hw_consumer: Use struct_size() helper in
+ kzalloc()
+Message-ID: <202201201532.1F9C5BD@keescook>
+References: <20220120225243.GA37225@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20220120225243.GA37225@embeddedor>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make use of the struct_size() helper instead of an open-coded version,
-in order to avoid any potential type mistakes or integer overflows that,
-in the worst scenario, could lead to heap overflows.
+On Thu, Jan 20, 2022 at 04:52:43PM -0600, Gustavo A. R. Silva wrote:
+> Make use of the struct_size() helper instead of an open-coded version,
+> in order to avoid any potential type mistakes or integer overflows that,
+> in the worst scenario, could lead to heap overflows.
+> 
+> Also, address the following sparse warnings:
+> drivers/iio/buffer/industrialio-hw-consumer.c:63:23: warning: using sizeof on a flexible structure
+> 
+> Link: https://github.com/KSPP/linux/issues/174
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Also, address the following sparse warnings:
-drivers/iio/buffer/industrialio-hw-consumer.c:63:23: warning: using sizeof on a flexible structure
+Looks good to me.
 
-Link: https://github.com/KSPP/linux/issues/174
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/iio/buffer/industrialio-hw-consumer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-diff --git a/drivers/iio/buffer/industrialio-hw-consumer.c b/drivers/iio/buffer/industrialio-hw-consumer.c
-index 87d9aabd20c7..fb58f599a80b 100644
---- a/drivers/iio/buffer/industrialio-hw-consumer.c
-+++ b/drivers/iio/buffer/industrialio-hw-consumer.c
-@@ -52,7 +52,6 @@ static const struct iio_buffer_access_funcs iio_hw_buf_access = {
- static struct hw_consumer_buffer *iio_hw_consumer_get_buffer(
- 	struct iio_hw_consumer *hwc, struct iio_dev *indio_dev)
- {
--	size_t mask_size = BITS_TO_LONGS(indio_dev->masklength) * sizeof(long);
- 	struct hw_consumer_buffer *buf;
- 
- 	list_for_each_entry(buf, &hwc->buffers, head) {
-@@ -60,7 +59,8 @@ static struct hw_consumer_buffer *iio_hw_consumer_get_buffer(
- 			return buf;
- 	}
- 
--	buf = kzalloc(sizeof(*buf) + mask_size, GFP_KERNEL);
-+	buf = kzalloc(struct_size(buf, scan_mask, BITS_TO_LONGS(indio_dev->masklength)),
-+		      GFP_KERNEL);
- 	if (!buf)
- 		return NULL;
- 
 -- 
-2.27.0
-
+Kees Cook

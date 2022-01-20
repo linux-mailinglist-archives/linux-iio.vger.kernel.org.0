@@ -2,146 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24AE6494C2B
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jan 2022 11:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 851D8494CDA
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jan 2022 12:27:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbiATKwR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Jan 2022 05:52:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbiATKv5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jan 2022 05:51:57 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5411C06173F
-        for <linux-iio@vger.kernel.org>; Thu, 20 Jan 2022 02:51:56 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id n8so11147028wmk.3
-        for <linux-iio@vger.kernel.org>; Thu, 20 Jan 2022 02:51:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:references:from:organization:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=0mEqvDNu9Zk6sTqlde6UJTd4iKTAhS2ZsSWCjtjL8Js=;
-        b=IbMaG71swN4sg6h7akifeOkgqmBmzGXKACVQZ7YeIkKLuvwtXX6p+6UctVNQY/APfF
-         bQqm3tf1/cVG4tduVkPRsNK0yY6hBpMXqtmBMl+cteiTxRv6AEClmvr74ai7lRU76R27
-         3U88OB7w/lEDblM5xJGdIi02EnnM6d2kY/MojR4TSfmNCbsVEUCVsO9fFo0hfM/B6Uvl
-         eeJNrt99WTtMoPozJa45ASMZicDTzwsh8BZkL0q8+S6jBl7Lx9BUo04suJkGEb2gT9g1
-         XVIDjgSG3Ad0UDwiLL+X6gg9rE3VO4BvA/h1Pgcp6OJRlgivxq/eMqUpWh7ANX6Vp4U5
-         7yTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=0mEqvDNu9Zk6sTqlde6UJTd4iKTAhS2ZsSWCjtjL8Js=;
-        b=ux+AAh8OIp8K61LEBM+suwI68x/WI8cwqZB7doCcsN6FHgX6sB/vPwKl1sPFIrfkAL
-         FAiEpFEorMvxsl5LMDDVbOrBXprJ+XvGDfZvcBVh8ZF7XSfrBcS54UvAVOLKOcpy7Adr
-         OgEzy4gJ7KThDMO+HCjeb5nVg8VVH3oCtuTgD9oLM9WC5jpDwFR6V9+ex9SvI9OCZuFn
-         a3NvcTyW6acNW7BGzSsQAbc8Bzp+4cbzPCyYJyGmOqWt5A2htzecQL1aH+TIK3GAig0b
-         PlovPIWuRSr9bIE0MK9FIX6hCIhqutgt75NdEcEI+EXzc/VSKXWCrNSePDN8iPn6BYur
-         R6ug==
-X-Gm-Message-State: AOAM531YgbLvJdbhgb2a+vn2c1I2xLpfo7iSfRuOi+WDdxBIpD0DfBzR
-        XT34/dsBC8+vRGhR5Tvvbypy5w==
-X-Google-Smtp-Source: ABdhPJxCmfCA/1jlhXZWdxR9sWvgeiXVFA3T8nw7/QKA41S71Chv5KYtJpjPG5UiXpySFQYrnJk1dQ==
-X-Received: by 2002:a05:6000:1d84:: with SMTP id bk4mr31790024wrb.708.1642675914618;
-        Thu, 20 Jan 2022 02:51:54 -0800 (PST)
-Received: from ?IPv6:2001:861:44c0:66c0:ced2:397a:bee8:75f5? ([2001:861:44c0:66c0:ced2:397a:bee8:75f5])
-        by smtp.gmail.com with ESMTPSA id b62sm1834642wmb.16.2022.01.20.02.51.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jan 2022 02:51:53 -0800 (PST)
-Subject: Re: [PATCH 1/2] dt-bindings: display: bridge: drop Enric Balletbo i
- Serra from maintainers
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
+        id S230400AbiATL1W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Jan 2022 06:27:22 -0500
+Received: from mxout04.lancloud.ru ([45.84.86.114]:54944 "EHLO
+        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230371AbiATL1T (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Jan 2022 06:27:19 -0500
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru C003420DA1E6
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: Re: [PATCH 1/2] platform: make platform_get_irq_optional() optional
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+CC:     Andrew Lunn <andrew@lunn.ch>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        KVM list <kvm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <linux-iio@vger.kernel.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        "ALSA Development Mailing List" <alsa-devel@alsa-project.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
         Guenter Roeck <groeck@chromium.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        <linux-phy@lists.infradead.org>, Jiri Slaby <jirislaby@kernel.org>,
+        <openipmi-developer@lists.sourceforge.net>,
+        "Khuong Dinh" <khuong@os.amperecomputing.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Lee Jones <lee.jones@linaro.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Nicolas Boichat <drinkcat@chromium.org>,
-        Simon Glass <sjg@chromium.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org
-References: <20220120104009.159147-1-krzysztof.kozlowski@canonical.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Organization: Baylibre
-Message-ID: <a370a74a-2548-fc20-20b0-89e48645086f@baylibre.com>
-Date:   Thu, 20 Jan 2022 11:51:52 +0100
+        "Bartosz Golaszewski" <brgl@bgdev.pl>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "Tony Luck" <tony.luck@intel.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        "Saravanan Sekar" <sravanhome@gmail.com>,
+        Corey Minyard <minyard@acm.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        "Sebastian Reichel" <sre@kernel.org>,
+        Eric Auger <eric.auger@redhat.com>,
+        "Matthias Brugger" <matthias.bgg@gmail.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        <platform-driver-x86@vger.kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        <linux-edac@vger.kernel.org>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        "Hans de Goede" <hdegoede@redhat.com>,
+        netdev <netdev@vger.kernel.org>,
+        "Yoshihiro Shimoda" <yoshihiro.shimoda.uh@renesas.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Zha Qipeng <qipeng.zha@intel.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Richard Weinberger <richard@nod.at>,
+        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
+        <linux-mediatek@lists.infradead.org>,
+        "Brian Norris" <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+References: <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
+ <Yd9L9SZ+g13iyKab@sirena.org.uk>
+ <29f0c65d-77f2-e5b2-f6cc-422add8a707d@omp.ru>
+ <20220114092557.jrkfx7ihg26ekzci@pengutronix.de>
+ <61b80939-357d-14f5-df99-b8d102a4e1a1@omp.ru>
+ <20220114202226.ugzklxv4wzr6egwj@pengutronix.de>
+ <c9026f17-2b3f-ee94-0ea3-5630f981fbc1@omp.ru>
+ <CAMuHMdXVbRudGs69f9ZzaP1PXhteDNZiXA658eMFAwP4nr9r3w@mail.gmail.com>
+ <20220117092444.opoedfcf5k5u6otq@pengutronix.de>
+ <CAMuHMdUgZUeraHadRAi2Z=DV+NuNBrKPkmAKsvFvir2MuquVoA@mail.gmail.com>
+ <20220117114923.d5vajgitxneec7j7@pengutronix.de>
+ <CAMuHMdWCKERO20R2iVHq8P=BaoauoBAtiampWzfMRYihi3Sb0g@mail.gmail.com>
+Organization: Open Mobile Platform
+Message-ID: <b8fda2ae-07b7-af30-2b0d-213a60a7b802@omp.ru>
+Date:   Thu, 20 Jan 2022 14:27:08 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <20220120104009.159147-1-krzysztof.kozlowski@canonical.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAMuHMdWCKERO20R2iVHq8P=BaoauoBAtiampWzfMRYihi3Sb0g@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 20/01/2022 11:40, Krzysztof Kozlowski wrote:
-> Enric Balletbo i Serra emails bounce:
-> 
->   <enric.balletbo@collabora.com>: Recipient address rejected: User unknown in  local recipient table
-> 
-> so drop him from the maintainers, similarly to commit 3119c28634dd
-> ("MAINTAINERS: Chrome: Drop Enric Balletbo i Serra").  Add generic DRM
-> bridge maintainers to Analogix ANX7814.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  .../devicetree/bindings/display/bridge/analogix,anx7814.yaml  | 4 +++-
->  .../bindings/display/bridge/google,cros-ec-anx7688.yaml       | 1 -
->  Documentation/devicetree/bindings/display/bridge/ps8640.yaml  | 1 -
->  3 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/bridge/analogix,anx7814.yaml b/Documentation/devicetree/bindings/display/bridge/analogix,anx7814.yaml
-> index 8e13f27b28ed..bce96b5b0db0 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/analogix,anx7814.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/analogix,anx7814.yaml
-> @@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analogix ANX7814 SlimPort (Full-HD Transmitter)
->  
->  maintainers:
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> +  - Andrzej Hajda <andrzej.hajda@intel.com>
-> +  - Neil Armstrong <narmstrong@baylibre.com>
-> +  - Robert Foss <robert.foss@linaro.org>
->  
->  properties:
->    compatible:
-> diff --git a/Documentation/devicetree/bindings/display/bridge/google,cros-ec-anx7688.yaml b/Documentation/devicetree/bindings/display/bridge/google,cros-ec-anx7688.yaml
-> index 9f7cc6b757cb..a88a5d8c7ba5 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/google,cros-ec-anx7688.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/google,cros-ec-anx7688.yaml
-> @@ -8,7 +8,6 @@ title: ChromeOS EC ANX7688 HDMI to DP Converter through Type-C Port
->  
->  maintainers:
->    - Nicolas Boichat <drinkcat@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->  
->  description: |
->    ChromeOS EC ANX7688 is a display bridge that converts HDMI 2.0 to
-> diff --git a/Documentation/devicetree/bindings/display/bridge/ps8640.yaml b/Documentation/devicetree/bindings/display/bridge/ps8640.yaml
-> index cdaf7a7a8f88..186e17be51fb 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/ps8640.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/ps8640.yaml
-> @@ -8,7 +8,6 @@ title: MIPI DSI to eDP Video Format Converter Device Tree Bindings
->  
->  maintainers:
->    - Nicolas Boichat <drinkcat@chromium.org>
-> -  - Enric Balletbo i Serra <enric.balletbo@collabora.com>
->  
->  description: |
->    The PS8640 is a low power MIPI-to-eDP video format converter supporting
-> 
+On 1/17/22 4:08 PM, Geert Uytterhoeven wrote:
 
-Let's wait for Enric's response, but in any case (removal or new address):
-Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+[...]
+>>> But as we were all in a hurry to kill the non-applicable error
+>>> message, we went for the quick and dirty fix.
+>>>
+>>>> Also I fail to see how a caller of (today's) platform_get_irq_optional()
+>>>> is simpler than a caller of platform_get_irq() given that there is no
+>>>> semantic difference between the two. Please show me a single
+>>>> conversion from platform_get_irq to platform_get_irq_optional that
+>>>> yielded a simplification.
+>>>
+>>> That's exactly why we want to change the latter to return 0 ;-)
+>>
+>> OK. So you agree to my statement "The reason for
+>> platform_get_irq_optional()'s existence is just that platform_get_irq()
+>> emits an error message [...]". Actually you don't want to oppose but
+>> say: It's unfortunate that the silent variant of platform_get_irq() took
+>> the obvious name of a function that could have an improved return code
+>> semantic.
+>>
+>> So my suggestion to rename todays platform_get_irq_optional() to
+>> platform_get_irq_silently() and then introducing
+>> platform_get_irq_optional() with your suggested semantic seems
+>> intriguing and straigt forward to me.
+> 
+> I don't really see the point of needing platform_get_irq_silently(),
+> unless as an intermediary step, where it's going to be removed again
+> once the conversion has completed.
+> Still, the rename would touch all users at once anyway.
+> 
+>> Another thought: platform_get_irq emits an error message for all
+>> problems. Wouldn't it be consistent to let platform_get_irq_optional()
+>> emit an error message for all problems but "not found"?
+>> Alternatively remove the error printk from platform_get_irq().
+> 
+> Yes, all problems but not found are real errors.
 
-Neil
+   ACK for using dev_err_probe() in platfrom_get_irq_optional()
+for the real errors...
+   I've also noted that only platfrom_get_irq_optional() got converted
+from dev_err() to dev_err_probe() but not platfrom_get_irq_byname_optional()...
+
+[...]
+
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+
+MBR, Sergey

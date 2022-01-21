@@ -2,125 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02799496327
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jan 2022 17:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59FB5496848
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 00:38:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379112AbiAUQy1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jan 2022 11:54:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378980AbiAUQy0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 11:54:26 -0500
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F68DC06173B;
-        Fri, 21 Jan 2022 08:54:26 -0800 (PST)
-Received: by mail-oi1-x234.google.com with SMTP id q186so14347327oih.8;
-        Fri, 21 Jan 2022 08:54:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+onRDSB8NBPE12vkU5FSeD+tqXtPtVIIqSZAFj9Gqb8=;
-        b=VV0tazK7JhQqvueYD1I/rC7s9R8HgpUIHqZqhR0so78OUBIyxJzsOkZkyJNytnuH7E
-         8/O7RYFDXW+m/2+S3G2iaeCYXRKOQbxjyBtfnVarWEzqFkEXXDl3a+GJpNvA3sM80C95
-         WuRWMpBE7RWUc93hiZl44IJ9aFgyDh6wqo4DW90F6w6rMrEv82svtmvyjBfGRb8cut8/
-         2SBxiOwNDSBRpIXXJ87wFFU6h+UWqFA2sBo+NxfJsuUo4Jt3EDjJCiy4dHf03oZfGYwf
-         pG/cb31Cj2GH81TFWwKHFwFng9ad7x6gluu3fQaKgahICi8VznMMQJFRSudA0gAb/DJY
-         TDhw==
+        id S229679AbiAUXiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jan 2022 18:38:12 -0500
+Received: from mail-ot1-f53.google.com ([209.85.210.53]:41886 "EHLO
+        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229645AbiAUXiL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 18:38:11 -0500
+Received: by mail-ot1-f53.google.com with SMTP id a12-20020a0568301dcc00b005919e149b4cso13688557otj.8;
+        Fri, 21 Jan 2022 15:38:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+onRDSB8NBPE12vkU5FSeD+tqXtPtVIIqSZAFj9Gqb8=;
-        b=yZ87zy1JOiMiIyqjEBZeOmwh1jdpJWwn9Zvr0KqOx78ENNM3aSz8xnCmFjS7OQFw6u
-         aOZZh9vdfh7dAmkNqKrr77Pr2FXUm3n1Rw7WsbRAhhCq2c7oFkbVsMsmxB2QD3cVmhfh
-         tBvgFWxNGrI5lCfoV7lQsidZ5IjI32LwOAtZqMR2t7dVBMMAUfSykkBEhr4jWj+VPmUc
-         ANv+0txlyxhZSWJ2d8HgcpAGwSfi84kYBZB7MubI0TytZkVAbG+9HSkamF9ZQHVtlobm
-         8WGdx1SbplS0hHq928Rc2dmqhGsBQOIhwAqvzmYBbJWeWBwR7+MD4dX2TThsHqr2xU8a
-         0Mkw==
-X-Gm-Message-State: AOAM531tSO7v2NQcmSHksFN6oJE8PZ/cnXMVnY7WjXqUsKxvxXEcJhRS
-        lHZwP6mQVUohSKaHlP86Yfo=
-X-Google-Smtp-Source: ABdhPJzH/cMZPe1PawEcN7hDEZjfPuESpYNcLZvMMWhAMFkqLEdpxOA/Lmu+Qc3XChTtI6z7i2zqIg==
-X-Received: by 2002:a05:6808:1709:: with SMTP id bc9mr1280338oib.130.1642784065694;
-        Fri, 21 Jan 2022 08:54:25 -0800 (PST)
-Received: from thinkpad.localdomain ([2804:14d:5cd1:5d03:cf72:4317:3105:f6e5])
-        by smtp.gmail.com with ESMTPSA id y8sm1089271oou.23.2022.01.21.08.54.23
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=e23Qd0fm0GuK2sIIse882pkUGPnMfjGNce/vSbHSQdE=;
+        b=5nFe254LZWoEbmazFhf4uzxskoBhOix4Y2k2NRIYQd9htj3I8gCFAzBPM86KRcj/6R
+         YIu2elxl3CxUhP1RNzlpTQApWVkAvA0aXjAPMOyV4u4/dabCa/7Jb+Cv5F/uPe7Z5uvs
+         MSkh12NYn//ZX9c3NA7oqgyOkvT+++kHvK/1dvIy6ytq6xVREE+q8HceYialroWmk/qG
+         hFy7577m5CXqkF3cksl01vaoKSCQRCFSQDxk6Sgu582WvwWzv4dZocyC+WZbMOhwmyIk
+         MQMpZ/Lz6H9XK6Hm7FhtYZceRRQEUyD46m1/Kds7YGYnJRvjPfqLSuEx9ReDQ17Q6VWe
+         GZzQ==
+X-Gm-Message-State: AOAM531sr5OFOR772BzANm0LStXCbJTV71xiISp/zr9wMltdCnFagfsu
+        /p+bP/vKO/FFDgXQFjVziQ==
+X-Google-Smtp-Source: ABdhPJx8DELQ9xc5SKlrpkpLS4lSCx/gVdpoSqAojzwmxkwoW4TLkPA8rhSCwN3hTZgsaKBeYeeRDg==
+X-Received: by 2002:a05:6830:1f56:: with SMTP id u22mr4325700oth.138.1642808291144;
+        Fri, 21 Jan 2022 15:38:11 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id f6sm1399162oos.7.2022.01.21.15.38.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jan 2022 08:54:25 -0800 (PST)
-From:   Luiz Sampaio <sampaio.ime@gmail.com>
-To:     Kevin Tsai <ktsai@capellamicro.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-kernel@vger.kernel.org, Luiz Sampaio <sampaio.ime@gmail.com>,
-        linux-iio@vger.kernel.org
-Subject: [PATCH 04/31] iio: light: cm3605: changing LED_* from enum led_brightness to actual value
-Date:   Fri, 21 Jan 2022 13:54:09 -0300
-Message-Id: <20220121165436.30956-5-sampaio.ime@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220121165436.30956-1-sampaio.ime@gmail.com>
-References: <20220121165436.30956-1-sampaio.ime@gmail.com>
+        Fri, 21 Jan 2022 15:38:10 -0800 (PST)
+Received: (nullmailer pid 1827883 invoked by uid 1000);
+        Fri, 21 Jan 2022 23:38:09 -0000
+Date:   Fri, 21 Jan 2022 17:38:09 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Guodong Liu <guodong.liu@mediatek.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Project_Global_Chrome_Upstream_Group@mediatek.com,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        linux-mediatek@lists.infradead.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add compatible for
+ Mediatek MT8186
+Message-ID: <YetD4SehEDxLkrzH@robh.at.kernel.org>
+References: <20220110084841.575-1-guodong.liu@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220110084841.575-1-guodong.liu@mediatek.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The enum led_brightness, which contains the declaration of LED_OFF,
-LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
-max_brightness.
----
- drivers/iio/light/cm3605.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+On Mon, 10 Jan 2022 16:48:40 +0800, Guodong Liu wrote:
+> This commit adds dt-binding documentation of auxadc for Mediatek MT8186 SoC
+> Platform.
+> 
+> Signed-off-by: Guodong Liu <guodong.liu@mediatek.com>
+> ---
+>  .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
-index 50d34a98839c..f60db6cd9e6d 100644
---- a/drivers/iio/light/cm3605.c
-+++ b/drivers/iio/light/cm3605.c
-@@ -238,7 +238,7 @@ static int cm3605_probe(struct platform_device *pdev)
- 
- 	/* Just name the trigger the same as the driver */
- 	led_trigger_register_simple("cm3605", &cm3605->led);
--	led_trigger_event(cm3605->led, LED_FULL);
-+	led_trigger_event(cm3605->led, 255);
- 
- 	indio_dev->info = &cm3605_info;
- 	indio_dev->name = "cm3605";
-@@ -255,7 +255,7 @@ static int cm3605_probe(struct platform_device *pdev)
- 	return 0;
- 
- out_remove_trigger:
--	led_trigger_event(cm3605->led, LED_OFF);
-+	led_trigger_event(cm3605->led, 0);
- 	led_trigger_unregister_simple(cm3605->led);
- out_disable_aset:
- 	gpiod_set_value_cansleep(cm3605->aset, 0);
-@@ -269,7 +269,7 @@ static int cm3605_remove(struct platform_device *pdev)
- 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
- 	struct cm3605 *cm3605 = iio_priv(indio_dev);
- 
--	led_trigger_event(cm3605->led, LED_OFF);
-+	led_trigger_event(cm3605->led, 0);
- 	led_trigger_unregister_simple(cm3605->led);
- 	gpiod_set_value_cansleep(cm3605->aset, 0);
- 	iio_device_unregister(indio_dev);
-@@ -283,7 +283,7 @@ static int __maybe_unused cm3605_pm_suspend(struct device *dev)
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct cm3605 *cm3605 = iio_priv(indio_dev);
- 
--	led_trigger_event(cm3605->led, LED_OFF);
-+	led_trigger_event(cm3605->led, 0);
- 	regulator_disable(cm3605->vdd);
- 
- 	return 0;
-@@ -298,7 +298,7 @@ static int __maybe_unused cm3605_pm_resume(struct device *dev)
- 	ret = regulator_enable(cm3605->vdd);
- 	if (ret)
- 		dev_err(dev, "failed to enable regulator in resume path\n");
--	led_trigger_event(cm3605->led, LED_FULL);
-+	led_trigger_event(cm3605->led, 255);
- 
- 	return 0;
- }
--- 
-2.34.1
-
+Acked-by: Rob Herring <robh@kernel.org>

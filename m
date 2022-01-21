@@ -2,480 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97CA3496239
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jan 2022 16:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02799496327
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jan 2022 17:54:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381641AbiAUPla (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jan 2022 10:41:30 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:46472 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1381640AbiAUPla (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 10:41:30 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LCgq6e015634;
-        Fri, 21 Jan 2022 10:41:18 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dqj1bbant-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 21 Jan 2022 10:41:18 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 20LFfGZd007285
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 21 Jan 2022 10:41:16 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 21 Jan
- 2022 10:41:15 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 21 Jan 2022 10:41:15 -0500
-Received: from NSA-L01.ad.analog.com ([10.32.224.71])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20LFf3vN021092;
-        Fri, 21 Jan 2022 10:41:09 -0500
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: [PATCH 3/3] iio: adis: stylistic changes
-Date:   Fri, 21 Jan 2022 16:40:57 +0100
-Message-ID: <20220121154057.251-3-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220121154057.251-1-nuno.sa@analog.com>
-References: <20220121154057.251-1-nuno.sa@analog.com>
+        id S1379112AbiAUQy1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jan 2022 11:54:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1378980AbiAUQy0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 11:54:26 -0500
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F68DC06173B;
+        Fri, 21 Jan 2022 08:54:26 -0800 (PST)
+Received: by mail-oi1-x234.google.com with SMTP id q186so14347327oih.8;
+        Fri, 21 Jan 2022 08:54:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+onRDSB8NBPE12vkU5FSeD+tqXtPtVIIqSZAFj9Gqb8=;
+        b=VV0tazK7JhQqvueYD1I/rC7s9R8HgpUIHqZqhR0so78OUBIyxJzsOkZkyJNytnuH7E
+         8/O7RYFDXW+m/2+S3G2iaeCYXRKOQbxjyBtfnVarWEzqFkEXXDl3a+GJpNvA3sM80C95
+         WuRWMpBE7RWUc93hiZl44IJ9aFgyDh6wqo4DW90F6w6rMrEv82svtmvyjBfGRb8cut8/
+         2SBxiOwNDSBRpIXXJ87wFFU6h+UWqFA2sBo+NxfJsuUo4Jt3EDjJCiy4dHf03oZfGYwf
+         pG/cb31Cj2GH81TFWwKHFwFng9ad7x6gluu3fQaKgahICi8VznMMQJFRSudA0gAb/DJY
+         TDhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+onRDSB8NBPE12vkU5FSeD+tqXtPtVIIqSZAFj9Gqb8=;
+        b=yZ87zy1JOiMiIyqjEBZeOmwh1jdpJWwn9Zvr0KqOx78ENNM3aSz8xnCmFjS7OQFw6u
+         aOZZh9vdfh7dAmkNqKrr77Pr2FXUm3n1Rw7WsbRAhhCq2c7oFkbVsMsmxB2QD3cVmhfh
+         tBvgFWxNGrI5lCfoV7lQsidZ5IjI32LwOAtZqMR2t7dVBMMAUfSykkBEhr4jWj+VPmUc
+         ANv+0txlyxhZSWJ2d8HgcpAGwSfi84kYBZB7MubI0TytZkVAbG+9HSkamF9ZQHVtlobm
+         8WGdx1SbplS0hHq928Rc2dmqhGsBQOIhwAqvzmYBbJWeWBwR7+MD4dX2TThsHqr2xU8a
+         0Mkw==
+X-Gm-Message-State: AOAM531tSO7v2NQcmSHksFN6oJE8PZ/cnXMVnY7WjXqUsKxvxXEcJhRS
+        lHZwP6mQVUohSKaHlP86Yfo=
+X-Google-Smtp-Source: ABdhPJzH/cMZPe1PawEcN7hDEZjfPuESpYNcLZvMMWhAMFkqLEdpxOA/Lmu+Qc3XChTtI6z7i2zqIg==
+X-Received: by 2002:a05:6808:1709:: with SMTP id bc9mr1280338oib.130.1642784065694;
+        Fri, 21 Jan 2022 08:54:25 -0800 (PST)
+Received: from thinkpad.localdomain ([2804:14d:5cd1:5d03:cf72:4317:3105:f6e5])
+        by smtp.gmail.com with ESMTPSA id y8sm1089271oou.23.2022.01.21.08.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jan 2022 08:54:25 -0800 (PST)
+From:   Luiz Sampaio <sampaio.ime@gmail.com>
+To:     Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-kernel@vger.kernel.org, Luiz Sampaio <sampaio.ime@gmail.com>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH 04/31] iio: light: cm3605: changing LED_* from enum led_brightness to actual value
+Date:   Fri, 21 Jan 2022 13:54:09 -0300
+Message-Id: <20220121165436.30956-5-sampaio.ime@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220121165436.30956-1-sampaio.ime@gmail.com>
+References: <20220121165436.30956-1-sampaio.ime@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: URHByItCFsGAoHzg_9iLiXjwWEifoess
-X-Proofpoint-ORIG-GUID: URHByItCFsGAoHzg_9iLiXjwWEifoess
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-21_08,2022-01-21_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- malwarescore=0 mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2201110000 definitions=main-2201210105
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Minor stylistic changes to address checkptach complains when called with
-'--strict'.
-
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+The enum led_brightness, which contains the declaration of LED_OFF,
+LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
+max_brightness.
 ---
- drivers/iio/imu/adis.c         | 47 +++++++++++++++++----------------
- drivers/iio/imu/adis_buffer.c  |  6 ++---
- drivers/iio/imu/adis_trigger.c |  3 +--
- include/linux/iio/imu/adis.h   | 48 ++++++++++++++++++----------------
- 4 files changed, 54 insertions(+), 50 deletions(-)
+ drivers/iio/light/cm3605.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-index cb0d66bf6561..638957001653 100644
---- a/drivers/iio/imu/adis.c
-+++ b/drivers/iio/imu/adis.c
-@@ -30,8 +30,8 @@
-  * @value: The value to write to device (up to 4 bytes)
-  * @size: The size of the @value (in bytes)
-  */
--int __adis_write_reg(struct adis *adis, unsigned int reg,
--	unsigned int value, unsigned int size)
-+int __adis_write_reg(struct adis *adis, unsigned int reg, unsigned int value,
-+		     unsigned int size)
- {
- 	unsigned int page = reg / ADIS_PAGE_SIZE;
- 	int ret, i;
-@@ -114,7 +114,7 @@ int __adis_write_reg(struct adis *adis, unsigned int reg,
- 	ret = spi_sync(adis->spi, &msg);
- 	if (ret) {
- 		dev_err(&adis->spi->dev, "Failed to write register 0x%02X: %d\n",
--				reg, ret);
-+			reg, ret);
- 	} else {
- 		adis->current_page = page;
- 	}
-@@ -130,8 +130,8 @@ EXPORT_SYMBOL_GPL(__adis_write_reg);
-  * @val: The value read back from the device
-  * @size: The size of the @val buffer
-  */
--int __adis_read_reg(struct adis *adis, unsigned int reg,
--	unsigned int *val, unsigned int size)
-+int __adis_read_reg(struct adis *adis, unsigned int reg, unsigned int *val,
-+		    unsigned int size)
- {
- 	unsigned int page = reg / ADIS_PAGE_SIZE;
- 	struct spi_message msg;
-@@ -201,12 +201,12 @@ int __adis_read_reg(struct adis *adis, unsigned int reg,
- 	ret = spi_sync(adis->spi, &msg);
- 	if (ret) {
- 		dev_err(&adis->spi->dev, "Failed to read register 0x%02X: %d\n",
--				reg, ret);
-+			reg, ret);
- 		return ret;
--	} else {
--		adis->current_page = page;
- 	}
+diff --git a/drivers/iio/light/cm3605.c b/drivers/iio/light/cm3605.c
+index 50d34a98839c..f60db6cd9e6d 100644
+--- a/drivers/iio/light/cm3605.c
++++ b/drivers/iio/light/cm3605.c
+@@ -238,7 +238,7 @@ static int cm3605_probe(struct platform_device *pdev)
  
-+	adis->current_page = page;
-+
- 	switch (size) {
- 	case 4:
- 		*val = get_unaligned_be32(adis->rx);
-@@ -247,13 +247,13 @@ EXPORT_SYMBOL_GPL(__adis_update_bits_base);
+ 	/* Just name the trigger the same as the driver */
+ 	led_trigger_register_simple("cm3605", &cm3605->led);
+-	led_trigger_event(cm3605->led, LED_FULL);
++	led_trigger_event(cm3605->led, 255);
  
- #ifdef CONFIG_DEBUG_FS
+ 	indio_dev->info = &cm3605_info;
+ 	indio_dev->name = "cm3605";
+@@ -255,7 +255,7 @@ static int cm3605_probe(struct platform_device *pdev)
+ 	return 0;
  
--int adis_debugfs_reg_access(struct iio_dev *indio_dev,
--	unsigned int reg, unsigned int writeval, unsigned int *readval)
-+int adis_debugfs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-+			    unsigned int writeval, unsigned int *readval)
- {
- 	struct adis *adis = iio_device_get_drvdata(indio_dev);
+ out_remove_trigger:
+-	led_trigger_event(cm3605->led, LED_OFF);
++	led_trigger_event(cm3605->led, 0);
+ 	led_trigger_unregister_simple(cm3605->led);
+ out_disable_aset:
+ 	gpiod_set_value_cansleep(cm3605->aset, 0);
+@@ -269,7 +269,7 @@ static int cm3605_remove(struct platform_device *pdev)
+ 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+ 	struct cm3605 *cm3605 = iio_priv(indio_dev);
  
- 	if (readval) {
--		uint16_t val16;
-+		u16 val16;
- 		int ret;
+-	led_trigger_event(cm3605->led, LED_OFF);
++	led_trigger_event(cm3605->led, 0);
+ 	led_trigger_unregister_simple(cm3605->led);
+ 	gpiod_set_value_cansleep(cm3605->aset, 0);
+ 	iio_device_unregister(indio_dev);
+@@ -283,7 +283,7 @@ static int __maybe_unused cm3605_pm_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct cm3605 *cm3605 = iio_priv(indio_dev);
  
- 		ret = adis_read_reg_16(adis, reg, &val16);
-@@ -261,9 +261,9 @@ int adis_debugfs_reg_access(struct iio_dev *indio_dev,
- 			*readval = val16;
+-	led_trigger_event(cm3605->led, LED_OFF);
++	led_trigger_event(cm3605->led, 0);
+ 	regulator_disable(cm3605->vdd);
  
- 		return ret;
--	} else {
--		return adis_write_reg_16(adis, reg, writeval);
- 	}
-+
-+	return adis_write_reg_16(adis, reg, writeval);
- }
- EXPORT_SYMBOL(adis_debugfs_reg_access);
- 
-@@ -279,14 +279,16 @@ EXPORT_SYMBOL(adis_debugfs_reg_access);
- int adis_enable_irq(struct adis *adis, bool enable)
- {
- 	int ret = 0;
--	uint16_t msc;
-+	u16 msc;
- 
- 	mutex_lock(&adis->state_lock);
- 
- 	if (adis->data->enable_irq) {
- 		ret = adis->data->enable_irq(adis, enable);
- 		goto out_unlock;
--	} else if (adis->data->unmasked_drdy) {
-+	}
-+
-+	if (adis->data->unmasked_drdy) {
- 		if (enable)
- 			enable_irq(adis->spi->irq);
- 		else
-@@ -322,7 +324,7 @@ EXPORT_SYMBOL(adis_enable_irq);
-  */
- int __adis_check_status(struct adis *adis)
- {
--	uint16_t status;
-+	u16 status;
- 	int ret;
- 	int i;
- 
-@@ -358,7 +360,7 @@ int __adis_reset(struct adis *adis)
- 	const struct adis_timeout *timeouts = adis->data->timeouts;
- 
- 	ret = __adis_write_reg_8(adis, adis->data->glob_cmd_reg,
--			ADIS_GLOB_CMD_SW_RESET);
-+				 ADIS_GLOB_CMD_SW_RESET);
- 	if (ret) {
- 		dev_err(&adis->spi->dev, "Failed to reset device: %d\n", ret);
- 		return ret;
-@@ -414,7 +416,7 @@ int __adis_initial_startup(struct adis *adis)
- {
- 	const struct adis_timeout *timeouts = adis->data->timeouts;
- 	struct gpio_desc *gpio;
--	uint16_t prod_id;
-+	u16 prod_id;
- 	int ret;
- 
- 	/* check if the device has rst pin low */
-@@ -423,7 +425,7 @@ int __adis_initial_startup(struct adis *adis)
- 		return PTR_ERR(gpio);
- 
- 	if (gpio) {
--		msleep(10);
-+		usleep_range(10, 12);
- 		/* bring device out of reset */
- 		gpiod_set_value_cansleep(gpio, 0);
- 		msleep(timeouts->reset_ms);
-@@ -477,7 +479,8 @@ EXPORT_SYMBOL_GPL(__adis_initial_startup);
-  * a error bit in the channels raw value set error_mask to 0.
-  */
- int adis_single_conversion(struct iio_dev *indio_dev,
--	const struct iio_chan_spec *chan, unsigned int error_mask, int *val)
-+			   const struct iio_chan_spec *chan,
-+			   unsigned int error_mask, int *val)
- {
- 	struct adis *adis = iio_device_get_drvdata(indio_dev);
- 	unsigned int uval;
-@@ -486,7 +489,7 @@ int adis_single_conversion(struct iio_dev *indio_dev,
- 	mutex_lock(&adis->state_lock);
- 
- 	ret = __adis_read_reg(adis, chan->address, &uval,
--			chan->scan_type.storagebits / 8);
-+			      chan->scan_type.storagebits / 8);
+ 	return 0;
+@@ -298,7 +298,7 @@ static int __maybe_unused cm3605_pm_resume(struct device *dev)
+ 	ret = regulator_enable(cm3605->vdd);
  	if (ret)
- 		goto err_unlock;
+ 		dev_err(dev, "failed to enable regulator in resume path\n");
+-	led_trigger_event(cm3605->led, LED_FULL);
++	led_trigger_event(cm3605->led, 255);
  
-@@ -521,7 +524,7 @@ EXPORT_SYMBOL_GPL(adis_single_conversion);
-  * called.
-  */
- int adis_init(struct adis *adis, struct iio_dev *indio_dev,
--	struct spi_device *spi, const struct adis_data *data)
-+	      struct spi_device *spi, const struct adis_data *data)
- {
- 	if (!data || !data->timeouts) {
- 		dev_err(&spi->dev, "No config data or timeouts not defined!\n");
-diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
-index 351c303c8a8c..d3527cf5ed37 100644
---- a/drivers/iio/imu/adis_buffer.c
-+++ b/drivers/iio/imu/adis_buffer.c
-@@ -20,7 +20,7 @@
- #include <linux/iio/imu/adis.h>
- 
- static int adis_update_scan_mode_burst(struct iio_dev *indio_dev,
--	const unsigned long *scan_mask)
-+				       const unsigned long *scan_mask)
- {
- 	struct adis *adis = iio_device_get_drvdata(indio_dev);
- 	unsigned int burst_length, burst_max_length;
-@@ -67,7 +67,7 @@ static int adis_update_scan_mode_burst(struct iio_dev *indio_dev,
+ 	return 0;
  }
- 
- int adis_update_scan_mode(struct iio_dev *indio_dev,
--	const unsigned long *scan_mask)
-+			  const unsigned long *scan_mask)
- {
- 	struct adis *adis = iio_device_get_drvdata(indio_dev);
- 	const struct iio_chan_spec *chan;
-@@ -158,7 +158,7 @@ static irqreturn_t adis_trigger_handler(int irq, void *p)
- 	}
- 
- 	iio_push_to_buffers_with_timestamp(indio_dev, adis->buffer,
--		pf->timestamp);
-+					   pf->timestamp);
- 
- irq_done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
-index c461bd1e8e69..0e7fb00ba241 100644
---- a/drivers/iio/imu/adis_trigger.c
-+++ b/drivers/iio/imu/adis_trigger.c
-@@ -15,8 +15,7 @@
- #include <linux/iio/trigger.h>
- #include <linux/iio/imu/adis.h>
- 
--static int adis_data_rdy_trigger_set_state(struct iio_trigger *trig,
--						bool state)
-+static int adis_data_rdy_trigger_set_state(struct iio_trigger *trig, bool state)
- {
- 	struct adis *adis = iio_trigger_get_drvdata(trig);
- 
-diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-index 186e5f40df16..04371d430e15 100644
---- a/include/linux/iio/imu/adis.h
-+++ b/include/linux/iio/imu/adis.h
-@@ -32,6 +32,7 @@ struct adis_timeout {
- 	u16 sw_reset_ms;
- 	u16 self_test_ms;
- };
-+
- /**
-  * struct adis_data - ADIS chip variant specific data
-  * @read_delay: SPI delay for read operations in us
-@@ -45,7 +46,7 @@ struct adis_timeout {
-  * @self_test_mask: Bitmask of supported self-test operations
-  * @self_test_reg: Register address to request self test command
-  * @self_test_no_autoclear: True if device's self-test needs clear of ctrl reg
-- * @status_error_msgs: Array of error messgaes
-+ * @status_error_msgs: Array of error messages
-  * @status_error_mask: Bitmask of errors supported by the device
-  * @timeouts: Chip specific delays
-  * @enable_irq: Hook for ADIS devices that have a special IRQ enable/disable
-@@ -130,12 +131,12 @@ struct adis {
- 	unsigned long		irq_flag;
- 	void			*buffer;
- 
--	uint8_t			tx[10] ____cacheline_aligned;
--	uint8_t			rx[4];
-+	u8			tx[10] ____cacheline_aligned;
-+	u8			rx[4];
- };
- 
- int adis_init(struct adis *adis, struct iio_dev *indio_dev,
--	struct spi_device *spi, const struct adis_data *data);
-+	      struct spi_device *spi, const struct adis_data *data);
- int __adis_reset(struct adis *adis);
- 
- /**
-@@ -156,9 +157,9 @@ static inline int adis_reset(struct adis *adis)
- }
- 
- int __adis_write_reg(struct adis *adis, unsigned int reg,
--	unsigned int val, unsigned int size);
-+		     unsigned int val, unsigned int size);
- int __adis_read_reg(struct adis *adis, unsigned int reg,
--	unsigned int *val, unsigned int size);
-+		    unsigned int *val, unsigned int size);
- 
- /**
-  * __adis_write_reg_8() - Write single byte to a register (unlocked)
-@@ -167,7 +168,7 @@ int __adis_read_reg(struct adis *adis, unsigned int reg,
-  * @value: The value to write
-  */
- static inline int __adis_write_reg_8(struct adis *adis, unsigned int reg,
--	uint8_t val)
-+				     u8 val)
- {
- 	return __adis_write_reg(adis, reg, val, 1);
- }
-@@ -179,7 +180,7 @@ static inline int __adis_write_reg_8(struct adis *adis, unsigned int reg,
-  * @value: Value to be written
-  */
- static inline int __adis_write_reg_16(struct adis *adis, unsigned int reg,
--	uint16_t val)
-+				      u16 val)
- {
- 	return __adis_write_reg(adis, reg, val, 2);
- }
-@@ -191,7 +192,7 @@ static inline int __adis_write_reg_16(struct adis *adis, unsigned int reg,
-  * @value: Value to be written
-  */
- static inline int __adis_write_reg_32(struct adis *adis, unsigned int reg,
--	uint32_t val)
-+				      u32 val)
- {
- 	return __adis_write_reg(adis, reg, val, 4);
- }
-@@ -203,7 +204,7 @@ static inline int __adis_write_reg_32(struct adis *adis, unsigned int reg,
-  * @val: The value read back from the device
-  */
- static inline int __adis_read_reg_16(struct adis *adis, unsigned int reg,
--	uint16_t *val)
-+				     u16 *val)
- {
- 	unsigned int tmp;
- 	int ret;
-@@ -222,7 +223,7 @@ static inline int __adis_read_reg_16(struct adis *adis, unsigned int reg,
-  * @val: The value read back from the device
-  */
- static inline int __adis_read_reg_32(struct adis *adis, unsigned int reg,
--	uint32_t *val)
-+				     u32 *val)
- {
- 	unsigned int tmp;
- 	int ret;
-@@ -242,7 +243,7 @@ static inline int __adis_read_reg_32(struct adis *adis, unsigned int reg,
-  * @size: The size of the @value (in bytes)
-  */
- static inline int adis_write_reg(struct adis *adis, unsigned int reg,
--	unsigned int val, unsigned int size)
-+				 unsigned int val, unsigned int size)
- {
- 	int ret;
- 
-@@ -261,7 +262,7 @@ static inline int adis_write_reg(struct adis *adis, unsigned int reg,
-  * @size: The size of the @val buffer
-  */
- static int adis_read_reg(struct adis *adis, unsigned int reg,
--	unsigned int *val, unsigned int size)
-+			 unsigned int *val, unsigned int size)
- {
- 	int ret;
- 
-@@ -279,7 +280,7 @@ static int adis_read_reg(struct adis *adis, unsigned int reg,
-  * @value: The value to write
-  */
- static inline int adis_write_reg_8(struct adis *adis, unsigned int reg,
--	uint8_t val)
-+				   u8 val)
- {
- 	return adis_write_reg(adis, reg, val, 1);
- }
-@@ -291,7 +292,7 @@ static inline int adis_write_reg_8(struct adis *adis, unsigned int reg,
-  * @value: Value to be written
-  */
- static inline int adis_write_reg_16(struct adis *adis, unsigned int reg,
--	uint16_t val)
-+				    u16 val)
- {
- 	return adis_write_reg(adis, reg, val, 2);
- }
-@@ -303,7 +304,7 @@ static inline int adis_write_reg_16(struct adis *adis, unsigned int reg,
-  * @value: Value to be written
-  */
- static inline int adis_write_reg_32(struct adis *adis, unsigned int reg,
--	uint32_t val)
-+				    u32 val)
- {
- 	return adis_write_reg(adis, reg, val, 4);
- }
-@@ -315,7 +316,7 @@ static inline int adis_write_reg_32(struct adis *adis, unsigned int reg,
-  * @val: The value read back from the device
-  */
- static inline int adis_read_reg_16(struct adis *adis, unsigned int reg,
--	uint16_t *val)
-+				   u16 *val)
- {
- 	unsigned int tmp;
- 	int ret;
-@@ -334,7 +335,7 @@ static inline int adis_read_reg_16(struct adis *adis, unsigned int reg,
-  * @val: The value read back from the device
-  */
- static inline int adis_read_reg_32(struct adis *adis, unsigned int reg,
--	uint32_t *val)
-+				   u32 *val)
- {
- 	unsigned int tmp;
- 	int ret;
-@@ -439,8 +440,8 @@ static inline void adis_dev_unlock(struct adis *adis)
- }
- 
- int adis_single_conversion(struct iio_dev *indio_dev,
--	const struct iio_chan_spec *chan, unsigned int error_mask,
--	int *val);
-+			   const struct iio_chan_spec *chan,
-+			   unsigned int error_mask, int *val);
- 
- #define ADIS_VOLTAGE_CHAN(addr, si, chan, name, info_all, bits) { \
- 	.type = IIO_VOLTAGE, \
-@@ -489,7 +490,7 @@ int adis_single_conversion(struct iio_dev *indio_dev,
- 	.modified = 1, \
- 	.channel2 = IIO_MOD_ ## mod, \
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
--		 info_sep, \
-+		 (info_sep), \
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
- 	.info_mask_shared_by_all = info_all, \
- 	.address = (addr), \
-@@ -523,7 +524,7 @@ devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
- int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev);
- 
- int adis_update_scan_mode(struct iio_dev *indio_dev,
--	const unsigned long *scan_mask);
-+			  const unsigned long *scan_mask);
- 
- #else /* CONFIG_IIO_BUFFER */
- 
-@@ -547,7 +548,8 @@ static inline int devm_adis_probe_trigger(struct adis *adis,
- #ifdef CONFIG_DEBUG_FS
- 
- int adis_debugfs_reg_access(struct iio_dev *indio_dev,
--	unsigned int reg, unsigned int writeval, unsigned int *readval);
-+			    unsigned int reg, unsigned int writeval,
-+			    unsigned int *readval);
- 
- #else
- 
 -- 
 2.34.1
 

@@ -2,239 +2,443 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DBD64960A8
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jan 2022 15:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31746496194
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jan 2022 15:55:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380977AbiAUOZh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jan 2022 09:25:37 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5460 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1350730AbiAUOZg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 09:25:36 -0500
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20LCB2Yl009179;
-        Fri, 21 Jan 2022 09:25:24 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dqj3ku0dw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 21 Jan 2022 09:25:23 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 20LEPM0q002038
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 21 Jan 2022 09:25:22 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 21 Jan
- 2022 09:25:21 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 21 Jan 2022 09:25:21 -0500
-Received: from NSA-L01.ad.analog.com ([10.32.224.71])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20LEP5pm017001;
-        Fri, 21 Jan 2022 09:25:15 -0500
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: [PATCH v3 3/3] dt-bindings: iio: Add ltc2688 documentation
-Date:   Fri, 21 Jan 2022 15:25:01 +0100
-Message-ID: <20220121142501.151-4-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220121142501.151-1-nuno.sa@analog.com>
-References: <20220121142501.151-1-nuno.sa@analog.com>
+        id S1381506AbiAUOy7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Jan 2022 09:54:59 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4438 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232344AbiAUOyg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 09:54:36 -0500
+Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JgMpc5VTpz67b1p;
+        Fri, 21 Jan 2022 22:54:16 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Fri, 21 Jan 2022 15:54:33 +0100
+Received: from localhost (10.47.75.29) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.21; Fri, 21 Jan
+ 2022 14:54:32 +0000
+Date:   Fri, 21 Jan 2022 14:54:29 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Pop, Cristian" <Cristian.Pop@analog.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH v2 2/2] one-bit-adc-dac: Add initial version of one bit
+ ADC-DAC
+Message-ID: <20220121145429.00007e7b@Huawei.com>
+In-Reply-To: <DM6PR03MB38660D97C97334644D755FD7E75B9@DM6PR03MB3866.namprd03.prod.outlook.com>
+References: <20220111115919.14645-1-cristian.pop@analog.com>
+        <20220111115919.14645-2-cristian.pop@analog.com>
+        <20220116115228.1f7b4728@jic23-huawei>
+        <DM6PR03MB38660D97C97334644D755FD7E75B9@DM6PR03MB3866.namprd03.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 706TRFxWEYXUjWCO8ou0IbuOK7J8L15X
-X-Proofpoint-GUID: 706TRFxWEYXUjWCO8ou0IbuOK7J8L15X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-21_06,2022-01-21_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 clxscore=1015 impostorscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2201210097
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.75.29]
+X-ClientProxiedBy: lhreml702-chm.china.huawei.com (10.201.108.51) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document the LTC2688 devicetree properties.
+On Fri, 21 Jan 2022 10:24:18 +0000
+"Pop, Cristian" <Cristian.Pop@analog.com> wrote:
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- .../bindings/iio/dac/adi,ltc2688.yaml         | 146 ++++++++++++++++++
- MAINTAINERS                                   |   1 +
- 2 files changed, 147 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
+> Hi Jonathan,
+> 
+> The additional functionality it is a little bit unclear to me.
+> 
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, January 16, 2022 1:52 PM
+> > To: Pop, Cristian <Cristian.Pop@analog.com>
+> > Cc: linux-iio@vger.kernel.org; linux-gpio@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; devicetree@vger.kernel.org; robh+dt@kernel.org
+> > Subject: Re: [PATCH v2 2/2] one-bit-adc-dac: Add initial version of one bit
+> > ADC-DAC
+> > 
+> > [External]
+> > 
+> > On Tue, 11 Jan 2022 13:59:19 +0200
+> > Cristian Pop <cristian.pop@analog.com> wrote:
+> >   
+> > > This allows remote reading and writing of the GPIOs. This is useful in
+> > > application that run on another PC, at system level, where multiple
+> > > iio devices and GPIO devices are integrated together.  
+> > Hi Cristian,
+> > 
+> > So I fully understand why this can be useful, but it is a software only
+> > construction so I'm not convinced that it makes sense to necessarily
+> > configure it via device tree.   A better fit may well be configfs.
+> > (note I always meant to add configfs controls for iio_hwmon but haven't
+> > found the time to do it yet...)
+> > 
+> > As it currently stands, doing only polled / sysfs reads this driver doesn't do
+> > enough to justify its existence. You could just do all this in userspace using
+> > the existing gpio interfaces.  So to be useful I'd expect it to at least do
+> > triggered buffer capture.  
+> 
+> What do you mean by triggered buffer capture? Should I save previous GPIO
+> states into a buffer? What should I do with them?
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
-new file mode 100644
-index 000000000000..48f9e7d29423
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
-@@ -0,0 +1,146 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ltc2688.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices LTC2688 DAC
-+
-+maintainers:
-+  - Nuno Sá <nuno.sa@analog.com>
-+
-+description: |
-+  Analog Devices LTC2688 16 channel, 16 bit, +-15V DAC
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2688.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ltc2688
-+
-+  reg:
-+    maxItems: 1
-+
-+  vcc-supply:
-+    description: Analog Supply Voltage Input.
-+
-+  iovcc-supply:
-+    description: Digital Input/Output Supply Voltage.
-+
-+  vref-supply:
-+    description:
-+      Reference Input/Output. The voltage at the REF pin sets the full-scale
-+      range of all channels. If not provided the internal reference is used and
-+      also provided on the VREF pin".
-+
-+  clr-gpios:
-+    description:
-+      If specified, it will be asserted during driver probe. As the line is
-+      active low, it should be marked GPIO_ACTIVE_LOW.
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+patternProperties:
-+  "^channel@([0-9]|1[0-5])$":
-+    type: object
-+
-+    properties:
-+      reg:
-+        description: The channel number representing the DAC output channel.
-+        maximum: 15
-+
-+      adi,toggle-mode:
-+        description:
-+          Set the channel as a toggle enabled channel. Toggle operation enables
-+          fast switching of a DAC output between two different DAC codes without
-+          any SPI transaction.
-+        type: boolean
-+
-+      adi,output-range-microvolt:
-+        description: Specify the channel output full scale range.
-+        oneOf:
-+          - items:
-+              - const: 0
-+              - enum: [5000000, 10000000]
-+          - items:
-+              - const: -5000000
-+              - const: 5000000
-+          - items:
-+              - const: -10000000
-+              - const: 10000000
-+          - items:
-+              - const: -15000000
-+              - const: 15000000
-+
-+      adi,overrange:
-+        description: Enable 5% overrange over the selected full scale range.
-+        type: boolean
-+
-+      clocks:
-+        maxItems: 1
-+
-+      adi,toggle-dither-input:
-+        description:
-+          Selects the TGPx pin to be associated with this channel. This setting
-+          only makes sense for toggle or dither enabled channels. If
-+          @adi,toggle-mode is not set and this property is given, the channel is
-+          assumed to be a dither capable channel. Note that multiple channels
-+          can be mapped to the same pin. If this setting is given, the
-+          respective @clock must also be provided. Mappings between this and
-+          input pins
-+            0 - TGP1
-+            1 - TGP2
-+            2 - TGP3
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        enum: [0, 1, 2]
-+
-+    dependencies:
-+      adi,toggle-dither-input: [ clocks ]
-+
-+    required:
-+      - reg
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+
-+    spi {
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+          ltc2688: ltc2688@0 {
-+                  compatible = "adi,ltc2688";
-+                  reg = <0>;
-+
-+                  vcc-supply = <&vcc>;
-+                  iovcc-supply = <&vcc>;
-+                  vref-supply = <&vref>;
-+
-+                  #address-cells = <1>;
-+                  #size-cells = <0>;
-+                  channel@0 {
-+                          reg = <0>;
-+                          adi,toggle-mode;
-+                          adi,overrange;
-+                  };
-+
-+                  channel@1 {
-+                          reg = <1>;
-+                          adi,output-range-microvolt = <0 10000000>;
-+
-+                          clocks = <&clock_tgp3>;
-+                          adi,toggle-dither-input = <2>;
-+                  };
-+          };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1ce4bb5e460a..bc3f8dc8dca2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11196,6 +11196,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	http://ez.analog.com/community/linux-device-drivers
- F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
-+F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
- F:	drivers/iio/dac/ltc2688.c
- 
- LTC2947 HARDWARE MONITOR DRIVER
--- 
-2.34.1
+As in using IIO triggers in conjunction with a Kfifo. So that you can do
+in kernel capture of a series of samples triggered at the same time as
+captures from ADCs.  Then it's easy to line the data up afterwards in
+userspace.
+
+Same in the output direction.  This is only really interesting if it is being
+done in sync with something else - otherwise you could just use the usespace
+gpio interfaces directly.
+
+> 
+> A useful use case that I see:
+> - Is to register a function callback (in kernel space, maybe user space that
+>   should be used by a different driver), and called in the interrupt handler
+>   when the state of an input GPIO changes.
+
+Ok. But if you can just do that directly using the gpio interaces as it will
+require a bit of custom driver code anyway.
+
+> - Output to a GPIO from a buffer using a clock, obtaining a PWM like signal.
+Again, why is the IIO bit useful?  It's only useful if you are doing it
+in sync with other IIO stuff and I don't just mean using the IIO in kernel
+interfaces for accessing a channel in a polled mode (effectively call read_raw
+/write_raw because whereever you can do that you can just the gpio directly.
+
+Jonathan
+> 
+> > 
+> > When we have talked about handling digital signals int he past we discussed
+> > whether the IIO channel description would also benefit from tighter packing
+> > than the current minimum of a byte per channel.  Perhaps we don't
+> > technically 'need' it here but if we do add it in future it will be hard to retrofit
+> > into this driver without big userspace ABI changes (i.e. breaking all existing
+> > users).
+> > 
+> > I've not repeated stuff Andy got it in his review (assuming I remembered it
+> > was something Andy raised).
+> > 
+> > Conclusion:
+> > 1) Creation interface needs a rethink or strong argument why it belongs in
+> > DT.
+> > 2) Driver needs to do more to justify it's existence.
+> > 
+> > Jonathan
+> >   
+> > >
+> > > Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> > > ---
+> > >  drivers/iio/addac/Kconfig           |   8 +
+> > >  drivers/iio/addac/Makefile          |   1 +
+> > >  drivers/iio/addac/one-bit-adc-dac.c | 229
+> > > ++++++++++++++++++++++++++++
+> > >  3 files changed, 238 insertions(+)
+> > >  create mode 100644 drivers/iio/addac/one-bit-adc-dac.c
+> > >
+> > > diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
+> > > index 138492362f20..5f311f4a747e 100644
+> > > --- a/drivers/iio/addac/Kconfig
+> > > +++ b/drivers/iio/addac/Kconfig
+> > > @@ -17,4 +17,12 @@ config AD74413R
+> > >  	  To compile this driver as a module, choose M here: the
+> > >  	  module will be called ad74413r.
+> > >
+> > > +config ONE_BIT_ADC_DAC
+> > > +	tristate "ONE_BIT_ADC_DAC driver"
+> > > +	help
+> > > +	  Say yes here to build support for ONE_BIT_ADC_DAC driver.  
+> > 
+> > Needs a lot more detail here.  Though naming it to be explicitly about GPIO to
+> > IIO binding would help.
+> >   
+> > > +
+> > > +	  To compile this driver as a module, choose M here: the
+> > > +	  module will be called one-bit-adc-dac.
+> > > +
+> > >  endmenu
+> > > diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
+> > > index cfd4bbe64ad3..0a33f0706b55 100644
+> > > --- a/drivers/iio/addac/Makefile
+> > > +++ b/drivers/iio/addac/Makefile
+> > > @@ -5,3 +5,4 @@
+> > >
+> > >  # When adding new entries keep the list in alphabetical order
+> > >  obj-$(CONFIG_AD74413R) += ad74413r.o
+> > > +obj-$(CONFIG_ONE_BIT_ADC_DAC) += one-bit-adc-dac.o
+> > > diff --git a/drivers/iio/addac/one-bit-adc-dac.c
+> > > b/drivers/iio/addac/one-bit-adc-dac.c
+> > > new file mode 100644
+> > > index 000000000000..5680de594429
+> > > --- /dev/null
+> > > +++ b/drivers/iio/addac/one-bit-adc-dac.c
+> > > @@ -0,0 +1,229 @@
+> > > +// SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+> > > +/*
+> > > + * one-bit-adc-dac  
+> > 
+> > Improve description here as well.  It's really just a wrapper for a gpio in an IIO
+> > channel, so just say that.  Fine to say the representation is 1 bit ADC or DAC
+> > channels as well, but I think the GPIO part will be more obvious to the casual
+> > reader.
+> >   
+> > > + *
+> > > + * Copyright 2022 Analog Devices Inc.
+> > > + */
+> > > +
+> > > +#include <linux/device.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/iio/iio.h>
+> > > +#include <linux/platform_device.h>
+> > > +#include <linux/gpio/consumer.h>
+> > > +
+> > > +enum ch_direction {
+> > > +	CH_IN,
+> > > +	CH_OUT,
+> > > +};
+> > > +
+> > > +struct one_bit_adc_dac_state {
+> > > +	int			in_num_ch;
+> > > +	int			out_num_ch;
+> > > +	struct platform_device  *pdev;  
+> > 
+> > Not used after probe so don't keep it around.
+> >   
+> > > +	struct gpio_descs       *in_gpio_descs;
+> > > +	struct gpio_descs       *out_gpio_descs;
+> > > +	const char		**labels;
+> > > +};
+> > > +
+> > > +static int one_bit_adc_dac_read_raw(struct iio_dev *indio_dev,
+> > > +	const struct iio_chan_spec *chan, int *val, int *val2, long info) {
+> > > +	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
+> > > +	struct gpio_descs *descs;
+> > > +
+> > > +	switch (info) {
+> > > +	case IIO_CHAN_INFO_RAW:
+> > > +		if (chan->output)
+> > > +			descs = st->out_gpio_descs;
+> > > +		else
+> > > +			descs = st->in_gpio_descs;
+> > > +		*val = gpiod_get_value_cansleep(descs->desc[chan-
+> > >channel]);
+> > > +
+> > > +		return IIO_VAL_INT;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > > +static int one_bit_adc_dac_write_raw(struct iio_dev *indio_dev,
+> > > +			    struct iio_chan_spec const *chan,
+> > > +			    int val,
+> > > +			    int val2,
+> > > +			    long info)
+> > > +{
+> > > +	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
+> > > +	int channel = chan->channel;
+> > > +
+> > > +	if (!chan->output)
+> > > +		return 0;  
+> > 
+> > -EINVAL;  It's an error that should be reported to userspace..
+> >   
+> > > +
+> > > +	switch (info) {
+> > > +	case IIO_CHAN_INFO_RAW:
+> > > +		gpiod_set_value_cansleep(st->out_gpio_descs-
+> > >desc[channel], val);
+> > > +
+> > > +		return 0;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > > +static int one_bit_adc_dac_read_label(struct iio_dev *indio_dev,
+> > > +	const struct iio_chan_spec *chan, char *label) {
+> > > +	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
+> > > +	int ch;
+> > > +
+> > > +	if (chan->output)
+> > > +		ch = chan->channel + st->in_num_ch;
+> > > +	else
+> > > +		ch = chan->channel;
+> > > +
+> > > +	return sprintf(label, "%s\n", st->labels[ch]); }
+> > > +
+> > > +static const struct iio_info one_bit_adc_dac_info = {
+> > > +	.read_raw = &one_bit_adc_dac_read_raw,
+> > > +	.write_raw = &one_bit_adc_dac_write_raw,
+> > > +	.read_label = &one_bit_adc_dac_read_label, };
+> > > +
+> > > +static int one_bit_adc_dac_set_ch(struct iio_chan_spec *channels,
+> > > +					int num_ch,
+> > > +					enum ch_direction direction)
+> > > +{
+> > > +	int i;
+> > > +
+> > > +	for (i = 0; i < num_ch; i++) {
+> > > +		channels[i].type = IIO_VOLTAGE;
+> > > +		channels[i].indexed = 1;
+> > > +		channels[i].channel = i;
+> > > +		channels[i].info_mask_separate =  
+> > BIT(IIO_CHAN_INFO_RAW);  
+> > > +		channels[i].output = direction;
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int one_bit_adc_dac_set_channel_label(struct iio_dev *indio_dev,
+> > > +						struct iio_chan_spec  
+> > *channels,  
+> > > +						int num_channels)
+> > > +{
+> > > +	struct device *device = indio_dev->dev.parent;
+> > > +	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
+> > > +	struct fwnode_handle *fwnode;
+> > > +	struct fwnode_handle *child;
+> > > +	struct iio_chan_spec *chan;
+> > > +	const char *label;
+> > > +	int crt_ch = 0, child_num, i = 0;
+> > > +
+> > > +	fwnode = dev_fwnode(device);
+> > > +	child_num = device_get_child_node_count(device);
+> > > +
+> > > +	st->labels = devm_kzalloc(device, sizeof(*st->labels) * child_num,  
+> > GFP_KERNEL);  
+> > > +	if (!st->labels)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	i = child_num;
+> > > +	fwnode_for_each_child_node(fwnode, child) {
+> > > +		if (fwnode_property_read_u32(child, "reg", &crt_ch))
+> > > +			continue;
+> > > +
+> > > +		if (crt_ch >= num_channels)
+> > > +			continue;
+> > > +
+> > > +		if (fwnode_property_read_string(child, "label", &label))
+> > > +			continue;
+> > > +
+> > > +		chan = &channels[crt_ch];  
+> > ? Not used.
+> >   
+> > > +		st->labels[--i] = label;  
+> > 
+> > I've no idea how this works...  Should be looking for the chan->channel value
+> > as that's what your read uses to index.
+> >   
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int one_bit_adc_dac_parse_dt(struct iio_dev *indio_dev) {
+> > > +	struct one_bit_adc_dac_state *st = iio_priv(indio_dev);
+> > > +	struct iio_chan_spec *channels;
+> > > +	int ret, in_num_ch = 0, out_num_ch = 0;
+> > > +
+> > > +	st->in_gpio_descs = devm_gpiod_get_array_optional(&st->pdev-
+> > >dev, "in", GPIOD_IN);
+> > > +	if (IS_ERR(st->in_gpio_descs))
+> > > +		return PTR_ERR(st->in_gpio_descs);
+> > > +
+> > > +	if (st->in_gpio_descs)
+> > > +		in_num_ch = st->in_gpio_descs->ndescs;
+> > > +
+> > > +	st->out_gpio_descs = devm_gpiod_get_array_optional(&st->pdev-
+> > >dev, "out", GPIOD_OUT_LOW);
+> > > +	if (IS_ERR(st->out_gpio_descs))
+> > > +		return PTR_ERR(st->out_gpio_descs);
+> > > +
+> > > +	if (st->out_gpio_descs)
+> > > +		out_num_ch = st->out_gpio_descs->ndescs;
+> > > +	st->in_num_ch = in_num_ch;
+> > > +	st->out_num_ch = out_num_ch;
+> > > +
+> > > +	channels = devm_kcalloc(indio_dev->dev.parent, in_num_ch +  
+> > out_num_ch,  
+> > > +				sizeof(*channels), GFP_KERNEL);
+> > > +	if (!channels)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	ret = one_bit_adc_dac_set_ch(&channels[0], in_num_ch, CH_IN);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = one_bit_adc_dac_set_ch(&channels[in_num_ch],  
+> > out_num_ch, CH_OUT);  
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = one_bit_adc_dac_set_channel_label(indio_dev, channels,  
+> > in_num_ch + out_num_ch);  
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	indio_dev->channels = channels;
+> > > +	indio_dev->num_channels = in_num_ch + out_num_ch;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int one_bit_adc_dac_probe(struct platform_device *pdev) {
+> > > +	struct iio_dev *indio_dev;
+> > > +	struct one_bit_adc_dac_state *st;
+> > > +	int ret;
+> > > +
+> > > +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*st));
+> > > +	if (!indio_dev)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	st = iio_priv(indio_dev);
+> > > +	st->pdev = pdev;
+> > > +	indio_dev->name = "one-bit-adc-dac";
+> > > +	indio_dev->modes = INDIO_DIRECT_MODE;
+> > > +	indio_dev->info = &one_bit_adc_dac_info;
+> > > +
+> > > +	ret = one_bit_adc_dac_parse_dt(indio_dev);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	return devm_iio_device_register(indio_dev->dev.parent,  
+> > indio_dev); }  
+> > > +
+> > > +static const struct of_device_id one_bit_adc_dac_dt_match[] = {
+> > > +	{ .compatible = "one-bit-adc-dac" },
+> > > +	{}
+> > > +};
+> > > +MODULE_DEVICE_TABLE(of, one_bit_adc_dac_dt_match);
+> > > +
+> > > +static struct platform_driver one_bit_adc_dac_driver = {
+> > > +	.driver = {
+> > > +		.name = "one-bit-adc-dac",
+> > > +		.of_match_table = one_bit_adc_dac_dt_match,
+> > > +	},
+> > > +	.probe = one_bit_adc_dac_probe,
+> > > +};
+> > > +module_platform_driver(one_bit_adc_dac_driver);
+> > > +
+> > > +MODULE_AUTHOR("Cristian Pop <cristian.pop@analog.com>");
+> > > +MODULE_DESCRIPTION("One bit ADC DAC converter");  
+> > MODULE_LICENSE("Dual  
+> > > +BSD/GPL");
+> > > \ No newline at end of file  
+> > 
+> > Make sure to eyeball your patches before sending as this sort of thing should
+> > be caught at that stage...
+> >   
+> 
 

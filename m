@@ -2,72 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 59FB5496848
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 00:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3930B496C77
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 14:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbiAUXiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Jan 2022 18:38:12 -0500
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:41886 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbiAUXiL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Jan 2022 18:38:11 -0500
-Received: by mail-ot1-f53.google.com with SMTP id a12-20020a0568301dcc00b005919e149b4cso13688557otj.8;
-        Fri, 21 Jan 2022 15:38:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=e23Qd0fm0GuK2sIIse882pkUGPnMfjGNce/vSbHSQdE=;
-        b=5nFe254LZWoEbmazFhf4uzxskoBhOix4Y2k2NRIYQd9htj3I8gCFAzBPM86KRcj/6R
-         YIu2elxl3CxUhP1RNzlpTQApWVkAvA0aXjAPMOyV4u4/dabCa/7Jb+Cv5F/uPe7Z5uvs
-         MSkh12NYn//ZX9c3NA7oqgyOkvT+++kHvK/1dvIy6ytq6xVREE+q8HceYialroWmk/qG
-         hFy7577m5CXqkF3cksl01vaoKSCQRCFSQDxk6Sgu582WvwWzv4dZocyC+WZbMOhwmyIk
-         MQMpZ/Lz6H9XK6Hm7FhtYZceRRQEUyD46m1/Kds7YGYnJRvjPfqLSuEx9ReDQ17Q6VWe
-         GZzQ==
-X-Gm-Message-State: AOAM531sr5OFOR772BzANm0LStXCbJTV71xiISp/zr9wMltdCnFagfsu
-        /p+bP/vKO/FFDgXQFjVziQ==
-X-Google-Smtp-Source: ABdhPJx8DELQ9xc5SKlrpkpLS4lSCx/gVdpoSqAojzwmxkwoW4TLkPA8rhSCwN3hTZgsaKBeYeeRDg==
-X-Received: by 2002:a05:6830:1f56:: with SMTP id u22mr4325700oth.138.1642808291144;
-        Fri, 21 Jan 2022 15:38:11 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id f6sm1399162oos.7.2022.01.21.15.38.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jan 2022 15:38:10 -0800 (PST)
-Received: (nullmailer pid 1827883 invoked by uid 1000);
-        Fri, 21 Jan 2022 23:38:09 -0000
-Date:   Fri, 21 Jan 2022 17:38:09 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Guodong Liu <guodong.liu@mediatek.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Project_Global_Chrome_Upstream_Group@mediatek.com,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        linux-mediatek@lists.infradead.org,
+        id S232684AbiAVNJl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 08:09:41 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:1422 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232537AbiAVNJl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 08:09:41 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20M6QxQA027255;
+        Sat, 22 Jan 2022 08:09:30 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3drcna0g79-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 22 Jan 2022 08:09:29 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 20MD9Sug002427
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 22 Jan 2022 08:09:28 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Sat, 22 Jan 2022 08:09:27 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Sat, 22 Jan 2022 08:09:27 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Sat, 22 Jan 2022 08:09:27 -0500
+Received: from NSA-L01.ad.analog.com ([10.32.224.71])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20MD9BHS004310;
+        Sat, 22 Jan 2022 08:09:13 -0500
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add compatible for
- Mediatek MT8186
-Message-ID: <YetD4SehEDxLkrzH@robh.at.kernel.org>
-References: <20220110084841.575-1-guodong.liu@mediatek.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: [PATCH v2 1/3] MAINTAINERS: add missing files to the adis lib
+Date:   Sat, 22 Jan 2022 14:09:03 +0100
+Message-ID: <20220122130905.99-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220110084841.575-1-guodong.liu@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: p_k-cDLF4MDOamPmEtX6DBXAbd2PI6Sp
+X-Proofpoint-ORIG-GUID: p_k-cDLF4MDOamPmEtX6DBXAbd2PI6Sp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-22_04,2022-01-21_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ suspectscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 spamscore=0
+ mlxlogscore=942 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2201110000 definitions=main-2201220092
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 Jan 2022 16:48:40 +0800, Guodong Liu wrote:
-> This commit adds dt-binding documentation of auxadc for Mediatek MT8186 SoC
-> Platform.
-> 
-> Signed-off-by: Guodong Liu <guodong.liu@mediatek.com>
-> ---
->  .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
->  1 file changed, 1 insertion(+)
-> 
+The triggered buffer support was missing in the MAINTAINERS file. Add
+them.
 
-Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+---
+changes in v2:
+ * none.
+
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 78881bbaf3c0..7527466b436d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1103,6 +1103,8 @@ M:	Nuno Sa <nuno.sa@analog.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ F:	drivers/iio/imu/adis.c
++F:	drivers/iio/imu/adis_buffer.c
++F:	drivers/iio/imu/adis_trigger.c
+ F:	include/linux/iio/imu/adis.h
+ 
+ ANALOG DEVICES INC ADIS16460 DRIVER
+-- 
+2.17.1
+

@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FCBC496D13
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 18:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50C2F496D14
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 18:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234599AbiAVRXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jan 2022 12:23:34 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:39852 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbiAVRXd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 12:23:33 -0500
+        id S232058AbiAVR0i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 12:26:38 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:54506 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231655AbiAVR0h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 12:26:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C6A27B80AB1
-        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 17:23:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FC9C004E1;
-        Sat, 22 Jan 2022 17:23:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D75660E07;
+        Sat, 22 Jan 2022 17:26:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F4FC004E1;
+        Sat, 22 Jan 2022 17:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642872211;
-        bh=nxkP0wle0FNzDE+0zarLnzRHdZ8KOeCA5Rqwq9RytM8=;
+        s=k20201202; t=1642872396;
+        bh=JKOyBIBEtQl1RLmxtU+7ibAOozBWhlW6qQd4TiIiKmo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IIU+MYBYXm5ooD+7T4qa9mYNWZCF2aDKStFzhZTARzC8P9YZwp59Ej6k157Qoacrz
-         IzXoDj+1n2U39NDyUfJbzZcd3tniChmpQHSR/wfCR8xBBggNVhSwfSxBjv0p4lt2qq
-         rtZLmCQrjMYHtpTszaRrXEvuT+4/suPOdKBOLjT5xz2iq/fxXBldAVjFBkNzzpF0yz
-         1YXQ4Byo1VoUTRbn3CzhmUjD6ZOYJKiA28Ko6Dwg9WQq2BmwflahnC0+9mwhL3MbvF
-         FlEsLm2Yovn2XFULGOuNZ4YuSH03Yb2GEs49DVmCzTejgKNpe/b1B6hb+pApMQ/7Oc
-         QDjaR54QWpXEQ==
-Date:   Sat, 22 Jan 2022 17:29:40 +0000
+        b=Rswjyo00WTr/Ld1rwCHlo3T5fv9BLKGkkba++/cHPBXvUC5IA7XhdXlcWRZVbx1Hz
+         YndgiozDqKoRiLXiugZ4YA1DdONVMbzqOhDd0RBX3r1wtLuFEJSHqrqaSyF1RRa9Jg
+         TWi6bsG+IQpAMPbhG3envozCFYKq91tpaBVFqERcHlz/rpTkocgwi9p2ou9lRTSGte
+         lcNkbvLJ6I+r+m0T1+IUU3vvjXflCOJs0jc07ebJ1Yi/Nw37KtMdZjTNvBGMYHd184
+         GRjcaSdP6ar8Me0cH2TBnkwQP+ZsfxjAJrCQ+OjZ/wkPUZndRvHz51Du+uZpiYcMLB
+         f2rs3ojtlcvmA==
+Date:   Sat, 22 Jan 2022 17:32:46 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     jongpil19.jung@samsung.com, lars@metafoo.de,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: sx9360: enable push iio event
-Message-ID: <20220122172940.125d8033@jic23-huawei>
-In-Reply-To: <20220118212504.832429-1-gwendal@chromium.org>
-References: <20220118212504.832429-1-gwendal@chromium.org>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/4] dt-bindings:iio:frequency: add admv1014 binding
+Message-ID: <20220122173246.48f52792@jic23-huawei>
+In-Reply-To: <20220119081838.70210-2-antoniu.miclaus@analog.com>
+References: <20220119081838.70210-1-antoniu.miclaus@analog.com>
+        <20220119081838.70210-2-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,64 +46,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 18 Jan 2022 13:25:04 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Wed, 19 Jan 2022 10:18:36 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> From: Jongpil Jung <jongpil19.jung@samsung.com>
-
-Hi, 
-
-Patch title is not really clear. It suggests this is enabling
-a new feature rather than fixing anything.  Please rephrase.
-
+> Add device tree bindings for the ADMV1014 Upconverter.
 > 
-> Fixes: f75095753 ("iio:proximity:sx9360: Add sx9360 support")
-This is part of the tag block so should appear.
-> 
-> To convert SX9360 status register ["REG_STAT"], into a channel
-> index, we need to right shift by |stat_offset|, not left shift.
-> Also the PROXSTAT bit (3) is for channel 1 (PHM, PHase Measured), not (PHR,
-> PHase Reference, channel 0), so the offset is 2 instead of 3.
-> 
-Phase 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> changes in v3:
+>  - change clock description as suggested
+> ---
 
-fixes tag should be here.
-> Signed-off-by: Jongpil Jung <jongpil19.jung@samsung.com>
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Change log below the --- 
+
+We don't want it in the permanent git history.  There will
+be a link tag to this thread to allow anyone who happens to 
+want to known more to find the version change log.
+
+Given you got it right in the other 3 patches, I'm guessing you
+just missed here.
+
+If that is all that turns up in review, I can fix it whilst applying.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/proximity/sx9360.c    | 2 +-
->  drivers/iio/proximity/sx_common.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+
+>  .../bindings/iio/frequency/adi,admv1014.yaml  | 129 ++++++++++++++++++
+>  1 file changed, 129 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
 > 
-> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-> index 6fd6561bb6f5b8..3ebb30c8a4f61d 100644
-> --- a/drivers/iio/proximity/sx9360.c
-> +++ b/drivers/iio/proximity/sx9360.c
-> @@ -775,7 +775,7 @@ static const struct sx_common_chip_info sx9360_chip_info = {
->  	.reg_reset = SX9360_REG_RESET,
->  
->  	.mask_enable_chan = SX9360_REG_GNRL_CTRL0_PHEN_MASK,
-> -	.stat_offset = 3,
-> +	.stat_offset = 2,
->  	.num_channels = SX9360_NUM_CHANNELS,
->  	.num_default_regs = ARRAY_SIZE(sx9360_default_regs),
->  
-> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-> index ac8fd5920481cb..a7c07316a0a91e 100644
-> --- a/drivers/iio/proximity/sx_common.c
-> +++ b/drivers/iio/proximity/sx_common.c
-> @@ -87,7 +87,7 @@ static void sx_common_push_events(struct iio_dev *indio_dev)
->  		return;
->  	}
->  
-> -	val <<= data->chip_info->stat_offset;
-> +	val >>= data->chip_info->stat_offset;
->  
->  	/*
->  	 * Only iterate over channels with changes on proximity status that have
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
+> new file mode 100644
+> index 000000000000..864093f6a29a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
+> @@ -0,0 +1,129 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,admv1014.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ADMV1014 Microwave Downconverter
+> +
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +
+> +description: |
+> +   Wideband, microwave downconverter optimized for point to point microwave
+> +   radio designs operating in the 24 GHz to 44 GHz frequency range.
+> +
+> +   https://www.analog.com/en/products/admv1014.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,admv1014
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 1000000
+> +
+> +  clocks:
+> +    minItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: lo_in
+> +    description:
+> +      External clock that provides the Local Oscilator input.
+> +
+> +  vcm-supply:
+> +    description:
+> +      Common-mode voltage regulator.
+> +
+> +  vcc-if-bb-supply:
+> +    description:
+> +      BB and IF supply voltage regulator.
+> +
+> +  vcc-vga-supply:
+> +    description:
+> +      RF Amplifier supply voltage regulator.
+> +
+> +  vcc-vva-supply:
+> +    description:
+> +      VVA Control Circuit supply voltage regulator.
+> +
+> +  vcc-lna-3p3-supply:
+> +    description:
+> +      Low Noise Amplifier 3.3V supply voltage regulator.
+> +
+> +  vcc-lna-1p5-supply:
+> +    description:
+> +      Low Noise Amplifier 1.5V supply voltage regulator.
+> +
+> +  vcc-bg-supply:
+> +    description:
+> +      Band Gap Circuit supply voltage regulator.
+> +
+> +  vcc-quad-supply:
+> +    description:
+> +      Quadruple supply voltage regulator.
+> +
+> +  vcc-mixer-supply:
+> +    description:
+> +      Mixer supply voltage regulator.
+> +
+> +  adi,input-mode:
+> +    description:
+> +      Select the input mode.
+> +      iq - in-phase quadrature (I/Q) input
+> +      if - complex intermediate frequency (IF) input
+> +    enum: [iq, if]
+> +
+> +  adi,detector-enable:
+> +    description:
+> +      Digital Rx Detector Enable. The Square Law Detector output is
+> +      available at output pin VDET.
+> +    type: boolean
+> +
+> +  adi,p1db-compensation-enable:
+> +    description:
+> +      Turn on bits to optimize P1dB.
+> +    type: boolean
+> +
+> +  adi,quad-se-mode:
+> +    description:
+> +      Switch the LO path from differential to single-ended operation.
+> +      se-neg - Single-Ended Mode, Negative Side Disabled.
+> +      se-pos - Single-Ended Mode, Positive Side Disabled.
+> +      diff - Differential Mode.
+> +    enum: [se-neg, se-pos, diff]
+> +
+> +  '#clock-cells':
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - vcm-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      admv1014@0{
+> +        compatible = "adi,admv1014";
+> +        reg = <0>;
+> +        spi-max-frequency = <1000000>;
+> +        clocks = <&admv1014_lo>;
+> +        clock-names = "lo_in";
+> +        vcm-supply = <&vcm>;
+> +        adi,quad-se-mode = "diff";
+> +        adi,detector-enable;
+> +        adi,p1db-compensation-enable;
+> +      };
+> +    };
+> +...
 

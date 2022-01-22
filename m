@@ -2,36 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 691BC496D86
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 20:07:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ABE5496D88
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 20:08:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234765AbiAVTH4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jan 2022 14:07:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55770 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbiAVTHz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 14:07:55 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D34C06173B
-        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 11:07:55 -0800 (PST)
+        id S229472AbiAVTIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 14:08:15 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:36752 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234766AbiAVTIP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 14:08:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA86160E8F
-        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 19:07:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC760C004E1;
-        Sat, 22 Jan 2022 19:07:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D548B60EAE
+        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 19:08:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9162C004E1;
+        Sat, 22 Jan 2022 19:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642878474;
+        s=k20201202; t=1642878494;
         bh=qz/XSsmq6dyVDD1/12oulEBz5kWq530icoJ5F1KDIAk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=q9XXS2VY15ZxwWLTiUCnmZtX5pojwbDOX/3VxupFUbAlIYMvfVzro4E2OTNbsXKW4
-         gQvzWtD9/7qAHloLySuSO/mAcNHURVEcYs1SPeUFmJZ5mD7aGTaxCtT2W0ivpVxfg0
-         8cQBmrvZwzCN5t10MVeZU/X8KfoH96z1uaMfqEsbV6MKhGYk7+VDtrhmV0lLud1zO/
-         hzkztgSWYdK05UhPf4/A3mqezXngKmznUmo/uU5izAfGJazScNUk/ZUKXFb0EGw8yu
-         IwBmFBvqzwveTqzfPfb+OHhW6R+7cOVfRP0mRK/Legd3AMn/2AB1BWBT3ngwSMA/HU
-         jF1Q/GwihZksg==
-Date:   Sat, 22 Jan 2022 19:14:03 +0000
+        b=Sbc5VZRdmPc5Hp00oV4i2OeueYEhgde4RbDLVfIayC8gvosHwAbFUELSK56awNN29
+         f9GgqU9uQXHoV1ZAB6KW0QQwywf87VNxOy3RP8+tNweXlUHpUiOr7UMzxCHJyaP23+
+         +a3MKcZ6s/JK+5IkL7zhJjBvCl5qNPNEr+guX+k37AyPQdfodi7HLzs/vRvrFoPGRe
+         n8hWG0syJ3fog97UYd/j3Xb/Qzzza1BkXlQFY8buwsKKILm9BSp9Ra5zVutBTxt5J2
+         ZXdsBgxlNmsznxLwKPLOvErzsQUMw4brKX+Saum46cfD8NdjLcKSXoyoK3JPehDjI1
+         Slo9QvRa3FGTA==
+Date:   Sat, 22 Jan 2022 19:14:24 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Gwendal Grignou <gwendal@chromium.org>, jongpil19.jung@samsung.com,

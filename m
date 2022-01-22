@@ -2,41 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B57B3496D25
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 18:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB1B496D2B
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 19:02:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbiAVRzp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jan 2022 12:55:45 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:36966 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbiAVRzo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 12:55:44 -0500
+        id S234647AbiAVSCh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 13:02:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41498 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234642AbiAVSCh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 13:02:37 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6C2C06173B;
+        Sat, 22 Jan 2022 10:02:37 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2763460E93;
-        Sat, 22 Jan 2022 17:55:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293C7C004E1;
-        Sat, 22 Jan 2022 17:55:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 901A660E97;
+        Sat, 22 Jan 2022 18:02:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0B9C004E1;
+        Sat, 22 Jan 2022 18:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642874143;
-        bh=ShVTb8K+Cj7zIZtxwnykU0NLsWRT2b34SOiw2JTdwGw=;
+        s=k20201202; t=1642874556;
+        bh=DHZ83qWLfNcBtCSmnXBCZiiYLp4jLMHJJYrG3LGuaC8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=twqPX82ngF+YqEu/y0I/9izIy/pNTQkB7KgpRjr0WOiKts0z5BCgovWA4C51DpqpC
-         Dt7zJKq9XR1FXwG38CrG8jfYrmsafYo0+HAnphT7x/vtvc/MKmo9ZyY/U1L7mzTwrG
-         3nQGbCpfmNJQuzKZUShw+yKceD7DDOnGkCBMzigwCKBDQyO1HPkje9SSLFP5fqbbC2
-         Upiw9vf0GlbJ8LQHBdBtugBhh35ZjksZM7s/7Y35LHdlzg6n99tMY76bI9O9O63tHk
-         kgpSH9qcGY1rqm7UtfEZ3pKwSWnYsrDqzzc1ZjnX2mReRMy1bVIrk/DqjmGQvyL4TN
-         OHU7P7j5Kb0Bw==
-Date:   Sat, 22 Jan 2022 18:01:54 +0000
+        b=QJS91lJzbSSyc/RUycYlfVhYHIulWqJ1zOqfcOR4ixHRU5h43Ouge1GGMcbbLXwkr
+         VOtaxLmYxDhnunljy2pRbsM67yOYTUPA3ae1Ww/DwrgmWW03ZgvfDrGd/rMfuDTqU7
+         sx9H9jAM68YJDQSTneaOzjRs/QnhF2Q1geGDwrWAC3QZyLou8GW+0oe2ju1TYs2vS+
+         Sn7baoacO52KJlULAzFd09YBdh1r4yLVD+VMsAxrZap47zhxwqATJI+Z6TOggzG59U
+         Ur0qZ1enyxcwNKhatNkG7OZBts46vvG7TlgZ4zmjzJgQo8kIhg6Pzap1bpe+Rh0Efx
+         dVKnzDhUdgaGQ==
+Date:   Sat, 22 Jan 2022 18:08:43 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/4] iio:frequency:admv1014: add support for ADMV1014
-Message-ID: <20220122180154.3415aed1@jic23-huawei>
-In-Reply-To: <20220119081838.70210-1-antoniu.miclaus@analog.com>
-References: <20220119081838.70210-1-antoniu.miclaus@analog.com>
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Subject: Re: [v2 06/10] iio: document bno055 private sysfs attributes
+Message-ID: <20220122180843.2fa8ca0c@jic23-huawei>
+In-Reply-To: <CAN8YU5OT44Wz813tKA62-Dvq3=VoTcoyVE__5UuRw+i7+B7i8w@mail.gmail.com>
+References: <20210715141742.15072-1-andrea.merello@gmail.com>
+        <20211028101840.24632-1-andrea.merello@gmail.com>
+        <20211028101840.24632-7-andrea.merello@gmail.com>
+        <20211028120405.6ffb01d1@jic23-huawei>
+        <CAN8YU5Orbbzq-eDxmrR00xHwXQ=0LU2G3_yEtHGMkbVhmdcqgg@mail.gmail.com>
+        <20211114162032.425ab36d@jic23-huawei>
+        <CAN8YU5NO5mcrPa5ZCB3XnAb=3N3cyXZUT=gH5G+EbnM-En0a3Q@mail.gmail.com>
+        <20220115152749.173b7172@jic23-huawei>
+        <CAN8YU5OT44Wz813tKA62-Dvq3=VoTcoyVE__5UuRw+i7+B7i8w@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -45,336 +65,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Jan 2022 10:18:35 +0200
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Mon, 17 Jan 2022 10:37:33 +0100
+Andrea Merello <andrea.merello@gmail.com> wrote:
 
-> The ADMV1014 is a silicon germanium (SiGe), wideband,
-> microwave downconverter optimized for point to point microwave
-> radio designs operating in the 24 GHz to 44 GHz frequency range.
+> Trivial inline comments below. Beside that, I've found another
+> pleasing issue with this "range" thing on this device..
 > 
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1014.pdf
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> One one hand, things seem to always work as we discussed for the
+> accelerometer (i.e. range doesn't affect the scale; the HW always
+> provides readings in the same scale, but with different range and
+> precision) on the other hand, the gyroscope behavior depends by the
+> internal IMU firmware version.. great..
 
-Hi Antoniu,
+*sigh* :)
 
-This looks mostly fine to me, but I think you haven't quite understood
-the difference between a required regulator and an optional one.
-It's about whether there is power needed on the pin. E.g. sometimes for things
-like reference voltages we can use either an external voltage or an
-internally generated reference, thus making vref-supply optional.
-It's not about whether they 'need' to be specified in DT.  The regulator
-core has a concept of a dummy regulator which is provided in some
-cases when we request a regulator and one is not specified.  This
-is a simplification to allow for always on supplies without fully describing
-them. That fallback is what should be relied on, not optional regulators
-unless they really are.
+> 
+> Stock firmware has a bug[0], so that the "range" gyroscope registers
+> do change the scale indeed. AFAICT stock firmware is the one you find
+> in most (all?) breakout boards, which are usually available (and which
+> I'm using right now for this driver mainlining attempt). Upgrading
+> firmware looks like a rather obscure process that AFAICT can be done
+> only in some specific USB-stick demo-board ("shuttle board") or with
+> maybe with FAE assistance on custom developed boards [1] (i.e. maybe
+> can be done by some professional user; I would say not for most
+> people).
+> 
+> So, I'm now wondering how to handle this... I really want to support
+> the stock FW, which seems the most widespread, and the one I have
+> right now; I'd say this means: the accelerometer thing will still work
+> as we discussed (i.e. the range attribute thing), while the gyro will
+> have writeable scale, and a (ro) scale_available attrib. But what
+> about the gyro range thing? Should I drop it, or keep it as
+> informative read-only?
 
-Once you've made most (maybe all?) of the regulators in here non optional
-you can use the bulk get / enable regulator calls to cut down on repetition.
+I'd be cynical and for initial version at least, just hide it as 'too
+complex' with a comment in the driver code on why.
 
-Thanks,
+> 
+> Then I could also support the new firmware (which I cannot test right
+> now with my actual breakout board, but I might see whether I could get
+> a board with an updated IMU), keeping also the current driver behavior
+> (i.e. range stuff).
+> 
+> But the question is: in either cases (new vs old fw) should the
+> non-necessary attributes disappear or they may just be RO or locked
+> (i.e. scale_available for new FW and range stuff for the old one)?
 
-Jonathan
+If they don't have meaning then they should disappear, but it would
+also be valid to have the 'broken' one be read only if there is
+an appropriate value.
 
+> 
+> Any thoughts and advice on this whole thing would be very welcome :)
+> my current inclination anyway now tends to be: go on supporting only
+> the stock FW (i.e. the board I have here now) and eventually add
+> support for the new fw later on, after merge.
 
-...
+Sounds sensible - but.... Make sure you check the firmware version
+number (I hope it has one) and print a warning at least if you get
+one that you have strong reason to believe will handle this differently
+from whatever the driver is supporting.
 
-> +static int admv1014_init(struct admv1014_state *st)
-> +{
-> +	int ret;
-> +	unsigned int chip_id, enable_reg, enable_reg_msk;
-> +	struct spi_device *spi = st->spi;
-> +
-> +	ret = regulator_enable(st->vcm_reg);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Failed to enable Common-Mode Voltage!\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcm_reg);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (st->vcc_if_bb_reg) {
-> +		ret = regulator_enable(st->vcc_if_bb_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable BB and IF Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_if_bb_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_vga_reg) {
+This is definitely going to be a case for detailed comments in
+the driver code so that we can 'recall' what on earth was
+going on here in N years time!
 
-I'm fairly sure these should not be optional regs (they may be dummy ones provided by
-the regulator subsystem) so we should always enable them.
-
-
-As below, you should be able to use bulk regulator handling for all of these.
-
-> +		ret = regulator_enable(st->vcc_vga_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable RF Amplifier Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_vga_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_vva_reg) {
-> +		ret = regulator_enable(st->vcc_vva_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable VVA Control Circuit Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_vva_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_lna_3p3_reg) {
-> +		ret = regulator_enable(st->vcc_lna_3p3_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable Low Noise Amplifier 3.3V Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_lna_3p3_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_lna_1p5_reg) {
-> +		ret = regulator_enable(st->vcc_lna_1p5_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable Low Noise Amplifier 1.5V Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_lna_1p5_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_bg_reg) {
-> +		ret = regulator_enable(st->vcc_bg_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable Band Gap Circuit Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_bg_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_quad_reg) {
-> +		ret = regulator_enable(st->vcc_quad_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable Quadruple Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_quad_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	if (st->vcc_mixer_reg) {
-> +		ret = regulator_enable(st->vcc_mixer_reg);
-> +		if (ret) {
-> +			dev_err(&spi->dev, "Failed to enable Mixer Voltage!\n");
-> +			return ret;
-> +		}
-> +
-> +		ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->vcc_mixer_reg);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	ret = clk_prepare_enable(st->clkin);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, admv1014_clk_disable, st->clkin);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->nb.notifier_call = admv1014_freq_change;
-> +	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, admv1014_powerdown, st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Perform a software reset */
-> +	ret = __admv1014_spi_update_bits(st, ADMV1014_REG_SPI_CONTROL,
-> +					 ADMV1014_SPI_SOFT_RESET_MSK,
-> +					 FIELD_PREP(ADMV1014_SPI_SOFT_RESET_MSK, 1));
-> +	if (ret) {
-> +		dev_err(&spi->dev, "ADMV1014 SPI software reset failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = __admv1014_spi_update_bits(st, ADMV1014_REG_SPI_CONTROL,
-> +					 ADMV1014_SPI_SOFT_RESET_MSK,
-> +					 FIELD_PREP(ADMV1014_SPI_SOFT_RESET_MSK, 0));
-> +	if (ret) {
-> +		dev_err(&spi->dev, "ADMV1014 SPI software reset disable failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = __admv1014_spi_write(st, ADMV1014_REG_VVA_TEMP_COMP, 0x727C);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Writing default Temperature Compensation value failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = __admv1014_spi_read(st, ADMV1014_REG_SPI_CONTROL, &chip_id);
-> +	if (ret)
-> +		return ret;
-> +
-> +	chip_id = (chip_id & ADMV1014_CHIP_ID_MSK) >> 4;
-> +	if (chip_id != ADMV1014_CHIP_ID) {
-> +		dev_err(&spi->dev, "Invalid Chip ID.\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = __admv1014_spi_update_bits(st, ADMV1014_REG_QUAD,
-> +					 ADMV1014_QUAD_SE_MODE_MSK,
-> +					 FIELD_PREP(ADMV1014_QUAD_SE_MODE_MSK,
-> +						    st->quad_se_mode));
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Writing Quad SE Mode failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = admv1014_update_quad_filters(st);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Update Quad Filters failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = admv1014_update_vcm_settings(st);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "Update VCM Settings failed.\n");
-> +		return ret;
-> +	}
-> +
-> +	enable_reg_msk = ADMV1014_P1DB_COMPENSATION_MSK |
-> +			 ADMV1014_IF_AMP_PD_MSK |
-> +			 ADMV1014_BB_AMP_PD_MSK |
-> +			 ADMV1014_DET_EN_MSK;
-> +
-> +	enable_reg = FIELD_PREP(ADMV1014_P1DB_COMPENSATION_MSK, st->p1db_comp ? 3 : 0) |
-> +		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK, !(st->input_mode)) |
-> +		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK, st->input_mode) |
-> +		     FIELD_PREP(ADMV1014_DET_EN_MSK, st->det_en);
-> +
-> +	return __admv1014_spi_update_bits(st, ADMV1014_REG_ENABLE, enable_reg_msk, enable_reg);
-> +}
-> +
-> +static int admv1014_properties_parse(struct admv1014_state *st)
-> +{
-> +	const char *str;
-> +	struct spi_device *spi = st->spi;
-> +
-> +	st->det_en = device_property_read_bool(&spi->dev, "adi,detector-enable");
-> +
-> +	st->p1db_comp = device_property_read_bool(&spi->dev, "adi,p1db-compensation-enable");
-> +
-> +	str = "iq";
-> +	device_property_read_string(&spi->dev, "adi,input-mode", &str);
-> +
-> +	if (!strcmp(str, "iq"))
-> +		st->input_mode = ADMV1014_IQ_MODE;
-> +	else if (!strcmp(str, "if"))
-> +		st->input_mode = ADMV1014_IF_MODE;
-> +	else
-> +		return -EINVAL;
-> +
-> +	str = "diff";
-> +	device_property_read_string(&spi->dev, "adi,quad-se-mode", &str);
-> +
-> +	if (!strcmp(str, "diff"))
-> +		st->quad_se_mode = ADMV1014_SE_MODE_DIFF;
-> +	else if (!strcmp(str, "se-pos"))
-> +		st->quad_se_mode = ADMV1014_SE_MODE_POS;
-> +	else if (!strcmp(str, "se-neg"))
-> +		st->quad_se_mode = ADMV1014_SE_MODE_NEG;
-> +	else
-> +		return -EINVAL;
-> +
-> +	st->vcm_reg = devm_regulator_get(&spi->dev, "vcm");
-> +	if (IS_ERR(st->vcm_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcm_reg),
-> +				     "failed to get the common-mode voltage\n");
-> +
-> +	st->vcc_if_bb_reg = devm_regulator_get_optional(&spi->dev, "vcc-if-bb");
-
-Are these actually optional?  That means we can operate the device in a mode where
-it doesn't matter if there is power on this pin...  It doesn't mean we have
-to specify them in DT, because they may be always on supplies in which case
-a dummy regulator is fine (which is what you get from devm_regulator_get() 
-under some circumstances when one isn't specified).
-
-
-Having made those that aren't actually optional, non optional you can probably
-use the bulk regulator controls to avoid lots of identical calls.
-
-> +	if (IS_ERR(st->vcc_if_bb_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_if_bb_reg),
-> +				     "failed to get the BB and IF supply\n");
-> +
-> +	st->vcc_vga_reg = devm_regulator_get_optional(&spi->dev, "vcc-vga");
-> +	if (IS_ERR(st->vcc_vga_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_vga_reg),
-> +				     "failed to get the RF Amplifier supply\n");
-> +
-> +	st->vcc_vva_reg = devm_regulator_get_optional(&spi->dev, "vcc-vva");
-> +	if (IS_ERR(st->vcc_vva_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_vva_reg),
-> +				     "failed to get the VVA Control Circuit supply\n");
-> +
-> +	st->vcc_lna_3p3_reg = devm_regulator_get_optional(&spi->dev, "vcc-lna-3p3");
-> +	if (IS_ERR(st->vcc_lna_3p3_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_lna_3p3_reg),
-> +				     "failed to get the Low Noise Amplifier 3.3V supply\n");
-> +
-> +	st->vcc_lna_1p5_reg = devm_regulator_get_optional(&spi->dev, "vcc-lna-1p5");
-> +	if (IS_ERR(st->vcc_lna_1p5_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_lna_1p5_reg),
-> +				     "failed to get the Low Noise Amplifier 1.5V supply\n");
-> +
-> +	st->vcc_bg_reg = devm_regulator_get_optional(&spi->dev, "vcc-bg");
-> +	if (IS_ERR(st->vcc_lna_1p5_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_bg_reg),
-> +				     "failed to get the Band Gap Circuit supply\n");
-> +
-> +	st->vcc_quad_reg = devm_regulator_get_optional(&spi->dev, "vcc-quad");
-> +	if (IS_ERR(st->vcc_quad_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_quad_reg),
-> +				     "failed to get the Quadruple supply\n");
-> +
-> +	st->vcc_mixer_reg = devm_regulator_get_optional(&spi->dev, "vcc-mixer");
-> +	if (IS_ERR(st->vcc_quad_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->vcc_mixer_reg),
-> +				     "failed to get the Mixer supply\n");
-> +
-> +	st->clkin = devm_clk_get(&spi->dev, "lo_in");
-> +	if (IS_ERR(st->clkin))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
-> +				     "failed to get the LO input clock\n");
-> +
-> +	return 0;
-> +}
-> +
+> 
+> [0] https://community.bosch-sensortec.com/t5/MEMS-sensors-forum/BNO055-Wrong-sensitivity-resolution-in-datasheet/td-p/10266
+> [1] https://community.bosch-sensortec.com/t5/MEMS-sensors-forum/BNO055-Software-Version/td-p/14001
+> 
+> > > I've looked at other iio sysfs attributes in the DOC.  It seems  that
+> > > "thesh" and "roc" attributes allows for both preprocessed and raw
+> > > data: I found e.g. "<type>[Y][_name]_<raw|input>_thresh_value", but
+> > > the related "what" entries written above all seem to omit both "_raw"
+> > > and "_input"; I don't understand why.  
+> >
+> > Excellent point.  That documentation is garbage.  Events are meant
+> > to pick it up implicitly from the related channel _raw or _input.
+> > I don't remember them ever having raw or input in their naming but
+> > it's possible they did right at the beginning before the ABI was anywhere
+> > near stable.  Gah. I dread to think how long that that has been wrong.  
+> 
+> Ok, great :)
+> 
+> > So I think range_raw postfix is the best bet.  
+> 
+> Will go with this, thanks.
+> 
+> > Jonathan
+> >
+> >
+> >
+> >
+> >  
+> > >  
+> >  
+> > >
+> > > Andrea  
+> >  
 

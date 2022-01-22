@@ -2,50 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A768496CFC
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 17:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73886496D06
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 18:08:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231223AbiAVQ6k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jan 2022 11:58:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55944 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230136AbiAVQ6j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 11:58:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8A4C06173B;
-        Sat, 22 Jan 2022 08:58:39 -0800 (PST)
+        id S234602AbiAVRIP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 12:08:15 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:35898 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234600AbiAVRIP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 12:08:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F7D760E05;
-        Sat, 22 Jan 2022 16:58:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179B0C004E1;
-        Sat, 22 Jan 2022 16:58:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F2DA7B807EE;
+        Sat, 22 Jan 2022 17:08:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCA7C004E1;
+        Sat, 22 Jan 2022 17:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642870718;
-        bh=5gZrthvBYcROpsTd1AT/pYU+NE8D3dCyafqvhAjkSbE=;
+        s=k20201202; t=1642871292;
+        bh=M+nTT4ATcVMqW6OoyFe0IltlVOeSfQLnMqGdLE5N59E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ubCZ6QK/l5hO08fFvQC6kHaZfg54zz+sd3tf33Vgt+8rlc15U9flFt33uKbnyw2Vw
-         DpDAlUjh3wVJ+KyQadOWmB3GM2jGQ+yDGtSidIknmwDO1hny35k9tcAQ2JhzfDetoA
-         Ck6NyazaZcgz9PueYUdwshSJDFu/yqGAv0ybOszQmVx9pm4+c3idNBQQ38YZxjYZtJ
-         qWrLaI+6U7cE929FWqyWq79WSJqFgJp2ueShCiOfzvVbFeU+0lWDic9K15Qg3dG2iw
-         LwGBEa7gqFPTy6zNxdn+/SNn/+vNsqpZGHWkXnsbpoT5o5xk5iRfFrd57cIjDwdaJ/
-         DFtPbOTFWTRdA==
-Date:   Sat, 22 Jan 2022 17:04:47 +0000
+        b=VqVlpnIpPSAmA7IDptBkkjGpNt5CzYoP3J5t2r5bBtAY6RrYI2RP84EN+WRcH2SAL
+         nrMROFrDWIV6fO9PBrFgf5Eowqvz/zr+GZb+3zT+gb5oprIC+SpeXFtX3F2ciYQNWY
+         I/dlfGXHrddhJhQiJBnIHC3VoNThlaLRiiCN6+oGlt6XyAJoS1dY4PjwsCuq7vv/bb
+         8xg7I4IuxmX5uj6o5GXvb4rdPve5jiIzmO4w95oT6g546HbF03MkaVFOSC3rpFbz1/
+         t4WAmPSbiD+XZLjAT7P0CRNDvLolUH4tVRVMG8lvQZZFAai4lRcQc9Op+uyyLtrRwx
+         Hb9HZmzUIoN4w==
+Date:   Sat, 22 Jan 2022 17:14:20 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>
-Subject: Re: [PATCH 2/2] iio: at91-sama5d2: Limit requested watermark value
- to hwfifo size
-Message-ID: <20220122170447.68f35cfa@jic23-huawei>
-In-Reply-To: <20220117102512.31725-2-paul@crapouillou.net>
-References: <20220117102512.31725-1-paul@crapouillou.net>
-        <20220117102512.31725-2-paul@crapouillou.net>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v3 1/2] iio: adc: tsc2046: add .read_raw support
+Message-ID: <20220122171420.7036e031@jic23-huawei>
+In-Reply-To: <20220117082852.3370869-1-o.rempel@pengutronix.de>
+References: <20220117082852.3370869-1-o.rempel@pengutronix.de>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,49 +48,227 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 Jan 2022 10:25:12 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Mon, 17 Jan 2022 09:28:51 +0100
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-> Instead of returning an error if the watermark value is too high, which
-> the core will silently ignore anyway, limit the value to the hardware
-> FIFO size; a lower-than-requested value is still better than using the
-> default, which is usually 1.
+> Add read_raw() support to make use of iio_hwmon and other iio clients.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-There is another potential error condition in this function which will
-also be ignored by the core.
+> ---
 
-As such whilst I agree this is a sensible thing to do in this
-particular case I think we should also be handling the error in the core.
+Change log? If it's just the check against PAGE_SIZE then I'm fine with it, but
+maybe I missed something.  Much better to have a short description of what
+changed here.
 
-I think it would be better to clean that up at the same time
-as these improvements - particularly as I'd guess you have a convenient
-test setup to check the error unwind is correct?
+Anyhow, I'll assume that's it.  Applied to the togreg branch of iio.git and
+pushed out as testing to let 0-day poke at it and see if it can find any
+problems.
+
+There was a little fuzz here for patch 2, presumably because the fix that is
+in flight.  Hopefully that won't cause us too many problems in linux-next or
+at merge time.
 
 Thanks,
 
 Jonathan
 
+
+>  drivers/iio/adc/ti-tsc2046.c | 118 ++++++++++++++++++++++++++++-------
+>  1 file changed, 97 insertions(+), 21 deletions(-)
 > 
-> Cc: Eugen Hristev <eugen.hristev@microchip.com>
-> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index 854b1f81d807..5cc84f4a17bb 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -1752,7 +1752,7 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
+> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> index 7ac1fc4b04c2..95771ceba206 100644
+> --- a/drivers/iio/adc/ti-tsc2046.c
+> +++ b/drivers/iio/adc/ti-tsc2046.c
+> @@ -86,6 +86,7 @@
+>  #define TI_TSC2046_EXT_POLL_CNT			3
+>  #define TI_TSC2046_POLL_CNT \
+>  	(TI_TSC2046_MIN_POLL_CNT + TI_TSC2046_EXT_POLL_CNT)
+> +#define TI_TSC2046_INT_VREF			2500
+>  
+>  /* Represents a HW sample */
+>  struct tsc2046_adc_atom {
+> @@ -166,9 +167,6 @@ struct tsc2046_adc_priv {
+>  	struct tsc2046_adc_atom *rx;
+>  	struct tsc2046_adc_atom *tx;
+>  
+> -	struct tsc2046_adc_atom *rx_one;
+> -	struct tsc2046_adc_atom *tx_one;
+> -
+>  	unsigned int count;
+>  	unsigned int groups;
+>  	u32 effective_speed_hz;
+> @@ -184,6 +182,8 @@ struct tsc2046_adc_priv {
+>  	.type = IIO_VOLTAGE,					\
+>  	.indexed = 1,						\
+>  	.channel = index,					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+>  	.datasheet_name = "#name",				\
+>  	.scan_index = index,					\
+>  	.scan_type = {						\
+> @@ -247,6 +247,14 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
+>  	else
+>  		pd = 0;
+>  
+> +	switch (ch_idx) {
+> +	case TI_TSC2046_ADDR_TEMP1:
+> +	case TI_TSC2046_ADDR_AUX:
+> +	case TI_TSC2046_ADDR_VBAT:
+> +	case TI_TSC2046_ADDR_TEMP0:
+> +		pd |= TI_TSC2046_SER | TI_TSC2046_PD1_VREF_ON;
+> +	}
+> +
+>  	return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
+>  }
+>  
+> @@ -258,16 +266,50 @@ static u16 tsc2046_adc_get_value(struct tsc2046_adc_atom *buf)
+>  static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
+>  				u32 *effective_speed_hz)
+>  {
+> +	struct tsc2046_adc_ch_cfg *ch = &priv->ch_cfg[ch_idx];
+> +	struct tsc2046_adc_atom *rx_buf, *tx_buf;
+> +	unsigned int val, val_normalized = 0;
+> +	int ret, i, count_skip = 0, max_count;
+>  	struct spi_transfer xfer;
+>  	struct spi_message msg;
+> -	int ret;
+> +	u8 cmd;
+> +
+> +	if (!effective_speed_hz) {
+> +		count_skip = tsc2046_adc_time_to_count(priv, ch->settling_time_us);
+> +		max_count = count_skip + ch->oversampling_ratio;
+> +	} else {
+> +		max_count = 1;
+> +	}
+> +
+> +	if (sizeof(*tx_buf) * max_count > PAGE_SIZE)
+> +		return -ENOSPC;
+> +
+> +	tx_buf = kcalloc(max_count, sizeof(*tx_buf), GFP_KERNEL);
+> +	if (!tx_buf)
+> +		return -ENOMEM;
+> +
+> +	rx_buf = kcalloc(max_count, sizeof(*rx_buf), GFP_KERNEL);
+> +	if (!rx_buf) {
+> +		ret = -ENOMEM;
+> +		goto free_tx;
+> +	}
+> +
+> +	/*
+> +	 * Do not enable automatic power down on working samples. Otherwise the
+> +	 * plates will never be completely charged.
+> +	 */
+> +	cmd = tsc2046_adc_get_cmd(priv, ch_idx, true);
+> +
+> +	for (i = 0; i < max_count - 1; i++)
+> +		tx_buf[i].cmd = cmd;
+> +
+> +	/* automatically power down on last sample */
+> +	tx_buf[i].cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
+>  
+>  	memset(&xfer, 0, sizeof(xfer));
+> -	priv->tx_one->cmd = tsc2046_adc_get_cmd(priv, ch_idx, false);
+> -	priv->tx_one->data = 0;
+> -	xfer.tx_buf = priv->tx_one;
+> -	xfer.rx_buf = priv->rx_one;
+> -	xfer.len = sizeof(*priv->tx_one);
+> +	xfer.tx_buf = tx_buf;
+> +	xfer.rx_buf = rx_buf;
+> +	xfer.len = sizeof(*tx_buf) * max_count;
+>  	spi_message_init_with_transfers(&msg, &xfer, 1);
+>  
+>  	/*
+> @@ -278,13 +320,25 @@ static int tsc2046_adc_read_one(struct tsc2046_adc_priv *priv, int ch_idx,
+>  	if (ret) {
+>  		dev_err_ratelimited(&priv->spi->dev, "SPI transfer failed %pe\n",
+>  				    ERR_PTR(ret));
+> -		return ret;
+> +		goto free_bufs;
+>  	}
+>  
+>  	if (effective_speed_hz)
+>  		*effective_speed_hz = xfer.effective_speed_hz;
+>  
+> -	return tsc2046_adc_get_value(priv->rx_one);
+> +	for (i = 0; i < max_count - count_skip; i++) {
+> +		val = tsc2046_adc_get_value(&rx_buf[count_skip + i]);
+> +		val_normalized += val;
+> +	}
+> +
+> +	ret = DIV_ROUND_UP(val_normalized, max_count - count_skip);
+> +
+> +free_bufs:
+> +	kfree(rx_buf);
+> +free_tx:
+> +	kfree(tx_buf);
+> +
+> +	return ret;
+>  }
+>  
+>  static size_t tsc2046_adc_group_set_layout(struct tsc2046_adc_priv *priv,
+> @@ -391,6 +445,37 @@ static irqreturn_t tsc2046_adc_trigger_handler(int irq, void *p)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static int tsc2046_adc_read_raw(struct iio_dev *indio_dev,
+> +				struct iio_chan_spec const *chan,
+> +				int *val, int *val2, long m)
+> +{
+> +	struct tsc2046_adc_priv *priv = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (m) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = tsc2046_adc_read_one(priv, chan->channel, NULL);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		*val = ret;
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/*
+> +		 * Note: the TSC2046 has internal voltage divider on the VBAT
+> +		 * line. This divider can be influenced by external divider.
+> +		 * So, it is better to use external voltage-divider driver
+> +		 * instead, which is calculating complete chain.
+> +		 */
+> +		*val = TI_TSC2046_INT_VREF;
+> +		*val2 = chan->scan_type.realbits;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+>  static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
+>  					const unsigned long *active_scan_mask)
+>  {
+> @@ -421,6 +506,7 @@ static int tsc2046_adc_update_scan_mode(struct iio_dev *indio_dev,
+>  }
+>  
+>  static const struct iio_info tsc2046_adc_info = {
+> +	.read_raw	  = tsc2046_adc_read_raw,
+>  	.update_scan_mode = tsc2046_adc_update_scan_mode,
+>  };
+>  
+> @@ -563,16 +649,6 @@ static int tsc2046_adc_setup_spi_msg(struct tsc2046_adc_priv *priv)
+>  	size_t size;
 >  	int ret;
 >  
->  	if (val > AT91_HWFIFO_MAX_SIZE)
-> -		return -EINVAL;
-> +		val = AT91_HWFIFO_MAX_SIZE;
->  
->  	if (!st->selected_trig->hw_trig) {
->  		dev_dbg(&indio_dev->dev, "we need hw trigger for DMA\n");
+> -	priv->tx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->tx_one),
+> -				    GFP_KERNEL);
+> -	if (!priv->tx_one)
+> -		return -ENOMEM;
+> -
+> -	priv->rx_one = devm_kzalloc(&priv->spi->dev, sizeof(*priv->rx_one),
+> -				    GFP_KERNEL);
+> -	if (!priv->rx_one)
+> -		return -ENOMEM;
+> -
+>  	/*
+>  	 * Make dummy read to set initial power state and get real SPI clock
+>  	 * freq. It seems to be not important which channel is used for this
 

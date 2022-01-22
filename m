@@ -2,168 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A03496D0C
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 18:21:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FCBC496D13
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 18:23:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232408AbiAVRU6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jan 2022 12:20:58 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:52312 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbiAVRU5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 12:20:57 -0500
+        id S234599AbiAVRXe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 12:23:34 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:39852 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232018AbiAVRXd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 12:23:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D5FE60E86;
-        Sat, 22 Jan 2022 17:20:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2434C004E1;
-        Sat, 22 Jan 2022 17:20:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C6A27B80AB1
+        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 17:23:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FC9C004E1;
+        Sat, 22 Jan 2022 17:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642872056;
-        bh=Y6RJY7P+ppmkAO6OetIxI5fEdZKtnL9ZWHGsqK01Cw4=;
+        s=k20201202; t=1642872211;
+        bh=nxkP0wle0FNzDE+0zarLnzRHdZ8KOeCA5Rqwq9RytM8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TzAyRB5U802m0KJwuLr4sVBxaHpNp1AwHxo97QhKbiUZ5WaElxRmuKZFHTgM5jjPJ
-         oAbbFTo9EATT5jNJg4OlybY7JfUJGKmw3nPRD3e2N/Uwo5NwCCe979XT2GarbzooYG
-         ldswpzmAAt+QV9mOrUCwNSwlXAVHr/0BYN0tqmeOWFPrkvM5SWWnE8j5VYGbH/stN4
-         TnIPbEEut1hAOIaMIn9SAoneBAE8/gkyW7/r679b5tj5yP4My32EmzqBmf72WlgR8B
-         sprDzMWvHzdSLwmgG8IpbFhSMB64yZm6ltpo7QsW8KAzyE9phgSPioVbtLPlNFyF0e
-         uIwMJCJeBtPnA==
-Date:   Sat, 22 Jan 2022 17:27:06 +0000
+        b=IIU+MYBYXm5ooD+7T4qa9mYNWZCF2aDKStFzhZTARzC8P9YZwp59Ej6k157Qoacrz
+         IzXoDj+1n2U39NDyUfJbzZcd3tniChmpQHSR/wfCR8xBBggNVhSwfSxBjv0p4lt2qq
+         rtZLmCQrjMYHtpTszaRrXEvuT+4/suPOdKBOLjT5xz2iq/fxXBldAVjFBkNzzpF0yz
+         1YXQ4Byo1VoUTRbn3CzhmUjD6ZOYJKiA28Ko6Dwg9WQq2BmwflahnC0+9mwhL3MbvF
+         FlEsLm2Yovn2XFULGOuNZ4YuSH03Yb2GEs49DVmCzTejgKNpe/b1B6hb+pApMQ/7Oc
+         QDjaR54QWpXEQ==
+Date:   Sat, 22 Jan 2022 17:29:40 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v3 0/3] Add support for LTC2688
-Message-ID: <20220122172706.16aec32e@jic23-huawei>
-In-Reply-To: <20220121142501.151-1-nuno.sa@analog.com>
-References: <20220121142501.151-1-nuno.sa@analog.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     jongpil19.jung@samsung.com, lars@metafoo.de,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: sx9360: enable push iio event
+Message-ID: <20220122172940.125d8033@jic23-huawei>
+In-Reply-To: <20220118212504.832429-1-gwendal@chromium.org>
+References: <20220118212504.832429-1-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 21 Jan 2022 15:24:58 +0100
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Tue, 18 Jan 2022 13:25:04 -0800
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> The ABI defined for this driver has some subtleties that were previously
-> discussed in this RFC [1]. This might not be the final state but,
-> hopefully, we are close to it:
->=20
-> toggle mode channels:
->=20
->  * out_voltageY_toggle_en
->  * out_voltageY_raw0
->  * out_voltageY_raw1
->  * out_voltageY_symbol
->=20
-> dither mode channels:
->=20
->  * out_voltageY_dither_en
->  * out_voltageY_dither_raw
->  * out_voltageY_dither_raw_available
->  * out_voltageY_dither_offset
->  * out_voltageY_dither_frequency
->  * out_voltageY_dither_frequency_available
->  * out_voltageY_dither_phase
->  * out_voltageY_dither_phase_available
->=20
-> Default channels won't have any of the above ABIs. A channel is toggle
-> capable if the devicetree 'adi,toggle-mode' flag is set. For dither, the
-> assumption is more silent. If 'adi,toggle-mode' is not given and a
-> channel is associated with a TGPx pin through 'adi,toggle-dither-input',
-> then the channel is assumed to be dither capable (there's no point in
-> having a dither capable channel without an input clock).
->=20
-> changes in v2:
->=20
->  ltc2688:
->   * Use local buffer for regmap read. Do not assume that reg is part of
-> larger buffer;
->   * Renamed GPIO to "clr" so that is consistent with the datasheet;
->   * Renamed 'mask' and 'm' to info. 'mask' is a thing from the past;
->   * Removed 'LTC2688_CHAN_TOGGLE()' and defined to static ext_info arrays;
->   * Use 'regmap_set_bits' to set external ref;
->   * Use FIELD_{PREP|GET} for dither amplitude and channel calibbias where
-> only 13bits are used;
->   * Use 'regmap_write()' instead of update_bits for channels settings;
->   * Init 'val' at the beginning of the channel configuration loop
-> (and drop mask);
->   * Comment 'ltc2688_reg_writable()' to account for the special condition;
->   * Kmemdup default channels so that it can be safely changed per probed
-> device;
->   * Replace extended info multiplexer functions by individual functions;
->   * Use raw0 ABI for toggle channels;
->   * Use dedicated offset ABI for dither channels;
->   * Misc changes (spell fixes, blank lines...);
->   * Have a clock property per channel. Note that we this I moved to OF
-> since we now have to use 'devm_get_clk_from_child()' which is using
-> device_node. Note that I could use 'to_of_node()' but mixing of.h and
-> property.h does not feel like a good idea.
->=20
->  ABI:
->   * Added out_voltageY_raw0 ABI for toggle mode;
->   * Added out_voltageY_dither_offset.
->=20
->  Bindings:
->   * Use standard microvolt unit;
->   * Added constrains for adi,output-range-microvolt and removed negative
-> values from the dts example;
->   * Moved clocks to the channel object;
->   * Dropped clock-names;
->   * Add a dependency between 'adi,toggle-dither-input' and 'clocks'.
->=20
-> Changes in v3:
->=20
->  ltc2688:
->   * Fix mismatch between functions and function pointers detected by kern=
-el
-> test bot;=20
->   * Always use if (ret) when ret > 0 has no meaning;
->   * Rename ltc2688_bulk_disable -> ltc2688_disable_regulators;
->   * Report dither phase in radians rather than degrees.
->=20
->  ABI:
->   * Specify units for dither_phase and dither_freqency;=20
->   * Say why its useful to have dither_en and toggle_en;
->   * Combine out_voltageY_raw0 and out_voltageY_raw1;
->   * Fix some description issues in out_voltageY_raw{0|1} and
-> out_voltageY_symbol.
->=20
->  Bindings:
->   * Remove mentions to ABI (linux specifix);
->   * Slightly rephrased VREF and adi,toggle-dither-input properties and
-> suggested.
->   =20
-> [1]: https://marc.info/?l=3Dlinux-iio&m=3D163662843603265&w=3D2
+> From: Jongpil Jung <jongpil19.jung@samsung.com>
 
-Series looks good to me, but will have to wait a little longer for DT and
-any other review before I apply it.
+Hi, 
+
+Patch title is not really clear. It suggests this is enabling
+a new feature rather than fixing anything.  Please rephrase.
+
+> 
+> Fixes: f75095753 ("iio:proximity:sx9360: Add sx9360 support")
+This is part of the tag block so should appear.
+> 
+> To convert SX9360 status register ["REG_STAT"], into a channel
+> index, we need to right shift by |stat_offset|, not left shift.
+> Also the PROXSTAT bit (3) is for channel 1 (PHM, PHase Measured), not (PHR,
+> PHase Reference, channel 0), so the offset is 2 instead of 3.
+> 
+Phase 
+
+fixes tag should be here.
+> Signed-off-by: Jongpil Jung <jongpil19.jung@samsung.com>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 
 Thanks,
 
 Jonathan
 
->=20
-> Nuno S=C3=A1 (3):
->   iio: dac: add support for ltc2688
->   iio: ABI: add ABI file for the LTC2688 DAC
->   dt-bindings: iio: Add ltc2688 documentation
->=20
->  .../ABI/testing/sysfs-bus-iio-dac-ltc2688     |   86 ++
->  .../bindings/iio/dac/adi,ltc2688.yaml         |  146 +++
->  MAINTAINERS                                   |    9 +
->  drivers/iio/dac/Kconfig                       |   11 +
->  drivers/iio/dac/Makefile                      |    1 +
->  drivers/iio/dac/ltc2688.c                     | 1070 +++++++++++++++++
->  6 files changed, 1323 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2688=
-.yaml
->  create mode 100644 drivers/iio/dac/ltc2688.c
->=20
+> ---
+>  drivers/iio/proximity/sx9360.c    | 2 +-
+>  drivers/iio/proximity/sx_common.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
+> index 6fd6561bb6f5b8..3ebb30c8a4f61d 100644
+> --- a/drivers/iio/proximity/sx9360.c
+> +++ b/drivers/iio/proximity/sx9360.c
+> @@ -775,7 +775,7 @@ static const struct sx_common_chip_info sx9360_chip_info = {
+>  	.reg_reset = SX9360_REG_RESET,
+>  
+>  	.mask_enable_chan = SX9360_REG_GNRL_CTRL0_PHEN_MASK,
+> -	.stat_offset = 3,
+> +	.stat_offset = 2,
+>  	.num_channels = SX9360_NUM_CHANNELS,
+>  	.num_default_regs = ARRAY_SIZE(sx9360_default_regs),
+>  
+> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+> index ac8fd5920481cb..a7c07316a0a91e 100644
+> --- a/drivers/iio/proximity/sx_common.c
+> +++ b/drivers/iio/proximity/sx_common.c
+> @@ -87,7 +87,7 @@ static void sx_common_push_events(struct iio_dev *indio_dev)
+>  		return;
+>  	}
+>  
+> -	val <<= data->chip_info->stat_offset;
+> +	val >>= data->chip_info->stat_offset;
+>  
+>  	/*
+>  	 * Only iterate over channels with changes on proximity status that have
 

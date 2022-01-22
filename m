@@ -2,156 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8687B496D35
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 19:07:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39878496D41
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jan 2022 19:16:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234656AbiAVSH2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Jan 2022 13:07:28 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:41324 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234633AbiAVSH2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 13:07:28 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7E3F60E83;
-        Sat, 22 Jan 2022 18:07:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F23C004E1;
-        Sat, 22 Jan 2022 18:07:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642874847;
-        bh=ed4KbG0a448WkbpZMG7EtToBILwDJdJNmhrkkL9oYHs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dcybovW4OlYGu+qDAhf4CHjsnfKHuFl30wagBG4FIQGi+sP64xX8pL+20Hce7C1CA
-         usRuCttijOh60IWec7d1SsAy5FmstJBUM1/e+1CUXm2dPaaj/KLc6FV+Et/3wx45S5
-         4xGnsU6FH9uDYka3blYl78arRt8fOFDJe2JjT73ZU8pjVDmCAhzWfZMgYGc4p53heG
-         1IEJ7ar3Mt9ABYgFFViySjJ3qBa8SCBHrKfsi+0F7N3WDhzOUcFhai4cQ8tERfOGfu
-         G/ohHXPwSdxIyAPkyxUf8nqaFKU5wkhTBvJEtP72MKBEpy0NbARxIKDHzB2PhEOpnK
-         z5Y+nuWBb8JrQ==
-Date:   Sat, 22 Jan 2022 18:13:36 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Sean Nyekjaer <sean@geanix.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: fxls8962af: add padding to regmap for SPI
-Message-ID: <20220122181336.61bed571@jic23-huawei>
-In-Reply-To: <20220117074600.gmfonh35ptx6kqbs@skn-laptop.hadsten>
-References: <20211220125144.3630539-1-sean@geanix.com>
-        <20220117074600.gmfonh35ptx6kqbs@skn-laptop.hadsten>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        id S234682AbiAVSQg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Jan 2022 13:16:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44580 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231812AbiAVSQg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Jan 2022 13:16:36 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA708C06173B
+        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 10:16:35 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id a18so48463488edj.7
+        for <linux-iio@vger.kernel.org>; Sat, 22 Jan 2022 10:16:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UVjNMhAOEvIRMUX+Vct6qJ0TvR34CHCUM62ejLntanc=;
+        b=nQviZLdPNIMOvpKR4hw1dvsw69UW2MrvEo0X3/PoG2YDPOrwpcdTdeCk5WjEO4JnJ9
+         bmLLvBLwpTnRKHOHYtgrA9qPgLBKeEOZvaBjqMfJW/xyjThzQJCQOjt8yGiV3CGXaVxC
+         OSiArPv2xRhvBaXBkpDxjKRopaX8k6fb3XnDCbUqmAeTaE671jRvvQ2CYLAMaE6FSKNX
+         M9czt2pDIPayo528xsTL2iDg0qdV2NVDb/PQx5rEEl4GvBeiGvBEOQduObahbjtVboqj
+         78z9J11szVCZzjuKj+vzvldF9/vPhnRgi9brAul+gFgyZ7XMgfru8lur6oZFUvM3PB6E
+         WgJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UVjNMhAOEvIRMUX+Vct6qJ0TvR34CHCUM62ejLntanc=;
+        b=lh3Dq0cAfetNjuCE+SUhc4y7Q5JcCdswroYTLEEphTC3qtKgH+Vn2hcw7Gf+hSCsKk
+         t/Nh/f0GUFaVWcv/R1AnIi2AVFerF5ien/gMXYFSKLidCXk73sSquWlKLd/+Ga7YxEV9
+         aOooEaqFTz9MqneAatbjWKSXg3B2DR0bht56TKMTkDTZD2bpCtVkUgBh9mZDxglorC8V
+         L9OM4wAOFGrzVseKu95cyAJr1xAvM+1IF4+1VVU1+h0CGD8N5vQnspzrFcEe+eQj17Rl
+         0v7SbTrKLHh+LoNv5c94EdtvneXhSqDGpqmh9mxwF5mkWhR4r813LvLTiUCzWHX2B587
+         H/WQ==
+X-Gm-Message-State: AOAM533FZC/YYyre9zgbPHzM1sxMzXu00X880YLalLOUKrDq2M8uL84s
+        ykC4xIu7uiQG2hF1jQ8E/8vz9KQscJwM0PTk9GHAGrabEms=
+X-Google-Smtp-Source: ABdhPJxostjOpIgxd87i9c1Nk7G+zSosFuzr8MWZJCofEgJMcmlxUDpebsloXfGy58qhlbLZochTsT3G0LaS7MH9pxA=
+X-Received: by 2002:aa7:cf0e:: with SMTP id a14mr9006985edy.296.1642875394115;
+ Sat, 22 Jan 2022 10:16:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20220118212504.832429-1-gwendal@chromium.org> <20220122172940.125d8033@jic23-huawei>
+In-Reply-To: <20220122172940.125d8033@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 22 Jan 2022 20:15:57 +0200
+Message-ID: <CAHp75VcRFRVOPvgGROiNM4wQurTDn+D-DSc0oU1YsrgkkNOF6g@mail.gmail.com>
+Subject: Re: [PATCH] iio: sx9360: enable push iio event
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Gwendal Grignou <gwendal@chromium.org>, jongpil19.jung@samsung.com,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 Jan 2022 08:46:00 +0100
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Sat, Jan 22, 2022 at 7:23 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Tue, 18 Jan 2022 13:25:04 -0800
+> Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> On Mon, Dec 20, 2021 at 01:51:43PM +0100, Sean Nyekjaer wrote:
-> > Add missing don't care padding between address and
-> > data for SPI transfers
-> > 
-> > Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> > ---
-> >  drivers/iio/accel/fxls8962af-core.c | 12 ++++++++++--
-> >  drivers/iio/accel/fxls8962af-i2c.c  |  2 +-
-> >  drivers/iio/accel/fxls8962af-spi.c  |  2 +-
-> >  drivers/iio/accel/fxls8962af.h      |  3 ++-
-> >  4 files changed, 14 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> > index 32989d91b982..f7fd9e046588 100644
-> > --- a/drivers/iio/accel/fxls8962af-core.c
-> > +++ b/drivers/iio/accel/fxls8962af-core.c
-> > @@ -173,12 +173,20 @@ struct fxls8962af_data {
-> >  	u16 upper_thres;
-> >  };
-> >  
-> > -const struct regmap_config fxls8962af_regmap_conf = {
-> > +const struct regmap_config fxls8962af_i2c_regmap_conf = {
-> >  	.reg_bits = 8,
-> >  	.val_bits = 8,
-> >  	.max_register = FXLS8962AF_MAX_REG,
-> >  };
-> > -EXPORT_SYMBOL_GPL(fxls8962af_regmap_conf);
-> > +EXPORT_SYMBOL_GPL(fxls8962af_i2c_regmap_conf);
-> > +
-> > +const struct regmap_config fxls8962af_spi_regmap_conf = {
-> > +	.reg_bits = 8,
-> > +	.pad_bits = 8,
-> > +	.val_bits = 8,
-> > +	.max_register = FXLS8962AF_MAX_REG,
-> > +};
-> > +EXPORT_SYMBOL_GPL(fxls8962af_spi_regmap_conf);
-> >  
-> >  enum {
-> >  	fxls8962af_idx_x,
-> > diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-> > index cfb004b20455..6bde9891effb 100644
-> > --- a/drivers/iio/accel/fxls8962af-i2c.c
-> > +++ b/drivers/iio/accel/fxls8962af-i2c.c
-> > @@ -18,7 +18,7 @@ static int fxls8962af_probe(struct i2c_client *client)
-> >  {
-> >  	struct regmap *regmap;
-> >  
-> > -	regmap = devm_regmap_init_i2c(client, &fxls8962af_regmap_conf);
-> > +	regmap = devm_regmap_init_i2c(client, &fxls8962af_i2c_regmap_conf);
-> >  	if (IS_ERR(regmap)) {
-> >  		dev_err(&client->dev, "Failed to initialize i2c regmap\n");
-> >  		return PTR_ERR(regmap);
-> > diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
-> > index 57108d3d480b..6f4dff3238d3 100644
-> > --- a/drivers/iio/accel/fxls8962af-spi.c
-> > +++ b/drivers/iio/accel/fxls8962af-spi.c
-> > @@ -18,7 +18,7 @@ static int fxls8962af_probe(struct spi_device *spi)
-> >  {
-> >  	struct regmap *regmap;
-> >  
-> > -	regmap = devm_regmap_init_spi(spi, &fxls8962af_regmap_conf);
-> > +	regmap = devm_regmap_init_spi(spi, &fxls8962af_spi_regmap_conf);
-> >  	if (IS_ERR(regmap)) {
-> >  		dev_err(&spi->dev, "Failed to initialize spi regmap\n");
-> >  		return PTR_ERR(regmap);
-> > diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
-> > index b67572c3ef06..9cbe98c3ba9a 100644
-> > --- a/drivers/iio/accel/fxls8962af.h
-> > +++ b/drivers/iio/accel/fxls8962af.h
-> > @@ -17,6 +17,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
-> >  int fxls8962af_core_remove(struct device *dev);
-> >  
-> >  extern const struct dev_pm_ops fxls8962af_pm_ops;
-> > -extern const struct regmap_config fxls8962af_regmap_conf;
-> > +extern const struct regmap_config fxls8962af_i2c_regmap_conf;
-> > +extern const struct regmap_config fxls8962af_spi_regmap_conf;
-> >  
-> >  #endif				/* _FXLS8962AF_H_ */
-> > -- 
-> > 2.34.1
-> >   
-> 
-> Hi Jonathan,
-> 
-> Did you have time to look at this?
+...
 
-Sorry, saw it go by but bad timing wrt to opening of merge window
-so it was still in my 'to apply' queue.
+> > Fixes: f75095753 ("iio:proximity:sx9360: Add sx9360 support")
+> This is part of the tag block so should appear.
 
-Anyhow, now done so and it is in the fixes-togreg branch of iio.git +
-marked for stable.
 
-Note I'll probably rebase that tree after rc1 though as we have a few
-other fixes I'd like in the same pull request for stuff that only
-went in this cycle.
+> fixes tag should be here.
+> > Signed-off-by: Jongpil Jung <jongpil19.jung@samsung.com>
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 
-Thanks,
+...and the submitter's SoB must be last (according to the documentation).
 
-Jonathan
-
-> 
-> /Sean
-
+-- 
+With Best Regards,
+Andy Shevchenko

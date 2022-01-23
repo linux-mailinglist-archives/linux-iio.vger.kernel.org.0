@@ -2,44 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D712497230
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jan 2022 15:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA7F497238
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jan 2022 15:46:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236784AbiAWOne (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Jan 2022 09:43:34 -0500
-Received: from alexa-out.qualcomm.com ([129.46.98.28]:13424 "EHLO
-        alexa-out.qualcomm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233533AbiAWOne (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jan 2022 09:43:34 -0500
+        id S236810AbiAWOqc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Jan 2022 09:46:32 -0500
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:45565 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233533AbiAWOqb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Jan 2022 09:46:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1642949014; x=1674485014;
+  t=1642949191; x=1674485191;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ISKKszcB4BU8ddnDILGYHFW7vinX67qvZKaFwOdiGbc=;
-  b=ODlHXZtTiq3Cw4g1pmyAQnQ/m0ufPTSmUAbTOCUh6joNFa0hC+7u29ci
-   Zr/jeH1EpWBR+BldU+C3lAzH1uZFlkGpNX9AOUomwK8/TnJR49iFGHR70
-   VYCKhyvLT7szJVypJLTabIqAg2pTMccROkHUGTkaLJH8w8HS3ovNDb6Y8
-   w=;
-Received: from ironmsg-lv-alpha.qualcomm.com ([10.47.202.13])
-  by alexa-out.qualcomm.com with ESMTP; 23 Jan 2022 06:43:34 -0800
+  bh=mycJ8+dHfD1xjVxrdmxmttz3DlLMs0BIC5UpIx3conI=;
+  b=uX2QxqOzUr0aitJ1yvfTtHjgOL5lSKV3ZAOV+DtZSNJPLK3+lNu8hBtL
+   mUgRYJiKSOKZF3274lDsolz6tR/hwuMrG7HaWfweDYCfxyr3Pg6yQAdUH
+   4da428md+3IXFfEJGv/mwLKtCNo3Z+jE/eVxgQIQ4B+6alufm2T6EPfKN
+   0=;
+Received: from unknown (HELO ironmsg02-sd.qualcomm.com) ([10.53.140.142])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 23 Jan 2022 06:46:30 -0800
 X-QCInternal: smtphost
 Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg-lv-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 06:43:32 -0800
+  by ironmsg02-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2022 06:46:29 -0800
 Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
  nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.922.19; Sun, 23 Jan 2022 06:43:32 -0800
+ 15.2.922.19; Sun, 23 Jan 2022 06:46:29 -0800
 Received: from [10.216.26.9] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Sun, 23 Jan
- 2022 06:43:21 -0800
-Message-ID: <d241d160-fb27-2103-3c5c-237b88baa91f@quicinc.com>
-Date:   Sun, 23 Jan 2022 20:13:15 +0530
+ 2022 06:46:19 -0800
+Message-ID: <6eed66b8-a04b-fa1e-49ec-d1051641b2e9@quicinc.com>
+Date:   Sun, 23 Jan 2022 20:16:14 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH V3 0/4] thermal: qcom: Add support for PMIC5 Gen2 ADC_TM
+Subject: Re: [PATCH V3 4/4] thermal: qcom: add support for PMIC5 Gen2 ADCTM
 Content-Language: en-US
 To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 CC:     <agross@kernel.org>, <bjorn.andersson@linaro.org>,
@@ -50,14 +50,16 @@ CC:     <agross@kernel.org>, <bjorn.andersson@linaro.org>,
         <quic_kgunda@quicinc.com>, <quic_aghayal@quicinc.com>,
         <daniel.lezcano@linaro.org>, <rui.zhang@intel.com>,
         <quic_subbaram@quicinc.com>, <jic23@kernel.org>,
-        <amitk@kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <amitk@kernel.org>, Thara Gopinath <thara.gopinath@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        <linux-pm@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
-        <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>
+        <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>
 References: <1637647025-20409-1-git-send-email-quic_jprakash@quicinc.com>
- <20211126182911.00005110@Huawei.com>
+ <1637647025-20409-5-git-send-email-quic_jprakash@quicinc.com>
+ <20211126184613.00002816@Huawei.com>
 From:   Jishnu Prakash <quic_jprakash@quicinc.com>
-In-Reply-To: <20211126182911.00005110@Huawei.com>
+In-Reply-To: <20211126184613.00002816@Huawei.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
@@ -69,38 +71,65 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Jonathan,
 
-On 11/26/2021 11:59 PM, Jonathan Cameron wrote:
-> On Tue, 23 Nov 2021 11:27:00 +0530
+On 11/27/2021 12:16 AM, Jonathan Cameron wrote:
+> On Tue, 23 Nov 2021 11:27:04 +0530
 > Jishnu Prakash <quic_jprakash@quicinc.com> wrote:
 >
->> Made following changes in this post:
->> Addressed comments given by Jonathan for qcom-spmi-adc-tm5.yaml.
->> Addressed comments given by Dmitry and Jonathan for qcom-spmi-adc-tm5.c.
->> Split patch for qcom-spmi-adc-tm5.c into two parts, one to refactor
->> code to support multiple device generations and the second to add
->> actual Gen2 ADC_TM changes.
-> Series is missing a change log.  Either in cover letter, or in
-> individual patches after the --
->
-> Jonathan
-
-
-I'll add the change log in the cover letter in the next post.
-
-
->
->> Jishnu Prakash (4):
->>    dt-bindings: thermal: qcom: add PMIC5 Gen2 ADC_TM bindings
->>    iio: adc: qcom-vadc-common: add reverse scaling for PMIC5 Gen2 ADC_TM
->>    thermal: qcom: Add support for multiple generations of devices
->>    thermal: qcom: add support for PMIC5 Gen2 ADCTM
+>> Add support for PMIC5 Gen2 ADC_TM, used on PMIC7 chips. It is a
+>> close counterpart of PMIC7 ADC and has the same functionality as
+>> PMIC5 ADC_TM, for threshold monitoring and interrupt generation.
+>> It is present on PMK8350 alone, like PMIC7 ADC and can be used
+>> to monitor up to 8 ADC channels, from any of the PMIC7 PMICs
+>> having ADC on a target, through PBS(Programmable Boot Sequence).
 >>
->>   .../bindings/thermal/qcom-spmi-adc-tm5.yaml        | 110 ++++-
->>   drivers/iio/adc/qcom-vadc-common.c                 |  11 +
->>   drivers/thermal/qcom/qcom-spmi-adc-tm5.c           | 451 +++++++++++++++++++--
->>   include/linux/iio/adc/qcom-vadc-common.h           |   2 +
->>   4 files changed, 541 insertions(+), 33 deletions(-)
+>> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+> Just one note on using put_unaligned_le16() below.  Otherwise, from
+> a drive by review point of view it looks fine to someone not that
+> familiar with the driver or thermal :)
+>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+>> ---
+>>   drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 375 ++++++++++++++++++++++++++++++-
+>>   1 file changed, 372 insertions(+), 3 deletions(-)
 >>
+>> diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+>> index fc8cd45..a7b33a8 100644
+>> --- a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+>> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+>> @@ -4,7 +4,10 @@
+>>    *
+>>    * Based on original driver:
+>>    * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+>> + *
+>> + * Copyright (c) 2021 Qualcomm Innovation Center, Inc. All rights reserved.
+>>    */
+
+>> +
+>> +	/* Low temperature corresponds to high voltage threshold */
+>> +	if (low != -INT_MAX) {
+>> +		channel->high_thr_en = true;
+>> +		adc_code = qcom_adc_tm5_gen2_temp_res_scale(low);
+>> +
+>> +		buf[11] = adc_code & 0xff;
+>> +		buf[12] = adc_code >> 8;
+> looks like a little endian put though not necessarily aligned so
+> put_unaligned_le16() preferred to open coding it. Same in similar places.
+> Not my area though so maintainer may not care as much.
+
+
+I'll use put_unaligned_le16 as suggested, in similar places in the next 
+post.
+
+
+>> +	} else {
+>> +		channel->high_thr_en = false;
+>> +	}
+>> +
+>> +	buf[13] = ADC_TM_GEN2_MEAS_EN;
+>> +	if (channel->high_thr_en)
+>> +		buf[13] |= ADC_TM5_GEN2_HIGH_THR_INT_EN;
+
 Thanks,
 
 Jishnu

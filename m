@@ -2,239 +2,306 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE9549B23F
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 11:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42CB049B476
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 14:01:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242069AbiAYKrM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 25 Jan 2022 05:47:12 -0500
-Received: from mail-ua1-f51.google.com ([209.85.222.51]:34740 "EHLO
-        mail-ua1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359754AbiAYKnd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 25 Jan 2022 05:43:33 -0500
-Received: by mail-ua1-f51.google.com with SMTP id y4so36590173uad.1;
-        Tue, 25 Jan 2022 02:43:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KUBI31PDeAnUzGFlBJuIh4dmvfrE44RhBRVMq2wEYSI=;
-        b=jEQDW5yodRmRVP9NIHGKf/Zqv7fciKPRB1CkTV3fKwnJqJOR9nObuvchECsV6CkowS
-         0RXMHwpiWGb2Tc8Kq8ywS8r7D5Ou/pBi+AuAod7u3AaDFL1+Z/eF6fLMeHVSznOTnWUW
-         90tv/NIVrXuMtI8sY04pwv/Mro4kUzc+Bpth5wWllcKADG4aGhnhIjbJhQzaV5RtPjzw
-         s1FdjjAQnwFOzetd3JADKbmMtsbUPpwqNRzajLB0hDQGa0Rgfbp8HOVlhxI+mK2MNTJd
-         Q5wTqyofT3OihGmTPOd6QhPLpcrEB7UCAoEmrVZTRCK/nWOxls32FCorF6O1NqCujuDv
-         dJSg==
-X-Gm-Message-State: AOAM531YcK63o+balcc5pV241srngLS5LTpT15FAMrvagHXIW5gKB3jS
-        U2c1AOPoRhAwTItUF4uz4P44uZUF4VS28vTX
-X-Google-Smtp-Source: ABdhPJwAP7sGEC010JKTiaYioiu/UTc4Mp89rGwnkrkLZob5IjBWSJ5wyDMZldWcel/u/8J+O6Kjog==
-X-Received: by 2002:a67:e146:: with SMTP id o6mr1664843vsl.4.1643107407326;
-        Tue, 25 Jan 2022 02:43:27 -0800 (PST)
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com. [209.85.221.178])
-        by smtp.gmail.com with ESMTPSA id s134sm3300983vkb.16.2022.01.25.02.43.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jan 2022 02:43:27 -0800 (PST)
-Received: by mail-vk1-f178.google.com with SMTP id j185so8365206vkc.1;
-        Tue, 25 Jan 2022 02:43:27 -0800 (PST)
-X-Received: by 2002:a05:6102:34e:: with SMTP id e14mr295625vsa.68.1643107051968;
- Tue, 25 Jan 2022 02:37:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20220123175201.34839-1-u.kleine-koenig@pengutronix.de> <20220123175201.34839-6-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20220123175201.34839-6-u.kleine-koenig@pengutronix.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 25 Jan 2022 11:37:19 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWCRyyq1=5+YnXgt2=B-qXMGWXC4XtnP_GHGvghdaH_XQ@mail.gmail.com>
-Message-ID: <CAMuHMdWCRyyq1=5+YnXgt2=B-qXMGWXC4XtnP_GHGvghdaH_XQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] spi: make remove callback a void function
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Mark Brown <broonie@kernel.org>,
-        =?UTF-8?B?TWFyZWsgQmVow7pu?= <kabel@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Emma Anholt <emma@anholt.net>,
-        David Lechner <david@lechnology.com>,
-        Kamlesh Gurudasani <kamlesh.gurudasani@gmail.com>,
-        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Dan Robertson <dan@dlrobertson.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Yasunari Takiguchi <Yasunari.Takiguchi@sony.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Charles-Antoine Couret <charles-antoine.couret@nexvision.fr>,
-        Antti Palosaari <crope@iki.fi>,
-        Lee Jones <lee.jones@linaro.org>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Eric Piel <eric.piel@tremplin-utc.net>,
+        id S1346473AbiAYM7o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Jan 2022 07:59:44 -0500
+Received: from mx1.tq-group.com ([93.104.207.81]:23582 "EHLO mx1.tq-group.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1359066AbiAYM4T (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 25 Jan 2022 07:56:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1643115378; x=1674651378;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qmHH9G8TVCwWdo3uTby79rF+j0/3SailZLcBZpByLtg=;
+  b=MB4CtmBY/kKUZUkbx858aLxhxtieEwNP3ArjS4boMb6N8oV/9x7+oe+7
+   vBRLZ4YVEvZ/1JO2JM7klGULc8cKXlCkrMAODKUDhoRxB28SicAlb3MwA
+   z4BaKpNCiXG7OZsbwPxYNCX20Nvck+6x4Hz/LZ+ldX2fSU+OXD7ABJ1L3
+   qhCGVEW1kcKUCt7niPCL5EASKNk6v9jLS3splPrSApHD9OyMA3IK+xWnD
+   qyyDv4o+OVOldOqDDmEWH7qIkVMd4VmaPCCCi8zZkUsMRkMvEb3Tf3C3R
+   UUuaUcupgO11DYD/qAb/ED5oLYw/xNWULPE2SGkeHr9g/mXySY1kfHonr
+   w==;
+X-IronPort-AV: E=Sophos;i="5.88,315,1635199200"; 
+   d="scan'208";a="21697221"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 25 Jan 2022 13:56:08 +0100
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Tue, 25 Jan 2022 13:56:09 +0100
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Tue, 25 Jan 2022 13:56:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1643115368; x=1674651368;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qmHH9G8TVCwWdo3uTby79rF+j0/3SailZLcBZpByLtg=;
+  b=DZazWES6Z7qX74NIrM+i69skWo5ObJhdpFykKEns/urrKSV7FmjkeM2t
+   YnBYyu8w987PyL5eZzlJ5LqVC1ihXP16gqLHPxLAtK9NLfyfbbnxMJjnE
+   xkheSFbGqZGupY07RAOmoaOCOMZDwMnZDGO5NYbNANthuHRau78001vK2
+   zJddEGsKEXtkeB0hUhuWkr3kF7tYn69GziEH85Y5mupr+z4GI7q8lpN8I
+   tHnvDwxI2K5PUlNNRZSdV0LyBsYg2DAs8tg6Mfpsr/QsP6qCBNv225Vhv
+   9E6GQFdFpwV+AAWYlFUvOpxFqY72lFs4EOW/dDH0eW9QyDbiOHxD6zCA3
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.88,315,1635199200"; 
+   d="scan'208";a="21697220"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 25 Jan 2022 13:56:08 +0100
+Received: from schifferm-ubuntu (SCHIFFERM-M2.tq-net.de [10.121.201.138])
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 966B4280065;
+        Tue, 25 Jan 2022 13:56:07 +0100 (CET)
+Message-ID: <33e55c4c0a637b23d76db5d33872378ad04121bd.camel@ew.tq-group.com>
+Subject: Re: [PATCH] driver core: platform: Rename
+ platform_get_irq_optional() to platform_get_irq_silent()
+From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
         Ulf Hansson <ulf.hansson@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Thomas Kopp <thomas.kopp@microchip.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Woojung Huh <woojung.huh@microchip.com>,
-        UNGLinuxDriver@microchip.com,
-        =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
-        Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Harry Morris <h.morris@cascoda.com>,
-        Varka Bhadram <varkabhadram@gmail.com>,
-        Xue Liu <liuxuenetmail@gmail.com>, Alan Ott <alan@signal11.us>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Solomon Peachy <pizza@shaftnet.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Mark Greer <mgreer@animalcreek.com>,
-        Benson Leung <bleung@chromium.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        James Schulman <james.schulman@cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
+        KVM list <kvm@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
         Jaroslav Kysela <perex@perex.cz>,
+        Guenter Roeck <groeck@chromium.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-phy@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Linux PWM List <linux-pwm@vger.kernel.org>,
+        Robert Richter <rric@kernel.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Corey Minyard <minyard@acm.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        John Garry <john.garry@huawei.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Mark Gross <markgross@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Eric Auger <eric.auger@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Takashi Iwai <tiwai@suse.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        platform-driver-x86@vger.kernel.org,
+        Benson Leung <bleung@chromium.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Mun Yew Tham <mun.yew.tham@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>, netdev@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Maxime Ripard <mripard@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Cai Huoqing <caihuoqing@baidu.com>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        =?UTF-8?Q?Ronald_Tschal=C3=A4r?= <ronald@innovation.ch>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Heiko Schocher <hs@denx.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Colin Ian King <colin.king@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Matt Kline <matt@bitbashing.io>,
-        Torin Cooper-Bennun <torin@maxiluxsystems.com>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        =?UTF-8?Q?Stefan_M=C3=A4tje?= <stefan.maetje@esd.eu>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Nanyong Sun <sunnanyong@huawei.com>,
-        Yang Shen <shenyang39@huawei.com>,
-        dingsenjie <dingsenjie@yulong.com>,
-        Aditya Srivastava <yashsri421@gmail.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michael Walle <michael@walle.cc>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        wengjianfeng <wengjianfeng@yulong.com>,
-        Sidong Yang <realwakka@gmail.com>,
-        Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>,
-        Zhang Qilong <zhangqilong3@huawei.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>,
-        Davidlohr Bueso <dbueso@suse.de>, Claudius Heine <ch@denx.de>,
-        Jiri Prchal <jiri.prchal@aksignal.cz>,
-        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-can@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
-        linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org,
-        platform-driver-x86@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        kernel@pengutronix.de
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Zha Qipeng <qipeng.zha@intel.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Richard Weinberger <richard@nod.at>,
+        Niklas =?ISO-8859-1?Q?S=F6derlund?= 
+        <niklas.soderlund@ragnatech.se>,
+        linux-mediatek@lists.infradead.org,
+        Brian Norris <computersforpeace@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+Date:   Tue, 25 Jan 2022 13:56:05 +0100
+In-Reply-To: <CAMuHMdXouECKa43OwUgQ6dA+gNeOqEZHZgOmQzqknzYiA924YA@mail.gmail.com>
+References: <CAMuHMdWsMGPiQaPS0-PJ_+Mc5VQ37YdLfbHr_aS40kB+SfW-aw@mail.gmail.com>
+         <20220112213121.5ruae5mxwj6t3qiy@pengutronix.de>
+         <Yd9L9SZ+g13iyKab@sirena.org.uk>
+         <20220113110831.wvwbm75hbfysbn2d@pengutronix.de>
+         <YeA7CjOyJFkpuhz/@sirena.org.uk>
+         <20220113194358.xnnbhsoyetihterb@pengutronix.de>
+         <YeF05vBOzkN+xYCq@smile.fi.intel.com>
+         <20220115154539.j3tsz5ioqexq2yuu@pengutronix.de>
+         <YehdsUPiOTwgZywq@smile.fi.intel.com>
+         <20220120075718.5qtrpc543kkykaow@pengutronix.de>
+         <Ye6/NgfxsZnpXE09@smile.fi.intel.com>
+         <15796e57-f7d4-9c66-3b53-0b026eaf31d8@omp.ru>
+         <CAMuHMdXouECKa43OwUgQ6dA+gNeOqEZHZgOmQzqknzYiA924YA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.36.5-0ubuntu1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 23, 2022 at 6:54 PM Uwe Kleine-König
-<u.kleine-koenig@pengutronix.de> wrote:
-> The value returned by an spi driver's remove function is mostly ignored.
-> (Only an error message is printed if the value is non-zero that the
-> error is ignored.)
->
-> So change the prototype of the remove function to return no value. This
-> way driver authors are not tempted to assume that passing an error to
-> the upper layer is a good idea. All drivers are adapted accordingly.
-> There is no intended change of behaviour, all callbacks were prepared to
-> return 0 before.
->
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+On Tue, 2022-01-25 at 09:25 +0100, Geert Uytterhoeven wrote:
+> Hi Sergey,
+> 
+> On Mon, Jan 24, 2022 at 10:02 PM Sergey Shtylyov <s.shtylyov@omp.ru>
+> wrote:
+> > On 1/24/22 6:01 PM, Andy Shevchenko wrote:
+> > > > > > > > > It'd certainly be good to name anything that doesn't
+> > > > > > > > > correspond to one
+> > > > > > > > > of the existing semantics for the API (!) something
+> > > > > > > > > different rather
+> > > > > > > > > than adding yet another potentially overloaded
+> > > > > > > > > meaning.
+> > > > > > > > 
+> > > > > > > > It seems we're (at least) three who agree about this.
+> > > > > > > > Here is a patch
+> > > > > > > > fixing the name.
+> > > > > > > 
+> > > > > > > And similar number of people are on the other side.
+> > > > > > 
+> > > > > > If someone already opposed to the renaming (and not only
+> > > > > > the name) I
+> > > > > > must have missed that.
+> > > > > > 
+> > > > > > So you think it's a good idea to keep the name
+> > > > > > platform_get_irq_optional() despite the "not found" value
+> > > > > > returned by it
+> > > > > > isn't usable as if it were a normal irq number?
+> > > > > 
+> > > > > I meant that on the other side people who are in favour of
+> > > > > Sergey's patch.
+> > > > > Since that I commented already that I opposed the renaming
+> > > > > being a standalone
+> > > > > change.
+> > > > > 
+> > > > > Do you agree that we have several issues with
+> > > > > platform_get_irq*() APIs?
+> > [...]
+> > > > > 2. The vIRQ0 handling: a) WARN() followed by b) returned
+> > > > > value 0
+> > > > 
+> > > > I'm happy with the vIRQ0 handling. Today platform_get_irq() and
+> > > > it's
+> > > > silent variant returns either a valid and usuable irq number or
+> > > > a
+> > > > negative error value. That's totally fine.
+> > > 
+> > > It might return 0.
+> > > Actually it seems that the WARN() can only be issued in two
+> > > cases:
+> > > - SPARC with vIRQ0 in one of the array member
+> > > - fallback to ACPI for GPIO IRQ resource with index 0
+> > 
+> >    You have probably missed the recent discovery that
+> > arch/sh/boards/board-aps4*.c
+> > causes IRQ0 to be passed as a direct IRQ resource?
+> 
+> So far no one reported seeing the big fat warning ;-)
 
->  drivers/spi/spi-slave-system-control.c                |  3 +--
->  drivers/spi/spi-slave-time.c                          |  3 +--
->  drivers/spi/spi.c                                     | 11 ++---------
->  drivers/spi/spidev.c                                  |  4 +---
+FWIW, we had a similar issue with an IRQ resource passed from the
+tqmx86 MFD driver do the GPIO driver, which we noticed due to this
+warning, and which was fixed
+in a946506c48f3bd09363c9d2b0a178e55733bcbb6
+and 9b87f43537acfa24b95c236beba0f45901356eb2.
+I believe these changes are what promted this whole discussion and led
+to my "Reported-by" on the patch?
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+It is not entirely clear to me when IRQ 0 is valid and when it isn't,
+but the warning seems useful to me. Maybe it would make more sense to
+warn when such an IRQ resource is registered for a platform device, and
+not when it is looked up?
 
-Gr{oetje,eeting}s,
+My opinion is that it would be very confusing if there are any places
+in the kernel (on some platforms) where IRQ 0 is valid, but for
+platform_get_irq() it would suddenly mean "not found". Keeping a
+negative return value seems preferable to me for this reason.
 
-                        Geert
+(An alternative, more involved idea would be to add 1 to all IRQ
+"cookies", so IRQ 0 would return 1, leaving 0 as a special value. I
+have absolutely no idea how big the API surface is that would need
+changes, and it is likely not worth the effort at all.)
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> 
+> > > The bottom line here is the SPARC case. Anybody familiar with the
+> > > platform
+> > > can shed a light on this. If there is no such case, we may remove
+> > > warning
+> > > along with ret = 0 case from platfrom_get_irq().
+> > 
+> >    I'm afraid you're too fast here... :-)
+> >    We'll have a really hard time if we continue to allow IRQ0 to be
+> > returned by
+> > platform_get_irq() -- we'll have oto fileter it out in the callers
+> > then...
+> 
+> So far no one reported seeing the big fat warning?
+> 
+> > > > > 3. The specific cookie for "IRQ not found, while no error
+> > > > > happened" case
+> > > > 
+> > > > Not sure what you mean here. I have no problem that a situation
+> > > > I can
+> > > > cope with is called an error for the query function. I just do
+> > > > error
+> > > > handling and continue happily. So the part "while no error
+> > > > happened" is
+> > > > irrelevant to me.
+> > > 
+> > > I meant that instead of using special error code, 0 is very much
+> > > good for
+> > > the cases when IRQ is not found. It allows to distinguish -ENXIO
+> > > from the
+> > > low layer from -ENXIO with this magic meaning.
+> > 
+> >    I don't see how -ENXIO can trickle from the lower layers,
+> > frankly...
+> 
+> It might one day, leading to very hard to track bugs.
+
+As gregkh noted, changing the return value without also making the
+compile fail will be a huge PITA whenever driver patches are back- or
+forward-ported, as it would require subtle changes in error paths,
+which can easily slip through unnoticed, in particular with half-
+automated stable backports.
+
+Even if another return value like -ENODEV might be better aligned with
+...regulator_get_optional() and similar functions, or we even find a
+way to make 0 usable for this, none of the proposed changes strike me
+as big enough a win to outweigh the churn caused by making such a
+change at all.
+
+Kind regards,
+Matthias
+
+
+
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- 
+> geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a
+> hacker. But
+> when I'm talking to journalists I just say "programmer" or something
+> like that.
+>                                 -- Linus Torvalds
+

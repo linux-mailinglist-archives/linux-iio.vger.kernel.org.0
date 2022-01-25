@@ -2,156 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1199E49A694
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 03:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38F5E49AB14
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 05:45:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242070AbiAYCTP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Jan 2022 21:19:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50560 "EHLO
+        id S1384180AbiAYEOH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Jan 2022 23:14:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1847649AbiAXXUP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jan 2022 18:20:15 -0500
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99F0EC028C26;
-        Mon, 24 Jan 2022 13:28:14 -0800 (PST)
-Received: by mail-qt1-x829.google.com with SMTP id r14so1812532qtt.5;
-        Mon, 24 Jan 2022 13:28:14 -0800 (PST)
+        with ESMTP id S3420519AbiAYCYf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Jan 2022 21:24:35 -0500
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAE4C0885BD
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jan 2022 16:15:09 -0800 (PST)
+Received: by mail-io1-xd2a.google.com with SMTP id w7so21720595ioj.5
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jan 2022 16:15:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=slA4hKk3SRch55eW3a2SaAckanXwGcMXYthRdgb6F60=;
-        b=StyMdhim9hb/9ea2tVx958yAlIb9nMm7Edt1qSWsnGyh/fBU4p3xeiq7Z+BPkrxhzx
-         hvkt/JspEakv9QGMOvyic0F7+5XriBZUYv9A1C+VyvGSfDxp2bcKcCL2K4Bg20NJNpa1
-         CzWsW1Upz6eaEOlHU6sg84RdhrB2yVynS1UM4ga0CgHRymCi8OPdZ2UG8NtYqzutsgPB
-         /igRscwNvxqKQClIVHj7Ie/QrOhfnzIq5ZWebJU+fWJBmHcnl2P7F8HRwiIfJWgJJSJG
-         iU/RqM5ts6AHks+pVyyyOSVLdNOeOIYTUH0Pep4R6SGPkyxu1A1ZS8YcxkKxez99mijz
-         gQqw==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XOycsyS8WRs8WZM/52QyGEA5jLYLxAJ/W6Zuel7qkRA=;
+        b=f34lBeEz/HehymnXqwwxOdjyY9w+KaosW++K7KCxycK9xeN1xQJgQUcrX1Qv4myWUD
+         ASAxMVGBmSHRkErcLkUXTfeUBExMbmB2J+gUCX3t82Jxq6AsGWKm2JnYRiVSlmLl5k4R
+         QYL5R2OtQSDQS856QugEJt0DqvxJ3bbI0rn+OtxJIj8rcNOFnxt/4AHBJDiD5aOosazN
+         nTt1P+okBemMag/6vQsXhwSqyk0/1OenfLmwa6g12KHh4moUq3cgkK/9GGbn1AHR9big
+         zuZxUDa+GIKKvip+Yd0sJRRqcVxtchRAX6kiSQsY+0dW8B2WHQ1Ua5Copi+5ukWNR2Bq
+         B3gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=slA4hKk3SRch55eW3a2SaAckanXwGcMXYthRdgb6F60=;
-        b=CdLQK+nxOfIX2lwz/i9mJHlmcNGo/dFArWLgIFMuiTIeoHf2FhTUJE3Pt39dVehbW6
-         ubGrfWjvRaswU0ZP+6LWajFuZYQkdrd1fLIrORiuJgTAq4vWK0UZpF+0aBElN78OyWqy
-         gl4tK3BuAtQB7tM542dNciDSRQ2PuH7b8pAApnEDQqUyeSYzBiqOB3rgzw/8LHkITYie
-         heyRiwEnyNul20qUKYlrkamtJNJTNpanOLB8FeoJSmoZXxp+EXDMb793XX0NX7Y0PC9a
-         jqCmFYczDNFF/1DM4ySzIeK4P/HT+v2MNJcwXMh8NWZjTioZsRCPjvmwTW02LMlEgWZR
-         V+Qg==
-X-Gm-Message-State: AOAM533KE26K9GwhanBdeNDFtGniXKK0S7y5wfz4vi0+U9a21M+7/xox
-        mwtbzqPiyaPw/hMQr8AmHNo=
-X-Google-Smtp-Source: ABdhPJxr1X9COMZLR6jW4yup+IW6IyJRcstvSb5FoEcZSfZWyozW2KfzV0ISVXICiVD3Akpz9hnNCg==
-X-Received: by 2002:ac8:5b51:: with SMTP id n17mr2893765qtw.594.1643059693753;
-        Mon, 24 Jan 2022 13:28:13 -0800 (PST)
-Received: from shaak (69-165-204-82.cable.teksavvy.com. [69.165.204.82])
-        by smtp.gmail.com with ESMTPSA id d13sm5486316qtx.35.2022.01.24.13.28.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jan 2022 13:28:12 -0800 (PST)
-Date:   Mon, 24 Jan 2022 16:28:09 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH v2 5/5] iio: afe: iio-rescale: Re-use generic struct
- s32_fract
-Message-ID: <Ye8Z6dS5cCji9LNQ@shaak>
-References: <20220110193104.75225-1-andriy.shevchenko@linux.intel.com>
- <20220110193104.75225-5-andriy.shevchenko@linux.intel.com>
- <20220115185203.567780e8@jic23-huawei>
- <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XOycsyS8WRs8WZM/52QyGEA5jLYLxAJ/W6Zuel7qkRA=;
+        b=ZQVdBqPONws5mk7YCYS6VrSU1IGCNb0GEegifT4Hic1giFHBJbrkNVwz9OcYJVcyj5
+         6pHxqh+Gmm+/njkMYtXwsJ3qZ+VAKaurZ08d/4sVcvW/AJQ4sYyYpMKjOM1cCprBvMlJ
+         T1ULDcPHcNozMdPi6ZtodYrQkHqUvMm2P8+2TaDrFz9xDiUntjjnNUnMYV3XL8ZD84qw
+         mq7Wq0apJSBqG93x2gAbKv40CLz2ibSH5JtAadBN0OXsgghwGTQPkXZgDqltq/lokaXs
+         vedNgSVTs8T0BD2NmnzBeCMgf0jihvawVqz39Y4qQtQethQD4/J8k3UksB8+nFVXGL6l
+         fNfQ==
+X-Gm-Message-State: AOAM533yXodh9EcS75UBZBkS4S0LeOuq1VaCcoq2iSP4oigoDx93sdSv
+        DjiQtfRdYdYMJ2CjYfMNYQWRC3nLRv8v++DoZTE=
+X-Google-Smtp-Source: ABdhPJxlao7tW+lPffpN2kE8+THqlB+sycLsujMgVjquvQRKD63tn1vVkqnvCJ5ZEHxWs2N+1HhEOSCL9h1qrWiQMs0=
+X-Received: by 2002:a02:7a0f:: with SMTP id a15mr8025815jac.278.1643069708426;
+ Mon, 24 Jan 2022 16:15:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
+Received: by 2002:a05:6602:1401:0:0:0:0 with HTTP; Mon, 24 Jan 2022 16:15:07
+ -0800 (PST)
+Reply-To: ayishagddafio@mail.ru
+From:   AISHA GADDAFI <dicksonsilva20017@gmail.com>
+Date:   Mon, 24 Jan 2022 16:15:07 -0800
+Message-ID: <CAPKPuhM40XerQ4J3aj6YCzPADjcy1qGMLK8JcMMKq6aB1RExZw@mail.gmail.com>
+Subject: Dearest Friend,?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+Dearest Friend,
 
-On Mon, Jan 24, 2022 at 05:18:32PM +0200, Andy Shevchenko wrote:
-> On Sat, Jan 15, 2022 at 06:52:03PM +0000, Jonathan Cameron wrote:
-> > On Mon, 10 Jan 2022 21:31:04 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > 
-> > > Instead of custom data type re-use generic struct s32_fract.
-> > > No changes intended.
-> > > 
-> > > The new member is put to be the first one to avoid additional
-> > > pointer arithmetic. Besides that one may switch to use fract
-> > > member to perform container_of(), which will be no-op in this
-> > > case, to get struct rescale.
-> > > 
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > 
-> > I'm not totally sold on this series showing there is a strong case for
-> > these macros so interested to hear what others think.
-> 
-> So far no news :-)
+In the name of God, Most Gracious, Most Merciful.
 
-Like I mentioned briefly in the other thread[1], I don't really see the
-advantage for the AFE driver given that it's almost just like renaming
-the parameters.
+Peace be upon you and mercy be upon you and blessings be upon you.
+I have the sum of $27.5 million USD for investment, I am interested in
+you for investment project assistance in your country. My name is
+Aisha  Gaddafi and presently living in Oman, I am a Widow and single
+Mother with three Children, the only biological Daughter of late
+Libyan President (Late Colonel Muammar Gaddafi) and presently I am
+under political asylum protection by the Omani Government.
 
-For the other drivers affected by the change, it drops the definition of
-the structure which is nice. So overall, it's a plus IMO :-)
+Kindly reply urgently for more details.
 
-[1] https://lore.kernel.org/linux-iio/20220108205319.2046348-1-liambeguin@gmail.com/
-
-Cheers,
-Liam
-
-> > Boiler plate removal is always nice of course...
-> 
-> That's what I considered nice as well.
-> 
-> ...
-> 
-> > > I found this better in order how code is structurally (re)organized.
-> > > I may rebase this on top of ongoing AFE series.
-> > > 
-> > > Also reveals possibility to switch to rational best approximation.
-> > > But this is another story...
-> > 
-> > Now that may well justify introducing this shared infrastructure :)
-> 
-> We also have mult_frac() macro which can be extended by mult_fract() for
-> these structures.
-> 
-> ...
-> 
-> > >  	rescale = iio_priv(indio_dev);
-> > > -
-> > > +	rescale->source = source;
-> > 
-> > There seems to be more reorganizing going on in here than is necessary
-> > for the function of this patch. At very least, description should
-> > call it out.  Why move setting source?
-> 
-> Yeah, I agree that this may be in a separate change before of after the series.
-> I will split.
-> 
-> > >  	rescale->cfg = of_device_get_match_data(dev);
-> > > -	rescale->numerator = 1;
-> > > -	rescale->denominator = 1;
-> > >  
-> > > -	ret = rescale->cfg->props(dev, rescale);
-> > > +	fract = &rescale->fract;
-> > > +	fract->numerator = 1;
-> > > +	fract->denominator = 1;
-> 
-> > > -	rescale->source = source;
-> > > -
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+my email address below: ayishagddafio@mail.ru
+Thanks
+Yours Truly Aisha

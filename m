@@ -2,268 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 128DB49B5B6
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 15:09:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ED3649B70B
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 15:59:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1577948AbiAYOHZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Jan 2022 09:07:25 -0500
-Received: from mga01.intel.com ([192.55.52.88]:34131 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1384953AbiAYOFM (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 25 Jan 2022 09:05:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643119511; x=1674655511;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z6iO4goP/6mOntNu6iUnXj156J2xRO3zDzNJWbq5fzg=;
-  b=DlV+ovpEXn8N+TNyiZrsmwlK+kX+rXtW7PAPhXl/8FCqQabAj+873dU5
-   pXSJM6lOWgJei1+yLNHVWY+4sFX61lEV3Nym8AT3WP8b0dm7JZ2PkDB66
-   5X5WhhbXJOHbeBRwxYI4U3/i6+/cpN0sO3VmQyZPic00XxInOsPtTA40t
-   nPtu9vk/aVvpzaVrTbK9HJIUAt3Fm5iGENPSgJKUd55XROVXbPOJIWKle
-   S6yVXTKYrakaUWXGMy6T+ZNHjY9lbBcFfZ/LO9X7KDyZWKp9/8/ciG9pU
-   MH63qlKkPdcnkfO2EO6h+bh6tWlg8Vxe6QgUimUhf8l/VfvMzSPQOJ4MN
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10237"; a="270750702"
-X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
-   d="scan'208";a="270750702"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 06:02:45 -0800
-X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
-   d="scan'208";a="695840276"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 06:02:27 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nCMNp-00EGb4-Aj;
-        Tue, 25 Jan 2022 16:01:17 +0200
-Date:   Tue, 25 Jan 2022 16:01:17 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        KVM list <kvm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Guenter Roeck <groeck@chromium.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-phy@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>,
-        openipmi-developer@lists.sourceforge.net,
-        Khuong Dinh <khuong@os.amperecomputing.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Linux PWM List <linux-pwm@vger.kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Corey Minyard <minyard@acm.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        John Garry <john.garry@huawei.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Mark Gross <markgross@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        platform-driver-x86@vger.kernel.org,
-        Benson Leung <bleung@chromium.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-edac@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Mun Yew Tham <mun.yew.tham@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>, netdev@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Zha Qipeng <qipeng.zha@intel.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Richard Weinberger <richard@nod.at>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund@ragnatech.se>,
-        linux-mediatek@lists.infradead.org,
-        Brian Norris <computersforpeace@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH] driver core: platform: Rename
- platform_get_irq_optional() to platform_get_irq_silent()
-Message-ID: <YfACrffZCCeleOjK@smile.fi.intel.com>
-References: <YeA7CjOyJFkpuhz/@sirena.org.uk>
- <20220113194358.xnnbhsoyetihterb@pengutronix.de>
- <YeF05vBOzkN+xYCq@smile.fi.intel.com>
- <20220115154539.j3tsz5ioqexq2yuu@pengutronix.de>
- <YehdsUPiOTwgZywq@smile.fi.intel.com>
- <20220120075718.5qtrpc543kkykaow@pengutronix.de>
- <Ye6/NgfxsZnpXE09@smile.fi.intel.com>
- <15796e57-f7d4-9c66-3b53-0b026eaf31d8@omp.ru>
- <CAMuHMdXouECKa43OwUgQ6dA+gNeOqEZHZgOmQzqknzYiA924YA@mail.gmail.com>
- <33e55c4c0a637b23d76db5d33872378ad04121bd.camel@ew.tq-group.com>
+        id S1580701AbiAYO43 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 25 Jan 2022 09:56:29 -0500
+Received: from mail-eopbgr00106.outbound.protection.outlook.com ([40.107.0.106]:15022
+        "EHLO EUR02-AM5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1581013AbiAYOyV (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Tue, 25 Jan 2022 09:54:21 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I/vdwx3AKsOCFx6F78O6xs7YUWdZqCsMcCY6hoDoJErjIk26mdHiEdOZ5lJgEAaYnlRdESre75cuJ7CwMglGHDxDrZLlAZ8Sv+23dhvL918KKIgN3Yxw2oT4HDL01IQZGCGmpSj1ofaeNgc4EVbtSpkq4O6O9PZouYWaFEdD172s0HHKqkCcll1xSMWvGASMbfttosg6xOZwl9+FnG/tenMQ6M8jblU03aVkfRRwk/2N89yuHxcY4J9ZtWnkoHlgIgJDBkrEN7YE3KSNmzZguBvH/BUN8jdh/wLJ8fyHupqSTdC1bNOMxSEy+HrBrN5fgvjTH7Roc2fjkr79YtXVRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tDtxkZW8zmkqpfEaWEY6IwYx4RFzxn8+djpZ1NYVD+g=;
+ b=XnLgTnWHUtW29NW0wKnufn1R4fTOi1PhDtLJjN9ubBODJbj7/N3RPLKzEjTgsMLT4uhLQ+o0FNajecDxSPn/m69AyQGDbvDCI5e8a1XGCoCy0GFkqH2YvvtA483+qWXBO8YYONuG9fw9uh8m1jVOh3rX9Atn130HP/6jwjbtvaeouuR+pzkklkyJOizc2eq8AwMfx1kCQH8cETFWxiws6QgBAdx6mbTF9j0owfYjXA+vA97YeV+v+y2eheBK71HI0yKcV29EJyyZXvbovpi7No/UPsO7O6GiPDRs2VQPY1enOxvZXKjHvS6iE0ZIoFbUAXef0jj6RCf2LAtisS0Ohg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tDtxkZW8zmkqpfEaWEY6IwYx4RFzxn8+djpZ1NYVD+g=;
+ b=WHQa+r613fcT8gGJyDPkjk3hCyXpehO6vb9kGG6I4EKkO+A0D8ixYlzJvib8A6iiCyJA5rmUCJgiOpA/0ARe/BEQRrXnSjwnvPwMn9j2aBb0jJQ+H6Umn7+S6N3u4g19NZAgBWB6WOG7j1Pr3B2lYWV2UFsRrPh7iI5hgkWzMug=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axentia.se;
+Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
+ by AM6PR02MB5254.eurprd02.prod.outlook.com (2603:10a6:20b:80::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4909.19; Tue, 25 Jan
+ 2022 14:54:11 +0000
+Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
+ ([fe80::99a:847f:ce2e:745]) by DB8PR02MB5482.eurprd02.prod.outlook.com
+ ([fe80::99a:847f:ce2e:745%4]) with mapi id 15.20.4909.017; Tue, 25 Jan 2022
+ 14:54:11 +0000
+Message-ID: <b25932d7-91bc-27b4-ada9-8d5da1ef2ddf@axentia.se>
+Date:   Tue, 25 Jan 2022 15:54:07 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 5/5] iio: afe: iio-rescale: Re-use generic struct
+ s32_fract
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Liam Beguin <liambeguin@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+References: <20220110193104.75225-1-andriy.shevchenko@linux.intel.com>
+ <20220110193104.75225-5-andriy.shevchenko@linux.intel.com>
+ <20220115185203.567780e8@jic23-huawei> <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
+ <Ye8Z6dS5cCji9LNQ@shaak> <Ye/4eJ/RhlWF7q70@smile.fi.intel.com>
+From:   Peter Rosin <peda@axentia.se>
+Organization: Axentia Technologies AB
+In-Reply-To: <Ye/4eJ/RhlWF7q70@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GV3P280CA0051.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:9::35) To DB8PR02MB5482.eurprd02.prod.outlook.com
+ (2603:10a6:10:eb::29)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33e55c4c0a637b23d76db5d33872378ad04121bd.camel@ew.tq-group.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b5aa1368-e727-4676-72e9-08d9e0128c1d
+X-MS-TrafficTypeDiagnostic: AM6PR02MB5254:EE_
+X-Microsoft-Antispam-PRVS: <AM6PR02MB525402C678C9F7DB15B490BBBC5F9@AM6PR02MB5254.eurprd02.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fXDHJ/kvvn7nQUxBa/keZevmZjRc5Pyufb4dfAv5ccvEqglJExpvswsxYRGWlMaUwzBJ20Iy3PPBy7TpRO/aHQQbrYOGYVd446tA304U4Jw1jgZA9GqBkzwPSHFo4hFYJQ5ysaSjSWQx8ZipYDlBNXpW62C8EIlYhwjqP9Ini+WlKbUdE7HztInq/E1PYGA90LukV+Cz34ZRBbh8lqHPP0VSRu73GpyqqrgO5csZAgS5lW7/zkjwpu2AerMebamX65r5Oc3Ma3I0v/4ltmdxbdVwku++vjk4cqC3Dtgm6P+psNfecRWzYFpWMUOKbMoSTmtAQEKp18/HkmnU7Rs9LOQAYG469APPONnsGs66gCmO64pqohD66Bip/jDni2KQ8vcS72AQ72OnBXjlbmb5vwPB+LXEJyBgU4dnvdRdiPEXfG7mBGcJB/3a+6f5DPF8q7Oek55CTDmd1M8Hkkaxego8PiG1/7HtTzTzULEe/Owsg6QkwJr98X2j6oRuXkeqtTH1EnJeIpJyAGX08TIKScr+LTeBGAgAzkKa6OnvPI1mX5GosH8hT8tiDo3GkxVA0z32XG4u9PQjMeA0NqcWs+W4FDwE7NoXhL0wGWAUmdSUjlTz5wdbWALzh8lTylSAHh2sbCe+s+5iqUQptRPcuRMJdt3/s066hOSk94700dbTi+dh6TYFo5RiQXH8vsJtJXK5EpkeXaBgmjgSzQ47YTa8Ni7cJX8AJ5DpBp1TaAlh0S5gRiPJ74frtoyM4WWj
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(376002)(346002)(366004)(136003)(39830400003)(2616005)(7416002)(83380400001)(316002)(186003)(38100700002)(31696002)(36756003)(110136005)(54906003)(53546011)(66476007)(2906002)(6666004)(4326008)(8936002)(8676002)(508600001)(31686004)(36916002)(66946007)(86362001)(6512007)(26005)(5660300002)(6486002)(6506007)(66556008)(41533002)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bTBXUUtzaEJEb1JNTzB2VGhldzB0OGplcy9hUkZ2YjIvTmZnd04rSjU1UXNt?=
+ =?utf-8?B?SVI0ZW1wZWhmNUt3TlZpeWwyRlJCcXR3V2NQSkxTd3VzYmJqK3cxK3pibWJ0?=
+ =?utf-8?B?Q3hmRGJ3S2c3Vi9rSVo5K3dveEdIbytBVmZiMGNtMFhlSmV3cStKci94TDAx?=
+ =?utf-8?B?bVNpR0pzVEQwck9PamJnNDBGL0ZEWnNMMCtBb3RFS1R5aXVKNjk0ZVVCNHVx?=
+ =?utf-8?B?TEJySnNPb2dUc3d4NW95cS9qOGdkaEE2S3JxZ0NWcTBoR0ZkOVRTdHd6dlpZ?=
+ =?utf-8?B?RXBxRk5RNDFhNE9DZHRING9tb2lpTmowN0hLaWZ4a1hTWlB1ejZ4Nk9xS1Q4?=
+ =?utf-8?B?ZlQ1d3RUUTdkdUUzbHE3SG1ZckpLOFFaZWI5RFdoU205VVlNaHd1eXNScE1O?=
+ =?utf-8?B?SWU0eTkxWitVcmh4eHpjcC90Mzl5S0NLSnkzeTZYYkRkVnQ1TVJ4L0w5VVlv?=
+ =?utf-8?B?dkY0UmJLUmh4eUltaUVXMDZTbmZSWU8ydWN5elUzeUVQaGd5MUlXY203bE9L?=
+ =?utf-8?B?aGJ2djR3WG5SOVQvOFV2dUJISm03QlVTS0N5cXNBNGMxcnNzSW5Gb3dVS29T?=
+ =?utf-8?B?aExobGY5RkRoMWVNR0dDcjN2bnVoRkU2b01DVmZ5Q2VOdDY5L0RWdjhtNXZU?=
+ =?utf-8?B?SlAxSndPb24xVksrMFVmTElHa2pJaXQ0RU92Q0pmdzZ3UzhYVGl5Zm9GdE5u?=
+ =?utf-8?B?TjkreEJ2MytXUmk0S3kzY1NwTkJ2MFBUTU9SNjMrYVlYTXdMOVQvdWd2eWFU?=
+ =?utf-8?B?a2k2Qy85K3lFQkFQcEFuWjZTRXhnejJUcUFteURPTGt5L0dOdWZ5QW9EV3Rj?=
+ =?utf-8?B?TU1aMWozSzFhQTMrbFlrTVozbzZoN0RIR1BpS1pYTFlNWGxJc3prZnIyT0d0?=
+ =?utf-8?B?Wkp5cnVaUWhNVkFIOEpkWWVLT0F2OGhyeWxLU1QvR2JSY3o4RG1SMFNyZUoy?=
+ =?utf-8?B?b2U5U2IxS0EwbzlySStPRlVxMDN5Q0RTelBrWFZxSDdMVGNwY1dYUHhTUk1E?=
+ =?utf-8?B?c1gzSDBTRFgzSURtRDVUNGlYUlVWVTRHVk0xYktEKzF5Uk5yaE1KOVRvbytu?=
+ =?utf-8?B?enNpVmZrYlRuYm11VlArZnIvc3lTeGxicjRaVXUvTG44blB6WGlQN3I4L1Vx?=
+ =?utf-8?B?bkk1YkNCc0Y4dGt3YkJMd3VmUHN0Ry9vOXE5N1hzMGJLSjI1eXNJUFU1UzdP?=
+ =?utf-8?B?SmtkQ2U0TDV2VzJRallBTFZVUE5wcFNaeWZBb3VtdEJBRll4V1E2VUhUZXdB?=
+ =?utf-8?B?RXVGem1MWHdOZ3lBSXJYZ3JheW9yZi80TjRGSVM0SHJlNFBxVnY1TFZjVlpB?=
+ =?utf-8?B?dHRsWGdLeVRnb0hNVzNuTFB0ei8vbFFjNnBFbjAxdlV2ZFFuc2czTmhoY1h0?=
+ =?utf-8?B?UXJuQUhQVWFMdW8xM2JtSExUZm5iMkZnTFBqbm53OHZTTyswSFhmMVJRVVNw?=
+ =?utf-8?B?WXM4S3p6bnJHSmFqL3VseDZ0ck9WVjNLTWJPa214b1JmbjZ0NFBBR0tZcW5j?=
+ =?utf-8?B?OGZITW85LzAybzdqa1BZZ0pBR2ppSFJvR1MwREQxZFhQNnhxL1prZ3F4d2Ew?=
+ =?utf-8?B?allXTlhONjdndVdxWCtqUGFTNS9ZM212R1R5eHFTQ0Y3K21JMy8rb1ZmUElk?=
+ =?utf-8?B?cmU0MWt2QXA4WW80OGNZM1Y5eGhqaDhJMUJyaG5aMWtPTi8wbXJuQjhOVG8x?=
+ =?utf-8?B?NU05NG53c3ZTNkhwOHJkSGcrSmhhZWY2eElVWUlkWDkvcXBnRk9wN0t6MDQ4?=
+ =?utf-8?B?VCtSVG83R1lyeWd2NVBhNm5nZmV6VVh2cWdna0hnaWdjZ3pDWmk2TWh3aUdp?=
+ =?utf-8?B?VGE0WS9MNXcvb2Z4M3hEdlVibWYwNlJ3Q1l3N1ovV2VRV0FjM3FYKzNza3dt?=
+ =?utf-8?B?SHd3N2RteXFRd1RxdmtlaFNVRklrSU1GeHVSZEpOTkNESUt1cDdheWRuVWs1?=
+ =?utf-8?B?TDBGTzgxNjBTa01GMFlubE9zb3ZZcXQxdktBb1hFR1NLVEphcTVYY1FaRGI2?=
+ =?utf-8?B?SWV3UFdUdk9kTjdQamx5bkd0am1TcXVtcnA2aC9mckpDTm1ZTFYvVmMweEtC?=
+ =?utf-8?B?MXNhLzAvdFllYjUzbXk0cytULzhvcGV5VnRhVmxPM2wyR2RMazBJNWxFWXFV?=
+ =?utf-8?Q?OnmQ=3D?=
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5aa1368-e727-4676-72e9-08d9e0128c1d
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2022 14:54:11.6127
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NEgn5Du7EZQkCAzyQdLIox/R4SS8nd6h1h3/YakrH5HT7GUEYIbMDEfsCPn+P3V8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR02MB5254
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 25, 2022 at 01:56:05PM +0100, Matthias Schiffer wrote:
-> On Tue, 2022-01-25 at 09:25 +0100, Geert Uytterhoeven wrote:
-> > On Mon, Jan 24, 2022 at 10:02 PM Sergey Shtylyov <s.shtylyov@omp.ru>
-> > wrote:
-> > > On 1/24/22 6:01 PM, Andy Shevchenko wrote:
 
-...
-
-> > > > > > 2. The vIRQ0 handling: a) WARN() followed by b) returned
-> > > > > > value 0
-> > > > > 
-> > > > > I'm happy with the vIRQ0 handling. Today platform_get_irq() and
-> > > > > it's
-> > > > > silent variant returns either a valid and usuable irq number or
-> > > > > a
-> > > > > negative error value. That's totally fine.
-> > > > 
-> > > > It might return 0.
-> > > > Actually it seems that the WARN() can only be issued in two
-> > > > cases:
-> > > > - SPARC with vIRQ0 in one of the array member
-> > > > - fallback to ACPI for GPIO IRQ resource with index 0
-> > > 
-> > >    You have probably missed the recent discovery that
-> > > arch/sh/boards/board-aps4*.c
-> > > causes IRQ0 to be passed as a direct IRQ resource?
-> > 
-> > So far no one reported seeing the big fat warning ;-)
+On 2022-01-25 14:17, Andy Shevchenko wrote:
+> On Mon, Jan 24, 2022 at 04:28:09PM -0500, Liam Beguin wrote:
+>> On Mon, Jan 24, 2022 at 05:18:32PM +0200, Andy Shevchenko wrote:
+>>> On Sat, Jan 15, 2022 at 06:52:03PM +0000, Jonathan Cameron wrote:
+>>>> On Mon, 10 Jan 2022 21:31:04 +0200
+>>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>>>>
+>>>>> Instead of custom data type re-use generic struct s32_fract.
+>>>>> No changes intended.
+>>>>>
+>>>>> The new member is put to be the first one to avoid additional
+>>>>> pointer arithmetic. Besides that one may switch to use fract
+>>>>> member to perform container_of(), which will be no-op in this
+>>>>> case, to get struct rescale.
+>>>>>
+>>>>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>>>>
+>>>> I'm not totally sold on this series showing there is a strong case for
+>>>> these macros so interested to hear what others think.
+>>>
+>>> So far no news :-)
+>>
+>> Like I mentioned briefly in the other thread[1], I don't really see the
+>> advantage for the AFE driver given that it's almost just like renaming
+>> the parameters.
 > 
-> FWIW, we had a similar issue with an IRQ resource passed from the
-> tqmx86 MFD driver do the GPIO driver, which we noticed due to this
-> warning, and which was fixed
-> in a946506c48f3bd09363c9d2b0a178e55733bcbb6
-> and 9b87f43537acfa24b95c236beba0f45901356eb2.
-
-No, it's not, unfortunately :-( You just band aided the warning issue, but the
-root cause is the WARN() and possibility to see valid (v)IRQ0 in the resources.
-See below.
-
-> I believe these changes are what promted this whole discussion and led
-> to my "Reported-by" on the patch?
+> I tend to disagree, perhaps I wasn't so clear in my points.
 > 
-> It is not entirely clear to me when IRQ 0 is valid and when it isn't,
-> but the warning seems useful to me. Maybe it would make more sense to
-> warn when such an IRQ resource is registered for a platform device, and
-> not when it is looked up?
-> 
-> My opinion is that it would be very confusing if there are any places
-> in the kernel (on some platforms) where IRQ 0 is valid,
+> The change reveals that the layering can be improved. In OOP
+> the object A which is inherited (or encapsulated as we see here)
+> allows to clearly get what kind of data the methods are operating
+> with / on. As you may see the two functions and the method
+> declaration appears to have interest only in the fraction data
+> for rescaling. The cleanup I consider helpful in the terms
+> of layering and OOP.
 
-And those places are board files like yours :( They have to be fixed
-eventually. Ideally by using IRQ domains. At least that's how it's
-done elsewhere.
+Hi!
 
-> but for
-> platform_get_irq() it would suddenly mean "not found". Keeping a
-> negative return value seems preferable to me for this reason.
+[Sorry for the delay, I have been far too busy for far too long]
 
-IRQ 0 is valid, vIRQ0 (or read it as cookie) is not.
+While this is all true for the current set of front-ends, it is not
+all that far-fetched to imagine some kind of future front-end that
+requires some other parameter, such that the rescaling fraction is no
+longer the only thing of interest. So, I have the feeling that changing
+the type of the 2nd argument of the ->props functions to just the
+fraction instead of the bigger object is conceptually wrong and
+something that will later turn out to have been a bad idea.
 
-Now, the problem in your case is that you are talking about board files, while
-ACPI and DT never gives resource with vIRQ0. For board files some (legacy) code
-decides that it's fine to supply HW IRQ, while the de facto case is that
-platform_get_resource() returns whatever is in the resource, while
-platform_get_irq() should return a cookie.
+Regarding the new xyz_fract types, I have no strong opinion. But as
+long as there are no helper functions for the new types, I see little
+value in them. To me, they look mostly like something that newcomers
+(and others) will not know about or expect, and it will just be
+another thing that you have to look out for during review, to keep new
+numerators/denominators from appearing and causing extra rounds of
+review for something that is mostly a bikeshed issue.
 
-> (An alternative, more involved idea would be to add 1 to all IRQ
-> "cookies", so IRQ 0 would return 1, leaving 0 as a special value. I
-> have absolutely no idea how big the API surface is that would need
-> changes, and it is likely not worth the effort at all.)
+My guess is that many times where fractions are used, they are used
+since fp math is not available. And that means that there will be a
+lot of special handling and shortcuts done since various things about
+accuracy and precision can be assumed. I think it will be hard to do
+all that centrally and in a comprehensible way. But if it is done it
+will of course also be possible to eliminate bugs since people may
+have taken too many shortcuts. But simply changing to xyz_fract and
+then not take it further than that will not change much.
 
-This is what IRQ domains do, they start vIRQs from 1.
+Also, there is already a v4l2_fract which is exposed in UAPI (maybe
+there are others?). I don't see how we bring that one in line with this
+new struct xyz_fract scheme?
 
-> > > > The bottom line here is the SPARC case. Anybody familiar with the
-> > > > platform
-> > > > can shed a light on this. If there is no such case, we may remove
-> > > > warning
-> > > > along with ret = 0 case from platfrom_get_irq().
-> > > 
-> > >    I'm afraid you're too fast here... :-)
-> > >    We'll have a really hard time if we continue to allow IRQ0 to be
-> > > returned by
-> > > platform_get_irq() -- we'll have oto fileter it out in the callers
-> > > then...
-> > 
-> > So far no one reported seeing the big fat warning?
-> > 
-> > > > > > 3. The specific cookie for "IRQ not found, while no error
-> > > > > > happened" case
-> > > > > 
-> > > > > Not sure what you mean here. I have no problem that a situation
-> > > > > I can
-> > > > > cope with is called an error for the query function. I just do
-> > > > > error
-> > > > > handling and continue happily. So the part "while no error
-> > > > > happened" is
-> > > > > irrelevant to me.
-> > > > 
-> > > > I meant that instead of using special error code, 0 is very much
-> > > > good for
-> > > > the cases when IRQ is not found. It allows to distinguish -ENXIO
-> > > > from the
-> > > > low layer from -ENXIO with this magic meaning.
-> > > 
-> > >    I don't see how -ENXIO can trickle from the lower layers,
-> > > frankly...
-> > 
-> > It might one day, leading to very hard to track bugs.
-> 
-> As gregkh noted, changing the return value without also making the
-> compile fail will be a huge PITA whenever driver patches are back- or
-> forward-ported, as it would require subtle changes in error paths,
-> which can easily slip through unnoticed, in particular with half-
-> automated stable backports.
-
-Let's not modify kernel at all then, because in many cases it is a PITA
-for back- or forward-porting :-)
-
-> Even if another return value like -ENODEV might be better aligned with
-> ...regulator_get_optional() and similar functions, or we even find a
-> way to make 0 usable for this, none of the proposed changes strike me
-> as big enough a win to outweigh the churn caused by making such a
-> change at all.
-
-Yeah, let's continue to suffer from ugly interface and see more band aids
-landing around...
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers,
+Peter

@@ -2,155 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3811A49BB1F
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jan 2022 19:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 281BE49C5ED
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jan 2022 10:13:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229986AbiAYSUK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 25 Jan 2022 13:20:10 -0500
-Received: from mga05.intel.com ([192.55.52.43]:53955 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229951AbiAYSTG (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Tue, 25 Jan 2022 13:19:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643134746; x=1674670746;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tv1tjWDzNBoDUOS+Q8dhCcXjC2IOqiaYcuGKE757/JY=;
-  b=e9iB+OFkjxRB/A6gNVQ+7T3BGi1KLPkyuhRHDrK7OVhCEOsBkS6gnkR+
-   NmIZlEYNa3aCPC1avelFGdcboiHMAKknXd+5FvDhc9XE+ptzwp+UxDtNG
-   Z9AW83urdHHrlt5+YI9HSLpH5Ov5PFSbC8+hMhBhV7/m3JnL2egwG6mGd
-   Q1N/xzFZ6SSUPiW/SDpmoTUbtjcA80HKr3fJhgXAkLcGB9UZI3dYA2FBZ
-   kHTI4DBiHRS3x4UXbkntlRkJ5+l7UAPoFGsTOR7ACFDVRb3c1nekezt+t
-   5P6+66SuevJeIbald3U+7DLBECx9LG+8BN+tUEUYJXS5t020Z2lP1rNbr
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10238"; a="332725513"
-X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
-   d="scan'208";a="332725513"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 10:18:50 -0800
-X-IronPort-AV: E=Sophos;i="5.88,315,1635231600"; 
-   d="scan'208";a="477203483"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2022 10:18:47 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nCQNw-00ELWo-LD;
-        Tue, 25 Jan 2022 20:17:40 +0200
-Date:   Tue, 25 Jan 2022 20:17:40 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Liam Beguin <liambeguin@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 5/5] iio: afe: iio-rescale: Re-use generic struct
- s32_fract
-Message-ID: <YfA+xFR0oh2ztDKv@smile.fi.intel.com>
-References: <20220110193104.75225-1-andriy.shevchenko@linux.intel.com>
- <20220110193104.75225-5-andriy.shevchenko@linux.intel.com>
- <20220115185203.567780e8@jic23-huawei>
- <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
- <Ye8Z6dS5cCji9LNQ@shaak>
- <Ye/4eJ/RhlWF7q70@smile.fi.intel.com>
- <b25932d7-91bc-27b4-ada9-8d5da1ef2ddf@axentia.se>
+        id S238845AbiAZJNG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jan 2022 04:13:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230488AbiAZJNF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Jan 2022 04:13:05 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF2DC06161C
+        for <linux-iio@vger.kernel.org>; Wed, 26 Jan 2022 01:13:05 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1nCeMH-0002MY-Kx; Wed, 26 Jan 2022 10:12:53 +0100
+Received: from mtr by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1nCeME-00026i-OU; Wed, 26 Jan 2022 10:12:50 +0100
+Date:   Wed, 26 Jan 2022 10:12:50 +0100
+From:   Michael Tretter <m.tretter@pengutronix.de>
+To:     Robert Hancock <robert.hancock@calian.com>
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "manish.narani@xilinx.com" <manish.narani@xilinx.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "anand.ashok.dumbre@xilinx.com" <anand.ashok.dumbre@xilinx.com>
+Subject: Re: [PATCH 3/4] iio: adc: xilinx-ams: Fixed wrong sequencer register
+ settings
+Message-ID: <20220126091250.GC2550@pengutronix.de>
+References: <20220120010246.3794962-1-robert.hancock@calian.com>
+ <20220120010246.3794962-4-robert.hancock@calian.com>
+ <20220125082108.GE25856@pengutronix.de>
+ <4c5fb3899a8aafa34106a668bcb2807b6f073036.camel@calian.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b25932d7-91bc-27b4-ada9-8d5da1ef2ddf@axentia.se>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <4c5fb3899a8aafa34106a668bcb2807b6f073036.camel@calian.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 10:10:37 up 46 days, 17:56, 80 users,  load average: 0.43, 0.21,
+ 0.19
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jan 25, 2022 at 03:54:07PM +0100, Peter Rosin wrote:
-> On 2022-01-25 14:17, Andy Shevchenko wrote:
-> > On Mon, Jan 24, 2022 at 04:28:09PM -0500, Liam Beguin wrote:
-> >> On Mon, Jan 24, 2022 at 05:18:32PM +0200, Andy Shevchenko wrote:
-> >>> On Sat, Jan 15, 2022 at 06:52:03PM +0000, Jonathan Cameron wrote:
-> >>>> On Mon, 10 Jan 2022 21:31:04 +0200
-> >>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> >>>> I'm not totally sold on this series showing there is a strong case for
-> >>>> these macros so interested to hear what others think.
-> >>>
-> >>> So far no news :-)
-> >>
-> >> Like I mentioned briefly in the other thread[1], I don't really see the
-> >> advantage for the AFE driver given that it's almost just like renaming
-> >> the parameters.
+On Tue, 25 Jan 2022 16:15:05 +0000, Robert Hancock wrote:
+> On Tue, 2022-01-25 at 09:21 +0100, Michael Tretter wrote:
+> > On Wed, 19 Jan 2022 19:02:45 -0600, Robert Hancock wrote:
+> > > Register settings used for the sequencer configuration register
+> > > were incorrect, causing some inputs to not be read properly.
+> > > 
+> > > Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+> > > Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+> > > ---
+> > >  drivers/iio/adc/xilinx-ams.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> > > index b93864362dac..199027c93cdc 100644
+> > > --- a/drivers/iio/adc/xilinx-ams.c
+> > > +++ b/drivers/iio/adc/xilinx-ams.c
+> > > @@ -91,8 +91,8 @@
+> > >  
+> > >  #define AMS_CONF1_SEQ_MASK		GENMASK(15, 12)
+> > >  #define AMS_CONF1_SEQ_DEFAULT		FIELD_PREP(AMS_CONF1_SEQ_MASK,
+> > > 0)
+> > > -#define AMS_CONF1_SEQ_CONTINUOUS	FIELD_PREP(AMS_CONF1_SEQ_MASK, 1)
+> > > -#define AMS_CONF1_SEQ_SINGLE_CHANNEL	FIELD_PREP(AMS_CONF1_SEQ_MASK,
+> > > 2)
+> > > +#define AMS_CONF1_SEQ_CONTINUOUS	FIELD_PREP(AMS_CONF1_SEQ_MASK, 2)
+> > > +#define AMS_CONF1_SEQ_SINGLE_CHANNEL	FIELD_PREP(AMS_CONF1_SEQ_MASK,
+> > > 3)
 > > 
-> > I tend to disagree, perhaps I wasn't so clear in my points.
-> > 
-> > The change reveals that the layering can be improved. In OOP
-> > the object A which is inherited (or encapsulated as we see here)
-> > allows to clearly get what kind of data the methods are operating
-> > with / on. As you may see the two functions and the method
-> > declaration appears to have interest only in the fraction data
-> > for rescaling. The cleanup I consider helpful in the terms
-> > of layering and OOP.
-
-> [Sorry for the delay, I have been far too busy for far too long]
-
-Anyway, thanks for review! My answers below.
-
-> While this is all true for the current set of front-ends, it is not
-> all that far-fetched to imagine some kind of future front-end that
-> requires some other parameter, such that the rescaling fraction is no
-> longer the only thing of interest. So, I have the feeling that changing
-> the type of the 2nd argument of the ->props functions to just the
-> fraction instead of the bigger object is conceptually wrong and
-> something that will later turn out to have been a bad idea.
-
-How? Technically as I mentioned currently it's the case to use
-only the date from fraction. The bigger object would be needed
-in case of using data that is not fraction. Either way it would
-be easy to add a container_of() than supply unneeded data to
-the method.
-
-TL;DR: It makes possible not to mix bananas with wooden boxes.
-
-> Regarding the new xyz_fract types, I have no strong opinion. But as
-> long as there are no helper functions for the new types, I see little
-> value in them. To me, they look mostly like something that newcomers
-> (and others) will not know about or expect, and it will just be
-> another thing that you have to look out for during review, to keep new
-> numerators/denominators from appearing and causing extra rounds of
-> review for something that is mostly a bikeshed issue.
+> > The TRM states that Continuous Loop Mode is 2, but Single Pass Sequence Mode
+> > is 1, not 3. Is there a reason, why you need to set both bits?
 > 
-> My guess is that many times where fractions are used, they are used
-> since fp math is not available. And that means that there will be a
-> lot of special handling and shortcuts done since various things about
-> accuracy and precision can be assumed. I think it will be hard to do
-> all that centrally and in a comprehensible way. But if it is done it
-> will of course also be possible to eliminate bugs since people may
-> have taken too many shortcuts. But simply changing to xyz_fract and
-> then not take it further than that will not change much.
+> Single pass sequence mode (1) just runs the same sequence only once. To read
+> these values it needs to switch to single channel mode (3).
+> 
+> The register bits are defined in Table 3-8 of 
+> https://www.xilinx.com/support/documentation/user_guides/ug580-ultrascale-sysmon.pdf
+>  .
 
-I understand your point. I will provide a mult_fract() macro and
-apply it to AFE to show the usability of this. Would it work better?
+Thanks for the clarification.
 
-I haven't checked the other possible improvements based on new type, but
-I truly believe that the types themselves are good to have.
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
 
-> Also, there is already a v4l2_fract which is exposed in UAPI (maybe
-> there are others?). I don't see how we bring that one in line with this
-> new struct xyz_fract scheme?
-
-UAPI is another story. It might be possible to extend, but I would like
-to avoid expanding the proposed types to UAPI (we don't have many users
-and I believe they more or less unique, so v4l2 is rather exception than
-usual).
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> 
+> > 
+> > Michael
+> > 
+> > >  
+> > >  #define AMS_REG_SEQ0_MASK		GENMASK(15, 0)
+> > >  #define AMS_REG_SEQ2_MASK		GENMASK(21, 16)
+> > > -- 
+> > > 2.31.1
+> > > 
+> > > 
+> > > _______________________________________________
+> > > linux-arm-kernel mailing list
+> > > linux-arm-kernel@lists.infradead.org
+> > > https://urldefense.com/v3/__http://lists.infradead.org/mailman/listinfo/linux-arm-kernel__;!!IOGos0k!yGFEjSC1BL20lwurby914len0HCLXyzarwxKJP9Jx30qv_qrERSkRJUiVo_2MdusMVA$ 
+> > > 
+> -- 
+> Robert Hancock
+> Senior Hardware Designer, Calian Advanced Technologies
+> www.calian.com

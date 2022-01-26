@@ -2,100 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACBAD49CD27
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jan 2022 15:59:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 037A049CEF3
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jan 2022 16:54:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242472AbiAZO7j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jan 2022 09:59:39 -0500
-Received: from mail-ua1-f54.google.com ([209.85.222.54]:35645 "EHLO
-        mail-ua1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235637AbiAZO7i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Jan 2022 09:59:38 -0500
-Received: by mail-ua1-f54.google.com with SMTP id m90so43446568uam.2;
-        Wed, 26 Jan 2022 06:59:38 -0800 (PST)
+        id S230143AbiAZPy0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jan 2022 10:54:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50904 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229645AbiAZPy0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Jan 2022 10:54:26 -0500
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A984C06161C;
+        Wed, 26 Jan 2022 07:54:26 -0800 (PST)
+Received: by mail-qk1-x730.google.com with SMTP id b22so4820199qkk.12;
+        Wed, 26 Jan 2022 07:54:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=d2hfJnq7WFG6jJbY1jQ64KsykK+O3FA7XQ9vdxvBn90=;
+        b=fxrbuXDps7bOVDI3Pn+WxxehZMZBBY1HydEO72ENhhutcwBCI+hmGQ+wJgoWASvsgz
+         cjhBQX1tKM9lDW6Zaj6ubROCjBk3rXIHp2R+GTeTBgO11RTbNF7BFgVBUtKgsML1Wp+2
+         Sw6EZHJNwLfuZumruwVCnPDLIMWCUf3EmLXHCzhXzKpAwc4acw3fAUXRe4lSfG5Y4rBy
+         ffITB/xAhu1rp926aEEHwRaf3FVxINsrX9DdfQu4OyhIbfzpV5SuzqbVTZmhZikxn+8j
+         hGQ2lCR8QvMDeUyH/vCJqjdbNdHTHQM/ajihgBqfMBRE2o7v3Q3tUul1PjQ8vWfNp7GR
+         UlxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+RR2pY1rV0ULsrCqGU+BKO9MJav/kGNPSRvgU4pqlTg=;
-        b=gIvfHvzhaGXQGh9qThqblmU+cANa7NwAATnRpJAZQD78AOa78yqW2hBzgNkFiEq0wv
-         Dhpa8SKh5DblFyX5/ltgF6nGmiAlAkYoOI+MdkQHQecF304u+qfJG/4awNVuEIU8vVdj
-         b8tVwjB/mi3mAEKldqc975HQGt1ytXc1Es/YUFQ+o9QLFY+l4YLnNyntpsHKFTqX8JvB
-         TZNoeHVUmUQM0Dj90b4yc3fEvTQKfjz87sqfyuv2rOJWYBduhgvGxA5O2RWAEc/7j29q
-         O14eoC6QBYba6qL/0wU72VAUh84ZxwnDShaSZuLn9DNNqJt60/KBxFxjvMS7ZdOt0BW9
-         Iy3w==
-X-Gm-Message-State: AOAM5339VXCw2BLGFcWNHwVM5WxlaI/a3Qtttqn+aPToTA8KfzH44gBj
-        b4e5e7E2qMRY/vWbrAhkmWh0zK48SE5Aw1zx
-X-Google-Smtp-Source: ABdhPJxIF9c3BCQaXRUqSruYt1xa2eVsEhYzzcRbhcaoNwjn53VBPe07RM3JYTFY9anJ4aCQijI2Fw==
-X-Received: by 2002:a67:ca9d:: with SMTP id a29mr2409934vsl.45.1643209177997;
-        Wed, 26 Jan 2022 06:59:37 -0800 (PST)
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com. [209.85.221.170])
-        by smtp.gmail.com with ESMTPSA id 63sm3946985vkz.19.2022.01.26.06.59.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jan 2022 06:59:37 -0800 (PST)
-Received: by mail-vk1-f170.google.com with SMTP id l196so12111589vki.5;
-        Wed, 26 Jan 2022 06:59:37 -0800 (PST)
-X-Received: by 2002:a1f:384b:: with SMTP id f72mr10172278vka.0.1643209177403;
- Wed, 26 Jan 2022 06:59:37 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=d2hfJnq7WFG6jJbY1jQ64KsykK+O3FA7XQ9vdxvBn90=;
+        b=Cj0zKpzavFoYf7jZzY7AhcVsVLLyhD+dLaRO+jPB1Nu6r2mp0OFkydPEzgoBgL0miN
+         zBpK5/aTQoBPMOAYmMon3yEThJpOLDFkuqSyk1BEe46AKHGA25ZVUiPEkzFFBdpzFT51
+         I8n0R/mwFFqj/GpQcr/RW7nZTc7zIe+JlmM3ff1s6k+u7okbj5VzoP2PWElS0qNpmK13
+         ywJg5WBB8obFOoA6rbXY+LEYQelainCmznoTSrh8Knd/d/xsIh9FulLj2LvuQIzfX+or
+         w8E9QntuAKMsYjj3nSSQbMOp8PyDp6FhspW3GzoVNelHrqEGV63kjTZHaqH5wxzxPSYu
+         ZkVw==
+X-Gm-Message-State: AOAM5334zTX6/D0BIpWdvGur5v7Evv/ZgFvlE0Mfbb/SRgyivDvJHAxl
+        LYVNSWjU6rz2dx5xYf7VDII=
+X-Google-Smtp-Source: ABdhPJz6xJBj7tZ4ymoR1vfWqzCoELsEIantQdyGfyRGT3CSIbDxgepmXmUiaHMksimv4ZaJorKDfw==
+X-Received: by 2002:a05:620a:2915:: with SMTP id m21mr8359108qkp.374.1643212465186;
+        Wed, 26 Jan 2022 07:54:25 -0800 (PST)
+Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
+        by smtp.gmail.com with ESMTPSA id b4sm10815876qkf.61.2022.01.26.07.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jan 2022 07:54:24 -0800 (PST)
+Date:   Wed, 26 Jan 2022 10:54:22 -0500
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 5/5] iio: afe: iio-rescale: Re-use generic struct
+ s32_fract
+Message-ID: <YfFurqdAmPpZ8PJ1@shaak>
+References: <20220110193104.75225-1-andriy.shevchenko@linux.intel.com>
+ <20220110193104.75225-5-andriy.shevchenko@linux.intel.com>
+ <20220115185203.567780e8@jic23-huawei>
+ <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
+ <Ye8Z6dS5cCji9LNQ@shaak>
+ <Ye/4eJ/RhlWF7q70@smile.fi.intel.com>
+ <b25932d7-91bc-27b4-ada9-8d5da1ef2ddf@axentia.se>
+ <YfA+xFR0oh2ztDKv@smile.fi.intel.com>
+ <34c121fa-2a3b-fb6b-f6d5-fc2be2a5c6b7@axentia.se>
+ <YfE45cImAQpOeziT@smile.fi.intel.com>
 MIME-Version: 1.0
-References: <20210412122331.1631643-1-linus.walleij@linaro.org>
-In-Reply-To: <20210412122331.1631643-1-linus.walleij@linaro.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 26 Jan 2022 15:59:25 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUYOxKECcF+aM3+pTpgp-412YbL5vMDZpmEqJmLigpdVw@mail.gmail.com>
-Message-ID: <CAMuHMdUYOxKECcF+aM3+pTpgp-412YbL5vMDZpmEqJmLigpdVw@mail.gmail.com>
-Subject: Re: [PATCH] iio: st-sensors: Update ST Sensor bindings
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YfE45cImAQpOeziT@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Linus,
+Hi Andy,
+On Wed, Jan 26, 2022 at 02:04:53PM +0200, Andy Shevchenko wrote:
+> On Wed, Jan 26, 2022 at 11:26:50AM +0100, Peter Rosin wrote:
+> > On 2022-01-25 19:17, Andy Shevchenko wrote:
+> > > On Tue, Jan 25, 2022 at 03:54:07PM +0100, Peter Rosin wrote:
+> > >> On 2022-01-25 14:17, Andy Shevchenko wrote:
+> > >>> On Mon, Jan 24, 2022 at 04:28:09PM -0500, Liam Beguin wrote:
+> > >>>> On Mon, Jan 24, 2022 at 05:18:32PM +0200, Andy Shevchenko wrote:
+> > >>>>> On Sat, Jan 15, 2022 at 06:52:03PM +0000, Jonathan Cameron wrote:
+> > >>>>>> On Mon, 10 Jan 2022 21:31:04 +0200
+> > >>>>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> ...
 
-On Mon, Apr 12, 2021 at 2:24 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> This adjusts the ST Sensor bindings with the more fine-grained
-> syntax checks that were proposed late in the last kernel cycle
-> and colliding with parallel work.
->
-> Cc: devicetree@vger.kernel.org
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+...
 
-Thanks for your patch, which is now commit 0cd71145803dc2b8
-("iio: st-sensors: Update ST Sensor bindings") in v5.14.
+> The problem here is that every driver would like to do this differently
+> and since it's related to the calculation we will have all possible error
+> prone implementations which do miscalculations (yes, one may not notice
+> traditional off-by-one until it becomes a huge issue by using additional
+> conversion formulas or so).
+> 
+> > But sure, feel free to suggest something. But please hold until the
+> > current work from Liam is merged.
+> > That series is clearly more
+> > important, and I'm not really interested in neither adding more work for
+> > him nor a cleanup of the current code without those pending changes.
+> 
+> I'm very well fine with that. As I mentioned from the beginning, I may rebase
+> this on top of the Liam's work.
 
-> --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+I appreciate that! I'll make time to wrap things up so I don't hold you
+up.
 
->    interrupts:
-> +    description: interrupt line(s) connected to the DRDY line(s) and/or the
-> +      Intertial interrupt lines INT1 and INT2 if these exist. This means up to
-> +      three interrupts, and the DRDY must be the first one if it exists on
+Cheers,
+Liam
 
-So this says three (the LSM9DS0 datasheet agrees)...
-
-> +      the package. The trigger edge of the interrupts is sometimes software
-> +      configurable in the hardware so the operating system should parse this
-> +      flag and set up the trigger edge as indicated in the device tree.
->      minItems: 1
-> +    maxItems: 2
-
-... while this says two?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 

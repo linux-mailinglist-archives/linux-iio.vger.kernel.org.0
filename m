@@ -2,122 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 037A049CEF3
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jan 2022 16:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FC6A49D266
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jan 2022 20:16:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbiAZPy0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 26 Jan 2022 10:54:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50904 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbiAZPy0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Jan 2022 10:54:26 -0500
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A984C06161C;
-        Wed, 26 Jan 2022 07:54:26 -0800 (PST)
-Received: by mail-qk1-x730.google.com with SMTP id b22so4820199qkk.12;
-        Wed, 26 Jan 2022 07:54:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=d2hfJnq7WFG6jJbY1jQ64KsykK+O3FA7XQ9vdxvBn90=;
-        b=fxrbuXDps7bOVDI3Pn+WxxehZMZBBY1HydEO72ENhhutcwBCI+hmGQ+wJgoWASvsgz
-         cjhBQX1tKM9lDW6Zaj6ubROCjBk3rXIHp2R+GTeTBgO11RTbNF7BFgVBUtKgsML1Wp+2
-         Sw6EZHJNwLfuZumruwVCnPDLIMWCUf3EmLXHCzhXzKpAwc4acw3fAUXRe4lSfG5Y4rBy
-         ffITB/xAhu1rp926aEEHwRaf3FVxINsrX9DdfQu4OyhIbfzpV5SuzqbVTZmhZikxn+8j
-         hGQ2lCR8QvMDeUyH/vCJqjdbNdHTHQM/ajihgBqfMBRE2o7v3Q3tUul1PjQ8vWfNp7GR
-         UlxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=d2hfJnq7WFG6jJbY1jQ64KsykK+O3FA7XQ9vdxvBn90=;
-        b=Cj0zKpzavFoYf7jZzY7AhcVsVLLyhD+dLaRO+jPB1Nu6r2mp0OFkydPEzgoBgL0miN
-         zBpK5/aTQoBPMOAYmMon3yEThJpOLDFkuqSyk1BEe46AKHGA25ZVUiPEkzFFBdpzFT51
-         I8n0R/mwFFqj/GpQcr/RW7nZTc7zIe+JlmM3ff1s6k+u7okbj5VzoP2PWElS0qNpmK13
-         ywJg5WBB8obFOoA6rbXY+LEYQelainCmznoTSrh8Knd/d/xsIh9FulLj2LvuQIzfX+or
-         w8E9QntuAKMsYjj3nSSQbMOp8PyDp6FhspW3GzoVNelHrqEGV63kjTZHaqH5wxzxPSYu
-         ZkVw==
-X-Gm-Message-State: AOAM5334zTX6/D0BIpWdvGur5v7Evv/ZgFvlE0Mfbb/SRgyivDvJHAxl
-        LYVNSWjU6rz2dx5xYf7VDII=
-X-Google-Smtp-Source: ABdhPJz6xJBj7tZ4ymoR1vfWqzCoELsEIantQdyGfyRGT3CSIbDxgepmXmUiaHMksimv4ZaJorKDfw==
-X-Received: by 2002:a05:620a:2915:: with SMTP id m21mr8359108qkp.374.1643212465186;
-        Wed, 26 Jan 2022 07:54:25 -0800 (PST)
-Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
-        by smtp.gmail.com with ESMTPSA id b4sm10815876qkf.61.2022.01.26.07.54.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jan 2022 07:54:24 -0800 (PST)
-Date:   Wed, 26 Jan 2022 10:54:22 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 5/5] iio: afe: iio-rescale: Re-use generic struct
- s32_fract
-Message-ID: <YfFurqdAmPpZ8PJ1@shaak>
-References: <20220110193104.75225-1-andriy.shevchenko@linux.intel.com>
- <20220110193104.75225-5-andriy.shevchenko@linux.intel.com>
- <20220115185203.567780e8@jic23-huawei>
- <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
- <Ye8Z6dS5cCji9LNQ@shaak>
- <Ye/4eJ/RhlWF7q70@smile.fi.intel.com>
- <b25932d7-91bc-27b4-ada9-8d5da1ef2ddf@axentia.se>
- <YfA+xFR0oh2ztDKv@smile.fi.intel.com>
- <34c121fa-2a3b-fb6b-f6d5-fc2be2a5c6b7@axentia.se>
- <YfE45cImAQpOeziT@smile.fi.intel.com>
+        id S244385AbiAZTQP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 26 Jan 2022 14:16:15 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4520 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231214AbiAZTQO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 26 Jan 2022 14:16:14 -0500
+Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JkYJW4JDTz67JwR;
+        Thu, 27 Jan 2022 03:12:43 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.21; Wed, 26 Jan 2022 20:16:11 +0100
+Received: from localhost (10.47.31.55) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Wed, 26 Jan
+ 2022 19:16:11 +0000
+Date:   Wed, 26 Jan 2022 19:16:06 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Hegbeli, Ciprian" <Ciprian.Hegbeli@analog.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: iio_trigger_poll from IRQ thread
+Message-ID: <20220126191606.00003f37@Huawei.com>
+In-Reply-To: <BYAPR03MB46473D8DDED835EDBDB20A8297209@BYAPR03MB4647.namprd03.prod.outlook.com>
+References: <BYAPR03MB46473D8DDED835EDBDB20A8297209@BYAPR03MB4647.namprd03.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YfE45cImAQpOeziT@smile.fi.intel.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.31.55]
+X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
-On Wed, Jan 26, 2022 at 02:04:53PM +0200, Andy Shevchenko wrote:
-> On Wed, Jan 26, 2022 at 11:26:50AM +0100, Peter Rosin wrote:
-> > On 2022-01-25 19:17, Andy Shevchenko wrote:
-> > > On Tue, Jan 25, 2022 at 03:54:07PM +0100, Peter Rosin wrote:
-> > >> On 2022-01-25 14:17, Andy Shevchenko wrote:
-> > >>> On Mon, Jan 24, 2022 at 04:28:09PM -0500, Liam Beguin wrote:
-> > >>>> On Mon, Jan 24, 2022 at 05:18:32PM +0200, Andy Shevchenko wrote:
-> > >>>>> On Sat, Jan 15, 2022 at 06:52:03PM +0000, Jonathan Cameron wrote:
-> > >>>>>> On Mon, 10 Jan 2022 21:31:04 +0200
-> > >>>>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> ...
+On Wed, 26 Jan 2022 14:43:45 +0000
+"Hegbeli, Ciprian" <Ciprian.Hegbeli@analog.com> wrote:
 
-...
-
-> The problem here is that every driver would like to do this differently
-> and since it's related to the calculation we will have all possible error
-> prone implementations which do miscalculations (yes, one may not notice
-> traditional off-by-one until it becomes a huge issue by using additional
-> conversion formulas or so).
+> Hi, 
 > 
-> > But sure, feel free to suggest something. But please hold until the
-> > current work from Liam is merged.
-> > That series is clearly more
-> > important, and I'm not really interested in neither adding more work for
-> > him nor a cleanup of the current code without those pending changes.
+> I'm currently trying to call iio_trigger_poll from the bottom-half of an interrupt handler and get the following waring;
 > 
-> I'm very well fine with that. As I mentioned from the beginning, I may rebase
-> this on top of the Liam's work.
-
-I appreciate that! I'll make time to wrap things up so I don't hold you
-up.
-
-Cheers,
-Liam
-
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+> [  101.814234] WARNING: CPU: 0 PID: 1204 at kernel/irq/handle.c:152 __handle_irq_event_percpu+0x234/0x238
+> [  101.814255] irq 60 handler irq_default_primary_handler+0x0/0x1c enabled interrupts
+> [  101.814268] Modules linked in: ade9078 cmac rfcomm bnep hci_uart btbcm bluetooth ecdh_generic ecc fuse 8021q garp brcmfmac brcmutil cfg80211 v3d rfkill spi_bcm2835 gpu_sched raspberrypi_hwmon bcm2835_codec(C) snd_bcm2835(C) bcm2835_v4l2(C) bcm2835_isp(C) v4l2_mem2mem bcm2835_mmal_vchiq(C) vc_sm_cma(C) rpivid_mem vc4 uio_pdrv_genirq uio i2c_dev ip_tables x_tables
+> [  101.814452] CPU: 0 PID: 1204 Comm: irq/58-ade9078 Tainted: G         C        5.4.83-v7l+ #7
 > 
+> This warning occurs only once, the first time it goes through this scenario, on a second passing through it I get no warning.
+> After reading online about it, the problem is related to disabling the interrupts prior to entering the IIO Handler. 
+> By doing this manually I don't get any Warnings, but it has been pointed out to me that this might not be a good solution.
 > 
+> I'm using the bottom-half of the handler because the interrupt requires reading the status register of the IC, which can be slow.
+> Unfortunately there is no way to insert the iio_trigger_poll in the top-half because all the checks are done in the bottom-half.
+> 
+> The trigger_handler reads the samples from an internal FIFO in the IC, I'm not sure if this detail is relevant or not. 
+
+If in bottom half, call iio_trigger_poll_chained().
+
+It's a bit of a hack in the sense that it will only run the bottom half
+of the pollfuncs which isn't always what is wanted (can miss timestamps
+being stored for example) but mostly works.
+
+Not well named either which I've been meaning to fix for a very
+long time :(
+
+However, if there is a fifo involved, is it useful to use the trigger
+framework at all?  That only normally makes sense if there is one
+'trigger' per 'scan'.  If your fifo is working on the basis of
+a watermark interrupt for when the buffer has N scans of data in it
+then it's normally better to just not use a trigger at all and fill
+the buffer directly from the interrupt bottom half.
+Things can get a bit fiddly if you also want to support other triggers
+but there are drivers that do that.  No trigger means fill directly,
+trigger means grabbing data via a path not using the fifo (or with
+fifo depth set to 1 scan)
+
+Jonathan
+
+> 
+> Regards,
+> Ciprian
+

@@ -2,85 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E227649E4C5
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jan 2022 15:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B569549E577
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jan 2022 16:09:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242495AbiA0Oip (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jan 2022 09:38:45 -0500
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:47312
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S242434AbiA0Oip (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jan 2022 09:38:45 -0500
-Received: from HP-EliteBook-840-G7.. (1-171-96-243.dynamic-ip.hinet.net [1.171.96.243])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 0055B3F12E;
-        Thu, 27 Jan 2022 14:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1643294317;
-        bh=UxowwXQxo8uCrhgoZW9r6sHJJUTYdeBxTU4y/n+UOSs=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=O+icSGTFIULmpaWrxo5DX5gHDl4G83Q2SCoQEnWdQ1HiRq+JISd8QEF70pYgXH74q
-         A3dtSBOXpNdjtxCEMQjXbmvJ5c/OJletToRVgBDtliAtMhrhCq2gpLZ3ZuhI7SJFcO
-         ODEowWwpWEvE8aFlI/zNBEXlymXCYMW/vNEKln0E+HnrtgTBVfS0BG6ARLP1mzpsk7
-         FJrbioAn0l96D1l4IMBeIY2PXKABQQXRRyj1KGMUqMUlJa1kTcbi/cq0z4ZwXXVF4t
-         z1cctLkEaBwzJnlG6F/2uVfK9xfqmY0KCCMp6sk0B7g0/n8jCNkw6cJG13F40E41sE
-         r8LbaZWWZeCRQ==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     jic23@kernel.org, eajames@linux.ibm.com
-Cc:     andy.shevchenko@gmail.com,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] iio: dps310: Add ACPI HID table
-Date:   Thu, 27 Jan 2022 22:38:28 +0800
-Message-Id: <20220127143828.2033838-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.33.1
+        id S242801AbiA0PJZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jan 2022 10:09:25 -0500
+Received: from mga14.intel.com ([192.55.52.115]:6532 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242794AbiA0PJX (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 27 Jan 2022 10:09:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643296163; x=1674832163;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=m03jHFTsmH0kl+SqiX5YOIzStgNgXmrl9679DYrvc54=;
+  b=lvUEeT+EiN9OrHviiqLdOYjoWxfbiPe1wg7LiEZnsXUza4IC6IsQjQMD
+   VwJQ3sowxyrM6iaRGmXSAvDXF4C748CVLRjZOBRst2357Nfovh3WWpyuX
+   ldeTF3Myynm+WZykaMvQXM1O5rwfyGEp5nD9JsKPEd+nBl50ujo8YdzZb
+   S6mEjWNG1N6fKItraAq4spQDzGhEoBo6bOTGCHadPExD9uHBBwMsJ6Owe
+   wf/fWDU3YV9WMtiHK2n8ZkYuleUU+NOoiJxyzD6LFyZwGCU5BaOv/2TGD
+   FLpvZsLI2+i+sqMOwDsuiKWOIWJv+ptVAQY9xNHx83TL3bvbzXmmCbtOf
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10239"; a="247099735"
+X-IronPort-AV: E=Sophos;i="5.88,321,1635231600"; 
+   d="scan'208";a="247099735"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 07:09:22 -0800
+X-IronPort-AV: E=Sophos;i="5.88,321,1635231600"; 
+   d="scan'208";a="618361102"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 07:09:19 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nD6Nh-00F1CR-MI;
+        Thu, 27 Jan 2022 17:08:13 +0200
+Date:   Thu, 27 Jan 2022 17:08:13 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Liam Beguin <liambeguin@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 5/5] iio: afe: iio-rescale: Re-use generic struct
+ s32_fract
+Message-ID: <YfK1XSfVW8P+gzd/@smile.fi.intel.com>
+References: <Ye7DSAN4gdhXfEUs@smile.fi.intel.com>
+ <Ye8Z6dS5cCji9LNQ@shaak>
+ <Ye/4eJ/RhlWF7q70@smile.fi.intel.com>
+ <b25932d7-91bc-27b4-ada9-8d5da1ef2ddf@axentia.se>
+ <YfA+xFR0oh2ztDKv@smile.fi.intel.com>
+ <34c121fa-2a3b-fb6b-f6d5-fc2be2a5c6b7@axentia.se>
+ <YfE45cImAQpOeziT@smile.fi.intel.com>
+ <7ed2cdb9-0719-3535-9e0a-fd9d393f1cd8@axentia.se>
+ <YfFGLjeAEWfAAUWc@smile.fi.intel.com>
+ <7bae39d5-7a38-ebdd-074a-6c140dc3a519@axentia.se>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7bae39d5-7a38-ebdd-074a-6c140dc3a519@axentia.se>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-x86 boards may use ACPI HID "IFX3100" for dps310 device.
+On Thu, Jan 27, 2022 at 12:03:49PM +0100, Peter Rosin wrote:
+> On 2022-01-26 14:01, Andy Shevchenko wrote:
+> > On Wed, Jan 26, 2022 at 01:35:09PM +0100, Peter Rosin wrote:
+> >> On 2022-01-26 13:04, Andy Shevchenko wrote:
+> >>> On Wed, Jan 26, 2022 at 11:26:50AM +0100, Peter Rosin wrote:
+> >>>> It's easy to both remove and to add back "the bigger object". I just
+> >>>> don't see the point of the churn. Technically you can probably rearrange
+> >>>> stuff in probe and remove the 2nd argument to ->props() altogether and
+> >>>> chase pointers from the dev object instead. I don't see the point of
+> >>>> that either. It doesn't really make things simpler, it doesn't really
+> >>>> make things easier to read. To me, it's just pointless churn.
+> >>>
+> >>> Since you still haven't got a point the conclusions are wrong.
+> >>> The point is (I dunno how more clear to make it) is to have proper
+> >>> layering from the (current) design perspective.
+> >>
+> >> I think got the gist of it. I simply do not agree with your conclusion
+> >> about what the "proper layering" should be.
+> > 
+> > And I see no real argument against it. With the patch applied I see
+> > a better structure of the code and exactly necessary data to be passed
+> > to the method. Which makes me think that current implementation is
+> > either a leftover or was something like "let's take a bigger object
+> > _just in case_", which I can't take as a proper layering.
+> 
+> The bigger object, or the one and only object as the current code is
+> written, is given to ->props() by design.
+> 
+> BTW, you don't seem to understand the ->props() functions. There is no
+> data "passed to" the ->props() functions. These functions instead fill
+> in properties. Currently this boils down to the scaling fraction, but I
+> can imagine other properties.
 
-Vendor told us feel free to add the ID and contact
-"Saumitra.Chafekar@infineon.com" for any further question.
+Currently the object of the properties is the same as struct __Txx_fract.
+In the future it may indeed be expanded. In such case I see that the layering
+might look like
 
-So add an ACPI match table for that accordingly.
+struct ..._props {
+	struct __Txx_fract fract;
+	...
+};
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v2:
- - Drop ACPI_PTR().
- - Add info from vendor.
+Of course it depends on the properties themselves, but at least that's
+how I believe the OOP paradigm works. Am I mistaken?
 
- drivers/iio/pressure/dps310.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> On 2022-01-25 19:17, Andy Shevchenko wrote:
+> >                              The bigger object would be needed
+> > in case of using data that is not fraction. Either way it would
+> > be easy to add a container_of() than supply unneeded data to
+> > the method.
+> 
+> You argued that it is easy to "break out" to the bigger object in case
+> it's needed. Which in my book is a sign of poor layering.
+> It's way easier to *not* change things, it's perfectly fine as-is.
+> 
+> The argument against making the change you propose is that it does not
+> make this small driver any easier to understand. It would still just
+> change things for the sake of changing them, and I do not see the point
+> of erasing the existing future-proofing when it has no cost.
+> 
+> To sum up, I'm ok with introducing fract_s32 in this driver, but I
+> don't agree with the signature change of ->props().
 
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index 0730380ceb692..7e6fcb32212a2 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -812,9 +812,17 @@ static const struct i2c_device_id dps310_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, dps310_id);
- 
-+static const struct acpi_device_id dps310_acpi_match[] = {
-+	{ "IFX3100" },
-+	{ },
-+};
-+
-+MODULE_DEVICE_TABLE(acpi, dps310_acpi_match);
-+
- static struct i2c_driver dps310_driver = {
- 	.driver = {
- 		.name = DPS310_DEV_NAME,
-+		.acpi_match_table = dps310_acpi_match,
- 	},
- 	.probe = dps310_probe,
- 	.id_table = dps310_id,
+Thanks for valuable comments!
+
+I postponed the change in any case, let Liam to finish his part first,
+which we agreed is more important.
+
+
 -- 
-2.33.1
+With Best Regards,
+Andy Shevchenko
+
 

@@ -2,83 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77F0849F75E
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 11:36:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FCD49FB19
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 14:54:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbiA1KgE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Jan 2022 05:36:04 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4542 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiA1KgE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jan 2022 05:36:04 -0500
-Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JlYfK20Qjz6892T;
-        Fri, 28 Jan 2022 18:31:37 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Fri, 28 Jan 2022 11:36:02 +0100
-Received: from localhost (10.47.76.156) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 28 Jan
- 2022 10:36:01 +0000
-Date:   Fri, 28 Jan 2022 10:35:54 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     jagath jogj <jagathjog1996@gmail.com>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>,
-        <andriy.shevchenko@linux.intel.com>, <aardelean@deviqon.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: IIO Device Driver for Maxim DS3502 potentiometer
-Message-ID: <20220128103554.000028ff@Huawei.com>
-In-Reply-To: <CAM+2Eu+G2YK-O4ioYCBTJOs9VV9k5fVfQSii+m3kcyouJRg_vA@mail.gmail.com>
-References: <CAM+2Eu+G2YK-O4ioYCBTJOs9VV9k5fVfQSii+m3kcyouJRg_vA@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        id S232774AbiA1Nyv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jan 2022 08:54:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35080 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235200AbiA1Nyu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jan 2022 08:54:50 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67605C06173B;
+        Fri, 28 Jan 2022 05:54:50 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id ah7so16283284ejc.4;
+        Fri, 28 Jan 2022 05:54:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=W+HVO9pfWKvtQNPEDK/I430Md9WsgnnHul3CbcaOVZQ=;
+        b=Z2ELedQwJYz39tK4+PNoaYeMbVIHl7NAlHepJHX0f7jqb5+GMp+mf1tg2GNnP7C1WZ
+         AHvHlEcwz6rBoSieI4EmTZ6u1n6KIDvT7iNSLfNhbXSiIqVqAljN/0AyE2MO2RgRV563
+         n4/nSeaaWcguzSZUJlyZ8Lp2FqktAq8YkOW1btwKrlF8BceAf7vV06B91ouOZUW2OBdG
+         KuFaS1Cn6qs+j4shaT3eVGbo5pbU91z/JjDScOfI5eHu7Hg/ChZqtKAZUgoo4qUSFFvZ
+         cOiGLb+EvRHD4Rt15nI2IUiKiyOzV70Hm0IDPILXk66hlPiYCoBuM61WPjVDmj/6ixQb
+         prUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=W+HVO9pfWKvtQNPEDK/I430Md9WsgnnHul3CbcaOVZQ=;
+        b=H0rRRCXtzP+ZpIGJbzWU+BB/YNpISS4AdZQ50SAU8w4G+sdSFK3PcZzHZsXsgaABgz
+         QAPW9bNvteLHGZlf+cIPd5AgSaOq2pWgIW8kljupLPfrh/kjopxLdWTqW31DYY7aFHnE
+         77uhPWbbFtKILJV+YJKlpTPzIubLyM5wDDkIzd7RZIvWnq/GyCBcIrI7ArXch5FhQbMz
+         K7y2yWxmEPhAamRrB85crMiXR7vHkZI6TQ4HrhfVnuFCCDz5K/g7otnapTaoZrICVGue
+         nbJbN65InOwud0N50mVHlpPSbX9FRI+U7WyuWwlOGFrOS460qcV70o2IX3yXCumE5q+n
+         z7DA==
+X-Gm-Message-State: AOAM533JAOSLuY4Lq0Kobn/991+BpL7aWIQk88gQ6Rfid4nz+TML1Toe
+        ILWjVLenWHk77IdqUF0EOJtYll8t18h73qYRECs=
+X-Google-Smtp-Source: ABdhPJyxCcBk99rUQp6U3SzpQdyerpPcALccJkGIBAlJSRaoWZdv2CoAwgPjTfHSCh/AG6gJHd0h1//AZ6QidA+nU+A=
+X-Received: by 2002:a17:906:7948:: with SMTP id l8mr6852057ejo.636.1643378088706;
+ Fri, 28 Jan 2022 05:54:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.76.156]
-X-ClientProxiedBy: lhreml731-chm.china.huawei.com (10.201.108.82) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+References: <20220128042054.2062060-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20220128042054.2062060-1-kai.heng.feng@canonical.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 28 Jan 2022 15:53:11 +0200
+Message-ID: <CAHp75VfC873djcc4Z2+HhzR8z3Uaute3g0Fgr1dvOs_v=gD3Lw@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: humidity: hdc100x: Add ACPI HID table
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Your Name <you@example.com>,
+        Chris Lesiak <chris.lesiak@licor.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 28 Jan 2022 09:11:28 +0530
-jagath jogj <jagathjog1996@gmail.com> wrote:
+On Fri, Jan 28, 2022 at 6:21 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> x86 boards may use ACPI HID "TXNW1010" for the hdc100x device.
+>
+> TI told us "The ACPI ID for TI is: https://uefi.org/node/1028 (TXNW),
+> therefore it would most likely be appropriate to use TXNW1010."
 
-> Hello,
-> 
-> I have a Maxim DS3502 potentiometer breakout and I have written an IIO
-> driver for learning purposes and tested with Raspberry pi and wanted
-> to send patches of the driver for the IIO sub-system.
-> 
-> Can I send the patches for DS3502 POT for review?
-> 
-> The setup used to write driver
-> Raspberry pi 3b
-> DS3502 breakout board
-> Raspberry pi latest kernel branch - https://github.com/raspberrypi/linux
-> 
-> Regards,
-> Jagath
+So, they basically agree on using it, did I get it right?
 
-Hi Jagath,
+> So add an ACPI match table for that accordingly.
 
-Welcome to IIO.
+Assuming TI is aware of the ID,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Absolutely on sending the patches for review.
-You'll need to rebase them on latest mainline from kernel.org
-(pick a tagged version which would currently be 5.17-rc1_
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
+> v3:
+>  - Add info from vendor
+>  - Drop redundant line and comma.
+>  - Wording change.
+>
+> v2:
+>  - Change the ID to follow ACPI Spec
+>  - Add __maybe_unused to avoid compiler warning
+>
+>  drivers/iio/humidity/hdc100x.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index 9e0fce917ce4c..47f8e8ef56d68 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -417,10 +417,17 @@ static const struct of_device_id hdc100x_dt_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
+>
+> +static const struct acpi_device_id hdc100x_acpi_match[] = {
+> +       { "TXNW1010" },
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, hdc100x_acpi_match);
+> +
+>  static struct i2c_driver hdc100x_driver = {
+>         .driver = {
+>                 .name   = "hdc100x",
+>                 .of_match_table = hdc100x_dt_ids,
+> +               .acpi_match_table = hdc100x_acpi_match,
+>         },
+>         .probe = hdc100x_probe,
+>         .id_table = hdc100x_id,
+> --
+> 2.33.1
+>
 
-and then follow the documentation for how to submit a patch in
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html
 
-Feel free to ask if you have any questions about the process.
-
-Looking forwards to seeing your code.
-
-Thanks,
-
-Jonathan
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -2,89 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7DCB49F0FC
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 03:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6ADB49F1EC
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 04:41:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236929AbiA1CcA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jan 2022 21:32:00 -0500
-Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:42454
-        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1345372AbiA1Cb7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jan 2022 21:31:59 -0500
-Received: from HP-EliteBook-840-G7.. (1-171-96-243.dynamic-ip.hinet.net [1.171.96.243])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id B58A83F121;
-        Fri, 28 Jan 2022 02:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1643337112;
-        bh=ak3Oxt3iNycYESnHxDsQ+83AZkvGg5OENtlmyREpgZE=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=Y80Am/6CtgyJFjyuT8vipVoUifvtOnJVsFoxOF7Ull0v+zU0wcoRslU0RTZ7nw/Hq
-         /w5cy/kYLIXOtuCrlear3ZrcoeXQoDoaXWKw9KmdYGOw2H35k6YUgd0h/FO+DT8/2e
-         clG+4YXcTu9hQpmmPPLYaWkbE//dkL1+R7i6AXf6uEEkk1mlpWuOMF4/TyHAgd7e5n
-         p37QQBMDdW4D1yeICweFzz46y5Xjv8QqFSopE+JKH8pXJZsjffoJTDzAgWj58LAKEj
-         YiQyUcnkjmSCsvOm2a77X6eg/MkyuPqNnxMTX+c5pvTH/saD6sz3bmrZ2yyGVwUB6c
-         QGd9M2N3t+KTg==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     jic23@kernel.org, eajames@linux.ibm.com
-Cc:     andy.shevchenko@gmail.com,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] iio: dps310: Add ACPI HID table
-Date:   Fri, 28 Jan 2022 10:31:44 +0800
-Message-Id: <20220128023144.2050615-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.33.1
+        id S1345810AbiA1Dll (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Jan 2022 22:41:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35012 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241873AbiA1Dll (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jan 2022 22:41:41 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39107C061714;
+        Thu, 27 Jan 2022 19:41:41 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id p125so4113362pga.2;
+        Thu, 27 Jan 2022 19:41:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=GEDrQnS2PQp0kCcJ4PzWq//Eov06fv7g6bwFtYZ+45I=;
+        b=lWjDr4T3y968IJ3MRsdCHsaWaUxUbZWxjXJxunvhiLDc9KFkBchkFsiYTkY2dG8bJr
+         GgZxXe5HkLsqGdwnk4bM5s5WD4KUWvj1Hz3/5mMz552LhXKzRjP/O5HPoMhROCLfsKwB
+         yl6EOoLNLcTWTAwOKmNOn4GwZXfP6yzNE7PN9CctYARsoFcGgvlikMmqw5Iu6cuR8+O0
+         88FSCCbKl8c7pUyDioTCxdvBYojfP0bCbvYC7eJdD54F299ID3dvU/Np8P12SOoZ5CsD
+         ZglD/K80eHPZSh5CwHXDTyN/AkiqJ+O49sqgGli/48ZpeT/aq547zszhp3XEh7Rfug3T
+         sahg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=GEDrQnS2PQp0kCcJ4PzWq//Eov06fv7g6bwFtYZ+45I=;
+        b=58dH92PnxMI7b95NxovmAgcskstyOzb5B4nApwbxCankIkiQ3o7bu69PgcO4idUE0j
+         o3VbUfENyaFKUyZOvgBSniwtleMeCR47E/YQHRQ27LxMYe0B463Gmp60hh3hE7h71rgD
+         S5vmFRCur5miQulQHvt/TXxX12CbMGN33gQh7cgXZHMFNdfIplOgxKL9hCCjNx/vw4v9
+         k5BBeEYGD8IEGNIAsSjDSjrfxbJyMdIl9kv42TgmyLGpS8vbOXgbTlwUxD2ZFjl9IObc
+         zbczXC1xxw9GsLzA9djgagiyumEKd0zq4yhSpemmSAWDl6UO5fuNUpU2j6a1tyTL9zIV
+         xOZA==
+X-Gm-Message-State: AOAM530XN/gnpwgz8opS53fbeE0IN01vENa8dUEE991Rz6CRT61/u56L
+        VuKolS7XonucPfJOF9fcsW5fGlUy0/7pj8mrCwPrPDXV
+X-Google-Smtp-Source: ABdhPJwbhcwL1OBXdUvoiaYEdhlijoHI8NJzyaEK+ZFPRvfSAndEv1yF95YXXqm75fyPs6018HcEeDQuctzy1cqo5dM=
+X-Received: by 2002:a65:6b90:: with SMTP id d16mr4998473pgw.129.1643341300522;
+ Thu, 27 Jan 2022 19:41:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   jagath jogj <jagathjog1996@gmail.com>
+Date:   Fri, 28 Jan 2022 09:11:28 +0530
+Message-ID: <CAM+2Eu+G2YK-O4ioYCBTJOs9VV9k5fVfQSii+m3kcyouJRg_vA@mail.gmail.com>
+Subject: IIO Device Driver for Maxim DS3502 potentiometer
+To:     jic23@kernel.org, lars@metafoo.de,
+        andriy.shevchenko@linux.intel.com, aardelean@deviqon.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-x86 boards may use ACPI HID "IFX3100" for the dps310 device.
+Hello,
 
-Vendor told us feel free to add the ID and contact
-"Saumitra.Chafekar@infineon.com" for further questions.
+I have a Maxim DS3502 potentiometer breakout and I have written an IIO
+driver for learning purposes and tested with Raspberry pi and wanted
+to send patches of the driver for the IIO sub-system.
 
-So add an ACPI match table for that accordingly.
+Can I send the patches for DS3502 POT for review?
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v3:
- - Drop redundant line and comma.
- - Wording change.
+The setup used to write driver
+Raspberry pi 3b
+DS3502 breakout board
+Raspberry pi latest kernel branch - https://github.com/raspberrypi/linux
 
-v2:
- - Drop ACPI_PTR().
- - Add info from vendor.
-
- drivers/iio/pressure/dps310.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index 0730380ceb692..36fb7ae0d0a9d 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -812,9 +812,16 @@ static const struct i2c_device_id dps310_id[] = {
- };
- MODULE_DEVICE_TABLE(i2c, dps310_id);
- 
-+static const struct acpi_device_id dps310_acpi_match[] = {
-+	{ "IFX3100" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, dps310_acpi_match);
-+
- static struct i2c_driver dps310_driver = {
- 	.driver = {
- 		.name = DPS310_DEV_NAME,
-+		.acpi_match_table = dps310_acpi_match,
- 	},
- 	.probe = dps310_probe,
- 	.id_table = dps310_id,
--- 
-2.33.1
-
+Regards,
+Jagath

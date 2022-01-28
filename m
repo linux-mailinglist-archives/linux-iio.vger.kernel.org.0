@@ -2,99 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68B8849FBEC
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 15:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5AD449FC3C
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 15:56:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245132AbiA1OoI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Jan 2022 09:44:08 -0500
-Received: from mga12.intel.com ([192.55.52.136]:9044 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239527AbiA1OoH (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Fri, 28 Jan 2022 09:44:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643381047; x=1674917047;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=03BCVhQWgRy3l9VLGQsE2lheSMUyT2B9E/jISlaxeCk=;
-  b=Ijm+VgcGcoOLKZrfcIM305g0+8mQD/26OJ1IRZyC2tQQf9mkVU/4XGXW
-   PkNGgVP1aUslykEJ6aV1r7/Zv2LYxW1ea0lXpb+O57It4GLeSOvRgkmyk
-   q4Dm1BWYezs7GLpsVJD4WnkxrtneQ5XNkHS3Q2R+Gh37GAPr8IVhqM+qK
-   5Olh8/D6nLFJJMQvLG9Ro2uM3gaJ03/7qZX1qMbXsplrc2uW15ncw30Vb
-   HO5IFzogOseO3WpVuidFgL+yEyUHMMNng41LOkbnQTw570EyYf83H0oNZ
-   kxbGFbM+aJOo0ZujWVo+L1I5QDi8yEdFBiJSXjia/e+i2U9YEEPpza1Dr
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10240"; a="227108150"
-X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="227108150"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 06:44:07 -0800
-X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="496149565"
-Received: from smile.fi.intel.com ([10.237.72.61])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 06:44:05 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nDSSq-00FRde-5w;
-        Fri, 28 Jan 2022 16:43:00 +0200
-Date:   Fri, 28 Jan 2022 16:42:59 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     jagath jogj <jagathjog1996@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de, aardelean@deviqon.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: IIO Device Driver for Maxim DS3502 potentiometer
-Message-ID: <YfQA8wRpauq058WK@smile.fi.intel.com>
-References: <CAM+2Eu+G2YK-O4ioYCBTJOs9VV9k5fVfQSii+m3kcyouJRg_vA@mail.gmail.com>
- <20220128103554.000028ff@Huawei.com>
+        id S1343537AbiA1O4u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jan 2022 09:56:50 -0500
+Received: from relay11.mail.gandi.net ([217.70.178.231]:55179 "EHLO
+        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245578AbiA1O4r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jan 2022 09:56:47 -0500
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 1D026100015;
+        Fri, 28 Jan 2022 14:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1643381805;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TVfawNb8/rB/bxCTxT2oK4tA0DYWVmfmQBDpSOezWEw=;
+        b=WKSGNDvZiL8Utl2HY58MmWy8zfHUhNiziE4cgCbaQBkniP5ZUtCjFazTadIkK1XlNRDnWW
+        7I/4mI2SQyhB33UckpwGm76KtOlZKqjt0wkMbk8WB4S9+VxFCnoSD+jFkDwtImn07Gz5cr
+        NuzXIhffAhT4xIf1bpxcovPkLUjw0Hfl+YxOblOf/9dvRx2paRPwazwE0Ozhp6TWrMqtQ6
+        oaRzRz9r3RG0bNU7YtR6yiCGZo7Cs4ttuBx+xpClhy9d4FJtAKNkFU0MUkMaZawBl7IDzP
+        XagZd10JwC3PzgKzuC4Z4tqqA5THQJXBesNLB31gRYfmd1ytHpM65LzPhcYh0A==
+Date:   Fri, 28 Jan 2022 15:56:37 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 02/10] iio: core: Enhance the kernel doc of modes and
+ currentmodes iio_dev entries
+Message-ID: <20220128155637.05147239@xps13>
+In-Reply-To: <20220115155145.4f5ec151@jic23-huawei>
+References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
+        <20211215151344.163036-3-miquel.raynal@bootlin.com>
+        <CA+U=Dsq_HewmCchxauGe6YKpWaNBAb5rP3xvzNQ6K7n7KpbpvA@mail.gmail.com>
+        <20211216091552.0917520f@xps13>
+        <20220115155145.4f5ec151@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220128103554.000028ff@Huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jan 28, 2022 at 10:35:54AM +0000, Jonathan Cameron wrote:
-> On Fri, 28 Jan 2022 09:11:28 +0530
-> jagath jogj <jagathjog1996@gmail.com> wrote:
-> 
-> > Hello,
-> > 
-> > I have a Maxim DS3502 potentiometer breakout and I have written an IIO
-> > driver for learning purposes and tested with Raspberry pi and wanted
-> > to send patches of the driver for the IIO sub-system.
-> > 
-> > Can I send the patches for DS3502 POT for review?
-> > 
-> > The setup used to write driver
-> > Raspberry pi 3b
-> > DS3502 breakout board
-> > Raspberry pi latest kernel branch - https://github.com/raspberrypi/linux
+Hi Jonathan,
 
-> Welcome to IIO.
-> 
-> Absolutely on sending the patches for review.
-> You'll need to rebase them on latest mainline from kernel.org
-> (pick a tagged version which would currently be 5.17-rc1_
-> 
-> and then follow the documentation for how to submit a patch in
-> https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-> 
-> Feel free to ask if you have any questions about the process.
-> 
-> Looking forwards to seeing your code.
+jic23@kernel.org wrote on Sat, 15 Jan 2022 15:51:45 +0000:
 
-Agree with Jonathan.
+> On Thu, 16 Dec 2021 09:15:52 +0100
+> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+>=20
+> > Hi Alexandru,
+> >=20
+> > ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 08:24:51 +0200:
+> >  =20
+> > > On Wed, Dec 15, 2021 at 10:04 PM Miquel Raynal
+> > > <miquel.raynal@bootlin.com> wrote:   =20
+> > > >
+> > > > Let's provide more details about these two variables because their
+> > > > understanding may not be straightforward for someone not used to th=
+e IIO
+> > > > subsystem internal logic. The different modes will soon be also be =
+more
+> > > > documented for the same reason.
+> > > >
+> > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > > ---
+> > > >  include/linux/iio/iio.h | 10 ++++++++--
+> > > >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > > > index 06433c2c2968..0312da2e83f8 100644
+> > > > --- a/include/linux/iio/iio.h
+> > > > +++ b/include/linux/iio/iio.h
+> > > > @@ -487,8 +487,14 @@ struct iio_buffer_setup_ops {
+> > > >
+> > > >  /**
+> > > >   * struct iio_dev - industrial I/O device
+> > > > - * @modes:             [DRIVER] operating modes supported by device
+> > > > - * @currentmode:       [INTERN] current operating mode
+> > > > + * @modes:             [DRIVER] list of operating modes supported =
+by the IIO     =20
+> > >=20
+> > > I'd argue that it may make sense to highlight that this list of modes
+> > > is represented as a bitmask.
+> > > When reading docs, it may not be obvious at first (I guess).   =20
+> >=20
+> > That is a good idea. I'll add this to the next iteration. =20
+>=20
+> Good.
 
-One remark though, can you double check that drivers/iio/potentiometer
-doesn't have any similar driver that can be expanded (usually it can be
-done by analyzing a register file of the devices, like register offsets
-and their meanings or bit fields)?
+Done.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>=20
+> >  =20
+> > > > + *                     device, this list should be initialized bef=
+ore
+> > > > + *                     registering the IIO device and can be filed=
+ up by the
+> > > > + *                     IIO core depending on the features advertis=
+ed by the
+> > > > + *                     driver during other steps of the registrati=
+on =20
+>=20
+> Perhaps make it a little clearer that some bits are set as a result of
+> enabling particular features.  Maybe even call out which functions do it.
+> From what I recall, that's a very short list.
+
+Done.
+
+>=20
+> > > > + * @currentmode:       [INTERN] operating mode currently in use, m=
+ay be
+> > > > + *                     eventually checked by device drivers but sh=
+ould be
+> > > > + *                     considered read-only as this is a core inte=
+rnal bit =20
+>=20
+> We should add an accessor function to read it.  (maybe later in your seri=
+es? :)
+
+Yup!
+
+>=20
+> > > >   * @dev:               [DRIVER] device structure, should be assign=
+ed a parent
+> > > >   *                     and owner
+> > > >   * @buffer:            [DRIVER] any buffer present
+> > > > --
+> > > > 2.27.0
+> > > >     =20
+> >=20
+> > Thanks,
+> > Miqu=C3=A8l =20
+>=20
 
 
+Thanks,
+Miqu=C3=A8l

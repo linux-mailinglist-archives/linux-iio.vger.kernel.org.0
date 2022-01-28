@@ -2,92 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D149E49F266
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 05:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F0849F75E
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 11:36:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346013AbiA1EVI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Jan 2022 23:21:08 -0500
-Received: from smtp-relay-canonical-0.canonical.com ([185.125.188.120]:54848
-        "EHLO smtp-relay-canonical-0.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1346015AbiA1EVH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Jan 2022 23:21:07 -0500
-Received: from HP-EliteBook-840-G7.. (1-171-96-243.dynamic-ip.hinet.net [1.171.96.243])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id BFB783F051;
-        Fri, 28 Jan 2022 04:21:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1643343666;
-        bh=O7UDFd+18p0T3OuGDq+A+rqg6kK6AeWCWRKy8LSYkF8=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=RtxYzINEOYgtJ4stMeISzvQFkojTvOGuWpI5614HGp2bzJWhHtFoSslQ3xH7Pij7g
-         CPU75yahvtrGlA4VobFQ5fqRSa7TtlENHoJVMXzSbbCXl0WADRrXxAvd3unFSFV9F3
-         xehtNkP2pbEhRDJzO1BEbzG9ZGGFdF5xsSpypl3DdYNMyTQtajDqmgpg1+qI1MxulW
-         E7fznHZ4dKu0XjOs5ibmeigzb+M/ZjAI9gJO5c/aqUCcP5h1wdaMhGQfoJeYqqWu7k
-         A6SEBRlJVSZmvjjuT9BvAmAkBLLdFxva61EAyJCgMTxOcgjPzIoaW/1CO54z/26zZ9
-         OeafNlOib3R7w==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     andy.shevchenko@gmail.com,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Your Name <you@example.com>,
-        Chris Lesiak <chris.lesiak@licor.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] iio: humidity: hdc100x: Add ACPI HID table
-Date:   Fri, 28 Jan 2022 12:20:51 +0800
-Message-Id: <20220128042054.2062060-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.33.1
+        id S229500AbiA1KgE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jan 2022 05:36:04 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56]:4542 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229462AbiA1KgE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jan 2022 05:36:04 -0500
+Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JlYfK20Qjz6892T;
+        Fri, 28 Jan 2022 18:31:37 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Fri, 28 Jan 2022 11:36:02 +0100
+Received: from localhost (10.47.76.156) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 28 Jan
+ 2022 10:36:01 +0000
+Date:   Fri, 28 Jan 2022 10:35:54 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     jagath jogj <jagathjog1996@gmail.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        <andriy.shevchenko@linux.intel.com>, <aardelean@deviqon.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: IIO Device Driver for Maxim DS3502 potentiometer
+Message-ID: <20220128103554.000028ff@Huawei.com>
+In-Reply-To: <CAM+2Eu+G2YK-O4ioYCBTJOs9VV9k5fVfQSii+m3kcyouJRg_vA@mail.gmail.com>
+References: <CAM+2Eu+G2YK-O4ioYCBTJOs9VV9k5fVfQSii+m3kcyouJRg_vA@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.76.156]
+X-ClientProxiedBy: lhreml731-chm.china.huawei.com (10.201.108.82) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-x86 boards may use ACPI HID "TXNW1010" for the hdc100x device.
+On Fri, 28 Jan 2022 09:11:28 +0530
+jagath jogj <jagathjog1996@gmail.com> wrote:
 
-TI told us "The ACPI ID for TI is: https://uefi.org/node/1028 (TXNW),
-therefore it would most likely be appropriate to use TXNW1010."
+> Hello,
+> 
+> I have a Maxim DS3502 potentiometer breakout and I have written an IIO
+> driver for learning purposes and tested with Raspberry pi and wanted
+> to send patches of the driver for the IIO sub-system.
+> 
+> Can I send the patches for DS3502 POT for review?
+> 
+> The setup used to write driver
+> Raspberry pi 3b
+> DS3502 breakout board
+> Raspberry pi latest kernel branch - https://github.com/raspberrypi/linux
+> 
+> Regards,
+> Jagath
 
-So add an ACPI match table for that accordingly.
+Hi Jagath,
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v3:
- - Add info from vendor
- - Drop redundant line and comma.
- - Wording change.
+Welcome to IIO.
 
-v2:
- - Change the ID to follow ACPI Spec
- - Add __maybe_unused to avoid compiler warning
- 
- drivers/iio/humidity/hdc100x.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Absolutely on sending the patches for review.
+You'll need to rebase them on latest mainline from kernel.org
+(pick a tagged version which would currently be 5.17-rc1_
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 9e0fce917ce4c..47f8e8ef56d68 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -417,10 +417,17 @@ static const struct of_device_id hdc100x_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
- 
-+static const struct acpi_device_id hdc100x_acpi_match[] = {
-+	{ "TXNW1010" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, hdc100x_acpi_match);
-+
- static struct i2c_driver hdc100x_driver = {
- 	.driver = {
- 		.name	= "hdc100x",
- 		.of_match_table = hdc100x_dt_ids,
-+		.acpi_match_table = hdc100x_acpi_match,
- 	},
- 	.probe = hdc100x_probe,
- 	.id_table = hdc100x_id,
--- 
-2.33.1
+and then follow the documentation for how to submit a patch in
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html
 
+Feel free to ask if you have any questions about the process.
+
+Looking forwards to seeing your code.
+
+Thanks,
+
+Jonathan

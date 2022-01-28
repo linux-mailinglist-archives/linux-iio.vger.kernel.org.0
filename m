@@ -2,43 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D523549FC4F
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 16:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC7149FC66
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jan 2022 16:04:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346908AbiA1PAe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 28 Jan 2022 10:00:34 -0500
-Received: from relay7-d.mail.gandi.net ([217.70.183.200]:47211 "EHLO
-        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348674AbiA1PAI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jan 2022 10:00:08 -0500
+        id S1348929AbiA1PEy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 28 Jan 2022 10:04:54 -0500
+Received: from relay6-d.mail.gandi.net ([217.70.183.198]:51625 "EHLO
+        relay6-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240215AbiA1PEt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 28 Jan 2022 10:04:49 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 02F442001E;
-        Fri, 28 Jan 2022 15:00:03 +0000 (UTC)
+        by mail.gandi.net (Postfix) with ESMTPSA id 58A0FC0015;
+        Fri, 28 Jan 2022 15:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1643382005;
+        t=1643382286;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nGIzn8Fas948vf0yRWBH4YBQYxNfQadBtMDNzSIqSXU=;
-        b=Ez37e3b56Yg33saOQLV0PXvA9WeOHqYbevmSAMv9tkT1NNaf+8qa7wtZvZa1FYVpvuC8Go
-        9Y9QiUp0DTQiVcTPLy8tdLGBVxFNWxXk+l/ar6MgbbL3zIRLq6+CPH8rbnMTo8reibVI4Z
-        oNMCOlm0BwjTUlvy0Spvvbj6Ul1gIlQ3Ly7Mq4b7ms0y0sKvxqQbA6eFQarRdMAaYPY3Sp
-        G5p6n84z6luCkcXxnXy47QztqFfLtADiASHoI74nz1epg//4OQowJhyMiM1k/Wj2cUxV7t
-        4RZYb9KEyOACyDj4zFEikznBg8UIlh6J+IJT750V8psdb/aOjrKHRUShBauZMA==
-Date:   Fri, 28 Jan 2022 16:00:02 +0100
+        bh=gnFjquidjCHGW2Zdf/Lw32ZTEjmoWsuxrAf7yoFxRH8=;
+        b=dLCinhAHQ4lr53KxKZmATrNRwAdWiTHPqgv3+SSN3Gwu95Eu7hyqMeoILnk0Cllw23r/NX
+        DRjxG6jI6DKsM4yk3s6ijUZVdDvv33NJ1aS6DHURQQWw6ubuDPWlAErpf/UHzH2iIcemyV
+        6BwdhsyvvGvk7hWwdKSMTp/9f7V1k1I/WFCx3//RQ1hVRluVzCOY2f0fHGE96hM6KgXiH/
+        K/vK5DUzl9zjMTdVycKKZMpmjG7dIIL2iYGfvRyP7Y1V9rCZkDxv3zVf5+yJiAfD6vHH7i
+        SM+1gb0ch7ypPfit0ED9ehzoWb31Nfe1MHmH3m/qhiKj2YvdXdQ8INMsuRoFRA==
+Date:   Fri, 28 Jan 2022 16:04:43 +0100
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Alexandru Ardelean <ardeleanalex@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Song Qiang <songqiang1304521@gmail.com>
-Subject: Re: [PATCH 03/10] iio: magnetometer: rm3100: Stop abusing the
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Subject: Re: [PATCH 04/10] iio: adc: stm32-dfsdm: Avoid dereferencing
  ->currentmode
-Message-ID: <20220128160002.3e927de8@xps13>
-In-Reply-To: <20220115155832.1f431e65@jic23-huawei>
+Message-ID: <20220128160443.44016830@xps13>
+In-Reply-To: <20220115160619.746a9246@jic23-huawei>
 References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-        <20211215151344.163036-4-miquel.raynal@bootlin.com>
-        <20220115155832.1f431e65@jic23-huawei>
+        <20211215151344.163036-5-miquel.raynal@bootlin.com>
+        <CA+U=DspvsLxYyhrvNfEBGPKuJ1a6-L=WjnQE-hvjMVp2g-9nxQ@mail.gmail.com>
+        <20211216092235.56e69441@xps13>
+        <20220115160619.746a9246@jic23-huawei>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -50,31 +54,107 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Jonathan,
 
-jic23@kernel.org wrote on Sat, 15 Jan 2022 15:58:32 +0000:
+jic23@kernel.org wrote on Sat, 15 Jan 2022 16:06:19 +0000:
 
-> On Wed, 15 Dec 2021 16:13:37 +0100
+> On Thu, 16 Dec 2021 09:22:35 +0100
 > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 >=20
-> > This is an internal variable for the core, here it is set to a "default"
-> > value by the driver in order to later be able to perform checks against
-> > it. None of this is needed because this check actually cares about the
-> > buffers being enabled or not. So it is an unproper side-channel access
-> > to the information "are the buffers enabled?", returned officially by
-> > the iio_buffer_enabled() helper. Use this helper instead.
+> > Hi Alexandru,
 > >=20
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com> =20
-> Hi Miquel,
+> > ardeleanalex@gmail.com wrote on Thu, 16 Dec 2021 08:47:02 +0200:
+> >  =20
+> > > On Wed, Dec 15, 2021 at 10:03 PM Miquel Raynal
+> > > <miquel.raynal@bootlin.com> wrote:   =20
+> > > >
+> > > > This is an internal variable of the core, let's use the
+> > > > iio_buffer_enabled() helper which is exported for the following pur=
+pose:
+> > > > telling if the current mode is a buffered mode, which is precisely =
+what
+> > > > this driver looks for.
+> > > >
+> > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > > ---
+> > > >  drivers/iio/adc/stm32-dfsdm-adc.c | 5 ++---
+> > > >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/st=
+m32-dfsdm-adc.c
+> > > > index 1cfefb3b5e56..a3b8827d3bbf 100644
+> > > > --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> > > > +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> > > > @@ -466,8 +466,7 @@ static int stm32_dfsdm_channels_configure(struc=
+t iio_dev *indio_dev,
+> > > >          * In continuous mode, use fast mode configuration,
+> > > >          * if it provides a better resolution.
+> > > >          */
+> > > > -       if (adc->nconv =3D=3D 1 && !trig &&
+> > > > -           (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)) {
+> > > > +       if (adc->nconv =3D=3D 1 && !trig && iio_buffer_enabled(indi=
+o_dev)) {     =20
+> > >=20
+> > > This may become tricky if other modes get added later.
+> > > STM does a relatively good job in updating and re-using their drivers
+> > > (even if some of them do look quirky sometimes). =20
 >=20
-> Make sure to +cc driver authors on v2.
+> Their hardware is crazy/complicated so tends to push the limits!
 >=20
-> Whilst I think this is safe we should definitely give them visibility.
+> > >=20
+> > > So, the question here would be: is "iio_buffer_enabled(indio_dev)"
+> > > going to be valid [in this place] once INDIO_BUFFER_TRIGGERED or
+> > > INDIO_BUFFER_HARDWARE get added?   =20
+> >=20
+> > I would argue, is this a real problem? Today iio_buffer_enabled() seem
+> > to handle well what this driver is expecting. If tomorrow someone adds
+> > another mode, that is his/her responsibility to state "okay, this
+> > section is not common to all buffer styles *anymore*, so we need to do
+> > a more fine grained check against ->currentmodes than
+> > iio_buffer_enabled() does". In that case using the ->currentmodes
+> > getter would be the right way to go, but only at that particular
+> > moment, not today. =20
 >=20
-> Obviously some IIO drivers probably have authors who have long moved on
-> but this one is only 2018 vintage so Song Qiang might still have
-> access to hardware or be willing to do a review!
+> It should be isolated to this driver, so I think it is fine to use
+> the broader check today, but I'll leave this to the st folks as
+> it's their driver and I don't feel that strongly about it.
+>=20
+> >  =20
+> > >=20
+> > > I'd also ping some STM people for some feedback, acks or testing. =20
+>=20
+> Definitely on this - they are an active bunch who do a great job of looki=
+ng
+> after these drivers.  I've cc'd Fabrice. Make sure he (and possibly some
+> others are on v2 cc list).
+>=20
 
-Right, I've added Song Qiang into a Cc: tag for this patch for the next
-iteration.
+I'll add Olivier Moysan as well in the next version who has been quite
+active on this driver as well according to git log.
+
+>=20
+> > >    =20
+> > > >                 if (fl->flo[1].res >=3D fl->flo[0].res) {
+> > > >                         fl->fast =3D 1;
+> > > >                         flo =3D &fl->flo[1];
+> > > > @@ -562,7 +561,7 @@ static int stm32_dfsdm_filter_configure(struct =
+iio_dev *indio_dev,
+> > > >                 cr1 =3D DFSDM_CR1_RCH(chan->channel);
+> > > >
+> > > >                 /* Continuous conversions triggered by SPI clk in b=
+uffer mode */
+> > > > -               if (indio_dev->currentmode & INDIO_BUFFER_SOFTWARE)
+> > > > +               if (iio_buffer_enabled(indio_dev))
+> > > >                         cr1 |=3D DFSDM_CR1_RCONT(1);
+> > > >
+> > > >                 cr1 |=3D DFSDM_CR1_RSYNC(fl->sync_mode);
+> > > > --
+> > > > 2.27.0
+> > > >     =20
+> >=20
+> >=20
+> > Thanks,
+> > Miqu=C3=A8l =20
+>=20
+
 
 Thanks,
 Miqu=C3=A8l

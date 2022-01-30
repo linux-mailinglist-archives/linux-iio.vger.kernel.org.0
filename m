@@ -2,50 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BD5E4A3680
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 14:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 323064A3682
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 14:45:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240411AbiA3Njf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 08:39:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44424 "EHLO
+        id S1354875AbiA3Npg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 08:45:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354875AbiA3Nje (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 08:39:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B08FC061714;
-        Sun, 30 Jan 2022 05:39:34 -0800 (PST)
+        with ESMTP id S245308AbiA3Npg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 08:45:36 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3822C061714;
+        Sun, 30 Jan 2022 05:45:34 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34204611A0;
-        Sun, 30 Jan 2022 13:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD33C340E4;
-        Sun, 30 Jan 2022 13:39:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 57E15B82858;
+        Sun, 30 Jan 2022 13:45:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6798DC340E4;
+        Sun, 30 Jan 2022 13:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643549973;
-        bh=KkkR+/istY01b0m72vBgPpw/mmxq0HitAfAwOrw14G0=;
+        s=k20201202; t=1643550332;
+        bh=m5SoGhxE2jsXwlJrfSO3HNBwfLis8cOAHvfvYSbMfMA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=k/pOwp1CYSXv/b6RrMbpU+oC42qDUIC30ikzyLZH1KrDpHgZwkvkWt+bfMkf75X8Q
-         qjy4EPx/gZxOjwebzxNaUhwnXoPYanVGl+acHZjBhgNLoLq8pzS+ik/FAw0ZIVLDRO
-         mzFnsTJCaGjI00NziFej6N7/6r90CgFh7sXm8aC5eLCXj7DsGNJSTAYb42sRKFzXRo
-         a7RD9csYOpnz8/JuXJ0aHXFhkG3u3gPe3WzYnpv7Kx5rSuWiSoZYFphaOrw3GEo7yN
-         7UnzeMQbPwJbfnqJD0PXOYmzMpmuCsn94lJVAheU9b0LDa6NtOEByeVKZhuJt2RERN
-         0hVySdvX/j7UQ==
-Date:   Sun, 30 Jan 2022 13:45:57 +0000
+        b=EE6wuEUeiY6C/QwgIGPnIS83ir9kyumhK7H4KGMBOvBd4T/brGvDoD/t/gIegWjDB
+         SpXJFn69FiUcCZg51Ct+82w/xgyTVSRelwdk+FtOGXk8opWccuEjIT+LJuKveU6q5s
+         ZyA4julKR+64w8aIjwzRqGEpIYoh19fSLZajixQ4ETaG6KAEa5p6i9bHYdtEHzPqnT
+         HVHsE0C978BdDeHWy6BmigLiZ/vyKIwSKGb4eeRy91UpXyHJt1/IHuyxQaPAF6xHm3
+         pF6yQ+jbLaPaJD0DNapJQxs66Nq23WzJJ6s/4qzaAo+rOks41ANqHeODrFJyLrTZXO
+         EySX5o2+ARv2A==
+Date:   Sun, 30 Jan 2022 13:51:55 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Your Name <you@example.com>,
-        Chris Lesiak <chris.lesiak@licor.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] iio: humidity: hdc100x: Add ACPI HID table
-Message-ID: <20220130134557.5e211d45@jic23-huawei>
-In-Reply-To: <CAHp75VfC873djcc4Z2+HhzR8z3Uaute3g0Fgr1dvOs_v=gD3Lw@mail.gmail.com>
-References: <20220128042054.2062060-1-kai.heng.feng@canonical.com>
-        <CAHp75VfC873djcc4Z2+HhzR8z3Uaute3g0Fgr1dvOs_v=gD3Lw@mail.gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Johannes Thumshirn <johannes.thumshirn@men.de>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: men_z188_adc: Fix a resource leak in an error
+ handling path
+Message-ID: <20220130135155.024e08a2@jic23-huawei>
+In-Reply-To: <320fc777863880247c2aff4a9d1a54ba69abf080.1643445149.git.christophe.jaillet@wanadoo.fr>
+References: <320fc777863880247c2aff4a9d1a54ba69abf080.1643445149.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,73 +52,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 28 Jan 2022 15:53:11 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sat, 29 Jan 2022 09:32:47 +0100
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> On Fri, Jan 28, 2022 at 6:21 AM Kai-Heng Feng
-> <kai.heng.feng@canonical.com> wrote:
-> >
-> > x86 boards may use ACPI HID "TXNW1010" for the hdc100x device.
-> >
-> > TI told us "The ACPI ID for TI is: https://uefi.org/node/1028 (TXNW),
-> > therefore it would most likely be appropriate to use TXNW1010."  
+> If iio_device_register() fails, a previous ioremap() is left unbalanced.
 > 
-> So, they basically agree on using it, did I get it right?
+> Update the error handling path and add the missing iounmap() call, as
+> already done in the remove function.
 > 
-> > So add an ACPI match table for that accordingly.  
-> 
-> Assuming TI is aware of the ID,
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-With that assumption I'm applying this to the togreg branch of iio.git which
-will be pushed out as testing for 0-day to take a look at.
+> Fixes: 74aeac4da66f ("iio: adc: Add MEN 16z188 ADC driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+This is a good target for a devm_ conversion at somepoint, but this
+is indeed the minimal fix so we should do this first.
 
-Still time to pull it out before I push this out as non rebasing if
-we have misunderstood the above.
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/men_z188_adc.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > ---
-> > v3:
-> >  - Add info from vendor
-> >  - Drop redundant line and comma.
-> >  - Wording change.
-> >
-> > v2:
-> >  - Change the ID to follow ACPI Spec
-> >  - Add __maybe_unused to avoid compiler warning
-> >
-> >  drivers/iio/humidity/hdc100x.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> > index 9e0fce917ce4c..47f8e8ef56d68 100644
-> > --- a/drivers/iio/humidity/hdc100x.c
-> > +++ b/drivers/iio/humidity/hdc100x.c
-> > @@ -417,10 +417,17 @@ static const struct of_device_id hdc100x_dt_ids[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
-> >
-> > +static const struct acpi_device_id hdc100x_acpi_match[] = {
-> > +       { "TXNW1010" },
-> > +       { }
-> > +};
-> > +MODULE_DEVICE_TABLE(acpi, hdc100x_acpi_match);
-> > +
-> >  static struct i2c_driver hdc100x_driver = {
-> >         .driver = {
-> >                 .name   = "hdc100x",
-> >                 .of_match_table = hdc100x_dt_ids,
-> > +               .acpi_match_table = hdc100x_acpi_match,
-> >         },
-> >         .probe = hdc100x_probe,
-> >         .id_table = hdc100x_id,
-> > --
-> > 2.33.1
-> >  
-> 
-> 
+> diff --git a/drivers/iio/adc/men_z188_adc.c b/drivers/iio/adc/men_z188_adc.c
+> index 42ea8bc7e780..adc5ceaef8c9 100644
+> --- a/drivers/iio/adc/men_z188_adc.c
+> +++ b/drivers/iio/adc/men_z188_adc.c
+> @@ -103,6 +103,7 @@ static int men_z188_probe(struct mcb_device *dev,
+>  	struct z188_adc *adc;
+>  	struct iio_dev *indio_dev;
+>  	struct resource *mem;
+> +	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&dev->dev, sizeof(struct z188_adc));
+>  	if (!indio_dev)
+> @@ -128,8 +129,14 @@ static int men_z188_probe(struct mcb_device *dev,
+>  	adc->mem = mem;
+>  	mcb_set_drvdata(dev, indio_dev);
+>  
+> -	return iio_device_register(indio_dev);
+> +	ret = iio_device_register(indio_dev);
+> +	if (ret)
+> +		goto err_unmap;
+> +
+> +	return 0;
+>  
+> +err_unmap:
+> +	iounmap(adc->base);
+>  err:
+>  	mcb_release_mem(mem);
+>  	return -ENXIO;
 

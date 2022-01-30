@@ -2,51 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8434A3603
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 12:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F854A3606
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 12:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346954AbiA3LkQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 06:40:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46894 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354678AbiA3LkP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 06:40:15 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B45CC061714;
-        Sun, 30 Jan 2022 03:40:15 -0800 (PST)
+        id S1346964AbiA3Lol (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 06:44:41 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:50528 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354689AbiA3Lol (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 06:44:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 259F2610D5;
-        Sun, 30 Jan 2022 11:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4378BC340E4;
-        Sun, 30 Jan 2022 11:40:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 144C5B82904;
+        Sun, 30 Jan 2022 11:44:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C35C340E4;
+        Sun, 30 Jan 2022 11:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643542814;
-        bh=OD20yGGe1ZXowJDHG6nb9wBY2ov04C9DoiWPunmjBMs=;
+        s=k20201202; t=1643543078;
+        bh=bU+bE9g3RxDrvTkLSURPmNjGsKVoht5+G+tw3mHeICg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GnUZJDzo9hxCrQiRFd2/vECcNEIKKT2PWdMAjlzJ0YxmZuoND0OJIyPycLyPdWOzu
-         UHKHYZLKLKmvnEhW4aChjZVMQN9BEYayAH/LnRQ3Ljte1xdtrmpTMa1RZR9ZFicFZJ
-         B+ScNJ+fUsBMdFZM3timw31A5vKlSoJRGKwfMR3VzIOWQOu/neMnC80CEdOpfK3Vtk
-         D21dyMyPQ1aI0dhfmLzR3jZo3Go381lk92AzWtE9QxKO1pftPBdUU8B5Jq0pp6HRnE
-         IjNRvqgxPEgO9fYpSybRt/ml6tD87psEydPH99jlovtGVCRX6M1wl6jWxYxh3IoTUE
-         yiZ7n5ZUwsNYw==
-Date:   Sun, 30 Jan 2022 11:46:38 +0000
+        b=CqhdP3M0iSLXvD2CAyZVwibibEIE9lMP6ENk3lEOirjkWejXUqUUN1hyT3Vr9l8mv
+         AEP+BkIBnLt9+9LekrKjs0/fIlLIdOKAv9wtdBTzgkcAh9x71n/xmedKbP7Wq8ftpg
+         mQ2t2JGV6CTRUWY1pDUnvnQB1YnF4PkLkyYsd5Y8T8ASw/aTZeSqUrHxVz+Bp66Hm7
+         DpCdUz7l1WIWiHsz7wEagaG6W8UzzTac9Zfu32hpBMcYFTyOHllzWWwemelUSnmfLh
+         5akO18g6hjAAkdxP8vAa2VDH2Gh7bzNlPuEB/d6AlHmD9sEpWMC/lE1GocrPhCNMgA
+         Dqh8gtFe4/wTA==
+Date:   Sun, 30 Jan 2022 11:51:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tomas Melin <tomas.melin@vaisala.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH V1 5/6] iio: accel: sca3300: Add inclination channels.
-Message-ID: <20220130114638.20097dd8@jic23-huawei>
-In-Reply-To: <CAHp75VeNFj3Hz1+quqpuWGuVYhPFngC20Gk=AfG+ZVEsrU9Qeg@mail.gmail.com>
-References: <20220124093912.2429190-1-Qing-wu.Li@leica-geosystems.com.cn>
-        <20220124093912.2429190-6-Qing-wu.Li@leica-geosystems.com.cn>
-        <CAHp75VeNFj3Hz1+quqpuWGuVYhPFngC20Gk=AfG+ZVEsrU9Qeg@mail.gmail.com>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH] iio: frequency: admv1013: remove the always true
+ condition
+Message-ID: <20220130115101.0dc314dc@jic23-huawei>
+In-Reply-To: <b5b69eac10039de1b287df90279f464bd70e1de0.camel@collabora.com>
+References: <YdS3gJYtECMaDDjA@debian-BULLSEYE-live-builder-AMD64>
+        <20220115180941.709a667a@jic23-huawei>
+        <b5b69eac10039de1b287df90279f464bd70e1de0.camel@collabora.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,157 +51,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 Jan 2022 15:19:09 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 17 Jan 2022 13:34:28 +0500
+Muhammad Usama Anjum <usama.anjum@collabora.com> wrote:
 
-> On Mon, Jan 24, 2022 at 11:39 AM LI Qingwu
-> <Qing-wu.Li@leica-geosystems.com.cn> wrote:
-> >
-> > Different with SCA3300, SCL3300 can output inclination angles.
-> > Angles are formed from acceleration with following equations:
-> > ANG_X =3D atan2(accx / =E2=88=9A(accy^2 + accz^2)),
-> > ANG_Y =3D atan2(accy / =E2=88=9A(accx^2 + accz^2)),
-> > ANG_Z =3D atan2(accz / =E2=88=9A(accx^2 + accy^2)),
-> >
-> > The commit add output of the raw value,scale
-> > and scale_available of angles.
-> > add interface for enable/disable of the angle output.
-> >
-> > new interfaces: =20
+> On Sat, 2022-01-15 at 18:09 +0000, Jonathan Cameron wrote:
+> > On Wed, 5 Jan 2022 02:09:20 +0500
+> > Muhammad Usama Anjum <usama.anjum@collabora.com> wrote:
+> >  =20
+> > > unsigned int variable is always greater than or equal to zero. Make t=
+he
+> > > if condition simple.
+> > >=20
+> > > Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com> =20
+> > Hi,
+> >=20
+> > + CC Antoniu and this should have a Fixes tag.
+> >=20
+> > Thanks,
+> >=20
+> > Jonathan
+> >  =20
+> Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
 >=20
-> New
->=20
-> > in_incli_en
+> Please let me know if I should send a V2 with this tag included.
 
-Why?  There are only a few reasons to have an enable for a
-channel and they don't include something that we might only
-sometimes read (tend to be temporal channels such as step
-counters where we want to be able to pause their counting,
-or output channels).
+Great thanks an no need to resend.
 
-> > in_incli_scale
-> > in_incli_scale_available
-> > in_incli_x_raw
-> > in_incli_y_raw
-> > in_incli_z_raw =20
->=20
-> Indent them by 2 spaces.
->=20
-> Wondering if these need to be described in ABI documentation.
-It's standard ABI, though we don't give much description of what
-exactly these ease. It might be possible to add more information
-to the generic docs, but that would require looking very carefully
-at the current supporting devices.
+Applied to the fixes-togreg branch of iio.git
 
-"Inclination raw reading about axis x, y or z (may be
-Arbitrarily assigned). Data converted by application of offset
-and scale to degrees."
+Thanks,
+
+Jonathan
 
 >=20
-> ...
+> Thanks,
+> Usama
+> > > ---
+> > > =C2=A0drivers/iio/frequency/admv1013.c | 2 +-
+> > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency=
+/admv1013.c
+> > > index 6cdeb50143af..3f3c478e9baa 100644
+> > > --- a/drivers/iio/frequency/admv1013.c
+> > > +++ b/drivers/iio/frequency/admv1013.c
+> > > @@ -348,7 +348,7 @@ static int admv1013_update_mixer_vgate(struct adm=
+v1013_state *st)
+> > > =C2=A0
+> > >=20
+> > >=20
+> > >=20
+> > > =C2=A0	vcm =3D regulator_get_voltage(st->reg);
+> > > =C2=A0
+> > >=20
+> > >=20
+> > >=20
+> > > -	if (vcm >=3D 0 && vcm < 1800000)
+> > > +	if (vcm < 1800000)
+> > > =C2=A0		mixer_vgate =3D (2389 * vcm / 1000000 + 8100) / 100;
+> > > =C2=A0	else if (vcm > 1800000 && vcm < 2600000)
+> > > =C2=A0		mixer_vgate =3D (2375 * vcm / 1000000 + 125) / 100; =20
+> >  =20
 >=20
-> >         SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Y, 0x2, Y),
-> >         SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Z, 0x3, Z),
-> >         SCA3300_TEMP_CHANNEL(SCA3300_TEMP, 0x05),
-> > -       IIO_CHAN_SOFT_TIMESTAMP(4) =20
->=20
-> > +       IIO_CHAN_SOFT_TIMESTAMP(SCA3300_TIMESTAMP) =20
->=20
-> + Comma (while at it)?
->=20
-> ...
->=20
-> > -       IIO_CHAN_SOFT_TIMESTAMP(4),
-> > +       SCA3300_INCLI_CHANNEL(SCA3300_INCLI_X, 0x09, X),
-> > +       SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Y, 0x0A, Y),
-> > +       SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Z, 0x0B, Z),
-> > +       IIO_CHAN_SOFT_TIMESTAMP(SCA3300_TIMESTAMP) =20
->=20
-> Ditto.
->=20
-> > +static const int sca3300_incli_scale[CHIP_CNT][OP_MOD_CNT][2] =3D {
-> > +       [CHIP_SCA3300] =3D {{0, 0}, {0, 0}, {0, 0}, {0, 0}}, =20
->=20
-> > +       [CHIP_SCL3300] =3D {{0, 5495}, {0, 5495}, {0, 5495}, {0, 5495}}=
- =20
->=20
-> + Comma.
->=20
-> > +}; =20
->=20
-> ...
->=20
-> >         struct {
-> > -               s16 channels[4];
-> > +               s16 channels[SCA3300_TIMESTAMP-1]; =20
->=20
-> Missed spaces around the arithmetic operator.
->=20
-> >                 s64 ts __aligned(sizeof(s64));
-> >         } scan;
-> >         const struct sca3300_chip_info *chip_info;
-> >         u8 txbuf[4] ____cacheline_aligned;
-> >         u8 rxbuf[4]; =20
->=20
-> > - =20
->=20
-> Stray change.
->=20
-> >  }; =20
->=20
-> ...
->=20
-> > +               /*Inclination scale info tied to accel scale.*/
-> > +               /*not allowed to set separately.      */ =20
->=20
-> Please, follow the proper style for multi-line comments, including
-> necessary spaces, periods, starting and ending lines.
->=20
-> ...
->=20
-> > +       case IIO_CHAN_INFO_ENABLE:
-> > +               if (data->chip_info->chip_type =3D=3D CHIP_SCL3300) { =
-=20
->=20
-> > +                       if (chan->type =3D=3D IIO_INCLI) { =20
->=20
-> See below.
->=20
-> > +                               if (val !=3D 0) =20
->=20
->    if (val)
->=20
-> > +                                       reg_val =3D 0x1F;
-> > +                               else
-> > +                                       reg_val =3D 0x00;
-> > +                               return sca3300_write_reg(data, SCA3300_=
-REG_ANG_CTRL, reg_val);
-> > +                       }
-> > +               } =20
->=20
-> ...
->=20
-> > -               if (chan->type =3D=3D IIO_ACCEL) {
-> > +
-> > +               if (chan->type =3D=3D IIO_INCLI) { =20
->=20
-> > +               } else if (chan->type =3D=3D IIO_ACCEL) { =20
->=20
-> I would recommend using switch-case for channel type as well.
->=20
-> ...
->=20
-> > +       case IIO_CHAN_INFO_ENABLE:
-> > +               if (chan->type =3D=3D IIO_INCLI) { =20
->=20
-> > +                       ret =3D sca3300_read_reg(data, SCA3300_REG_ANG_=
-CTRL, &reg_val); =20
->=20
-> How is ret supposed to be used?
->=20
-> > +                       *val =3D reg_val;
-> > +                       return IIO_VAL_INT;
-> > +               }
-> > +               return -EINVAL; =20
 >=20
 

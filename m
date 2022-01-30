@@ -2,58 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3EE4A3632
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF6F4A363F
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:28:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354769AbiA3MZi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 07:25:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56650 "EHLO
+        id S1354794AbiA3M2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 07:28:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354760AbiA3MZi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:25:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEB1C061714;
-        Sun, 30 Jan 2022 04:25:37 -0800 (PST)
+        with ESMTP id S1354778AbiA3M2j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:28:39 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1900DC061714;
+        Sun, 30 Jan 2022 04:28:39 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8851BB82920;
-        Sun, 30 Jan 2022 12:25:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C620C340E4;
-        Sun, 30 Jan 2022 12:25:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8D51611A6;
+        Sun, 30 Jan 2022 12:28:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B707C340E4;
+        Sun, 30 Jan 2022 12:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643545535;
-        bh=qQp9Ydhf25VS6D6MpriuZZ0bGWeVhYXJp4Y6EavVOsc=;
+        s=k20201202; t=1643545717;
+        bh=ZH7NMTZhIULnPE3aaXaSqB0Wg5JBWfl8SFMQQQN/fAc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QtfUmzPkUvpp4y4hfqnbeAackZ4U+DnUuzmbHoIZ+4dig3kYJy18rBSZ2of+jOVE0
-         VeuQB/eZ/2cw0DQ2g+VD7CfflBUnJe1IHelkj1X8cmvVc5v5hTf+/3VfsoRGtynkmW
-         Kx3N2OzmER+O8hnmfL6+84gk4Tv7l5l6u8fVMxu4ewFtztW9HNR/09O6dK2cHCz4UX
-         XftS4kMyd8O6wP02qhlEdRydL3eIkzhPvEeWfD2r8Cz1QuI/YfAkjlByEkDyaBwrfC
-         1Wn9AClpAOsPjVJzD/x9PqK88d+WIlbNrbLygT7Yqz8d6srAlXjs15sAg8KD+TMgdq
-         LmEa+U9RARNjw==
-Date:   Sun, 30 Jan 2022 12:31:57 +0000
+        b=DXx6DJrOYx5aO346V4ysQS58oIVZQ6aLjs+62099AnkbcW74t/77kmzpo3/Y9MyrQ
+         Jo0nu6FEuZ3GIfjnM3fWAP/zUCVs00pYcbjnID7SxnE/mG7nhM8CHGV1vZAVoimqUN
+         Hnslwwrwb8vYN4d6pA0/eoVNXIajG8HvWWnOkN4XbXrnzy5KuhzOUba0jsoH4OYCKI
+         h2zl6mPv4+FUPDwHV+89I171rBSOGT2+brOlR5n4pq8nUyyazWvhS27Vrbp+LGj45i
+         RRHj3mlJNmGhxD/G1mYPFywaMyTqa8Vs721a4QxWaAmgtWzlrM/7/twGH2IgrGBTcR
+         vmlxKFQRJNbLw==
+Date:   Sun, 30 Jan 2022 12:34:59 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Michael Tretter <m.tretter@pengutronix.de>
-Cc:     Robert Hancock <robert.hancock@calian.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "manish.narani@xilinx.com" <manish.narani@xilinx.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "anand.ashok.dumbre@xilinx.com" <anand.ashok.dumbre@xilinx.com>
-Subject: Re: [PATCH 3/4] iio: adc: xilinx-ams: Fixed wrong sequencer
- register settings
-Message-ID: <20220130123157.0d98f968@jic23-huawei>
-In-Reply-To: <20220126091250.GC2550@pengutronix.de>
+To:     Robert Hancock <robert.hancock@calian.com>
+Cc:     linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        michal.simek@xilinx.com, anand.ashok.dumbre@xilinx.com,
+        lars@metafoo.de, manish.narani@xilinx.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        Michael Tretter <m.tretter@pengutronix.de>
+Subject: Re: [PATCH 4/4] iio: adc: xilinx-ams: Fix single channel switching
+ sequence
+Message-ID: <20220130123459.5d44c1ec@jic23-huawei>
+In-Reply-To: <20220120010246.3794962-5-robert.hancock@calian.com>
 References: <20220120010246.3794962-1-robert.hancock@calian.com>
-        <20220120010246.3794962-4-robert.hancock@calian.com>
-        <20220125082108.GE25856@pengutronix.de>
-        <4c5fb3899a8aafa34106a668bcb2807b6f073036.camel@calian.com>
-        <20220126091250.GC2550@pengutronix.de>
+        <20220120010246.3794962-5-robert.hancock@calian.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,53 +53,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 26 Jan 2022 10:12:50 +0100
-Michael Tretter <m.tretter@pengutronix.de> wrote:
+On Wed, 19 Jan 2022 19:02:46 -0600
+Robert Hancock <robert.hancock@calian.com> wrote:
 
-> On Tue, 25 Jan 2022 16:15:05 +0000, Robert Hancock wrote:
-> > On Tue, 2022-01-25 at 09:21 +0100, Michael Tretter wrote:  
-> > > On Wed, 19 Jan 2022 19:02:45 -0600, Robert Hancock wrote:  
-> > > > Register settings used for the sequencer configuration register
-> > > > were incorrect, causing some inputs to not be read properly.
-> > > > 
-> > > > Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-> > > > Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-> > > > ---
-> > > >  drivers/iio/adc/xilinx-ams.c | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-> > > > index b93864362dac..199027c93cdc 100644
-> > > > --- a/drivers/iio/adc/xilinx-ams.c
-> > > > +++ b/drivers/iio/adc/xilinx-ams.c
-> > > > @@ -91,8 +91,8 @@
-> > > >  
-> > > >  #define AMS_CONF1_SEQ_MASK		GENMASK(15, 12)
-> > > >  #define AMS_CONF1_SEQ_DEFAULT		FIELD_PREP(AMS_CONF1_SEQ_MASK,
-> > > > 0)
-> > > > -#define AMS_CONF1_SEQ_CONTINUOUS	FIELD_PREP(AMS_CONF1_SEQ_MASK, 1)
-> > > > -#define AMS_CONF1_SEQ_SINGLE_CHANNEL	FIELD_PREP(AMS_CONF1_SEQ_MASK,
-> > > > 2)
-> > > > +#define AMS_CONF1_SEQ_CONTINUOUS	FIELD_PREP(AMS_CONF1_SEQ_MASK, 2)
-> > > > +#define AMS_CONF1_SEQ_SINGLE_CHANNEL	FIELD_PREP(AMS_CONF1_SEQ_MASK,
-> > > > 3)  
-> > > 
-> > > The TRM states that Continuous Loop Mode is 2, but Single Pass Sequence Mode
-> > > is 1, not 3. Is there a reason, why you need to set both bits?  
-> > 
-> > Single pass sequence mode (1) just runs the same sequence only once. To read
-> > these values it needs to switch to single channel mode (3).
-> > 
-> > The register bits are defined in Table 3-8 of 
-> > https://www.xilinx.com/support/documentation/user_guides/ug580-ultrascale-sysmon.pdf
-> >  .  
+> Some of the AMS channels need to be read by switching into single-channel
+> mode from the normal polling sequence. There was a logic issue in this
+> switching code that could cause the first read of these channels to read
+> back as zero.
 > 
-> Thanks for the clarification.
+> It appears that the sequencer should be set back to default mode before
+> changing the channel selection, and the channel should be set before
+> switching the sequencer back into single-channel mode.
 > 
-> Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+> Also, write 1 to the EOC bit in the status register to clear it before
+> waiting for it to become set, so that we actually wait for a new
+> conversion to complete, and don't proceed based on a previous conversion
+> completing.
+> 
+> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+> Signed-off-by: Robert Hancock <robert.hancock@calian.com>
 
-Applied to the fixes-togreg branch of iio.git
+Looking for an Ack from Anand or someone else familiar with this device.
 
 Thanks,
 
 Jonathan
+
+
+> ---
+>  drivers/iio/adc/xilinx-ams.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> index 199027c93cdc..7bf097fa10cb 100644
+> --- a/drivers/iio/adc/xilinx-ams.c
+> +++ b/drivers/iio/adc/xilinx-ams.c
+> @@ -530,14 +530,18 @@ static int ams_enable_single_channel(struct ams *ams, unsigned int offset)
+>  		return -EINVAL;
+>  	}
+>  
+> -	/* set single channel, sequencer off mode */
+> +	/* put sysmon in a soft reset to change the sequence */
+>  	ams_ps_update_reg(ams, AMS_REG_CONFIG1, AMS_CONF1_SEQ_MASK,
+> -			  AMS_CONF1_SEQ_SINGLE_CHANNEL);
+> +			  AMS_CONF1_SEQ_DEFAULT);
+>  
+>  	/* write the channel number */
+>  	ams_ps_update_reg(ams, AMS_REG_CONFIG0, AMS_CONF0_CHANNEL_NUM_MASK,
+>  			  channel_num);
+>  
+> +	/* set single channel, sequencer off mode */
+> +	ams_ps_update_reg(ams, AMS_REG_CONFIG1, AMS_CONF1_SEQ_MASK,
+> +			  AMS_CONF1_SEQ_SINGLE_CHANNEL);
+> +
+>  	return 0;
+>  }
+>  
+> @@ -551,6 +555,8 @@ static int ams_read_vcc_reg(struct ams *ams, unsigned int offset, u32 *data)
+>  	if (ret)
+>  		return ret;
+>  
+> +	/* clear end-of-conversion flag, wait for next conversion to complete */
+> +	writel(expect, ams->base + AMS_ISR_1);
+>  	ret = readl_poll_timeout(ams->base + AMS_ISR_1, reg, (reg & expect),
+>  				 AMS_INIT_POLL_TIME_US, AMS_INIT_TIMEOUT_US);
+>  	if (ret)
+

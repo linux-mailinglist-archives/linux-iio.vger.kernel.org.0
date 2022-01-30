@@ -2,42 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 015074A38A3
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BA754A38A4
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:27:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355948AbiA3T1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 14:27:06 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:51806 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355951AbiA3T0w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:52 -0500
+        id S1355951AbiA3T1J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 14:27:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35642 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355953AbiA3T0y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:54 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81FFC061714
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 11:26:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C20D2B829AD
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E24C340EF;
-        Sun, 30 Jan 2022 19:26:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87804612EA
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C4BC340EB;
+        Sun, 30 Jan 2022 19:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643570810;
-        bh=sHJZzAacRvwCMdFgTfMD8jeDKiY7BZo2VxcnPHDXS6U=;
+        s=k20201202; t=1643570813;
+        bh=SnK+3mPb0mpEwkTUzk1HX9dIbRJIxuNqG/rKKPgnt2Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AfM5TCmp767VkpysT/tGCIkN8L4b3HVVr/ntA3r4UfVuPvgp1z+piRCQVvB7TTc/a
-         bU23yY+Ej+QGtxtQOBF0WZWqnaDCt8tzEl+vE5lKsju1KgvYUyQgqT0UOCJgAYFPia
-         vrbXQeA4xvwVTsvapAchpO3eGVVRnR6slgavoepIi9X+DnY/jB74dlpCuN3GGKpLe3
-         cDiy+0ENp1157kPuu3LB4xxjRt/CF1Ej/DLnVplxlOTxcnQFUmGeLxkA8tH1KqE+05
-         Mh4nzUEEMnBU98q74x4vFDN8sgqWEyLII2o6TKXuvF6L7Ebs1KUn6gbJx4auJ/xoao
-         pr/bfjAfk24XQ==
+        b=HL/wOXBY4JljMmLgFwl2q8PmaAHGnSOBQaeYcWkDBd/WV7NJUCY4uHOOgbv1ZKH3n
+         ip9FyF9sEoSLOr27nwRB/XDyE/xzl9O7860XLrXSiRr9p1QJi/DM6FeQcslxKI1uDW
+         UssLyJE7Dqa04MIxQGtPso9NDNYgr88cP5NGW58ip+3KcmRyR5vXLD8G6jKC9uLgEq
+         1h/NN//+ZnHska/oqir6tLxKnA+pp49wxuJOx3kJvfe8LQowPfadZYJ9NMqU2MNZq0
+         ZmXmWmSe3uDguC4oDFoXgLHxhSVoJevmEgZ78mi5OUoZSWcEvE1ADsc2y2uVUa7WOi
+         pNqLm94rqbOYQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v3 35/50] iio:proximity:sx9500: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun, 30 Jan 2022 19:31:32 +0000
-Message-Id: <20220130193147.279148-36-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 36/50] iio:temperature:tmp006: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun, 30 Jan 2022 19:31:33 +0000
+Message-Id: <20220130193147.279148-37-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220130193147.279148-1-jic23@kernel.org>
 References: <20220130193147.279148-1-jic23@kernel.org>
@@ -56,46 +58,43 @@ use of #ifdef based config guards.
 Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
-Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/proximity/sx9500.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/iio/temperature/tmp006.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9500.c b/drivers/iio/proximity/sx9500.c
-index 3e4ddb2e8c2b..42589d6200ad 100644
---- a/drivers/iio/proximity/sx9500.c
-+++ b/drivers/iio/proximity/sx9500.c
-@@ -993,7 +993,6 @@ static int sx9500_remove(struct i2c_client *client)
- 	return 0;
+diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+index e4943a0bc9aa..706a760f30b4 100644
+--- a/drivers/iio/temperature/tmp006.c
++++ b/drivers/iio/temperature/tmp006.c
+@@ -261,7 +261,6 @@ static int tmp006_probe(struct i2c_client *client,
+ 	return devm_iio_device_register(&client->dev, indio_dev);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int sx9500_suspend(struct device *dev)
+ static int tmp006_suspend(struct device *dev)
  {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-@@ -1030,11 +1029,8 @@ static int sx9500_resume(struct device *dev)
- 
- 	return ret;
+ 	return tmp006_power(dev, false);
+@@ -271,9 +270,8 @@ static int tmp006_resume(struct device *dev)
+ {
+ 	return tmp006_power(dev, true);
  }
--#endif /* CONFIG_PM_SLEEP */
+-#endif
  
--static const struct dev_pm_ops sx9500_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(sx9500_suspend, sx9500_resume)
--};
-+static DEFINE_SIMPLE_DEV_PM_OPS(sx9500_pm_ops, sx9500_suspend, sx9500_resume);
+-static SIMPLE_DEV_PM_OPS(tmp006_pm_ops, tmp006_suspend, tmp006_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(tmp006_pm_ops, tmp006_suspend, tmp006_resume);
  
- static const struct acpi_device_id sx9500_acpi_match[] = {
- 	{"SSX9500", 0},
-@@ -1060,7 +1056,7 @@ static struct i2c_driver sx9500_driver = {
- 		.name	= SX9500_DRIVER_NAME,
- 		.acpi_match_table = ACPI_PTR(sx9500_acpi_match),
- 		.of_match_table = of_match_ptr(sx9500_of_match),
--		.pm = &sx9500_pm_ops,
-+		.pm = pm_sleep_ptr(&sx9500_pm_ops),
+ static const struct i2c_device_id tmp006_id[] = {
+ 	{ "tmp006", 0 },
+@@ -284,7 +282,7 @@ MODULE_DEVICE_TABLE(i2c, tmp006_id);
+ static struct i2c_driver tmp006_driver = {
+ 	.driver = {
+ 		.name	= "tmp006",
+-		.pm	= &tmp006_pm_ops,
++		.pm	= pm_sleep_ptr(&tmp006_pm_ops),
  	},
- 	.probe		= sx9500_probe,
- 	.remove		= sx9500_remove,
+ 	.probe = tmp006_probe,
+ 	.id_table = tmp006_id,
 -- 
 2.35.1
 

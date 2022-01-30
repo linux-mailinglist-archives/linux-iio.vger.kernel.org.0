@@ -2,154 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB2904A36E7
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 15:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2094A3719
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 15:59:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355174AbiA3Osa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 09:48:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59600 "EHLO
+        id S1355344AbiA3O7X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 09:59:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355165AbiA3Osa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 09:48:30 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F309C061714
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 06:48:30 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1346611F9
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 14:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA65AC340E4;
-        Sun, 30 Jan 2022 14:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643554109;
-        bh=AleTpGfOO6/DrQNlumuA2g9JIWClKgBLvqIRXh7tKKw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DyBqPGIwZMvPLJE/jjBjrith5Lyfto+ywy+pe0wmYP9gkjwrLx5538ncisjFI3IXv
-         A+wE+vW/0ykicFA2jcxyDiU2IhMA9U8EuQWlxLyl/23lStlJv7Fdp6oJ0T2wlgDZZ/
-         r/QiUYYKh/0JF2k8LhoAnFVVIHJcl7FhwNoM0okUAgTWvaUzJC3P9cp3iEwEGo2SRz
-         L1bwx2/itTw+vm+SkX/EwgLre/z3mt+cRbftmyDZFx66z+5r1RphnpZRfHEYJibsN4
-         5eBxitUCU84bKAe8wz7eK0ISZlcxQEJJV13cL3LWPGleAIy7eyykadLwMiYIHlyLJB
-         GMgP1PZCGHB6A==
-Date:   Sun, 30 Jan 2022 14:54:54 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: mma8452: Fix probe failing when an i2c_device_id
- is used
-Message-ID: <20220130145454.41c216bf@jic23-huawei>
-In-Reply-To: <25fd03a5-4b85-a112-1897-0a6d662aa88d@redhat.com>
-References: <20220106111414.66421-1-hdegoede@redhat.com>
-        <20220109151043.54d92a79@jic23-huawei>
-        <25fd03a5-4b85-a112-1897-0a6d662aa88d@redhat.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        with ESMTP id S1355335AbiA3O7H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 09:59:07 -0500
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32EC9C061714;
+        Sun, 30 Jan 2022 06:59:07 -0800 (PST)
+Received: by mail-qt1-x833.google.com with SMTP id h25so8385438qtm.1;
+        Sun, 30 Jan 2022 06:59:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=f+X5yk2roOzmJwzypwQmhOu/mrO4cbF9p7VZTWulkAE=;
+        b=hZn6WRv/zhcXNyjrVUeS9BrgiFa0HgEmEqOPc+zdMag+uwiwEspKvAyWYGgdmCwm7Q
+         YcEtHdH0z0co22/8b/5aWo1NB36LXNTkPlsgUEqMIu6iKmDTUnUZXEzpamnVkR200w+o
+         Gr4VZZJoSr2A9X0i27MLz3kOh/wzYWqc6Jr3031OzAVEU1zlyoi4V5DyBE5/MF0umGpe
+         ELIgVNC4YEiZT19GgDXozTQvgxVjiansUUkFtz8CyUqClyM0mLlUmI5xxLvZzb4j8ARo
+         1Yx8Mc9VRMc3h4MhqEKijxlU2iTfLbxwK2ZIFYz/72gVFREGTqCSpvwT1gvkTxqF8rhI
+         19Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=f+X5yk2roOzmJwzypwQmhOu/mrO4cbF9p7VZTWulkAE=;
+        b=Be8s0TJ8b+FTAgotiqWZQ1RXkfYeFE1Nng9Ty//7N8kRGak0s64j5iYB3WttWhnlVU
+         rziEC2109lel5cd3fMAr0Tr96xcpE3MKckEkT4e7OJl9K+yzxtiTwVDcWaTuMBiH858u
+         gkoDix3T2/W7BNfl44UFm64YL6nszbyglB8Uyb8BN45zg0lLUjTKLHJJDCqgnTZ3MSH5
+         BHg9YklK+zGYMGbFs5dtOY4XlcFFIE0dX0Y31Nxt/06I7dT9Z9NG/IfGxvD0hS3S3Ovd
+         vK/r48rUI3e12z6UfkKWFuGJ/ImHJP/4mtn3Eadl1Fdodt7W3LCB7prp9M83BUUmhPbf
+         Yq6A==
+X-Gm-Message-State: AOAM531eGEqMHTUVNzzjiPZg9PMyfS42+yre+8j4oECd91Tol3GWlfEy
+        G4bFG80TKu/jbkWFwUXeyktq0j+wSYI=
+X-Google-Smtp-Source: ABdhPJysO5uJaDMgv+i05X60uWQx4c7I2DJErsRJZonIgGdivOF7DOzdYrpDgddVrms4fR9tronRlQ==
+X-Received: by 2002:a05:622a:447:: with SMTP id o7mr1446288qtx.537.1643554746267;
+        Sun, 30 Jan 2022 06:59:06 -0800 (PST)
+Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
+        by smtp.gmail.com with ESMTPSA id az38sm3436312qkb.124.2022.01.30.06.59.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Jan 2022 06:59:05 -0800 (PST)
+Date:   Sun, 30 Jan 2022 09:59:03 -0500
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Peter Rosin <peda@axentia.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v12 00/16] iio: afe: add temperature rescaling support
+Message-ID: <Yfant1/USRnKsCaJ@shaak>
+References: <20220108205319.2046348-1-liambeguin@gmail.com>
+ <CAHp75VdyujSuTCr_+oFP9t=tardioG69k7uNkBSRAmPvqiyT7w@mail.gmail.com>
+ <20220130143933.7711025a@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220130143933.7711025a@jic23-huawei>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 9 Jan 2022 16:35:46 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
+Hi Jonathan,
 
-> Hi,
+On Sun, Jan 30, 2022 at 02:39:33PM +0000, Jonathan Cameron wrote:
+> On Sun, 9 Jan 2022 15:10:36 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 > 
-> On 1/9/22 16:10, Jonathan Cameron wrote:
-> > On Thu,  6 Jan 2022 12:14:14 +0100
-> > Hans de Goede <hdegoede@redhat.com> wrote:
-> >   
-> >> The mma8452_driver declares both of_match_table and i2c_driver.id_table
-> >> match-tables, but its probe() function only checked for of matches.
-> >>
-> >> Add support for i2c_device_id matches. This fixes the driver not loading
-> >> on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
-> >> instantiated by platform code using an i2c_device_id.
-> >>
-> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>  
-> > Hi Hans,
+> > On Sat, Jan 8, 2022 at 10:53 PM Liam Beguin <liambeguin@gmail.com> wrote:
+> > >
+> > > Jonathan, Peter, Andy,
+> > >
+> > > I left out IIO_VAL_INT overflows for now, so that I can focus on getting
+> > > the rest of these changes pulled in, but I don't mind adding a patch for
+> > > that later on.
+> > >
+> > > This series focuses on adding temperature rescaling support to the IIO
+> > > Analog Front End (AFE) driver.
+> > >
+> > > The first few patches address minor bugs in IIO inkernel functions, and
+> > > prepare the AFE driver for the additional features.
+> > >
+> > > The main changes to the AFE driver include an initial Kunit test suite,
+> > > support for IIO_VAL_INT_PLUS_{NANO,MICRO} scales, and support for RTDs
+> > > and temperature transducer sensors.
+> > >
+> > > My apologies Andy for misunderstanding your left-shift comments, I don't
+> > > know where my head was at... Thanks for your patience!  
 > > 
-> > At some point we'll want to get rid of the of_ specific stuff in here in
-> > favour of generic firmware properties and I suspect at that time we'll
-> > move the device name into the chip_info_table[] entries so that we
-> > can just use device_get_match_data()
+> > For the patches 1-5
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > > 
-> > In the meantime this fix looks good to me.  Is there an appropriate
-> > Fixes: tag?  
+> > Jonathan, perhaps you may apply them, so Liam will have less burden in
+> > the near future.
+> > 
+> done, Patches 1-5 applied to the togreg branch of iio.git and pushed out
+> as testing for 0-day to see if it can find anything we missed.
 > 
-> I did a quick dive in the git history and the of_match_device() ||
-> return -ENODEV behavior was introduced in:
-> 
-> c3cdd6e48e35 ("iio: mma8452: refactor for seperating chip specific data")
-Applied to the fixes-togreg branch of iio.git with that as the fixes tag.
+> I've marked the fixes for stable, but am taking these the slow way
+> (via next merge window) so as to keep things simple for applying the
+> rest of the series later this cycle.
 
-Hmm. Sending "Fixes: tag?" was a  bad idea on my part as b4 picked it up as
-a fixes tag. Good think I was editing it anyway or I might not have noticed.
+Thanks for taking these in.
 
-Thanks,
+> I got a bit lost in the discussion but seems there are some minor
+> requests for changes so I guess I'll see a v13 of patches 6-12.
 
-Jonathan
+I'm rebasing what's left on top of your to-greg branch, and will send
+out v13 today.
 
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> 
-> >> ---
-> >>  drivers/iio/accel/mma8452.c | 23 +++++++++++++++--------
-> >>  1 file changed, 15 insertions(+), 8 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-> >> index 09c7f10fefb6..c82841c0a7b3 100644
-> >> --- a/drivers/iio/accel/mma8452.c
-> >> +++ b/drivers/iio/accel/mma8452.c
-> >> @@ -1523,12 +1523,7 @@ static int mma8452_probe(struct i2c_client *client,
-> >>  	struct iio_dev *indio_dev;
-> >>  	int ret;
-> >>  	const struct of_device_id *match;
-> >> -
-> >> -	match = of_match_device(mma8452_dt_ids, &client->dev);
-> >> -	if (!match) {
-> >> -		dev_err(&client->dev, "unknown device model\n");
-> >> -		return -ENODEV;
-> >> -	}
-> >> +	const char *compatible;
-> >>  
-> >>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> >>  	if (!indio_dev)
-> >> @@ -1537,7 +1532,19 @@ static int mma8452_probe(struct i2c_client *client,
-> >>  	data = iio_priv(indio_dev);
-> >>  	data->client = client;
-> >>  	mutex_init(&data->lock);
-> >> -	data->chip_info = match->data;
-> >> +
-> >> +	if (id) {
-> >> +		compatible = id->name;
-> >> +		data->chip_info = &mma_chip_info_table[id->driver_data];
-> >> +	} else {
-> >> +		match = of_match_device(mma8452_dt_ids, &client->dev);
-> >> +		if (!match) {
-> >> +			dev_err(&client->dev, "unknown device model\n");
-> >> +			return -ENODEV;
-> >> +		}
-> >> +		compatible = match->compatible;
-> >> +		data->chip_info = match->data;
-> >> +	}
-> >>  
-> >>  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
-> >>  	if (IS_ERR(data->vdd_reg))
-> >> @@ -1581,7 +1588,7 @@ static int mma8452_probe(struct i2c_client *client,
-> >>  	}
-> >>  
-> >>  	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
-> >> -		 match->compatible, data->chip_info->chip_id);
-> >> +		 compatible, data->chip_info->chip_id);
-> >>  
-> >>  	i2c_set_clientdata(client, indio_dev);
-> >>  	indio_dev->info = &mma8452_info;  
-> >   
-> 
+Cheers,
+Liam
 
+> Thanks,
+> 
+> Jonathan
+> 
+> 

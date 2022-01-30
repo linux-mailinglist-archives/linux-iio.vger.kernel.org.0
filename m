@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C01B14A3892
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32BC14A3893
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:26:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230004AbiA3T0O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 14:26:14 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:36042 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355904AbiA3T0N (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:13 -0500
+        id S1355904AbiA3T0R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 14:26:17 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:51578 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355910AbiA3T0R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 645F3612EC
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEB4C340EF;
-        Sun, 30 Jan 2022 19:26:11 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 495D5B829AB
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE7FC340F2;
+        Sun, 30 Jan 2022 19:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643570772;
-        bh=BnANxcBt51ZAuShungESptRElbJqEWGEP6JtV+EBrsg=;
+        s=k20201202; t=1643570774;
+        bh=1vAmtdxc+ZdlFQFMjF6UWGf9xPK/8kX0cXiQvukvy2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hm+VHPGeqUiFE558653oT4c36KRKtDSxYWC5p0MaDDGUpaLY/MMJAL/2U/kt2nvv8
-         YofaE5osbDFx9o39yfsOMNBwEX93Yn844mALnrTDaIusGwVXoAXygFAf8S3umYlVhq
-         fw2AHyUN2WCQtCZm7iLlCuMerjZ/olHNc5TarGsrORrL3+DWH9vOrGm12XxiIOtBqH
-         JAT8xt0Zzam9a9ljFXFUdJFXmhGkNnX2qANrn53MfSVUrjY8P495WENVfw40Q+NJMv
-         VEuUA9ttC+uwTUXFslpckRcceg8C5ypjjkoZwsQC8CUIojj1Fy0j6OTBZ5EFdKsMjj
-         4nhFdDRMda6gw==
+        b=DNd1deYIjx+++qoAr2SA0ytqmpgCxcnntNXTgwJfLW8lRp347T2kGJEPT6v1cxFsr
+         CVB5wfi1TYamRc+uCjqgCNJlhy38ljzzFMgxEkeq7tP/n6sfkL7raGneH2XawYevSQ
+         LYWjSA86dXr0ZiJLrZ1wMM/4hX6SOu/ANILgjwWFsVemhICNdXKpz+e7nNIDUr10a+
+         8g/fVbmiB4Bszta2vHkFS6z774W9TGYLRTka9vpd5bF0ifaj+au+4JCxeenIq0IXJK
+         nyPYq0885UdFzC4q3YuGIEpUwcxI/6F/J6qWxTnV+w5oTD7qQ1FFhsadgQZWCWypnI
+         iZKEC5SzKQR9w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 18/50] iio:light:apds9300: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun, 30 Jan 2022 19:31:15 +0000
-Message-Id: <20220130193147.279148-19-jic23@kernel.org>
+Subject: [PATCH v3 19/50] iio:light:cm3232: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun, 30 Jan 2022 19:31:16 +0000
+Message-Id: <20220130193147.279148-20-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220130193147.279148-1-jic23@kernel.org>
 References: <20220130193147.279148-1-jic23@kernel.org>
@@ -50,51 +50,51 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 Letting the compiler remove these functions when the kernel is built
 without CONFIG_PM_SLEEP support is simpler and less error prone than the
-use of #ifdef based config guards.
+use of #ifdef based config guards.  Also switch to SIMPLE_DEV_PM_OPS rather
+than opencoding the same.
 
 Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/apds9300.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/iio/light/cm3232.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/light/apds9300.c b/drivers/iio/light/apds9300.c
-index baaf202dce05..0f9d77598997 100644
---- a/drivers/iio/light/apds9300.c
-+++ b/drivers/iio/light/apds9300.c
-@@ -466,7 +466,6 @@ static int apds9300_remove(struct i2c_client *client)
- 	return 0;
- }
+diff --git a/drivers/iio/light/cm3232.c b/drivers/iio/light/cm3232.c
+index 18a410340dc5..2c80a0535d2c 100644
+--- a/drivers/iio/light/cm3232.c
++++ b/drivers/iio/light/cm3232.c
+@@ -374,7 +374,6 @@ static const struct i2c_device_id cm3232_id[] = {
+ 	{}
+ };
  
 -#ifdef CONFIG_PM_SLEEP
- static int apds9300_suspend(struct device *dev)
+ static int cm3232_suspend(struct device *dev)
  {
  	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-@@ -493,11 +492,8 @@ static int apds9300_resume(struct device *dev)
+@@ -403,9 +402,7 @@ static int cm3232_resume(struct device *dev)
  	return ret;
  }
  
--static SIMPLE_DEV_PM_OPS(apds9300_pm_ops, apds9300_suspend, apds9300_resume);
--#define APDS9300_PM_OPS (&apds9300_pm_ops)
--#else
--#define APDS9300_PM_OPS NULL
+-static const struct dev_pm_ops cm3232_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(cm3232_suspend, cm3232_resume)};
 -#endif
-+static DEFINE_SIMPLE_DEV_PM_OPS(apds9300_pm_ops, apds9300_suspend,
-+				apds9300_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(cm3232_pm_ops, cm3232_suspend, cm3232_resume);
  
- static const struct i2c_device_id apds9300_id[] = {
- 	{ APDS9300_DRV_NAME, 0 },
-@@ -509,7 +505,7 @@ MODULE_DEVICE_TABLE(i2c, apds9300_id);
- static struct i2c_driver apds9300_driver = {
+ MODULE_DEVICE_TABLE(i2c, cm3232_id);
+ 
+@@ -419,9 +416,7 @@ static struct i2c_driver cm3232_driver = {
  	.driver = {
- 		.name	= APDS9300_DRV_NAME,
--		.pm	= APDS9300_PM_OPS,
-+		.pm	= pm_sleep_ptr(&apds9300_pm_ops),
+ 		.name	= "cm3232",
+ 		.of_match_table = cm3232_of_match,
+-#ifdef CONFIG_PM_SLEEP
+-		.pm	= &cm3232_pm_ops,
+-#endif
++		.pm	= pm_sleep_ptr(&cm3232_pm_ops),
  	},
- 	.probe		= apds9300_probe,
- 	.remove		= apds9300_remove,
+ 	.id_table	= cm3232_id,
+ 	.probe		= cm3232_probe,
 -- 
 2.35.1
 

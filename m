@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AA604A372A
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 16:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ADC34A3733
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 16:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347345AbiA3PLP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 10:11:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36554 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349175AbiA3PLN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 10:11:13 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9D6C061714;
-        Sun, 30 Jan 2022 07:11:13 -0800 (PST)
+        id S1355404AbiA3PTV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 10:19:21 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:59154 "EHLO
+        sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347323AbiA3PTV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 10:19:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8ADB6123B;
-        Sun, 30 Jan 2022 15:11:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DDEC340E4;
-        Sun, 30 Jan 2022 15:11:10 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 69B0BCE0FC9;
+        Sun, 30 Jan 2022 15:19:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3921C340E4;
+        Sun, 30 Jan 2022 15:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643555472;
-        bh=oYvKAImQNUHKveacXyI4MjLN9QGhpLq3yA19e/9Eri8=;
+        s=k20201202; t=1643555957;
+        bh=gqZKjFiI669q0gnS/jVPy4eF6e3RL32aeL9cHh4hGBk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NreeKZBiXnASrKDL6r3UzlLBbK4CgrRFna25soR7h/Q1u7RhIMSmf2IJLhKaBfXGU
-         /zXrkRPbJNSKfD5YCS1Kx0SwJl1qmawCgqOgzYAS0/iM3C9+dL+maAhXXw1XaTsbL8
-         o9YczUxPc05DfRlQN2yt3XoArE/+ASqQqlz4mhCych6rZKmauHj4RusfKbIoeeJRLN
-         ZGcoC/OtZ6e3+SlRNRyIEs4gT7kNWlO3wruFk6YlkLwsVdzhDqlYWnK+V2Hc6E2G3O
-         0uLXaSiPOaKYMKpjeMHLLWzUh61NpwtRQFSsLrI3h+qmgIk6fr7y9RUlTsoKXhueg4
-         JF8D+dpHx9E1Q==
-Date:   Sun, 30 Jan 2022 15:17:37 +0000
+        b=KyRnbaqFAK+nA9fhN2VtkQpD/lSC+SORK4ahJNndfScSUw343/mnE0tfnEkQCSGit
+         /nPfhF6D1gCzxmi+K4kkhZsFXp8QrJYwzJOwcdKYE9M4JEBwiC0sBWsqMObkV7evYU
+         sEUsHuvfS9P2iJcOLKIviv3Rv14Au2D/rSib9z+x8SS7OPkQy4fNwZzyO/mLhm/RQS
+         0ts1urKPEl77crlCKxgGOpe7lyTyipRoO1ZjJotdTdR2TY7w5ZaGJWLGO8wFNLi4kU
+         Z7AhZSg3ifSZ6tJ5ngAUZwe3SBQONL/1tO0njody7SgCsMT3KvEhZeQcH/uiPiASA/
+         bS5izFbYgDcCQ==
+Date:   Sun, 30 Jan 2022 15:25:41 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nikos Latmos <n.latmos@deepsea.ai>
-Cc:     jmaneyrol@invensense.com, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PROBLEM]: Error during probing process in inv_icm42600_i2c
- driver
-Message-ID: <20220130151737.43ef5b08@jic23-huawei>
-In-Reply-To: <CAC-bbXbkt0oYPn+EWLdEYKyj8G_muWGDZWTApyFv3cb591dc0A@mail.gmail.com>
-References: <20211208135644.3523024-1-n.latmos@deepsea.ai>
-        <CAC-bbXbkt0oYPn+EWLdEYKyj8G_muWGDZWTApyFv3cb591dc0A@mail.gmail.com>
+To:     <nicolas.ferre@microchip.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: iio: adc: at91-sama5d2: update
+ maintainers entry
+Message-ID: <20220130152541.5772d4ad@jic23-huawei>
+In-Reply-To: <6acdb66592baf395a77a431c0cb9a37b0f178097.1643554065.git.nicolas.ferre@microchip.com>
+References: <6acdb66592baf395a77a431c0cb9a37b0f178097.1643554065.git.nicolas.ferre@microchip.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -50,84 +51,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 8 Dec 2021 16:33:52 +0200
-Nikos Latmos <n.latmos@deepsea.ai> wrote:
+On Sun, 30 Jan 2022 15:50:08 +0100
+<nicolas.ferre@microchip.com> wrote:
 
-> Hello,
+> From: Nicolas Ferre <nicolas.ferre@microchip.com>
 > 
-> I have an ARM device based on the Broadcom BCM2837 processor (quad-core
-> ARM Cortex-A53, 1.2GHz), which has an Invensense ICM-42605 IMU chip
-> connected over I2C. I'm running an unmodified Linux 5.4.83 kernel. The I2C
-> driver for my device is in the following path:
-> drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c.
+> Update the maintainers entry to match the changes made back in
+> mid-2020 with 853fa48717c2 ("MAINTAINERS: adc: at91-sama5d2_adc:
+> remove myself as co-maintainer").
 > 
-> The problem is that the device driver cannot be probed. More specifically,
-> dmesg returns the following error message:
-> 
-> inv-icm42600-i2c 0-0068: mounting matrix not found: using identity...
-> inv-icm42600-i2c 0-0068: 0-0068 supply vdd not found, using dummy regulator
-> inv-icm42600-i2c 0-0068: 0-0068 supply vddio not found, using dummy regulator
-> inv-icm42600-i2c: probe of 0-0068 failed with error -121
-> 
-> During the debugging procedure, I found out that the failure occurred when
-> the driver tried to set up the I2C bus parameters. More precisely, by setting
-> the INV_ICM42600_REG_INTF_CONFIG6 register according to the values described
-> in the datasheet for the I2C communication, actually caused the probe function
-> to fail and return the error -121.
-> 
-> After I experimented with different values in the specific register bits,
-> I came to the conclusion, that the setting of the bit
-> INV_ICM42600_INTF_CONFIG6_I3C_SDR_EN caused the system to successfully
-> probe the driver. Any other bit setting combinations failed to do so.
-> 
-> Any hints on why would the driver behave so?
-> 
-> Here is a patch that I have so far and it seems to solve the issue.
-> 
-> Best regards,
-> Nick Latmos
-
-Hi All,
-
-Anyone familiar with this part able to help Nick?
+> Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to poke at other things I applied today.
 
 Thanks,
 
 Jonathan
 
-> 
-> 
-> From d7b3922cd0182ba880ff729edb4a156b55dfb6f0 Mon Sep 17 00:00:00 2001
-> From: nicklat <n.latmos@deepsea.ai>
-> Date: Wed, 8 Dec 2021 15:51:28 +0200
-> Subject: [PATCH] iio: imu: inv_icm42600: enable SDR mode
-> 
-> Add SDR (Single Data Rate) support.
-> In SDR mode, data is only clocked on one edge of the clock.
-> 
-> Without this option enabled, the probing process fails.
-> 
-> Signed-off-by: nicklat <n.latmos@deepsea.ai>
 > ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Hi,
 > 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> index 85b1934cec60..ea31f102fbca 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> @@ -21,7 +21,8 @@ static int inv_icm42600_i2c_bus_setup(struct
-> inv_icm42600_state *st)
->         /* setup interface registers */
->         ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG6,
->                                  INV_ICM42600_INTF_CONFIG6_MASK,
-> -                                INV_ICM42600_INTF_CONFIG6_I3C_EN);
-> +                                INV_ICM42600_INTF_CONFIG6_I3C_EN |
-> +                                INV_ICM42600_INTF_CONFIG6_I3C_SDR_EN);
->         if (ret)
->                 return ret;
+> Patch for new MAINTAINERS entry is here:
+> https://lore.kernel.org/linux-arm-kernel/23819d8baa635815d0893955197561fe4f044d5e.1643553501.git.nicolas.ferre@microchip.com/
 > 
-> --
-> 2.25.1
+> Regards,
+>   Nicolas
+> 
+>  Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
+> index efed361215b4..9a2292e7defc 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
+> @@ -7,7 +7,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: AT91 SAMA5D2 Analog to Digital Converter (ADC)
+>  
+>  maintainers:
+> -  - Ludovic Desroches <ludovic.desroches@atmel.com>
+>    - Eugen Hristev <eugen.hristev@microchip.com>
+>  
+>  properties:
 

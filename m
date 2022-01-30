@@ -2,42 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3FC4A3646
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BD084A3648
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:38:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354796AbiA3Mep (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 07:34:45 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:58194 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354795AbiA3Meo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:34:44 -0500
+        id S1354797AbiA3MiX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 07:38:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240805AbiA3MiW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:38:22 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A995C061714
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 04:38:22 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 570CAB82921
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 12:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA10FC340E4;
-        Sun, 30 Jan 2022 12:34:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A830761193
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 12:38:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF46C340E4;
+        Sun, 30 Jan 2022 12:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643546082;
-        bh=0toZ3pZyC/Wy3X9Cx3KUWPtAY0odPP5+z3iXEp7K0Qw=;
+        s=k20201202; t=1643546301;
+        bh=z4EkGHSSzUXo5U3w1mUhpT3Hr3SpgVBh6HSkNvnGFtY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=f7c0ZRc7QA18WktbKaIYhnhRsdScDDIbHfvse7RqelNfOQ61UnmSeHYpynmQqaFQd
-         DMTs9TbpYEVuP+f/rnPigZikqywZG05r3sv6mwHVnrarv/YuKFcqlEs8nlh+Iz03xq
-         jxN8DRxpoI02jI60oGKbIuycLcxb5eKcQaughoG0wd4Ceu3FafneOqlsNMqMULbYZW
-         oCDdsMO1DgFJnhOLuGbKDxNKNqaQCfFdZpDJUzXRSCSCLLibjoX5OsEcFVPK9ISgEB
-         kwtrdyT9DiU5K6zT/Kn0B9XgPlRvEud9qVpmR/1qw0j28wywsx2c2PWkYzM16laOcO
-         6IcPwrh93XdhQ==
-Date:   Sun, 30 Jan 2022 12:41:05 +0000
+        b=Zsmboc7zegZ+VhghlKn8op6HVHmLmV4Gri9HxS/0TCPjJhbdHQeq+QSvBxx07rtk0
+         pFyO2ILEvGU5qBslLg2uKEtuNdzL4JO/A1Wo1VKiqV9AGYg6uGGAOWmryWuGlN8bav
+         fMKrMnq/5zpZ3u9/NYZWSh61+miJiGDucOyr3WmsZdcH3t21vW1q50FeX7G+GgsURX
+         ieaFB1FvwfqX3CWj9FeIPa7EWgrdJ1UTf1pC/7IoNcFoS6AZeiG6ZLoK3gJVqTrBud
+         RSLhnTezskGarRxoGoaUPgw9/JVyryPP48j+lFa0amSGzYJdawjKQUXd3gwei7Sd1O
+         PALto98ybtCIQ==
+Date:   Sun, 30 Jan 2022 12:44:45 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     lars@metafoo.de, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org,
-        Jongpil Jung <jongpil19.jung@samsung.com>
-Subject: Re: [PATCH v2] iio: sx9360: fix iio event generation
-Message-ID: <20220130124105.23ed6bdb@jic23-huawei>
-In-Reply-To: <20220122213444.745152-1-gwendal@chromium.org>
-References: <20220122213444.745152-1-gwendal@chromium.org>
+To:     Michael Tretter <m.tretter@pengutronix.de>
+Cc:     linux-iio@vger.kernel.org, anand.ashok.dumbre@xilinx.com,
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
+Subject: Re: [PATCH] iio: adc: xilinx-ams: Fix num_channels for PS channels
+Message-ID: <20220130124445.22a34873@jic23-huawei>
+In-Reply-To: <20220130123025.5ff021d9@jic23-huawei>
+References: <20220119114513.2035609-1-m.tretter@pengutronix.de>
+        <20220130123025.5ff021d9@jic23-huawei>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,63 +49,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 22 Jan 2022 13:34:44 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Sun, 30 Jan 2022 12:30:25 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> From: Jongpil Jung <jongpil19.jung@samsung.com>
+> On Wed, 19 Jan 2022 12:45:13 +0100
+> Michael Tretter <m.tretter@pengutronix.de> wrote:
 > 
-> To convert SX9360 status register ["REG_STAT"], into a channel
-> index, we need to right shift by |stat_offset|, not left shift.
-> Also the PROXSTAT bit (3) is for channel 1 (PHM, Phase Measured), not (PHR,
-> Phase Reference, channel 0), so the offset is 2 instead of 3.
+> > The IIO channels of the PS are not provided in the sysfs even if the
+> > ams_ps is enabled in the device tree. The reason is that the channels of
+> > the PS are not added to the overall number of IIO channels.
+> > 
+> > The line somehow got lost between v11 and v12 of the patch series.
+> > 
+> > Add the number of ams_ps_channels to the number of channels to correctly
+> > register all channels.
+> > 
+> > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> > Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")  
+> Applied to the fixes togreg branch of iio.git.
 > 
-> Fixes: f75095753 ("iio:proximity:sx9360: Add sx9360 support")
-Should be 12 chars of the hash.
-
-Also, tree rebased at rc1 so it's wrong anyway :)
-
-Fixed it up and applied to the togreg branch of iio.git and pushed
-out as testing for 0-day to see if it can find anything else.
+Actually change of plan . I'll just pick up the v2 fixes set from
+Robert as otherwise I'll loose track of where we are with these.
 
 Thanks,
 
 Jonathan
 
-> Signed-off-by: Jongpil Jung <jongpil19.jung@samsung.com>
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
-> Changes since v1:
-> - Change title to highlight the patch is a fix.
-> - Put "Fixes:" tag in the commit message footer
+> Thanks,
 > 
->  drivers/iio/proximity/sx9360.c    | 2 +-
->  drivers/iio/proximity/sx_common.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+> Jonathan
 > 
-> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-> index 6fd6561bb6f5b8..3ebb30c8a4f61d 100644
-> --- a/drivers/iio/proximity/sx9360.c
-> +++ b/drivers/iio/proximity/sx9360.c
-> @@ -775,7 +775,7 @@ static const struct sx_common_chip_info sx9360_chip_info = {
->  	.reg_reset = SX9360_REG_RESET,
->  
->  	.mask_enable_chan = SX9360_REG_GNRL_CTRL0_PHEN_MASK,
-> -	.stat_offset = 3,
-> +	.stat_offset = 2,
->  	.num_channels = SX9360_NUM_CHANNELS,
->  	.num_default_regs = ARRAY_SIZE(sx9360_default_regs),
->  
-> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-> index ac8fd5920481cb..a7c07316a0a91e 100644
-> --- a/drivers/iio/proximity/sx_common.c
-> +++ b/drivers/iio/proximity/sx_common.c
-> @@ -87,7 +87,7 @@ static void sx_common_push_events(struct iio_dev *indio_dev)
->  		return;
->  	}
->  
-> -	val <<= data->chip_info->stat_offset;
-> +	val >>= data->chip_info->stat_offset;
->  
->  	/*
->  	 * Only iterate over channels with changes on proximity status that have
+> > ---
+> >  drivers/iio/adc/xilinx-ams.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> > index 8343c5f74121..ede968efb77f 100644
+> > --- a/drivers/iio/adc/xilinx-ams.c
+> > +++ b/drivers/iio/adc/xilinx-ams.c
+> > @@ -1224,6 +1224,7 @@ static int ams_init_module(struct iio_dev *indio_dev,
+> >  
+> >  		/* add PS channels to iio device channels */
+> >  		memcpy(channels, ams_ps_channels, sizeof(ams_ps_channels));
+> > +		num_channels += ARRAY_SIZE(ams_ps_channels);
+> >  	} else if (fwnode_property_match_string(fwnode, "compatible",
+> >  						"xlnx,zynqmp-ams-pl") == 0) {
+> >  		ams->pl_base = fwnode_iomap(fwnode, 0);  
+> 
 

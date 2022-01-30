@@ -2,49 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF6F4A363F
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A3FC4A3646
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:34:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354794AbiA3M2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 07:28:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354778AbiA3M2j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:28:39 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1900DC061714;
-        Sun, 30 Jan 2022 04:28:39 -0800 (PST)
+        id S1354796AbiA3Mep (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 07:34:45 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:58194 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354795AbiA3Meo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:34:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8D51611A6;
-        Sun, 30 Jan 2022 12:28:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B707C340E4;
-        Sun, 30 Jan 2022 12:28:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 570CAB82921
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 12:34:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA10FC340E4;
+        Sun, 30 Jan 2022 12:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643545717;
-        bh=ZH7NMTZhIULnPE3aaXaSqB0Wg5JBWfl8SFMQQQN/fAc=;
+        s=k20201202; t=1643546082;
+        bh=0toZ3pZyC/Wy3X9Cx3KUWPtAY0odPP5+z3iXEp7K0Qw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DXx6DJrOYx5aO346V4ysQS58oIVZQ6aLjs+62099AnkbcW74t/77kmzpo3/Y9MyrQ
-         Jo0nu6FEuZ3GIfjnM3fWAP/zUCVs00pYcbjnID7SxnE/mG7nhM8CHGV1vZAVoimqUN
-         Hnslwwrwb8vYN4d6pA0/eoVNXIajG8HvWWnOkN4XbXrnzy5KuhzOUba0jsoH4OYCKI
-         h2zl6mPv4+FUPDwHV+89I171rBSOGT2+brOlR5n4pq8nUyyazWvhS27Vrbp+LGj45i
-         RRHj3mlJNmGhxD/G1mYPFywaMyTqa8Vs721a4QxWaAmgtWzlrM/7/twGH2IgrGBTcR
-         vmlxKFQRJNbLw==
-Date:   Sun, 30 Jan 2022 12:34:59 +0000
+        b=f7c0ZRc7QA18WktbKaIYhnhRsdScDDIbHfvse7RqelNfOQ61UnmSeHYpynmQqaFQd
+         DMTs9TbpYEVuP+f/rnPigZikqywZG05r3sv6mwHVnrarv/YuKFcqlEs8nlh+Iz03xq
+         jxN8DRxpoI02jI60oGKbIuycLcxb5eKcQaughoG0wd4Ceu3FafneOqlsNMqMULbYZW
+         oCDdsMO1DgFJnhOLuGbKDxNKNqaQCfFdZpDJUzXRSCSCLLibjoX5OsEcFVPK9ISgEB
+         kwtrdyT9DiU5K6zT/Kn0B9XgPlRvEud9qVpmR/1qw0j28wywsx2c2PWkYzM16laOcO
+         6IcPwrh93XdhQ==
+Date:   Sun, 30 Jan 2022 12:41:05 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Robert Hancock <robert.hancock@calian.com>
-Cc:     linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        michal.simek@xilinx.com, anand.ashok.dumbre@xilinx.com,
-        lars@metafoo.de, manish.narani@xilinx.com,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        Michael Tretter <m.tretter@pengutronix.de>
-Subject: Re: [PATCH 4/4] iio: adc: xilinx-ams: Fix single channel switching
- sequence
-Message-ID: <20220130123459.5d44c1ec@jic23-huawei>
-In-Reply-To: <20220120010246.3794962-5-robert.hancock@calian.com>
-References: <20220120010246.3794962-1-robert.hancock@calian.com>
-        <20220120010246.3794962-5-robert.hancock@calian.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org,
+        Jongpil Jung <jongpil19.jung@samsung.com>
+Subject: Re: [PATCH v2] iio: sx9360: fix iio event generation
+Message-ID: <20220130124105.23ed6bdb@jic23-huawei>
+In-Reply-To: <20220122213444.745152-1-gwendal@chromium.org>
+References: <20220122213444.745152-1-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,69 +46,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 19 Jan 2022 19:02:46 -0600
-Robert Hancock <robert.hancock@calian.com> wrote:
+On Sat, 22 Jan 2022 13:34:44 -0800
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Some of the AMS channels need to be read by switching into single-channel
-> mode from the normal polling sequence. There was a logic issue in this
-> switching code that could cause the first read of these channels to read
-> back as zero.
+> From: Jongpil Jung <jongpil19.jung@samsung.com>
 > 
-> It appears that the sequencer should be set back to default mode before
-> changing the channel selection, and the channel should be set before
-> switching the sequencer back into single-channel mode.
+> To convert SX9360 status register ["REG_STAT"], into a channel
+> index, we need to right shift by |stat_offset|, not left shift.
+> Also the PROXSTAT bit (3) is for channel 1 (PHM, Phase Measured), not (PHR,
+> Phase Reference, channel 0), so the offset is 2 instead of 3.
 > 
-> Also, write 1 to the EOC bit in the status register to clear it before
-> waiting for it to become set, so that we actually wait for a new
-> conversion to complete, and don't proceed based on a previous conversion
-> completing.
-> 
-> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-> Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+> Fixes: f75095753 ("iio:proximity:sx9360: Add sx9360 support")
+Should be 12 chars of the hash.
 
-Looking for an Ack from Anand or someone else familiar with this device.
+Also, tree rebased at rc1 so it's wrong anyway :)
+
+Fixed it up and applied to the togreg branch of iio.git and pushed
+out as testing for 0-day to see if it can find anything else.
 
 Thanks,
 
 Jonathan
 
-
+> Signed-off-by: Jongpil Jung <jongpil19.jung@samsung.com>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > ---
->  drivers/iio/adc/xilinx-ams.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> Changes since v1:
+> - Change title to highlight the patch is a fix.
+> - Put "Fixes:" tag in the commit message footer
 > 
-> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-> index 199027c93cdc..7bf097fa10cb 100644
-> --- a/drivers/iio/adc/xilinx-ams.c
-> +++ b/drivers/iio/adc/xilinx-ams.c
-> @@ -530,14 +530,18 @@ static int ams_enable_single_channel(struct ams *ams, unsigned int offset)
->  		return -EINVAL;
+>  drivers/iio/proximity/sx9360.c    | 2 +-
+>  drivers/iio/proximity/sx_common.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
+> index 6fd6561bb6f5b8..3ebb30c8a4f61d 100644
+> --- a/drivers/iio/proximity/sx9360.c
+> +++ b/drivers/iio/proximity/sx9360.c
+> @@ -775,7 +775,7 @@ static const struct sx_common_chip_info sx9360_chip_info = {
+>  	.reg_reset = SX9360_REG_RESET,
+>  
+>  	.mask_enable_chan = SX9360_REG_GNRL_CTRL0_PHEN_MASK,
+> -	.stat_offset = 3,
+> +	.stat_offset = 2,
+>  	.num_channels = SX9360_NUM_CHANNELS,
+>  	.num_default_regs = ARRAY_SIZE(sx9360_default_regs),
+>  
+> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+> index ac8fd5920481cb..a7c07316a0a91e 100644
+> --- a/drivers/iio/proximity/sx_common.c
+> +++ b/drivers/iio/proximity/sx_common.c
+> @@ -87,7 +87,7 @@ static void sx_common_push_events(struct iio_dev *indio_dev)
+>  		return;
 >  	}
 >  
-> -	/* set single channel, sequencer off mode */
-> +	/* put sysmon in a soft reset to change the sequence */
->  	ams_ps_update_reg(ams, AMS_REG_CONFIG1, AMS_CONF1_SEQ_MASK,
-> -			  AMS_CONF1_SEQ_SINGLE_CHANNEL);
-> +			  AMS_CONF1_SEQ_DEFAULT);
+> -	val <<= data->chip_info->stat_offset;
+> +	val >>= data->chip_info->stat_offset;
 >  
->  	/* write the channel number */
->  	ams_ps_update_reg(ams, AMS_REG_CONFIG0, AMS_CONF0_CHANNEL_NUM_MASK,
->  			  channel_num);
->  
-> +	/* set single channel, sequencer off mode */
-> +	ams_ps_update_reg(ams, AMS_REG_CONFIG1, AMS_CONF1_SEQ_MASK,
-> +			  AMS_CONF1_SEQ_SINGLE_CHANNEL);
-> +
->  	return 0;
->  }
->  
-> @@ -551,6 +555,8 @@ static int ams_read_vcc_reg(struct ams *ams, unsigned int offset, u32 *data)
->  	if (ret)
->  		return ret;
->  
-> +	/* clear end-of-conversion flag, wait for next conversion to complete */
-> +	writel(expect, ams->base + AMS_ISR_1);
->  	ret = readl_poll_timeout(ams->base + AMS_ISR_1, reg, (reg & expect),
->  				 AMS_INIT_POLL_TIME_US, AMS_INIT_TIMEOUT_US);
->  	if (ret)
+>  	/*
+>  	 * Only iterate over channels with changes on proximity status that have
 

@@ -2,44 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38AE04A389A
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F040F4A389B
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:26:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355927AbiA3T0g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 14:26:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355929AbiA3T0d (ORCPT
+        id S1355933AbiA3T0j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 14:26:39 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:36230 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355930AbiA3T0d (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:33 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FC92C061714
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 11:26:32 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2FCECB829AF
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80206C340F2;
-        Sun, 30 Jan 2022 19:26:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF007612EE
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916BCC340E4;
+        Sun, 30 Jan 2022 19:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643570790;
-        bh=SPHkKQlgXlzBrZWPaT/PXgHi0Iipk9QCgoSKA4bsFxc=;
+        s=k20201202; t=1643570792;
+        bh=D6o0UcSaxBEyVO5E+Ksuu1qudFjZG2rtmMoA6FguGyg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gKqErSli89o513tOrNv+NrYNgGQY86+aZ4Nk2sQBbVgea2z0JNacDD2iFkTiRcpFo
-         qU8xZeu9ADTTvz98kW4HioStcXAKx8gvk/zuIl1c3GfscVH0VaiwZVUfmKPdyXuDlz
-         vGlNAp/6SJOUULxQ7hxp4LSwDdPZU/zU2x/GT0+sMQB2V36Go6MrmG5DJHzicpiirc
-         do1Kf3jQWx4wHs7lRCmoDWe5vl2SWEbCNo2AGK4zaLJkmsxnEtG2/TPAjHvOcS/MQJ
-         WXmv86sECHzkCiEJrMy70wF1d3n4pHTXdXAojvXy/5cyZSZ8tMK0ITVCatCKqkdIwT
-         ZRB1dmqrX4tjA==
+        b=DBHJAXSNPOoXLnq2VzCpBfAufb/KnaVONqsMFK3L7zBKVOXtMfHLWFyGHhxSrtZ6J
+         mBt/TJZ21zYeAbiHdp8Qb0/yCcM5yxVkXyzebSNjkDuNDLXvMX9Gc3oUx/aYuHVUc+
+         N+8NJJc953T/tKIXOOpYuv5YMzu+Js/V/0Z9DZHygHH3mjzlRU9WuIFj7vSyM4z5rb
+         IoZFREB89w6u30rHDpZnk7M10uGwquPalXRUaT1dNgpBi2z8Cg8WkCGugN2j9OPfuj
+         2XH/VON+bPrebze1yiiPDHW0gsDArU2GC5yOTbsEtc/0Yf134LM60JOt0eo/ejvXRF
+         pxoll7ZZd9pHw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 26/50] iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun, 30 Jan 2022 19:31:23 +0000
-Message-Id: <20220130193147.279148-27-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Vaishnav M A <vaishnav@beagleboard.org>
+Subject: [PATCH v3 27/50] iio:light:tsl2563: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun, 30 Jan 2022 19:31:24 +0000
+Message-Id: <20220130193147.279148-28-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220130193147.279148-1-jic23@kernel.org>
 References: <20220130193147.279148-1-jic23@kernel.org>
@@ -59,43 +57,46 @@ Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Vaishnav M A <vaishnav@beagleboard.org>
 ---
- drivers/iio/light/tcs3472.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/iio/light/tsl2563.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/light/tcs3472.c b/drivers/iio/light/tcs3472.c
-index 371c6a39a165..823435f59bb6 100644
---- a/drivers/iio/light/tcs3472.c
-+++ b/drivers/iio/light/tcs3472.c
-@@ -572,7 +572,6 @@ static int tcs3472_remove(struct i2c_client *client)
+diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+index 5bf2bfbc5379..0a278eea36ca 100644
+--- a/drivers/iio/light/tsl2563.c
++++ b/drivers/iio/light/tsl2563.c
+@@ -814,7 +814,6 @@ static int tsl2563_remove(struct i2c_client *client)
  	return 0;
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int tcs3472_suspend(struct device *dev)
+ static int tsl2563_suspend(struct device *dev)
  {
- 	struct tcs3472_data *data = iio_priv(i2c_get_clientdata(
-@@ -598,9 +597,9 @@ static int tcs3472_resume(struct device *dev)
- 
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+@@ -857,11 +856,8 @@ static int tsl2563_resume(struct device *dev)
  	return ret;
  }
+ 
+-static SIMPLE_DEV_PM_OPS(tsl2563_pm_ops, tsl2563_suspend, tsl2563_resume);
+-#define TSL2563_PM_OPS (&tsl2563_pm_ops)
+-#else
+-#define TSL2563_PM_OPS NULL
 -#endif
++static DEFINE_SIMPLE_DEV_PM_OPS(tsl2563_pm_ops, tsl2563_suspend,
++				tsl2563_resume);
  
--static SIMPLE_DEV_PM_OPS(tcs3472_pm_ops, tcs3472_suspend, tcs3472_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(tcs3472_pm_ops, tcs3472_suspend,
-+				tcs3472_resume);
- 
- static const struct i2c_device_id tcs3472_id[] = {
- 	{ "tcs3472", 0 },
-@@ -611,7 +610,7 @@ MODULE_DEVICE_TABLE(i2c, tcs3472_id);
- static struct i2c_driver tcs3472_driver = {
+ static const struct i2c_device_id tsl2563_id[] = {
+ 	{ "tsl2560", 0 },
+@@ -885,7 +881,7 @@ static struct i2c_driver tsl2563_i2c_driver = {
  	.driver = {
- 		.name	= TCS3472_DRV_NAME,
--		.pm	= &tcs3472_pm_ops,
-+		.pm	= pm_sleep_ptr(&tcs3472_pm_ops),
+ 		.name	 = "tsl2563",
+ 		.of_match_table = tsl2563_of_match,
+-		.pm	= TSL2563_PM_OPS,
++		.pm	= pm_sleep_ptr(&tsl2563_pm_ops),
  	},
- 	.probe		= tcs3472_probe,
- 	.remove		= tcs3472_remove,
+ 	.probe		= tsl2563_probe,
+ 	.remove		= tsl2563_remove,
 -- 
 2.35.1
 

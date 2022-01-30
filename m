@@ -2,44 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A8C964A38A9
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6684A38AA
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:27:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355949AbiA3T1Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 14:27:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35688 "EHLO
+        id S1355942AbiA3T13 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 14:27:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355942AbiA3T1G (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:27:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B7C3C061741
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 11:27:06 -0800 (PST)
+        with ESMTP id S1355963AbiA3T1J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:27:09 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F92C061714
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 11:27:08 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B072E612BD
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:27:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3BAC340EB;
-        Sun, 30 Jan 2022 19:27:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8DD0AB829A0
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:27:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AC4C340EB;
+        Sun, 30 Jan 2022 19:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643570825;
-        bh=GpdeolEp5zO3pXt24sEBL8tMcS13ZpqLXyPt0BHefFs=;
+        s=k20201202; t=1643570827;
+        bh=7iRAGDYzZh09h2kvmp+uyhuvn/hNl7b8gogCScyy5R4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lLfoxn5PeOML6tR5vvS8Sx5jCJWNWSTV+wjbwvev8cDgDyEUkV2JBI2U/3TyqdGAm
-         fM1jRc76Jo/7VJAK7QwzZRpm2Wmxan2hQllSGUny69G6W1OnyXLcnwHWb2Xm63x0aT
-         bN/Xcm2bG+oTV3B/5emRdcWkKhQKz2oi+mxExGVDlf+kvsWOnW8rjVxyXv/8qZ5+aL
-         CpT4VArDqMc9WmlO3Rlt7y+nMnjK4sOBz3kCSkQVJpWtL1FuwrmFgJdLhmNG16pLp5
-         YMTHElO6HtXr3bQ7H2+LFsV/RnmbZiT75mzljWdGF0Vx6FjIvWnP8qw5OurPMuxDqc
-         3++DMS0YeFK/Q==
+        b=JF9T1ixKrlx4kIkBdlz/rAXh9zWuAl2XgAq0FCxV8asviNQwhzk2CzTOrMqdtM1RF
+         LHdExmqsFY7ALiIWu2zPJKjACkAeOX7pDd0qhg3Cz33+/+AQRXP0SdYKnGJzKubJE7
+         XguD5a/Yrjwo24E0cZCz91kOznx2/UgtIhPRzrqv5IZ7Sv1FrfRN17cCGZi45rAyTl
+         qBDsLhlaOP0CGj6GGuViFpxRMX0rx+hWWsLKGBqfYEOpCPepwjIwHz3Dp+q1dY2zgF
+         lS5icW4v25ZDrHuEo+ysUZbv6jWI5xrtJ/5hmuXHFIzFGzc2JBvdcb40afrIrM0rwn
+         kCJhwFyHYAWjA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 41/50] iio:imu:kmx61: Switch from CONFIG_PM* guards to pm_ptr() etc
-Date:   Sun, 30 Jan 2022 19:31:38 +0000
-Message-Id: <20220130193147.279148-42-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Crt Mori <cmo@melexis.com>
+Subject: [PATCH v3 42/50] iio:temperature:mlx90614: Switch from CONFIG_PM* guards to pm_ptr() etc
+Date:   Sun, 30 Jan 2022 19:31:39 +0000
+Message-Id: <20220130193147.279148-43-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220130193147.279148-1-jic23@kernel.org>
 References: <20220130193147.279148-1-jic23@kernel.org>
@@ -59,55 +60,57 @@ Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Crt Mori <cmo@melexis.com>
 ---
- drivers/iio/imu/kmx61.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/iio/temperature/mlx90614.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
-index 1dabfd615dab..20ac1b4c8923 100644
---- a/drivers/iio/imu/kmx61.c
-+++ b/drivers/iio/imu/kmx61.c
-@@ -1440,7 +1440,6 @@ static int kmx61_remove(struct i2c_client *client)
- 	return 0;
- }
+diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
+index afcb10ea7c44..c253a5315988 100644
+--- a/drivers/iio/temperature/mlx90614.c
++++ b/drivers/iio/temperature/mlx90614.c
+@@ -600,7 +600,6 @@ static const struct of_device_id mlx90614_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mlx90614_of_match);
  
 -#ifdef CONFIG_PM_SLEEP
- static int kmx61_suspend(struct device *dev)
+ static int mlx90614_pm_suspend(struct device *dev)
  {
- 	int ret;
-@@ -1466,9 +1465,7 @@ static int kmx61_resume(struct device *dev)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+@@ -630,9 +629,7 @@ static int mlx90614_pm_resume(struct device *dev)
  
- 	return kmx61_set_mode(data, stby, KMX61_ACC | KMX61_MAG, true);
+ 	return 0;
  }
 -#endif
  
 -#ifdef CONFIG_PM
- static int kmx61_runtime_suspend(struct device *dev)
+ static int mlx90614_pm_runtime_suspend(struct device *dev)
  {
- 	struct kmx61_data *data = i2c_get_clientdata(to_i2c_client(dev));
-@@ -1493,11 +1490,10 @@ static int kmx61_runtime_resume(struct device *dev)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+@@ -648,19 +645,18 @@ static int mlx90614_pm_runtime_resume(struct device *dev)
  
- 	return kmx61_set_mode(data, stby, KMX61_ACC | KMX61_MAG, true);
+ 	return mlx90614_wakeup(data);
  }
 -#endif
  
- static const struct dev_pm_ops kmx61_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(kmx61_suspend, kmx61_resume)
--	SET_RUNTIME_PM_OPS(kmx61_runtime_suspend, kmx61_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(kmx61_suspend, kmx61_resume)
-+	RUNTIME_PM_OPS(kmx61_runtime_suspend, kmx61_runtime_resume, NULL)
+ static const struct dev_pm_ops mlx90614_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(mlx90614_pm_suspend, mlx90614_pm_resume)
+-	SET_RUNTIME_PM_OPS(mlx90614_pm_runtime_suspend,
+-			   mlx90614_pm_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(mlx90614_pm_suspend, mlx90614_pm_resume)
++	RUNTIME_PM_OPS(mlx90614_pm_runtime_suspend,
++		       mlx90614_pm_runtime_resume, NULL)
  };
  
- static const struct acpi_device_id kmx61_acpi_match[] = {
-@@ -1518,7 +1514,7 @@ static struct i2c_driver kmx61_driver = {
+ static struct i2c_driver mlx90614_driver = {
  	.driver = {
- 		.name = KMX61_DRV_NAME,
- 		.acpi_match_table = ACPI_PTR(kmx61_acpi_match),
--		.pm = &kmx61_pm_ops,
-+		.pm = pm_ptr(&kmx61_pm_ops),
+ 		.name	= "mlx90614",
+ 		.of_match_table = mlx90614_of_match,
+-		.pm	= &mlx90614_pm_ops,
++		.pm	= pm_ptr(&mlx90614_pm_ops),
  	},
- 	.probe		= kmx61_probe,
- 	.remove		= kmx61_remove,
+ 	.probe = mlx90614_probe,
+ 	.remove = mlx90614_remove,
 -- 
 2.35.1
 

@@ -2,43 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C0EB4A38A1
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67BEE4A38A2
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 20:27:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355941AbiA3T0v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 14:26:51 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:36368 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355943AbiA3T0q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:46 -0500
+        id S1355947AbiA3T1E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 14:27:04 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:51788 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355948AbiA3T0v (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 14:26:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DF30612EA
-        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC318C340E4;
-        Sun, 30 Jan 2022 19:26:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6A507B829AB
+        for <linux-iio@vger.kernel.org>; Sun, 30 Jan 2022 19:26:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59720C340F0;
+        Sun, 30 Jan 2022 19:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643570805;
-        bh=+q5gqWcdlRebWYQMvEFdBg5H0UMHQnFpvB2Dvl7ssd8=;
+        s=k20201202; t=1643570808;
+        bh=rtGOhhdzD+LUzMFwpwxVa0UpJtDUmyYavEfyS6k/r/8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=StrM9r37O5/5drV1JYHkZ53a8bNg0I2ykWqDOOumsi3f1vG4pDR8ql9gOF75HDfiU
-         Q9Enopm8g3K6kS8AGm7KC75ifnCQFU9FP0JiSHkA8o+VP1f9w1U2mXOHNrl4U7OOPx
-         o3M2Wrujq7i5erwms45Dk8SYEkqgtvGCUbBUmBQhrDXty2NqsE3GKS0xvQA4WG7AT7
-         qROLZZAKP97fcydV9DbNGORzWT+wLlWseqVgnilJ0wfRica8c3eJ4ycvllIDuLK23t
-         4V8oqHEU43YIiXRprj/zYlLk2TbG8PCltMmy/D3kWJCbRr17dZxEZA3fMzTc0xnaTC
-         8Ho6x0q3Qltsw==
+        b=hDrb7TZ+rsghkaeC6uaWzKsHIUZAFYTFzBd4WhVcC/aAVmDnJ3VfBAOmGRdED3nVC
+         8NefCb16lqxXUHHXiLa7GAyE1GdmcdwagN+3qrSB0GW2xVB+Xm5hBMkl7/XLi7V/VL
+         LWj25P5RPkzdoe5N1xl1Hbh5SnrqnbZD6sYaD574wOEf6hGW9rtiHoiG5rA0JS+GGR
+         HzghDHy8t2qZbAEjLauhbopSF5OdGO2OiChhDu/dkrptOJe8lgbayE3YV52htim3p/
+         fwng1A3L4PIf1AWGdYsqOkgSRgGJIhZTUrLRKuhnOeWtkwtKzB7nTJjFDy7EOdPJmq
+         lWLb0NArEnJiQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Arnd Bergmann <arnd@arndb.de>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH v3 33/50] iio:proximity:as3935: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
-Date:   Sun, 30 Jan 2022 19:31:30 +0000
-Message-Id: <20220130193147.279148-34-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 34/50] iio:proximity:rfd77492: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr() etc
+Date:   Sun, 30 Jan 2022 19:31:31 +0000
+Message-Id: <20220130193147.279148-35-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220130193147.279148-1-jic23@kernel.org>
 References: <20220130193147.279148-1-jic23@kernel.org>
@@ -57,48 +55,44 @@ use of #ifdef based config guards.
 Removing instances of this approach from IIO also stops them being
 copied into new drivers.
 
-Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/proximity/as3935.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/iio/proximity/rfd77402.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
-index bd7595db31d4..420592a4956f 100644
---- a/drivers/iio/proximity/as3935.c
-+++ b/drivers/iio/proximity/as3935.c
-@@ -295,7 +295,6 @@ static void calibrate_as3935(struct as3935_state *st)
- 	as3935_write(st, AS3935_NFLWDTH, st->nflwdth_reg);
+diff --git a/drivers/iio/proximity/rfd77402.c b/drivers/iio/proximity/rfd77402.c
+index 0ae91963b570..cb80b3c9d073 100644
+--- a/drivers/iio/proximity/rfd77402.c
++++ b/drivers/iio/proximity/rfd77402.c
+@@ -295,7 +295,6 @@ static int rfd77402_probe(struct i2c_client *client,
+ 	return devm_iio_device_register(&client->dev, indio_dev);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int as3935_suspend(struct device *dev)
+ static int rfd77402_suspend(struct device *dev)
  {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-@@ -337,12 +336,7 @@ static int as3935_resume(struct device *dev)
- 	return ret;
+ 	return rfd77402_powerdown(to_i2c_client(dev));
+@@ -305,9 +304,9 @@ static int rfd77402_resume(struct device *dev)
+ {
+ 	return rfd77402_init(to_i2c_client(dev));
  }
- 
--static SIMPLE_DEV_PM_OPS(as3935_pm_ops, as3935_suspend, as3935_resume);
--#define AS3935_PM_OPS (&as3935_pm_ops)
--
--#else
--#define AS3935_PM_OPS NULL
 -#endif
-+static DEFINE_SIMPLE_DEV_PM_OPS(as3935_pm_ops, as3935_suspend, as3935_resume);
  
- static void as3935_stop_work(void *data)
- {
-@@ -472,7 +466,7 @@ static struct spi_driver as3935_driver = {
+-static SIMPLE_DEV_PM_OPS(rfd77402_pm_ops, rfd77402_suspend, rfd77402_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(rfd77402_pm_ops, rfd77402_suspend,
++				rfd77402_resume);
+ 
+ static const struct i2c_device_id rfd77402_id[] = {
+ 	{ "rfd77402", 0 },
+@@ -318,7 +317,7 @@ MODULE_DEVICE_TABLE(i2c, rfd77402_id);
+ static struct i2c_driver rfd77402_driver = {
  	.driver = {
- 		.name	= "as3935",
- 		.of_match_table = as3935_of_match,
--		.pm	= AS3935_PM_OPS,
-+		.pm	= pm_sleep_ptr(&as3935_pm_ops),
+ 		.name   = RFD77402_DRV_NAME,
+-		.pm     = &rfd77402_pm_ops,
++		.pm     = pm_sleep_ptr(&rfd77402_pm_ops),
  	},
- 	.probe		= as3935_probe,
- 	.id_table	= as3935_id,
+ 	.probe  = rfd77402_probe,
+ 	.id_table = rfd77402_id,
 -- 
 2.35.1
 

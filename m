@@ -2,96 +2,240 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17F034A36EA
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 15:50:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 382504A36DF
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 15:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355175AbiA3OuX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 09:50:23 -0500
-Received: from esa.microchip.iphmx.com ([68.232.154.123]:9743 "EHLO
-        esa.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347259AbiA3OuV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 09:50:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1643554222; x=1675090222;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FJIF3Ym7W2GedFgY8vVihKuSIe0hGh7F+YW1ik4rU9M=;
-  b=mzT+FV/bFRsEcTWmRd6N3DU3+HCqelvhRNEPWJCnEIGoOt2K8bnRP3MP
-   rNAAmVAGby4J3dXO3YTzMgPjGgxuNQMnemXTZR64fxJHNoI8g39H/BeN1
-   no5E4toAaIqqcU9O1TIN7E7LUryaNGHUe0JGQ8lohYh1Gu2zf+noQOlbJ
-   B30vN6WZCvGbnpvaVisz+UA2kljGial82/SnHKZoc+8nOJi3Y0OyLMhDm
-   lo/NXX2DjgWtFQglEk+wZ330qAk/RsC6cwiIM0eXsa5Zas3bmuG2L23ZK
-   mny03SK1ezkWii2HkgMASgPAAvpt+oLoo7S9+u4hLz87UYuv+gf17kVn3
-   A==;
-IronPort-SDR: 7bHwPrJtn3Cw+MpFB4tKb5ygCsHG0Yhs5iZOFISiS39dncdf9jmqdolJ+QF0/Cn8Hvp8FmOg/S
- fniARjOU6g2leBOeoXZ7dU5EcMUEVwgORXO+j7WMefheYnxFlAFMXiIrxkI9o9510l953bxDJP
- NEauPgQ9OCCzdU7ntN/PM3rvWuc6b/Jp43ML6py4FaPgbg/75A+4oWwkYZk7TUPLwDGAyXBBeP
- vcgLIgI+COovX/8dHF4iKJiYMe9ucEk/q36q0IB20opoIIiANxDGCw1m+L+A5YEkJ7+9kNrvrn
- esP+YSZbK++RKmeU8fccHskw
-X-IronPort-AV: E=Sophos;i="5.88,328,1635231600"; 
-   d="scan'208";a="147058778"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 30 Jan 2022 07:50:21 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.17; Sun, 30 Jan 2022 07:50:20 -0700
-Received: from ness.home (10.10.115.15) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2375.17 via Frontend
- Transport; Sun, 30 Jan 2022 07:50:18 -0700
-From:   <nicolas.ferre@microchip.com>
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: [PATCH 1/1] dt-bindings: iio: adc: at91-sama5d2: update maintainers entry
-Date:   Sun, 30 Jan 2022 15:50:08 +0100
-Message-ID: <6acdb66592baf395a77a431c0cb9a37b0f178097.1643554065.git.nicolas.ferre@microchip.com>
-X-Mailer: git-send-email 2.32.0
+        id S1355182AbiA3OqP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 09:46:15 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:54302 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355122AbiA3OpZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 09:45:25 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 077A9B82973;
+        Sun, 30 Jan 2022 14:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161E5C340E8;
+        Sun, 30 Jan 2022 14:45:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643553922;
+        bh=5HmiHVeprudoa5Q4aruSHZTv9jVzOD5vFnAOcy/m0zY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=clqj16mVniI09/7yffpGOBTFfPpUTpDqWQlRd3/1dJwTRc59CoU+T83nPom24EfHP
+         PkLBfWL98h0RRhSt4n15TlJCn7k9h45WnP4znvbXd2SqTQCCxDucrPt50HG603Pz3K
+         aAJLZqfYvbcvMOOJsLwtqFc9+RUSkmu2T/+awMwHtY9w+3ULoyEiKDQ/sEAMuDnYQ9
+         8ILIa8FkvGRzd+CdpujN30LxDC63HjGVhQq7HAwTm6nTKiAz+eciTJg1kmB9zo+yV2
+         cc7qi1JAcIc0abxsy9E/DL+FHUrbs8kJdWrCn8cPqnK0qkYK6Yn5UNqv2Fr37ryzVG
+         TaEhoayOFrVVw==
+Date:   Sun, 30 Jan 2022 14:51:46 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Miaoqian Lin <linmq006@gmail.com>, adi.reus@gmail.com,
+        ardeleanalex@gmail.com, gwendal@chromium.org, lars@metafoo.de,
+        linus.walleij@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stephan@gerhold.net
+Subject: Re: [PATCH v2] iio: Fix error handling for PM
+Message-ID: <20220130145146.2d666289@jic23-huawei>
+In-Reply-To: <YdgrMwCkqzOG8j/j@smile.fi.intel.com>
+References: <YdWjHWowWXy01zaE@smile.fi.intel.com>
+        <20220106112309.16879-1-linmq006@gmail.com>
+        <YdgrMwCkqzOG8j/j@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+On Fri, 7 Jan 2022 13:59:47 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Update the maintainers entry to match the changes made back in
-mid-2020 with 853fa48717c2 ("MAINTAINERS: adc: at91-sama5d2_adc:
-remove myself as co-maintainer").
+> On Thu, Jan 06, 2022 at 11:23:09AM +0000, Miaoqian Lin wrote:
+> > The pm_runtime_enable will increase power disable depth.
+> > If the probe fails, we should use pm_runtime_disable() to balance
+> > pm_runtime_enable(). In the PM Runtime docs:
+> >     Drivers in ->remove() callback should undo the runtime PM changes done
+> >     in ->probe(). Usually this means calling pm_runtime_disable(),
+> >     pm_runtime_dont_use_autosuspend() etc.
+> > We should do this in error handling.
+> > 
+> > Fix this problem for the following drivers: bmc150, bmg160, kmx61,
+> > kxcj-1013, mma9551, mma9553.  
+> 
+> LGTM, FWIW,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
----
-Hi,
+Thanks,
 
-Patch for new MAINTAINERS entry is here:
-https://lore.kernel.org/linux-arm-kernel/23819d8baa635815d0893955197561fe4f044d5e.1643553501.git.nicolas.ferre@microchip.com/
+Jonathan
 
-Regards,
-  Nicolas
-
- Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
-index efed361215b4..9a2292e7defc 100644
---- a/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/atmel,sama5d2-adc.yaml
-@@ -7,7 +7,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: AT91 SAMA5D2 Analog to Digital Converter (ADC)
- 
- maintainers:
--  - Ludovic Desroches <ludovic.desroches@atmel.com>
-   - Eugen Hristev <eugen.hristev@microchip.com>
- 
- properties:
--- 
-2.32.0
+> 
+> > Fixes: 7d0ead5c3f00 ("iio: Reconcile operation order between iio_register/unregister and pm functions")
+> > Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> > ---
+> > Changes in v2:
+> > - fix the fixes tag
+> > - fix similar problems introduced by the same commit
+> > ---
+> >  drivers/iio/accel/bmc150-accel-core.c  | 5 ++++-
+> >  drivers/iio/accel/kxcjk-1013.c         | 5 ++++-
+> >  drivers/iio/accel/mma9551.c            | 5 ++++-
+> >  drivers/iio/accel/mma9553.c            | 5 ++++-
+> >  drivers/iio/gyro/bmg160_core.c         | 5 ++++-
+> >  drivers/iio/imu/kmx61.c                | 5 ++++-
+> >  drivers/iio/magnetometer/bmc150_magn.c | 5 +++--
+> >  7 files changed, 27 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+> > index b0678c351e82..c3a2b4c0b3b2 100644
+> > --- a/drivers/iio/accel/bmc150-accel-core.c
+> > +++ b/drivers/iio/accel/bmc150-accel-core.c
+> > @@ -1783,11 +1783,14 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(dev, "Unable to register iio device\n");
+> > -		goto err_trigger_unregister;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	return 0;
+> >  
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(dev);
+> > +	pm_runtime_disable(dev);
+> >  err_trigger_unregister:
+> >  	bmc150_accel_unregister_triggers(data, BMC150_ACCEL_TRIGGERS - 1);
+> >  err_buffer_cleanup:
+> > diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+> > index 24c9387c2968..ba6c8ca488b1 100644
+> > --- a/drivers/iio/accel/kxcjk-1013.c
+> > +++ b/drivers/iio/accel/kxcjk-1013.c
+> > @@ -1589,11 +1589,14 @@ static int kxcjk1013_probe(struct i2c_client *client,
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(&client->dev, "unable to register iio device\n");
+> > -		goto err_buffer_cleanup;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	return 0;
+> >  
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(&client->dev);
+> > +	pm_runtime_disable(&client->dev);
+> >  err_buffer_cleanup:
+> >  	iio_triggered_buffer_cleanup(indio_dev);
+> >  err_trigger_unregister:
+> > diff --git a/drivers/iio/accel/mma9551.c b/drivers/iio/accel/mma9551.c
+> > index 4c359fb05480..c53a3398b14c 100644
+> > --- a/drivers/iio/accel/mma9551.c
+> > +++ b/drivers/iio/accel/mma9551.c
+> > @@ -495,11 +495,14 @@ static int mma9551_probe(struct i2c_client *client,
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(&client->dev, "unable to register iio device\n");
+> > -		goto out_poweroff;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	return 0;
+> >  
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(&client->dev);
+> > +	pm_runtime_disable(&client->dev);
+> >  out_poweroff:
+> >  	mma9551_set_device_state(client, false);
+> >  
+> > diff --git a/drivers/iio/accel/mma9553.c b/drivers/iio/accel/mma9553.c
+> > index ba3ecb3b57dc..1599b75724d4 100644
+> > --- a/drivers/iio/accel/mma9553.c
+> > +++ b/drivers/iio/accel/mma9553.c
+> > @@ -1134,12 +1134,15 @@ static int mma9553_probe(struct i2c_client *client,
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(&client->dev, "unable to register iio device\n");
+> > -		goto out_poweroff;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	dev_dbg(&indio_dev->dev, "Registered device %s\n", name);
+> >  	return 0;
+> >  
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(&client->dev);
+> > +	pm_runtime_disable(&client->dev);
+> >  out_poweroff:
+> >  	mma9551_set_device_state(client, false);
+> >  	return ret;
+> > diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+> > index 17b939a367ad..81a6d09788bd 100644
+> > --- a/drivers/iio/gyro/bmg160_core.c
+> > +++ b/drivers/iio/gyro/bmg160_core.c
+> > @@ -1188,11 +1188,14 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(dev, "unable to register iio device\n");
+> > -		goto err_buffer_cleanup;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	return 0;
+> >  
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(dev);
+> > +	pm_runtime_disable(dev);
+> >  err_buffer_cleanup:
+> >  	iio_triggered_buffer_cleanup(indio_dev);
+> >  err_trigger_unregister:
+> > diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
+> > index 1dabfd615dab..f89724481df9 100644
+> > --- a/drivers/iio/imu/kmx61.c
+> > +++ b/drivers/iio/imu/kmx61.c
+> > @@ -1385,7 +1385,7 @@ static int kmx61_probe(struct i2c_client *client,
+> >  	ret = iio_device_register(data->acc_indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(&client->dev, "Failed to register acc iio device\n");
+> > -		goto err_buffer_cleanup_mag;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	ret = iio_device_register(data->mag_indio_dev);
+> > @@ -1398,6 +1398,9 @@ static int kmx61_probe(struct i2c_client *client,
+> >  
+> >  err_iio_unregister_acc:
+> >  	iio_device_unregister(data->acc_indio_dev);
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(&client->dev);
+> > +	pm_runtime_disable(&client->dev);
+> >  err_buffer_cleanup_mag:
+> >  	if (client->irq > 0)
+> >  		iio_triggered_buffer_cleanup(data->mag_indio_dev);
+> > diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+> > index f96f53175349..3d4d21f979fa 100644
+> > --- a/drivers/iio/magnetometer/bmc150_magn.c
+> > +++ b/drivers/iio/magnetometer/bmc150_magn.c
+> > @@ -962,13 +962,14 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
+> >  	ret = iio_device_register(indio_dev);
+> >  	if (ret < 0) {
+> >  		dev_err(dev, "unable to register iio device\n");
+> > -		goto err_disable_runtime_pm;
+> > +		goto err_pm_cleanup;
+> >  	}
+> >  
+> >  	dev_dbg(dev, "Registered device %s\n", name);
+> >  	return 0;
+> >  
+> > -err_disable_runtime_pm:
+> > +err_pm_cleanup:
+> > +	pm_runtime_dont_use_autosuspend(dev);
+> >  	pm_runtime_disable(dev);
+> >  err_buffer_cleanup:
+> >  	iio_triggered_buffer_cleanup(indio_dev);
+> > -- 
+> > 2.17.1
+> >   
+> 
 

@@ -2,36 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26ED54A3690
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 15:04:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 471824A3694
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 15:05:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241831AbiA3OE2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 09:04:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49818 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237553AbiA3OE1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 09:04:27 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F0ABC061714;
-        Sun, 30 Jan 2022 06:04:27 -0800 (PST)
+        id S1354945AbiA3OFs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 09:05:48 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:49928 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237553AbiA3OFs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 09:05:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE9B1611CB;
-        Sun, 30 Jan 2022 14:04:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AADEC340E4;
-        Sun, 30 Jan 2022 14:04:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 351F761193;
+        Sun, 30 Jan 2022 14:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6520BC340F0;
+        Sun, 30 Jan 2022 14:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643551466;
-        bh=V6j1bLnRiyoxNixikiAnOSimbdOAtXOBFRAv0m7JhRA=;
+        s=k20201202; t=1643551547;
+        bh=OO5FkFuFfJwcPYSFa+GXosL1yGNT8VeA5s9UGFeBx1I=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=asbqWx3OuGhPdWupvzhf0t1T+FBWU+bKyWOYD4kSu6Ue0mv7u0qxU1zniSNPnjleF
-         Gdc8lb6v0ztR4WDZLrf45fpDz5s8J0O32mT7JxgzmY2gN7EyWmV5hnUdABVrzXhZhP
-         XiMBhXabeeMcVhe1XZSkSjV8HZImS9K5s8kMIL9uBsrXS1Ejh0HFrQs6tCn0O2Yuov
-         ysbSCoJCkZNvVHedoD/VTjcwWLmGQ3vrdmL6IkjVuVoBGGvTyvd5s7tSimw6YSf+he
-         zRDsNeJ5y72yLA0XUIioOqxMcLYwRIhnnFulW9cjTQ/2az5Kv29cMLGNhe6kDGw8uO
-         0YfrZW57FniNg==
-Date:   Sun, 30 Jan 2022 14:10:48 +0000
+        b=SmsH8BbYG8IIVjPrFLxxIGPrjkIdheqTwz4j/ekOu7eBXOmeuVC9CpcQ5MXy9TbfT
+         n3MVebVg3aW+nmH908C1UFS1IXZlQTvt2Gsvh3V3kSKDTMBExDLBpnMms2+FF5m3CF
+         c9aNnRtZhPDM6dR/jDH0F1UKmR/rSYiyGD8WtJZ50CtGg/JbjV6s0Ht0XrAtivzhoH
+         5H/BYuMnLsnRxMtkwqobbDkjXql6yxt0DXftDS2RgDW41pChVuAQVzfa/hZBnkKgwe
+         tAvhp9ADSZ0Rssxewp8vr4hsnM3ueIWY0yqCKqz3e63YXqAKQIxc+D6JcoR5e4Qwc+
+         pIl+xBEfH2W6Q==
+Date:   Sun, 30 Jan 2022 14:12:11 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Samuel Holland <samuel@sholland.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -39,11 +36,12 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: accel: st_accel: Add support for Silan SC7A20
-Message-ID: <20220130141048.31be2554@jic23-huawei>
-In-Reply-To: <20220130034441.15474-4-samuel@sholland.org>
+Subject: Re: [PATCH 2/3] dt-bindings: iio: st: Add Silan SC7A20
+ accelerometer
+Message-ID: <20220130141211.19a61569@jic23-huawei>
+In-Reply-To: <20220130034441.15474-3-samuel@sholland.org>
 References: <20220130034441.15474-1-samuel@sholland.org>
-        <20220130034441.15474-4-samuel@sholland.org>
+        <20220130034441.15474-3-samuel@sholland.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,181 +50,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 29 Jan 2022 21:44:41 -0600
+On Sat, 29 Jan 2022 21:44:40 -0600
 Samuel Holland <samuel@sholland.org> wrote:
 
-> This chip appears to be a clone of the LIS2DH. The new description is a
-> copy of the LIS2DH's description with a different WAI value.
+> This chip appears to be a clone of the LIS2DH, as the register bit
+> definitions match exactly.
 > 
 > Signed-off-by: Samuel Holland <samuel@sholland.org>
-Hi Samuel,
+> ---
+> 
+>  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> index 71de5631ebae..70f755041d8a 100644
+> --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> @@ -24,6 +24,7 @@ properties:
+>      oneOf:
+>        - description: STMicroelectronics Accelerometers
 
-This is nasty as 0x11 is a valid who am I for an LIS3DHH which is a very
-different device.
-
-One request inline for a bit more info in the code about what this device
-is etc.  I've found a Chinese data sheet on one of the datasheet aggregator
-sites.
-
-If you know of a stable location to add a
-Datasheet:
-tag to this patch that would also be helpful.
+It's not an STMicroelectronics part, so add a new block for silan ones.
 
 Thanks,
 
 Jonathan
 
-> ---
-> 
->  drivers/iio/accel/st_accel.h      |  2 +
->  drivers/iio/accel/st_accel_core.c | 79 +++++++++++++++++++++++++++++++
->  drivers/iio/accel/st_accel_i2c.c  |  5 ++
->  3 files changed, 86 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
-> index 8750dea56fcb..00e056c21bfc 100644
-> --- a/drivers/iio/accel/st_accel.h
-> +++ b/drivers/iio/accel/st_accel.h
-> @@ -36,6 +36,7 @@ enum st_accel_type {
->  	LIS3DHH,
->  	LIS2DE12,
->  	LIS2HH12,
-> +	SC7A20,
->  	ST_ACCEL_MAX,
->  };
->  
-> @@ -61,6 +62,7 @@ enum st_accel_type {
->  #define LIS3DE_ACCEL_DEV_NAME		"lis3de"
->  #define LIS2DE12_ACCEL_DEV_NAME		"lis2de12"
->  #define LIS2HH12_ACCEL_DEV_NAME		"lis2hh12"
-> +#define SC7A20_ACCEL_DEV_NAME		"sc7a20"
->  
->  #ifdef CONFIG_IIO_BUFFER
->  int st_accel_allocate_ring(struct iio_dev *indio_dev);
-> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-> index 31ea19d0ba71..d9aa0ff1922b 100644
-> --- a/drivers/iio/accel/st_accel_core.c
-> +++ b/drivers/iio/accel/st_accel_core.c
-> @@ -1087,6 +1087,85 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
->  		.multi_read_bit = true,
->  		.bootime = 2,
->  	},
-> +	{
 
-Please add a comment here about the fact it seems to be a clone of the LIS2DH
-despite the wrong WAI.
-
-It's worth noting that a good part of the maintenance of this driver is
-done by ST employees who are probably less than happy with seeing
-a clone (with bugs) supported.  So support is likely to be somewhat best
-effort / not going to deliberately break support for this part but no
-means to test it. Hopefully we'll remember to cc you to test anything new added to
-the driver.  Clones aren't always perfect!
-
-Jonathan
-
-> +		.wai = 0x11,
-> +		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-> +		.sensors_supported = {
-> +			[0] = SC7A20_ACCEL_DEV_NAME,
-> +		},
-> +		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
-> +		.odr = {
-> +			.addr = 0x20,
-> +			.mask = 0xf0,
-> +			.odr_avl = {
-> +				{ .hz = 1, .value = 0x01, },
-> +				{ .hz = 10, .value = 0x02, },
-> +				{ .hz = 25, .value = 0x03, },
-> +				{ .hz = 50, .value = 0x04, },
-> +				{ .hz = 100, .value = 0x05, },
-> +				{ .hz = 200, .value = 0x06, },
-> +				{ .hz = 400, .value = 0x07, },
-> +				{ .hz = 1600, .value = 0x08, },
-> +			},
-> +		},
-> +		.pw = {
-> +			.addr = 0x20,
-> +			.mask = 0xf0,
-> +			.value_off = ST_SENSORS_DEFAULT_POWER_OFF_VALUE,
-> +		},
-> +		.enable_axis = {
-> +			.addr = ST_SENSORS_DEFAULT_AXIS_ADDR,
-> +			.mask = ST_SENSORS_DEFAULT_AXIS_MASK,
-> +		},
-> +		.fs = {
-> +			.addr = 0x23,
-> +			.mask = 0x30,
-> +			.fs_avl = {
-> +				[0] = {
-> +					.num = ST_ACCEL_FS_AVL_2G,
-> +					.value = 0x00,
-> +					.gain = IIO_G_TO_M_S_2(1000),
-> +				},
-> +				[1] = {
-> +					.num = ST_ACCEL_FS_AVL_4G,
-> +					.value = 0x01,
-> +					.gain = IIO_G_TO_M_S_2(2000),
-> +				},
-> +				[2] = {
-> +					.num = ST_ACCEL_FS_AVL_8G,
-> +					.value = 0x02,
-> +					.gain = IIO_G_TO_M_S_2(4000),
-> +				},
-> +				[3] = {
-> +					.num = ST_ACCEL_FS_AVL_16G,
-> +					.value = 0x03,
-> +					.gain = IIO_G_TO_M_S_2(12000),
-> +				},
-> +			},
-> +		},
-> +		.bdu = {
-> +			.addr = 0x23,
-> +			.mask = 0x80,
-> +		},
-> +		.drdy_irq = {
-> +			.int1 = {
-> +				.addr = 0x22,
-> +				.mask = 0x10,
-> +			},
-> +			.addr_ihl = 0x25,
-> +			.mask_ihl = 0x02,
-> +			.stat_drdy = {
-> +				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
-> +				.mask = 0x07,
-> +			},
-> +		},
-> +		.sim = {
-> +			.addr = 0x23,
-> +			.value = BIT(0),
-> +		},
-> +		.multi_read_bit = true,
-> +		.bootime = 2,
-> +	},
->  };
->  
->  /* Default accel DRDY is available on INT1 pin */
-> diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
-> index c0ce78eebad9..7f5888570e87 100644
-> --- a/drivers/iio/accel/st_accel_i2c.c
-> +++ b/drivers/iio/accel/st_accel_i2c.c
-> @@ -107,6 +107,10 @@ static const struct of_device_id st_accel_of_match[] = {
->  		.compatible = "st,lis2hh12",
->  		.data = LIS2HH12_ACCEL_DEV_NAME,
->  	},
-> +	{
-> +		.compatible = "silan,sc7a20",
-> +		.data = SC7A20_ACCEL_DEV_NAME,
-> +	},
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, st_accel_of_match);
-> @@ -142,6 +146,7 @@ static const struct i2c_device_id st_accel_id_table[] = {
->  	{ LIS3DE_ACCEL_DEV_NAME },
->  	{ LIS2DE12_ACCEL_DEV_NAME },
->  	{ LIS2HH12_ACCEL_DEV_NAME },
-> +	{ SC7A20_ACCEL_DEV_NAME },
->  	{},
->  };
->  MODULE_DEVICE_TABLE(i2c, st_accel_id_table);
+>          enum:
+> +          - silan,sc7a20
+>            - st,h3lis331dl-accel
+>            - st,lis2de12
+>            - st,lis2dw12
 

@@ -2,42 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 231BB4A364B
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB5B4A3657
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jan 2022 13:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245066AbiA3Mjp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Jan 2022 07:39:45 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:58980 "EHLO
+        id S1354805AbiA3Mrz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Jan 2022 07:47:55 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:60180 "EHLO
         ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240805AbiA3Mjo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:39:44 -0500
+        with ESMTP id S1354798AbiA3Mrt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Jan 2022 07:47:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id ED5B3B80DE4;
-        Sun, 30 Jan 2022 12:39:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CB5C340E4;
-        Sun, 30 Jan 2022 12:39:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 196FAB82923;
+        Sun, 30 Jan 2022 12:47:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6ABC340E4;
+        Sun, 30 Jan 2022 12:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643546381;
-        bh=CCjMch+EUmAZfUmn7YMzwEFlRI9krRM19G03S8jDpeE=;
+        s=k20201202; t=1643546866;
+        bh=aVDc8Yu/ogmHGWUx29IlMTDDegp/e73DqnCrg8ODuZM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ml5ctTiyE2lQeT+deZMjTojb/7iwZ/92VZ5TjXgP+8jDFad9BdPut9P4/umVczP1u
-         rCTjqQaNBlFDQ6AZiheWhS3qFeoYkQaAtSLv60yjSfehlpbxFFAedcPbA88jOUtFOA
-         GcyhD25dXwf4wQ3O9/NjQ0ubiGKliE6Dg5Yi0KtExEjbPMUea073ux+IHkweNQNTja
-         16e1adPuWedXtwwvm/haQdv6WLTrKEntRm3TBduZrdQ3QN+23Tn/RrKVNChcojkrVM
-         0jqhZGTTeWUbzzQF+K/9ggNLqDfU2VarR5CLMR3X+XhZlRf85JqUAczEiE1zQ42p0N
-         oUv9oyzv5MUiw==
-Date:   Sun, 30 Jan 2022 12:46:05 +0000
+        b=Nq98CGrIZ9nAbhUKlKnlO1se4qC21zkur0zkN9RF0QmQi7sRv3hgrCPDO3KeXkk/N
+         LwBhir3pOpKJ/eYM+PMrYYsBVEgUJ715DysFda3xnH4J8wHJLxPsSvcRDVvUp+Nuek
+         VdiLYIxlTlaLWEgDRGPFTxoCkk8BsMe4ql2/Ok1jVsBoIwotEswkzlZAkYtMKOiTFU
+         Nk+Twtf1OSlTXocd5i6I+l6Wm6/wIxVDa/yDzA5C1yegc297stc0eESw2yjI/vpWuz
+         mruHdwN6FwQX77xQckDBK4qNhwh91pAeUCwpzQHpovNMO4iHJ4R+CiMtLpoK2esNSu
+         /GpbCT5mXKvWw==
+Date:   Sun, 30 Jan 2022 12:54:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Robert Hancock <robert.hancock@calian.com>
-Cc:     linux-iio@vger.kernel.org, anand.ashok.dumbre@xilinx.com,
-        lars@metafoo.de, robh+dt@kernel.org, michal.simek@xilinx.com,
-        manish.narani@xilinx.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] Xilinx AMS fixes
-Message-ID: <20220130124605.6268bfc5@jic23-huawei>
-In-Reply-To: <20220127173450.3684318-1-robert.hancock@calian.com>
-References: <20220127173450.3684318-1-robert.hancock@calian.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Yury Norov <yury.norov@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        David Laight <David.Laight@aculab.com>,
+        Joe Perches <joe@perches.com>, Dennis Zhou <dennis@kernel.org>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Alexey Klimov <aklimov@redhat.com>,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 29/54] drivers/iio: replace bitmap_weight() with
+ bitmap_weight_{eq,gt} where appropriate
+Message-ID: <20220130125408.0cca0b66@jic23-huawei>
+In-Reply-To: <Ye6fsynB1/q0ZLui@smile.fi.intel.com>
+References: <20220123183925.1052919-1-yury.norov@gmail.com>
+        <20220123183925.1052919-30-yury.norov@gmail.com>
+        <Ye6fsynB1/q0ZLui@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,30 +62,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 27 Jan 2022 11:34:46 -0600
-Robert Hancock <robert.hancock@calian.com> wrote:
+On Mon, 24 Jan 2022 14:46:43 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Various fixes for the Xilinx AMS driver.
+> On Sun, Jan 23, 2022 at 10:39:00AM -0800, Yury Norov wrote:
+> > drivers/iio calls bitmap_weight() to compare the weight of bitmap with
+> > a given number. We can do it more efficiently with bitmap_weight_{eq, gt}
+> > because conditional bitmap_weight may stop traversing the bitmap earlier,
+> > as soon as condition is met.  
 > 
-> Changes since v1:
-> -drop addition to ZynqMP device tree, will be submitted elsewhere
-> -add patch to fix DT binding to add missing clock entry
+> ...
+> 
+> >  		int i, j;
+> >  
+> >  		for (i = 0, j = 0;
+> > -		     i < bitmap_weight(indio_dev->active_scan_mask,
+> > -				       indio_dev->masklength);
+> > +		     bitmap_weight_gt(indio_dev->active_scan_mask,
+> > +				       indio_dev->masklength, i);
+> >  		     i++, j++) {
+> >  			j = find_next_bit(indio_dev->active_scan_mask,
+> >  					  indio_dev->masklength, j);  
+> 
+> This smells like room for improvement. Have you checked this deeply?
+> 
 
-I'm fine with these but would like to leave them all on list a tiny
-bit longer so we can hopefully get some review, particularly on patches
-1 and 4.
+I have no idea what I was smoking that day.
+It was near 10 years ago, so I'll blame my younger self ;)
 
 Jonathan
-
-> 
-> Robert Hancock (4):
->   dt-bindings: iio: adc: zynqmp_ams: Add clock entry
->   iio: adc: xilinx-ams: Fixed missing PS channels
->   iio: adc: xilinx-ams: Fixed wrong sequencer register settings
->   iio: adc: xilinx-ams: Fix single channel switching sequence
-> 
->  .../bindings/iio/adc/xlnx,zynqmp-ams.yaml         |  8 ++++++++
->  drivers/iio/adc/xilinx-ams.c                      | 15 +++++++++++----
->  2 files changed, 19 insertions(+), 4 deletions(-)
-> 
-

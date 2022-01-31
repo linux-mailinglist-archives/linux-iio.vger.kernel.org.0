@@ -2,96 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E01064A3FD3
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jan 2022 11:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF824A3FF4
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jan 2022 11:18:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358024AbiAaKCW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jan 2022 05:02:22 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:7716 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1357989AbiAaKCW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jan 2022 05:02:22 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20V4DiXY032215;
-        Mon, 31 Jan 2022 05:02:21 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dx8jbrkjh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 31 Jan 2022 05:02:21 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 20VA2K1Q023790
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 31 Jan 2022 05:02:20 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 31 Jan 2022 05:02:19 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 31 Jan 2022 05:02:19 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 31 Jan 2022 05:02:19 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.119])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 20VA26eQ009375;
-        Mon, 31 Jan 2022 05:02:14 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v5 4/4] MAINTAINERS: add maintainer for ADMV1014 driver
-Date:   Mon, 31 Jan 2022 12:01:02 +0200
-Message-ID: <20220131100102.15372-4-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.35.0
-In-Reply-To: <20220131100102.15372-1-antoniu.miclaus@analog.com>
-References: <20220131100102.15372-1-antoniu.miclaus@analog.com>
+        id S1358007AbiAaKSy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jan 2022 05:18:54 -0500
+Received: from mga05.intel.com ([192.55.52.43]:8189 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232024AbiAaKSw (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 31 Jan 2022 05:18:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643624332; x=1675160332;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+4KBIisyHEFl81YzQOnG17jTyC8lc+mEqx8k4t2pj94=;
+  b=N8JBRXpQ1s02aD14EBOMWTpIoIPt1mChM0u4Z+B5ryRSbsnnuGMnqf6G
+   nIwsFjtyx0pkI/xTU0+MsM6diqn4Gp34k3ckMIilmqGF0l1R1z5KRNWTJ
+   8D426NVlrUrV5PuZYJN4Xesk5FoLSqQ5/6N1icwMrT9/CmsgC0ZCv11ln
+   H4TeKvTEVZr/aozGG5xbVkdz9/54yMe/bud3udBOA8NpFtPzQoc7AZTXf
+   sjqJj5wV0Pstuhh/r/S3Ryo5PX1TahtJaRZvCj6P5es0D1ccQQoB2yfSG
+   7Mw50nxjDcg9vH8ETbn4rcHPhHRXAr6eLwCi3b/Y8orH33j51Ox2clDfL
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10243"; a="333791235"
+X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
+   d="scan'208";a="333791235"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 02:18:50 -0800
+X-IronPort-AV: E=Sophos;i="5.88,330,1635231600"; 
+   d="scan'208";a="629970286"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2022 02:18:47 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nETkm-00GpEg-FG;
+        Mon, 31 Jan 2022 12:17:44 +0200
+Date:   Mon, 31 Jan 2022 12:17:44 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andreas Kemnade <andreas@kemnade.info>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v4 1/4] math.h: Introduce data types for fractional
+ numbers
+Message-ID: <Yfe3SK88LeJ8Iebf@smile.fi.intel.com>
+References: <20220126135353.24007-1-andriy.shevchenko@linux.intel.com>
+ <20220130123034.708543ad@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 7dhsPbKV4TB1WvY1goA1rhTCvvdv22HF
-X-Proofpoint-ORIG-GUID: 7dhsPbKV4TB1WvY1goA1rhTCvvdv22HF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-31_02,2022-01-28_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2201310067
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220130123034.708543ad@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add myself as maintainer for the ADMV1014 driver.
+On Sun, Jan 30, 2022 at 12:30:47PM +0000, Jonathan Cameron wrote:
+> On Wed, 26 Jan 2022 15:53:50 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > Introduce a macro to produce data types like
+> > 
+> > 	struct TYPE_fract {
+> > 		__TYPE numerator;
+> > 		__TYPE denominator;
+> > 	};
+> > 
+> > to be used in the code wherever it's needed.
+> > 
+> > In the following changes convert some users to it.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> I'm not 100% sold on this, but I'm going to give them the benefit
+> of the doubt as to long term usefulness and apply them.
+> 
+> Basically I'm taking the view Andy is often right :)
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-no changes in v5.
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Time will show :-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 170bbbeefc3f..b05148cfd4aa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1119,6 +1119,14 @@ W:	http://ez.analog.com/community/linux-device-drivers
- F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
- F:	drivers/hwmon/adm1177.c
- 
-+ANALOG DEVICES INC ADMV1014 DRIVER
-+M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
-+F:	drivers/iio/frequency/admv1014.c
-+
- ANALOG DEVICES INC ADP5061 DRIVER
- M:	Michael Hennerich <Michael.Hennerich@analog.com>
- L:	linux-pm@vger.kernel.org
+> Applied to the togreg branch of iio.git and pushed out as testing
+> for 0-day to see if we missed anything.
+
+Thanks!
+
 -- 
-2.35.0
+With Best Regards,
+Andy Shevchenko
+
 

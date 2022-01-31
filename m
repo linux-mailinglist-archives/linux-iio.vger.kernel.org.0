@@ -2,100 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39AEC4A48E8
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jan 2022 15:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3694A48C4
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jan 2022 14:54:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359871AbiAaOAb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jan 2022 09:00:31 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:41949 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240723AbiAaOAa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jan 2022 09:00:30 -0500
-Received: from mail-wm1-f53.google.com ([209.85.128.53]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N7xml-1m9UIY10nT-014yH8 for <linux-iio@vger.kernel.org>; Mon, 31 Jan 2022
- 15:00:29 +0100
-Received: by mail-wm1-f53.google.com with SMTP id bg21-20020a05600c3c9500b0035283e7a012so4478149wmb.0
-        for <linux-iio@vger.kernel.org>; Mon, 31 Jan 2022 06:00:29 -0800 (PST)
-X-Gm-Message-State: AOAM533/x+MfZdpfWhtsM7DKAlm1HtukaDjMns3b556WR2HgE3xseztR
-        Akt37r1yrUPFPDzABlYVDxH/7l/H23RTMpOgi9g=
-X-Google-Smtp-Source: ABdhPJz58wZTfj8xGlghaVKBQYqU0rtXmYoZnrdMp/2qs9duxmS6uOQXOuYUiFFzHeYmZ4BSGKLBZqskw1zE9uDpHD8=
-X-Received: by 2002:a1c:f309:: with SMTP id q9mr27088267wmq.173.1643636013274;
- Mon, 31 Jan 2022 05:33:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20220130193147.279148-1-jic23@kernel.org>
-In-Reply-To: <20220130193147.279148-1-jic23@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 31 Jan 2022 14:33:17 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0WGEhPX9biP0DE-1SsedTX-njz5JhgdOS56_EwU5xoUg@mail.gmail.com>
-Message-ID: <CAK8P3a0WGEhPX9biP0DE-1SsedTX-njz5JhgdOS56_EwU5xoUg@mail.gmail.com>
-Subject: Re: [PATCH v3 00/50] iio: Tree wide switch from CONFIG_PM* to
- pm_[sleep]_ptr etc.
+        id S232774AbiAaNyE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 31 Jan 2022 08:54:04 -0500
+Received: from aposti.net ([89.234.176.197]:33582 "EHLO aposti.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346094AbiAaNyE (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Mon, 31 Jan 2022 08:54:04 -0500
+Date:   Mon, 31 Jan 2022 13:53:52 +0000
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 02/16] iio:adc:ad7091r: Move exports into IIO_AD7091R
+ namespace.
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Crt Mori <cmo@melexis.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Mikko Koivunen <mikko.koivunen@fi.rohmeurope.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:JH7KeQRkJIUxOJCRm+gn3hk1CEvnRZUQVWi08hjeHdF824OC0gR
- 2glmLb+yskqIXJBzc6dGSgWIkO1s8ylpguQMEXxfSaCioS8+SP6efAfKik0XSKUFEdPZom8
- qX6THGSDBhTxG6Hu6QLjmDCR6vXAFhzgTZ3xa3/n0IOSs2FziccoHl6l8iHab+stPdSx6yJ
- N9Lx8V646YLn8HKVX8EJA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2sChHhrQLnU=:ex5G8EccEpIhzb3zns0I/Y
- EYWfKm+YWoUBkhiXZzi5twbKnMREOqyYThsnMFUBXJ2MDkbsFxwjWXomj7g057jmokT/pMTJN
- cXUQDc79g3KUQ4ldM1XHvHjeGVF4/OZGDH11mq8viUZdhPMGP3z0/mfacCN7pJX/3cEbNIkv1
- XWrDtGp7s1JXmwGW3O7/m2dat4RsR+Yqc1fGOENKEzoJKz58yh4hAc8UEo7mHVP421xH5awub
- 1ys6x+pzj2gBpXt/6P+jPSRaLJ6Tm0R/TNuPq2Ot7SOIyUZe3Nza/HiYITVUXqd+NtuN/grmb
- t0eX3dAKSz7muefYal/4POb4deakPjLLa86FtIErqsfEI5DM1NqR79o2GiWywlRcXPCi6j5U8
- 8WFuqpYpUbSEu3h4dTsj3jhWHrM1c4FsHTfOU222Unss1agN2YAYvEslx4D0lxJ3BtFhCUbsk
- c3aEt8pe0BSsHl2HpL5oA9pLiJylmk25OQFVs9Sew/bwgr9awZ6EwQNvo1oMqLFewj6eoIsmN
- Bl35LXs65XoP96xzc/sLFmhCG+jEVOWWIdd/HaVXyscFT9lRyBNcArHQaWTuRSHTb8qDp4w4f
- hzB0rg2vSq7Qk4s0OsLP3S7dGsIkr0CqaYKU+IBB5BdPgVaxxwLr9lSfwiT4HkFdgrvtIEck7
- tYAm0WlJriKPrQxRlfh50Lu6+O+1nRZfoiwp+5/i2CVhT3RfeuKEe4CJ7Vz9hCrdkoee23q1f
- nWp/IxrD0zRbBWAAs5pUUWBrYjFO8JniWb791SJ97Vq1iiPAzuRwuwUAYffUxllnq1dtVQfg1
- hP5A9azKoQxgN8EMKjvljQ7F18lcsaJg4rIC66mKMK3uy1Tg4k=
+Cc:     linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>, lars@metafoo.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <SLUK6R.LXAL8TY0VY432@crapouillou.net>
+In-Reply-To: <20220130205701.334592-3-jic23@kernel.org>
+References: <20220130205701.334592-1-jic23@kernel.org>
+        <20220130205701.334592-3-jic23@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 8:30 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
+Hi Jonathan,
+
+Le dim., janv. 30 2022 at 20:56:47 +0000, Jonathan Cameron 
+<jic23@kernel.org> a écrit :
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Note that I have cc'd no one for a number of drivers touched in this
-> set because we don't have a known active maintainer, so if anyone
-> has time to sanity check those it would be much appreciated.
->
-> Now that Paul Cercueil's rework of the pm_ptr() and related macro magic
-> to ensure we the compiler can remove unused struct dev_pm_ops and related
-> functions when either CONFIG_PM_SLEEP is not set or both that and
-> CONFIG_PM are not set is upstream [1], lets revisit this series of
-> cleanup of CONFIG_PM* guards in IIO.
+> 
+> In order to avoid unnecessary pollution of the global symbol namespace
+> move the core/library functions into a specific namespace and import
+> that into the various specific device drivers that use them.
+> 
+> For more information see https://lwn.net/Articles/760045/
+> 
+> An alternative here would be to conclude that we are unlikely to see
+> support for the other ad7091r parts in the near future and just merge
+> the two modules into one supporting just the i2c -5 variant.
 
-I have not done an in-depth review of any particular patch, but I have
-glanced over all of them and I am perfectly happy with this version, and
-I'd say you should just put them into linux-next once no more Acks
-come in. If anything breaks, it can be fixed on top.
+Unlikely in the near future, yes. I wouldn't totally close the door but 
+it's not in our short-term plans.
 
-        Arnd
+If you think it's better to merge the two modules into one in the 
+meantime - fine with me.
+
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Paul Cercueil <paul@crapouillou.net>
+
+Otherwise:
+
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
+
+Cheers,
+-Paul
+
+> ---
+>  drivers/iio/adc/ad7091r-base.c | 4 ++--
+>  drivers/iio/adc/ad7091r5.c     | 1 +
+>  2 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7091r-base.c 
+> b/drivers/iio/adc/ad7091r-base.c
+> index 63b4d6ea4566..8e252cde735b 100644
+> --- a/drivers/iio/adc/ad7091r-base.c
+> +++ b/drivers/iio/adc/ad7091r-base.c
+> @@ -260,7 +260,7 @@ int ad7091r_probe(struct device *dev, const char 
+> *name,
+> 
+>  	return devm_iio_device_register(dev, iio_dev);
+>  }
+> -EXPORT_SYMBOL_GPL(ad7091r_probe);
+> +EXPORT_SYMBOL_NS_GPL(ad7091r_probe, IIO_AD7091R);
+> 
+>  static bool ad7091r_writeable_reg(struct device *dev, unsigned int 
+> reg)
+>  {
+> @@ -290,7 +290,7 @@ const struct regmap_config ad7091r_regmap_config 
+> = {
+>  	.writeable_reg = ad7091r_writeable_reg,
+>  	.volatile_reg = ad7091r_volatile_reg,
+>  };
+> -EXPORT_SYMBOL_GPL(ad7091r_regmap_config);
+> +EXPORT_SYMBOL_NS_GPL(ad7091r_regmap_config, IIO_AD7091R);
+> 
+>  MODULE_AUTHOR("Beniamin Bia <beniamin.bia@analog.com>");
+>  MODULE_DESCRIPTION("Analog Devices AD7091Rx multi-channel 
+> converters");
+> diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
+> index 9665679c3ea6..47f5763023a4 100644
+> --- a/drivers/iio/adc/ad7091r5.c
+> +++ b/drivers/iio/adc/ad7091r5.c
+> @@ -111,3 +111,4 @@ module_i2c_driver(ad7091r5_driver);
+>  MODULE_AUTHOR("Beniamin Bia <beniamin.bia@analog.com>");
+>  MODULE_DESCRIPTION("Analog Devices AD7091R5 multi-channel ADC 
+> driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_AD7091R);
+> --
+> 2.35.1
+> 
+
+

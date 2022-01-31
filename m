@@ -2,89 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F124A4522
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Jan 2022 12:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D8F4A477C
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Jan 2022 13:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377560AbiAaLgm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Jan 2022 06:36:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50822 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378569AbiAaLeZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jan 2022 06:34:25 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2731C079788
-        for <linux-iio@vger.kernel.org>; Mon, 31 Jan 2022 03:23:34 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id w81so17049334ybg.12
-        for <linux-iio@vger.kernel.org>; Mon, 31 Jan 2022 03:23:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Mfeb88SgNAu3DA1TovWLpJ9GU00PuBZKgL/FgGbBmOk=;
-        b=WEK5URMbKWCEr+E+XSH0mpKLZ+NhV27Btn5eGtzM0qtsPnwScOdv3xZzIPTCqgEXkd
-         5IrPm6HUBpHLkaMBntp2Q90o723ZIyceD03Py/EOAGUwggrikLy2WBW30V/1gqVEqzte
-         m//HNeElTBBpiQnu7E14yOvYxlyN1fE2Umbli6ezeZOqMehNSiKEUDTKkUDJhSf654gb
-         yZQ6W8qJbKO4paW+GirnnW2dtgHJ5YhbjinKCcaeqI/dBy8gAzoC5GPbEmHFG6nOPq9P
-         w72bIYMVbxwxPaXynRmRE65tDAgfs4MUNpWyexop42dJE7znS/t6pADy+cffZbrcgrOS
-         fmdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Mfeb88SgNAu3DA1TovWLpJ9GU00PuBZKgL/FgGbBmOk=;
-        b=OwEn4HEKYzrid3af4hadqujqUhnklMo7NdL7+M2yI0prPLy8/eL3oBZSUXQ60NVXtf
-         /WsaKtCvbUrpFTN8SbSFRYOTkWLgiQVrrO71WQXMxPuZik84rTPuAyw4jQmTN0sDZrAl
-         TN9P3Ii3rf+0cHiTtww0+yjTJuBF9Pd6WPs6r+oQVvtEPzMqPY5tPTaRJ81kc9sVhTZS
-         Izgnu/OZIKVCjPIJcW5BiQesG81Snz3hcZQ9H5sDEl8tZHvxGBCSiAMyBdhQEzd0L2mu
-         24tlZKH1bF341wOG/Cq1Z5rM5/xK3lu12ftBx6h/hknHWvEFTXKVqhIyTKlGFfTQEiBj
-         keHw==
-X-Gm-Message-State: AOAM530zIc0GyRKvO9ATK5Fw5KTOty06o3hKhLr/Ojm4eH2RdbmVMX6F
-        rUrWQHjSd9XYpDrO/oi5dUZyL9SbGCUbaBBAxi0sOQ==
-X-Google-Smtp-Source: ABdhPJyJF4KcmkIVlYy6MWPxlek8Lb/gigZvypCrGUGQiwZhktVI00QkPs/ebeWHJlJba0FitxHDSwERyWccpovX9XQ=
-X-Received: by 2002:a25:cfc6:: with SMTP id f189mr27662344ybg.322.1643628213945;
- Mon, 31 Jan 2022 03:23:33 -0800 (PST)
+        id S1350849AbiAaMrF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Jan 2022 07:47:05 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:59962 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S240768AbiAaMrF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Jan 2022 07:47:05 -0500
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 20V8q7P0008938;
+        Mon, 31 Jan 2022 13:46:57 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=c/fnF1/4lc2Gc1HnW5Y3heeYAY6TKiR8Ck/ftevMOpQ=;
+ b=fI56H8m6wc3ZJvbQTOKeHGZF5DrZCzrvb6RuDg0l3JKKEEuNzb1JaaWIhwHy6jlqGidT
+ UORmyG0fidkBKok04X5haJ72bWEC2Q+CD7mdHNCqarTCuDECYh2CQmp/7557pIkYb2Ma
+ FRxmBetzsY/3q9QQbC6iJ+YkD/h4KCFg1nMnDYAcyLRS+fiklJf2j5aGWDWIttU27Z7T
+ rOCWU1Fr4PMcOEsqpNSUiX2zKfz24HkBV5n+xb3Y5CTQaIhyATBaJI2fCVOqZ9Mc+zzD
+ Vw4DoB4K7RqqI/wh6XGph7l+v5Ra1u2x3SJaoT8gQAz5l0SXoDXyxCmsXDo5yPACkcJc Kw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3dwwf3vc73-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 31 Jan 2022 13:46:57 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id F3F6110002A;
+        Mon, 31 Jan 2022 13:46:56 +0100 (CET)
+Received: from Webmail-eu.st.com (sfhdag2node1.st.com [10.75.127.4])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E89B1217B91;
+        Mon, 31 Jan 2022 13:46:56 +0100 (CET)
+Received: from SFHDAG2NODE1.st.com (10.75.127.4) by SFHDAG2NODE1.st.com
+ (10.75.127.4) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Mon, 31 Jan
+ 2022 13:46:56 +0100
+Received: from SFHDAG2NODE1.st.com ([fe80::4413:c8c:992b:bb90]) by
+ SFHDAG2NODE1.st.com ([fe80::4413:c8c:992b:bb90%20]) with mapi id
+ 15.00.1497.026; Mon, 31 Jan 2022 13:46:56 +0100
+From:   Mario TESI <mario.tesi@st.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>
+CC:     "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: st_lsm6dsx: wait for settling time in
+ st_lsm6dsx_read_oneshot
+Thread-Topic: [PATCH] iio: imu: st_lsm6dsx: wait for settling time in
+ st_lsm6dsx_read_oneshot
+Thread-Index: AQHYFpL5u4K4s8cQS02ZgX6/YqFBZqx9E5Zk
+Date:   Mon, 31 Jan 2022 12:46:56 +0000
+Message-ID: <1643633216538.97874@st.com>
+References: <6c10e1de14a42eca2d283a9df242b426e371543e.1643627150.git.lorenzo@kernel.org>
+In-Reply-To: <6c10e1de14a42eca2d283a9df242b426e371543e.1643627150.git.lorenzo@kernel.org>
+Accept-Language: it-IT, en-US
+Content-Language: it-IT
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.48]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20220130034441.15474-1-samuel@sholland.org> <20220130034441.15474-4-samuel@sholland.org>
- <20220130141048.31be2554@jic23-huawei>
-In-Reply-To: <20220130141048.31be2554@jic23-huawei>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 31 Jan 2022 12:23:22 +0100
-Message-ID: <CACRpkdb407XmMGSM+7okOx50ZNTK3UuHWSFSH+CZ_2bQS0NJ=w@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iio: accel: st_accel: Add support for Silan SC7A20
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Samuel Holland <samuel@sholland.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-31_05,2022-01-28_01,2021-12-02_01
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jan 30, 2022 at 3:04 PM Jonathan Cameron <jic23@kernel.org> wrote:
-
-> This is nasty as 0x11 is a valid who am I for an LIS3DHH which is a very
-> different device.
-
-The WAI value is just a second line check anyway, the device is probed
-from the compatible, this is just checked to make sure the device is
-what it says it is. Annoying, but it will do the job.
-
-> It's worth noting that a good part of the maintenance of this driver is
-> done by ST employees who are probably less than happy with seeing
-> a clone (with bugs) supported.  So support is likely to be somewhat best
-> effort / not going to deliberately break support for this part but no
-> means to test it. Hopefully we'll remember to cc you to test anything new added to
-> the driver.  Clones aren't always perfect!
-
-Linux began with people running it on IBM PC clones... ;)
-
-I would assume good faith, especially with the silicon shortage
-plaguing us it is
-perfectly possible that this is a fully licensed copy. I think the two
-derivatives of the AK8974 magnetometer for example are
-legally transferred IP, we just don't know the details behind the curtain.
-
-Yours,
-Linus Walleij
+Tested-by: Mario Tesi <mario.tesi@st.com>=0A=
+________________________________________=0A=
+Da: Lorenzo Bianconi <lorenzo@kernel.org>=0A=
+Inviato: luned=EC 31 gennaio 2022 12:08=0A=
+A: jic23@kernel.org=0A=
+Cc: lorenzo.bianconi@redhat.com; linux-iio@vger.kernel.org; Mario TESI=0A=
+Oggetto: [PATCH] iio: imu: st_lsm6dsx: wait for settling time in st_lsm6dsx=
+_read_oneshot=0A=
+=0A=
+We need to wait for sensor settling time (~ 3/ODR) before reading data=0A=
+in st_lsm6dsx_read_oneshot routine in order to avoid corrupted samples.=0A=
+=0A=
+Reported-by: Mario Tesi <mario.tesi@st.com>=0A=
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>=0A=
+---=0A=
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++++-=0A=
+ 1 file changed, 5 insertions(+), 1 deletion(-)=0A=
+=0A=
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu=
+/st_lsm6dsx/st_lsm6dsx_core.c=0A=
+index 727b4b6ac696..93f0c6bce502 100644=0A=
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c=0A=
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c=0A=
+@@ -1374,8 +1374,12 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx=
+_sensor *sensor,=0A=
+        if (err < 0)=0A=
+                return err;=0A=
+=0A=
++       /*=0A=
++        * we need to wait for sensor settling time before=0A=
++        * reading data in order to avoid corrupted samples=0A=
++        */=0A=
+        delay =3D 1000000000 / sensor->odr;=0A=
+-       usleep_range(delay, 2 * delay);=0A=
++       usleep_range(3 * delay, 4 * delay);=0A=
+=0A=
+        err =3D st_lsm6dsx_read_locked(hw, addr, &data, sizeof(data));=0A=
+        if (err < 0)=0A=
+--=0A=
+2.34.1=0A=
+=0A=

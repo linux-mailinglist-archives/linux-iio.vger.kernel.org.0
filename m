@@ -2,100 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0A04A5920
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Feb 2022 10:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F37604A5D40
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Feb 2022 14:10:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235909AbiBAJWN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Feb 2022 04:22:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39590 "EHLO
+        id S238782AbiBANKK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Feb 2022 08:10:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235902AbiBAJWN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Feb 2022 04:22:13 -0500
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A74EC061714;
-        Tue,  1 Feb 2022 01:22:12 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id jx6so52502706ejb.0;
-        Tue, 01 Feb 2022 01:22:12 -0800 (PST)
+        with ESMTP id S238789AbiBANJq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Feb 2022 08:09:46 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF8FC061765
+        for <linux-iio@vger.kernel.org>; Tue,  1 Feb 2022 05:09:44 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id j2so53424218ejk.6
+        for <linux-iio@vger.kernel.org>; Tue, 01 Feb 2022 05:09:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zc0YUBbP4nO5xY/HXkwm2TEbGRUwzysYtK0Wp/4IoWE=;
-        b=e7qSjd/0adrVrIIWN9p3EskCqHxGkJbwEIdTPOfRwrTlIc7VjHD1tc9nhYQNhbjaDL
-         734EopB6UFXritQodtoOvtiP6KNtM0qHwnYOzQuFnhJlYtpmRXBzPMXC2mKN3wA5luj2
-         VEPM1v47mucgLRp258bkjvaWtGo7eji9twznQncL5at5xnEUJ981gPsI0IZkVXHTaFxx
-         LmAcAYA08Srh4owUN1WUl6LkVUNliUHlPzaZlmZFUGOUqpdmM5JsHCcCo1j/LsJIW7cO
-         27syUfF3hjPpaIfvdWsScGdJ6Albm57lUtRA9DZhjjI4KbWdeWfVCFMCpsb9YQg69wbP
-         fdSQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=CMzdAZWvSREUxL9gyi7ZDNRKXhnPhof45SdOgpKoP4Q=;
+        b=lI9Jmbuup3aTWITenXjzX9xDuHVe8UPpTHYDrZok/sN3tRm2Td+EQRuXxeskfP0mJ9
+         GNI7avi90d9ZNOOE7Dsj/u+Lzeby81VSWyc9shQ9/j4lc6cyAHqtLhDTBU2WY0Mm5+V/
+         TaWW/OkPLWRZgrYMjObe8D0XIVUjgQBr5GqESJoZzV2l9xcOXqhcP9BzIwQgsSZTH65f
+         494ANS0zbV7qN4bCPKmPxwSWP9OIqO30KaFMSXldufcSUAKWamWP79QdSiosm7q9QHvC
+         uaaaA5+KqOrmG8H5ILKqis6yB0h8qpNmrz63iJDIHv7cetvnn6eX+W+6JiunGKrn15zN
+         dhSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zc0YUBbP4nO5xY/HXkwm2TEbGRUwzysYtK0Wp/4IoWE=;
-        b=6XbEyRJAGB1xhFbCoHdj2Vzv7OAc71vPN9jbmZwXpQNc0Ktcv4fxDlrxRjgTErXVJs
-         zE1scN/3dAWwogcyoP9CKQsWPzm1NUUCFaYAIdYLqfPD4ODe+TfUCfuPri2BNACFFGCY
-         zznY+V5sF0/B3vWNhcEKZHMsOWUsxzhOaT0ZgwvSNmG5Lb6A0QEbBNmkoI0lFEWUm7H3
-         GU7U40Ym06JkmTexvBoVIJeSA00YjP/aFj4wEdwnmse88OcSjxlK7TdueV27TCrJ0sfy
-         Bvwaj06dj7zdFBUnrxMywntDw4s0OsFYlGzIzmXdcbigNMey7KWFzpNAI5GmgRRSq3Sr
-         99YQ==
-X-Gm-Message-State: AOAM530+SVO3PfaiQympfDoZQokB40vG2ctNMidKJYtkzFPK5n2TGMnk
-        RW3EyUnE+4Ky5YdTB+ToK91yp0QpQeIhsP1BK1i7QyhhKbY=
-X-Google-Smtp-Source: ABdhPJyu5EUjHz+2RHbDEm3rZ1PYg19nT0J6+DbOVH4w0wgXGtwZxUwVQJH7+9NtCPS6zvJw6g3D4b2CRlVLsDwPwqc=
-X-Received: by 2002:a17:907:a40a:: with SMTP id sg10mr20861269ejc.44.1643707331063;
- Tue, 01 Feb 2022 01:22:11 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=CMzdAZWvSREUxL9gyi7ZDNRKXhnPhof45SdOgpKoP4Q=;
+        b=gIP1WUY81IKs33K4pysToEA0E5YpTpFOm1mRa+lfiVghX+Rt5Dgmfyhioryzpo6ha0
+         ycPFnKJbjvQqxQY/l7PYhVD+815RY8pScEXJw4bL/Dvu9ylNOTd6wpvfZaTBvul9iwt6
+         03qdwwsizskvzv2w/OOAoGgXfpjfVxw4AROZUtPpW9hrP5H69ttg2fJDSm32kllw/iu5
+         6kTYrrri794FwlBciPtqEpmZ6eqRa9EvUB9/67/AwWs1H+k6M4zF4dk3WDZBfbLskzHn
+         SVgBv0fepLmuDzx05hbuRVP/0Jhe+T4oNHO49EmQ76062Zl83snhZR2f23eWxGzyn1V/
+         Zj2Q==
+X-Gm-Message-State: AOAM533wum0Ke1A0RpnmYEc0ptH/yFvUzgcPseD8WxwpeH/p6XlT2kl5
+        vCjBwak/v2CR9R01/8PdyaWgdC/AXhWTRHruyOw=
+X-Google-Smtp-Source: ABdhPJz6GI7dUsypgqwhst0kQha2r+tRDnfIE5rKQ36RMXn96nHLExEnUaiU4OuPQOyY9uWs8E3MdztN4iEtee4sGdo=
+X-Received: by 2002:a17:906:6a0f:: with SMTP id qw15mr21491179ejc.66.1643720983147;
+ Tue, 01 Feb 2022 05:09:43 -0800 (PST)
 MIME-Version: 1.0
-References: <20220130161101.1067691-1-liambeguin@gmail.com>
- <20220130161101.1067691-7-liambeguin@gmail.com> <5da96dc7-696b-1bc0-a111-f6108ecfa54c@axentia.se>
- <CAHp75VcDMfnkRvh5Rmxqc_R0ML5Eq4GCFL_QAkess7OLAQkg7w@mail.gmail.com> <d9f3032c-539e-800f-289c-14971b7e3b15@axentia.se>
-In-Reply-To: <d9f3032c-539e-800f-289c-14971b7e3b15@axentia.se>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 1 Feb 2022 11:20:35 +0200
-Message-ID: <CAHp75VdQyRrzYdTe5ak0Fyj2xDT2UVTwDMf+u9Y_6Hv-qMaPJw@mail.gmail.com>
-Subject: Re: [PATCH v13 06/11] iio: afe: rescale: make use of units.h
-To:     Peter Rosin <peda@axentia.se>
-Cc:     Liam Beguin <liambeguin@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
+Received: by 2002:a17:907:6d06:0:0:0:0 with HTTP; Tue, 1 Feb 2022 05:09:42
+ -0800 (PST)
+Reply-To: lisahugh159@gmail.com
+From:   MS LISA HUGH <dkoure73@gmail.com>
+Date:   Tue, 1 Feb 2022 14:09:42 +0100
+Message-ID: <CABn=45xvmrGOmWfGo3jz5qscrq=sbaUZSC3CWxL-3rBUO3q5kA@mail.gmail.com>
+Subject: FROM Ms Lisa Hugh.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Feb 1, 2022 at 3:59 AM Peter Rosin <peda@axentia.se> wrote:
-> On 2022-01-31 16:23, Andy Shevchenko wrote:
-> > On Mon, Jan 31, 2022 at 4:50 PM Peter Rosin <peda@axentia.se> wrote:
-> >> On 2022-01-30 17:10, Liam Beguin wrote:
-> >
-> > ...
-> >
-> >>> -             tmp = div_s64_rem(tmp, 1000000000LL, &rem);
-> >>> +             tmp = div_s64_rem(tmp, GIGA, &rem);
-> >>
-> >> It is NOT easy for me to say which of GIGA/NANO is most fitting.
-> >
-> > What do you mean? The idea behind is the use of the macro depending on
-> > the actual power of 10 in use (taking into account the sign of the
-> > exponent part).
-> >
-> >> There are a couple of considerations:
-> >>
-> >> A) 1000000000 is just a big value (GIGA fits). Something big is
-> >>    needed to not lose too much precision.
-> >
-> > Does it have a physical meaning?
->
-> No, this is just a scaling factor which is moments later
-> eliminted by a matching inverse operation. It's math purely
-> about attempting to preserve precision and has nothing to do
-> with the units of the values that are involved.
+Dear Friend,
 
-I see your point now, shame on me.
+I am Ms Lisa Hugh accountant and files keeping by profession with the bank.
 
+I need your co-operation for the  transferring of
+($4,500,000,00,U.S.DOLLARS)to your bank account for both of us
+benefit.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Please send the follow below,
+
+1)AGE....
+2)TELEPHONE NUMBER,,,,,...
+3)COUNTRY.....
+4)OCCUPATION..
+....
+Thanks.
+
+Ms Lisa Hugh

@@ -2,78 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F234A5EDB
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Feb 2022 16:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5D054A6117
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Feb 2022 17:12:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239682AbiBAPC4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Feb 2022 10:02:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32912 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239677AbiBAPCz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Feb 2022 10:02:55 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 764A7C061714
-        for <linux-iio@vger.kernel.org>; Tue,  1 Feb 2022 07:02:55 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id bu18so34467709lfb.5
-        for <linux-iio@vger.kernel.org>; Tue, 01 Feb 2022 07:02:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=qq9wIiVWHN2WAUtj0B7xD2yz2moOuwSz6aN0pUPieSs=;
-        b=hQCbYATbk65TPS0Hairf+vvZ+s3GXMdG+9wF47a9cJKVMCp7Gg/TSfHZMk/lcyxb5B
-         tX3dWbgTJWUNclye4xNr2/XErXb6mnmDV5NhCV6PXAk7qw+Osj0N+rb+EqeCgmv7NFLb
-         hMA6bEGtF2sylUWFav27c9MJQWLh/+hk+P5sV+aWS/rrf9qaS3QQkrGKYADoSWyLhkn3
-         ml+hTyucpkB9pDD9MnFMNt7p3+sPhT/j9lYQijkO0tGUfrS4Q9fvFYGR6Nmc8tESJfqL
-         pvHOFL0WotgBSIUPZs42n49isyyGa9mRwwLA4s5Y+Zgzb8bP3X5FQ5qAh+VSys2GiIYe
-         Dxwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=qq9wIiVWHN2WAUtj0B7xD2yz2moOuwSz6aN0pUPieSs=;
-        b=uTbqrkrzjnqCOgm/jrSLQA+N9su0PDGEBQ6ZvsP5J3XA5sypMowWxKXnTMvPsknjPS
-         wa6nRCX6CyJ5GFSVGWT3QCRcyYLsVAlyMbzh9CmnjAtyxZYbCfZkA0L//BaVSuzzxDE8
-         DTCsc7YlBHsau1f4jbB+f5NWm3wo4O3g3N4vFedICnuIB7oNZskupRJUO7g/1A1CHHj+
-         uskelW/haRkrX9KFoKNHnwua5JYVi9e5385WBGhfH58DJtHiEB4bFfo+OjdNhRGSqljF
-         aY5elbhVLhTLmu5WdecJMuQQgVtL02yVLx1QFdl8ETC8vl5PsADLsJhtki8UUyWinMl+
-         h5sw==
-X-Gm-Message-State: AOAM5328a+L0jvm239TNiFESmfrV3UTJEeSjTKrpmSi3CidHyDQaIDu0
-        ctnd+pf0NCMFmG+AHNhfJqUcsvQ25QqLTJCAHKk=
-X-Google-Smtp-Source: ABdhPJwMYZVEm/LEQaXM3014TaxFXOCTGloX2VIVQufu9jUzdz1ponUkFRqhk1fJ90I9XTzKoJs3oOcxYaeN+H/WSCk=
-X-Received: by 2002:a05:6512:12c5:: with SMTP id p5mr19495585lfg.492.1643727773905;
- Tue, 01 Feb 2022 07:02:53 -0800 (PST)
+        id S240892AbiBAQMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Feb 2022 11:12:50 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:45874 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240848AbiBAQMu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Feb 2022 11:12:50 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 211FVMX8032227;
+        Tue, 1 Feb 2022 11:12:43 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3dx8jbvvnv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Feb 2022 11:12:42 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 211GCf0Y045166
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 1 Feb 2022 11:12:41 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 1 Feb 2022 11:12:40 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 1 Feb 2022 11:12:40 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 1 Feb 2022 11:12:40 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 211GCWGa019228;
+        Tue, 1 Feb 2022 11:12:34 -0500
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, Cristian Pop <cristian.pop@analog.com>
+Subject: [PATCH v2 1/2] dt:bindings:iio:frequency: Add ADMV4420 doc
+Date:   Tue, 1 Feb 2022 18:23:50 +0200
+Message-ID: <20220201162351.53520-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:a05:6504:3067:0:0:0:0 with HTTP; Tue, 1 Feb 2022 07:02:53
- -0800 (PST)
-Reply-To: attorneyjoel4ever1@gmail.com
-From:   Felix Joel <aldewshpoi@gmail.com>
-Date:   Tue, 1 Feb 2022 15:02:53 +0000
-Message-ID: <CABv=ag64L=Z1UxUTup0jV-RXh6zzJHj+iwbQju=VNOeUZYaaTA@mail.gmail.com>
-Subject: =?UTF-8?Q?jeg_venter_p=C3=A5_svaret_ditt?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: vm1ni3cvA7FvzkoUTE-YRYnD4eucenw_
+X-Proofpoint-ORIG-GUID: vm1ni3cvA7FvzkoUTE-YRYnD4eucenw_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-01_08,2022-02-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ mlxlogscore=999 phishscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202010092
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Hallo,
-V=C3=A6r s=C3=A5 snill, godta mine unnskyldninger. Jeg =C3=B8nsker ikke =C3=
-=A5 invadere
-privatlivet ditt, jeg er Felix Joel, en advokat av yrke. Jeg har
-skrevet en tidligere e-post til deg, men uten svar, og i min f=C3=B8rste
-e-post nevnte jeg til deg om min avd=C3=B8de klient, som har samme
-etternavn som deg. Siden hans d=C3=B8d har jeg mottatt flere brev fra
-banken hans hvor han foretok et innskudd f=C3=B8r hans d=C3=B8d, banken har=
- bedt
-meg om =C3=A5 gi hans n=C3=A6rmeste p=C3=A5r=C3=B8rende eller noen av hans =
-slektninger som
-kan gj=C3=B8re krav p=C3=A5 hans midler, ellers vil de bli konfiskert og si=
-den
-Jeg kunne ikke finne noen av hans slektninger. Jeg bestemte meg for =C3=A5
-kontakte deg for denne p=C3=A5standen, derfor har du samme etternavn som
-ham. kontakt meg snarest for mer informasjon.
-Vennlig hilsen,
-Barrister Felix Joel.
+Add device tree bindings for the ADMV4420 K band downconverter.
+
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+---
+changes in v2:
+ - Fix indentation
+ - Remove '|', there is no formatting to persevere
+ - Add plank line before 'properties:'
+ - replace '_' with '-' in property names
+ .../bindings/iio/frequency/adi,admv4420.yaml  | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+new file mode 100644
+index 000000000000..43a27d8e5da1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,admv4420.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ADMV4420 K Band Downconverter
++
++maintainers:
++  - Cristian Pop <cristian.pop@analog.com>
++
++description:
++    The ADMV4420 is a highly integrated, double balanced, active
++    mixer with an integrated fractional-N synthesizer, ideally suited
++    for next generation K band satellite communications
++
++properties:
++  compatible:
++    enum:
++      - adi,admv4420
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 1000000
++
++  adi,lo-freq-hz:
++    description: LO Frequency
++
++  adi,ref-ext-single-ended-en:
++    description: External reference selected.
++    type: boolean
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      admv4420@0 {
++        compatible = "adi,admv4420";
++        reg = <0>;
++        spi-max-frequency = <1000000>;
++        adi,lo-freq-hz = /bits/ 64 <16743700000>;
++        adi,ref-ext-single-ended-en;
++      };
++    };
++...
+-- 
+2.17.1
+

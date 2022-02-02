@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3E54A7286
+	by mail.lfdr.de (Postfix) with ESMTP id CF4DE4A7287
 	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 15:02:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiBBOCR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S232561AbiBBOCR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Wed, 2 Feb 2022 09:02:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35532 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232561AbiBBOCQ (ORCPT
+        with ESMTP id S237227AbiBBOCQ (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 09:02:16 -0500
 Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B279C06173B
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EED9C061714
         for <linux-iio@vger.kernel.org>; Wed,  2 Feb 2022 06:02:16 -0800 (PST)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 1F1B020000C;
-        Wed,  2 Feb 2022 14:02:13 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 721FF200019;
+        Wed,  2 Feb 2022 14:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1643810534;
+        t=1643810535;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gjqrs8lgm6stkpfbGv5AvGpuKA7eWv/k0sHN3EALNhs=;
-        b=lt0Tmq8knonCseR/LFSxssuqI5+crEOaoV16a0QoLeDNJ6epAEby2qxgZhjTRns0dz9KzF
-        ruFMuV6VpC2sH3BY6mP7OVDB5raxEvc1iRUrCepWYEotZF30gaWHpsgNl1O4t1WfyNbu5U
-        VZ3KAzbYyQgnqIcfeP1ZIF2k1EnOuiFrGIbuhy6XeDeCwkXyrHrMdDkIzwSrdtSZmgT4gt
-        f0G7yysty7OjKtbQf2qt8nAOvnSpLBzrdnRxPdbuAGGpP5syo5sMUeq/w7w9jT6/C+l63D
-        7z6ZYX/e6pt2wD1mKSJqcPTYDZNpztyjLQw5KNr1YG0uxpS8kMJiMnO06Lh24Q==
+        bh=iUQPK60QKKdxj/JuXXedNGdN9AoMIZdtcjz0BSTqr/w=;
+        b=h9ZdsdkDy4kNGPITFoQGHsmaEY5fSoTACJSF5pOKfD4lV3nHabq5kln1R3Q4QhPV+KiTt6
+        d7iV99DDIekkeDoEFvC18gSPMUZqLZS+Ovd/re1j6RPgH9qWWdfhZNij2Jbd1/kIvP16f/
+        4/deWkX5RVuUn/1K13i8xul71Tq9UkZv+lwRqwYHYEyIAwokjgVhZxosJjXugxxDtgL6Kh
+        m2P/qcvxR9mD4ltjYx4jATedpE2EYXdtfTws+V2hj+s/5MfQvxTw49li1CS6KTagYsHLYd
+        qkyrD8CDXG1HvSNKhK63AW1G2v0sbHQyrOE0xomxSCbxfufcupA+IWdyKDMzOQ==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
@@ -36,9 +36,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Denis Ciocca <denis.ciocca@st.com>
-Subject: [PATCH v2 04/12] iio: st_sensors: Drop the protection on _avail functions
-Date:   Wed,  2 Feb 2022 15:02:00 +0100
-Message-Id: <20220202140208.391394-5-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 05/12] iio: st_sensors: Add a local lock for protecting odr
+Date:   Wed,  2 Feb 2022 15:02:01 +0100
+Message-Id: <20220202140208.391394-6-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220202140208.391394-1-miquel.raynal@bootlin.com>
 References: <20220202140208.391394-1-miquel.raynal@bootlin.com>
@@ -49,56 +49,142 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The use of a lock there seems pointless. Besides preventing to read
-these information from userspace while buffers are enabled (which is not
-supposed to happen), it only protect read accesses over static const
-values, which are never supposed to be written anyway.
+Right now the (framework) mlock lock is (ab)used for multiple purposes:
+1- protecting concurrent accesses over the odr local cache
+2- avoid changing samplig frequency whilst buffer is running
 
-Drop these lock calls.
+Let's start by handling situation #1 with a local lock.
 
 Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Cc: Denis Ciocca <denis.ciocca@st.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/iio/common/st_sensors/st_sensors_core.c | 4 ----
- 1 file changed, 4 deletions(-)
+ .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++++++++------
+ include/linux/iio/common/st_sensors.h         |  3 ++
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index eb452d0c423c..6c027150a5a4 100644
+index 6c027150a5a4..d0419234a747 100644
 --- a/drivers/iio/common/st_sensors/st_sensors_core.c
 +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -641,7 +641,6 @@ ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+@@ -71,16 +71,18 @@ static int st_sensors_match_odr(struct st_sensor_settings *sensor_settings,
+ 
+ int st_sensors_set_odr(struct iio_dev *indio_dev, unsigned int odr)
+ {
+-	int err;
++	int err = 0;
+ 	struct st_sensor_odr_avl odr_out = {0, 0};
  	struct st_sensor_data *sdata = iio_priv(indio_dev);
  
--	mutex_lock(&indio_dev->mlock);
- 	for (i = 0; i < ST_SENSORS_ODR_LIST_MAX; i++) {
- 		if (sdata->sensor_settings->odr.odr_avl[i].hz == 0)
- 			break;
-@@ -649,7 +648,6 @@ ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
- 				sdata->sensor_settings->odr.odr_avl[i].hz);
- 	}
--	mutex_unlock(&indio_dev->mlock);
- 	buf[len - 1] = '\n';
++	mutex_lock(&sdata->odr_lock);
++
+ 	if (!sdata->sensor_settings->odr.mask)
+-		return 0;
++		goto unlock_mutex;
  
- 	return len;
-@@ -663,7 +661,6 @@ ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	err = st_sensors_match_odr(sdata->sensor_settings, odr, &odr_out);
+ 	if (err < 0)
+-		goto st_sensors_match_odr_error;
++		goto unlock_mutex;
+ 
+ 	if ((sdata->sensor_settings->odr.addr ==
+ 					sdata->sensor_settings->pw.addr) &&
+@@ -103,7 +105,9 @@ int st_sensors_set_odr(struct iio_dev *indio_dev, unsigned int odr)
+ 	if (err >= 0)
+ 		sdata->odr = odr_out.hz;
+ 
+-st_sensors_match_odr_error:
++unlock_mutex:
++	mutex_unlock(&sdata->odr_lock);
++
+ 	return err;
+ }
+ EXPORT_SYMBOL(st_sensors_set_odr);
+@@ -162,6 +166,8 @@ int st_sensors_set_enable(struct iio_dev *indio_dev, bool enable)
+ 	struct st_sensor_odr_avl odr_out = {0, 0};
  	struct st_sensor_data *sdata = iio_priv(indio_dev);
  
--	mutex_lock(&indio_dev->mlock);
- 	for (i = 0; i < ST_SENSORS_FULLSCALE_AVL_MAX; i++) {
- 		if (sdata->sensor_settings->fs.fs_avl[i].num == 0)
- 			break;
-@@ -673,7 +670,6 @@ ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
++	mutex_lock(&sdata->odr_lock);
++
+ 	if (enable) {
+ 		tmp_value = sdata->sensor_settings->pw.value_on;
+ 		if ((sdata->sensor_settings->odr.addr ==
+@@ -171,7 +177,7 @@ int st_sensors_set_enable(struct iio_dev *indio_dev, bool enable)
+ 			err = st_sensors_match_odr(sdata->sensor_settings,
+ 							sdata->odr, &odr_out);
+ 			if (err < 0)
+-				goto set_enable_error;
++				goto unlock_mutex;
+ 			tmp_value = odr_out.value;
+ 			found = true;
+ 		}
+@@ -179,7 +185,7 @@ int st_sensors_set_enable(struct iio_dev *indio_dev, bool enable)
+ 				sdata->sensor_settings->pw.addr,
+ 				sdata->sensor_settings->pw.mask, tmp_value);
+ 		if (err < 0)
+-			goto set_enable_error;
++			goto unlock_mutex;
  
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "%u.%06u ", q, r);
+ 		sdata->enabled = true;
+ 
+@@ -191,12 +197,14 @@ int st_sensors_set_enable(struct iio_dev *indio_dev, bool enable)
+ 				sdata->sensor_settings->pw.mask,
+ 				sdata->sensor_settings->pw.value_off);
+ 		if (err < 0)
+-			goto set_enable_error;
++			goto unlock_mutex;
+ 
+ 		sdata->enabled = false;
  	}
--	mutex_unlock(&indio_dev->mlock);
- 	buf[len - 1] = '\n';
  
- 	return len;
+-set_enable_error:
++unlock_mutex:
++	mutex_unlock(&sdata->odr_lock);
++
+ 	return err;
+ }
+ EXPORT_SYMBOL(st_sensors_set_enable);
+@@ -361,6 +369,8 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
+ 	struct st_sensors_platform_data *of_pdata;
+ 	int err = 0;
+ 
++	mutex_init(&sdata->odr_lock);
++
+ 	/* If OF/DT pdata exists, it will take precedence of anything else */
+ 	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
+ 	if (IS_ERR(of_pdata))
+@@ -558,8 +568,10 @@ int st_sensors_read_info_raw(struct iio_dev *indio_dev,
+ 		if (err < 0)
+ 			goto out;
+ 
++		mutex_lock(&sdata->odr_lock);
+ 		msleep((sdata->sensor_settings->bootime * 1000) / sdata->odr);
+ 		err = st_sensors_read_axis_data(indio_dev, ch, val);
++		mutex_unlock(&sdata->odr_lock);
+ 		if (err < 0)
+ 			goto out;
+ 
+diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
+index 22f67845cdd3..db4a1b260348 100644
+--- a/include/linux/iio/common/st_sensors.h
++++ b/include/linux/iio/common/st_sensors.h
+@@ -237,6 +237,7 @@ struct st_sensor_settings {
+  * @hw_irq_trigger: if we're using the hardware interrupt on the sensor.
+  * @hw_timestamp: Latest timestamp from the interrupt handler, when in use.
+  * @buffer_data: Data used by buffer part.
++ * @odr_lock: Local lock for preventing concurrent ODR accesses/changes
+  */
+ struct st_sensor_data {
+ 	struct iio_trigger *trig;
+@@ -261,6 +262,8 @@ struct st_sensor_data {
+ 	s64 hw_timestamp;
+ 
+ 	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
++
++	struct mutex odr_lock;
+ };
+ 
+ #ifdef CONFIG_IIO_BUFFER
 -- 
 2.27.0
 

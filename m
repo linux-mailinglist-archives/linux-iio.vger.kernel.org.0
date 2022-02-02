@@ -2,265 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C56C4A71D7
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 14:46:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AC484A7282
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 15:02:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344425AbiBBNqm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 08:46:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344420AbiBBNqj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 08:46:39 -0500
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CADC061714
-        for <linux-iio@vger.kernel.org>; Wed,  2 Feb 2022 05:46:39 -0800 (PST)
+        id S230213AbiBBOCL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Feb 2022 09:02:11 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:52503 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229515AbiBBOCK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 09:02:10 -0500
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 512DC60018;
-        Wed,  2 Feb 2022 13:46:37 +0000 (UTC)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 95CA9200010;
+        Wed,  2 Feb 2022 14:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1643809597;
+        t=1643810529;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bs4gVsMm+qpQW6rqNZjPNJWTeZHDnwV1gKpS8WHTws0=;
-        b=ROe390HA5fo7TR8YYNkWClq1YocIiwjtE4QQHe/T6R2I6JXf1xyANKPTd53d0mSu762Yjo
-        b7vT/7lFmmkB6vciSqGbgYJ6xoekkp0JzQquWhi8bTTxQ3OSsq9/LPwXfBrHERq7PFSpmy
-        DSTyLaziqG1O4DBGCzURiOlJmt2V3X7/XKG+NiWMdO/cMINuA76TsRP8L3Yka8aLKW3QF0
-        wMImwIQuZAA+o1DlqTKh2Og8CWFEq9yITPtyWFQx+eRcECjulRgTHOu6n5VkhMMOKuVO9A
-        jraf3eW5BWWhI5ePu/e0qeRgNupkDcZSgJhsjXR3nvIofH0aLF9BQiJVf58NIA==
-Date:   Wed, 2 Feb 2022 14:46:35 +0100
+         content-transfer-encoding:content-transfer-encoding;
+        bh=XT2yXScjF+TdX6tS7FnGG5ieuHrEO/BJ/KLLpXdWdOw=;
+        b=S3grmL3vQ8KKzLVxBqxxfH2CMqrisojfyl2pRMqcLzPvCH6ylDWoj07lLE5pn1tVJD7NST
+        Gz51Xuj/W9KcWWzelqv80u6LRuAopUgn3BY0PJcqrmYQu2NRlnIedtuc+QBfap5KZHJEXS
+        884zF4ISan28td6Ai4bG12b2MM6hVRfHOP5WsWscdvRh4gQ7nSi/WnM+hzmcC/ofnoqV1S
+        wuHapKUcMX8tffombVlLi02YwT9uLWo2C69UA3kqtfkV0e5W9qYnHk6k68dn6q2LSTId+U
+        XG0WsfxI7l9gdNpUGVLUVPDSuUglePAogITOqVf+nFmPBGIQha3p6lXdCMYApA==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 10/10] iio: core: Clarify the modes
-Message-ID: <20220202144635.35748521@xps13>
-In-Reply-To: <20220115173050.3501e20c@jic23-huawei>
-References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
-        <20211215151344.163036-11-miquel.raynal@bootlin.com>
-        <20220115173050.3501e20c@jic23-huawei>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 00/12] Miscellaneous IIO core enhancements
+Date:   Wed,  2 Feb 2022 15:01:56 +0100
+Message-Id: <20220202140208.391394-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Hello,
 
-jic23@kernel.org wrote on Sat, 15 Jan 2022 17:30:50 +0000:
+As part of a previous discussion with Jonathan (I know, it was three
+months ago, sorry for the delay :-$), it appeared necessary to do a
+little bit of cleanup in the IIO core and at least provide a little bit
+more documentation for developers diving into the IIO subsystem for the
+first time. My first move was to write a blog post trying to explain
+(from my point of view but with the review of Jonathan) what is
+necessary to understand when writing and IIO kernel driver:
+https://bootlin.com/blog/the-backbone-of-a-linux-industrial-i-o-driver/
 
-> On Wed, 15 Dec 2021 16:13:44 +0100
-> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
->=20
-> > As part of a previous discussion with Jonathan Cameron [1], it appeared
-> > necessary to clarify the meaning of each mode so that new developers
-> > could understand better what they should use or not use and when.
-> >=20
-> > The idea of renaming these modes as been let aside because naming is a
-> > big deal and requires a lot of thinking. So for now let's focus on
-> > correctly explaining what each mode implies.
-> >=20
-> > [1] https://lore.kernel.org/linux-iio/20210930165510.2295e6c4@jic23-hua=
-wei/
-> >=20
-> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >  include/linux/iio/iio.h | 40 +++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 39 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > index d04ab89fa0c2..75b561fd63d0 100644
-> > --- a/include/linux/iio/iio.h
-> > +++ b/include/linux/iio/iio.h
-> > @@ -314,7 +314,45 @@ static inline bool iio_channel_has_available(const=
- struct iio_chan_spec *chan,
-> >  s64 iio_get_time_ns(const struct iio_dev *indio_dev);
-> >  unsigned int iio_get_time_res(const struct iio_dev *indio_dev);
-> > =20
-> > -/* Device operating modes */
-> > +/**
-> > + * Device operating modes
-> > + * @INDIO_DIRECT_MODE: There is an access to the last single value ava=
-ilable. =20
->=20
-> I'd avoid 'last' as not obvious wrt to what time point.  Perhaps use some=
-thing
-> horrible like "timely"?
+Here is now the second halve of this work, with few things that I tried
+to address.
 
-I don't feel a big difference between the two, besides timely being far
-from easy to understand IMHO, but I'll use it if you think it's best.
+* The currentmode indio_dev entry was misused by several device drivers,
+  I tried to understand which ones were wrong (there are two still
+  accessing this variable left, I decided not to touch them because I
+  think it is legitimate) and I tried to find an alternative.
 
-> > + * On most devices, this is a single-shot read. On some devices with d=
-ata
-> > + * streams without an 'on-demand' function, this might also be the 'la=
-st value'
-> > + * feature. Above all, this mode internally means that we are not in a=
-ny of the
-> > + * other modes, and sysfs reads will definitely work. =20
->=20
-> Should work ;)  They might fail for a wide variety of other reasons.
+* Then, I tried to make new accesses to this variable harder in order to
+  avoid future mistakes, by creating a helper to read it from outside the
+  core and moving it to the opaque structure.
 
-Right.
+* I continued with the IIO modes which are completely
+  undocumented. Following a few exchanges with Jonathan, I tried to take
+  most of this discussion and put it into a kernel doc header.
 
-> > + * Device drivers are pleased to inquire the core about this mode. =20
-> Not totally sure what you mean here.  Perhaps
-> Device drivers should inform the core if they support this mode.
+* When doing the above task, I realized that there was a particular case
+  handled for kfifo buffers which I tried to simplify, but if this is a
+  mistake, I'll just drop the patch.
 
-Ok.
+Hope this will help!
 
-> > + * @INDIO_BUFFER_TRIGGERED: Most common mode when dealing with kfifo b=
-uffers. =20
->=20
-> Avoid "common". That may well change in future as fifos are become increa=
-singly
-> common on devices over time.  Perhaps just drop this first sentence.
+Cheers,
+Miquèl
 
-I don't think dropping this sentence is a good idea. My first goal here
-is to make it easier for newcomers to understand these modes. Here it
-clearly states "if you're dealing with a kfifo, keep reading, otherwise
-just check out the next mode". Of course this might evolve over time
-and if it is the case we can later update the documentation.
+Changes in v2:
+* Added Alexandru Reviewed-by when relevant.
+* Indicated that "modes" is a bitmask as suggested.
+* Added a mention in the "modes" kdoc about the function that could
+  alter its content in the core.
+* Added more driver maintainers in Cc.
+* Avoided deleting the INDIO_BUFFER_TRIGGERED mode from kfifos.
+* Dropped entirely the currentmode setter helper.
+* Avoided using the currentmode getter from places where we have access
+  to the opaque structure (ie. from the core itself).
+* Added a patch to move the iio_buffer_enabled() definition in the core
+  as it cannot be inlined anymore.
+* Dropped completely the use of the mlock lock form the st-sensor
+  drivers by inserting an additional local lock when this was
+  needed. Hopefully I didn't fail that, this will need testing.
+* Reworded the modes kdoc as advised by Jonathan.
 
-I've dropped the "Most" instead, to still indicate this is fairly
-common but should not be read like something almost automatic.
+Miquel Raynal (12):
+  iio: core: Enhance the kernel doc of modes and currentmodes iio_dev
+    entries
+  iio: magnetometer: rm3100: Stop abusing the ->currentmode
+  iio: adc: stm32-dfsdm: Avoid dereferencing ->currentmode
+  iio: st_sensors: Drop the protection on _avail functions
+  iio: st_sensors: Add a local lock for protecting odr
+  iio: st_sensors: Stop abusing mlock to ensure internal coherency
+  iio: st_sensors: Use iio_device_claim/release_direct_mode() when
+    relevant
+  iio: Un-inline iio_buffer_enabled()
+  iio: core: Hide read accesses to iio_dev->currentmode
+  iio: core: Move the currentmode entry to the opaque structure
+  iio: core: Simplify the registration of kfifo buffers
+  iio: core: Clarify the modes
 
-> > + * It indicates that there is an explicit trigger that must be used. T=
-his =20
->=20
-> Indicates that an explicit trigger is required. (subtle difference from w=
-hat you
-> wrote in that you kind of imply there is only one possible choice)
+ drivers/iio/accel/bmc150-accel-core.c         |  4 +-
+ drivers/iio/accel/fxls8962af-core.c           |  1 -
+ drivers/iio/accel/sca3000.c                   |  1 -
+ drivers/iio/accel/ssp_accel_sensor.c          |  1 -
+ drivers/iio/accel/st_accel_core.c             |  5 +-
+ drivers/iio/adc/at91-sama5d2_adc.c            |  4 +-
+ drivers/iio/adc/ina2xx-adc.c                  |  1 -
+ drivers/iio/adc/stm32-dfsdm-adc.c             |  5 +-
+ drivers/iio/adc/ti_am335x_adc.c               |  4 +-
+ drivers/iio/buffer/kfifo_buf.c                | 10 +--
+ .../cros_ec_sensors/cros_ec_sensors_core.c    |  3 +-
+ drivers/iio/common/scmi_sensors/scmi_iio.c    |  1 -
+ .../iio/common/st_sensors/st_sensors_core.c   | 60 +++++++++--------
+ drivers/iio/gyro/ssp_gyro_sensor.c            |  1 -
+ drivers/iio/gyro/st_gyro_core.c               |  5 +-
+ drivers/iio/health/max30100.c                 |  1 -
+ drivers/iio/health/max30102.c                 |  1 -
+ .../iio/imu/inv_icm42600/inv_icm42600_accel.c |  1 -
+ .../iio/imu/inv_icm42600/inv_icm42600_gyro.c  |  1 -
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |  1 -
+ drivers/iio/industrialio-buffer.c             | 12 ++--
+ drivers/iio/industrialio-core.c               | 27 ++++++++
+ drivers/iio/industrialio-trigger.c            |  2 +-
+ drivers/iio/light/apds9960.c                  |  1 -
+ drivers/iio/magnetometer/rm3100-core.c        | 15 +----
+ drivers/iio/magnetometer/st_magn_core.c       |  5 +-
+ drivers/iio/pressure/st_pressure_core.c       |  8 +--
+ .../staging/iio/impedance-analyzer/ad5933.c   |  1 -
+ include/linux/iio/common/st_sensors.h         |  3 +
+ include/linux/iio/iio-opaque.h                |  4 ++
+ include/linux/iio/iio.h                       | 67 +++++++++++++++----
+ include/linux/iio/kfifo_buf.h                 |  5 +-
+ 32 files changed, 149 insertions(+), 112 deletions(-)
 
-Fair enough.
+-- 
+2.27.0
 
-> > + * requests the core to attach a poll function when enabling the buffe=
-r, which
-> > + * is indicated by the _TRIGGERED suffix.
-> > + * The core will ensure this mode is set when registering a triggered =
-buffer. =20
->=20
-> I'd call out the function name (mostly to be inline with below where you =
-need
-> to because there isn't a particularly good way to describe what it is doi=
-ng).
-
-Done.
-
->=20
-> > + * @INDIO_BUFFER_SOFTWARE: Another kfifo buffer mode, but not event tr=
-iggered.
-> > + * No poll function can be attached because there is no triggered infr=
-astructure
-> > + * we can use to cause capture. There is a kfifo that the hardware wil=
-l fill,
-> > + * but not "one scan at a time", just like in a continuous stream. =20
->=20
-> No real relationship to a continuous stream that I can see.  Perhaps some=
-thing like
-> "Typically hardware will have a buffer that can hold multiple scans. Soft=
-ware may
->  read one or more scans at a single time and push the available data to a=
- Kfifo."
-
-Added.
-
->=20
-> > This means
-> > + * the core will not attach any poll function when enabling the buffer.
-> > + * The core will ensure this mode is set when registering a simple kfi=
-fo buffer. =20
->=20
-> I'd call out the function name here.  The above registers a kfifo as well=
- which is
-> pretty simple...
-
-Sure.
-
->=20
-> > + * @INDIO_BUFFER_HARDWARE: For specific hardware, if unsure do not use=
- this mode.
-> > + * Same as above but this time the buffer is not a kfifo where we have=
- direct
-> > + * access to the data. Instead, the consumer driver must access the da=
-ta through
-> > + * side-channels  =20
-> What do you mean by side-channels here?  That term gets over used - perha=
-ps
-> "non software visible channels"
-
-Clear.
-
->=20
->  + (or DMA when there is no demux possible in software).
-> > + * The core will ensure this mode is set when registering a dmaengine =
-buffer. =20
->=20
-> > + * @INDIO_EVENT_TRIGGERED: Very specific, do not use this mode. =20
->=20
-> :) That's harsh..
-
-Looks like you changed your mind, that's almost what you proposed back
-in September ;)
-
-> If you happen to be supporting hardware that works this way
-> it's a valid setting.  Perhaps we'd be safe to say:
-> "Very unusual."
->=20
-> > + * Triggers usually refer to an external event which will start data c=
-apture.
-> > + * Here it is kind of the opposite as, a particular state of the data =
-might
-> > + * produce an event which can be considered as an event. We don't nece=
-ssarily
-> > + * have access to the data itself, but to the event produced. For exam=
-ple, this
-> > + * can be a threshold detector. The internal path of this mode is very=
- close to
-> > + * the INDIO_BUFFER_TRIGGERED mode.
-> > + * The core will ensure this mode is set when registering a triggered =
-event.
-> > + * @INDIO_HARDWARE_TRIGGERED: STM32 specific mode, do not use it. =20
->=20
-> I'd avoid that comment because it'll rot when some other hardware needs s=
-omething
-> like this.  Again, perhaps "Very rare / unusual." will be enough to put p=
-eople
-> off using it.
-
-As you prefer.
-
-> > + * Here, triggers can result in data capture and can be routed to mult=
-iple
-> > + * hardware components, which make them close to regular triggers in t=
-he way
-> > + * they must be managed by the core, but without the entire interrupts=
-/poll
-> > + * functions burden. All of this is irrelevant as it is all hardware m=
-ediated
-> > + * and distributed. =20
->=20
-> "All this" is not totally clear.  Interrupts are irrelevant as the data f=
-low
-> is hardware mediated and distributed.
-
-Thanks for the alternative.
-
->=20
-> Nice descriptions in general.  Nature of these things is without a straw =
-man
-> to poke holes in I'd never get around to documenting this very much
-> appreciated that you took the time to figure all the weird corners out and
-> write this up.
->=20
-
-I'm happy if this can be useful!
-
-V2 finally coming soon.
-
-Thanks,
-Miqu=C3=A8l

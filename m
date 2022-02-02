@@ -2,153 +2,265 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18F1D4A70D1
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 13:32:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C56C4A71D7
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 14:46:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231841AbiBBMct (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 07:32:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43120 "EHLO
+        id S1344425AbiBBNqm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Feb 2022 08:46:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbiBBMcs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 07:32:48 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354CBC061714
-        for <linux-iio@vger.kernel.org>; Wed,  2 Feb 2022 04:32:48 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nFEoU-0003vW-PT; Wed, 02 Feb 2022 13:32:42 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nFEoT-00BkQb-8K; Wed, 02 Feb 2022 13:32:41 +0100
-Date:   Wed, 2 Feb 2022 13:32:41 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     David Jander <david@protonic.nl>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        David Lechner <david@lechnology.com>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-Message-ID: <Yfp56WznEMh7rp2O@pengutronix.de>
-References: <YZ3XAeYyfGblfaOi@shinobu>
- <20211124072720.GA30281@pengutronix.de>
- <YZ7tv79LQwLL7h3T@shinobu>
- <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
- <20211207081602.45b1423c@erd992>
- <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
- <20211208171035.6ad117af@erd992>
- <Ybmr2kCLScuGZ41h@shinobu>
- <20211215100853.11f9262d@erd992>
- <YcaZEKbzRbX982YW@shinobu>
+        with ESMTP id S1344420AbiBBNqj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 08:46:39 -0500
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CADC061714
+        for <linux-iio@vger.kernel.org>; Wed,  2 Feb 2022 05:46:39 -0800 (PST)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 512DC60018;
+        Wed,  2 Feb 2022 13:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1643809597;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=bs4gVsMm+qpQW6rqNZjPNJWTeZHDnwV1gKpS8WHTws0=;
+        b=ROe390HA5fo7TR8YYNkWClq1YocIiwjtE4QQHe/T6R2I6JXf1xyANKPTd53d0mSu762Yjo
+        b7vT/7lFmmkB6vciSqGbgYJ6xoekkp0JzQquWhi8bTTxQ3OSsq9/LPwXfBrHERq7PFSpmy
+        DSTyLaziqG1O4DBGCzURiOlJmt2V3X7/XKG+NiWMdO/cMINuA76TsRP8L3Yka8aLKW3QF0
+        wMImwIQuZAA+o1DlqTKh2Og8CWFEq9yITPtyWFQx+eRcECjulRgTHOu6n5VkhMMOKuVO9A
+        jraf3eW5BWWhI5ePu/e0qeRgNupkDcZSgJhsjXR3nvIofH0aLF9BQiJVf58NIA==
+Date:   Wed, 2 Feb 2022 14:46:35 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 10/10] iio: core: Clarify the modes
+Message-ID: <20220202144635.35748521@xps13>
+In-Reply-To: <20220115173050.3501e20c@jic23-huawei>
+References: <20211215151344.163036-1-miquel.raynal@bootlin.com>
+        <20211215151344.163036-11-miquel.raynal@bootlin.com>
+        <20220115173050.3501e20c@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YcaZEKbzRbX982YW@shinobu>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 13:23:00 up 97 days, 18:50, 94 users,  load average: 3.46, 7.94,
- 12.13
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi William,
+Hi Jonathan,
 
-On Sat, Dec 25, 2021 at 01:07:44PM +0900, William Breathitt Gray wrote:
-... 
-> So the counter_push_event() function interacts with two spinlocks:
-> events_list_lock and events_in_lock. The events_list_lock spinlock is
-> necessary because userspace can modify the events_list list via the
-> counter_enable_events() and counter_disable_events() functions. The
-> events_in_lock spinlock is necessary because userspace can modify the
-> events kfifo via the counter_events_queue_size_write() function.
-> 
-> A lockless solution for this might be possible if the driver maintains
-> its own circular buffer as you suggest. The driver's IRQ handler can
-> write to this circular buffer without calling the counter_push_event()
-> function, and then flush the buffer to the Counter character device via
-> a userspace write to a "flush_events" sysfs attribute or similar; this
-> eliminates the need for the events_in_lock spinlock. The state of the
-> events_list list can be captured in the driver's events_configure()
-> callback and stored locally in the driver for reference, thus
-> eliminating the need for the events_list_lock; interrupts can be
-> disabled before the driver's local copy of events_list is modified.
-> 
-> With only one reader and one writer operating on the driver's buffer,
-> you can use the normal kfifo_in and kfifo_out calls for lockless
-> operations. Perhaps that is a way forward for this problem.
+jic23@kernel.org wrote on Sat, 15 Jan 2022 17:30:50 +0000:
 
-As proof of concept, I implemented the double buffered version with the
-sysfs flush_events interface. Currently it feels kind of wired, I use
-poll and wait until it timeouts to run the sysfs_flush_counter() to
-trigger new data.
+> On Wed, 15 Dec 2021 16:13:44 +0100
+> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+>=20
+> > As part of a previous discussion with Jonathan Cameron [1], it appeared
+> > necessary to clarify the meaning of each mode so that new developers
+> > could understand better what they should use or not use and when.
+> >=20
+> > The idea of renaming these modes as been let aside because naming is a
+> > big deal and requires a lot of thinking. So for now let's focus on
+> > correctly explaining what each mode implies.
+> >=20
+> > [1] https://lore.kernel.org/linux-iio/20210930165510.2295e6c4@jic23-hua=
+wei/
+> >=20
+> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > ---
+> >  include/linux/iio/iio.h | 40 +++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 39 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > index d04ab89fa0c2..75b561fd63d0 100644
+> > --- a/include/linux/iio/iio.h
+> > +++ b/include/linux/iio/iio.h
+> > @@ -314,7 +314,45 @@ static inline bool iio_channel_has_available(const=
+ struct iio_chan_spec *chan,
+> >  s64 iio_get_time_ns(const struct iio_dev *indio_dev);
+> >  unsigned int iio_get_time_res(const struct iio_dev *indio_dev);
+> > =20
+> > -/* Device operating modes */
+> > +/**
+> > + * Device operating modes
+> > + * @INDIO_DIRECT_MODE: There is an access to the last single value ava=
+ilable. =20
+>=20
+> I'd avoid 'last' as not obvious wrt to what time point.  Perhaps use some=
+thing
+> horrible like "timely"?
 
-Here is example:
-int main(void)
-{
-	ret = sysfs_enable_counter();
-	...
+I don't feel a big difference between the two, besides timely being far
+from easy to understand IMHO, but I'll use it if you think it's best.
 
-	fd = open("/dev/counter0", O_RDWR);
-	...
+> > + * On most devices, this is a single-shot read. On some devices with d=
+ata
+> > + * streams without an 'on-demand' function, this might also be the 'la=
+st value'
+> > + * feature. Above all, this mode internally means that we are not in a=
+ny of the
+> > + * other modes, and sysfs reads will definitely work. =20
+>=20
+> Should work ;)  They might fail for a wide variety of other reasons.
 
-	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
-	...
+Right.
 
-	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-	...
+> > + * Device drivers are pleased to inquire the core about this mode. =20
+> Not totally sure what you mean here.  Perhaps
+> Device drivers should inform the core if they support this mode.
 
-	for (;;) {
-		struct pollfd fds[] = {
-			{
-				.fd = fd,
-				.events = POLLIN,
-			},
-		};
-		ssize_t i;
+Ok.
 
-		/* wait for 10 sec */
-		ret = poll(fds, ARRAY_SIZE(fds), DEFAULT_TIMEOUT_MS);
-		if (ret == -EINTR)
-			continue;
-		else if (ret < 0)
-			return -errno;
-		else if (ret == 0) {
-			sysfs_flush_counter(); <---- request to flush queued events from the driver
-			continue;
-		}
+> > + * @INDIO_BUFFER_TRIGGERED: Most common mode when dealing with kfifo b=
+uffers. =20
+>=20
+> Avoid "common". That may well change in future as fifos are become increa=
+singly
+> common on devices over time.  Perhaps just drop this first sentence.
 
-		ret = read(fd, event_data, sizeof(event_data));
-		...
+I don't think dropping this sentence is a good idea. My first goal here
+is to make it easier for newcomers to understand these modes. Here it
+clearly states "if you're dealing with a kfifo, keep reading, otherwise
+just check out the next mode". Of course this might evolve over time
+and if it is the case we can later update the documentation.
 
-		for (i = 0; i < ret / (ssize_t)sizeof(event_data[0]); i++)
-			/* process event */
-			....
-		}
-	}
+I've dropped the "Most" instead, to still indicate this is fairly
+common but should not be read like something almost automatic.
 
-	return ret;
-}
+> > + * It indicates that there is an explicit trigger that must be used. T=
+his =20
+>=20
+> Indicates that an explicit trigger is required. (subtle difference from w=
+hat you
+> wrote in that you kind of imply there is only one possible choice)
 
-If it is still the only way to go, I'll send kernel patches.
+Fair enough.
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > + * requests the core to attach a poll function when enabling the buffe=
+r, which
+> > + * is indicated by the _TRIGGERED suffix.
+> > + * The core will ensure this mode is set when registering a triggered =
+buffer. =20
+>=20
+> I'd call out the function name (mostly to be inline with below where you =
+need
+> to because there isn't a particularly good way to describe what it is doi=
+ng).
+
+Done.
+
+>=20
+> > + * @INDIO_BUFFER_SOFTWARE: Another kfifo buffer mode, but not event tr=
+iggered.
+> > + * No poll function can be attached because there is no triggered infr=
+astructure
+> > + * we can use to cause capture. There is a kfifo that the hardware wil=
+l fill,
+> > + * but not "one scan at a time", just like in a continuous stream. =20
+>=20
+> No real relationship to a continuous stream that I can see.  Perhaps some=
+thing like
+> "Typically hardware will have a buffer that can hold multiple scans. Soft=
+ware may
+>  read one or more scans at a single time and push the available data to a=
+ Kfifo."
+
+Added.
+
+>=20
+> > This means
+> > + * the core will not attach any poll function when enabling the buffer.
+> > + * The core will ensure this mode is set when registering a simple kfi=
+fo buffer. =20
+>=20
+> I'd call out the function name here.  The above registers a kfifo as well=
+ which is
+> pretty simple...
+
+Sure.
+
+>=20
+> > + * @INDIO_BUFFER_HARDWARE: For specific hardware, if unsure do not use=
+ this mode.
+> > + * Same as above but this time the buffer is not a kfifo where we have=
+ direct
+> > + * access to the data. Instead, the consumer driver must access the da=
+ta through
+> > + * side-channels  =20
+> What do you mean by side-channels here?  That term gets over used - perha=
+ps
+> "non software visible channels"
+
+Clear.
+
+>=20
+>  + (or DMA when there is no demux possible in software).
+> > + * The core will ensure this mode is set when registering a dmaengine =
+buffer. =20
+>=20
+> > + * @INDIO_EVENT_TRIGGERED: Very specific, do not use this mode. =20
+>=20
+> :) That's harsh..
+
+Looks like you changed your mind, that's almost what you proposed back
+in September ;)
+
+> If you happen to be supporting hardware that works this way
+> it's a valid setting.  Perhaps we'd be safe to say:
+> "Very unusual."
+>=20
+> > + * Triggers usually refer to an external event which will start data c=
+apture.
+> > + * Here it is kind of the opposite as, a particular state of the data =
+might
+> > + * produce an event which can be considered as an event. We don't nece=
+ssarily
+> > + * have access to the data itself, but to the event produced. For exam=
+ple, this
+> > + * can be a threshold detector. The internal path of this mode is very=
+ close to
+> > + * the INDIO_BUFFER_TRIGGERED mode.
+> > + * The core will ensure this mode is set when registering a triggered =
+event.
+> > + * @INDIO_HARDWARE_TRIGGERED: STM32 specific mode, do not use it. =20
+>=20
+> I'd avoid that comment because it'll rot when some other hardware needs s=
+omething
+> like this.  Again, perhaps "Very rare / unusual." will be enough to put p=
+eople
+> off using it.
+
+As you prefer.
+
+> > + * Here, triggers can result in data capture and can be routed to mult=
+iple
+> > + * hardware components, which make them close to regular triggers in t=
+he way
+> > + * they must be managed by the core, but without the entire interrupts=
+/poll
+> > + * functions burden. All of this is irrelevant as it is all hardware m=
+ediated
+> > + * and distributed. =20
+>=20
+> "All this" is not totally clear.  Interrupts are irrelevant as the data f=
+low
+> is hardware mediated and distributed.
+
+Thanks for the alternative.
+
+>=20
+> Nice descriptions in general.  Nature of these things is without a straw =
+man
+> to poke holes in I'd never get around to documenting this very much
+> appreciated that you took the time to figure all the weird corners out and
+> write this up.
+>=20
+
+I'm happy if this can be useful!
+
+V2 finally coming soon.
+
+Thanks,
+Miqu=C3=A8l

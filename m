@@ -2,158 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01FF54A7475
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 16:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2534A75B2
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 17:24:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239858AbiBBPSD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 10:18:03 -0500
-Received: from vern.gendns.com ([98.142.107.122]:40680 "EHLO vern.gendns.com"
+        id S1345813AbiBBQYV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Feb 2022 11:24:21 -0500
+Received: from mga05.intel.com ([192.55.52.43]:12903 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229758AbiBBPSC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 2 Feb 2022 10:18:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=mpoVInAtsv/YA6dQvqwdYD/Z/Z2uGxkkZTeDwQNf29E=; b=iaBhdHQcWhpOJXePxbidutIY6w
-        pOgeWkUt8k2qwc2LpVp3ffIPJ9h++L3+AD6/YrZ078dVSA+OWoC8d4wTUOTbYygMoA42vBdtRRmnv
-        BWfzJOXZT9L/YnDfuIT0kNfOn+cyrR7aflbwjJYFQEG1E14zosFKNbMB7O0rLcgSj6/Q3oOVUN+vn
-        OASXKH10UHfRvPwgcuy9LLFmvSOJlVUxItCvb9UqAV0r/njHPHPULxNr66tX48ksEoBRvAv+IfTSJ
-        JBwgdsULGeln3Og8NDsVpS4NZQWeQ3lRTRqcLjocFeLAvwqkgi4j8JH3WjQDeHSjdIDALTTNyqaS4
-        KxCb/IkQ==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:52452 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <david@lechnology.com>)
-        id 1nFHOK-0007JH-Mv; Wed, 02 Feb 2022 10:18:00 -0500
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-To:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     David Jander <david@protonic.nl>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-References: <YZ3XAeYyfGblfaOi@shinobu> <20211124072720.GA30281@pengutronix.de>
- <YZ7tv79LQwLL7h3T@shinobu>
- <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
- <20211207081602.45b1423c@erd992>
- <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
- <20211208171035.6ad117af@erd992> <Ybmr2kCLScuGZ41h@shinobu>
- <20211215100853.11f9262d@erd992> <YcaZEKbzRbX982YW@shinobu>
- <Yfp56WznEMh7rp2O@pengutronix.de>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
-Date:   Wed, 2 Feb 2022 09:17:57 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S239135AbiBBQYU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 2 Feb 2022 11:24:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643819060; x=1675355060;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ukjzdZ1LCQH1/e1Fw/IBXRZHdov9vWYpkFWNV439dD4=;
+  b=FHUPLPGpejHTOhZ4tO4uAYZ33n+XWLnxaQNq4zDBjox9Jpc3nmdZ+1q1
+   2GLFXZMhIXTgIt/8nZFzAJKR7P84Ket9lZAwIFOrOsipimRYqgYa1lPDT
+   CY89suWLVBEp2LZXlIOU5ILX9NFlyAVqs1/7GqMQY7F0mD3VcTp+OecQI
+   fcUL04s7PrusOJebxSh992sOaeMKJQ/nEydeWvPqX/XhWlMINxjuH7yWP
+   mENj+6Obg3O+OciD9DNWriYVWfpwV4u6llmqJDKoY65mY8lr6CE+EkH2F
+   nrqm3BD5exOuQoWAdgp6qr9zlqxywXleM4/nX1kmZ4hkzNUkwzU4a80zK
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10246"; a="334313158"
+X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
+   d="scan'208";a="334313158"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 08:24:20 -0800
+X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
+   d="scan'208";a="480154340"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 08:24:16 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nFIPZ-0008lT-Rm;
+        Wed, 02 Feb 2022 18:23:13 +0200
+Date:   Wed, 2 Feb 2022 18:23:13 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Maxim Levitsky <maximlevitsky@gmail.com>
+Cc:     Hayes Wang <hayeswang@realtek.com>, nicfae@realtek.com,
+        wlanfae@realtek.com, pctech@realtek.com, security@realtek.com,
+        Hans de Goede <hdegoede@redhat.com>,
+        "linux-realtek-soc@lists.infradead.org" 
+        <linux-realtek-soc@lists.infradead.org>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Pkshih <pkshih@realtek.com>, nic_swsd <nic_swsd@realtek.com>,
+        Derek =?utf-8?B?W+aWueW+t+e+qV0=?= <derek.fang@realtek.com>,
+        Kailang <kailang@realtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "info@ayaneo.com" <info@ayaneo.com>, meakyi@ayaneo.com,
+        software@ayaneo.com
+Subject: Re: BMI160 accelerometer on AyaNeo tablet
+Message-ID: <Yfqv8V6fZBnG5J5H@smile.fi.intel.com>
+References: <CACAwPwauWAcin3Vj4cOM1uejrCz-eRX_3Hp_iZFap--yuXK0jg@mail.gmail.com>
+ <Yeh564iHDXEzHXUQ@smile.fi.intel.com>
+ <CACAwPwatbMjd9CLdFCWnND3FqT5ZtPJqEVC-Ohze+GoJ6ODqqw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <Yfp56WznEMh7rp2O@pengutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACAwPwatbMjd9CLdFCWnND3FqT5ZtPJqEVC-Ohze+GoJ6ODqqw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2/2/22 6:32 AM, Oleksij Rempel wrote:
-> Hi William,
-> 
-> On Sat, Dec 25, 2021 at 01:07:44PM +0900, William Breathitt Gray wrote:
-> ...
->> So the counter_push_event() function interacts with two spinlocks:
->> events_list_lock and events_in_lock. The events_list_lock spinlock is
->> necessary because userspace can modify the events_list list via the
->> counter_enable_events() and counter_disable_events() functions. The
->> events_in_lock spinlock is necessary because userspace can modify the
->> events kfifo via the counter_events_queue_size_write() function.
->>
->> A lockless solution for this might be possible if the driver maintains
->> its own circular buffer as you suggest. The driver's IRQ handler can
->> write to this circular buffer without calling the counter_push_event()
->> function, and then flush the buffer to the Counter character device via
->> a userspace write to a "flush_events" sysfs attribute or similar; this
->> eliminates the need for the events_in_lock spinlock. The state of the
->> events_list list can be captured in the driver's events_configure()
->> callback and stored locally in the driver for reference, thus
->> eliminating the need for the events_list_lock; interrupts can be
->> disabled before the driver's local copy of events_list is modified.
->>
->> With only one reader and one writer operating on the driver's buffer,
->> you can use the normal kfifo_in and kfifo_out calls for lockless
->> operations. Perhaps that is a way forward for this problem.
-> 
-> As proof of concept, I implemented the double buffered version with the
-> sysfs flush_events interface. Currently it feels kind of wired, I use
-> poll and wait until it timeouts to run the sysfs_flush_counter() to
-> trigger new data.
-> 
-> Here is example:
-> int main(void)
-> {
-> 	ret = sysfs_enable_counter();
-> 	...
-> 
-> 	fd = open("/dev/counter0", O_RDWR);
-> 	...
-> 
-> 	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
-> 	...
-> 
-> 	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-> 	...
-> 
-> 	for (;;) {
-> 		struct pollfd fds[] = {
-> 			{
-> 				.fd = fd,
-> 				.events = POLLIN,
-> 			},
-> 		};
-> 		ssize_t i;
-> 
-> 		/* wait for 10 sec */
-> 		ret = poll(fds, ARRAY_SIZE(fds), DEFAULT_TIMEOUT_MS);
-> 		if (ret == -EINTR)
-> 			continue;
-> 		else if (ret < 0)
-> 			return -errno;
-> 		else if (ret == 0) {
-> 			sysfs_flush_counter(); <---- request to flush queued events from the driver
-> 			continue;
-> 		}
-> 
-> 		ret = read(fd, event_data, sizeof(event_data));
-> 		...
-> 
-> 		for (i = 0; i < ret / (ssize_t)sizeof(event_data[0]); i++)
-> 			/* process event */
-> 			....
-> 		}
-> 	}
-> 
-> 	return ret;
-> }
-> 
-> If it is still the only way to go, I'll send kernel patches.
-> 
-> Regards,
-> Oleksij
-> 
+On Sun, Jan 23, 2022 at 07:22:46PM +0200, Maxim Levitsky wrote:
+> Added software@ayaneo.com to CC ( I found this email on google).
 
-Couldn't the flush be implicit in the `read()` implementation
-instead of requiring a separate sysfs attribute to trigger it?
+I believe they both (Realtek and Aya-Neo) don't care about this.
+
+This is really frustrating.
+
+So, let's wait couple more weeks and if nothing happens, maybe we can submit
+original ID with a huge comment on top (with a link to lore.kernel.org of this
+discussion) that this is WRONG WRONG WRONG and must not be repeated.
+
+> On Wed, Jan 19, 2022 at 10:53 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > +Cc: more Aya-Neo emails (please, share it with your legal, involved managers
+> >      and engineers).
+> >
+> > On Wed, Jan 19, 2022 at 09:05:25PM +0200, Maxim Levitsky wrote:
+> > > > Any news from Aya-Neo? Have you fixed and issued a new firmware, please?
+> > >
+> > > Nothing I heard of. Anything I can do to further help with this?
+> >
+> > Unfortunately we need to hear from the Aya-Neo, if they ever care about their
+> > products. Without that it would make an unfortunate precedent which will open
+> > a Pandora's box (means a green light on abusing ACPI specification and other's
+> > IPs, yes, Intellectual Property in this case, as ID is an IP of the corresponding
+> > vendor).
+> >
+> > I'm fine if Realtek doesn't care about their IDs to be (ab)used by somebody else,
+> > the main problem here is on Aya-Neo side.
+> >
+> > Is there any engineer-to-engineer connection with Aya-Neo? Because using that
+> > info@ address may be simply ignored / went to spam / etc.
+> >
+> > > On Tue, Nov 16, 2021 at 7:50 PM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > >
+> > > > I filed the form, Cc'ed this to more people from Realtek, still no response on
+> > > > the topic. Does Realtek really cares about their IDs?
+> > > >
+> > > > Any news from Aya-Neo? Have you fixed and issued a new firmware, please?
+> > > >
+> > > > On Wed, Oct 20, 2021 at 02:21:04PM +0300, Andy Shevchenko wrote:
+> > > > > +Cc: another set of emails from Realtek as per Hayes' email.
+> > > > >
+> > > > > Please waterfall to the people inside Realtek who can answer the question.
+> > > > > (Note, you may access this discussion in full via:
+> > > > > https://lore.kernel.org/linux-iio/CACAwPwYQHRcrabw9=0tvenPzAcwwW1pTaR6a+AEWBF9Hqf_wXQ@mail.gmail.com/T/#u)
+> > > > >
+> > > > > The problem here is to have an official confirmation of what 10ec:5280
+> > > > > ID is from Realtek's point of view.
+> > > > >
+> > > > > Context: the current discussion and a patch state that it's related
+> > > > > to gyro sensor. Is it so?
+> > > > >
+> > > > > On Wed, Oct 20, 2021 at 10:36:12AM +0300, Andy Shevchenko wrote:
+> > > > > > On Wednesday, October 20, 2021, Hayes Wang <hayeswang@realtek.com> wrote:
+> > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > > > > > > Sent: Tuesday, October 19, 2021 5:59 PM
+> > > > >
+> > > > > ...
+> > > > >
+> > > > > > > > > > Realtek probably should make this ID marked somehow broken and not
+> > > > > > > use
+> > > > > > > > > > in their products in case the answer to the first of the above
+> > > > > > > question
+> > > > > > > > > > is "yes". (Of course in case the ID will be used for solely PCI
+> > > > > > > enumerated
+> > > > > > > > > > product there will be no conflict, I just propose to be on the
+> > > > > > > safest side,
+> > > > > > > > > > but remark should be made somewhere).
+> > > > > > > >
+> > > > > > > > Any comments from Realtek, please?
+> > > > > > >
+> > > > > > > Excuse me. I don't know this device, so I don't know who I could forward.
+> > > > > > > Maybe you could try our contract window from our web site.
+> > > > > > > https://www.realtek.com/en/cu-1-en/cu-1-taiwan-en
+> > > > > >
+> > > > > > Thanks for reply. I will try my best, but I am afraid that what you suggest
+> > > > > > will be a long loop (and I believe the people behind that form are not
+> > > > > > technical, they probably won’t understand the topic). I think you may pull
+> > > > > > strings inside much faster. Just ask somebody who is technical superior in
+> > > > > > your team / organization. Ideally inside company you may have a dedicated
+> > > > > > people who responsible for allocating PCI and ACPI IDs.
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko
+> >
+> >
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

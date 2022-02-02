@@ -2,82 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B29C04A7430
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 16:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01FF54A7475
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 16:18:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbiBBPEX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 10:04:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232809AbiBBPEW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 10:04:22 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19A5C061714;
-        Wed,  2 Feb 2022 07:04:22 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id l5so42495702edv.3;
-        Wed, 02 Feb 2022 07:04:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RWu5pDMV1z9EmfaCLWyaLnspdjFYx8WMWSWMsW9MZfM=;
-        b=ASPPkxAbndGOdZ2beML4k/g6klMhIr3bRHdGzh1IPqYXOJesPkBCe0mGArORQasiE8
-         aZtWiF3U5D7lpXcTkcr7qqTXOgEbep2LbcJc/+pMkKSZ8/UlR2UsMgxVc0iQk2pFrDS3
-         CiNM8qQ5zXfFhlnhnrzRgeYI6dwYJ6MXMB24itST/Jqz5szETzrgKgYR7DmWcPjWIwv7
-         atPzSqO+53QBit1zHItb7xgJmVr8Y/okudp3ZyyS1/kzwoGL78JKzl0yJge68iWAhLT+
-         Sg0s16dUvJjrB4JuXIx3gAT3EhsolXZLqyNqQs15RM1gA8mruL/fku+Fwdq3gpykqyl1
-         jfYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RWu5pDMV1z9EmfaCLWyaLnspdjFYx8WMWSWMsW9MZfM=;
-        b=IT1Hef8SJUcmI4wdLhK9QIV36axIi/XKMxD4MoON/Aemt/T0wkBiywqGi/QjYIOimW
-         5gsp83qJFWfnqa5EUFICPSKMiSskxpWc903v3c9Remp0xLqgAKp372f2TkyQNYKQdSZK
-         X/U8qysbZ6J2DJubDOwr0g9IMT6Y4ogRNRmDfXKYHv350+4XlQ6DHlJMqz3gZfLDBpZ3
-         ZA1/kqPOV6DbNlX4Oz7llteMSElj6zpxQ6SUvTgfRKbYDlkK3CDXdzpN940eZbGMnnga
-         NG+FVH+WCqgnckwuGfVH/7lafo1ILP4ZB25cIAtUXHK/eD5lJYfTZ2snnz1ThP7kYk53
-         9bUw==
-X-Gm-Message-State: AOAM533zdEHCZAqrT6CUQC/MrVDkPw9T6tVQMKhXCVo2mfC2uJzA7pTM
-        EgZekscx+pFw2kDpQBgwYFxWknaOTPwe6xmdSyo406uyg3I=
-X-Google-Smtp-Source: ABdhPJye62W0y+8r30tWYoHFNgkRmHXKCFhpGyEiCKZcn+iMaqsVBM87HTA+JAuKnjgrk94cl5yRV4hww4Bfo0rRyTw=
-X-Received: by 2002:a05:6402:1705:: with SMTP id y5mr30480593edu.200.1643814261117;
- Wed, 02 Feb 2022 07:04:21 -0800 (PST)
+        id S239858AbiBBPSD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Feb 2022 10:18:03 -0500
+Received: from vern.gendns.com ([98.142.107.122]:40680 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229758AbiBBPSC (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Wed, 2 Feb 2022 10:18:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=mpoVInAtsv/YA6dQvqwdYD/Z/Z2uGxkkZTeDwQNf29E=; b=iaBhdHQcWhpOJXePxbidutIY6w
+        pOgeWkUt8k2qwc2LpVp3ffIPJ9h++L3+AD6/YrZ078dVSA+OWoC8d4wTUOTbYygMoA42vBdtRRmnv
+        BWfzJOXZT9L/YnDfuIT0kNfOn+cyrR7aflbwjJYFQEG1E14zosFKNbMB7O0rLcgSj6/Q3oOVUN+vn
+        OASXKH10UHfRvPwgcuy9LLFmvSOJlVUxItCvb9UqAV0r/njHPHPULxNr66tX48ksEoBRvAv+IfTSJ
+        JBwgdsULGeln3Og8NDsVpS4NZQWeQ3lRTRqcLjocFeLAvwqkgi4j8JH3WjQDeHSjdIDALTTNyqaS4
+        KxCb/IkQ==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:52452 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1nFHOK-0007JH-Mv; Wed, 02 Feb 2022 10:18:00 -0500
+Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
+To:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     David Jander <david@protonic.nl>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>
+References: <YZ3XAeYyfGblfaOi@shinobu> <20211124072720.GA30281@pengutronix.de>
+ <YZ7tv79LQwLL7h3T@shinobu>
+ <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
+ <20211207081602.45b1423c@erd992>
+ <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
+ <20211208171035.6ad117af@erd992> <Ybmr2kCLScuGZ41h@shinobu>
+ <20211215100853.11f9262d@erd992> <YcaZEKbzRbX982YW@shinobu>
+ <Yfp56WznEMh7rp2O@pengutronix.de>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
+Date:   Wed, 2 Feb 2022 09:17:57 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-References: <20211208135644.3523024-1-n.latmos@deepsea.ai> <CAC-bbXbkt0oYPn+EWLdEYKyj8G_muWGDZWTApyFv3cb591dc0A@mail.gmail.com>
- <20220130151737.43ef5b08@jic23-huawei> <FR3P281MB0537EEAEC0F836E5CC895C2BCE259@FR3P281MB0537.DEUP281.PROD.OUTLOOK.COM>
-In-Reply-To: <FR3P281MB0537EEAEC0F836E5CC895C2BCE259@FR3P281MB0537.DEUP281.PROD.OUTLOOK.COM>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 2 Feb 2022 17:02:46 +0200
-Message-ID: <CAHp75VfLFKinChE2H-Lsb1A50JOOMettsshSZWoDkVNSW6ckLQ@mail.gmail.com>
-Subject: Re: [PROBLEM]: Error during probing process in inv_icm42600_i2c driver
-To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Nikos Latmos <n.latmos@deepsea.ai>,
-        "jmaneyrol@invensense.com" <jmaneyrol@invensense.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <Yfp56WznEMh7rp2O@pengutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Feb 1, 2022 at 10:17 PM Jean-Baptiste Maneyrol
-<Jean-Baptiste.Maneyrol@tdk.com> wrote:
->
-> Hello,
->
-> this is a known issue. When setting I2C parameters, it enables some specific filter for improving transfer quality. These filters are by default disabled to enable I3C usage.
->
-> This operation creates a spike in the lines that make the transaction fails even if it is in fact doing OK.
->
-> Do not change the register value. The fix is to ignore the return value of the regmap_update_bits done on INV_ICM42600_REG_INTF_CONFIG6.
->
-> If you want to create a patch, it would be very welcomed I could review it.
+On 2/2/22 6:32 AM, Oleksij Rempel wrote:
+> Hi William,
+> 
+> On Sat, Dec 25, 2021 at 01:07:44PM +0900, William Breathitt Gray wrote:
+> ...
+>> So the counter_push_event() function interacts with two spinlocks:
+>> events_list_lock and events_in_lock. The events_list_lock spinlock is
+>> necessary because userspace can modify the events_list list via the
+>> counter_enable_events() and counter_disable_events() functions. The
+>> events_in_lock spinlock is necessary because userspace can modify the
+>> events kfifo via the counter_events_queue_size_write() function.
+>>
+>> A lockless solution for this might be possible if the driver maintains
+>> its own circular buffer as you suggest. The driver's IRQ handler can
+>> write to this circular buffer without calling the counter_push_event()
+>> function, and then flush the buffer to the Counter character device via
+>> a userspace write to a "flush_events" sysfs attribute or similar; this
+>> eliminates the need for the events_in_lock spinlock. The state of the
+>> events_list list can be captured in the driver's events_configure()
+>> callback and stored locally in the driver for reference, thus
+>> eliminating the need for the events_list_lock; interrupts can be
+>> disabled before the driver's local copy of events_list is modified.
+>>
+>> With only one reader and one writer operating on the driver's buffer,
+>> you can use the normal kfifo_in and kfifo_out calls for lockless
+>> operations. Perhaps that is a way forward for this problem.
+> 
+> As proof of concept, I implemented the double buffered version with the
+> sysfs flush_events interface. Currently it feels kind of wired, I use
+> poll and wait until it timeouts to run the sysfs_flush_counter() to
+> trigger new data.
+> 
+> Here is example:
+> int main(void)
+> {
+> 	ret = sysfs_enable_counter();
+> 	...
+> 
+> 	fd = open("/dev/counter0", O_RDWR);
+> 	...
+> 
+> 	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
+> 	...
+> 
+> 	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
+> 	...
+> 
+> 	for (;;) {
+> 		struct pollfd fds[] = {
+> 			{
+> 				.fd = fd,
+> 				.events = POLLIN,
+> 			},
+> 		};
+> 		ssize_t i;
+> 
+> 		/* wait for 10 sec */
+> 		ret = poll(fds, ARRAY_SIZE(fds), DEFAULT_TIMEOUT_MS);
+> 		if (ret == -EINTR)
+> 			continue;
+> 		else if (ret < 0)
+> 			return -errno;
+> 		else if (ret == 0) {
+> 			sysfs_flush_counter(); <---- request to flush queued events from the driver
+> 			continue;
+> 		}
+> 
+> 		ret = read(fd, event_data, sizeof(event_data));
+> 		...
+> 
+> 		for (i = 0; i < ret / (ssize_t)sizeof(event_data[0]); i++)
+> 			/* process event */
+> 			....
+> 		}
+> 	}
+> 
+> 	return ret;
+> }
+> 
+> If it is still the only way to go, I'll send kernel patches.
+> 
+> Regards,
+> Oleksij
+> 
 
-That patch should have a good comment to summarize the above.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Couldn't the flush be implicit in the `read()` implementation
+instead of requiring a separate sysfs attribute to trigger it?

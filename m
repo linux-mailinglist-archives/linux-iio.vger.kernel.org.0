@@ -2,109 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302374A7A16
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 22:14:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D4434A7BE3
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 00:51:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbiBBVN5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 16:13:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50686 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239968AbiBBVNz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 16:13:55 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C304C061714;
-        Wed,  2 Feb 2022 13:13:55 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id y8so424948qtn.8;
-        Wed, 02 Feb 2022 13:13:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=aKbhLaruFzJihRr6tuHWqUwiyv5AacGBfXx3Ff7B0io=;
-        b=SYedvhKztxYN6/73vqzNbvu0Qr5H5hpvoKUwVsBTwGsvFLq1GKGs5oF77oWeMy1gtR
-         17RhhPxDJRo/NdyISTDSIRI84kFh9x1D7x5M2AFL5lE4MbIwN3H7z+rCsPHiyXGLgutB
-         Tv9wbPZUtLpfcFYANRdDAlsIWXzVX0fG6Y9i+o+HIHoGPAH19h5yjZuuf/vpf/29MY7x
-         zEjRwyoQgzUhTwtVQhyLkWZfXCY6FaS+wcfgnU2DXEB8UtrVj4x2FbPE4Cq2RHXf38Np
-         FgBiMBqrAM74b+jQIv1f0AhXr3LqMAiDrUex57Ze6sVUDvkISJAHqSu6eYdWwUrlFL1X
-         s8nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=aKbhLaruFzJihRr6tuHWqUwiyv5AacGBfXx3Ff7B0io=;
-        b=0PDyigdySpBSHsn7i3U8JBMyUg1cRmmkC5bqOp5BnpC90s3Z7NuCjTbI+g8ri8LtkE
-         LcRJYh/GJmOSQhqCGg87Un1uG7xI1nP5WhFnKbp+ePXE/ZGGpu2t0vuzBUNT18xma8LL
-         oJikVmp1utAatxkJI4Rxp3lsMg8J1Rv4DXERUTJv+32dhcV+Vb3wQG1rzCuAKusMlvOk
-         VvwT/UtG9wvMjz7uuZ/tHGmwA0sW0zLuAUyrRtVlkheTpeANYLKN7CBi36qR2AuemiCD
-         pik9uWzIfzRkcP/MCNCXn9emrZ6vuZlN/C0aRwS85XZMnfFqL3vKNFAyy8JceqXifOu8
-         HOwA==
-X-Gm-Message-State: AOAM531lF61k0/Up7lG0BMX/SEqvDgxtrzcUdrlA5X8egw7OqvbTXCVP
-        FEA0ku8ZkE5UUXwZOcnORXJqEXgpxqA=
-X-Google-Smtp-Source: ABdhPJxFYaSprVyP6Y01tg0cALKPhGKkbkgEwLvuLUBcJPUVAI8RstL1ZwH9nCGZN7X25+ma9ES2aw==
-X-Received: by 2002:ac8:7d55:: with SMTP id h21mr24439359qtb.331.1643836434380;
-        Wed, 02 Feb 2022 13:13:54 -0800 (PST)
-Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
-        by smtp.gmail.com with ESMTPSA id w4sm13542192qko.123.2022.02.02.13.13.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Feb 2022 13:13:53 -0800 (PST)
-Date:   Wed, 2 Feb 2022 16:13:51 -0500
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     jic23@kernel.org, andy.shevchenko@gmail.com, lars@metafoo.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: Re: [PATCH v13 02/11] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
- support
-Message-ID: <Yfr0D3MabWcGLOde@shaak>
-References: <20220130161101.1067691-1-liambeguin@gmail.com>
- <20220130161101.1067691-3-liambeguin@gmail.com>
- <8347a069-c36c-cb30-a0be-5b38f3c59b32@axentia.se>
+        id S1348133AbiBBXvF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Feb 2022 18:51:05 -0500
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:51415 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S239716AbiBBXuv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 18:50:51 -0500
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 4F6C55C01D4;
+        Wed,  2 Feb 2022 18:50:51 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 02 Feb 2022 18:50:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
+        cc:cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to; s=fm1; bh=G3uMJoiuyTNYSzQLHkBtYHuRGGlAUi5KOnThdB
+        0YcG8=; b=NXJUF3YhKRU8bfeCGs/x/X2JQdeLsluEgkicQJx6DgojU5K1kP1egf
+        MjvBexuh379F9p7Hr4QkjeDfPjE7jLlYpXnA1EPaJ19oF2CbNNG2SBOhhvNyuyQv
+        D7ruPgB3BaHr37k7Q3/dKrASPaQqFCDDxpYLbQsoDNhEFTN6nwRBB6d6GnOPQTe2
+        r252aLGGfKgYE2rtu1Ok1VdvI3h7mSa+V6pHiIWAV46SDEEP+v2oTcGvrdQAediW
+        zCFM9acWwtLAdznMqKjlYINtKITMbm8Y7qWf96JUYVr1Zcv++ImPgDlSySBvtnwV
+        d9tEjmSWYcW7Kiypgq2VrYAAaX2Cje2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=G3uMJo
+        iuyTNYSzQLHkBtYHuRGGlAUi5KOnThdB0YcG8=; b=MIKrEs6WfmCWJ7tQql0C80
+        WHMokSU/wQi3Xs0D+OzuLb7WpxE993bmu2xDWxOPv7CD5/UzlaDizng73KhrG+Im
+        T+utaLt4xjJ8azlv/z9airUp9fRigZOI5tMiBcB3O8HRvTc8/2uuc04HO/AAWIAo
+        huR7yIH+mydfbKdADO+CqkzjmbjBQSn9wN46ptZgnQ9rP4hvMMTLcFuRBCUUW1zV
+        v0VcMZLlWbb6uvaSdDoEc6yEpIg/xoCJCzufplkqmPKtKJoQBqScgrgNR4xxG2mX
+        tYoQreaKvZDRtqs8CMAsPzG9Tp5aXFd1/P1csPDy9qWnLd161pf8+rCRabOWFU6A
+        ==
+X-ME-Sender: <xms:2hj7YVtOiVGqZ2pZ55PmWyi7jPOog0EOPBsseY4c0ErmU8m-PAJ2lQ>
+    <xme:2hj7Yec6toGLUbgOYviI0ZPpuFgHdzq_7xfXm3j8RZKQ6E36EvZ_oUSK4mUpSfwnM
+    VO2Vpc6BR5kIOnN1Q>
+X-ME-Received: <xmr:2hj7YYz21onOCS5Gy_x_fWyGDaGxdyN9yzaiwh-eImjlfkD-E1IE2FpXjd-R_JRSeIMB4xQ_o4Q2nXe7sMClgR_h3HEzQZqZojBRTLnm_RHdVRqZKJjhBkCC_qx75BFFwluirg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrgeeigdduvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvffufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpefurghmuhgvlhcu
+    jfholhhlrghnugcuoehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvleefveegvefghfegheeghfehtdeigeejfefhvedvueekieefheetfffg
+    veethfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hsrghmuhgvlhesshhhohhllhgrnhgurdhorhhg
+X-ME-Proxy: <xmx:2hj7YcMt_MdI0rrH2DIeCHb7e1Mr7yHSJuxGyVx15C06csFGZy-_fg>
+    <xmx:2hj7YV9yhD214nDm-krfaw8GMwfCx5b1COQwiYoOsrLLMbYoHrIavA>
+    <xmx:2hj7YcWooIKl7elu2kANYbtxeNxftV4qNYWyuwpPXoPM1xpJV_kdDQ>
+    <xmx:2xj7YeNM0J5PlIMVIm2-wDTYVw3NZx9Iw1du4tVNBTdB4BfVCurOoA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Feb 2022 18:50:50 -0500 (EST)
+From:   Samuel Holland <samuel@sholland.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Samuel Holland <samuel@sholland.org>
+Subject: [PATCH v2 0/3] iio: Silan SC7A20 accelerometer support
+Date:   Wed,  2 Feb 2022 17:50:45 -0600
+Message-Id: <20220202235049.8051-1-samuel@sholland.org>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8347a069-c36c-cb30-a0be-5b38f3c59b32@axentia.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Peter,
-On Wed, Feb 02, 2022 at 06:04:25PM +0100, Peter Rosin wrote:
-> Hi!
-> 
-> On 2022-01-30 17:10, Liam Beguin wrote:
-> > Some ADCs use IIO_VAL_INT_PLUS_{NANO,MICRO} scale types.
-> > Add support for these to allow using the iio-rescaler with them.
-> > 
-> > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-> > Reviewed-by: Peter Rosin <peda@axentia.se>
-> > ---
-> >  drivers/iio/afe/iio-rescale.c | 35 +++++++++++++++++++++++++++++++++++
-> >  1 file changed, 35 insertions(+)
-> > 
-> > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> > index 65832dd09249..f833eb38f8bb 100644
-> > --- a/drivers/iio/afe/iio-rescale.c
-> > +++ b/drivers/iio/afe/iio-rescale.c
-> > @@ -14,6 +14,7 @@
-> >  #include <linux/of_device.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/property.h>
-> > +#include <linux/units.h>
-> 
-> This include should be moved to the first patch that uses stuff from
-> it.
+This chip is register-compatible with an ST part, so it works without
+any issues when added to the existing driver.
 
-Some defines are used a bit further down in mult
+Previously I called it a clone, but it's not really a clone, because
+it's not a drop-in replacement for the other chips. The software
+interface matches the ST parts, but the pinout does not. Instead, the
+pinout matches the Kionix KX122 and KX132.
 
-(copied back from the original message):
-> >	case IIO_VAL_INT_PLUS_NANO:
-> >	case IIO_VAL_INT_PLUS_MICRO:
-> >		mult = scale_type == IIO_VAL_INT_PLUS_NANO ? GIGA : MEGA;
+Changes in v2:
+ - Move the new compatible to its own section
+ - Add a comment about the WAI value
+ - Update commit messages
 
-> Cheers,
-> Peter
-> 
-> *snip*
+Samuel Holland (3):
+  dt-bindings: vendor-prefixes: Add silan vendor prefix
+  dt-bindings: iio: st: Add Silan SC7A20 accelerometer
+  iio: accel: st_accel: Add support for Silan SC7A20
 
-Cheers,
-Liam
+ .../bindings/iio/st,st-sensors.yaml           |  3 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
+ drivers/iio/accel/st_accel.h                  |  2 +
+ drivers/iio/accel/st_accel_core.c             | 83 +++++++++++++++++++
+ drivers/iio/accel/st_accel_i2c.c              |  5 ++
+ 5 files changed, 95 insertions(+)
+
+-- 
+2.33.1
+

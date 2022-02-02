@@ -2,78 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4154A79CF
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 21:55:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F094A79D7
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Feb 2022 21:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231705AbiBBUzW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 15:55:22 -0500
-Received: from mga09.intel.com ([134.134.136.24]:64097 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347331AbiBBUzU (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Wed, 2 Feb 2022 15:55:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643835321; x=1675371321;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CdJlJPui20ZYUBnP9Qq9k7eB0SBmLsgUn7XCbKkohes=;
-  b=FYi/pndRo+o1/Qg21NHeY6CLwmvFcUD+5PHSCdzVMBOkghqT7XUNXuxq
-   cyjsNETFw2s1E9xPmWkXRl5J6qR7CufeCtWsaMAyNIGtxxTo8nGTsrAqK
-   l6jciG2ME7+DgG0R7rizkFVAGlFnvRa6rSLTelPBoJfZI6kbiS8YKmyap
-   W2dUS76R/uUM3t1RUudbA1kob5ed6n/Ufzl7s9YEMiZG+78garTKzDgDO
-   j1sZELLN585GcIp1o3p89deWEMphONt0+cp+cQVlCq8c9cdT3mQ6xDtXZ
-   CP5m2F63hFB3GJ+hzLNoQDG/geuIGkhQbEqsfA2UsHp8U/3UTJDKabNiM
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10246"; a="247785420"
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="247785420"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2022 12:55:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,337,1635231600"; 
-   d="scan'208";a="480247469"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 02 Feb 2022 12:55:18 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7F5D93B7; Wed,  2 Feb 2022 22:55:32 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 1/1] iio: temperature: mlx90632: Switch from of headers to mod_devicetable.h
-Date:   Wed,  2 Feb 2022 22:55:31 +0200
-Message-Id: <20220202205531.57966-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        id S1343779AbiBBU4d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Feb 2022 15:56:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46654 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230399AbiBBU4c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 15:56:32 -0500
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92901C061714;
+        Wed,  2 Feb 2022 12:56:32 -0800 (PST)
+Received: by mail-qk1-x72b.google.com with SMTP id bs32so826469qkb.1;
+        Wed, 02 Feb 2022 12:56:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=2oBJmK/+RBc8FE7PZmIHJK5BlYsD+KPlOD7Zr3SmWis=;
+        b=IjdRGcpiq/kU8e8JDfGm198uCN3Ay9NCRoeG99nRmaxObU0Z+Ri617Om8zaXoE25N4
+         14JG8CM/RGyQyTEmEZ4+/xrPY+FzfOxqvsNsFXoObz3HbjxApLOC/Q2tIYS0PXZlKNRE
+         LGa3aOcDFelY+Q1eIAIpWuM3dDiKp3hE1S1lbZDZRGDTBlcMXUrplj4T8l/imyPfc9DB
+         4UEBGlNi1HXoYdj3tVip7++2N72fQcrBvGXKPlWkWAOZJbnwjYU5Q4o2Ghh6+5VSlg+9
+         qhjojkaaqoKpnZaAUJc4hvxiQ3SS3GvcdCOnivES0J+XlIII3au78CeA64LzN25BvjtQ
+         aAEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=2oBJmK/+RBc8FE7PZmIHJK5BlYsD+KPlOD7Zr3SmWis=;
+        b=hm66H5HgdWqX9okOW0VTVXelXXtLURWsGam0L6T9/WZw3ZmGNJqL3l3vbI+kSdNaHQ
+         MBs2KZUYFyOCJ+XNvMMwfbVAKj9hsIXE6oHSpldpbl4zggjuq5wOWvV4e5szA1pDsMan
+         Vj5Wc89ibGM6O/FgkGaS1HXQXA0T7FUfRHji3Gvv2+4/nqUzFPQH+/J/zVtB77Ws3393
+         2qbqn4w7u11TejC+XJUvJEsK4p6lvO8YuwdUGQECi9S0cZXDoa9kjpb0K8LQhI/cskzM
+         1tGGeCnw4DLDoNkcBz5ZeMRabKHm/NY9qRID4e1Ain+Q0pKHQqrFVkJXThQiAfrIUOJG
+         m80w==
+X-Gm-Message-State: AOAM532CiQC1o0VZsvSjqUWtwOUBlvVh78XTHA1Y7fAPwOeHcVnRDVcH
+        WW7McOJno49COsrrDzBsPS8=
+X-Google-Smtp-Source: ABdhPJzZXB9Y3XZwRz0Y8ng7Vr5OzC7UnSl3/1MEpsMNYDrSC2FkfaMUKQHSNxKCEcO0f3zWWJ2T8w==
+X-Received: by 2002:a05:620a:319b:: with SMTP id bi27mr21596353qkb.505.1643835391682;
+        Wed, 02 Feb 2022 12:56:31 -0800 (PST)
+Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
+        by smtp.gmail.com with ESMTPSA id b8sm1772339qtx.79.2022.02.02.12.56.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Feb 2022 12:56:30 -0800 (PST)
+Date:   Wed, 2 Feb 2022 15:56:28 -0500
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     jic23@kernel.org, andy.shevchenko@gmail.com, lars@metafoo.de,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v13 08/11] iio: afe: rescale: add RTD temperature sensor
+ support
+Message-ID: <Yfrv/K8ohqTINEED@shaak>
+References: <20220130161101.1067691-1-liambeguin@gmail.com>
+ <20220130161101.1067691-9-liambeguin@gmail.com>
+ <cb48ec7c-da91-cadd-ee7f-02691671e7be@axentia.se>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb48ec7c-da91-cadd-ee7f-02691671e7be@axentia.se>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is nothing directly using of specific interfaces in this driver,
-so lets not include the headers.
+Hi Peter,
+On Wed, Feb 02, 2022 at 05:58:25PM +0100, Peter Rosin wrote:
+> Hi!
+> 
+> On 2022-01-30 17:10, Liam Beguin wrote:
+> > An RTD (Resistance Temperature Detector) is a kind of temperature
+> > sensor used to get a linear voltage to temperature reading within a
+> > give range (usually 0 to 100 degrees Celsius). Common types of RTDs
+> > include PT100, PT500, and PT1000.
+> > 
+> > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+> > Reviewed-by: Peter Rosin <peda@axentia.se>
+> > ---
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/temperature/mlx90632.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-- snip --
 
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index 608ccb1d8bc8..7ee7ff8047a4 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -13,9 +13,9 @@
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/limits.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/math64.h>
--#include <linux/of.h>
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- 
--- 
-2.34.1
+> > +
+> > +	tmp = r0 * iexc * alpha / MEGA;
+> > +	factor = gcd(tmp, MEGA);
+> > +	rescale->numerator = MEGA / factor;
+> > +	rescale->denominator = tmp / factor;
+> > +
+> > +	rescale->offset = -1 * ((r0 * iexc) / MEGA * MILLI);
+> 
+> The inner (unneeded) brackets are not helping with clarifying
+> the precedence. The most "problematic" operation is the last
+> multiplication inside the outer brackets. Extra brackets are
+> more useful like this, methinks:
+> 
+> 	rescale->offset = -1 * ((r0 * iexc / MEGA) * MILLI);
+> 
+> But, what is more important is that you in v10 had:
+> 
+> 	rescale->offset = -1 * ((r0 * iexc) / 1000);
+> 
+> What you tricked yourself into writing when you converted to
+> these prefix defines is not equivalent. You lose precision.
+> 
+> I.e. dividing by 1000000 and then multiplying by 1000 is not
+> the same as dividing directly with 1000. And you know this, but
+> didn't notice perhaps exactly because you got yourself entangled
+> in prefix macros that blurred the picture?
 
+Apologies for this oversight. Your observation is correct, I looked at
+the prefix changes and failed to catch this mistake.
+
+Would you be okay with the following:
+
+	rescale->offset = -1 * ((r0 * iexc) / KILO);
+
+This would keep things consistent with what I said here[1].
+
+[1] https://lore.kernel.org/linux-iio/YfmJ3P1gYaEkVjlY@shaak/
+
+> These macros have wasted quite a bit of review time. I'm not
+> fully convinced they represent an improvement...
+
+Sorry for the wasted cycles here.
+
+Cheers,
+Liam
+
+> Cheers,
+> Peter
+> 
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  enum rescale_variant {
+> >  	CURRENT_SENSE_AMPLIFIER,
+> >  	CURRENT_SENSE_SHUNT,
+> >  	VOLTAGE_DIVIDER,
+> > +	TEMP_SENSE_RTD,
+> >  };
+> >  
+> >  static const struct rescale_cfg rescale_cfg[] = {
+> > @@ -414,6 +456,10 @@ static const struct rescale_cfg rescale_cfg[] = {
+> >  		.type = IIO_VOLTAGE,
+> >  		.props = rescale_voltage_divider_props,
+> >  	},
+> > +	[TEMP_SENSE_RTD] = {
+> > +		.type = IIO_TEMP,
+> > +		.props = rescale_temp_sense_rtd_props,
+> > +	},
+> >  };
+> >  
+> >  static const struct of_device_id rescale_match[] = {
+> > @@ -423,6 +469,8 @@ static const struct of_device_id rescale_match[] = {
+> >  	  .data = &rescale_cfg[CURRENT_SENSE_SHUNT], },
+> >  	{ .compatible = "voltage-divider",
+> >  	  .data = &rescale_cfg[VOLTAGE_DIVIDER], },
+> > +	{ .compatible = "temperature-sense-rtd",
+> > +	  .data = &rescale_cfg[TEMP_SENSE_RTD], },
+> >  	{ /* sentinel */ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, rescale_match);

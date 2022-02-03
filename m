@@ -2,82 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D913C4A85BA
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 15:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5600F4A8834
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 17:00:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350980AbiBCOGO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Feb 2022 09:06:14 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:34461 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241494AbiBCOGN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 09:06:13 -0500
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nFcc5-00033s-10; Thu, 03 Feb 2022 14:57:29 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nFcc4-009xpX-Hv; Thu, 03 Feb 2022 14:57:28 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v2 2/2] counter: interrupt-cnt: add counter_push_event()
-Date:   Thu,  3 Feb 2022 14:57:27 +0100
-Message-Id: <20220203135727.2374052-3-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220203135727.2374052-1-o.rempel@pengutronix.de>
-References: <20220203135727.2374052-1-o.rempel@pengutronix.de>
+        id S242285AbiBCP7L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Feb 2022 10:59:11 -0500
+Received: from mga07.intel.com ([134.134.136.100]:14238 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231251AbiBCP7L (ORCPT <rfc822;linux-iio@vger.kernel.org>);
+        Thu, 3 Feb 2022 10:59:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1643903951; x=1675439951;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=r3LklpumRSCVRPZ1iWKibE5YvEFhUlEi5fqm7ahAhq4=;
+  b=FrSXgMvraotO1tc/SjEpM1PP8aQQ/V58Fc9mLfoSn8q8zY1FsF0xxElr
+   s+rIE/9XeQD+w7iWo9Tz760Nz1rqeKZpK+3AoIX9DqKciqMcwxHnDd/QH
+   klraeQAdBfP06pBuLHfdkWvgdzCwAN0CVdR3BEP7+6NZOifaHFtToP2qB
+   sJzJGIxiLetSeLiyA4dE1pqEyzWj0f20VE2OWnp3CUHgolOcz9YbF/zrD
+   GAO8qB81zbOLl6s3ONyT04TI1as+KKLBoxjb1r63cKG5BsBwU+FEuDETB
+   6t/ER+8Pvb/H3L2iWfDiFB0Y4o5kjEsx9s7qYE4eFE8Gowz61zsItTg6n
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10246"; a="311477491"
+X-IronPort-AV: E=Sophos;i="5.88,340,1635231600"; 
+   d="scan'208";a="311477491"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 07:59:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,340,1635231600"; 
+   d="scan'208";a="676807120"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 03 Feb 2022 07:59:09 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 1482E18D; Thu,  3 Feb 2022 17:59:23 +0200 (EET)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v1 1/3] iio: imu: inv_mpu6050: Drop wrong use of ACPI_PTR()
+Date:   Thu,  3 Feb 2022 17:59:18 +0200
+Message-Id: <20220203155920.18586-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add counter_push_event() to notify user space about new pulses
+ACPI_PTR() is more harmful than helpful. For example, in this case
+if CONFIG_ACPI=n, the ID table left unused which is not what we want.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Instead of adding ifdeffery or attribute here and there, drop ACPI_PTR().
+
+Fixes: 3b3870646642 ("iio: imu: inv_mpu6050: Mark acpi match table as maybe unused")
+Fixes: fd64df16f40e ("iio: imu: inv_mpu6050: Add SPI support for MPU6000")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/counter/interrupt-cnt.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c | 7 +++----
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c | 4 ++--
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-index 9e99702470c2..3b13f56bbb11 100644
---- a/drivers/counter/interrupt-cnt.c
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -26,10 +26,13 @@ struct interrupt_cnt_priv {
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+index fe03707ec2d3..ccb06d9af760 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+@@ -3,11 +3,11 @@
+ * Copyright (C) 2012 Invensense, Inc.
+ */
  
- static irqreturn_t interrupt_cnt_isr(int irq, void *dev_id)
- {
--	struct interrupt_cnt_priv *priv = dev_id;
-+	struct counter_device *counter = dev_id;
-+	struct interrupt_cnt_priv *priv = counter_priv(counter);
+-#include <linux/acpi.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/of_device.h>
+ #include <linux/property.h>
+@@ -249,11 +249,10 @@ static const struct of_device_id inv_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, inv_of_match);
  
- 	atomic_inc(&priv->count);
+-static const struct acpi_device_id __maybe_unused inv_acpi_match[] = {
++static const struct acpi_device_id inv_acpi_match[] = {
+ 	{"INVN6500", INV_MPU6500},
+ 	{ },
+ };
+-
+ MODULE_DEVICE_TABLE(acpi, inv_acpi_match);
  
-+	counter_push_event(counter, COUNTER_EVENT_CHANGE_OF_STATE, 0);
-+
- 	return IRQ_HANDLED;
- }
- 
-@@ -209,7 +212,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
- 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
- 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
- 			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
--			       dev_name(dev), priv);
-+			       dev_name(dev), counter);
- 	if (ret)
- 		return ret;
- 
+ static struct i2c_driver inv_mpu_driver = {
+@@ -262,7 +261,7 @@ static struct i2c_driver inv_mpu_driver = {
+ 	.id_table	=	inv_mpu_id,
+ 	.driver = {
+ 		.of_match_table = inv_of_match,
+-		.acpi_match_table = ACPI_PTR(inv_acpi_match),
++		.acpi_match_table = inv_acpi_match,
+ 		.name	=	"inv-mpu6050-i2c",
+ 		.pm     =       &inv_mpu_pmops,
+ 	},
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+index 6800356b25fb..44b4f74b9256 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+@@ -2,8 +2,8 @@
+ /*
+ * Copyright (C) 2015 Intel Corporation Inc.
+ */
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+-#include <linux/acpi.h>
+ #include <linux/of.h>
+ #include <linux/property.h>
+ #include <linux/spi/spi.h>
+@@ -148,7 +148,7 @@ static struct spi_driver inv_mpu_driver = {
+ 	.id_table	=	inv_mpu_id,
+ 	.driver = {
+ 		.of_match_table = inv_of_match,
+-		.acpi_match_table = ACPI_PTR(inv_acpi_match),
++		.acpi_match_table = inv_acpi_match,
+ 		.name	=	"inv-mpu6000-spi",
+ 		.pm     =       &inv_mpu_pmops,
+ 	},
 -- 
-2.30.2
+2.34.1
 

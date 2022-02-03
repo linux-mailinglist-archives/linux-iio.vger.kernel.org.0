@@ -2,185 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3FFE4A7FDE
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 08:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D14644A7FE4
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 08:35:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237818AbiBCHdn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Feb 2022 02:33:43 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:49059 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230473AbiBCHdm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 02:33:42 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nFWTW-0007TF-6f; Thu, 03 Feb 2022 08:24:14 +0100
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nFWTT-0005dv-4m; Thu, 03 Feb 2022 08:24:11 +0100
-Date:   Thu, 3 Feb 2022 08:24:11 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     David Lechner <david@lechnology.com>
-Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
-        David Jander <david@protonic.nl>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
+        id S1349404AbiBCHfM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Feb 2022 02:35:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48662 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349413AbiBCHfM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 02:35:12 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1594C06173B;
+        Wed,  2 Feb 2022 23:35:11 -0800 (PST)
+Received: by mail-qk1-x735.google.com with SMTP id 71so1907210qkf.4;
+        Wed, 02 Feb 2022 23:35:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GV5y/r9SmYnI3xDISz2CmR4cyeVlCQ+WRD07va7sDHc=;
+        b=pcCaZ8DqkGiYPtEoKYPb4oQaf8V9u5hP6L7HLfsEG7qP72yZkqzxhtVK85MdYHfcwO
+         D7EJSx6Tm2OvCdU+XlcbEyRM9CEKlNw7bTx59NGQoM4MsyPY1TU3Yk5bfJLs6pXZ5rE9
+         T/idM1qGVfyHhaICtznvxsBlx8x7p5QR3Z+Kzt/6D/bGo/AOiPxhtJOXKg0gT7FJe8Z8
+         08p2pmiN3DGGtyLesEf0lATXRVFCgPcSFYp6hOQbdGsODgV7/oqMhz9psBmM6hRYtz29
+         oxust9pRs8cNZIoeGGj9kWPc+xWCtqiEsnK0X0GMwb8N2Kz7i91kIKRGSs3+qJdb5g3x
+         kd2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GV5y/r9SmYnI3xDISz2CmR4cyeVlCQ+WRD07va7sDHc=;
+        b=fD+uiIXAXeLtGeBza5fGyZyq2eJso7175IcHjT8RxCVhPu6kdfu0cVOocW87OaOUhm
+         ntMi2z1i1gU2Lon7Xpiq23LdbfXhh4nTLvTLXsqvkpnVcLwAQ1jdumGVcjuk+LRlGBLy
+         crKpWkdTDuH1mV/lRCYuDPlrc37o7kmWRnDJxTP8F7IStUUC+eqeI/5USSC/SwVmB/xp
+         MhLlTCMLzfNolvD9nusO5f1XQwJykD3Uyd8qmQaT1PLDz80U3gxYeEAjns1/G99+1CpP
+         TXUQUprH2XgzYBHNz5m8XEWTmkkDauIuX9XrX4Q9WMy/ReZUDePO5wB741iedJGJz9VV
+         LINw==
+X-Gm-Message-State: AOAM530GMa2qlxEhyHxIQ34cbUE5U5v62Ag/gkdcwhD+r3a21l7eU/YN
+        /qz/U3h5u/fgbTWdRFmx/S4=
+X-Google-Smtp-Source: ABdhPJyxHQrbhkVRX4ru6uajR66XLZ/3Ma+mv6E/FfUvaP3tvlwXWCFlyvNDEjS1HYjRS/iNF2UWKg==
+X-Received: by 2002:a05:620a:2894:: with SMTP id j20mr23060194qkp.307.1643873710960;
+        Wed, 02 Feb 2022 23:35:10 -0800 (PST)
+Received: from localhost.localdomain (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
+        by smtp.gmail.com with ESMTPSA id 134sm12712551qkl.50.2022.02.02.23.35.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Feb 2022 23:35:10 -0800 (PST)
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     jic23@kernel.org
+Cc:     u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
-Message-ID: <20220203072411.GA12695@pengutronix.de>
-References: <YZ7tv79LQwLL7h3T@shinobu>
- <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
- <20211207081602.45b1423c@erd992>
- <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
- <20211208171035.6ad117af@erd992>
- <Ybmr2kCLScuGZ41h@shinobu>
- <20211215100853.11f9262d@erd992>
- <YcaZEKbzRbX982YW@shinobu>
- <Yfp56WznEMh7rp2O@pengutronix.de>
- <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH] counter: Set counter device name
+Date:   Thu,  3 Feb 2022 16:34:59 +0900
+Message-Id: <20220203073459.90093-1-vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 08:04:33 up 54 days, 15:50, 44 users,  load average: 0.23, 0.46,
- 0.28
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Feb 02, 2022 at 09:17:57AM -0600, David Lechner wrote:
-> On 2/2/22 6:32 AM, Oleksij Rempel wrote:
-> > Hi William,
-> > 
-> > On Sat, Dec 25, 2021 at 01:07:44PM +0900, William Breathitt Gray wrote:
-> > ...
-> > > So the counter_push_event() function interacts with two spinlocks:
-> > > events_list_lock and events_in_lock. The events_list_lock spinlock is
-> > > necessary because userspace can modify the events_list list via the
-> > > counter_enable_events() and counter_disable_events() functions. The
-> > > events_in_lock spinlock is necessary because userspace can modify the
-> > > events kfifo via the counter_events_queue_size_write() function.
-> > > 
-> > > A lockless solution for this might be possible if the driver maintains
-> > > its own circular buffer as you suggest. The driver's IRQ handler can
-> > > write to this circular buffer without calling the counter_push_event()
-> > > function, and then flush the buffer to the Counter character device via
-> > > a userspace write to a "flush_events" sysfs attribute or similar; this
-> > > eliminates the need for the events_in_lock spinlock. The state of the
-> > > events_list list can be captured in the driver's events_configure()
-> > > callback and stored locally in the driver for reference, thus
-> > > eliminating the need for the events_list_lock; interrupts can be
-> > > disabled before the driver's local copy of events_list is modified.
-> > > 
-> > > With only one reader and one writer operating on the driver's buffer,
-> > > you can use the normal kfifo_in and kfifo_out calls for lockless
-> > > operations. Perhaps that is a way forward for this problem.
-> > 
-> > As proof of concept, I implemented the double buffered version with the
-> > sysfs flush_events interface. Currently it feels kind of wired, I use
-> > poll and wait until it timeouts to run the sysfs_flush_counter() to
-> > trigger new data.
-> > 
-> > Here is example:
-> > int main(void)
-> > {
-> > 	ret = sysfs_enable_counter();
-> > 	...
-> > 
-> > 	fd = open("/dev/counter0", O_RDWR);
-> > 	...
-> > 
-> > 	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
-> > 	...
-> > 
-> > 	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
-> > 	...
-> > 
-> > 	for (;;) {
-> > 		struct pollfd fds[] = {
-> > 			{
-> > 				.fd = fd,
-> > 				.events = POLLIN,
-> > 			},
-> > 		};
-> > 		ssize_t i;
-> > 
-> > 		/* wait for 10 sec */
-> > 		ret = poll(fds, ARRAY_SIZE(fds), DEFAULT_TIMEOUT_MS);
-> > 		if (ret == -EINTR)
-> > 			continue;
-> > 		else if (ret < 0)
-> > 			return -errno;
-> > 		else if (ret == 0) {
-> > 			sysfs_flush_counter(); <---- request to flush queued events from the driver
-> > 			continue;
-> > 		}
-> > 
-> > 		ret = read(fd, event_data, sizeof(event_data));
-> > 		...
-> > 
-> > 		for (i = 0; i < ret / (ssize_t)sizeof(event_data[0]); i++)
-> > 			/* process event */
-> > 			....
-> > 		}
-> > 	}
-> > 
-> > 	return ret;
-> > }
-> > 
-> > If it is still the only way to go, I'll send kernel patches.
-> > 
-> > Regards,
-> > Oleksij
-> > 
-> 
-> Couldn't the flush be implicit in the `read()` implementation
-> instead of requiring a separate sysfs attribute to trigger it?
+Naming the counter device provides a convenient way to identify it in
+devres_log events and similar situations. This patch names the counter
+device by combining the prefix "counter" with the counter device's
+unique ID.
 
-Hm...
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+---
+ drivers/counter/counter-core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-To detect pulse frequency, I need a burst of sequential time-stamps
-without drops. In case the pulse frequency is higher then the use space
-is able to get it out of FIFO, we will get high number of drops. 
-So, we do not need all time stamps. Only bunch of them without drops in
-the middle.
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index 7e0957eea094..2ebd9adf0bd2 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -22,6 +22,8 @@
+ #include "counter-chrdev.h"
+ #include "counter-sysfs.h"
+ 
++#define COUNTER_NAME	"counter"
++
+ /* Provides a unique ID for each counter device */
+ static DEFINE_IDA(counter_ida);
+ 
+@@ -104,6 +106,10 @@ struct counter_device *counter_alloc(size_t sizeof_priv)
+ 		goto err_ida_alloc;
+ 	dev->id = err;
+ 
++	err = dev_set_name(dev, COUNTER_NAME "%d", dev->id);
++	if (err)
++		goto err_dev_set_name;
++
+ 	mutex_init(&counter->ops_exist_lock);
+ 	dev->type = &counter_device_type;
+ 	dev->bus = &counter_bus_type;
+@@ -119,6 +125,9 @@ struct counter_device *counter_alloc(size_t sizeof_priv)
+ 
+ err_chrdev_add:
+ 
++	kfree(dev_name(dev));
++err_dev_set_name:
++
+ 	ida_free(&counter_ida, dev->id);
+ err_ida_alloc:
+ 
+@@ -250,7 +259,8 @@ static int __init counter_init(void)
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = alloc_chrdev_region(&counter_devt, 0, COUNTER_DEV_MAX, "counter");
++	err = alloc_chrdev_region(&counter_devt, 0, COUNTER_DEV_MAX,
++				  COUNTER_NAME);
+ 	if (err < 0)
+ 		goto err_unregister_bus;
+ 
 
-I know, at some frequency we wont be able to collect all pulses any way.
-Internal FIFO is just increasing the max detectable frequency. So, it is
-sort of optimization.
-
-My current driver version has own FIFO which is filled directly by the
-IRQ handler and user space trigger flush_cb to push all collected
-time stamps. The main question is: how the flush procedure should be
-controlled. We have following options:
-
-- Attach it to the read(). The disadvantage: at high frequencies, we
-  wont be able to get a burst with time stamps without drops in the
-  middle
-- Trigger flush from user space. In this case, we make user space a bit
-  more complicated and cant really get all advantages of poll().
-- kernel driver is using own timer to trigger flush. The timer can be
-  configured from user space. The advantage of it, the user space is
-  simple and has full advantage of using poll()
-
-Regards,
-Oleksij
+base-commit: 7b9c8e1a0ca18a62565ee0e28b23baf7b176e96f
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.35.1
+

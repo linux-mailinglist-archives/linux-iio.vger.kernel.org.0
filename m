@@ -2,237 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 036624A7BE5
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 00:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FFE4A7FDE
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 08:33:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348141AbiBBXvG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Feb 2022 18:51:06 -0500
-Received: from out1-smtp.messagingengine.com ([66.111.4.25]:46345 "EHLO
-        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1348134AbiBBXu4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Feb 2022 18:50:56 -0500
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id A099F5C0114;
-        Wed,  2 Feb 2022 18:50:55 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 02 Feb 2022 18:50:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
-        cc:cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm1; bh=Y4Guu71RDilBzG
-        o2ggKBceNSjzOtu1j8s5y8c9QFFGs=; b=REJlAgpV/D931cY5p/+UCEaeFRCcbQ
-        CVCXeXMAEOrRqLagTfw0+oxg+uFY7Z+vz6vM6JreAE00qEsibBCspLpvO4kUaHEI
-        nrV8ZLlFcNpJU/T/Wl6RhpUTTvg5a4EAmFLIuGURWRw/l+ZhU6NuXMiBN/AuCWhW
-        EuoiSoE2M432MSdDO5NS6j4zXGok10EL/DWaqWjImmDx6FZP+4dBu7oHoGsXJJGL
-        67CyvXmuNHRpYEPTHGkmkuMDRwJ1LJMHoquUuBUZDoMgB7BNzxxJnfCsDN5gC0Uz
-        mGJfZeBxj8xHVhCyprKjVbleZ4EsjL7vZOdV407cupcvD8huepm7RkbQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; bh=Y4Guu71RDilBzGo2ggKBceNSjzOtu1j8s5y8c9QFF
-        Gs=; b=Goy9bjzJcCXGDrNV+AtxUP5YgXSq+/UE8rKKpHnE4v5HaEnY/z/Ubh10B
-        y8bazeN0e0YQs6MmXIZlrIokJhkynjykFS4hZ1g0iUSodVnTqqrClQ8ZccfJ6ewu
-        +DvYD0f6JefwDKZHJ9d5tvYAz14TYiDP5VfBkj2nlAgX8uWU93EYNgRka+HbgoRC
-        iL4ghDQte9isKXcE2kfbeaPFNMEJbRiZIpbNkbW7SV/aJWhEvbZ2cR7WDJDYTu/e
-        zFAV0s/LxHvaNAYgOvAJzXiZ0vkIGeXRNHseqxUStbMmEjUALh0k1+l+Zm1oATcT
-        rlE8wzE7pLLRVBtY97D1DawWTK/jg==
-X-ME-Sender: <xms:3xj7Ybu0m0_ErmP8qvXoyLLpNXqAC2RAJ9fHqw14l_o5rOXKIm8VAw>
-    <xme:3xj7YccRBtgvx5Qs5aoHeDuVgex0vycx6UEb9wW4sw0lrAOIXk1l3j_o81Zclb8jB
-    mCUW2BAfgbQCUXLuA>
-X-ME-Received: <xmr:3xj7YeyzYls_SHxoxEagUz5U3f3z8luy9ywmxP3ObA_YTcqBSK4IfvNohhSGFJvBNQycwb56vlxpOpt8Juq3zxXr8YgvzwZjlECd4YWnjTICkKMpPQVPKiwnmbzEWha-MhBumw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrgeeigdduvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvffufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpefurghmuhgv
-    lhcujfholhhlrghnugcuoehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhgqeenucggtf
-    frrghtthgvrhhnpeettdejhfejjedvfeelieffteduueevgeethedvjefhkeeigfejhfet
-    udffiefhfeenucffohhmrghinheplhhinhhugidqtghhvghngihinhhgrdhorhhgpdhsih
-    hithgvkhdrtghomhdrtghnnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
-    rghilhhfrhhomhepshgrmhhuvghlsehshhholhhlrghnugdrohhrgh
-X-ME-Proxy: <xmx:3xj7YaMPIGERppAblI-ufCKsrTZnCymi9TkLbQvnRZ9ukrt8ffH-xA>
-    <xmx:3xj7Yb_eOinzwDRbgZmkGj0wJimr4-M92fUkVl9tvrK4pifgXZBm8A>
-    <xmx:3xj7YaUNK-2mMC4hm6BZfhYcOSMA0BJNsqkgY1jgLLGl8TAvtS8mIg>
-    <xmx:3xj7YcObQ4a0M-Lu4BBQi0pA1PQb89_bLUBWDCazaRECe419TcK3qg>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 2 Feb 2022 18:50:55 -0500 (EST)
-From:   Samuel Holland <samuel@sholland.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Samuel Holland <samuel@sholland.org>
-Subject: [PATCH v2 3/3] iio: accel: st_accel: Add support for Silan SC7A20
-Date:   Wed,  2 Feb 2022 17:50:48 -0600
-Message-Id: <20220202235049.8051-4-samuel@sholland.org>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20220202235049.8051-1-samuel@sholland.org>
-References: <20220202235049.8051-1-samuel@sholland.org>
+        id S237818AbiBCHdn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Feb 2022 02:33:43 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:49059 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230473AbiBCHdm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 02:33:42 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nFWTW-0007TF-6f; Thu, 03 Feb 2022 08:24:14 +0100
+Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nFWTT-0005dv-4m; Thu, 03 Feb 2022 08:24:11 +0100
+Date:   Thu, 3 Feb 2022 08:24:11 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     David Lechner <david@lechnology.com>
+Cc:     William Breathitt Gray <vilhelm.gray@gmail.com>,
+        David Jander <david@protonic.nl>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
+Message-ID: <20220203072411.GA12695@pengutronix.de>
+References: <YZ7tv79LQwLL7h3T@shinobu>
+ <f73650b6-5a08-9ea9-9ecb-c47665ef07b0@lechnology.com>
+ <20211207081602.45b1423c@erd992>
+ <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
+ <20211208171035.6ad117af@erd992>
+ <Ybmr2kCLScuGZ41h@shinobu>
+ <20211215100853.11f9262d@erd992>
+ <YcaZEKbzRbX982YW@shinobu>
+ <Yfp56WznEMh7rp2O@pengutronix.de>
+ <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:04:33 up 54 days, 15:50, 44 users,  load average: 0.23, 0.46,
+ 0.28
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This chip appears to be register-compatible with the LIS2DH. The new
-description is a copy of the LIS2DH's description with a different WAI
-value.
+On Wed, Feb 02, 2022 at 09:17:57AM -0600, David Lechner wrote:
+> On 2/2/22 6:32 AM, Oleksij Rempel wrote:
+> > Hi William,
+> > 
+> > On Sat, Dec 25, 2021 at 01:07:44PM +0900, William Breathitt Gray wrote:
+> > ...
+> > > So the counter_push_event() function interacts with two spinlocks:
+> > > events_list_lock and events_in_lock. The events_list_lock spinlock is
+> > > necessary because userspace can modify the events_list list via the
+> > > counter_enable_events() and counter_disable_events() functions. The
+> > > events_in_lock spinlock is necessary because userspace can modify the
+> > > events kfifo via the counter_events_queue_size_write() function.
+> > > 
+> > > A lockless solution for this might be possible if the driver maintains
+> > > its own circular buffer as you suggest. The driver's IRQ handler can
+> > > write to this circular buffer without calling the counter_push_event()
+> > > function, and then flush the buffer to the Counter character device via
+> > > a userspace write to a "flush_events" sysfs attribute or similar; this
+> > > eliminates the need for the events_in_lock spinlock. The state of the
+> > > events_list list can be captured in the driver's events_configure()
+> > > callback and stored locally in the driver for reference, thus
+> > > eliminating the need for the events_list_lock; interrupts can be
+> > > disabled before the driver's local copy of events_list is modified.
+> > > 
+> > > With only one reader and one writer operating on the driver's buffer,
+> > > you can use the normal kfifo_in and kfifo_out calls for lockless
+> > > operations. Perhaps that is a way forward for this problem.
+> > 
+> > As proof of concept, I implemented the double buffered version with the
+> > sysfs flush_events interface. Currently it feels kind of wired, I use
+> > poll and wait until it timeouts to run the sysfs_flush_counter() to
+> > trigger new data.
+> > 
+> > Here is example:
+> > int main(void)
+> > {
+> > 	ret = sysfs_enable_counter();
+> > 	...
+> > 
+> > 	fd = open("/dev/counter0", O_RDWR);
+> > 	...
+> > 
+> > 	ret = ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches);
+> > 	...
+> > 
+> > 	ret = ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
+> > 	...
+> > 
+> > 	for (;;) {
+> > 		struct pollfd fds[] = {
+> > 			{
+> > 				.fd = fd,
+> > 				.events = POLLIN,
+> > 			},
+> > 		};
+> > 		ssize_t i;
+> > 
+> > 		/* wait for 10 sec */
+> > 		ret = poll(fds, ARRAY_SIZE(fds), DEFAULT_TIMEOUT_MS);
+> > 		if (ret == -EINTR)
+> > 			continue;
+> > 		else if (ret < 0)
+> > 			return -errno;
+> > 		else if (ret == 0) {
+> > 			sysfs_flush_counter(); <---- request to flush queued events from the driver
+> > 			continue;
+> > 		}
+> > 
+> > 		ret = read(fd, event_data, sizeof(event_data));
+> > 		...
+> > 
+> > 		for (i = 0; i < ret / (ssize_t)sizeof(event_data[0]); i++)
+> > 			/* process event */
+> > 			....
+> > 		}
+> > 	}
+> > 
+> > 	return ret;
+> > }
+> > 
+> > If it is still the only way to go, I'll send kernel patches.
+> > 
+> > Regards,
+> > Oleksij
+> > 
+> 
+> Couldn't the flush be implicit in the `read()` implementation
+> instead of requiring a separate sysfs attribute to trigger it?
 
-Datasheet: http://linux-chenxing.org/silan/SC7A20-SilanMicroelectronics.pdf
-Datasheet: http://www.siitek.com.cn/Upfiles/down/SC7A20说明书_0.92(智能穿戴).pdf
-Signed-off-by: Samuel Holland <samuel@sholland.org>
----
+Hm...
 
-Changes in v2:
- - Add a comment about the WAI value
- - Update commit messages
+To detect pulse frequency, I need a burst of sequential time-stamps
+without drops. In case the pulse frequency is higher then the use space
+is able to get it out of FIFO, we will get high number of drops. 
+So, we do not need all time stamps. Only bunch of them without drops in
+the middle.
 
- drivers/iio/accel/st_accel.h      |  2 +
- drivers/iio/accel/st_accel_core.c | 83 +++++++++++++++++++++++++++++++
- drivers/iio/accel/st_accel_i2c.c  |  5 ++
- 3 files changed, 90 insertions(+)
+I know, at some frequency we wont be able to collect all pulses any way.
+Internal FIFO is just increasing the max detectable frequency. So, it is
+sort of optimization.
 
-diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
-index 8750dea56fcb..00e056c21bfc 100644
---- a/drivers/iio/accel/st_accel.h
-+++ b/drivers/iio/accel/st_accel.h
-@@ -36,6 +36,7 @@ enum st_accel_type {
- 	LIS3DHH,
- 	LIS2DE12,
- 	LIS2HH12,
-+	SC7A20,
- 	ST_ACCEL_MAX,
- };
- 
-@@ -61,6 +62,7 @@ enum st_accel_type {
- #define LIS3DE_ACCEL_DEV_NAME		"lis3de"
- #define LIS2DE12_ACCEL_DEV_NAME		"lis2de12"
- #define LIS2HH12_ACCEL_DEV_NAME		"lis2hh12"
-+#define SC7A20_ACCEL_DEV_NAME		"sc7a20"
- 
- #ifdef CONFIG_IIO_BUFFER
- int st_accel_allocate_ring(struct iio_dev *indio_dev);
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 31ea19d0ba71..2ada8d6fb503 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1087,6 +1087,89 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
- 		.multi_read_bit = true,
- 		.bootime = 2,
- 	},
-+	{
-+		/*
-+		 * Not an ST part. Register-compatible with the LIS2DH, even
-+		 * though the WAI value is different.
-+		 */
-+		.wai = 0x11,
-+		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-+		.sensors_supported = {
-+			[0] = SC7A20_ACCEL_DEV_NAME,
-+		},
-+		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
-+		.odr = {
-+			.addr = 0x20,
-+			.mask = 0xf0,
-+			.odr_avl = {
-+				{ .hz = 1, .value = 0x01, },
-+				{ .hz = 10, .value = 0x02, },
-+				{ .hz = 25, .value = 0x03, },
-+				{ .hz = 50, .value = 0x04, },
-+				{ .hz = 100, .value = 0x05, },
-+				{ .hz = 200, .value = 0x06, },
-+				{ .hz = 400, .value = 0x07, },
-+				{ .hz = 1600, .value = 0x08, },
-+			},
-+		},
-+		.pw = {
-+			.addr = 0x20,
-+			.mask = 0xf0,
-+			.value_off = ST_SENSORS_DEFAULT_POWER_OFF_VALUE,
-+		},
-+		.enable_axis = {
-+			.addr = ST_SENSORS_DEFAULT_AXIS_ADDR,
-+			.mask = ST_SENSORS_DEFAULT_AXIS_MASK,
-+		},
-+		.fs = {
-+			.addr = 0x23,
-+			.mask = 0x30,
-+			.fs_avl = {
-+				[0] = {
-+					.num = ST_ACCEL_FS_AVL_2G,
-+					.value = 0x00,
-+					.gain = IIO_G_TO_M_S_2(1000),
-+				},
-+				[1] = {
-+					.num = ST_ACCEL_FS_AVL_4G,
-+					.value = 0x01,
-+					.gain = IIO_G_TO_M_S_2(2000),
-+				},
-+				[2] = {
-+					.num = ST_ACCEL_FS_AVL_8G,
-+					.value = 0x02,
-+					.gain = IIO_G_TO_M_S_2(4000),
-+				},
-+				[3] = {
-+					.num = ST_ACCEL_FS_AVL_16G,
-+					.value = 0x03,
-+					.gain = IIO_G_TO_M_S_2(12000),
-+				},
-+			},
-+		},
-+		.bdu = {
-+			.addr = 0x23,
-+			.mask = 0x80,
-+		},
-+		.drdy_irq = {
-+			.int1 = {
-+				.addr = 0x22,
-+				.mask = 0x10,
-+			},
-+			.addr_ihl = 0x25,
-+			.mask_ihl = 0x02,
-+			.stat_drdy = {
-+				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
-+				.mask = 0x07,
-+			},
-+		},
-+		.sim = {
-+			.addr = 0x23,
-+			.value = BIT(0),
-+		},
-+		.multi_read_bit = true,
-+		.bootime = 2,
-+	},
- };
- 
- /* Default accel DRDY is available on INT1 pin */
-diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
-index c0ce78eebad9..7f5888570e87 100644
---- a/drivers/iio/accel/st_accel_i2c.c
-+++ b/drivers/iio/accel/st_accel_i2c.c
-@@ -107,6 +107,10 @@ static const struct of_device_id st_accel_of_match[] = {
- 		.compatible = "st,lis2hh12",
- 		.data = LIS2HH12_ACCEL_DEV_NAME,
- 	},
-+	{
-+		.compatible = "silan,sc7a20",
-+		.data = SC7A20_ACCEL_DEV_NAME,
-+	},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, st_accel_of_match);
-@@ -142,6 +146,7 @@ static const struct i2c_device_id st_accel_id_table[] = {
- 	{ LIS3DE_ACCEL_DEV_NAME },
- 	{ LIS2DE12_ACCEL_DEV_NAME },
- 	{ LIS2HH12_ACCEL_DEV_NAME },
-+	{ SC7A20_ACCEL_DEV_NAME },
- 	{},
- };
- MODULE_DEVICE_TABLE(i2c, st_accel_id_table);
+My current driver version has own FIFO which is filled directly by the
+IRQ handler and user space trigger flush_cb to push all collected
+time stamps. The main question is: how the flush procedure should be
+controlled. We have following options:
+
+- Attach it to the read(). The disadvantage: at high frequencies, we
+  wont be able to get a burst with time stamps without drops in the
+  middle
+- Trigger flush from user space. In this case, we make user space a bit
+  more complicated and cant really get all advantages of poll().
+- kernel driver is using own timer to trigger flush. The timer can be
+  configured from user space. The advantage of it, the user space is
+  simple and has full advantage of using poll()
+
+Regards,
+Oleksij
 -- 
-2.33.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

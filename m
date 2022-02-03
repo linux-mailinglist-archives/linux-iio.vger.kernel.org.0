@@ -2,124 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77FE64A80D6
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 10:03:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B124A82A8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 11:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349591AbiBCJDM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Feb 2022 04:03:12 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:49239 "EHLO
+        id S236951AbiBCKr6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Feb 2022 05:47:58 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:33545 "EHLO
         metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234747AbiBCJDM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 04:03:12 -0500
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        with ESMTP id S233621AbiBCKr6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 05:47:58 -0500
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nFXz7-0001Ju-OT; Thu, 03 Feb 2022 10:00:57 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nFXz7-00EEKb-Kr; Thu, 03 Feb 2022 10:00:56 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nFXz6-005FX4-3S; Thu, 03 Feb 2022 10:00:56 +0100
-Date:   Thu, 3 Feb 2022 10:00:53 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+        (envelope-from <ore@pengutronix.de>)
+        id 1nFZXa-0005RQ-Au; Thu, 03 Feb 2022 11:40:38 +0100
+Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nFZXY-0001jE-BJ; Thu, 03 Feb 2022 11:40:36 +0100
+Date:   Thu, 3 Feb 2022 11:40:36 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: Set counter device name
-Message-ID: <20220203090053.oki5ts4c2gdpi2c6@pengutronix.de>
-References: <20220203073459.90093-1-vilhelm.gray@gmail.com>
+Cc:     David Lechner <david@lechnology.com>, linux-iio@vger.kernel.org,
+        Robin van der Gracht <robin@protonic.nl>,
+        David Jander <david@protonic.nl>, linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v1] counter: interrupt-cnt: add counter_push_event()
+Message-ID: <20220203104036.GB12695@pengutronix.de>
+References: <20211207081602.45b1423c@erd992>
+ <20211208135902.7j3aawytt3jlqgwr@pengutronix.de>
+ <20211208171035.6ad117af@erd992>
+ <Ybmr2kCLScuGZ41h@shinobu>
+ <20211215100853.11f9262d@erd992>
+ <YcaZEKbzRbX982YW@shinobu>
+ <Yfp56WznEMh7rp2O@pengutronix.de>
+ <7a22b7c7-e5ac-7574-9d65-179ab605e4ca@lechnology.com>
+ <20220203072411.GA12695@pengutronix.de>
+ <YfuJXrxpas1ufzp2@shinobu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jh4osnqu6wmxh7l3"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220203073459.90093-1-vilhelm.gray@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
+In-Reply-To: <YfuJXrxpas1ufzp2@shinobu>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:54:14 up 54 days, 16:39, 66 users,  load average: 0.15, 0.10,
+ 0.09
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi William,
 
---jh4osnqu6wmxh7l3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, Feb 03, 2022 at 04:50:54PM +0900, William Breathitt Gray wrote:
+> > Hm...
+> > 
+> > To detect pulse frequency, I need a burst of sequential time-stamps
+> > without drops. In case the pulse frequency is higher then the use space
+> > is able to get it out of FIFO, we will get high number of drops. 
+> > So, we do not need all time stamps. Only bunch of them without drops in
+> > the middle.
+> > 
+> > I know, at some frequency we wont be able to collect all pulses any way.
+> > Internal FIFO is just increasing the max detectable frequency. So, it is
+> > sort of optimization.
+> > 
+> > My current driver version has own FIFO which is filled directly by the
+> > IRQ handler and user space trigger flush_cb to push all collected
+> > time stamps. The main question is: how the flush procedure should be
+> > controlled. We have following options:
+> > 
+> > - Attach it to the read(). The disadvantage: at high frequencies, we
+> >   wont be able to get a burst with time stamps without drops in the
+> >   middle
+> > - Trigger flush from user space. In this case, we make user space a bit
+> >   more complicated and cant really get all advantages of poll().
+> > - kernel driver is using own timer to trigger flush. The timer can be
+> >   configured from user space. The advantage of it, the user space is
+> >   simple and has full advantage of using poll()
+> > 
+> > Regards,
+> > Oleksij
+> 
+> Hi Oleksij,
+> 
+> Earlier in this thread, Jonathan Cameron suggested using the RCU macros
+> to protect access to the events. Taking an RCU approach would eliminate
+> the need for spinlocks because the memory barriers are built-in to the
+> macros, so I assume flushing would no longer be necessary. Would RCU be
+> a viable solution for your needs?
 
-On Thu, Feb 03, 2022 at 04:34:59PM +0900, William Breathitt Gray wrote:
-> Naming the counter device provides a convenient way to identify it in
-> devres_log events and similar situations. This patch names the counter
-> device by combining the prefix "counter" with the counter device's
-> unique ID.
->=20
-> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> ---
->  drivers/counter/counter-core.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
-e.c
-> index 7e0957eea094..2ebd9adf0bd2 100644
-> --- a/drivers/counter/counter-core.c
-> +++ b/drivers/counter/counter-core.c
-> @@ -22,6 +22,8 @@
->  #include "counter-chrdev.h"
->  #include "counter-sysfs.h"
-> =20
-> +#define COUNTER_NAME	"counter"
-> +
->  /* Provides a unique ID for each counter device */
->  static DEFINE_IDA(counter_ida);
-> =20
-> @@ -104,6 +106,10 @@ struct counter_device *counter_alloc(size_t sizeof_p=
-riv)
->  		goto err_ida_alloc;
->  	dev->id =3D err;
-> =20
-> +	err =3D dev_set_name(dev, COUNTER_NAME "%d", dev->id);
-> +	if (err)
-> +		goto err_dev_set_name;
-> +
->  	mutex_init(&counter->ops_exist_lock);
->  	dev->type =3D &counter_device_type;
->  	dev->bus =3D &counter_bus_type;
-> @@ -119,6 +125,9 @@ struct counter_device *counter_alloc(size_t sizeof_pr=
-iv)
-> =20
->  err_chrdev_add:
-> =20
-> +	kfree(dev_name(dev));
-> +err_dev_set_name:
-> +
+IMO, RCU is the wrong word in this context. It provide an advantage
+where we need to reuse/read less frequently changed data. In this use
+case we need to move data ASAP, so KFIFO seems to work just fine here.
 
-I think this is wrong as kobject_cleanup frees the name.
+In any case, after implementi double FIFO and more testing I would
+prefer to stay with my initial patch. On a single core system, with have
+no waiting time at all. No concurrent access. And on the SMP system
+(iMX6Q), currently I can measure higher frequency with initial not
+optimized driver:
+- with counter_push_event() directly from IRQ: max freq 30-35kHz
+- with double FIFO, i have max freq of ~25kHz
 
-Best regards
-Uwe
+Your suggestion was to add COUNTER_EVENT_CHANGE_OF_STATE and use it for
+my use case. Correct?
 
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---jh4osnqu6wmxh7l3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmH7mcIACgkQwfwUeK3K
-7AlJzQf/cNuK0rtB1iKYAnzDVPvJyIJGTVT0IzvU7inl9odpeyTyYpPmlxPHpWm3
-Sm6uypswc05jVj1Tk5TSzFgHUAfA1bh3V7KXFJ7co+X3KS7T/k+KZt0+wstsnVFw
-lcnw+0s2ACwSPWW1tsUTnQo3UojaYBfqU/5nNN1OPoAM2BI9xZE5ghftnQqurQRm
-34fjYo5xWZbrpzHvOUblwpq/BZ8O8YPg+nzo5AFyw6nSdT+Do2PUxTvZhJV7i1xX
-O2rPFIxYWjxvx+I0xZfi1l7/Z2Ou1RP6oMJjmA+xhvWXlqLkM56y7a/q3fEqQDjt
-9kW/x1DL5ibLqTtdItY39Yg/Op2PDQ==
-=ALNc
------END PGP SIGNATURE-----
-
---jh4osnqu6wmxh7l3--
+Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

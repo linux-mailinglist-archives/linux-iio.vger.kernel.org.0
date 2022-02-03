@@ -2,77 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6DA4A83DD
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 13:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6490A4A85B7
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 15:05:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350539AbiBCMdn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Feb 2022 07:33:43 -0500
-Received: from mga17.intel.com ([192.55.52.151]:23607 "EHLO mga17.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350455AbiBCMdn (ORCPT <rfc822;linux-iio@vger.kernel.org>);
-        Thu, 3 Feb 2022 07:33:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643891623; x=1675427623;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=yT9k+zTUxwu1TXM+VzXDrKvcqnvS/GwhevCFkqm0aiU=;
-  b=a3AvrdefBVA1KGBbZObjP8UMyy1R1crjlN6QseF5ZeGTn6WQbxOYE+VU
-   SQFbnSwquRwcNd10b/5pnggjQQ7IjBkuEWFIty5eV93gMDfeNLEpqrgHw
-   1GVb+ennMI4UCSw5v5C1iASqMLY8X98qNUxWTxBdljZHOwN8+4ZBJeTAe
-   v4eM4lSUiqn5XVr/0CzgIIpKlAUxD3fk0kln0ePzN9CRGzyJiRLnKnKsh
-   AVgxpaJuXkdKynt+dip1+l6RKuUK5IqcaB98sXpfvabQAZ3peJczMBOjX
-   4wmv4SjZ+vQJHP62Gp5QuxUTAw9Ie7kf6aHSB9Y+OlIEVUqSZs+RUJJPL
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10246"; a="228785606"
-X-IronPort-AV: E=Sophos;i="5.88,339,1635231600"; 
-   d="scan'208";a="228785606"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2022 04:33:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,339,1635231600"; 
-   d="scan'208";a="538726865"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 03 Feb 2022 04:33:41 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 98D91204; Thu,  3 Feb 2022 14:33:55 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] iio: dac: ad5592r: Drop leftover header inclusion
-Date:   Thu,  3 Feb 2022 14:33:54 +0200
-Message-Id: <20220203123354.76573-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        id S233537AbiBCOFW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Feb 2022 09:05:22 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:53817 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229747AbiBCOFV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 09:05:21 -0500
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nFcZ8-0002cQ-AM; Thu, 03 Feb 2022 14:54:26 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nFcZ1-009S1X-Nr; Thu, 03 Feb 2022 14:54:19 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH v1] counter: fix NULL pointer dereference on counter_comp_u8_store()
+Date:   Thu,  3 Feb 2022 14:54:18 +0100
+Message-Id: <20220203135418.2252624-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is no use of of.h in the module, drop it.
+Current kernel will report NULL pointer dereference with following
+back trace:
+  interrupt_cnt_enable_write from counter_comp_u8_store+0xc0/0xf4
+  counter_comp_u8_store from dev_attr_store+0x24/0x30
+  dev_attr_store from sysfs_kf_write+0x48/0x54
+  sysfs_kf_write from kernfs_fop_write_iter+0x128/0x1c8
+  kernfs_fop_write_iter from vfs_write+0x124/0x1b4
+  vfs_write from ksys_write+0x88/0xe0
+  ksys_write from sys_write+0x18/0x1c
+  sys_write from ret_fast_syscall+0x0/0x1c
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Add missing dev_set_drvdata() to fix it.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/iio/dac/ad5592r-base.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/counter/counter-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index 2fcc59728fd6..a9c654b614a4 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -11,7 +11,6 @@
- #include <linux/iio/iio.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
--#include <linux/of.h>
- #include <linux/regulator/consumer.h>
- #include <linux/gpio/consumer.h>
- #include <linux/gpio/driver.h>
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index 7e0957eea094..1de16d5e9fbc 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -98,6 +98,8 @@ struct counter_device *counter_alloc(size_t sizeof_priv)
+ 	counter = &ch->counter;
+ 	dev = &counter->dev;
+ 
++	dev_set_drvdata(dev, counter);
++
+ 	/* Acquire unique ID */
+ 	err = ida_alloc(&counter_ida, GFP_KERNEL);
+ 	if (err < 0)
 -- 
-2.34.1
+2.30.2
 

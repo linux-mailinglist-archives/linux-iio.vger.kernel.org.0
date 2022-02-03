@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59AF24A88A7
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 17:36:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D57354A88AB
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Feb 2022 17:36:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352248AbiBCQf6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Feb 2022 11:35:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58688 "EHLO
+        id S1352258AbiBCQgn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Feb 2022 11:36:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352247AbiBCQf6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 11:35:58 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41339C06173D
-        for <linux-iio@vger.kernel.org>; Thu,  3 Feb 2022 08:35:58 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id i10so10565257ybt.10
-        for <linux-iio@vger.kernel.org>; Thu, 03 Feb 2022 08:35:58 -0800 (PST)
+        with ESMTP id S1352196AbiBCQgm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Feb 2022 11:36:42 -0500
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C08FC061714
+        for <linux-iio@vger.kernel.org>; Thu,  3 Feb 2022 08:36:42 -0800 (PST)
+Received: by mail-yb1-xb33.google.com with SMTP id 23so10637215ybf.7
+        for <linux-iio@vger.kernel.org>; Thu, 03 Feb 2022 08:36:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AH05FNi0eHjnyKWHpwP6aP5DMLc/YvS0qJ8PqKU0jks=;
-        b=QnqDWAnXrKKAOcPkQk92Iauc3sa9kAsuMyDMKrp9zQJCzCD2su7lvlStR+xujSpkIH
-         D9LVMXEG+GBwzkmTgqTn7PAkEBZZv5OpoXv85f0Aiaxp6ZCuR9SX8f0ppco88eHt/0XH
-         n//IrSfq86J1V6SqQg4iF9b1R/Ot5LfCIj8/KiLEW0MaVcZu7w8jztwfPd/mKkm/ldLw
-         HotMlGjgYvtRkK31Z8Sc8C7nEd/t19B0rfXJbPAHex0e/zWBYlWjAZ7eF+xQKa3SXXAN
-         Xh5S9QAlYHjII1UhFOhQap7oPyfvauq8csAI2C34WU5L+ACo6v0/RXsAHolDjPDX3eVI
-         EtCw==
+         :cc:content-transfer-encoding;
+        bh=X8SSPf/mraiWro8suMcSqfz+VF8p4sGwr/CfpUCuIGY=;
+        b=bkKzAI072p7AqmVFdvgKsK0FnezlalYWZwnV/macVP3CZ/cvwb4SW0vGtjIupJRjVm
+         zSPaAsLCggEyYVFrUbfh1LfbEakL8xAA3C+CbNEUcmSNiS7avvTu+kk8RcSEY9XM0yU4
+         qj86zaZZy/y/JqHsqv1mgWskcfeeq7uiZB0pngk9/ySmC2ONxStu3Q9L7AClTbOzozpq
+         oBYAg5sH6CLcix+F0i87ayv7/uJS8WgU/+sqewVEJJ50bo0/7lDQq3/aWIcmDZZPuSRQ
+         jJd5KgGtlI4O0v8hG35cFNZSgYJ0+ZPWbaPLCk/FA7/3qaEDjDhTTP0YHemdF5cVu5w4
+         GUqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AH05FNi0eHjnyKWHpwP6aP5DMLc/YvS0qJ8PqKU0jks=;
-        b=Sb1DAH1eommJ/8aDEhLrIzceNgiL5mZraUKBBUfJt90tVBx0bbCXlV+uIOe36h1k+1
-         acELRU8EFDN+Zs/V+573WtS41htj1IJnfCrR5TcA/gQTUSN1iB6rR3G0ZMYEABgnQpo0
-         U1oK9Eo4CrPW/b4RPVIcZdZ6vBLL8CNR5MAfpgWAF1gmpFn9jNT3xTCr3JKDI4cxWLgz
-         hV9mTynZdAbOqJk9tXDOqjDAN4HL6vW+OpU7Jc31Hh20gypt74Pg1safoXfPdxItbfgU
-         38gnea9vfw6/fgyPl0P7TPmrz4fXjsKdwvT3U5aeVPiQjLeGeSVonantybfZMQlKuTZX
-         Ewhg==
-X-Gm-Message-State: AOAM533xKb1vajQCje32axL5qOueahu/owhjrjrSrWWOrV+7DMVEuFBn
-        EANqqjIV9BnW0fxpfpNr4KBjl6J2xUnFUprqImwLVw==
-X-Google-Smtp-Source: ABdhPJwa+7BO2viz+KvmyLlQG2IVqXMRSJ54OwUetrl3DIY0CC33McuCotiiQ+uVGoEhh/EeBwIAcM3UMG8Wov2yhEQ=
-X-Received: by 2002:a05:6902:72f:: with SMTP id l15mr3454839ybt.511.1643906157537;
- Thu, 03 Feb 2022 08:35:57 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=X8SSPf/mraiWro8suMcSqfz+VF8p4sGwr/CfpUCuIGY=;
+        b=cKAWEv6HsSM8GExLOcpfkAaNgGi6bQCnhErL/ZXeNKUS/WKbR1h0b+IW2aQEn+LDLT
+         nskm3fQnp7aT59qLOFkkEXyxuZa7lBT8MwloQnAYyVJiptQ4KUtVb7ihC/rfJkbUSedD
+         hRiSQrw9DRlbcvj1XwVXIVpQSHcxkD55pzihC+LNb/Y0YqFF+EJb1lwNd6DPYtmfY8Fz
+         N3u8JROHHHGYm/TNniO2wmDzNgagfO/riPPgg9054auSI3ynyPDnkX7dol5E0Mt6MyxW
+         /s5SUDnidAo4d1xAL/yRsqJm9PHTqy6iqNWBcB00mvfhqbGdbWxf8b8nrd9Gqlackeij
+         7tUg==
+X-Gm-Message-State: AOAM530tIQt6Ck8YDd7PK78wDorpCIdpFTE49fVnnGDaJTzdNd0lEiDJ
+        e2HSlhFoNJur0qtmXSE5KIR3sGpJqLG9+kjez3yeHA==
+X-Google-Smtp-Source: ABdhPJzBB62u5yYirteberd0CnVV5WELDHeZjWtcpEt+y1J7bjeHeVMwD2pW5t1aZ7XlloYssMx+zNSK8nHO+tpgRjU=
+X-Received: by 2002:a25:5143:: with SMTP id f64mr49828104ybb.520.1643906201370;
+ Thu, 03 Feb 2022 08:36:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20220202235049.8051-1-samuel@sholland.org> <20220202235049.8051-3-samuel@sholland.org>
-In-Reply-To: <20220202235049.8051-3-samuel@sholland.org>
+References: <20220202235049.8051-1-samuel@sholland.org> <20220202235049.8051-4-samuel@sholland.org>
+In-Reply-To: <20220202235049.8051-4-samuel@sholland.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 3 Feb 2022 17:35:46 +0100
-Message-ID: <CACRpkdYZD5-Tyx=QsT=nfSLHk9_ngSYALJdwyi=S1=n8e6vPUA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: st: Add Silan SC7A20 accelerometer
+Date:   Thu, 3 Feb 2022 17:36:30 +0100
+Message-ID: <CACRpkdahv_0+TW-8eYT-_FjCN1-bJXU1xU+qKRPxMpeqsXRMaQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] iio: accel: st_accel: Add support for Silan SC7A20
 To:     Samuel Holland <samuel@sholland.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -57,16 +57,27 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Feb 3, 2022 at 12:50 AM Samuel Holland <samuel@sholland.org> wrote:
 
-> This chip is not an ST part, but it appears to be register-compatible
-> with the LIS2DH, so it can use the same binding.
+> This chip appears to be register-compatible with the LIS2DH. The new
+> description is a copy of the LIS2DH's description with a different WAI
+> value.
 >
+> Datasheet: http://linux-chenxing.org/silan/SC7A20-SilanMicroelectronics.p=
+df
+> Datasheet: http://www.siitek.com.cn/Upfiles/down/SC7A20=E8=AF=B4=E6=98=8E=
+=E4=B9=A6_0.92(=E6=99=BA=E8=83=BD=E7=A9=BF=E6=88=B4).pdf
 > Signed-off-by: Samuel Holland <samuel@sholland.org>
+> ---
+>
+> Changes in v2:
+>  - Add a comment about the WAI value
+>  - Update commit messages
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 

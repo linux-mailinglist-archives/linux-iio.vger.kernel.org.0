@@ -2,143 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E65D34A9512
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Feb 2022 09:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DBBE4A956C
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Feb 2022 09:46:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350991AbiBDI0P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Feb 2022 03:26:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47796 "EHLO
+        id S235756AbiBDIqG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Feb 2022 03:46:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231339AbiBDI0P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Feb 2022 03:26:15 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCA9C061714
-        for <linux-iio@vger.kernel.org>; Fri,  4 Feb 2022 00:26:14 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nFtv2-0002VU-QD; Fri, 04 Feb 2022 09:26:12 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nFtv1-00ERdr-Rc; Fri, 04 Feb 2022 09:26:11 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nFtv0-006WuM-2I; Fri, 04 Feb 2022 09:26:10 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
+        with ESMTP id S1357166AbiBDIqF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Feb 2022 03:46:05 -0500
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2EC2C061714;
+        Fri,  4 Feb 2022 00:46:04 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id k17so4616056plk.0;
+        Fri, 04 Feb 2022 00:46:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BLm1Xd58kZdRJgQxfBatH1zJyJ5hT921Y/jdnN6VFT0=;
+        b=l8WS47NjCGx58W8XGL6HxsWueH0OEPntNnxwO6pqtWLLw5So50Y+2GGjQiLw2j4KeV
+         3SIWZJ2MWaLBA393cexcMJd+6nowPmTlHdDF1iHkiT16lCSXA7iZtaHv35kKpGA2ycYi
+         MsZm87uTeLlwWmyD2XzlzRQDXDHSI8mgbT5XKOXugwcugJCku4qnYddUU1d1m8v5ayCI
+         mVtdC1RqylD7NqSXHzMEAjbAMYePtPshg+rq3gXoRKZe6SfeDOsZuiDkcvtu1bUq90Aa
+         F4HUBkEVTdoJqRyWuSXOdlWZJki0c2kfeqLhY/7OfbqZ4tcTwXoj9bIwmea79VJsBkUv
+         3Xwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BLm1Xd58kZdRJgQxfBatH1zJyJ5hT921Y/jdnN6VFT0=;
+        b=OweR5LRD8LTO5lf3T8M64RmFhaRNU54I1A0+wVULn1iRytSDp8l20zturUJ3oM8idN
+         eXF1MjMVZlTsN1lbZm94fuxfJD9PzgUvLKpK/y781b7CY7e7mWNgNf3xXVGdA8kvSoZg
+         RXt0BkXQ+kQ2sbMF0v9/hDS2v47EwBOCr2sLaFNUfhX9Um9+7QEvqhL8R0/dtuwgHmpe
+         KOi+WWjzedFhliePtVxq3wpKb1a4Byipex1y9l62WIdRhJ148lXK13ncEDtZa3L5317u
+         4raezkzomSRbE83dc24yEAUa6qwZcVki6jBYFTSlym/26ODUvq5EFW6t9pffAneFV9Xk
+         3mKg==
+X-Gm-Message-State: AOAM531lUWA5SVTgARBqTIoYP4dy/qhh8CTTJodjkbx8SNzjdivS1OgS
+        oubs7+R0teaBlhDdjZIlXBZxcWM/tzFqyg==
+X-Google-Smtp-Source: ABdhPJx5CgRsgoRdhYdVnW5qcZz1NQsKsJtwY6UJcp5T4KLl9uWSnW4iiyC8PFi6GQqJYqCop+FBVg==
+X-Received: by 2002:a17:903:1212:: with SMTP id l18mr2141871plh.77.1643964364337;
+        Fri, 04 Feb 2022 00:46:04 -0800 (PST)
+Received: from localhost.localdomain (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
+        by smtp.gmail.com with ESMTPSA id g17sm1630784pfj.148.2022.02.04.00.46.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Feb 2022 00:46:03 -0800 (PST)
+From:   William Breathitt Gray <vilhelm.gray@gmail.com>
+To:     jic23@kernel.org
+Cc:     u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH] counter: Stop using dev_get_drvdata() to get the counter device
-Date:   Fri,  4 Feb 2022 09:25:56 +0100
-Message-Id: <20220204082556.370348-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <YfzPcyusGwAOkys6@shinobu>
-References: <YfzPcyusGwAOkys6@shinobu>
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH v2] counter: Set counter device name
+Date:   Fri,  4 Feb 2022 17:45:51 +0900
+Message-Id: <20220204084551.16397-1-vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3546; h=from:subject; bh=4f+E5ZeOEMBTZf7GXLGZNa7l3bll59EU1yKNGxjRWTI=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBh/OMO8ITc0QJeW1oC4iIbd+gd0f1AK9QKA7S5rqNZ Jg4lmaqJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYfzjDgAKCRDB/BR4rcrsCTFrCA COj+lZ6P26rIwhR41ND6rPp7DUoFAzHTXdnpMUhriZKF95/BF11qR4bAmEI889CrqwwzJZQ5QaCrGb Z+3dcOfSDyLunnPXFV3Ps2euznDA7IokVUDdIbgnvsZ9Y72Xj0EXVqoMRXOVMEZNb+Jo/jdzwGlE/u javAx4c9G0BSGF4vxTfbAAhNwaBUbJX180Kp5wTj+JuTEXZs0SircTCciG+9zYO7LaznLZWXZzNyt/ APnUOt97+qx9rWoS6j/JhzYTSYlF84a8oAFaM/4jWCTE7o1w+R/6xCnv9fGSfSoN377l4DShq+E8xh FphTIlEXTR/wpqqy2BrgVhhyI8GRWZ
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-dev_get_drvdata() returns NULL since commit b56346ddbd82 ("counter: Use
-container_of instead of drvdata to track counter_device") which wrongly
-claimed there were no users of drvdata. Convert to container_of() to
-fix a null pointer dereference.
+Naming the counter device provides a convenient way to identify it in
+devres_log events and similar situations. This patch names the counter
+device by combining the prefix "counter" with the counter device's
+unique ID.
 
-Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: b56346ddbd82 ("counter: Use container_of instead of drvdata to track counter_device")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 ---
- drivers/counter/counter-sysfs.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+Changes in v2:
+ - Move dev_set_name() after device_initialize() so that device core
+   takes care of cleanup on error
 
-diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-index 7cc4d1d523ea..04eac41dad33 100644
---- a/drivers/counter/counter-sysfs.c
-+++ b/drivers/counter/counter-sysfs.c
-@@ -19,6 +19,11 @@
- 
+ drivers/counter/counter-core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index 7e0957eea094..6219d62bf223 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -22,6 +22,8 @@
+ #include "counter-chrdev.h"
  #include "counter-sysfs.h"
  
-+static inline struct counter_device *counter_from_dev(struct device *dev)
-+{
-+	return container_of(dev, struct counter_device, dev);
-+}
++#define COUNTER_NAME	"counter"
 +
- /**
-  * struct counter_attribute - Counter sysfs attribute
-  * @dev_attr:	device attribute for sysfs
-@@ -90,7 +95,7 @@ static ssize_t counter_comp_u8_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u8 data = 0;
+ /* Provides a unique ID for each counter device */
+ static DEFINE_IDA(counter_ida);
  
-@@ -122,7 +127,7 @@ static ssize_t counter_comp_u8_store(struct device *dev,
- 				     const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	bool bool_data = 0;
- 	u8 data = 0;
-@@ -158,7 +163,7 @@ static ssize_t counter_comp_u32_show(struct device *dev,
- 				     struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	const struct counter_available *const avail = a->comp.priv;
- 	int err;
- 	u32 data = 0;
-@@ -221,7 +226,7 @@ static ssize_t counter_comp_u32_store(struct device *dev,
- 				      const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	struct counter_count *const count = a->parent;
- 	struct counter_synapse *const synapse = a->comp.priv;
- 	const struct counter_available *const avail = a->comp.priv;
-@@ -281,7 +286,7 @@ static ssize_t counter_comp_u64_show(struct device *dev,
- 				     struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u64 data = 0;
+@@ -115,8 +117,15 @@ struct counter_device *counter_alloc(size_t sizeof_priv)
  
-@@ -309,7 +314,7 @@ static ssize_t counter_comp_u64_store(struct device *dev,
- 				      const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u64 data = 0;
+ 	device_initialize(dev);
+ 
++	err = dev_set_name(dev, COUNTER_NAME "%d", dev->id);
++	if (err)
++		goto err_dev_set_name;
++
+ 	return counter;
+ 
++err_dev_set_name:
++
++	counter_chrdev_remove(counter);
+ err_chrdev_add:
+ 
+ 	ida_free(&counter_ida, dev->id);
+@@ -250,7 +259,8 @@ static int __init counter_init(void)
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = alloc_chrdev_region(&counter_devt, 0, COUNTER_DEV_MAX, "counter");
++	err = alloc_chrdev_region(&counter_devt, 0, COUNTER_DEV_MAX,
++				  COUNTER_NAME);
+ 	if (err < 0)
+ 		goto err_unregister_bus;
  
 
-base-commit: e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
+base-commit: 7b9c8e1a0ca18a62565ee0e28b23baf7b176e96f
 -- 
-2.34.1
+2.35.1
 

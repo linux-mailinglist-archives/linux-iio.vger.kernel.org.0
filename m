@@ -1,85 +1,66 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB554A9FEE
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Feb 2022 20:19:36 +0100 (CET)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 062734AA343
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Feb 2022 23:38:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbiBDTTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Feb 2022 14:19:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232646AbiBDTTf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Feb 2022 14:19:35 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C696CC06173E
-        for <linux-iio@vger.kernel.org>; Fri,  4 Feb 2022 11:19:34 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id o17so9881252ljp.1
-        for <linux-iio@vger.kernel.org>; Fri, 04 Feb 2022 11:19:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=nRLae2EDOIvK+J10/LWcbhWcvU8XY4T61wNYgItmDxs=;
-        b=ZgR+FLV7j6qOIplNWMqOjOWX0JOkGChjKQN/EU/GT62NpNW3j82muSZw4ox17hYTYY
-         /v+WtZwKv0czgN02Oa0PaqAkfMe8aDVwkVLR5jP4rovXB9KoUYXVFebJ+Qapb+DVeXS3
-         WiidP9KZzBWXiCutbNSr2Nc0U0bFSkTSON6DuZ3QIaR56xjyTCi2i0KY/lCPYgN3PNMz
-         WN/8lR5Pu21P6+TlJj7N1d+Erd13djI/VwsM/1osVO1Sc7Pl0s7sUGYL6wf7hx41xWSB
-         IoB9ex+y+M8viZqwOJQHYi/Hy7hDTPVd1XXYSJlJlYdrJbC4ZoOraxFIYshW4RkmBUmV
-         B5vw==
+        id S1345127AbiBDWiz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Feb 2022 17:38:55 -0500
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:36756 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236523AbiBDWiz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Feb 2022 17:38:55 -0500
+Received: by mail-oi1-f179.google.com with SMTP id s185so10223014oie.3;
+        Fri, 04 Feb 2022 14:38:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=nRLae2EDOIvK+J10/LWcbhWcvU8XY4T61wNYgItmDxs=;
-        b=iv9YQBy2oCzsYAyMXe5NFlDSNelFBYJWTkna/YzHILhF0eidpjDI14ax+gLdgAN1ks
-         feVjqqf9UY+N2fcb64iR8Gmi6dQUnE7UbyGnSRPY5ttMYi4zLQQ8oEByUtaZTQmcniMc
-         oe7jGHytjzHXzAVi57GMZ35AKMkIwyLi3xPxnS7E1kRoyLoHTQeGiJaCaYQaWSLXFTQ7
-         2eALyIdOTR7+RgE0UHkAdNlfVOXswU4lYhc/wOM4WrnwtHY5URt9Bh6JJ3E9eWGYelaV
-         FqenXR+Ou8ZlK4Pu9owYbhrVa4WWhaPdIo7DLeKvOSDIrLLUK0rKLqqYqul8Y6EfKH7E
-         DiQw==
-X-Gm-Message-State: AOAM532/bQ9ooWbEG1P7KS5vze+7YA1cXMaBlGFe6RLeoBWBjxDGgUBi
-        ioh8zi4fFd88yESMP/c0pSVUFtLacQYAppbOEOM=
-X-Google-Smtp-Source: ABdhPJx4WLY8RmO9VbWofdRKNfqADC1e6pT39d8AMEQWAsAjNui9ATDPMyOVQ3Ded6T/J4lcuJYjTKGDblX0VXbjH9w=
-X-Received: by 2002:a2e:7c10:: with SMTP id x16mr213769ljc.482.1644002372940;
- Fri, 04 Feb 2022 11:19:32 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=v38Kfg/wf9t6mUoqPaOFlIjuWloQG1bbjKXeADCLqYU=;
+        b=DjdqQ6MY4PVwbkQBCI8BarnQMeczP576lSL3Rj5WUuAihyb6/Ifh35mVwXM7yX7Mg+
+         EJ1/f9S+3SfhJ/8kCEbvf66wcdTE4Ygk6Mcxz0AIiKlclyWPWY1Nv29sqsU6+/AuZduQ
+         qgYJSyQDwRFmgp9sZFu/MO9SpoIe8caaj0hZq0l1CQ7kVryhcXSemYSfngml8Trr1VXY
+         XtIKuJevOs/P3NzOESK/+sUFyjlAjZhZPQjST0gpO9LAxdpuOFo/IjIcH+uHywNq4Cqy
+         wC2/ADAMqxXnYd+FkMrbqfrMqIgaTb1tCCBzcrm7KadvjBnEwVA+Qz7bx23+8/mshaY1
+         JdiQ==
+X-Gm-Message-State: AOAM532SaF7zUgqCBEal/l2rHrtEEGBpbrKLswnYExxLz3rgglVsdVUV
+        AV5xEysH8eIGZlsQ0lddGg==
+X-Google-Smtp-Source: ABdhPJyTrqs4CLu0auGGEAWVcE1rpCQ9ftRnQzFJS9Ype3oGGmsjbsjoLQ7hzZHWJCTfKDaIHZOw5Q==
+X-Received: by 2002:a05:6808:209e:: with SMTP id s30mr596076oiw.13.1644014334871;
+        Fri, 04 Feb 2022 14:38:54 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id x17sm1197653oop.1.2022.02.04.14.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Feb 2022 14:38:54 -0800 (PST)
+Received: (nullmailer pid 3312730 invoked by uid 1000);
+        Fri, 04 Feb 2022 22:38:53 -0000
+Date:   Fri, 4 Feb 2022 16:38:53 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        jic23@kernel.org, robh+dt@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/4] dt-bindings:iio:frequency: add admv1014 binding
+Message-ID: <Yf2q/cZMebdudNny@robh.at.kernel.org>
+References: <20220131100102.15372-1-antoniu.miclaus@analog.com>
+ <20220131100102.15372-2-antoniu.miclaus@analog.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6504:408d:0:0:0:0 with HTTP; Fri, 4 Feb 2022 11:19:32
- -0800 (PST)
-Reply-To: georgesilas@seznam.cz
-From:   Robert Kelvin <lakpodjidjo@gmail.com>
-Date:   Fri, 4 Feb 2022 19:19:32 +0000
-Message-ID: <CABVvB90-tgCMkmQJ82W_eM2AkAjj1PDJXBzHwcXuo10c9Fygtg@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220131100102.15372-2-antoniu.miclaus@analog.com>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Financial Institutions / Managing Director
+On Mon, 31 Jan 2022 12:01:00 +0200, Antoniu Miclaus wrote:
+> Add device tree bindings for the ADMV1014 Upconverter.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> no changes in v5.
+>  .../bindings/iio/frequency/adi,admv1014.yaml  | 137 ++++++++++++++++++
+>  1 file changed, 137 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
+> 
 
-Amount: $ 500,000,000, (500,000, United State Dollars)
-
-UN and World Bank (IMF) Compensation Program for AWARD Support and Victim.
-
-Attention Recipient,
-
-We agreed with the World Bank and the Federal Bureau of Investigation
-(FBI) that we the Financial Institutions (FI), will monitor this
-payment to overcome the desperate situation of banks and other
-employees. Organizations involved in criminal proceedings.
-
-We have received an irrevocable payment guarantee from the World Bank.
-That your email is found through our database to receive this
-compensation fund this Year 2021.
-
-We would like to inform you that the World Bank has decided to send
-you $ 500,000.00 and transfer it via an international VISA ATM card,
-which you will use to withdraw from any Visa ATM anywhere in the world
-(Bank of America) issues an international ATM visa card for you, we
-will send it to your home address through FEDEX courier services.
-
-Bank of America will issue your compensating visa card and send it to
-your home address. Please contact Peter Frkal for more information.
-
-Peter Frkal.
+Reviewed-by: Rob Herring <robh@kernel.org>

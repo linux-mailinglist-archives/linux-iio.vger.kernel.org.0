@@ -2,157 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 189714A9415
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Feb 2022 07:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A424A943D
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Feb 2022 08:02:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234257AbiBDGlj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Feb 2022 01:41:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52876 "EHLO
+        id S1347585AbiBDHCV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Feb 2022 02:02:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232432AbiBDGlj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Feb 2022 01:41:39 -0500
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22455C061714;
-        Thu,  3 Feb 2022 22:41:39 -0800 (PST)
-Received: by mail-qk1-x736.google.com with SMTP id 200so4072815qki.2;
-        Thu, 03 Feb 2022 22:41:39 -0800 (PST)
+        with ESMTP id S1347553AbiBDHCU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Feb 2022 02:02:20 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B19C061714;
+        Thu,  3 Feb 2022 23:02:19 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id d1so4352797plh.10;
+        Thu, 03 Feb 2022 23:02:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=Y3VBysFzp1kRvgau2cMx1aSqaX9MmIj4iq8W0jdx/e4=;
-        b=OIuZqO1OIXVeWVnaiyLGJVRL3I6W/hyCBabm1Zy0YuNodpqx9vGtIcZxcIGJYCTmYo
-         E/y3ElBCa23/0THZUUZ9MWb7cYEsSjdaNgBDzkXbOpZkHaHmTHeG0wmt6abTgjATn/SW
-         gH9vn304BW5NQnfJoe6Jq+x27hOBGjfWtjLdW9iPTa5//CwBL6b0oIAkXs8m2x2++uxR
-         oz/rdx62ONw8ymolVqSu+nPPUKDKRmgH5xE8oqpDEmIgWOLnVSAgtp0VetN+Qa34OcH7
-         juWPSC+b3G2RYGWfSyuPa0BdBG9IgLBzDBzMzTPVZFKEfaRTN9JkuGRstB2+OWab8/R7
-         p4XQ==
+        bh=zB20MrjJCJ/mahE3hOZDlXYc1ss+ptrbcqWTueisJKs=;
+        b=JYxnSeTkltmlLTtg754iDOcmlajfhlOqg38UqUO0D2uxll7/XGrVhHHxCP/1wq/o2E
+         AGwkeFyc6BqjvW6xyyjjE27TlArIvGp55nWM2NZHy25BIpOdRmc9VKsG7ovIMj82jehX
+         KDr/c9A9l9udRCAkBSVDhm1VpXmiC1LKY7y2REapHBwmqP/ScIbd7pWgS/0R0GSfuH2K
+         SI+2qpxEwc5mF3odwtEWjZ5CEoQyhTl+kVW1VQOPX8wMhbA6hBGJnzyEoSrGiFOAKKcX
+         E3fo7T6E/ZC1LGzPPCirf7TMvtdj7fM+ag2Kd5gfrqz2LegSM/FCoTlPxYDMqHgn0Gcw
+         tzxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Y3VBysFzp1kRvgau2cMx1aSqaX9MmIj4iq8W0jdx/e4=;
-        b=0/mfE9LOKsDmm3D+HkX8zdP7sAoDjxqwCJZ0WBJLQMHTLjRsKIZ0z+mm5lB6KX1fx4
-         J2yj5anJ1PFyZNv1AW1TqskNuz11y85dpu1lXac+oZcsaN9fmWEUU/WbROFpAW1efLSm
-         BIh4+okok+3U9rXswdfR8JZGzqHx9AMAM2H8/zThjDooaS4mgfxgAKBhIJHvhWu4domJ
-         RlqlFhfnSU7q0i5cMV8C2lED8v7NT5gN0u3LyS4jZEMgTwcMaC701tGm7US4mVM/1a1J
-         e/Z7bS2Y5SHxZhSehZpoSk2tPBiwQ3OX5zNk6xRX5MAW6i4GUmiX48a6LH6BAZalhje6
-         ZZdg==
-X-Gm-Message-State: AOAM531ekbRVDDWcBhsYuO1ySui3BAB88V5aSIQxu84OaMyTLOQvnZj9
-        YFVwHhYh0FXJM6qRFJdtBoVA7AVgGZEyAA==
-X-Google-Smtp-Source: ABdhPJwy0IQfuUSq9u5lwkcYWdm2c3eASYnBBQ4Y+lCyz9oYJ8XM0ry3tukzDPa2M4UR599HYv2rkA==
-X-Received: by 2002:a37:68d4:: with SMTP id d203mr777487qkc.79.1643956898081;
-        Thu, 03 Feb 2022 22:41:38 -0800 (PST)
+        bh=zB20MrjJCJ/mahE3hOZDlXYc1ss+ptrbcqWTueisJKs=;
+        b=zN0jlrRsh4Eyj4NMhG5B+CuhVUH9a7pQRs8VTRXFJNjF4YxU/7XtIsEAXKr/ej0k8c
+         s+PbDnxrdtMD1bP78z4RW8p8rvW80+kd/Dn1zeUyJ5tDhHmmggKyKPKFdE/ZsxD3kWA4
+         Bo58pC6I9h8RXQi4788TmzDSgluBsjSY9trN9wsYwsnnTRVk64gKtVs8CV1j/CiYZMnX
+         f+33TqkVISioGn/ac+MBO9bzDiV8qW3weMBaYKWyl2p238bfESSdj89UQA9YeymULGVF
+         hAMtaX0c6+AoExfylbKW2hTlNB2iOpI3as7NG+/AEHxkAZp8U6Qlh54SgX4EauegPgtz
+         ISmg==
+X-Gm-Message-State: AOAM532pYH/eEtvyRP1Ce7JJrqcKrE61vhbtZPMV3GH6bU3HNZc9vxsM
+        AIrwLbOlC0sV4NgScd+PDOE=
+X-Google-Smtp-Source: ABdhPJx+qYOYdOWb0sL7TLr0+7+LK+Dci/E0hn9jlKOcPwabLJEMUZGSk7kTDuUFMzenXvGmrgdxHA==
+X-Received: by 2002:a17:902:f54c:: with SMTP id h12mr1585641plf.38.1643958139001;
+        Thu, 03 Feb 2022 23:02:19 -0800 (PST)
 Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id 195sm615793qkf.30.2022.02.03.22.41.35
+        by smtp.gmail.com with ESMTPSA id b11sm1220522pfv.192.2022.02.03.23.02.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Feb 2022 22:41:37 -0800 (PST)
-Date:   Fri, 4 Feb 2022 15:41:33 +0900
+        Thu, 03 Feb 2022 23:02:18 -0800 (PST)
+Date:   Fri, 4 Feb 2022 16:02:11 +0900
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: Set counter device name
-Message-ID: <YfzKnWJTwiWgOofi@shinobu>
-References: <20220203073459.90093-1-vilhelm.gray@gmail.com>
- <20220203090053.oki5ts4c2gdpi2c6@pengutronix.de>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        David Jander <david@protonic.nl>,
+        Robin van der Gracht <robin@protonic.nl>,
+        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        u.kleine-koenig@pengutronix.de
+Subject: Re: [PATCH v1] counter: fix NULL pointer dereference on
+ counter_comp_u8_store()
+Message-ID: <YfzPcyusGwAOkys6@shinobu>
+References: <20220203135418.2252624-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SGhrym32gYZ7uNn8"
+        protocol="application/pgp-signature"; boundary="npq/AMq6ayJbuCXa"
 Content-Disposition: inline
-In-Reply-To: <20220203090053.oki5ts4c2gdpi2c6@pengutronix.de>
+In-Reply-To: <20220203135418.2252624-1-o.rempel@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---SGhrym32gYZ7uNn8
+--npq/AMq6ayJbuCXa
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 03, 2022 at 10:00:53AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Thu, Feb 03, 2022 at 04:34:59PM +0900, William Breathitt Gray wrote:
-> > Naming the counter device provides a convenient way to identify it in
-> > devres_log events and similar situations. This patch names the counter
-> > device by combining the prefix "counter" with the counter device's
-> > unique ID.
-> >=20
-> > Cc: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> > ---
-> >  drivers/counter/counter-core.c | 12 +++++++++++-
-> >  1 file changed, 11 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-c=
-ore.c
-> > index 7e0957eea094..2ebd9adf0bd2 100644
-> > --- a/drivers/counter/counter-core.c
-> > +++ b/drivers/counter/counter-core.c
-> > @@ -22,6 +22,8 @@
-> >  #include "counter-chrdev.h"
-> >  #include "counter-sysfs.h"
-> > =20
-> > +#define COUNTER_NAME	"counter"
-> > +
-> >  /* Provides a unique ID for each counter device */
-> >  static DEFINE_IDA(counter_ida);
-> > =20
-> > @@ -104,6 +106,10 @@ struct counter_device *counter_alloc(size_t sizeof=
-_priv)
-> >  		goto err_ida_alloc;
-> >  	dev->id =3D err;
-> > =20
-> > +	err =3D dev_set_name(dev, COUNTER_NAME "%d", dev->id);
-> > +	if (err)
-> > +		goto err_dev_set_name;
-> > +
-> >  	mutex_init(&counter->ops_exist_lock);
-> >  	dev->type =3D &counter_device_type;
-> >  	dev->bus =3D &counter_bus_type;
-> > @@ -119,6 +125,9 @@ struct counter_device *counter_alloc(size_t sizeof_=
-priv)
-> > =20
-> >  err_chrdev_add:
-> > =20
-> > +	kfree(dev_name(dev));
-> > +err_dev_set_name:
-> > +
+On Thu, Feb 03, 2022 at 02:54:18PM +0100, Oleksij Rempel wrote:
+> Current kernel will report NULL pointer dereference with following
+> back trace:
+>   interrupt_cnt_enable_write from counter_comp_u8_store+0xc0/0xf4
+>   counter_comp_u8_store from dev_attr_store+0x24/0x30
+>   dev_attr_store from sysfs_kf_write+0x48/0x54
+>   sysfs_kf_write from kernfs_fop_write_iter+0x128/0x1c8
+>   kernfs_fop_write_iter from vfs_write+0x124/0x1b4
+>   vfs_write from ksys_write+0x88/0xe0
+>   ksys_write from sys_write+0x18/0x1c
+>   sys_write from ret_fast_syscall+0x0/0x1c
 >=20
-> I think this is wrong as kobject_cleanup frees the name.
+> Add missing dev_set_drvdata() to fix it.
 >=20
-> Best regards
-> Uwe
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-This is true once the device is initialized by device_initialize() but
-that won't happen until after counter_chrdev_add() is called; if
-counter_chrdev_add() fails, we need to free this memory lest it leak
-when we return the error code.
+Hi Oleksij,
 
-I did notice kobject_cleanup() calls kfree_const() on the name rather
-than kfree(). Would it make sense to change this patch to call
-kfree_const() instead?
+This dev_set_drvdata() was removed in commit b56346ddbd82 ("counter: Use
+container_of instead of drvdata to track counter_device"). It looks like
+we overlooked the counter-sysfs.c file when we made that change.
+
+Would you instead replace the dev_get_drvdata() calls in counter-sysfs.c
+with respective container_of() calls? Add a Fixes tag referencing commit
+b56346ddbd82 as well to your commit message.
+
+Thanks,
 
 William Breathitt Gray
 
---SGhrym32gYZ7uNn8
+> ---
+>  drivers/counter/counter-core.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-cor=
+e.c
+> index 7e0957eea094..1de16d5e9fbc 100644
+> --- a/drivers/counter/counter-core.c
+> +++ b/drivers/counter/counter-core.c
+> @@ -98,6 +98,8 @@ struct counter_device *counter_alloc(size_t sizeof_priv)
+>  	counter =3D &ch->counter;
+>  	dev =3D &counter->dev;
+> =20
+> +	dev_set_drvdata(dev, counter);
+> +
+>  	/* Acquire unique ID */
+>  	err =3D ida_alloc(&counter_ida, GFP_KERNEL);
+>  	if (err < 0)
+> --=20
+> 2.30.2
+>=20
+
+--npq/AMq6ayJbuCXa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmH8yoYACgkQhvpINdm7
-VJJBBQ//a+ffB0x18Li9NKcR4HsguAJsIwcQwPjK+c8ukpJt5TdehDpEPwiWAyH4
-M96rUrFA+yF1YHVnxyzC3Lt2+MdLm8D8gcQQdCnCCc+SJBJoW/pC1fid9YBGT8z2
-TeXbDlOLwGgxj9CQv4sABfrO79anUegPmLnaN/6dtlbROlV7m9FL7C51RmnCIZXF
-Tf3dTBdv3LbhdlSwI3y7oEmLKjuIg75iU7ucFLm3ygLylr9jEGUSHRkED2nJafRO
-j38xgBNlSEBqwj8KD9yBChzk5DybNLguyWzkEQeMrprDxR+st+2mARK1ANHYgzX1
-P0c/r1qKaW0g9JmKrp7/ADuf2h5u3ZHnaF8SR8mZOINL3IN2MlEWuRD9StY8YcR7
-k7gFwYyN9cfq41W9HEgG4VYYUyqnwTKdSNrUy7AizaFTReodMQuokOhLKhSWjzY2
-GP1Tjtj8D+uirxcmnKNhPk21hUPrauakmcDcnDkdcSR+HnoplvO8P+8DWFvcJ8vi
-QI3BiMJ500FccYJgdvykUQuwsD+ex0XqSTqnlHpkqTQjPl3A4PBy4Q3twDM/Ro72
-sQmzWg0w8dNWlt0+VbD3UYBIzVcNzNQ5xoxljaWtrEKG1zDsG3uJFnx06+Pu4TQc
-qBx6q8u83SpUVzbWPMQwobTNTha98h860gK2tGPd/JrHv7HQ/jc=
-=FRuA
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmH8z3MACgkQhvpINdm7
+VJKlVg//fx7Qn6VlgplkBrbIHRkO/ZShnQ9i84RQhEEm7gBQ7Lwvcewrstj1imdR
+IedgwHTYgctA1MVjrF6SS3fonTL1u5V6F751hIhZ66LqFvbHHPia2P7v773DFi29
+Wo1keBwASGFZzUEpHudB1091x1iH7gZINsD46CKTzZ25c/HO+zQNeeAjFu96L7C9
+ZdZZHvn+P7JRwP+WZu3sudWQEa34x/kbR7KI1xnybids3lzn0DRXcHNadfAjdxuL
+9VseLn6JNBa8fxQ5WJ4kAD1Fck7Q6jnWXvmJeQYW6qGER5WGi42jWx5GyofLAHM4
+dosyPm50GTMbil2gC7EZCf8cK7G0J2W/HtWmwOQl8wp39NJ14wejQh0sNhotd8IH
+A2igsgxAKXPzjtOE59nU1pPdrBvQZOW3n7rJnVDNkp/SAwG8EI2TSTk4mpRLGEYy
+v0QWUrZoeXxyzAqwvYZTn02SavUXqFYlBXO6JaYEUx6E00l4fyvK8rsbzIP9PLi/
+beES5nqMZdCOmI7hiUOyqCphDnD517JfiyYCmcBCYJvZ5R1HBj2fZCk8sflEjuJl
+/WDoBLDGC2nOfS1fpq5jk8eOJesqqHeNzDYwU0if/4xThm1xzgN0A58ZqzlPvPwB
+Nd2GeHyVrqs1R/B6qm5iddZY78igxTzjMkt+zMBrrYLo8NhdJNg=
+=9MuS
 -----END PGP SIGNATURE-----
 
---SGhrym32gYZ7uNn8--
+--npq/AMq6ayJbuCXa--

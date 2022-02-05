@@ -2,44 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 550594AAA2E
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Feb 2022 17:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A41B4AAA30
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Feb 2022 17:39:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230424AbiBEQfK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Feb 2022 11:35:10 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:43136 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiBEQfK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Feb 2022 11:35:10 -0500
+        id S232570AbiBEQjE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Feb 2022 11:39:04 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:53776 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229446AbiBEQjE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Feb 2022 11:39:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2D6BDB80837;
-        Sat,  5 Feb 2022 16:35:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CCDC340E8;
-        Sat,  5 Feb 2022 16:35:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 026486102E;
+        Sat,  5 Feb 2022 16:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A510C340EF;
+        Sat,  5 Feb 2022 16:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644078908;
-        bh=pf+QDY5ILQrzr0TL1PIpiXAY5ACouBdzcFNWEsLc2nk=;
+        s=k20201202; t=1644079143;
+        bh=eyUzCj9Im/JJzJ/b7lRZbLEXnEmp7CpYdiYbFMtcsQQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Up5qsBnP2IKd2Kuxb1kdb3h3Y75vHt97mP8aBVw1lrKJTvjnjOF8F/OHiBJEATlz7
-         HyKCGytdtw1/rQg1yI47B8q83oa+MJPX8p9+g2jD70ZsFV6Egyw+I71m4G2y0+I2BW
-         mrPsU3h3O5JomEqSc3v3jwFmULkOBBXdefg4gbd5EhZkhnTeyshC+bHH5HxMzeDDpT
-         RO9PulMcCWQYsxmtgFQWvOfzYUyLFacDkdLhVRsPnRlTlkKzweSrbgVnb7SYzLZtKa
-         d1mtoBeRinMDT/oHtMHueh08bHNFufKkeRh57I9buc1+tmxWjkfn91AljDLUSFnFd5
-         AdjGjb+WmV0qw==
-Date:   Sat, 5 Feb 2022 16:41:39 +0000
+        b=F3Dgq1e7oPMaa0gOvWSIPORHe4THC5j5+9RcDXJR4ug89pvh52dEJhWx5VpWZ5ZXN
+         L30IkYkEql0cxl3LAUFODqtuFMzM9S2Y4Ifokr9o8e01mKvyAyazwlV2aEJsMnNGAf
+         TENqxvAkSL0dweFJNQopYGKVhFOTyiATvcHpdjsMVHk9KDg92telp+L+KLSIWJ8tWB
+         bmoqeWa7BttZSNjjLQ8YdborwZv48+q4sXxMC84PIKr9ixhu2UE8rMuomU+8hnOJHR
+         41czcCVe5iJjAd0+dcaZrxmre3rnOlYXz1bpnpfFhI/2N6e/5yYfYsZSa0I5Ek0ws6
+         V1Bz2q1HQ/vYQ==
+Date:   Sat, 5 Feb 2022 16:45:35 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v1 1/1] iio: dac: ad5592r: Drop leftover header
- inclusion
-Message-ID: <20220205164139.7b1a12e3@jic23-huawei>
-In-Reply-To: <20220203123354.76573-1-andriy.shevchenko@linux.intel.com>
-References: <20220203123354.76573-1-andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/3] iio: imu: inv_mpu6050: Drop wrong use of
+ ACPI_PTR()
+Message-ID: <20220205164535.763feeea@jic23-huawei>
+In-Reply-To: <20220203155920.18586-1-andriy.shevchenko@linux.intel.com>
+References: <20220203155920.18586-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -48,31 +46,94 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Feb 2022 14:33:54 +0200
+On Thu,  3 Feb 2022 17:59:18 +0200
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> There is no use of of.h in the module, drop it.
+> ACPI_PTR() is more harmful than helpful. For example, in this case
+> if CONFIG_ACPI=n, the ID table left unused which is not what we want.
 > 
+> Instead of adding ifdeffery or attribute here and there, drop ACPI_PTR().
+> 
+> Fixes: 3b3870646642 ("iio: imu: inv_mpu6050: Mark acpi match table as maybe unused")
+> Fixes: fd64df16f40e ("iio: imu: inv_mpu6050: Add SPI support for MPU6000")
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied,
 
-Thanks,
+Hi Andy,
 
-J
+Whilst I fully support tidying this up, what is 'fixing' as such?
+Will get rid of an unused warning for the spi case but that sort
+of things doesn't always get fixes tags.  They tend to result
+in backports and I wouldn't think it was worth backporting this
+unless I'm missing something...
+
+Jonathan
+
+
 > ---
->  drivers/iio/dac/ad5592r-base.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c | 7 +++----
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c | 4 ++--
+>  2 files changed, 5 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-> index 2fcc59728fd6..a9c654b614a4 100644
-> --- a/drivers/iio/dac/ad5592r-base.c
-> +++ b/drivers/iio/dac/ad5592r-base.c
-> @@ -11,7 +11,6 @@
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> index fe03707ec2d3..ccb06d9af760 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> @@ -3,11 +3,11 @@
+>  * Copyright (C) 2012 Invensense, Inc.
+>  */
+>  
+> -#include <linux/acpi.h>
+>  #include <linux/delay.h>
+>  #include <linux/err.h>
+>  #include <linux/i2c.h>
 >  #include <linux/iio/iio.h>
+> +#include <linux/mod_devicetable.h>
 >  #include <linux/module.h>
->  #include <linux/mutex.h>
-> -#include <linux/of.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/gpio/driver.h>
+>  #include <linux/of_device.h>
+>  #include <linux/property.h>
+> @@ -249,11 +249,10 @@ static const struct of_device_id inv_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, inv_of_match);
+>  
+> -static const struct acpi_device_id __maybe_unused inv_acpi_match[] = {
+> +static const struct acpi_device_id inv_acpi_match[] = {
+>  	{"INVN6500", INV_MPU6500},
+>  	{ },
+>  };
+> -
+>  MODULE_DEVICE_TABLE(acpi, inv_acpi_match);
+>  
+>  static struct i2c_driver inv_mpu_driver = {
+> @@ -262,7 +261,7 @@ static struct i2c_driver inv_mpu_driver = {
+>  	.id_table	=	inv_mpu_id,
+>  	.driver = {
+>  		.of_match_table = inv_of_match,
+> -		.acpi_match_table = ACPI_PTR(inv_acpi_match),
+> +		.acpi_match_table = inv_acpi_match,
+>  		.name	=	"inv-mpu6050-i2c",
+>  		.pm     =       &inv_mpu_pmops,
+>  	},
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+> index 6800356b25fb..44b4f74b9256 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+> @@ -2,8 +2,8 @@
+>  /*
+>  * Copyright (C) 2015 Intel Corporation Inc.
+>  */
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> -#include <linux/acpi.h>
+>  #include <linux/of.h>
+>  #include <linux/property.h>
+>  #include <linux/spi/spi.h>
+> @@ -148,7 +148,7 @@ static struct spi_driver inv_mpu_driver = {
+>  	.id_table	=	inv_mpu_id,
+>  	.driver = {
+>  		.of_match_table = inv_of_match,
+> -		.acpi_match_table = ACPI_PTR(inv_acpi_match),
+> +		.acpi_match_table = inv_acpi_match,
+>  		.name	=	"inv-mpu6000-spi",
+>  		.pm     =       &inv_mpu_pmops,
+>  	},
 

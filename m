@@ -2,96 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EAC44AB02E
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Feb 2022 16:26:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 332824AB04D
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Feb 2022 16:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237469AbiBFP0K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Feb 2022 10:26:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51246 "EHLO
+        id S233983AbiBFPjG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Feb 2022 10:39:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231978AbiBFP0J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Feb 2022 10:26:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4BCC06173B
-        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 07:26:04 -0800 (PST)
+        with ESMTP id S233564AbiBFPjF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Feb 2022 10:39:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA247C06173B
+        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 07:39:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48A9EB80D87
-        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 15:26:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC79C340E9;
-        Sun,  6 Feb 2022 15:26:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5123C61172
+        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 15:39:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D54C340E9;
+        Sun,  6 Feb 2022 15:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644161162;
-        bh=vVhyOlWfp536sFcJGCQFVGaIdcZ9C7hKStt2y//H37o=;
+        s=k20201202; t=1644161942;
+        bh=OGqvnmonEtiAhnIWeHetKlqC8ka8nmut+DwwXkxOm24=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hivtDsupRdivqMZI+iID1VbFqh5LqMOAILgGoZF8mJfnPGgQYk8vMwxrXcTV9Ix2y
-         XNR5pEMihgagRE4JQtZKJnhjw4URdCN+HMioOYIpMSKG3K19myZv921Xh/5MyALdsz
-         v8FirMoo1+D7G1ryeznNUygis9e8Si7Q2iOUjURCLbeOFWPTGly+pfRF804UVNYeoU
-         oRgjhNZzGEO/Bo+TWfVwSk1TpslqmdPn9QiFXcr+0q3PTs1UYJYIMFiBb3QfuNvaVI
-         UBNUKca6RRcVZVTntNg1cnEcAVYaMJkegyB36jE3RoxA0rSZ+821Tg7pH1QyxNjEtB
-         Bq02SNYT3dS5g==
-Date:   Sun, 6 Feb 2022 15:32:33 +0000
+        b=MJS4SR4eY+XJZuc2tv1BHlIBugpioP18YG/QutpXC6YAKX+ctv8/x+iCmAzHKvbqE
+         qvy4k/pkbFaUMVmmGs6mF8xyNF0AIOX8IeI5N4jmooC3fgKWitHLd+2XfQVp98eOL3
+         tgzvE2+MhDH+RrsomCpo4rniBv0Fx/iBSBCM0Z/B2wtmVs2X8DAh5Q22+KZTu9y3NP
+         hpmtrnhOuzhkloQhTF2wfqxbWTiLeiOi7/QdIffQY7DGr/UzlYbvbVAS0gQX1rKWAw
+         YdPr4mJ6S4PJ1CotTBeWmX7YY5l50D2EuAUcMqMUjNM1BdLe04T4KP7CrscT3xS7As
+         g3ttglpqFBCPA==
+Date:   Sun, 6 Feb 2022 15:45:33 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
-        mario.tesi@st.com
-Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: wait for settling time in
- st_lsm6dsx_read_oneshot
-Message-ID: <20220206153233.45a96a9c@jic23-huawei>
-In-Reply-To: <b41ebda5535895298716c76d939f9f165fcd2d13.1644098120.git.lorenzo@kernel.org>
-References: <b41ebda5535895298716c76d939f9f165fcd2d13.1644098120.git.lorenzo@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Denis Ciocca <denis.ciocca@st.com>
+Subject: Re: [PATCH v2 06/12] iio: st_sensors: Stop abusing mlock to ensure
+ internal coherency
+Message-ID: <20220206154533.3153e610@jic23-huawei>
+In-Reply-To: <20220202140208.391394-7-miquel.raynal@bootlin.com>
+References: <20220202140208.391394-1-miquel.raynal@bootlin.com>
+        <20220202140208.391394-7-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  5 Feb 2022 22:57:42 +0100
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+On Wed,  2 Feb 2022 15:02:02 +0100
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> We need to wait for sensor settling time (~ 3/ODR) before reading data
-> in st_lsm6dsx_read_oneshot routine in order to avoid corrupted samples.
+> An odr_lock has been introduced to protect local accesses to the odr
+> internal cache and ensure the cached value always reflected the actual
+> value. Using the mlock() for this purpose is no longer needed, so let's
+> drop these extra mutex_lock/unlock() calls.
 > 
-> Fixes: 290a6ce11d938 ("iio: imu: add support to lsm6dsx driver")
-> Reported-by: Mario Tesi <mario.tesi@st.com>
-> Tested-by: Mario Tesi <mario.tesi@st.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Thanks for the quick update.
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Cc: Denis Ciocca <denis.ciocca@st.com>
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+Obviously a different issue but all the write_raw() functions should
+use the pattern used in st_pressure_core.c and do early
+returns seeing as there doesn't seem to be any cleanup to do.
+
+We can tidy that up in a follow up patch as I'm sure there are other
+areas in these drivers where direct returns would be nicer than
+what is there currently!
+
+Otherwise looks good to me.
 
 > ---
-> Changes since v1:
-> - add missing Fixes tag.
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/iio/accel/st_accel_core.c       | 5 ++---
+>  drivers/iio/gyro/st_gyro_core.c         | 5 ++---
+>  drivers/iio/magnetometer/st_magn_core.c | 5 ++---
+>  drivers/iio/pressure/st_pressure_core.c | 8 ++------
+>  4 files changed, 8 insertions(+), 15 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 727b4b6ac696..93f0c6bce502 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1374,8 +1374,12 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
->  	if (err < 0)
->  		return err;
->  
-> +	/*
-> +	 * we need to wait for sensor settling time before
-> +	 * reading data in order to avoid corrupted samples
-> +	 */
->  	delay = 1000000000 / sensor->odr;
-> -	usleep_range(delay, 2 * delay);
-> +	usleep_range(3 * delay, 4 * delay);
->  
->  	err = st_lsm6dsx_read_locked(hw, addr, &data, sizeof(data));
->  	if (err < 0)
+> diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+> index 31ea19d0ba71..d314125269e4 100644
+> --- a/drivers/iio/accel/st_accel_core.c
+> +++ b/drivers/iio/accel/st_accel_core.c
+> @@ -1139,10 +1139,9 @@ static int st_accel_write_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		if (val2)
+>  			return -EINVAL;
+> -		mutex_lock(&indio_dev->mlock);
+> +
+>  		err = st_sensors_set_odr(indio_dev, val);
+> -		mutex_unlock(&indio_dev->mlock);
+> -		return err;
+> +		break;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> diff --git a/drivers/iio/gyro/st_gyro_core.c b/drivers/iio/gyro/st_gyro_core.c
+> index 201050b76fe5..46e3df1bfacb 100644
+> --- a/drivers/iio/gyro/st_gyro_core.c
+> +++ b/drivers/iio/gyro/st_gyro_core.c
+> @@ -415,10 +415,9 @@ static int st_gyro_write_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		if (val2)
+>  			return -EINVAL;
+> -		mutex_lock(&indio_dev->mlock);
+> +
+>  		err = st_sensors_set_odr(indio_dev, val);
+> -		mutex_unlock(&indio_dev->mlock);
+> -		return err;
+> +		break;
+>  	default:
+>  		err = -EINVAL;
+>  	}
+> diff --git a/drivers/iio/magnetometer/st_magn_core.c b/drivers/iio/magnetometer/st_magn_core.c
+> index 0806a1e65ce4..7b48e7a29cee 100644
+> --- a/drivers/iio/magnetometer/st_magn_core.c
+> +++ b/drivers/iio/magnetometer/st_magn_core.c
+> @@ -549,10 +549,9 @@ static int st_magn_write_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		if (val2)
+>  			return -EINVAL;
+> -		mutex_lock(&indio_dev->mlock);
+> +
+>  		err = st_sensors_set_odr(indio_dev, val);
+> -		mutex_unlock(&indio_dev->mlock);
+> -		return err;
+> +		break;
+>  	default:
+>  		err = -EINVAL;
+>  	}
+> diff --git a/drivers/iio/pressure/st_pressure_core.c b/drivers/iio/pressure/st_pressure_core.c
+> index 26a1ee43d56e..05a909eeaff0 100644
+> --- a/drivers/iio/pressure/st_pressure_core.c
+> +++ b/drivers/iio/pressure/st_pressure_core.c
+> @@ -560,16 +560,12 @@ static int st_press_write_raw(struct iio_dev *indio_dev,
+>  			      int val2,
+>  			      long mask)
+>  {
+> -	int err;
+> -
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		if (val2)
+>  			return -EINVAL;
+> -		mutex_lock(&indio_dev->mlock);
+> -		err = st_sensors_set_odr(indio_dev, val);
+> -		mutex_unlock(&indio_dev->mlock);
+> -		return err;
+> +
+> +		return st_sensors_set_odr(indio_dev, val);
+>  	default:
+>  		return -EINVAL;
+>  	}
 

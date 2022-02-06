@@ -2,45 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D394AB183
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Feb 2022 19:58:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A62A4AB184
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Feb 2022 19:58:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344194AbiBFS6B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Feb 2022 13:58:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
+        id S1346319AbiBFS6E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Feb 2022 13:58:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347039AbiBFS6B (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Feb 2022 13:58:01 -0500
+        with ESMTP id S243944AbiBFS6D (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Feb 2022 13:58:03 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F4CDC043184
-        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 10:58:00 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D194C043184
+        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 10:58:03 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 493B5B80D88
-        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 18:57:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881BBC340F1;
-        Sun,  6 Feb 2022 18:57:55 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C4F19B80D88
+        for <linux-iio@vger.kernel.org>; Sun,  6 Feb 2022 18:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEC2C340E9;
+        Sun,  6 Feb 2022 18:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644173877;
-        bh=NE0+/5HujTe9xuJH29fRglAyQTczTemVBOTdFl0Kh7Q=;
+        s=k20201202; t=1644173880;
+        bh=mw83zoz93cyp/tvgo5W/vlZmt2sDrShamuN1RXUHl+g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b64WueTqBqqhvAXY6+2YI1Nn8wfYW7LKdIdFJPYEWms1i4Pn2vQ3EImhAPifrG/dc
-         sop2lxGENOyDlocAg6WdSfJIXD7YwL2wp0p37bkgrIbNQhLQzrPRddvKuSePHchsUu
-         d/4UpYwygMZvKDt/qKLybqlKd+35FCV4m4pLrDIEPvkvJ/x3UnHrpbck53822vCCvD
-         /wSqpgs5fN//rCjc7LKuC66EOimOZapN7UDymq3RiKSC324XBpXrG1Dn9ZgqajXlIz
-         7Eobmw+sHA7xpwiv/h/vezCrHPtOvTAJtiswAcZVEY0E/rZsF17uYWv+wuO2CtDgHA
-         47Be4JcHAb1dw==
+        b=IGsK7jzpwk6Y32Jqj6ynsA4/Rn7wN2vqV+yKUaH2CxMI7XQlgIO0ejqAV7bgFfAqg
+         PIHffUHOPWOD9KMCKdAwygL1d7/QyCMToN/24GLZ64i9nQNFjKC+LZRK4LY7+0m5tS
+         bqu17urgKajmRvwANEoFNvD9BZow4qkCVEn7PylfiYkNFmUjiQbcA9+v/0svMlCPrQ
+         B6fvTEd7hYwf53PonVZXz5/F2vcFlxVxISe0cbK66C9i5Zve173uzEyeq5ASCM6jiL
+         rbZK+/cqGCKiHBxC0sfEDiXKRjvtkZfvGUIa6fJlIXYdRzkbtGIRWlS+2eZSMrupAl
+         vhOkQbjLsy5pQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org,
         Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 Cc:     Hennerich@vger.kernel.org, Michael <Michael.Hennerich@analog.com>,
         Nuno Sa <Nuno.Sa@analog.com>, lars@metafoo.de,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 16/20] dt-bindings:iio:adc:ad7280a: Add binding
-Date:   Sun,  6 Feb 2022 19:03:24 +0000
-Message-Id: <20220206190328.333093-17-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 17/20] iio:adc:ad7280a: Document ABI for cell balance switches
+Date:   Sun,  6 Feb 2022 19:03:25 +0000
+Message-Id: <20220206190328.333093-18-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220206190328.333093-1-jic23@kernel.org>
 References: <20220206190328.333093-1-jic23@kernel.org>
@@ -58,99 +57,34 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Add a binding for this Lithium Ion Battery monitoring chip/chain of chips
-as it is now clean and ready to move out of staging.
+Very minimal ABI docs. This is unusual enough that I'd expect anyone
+who actually wanted to touch them to go look at the datasheet.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
 Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 ---
- .../bindings/iio/adc/adi,ad7280a.yaml         | 77 +++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
 new file mode 100644
-index 000000000000..a694d5794d4a
+index 000000000000..83b7efe6aa07
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
-@@ -0,0 +1,77 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad7280a.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
+@@ -0,0 +1,13 @@
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_balance_switch_en
++KernelVersion:	5.14
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Used to enable an output for balancing cells for time
++		controlled via in_voltage_Y-voltageZ_balance_switch_timer.
 +
-+title: Analog Devices AD7280a Lithium Ion Battery Monitoring System
-+
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+  - Jonathan Cameron <jic23@kernel.org>
-+
-+description: |
-+  Bindings for the Analog Devices AD7280a Battery Monitoring System.
-+  Used in devices such as hybrid electric cars, battery backup and power tools.
-+  Multiple chips can be daisy chained and accessed via a single SPI interface.
-+  Data sheet found here:
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7280A.pdf
-+
-+properties:
-+  compatible:
-+    const: adi,ad7280a
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    description: IRQ line for the ADC
-+    maxItems: 1
-+
-+  spi-max-frequency: true
-+
-+  adi,voltage-alert-last-chan:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Allows limiting of scope of which channels are considered for voltage
-+      alerts, typically because not all are wired to anything. Only applies to
-+      last device in the daisy chain.
-+    default: 5
-+    enum: [3, 4, 5]
-+
-+  adi,acquisition-time-ns:
-+    description:
-+      Additional time may be needed to charge the sampling capacitors depending
-+      on external writing.
-+    default: 400
-+    enum: [400, 800, 1200, 1600]
-+
-+  adi,thermistor-termination:
-+    type: boolean
-+    description:
-+      Enable the thermistor termination function.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      adc@0 {
-+        compatible = "adi,ad7280a";
-+        reg = <0>;
-+        spi-max-frequency = <700000>;
-+        interrupt-parent = <&gpio>;
-+        interrupts = <25 2>;
-+        adi,thermistor-termination;
-+        adi,acquisition-time-ns = <800>;
-+        adi,voltage-alert-last-chan = <5>;
-+      };
-+    };
-+...
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_balance_switch_timer
++KernelVersion:	5.14
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Time in seconds for which balance switch will be turned on.
++		Multiple of 71.5 seconds.
 -- 
 2.35.1
 

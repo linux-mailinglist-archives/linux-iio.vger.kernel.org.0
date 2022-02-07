@@ -2,50 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0906A4ACAA3
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 21:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9374E4ACB0D
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 22:16:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233445AbiBGUrx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Feb 2022 15:47:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54598 "EHLO
+        id S235285AbiBGVQJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Feb 2022 16:16:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242599AbiBGUhu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 15:37:50 -0500
-X-Greylist: delayed 201 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 12:37:50 PST
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC46C0401DA;
-        Mon,  7 Feb 2022 12:37:49 -0800 (PST)
+        with ESMTP id S231300AbiBGVQJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 16:16:09 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780D5C0612A4
+        for <linux-iio@vger.kernel.org>; Mon,  7 Feb 2022 13:16:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 69338CE10EF;
-        Mon,  7 Feb 2022 20:37:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6687EC004E1;
-        Mon,  7 Feb 2022 20:37:44 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2758DB811FE
+        for <linux-iio@vger.kernel.org>; Mon,  7 Feb 2022 21:16:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B669AC004E1;
+        Mon,  7 Feb 2022 21:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644266266;
-        bh=IgAuBdjgFLxpzyuTFtxQnKiQ28etrzscehcAocUU+Tg=;
+        s=k20201202; t=1644268562;
+        bh=Umi4q6GGruL8uDszkK02ekWB6Ek5H88M+yocV1ZwB3Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VqlmucnKui7TMn1XduYKgDyTgILjXVAJy1KHKfLJ3+Isf3ztsu8BxIsj8spr9joY5
-         0S6wIuiB3dVtnWWkcLRgDugXPq894VXMvElJNoUEGidLjkcMYPk+wjOmxqoLmsSTpP
-         cvKdmGieZhs5hgOUF+jEd0PMbx6PnV05KXmZXVHgvD+pP9eDcM/pRdQWlRtj9NyLGi
-         gS0L8IoD0n1sapSUvOQQ0PUpSmg/joajcuyYNuSruCbaV0PEaWANBu65hYOtBqBEgx
-         BYsISPk9Z9VK/+AqpI8Rzj58SKIycjO136cX526qV/TX6sKbYxXDNKaxNmvZB2fn5N
-         /x7kAF2g8GK+A==
-Date:   Mon, 7 Feb 2022 20:44:21 +0000
+        b=M5ByG60YKmck0Sb69w38a9CCv/HDKmBGTKot8F4QAwZ9aBZ1XQZjHM7BSXKfqwtPz
+         M9pwbC2OMhgT19GXE/n936wOKzf1icRS0bl3CE/TYBRvvjS6v+C61stpSWj9bA0d7g
+         fP8Ydbp5vUeddB+b1AwtlAVz+mesjFKtWwysECxVOWcYnoR2xD8IDOsv3r3GGE5tor
+         kmXw83QxvTULU/qkyHDbTaD7uL1XuJYx9FYebl/ZfnfwcmItoOT3DOTqa7tiv7RHBp
+         WWH8rAqaWqwh0sOzRbmq974QA1wIDsLYuVkZXqodCY7NRlAPSdewk/3i1RgMTfB9nj
+         /10LDtLlLGtdg==
+Date:   Mon, 7 Feb 2022 21:22:38 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Joe Perches <joe@perches.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 1/3] iio: temperature: ltc2983: Don't hard code
- defined constants in messages
-Message-ID: <20220207204421.7f905aa5@jic23-huawei>
-In-Reply-To: <YgFVFceYQtWq4Hww@smile.fi.intel.com>
-References: <20220207104830.83882-1-andriy.shevchenko@linux.intel.com>
-        <fdb3056dcaf9dd113049adebbc3fcd74de2b3028.camel@perches.com>
-        <YgFVFceYQtWq4Hww@smile.fi.intel.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: mma8452: Fix probe failing when an
+ i2c_device_id is used
+Message-ID: <20220207212238.5dc88f44@jic23-huawei>
+In-Reply-To: <20220207103419.309032-1-hdegoede@redhat.com>
+References: <20220207103419.309032-1-hdegoede@redhat.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,35 +56,150 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 7 Feb 2022 19:21:25 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Mon,  7 Feb 2022 11:34:18 +0100
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> On Mon, Feb 07, 2022 at 08:37:55AM -0800, Joe Perches wrote:
-> > On Mon, 2022-02-07 at 12:48 +0200, Andy Shevchenko wrote:  
-> > > In a couple of messages the constants, which have their definitions,
-> > > are hard coded into the message text. Unhardcode them.  
-> > 
-> > Found by inspection or tool?  
+> The mma8452_driver declares both of_match_table and i2c_driver.id_table
+> match-tables, but its probe() function only checked for of matches.
 > 
-> Does it matter? No, a side effect of the following patch.
+> Add support for i2c_device_id matches. This fixes the driver not loading
+> on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
+> instantiated by platform code using an i2c_device_id.
 > 
-> ...
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+We've lost the fixes tag from the v1 discussion. 
+> ---
+> Changes in v2:
+> - Fix the following smatch warning:
+>   drivers/iio/accel/mma8452.c:1595 mma8452_probe() error: we previously assumed 'id' could be null (see line 1536)
+>   Reported-by: kernel test robot <lkp@intel.com>
+>   Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/iio/accel/mma8452.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
 > 
-> > > +		dev_err(dev, "Steinhart sensors size(%zu) must be %d", new_custom->size,
-> > > +			LTC2983_CUSTOM_STEINHART_SIZE);  
-> > 
-> > probably better using "%u" and not "%d"
-> > 
-> > and better with a \n termination too.  
-> 
-> I think it would be a separate change if we wish so. Let Jonathan to tell what
-> to do here.
-> 
-Either way is fine by me.  I tend to be a little flexible of trivial fixes
-in patches that are as simple as this one.
+> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+> index 64b82b4503ad..eaa236cfbabb 100644
+> --- a/drivers/iio/accel/mma8452.c
+> +++ b/drivers/iio/accel/mma8452.c
+> @@ -1523,12 +1523,7 @@ static int mma8452_probe(struct i2c_client *client,
+>  	struct iio_dev *indio_dev;
+>  	int ret;
+>  	const struct of_device_id *match;
+> -
+> -	match = of_match_device(mma8452_dt_ids, &client->dev);
+> -	if (!match) {
+> -		dev_err(&client->dev, "unknown device model\n");
+> -		return -ENODEV;
+> -	}
+> +	const char *compatible;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -1537,7 +1532,19 @@ static int mma8452_probe(struct i2c_client *client,
+>  	data = iio_priv(indio_dev);
+>  	data->client = client;
+>  	mutex_init(&data->lock);
+> -	data->chip_info = match->data;
+> +
+> +	if (id) {
+> +		compatible = id->name;
+> +		data->chip_info = &mma_chip_info_table[id->driver_data];
+> +	} else {
+> +		match = of_match_device(mma8452_dt_ids, &client->dev);
+> +		if (!match) {
+> +			dev_err(&client->dev, "unknown device model\n");
+> +			return -ENODEV;
+> +		}
+> +		compatible = match->compatible;
 
-Thanks,
+Won't this be "fsl,mma8452" or similar when we want "mma8452"?
+That doesn't matter for the dev_info() but it does matter for
+indio_dev->name which is part of the userspace ABI.
+
+Probably easiest way to work around this is to just put the names
+as an extra entry in the mma_chip_info_table[] so they can
+be trivially retrieved in either path.
+Sure it's duplication of a string but they are pretty small and
+it makes for less special casing in the code.
+
+However, looking again at this code I noticed that you haven't
+actually introduced the fact that id->name wouldn't be set which
+made me remind myself of how the i2c-core-of.c code works.
+It has a quirk.  It will actually always provide the id via
+the following path:
+
+of_i2c_register_device()
+-> of_i2c_get_board_info()
+  -> info->type set in of_modalias_node to the part of the compatible after the comma.
+
+Then
+of_i2c_register_device()
+-> of_i2c_new_client_device()
+  which copies info->type into client->name
+
+Then via i2c_device_probe() for the i2c bus the probe is
+called with an i2c_match_id(driver->id_table, client)
+to provide the id parameter.
+
+So for devicetree you won't hit your else above as if (id)
+will also pass (which is why the id->name before was working).
+
+This path is dropped if we ever move to the probe_new() callback
+but for now I think it will just work.
+
+Now, what to do about this.. In similar cases we do
+if (client->dev.of_node) {
+ of option.
+} else {
+ id option
+}
+though this is mostly because people don't feel confident
+the i2c id path will always work for device tree just because
+(assuming I followed it through correctly) it works today.
+
+Now for ACPI there isn't such a path so when we move to
+generic device properties we can't assume id is anything other
+than NULL. Note that this driver hasn't previously been converted
+to generic fw properties because of the absence of a suitable
+fwnode_irq_get_by_name() but Andy pointed out this week that
+we now have one available:
+https://lore.kernel.org/all/YflfEpKj0ilHnQQm@smile.fi.intel.com/
+https://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git/commit/?h=i2c/alert-for-acpi&id=ca0acb511c21738b32386ce0f85c284b351d919e
+
+Given that conversion is likely to happen shortly I'd like to
+use the pattern above rather than temporarily relying on
+the struct i2c_device_id always being available.
+
+
+It also relies on a one to one match up between compatible
+ids and of compatibles which isn't always the case.
+
 
 Jonathan
 
+
+
+
+
+
+> +		data->chip_info = match->data;
+> +	}
+>  
+>  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+>  	if (IS_ERR(data->vdd_reg))
+> @@ -1581,11 +1588,11 @@ static int mma8452_probe(struct i2c_client *client,
+>  	}
+>  
+>  	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
+> -		 match->compatible, data->chip_info->chip_id);
+> +		 compatible, data->chip_info->chip_id);
+>  
+>  	i2c_set_clientdata(client, indio_dev);
+>  	indio_dev->info = &mma8452_info;
+> -	indio_dev->name = id->name;
+> +	indio_dev->name = compatible;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->channels = data->chip_info->channels;
+>  	indio_dev->num_channels = data->chip_info->num_channels;
 

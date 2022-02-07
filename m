@@ -2,315 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 405684AB83B
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 11:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F47E4AB8F1
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 11:44:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244599AbiBGJzB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Feb 2022 04:55:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36366 "EHLO
+        id S232607AbiBGKne (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Feb 2022 05:43:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235512AbiBGJmy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 04:42:54 -0500
-X-Greylist: delayed 627 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 01:42:51 PST
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC001C043181
-        for <linux-iio@vger.kernel.org>; Mon,  7 Feb 2022 01:42:51 -0800 (PST)
-Received: from fraeml735-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Jsh4d0xGhz67tlm;
-        Mon,  7 Feb 2022 17:42:09 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml735-chm.china.huawei.com (10.206.15.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Mon, 7 Feb 2022 10:42:49 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 7 Feb
- 2022 09:42:48 +0000
-Date:   Mon, 7 Feb 2022 09:42:47 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-CC:     kernel test robot <lkp@intel.com>, <linux-iio@vger.kernel.org>
-Subject: Re: [jic23-iio:fixes-togreg] BUILD SUCCESS
- 21472ddd425831f6cf39b3034e825df2825ec850
-Message-ID: <20220207094247.0000746e@Huawei.com>
-In-Reply-To: <ab41d2d5-1b00-a108-d39a-e00c6378a9ac@redhat.com>
-References: <62009f70.k3Jjl7f7YJXTiTPB%lkp@intel.com>
-        <20220207093220.0000138a@Huawei.com>
-        <ab41d2d5-1b00-a108-d39a-e00c6378a9ac@redhat.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S235808AbiBGKes (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 05:34:48 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F7C7C043181
+        for <linux-iio@vger.kernel.org>; Mon,  7 Feb 2022 02:34:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1644230086;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=ibN6/eDkPg06FmKcOZnz2iN/4NPbggkjDC87Ud75vSU=;
+        b=KDp2dPrynwOgpI14Gc0PtuCNnw/fhGgxzkV0HQwF3c7ATMPdvpuQyEabUJjD7GU86EpHpd
+        MtYxan9E3e8Wziwo3tCfES8B5v5Hkcrmza+E8zhqEUcP+A158tRviE2nbI98PsusxvPLq/
+        owVXuMv6UVm1KCu2rKwK3WdaxgUJX6w=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-277-2LwQpE5iP5SwIcEonMbkGQ-1; Mon, 07 Feb 2022 05:34:23 -0500
+X-MC-Unique: 2LwQpE5iP5SwIcEonMbkGQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E2A22814243;
+        Mon,  7 Feb 2022 10:34:21 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.194.116])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5BD6E4F867;
+        Mon,  7 Feb 2022 10:34:20 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v2 1/2] iio: mma8452: Fix probe failing when an i2c_device_id is used
+Date:   Mon,  7 Feb 2022 11:34:18 +0100
+Message-Id: <20220207103419.309032-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml733-chm.china.huawei.com (10.201.108.84) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 7 Feb 2022 10:38:40 +0100
-Hans de Goede <hdegoede@redhat.com> wrote:
+The mma8452_driver declares both of_match_table and i2c_driver.id_table
+match-tables, but its probe() function only checked for of matches.
 
-> Hi Jonathan,
-> 
-> On 2/7/22 10:32, Jonathan Cameron wrote:
-> > On Mon, 07 Feb 2022 12:26:24 +0800
-> > kernel test robot <lkp@intel.com> wrote:
-> >   
-> >> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git fixes-togreg
-> >> branch HEAD: 21472ddd425831f6cf39b3034e825df2825ec850  iio: imu: st_lsm6dsx: wait for settling time in st_lsm6dsx_read_oneshot
-> >>
-> >> possible Warning in current branch (please contact us if interested):
-> >>
-> >> drivers/iio/accel/mma8452.c:1595 mma8452_probe() error: we previously assumed 'id' could be null (see line 1536)  
-> > 
-> > We have name set from id->name after this patch which assumes id can be NULL.
-> > iio: mma8452: Fix probe failing when an i2c_device_id is used
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/drivers/iio/accel/mma8452.c?h=fixes-togreg&id=4787cdbfbcb9590e6d9fb4809e0b667a3f491747#n1595
-> > 
-> > Hans, could you send me an updated fix dealing with that as well and I'll replace
-> > this one.  If not I'll get to it when I'm next on the right computer.  
-> 
-> Yes I was already looking at this, I was planning to do a follow-up fix, but as you
-> requested I'll send a new version of the fix instead.
+Add support for i2c_device_id matches. This fixes the driver not loading
+on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
+instantiated by platform code using an i2c_device_id.
 
-I'm fairly sure no one will notice me rebasing the fixes branch :)
-I can squish in a separate patch as well if you already have one of those.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v2:
+- Fix the following smatch warning:
+  drivers/iio/accel/mma8452.c:1595 mma8452_probe() error: we previously assumed 'id' could be null (see line 1536)
+  Reported-by: kernel test robot <lkp@intel.com>
+  Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/iio/accel/mma8452.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-Thanks,
-
-Jonathan
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
-> >>
-> >> Warning ids grouped by kconfigs:
-> >>
-> >> gcc_recent_errors
-> >> |-- microblaze-randconfig-m031-20220207
-> >> |   `-- drivers-iio-accel-mma8452.c-mma8452_probe()-error:we-previously-assumed-id-could-be-null-(see-line-)
-> >> |-- x86_64-randconfig-m001
-> >> |   `-- drivers-iio-accel-mma8452.c-mma8452_probe()-error:we-previously-assumed-id-could-be-null-(see-line-)
-> >> `-- x86_64-randconfig-m001-20220207
-> >>     `-- drivers-iio-accel-mma8452.c-mma8452_probe()-error:we-previously-assumed-id-could-be-null-(see-line-)
-> >>
-> >> elapsed time: 723m
-> >>
-> >> configs tested: 183
-> >> configs skipped: 3
-> >>
-> >> The following configs have been built successfully.
-> >> More configs may be tested in the coming days.
-> >>
-> >> gcc tested configs:
-> >> arm                                 defconfig
-> >> arm64                            allyesconfig
-> >> arm64                               defconfig
-> >> arm                              allyesconfig
-> >> arm                              allmodconfig
-> >> i386                          randconfig-c001
-> >> i386                 randconfig-c001-20220207
-> >> arm                     eseries_pxa_defconfig
-> >> arm                        mvebu_v7_defconfig
-> >> powerpc                   motionpro_defconfig
-> >> powerpc                     ep8248e_defconfig
-> >> microblaze                      mmu_defconfig
-> >> mips                         rt305x_defconfig
-> >> arc                     haps_hs_smp_defconfig
-> >> arm                        trizeps4_defconfig
-> >> sh                     magicpanelr2_defconfig
-> >> xtensa                           allyesconfig
-> >> sh                          landisk_defconfig
-> >> sh                          sdk7780_defconfig
-> >> arc                        vdk_hs38_defconfig
-> >> mips                           xway_defconfig
-> >> sparc                       sparc32_defconfig
-> >> m68k                          hp300_defconfig
-> >> sh                          rsk7269_defconfig
-> >> arm                        shmobile_defconfig
-> >> arc                            hsdk_defconfig
-> >> arc                              alldefconfig
-> >> powerpc                      pcm030_defconfig
-> >> mips                       capcella_defconfig
-> >> mips                           ip32_defconfig
-> >> powerpc                 canyonlands_defconfig
-> >> sh                          rsk7201_defconfig
-> >> sh                           se7780_defconfig
-> >> arc                         haps_hs_defconfig
-> >> sh                   secureedge5410_defconfig
-> >> ia64                         bigsur_defconfig
-> >> sh                   rts7751r2dplus_defconfig
-> >> sh                           se7722_defconfig
-> >> sh                        edosk7760_defconfig
-> >> powerpc                   currituck_defconfig
-> >> powerpc                 mpc834x_mds_defconfig
-> >> xtensa                  cadence_csp_defconfig
-> >> m68k                       m5208evb_defconfig
-> >> arm                         lubbock_defconfig
-> >> powerpc                     sequoia_defconfig
-> >> m68k                          amiga_defconfig
-> >> powerpc                      cm5200_defconfig
-> >> nds32                             allnoconfig
-> >> sh                               j2_defconfig
-> >> sh                          r7785rp_defconfig
-> >> x86_64                              defconfig
-> >> arm                      jornada720_defconfig
-> >> powerpc64                           defconfig
-> >> openrisc                  or1klitex_defconfig
-> >> m68k                        m5407c3_defconfig
-> >> arm                        multi_v7_defconfig
-> >> h8300                       h8s-sim_defconfig
-> >> riscv                    nommu_k210_defconfig
-> >> mips                     loongson1b_defconfig
-> >> arm                             ezx_defconfig
-> >> sh                           se7721_defconfig
-> >> mips                     decstation_defconfig
-> >> powerpc                         wii_defconfig
-> >> sh                     sh7710voipgw_defconfig
-> >> m68k                             alldefconfig
-> >> m68k                        mvme16x_defconfig
-> >> sh                             shx3_defconfig
-> >> sh                          lboxre2_defconfig
-> >> m68k                         apollo_defconfig
-> >> sh                             espt_defconfig
-> >> arc                           tb10x_defconfig
-> >> mips                      loongson3_defconfig
-> >> arm                  randconfig-c002-20220206
-> >> arm                  randconfig-c002-20220207
-> >> ia64                             allmodconfig
-> >> ia64                                defconfig
-> >> ia64                             allyesconfig
-> >> m68k                             allmodconfig
-> >> m68k                                defconfig
-> >> m68k                             allyesconfig
-> >> nios2                               defconfig
-> >> arc                              allyesconfig
-> >> csky                                defconfig
-> >> alpha                               defconfig
-> >> nds32                               defconfig
-> >> alpha                            allyesconfig
-> >> nios2                            allyesconfig
-> >> h8300                            allyesconfig
-> >> arc                                 defconfig
-> >> sh                               allmodconfig
-> >> parisc                              defconfig
-> >> s390                             allyesconfig
-> >> s390                             allmodconfig
-> >> parisc                           allyesconfig
-> >> s390                                defconfig
-> >> i386                             allyesconfig
-> >> sparc                            allyesconfig
-> >> sparc                               defconfig
-> >> i386                                defconfig
-> >> i386                   debian-10.3-kselftests
-> >> i386                              debian-10.3
-> >> mips                             allyesconfig
-> >> mips                             allmodconfig
-> >> powerpc                          allyesconfig
-> >> powerpc                          allmodconfig
-> >> powerpc                           allnoconfig
-> >> x86_64                        randconfig-a006
-> >> x86_64                        randconfig-a004
-> >> x86_64                        randconfig-a002
-> >> x86_64               randconfig-a013-20220207
-> >> x86_64               randconfig-a016-20220207
-> >> x86_64               randconfig-a015-20220207
-> >> x86_64               randconfig-a012-20220207
-> >> x86_64               randconfig-a014-20220207
-> >> x86_64               randconfig-a011-20220207
-> >> i386                          randconfig-a012
-> >> i386                          randconfig-a014
-> >> i386                          randconfig-a016
-> >> i386                 randconfig-a012-20220207
-> >> i386                 randconfig-a013-20220207
-> >> i386                 randconfig-a015-20220207
-> >> i386                 randconfig-a014-20220207
-> >> i386                 randconfig-a011-20220207
-> >> i386                 randconfig-a016-20220207
-> >> riscv                            allyesconfig
-> >> riscv                    nommu_virt_defconfig
-> >> riscv                             allnoconfig
-> >> riscv                               defconfig
-> >> riscv                          rv32_defconfig
-> >> riscv                            allmodconfig
-> >> um                           x86_64_defconfig
-> >> um                             i386_defconfig
-> >> x86_64                           allyesconfig
-> >> x86_64                    rhel-8.3-kselftests
-> >> x86_64                               rhel-8.3
-> >> x86_64                          rhel-8.3-func
-> >> x86_64                                  kexec
-> >>
-> >> clang tested configs:
-> >> riscv                randconfig-c006-20220207
-> >> i386                 randconfig-c001-20220207
-> >> powerpc              randconfig-c003-20220207
-> >> x86_64               randconfig-c007-20220207
-> >> mips                 randconfig-c004-20220207
-> >> arm                  randconfig-c002-20220207
-> >> x86_64                        randconfig-c007
-> >> powerpc              randconfig-c003-20220206
-> >> mips                 randconfig-c004-20220206
-> >> i386                          randconfig-c001
-> >> arm                  randconfig-c002-20220206
-> >> s390                 randconfig-c005-20220206
-> >> riscv                randconfig-c006-20220206
-> >> arm                          pcm027_defconfig
-> >> mips                      maltaaprp_defconfig
-> >> powerpc                  mpc866_ads_defconfig
-> >> arm                          ep93xx_defconfig
-> >> arm                         shannon_defconfig
-> >> arm                        magician_defconfig
-> >> arm                         socfpga_defconfig
-> >> powerpc                     skiroot_defconfig
-> >> powerpc                     mpc5200_defconfig
-> >> arm                            mmp2_defconfig
-> >> arm                              alldefconfig
-> >> powerpc                          allyesconfig
-> >> powerpc                    mvme5100_defconfig
-> >> powerpc                      ppc64e_defconfig
-> >> arm                  colibri_pxa270_defconfig
-> >> arm                   milbeaut_m10v_defconfig
-> >> arm                    vt8500_v6_v7_defconfig
-> >> powerpc                   bluestone_defconfig
-> >> x86_64               randconfig-a006-20220207
-> >> x86_64               randconfig-a004-20220207
-> >> x86_64               randconfig-a005-20220207
-> >> x86_64               randconfig-a003-20220207
-> >> x86_64               randconfig-a002-20220207
-> >> x86_64               randconfig-a001-20220207
-> >> i386                          randconfig-a002
-> >> i386                          randconfig-a006
-> >> i386                          randconfig-a004
-> >> i386                 randconfig-a004-20220207
-> >> i386                 randconfig-a003-20220207
-> >> i386                 randconfig-a001-20220207
-> >> i386                 randconfig-a002-20220207
-> >> i386                 randconfig-a005-20220207
-> >> i386                 randconfig-a006-20220207
-> >> hexagon              randconfig-r045-20220206
-> >> riscv                randconfig-r042-20220206
-> >> hexagon              randconfig-r041-20220206
-> >> hexagon              randconfig-r045-20220207
-> >> hexagon              randconfig-r041-20220207
-> >>
-> >> ---
-> >> 0-DAY CI Kernel Test Service, Intel Corporation
-> >> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org  
-> >   
-> 
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index 64b82b4503ad..eaa236cfbabb 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -1523,12 +1523,7 @@ static int mma8452_probe(struct i2c_client *client,
+ 	struct iio_dev *indio_dev;
+ 	int ret;
+ 	const struct of_device_id *match;
+-
+-	match = of_match_device(mma8452_dt_ids, &client->dev);
+-	if (!match) {
+-		dev_err(&client->dev, "unknown device model\n");
+-		return -ENODEV;
+-	}
++	const char *compatible;
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -1537,7 +1532,19 @@ static int mma8452_probe(struct i2c_client *client,
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
+ 	mutex_init(&data->lock);
+-	data->chip_info = match->data;
++
++	if (id) {
++		compatible = id->name;
++		data->chip_info = &mma_chip_info_table[id->driver_data];
++	} else {
++		match = of_match_device(mma8452_dt_ids, &client->dev);
++		if (!match) {
++			dev_err(&client->dev, "unknown device model\n");
++			return -ENODEV;
++		}
++		compatible = match->compatible;
++		data->chip_info = match->data;
++	}
+ 
+ 	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+ 	if (IS_ERR(data->vdd_reg))
+@@ -1581,11 +1588,11 @@ static int mma8452_probe(struct i2c_client *client,
+ 	}
+ 
+ 	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
+-		 match->compatible, data->chip_info->chip_id);
++		 compatible, data->chip_info->chip_id);
+ 
+ 	i2c_set_clientdata(client, indio_dev);
+ 	indio_dev->info = &mma8452_info;
+-	indio_dev->name = id->name;
++	indio_dev->name = compatible;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = data->chip_info->channels;
+ 	indio_dev->num_channels = data->chip_info->num_channels;
+-- 
+2.33.1
 

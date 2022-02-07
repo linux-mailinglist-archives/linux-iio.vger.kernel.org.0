@@ -2,33 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEDD4AC224
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 15:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A0D84AC214
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 15:57:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358842AbiBGO5L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Feb 2022 09:57:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47120 "EHLO
+        id S244050AbiBGO46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Feb 2022 09:56:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240672AbiBGOiu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 09:38:50 -0500
+        with ESMTP id S241402AbiBGOiv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 09:38:51 -0500
 Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [IPv6:2001:4b98:dc4:8::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F20C0401C6
-        for <linux-iio@vger.kernel.org>; Mon,  7 Feb 2022 06:38:48 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C09C0401C1
+        for <linux-iio@vger.kernel.org>; Mon,  7 Feb 2022 06:38:49 -0800 (PST)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 06D3110000E;
-        Mon,  7 Feb 2022 14:38:44 +0000 (UTC)
+        by mail.gandi.net (Postfix) with ESMTPSA id 22974100015;
+        Mon,  7 Feb 2022 14:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
         t=1644244726;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Ry6myupu84aZtV75/bByECo3fbRZ0TuCh6kABlxb/PY=;
-        b=bmiVsAz3MWX8KQ7mYH+touwwaRBKjFtuGOGj4jWPHUvwisXJLMJs3/GcDz6TmZ4pmfSPad
-        GeNG3n+4QNpK7RLoAu2tuYXcK8nRd4vSpYvG8t+dPVJV+CI+T5zgolVhcvFRbpJWjl+cfp
-        rStdnF+Fe8A4DbCGBYL9fb7tmBvbTQtAYvpTkfTfpDuQ8iR0Eq9UqfftE8x17dHwHM5kaX
-        7jTt51kPABsXb9lv+n1TsHDOcjwsEj09HaNW28elq7MLjEEq4BMcyIJ4FUrUnU0R+a4GKl
-        BJ7WpGk5UmUKfG4KSragaJ167bX5xUGz1bDO085L+QxAVlVv3w1g/2TfmaEL7Q==
+        bh=gjqrs8lgm6stkpfbGv5AvGpuKA7eWv/k0sHN3EALNhs=;
+        b=ciNsZnlwWLC03//wFPeoQ/WUvWoPXXIfcdNBQHopVYQSiSqupMu8BWC48v8bR9TJZyGuwU
+        XiU8aGqtn44QmCNXWrdSU7avPbEJIkhtIuKCVj8s0Yxs8KEL6anLluFU6/KG/tv5GxMC4g
+        Httj9zsIkZOtY4L65b4OyAvsl4nP+rXkn3DemCOwDIbGlAMIPClgxtd6pg5PqE/ONV0QGh
+        vmiL3sXPPUaYyl3A0QHp/Rxn9viFuXxW2tAGDb7UaQ26Jk7ODBaKbiRIFy9m9z4IMPY4oY
+        h5VTEI0C9y7L8sUS0pGB5VfIojtx0zQzjnFeaW+RDv5yDp4skBUUGoKdy3k1Ww==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
@@ -36,9 +36,9 @@ Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
         Denis Ciocca <denis.ciocca@st.com>
-Subject: [PATCH v3 04/13] iio: st_sensors: Return as early as possible from the _write_raw() callbacks
-Date:   Mon,  7 Feb 2022 15:38:31 +0100
-Message-Id: <20220207143840.707510-5-miquel.raynal@bootlin.com>
+Subject: [PATCH v3 05/13] iio: st_sensors: Drop the protection on _avail functions
+Date:   Mon,  7 Feb 2022 15:38:32 +0100
+Message-Id: <20220207143840.707510-6-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220207143840.707510-1-miquel.raynal@bootlin.com>
 References: <20220207143840.707510-1-miquel.raynal@bootlin.com>
@@ -55,95 +55,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As there is no cleanup to do, let's return as early as possible in the
-various ST sensor drivers _write_raw() callback functions.
+The use of a lock there seems pointless. Besides preventing to read
+these information from userspace while buffers are enabled (which is not
+supposed to happen), it only protect read accesses over static const
+values, which are never supposed to be written anyway.
 
-There is no functional change.
+Drop these lock calls.
 
 Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Cc: Denis Ciocca <denis.ciocca@st.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/iio/accel/st_accel_core.c       | 5 +----
- drivers/iio/gyro/st_gyro_core.c         | 7 ++-----
- drivers/iio/magnetometer/st_magn_core.c | 7 ++-----
- 3 files changed, 5 insertions(+), 14 deletions(-)
+ drivers/iio/common/st_sensors/st_sensors_core.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 31ea19d0ba71..ae0e6414e8f4 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1133,8 +1133,7 @@ static int st_accel_write_raw(struct iio_dev *indio_dev,
- 		int gain;
+diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
+index eb452d0c423c..6c027150a5a4 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_core.c
++++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+@@ -641,7 +641,6 @@ ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
  
- 		gain = val * 1000000 + val2;
--		err = st_sensors_set_fullscale_by_gain(indio_dev, gain);
--		break;
-+		return st_sensors_set_fullscale_by_gain(indio_dev, gain);
+-	mutex_lock(&indio_dev->mlock);
+ 	for (i = 0; i < ST_SENSORS_ODR_LIST_MAX; i++) {
+ 		if (sdata->sensor_settings->odr.odr_avl[i].hz == 0)
+ 			break;
+@@ -649,7 +648,6 @@ ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
+ 		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
+ 				sdata->sensor_settings->odr.odr_avl[i].hz);
  	}
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		if (val2)
-@@ -1146,8 +1145,6 @@ static int st_accel_write_raw(struct iio_dev *indio_dev,
- 	default:
- 		return -EINVAL;
+-	mutex_unlock(&indio_dev->mlock);
+ 	buf[len - 1] = '\n';
+ 
+ 	return len;
+@@ -663,7 +661,6 @@ ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+ 
+-	mutex_lock(&indio_dev->mlock);
+ 	for (i = 0; i < ST_SENSORS_FULLSCALE_AVL_MAX; i++) {
+ 		if (sdata->sensor_settings->fs.fs_avl[i].num == 0)
+ 			break;
+@@ -673,7 +670,6 @@ ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
+ 
+ 		len += scnprintf(buf + len, PAGE_SIZE - len, "%u.%06u ", q, r);
  	}
--
--	return err;
- }
+-	mutex_unlock(&indio_dev->mlock);
+ 	buf[len - 1] = '\n';
  
- static ST_SENSORS_DEV_ATTR_SAMP_FREQ_AVAIL();
-diff --git a/drivers/iio/gyro/st_gyro_core.c b/drivers/iio/gyro/st_gyro_core.c
-index 201050b76fe5..f574ee7aca95 100644
---- a/drivers/iio/gyro/st_gyro_core.c
-+++ b/drivers/iio/gyro/st_gyro_core.c
-@@ -410,8 +410,7 @@ static int st_gyro_write_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
--		err = st_sensors_set_fullscale_by_gain(indio_dev, val2);
--		break;
-+		return st_sensors_set_fullscale_by_gain(indio_dev, val2);
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		if (val2)
- 			return -EINVAL;
-@@ -420,10 +419,8 @@ static int st_gyro_write_raw(struct iio_dev *indio_dev,
- 		mutex_unlock(&indio_dev->mlock);
- 		return err;
- 	default:
--		err = -EINVAL;
-+		return -EINVAL;
- 	}
--
--	return err;
- }
- 
- static ST_SENSORS_DEV_ATTR_SAMP_FREQ_AVAIL();
-diff --git a/drivers/iio/magnetometer/st_magn_core.c b/drivers/iio/magnetometer/st_magn_core.c
-index 0806a1e65ce4..34a0503bc571 100644
---- a/drivers/iio/magnetometer/st_magn_core.c
-+++ b/drivers/iio/magnetometer/st_magn_core.c
-@@ -544,8 +544,7 @@ static int st_magn_write_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
--		err = st_sensors_set_fullscale_by_gain(indio_dev, val2);
--		break;
-+		return st_sensors_set_fullscale_by_gain(indio_dev, val2);
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		if (val2)
- 			return -EINVAL;
-@@ -554,10 +553,8 @@ static int st_magn_write_raw(struct iio_dev *indio_dev,
- 		mutex_unlock(&indio_dev->mlock);
- 		return err;
- 	default:
--		err = -EINVAL;
-+		return -EINVAL;
- 	}
--
--	return err;
- }
- 
- static ST_SENSORS_DEV_ATTR_SAMP_FREQ_AVAIL();
+ 	return len;
 -- 
 2.27.0
 

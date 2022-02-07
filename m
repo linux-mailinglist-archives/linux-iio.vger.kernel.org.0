@@ -2,371 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECFBD4AB470
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 07:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D62414AB75F
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Feb 2022 10:14:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230446AbiBGGOw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Feb 2022 01:14:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40618 "EHLO
+        id S1350415AbiBGJNV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Feb 2022 04:13:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351166AbiBGEEW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Feb 2022 23:04:22 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9B5C043180;
-        Sun,  6 Feb 2022 20:04:19 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id y15-20020a17090a474f00b001b88562650aso2649308pjg.0;
-        Sun, 06 Feb 2022 20:04:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=16v0cC1TvpKhlFbTNq1A18dbL8TX/lGmAdN0x49ucuc=;
-        b=YBzJmObXlO3nu/xcZSjYigtBCOdcVkVI7++1MWimj3x4sxZVv4tuLnKHIWbmttgnfu
-         5BiffbdWgh3R7WrmsTQzlpe1XY4MX0eLPVCmOGU1jdySmBJHGEzn4H3A7wj20uIimQrX
-         AjEp2SVT3oApu5TVPQnXUiCy40K1Cm4HeeLZxdcEJhnLlMQci2vo47bA8Zd4GVeZYFMI
-         q3PjmqcHcUdr24a2w/XvtrYz3TI7OC8DQW2wT1XHoAfdWxYbjsYoMNtXlyU4A7cjxjU5
-         8k9f7eZDjvtmxBTZIenH50hq/wWEXzVjQqfTBuh0PP+oaYvA91+pbdT9JbYCj5P08/AD
-         CD7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=16v0cC1TvpKhlFbTNq1A18dbL8TX/lGmAdN0x49ucuc=;
-        b=JOCzDA84iUQrw22Ul5lRNcVSvLmpELIlPy6mMbl3H83dJq9Hx4Ud0sC2VpERwxS5wu
-         29OPQgdBjAvDJhDKbURlR4w8Ig9KK2s8ep8KBjsa5vgT4WvZSQwX2bV8siVM6rt6gd2y
-         tsNCiPPvtnWxZ54z0yM49TkCtZxZ3t/uDA6DKNXdRI118BzGNTrs61+AKesQzQHI+Iqn
-         3iy0hXkq7auBRdxBNl1ztWkIqeDSumuJPaO1RL1EELfKjZYXlUb4Wf5PxDT3r3Fpj2Fu
-         yc5ij8FtIfJVFUzIQmX17qrpZ5plZIFwapbAgsayhujgWzHHWLcMR7W+AefyT1OUfgW8
-         2g1g==
-X-Gm-Message-State: AOAM533dF+6lgbF+VRrNN5eBlNeCc1Vgi+Yfz/hDP3Q8WM4deI55RkrF
-        5+v8kvXK6369C/YLLn2w9aM=
-X-Google-Smtp-Source: ABdhPJyyzhCLWwzxQt2xfOIIPRPYd3U8JsrS7xz8kNwQgrN0D4pB+eAoZxL/CV6twQGXaEo9qUg0Cw==
-X-Received: by 2002:a17:90a:a616:: with SMTP id c22mr12102473pjq.68.1644206659029;
-        Sun, 06 Feb 2022 20:04:19 -0800 (PST)
-Received: from localhost.localdomain ([27.7.146.135])
-        by smtp.gmail.com with ESMTPSA id j18sm10601234pfj.13.2022.02.06.20.04.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Feb 2022 20:04:18 -0800 (PST)
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
-        sst@poczta.fm, robh+dt@kernel.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: potentiometer: Add support for Maxim DS3502
-Date:   Mon,  7 Feb 2022 09:34:08 +0530
-Message-Id: <20220207040408.4273-3-jagathjog1996@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220207040408.4273-1-jagathjog1996@gmail.com>
-References: <20220207040408.4273-1-jagathjog1996@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S239097AbiBGJFh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 04:05:37 -0500
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2118.outbound.protection.outlook.com [40.107.22.118])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8AFC043181;
+        Mon,  7 Feb 2022 01:05:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S5FwG0COVkgOMNDd+MxGhTkIXIaUjgGQ4DujPUktAj2JoYtsFH6upiCX9OTXepJW7lZ2Neh04MF88cgkVl3rqehaNTUYUkitooaTAvdVK2iZYdplk1xtPjoAF+MvxhocxTVCxnVAIbIy8uf7U1jJTalT/DTHH9drGTxd6HmfGLL829czn1HJ3/Q/X58/tizJgikRQXrmWrrwWExZlzqxuJ/HhnCN+QQrYKFk9qDOYvjm/L6rLB6F/+/AAQLFwzhKDf9wSzcm5hdzwO5Lk3ygFQgs94txBzNpGI74NsjjvcKjc2dByuqnWTbQwFAYs3juWayyqd6hDLlJjFBVAPggDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R4CuhZjcMCmsNI1y9lA+0TIlDOEJRkR+Wn0UL08EPa0=;
+ b=QcYYoGxYZjCZLJaUQfFiZhcNtUHG1EAa7BA3ffCQrTsDR97vB7d3t5QQ/CKLhwXRWkgnGik6R3h8b19bvGBpy8uchA5GfZp66hV/55tiS9XDNmyy7cSr8+mb6IXkpKJLITNtpxgz607GRap81nL6cpzefMK6F4yxwe/bmPyVP1H06GD1qYg/eNzBCKNYn97xoasvKefzMdCnnzROkqfr6zesjPDiYHGcum31EHpkgL6P+JNQ7HiDRHj3tYHgnIHgpHPZawBcVWT+6p04PZeA95LY/1p2W4nH+xG027ClwZ7B4ADsKzV8u90trUMEDW6VjbN4NgT0l/DaaSEifb0PEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=vger.kernel.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=quarantine sp=quarantine
+ pct=100) action=none header.from=leica-geosystems.com; dkim=none (message not
+ signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R4CuhZjcMCmsNI1y9lA+0TIlDOEJRkR+Wn0UL08EPa0=;
+ b=I/lp6kSRBJikwiK+hb3BFHMg+YPGMkF5BdMTohNiLEe7er/8mugk2MiFe2u2CrxFFmJt6kjSrFiS7CmxiL7O+gALMz5COyhZ4+3ukIbZwWcbhRmNStcSVVy8tKZEkMUQOaoF90s76IWiRLwQzHnEa7F6uAqG5VZ3ki1iZvusIzg=
+Received: from AM6P195CA0094.EURP195.PROD.OUTLOOK.COM (2603:10a6:209:86::35)
+ by AM5PR06MB3122.eurprd06.prod.outlook.com (2603:10a6:206:3::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.11; Mon, 7 Feb
+ 2022 09:05:33 +0000
+Received: from VE1EUR02FT058.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:209:86:cafe::16) by AM6P195CA0094.outlook.office365.com
+ (2603:10a6:209:86::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.17 via Frontend
+ Transport; Mon, 7 Feb 2022 09:05:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=hexagon.com;
+Received: from hexagon.com (193.8.40.94) by
+ VE1EUR02FT058.mail.protection.outlook.com (10.152.13.52) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4951.12 via Frontend Transport; Mon, 7 Feb 2022 09:05:33 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.60.34.56]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+         Mon, 7 Feb 2022 10:05:32 +0100
+From:   Massimo Toscanelli <massimo.toscanelli@leica-geosystems.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, lars@metafoo.de, linus.walleij@linaro.org,
+        caihuoqing@baidu.com, aardelean@deviqon.com,
+        andy.shevchenko@gmail.com, hdegoede@redhat.com,
+        Qing-wu.Li@leica-geosystems.com.cn, stephan@gerhold.net,
+        linux-iio@vger.kernel.org,
+        bsp-development.geo@leica-geosystems.com,
+        Massimo Toscanelli <massimo.toscanelli@leica-geosystems.com>
+Subject: [PATCH RESEND 0/2] Solve data access delay of ST sensors
+Date:   Mon,  7 Feb 2022 09:04:41 +0000
+Message-Id: <20220207090443.3710425-1-massimo.toscanelli@leica-geosystems.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220204192552.428433-1-massimo.toscanelli@leica-geosystems.com>
+References: <20220204192552.428433-1-massimo.toscanelli@leica-geosystems.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 07 Feb 2022 09:05:32.0838 (UTC) FILETIME=[DC8FB460:01D81C01]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: a3f536c8-61b0-4541-f6ac-08d9ea18ff3b
+X-MS-TrafficTypeDiagnostic: AM5PR06MB3122:EE_
+X-Microsoft-Antispam-PRVS: <AM5PR06MB31223E859EE3088BBF95003BA02C9@AM5PR06MB3122.eurprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TQhjCTrcbgVqXsKUK6u7D6K5G6jNA8+kUVDk9ChrqJzmYiCb/YJ1FKEN0ujuR61LpIbo8o2EMjWgt1jjgzWTWyJtljrYu9FGR9SFrluzeeRkkBGuDut3lhAGRnBr41fdq6NO4x4uKIR07LDNyW2SRINeN5XbvcKif1dKWB9mw0j1QqpzSnjOFl6G3S2SrRh4kHnUzMWUjz/R08qP6Tth2mkJxVK/KMJs4NiD0rOzwoDLmRMaGyh7VI9LsuRCMHuU7GQqHP/ntUKTBnK4yG/kcvVE4Np+aZ89I5sCjY/VKki+qlxZaSv4yKqEsbPzj8n87Uc+fEn+hS0wauIDcVyJWnYw5Oip+DlJcDjTfFqotxtvkoLsLNbmyoqTwtoxdVW+pbPOLSNQdM+DHIJyEI+E0kvks2dEeCEZ0XNlEmzu1m558RhN3O+Y9n04gMFJbVRh7k45upkO5pczC/kT1hINH8Uk2x/lSK29/9JY/eFLdR8fNE/9n0OCNZ9GvUf5mEpwx5nIbOxJ/IOucpvevKMyODsQUAumD5deyrWO6zcoqmwoRQ3ktFuSWlZ0HIaMvyZQm/64eSAi1WdFoIYYVbugHodzrzgGi99opBAOlywk1pvpnBMjHvXKErCnifQO8t4CGoy2+bYNd2BDINSJOjrCKe9TQhq7zZrzjD3jEXPl69bTMcNlc/OvPy6W7TXileevZkX66UuFUBsi1mML8DDTsQ==
+X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(2616005)(107886003)(34020700004)(6666004)(36756003)(83380400001)(1076003)(70586007)(70206006)(450100002)(8936002)(8676002)(47076005)(508600001)(36860700001)(26005)(186003)(336012)(81166007)(2906002)(316002)(82310400004)(6916009)(356005)(5660300002)(40460700003)(4326008)(4744005)(86362001)(44832011);DIR:OUT;SFP:1102;
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2022 09:05:33.1471
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3f536c8-61b0-4541-f6ac-08d9ea18ff3b
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR02FT058.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR06MB3122
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The DS3502 is a 7-bit, nonvolatile digital potentiometer featuring
-an output voltage range of up to 15.5V.
-DS3502 support is implemented into existing ds1803 driver
+Reading raw data from ST sensors implies enabling the device and
+waiting for its activation.
+This leads to significant delays every time the data is fetched,
+especially if the operation has to be repeated.
 
-Datasheet: https://datasheets.maximintegrated.com/en/ds/DS3502.pdf
+The introduction of the 'always_on' flag as sysfs attribute can
+solve this issue, by allowing the user to keep the device enabled
+during the entire read session and therefore, to perform a much
+faster data access.
 
-Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
----
- drivers/iio/potentiometer/Kconfig  |   4 +-
- drivers/iio/potentiometer/ds1803.c | 150 +++++++++++++++++++++++------
- 2 files changed, 120 insertions(+), 34 deletions(-)
+This implementation has been already tested on a ST magnetometer.
 
-diff --git a/drivers/iio/potentiometer/Kconfig b/drivers/iio/potentiometer/Kconfig
-index 832df8da2bc6..1741af33672c 100644
---- a/drivers/iio/potentiometer/Kconfig
-+++ b/drivers/iio/potentiometer/Kconfig
-@@ -27,10 +27,10 @@ config AD5272
- 	  module will be called ad5272.
- 
- config DS1803
--	tristate "Maxim Integrated DS1803 Digital Potentiometer driver"
-+	tristate "Maxim Integrated DS1803 and similar Digital Potentiometer driver"
- 	depends on I2C
- 	help
--	  Say yes here to build support for the Maxim Integrated DS1803
-+	  Say yes here to build support for the Maxim Integrated DS1803 and DS3502
- 	  digital potentiometer chip.
- 
- 	  To compile this driver as a module, choose M here: the
-diff --git a/drivers/iio/potentiometer/ds1803.c b/drivers/iio/potentiometer/ds1803.c
-index 20b45407eaac..5e403e3400f7 100644
---- a/drivers/iio/potentiometer/ds1803.c
-+++ b/drivers/iio/potentiometer/ds1803.c
-@@ -1,12 +1,15 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Maxim Integrated DS1803 digital potentiometer driver
-+ * Maxim Integrated DS1803 and DS3502 digital potentiometer driver
-  * Copyright (c) 2016 Slawomir Stepien
-+ * Copyright (c) 2022 Jagath Jog J
-  *
-  * Datasheet: https://datasheets.maximintegrated.com/en/ds/DS1803.pdf
-+ * Datasheet: https://datasheets.maximintegrated.com/en/ds/DS3502.pdf
-  *
-  * DEVID	#Wipers	#Positions	Resistor Opts (kOhm)	i2c address
-  * ds1803	2	256		10, 50, 100		0101xxx
-+ * DS3502       1       128             10                      01010xx
-  */
- 
- #include <linux/err.h>
-@@ -16,47 +19,88 @@
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
- 
--#define DS1803_MAX_POS		255
--#define DS1803_WRITE(chan)	(0xa8 | ((chan) + 1))
-+#define DS1803_WIPER_0		(0xA9)
-+#define DS1803_WIPER_1		(0xAA)
-+#define DS3502_WR_IVR		(0x00)
-+#define DS3502_CR               (0x02)
-+#define DS3502_MODE0		(0x00)
-+#define DS3502_MODE1		(0x80)
- 
- enum ds1803_type {
- 	DS1803_010,
- 	DS1803_050,
- 	DS1803_100,
-+	DS3502,
- };
- 
- struct ds1803_cfg {
-+	int wipers;
-+	int avail[3];
- 	int kohms;
- };
- 
- static const struct ds1803_cfg ds1803_cfg[] = {
--	[DS1803_010] = { .kohms =  10, },
--	[DS1803_050] = { .kohms =  50, },
--	[DS1803_100] = { .kohms = 100, },
-+	[DS1803_010] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  10, },
-+	[DS1803_050] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  50, },
-+	[DS1803_100] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms = 100, },
-+	[DS3502] =     { .wipers = 1, .avail = { 0, 1, 127 }, .kohms =  10, },
-+};
-+
-+struct maxim_potentiometer {
-+	const struct iio_chan_spec *channels;
-+	u8 num_channels;
- };
- 
- struct ds1803_data {
- 	struct i2c_client *client;
-+	enum ds1803_type chip_type;
- 	const struct ds1803_cfg *cfg;
-+	const struct maxim_potentiometer *chip;
- };
- 
--#define DS1803_CHANNEL(ch) {					\
--	.type = IIO_RESISTANCE,					\
--	.indexed = 1,						\
--	.output = 1,						\
--	.channel = (ch),					\
--	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
--	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-+#define DS1803_CHANNEL(ch, addr) {					\
-+	.type = IIO_RESISTANCE,						\
-+	.indexed = 1,							\
-+	.output = 1,							\
-+	.channel = (ch),						\
-+	.address = (addr),						\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
-+	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_RAW),	\
- }
- 
- static const struct iio_chan_spec ds1803_channels[] = {
--	DS1803_CHANNEL(0),
--	DS1803_CHANNEL(1),
-+	DS1803_CHANNEL(0, DS1803_WIPER_0),
-+	DS1803_CHANNEL(1, DS1803_WIPER_1),
-+};
-+
-+static const struct iio_chan_spec ds3502_channels[] = {
-+	{
-+		.type = IIO_RESISTANCE,
-+		.indexed = 1,
-+		.output = 1,
-+		.channel = 0,
-+		.address = (DS3502_WR_IVR),
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_ENABLE),
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_RAW),
-+	},
-+};
-+
-+static const struct maxim_potentiometer maxim_potentiometer_chips[] = {
-+	[DS1803_100] = {
-+				.channels = ds1803_channels,
-+				.num_channels = ARRAY_SIZE(ds1803_channels),
-+		},
-+	[DS3502]     = {
-+				.channels = ds3502_channels,
-+				.num_channels = ARRAY_SIZE(ds3502_channels),
-+		},
- };
- 
- static int ds1803_read_raw(struct iio_dev *indio_dev,
--			    struct iio_chan_spec const *chan,
--			    int *val, int *val2, long mask)
-+			   struct iio_chan_spec const *chan,
-+			   int *val, int *val2, long mask)
- {
- 	struct ds1803_data *data = iio_priv(indio_dev);
- 	int pot = chan->channel;
-@@ -65,17 +109,28 @@ static int ds1803_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = i2c_master_recv(data->client, result,
--				indio_dev->num_channels);
-+		switch (data->chip_type) {
-+		case DS1803_010:
-+		case DS1803_050:
-+		case DS1803_100:
-+			ret = i2c_master_recv(data->client, result,
-+					      indio_dev->num_channels);
-+			*val = result[pot];
-+			break;
-+		case DS3502:
-+			ret = i2c_smbus_read_byte_data(data->client, chan->address);
-+			*val = ret;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
- 		if (ret < 0)
- 			return ret;
--
--		*val = result[pot];
- 		return IIO_VAL_INT;
--
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 1000 * data->cfg->kohms;
--		*val2 = DS1803_MAX_POS;
-+		*val2 = data->cfg->avail[2];
- 		return IIO_VAL_FRACTIONAL;
- 	}
- 
-@@ -83,38 +138,64 @@ static int ds1803_read_raw(struct iio_dev *indio_dev,
- }
- 
- static int ds1803_write_raw(struct iio_dev *indio_dev,
--			     struct iio_chan_spec const *chan,
--			     int val, int val2, long mask)
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
- {
- 	struct ds1803_data *data = iio_priv(indio_dev);
--	int pot = chan->channel;
-+	int max_pos = data->cfg->avail[2];
-+	u8 addr = chan->address;
- 
- 	if (val2 != 0)
- 		return -EINVAL;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		if (val > DS1803_MAX_POS || val < 0)
-+		if (val > max_pos || val < 0)
-+			return -EINVAL;
-+		break;
-+	case IIO_CHAN_INFO_ENABLE:
-+		if (val == 1)
-+			val = DS3502_MODE1;
-+		else if (val != DS3502_MODE0)
- 			return -EINVAL;
-+		addr = DS3502_CR;
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
- 
--	return i2c_smbus_write_byte_data(data->client, DS1803_WRITE(pot), val);
-+	return i2c_smbus_write_byte_data(data->client, addr, val);
-+}
-+
-+static int ds1803_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length, long mask)
-+{
-+	struct ds1803_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		*vals = data->cfg->avail;
-+		*length = ARRAY_SIZE(data->cfg->avail);
-+		*type = IIO_VAL_INT;
-+		return IIO_AVAIL_RANGE;
-+	}
-+	return -EINVAL;
- }
- 
- static const struct iio_info ds1803_info = {
- 	.read_raw = ds1803_read_raw,
-+	.read_avail = ds1803_read_avail,
- 	.write_raw = ds1803_write_raw,
- };
- 
- static int ds1803_probe(struct i2c_client *client,
--			 const struct i2c_device_id *id)
-+			const struct i2c_device_id *id)
- {
- 	struct device *dev = &client->dev;
- 	struct ds1803_data *data;
- 	struct iio_dev *indio_dev;
-+	enum ds1803_type chip_type = (id->driver_data <= DS1803_100 ? DS1803_100 : DS3502);
-+	const struct maxim_potentiometer *chip = &maxim_potentiometer_chips[chip_type];
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
- 	if (!indio_dev)
-@@ -125,10 +206,12 @@ static int ds1803_probe(struct i2c_client *client,
- 	data = iio_priv(indio_dev);
- 	data->client = client;
- 	data->cfg = &ds1803_cfg[id->driver_data];
-+	data->chip = chip;
-+	data->chip_type = chip_type;
- 
- 	indio_dev->info = &ds1803_info;
--	indio_dev->channels = ds1803_channels;
--	indio_dev->num_channels = ARRAY_SIZE(ds1803_channels);
-+	indio_dev->channels = chip->channels;
-+	indio_dev->num_channels = chip->num_channels;
- 	indio_dev->name = client->name;
- 
- 	return devm_iio_device_register(dev, indio_dev);
-@@ -138,6 +221,7 @@ static const struct of_device_id ds1803_dt_ids[] = {
- 	{ .compatible = "maxim,ds1803-010", .data = &ds1803_cfg[DS1803_010] },
- 	{ .compatible = "maxim,ds1803-050", .data = &ds1803_cfg[DS1803_050] },
- 	{ .compatible = "maxim,ds1803-100", .data = &ds1803_cfg[DS1803_100] },
-+	{ .compatible = "maxim,ds3502",     .data = &ds1803_cfg[DS3502] },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ds1803_dt_ids);
-@@ -146,6 +230,7 @@ static const struct i2c_device_id ds1803_id[] = {
- 	{ "ds1803-010", DS1803_010 },
- 	{ "ds1803-050", DS1803_050 },
- 	{ "ds1803-100", DS1803_100 },
-+	{ "ds3502",	DS3502	   },
- 	{}
- };
- MODULE_DEVICE_TABLE(i2c, ds1803_id);
-@@ -162,5 +247,6 @@ static struct i2c_driver ds1803_driver = {
- module_i2c_driver(ds1803_driver);
- 
- MODULE_AUTHOR("Slawomir Stepien <sst@poczta.fm>");
--MODULE_DESCRIPTION("DS1803 digital potentiometer");
-+MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
-+MODULE_DESCRIPTION("DS1803 and DS3502 digital potentiometer");
- MODULE_LICENSE("GPL v2");
+I forgot to add maintainers as recepients, so I resend the patches.
+
+Massimo Toscanelli (2):
+  iio: st_sensors: add always_on flag
+  iio: st_magn_core.c: activate always_on attribute
+
+ .../iio/common/st_sensors/st_sensors_core.c   | 85 +++++++++++++++++--
+ drivers/iio/magnetometer/st_magn_core.c       |  2 +
+ include/linux/iio/common/st_sensors.h         | 14 +++
+ 3 files changed, 96 insertions(+), 5 deletions(-)
+
+
+base-commit: dcb85f85fa6f142aae1fe86f399d4503d49f2b60
 -- 
-2.17.1
+2.25.1
 

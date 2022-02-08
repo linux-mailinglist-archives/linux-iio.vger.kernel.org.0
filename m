@@ -2,206 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 180EE4ACEA2
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Feb 2022 03:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17B9A4AD90B
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Feb 2022 14:16:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbiBHCJF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Feb 2022 21:09:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
+        id S1350309AbiBHNQO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Feb 2022 08:16:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345447AbiBHCFC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Feb 2022 21:05:02 -0500
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 647F3C061355;
-        Mon,  7 Feb 2022 18:05:01 -0800 (PST)
-Received: by mail-qt1-x82f.google.com with SMTP id o3so13611551qtm.12;
-        Mon, 07 Feb 2022 18:05:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=4lFaVXaOEQ0S/iYKidAfI8kJNzQK67M6VoIAHTd3OhI=;
-        b=ndyROLy6GbL/8bzB4QYIlDvtD25Ac3AGNLI9bPBauHLoYN7WjxwWmaYVq/14CAkNv/
-         GFV8h+3L+w6sbrf7GmAzjJC2CImxmi/eXL8FVl5T6pHeK4JkISsGwKwa/3ZzsGGcs5pU
-         8xD/nKk3OC6J73McVTzFa3PnE/bFFqNFAxEormtKUcJDYSmE6lAj72QjlXn52n0JHbAw
-         KxzzVUKFQfDg9IwR6vIQqC+lsDIei/g6SxNLtOeZmoox0qStJJJvnJuqWF2rkQ22GD8t
-         NG6fKtLm05zGO5ES6nw4j9DlNxrzvcEwISjjVcY7z7Z4tcdn6bIvmoJBfGmwtesWisDU
-         MHkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=4lFaVXaOEQ0S/iYKidAfI8kJNzQK67M6VoIAHTd3OhI=;
-        b=BmWWeN+qKmu6XF4W7Q/Y0kj+gaQtjmfR0GFFUewXYkFvAmqFRQG0Lo1sEQHdUd9YwH
-         ItuTnzwo0+kBRnlLrELUuskM2nERziWQFnc4sACyXomLOIuErS7Hk0z+57VgrPFxWUOB
-         g9PBzkN4y0HfVVEYcFUXEAfvy0fnzoAKcyBoI0bxeHm19x9089UTPrJ9UNKZ3JipZUFB
-         0p4FwuZsSh8Ne5/JYfRjRBHta7zNxocesGAoCIeVnDuzM29lPlq1jj8gFdzaebt6iNa3
-         4vZ30V4cx+JHdVc2VI/DEHvKfF/g7W+XC6yshN+Ps4F8+qpZflaKdSnpbpEIsa4wOA0Q
-         BpzA==
-X-Gm-Message-State: AOAM533d9kSeT2ys29HgqnRRl8ydtVz1ijKWxrVswxxufbPtHd5Csj/l
-        jUjfNOcER6bRyLgtn75N0AMX3qAm7eE=
-X-Google-Smtp-Source: ABdhPJx95JuY11c+Q/4+2n5wjUQeI80A9QZNF6/nUbeForahEtccAeSDqZew+dpi/4LBntoNdK1vpg==
-X-Received: by 2002:ac8:7619:: with SMTP id t25mr1687748qtq.456.1644285900545;
-        Mon, 07 Feb 2022 18:05:00 -0800 (PST)
-Received: from shaak.. (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
-        by smtp.gmail.com with ESMTPSA id u9sm1416055qko.130.2022.02.07.18.04.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Feb 2022 18:05:00 -0800 (PST)
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     liambeguin@gmail.com, peda@axentia.se, jic23@kernel.org,
-        andy.shevchenko@gmail.com, lars@metafoo.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-Subject: [PATCH v14 11/11] dt-bindings: iio: afe: add bindings for temperature transducers
-Date:   Mon,  7 Feb 2022 21:04:41 -0500
-Message-Id: <20220208020441.3081162-12-liambeguin@gmail.com>
-X-Mailer: git-send-email 2.35.1.4.g5d01301f2b86
-In-Reply-To: <20220208020441.3081162-1-liambeguin@gmail.com>
-References: <20220208020441.3081162-1-liambeguin@gmail.com>
+        with ESMTP id S1359441AbiBHMno (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Feb 2022 07:43:44 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D46FCC03FEC0
+        for <linux-iio@vger.kernel.org>; Tue,  8 Feb 2022 04:43:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1644324222;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=WHSdaGV7D6BVO7kqtGhJJi7bUe22481XQCQAgrnr4ag=;
+        b=L712hIFjxlPda5Hto6GInGPUzDtr4J0jVii6QBXw88UWriniZk7czrfpZh53lrEZDIcrQS
+        /Ria9IbwDjDDBjH6FQ5YkWIRH8+TeGxNkr+seBQdB/D+GfGvcwPWidCFvypbpvA6X/WAAv
+        gw5F04/Xsy2LYgPMxwWqmSuxvIIxR98=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-611-I39ZHvcBO3CNWiCt0s7w-A-1; Tue, 08 Feb 2022 07:43:39 -0500
+X-MC-Unique: I39ZHvcBO3CNWiCt0s7w-A-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A152D83DD20;
+        Tue,  8 Feb 2022 12:43:38 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.193.228])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 220D4F6C7;
+        Tue,  8 Feb 2022 12:43:36 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-iio@vger.kernel.org
+Subject: [PATCH v3 1/2] iio: mma8452: Fix probe failing when an i2c_device_id is used
+Date:   Tue,  8 Feb 2022 13:43:35 +0100
+Message-Id: <20220208124336.511884-1-hdegoede@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-An ADC is often used to measure other quantities indirectly.
-This binding describe one case, the measurement of a temperature
-through a temperature transducer (either voltage or current).
+The mma8452_driver declares both of_match_table and i2c_driver.id_table
+match-tables, but its probe() function only checked for of matches.
 
-Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Peter Rosin <peda@axentia.se>
+Add support for i2c_device_id matches. This fixes the driver not loading
+on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
+instantiated by platform code using an i2c_device_id.
+
+Fixes: c3cdd6e48e35 ("iio: mma8452: refactor for seperating chip specific data")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- .../iio/afe/temperature-transducer.yaml       | 114 ++++++++++++++++++
- 1 file changed, 114 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
+Changes in v3:
+- Store name in struct mma_chip_info and use that to set indio_dev->name
+- Switch to using device_get_match_data() for (potentially) adding ACPI
+  enumeration support in the future
 
-diff --git a/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-new file mode 100644
-index 000000000000..cfbf5350db27
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/afe/temperature-transducer.yaml
-@@ -0,0 +1,114 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/afe/temperature-transducer.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+Changes in v2:
+- Fix the following smatch warning:
+  drivers/iio/accel/mma8452.c:1595 mma8452_probe() error: we previously assumed 'id' could be null (see line 1536)
+  Reported-by: kernel test robot <lkp@intel.com>
+  Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/iio/accel/mma8452.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index 64b82b4503ad..0528717d9f44 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -176,6 +176,7 @@ static const struct mma8452_event_regs trans_ev_regs = {
+  * @enabled_events:		event flags enabled and handled by this driver
+  */
+ struct mma_chip_info {
++	const char *name;
+ 	u8 chip_id;
+ 	const struct iio_chan_spec *channels;
+ 	int num_channels;
+@@ -1301,6 +1302,7 @@ enum {
+ 
+ static const struct mma_chip_info mma_chip_info_table[] = {
+ 	[mma8451] = {
++		.name = "mma8451",
+ 		.chip_id = MMA8451_DEVICE_ID,
+ 		.channels = mma8451_channels,
+ 		.num_channels = ARRAY_SIZE(mma8451_channels),
+@@ -1325,6 +1327,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+ 					MMA8452_INT_FF_MT,
+ 	},
+ 	[mma8452] = {
++		.name = "mma8452",
+ 		.chip_id = MMA8452_DEVICE_ID,
+ 		.channels = mma8452_channels,
+ 		.num_channels = ARRAY_SIZE(mma8452_channels),
+@@ -1341,6 +1344,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+ 					MMA8452_INT_FF_MT,
+ 	},
+ 	[mma8453] = {
++		.name = "mma8453",
+ 		.chip_id = MMA8453_DEVICE_ID,
+ 		.channels = mma8453_channels,
+ 		.num_channels = ARRAY_SIZE(mma8453_channels),
+@@ -1357,6 +1361,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+ 					MMA8452_INT_FF_MT,
+ 	},
+ 	[mma8652] = {
++		.name = "mma8652",
+ 		.chip_id = MMA8652_DEVICE_ID,
+ 		.channels = mma8652_channels,
+ 		.num_channels = ARRAY_SIZE(mma8652_channels),
+@@ -1366,6 +1371,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+ 		.enabled_events = MMA8452_INT_FF_MT,
+ 	},
+ 	[mma8653] = {
++		.name = "mma8653",
+ 		.chip_id = MMA8653_DEVICE_ID,
+ 		.channels = mma8653_channels,
+ 		.num_channels = ARRAY_SIZE(mma8653_channels),
+@@ -1380,6 +1386,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+ 		.enabled_events = MMA8452_INT_FF_MT,
+ 	},
+ 	[fxls8471] = {
++		.name = "fxls8471",
+ 		.chip_id = FXLS8471_DEVICE_ID,
+ 		.channels = mma8451_channels,
+ 		.num_channels = ARRAY_SIZE(mma8451_channels),
+@@ -1522,13 +1529,6 @@ static int mma8452_probe(struct i2c_client *client,
+ 	struct mma8452_data *data;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
+-	const struct of_device_id *match;
+-
+-	match = of_match_device(mma8452_dt_ids, &client->dev);
+-	if (!match) {
+-		dev_err(&client->dev, "unknown device model\n");
+-		return -ENODEV;
+-	}
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -1537,7 +1537,14 @@ static int mma8452_probe(struct i2c_client *client,
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
+ 	mutex_init(&data->lock);
+-	data->chip_info = match->data;
 +
-+title: Temperature Transducer
-+
-+maintainers:
-+  - Liam Beguin <liambeguin@gmail.com>
-+
-+description: |
-+  A temperature transducer is a device that converts a thermal quantity
-+  into any other physical quantity. This binding applies to temperature to
-+  voltage (like the LTC2997), and temperature to current (like the AD590)
-+  linear transducers.
-+  In both cases these are assumed to be connected to a voltage ADC.
-+
-+  When an io-channel measures the output voltage of a temperature analog front
-+  end such as a temperature transducer, the interesting measurement is almost
-+  always the corresponding temperature, not the voltage output. This binding
-+  describes such a circuit.
-+
-+  The general transfer function here is (using SI units)
-+    V(T) = Rsense * Isense(T)
-+    T = (Isense(T) / alpha) + offset
-+    T = 1 / (Rsense * alpha) * (V + offset * Rsense * alpha)
-+
-+  When using a temperature to voltage transducer, Rsense is set to 1.
-+
-+  The following circuits show a temperature to current and a temperature to
-+  voltage transducer that can be used with this binding.
-+
-+           VCC
-+          -----
-+            |
-+        +---+---+
-+        | AD590 |                               VCC
-+        +---+---+                              -----
-+            |                                    |
-+            V proportional to T             +----+----+
-+            |                          D+ --+         |
-+            +---- Vout                      | LTC2997 +--- Vout
-+            |                          D- --+         |
-+        +---+----+                          +---------+
-+        | Rsense |                               |
-+        +---+----+                             -----
-+            |                                   GND
-+          -----
-+           GND
-+
-+properties:
-+  compatible:
-+    const: temperature-transducer
-+
-+  io-channels:
-+    maxItems: 1
-+    description: |
-+      Channel node of a voltage io-channel.
-+
-+  '#io-channel-cells':
-+    const: 0
-+
-+  sense-offset-millicelsius:
-+    description: |
-+      Temperature offset.
-+      This offset is commonly used to convert from Kelvins to degrees Celsius.
-+      In that case, sense-offset-millicelsius would be set to <(-273150)>.
-+    default: 0
-+
-+  sense-resistor-ohms:
-+    description: |
-+      The sense resistor.
-+      By default sense-resistor-ohms cancels out the resistor making the
-+      circuit behave like a temperature transducer.
-+    default: 1
-+
-+  alpha-ppm-per-celsius:
-+    description: |
-+      Sometimes referred to as output gain, slope, or temperature coefficient.
-+
-+      alpha is expressed in parts per million which can be micro-amps per
-+      degrees Celsius or micro-volts per degrees Celsius. The is the main
-+      characteristic of a temperature transducer and should be stated in the
-+      datasheet.
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - io-channels
-+  - alpha-ppm-per-celsius
-+
-+examples:
-+  - |
-+    ad950: temperature-sensor-0 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 3>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        sense-resistor-ohms = <8060>;
-+        alpha-ppm-per-celsius = <1>; /* 1 uA/K */
-+    };
-+  - |
-+    znq_tmp: temperature-sensor-1 {
-+        compatible = "temperature-transducer";
-+        #io-channel-cells = <0>;
-+        io-channels = <&temp_adc 2>;
-+
-+        sense-offset-millicelsius = <(-273150)>; /* Kelvin to degrees Celsius */
-+        alpha-ppm-per-celsius = <4000>; /* 4 mV/K */
-+    };
-+...
++	data->chip_info = device_get_match_data(&client->dev);
++	if (!data->chip_info && id) {
++		data->chip_info = &mma_chip_info_table[id->driver_data];
++	} else {
++		dev_err(&client->dev, "unknown device model\n");
++		return -ENODEV;
++	}
+ 
+ 	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+ 	if (IS_ERR(data->vdd_reg))
+@@ -1581,11 +1588,11 @@ static int mma8452_probe(struct i2c_client *client,
+ 	}
+ 
+ 	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
+-		 match->compatible, data->chip_info->chip_id);
++		 data->chip_info->name, data->chip_info->chip_id);
+ 
+ 	i2c_set_clientdata(client, indio_dev);
+ 	indio_dev->info = &mma8452_info;
+-	indio_dev->name = id->name;
++	indio_dev->name = data->chip_info->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = data->chip_info->channels;
+ 	indio_dev->num_channels = data->chip_info->num_channels;
 -- 
-2.35.1.4.g5d01301f2b86
+2.33.1
 

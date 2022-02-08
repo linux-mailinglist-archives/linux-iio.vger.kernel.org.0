@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA07D4ADA44
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Feb 2022 14:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FF1D4ADA59
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Feb 2022 14:47:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359843AbiBHNnC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Feb 2022 08:43:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40510 "EHLO
+        id S1357586AbiBHNrI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Feb 2022 08:47:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235437AbiBHNnC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Feb 2022 08:43:02 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2338FC03FED9;
-        Tue,  8 Feb 2022 05:43:00 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id cn6so14804122edb.5;
-        Tue, 08 Feb 2022 05:43:00 -0800 (PST)
+        with ESMTP id S1348721AbiBHNrH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Feb 2022 08:47:07 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0D4C03FECE;
+        Tue,  8 Feb 2022 05:47:05 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id s7so10929328edd.3;
+        Tue, 08 Feb 2022 05:47:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=f4NlyDvQ+OmTWhioc5XIe48Pbf0SWwcG+0BmyfZwVFE=;
-        b=InKvcODql4soQETTIoVQwvWCSdhsI4olMXqvYkj6+7nx78OgY4P9Ppbcpbe0Bl5K8C
-         pCG8Np9utrrmDQ6BuEoF/qGZtWAFhyl1UvLVi++W2jBkSMCPsSc+mQPIID67reJ7L34p
-         F/2ZDRJ642N1nstNdozNlDA5HRXPh9HKLNqBkpL9GYOa89jd7E7HOmivcqEv7Wo/cAgJ
-         ZZ3fXK8NNkRSoeUHZnfYWXFbl5XOe/tSFfYjnJ/pgS5VFaskYns0huL9KF/MVQPe5YTn
-         TMMzgHKtHH0k++cYe2OeoHVChbWquicgEBYdCEhBEDz2oGZTVZxE1WN/J21bLJbixpAo
-         wZdg==
+        bh=1Uu1nmskTHfo9hf/W5wz6SlkksAW9cfa8fGOqXsoeu0=;
+        b=Gk264vUVXqULqzqf8r/V2hhm+hrlBz33ptFcQz961+WAYCu63lke2girCZMbuqBNVo
+         wQCza+VJ/CWrAWTDsf9opfmeHeZdOMPCEYWK13gurn9ek/yD7yRPAmomj0572H5kn2eX
+         FwLrdPQOhTD6SZkpLlxM7amzIjLfH0Ss/vhceG5nA/1i6PVchCUE9tWGyIIrlGnqNwlU
+         SVDhFdLdHHO1adtLeGj00RtBsyIuOdUdh8J+tYLGUtmu0v/DHfTpSocddpCVXgTzmZpf
+         LXiF8vS1aXYt/a1HakbTNovY6pOptFhAaFHlvEjXDke9KLyD9iIT52OytpJT+rk48QSN
+         PBZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=f4NlyDvQ+OmTWhioc5XIe48Pbf0SWwcG+0BmyfZwVFE=;
-        b=KuWfb9tZffRlUtlE/yrgtElVv6eQ3/r8hnV6i6i9sdWQgsgCO+2Bm3eLHqKlX/MmE5
-         N/qwZl7YNzJn9XYfI0KodivkNh+ZCQzy9GQBtYB1Y+HwNRJrxAb14gx7pVkUMBgluyuF
-         eXZpF0vCXeCkUjDLyYkw/WBqkx9Z6cdkxix6lUgCgdRCaVGLiHH5TMPKuRAYPdvq5fbA
-         +WfKWYFCl6bSkTGJwH2eDWze4tpoY48g94lFYI6ZduDIsx20Vks+Nuzm9JCay/lX955K
-         zynuhxXtb4OgKZEELVeJjSsviP7sUdHMrNP17aZs8lN/Qv9Gq7L8c5OcfvhU2rPnB0NV
-         dRGg==
-X-Gm-Message-State: AOAM532TIbRd7bvp+6PKHbmNJ1c8UebtSokrTuAysXcBt+xUltn11cLQ
-        wBFMoH+p+XGazYODYRVgfVUQXRSHfuvge6GaaZc=
-X-Google-Smtp-Source: ABdhPJzL1h8uMoMI1YO9mj+zqENB5rXbyS/y1GH2Oy4Usn3dJT9bRKgSvTIO9Olpk7hrj1E2o6AP93f79oomlsyf6Jc=
-X-Received: by 2002:aa7:c413:: with SMTP id j19mr3693113edq.200.1644327778649;
- Tue, 08 Feb 2022 05:42:58 -0800 (PST)
+        bh=1Uu1nmskTHfo9hf/W5wz6SlkksAW9cfa8fGOqXsoeu0=;
+        b=f5pylbW5EjMAhjDKg83m3fpnbCLfhnonREJzXG31Ak5XNQUdw8X9C0TNLgxIgzjv8j
+         CJ8A3+Y76X0s0lK25sHxYXJMNUtP/GpavlglQ193MldVNzt+L4jtF7taVKNgv4omm3XY
+         7mB9UYTs7DZMuKM6lECMZgY3bO7KLBV87Aay+KP5MDdieqGYuxg5wMVPIVYDt4k1+rf1
+         ZRsQ8+cU+lFq4axBtHc9uRpQ2VOxcuPF5SilTEEjeGD1tdS7y1OTS+2IN0KDOYGye72J
+         5Pfjs5z6AM/Fa2BMZGe5b4Ps68iWyqUL9TZSdsXRFRMh8r1SlVxZF0eyUFHZtIGrLfyY
+         kESg==
+X-Gm-Message-State: AOAM532JiByC42LZEE8E78NneAYSYgj/sxEuBCzOPgNpXuTQxhYy7+5N
+        fEopzdCLQ/YuoUsc8RwWY8J7pXoF+ScPRJOovsI=
+X-Google-Smtp-Source: ABdhPJz2GmTrp8kspjWPIrO//kFaIZIY6zuZ3x2Mu5vF8Z/DPZ7MBkknv+oLENEgrJA6ASawew8rshblrdr780Qg7Wc=
+X-Received: by 2002:aa7:c413:: with SMTP id j19mr3709836edq.200.1644328023983;
+ Tue, 08 Feb 2022 05:47:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20220208020441.3081162-1-liambeguin@gmail.com> <20220208020441.3081162-4-liambeguin@gmail.com>
-In-Reply-To: <20220208020441.3081162-4-liambeguin@gmail.com>
+References: <20220208020441.3081162-1-liambeguin@gmail.com> <20220208020441.3081162-10-liambeguin@gmail.com>
+In-Reply-To: <20220208020441.3081162-10-liambeguin@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 8 Feb 2022 15:42:22 +0200
-Message-ID: <CAHp75Vd7OfLyfziraV4AHWrnTSCPPN9gzGNxaFa+V6uNe8-YUA@mail.gmail.com>
-Subject: Re: [PATCH v14 03/11] iio: afe: rescale: add offset support
+Date:   Tue, 8 Feb 2022 15:46:27 +0200
+Message-ID: <CAHp75Vf+FkofvC3_jvNadGed+eH7mQvVYXTOiWKCzwinJ3-2-w@mail.gmail.com>
+Subject: Re: [PATCH v14 09/11] iio: afe: rescale: add temperature transducers
 To:     Liam Beguin <liambeguin@gmail.com>
 Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -70,27 +70,18 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Tue, Feb 8, 2022 at 4:04 AM Liam Beguin <liambeguin@gmail.com> wrote:
 >
-> This is a preparatory change required for the addition of temperature
-> sensing front ends.
+> A temperature transducer is a device that converts a thermal quantity
+> into any other physical quantity. This patch adds support for
+> temperature to voltage (like the LTC2997) and temperature to current
+> (like the AD590) linear transducers.
+> In both cases these are assumed to be connected to a voltage ADC.
 
 ...
 
-> +               if (iio_channel_has_info(rescale->source->channel,
-> +                                        IIO_CHAN_INFO_OFFSET)) {
-> +                       ret = iio_read_channel_offset(rescale->source,
-> +                                                     &schan_off, NULL);
+> +       rescale->offset = div_s64((s64)offset * rescale->denominator,
+> +                                 rescale->numerator);
 
-> +                       if (ret != IIO_VAL_INT)
-> +                               return ret < 0 ? ret : -EOPNOTSUPP;
-
-Wonder if this actually should be
-
-   if (ret < 0)
-       return ret;
-   if (ret != ...)
-       return -EOP...;
-
-> +               }
+Wonder if we can use mult_frac() here. Would it require 64-bit division?
 
 -- 
 With Best Regards,

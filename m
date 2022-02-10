@@ -2,138 +2,262 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DF5F4B0F74
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Feb 2022 14:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 577F84B11BF
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Feb 2022 16:34:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242517AbiBJN5M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Feb 2022 08:57:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53170 "EHLO
+        id S243639AbiBJPeB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Feb 2022 10:34:01 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242513AbiBJN5M (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 08:57:12 -0500
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31061BF5;
-        Thu, 10 Feb 2022 05:57:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1644501433; x=1676037433;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OFP1NltEDOTkFZpR5z2865Gx8le09uqHZgXyYOTV2S4=;
-  b=captqA7NfiTaSUeYOqjU1bXEluI1uDcuFnafc+vB35D23AwoMhX0yPUe
-   h2m0V9l/wI2tNMNpv5ejunl+Ow/brKzpcnNJC04EeQXl1eVSNJ4tEnpjY
-   /+L6QPu1ZN/p2aZ5jOB9N2wePeoceYVJB3Mwml+yNFzL/q+/fBaWLJOkL
-   lj2NzA3yCLkjcE9TqLuudAHgQ4q1+FFtvMDz9YiTsRbdDfeZ2WT7GnGls
-   WVNFACV/5+3hEbosvkbHPSLjIUECYN15LiJ7pHpLMZVEwfGEtse3pKl0Z
-   p5woW2/XbAcR9wvtWa880wU8u+OPtOC0CQk0pO2hkHJgRlmShaNrvFbgL
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10253"; a="233054007"
-X-IronPort-AV: E=Sophos;i="5.88,358,1635231600"; 
-   d="scan'208";a="233054007"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2022 05:57:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,358,1635231600"; 
-   d="scan'208";a="773875261"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 10 Feb 2022 05:57:10 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 20FC9366; Thu, 10 Feb 2022 15:57:25 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 1/1] iio: ssp_sensors: Make use of device properties
-Date:   Thu, 10 Feb 2022 15:57:24 +0200
-Message-Id: <20220210135724.26660-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S243638AbiBJPeB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 10:34:01 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B34C11DF;
+        Thu, 10 Feb 2022 07:34:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id D844BCE249E;
+        Thu, 10 Feb 2022 15:33:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91140C004E1;
+        Thu, 10 Feb 2022 15:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644507238;
+        bh=BKeitxpfCGIJQJTATObfn7bUY4xpEWQny+fdU8bKBgg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=i5uVIOpEclbZZ3IneV185GXY860waI1Ss4TIko7UGsQyI9pzMlQfunc2xKUJTLDBY
+         PLIlyt50KiwOImwL0Z7UI+v7iD7TASoWEQeUBN3oXC9mbgVmqviNPj6oLRj//z4loK
+         FR47sNNdeeeBp9iVykUDSxtjqlG5+nohsB7jjYogxBX4RGO0Q4vNNBFMcrXYS8ggZs
+         I17f7KiYUjx3AEzf2x0Ve3N++TrUT7H0wDS068kDh7bnuGUO/yEfE6FsIs0tC5Uu8h
+         NSt1Ig03zrBTZX27rmmfokPEA/qZ83c29MWAoWJ3kXQE5nT+DEUW2UCPXU3Kd2y2XB
+         SYi6SnOsfWfug==
+Date:   Thu, 10 Feb 2022 15:40:35 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     LI Qingwu <qing-wu.li@leica-geosystems.com.cn>
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "tomas.melin@vaisala.com" <tomas.melin@vaisala.com>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH V1 2/6] iio: accel: sca3300: Add interface for operation
+ modes.
+Message-ID: <20220210154035.62ef7bf6@jic23-huawei>
+In-Reply-To: <AM9PR06MB78448AE3641602CA8E52603AD72F9@AM9PR06MB7844.eurprd06.prod.outlook.com>
+References: <20220124093912.2429190-1-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220124093912.2429190-3-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220130114014.38923fb4@jic23-huawei>
+        <AM9PR06MB78448AE3641602CA8E52603AD72F9@AM9PR06MB7844.eurprd06.prod.outlook.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the module to be property provider agnostic and allow
-it to be used on non-OF platforms.
+On Thu, 10 Feb 2022 10:08:53 +0000
+LI Qingwu <qing-wu.li@leica-geosystems.com.cn> wrote:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/common/ssp_sensors/ssp_dev.c | 22 +++++-----------------
- 1 file changed, 5 insertions(+), 17 deletions(-)
+> Thanks a lot all of your inputs, I'm just back from long holiday and star=
+t to rework on the patches.
+>=20
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, January 30, 2022 7:40 PM
+> > To: LI Qingwu <qing-wu.li@leica-geosystems.com.cn>
+> > Cc: lars@metafoo.de; robh+dt@kernel.org; tomas.melin@vaisala.com;
+> > andy.shevchenko@gmail.com; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH V1 2/6] iio: accel: sca3300: Add interface for oper=
+ation
+> > modes.
+> >=20
+> > This email is not from Hexagon=E2=80=99s Office 365 instance. Please be=
+ careful while
+> > clicking links, opening attachments, or replying to this email.
+> >=20
+> >=20
+> > On Mon, 24 Jan 2022 09:39:08 +0000
+> > LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+> >  =20
+> > > The acceleration scale and the frequency were set via operation modes,
+> > > the scal and frequency are both non-uniqueness, this leads to logic
+> > > confusion for setting scale.and.frequency.
+> > > it getting worse if add more different sensor types into the driver.
+> > >
+> > > The commit add an interface for set and get the operation modes.
+> > > the following interfaces added:
+> > > in_accel_op_mode_available
+> > > in_op_mode
+> > >
+> > > SCA3300 operation modes table:
+> > > | Mode | Full-scale | low pass filter frequency |
+> > > | ---- | ---------- | ------------------------- |
+> > > | 1    | =C2=B1 3 g      | 70 Hz                     |
+> > > | 2    | =C2=B1 6 g      | 70 Hz                     |
+> > > | 3    | =C2=B1 1.5 g    | 70 Hz                     |
+> > > | 4    | =C2=B1 1.5 g    | 10 Hz                     |
+> > >
+> > > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> =20
+> >=20
+> > While it may seem convenient to expose this to userspace, the reality i=
+s that
+> > generic userspace has no way to know how to use it.
+> >=20
+> > That makes supplying this control a bad idea however convenient it may =
+seem.
+> > It's not unusual to have these sorts of constraints on devices and so t=
+he ABI
+> > always assumes any setting may modify any other and / or change what is
+> > available for a given setting.
+> >=20
+> > If you need a particular combination for your own userspace, then make =
+the
+> > userspace aware of the constraints rather than exposing it as a 'mode' =
+which
+> > the userspace will need to know about anyway.
+> >=20
+> > Jonathan =20
+>=20
 
-diff --git a/drivers/iio/common/ssp_sensors/ssp_dev.c b/drivers/iio/common/ssp_sensors/ssp_dev.c
-index eafaf4529df5..c1abd20ff808 100644
---- a/drivers/iio/common/ssp_sensors/ssp_dev.c
-+++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
-@@ -7,9 +7,10 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/mfd/core.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
--#include <linux/of_platform.h>
-+#include <linux/property.h>
-+
- #include "ssp.h"
- 
- #define SSP_WDT_TIME			10000
-@@ -425,7 +426,6 @@ int ssp_queue_ssp_refresh_task(struct ssp_data *data, unsigned int delay)
- 				  msecs_to_jiffies(delay));
- }
- 
--#ifdef CONFIG_OF
- static const struct of_device_id ssp_of_match[] = {
- 	{
- 		.compatible	= "samsung,sensorhub-rinato",
-@@ -441,8 +441,6 @@ MODULE_DEVICE_TABLE(of, ssp_of_match);
- static struct ssp_data *ssp_parse_dt(struct device *dev)
- {
- 	struct ssp_data *data;
--	struct device_node *node = dev->of_node;
--	const struct of_device_id *match;
- 
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
-@@ -461,22 +459,12 @@ static struct ssp_data *ssp_parse_dt(struct device *dev)
- 	if (IS_ERR(data->mcu_reset_gpiod))
- 		return NULL;
- 
--	match = of_match_node(ssp_of_match, node);
--	if (!match)
--		return NULL;
--
--	data->sensorhub_info = match->data;
-+	data->sensorhub_info = device_get_match_data(dev);
- 
- 	dev_set_drvdata(dev, data);
- 
- 	return data;
- }
--#else
--static struct ssp_data *ssp_parse_dt(struct device *pdev)
--{
--	return NULL;
--}
--#endif
- 
- /**
-  * ssp_register_consumer() - registers iio consumer in ssp framework
-@@ -670,7 +658,7 @@ static struct spi_driver ssp_driver = {
- 	.remove = ssp_remove,
- 	.driver = {
- 		.pm = &ssp_pm_ops,
--		.of_match_table = of_match_ptr(ssp_of_match),
-+		.of_match_table = ssp_of_match,
- 		.name = "sensorhub"
- 	},
- };
--- 
-2.34.1
++cc linux-iio@vger.kernel.org
+
+> Thanks a lot Jonathan, I couldn't agree with you more, the mode is not go=
+od for userspace,
+> I would like to ask you how to handle this.
+> Since the change for 'mode' was a prepare for support SCL3300,
+> For SCL3300, mode 3 and mode 4 are totally same for both scale and freque=
+ncy.
+> The only different is mode 4 is low noise mode, but no difference from so=
+ftware point of view.
+> Then it's impossible to set to between mode 3/4, let's say normal noise a=
+nd low noise mode, with index of frequency and scale.
+> Set between mode 3 and 4 is necessary, I have no idea how to handle it.
+
+Why would a user ever select the 'high noise' option?
+My guess is power saving?  Probably not enough to be relevant
+in a system running Linux.
+
+I would suggest just not supporting that option.
+It is not uncommon for some modes to make limited sense and
+to just be there as an artefact of the underlying hardware
+architecture.  Doesn't mean we have to support them :)
+
+Jonathan
+
+
+
+
+
+>=20
+> | Mode             | Full-scale   | frequency |
+> | -------------------      | ----------------- | ------------- |
+> | 1                 | =C2=B1 1.2 g     | 40 Hz    |
+> | 2                 | =C2=B1 2.4 g     | 70 Hz    |
+> | 3                 | =C2=B1 0.6 g     | 10 Hz    |
+> | 4 (Low noise mode)  | =C2=B1 0.6 g     | 10 Hz    |  =20
+>               =20
+> The link of the SCL3300 datasheet:
+> https://www.murata.com/-/media/webrenewal/products/sensor/pdf/datasheet/d=
+atasheet_scl3300-d01.ashx?la=3Den&cvid=3D20210316063715000000
+>=20
+> >=20
+> >  =20
+> > > ---
+> > >  drivers/iio/accel/sca3300.c | 55
+> > > +++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 55 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
+> > > index 083ae2a47ad9..e26b3175b3c6 100644
+> > > --- a/drivers/iio/accel/sca3300.c
+> > > +++ b/drivers/iio/accel/sca3300.c
+> > > @@ -42,6 +42,38 @@
+> > >  /* Device return status and mask */
+> > >  #define SCA3300_VALUE_RS_ERROR       0x3
+> > >  #define SCA3300_MASK_RS_STATUS       GENMASK(1, 0)
+> > > +enum sca3300_op_mode_indexes {
+> > > +     OP_MOD_1 =3D 0,
+> > > +     OP_MOD_2,
+> > > +     OP_MOD_3,
+> > > +     OP_MOD_4,
+> > > +     OP_MOD_CNT
+> > > +};
+> > > +
+> > > +static const char * const sca3300_op_modes[] =3D {
+> > > +     [OP_MOD_1] =3D "1",
+> > > +     [OP_MOD_2] =3D "2",
+> > > +     [OP_MOD_3] =3D "3",
+> > > +     [OP_MOD_4] =3D "4"
+> > > +};
+> > > +
+> > > +static int sca3300_get_op_mode(struct iio_dev *indio_dev,
+> > > +             const struct iio_chan_spec *chan); static int
+> > > +sca3300_set_op_mode(struct iio_dev *indio_dev,
+> > > +             const struct iio_chan_spec *chan, unsigned int mode);
+> > > +
+> > > +static const struct iio_enum sca3300_op_mode_enum =3D {
+> > > +     .items =3D sca3300_op_modes,
+> > > +     .num_items =3D ARRAY_SIZE(sca3300_op_modes),
+> > > +     .get =3D sca3300_get_op_mode,
+> > > +     .set =3D sca3300_set_op_mode,
+> > > +};
+> > > +
+> > > +static const struct iio_chan_spec_ext_info sca3300_ext_info[] =3D {
+> > > +     IIO_ENUM("op_mode", IIO_SHARED_BY_DIR, =20
+> > &sca3300_op_mode_enum), =20
+> > > +     IIO_ENUM_AVAILABLE("op_mode", &sca3300_op_mode_enum),
+> > > +     { }
+> > > +};
+> > >
+> > >  enum sca3300_scan_indexes {
+> > >       SCA3300_ACC_X =3D 0,
+> > > @@ -70,6 +102,7 @@ enum sca3300_scan_indexes {
+> > >               .storagebits =3D 16, =20
+> > \ =20
+> > >               .endianness =3D IIO_CPU, =20
+> > \ =20
+> > >       }, =20
+> > \ =20
+> > > +     .ext_info =3D sca3300_ext_info, =20
+> > \ =20
+> > >  }
+> > >
+> > >  #define SCA3300_TEMP_CHANNEL(index, reg) =20
+> > {                           \ =20
+> > > @@ -400,6 +433,28 @@ static int sca3300_read_avail(struct iio_dev =20
+> > *indio_dev, =20
+> > >       }
+> > >  }
+> > >
+> > > +static int sca3300_get_op_mode(struct iio_dev *indio_dev,
+> > > +             const struct iio_chan_spec *chan) {
+> > > +     int mode;
+> > > +     int ret;
+> > > +     struct sca3300_data *data =3D iio_priv(indio_dev);
+> > > +
+> > > +     ret =3D sca3300_read_reg(data, SCA3300_REG_MODE, &mode);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +     return mode;
+> > > +
+> > > +}
+> > > +
+> > > +static int sca3300_set_op_mode(struct iio_dev *indio_dev,
+> > > +             const struct iio_chan_spec *chan, unsigned int mode) {
+> > > +     struct sca3300_data *data =3D iio_priv(indio_dev);
+> > > +
+> > > +     return sca3300_write_reg(data, SCA3300_REG_MODE, mode); }
+> > > +
+> > >  static const struct iio_info sca3300_info =3D {
+> > >       .read_raw =3D sca3300_read_raw,
+> > >       .write_raw =3D sca3300_write_raw, =20
+>=20
 

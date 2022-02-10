@@ -2,123 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9EC74B1348
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Feb 2022 17:43:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBA34B1368
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Feb 2022 17:48:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244640AbiBJQmy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Feb 2022 11:42:54 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55728 "EHLO
+        id S244726AbiBJQsW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Feb 2022 11:48:22 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244682AbiBJQmv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 11:42:51 -0500
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80131.outbound.protection.outlook.com [40.107.8.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91D62E87;
-        Thu, 10 Feb 2022 08:42:36 -0800 (PST)
+        with ESMTP id S244775AbiBJQsB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 11:48:01 -0500
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70127.outbound.protection.outlook.com [40.107.7.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9520E9A;
+        Thu, 10 Feb 2022 08:47:33 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j/MKSxMrqkJVvjFqmDsxc7y2e8Rf0i+ses3DNPc8XCEuBtA4UknsrSSXWCtZ/bGGCUlhXxNXjPi3XZS16cWUWxmN3zSaYRaIVSKJ4ms8fK1nyLLT8+JAgIpZIykmTZCI3ontwDDUVFx4vu8uU6ZMmgNkHyBinK/d6MZw7javxiGq0ilG2eynV2pM23ms7815Oi3RYF6bf2fDrE4KZ0rTi4pL8ogmFxJN4/3UbQ/lr56AeYqlg9up18mDpaDDlmQoXv5dMApRUxXpr2AQMnTdwU3NR3YNrJraFsOqMXgMX8nSLwECVChBKaWw6JYxQyd/D73igjgKsPB4Q+mAVY7uoQ==
+ b=U9IVkzW7y97Aukh+HIduDGVjVa80hP0tYpEfFGyvObLEtUkawccut9VQQ18a+a6wwS2G7/CsCGuov1ft1ZXGeSy7rB9877brDoYEE1Ksqvwd799Usj6b3pF3YRZ8v7E7yzQv5sMTqBflN91fFAdH5HW9JhkBOb1I60IGf0TGeoOVmAJinjL+7dA3Ee1DD8c3oMPBEqSlFC7USGO2RQObvKEYZOBkWpN+xp0XizkpEjI7L4j9xm93V3XO6hawh4gU6ygxz0IuY4NDTHGETkyGJeXYMlT/ipvxYWmBvCwVlloFdW008pd6Gn2AsyQcvi4rqPPz4tzCkd37Lt6dqV25Jw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BHjby0Z61ssEsArNtgJusHMxvjAJOduWKgsAuFML+6M=;
- b=GWeKLK7RzGz4jfHrW84n1urGm3PuotA7sjuj6/wlUR3B5Zvhe+zsiFInj3rfOhHGsyBBsnsf6CuCYF5mrNqZ03kcpos8F8dZ2cCAJAkw3L27aiM9i4uteaJFPxKHKVP4FnDlOYS5odZul/SNKvg+xA9PMm1JAHj3es62grkTDsAMfJEWpoT2xgf09/v6Dz+bpPuQp3GzEemLrk8vjpyShYctzLW/Av3PQNUqwF2pQRBKtyJgiBnDoVVnVgFlrszVr+ExcXD6+P1gUxM6gVIyCE7fQr/ZiGkxd3YXY777ZmwDbUK1N32APIlIhtdEOCNpC+iz2XO4Eoj6unz3pfKyGw==
+ bh=QGdnmHcrSklDKQTu75tx/sVDZJBqyWUBddohJisTSdU=;
+ b=XJ5u6gBLLa4jOrtj0JZrda62Zgg7B/9qJDwMuNSdLONGZyuZQtB9Z9o6xpV9YG3T7lni/AgTGEeV+j8EEpPq2m7ENp3f5xtmaH3aPdpDm7qGWLRMh71b1x5rziMBCDYFFKW8Z4y2Zau1rn9eA8+En2RNpUN+SKD3eNNMfDsOSiMnEE8gARCBtR66x7wEusStuMY+h6F5XaQ4k/5Fdn7GnQPGuT+cs8QZaMMEf9KFpkRW6Jw62p8HWuRP8DyB1ITuXdTHMIgP6qgOReiK9Ypd+jqNQqGtlX4uDo45vGvulxUHNCNhVcEwlOcdSgV2Wunw/1vo0VipsFWD4JnLpVATQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BHjby0Z61ssEsArNtgJusHMxvjAJOduWKgsAuFML+6M=;
- b=ZAZSbqM0EMFcjCgH7LBnd5/afWwIqzcgKSDtBT4Krwkl9Bju1drWdke6I2OwydyLLBZ1ZCWkauekDbfB1Bf+3wfTjiuRxzu+l/LcZ7qr3Uj+dl9lxZw74VSqrWMk2fid2eLl87pCfIMpwhYkA08q597JwXO6+9HViEGfNiwWM9Q=
+ bh=QGdnmHcrSklDKQTu75tx/sVDZJBqyWUBddohJisTSdU=;
+ b=WOCTcSCw2z8fmouAE0fOBHWq829XYXs+ixtoa543VLSfl7UhLMM39U4Nfaduhw+P0B5cWpGBCPqBDW19TKleoG2fdYwqwmXDKBDPTbSbhzRuHnrRPqP7wsbc+1JdPAvQVlL+xATeORYctNCS9eJHfR+GJAZmzQve+Fs/G2g0UmA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=axentia.se;
 Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by HE1PR0201MB2187.eurprd02.prod.outlook.com (2603:10a6:3:2a::12) with
+ by PR3PR02MB6441.eurprd02.prod.outlook.com (2603:10a6:102:73::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.19; Thu, 10 Feb
- 2022 16:42:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Thu, 10 Feb
+ 2022 16:47:31 +0000
 Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
  ([fe80::dcfc:1278:ab19:ed07]) by DB8PR02MB5482.eurprd02.prod.outlook.com
  ([fe80::dcfc:1278:ab19:ed07%6]) with mapi id 15.20.4951.019; Thu, 10 Feb 2022
- 16:42:31 +0000
-Message-ID: <fbb84b08-5d3d-3684-fdee-5ce367280857@axentia.se>
-Date:   Thu, 10 Feb 2022 17:42:25 +0100
+ 16:47:31 +0000
+Message-ID: <adb275f6-07bf-1468-b548-df944a25dbd0@axentia.se>
+Date:   Thu, 10 Feb 2022 17:47:26 +0100
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH v14 02/11] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
- support
+Subject: Re: [PATCH v14 03/11] iio: afe: rescale: add offset support
 Content-Language: sv-SE
 To:     Liam Beguin <liambeguin@gmail.com>, jic23@kernel.org,
         andy.shevchenko@gmail.com, lars@metafoo.de
 Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, robh+dt@kernel.org
 References: <20220208020441.3081162-1-liambeguin@gmail.com>
- <20220208020441.3081162-3-liambeguin@gmail.com>
+ <20220208020441.3081162-4-liambeguin@gmail.com>
 From:   Peter Rosin <peda@axentia.se>
 Organization: Axentia Technologies AB
-In-Reply-To: <20220208020441.3081162-3-liambeguin@gmail.com>
+In-Reply-To: <20220208020441.3081162-4-liambeguin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: HE1PR05CA0389.eurprd05.prod.outlook.com
- (2603:10a6:7:94::48) To DB8PR02MB5482.eurprd02.prod.outlook.com
+X-ClientProxiedBy: GV3P280CA0068.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:150:a::20) To DB8PR02MB5482.eurprd02.prod.outlook.com
  (2603:10a6:10:eb::29)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: faaa2cb5-d9f3-47a7-75ca-08d9ecb454a1
-X-MS-TrafficTypeDiagnostic: HE1PR0201MB2187:EE_
-X-Microsoft-Antispam-PRVS: <HE1PR0201MB2187585109DB13977ADBDA72BC2F9@HE1PR0201MB2187.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6108;
+X-MS-Office365-Filtering-Correlation-Id: b2b2349f-8e23-47ee-c33c-08d9ecb507ae
+X-MS-TrafficTypeDiagnostic: PR3PR02MB6441:EE_
+X-Microsoft-Antispam-PRVS: <PR3PR02MB6441EB2BFA80B8CC882EC4F4BC2F9@PR3PR02MB6441.eurprd02.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BNVI9DLZ64NXOSsg/LYsR1bwqjqGUgEuPKGGugyYid11sUpeYkfqFgoVqPqBRk/WKCuBI+X+8f1USQR0Ao1qNEdHBH3qf8KYhdRuNyT3io2dwDF9SuM+VhzzMIfhKHU1cy4K3rcHXFvGseKKnlGJYipchVeSdlo0SOMrS+c87MfR83bBjliRQZhe6U+WYQj49fy3wSdUFcjEdzP/XLTQ4oWCjXyzxcV4AqS073QGsJLpIdN8B1S9dl0MxgBKOjxaJ0AgpqB6c3pPxsovzlgkXiRKAVV3mut+f10HeqOv9IJjAkLt3PxQIYzwnE5HUYRXrjLXBCg7paYQC+lAr08XRk3Eh81K6Ge0nNxr6ccrWyU7oPwdoeYGPYol+b4UgncbY5U4haSBQAAk6CMKJTx2MYPq0zSoQ9QHUE/gCemKz+O6ho0cPGJaT9nrJ7YikVj3x1t7G0k4z+5WQ8LMr8ffRW+72X76MEUjLSRJSfh0axf/oJlEQ5r+YeuNTe5oR9Fr+CgZPo0gmXWN9JUZXIRxWGYSIBfSm/WZ+amXiBsBE2tiQkjz4WY0JRCjlIZj1/o+BEknc8VHktaTbNDjd15dEwJMW/ZB8Vi6K0p3l3FPgtMSd5AbLFHPEXE5BgSR/HMCNHiiIE6QzwcQUe5pJdBlaNxyDLYsfwHdRFx79uj0zUdMshnRl8Y2CT0dzFnuM7oo9CRFcyJA9kaQxrJ6h5Sk3+2OTz22v65ST+D1U1OjU+A=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(376002)(136003)(366004)(396003)(39840400004)(346002)(2906002)(31686004)(38100700002)(36916002)(6506007)(5660300002)(53546011)(508600001)(6486002)(6666004)(8936002)(8676002)(6512007)(26005)(186003)(2616005)(4326008)(36756003)(66946007)(66556008)(86362001)(316002)(31696002)(66476007)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 0SOOPChCp6FOmr2o9OuNUNVN5TbCJ0emhavXbV1sBz9JyJddgqz4CCi0ac4x2dyQS0d8LbKvcH6KpCPgVeJ5VWQj2KFtGIC3rSKP9yWaca7xrLJHfECAWksgPT0KxIuPLsEzl/6pwXnVH6ZwYCZPZa24PZG6/Lsbuf2LtoRhDy0P8k0leTep7d+Xvy345soOjam/umhoTRHdoVmdqVD8TlM61BRkRk4NhXps/DWIJvrQS4m+UntXTu1dy5EQIktzTUksuxrDuOExkMmmlWJ4sy/S+uL8H3VGqib3nq3Af9wM7tny2Thas2QfCS7eRr5+ftRd8i/Po1IBZfUiZdI2XGsA6B6UYjt1AJZ04V4taju828pZFzfBy4Ga8didGfFcCQIwpH9fIgHz3JmkhAFEgdRaqPCsEVNMALsiC36on3AQ7228bCZEtJvdud27SKca/GN0QDIMiJ3V7aQpp0Y9ezFm44hZK6z5hlt8WfkhNkKzpPqcDZSX4Qxf/5oOZwKCu2U2uE/N0IHsXCBIIOsUvz/sFYfSVuCZRKT9YsWgmRjFG15SohBXYiS2hz/JCLBoUBIHQTvNPumKzpKmvSGgczQTEQFZ5cN2rofQR2A9VB89V9Em25qmvD6Ie/ObTm+93ekefmnogtDWG+R0Ptu3AC5c49IH7w77iFAzw/zRcj16FJCZs2NSlRlkoiv6yOjpbafViFE217//XPwzp5vxAdu1+YjJCwpgBmkJZCqU2cM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(376002)(366004)(136003)(346002)(396003)(39840400004)(86362001)(2906002)(66946007)(66476007)(4326008)(66556008)(186003)(26005)(31696002)(38100700002)(5660300002)(8676002)(53546011)(2616005)(6506007)(316002)(6666004)(8936002)(36756003)(6486002)(31686004)(508600001)(6512007)(36916002)(45980500001)(43740500002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cWlOd0tWN1JjUWJLSCtTL0hQQUdOS3lSN0JqWDB2cmlXdXJZaHZ3NmtlNzBB?=
- =?utf-8?B?UlFNNjkxVlI1emx6NzZNams2WHRVNzUzcVRRaUNXM1Q5MWZIdkM4L2hDbUdp?=
- =?utf-8?B?TExWbEVWdlY2bFF4VHBGSktweFFQMTdzbGlMOXRCdHVBYlRFRDJKSi83ek0x?=
- =?utf-8?B?Q281VmZFWW55eEQxR2VIaWVZRFZEQUdlZjcwaDFKcUpRS2hBRFh0OUQwOEMy?=
- =?utf-8?B?clJ5ZW0vaVVyQThJWnE1aTVJUlBwRnl1UDFtUHVjeUhRVXVaRUt0aHUydXp2?=
- =?utf-8?B?VHowOGF3WUFCamNjQ0NmRmloY0lwWEJ3b1cvejFpdktKbFhJVTJxRVpQcEpH?=
- =?utf-8?B?cWFLNXdpRzJybkFjalliMitDQkRmemNxRGNzS1BPMm5MZ1FiZEVHWFJrbncr?=
- =?utf-8?B?aEYyc2ZvRTF5L09NelFXdmpnbnVQS2ZTenp1UDJubGdBTlJMM2ZtUkhMVEpn?=
- =?utf-8?B?ekd0VWw2RCtqN1hoeFIycldpbGxhY2dranN2YklNaVF3WjNmMXZQeW0yT2t1?=
- =?utf-8?B?aWFCZGJZNEdRTnV2YkQ4Q3NiNk9uNWlHS2pUZElrd0lVTkQ0czk4R0Z6Rmln?=
- =?utf-8?B?TWVOb2l1SENoZUJVUUFmaXBSSkZNQnZYcUY4clZoemE5Rm8xYlJsQ3BHVVNj?=
- =?utf-8?B?aGZMK1BRNGRvWEYvOHV0eU54cWhVNm04QlF3dFU3ZFA0bUZobEhxWkhJdW1k?=
- =?utf-8?B?T0dWWGh6VmkxL3ZoY1FLbFhIM0drNCs0eG9BOU84QW1IUXpxN1loTjN1aTI3?=
- =?utf-8?B?NUVidTk1YWpKMjRFdlNzeDIwS0FXN2NJY0pnZmtrTHNXcGpBa2lGWHRrNXlu?=
- =?utf-8?B?Qm9IYUpJYnh6QnlMTFYxS0w4RW1VMGZwbklObEhXdXduT3dVaGRvZUZyQ1BV?=
- =?utf-8?B?UDY4UUdIdktGQnk0bEl0dUlpeGdKdUlwYzVhZ0ZYL2NRNHN4YVdScktLY2N1?=
- =?utf-8?B?N082d29UR1h0UmdORVFFbWdVVEszdmoza25COHJaYmV6NHEwZnRiTU5RcnpB?=
- =?utf-8?B?ZGZ0WFlETk1UalArdkN3eUdMYm9ibUZPbnorSi8rM21Da0svOGk4WHRTVjBI?=
- =?utf-8?B?dlRIRTQ1OEFTZFZSeWRNNDh3b2pvU2lSRGxsck5Qd01NNUE2algwQ2V1eCtH?=
- =?utf-8?B?akwvYm53SlE2bTRReXQ3ZXN5cUFuWXQ0ZVZ4N3ZrUG5oRGpyRHp5VHo3VUhM?=
- =?utf-8?B?ZFFUVGhBVnhmMEUxQUFsY2dyQmFJdDgyWVpJTVo3azhSaUFpQmpzbExISWds?=
- =?utf-8?B?M2RTajBpNEVxaGpaczZGSkFoNE8xUjh3M05UcGMxZ2d1dWRXQWU5TUFSRm9U?=
- =?utf-8?B?ZkRKMTAwUkc2NU9MOTdRSkFwaWkrV3lRVjE2K0liVHdXdk5RdTlTWDNFb0pV?=
- =?utf-8?B?Sk0yUjA5aWhiRWF1L1ZybmtLeVZLK3pKYTdHdzBuTzBPeC9BTUQ1UnlGUXB1?=
- =?utf-8?B?MkxHQkg3OCtDMmNrNW9RSkdKTVdIQjZEYzZyM0VyWW9CSjkxUFFjakM1bVJy?=
- =?utf-8?B?c01hNU03T3lvbjdDcUtMK1pQZ2k5cUdRMWYvMFpGb2lSMjBENmhvOFhLSkFl?=
- =?utf-8?B?bGdvcWpjbFlwNVQ2WTNpUG1PKzBiUVVabGxiQnFrdW4wdDNTenNicUFqeGYx?=
- =?utf-8?B?alpPZmcvQkQwV3lkcnRrRFlhcGE0MVNPWUdjbk1TNmdGYjJOT0xJZzRoYWxi?=
- =?utf-8?B?dWJJUzhucEhTcXpIK1R1MEppT3BkWmVybFYzbkpQa056dWQvcDFPZnlmQU9D?=
- =?utf-8?B?UzJDQnhRYkx5RUo2cktFWFZYZDdvbGZ3MjcvWU5uSFI3MjZ6bjNEeFRJOEVW?=
- =?utf-8?B?dk1vRndBVUpWd3BzUkdlNmNxMHpOMGtzSytFaWF2ZGpxK0IyemhvU2gzM0xU?=
- =?utf-8?B?QzBlYVdmQ2pkeGFyWU02N1lXZSs0QkxIRjRDT2hxa3Qva2xmeUNMNWZ4L3RG?=
- =?utf-8?B?UHgyMUwwSjlXeVljby9KUE5rbXljSTZkYjhxMnlOMHZmbFY5OVZoRHlEUVp2?=
- =?utf-8?B?Y1FOM3JwY3ZzbWw3c3ZHcnV2ZnZmWXljbGh6NEdQZENtS2hXT2QwUFhUVkRp?=
- =?utf-8?B?REdzM25DdlZIUXZrRVZWZ0FxRC9INXdSaHNkZGZOYmJha2RFR2pCemV3Q1N2?=
- =?utf-8?Q?Al5Y=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TmJuc1RDY2xXNy9LcDRmdEMyc0F0dkV6ZjljUHgvZFRHN1ZGSCs5TklMVjhR?=
+ =?utf-8?B?YVBSaEl5ZmpsUExHN3dBVHA3eFdxbmkrUEh4SmEzQlNMQTRSeUlQZjZpZVk3?=
+ =?utf-8?B?Q2g1aGhTUTZienphSDlMTGxIb3dUaGE3UGpCVUw4dlhRTStPZnN0Tnc5K0o4?=
+ =?utf-8?B?YjJtWE5mZGE5QnVBT1JxTnFtckZKRFBRbXJnZ1Z1OC8wVHdUSHNlMnUyc1A5?=
+ =?utf-8?B?OExmMEE1MVRSTUhaSWNtVEJ4OXBMSFY5SDVpR2lBZXhpSkV1cmVYNTIwcFYw?=
+ =?utf-8?B?TC9yUjVleWM0bnYxdU1qbDV4NENESm5QVllOeXpiRjFKL1BFSzV6UmNwWXdL?=
+ =?utf-8?B?WnRrVVdLRTV5STMxWU1NNzhXZGV4OVpKN2Q3anJaQmlGUVJqYXNkOGl0YTJS?=
+ =?utf-8?B?WTZTT2lpbG80Ni9xMk1xWTg3czdJK0Rwa0FGazhpbkRYV2hhb2dQT2g1bEYz?=
+ =?utf-8?B?NmZWdTlXbUhHbnRpZFNMaVpWT0dzcng5bytqZHh6TlZ4QnczZFU2VCs2NXRM?=
+ =?utf-8?B?M091eWI3blNFU3VUZTVpY2d3ZjdrdGphVmQ4eWt1NnhjMVIyQzhZSnJzT3FC?=
+ =?utf-8?B?Z21ocmVKTkNzT2RwL0JJUkg2U2hPS2tIQlJCb2lwZnpzSmFKUjd2dEw4QzZK?=
+ =?utf-8?B?NFN5OEpiU0RKVUZkbjBhaC9lTS9UNTAwS0VpUGZ3OHhrbWtsZDhWVkI1TmZQ?=
+ =?utf-8?B?dGJDYkNyL05lTnkrVldLYTJ6eFJ3RkMyQnBUaGRsY09YMjB4L3NQWHZRNDNU?=
+ =?utf-8?B?TkRVOFROaHJCbnk2TkZwMmg1bEV6dHdCSnp0ZXROem82SitSSmtkTUlTUUVW?=
+ =?utf-8?B?WU1nYldaamxsMXltT3VyRGltSDR2aVhGbzFhaVVQVjFXbmhabktTR1A1dVRW?=
+ =?utf-8?B?dUFVanVVbmtBK1FwZzZUb0YvaVlKOVpTdXpkYXl1MmJrb3BFb2E2WjZxWmYy?=
+ =?utf-8?B?bTFyN2Y2bUEyRkk2NjRHWXZ3b0xJVGxDcUREQUdPbk54Mk1OTVBRbURJdVI3?=
+ =?utf-8?B?MDE1cy9vSFRmNnZzanRTOU5LZDluNXRvZnJUeHZDYXFRNDBGdkxNaUlFVHd0?=
+ =?utf-8?B?dHJqQmFpMVpqV3FDMENiMTZKOGNnQzVOeUZBMmRVd1gwUlJTNGRwWjFRcUw4?=
+ =?utf-8?B?dmxJc1NRd0c3R0Fvbzd1QzJiWFJvVDR3VTk1VVRiMGp0aUFrN2paY0xBTk1P?=
+ =?utf-8?B?eXIzSGNBSmd0OUtuNGRJaVdIYXhVRVhJTmpkVGFJZ0h0OUdGQ2lqTlNYSWxM?=
+ =?utf-8?B?blRjZmIzaG11OURJdHN3bFdZVHZuTTdPM1hFTFB5OXc1b1ZLdVBHcmthNFh3?=
+ =?utf-8?B?enYzTFhJNm5KRG5hUkNCc3JPOExDRjhCdGF5eVQvOTdYQTZVT2JDVFBVenFw?=
+ =?utf-8?B?WjNmVWI4Si9Hd05sb0cveVRxZWxBckRBMnZuY2lIa0ZMRnYzalhYUkgxd0xO?=
+ =?utf-8?B?RkIxMWlCVGtSa3FZQllVTW1Jak1CeW9KVURSN2xVdENXUWpSYWZZSjE0ZDVs?=
+ =?utf-8?B?TEtiYkMvRkpwOHl3YXBRZnc0Z1hSVm00bkMveitLak1iUGpUU1VvWjlwRFhl?=
+ =?utf-8?B?dGhlQ0lwRDJUQk9iSlhtcEc1eTBGUk1RcUJSekZBc3NnVlV3Vkl4QU5uRXRI?=
+ =?utf-8?B?cmVSMjY3UTVGNXl2Z2IwTlFsS0M3bERkc0JDMVRKc0tETUFXbHM4N1VUa1Zr?=
+ =?utf-8?B?dWhzVUs5NEEwY21YTTZuUjZqVk9TdTZkbXk1MDJqa1EzUTlTMi9ibGlMSUJx?=
+ =?utf-8?B?c0FPUFBkTklPbmc4eDhFU05UcHVRK3haVGVuR1pEVitDUDFGbGhaNTlyWVRy?=
+ =?utf-8?B?cjMweGg3WG9TTjkxZHRKTzljTjlxdUUzZ2l1MjliSnI0L2x5MWZEOTF0ays2?=
+ =?utf-8?B?MzhDVmczTExYL1doMmRwM0ZoYllSSXpMWUZwQzJad0l6UzVMa3JSZG1GS2Na?=
+ =?utf-8?B?czhzdGt3ZkJ3elpaQzB0N2hveDZTVkJxYjBvMjVaNzRNOXcycFp1VlJXTytC?=
+ =?utf-8?B?ZWt0c1V5WWhyQUhQRUFJWDRSSW1BSEpHNVR2RzA2SW8ySjZWWFJNVFlrWTJW?=
+ =?utf-8?B?OXNiaWpkREtYVzVxdU9kdmp6MmJuUlh5R2ppSVNBODFteUp3dm13dU5GejYw?=
+ =?utf-8?Q?KrIM=3D?=
 X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: faaa2cb5-d9f3-47a7-75ca-08d9ecb454a1
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2b2349f-8e23-47ee-c33c-08d9ecb507ae
 X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2022 16:42:30.9802
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2022 16:47:31.3327
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +z0gZ5EAxyVY6/A5yzIxmcozsokALHlQS4QqeeZ9gDiwdPe7sWDr0HPJtvYUElCG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0201MB2187
+X-MS-Exchange-CrossTenant-UserPrincipalName: XfO3cvg39hZhpWRyx/BlJeIDtgbizvxZNhCU8mqme7kl6UIOPkACJ6uy6C36n8GD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR02MB6441
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -131,102 +130,67 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi!
 
-As usual, sorry for my low bandwidth.
-
 On 2022-02-08 03:04, Liam Beguin wrote:
-> Some ADCs use IIO_VAL_INT_PLUS_{NANO,MICRO} scale types.
-> Add support for these to allow using the iio-rescaler with them.
+> This is a preparatory change required for the addition of temperature
+> sensing front ends.
 > 
 > Signed-off-by: Liam Beguin <liambeguin@gmail.com>
 > Reviewed-by: Peter Rosin <peda@axentia.se>
 > ---
->  drivers/iio/afe/iio-rescale.c | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
+>  drivers/iio/afe/iio-rescale.c   | 81 +++++++++++++++++++++++++++++++++
+>  include/linux/iio/afe/rescale.h |  4 ++
+>  2 files changed, 85 insertions(+)
 > 
 > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> index 65832dd09249..f833eb38f8bb 100644
+> index f833eb38f8bb..63035b4bce5e 100644
 > --- a/drivers/iio/afe/iio-rescale.c
 > +++ b/drivers/iio/afe/iio-rescale.c
-> @@ -14,6 +14,7 @@
->  #include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-> +#include <linux/units.h>
+> @@ -3,6 +3,7 @@
+>   * IIO rescale driver
+>   *
+>   * Copyright (C) 2018 Axentia Technologies AB
+> + * Copyright (C) 2022 Liam Beguin <liambeguin@gmail.com>
+>   *
+>   * Author: Peter Rosin <peda@axentia.se>
+>   */
+> @@ -82,11 +83,46 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
+>  	}
+>  }
 >  
->  #include <linux/iio/afe/rescale.h>
->  #include <linux/iio/consumer.h>
-> @@ -23,6 +24,9 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
->  			  int *val, int *val2)
->  {
->  	s64 tmp;
-> +	s32 rem;
-> +	u32 mult;
-> +	u32 neg;
->  
->  	switch (scale_type) {
->  	case IIO_VAL_FRACTIONAL:
-> @@ -41,6 +45,37 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
->  		tmp *= rescale->numerator;
->  		tmp = div_s64(tmp, 1000000000LL);
->  		*val = tmp;
-> +		return scale_type;
+> +int rescale_process_offset(struct rescale *rescale, int scale_type,
+> +			   int scale, int scale2, int schan_off,
+> +			   int *val, int *val2)
+> +{
+> +	s64 tmp, tmp2;
+> +
+> +	switch (scale_type) {
+> +	case IIO_VAL_FRACTIONAL:
+> +		tmp = (s64)rescale->offset * scale2;
+> +		*val = div_s64(tmp, scale) + schan_off;
+> +		return IIO_VAL_INT;
+> +	case IIO_VAL_INT:
+> +		*val = div_s64(rescale->offset, scale) + schan_off;
+> +		return IIO_VAL_INT;
+> +	case IIO_VAL_FRACTIONAL_LOG2:
+> +		tmp = (s64)rescale->offset * (1 << scale2);
+> +		*val = div_s64(tmp, scale) + schan_off;
+> +		return IIO_VAL_INT;
 > +	case IIO_VAL_INT_PLUS_NANO:
+> +		tmp = (s64)rescale->offset * GIGA;
+> +		tmp2 = ((s64)scale * GIGA) + scale2;
+
+Same thing here as in patch 2/11, use NANO or the raw number. GIGA
+has no connection to the usage.
+
+> +		*val = div64_s64(tmp, tmp2) + schan_off;
+> +		return IIO_VAL_INT;
 > +	case IIO_VAL_INT_PLUS_MICRO:
-> +		mult = scale_type == IIO_VAL_INT_PLUS_NANO ? GIGA : MEGA;
+> +		tmp = (s64)rescale->offset * MEGA;
+> +		tmp2 = ((s64)scale * MEGA) + scale2;
 
-By now, we all agree that the big numbers in this context have nothing
-to do with unit prefixes of physical quantities, so the macros are not
-really appropriate. However, in this case we have IIO_VAL_INT_PLUS_NANO
-and IIO_VAL_INT_PLUS_MICRO. Not using "NANO : MICRO" here, and instead
-go with "GIGA : MEGA" is just plain silly, if you ask me.
-
-So, either "NANO : MICRO" or "1000000000 : 1000000".
-
-I'm not sold on the macros. I frankly don't see all that much value
-in them and am perfectly fine with raw numbers. To me, it just looks
-like someone has read somewhere that constants should not appear in
-the code, and from that concluded that #define TEN 10 is a good thing
-without thinking very much about it. There is also the possibility
-that someone who has never seen these defines thinks MEGA is 2^20
-instead of 10^6, because that is a much more likely candidate for a
-define in the frist place (not everybody knows all the digits of
-1048576 by heart and 1 << 20 many times require extra brackets that
-might make it look more complicated than it needs to be).
-
-Back to this case; the connection to the naming of IIO_VAL_INT_PLUS_NANO
-(and ..._MICRO) makes it ok to use the defines. So if you feel strongly
-about not using "1000000000 : 1000000" I'm ok with that.
+And MICRO here of course.
 
 Cheers,
 Peter
 
-> +
-> +		/*
-> +		 * For IIO_VAL_INT_PLUS_{MICRO,NANO} scale types if either *val
-> +		 * OR *val2 is negative the schan scale is negative, i.e.
-> +		 * *val = 1 and *val2 = -0.5 yields -1.5 not -0.5.
-> +		 */
-> +		neg = *val < 0 || *val2 < 0;
-> +
-> +		tmp = (s64)abs(*val) * abs(rescale->numerator);
-> +		*val = div_s64_rem(tmp, abs(rescale->denominator), &rem);
-> +
-> +		tmp = (s64)rem * mult + (s64)abs(*val2) * abs(rescale->numerator);
-> +		tmp = div_s64(tmp, abs(rescale->denominator));
-> +
-> +		*val += div_s64_rem(tmp, mult, val2);
-> +
-> +		/*
-> +		 * If only one of the rescaler elements or the schan scale is
-> +		 * negative, the combined scale is negative.
-> +		 */
-> +		if (neg ^ ((rescale->numerator < 0) ^ (rescale->denominator < 0))) {
-> +			if (*val)
-> +				*val = -*val;
-> +			else
-> +				*val2 = -*val2;
-> +		}
-> +
->  		return scale_type;
->  	default:
->  		return -EOPNOTSUPP;
+*snip*

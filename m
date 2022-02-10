@@ -2,227 +2,477 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC79A4B146C
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Feb 2022 18:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7284B14A6
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Feb 2022 18:55:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245249AbiBJRlu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Feb 2022 12:41:50 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48584 "EHLO
+        id S245376AbiBJRyd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Feb 2022 12:54:33 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238232AbiBJRlt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 12:41:49 -0500
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80105.outbound.protection.outlook.com [40.107.8.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3AD109B;
-        Thu, 10 Feb 2022 09:41:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I5JAK60HxOKqw5BbCd8H0jf0gCOHZydcHZgiCsAoXAdMw23cvaJm8QfwkDP5+dvIzBQq9ZNznbDSU7gJv+LNM0ilPisjPvSq4uj6NK3IgWXQ5e9rsFBJFKxktz+Slxz42okA/KMsUV+CG5aeRAL2n40kbVaubieoG4O3NzmhzPM0w5MGPSCreW4pthcYOdrhpejwEKqIWFsbFYVKAyRb0UIhfuRXa8NGdCkZy6bBXgl5e34IGuomDf4wRaz8JEHC9GSLej7x6dPoXDtWyjbJLmuNt1W+VajL0KjLWKFUs5C77Mn4qkjn0U4Siu87S1QKnLqJHCvLmwKlPDcIWgOIPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8ayzs/OH6RxEksH4AJhDJeJaCpHo5im2kYo87umjDek=;
- b=MEbbhf3QCSRDlYlUK+62qTKh0eBxSvvgF86KL8EiO1m/y8MBsfjIkEvfxYT18nannenJ7tVErK0QXQHSU/XjY6S+YMCcbeGPr4DL8D81m1DKF9TONPfZXA9ZS7kDvLJr20UDzfRxaS9cYI8WOzaRCr6t81bupfwnz9yOHJehiC6nGj1qKgjqohuwI3Ynvt3vNNOfcNz63gSZH6cKKcxQV/R7MyeqOJ8/phTYwYdSQOXMrBmp5AaklWT/HUVYusWCShoV27iGjZZl29jDB+Ixq6N1xnJpVZwnrKwpWzd/KXQbAwEpXDTUnuWFCYxzRbnXLMFq3pc7PIgKkjaSjLdaGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8ayzs/OH6RxEksH4AJhDJeJaCpHo5im2kYo87umjDek=;
- b=R0hoaEixqtu7V2uRL4gj6An4JjOGB5N7zk7izlNU+siEWRUgTMArJl3yi/xz/aLLafnWiJBVKHmp6AOBElEYhMVkcLbfhpbEHtHu60pt1VXeERQfwDGW2UYN8ZlKJIf63StYl9YoxG/wr/Lm4cRr1WG1uTa54GHrw+igPkzKreA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axentia.se;
-Received: from VE1PR02MB5487.eurprd02.prod.outlook.com (2603:10a6:803:115::17)
- by AM0PR0202MB3505.eurprd02.prod.outlook.com (2603:10a6:208:2::28) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.19; Thu, 10 Feb
- 2022 17:41:46 +0000
-Received: from VE1PR02MB5487.eurprd02.prod.outlook.com
- ([fe80::6410:e40a:1c31:ba9c]) by VE1PR02MB5487.eurprd02.prod.outlook.com
- ([fe80::6410:e40a:1c31:ba9c%4]) with mapi id 15.20.4975.012; Thu, 10 Feb 2022
- 17:41:46 +0000
-Message-ID: <449f84f0-9270-01c7-409f-40298094467a@axentia.se>
-Date:   Thu, 10 Feb 2022 18:41:41 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v14 06/11] iio: afe: rescale: make use of units.h
-Content-Language: sv-SE
-To:     Liam Beguin <liambeguin@gmail.com>, jic23@kernel.org,
-        andy.shevchenko@gmail.com, lars@metafoo.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-References: <20220208020441.3081162-1-liambeguin@gmail.com>
- <20220208020441.3081162-7-liambeguin@gmail.com>
-From:   Peter Rosin <peda@axentia.se>
-Organization: Axentia Technologies AB
-In-Reply-To: <20220208020441.3081162-7-liambeguin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: HE1PR05CA0350.eurprd05.prod.outlook.com
- (2603:10a6:7:92::45) To VE1PR02MB5487.eurprd02.prod.outlook.com
- (2603:10a6:803:115::17)
+        with ESMTP id S242006AbiBJRyd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 12:54:33 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64668192;
+        Thu, 10 Feb 2022 09:54:32 -0800 (PST)
+Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JvksB1gL2z67bNK;
+        Fri, 11 Feb 2022 01:54:22 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Thu, 10 Feb 2022 18:54:29 +0100
+Received: from localhost (10.47.64.132) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.21; Thu, 10 Feb
+ 2022 17:54:28 +0000
+Date:   Thu, 10 Feb 2022 17:54:23 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <andy.shevchenko@gmail.com>,
+        <sst@poczta.fm>, <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iio: potentiometer: Add support for Maxim DS3502
+Message-ID: <20220210175423.00005364@Huawei.com>
+In-Reply-To: <20220207040408.4273-3-jagathjog1996@gmail.com>
+References: <20220207040408.4273-1-jagathjog1996@gmail.com>
+        <20220207040408.4273-3-jagathjog1996@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 733e7da7-4e42-4907-692b-08d9ecbc9bab
-X-MS-TrafficTypeDiagnostic: AM0PR0202MB3505:EE_
-X-Microsoft-Antispam-PRVS: <AM0PR0202MB3505386131E36F812B13C21FBC2F9@AM0PR0202MB3505.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XqqNkPLpgmS5ypTdO67UsemVDWsxVWyIQuK0nYsSqxxbeaeiPvhdRECWITKpHoVEbDivMn+FmBBRrDav18+MCCsgtj01bh+wcoi6Rri3nLHHJkQVo9ouNTIqvvQ4knVCZHsJbSscuBUbE4KNndZlM/7zbi+pmVeURD8Am73e8yArvBMQWlnJbY87IQ1c18t4c6Ah2hhRVGNtdHiiIxse9PkCVL6qkmKWW7EIYDXi4QIYCwDLEIBbjJyuGzq6VbBZj0PoUiReCmHZuwfOKTlwkzwts92WwYZR+zwsXIb8DNwhk6eM6qCSseFJQeqWHoqYltkdmPHDZC4LwYPutRQB/C/40qdaWup4I4U0r+1uAZBkRW78oJNPTcXnM2ktMY/sXq5cRUX5/Mdn/xZDIBb6+hUekrCkfxVU3m8NigHbLkjdjNkk9HyhETFl30C3TSVfmof7anuj1vmAMq9r6+JsmsXMg9zQT/08Z8TSTuFX8Syt0jsw+Du0IrvMzzh9awtqC9AsAgwwPHI1i9hOfL4Buu7IsPpx4/JdP2GnI4q8GP+0z1V9b5t8jh0W4sxqG8ctuRwz72oSRnKFL7SVU/8So2tzUSGUx4MluyTreW2imRWDOJ9ampCKE/EcroQhFrHt5thPSPWBnKc+c1VlJpCs+oRLzQdxf/zzTMIjh8VFMXolCZTUNG2SVepBb4KA+nUqJAecriuHNpEOgQHX6vxZHWmuX94rEM4B6Jq6OB64u+8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR02MB5487.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(346002)(136003)(376002)(39840400004)(396003)(366004)(6486002)(31686004)(36756003)(2616005)(83380400001)(5660300002)(26005)(6506007)(6666004)(186003)(53546011)(6512007)(2906002)(508600001)(36916002)(4326008)(66476007)(66556008)(316002)(38100700002)(86362001)(66946007)(31696002)(8936002)(8676002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?amJUVEFvanQ1QVBJQ2pHZXp6eUZESDlScm5SaVpEbytRSEdQSkQ4UW91R2lr?=
- =?utf-8?B?bHJGYzRHbEx2R1dMVDZIZThFYS9Nakwzd1dSd051aWhIZnFITStMOSthRFhn?=
- =?utf-8?B?eVdsUkRIVGJWVVplbDNXSGRJUm5KZjMwd1l1N0w4UHBHd0lWVFhCcFJBV2NI?=
- =?utf-8?B?UFlIdm0zRGIzOVJSUDErWDgxQ2JPUDFiNFYrM2IzVW5MYWhTSUdVeXVDNWZa?=
- =?utf-8?B?VkRHMGZIdUFGQmRkaVQvNWZ6dDNaOFhwdlkyRFRtK2hvT1RkSXhKUUZGVEJn?=
- =?utf-8?B?TGtuTm1DbFVKakViNkpIci8zdFJkVSt1c1dIS2Q5bFg3aUlHM3hIcXd5NmY2?=
- =?utf-8?B?Vk5kcnlRVVVVOFMvbi9iNVBzb3hSblkwMVVHZzhiSUFDR2szRlNNQUNXYkdF?=
- =?utf-8?B?cmdEdGIzT1RVQXdSS0ZKdlN4eHVSUTltQnR5alo2UXNIcEg1emdEUWQvZjBi?=
- =?utf-8?B?aWpMbXBSTldxTG9QVGdCUUdjUWQ2V05GQWZjekpzUXp2VnNsUHY5WklDRVRa?=
- =?utf-8?B?N1psTlUwN21lVFE5UlpSNGpVWnZkOXF2SldQd3BYVUcxVnlrdThEa09sZVN5?=
- =?utf-8?B?dm1TZEN3bnQ5MVRwd0RoNHdQZmhEWHk5N1F3TmdyRXdOQWp6MENsdUNQL0ZN?=
- =?utf-8?B?dnZvL2dlTFppN0p6aEpUcnJwaUxnZFN0U2ZGTDdJbWhNRTNCV1kyNHRueTVP?=
- =?utf-8?B?L0dycllSUkhSU1U0Sk15Tkc3MlE5TmpHVzJOSnNpeWdBWkQ3SC9TdmNIUmUr?=
- =?utf-8?B?SEZVUGJBcXRzdnlqT2daMEtpeU1RQU4zZ1BlbmhGTHlBNit3THJySnQvRyt5?=
- =?utf-8?B?c0NUMXA2LzZ2ZmhWbHovb00reUZXK2xlbEN0ZkxacG8vOThLZGl0QU1KUjgw?=
- =?utf-8?B?SXVjaHRvY1hhanpjZUlXRkZyWmx6WFZrU0ZEWlNnWFlqUTRteFY1bGxaUXVE?=
- =?utf-8?B?VEVUUjMxeW1xQlMwT1FkNFRnckhjNnhqa0lHWTJWMHp3UmpzVkpjWm9sRjdX?=
- =?utf-8?B?b2lDd3lacDJ0UkVYbktPWE5oaEh2bnNXUTlycm9vQnROTTNQczkxUjdSRDJR?=
- =?utf-8?B?S1dIaitrWnpQd25OTDlBbWRRdlZGZngxb3FqUjdnNEFFb05hYko5QklqSllv?=
- =?utf-8?B?eWk2cUxIcW8vSThxRXBNT2wzNTNsRXcwRXhxSStoOElPLzZKdmI1b0NKbzJO?=
- =?utf-8?B?aTBPME1KZCs2UXNmV1VhZkJnL2JKVTdDOEtVai8zQzBOMEZRb25iSS9OWnF0?=
- =?utf-8?B?akduZkVvamNKNVIxYkFYZHhCOXRwSFhxMEJkdWF2NlIwb3NadDBvZXpZZ0Nw?=
- =?utf-8?B?R2xoZXhzYlBFWlFDRC9EbG05M093YjFOTTJEekpqZFgvWm9Gc2NXTVJxMGxN?=
- =?utf-8?B?RDJUdHZ3UEJidU9WWHVzTytmN1RpdWJnd2RlU0ozVGVIK2Nvam8vSlZ6c0Va?=
- =?utf-8?B?cldOVllUbFg1d0pYMHZJYUVoWDhoeXU5RHUrNnpTaWRUb3U0RGt2Tll3Sy9i?=
- =?utf-8?B?SDFveHFzWFgwYnlacTBsZ3lyc1Z1cWNCOXEraDdSN2hsblFpaXA0Mkgzb0w1?=
- =?utf-8?B?dlVFTFF1RzVaVXRtaWl3dkk4Wm8vdmc3eVRHVmZkcHlXSlJkYm92Z0tyOU90?=
- =?utf-8?B?LzRLR0JzSEpyTVNNWVhRMlFWM0tqMitrNXo2VXhZR01SZTJpaXBxV1Qva2FF?=
- =?utf-8?B?U1FtZVYrbXJoWGU3TjFTZU9PWWUvbldhRjNYbHB1ekZjSExJTloxWXNmcm8y?=
- =?utf-8?B?dUhMYS84dGxEN0RBb2EvUHZjS010ZzdvQU5GZTUvK3VGNzRIZUM2L2VWSGZ5?=
- =?utf-8?B?VmZRQ2kxSXZnVXJ6SmNUWFpQUmJIK0tvTHNJQTFFZXFGdTZrQ1pPZjFIRHBB?=
- =?utf-8?B?SXgxZUQ3Y0NUcmxpS0FEclZ2LzhpdFBxRTBjQ2cwZG1nUkkwRmkvcTZMZTMw?=
- =?utf-8?B?aE1JWXlUOWkyb21BNXhLcTZHS3JMcUVraVNPSThDaFVncXd0djYzQ044bWtF?=
- =?utf-8?B?REhQY2dxdC9QaWhzUWJYK25lM1kxdFNaK2JuUzM0OFo2elI2dTVobFRQMGdy?=
- =?utf-8?B?Q2Y5TXVXd2paK0FHbHJDZ3BBNzRtM1lVWVJQYjh1cHg4VFdxdkd1aDExTzh2?=
- =?utf-8?Q?wE9M=3D?=
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 733e7da7-4e42-4907-692b-08d9ecbc9bab
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR02MB5487.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2022 17:41:46.1688
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GCv5UZIi6NRK6GCLPC7HrTwQVTTfrqbufXUZtHo6FIRAwxLdPtu9ip5E3N2GgKaY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0202MB3505
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.47.64.132]
+X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi!
+On Mon,  7 Feb 2022 09:34:08 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-On 2022-02-08 03:04, Liam Beguin wrote:
-> Make use of well-defined SI metric prefixes to improve code readability.
+> The DS3502 is a 7-bit, nonvolatile digital potentiometer featuring
+> an output voltage range of up to 15.5V.
+> DS3502 support is implemented into existing ds1803 driver
 > 
-> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+> Datasheet: https://datasheets.maximintegrated.com/en/ds/DS3502.pdf
+> 
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+Hi Jagath,
+
+Comments inline.  Looks pretty clean in the end so this is definitely
+the better option than introducing another driver.
+
+Thanks,
+
+Jonathan
+
 > ---
->  drivers/iio/afe/iio-rescale.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
+>  drivers/iio/potentiometer/Kconfig  |   4 +-
+>  drivers/iio/potentiometer/ds1803.c | 150 +++++++++++++++++++++++------
+>  2 files changed, 120 insertions(+), 34 deletions(-)
 > 
-> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> index 67273de46843..4601f84a83c2 100644
-> --- a/drivers/iio/afe/iio-rescale.c
-> +++ b/drivers/iio/afe/iio-rescale.c
-> @@ -51,11 +51,16 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
->  		}
->  		fallthrough;
->  	case IIO_VAL_FRACTIONAL_LOG2:
-> -		tmp = (s64)*val * 1000000000LL;
-> +		/*
-> +		 * GIGA is used here as an arbitrarily large multiplier to avoid
-
-s/arbitrarily/arbitrary/, however...
-
-> +		 * precision loss in the division. It doesn't have any physical
-> +		 * meaning attached to it.
-
-... 1000000000 is NOT arbitrary. Before patch 4/11 that was true, but
-with that patch the multiplier MUST match the multiplier used below
-when calculating with the decimals for the IIO_VAL_INT_PLUS_NANO
-value. Again, the connection with that name makes me think that NANO
-is just so much better that GIGA. Still fine with raw numbers of
-course.
-
-So, the comment is actively misleading. How about the following?
-
-/*
- * We need to multiply by something large to avoid loss of
- * precision, and NANO fits that while at the same time
- * being compatible with the conversion to
- * IIO_VAL_INT_PLUS_NANO for cases where that maintains even
- * more precision.
- */
-
-> +		 */
-> +		tmp = (s64)*val * GIGA;
->  		tmp = div_s64(tmp, rescale->denominator);
->  		tmp *= rescale->numerator;
+> diff --git a/drivers/iio/potentiometer/Kconfig b/drivers/iio/potentiometer/Kconfig
+> index 832df8da2bc6..1741af33672c 100644
+> --- a/drivers/iio/potentiometer/Kconfig
+> +++ b/drivers/iio/potentiometer/Kconfig
+> @@ -27,10 +27,10 @@ config AD5272
+>  	  module will be called ad5272.
 >  
-> -		tmp = div_s64_rem(tmp, 1000000000LL, &rem);
-> +		tmp = div_s64_rem(tmp, GIGA, &rem);
->  		*val = tmp;
+>  config DS1803
+> -	tristate "Maxim Integrated DS1803 Digital Potentiometer driver"
+> +	tristate "Maxim Integrated DS1803 and similar Digital Potentiometer driver"
+>  	depends on I2C
+>  	help
+> -	  Say yes here to build support for the Maxim Integrated DS1803
+> +	  Say yes here to build support for the Maxim Integrated DS1803 and DS3502
+>  	  digital potentiometer chip.
 >  
->  		if (!rem)
-> @@ -71,7 +76,7 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
+>  	  To compile this driver as a module, choose M here: the
+> diff --git a/drivers/iio/potentiometer/ds1803.c b/drivers/iio/potentiometer/ds1803.c
+> index 20b45407eaac..5e403e3400f7 100644
+> --- a/drivers/iio/potentiometer/ds1803.c
+> +++ b/drivers/iio/potentiometer/ds1803.c
+> @@ -1,12 +1,15 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+> - * Maxim Integrated DS1803 digital potentiometer driver
+> + * Maxim Integrated DS1803 and DS3502 digital potentiometer driver
+
+I'd stick to and similar wording here.  We want to be able
+to grep the part number and hit the Kconfig + drivers, but
+once is enough for either.  "and similar" avoids more churn
+than necessary when adding additional parts.
+
+
+>   * Copyright (c) 2016 Slawomir Stepien
+> + * Copyright (c) 2022 Jagath Jog J
+>   *
+>   * Datasheet: https://datasheets.maximintegrated.com/en/ds/DS1803.pdf
+> + * Datasheet: https://datasheets.maximintegrated.com/en/ds/DS3502.pdf
+>   *
+>   * DEVID	#Wipers	#Positions	Resistor Opts (kOhm)	i2c address
+>   * ds1803	2	256		10, 50, 100		0101xxx
+> + * DS3502       1       128             10                      01010xx
+
+Stick to lowercase for consistency.
+Also use tabs for spacing for consistency with existing table entry.
+
+>   */
 >  
->  		*val2 = rem / (int)tmp;
->  		if (rem2)
-> -			*val2 += div_s64((s64)rem2 * 1000000000LL, tmp);
-> +			*val2 += div_s64((s64)rem2 * GIGA, tmp);
-
-NANO again, because IIO_VAL_INT_PLUS_NANO.
-
+>  #include <linux/err.h>
+> @@ -16,47 +19,88 @@
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
 >  
->  		return IIO_VAL_INT_PLUS_NANO;
->  	case IIO_VAL_INT_PLUS_NANO:
-> @@ -332,8 +337,8 @@ static int rescale_current_sense_amplifier_props(struct device *dev,
->  	 * gain_div / (gain_mult * sense), while trying to keep the
->  	 * numerator/denominator from overflowing.
->  	 */
-> -	factor = gcd(sense, 1000000);
-> -	rescale->numerator = 1000000 / factor;
-> +	factor = gcd(sense, MEGA);
-> +	rescale->numerator = MEGA / factor;
+> -#define DS1803_MAX_POS		255
+> -#define DS1803_WRITE(chan)	(0xa8 | ((chan) + 1))
+> +#define DS1803_WIPER_0		(0xA9)
 
-Here, we actually have a connection with prefix of a unit of a
-physical quantity. microohms. If anything, why not MICRO?
+Single constants don't need or benefit from being surrounding in
+brackets like this.
 
->  	rescale->denominator = sense / factor;
+> +#define DS1803_WIPER_1		(0xAA)
+> +#define DS3502_WR_IVR		(0x00)
+> +#define DS3502_CR               (0x02)
+> +#define DS3502_MODE0		(0x00)
+> +#define DS3502_MODE1		(0x80)
 >  
->  	factor = gcd(rescale->numerator, gain_mult);
-> @@ -361,8 +366,8 @@ static int rescale_current_sense_shunt_props(struct device *dev,
->  		return ret;
+>  enum ds1803_type {
+>  	DS1803_010,
+>  	DS1803_050,
+>  	DS1803_100,
+> +	DS3502,
+>  };
+>  
+>  struct ds1803_cfg {
+> +	int wipers;
+> +	int avail[3];
+>  	int kohms;
+>  };
+>  
+>  static const struct ds1803_cfg ds1803_cfg[] = {
+> -	[DS1803_010] = { .kohms =  10, },
+> -	[DS1803_050] = { .kohms =  50, },
+> -	[DS1803_100] = { .kohms = 100, },
+> +	[DS1803_010] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  10, },
+> +	[DS1803_050] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  50, },
+> +	[DS1803_100] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms = 100, },
+> +	[DS3502] =     { .wipers = 1, .avail = { 0, 1, 127 }, .kohms =  10, },
+> +};
+> +
+> +struct maxim_potentiometer {
+> +	const struct iio_chan_spec *channels;
+> +	u8 num_channels;
+>  };
+>  
+>  struct ds1803_data {
+>  	struct i2c_client *client;
+> +	enum ds1803_type chip_type;
+
+Move this into the ds1803_cfg.
+
+>  	const struct ds1803_cfg *cfg;
+> +	const struct maxim_potentiometer *chip;
+
+Everything in here should go in ds1803_cfg as well.
+
+>  };
+>  
+> -#define DS1803_CHANNEL(ch) {					\
+> -	.type = IIO_RESISTANCE,					\
+> -	.indexed = 1,						\
+> -	.output = 1,						\
+> -	.channel = (ch),					\
+> -	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> -	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+> +#define DS1803_CHANNEL(ch, addr) {					\
+> +	.type = IIO_RESISTANCE,						\
+> +	.indexed = 1,							\
+> +	.output = 1,							\
+> +	.channel = (ch),						\
+> +	.address = (addr),						\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
+> +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_RAW),	\
+
+Adding available is new functionality for the old part.
+Good to have but ideally would be in a separate patch (probably before
+the main one)
+
+>  }
+>  
+>  static const struct iio_chan_spec ds1803_channels[] = {
+> -	DS1803_CHANNEL(0),
+> -	DS1803_CHANNEL(1),
+> +	DS1803_CHANNEL(0, DS1803_WIPER_0),
+> +	DS1803_CHANNEL(1, DS1803_WIPER_1),
+> +};
+> +
+> +static const struct iio_chan_spec ds3502_channels[] = {
+> +	{
+> +		.type = IIO_RESISTANCE,
+> +		.indexed = 1,
+> +		.output = 1,
+> +		.channel = 0,
+> +		.address = (DS3502_WR_IVR),
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_ENABLE),
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
+> +		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_RAW),
+> +	},
+> +};
+> +
+> +static const struct maxim_potentiometer maxim_potentiometer_chips[] = {
+> +	[DS1803_100] = {
+> +				.channels = ds1803_channels,
+
+Very deep indenting. Stick to
+		This level and reduce the indent of the closing bracket by one
+tab.
+
+I would add this information to the existing ds1803_cfg structure.
+you will have to duplicate a elements, but you will save on the
+complexity of having two chip type related structures.
+You will have to reorder the code to make that work cleanly.
+
+> +				.num_channels = ARRAY_SIZE(ds1803_channels),
+> +		},
+> +	[DS3502]     = {
+> +				.channels = ds3502_channels,
+> +				.num_channels = ARRAY_SIZE(ds3502_channels),
+> +		},
+>  };
+>  
+>  static int ds1803_read_raw(struct iio_dev *indio_dev,
+> -			    struct iio_chan_spec const *chan,
+> -			    int *val, int *val2, long mask)
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long mask)
+If there are valid white space tidy ups, please do them in
+a separate patch as they just distract form the important stuff
+ehre.
+
+>  {
+>  	struct ds1803_data *data = iio_priv(indio_dev);
+>  	int pot = chan->channel;
+> @@ -65,17 +109,28 @@ static int ds1803_read_raw(struct iio_dev *indio_dev,
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		ret = i2c_master_recv(data->client, result,
+> -				indio_dev->num_channels);
+> +		switch (data->chip_type) {
+> +		case DS1803_010:
+> +		case DS1803_050:
+> +		case DS1803_100:
+> +			ret = i2c_master_recv(data->client, result,
+> +					      indio_dev->num_channels);
+Whilst it doesn't cause problems, as a general rule, you shouldn't use
+the output of a function if it has returned an error code. You should
+do the
+			if (ret < 0)
+				return ret;
+which seems have have gotten lost below.
+> +			*val = result[pot];
+
+return IIO_VAL_INT; here
+
+> +			break;
+> +		case DS3502:
+> +			ret = i2c_smbus_read_byte_data(data->client, chan->address);
+
+Preference for 80 char max lines when there is no strong reason to go over. Here
+wrapping after client, will not hurt readability significantly.
+
+> +			*val = ret;
+> +			break;
+
+return here.
+
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +
+>  		if (ret < 0)
+>  			return ret;
+> -
+> -		*val = result[pot];
+>  		return IIO_VAL_INT;
+> -
+>  	case IIO_CHAN_INFO_SCALE:
+>  		*val = 1000 * data->cfg->kohms;
+> -		*val2 = DS1803_MAX_POS;
+> +		*val2 = data->cfg->avail[2];
+
+Probably worth a comment on why [2] is the right option here.
+
+>  		return IIO_VAL_FRACTIONAL;
 >  	}
 >  
-> -	factor = gcd(shunt, 1000000);
-> -	rescale->numerator = 1000000 / factor;
-> +	factor = gcd(shunt, MEGA);
-> +	rescale->numerator = MEGA / factor;
-
-MICRO again, bacause microohms.
-
->  	rescale->denominator = shunt / factor;
+> @@ -83,38 +138,64 @@ static int ds1803_read_raw(struct iio_dev *indio_dev,
+>  }
 >  
->  	return 0;
+>  static int ds1803_write_raw(struct iio_dev *indio_dev,
+> -			     struct iio_chan_spec const *chan,
+> -			     int val, int val2, long mask)
+> +			    struct iio_chan_spec const *chan,
+> +			    int val, int val2, long mask)
 
-Cheers,
-Peter
+Check for white space only changes like this before sending patches.
+They are easy to accidentally introduce but should not be in a patch
+doing significant changes like this one.
+
+>  {
+>  	struct ds1803_data *data = iio_priv(indio_dev);
+> -	int pot = chan->channel;
+> +	int max_pos = data->cfg->avail[2];
+> +	u8 addr = chan->address;
+>  
+>  	if (val2 != 0)
+>  		return -EINVAL;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		if (val > DS1803_MAX_POS || val < 0)
+> +		if (val > max_pos || val < 0)
+
+as max_pos is just used here I would not bother with the local
+variable.
+
+> +			return -EINVAL;
+> +		break;
+> +	case IIO_CHAN_INFO_ENABLE:
+
+This doesn't seem to map to enable as it is about whether the
+value is written to the initial value register or not.
+We may need to invent some new sysfs attributes to cover that
+though I'd be a bit surprised if we have no precedence in other
+DACs.
+
+
+> +		if (val == 1)
+> +			val = DS3502_MODE1;
+> +		else if (val != DS3502_MODE0)
+>  			return -EINVAL;
+> +		addr = DS3502_CR;
+
+In cases like this it's better to assign addr in both
+case statements as one is no more of a 'default' than the
+other choice.
+
+>  		break;
+>  	default:
+>  		return -EINVAL;
+>  	}
+>  
+> -	return i2c_smbus_write_byte_data(data->client, DS1803_WRITE(pot), val);
+> +	return i2c_smbus_write_byte_data(data->client, addr, val);
+
+> +}
+> +
+> +static int ds1803_read_avail(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+> +			     const int **vals, int *type, int *length, long mask)
+> +{
+
+As mentioned above. This is great, but not strictly about support for
+the new part, so it should be a different patch.
+
+> +	struct ds1803_data *data = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		*vals = data->cfg->avail;
+> +		*length = ARRAY_SIZE(data->cfg->avail);
+> +		*type = IIO_VAL_INT;
+> +		return IIO_AVAIL_RANGE;
+> +	}
+> +	return -EINVAL;
+>  }
+>  
+>  static const struct iio_info ds1803_info = {
+>  	.read_raw = ds1803_read_raw,
+> +	.read_avail = ds1803_read_avail,
+>  	.write_raw = ds1803_write_raw,
+>  };
+>  
+>  static int ds1803_probe(struct i2c_client *client,
+> -			 const struct i2c_device_id *id)
+> +			const struct i2c_device_id *id)
+
+Another white space change.  Fixing up the alignment is a good thing
+to do but needs to be in a separate patch.
+
+>  {
+>  	struct device *dev = &client->dev;
+>  	struct ds1803_data *data;
+>  	struct iio_dev *indio_dev;
+> +	enum ds1803_type chip_type = (id->driver_data <= DS1803_100 ? DS1803_100 : DS3502);
+
+Why this dance?  You have all the models covered by a switch statement anyway.
+
+> +	const struct maxim_potentiometer *chip = &maxim_potentiometer_chips[chip_type];
+>  
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -125,10 +206,12 @@ static int ds1803_probe(struct i2c_client *client,
+>  	data = iio_priv(indio_dev);
+>  	data->client = client;
+>  	data->cfg = &ds1803_cfg[id->driver_data];
+
+Unrelated to this patch, but note that for DT based bindings this relies
+on the part after the comma precisely matching the entry in the 
+i2c_device_id table which is rather fragile. At somepoint we should tidy
+this up to first check if there is a firmware provided entry with data
+and only if there is not fall back to using id->driver_data if available.
+It never is on ACPI platforms for starters.
+
+> +	data->chip = chip;
+
+Not used anywhere that I can see.
+
+> +	data->chip_type = chip_type;
+>  
+>  	indio_dev->info = &ds1803_info;
+> -	indio_dev->channels = ds1803_channels;
+> -	indio_dev->num_channels = ARRAY_SIZE(ds1803_channels);
+> +	indio_dev->channels = chip->channels;
+> +	indio_dev->num_channels = chip->num_channels;
+>  	indio_dev->name = client->name;
+>  
+>  	return devm_iio_device_register(dev, indio_dev);
+> @@ -138,6 +221,7 @@ static const struct of_device_id ds1803_dt_ids[] = {
+>  	{ .compatible = "maxim,ds1803-010", .data = &ds1803_cfg[DS1803_010] },
+>  	{ .compatible = "maxim,ds1803-050", .data = &ds1803_cfg[DS1803_050] },
+>  	{ .compatible = "maxim,ds1803-100", .data = &ds1803_cfg[DS1803_100] },
+> +	{ .compatible = "maxim,ds3502",     .data = &ds1803_cfg[DS3502] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, ds1803_dt_ids);
+> @@ -146,6 +230,7 @@ static const struct i2c_device_id ds1803_id[] = {
+>  	{ "ds1803-010", DS1803_010 },
+>  	{ "ds1803-050", DS1803_050 },
+>  	{ "ds1803-100", DS1803_100 },
+> +	{ "ds3502",	DS3502	   },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(i2c, ds1803_id);
+> @@ -162,5 +247,6 @@ static struct i2c_driver ds1803_driver = {
+>  module_i2c_driver(ds1803_driver);
+>  
+>  MODULE_AUTHOR("Slawomir Stepien <sst@poczta.fm>");
+> -MODULE_DESCRIPTION("DS1803 digital potentiometer");
+> +MODULE_AUTHOR("Jagath Jog J <jagathjog1996@gmail.com>");
+> +MODULE_DESCRIPTION("DS1803 and DS3502 digital potentiometer");
+
+I would use and similar here, or just don't bother changing the
+description. It's common for these to not cover all the devices
+supported.
+
+>  MODULE_LICENSE("GPL v2");
+

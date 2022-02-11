@@ -2,161 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 222654B18F2
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Feb 2022 00:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90CF64B1AFE
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Feb 2022 02:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345076AbiBJXAn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Feb 2022 18:00:43 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54050 "EHLO
+        id S1346671AbiBKBLJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Feb 2022 20:11:09 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344698AbiBJXAm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 18:00:42 -0500
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05AB21105;
-        Thu, 10 Feb 2022 15:00:43 -0800 (PST)
-Received: by mail-il1-x134.google.com with SMTP id e8so5588189ilm.13;
-        Thu, 10 Feb 2022 15:00:42 -0800 (PST)
+        with ESMTP id S244155AbiBKBLJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Feb 2022 20:11:09 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DF9B3F
+        for <linux-iio@vger.kernel.org>; Thu, 10 Feb 2022 17:11:08 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id c6so20563260ybk.3
+        for <linux-iio@vger.kernel.org>; Thu, 10 Feb 2022 17:11:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=r7B1u3StVmNn+cEV4ztOlK7kYJWbJkFyeLauH29gYM8=;
-        b=dzLBz2h9W3+P1fTFVwJCXjMzkDS/do2ayswvINxgwRV6LLNSkbDxlUQcxdk+LJZ5Gx
-         vwqdX6D12rc1Yvd9fQaPcwN9sVvGOovH2iqr9zxZY7dauw3jnWm/j6Ep0mU30c80bSMn
-         x0XJB822IsAmPLlczCETi3PVgDyd0smheFP2USkn/XObVyW1NxHYcT0aTPxrxtrBTRYb
-         xBuWoEUXkdw3rPyD+c8jdwY2BMCXVdxzxFDgblYiKQjVEL6J813R1xNRtcpVL4OQ0a7u
-         fhfqQFn9ElMVCLQ6Sq8p4ZBLU1HYI1JL0a8nEn94OxrS6Mh7CubSmLYNEUawMDPT+DL4
-         V42g==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xWAtxFOBnLmSYM035NYdRT/JcWj28PeqsxQriuBme8Q=;
+        b=FtK4Te4IWb91V1Vn3LbRCzTDklDYen9d6sDgXkXByFFmubx6ljKSsJPvwMg67kw6tv
+         wYLQm1716CF6qADAGZSDDlhHPLRl2GGrQTbsRPQNmli7SkCnK49NRLklstyVsI+0OuCi
+         1dBwDNzD4+qlfQfJB5Zn5vR2COw0+c5o5YBtP2Kn4saAKWoydQx7p6HYtKqf3a/juzhQ
+         ffB4IHmG4WG+8ovXGYk2xosv39og706wSC5QPzOOkg1Jg0VbAhzKSYqAzExljQ6CVZBu
+         hbzNVjQ9W2tkXFIz+S0eWHkKOZmNPBZ8w7IB6mf2JhcOhJoD1yKRBoJy52D3G1q+fkil
+         3QBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=r7B1u3StVmNn+cEV4ztOlK7kYJWbJkFyeLauH29gYM8=;
-        b=JYbrZX5/FO5si8lHPf+AzsAUwkBUJgaAl7Yn7PRPyZwtMwA2kk32CdCwLLyhEsMUf0
-         Eqmw3Hu03yJdf1M/HEaFivr7GdNAUETVnIB+CAYZEu/O6zPbrUOciCEw0gVhBH/6Hd14
-         wFoF5BWBvWIy6LJdNR0xK8leWG0d6ACLurnIjYNVog7lzu7086875h7k1fkRTsOC8nnR
-         ZUTyViEiI3AT01R/lquqMVdPlUdKHPs1782F06GtYcv6Q8ZkzwKCGtK200lrtupWy08d
-         fyL+WKJHW579cJKRT+ufO217XxkiyEGyT9IThPtbdUx6u7Hjt38JC+gnjMqKeg6t+l+g
-         V4sw==
-X-Gm-Message-State: AOAM532gfznWk9reF0lj1jgrtS69IiyJ0w8O+vDQvAooN4w3QCTZM9sY
-        andOPrXBKsmPxHFx4UV4CNI=
-X-Google-Smtp-Source: ABdhPJyDaHsNtIqicj2d5g0OLH9mju+tDwyc+D9hx93ef0eytT5AHJVFdIVfEcBuRUZkUUoFK32Fgg==
-X-Received: by 2002:a05:6e02:1d12:: with SMTP id i18mr4925637ila.323.1644534042346;
-        Thu, 10 Feb 2022 15:00:42 -0800 (PST)
-Received: from localhost ([12.28.44.171])
-        by smtp.gmail.com with ESMTPSA id y9sm7235385ilg.58.2022.02.10.15.00.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 15:00:41 -0800 (PST)
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        David Laight <David.Laight@aculab.com>,
-        Joe Perches <joe@perches.com>, Dennis Zhou <dennis@kernel.org>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Alexey Klimov <aklimov@redhat.com>,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-iio@vger.kernel.org
-Subject: [PATCH 04/49] iio: fix opencoded for_each_set_bit()
-Date:   Thu, 10 Feb 2022 14:48:48 -0800
-Message-Id: <20220210224933.379149-5-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220210224933.379149-1-yury.norov@gmail.com>
-References: <20220210224933.379149-1-yury.norov@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xWAtxFOBnLmSYM035NYdRT/JcWj28PeqsxQriuBme8Q=;
+        b=GS6cGubTOvA1OQ3rkXtVkgTbsjhbtpE67dqzahl43X5zuFfKnsn6mG63rLYMxyFIdf
+         HkF31nyvsL2MhTaryOummfgaTU4pCL2w0FpPhgXUIwiMUF51CWeVQ76aOezXWucle2Ra
+         1C+kU8RP1Qujf0rqIJBwg+nn6fDG2lDOtaQg4bRUODZhoKQYH+ClkDs8eSjZGq99miRM
+         oW8kr0OYp6yqOESqcHvs4pIN8yHjBzvur0MIER8dLp2ZA8mCqz/yrxsg+TcAp7MAtH5l
+         BaXYW9rLetCoKn8IylMtDzxtlcaCsxevq9AQEW1+BHkCSziYUBixmhCUKRBZ9p2iQSNe
+         Wz/g==
+X-Gm-Message-State: AOAM530dECOmznFUpNVnpL1Em68SgCdaK3uE9N3YHYyiTrn1EWi7sEfq
+        PYIwlnnsVxi3le82H56+belggUqXRsfwNm2CODX9vg==
+X-Google-Smtp-Source: ABdhPJx0NDMuKKHpiSyjhCxVZGm2u9pnNLdHss+U+hAwmB8phM3KI4DuksHpnZJQDm77hJ1ypE+Egc3/AdlqSbYf5dE=
+X-Received: by 2002:a25:30d4:: with SMTP id w203mr9347222ybw.511.1644541867928;
+ Thu, 10 Feb 2022 17:11:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220204192552.428433-1-massimo.toscanelli@leica-geosystems.com>
+ <20220207090443.3710425-1-massimo.toscanelli@leica-geosystems.com> <20220207090443.3710425-2-massimo.toscanelli@leica-geosystems.com>
+In-Reply-To: <20220207090443.3710425-2-massimo.toscanelli@leica-geosystems.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 11 Feb 2022 02:10:56 +0100
+Message-ID: <CACRpkdaERtyiYhJVB536YOgB6JOMTV=eME2Tq6ed3JndZkhq7g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: st_sensors: add always_on flag
+To:     Massimo Toscanelli <massimo.toscanelli@leica-geosystems.com>
+Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        caihuoqing@baidu.com, aardelean@deviqon.com,
+        andy.shevchenko@gmail.com, hdegoede@redhat.com,
+        Qing-wu.Li@leica-geosystems.com.cn, stephan@gerhold.net,
+        linux-iio@vger.kernel.org, bsp-development.geo@leica-geosystems.com
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-iio_simple_dummy_trigger_h() is mostly an opencoded for_each_set_bit().
-Using for_each_set_bit() make code much cleaner, and more effective.
+On Mon, Feb 7, 2022 at 10:05 AM Massimo Toscanelli
+<massimo.toscanelli@leica-geosystems.com> wrote:
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- drivers/iio/dummy/iio_simple_dummy_buffer.c | 48 ++++++++-------------
- 1 file changed, 19 insertions(+), 29 deletions(-)
+> The st_sensors_read_info_raw() implementation allows to get raw data
+> from st_sensors, enabling and disabling the device at every read.
+> This leads to delays in data access, caused by the msleep that waits
+> the hardware to be ready after every read.
+>
+> Introduced always_on flag in st_sensor_data, to allow the user to
+> keep the device always enabled. In this way, every data access to the
+> device can be performed with no delays.
+>
+> Add always_on sysfs attribute.
+>
+> Signed-off-by: Massimo Toscanelli <massimo.toscanelli@leica-geosystems.com>
 
-diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-index d81c2b2dad82..3bc1b7529e2a 100644
---- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-+++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-@@ -45,41 +45,31 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
-+	int i = 0, j;
- 	u16 *data;
- 
- 	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
- 	if (!data)
- 		goto done;
- 
--	if (!bitmap_empty(indio_dev->active_scan_mask, indio_dev->masklength)) {
--		/*
--		 * Three common options here:
--		 * hardware scans: certain combinations of channels make
--		 *   up a fast read.  The capture will consist of all of them.
--		 *   Hence we just call the grab data function and fill the
--		 *   buffer without processing.
--		 * software scans: can be considered to be random access
--		 *   so efficient reading is just a case of minimal bus
--		 *   transactions.
--		 * software culled hardware scans:
--		 *   occasionally a driver may process the nearest hardware
--		 *   scan to avoid storing elements that are not desired. This
--		 *   is the fiddliest option by far.
--		 * Here let's pretend we have random access. And the values are
--		 * in the constant table fakedata.
--		 */
--		int i, j;
--
--		for (i = 0, j = 0;
--		     i < bitmap_weight(indio_dev->active_scan_mask,
--				       indio_dev->masklength);
--		     i++, j++) {
--			j = find_next_bit(indio_dev->active_scan_mask,
--					  indio_dev->masklength, j);
--			/* random access read from the 'device' */
--			data[i] = fakedata[j];
--		}
--	}
-+	/*
-+	 * Three common options here:
-+	 * hardware scans: certain combinations of channels make
-+	 *   up a fast read.  The capture will consist of all of them.
-+	 *   Hence we just call the grab data function and fill the
-+	 *   buffer without processing.
-+	 * software scans: can be considered to be random access
-+	 *   so efficient reading is just a case of minimal bus
-+	 *   transactions.
-+	 * software culled hardware scans:
-+	 *   occasionally a driver may process the nearest hardware
-+	 *   scan to avoid storing elements that are not desired. This
-+	 *   is the fiddliest option by far.
-+	 * Here let's pretend we have random access. And the values are
-+	 * in the constant table fakedata.
-+	 */
-+	for_each_set_bit(j, indio_dev->active_scan_mask, indio_dev->masklength)
-+		data[i++] = fakedata[j];
- 
- 	iio_push_to_buffers_with_timestamp(indio_dev, data,
- 					   iio_get_time_ns(indio_dev));
--- 
-2.32.0
+This creates special dependencies on sysfs poking etc.
 
+Couldn't the runtime PM solve this problem in a better way?
+
+If you look in for example:
+drivers/iio/accel/kxsd9.c
+how the different pm_runtime* primitives are used, you get an
+idea.
+
+Especially note
+
+        /*
+         * Set autosuspend to two orders of magnitude larger than the
+         * start-up time. 20ms start-up time means 2000ms autosuspend,
+         * i.e. 2 seconds.
+         */
+        pm_runtime_set_autosuspend_delay(dev, 2000);
+
+This creates a "hysteresis window" around when the device is
+on, so it is not repeatedly shut off and on, but only after 2 seconds
+of inactivity.
+
+This way no special userspace is needed to achieve what you want,
+and it benefits everyone.
+
+I wanted to fix this for all the ST sensors but never got around to.
+
+Yours,
+Linus Walleij

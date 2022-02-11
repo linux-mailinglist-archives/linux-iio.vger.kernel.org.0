@@ -2,142 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F257E4B27B9
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Feb 2022 15:20:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0EE34B27F0
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Feb 2022 15:32:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350143AbiBKOUu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Feb 2022 09:20:50 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56874 "EHLO
+        id S1350877AbiBKOci (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Feb 2022 09:32:38 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348719AbiBKOUt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Feb 2022 09:20:49 -0500
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2134.outbound.protection.outlook.com [40.107.21.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E13521D;
-        Fri, 11 Feb 2022 06:20:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NgaYfTkFCC3o269JmfwCtxo11LS4C5ZLKTb6opDei6O7TxvHRWwxMybX4b/yA1l4JtRkgaQshjeSucWv0lqpGlVP+cUqxQpvDhk4xBnF1m9TIgw4cHZktvFOj0xpZ+pMvJib8zjlAEIYXN6BzXhWIorNQHYx+QlizTjJPazV3d6faX6wZBUbNKBe5+xdFKTOTI6LtCIkf7SbQJK0NUkVM55SsDYT40jH+U+HVrzO9i5X+PRIx4q96AT3aOZTDInv5uoYrwmP87tNB73bYjA6QIivlU/Z7bC9TUqa7sNOoCBjBY8yxE/tIRqvicR0xaZRhHo3NMDFJI3Hog+j8ItW4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QIQLnck1KDyP6Do45ZOwDF0IDo+xuxIzdYbEMjNba6Y=;
- b=IsfU1C3ke6peOCaKXUoQZMwPScnho5by/m4tRkKvlBW79kgjBVJ1MFbHRES4btyDiZFRcaUx25pWUgG1etQQckTB/1jzYwzAp6ehHEAUvwgBusia1iuj8RjhT9PeSF/x39FWy5FT/1HZ94ssZTVepKj+LOZFyjXhv23RE+8ca6RCvtf5v8WWKKRfOsZv1hrQuEcP5nALSWQ8nFvtoVUayufRjuMoYS2b2GpZlfuKEcWV+zejF48/zuU99lhNfL0jLxApQQgBMY8KiE5ruexYBlwtTPoVaV/kcsPp2J2UsZ8GRTafIs7HkGsnAttbnKtTwTZNRo++AkDjbdRtviH+zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QIQLnck1KDyP6Do45ZOwDF0IDo+xuxIzdYbEMjNba6Y=;
- b=ndEuBk54MmYBtKqAmgfEMdTm61oczDuLfdrCAYFDKsHpDtq4bARg3H61svCZqh4n4jx0r+dwqqIoUrnapnaMUuFjWAbNSqeeLXOH0iXFNdg8jdPUKtIo7o8QDuEDs+NxQjT+oWU9HmfEpcdYP5BdUNDgm6/TJKTru9G24bcsFn0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axentia.se;
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
- by VI1PR0202MB2688.eurprd02.prod.outlook.com (2603:10a6:801:9::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.15; Fri, 11 Feb
- 2022 14:20:44 +0000
-Received: from DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::c033:9198:4c70:e66b]) by DB8PR02MB5482.eurprd02.prod.outlook.com
- ([fe80::c033:9198:4c70:e66b%4]) with mapi id 15.20.4975.015; Fri, 11 Feb 2022
- 14:20:44 +0000
-Message-ID: <8a8980e1-97a4-1061-db76-8592b1f21111@axentia.se>
-Date:   Fri, 11 Feb 2022 15:20:39 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v14 02/11] iio: afe: rescale: add INT_PLUS_{MICRO,NANO}
- support
-Content-Language: en-US
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     jic23@kernel.org, andy.shevchenko@gmail.com, lars@metafoo.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org
-References: <20220208020441.3081162-1-liambeguin@gmail.com>
- <20220208020441.3081162-3-liambeguin@gmail.com>
- <fbb84b08-5d3d-3684-fdee-5ce367280857@axentia.se> <YgVNAj7kz1QbKkhy@shaak>
-From:   Peter Rosin <peda@axentia.se>
-Organization: Axentia Technologies AB
-In-Reply-To: <YgVNAj7kz1QbKkhy@shaak>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: GV3P280CA0028.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:b::8)
- To DB8PR02MB5482.eurprd02.prod.outlook.com (2603:10a6:10:eb::29)
+        with ESMTP id S244152AbiBKOch (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Feb 2022 09:32:37 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7A46B6E;
+        Fri, 11 Feb 2022 06:32:34 -0800 (PST)
+Received: from fraeml709-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4JwGDy5nHCz682w5;
+        Fri, 11 Feb 2022 22:28:18 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml709-chm.china.huawei.com (10.206.15.37) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Fri, 11 Feb 2022 15:32:32 +0100
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 11 Feb
+ 2022 14:32:31 +0000
+Date:   Fri, 11 Feb 2022 14:32:29 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+CC:     <cosmin.tanislav@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 5/5] iio: accel: add ADXL367 driver
+Message-ID: <20220211143229.00000aad@Huawei.com>
+In-Reply-To: <20220206211307.1564647-6-cosmin.tanislav@analog.com>
+References: <20220206211307.1564647-1-cosmin.tanislav@analog.com>
+        <20220206211307.1564647-6-cosmin.tanislav@analog.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2b18062c-e784-48a5-d1ce-08d9ed69b08e
-X-MS-TrafficTypeDiagnostic: VI1PR0202MB2688:EE_
-X-Microsoft-Antispam-PRVS: <VI1PR0202MB268870FC22DBD91A2240D37EBC309@VI1PR0202MB2688.eurprd02.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YOhUe8dVUywDBu5JVwxms3cnmFHcl9sfD5+P6AS3GmUD20pAqNukaSqIYZnrp5iIz8G2L3/2vsck+CW6lm7Gc38/6znzrX9d+1MsUtOtMCvnaIb2CkgyyJaElJ+5c4kZWMKs1VAgWJw10t+6ZBH8mHLPFOw53fLKvaEy8qgjs80D5G1FdnmHiO1TD6ddyLuyuJoG/cXIKFCZtEMIegJiumKhxwxw9q6GEuvRbkW7kgxDPV4avZY2/qihflr4GucA6pK2Vz2pC9hU8BcDiUtGnUZtpjs24GVNEKEa84sY4bIBTopqLoii2y8rTBjv6wdRgrUjSg1ZWLQkfo/kyYCESwogz15R+YmeqqoIWZuVsqyNBDDrgGxFPantCDXYU3/k7QXwAELkYVDDDlJpGcuGHp1WGsgkxGjuRpbde4GNlI3avEssjeOxK2w7ZaGZrno6E1+NGgEQJoTn2EcebXhlQZtI9vH12QxzVEXwl/FUyggmKyrq6SFIwrkiVOxgJWwrgbtE0Pvq15hkme1WZ0mmTy5Sz58X41cLMWug4l2tuDOY5xy7XrXA1loWtdLycm/jfYyi1ioBd0OmuvaqAQ9VhCGJecO8bxT5h6WhhoFgGa7yan3ghBILikPIWzV+bL91Ehyja6THG9ERyceQYpLhpNCp+J4Pct9EFASz+pYdxsFwPbiJLbO84hN5sLDBM8xZ+ndaXOce0YQlOUHyq7rrUUOLQPJn+PFJN78w4JhwOL8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR02MB5482.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(376002)(366004)(396003)(136003)(346002)(39830400003)(5660300002)(38100700002)(4326008)(316002)(86362001)(508600001)(4744005)(6486002)(8936002)(66476007)(66556008)(66946007)(8676002)(31696002)(6916009)(186003)(26005)(53546011)(36916002)(6506007)(6512007)(6666004)(2616005)(2906002)(36756003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q3Z0WnJYMHM2SElrZkdLYWQrdHl4dlJlbjcwUHo4bTRIYm1EN2tFQ0JkRFNG?=
- =?utf-8?B?cmpWT1djVVJPSFFLTVJGZ3ZYbnhGZTJ6b0dHMitzTWxteXFXdklQTmlMeHVi?=
- =?utf-8?B?NnExaldodTQrWExMbzJFeUVGKzMxSm1IMUJFWCtuWFZyZDY5eFJQaEh2TFVr?=
- =?utf-8?B?WklhYStmdE5taUtaYVZhcmp2OTFXQkdOUUdlcGtOWXhFSXRRV3IzMjFMcURa?=
- =?utf-8?B?OWZCamQzTm5HWCt4anJsZTNENFhpaHlXc0tZei96b05saENWSXh3eXFVcUQy?=
- =?utf-8?B?TEpDY2xIMkNCQzRBTWtWclk2MzhzRG1iTWJMbnptRVFzM1BlSDI3dU5MTEx6?=
- =?utf-8?B?K1BNRWFGRTcrejVFU09yTTJYYTY4d1ZTRjNlcEM2dkQ1bkE4Y0ZrWnRWeXdX?=
- =?utf-8?B?MW5LYndBOWtrVGhPaDFUclA4MS96cmhyS3dDVEhSaXBNaGZFTmJwbmd5Vy9E?=
- =?utf-8?B?T3FaeEpiZzFJSzRCMEpvTjVTK2xxYUxlTmlvaVFmNUtDZ3ZjREh1bHNsKzZ0?=
- =?utf-8?B?bFNHUW5SVGF1Z3JRekpPNWF3TGhtd1JEY1pZQTdha2p1TlIyTW92bkFTdmxB?=
- =?utf-8?B?UTdqUUVEaDJOdHQ5V2hic0xaazU4d1dQdWkvRTRNQlFzMFRFVXZBbk8rYzZG?=
- =?utf-8?B?NVhiUVJXQ2duWFVJMzM4a0dMRnF5UEY2VFkzNHlJWkJ4OXZPZ1dkVitNNjc2?=
- =?utf-8?B?WW5LbmM4T1lodHV1dTlnTkxvN2lhYmU4SU9iak5mUWRwL1VYcHNRVHluNlVk?=
- =?utf-8?B?Snd1ZUovdTZKWE9nZncrUzJOVUVNcjNuTHM3eGdZYTRWdE9ub002cHhIbXhE?=
- =?utf-8?B?MDd5eGxjZVFMNEVxYTVuUGFvN2YzVU5aQWw3cXlyZ2VvZTBuemVtUXpRby9x?=
- =?utf-8?B?S0pLdzFObS9qdkhqRm9lMUlSZkJOTG9Ub1hNQnIrT2l4ODgrb0VvSXRGZHZT?=
- =?utf-8?B?dkc3Sk1jWVRjMVFBbGN1MUZhOTJKNnJzMkZ1b3V0SmJnU0ZsbytDOWJmNlFD?=
- =?utf-8?B?Wi8zVVcxRWFlK1k1U2FoZHFpYWhON04yTm8wSFhPY2JrdW5oMmNIRmlPSjFD?=
- =?utf-8?B?cGxEZUFJc1VUU0lJdUc1OEpYT0lWQXp5MjB3VFExVnh6T2JxM0hkL09hSExP?=
- =?utf-8?B?UmgySktXeklQR1Z3cVFJaGJoaEpYYWNmMlpMMUJXazFHd0R4V2U1dGhGZitR?=
- =?utf-8?B?NmtFNzI5VHBFald1WTRPbkt2UWpZVG04aEFMMFlnNk1nWWtQMmY2c011WUhV?=
- =?utf-8?B?L3I2Zjd1VzIxNVAwWjY3dlY1MkFzOG95N0VzQmhkZExCRm1vWDdWNStBcXI3?=
- =?utf-8?B?NThPVWR0cFNSbWpuWU9JenMvTlhWc2xRdnVkWXE5YUZ1cm1RQVl6T09MZnYy?=
- =?utf-8?B?SS9xU0xhdWFsRjl1cUlPSFZCUXROdjgvcytqVGZ4aklOODJTb1BDek1pQkJG?=
- =?utf-8?B?MzFzTGdBRDAzN090OWpPTVZydU1zL2c4TFVJeEkzeFNvcVlISHJzU2pHTlU2?=
- =?utf-8?B?QUdQMFhYUU11WTlvTEhyZm01OEdwbEFJQ2pxSittckR0UnNnT3JNU0dodldN?=
- =?utf-8?B?MDcvTFFLZ3pUWm1HZlBoWFBDdkJONXpvc0NNenY3QW51U1RuMmdoWGRSdWV2?=
- =?utf-8?B?ZWVQTUN4WVlMV3JDZzhibHRiUlZiZitpNXhiK1o1YVRmT0hrbjhSMGFDeGpT?=
- =?utf-8?B?emErYWdubFVqVDhBYys2SEVTeWdVc0FZQm1rVncrZ2hVSXlTUnlaTFV5QWxt?=
- =?utf-8?B?VmhSczBRNnlPZWM5REUwMnhnOUszaFZHZzlZQ2JldHlOemdlT2x5WGlqVndw?=
- =?utf-8?B?L3BVaHBGMEpQaW1wTnlqSXBqaXBNNWFUL0ZQaUNpTUJkaXJPd3dsYk9TUjdN?=
- =?utf-8?B?dkd4eHh4bGZUY1Riakg3UXZHa2hjNEV0R1hrdlVKaWF4NWUvVVBpWjFQWXh6?=
- =?utf-8?B?Z0taam0yelg1WEhjaEpLMG9peE0xVlFtVDhEWVVFTnBlNU9XdXQrekdmUThw?=
- =?utf-8?B?QkxXQWZFaVpwNXlXejZ3WWJlZkdLT2J4NFJQYU5QWVhveTdrZnI4VzN2bkp5?=
- =?utf-8?B?R1c1SlkxTkJBd3BXbHBTZjUyNThPMWcyZ3NITXVKWnNXUm1JRGhXVEpVS0Vt?=
- =?utf-8?Q?I7pI=3D?=
-X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b18062c-e784-48a5-d1ce-08d9ed69b08e
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR02MB5482.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2022 14:20:44.1634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8p+FJ+0n8mAW50qjQxekPpIPzFpB5C5+qG0LKcujskasFlGUfdgsZE/Cv2iCKfBF
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0202MB2688
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml727-chm.china.huawei.com (10.201.108.78) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2022-02-10 18:36, Liam Beguin wrote:
-> I like that the macros make the number of zeros more "obvious" in a
-> sense, but honestly at this point, I'd rather go back to not using them.
-> Depending on who you ask, one way makes more sense than the other, at
-> least with the raw values, there's no ambiguity.
+On Sun,  6 Feb 2022 23:13:07 +0200
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-I'm fine with not using the macros in this series, obviously. While I
-can tolerate them, I do not get a warm and cozy feeling when I see
-them.
+> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+> 
+> The ADXL367 does not alias input signals to achieve ultralow power
+> consumption, it samples the full bandwidth of the sensor at all
+> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
+> with a resolution of 0.25mg/LSB on the +-2 g range.
+> 
+> In addition to its ultralow power consumption, the ADXL367
+> has many features to enable true system level power reduction.
+> It includes a deep multimode output FIFO, a built-in micropower
+> temperature sensor, and an internal ADC for synchronous conversion
+> of an additional analog input.
+> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 
-Cheers,
-Peter
+I missed the issue below with the use of available_scan_masks
+in v3. Other than that and a few trivial things below, the series
+looks good to me.
+
+Thanks,
+
+Jonathan
+
+
+> ---
+>  MAINTAINERS                     |    8 +
+>  drivers/iio/accel/Kconfig       |   27 +
+>  drivers/iio/accel/Makefile      |    3 +
+>  drivers/iio/accel/adxl367.c     | 1585 +++++++++++++++++++++++++++++++
+>  drivers/iio/accel/adxl367.h     |   23 +
+>  drivers/iio/accel/adxl367_i2c.c |   90 ++
+>  drivers/iio/accel/adxl367_spi.c |  164 ++++
+>  7 files changed, 1900 insertions(+)
+>  create mode 100644 drivers/iio/accel/adxl367.c
+>  create mode 100644 drivers/iio/accel/adxl367.h
+>  create mode 100644 drivers/iio/accel/adxl367_i2c.c
+>  create mode 100644 drivers/iio/accel/adxl367_spi.c
+> 
+
+
+> new file mode 100644
+> index 000000000000..cac47db7d89c
+> --- /dev/null
+> +++ b/drivers/iio/accel/adxl367.c
+> @@ -0,0 +1,1585 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright (C) 2021 Analog Devices, Inc.
+> + * Author: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/kfifo_buf.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/module.h>
+
+#include <linux/mod_devicetable.h>
+for the id tables.
+
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <asm/unaligned.h>
+> +
+> +#include "adxl367.h"
+> +
+
+
+
+
+> +static const unsigned long adxl367_channel_masks[] = {
+> +	[ADXL367_FIFO_FORMAT_XYZ]  = ADXL367_X_CHANNEL_MASK
+> +				     | ADXL367_Y_CHANNEL_MASK
+> +				     | ADXL367_Z_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_X]    = ADXL367_X_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_Y]    = ADXL367_Y_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_Z]    = ADXL367_Z_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_XYZT] = ADXL367_X_CHANNEL_MASK
+> +				     | ADXL367_Y_CHANNEL_MASK
+> +				     | ADXL367_Z_CHANNEL_MASK
+> +				     | ADXL367_TEMP_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_XT]   = ADXL367_X_CHANNEL_MASK
+> +				     | ADXL367_TEMP_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_YT]   = ADXL367_Y_CHANNEL_MASK
+> +				     | ADXL367_TEMP_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_ZT]   = ADXL367_Z_CHANNEL_MASK
+> +				     | ADXL367_TEMP_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_XYZA] = ADXL367_X_CHANNEL_MASK
+> +				     | ADXL367_Y_CHANNEL_MASK
+> +				     | ADXL367_Z_CHANNEL_MASK
+> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_XA]   = ADXL367_X_CHANNEL_MASK
+> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_YA]   = ADXL367_Y_CHANNEL_MASK
+> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+> +	[ADXL367_FIFO_FORMAT_ZA]   = ADXL367_Z_CHANNEL_MASK
+> +				     | ADXL367_EX_ADC_CHANNEL_MASK,
+> +	0,
+> +};
+
+The way available scan_masks works is to search for an entry
+for which the desired mask is a subset.
+
+That means to get the minimal mode IIRC you need to order them from
+smallest to largest. e.g.
+https://elixir.bootlin.com/linux/latest/source/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c#L1122
+
+> +
+
+> +EXPORT_SYMBOL_NS_GPL(adxl367_probe, ADXL367);
+
+Trivial but we decided to prefix IIO namespaces with IIO_ so this should
+be IIO_ADXL367.
+
+> +
+> +MODULE_AUTHOR("Cosmin Tanislav <cosmin.tanislav@analog.com>");
+> +MODULE_DESCRIPTION("Analog Devices ADXL367 3-axis accelerometer driver");
+> +MODULE_LICENSE("GPL");

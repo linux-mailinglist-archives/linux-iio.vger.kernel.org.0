@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7CB4B2F42
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Feb 2022 22:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3911C4B2F45
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Feb 2022 22:20:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353544AbiBKVUX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Feb 2022 16:20:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44472 "EHLO
+        id S1352934AbiBKVUY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Feb 2022 16:20:24 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352934AbiBKVUW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Feb 2022 16:20:22 -0500
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BCF5C5E
-        for <linux-iio@vger.kernel.org>; Fri, 11 Feb 2022 13:20:20 -0800 (PST)
-Received: by mail-wr1-x436.google.com with SMTP id v12so17320046wrv.2
-        for <linux-iio@vger.kernel.org>; Fri, 11 Feb 2022 13:20:20 -0800 (PST)
+        with ESMTP id S1349534AbiBKVUX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Feb 2022 16:20:23 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7E5C5B
+        for <linux-iio@vger.kernel.org>; Fri, 11 Feb 2022 13:20:21 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id x3-20020a05600c21c300b0037c01ad715bso4007674wmj.2
+        for <linux-iio@vger.kernel.org>; Fri, 11 Feb 2022 13:20:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ydVzqquU4q/bWYrhn+94me4Lj3peddSiUdmbeVAiITc=;
-        b=eSsxeZ4orkbspSt5KyAoqc7J1G/ZVd50cU0CRQdOoyaUDUM2GyOsV5HrStc2X/sJiR
-         reAHMUR+YEcXzGhuvA+YZtNBiI81wN7pJclpVCoZP+yB/13or87sp6PsYyAcFW8bEo5D
-         ajsz5GOvDmg5hcIjS6cV3YqMaVrACl/tyCibGHXUTxBFWYUjXcRFmGRwpUMMJ7sMRf6J
-         p4YsJ/3wbDI7VEdSQF1lPVVWbQKo7kv5gZyNku/H4yJGgWrkzIzhYJ7fjcPGbCkhk9lV
-         5arye/KpxpBVL5j339xJyzXFKBtc4D7IGqnNaqRLzXdkDmfznNFPEng0uT/5SGiDC0ZB
-         Ut/A==
+        bh=BXhDDcjJdPDbZfpGFJmQRsA5lMP0BnPrEwgZzVXptZc=;
+        b=E7AMSUvwtUB2Ul1EJMd0nBqLS8YlEKGzgAhZ2r+5hsVmb38DHWw113iqnrGSgremJA
+         PljpHRQdKRZRDUWNbqPq8R663G+7jupXGPLJz7SY4W1/vqMVGSOK+k3jyVD5MUaIJHic
+         Pd6acQk46RmUBRN6pcXoVzQGVmGSdYEGJpg3siCoNTxiUZeAa2cctzQNT8tylI0Imfjl
+         9gHr+cHUmyNWhjOBA8ujO5PoZLtN3/TVHeyurIsJvB7Ku9fK74kPvOkNpmGR+AAg+JE7
+         2iMT0RsZSxwD0B9cA3F62Hbb2IDQORQ05z4GfrHClnJZc/4KxQr0y0dLjxVwupHqfVmH
+         QYww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ydVzqquU4q/bWYrhn+94me4Lj3peddSiUdmbeVAiITc=;
-        b=ihtHcGg8C9LISJ+YfyJxwpg2DCq7WQWU7c81nWO0xPqfInZ1Gza7nnrZUUlixHXSn3
-         q0xesyCm9Qt03yvUROeWpdAT8kKXqjpD5+Q/s7evsHW3HCR1RbLRuUBZh6uJBq1BJ9Br
-         Riyx4Ck9fGMzJjMa2mIfHeEJLg7mNIeETM+vhQSF/n4ts0wkWEFOY3VtquojYtx0uzCl
-         zCk1ev3RxLyWQoY/sLVB6LqobUZ6596YPqoWrkkkJrclmsqcmlQ19bsDLqCoaO2nlV6a
-         aDKvr8tEHeR6DJ/fNXx9PQXXB0By/CDCuaZvQZ2HOx2OAp9lrAD4IEHn+3s6NqtOJnk9
-         OHPA==
-X-Gm-Message-State: AOAM532M8fh/BHQOMbsp4+HWiGAmPRFg/dT/5d5EyUWRfq4fDn1odPSi
-        pPFuU9QQKZbpw3XqQa4Gah5YCQ==
-X-Google-Smtp-Source: ABdhPJzhZEYpbYwKubpWDwBWiROzAN94i5PS0Q4CpmndFnMgR0mcybs5TbwKfi0KKdJUUO/HtNQVZw==
-X-Received: by 2002:a05:6000:1861:: with SMTP id d1mr2775461wri.92.1644614418738;
-        Fri, 11 Feb 2022 13:20:18 -0800 (PST)
+        bh=BXhDDcjJdPDbZfpGFJmQRsA5lMP0BnPrEwgZzVXptZc=;
+        b=C1654xBNam3GabnEvpGXL+XFIaP0dyr/6kE1wllO6LlAObvR7cjv6Oz2G9p/6/KOg/
+         QXX9uY6frSfWLKPjx2TF0lzumDVF1WyOx7xjP3GeqBBCJzFfMcoXIhs258IF+aw+XeiP
+         R1Aoe8YjLaps9TJ7b8fspllPsInWC/8PXCRAw5F4E+ECk11XE331t/LnsF1JcNpOxvQH
+         VKoK9eJ7glL/8sLXTCAD0PCk8HW5kcDrsyNgTbjgoKUAGU6x2X+kpI59lM6M4P1D6T7s
+         AMwoNm6YqaEW4JZ5QqCJYWfF7iuSpc84wxz72uVNAR4o74zz9Bhrtu/fbqo4J1xyUvbL
+         J4jg==
+X-Gm-Message-State: AOAM533qvEm4pxeawTYkfC4IIN5UeqzrGIa15wVYkS0JBe1ffZ6vSPds
+        OeNiyy7OArkua6EWA+YeaB+WJw==
+X-Google-Smtp-Source: ABdhPJxFtczxqzZSasyWl6Efyuq/Lsq4Dj9LUh4RHYrT5mfp4m6j2c/6HjXjX17HJP6Nrx8qMZaMiQ==
+X-Received: by 2002:a05:600c:1d92:: with SMTP id p18mr1779690wms.93.1644614419749;
+        Fri, 11 Feb 2022 13:20:19 -0800 (PST)
 Received: from localhost.localdomain (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id x5sm14276017wrv.63.2022.02.11.13.20.17
+        by smtp.gmail.com with ESMTPSA id x5sm14276017wrv.63.2022.02.11.13.20.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Feb 2022 13:20:18 -0800 (PST)
+        Fri, 11 Feb 2022 13:20:19 -0800 (PST)
 From:   Caleb Connolly <caleb.connolly@linaro.org>
 To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -56,10 +56,10 @@ To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
         Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
 Cc:     sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        john.stultz@linaro.org
-Subject: [PATCH v4 2/8] mfd: qcom-spmi-pmic: read fab id on supported PMICs
-Date:   Fri, 11 Feb 2022 21:19:53 +0000
-Message-Id: <20220211211959.502514-3-caleb.connolly@linaro.org>
+        john.stultz@linaro.org, Rob Herring <robh@kernel.org>
+Subject: [PATCH v4 3/8] dt-bindings: iio: adc: document qcom-spmi-rradc
+Date:   Fri, 11 Feb 2022 21:19:54 +0000
+Message-Id: <20220211211959.502514-4-caleb.connolly@linaro.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220211211959.502514-1-caleb.connolly@linaro.org>
 References: <20220211211959.502514-1-caleb.connolly@linaro.org>
@@ -75,52 +75,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The PMI8998 and PM660 expose the fab_id, this is needed by drivers like
-the RRADC to calibrate ADC values.
+Add dt-binding docs for the Qualcomm SPMI RRADC found in PMICs like
+PMI8998 and PMI8994
 
 Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- drivers/mfd/qcom-spmi-pmic.c      | 7 +++++++
- include/soc/qcom/qcom-spmi-pmic.h | 1 +
- 2 files changed, 8 insertions(+)
+ .../bindings/iio/adc/qcom,spmi-rradc.yaml     | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
 
-diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
-index 4af88b8bb7d0..c77b4c82559e 100644
---- a/drivers/mfd/qcom-spmi-pmic.c
-+++ b/drivers/mfd/qcom-spmi-pmic.c
-@@ -19,6 +19,7 @@
- #define PMIC_REV4		0x103
- #define PMIC_TYPE		0x104
- #define PMIC_SUBTYPE		0x105
-+#define PMIC_FAB_ID		0x1f2
- #define PMIC_TYPE_VALUE		0x51
- 
- static const struct of_device_id pmic_spmi_id_table[] = {
-@@ -145,6 +146,12 @@ static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
-+	if (pmic->subtype == PMI8998_SUBTYPE || pmic->subtype == PM660_SUBTYPE) {
-+		ret = regmap_read(map, PMIC_FAB_ID, &pmic->fab_id);
-+		if (ret < 0)
-+			return ret;
-+	}
+diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+new file mode 100644
+index 000000000000..11d47c46a48d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+@@ -0,0 +1,54 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/qcom,spmi-rradc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	/*
- 	 * In early versions of PM8941 and PM8226, the major revision number
- 	 * started incrementing from 0 (eg 0 = v1.0, 1 = v2.0).
-diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-index a8a77be22cfc..c821f6c6c8a8 100644
---- a/include/soc/qcom/qcom-spmi-pmic.h
-+++ b/include/soc/qcom/qcom-spmi-pmic.h
-@@ -50,6 +50,7 @@ struct qcom_spmi_pmic {
- 	unsigned int major;
- 	unsigned int minor;
- 	unsigned int rev2;
-+	unsigned int fab_id;
- 	const char *name;
- };
- 
++title: Qualcomm's SPMI PMIC Round Robin ADC
++
++maintainers:
++  - Caleb Connolly <caleb.connolly@linaro.org>
++
++description: |
++  The Qualcomm SPMI Round Robin ADC (RRADC) provides interface to clients to read the
++  voltage, current and temperature for supported peripherals such as the battery thermistor
++  die temperature, charger temperature, USB and DC input voltage / current and battery ID
++  resistor.
++
++properties:
++  compatible:
++    enum:
++      - qcom,pmi8998-rradc
++      - qcom,pm660-rradc
++
++  reg:
++    description: rradc base address and length in the SPMI PMIC register map
++    maxItems: 1
++
++  qcom,batt-id-delay-ms:
++    description:
++      Sets the hardware settling time for the battery ID resistor.
++    enum: [0, 1, 4, 12, 20, 40, 60, 80]
++
++  "#io-channel-cells":
++    const: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    pmic {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      pmic_rradc: adc@4500 {
++          compatible = "qcom,pmi8998-rradc";
++          reg = <0x4500>;
++          #io-channel-cells  = <1>;
++      };
++    };
++...
 -- 
 2.35.1
 

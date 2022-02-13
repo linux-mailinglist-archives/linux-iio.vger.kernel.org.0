@@ -2,51 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CE654B3CCD
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 19:17:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AAA74B3CD0
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 19:21:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233512AbiBMSRg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Feb 2022 13:17:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35594 "EHLO
+        id S237760AbiBMSVi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Feb 2022 13:21:38 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbiBMSRf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 13:17:35 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B742237FD;
-        Sun, 13 Feb 2022 10:17:28 -0800 (PST)
+        with ESMTP id S230009AbiBMSVg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 13:21:36 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80EA15717C;
+        Sun, 13 Feb 2022 10:21:30 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E7D26124F;
-        Sun, 13 Feb 2022 18:17:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECFFC340EB;
-        Sun, 13 Feb 2022 18:17:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A80961221;
+        Sun, 13 Feb 2022 18:21:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CCFC004E1;
+        Sun, 13 Feb 2022 18:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644776247;
-        bh=HYb+oxLvNsZDSyfXa0FPW5sdeAZrK4dAhcxoRuS1iwM=;
+        s=k20201202; t=1644776489;
+        bh=Z4JsTbMUMjpHsmFygjZDeXmvGBzAO2NqeJ89Qij/jFo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rAOkul+oL+AJQqfrkcXXobFGpWGhC/yZaXWDHAr6ELIjFRZ7+VvJZpL8WNd26OBwa
-         aXKCjlw0MVroEC2kYgnval4KjxaICLA0UCMrMS7VV3uPPJpujrEcbqLs9tsA8r9Q2Z
-         bk/VeOjIQq/qUaX1dZ53fvDRkkhtkXL5qo3tcVvPmJj0K6koJnSNb/aGM7IqEh1Vtg
-         QUX4ZZUY9rBfgcdSTHXCblc8Ntk3z8vfArI5vHpBxkmLtkULUEEEoUbjLhO+B6qY0r
-         bKglX1Xecdfg4G+5q1yvmwoc6ST/FgwZ3EO9ibfOXXrWr+74w+s7vLPHMWRjWLrQPK
-         YHTY6bZ7amWlw==
-Date:   Sun, 13 Feb 2022 18:24:07 +0000
+        b=mEKVwT5APORAPkd9ErZ81Tp5FfsrFPahetC0GUNE7iM+BOYBuPzbotgxsf75+Ic55
+         rUpNbH8s5nk94W6HkMTDZ+OE6GNDPp5+Q1esJjqceeoTYuYJfpe/iLXC8NQurNL+Rp
+         GsVhYiiHM8zMDP5cio/s47V3uxPq6iZDBUsyXLLMvbaIDAB5sRnRjRAtYH/M+R16oq
+         w8t6E9nkVxhDNMIxaNrnBBdAYDvpdQfi9oLtMsr4waxWy0MqflX5Bf85oK9RDHnHIK
+         yqOm/oBCx+AxIAwm7GclVzMtAm0yeYMiEjH42tyl11XjRSiAAJehA/rl5JKBZIIBaP
+         o1xq2GiN+2DSg==
+Date:   Sun, 13 Feb 2022 18:28:10 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Samuel Holland <samuel@sholland.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] iio: Silan SC7A20 accelerometer support
-Message-ID: <20220213182407.5b2fd893@jic23-huawei>
-In-Reply-To: <20220202235049.8051-1-samuel@sholland.org>
-References: <20220202235049.8051-1-samuel@sholland.org>
+To:     "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 3/4] Documentation:ABI:testing:admv1014: add ABI docs
+Message-ID: <20220213182810.2246581b@jic23-huawei>
+In-Reply-To: <CY4PR03MB339929F700810DA7BB36D43D9B2C9@CY4PR03MB3399.namprd03.prod.outlook.com>
+References: <20220207130549.98415-1-antoniu.miclaus@analog.com>
+        <20220207130549.98415-3-antoniu.miclaus@analog.com>
+        <CY4PR03MB339929F700810DA7BB36D43D9B2C9@CY4PR03MB3399.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,39 +58,98 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  2 Feb 2022 17:50:45 -0600
-Samuel Holland <samuel@sholland.org> wrote:
+On Mon, 7 Feb 2022 14:55:36 +0000
+"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
 
-> This chip is register-compatible with an ST part, so it works without
-> any issues when added to the existing driver.
-> 
-> Previously I called it a clone, but it's not really a clone, because
-> it's not a drop-in replacement for the other chips. The software
-> interface matches the ST parts, but the pinout does not. Instead, the
-> pinout matches the Kionix KX122 and KX132.
-Series applied to the togreg branch of iio.git and pushed out as testing
-to see if 0-day can find anything we missed.
+> --
+> Antoniu Micl=C4=83u=C5=9F
+>=20
+> > -----Original Message-----
+> > From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > Sent: Monday, February 7, 2022 3:06 PM
+> > To: jic23@kernel.org; robh+dt@kernel.org; linux-iio@vger.kernel.org;
+> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
+> > Cc: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
+> > Subject: [PATCH v6 3/4] Documentation:ABI:testing:admv1014: add ABI docs
+> >=20
+> > Add documentation for the use of the Digital Attenuator gain.
+> >=20
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com> =20
+> Forgot to add in v6:
+> Reviewed-by: Rob Herring <robh@kernel.org>
+Ah. That will break b4 trying to pick this up (as it's in the wrong
+patch as you noted).
+
+Please resend as v7 with fixed up tags.
+
+I'm waiting to give Andy another chance to look at this if he wants
+anyway.
 
 Thanks,
 
 Jonathan
 
-> 
-> Changes in v2:
->  - Move the new compatible to its own section
->  - Add a comment about the WAI value
->  - Update commit messages
-> 
-> Samuel Holland (3):
->   dt-bindings: vendor-prefixes: Add silan vendor prefix
->   dt-bindings: iio: st: Add Silan SC7A20 accelerometer
->   iio: accel: st_accel: Add support for Silan SC7A20
-> 
->  .../bindings/iio/st,st-sensors.yaml           |  3 +
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  drivers/iio/accel/st_accel.h                  |  2 +
->  drivers/iio/accel/st_accel_core.c             | 83 +++++++++++++++++++
->  drivers/iio/accel/st_accel_i2c.c              |  5 ++
->  5 files changed, 95 insertions(+)
-> 
+> > ---
+> > no changes in v6.
+> >  Documentation/ABI/testing/sysfs-bus-iio       |  1 +
+> >  .../testing/sysfs-bus-iio-frequency-admv1014  | 23 +++++++++++++++++++
+> >  2 files changed, 24 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-
+> > admv1014
+> >=20
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio
+> > b/Documentation/ABI/testing/sysfs-bus-iio
+> > index c551301b33f1..2b5770017a84 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -476,6 +476,7 @@ What:
+> > 	/sys/bus/iio/devices/iio:deviceX/in_voltageY_i_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_q_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_i_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_q_calibscale
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltage_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_accel_x_calibscale
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_accel_y_calibscale
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
+> > b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
+> > new file mode 100644
+> > index 000000000000..395010a0ef8b
+> > --- /dev/null
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-admv1014
+> > @@ -0,0 +1,23 @@
+> > +What:
+> > 	/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_i_calibscale_coarse
+> > +KernelVersion: 5.18
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Read/write value for the digital attenuator gain (IF_I) with
+> > coarse steps.
+> > +
+> > +What:
+> > 	/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_q_calibscale_coarse
+> > +KernelVersion: 5.18
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Read/write value for the digital attenuator gain (IF_Q) with
+> > coarse steps.
+> > +
+> > +What:
+> > 	/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_i_calibscale_fine
+> > +KernelVersion: 5.18
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Read/write value for the digital attenuator gain (IF_I) with
+> > fine steps.
+> > +
+> > +What:
+> > 	/sys/bus/iio/devices/iio:deviceX/in_altvoltage0_q_calibscale_fine
+> > +KernelVersion: 5.18
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		Read/write value for the digital attenuator gain (IF_Q) with
+> > fine steps.
+> > --
+> > 2.35.1 =20
+>=20
 

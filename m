@@ -2,46 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3744B3CE0
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 19:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E74A4B3CE6
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 19:39:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231164AbiBMSfx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Feb 2022 13:35:53 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48794 "EHLO
+        id S233720AbiBMSjn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Feb 2022 13:39:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230145AbiBMSfx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 13:35:53 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4AF157B01
-        for <linux-iio@vger.kernel.org>; Sun, 13 Feb 2022 10:35:46 -0800 (PST)
+        with ESMTP id S237828AbiBMSjn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 13:39:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C3157B1C;
+        Sun, 13 Feb 2022 10:39:37 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 43333B80B07
-        for <linux-iio@vger.kernel.org>; Sun, 13 Feb 2022 18:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922D0C004E1;
-        Sun, 13 Feb 2022 18:35:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF5946120F;
+        Sun, 13 Feb 2022 18:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1936EC004E1;
+        Sun, 13 Feb 2022 18:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644777343;
-        bh=3eXk3miZyecrfFgE0W8BL7rR57bmWV/X+1U9x5bzDE0=;
+        s=k20201202; t=1644777576;
+        bh=62G4pAU8FmHDbset5IKmCXHU7ITta7/U1Abf+yudxtA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PRn9xF80WLdL5mqXtNCIlnxour4PjDVECZ1Azqv+YDgdiMqsIu6qtTK1paRs+A+s4
-         YLu3izJqzJvSPVbLOzwoQaA4v8DQCjdn4UtHixojQVdqOOQOc8EYsRcEtngXJXYmva
-         2Dg/n42+OCrhKsibIEpPkF4RV1wsPYs6qn1glgPP53FNgtP3lEUlnugHpzXZoQeNyv
-         0VhGd5P9tvqovBUAbhAPxDcQR1ak7O9o7Q/YM8E+vrDN5RUqyaR/u6/qmjMqO4DSuC
-         1IScS3jGOTcXus/fF7A5t6Gnd2whZN6rEQ+hd+kRL4j0dc+Ks/asUOWOb2hMIKSFyK
-         Cd6cRd34hxZrw==
-Date:   Sun, 13 Feb 2022 18:42:24 +0000
+        b=pwJQ1NO7br6owS38v9O55UrFNGA8LXTFnWMrfNKA9qbzqA4Mco85gRbDtaSkj48fu
+         ciJf2jNVWazBul0qer4t6DTRsYXjBeaDtBNqtEJRlJI1sCBxFHdwUX4H7HPa8qq0wb
+         VR3zjYrAGDR9zu5z/At01gwxCWTcFsvGjpZPB28PXAXZPnwLV0RaqDfXtBsUdp3clY
+         yalK6rdNvJVbv+VwszApgUYBb5D539+KdNRrw8BchLVEk4BJB8howFwUWDdwd/LPY/
+         6e0CrWvrSQeUdEwwHIu2lyjcCji7ecMw7eZfdrT4EqdItcUesBzaP0g8yue3huvwdY
+         /glfHfZL2bnYg==
+Date:   Sun, 13 Feb 2022 18:46:16 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: Re: [PATCH v3 13/13] iio: core: Clarify the modes
-Message-ID: <20220213184224.1644ddbc@jic23-huawei>
-In-Reply-To: <20220207143840.707510-14-miquel.raynal@bootlin.com>
-References: <20220207143840.707510-1-miquel.raynal@bootlin.com>
-        <20220207143840.707510-14-miquel.raynal@bootlin.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 00/12] iio: buffer-dma: write() and new DMABUF based
+ API
+Message-ID: <20220213184616.669b490b@jic23-huawei>
+In-Reply-To: <20220207125933.81634-1-paul@crapouillou.net>
+References: <20220207125933.81634-1-paul@crapouillou.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,97 +62,90 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  7 Feb 2022 15:38:40 +0100
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+On Mon,  7 Feb 2022 12:59:21 +0000
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-> As part of a previous discussion with Jonathan Cameron [1], it appeared
-> necessary to clarify the meaning of each mode so that new developers
-> could understand better what they should use or not use and when.
+> Hi Jonathan,
 > 
-> The idea of renaming these modes as been let aside because naming is a
-> big deal and requires a lot of thinking. So for now let's focus on
-> correctly explaining what each mode implies.
-> 
-> [1] https://lore.kernel.org/linux-iio/20210930165510.2295e6c4@jic23-huawei/
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-One trivial thing inline as a result of edits in v3.
+> This is the V2 of my patchset that introduces a new userspace interface
+> based on DMABUF objects to complement the fileio API, and adds write()
+> support to the existing fileio API.
 
-Otherwise, I want to let this series sit a little longer and ideally get
-some eyes on the st_sensors patches.
+Hi Paul,
+
+It's been a little while. Perhaps you could summarize the various view
+points around the appropriateness of using DMABUF for this?
+I appreciate it is a tricky topic to distil into a brief summary but
+I know I would find it useful even if no one else does!
+
+Thanks,
 
 Jonathan
 
-> ---
->  include/linux/iio/iio.h | 49 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 48 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 85cb924debd9..e383b0d96035 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -315,7 +315,54 @@ static inline bool iio_channel_has_available(const struct iio_chan_spec *chan,
->  s64 iio_get_time_ns(const struct iio_dev *indio_dev);
->  unsigned int iio_get_time_res(const struct iio_dev *indio_dev);
->  
-> -/* Device operating modes */
-> +/**
-> + * Device operating modes
-> + * @INDIO_DIRECT_MODE: There is an access to either:
-> + * a) The last single value available for devices that do not provide
-> + *    on-demand reads.
-> + * b) A new value after performing an on-demand read otherwise.
-
-
-> + * On most devices, this is a single-shot read. On some devices with data
-> + * streams without an 'on-demand' function, this might also be the 'last value'
-> + * feature.
-
-This block duplicates what you now have as a/b above. I can drop it whilst
-applying if nothing else comes up.
-
->  Above all, this mode internally means that we are not in any of the
-> + * other modes, and sysfs reads should work.
-> + * Device drivers should inform the core if they support this mode.
-> + * @INDIO_BUFFER_TRIGGERED: Common mode when dealing with kfifo buffers.
-> + * It indicates that an explicit trigger is required. This requests the core to
-> + * attach a poll function when enabling the buffer, which is indicated by the
-> + * _TRIGGERED suffix.
-> + * The core will ensure this mode is set when registering a triggered buffer
-> + * with iio_triggered_buffer_setup().
-> + * @INDIO_BUFFER_SOFTWARE: Another kfifo buffer mode, but not event triggered.
-> + * No poll function can be attached because there is no triggered infrastructure
-> + * we can use to cause capture. There is a kfifo that the driver will fill, but
-> + * not "only one scan at a time". Typically, hardware will have a buffer that
-> + * can hold multiple scans. Software may read one or more scans at a single time
-> + * and push the available data to a Kfifo. This means the core will not attach
-> + * any poll function when enabling the buffer.
-> + * The core will ensure this mode is set when registering a simple kfifo buffer
-> + * with devm_iio_kfifo_buffer_setup().
-> + * @INDIO_BUFFER_HARDWARE: For specific hardware, if unsure do not use this mode.
-> + * Same as above but this time the buffer is not a kfifo where we have direct
-> + * access to the data. Instead, the consumer driver must access the data through
-> + * non software visible channels (or DMA when there is no demux possible in
-> + * software)
-> + * The core will ensure this mode is set when registering a dmaengine buffer
-> + * with devm_iio_dmaengine_buffer_setup().
-> + * @INDIO_EVENT_TRIGGERED: Very unusual mode.
-> + * Triggers usually refer to an external event which will start data capture.
-> + * Here it is kind of the opposite as, a particular state of the data might
-> + * produce an event which can be considered as an event. We don't necessarily
-> + * have access to the data itself, but to the event produced. For example, this
-> + * can be a threshold detector. The internal path of this mode is very close to
-> + * the INDIO_BUFFER_TRIGGERED mode.
-> + * The core will ensure this mode is set when registering a triggered event.
-> + * @INDIO_HARDWARE_TRIGGERED: Very unusual mode.
-> + * Here, triggers can result in data capture and can be routed to multiple
-> + * hardware components, which make them close to regular triggers in the way
-> + * they must be managed by the core, but without the entire interrupts/poll
-> + * functions burden. Interrupts are irrelevant as the data flow is hardware
-> + * mediated and distributed.
-> + */
->  #define INDIO_DIRECT_MODE		0x01
->  #define INDIO_BUFFER_TRIGGERED		0x02
->  #define INDIO_BUFFER_SOFTWARE		0x04
+> Changes since v1:
+> 
+> - the patches that were merged in v1 have been (obviously) dropped from
+>   this patchset;
+> - the patch that was setting the write-combine cache setting has been
+>   dropped as well, as it was simply not useful.
+> - [01/12]: 
+>     * Only remove the outgoing queue, and keep the incoming queue, as we
+>       want the buffer to start streaming data as soon as it is enabled.
+>     * Remove IIO_BLOCK_STATE_DEQUEUED, since it is now functionally the
+>       same as IIO_BLOCK_STATE_DONE.
+> - [02/12]:
+>     * Fix block->state not being reset in
+>       iio_dma_buffer_request_update() for output buffers.
+>     * Only update block->bytes_used once and add a comment about why we
+>       update it.
+>     * Add a comment about why we're setting a different state for output
+>       buffers in iio_dma_buffer_request_update()
+>     * Remove useless cast to bool (!!) in iio_dma_buffer_io()
+> - [05/12]:
+>     Only allow the new IOCTLs on the buffer FD created with
+>     IIO_BUFFER_GET_FD_IOCTL().
+> - [12/12]:
+>     * Explicitly state that the new interface is optional and is
+>       not implemented by all drivers.
+>     * The IOCTLs can now only be called on the buffer FD returned by
+>       IIO_BUFFER_GET_FD_IOCTL.
+>     * Move the page up a bit in the index since it is core stuff and not
+>       driver-specific.
+> 
+> The patches not listed here have not been modified since v1.
+> 
+> Cheers,
+> -Paul
+> 
+> Alexandru Ardelean (1):
+>   iio: buffer-dma: split iio_dma_buffer_fileio_free() function
+> 
+> Paul Cercueil (11):
+>   iio: buffer-dma: Get rid of outgoing queue
+>   iio: buffer-dma: Enable buffer write support
+>   iio: buffer-dmaengine: Support specifying buffer direction
+>   iio: buffer-dmaengine: Enable write support
+>   iio: core: Add new DMABUF interface infrastructure
+>   iio: buffer-dma: Use DMABUFs instead of custom solution
+>   iio: buffer-dma: Implement new DMABUF based userspace API
+>   iio: buffer-dmaengine: Support new DMABUF based userspace API
+>   iio: core: Add support for cyclic buffers
+>   iio: buffer-dmaengine: Add support for cyclic buffers
+>   Documentation: iio: Document high-speed DMABUF based API
+> 
+>  Documentation/driver-api/dma-buf.rst          |   2 +
+>  Documentation/iio/dmabuf_api.rst              |  94 +++
+>  Documentation/iio/index.rst                   |   2 +
+>  drivers/iio/adc/adi-axi-adc.c                 |   3 +-
+>  drivers/iio/buffer/industrialio-buffer-dma.c  | 610 ++++++++++++++----
+>  .../buffer/industrialio-buffer-dmaengine.c    |  42 +-
+>  drivers/iio/industrialio-buffer.c             |  60 ++
+>  include/linux/iio/buffer-dma.h                |  38 +-
+>  include/linux/iio/buffer-dmaengine.h          |   5 +-
+>  include/linux/iio/buffer_impl.h               |   8 +
+>  include/uapi/linux/iio/buffer.h               |  30 +
+>  11 files changed, 749 insertions(+), 145 deletions(-)
+>  create mode 100644 Documentation/iio/dmabuf_api.rst
+> 
 

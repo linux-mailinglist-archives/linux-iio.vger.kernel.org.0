@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 804F44B3CAA
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 18:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A576A4B3CAF
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 18:57:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbiBMRxI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Feb 2022 12:53:08 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51212 "EHLO
+        id S235429AbiBMR5M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Feb 2022 12:57:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230120AbiBMRxH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 12:53:07 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC475A584;
-        Sun, 13 Feb 2022 09:53:01 -0800 (PST)
+        with ESMTP id S234146AbiBMR5M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 12:57:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E1675AEE1
+        for <linux-iio@vger.kernel.org>; Sun, 13 Feb 2022 09:57:06 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8A2CFB80B0E;
-        Sun, 13 Feb 2022 17:53:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9FBC004E1;
-        Sun, 13 Feb 2022 17:52:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C69AAB80B49
+        for <linux-iio@vger.kernel.org>; Sun, 13 Feb 2022 17:57:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E002C004E1;
+        Sun, 13 Feb 2022 17:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644774779;
-        bh=kPHxeTgcg9NmBIAzq6Zcpzz0ekEcpp+pRXOIDMqRzhw=;
+        s=k20201202; t=1644775023;
+        bh=irjKzbFp7FRLjad6o4aSl1asaUUIaTJcczykxLQvpp4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Yfg7avbQeAvZoIIXzV24s1tWEfcF5XFVC1hDW6+V6Nar/TQvPUDFqZlOCcJwIgo6L
-         cM3Z/v2t2Lwfdx9IdyKMCsHNuFgFxqEAH/2c3/KdG312xiW3rqqUv85sRu9DZnGHYw
-         2ot7Wi8AzlEBWmjQ0TKLrmZB92cWw54VpAMG9cHBEt4ybj427j5Xr1e/2aXkiieRFm
-         Vjrj5s2RGNi3cAnse4/ZgPC3b/qiP7d5BT2RU+se5gzybbZ4CaEmmxCI5fsBQgM6tG
-         gccd7RbCaZQ4wJNwZE4AqXXPvymW19SPRqtTqM3h/T+mBxeAq3udK5nxaWZ4HlWSqG
-         P0wVCTVjCBmQw==
-Date:   Sun, 13 Feb 2022 17:59:40 +0000
+        b=XZDhE3hBk18PSAomRQvxNRI0fcvPl+2uJFrgc8w4tYKn/lpxLMEVLFYNchmPi/pug
+         PvVTR4YteZrLRQgrm+eUsydklad/WzWaVuRmL++AbDGEA2EVQmL4yO8Bx4GvnKq+Cs
+         QU4unaubhSyxQ4myvE48ciNOBXzblt8LUgT9swg9+wJDDkF5gI27KeB/G9DNGQKB0v
+         faw0uRg/VAXbFnFK0b8jfN8hwkTlFNUoapKqeUAjMwQQPFHCtY/dMGhfaK4I6IYyGM
+         u9iDkGKK3devAvA16mUfLeEHTDe9qJ8irxRoPYrfZZeezrOZaeB1mc/gVTShV0Xv5z
+         O2EiHI2A2rZkg==
+Date:   Sun, 13 Feb 2022 18:03:45 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Qing Wang <wangqing@vivo.com>
-Cc:     Jyoti Bhayana <jbhayana@google.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: use div64_u64() instead of do_div()
-Message-ID: <20220213175940.1066f5a8@jic23-huawei>
-In-Reply-To: <1644395873-3937-1-git-send-email-wangqing@vivo.com>
-References: <1644395873-3937-1-git-send-email-wangqing@vivo.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: mma8452: Fix probe failing when an
+ i2c_device_id is used
+Message-ID: <20220213180345.679b0a8b@jic23-huawei>
+In-Reply-To: <20220208124336.511884-1-hdegoede@redhat.com>
+References: <20220208124336.511884-1-hdegoede@redhat.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,71 +56,141 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  9 Feb 2022 00:37:53 -0800
-Qing Wang <wangqing@vivo.com> wrote:
+On Tue,  8 Feb 2022 13:43:35 +0100
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-> From: Wang Qing <wangqing@vivo.com>
+> The mma8452_driver declares both of_match_table and i2c_driver.id_table
+> match-tables, but its probe() function only checked for of matches.
 > 
-> do_div() does a 64-by-32 division.
-> When the divisor is u64, do_div() truncates it to 32 bits, this means it
-> can test non-zero and be truncated to zero for division.
+> Add support for i2c_device_id matches. This fixes the driver not loading
+> on some x86 tablets (e.g. the Nextbook Ares 8) where the i2c_client is
+> instantiated by platform code using an i2c_device_id.
 > 
-> fix do_div.cocci warning:
-> do_div() does a 64-by-32 division, please consider using div64_u64 instead.
-> 
-> Signed-off-by: Wang Qing <wangqing@vivo.com>
-These look correct to me.  Jyoti, please could give these a sanity check?
+> Fixes: c3cdd6e48e35 ("iio: mma8452: refactor for seperating chip specific data")
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/common/scmi_sensors/scmi_iio.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> Changes in v3:
+> - Store name in struct mma_chip_info and use that to set indio_dev->name
+> - Switch to using device_get_match_data() for (potentially) adding ACPI
+>   enumeration support in the future
 > 
-> diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> index d538bf3..d6df5da
-> --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-> +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-> @@ -160,7 +160,7 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2)
->  	mult = scnprintf(buf, sizeof(buf), "%llu", sf) - 1;
+> Changes in v2:
+> - Fix the following smatch warning:
+>   drivers/iio/accel/mma8452.c:1595 mma8452_probe() error: we previously assumed 'id' could be null (see line 1536)
+>   Reported-by: kernel test robot <lkp@intel.com>
+>   Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/iio/accel/mma8452.c | 27 +++++++++++++++++----------
+>  1 file changed, 17 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+> index 64b82b4503ad..0528717d9f44 100644
+> --- a/drivers/iio/accel/mma8452.c
+> +++ b/drivers/iio/accel/mma8452.c
+> @@ -176,6 +176,7 @@ static const struct mma8452_event_regs trans_ev_regs = {
+>   * @enabled_events:		event flags enabled and handled by this driver
+>   */
+>  struct mma_chip_info {
+> +	const char *name;
+>  	u8 chip_id;
+>  	const struct iio_chan_spec *channels;
+>  	int num_channels;
+> @@ -1301,6 +1302,7 @@ enum {
 >  
->  	sec = int_pow(10, mult) * UHZ_PER_HZ;
-> -	do_div(sec, uHz);
-> +	div64_u64(sec, uHz);
->  	if (sec == 0) {
->  		dev_err(&iio_dev->dev,
->  			"Trying to set invalid sensor update value for sensor %s",
-> @@ -237,10 +237,10 @@ static void convert_ns_to_freq(u64 interval_ns, u64 *hz, u64 *uhz)
->  	u64 rem, freq;
+>  static const struct mma_chip_info mma_chip_info_table[] = {
+>  	[mma8451] = {
+> +		.name = "mma8451",
+>  		.chip_id = MMA8451_DEVICE_ID,
+>  		.channels = mma8451_channels,
+>  		.num_channels = ARRAY_SIZE(mma8451_channels),
+> @@ -1325,6 +1327,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  					MMA8452_INT_FF_MT,
+>  	},
+>  	[mma8452] = {
+> +		.name = "mma8452",
+>  		.chip_id = MMA8452_DEVICE_ID,
+>  		.channels = mma8452_channels,
+>  		.num_channels = ARRAY_SIZE(mma8452_channels),
+> @@ -1341,6 +1344,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  					MMA8452_INT_FF_MT,
+>  	},
+>  	[mma8453] = {
+> +		.name = "mma8453",
+>  		.chip_id = MMA8453_DEVICE_ID,
+>  		.channels = mma8453_channels,
+>  		.num_channels = ARRAY_SIZE(mma8453_channels),
+> @@ -1357,6 +1361,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  					MMA8452_INT_FF_MT,
+>  	},
+>  	[mma8652] = {
+> +		.name = "mma8652",
+>  		.chip_id = MMA8652_DEVICE_ID,
+>  		.channels = mma8652_channels,
+>  		.num_channels = ARRAY_SIZE(mma8652_channels),
+> @@ -1366,6 +1371,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.enabled_events = MMA8452_INT_FF_MT,
+>  	},
+>  	[mma8653] = {
+> +		.name = "mma8653",
+>  		.chip_id = MMA8653_DEVICE_ID,
+>  		.channels = mma8653_channels,
+>  		.num_channels = ARRAY_SIZE(mma8653_channels),
+> @@ -1380,6 +1386,7 @@ static const struct mma_chip_info mma_chip_info_table[] = {
+>  		.enabled_events = MMA8452_INT_FF_MT,
+>  	},
+>  	[fxls8471] = {
+> +		.name = "fxls8471",
+>  		.chip_id = FXLS8471_DEVICE_ID,
+>  		.channels = mma8451_channels,
+>  		.num_channels = ARRAY_SIZE(mma8451_channels),
+> @@ -1522,13 +1529,6 @@ static int mma8452_probe(struct i2c_client *client,
+>  	struct mma8452_data *data;
+>  	struct iio_dev *indio_dev;
+>  	int ret;
+> -	const struct of_device_id *match;
+> -
+> -	match = of_match_device(mma8452_dt_ids, &client->dev);
+> -	if (!match) {
+> -		dev_err(&client->dev, "unknown device model\n");
+> -		return -ENODEV;
+> -	}
 >  
->  	freq = NSEC_PER_SEC;
-> -	rem = do_div(freq, interval_ns);
-> +	rem = div64_u64(freq, interval_ns);
->  	*hz = freq;
->  	*uhz = rem * 1000000UL;
-> -	do_div(*uhz, interval_ns);
-> +	div64_u64(*uhz, interval_ns);
->  }
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -1537,7 +1537,14 @@ static int mma8452_probe(struct i2c_client *client,
+>  	data = iio_priv(indio_dev);
+>  	data->client = client;
+>  	mutex_init(&data->lock);
+> -	data->chip_info = match->data;
+> +
+> +	data->chip_info = device_get_match_data(&client->dev);
+> +	if (!data->chip_info && id) {
+> +		data->chip_info = &mma_chip_info_table[id->driver_data];
+> +	} else {
+> +		dev_err(&client->dev, "unknown device model\n");
+> +		return -ENODEV;
+> +	}
 >  
->  static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
-> @@ -266,7 +266,7 @@ static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val, int *val2)
->  	mult = SCMI_SENS_CFG_GET_UPDATE_EXP(sensor_config);
->  	if (mult < 0) {
->  		sensor_interval_mult = int_pow(10, abs(mult));
-> -		do_div(sensor_update_interval, sensor_interval_mult);
-> +		div64_u64(sensor_update_interval, sensor_interval_mult);
->  	} else {
->  		sensor_interval_mult = int_pow(10, mult);
->  		sensor_update_interval =
-> @@ -500,7 +500,7 @@ static u64 scmi_iio_convert_interval_to_ns(u32 val)
->  	mult = SCMI_SENS_INTVL_GET_EXP(val);
->  	if (mult < 0) {
->  		sensor_interval_mult = int_pow(10, abs(mult));
-> -		do_div(sensor_update_interval, sensor_interval_mult);
-> +		div64_u64(sensor_update_interval, sensor_interval_mult);
->  	} else {
->  		sensor_interval_mult = int_pow(10, mult);
->  		sensor_update_interval =
+>  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
+>  	if (IS_ERR(data->vdd_reg))
+> @@ -1581,11 +1588,11 @@ static int mma8452_probe(struct i2c_client *client,
+>  	}
+>  
+>  	dev_info(&client->dev, "registering %s accelerometer; ID 0x%x\n",
+> -		 match->compatible, data->chip_info->chip_id);
+> +		 data->chip_info->name, data->chip_info->chip_id);
+>  
+>  	i2c_set_clientdata(client, indio_dev);
+>  	indio_dev->info = &mma8452_info;
+> -	indio_dev->name = id->name;
+> +	indio_dev->name = data->chip_info->name;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->channels = data->chip_info->channels;
+>  	indio_dev->num_channels = data->chip_info->num_channels;
 

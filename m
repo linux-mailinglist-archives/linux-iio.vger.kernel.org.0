@@ -2,96 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA4B94B457F
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 10:18:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE43E4B4592
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 10:24:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242738AbiBNJTE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Feb 2022 04:19:04 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36294 "EHLO
+        id S242814AbiBNJYH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Feb 2022 04:24:07 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242452AbiBNJTE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Feb 2022 04:19:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0CC4B606E8
-        for <linux-iio@vger.kernel.org>; Mon, 14 Feb 2022 01:18:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1644830336;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=AsxyZOgufzk8HpMLNICOi8wJ4CMKP8C9MplVo5OUilM=;
-        b=CTzKL8DVgTh2kemtstM7n3/PLAseoWoA4dVXz4O10z7HgXwpQvaug7ttD6umaBB9UKI5XG
-        Wr1c+9hmEMLGO23EecP4sf9BmDgpcfwDnq/NPQcVyR+843OZFoMxunGaWK6Tja8Lya4s+I
-        IMgjl2rEhKuYLI/5D2VJVkcc2yP5a1E=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-455-ZNpaTmvOOGaS0sg1BURtMw-1; Mon, 14 Feb 2022 04:18:54 -0500
-X-MC-Unique: ZNpaTmvOOGaS0sg1BURtMw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3B86A1091DA1;
-        Mon, 14 Feb 2022 09:18:53 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.195.147])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B34A860C25;
-        Mon, 14 Feb 2022 09:18:51 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
+        with ESMTP id S231140AbiBNJYG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Feb 2022 04:24:06 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7728E60A87;
+        Mon, 14 Feb 2022 01:23:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1644830639; x=1676366639;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bVOs35Dp7Asq5//nT0TwjwfmoTvaxxpXMLgbeKZ9q9Y=;
+  b=S4EDqU4dfrKl0XVt16bMpYWq0Lrm/+rfKGeSKVRQoTwLGt5scooFdZak
+   ZmRFT1fcpqu7FO0yYemmgjn/f6EhSxUPWDl9pn7qNXMtNSm1kPDay2oRi
+   qktL+3TGPn1lDmn7lJECLVvEG1r/RXXysix+76E995S1xgk8m2CN+eWjd
+   0j4iKMTJB1+1w+EtG0TrdFlOwr054u/t30ADsimceKMTuiwSeGyxXDLEt
+   sJjCm/j8CGGEKn8wLGFKPqJykjTOqOLhpxVHfpzoUDcZj8Cf+ohE3jIKr
+   mhVs9wZVpKWDQ85R3Z9PH9baBgzVKlt8sARjd3a01DWDRdABF5vr98rWC
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10257"; a="336477221"
+X-IronPort-AV: E=Sophos;i="5.88,367,1635231600"; 
+   d="scan'208";a="336477221"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 01:23:59 -0800
+X-IronPort-AV: E=Sophos;i="5.88,367,1635231600"; 
+   d="scan'208";a="570031384"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 01:23:57 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nJXZW-004OM7-8W;
+        Mon, 14 Feb 2022 11:23:02 +0200
+Date:   Mon, 14 Feb 2022 11:23:02 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: [PATCH] iio: mma8452: Fix 'mma8452_dt_ids' defined but not used compiler warning
-Date:   Mon, 14 Feb 2022 10:18:50 +0100
-Message-Id: <20220214091850.44139-1-hdegoede@redhat.com>
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: Re: [PATCH v3 1/1] iio: chemical: atlas-ezo-sensor: Make use of
+ device properties
+Message-ID: <YgofdmXx5BED0C3f@smile.fi.intel.com>
+References: <20220207124204.11658-1-andriy.shevchenko@linux.intel.com>
+ <20220213180757.751d1350@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220213180757.751d1350@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Commit 90adc57bd55a ("iio: mma8452: Fix probe failing when an
-i2c_device_id is used") introduces a new: "'mma8452_dt_ids' defined
-but not used" compiler warning.
+On Sun, Feb 13, 2022 at 06:07:57PM +0000, Jonathan Cameron wrote:
+> On Mon,  7 Feb 2022 14:42:04 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > Convert the module to be property provider agnostic and allow
+> > it to be used on non-OF platforms.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> +Cc: Matt
 
-This is caused by the switch from of_match_device() (which takes a
-pointer to this) to device_get_match_data(), combined with the use of
-of_match_ptr() when setting of_match_table.
+Maybe he wants to become a designated reviewer for this driver?
+(Missing record in MAINTAINERS?)
 
-We actually want mma8452_dt_ids to get optmized away when CONFIG_OF is
-not set, so mark it as __maybe_unused to silence the warning.
+> Looks straight forward to me so I'll queue it up and Matt can comment
+> after if he likes.
+> 
+> Applied to the togreg branch of iio.git and pushed out as testing for
+> all the normal checks.
 
-Fixes: 90adc57bd55a ("iio: mma8452: Fix probe failing when an i2c_device_id is used")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Note the 90adc57bd55a hash is from the jic23/iio.git testing branch, not
-sure of it is stable. It is probably best to just squash this into the
-original commit.
----
- drivers/iio/accel/mma8452.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks!
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 590d9431e1bd..1324bd515377 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1529,7 +1529,7 @@ static int mma8452_reset(struct i2c_client *client)
- 	return -ETIMEDOUT;
- }
- 
--static const struct of_device_id mma8452_dt_ids[] = {
-+static const struct of_device_id __maybe_unused mma8452_dt_ids[] = {
- 	{ .compatible = "fsl,mma8451", .data = &mma_chip_info_table[mma8451] },
- 	{ .compatible = "fsl,mma8452", .data = &mma_chip_info_table[mma8452] },
- 	{ .compatible = "fsl,mma8453", .data = &mma_chip_info_table[mma8453] },
 -- 
-2.33.1
+With Best Regards,
+Andy Shevchenko
+
 

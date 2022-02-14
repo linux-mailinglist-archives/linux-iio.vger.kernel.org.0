@@ -2,66 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 946DA4B3D48
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Feb 2022 21:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD174B4055
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 04:36:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238066AbiBMULX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Feb 2022 15:11:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43970 "EHLO
+        id S239908AbiBNDgc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Feb 2022 22:36:32 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238055AbiBMULX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 15:11:23 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3614A912
-        for <linux-iio@vger.kernel.org>; Sun, 13 Feb 2022 12:11:16 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id s24so15456538oic.6
-        for <linux-iio@vger.kernel.org>; Sun, 13 Feb 2022 12:11:16 -0800 (PST)
+        with ESMTP id S231682AbiBNDgc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Feb 2022 22:36:32 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A860955499;
+        Sun, 13 Feb 2022 19:36:25 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id v4so13301122pjh.2;
+        Sun, 13 Feb 2022 19:36:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=haS2wAFTF4LYkWgTobEez2BzhQa+N8kYiRyHjcuTHYs=;
-        b=Qc+SYPF1VlrF664pmDRMLgeHuwUZoNcGOKON5ODQqVlGItv7rI2NWLEpIfYXtN/wUY
-         jUqISdI4eAZz7zAidPhujHNDbAP/FlebJP/K+9utaqPtzRIu3CEyl/WJ2rFY84moFCcc
-         ZepS92v6C5pSvCBrBu0+kzzvpQr8NpKwYTwhP38ePs5RCYTP3rjMHyyef1iHtdX7FRcH
-         57u+vmAkgLK6Wp17TJNHfF/omTPlPHJCeKa0kNGKJCcJDfaie3/D+hoz/yMSNbePxIc6
-         xH1Jc61Q6wxJqfPjYSu/N4pUBXtyDjwAGClToxkg1cL6exc0+aWnwH5KOemqjI3keb9v
-         6HSg==
+        h=from:to:cc:subject:date:message-id;
+        bh=f3jKCxZz79yoCVjIE/GhM4SSk5VSPr4MEx9bSap5HVE=;
+        b=hu5KrUWCd4RCeN8bABh7BbryxBQjFEsBedmue3Ek/yUQx3JT8iv8SM/gRMY1VlZlJT
+         /PiRnXAvxjCb607of/71NYxcO0KF+2Bf8OaVvKeO1lkoJcOJLcaaO2tDQye3GieYyVTY
+         LcpapNw+BoXEzPBhTUinJMxLnewptmgjjyw9sgu5TckNdG6f9ptjNlaayXTR6/Uy1owy
+         IVD8Rv5n+PSPba62WK3V6k0Yr4P4zNCQypzTOmbX0u+drA/FyjrV8da77Wxz9qIXZk+A
+         S5pMiIouPwhQ2WGybyq6S8zsOsloAYs5SQrJ8QnyOtZDDZkPKuojzs03BM2OSHK+huqP
+         VcRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=haS2wAFTF4LYkWgTobEez2BzhQa+N8kYiRyHjcuTHYs=;
-        b=xQtaQJNuXCiY7Aq4CxiNcufhdCYyfvxFqv73vNrdyKIzLuajbY8/BI1I/sXICWhU+z
-         CBFGqZW9WtB19imBDf7ghjVvC7YrSh5sV2+zfBtJyZBRgXfn2ilKF8ND+15NeiQbBDFY
-         lJCu4I4heHM5u8lWGBGkE+SY+pea4x8591UVWQ7S6IhADoMHizrNaFh7S3dQZA0KZJdE
-         nOfq8RTwjgOb+G0or2mIGDXpQhKtJesRMescKluuyhrIhByQS9BxHHDUsp3ND1oR1UXN
-         jlvwEQ+8Jt9cOgElGCBx8Yk35rmHRqBzmTPJI/USNWYaKtzG/3+RYzp22+aTeiXlBU9R
-         FJTA==
-X-Gm-Message-State: AOAM530TKn770cnvdkifn06wbYY00vZTyVHxGI4u07wl75G4Y6lkjbLt
-        v/WUlo5gVQ6wmbbdq1z3tBtoBTJH7kE=
-X-Google-Smtp-Source: ABdhPJz57rgCsHtD0kfrMkySLO9Gd9kwgUJHLtJ/AiSWeOf7+eRYrFR9sxxI1D016mwod1CyeyHp4Q==
-X-Received: by 2002:aca:bbc1:: with SMTP id l184mr4181976oif.190.1644783076082;
-        Sun, 13 Feb 2022 12:11:16 -0800 (PST)
-Received: from marsc.168.1.7 ([2804:30c:b7a:7b00:70e:e3d5:be94:991])
-        by smtp.gmail.com with ESMTPSA id t4sm11933208oie.14.2022.02.13.12.11.13
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=f3jKCxZz79yoCVjIE/GhM4SSk5VSPr4MEx9bSap5HVE=;
+        b=a/nwAh6s5P9y7jkAmjUHtmemN1ET7VTJHEdnC/5aSP84OT9ZZKoQVX/jBxElxzWHlQ
+         nyaSNB8yeyRVYk0eKCjUmdll+tBk+ynW957fns9wjWdCdtKEVVck7oVY7FfLw0huiJD7
+         J5BbrcQeypVh2bgYcGWejobkHrSgkmBfB86eUBEkWGZjmIp0nYA9kwDGLa1Ob4GVPzJ2
+         jkwua6UHxDLeKnG2IrbHq1w1I91FSJwf11/d4Ju+XnaTf7+SIiPk44wYN/qg/LX7rRal
+         wh5Obvo8r6MLT2E6FMoCD7G0mskw612qRNslQEpDly1PCG6XCyInWWvwmc+6eDiZbpNK
+         HNtg==
+X-Gm-Message-State: AOAM5331gr4toMKYsJulS5siUGlGkEWZWUDx2XS8emhRk9xQHzqFqEzu
+        z7yAMP9Ks3xnfxJgEGFRG58=
+X-Google-Smtp-Source: ABdhPJzLE0eJiTiiQoeFyETOWRfAeP1HZF9TKsnzLgNlg9TPkpXc/mIlJAHFQpPt3kpgz1YB49rhfA==
+X-Received: by 2002:a17:902:ba98:: with SMTP id k24mr12140443pls.44.1644809785129;
+        Sun, 13 Feb 2022 19:36:25 -0800 (PST)
+Received: from localhost.localdomain ([27.7.103.158])
+        by smtp.gmail.com with ESMTPSA id me14sm36012pjb.41.2022.02.13.19.36.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Feb 2022 12:11:15 -0800 (PST)
-Date:   Sun, 13 Feb 2022 17:11:11 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Hennerich@marsc.168.1.7,
-        Michael <Michael.Hennerich@analog.com>,
-        Nuno Sa <Nuno.Sa@analog.com>, lars@metafoo.de,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 00/20] iio:adc:ad7280a Cleanup and proposed staging
- graduation.
-Message-ID: <Ygll3yGIjH7NOFx/@marsc.168.1.7>
-References: <20220206190328.333093-1-jic23@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220206190328.333093-1-jic23@kernel.org>
+        Sun, 13 Feb 2022 19:36:24 -0800 (PST)
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
+        sst@poczta.fm, robh+dt@kernel.org
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] iio: potentiometer: Add support for DS3502
+Date:   Mon, 14 Feb 2022 09:06:16 +0530
+Message-Id: <20220214033620.4059-1-jagathjog1996@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -72,118 +64,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 02/06, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Changes since v2:
-> All in response to Marcelo Schmitt doing a really detailed review and
-> testing against the QEMU model.
-> 
-> - Moved elements of patch 2 to patch 5 to avoid missing defines.
-> - Patch 6: Amend ordering to avoid updated software cached values until the
->   hardware write has succeeded.
-> - Patch 12 Fixed wrong callbacks in no_irq case
-> - Patch 14: Changed all numeric properties to u32 to avoid needing to
->   specify bit depth in dts.
-> - Patch 14: Typo fix.
-> - Patch 15: New Patch to drop the handling of partial aux alert channels as
->   it is buggy (and always was). Anyone wanting to bring this back will
->   hopefully have hardware to test as it will be fiddly.
-> - Patch 15 (old number, now 16). Update dt bindings to drop the
->   adi,temp-alert-last-chan given new patch 15 drops the support.
-> - New Patch 18: Change cb_mask software cache to not include the offset of 2
->   and instead apply that only when writing the registers.
-> - New Patch 19: More conservative timings to allow 105 degree Centigrade
->   operation.
-> - Patch 20 is moving the new code so obviously all the above apply to that
->   as well!
+Add dt-bindings and support for Maxim DS3502 into existing ds1803 driver.
+DS3502 is a 7 bit Nonvolatile Digital Potentiometer.
 
-I had another look into this set (including the new patches), and it seems all good. :)
-Also, thanks for clarifying my doubts about the driver on the previous thread.
-So,
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-for the whole series.
+Changes since v1:
+1. Fixes the alignment to match the open parenthesis in separate patch
+2. Adding available functionality for ds1803 driver in separate patch
+3. Moving maxim_potentiometer members into ds1803_cfg structure
+4. Droping of the INFO_ENABLE channel type
+5. Firmware entry with data is used instead of id->driver_data to
+   to retrieve the chip specific data.
 
-It will be nice to see another driver getting out of staging. :D
+Jagath Jog J (4):
+  iio: potentiometer: Alignment to match the open parenthesis
+  iio: potentiometer: Add available functionality
+  iio: potentiometer: Add support for Maxim DS3502
+  dt-bindings: iio: potentiometer: Add Maxim DS3502 in trivial-devices
 
-Thanks,
+ .../devicetree/bindings/trivial-devices.yaml  |   2 +
+ drivers/iio/potentiometer/Kconfig             |   6 +-
+ drivers/iio/potentiometer/ds1803.c            | 141 +++++++++++++-----
+ 3 files changed, 106 insertions(+), 43 deletions(-)
 
-Marcelo
+-- 
+2.17.1
 
-> 
-> Hi All,
-> 
-> This one proved an interesting diversion.
-> 
-> Work done against a somewhat hacked up QEMU emulation of 3 daisy chained
-> ad7280a devices (18 channels).  Note that the emulation isn't complete
-> but does do chaining, CRC, and readout of channels etc in a fashion that
-> worked with the original driver (up to the bug in patch 1) and continues
-> to work with the updated version. I've not intention to upstream the
-> emulation (as would need to make it more completed and flexible), but
-> happy to share it with anyone who is interested.
-> 
-> I briefly flirted with posting a patch to just drop the driver entirely,
-> but the part is still available and it looked like fun + isn't going
-> to greatly impact maintainability of the subsystem long term so is low
-> cost even if it becomes unavailable sometime soon.
-> 
-> There are lots of things we could do after this set to improved the driver
-> and make things more flexible, but it should basically 'just work'
-> 
-> Anyhow, as normal for staging graduations, last patch has rename detection
-> turned off so that people can easily see what I am proposing we move
-> out of staging.
-> 
-> All comments welcome and thanks to Marcelo for reviewing this beast!
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> Jonathan Cameron (20):
->   staging:iio:adc:ad7280a: Fix handing of device address bit reversing.
->   staging:iio:adc:ad7280a: Register define cleanup.
->   staging:iio:adc:ad7280a: rename _read() to _read_reg()
->   staging:iio:adc:ad7280a: Split buff[2] into tx and rx parts
->   staging:iio:adc:ad7280a: Use bitfield ops to managed fields in
->     transfers.
->   staging:iio:adc:ad7280a: Switch to standard event control
->   staging:iio:adc:ad7280a: Standardize extended ABI naming
->   staging:iio:adc:ad7280a: Drop unused timestamp channel.
->   staging:iio:adc:ad7280a: Trivial comment formatting cleanup
->   staging:iio:adc:ad7280a: Make oversampling_ratio a runtime control
->   staging:iio:adc:ad7280a: Cleanup includes
->   staging:iio:ad7280a: Reflect optionality of irq in ABI
->   staging:iio:adc:ad7280a: Use a local dev pointer to avoid &spi->dev
->   staging:iio:adc:ad7280a: Use device properties to replace platform
->     data.
->   staging:iio:adc:ad7280a: Drop buggy support for early termination of
->     AUX alert.
->   dt-bindings:iio:adc:ad7280a: Add binding
->   iio:adc:ad7280a: Document ABI for cell balance switches
->   staging:iio:adc:ad7280a: Remove shift from cb_mask state cache.
->   staging:iio:adc:ad7280a: Use more conservative delays to allow 105C
->     operation.
->   iio:adc:ad7280a: Move out of staging
-> 
->  .../ABI/testing/sysfs-bus-iio-adc-ad7280a     |   13 +
->  .../bindings/iio/adc/adi,ad7280a.yaml         |   77 ++
->  drivers/iio/adc/Kconfig                       |   11 +
->  drivers/iio/adc/Makefile                      |    1 +
->  drivers/iio/adc/ad7280a.c                     | 1111 +++++++++++++++++
->  drivers/staging/iio/adc/Kconfig               |   11 -
->  drivers/staging/iio/adc/Makefile              |    1 -
->  drivers/staging/iio/adc/ad7280a.c             | 1044 ----------------
->  drivers/staging/iio/adc/ad7280a.h             |   37 -
->  9 files changed, 1213 insertions(+), 1093 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
->  create mode 100644 drivers/iio/adc/ad7280a.c
->  delete mode 100644 drivers/staging/iio/adc/ad7280a.c
->  delete mode 100644 drivers/staging/iio/adc/ad7280a.h
-> 
-> -- 
-> 2.35.1
-> 

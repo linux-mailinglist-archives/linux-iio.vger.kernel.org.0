@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 359044B4ED7
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 12:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFFF94B4F06
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 12:43:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351160AbiBNLgp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Feb 2022 06:36:45 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38088 "EHLO
+        id S1352900AbiBNLmX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Feb 2022 06:42:23 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351888AbiBNLfl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Feb 2022 06:35:41 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC95113E95;
-        Mon, 14 Feb 2022 03:24:02 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id jg20so11762032ejc.3;
-        Mon, 14 Feb 2022 03:24:02 -0800 (PST)
+        with ESMTP id S1353773AbiBNLmA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Feb 2022 06:42:00 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D13E66239;
+        Mon, 14 Feb 2022 03:33:45 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id h18so4226803edb.7;
+        Mon, 14 Feb 2022 03:33:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Iy1Cz+zs1JEAXLXhqhcX9TK2+/+UIJdUp67WG5w40hs=;
-        b=gYkOBtZZABcgpF/thuvjIupfs7FIan0Ynvg/bIMX1ajqZCmkFQuY/dHAojvsYq9nBD
-         kcblzBoO208ukgToDuQJYqNBMmEAoqxYVriDkSOCehOQzQSfzHQUvM3EQE5+qJqxejVl
-         ROCuhGs4qwhpAOVcNMiJLItVJnqd3haEFiwe9aqEYaCWn7JeXpLLMCYJaGbWXOFhGxzb
-         6gu5CuISR4GldSuwp5HvZB/r8WxzOpTBxVcKud6eRsp/Tg1ps+Bu2HdCmjWY7IHcBGd5
-         gbC1IptsQyGLEQQRYFCA9rEX1mKgBJRDlv4ncNTaj7lI2Rk/b9CBz466LBg1S07jSSdQ
-         yI2Q==
+        bh=XoIGUc7L1CNxby6hJQisyEzt3VmpKa35bNMvST/YPuE=;
+        b=JlN98nyPpMDUKHiyYlGiPuS7cQJHiFTCs3X6VJUvUDUyjMH04GGi1UiVpeTpW0etd5
+         piy+HN1nnL3JqFiwFC2q/KiFgk8tp6xOXEZMSUjbGTto63xB0ZZ8rKvn4Id3sx0suOa3
+         YqnROkPIS+UkqAqF6v8eCKUPgbumINw1KwtblAfeFsP49L/S5BzM8XiM0V4mJaV5yGys
+         AzA4WejMe721YwVpHQe5uv1AaDYxvmB/fCtrLcaaaS+k21qCVsEUZViAc60oeaP6Ni4A
+         dMAgEtn2oQ4cX7A8MWI9CpcMuiyLePimbafnMB1L28kzbj9t4geyzCVGcLgd5cP5TmhT
+         I8bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Iy1Cz+zs1JEAXLXhqhcX9TK2+/+UIJdUp67WG5w40hs=;
-        b=0caEPc2oz7xhKty/rJXGyBEWrqCQyix8aHItYkCekRGQoxtGFif5FKcmELRzC0r0dm
-         gZeM0ByyXyQQAv7uVF+C6abw9HMLjK1e8IQZdvi0npOfWTE/mniaAkluYZeAtOGMAb63
-         bb1WkRhsM/BQMHfK/iid5azJI6zzi//c+a+sLBfjfqepca+Qdi50U/rxp9ZvQRKyzGMy
-         OtexeQYTiYfo/bu2pHbRum0Hf1CtTRP7QxWnpHyTnJLm+CfZ4adqgiAc1hUjX76Nae0K
-         Mpr9z1AEvmWIy2Gi4IBCTas9MBpuSOQXKxN7YOwruJKcbvnjLeqhhPR8xo/7xYipEau0
-         yuKg==
-X-Gm-Message-State: AOAM532+EsKtGWx3BFhXjWJEF1yrPERgjdLh3mAgfXEK+w0/OWD8hw9q
-        mmRkXblyKPcQmBR2649EZQF6SdzDTcOJdyx2sepY9DQMDZ9e0Q==
-X-Google-Smtp-Source: ABdhPJztH97hs/hzxJ06YxLEpyVt5dSU/fl8YH8A+MrGtW16j8ov1p2lxpUGCpvLJHjKJ1qy+/RfSZbiF/DzUGCDFsQ=
-X-Received: by 2002:a17:907:2d92:: with SMTP id gt18mr10690121ejc.579.1644837841277;
- Mon, 14 Feb 2022 03:24:01 -0800 (PST)
+        bh=XoIGUc7L1CNxby6hJQisyEzt3VmpKa35bNMvST/YPuE=;
+        b=fju/APajZwRvSTMVZzJBvlx5hzM9PKgP7sDw+YhNC5Rg8sc7TixE3mq0lhisOUvRoy
+         xVx+QrIghOKUgAHDiEZD1REtIYAeOI/Pkv2OnpalcdeoLBNXqrLaXhf349Dt9wUycu5r
+         A7fiDO/hR5c9Ti+tYXApW/O2DbmTTHW+Xd+ktRDUmZt+Qj1ah0Yyn5DiWvn6nlaxjQVn
+         J+OKYrfWwjOkqEgS09xFqYIlA1OzxPsPH1fNY+YH5VaBnQTrQRm5uno4dOlefqIPKwbv
+         Cw5EdqkaSLAe9MqMf4p6/bqVeCYRSBCaYbIkxXqu4YlVUwo5Nb5jFF7YP3K8XiPV8/Tw
+         ktgw==
+X-Gm-Message-State: AOAM530zy1nADY8Ir72KnjHwFfForsXOXSbVbI0CckAo5s8LIMupbrGA
+        yPR0vaArHetjDcG+nQIosMVhJdihyjmxlfzaDsk=
+X-Google-Smtp-Source: ABdhPJxdjDrQ1VObEg1fJDmTAzjNNascf/eT/ASfc96PvXg+NyV2kooWdTZhgBk30cN/cpVwEf4p/OyzKfS1/Y1gQqI=
+X-Received: by 2002:a05:6402:4254:: with SMTP id g20mr15512109edb.281.1644838422989;
+ Mon, 14 Feb 2022 03:33:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20220214033620.4059-1-jagathjog1996@gmail.com> <20220214033620.4059-3-jagathjog1996@gmail.com>
-In-Reply-To: <20220214033620.4059-3-jagathjog1996@gmail.com>
+References: <20220214033620.4059-1-jagathjog1996@gmail.com> <20220214033620.4059-4-jagathjog1996@gmail.com>
+In-Reply-To: <20220214033620.4059-4-jagathjog1996@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 14 Feb 2022 13:22:32 +0200
-Message-ID: <CAHp75VdUkVQJOebA3V+F734e5hXO3XWFAT0HVQqKdCQgPbqdNA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] iio: potentiometer: Add available functionality
+Date:   Mon, 14 Feb 2022 13:32:14 +0200
+Message-ID: <CAHp75VcWym5vyDAVyTUCpj=Qkm28VUaqdqJ7VuFL_bsb0fmhaA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] iio: potentiometer: Add support for Maxim DS3502
 To:     Jagath Jog J <jagathjog1996@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -71,36 +71,113 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Mon, Feb 14, 2022 at 5:36 AM Jagath Jog J <jagathjog1996@gmail.com> wrote:
 >
-> Adding available functionality for ds1803 driver which
-> will show the minimum, step and maximum values
-> it can accepts through sysfs entry.
+> The DS3502 is a 7-bit, nonvolatile digital potentiometer featuring
+> an output voltage range of up to 15.5V.
+> DS3502 support is implemented into existing ds1803 driver
 
-accept
+Be consistent here and in other commit messages with how you refer to
+the IC parts, i.e.
+DS1803. Don't forget English grammar and punctuation, i.e. missed period above.
+
+> Datasheet: https://datasheets.maximintegrated.com/en/ds/DS3502.pdf
+
+>
+
+A tag block may not have blank lines. Drop it.
+
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
 
 ...
 
->  struct ds1803_cfg {
->         int kohms;
-> +       int avail[3];
+> -       tristate "Maxim Integrated DS1803 Digital Potentiometer driver"
+> +       tristate "Maxim Integrated DS1803 and similar Digital Potentiometer driver"
+
+Please, list them like other drivers do:
+
+       tristate "Maxim Integrated DS1803/DS... Digital Potentiometer driver"
+
+...
+
+> -         Say yes here to build support for the Maxim Integrated DS1803
+> -         digital potentiometer chip.
+> +         Say yes here to build support for the Maxim Integrated DS1803 and
+> +         similar digital potentiometer chip.
+
+Same here.
+
+...
+
+> - * Maxim Integrated DS1803 digital potentiometer driver
+> + * Maxim Integrated DS1803 and similar digital potentiometer driver
+
+Same here.
+
+...
+
+> -#define DS1803_MAX_POS         255
+> -#define DS1803_WRITE(chan)     (0xa8 | ((chan) + 1))
+
+Not sure why these were removed (or moved?)
+
+...
+
+> +static const struct ds1803_cfg ds1803_cfg[] = {
+> +       [DS1803_010] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  10,
+> +                        .channels = ds1803_channels,
+> +                        .num_channels = ARRAY_SIZE(ds1803_channels) },
+> +       [DS1803_050] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  50,
+> +                        .channels = ds1803_channels,
+> +                        .num_channels = ARRAY_SIZE(ds1803_channels) },
+> +       [DS1803_100] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms = 100,
+> +                        .channels = ds1803_channels,
+> +                        .num_channels = ARRAY_SIZE(ds1803_channels) },
+> +       [DS3502] =     { .wipers = 1, .avail = { 0, 1, 127 }, .kohms =  10,
+> +                        .channels = ds3502_channels,
+> +                        .num_channels = ARRAY_SIZE(ds3502_channels) },
 >  };
->
->  static const struct ds1803_cfg ds1803_cfg[] = {
-> -       [DS1803_010] = { .kohms =  10, },
-> -       [DS1803_050] = { .kohms =  50, },
-> -       [DS1803_100] = { .kohms = 100, },
-> +       [DS1803_010] = { .avail = { 0, 1, 255 }, .kohms =  10, },
-> +       [DS1803_050] = { .avail = { 0, 1, 255 }, .kohms =  50, },
-> +       [DS1803_100] = { .avail = { 0, 1, 255 }, .kohms = 100, },
->  };
 
-Please, do it rather with additional data:
+Split this on a per type basis. I believe it won't be too much work,
+also, consider adding channels as a separate preparatory patch as you
+did with avail.
 
-static const int ds1803_range[] = { ... };
+...
 
-   .avail = ..._range,
+> -       data->cfg = &ds1803_cfg[id->driver_data];
+> +       data->chip_type = (uintptr_t)device_get_match_data(dev);
+> +       if (data->chip_type < DS1803_010 || data->chip_type > DS3502)
+> +               data->chip_type = id->driver_data;
 
-Also, looking into the next patch, can you move the structure to the
-place where it's more appropriate?
+Split it into a separate patch and use pointer validation instead:
+
+data->cfg = ...
+if (!data->cfg)
+  data->cfg = ...id->driver_data;
+
+...
+
+> -       { .compatible = "maxim,ds1803-010", .data = &ds1803_cfg[DS1803_010] },
+> -       { .compatible = "maxim,ds1803-050", .data = &ds1803_cfg[DS1803_050] },
+> -       { .compatible = "maxim,ds1803-100", .data = &ds1803_cfg[DS1803_100] },
+> +       { .compatible = "maxim,ds1803-010", .data = (void *)DS1803_010 },
+> +       { .compatible = "maxim,ds1803-050", .data = (void *)DS1803_050 },
+> +       { .compatible = "maxim,ds1803-100", .data = (void *)DS1803_100 },
+
+This is not good, please use pointers as it was before.
+
+> +       { .compatible = "maxim,ds3502",     .data = (void *)DS3502 },
+
+Ditto. Create a new, separate structure for this type.
+
+...
+
+>         { "ds1803-010", DS1803_010 },
+>         { "ds1803-050", DS1803_050 },
+>         { "ds1803-100", DS1803_100 },
+> +       { "ds3502",     DS3502     },
+
+Too many spaces.
+Besides this, please create a new prerequisite patch to convert this
+to use pointers as above.
 
 -- 
 With Best Regards,

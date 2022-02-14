@@ -2,238 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBE34B5503
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 16:40:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D325A4B58C4
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Feb 2022 18:42:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233688AbiBNPke (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Feb 2022 10:40:34 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37386 "EHLO
+        id S239681AbiBNRmy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Feb 2022 12:42:54 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231735AbiBNPkd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Feb 2022 10:40:33 -0500
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842CB60A9F
-        for <linux-iio@vger.kernel.org>; Mon, 14 Feb 2022 07:40:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1644853225; x=1676389225;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PZfjvmSaL/J0TQy4l+6En+KIReCh1RZJbO4oVhzQ+tc=;
-  b=Su1Xq2wm1WSjQKk01RfNZ4N3hiE8NBU+tMCD2FyIDx+luzfhNU27rBvj
-   0lWMM6ZAwYVePW9hA4zw+51TDV9kQb25VJ8sf85pJ4j4mgGr2DwLOvi9n
-   uyRNuqwkGMgDkAH8wEEJhKGV2+I5Aw7F4/VYF+u5Ny1Be6wRRTjZWnY03
-   eh9Pkq/5ONSRPgVrNJ/mw9XKFDAnH9XtLkehf/fJccyhOHpmOLfUVSrn6
-   XQbwitrW2SrbdcBKdD4pd654K7mMCWrVQyZOsIWW134Pb+A2R/AuA8YJa
-   cWZc8Pzt0CV4ipR8ANi4Lcm3Lb/cmfP5Qp1NWMFLExIY42jM2PK0Ig15z
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10258"; a="250318150"
-X-IronPort-AV: E=Sophos;i="5.88,368,1635231600"; 
-   d="scan'208";a="250318150"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 07:40:25 -0800
-X-IronPort-AV: E=Sophos;i="5.88,368,1635231600"; 
-   d="scan'208";a="501882900"
-Received: from junliao-mobl.amr.corp.intel.com (HELO spandruv-desk1.amr.corp.intel.com) ([10.212.133.237])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 07:40:24 -0800
-Message-ID: <e23ff571cb023799d9890b2d9426c34e27a58ae4.camel@linux.intel.com>
-Subject: Re: [PATCH v2 00/13] IIO: accel/st-sensors move into separate
- symbol namespaces
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Denis Ciocca <denis.ciocca@st.com>
-Date:   Mon, 14 Feb 2022 07:40:24 -0800
-In-Reply-To: <20220214101843.00004bfb@Huawei.com>
-References: <20220116180535.2367780-1-jic23@kernel.org>
-         <20220130200128.58228e7b@jic23-huawei> <20220214101843.00004bfb@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
+        with ESMTP id S229457AbiBNRmx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Feb 2022 12:42:53 -0500
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 937A0652F2
+        for <linux-iio@vger.kernel.org>; Mon, 14 Feb 2022 09:42:45 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id y5so30474722pfe.4
+        for <linux-iio@vger.kernel.org>; Mon, 14 Feb 2022 09:42:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=W0jC+BI1XleZWb4xYM6y8STFaTPRsXHACPClwjtx+Ds=;
+        b=DAAiKeKy6fnmfv72KiGxiZKt4u2fNPLKP2MFLt/3RJ926upPT/BaGK6gUmWp+BGAwK
+         +uaRG1r2hvSEU5yJptA629iQmmZyT2i929+7BWp6g6IdkGYH9hhQx/R4z2MjjcO5N4qh
+         KXuFVRrOk8spFMUYk8TJJKW3/gJPd5m9Dr9HbbqSFf7zMoChbpe/6uECjqsYxitj8dQa
+         5GbIwEjGH8qFPQQIGm2oiP5N8vC/vCCBRx/vyFh81/L/fpy+fSk9IiV+sVUNxhMCCeXe
+         XkJmB85rXQQSzor4ivkwNC/4HQ5jVMX+gVeuIRWSBRBinJ0XGmLundj/BS512UkfEUeJ
+         cLhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=W0jC+BI1XleZWb4xYM6y8STFaTPRsXHACPClwjtx+Ds=;
+        b=4zd3ApZFBl68UrCDZ/JX2e16d6oa2iOoxWzkw9+Mgumf15y2s8cmVa+taZ9OEXho6+
+         N3YSSC4+ClLm0VyshaF+An4ESUWHsdq4LHOv9pL2c54eo2aQH/zBakIthCX0wjvgpYtE
+         exfKTmgOCG7YMQQRbN05oICwl7OMBZB69JGW66hobNTdY0upgMPITmzBhS5H0yQNfCml
+         M8AqQeSEdAKhbbAvkNVBCMCbJRssGwllD+roFox+oqsWyaRSVG5MfVHfG+We2zkztGdP
+         a3sUtBvXjFj8W2rc5QOLOjK8Te934l2yAKrPXgBjo2J/Xz/tukW7I+2d9jRMz2UmSRV3
+         2rYQ==
+X-Gm-Message-State: AOAM530OJdJNZe49Go7dpgONLqcxq7oseTbM1UAxJ36vMzkF3Jcx6kib
+        DHLgr3kuOHOYCNHU76CUqzgeP9JBovFBNi5MtLaMLg==
+X-Google-Smtp-Source: ABdhPJwJiJpYzgpABDBFyLzMhQvo1iBEVDu6iPYEDxL43BvO/78jc0M4fPXPbozpzpwQudr9dC9Z9wsmnPvKbX3AgvQ=
+X-Received: by 2002:a05:6a00:804:: with SMTP id m4mr636142pfk.45.1644860564881;
+ Mon, 14 Feb 2022 09:42:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <1644395873-3937-1-git-send-email-wangqing@vivo.com>
+ <20220213175940.1066f5a8@jic23-huawei> <9e5ed543-cd45-85db-50b5-52c2afd54c55@wanadoo.fr>
+ <29e74800-1c3f-e043-97e6-d83f7a53fafb@wanadoo.fr> <20220214110119.00006347@Huawei.com>
+In-Reply-To: <20220214110119.00006347@Huawei.com>
+From:   Jyoti Bhayana <jbhayana@google.com>
+Date:   Mon, 14 Feb 2022 09:42:33 -0800
+Message-ID: <CA+=V6c31+BvssWX-eG=LdeC8o4mE7e1whnT74jbQWRY2w5Zbqg@mail.gmail.com>
+Subject: Re: [PATCH] iio: use div64_u64() instead of do_div()
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Qing Wang <wangqing@vivo.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2022-02-14 at 10:18 +0000, Jonathan Cameron wrote:
-> On Sun, 30 Jan 2022 20:01:28 +0000
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
-> > On Sun, 16 Jan 2022 18:05:22 +0000
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> > 
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> > 
-> > Hi All,
-> > 
-> > I'd appreciate it if someone has a chance to look at this set.
-> > Should be fairly simple to review as more or less mechanical
-> > changes
-> > other than the choice of naming for each namespace.
-> 
-> I plan to pick this set up shortly on basis v1 got some review and
-> comments were all about the prefix.  So hopefully everything else
-> is fine.
-> 
-> However, if anyone does have time to sanity check it would be much
-> appreciated as I don't trust myself to not do something silly
-> (call it experience :)
-I did sanity check, didn't find any issue.
-
+yes, this is wrong. Also, the logic would be broken as the two apis
+do_div() and div64_u64 return values are completely different.
 Thanks,
-Srinivas
+Jyoti
 
-> 
-> Thanks,
-> 
+
+On Mon, Feb 14, 2022 at 3:01 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Sun, 13 Feb 2022 19:54:01 +0100
+> Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+>
+> > Le 13/02/2022 =C3=A0 19:50, Christophe JAILLET a =C3=A9crit :
+> > > Le 13/02/2022 =C3=A0 18:59, Jonathan Cameron a =C3=A9crit :
+> > >> On Wed,  9 Feb 2022 00:37:53 -0800
+> > >> Qing Wang <wangqing-DGpbCiVdSXo@public.gmane.org> wrote:
+> > >>
+> > >>> From: Wang Qing <wangqing-DGpbCiVdSXo@public.gmane.org>
+> > >>>
+> > >>> do_div() does a 64-by-32 division.
+> > >>> When the divisor is u64, do_div() truncates it to 32 bits, this mea=
+ns it
+> > >>> can test non-zero and be truncated to zero for division.
+> > >>>
+> > >>> fix do_div.cocci warning:
+> > >>> do_div() does a 64-by-32 division, please consider using div64_u64
+> > >>> instead.
+> > >>>
+> > >>> Signed-off-by: Wang Qing <wangqing-DGpbCiVdSXo@public.gmane.org>
+> > >> These look correct to me.  Jyoti, please could give these a sanity c=
+heck?
+> > >>
+> > >
+> > > This is wrong.
+> > >
+> > > See [1].
+> > >
+> > > CJ
+> > >
+> > > [1]:
+> > > https://lore.kernel.org/linux-kernel/20211117112559.jix3hmx7uwqmuryg-=
+bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org/
+> >
+> > Broken link, sorry:
+> >
+> > [1]
+> > https://lore.kernel.org/linux-kernel/20211117112559.jix3hmx7uwqmuryg@pe=
+ngutronix.de/
+> >
+> oops.  Thanks for the heads up. I'd forgotten the slightly odd convention
+> around do_div
+>
 > Jonathan
-> 
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> > > 
-> > > Changes since v1:
-> > > * Add IIO_ prefix to namespaces.
-> > > 
-> > > https://lwn.net/Articles/760045/ provides a good overview of this
-> > > feature
-> > > and why it might be used.  In this particular case we fall under
-> > > the multi
-> > > module case.  For each group of modules, I've moved the exports
-> > > into
-> > > an independent namespace.
-> > > 
-> > > Whilst I'm not entirely sure it is worth the noise of moving the
-> > > main
-> > > IIO exports into a namespace, it is definitely worthwhile for
-> > > these small
-> > > clusters of related modules (typically a core + i2c and spi
-> > > modules).
-> > > 
-> > > I've just done those within drivers/accel (including all of st-
-> > > sensors as
-> > > I did not want to do that piecemeal) as an initial set to get
-> > > feedback on
-> > > what people think of the approach and in particular naming of the
-> > > namespaces.
-> > > 
-> > > As you can see it is a straight forward change to makes so I'll
-> > > do the
-> > > rest of the IIO drivers once we are agreed on the generic
-> > > details.
-> > > Note that I'll be expecting this for any new cases of this
-> > > pattern going
-> > > forwards.
-> > > 
-> > > Includes a small diversion in st-sensors where we had a bunch of
-> > > duplicated
-> > > MODULE_* macros for some of the core modules which were made up
-> > > of multiple
-> > > c files.
-> > > 
-> > > Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de
-> > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > Cc: Lucas Stankus <lucas.p.stankus@gmail.com>
-> > > Cc: Puranjay Mohan <puranjay12@gmail.com>
-> > > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > > Cc: Mike Looijmans <mike.looijmans@topic.nl>
-> > > Cc: Sean Nyekjaer <sean@geanix.com>
-> > > Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > > Cc: Denis Ciocca <denis.ciocca@st.com>
-> > > 
-> > > Jonathan Cameron (13):
-> > >   iio:accel:mma9551_core: Move exports into IIO_MMA9551 namespace
-> > >   iio:accel:mma7455_core: Move exports into IIO_MMA7455 namespace
-> > >   iio:accel:kxsd9: Move exports into IIO_KDSD9 namespace
-> > >   iio:accel:bma400: Move exports into IIO_BMA400 namespace
-> > >   iio:accel:adxl313: Move exports into IIO_ADXL313 namespace
-> > >   iio:accel:adxl345: Move exports into IIO_ADXL345 namespace
-> > >   iio:accel:adxl355: Move exports into IIO_ADXL355 namespace
-> > >   iio:accel:adxl372: Move exports into IIO_ADXL372 namespace
-> > >   iio:accel:bmc150: Move exports into IIO_BMC150 namespace
-> > >   iio:accel:bmi088: Move exports into IIO_BMI088 namespace
-> > >   iio:accel:fxl8962af: Move exports into IIO_FXL8962AF namespace
-> > >   iio:st-sensors: Remove duplicate MODULE_*
-> > >   iio:st-sensors: Move exports into IIO_ST_SENSORS namespace
-> > > 
-> > >  drivers/iio/accel/adxl313_core.c              |  6 ++--
-> > >  drivers/iio/accel/adxl313_i2c.c               |  1 +
-> > >  drivers/iio/accel/adxl313_spi.c               |  1 +
-> > >  drivers/iio/accel/adxl345_core.c              |  2 +-
-> > >  drivers/iio/accel/adxl345_i2c.c               |  1 +
-> > >  drivers/iio/accel/adxl345_spi.c               |  1 +
-> > >  drivers/iio/accel/adxl355_core.c              |  6 ++--
-> > >  drivers/iio/accel/adxl355_i2c.c               |  1 +
-> > >  drivers/iio/accel/adxl355_spi.c               |  1 +
-> > >  drivers/iio/accel/adxl372.c                   |  4 +--
-> > >  drivers/iio/accel/adxl372_i2c.c               |  1 +
-> > >  drivers/iio/accel/adxl372_spi.c               |  1 +
-> > >  drivers/iio/accel/bma400_core.c               |  6 ++--
-> > >  drivers/iio/accel/bma400_i2c.c                |  1 +
-> > >  drivers/iio/accel/bma400_spi.c                |  1 +
-> > >  drivers/iio/accel/bmc150-accel-core.c         |  8 ++---
-> > >  drivers/iio/accel/bmc150-accel-i2c.c          |  1 +
-> > >  drivers/iio/accel/bmc150-accel-spi.c          |  1 +
-> > >  drivers/iio/accel/bmi088-accel-core.c         |  8 ++---
-> > >  drivers/iio/accel/bmi088-accel-spi.c          |  1 +
-> > >  drivers/iio/accel/fxls8962af-core.c           |  6 ++--
-> > >  drivers/iio/accel/fxls8962af-i2c.c            |  1 +
-> > >  drivers/iio/accel/fxls8962af-spi.c            |  1 +
-> > >  drivers/iio/accel/kxsd9-i2c.c                 |  1 +
-> > >  drivers/iio/accel/kxsd9-spi.c                 |  1 +
-> > >  drivers/iio/accel/kxsd9.c                     |  6 ++--
-> > >  drivers/iio/accel/mma7455_core.c              |  6 ++--
-> > >  drivers/iio/accel/mma7455_i2c.c               |  1 +
-> > >  drivers/iio/accel/mma7455_spi.c               |  1 +
-> > >  drivers/iio/accel/mma9551.c                   |  1 +
-> > >  drivers/iio/accel/mma9551_core.c              | 36 +++++++++----
-> > > ------
-> > >  drivers/iio/accel/mma9553.c                   |  1 +
-> > >  drivers/iio/accel/st_accel_buffer.c           |  5 ---
-> > >  drivers/iio/accel/st_accel_core.c             |  5 +--
-> > >  drivers/iio/accel/st_accel_i2c.c              |  1 +
-> > >  drivers/iio/accel/st_accel_spi.c              |  1 +
-> > >  .../iio/common/st_sensors/st_sensors_buffer.c |  7 +---
-> > >  .../iio/common/st_sensors/st_sensors_core.c   | 28 +++++++------
-> > > --
-> > >  .../iio/common/st_sensors/st_sensors_i2c.c    |  2 +-
-> > >  .../iio/common/st_sensors/st_sensors_spi.c    |  2 +-
-> > >  .../common/st_sensors/st_sensors_trigger.c    |  9 ++---
-> > >  drivers/iio/gyro/st_gyro_buffer.c             |  4 ---
-> > >  drivers/iio/gyro/st_gyro_core.c               |  5 +--
-> > >  drivers/iio/gyro/st_gyro_i2c.c                |  1 +
-> > >  drivers/iio/gyro/st_gyro_spi.c                |  1 +
-> > >  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  |  3 +-
-> > >  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c   |  1 +
-> > >  drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c   |  1 +
-> > >  drivers/iio/magnetometer/st_magn_buffer.c     |  4 ---
-> > >  drivers/iio/magnetometer/st_magn_core.c       |  5 +--
-> > >  drivers/iio/magnetometer/st_magn_i2c.c        |  1 +
-> > >  drivers/iio/magnetometer/st_magn_spi.c        |  1 +
-> > >  drivers/iio/pressure/st_pressure_buffer.c     |  5 ---
-> > >  drivers/iio/pressure/st_pressure_core.c       |  5 +--
-> > >  drivers/iio/pressure/st_pressure_i2c.c        |  1 +
-> > >  drivers/iio/pressure/st_pressure_spi.c        |  1 +
-> > >  56 files changed, 111 insertions(+), 103 deletions(-)
-> > >   
-> > 
-> 
-
+>
+>
+> > >
+> > >
+> > >> Thanks,
+> > >>
+> > >> Jonathan
+> > >>
+> > >>> ---
+> > >>>   drivers/iio/common/scmi_sensors/scmi_iio.c | 10 +++++-----
+> > >>>   1 file changed, 5 insertions(+), 5 deletions(-)
+> > >>>
+> > >>> diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > >>> b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > >>> index d538bf3..d6df5da
+> > >>> --- a/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > >>> +++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
+> > >>> @@ -160,7 +160,7 @@ static int scmi_iio_set_odr_val(struct iio_dev
+> > >>> *iio_dev, int val, int val2)
+> > >>>       mult =3D scnprintf(buf, sizeof(buf), "%llu", sf) - 1;
+> > >>>       sec =3D int_pow(10, mult) * UHZ_PER_HZ;
+> > >>> -    do_div(sec, uHz);
+> > >>> +    div64_u64(sec, uHz);
+> > >>>       if (sec =3D=3D 0) {
+> > >>>           dev_err(&iio_dev->dev,
+> > >>>               "Trying to set invalid sensor update value for sensor=
+ %s",
+> > >>> @@ -237,10 +237,10 @@ static void convert_ns_to_freq(u64 interval_n=
+s,
+> > >>> u64 *hz, u64 *uhz)
+> > >>>       u64 rem, freq;
+> > >>>       freq =3D NSEC_PER_SEC;
+> > >>> -    rem =3D do_div(freq, interval_ns);
+> > >>> +    rem =3D div64_u64(freq, interval_ns);
+> > >>>       *hz =3D freq;
+> > >>>       *uhz =3D rem * 1000000UL;
+> > >>> -    do_div(*uhz, interval_ns);
+> > >>> +    div64_u64(*uhz, interval_ns);
+> > >>>   }
+> > >>>   static int scmi_iio_get_odr_val(struct iio_dev *iio_dev, int *val=
+,
+> > >>> int *val2)
+> > >>> @@ -266,7 +266,7 @@ static int scmi_iio_get_odr_val(struct iio_dev
+> > >>> *iio_dev, int *val, int *val2)
+> > >>>       mult =3D SCMI_SENS_CFG_GET_UPDATE_EXP(sensor_config);
+> > >>>       if (mult < 0) {
+> > >>>           sensor_interval_mult =3D int_pow(10, abs(mult));
+> > >>> -        do_div(sensor_update_interval, sensor_interval_mult);
+> > >>> +        div64_u64(sensor_update_interval, sensor_interval_mult);
+> > >>>       } else {
+> > >>>           sensor_interval_mult =3D int_pow(10, mult);
+> > >>>           sensor_update_interval =3D
+> > >>> @@ -500,7 +500,7 @@ static u64 scmi_iio_convert_interval_to_ns(u32 =
+val)
+> > >>>       mult =3D SCMI_SENS_INTVL_GET_EXP(val);
+> > >>>       if (mult < 0) {
+> > >>>           sensor_interval_mult =3D int_pow(10, abs(mult));
+> > >>> -        do_div(sensor_update_interval, sensor_interval_mult);
+> > >>> +        div64_u64(sensor_update_interval, sensor_interval_mult);
+> > >>>       } else {
+> > >>>           sensor_interval_mult =3D int_pow(10, mult);
+> > >>>           sensor_update_interval =3D
+> > >>
+> > >>
+> > >
+> > >
+> >
+>

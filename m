@@ -2,99 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3BF34B65A9
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Feb 2022 09:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF09B4B6608
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Feb 2022 09:28:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234881AbiBOIOp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Feb 2022 03:14:45 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39938 "EHLO
+        id S235426AbiBOI2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Feb 2022 03:28:24 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235291AbiBOIOl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Feb 2022 03:14:41 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA3A6D961;
-        Tue, 15 Feb 2022 00:14:29 -0800 (PST)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 21EMmt4Z002192;
-        Tue, 15 Feb 2022 03:14:28 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3e7fsvnduc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 15 Feb 2022 03:14:28 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 21F8ERun024171
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 15 Feb 2022 03:14:27 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 15 Feb
- 2022 03:14:26 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 15 Feb 2022 03:14:26 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.131])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 21F8Dwtj002120;
-        Tue, 15 Feb 2022 03:14:19 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v8 4/4] MAINTAINERS: add maintainer for ADMV1014 driver
-Date:   Tue, 15 Feb 2022 10:12:16 +0200
-Message-ID: <20220215081216.67706-4-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220215081216.67706-1-antoniu.miclaus@analog.com>
-References: <20220215081216.67706-1-antoniu.miclaus@analog.com>
+        with ESMTP id S230153AbiBOI2Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Feb 2022 03:28:24 -0500
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF37C4879;
+        Tue, 15 Feb 2022 00:28:14 -0800 (PST)
+Received: by mail-ej1-x62e.google.com with SMTP id a8so42563167ejc.8;
+        Tue, 15 Feb 2022 00:28:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SWnhMGGy+Qpz+c59kaT1t8vcf7cPVieqeI/nb/UMyY0=;
+        b=NwBFcuP3hMOS43nGz3kR9HYYikVefnn4WTg79k5cBLGveJvvQetIswHbNBU6sw8xMi
+         6XHg1fO33keJYPrNSFWB/02kkUHhvtHPOEVut270AONcpg7Qte7OtI2UgwXzqh9ZxO6n
+         v050JGPNYGc1ijIAOp4CZSlP+chCPwnW7j82nPj75PZafGNWYC6hpUokRc14v/O7smw2
+         dWcubRyuYr1n9E+usxKNSKL7aWvenLtwtnkAOyuFpxZZlZeQ8SweNh/2ChF3DrerguHK
+         fYh0n2a5yayMQh7gW09CIF0bwUdMAGVX+Su/qxeKOhwoxYelcU2UV9u3aukOKktdtC2y
+         1HkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SWnhMGGy+Qpz+c59kaT1t8vcf7cPVieqeI/nb/UMyY0=;
+        b=K5V0/ogl/p5KeY7rdEb85PzYMjQ6g+XMgnZ2s8Mbqy3w67RTmyjk6s36pbLCINLkuW
+         2wAJpvH04OfUTeu/chh6I9KNLAbCOdOgqnxYlSdok88C3PZ+/j99EYMCpp5je/qZZK4o
+         LrFlHsy2bcBD0L7rkvtKCvPWl+dTzADngldscn5l9kVzpj4SF0WnJcchbPXgZWFl6M+W
+         5sCuXl60Qe28jcTljwccAQlXixAt2OA1nI358l9ytaT/d0+UDY3MvioNISGfGnmIgAgC
+         Dwd03tz8v4tJ9NkRv2HiE+Wa4wWNaT6+1xZhLotm4zOUd5cfP3hEijeYecmXGJR0nAEG
+         CuHw==
+X-Gm-Message-State: AOAM532jIpIKb4L0Uf7KoObMnX+mFSapKS5J4oBktKrP5s3hF8mfVz5H
+        9vCUyBUfqouxFwwZMnnqoUjr5xxYVlwB5glesuBdG6rYIlr9Uw==
+X-Google-Smtp-Source: ABdhPJx14GTHZuqUbZl+yuxFiiZQ+Xs3VxeZAHz4UJ3/Zixlb6E2MASa05kTrhddrHhyGZYB5GP09WbaAvI8N0M+rZs=
+X-Received: by 2002:a17:906:99c5:: with SMTP id s5mr2030550ejn.497.1644913693136;
+ Tue, 15 Feb 2022 00:28:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: TtXuzgJtRLgW0E1p1nZsYTjY11OAImAJ
-X-Proofpoint-ORIG-GUID: TtXuzgJtRLgW0E1p1nZsYTjY11OAImAJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-15_03,2022-02-14_04,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 adultscore=0 mlxlogscore=999
- suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202150047
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220215042011.2266897-1-kai.heng.feng@canonical.com>
+In-Reply-To: <20220215042011.2266897-1-kai.heng.feng@canonical.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 15 Feb 2022 10:27:37 +0200
+Message-ID: <CAHp75VfBQPgrbuxazuoyDbFtGZR=rU5wqPhSXhkoiA_2HR1EHA@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: accel: adxl345: Add ACPI HID table
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add myself as maintainer for the ADMV1014 driver.
+On Tue, Feb 15, 2022 at 6:20 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> x86 boards may use ACPI HID "ADS0345" for adxl345 device.
+>
+> Analog replied:
+> "ADS034X is not a valid PNP ID. ADS0345 would be.
+> I'm not aware that this ID is already taken.
+> Feel free to submit a mainline Linux input mailing list patch."
+>
+> So add an ACPI match table for that accordingly.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thank you for the update, my comments below.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 170bbbeefc3f..b05148cfd4aa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1119,6 +1119,14 @@ W:	http://ez.analog.com/community/linux-device-drivers
- F:	Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml
- F:	drivers/hwmon/adm1177.c
- 
-+ANALOG DEVICES INC ADMV1014 DRIVER
-+M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/frequency/adi,admv1014.yaml
-+F:	drivers/iio/frequency/admv1014.c
-+
- ANALOG DEVICES INC ADP5061 DRIVER
- M:	Michael Hennerich <Michael.Hennerich@analog.com>
- L:	linux-pm@vger.kernel.org
+...
+
+> @@ -41,6 +41,7 @@ static int adxl345_i2c_probe(struct i2c_client *client,
+>  static const struct i2c_device_id adxl345_i2c_id[] = {
+>         { "adxl345", ADXL345 },
+>         { "adxl375", ADXL375 },
+
+> +       { "ADS0345:00", ADXL345 },
+>         { }
+>  };
+>
+
+This is wrong. First of all, on the left side you put the device
+instance name (which must not be in the ID tables, since the device
+instance name is "ID + instance number"). Second, the motivation of
+this is not clear, if the device is enumerated by ACPI, why do you
+care about board code?
+
+Just don't add anything to this table.
+
+The rest is good, but consider doing the same for _spi part of the driver.
+
 -- 
-2.35.1
-
+With Best Regards,
+Andy Shevchenko

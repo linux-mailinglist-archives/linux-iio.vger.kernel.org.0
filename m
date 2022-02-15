@@ -2,107 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF09B4B6608
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Feb 2022 09:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33AE64B6AD7
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Feb 2022 12:30:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235426AbiBOI2Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Feb 2022 03:28:24 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54214 "EHLO
+        id S237155AbiBOLak (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Feb 2022 06:30:40 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiBOI2Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Feb 2022 03:28:24 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF37C4879;
-        Tue, 15 Feb 2022 00:28:14 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id a8so42563167ejc.8;
-        Tue, 15 Feb 2022 00:28:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SWnhMGGy+Qpz+c59kaT1t8vcf7cPVieqeI/nb/UMyY0=;
-        b=NwBFcuP3hMOS43nGz3kR9HYYikVefnn4WTg79k5cBLGveJvvQetIswHbNBU6sw8xMi
-         6XHg1fO33keJYPrNSFWB/02kkUHhvtHPOEVut270AONcpg7Qte7OtI2UgwXzqh9ZxO6n
-         v050JGPNYGc1ijIAOp4CZSlP+chCPwnW7j82nPj75PZafGNWYC6hpUokRc14v/O7smw2
-         dWcubRyuYr1n9E+usxKNSKL7aWvenLtwtnkAOyuFpxZZlZeQ8SweNh/2ChF3DrerguHK
-         fYh0n2a5yayMQh7gW09CIF0bwUdMAGVX+Su/qxeKOhwoxYelcU2UV9u3aukOKktdtC2y
-         1HkQ==
+        with ESMTP id S237140AbiBOLae (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Feb 2022 06:30:34 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3597108579
+        for <linux-iio@vger.kernel.org>; Tue, 15 Feb 2022 03:30:24 -0800 (PST)
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 112193F4B4
+        for <linux-iio@vger.kernel.org>; Tue, 15 Feb 2022 11:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1644924623;
+        bh=TQsWKxzWtW4CbZduV18nJ8RuXExNAqdKgvnVntrHDhc=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=Ih4nybmos/dYj9ptGC8iIbrR2f0liEqTSJ7K5toAJyiI0DQbr488UQsDEHvUkOBVL
+         Rel72W18wTWMaSFvUjpo+7TlK9i01THlKC/6k/DSkZvHICnVQRQ2xU2R+0HJrl4he1
+         YHT4anh7KNyaz10OJKGaYVmYQUgDDUdyZKduLJf2Sx3QZScuF7A0Mo+VOvnyrSHFNH
+         JiI+AimC3ocKRBnlzJ7TW+tz6pmJx5nN2ITd8FWoq48/Uwwq/9wavUQ9Kp+93d/dmS
+         c5Fb7s8L/CbmzaajY7ADu/ULYKHT8Lpch8yJUYnrWsz689GU06n2OLnMgy64Bx0g+g
+         SWO/AQdN/CHNA==
+Received: by mail-oo1-f69.google.com with SMTP id q25-20020a4a3019000000b0031917d3fbd6so728930oof.18
+        for <linux-iio@vger.kernel.org>; Tue, 15 Feb 2022 03:30:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=SWnhMGGy+Qpz+c59kaT1t8vcf7cPVieqeI/nb/UMyY0=;
-        b=K5V0/ogl/p5KeY7rdEb85PzYMjQ6g+XMgnZ2s8Mbqy3w67RTmyjk6s36pbLCINLkuW
-         2wAJpvH04OfUTeu/chh6I9KNLAbCOdOgqnxYlSdok88C3PZ+/j99EYMCpp5je/qZZK4o
-         LrFlHsy2bcBD0L7rkvtKCvPWl+dTzADngldscn5l9kVzpj4SF0WnJcchbPXgZWFl6M+W
-         5sCuXl60Qe28jcTljwccAQlXixAt2OA1nI358l9ytaT/d0+UDY3MvioNISGfGnmIgAgC
-         Dwd03tz8v4tJ9NkRv2HiE+Wa4wWNaT6+1xZhLotm4zOUd5cfP3hEijeYecmXGJR0nAEG
-         CuHw==
-X-Gm-Message-State: AOAM532jIpIKb4L0Uf7KoObMnX+mFSapKS5J4oBktKrP5s3hF8mfVz5H
-        9vCUyBUfqouxFwwZMnnqoUjr5xxYVlwB5glesuBdG6rYIlr9Uw==
-X-Google-Smtp-Source: ABdhPJx14GTHZuqUbZl+yuxFiiZQ+Xs3VxeZAHz4UJ3/Zixlb6E2MASa05kTrhddrHhyGZYB5GP09WbaAvI8N0M+rZs=
-X-Received: by 2002:a17:906:99c5:: with SMTP id s5mr2030550ejn.497.1644913693136;
- Tue, 15 Feb 2022 00:28:13 -0800 (PST)
+        bh=TQsWKxzWtW4CbZduV18nJ8RuXExNAqdKgvnVntrHDhc=;
+        b=jWNLeETVQS3rjs13kWJyK6q6yYfKeGcQsyVb9jQeDtQRZfX/H6CVoMj6wX3lOUo8fi
+         3HyTrqt1sTwIt75Fxud+lxbxz0/qSHW7yapHFJ5QQSu4dopYPtdQAoDp8Lp8fb2AxSln
+         fKdEdaii0CcrQ8XlBybC2Lp3wkdol5Hjlt9cXOzfqE/JvktqZbSVskjqp8xXYPbp45B2
+         HCZk2gnLZDQyNxBr3oSQqdsJvU7KFeBExKHcNbclyn1asj47mYMr+Xob79ekSZDmeziF
+         piooAEoKqbWD/KHiJh3FQCt2C0G9FrxgvG1v2HNI4WtrxHAdT4zpIw7RYpwD2gu4vzdb
+         wsEw==
+X-Gm-Message-State: AOAM531qkTqFb72YbBJg1vfn6y8KRro6H+yl8DZFUwFILRXQWnwWByLR
+        GGxA7tw/C/plTErXUCghpSNosIYj3NCrVSsDzIkK+DnY5WITjIo+tf0gOZ51gSgE05t4FBcQVAX
+        u26uzWh6FNVZ6JqTPYlao97kldvU+yIydmdaINN1pRRXWeXDooEqxRQ==
+X-Received: by 2002:a05:6870:1019:b0:ce:c0c9:631 with SMTP id 25-20020a056870101900b000cec0c90631mr1163427oai.131.1644924621952;
+        Tue, 15 Feb 2022 03:30:21 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxSDV3cX4UNce8B0x7g5PwElp6clHoeO17u/5Wi9aFeC595MGFUPB0PzJhz/IbYfeFikE2Tp9YmYSfowWCVBTw=
+X-Received: by 2002:a05:6870:1019:b0:ce:c0c9:631 with SMTP id
+ 25-20020a056870101900b000cec0c90631mr1163415oai.131.1644924621695; Tue, 15
+ Feb 2022 03:30:21 -0800 (PST)
 MIME-Version: 1.0
-References: <20220215042011.2266897-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20220215042011.2266897-1-kai.heng.feng@canonical.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 15 Feb 2022 10:27:37 +0200
-Message-ID: <CAHp75VfBQPgrbuxazuoyDbFtGZR=rU5wqPhSXhkoiA_2HR1EHA@mail.gmail.com>
+References: <20220215042011.2266897-1-kai.heng.feng@canonical.com> <CAHp75VfBQPgrbuxazuoyDbFtGZR=rU5wqPhSXhkoiA_2HR1EHA@mail.gmail.com>
+In-Reply-To: <CAHp75VfBQPgrbuxazuoyDbFtGZR=rU5wqPhSXhkoiA_2HR1EHA@mail.gmail.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Tue, 15 Feb 2022 19:30:10 +0800
+Message-ID: <CAAd53p6tjWtKSqDDG_hjbFGKeR7-L3uYwgOTRNHfwAhmE8nV+g@mail.gmail.com>
 Subject: Re: [PATCH v3] iio: accel: adxl345: Add ACPI HID table
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 6:20 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
+On Tue, Feb 15, 2022 at 4:28 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> x86 boards may use ACPI HID "ADS0345" for adxl345 device.
+> On Tue, Feb 15, 2022 at 6:20 AM Kai-Heng Feng
+> <kai.heng.feng@canonical.com> wrote:
+> >
+> > x86 boards may use ACPI HID "ADS0345" for adxl345 device.
+> >
+> > Analog replied:
+> > "ADS034X is not a valid PNP ID. ADS0345 would be.
+> > I'm not aware that this ID is already taken.
+> > Feel free to submit a mainline Linux input mailing list patch."
+> >
+> > So add an ACPI match table for that accordingly.
 >
-> Analog replied:
-> "ADS034X is not a valid PNP ID. ADS0345 would be.
-> I'm not aware that this ID is already taken.
-> Feel free to submit a mainline Linux input mailing list patch."
+> Thank you for the update, my comments below.
 >
-> So add an ACPI match table for that accordingly.
-
-Thank you for the update, my comments below.
-
-...
-
-> @@ -41,6 +41,7 @@ static int adxl345_i2c_probe(struct i2c_client *client,
->  static const struct i2c_device_id adxl345_i2c_id[] = {
->         { "adxl345", ADXL345 },
->         { "adxl375", ADXL375 },
-
-> +       { "ADS0345:00", ADXL345 },
->         { }
->  };
+> ...
 >
+> > @@ -41,6 +41,7 @@ static int adxl345_i2c_probe(struct i2c_client *client,
+> >  static const struct i2c_device_id adxl345_i2c_id[] = {
+> >         { "adxl345", ADXL345 },
+> >         { "adxl375", ADXL375 },
+>
+> > +       { "ADS0345:00", ADXL345 },
+> >         { }
+> >  };
+> >
+>
+> This is wrong. First of all, on the left side you put the device
+> instance name (which must not be in the ID tables, since the device
+> instance name is "ID + instance number"). Second, the motivation of
+> this is not clear, if the device is enumerated by ACPI, why do you
+> care about board code?
 
-This is wrong. First of all, on the left side you put the device
-instance name (which must not be in the ID tables, since the device
-instance name is "ID + instance number"). Second, the motivation of
-this is not clear, if the device is enumerated by ACPI, why do you
-care about board code?
+I was uncertain on this at first, but later I saw some drivers use
+this form (*:00) too, so I just followed through.
 
-Just don't add anything to this table.
+The intention is to accommodate adxl345_i2c_probe() without any modification.
 
-The rest is good, but consider doing the same for _spi part of the driver.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>
+> Just don't add anything to this table.
+
+Got it.
+
+>
+> The rest is good, but consider doing the same for _spi part of the driver.
+
+OK, will do.
+
+Kai-Heng
+
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

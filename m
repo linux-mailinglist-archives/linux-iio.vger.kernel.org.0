@@ -2,172 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ECE94B7782
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Feb 2022 21:50:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C903D4B7ACA
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Feb 2022 23:56:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242373AbiBORn7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 15 Feb 2022 12:43:59 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35366 "EHLO
+        id S244685AbiBOW4t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Feb 2022 17:56:49 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbiBORn7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Feb 2022 12:43:59 -0500
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF77E5406;
-        Tue, 15 Feb 2022 09:43:48 -0800 (PST)
-Date:   Tue, 15 Feb 2022 17:43:35 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v2 00/12] iio: buffer-dma: write() and new DMABUF based
- API
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Message-Id: <N8XC7R.5FP2M8552CGT3@crapouillou.net>
-In-Reply-To: <20220213184616.669b490b@jic23-huawei>
-References: <20220207125933.81634-1-paul@crapouillou.net>
-        <20220213184616.669b490b@jic23-huawei>
+        with ESMTP id S244682AbiBOW4r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Feb 2022 17:56:47 -0500
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F642B91D0;
+        Tue, 15 Feb 2022 14:56:37 -0800 (PST)
+Received: by mail-il1-f173.google.com with SMTP id n5so140367ilk.12;
+        Tue, 15 Feb 2022 14:56:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JeNpWnsdEBSIAdgZ4rc+NttAZNtgh6UEy35+0pZJ0PU=;
+        b=NrNpCcJuvt+CFR9+N5GwoSE4wYDFH2IY6ShgRXdTA0+FG7PogHxTSKG0mOvply+aV6
+         3sscyrPcj2ufroN2h0p4bNts1EwMlgr9YUqtPcItgJT274tdhF7VXN+ZD9vkXdwYgXnU
+         oGOJSJF5rJbYdjeyT4wOJMmn3L+i4IX12N2waKt8fqS86YemGiHLVGwUwp4hDzoMCvlc
+         VwWE4R7YOvSH9PPTlAZ5Qw6oLc9AQT9xW2S5z+fIkklf+NCATR7fqEU5LKcdlgGYBz+r
+         vPw1CTE49rn2xx4R9UUq0RDRfjX52QSh4TaND5NMf4klf+xCiUjHKJH0QGWyJ7mbdzoF
+         gNtg==
+X-Gm-Message-State: AOAM531Z9KzAIiXDTKrd/fYSGpcy40iEkq0vuByu5GGCMNe5XVCbu2br
+        M25tBQML1VFP2zM0jeHKMQ==
+X-Google-Smtp-Source: ABdhPJznftkYIpt01opf8UkdBTHjoIG3wyj6NjXO8VkO1mlt3KReXJUUXOr75f1kf6TzdSSAHpT92Q==
+X-Received: by 2002:a92:bf08:0:b0:2be:fc43:14c4 with SMTP id z8-20020a92bf08000000b002befc4314c4mr8776ilh.80.1644965796667;
+        Tue, 15 Feb 2022 14:56:36 -0800 (PST)
+Received: from robh.at.kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id q2sm17616920ilt.33.2022.02.15.14.56.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Feb 2022 14:56:36 -0800 (PST)
+Received: (nullmailer pid 4072247 invoked by uid 1000);
+        Tue, 15 Feb 2022 22:56:33 -0000
+Date:   Tue, 15 Feb 2022 16:56:33 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     sst@poczta.fm, linux-iio@vger.kernel.org, lars@metafoo.de,
+        jic23@kernel.org, robh+dt@kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, andy.shevchenko@gmail.com
+Subject: Re: [PATCH v2 4/4] dt-bindings: iio: potentiometer: Add Maxim DS3502
+ in trivial-devices
+Message-ID: <YgwvoUTOmTi8/NsS@robh.at.kernel.org>
+References: <20220214033620.4059-1-jagathjog1996@gmail.com>
+ <20220214033620.4059-5-jagathjog1996@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-13; format=flowed
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220214033620.4059-5-jagathjog1996@gmail.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-
-Le dim., févr. 13 2022 at 18:46:16 +0000, Jonathan Cameron 
-<jic23@kernel.org> a écrit :
-> On Mon,  7 Feb 2022 12:59:21 +0000
-> Paul Cercueil <paul@crapouillou.net> wrote:
+On Mon, 14 Feb 2022 09:06:20 +0530, Jagath Jog J wrote:
+> Maxim DS3502 is a 7 bit nonvolatile digital potentiometer.
+> Add DS3502 binding into trivial-devices.yaml
 > 
->>  Hi Jonathan,
->> 
->>  This is the V2 of my patchset that introduces a new userspace 
->> interface
->>  based on DMABUF objects to complement the fileio API, and adds 
->> write()
->>  support to the existing fileio API.
-> 
-> Hi Paul,
-> 
-> It's been a little while. Perhaps you could summarize the various view
-> points around the appropriateness of using DMABUF for this?
-> I appreciate it is a tricky topic to distil into a brief summary but
-> I know I would find it useful even if no one else does!
-
-So we want to have a high-speed interface where buffers of samples are 
-passed around between IIO devices and other devices (e.g. USB or 
-network), or made available to userspace without copying the data.
-
-DMABUF is, at least in theory, exactly what we need. Quoting the 
-documentation 
-(https://www.kernel.org/doc/html/v5.15/driver-api/dma-buf.html):
-"The dma-buf subsystem provides the framework for sharing buffers for 
-hardware (DMA) access across multiple device drivers and subsystems, 
-and for synchronizing asynchronous hardware access. This is used, for 
-example, by drm ´prime¡ multi-GPU support, but is of course not 
-limited to GPU use cases."
-
-The problem is that right now DMABUF is only really used by DRM, and to 
-quote Daniel, "dma-buf looks like something super generic and useful, 
-until you realize that there's a metric ton of gpu/accelerator bagage 
-piled in".
-
-Still, it seems to be the only viable option. We could add a custom 
-buffer-passing interface, but that would mean implementing the same 
-buffer-passing interface on the network and USB stacks, and before we 
-know it we re-invented DMABUFs.
-
-Cheers,
--Paul
-
-
->> 
->>  Changes since v1:
->> 
->>  - the patches that were merged in v1 have been (obviously) dropped 
->> from
->>    this patchset;
->>  - the patch that was setting the write-combine cache setting has 
->> been
->>    dropped as well, as it was simply not useful.
->>  - [01/12]:
->>      * Only remove the outgoing queue, and keep the incoming queue, 
->> as we
->>        want the buffer to start streaming data as soon as it is 
->> enabled.
->>      * Remove IIO_BLOCK_STATE_DEQUEUED, since it is now functionally 
->> the
->>        same as IIO_BLOCK_STATE_DONE.
->>  - [02/12]:
->>      * Fix block->state not being reset in
->>        iio_dma_buffer_request_update() for output buffers.
->>      * Only update block->bytes_used once and add a comment about 
->> why we
->>        update it.
->>      * Add a comment about why we're setting a different state for 
->> output
->>        buffers in iio_dma_buffer_request_update()
->>      * Remove useless cast to bool (!!) in iio_dma_buffer_io()
->>  - [05/12]:
->>      Only allow the new IOCTLs on the buffer FD created with
->>      IIO_BUFFER_GET_FD_IOCTL().
->>  - [12/12]:
->>      * Explicitly state that the new interface is optional and is
->>        not implemented by all drivers.
->>      * The IOCTLs can now only be called on the buffer FD returned by
->>        IIO_BUFFER_GET_FD_IOCTL.
->>      * Move the page up a bit in the index since it is core stuff 
->> and not
->>        driver-specific.
->> 
->>  The patches not listed here have not been modified since v1.
->> 
->>  Cheers,
->>  -Paul
->> 
->>  Alexandru Ardelean (1):
->>    iio: buffer-dma: split iio_dma_buffer_fileio_free() function
->> 
->>  Paul Cercueil (11):
->>    iio: buffer-dma: Get rid of outgoing queue
->>    iio: buffer-dma: Enable buffer write support
->>    iio: buffer-dmaengine: Support specifying buffer direction
->>    iio: buffer-dmaengine: Enable write support
->>    iio: core: Add new DMABUF interface infrastructure
->>    iio: buffer-dma: Use DMABUFs instead of custom solution
->>    iio: buffer-dma: Implement new DMABUF based userspace API
->>    iio: buffer-dmaengine: Support new DMABUF based userspace API
->>    iio: core: Add support for cyclic buffers
->>    iio: buffer-dmaengine: Add support for cyclic buffers
->>    Documentation: iio: Document high-speed DMABUF based API
->> 
->>   Documentation/driver-api/dma-buf.rst          |   2 +
->>   Documentation/iio/dmabuf_api.rst              |  94 +++
->>   Documentation/iio/index.rst                   |   2 +
->>   drivers/iio/adc/adi-axi-adc.c                 |   3 +-
->>   drivers/iio/buffer/industrialio-buffer-dma.c  | 610 
->> ++++++++++++++----
->>   .../buffer/industrialio-buffer-dmaengine.c    |  42 +-
->>   drivers/iio/industrialio-buffer.c             |  60 ++
->>   include/linux/iio/buffer-dma.h                |  38 +-
->>   include/linux/iio/buffer-dmaengine.h          |   5 +-
->>   include/linux/iio/buffer_impl.h               |   8 +
->>   include/uapi/linux/iio/buffer.h               |  30 +
->>   11 files changed, 749 insertions(+), 145 deletions(-)
->>   create mode 100644 Documentation/iio/dmabuf_api.rst
->> 
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
+
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
+
+If a tag was not added on purpose, please state why and what changed.
 

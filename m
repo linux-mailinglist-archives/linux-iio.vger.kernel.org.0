@@ -2,142 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 920184BA5E4
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Feb 2022 17:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B36CC4BA643
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Feb 2022 17:42:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243229AbiBQQ17 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Feb 2022 11:27:59 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:32972 "EHLO
+        id S243343AbiBQQkY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Feb 2022 11:40:24 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243182AbiBQQ1z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Feb 2022 11:27:55 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934ABB2E08;
-        Thu, 17 Feb 2022 08:27:37 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id d10so8516236eje.10;
-        Thu, 17 Feb 2022 08:27:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=x0CAWbNuIuDfQpbJainmJSxgl05KS6pI1nwvw77TVRY=;
-        b=XYjjMpDhaV3y4guUdwjcp7pgm0CCJvpxAYqNX/uRe1b80YfpnK0ARRNBQuuarUXsmt
-         IuoP9UGADm0phg5YjhICWB2TYsr8Q15w9dvHc8shFxuizpjNbhIo8BnklYElCvt1LVfH
-         aHEjCRuS/wUZhdmJDKGXCXZH2MeGUT5QgqowghefD1jO/9ZYE8o3eZGL/FRNKnJPk8ni
-         ky4p5t2DWKWEzWnNXX/Q+f4T3nvBS9CpocYX9sHIJdlvOprs79hV9JmszQBdz25z9bUi
-         Q2t7B+W8f1RiL4+buQH0S5DKRQ9D5BHYgteg7ctM8Z1DIkqdwZjesChIj/808a++1E4J
-         cu2A==
+        with ESMTP id S233867AbiBQQkX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Feb 2022 11:40:23 -0500
+Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B9A2B31B4;
+        Thu, 17 Feb 2022 08:40:08 -0800 (PST)
+Received: by mail-il1-f177.google.com with SMTP id 9so1960816ily.11;
+        Thu, 17 Feb 2022 08:40:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=x0CAWbNuIuDfQpbJainmJSxgl05KS6pI1nwvw77TVRY=;
-        b=5v4SbT74eWBvdrpKEuR6C2yACdN6GvJI9LmPptnr80C4XKH56j6k/94iC/fPG0kybQ
-         im6aGSLxQh6uBYqXTxJKmmQtRqO8SNfiSh6xLxyxsSS+Y7jxYXFmHtdhWCrU9c+Sc00p
-         W9FtU3qCKZbP2L0M0GkrqGc/FbJz1XZS7jznZjLfueLvgrKQXi7ddoxlFerWoiEO+W+q
-         DfJhkweC42W6z6eNGN2qZwp5lJpNmhsqJ75Hd7D3hBRDCrDZ1b1Q+6hiHfZese3VHmAl
-         BY8rszViXilMVzRnQ/t8CSYNGgOKTl4kpYoT+Usp9L0nF0fComXmwOQt2Rj0w2+Sduwf
-         eT0Q==
-X-Gm-Message-State: AOAM533VpJkhagUH9xAj/OKI/SxuLha4CIW8r+BTobfJMbVOCANbwcPT
-        6W5KizBWCro6mrguGc04n14=
-X-Google-Smtp-Source: ABdhPJzlwfwiOWxf+goTzxLgaAJ6/r/qIVfSm0JJTyMJULqZyhZQz20H7AUpWOyqFSUm3xkOn6AE4Q==
-X-Received: by 2002:a17:907:2bf6:b0:6b9:725e:4e1f with SMTP id gv54-20020a1709072bf600b006b9725e4e1fmr2943906ejc.527.1645115256153;
-        Thu, 17 Feb 2022 08:27:36 -0800 (PST)
-Received: from poker.lan (static.2-229-210-222.ip198.fastwebnet.it. [2.229.210.222])
-        by smtp.gmail.com with ESMTPSA id j13sm3653742edw.24.2022.02.17.08.27.34
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=FG2H7omY9RofxBYIWqf/AqADQ+9egAxBNOFJHSTjFn8=;
+        b=iG8UAruKRt/C616UqTuXelswnPyQjtP0UYSrcCWKkoaB8IQg8xnDv7icJjjTLtEUAO
+         9FX/gwGLupEhZ1wKheb6b1/cyucJyUw00mgTzst1P2Dpce5YoAqM9M9Sr7HQ+5qlR3Ha
+         iy0nr1scdC7kmp7yH8Wk9IsurdcUfyplWV2su+geLru4GNlzKmOAd+3dpmYV2SmTfYq4
+         /THCobs75i58lhJuhB3CyWP6HpbXPiKHQTZ8uvMUmIIgLtqYKaNkVOdONAGFtRgtkBAG
+         gTYyCd0OzUtfniKhm6+1QROJU5KjSm6rLVA6wDOna8MrTHX2WutyMXEnSU0O0gvqYbh0
+         berQ==
+X-Gm-Message-State: AOAM532goEkcB4e1tEuRACz3qzJyaqJNSSTsKt+NC9E4LZMueMDfQdOh
+        KtADBtEZOuUtDVUA8q/GoK+O0y3T/g==
+X-Google-Smtp-Source: ABdhPJwmuv4Ou8IkxQmMGckJPm80zD2OBF0ztUKoJ0WK/FADyqFbwkpG2ZcG1QBGYVRNdpq4k6OzJw==
+X-Received: by 2002:a05:6e02:692:b0:2be:a3a4:8f0 with SMTP id o18-20020a056e02069200b002bea3a408f0mr2562966ils.134.1645116008024;
+        Thu, 17 Feb 2022 08:40:08 -0800 (PST)
+Received: from robh.at.kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id x11sm2300132iow.8.2022.02.17.08.40.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Feb 2022 08:27:35 -0800 (PST)
-From:   Andrea Merello <andrea.merello@gmail.com>
-To:     jic23@kernel.org, mchehab+huawei@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
-        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
-        jacopo@jmondi.org, Andrea Merello <andrea.merello@gmail.com>,
-        Andrea Merello <andrea.merello@iit.it>
-Subject: [v3 13/13] docs: iio: add documentation for BNO055 driver
-Date:   Thu, 17 Feb 2022 17:27:10 +0100
-Message-Id: <20220217162710.33615-14-andrea.merello@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220217162710.33615-1-andrea.merello@gmail.com>
-References: <20220217162710.33615-1-andrea.merello@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Thu, 17 Feb 2022 08:40:07 -0800 (PST)
+Received: (nullmailer pid 3365325 invoked by uid 1000);
+        Thu, 17 Feb 2022 16:39:55 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Cristian Pop <cristian.pop@analog.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, jic23@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20220217101241.71702-1-cristian.pop@analog.com>
+References: <20220217101241.71702-1-cristian.pop@analog.com>
+Subject: Re: [PATCH v3 1/2] dt:bindings:iio:frequency: Add ADMV4420 doc
+Date:   Thu, 17 Feb 2022 10:39:55 -0600
+Message-Id: <1645115995.366904.3365324.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Signed-off-by: Andrea Merello <andrea.merello@iit.it>
----
- Documentation/iio/bno055.rst | 53 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
- create mode 100644 Documentation/iio/bno055.rst
+On Thu, 17 Feb 2022 12:12:40 +0200, Cristian Pop wrote:
+> Add device tree bindings for the ADMV4420 K band downconverter.
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> ---
+> changes in v3:
+>  - Fix indentation
+>  - Rename property 'adi,lo-freq-hz' to 'adi,lo-freq-khz'
+>  .../bindings/iio/frequency/adi,admv4420.yaml  | 54 +++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+> 
 
-diff --git a/Documentation/iio/bno055.rst b/Documentation/iio/bno055.rst
-new file mode 100644
-index 000000000000..4bb185075325
---- /dev/null
-+++ b/Documentation/iio/bno055.rst
-@@ -0,0 +1,53 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+==============================
-+BNO055 driver
-+==============================
-+
-+1. Overview
-+===========
-+
-+This driver supports Bosch BNO055 IMUs (on both serial and I2C busses).
-+
-+Accelerometer, magnetometer and gyroscope measures are always provided.
-+When "fusion_enable" sysfs attribute is set to 1, orientation (both Euler
-+angles and quaternion), linear velocity and gravity vector are also
-+provided, but some sensor settings (e.g. low pass filtering and range)
-+became locked (the IMU firmware controls them).
-+
-+IIO attributes for unavailable measurements (e.g. Euler angles when fusion
-+mode is disabled) just read zero.
-+
-+This driver supports also IIO buffers.
-+
-+2. Calibration
-+==============
-+
-+The IMU continuously performs an autocalibration procedure if (and only if)
-+operating in fusion mode. The magnetometer autocalibration can however be
-+disabled writing 0 in the sysfs in_magn_calibration_fast_enable attribute.
-+
-+The driver provides access to autocalibration flags (i.e. you can known if
-+the IMU has successfully autocalibrated) and to the calibration data blob.
-+
-+The user can save this blob in a firmware file (i.e. in /lib/firmware) that
-+the driver looks for at probe time. If found, then the IMU is initialized
-+with this calibration data. This saves the user from performing the
-+calibration procedure every time (which consist of moving the IMU in
-+various way).
-+
-+The driver looks for calibration data file using two different names: first
-+a file whose name is suffixed with the IMU unique ID (exposed in sysfs as
-+serial_number) is searched for; this is useful when there is more than one
-+IMU instance. If this file is not found, then a "generic" calibration file
-+is searched for (which can be used when only one IMU is present, without
-+struggling with fancy names, that change on each device).
-+
-+Valid calibration file names would be e.g.
-+ bno055-caldata-0e7c26a33541515120204a35342b04ff.dat
-+ bno055-caldata.dat
-+
-+In non-fusion mode the IIO 'offset' attributes provide access to the
-+offsets from calibration data (if any), so that the user can apply them to
-+the accel, angvel and magn IIO attributes. In fusion mode they are not
-+needed (the IMU firmware internally applies those corrections) and they
-+read as zero.
--- 
-2.17.1
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml: properties:adi,lo-freq-khz: 'oneOf' conditional failed, one must be fixed:
+	'type' is a required property
+		hint: A vendor boolean property can use "type: boolean"
+	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml: properties:adi,lo-freq-khz: 'oneOf' conditional failed, one must be fixed:
+		'enum' is a required property
+		'const' is a required property
+		hint: A vendor string property with exact values has an implicit type
+		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
+	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml: properties:adi,lo-freq-khz: 'oneOf' conditional failed, one must be fixed:
+		'$ref' is a required property
+		'allOf' is a required property
+		hint: A vendor property needs a $ref to types.yaml
+		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
+	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
+	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml: ignoring, error in schema: properties: adi,lo-freq-khz
+Documentation/devicetree/bindings/iio/frequency/adi,admv4420.example.dt.yaml:0:0: /example-0/spi/admv4420@0: failed to match any schema with compatible: ['adi,admv4420']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1594130
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 

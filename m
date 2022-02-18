@@ -2,77 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 947044BB514
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 10:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF2854BB563
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 10:21:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231920AbiBRJML (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 04:12:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38876 "EHLO
+        id S232978AbiBRJVb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 04:21:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231190AbiBRJMK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 04:12:10 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA021FAA3B;
-        Fri, 18 Feb 2022 01:11:53 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id j4so6676611plj.8;
-        Fri, 18 Feb 2022 01:11:53 -0800 (PST)
+        with ESMTP id S233462AbiBRJV0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 04:21:26 -0500
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217A327CC5
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 01:21:08 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id q11-20020a17090a304b00b001b94d25eaecso7947486pjl.4
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 01:21:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=LIyRE3EdCpuyED3eL5M9fHMS8or7gH1mbvyGPDXk7Ho=;
-        b=mimdAcxFhT2El1z1fVFEL0MJ4/Pp7o6E1+DqHWP+bFNzUuaCVast9XxCbMtrMQrD98
-         ANWiMfRGgzZT1ka8MMYuLFJusueUZk4X4+Yaz9QgKS/gKss8MExYmjI+r7ZikIYzTQM/
-         2tK6Xm61C21KtbTW8jCGEuTiPVKOjV3ikNRIfAa736bX3pTfEGBkKIKa5kzAmwW+zZXS
-         i+r1FJ5Wbj+PZaGWq5ZaxCoki9Qe3cqYbKmNDbbqQPI0g47xWPjx2D6gwiBDAQ7TWeO6
-         0FA7QyJ9wOp2DKBuGNeyo+eDyNhFdNRmFbK0VVcCIR0Eabbv7hbEj/AKgkjIZquzl9N7
-         5yYg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oL38d/xhLakar1r3IADvY8npTUwpwPyjsDa5M8iZYyg=;
+        b=qgOuGk+ALMVLZF217C9jdDK9A5b/e6HUP3Vk33NVbIsuOc7sAK/8gZ4YVAXYDCEKIB
+         xEp3TdzLLV3pOT1vVlcRcWfao1da3ExBZFwYzhUFlFe2FHZ9af3PCFch8eZCPaAL4zXz
+         dw2W8Ey7Us3YhkdyHS2Vcq53/3cIlcX/u/j4sPSbFBPbG5ulGudPEAOnVSRxzIqwHiqU
+         uiCxeNWmVM9GvNEGQnv+CXJlhYOmLrZH2176bRWNOq4i3mZ7fG2n69OX8YLZCEgsOJN9
+         v5frYh6kGAvQn0X9qn4hXr+TNrdge+Wz5bV2H/tGzgtzDM+NIC07+/YAbHGiWZP47qz0
+         CKYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=LIyRE3EdCpuyED3eL5M9fHMS8or7gH1mbvyGPDXk7Ho=;
-        b=rei2udyRrGQAZ6AgdtivxP2kMFrEJ5qDElRPdjrc4i/C5kxsvBeO1QwTo/eYQXNpZx
-         tncyakAIvvuTgbNgwVAtpZVCzkHy6C9fkZzmecgukQ7rOy1NUo2W06113hk7zerRHy+D
-         DW9MFW5WAM9qcvXBw9mekI7YEGcDW+MgOO4aETB6d5J0SYVUqIY0jRQsBEQ4CSCIwx3D
-         zu3Us+1pneWyU8UA8fovBgiXhJsWgObpgNqZTmjgkHmEyFm1HfOiSGorRXMC1TQi4AFN
-         CCuELX4xHT7dWLdGCmFpz2AkP3mwoT2iPRRj8gSHNc7v4NixsSu2A+KTshFskWyVLkP6
-         d16g==
-X-Gm-Message-State: AOAM531y41wzDuEONaLUqbmCCasVKm9xDbdghxJzroCTDMWzE+cDebkK
-        r6Nav1DILK8VGVVWV3TUBAG56vjMPIwW7A==
-X-Google-Smtp-Source: ABdhPJwJ9QuWZ+uW0njIFCa4HTx3lVBs2R5lPDA4/gn9iBSrA230PM1YWkUrMOl0zzSab4+V0CO4EA==
-X-Received: by 2002:a17:902:8497:b0:14f:919:9fdd with SMTP id c23-20020a170902849700b0014f09199fddmr6766127plo.52.1645175513425;
-        Fri, 18 Feb 2022 01:11:53 -0800 (PST)
-Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id s9sm4038660pjk.1.2022.02.18.01.11.49
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oL38d/xhLakar1r3IADvY8npTUwpwPyjsDa5M8iZYyg=;
+        b=hJbARDClX4x21xFuLdacYLrh6yj8eTNRikH5H4RQU7X2/ss0+lNNe1Juv2pUsxfti/
+         +Q/hKxHuV1B+rBR3xR201VsAtVjBdyfwl5tzbEb529vCX32RDjCiEQcPw1b5cs6iy3+l
+         ktHMDuPPs17jz4nyu0d+zGY8QdXotS0r8BijUZxP1CL36WqntD8G/YjK6XDnbqJqviYz
+         KDTDBf/e9l+j4aAAJDN8zzfguHl+nrOjvAXVhkBZ8Yh5K0yjGreif4OR+FkIvYCCaTQL
+         4+PNAHOjEad+CrjUf3sEgR+2j6l9luVc4EoRGoiugQzM/BSUNqPSwtmal58ESOZZnudn
+         5DEw==
+X-Gm-Message-State: AOAM533DmxaH2d7N7VKb8kAnz4sR9j3zSgjExzxrAjFCWvxIoLHVvbEz
+        UKCyMzUP7ZVMCCFcSG6Lbq0=
+X-Google-Smtp-Source: ABdhPJy6OHGRlYqtEOPxHXbPMXrEVXj26cV6FSe5ZTjQTICO5ZBto6X9PDZgQoFOiqE9ah9m42pw8w==
+X-Received: by 2002:a17:90b:3d0e:b0:1bb:8615:78d6 with SMTP id pt14-20020a17090b3d0e00b001bb861578d6mr7511405pjb.4.1645176067672;
+        Fri, 18 Feb 2022 01:21:07 -0800 (PST)
+Received: from localhost.localdomain (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
+        by smtp.gmail.com with ESMTPSA id ot12sm4523155pjb.22.2022.02.18.01.21.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Feb 2022 01:11:52 -0800 (PST)
-Date:   Fri, 18 Feb 2022 18:11:46 +0900
+        Fri, 18 Feb 2022 01:21:07 -0800 (PST)
 From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     gregkh@linuxfoundation.org
 Cc:     linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Oleksij Rempel <o.rempel@pengutronix.de>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH] counter: Stop using dev_get_drvdata() to get the counter
- device
-Message-ID: <Yg9i0lvLAurmp3M+@shinobu>
-References: <YfzPcyusGwAOkys6@shinobu>
- <20220204082556.370348-1-u.kleine-koenig@pengutronix.de>
- <YgHKekl9rJ2jH5j4@shinobu>
- <b9099ac3-a5fa-1aba-92a3-05a7212525ab@linux.intel.com>
- <20220217160308.oo3fmghapnvmummz@pengutronix.de>
- <Yg7de1ZlUJoNGYNa@shinobu>
- <20220218074751.3xjsxwy7s63jshwv@pengutronix.de>
+        William Breathitt Gray <vilhelm.gray@gmail.com>
+Subject: [PATCH] counter: Stop using dev_get_drvdata() to get the counter device
+Date:   Fri, 18 Feb 2022 18:20:31 +0900
+Message-Id: <20220218092031.167689-1-vilhelm.gray@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="RXQcv7FYYhz4E3ZR"
-Content-Disposition: inline
-In-Reply-To: <20220218074751.3xjsxwy7s63jshwv@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -83,84 +72,94 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
---RXQcv7FYYhz4E3ZR
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+dev_get_drvdata() returns NULL since commit b56346ddbd82 ("counter: Use
+container_of instead of drvdata to track counter_device") which wrongly
+claimed there were no users of drvdata. Convert to container_of() to
+fix a null pointer dereference.
 
-On Fri, Feb 18, 2022 at 08:47:51AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Hello,
->=20
-> On Fri, Feb 18, 2022 at 08:42:51AM +0900, William Breathitt Gray wrote:
-> > On Thu, Feb 17, 2022 at 05:03:08PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Thu, Feb 17, 2022 at 04:48:50PM +0200, Jarkko Nikula wrote:
-> > > > On 2/8/22 03:42, William Breathitt Gray wrote:
-> > > > > On Fri, Feb 04, 2022 at 09:25:56AM +0100, Uwe Kleine-K=C3=B6nig w=
-rote:
-> > > > > > dev_get_drvdata() returns NULL since commit b56346ddbd82 ("coun=
-ter: Use
-> > > > > > container_of instead of drvdata to track counter_device") which=
- wrongly
-> > > > > > claimed there were no users of drvdata. Convert to container_of=
-() to
-> > > > > > fix a null pointer dereference.
-> > > > > >=20
-> > > > > > Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > > > > Fixes: b56346ddbd82 ("counter: Use container_of instead of drvd=
-ata to track counter_device")
-> > > > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutron=
-ix.de>
-> > > > >=20
-> > > > > I'll pick this up and apply it to my tree.
-> > > >
-> > > > Perhaps late but I hit this same issue, patch here fixes it and I w=
-anted to
-> > > > confirm it.
-> > > >=20
-> > > > Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> > >=20
-> > > I wonder if this patch is scheduled for 5.17. Currently it's not even=
- in
-> > > next ... :-\
-> >=20
-> > I've got it in my tree. I'm sending a pull request for the Counter
-> > patches for 5.17 next week, so they should all be merged after that.
->=20
-> That's good. Still I think you could make live easier for your users to
-> find fixes if your tree was included in next. And in MAINTAINERS.
->=20
-> Best regards
-> Uwe
+Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: b56346ddbd82 ("counter: Use container_of instead of drvdata to track counter_device")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+---
+ drivers/counter/counter-sysfs.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-That's a fair point, I'll update MAINTAINERS and set up my fixes branch
-for inclusion in linux-next.
+diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+index 7cc4d1d523ea..04eac41dad33 100644
+--- a/drivers/counter/counter-sysfs.c
++++ b/drivers/counter/counter-sysfs.c
+@@ -19,6 +19,11 @@
+ 
+ #include "counter-sysfs.h"
+ 
++static inline struct counter_device *counter_from_dev(struct device *dev)
++{
++	return container_of(dev, struct counter_device, dev);
++}
++
+ /**
+  * struct counter_attribute - Counter sysfs attribute
+  * @dev_attr:	device attribute for sysfs
+@@ -90,7 +95,7 @@ static ssize_t counter_comp_u8_show(struct device *dev,
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+-	struct counter_device *const counter = dev_get_drvdata(dev);
++	struct counter_device *const counter = counter_from_dev(dev);
+ 	int err;
+ 	u8 data = 0;
+ 
+@@ -122,7 +127,7 @@ static ssize_t counter_comp_u8_store(struct device *dev,
+ 				     const char *buf, size_t len)
+ {
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+-	struct counter_device *const counter = dev_get_drvdata(dev);
++	struct counter_device *const counter = counter_from_dev(dev);
+ 	int err;
+ 	bool bool_data = 0;
+ 	u8 data = 0;
+@@ -158,7 +163,7 @@ static ssize_t counter_comp_u32_show(struct device *dev,
+ 				     struct device_attribute *attr, char *buf)
+ {
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+-	struct counter_device *const counter = dev_get_drvdata(dev);
++	struct counter_device *const counter = counter_from_dev(dev);
+ 	const struct counter_available *const avail = a->comp.priv;
+ 	int err;
+ 	u32 data = 0;
+@@ -221,7 +226,7 @@ static ssize_t counter_comp_u32_store(struct device *dev,
+ 				      const char *buf, size_t len)
+ {
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+-	struct counter_device *const counter = dev_get_drvdata(dev);
++	struct counter_device *const counter = counter_from_dev(dev);
+ 	struct counter_count *const count = a->parent;
+ 	struct counter_synapse *const synapse = a->comp.priv;
+ 	const struct counter_available *const avail = a->comp.priv;
+@@ -281,7 +286,7 @@ static ssize_t counter_comp_u64_show(struct device *dev,
+ 				     struct device_attribute *attr, char *buf)
+ {
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+-	struct counter_device *const counter = dev_get_drvdata(dev);
++	struct counter_device *const counter = counter_from_dev(dev);
+ 	int err;
+ 	u64 data = 0;
+ 
+@@ -309,7 +314,7 @@ static ssize_t counter_comp_u64_store(struct device *dev,
+ 				      const char *buf, size_t len)
+ {
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+-	struct counter_device *const counter = dev_get_drvdata(dev);
++	struct counter_device *const counter = counter_from_dev(dev);
+ 	int err;
+ 	u64 data = 0;
+ 
 
-Incidentally, it looks like this is the only fix I have merged; I'll
-submit it now by itself so we don't have to wait until next week.
+base-commit: e6cb9c167eeb8f90ab924666c573e69e85e700a0
+-- 
+2.35.1
 
-Thanks,
-
-William Breathitt Gray
-
---RXQcv7FYYhz4E3ZR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmIPYsUACgkQhvpINdm7
-VJJCMQ//Wdh681Ssq3mGlMHywQtFBbf0m1/a5uYyzOjnvlCKcAGWyYnwGuFh195T
-GSVHd+k8KszChljN2lSr2EQ6010sTslEt6eeg77KkglYZGJYzmHw4IO8oFvGCWtT
-4AbGpEoL/NzXzhx4Gog5Xqui6bM6amoElVi4usUn5rk+n4Fdy3qA0UWM9nqotAn3
-/nSYSxTllY5L3ysSseVsmFS7xJwYuKFz0j3SUBMs0rsZo2NKWoQrRFdEslQGADql
-DvX5umL21rticnD0HJpasqeXT156/tdjmw/r7THcwo84fgHEuxyGZOfNrOyDYuJU
-3irJENsE5fPJMstm3UozR2ePtAtya44zRQtGpogMxgqmEcd/fd8kdBB0lrm9ekwn
-JELHRFgshNQuHdBm4R4whQglvTgJNt8RtrU8zsaDFxw4PlPIwvxOlJg0FLstYZ6b
-putyrukmCmu+Gd+cybYyZkSKGcghBSCrgmJTTMLFk9VVahou+tC4kTDt5Z797f1G
-kXX/cpbyVOMBZ/OOXmhEAdzZgnXr2PrlDIuAQG9KIvUcOuU39k58C9OVwCjgBSMd
-VtSNEF5ZClbpi+MQUBOQXW6BkVWpwAh5DBAZNJOL9mpqJnX8Pbg9tBBEgsXnvmcF
-8WW9cyuzOaz0DLXLIlvdOyNdoMs6QuAmNYSiDRUwkATiZa1qnzk=
-=7/fD
------END PGP SIGNATURE-----
-
---RXQcv7FYYhz4E3ZR--

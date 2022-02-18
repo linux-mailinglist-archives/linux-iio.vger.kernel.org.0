@@ -2,164 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2854BB563
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 10:21:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDADA4BB5C2
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 10:40:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232978AbiBRJVb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 04:21:31 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52426 "EHLO
+        id S230182AbiBRJk2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 04:40:28 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233462AbiBRJV0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 04:21:26 -0500
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217A327CC5
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 01:21:08 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id q11-20020a17090a304b00b001b94d25eaecso7947486pjl.4
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 01:21:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oL38d/xhLakar1r3IADvY8npTUwpwPyjsDa5M8iZYyg=;
-        b=qgOuGk+ALMVLZF217C9jdDK9A5b/e6HUP3Vk33NVbIsuOc7sAK/8gZ4YVAXYDCEKIB
-         xEp3TdzLLV3pOT1vVlcRcWfao1da3ExBZFwYzhUFlFe2FHZ9af3PCFch8eZCPaAL4zXz
-         dw2W8Ey7Us3YhkdyHS2Vcq53/3cIlcX/u/j4sPSbFBPbG5ulGudPEAOnVSRxzIqwHiqU
-         uiCxeNWmVM9GvNEGQnv+CXJlhYOmLrZH2176bRWNOq4i3mZ7fG2n69OX8YLZCEgsOJN9
-         v5frYh6kGAvQn0X9qn4hXr+TNrdge+Wz5bV2H/tGzgtzDM+NIC07+/YAbHGiWZP47qz0
-         CKYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oL38d/xhLakar1r3IADvY8npTUwpwPyjsDa5M8iZYyg=;
-        b=hJbARDClX4x21xFuLdacYLrh6yj8eTNRikH5H4RQU7X2/ss0+lNNe1Juv2pUsxfti/
-         +Q/hKxHuV1B+rBR3xR201VsAtVjBdyfwl5tzbEb529vCX32RDjCiEQcPw1b5cs6iy3+l
-         ktHMDuPPs17jz4nyu0d+zGY8QdXotS0r8BijUZxP1CL36WqntD8G/YjK6XDnbqJqviYz
-         KDTDBf/e9l+j4aAAJDN8zzfguHl+nrOjvAXVhkBZ8Yh5K0yjGreif4OR+FkIvYCCaTQL
-         4+PNAHOjEad+CrjUf3sEgR+2j6l9luVc4EoRGoiugQzM/BSUNqPSwtmal58ESOZZnudn
-         5DEw==
-X-Gm-Message-State: AOAM533DmxaH2d7N7VKb8kAnz4sR9j3zSgjExzxrAjFCWvxIoLHVvbEz
-        UKCyMzUP7ZVMCCFcSG6Lbq0=
-X-Google-Smtp-Source: ABdhPJy6OHGRlYqtEOPxHXbPMXrEVXj26cV6FSe5ZTjQTICO5ZBto6X9PDZgQoFOiqE9ah9m42pw8w==
-X-Received: by 2002:a17:90b:3d0e:b0:1bb:8615:78d6 with SMTP id pt14-20020a17090b3d0e00b001bb861578d6mr7511405pjb.4.1645176067672;
-        Fri, 18 Feb 2022 01:21:07 -0800 (PST)
-Received: from localhost.localdomain (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id ot12sm4523155pjb.22.2022.02.18.01.21.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Feb 2022 01:21:07 -0800 (PST)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [PATCH] counter: Stop using dev_get_drvdata() to get the counter device
-Date:   Fri, 18 Feb 2022 18:20:31 +0900
-Message-Id: <20220218092031.167689-1-vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229445AbiBRJk1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 04:40:27 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4A85DE58;
+        Fri, 18 Feb 2022 01:40:12 -0800 (PST)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 21I5vgRC022672;
+        Fri, 18 Feb 2022 04:40:10 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3e9fu164c7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Feb 2022 04:40:10 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 21I9e8u5032707
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 18 Feb 2022 04:40:08 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 18 Feb 2022 04:40:08 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 18 Feb 2022 04:40:07 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 18 Feb 2022 04:40:07 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 21I9e0vw016074;
+        Fri, 18 Feb 2022 04:40:02 -0500
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, Cristian Pop <cristian.pop@analog.com>
+Subject: [PATCH v4 1/2] dt:bindings:iio:frequency: Add ADMV4420 doc
+Date:   Fri, 18 Feb 2022 11:50:47 +0200
+Message-ID: <20220218095048.86826-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: fdUizBSlPYCJzluFDnlFyDTrgrfJnexE
+X-Proofpoint-GUID: fdUizBSlPYCJzluFDnlFyDTrgrfJnexE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-18_04,2022-02-17_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202180062
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Add device tree bindings for the ADMV4420 K band downconverter.
 
-dev_get_drvdata() returns NULL since commit b56346ddbd82 ("counter: Use
-container_of instead of drvdata to track counter_device") which wrongly
-claimed there were no users of drvdata. Convert to container_of() to
-fix a null pointer dereference.
-
-Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: b56346ddbd82 ("counter: Use container_of instead of drvdata to track counter_device")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 ---
- drivers/counter/counter-sysfs.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ .../bindings/iio/frequency/adi,admv4420.yaml  | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
 
-diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-index 7cc4d1d523ea..04eac41dad33 100644
---- a/drivers/counter/counter-sysfs.c
-+++ b/drivers/counter/counter-sysfs.c
-@@ -19,6 +19,11 @@
- 
- #include "counter-sysfs.h"
- 
-+static inline struct counter_device *counter_from_dev(struct device *dev)
-+{
-+	return container_of(dev, struct counter_device, dev);
-+}
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+new file mode 100644
+index 000000000000..35a3fb3fd339
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,admv4420.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- /**
-  * struct counter_attribute - Counter sysfs attribute
-  * @dev_attr:	device attribute for sysfs
-@@ -90,7 +95,7 @@ static ssize_t counter_comp_u8_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u8 data = 0;
- 
-@@ -122,7 +127,7 @@ static ssize_t counter_comp_u8_store(struct device *dev,
- 				     const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	bool bool_data = 0;
- 	u8 data = 0;
-@@ -158,7 +163,7 @@ static ssize_t counter_comp_u32_show(struct device *dev,
- 				     struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	const struct counter_available *const avail = a->comp.priv;
- 	int err;
- 	u32 data = 0;
-@@ -221,7 +226,7 @@ static ssize_t counter_comp_u32_store(struct device *dev,
- 				      const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	struct counter_count *const count = a->parent;
- 	struct counter_synapse *const synapse = a->comp.priv;
- 	const struct counter_available *const avail = a->comp.priv;
-@@ -281,7 +286,7 @@ static ssize_t counter_comp_u64_show(struct device *dev,
- 				     struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u64 data = 0;
- 
-@@ -309,7 +314,7 @@ static ssize_t counter_comp_u64_store(struct device *dev,
- 				      const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u64 data = 0;
- 
-
-base-commit: e6cb9c167eeb8f90ab924666c573e69e85e700a0
++title: ADMV4420 K Band Downconverter
++
++maintainers:
++  - Cristian Pop <cristian.pop@analog.com>
++
++description:
++  The ADMV4420 is a highly integrated, double balanced, active
++  mixer with an integrated fractional-N synthesizer, ideally suited
++  for next generation K band satellite communications
++
++properties:
++  compatible:
++    enum:
++      - adi,admv4420
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 1000000
++
++  adi,lo-freq-khz:
++    description: LO Frequency
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  adi,ref-ext-single-ended-en:
++    description: External reference selected.
++    type: boolean
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      admv4420@0 {
++        compatible = "adi,admv4420";
++        reg = <0>;
++        spi-max-frequency = <1000000>;
++        adi,lo-freq-khz = <16750000>;
++        adi,ref-ext-single-ended-en;
++      };
++    };
++...
 -- 
-2.35.1
+2.17.1
 

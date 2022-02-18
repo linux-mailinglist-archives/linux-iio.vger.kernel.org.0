@@ -2,80 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A0704BB7E6
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:16:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C34C14BB814
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:30:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232194AbiBRLQb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 06:16:31 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56780 "EHLO
+        id S234408AbiBRLa2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 06:30:28 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230475AbiBRLQa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:16:30 -0500
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0ED23BF35
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:16:14 -0800 (PST)
-Received: by mail-io1-xd41.google.com with SMTP id y20so7115521iod.1
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:16:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=mTe6rsF1WlocKfWRCIawejpNJl6lRYSIlYxDz8jltlQ=;
-        b=Pan6CQ5hu2zUWWGu7Uie4NrQKmsGKL/CxMvpZg3arHLwqybzfW5vPwI0oNIlnVTVCY
-         4c8HMuG3hOlZ2dJ19IADvg7r/uWRLoGCJQRLhgXrRFBRd8cLzV+L8Ry4zDWV8DeUZRYC
-         gr9b2V+5LPdM2syWTpwKBi7HAZWKHBCcCiyX+x/fdDeLs666uNWUruqhzwDOsideezPk
-         7V2QvzuUtibuz8O4V++lY+8wUh5ErnXfvJD9Z8NYbtVyMRCIcc6LU/EbQRA1jTha3uEl
-         TB9ODkMhs1755JcB/E+vFGz8PGcjD5GVLug+doOg+GgTZ0WX/8d+d2eusHRLFm6YvprH
-         vbjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=mTe6rsF1WlocKfWRCIawejpNJl6lRYSIlYxDz8jltlQ=;
-        b=VjYCfJ2PaV9FnfNAcLdF/AblKO3oz8f/YXMCtdl7BSx9GufbJmxizLPUekQNd7tToP
-         Eout8BEiMbQakIDXT2H7Tjd6FHlNqphryxeriA6HTAFLXHLyT/TVsq+RSTxachUDTrH6
-         BtGy6fL/pi+YDhUrNY7+k1VSqep+5/oj7q+uiXTx+JsasvL5wurIbMJR2i7xVSR5jUMi
-         xka/uwatsorrVXUkWFlw3ZA2maFsn81rmGsSUnIOFPestrVCn6C7uABfnb2dJ1fcRx0X
-         tDnyHIGxbXvRxVCg89I4HhfXu1zBpmgcPiiI+uJ5NkJyJ1HPldief2lmVabWyY9+qB1N
-         1oOA==
-X-Gm-Message-State: AOAM530Egll/yEYz9nWYyDrLeYjjL8DPWuKfAmpMOC7lfTcQO3oh7/cE
-        fkGZF2OK24mE7ZkVLscuLY6nZRXgEQVan6aEQg==
-X-Google-Smtp-Source: ABdhPJyYJX7MA4BjA31I/F0RfVIRMUutodreFGyEGO8BeEyItxwVKLbClz1ulV0gK9BDYhDuxAplopBsC5LbHDgKhP8=
-X-Received: by 2002:a6b:8f83:0:b0:613:8b75:b76d with SMTP id
- r125-20020a6b8f83000000b006138b75b76dmr5245691iod.77.1645182973880; Fri, 18
- Feb 2022 03:16:13 -0800 (PST)
+        with ESMTP id S234507AbiBRLa1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:30:27 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2042AF92C
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:30:11 -0800 (PST)
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K0Tx53HfNz67jRt;
+        Fri, 18 Feb 2022 19:29:13 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Fri, 18 Feb 2022 12:30:09 +0100
+Received: from localhost (10.122.247.231) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Fri, 18 Feb
+ 2022 11:30:08 +0000
+Date:   Fri, 18 Feb 2022 11:30:07 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Hans de Goede <hdegoede@redhat.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: mma8452: Fix 'mma8452_dt_ids' defined but not used
+ compiler warning
+Message-ID: <20220218113007.00004feb@huawei.com>
+In-Reply-To: <b4482ee4-2e8e-e8e4-b1f8-29fb37973780@redhat.com>
+References: <20220214091850.44139-1-hdegoede@redhat.com>
+        <20220214105456.00002177@Huawei.com>
+        <b4482ee4-2e8e-e8e4-b1f8-29fb37973780@redhat.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Reply-To: zahirikeen@gmail.com
-Sender: ali.wa1234ara@gmail.com
-Received: by 2002:a05:6638:3013:0:0:0:0 with HTTP; Fri, 18 Feb 2022 03:16:13
- -0800 (PST)
-From:   Zahiri Keen <zahirikeen2@gmail.com>
-Date:   Fri, 18 Feb 2022 11:16:13 +0000
-X-Google-Sender-Auth: ossTFlO9wpy3KD-k9TK98D_rNgI
-Message-ID: <CA+0F4TE-LpATnJ0TyO4Reo6H9EQUjwSQquiHVa_gGjzzsAAnFw@mail.gmail.com>
-Subject: Greetings to you.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhreml722-chm.china.huawei.com (10.201.108.73) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Good Day,
+On Mon, 14 Feb 2022 11:59:52 +0100
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-I know this email might come to you as a surprise because is coming
-from someone you haven=E2=80=99t met with before.
+> Hi,
+> 
+> On 2/14/22 11:54, Jonathan Cameron wrote:
+> > On Mon, 14 Feb 2022 10:18:50 +0100
+> > Hans de Goede <hdegoede@redhat.com> wrote:
+> >   
+> >> Commit 90adc57bd55a ("iio: mma8452: Fix probe failing when an
+> >> i2c_device_id is used") introduces a new: "'mma8452_dt_ids' defined
+> >> but not used" compiler warning.
+> >>
+> >> This is caused by the switch from of_match_device() (which takes a
+> >> pointer to this) to device_get_match_data(), combined with the use of
+> >> of_match_ptr() when setting of_match_table.
+> >>
+> >> We actually want mma8452_dt_ids to get optmized away when CONFIG_OF is
+> >> not set, so mark it as __maybe_unused to silence the warning.
+> >>
+> >> Fixes: 90adc57bd55a ("iio: mma8452: Fix probe failing when an i2c_device_id is used")
+> >> Reported-by: kernel test robot <lkp@intel.com>
+> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com>  
+> > 
+> > For this I'd rather drop the of_match_ptr() protection.  
+> 
+> Ok, that is fine with me.
+> 
+> > We will need to do that anyway shortly as part of converting this
+> > to fully device properties and allowing ACPI PRP0001 which uses
+> > the of_match_table from ACPI.
+> > 
+> > We can now easily make that transition as (via Andy)
+> > https://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git/commit/?h=i2c/alert-for-acpi&id=ca0acb511c21738b32386ce0f85c284b351d919e
+> > 
+> > Anyhow, I can just fix it up on the original patch once I'm on the
+> > right computer.  
+> 
+> Great thank you.
+Done.
 
-I am Mr. Zahiri Keen, the bank manager with BOA bank i contact you for
-a deal relating to the funds which are in my position I shall furnish
-you with more detail once your response.
+Thanks,
 
-Regards,
-Mr.Zahiri
+Jonathan
+> 
+> > I might also post patches to get rid
+> > of the of dependency completely if no one else gets there
+> > before me.  
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> >> ---
+> >> Note the 90adc57bd55a hash is from the jic23/iio.git testing branch, not
+> >> sure of it is stable. It is probably best to just squash this into the
+> >> original commit.
+> >> ---
+> >>  drivers/iio/accel/mma8452.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+> >> index 590d9431e1bd..1324bd515377 100644
+> >> --- a/drivers/iio/accel/mma8452.c
+> >> +++ b/drivers/iio/accel/mma8452.c
+> >> @@ -1529,7 +1529,7 @@ static int mma8452_reset(struct i2c_client *client)
+> >>  	return -ETIMEDOUT;
+> >>  }
+> >>  
+> >> -static const struct of_device_id mma8452_dt_ids[] = {
+> >> +static const struct of_device_id __maybe_unused mma8452_dt_ids[] = {
+> >>  	{ .compatible = "fsl,mma8451", .data = &mma_chip_info_table[mma8451] },
+> >>  	{ .compatible = "fsl,mma8452", .data = &mma_chip_info_table[mma8452] },
+> >>  	{ .compatible = "fsl,mma8453", .data = &mma_chip_info_table[mma8453] },  
+> >   
+> 
+

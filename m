@@ -2,121 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 131D94BB463
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 09:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E48024BB4FF
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 10:05:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230075AbiBRIkJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 03:40:09 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36788 "EHLO
+        id S231354AbiBRJGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 04:06:01 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231356AbiBRIkI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 03:40:08 -0500
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2666265136;
-        Fri, 18 Feb 2022 00:39:51 -0800 (PST)
-Received: by mail-ed1-x52b.google.com with SMTP id h18so14197077edb.7;
-        Fri, 18 Feb 2022 00:39:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=g5OkeuTfr4KZRQqShhSXo68jRGfkegJkXmtaiGdTszU=;
-        b=UWW0dS9gtbq8WhED+3o0WdFpnplxoP319PmrWBzjgyzl01jB3ogcJX4i1IM4uq0qho
-         42d4OTMKmZsu/LXQFoaySdSVthS+iOXz3xmV0FzmRK+RXd+oudRkXb5bwFxps0kaYfDD
-         9CUoTr06wJ4/wIbuPLj2Mmj24ch8eGuNtQP7UnaGGxfWSigHOMGASy0BjdAQHPCHmg5B
-         2QfyVOKFzMm8v18dTcRi/MYPbn/Z8/qwY5c9Y/DQ0wCCzBv4ekJODW/vtZ3tfmY5dLDU
-         0CQ6u42s0rBWZnfE8MYMTQZhBYfJQrDp8/7/jG8Bu2FONF/poAidFjURyIfkCzVLOjqO
-         sdFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=g5OkeuTfr4KZRQqShhSXo68jRGfkegJkXmtaiGdTszU=;
-        b=fVHtN5t1yFuQxcgEdg0DyVBW0BtNr7o2DaO2Pp5vNV12X6epCDEQW1GUMSMDJs6cMw
-         0AGXfPOiBivt3RZpUZCWWPzMwRdoHtzTskc0IxefzyF7Q/BJyt8RjuHHjs9SNCP/6b7f
-         VT9+zuLEaMASREx+yk7WruqTi01EKDglYJzcgFmH23PcrN74wfkvf0TuHG2iVoAPsIgT
-         fpviJvaYe+q+4gMsaVGWBmAm5GWY8Foz+K1T/meT1cxCKv3f9WMq/reyYxXQgz5QCr//
-         3eVTGP211FYXK1t9Fay2+nqv2HUfLYNmB4hMtmQuUIlF9b2XuvD600TWHvC7q2WM2kx1
-         08Bg==
-X-Gm-Message-State: AOAM533FOj20/TJ27k68RvKnUqLihHWxcMMYrF/jvkWIpfEjHPEQngwy
-        2WyJNnd8jWBwMGYdxY8HmL0YAOBPIDamBBcH434=
-X-Google-Smtp-Source: ABdhPJwyTqV3pg/0GVBz6HN/kTpPD64M8SxNGxlJaHFLeJoOxVTqGqOd7MhrTtAW/s+f2u14vypGQ0RyZ8+mH2VfLkY=
-X-Received: by 2002:a05:6402:198:b0:410:83e3:21d7 with SMTP id
- r24-20020a056402019800b0041083e321d7mr7000565edv.159.1645173590335; Fri, 18
- Feb 2022 00:39:50 -0800 (PST)
+        with ESMTP id S233247AbiBRJF6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 04:05:58 -0500
+X-Greylist: delayed 457 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 18 Feb 2022 01:05:40 PST
+Received: from twspam01.aspeedtech.com (twspam01.aspeedtech.com [211.20.114.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A2F2B3AE7;
+        Fri, 18 Feb 2022 01:05:39 -0800 (PST)
+Received: from twspam01.aspeedtech.com (localhost [127.0.0.2] (may be forged))
+        by twspam01.aspeedtech.com with ESMTP id 21I8nNN3034493;
+        Fri, 18 Feb 2022 16:49:23 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from mail.aspeedtech.com ([192.168.0.24])
+        by twspam01.aspeedtech.com with ESMTP id 21I8lrmY034381;
+        Fri, 18 Feb 2022 16:47:53 +0800 (GMT-8)
+        (envelope-from billy_tsai@aspeedtech.com)
+Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 18 Feb
+ 2022 16:56:33 +0800
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <joel@jms.id.au>,
+        <andrew@aj.id.au>, <billy_tsai@aspeedtech.com>,
+        <colin.king@canonical.com>, <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+CC:     Konstantin Klubnichkin <kitsok@yandex-team.ru>
+Subject: [PATCH] iio: adc: aspeed: Add divider flag to fix incorrect voltage reading.
+Date:   Fri, 18 Feb 2022 16:57:08 +0800
+Message-ID: <20220218085708.8194-1-billy_tsai@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220217055208.2388929-1-kai.heng.feng@canonical.com>
- <CAHp75VfFGw3b_ZtQir0AfTfXfQ7fi_LKLsY-7ww=4+MMBR8BAQ@mail.gmail.com> <CAAd53p7O7joFa7MH0s+rw-59WQkigvjKBf1bpO9e2gX9ddjF-A@mail.gmail.com>
-In-Reply-To: <CAAd53p7O7joFa7MH0s+rw-59WQkigvjKBf1bpO9e2gX9ddjF-A@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 18 Feb 2022 09:39:14 +0100
-Message-ID: <CAHp75Vf4pjyJJDLKWTjq2ny1xkF9fSCSPb_8q5yk69DjV9EUAg@mail.gmail.com>
-Subject: Re: [PATCH v4] iio: accel: adxl345: Add ACPI HID table
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.2.149]
+X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
+ (192.168.0.24)
+X-DNSRBL: 
+X-MAIL: twspam01.aspeedtech.com 21I8lrmY034381
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Feb 18, 2022 at 4:46 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
-> On Thu, Feb 17, 2022 at 6:57 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Thursday, February 17, 2022, Kai-Heng Feng <kai.heng.feng@canonical.=
-com> wrote:
+The formula for the ADC sampling period in ast2400/ast2500 is:
+ADC clock period = PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0])
+When ADC0C[9:0] is set to 0 the sampling voltage will be lower than
+expected, because the hardware may not have enough time to
+charge/discharge to a stable voltage.
 
-...
+Reported-by: Konstantin Klubnichkin <kitsok@yandex-team.ru>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+---
+ drivers/iio/adc/aspeed_adc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> >> +               acpi_id =3D acpi_match_device(dev->driver->acpi_match_=
-table, dev);
-> >> +               if (acpi_id) {
-> >> +                       type =3D acpi_id->driver_data;
-> >> +                       name =3D acpi_id->id;
-> >> +               } else
-> >> +                       return -ENODEV;
-> >
-> > Thanks, but can we do this in ACPI agnostic way?
-> >
-> > Can be as simple as
-> >
-> > if (id)
-> >   ...
-> > else {
-> >   match =3D device_get_match_data(dev);
-> >   if (!match)
-> >     return -ENODEV;
-> > }
-> >
-> > Note, it might require to reconsider what is put in the driver data (ei=
-ther convert to pointers, or be sure that valid type is never a 0/NULL).
->
-> Unlike acpi_match_device(), device_get_match_data() only get
-> driver_data, so we need a new struct to provide both name and type.
+diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
+index a957cad1bfab..ffae64f39221 100644
+--- a/drivers/iio/adc/aspeed_adc.c
++++ b/drivers/iio/adc/aspeed_adc.c
+@@ -539,7 +539,9 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+ 	data->clk_scaler = devm_clk_hw_register_divider(
+ 		&pdev->dev, clk_name, clk_parent_name, scaler_flags,
+ 		data->base + ASPEED_REG_CLOCK_CONTROL, 0,
+-		data->model_data->scaler_bit_width, 0, &data->clk_lock);
++		data->model_data->scaler_bit_width,
++		data->model_data->need_prescaler ? CLK_DIVIDER_ONE_BASED : 0,
++		&data->clk_lock);
+ 	if (IS_ERR(data->clk_scaler))
+ 		return PTR_ERR(data->clk_scaler);
+ 
+-- 
+2.25.1
 
-It's unfortunate. Let me think about it a bit more.
-
-> > Also note, in both cases using ID name for name us fragile. Probably we=
- have to fix that first. Let me check today=E2=80=99s evening.
->
-> Can you please explain more on this? How does ID name make it fragile?
-
-I thought this one is used somehow by userspace to distinguish the
-instance of the device, but looking into the rest of the IIO drivers
-it seems more or less  a field for part number. That said, the ID is
-okay to use. I hope Jonathan may correct me.
-
---=20
-With Best Regards,
-Andy Shevchenko

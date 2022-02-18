@@ -2,54 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7EFA4BB8D0
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 13:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B9E34BB8FE
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 13:17:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234729AbiBRMDs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 07:03:48 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47788 "EHLO
+        id S234855AbiBRMRx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 07:17:53 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232329AbiBRMDs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 07:03:48 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA3220F42;
-        Fri, 18 Feb 2022 04:03:31 -0800 (PST)
+        with ESMTP id S232963AbiBRMRw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 07:17:52 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09CD128DDE3;
+        Fri, 18 Feb 2022 04:17:36 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 42485B825D4;
-        Fri, 18 Feb 2022 12:03:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51578C340E9;
-        Fri, 18 Feb 2022 12:03:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C0B4EB82610;
+        Fri, 18 Feb 2022 12:17:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA16C340E9;
+        Fri, 18 Feb 2022 12:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645185809;
-        bh=5eCNGRZmLgvKjz0xwJntkcNjbDBrasjKtxubxgHEuIs=;
+        s=k20201202; t=1645186653;
+        bh=Xhp/n5pC/m8sJ4ETvUkmuS+0wXHJDe9HqAoXpaAAhzM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=gat8Bz/ayLWMwqVKTR/TpQ1SFEyaR0to68tpYy9Ee9p4nSXcFNP5rR9IP8hPB5R7i
-         m69pfGU6QgcA+JQ1yjc1MaNrf+1tKQKEE6UhTrawngSuQnmgDDCGYo3+0nuqgE4BAN
-         fUmteywuV18OhthhefEzIf4heM+3qs8Efr96LFw4aYdlhPEgFQe82T2WyvR8SsaWNS
-         h5qJwByeXpTf4TWDGX3xZJSUoYmGXxLqtnh958/2MEsbYXcg4HvuQobvwI8OAfmy7o
-         P/WVYFICdJ9ygz54YuIGiZNLQ2wa/62QI8J/f2dk3zzjCezt89Limwl9XeBNB2l4po
-         4b2ORGQo6cOaA==
-Date:   Fri, 18 Feb 2022 12:10:17 +0000
+        b=PrljZQE8KwYpeMK9yqKJtAVzgIsR13V2D/cO1/YaA0stNMtu0dq16C7/idti+OouO
+         iz2SPe6Wma2QcaUnMcTycT8HXS3cD3B6eoJ/i6RDHuJo3uduYJaloxAYQ0wI5FkqYY
+         pT0JTDzLiV4jPhR4md7bFjLPPUov54Vy4lUR69u05EYgC38FJsvdO+dHoBqd+hyQda
+         5y31/ssSqyfZU1lLWFJkCcw/ylmdiwG5K5OcUVgZK9IRLsp2yEFX95MVT29UreL8WH
+         Fkbijs58ZmxV8cx+a7McKm+XS3+DsFBz8/E/FKX19cVTH1GOYNgxiZC7gU8MVxRA3p
+         Vq09onRuupwag==
+Date:   Fri, 18 Feb 2022 12:24:20 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4] iio: accel: adxl345: Add ACPI HID table
-Message-ID: <20220218121017.32bbdef9@jic23-huawei>
-In-Reply-To: <CAHp75Vf4pjyJJDLKWTjq2ny1xkF9fSCSPb_8q5yk69DjV9EUAg@mail.gmail.com>
-References: <20220217055208.2388929-1-kai.heng.feng@canonical.com>
-        <CAHp75VfFGw3b_ZtQir0AfTfXfQ7fi_LKLsY-7ww=4+MMBR8BAQ@mail.gmail.com>
-        <CAAd53p7O7joFa7MH0s+rw-59WQkigvjKBf1bpO9e2gX9ddjF-A@mail.gmail.com>
-        <CAHp75Vf4pjyJJDLKWTjq2ny1xkF9fSCSPb_8q5yk69DjV9EUAg@mail.gmail.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/4] iio: potentiometer: Add support for Maxim DS3502
+Message-ID: <20220218122420.76425450@jic23-huawei>
+In-Reply-To: <20220214195252.GA7374@jagath-PC>
+References: <20220214033620.4059-1-jagathjog1996@gmail.com>
+        <20220214033620.4059-4-jagathjog1996@gmail.com>
+        <CAHp75VcWym5vyDAVyTUCpj=Qkm28VUaqdqJ7VuFL_bsb0fmhaA@mail.gmail.com>
+        <20220214195252.GA7374@jagath-PC>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,74 +62,184 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Feb 2022 09:39:14 +0100
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 15 Feb 2022 01:22:54 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> On Fri, Feb 18, 2022 at 4:46 AM Kai-Heng Feng
-> <kai.heng.feng@canonical.com> wrote:
-> > On Thu, Feb 17, 2022 at 6:57 PM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote: =20
-> > > On Thursday, February 17, 2022, Kai-Heng Feng <kai.heng.feng@canonica=
-l.com> wrote: =20
->=20
-> ...
->=20
-> > >> +               acpi_id =3D acpi_match_device(dev->driver->acpi_matc=
-h_table, dev);
-> > >> +               if (acpi_id) {
-> > >> +                       type =3D acpi_id->driver_data;
-> > >> +                       name =3D acpi_id->id;
-> > >> +               } else
-> > >> +                       return -ENODEV; =20
+> Hello Andy,
+> 
+> On Mon, Feb 14, 2022 at 01:32:14PM +0200, Andy Shevchenko wrote:
+> > On Mon, Feb 14, 2022 at 5:36 AM Jagath Jog J <jagathjog1996@gmail.com> wrote:  
 > > >
-> > > Thanks, but can we do this in ACPI agnostic way?
-> > >
-> > > Can be as simple as
-> > >
-> > > if (id)
-> > >   ...
-> > > else {
-> > >   match =3D device_get_match_data(dev);
-> > >   if (!match)
-> > >     return -ENODEV;
-> > > }
-> > >
-> > > Note, it might require to reconsider what is put in the driver data (=
-either convert to pointers, or be sure that valid type is never a 0/NULL). =
-=20
+> > > The DS3502 is a 7-bit, nonvolatile digital potentiometer featuring
+> > > an output voltage range of up to 15.5V.
+> > > DS3502 support is implemented into existing ds1803 driver  
+> > 
+> > Be consistent here and in other commit messages with how you refer to
+> > the IC parts, i.e.
+> > DS1803. Don't forget English grammar and punctuation, i.e. missed period above.
+> >   
+> 
+> I will fix this in v3
+> 
+> > > Datasheet: https://datasheets.maximintegrated.com/en/ds/DS3502.pdf  
+> >   
+> > >  
+> > 
+> > A tag block may not have blank lines. Drop it.
+> >   
+> > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>  
+> > 
+> > ...
+> >   
+> > > -       tristate "Maxim Integrated DS1803 Digital Potentiometer driver"
+> > > +       tristate "Maxim Integrated DS1803 and similar Digital Potentiometer driver"  
+> > 
+> > Please, list them like other drivers do:
+> > 
+> >        tristate "Maxim Integrated DS1803/DS... Digital Potentiometer driver"
+> > 
+> > ...
+> >   
+> > > -         Say yes here to build support for the Maxim Integrated DS1803
+> > > -         digital potentiometer chip.
+> > > +         Say yes here to build support for the Maxim Integrated DS1803 and
+> > > +         similar digital potentiometer chip.  
+> > 
+> > Same here.
+
+Usual thing is to use the and similar phrasing for the title if it
+is getting to long and have the one place that lists them all being the belp
+text.  We need it somewhere so people can grep for it.
+
+> > 
+> > ...
+> >   
+> > > - * Maxim Integrated DS1803 digital potentiometer driver
+> > > + * Maxim Integrated DS1803 and similar digital potentiometer driver  
+> > 
+> > Same here.  
+> 
+> Based on Jonathan suggestion for the previous patch version I used 
+> "and similar" wording here.
+
+I wasn't that clear on exactly where to do that!  Sorry about that.
+
+> 
+> > 
+> > ...
+> >   
+> > > -#define DS1803_MAX_POS         255
+> > > -#define DS1803_WRITE(chan)     (0xa8 | ((chan) + 1))  
+> > 
+> > Not sure why these were removed (or moved?)  
+> 
+> Since max wiper position is present in avail array of ds1803_cfg structure
+> and that is being used for read scale so DS1803_MAX_POS is removed.
+> 
+> Since each wiper address of both parts is assigned to the address
+> member of iio_chan_spec struct so DS1803_WRITE(chan) is removed.
+> 
+> > 
+> > ...
+> >   
+> > > +static const struct ds1803_cfg ds1803_cfg[] = {
+> > > +       [DS1803_010] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  10,
+> > > +                        .channels = ds1803_channels,
+> > > +                        .num_channels = ARRAY_SIZE(ds1803_channels) },
+> > > +       [DS1803_050] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms =  50,
+> > > +                        .channels = ds1803_channels,
+> > > +                        .num_channels = ARRAY_SIZE(ds1803_channels) },
+> > > +       [DS1803_100] = { .wipers = 2, .avail = { 0, 1, 255 }, .kohms = 100,
+> > > +                        .channels = ds1803_channels,
+> > > +                        .num_channels = ARRAY_SIZE(ds1803_channels) },
+> > > +       [DS3502] =     { .wipers = 1, .avail = { 0, 1, 127 }, .kohms =  10,
+> > > +                        .channels = ds3502_channels,
+> > > +                        .num_channels = ARRAY_SIZE(ds3502_channels) },
+> > >  };  
+> > 
+> > Split this on a per type basis. I believe it won't be too much work,
+> > also, consider adding channels as a separate preparatory patch as you
+> > did with avail.  
+> 
+> Based on Jonathan suggestion for the previous patch version to avoid
+> having different chip type related structures so channels and num_channels
+> are added into ds1803_cfg structure.
+> 
+> Sure for channels I will split into separate patch for old part in v3.
+
+I'm not totally sure what Andy is suggesting with his feedback here.
+
+> 
 > >
-> > Unlike acpi_match_device(), device_get_match_data() only get
-> > driver_data, so we need a new struct to provide both name and type. =20
->=20
-> It's unfortunate. Let me think about it a bit more.
-Usual solution is just to add that name to a per device type structure.
-In this particular case there isn't one so far though and an enum is used
-in the one place we might otherwise have used a part number specific struct=
-ure.
+> > ...
+> >   
+> > > -       data->cfg = &ds1803_cfg[id->driver_data];
+> > > +       data->chip_type = (uintptr_t)device_get_match_data(dev);
+> > > +       if (data->chip_type < DS1803_010 || data->chip_type > DS3502)
+> > > +               data->chip_type = id->driver_data;  
+> > 
+> > Split it into a separate patch and use pointer validation instead:
+> > 
+> > data->cfg = ...
+> > if (!data->cfg)
+> >   data->cfg = ...id->driver_data;
+> > 
+> > ...
+> >   
+> > > -       { .compatible = "maxim,ds1803-010", .data = &ds1803_cfg[DS1803_010] },
+> > > -       { .compatible = "maxim,ds1803-050", .data = &ds1803_cfg[DS1803_050] },
+> > > -       { .compatible = "maxim,ds1803-100", .data = &ds1803_cfg[DS1803_100] },  
+> 
+> To get the chip specific structure I can use previous structure method for data
+> and validation as you shown above.
+> But it is necessary to get the chip_type also because of dependency in 
+> ds1803_raw_read().
 
-Probably the easiest thing to do is use the enum to do a lookup in an array
-of structures and have the string there.
+You could use a function pointer in the cfg structure and provide appropriate read
+functions for the different types so that read_raw() can call the appropriate function
+for the type of device.  That would be tidy and avoid this need to change
+to an enum.
 
->=20
-> > > Also note, in both cases using ID name for name us fragile. Probably =
-we have to fix that first. Let me check today=E2=80=99s evening. =20
-> >
-> > Can you please explain more on this? How does ID name make it fragile? =
-=20
->=20
-> I thought this one is used somehow by userspace to distinguish the
-> instance of the device, but looking into the rest of the IIO drivers
-> it seems more or less  a field for part number. That said, the ID is
-> okay to use. I hope Jonathan may correct me.
->=20
-Should be part number.  Instances are distinguished via label rather than
-name (or via the device parent on older kernels where we didn't have
-label).
+Sorry for slow response btw as I didn't get in before v3!
 
-There are a few places where we accidentally let though IDs that aren't
-always simply the part number and they became part of the ABI so we
-couldn't really fix them after the event.
+Thanks,
 
 Jonathan
 
+
+> 
+> To get the chip_type can I use 
+> data->chip_type = id->driver_data
+> 
+> > > +       { .compatible = "maxim,ds1803-010", .data = (void *)DS1803_010 },
+> > > +       { .compatible = "maxim,ds1803-050", .data = (void *)DS1803_050 },
+> > > +       { .compatible = "maxim,ds1803-100", .data = (void *)DS1803_100 },  
+> > 
+> > This is not good, please use pointers as it was before.
+> >   
+> > > +       { .compatible = "maxim,ds3502",     .data = (void *)DS3502 },  
+> > 
+> > Ditto. Create a new, separate structure for this type.
+> > 
+> > ...
+> >   
+> > >         { "ds1803-010", DS1803_010 },
+> > >         { "ds1803-050", DS1803_050 },
+> > >         { "ds1803-100", DS1803_100 },
+> > > +       { "ds3502",     DS3502     },  
+> > 
+> > Too many spaces.
+> > Besides this, please create a new prerequisite patch to convert this
+> > to use pointers as above.  
+> 
+> Sure I will split this patch in v3.
+> Thanks for feedback.
+> 
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko  
+> 
+> Best Regards,
+> Jagath
 

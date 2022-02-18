@@ -2,233 +2,223 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5FD4BB860
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 124714BB826
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:33:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233522AbiBRLkc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 06:40:32 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45744 "EHLO
+        id S234276AbiBRLdb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 06:33:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234935AbiBRLkQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:40:16 -0500
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9732C29F5;
-        Fri, 18 Feb 2022 03:38:57 -0800 (PST)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21IAR9jt012876;
-        Fri, 18 Feb 2022 11:38:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : in-reply-to : mime-version;
- s=corp-2021-07-09; bh=1hLFI1R0AWvuny9xIyikvS+n818n17pnPmPwx2B4P0U=;
- b=vwAM/oZ+y2KHFUJZroF1RCFkpx+s8JHXI5mBe2CozFire5KluvzBdcl/AWftEHLClkwZ
- BsCkPkIYbfBmRn/e36GL/DUJkWOYmuCmAvaHPKjAEJHYZKfJvnoCx4cOuKntGqgBJ1R7
- /4fbM6h4/KAPkhCYljGIbMw9uicmHUMf8Q1PfFJfESQ2IMkUxZAnZhMKl+UjE/5oQEEb
- wkNks/6O8cUJsU8DtxXre1f/lcEtT9JJxyc/YaPa/LCD7kzjwySjEPmjlSCRvoqXf+kU
- EKWmTFHOK13jGQQZG8f+7Mb7TqKS+dF2SCWF7/ywGUCCZe7DYuM5ECRS7RMwihzQnVHv gg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3e8nb3rs2e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Feb 2022 11:38:37 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 21IBUd6j033167;
-        Fri, 18 Feb 2022 11:38:37 GMT
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam08lp2177.outbound.protection.outlook.com [104.47.73.177])
-        by aserp3030.oracle.com with ESMTP id 3e9brdnt59-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 18 Feb 2022 11:38:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GGJF8gbj8TY04G1npudj1dxrROGI1+DjprgMFXOQWOfyxNl3kyfJUvxRbQo5eItvNd0bBDlbM63YqvjGjOoJRO4lxylx2KC+FC2elrfWkrHd+Hq1Vw144K9o63uuc3uelE2wUAuAgFZMTxiAdAkrKd5phlvEvxNYIKhMV/+cbtCOpKCQujH0MJYhy0hyeoQgnHUvfBPqxR7Bt8WLHKu1sd8ql63VijP0oW7AcaMmnn+VM9Zc7zYvFdsu8fLTH1RFYWwiO+vKWR46vMCf7Bw0RgdzbY2r/vkaiqefzpYdYdKtWND82vGWXzv5ZqBywAkeTcOrrbEXpG1UTqaxkhYAGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1hLFI1R0AWvuny9xIyikvS+n818n17pnPmPwx2B4P0U=;
- b=AAFtYeV8K+0Pcfdf+pJzkYLJlKmJ7+8UouyviLYF7ZYujCK1c3nF5UuQECLemHGa/7z+7yaV/dSj4XpJCscellY9DQSV2TpfoHMdPPdh7tEbl1VJ+/yeDCng7KYcsKZpD/7fFPGkBKylachDFTRRyaoZYfe15AAnv7NR+6RFpTwoYrv8PbjbLV7+FqMMsFRNEkPuy70NzyReVb2peyVJZxvatbluYhFc2DvqZoXOINiymxRKJ8q0GdvSvJ8rAiQn8mK/AF+8a2Z7p/fNLKDg5t5AWOmb4g3Wf4wqZm0SC6dGSVIaWjaxBdyT2fOtO80bT2iYhoqYMz+tSaiK450BHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1hLFI1R0AWvuny9xIyikvS+n818n17pnPmPwx2B4P0U=;
- b=zaHTiuLjYAFItKKPXE+obiMxCX4dF2Bm2KgfcsLviP2yxf4soSXwsGX93AnpIA5aP45WGEkXU+1Rm5cLRDmhsTfpZgLFnbddlHItIjZDTKJTpcARiwvrvciHhABghDU/7m0ub3UVN44tGTS5S+JZA+Lv+TWBtKc1Eh5TXumhb2Y=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by BN6PR10MB1842.namprd10.prod.outlook.com
- (2603:10b6:404:fb::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.14; Fri, 18 Feb
- 2022 11:38:33 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::2c3d:92b5:42b3:c1c5]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::2c3d:92b5:42b3:c1c5%3]) with mapi id 15.20.4975.019; Fri, 18 Feb 2022
- 11:38:33 +0000
-Date:   Fri, 18 Feb 2022 14:38:12 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     kbuild@lists.01.org, Caleb Connolly <caleb.connolly@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S233423AbiBRLda (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:33:30 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824922A0736
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:33:13 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id EC706CE3148
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 11:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8920DC340E9;
+        Fri, 18 Feb 2022 11:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645183989;
+        bh=NYtkmUVaouWyumQKxxDwXwxmSaUwG6qhqXDu4oYwgA4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=kIsLPRUpBSwQ/YX+VFqYz+47cC1J14MkLTCxOxFl26KhJ/LKUy5s6SoZCdCWd53yr
+         +9wEpaVs8+aPGScGzJF7b4Qz7Ii269IaVRb4fHzV6sBLHQ2/vMl0mwj65q+clXLfzx
+         dAwytY5tLsEVSYpQroZcOLkjmkS57vhtFvWtXjCNEhvLaXL4denv5EqGYsq+dx5/5A
+         xURAZA+tOYqSsk3IOOl1OOySN3mBKfVWcJsaTgvxLlROBvl74Oaw4/UUbGd5q8NnlW
+         cNHaGFNgTGLnJqP7IWWRBb2lHOZsfRQl229+8uoFsbuL0bCQ0zVAHG3HbwfV6pjzMv
+         MREz4A7jeEoEw==
+Date:   Fri, 18 Feb 2022 11:39:53 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc:     lkp@intel.com, kbuild-all@lists.01.org, sumit.semwal@linaro.org,
-        amit.pundir@linaro.org, john.stultz@linaro.org
-Subject: Re: [PATCH v7 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid
- information to clients
-Message-ID: <202202180412.YwXgb5WR-lkp@intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220216134920.239989-3-caleb.connolly@linaro.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: JNAP275CA0042.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4e::13)
- To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
+        Song Bao Hua <song.bao.hua@hisilicon.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        William Markezana <william.markezana@meas-spec.com>,
+        Ludovic Tancerel <ludovic.tancerel@maplehightech.com>,
+        Renato Lui Geh <renatogeh@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH 00/16] 2nd set of IIO export namespaces
+Message-ID: <20220218113953.08d63849@jic23-huawei>
+In-Reply-To: <CAHp75Vf1SguefmPDMtm87O8h8AU2Hy3r7RaJ4o6yy9k87F4MqQ@mail.gmail.com>
+References: <20220130205701.334592-1-jic23@kernel.org>
+        <CAHp75Vf1SguefmPDMtm87O8h8AU2Hy3r7RaJ4o6yy9k87F4MqQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 254c2d23-98ba-4feb-8379-08d9f2d3319a
-X-MS-TrafficTypeDiagnostic: BN6PR10MB1842:EE_
-X-Microsoft-Antispam-PRVS: <BN6PR10MB1842A7049F610255C9FB0E858E379@BN6PR10MB1842.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: K1UbRNZ3rLBwqMqUMxZ4dhL0poRwX9R/Sbi7ZEOZ6ZDzdh6KdRxvEVTYMQvuKE5O9bZaEzjjCrdOi3a1BfTpDCaqUi5MWCAeYVU8V4Hl2OMowjbixowzZqaCAfnXTUVGYG+WSk5paYvUHG4FqMjba4PlHgQ1y3Z8N+QhShjHi9QdpiAv7K1yydXWlw4GjzijokIjg4UTlfBRim4SiyrEQpr0dyRvnIzu0WYgGZtFJB2ChlhDalOmNqwYf3PkzJL7hYTr4hDsyDtiMm8HyKGJtDufnza3oA/IKWzXK1JB+iOHZZIXOyKjhAlOKGwjawFs6CfEZl6VeCpNX6JO5rvLCfqYM8UL/4QZcS3f5ukZ4ud0yqll6xMC9ngYpXa25+cIGRaWvRbPx7ZqwPP6VZazRHfXMpWZiCUKJC3POyx6s3SrKm0afF/o3fZdetrj6zFhoL2QfvuXignzpEVbgFLFDIw0sqHO4u+KU0DgoFxr85geFcvNrmSQ+82AcDix/UH463NEyVJ0jYxlw8WpkT/4u99rkWMkjDNy92xaGb6XpqnCXQ+gGUlaoZvaTTPZTXgi/vtT95beXRkQKWvZ9eYoKl87BxAv55Zxajys01sghP4KfOl8kyBDWgVLBKMGq6kehOuV8YiHXi4fU7ZSOGXFfnBl+fUb9yLVQlQH8qarclH1K6HOIju3l2vZE9B0C9O8jfPmxc2I6eSwNb9yT/W4bOhc5SFqZRQlBfAgduXAuZ8gW+cIe5JF0binOZq+ajZu/auJU/A/yZzH1yebXs9eEvomlUvtyScRdBh0W1p++gf2iS+wx4UbkjQ4A9sJvcSfi9CLwkSG0mNqcCvUmxmpcUfG0F4K5jI/zhZm57qN4wA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(186003)(83380400001)(66476007)(26005)(52116002)(2906002)(38350700002)(1076003)(38100700002)(6512007)(6506007)(6666004)(36756003)(9686003)(7416002)(8936002)(44832011)(966005)(5660300002)(86362001)(6486002)(508600001)(8676002)(316002)(110136005)(66946007)(4326008)(66556008)(921005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QvACfu28Cc5b5hsi3V63LwDszaxrL+b9hLGJXjdkUlg+Q41E9MGdQuTr/V0z?=
- =?us-ascii?Q?A8fFnl/B8RF8ovGftWxT/B4WAqTy0haqjbQ7qOG4auMaB/YPU0KMsfWpHXB+?=
- =?us-ascii?Q?BXoSMjwcGWfxmH5gHY+Gz9X/TSW3Ze8q/U91blQlOOexsN1NfMVvkznuC6yo?=
- =?us-ascii?Q?2o6gihGNmDiM1QdNnPWMIijv5DyuQ12rMgv5b2QuLcSh8jHrSecEmwTgcTfl?=
- =?us-ascii?Q?5cvcgptpjMfvkx6m0MRRD6c6/GT481ISkbXAnLu4KkvMBP9QfnvajN9SpX4S?=
- =?us-ascii?Q?13geQdxxOgSwVf6q1xhQ8QY+5D7mx23iMxG9jQwKV1ouS/s6KfRyiz+rT+iX?=
- =?us-ascii?Q?OQUlbGpkXjk23DDHeBRPpT2MkLbbDeM8QE4Qal5a+SgkdjBthxqTomsINYe0?=
- =?us-ascii?Q?3mfoI+SGK8jwYrJanWkVzMUxhqhxNzeAMwCMVoHVlyekf3hqEhiEaFnWJ72C?=
- =?us-ascii?Q?dJzt0nywW7jx7FCSitnrKm1xXxYLyAQAvM5pwTPuBYL7UR3E5CQxoCZA/Ueu?=
- =?us-ascii?Q?x66Fp1tFR7cPxilxnGsBFpNkS1qe/0dJhk7aAaTxOy6m3i623PN5ypkPWXfa?=
- =?us-ascii?Q?x0fS7XvRZMy+PmdVjvoOIxDm57TS8g7cM/yrvrSfWAr/xU4NKLS5wFAfNqBV?=
- =?us-ascii?Q?dne79hxfxkOYpPBAqnumIdK32TiTcFo32PEvQ2zsTRf7+1Ox6IaU4nfJB7Ny?=
- =?us-ascii?Q?MoO1kJ8RQO8EP2yILYUluJKHYJUcLRhMK9omMqXxhINDhUgMo9smI4cAk687?=
- =?us-ascii?Q?WNK6zQa+v8qBHl752A6l36aByuIdgMgENE2oFfh0UOKv1vzTK91H7RJyJRQI?=
- =?us-ascii?Q?k0NNBimuZ3ht+fnkOTBXMBvf44ezJALYdlO67FNlJPMsDdIcQMAVxlWq5TY0?=
- =?us-ascii?Q?ycXYJgevOjUGfo0g82EKt+ZDpfknEhLq2OITKTPcsgNQaQFFvJyuPb3YBsQb?=
- =?us-ascii?Q?IO1MvG9zoyyq8K46C6iZQMp+rv3jRB4O8QidaV9osyhp5KM8EQveLe6Y4FxE?=
- =?us-ascii?Q?7+GoqcO319gAYHzIsgnZJTtsTN86xRoUpoB9+5C7l9HoERn03spKxa/6tSUP?=
- =?us-ascii?Q?lFa1F9T0p0QYRncvbkH2rLB0bKyrBbAy1cyfBeEmflyWVNKUEOnVqcTOncHD?=
- =?us-ascii?Q?X1I8c3ypAsgl5tRpR2TXTujwJ69fsYVjJEX2qqvbN6JmpY7bZjqZMeYye2l3?=
- =?us-ascii?Q?nNCXLB0Fs950iFI46Z4xED2cIW0aImYLwy24WaJlYm0sxjNnH27PatGvtfMj?=
- =?us-ascii?Q?hEpcn+oLGdyGK56Iq1yo74TCuW9XtnvZ/kQMAKBtFrS1SyAYH7NfDS189Mfm?=
- =?us-ascii?Q?z0D26ivsXy3STtnLCxt8I6hzGR6jg1mdkaZ5G4WYPJyKV3wcBxg9bfyaEZ6i?=
- =?us-ascii?Q?oMlP0gIsabrsGch+KAqi2ljWkWd8BNJoh0tGaECxnjfQTe17+ToRD7E4c9Xx?=
- =?us-ascii?Q?788naAeX2pj7M0zAY7bJ5zXYlVRZ9+/ycuYHOS8Til34RHKuciluDJwrCkjx?=
- =?us-ascii?Q?xyYj7a854EanDJRupaloVu/SnGeo2LQ3cSKC57zgLQtw2gGHGQI+Ad5B80nI?=
- =?us-ascii?Q?1hau+rPgAhZnbtwu3aXR3+kEnkGA5g33JvGZdLMhFPPh84yFmSMiAx0e79CI?=
- =?us-ascii?Q?/Ftk/2wuksrJsefm8okiGw2rEYAukLC24RfVUYZWceQ0quSumuJzy9Mk4asZ?=
- =?us-ascii?Q?6sYuow=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 254c2d23-98ba-4feb-8379-08d9f2d3319a
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2022 11:38:33.7147
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fNeE9mIiTruw5FZfaffmTlkLDKOq9XdFZfHWtJUG/K+lDaiW3PEnXpRubnu7MbLoOTXLsifgUM9bSEfMDD1q7hk2QOy0bFl/6+q6v/mNtHk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR10MB1842
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10261 signatures=677564
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202180074
-X-Proofpoint-GUID: iBNQKn-QzYY3D6p7CUpHfR6HzOfcMJ5k
-X-Proofpoint-ORIG-GUID: iBNQKn-QzYY3D6p7CUpHfR6HzOfcMJ5k
-X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FAKE_REPLY_C,HEXHASH_WORD,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Caleb,
+On Mon, 31 Jan 2022 12:50:32 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-url:    https://github.com/0day-ci/linux/commits/Caleb-Connolly/iio-adc-introduce-Qualcomm-SPMI-Round-Robin-ADC/20220216-215127
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-config: arm-randconfig-m031-20220217 (https://download.01.org/0day-ci/archive/20220218/202202180412.YwXgb5WR-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.2.0
+> On Sun, Jan 30, 2022 at 10:50 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Whilst I'm still looking for additional review on the first set,
+> > I'll take the quiet as meaning no one objects and send out a second
+> > set.  Note that I don't have anyone cc'd on some of these because
+> > I couldn't immediately figure out who was still active and familiar
+> > with the drivers.  As these should be simple to review, please take
+> > a look at as many as you have time for!
+> >
+> > Here's the reasoning as per the first set cover letter.
+> > Note that we have some clashes with patches that I'd like to clean
+> > up the handling of dev_pm_ops and CONFIG_PM* guards so for now
+> > I've dropped those cases from this series.
+> >
+> > https://lwn.net/Articles/760045/ provides a good overview of this feature
+> > and why it might be used.  In this particular case we fall under the multi
+> > module case.  For each group of modules, I've moved the exports into
+> > an independent namespace.
+> >
+> > Whilst I'm not entirely sure it is worth the noise of moving the main
+> > IIO exports into a namespace, it is definitely worthwhile for these small
+> > clusters of related modules (typically a core + i2c and spi modules).
+> >
+> > I've just done those within drivers/accel (including all of st-sensors as
+> > I did not want to do that piecemeal) as an initial set to get feedback on
+> > what people think of the approach and in particular naming of the namespaces.
+> >
+> > As you can see it is a straight forward change to makes so I'll do the
+> > rest of the IIO drivers once we are agreed on the generic details.
+> > Note that I'll be expecting this for any new cases of this pattern going
+> > forwards.
+> >
+> > Includes a small diversion in st-sensors where we had a bunch of duplicated
+> > MODULE_* macros for some of the core modules which were made up of multiple
+> > c files.  
+> 
+> I briefly looked at the series and found no drastical issues (hope CI
+> will find, if any), so
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Thanks
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Series applied to the togreg branch of iio.git and pushed out as testing
+to see if CI can find anything.
 
-smatch warnings:
-drivers/mfd/qcom-spmi-pmic.c:104 qcom_pmic_get() error: uninitialized symbol 'other_usid'.
+Thanks,
 
-vim +/other_usid +104 drivers/mfd/qcom-spmi-pmic.c
-
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   72  const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev)
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   73  {
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   74  	struct spmi_device *sdev;
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   75  	struct device_node *spmi_bus;
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   76  	struct device_node *other_usid;
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   77  	int function_parent_usid, ret;
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   78  	u32 reg[2];
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   79  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   80  	if (!of_match_device(pmic_spmi_id_table, dev->parent))
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   81  		return ERR_PTR(-EINVAL);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   82  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   83  	sdev = to_spmi_device(dev->parent);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   84  	if (!sdev)
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   85  		return ERR_PTR(-EINVAL);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   86  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   87  	/*
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   88  	 * Quick return if the function device is already in the right
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   89  	 * USID
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   90  	 */
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   91  	if (sdev->usid % 2 == 0)
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   92  		return spmi_device_get_drvdata(sdev);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   93  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   94  	function_parent_usid = sdev->usid;
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   95  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   96  	/*
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   97  	 * Walk through the list of PMICs until we find the sibling USID.
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   98  	 * The goal is the find to previous sibling. Assuming there is no
-0e7c7a6e235e61 Caleb Connolly 2022-02-16   99  	 * PMIC with more than 2 USIDs. We know that function_parent_usid
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  100  	 * is one greater than the base USID.
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  101  	 */
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  102  	spmi_bus = of_get_parent(sdev->dev.parent->of_node);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  103  	do {
-0e7c7a6e235e61 Caleb Connolly 2022-02-16 @104  		other_usid = of_get_next_child(spmi_bus, other_usid);
-                                                                                                 ^^^^^^^^^^
-Uninitialized.
-
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  105  		ret = of_property_read_u32_array(other_usid, "reg", reg, 2);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  106  		if (ret)
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  107  			return ERR_PTR(ret);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  108  		sdev = spmi_device_from_of(other_usid);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  109  		if (sdev == NULL) {
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  110  			/*
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  111  			 * If the base USID for this PMIC hasn't probed yet
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  112  			 * but the secondary USID has, then we need to defer
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  113  			 * the function driver so that it will attempt to
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  114  			 * probe again when the base USID is ready.
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  115  			 */
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  116  			if (reg[0] == function_parent_usid - 1)
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  117  				return ERR_PTR(-EPROBE_DEFER);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  118  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  119  			continue;
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  120  		}
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  121  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  122  		if (reg[0] == function_parent_usid - 1)
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  123  			return spmi_device_get_drvdata(sdev);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  124  	} while (other_usid->sibling);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  125  
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  126  	return ERR_PTR(-ENODATA);
-0e7c7a6e235e61 Caleb Connolly 2022-02-16  127  }
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Jonathan
+> 
+> > Cc: Himanshu Jha <himanshujha199640@gmail.com>
+> > Cc: Song Qiang <songqiang1304521@gmail.com>
+> > Cc: Tomasz Duszynski <tduszyns@gmail.com>
+> > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > Cc: Song Bao Hua (Barry Song) <song.bao.hua@hisilicon.com>
+> > Cc: Paul Cercueil <paul@crapouillou.net>
+> > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> > Cc: William Markezana <william.markezana@meas-spec.com>
+> > Cc: Ludovic Tancerel <ludovic.tancerel@maplehightech.com>
+> > Cc: Renato Lui Geh <renatogeh@gmail.com>
+> > Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+> >
+> >
+> > Jonathan Cameron (16):
+> >   iio:adc:ad_sigma_delta: Move exports into IIO_AD_SIGMA_DELTA namespace
+> >   iio:adc:ad7091r: Move exports into IIO_AD7091R namespace.
+> >   iio:adc:ad76060: Move exports into IIO_AD7606 namespace.
+> >   iio:common:meas-spec: Move exports into IIO_MEAS_SPEC_SENSORS
+> >   iio:common:ssp_sensors: Move exports into IIO_SSP_SENSORS namespace
+> >   iio:dac:ad5592r: Move exports into IIO_AD5592R namespace
+> >   iio:dac:ad5686: Move exports into IIO_AD5686 namespace
+> >   iio:imu:adis: Move exports into IIO_ADISLIB namespace
+> >   iio:pressure:zpa2326: Move exports into IIO_ZPA2326 namespace
+> >   iio:pressure:ms5611: Move exports into IIO_MS5611 namespace
+> >   iio:pressure:mpl115: Move exports into IIO_MPL115 namespace
+> >   iio:magnetometer:rm3100: Move exports to IIO_RM3100 namespace
+> >   iio:magnetometer:bmc150: Move exports to IIO_BMC150_MAGN namespace
+> >   iio:magnetometer:hmc5843: Move exports to IIO_HMC5843 namespace
+> >   iio:light:st_uvis25: Move exports to IIO_UVIS25 namespace
+> >   iio:chemical:bme680: Move exports to IIO_BME680 namespace
+> >
+> >  drivers/iio/accel/adis16201.c                 |  1 +
+> >  drivers/iio/accel/adis16209.c                 |  1 +
+> >  drivers/iio/accel/ssp_accel_sensor.c          |  1 +
+> >  drivers/iio/adc/ad7091r-base.c                |  4 ++--
+> >  drivers/iio/adc/ad7091r5.c                    |  1 +
+> >  drivers/iio/adc/ad7124.c                      |  1 +
+> >  drivers/iio/adc/ad7192.c                      |  1 +
+> >  drivers/iio/adc/ad7606.c                      |  4 ++--
+> >  drivers/iio/adc/ad7606_par.c                  |  1 +
+> >  drivers/iio/adc/ad7606_spi.c                  |  1 +
+> >  drivers/iio/adc/ad7780.c                      |  1 +
+> >  drivers/iio/adc/ad7791.c                      |  1 +
+> >  drivers/iio/adc/ad7793.c                      |  1 +
+> >  drivers/iio/adc/ad_sigma_delta.c              | 20 ++++++++--------
+> >  drivers/iio/chemical/bme680_core.c            |  4 ++--
+> >  drivers/iio/chemical/bme680_i2c.c             |  1 +
+> >  drivers/iio/chemical/bme680_spi.c             |  1 +
+> >  .../iio/common/ms_sensors/ms_sensors_i2c.c    | 24 +++++++++----------
+> >  drivers/iio/common/ssp_sensors/ssp_dev.c      | 10 ++++----
+> >  drivers/iio/common/ssp_sensors/ssp_iio.c      |  7 +++---
+> >  drivers/iio/dac/ad5592r-base.c                |  4 ++--
+> >  drivers/iio/dac/ad5592r.c                     |  1 +
+> >  drivers/iio/dac/ad5593r.c                     |  1 +
+> >  drivers/iio/dac/ad5686-spi.c                  |  1 +
+> >  drivers/iio/dac/ad5686.c                      |  4 ++--
+> >  drivers/iio/dac/ad5696-i2c.c                  |  1 +
+> >  drivers/iio/gyro/adis16136.c                  |  1 +
+> >  drivers/iio/gyro/adis16260.c                  |  1 +
+> >  drivers/iio/gyro/ssp_gyro_sensor.c            |  1 +
+> >  drivers/iio/humidity/htu21.c                  |  1 +
+> >  drivers/iio/imu/adis.c                        | 20 ++++++++--------
+> >  drivers/iio/imu/adis16400.c                   |  1 +
+> >  drivers/iio/imu/adis16460.c                   |  1 +
+> >  drivers/iio/imu/adis16475.c                   |  1 +
+> >  drivers/iio/imu/adis16480.c                   |  1 +
+> >  drivers/iio/imu/adis_buffer.c                 |  4 ++--
+> >  drivers/iio/imu/adis_trigger.c                |  2 +-
+> >  drivers/iio/light/st_uvis25_core.c            |  4 ++--
+> >  drivers/iio/light/st_uvis25_i2c.c             |  1 +
+> >  drivers/iio/light/st_uvis25_spi.c             |  1 +
+> >  drivers/iio/magnetometer/bmc150_magn.c        |  8 +++----
+> >  drivers/iio/magnetometer/bmc150_magn_i2c.c    |  1 +
+> >  drivers/iio/magnetometer/bmc150_magn_spi.c    |  1 +
+> >  drivers/iio/magnetometer/hmc5843_core.c       |  8 +++----
+> >  drivers/iio/magnetometer/hmc5843_i2c.c        |  1 +
+> >  drivers/iio/magnetometer/hmc5843_spi.c        |  1 +
+> >  drivers/iio/magnetometer/rm3100-core.c        |  8 +++----
+> >  drivers/iio/magnetometer/rm3100-i2c.c         |  1 +
+> >  drivers/iio/magnetometer/rm3100-spi.c         |  1 +
+> >  drivers/iio/pressure/mpl115.c                 |  2 +-
+> >  drivers/iio/pressure/mpl115_i2c.c             |  1 +
+> >  drivers/iio/pressure/mpl115_spi.c             |  1 +
+> >  drivers/iio/pressure/ms5611_core.c            |  4 ++--
+> >  drivers/iio/pressure/ms5611_i2c.c             |  1 +
+> >  drivers/iio/pressure/ms5611_spi.c             |  1 +
+> >  drivers/iio/pressure/ms5637.c                 |  1 +
+> >  drivers/iio/pressure/zpa2326.c                | 12 +++++-----
+> >  drivers/iio/pressure/zpa2326_i2c.c            |  1 +
+> >  drivers/iio/pressure/zpa2326_spi.c            |  1 +
+> >  drivers/iio/temperature/tsys01.c              |  1 +
+> >  drivers/iio/temperature/tsys02d.c             |  1 +
+> >  drivers/staging/iio/accel/adis16203.c         |  1 +
+> >  drivers/staging/iio/accel/adis16240.c         |  1 +
+> >  63 files changed, 121 insertions(+), 76 deletions(-)
+> >
+> > --
+> > 2.35.1
+> >  
+> 
+> 
 

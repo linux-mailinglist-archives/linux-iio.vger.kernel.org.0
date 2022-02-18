@@ -2,150 +2,222 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 381374BAD5B
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 00:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 182634BB05E
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 04:46:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbiBQXr1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Feb 2022 18:47:27 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:55452 "EHLO
+        id S229644AbiBRDqn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Feb 2022 22:46:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbiBQXr1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Feb 2022 18:47:27 -0500
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B65237842F;
-        Thu, 17 Feb 2022 15:47:04 -0800 (PST)
-Received: by mail-pf1-f174.google.com with SMTP id u16so941499pfg.12;
-        Thu, 17 Feb 2022 15:47:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=u00A7HXNqtn6x61TYWm7OlmiKFTOsyXYfH8TCwr1QB8=;
-        b=p15mpCPvBPQa1JJ3cMVulmRKIRseXMQEsaEWk2vbVJztGY6ojcdBHQuaZbEHH1b4A9
-         vdh7rQrVzJiwneRnftFMojLEHyo5Oxz8p9JGyovy2LJuU5E5aMKPZUNq2ZTF1eDD1Y1I
-         /pMdAFiJsfLftcXH8Jv8ckjq2HX4TmWaeEfizIBLdOFQbVpDHy1tcht95zlmqv5Nvovc
-         OzDQmtxQY5pTfcRmlYnuv8RtjIywzMoe5ZcXWYu+RbF888mjBoAeotvpUgZE+o1E2apg
-         vnP3rwO288Au9CKm/bE4mpfl0Ao1yX+3Q6t0izEzeKwHuYTUnYT56/yEc2bHUw/IcrXS
-         1Ddg==
+        with ESMTP id S229576AbiBRDql (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Feb 2022 22:46:41 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E04BC1B
+        for <linux-iio@vger.kernel.org>; Thu, 17 Feb 2022 19:46:25 -0800 (PST)
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id B35BE40017
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:46:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645155983;
+        bh=0RxOc3UniivNO6eEtLtFNmWfIVvDozmAkMICYO3UsLU=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=jyWvHdVlS6HnQKXgSmUxlr9/W/2EW2qUS/3EufFv7tcoBlqpZSeea/gMBn9X0ZgB1
+         wD92FWXwID7gOrVMmkk4qbQa9CdgtDAu2gcUhAq+LWrw2315vpt1FPdQZc+K9Zjgbt
+         qdxAJdrmqgDu8ZjcPMLQ/nyCEcg/GAnhkUdsCyR/7JxgGZCKyAGwKhsUbOdg43oBBv
+         PrgG3DgpM2JUHjTlX3arR5+5gSY626dz28tpLH4/cuJbksUZ1qRLPgFEUgrd7Ih5wB
+         kEz9/VdEWMSafjNOxrs68aLkvpfj4vm5y4MSL3KDSwfJmgKq0VSEjTpCxhxzBxNK1x
+         oFfIz5/q2BEBg==
+Received: by mail-ot1-f69.google.com with SMTP id t3-20020a9d7483000000b005ad2f92e885so784785otk.21
+        for <linux-iio@vger.kernel.org>; Thu, 17 Feb 2022 19:46:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=u00A7HXNqtn6x61TYWm7OlmiKFTOsyXYfH8TCwr1QB8=;
-        b=xfYBO3kq4HBRT/kGYY4mKRVkcIlem+9Ii2sUOxG3H7O+pdun283QnyOxPmwi/0vTFH
-         1uQ4jDSWa0nl0ONG+gT8kk4hjFWGvlmJYkGBKN3ZDRLj46zcWXCWmreEO/SSutELxb8V
-         3UNnU28oJaSx+M7CmHNAjM9+fxI97tAr3lrr6HJv7MKTZGDUG4YrifE8UAwNDuj2XPxY
-         aNvXEF0Sm1W5qVnbv6S4gXnr+br26dUy/K7LQoTlzuzD1Hfgd1WdaTZ4jiy6jhjQy/jQ
-         DqS9EKGVy9MjvXyOH/BiX3pc11QR9RVTzW02fixbinTUzqWfU0AiKPpiGhi+dSkolTV1
-         WClQ==
-X-Gm-Message-State: AOAM5332CB0kP63+w9Sr2LJybBOQjJt/shPAMgk3hH9dtzLi80gOreyA
-        rMV40BSct4aTMnS5+YsHKq4jzlfifT2z+Q==
-X-Google-Smtp-Source: ABdhPJw6JQyNTvhVXbUzQ/+zneEXeBpconb6izjpkCJT8lXzfplhbWtbFhX9XlPnZPRE1ihsoVUY8Q==
-X-Received: by 2002:a65:6201:0:b0:369:4a47:aff1 with SMTP id d1-20020a656201000000b003694a47aff1mr4188198pgv.238.1645141377577;
-        Thu, 17 Feb 2022 15:42:57 -0800 (PST)
-Received: from shinobu (113x37x72x24.ap113.ftth.ucom.ne.jp. [113.37.72.24])
-        by smtp.gmail.com with ESMTPSA id b11sm658653pfl.123.2022.02.17.15.42.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Feb 2022 15:42:56 -0800 (PST)
-Date:   Fri, 18 Feb 2022 08:42:51 +0900
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-iio@vger.kernel.org,
-        Robin van der Gracht <robin@protonic.nl>,
-        linux-kernel@vger.kernel.org,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        David Jander <david@protonic.nl>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH] counter: Stop using dev_get_drvdata() to get the counter
- device
-Message-ID: <Yg7de1ZlUJoNGYNa@shinobu>
-References: <YfzPcyusGwAOkys6@shinobu>
- <20220204082556.370348-1-u.kleine-koenig@pengutronix.de>
- <YgHKekl9rJ2jH5j4@shinobu>
- <b9099ac3-a5fa-1aba-92a3-05a7212525ab@linux.intel.com>
- <20220217160308.oo3fmghapnvmummz@pengutronix.de>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=0RxOc3UniivNO6eEtLtFNmWfIVvDozmAkMICYO3UsLU=;
+        b=v2/VtpK8aqyQC0EMoh+Ib5ktnJKLQ7vxAEsrRRJDedPXdy8PjsnvkUM1YJ8QWDdFSO
+         1lcoX/J+sgXHiQfaJAOZH7A/1ZAK+S9owKN93w5sevCrri/H0tXBoiBuFLNFQQwqgvlt
+         VszFEGXwba5Ep1FVCtTBuV1KJKS/bC0M1HUTuNqwj6o1XbFhUVvGPn7vy2RkbyHEqHiv
+         KXWM8PXV8MNPEfF45fC4ITyk6Sx968SO5hgqHSkcbSBqbILHbIQv9y29GDjZvgxBLNl1
+         kL9MebG5P3sEWdms0Z2MQWSTMTp8y5X/1HIYAwaLyZzA8lwmY9MeNmeZ64/IBe7SIRoz
+         qFsg==
+X-Gm-Message-State: AOAM530QFTO325hsP4NSDx5n0Tu3aU4OiBkVbDcZpIhf069EeGTNZNfK
+        M64NreaJKvHQ9gHxkJejFNe57eDudUhxl33kAr4BObmHr/3rWmQZndBsqX5ovlyxXxGWIDb39NI
+        3zt6Ezm4dWL/JVuPEukz5oU2kYe+/1s19fLNI5uMOUBfapkKdmRvGow==
+X-Received: by 2002:a05:6808:2110:b0:2d4:4137:b4fc with SMTP id r16-20020a056808211000b002d44137b4fcmr4329998oiw.111.1645155982390;
+        Thu, 17 Feb 2022 19:46:22 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzMQyIw05tp8VFtFxbc+dsgMQp7NcON7pbi2DUtJ4YIPKYpvyCcRQpeoHCvrdqIRDQhi34L+gklycZtFQqlR1c=
+X-Received: by 2002:a05:6808:2110:b0:2d4:4137:b4fc with SMTP id
+ r16-20020a056808211000b002d44137b4fcmr4329992oiw.111.1645155982128; Thu, 17
+ Feb 2022 19:46:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iNB/FkNypOb1hr7K"
-Content-Disposition: inline
-In-Reply-To: <20220217160308.oo3fmghapnvmummz@pengutronix.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220217055208.2388929-1-kai.heng.feng@canonical.com> <CAHp75VfFGw3b_ZtQir0AfTfXfQ7fi_LKLsY-7ww=4+MMBR8BAQ@mail.gmail.com>
+In-Reply-To: <CAHp75VfFGw3b_ZtQir0AfTfXfQ7fi_LKLsY-7ww=4+MMBR8BAQ@mail.gmail.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Fri, 18 Feb 2022 11:46:10 +0800
+Message-ID: <CAAd53p7O7joFa7MH0s+rw-59WQkigvjKBf1bpO9e2gX9ddjF-A@mail.gmail.com>
+Subject: Re: [PATCH v4] iio: accel: adxl345: Add ACPI HID table
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, Feb 17, 2022 at 6:57 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+>
+>
+> On Thursday, February 17, 2022, Kai-Heng Feng <kai.heng.feng@canonical.co=
+m> wrote:
+>>
+>> x86 boards may use ACPI HID "ADS0345" for adxl345 device.
+>>
+>> Analog replied:
+>> "ADS034X is not a valid PNP ID. ADS0345 would be.
+>> I'm not aware that this ID is already taken.
+>> Feel free to submit a mainline Linux input mailing list patch."
+>>
+>> So add an ACPI match table for that accordingly.
+>>
+>> Since ACPI device may not match to any I2C ID, use the name and type
+>> directly from ACPI ID table in absence of I2C ID.
+>>
+>> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+>> ---
+>> v4:
+>>  - Drop "ADS0345:00" and use driver_date from ACPI table directly.
+>>
+>> v3:
+>>  - Convert the driver from input to iio.
+>>
+>> v2:
+>>  - Drop ACPI_PTR()
+>>  - Drop redundant empty line and comma
+>>  - Add info from vendor
+>>
+>>  drivers/iio/accel/adxl345_i2c.c | 29 ++++++++++++++++++++++++-----
+>>  1 file changed, 24 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345=
+_i2c.c
+>> index a431cba216e69..cdcc3ef1f1d33 100644
+>> --- a/drivers/iio/accel/adxl345_i2c.c
+>> +++ b/drivers/iio/accel/adxl345_i2c.c
+>> @@ -22,20 +22,32 @@ static const struct regmap_config adxl345_i2c_regmap=
+_config =3D {
+>>  static int adxl345_i2c_probe(struct i2c_client *client,
+>>                              const struct i2c_device_id *id)
+>>  {
+>> +       struct device *dev =3D &client->dev;
+>> +       const struct acpi_device_id *acpi_id;
+>> +       enum adxl345_device_type type;
+>> +       const char *name;
+>>         struct regmap *regmap;
+>>
+>> -       if (!id)
+>> -               return -ENODEV;
+>> +       if (id) {
+>> +               type =3D id->driver_data;
+>> +               name =3D id->name;
+>> +       } else {
+>> +               acpi_id =3D acpi_match_device(dev->driver->acpi_match_ta=
+ble, dev);
+>> +               if (acpi_id) {
+>> +                       type =3D acpi_id->driver_data;
+>> +                       name =3D acpi_id->id;
+>> +               } else
+>> +                       return -ENODEV;
+>> +       }
+>>
+>
+>
+> Thanks, but can we do this in ACPI agnostic way?
+>
+> Can be as simple as
+>
+> if (id)
+>   ...
+> else {
+>   match =3D device_get_match_data(dev);
+>   if (!match)
+>     return -ENODEV;
+> }
+>
+> Note, it might require to reconsider what is put in the driver data (eith=
+er convert to pointers, or be sure that valid type is never a 0/NULL).
 
---iNB/FkNypOb1hr7K
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Unlike acpi_match_device(), device_get_match_data() only get
+driver_data, so we need a new struct to provide both name and type.
 
-On Thu, Feb 17, 2022 at 05:03:08PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Thu, Feb 17, 2022 at 04:48:50PM +0200, Jarkko Nikula wrote:
-> > On 2/8/22 03:42, William Breathitt Gray wrote:
-> > > On Fri, Feb 04, 2022 at 09:25:56AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > > dev_get_drvdata() returns NULL since commit b56346ddbd82 ("counter:=
- Use
-> > > > container_of instead of drvdata to track counter_device") which wro=
-ngly
-> > > > claimed there were no users of drvdata. Convert to container_of() to
-> > > > fix a null pointer dereference.
-> > > >=20
-> > > > Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > > > Fixes: b56346ddbd82 ("counter: Use container_of instead of drvdata =
-to track counter_device")
-> > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.d=
-e>
-> > >=20
-> > > I'll pick this up and apply it to my tree.
-> >
-> > Perhaps late but I hit this same issue, patch here fixes it and I wante=
-d to
-> > confirm it.
-> >=20
-> > Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->=20
-> I wonder if this patch is scheduled for 5.17. Currently it's not even in
-> next ... :-\
->=20
-> Best regards
-> Uwe
+>
+> Also note, in both cases using ID name for name us fragile. Probably we h=
+ave to fix that first. Let me check today=E2=80=99s evening.
 
-Hi Uwe,
+Can you please explain more on this? How does ID name make it fragile?
 
-I've got it in my tree. I'm sending a pull request for the Counter
-patches for 5.17 next week, so they should all be merged after that.
+Kai-Heng
 
-Sincerely,
-
-William Breathitt Gray
-
---iNB/FkNypOb1hr7K
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAmIO3WQACgkQhvpINdm7
-VJKqAQ/+N4Ipb9S/Ax8Xl5ttPmJedMOl/V5NBJ+GjFdcKkoyS/SP2FC1mylie/Ju
-mbkMIL5k+enkr5EFqmIBRmJFc79RU7JWR68n4TLx+5+l7EdruUx1CDmmxu0lhgnl
-gKbWj1zUsu41aEi+doFOeMfmGwMHMCNazhzaj8S7+1YRhnoKGqnV+PjJShAt1f0D
-HLA6hBvm0rk5dIWH0HZ0faKnbVeBPxE4+oD5ZOZbDrr3A7x1AY6vXKDhq0BuLLI/
-eEFl2u2s+13tzNsqm176RXaKD656M8qgJ3+L+WU6yPfDgNiW+5etejcwd7i6Gl6y
-S3+//ijKPFmv0npH/Pcnq3VuerE9KnA5COXDvKTJ5osiMaE6G6rzdNyvrywFNigV
-HyikQgQg7QTFX2WeQdkCEkDj7ZQ9P0o83bnLgA6TJxDLJjaPaQXKm9XDNM7rfQSR
-L9OsDbhJM2LdC3w75lz6hgRe7EVLpKT47SRIRtQj3j0qVyWgvZb4keLJVBjNMmic
-IJ+c38ZgsQDUUfrT7ciqKWY964/1wZGEigJoBWr1qGrNhKPiAjndLDTSJaYGatx2
-YFTBNhZhZS55ytn3mm9kZtgx2D8MR4gNbLK5SJbxMPNOWTneCiPDWIcdTN0jr6sL
-uOkdb1abxVE4VyibUZ5OFycg/ijE49J0JBY3chXEHV+PMG9RC+s=
-=sOb8
------END PGP SIGNATURE-----
-
---iNB/FkNypOb1hr7K--
+>
+>>
+>>         regmap =3D devm_regmap_init_i2c(client, &adxl345_i2c_regmap_conf=
+ig);
+>>         if (IS_ERR(regmap)) {
+>> -               dev_err(&client->dev, "Error initializing i2c regmap: %l=
+d\n",
+>> +               dev_err(dev, "Error initializing i2c regmap: %ld\n",
+>>                         PTR_ERR(regmap));
+>>                 return PTR_ERR(regmap);
+>>         }
+>>
+>> -       return adxl345_core_probe(&client->dev, regmap, id->driver_data,
+>> -                                 id->name);
+>> +       return adxl345_core_probe(&client->dev, regmap, type, name);
+>>  }
+>>
+>>  static const struct i2c_device_id adxl345_i2c_id[] =3D {
+>> @@ -54,10 +66,17 @@ static const struct of_device_id adxl345_of_match[] =
+=3D {
+>>
+>>  MODULE_DEVICE_TABLE(of, adxl345_of_match);
+>>
+>> +static const struct acpi_device_id adxl345_acpi_match[] =3D {
+>> +       { "ADS0345", ADXL345 },
+>> +       { }
+>> +};
+>> +MODULE_DEVICE_TABLE(acpi, adxl345_acpi_match);
+>> +
+>>  static struct i2c_driver adxl345_i2c_driver =3D {
+>>         .driver =3D {
+>>                 .name   =3D "adxl345_i2c",
+>>                 .of_match_table =3D adxl345_of_match,
+>> +               .acpi_match_table =3D adxl345_acpi_match,
+>>         },
+>>         .probe          =3D adxl345_i2c_probe,
+>>         .id_table       =3D adxl345_i2c_id,
+>> --
+>> 2.34.1
+>>
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>

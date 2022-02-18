@@ -2,105 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F05B4BB65B
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 11:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A0704BB7E6
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:16:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233790AbiBRKIG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 05:08:06 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53032 "EHLO
+        id S232194AbiBRLQb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 06:16:31 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231401AbiBRKIF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 05:08:05 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480941B7BF
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 02:07:48 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nL0Az-0001P2-DN; Fri, 18 Feb 2022 11:07:45 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nL0Az-00HNUK-Bs; Fri, 18 Feb 2022 11:07:44 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nL0Ax-003y6p-LU; Fri, 18 Feb 2022 11:07:43 +0100
-Date:   Fri, 18 Feb 2022 11:07:43 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH] counter: Stop using dev_get_drvdata() to get the counter
- device
-Message-ID: <20220218100743.ipzhzcv2cvaw3a2f@pengutronix.de>
-References: <20220218092031.167689-1-vilhelm.gray@gmail.com>
+        with ESMTP id S230475AbiBRLQa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:16:30 -0500
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0ED23BF35
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:16:14 -0800 (PST)
+Received: by mail-io1-xd41.google.com with SMTP id y20so7115521iod.1
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:16:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=mTe6rsF1WlocKfWRCIawejpNJl6lRYSIlYxDz8jltlQ=;
+        b=Pan6CQ5hu2zUWWGu7Uie4NrQKmsGKL/CxMvpZg3arHLwqybzfW5vPwI0oNIlnVTVCY
+         4c8HMuG3hOlZ2dJ19IADvg7r/uWRLoGCJQRLhgXrRFBRd8cLzV+L8Ry4zDWV8DeUZRYC
+         gr9b2V+5LPdM2syWTpwKBi7HAZWKHBCcCiyX+x/fdDeLs666uNWUruqhzwDOsideezPk
+         7V2QvzuUtibuz8O4V++lY+8wUh5ErnXfvJD9Z8NYbtVyMRCIcc6LU/EbQRA1jTha3uEl
+         TB9ODkMhs1755JcB/E+vFGz8PGcjD5GVLug+doOg+GgTZ0WX/8d+d2eusHRLFm6YvprH
+         vbjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=mTe6rsF1WlocKfWRCIawejpNJl6lRYSIlYxDz8jltlQ=;
+        b=VjYCfJ2PaV9FnfNAcLdF/AblKO3oz8f/YXMCtdl7BSx9GufbJmxizLPUekQNd7tToP
+         Eout8BEiMbQakIDXT2H7Tjd6FHlNqphryxeriA6HTAFLXHLyT/TVsq+RSTxachUDTrH6
+         BtGy6fL/pi+YDhUrNY7+k1VSqep+5/oj7q+uiXTx+JsasvL5wurIbMJR2i7xVSR5jUMi
+         xka/uwatsorrVXUkWFlw3ZA2maFsn81rmGsSUnIOFPestrVCn6C7uABfnb2dJ1fcRx0X
+         tDnyHIGxbXvRxVCg89I4HhfXu1zBpmgcPiiI+uJ5NkJyJ1HPldief2lmVabWyY9+qB1N
+         1oOA==
+X-Gm-Message-State: AOAM530Egll/yEYz9nWYyDrLeYjjL8DPWuKfAmpMOC7lfTcQO3oh7/cE
+        fkGZF2OK24mE7ZkVLscuLY6nZRXgEQVan6aEQg==
+X-Google-Smtp-Source: ABdhPJyYJX7MA4BjA31I/F0RfVIRMUutodreFGyEGO8BeEyItxwVKLbClz1ulV0gK9BDYhDuxAplopBsC5LbHDgKhP8=
+X-Received: by 2002:a6b:8f83:0:b0:613:8b75:b76d with SMTP id
+ r125-20020a6b8f83000000b006138b75b76dmr5245691iod.77.1645182973880; Fri, 18
+ Feb 2022 03:16:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mfyftfv6zovvw7xo"
-Content-Disposition: inline
-In-Reply-To: <20220218092031.167689-1-vilhelm.gray@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Reply-To: zahirikeen@gmail.com
+Sender: ali.wa1234ara@gmail.com
+Received: by 2002:a05:6638:3013:0:0:0:0 with HTTP; Fri, 18 Feb 2022 03:16:13
+ -0800 (PST)
+From:   Zahiri Keen <zahirikeen2@gmail.com>
+Date:   Fri, 18 Feb 2022 11:16:13 +0000
+X-Google-Sender-Auth: ossTFlO9wpy3KD-k9TK98D_rNgI
+Message-ID: <CA+0F4TE-LpATnJ0TyO4Reo6H9EQUjwSQquiHVa_gGjzzsAAnFw@mail.gmail.com>
+Subject: Greetings to you.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Good Day,
 
---mfyftfv6zovvw7xo
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I know this email might come to you as a surprise because is coming
+from someone you haven=E2=80=99t met with before.
 
-Hello,
+I am Mr. Zahiri Keen, the bank manager with BOA bank i contact you for
+a deal relating to the funds which are in my position I shall furnish
+you with more detail once your response.
 
-On Fri, Feb 18, 2022 at 06:20:31PM +0900, William Breathitt Gray wrote:
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> dev_get_drvdata() returns NULL since commit b56346ddbd82 ("counter: Use
-> container_of instead of drvdata to track counter_device") which wrongly
-> claimed there were no users of drvdata. Convert to container_of() to
-> fix a null pointer dereference.
->=20
-> Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Fixes: b56346ddbd82 ("counter: Use container_of instead of drvdata to tra=
-ck counter_device")
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
-> ---
-
-William didn't tell explicitly, so in case there are doubts: This patch
-is targeted for v5.17.
-
-Thanks
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---mfyftfv6zovvw7xo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmIPb+wACgkQwfwUeK3K
-7AkdEgf/bmf5sYB0eYSvBmbPJag0UY/r0kQXIHhBUQxrKmVZ6HKUEj0EmQDrsNss
-E5pcv0h+x49+GKnDY29ime4SejdL71Wnd2By8wijWb+crPqwDNB9x9zv85iTuH8V
-4e16mffTWVWOUaPWIol0CoZ+7HgEfQ+e5B5nfKOyVaHu2OdaaU4WraepzLyEqJAp
-cYnmklHyOsbq1P9Tt5Jh+S1ibnI9envv0B0zzkqwhLkaio351yf3PwzcpuihZMqs
-ZQDo51j6y3VEilNmakixkqgPVIs6P1IeBUX2p48GsMQqqbuovdgaY3GCseRylTOu
-+qThaDTrnp0ktNLNXqLASlyxp1T2OA==
-=1E4O
------END PGP SIGNATURE-----
-
---mfyftfv6zovvw7xo--
+Regards,
+Mr.Zahiri

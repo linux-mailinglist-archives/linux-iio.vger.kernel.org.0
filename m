@@ -2,71 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08C504BB867
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E074BB8B5
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Feb 2022 12:53:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbiBRLlG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Feb 2022 06:41:06 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36738 "EHLO
+        id S233324AbiBRLxZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Feb 2022 06:53:25 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234925AbiBRLlA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:41:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD86D381
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:40:43 -0800 (PST)
+        with ESMTP id S230523AbiBRLxY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Feb 2022 06:53:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96DD623D3D1
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 03:53:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7435FB825DE
-        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 11:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B6CC340E9;
-        Fri, 18 Feb 2022 11:40:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3255561F5A
+        for <linux-iio@vger.kernel.org>; Fri, 18 Feb 2022 11:53:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD6CC340E9;
+        Fri, 18 Feb 2022 11:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645184441;
-        bh=zfSOv3A+lmCSVJN9uuuXVfmJGrvuTMd/wGf2HqpLcqk=;
+        s=k20201202; t=1645185186;
+        bh=fc9G1W2F+02XTviIMZxLjKVwSy/dvhYcZG+8dtSPfpA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BjnEdnVvw0kZrGex+XXnBtT8JG1tuGDkOIMp/zLklx61dCqVv/VTh4JQOopGs6TDe
-         NWku8d0qr+1LYT5NbO6HCGv834VtPrbrZ10XR9Wg1L69aeD8ZZ0XLTGt65USLLAbQH
-         D4APLK0EMTStctuqAXtmQZciLEMxO5GSIjUP/RVGq7thkzcNIhAcMtAMyovvNhA9ZH
-         y4hEnRNnewwJ4jG56rAJMWG1Hy1JFMhknrqeZr1ayurCeXzXIgivHqBEKsd+9yqfsD
-         TMnNmpH0OoeSmi782jCZjCKQUkflthW9E+IrfMTY0Rm5n8CAQ1232fTxxnlqGxDmIb
-         gFFC7as4JHJgg==
-Date:   Fri, 18 Feb 2022 11:47:25 +0000
+        b=ExeoTXiO/wKINzgVMj/pMw7liTwcH3OMAxaOuAQ9F0nOPXvNbsKzY7AMwOxr2Ka3G
+         LhRp2LvFQChLuW0LMTFsaLIjxvnsJbxmq3i1MOFNvFY0fLzIzNc3kzgcUt+6CvdLnt
+         g0J/udy+c+mKkbxOQ1b9Ch2MtEAkLAH+8MjDOiOkHWUiUciC6EiBs/h6PuhP9fjeMs
+         W2S5l/6h+ABE0dHxcjh4tR02GPJiOcTWmvgY90XRtyCbSqMCuNspLhaHzpx9Kss+jo
+         YgqYNS6grE67hGg01WUUr+hmblzPmNsq/AFy+wukL+skjvtwr7yF7pzirvv95oqiGY
+         giB+ozAHf5c9g==
+Date:   Fri, 18 Feb 2022 11:59:55 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     linux-iio@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Anson Huang <anson.huang@nxp.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Crt Mori <cmo@melexis.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Stuebner <heiko.stuebner@theobroma-systems.com>,
-        Icenowy Zheng <icenowy@aosc.io>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Martijn Braam <martijn@brixit.nl>,
-        Maslov Dmitry <maslovdmitry@seeed.cc>,
-        Mikko Koivunen <mikko.koivunen@fi.rohmeurope.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>,
-        Vaishnav M A <vaishnav@beagleboard.org>
-Subject: Re: [PATCH v3 00/50]  iio: Tree wide switch from CONFIG_PM* to
- pm_[sleep]_ptr etc.
-Message-ID: <20220218114725.5c3c80ee@jic23-huawei>
-In-Reply-To: <2HC17R.WS259RW5BMQ73@crapouillou.net>
-References: <20220130193147.279148-1-jic23@kernel.org>
-        <2HC17R.WS259RW5BMQ73@crapouillou.net>
+To:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Hennerich@marsc.168.1.7,
+        Michael <Michael.Hennerich@analog.com>,
+        Nuno Sa <Nuno.Sa@analog.com>, lars@metafoo.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 00/20] iio:adc:ad7280a Cleanup and proposed staging
+ graduation.
+Message-ID: <20220218115955.520ef6e4@jic23-huawei>
+In-Reply-To: <Ygll3yGIjH7NOFx/@marsc.168.1.7>
+References: <20220206190328.333093-1-jic23@kernel.org>
+        <Ygll3yGIjH7NOFx/@marsc.168.1.7>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -77,253 +58,140 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 09 Feb 2022 11:41:26 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Sun, 13 Feb 2022 17:11:11 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> Hi Jonathan,
->=20
-> Reviewed-by: Paul Cercueil <paul@crapouillou.net>
->=20
+> On 02/06, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Changes since v2:
+> > All in response to Marcelo Schmitt doing a really detailed review and
+> > testing against the QEMU model.
+> > 
+> > - Moved elements of patch 2 to patch 5 to avoid missing defines.
+> > - Patch 6: Amend ordering to avoid updated software cached values until the
+> >   hardware write has succeeded.
+> > - Patch 12 Fixed wrong callbacks in no_irq case
+> > - Patch 14: Changed all numeric properties to u32 to avoid needing to
+> >   specify bit depth in dts.
+> > - Patch 14: Typo fix.
+> > - Patch 15: New Patch to drop the handling of partial aux alert channels as
+> >   it is buggy (and always was). Anyone wanting to bring this back will
+> >   hopefully have hardware to test as it will be fiddly.
+> > - Patch 15 (old number, now 16). Update dt bindings to drop the
+> >   adi,temp-alert-last-chan given new patch 15 drops the support.
+> > - New Patch 18: Change cb_mask software cache to not include the offset of 2
+> >   and instead apply that only when writing the registers.
+> > - New Patch 19: More conservative timings to allow 105 degree Centigrade
+> >   operation.
+> > - Patch 20 is moving the new code so obviously all the above apply to that
+> >   as well!  
+> 
+> I had another look into this set (including the new patches), and it seems all good. :)
+> Also, thanks for clarifying my doubts about the driver on the previous thread.
+> So,
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 > for the whole series.
+> 
+> It will be nice to see another driver getting out of staging. :D
 
-Thanks!
+Hi Marcelo,
 
-Series applied with a bit of fuzz to the togreg branch of iio.git and
-pushed out as testing to let the autobuilders see if they can find
-anything we missed
+Thanks for your help with this.
 
-Thanks,
+Applied to the togreg branch of iio.git and pushed out as testing to
+let 0-day see if it can find anything we missed.
+
+Guess I'll have to figure out which one of the remaining staging drivers
+to tackle next in my (very) slow moving project to get them all out...
+
+I actually have hardware for the adt7316 so maybe time to wire that up
+though IIRC I could only get SPI to work intermittently due to
+my dubious soldering.  Keeping it all in software by using emulation
+for this one was nice :)
 
 Jonathan
 
->=20
-> Cheers,
-> -Paul
->=20
->=20
-> Le dim., janv. 30 2022 at 19:30:57 +0000, Jonathan Cameron=20
-> <jic23@kernel.org> a =C3=A9crit :
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > Note that I have cc'd no one for a number of drivers touched in this
-> > set because we don't have a known active maintainer, so if anyone
-> > has time to sanity check those it would be much appreciated.
-> >=20
-> > Now that Paul Cercueil's rework of the pm_ptr() and related macro=20
-> > magic
-> > to ensure we the compiler can remove unused struct dev_pm_ops and=20
-> > related
-> > functions when either CONFIG_PM_SLEEP is not set or both that and
-> > CONFIG_PM are not set is upstream [1], lets revisit this series of
-> > cleanup of CONFIG_PM* guards in IIO.
-> >=20
-> > Changes since v2:
-> > 1) Move to new macros where relevant.
-> > 2) Add static as the macros no longer include it
-> >    DEFINE_SIMPLE_DEV_PM_OPS etc.
-> > 3) Drop complex cases (I've noted those in reply to v2 so won't
-> >    go into specifics here.  I'll revisit all these but after this=20
-> > massive
-> >    set is in place. Some of these are due to interaction with
-> >    the ongoing namespace work in IIO.
-> > 4) Use the new DEFINE_RUNTIME_DEV_PM_OPS for cases where the
-> >    force runtime functions were used for sleep ops.
-> > 5) Add a few cases that I'd missed the first time around.
-> >=20
-> > Note that there are some drivers that provide runtime callbacks
-> > but not sleep ones.  The chances are high that it would be
-> > sensible to use the force runtime pm calls for those, but
-> > I considered that a separate change which should potentially be
-> > part of a follow up patch set.
-> >=20
-> > [1]=20
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D9d8619190031af0a314bee865262d8975473e4dd
-> >=20
-> > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > Cc: Anson Huang <anson.huang@nxp.com>
-> > Cc: Brian Masney <masneyb@onstation.org>
-> > Cc: Crt Mori <cmo@melexis.com>
-> > Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> > Cc: Hans de Goede <hdegoede@redhat.com>
-> > Cc: Heiko Stuebner <heiko.stuebner@theobroma-systems.com>
-> > Cc: Icenowy Zheng <icenowy@aosc.io>
-> > Cc: Jonathan Albrieux <jonathan.albrieux@gmail.com>
-> > Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> > Cc: Linus Walleij <linus.walleij@linaro.org>
-> > Cc: Luca Weiss <luca@z3ntu.xyz>
-> > Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-> > Cc: Manivannan Sadhasivam <mani@kernel.org>
-> > Cc: Martijn Braam <martijn@brixit.nl>
-> > Cc: Maslov Dmitry <maslovdmitry@seeed.cc>
-> > Cc: Matt Ranostay <matt.ranostay@konsulko.com
-> > Cc: Mikko Koivunen <mikko.koivunen@fi.rohmeurope.com>
-> > Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-> > Cc: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-> > Cc: Vaishnav M A <vaishnav@beagleboard.org>
-> > Jonathan Cameron (50):
-> >   iio:accel:da311: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:accel:da280: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:accel:dmard06: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:accel:dmard10: Switch from CONFIG_PM guards to pm_sleep_ptr()=20
-> > etc
-> >   iio:accel:mc3230: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:accel:mma7660: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr()
-> >   iio:accel:mma9551: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:accel:mma9553: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:accel:stk8ba50: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:adc:at91-adc: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:adc:exynos_adc: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr()
-> >   iio:adc:palmas_gpadc: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr()
-> >   iio:adc:rockchip: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:adc:twl6030: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:adc:vf610: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
-> >     etc
-> >   iio:common:ssp: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
-> >     etc
-> >   iio:dac:vf610: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
-> >     etc
-> >   iio:light:apds9300: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:cm3232: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:light:isl29018: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr()
-> >   iio:light:isl29125: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:jsa1212: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:ltr501: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:light:stk3310: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:tcs3414: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:tcs3472: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:tsl2563: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:light:tsl4531: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:magn:ak8975: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:magn:mag3110: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:magn:mmc35240: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:pressure:mpl3115: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:proximity:as3935: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:proximity:rfd77492: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:proximity:sx9500: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:temperature:tmp006: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:temperature:tmp007: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:accel:stk8312: Switch from CONFIG_PM_SLEEP guards to
-> >     pm_sleep_ptr() etc
-> >   iio:accel:bma180: Switch from CONFIG_PM_SLEEP guards to=20
-> > pm_sleep_ptr()
-> >     etc
-> >   iio:dac:m62332: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
-> >     etc
-> >   iio:imu:kmx61: Switch from CONFIG_PM* guards to pm_ptr() etc
-> >   iio:temperature:mlx90614: Switch from CONFIG_PM* guards to pm_ptr()
-> >     etc
-> >   iio:adc:ab8500: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:adc:stm32:Switch from CONFIG_PM guards to pm_ptr()
-> >   iio:adc:rcar: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:light:bh1780: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:proximity:pulsedlight: Switch from CONFIG_PM guards to pm_ptr()
-> >     etc
-> >   iio:chemical:atlas: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:light:rpr0521: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio:adc:stm32*: Use pm[_sleep]_ptr() etc to avoid need to make pm
-> >     __maybe_unused
-> >=20
-> >  drivers/iio/accel/bma180.c                    |  9 ++-------
-> >  drivers/iio/accel/da280.c                     |  6 ++----
-> >  drivers/iio/accel/da311.c                     |  6 ++----
-> >  drivers/iio/accel/dmard06.c                   | 10 +++-------
-> >  drivers/iio/accel/dmard10.c                   |  7 +++----
-> >  drivers/iio/accel/mc3230.c                    |  6 ++----
-> >  drivers/iio/accel/mma7660.c                   | 11 +++--------
-> >  drivers/iio/accel/mma9551.c                   | 11 +++--------
-> >  drivers/iio/accel/mma9553.c                   | 11 +++--------
-> >  drivers/iio/accel/stk8312.c                   | 11 +++--------
-> >  drivers/iio/accel/stk8ba50.c                  | 11 +++--------
-> >  drivers/iio/adc/ab8500-gpadc.c                | 13 +++----------
-> >  drivers/iio/adc/at91_adc.c                    |  7 +++----
-> >  drivers/iio/adc/exynos_adc.c                  |  9 +++------
-> >  drivers/iio/adc/palmas_gpadc.c                | 10 +++-------
-> >  drivers/iio/adc/rcar-gyroadc.c                |  6 ++----
-> >  drivers/iio/adc/rockchip_saradc.c             |  9 ++++-----
-> >  drivers/iio/adc/stm32-adc-core.c              | 17 ++++++-----------
-> >  drivers/iio/adc/stm32-adc.c                   | 12 ++++--------
-> >  drivers/iio/adc/stm32-dfsdm-adc.c             | 11 ++++++-----
-> >  drivers/iio/adc/stm32-dfsdm-core.c            | 19=20
-> > +++++++++----------
-> >  drivers/iio/adc/twl6030-gpadc.c               |  8 +++-----
-> >  drivers/iio/adc/vf610_adc.c                   |  7 +++----
-> >  drivers/iio/chemical/atlas-sensor.c           |  7 ++-----
-> >  drivers/iio/common/ssp_sensors/ssp_dev.c      |  8 ++------
-> >  drivers/iio/dac/m62332.c                      | 11 ++---------
-> >  drivers/iio/dac/stm32-dac-core.c              | 16 ++++++++--------
-> >  drivers/iio/dac/stm32-dac.c                   |  9 ++++-----
-> >  drivers/iio/dac/vf610_dac.c                   |  7 +++----
-> >  drivers/iio/imu/kmx61.c                       | 10 +++-------
-> >  drivers/iio/light/apds9300.c                  | 10 +++-------
-> >  drivers/iio/light/bh1780.c                    | 12 +++---------
-> >  drivers/iio/light/cm3232.c                    |  9 ++-------
-> >  drivers/iio/light/isl29018.c                  | 10 +++-------
-> >  drivers/iio/light/isl29125.c                  |  7 +++----
-> >  drivers/iio/light/jsa1212.c                   | 11 +++--------
-> >  drivers/iio/light/ltr501.c                    |  6 ++----
-> >  drivers/iio/light/rpr0521.c                   |  7 ++-----
-> >  drivers/iio/light/stk3310.c                   | 11 +++--------
-> >  drivers/iio/light/tcs3414.c                   |  7 +++----
-> >  drivers/iio/light/tcs3472.c                   |  7 +++----
-> >  drivers/iio/light/tsl2563.c                   | 10 +++-------
-> >  drivers/iio/light/tsl4531.c                   | 10 +++-------
-> >  drivers/iio/magnetometer/ak8975.c             | 12 +++---------
-> >  drivers/iio/magnetometer/mag3110.c            | 10 +++-------
-> >  drivers/iio/magnetometer/mmc35240.c           |  9 +++------
-> >  drivers/iio/pressure/mpl3115.c                | 10 +++-------
-> >  drivers/iio/proximity/as3935.c                | 10 ++--------
-> >  .../iio/proximity/pulsedlight-lidar-lite-v2.c |  7 ++-----
-> >  drivers/iio/proximity/rfd77402.c              |  7 +++----
-> >  drivers/iio/proximity/sx9500.c                |  8 ++------
-> >  drivers/iio/temperature/mlx90614.c            | 12 ++++--------
-> >  drivers/iio/temperature/tmp006.c              |  6 ++----
-> >  drivers/iio/temperature/tmp007.c              |  6 ++----
-> >  drivers/iio/trigger/stm32-timer-trigger.c     | 12 ++++++------
-> >  55 files changed, 173 insertions(+), 348 deletions(-)
-> >=20
-> > --
+> 
+> Thanks,
+> 
+> Marcelo
+> 
+> > 
+> > Hi All,
+> > 
+> > This one proved an interesting diversion.
+> > 
+> > Work done against a somewhat hacked up QEMU emulation of 3 daisy chained
+> > ad7280a devices (18 channels).  Note that the emulation isn't complete
+> > but does do chaining, CRC, and readout of channels etc in a fashion that
+> > worked with the original driver (up to the bug in patch 1) and continues
+> > to work with the updated version. I've not intention to upstream the
+> > emulation (as would need to make it more completed and flexible), but
+> > happy to share it with anyone who is interested.
+> > 
+> > I briefly flirted with posting a patch to just drop the driver entirely,
+> > but the part is still available and it looked like fun + isn't going
+> > to greatly impact maintainability of the subsystem long term so is low
+> > cost even if it becomes unavailable sometime soon.
+> > 
+> > There are lots of things we could do after this set to improved the driver
+> > and make things more flexible, but it should basically 'just work'
+> > 
+> > Anyhow, as normal for staging graduations, last patch has rename detection
+> > turned off so that people can easily see what I am proposing we move
+> > out of staging.
+> > 
+> > All comments welcome and thanks to Marcelo for reviewing this beast!
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> > 
+> > Jonathan Cameron (20):
+> >   staging:iio:adc:ad7280a: Fix handing of device address bit reversing.
+> >   staging:iio:adc:ad7280a: Register define cleanup.
+> >   staging:iio:adc:ad7280a: rename _read() to _read_reg()
+> >   staging:iio:adc:ad7280a: Split buff[2] into tx and rx parts
+> >   staging:iio:adc:ad7280a: Use bitfield ops to managed fields in
+> >     transfers.
+> >   staging:iio:adc:ad7280a: Switch to standard event control
+> >   staging:iio:adc:ad7280a: Standardize extended ABI naming
+> >   staging:iio:adc:ad7280a: Drop unused timestamp channel.
+> >   staging:iio:adc:ad7280a: Trivial comment formatting cleanup
+> >   staging:iio:adc:ad7280a: Make oversampling_ratio a runtime control
+> >   staging:iio:adc:ad7280a: Cleanup includes
+> >   staging:iio:ad7280a: Reflect optionality of irq in ABI
+> >   staging:iio:adc:ad7280a: Use a local dev pointer to avoid &spi->dev
+> >   staging:iio:adc:ad7280a: Use device properties to replace platform
+> >     data.
+> >   staging:iio:adc:ad7280a: Drop buggy support for early termination of
+> >     AUX alert.
+> >   dt-bindings:iio:adc:ad7280a: Add binding
+> >   iio:adc:ad7280a: Document ABI for cell balance switches
+> >   staging:iio:adc:ad7280a: Remove shift from cb_mask state cache.
+> >   staging:iio:adc:ad7280a: Use more conservative delays to allow 105C
+> >     operation.
+> >   iio:adc:ad7280a: Move out of staging
+> > 
+> >  .../ABI/testing/sysfs-bus-iio-adc-ad7280a     |   13 +
+> >  .../bindings/iio/adc/adi,ad7280a.yaml         |   77 ++
+> >  drivers/iio/adc/Kconfig                       |   11 +
+> >  drivers/iio/adc/Makefile                      |    1 +
+> >  drivers/iio/adc/ad7280a.c                     | 1111 +++++++++++++++++
+> >  drivers/staging/iio/adc/Kconfig               |   11 -
+> >  drivers/staging/iio/adc/Makefile              |    1 -
+> >  drivers/staging/iio/adc/ad7280a.c             | 1044 ----------------
+> >  drivers/staging/iio/adc/ad7280a.h             |   37 -
+> >  9 files changed, 1213 insertions(+), 1093 deletions(-)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7280a
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7280a.yaml
+> >  create mode 100644 drivers/iio/adc/ad7280a.c
+> >  delete mode 100644 drivers/staging/iio/adc/ad7280a.c
+> >  delete mode 100644 drivers/staging/iio/adc/ad7280a.h
+> > 
+> > -- 
 > > 2.35.1
-> >  =20
->=20
->=20
+> >   
 

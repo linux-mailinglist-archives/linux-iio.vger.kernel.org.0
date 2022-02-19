@@ -2,109 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 144E24BC947
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Feb 2022 17:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F07324BC953
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Feb 2022 17:39:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236556AbiBSQZX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Feb 2022 11:25:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45082 "EHLO
+        id S240614AbiBSQkA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Feb 2022 11:40:00 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229528AbiBSQZW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Feb 2022 11:25:22 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3641959D3;
-        Sat, 19 Feb 2022 08:25:03 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229528AbiBSQkA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Feb 2022 11:40:00 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B591BAC48
+        for <linux-iio@vger.kernel.org>; Sat, 19 Feb 2022 08:39:40 -0800 (PST)
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B2C760B35;
-        Sat, 19 Feb 2022 16:25:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26930C004E1;
-        Sat, 19 Feb 2022 16:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645287902;
-        bh=kDljAIp9S1nSRednTbW/1jhULMQHBXru5memF9e/114=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=u6tRX8o8oFx+AiAPMTv++UvtcGNZDLln3yzOi62DHpYeFgtQUalBv5OLhISDN1aan
-         2WqbrQtVPexuTjCsdI+gF5QepBUFwxvmNEs3y+gsxpIO1mbwPXmOGKCIBWNd3z0XWK
-         JINSPX5dIl1vSBNPPX+/pwF3UDi91sXLJ0AT1WVjrE0xv3PocKQAdkDtWGXrYese4Z
-         PFKStfB4L7+ChtVFF5c5kstM8WvHuWBpY701N0olloB4HU3CUf/hTYjsrWlDGDOkNy
-         gg/SbfdaofvcOHSQiOsN8uMYu8HyJ2bmjuiKD4WLu+savllgsnXiH5+iAAXMlXx745
-         M5CYylmNsvxoA==
-Date:   Sat, 19 Feb 2022 16:31:49 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andrea Merello <andrea.merello@gmail.com>
-Cc:     mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
-        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
-        jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [v3 05/13] iio: document pitch, yaw, roll modifiers
-Message-ID: <20220219163149.6c33318c@jic23-huawei>
-In-Reply-To: <20220217162710.33615-6-andrea.merello@gmail.com>
-References: <20220217162710.33615-1-andrea.merello@gmail.com>
-        <20220217162710.33615-6-andrea.merello@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id AD3B13F1A1
+        for <linux-iio@vger.kernel.org>; Sat, 19 Feb 2022 16:39:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645288778;
+        bh=fv6Vlts8WZIOYFM6nhe/RZHWwtYVs4haR4eZslzQ91M=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=Gw+t81ySigxZI9PojtI690BRL/zTq0Z5pzqtZtzuD7XZn+3s3Ji4CyRqMlR4no2wy
+         PD8PCTE8KQWsHZlrtecwo45ase9w0yk9OLqWvpRISJnreDnkrnnEpm+GRnKMB1uLNf
+         baAMLa8LbcwTL8LvvepGNBVe2kovHW/aL87jL18zGK3HpwGB0C4qLokpzdRTqFPVUI
+         OWuunoPsoOgowSNGhZf3HO/oYBt9aGLESuPJaGfYFTbG+3X0XoSb72zZqxcOoC6QLX
+         brOVKeQg1zUOL4r3vxU55APcr7wp8MLyP7WDF8n04gbrZSXFtXYpzvKU3n2rcu3TMA
+         y36CFD+ZkvC+Q==
+Received: by mail-wr1-f69.google.com with SMTP id q8-20020adfb188000000b001e33a8cdbf4so4825247wra.16
+        for <linux-iio@vger.kernel.org>; Sat, 19 Feb 2022 08:39:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=fv6Vlts8WZIOYFM6nhe/RZHWwtYVs4haR4eZslzQ91M=;
+        b=YRkOdXxA30+ew35s8aqdPKumbV2oSdMnHcx13axHYOHHq4bNH3xdC7ifw5NjYTkrZ+
+         WRhhCo1cTQ3YmWOVelXvbbQeK1s42ZURWhVYMsohdz04PD12pe6NL+Sx4u99UJrCn/rn
+         Fqfezweao40/l+7WeWKUhd0fjxOMG274dg0aOvzB/t7znxdWN0/k01+XcyNcwvgMzRaW
+         GdtdnCyHahWiSQCnFa9p5kB9y6Xo/mzzA2GQ6VBsp0vm1JFZA12gB1olYvqd14VT1BM5
+         RaL9YOSu86F0yOtWToCC5xC6EAnVFQ3VteFBZJLxYnApA6xHfW7O/O2BjizrLLvLN3BH
+         qwwg==
+X-Gm-Message-State: AOAM530XXJz24G17ZR6i+BgwUx+MQ2aTqva7JHrbGQjuzEP+yW6h9Spq
+        BIaZoZgNSVjsyPm6ATrWqBjGHgCPl7XV3K1GfcMmwLYB41iVNtprHTRWASheMVouP1YWkHYZXZK
+        XSCoEOOxlHolgXYvk+Dn5BVXL+fekY1jR1ppv8Q==
+X-Received: by 2002:a7b:c938:0:b0:37b:fdaa:2749 with SMTP id h24-20020a7bc938000000b0037bfdaa2749mr15160141wml.88.1645288778271;
+        Sat, 19 Feb 2022 08:39:38 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwTjIE8tRPmBD+PlkUTZBca9lbgzOitR83nDpYhWogpejZ8yTpnvZi5vWazVdvUaNy10Rl8sw==
+X-Received: by 2002:a7b:c938:0:b0:37b:fdaa:2749 with SMTP id h24-20020a7bc938000000b0037bfdaa2749mr15160128wml.88.1645288778087;
+        Sat, 19 Feb 2022 08:39:38 -0800 (PST)
+Received: from [192.168.0.116] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
+        by smtp.gmail.com with ESMTPSA id p7sm20505311wrr.95.2022.02.19.08.39.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Feb 2022 08:39:37 -0800 (PST)
+Message-ID: <6188a47f-ed12-7d0a-bc28-5efa4092b59f@canonical.com>
+Date:   Sat, 19 Feb 2022 17:39:36 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: frequency: Add ADMV4420 doc
+Content-Language: en-US
+To:     Cristian Pop <cristian.pop@analog.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, devicetree@vger.kernel.org, robh+dt@kernel.org
+References: <20220218150738.94735-1-cristian.pop@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20220218150738.94735-1-cristian.pop@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 17 Feb 2022 17:27:02 +0100
-Andrea Merello <andrea.merello@gmail.com> wrote:
-
-> This patch introduces ABI documentation for new modifiers used for
-> reporting rotations expressed as euler angles (i.e. yaw, pitch, roll).
+On 18/02/2022 16:07, Cristian Pop wrote:
+> Add device tree bindings for the ADMV4420 K band downconverter.
 > 
-> Signed-off-by: Andrea Merello <andrea.merello@iit.it>
-I've lost track of what we already discussed about this, but why have these
-as measured in degrees?
-
-Gah. I thought we'd maintained consistency on this, but seems incli is
-in degrees, angl is in radians and rot isn't documented at all.
-
-Checking drivers the adis16209 has rot in degrees and I can't immediately figure
-out what the hid sensors driver is using.  The underlying spec supports the
-hardware returning in either radians or degrees I think. 
-
-Ah well, at least these are new so given the existing mess means at least some
-units are already in degrees we aren't making things worse.
-
-Perhaps it's worth a comment on the unit inconsistency in this patch description
-so we can at least look back at the history if it comes up for a future driver.
-
-Thanks,
-
-Jonathan
-
-
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> changes in v5:
+>  - Add spaces and fix prefix in commit subject
+>  - Rename node name: admv4420 -> mixer
+>  .../bindings/iio/frequency/adi,admv4420.yaml  | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index b2fb4d9abcd1..1b8d77577608 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2008,3 +2008,12 @@ Description:
->  		Available range for the forced calibration value, expressed as:
->  
->  		- a range specified as "[min step max]"
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_rot_yaw_raw
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_rot_pitch_raw
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_rot_roll_raw
-> +KernelVersion:	5.17
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Raw (unscaled) euler angles readings. Units after
-> +		application of scale are deg.
 
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+
+
+Best regards,
+Krzysztof

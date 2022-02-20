@@ -2,46 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A4A44BCE51
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 12:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A9704BCE5B
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 13:07:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240359AbiBTL5i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Feb 2022 06:57:38 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45386 "EHLO
+        id S237539AbiBTMHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Feb 2022 07:07:52 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237539AbiBTL5h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 06:57:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBFF2DD4;
-        Sun, 20 Feb 2022 03:57:15 -0800 (PST)
+        with ESMTP id S229509AbiBTMHv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 07:07:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAC540E7E;
+        Sun, 20 Feb 2022 04:07:28 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A4276116C;
-        Sun, 20 Feb 2022 11:57:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46655C340E8;
-        Sun, 20 Feb 2022 11:57:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E1E5CB80D44;
+        Sun, 20 Feb 2022 12:07:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A244EC340E8;
+        Sun, 20 Feb 2022 12:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645358234;
-        bh=q/QZ+77EAZGS4K6gv46acDRSLF/0acLiMNlTnPSfmOo=;
+        s=k20201202; t=1645358845;
+        bh=qIYqNkqbYg9a12Wje7xqZ23YRGPPYOaM6TBHWPMsTmo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IF12N46lgFOz1wG31rlO/0+lZT5Z0/qHI6hmiU36007UG9IokrwC6X2DS/Oq6hTLa
-         xbdkHIEsQ0wIxFv+nH3VCKtoRi9fx0Nr+gwA9GQVLcFQMH1dspavZNb0JS5POHe7Ly
-         U4tBB5gx+aKM0e0OyZ1p2ifu1oat0O8Kl2hjEbDCUtkAmCnRDu5iVB1nXw1bABcJWj
-         ysZlesMqS/2e59wOPkMUJsr0QAUWLTU09EMVE4+O1hZgjEH2dhKMIwKyFFByarGFC+
-         u+Db66tOFVdigxvylkRcFPS2WXbi4ZEZbCq5XRVx2hsb+rZJuXQD5oafMUy6SRc3lW
-         iHuOwtNqNkstQ==
-Date:   Sun, 20 Feb 2022 12:04:03 +0000
+        b=hXdd1RHH/37o9iwJYrMMk4SSFp7Gbzd/Bo81A3W/PeOocmOlGhd4g2ddemBYewlvW
+         tB4EYbYNk0fHGGIMfjbjEyQtu+Z0EXTZ8+hiLrXMRz6tGIJoOtL2UTOAxjfyhTfohu
+         jBGb9IbKpAe+5vGbqDz+beo7AUAJhHYbqOi54Jk5myhC8VJAvPeWl2spo0tINOc/Q3
+         UDodrX/Yy5P/0F3iRD83KACA0phn4EgpxTmMfqrIl+G/Yjb8FUk5vwDWYTwrc8yWeR
+         p14xGozYlNFR3lX7tQyjk62DA4Bs1z9tEPnPqyRlwQElkhdrybuFPECO3BlNVPgBIE
+         521wxzM9ryKDA==
+Date:   Sun, 20 Feb 2022 12:14:14 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     cosmin.tanislav@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/5] Add ADXL367 driver
-Message-ID: <20220220120336.193d17b0@jic23-huawei>
-In-Reply-To: <20220214073810.781016-1-cosmin.tanislav@analog.com>
-References: <20220214073810.781016-1-cosmin.tanislav@analog.com>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     <robh+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 1/4] iio:frequency:admv1014: add support for ADMV1014
+Message-ID: <20220220121414.48d7a3b6@jic23-huawei>
+In-Reply-To: <20220215081216.67706-1-antoniu.miclaus@analog.com>
+References: <20220215081216.67706-1-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,127 +54,234 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Feb 2022 09:38:05 +0200
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
+On Tue, 15 Feb 2022 10:12:13 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> The ADXL367 is an ultralow power, 3-axis MEMS accelerometer.
+> The ADMV1014 is a silicon germanium (SiGe), wideband,
+> microwave downconverter optimized for point to point microwave
+> radio designs operating in the 24 GHz to 44 GHz frequency range.
 > 
-> The ADXL367 does not alias input signals to achieve ultralow power
-> consumption, it samples the full bandwidth of the sensor at all
-> data rates. Measurement ranges of +-2g, +-4g, and +-8g are available,
-> with a resolution of 0.25mg/LSB on the +-2 g range.
-> 
-> In addition to its ultralow power consumption, the ADXL367
-> has many features to enable true system level power reduction.
-> It includes a deep multimode output FIFO, a built-in micropower
-> temperature sensor, and an internal ADC for synchronous conversion
-> of an additional analog input.
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1014.pdf
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-Looks good to me.
+Hi Antoniu.
 
-Series applied to the togreg branch of iio.git and pushed out as testing
-to let the autobuilders see if they can find anything we missed.
+One really trivial point inline that I noticed whilst having 'one last look'.
+
+I'll fix it up whilst applying but please check I didn't mess up!
+
+Series applied to the togreg branch of iio.git and initially pushed out as
+testing to let 0-day poke at it an see if it can find anything we missed.
 
 Thanks,
 
 Jonathan
 
+> ---
+> changes in v8:
+>  - remove clk-provider header
+>  drivers/iio/frequency/Kconfig    |  10 +
+>  drivers/iio/frequency/Makefile   |   1 +
+>  drivers/iio/frequency/admv1014.c | 823 +++++++++++++++++++++++++++++++
+>  3 files changed, 834 insertions(+)
+>  create mode 100644 drivers/iio/frequency/admv1014.c
 > 
-> V1 -> V2
->  * add support for vdd and vddio supplies
->  * lock fifo_watermark retrieval
->  * fix indentation of sysfs_emit for fifo_mode
->  * dt-bindings: add spi-max-frequency: true
->  * dt-bindings: remove cs-gpios property
->  * dt-bindings: remove status property
->  * dt-bindings: add support for vdd
-> 
-> V2 -> V3
->  * MAINTAINERS: use wildcard for adxl367
->  * dt-bindings: adxl367@addr -> accelerometer@addr
->  * put asm include after linux includes
->  * drop registers accessed implicitly
->  * fifo_full -> fifo_watermark
->  * print expected device id
->  * remove INDIO_BUFFER_HARDWARE
->  * inline ADXL367_EVENT macro
->  * inline ADXL367_14BIT_SCAN_INFO
->  * inline regulator enum
->  * remove of.h in spi driver
->  * cast const void * to const u8 * in spi read
->  * switch to trigger-less buffer
->  * increase reset time as advised by hardware team
->  * let iio framework validate available channel masks
->  * enable adc or temp channel automatically on single read
->  * wait for 100ms after enabling adc or temp for output
->    to settle on single read (waiting on hardware team input)
->  * enable adc or temp channel automatically on buffered read
->  * claim direct mode when setting range
->  * claim direct mode when setting odr
->  * claim direct mode when setting event config
->  * sort status masks in descending bit order
->  * hardcode indio_dev name
->  * add some comments regarding spi message layout
->  * use bulk_write for activity and inactivity threshold
->  * use bulk_write for inactivity time
->  * use bool as return type of fifo format finding function
->  * remove shift from channels scan type
-> 
-> V3 -> V4
->  * add a patch that introduces mag_referenced event type
->  * add a patch that documents mag_referenced event type
->  * add a patch that adds a note to the buffer/enable documentation
->    regarding configuration of other attributes during buffer capture
->  * remove unused adxl367_time_scale_tbl
->  * add static attribute to adxl367_write_raw_get_fmt
->  * return IRQ_HANDLED when FIFO read fails and print error message
->  * scale temperature value by 1000 to reach milli degrees C
->  * merge dev_to_iio_dev into useplace when indio_dev is not needed
->  * merge preenable into postenable and postdisable into predisable
->  * fix default inactivity threshold
->  * export probe symbol to namespace
->  * IIO_EV_TYPE_THRESH -> IIO_EV_TYPE_MAG_REFERENCED
->  * reset device and then verify dev id for 10ms
->  * share events by type so that they show up with iio_accel prefix in the
->    events subdirectory
->  * use a separate mask for extracting data
->    I previously removed the shift fron scan_type since the FIFO data does
->    not contain a shift but that broke single channel reads. Add it back
->    just for single channel reads.
-> 
-> V4 -> V5
->  * linux/module.h -> linux/mod_devicetable.h
->  * extract fifo_formats into separate array to allow arbitrary scan mask
->    order
->  * reorder channel_masks and fifo_formats
->  * prepend IIO_ to ADXL367 namespace
->  * use adxl367_fifo_formats array size to iterate over channel_masks table
-> 
-> Cosmin Tanislav (5):
->   iio: introduce mag_referenced
->   iio: ABI: document mag_referenced
->   iio: ABI: add note about configuring other attributes during buffer
->     capture
->   dt-bindings: iio: accel: add ADXL367
->   iio: accel: add ADXL367 driver
-> 
->  Documentation/ABI/testing/sysfs-bus-iio       |   30 +
->  .../bindings/iio/accel/adi,adxl367.yaml       |   79 +
->  MAINTAINERS                                   |    8 +
->  drivers/iio/accel/Kconfig                     |   27 +
->  drivers/iio/accel/Makefile                    |    3 +
->  drivers/iio/accel/adxl367.c                   | 1588 +++++++++++++++++
->  drivers/iio/accel/adxl367.h                   |   23 +
->  drivers/iio/accel/adxl367_i2c.c               |   90 +
->  drivers/iio/accel/adxl367_spi.c               |  164 ++
->  drivers/iio/industrialio-event.c              |    1 +
->  include/uapi/linux/iio/types.h                |    1 +
->  tools/iio/iio_event_monitor.c                 |    1 +
->  12 files changed, 2015 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
->  create mode 100644 drivers/iio/accel/adxl367.c
->  create mode 100644 drivers/iio/accel/adxl367.h
->  create mode 100644 drivers/iio/accel/adxl367_i2c.c
->  create mode 100644 drivers/iio/accel/adxl367_spi.c
-> 
+> diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
+> index 2c9e0559e8a4..493221f42077 100644
+> --- a/drivers/iio/frequency/Kconfig
+> +++ b/drivers/iio/frequency/Kconfig
+> @@ -50,6 +50,16 @@ config ADF4371
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called adf4371.
+>  
+> +config ADMV1014
+> +	tristate "Analog Devices ADMV1014 Microwave Downconverter"
+> +	depends on SPI && COMMON_CLK && 64BIT
+> +	help
+> +	  Say yes here to build support for Analog Devices ADMV1014
+> +	  24 GHz to 44 GHz, Wideband, Microwave Downconverter.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called admv1014.
+> +
+>  config ADRF6780
+>          tristate "Analog Devices ADRF6780 Microwave Upconverter"
+>          depends on SPI
+> diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
+> index ae3136c79202..5f0348e5eb53 100644
+> --- a/drivers/iio/frequency/Makefile
+> +++ b/drivers/iio/frequency/Makefile
+> @@ -7,4 +7,5 @@
+>  obj-$(CONFIG_AD9523) += ad9523.o
+>  obj-$(CONFIG_ADF4350) += adf4350.o
+>  obj-$(CONFIG_ADF4371) += adf4371.o
+> +obj-$(CONFIG_ADMV1014) += admv1014.o
+>  obj-$(CONFIG_ADRF6780) += adrf6780.o
+> diff --git a/drivers/iio/frequency/admv1014.c b/drivers/iio/frequency/admv1014.c
+> new file mode 100644
+> index 000000000000..06a60c246161
+> --- /dev/null
+> +++ b/drivers/iio/frequency/admv1014.c
+> @@ -0,0 +1,823 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ADMV1014 driver
+> + *
+> + * Copyright 2022 Analog Devices Inc.
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/clk.h>
+> +#include <linux/clkdev.h>
+> +#include <linux/device.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/notifier.h>
+> +#include <linux/property.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/units.h>
+> +
+> +#include <asm/unaligned.h>
+> +
+> +/* ADMV1014 Register Map */
+> +#define ADMV1014_REG_SPI_CONTROL		0x00
+> +#define ADMV1014_REG_ALARM			0x01
+> +#define ADMV1014_REG_ALARM_MASKS		0x02
+> +#define ADMV1014_REG_ENABLE			0x03
+> +#define ADMV1014_REG_QUAD			0x04
+> +#define ADMV1014_REG_LO_AMP_PHASE_ADJUST1	0x05
+> +#define ADMV1014_REG_MIXER			0x07
+> +#define ADMV1014_REG_IF_AMP			0x08
+> +#define ADMV1014_REG_IF_AMP_BB_AMP		0x09
+> +#define ADMV1014_REG_BB_AMP_AGC			0x0A
+> +#define ADMV1014_REG_VVA_TEMP_COMP		0x0B
+> +
+> +/* ADMV1014_REG_SPI_CONTROL Map */
+> +#define ADMV1014_PARITY_EN_MSK			BIT(15)
+> +#define ADMV1014_SPI_SOFT_RESET_MSK		BIT(14)
+> +#define ADMV1014_CHIP_ID_MSK			GENMASK(11, 4)
+> +#define ADMV1014_CHIP_ID			0x9
+> +#define ADMV1014_REVISION_ID_MSK		GENMASK(3, 0)
+> +
+> +/* ADMV1014_REG_ALARM Map */
+> +#define ADMV1014_PARITY_ERROR_MSK		BIT(15)
+> +#define ADMV1014_TOO_FEW_ERRORS_MSK		BIT(14)
+> +#define ADMV1014_TOO_MANY_ERRORS_MSK		BIT(13)
+> +#define ADMV1014_ADDRESS_RANGE_ERROR_MSK	BIT(12)
+> +
+> +/* ADMV1014_REG_ENABLE Map */
+> +#define ADMV1014_IBIAS_PD_MSK			BIT(14)
+> +#define ADMV1014_P1DB_COMPENSATION_MSK		GENMASK(13, 12)
+> +#define ADMV1014_IF_AMP_PD_MSK			BIT(11)
+> +#define ADMV1014_QUAD_BG_PD_MSK			BIT(9)
+> +#define ADMV1014_BB_AMP_PD_MSK			BIT(8)
+> +#define ADMV1014_QUAD_IBIAS_PD_MSK		BIT(7)
+> +#define ADMV1014_DET_EN_MSK			BIT(6)
+> +#define ADMV1014_BG_PD_MSK			BIT(5)
+> +
+> +/* ADMV1014_REG_QUAD Map */
+> +#define ADMV1014_QUAD_SE_MODE_MSK		GENMASK(9, 6)
+> +#define ADMV1014_QUAD_FILTERS_MSK		GENMASK(3, 0)
+> +
+> +/* ADMV1014_REG_LO_AMP_PHASE_ADJUST1 Map */
+> +#define ADMV1014_LOAMP_PH_ADJ_I_FINE_MSK	GENMASK(15, 9)
+> +#define ADMV1014_LOAMP_PH_ADJ_Q_FINE_MSK	GENMASK(8, 2)
+> +
+> +/* ADMV1014_REG_MIXER Map */
+> +#define ADMV1014_MIXER_VGATE_MSK		GENMASK(15, 9)
+> +#define ADMV1014_DET_PROG_MSK			GENMASK(6, 0)
+> +
+> +/* ADMV1014_REG_IF_AMP Map */
+> +#define ADMV1014_IF_AMP_COARSE_GAIN_I_MSK	GENMASK(11, 8)
+> +#define ADMV1014_IF_AMP_FINE_GAIN_Q_MSK		GENMASK(7, 4)
+> +#define ADMV1014_IF_AMP_FINE_GAIN_I_MSK		GENMASK(3, 0)
+> +
+> +/* ADMV1014_REG_IF_AMP_BB_AMP Map */
+> +#define ADMV1014_IF_AMP_COARSE_GAIN_Q_MSK	GENMASK(15, 12)
+> +#define ADMV1014_BB_AMP_OFFSET_Q_MSK		GENMASK(9, 5)
+> +#define ADMV1014_BB_AMP_OFFSET_I_MSK		GENMASK(4, 0)
+> +
+> +/* ADMV1014_REG_BB_AMP_AGC Map */
+> +#define ADMV1014_BB_AMP_REF_GEN_MSK		GENMASK(6, 3)
+> +#define ADMV1014_BB_AMP_GAIN_CTRL_MSK		GENMASK(2, 1)
+> +#define ADMV1014_BB_SWITCH_HIGH_LOW_CM_MSK	BIT(0)
+> +
+> +/* ADMV1014_REG_VVA_TEMP_COMP Map */
+> +#define ADMV1014_VVA_TEMP_COMP_MSK		GENMASK(15, 0)
+> +
+> +/* ADMV1014 Miscellaneous Defines */
+> +#define ADMV1014_READ				BIT(7)
+> +#define ADMV1014_REG_ADDR_READ_MSK		GENMASK(6, 1)
+> +#define ADMV1014_REG_ADDR_WRITE_MSK		GENMASK(22, 17)
+> +#define ADMV1014_REG_DATA_MSK			GENMASK(16, 1)
+> +#define ADMV1014_NUM_REGULATORS			9
 
+...
+
+> +
+> +static int admv1014_init(struct admv1014_state *st)
+> +{
+> +	unsigned int chip_id, enable_reg, enable_reg_msk;
+> +	struct spi_device *spi = st->spi;
+> +	int ret;
+> +
+> +	ret = regulator_bulk_enable(ADMV1014_NUM_REGULATORS, st->regulators);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "Failed to enable regulators");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, admv1014_reg_disable, st->regulators);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = clk_prepare_enable(st->clkin);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, admv1014_clk_disable, st->clkin);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->nb.notifier_call = admv1014_freq_change;
+> +	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, admv1014_powerdown, st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Perform a software reset */
+> +	ret = __admv1014_spi_update_bits(st, ADMV1014_REG_SPI_CONTROL,
+> +					 ADMV1014_SPI_SOFT_RESET_MSK,
+> +					 FIELD_PREP(ADMV1014_SPI_SOFT_RESET_MSK, 1));
+> +	if (ret) {
+> +		dev_err(&spi->dev, "ADMV1014 SPI software reset failed.\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = __admv1014_spi_update_bits(st, ADMV1014_REG_SPI_CONTROL,
+> +					 ADMV1014_SPI_SOFT_RESET_MSK,
+> +					 FIELD_PREP(ADMV1014_SPI_SOFT_RESET_MSK, 0));
+> +	if (ret) {
+> +		dev_err(&spi->dev, "ADMV1014 SPI software reset disable failed.\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = __admv1014_spi_write(st, ADMV1014_REG_VVA_TEMP_COMP, 0x727C);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "Writing default Temperature Compensation value failed.\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = __admv1014_spi_read(st, ADMV1014_REG_SPI_CONTROL, &chip_id);
+> +	if (ret)
+> +		return ret;
+> +
+> +	chip_id = (chip_id & ADMV1014_CHIP_ID_MSK) >> 4;
+
+Trivial but this could be a FIELD_GET()

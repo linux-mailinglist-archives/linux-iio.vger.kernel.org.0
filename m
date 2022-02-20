@@ -2,49 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C667F4BCF03
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 15:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D984BCFD8
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 17:26:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243060AbiBTO10 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Feb 2022 09:27:26 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60488 "EHLO
+        id S236499AbiBTQ1D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Feb 2022 11:27:03 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231159AbiBTO1Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 09:27:25 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E121EC42;
-        Sun, 20 Feb 2022 06:27:01 -0800 (PST)
+        with ESMTP id S235473AbiBTQ1D (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 11:27:03 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273DB35857
+        for <linux-iio@vger.kernel.org>; Sun, 20 Feb 2022 08:26:42 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2ADBAB80D44;
-        Sun, 20 Feb 2022 14:27:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6FBC340E8;
-        Sun, 20 Feb 2022 14:26:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF88260C73
+        for <linux-iio@vger.kernel.org>; Sun, 20 Feb 2022 16:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF11AC340E8;
+        Sun, 20 Feb 2022 16:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645367218;
-        bh=RTigvJDntL6YVrCZiZEnoHivr3No4Poo1ugUd6o9OOA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qZeLd9QNm+MvELxBeIy46L4kJE97lrRj+vtOl6ACAkDZN4nGM9TDoQuju06Xy2Z+D
-         xBF1+jdwFExfnWWQBjCReGy3gJQp2OOjC702qMFzdtL4EP+GCT8RlCX4e5IQtq1rei
-         ETA8iwYVato7MjgSUITt3wiYuU2/fvfegn0mgtPM3+0CbMV29PfQX6J88LH1fGGsdD
-         upcm7NkRgYiMNige18VHZp/nW7uLYVBRnUzr0FkdLwWEnX1Kkyf049Ctz6gjLE2dgz
-         Z5ni7iFZRFyoPaRSUE6uA5QMwzgezzW85Zk51EkCjtyqcsysJt+4Y+7RG+1QJE6ShP
-         OXp5HlHRpNLUA==
-Date:   Sun, 20 Feb 2022 14:33:48 +0000
+        s=k20201202; t=1645374401;
+        bh=mz5wJD19Vc07QihgMrZHiRnguZROHGLxGOxnhs5bS+A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=J2sgNX/kzPzy5HyoQGLFSff1Z4vK710r2BfatKQiRdg1P4s32Cpi+BgTFrkwVHbNw
+         +79SjVcj7nmslWk2/b36+Km4jOtPpYUw8dsMHYyTSUrxpUIqRN6dx48cW8Gns5M/CO
+         Dc8u1i6ExZKZx1fsw31ke4BMHY9A5VSeB41/g9bhaJGO58SaRG0WzUmmX+jVu9lPap
+         UaZFuiLvrveSaCEYoc1vqq/EoF7JbBsBTd7I+/skcKgiefOWKfgmTaJll113pVQsZJ
+         81xCk/FkzLqXZ1tkwmjO72MtPmJbgU4F2w5txN0Nl01aYj7CZKe5YpG+cCeK9ggWkN
+         8oRl3jW9L5fnA==
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     lars@metafoo.de, andy.shevchenko@gmail.com, sst@poczta.fm,
-        robh+dt@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/7] iio: potentiometer: Add support for DS3502
-Message-ID: <20220220143348.44f71d62@jic23-huawei>
-In-Reply-To: <20220220024632.4183-1-jagathjog1996@gmail.com>
-References: <20220220024632.4183-1-jagathjog1996@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH] iio: core: drop iio_get_time_res()
+Date:   Sun, 20 Feb 2022 16:33:27 +0000
+Message-Id: <20220220163327.424696-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,59 +50,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 20 Feb 2022 08:16:25 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> Add dt-bindings and support for Maxim DS3502 into existing ds1803 driver.
-> DS3502 is a 7 bit Nonvolatile Digital Potentiometer.
+This function was introduced with the ability to pick a clock.
+There are no upstream users so presumably it isn't as obviously useful
+as it seemed at the time.  Hence drop it.
 
-Looks good to me.  Will leave it on list a few more days though
-to allow others to comment if they wish.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/industrialio-core.c | 23 -----------------------
+ include/linux/iio/iio.h         |  1 -
+ 2 files changed, 24 deletions(-)
 
-Nice work,
-
-Thanks,
-
-Jonathan
-
-> 
-> Changes since v3:
-> 1. Dropped the chip type switch statement in read_raw function.
-> 2. Added device specific read function pointer in their structure.
-> 3. Added two separate functions to read values from two different types
->    of devices.
-> 
-> Changes since v2:
-> 1. Addressed Andy Shevchenko comments.
-> 2. Adding device name in Kconfig file.
-> 3. Spliting up of patch into 3 patches.
-> 4. Adding channel info into ds1803_cfg in separate patch.
-> 5. Dropping the use of enum in firmware data instead using previous
->    pointer method for accessing device specific data.
-> 6. Separate patch for using firmware provided data instead of 
->    id->driver_data.
-> 7. Adding DS3502 support in separate patch.
-> 
-> Changes since v1:
-> 1. Fixes the alignment to match the open parenthesis in separate patch.
-> 2. Adding available functionality for ds1803 driver in separate patch.
-> 3. Moving maxim_potentiometer members into ds1803_cfg structure.
-> 4. Droping of the INFO_ENABLE channel type.
-> 5. Firmware entry with data is used instead of id->driver_data to
->    to retrieve the chip specific data.
-> 
-> Jagath Jog J (7):
->   iio: potentiometer: Alignment to match the open parenthesis
->   iio: potentiometer: Add available functionality
->   iio: potentiometer: Add channel information in device data
->   iio: potentiometer: Change to firmware provided data
->   iio: potentiometer: Add device specific read_raw function
->   iio: potentiometer: Add support for Maxim DS3502
->   dt-bindings: iio: potentiometer: Add Maxim DS3502 in trivial-devices
-> 
->  .../devicetree/bindings/trivial-devices.yaml  |   2 +
->  drivers/iio/potentiometer/Kconfig             |   6 +-
->  drivers/iio/potentiometer/ds1803.c            | 153 +++++++++++++-----
->  3 files changed, 121 insertions(+), 40 deletions(-)
-> 
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e1ed44dec2ab..5d6c62d4a83d 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -320,29 +320,6 @@ s64 iio_get_time_ns(const struct iio_dev *indio_dev)
+ }
+ EXPORT_SYMBOL(iio_get_time_ns);
+ 
+-/**
+- * iio_get_time_res() - utility function to get time stamp clock resolution in
+- *                      nano seconds.
+- * @indio_dev: device
+- */
+-unsigned int iio_get_time_res(const struct iio_dev *indio_dev)
+-{
+-	switch (iio_device_get_clock(indio_dev)) {
+-	case CLOCK_REALTIME:
+-	case CLOCK_MONOTONIC:
+-	case CLOCK_MONOTONIC_RAW:
+-	case CLOCK_BOOTTIME:
+-	case CLOCK_TAI:
+-		return hrtimer_resolution;
+-	case CLOCK_REALTIME_COARSE:
+-	case CLOCK_MONOTONIC_COARSE:
+-		return LOW_RES_NSEC;
+-	default:
+-		BUG();
+-	}
+-}
+-EXPORT_SYMBOL(iio_get_time_res);
+-
+ static int __init iio_init(void)
+ {
+ 	int ret;
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index faf00f2c0be6..13cd5f41b0de 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -313,7 +313,6 @@ static inline bool iio_channel_has_available(const struct iio_chan_spec *chan,
+ }
+ 
+ s64 iio_get_time_ns(const struct iio_dev *indio_dev);
+-unsigned int iio_get_time_res(const struct iio_dev *indio_dev);
+ 
+ /* Device operating modes */
+ #define INDIO_DIRECT_MODE		0x01
+-- 
+2.35.1
 

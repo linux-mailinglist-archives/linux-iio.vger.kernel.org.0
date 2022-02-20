@@ -2,46 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B564BD086
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 19:19:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF0694BD08A
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 19:19:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237476AbiBTSJP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Feb 2022 13:09:15 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41068 "EHLO
+        id S244485AbiBTSJR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Feb 2022 13:09:17 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244482AbiBTSJO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 13:09:14 -0500
+        with ESMTP id S244482AbiBTSJR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 13:09:17 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5175C527E3
-        for <linux-iio@vger.kernel.org>; Sun, 20 Feb 2022 10:08:53 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9547527E3
+        for <linux-iio@vger.kernel.org>; Sun, 20 Feb 2022 10:08:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 14B43B80DAD
-        for <linux-iio@vger.kernel.org>; Sun, 20 Feb 2022 18:08:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896FBC340F0;
-        Sun, 20 Feb 2022 18:08:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6FD05B801BC
+        for <linux-iio@vger.kernel.org>; Sun, 20 Feb 2022 18:08:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698D0C340F4;
+        Sun, 20 Feb 2022 18:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645380530;
-        bh=Vy/rE6jW/gLwIq9M04Ry+5g5a6fATgcJy2+KHhwSYPE=;
+        s=k20201202; t=1645380533;
+        bh=sgiBlcb8DRSoGepw38+5vb+HoqjBBxFIQNn38CWPE8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X/DRQJnxACslKGYxERXr+b4k1NfOPUSWjY2mmj6orDbsHftinnvgisv94kDi0PoY2
-         e2El4/dUzx2anGxJIL9dpxxPIrIckXQRX444sMVIE1fapgw4L6VNb0PNoE5hUdmmn8
-         0mGzDoFztVgoPwHmjVLWzN76gD4ZMRJ/drH7jFFQA/0aPCmx8TeiJGBYQFlvZPOTLh
-         aChCHdjY8LG8r7gTSNIxl2OCoHrqJqdEr9aY3ZR7x5sH6kQxPhQUZDwONQOipzKCoq
-         J7HtZVgijg9U2GQ33IZNEH1k1tHrWn93BVBxUzrQhkRDVuJVYZgpnvIe4/TcpT3grg
-         xu0WBmlkpekBg==
+        b=pu8fCHbZqkcfU3/mnsyCx/9JSZA5UT2PcnIKdadCzzwTxSMg/dLT4dJTzXf13S9uJ
+         clDhEhLhhxOyHhA6FKnTejb/VVPXvfcXLgXuKwGwJmLaCcGeZeBwGQZMvycNoP390n
+         u05AQMh1s6MEpcK7+b9nUZQAmihkEVfnOu/Ouwa46jdYEU9HQj6L2ZgAku+CnV5NfB
+         c1/MyUqW1haz29ZLmE0PX04qPSeE5oRGV1OP+SEWgOI6cV2Rko7rVS6gKuHi87gjpD
+         Gh0APR4suTBD+aIEb3lupWwxEOISYmUGorJuS5u4MTqdfZPD3DvvIMZ+lpX64aBZpj
+         JtHZesbgya0rQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         "Rafael J . Wysocki" <rafael@kernel.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 2/8] PM: core: Add NS varients of EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and runtime pm equiv
-Date:   Sun, 20 Feb 2022 18:15:16 +0000
-Message-Id: <20220220181522.541718-3-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 3/8] iio: chemical: scd30: Move symbol exports into IIO_SCD30 namespace
+Date:   Sun, 20 Feb 2022 18:15:17 +0000
+Message-Id: <20220220181522.541718-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220220181522.541718-1-jic23@kernel.org>
 References: <20220220181522.541718-1-jic23@kernel.org>
@@ -59,77 +58,60 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-As more drivers start to use namespaces, we need to have varients of these
-useful macros that allow the export to be in a particular namespace.
+Avoid unnecessary pollution of the global symbol namespace by
+moving library functions in to a specific namespace and import
+that into the drivers that make use of the functions.
+
+For more info: https://lwn.net/Articles/760045/
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 ---
- include/linux/pm.h         | 14 +++++++++-----
- include/linux/pm_runtime.h | 10 ++++++++--
- 2 files changed, 17 insertions(+), 7 deletions(-)
+ drivers/iio/chemical/scd30_core.c   | 4 ++--
+ drivers/iio/chemical/scd30_i2c.c    | 1 +
+ drivers/iio/chemical/scd30_serial.c | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index f7d2be686359..112b8125d4be 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -368,13 +368,13 @@ const struct dev_pm_ops name = { \
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index 6c6c11c2772a..682fca39d14d 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -543,7 +543,7 @@ static int scd30_resume(struct device *dev)
+ 	return scd30_command_write(state, CMD_START_MEAS, state->pressure_comp);
+ }
  
- #ifdef CONFIG_PM
- #define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
--			   runtime_resume_fn, idle_fn, sec) \
-+			   runtime_resume_fn, idle_fn, sec, ns)		\
- 	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
- 			   runtime_resume_fn, idle_fn); \
--	_EXPORT_SYMBOL(name, sec)
-+	__EXPORT_SYMBOL(name, sec, ns)
- #else
- #define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
--			   runtime_resume_fn, idle_fn, sec) \
-+			   runtime_resume_fn, idle_fn, sec, ns) \
- static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
- 					 resume_fn, runtime_suspend_fn, \
- 					 runtime_resume_fn, idle_fn)
-@@ -391,9 +391,13 @@ static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
- 	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
+-EXPORT_SIMPLE_DEV_PM_OPS(scd30_pm_ops, scd30_suspend, scd30_resume);
++EXPORT_NS_SIMPLE_DEV_PM_OPS(scd30_pm_ops, scd30_suspend, scd30_resume, IIO_SCD30);
  
- #define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "")
-+	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "", "")
- #define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl")
-+	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl", "")
-+#define EXPORT_NS_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
-+	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "", #ns)
-+#define EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
-+	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl", #ns)
+ static void scd30_stop_meas(void *data)
+ {
+@@ -759,7 +759,7 @@ int scd30_probe(struct device *dev, int irq, const char *name, void *priv,
  
- /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
- #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 9f09601c465a..6a8b9551ecad 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -41,10 +41,16 @@
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+-EXPORT_SYMBOL(scd30_probe);
++EXPORT_SYMBOL_NS(scd30_probe, IIO_SCD30);
  
- #define EXPORT_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
- 	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
--			   suspend_fn, resume_fn, idle_fn, "")
-+			   suspend_fn, resume_fn, idle_fn, "", "")
- #define EXPORT_GPL_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
- 	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
--			   suspend_fn, resume_fn, idle_fn, "_gpl")
-+			   suspend_fn, resume_fn, idle_fn, "_gpl", "")
-+#define EXPORT_NS_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn, ns) \
-+	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-+			   suspend_fn, resume_fn, idle_fn, "", #ns)
-+#define EXPORT_NS_GPL_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn, ns) \
-+	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-+			   suspend_fn, resume_fn, idle_fn, "_gpl", #ns)
- 
- #ifdef CONFIG_PM
- extern struct workqueue_struct *pm_wq;
+ MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
+ MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor core driver");
+diff --git a/drivers/iio/chemical/scd30_i2c.c b/drivers/iio/chemical/scd30_i2c.c
+index 7c332e4e8e46..bae479a4721f 100644
+--- a/drivers/iio/chemical/scd30_i2c.c
++++ b/drivers/iio/chemical/scd30_i2c.c
+@@ -137,3 +137,4 @@ module_i2c_driver(scd30_i2c_driver);
+ MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
+ MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor i2c driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_SCD30);
+diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
+index 8664f3ce6b33..3c519103d30b 100644
+--- a/drivers/iio/chemical/scd30_serial.c
++++ b/drivers/iio/chemical/scd30_serial.c
+@@ -261,3 +261,4 @@ module_serdev_device_driver(scd30_serdev_driver);
+ MODULE_AUTHOR("Tomasz Duszynski <tomasz.duszynski@octakon.com>");
+ MODULE_DESCRIPTION("Sensirion SCD30 carbon dioxide sensor serial driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(IIO_SCD30);
 -- 
 2.35.1
 

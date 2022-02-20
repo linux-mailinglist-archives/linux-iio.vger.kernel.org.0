@@ -2,99 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E314BCEFC
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 15:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C667F4BCF03
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Feb 2022 15:35:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243932AbiBTOGW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Feb 2022 09:06:22 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51240 "EHLO
+        id S243060AbiBTO10 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Feb 2022 09:27:26 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243937AbiBTOGU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 09:06:20 -0500
-X-Greylist: delayed 933 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 20 Feb 2022 06:05:54 PST
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F07145ADF;
-        Sun, 20 Feb 2022 06:05:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=MZoKb9hkNy/YztJH3jvZm9vX6HmaFd7kAfLYZurpauA=; b=a8zes3mxnr/TOyTPcpl0nLcQ6H
-        uv2+tS8gusHLD+d2ffEPstRMlA3g9WBeDnVDwJqY1JSOmzx4+e4FK/IMy6r9aDhzzamvpeoByiojl
-        bh3Ta4EPsHbsTqOEheeLYoZVQAWOukImlI3boNy2daoocd/ZcSZ6fzBY7a47nbImQIsk4oV3lgZGK
-        /eG4HqADjHCm20tmUkUK41FtUUHE5KKGTS04JM6TjxBhIUhzn+zghyVFKkF7VjCaJM+UHKt3v1+i2
-        1+MyM5aFpHSxey2JqZ4HmtcglLt8JfjwZ9rwuuzqbwk8W6Z1rrbi7cVTtviXHMSshcqr4M6Ppd4eE
-        tT4ZfVAA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1nLmbS-000DRK-Gf; Sun, 20 Feb 2022 14:50:18 +0100
-Received: from [62.216.202.16] (helo=[192.168.178.36])
-        by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1nLmbS-000C96-21; Sun, 20 Feb 2022 14:50:18 +0100
-Message-ID: <0a606181-b51b-526a-7166-2f2a362dc8d6@metafoo.de>
-Date:   Sun, 20 Feb 2022 14:50:17 +0100
+        with ESMTP id S231159AbiBTO1Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 09:27:25 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E121EC42;
+        Sun, 20 Feb 2022 06:27:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2ADBAB80D44;
+        Sun, 20 Feb 2022 14:27:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6FBC340E8;
+        Sun, 20 Feb 2022 14:26:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645367218;
+        bh=RTigvJDntL6YVrCZiZEnoHivr3No4Poo1ugUd6o9OOA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qZeLd9QNm+MvELxBeIy46L4kJE97lrRj+vtOl6ACAkDZN4nGM9TDoQuju06Xy2Z+D
+         xBF1+jdwFExfnWWQBjCReGy3gJQp2OOjC702qMFzdtL4EP+GCT8RlCX4e5IQtq1rei
+         ETA8iwYVato7MjgSUITt3wiYuU2/fvfegn0mgtPM3+0CbMV29PfQX6J88LH1fGGsdD
+         upcm7NkRgYiMNige18VHZp/nW7uLYVBRnUzr0FkdLwWEnX1Kkyf049Ctz6gjLE2dgz
+         Z5ni7iFZRFyoPaRSUE6uA5QMwzgezzW85Zk51EkCjtyqcsysJt+4Y+7RG+1QJE6ShP
+         OXp5HlHRpNLUA==
+Date:   Sun, 20 Feb 2022 14:33:48 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     lars@metafoo.de, andy.shevchenko@gmail.com, sst@poczta.fm,
+        robh+dt@kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/7] iio: potentiometer: Add support for DS3502
+Message-ID: <20220220143348.44f71d62@jic23-huawei>
+In-Reply-To: <20220220024632.4183-1-jagathjog1996@gmail.com>
+References: <20220220024632.4183-1-jagathjog1996@gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [RFC PATCH] iio: core: provide a default value `label` property
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Nandor Han <nandor.han@vaisala.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220216135604.3435769-1-nandor.han@vaisala.com>
- <20220220131809.1bc184e0@jic23-huawei>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20220220131809.1bc184e0@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.5/26459/Sun Feb 20 10:22:37 2022)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2/20/22 14:18, Jonathan Cameron wrote:
-> On Wed, 16 Feb 2022 15:56:04 +0200
-> Nandor Han <nandor.han@vaisala.com> wrote:
->
->> The label property is used to correctly identify the same IIO device
->> over reboots. The implementation requires that a value will be provided
->> through device-tree. This sometime could requires many changes to
->> device-trees when multiple devices want to use the label property.
->> In order to prevent this, we could use the device-tree node
->> name as default value. The device-tree node name is unique and
->> also reflects the device which makes it a good choice as default value.
->> This change is backward compatible since doesn't affect the users that
->> do configure a label using the device-tree or the ones that are not
->> using the labels at all.
->>
->> Use the device-tree node name as a default value for `label` property,
->> in case there isn't one configured through device-tree.
-> Interesting idea.  However a few concerns come to mind.
-> 1) If we start having a default for this, then it will get used as ABI
->     and if a label is applied later to the DT then we will end up breaking
->     userspace scripts.
-> 2) If we do this it should be firmware agnostics (we need to fix
->     the existing code to be such as well).
-> 3) Is the node name always unique (think multiple accelerometers on
->     different i2c masters)?
-> 3) I'm fairly sure this information is readily available anyway.
->     either via the of_node link for the iio\:deviceX
->     So why not have your usespace use that instead of label?
->     I'm not a fan of duplicating information that is readily available
->     anyway - be it as name and reg in the of_node directory.
+On Sun, 20 Feb 2022 08:16:25 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-I'm not a big fan of this either for the above reasons.
+> Add dt-bindings and support for Maxim DS3502 into existing ds1803 driver.
+> DS3502 is a 7 bit Nonvolatile Digital Potentiometer.
 
+Looks good to me.  Will leave it on list a few more days though
+to allow others to comment if they wish.
+
+Nice work,
+
+Thanks,
+
+Jonathan
+
+> 
+> Changes since v3:
+> 1. Dropped the chip type switch statement in read_raw function.
+> 2. Added device specific read function pointer in their structure.
+> 3. Added two separate functions to read values from two different types
+>    of devices.
+> 
+> Changes since v2:
+> 1. Addressed Andy Shevchenko comments.
+> 2. Adding device name in Kconfig file.
+> 3. Spliting up of patch into 3 patches.
+> 4. Adding channel info into ds1803_cfg in separate patch.
+> 5. Dropping the use of enum in firmware data instead using previous
+>    pointer method for accessing device specific data.
+> 6. Separate patch for using firmware provided data instead of 
+>    id->driver_data.
+> 7. Adding DS3502 support in separate patch.
+> 
+> Changes since v1:
+> 1. Fixes the alignment to match the open parenthesis in separate patch.
+> 2. Adding available functionality for ds1803 driver in separate patch.
+> 3. Moving maxim_potentiometer members into ds1803_cfg structure.
+> 4. Droping of the INFO_ENABLE channel type.
+> 5. Firmware entry with data is used instead of id->driver_data to
+>    to retrieve the chip specific data.
+> 
+> Jagath Jog J (7):
+>   iio: potentiometer: Alignment to match the open parenthesis
+>   iio: potentiometer: Add available functionality
+>   iio: potentiometer: Add channel information in device data
+>   iio: potentiometer: Change to firmware provided data
+>   iio: potentiometer: Add device specific read_raw function
+>   iio: potentiometer: Add support for Maxim DS3502
+>   dt-bindings: iio: potentiometer: Add Maxim DS3502 in trivial-devices
+> 
+>  .../devicetree/bindings/trivial-devices.yaml  |   2 +
+>  drivers/iio/potentiometer/Kconfig             |   6 +-
+>  drivers/iio/potentiometer/ds1803.c            | 153 +++++++++++++-----
+>  3 files changed, 121 insertions(+), 40 deletions(-)
+> 
 

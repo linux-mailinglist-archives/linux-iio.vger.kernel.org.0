@@ -2,103 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9630B4BDF7E
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Feb 2022 18:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4F24BE42B
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Feb 2022 18:58:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344135AbiBUKWD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Feb 2022 05:22:03 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47964 "EHLO
+        id S1355073AbiBUKmZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Feb 2022 05:42:25 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354338AbiBUKVw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Feb 2022 05:21:52 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62BE25EDDF;
-        Mon, 21 Feb 2022 01:41:29 -0800 (PST)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 21L3OU81002444;
-        Mon, 21 Feb 2022 04:28:12 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3eaxbbf6m4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 21 Feb 2022 04:28:11 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 21L9SAZ2020829
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Feb 2022 04:28:10 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 21 Feb 2022 04:28:09 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 21 Feb 2022 04:28:09 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 21 Feb 2022 04:28:09 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.131])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 21L9RwKb021254;
-        Mon, 21 Feb 2022 04:28:05 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v4 3/3] MAINTAINERS: add maintainer for ADA4250 driver
-Date:   Mon, 21 Feb 2022 11:27:40 +0200
-Message-ID: <20220221092740.25511-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220221092740.25511-1-antoniu.miclaus@analog.com>
-References: <20220221092740.25511-1-antoniu.miclaus@analog.com>
+        with ESMTP id S1355270AbiBUKkF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Feb 2022 05:40:05 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A513F50
+        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 02:02:03 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id cm8so18549043edb.3
+        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 02:02:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=monstr-eu.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=kMIEQ6EmXrcKF9QOgwi4JP+rN/GpqbWH/lqcMa8liiA=;
+        b=QQbUtc7TFLde+vu666fP1jpn3ZV0FX04icLIemzeQRGi911a0jMrdL8vJdmL3pepEi
+         6okCY+lM3vY8PCpbLkL0CN1RQ4ccaCqElG9sY+NLCKb3+FcPSFZopQ52JY04uQApqnML
+         Q4cY5EH3iUC6W+Su0VttBmEwgrjlKWAQYvTGBsWINSb5FBW79dNR5AY4+0ePzW4cOSBz
+         Q0sUk5AIW65Wwz/1e5NuOnsKKgKEjkWiLU4zNXi8yPSJJtSQpBUtIyP/KtVR7SCVX7xF
+         /nGHil8Eqxvg9T8QZOz9HbijZq4GNAT7JXWKEOQyr7dui6njbDWHiKdx9LVYzym+qEK1
+         yy+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=kMIEQ6EmXrcKF9QOgwi4JP+rN/GpqbWH/lqcMa8liiA=;
+        b=2xQVsuJThcf/xvXaM5/Rj5YNQrKOIxkTIErVRV8YurbCy33inJ64/zjmOd12cHTIRl
+         QjOG5mWI7SJXR7kG3s7FpkMi0oAI5x3j1JkX4qc5Lyet/6rpfyKG2DISYO1R69cd4RT/
+         8fiGMxdno3lLGTaG1ML5h2ff/4QlSiVgAp5cKs+ay68IQtXN7HpnYHKamuqVZmHDWZbS
+         evgHkzmy/1ibVZPMBkyiN4kUYPxy6oJ1XZTisDyljHt3AZIVC+2N0FSzTjroFKtsUhwH
+         75nbL37M+mKv4C5WQ8Vk7wOoF+aOVrzULaNSafAbn4qxttij3yX4SC+3a0/36mrPont1
+         nd7g==
+X-Gm-Message-State: AOAM531uFi0nwmTdYgnENpckyTtEV7gkSjywCTF7cw5kBElRhST1CWh8
+        GXWo0dUv0TrDdzWwOwkTejVk6A==
+X-Google-Smtp-Source: ABdhPJwoxhTQ66ov81uyxAEEkMdXe2eNB3Eu5awgfYyKsjlTo0UYbaWCPMaaN9gxOKo3lAv87zWjkw==
+X-Received: by 2002:a50:f686:0:b0:410:e352:e61a with SMTP id d6-20020a50f686000000b00410e352e61amr19883345edn.23.1645437721836;
+        Mon, 21 Feb 2022 02:02:01 -0800 (PST)
+Received: from ?IPV6:2a02:768:2307:40d6::f9e? ([2a02:768:2307:40d6::f9e])
+        by smtp.gmail.com with ESMTPSA id gs6sm702985ejb.17.2022.02.21.02.02.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Feb 2022 02:02:01 -0800 (PST)
+Message-ID: <f874a9c7-8d8d-fecc-8fc9-51dcf37cf60b@monstr.eu>
+Date:   Mon, 21 Feb 2022 11:02:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: nYKYLNnHq94IxN4R7Sfpr-KAQWyRiVF6
-X-Proofpoint-ORIG-GUID: nYKYLNnHq94IxN4R7Sfpr-KAQWyRiVF6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-21_03,2022-02-18_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=810 bulkscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202210056
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH] iio: adc: xilinx-ams: Use devm_delayed_work_autocancel()
+ to simplify code
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <2626e6a057e40cd2271ef0e5f81d12e607bad5b4.1644776929.git.christophe.jaillet@wanadoo.fr>
+ <20220220114552.53fedd33@jic23-huawei>
+From:   Michal Simek <monstr@monstr.eu>
+In-Reply-To: <20220220114552.53fedd33@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add myself as maintainer for the ADA4250 driver.
+Hi,
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On 2/20/22 12:45, Jonathan Cameron wrote:
+> On Sun, 13 Feb 2022 19:29:05 +0100
+> Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+> 
+>> Use devm_delayed_work_autocancel() instead of hand writing it. This is
+>> less verbose and saves a few lines of code.
+>>
+>> devm_delayed_work_autocancel() uses devm_add_action() instead of
+>> devm_add_action_or_reset(). This is fine, because if the underlying memory
+>> allocation fails, no work has been scheduled yet. So there is nothing to
+>> undo.
+>>
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Looks good to me, but I'd ideally like some input from someone familiar with
+> the driver.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fb18ce7168aa..0410054a7bf5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1075,6 +1075,14 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/i2c/ad9389b*
- 
-+ANALOG DEVICES INC ADA4250 DRIVER
-+M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/amplifiers/adi,ada4250.yaml
-+F:	drivers/iio/amplifiers/ada4250.c
-+
- ANALOG DEVICES INC ADGS1408 DRIVER
- M:	Mircea Caprioru <mircea.caprioru@analog.com>
- S:	Supported
--- 
-2.35.1
+Anand told me that the change is fine that's why here is my
+Acked-by: Michal Simek <michal.simek@xilinx.com>
 
+Jonathan: Anand decided to do change in his carrier that's why that emails won't 
+go through. But I am still around if you need something xilinx/amd to test.
+
+Thanks,
+Michal

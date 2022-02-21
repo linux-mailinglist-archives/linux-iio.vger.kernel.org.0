@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DCA84BECEF
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Feb 2022 23:08:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5DE24BECEE
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Feb 2022 23:08:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235179AbiBUWIZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Feb 2022 17:08:25 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35316 "EHLO
+        id S235171AbiBUWI0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Feb 2022 17:08:26 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235168AbiBUWIY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Feb 2022 17:08:24 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B04422BDD
-        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 14:08:00 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id p9so29313674wra.12
-        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 14:08:00 -0800 (PST)
+        with ESMTP id S235151AbiBUWIZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Feb 2022 17:08:25 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9485B22BEA
+        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 14:08:01 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id f17so4485180wrh.7
+        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 14:08:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=A4kUsp99qPhCm2w72vierLheFy7DD/xJVJ6pKA0+Euo=;
-        b=Ias28gsnuATmMgnLARnatjpH10y0hiBu3fCsJj29GzGXI6XSgPdbSsjSCv0JbG+U5Z
-         qPq+gz38PhhkPg4uo3xOqPZ8XdCi0uz9ZkRDH7AA0g7WRLjqNTuOcJ9YNyNaUe9zYo8F
-         QpdAUUsHxBHV932puLq3ieAvZ6mt4JU4RlPB1Fu9kS/hoY5ne6NbV1v6omcrJe285STk
-         +4bmsXoGNQJT5IJtE0Wr4cWQWTmzUo0UBjYwA5/068AY4qsZUI3nGB8IO14LvjywpjlO
-         Dzz1HevVVq5w/Y4FdGYBA/XSAYpFS3T4EB5J+UPtwGsbb1wqZdlV+ODoH1MmR0vZ5HIt
-         b1og==
+        bh=bwN53YHoJ1opVHwpPbkOWG0HPkiJRyBRi2Alm7N6S5M=;
+        b=K6PLqWNi78md6WDHB3AVIRNDPTjYFcoljhSFKi/ZiPJWVGQOvd1jxPg/RF2t3UROFp
+         Vm4MVTD1irJ6SGuusqlbgyIR7C9W6u4P5sgM40gamct5IyfeTFDNcw8iH5815pbDrh6U
+         Jdj4CjLgjSy3lq8Rn+xlR9/TfnXwBg1bSfqBAxoT/lnlXqycGEApVOWbDKjcEtwINT7Q
+         VKiPohZVXjWojIZfdaKGGQiFWCUveGEKDHhzUyaald31WDQdGgTEW7jUk/Ltj2nfIS5n
+         mAqNN0GoblGxU4dPHPkISL3PgEzgd9ubk/I6kLNB120mqn2jbhCZLsJdRCZIzEeVHVIq
+         zJCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=A4kUsp99qPhCm2w72vierLheFy7DD/xJVJ6pKA0+Euo=;
-        b=JGUs505Eca7JVdYg/k1fi16B2z6M5BrlrU5GVG++ytg8KGcHcJ9kakR1pnNsoQhjGk
-         QIjpcJneUt82oqmS+FT2MaCD9khHSRoIQ7/eXIDQaB8Ce/DL4PnnOOxtTcVbvUUdAo3H
-         R55Wa72fjzvlyQQiQg5a1T192KcQyMhZnAXqatSAzQY7J+rtpsX7rsTcvPSuPB8OScFr
-         Egt85++hlGC0Lv1w5d9KiW2iHWkyr7QGM+i7DAsaJ0IfFNGQVw98HmwnffN6v1+3WO7d
-         qs9hepeV+bfwPihS6Rli0qIMQIDT5kBB9bIZIF45jTQcMF2bCYVNtDCQChGXSVpE+Plk
-         64wQ==
-X-Gm-Message-State: AOAM5304W0/MlxFu1THEIS38QdUdp6WyZc7sZI2uolK8gsQ3CMsCtqy4
-        Dlv6Y1J3EZm5BGeD3iXDDvxE1A==
-X-Google-Smtp-Source: ABdhPJz3tz2sUlMBATCFGvB98aEz0pzfntgCr8LpPWEPoE0KNDtfTPQOzhAOJ6/PvfuuHOu7HdcagQ==
-X-Received: by 2002:a05:6000:1684:b0:1ea:8ad6:4e12 with SMTP id y4-20020a056000168400b001ea8ad64e12mr370047wrd.174.1645481279059;
-        Mon, 21 Feb 2022 14:07:59 -0800 (PST)
+        bh=bwN53YHoJ1opVHwpPbkOWG0HPkiJRyBRi2Alm7N6S5M=;
+        b=6phosBp5o7Fd6/mpT9rfhQ+AtcEYhNitL9nZKsGE9RUTKzw+mjqYSKBfkMmrMoCo0M
+         PVbTD89XKEhjHzyfNySOZtjBebxryvO/BxDwEZbeNak0JUme8V6YR4YBuyWUn4vTr0nF
+         AGf2fj+zwB2ERtiSGgIHI4ILoIruaBvN2qtq0uvUaz77bN8NwMkzSDpEdzZrzRr0r+Mn
+         jxCImohxf9COf/O3xLWR4O35SXL7wMa9DULRwdw9o0bEEEQg0lZ3NsNTD2x1yWTmQBzA
+         VIVkUOnZ+q/PoxvbmNQBShg9pq2ZJ3+r+OVLVGLNoNXd3fuA94KqbZteGcNZKw3w4d7D
+         o/qQ==
+X-Gm-Message-State: AOAM532Xww3nIkAYJSPMgZkava7icRQ8OvkBURkny1cgs5Z8ZO5jpO/J
+        eeiYPvwB2lEXt/ZACwlPSTGC4Q==
+X-Google-Smtp-Source: ABdhPJxm3WKYqTKnR9kmdvBJmF0hspSjIA2J3Yj0N/VQGscdgV51DReP+vs8JzdEskHv2e+8Ag5g/A==
+X-Received: by 2002:a05:6000:188b:b0:1e3:1cfa:5851 with SMTP id a11-20020a056000188b00b001e31cfa5851mr17952965wri.510.1645481280244;
+        Mon, 21 Feb 2022 14:08:00 -0800 (PST)
 Received: from localhost.localdomain (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id w8sm51626093wre.83.2022.02.21.14.07.57
+        by smtp.gmail.com with ESMTPSA id w8sm51626093wre.83.2022.02.21.14.07.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Feb 2022 14:07:58 -0800 (PST)
+        Mon, 21 Feb 2022 14:07:59 -0800 (PST)
 From:   Caleb Connolly <caleb.connolly@linaro.org>
 To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -57,11 +57,10 @@ To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
         Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
 Cc:     sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        john.stultz@linaro.org, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH v8 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid information to clients
-Date:   Mon, 21 Feb 2022 22:07:36 +0000
-Message-Id: <20220221220743.541704-3-caleb.connolly@linaro.org>
+        john.stultz@linaro.org
+Subject: [PATCH v8 3/9] mfd: qcom-spmi-pmic: read fab id on supported PMICs
+Date:   Mon, 21 Feb 2022 22:07:37 +0000
+Message-Id: <20220221220743.541704-4-caleb.connolly@linaro.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220221220743.541704-1-caleb.connolly@linaro.org>
 References: <20220221220743.541704-1-caleb.connolly@linaro.org>
@@ -77,336 +76,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Some PMIC functions such as the RRADC need to be aware of the PMIC
-chip revision information to implement errata or otherwise adjust
-behaviour, export the PMIC information to enable this.
+The PMI8998 and PM660 expose the fab_id, this is needed by drivers like
+the RRADC to calibrate ADC values.
 
-This is specifically required to enable the RRADC to adjust
-coefficients based on which chip fab the PMIC was produced in,
-this can vary per unique device and therefore has to be read at
-runtime.
-
-[bugs in previous revision]
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 ---
- drivers/mfd/qcom-spmi-pmic.c      | 174 ++++++++++++++++++++----------
- include/soc/qcom/qcom-spmi-pmic.h |  60 +++++++++++
- 2 files changed, 178 insertions(+), 56 deletions(-)
- create mode 100644 include/soc/qcom/qcom-spmi-pmic.h
+ drivers/mfd/qcom-spmi-pmic.c      | 7 +++++++
+ include/soc/qcom/qcom-spmi-pmic.h | 1 +
+ 2 files changed, 8 insertions(+)
 
 diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
-index 1cacc00aa6c9..1ef426a1513b 100644
+index 1ef426a1513b..89e10b32fccb 100644
 --- a/drivers/mfd/qcom-spmi-pmic.c
 +++ b/drivers/mfd/qcom-spmi-pmic.c
-@@ -3,11 +3,16 @@
-  * Copyright (c) 2014, The Linux Foundation. All rights reserved.
-  */
- 
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/gfp.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/spmi.h>
-+#include <linux/types.h>
- #include <linux/regmap.h>
- #include <linux/of_platform.h>
-+#include <soc/qcom/qcom-spmi-pmic.h>
- 
- #define PMIC_REV2		0x101
- #define PMIC_REV3		0x102
-@@ -17,37 +22,6 @@
+@@ -19,6 +19,7 @@
+ #define PMIC_REV4		0x103
+ #define PMIC_TYPE		0x104
+ #define PMIC_SUBTYPE		0x105
++#define PMIC_FAB_ID		0x1f2
  
  #define PMIC_TYPE_VALUE		0x51
  
--#define COMMON_SUBTYPE		0x00
--#define PM8941_SUBTYPE		0x01
--#define PM8841_SUBTYPE		0x02
--#define PM8019_SUBTYPE		0x03
--#define PM8226_SUBTYPE		0x04
--#define PM8110_SUBTYPE		0x05
--#define PMA8084_SUBTYPE		0x06
--#define PMI8962_SUBTYPE		0x07
--#define PMD9635_SUBTYPE		0x08
--#define PM8994_SUBTYPE		0x09
--#define PMI8994_SUBTYPE		0x0a
--#define PM8916_SUBTYPE		0x0b
--#define PM8004_SUBTYPE		0x0c
--#define PM8909_SUBTYPE		0x0d
--#define PM8028_SUBTYPE		0x0e
--#define PM8901_SUBTYPE		0x0f
--#define PM8950_SUBTYPE		0x10
--#define PMI8950_SUBTYPE		0x11
--#define PM8998_SUBTYPE		0x14
--#define PMI8998_SUBTYPE		0x15
--#define PM8005_SUBTYPE		0x18
--#define PM660L_SUBTYPE		0x1A
--#define PM660_SUBTYPE		0x1B
--#define PM8150_SUBTYPE		0x1E
--#define PM8150L_SUBTYPE		0x1f
--#define PM8150B_SUBTYPE		0x20
--#define PMK8002_SUBTYPE		0x21
--#define PM8009_SUBTYPE		0x24
--#define PM8150C_SUBTYPE		0x26
--#define SMB2351_SUBTYPE		0x29
--
- static const struct of_device_id pmic_spmi_id_table[] = {
- 	{ .compatible = "qcom,pm660",     .data = (void *)PM660_SUBTYPE },
- 	{ .compatible = "qcom,pm660l",    .data = (void *)PM660L_SUBTYPE },
-@@ -81,42 +55,118 @@ static const struct of_device_id pmic_spmi_id_table[] = {
- 	{ }
- };
- 
--static void pmic_spmi_show_revid(struct regmap *map, struct device *dev)
-+/**
-+ * qcom_pmic_get() - Get a pointer to the base PMIC device
-+ *
-+ * @dev: the pmic function device
-+ * @return: the struct qcom_spmi_pmic* pointer associated with the function device
-+ *
-+ * A PMIC can be represented by multiple SPMI devices, but
-+ * only the base PMIC device will contain a reference to
-+ * the revision information.
-+ *
-+ * This function takes a pointer to a function device and
-+ * returns a pointer to the base PMIC device.
-+ */
-+const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev)
-+{
-+	struct spmi_device *sdev;
-+	struct device_node *spmi_bus;
-+	struct device_node *other_usid = NULL;
-+	int function_parent_usid, ret;
-+	u32 reg[2];
-+
-+	if (!of_match_device(pmic_spmi_id_table, dev->parent))
-+		return ERR_PTR(-EINVAL);
-+
-+	sdev = to_spmi_device(dev->parent);
-+	if (!sdev)
-+		return ERR_PTR(-EINVAL);
-+
-+	/*
-+	 * Quick return if the function device is already in the right
-+	 * USID
-+	 */
-+	if (sdev->usid % 2 == 0)
-+		return spmi_device_get_drvdata(sdev);
-+
-+	function_parent_usid = sdev->usid;
-+
-+	/*
-+	 * Walk through the list of PMICs until we find the sibling USID.
-+	 * The goal is the find to previous sibling. Assuming there is no
-+	 * PMIC with more than 2 USIDs. We know that function_parent_usid
-+	 * is one greater than the base USID.
-+	 */
-+	spmi_bus = of_get_parent(sdev->dev.parent->of_node);
-+	do {
-+		other_usid = of_get_next_child(spmi_bus, other_usid);
-+		ret = of_property_read_u32_array(other_usid, "reg", reg, 2);
-+		if (ret)
-+			return ERR_PTR(ret);
-+		sdev = spmi_device_from_of(other_usid);
-+		if (sdev == NULL) {
-+			/*
-+			 * If the base USID for this PMIC hasn't probed yet
-+			 * but the secondary USID has, then we need to defer
-+			 * the function driver so that it will attempt to
-+			 * probe again when the base USID is ready.
-+			 */
-+			if (reg[0] == function_parent_usid - 1)
-+				return ERR_PTR(-EPROBE_DEFER);
-+
-+			continue;
-+		}
-+
-+		if (reg[0] == function_parent_usid - 1)
-+			return spmi_device_get_drvdata(sdev);
-+	} while (other_usid->sibling);
-+
-+	return ERR_PTR(-ENODATA);
-+}
-+EXPORT_SYMBOL(qcom_pmic_get);
-+
-+static inline void pmic_print_info(struct device *dev, struct qcom_spmi_pmic *pmic)
-+{
-+	dev_dbg(dev, "%x: %s v%d.%d\n",
-+		pmic->subtype, pmic->name, pmic->major, pmic->minor);
-+}
-+
-+static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
-+				 struct qcom_spmi_pmic *pmic)
- {
--	unsigned int rev2, minor, major, type, subtype;
--	const char *name = "unknown";
- 	int ret, i;
- 
--	ret = regmap_read(map, PMIC_TYPE, &type);
-+	ret = regmap_read(map, PMIC_TYPE, &pmic->type);
+@@ -168,6 +169,12 @@ static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
  	if (ret < 0)
--		return;
-+		return ret;
+ 		return ret;
  
--	if (type != PMIC_TYPE_VALUE)
--		return;
-+	if (pmic->type != PMIC_TYPE_VALUE)
-+		return ret;
- 
--	ret = regmap_read(map, PMIC_SUBTYPE, &subtype);
-+	ret = regmap_read(map, PMIC_SUBTYPE, &pmic->subtype);
- 	if (ret < 0)
--		return;
-+		return ret;
- 
- 	for (i = 0; i < ARRAY_SIZE(pmic_spmi_id_table); i++) {
--		if (subtype == (unsigned long)pmic_spmi_id_table[i].data)
-+		if (pmic->subtype == (unsigned long)pmic_spmi_id_table[i].data)
- 			break;
- 	}
- 
- 	if (i != ARRAY_SIZE(pmic_spmi_id_table))
--		name = pmic_spmi_id_table[i].compatible;
-+		pmic->name = devm_kstrdup_const(dev, pmic_spmi_id_table[i].compatible, GFP_KERNEL);
- 
--	ret = regmap_read(map, PMIC_REV2, &rev2);
-+	ret = regmap_read(map, PMIC_REV2, &pmic->rev2);
- 	if (ret < 0)
--		return;
-+		return ret;
- 
--	ret = regmap_read(map, PMIC_REV3, &minor);
-+	ret = regmap_read(map, PMIC_REV3, &pmic->minor);
- 	if (ret < 0)
--		return;
-+		return ret;
- 
--	ret = regmap_read(map, PMIC_REV4, &major);
-+	ret = regmap_read(map, PMIC_REV4, &pmic->major);
- 	if (ret < 0)
--		return;
-+		return ret;
- 
- 	/*
- 	 * In early versions of PM8941 and PM8226, the major revision number
-@@ -124,14 +174,16 @@ static void pmic_spmi_show_revid(struct regmap *map, struct device *dev)
- 	 * Increment the major revision number here if the chip is an early
- 	 * version of PM8941 or PM8226.
- 	 */
--	if ((subtype == PM8941_SUBTYPE || subtype == PM8226_SUBTYPE) &&
--	    major < 0x02)
--		major++;
-+	if ((pmic->subtype == PM8941_SUBTYPE || pmic->subtype == PM8226_SUBTYPE) &&
-+	    pmic->major < 0x02)
-+		pmic->major++;
-+
-+	if (pmic->subtype == PM8110_SUBTYPE)
-+		pmic->minor = pmic->rev2;
- 
--	if (subtype == PM8110_SUBTYPE)
--		minor = rev2;
-+	pmic_print_info(dev, pmic);
- 
--	dev_dbg(dev, "%x: %s v%d.%d\n", subtype, name, major, minor);
-+	return 0;
- }
- 
- static const struct regmap_config spmi_regmap_config = {
-@@ -144,14 +196,24 @@ static const struct regmap_config spmi_regmap_config = {
- static int pmic_spmi_probe(struct spmi_device *sdev)
- {
- 	struct regmap *regmap;
-+	struct qcom_spmi_pmic *pmic;
-+	int ret;
- 
- 	regmap = devm_regmap_init_spmi_ext(sdev, &spmi_regmap_config);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
-+	pmic = devm_kzalloc(&sdev->dev, sizeof(*pmic), GFP_KERNEL);
-+	if (!pmic)
-+		return -ENOMEM;
-+
- 	/* Only the first slave id for a PMIC contains this information */
--	if (sdev->usid % 2 == 0)
--		pmic_spmi_show_revid(regmap, &sdev->dev);
-+	if (sdev->usid % 2 == 0) {
-+		ret = pmic_spmi_load_revid(regmap, &sdev->dev, pmic);
++	if (pmic->subtype == PMI8998_SUBTYPE || pmic->subtype == PM660_SUBTYPE) {
++		ret = regmap_read(map, PMIC_FAB_ID, &pmic->fab_id);
 +		if (ret < 0)
 +			return ret;
-+		spmi_device_set_drvdata(sdev, pmic);
 +	}
- 
- 	return devm_of_platform_populate(&sdev->dev);
- }
++
+ 	/*
+ 	 * In early versions of PM8941 and PM8226, the major revision number
+ 	 * started incrementing from 0 (eg 0 = v1.0, 1 = v2.0).
 diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-new file mode 100644
-index 000000000000..a8a77be22cfc
---- /dev/null
+index a8a77be22cfc..c821f6c6c8a8 100644
+--- a/include/soc/qcom/qcom-spmi-pmic.h
 +++ b/include/soc/qcom/qcom-spmi-pmic.h
-@@ -0,0 +1,60 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* Copyright (c) 2021 Linaro. All rights reserved.
-+ * Copyright (c) 2021 Caleb Connolly <caleb.connolly@linaro.org>
-+ */
-+
-+#ifndef __QCOM_PMIC_H__
-+#define __QCOM_PMIC_H__
-+
-+#define COMMON_SUBTYPE		0x00
-+#define PM8941_SUBTYPE		0x01
-+#define PM8841_SUBTYPE		0x02
-+#define PM8019_SUBTYPE		0x03
-+#define PM8226_SUBTYPE		0x04
-+#define PM8110_SUBTYPE		0x05
-+#define PMA8084_SUBTYPE		0x06
-+#define PMI8962_SUBTYPE		0x07
-+#define PMD9635_SUBTYPE		0x08
-+#define PM8994_SUBTYPE		0x09
-+#define PMI8994_SUBTYPE		0x0a
-+#define PM8916_SUBTYPE		0x0b
-+#define PM8004_SUBTYPE		0x0c
-+#define PM8909_SUBTYPE		0x0d
-+#define PM8028_SUBTYPE		0x0e
-+#define PM8901_SUBTYPE		0x0f
-+#define PM8950_SUBTYPE		0x10
-+#define PMI8950_SUBTYPE		0x11
-+#define PM8998_SUBTYPE		0x14
-+#define PMI8998_SUBTYPE		0x15
-+#define PM8005_SUBTYPE		0x18
-+#define PM660L_SUBTYPE		0x1A
-+#define PM660_SUBTYPE		0x1B
-+#define PM8150_SUBTYPE		0x1E
-+#define PM8150L_SUBTYPE		0x1f
-+#define PM8150B_SUBTYPE		0x20
-+#define PMK8002_SUBTYPE		0x21
-+#define PM8009_SUBTYPE		0x24
-+#define PM8150C_SUBTYPE		0x26
-+#define SMB2351_SUBTYPE		0x29
-+
-+#define PMI8998_FAB_ID_SMIC	0x11
-+#define PMI8998_FAB_ID_GF	0x30
-+
-+#define PM660_FAB_ID_GF		0x0
-+#define PM660_FAB_ID_TSMC	0x2
-+#define PM660_FAB_ID_MX		0x3
-+
-+struct qcom_spmi_pmic {
-+	unsigned int type;
-+	unsigned int subtype;
-+	unsigned int major;
-+	unsigned int minor;
-+	unsigned int rev2;
-+	const char *name;
-+};
-+
-+struct device;
-+
-+const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev);
-+
-+#endif /* __QCOM_PMIC_H__ */
+@@ -50,6 +50,7 @@ struct qcom_spmi_pmic {
+ 	unsigned int major;
+ 	unsigned int minor;
+ 	unsigned int rev2;
++	unsigned int fab_id;
+ 	const char *name;
+ };
+ 
 -- 
 2.35.1
 

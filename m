@@ -2,84 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D9C4BD326
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Feb 2022 02:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 526EC4BD3DD
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Feb 2022 03:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229791AbiBUB3B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Feb 2022 20:29:01 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48868 "EHLO
+        id S1343776AbiBUCgf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Feb 2022 21:36:35 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233987AbiBUB3B (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 20:29:01 -0500
-Received: from twspam01.aspeedtech.com (twspam01.aspeedtech.com [211.20.114.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F8D3517C0;
-        Sun, 20 Feb 2022 17:28:38 -0800 (PST)
-Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 21L1HQCl026167;
-        Mon, 21 Feb 2022 09:17:26 +0800 (GMT-8)
-        (envelope-from billy_tsai@aspeedtech.com)
-Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 21 Feb
- 2022 09:26:16 +0800
-From:   Billy Tsai <billy_tsai@aspeedtech.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <billy_tsai@aspeedtech.com>,
-        <colin.king@canonical.com>, <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-CC:     Konstantin Klubnichkin <kitsok@yandex-team.ru>
-Subject: [PATCH v2] iio: adc: aspeed: Add divider flag to fix incorrect voltage reading.
-Date:   Mon, 21 Feb 2022 09:27:05 +0800
-Message-ID: <20220221012705.22008-1-billy_tsai@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [192.168.2.149]
-X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
- (192.168.0.24)
-X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 21L1HQCl026167
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S1343889AbiBUCgf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Feb 2022 21:36:35 -0500
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2600D3DDE0;
+        Sun, 20 Feb 2022 18:36:12 -0800 (PST)
+Received: by mail-io1-f54.google.com with SMTP id r7so8982377iot.3;
+        Sun, 20 Feb 2022 18:36:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=FxeQCl1x7bPN2N7fKduzQexfeAZe1Kk7c2rGWjraM2M=;
+        b=vKnQxwU0+VxmSw9UgqnXXmy67eKsY5scUhrpbbtqsCdtT4dRP+MxYhekfIpriQTshC
+         1nm2PjKWr6m0zD/HMv+YamC02/uNkUyKQA2phTNMYRPFErn166bxut6/9kHzAvgNwOjL
+         xzbb27GxpmVv3C6qYeCeEC43SeTYYOB3whsz09/BHkZLKGNL5q/rgPIT0tctSQJVaRfe
+         KST+7ak1id9I58t9S8i17QskVHfr5OIEc3LAO67hVS8FkPO3q524hELgHaYn13/W6Tyd
+         R4wlW1uXKFkaYttTA0zDX1zgQxKKIOord1jX0vtOraXN+uxsS4Rfywokru+s4rNP3pbg
+         hhTw==
+X-Gm-Message-State: AOAM530TsRhPWYhMdkRmKMuUkBwczMYaV2gv36O3PXXZFF3OKhpP+cJW
+        bjzhbTW0aSqazCtL9gqaGozjPJ73Eg==
+X-Google-Smtp-Source: ABdhPJwOKow//TiuesfE0CYp/GWJkr7IS6te0xCDAT81+jaq7aIKH6XqV2hxLRYv99lirxqpAHRZdQ==
+X-Received: by 2002:a05:6638:2722:b0:30d:2b4e:5ff with SMTP id m34-20020a056638272200b0030d2b4e05ffmr13408270jav.261.1645410972080;
+        Sun, 20 Feb 2022 18:36:12 -0800 (PST)
+Received: from robh.at.kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id f13sm4569612iov.39.2022.02.20.18.36.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Feb 2022 18:36:11 -0800 (PST)
+Received: (nullmailer pid 2041534 invoked by uid 1000);
+        Mon, 21 Feb 2022 02:36:09 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     chegbeli <ciprian.hegbeli@analog.com>
+Cc:     devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        robh+dt@kernel.org, linux-kernel@vger.kernel.org, jic23@kernel.org
+In-Reply-To: <20220217135140.5658-3-ciprian.hegbeli@analog.com>
+References: <20220217135140.5658-1-ciprian.hegbeli@analog.com> <20220217135140.5658-3-ciprian.hegbeli@analog.com>
+Subject: Re: [PATCH 2/3] dt-bindings: iio: add ADE9078
+Date:   Sun, 20 Feb 2022 20:36:09 -0600
+Message-Id: <1645410969.316145.2041533.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The formula for the ADC sampling period in ast2400/ast2500 is:
-ADC clock period = PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0])
-When ADC0C[9:0] is set to 0 the sampling voltage will be lower than
-expected, because the hardware may not have enough time to
-charge/discharge to a stable voltage. This patch use the flag
-CLK_DIVIDER_ONE_BASED which will use the raw value read from the
-register, with the value of zero considered invalid to conform to the
-corrected formula.
+On Thu, 17 Feb 2022 15:51:39 +0200, chegbeli wrote:
+> Added device tree bindings for the ADE9078
+> 
+> Signed-off-by: chegbeli <ciprian.hegbeli@analog.com>
+> ---
+>  .../bindings/iio/meter/adi,ade9078.yaml       | 153 ++++++++++++++++++
+>  include/dt-bindings/iio/meter/adi,ade9078.h   |  21 +++
+>  2 files changed, 174 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/meter/adi,ade9078.yaml
+>  create mode 100644 include/dt-bindings/iio/meter/adi,ade9078.h
+> 
 
-Fixes: 573803234e72 ("iio: Aspeed ADC")
-Reported-by: Konstantin Klubnichkin <kitsok@yandex-team.ru>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
----
- drivers/iio/adc/aspeed_adc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index a957cad1bfab..ffae64f39221 100644
---- a/drivers/iio/adc/aspeed_adc.c
-+++ b/drivers/iio/adc/aspeed_adc.c
-@@ -539,7 +539,9 @@ static int aspeed_adc_probe(struct platform_device *pdev)
- 	data->clk_scaler = devm_clk_hw_register_divider(
- 		&pdev->dev, clk_name, clk_parent_name, scaler_flags,
- 		data->base + ASPEED_REG_CLOCK_CONTROL, 0,
--		data->model_data->scaler_bit_width, 0, &data->clk_lock);
-+		data->model_data->scaler_bit_width,
-+		data->model_data->need_prescaler ? CLK_DIVIDER_ONE_BASED : 0,
-+		&data->clk_lock);
- 	if (IS_ERR(data->clk_scaler))
- 		return PTR_ERR(data->clk_scaler);
- 
--- 
-2.25.1
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/meter/adi,ade9078.yaml:131:1: [error] syntax error: found character '\t' that cannot start any token (syntax)
+
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/iio/meter/adi,ade9078.yaml:  while scanning a block scalar
+  in "<unicode string>", line 129, column 5
+found a tab character where an indentation space is expected
+  in "<unicode string>", line 131, column 1
+make[1]: *** Deleting file 'Documentation/devicetree/bindings/iio/meter/adi,ade9078.example.dts'
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-extract-example", line 46, in <module>
+    binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
+  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/main.py", line 434, in load
+    return constructor.get_single_data()
+  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/constructor.py", line 119, in get_single_data
+    node = self.composer.get_single_node()
+  File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
+  File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
+  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
+  File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
+  File "_ruamel_yaml.pyx", line 773, in _ruamel_yaml.CParser._compose_node
+  File "_ruamel_yaml.pyx", line 848, in _ruamel_yaml.CParser._compose_sequence_node
+  File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
+ruamel.yaml.scanner.ScannerError: while scanning a block scalar
+  in "<unicode string>", line 129, column 5
+found a tab character where an indentation space is expected
+  in "<unicode string>", line 131, column 1
+make[1]: *** [Documentation/devicetree/bindings/Makefile:25: Documentation/devicetree/bindings/iio/meter/adi,ade9078.example.dts] Error 1
+make[1]: *** Waiting for unfinished jobs....
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/meter/adi,ade9078.yaml: ignoring, error parsing file
+make: *** [Makefile:1398: dt_binding_check] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1594257
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 

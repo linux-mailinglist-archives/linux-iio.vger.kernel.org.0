@@ -2,107 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99DD84BF173
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Feb 2022 06:42:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B75B24BF2F9
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Feb 2022 08:58:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbiBVFd2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Feb 2022 00:33:28 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:35948 "EHLO
+        id S229779AbiBVH6j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Feb 2022 02:58:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbiBVFdL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Feb 2022 00:33:11 -0500
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86ECC11A39
-        for <linux-iio@vger.kernel.org>; Mon, 21 Feb 2022 21:32:45 -0800 (PST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7580A1A170F;
-        Tue, 22 Feb 2022 05:54:21 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3C9821A23FF;
-        Tue, 22 Feb 2022 05:54:21 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 193B7183AC94;
-        Tue, 22 Feb 2022 12:54:20 +0800 (+08)
-From:   haibo.chen@nxp.com
-To:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        pmeerw@pmeerw.net
-Cc:     haibo.chen@nxp.com, linux-imx@nxp.com
-Subject: [PATCH] iio: accel: mma8452: remove the reset operation during driver probe
-Date:   Tue, 22 Feb 2022 12:45:51 +0800
-Message-Id: <1645505151-5789-1-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
+        with ESMTP id S229437AbiBVH6j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Feb 2022 02:58:39 -0500
+X-Greylist: delayed 600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 21 Feb 2022 23:58:13 PST
+Received: from hel-mailgw-01.vaisala.com (hel-mailgw-01.vaisala.com [193.143.230.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DB61405F6;
+        Mon, 21 Feb 2022 23:58:13 -0800 (PST)
+Received: from HEL-SMTP.corp.vaisala.com (HEL-SMTP.corp.vaisala.com [172.24.1.225])
+        by hel-mailgw-01.vaisala.com (Postfix) with ESMTP id 82D566082A42;
+        Tue, 22 Feb 2022 09:42:15 +0200 (EET)
+Received: from [172.24.254.98] ([172.24.254.98]) by HEL-SMTP.corp.vaisala.com over TLS secured channel with Microsoft SMTPSVC(8.5.9600.16384);
+         Tue, 22 Feb 2022 09:42:19 +0200
+Message-ID: <4f0c786f-e29c-4838-59e3-236a908e4431@vaisala.com>
+Date:   Tue, 22 Feb 2022 09:42:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [RFC PATCH] iio: core: provide a default value `label` property
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220216135604.3435769-1-nandor.han@vaisala.com>
+ <20220220131809.1bc184e0@jic23-huawei>
+From:   Nandor Han <nandor.han@vaisala.com>
+In-Reply-To: <20220220131809.1bc184e0@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 22 Feb 2022 07:42:19.0874 (UTC) FILETIME=[B8B81C20:01D827BF]
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+On 2/20/22 15:18, Jonathan Cameron wrote:
+> On Wed, 16 Feb 2022 15:56:04 +0200
+> Nandor Han <nandor.han@vaisala.com> wrote:
+> 
 
-Though Sensor Datasheet define this reset bit in it's CTRL_REG2
-register, but seems the actual hardware behavior do not align with
-the doc expect. Once the reset bit is set, sensor can’t give back
-an I2C ack, which will cause the probe fail. So just remove this
-reset operation.
+Thanks for reviewing the patch and provide feed back.
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/iio/accel/mma8452.c | 28 ----------------------------
- 1 file changed, 28 deletions(-)
+>> The label property is used to correctly identify the same IIO device
+>> over reboots. The implementation requires that a value will be provided
+>> through device-tree. This sometime could requires many changes to
+>> device-trees when multiple devices want to use the label property.
+>> In order to prevent this, we could use the device-tree node
+>> name as default value. The device-tree node name is unique and
+>> also reflects the device which makes it a good choice as default value.
+>> This change is backward compatible since doesn't affect the users that
+>> do configure a label using the device-tree or the ones that are not
+>> using the labels at all.
+>>
+>> Use the device-tree node name as a default value for `label` property,
+>> in case there isn't one configured through device-tree.
+> 
+> Interesting idea.  However a few concerns come to mind.
+> 1) If we start having a default for this, then it will get used as ABI
+>     and if a label is applied later to the DT then we will end up breaking
+>     userspace scripts.
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 0016bb947c10..ec9e26fdfb2a 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1481,30 +1481,6 @@ static void mma8452_trigger_cleanup(struct iio_dev *indio_dev)
- 		iio_trigger_unregister(indio_dev->trig);
- }
- 
--static int mma8452_reset(struct i2c_client *client)
--{
--	int i;
--	int ret;
--
--	ret = i2c_smbus_write_byte_data(client,	MMA8452_CTRL_REG2,
--					MMA8452_CTRL_REG2_RST);
--	if (ret < 0)
--		return ret;
--
--	for (i = 0; i < 10; i++) {
--		usleep_range(100, 200);
--		ret = i2c_smbus_read_byte_data(client, MMA8452_CTRL_REG2);
--		if (ret == -EIO)
--			continue; /* I2C comm reset */
--		if (ret < 0)
--			return ret;
--		if (!(ret & MMA8452_CTRL_REG2_RST))
--			return 0;
--	}
--
--	return -ETIMEDOUT;
--}
--
- static const struct of_device_id mma8452_dt_ids[] = {
- 	{ .compatible = "fsl,mma8451", .data = &mma_chip_info_table[mma8451] },
- 	{ .compatible = "fsl,mma8452", .data = &mma_chip_info_table[mma8452] },
-@@ -1591,10 +1567,6 @@ static int mma8452_probe(struct i2c_client *client,
- 	indio_dev->num_channels = data->chip_info->num_channels;
- 	indio_dev->available_scan_masks = mma8452_scan_masks;
- 
--	ret = mma8452_reset(client);
--	if (ret < 0)
--		goto disable_regulators;
--
- 	data->data_cfg = MMA8452_DATA_CFG_FS_2G;
- 	ret = i2c_smbus_write_byte_data(client, MMA8452_DATA_CFG,
- 					data->data_cfg);
--- 
-2.25.1
+When a label is explicitly configured means that the userspace expects 
+to have that value available. Therefore, I don't see this as ABI change, 
+given that this affects the property label content and not for example 
+the property name.
 
+> 2) If we do this it should be firmware agnostics (we need to fix
+>     the existing code to be such as well).
+
+Not sure I understand this. If you could explain a bit more I would 
+really appriciate.
+
+> 3) Is the node name always unique (think multiple accelerometers on
+>     different i2c masters)?
+> 3) I'm fairly sure this information is readily available anyway.
+>     either via the of_node link for the iio\:deviceX
+>     So why not have your usespace use that instead of label?
+>     I'm not a fan of duplicating information that is readily available
+>     anyway - be it as name and reg in the of_node directory.
+> 
+
+The node name supposed to be unique AFAIK and you're right it is 
+available already in the userspace.
+My point with this patch is to provide a default value for the label 
+content and I'm open to suggestions related to content. The of_node name 
+was something that I thought that is unique and easy to use, but if 
+somebody has better suggestions I'm really open to these.
+
+> Thanks,
+> 
+> Jonathan
+> 
+
+<snip>
+
+
+Thanks again and regards,
+    Nandor

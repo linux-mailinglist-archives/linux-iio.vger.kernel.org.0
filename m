@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 168564BEF4A
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Feb 2022 03:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 693294BEFAB
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Feb 2022 03:54:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231425AbiBVCQR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Feb 2022 21:16:17 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37740 "EHLO
+        id S232739AbiBVCrS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Feb 2022 21:47:18 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230436AbiBVCQQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Feb 2022 21:16:16 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC0C25589;
-        Mon, 21 Feb 2022 18:15:51 -0800 (PST)
+        with ESMTP id S231297AbiBVCrQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Feb 2022 21:47:16 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463FA22BDE;
+        Mon, 21 Feb 2022 18:46:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645496151; x=1677032151;
+  t=1645498012; x=1677034012;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=/DzTfGp3/ss+OtkjPmEsFuhrYjk447cfjdaz6luL3Po=;
-  b=gIyJTdwa7a9CKYJgGT7PQKu8ZshUQP8RyNmphqYH/n0whSvzyZW/C6Bf
-   LBYtc7IHkymoscIVaOMTsqa3zyHHnPm1Eqoq+ivxRB2GOFhjghZI92GB5
-   1nCzgv8vBg3wF5puxpk97zuPrRQlq9qCgYKCj4d4soXqmitYlk0yOCLSP
-   Lh/2i8mcYg13TXMGC0hGd6uyZlopEeoEqsDpeIy0XsfPipv/YGS+zKoVo
-   Q+zNr5SS9KkS47iRygmkkbY+Y7y9T+NlONzOg1GrBn+qQcvgpKt/dAc3Q
-   T1eLfBY8EVnCuSNkR9jq/fxPxsTGim6fY9wh2GcYcLC9Gq4rJ/1WpYf1s
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10265"; a="232214598"
+  bh=9y052aQ+Fe5ENvoVdgRksoJLPjYxMJtbEtdkf1tp8po=;
+  b=f986MjPcTBmPkRksbkczE+sdlRnVVun3EmuXXqgAfjIJR/XpAKaDzqmO
+   MeUx8kGUvQGpWwXtkqAppUtllQYlKaJZry3u51OPb9H9dkzNlAf0Kod1g
+   wHZnPoQqkDACZGoOj5Wgb28RernND/sSzqRNC/rMom+5089KYk9V+fmU5
+   ZSUxQbY7Omu8+b40rO94ZTPJgOcQtllmqoOpd0YheQ3xCDjPGKTx2pXhC
+   3FHw4Gd0TQM/ZvmQVz7s+IvLHxE24Q3KPFaWzzsMOHimFAp7l0Ue79NTA
+   1aQyIplZ4PK8hfn8O21O1xB5uAhNbOW+E2hR3KWEHTyD8jFPOIGp1DLlg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10265"; a="276195622"
 X-IronPort-AV: E=Sophos;i="5.88,387,1635231600"; 
-   d="scan'208";a="232214598"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2022 18:15:51 -0800
+   d="scan'208";a="276195622"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2022 18:46:52 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,387,1635231600"; 
-   d="scan'208";a="591136330"
+   d="scan'208";a="573271646"
 Received: from lkp-server01.sh.intel.com (HELO da3212ac2f54) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 21 Feb 2022 18:15:48 -0800
+  by orsmga001.jf.intel.com with ESMTP; 21 Feb 2022 18:46:49 -0800
 Received: from kbuild by da3212ac2f54 with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1nMKiS-0002EA-86; Tue, 22 Feb 2022 02:15:48 +0000
-Date:   Tue, 22 Feb 2022 10:15:21 +0800
+        id 1nMLCS-0002Fi-NN; Tue, 22 Feb 2022 02:46:48 +0000
+Date:   Tue, 22 Feb 2022 10:46:02 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -51,17 +51,17 @@ Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
         Kai-Heng Feng <kai.heng.feng@canonical.com>
 Subject: Re: [PATCH v1 2/8] iio: accel: adxl345: Set driver_data for OF
  enumeration
-Message-ID: <202202221020.VX0nc5j6-lkp@intel.com>
+Message-ID: <202202221026.cREU7Drv-lkp@intel.com>
 References: <20220221233235.86893-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20220221233235.86893-2-andriy.shevchenko@linux.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -80,7 +80,7 @@ https://git-scm.com/docs/git-format-patch]
 
 url:    https://github.com/0day-ci/linux/commits/Andy-Shevchenko/iio-accel-adxl345-Convert-to-use-dev_err_probe/20220222-073422
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: hexagon-randconfig-r036-20220221 (https://download.01.org/0day-ci/archive/20220222/202202221020.VX0nc5j6-lkp@intel.com/config)
+config: i386-randconfig-a014-20220221 (https://download.01.org/0day-ci/archive/20220222/202202221026.cREU7Drv-lkp@intel.com/config)
 compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project d271fc04d5b97b12e6b797c6067d3c96a8d7470e)
 reproduce (this is a W=1 build):
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
@@ -91,13 +91,24 @@ reproduce (this is a W=1 build):
         git checkout 2d02dfc34a92b731790a911491fbb13cf2e6e882
         # save the config file to linux build tree
         mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/iio/accel/
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/iio/accel/
 
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
 
 All warnings (new ones prefixed by >>):
 
+   drivers/iio/accel/adxl345_i2c.c:32:25: error: use of undeclared identifier 'spi'
+                   return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
+                                         ^
+>> drivers/iio/accel/adxl345_i2c.c:47:33: warning: incompatible integer to pointer conversion initializing 'const void *' with an expression of type 'int' [-Wint-conversion]
+           { .compatible = "adi,adxl345", ADXL345 },
+                                          ^~~~~~~
+   drivers/iio/accel/adxl345_i2c.c:48:33: warning: incompatible integer to pointer conversion initializing 'const void *' with an expression of type 'int' [-Wint-conversion]
+           { .compatible = "adi,adxl375", ADXL375 },
+                                          ^~~~~~~
+   2 warnings and 1 error generated.
+--
 >> drivers/iio/accel/adxl345_spi.c:48:33: warning: incompatible integer to pointer conversion initializing 'const void *' with an expression of type 'int' [-Wint-conversion]
            { .compatible = "adi,adxl345", ADXL345 },
                                           ^~~~~~~
@@ -107,15 +118,15 @@ All warnings (new ones prefixed by >>):
    2 warnings generated.
 
 
-vim +48 drivers/iio/accel/adxl345_spi.c
+vim +47 drivers/iio/accel/adxl345_i2c.c
 
-    46	
-    47	static const struct of_device_id adxl345_of_match[] = {
-  > 48		{ .compatible = "adi,adxl345", ADXL345 },
-    49		{ .compatible = "adi,adxl375", ADXL375 },
-    50		{ },
-    51	};
-    52	
+    45	
+    46	static const struct of_device_id adxl345_of_match[] = {
+  > 47		{ .compatible = "adi,adxl345", ADXL345 },
+    48		{ .compatible = "adi,adxl375", ADXL375 },
+    49		{ },
+    50	};
+    51	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation

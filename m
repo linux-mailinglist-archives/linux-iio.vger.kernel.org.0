@@ -2,156 +2,260 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC4A4C1288
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 13:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4818E4C1312
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 13:46:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237379AbiBWMOS convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 23 Feb 2022 07:14:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
+        id S240561AbiBWMrP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Feb 2022 07:47:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237651AbiBWMOS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 07:14:18 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBDD9ADBF
-        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 04:13:48 -0800 (PST)
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K3ZZc6CSpz6GD0M;
-        Wed, 23 Feb 2022 20:08:56 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Wed, 23 Feb 2022 13:13:44 +0100
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.21; Wed, 23 Feb
- 2022 12:13:43 +0000
-Date:   Wed, 23 Feb 2022 12:13:41 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Subject: Re: [PATCH 0/8] IIO: Where dev_pm_ops rework and namespaces meet.
-Message-ID: <20220223121341.0000089b@Huawei.com>
-In-Reply-To: <O8AR7R.HDQ5MQXD3QZI3@crapouillou.net>
-References: <20220220181522.541718-1-jic23@kernel.org>
-        <O8AR7R.HDQ5MQXD3QZI3@crapouillou.net>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S235284AbiBWMrO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 07:47:14 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292A02DD4F;
+        Wed, 23 Feb 2022 04:46:46 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id v21so4161898wrv.5;
+        Wed, 23 Feb 2022 04:46:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=1KDDeL+fAKAGSCPVC1Cy9+urbGEB6jY9aqThbyb4akw=;
+        b=SCLOCvUeuahNIq7wkUZVh7DiLmZIs5eeOzZeWGl4Rbv7iWB9EWtmtJPM3unh9QSeNG
+         E3+NTqaT0naujpD1WfbaFQ1Dz4GAQQqkrMBUl19N2NBKrlLYAUaru8SfjIT1puJwl75b
+         BV94THjh3UCr5MtuqMWLsqe43mNzfN71XUW/4gSTPAklOeWIRKCNhS5ghpykVvWvvHq7
+         Xym+4eU9Hy8xpdxzT5HovNM6SvU3gATUQGEJSQ7NZgDh9vG7JjCrbl8snFsJ3R0g0qUg
+         Ot8TEvsg5k0OjOj17zBb5Ph0BaIX03QapybrtjMDaAvPWZSph2JvkNy8q408/dCXwcVy
+         6/Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=1KDDeL+fAKAGSCPVC1Cy9+urbGEB6jY9aqThbyb4akw=;
+        b=rb9E1uZRZaptFA/CFzPQIK+mrFiSz7Yr3ZWSLMfndF5psgbY3IyIeuF0oGz8Ch7T26
+         vRa9NQQQkEsxFBsN3I2sP40/Zul3TO53BJKsxY+H6cpHrTLa0EKiiGAZSvPVU8ESRc9s
+         oMfiKHvuvj2h7QX4KRA6nGLnER10GE3HXCp5mEdbkQ/XXs5zdndf+J9TPVG8+FfDO7rq
+         h4xQmTxrc3HMnzvQvajty1mbVhnEh+8mxEM+zmY/GqvnsXtsNpd6HnxhJf7rguE9huOV
+         32NgYVdEpXw50BLJKuFuCNZwYDnvgLFGGGB5+3BtigiL+6yRhWWwLu9CdZfFspzqEFBO
+         54/Q==
+X-Gm-Message-State: AOAM532mmyKXB2TcoAys+qFLhN6wWM31lzHR+ck1jIYlcEBZyj5GEkvB
+        0WIdgcVhcbVjgRQLiZGVtC4Ye2UX2Qw4MLTyBXw=
+X-Google-Smtp-Source: ABdhPJxi2J4xeewLp3yBk5mY6VKE1hfSaGiAzOPNJ6GrTaGBdHbKmli1Gf+H1flitG29iPYzgB8X0lqEThSNE86lnnk=
+X-Received: by 2002:a05:6000:2a5:b0:1e8:d9dc:f369 with SMTP id
+ l5-20020a05600002a500b001e8d9dcf369mr22144300wry.589.1645620404611; Wed, 23
+ Feb 2022 04:46:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml708-chm.china.huawei.com (10.201.108.57) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220106125947.139523-1-gengcixi@gmail.com> <20220106125947.139523-4-gengcixi@gmail.com>
+ <CADBw62pBCdrbRspTV9Yck4DP8DE=ECGmEtD74NOtm1YRT3DM8w@mail.gmail.com>
+ <CAF12kFu6O-gfiqp4j24zxC_GqCwJ2Q5KGYYaCtnagmUFB_bsVg@mail.gmail.com>
+ <CADBw62rSdWN-L8HbnyMrUNp=x0pDdKR6MyKO4yfu00MnrN4L-g@mail.gmail.com>
+ <CAF12kFvUfykKfeRAJACFRk31pmEBQEPw402x0JN4i1uv0EK1zg@mail.gmail.com> <CADBw62pmtbzr78c9J20cFbNRuTrntGg_E8TH_g=LciCVGYrYqQ@mail.gmail.com>
+In-Reply-To: <CADBw62pmtbzr78c9J20cFbNRuTrntGg_E8TH_g=LciCVGYrYqQ@mail.gmail.com>
+From:   Cixi Geng <gengcixi@gmail.com>
+Date:   Wed, 23 Feb 2022 20:46:08 +0800
+Message-ID: <CAF12kFtV_dpHukd2v0UwSoAFsDbNXZLPSnSSK9dqq7hnoJh9UQ@mail.gmail.com>
+Subject: Re: [PATCH 3/7] iio: adc: sc27xx: structure adjuststment and optimization
+To:     Baolin Wang <baolin.wang7@gmail.com>
+Cc:     Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>, jic23@kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, lgirdwood@gmail.com,
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
+        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Feb 2022 11:50:48 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
-
+Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B42=E6=9C=8810=E6=
+=97=A5=E5=91=A8=E5=9B=9B 16:07=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, Jan 24, 2022 at 4:07 PM Cixi Geng <gengcixi@gmail.com> wrote:
+> >
+> > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=8817=
+=E6=97=A5=E5=91=A8=E4=B8=80 14:15=E5=86=99=E9=81=93=EF=BC=9A
+> > >
+> > > On Thu, Jan 13, 2022 at 9:54 AM Cixi Geng <gengcixi@gmail.com> wrote:
+> > > >
+> > > > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=
+=887=E6=97=A5=E5=91=A8=E4=BA=94 15:03=E5=86=99=E9=81=93=EF=BC=9A
+> > > > >
+> > > > > On Thu, Jan 6, 2022 at 9:00 PM Cixi Geng <gengcixi@gmail.com> wro=
+te:
+> > > > > >
+> > > > > > From: Cixi Geng <cixi.geng1@unisoc.com>
+> > > > > >
+> > > > > > Introduce one variant device data structure to be compatible
+> > > > > > with SC2731 PMIC since it has different scale and ratio calcula=
+tion
+> > > > > > and so on.
+> > > > > >
+> > > > > > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
+> > > > > > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+> > > > > > ---
+> > > > > >  drivers/iio/adc/sc27xx_adc.c | 94 ++++++++++++++++++++++++++++=
+++------
+> > > > > >  1 file changed, 79 insertions(+), 15 deletions(-)
+> > > > > >
+> > > > > > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc2=
+7xx_adc.c
+> > > > > > index aee076c8e2b1..d2712e54ee79 100644
+> > > > > > --- a/drivers/iio/adc/sc27xx_adc.c
+> > > > > > +++ b/drivers/iio/adc/sc27xx_adc.c
+> > > > > > @@ -12,9 +12,9 @@
+> > > > > >  #include <linux/slab.h>
+> > > > > >
+> > > > > >  /* PMIC global registers definition */
+> > > > > > -#define SC27XX_MODULE_EN               0xc08
+> > > > > > +#define SC2731_MODULE_EN               0xc08
+> > > > > >  #define SC27XX_MODULE_ADC_EN           BIT(5)
+> > > > > > -#define SC27XX_ARM_CLK_EN              0xc10
+> > > > > > +#define SC2731_ARM_CLK_EN              0xc10
+> > > > > >  #define SC27XX_CLK_ADC_EN              BIT(5)
+> > > > > >  #define SC27XX_CLK_ADC_CLK_EN          BIT(6)
+> > > > > >
+> > > > > > @@ -78,6 +78,23 @@ struct sc27xx_adc_data {
+> > > > > >         int channel_scale[SC27XX_ADC_CHANNEL_MAX];
+> > > > > >         u32 base;
+> > > > > >         int irq;
+> > > > > > +       const struct sc27xx_adc_variant_data *var_data;
+> > > > > > +};
+> > > > > > +
+> > > > > > +/*
+> > > > > > + * Since different PMICs of SC27xx series can have different
+> > > > > > + * address and ratio, we should save ratio config and base
+> > > > > > + * in the device data structure.
+> > > > > > + */
+> > > > > > +struct sc27xx_adc_variant_data {
+> > > > > > +       u32 module_en;
+> > > > > > +       u32 clk_en;
+> > > > > > +       u32 scale_shift;
+> > > > > > +       u32 scale_mask;
+> > > > > > +       const struct sc27xx_adc_linear_graph *bscale_cal;
+> > > > > > +       const struct sc27xx_adc_linear_graph *sscale_cal;
+> > > > > > +       void (*init_scale)(struct sc27xx_adc_data *data);
+> > > > > > +       int (*get_ratio)(int channel, int scale);
+> > > > > >  };
+> > > > > >
+> > > > > >  struct sc27xx_adc_linear_graph {
+> > > > > > @@ -103,6 +120,16 @@ static struct sc27xx_adc_linear_graph smal=
+l_scale_graph =3D {
+> > > > > >         100, 341,
+> > > > > >  };
+> > > > > >
+> > > > > > +static const struct sc27xx_adc_linear_graph sc2731_big_scale_g=
+raph_calib =3D {
+> > > > > > +       4200, 850,
+> > > > > > +       3600, 728,
+> > > > > > +};
+> > > > > > +
+> > > > > > +static const struct sc27xx_adc_linear_graph sc2731_small_scale=
+_graph_calib =3D {
+> > > > > > +       1000, 838,
+> > > > > > +       100, 84,
+> > > > > > +};
+> > > > >
+> > > > > The original big_scale_graph_calib and small_scale_graph_calib ar=
+e for
+> > > > > SC2731 PMIC, why add new structure definition for SC2731?
+> > > > >
+> > > > > > +
+> > > > > >  static const struct sc27xx_adc_linear_graph big_scale_graph_ca=
+lib =3D {
+> > > > > >         4200, 856,
+> > > > > >         3600, 733,
+> > > > > > @@ -130,11 +157,11 @@ static int sc27xx_adc_scale_calibration(s=
+truct sc27xx_adc_data *data,
+> > > > > >         size_t len;
+> > > > > >
+> > > > > >         if (big_scale) {
+> > > > > > -               calib_graph =3D &big_scale_graph_calib;
+> > > > > > +               calib_graph =3D data->var_data->bscale_cal;
+> > > > > >                 graph =3D &big_scale_graph;
+> > > > > >                 cell_name =3D "big_scale_calib";
+> > > > > >         } else {
+> > > > > > -               calib_graph =3D &small_scale_graph_calib;
+> > > > > > +               calib_graph =3D data->var_data->sscale_cal;
+> > > > > >                 graph =3D &small_scale_graph;
+> > > > > >                 cell_name =3D "small_scale_calib";
+> > > > > >         }
+> > > > > > @@ -160,7 +187,7 @@ static int sc27xx_adc_scale_calibration(str=
+uct sc27xx_adc_data *data,
+> > > > > >         return 0;
+> > > > > >  }
+> > > > > >
+> > > > > > -static int sc27xx_adc_get_ratio(int channel, int scale)
+> > > > > > +static int sc2731_adc_get_ratio(int channel, int scale)
+> > > > > >  {
+> > > > > >         switch (channel) {
+> > > > > >         case 1:
+> > > > > > @@ -185,6 +212,21 @@ static int sc27xx_adc_get_ratio(int channe=
+l, int scale)
+> > > > > >         return SC27XX_VOLT_RATIO(1, 1);
+> > > > > >  }
+> > > > > >
+> > > > > > +/*
+> > > > > > + * According to the datasheet set specific value on some chann=
+el.
+> > > > > > + */
+> > > > > > +static void sc2731_adc_scale_init(struct sc27xx_adc_data *data=
+)
+> > > > > > +{
+> > > > > > +       int i;
+> > > > > > +
+> > > > > > +       for (i =3D 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
+> > > > > > +               if (i =3D=3D 5)
+> > > > > > +                       data->channel_scale[i] =3D 1;
+> > > > > > +               else
+> > > > > > +                       data->channel_scale[i] =3D 0;
+> > > > > > +       }
+> > > > > > +}
+> > > > >
+> > > > > This is unnecessary I think, please see sc27xx_adc_write_raw() th=
+at
+> > > > > can set the channel scale.
+> > > > Did you mean that all the PMIC's scale_init function should put int=
+o
+> > > > the sc27xx_adc_write_raw?
+> > >
+> > > No.
+> > >
+> > > > but the scale_init is all different by each PMIC, if implemented in
+> > > > the write_raw, will add a lot of
+> > > > if or switch_case branch
+> > >
+> > > What I mean is we should follow the original method to set the channe=
+l
+> > > scale by iio_info. Please also refer to other drivers how ot handle
+> > > the channel scale.
+> > Hi Baolin,  I understand the adc_write_raw() function is the method to =
+set
+> > channal scale for the userspace, we can change the channel scale by wri=
+te
+> > a value on a user code. did i understand right?
+> > out  scale_init is to set scale value when the driver probe stage, and =
+I also
+> > did not found other adc driver use the adc_write_raw() during the drive=
+r
+> >  initialization phase.
+>
 > Hi Jonathan,
-> 
-> Le dim., févr. 20 2022 at 18:15:14 +0000, Jonathan Cameron 
-> <jic23@kernel.org> a écrit :
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Hi All,
-> > 
-> > As these two activities have been ongoing across IIO at the same time
-> > it was inevitable that there would be drivers were they both interact.
-> > In particularly when we have EXPORT* of struct dev_pm_ops.
-> > 
-> > This series covers those cases by introducing (in patch 2)
-> > EXPORT_NS[_GPL]_SIMPLE_DEV_PM_OPS() and
-> > EXPORT_NS[_GPL]_RUNTIME_DEV_PM_OPS()
-> > that add a namespace as the final parameter.  
-> 
-> If we now have namespace versions of the macros, I'm starting to wonder 
-> if the original macros are still useful.
-> 
-> In which case would we need to export a dev_pm_ops outside the scope of 
-> a namespace?
-
-Excellent point. Long term my assumption is that any place where
-a dev_pm_ops is being exported probably should be in a namespace
-because the scope is tightly defined.
-
-My only thought is it adds a burden to moving over to your new infrastructure
-as it would be odd to move only the dev_pm_ops into a NS without looking
-at the rest of the exports in a driver.
-
-It was useful to be able to do things in two steps as it allowed separation
-of using the new dev_pm_ops handling from a namespace move, but
-clearly could do that the other way around and not need the non
-namespaced version of this macro.
-So do namespace move first then use the new macros and hence only
-ever need the namespaced one.
-
-Jonathan
-
- 
-> 
-> Cheers,
-> -Paul
-> 
-> > In each driver (with the exception of the kxsd9 which was already
-> > using a IIO_KXSD9 namespace) I first move to the new *_PM_OPS()
-> > and pm_[sleep_]_ptr() then in a second patch move to the new
-> > namespaces.  Initially I had these two steps done as one patch
-> > per driver but that was harder to follow and broke the rule of
-> > one thing per patch.
-> > 
-> > All comments welcome.
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> > 
-> > Jonathan Cameron (8):
-> >   iio: chemical: scd30: Export dev_pm_ops instead of suspend() and
-> >     resume()
-> >   PM: core: Add NS varients of EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and
-> >     runtime pm equiv
-> >   iio: chemical: scd30: Move symbol exports into IIO_SCD30 namespace
-> >   iio:accel:kxsd9: Switch from CONFIG_PM guards to pm_ptr() etc
-> >   iio: humidity: hts221: Use EXPORT_SIMPLE_DEV_PM_OPS() to allow
-> >     compiler to remove dead code.
-> >   iio: humidity: hts221: Move symbol exports into IIO_HTS221 namespace
-> >   iio: imu: lsm6dsx: Use new pm_sleep_ptr() and
-> >     EXPORT_SIMPLE_DEV_PM_OPS()
-> >   iio: imu: lsm6dsx: Move exported symbols to the IIO_LSM6DSX 
-> > namespace
-> > 
-> >  drivers/iio/accel/kxsd9-i2c.c                |  2 +-
-> >  drivers/iio/accel/kxsd9-spi.c                |  2 +-
-> >  drivers/iio/accel/kxsd9.c                    | 11 ++---------
-> >  drivers/iio/chemical/scd30.h                 |  5 +----
-> >  drivers/iio/chemical/scd30_core.c            | 10 +++++-----
-> >  drivers/iio/chemical/scd30_i2c.c             |  3 ++-
-> >  drivers/iio/chemical/scd30_serial.c          |  3 ++-
-> >  drivers/iio/humidity/hts221_core.c           | 12 +++++-------
-> >  drivers/iio/humidity/hts221_i2c.c            |  3 ++-
-> >  drivers/iio/humidity/hts221_spi.c            |  3 ++-
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 12 +++++-------
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 ++-
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  |  3 ++-
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 ++-
-> >  include/linux/pm.h                           | 14 +++++++++-----
-> >  include/linux/pm_runtime.h                   | 10 ++++++++--
-> >  16 files changed, 51 insertions(+), 48 deletions(-)
-> > 
-> > --
-> > 2.35.1
-> >   
-> 
-> 
-
+>
+> How do you think about the method in this patch to set the channel
+> scale? Thanks.
+>
+Hi Jonathan,
+Could you have a loot at this patch ,and give some advice about the
+method to set the channel scale? Thanks very much.
+> --
+> Baolin Wang

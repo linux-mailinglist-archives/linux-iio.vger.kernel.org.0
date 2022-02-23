@@ -2,74 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4818E4C1312
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 13:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8EBA4C1328
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 13:49:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240561AbiBWMrP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Feb 2022 07:47:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34048 "EHLO
+        id S240606AbiBWMta (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Feb 2022 07:49:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235284AbiBWMrO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 07:47:14 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292A02DD4F;
-        Wed, 23 Feb 2022 04:46:46 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id v21so4161898wrv.5;
-        Wed, 23 Feb 2022 04:46:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=1KDDeL+fAKAGSCPVC1Cy9+urbGEB6jY9aqThbyb4akw=;
-        b=SCLOCvUeuahNIq7wkUZVh7DiLmZIs5eeOzZeWGl4Rbv7iWB9EWtmtJPM3unh9QSeNG
-         E3+NTqaT0naujpD1WfbaFQ1Dz4GAQQqkrMBUl19N2NBKrlLYAUaru8SfjIT1puJwl75b
-         BV94THjh3UCr5MtuqMWLsqe43mNzfN71XUW/4gSTPAklOeWIRKCNhS5ghpykVvWvvHq7
-         Xym+4eU9Hy8xpdxzT5HovNM6SvU3gATUQGEJSQ7NZgDh9vG7JjCrbl8snFsJ3R0g0qUg
-         Ot8TEvsg5k0OjOj17zBb5Ph0BaIX03QapybrtjMDaAvPWZSph2JvkNy8q408/dCXwcVy
-         6/Kw==
+        with ESMTP id S240647AbiBWMtX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 07:49:23 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2D1A94CC
+        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 04:48:54 -0800 (PST)
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 56BC33F1D0
+        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 12:48:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645620533;
+        bh=NesaMe6AAtPcbdsNiOaIasWekYnWN+a1MuvJIFl2Bqk=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=chJkfMm+X7AXDvr/HTUMsdYHUVu6AiEHzkNNLdvefPxddzk7JtjyGjv2+D+xG+XmP
+         f+cPdPxeKavzLtx8QjZVb9rlNk9K6TyFNoB1NnFeywVWcVC6IDAjceBgm7lqMMDFuP
+         EKEN34/tDmfrqxPHmZp7UoAS5caay/otohDu4TGMexTeEzM2A5qPHd8iUvILARTuFw
+         v/0KI13LQpoVgTmXxmn8YhPhQ3cB3sFjAA1MheClD/r2US9lJXQ6F0exsSRJOvJBbo
+         GPDtVcMaCqv9I8vBU5/Zt3yYNhcioqLpr3DS7Mu9Ej3mW/zxM0rbmYUwlq1BBdGEyx
+         ZFdXyB0nemTWg==
+Received: by mail-ej1-f70.google.com with SMTP id m12-20020a1709062acc00b006cfc98179e2so7065011eje.6
+        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 04:48:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=1KDDeL+fAKAGSCPVC1Cy9+urbGEB6jY9aqThbyb4akw=;
-        b=rb9E1uZRZaptFA/CFzPQIK+mrFiSz7Yr3ZWSLMfndF5psgbY3IyIeuF0oGz8Ch7T26
-         vRa9NQQQkEsxFBsN3I2sP40/Zul3TO53BJKsxY+H6cpHrTLa0EKiiGAZSvPVU8ESRc9s
-         oMfiKHvuvj2h7QX4KRA6nGLnER10GE3HXCp5mEdbkQ/XXs5zdndf+J9TPVG8+FfDO7rq
-         h4xQmTxrc3HMnzvQvajty1mbVhnEh+8mxEM+zmY/GqvnsXtsNpd6HnxhJf7rguE9huOV
-         32NgYVdEpXw50BLJKuFuCNZwYDnvgLFGGGB5+3BtigiL+6yRhWWwLu9CdZfFspzqEFBO
-         54/Q==
-X-Gm-Message-State: AOAM532mmyKXB2TcoAys+qFLhN6wWM31lzHR+ck1jIYlcEBZyj5GEkvB
-        0WIdgcVhcbVjgRQLiZGVtC4Ye2UX2Qw4MLTyBXw=
-X-Google-Smtp-Source: ABdhPJxi2J4xeewLp3yBk5mY6VKE1hfSaGiAzOPNJ6GrTaGBdHbKmli1Gf+H1flitG29iPYzgB8X0lqEThSNE86lnnk=
-X-Received: by 2002:a05:6000:2a5:b0:1e8:d9dc:f369 with SMTP id
- l5-20020a05600002a500b001e8d9dcf369mr22144300wry.589.1645620404611; Wed, 23
- Feb 2022 04:46:44 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=NesaMe6AAtPcbdsNiOaIasWekYnWN+a1MuvJIFl2Bqk=;
+        b=75Fp8ayfJ0ZSCg+O05hSx73/yElPwglpJNIUt8MuzE776m0CyBBUQfCxksz2b61vOI
+         QMKb8xFHa3Y8u5Kl2UN5Omi6nAeytXqThiUq1MiKob4ajJ/N1ih27txQn4F0IC20l5VA
+         qK7cd0BTcm+t+yC2Oa2A+LtfoFkZsmY0DbPnuNybLGFrNuWVHsSdQ3fbaXEI/ulIdbtJ
+         qxBfrIVBP1U7yC2pIhfksonv9p6GvFXrEyWpCzdBj6aLTMuBnrCFTY5rSLj32a75nlfs
+         y3DeOz3KZYTvgcALGMjLvrqwKfThfb0rJW5sLvAEE0xJqI8mrfKFQxoqkPuOz+VqUahX
+         GCDA==
+X-Gm-Message-State: AOAM532ZxM4DktBst5HGqBajVRqdbBKsRF1sAve2Qhb8ubaVYPGOPaKL
+        Nkf8RiKApUFYYYEgSy3A4XlukTUVlABS+eDZzS6r2w3Y+HDz9mn2xI/oE96vxKOGATFd3iA1s9c
+        vELC5HYq7VeFb++TQL6YMPhD6o/hVi968Y0XkEQ==
+X-Received: by 2002:a17:906:7189:b0:6b6:1ef8:f392 with SMTP id h9-20020a170906718900b006b61ef8f392mr22560400ejk.590.1645620532993;
+        Wed, 23 Feb 2022 04:48:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwlMqo0+lCiKQuYiIxgwvGDiKs3nUuBFpD+SmKArC4ih9QTg9OmjdwfiyJrUKH1Ndf+bFi3PA==
+X-Received: by 2002:a17:906:7189:b0:6b6:1ef8:f392 with SMTP id h9-20020a170906718900b006b61ef8f392mr22560390ejk.590.1645620532828;
+        Wed, 23 Feb 2022 04:48:52 -0800 (PST)
+Received: from [192.168.0.125] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
+        by smtp.gmail.com with ESMTPSA id v24sm7425426ejx.161.2022.02.23.04.48.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Feb 2022 04:48:51 -0800 (PST)
+Message-ID: <e6300716-914e-aa45-8c4c-489930cdbdd6@canonical.com>
+Date:   Wed, 23 Feb 2022 13:48:50 +0100
 MIME-Version: 1.0
-References: <20220106125947.139523-1-gengcixi@gmail.com> <20220106125947.139523-4-gengcixi@gmail.com>
- <CADBw62pBCdrbRspTV9Yck4DP8DE=ECGmEtD74NOtm1YRT3DM8w@mail.gmail.com>
- <CAF12kFu6O-gfiqp4j24zxC_GqCwJ2Q5KGYYaCtnagmUFB_bsVg@mail.gmail.com>
- <CADBw62rSdWN-L8HbnyMrUNp=x0pDdKR6MyKO4yfu00MnrN4L-g@mail.gmail.com>
- <CAF12kFvUfykKfeRAJACFRk31pmEBQEPw402x0JN4i1uv0EK1zg@mail.gmail.com> <CADBw62pmtbzr78c9J20cFbNRuTrntGg_E8TH_g=LciCVGYrYqQ@mail.gmail.com>
-In-Reply-To: <CADBw62pmtbzr78c9J20cFbNRuTrntGg_E8TH_g=LciCVGYrYqQ@mail.gmail.com>
-From:   Cixi Geng <gengcixi@gmail.com>
-Date:   Wed, 23 Feb 2022 20:46:08 +0800
-Message-ID: <CAF12kFtV_dpHukd2v0UwSoAFsDbNXZLPSnSSK9dqq7hnoJh9UQ@mail.gmail.com>
-Subject: Re: [PATCH 3/7] iio: adc: sc27xx: structure adjuststment and optimization
-To:     Baolin Wang <baolin.wang7@gmail.com>
-Cc:     Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>, jic23@kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, lgirdwood@gmail.com,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
-        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
-        Devicetree List <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v6 1/2] dt-bindings: iio: frequency: Add ADMV4420 doc
+Content-Language: en-US
+To:     Cristian Pop <cristian.pop@analog.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     jic23@kernel.org, devicetree@vger.kernel.org, robh+dt@kernel.org
+References: <20220223115736.12485-1-cristian.pop@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20220223115736.12485-1-cristian.pop@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,185 +82,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B42=E6=9C=8810=E6=
-=97=A5=E5=91=A8=E5=9B=9B 16:07=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Jan 24, 2022 at 4:07 PM Cixi Geng <gengcixi@gmail.com> wrote:
-> >
-> > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=8817=
-=E6=97=A5=E5=91=A8=E4=B8=80 14:15=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > On Thu, Jan 13, 2022 at 9:54 AM Cixi Geng <gengcixi@gmail.com> wrote:
-> > > >
-> > > > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=
-=887=E6=97=A5=E5=91=A8=E4=BA=94 15:03=E5=86=99=E9=81=93=EF=BC=9A
-> > > > >
-> > > > > On Thu, Jan 6, 2022 at 9:00 PM Cixi Geng <gengcixi@gmail.com> wro=
-te:
-> > > > > >
-> > > > > > From: Cixi Geng <cixi.geng1@unisoc.com>
-> > > > > >
-> > > > > > Introduce one variant device data structure to be compatible
-> > > > > > with SC2731 PMIC since it has different scale and ratio calcula=
-tion
-> > > > > > and so on.
-> > > > > >
-> > > > > > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
-> > > > > > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-> > > > > > ---
-> > > > > >  drivers/iio/adc/sc27xx_adc.c | 94 ++++++++++++++++++++++++++++=
-++------
-> > > > > >  1 file changed, 79 insertions(+), 15 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc2=
-7xx_adc.c
-> > > > > > index aee076c8e2b1..d2712e54ee79 100644
-> > > > > > --- a/drivers/iio/adc/sc27xx_adc.c
-> > > > > > +++ b/drivers/iio/adc/sc27xx_adc.c
-> > > > > > @@ -12,9 +12,9 @@
-> > > > > >  #include <linux/slab.h>
-> > > > > >
-> > > > > >  /* PMIC global registers definition */
-> > > > > > -#define SC27XX_MODULE_EN               0xc08
-> > > > > > +#define SC2731_MODULE_EN               0xc08
-> > > > > >  #define SC27XX_MODULE_ADC_EN           BIT(5)
-> > > > > > -#define SC27XX_ARM_CLK_EN              0xc10
-> > > > > > +#define SC2731_ARM_CLK_EN              0xc10
-> > > > > >  #define SC27XX_CLK_ADC_EN              BIT(5)
-> > > > > >  #define SC27XX_CLK_ADC_CLK_EN          BIT(6)
-> > > > > >
-> > > > > > @@ -78,6 +78,23 @@ struct sc27xx_adc_data {
-> > > > > >         int channel_scale[SC27XX_ADC_CHANNEL_MAX];
-> > > > > >         u32 base;
-> > > > > >         int irq;
-> > > > > > +       const struct sc27xx_adc_variant_data *var_data;
-> > > > > > +};
-> > > > > > +
-> > > > > > +/*
-> > > > > > + * Since different PMICs of SC27xx series can have different
-> > > > > > + * address and ratio, we should save ratio config and base
-> > > > > > + * in the device data structure.
-> > > > > > + */
-> > > > > > +struct sc27xx_adc_variant_data {
-> > > > > > +       u32 module_en;
-> > > > > > +       u32 clk_en;
-> > > > > > +       u32 scale_shift;
-> > > > > > +       u32 scale_mask;
-> > > > > > +       const struct sc27xx_adc_linear_graph *bscale_cal;
-> > > > > > +       const struct sc27xx_adc_linear_graph *sscale_cal;
-> > > > > > +       void (*init_scale)(struct sc27xx_adc_data *data);
-> > > > > > +       int (*get_ratio)(int channel, int scale);
-> > > > > >  };
-> > > > > >
-> > > > > >  struct sc27xx_adc_linear_graph {
-> > > > > > @@ -103,6 +120,16 @@ static struct sc27xx_adc_linear_graph smal=
-l_scale_graph =3D {
-> > > > > >         100, 341,
-> > > > > >  };
-> > > > > >
-> > > > > > +static const struct sc27xx_adc_linear_graph sc2731_big_scale_g=
-raph_calib =3D {
-> > > > > > +       4200, 850,
-> > > > > > +       3600, 728,
-> > > > > > +};
-> > > > > > +
-> > > > > > +static const struct sc27xx_adc_linear_graph sc2731_small_scale=
-_graph_calib =3D {
-> > > > > > +       1000, 838,
-> > > > > > +       100, 84,
-> > > > > > +};
-> > > > >
-> > > > > The original big_scale_graph_calib and small_scale_graph_calib ar=
-e for
-> > > > > SC2731 PMIC, why add new structure definition for SC2731?
-> > > > >
-> > > > > > +
-> > > > > >  static const struct sc27xx_adc_linear_graph big_scale_graph_ca=
-lib =3D {
-> > > > > >         4200, 856,
-> > > > > >         3600, 733,
-> > > > > > @@ -130,11 +157,11 @@ static int sc27xx_adc_scale_calibration(s=
-truct sc27xx_adc_data *data,
-> > > > > >         size_t len;
-> > > > > >
-> > > > > >         if (big_scale) {
-> > > > > > -               calib_graph =3D &big_scale_graph_calib;
-> > > > > > +               calib_graph =3D data->var_data->bscale_cal;
-> > > > > >                 graph =3D &big_scale_graph;
-> > > > > >                 cell_name =3D "big_scale_calib";
-> > > > > >         } else {
-> > > > > > -               calib_graph =3D &small_scale_graph_calib;
-> > > > > > +               calib_graph =3D data->var_data->sscale_cal;
-> > > > > >                 graph =3D &small_scale_graph;
-> > > > > >                 cell_name =3D "small_scale_calib";
-> > > > > >         }
-> > > > > > @@ -160,7 +187,7 @@ static int sc27xx_adc_scale_calibration(str=
-uct sc27xx_adc_data *data,
-> > > > > >         return 0;
-> > > > > >  }
-> > > > > >
-> > > > > > -static int sc27xx_adc_get_ratio(int channel, int scale)
-> > > > > > +static int sc2731_adc_get_ratio(int channel, int scale)
-> > > > > >  {
-> > > > > >         switch (channel) {
-> > > > > >         case 1:
-> > > > > > @@ -185,6 +212,21 @@ static int sc27xx_adc_get_ratio(int channe=
-l, int scale)
-> > > > > >         return SC27XX_VOLT_RATIO(1, 1);
-> > > > > >  }
-> > > > > >
-> > > > > > +/*
-> > > > > > + * According to the datasheet set specific value on some chann=
-el.
-> > > > > > + */
-> > > > > > +static void sc2731_adc_scale_init(struct sc27xx_adc_data *data=
-)
-> > > > > > +{
-> > > > > > +       int i;
-> > > > > > +
-> > > > > > +       for (i =3D 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
-> > > > > > +               if (i =3D=3D 5)
-> > > > > > +                       data->channel_scale[i] =3D 1;
-> > > > > > +               else
-> > > > > > +                       data->channel_scale[i] =3D 0;
-> > > > > > +       }
-> > > > > > +}
-> > > > >
-> > > > > This is unnecessary I think, please see sc27xx_adc_write_raw() th=
-at
-> > > > > can set the channel scale.
-> > > > Did you mean that all the PMIC's scale_init function should put int=
-o
-> > > > the sc27xx_adc_write_raw?
-> > >
-> > > No.
-> > >
-> > > > but the scale_init is all different by each PMIC, if implemented in
-> > > > the write_raw, will add a lot of
-> > > > if or switch_case branch
-> > >
-> > > What I mean is we should follow the original method to set the channe=
-l
-> > > scale by iio_info. Please also refer to other drivers how ot handle
-> > > the channel scale.
-> > Hi Baolin,  I understand the adc_write_raw() function is the method to =
-set
-> > channal scale for the userspace, we can change the channel scale by wri=
-te
-> > a value on a user code. did i understand right?
-> > out  scale_init is to set scale value when the driver probe stage, and =
-I also
-> > did not found other adc driver use the adc_write_raw() during the drive=
-r
-> >  initialization phase.
->
-> Hi Jonathan,
->
-> How do you think about the method in this patch to set the channel
-> scale? Thanks.
->
-Hi Jonathan,
-Could you have a loot at this patch ,and give some advice about the
-method to set the channel scale? Thanks very much.
-> --
-> Baolin Wang
+On 23/02/2022 12:57, Cristian Pop wrote:
+> Add device tree bindings for the ADMV4420 K band downconverter.
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+> 
+> squash
+> 
+> Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+
+This requires fixing.
+
+> ---
+>  .../bindings/iio/frequency/adi,admv4420.yaml  | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+> 
+
+With fixed commit msg:
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+
+
+Best regards,
+Krzysztof

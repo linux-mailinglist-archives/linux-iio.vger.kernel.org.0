@@ -2,116 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF004C11EB
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 12:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B1614C11CC
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 12:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230403AbiBWLv1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Wed, 23 Feb 2022 06:51:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53140 "EHLO
+        id S239685AbiBWLsW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Feb 2022 06:48:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233286AbiBWLv0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 06:51:26 -0500
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD1A5D183
-        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 03:50:59 -0800 (PST)
-Date:   Wed, 23 Feb 2022 11:50:48 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 0/8] IIO: Where dev_pm_ops rework and namespaces meet.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <O8AR7R.HDQ5MQXD3QZI3@crapouillou.net>
-In-Reply-To: <20220220181522.541718-1-jic23@kernel.org>
-References: <20220220181522.541718-1-jic23@kernel.org>
+        with ESMTP id S239782AbiBWLrt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 06:47:49 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C468210FCF;
+        Wed, 23 Feb 2022 03:47:16 -0800 (PST)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 21N2wEne012240;
+        Wed, 23 Feb 2022 06:47:09 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3edckssppg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Feb 2022 06:47:09 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 21NBl7SE018225
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 23 Feb 2022 06:47:07 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 23 Feb 2022 06:47:07 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 23 Feb 2022 06:47:06 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 23 Feb 2022 06:47:06 -0500
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 21NBkw2Y022328;
+        Wed, 23 Feb 2022 06:47:00 -0500
+From:   Cristian Pop <cristian.pop@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>, <devicetree@vger.kernel.org>,
+        <robh+dt@kernel.org>, Cristian Pop <cristian.pop@analog.com>
+Subject: [PATCH v6 1/2] dt-bindings: iio: frequency: Add ADMV4420 doc
+Date:   Wed, 23 Feb 2022 13:57:35 +0200
+Message-ID: <20220223115736.12485-1-cristian.pop@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: y7fTsbFquV3IcNeAnPKfA85tdJlcJzex
+X-Proofpoint-GUID: y7fTsbFquV3IcNeAnPKfA85tdJlcJzex
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-02-23_04,2022-02-23_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202230066
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Add device tree bindings for the ADMV4420 K band downconverter.
 
-Le dim., févr. 20 2022 at 18:15:14 +0000, Jonathan Cameron 
-<jic23@kernel.org> a écrit :
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Hi All,
-> 
-> As these two activities have been ongoing across IIO at the same time
-> it was inevitable that there would be drivers were they both interact.
-> In particularly when we have EXPORT* of struct dev_pm_ops.
-> 
-> This series covers those cases by introducing (in patch 2)
-> EXPORT_NS[_GPL]_SIMPLE_DEV_PM_OPS() and
-> EXPORT_NS[_GPL]_RUNTIME_DEV_PM_OPS()
-> that add a namespace as the final parameter.
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 
-If we now have namespace versions of the macros, I'm starting to wonder 
-if the original macros are still useful.
+squash
 
-In which case would we need to export a dev_pm_ops outside the scope of 
-a namespace?
+Signed-off-by: Cristian Pop <cristian.pop@analog.com>
+---
+ .../bindings/iio/frequency/adi,admv4420.yaml  | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
 
-Cheers,
--Paul
-
-> In each driver (with the exception of the kxsd9 which was already
-> using a IIO_KXSD9 namespace) I first move to the new *_PM_OPS()
-> and pm_[sleep_]_ptr() then in a second patch move to the new
-> namespaces.  Initially I had these two steps done as one patch
-> per driver but that was harder to follow and broke the rule of
-> one thing per patch.
-> 
-> All comments welcome.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> Jonathan Cameron (8):
->   iio: chemical: scd30: Export dev_pm_ops instead of suspend() and
->     resume()
->   PM: core: Add NS varients of EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and
->     runtime pm equiv
->   iio: chemical: scd30: Move symbol exports into IIO_SCD30 namespace
->   iio:accel:kxsd9: Switch from CONFIG_PM guards to pm_ptr() etc
->   iio: humidity: hts221: Use EXPORT_SIMPLE_DEV_PM_OPS() to allow
->     compiler to remove dead code.
->   iio: humidity: hts221: Move symbol exports into IIO_HTS221 namespace
->   iio: imu: lsm6dsx: Use new pm_sleep_ptr() and
->     EXPORT_SIMPLE_DEV_PM_OPS()
->   iio: imu: lsm6dsx: Move exported symbols to the IIO_LSM6DSX 
-> namespace
-> 
->  drivers/iio/accel/kxsd9-i2c.c                |  2 +-
->  drivers/iio/accel/kxsd9-spi.c                |  2 +-
->  drivers/iio/accel/kxsd9.c                    | 11 ++---------
->  drivers/iio/chemical/scd30.h                 |  5 +----
->  drivers/iio/chemical/scd30_core.c            | 10 +++++-----
->  drivers/iio/chemical/scd30_i2c.c             |  3 ++-
->  drivers/iio/chemical/scd30_serial.c          |  3 ++-
->  drivers/iio/humidity/hts221_core.c           | 12 +++++-------
->  drivers/iio/humidity/hts221_i2c.c            |  3 ++-
->  drivers/iio/humidity/hts221_spi.c            |  3 ++-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 12 +++++-------
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 ++-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  |  3 ++-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 ++-
->  include/linux/pm.h                           | 14 +++++++++-----
->  include/linux/pm_runtime.h                   | 10 ++++++++--
->  16 files changed, 51 insertions(+), 48 deletions(-)
-> 
-> --
-> 2.35.1
-> 
-
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+new file mode 100644
+index 000000000000..da7fe85ec92e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,admv4420.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,admv4420.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ADMV4420 K Band Downconverter
++
++maintainers:
++  - Cristian Pop <cristian.pop@analog.com>
++
++description:
++  The ADMV4420 is a highly integrated, double balanced, active
++  mixer with an integrated fractional-N synthesizer, ideally suited
++  for next generation K band satellite communications
++
++properties:
++  compatible:
++    enum:
++      - adi,admv4420
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 1000000
++
++  adi,lo-freq-khz:
++    description: LO Frequency
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  adi,ref-ext-single-ended-en:
++    description: External reference selected.
++    type: boolean
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      mixer@0 {
++        compatible = "adi,admv4420";
++        reg = <0>;
++        spi-max-frequency = <1000000>;
++        adi,lo-freq-khz = <16750000>;
++        adi,ref-ext-single-ended-en;
++      };
++    };
++...
+-- 
+2.17.1
 

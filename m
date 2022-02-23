@@ -2,258 +2,197 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39AF94BFF6E
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Feb 2022 17:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB8C34C0A00
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 04:11:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234406AbiBVQ5M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Feb 2022 11:57:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41418 "EHLO
+        id S237579AbiBWDLc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Feb 2022 22:11:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230047AbiBVQ5L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Feb 2022 11:57:11 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B742DD4F
-        for <linux-iio@vger.kernel.org>; Tue, 22 Feb 2022 08:56:43 -0800 (PST)
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K350F2kJmz67bS5;
-        Wed, 23 Feb 2022 00:55:57 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 22 Feb 2022 17:56:41 +0100
-Received: from localhost (10.47.30.92) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 22 Feb
- 2022 16:56:40 +0000
-Date:   Tue, 22 Feb 2022 16:56:38 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <haibo.chen@nxp.com>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-imx@nxp.com>
-Subject: Re: [PATCH] iio: imu: fxos8700: few bug fix for fxos8700
-Message-ID: <20220222165638.0000243a@Huawei.com>
-In-Reply-To: <1645502822-5585-1-git-send-email-haibo.chen@nxp.com>
-References: <1645502822-5585-1-git-send-email-haibo.chen@nxp.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S234771AbiBWDL3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Feb 2022 22:11:29 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8EB753E1F
+        for <linux-iio@vger.kernel.org>; Tue, 22 Feb 2022 19:11:01 -0800 (PST)
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 3C4A73F1D9
+        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 03:11:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645585860;
+        bh=7Q1qJ9Pfx7Ku4H3hFgD/kJyjwtmDcZ5E96SpjSPCl9c=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=pPKZd1QK3K80i7nQRMInypWc7sBLYTiG0aUaQuwNj1hSfC+VZBRE8gXqE6CO4Z7xc
+         dZgJB9hH4ZOtmtsAcX+or75xajix2avOVTj9NcSjRfJutRWUsSZkAVekRD3bHJyUf7
+         /TZ3tEr9i73Cy08MhxZbAlAErU+wuT32AoxGtxXn5OSmSVBMrpa+rFi8mCeGw5H/A8
+         j2eRiqLVtzLtrHWj5l0CEATK+F2+pp4VEh1TkCAYtrWWh55FLGBv4yg1elx4m6qMWN
+         qdC9BZBIS2zwFqTbbl7ngatcSmj8n3OTZ/6agduRgTfi32gu9njGd5nmxf3w2itiMZ
+         z0wcADwKk2i1w==
+Received: by mail-ot1-f71.google.com with SMTP id q2-20020a9d5782000000b005ad0c39a8b5so10628702oth.2
+        for <linux-iio@vger.kernel.org>; Tue, 22 Feb 2022 19:11:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7Q1qJ9Pfx7Ku4H3hFgD/kJyjwtmDcZ5E96SpjSPCl9c=;
+        b=0xqYfq8iK3iID9Ank4iw7KqX9qCP0quodhi6zW/9y5aS/ANQazHIi6etHJv5ZgohHv
+         aPfXPBMWdt2G+iTcCxlKMFvgIWp0srUf617Qox1nAByrM+3ie+2bfrDaQLzwj2Qxqq4S
+         AZhMQZ5Qrhzu6dzy6qzFot2yERvBIocS1gxkv27LvIge5BWs6pKuU/9iIVkXnUl9zEuP
+         7df1yU3qCjw54ADMlEjM4HnrSIy11Wa4R4TguH520x7yBlnIxymz/mNYUrrjsak4pfI2
+         sgmWSOHJkDh7cDgm+MGj7YyPpp3M2jAcSPbW134dMgzftAfwX8h6Dx7gqMYXC3CIgEBU
+         TKuw==
+X-Gm-Message-State: AOAM5304jEz9syHpOa26xsx40Z8COFtyJmQctLNgF64oEpfQp5a+vMus
+        v4YY0R0DBd69ALha3N3C74ro8gwGAfUAwq5l5cjUy4UJy7uWCcm+gYj9ffH6fMP7N6XEuWshpTg
+        co4ERuiFAajSjX/H7XM53Pchz9xV5WW9QLPdOMBoU+6OeYn2AOK12Tw==
+X-Received: by 2002:a05:6808:2110:b0:2d4:4137:b4fc with SMTP id r16-20020a056808211000b002d44137b4fcmr3735322oiw.111.1645585859074;
+        Tue, 22 Feb 2022 19:10:59 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxpWBcNcPhRbtOhXgOZnzEqnmru/8cLKymulPlM/BRdSjbj8OVCCoMJ15KE/rOa80SJf6aqIsf2k2u/+hLf0Pk=
+X-Received: by 2002:a05:6808:2110:b0:2d4:4137:b4fc with SMTP id
+ r16-20020a056808211000b002d44137b4fcmr3735314oiw.111.1645585858753; Tue, 22
+ Feb 2022 19:10:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.30.92]
-X-ClientProxiedBy: lhreml713-chm.china.huawei.com (10.201.108.64) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220222090009.2060-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220222090009.2060-1-andriy.shevchenko@linux.intel.com>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Wed, 23 Feb 2022 11:10:47 +0800
+Message-ID: <CAAd53p7sZL4ppWoXfeM8=N_ucjMUs3vv6-LoyLX4-beYE30fSQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/8] iio: accel: adxl345: Convert to use dev_err_probe()
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Feb 2022 12:07:02 +0800
-<haibo.chen@nxp.com> wrote:
+On Tue, Feb 22, 2022 at 4:59 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> It's fine to call dev_err_probe() in ->probe() when error code is known.
+> Convert the driver to use dev_err_probe().
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> 1, z raw data always 0, regmap_buk_read use the wrong length. fix it
-> and optmize read the only need data.
-> 2, use the correct register address when try to read raw data.
-> 3, before set scale, need to set the sensor to standby mode. otherwise
-> the scale set is not work.
-> 4, give the correct offset when config odr bit.
+Tested on ACPI based platform. Hence, for the whole series,
 
-Sounds like 4 patches to me. Whenever you have a list of what a patch
-does you should probably split it up.  Would be a lot easier to review as one
-patch per issue.  For now I've just take a quick general look.
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> Reviewed-by: Clark Wang <xiaoning.wang@nxp.com>
 > ---
->  drivers/iio/imu/fxos8700_core.c | 66 +++++++++++++++++++++++----------
->  1 file changed, 47 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-> index ab288186f36e..1896d6db6d77 100644
-> --- a/drivers/iio/imu/fxos8700_core.c
-> +++ b/drivers/iio/imu/fxos8700_core.c
-> @@ -162,12 +162,11 @@
->  
->  #define FXOS8700_DEVICE_ID          0xC7
->  #define FXOS8700_PRE_DEVICE_ID      0xC4
-> -#define FXOS8700_DATA_BUF_SIZE      3
->  
->  struct fxos8700_data {
->  	struct regmap *regmap;
->  	struct iio_trigger *trig;
-> -	__be16 buf[FXOS8700_DATA_BUF_SIZE] ____cacheline_aligned;
-> +	__be16 buf ____cacheline_aligned;
->  };
->  
->  /* Regmap info */
-> @@ -345,7 +344,8 @@ static int fxos8700_set_active_mode(struct fxos8700_data *data,
->  static int fxos8700_set_scale(struct fxos8700_data *data,
->  			      enum fxos8700_sensor t, int uscale)
->  {
-> -	int i;
-> +	int i, ret, val;
-> +	bool active_mode;
->  	static const int scale_num = ARRAY_SIZE(fxos8700_accel_scale);
->  	struct device *dev = regmap_get_device(data->regmap);
->  
-> @@ -354,6 +354,23 @@ static int fxos8700_set_scale(struct fxos8700_data *data,
->  		return -EINVAL;
->  	}
->  
-> +	ret = regmap_read(data->regmap, FXOS8700_CTRL_REG1, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	active_mode = val & FXOS8700_ACTIVE;
-> +
-> +	if (active_mode) {
-> +		/*
-> +		 * The device must be in standby mode to change any of the
-> +		 * other fields within CTRL_REG1
-> +		 */
-> +		ret = regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> +				   val & ~FXOS8700_ACTIVE);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	for (i = 0; i < scale_num; i++)
->  		if (fxos8700_accel_scale[i].uscale == uscale)
->  			break;
-> @@ -361,8 +378,12 @@ static int fxos8700_set_scale(struct fxos8700_data *data,
->  	if (i == scale_num)
->  		return -EINVAL;
->  
-> -	return regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG,
-> +	ret = regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG,
->  			    fxos8700_accel_scale[i].bits);
-
-Realign these parameters with the opening bracket.
-
-> +	if (ret)
-> +		return ret;
-
-blank line here.
-
-> +	return regmap_update_bits(data->regmap, FXOS8700_CTRL_REG1,
-> +				  FXOS8700_ACTIVE, active_mode);
+> v2: fixed typo (LKP), shorten one line to satisfy checkpatch
+>  drivers/iio/accel/adxl345_core.c | 26 +++++++++-----------------
+>  drivers/iio/accel/adxl345_i2c.c  |  7 ++-----
+>  drivers/iio/accel/adxl345_spi.c  | 15 +++++----------
+>  3 files changed, 16 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+> index ef2240e356e0..078e1029e49d 100644
+> --- a/drivers/iio/accel/adxl345_core.c
+> +++ b/drivers/iio/accel/adxl345_core.c
+> @@ -222,16 +222,12 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>         int ret;
+>
+>         ret = regmap_read(regmap, ADXL345_REG_DEVID, &regval);
+> -       if (ret < 0) {
+> -               dev_err(dev, "Error reading device ID: %d\n", ret);
+> -               return ret;
+> -       }
+> +       if (ret < 0)
+> +               return dev_err_probe(dev, ret, "Error reading device ID\n");
+>
+> -       if (regval != ADXL345_DEVID) {
+> -               dev_err(dev, "Invalid device ID: %x, expected %x\n",
+> -                       regval, ADXL345_DEVID);
+> -               return -ENODEV;
+> -       }
+> +       if (regval != ADXL345_DEVID)
+> +               return dev_err_probe(dev, -ENODEV, "Invalid device ID: %x, expected %x\n",
+> +                                    regval, ADXL345_DEVID);
+>
+>         indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+>         if (!indio_dev)
+> @@ -245,10 +241,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>
+>         ret = regmap_write(data->regmap, ADXL345_REG_DATA_FORMAT,
+>                            data->data_range);
+> -       if (ret < 0) {
+> -               dev_err(dev, "Failed to set data range: %d\n", ret);
+> -               return ret;
+> -       }
+> +       if (ret < 0)
+> +               return dev_err_probe(dev, ret, "Failed to set data range\n");
+>
+>         indio_dev->name = name;
+>         indio_dev->info = &adxl345_info;
+> @@ -259,10 +253,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>         /* Enable measurement mode */
+>         ret = regmap_write(data->regmap, ADXL345_REG_POWER_CTL,
+>                            ADXL345_POWER_CTL_MEASURE);
+> -       if (ret < 0) {
+> -               dev_err(dev, "Failed to enable measurement mode: %d\n", ret);
+> -               return ret;
+> -       }
+> +       if (ret < 0)
+> +               return dev_err_probe(dev, ret, "Failed to enable measurement mode\n");
+>
+>         ret = devm_add_action_or_reset(dev, adxl345_powerdown, data->regmap);
+>         if (ret < 0)
+> diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
+> index 7bc8324c4f07..e3205dce91b8 100644
+> --- a/drivers/iio/accel/adxl345_i2c.c
+> +++ b/drivers/iio/accel/adxl345_i2c.c
+> @@ -28,11 +28,8 @@ static int adxl345_i2c_probe(struct i2c_client *client,
+>                 return -ENODEV;
+>
+>         regmap = devm_regmap_init_i2c(client, &adxl345_i2c_regmap_config);
+> -       if (IS_ERR(regmap)) {
+> -               dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",
+> -                       PTR_ERR(regmap));
+> -               return PTR_ERR(regmap);
+> -       }
+> +       if (IS_ERR(regmap))
+> +               return dev_err_probe(&client->dev, PTR_ERR(regmap), "Error initializing regmap\n");
+>
+>         return adxl345_core_probe(&client->dev, regmap, id->driver_data,
+>                                   id->name);
+> diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
+> index c752562c5d3b..9223302fdd46 100644
+> --- a/drivers/iio/accel/adxl345_spi.c
+> +++ b/drivers/iio/accel/adxl345_spi.c
+> @@ -26,18 +26,13 @@ static int adxl345_spi_probe(struct spi_device *spi)
+>         struct regmap *regmap;
+>
+>         /* Bail out if max_speed_hz exceeds 5 MHz */
+> -       if (spi->max_speed_hz > ADXL345_MAX_SPI_FREQ_HZ) {
+> -               dev_err(&spi->dev, "SPI CLK, %d Hz exceeds 5 MHz\n",
+> -                       spi->max_speed_hz);
+> -               return -EINVAL;
+> -       }
+> +       if (spi->max_speed_hz > ADXL345_MAX_SPI_FREQ_HZ)
+> +               return dev_err_probe(&spi->dev, -EINVAL, "SPI CLK, %d Hz exceeds 5 MHz\n",
+> +                                    spi->max_speed_hz);
+>
+>         regmap = devm_regmap_init_spi(spi, &adxl345_spi_regmap_config);
+> -       if (IS_ERR(regmap)) {
+> -               dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
+> -                       PTR_ERR(regmap));
+> -               return PTR_ERR(regmap);
+> -       }
+> +       if (IS_ERR(regmap))
+> +               return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
+>
+>         return adxl345_core_probe(&spi->dev, regmap, id->driver_data, id->name);
 >  }
->  
->  static int fxos8700_get_scale(struct fxos8700_data *data,
-> @@ -393,23 +414,29 @@ static int fxos8700_get_scale(struct fxos8700_data *data,
->  static int fxos8700_get_data(struct fxos8700_data *data, int chan_type,
->  			     int axis, int *val)
->  {
-> -	u8 base, reg;
-> -	int ret;
-> +	u8 base, offset;
->  	enum fxos8700_sensor type = fxos8700_to_sensor(chan_type);
-> +	u8 tmp_data[2];
-We loop around this every now and then. It 'happens' to be the case that
-currently (or last time I checked) regmap_bulk_read always copied the
-data and hence uses a dma safe buffer internally. That is not guaranteed
-by the interface however so when we last asked Mark Brown he suggested
-we should assume that it requires the same level of dma buffer safety
-as the bus subsystems being used.
-
-Thus for any driver doing bulk accesses to SPI device, you need a DMA safe
-buffer.  Which is what the __cacheline_aligned buffer in iio_priv() is for
-in this driver.
-
-> +	u16 native_data;
-> +	int ret;
->  
-> -	base = type ? FXOS8700_OUT_X_MSB : FXOS8700_M_OUT_X_MSB;
-> +	base = type ? FXOS8700_M_OUT_X_MSB : FXOS8700_OUT_X_MSB;
-> +	offset = axis - IIO_MOD_X;
->  
-> -	/* Block read 6 bytes of device output registers to avoid data loss */
-> -	ret = regmap_bulk_read(data->regmap, base, data->buf,
-> -			       FXOS8700_DATA_BUF_SIZE);
-> +	ret = regmap_bulk_read(data->regmap, base + offset, &tmp_data[0], 2);
->  	if (ret)
-> -		return ret;
-> +		return -EIO;
-
-Why eat the error return of the bulk_read and replace it with a potentially
-less informative one?
-
->  
-> -	/* Convert axis to buffer index */
-> -	reg = axis - IIO_MOD_X;
->  
-> +	data->buf = ((tmp_data[1] << 8) & 0xff00) | tmp_data[0];
-
-tmp_data[1] is a u8 so that masking isn't doing anything other than
-possibly fixing some type conversion issues.
-
-However, this is an endian operation, so express it as such
-get_unaligned_be16(tmp_data); or similar.  Maybe even just use a __be16
-and be16_to_cpu() directly on that.
-
-
->  	/* Convert to native endianness */
-> -	*val = sign_extend32(be16_to_cpu(data->buf[reg]), 15);
-> +	native_data = be16_to_cpu(data->buf);
-
-This looks wrong.  You've already done a be to cpu conversion (via
-the shifts above) now y ou are doing it again. Why?
-
-> +
-> +	/*accel raw data only has 14 bit */
-
-/* Accel ...
-
-> +	if (!type)
-> +		native_data = native_data >> 2;
-> +
-> +	*val = sign_extend32(native_data, 15);
->  
->  	return 0;
->  }
-> @@ -462,6 +489,7 @@ static int fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
->  		return ret;
->  
->  	val &= FXOS8700_CTRL_ODR_MSK;
-> +	val = val >> 3;
-
-FIELD_GET() would be easier to read for this.
-
->  
->  	for (i = 0; i < odr_num; i++)
->  		if (val == fxos8700_odr[i].bits)
-> @@ -592,14 +620,14 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
->  	if (ret)
->  		return ret;
->  
-> -	/* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> -	ret = regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> -			   FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
-> +	/* Set for max full-scale range (+/-8G) */
-> +	ret = regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG, MODE_8G);
->  	if (ret)
->  		return ret;
->  
-> -	/* Set for max full-scale range (+/-8G) */
-> -	return regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG, MODE_8G);
-> +	/* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> +	return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> +			   FXOS8700_CTRL_ODR_MAX << 3 | FXOS8700_ACTIVE);
-
-Preference for FIELD_PREP() to make ti clear what you are shifting left and why.
-Given you have FXOS8700_CTRL_ODR_MSK that is easy to add here.
-Mind you it's a noop as ODR_MAX == 0 anyway :)
-
-
->  }
->  
->  static void fxos8700_chip_uninit(void *data)
-
+> --
+> 2.34.1
+>

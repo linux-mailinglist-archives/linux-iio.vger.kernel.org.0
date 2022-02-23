@@ -2,99 +2,156 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0AB64C123C
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 13:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FC4A4C1288
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Feb 2022 13:13:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240300AbiBWMDe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Feb 2022 07:03:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35536 "EHLO
+        id S237379AbiBWMOS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 23 Feb 2022 07:14:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240302AbiBWMD2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 07:03:28 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 404E39A9A6;
-        Wed, 23 Feb 2022 04:02:50 -0800 (PST)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 21N2wEqr012240;
-        Wed, 23 Feb 2022 07:02:48 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3edckssseh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Feb 2022 07:02:48 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 21NC2lrf019355
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 23 Feb 2022 07:02:47 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 23 Feb
- 2022 07:02:46 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 23 Feb 2022 07:02:46 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.126])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 21NC2Y1c023695;
-        Wed, 23 Feb 2022 07:02:40 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v6 3/3] MAINTAINERS: add maintainer for ADA4250 driver
-Date:   Wed, 23 Feb 2022 14:01:12 +0200
-Message-ID: <20220223120112.8067-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220223120112.8067-1-antoniu.miclaus@analog.com>
-References: <20220223120112.8067-1-antoniu.miclaus@analog.com>
+        with ESMTP id S237651AbiBWMOS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Feb 2022 07:14:18 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBDD9ADBF
+        for <linux-iio@vger.kernel.org>; Wed, 23 Feb 2022 04:13:48 -0800 (PST)
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K3ZZc6CSpz6GD0M;
+        Wed, 23 Feb 2022 20:08:56 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Wed, 23 Feb 2022 13:13:44 +0100
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.21; Wed, 23 Feb
+ 2022 12:13:43 +0000
+Date:   Wed, 23 Feb 2022 12:13:41 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Subject: Re: [PATCH 0/8] IIO: Where dev_pm_ops rework and namespaces meet.
+Message-ID: <20220223121341.0000089b@Huawei.com>
+In-Reply-To: <O8AR7R.HDQ5MQXD3QZI3@crapouillou.net>
+References: <20220220181522.541718-1-jic23@kernel.org>
+        <O8AR7R.HDQ5MQXD3QZI3@crapouillou.net>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: JBU5sdKYW7BAkGMABYd_v9YbwLxwMePA
-X-Proofpoint-GUID: JBU5sdKYW7BAkGMABYd_v9YbwLxwMePA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-02-23_04,2022-02-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 adultscore=0 impostorscore=0 suspectscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0 priorityscore=1501
- mlxlogscore=807 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202230067
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml708-chm.china.huawei.com (10.201.108.57) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add myself as maintainer for the ADA4250 driver.
+On Wed, 23 Feb 2022 11:50:48 +0000
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> Hi Jonathan,
+> 
+> Le dim., févr. 20 2022 at 18:15:14 +0000, Jonathan Cameron 
+> <jic23@kernel.org> a écrit :
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Hi All,
+> > 
+> > As these two activities have been ongoing across IIO at the same time
+> > it was inevitable that there would be drivers were they both interact.
+> > In particularly when we have EXPORT* of struct dev_pm_ops.
+> > 
+> > This series covers those cases by introducing (in patch 2)
+> > EXPORT_NS[_GPL]_SIMPLE_DEV_PM_OPS() and
+> > EXPORT_NS[_GPL]_RUNTIME_DEV_PM_OPS()
+> > that add a namespace as the final parameter.  
+> 
+> If we now have namespace versions of the macros, I'm starting to wonder 
+> if the original macros are still useful.
+> 
+> In which case would we need to export a dev_pm_ops outside the scope of 
+> a namespace?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fb18ce7168aa..0410054a7bf5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1075,6 +1075,14 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/i2c/ad9389b*
+Excellent point. Long term my assumption is that any place where
+a dev_pm_ops is being exported probably should be in a namespace
+because the scope is tightly defined.
+
+My only thought is it adds a burden to moving over to your new infrastructure
+as it would be odd to move only the dev_pm_ops into a NS without looking
+at the rest of the exports in a driver.
+
+It was useful to be able to do things in two steps as it allowed separation
+of using the new dev_pm_ops handling from a namespace move, but
+clearly could do that the other way around and not need the non
+namespaced version of this macro.
+So do namespace move first then use the new macros and hence only
+ever need the namespaced one.
+
+Jonathan
+
  
-+ANALOG DEVICES INC ADA4250 DRIVER
-+M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/amplifiers/adi,ada4250.yaml
-+F:	drivers/iio/amplifiers/ada4250.c
-+
- ANALOG DEVICES INC ADGS1408 DRIVER
- M:	Mircea Caprioru <mircea.caprioru@analog.com>
- S:	Supported
--- 
-2.35.1
+> 
+> Cheers,
+> -Paul
+> 
+> > In each driver (with the exception of the kxsd9 which was already
+> > using a IIO_KXSD9 namespace) I first move to the new *_PM_OPS()
+> > and pm_[sleep_]_ptr() then in a second patch move to the new
+> > namespaces.  Initially I had these two steps done as one patch
+> > per driver but that was harder to follow and broke the rule of
+> > one thing per patch.
+> > 
+> > All comments welcome.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> > Jonathan Cameron (8):
+> >   iio: chemical: scd30: Export dev_pm_ops instead of suspend() and
+> >     resume()
+> >   PM: core: Add NS varients of EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and
+> >     runtime pm equiv
+> >   iio: chemical: scd30: Move symbol exports into IIO_SCD30 namespace
+> >   iio:accel:kxsd9: Switch from CONFIG_PM guards to pm_ptr() etc
+> >   iio: humidity: hts221: Use EXPORT_SIMPLE_DEV_PM_OPS() to allow
+> >     compiler to remove dead code.
+> >   iio: humidity: hts221: Move symbol exports into IIO_HTS221 namespace
+> >   iio: imu: lsm6dsx: Use new pm_sleep_ptr() and
+> >     EXPORT_SIMPLE_DEV_PM_OPS()
+> >   iio: imu: lsm6dsx: Move exported symbols to the IIO_LSM6DSX 
+> > namespace
+> > 
+> >  drivers/iio/accel/kxsd9-i2c.c                |  2 +-
+> >  drivers/iio/accel/kxsd9-spi.c                |  2 +-
+> >  drivers/iio/accel/kxsd9.c                    | 11 ++---------
+> >  drivers/iio/chemical/scd30.h                 |  5 +----
+> >  drivers/iio/chemical/scd30_core.c            | 10 +++++-----
+> >  drivers/iio/chemical/scd30_i2c.c             |  3 ++-
+> >  drivers/iio/chemical/scd30_serial.c          |  3 ++-
+> >  drivers/iio/humidity/hts221_core.c           | 12 +++++-------
+> >  drivers/iio/humidity/hts221_i2c.c            |  3 ++-
+> >  drivers/iio/humidity/hts221_spi.c            |  3 ++-
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 12 +++++-------
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  3 ++-
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  |  3 ++-
+> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  3 ++-
+> >  include/linux/pm.h                           | 14 +++++++++-----
+> >  include/linux/pm_runtime.h                   | 10 ++++++++--
+> >  16 files changed, 51 insertions(+), 48 deletions(-)
+> > 
+> > --
+> > 2.35.1
+> >   
+> 
+> 
 

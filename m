@@ -2,55 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA304C2E63
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Feb 2022 15:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BEDC4C2E79
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Feb 2022 15:31:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232850AbiBXO0a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Feb 2022 09:26:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41550 "EHLO
+        id S235417AbiBXOcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Feb 2022 09:32:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235551AbiBXO03 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Feb 2022 09:26:29 -0500
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80071.outbound.protection.outlook.com [40.107.8.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE8A1637FA
-        for <linux-iio@vger.kernel.org>; Thu, 24 Feb 2022 06:25:59 -0800 (PST)
+        with ESMTP id S235436AbiBXOcU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Feb 2022 09:32:20 -0500
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2084.outbound.protection.outlook.com [40.107.21.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A8241326
+        for <linux-iio@vger.kernel.org>; Thu, 24 Feb 2022 06:31:50 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q8Nxkjo3vaZciV2qljmbSBg7g6CEk50qmPQBPQnOeEP4MoMhBsnUbadsevgbmfb9OcCz/KhNLAqFx9ZZ9cdv9u6MphTDrqkt4MkwahD3m0SGH1EV185ceiBiN4GniMYpbtj0kW88I8sAVsUlZRhofhYjC19dVwTv68rv2d/dShn/JdVGIJtdgdNZCPm+Ov0BPASJpU7RFzxBzLRkjU6XIzrzpqGtTtIH7XjZksXIdfDtdnuuB3rV6eCKmlXx66hS1OcYpawFb8kMJgjh01vnKAXMnBuCHLnd7B6mSG038vWcrNSzGiyi7vXB7x+BjwORDhLtBzwna4GFM0h+lV/9CQ==
+ b=K450oD7xWwoPnPYT2hM5OkwMnR72JaMM9ZT9PbetUNlsrKtStnQka/UYXjVbhxe4wlQD6f4kkL3m+hdnkZz5SO8gyQDaTYRJq5OQHd9U7IG9ZV6Rkk9g9n/RNUehzpTDOogDEGHA6wkAsMAW9M91VKvd4lsLEh4yXj+khKOogl6GVgBkAUbu13PWnf7d45Ay3oaiX7cH1iQV0ixXDkh16BgQ7Yas2rBq6KRsY1gl6pcuswGCPl+STGbIVYQDyAjR2kZG3xlejbkWKhVzQKrCyKNPIvSJ7ISptb1ictsdHapHRBhJnPRx8GybZwCz9f1+i1gmOsHWlxqf6048HmYEXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=my80LbCIqzqIkPMJMU6Z56OMGhGLvBqpwL0w7lS9yBk=;
- b=e1QCMfvYl/eRzNfwrKbCCm7U8ty5A7jgQkGf3ylA9j1gxYPdDiV9pbeSHh4f9Hm6fPlg1eMeNTqKMKAU++jP2Rg00kqmg7+yU/dkvOqDwEjXwMDzpZfzdkd0ZZktYARjDE0xWjMWiCC/g3KOOoA+AmnAMjyS4biiD4GzOhm3eoFgO9oXBWCpTE0vQZZtLkm3A0Br9aTwpX9FBTKM1LG87npkhqwx3LbUgUtMdIYwVwSZFXX1BdyCTTMYrjeI3AQer4Hli+K1gKC9UIiq+hhR3sHYHicMmTjJGQl06A8i6LFMi0gqCqDyCRjuwamCFyhfeZCdOwDQ1IY40Qeme2YnaA==
+ bh=BzxJxpAZo2amNn1nyhJDU414B5FAr3wu5d5lR60dAwY=;
+ b=n/qWL+vUPTkWlXVbCbVaFZBhxYcGRBlaLzgbkpMiZB+6l1WAZv9WmcIz2jfdTBgTUhU3M6Su56e4Wb5Gv0qkh3uOmTMKLT3XZVznZ/z3QQZpYtol2YZArzTkLjFuPNcuQelpWLDkwtHajwiVYmgLv+d2uQng5ElSlXsLCzx4xmukGQiREQvZymI3Hko3fgo+egaJPLmIaqr5p86ADcJefWjSqZRnLAcUyJsz/VZ+kVLCQ5BsNlmuOSipGlLuO+Nkxhe4ALX0gp0TKspdFd50jaVgVFk7zwnjFf+vD0xvAMYhir45H/3uhKUe8XWG1xKAsDL/hN9UrMQbVuvpijn2XQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=my80LbCIqzqIkPMJMU6Z56OMGhGLvBqpwL0w7lS9yBk=;
- b=PUbnsX1NvKbVkkqnSvdz//to6TthlVDW6YlMTI6BZ/fHiC/DTGsBvddHpleYUCIr7PC+f06ElIRu8rsi432X7ae5zd16LZZtfzap3k9Te6PXHDk+x4ICqWt2FMfucG5yOW9BJQ1mecavn+Z1K6BMt/NXhDjfGDZpbeq7FoHJXF0=
+ bh=BzxJxpAZo2amNn1nyhJDU414B5FAr3wu5d5lR60dAwY=;
+ b=rUJzq76U4moxLpsEBu4v50elvi2ZdoMGUfC4N6aiJvYYTCcvBXI3NuOQ7JMkGi7Trydr7iRRvbT1oCVtRCveI8g/DETDkFMX6gHzefE4V5Y8b6KROxPRFlwM0cDCsiVPXhjTu0zql+ECxvPU+/CxtxjpqbfBkvktEE4X3nBQiwo=
 Received: from VI1PR04MB4016.eurprd04.prod.outlook.com (2603:10a6:803:4a::27)
- by AM0PR0402MB3683.eurprd04.prod.outlook.com (2603:10a6:208:d::19) with
+ by AM6PR04MB4904.eurprd04.prod.outlook.com (2603:10a6:20b:c::25) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.24; Thu, 24 Feb
- 2022 14:25:56 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.27; Thu, 24 Feb
+ 2022 14:31:46 +0000
 Received: from VI1PR04MB4016.eurprd04.prod.outlook.com
  ([fe80::f468:5bbf:f34c:668]) by VI1PR04MB4016.eurprd04.prod.outlook.com
  ([fe80::f468:5bbf:f34c:668%6]) with mapi id 15.20.5017.023; Thu, 24 Feb 2022
- 14:25:55 +0000
+ 14:31:46 +0000
 From:   Bough Chen <haibo.chen@nxp.com>
 To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 CC:     "jic23@kernel.org" <jic23@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>
-Subject: RE: [PATCH] iio: imu: fxos8700: few bug fix for fxos8700
-Thread-Topic: [PATCH] iio: imu: fxos8700: few bug fix for fxos8700
-Thread-Index: AQHYJ6LdpwjUUgqtj0WoPzU8wK55BqyfywoAgALxAKA=
-Date:   Thu, 24 Feb 2022 14:25:55 +0000
-Message-ID: <VI1PR04MB40164F502C239F681BFAC015903D9@VI1PR04MB4016.eurprd04.prod.outlook.com>
-References: <1645502822-5585-1-git-send-email-haibo.chen@nxp.com>
- <20220222165638.0000243a@Huawei.com>
-In-Reply-To: <20220222165638.0000243a@Huawei.com>
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        dl-linux-imx <linux-imx@nxp.com>, Wolfram Sang <wsa@kernel.org>
+Subject: RE: [PATCH] iio: accel: mma8452: remove the reset operation during
+ driver probe
+Thread-Topic: [PATCH] iio: accel: mma8452: remove the reset operation during
+ driver probe
+Thread-Index: AQHYJ6hClmYnFKRpxkqcnCLeaYH3M6yfx1WAgAL+joA=
+Date:   Thu, 24 Feb 2022 14:31:46 +0000
+Message-ID: <VI1PR04MB401628231C1D06E318820D26903D9@VI1PR04MB4016.eurprd04.prod.outlook.com>
+References: <1645505151-5789-1-git-send-email-haibo.chen@nxp.com>
+ <20220222164331.00002d18@Huawei.com>
+In-Reply-To: <20220222164331.00002d18@Huawei.com>
 Accept-Language: zh-CN, en-US
 Content-Language: en-US
 X-MS-Has-Attach: yes
@@ -58,68 +61,68 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 29f170c2-cd41-4916-7bf3-08d9f7a191e5
-x-ms-traffictypediagnostic: AM0PR0402MB3683:EE_
-x-microsoft-antispam-prvs: <AM0PR0402MB3683203E809661A86522D284903D9@AM0PR0402MB3683.eurprd04.prod.outlook.com>
+x-ms-office365-filtering-correlation-id: f6a1e77b-31ac-467a-c6ef-08d9f7a262c9
+x-ms-traffictypediagnostic: AM6PR04MB4904:EE_
+x-microsoft-antispam-prvs: <AM6PR04MB4904F1F522488C6A83295761903D9@AM6PR04MB4904.eurprd04.prod.outlook.com>
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: v4QW18RPgA6P6EfRPOoVxAarchKW0ep4FgwWkSwMKiQXxi85uXFpDwe1MEgumvZ9LJH8m77pkw3zgFBb6KnQy75Zr24UnRBJav3OjPwxpxldO5CkGqOLF3XqxtQjwFu6QeBs/SLyHsq32RnEUfQxS3GpZBJKr/1f5wd0oyGdtSxiLguvt/Dk9U+buJtIONRNo/il0nDpHpJp/8qGQeKiBKP/LGQvd7I8ajeUlLbXINKQfKC7Eqc8jUbFaf6H6AOlDKbDL5M9j8XpxtCn/zYCn9v4N2RhBtQ1Poe68s7CxqXj4sVHkTVfDzuxOt2U+309A35zOEfaCP3xnbC1aspuIR3qabqhhgaKcOyTJp3fZqQORMREQac/ht+rLIOqCw4bUs2hdXmMQOOLpVuTnsXaRw4Aa6erRjTzTBfBsyLWh9AnSwkAJHE9fhsOnfQl3yOC09Ink+G979uKE1sBbW7P0/GCI+AfuLwYHoPrHMLBdVu9QBG2LG/FRW3L5yqBwodgQ8yaMtcnU4+MLMDsKN99is6Sze2A6hnJzdgRxeeo8BvRqQ+SgkeKHcQNLgPpcup/pB03hTUYM2PIU689FEjyHiNvjYPOt/9Nws8OnClHPt5THucBMyWkmvGEVfQPTSRoEwInEPDmEk9rV4C9TJwSxQqqKNnVWPSCYfkzCOW6BJiEH1Fg4l2bhQNQtc5WlqxzHs8nZn+yqpUCA6RTYRbVPg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4016.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(33656002)(9686003)(86362001)(52536014)(2906002)(7696005)(122000001)(54906003)(8936002)(38070700005)(76116006)(6506007)(5660300002)(55016003)(186003)(6916009)(316002)(99936003)(26005)(83380400001)(38100700002)(66446008)(66476007)(66946007)(66556008)(64756008)(4326008)(8676002)(508600001)(53546011)(71200400001);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: fJF5zvINEl3EB36Kh4gpbyrpD7hNfXkGSmzxEXTlElMR3HylzvvxpQwxjj8nsa9g+GY/C1hJ5ec8rpzJ/ZlHke9ky/eSZc+w+6I+KBjqZdEzPUGliwDC7YNVP+FntcjJrH0uokv/Nvd/MyTl/BCRP5dB9JwNsRiEhQu42BhapzebWPnKmS2GV/1zhYZ5wXmeOI/uTKoZSkDYRtFBxDUn4Hd0x4d9eEVWwalzYtlNXTYJie49QEc6RRLw4aC8Z89IAzx+6YjudR7m9tkJVI7a+J807iiJUYJJ61kWesS3/rKtNFq/pSA98ztr2lYRCKrOA5C5HakX9o9wv7+qwJkns9eyc1ld5XH9EIYrhNJSWinwzlRySyFx/N8aM1DGJIXa2DtAK2w2vMp8qETbqcXg97/Mx5BHj6EJWbn43kEruhGe9OwlR8RKQl+wyteL9g7qy9Qza8FFX0uz7MD6aQtf3PVvBE4T1HHySO7ayPhfUf2vSXNJ9A+4ka2nst7jIuvRJJPRibuJEM3HqQqXM6gcn7nQERoAdyoVt+Y5wkaXTd2zJYqQ2vZTV6Zz2Ey4IO5w/tWFbVw6VDD98SthYgaw7ZXRiAmOjqFifkjInZZYrtIq+64bHmsFW4rLJylFfqIW3AnsRMxMu7xd1dJVPkcUlHsPB64PFAM/iO9twV/pX2t8SoxDscIXW30eLE/ZILgE8kx/tsIqb6t8U2tD0NfQSw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4016.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(83380400001)(54906003)(2906002)(86362001)(508600001)(33656002)(9686003)(8936002)(99936003)(316002)(5660300002)(6506007)(66556008)(53546011)(6916009)(66946007)(76116006)(122000001)(4326008)(38100700002)(7696005)(186003)(26005)(71200400001)(66476007)(55016003)(8676002)(64756008)(66446008)(52536014)(38070700005);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?gb2312?B?ZlkxclNCcXQvSTBjOUZpR3BwSG5BNTNqY2pVY3Nha3p3TzQzdE1ya3I1bmYy?=
- =?gb2312?B?QXlpT2U1elZlWmNwYytydEFoSlEzVjRMU0dRRDV1NklmL1JjQzFuWk1ZNDIv?=
- =?gb2312?B?cENHSmlPOXI5WVRjOGNhZHQ0OEhEOFlabk9qOVJhazcxb29mQnErSGFOVkNG?=
- =?gb2312?B?SS9McmVSRS9SMTBKbVdGWVdhL3ZtV3ZRblduNjVxczl5QmdFd0R0anF1YTUw?=
- =?gb2312?B?WHRkcy9JQlhJNm80eGdWV2Qyb09ldG1wbGdIVzNCVW5JZEdxWUNudU4zYzdU?=
- =?gb2312?B?S0RRajlTbWZGWGI5TFprNWZuYUNlSEhpTUFyeUFnYkxUMWhoYzZhOEkrckRB?=
- =?gb2312?B?eDhUbFpLMDNnaCtxTndKZVpwaGllV2FYWWxHdlRUK1psREQ2eGlPVkVLREIx?=
- =?gb2312?B?RE96bWN4R042Z2pvOXRrSklPMTRKMVRFT0ZrckNMT3FDS1RqWkdNUGhUSXBI?=
- =?gb2312?B?b2NHcTcvMDl3WHZTcW5HN0hMdXFPZEg4VUpmR1FGK0NndmZaaWh5QUUzaHpj?=
- =?gb2312?B?bmdIbS9YSGhvbmtoUHczdXlySEpNYjRhWmNCQnB3SXZmVFFaUUZiVE43MVJj?=
- =?gb2312?B?S2Z2Z1g5dG1YSmgyMElxN21nQ3M4TW4wMFlZR0tlbENYNGJqQjhDMlVRanJz?=
- =?gb2312?B?MGhBZUNzOU10bksyWHAyQmhjVks5a2dDVWF0ejJTWGhmVmRGN1lrQ3B1U25y?=
- =?gb2312?B?bE9QZGRWaFB3MXlnTFZpZmIyc1F1Tmhmd0Mrb0hlQ1Vpam5XOSsrWlRsTC82?=
- =?gb2312?B?T09CRG1oejVjSkcrLzVlRjZ1bGl5dHAvOWkxSStJMGx5dXFuOU93aTlhVkR2?=
- =?gb2312?B?VXh4bVA5bDNyRHNVVG8vNHBhL3VHRG8vSHNqbktIWEx4T2w2cnBMT1A3MFdQ?=
- =?gb2312?B?a3FkTUdPbFRRYVhzRlBsQ3NPVEgvZnpkZWx5WXBvbUtIeENNN0JRUEE3b1FU?=
- =?gb2312?B?anREbHJCRWJZN0x2cExLWGZoR2QzYlRyekNKRUNlQ0NZS0R6TThXT3ZralJs?=
- =?gb2312?B?RXlSTTdpQ3Q4VEoxdlk5V1VBKzFEQmRhaXVvRUJJZ2UzamRVazN1UVBXNWNS?=
- =?gb2312?B?VDZ3VU5iVWp2RW9hb2xubldJcFcxNm0vS3A4TCtsQktBdXMzNFk2WldINGVV?=
- =?gb2312?B?TlM5cW5xVS9sNjV3VWFpdGF1WmJEQ2EyWUZrUjZtWXlVbDl2dDVDajJ6U2o4?=
- =?gb2312?B?V0tjanFFdENkUGxaOXNqRWN5aGJBL0lHM0VhNlBkM1Y4RXp3RlE5RjNMMFlS?=
- =?gb2312?B?SXlJT29iTG4wazNHaGFNdWNwelkwZkhmb0dTYWl5azA4VU0rVFExVnRhMlhk?=
- =?gb2312?B?ZFk3czkzQjV2SlJOdnNtcTdiUnhCQlVwWjZJTSt0eFltTmd3NTB4TmtVWFhx?=
- =?gb2312?B?QmVTSlZ0SFNHbmU2Z2g0bTgwOHZpRURlQ3VjZkRRRVM5azFDSE9qMFc2ZzUw?=
- =?gb2312?B?Uk1oY3JXYUZDYkFlcXFsNys4dStaQXNkZlE3ZWMycVdhM1lYOWhJM3loMXpJ?=
- =?gb2312?B?cXZiZWxiV043NEJSREtGTitjQWw1TFpxWDE3cmt2VWFicnFWRm9mOGUvQjJY?=
- =?gb2312?B?S0ZoS3JWN09sK1dwVDJHZmtBVktoRGw5R2tRM0dOWldVNkVzbU1VZWhNbSs2?=
- =?gb2312?B?cWNzNWtQOTNqM004dDJKYjVaaEZCNm9DanAyS1FsQ3J4RWZCN0l2Zmp5czJh?=
- =?gb2312?B?L2ZXd2pNalpscXpuUXlKYmJyYzJSYkhvSzhsS2FzME1uTEI1Y01pZDJoM2tE?=
- =?gb2312?B?c2lqbDBuRUs5aGt4ZklBanRJRDI0TGErRTBHcitYa2ZZVVFqVkxWQXdNYWJt?=
- =?gb2312?B?SmxtbEdod2Vxd2p3cnVnZ290Nm5nWnQzWEZWdjl5dm5QcEx1c2NIUmJib0tF?=
- =?gb2312?B?WUF4TEJkVVJVbUVycWtHai9Delpoa3dZejFkQlVHdHFDVlpMRzZhSUExTWwy?=
- =?gb2312?B?T2dIV0ZLRG1zczVNcG1HcFJmNlhzSzUvazVHWHNHV2tIektIZXJ3akorUHVv?=
- =?gb2312?B?eFZDenExMVpjS3d6Qk5oRVJhZG1Va0pHb1VqYm85b2YzbmdzR3dYYnY0TGFh?=
- =?gb2312?B?dGU4aHgzcVoycERqWU41ZE9SQlZuZEVLQlJ4MWQ1TzgzWlhyOXk2QXl4UFZF?=
- =?gb2312?B?UVhTbEJSc0s1MGVZbjBtTmFmUzVxOWt0SGFhT0FlMTUyZkVrMENpNkhqZDM0?=
- =?gb2312?Q?pRgbcwzgVgqeriSemjHtPiM=3D?=
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UTRBMmk0cEFlRG10TVZBK1o0YmxWK3hIcDBYWW5WdmdYdnMvYlB6cnB1NGxo?=
+ =?utf-8?B?azY4c0ZleXpKRzlFSisyanNaUStFZ1BPUEpmZkNsYTdUM2hSR053TzEvVi8z?=
+ =?utf-8?B?UUQrSVNrS3JhbEJtU3JKUDJZOWdxN0dRZTlxR0c4TXlJZHhPZS8rdkZ3V2Z4?=
+ =?utf-8?B?ZUpuV1RNcStZYnV3RXpFbVBLNHN4NmgrSE52RDFUQTQ3T2NvSWc1Lzh0TWUw?=
+ =?utf-8?B?d0xEZitVWElabVpBYU1uQ0hqUmdBZ2RKY29TR0dzS25xMzdobmt6UUFVZ1hK?=
+ =?utf-8?B?RlBCMGlyNmZrYVRtdXJGSWIzdFBYV25XZ2NvWjE2TXk2TXpJcmx0UmlTa2NS?=
+ =?utf-8?B?cEJnRVBVN0VFY3A3d083TXd1U0tzaU05clJYTHdHN3BDenZza3AyRGMxeURM?=
+ =?utf-8?B?UzVWblFsS0M4S3JrdjUrbVpvR1k3L1FsQ0hOeE1SdWRIMGJoZjRURUVpTGFZ?=
+ =?utf-8?B?ZmxNUlhuYS9pb3JsZnZmMXVlTnNIb2lYS21jaUhpNC8vQXV5am9WdnUxWDAz?=
+ =?utf-8?B?RVZnRE45K0dmalNucU1sRlgybFZLWUxkaVZEVGxoMGZWQkFJV3lkZHZGYzI5?=
+ =?utf-8?B?cTdvRkJ5eGlraWpwRTVpK2duV0hRZVoyR2pHYUpCd1VLUWcybFRmVHpyZnd5?=
+ =?utf-8?B?dnJVeW91ZDJ0b1NhK3JyRndiblhMbkxiME5XWU1BNHpwMzNMWHMrVFFHbWo4?=
+ =?utf-8?B?Zkk0S3UrQlV2bUd4STFoRTN5bGJOUXhaS1FZc2dxZUY3eGN0MmFHb3FJMkxl?=
+ =?utf-8?B?TW5OR094MER4bnQ4OEJHY3dJcVJVM0g3dCs3bTF6UzhxR1NFVEkya3ZyRmZx?=
+ =?utf-8?B?SitkcWtWc2dybGxYNktpR25icDhZQTJIQnEzaGlXNWVRNzBsSENiRS93d2c5?=
+ =?utf-8?B?czdLMmJNbUlzK3A0dmlXazROQy9NTnpjRFp6dnRGY2JqUmVnalR3cmoxK3ln?=
+ =?utf-8?B?Q2VqcVVDUmRvNjNDcFA0bmdRVFNxdjNxQ3hhSVJXR2daQVZmQmUvSStVQXl4?=
+ =?utf-8?B?TDUyNHVpNERnSTRJRTNTR05kelZPRXJGQWkwR3BpNVpXcFQ0cXk3OUJjY2gx?=
+ =?utf-8?B?enFUSEcraG9EaWlpQTVWUkova3N6cFZwajMzT29xUVBzbi9Od0NiaExzSWti?=
+ =?utf-8?B?SmJOT3R6SUxoblVyR0d4alZqcDBXZlNYVTNIa20vY2lRMWpZTUJFRTNBZUVE?=
+ =?utf-8?B?Z0Y5RzdaQnRJbUYyMUFRNTNOelVNck9VY2hPVDRIT2p5VjNlNmwxMUptMkl1?=
+ =?utf-8?B?YUV1a2s2MTVNODJJWmYwN00xOTh0YXg4Y2Rpa201TWV1T3czOG9zYkhHQmFR?=
+ =?utf-8?B?Sy9DT2pxREgvWERpcFh1VVJsd2lCRnVUY3piZEhERUpaYXJJMlh1MElhVmVY?=
+ =?utf-8?B?R2RING9oaHJhREVwREhnYTRFWXVxaEptRTJudWp0UHIwd3JyUUhUTExFNmNh?=
+ =?utf-8?B?bGJ4TXBmNThUTTN3b2dzQWtrWGN4cVYyZGxCd3ZGTDc1alBpSEtpTlFvTUFL?=
+ =?utf-8?B?QjhWQXFiZzdMYUN2VWRXdkhQRXlnOVhzWjJDTHVoSjRZUmNzbTUvUDhPSkpu?=
+ =?utf-8?B?VlNmU1dpSnpQUUNJM2ZrbWpwdXl2S1dKUmZNYXJVc0QzZU1UazMra0ZTalIv?=
+ =?utf-8?B?cWF1ZnF0Ri8wR1hiS0U4Zi9ienE3WEJxbUZkYWtTNGFWYmh2SFJyT1pBa1ZO?=
+ =?utf-8?B?ZVNINnpPVHlGTVJSODVmVE81QkVlVm9KcjdYekNxRkp1TWJ3WUNZdzF0R2ph?=
+ =?utf-8?B?ejE5Mk45dUZsT01xUWo3V25idDhyejBVZzY4Y0pqSVcrejM2Q0lHVmpYcUM3?=
+ =?utf-8?B?bkFqRVR4QlRFMFp4UWVvRTlaTWpzVnIwVUlxdnFCREk5c3hJTFpDMURYSmcw?=
+ =?utf-8?B?eTRKTm5OUG1HNzgxcUlsWnlpS082bU16ZW0xcTB3aXFXcnk2NUhxSTVsWWVq?=
+ =?utf-8?B?K3FnbHZYOVA1dnNYY01WYmxaNWVCN0JKM3YyZXk0SkRxWVN0cG5HR01XRHFC?=
+ =?utf-8?B?NHhLb2MwQTdmVXlTMGl2T3drUThtUFM5QzJIVk9hWlFRWHJab2ozdzYvVkJm?=
+ =?utf-8?B?RDc1ejZvMVAzTm5uK0F2dkRBL3lDUHBReFRnMjdqU2dUK0E5UUJvcitpUi8v?=
+ =?utf-8?B?VllPVi9BaVJVWU5lOVZ2TXpRakEvemV3TWk0VzBxdmxIbnYxK1doV2tDd0Fj?=
+ =?utf-8?Q?/TMNfZfcvErm+DYHsBcf0q8=3D?=
 Content-Type: multipart/signed;
         micalg=SHA1;
         protocol="application/x-pkcs7-signature";
-        boundary="----=_NextPart_000_0397_01D829CD.7ABA64E0"
+        boundary="----=_NextPart_000_039B_01D829CE.4CBB1340"
 MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4016.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29f170c2-cd41-4916-7bf3-08d9f7a191e5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2022 14:25:55.8073
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6a1e77b-31ac-467a-c6ef-08d9f7a262c9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2022 14:31:46.2539
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MxEJCws4iOYN8oDooY2H3wdV/zMvuG6h6dRg7a67x+ozeV4X7muG89Ti2Ys1hR9HKuL13Ho7cCnWhApG/JEuCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR0402MB3683
+X-MS-Exchange-CrossTenant-userprincipalname: SYwPCQnnZGAMLIOGH11nU6PlAMtqWfq0jH+d8C+SiBiRDXGek59qSYflMiI25x0sCR4Gnk37viNEU8vI/NvCaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB4904
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -130,289 +133,119 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-------=_NextPart_000_0397_01D829CD.7ABA64E0
+------=_NextPart_000_039B_01D829CE.4CBB1340
 Content-Type: text/plain;
-	charset="gb2312"
+	charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 > -----Original Message-----
 > From: Jonathan Cameron [mailto:Jonathan.Cameron@Huawei.com]
-> Sent: 2022=C4=EA2=D4=C223=C8=D5 0:57
+> Sent: 2022=E5=B9=B42=E6=9C=8823=E6=97=A5 0:44
 > To: Bough Chen <haibo.chen@nxp.com>
 > Cc: jic23@kernel.org; lars@metafoo.de; linux-iio@vger.kernel.org;
-> dl-linux-imx <linux-imx@nxp.com>
-> Subject: Re: [PATCH] iio: imu: fxos8700: few bug fix for fxos8700
+> pmeerw@pmeerw.net; dl-linux-imx <linux-imx@nxp.com>; Wolfram Sang
+> <wsa@kernel.org>
+> Subject: Re: [PATCH] iio: accel: mma8452: remove the reset operation
+> during driver probe
 >=20
-> On Tue, 22 Feb 2022 12:07:02 +0800
+> On Tue, 22 Feb 2022 12:45:51 +0800
 > <haibo.chen@nxp.com> wrote:
 >=20
 > > From: Haibo Chen <haibo.chen@nxp.com>
 > >
-> > 1, z raw data always 0, regmap_buk_read use the wrong length. fix it
-> > and optmize read the only need data.
-> > 2, use the correct register address when try to read raw data.
-> > 3, before set scale, need to set the sensor to standby mode. =
-otherwise
-> > the scale set is not work.
-> > 4, give the correct offset when config odr bit.
->=20
-> Sounds like 4 patches to me. Whenever you have a list of what a patch =
-does
-> you should probably split it up.  Would be a lot easier to review as =
-one
-> patch per issue.  For now I've just take a quick general look.
->=20
->=20
-Hi Jonathan
-
-Thanks for your suggestion, I will split few patches in the next =
-version.
-
+> > Though Sensor Datasheet define this reset bit in it's CTRL_REG2
+> > register, but seems the actual hardware behavior do not align with =
+the
+> > doc expect. Once the reset bit is set, sensor can=E2=80=99t give =
+back an I2C
+> > ack, which will cause the probe fail. So just remove this reset
+> > operation.
 > >
 > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> > Reviewed-by: Clark Wang <xiaoning.wang@nxp.com>
-> > ---
-> >  drivers/iio/imu/fxos8700_core.c | 66
-> > +++++++++++++++++++++++----------
-> >  1 file changed, 47 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/drivers/iio/imu/fxos8700_core.c
-> > b/drivers/iio/imu/fxos8700_core.c index ab288186f36e..1896d6db6d77
-> > 100644
-> > --- a/drivers/iio/imu/fxos8700_core.c
-> > +++ b/drivers/iio/imu/fxos8700_core.c
-> > @@ -162,12 +162,11 @@
-> >
-> >  #define FXOS8700_DEVICE_ID          0xC7
-> >  #define FXOS8700_PRE_DEVICE_ID      0xC4
-> > -#define FXOS8700_DATA_BUF_SIZE      3
-> >
-> >  struct fxos8700_data {
-> >  	struct regmap *regmap;
-> >  	struct iio_trigger *trig;
-> > -	__be16 buf[FXOS8700_DATA_BUF_SIZE] ____cacheline_aligned;
-> > +	__be16 buf ____cacheline_aligned;
-> >  };
-> >
-> >  /* Regmap info */
-> > @@ -345,7 +344,8 @@ static int fxos8700_set_active_mode(struct
-> > fxos8700_data *data,  static int fxos8700_set_scale(struct
-> fxos8700_data *data,
-> >  			      enum fxos8700_sensor t, int uscale)  {
-> > -	int i;
-> > +	int i, ret, val;
-> > +	bool active_mode;
-> >  	static const int scale_num =3D ARRAY_SIZE(fxos8700_accel_scale);
-> >  	struct device *dev =3D regmap_get_device(data->regmap);
-> >
-> > @@ -354,6 +354,23 @@ static int fxos8700_set_scale(struct
-> fxos8700_data *data,
-> >  		return -EINVAL;
-> >  	}
-> >
-> > +	ret =3D regmap_read(data->regmap, FXOS8700_CTRL_REG1, &val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	active_mode =3D val & FXOS8700_ACTIVE;
-> > +
-> > +	if (active_mode) {
-> > +		/*
-> > +		 * The device must be in standby mode to change any of the
-> > +		 * other fields within CTRL_REG1
-> > +		 */
-> > +		ret =3D regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> > +				   val & ~FXOS8700_ACTIVE);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> >  	for (i =3D 0; i < scale_num; i++)
-> >  		if (fxos8700_accel_scale[i].uscale =3D=3D uscale)
-> >  			break;
-> > @@ -361,8 +378,12 @@ static int fxos8700_set_scale(struct
-> fxos8700_data *data,
-> >  	if (i =3D=3D scale_num)
-> >  		return -EINVAL;
-> >
-> > -	return regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG,
-> > +	ret =3D regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG,
-> >  			    fxos8700_accel_scale[i].bits);
 >=20
-> Realign these parameters with the opening bracket.
+> Hi Haibo,
 >=20
-> > +	if (ret)
-> > +		return ret;
+> I'm not really that keen to remove reset on probe as it's normally a =
+good
+> way to ensure we get a device into a sane state as we have no idea =
+what has
+> run before we load the driver.
 >=20
-> blank line here.
->=20
-> > +	return regmap_update_bits(data->regmap, FXOS8700_CTRL_REG1,
-> > +				  FXOS8700_ACTIVE, active_mode);
-> >  }
-> >
-> >  static int fxos8700_get_scale(struct fxos8700_data *data, @@ =
--393,23
-> > +414,29 @@ static int fxos8700_get_scale(struct fxos8700_data *data,
-> > static int fxos8700_get_data(struct fxos8700_data *data, int =
-chan_type,
-> >  			     int axis, int *val)
-> >  {
-> > -	u8 base, reg;
-> > -	int ret;
-> > +	u8 base, offset;
-> >  	enum fxos8700_sensor type =3D fxos8700_to_sensor(chan_type);
-> > +	u8 tmp_data[2];
-> We loop around this every now and then. It 'happens' to be the case =
-that
-> currently (or last time I checked) regmap_bulk_read always copied the =
-data
-> and hence uses a dma safe buffer internally. That is not guaranteed by =
-the
-> interface however so when we last asked Mark Brown he suggested we
-> should assume that it requires the same level of dma buffer safety as =
-the
-bus
-> subsystems being used.
->=20
-> Thus for any driver doing bulk accesses to SPI device, you need a DMA =
-safe
-> buffer.  Which is what the __cacheline_aligned buffer in iio_priv() is =
-for
-in
-> this driver.
+> Wolfram is there a standard way to work around missing ACK in cases =
+like
+> this?  Would just ignoring the return value be fine or are their i2c =
+masters
+> that will get stuck if they don't get the expected ack?
 
-Thanks for your sharing, I will take care of this.
+Currently, i2c masters will not get stuck. Only the sensor driver probe =
+failed.
+Let me do more test about this, currently I find this issue on =
+fxls8471/mma8452, and this driver cover many sensors
+Not sure whether other sensors has the same behavior.
 
->=20
-> > +	u16 native_data;
-> > +	int ret;
-> >
-> > -	base =3D type ? FXOS8700_OUT_X_MSB : FXOS8700_M_OUT_X_MSB;
-> > +	base =3D type ? FXOS8700_M_OUT_X_MSB : FXOS8700_OUT_X_MSB;
-> > +	offset =3D axis - IIO_MOD_X;
-> >
-> > -	/* Block read 6 bytes of device output registers to avoid data =
-loss
-*/
-> > -	ret =3D regmap_bulk_read(data->regmap, base, data->buf,
-> > -			       FXOS8700_DATA_BUF_SIZE);
-> > +	ret =3D regmap_bulk_read(data->regmap, base + offset, =
-&tmp_data[0],
-> > +2);
-> >  	if (ret)
-> > -		return ret;
-> > +		return -EIO;
->=20
-> Why eat the error return of the bulk_read and replace it with a
-potentially
-> less informative one?
-
-My bad, will fix.
-
->=20
-> >
-> > -	/* Convert axis to buffer index */
-> > -	reg =3D axis - IIO_MOD_X;
-> >
-> > +	data->buf =3D ((tmp_data[1] << 8) & 0xff00) | tmp_data[0];
->=20
-> tmp_data[1] is a u8 so that masking isn't doing anything other than
-possibly
-> fixing some type conversion issues.
-
-Oh, you are correct, I will fix that.
->=20
-> However, this is an endian operation, so express it as such
-> get_unaligned_be16(tmp_data); or similar.  Maybe even just use a =
-__be16
-> and be16_to_cpu() directly on that.
-
-I will re-do this code.
-
->=20
->=20
-> >  	/* Convert to native endianness */
-> > -	*val =3D sign_extend32(be16_to_cpu(data->buf[reg]), 15);
-> > +	native_data =3D be16_to_cpu(data->buf);
->=20
-> This looks wrong.  You've already done a be to cpu conversion (via the
-> shifts above) now y ou are doing it again. Why?
-
-For this sensor, according to the RM
-For the first register(address 01), we get data[13~6], and for the =
-second
-register(address 02), we get 8 bit data, the upper 6 bit is data[5~0],
-Seems I made the logic complicated.
-
->=20
-> > +
-> > +	/*accel raw data only has 14 bit */
->=20
-> /* Accel ...
->=20
-> > +	if (!type)
-> > +		native_data =3D native_data >> 2;
-> > +
-> > +	*val =3D sign_extend32(native_data, 15);
-> >
-> >  	return 0;
-> >  }
-> > @@ -462,6 +489,7 @@ static int fxos8700_get_odr(struct fxos8700_data
-> *data, enum fxos8700_sensor t,
-> >  		return ret;
-> >
-> >  	val &=3D FXOS8700_CTRL_ODR_MSK;
-> > +	val =3D val >> 3;
->=20
-> FIELD_GET() would be easier to read for this.
->=20
-> >
-> >  	for (i =3D 0; i < odr_num; i++)
-> >  		if (val =3D=3D fxos8700_odr[i].bits)
-> > @@ -592,14 +620,14 @@ static int fxos8700_chip_init(struct
-> fxos8700_data *data, bool use_spi)
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	/* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> > -	ret =3D regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> > -			   FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
-> > +	/* Set for max full-scale range (+/-8G) */
-> > +	ret =3D regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG,
-> MODE_8G);
-> >  	if (ret)
-> >  		return ret;
-> >
-> > -	/* Set for max full-scale range (+/-8G) */
-> > -	return regmap_write(data->regmap, FXOS8700_XYZ_DATA_CFG,
-> MODE_8G);
-> > +	/* Max ODR (800Hz individual or 400Hz hybrid), active mode */
-> > +	return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> > +			   FXOS8700_CTRL_ODR_MAX << 3 | FXOS8700_ACTIVE);
->=20
-> Preference for FIELD_PREP() to make ti clear what you are shifting =
-left
-and
-> why.
-> Given you have FXOS8700_CTRL_ODR_MSK that is easy to add here.
-> Mind you it's a noop as ODR_MAX =3D=3D 0 anyway :)
-
-Thanks for your suggestion, I just want to optimize that I config =
-ODR_MAX,
-but seems
-It better only mentioned this in the comment, do not need add in the =
-code.
 
 Best Regards
-Haibo Chen
+Haibo chen
 >=20
+> Jonathan
 >=20
+> > ---
+> >  drivers/iio/accel/mma8452.c | 28 ----------------------------
+> >  1 file changed, 28 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/mma8452.c =
+b/drivers/iio/accel/mma8452.c
+> > index 0016bb947c10..ec9e26fdfb2a 100644
+> > --- a/drivers/iio/accel/mma8452.c
+> > +++ b/drivers/iio/accel/mma8452.c
+> > @@ -1481,30 +1481,6 @@ static void mma8452_trigger_cleanup(struct
+> iio_dev *indio_dev)
+> >  		iio_trigger_unregister(indio_dev->trig);
 > >  }
 > >
-> >  static void fxos8700_chip_uninit(void *data)
+> > -static int mma8452_reset(struct i2c_client *client) -{
+> > -	int i;
+> > -	int ret;
+> > -
+> > -	ret =3D i2c_smbus_write_byte_data(client,	MMA8452_CTRL_REG2,
+> > -					MMA8452_CTRL_REG2_RST);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -
+> > -	for (i =3D 0; i < 10; i++) {
+> > -		usleep_range(100, 200);
+> > -		ret =3D i2c_smbus_read_byte_data(client, MMA8452_CTRL_REG2);
+> > -		if (ret =3D=3D -EIO)
+> > -			continue; /* I2C comm reset */
+> > -		if (ret < 0)
+> > -			return ret;
+> > -		if (!(ret & MMA8452_CTRL_REG2_RST))
+> > -			return 0;
+> > -	}
+> > -
+> > -	return -ETIMEDOUT;
+> > -}
+> > -
+> >  static const struct of_device_id mma8452_dt_ids[] =3D {
+> >  	{ .compatible =3D "fsl,mma8451", .data =3D
+> &mma_chip_info_table[mma8451] },
+> >  	{ .compatible =3D "fsl,mma8452", .data =3D
+> &mma_chip_info_table[mma8452]
+> > }, @@ -1591,10 +1567,6 @@ static int mma8452_probe(struct i2c_client
+> *client,
+> >  	indio_dev->num_channels =3D data->chip_info->num_channels;
+> >  	indio_dev->available_scan_masks =3D mma8452_scan_masks;
+> >
+> > -	ret =3D mma8452_reset(client);
+> > -	if (ret < 0)
+> > -		goto disable_regulators;
+> > -
+> >  	data->data_cfg =3D MMA8452_DATA_CFG_FS_2G;
+> >  	ret =3D i2c_smbus_write_byte_data(client, MMA8452_DATA_CFG,
+> >  					data->data_cfg);
 
 
-------=_NextPart_000_0397_01D829CD.7ABA64E0
+------=_NextPart_000_039B_01D829CE.4CBB1340
 Content-Type: application/pkcs7-signature;
 	name="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -570,8 +403,8 @@ ZSBDQSA1MQswCQYDVQQLDAJJVDERMA8GA1UECgwITlhQIEIuVi4xEjAQBgNVBAcMCUVpbmRob3Zl
 bjEWMBQGA1UECAwNTm9vcmQtQnJhYmFudDETMBEGCgmSJomT8ixkARkWA3diaTETMBEGCgmSJomT
 8ixkARkWA254cDETMBEGCgmSJomT8ixkARkWA2NvbTELMAkGA1UEBhMCTkwCEy0ABsdWyH4wxYEw
 yQ4AAAAGx1YwCQYFKw4DAhoFAKCCArkwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG
-9w0BCQUxDxcNMjIwMjI0MTQyNTUxWjAjBgkqhkiG9w0BCQQxFgQUupcyjjNOV5mTA3dqSZSlkHGY
-z3kwgZMGCSqGSIb3DQEJDzGBhTCBgjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAoGCCqGSIb3
+9w0BCQUxDxcNMjIwMjI0MTQzMTQzWjAjBgkqhkiG9w0BCQQxFgQUhqkgOS8FMbEMfqTNF0tjC4cX
+bLUwgZMGCSqGSIb3DQEJDzGBhTCBgjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAoGCCqGSIb3
 DQMHMAsGCWCGSAFlAwQBAjAOBggqhkiG9w0DAgICAIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAhow
 CwYJYIZIAWUDBAIDMAsGCWCGSAFlAwQCAjALBglghkgBZQMEAgEwgd8GCSsGAQQBgjcQBDGB0TCB
 zjCBtjEcMBoGA1UEAwwTTlhQIEVudGVycHJpc2UgQ0EgNTELMAkGA1UECwwCSVQxETAPBgNVBAoM
@@ -581,11 +414,11 @@ b20xCzAJBgNVBAYTAk5MAhMtAAbHVf9AFft39E7nAAAABsdVMIHhBgsqhkiG9w0BCRACCzGB0aCB
 zjCBtjEcMBoGA1UEAwwTTlhQIEVudGVycHJpc2UgQ0EgNTELMAkGA1UECwwCSVQxETAPBgNVBAoM
 CE5YUCBCLlYuMRIwEAYDVQQHDAlFaW5kaG92ZW4xFjAUBgNVBAgMDU5vb3JkLUJyYWJhbnQxEzAR
 BgoJkiaJk/IsZAEZFgN3YmkxEzARBgoJkiaJk/IsZAEZFgNueHAxEzARBgoJkiaJk/IsZAEZFgNj
-b20xCzAJBgNVBAYTAk5MAhMtAAbHVf9AFft39E7nAAAABsdVMA0GCSqGSIb3DQEBAQUABIIBAEm5
-Rsox19uOVDSOrntoaS+k3rjnGyzWHbPzdebdiFj8xNRQ5fEebJntx3DcB4AJqPW8BSk4mI++E2Xt
-JYaaapYSRkzQGLaAq8UBqbK26XsHiS0m+Me4rz4C8D1bPUAnjXGzXMoxvb2NQp2sX95borErkjQc
-AGQ/keT7hd0NjEgE35WyrpYy1UNXtLRg1grn5AXkjf1PWwDSTZNggR6skyHRUbr9ZOOE+RsKvFN3
-rQzx0M92GSI38EGctjW2EBuwYa6nVagr/ffOkesznx034VKVFbpQX9oiaUg5eH1AWwuRuJ3YgKJn
-rEtpuhF9z7T5Fz1+j+MMxhiyA7k34WCsU9sAAAAAAAA=
+b20xCzAJBgNVBAYTAk5MAhMtAAbHVf9AFft39E7nAAAABsdVMA0GCSqGSIb3DQEBAQUABIIBAIVl
+khzj/UvKiBOOu63nTNlc/xdPloPXkAksiwO8YQn1JAR9q1wD28ALLA2UV8ipQM0InS4dK92QfMK1
+5qqA0E0DhuNvsxsSLRR+uPXYDO0HokNm0FgAdd5K78APgL8QuQXNyrxjxl94M4G4TwQlPfUuzC8R
+VxeL3/r83w5zerVAKqs+ox3a92pMQDRkb/2u9OheLjPw/CMEnv0Px46emfyWR6tEsGo8d7CAJ0vC
+xsKk1PjUZ4tLEqgiWibhiVCHwUmbcTLvnTW17aMxEFSKfpxLDhcGM2R7iwZeaQFr14onp8TXHyVh
+XG4EWAuyV6bik7lFWczsPHsRTDiTfv5tJZ4AAAAAAAA=
 
-------=_NextPart_000_0397_01D829CD.7ABA64E0--
+------=_NextPart_000_039B_01D829CE.4CBB1340--

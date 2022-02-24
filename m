@@ -2,77 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33D674C3778
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Feb 2022 22:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 534054C3831
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Feb 2022 22:52:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231749AbiBXVLY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Feb 2022 16:11:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39760 "EHLO
+        id S234422AbiBXVw3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Feb 2022 16:52:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231464AbiBXVLX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Feb 2022 16:11:23 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84234285727
-        for <linux-iio@vger.kernel.org>; Thu, 24 Feb 2022 13:10:53 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2826B61983
-        for <linux-iio@vger.kernel.org>; Thu, 24 Feb 2022 21:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD011C340E9;
-        Thu, 24 Feb 2022 21:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645737052;
-        bh=of0dgeyEYw65+FoM0blva960Bmm/NelYeS+8mwZtaRw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mgnFTy+/Iw2w+HIhZsZoaHPokVk3nb3ubMC28rB2vt41gH4zN3nUGWXzupmPwlFB4
-         UVcnE1nRRyzORca95Dl7NH1hOmC49WPuJGE3/ysl0rSFj/Dgpw2YWL++MGFlb/SvBH
-         nh5pSRSfYwB8oygB7+2ewJeXeqDlr3g1xZkSNQdS1LAz9kwpPYihiAJR+1HSywvjYj
-         uVD5C2BcmuOeZTRleDeMxYU8XF30foNAyKeflBHSC4afltmMzQ4MFNag5vmDMTIOOZ
-         jcAVLsnjJVuJo2dS/7RyDtgJT8f549o7LTd4ppbVRMCpnFuVSHiLb6QDrG25YhRb3q
-         /FGWrKZ0Q5mXA==
-From:   Nathan Chancellor <nathan@kernel.org>
+        with ESMTP id S235124AbiBXVw1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Feb 2022 16:52:27 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BCAA11B5F7;
+        Thu, 24 Feb 2022 13:51:52 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id v2-20020a7bcb42000000b0037b9d960079so644985wmj.0;
+        Thu, 24 Feb 2022 13:51:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YmFWZxc6krmQRrhWIAxPmo8/k4kV7D8olzPCdDWyKQM=;
+        b=X5E/edASjqW4AmDXaRw68tytzufmqT8gIqxKApCij5Cxi4pSXeLwRjLdO6j9F3wkH4
+         i4fRl1qQo6SNEKbU1COrAitP5CDGXDsMmTpPb90lHkNOczhpfO27ZDei6Qwk650BSaUn
+         MRyMz5vBByitj7LOA3ZtLFSMCTnc+dtxos3cpHnSxBVUE+k1MHBcWJ4CHroOBQ/DIfxf
+         iZ1AA/BP1A40QlD+kDXVxmmLNB2lUHKqSxEvXwc4bbAmLUgvokKBXoAcykTt3uA6XL1/
+         vkrabdcd6O4BDyWBNb9EhW9tgSyXS8tTaZFcAiURnm6W5Zv2y5/5lI+JAYPLTfGAHYmC
+         5q2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=YmFWZxc6krmQRrhWIAxPmo8/k4kV7D8olzPCdDWyKQM=;
+        b=Q9ZGfIuiWDrCCyWY8geDmrq7buJbqsVZTwkVZG/IyysXa24/f4JOGvICuKpwwXP0Ai
+         mjg/NMVsYtXPD9VpSAXWXvT04Slgiy7rXhR6LBxpOb8dYN/u8sHp+G5SeCtTM7BUzpr+
+         sE9GNlSy1JOeTQcjkuDlG5uON6lT5i9mXYqppRx21s1V9nnQQmfi1dXs8FypDJ69b7Dm
+         dwuoq+opESZHijQnDjast0Q6sSfltLaSClbS681bNpetosT8D8DZ7ZnZ7RPV5vXEdvba
+         25C1WtKCfeGCv3RCoLyktOzK0yI3occ5MTaEVSmNkXUHjalZEPLD/1GFziJU+UQmg5au
+         IYAA==
+X-Gm-Message-State: AOAM530alIz2wit82jNKDeMmznl8y7GqedbY+ouea51/A6w0qMIstQtQ
+        +xAmcLO5cYwyCS+9+FOkgzg=
+X-Google-Smtp-Source: ABdhPJxZ1KpbZuMsHDzvLhXF6ZMUiAMtkH8QGbAfvEoDmlzEFAHsu+keY4Gj4RcH8HO14t7vwlBAyw==
+X-Received: by 2002:a05:600c:2101:b0:381:2275:1d71 with SMTP id u1-20020a05600c210100b0038122751d71mr101315wml.90.1645739510678;
+        Thu, 24 Feb 2022 13:51:50 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id x11-20020adfdccb000000b001e57922b8b6sm490014wrm.43.2022.02.24.13.51.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Feb 2022 13:51:50 -0800 (PST)
+From:   Colin Ian King <colin.i.king@gmail.com>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, patches@lists.linux.dev,
-        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH] iio: accel: adxl367: Fix handled initialization in adxl367_irq_handler()
-Date:   Thu, 24 Feb 2022 14:10:34 -0700
-Message-Id: <20220224211034.625130-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: accel: adxl367: Fix uninitialized variable handled
+Date:   Thu, 24 Feb 2022 21:51:49 +0000
+Message-Id: <20220224215149.146181-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Clang warns:
-
-  drivers/iio/accel/adxl367.c:887:2: error: variable 'handled' is uninitialized when used here [-Werror,-Wuninitialized]
-          handled |= adxl367_push_event(indio_dev, status);
-          ^~~~~~~
-  drivers/iio/accel/adxl367.c:879:14: note: initialize the variable 'handled' to silence this warning
-          bool handled;
-                      ^
-                       = 0
-  1 error generated.
-
-This should have used '=' instead of '|='; make that change to resolve
-the warning.
+Variable handle is not initialized leading to potential garbage
+results with the or operations. Fix this by replacing the first
+or operation to an assignment to ensure handled is initialized
+correctly.
 
 Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1605
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
  drivers/iio/accel/adxl367.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -90,8 +94,6 @@ index b452d74b1d4d..350a89b61179 100644
  	handled |= adxl367_push_fifo_data(indio_dev, status, fifo_entries);
  
  	return handled ? IRQ_HANDLED : IRQ_NONE;
-
-base-commit: 2be8795a609800e5071d868d459ce29232fce2c8
 -- 
-2.35.1
+2.34.1
 

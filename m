@@ -2,77 +2,149 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7B474C33CE
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Feb 2022 18:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 567A24C363B
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Feb 2022 20:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbiBXReH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Feb 2022 12:34:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35234 "EHLO
+        id S233337AbiBXTyy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Feb 2022 14:54:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230322AbiBXReE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Feb 2022 12:34:04 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D5F24FA34
-        for <linux-iio@vger.kernel.org>; Thu, 24 Feb 2022 09:33:34 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BDFE61C27
-        for <linux-iio@vger.kernel.org>; Thu, 24 Feb 2022 17:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4709C340EC;
-        Thu, 24 Feb 2022 17:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645724013;
-        bh=Cev1r9hBAVI6M9nknPQtTA8yQ2EasgW0cPDYyo3Bovw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ch4n43tDX8xsiZMVydQaVtldPUJa9Euitsc3oXSFhIUtfhppUZPZoSoPMwMhkvbT+
-         SD+/lIelGYb9TKdaBu3xAgYwzyj+I4Rk+kBaBfUYWDCGHCttw96CTAGESiCei8Mf7K
-         uXWTnl0iKw4wpMB/y7wOP42+eVYsYkiDzV9dy5Q5j3uGua4rYzd6st0JEBJf4pt/1q
-         DIXWxYWkijNXOZ61/Pui1tnclRemj8k9M+kZC8ZiZsnyxJpRSeTdbP1872saD29tiG
-         B8r5Mp2t2AR7GzVaYK/8NuV1KHXXXka9h4zj4dbxt9s0S0Y+V77Pc95z5TXtlEO0Oe
-         fIyiVZ9KyqNFg==
-Date:   Thu, 24 Feb 2022 18:33:26 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Bough Chen <haibo.chen@nxp.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH] iio: accel: mma8452: remove the reset operation during
- driver probe
-Message-ID: <YhfBZv7msnpvDVEs@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Bough Chen <haibo.chen@nxp.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        dl-linux-imx <linux-imx@nxp.com>
-References: <1645505151-5789-1-git-send-email-haibo.chen@nxp.com>
- <20220222164331.00002d18@Huawei.com>
- <VI1PR04MB401628231C1D06E318820D26903D9@VI1PR04MB4016.eurprd04.prod.outlook.com>
+        with ESMTP id S232736AbiBXTyx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Feb 2022 14:54:53 -0500
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CC3825D6CB;
+        Thu, 24 Feb 2022 11:54:23 -0800 (PST)
+Received: by mail-ot1-f43.google.com with SMTP id w3-20020a056830060300b005ad10e3becaso2089791oti.3;
+        Thu, 24 Feb 2022 11:54:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=njTe0/+lEpH/gJZOgGCS3W9+oEq9MCorzign5DzP55k=;
+        b=voynlO6jzLgUX6e0e6C7+AQsAxfGZOdD4CugloYXrmTaXA7Qdio+WA78sxUDS3BLHO
+         Vt61mjnG+q24eDFlo+4CHsGDpsMcDIKJhumsKIteHs1ipH5kfsfmy/1MEDcztjs5mn7k
+         lH1Z46/GQNA3bCCC6/MlP7wc3MzgTvbBwHVfJTpYWuJZZnxn7qmnEKuPfmdWFo94aALe
+         fCenJym0V2z9bzaOkTbhn0oZL5wPOz2gbnGHdG7s7nJK4S0bYNI2sO8nvgIewQk7YxGG
+         sCNYBBeot1oEQKUVOJvnfTlsF+oKqqvZDbtQwxuHV/6S4gD4Vlvr65Rxi/zKCi+UMF9u
+         eErQ==
+X-Gm-Message-State: AOAM531HGge0EWxDxCjJ+qfIuAVvyfCLGsMnUebgWV+fJu8FxrLBy2Oz
+        yWHoiurxayJSWDA1H3RAAw==
+X-Google-Smtp-Source: ABdhPJxkG/S5jS++HWcm7n39QBP/eF9cfi6idHK3/E231CmG31VfArqaJYNwWiM1J8/5Jeo6aeYzRA==
+X-Received: by 2002:a4a:1506:0:b0:2da:ee84:9759 with SMTP id 6-20020a4a1506000000b002daee849759mr1531237oon.65.1645732461513;
+        Thu, 24 Feb 2022 11:54:21 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id u22-20020a056830119600b005afa6a85e22sm138443otq.45.2022.02.24.11.54.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Feb 2022 11:54:20 -0800 (PST)
+Received: (nullmailer pid 3482595 invoked by uid 1000);
+        Thu, 24 Feb 2022 19:54:18 -0000
+Date:   Thu, 24 Feb 2022 13:54:18 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     jic23@kernel.org, mchehab+huawei@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, lars@metafoo.de,
+        andy.shevchenko@gmail.com, matt.ranostay@konsulko.com,
+        ardeleanalex@gmail.com, jacopo@jmondi.org,
+        Andrea Merello <andrea.merello@iit.it>
+Subject: Re: [v3 10/13] dt-bindings: iio: imu: add documentation for Bosch
+ BNO055 bindings
+Message-ID: <YhfiamXM3GGm/ZYj@robh.at.kernel.org>
+References: <20220217162710.33615-1-andrea.merello@gmail.com>
+ <20220217162710.33615-11-andrea.merello@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <VI1PR04MB401628231C1D06E318820D26903D9@VI1PR04MB4016.eurprd04.prod.outlook.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220217162710.33615-11-andrea.merello@gmail.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, Feb 17, 2022 at 05:27:07PM +0100, Andrea Merello wrote:
+> Introduce new documentation file for the Bosch BNO055 IMU
+> 
+> Signed-off-by: Andrea Merello <andrea.merello@iit.it>
 
-> > Wolfram is there a standard way to work around missing ACK in cases like
-> > this?  Would just ignoring the return value be fine or are their i2c masters
-> > that will get stuck if they don't get the expected ack?
+Your author and Sob emails need to match.
 
-Did I get this right: the reset procedures terminates the ACK and STOP?
-And the client expects a new START condition for communication?
-
+> ---
+>  .../bindings/iio/imu/bosch,bno055.yaml        | 59 +++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bno055.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bno055.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bno055.yaml
+> new file mode 100644
+> index 000000000000..e0d06db161a9
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/imu/bosch,bno055.yaml
+> @@ -0,0 +1,59 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/imu/bosch,bno055.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bosch BNO055
+> +
+> +maintainers:
+> +  - Andrea Merello <andrea.merello@iit.it>
+> +
+> +description: |
+> +  Inertial Measurement Unit with Accelerometer, Gyroscope, Magnetometer and
+> +  internal MCU for sensor fusion
+> +  https://www.bosch-sensortec.com/products/smart-sensors/bno055/
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - bosch,bno055
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    serial {
+> +      imu {
+> +        compatible = "bosch,bno055";
+> +        reset-gpios = <&gpio0 54 GPIO_ACTIVE_LOW>;
+> +        clocks = <&imu_clk>;
+> +      };
+> +    };
+> +
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      imu@28 {
+> +        compatible = "bosch,bno055";
+> +        reg = <0x28>;
+> +        reset-gpios = <&gpio0 54 GPIO_ACTIVE_LOW>;
+> +        clocks = <&imu_clk>;
+> +      };
+> +    };
+> -- 
+> 2.17.1
+> 
+> 

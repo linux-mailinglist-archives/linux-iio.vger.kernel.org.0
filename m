@@ -2,46 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51A404C5726
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 18:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4B04C5727
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 18:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbiBZRtu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Feb 2022 12:49:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48358 "EHLO
+        id S230117AbiBZRvn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Feb 2022 12:51:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232010AbiBZRtu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 12:49:50 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B6D27D142
-        for <linux-iio@vger.kernel.org>; Sat, 26 Feb 2022 09:49:15 -0800 (PST)
+        with ESMTP id S229933AbiBZRvm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 12:51:42 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343A427EC17;
+        Sat, 26 Feb 2022 09:51:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64E8660DBD
-        for <linux-iio@vger.kernel.org>; Sat, 26 Feb 2022 17:49:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63CDC340E8;
-        Sat, 26 Feb 2022 17:49:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D6382B80947;
+        Sat, 26 Feb 2022 17:51:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D766C340E8;
+        Sat, 26 Feb 2022 17:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645897754;
-        bh=1OkYZYuIgoRCMnhYZvRSXAQmebHB4Fg/K+A1zy4eck0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=C8/d+DkWdJtV/77ERjmfaRzy5MDw+7uo/mTLjX3flYAs2A8XC/ODVbIt1XJBTMnxs
-         Z6hxlb9t5zvCp2BGgdaDIN8Cr/ip4hNt7/XohUAYqLcrGflFrDaZNv0xnB6Z9GZI9L
-         Rf9Vt5FW028BROzbLrZbak4NVGIgIOyJskXRfanmHhjTQPksKznsgU57tN015+7IJD
-         ztbemmy7gFoBUBTl7VsT+G5F+wWHkTqi20MBHkbV8TqtTH9yAHttaGdJ9Oug90qGiA
-         1dDU5koUGqDheaeS1jbNF+hrPtqLz1uVqGZ2hYdXsBHHOiiAvn3VKExakHnayXYZgC
-         c0eXJjxLNZLuQ==
+        s=k20201202; t=1645897864;
+        bh=V62jRcLH/8MNpKHjxDLun0Cs4D+nxjy4aEAg3Ka1ZY8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Y4DxmxMNqySPLmaJ9+p7N/bL58oFGeTyUjCB37hXekQibCJGsn3rsRbIuqdkSJD4R
+         gbw4or82uI0d1i8MMNF2FJ5kmwuTSgybsg2hQE56mf6FDZzgA6WvhU+/SlBLhtBsTW
+         /a4S3lf1L+/X+uU0DF+x2dmP7NNqHN2GCA20I3brBaaA8vuI3pLX39aOQNVuD67UAW
+         krMFULc4SHmJgsgOHay5QmDP47p6lYtPgbrLAIk7IxwwypRKVGSyqJlCvRc6Ed3pwU
+         LDuoid8KapGOnC/WcoQGLMG66I4sHQ6pes/JUKwYNLCgE0U6jNZ3vclRu+e5Vb/Jgr
+         SAAPLPDwbUHBw==
+Date:   Sat, 26 Feb 2022 17:58:05 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Subject: [PATCH] iio: adc: ad7280a: Fix wrong variable used when setting thresholds.
-Date:   Sat, 26 Feb 2022 17:56:04 +0000
-Message-Id: <20220226175604.662422-1-jic23@kernel.org>
-X-Mailer: git-send-email 2.35.1
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: adxl367: unlock on error in
+ adxl367_buffer_predisable()
+Message-ID: <20220226175805.1f35babb@jic23-huawei>
+In-Reply-To: <20220224150228.GB6856@kili>
+References: <20220224150228.GB6856@kili>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -52,67 +57,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Thu, 24 Feb 2022 18:02:28 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Name of variable change missed in refactoring patch.
+> This error path needs to call the mutex_unlock(&st->lock) before
+> returning.
+> 
+> Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: 112bf4aa4afb ("staging:iio:adc:ad7280a: Switch to standard event control")
-Reported-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
----
+Thanks, applied to the togreg branch of iio.git.
 
-Note that the fixes tag may not be stable. I'll update when applying if
-it has changed.
+Jonathan
 
- drivers/iio/adc/ad7280a.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
-index ef9d27759961..ec9acbf12b9a 100644
---- a/drivers/iio/adc/ad7280a.c
-+++ b/drivers/iio/adc/ad7280a.c
-@@ -745,7 +745,7 @@ static int ad7280a_write_thresh(struct iio_dev *indio_dev,
- 		case IIO_EV_DIR_RISING:
- 			addr = AD7280A_CELL_OVERVOLTAGE_REG;
- 			ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, addr,
--					   1, val);
-+					   1, value);
- 			if (ret)
- 				break;
- 			st->cell_threshhigh = value;
-@@ -753,7 +753,7 @@ static int ad7280a_write_thresh(struct iio_dev *indio_dev,
- 		case IIO_EV_DIR_FALLING:
- 			addr = AD7280A_CELL_UNDERVOLTAGE_REG;
- 			ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, addr,
--					   1, val);
-+					   1, value);
- 			if (ret)
- 				break;
- 			st->cell_threshlow = value;
-@@ -770,18 +770,18 @@ static int ad7280a_write_thresh(struct iio_dev *indio_dev,
- 		case IIO_EV_DIR_RISING:
- 			addr = AD7280A_AUX_ADC_OVERVOLTAGE_REG;
- 			ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, addr,
--					   1, val);
-+					   1, value);
- 			if (ret)
- 				break;
--			st->aux_threshhigh = val;
-+			st->aux_threshhigh = value;
- 			break;
- 		case IIO_EV_DIR_FALLING:
- 			addr = AD7280A_AUX_ADC_UNDERVOLTAGE_REG;
- 			ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, addr,
--					   1, val);
-+					   1, value);
- 			if (ret)
- 				break;
--			st->aux_threshlow = val;
-+			st->aux_threshlow = value;
- 			break;
- 		default:
- 			ret = -EINVAL;
--- 
-2.35.1
+> ---
+>  drivers/iio/accel/adxl367.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+> index b452d74b1d4d..bdc95409abed 100644
+> --- a/drivers/iio/accel/adxl367.c
+> +++ b/drivers/iio/accel/adxl367.c
+> @@ -1359,7 +1359,7 @@ static int adxl367_buffer_predisable(struct iio_dev *indio_dev)
+>  
+>  	ret = adxl367_set_measure_en(st, true);
+>  	if (ret)
+> -		return ret;
+> +		goto out;
+>  
+>  	ret = adxl367_set_temp_adc_mask_en(st, indio_dev->active_scan_mask,
+>  					   false);
 

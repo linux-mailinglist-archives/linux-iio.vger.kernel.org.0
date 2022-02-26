@@ -2,49 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 916964C572A
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 18:53:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B640A4C572D
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 18:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231150AbiBZRyL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Feb 2022 12:54:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
+        id S232161AbiBZRzB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Feb 2022 12:55:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbiBZRyK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 12:54:10 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C17ED237D3
-        for <linux-iio@vger.kernel.org>; Sat, 26 Feb 2022 09:53:35 -0800 (PST)
+        with ESMTP id S232261AbiBZRzA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 12:55:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8035AA024;
+        Sat, 26 Feb 2022 09:54:25 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CAA18B80947
-        for <linux-iio@vger.kernel.org>; Sat, 26 Feb 2022 17:53:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2017C340E8;
-        Sat, 26 Feb 2022 17:53:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 64793B80947;
+        Sat, 26 Feb 2022 17:54:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924F5C340E8;
+        Sat, 26 Feb 2022 17:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645898012;
-        bh=VIfKV/A7k3FnJWADKVUq0cdczoP09UdBX8T7X4jHHCo=;
+        s=k20201202; t=1645898062;
+        bh=FCbTWnkvqcY+p5LVWDDYg6OE7PvWK1uaWEp7papnCU4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VIuYPZeKVVkLRGy2MbqyzV1ZhwEYvH2qfnxaLNNZcoYP9CSXExnHSiVzfqKdwD3AD
-         qnP5XdmKKJvh9zTppnC+ng/wzxeQzBrK+EloN+oh4pLEMl3648gKT2+mIwZYQ5/2wr
-         efu19OwcAHnDBeoxbREGR1jhA2LFHj2Qgozfw05ZbqBk2f2y8BzPYxwoGBigVXFtyv
-         UPqPzCH0BbOL+Uo6vxAmQA1tzQIIV/23FdZWemRoE1oRLyWkAxpd1hx2TUhfOPeSUr
-         ha/e47aMUxQdu1NrneragnIbpkHw4N69UDjP5IbN1AtOezNBJQ6XPMZ7yYvHhPGLf2
-         pJhEFntjgBxdA==
-Date:   Sat, 26 Feb 2022 18:00:32 +0000
+        b=vIGp7sNDgCk9r7szjI366/IOTTQAHJILLA8/mt83rclKu4HnyZhUgSd8lWs3sjVSh
+         7UwU4bnpr/D7jgX4yjc3N/3Cw0GUJFWflbyCYcGlUM9ljSiEKCIo527P/8RzqsBdDB
+         e0s7qK7d0GHTGu9+UZ66Qxe60bw3pG7ddevMohAxwXlJCVDS9crng7+VpNtFA8ygXV
+         RYofOSs9Fjvw/3HZtP141Vx5bRS96R+NX7cI2/RFxJa9YW0hDuDhnDP3t380+5J2IW
+         peN6f0Zu6D0vcYXYIDmWivWYh3sNBqlcq9EtE/AN9Cdgk9KteHVtvDl3pCsIPkyCjg
+         Dr8ypLa5v+PvA==
+Date:   Sat, 26 Feb 2022 18:01:24 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        linux-iio@vger.kernel.org, patches@lists.linux.dev,
-        llvm@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Colin Ian King <colin.i.king@gmail.com>
-Subject: Re: [PATCH] iio: accel: adxl367: Fix handled initialization in
- adxl367_irq_handler()
-Message-ID: <20220226180032.455dc1c2@jic23-huawei>
-In-Reply-To: <20220224211034.625130-1-nathan@kernel.org>
-References: <20220224211034.625130-1-nathan@kernel.org>
+To:     "Colin King (gmail)" <colin.i.king@gmail.com>
+Cc:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        linux-iio@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: iio:adc:ad7280a: Move out of staging
+Message-ID: <20220226180124.175f6162@jic23-huawei>
+In-Reply-To: <69aeef03-69ba-07f4-2506-31e481f86c76@gmail.com>
+References: <69aeef03-69ba-07f4-2506-31e481f86c76@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,51 +55,112 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Feb 2022 14:10:34 -0700
-Nathan Chancellor <nathan@kernel.org> wrote:
+On Thu, 24 Feb 2022 22:56:20 +0000
+"Colin King (gmail)" <colin.i.king@gmail.com> wrote:
 
-> Clang warns:
+> Hi,
 > 
->   drivers/iio/accel/adxl367.c:887:2: error: variable 'handled' is uninitialized when used here [-Werror,-Wuninitialized]
->           handled |= adxl367_push_event(indio_dev, status);
->           ^~~~~~~
->   drivers/iio/accel/adxl367.c:879:14: note: initialize the variable 'handled' to silence this warning
->           bool handled;
->                       ^
->                        = 0
->   1 error generated.
+> Static analysis with clang scan picked up a potential issue with 
+> drivers/iio/adc/ad7280a.c in function ad7280a_write_thresh, the analysis 
+> is as follows:
 > 
-> This should have used '=' instead of '|='; make that change to resolve
-> the warning.
+>          switch (chan->type) {
+>          case IIO_VOLTAGE:
+>                  value = ((val - 1000) * 100) / 1568; /* LSB 15.68mV */
+>                  value = clamp(value, 0L, 0xFFL);
 > 
-> Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1605
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>                  ^^
+> Note: variable value is being assigned a value
+> 
+>                  switch (dir) {
+>                  case IIO_EV_DIR_RISING:
+>                          addr = AD7280A_CELL_OVERVOLTAGE_REG;
+>                          ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, 
+> addr,
+>                                             1, val);
+>                          if (ret)
+>                                  break;
+>                          st->cell_threshhigh = value;
+> 
+> ..and value is being used here ^^
+> 
+>                          break;
+>                  case IIO_EV_DIR_FALLING:
+>                          addr = AD7280A_CELL_UNDERVOLTAGE_REG;
+>                          ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, 
+> addr,
+>                                             1, val);
+>                          if (ret)
+>                                  break;
+>                          st->cell_threshlow = value;
+> 
+> and value is being used here ^^
+> 
+>                          break;
+>                  default:
+>                          ret = -EINVAL;
+>                          goto err_unlock;
+>                  }
+>                  break;
+> 
+> However for the IIO_TEMP case:
+> 
+>          case IIO_TEMP:
+>                  value = (val * 10) / 196; /* LSB 19.6mV */
+>                  value = clamp(value, 0L, 0xFFL);
+> 
+>                  ^^
+> Note: variable value is being assigned a value
+> 
+>                  switch (dir) {
+>                  case IIO_EV_DIR_RISING:
+>                          addr = AD7280A_AUX_ADC_OVERVOLTAGE_REG;
+>                          ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, 
+> addr,
+>                                             1, val);
+>                          if (ret)
+>                                  break;
+>                          st->aux_threshhigh = val;
+>                                               ^^
+> But val is being used here rather than value
+> 
+>                          break;
+>                  case IIO_EV_DIR_FALLING:
+>                          addr = AD7280A_AUX_ADC_UNDERVOLTAGE_REG;
+>                          ret = ad7280_write(st, AD7280A_DEVADDR_MASTER, 
+> addr,
+>                                             1, val);
+>                          if (ret)
+>                                  break;
+>                          st->aux_threshlow = val;
+>                                              ^^
+> and val us being used here rather than value too
+> 
+> 
+> So for the IIO_TEMP case either the assignment to value is redundant or 
+> the setting of st->aux_threshhigh or st->auxthreashlow is incorrect.
 
-Applied to the togreg branch of iio.git.
-I also added a second reported-by to reflect the next patch setting in my inbox which
-was Colin fixing the same thing.
+Good spot Colin.
 
-Thanks!
+There is clearly something wrong here. Looking back at the patch where
+I refactored this it looks to me like I messed up a variable rename
+and all those writes + setting of aux_threshlow and similar should be using
+value, not val.
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=togreg&id=112bf4aa4afb5608d77ac9208758528bcdfae70d
 
-> ---
->  drivers/iio/accel/adxl367.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+The modeling we used to verify that particular feature 'worked'
+was rather minimal so missed this.
+
+I'll roll a patch an send out shortly.  No huge rush as fix can go in during
+the rc phase of 5.18 if we don't get it reviewed fast enough to make the
+merge window.
+
+Thanks,
+
+Jonathan
+
+
+
 > 
-> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-> index b452d74b1d4d..350a89b61179 100644
-> --- a/drivers/iio/accel/adxl367.c
-> +++ b/drivers/iio/accel/adxl367.c
-> @@ -884,7 +884,7 @@ static irqreturn_t adxl367_irq_handler(int irq, void *private)
->  	if (ret)
->  		return IRQ_NONE;
->  
-> -	handled |= adxl367_push_event(indio_dev, status);
-> +	handled = adxl367_push_event(indio_dev, status);
->  	handled |= adxl367_push_fifo_data(indio_dev, status, fifo_entries);
->  
->  	return handled ? IRQ_HANDLED : IRQ_NONE;
-> 
-> base-commit: 2be8795a609800e5071d868d459ce29232fce2c8
+> Colin
 

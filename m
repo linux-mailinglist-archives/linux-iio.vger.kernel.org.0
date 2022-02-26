@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC0C4C56D3
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 17:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C214C56DA
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 17:39:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230442AbiBZQgi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Feb 2022 11:36:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57680 "EHLO
+        id S232356AbiBZQje (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Feb 2022 11:39:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230359AbiBZQgi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 11:36:38 -0500
+        with ESMTP id S232358AbiBZQj3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 11:39:29 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6090B26295B;
-        Sat, 26 Feb 2022 08:36:03 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771292763DE;
+        Sat, 26 Feb 2022 08:38:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 01F19B80814;
-        Sat, 26 Feb 2022 16:36:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F649C340E8;
-        Sat, 26 Feb 2022 16:35:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 305B0B80814;
+        Sat, 26 Feb 2022 16:38:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A18C340E8;
+        Sat, 26 Feb 2022 16:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645893360;
-        bh=xX8VmDztp3N0GoPaZtIyUGbJBpyw5EhUWfj6kUcQHCc=;
+        s=k20201202; t=1645893532;
+        bh=d5AVYgPxJWn9UwC6aAdRHNnNvHYGW63YkaCdBsPCMW0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HR9lfhyI+fHAOfKgfe05UMA/jXHbf9+uZhq595RCkVcX2s0qFxVwi1STNsa5T6+7s
-         oZURCoGXOraYw3UPCridA37xCmIWnbIjMxIHx7OIx/Asb11+gS9mR+i9459ey1S2lI
-         4glj1gPAul4lWU6WYSqpPPaLit3AhAFDb5HrP0+R0SH1oPRqoa2hkOJBPmZE+PSX6r
-         mfiEtaQotW3aHoj90xMnxT96lX3f6cLtJ3NKhmMYCWUrln5UMYI9/MlHgl5rvmG/Lj
-         ur7/lhQlbd2Z/9pIE/A0PJ1PLDK0rP0SYvtxlhIdU5tHUqWMNFJnu+W3iVL4ZoqtcS
-         othBeSDGXJzKQ==
-Date:   Sat, 26 Feb 2022 16:43:00 +0000
+        b=brNXrWjEttinCo9d52z+QPt+qcJM7w6ExHd9GTBjpi3ayjtMzeQYsHVedmdw9cchi
+         1tG47rMaJ6sW+f0pQ1F/BbaaFUFVww9yV5x9xcqmMYsiRY2wFJ4lsbK84fCofNdBEl
+         OQohHXygKhHZfTOeNoUkuwYjiYJFBp5viuNjaP8mUifG7kPrvw9ENMc7LEBgpQwNqi
+         MAJsPjUECXtl5aGviLWl3BwACkMO5uXvn4r/qk02HpZiBg4JGpoHa+msfla6xd8+t0
+         OW63mnzyfgH0kAxodbZxxoc9RRCuOWhS1g9EflY95PKoMa2xt41W/dsBxPSy8QOycY
+         aR1dW9Q3xLIOQ==
+Date:   Sat, 26 Feb 2022 16:45:52 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Michal Simek <monstr@monstr.eu>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] iio: adc: xilinx-ams: Use
- devm_delayed_work_autocancel() to simplify code
-Message-ID: <20220226164300.63b31841@jic23-huawei>
-In-Reply-To: <f874a9c7-8d8d-fecc-8fc9-51dcf37cf60b@monstr.eu>
-References: <2626e6a057e40cd2271ef0e5f81d12e607bad5b4.1644776929.git.christophe.jaillet@wanadoo.fr>
-        <20220220114552.53fedd33@jic23-huawei>
-        <f874a9c7-8d8d-fecc-8fc9-51dcf37cf60b@monstr.eu>
+To:     Robert Hancock <robert.hancock@calian.com>,
+        "michal.simek@xilinx.com" <michal.simek@xilinx.com>
+Cc:     "anand.ashok.dumbre@xilinx.com" <anand.ashok.dumbre@xilinx.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "manish.narani@xilinx.com" <manish.narani@xilinx.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 0/4] Xilinx AMS fixes
+Message-ID: <20220226164552.7fed4f1d@jic23-huawei>
+In-Reply-To: <9aeda9dd153f470ae630cff79c374e66ffbeade8.camel@calian.com>
+References: <20220127173450.3684318-1-robert.hancock@calian.com>
+        <20220130124605.6268bfc5@jic23-huawei>
+        <9aeda9dd153f470ae630cff79c374e66ffbeade8.camel@calian.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,43 +61,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Feb 2022 11:02:00 +0100
-Michal Simek <monstr@monstr.eu> wrote:
+On Wed, 9 Feb 2022 19:49:27 +0000
+Robert Hancock <robert.hancock@calian.com> wrote:
 
-> Hi,
-> 
-> On 2/20/22 12:45, Jonathan Cameron wrote:
-> > On Sun, 13 Feb 2022 19:29:05 +0100
-> > Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+> On Sun, 2022-01-30 at 12:46 +0000, Jonathan Cameron wrote:
+> > On Thu, 27 Jan 2022 11:34:46 -0600
+> > Robert Hancock <robert.hancock@calian.com> wrote:
 > >   
-> >> Use devm_delayed_work_autocancel() instead of hand writing it. This is
-> >> less verbose and saves a few lines of code.
-> >>
-> >> devm_delayed_work_autocancel() uses devm_add_action() instead of
-> >> devm_add_action_or_reset(). This is fine, because if the underlying memory
-> >> allocation fails, no work has been scheduled yet. So there is nothing to
-> >> undo.
-> >>
-> >> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>  
-> > Looks good to me, but I'd ideally like some input from someone familiar with
-> > the driver.  
+> > > Various fixes for the Xilinx AMS driver.
+> > > 
+> > > Changes since v1:
+> > > -drop addition to ZynqMP device tree, will be submitted elsewhere
+> > > -add patch to fix DT binding to add missing clock entry  
+> > 
+> > I'm fine with these but would like to leave them all on list a tiny
+> > bit longer so we can hopefully get some review, particularly on patches
+> > 1 and 4.
+> > 
+> > Jonathan  
 > 
-> Anand told me that the change is fine that's why here is my
-> Acked-by: Michal Simek <michal.simek@xilinx.com>
+> Hi all,
 > 
-> Jonathan: Anand decided to do change in his carrier that's why that emails won't 
-> go through. But I am still around if you need something xilinx/amd to test.
+> I don't think I've gotten any feedback. Is anyone able to review/test?
 > 
-> Thanks,
-> Michal
+Michal,
 
-Thanks Michal and best wishes to Anand for whatever comes next!
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to take a quick look before I expose this to linux-next.
+If you have a chance to take a quick look at this series that would
+be great.
 
 Thanks,
 
 Jonathan
 
+
+> >   
+> > > Robert Hancock (4):
+> > >   dt-bindings: iio: adc: zynqmp_ams: Add clock entry
+> > >   iio: adc: xilinx-ams: Fixed missing PS channels
+> > >   iio: adc: xilinx-ams: Fixed wrong sequencer register settings
+> > >   iio: adc: xilinx-ams: Fix single channel switching sequence
+> > > 
+> > >  .../bindings/iio/adc/xlnx,zynqmp-ams.yaml         |  8 ++++++++
+> > >  drivers/iio/adc/xilinx-ams.c                      | 15 +++++++++++----
+> > >  2 files changed, 19 insertions(+), 4 deletions(-)
+> > >   
 

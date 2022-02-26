@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8E74C56F1
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 18:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03DDF4C571E
+	for <lists+linux-iio@lfdr.de>; Sat, 26 Feb 2022 18:28:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231203AbiBZRFf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Feb 2022 12:05:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50664 "EHLO
+        id S231327AbiBZR3O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Feb 2022 12:29:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229924AbiBZRFf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 12:05:35 -0500
+        with ESMTP id S230160AbiBZR3O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Feb 2022 12:29:14 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 107FD106B04;
-        Sat, 26 Feb 2022 09:05:00 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CCC21D6F62;
+        Sat, 26 Feb 2022 09:28:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99F8E60C86;
-        Sat, 26 Feb 2022 17:04:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA92C340E8;
-        Sat, 26 Feb 2022 17:04:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2ED160DB6;
+        Sat, 26 Feb 2022 17:28:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326F0C340E8;
+        Sat, 26 Feb 2022 17:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645895099;
-        bh=g7yo3fMuqJTQ1SHGCREG0ls4yeOh0MQ0TqRbYe1i/cw=;
+        s=k20201202; t=1645896517;
+        bh=hY7bEZyYMR2Ug9qjQSHJfsMY8JmzV826SRZRNb4Idws=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BxzDkYNYu3oh4WTcVLbiqWNDxHytoQ2IcMez4PIDiSC9Wz4JJUg1yO9Wj3sGC5ERh
-         JgQH7VCKCIWKBGf2Y+HRw3oqPbh+aJdtrRigZOULUQ/3IIpUARy6YNfdrP74QE+Vkc
-         e5/H8YTpKCynsDt/bm4QaVONsEXCFXfbNPkYag3sii9UYNSsqp+cfngOIsJSrMGNqn
-         7+gcBcY9mFiMB2RqMuEvO39L3JtM+PDReeCUJe1CAfxUlvfA9JkoNUU+caFe90i+DJ
-         jVq6QFt6B4s6zco4LHxn9hcVmG2jzCnKnl1/PHLbJGAhWOPtudSGfx5pI3yiroG/Ve
-         0fzvSGYsYSUrA==
-Date:   Sat, 26 Feb 2022 17:11:58 +0000
+        b=ZadyCV3v0YkbYAJDdbOSjgJMd5LzdmITJhtdSMwA7FbSvASzzxY8w/A5xqQBQK4VJ
+         X+/6QuddjoEackiHlHrGV6ey98PGrMiZclPDwl+6tQW5lgbzXn9mjcMTAAZwWgJY3G
+         d66NVroyarMz0o7sgROEace/uZGKqZ/hHBBtEdLSW+GY3q4fspd4T7XasC3rtrJD96
+         FXOm/KvT5+1nI6r+6aMdA8+5rRpVWCZ/TU6GRcTjwx7szJEjd8uQzm+Y7VxUF8Q/Tw
+         dZJJVQl2QM5qQkjMNGaGLBJpsKAJMB/4tjtBjzUUJ3LBiaR8tEGZs5hcKLmRhjAjJ5
+         73SrjYAx5n8pw==
+Date:   Sat, 26 Feb 2022 17:35:35 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Caleb Connolly <caleb.connolly@linaro.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -42,14 +42,13 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        john.stultz@linaro.org, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH v8 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid
- information to clients
-Message-ID: <20220226171158.4ced99d7@jic23-huawei>
-In-Reply-To: <20220221220743.541704-3-caleb.connolly@linaro.org>
+        john.stultz@linaro.org
+Subject: Re: [PATCH v8 5/9] iio: adc: qcom-spmi-rradc: introduce round robin
+ adc
+Message-ID: <20220226173535.5b31da09@jic23-huawei>
+In-Reply-To: <20220221220743.541704-6-caleb.connolly@linaro.org>
 References: <20220221220743.541704-1-caleb.connolly@linaro.org>
-        <20220221220743.541704-3-caleb.connolly@linaro.org>
+        <20220221220743.541704-6-caleb.connolly@linaro.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,356 +63,430 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Feb 2022 22:07:36 +0000
+On Mon, 21 Feb 2022 22:07:39 +0000
 Caleb Connolly <caleb.connolly@linaro.org> wrote:
 
-> Some PMIC functions such as the RRADC need to be aware of the PMIC
-> chip revision information to implement errata or otherwise adjust
-> behaviour, export the PMIC information to enable this.
+> The Round Robin ADC is responsible for reading data about the rate of
+> charge from the USB or DC input ports, it can also read the battery
+> ID (resistence), skin temperature and the die temperature of the pmic.
+> It is found on the PMI8998 and PM660 Qualcomm PMICs.
 > 
-> This is specifically required to enable the RRADC to adjust
-> coefficients based on which chip fab the PMIC was produced in,
-> this can vary per unique device and therefore has to be read at
-> runtime.
-> 
-> [bugs in previous revision]
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 
-Hi Caleb,
+Hi Calib,
 
-One trivial question about a comment below.
+Unfortunately this fell for the normal rule that everytime someone
+rereads some code they'll find something new :(
 
-Otherwise, looking for mfd ack from Lee.
-
-Is anyone actively maintaining mfd/qcom-spmi-pmic.c?
-If some one at least familiar with that code (Bjorn or Stephen maybe?)
-could take a quick look that would also be great.
-
-Thanks,
+All minor stuff though so fingers crossed for v9.
+The endian stuff isn't strictly necessary but it is always better to use explicit
+endian types where possible as it hardens the code against forgetting to convert
+them etc.
 
 Jonathan
 
-
 > ---
->  drivers/mfd/qcom-spmi-pmic.c      | 174 ++++++++++++++++++++----------
->  include/soc/qcom/qcom-spmi-pmic.h |  60 +++++++++++
->  2 files changed, 178 insertions(+), 56 deletions(-)
->  create mode 100644 include/soc/qcom/qcom-spmi-pmic.h
-> 
-> diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
-> index 1cacc00aa6c9..1ef426a1513b 100644
-> --- a/drivers/mfd/qcom-spmi-pmic.c
-> +++ b/drivers/mfd/qcom-spmi-pmic.c
-> @@ -3,11 +3,16 @@
->   * Copyright (c) 2014, The Linux Foundation. All rights reserved.
->   */
->  
-> +#include <linux/device.h>
-> +#include <linux/errno.h>
-> +#include <linux/gfp.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/spmi.h>
-> +#include <linux/types.h>
->  #include <linux/regmap.h>
->  #include <linux/of_platform.h>
-> +#include <soc/qcom/qcom-spmi-pmic.h>
->  
->  #define PMIC_REV2		0x101
->  #define PMIC_REV3		0x102
-> @@ -17,37 +22,6 @@
->  
->  #define PMIC_TYPE_VALUE		0x51
->  
-> -#define COMMON_SUBTYPE		0x00
-> -#define PM8941_SUBTYPE		0x01
-> -#define PM8841_SUBTYPE		0x02
-> -#define PM8019_SUBTYPE		0x03
-> -#define PM8226_SUBTYPE		0x04
-> -#define PM8110_SUBTYPE		0x05
-> -#define PMA8084_SUBTYPE		0x06
-> -#define PMI8962_SUBTYPE		0x07
-> -#define PMD9635_SUBTYPE		0x08
-> -#define PM8994_SUBTYPE		0x09
-> -#define PMI8994_SUBTYPE		0x0a
-> -#define PM8916_SUBTYPE		0x0b
-> -#define PM8004_SUBTYPE		0x0c
-> -#define PM8909_SUBTYPE		0x0d
-> -#define PM8028_SUBTYPE		0x0e
-> -#define PM8901_SUBTYPE		0x0f
-> -#define PM8950_SUBTYPE		0x10
-> -#define PMI8950_SUBTYPE		0x11
-> -#define PM8998_SUBTYPE		0x14
-> -#define PMI8998_SUBTYPE		0x15
-> -#define PM8005_SUBTYPE		0x18
-> -#define PM660L_SUBTYPE		0x1A
-> -#define PM660_SUBTYPE		0x1B
-> -#define PM8150_SUBTYPE		0x1E
-> -#define PM8150L_SUBTYPE		0x1f
-> -#define PM8150B_SUBTYPE		0x20
-> -#define PMK8002_SUBTYPE		0x21
-> -#define PM8009_SUBTYPE		0x24
-> -#define PM8150C_SUBTYPE		0x26
-> -#define SMB2351_SUBTYPE		0x29
-> -
->  static const struct of_device_id pmic_spmi_id_table[] = {
->  	{ .compatible = "qcom,pm660",     .data = (void *)PM660_SUBTYPE },
->  	{ .compatible = "qcom,pm660l",    .data = (void *)PM660L_SUBTYPE },
-> @@ -81,42 +55,118 @@ static const struct of_device_id pmic_spmi_id_table[] = {
->  	{ }
->  };
->  
-> -static void pmic_spmi_show_revid(struct regmap *map, struct device *dev)
-> +/**
-> + * qcom_pmic_get() - Get a pointer to the base PMIC device
+
+
+> diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
+> new file mode 100644
+> index 000000000000..f69d95103c82
+> --- /dev/null
+> +++ b/drivers/iio/adc/qcom-spmi-rradc.c
+> @@ -0,0 +1,1011 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2022 Linaro Limited.
+> + *  Author: Caleb Connolly <caleb.connolly@linaro.org>
 > + *
-> + * @dev: the pmic function device
-> + * @return: the struct qcom_spmi_pmic* pointer associated with the function device
-> + *
-> + * A PMIC can be represented by multiple SPMI devices, but
-> + * only the base PMIC device will contain a reference to
-> + * the revision information.
-> + *
-> + * This function takes a pointer to a function device and
-> + * returns a pointer to the base PMIC device.
+> + * This driver is for the Round Robin ADC found in the pmi8998 and pm660 PMICs.
 > + */
-> +const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev)
+
+...
+
+> +static const int batt_id_delays[] = { 0, 1, 4, 12, 20, 40, 60, 80 };
+> +static const struct rradc_channel rradc_chans[RR_ADC_CHAN_MAX];
+> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX];
+> +
+> +static int rradc_read(struct rradc_chip *chip, u16 addr, u8 *data, int len)
+
+This function is only ever called in paths which then convert *data to le16.
+As such, pass in __le16 *buf
+regmap_bulk_read() takes a void * so that will work fine without casting.
+The size should still be bytes to reflect that we are reading multiple 8 bit
+registers.
+
 > +{
-> +	struct spmi_device *sdev;
-> +	struct device_node *spmi_bus;
-> +	struct device_node *other_usid = NULL;
-> +	int function_parent_usid, ret;
-> +	u32 reg[2];
-> +
-> +	if (!of_match_device(pmic_spmi_id_table, dev->parent))
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	sdev = to_spmi_device(dev->parent);
-> +	if (!sdev)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	/*
-> +	 * Quick return if the function device is already in the right
-> +	 * USID
-> +	 */
-> +	if (sdev->usid % 2 == 0)
-> +		return spmi_device_get_drvdata(sdev);
-> +
-> +	function_parent_usid = sdev->usid;
-> +
-> +	/*
-> +	 * Walk through the list of PMICs until we find the sibling USID.
-> +	 * The goal is the find to previous sibling. Assuming there is no
+> +	int ret, retry_cnt = 0;
+> +	u8 data_check[RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN];
+elegance would make this __le16 as well but that probably doesn't matter.
 
-Probably:  The goal is to find the previous sibling. ?
+Possibly you'll have to do something a bit clever at the memcmp to force
+dropping of the endian markings - build with C=1, W=1 and see if it complains.
 
-> +	 * PMIC with more than 2 USIDs. We know that function_parent_usid
-> +	 * is one greater than the base USID.
-> +	 */
-> +	spmi_bus = of_get_parent(sdev->dev.parent->of_node);
-> +	do {
-> +		other_usid = of_get_next_child(spmi_bus, other_usid);
-> +		ret = of_property_read_u32_array(other_usid, "reg", reg, 2);
-> +		if (ret)
-> +			return ERR_PTR(ret);
-> +		sdev = spmi_device_from_of(other_usid);
-> +		if (sdev == NULL) {
-> +			/*
-> +			 * If the base USID for this PMIC hasn't probed yet
-> +			 * but the secondary USID has, then we need to defer
-> +			 * the function driver so that it will attempt to
-> +			 * probe again when the base USID is ready.
-> +			 */
-> +			if (reg[0] == function_parent_usid - 1)
-> +				return ERR_PTR(-EPROBE_DEFER);
 > +
+> +	if (len > RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN) {
+> +		dev_err(chip->dev,
+> +			"Can't read more than %d bytes, but asked to read %d bytes.\n",
+> +			RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN, len);
+> +		return -EINVAL;
+> +	}
+> +
+> +	while (retry_cnt < RR_ADC_COHERENT_CHECK_RETRY) {
+> +		ret = regmap_bulk_read(chip->regmap, chip->base + addr, data,
+> +				       len);
+> +		if (ret < 0) {
+> +			dev_err(chip->dev, "rr_adc reg 0x%x failed :%d\n", addr,
+> +				ret);
+> +			return ret;
+> +		}
+> +
+> +		ret = regmap_bulk_read(chip->regmap, chip->base + addr,
+> +				       data_check, len);
+> +		if (ret < 0) {
+> +			dev_err(chip->dev, "rr_adc reg 0x%x failed :%d\n", addr,
+> +				ret);
+> +			return ret;
+> +		}
+> +
+> +		if (memcmp(data, data_check, len) != 0) {
+> +			retry_cnt++;
+> +			dev_dbg(chip->dev,
+> +				"coherent read error, retry_cnt:%d\n",
+> +				retry_cnt);
 > +			continue;
 > +		}
 > +
-> +		if (reg[0] == function_parent_usid - 1)
-> +			return spmi_device_get_drvdata(sdev);
-> +	} while (other_usid->sibling);
+> +		break;
+> +	}
 > +
-> +	return ERR_PTR(-ENODATA);
+> +	if (retry_cnt == RR_ADC_COHERENT_CHECK_RETRY)
+> +		dev_err(chip->dev, "Retry exceeded for coherrency check\n");
+> +
+> +	return ret;
 > +}
-> +EXPORT_SYMBOL(qcom_pmic_get);
 > +
-> +static inline void pmic_print_info(struct device *dev, struct qcom_spmi_pmic *pmic)
+
+> +static int rradc_do_conversion(struct rradc_chip *chip,
+> +			       enum rradc_channel_id chan_address, u16 *data)
 > +{
-> +	dev_dbg(dev, "%x: %s v%d.%d\n",
-> +		pmic->subtype, pmic->name, pmic->major, pmic->minor);
+> +	const struct rradc_channel *chan = &rradc_chans[chan_address];
+> +	const struct iio_chan_spec *iio_chan = &rradc_iio_chans[chan_address];
+> +	int ret;
+> +	u8 buf[6];
+
+I missed this until now, but buf is only ever used as __le16 buf[3]
+so give it that type and you can use
+le16_to_cpu() as it will be aligned.
+
+ 
+> +
+> +	mutex_lock(&chip->conversion_lock);
+> +
+> +	switch (chan_address) {
+> +	case RR_ADC_BATT_ID:
+> +		ret = rradc_prepare_batt_id_conversion(chip, chan_address, data);
+> +		if (ret < 0) {
+> +			dev_err(chip->dev, "Battery ID conversion failed:%d\n",
+> +				ret);
+> +			goto unlock_out;
+> +		}
+> +		break;
+> +
+> +	case RR_ADC_USBIN_V:
+> +	case RR_ADC_DIE_TEMP:
+> +		ret = rradc_read_status_in_cont_mode(chip, chan_address);
+> +		if (ret < 0) {
+> +			dev_err(chip->dev,
+> +				"Error reading in continuous mode:%d\n", ret);
+> +			goto unlock_out;
+> +		}
+> +		break;
+> +	default:
+> +		if (!rradc_is_ready(chip, chan_address)) {
+> +			/*
+> +			 * Usually this means the channel isn't attached, for example
+> +			 * the in_voltage_usbin_v_input channel will not be ready if
+> +			 * no USB cable is attached
+> +			 */
+> +			dev_dbg(chip->dev, "channel '%s' is not ready\n",
+> +				iio_chan->extend_name);
+> +			ret = -ENODATA;
+> +			goto unlock_out;
+> +		}
+> +		break;
+> +	}
+> +
+> +	ret = rradc_read(chip, chan->lsb, buf, chan->size);
+> +	if (ret) {
+> +		dev_err(chip->dev, "read data failed\n");
+> +		goto unlock_out;
+> +	}
+> +
+> +	/*
+> +	 * For the battery ID we read the register for every ID ADC and then
+> +	 * see which one is actually connected.
+> +	 */
+> +	if (chan_address == RR_ADC_BATT_ID) {
+> +		u16 batt_id_150 = get_unaligned_le16(buf + 4);
+> +		u16 batt_id_15 = get_unaligned_le16(buf + 2);
+> +		u16 batt_id_5 = get_unaligned_le16(buf);
+> +
+> +		if (!batt_id_150 && !batt_id_15 && !batt_id_5) {
+> +			dev_err(chip->dev,
+> +				"Invalid batt_id values with all zeros\n");
+> +			ret = -EINVAL;
+> +			goto unlock_out;
+> +		}
+> +
+> +		if (batt_id_150 <= RR_ADC_BATT_ID_RANGE) {
+> +			*data = batt_id_150;
+> +			chip->batt_id_data = 150;
+> +		} else if (batt_id_15 <= RR_ADC_BATT_ID_RANGE) {
+> +			*data = batt_id_15;
+> +			chip->batt_id_data = 15;
+> +		} else {
+> +			*data = batt_id_5;
+> +			chip->batt_id_data = 5;
+> +		}
+> +	} else {
+> +		/*
+> +		 * All of the other channels are either 1 or 2 bytes.
+> +		 * We can rely on the second byte being 0 for 1-byte channels.
+> +		 */
+> +		*data = get_unaligned_le16(buf);
+> +	}
+> +
+> +unlock_out:
+> +	mutex_unlock(&chip->conversion_lock);
+> +
+> +	return ret;
 > +}
 > +
-> +static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
-> +				 struct qcom_spmi_pmic *pmic)
->  {
-> -	unsigned int rev2, minor, major, type, subtype;
-> -	const char *name = "unknown";
->  	int ret, i;
->  
-> -	ret = regmap_read(map, PMIC_TYPE, &type);
-> +	ret = regmap_read(map, PMIC_TYPE, &pmic->type);
->  	if (ret < 0)
-> -		return;
-> +		return ret;
->  
-> -	if (type != PMIC_TYPE_VALUE)
-> -		return;
-> +	if (pmic->type != PMIC_TYPE_VALUE)
-> +		return ret;
->  
-> -	ret = regmap_read(map, PMIC_SUBTYPE, &subtype);
-> +	ret = regmap_read(map, PMIC_SUBTYPE, &pmic->subtype);
->  	if (ret < 0)
-> -		return;
-> +		return ret;
->  
->  	for (i = 0; i < ARRAY_SIZE(pmic_spmi_id_table); i++) {
-> -		if (subtype == (unsigned long)pmic_spmi_id_table[i].data)
-> +		if (pmic->subtype == (unsigned long)pmic_spmi_id_table[i].data)
->  			break;
->  	}
->  
->  	if (i != ARRAY_SIZE(pmic_spmi_id_table))
-> -		name = pmic_spmi_id_table[i].compatible;
-> +		pmic->name = devm_kstrdup_const(dev, pmic_spmi_id_table[i].compatible, GFP_KERNEL);
->  
-> -	ret = regmap_read(map, PMIC_REV2, &rev2);
-> +	ret = regmap_read(map, PMIC_REV2, &pmic->rev2);
->  	if (ret < 0)
-> -		return;
-> +		return ret;
->  
-> -	ret = regmap_read(map, PMIC_REV3, &minor);
-> +	ret = regmap_read(map, PMIC_REV3, &pmic->minor);
->  	if (ret < 0)
-> -		return;
-> +		return ret;
->  
-> -	ret = regmap_read(map, PMIC_REV4, &major);
-> +	ret = regmap_read(map, PMIC_REV4, &pmic->major);
->  	if (ret < 0)
-> -		return;
-> +		return ret;
->  
->  	/*
->  	 * In early versions of PM8941 and PM8226, the major revision number
-> @@ -124,14 +174,16 @@ static void pmic_spmi_show_revid(struct regmap *map, struct device *dev)
->  	 * Increment the major revision number here if the chip is an early
->  	 * version of PM8941 or PM8226.
->  	 */
-> -	if ((subtype == PM8941_SUBTYPE || subtype == PM8226_SUBTYPE) &&
-> -	    major < 0x02)
-> -		major++;
-> +	if ((pmic->subtype == PM8941_SUBTYPE || pmic->subtype == PM8226_SUBTYPE) &&
-> +	    pmic->major < 0x02)
-> +		pmic->major++;
+
+...
+
+
 > +
-> +	if (pmic->subtype == PM8110_SUBTYPE)
-> +		pmic->minor = pmic->rev2;
->  
-> -	if (subtype == PM8110_SUBTYPE)
-> -		minor = rev2;
-> +	pmic_print_info(dev, pmic);
->  
-> -	dev_dbg(dev, "%x: %s v%d.%d\n", subtype, name, major, minor);
-> +	return 0;
->  }
->  
->  static const struct regmap_config spmi_regmap_config = {
-> @@ -144,14 +196,24 @@ static const struct regmap_config spmi_regmap_config = {
->  static int pmic_spmi_probe(struct spmi_device *sdev)
->  {
->  	struct regmap *regmap;
-> +	struct qcom_spmi_pmic *pmic;
+> +static int rradc_read_raw(struct iio_dev *indio_dev,
+> +			  struct iio_chan_spec const *chan_spec, int *val,
+> +			  int *val2, long mask)
+> +{
+> +	struct rradc_chip *chip = iio_priv(indio_dev);
+> +	const struct rradc_channel *chan;
 > +	int ret;
->  
->  	regmap = devm_regmap_init_spmi_ext(sdev, &spmi_regmap_config);
->  	if (IS_ERR(regmap))
->  		return PTR_ERR(regmap);
->  
-> +	pmic = devm_kzalloc(&sdev->dev, sizeof(*pmic), GFP_KERNEL);
-> +	if (!pmic)
-> +		return -ENOMEM;
+> +	u16 adc_code;
 > +
->  	/* Only the first slave id for a PMIC contains this information */
-> -	if (sdev->usid % 2 == 0)
-> -		pmic_spmi_show_revid(regmap, &sdev->dev);
-> +	if (sdev->usid % 2 == 0) {
-> +		ret = pmic_spmi_load_revid(regmap, &sdev->dev, pmic);
+> +	if (chan_spec->address >= RR_ADC_CHAN_MAX) {
+> +		dev_err(chip->dev, "Invalid channel index:%lu\n",
+> +			chan_spec->address);
+> +		return -EINVAL;
+> +	}
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SCALE:
+> +		return rradc_read_scale(chip, chan_spec->address, val, val2);
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		return rradc_read_offset(chip, chan_spec->address, val);
+> +	case IIO_CHAN_INFO_RAW:
+> +		chan = &rradc_chans[chan_spec->address];
+
+chan unused in this case statement.
+
+> +		ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
 > +		if (ret < 0)
 > +			return ret;
-> +		spmi_device_set_drvdata(sdev, pmic);
+> +
+> +		*val = adc_code;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		chan = &rradc_chans[chan_spec->address];
+> +		if (!chan->scale_fn)
+> +			return -EINVAL;
+> +		ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		*val = chan->scale_fn(chip, adc_code, val);
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
 > +	}
->  
->  	return devm_of_platform_populate(&sdev->dev);
->  }
-> diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-> new file mode 100644
-> index 000000000000..a8a77be22cfc
-> --- /dev/null
-> +++ b/include/soc/qcom/qcom-spmi-pmic.h
-> @@ -0,0 +1,60 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/* Copyright (c) 2021 Linaro. All rights reserved.
-> + * Copyright (c) 2021 Caleb Connolly <caleb.connolly@linaro.org>
-> + */
+> +}
 > +
-> +#ifndef __QCOM_PMIC_H__
-> +#define __QCOM_PMIC_H__
-> +
-> +#define COMMON_SUBTYPE		0x00
-> +#define PM8941_SUBTYPE		0x01
-> +#define PM8841_SUBTYPE		0x02
-> +#define PM8019_SUBTYPE		0x03
-> +#define PM8226_SUBTYPE		0x04
-> +#define PM8110_SUBTYPE		0x05
-> +#define PMA8084_SUBTYPE		0x06
-> +#define PMI8962_SUBTYPE		0x07
-> +#define PMD9635_SUBTYPE		0x08
-> +#define PM8994_SUBTYPE		0x09
-> +#define PMI8994_SUBTYPE		0x0a
-> +#define PM8916_SUBTYPE		0x0b
-> +#define PM8004_SUBTYPE		0x0c
-> +#define PM8909_SUBTYPE		0x0d
-> +#define PM8028_SUBTYPE		0x0e
-> +#define PM8901_SUBTYPE		0x0f
-> +#define PM8950_SUBTYPE		0x10
-> +#define PMI8950_SUBTYPE		0x11
-> +#define PM8998_SUBTYPE		0x14
-> +#define PMI8998_SUBTYPE		0x15
-> +#define PM8005_SUBTYPE		0x18
-> +#define PM660L_SUBTYPE		0x1A
-> +#define PM660_SUBTYPE		0x1B
-> +#define PM8150_SUBTYPE		0x1E
-> +#define PM8150L_SUBTYPE		0x1f
-> +#define PM8150B_SUBTYPE		0x20
-> +#define PMK8002_SUBTYPE		0x21
-> +#define PM8009_SUBTYPE		0x24
-> +#define PM8150C_SUBTYPE		0x26
-> +#define SMB2351_SUBTYPE		0x29
-> +
-> +#define PMI8998_FAB_ID_SMIC	0x11
-> +#define PMI8998_FAB_ID_GF	0x30
-> +
-> +#define PM660_FAB_ID_GF		0x0
-> +#define PM660_FAB_ID_TSMC	0x2
-> +#define PM660_FAB_ID_MX		0x3
-> +
-> +struct qcom_spmi_pmic {
-> +	unsigned int type;
-> +	unsigned int subtype;
-> +	unsigned int major;
-> +	unsigned int minor;
-> +	unsigned int rev2;
-> +	const char *name;
+
+...
+
+> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX] = {
+> +	{
+> +		.type = IIO_RESISTANCE,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.address = RR_ADC_BATT_ID,
+> +		.channel = 0,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +		.address = RR_ADC_BATT_THERM,
+> +		.channel = 0,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+> +				      BIT(IIO_CHAN_INFO_OFFSET),
+> +		.address = RR_ADC_SKIN_TEMP,
+> +		.channel = 1,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_CURRENT,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.address = RR_ADC_USBIN_I,
+> +		.channel = 0,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_VOLTAGE,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +			BIT(IIO_CHAN_INFO_SCALE),
+
+Inconsistent indenting vs the other similar cases.
+
+> +		.address = RR_ADC_USBIN_V,
+> +		.channel = 0,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_CURRENT,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.address = RR_ADC_DCIN_I,
+> +		.channel = 1,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_VOLTAGE,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.address = RR_ADC_DCIN_V,
+> +		.channel = 1,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+> +				      BIT(IIO_CHAN_INFO_OFFSET),
+> +		.address = RR_ADC_DIE_TEMP,
+> +		.channel = 2,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_TEMP,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_OFFSET) |
+> +				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.address = RR_ADC_CHG_TEMP,
+> +		.channel = 3,
+> +		.indexed = 1,
+> +	}, {
+> +		.type = IIO_VOLTAGE,
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +				      BIT(IIO_CHAN_INFO_SCALE),
+> +		.address = RR_ADC_GPIO,
+> +		.channel = 2,
+> +		.indexed = 1,
+> +	},
 > +};
 > +
-> +struct device;
+> +static int rradc_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct rradc_chip *chip;
+> +	int ret, i, batt_id_delay;
 > +
-> +const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev);
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*chip));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
 > +
-> +#endif /* __QCOM_PMIC_H__ */
+> +	chip = iio_priv(indio_dev);
+> +	chip->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+> +	if (!chip->regmap) {
+> +		dev_err(dev, "Couldn't get parent's regmap\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	chip->dev = dev;
+> +	mutex_init(&chip->conversion_lock);
+> +
+> +	ret = device_property_read_u32(dev, "reg", &chip->base);
+> +	if (ret < 0) {
+> +		dev_err(chip->dev, "Couldn't find reg address, ret = %d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
+> +	batt_id_delay = -1;
+> +	ret = device_property_read_u32(dev, "qcom,batt-id-delay-ms",
+> +				       &batt_id_delay);
+> +	if (!ret) {
+> +		for (i = 0; i < RRADC_BATT_ID_DELAY_MAX; i++) {
+> +			if (batt_id_delay == batt_id_delays[i])
+> +				break;
+> +		}
+> +		if (i == RRADC_BATT_ID_DELAY_MAX)
+> +			batt_id_delay = -1;
+> +	}
+> +
+> +	if (batt_id_delay >= 0) {
+> +		batt_id_delay = FIELD_PREP(BATT_ID_SETTLE_MASK, batt_id_delay);
+> +		ret = regmap_update_bits(chip->regmap,
+> +					 chip->base + RR_ADC_BATT_ID_CFG,
+> +					 batt_id_delay, batt_id_delay);
+> +		if (ret < 0) {
+> +			dev_err(chip->dev,
+> +				"BATT_ID settling time config failed:%d\n",
+> +				ret);
+> +		}
+> +	}
+> +
+> +	/* Get the PMIC revision ID, we need to handle some varying coefficients */
+> +	chip->pmic = qcom_pmic_get(chip->dev);
+> +	if (IS_ERR(chip->pmic)) {
+> +		dev_err(chip->dev, "Unable to get reference to PMIC device\n");
+> +		return PTR_ERR(chip->pmic);
+> +	}
+> +
+> +	indio_dev->name = DRIVER_NAME;
+
+I missed this in earlier versions, but this should be the specific
+part number if possible, so probably
+pm660-rradc / pmi8998-rradc as appropriate.
+You can set it based on chip->pmic->sub_type I think
+
+
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->info = &rradc_info;
+> +	indio_dev->channels = rradc_iio_chans;
+> +	indio_dev->num_channels = ARRAY_SIZE(rradc_iio_chans);
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+> +
+> +static const struct of_device_id rradc_match_table[] = {
+> +	{ .compatible = "qcom,pm660-rradc" },
+> +	{ .compatible = "qcom,pmi8998-rradc" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, rradc_match_table);
+> +
+> +static struct platform_driver rradc_driver = {
+> +	.driver		= {
+> +		.name		= DRIVER_NAME,
+> +		.of_match_table	= rradc_match_table,
+> +	},
+> +	.probe = rradc_probe,
+> +};
+> +module_platform_driver(rradc_driver);
+> +
+> +MODULE_DESCRIPTION("QCOM SPMI PMIC RR ADC driver");
+> +MODULE_AUTHOR("Caleb Connolly <caleb.connolly@linaro.org>");
+> +MODULE_LICENSE("GPL v2");
 

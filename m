@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C05944C5DD1
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 18:39:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D7294C5DD3
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 18:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbiB0Rjr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Feb 2022 12:39:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45960 "EHLO
+        id S229845AbiB0RmZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Feb 2022 12:42:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbiB0Rjr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 12:39:47 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF95B3983D;
-        Sun, 27 Feb 2022 09:39:10 -0800 (PST)
+        with ESMTP id S229664AbiB0RmZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 12:42:25 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D0593AA48;
+        Sun, 27 Feb 2022 09:41:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3B9B1B80884;
-        Sun, 27 Feb 2022 17:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DE8C340EF;
-        Sun, 27 Feb 2022 17:39:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB73C60FD3;
+        Sun, 27 Feb 2022 17:41:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F08C340EF;
+        Sun, 27 Feb 2022 17:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645983547;
-        bh=RlxsNBxWP23xW/4RVjjxHZDE4BG21qefYTNvuOdpYrc=;
+        s=k20201202; t=1645983707;
+        bh=u7vdYl/msJzciiBUb4kqi0WTExjnG9fioQPXlI5ief0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BnRFAFvGMoca9d7oCUM2P30xUW2DQtTIu5s6WxGi5BJSKv92sBM2pOLtt0bONJw84
-         PUssBow1aejad+JoryXbY3lumR1oHPOLjEcFlL0DiD1q4agnWJEZVCOgMLyufa7eee
-         h4mpGQwP2xqEuWDvaitMcuoQqtqLe9ELsecnOm/GCzFyDWh1LSYTnIe4kFc+Ni9Zsz
-         AB0gEOOZTM06m5PWFjgq+wnTLJEqiPm3hsYdQBwoan6dTP6d10opDdvM+NVkOm4N3/
-         ZTjPCoQhbXInL81vfEM4s/WKlRL9HaLxwQwxflIFugFLA75hhu5x1O8oDxil9Pebcc
-         GlYYk4SMQDklw==
-Date:   Sun, 27 Feb 2022 17:46:10 +0000
+        b=Xs1LWFkSqwXAGfmnXXhvfL+kVt07aTnfpsB52Vxlux/P31uUqSsWqquz/BZ3egW9E
+         5AWcpUjRB/JozILkJNE5e8q26bz/NxH5/BttXnZJ5KVqduarQgYYheQ4M3ah7QaQUI
+         7/iK9RUTN+DtNx72HR8wCi7F5FbIebSFBFfIFdyaf8ugdWH2hdojy40ObPY1ps4fJ8
+         aVEBo3JQaWgTMndrBBFu8JtBuVT0rS5+jT1uah64W7P88fR5eYtu1hSrvQNZFGoA9/
+         V5N+jMGQQSQlfmauloQcU0gkD4fh7skp8AZmE+x+oNY1vmkidNRXZa6wM75IFoHzFg
+         dis9WveVLuDOQ==
+Date:   Sun, 27 Feb 2022 17:48:50 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     trix@redhat.com
-Cc:     vilhelm.gray@gmail.com, nathan@kernel.org, ndesaulniers@google.com,
-        Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
+Cc:     roan@protonic.nl, lars@metafoo.de, nathan@kernel.org,
+        ndesaulniers@google.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] counter: add defaults to switch-statements
-Message-ID: <20220227174610.0e0e73e4@jic23-huawei>
-In-Reply-To: <20220227161746.82776-1-trix@redhat.com>
-References: <20220227161746.82776-1-trix@redhat.com>
+Subject: Re: [PATCH] iio: scd4x: check return of scd4x_write_and_fetch
+Message-ID: <20220227174850.73520e39@jic23-huawei>
+In-Reply-To: <20220227154331.80338-1-trix@redhat.com>
+References: <20220227154331.80338-1-trix@redhat.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,57 +55,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 27 Feb 2022 08:17:46 -0800
+On Sun, 27 Feb 2022 07:43:31 -0800
 trix@redhat.com wrote:
 
 > From: Tom Rix <trix@redhat.com>
 > 
-> Clang static analysis reports this representative problem
-> counter-chrdev.c:482:3: warning: Undefined or garbage value
->   returned to caller
->   return ret;
->   ^~~~~~~~~~
+> Clang static analysis reports this problem
+> scd4x.c:474:10: warning: The left operand of '==' is a
+>   garbage value
+>   if (val == 0xff) {
+>       ~~~ ^
+> val is only set from a successful call to scd4x_write_and_fetch()
+> So check it's return.
 > 
-> counter_get_data() has a multilevel switches, some without
-> defaults, so ret is sometimes not set.
-> Add returning -EINVAL similar to other defaults.
-> 
-> Fixes: b6c50affda59 ("counter: Add character device interface")
+> Fixes: 49d22b695cbb ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
 > Signed-off-by: Tom Rix <trix@redhat.com>
-I'm fairly sure this one is warning supression rather than a fix as
-that type u8 being used in the switch is storing an enum which is
-set only by kernel code and all values of the enum are covered.
 
-However, that's not locally visible so to me the addition looks good, I'd
-just be tempted to drop the fixes tag as backporting this looks like noise
-to me.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Good find, but I'd prefer a separate check on ret inline with what the
+other error checking paths in that function are doing.
 
 > ---
->  drivers/counter/counter-chrdev.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/iio/chemical/scd4x.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
-> index b7c62f957a6a8..69d340be9c93f 100644
-> --- a/drivers/counter/counter-chrdev.c
-> +++ b/drivers/counter/counter-chrdev.c
-> @@ -477,6 +477,8 @@ static int counter_get_data(struct counter_device *const counter,
->  		case COUNTER_SCOPE_COUNT:
->  			ret = comp->count_u8_read(counter, parent, &value_u8);
->  			break;
-> +		default:
-> +			return -EINVAL;
->  		}
->  		*value = value_u8;
->  		return ret;
-> @@ -496,6 +498,8 @@ static int counter_get_data(struct counter_device *const counter,
->  		case COUNTER_SCOPE_COUNT:
->  			ret = comp->count_u32_read(counter, parent, &value_u32);
->  			break;
-> +		default:
-> +			return -EINVAL;
->  		}
->  		*value = value_u32;
->  		return ret;
+> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+> index 20d4e7584e923..b978330fb761c 100644
+> --- a/drivers/iio/chemical/scd4x.c
+> +++ b/drivers/iio/chemical/scd4x.c
+> @@ -471,7 +471,7 @@ static ssize_t calibration_forced_value_store(struct device *dev,
+>  	ret = scd4x_write_and_fetch(state, CMD_FRC, arg, &val, sizeof(val));
+>  	mutex_unlock(&state->lock);
+>  
+> -	if (val == 0xff) {
+> +	if (!ret && val == 0xff) {
+>  		dev_err(dev, "forced calibration has failed");
+>  		return -EINVAL;
+>  	}
+Prefer
+
+	if (ret)
+		return ret;
+
+	if (val == 0xff) {
+		dev_err(dev, "...
+		return -EINVAL;
+	}
+
+Thanks,
+
+Jonathan
 

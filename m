@@ -2,47 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E97CF4C5AD5
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 13:03:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80C664C5B00
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 13:14:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbiB0MEQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Feb 2022 07:04:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57314 "EHLO
+        id S229768AbiB0MPT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Feb 2022 07:15:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbiB0MEP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 07:04:15 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8F004504C;
-        Sun, 27 Feb 2022 04:03:35 -0800 (PST)
+        with ESMTP id S229436AbiB0MPS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 07:15:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8D7E5674D;
+        Sun, 27 Feb 2022 04:14:42 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 64EC4B80BA1;
-        Sun, 27 Feb 2022 12:03:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D84C340E9;
-        Sun, 27 Feb 2022 12:03:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5402C60E65;
+        Sun, 27 Feb 2022 12:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93733C340E9;
+        Sun, 27 Feb 2022 12:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645963413;
-        bh=oCxNGVyXFBEgGugPHKW0CLS6eePMvEzboypl9TTvBb8=;
+        s=k20201202; t=1645964081;
+        bh=sgzKryWvFEwRSTVgMV3XSDuN4d/DthubbeMrQ+5G468=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IQJ+GVQ2MclK/3FPcpwO2XsPb8IHnhgaAuWky53FX/YwRThuLwPkb1KPcfobmMj0d
-         zz4pFiww2YBAHggtvie/WPeZZr9rWvPGBnnA5rFZHjQcXPS4ObQ931xSjCGBvpM6dZ
-         ek1g07bmn7BjOCZJbUGxqrLisX46FZrhLcYTBRFfliwFVc8GxIQnarGBJYLuwZZtTU
-         H/hsAeHHQEUMZSqX9C+G/2qCVYPGMI+3AI7x2/8C650pIaOZWx22WzWYq73fBZryzE
-         PRQxVsZ9reUP/ElForUcxlvVZn72c46Nf11roqpMTuiTMJ7rucmRw5Ws6zGdimf/JS
-         /AL71XeBKKUBw==
-Date:   Sun, 27 Feb 2022 12:10:35 +0000
+        b=fS6uacjqnIu8yIEVHkUKb/dTR6yAx2Rd2wWS1qmAMDV8CHJp7WM62JXqOZxV2unzU
+         ehqmf3LTdBxf8oaDoOHDDI26J39rS8hSodv2nkjawlHs5qP8g9n0eD1CCO7z4QDBvo
+         R3ZUxZk7GM8NNpneJUdQODC9/d4F2Q9rvb/OSyYCk6ZR5MjNIpsCUBM2BFsrqopVmY
+         SvQGnWxkSnJLuwfMcbvcvawKgsi4Mu1G1GlvclrAOsPEeVNhCxIa0CeUGqNZhbWDOB
+         3ix9o1PyWynVdvmnXmrEo8ImxFjPtvTvzf8Cq60Wiek10VuAqZQgf5o5ZlUhAGYgM7
+         8/bLD/aHylF0g==
+Date:   Sun, 27 Feb 2022 12:21:45 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: Re: [PATCH v6 1/3] dt-bindings: iio: amplifiers: add ada4250 doc
-Message-ID: <20220227121035.07a922a8@jic23-huawei>
-In-Reply-To: <Yhey1QmZa4RU0p50@robh.at.kernel.org>
-References: <20220223120112.8067-1-antoniu.miclaus@analog.com>
-        <Yhey1QmZa4RU0p50@robh.at.kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Cristian Pop <cristian.pop@analog.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH v7 1/2] dt-bindings: iio: frequency: Add ADMV4420 doc
+Message-ID: <20220227122145.6bc20b68@jic23-huawei>
+In-Reply-To: <b591b26e-1a80-e17d-4525-989b357e97b1@canonical.com>
+References: <20220223130808.13352-1-cristian.pop@analog.com>
+        <b591b26e-1a80-e17d-4525-989b357e97b1@canonical.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,42 +56,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Feb 2022 10:31:17 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Wed, 23 Feb 2022 14:26:05 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
 
-> On Wed, 23 Feb 2022 14:01:10 +0200, Antoniu Miclaus wrote:
-> > Add device tree bindings for the ADA4250 driver.
+> On 23/02/2022 14:08, Cristian Pop wrote:
+> > Add device tree bindings for the ADMV4420 K band downconverter.
 > > 
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> > Signed-off-by: Cristian Pop <cristian.pop@analog.com>
 > > ---
-> > changes in v6:
-> >  - add space before `{` in the amplifier node example
-> >  .../bindings/iio/amplifiers/adi,ada4250.yaml  | 50 +++++++++++++++++++
-> >  1 file changed, 50 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/amplifiers/adi,ada4250.yaml
-> >   
+> > Changes in v7:
+> >  - Fix commit message  
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+> Please include the tags accumulated in previous reviews.
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> 
+> 
+> Best regards,
+> Krzysztof
 
-Series applied to the togreg branch of iio.git and pushed out as testing for
-0-day to take a quick look before I go making a mess of linux-next.
+Series applied to the togreg branch of iio.git and pushed out as testing
+to let 0-day take a look before I go breaking linux-next (again :)
 
-One side comment though - when there are lots of revisions in a short timescale
-and people haven't had time to get back to the intermediate ones, it is particularly
-helpful to give a multi version change log.
+You get the same general feedback for future series as I just gave Antoniu:
 
-i.e. tell us what happened in at least the last couple of revisions to save
-on having to go find the earlier threads to find out what changed in v5 and v4!
+1) Particularly when doing multiple revisions close together, please give
+   a longer change log covering at least the last few versions as not
+   everyone will have looked at v7 and it saves reviewers time otherwise
+   spent checking back through earlier versions.
+2) Cover letters are good for multipatch series because they both provide
+   somewhere for general discussion that overlaps multiple patches and
+   as somewhere for series wide tags to be given and that sometimes
+   makes my life easier (complex cases where some tags are for individual
+   patches and some are series wide which I have to go in an add by hand
+   as no automated tool e.g. b4, could work it out!) 
 
-Also, I always prefer a cover letter for a series even if brief. It give somewhere
-to reply to if there are discussions covering multiple patches, or if someone wants
-to give a tag for the whole series that I can trivially pick up with b4.
-Obviously no point for single patch series though!
-I don't normally moan about this, but I was moaning anyway so why not get
-everything off my chest! :)
-
-Thanks,
+Sometimes I like to complain about this trivial stuff that makes me
+ever so slightly grumpy :)
 
 Jonathan
 

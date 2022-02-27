@@ -2,44 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB6F4C5ABB
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 12:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BBF4C5ABE
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 12:55:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbiB0Lwz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Feb 2022 06:52:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51622 "EHLO
+        id S230220AbiB0Lzv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Feb 2022 06:55:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbiB0Lwz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 06:52:55 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D5D38DBF;
-        Sun, 27 Feb 2022 03:52:19 -0800 (PST)
+        with ESMTP id S229797AbiB0Lzv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 06:55:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A989F31900
+        for <linux-iio@vger.kernel.org>; Sun, 27 Feb 2022 03:55:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D6733B80BA5;
-        Sun, 27 Feb 2022 11:52:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B628C340E9;
-        Sun, 27 Feb 2022 11:52:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3721C60E9B
+        for <linux-iio@vger.kernel.org>; Sun, 27 Feb 2022 11:55:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FB3C340E9;
+        Sun, 27 Feb 2022 11:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645962736;
-        bh=G6BSH2vwDpxNglA2J2PAEmoCdlAJh2l5DgipC3+5/HI=;
+        s=k20201202; t=1645962913;
+        bh=1D46LrvQDmcYzxzHk0RLMPYyM8EV3PHh9+WRVp5XWa0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=n41q8HXbRYCmulIVa4FU6KkzGpWehBVvHvmCQXf9JSFT3G6dn/Rm9wZzB/IEtMoKj
-         8wjcOLyFtjo3BzxoT3BMA5TiIm37rkCGh378DB9IFJwMnokAD3a++A7fjmTVph46RS
-         bd/qis16i6f4TwybjNptVywoZR2xF/fpz8VyAtgmjSwzDgDQ341mbCo8RzdgCgrYqY
-         rthKC89tAyBoA0JF8LFuioXBIUfB2r3M7FGrybxaCWsBNrzAJSoHkG4zwl6mL7JTEt
-         3RoWAY8qQ6VTOarhdewIC97oq9Apu2qo4Rf/2PDNAmQjsmg7/qtiepU3DLAu3pGPPB
-         2A/+GguZBEhkg==
-Date:   Sun, 27 Feb 2022 11:59:19 +0000
+        b=NBJctDlFoWnJJmkLzv6gW9pBQk+6sWeFWhVjbpXdxCnosJ4Nsyc8oOMsbeTToQY7C
+         h/VMwSWVOtCnXbb2x8haTDsUuGuR8AqJsNuZ7n+HykVBLAik6YURlBvS1lk6a3mc9D
+         sw1Pnz5gyM3GGLGHBwuTxqfn9m8ZNksvgfiQqK5zqaqeMRAav68LALWc3sKVidNq9l
+         qaFFaU5tgKdEmcN8R+Ymv1LZCnZ6ugVDwb43rpB3t9g/5NWPlwT+5m3uKKR7Cb+9qR
+         +wb3GgGGxchBSJEAN9FerOJVz6i8jT36ExfEV/mY9SVg5muAd1Yzp3FKNZXvhEyH0y
+         /uEYbiGNsYuGw==
+Date:   Sun, 27 Feb 2022 12:02:15 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     haibo.chen@nxp.com
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org, pmeerw@pmeerw.net,
-        martink@posteo.de, Stable@vger.kernel.org, linux-imx@nxp.com
-Subject: Re: [PATCH] iio: mma8452: use the correct logic to get mma8452_data
-Message-ID: <20220227115919.159b9b79@jic23-huawei>
-In-Reply-To: <1645497741-5402-1-git-send-email-haibo.chen@nxp.com>
-References: <1645497741-5402-1-git-send-email-haibo.chen@nxp.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>, patches@lists.linux.dev,
+        llvm@lists.linux.dev, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: accel: adxl367: Fix handled initialization in
+ adxl367_irq_handler()
+Message-ID: <20220227120215.4c112bc2@jic23-huawei>
+In-Reply-To: <CAHp75VdW8g_bvPvvfWOW5SUkEm9PYu8UvO9Mf_wshLLB3u=zPw@mail.gmail.com>
+References: <20220224211034.625130-1-nathan@kernel.org>
+        <CAHp75VdW8g_bvPvvfWOW5SUkEm9PYu8UvO9Mf_wshLLB3u=zPw@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,55 +60,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Feb 2022 10:42:21 +0800
-haibo.chen@nxp.com wrote:
+On Sat, 26 Feb 2022 21:49:16 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Haibo Chen <haibo.chen@nxp.com>
+> On Thu, Feb 24, 2022 at 11:25 PM Nathan Chancellor <nathan@kernel.org> wrote:
 > 
-> The original logic to get mma8452_data is wrong, the *dev point to
-> the device belong to iio_dev. we can't use this dev to find the
-> correct i2c_client. The original logic happen to work because it
-> finally use dev->driver_data to get iio_dev. Here use the API
-> to_i2c_client() is wrong and make reader confuse. To correct the
-> logic, it should be like this
+> ...
 > 
->   struct mma8452_data *data = iio_priv(dev_get_drvdata(dev));
+> >   drivers/iio/accel/adxl367.c:879:14: note: initialize the variable 'handled' to silence this warning
+> >           bool handled;
+> >                       ^  
 > 
-> But after commit 8b7651f25962 ("iio: iio_device_alloc(): Remove
-> unnecessary self drvdata"), the upper logic also can't work.
+> >                        = 0  
+> 
+> Bad advice (at minimum it should be false, but in general it might
+> hide a real issue)
 
-I've added as second fixes tag and some explanation of why there
-are two.  We should backport the fix all the way to the earlier one
-but the bug isn't (by luck) exposed until the patch you mention here.
+True. Thankfully Nathan did the right thing and looked for the real
+problem :)
 
-> When try to show the avialable scale in userspace, will meet kernel
-> dump, kernel handle NULL pointer dereference.
-> 
-> So use dev_to_iio_dev() to correct the logic.
-> 
-> Fixes: c3cdd6e48e35 ("iio: mma8452: refactor for seperating chip specific data")
-> Cc: <Stable@vger.kernel.org>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Jonathan
 
-Applied to the fixes-togreg branch of iio.git.
-
-> ---
->  drivers/iio/accel/mma8452.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-> index 64b82b4503ad..0016bb947c10 100644
-> --- a/drivers/iio/accel/mma8452.c
-> +++ b/drivers/iio/accel/mma8452.c
-> @@ -379,8 +379,8 @@ static ssize_t mma8452_show_scale_avail(struct device *dev,
->  					struct device_attribute *attr,
->  					char *buf)
->  {
-> -	struct mma8452_data *data = iio_priv(i2c_get_clientdata(
-> -					     to_i2c_client(dev)));
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct mma8452_data *data = iio_priv(indio_dev);
->  
->  	return mma8452_show_int_plus_micros(buf, data->chip_info->mma_scales,
->  		ARRAY_SIZE(data->chip_info->mma_scales));
+> >   1 error generated.  
+> 
 

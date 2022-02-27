@@ -2,51 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5D214C5AAC
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 12:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B93A74C5AB0
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 12:42:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230262AbiB0LkE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Feb 2022 06:40:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51074 "EHLO
+        id S229571AbiB0LnW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Feb 2022 06:43:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230257AbiB0LkD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 06:40:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21BA24F31;
-        Sun, 27 Feb 2022 03:39:27 -0800 (PST)
+        with ESMTP id S229812AbiB0LnW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 06:43:22 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB4811142;
+        Sun, 27 Feb 2022 03:42:45 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D65760E76;
-        Sun, 27 Feb 2022 11:39:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3270FC340E9;
-        Sun, 27 Feb 2022 11:39:23 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1578AB80881;
+        Sun, 27 Feb 2022 11:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC6BC340E9;
+        Sun, 27 Feb 2022 11:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645961966;
-        bh=RaHv/tbCTPFcJkyrq9jbKLwZnrSbRDyLy/HShbnR3DY=;
+        s=k20201202; t=1645962162;
+        bh=2GZAa88jl8nwc/hfdhteF303XDxGjwubhEYfJOwbaqQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EYMnLfkXjHVZi5w3T/eLc6H8OVn1YpHTfaFqv15stJj/fUgmIV7E+p7YDvvQm+v/m
-         s7oG0sWjHuvJDruH9lifdU2bxg1ZjEeeXvOk/ZwLvATrridL/1/AubXp8nOgWbKWpj
-         PyA6eh6xT7ildmcrdErmv+ifCEeTcjsB57oHyUARBB/K8GelAlMkUDqT5INSxfTk0n
-         JMTrVwXGo9Snrih5T2tTGFxVh/Ydaq6ZMcQRVb9hCGpYJG7pOMaJTRknxlVb7++sUt
-         eAovG0fvdIEgoam70BM/Q1MJ2EbUOzBAb4//GMPc0Q6A1raMJSM+GmP1Ka9YRG5ujk
-         r5Lfm2Q+9KHSg==
-Date:   Sun, 27 Feb 2022 11:46:28 +0000
+        b=nMMzAIUGv35rsu8OipfLeJFxbKcKWV73XzPuf+i6arMdEuZmI7TKrmNekoDu4Hs44
+         377pGHtab86XXGGKsN0QqpbkH+GFOwWrwqpS9jX0JLVWw95AUxOXDBDZRe7QGnBJhE
+         t8kj9gNcjnJMu+HKIh43cYkWdcLSkZZe1AKgrO/0A4reL9QFXoGrGoYa91nr6IMPOt
+         QNWw9HCaB0TvGIIiz9sV7wy3tK6tFw2knx/KvVgnkA2hA329lpTM5d4ZQ5KD7Kr8es
+         IsTjOyRgjZqeHIjlfe0hIxoKhcijSpGAShcrAo97PIrKrJb12oM056MaO9pXqv5s7L
+         fIyd5oiXRTLnA==
+Date:   Sun, 27 Feb 2022 11:49:44 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     <linux-iio@vger.kernel.org>, Paul Cercueil <paul@crapouillou.net>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 2/8] PM: core: Add NS varients of
- EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and runtime pm equiv
-Message-ID: <20220227114628.219c7055@jic23-huawei>
-In-Reply-To: <6cd17744-d060-1094-098d-e30a10f96600@intel.com>
-References: <20220220181522.541718-1-jic23@kernel.org>
-        <20220220181522.541718-3-jic23@kernel.org>
-        <6cd17744-d060-1094-098d-e30a10f96600@intel.com>
+To:     Joel Stanley <joel@jms.id.au>
+Cc:     Billy Tsai <billy_tsai@aspeedtech.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Colin King <colin.king@canonical.com>,
+        linux-iio@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Konstantin Klubnichkin <kitsok@yandex-team.ru>
+Subject: Re: [PATCH v2] iio: adc: aspeed: Add divider flag to fix incorrect
+ voltage reading.
+Message-ID: <20220227114944.4706bea1@jic23-huawei>
+In-Reply-To: <CACPK8XdsRorJvMjUMNYGAYNLGLzhYJEZSQMTk1ZywwY+SyqDbQ@mail.gmail.com>
+References: <20220221012705.22008-1-billy_tsai@aspeedtech.com>
+        <CACPK8XdsRorJvMjUMNYGAYNLGLzhYJEZSQMTk1ZywwY+SyqDbQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,118 +63,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Feb 2022 20:37:57 +0100
-"Rafael J. Wysocki" <rafael.j.wysocki@intel.com> wrote:
+On Mon, 21 Feb 2022 05:45:16 +0000
+Joel Stanley <joel@jms.id.au> wrote:
 
-Hi Rafael,
-> CC: linux-pm
-
-Oops. Stupid omission on my part, sorry about that!
-
-> 
-> On 2/20/2022 7:15 PM, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> On Mon, 21 Feb 2022 at 01:26, Billy Tsai <billy_tsai@aspeedtech.com> wrote:
 > >
-> > As more drivers start to use namespaces, we need to have varients of these
-> > useful macros that allow the export to be in a particular namespace.
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Paul Cercueil <paul@crapouillou.net>
-> > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>  
+> > The formula for the ADC sampling period in ast2400/ast2500 is:
+> > ADC clock period = PCLK * 2 * (ADC0C[31:17] + 1) * (ADC0C[9:0])
+> > When ADC0C[9:0] is set to 0 the sampling voltage will be lower than
+> > expected, because the hardware may not have enough time to
+> > charge/discharge to a stable voltage. This patch use the flag
+> > CLK_DIVIDER_ONE_BASED which will use the raw value read from the
+> > register, with the value of zero considered invalid to conform to the
+> > corrected formula.  
 > 
-> I'd rather route this through linux-pm unless you have dependent changes.
+> (to answer my own question)
+> 
+> ..and this is okay on the 2600, because we do not set need_prescaler =
+> true on that platform.
+> 
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-Ok. 
+Applied to the fixes-togreg branch of iio.git.
 
-The kxsd9 patch (4) is dependent on other changes queued for
-the merge window in IIO. If we want to do it through linux-pm I'd
-love it if we can manage to get the ground work in for the coming merge window.
-
-So options are:
-
-1) This patch alone via linux-pm and I queue the users up for next cycle
-   Fine by me but always awkward to have infrastructure with no users.
-2) First 3 patches via linux-pm so we have a user (scd30) in a low churn
-   driver and I'll queue the rest for 5.19.  Fine by me as well.
-   That goes on cleanly on 5.17-rc1 and there is nothing else in my review
-   queue touching that driver.
-
-I'm also interested to hear your view on the discussion going on in reply
-to the cover letter. Specifically Paul suggested we 'only' have the
-namespaced versions of these macros.
+Depending on how timing works out in the coming week I might just pull
+all the fixes in for the next merge window rather than doing a separate
+pull request.
 
 Thanks,
 
 Jonathan
 
-
 > 
-> 
-> > ---
-> >   include/linux/pm.h         | 14 +++++++++-----
-> >   include/linux/pm_runtime.h | 10 ++++++++--
-> >   2 files changed, 17 insertions(+), 7 deletions(-)
 > >
-> > diff --git a/include/linux/pm.h b/include/linux/pm.h
-> > index f7d2be686359..112b8125d4be 100644
-> > --- a/include/linux/pm.h
-> > +++ b/include/linux/pm.h
-> > @@ -368,13 +368,13 @@ const struct dev_pm_ops name = { \
-> >   
-> >   #ifdef CONFIG_PM
-> >   #define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> > -			   runtime_resume_fn, idle_fn, sec) \
-> > +			   runtime_resume_fn, idle_fn, sec, ns)		\
-> >   	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> >   			   runtime_resume_fn, idle_fn); \
-> > -	_EXPORT_SYMBOL(name, sec)
-> > +	__EXPORT_SYMBOL(name, sec, ns)
-> >   #else
-> >   #define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
-> > -			   runtime_resume_fn, idle_fn, sec) \
-> > +			   runtime_resume_fn, idle_fn, sec, ns) \
-> >   static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
-> >   					 resume_fn, runtime_suspend_fn, \
-> >   					 runtime_resume_fn, idle_fn)
-> > @@ -391,9 +391,13 @@ static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
-> >   	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
-> >   
-> >   #define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> > -	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "")
-> > +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "", "")
-> >   #define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> > -	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl")
-> > +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl", "")
-> > +#define EXPORT_NS_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
-> > +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "", #ns)
-> > +#define EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
-> > +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl", #ns)
-> >   
-> >   /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
-> >   #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
-> > diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-> > index 9f09601c465a..6a8b9551ecad 100644
-> > --- a/include/linux/pm_runtime.h
-> > +++ b/include/linux/pm_runtime.h
-> > @@ -41,10 +41,16 @@
-> >   
-> >   #define EXPORT_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
-> >   	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-> > -			   suspend_fn, resume_fn, idle_fn, "")
-> > +			   suspend_fn, resume_fn, idle_fn, "", "")
-> >   #define EXPORT_GPL_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
-> >   	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-> > -			   suspend_fn, resume_fn, idle_fn, "_gpl")
-> > +			   suspend_fn, resume_fn, idle_fn, "_gpl", "")
-> > +#define EXPORT_NS_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn, ns) \
-> > +	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-> > +			   suspend_fn, resume_fn, idle_fn, "", #ns)
-> > +#define EXPORT_NS_GPL_RUNTIME_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn, ns) \
-> > +	_EXPORT_DEV_PM_OPS(name, pm_runtime_force_suspend, pm_runtime_force_resume, \
-> > +			   suspend_fn, resume_fn, idle_fn, "_gpl", #ns)
-> >   
-> >   #ifdef CONFIG_PM
-> >   extern struct workqueue_struct *pm_wq;  
-> 
-> 
+> > Fixes: 573803234e72 ("iio: Aspeed ADC")
+> > Reported-by: Konstantin Klubnichkin <kitsok@yandex-team.ru>
+> > Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+> > ---
+> >  drivers/iio/adc/aspeed_adc.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
+> > index a957cad1bfab..ffae64f39221 100644
+> > --- a/drivers/iio/adc/aspeed_adc.c
+> > +++ b/drivers/iio/adc/aspeed_adc.c
+> > @@ -539,7 +539,9 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+> >         data->clk_scaler = devm_clk_hw_register_divider(
+> >                 &pdev->dev, clk_name, clk_parent_name, scaler_flags,
+> >                 data->base + ASPEED_REG_CLOCK_CONTROL, 0,
+> > -               data->model_data->scaler_bit_width, 0, &data->clk_lock);
+> > +               data->model_data->scaler_bit_width,
+> > +               data->model_data->need_prescaler ? CLK_DIVIDER_ONE_BASED : 0,
+> > +               &data->clk_lock);
+> >         if (IS_ERR(data->clk_scaler))
+> >                 return PTR_ERR(data->clk_scaler);
+> >
+> > --
+> > 2.25.1
+> >  
 

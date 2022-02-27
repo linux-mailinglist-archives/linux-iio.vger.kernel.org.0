@@ -2,51 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 311524C5B0F
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 13:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 243144C5B11
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 13:34:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbiB0McE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Feb 2022 07:32:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49642 "EHLO
+        id S229627AbiB0MfN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Feb 2022 07:35:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiB0McE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 07:32:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 236C15D66C;
-        Sun, 27 Feb 2022 04:31:26 -0800 (PST)
+        with ESMTP id S229446AbiB0MfM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 07:35:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E3F5F4FC;
+        Sun, 27 Feb 2022 04:34:36 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B346AB80C6E;
-        Sun, 27 Feb 2022 12:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8BFC340E9;
-        Sun, 27 Feb 2022 12:31:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0D3ECB80C6D;
+        Sun, 27 Feb 2022 12:34:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8005AC340E9;
+        Sun, 27 Feb 2022 12:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645965083;
-        bh=NEoxQP7btFmqwLHAz4vA91rqiHkME2xrzGjWQgylmBI=;
+        s=k20201202; t=1645965273;
+        bh=vd9yXUJzbfAqJNvLQ36xEL06P/YDGwf4z5Bmi1SooMg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=L+UWhSNd8Je3t6CUiFry7+mPRnfAUnLiUBV8ytOWYuRiqr0IEpqdfGwoWUwUdIbHb
-         7K9pS+w8zDXoSRMNFuju+bpBuk20GNFY5DMlCu4av2ogASMXiSwqXnJEfksoU+SpdB
-         Tnpi3B71ORH0wLJn3d/DeZjkJKBuBNkd+k05wFh9Ijg0jDO01DdBKGGQvrgk2QIAtf
-         SUwRuPnSKnGCdHpWIXXuudfwuQV49yLbGoQtjnf+vHSarxWjtqMXoXGb3ev3EYn8PD
-         AXLC0scLY31Su0BPFsxuVZhfqrxZOx16fnnv2VgssZt7XgD1LaDTkTC2L0tXC0W2Rc
-         UKiZMwYwiwlag==
-Date:   Sun, 27 Feb 2022 12:38:25 +0000
+        b=fL8puGmU5pIMV7kzPIjuWYDn/T+26sQczTlq67IceZ4vpjtB5+YeeucZsX5AjNQrz
+         BkZy5fem9/ie/TBF8tBhZgYSKKrMMvodYb2lnQsz9Fbl2xwuFBTRCxOJ+weh348vcu
+         OIIPVK10WK2OogrgeXlI7jJkfgJ6sbX35LA23/ztm9d/oyiwKApoJE24jUru9EJtwm
+         c9Whzi9QV6lqLKWEN9JdXk1siWDUIPyYO/WeNaVlxis/z5hNw4baqhaDCFwJUzoIVM
+         exmf8lGHu4nAlul0IwmpLB7abja8pDh3kSyFQUJj8sMMnNGj/WCccBj8R5QRj1rF0Q
+         PYftWF0JswJRg==
+Date:   Sun, 27 Feb 2022 12:41:34 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v4 1/3] iio: dac: add support for ltc2688
-Message-ID: <20220227123825.3555f44f@jic23-huawei>
-In-Reply-To: <20220225130129.69-2-nuno.sa@analog.com>
-References: <20220225130129.69-1-nuno.sa@analog.com>
-        <20220225130129.69-2-nuno.sa@analog.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Puranjay Mohan <puranjay12@gmail.com>, gregkh@linuxfoundation.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com,
+        kuba@kernel.org, saravanak@google.com,
+        linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: accel: adxl355: use fwnode_irq_get_byname()
+Message-ID: <20220227124134.4d4e4644@jic23-huawei>
+In-Reply-To: <YflfEpKj0ilHnQQm@smile.fi.intel.com>
+References: <20211109200840.135019-1-puranjay12@gmail.com>
+        <20211109200840.135019-3-puranjay12@gmail.com>
+        <YflfEpKj0ilHnQQm@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,34 +59,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 25 Feb 2022 14:01:27 +0100
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Tue, 1 Feb 2022 18:25:54 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> The LTC2688 is a 16 channel, 16 bit, +-15V DAC with an integrated
-> precision reference. It is guaranteed monotonic and has built in
-> rail-to-rail output buffers that can source or sink up to 20 mA.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> On Wed, Nov 10, 2021 at 01:38:40AM +0530, Puranjay Mohan wrote:
+> > Use the generic fwnode_irq_get_byname() in place of of_irq_get_byname()
+> > to get the IRQ number from the interrupt pin.  
+> 
+> Heads up, the fwnode_irq_get_byname() is in I2C tree and if Jonathan wants to
+> apply this one, the PR [1] can be used.
+> 
+> [1]: https://lore.kernel.org/linux-i2c/YfRiGR3AT8tzyweG@shikoro/T/#u
+> 
 
-Just one comment below - not a suggestion to change anything at this
-stage though, just something that might come up in future.
+Thanks Andy. 
 
+I'm going to let this go the slow way and pick up this patch after the
+merge window when I can avoid pulling in that PR.
 
-...
-
-> +static const char * const ltc2688_dither_phase[] =3D {
-> +	"0", "1.5708", "3.14159", "4.71239",
-> +};
-> +
-
-It if turns out we have in kernel users for this in the long run
-we may need to change these over to numeric values, but we
-can do that without changing the userspace ABI, so this is fine for
-now.
-
-...
-
-
-Thanks,
+Basically I'm feeling lazy today :)
 
 Jonathan

@@ -2,50 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C664C5B00
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 13:14:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 311524C5B0F
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Feb 2022 13:31:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbiB0MPT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Feb 2022 07:15:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34986 "EHLO
+        id S229579AbiB0McE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Feb 2022 07:32:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiB0MPS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 07:15:18 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8D7E5674D;
-        Sun, 27 Feb 2022 04:14:42 -0800 (PST)
+        with ESMTP id S229446AbiB0McE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Feb 2022 07:32:04 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 236C15D66C;
+        Sun, 27 Feb 2022 04:31:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5402C60E65;
-        Sun, 27 Feb 2022 12:14:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93733C340E9;
-        Sun, 27 Feb 2022 12:14:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B346AB80C6E;
+        Sun, 27 Feb 2022 12:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8BFC340E9;
+        Sun, 27 Feb 2022 12:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645964081;
-        bh=sgzKryWvFEwRSTVgMV3XSDuN4d/DthubbeMrQ+5G468=;
+        s=k20201202; t=1645965083;
+        bh=NEoxQP7btFmqwLHAz4vA91rqiHkME2xrzGjWQgylmBI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fS6uacjqnIu8yIEVHkUKb/dTR6yAx2Rd2wWS1qmAMDV8CHJp7WM62JXqOZxV2unzU
-         ehqmf3LTdBxf8oaDoOHDDI26J39rS8hSodv2nkjawlHs5qP8g9n0eD1CCO7z4QDBvo
-         R3ZUxZk7GM8NNpneJUdQODC9/d4F2Q9rvb/OSyYCk6ZR5MjNIpsCUBM2BFsrqopVmY
-         SvQGnWxkSnJLuwfMcbvcvawKgsi4Mu1G1GlvclrAOsPEeVNhCxIa0CeUGqNZhbWDOB
-         3ix9o1PyWynVdvmnXmrEo8ImxFjPtvTvzf8Cq60Wiek10VuAqZQgf5o5ZlUhAGYgM7
-         8/bLD/aHylF0g==
-Date:   Sun, 27 Feb 2022 12:21:45 +0000
+        b=L+UWhSNd8Je3t6CUiFry7+mPRnfAUnLiUBV8ytOWYuRiqr0IEpqdfGwoWUwUdIbHb
+         7K9pS+w8zDXoSRMNFuju+bpBuk20GNFY5DMlCu4av2ogASMXiSwqXnJEfksoU+SpdB
+         Tnpi3B71ORH0wLJn3d/DeZjkJKBuBNkd+k05wFh9Ijg0jDO01DdBKGGQvrgk2QIAtf
+         SUwRuPnSKnGCdHpWIXXuudfwuQV49yLbGoQtjnf+vHSarxWjtqMXoXGb3ev3EYn8PD
+         AXLC0scLY31Su0BPFsxuVZhfqrxZOx16fnnv2VgssZt7XgD1LaDTkTC2L0tXC0W2Rc
+         UKiZMwYwiwlag==
+Date:   Sun, 27 Feb 2022 12:38:25 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Cristian Pop <cristian.pop@analog.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v7 1/2] dt-bindings: iio: frequency: Add ADMV4420 doc
-Message-ID: <20220227122145.6bc20b68@jic23-huawei>
-In-Reply-To: <b591b26e-1a80-e17d-4525-989b357e97b1@canonical.com>
-References: <20220223130808.13352-1-cristian.pop@analog.com>
-        <b591b26e-1a80-e17d-4525-989b357e97b1@canonical.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v4 1/3] iio: dac: add support for ltc2688
+Message-ID: <20220227123825.3555f44f@jic23-huawei>
+In-Reply-To: <20220225130129.69-2-nuno.sa@analog.com>
+References: <20220225130129.69-1-nuno.sa@analog.com>
+        <20220225130129.69-2-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,43 +57,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Feb 2022 14:26:05 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+On Fri, 25 Feb 2022 14:01:27 +0100
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> On 23/02/2022 14:08, Cristian Pop wrote:
-> > Add device tree bindings for the ADMV4420 K band downconverter.
-> > 
-> > Signed-off-by: Cristian Pop <cristian.pop@analog.com>
-> > ---
-> > Changes in v7:
-> >  - Fix commit message  
-> 
-> Please include the tags accumulated in previous reviews.
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> 
-> 
-> Best regards,
-> Krzysztof
+> The LTC2688 is a 16 channel, 16 bit, +-15V DAC with an integrated
+> precision reference. It is guaranteed monotonic and has built in
+> rail-to-rail output buffers that can source or sink up to 20 mA.
+>=20
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Series applied to the togreg branch of iio.git and pushed out as testing
-to let 0-day take a look before I go breaking linux-next (again :)
+Just one comment below - not a suggestion to change anything at this
+stage though, just something that might come up in future.
 
-You get the same general feedback for future series as I just gave Antoniu:
 
-1) Particularly when doing multiple revisions close together, please give
-   a longer change log covering at least the last few versions as not
-   everyone will have looked at v7 and it saves reviewers time otherwise
-   spent checking back through earlier versions.
-2) Cover letters are good for multipatch series because they both provide
-   somewhere for general discussion that overlaps multiple patches and
-   as somewhere for series wide tags to be given and that sometimes
-   makes my life easier (complex cases where some tags are for individual
-   patches and some are series wide which I have to go in an add by hand
-   as no automated tool e.g. b4, could work it out!) 
+...
 
-Sometimes I like to complain about this trivial stuff that makes me
-ever so slightly grumpy :)
+> +static const char * const ltc2688_dither_phase[] =3D {
+> +	"0", "1.5708", "3.14159", "4.71239",
+> +};
+> +
+
+It if turns out we have in kernel users for this in the long run
+we may need to change these over to numeric values, but we
+can do that without changing the userspace ABI, so this is fine for
+now.
+
+...
+
+
+Thanks,
 
 Jonathan
-

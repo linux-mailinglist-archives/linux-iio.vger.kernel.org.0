@@ -2,54 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 259714C6F35
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 15:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE5274C6F3D
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 15:23:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236449AbiB1OVb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Feb 2022 09:21:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42822 "EHLO
+        id S234825AbiB1OXx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Feb 2022 09:23:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232226AbiB1OVa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 09:21:30 -0500
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B2E5D673;
-        Mon, 28 Feb 2022 06:20:52 -0800 (PST)
-Received: by mail-ua1-f49.google.com with SMTP id c36so6059867uae.13;
-        Mon, 28 Feb 2022 06:20:52 -0800 (PST)
+        with ESMTP id S232089AbiB1OXx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 09:23:53 -0500
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E64192BC;
+        Mon, 28 Feb 2022 06:23:14 -0800 (PST)
+Received: by mail-vs1-f48.google.com with SMTP id i27so13070930vsr.10;
+        Mon, 28 Feb 2022 06:23:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=RCsl/J5fP2/JmtRNo8BbmprLY7cOlxBvOyzidQ1R3I0=;
-        b=iRUdhqViFFheDSA1FbxdDaf/Zd/N4d+0zrq9QrFseinoFxZATy/HkbiO5+aCU2bcx1
-         1NtNyMorL8Htp9dZURYj5bkceU8Sw8TneAygvT0AuOdEjRTtCcu+GE9ntD8rkwAmEoxz
-         SJQa8noL4OmK1WEQV8Rt1hR/ppYqwvp1Em4YQ+fWor7/qlg/h0bnFpuSCK4K8lWjAfDN
-         IenGHa3q4N/MFbsyJ7nQTXp0atYgpmboPEkhvV6/aUEtAIY9cbalyJAwdeJON7ScHMkK
-         c8S41J4d88kWp7ndIsuUJbP+AVW6ugzDt4XEQiUn23mTNOu9Rtm8/MFTG+Yh/UTSj2yv
-         syjA==
-X-Gm-Message-State: AOAM532u6Ym3L/1YdlY1iPdFxQYGXa5iAIJkE0H7SHdRDBFzkh9r2BZ5
-        evVL7DqapDwq3+DcstNR3t9DSYFix4Wfzg==
-X-Google-Smtp-Source: ABdhPJx4yUF6L6xwa+dTUEWgvOiSPRuJCeZ1MNsqQVGQ8Ri5iIbA+YU2ngIidcty9O3DT/s10/Rt9A==
-X-Received: by 2002:ab0:72d1:0:b0:342:3751:d637 with SMTP id g17-20020ab072d1000000b003423751d637mr7349840uap.143.1646058051190;
-        Mon, 28 Feb 2022 06:20:51 -0800 (PST)
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
-        by smtp.gmail.com with ESMTPSA id b5-20020a1f1b05000000b0032597a7ba97sm1901203vkb.9.2022.02.28.06.20.50
+        bh=f5mSQXselbLEuJjsTNuLw+fQoeJTjUmyz7z46v3uwMA=;
+        b=e1jke7zjfyAIypZTASxQZfxKnNswSBb1N/gujfu3ZuJpPt6tq7iagkYabTzLGEjxMp
+         I+VgOPIOZ7tfRXvvYAhjuEpjvnVOlMssT3GKW+n/W9cO3CnuM0HLQ1IblUhH1Osp6jlp
+         wffZzBmS7GY9In/jJRHiL2kaOwkolLxpcTjcCBsWKEcqrwpAmHNV32AMIaC38pONUWnt
+         BxEVr94usaqx/QK+RMwSkgCBM+z0RFxAbsHW8ceMxejIDgxXbB4Vlvck5Y5SlYwHNeUu
+         r3/yDr+s8Q/g++Fg7Q+SpsnVVjgGd9G7ALF08szo+NeEs2fAUfc2khgZdX75mcuqXjVz
+         rDpQ==
+X-Gm-Message-State: AOAM530N0LJCTpP6tgzr08NeOqr7v26BFWzHxhSyInaSpAmOa28k7wR7
+        gDEq1FW59Dnx8dC84hxoWOfH505iiA3VmA==
+X-Google-Smtp-Source: ABdhPJzACp7n3YWPXW8ElHVOLXVJo7LWKTzyM0qikiTi5T/8sqaq/EzKOTs3KJdWGWfZPuT0Fy2sog==
+X-Received: by 2002:a05:6102:3e95:b0:31b:524c:e311 with SMTP id m21-20020a0561023e9500b0031b524ce311mr7551873vsv.21.1646058193659;
+        Mon, 28 Feb 2022 06:23:13 -0800 (PST)
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com. [209.85.221.174])
+        by smtp.gmail.com with ESMTPSA id k1-20020ab07541000000b00341f0ce5666sm1817489uaq.5.2022.02.28.06.23.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Feb 2022 06:20:50 -0800 (PST)
-Received: by mail-ua1-f46.google.com with SMTP id b37so6059699uad.12;
-        Mon, 28 Feb 2022 06:20:50 -0800 (PST)
-X-Received: by 2002:ab0:6253:0:b0:341:8be9:7a1 with SMTP id
- p19-20020ab06253000000b003418be907a1mr7893256uao.114.1646058050286; Mon, 28
- Feb 2022 06:20:50 -0800 (PST)
+        Mon, 28 Feb 2022 06:23:13 -0800 (PST)
+Received: by mail-vk1-f174.google.com with SMTP id w128so5231582vkd.3;
+        Mon, 28 Feb 2022 06:23:13 -0800 (PST)
+X-Received: by 2002:a05:6122:8ca:b0:332:64b4:8109 with SMTP id
+ 10-20020a05612208ca00b0033264b48109mr8035847vkg.7.1646058192797; Mon, 28 Feb
+ 2022 06:23:12 -0800 (PST)
 MIME-Version: 1.0
-References: <20220224125843.29733-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20220224125843.29733-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20220224125843.29733-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20220224125843.29733-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20220224125843.29733-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20220224125843.29733-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 28 Feb 2022 15:20:38 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWn0UZYTN4AoK4pDyvgv2_5aeiCvLKSTpw=JmMUrzF-6g@mail.gmail.com>
-Message-ID: <CAMuHMdWn0UZYTN4AoK4pDyvgv2_5aeiCvLKSTpw=JmMUrzF-6g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: renesas,rzg2l-adc: Document
- RZ/V2L SoC
+Date:   Mon, 28 Feb 2022 15:23:01 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWyyXEXh5OTpMzj=v0xtYKWjHN1GmZ+4hUD1Z7iTb6EOg@mail.gmail.com>
+Message-ID: <CAMuHMdWyyXEXh5OTpMzj=v0xtYKWjHN1GmZ+4hUD1Z7iTb6EOg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arm64: dts: renesas: r9a07g054: Fillup the ADC stub node
 To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Magnus Damm <magnus.damm@gmail.com>,
@@ -77,14 +76,13 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Feb 24, 2022 at 1:59 PM Lad Prabhakar
 <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> Document RZ/V2L ADC bindings. RZ/V2L ADC block is identical to one found
-> on the RZ/G2L SoC. No driver changes are required as generic compatible
-> string "renesas,rzg2l-adc" will be used as a fallback.
+> Fillup the ADC stub node in RZ/V2L (R9A07G054) SoC DTSI.
 >
 > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 > Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
 
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+i.e. will queue in renesas-devel for v5.19.
 
 Gr{oetje,eeting}s,
 

@@ -2,95 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE5274C6F3D
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 15:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0834C6FA7
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 15:37:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234825AbiB1OXx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Feb 2022 09:23:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46264 "EHLO
+        id S234274AbiB1OiG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Feb 2022 09:38:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232089AbiB1OXx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 09:23:53 -0500
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E64192BC;
-        Mon, 28 Feb 2022 06:23:14 -0800 (PST)
-Received: by mail-vs1-f48.google.com with SMTP id i27so13070930vsr.10;
-        Mon, 28 Feb 2022 06:23:14 -0800 (PST)
+        with ESMTP id S231599AbiB1OiG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 09:38:06 -0500
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BB4F0F
+        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 06:37:24 -0800 (PST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-2d07ae0b1c0so110604797b3.2
+        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 06:37:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YVpTo5tPx3PMdktiKIMZkyByWle1NPQ1YD4EpGj4GSg=;
+        b=mLaRadXO9R6BwQBCon+f1xm+IT7RKrQStLCaHefdAtJaVWjN7e2lAMQDkdB/vJjDyg
+         z7UXU5u/zZaDLsjOyEUsv9DM9PPIDmHcGKlnhFrra4017CzQ26z0RmObueVzlQ87fV+m
+         EaEAmzIKYNH90Zw3Hs7CNVEJS9BRKq2Cr+J0kTxTACXR1JPXlq+/WqHGB+O4UTPd9uUu
+         S+hfkGn4iPpv2ftOnSO8zZhMMpagRk8DJ0EOjxRISMWokmAjR6ajTg0auGGl+ROT0aPC
+         OJ2asPzw1+1Mp/4i+bjDIwQXMmJ7gDqo57D6PW/Ul5HQrcuClEOGqRQwp74tiL6+cMeH
+         fswQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=f5mSQXselbLEuJjsTNuLw+fQoeJTjUmyz7z46v3uwMA=;
-        b=e1jke7zjfyAIypZTASxQZfxKnNswSBb1N/gujfu3ZuJpPt6tq7iagkYabTzLGEjxMp
-         I+VgOPIOZ7tfRXvvYAhjuEpjvnVOlMssT3GKW+n/W9cO3CnuM0HLQ1IblUhH1Osp6jlp
-         wffZzBmS7GY9In/jJRHiL2kaOwkolLxpcTjcCBsWKEcqrwpAmHNV32AMIaC38pONUWnt
-         BxEVr94usaqx/QK+RMwSkgCBM+z0RFxAbsHW8ceMxejIDgxXbB4Vlvck5Y5SlYwHNeUu
-         r3/yDr+s8Q/g++Fg7Q+SpsnVVjgGd9G7ALF08szo+NeEs2fAUfc2khgZdX75mcuqXjVz
-         rDpQ==
-X-Gm-Message-State: AOAM530N0LJCTpP6tgzr08NeOqr7v26BFWzHxhSyInaSpAmOa28k7wR7
-        gDEq1FW59Dnx8dC84hxoWOfH505iiA3VmA==
-X-Google-Smtp-Source: ABdhPJzACp7n3YWPXW8ElHVOLXVJo7LWKTzyM0qikiTi5T/8sqaq/EzKOTs3KJdWGWfZPuT0Fy2sog==
-X-Received: by 2002:a05:6102:3e95:b0:31b:524c:e311 with SMTP id m21-20020a0561023e9500b0031b524ce311mr7551873vsv.21.1646058193659;
-        Mon, 28 Feb 2022 06:23:13 -0800 (PST)
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com. [209.85.221.174])
-        by smtp.gmail.com with ESMTPSA id k1-20020ab07541000000b00341f0ce5666sm1817489uaq.5.2022.02.28.06.23.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Feb 2022 06:23:13 -0800 (PST)
-Received: by mail-vk1-f174.google.com with SMTP id w128so5231582vkd.3;
-        Mon, 28 Feb 2022 06:23:13 -0800 (PST)
-X-Received: by 2002:a05:6122:8ca:b0:332:64b4:8109 with SMTP id
- 10-20020a05612208ca00b0033264b48109mr8035847vkg.7.1646058192797; Mon, 28 Feb
- 2022 06:23:12 -0800 (PST)
+        bh=YVpTo5tPx3PMdktiKIMZkyByWle1NPQ1YD4EpGj4GSg=;
+        b=w1UYRG/05nvMabyxC+Bq7AvbsybOJQrB4oo4cGeUMOm5H5LLXmXg4sWyB20TZBV1xp
+         Qjgx07pdqDk2eyoEAy7E1G641C2w2lnxhH5deABA00CKLQ89bEMDAeVXr4WsTVQ/Jctb
+         6at9FuwsseTZvY7dQ8aMNvl8GDk1dDmYtfhb9uS1xZnEQJRDHT4C7fImhvyNFvX+Nfrp
+         yeLGJ2qL2+Y3YbONK1FJjUChDXR9/dClnJP0WXJwnKNDUeMsUFeaPbJmGM+fKbZ+sdBt
+         yeHvX/Z3drVPoeGU+OIbVp/LNdQtcs3brvk0258HWENWjTbKED8e1/EKWno5zdHf9BfE
+         PYTw==
+X-Gm-Message-State: AOAM530i+atHrzVovEXIkj7AvnSuFQ9FMpYzJwD9uSIpO8CGiuAp52vs
+        uXdvmy5sQh70uNkZOzBXba8JQR7eYvZccIryrD/nG4jevfpdkA==
+X-Google-Smtp-Source: ABdhPJzQNN20OGB6fLuabC4QjTuGoZ9qIREifW+/q1ibj3JW1DkurROdQ8xfOP+aQn0JJPGnDESe7yupGKvrGsnPAGE=
+X-Received: by 2002:a81:f92:0:b0:2d0:5383:7ca with SMTP id 140-20020a810f92000000b002d0538307camr20081621ywp.268.1646059043696;
+ Mon, 28 Feb 2022 06:37:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20220224125843.29733-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20220224125843.29733-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20220224125843.29733-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 28 Feb 2022 15:23:01 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWyyXEXh5OTpMzj=v0xtYKWjHN1GmZ+4hUD1Z7iTb6EOg@mail.gmail.com>
-Message-ID: <CAMuHMdWyyXEXh5OTpMzj=v0xtYKWjHN1GmZ+4hUD1Z7iTb6EOg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arm64: dts: renesas: r9a07g054: Fillup the ADC stub node
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-iio@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>
+References: <Yhv9M/aXptQSKQju@tp440p.steeds.sam>
+In-Reply-To: <Yhv9M/aXptQSKQju@tp440p.steeds.sam>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 28 Feb 2022 15:37:12 +0100
+Message-ID: <CACRpkdajZLz4kRDpN0ETx=ZNavr0L7bKBW22LrjDmdmkQkg60Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] dt-bindings: iio: st,st-sensors add LIS302DL
+To:     "Sicelo A. Mhlongo" <absicsz@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Feb 24, 2022 at 1:59 PM Lad Prabhakar
-<prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> Fillup the ADC stub node in RZ/V2L (R9A07G054) SoC DTSI.
+On Sun, Feb 27, 2022 at 11:37 PM Sicelo A. Mhlongo <absicsz@gmail.com> wrote:
+
+> Update st,st-sensors bindings for STMicroelectronics LIS302DL variant
 >
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-devel for v5.19.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Yours,
+Linus Walleij

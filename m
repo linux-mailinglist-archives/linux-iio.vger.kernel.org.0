@@ -2,95 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B213C4C7822
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 19:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E77E4C77DE
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 19:33:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240855AbiB1Sm0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Feb 2022 13:42:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33914 "EHLO
+        id S239636AbiB1SeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Feb 2022 13:34:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240697AbiB1SmU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 13:42:20 -0500
-X-Greylist: delayed 600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Feb 2022 10:36:57 PST
-Received: from relay5.hostedemail.com (relay5.hostedemail.com [64.99.140.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E27CE9;
-        Mon, 28 Feb 2022 10:36:57 -0800 (PST)
-Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay11.hostedemail.com (Postfix) with ESMTP id 8480C81766;
-        Mon, 28 Feb 2022 18:20:49 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf09.hostedemail.com (Postfix) with ESMTPA id 5C4272002A;
-        Mon, 28 Feb 2022 18:20:29 +0000 (UTC)
-Message-ID: <0be9de3920442df490f01b6fb1c42521c3de6190.camel@perches.com>
-Subject: Re: [PATCH 1/6] drivers: usb: remove usage of list iterator past
- the loop body
-From:   Joe Perches <joe@perches.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jakob Koschel <jakobkoschel@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergman <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sgx@vger.kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-crypto@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-usb@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        bcm-kernel-feedback-list@broadcom.com, linux-tegra@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, kvm@vger.kernel.org,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-fsdevel@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        v9fs-developer@lists.sourceforge.net,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Date:   Mon, 28 Feb 2022 10:20:28 -0800
-In-Reply-To: <20220228112413.GA2812@kadam>
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
-         <20220228110822.491923-2-jakobkoschel@gmail.com>
-         <20220228112413.GA2812@kadam>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+        with ESMTP id S240009AbiB1SeQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 13:34:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B75B253B44;
+        Mon, 28 Feb 2022 10:19:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46BAB61382;
+        Mon, 28 Feb 2022 18:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CEBC340E7;
+        Mon, 28 Feb 2022 18:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646072361;
+        bh=esk0tt6NfHBQGDU8W2A3w8Fz1t0f515RUeQTILKlsZo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=t6NJVxUGaUFMUEnTTgcDbU02n5dRhA9RqY8U9ExA9nKK9ID7gSkfoZSG2S4m9sWKy
+         h3uYCWE6s25tS6rzOtGolcDwhV4lzXA4Tce6oQNpGoSGrk7YXnEVQcPR60YzB2oYk5
+         9V3oCAIpSUD/XSuZ1oi4rjH4OD5jhSYF0yvqVffefMQ6sWp6QIgGKYzlIbIbUHRjvL
+         Et+DbUL//M1r10BG+RON5+Q61g2jHrZ/L6v+Z75ROi/Eeo0AX86y/TNIGNT8jGnkK4
+         U9640fMGSQXqcF75LSFElcaan4ARLOPdN55kU4/gZmydixLo0k+9Ad20YAsLc70Tpp
+         XYAiO3eayDMDQ==
+Date:   Mon, 28 Feb 2022 18:26:26 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     Robert Hancock <robert.hancock@calian.com>,
+        "anand.ashok.dumbre@xilinx.com" <anand.ashok.dumbre@xilinx.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "manish.narani@xilinx.com" <manish.narani@xilinx.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 0/4] Xilinx AMS fixes
+Message-ID: <20220228182626.12544642@jic23-huawei>
+In-Reply-To: <56c261b2-2bf0-16d1-8fdb-a264709cba09@xilinx.com>
+References: <20220127173450.3684318-1-robert.hancock@calian.com>
+        <20220130124605.6268bfc5@jic23-huawei>
+        <9aeda9dd153f470ae630cff79c374e66ffbeade8.camel@calian.com>
+        <20220226164552.7fed4f1d@jic23-huawei>
+        <56c261b2-2bf0-16d1-8fdb-a264709cba09@xilinx.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1e1i8ombnsc3cdkptu3anccezjc89zox
-X-Rspamd-Server: rspamout07
-X-Rspamd-Queue-Id: 5C4272002A
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=unavailable autolearn_force=no version=3.4.6
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+i6vY6IDwHpNq++UEo/5hqvP4PvgQNb4E=
-X-HE-Tag: 1646072429-12569
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2022-02-28 at 14:24 +0300, Dan Carpenter wrote:
+On Mon, 28 Feb 2022 07:40:59 +0100
+Michal Simek <michal.simek@xilinx.com> wrote:
 
-> a multi-line indent gets curly braces for readability even though
-> it's not required by C.  And then both sides would get curly braces.
+> On 2/26/22 17:45, Jonathan Cameron wrote:
+> > On Wed, 9 Feb 2022 19:49:27 +0000
+> > Robert Hancock <robert.hancock@calian.com> wrote:
+> >   
+> >> On Sun, 2022-01-30 at 12:46 +0000, Jonathan Cameron wrote:  
+> >>> On Thu, 27 Jan 2022 11:34:46 -0600
+> >>> Robert Hancock <robert.hancock@calian.com> wrote:
+> >>>      
+> >>>> Various fixes for the Xilinx AMS driver.
+> >>>>
+> >>>> Changes since v1:
+> >>>> -drop addition to ZynqMP device tree, will be submitted elsewhere
+> >>>> -add patch to fix DT binding to add missing clock entry  
+> >>>
+> >>> I'm fine with these but would like to leave them all on list a tiny
+> >>> bit longer so we can hopefully get some review, particularly on patches
+> >>> 1 and 4.
+> >>>
+> >>> Jonathan  
+> >>
+> >> Hi all,
+> >>
+> >> I don't think I've gotten any feedback. Is anyone able to review/test?
+> >>  
+> > Michal,
+> > 
+> > If you have a chance to take a quick look at this series that would
+> > be great.  
+> 
+> That series looks good to me. Please apply and feel free to add my
+> 
+> Acked-by: Michal Simek <michal.simek@xilinx.com>
+> 
+Applied to the fixes-togreg branch of iio.git.
 
-That's more your personal preference than a coding style guideline.
+I'm not certain I'll get a fixes pull request out in time to make this
+cycle so these might get dragged across to my togreg branch and
+added to a pull request for the merge window. Or, possibly Greg
+will take them for the merge window even if I do a separate pull given
+we are close to the end of the cycle.
 
+Thanks,
+
+Jonathan
+
+> Thanks,
+> Michal
 

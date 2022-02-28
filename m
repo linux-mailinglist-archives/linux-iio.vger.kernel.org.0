@@ -2,75 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0834C6FA7
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 15:37:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D18A4C71E2
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 17:45:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234274AbiB1OiG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Feb 2022 09:38:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60632 "EHLO
+        id S237300AbiB1Qpo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Feb 2022 11:45:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231599AbiB1OiG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 09:38:06 -0500
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BB4F0F
-        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 06:37:24 -0800 (PST)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-2d07ae0b1c0so110604797b3.2
-        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 06:37:24 -0800 (PST)
+        with ESMTP id S234322AbiB1Qpn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 11:45:43 -0500
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38070694AD;
+        Mon, 28 Feb 2022 08:45:04 -0800 (PST)
+Received: by mail-qk1-x72d.google.com with SMTP id g24so10790559qkl.3;
+        Mon, 28 Feb 2022 08:45:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YVpTo5tPx3PMdktiKIMZkyByWle1NPQ1YD4EpGj4GSg=;
-        b=mLaRadXO9R6BwQBCon+f1xm+IT7RKrQStLCaHefdAtJaVWjN7e2lAMQDkdB/vJjDyg
-         z7UXU5u/zZaDLsjOyEUsv9DM9PPIDmHcGKlnhFrra4017CzQ26z0RmObueVzlQ87fV+m
-         EaEAmzIKYNH90Zw3Hs7CNVEJS9BRKq2Cr+J0kTxTACXR1JPXlq+/WqHGB+O4UTPd9uUu
-         S+hfkGn4iPpv2ftOnSO8zZhMMpagRk8DJ0EOjxRISMWokmAjR6ajTg0auGGl+ROT0aPC
-         OJ2asPzw1+1Mp/4i+bjDIwQXMmJ7gDqo57D6PW/Ul5HQrcuClEOGqRQwp74tiL6+cMeH
-         fswQ==
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=gZ/lBVmz5qkZmaDTKla0rq1d1JmWVouxOfT4UJPJ/zI=;
+        b=EUbYpCYm4Rqd9t5BnR6HhwA8Cv5yKyKomML6aJbDTJ1dmfmXbwe/dhAH9kYOFyQLwi
+         nD7qryaBes99/P/BXjFSxzpnwzzkckAuI2SuK4P/dQBI4VdFtbpV+EMhPe50lKeKfu4e
+         H8CbLTZf2rzwHhKnJYY84EUfcWccLAHWZ5jo1P1FD5BhkGeltKhGghV4Yd1AWwuzUHaa
+         fyj7um5P6NaemeD82c+U3dDnWQQNdf50kSfSjgITnw44qT7cRaYircVluNBi43XXqsCa
+         fB4/skecH1TslU0CBWl2DNU60au1qDswMX6IkdHa5ynEmvwiidkz8lZDE4nDKQ13Je1a
+         EVFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YVpTo5tPx3PMdktiKIMZkyByWle1NPQ1YD4EpGj4GSg=;
-        b=w1UYRG/05nvMabyxC+Bq7AvbsybOJQrB4oo4cGeUMOm5H5LLXmXg4sWyB20TZBV1xp
-         Qjgx07pdqDk2eyoEAy7E1G641C2w2lnxhH5deABA00CKLQ89bEMDAeVXr4WsTVQ/Jctb
-         6at9FuwsseTZvY7dQ8aMNvl8GDk1dDmYtfhb9uS1xZnEQJRDHT4C7fImhvyNFvX+Nfrp
-         yeLGJ2qL2+Y3YbONK1FJjUChDXR9/dClnJP0WXJwnKNDUeMsUFeaPbJmGM+fKbZ+sdBt
-         yeHvX/Z3drVPoeGU+OIbVp/LNdQtcs3brvk0258HWENWjTbKED8e1/EKWno5zdHf9BfE
-         PYTw==
-X-Gm-Message-State: AOAM530i+atHrzVovEXIkj7AvnSuFQ9FMpYzJwD9uSIpO8CGiuAp52vs
-        uXdvmy5sQh70uNkZOzBXba8JQR7eYvZccIryrD/nG4jevfpdkA==
-X-Google-Smtp-Source: ABdhPJzQNN20OGB6fLuabC4QjTuGoZ9qIREifW+/q1ibj3JW1DkurROdQ8xfOP+aQn0JJPGnDESe7yupGKvrGsnPAGE=
-X-Received: by 2002:a81:f92:0:b0:2d0:5383:7ca with SMTP id 140-20020a810f92000000b002d0538307camr20081621ywp.268.1646059043696;
- Mon, 28 Feb 2022 06:37:23 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gZ/lBVmz5qkZmaDTKla0rq1d1JmWVouxOfT4UJPJ/zI=;
+        b=DPL9I0MWUJULRsAZ16I5Y6Vw6FRarhkBkliH32/ZQUW9soYDIvu12eIL73AS0+vmfT
+         8uUj8J5/MFx2xOkT/z6U7uyD/KHt13652ubukJSQ7N6JyQaSyubLvx9LYnS0WdEVXqUf
+         /HVgSGnA+Mr3zBKjkyeugruy7HNjAast+cU60dh7/Vm6Otnu8rTBoD0XKuulIcN3sqZQ
+         598dkFpbVaX4qkY1750Cg5/qGoEci9xC1lmwdadmHaYaiSaPf+h3P/jFMmo3ux8aRCEj
+         q/YmIJcaxmUhHz8sfKMlzFI6BRzdXCcEOXF+2/FNiDB32AnIBR0tQEs2JAwaP/jYEgcy
+         P7Ag==
+X-Gm-Message-State: AOAM531LnvSoApD8HIUX5OQWhR5PKJmsj4gL7AN+OIBP94MqqtjZ7pJY
+        m8FQ48TdHa4DHSaHQp6TVUD51Nt7QEg=
+X-Google-Smtp-Source: ABdhPJwV79w/xcqL5pMshUMmenCj1DphiDLzuupE/DTTMMGNGZUk/iCMjf3a4MHPPAkfhmIldXgqDQ==
+X-Received: by 2002:a37:f719:0:b0:648:cd93:3198 with SMTP id q25-20020a37f719000000b00648cd933198mr11687653qkj.179.1646066703316;
+        Mon, 28 Feb 2022 08:45:03 -0800 (PST)
+Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
+        by smtp.gmail.com with ESMTPSA id t5-20020a05620a034500b00476e85c85b9sm5203572qkm.110.2022.02.28.08.45.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Feb 2022 08:45:02 -0800 (PST)
+Date:   Mon, 28 Feb 2022 11:45:00 -0500
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     peda@axentia.se, andy.shevchenko@gmail.com, lars@metafoo.de,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org
+Subject: Re: [PATCH v15 00/10] iio: afe: add temperature rescaling support
+Message-ID: <Yhz8DBfkJQSpBagW@shaak>
+References: <20220213025739.2561834-1-liambeguin@gmail.com>
+ <20220227125559.72d5d79a@jic23-huawei>
 MIME-Version: 1.0
-References: <Yhv9M/aXptQSKQju@tp440p.steeds.sam>
-In-Reply-To: <Yhv9M/aXptQSKQju@tp440p.steeds.sam>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 28 Feb 2022 15:37:12 +0100
-Message-ID: <CACRpkdajZLz4kRDpN0ETx=ZNavr0L7bKBW22LrjDmdmkQkg60Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: iio: st,st-sensors add LIS302DL
-To:     "Sicelo A. Mhlongo" <absicsz@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220227125559.72d5d79a@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Feb 27, 2022 at 11:37 PM Sicelo A. Mhlongo <absicsz@gmail.com> wrote:
+Hi Jonathan,
 
-> Update st,st-sensors bindings for STMicroelectronics LIS302DL variant
->
-> Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+On Sun, Feb 27, 2022 at 12:55:59PM +0000, Jonathan Cameron wrote:
+> On Sat, 12 Feb 2022 21:57:29 -0500
+> Liam Beguin <liambeguin@gmail.com> wrote:
+> 
+> > Jonathan, Peter, Andy,
+> > 
+> > This series focuses on adding temperature rescaling support to the IIO
+> > Analog Front End (AFE) driver.
+> > 
+> > The main changes to the AFE driver include an initial Kunit test suite,
+> > support for IIO_VAL_INT_PLUS_{NANO,MICRO} scales, and support for RTDs
+> > and temperature transducer sensors.
+> > 
+> > Thanks for your time,
+> > Liam
+> 
+> Hi Liam,
+> 
+> I was waiting for Andy to reply to this. Took a quick look back at
+> what was outstanding and realised he had given a
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> for v13.
+> 
+> I'm assuming there wasn't a strong reason to drop that in the meantime
+> and it's a simple omission / crossed emails issue.
+> 
+> As such, 
+> 
+> Series applied to the togreg branch of iio.git and pushed out
+> as testing to get some build coverage from 0-day.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Great news! Thanks again for your patience, and review on this work.
 
-Yours,
-Linus Walleij
+I noticed you fixed the CI error. Thanks for doing that, and my
+apologies for missing it.
+
+Cheers,
+Liam
+
+> Thanks,
+> 
+> Jonathan
+> 

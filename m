@@ -2,88 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C8F4C7CFF
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 23:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7EE54C7B5A
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 22:07:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231355AbiB1WHr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Feb 2022 17:07:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35058 "EHLO
+        id S229733AbiB1VHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Feb 2022 16:07:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230402AbiB1WHq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 17:07:46 -0500
-X-Greylist: delayed 3241 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Feb 2022 14:07:01 PST
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7E7D3C4E3A;
-        Mon, 28 Feb 2022 14:07:01 -0800 (PST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 21SKr95E005627;
-        Mon, 28 Feb 2022 14:53:09 -0600
-Received: (from segher@localhost)
-        by gate.crashing.org (8.14.1/8.14.1/Submit) id 21SKr7Xe005624;
-        Mon, 28 Feb 2022 14:53:07 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date:   Mon, 28 Feb 2022 14:53:07 -0600
-From:   Segher Boessenkool <segher@kernel.crashing.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        alsa-devel@alsa-project.org, KVM list <kvm@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>, linux1394-devel@lists.sourceforge.net,
-        drbd-dev@lists.linbit.com, linux-arch <linux-arch@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>, linux-aspeed@lists.ozlabs.org,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        intel-wired-lan@lists.osuosl.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        bcm-kernel-feedback-list@broadcom.com,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergman <arnd@arndb.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        dma <dmaengine@vger.kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        v9fs-developer@lists.sourceforge.net,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-sgx@vger.kernel.org,
-        linux-block <linux-block@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org,
-        samba-technical@lists.samba.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux F2FS Dev Mailing List 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        tipc-discussion@lists.sourceforge.net,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        linux-mediatek@lists.infradead.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body as a ptr
-Message-ID: <20220228205307.GD614@gate.crashing.org>
-References: <20220228110822.491923-1-jakobkoschel@gmail.com> <20220228110822.491923-3-jakobkoschel@gmail.com> <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com> <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com> <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com> <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com> <CAHk-=wj27SZQ3kPTesBzkiGhe-mA3gOQqr_adt_bMFzmg1VNaA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wj27SZQ3kPTesBzkiGhe-mA3gOQqr_adt_bMFzmg1VNaA@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        with ESMTP id S229673AbiB1VHU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 16:07:20 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 087B4642A
+        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 13:06:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1646082397;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LYnovbPtGcgc9E/8oVMTSKgr3ODQnP2MrUjRdl+DpK0=;
+        b=DaQrxhFrGf+T9cKOhjDsAkWVxK4/zMgREB5gNq9ORHQgUcnJu1mKE1Lxif0hhAPpGBu0Uj
+        /KHE5gvWH19Mm6FUqp887zGOxn6YddQgfEmsHl14miLTVEgPy7rT2d7HJeNNArIfstuZKZ
+        ZWnxnDt2acDqv3kfv8gcwzyngjqYW0Y=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-10-tP97XL8jNHy6r5Ws7llKUg-1; Mon, 28 Feb 2022 16:06:36 -0500
+X-MC-Unique: tP97XL8jNHy6r5Ws7llKUg-1
+Received: by mail-qv1-f69.google.com with SMTP id fh12-20020a0562141a0c00b00432f7fe8804so6062548qvb.4
+        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 13:06:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=LYnovbPtGcgc9E/8oVMTSKgr3ODQnP2MrUjRdl+DpK0=;
+        b=S1G46WQHnVD0Cy9tY44hHfDqMxeLxm3SggUzYeEyY1K90eHwsBFwCB94gprZ0jK/DA
+         kA134SZRTA+ho/GE69KFdBFZPnGa/CYvG1NY5FtJ+zs4OEM+m3e+crc22L6xjbz6Ip/f
+         RNOxs7qKHVksDkfeWB53oJnJnt89OaUnqti0KuF39ZJhn1huX6cKTWatdI496wKv8KVq
+         XCFYhr4uzm7/Jq4HwX2A+2sYQTYhed96PtJmgC5aOACDRcl11jaD+I9SDqsyD6EIteiX
+         jtDR+I6dzeR805jUJn1poQSxEejKqn8ZDff5hfGWCm6sgEKCKRtru4tTm5dTdctugrTP
+         aZCA==
+X-Gm-Message-State: AOAM533mrt2esoc29Xki7d1cpDHa7fMWEJsHp20MJDoTWjJLkm3MMjFl
+        EWJMZM6OfrUvKMvvDmXisl+Y0WbbjuYhcUPJ4wJ0qVM76nirtalFKgZgwQVScBgOvFOsZodGTcy
+        PaHcZPtkfVsdMNOnnx6ui
+X-Received: by 2002:a05:6214:2421:b0:432:843f:b437 with SMTP id gy1-20020a056214242100b00432843fb437mr15149193qvb.102.1646082395634;
+        Mon, 28 Feb 2022 13:06:35 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzYR48coK6y+4ntjFW3gm3X78BcUfrEpCL4Q9kP1stQ4+ZmgiQnbNc7mm9sQd0BlLKJGiAMPA==
+X-Received: by 2002:a05:6214:2421:b0:432:843f:b437 with SMTP id gy1-20020a056214242100b00432843fb437mr15149181qvb.102.1646082395416;
+        Mon, 28 Feb 2022 13:06:35 -0800 (PST)
+Received: from localhost.localdomain (024-205-208-113.res.spectrum.com. [24.205.208.113])
+        by smtp.gmail.com with ESMTPSA id n8-20020a05620a152800b00648e52be61bsm5437078qkk.37.2022.02.28.13.06.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Feb 2022 13:06:35 -0800 (PST)
+Subject: Re: [PATCH] iio: scd4x: check return of scd4x_write_and_fetch
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     roan@protonic.nl, lars@metafoo.de, nathan@kernel.org,
+        ndesaulniers@google.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20220227154331.80338-1-trix@redhat.com>
+ <20220227174850.73520e39@jic23-huawei>
+From:   Tom Rix <trix@redhat.com>
+Message-ID: <b13706f7-4a9e-ba3d-2828-8570c409096c@redhat.com>
+Date:   Mon, 28 Feb 2022 13:06:32 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <20220227174850.73520e39@jic23-huawei>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -91,48 +83,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Feb 28, 2022 at 12:14:44PM -0800, Linus Torvalds wrote:
-> On Mon, Feb 28, 2022 at 12:10 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > We can do
-> >
-> >         typeof(pos) pos
-> >
-> > in the 'for ()' loop, and never use __iter at all.
-> >
-> > That means that inside the for-loop, we use a _different_ 'pos' than outside.
-> 
-> The thing that makes me throw up in my mouth a bit is that in that
-> 
->         typeof(pos) pos
-> 
-> the first 'pos' (that we use for just the typeof) is that outer-level
-> 'pos', IOW it's a *different* 'pos' than the second 'pos' in that same
-> declaration that declares the inner level shadowing new 'pos'
-> variable.
 
-The new "pos" has not yet been declared, so this has to refer to the
-outer "pos", it cannot be the inner one.  Because it hasn't been
-declared yet :-)
+On 2/27/22 9:48 AM, Jonathan Cameron wrote:
+> On Sun, 27 Feb 2022 07:43:31 -0800
+> trix@redhat.com wrote:
+>
+>> From: Tom Rix <trix@redhat.com>
+>>
+>> Clang static analysis reports this problem
+>> scd4x.c:474:10: warning: The left operand of '==' is a
+>>    garbage value
+>>    if (val == 0xff) {
+>>        ~~~ ^
+>> val is only set from a successful call to scd4x_write_and_fetch()
+>> So check it's return.
+>>
+>> Fixes: 49d22b695cbb ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
+>> Signed-off-by: Tom Rix <trix@redhat.com>
+> Good find, but I'd prefer a separate check on ret inline with what the
+> other error checking paths in that function are doing.
+>
+>> ---
+>>   drivers/iio/chemical/scd4x.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+>> index 20d4e7584e923..b978330fb761c 100644
+>> --- a/drivers/iio/chemical/scd4x.c
+>> +++ b/drivers/iio/chemical/scd4x.c
+>> @@ -471,7 +471,7 @@ static ssize_t calibration_forced_value_store(struct device *dev,
+>>   	ret = scd4x_write_and_fetch(state, CMD_FRC, arg, &val, sizeof(val));
+>>   	mutex_unlock(&state->lock);
+>>   
+>> -	if (val == 0xff) {
+>> +	if (!ret && val == 0xff) {
+>>   		dev_err(dev, "forced calibration has failed");
+>>   		return -EINVAL;
+>>   	}
+> Prefer
+>
+> 	if (ret)
+> 		return ret;
+>
+> 	if (val == 0xff) {
+> 		dev_err(dev, "...
+> 		return -EINVAL;
+> 	}
 
-Compare this to
-  typeof (pos) pos = pos;
-where that last "pos" *does* refer to the newly declared one: that
-declaration has already been done!  (So this code is UB btw, 6.3.2.1/2).
+ok and the next line can be simplified to
 
-> If I was a compiler person, I would say "Linus, that thing is too ugly
-> to live", and I would hate it. I'm just hoping that even compiler
-> people say "that's *so* ugly it's almost beautiful".
+return len;
 
-It is perfectly well-defined.  Well, it would be good if we (GCC) would
-document it does work, and if someone tested it on LLVM as well.  But it
-is really hard to implement it to *not* work :-)
+Tom
 
-> Because it does seem to work. It's not pretty, but hey, it's not like
-> our headers are really ever be winning any beauty contests...
+> Thanks,
+>
+> Jonathan
+>
 
-It is very pretty!  Needs a comment though :-)
-
-
-Segher

@@ -2,142 +2,172 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7EE54C7B5A
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 22:07:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD2F4C7B84
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Feb 2022 22:13:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbiB1VHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Feb 2022 16:07:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
+        id S230140AbiB1VOA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Feb 2022 16:14:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbiB1VHU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 16:07:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 087B4642A
-        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 13:06:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1646082397;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LYnovbPtGcgc9E/8oVMTSKgr3ODQnP2MrUjRdl+DpK0=;
-        b=DaQrxhFrGf+T9cKOhjDsAkWVxK4/zMgREB5gNq9ORHQgUcnJu1mKE1Lxif0hhAPpGBu0Uj
-        /KHE5gvWH19Mm6FUqp887zGOxn6YddQgfEmsHl14miLTVEgPy7rT2d7HJeNNArIfstuZKZ
-        ZWnxnDt2acDqv3kfv8gcwzyngjqYW0Y=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-10-tP97XL8jNHy6r5Ws7llKUg-1; Mon, 28 Feb 2022 16:06:36 -0500
-X-MC-Unique: tP97XL8jNHy6r5Ws7llKUg-1
-Received: by mail-qv1-f69.google.com with SMTP id fh12-20020a0562141a0c00b00432f7fe8804so6062548qvb.4
-        for <linux-iio@vger.kernel.org>; Mon, 28 Feb 2022 13:06:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=LYnovbPtGcgc9E/8oVMTSKgr3ODQnP2MrUjRdl+DpK0=;
-        b=S1G46WQHnVD0Cy9tY44hHfDqMxeLxm3SggUzYeEyY1K90eHwsBFwCB94gprZ0jK/DA
-         kA134SZRTA+ho/GE69KFdBFZPnGa/CYvG1NY5FtJ+zs4OEM+m3e+crc22L6xjbz6Ip/f
-         RNOxs7qKHVksDkfeWB53oJnJnt89OaUnqti0KuF39ZJhn1huX6cKTWatdI496wKv8KVq
-         XCFYhr4uzm7/Jq4HwX2A+2sYQTYhed96PtJmgC5aOACDRcl11jaD+I9SDqsyD6EIteiX
-         jtDR+I6dzeR805jUJn1poQSxEejKqn8ZDff5hfGWCm6sgEKCKRtru4tTm5dTdctugrTP
-         aZCA==
-X-Gm-Message-State: AOAM533mrt2esoc29Xki7d1cpDHa7fMWEJsHp20MJDoTWjJLkm3MMjFl
-        EWJMZM6OfrUvKMvvDmXisl+Y0WbbjuYhcUPJ4wJ0qVM76nirtalFKgZgwQVScBgOvFOsZodGTcy
-        PaHcZPtkfVsdMNOnnx6ui
-X-Received: by 2002:a05:6214:2421:b0:432:843f:b437 with SMTP id gy1-20020a056214242100b00432843fb437mr15149193qvb.102.1646082395634;
-        Mon, 28 Feb 2022 13:06:35 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzYR48coK6y+4ntjFW3gm3X78BcUfrEpCL4Q9kP1stQ4+ZmgiQnbNc7mm9sQd0BlLKJGiAMPA==
-X-Received: by 2002:a05:6214:2421:b0:432:843f:b437 with SMTP id gy1-20020a056214242100b00432843fb437mr15149181qvb.102.1646082395416;
-        Mon, 28 Feb 2022 13:06:35 -0800 (PST)
-Received: from localhost.localdomain (024-205-208-113.res.spectrum.com. [24.205.208.113])
-        by smtp.gmail.com with ESMTPSA id n8-20020a05620a152800b00648e52be61bsm5437078qkk.37.2022.02.28.13.06.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Feb 2022 13:06:35 -0800 (PST)
-Subject: Re: [PATCH] iio: scd4x: check return of scd4x_write_and_fetch
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     roan@protonic.nl, lars@metafoo.de, nathan@kernel.org,
-        ndesaulniers@google.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-References: <20220227154331.80338-1-trix@redhat.com>
- <20220227174850.73520e39@jic23-huawei>
-From:   Tom Rix <trix@redhat.com>
-Message-ID: <b13706f7-4a9e-ba3d-2828-8570c409096c@redhat.com>
-Date:   Mon, 28 Feb 2022 13:06:32 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S230104AbiB1VN5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Feb 2022 16:13:57 -0500
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6021ECC41;
+        Mon, 28 Feb 2022 13:13:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1646082795;
+        bh=b0jOc0WDOwLaR9eob939Fu/T9iRVE4QNy1gcUuEgORI=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=fTQp+HhEyDWfdTRw9MD74D4dNoy4lJbDD6ufhn8pOCgDG9LKN5I5E2XfQsXuEnTyE
+         o41BjR/wB9Zx796mcVO5HItpPdbUBqFA5gZFvpxw0W0+8SaIBYecaW0t63X4w0ysYd
+         Uxmzs2O4chqjQ5mD0m0R9/q9wYnJ2eru8WGs04Zw=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id EE6F612811CE;
+        Mon, 28 Feb 2022 16:13:15 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id fdilm1jMyJ2v; Mon, 28 Feb 2022 16:13:15 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1646082795;
+        bh=b0jOc0WDOwLaR9eob939Fu/T9iRVE4QNy1gcUuEgORI=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=fTQp+HhEyDWfdTRw9MD74D4dNoy4lJbDD6ufhn8pOCgDG9LKN5I5E2XfQsXuEnTyE
+         o41BjR/wB9Zx796mcVO5HItpPdbUBqFA5gZFvpxw0W0+8SaIBYecaW0t63X4w0ysYd
+         Uxmzs2O4chqjQ5mD0m0R9/q9wYnJ2eru8WGs04Zw=
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:c551::527])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 980CE1280320;
+        Mon, 28 Feb 2022 16:13:11 -0500 (EST)
+Message-ID: <ade13f419519350e460e7ef1e64477ec72e828ed.camel@HansenPartnership.com>
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop
+ body as a ptr
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Jakob Koschel <jakobkoschel@gmail.com>,
+        alsa-devel@alsa-project.org, linux-aspeed@lists.ozlabs.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        samba-technical@lists.samba.org,
+        linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
+        linux-arch <linux-arch@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        KVM list <kvm@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-staging@lists.linux.dev, "Bos, H.J." <h.j.bos@vu.nl>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        intel-wired-lan@lists.osuosl.org,
+        kgdb-bugreport@lists.sourceforge.net,
+        bcm-kernel-feedback-list@broadcom.com,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergman <arnd@arndb.de>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        v9fs-developer@lists.sourceforge.net,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-sgx@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux F2FS Dev Mailing List 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        tipc-discussion@lists.sourceforge.net,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        dma <dmaengine@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Mike Rapoport <rppt@kernel.org>
+Date:   Mon, 28 Feb 2022 16:13:09 -0500
+In-Reply-To: <0b65541a-3da7-dc35-690a-0ada75b0adae@amd.com>
+References: <20220228110822.491923-1-jakobkoschel@gmail.com>
+         <20220228110822.491923-3-jakobkoschel@gmail.com>
+         <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
+         <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
+         <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com>
+         <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
+         <0b65541a-3da7-dc35-690a-0ada75b0adae@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-In-Reply-To: <20220227174850.73520e39@jic23-huawei>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 2022-02-28 at 21:56 +0100, Christian König wrote:
+> 
+> Am 28.02.22 um 21:42 schrieb James Bottomley:
+> > On Mon, 2022-02-28 at 21:07 +0100, Christian König wrote:
+> > > Am 28.02.22 um 20:56 schrieb Linus Torvalds:
+> > > > On Mon, Feb 28, 2022 at 4:19 AM Christian König
+> > > > <christian.koenig@amd.com> wrote:
+> > > > [SNIP]
+> > > > Anybody have any ideas?
+> > > I think we should look at the use cases why code is touching
+> > > (pos)
+> > > after the loop.
+> > > 
+> > > Just from skimming over the patches to change this and experience
+> > > with the drivers/subsystems I help to maintain I think the
+> > > primary pattern looks something like this:
+> > > 
+> > > list_for_each_entry(entry, head, member) {
+> > >       if (some_condition_checking(entry))
+> > >           break;
+> > > }
+> > > do_something_with(entry);
+> > 
+> > Actually, we usually have a check to see if the loop found
+> > anything, but in that case it should something like
+> > 
+> > if (list_entry_is_head(entry, head, member)) {
+> >      return with error;
+> > }
+> > do_somethin_with(entry);
+> > 
+> > Suffice?  The list_entry_is_head() macro is designed to cope with
+> > the bogus entry on head problem.
+> 
+> That will work and is also what people already do.
+> 
+> The key problem is that we let people do the same thing over and
+> over again with slightly different implementations.
+> 
+> Out in the wild I've seen at least using a separate variable, using
+> a bool to indicate that something was found and just assuming that
+> the list has an entry.
+> 
+> The last case is bogus and basically what can break badly.
 
-On 2/27/22 9:48 AM, Jonathan Cameron wrote:
-> On Sun, 27 Feb 2022 07:43:31 -0800
-> trix@redhat.com wrote:
->
->> From: Tom Rix <trix@redhat.com>
->>
->> Clang static analysis reports this problem
->> scd4x.c:474:10: warning: The left operand of '==' is a
->>    garbage value
->>    if (val == 0xff) {
->>        ~~~ ^
->> val is only set from a successful call to scd4x_write_and_fetch()
->> So check it's return.
->>
->> Fixes: 49d22b695cbb ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
->> Signed-off-by: Tom Rix <trix@redhat.com>
-> Good find, but I'd prefer a separate check on ret inline with what the
-> other error checking paths in that function are doing.
->
->> ---
->>   drivers/iio/chemical/scd4x.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
->> index 20d4e7584e923..b978330fb761c 100644
->> --- a/drivers/iio/chemical/scd4x.c
->> +++ b/drivers/iio/chemical/scd4x.c
->> @@ -471,7 +471,7 @@ static ssize_t calibration_forced_value_store(struct device *dev,
->>   	ret = scd4x_write_and_fetch(state, CMD_FRC, arg, &val, sizeof(val));
->>   	mutex_unlock(&state->lock);
->>   
->> -	if (val == 0xff) {
->> +	if (!ret && val == 0xff) {
->>   		dev_err(dev, "forced calibration has failed");
->>   		return -EINVAL;
->>   	}
-> Prefer
->
-> 	if (ret)
-> 		return ret;
->
-> 	if (val == 0xff) {
-> 		dev_err(dev, "...
-> 		return -EINVAL;
-> 	}
+Yes, I understand that.  I'm saying we should replace that bogus checks
+of entry->something against some_value loop termination condition with
+the list_entry_is_head() macro.  That should be a one line and fairly
+mechanical change rather than the explosion of code changes we seem to
+have in the patch series.
 
-ok and the next line can be simplified to
+James
 
-return len;
-
-Tom
-
-> Thanks,
->
-> Jonathan
->
 

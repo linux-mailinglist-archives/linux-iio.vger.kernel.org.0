@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B71AF4C988D
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 23:55:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A924C9890
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 23:56:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238557AbiCAW4g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Mar 2022 17:56:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60600 "EHLO
+        id S238561AbiCAW4r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Mar 2022 17:56:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237544AbiCAW4f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 17:56:35 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEF863BE3;
-        Tue,  1 Mar 2022 14:55:53 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id p184-20020a1c29c1000000b0037f76d8b484so158511wmp.5;
-        Tue, 01 Mar 2022 14:55:53 -0800 (PST)
+        with ESMTP id S236472AbiCAW4q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 17:56:46 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA2D79397;
+        Tue,  1 Mar 2022 14:56:04 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id p9so22854518wra.12;
+        Tue, 01 Mar 2022 14:56:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=yNzPi6lzSrMkhOu1rYI3ULtZdVbsMI/D7W0iS0nwK7I=;
-        b=NYe99Fdv9qsx8DcTwWi3jT40gLeUuxSdfRVMXv/0Cbdc2FcRPOhYWVXiDLetBUfu6u
-         79eg0LcXfk86tefC38uAjHG3ryr6kkvIdK/XdY23iRMfJYdBDd2A4Fh8n5DqEddmOIWK
-         RS7x4A8WcJ3SKhMUk67uvRkA+VlbPX+mDhXvuhDfj8uV/j7Kcah0YC3IT3lNE4A7W+Rf
-         xv2tbP7dhTE3guKJJUyuhUEHA/xOXNmHNwOXeZIitgYKHs89r/2G+PpF8L6XSpM7Kclz
-         ujq830pScvgXZKTkpQ7TPvJ0Q5+78S0YFayVwzpQ1xUmHKMBZCGCtPJ/YVsdl+PkebHD
-         FUUA==
+        bh=R3h0PpRGN1b9QtsJKwBnOzDweyLrjwadXEhG6ra676Q=;
+        b=C56u2O0lqISECCr7dkelTEKdbtkZITES8pq8U2F2sP17bZKgjpd2jfZvwQZXnuD90t
+         5I+IsGADkau80MuwA90njKYdOFGetr5O8mRO/iEFDRXVQdBF/Y5O6foqDq0YhsfEaDdT
+         8uEs3Uc8ta792Nd7mG0feloLeWqQOWbRrfv9UY85U7ykb+Gl0oCxtwFRPDW/PQjpwctU
+         CT6SRKg7fDQX0a30qHHNZDnaVP89eEQsmuVkIaB9O80qI99HxKQRluJF0v0+Ib9AnS3e
+         fSWoil55qp86DWfn5Qn8gryPqmyGMd5HyKjRExQ86CA+vhMSQClUEH9pL+63/1GmGPNz
+         4aUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=yNzPi6lzSrMkhOu1rYI3ULtZdVbsMI/D7W0iS0nwK7I=;
-        b=ViBDsvRxOYLiPTZ6VIqXOU8Na821BTSTBKgFNlGycnYd7hLdxoLsGPJY+6xLXPkBoS
-         fm3QeSx4Bm3MLFxfMFeBYM1cxo55TUYduQxJk225BwoiGeSEEKIgd+QTKxJ9ZC5tdle9
-         mwHPNpThSed/ejw7VLqX1kp9mts+jAeI4eOzwkiGP/zXDXAHp2h2pxl1XLWeU9dajOmH
-         Tmvyu3vCanfjSRo86O5oTnLrVslenofgld2vGl4V+Wg40ft46ClF3XFK2gMQBBVaWHhX
-         xap+byi0fhUqQvcdi7BvG+kB5sCzdCvkPzEZFaXDnq2jo+6NNgK6Isp07RYpPPOWLZ+k
-         LmiQ==
-X-Gm-Message-State: AOAM53340HpOfSzX+jj8RVgts4PWhWSHutoi0o048DNg3N5OT/3+WcLE
-        GSswj8Klw5+QG3+or6qCHWA=
-X-Google-Smtp-Source: ABdhPJyZP20LQkQj+YixbYNY6tJ/bEpDvaEjnSUtfgHWcNnibZskJe0KHIsoTS+hv2ByyiJ6nxZF2A==
-X-Received: by 2002:a05:600c:4f8e:b0:381:6de4:fccc with SMTP id n14-20020a05600c4f8e00b003816de4fcccmr8093260wmq.82.1646175351789;
-        Tue, 01 Mar 2022 14:55:51 -0800 (PST)
+        bh=R3h0PpRGN1b9QtsJKwBnOzDweyLrjwadXEhG6ra676Q=;
+        b=fFUPtgjizUYB8/BaHmg/lnxP4xnol++l0CRujZPkc7y9Cqrpm8wgyUoZ5PGIM2tRxa
+         NaTeyRtudC1irNGQZ/1jbgejwGabTiFl5JAH0akasInxD1Ql6uDH6oe3ijbvogwgzDwm
+         9Y6F6sWl/Jh/VcZNthfb4A8ORq2bYgdZDLxcdF3LKGZH+7RcHGY5H6yZoQVD8MCSzUF3
+         UQfZjEBf/I11Jp40/hlrxJ0yhNeNgIGnqL2GsFSXkTxCnYemp9o8EA+PQdBsAc0RRjJe
+         Ko33+92Z0zhJqb1/FsXWX9mbti47Zu25RZitLgLzWoHsJRLKdaeI1Woir8hrPD7au3pU
+         /6FQ==
+X-Gm-Message-State: AOAM532M7fLGR0ON7/AuIB5yaVHR+9Lq6qKf1mu4uX9dzWg9lgtZQea6
+        luNC/0kFEeRzhf0jlH4vPZfzQZWm3qM0apmK
+X-Google-Smtp-Source: ABdhPJxEeEjQ3rLS9vFIha4EPgtwRtPHrbOTHsj9wYF+3n7Aw2fsG3SN6DvG/2ifC+UgxStMaP6FDw==
+X-Received: by 2002:adf:ea44:0:b0:1ef:6f00:cf47 with SMTP id j4-20020adfea44000000b001ef6f00cf47mr17372976wrn.460.1646175363437;
+        Tue, 01 Mar 2022 14:56:03 -0800 (PST)
 Received: from tpt440p.steeds.sam ([69.63.75.250])
-        by smtp.gmail.com with ESMTPSA id o18-20020a05600c511200b00352ec3b4c5asm5314832wms.7.2022.03.01.14.55.49
+        by smtp.gmail.com with ESMTPSA id o18-20020a05600c511200b00352ec3b4c5asm5314832wms.7.2022.03.01.14.56.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Mar 2022 14:55:51 -0800 (PST)
+        Tue, 01 Mar 2022 14:56:03 -0800 (PST)
 From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -55,11 +55,10 @@ Cc:     devicetree@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Sicelo A. Mhlongo" <absicsz@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Subject: [PATCH v2 2/3] iio: accel: Remove unused enum in st_accel
-Date:   Wed,  2 Mar 2022 00:54:31 +0200
-Message-Id: <20220301225432.60844-3-absicsz@gmail.com>
+        "Sicelo A. Mhlongo" <absicsz@gmail.com>
+Subject: [PATCH v2 3/3] iio: accel: add support for LIS302DL variant
+Date:   Wed,  2 Mar 2022 00:54:32 +0200
+Message-Id: <20220301225432.60844-4-absicsz@gmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220301225432.60844-1-absicsz@gmail.com>
 References: <20220301225432.60844-1-absicsz@gmail.com>
@@ -76,51 +75,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The st_accel_type enum is not used anywhere else in the code, and can be
-removed
+Add support for STMicroelectronics LIS302DL accelerometer to the st_accel
+framework.
 
-Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+https://www.st.com/resource/en/datasheet/lis302dl.pdf
+
 Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
 ---
- drivers/iio/accel/st_accel.h | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ drivers/iio/accel/st_accel.h      | 1 +
+ drivers/iio/accel/st_accel_core.c | 1 +
+ drivers/iio/accel/st_accel_i2c.c  | 5 +++++
+ 3 files changed, 7 insertions(+)
 
 diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
-index 8750dea56fcb..969cc7faca07 100644
+index 969cc7faca07..0e79dc100ce5 100644
 --- a/drivers/iio/accel/st_accel.h
 +++ b/drivers/iio/accel/st_accel.h
-@@ -14,31 +14,6 @@
- #include <linux/types.h>
- #include <linux/iio/common/st_sensors.h>
+@@ -36,6 +36,7 @@
+ #define LIS3DE_ACCEL_DEV_NAME		"lis3de"
+ #define LIS2DE12_ACCEL_DEV_NAME		"lis2de12"
+ #define LIS2HH12_ACCEL_DEV_NAME		"lis2hh12"
++#define LIS302DL_ACCEL_DEV_NAME		"lis302dl"
  
--enum st_accel_type {
--	LSM303DLH,
--	LSM303DLHC,
--	LIS3DH,
--	LSM330D,
--	LSM330DL,
--	LSM330DLC,
--	LIS331DLH,
--	LSM303DL,
--	LSM303DLM,
--	LSM330,
--	LSM303AGR,
--	LIS2DH12,
--	LIS3L02DQ,
--	LNG2DM,
--	H3LIS331DL,
--	LIS331DL,
--	LIS3LV02DL,
--	LIS2DW12,
--	LIS3DHH,
--	LIS2DE12,
--	LIS2HH12,
--	ST_ACCEL_MAX,
--};
--
- #define H3LIS331DL_ACCEL_DEV_NAME	"h3lis331dl_accel"
- #define LIS3LV02DL_ACCEL_DEV_NAME	"lis3lv02dl_accel"
- #define LSM303DLHC_ACCEL_DEV_NAME	"lsm303dlhc_accel"
+ #ifdef CONFIG_IIO_BUFFER
+ int st_accel_allocate_ring(struct iio_dev *indio_dev);
+diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
+index 31ea19d0ba71..2a353c51c84a 100644
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -444,6 +444,7 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
+ 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
+ 		.sensors_supported = {
+ 			[0] = LIS331DL_ACCEL_DEV_NAME,
++			[1] = LIS302DL_ACCEL_DEV_NAME,
+ 		},
+ 		.ch = (struct iio_chan_spec *)st_accel_8bit_channels,
+ 		.odr = {
+diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
+index c0ce78eebad9..086e8af89e18 100644
+--- a/drivers/iio/accel/st_accel_i2c.c
++++ b/drivers/iio/accel/st_accel_i2c.c
+@@ -107,6 +107,10 @@ static const struct of_device_id st_accel_of_match[] = {
+ 		.compatible = "st,lis2hh12",
+ 		.data = LIS2HH12_ACCEL_DEV_NAME,
+ 	},
++	{
++		.compatible = "st,lis302dl",
++		.data = LIS302DL_ACCEL_DEV_NAME,
++	},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, st_accel_of_match);
+@@ -142,6 +146,7 @@ static const struct i2c_device_id st_accel_id_table[] = {
+ 	{ LIS3DE_ACCEL_DEV_NAME },
+ 	{ LIS2DE12_ACCEL_DEV_NAME },
+ 	{ LIS2HH12_ACCEL_DEV_NAME },
++	{ LIS302DL_ACCEL_DEV_NAME },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(i2c, st_accel_id_table);
 -- 
 2.35.1
 

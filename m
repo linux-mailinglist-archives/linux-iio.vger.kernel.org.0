@@ -2,160 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D32A4C9927
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 00:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D54544C997D
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 00:49:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238684AbiCAXUg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Mar 2022 18:20:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57422 "EHLO
+        id S232667AbiCAXuc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Mar 2022 18:50:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235510AbiCAXUf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 18:20:35 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 54D6096821
-        for <linux-iio@vger.kernel.org>; Tue,  1 Mar 2022 15:19:52 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-274-hYNDa1-rPGCuZAB3qy-How-1; Tue, 01 Mar 2022 23:19:49 +0000
-X-MC-Unique: hYNDa1-rPGCuZAB3qy-How-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Tue, 1 Mar 2022 23:19:46 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Tue, 1 Mar 2022 23:19:46 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Linus Torvalds' <torvalds@linux-foundation.org>
-CC:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        KVM list <kvm@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        "linux1394-devel@lists.sourceforge.net" 
-        <linux1394-devel@lists.sourceforge.net>,
-        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "kgdb-bugreport@lists.sourceforge.net" 
-        <kgdb-bugreport@lists.sourceforge.net>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Arnd Bergman" <arnd@arndb.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        dma <dmaengine@vger.kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        "v9fs-developer@lists.sourceforge.net" 
-        <v9fs-developer@lists.sourceforge.net>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux F2FS Dev Mailing List 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        "tipc-discussion@lists.sourceforge.net" 
-        <tipc-discussion@lists.sourceforge.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        =?utf-8?B?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>,
-        "Mike Rapoport" <rppt@kernel.org>
-Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Thread-Topic: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Thread-Index: AQHYLZ9++DU/OogLf0+tiSFmjztyUKyrHL5AgAAJGICAAAEEcA==
-Date:   Tue, 1 Mar 2022 23:19:46 +0000
-Message-ID: <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com>
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
- <20220228110822.491923-3-jakobkoschel@gmail.com>
- <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
- <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
- <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com>
- <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
- <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org>
- <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
- <CAHk-=wiT5HX6Kp0Qv4ZYK_rkq9t5fZ5zZ7vzvi6pub9kgp=72g@mail.gmail.com>
- <7dc860874d434d2288f36730d8ea3312@AcuMS.aculab.com>
- <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
-In-Reply-To: <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S231490AbiCAXuc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 18:50:32 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1262460CDB
+        for <linux-iio@vger.kernel.org>; Tue,  1 Mar 2022 15:49:50 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id x200so5258249ybe.6
+        for <linux-iio@vger.kernel.org>; Tue, 01 Mar 2022 15:49:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iq9SJsRTIEiQ9BodGEOUC/X40Bm070y/iGyzaDPlSG4=;
+        b=ZOTnHsC2Q2AXdMG6Lw51nFkAD5wvt/qqOt9OfKWTb9up3HV5pX5B+l+rqWEWCF0sPM
+         gUmXnDKeYORdY6zpYETUuJQ73EVGo/O9Z6mLtfiug+eZej7/VAF/1ZVI0n2iKUINLJdR
+         N91B3hFa84pOBzxyhzkMJbPZsAhOcuvaqO8AjQrG/z+lVVncVXe7xbabm/o466VyvORr
+         VD4pADR5/dBEBSO/mJN0nGAuqMPZj4UpiZuZnOgoV3Lr9EebLx2Se88glmdMgcza3mKw
+         7acCX8DR4j9XTNNRId9Sc8+CoeA0N0ytdE+TaniNNhu0ubmeHG8wzuPw8moSuQBtOZa3
+         psgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iq9SJsRTIEiQ9BodGEOUC/X40Bm070y/iGyzaDPlSG4=;
+        b=lqRGtsxii5fJP5tPrXopaH/oxWmSywxHcOLtF2fNdCOrnzvhAfSFGx9eq9uvIOq6G1
+         YxSQfS5p+qxIIK6U0kzd8Dx6qp4FecLNs18NYA5vO+KICwwswPsRsUo4jZ7SQ9/zvw47
+         j4ZVZNaVsdIExDVGU7kVFguYq9fK1cmnLib8KECNwglHZghCJ+sgIJklE7aTUuxCU+oM
+         pkTsW/0VuopaXxvc89triafE2ouN3LSJHcvxNIUoSjntISOJCOWDh5MkfsaMJdA29A+m
+         CZzOHp5bclkb0n4lOunig4DJLxra8T7otAe/N7WfG+9foPGtzJPeJbs7i5TRAE2dD8Mt
+         aSsA==
+X-Gm-Message-State: AOAM5327wc7/9N4jcS2OV8p6J/EClsC/jZA5NNWJiLIKGRJjf3823zov
+        +/MuAat2jWWfZteeL1AcGd4XS2lS0+uih74FSaBw23Lya1f7gw==
+X-Google-Smtp-Source: ABdhPJxbr3Zo1a2uvT3xuwZ4naduJv0andGWtMdmAQkS4hmBNidmoSOqNyi0ZFyDWn4ssRsj3etodXLW8MlO2y7nkcY=
+X-Received: by 2002:a5b:dc5:0:b0:624:f16d:7069 with SMTP id
+ t5-20020a5b0dc5000000b00624f16d7069mr25880238ybr.295.1646178589324; Tue, 01
+ Mar 2022 15:49:49 -0800 (PST)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20220301225432.60844-1-absicsz@gmail.com> <20220301225432.60844-3-absicsz@gmail.com>
+In-Reply-To: <20220301225432.60844-3-absicsz@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 2 Mar 2022 00:49:37 +0100
+Message-ID: <CACRpkdYRi_i1rjvZ9=8txXP0GbxAzPGC+rbLPeghJCofZ1A7Bg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: accel: Remove unused enum in st_accel
+To:     "Sicelo A. Mhlongo" <absicsz@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Denis Ciocca <denis.ciocca@st.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMDEgTWFyY2ggMjAyMiAyMzowMw0KPiANCj4g
-T24gVHVlLCBNYXIgMSwgMjAyMiBhdCAyOjU4IFBNIERhdmlkIExhaWdodCA8RGF2aWQuTGFpZ2h0
-QGFjdWxhYi5jb20+IHdyb3RlOg0KPiA+DQo+ID4gQ2FuIGl0IGJlIHJlc29sdmVkIGJ5IG1ha2lu
-ZzoNCj4gPiAjZGVmaW5lIGxpc3RfZW50cnlfaXNfaGVhZChwb3MsIGhlYWQsIG1lbWJlcikgKChw
-b3MpID09IE5VTEwpDQo+ID4gYW5kIGRvdWJsZS1jaGVja2luZyB0aGF0IGl0IGlzbid0IHVzZWQg
-YW55d2hlcmUgZWxzZSAoZXhjZXB0IGluDQo+ID4gdGhlIGxpc3QgbWFjcm9zIHRoZW1zZWx2ZXMp
-Lg0KPiANCj4gV2VsbCwgeWVzLCBleGNlcHQgZm9yIHRoZSBmYWN0IHRoYXQgdGhlbiB0aGUgbmFt
-ZSBpcyBlbnRpcmVseSBtaXNsZWFkaW5nLi4uDQo+IA0KPiBBbmQgc29tZWJvZHkgcG9zc2libHkg
-dXNlcyBpdCB0b2dldGhlciB3aXRoIGxpc3RfZmlyc3RfZW50cnkoKSBldGMsIHNvDQo+IGl0IHJl
-YWxseSBpcyBjb21wbGV0ZWx5IGJyb2tlbiB0byBtaXggdGhhdCBjaGFuZ2Ugd2l0aCB0aGUgbGlz
-dA0KPiB0cmF2ZXJzYWwgY2hhbmdlLg0KDQpQcm9iYWJseSB0cnVlIDotKA0KDQpBY3R1YWxseSBh
-ZGRpbmcgbGlzdF9lbnRyeV9ub3RfZm91bmQoKSBhcyBhIHN5bm9ueW0gZm9yDQpsaXN0X2VudHJ5
-X2lzX2hlYWQoKSBhbmQgY2hhbmdpbmcgdGhlIDI1aXNoIHBsYWNlcyB0aGF0DQp1c2UgaXQgYWZ0
-ZXIgYSBsb29wIG1pZ2h0IHdvcmsuDQoNCk9uY2UgdGhhdCBpcyBkb25lIHRoZSBsb29wIGNhbiBi
-ZSBjaGFuZ2VkIGF0IHRoZSBzYW1lIHRpbWUNCmFzIGxpc3RfZW50cnlfbm90X2ZvdW5kKCkuDQpU
-aGF0IHdvbid0IGFmZmVjdCB0aGUgaW4tdHJlZSBjYWxsZXJzLg0KKGFuZCBteSBvdXQgb2YgdHJl
-ZSBtb2R1bGVzIGRvbid0IHVzZSB0aG9zZSBsaXN0cyAtIHNvIEkNCmRvbid0IGNhcmUgYWJvdXQg
-dGhhdCEpDQoNCkhhdmluZyBzYWlkIHRoYXQgdGhlcmUgYXJlIHNvIGZldyB1c2VycyBvZiBsaXN0
-X2VudHJ5X2lzX2hlYWQoKQ0KaXQgaXMgcmVhc29uYWJsZSB0byBnZW5lcmF0ZSB0d28gbmV3IG5h
-bWVzLg0KT25lIGZvciB1c2UgYWZ0ZXIgbGlzdF9mb3JfZWFjaF9lbnRyeSgpIGFuZCBvbmUgZm9y
-IGxpc3RfbmV4dF9lbnRyeSgpLg0KVGhlbiB0aGUgY2hhbmdlIGFsbCB0aGUgY2FsbCBzaXRlcy4N
-CkFmdGVyIHRoYXQgbGlzdF9lbnRyeV9pc19oZWFkKCkgY2FuIGJlIGRlbGV0ZWQgLSBicmVha2lu
-ZyBvdXQgb2YNCnRyZWUgY29tcGlsZXMuDQpGaW5hbGx5IGxpc3RfZm9yX2VhY2hfZW50cnkoKSBj
-YW4gYmUgcmV3cml0dGVuIHRvIHNldCBOVUxMDQphdCB0aGUgZW5kIG9mIHRoZSBsaXN0Lg0KDQoJ
-RGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1v
-dW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEz
-OTczODYgKFdhbGVzKQ0K
+On Tue, Mar 1, 2022 at 11:55 PM Sicelo A. Mhlongo <absicsz@gmail.com> wrote:
 
+> The st_accel_type enum is not used anywhere else in the code, and can be
+> removed
+>
+> Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij

@@ -2,199 +2,305 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAE3C4C8387
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 06:53:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED204C8406
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 07:28:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbiCAFyD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Mar 2022 00:54:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52724 "EHLO
+        id S229695AbiCAG3N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Mar 2022 01:29:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbiCAFyA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 00:54:00 -0500
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F4649918;
-        Mon, 28 Feb 2022 21:53:19 -0800 (PST)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2212ZQsJ018802;
-        Tue, 1 Mar 2022 05:53:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=aZCvnIYHE8JMwzWHBnvAkTMzbTJeEGOE71a9D+oKdj8=;
- b=uLwvDX28g+RhMO1TnspnflfrF9B2bB8E4REmNzTOSOnhe+BvZMoFkSwvAnRivHmaQOZV
- xdZIrbiFI1mLDJjOO+WObKrhajjMPyn34jtznm+PcNxrGvn536LLgYKw6/YwTNl8yYH4
- TfZspQAdSDmittfsCWO0dftmXG5EQAXln+P7KI1wj0R0F1Eo+8dzaLrwoGIFy7NocVnl
- zrqAXwi5jFwh1FrVH7PMT2iRMWDI22eSGmy2Cy/35o5e435HoD1cAC07D9MklICwwkaQ
- KfHw6T5YLL/GBcsRVMugQhDZ9JS2WGPzdSmIBBwRQUc72KKNBkG1Zg9hOXuPBiSlT6we Tg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by mx0b-00069f02.pphosted.com with ESMTP id 3efbttean7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 01 Mar 2022 05:53:15 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 2215amqI000723;
-        Tue, 1 Mar 2022 05:53:14 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2177.outbound.protection.outlook.com [104.47.56.177])
-        by aserp3020.oracle.com with ESMTP id 3efc13sxjf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 01 Mar 2022 05:53:14 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SSe0jOaT6wwqHjG2yeUJ1Eie1nUuba4Tna/oV6Ckyd4MLjk0IWFb+i5CTzfzDBpViygsVhsAJjR2qv0Sp/SzoEJt+SF1LElWgFjfTCh0DfcBhsf/wPL/4OE1x2tRvL6pnpmqbHetmfDvxfobbB0hKfylmfso4G0P7A7xp5MI/bl3U7jYr+YEcnByJroE8fRmJtP6SI9qK+nkJTZQVDfT7mOFYW4ngxnoKeneB3u2G+3187cKwnThTrNtNCEt75BizKh73Xfr+MlUYXUqX2Jvmrl8HA/95YiQlDDJ2ha2V+BRGp6pYFN11PxlaJdlFfe3e7n/u0BJ5BjSKLjh2151Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aZCvnIYHE8JMwzWHBnvAkTMzbTJeEGOE71a9D+oKdj8=;
- b=EvV0Zy+bW9rP8zEPRNg75K0D5rMu0pBEXpf3i5V8Gm44m880ksauiGDBW73gpRLLrmi+dDI1aG1iEE+5lmY2wBRVNHCWRKImkBsULLkRNYRGYE/FlJW1QMP1+uSWne0mQOQG1dyu1VnaEITb0m24nHOlTW7qLAsdC7gbfxtNSoJBO0cZgYLxqSC1pSgjof667zdOIk9ACOOnpBYaqlBsppb6NfpxKfshvSlgOZt6+HInklBqMvgl6e9DsYvTRFwuClUndVKYqg1u/IrfY7dtaXWcy04u3YIQ273tRLqj+5KgulbtanR+v7IFE44O8gSdwUM43CYLeGofZpFWYr5XlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S232609AbiCAG3K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 01:29:10 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CBC57B36;
+        Mon, 28 Feb 2022 22:28:27 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id p184-20020a1c29c1000000b0037f76d8b484so728559wmp.5;
+        Mon, 28 Feb 2022 22:28:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aZCvnIYHE8JMwzWHBnvAkTMzbTJeEGOE71a9D+oKdj8=;
- b=Dbbf4FKtSfC13/FdIgguVp6E/eW5+/iY8Op3SpabZa/BL3dzLqTBc9xfhuLp9kZ468+IvRAmC7Pj9gdjhJaLdZEYk40fJw5GHU2fRxlxDPnJ1nLyrDBWY6n159Z9akT2fAsqMrgM4cJJHQoaYhjkpac157Z6iZUXYonKjEuxKNs=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by PH0PR10MB4533.namprd10.prod.outlook.com
- (2603:10b6:510:39::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.23; Tue, 1 Mar
- 2022 05:53:11 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::2c3d:92b5:42b3:c1c5]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::2c3d:92b5:42b3:c1c5%4]) with mapi id 15.20.5017.027; Tue, 1 Mar 2022
- 05:53:10 +0000
-Date:   Tue, 1 Mar 2022 08:52:31 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Jakob Koschel <jakobkoschel@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergman <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sgx@vger.kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-crypto@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-rdma@vger.kernel.org, linux-media@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-usb@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-        bcm-kernel-feedback-list@broadcom.com, linux-tegra@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, kvm@vger.kernel.org,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-fsdevel@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        v9fs-developer@lists.sourceforge.net,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 1/6] drivers: usb: remove usage of list iterator past the
- loop body
-Message-ID: <20220301055231.GI2812@kadam>
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
- <20220228110822.491923-2-jakobkoschel@gmail.com>
- <20220228112413.GA2812@kadam>
- <0be9de3920442df490f01b6fb1c42521c3de6190.camel@perches.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0be9de3920442df490f01b6fb1c42521c3de6190.camel@perches.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: CT2P275CA0038.ZAFP275.PROD.OUTLOOK.COM
- (2603:1086:100:a::26) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=pWn16AqiLrfX1zebjhB5rEinNun20KnuW9bQckIBJC8=;
+        b=TgTuw2EwRUTqgMpH6oWu/LUo4Tj0DaFq2gazb8ukk2M3E5/N/ABnZq0JN+mM815Ir9
+         vcgeDnECaVsw5QKgVp2TQprmJ75xfE7Q6Z46b7RN/DNTKR7QWx+YdLObRbto2cx62b76
+         U2Eizso9FS2bTMBrKswDzRbpOry/gMiKnA0EbBCVm7muvxnd8HShq6B1E7K9lYPJcGA2
+         ufdDL0oUpRNchJdWw4xSxScgUuh60nKzX5uqHuna+MBM6k52Efm5kO3D+4Qs++AxWTY1
+         66sbxn9PxSVef8cZmyoJn7blrikHWzY2mf89TbTVevUvJahlgApgW6lbAfNhWvftwYEr
+         GInQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=pWn16AqiLrfX1zebjhB5rEinNun20KnuW9bQckIBJC8=;
+        b=tXhUMKpCEIpLZkJbYWwJwl6w2BOxkmgt6FmzILtHoSXUR2BFtgWNoaepdTQJ1UtZQp
+         3yPfvxmTkEkLWz2r+MZpwdSLEZ6pJZzhmBDcjDjwYZzpFKEqaQk7YkBMarEErO8CM58s
+         HF3Az6BXyaTG7Qu2ZdwPB9UWX5AJVu4dekQUrbDE7vCQXYIqatHQNnReUQ3jBWe2R7bB
+         xbrHH045MW2OJEUPfpULX0Q0HdmWRupWTuCAxRPDB+IAz9ZsKTIA3i+Z2Q6KAwIZMiRv
+         T/K6JN5NLno55x93AIefWQQKpmh7KyYzy/ezpjbsNL0BQHGFbkGKWJgDGT0kexe+7bD0
+         kSXQ==
+X-Gm-Message-State: AOAM532rdixdAL8dXyjMsOCjzgiFOP+r2L/G8nHWOnqid66v5FDyBV6M
+        qqT312h0L83H+db4KH9a1zjpvWZ6VGdv6XD0E3g=
+X-Google-Smtp-Source: ABdhPJw5lGRgmvJqRxK5pgVS2VyC04FiWUkY4OzVfoIcOgkPNqK2YKMpbei0S4C0NMIQ0+vl+S9PndX5tVzQcUVaQyw=
+X-Received: by 2002:a05:600c:42d6:b0:380:ed47:43e8 with SMTP id
+ j22-20020a05600c42d600b00380ed4743e8mr15770755wme.61.1646116106338; Mon, 28
+ Feb 2022 22:28:26 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f00bd6dc-d76c-4bf7-86ca-08d9fb47c40f
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4533:EE_
-X-Microsoft-Antispam-PRVS: <PH0PR10MB45336ABFCDF312DB98F2AE608E029@PH0PR10MB4533.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: G2x+t26wSuTDDkq5o4q7dbW4/UjzD3hW6M5tuxN3cE9Ky9PRtHnitbQRwuVildDloArCtPWngk4gSsu2J/fQ1Yg7oEb/EDYZPN4hKOG7qZjkOXxG5P7QScLppmuJjx+iRUvRSdNc++RCkzB00ZstVPzvo2uA97a94UXPnBMXuj29Q8DLxo4w4cR+L5FYhAEoXORyrzlEng+TFzLzMDCkGR8iTfh9dT+LhiI9ZxGrIsMsuvjhSFlMnXwhyv3ryp99PKiK2eOXjxSoYxIydBdXDy6CYe2WGe+BRAPFcJTjiAsEGE0aKaMhAz8xEkejdm4oa/Bs6dr6HUqm0kFoXPW7E0KL/IsCU1+Nbfk1UNIUSPqGhrqvfvzS6WPiiolWtALU5nn7rg1yVKAte4zF2FUTVoeog8mMJQchv7t5XzlOetD2/h//JB/WFS3HxqR1BmSAnqxmiDFqzgiUIeHot/VQWVa8e/lOW+usUgBYH7akTOk1d/UbmcTrs06sSNHp7YA9XhLvVHsSHzqOJzwu6sM999sl3EUPiOqOK2dgp8uE/VPSaOPnBt4s0sYroeoytfrA093GhdFDswl/nyfYtlw13WUItyPieJ9Wh4ui7AfWP2A/S3WdVMDcMoqeVcIS4mj6eTAy2ZdsN46S/07W0NdfYiGebfCMs/eXnmJljIv3aeWJYhrMTm930JqyPq3eTHwA
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(7916004)(366004)(4744005)(44832011)(6506007)(316002)(33716001)(7406005)(6916009)(6666004)(8936002)(54906003)(86362001)(52116002)(66556008)(66476007)(66946007)(6512007)(33656002)(9686003)(8676002)(6486002)(508600001)(2906002)(1076003)(26005)(186003)(7366002)(4326008)(38350700002)(38100700002)(5660300002)(7416002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4IvDCtl5VM5rcP0Skuq04PLt/9msaa8KrgRc5DZjGXsPhA9y4iJD88IBEQ1c?=
- =?us-ascii?Q?5NlEFNIcsvnz9BinB/mgAkczuiQ215LgILS+oP8xbCLw3Z5P8AhLO1KPD4wd?=
- =?us-ascii?Q?dUYAfATfNveCiClhAExDGcXu1vqHxF0cBcSMhyo1jII5XE9OWZoDTCKHtW6w?=
- =?us-ascii?Q?CFJ4fhH/Fy0pCAeZsouRcbdAyjLHlrhUwCbIX9PadaSdTcnVMqesGvuxgr3d?=
- =?us-ascii?Q?hC75pQ0koF7QtkaYc72EswV5NZ9j7FsZ6PMgEUn9BL7KStD6UmhWBgt67eY/?=
- =?us-ascii?Q?9Yd77VvL3i+hZ/rHLbQsh0G8SWHoBJtac4ylVeaRMKOYJ7U7C4H7jdy3mbHL?=
- =?us-ascii?Q?LA+NSHBWuze+IuI1swbSTBFcwgz/WQcp/plyNQhxeF4UGJzK6Am/zcwas6Mb?=
- =?us-ascii?Q?BvixPxIPDopJH6kgHoRXPYMUDpqy0NFviNqOzU2uDB+OzW7mt8VLMXCgShQx?=
- =?us-ascii?Q?dumf9Hh4CjFQL8zAUaJhrxRx6juz8Cvyjou0C2LfXRzJvnYDsBs3YidywzHI?=
- =?us-ascii?Q?z7APDKEhaxiNh5aHtdCmurO3Nh0S93wPKYeKijEFOvmJCNn5ENvDsRz8h5m2?=
- =?us-ascii?Q?XfgtNwJFiw0FKCGRGyMjLGlkDw5Z7U3FLsk5OrUB5Xo78w+E5Tz6b16m6DHj?=
- =?us-ascii?Q?bFfxM2xveRZjeFbu8TCQcCAzuS8Wq6qkmETePfOoe0KLCN//mNekgvWmHSkw?=
- =?us-ascii?Q?Km7b4FQuWHYE0OYf6V9CQYbNLYNqtkCNYgUocYFlSaJb0TCFy38gertqTVFg?=
- =?us-ascii?Q?3j6Xvbc4PI9BQJ55gqjyF018IRMPwH4OFdjaB+I3VJDFp+MWSJyBcx6quuxK?=
- =?us-ascii?Q?TNVWOUZb8na8LSkT3Ts8oNMSyDjGRu6cM66iNEIOPphYRUWJ5vnJvqStxZ+J?=
- =?us-ascii?Q?rOoeqvgCCrmQXc3iVUJih3eWUtEPxvcC9cuFN2WJszS39zOTkLbW0lNCpss/?=
- =?us-ascii?Q?UiTcmCvYiA846OQB/82ioH25a5wURPUY5Gk6tcZQKbvQF2QSm4W8mEl0qMd9?=
- =?us-ascii?Q?dvwtMIf2UTyDDy9hvv0AnAeopFT+l+GJu1gYxMsIzbYCTjDtydjCr8NbS0+p?=
- =?us-ascii?Q?MsggsisVU8DVl7AwTV7qwaLf6m9DeqEU6lwBNO+3mE23mo9Vuhx+1kATyxgv?=
- =?us-ascii?Q?BM95B7XfndX+325MFt1wEDMBPrgQ+fgnBsBXxALYHlS4/rkd/MceSPJEGrwK?=
- =?us-ascii?Q?WQYbjDgt/t2RpV9z2C40TzZp3jFpkyBCt7g7Vufq9wLNNY0x2H3AVQQvUSo+?=
- =?us-ascii?Q?h0f9KsCB0CKiep1vFz0U7aq8+waWIK7GZOlgJcIOJHOS5NWG4jMb5Lxf2ISm?=
- =?us-ascii?Q?J7zq+23uZrZ1Wix8nRxbFxCej7mwuEgcX6BccuAvA1Hat2WPXVIgsyIZHOUu?=
- =?us-ascii?Q?G2oJdd3yFHfVfUzDutAE9P/fdF82VTo8JgyV9kydaT68/rQZKREIGW2YHoyV?=
- =?us-ascii?Q?nzuOchXYtl7AbU54KCN6/QLAp7gb5GtqGa0ft4+OO3b5qCISc3Dzwv/ckEqJ?=
- =?us-ascii?Q?j3kpuVuZGFcv2qd8z6IKmuC6ezfYglOMY9ZVI++aIsIELDpVuolntfe0fyMG?=
- =?us-ascii?Q?aXl3xdbSxonrnMA4DJF41RcXnV2SAVsfcBmG/Bq95pmkZjXOmb5Hpo3Xs+R+?=
- =?us-ascii?Q?FgQ9YbTSVBtx3emhgqmaM5eLloVjjXBpGs9Mr2bGJ5t5kwIC2hcy5ccEFGfA?=
- =?us-ascii?Q?0xxlvA=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f00bd6dc-d76c-4bf7-86ca-08d9fb47c40f
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2022 05:53:10.6487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aEWUTcysPwoFeIZPleBXa/PNJnNLmuAC5LuxoVYyUGkAGrPdM28HZ3zTODvsT2Hs+dTwsQzEnxTFSLDh+VD98ov86BVdCluK+h5G3DARlTs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4533
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10272 signatures=684655
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
- bulkscore=0 adultscore=0 spamscore=0 suspectscore=0 mlxlogscore=797
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2203010026
-X-Proofpoint-GUID: 1VKc32mrS9XhcTkgdE8hJyTpCeJ2-R09
-X-Proofpoint-ORIG-GUID: 1VKc32mrS9XhcTkgdE8hJyTpCeJ2-R09
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220106125947.139523-1-gengcixi@gmail.com> <20220106125947.139523-4-gengcixi@gmail.com>
+ <CADBw62pBCdrbRspTV9Yck4DP8DE=ECGmEtD74NOtm1YRT3DM8w@mail.gmail.com>
+ <CAF12kFu6O-gfiqp4j24zxC_GqCwJ2Q5KGYYaCtnagmUFB_bsVg@mail.gmail.com>
+ <CADBw62rSdWN-L8HbnyMrUNp=x0pDdKR6MyKO4yfu00MnrN4L-g@mail.gmail.com>
+ <CAF12kFvUfykKfeRAJACFRk31pmEBQEPw402x0JN4i1uv0EK1zg@mail.gmail.com>
+ <CADBw62pmtbzr78c9J20cFbNRuTrntGg_E8TH_g=LciCVGYrYqQ@mail.gmail.com>
+ <CAF12kFtV_dpHukd2v0UwSoAFsDbNXZLPSnSSK9dqq7hnoJh9UQ@mail.gmail.com> <20220225101942.00002f43@Huawei.com>
+In-Reply-To: <20220225101942.00002f43@Huawei.com>
+From:   Cixi Geng <gengcixi@gmail.com>
+Date:   Tue, 1 Mar 2022 14:27:50 +0800
+Message-ID: <CAF12kFtQH3_EsPBnDgBL59tYZ6wintgt9yceS2tUiB1Pv8qjgQ@mail.gmail.com>
+Subject: Re: [PATCH 3/7] iio: adc: sc27xx: structure adjuststment and optimization
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Baolin Wang <baolin.wang7@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>, jic23@kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, lgirdwood@gmail.com,
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
+        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Feb 28, 2022 at 10:20:28AM -0800, Joe Perches wrote:
-> On Mon, 2022-02-28 at 14:24 +0300, Dan Carpenter wrote:
-> 
-> > a multi-line indent gets curly braces for readability even though
-> > it's not required by C.  And then both sides would get curly braces.
-> 
-> That's more your personal preference than a coding style guideline.
-> 
-
-It's a USB patch.  I thought Greg prefered it that way.  Greg has some
-specific style things which he likes and I have adopted and some I
-pretend not to see.
-
-regards,
-dan carpenter
+Jonathan Cameron <Jonathan.Cameron@huawei.com> =E4=BA=8E2022=E5=B9=B42=E6=
+=9C=8825=E6=97=A5=E5=91=A8=E4=BA=94 18:19=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Wed, 23 Feb 2022 20:46:08 +0800
+> Cixi Geng <gengcixi@gmail.com> wrote:
+>
+> > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B42=E6=9C=8810=
+=E6=97=A5=E5=91=A8=E5=9B=9B 16:07=E5=86=99=E9=81=93=EF=BC=9A
+> > >
+> > > On Mon, Jan 24, 2022 at 4:07 PM Cixi Geng <gengcixi@gmail.com> wrote:
+> > > >
+> > > > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=9C=
+=8817=E6=97=A5=E5=91=A8=E4=B8=80 14:15=E5=86=99=E9=81=93=EF=BC=9A
+> > > > >
+> > > > > On Thu, Jan 13, 2022 at 9:54 AM Cixi Geng <gengcixi@gmail.com> wr=
+ote:
+> > > > > >
+> > > > > > Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B41=E6=
+=9C=887=E6=97=A5=E5=91=A8=E4=BA=94 15:03=E5=86=99=E9=81=93=EF=BC=9A
+> > > > > > >
+> > > > > > > On Thu, Jan 6, 2022 at 9:00 PM Cixi Geng <gengcixi@gmail.com>=
+ wrote:
+> > > > > > > >
+> > > > > > > > From: Cixi Geng <cixi.geng1@unisoc.com>
+> > > > > > > >
+> > > > > > > > Introduce one variant device data structure to be compatibl=
+e
+> > > > > > > > with SC2731 PMIC since it has different scale and ratio cal=
+culation
+> > > > > > > > and so on.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
+> > > > > > > > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+> > > > > > > > ---
+> > > > > > > >  drivers/iio/adc/sc27xx_adc.c | 94 ++++++++++++++++++++++++=
+++++++------
+> > > > > > > >  1 file changed, 79 insertions(+), 15 deletions(-)
+> > > > > > > >
+> > > > > > > > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc=
+/sc27xx_adc.c
+> > > > > > > > index aee076c8e2b1..d2712e54ee79 100644
+> > > > > > > > --- a/drivers/iio/adc/sc27xx_adc.c
+> > > > > > > > +++ b/drivers/iio/adc/sc27xx_adc.c
+> > > > > > > > @@ -12,9 +12,9 @@
+> > > > > > > >  #include <linux/slab.h>
+> > > > > > > >
+> > > > > > > >  /* PMIC global registers definition */
+> > > > > > > > -#define SC27XX_MODULE_EN               0xc08
+> > > > > > > > +#define SC2731_MODULE_EN               0xc08
+> > > > > > > >  #define SC27XX_MODULE_ADC_EN           BIT(5)
+> > > > > > > > -#define SC27XX_ARM_CLK_EN              0xc10
+> > > > > > > > +#define SC2731_ARM_CLK_EN              0xc10
+> > > > > > > >  #define SC27XX_CLK_ADC_EN              BIT(5)
+> > > > > > > >  #define SC27XX_CLK_ADC_CLK_EN          BIT(6)
+> > > > > > > >
+> > > > > > > > @@ -78,6 +78,23 @@ struct sc27xx_adc_data {
+> > > > > > > >         int channel_scale[SC27XX_ADC_CHANNEL_MAX];
+> > > > > > > >         u32 base;
+> > > > > > > >         int irq;
+> > > > > > > > +       const struct sc27xx_adc_variant_data *var_data;
+> > > > > > > > +};
+> > > > > > > > +
+> > > > > > > > +/*
+> > > > > > > > + * Since different PMICs of SC27xx series can have differe=
+nt
+> > > > > > > > + * address and ratio, we should save ratio config and base
+> > > > > > > > + * in the device data structure.
+> > > > > > > > + */
+> > > > > > > > +struct sc27xx_adc_variant_data {
+> > > > > > > > +       u32 module_en;
+> > > > > > > > +       u32 clk_en;
+> > > > > > > > +       u32 scale_shift;
+> > > > > > > > +       u32 scale_mask;
+> > > > > > > > +       const struct sc27xx_adc_linear_graph *bscale_cal;
+> > > > > > > > +       const struct sc27xx_adc_linear_graph *sscale_cal;
+> > > > > > > > +       void (*init_scale)(struct sc27xx_adc_data *data);
+> > > > > > > > +       int (*get_ratio)(int channel, int scale);
+> > > > > > > >  };
+> > > > > > > >
+> > > > > > > >  struct sc27xx_adc_linear_graph {
+> > > > > > > > @@ -103,6 +120,16 @@ static struct sc27xx_adc_linear_graph =
+small_scale_graph =3D {
+> > > > > > > >         100, 341,
+> > > > > > > >  };
+> > > > > > > >
+> > > > > > > > +static const struct sc27xx_adc_linear_graph sc2731_big_sca=
+le_graph_calib =3D {
+> > > > > > > > +       4200, 850,
+> > > > > > > > +       3600, 728,
+> > > > > > > > +};
+> > > > > > > > +
+> > > > > > > > +static const struct sc27xx_adc_linear_graph sc2731_small_s=
+cale_graph_calib =3D {
+> > > > > > > > +       1000, 838,
+> > > > > > > > +       100, 84,
+> > > > > > > > +};
+> > > > > > >
+> > > > > > > The original big_scale_graph_calib and small_scale_graph_cali=
+b are for
+> > > > > > > SC2731 PMIC, why add new structure definition for SC2731?
+> > > > > > >
+> > > > > > > > +
+> > > > > > > >  static const struct sc27xx_adc_linear_graph big_scale_grap=
+h_calib =3D {
+> > > > > > > >         4200, 856,
+> > > > > > > >         3600, 733,
+> > > > > > > > @@ -130,11 +157,11 @@ static int sc27xx_adc_scale_calibrati=
+on(struct sc27xx_adc_data *data,
+> > > > > > > >         size_t len;
+> > > > > > > >
+> > > > > > > >         if (big_scale) {
+> > > > > > > > -               calib_graph =3D &big_scale_graph_calib;
+> > > > > > > > +               calib_graph =3D data->var_data->bscale_cal;
+> > > > > > > >                 graph =3D &big_scale_graph;
+> > > > > > > >                 cell_name =3D "big_scale_calib";
+> > > > > > > >         } else {
+> > > > > > > > -               calib_graph =3D &small_scale_graph_calib;
+> > > > > > > > +               calib_graph =3D data->var_data->sscale_cal;
+> > > > > > > >                 graph =3D &small_scale_graph;
+> > > > > > > >                 cell_name =3D "small_scale_calib";
+> > > > > > > >         }
+> > > > > > > > @@ -160,7 +187,7 @@ static int sc27xx_adc_scale_calibration=
+(struct sc27xx_adc_data *data,
+> > > > > > > >         return 0;
+> > > > > > > >  }
+> > > > > > > >
+> > > > > > > > -static int sc27xx_adc_get_ratio(int channel, int scale)
+> > > > > > > > +static int sc2731_adc_get_ratio(int channel, int scale)
+> > > > > > > >  {
+> > > > > > > >         switch (channel) {
+> > > > > > > >         case 1:
+> > > > > > > > @@ -185,6 +212,21 @@ static int sc27xx_adc_get_ratio(int ch=
+annel, int scale)
+> > > > > > > >         return SC27XX_VOLT_RATIO(1, 1);
+> > > > > > > >  }
+> > > > > > > >
+> > > > > > > > +/*
+> > > > > > > > + * According to the datasheet set specific value on some c=
+hannel.
+> > > > > > > > + */
+> > > > > > > > +static void sc2731_adc_scale_init(struct sc27xx_adc_data *=
+data)
+> > > > > > > > +{
+> > > > > > > > +       int i;
+> > > > > > > > +
+> > > > > > > > +       for (i =3D 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
+> > > > > > > > +               if (i =3D=3D 5)
+> > > > > > > > +                       data->channel_scale[i] =3D 1;
+> > > > > > > > +               else
+> > > > > > > > +                       data->channel_scale[i] =3D 0;
+> > > > > > > > +       }
+> > > > > > > > +}
+> > > > > > >
+> > > > > > > This is unnecessary I think, please see sc27xx_adc_write_raw(=
+) that
+> > > > > > > can set the channel scale.
+> > > > > > Did you mean that all the PMIC's scale_init function should put=
+ into
+> > > > > > the sc27xx_adc_write_raw?
+> > > > >
+> > > > > No.
+> > > > >
+> > > > > > but the scale_init is all different by each PMIC, if implemente=
+d in
+> > > > > > the write_raw, will add a lot of
+> > > > > > if or switch_case branch
+> > > > >
+> > > > > What I mean is we should follow the original method to set the ch=
+annel
+> > > > > scale by iio_info. Please also refer to other drivers how ot hand=
+le
+> > > > > the channel scale.
+> > > > Hi Baolin,  I understand the adc_write_raw() function is the method=
+ to set
+> > > > channal scale for the userspace, we can change the channel scale by=
+ write
+> > > > a value on a user code. did i understand right?
+> > > > out  scale_init is to set scale value when the driver probe stage, =
+and I also
+> > > > did not found other adc driver use the adc_write_raw() during the d=
+river
+> > > >  initialization phase.
+> > >
+> > > Hi Jonathan,
+> > >
+> > > How do you think about the method in this patch to set the channel
+> > > scale? Thanks.
+> > >
+> > Hi Jonathan,
+> > Could you have a loot at this patch ,and give some advice about the
+> > method to set the channel scale? Thanks very much.
+>
+> Hi, thanks for poking me on this - I'd missed the question buried deep in=
+ the thread!
+>
+> Anyhow, I don't quite follow the discussion but think it could be focused
+> on one of 2 questions...
+>
+> 1) Does setting an initial default make sense?
+>    Yes, this is an acceptable thing to do if there is a particular set of=
+ defaults
+>    and there is no risk of regressions (i.e. the device wasn't previously=
+ supported
+>    with different defaults).
+> 2) Should you use the write_raw callback to actually do the setting?
+>    Probably not as it has a set of parameters that don't make as much sen=
+se from within
+>    the driver.  It 'might' make sense to have a common _set() function fo=
+r this
+>    feature which is called both in this initialization case and from the =
+write_raw()
+>    function however as that could do bounds checking etc in one common pl=
+ace.
+>    However, it is very simple here, so perhaps not necessary.
+>
+> Jonathan
+>
+Hi Jonathan, thanks for your comment !
+And Baolin, I will send a new verision for the patches tto keep the
+scale_init and
+fix other issues . thanks!
+> > > --
+> > > Baolin Wang
+>

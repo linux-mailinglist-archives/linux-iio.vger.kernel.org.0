@@ -2,261 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E09D04C8AAD
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 12:28:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B138B4C8AD0
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 12:32:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234508AbiCAL3C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Mar 2022 06:29:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
+        id S234578AbiCALcm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Mar 2022 06:32:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbiCAL3A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 06:29:00 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54B1A46652;
-        Tue,  1 Mar 2022 03:28:19 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id gb39so30861217ejc.1;
-        Tue, 01 Mar 2022 03:28:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=rLPvv7mVdDwWU3WqqHUc/M/t9o2wkfNNz2uUSA/i/Q0=;
-        b=ioxwEWwSec2mkWoQpVaP+m+cuqfrILVMZy97DsxGJQFNwUj5vt0t9wo5G7myUpC8Gn
-         ea9oHHWNkcI1g0+ETzPDSekL4muwhDYsG3jrD0dPjJWnH1vW4gUq2ufbL8yBIo9ax2rC
-         LCc4peu3G2+oC3D/CoxTwxe0jKznErkS9hGO2cQ4rpTAmgLJ5M6BCvPaoqQObgiQcr6n
-         RKDduahlScES6wicQqME3eGzY8GUno55Oqx2eUsC/sQVyrcKAkNt4/DW8JZWJd6l/Vwp
-         mTTzA+edxLDCldwyXcUf3Jn0ErW39L5ba+PqRXF7jiU95w3jgcW/Rs/bUGAwA8mWZWkw
-         L2Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=rLPvv7mVdDwWU3WqqHUc/M/t9o2wkfNNz2uUSA/i/Q0=;
-        b=giO4plcs+ABte//d8gwL+2pUDHZqwCPkblhelmffpXm7V53ATpHNorjmZ913XTgE1z
-         FqflQE315aEEKvoN0tFlsYijiUOy/DnmlpKWRDKWEfBOAoXEqD08HgbwPAszCPvNBAjd
-         zg5Pa6s8phaSWtCFkVz9Q0eIigW5ve0F0j4Py0dsWriP8rjA3UE8oEFTmpjoy22jC5sR
-         rJ8TqHMKfLTj0rkSBjkvZT5NOHYtUQ6nD1seea29RX4m9ege4KP3SoDbvLaXOZrEXyBv
-         9C7PQnNtTW6e9zXaD4JhioQRXRERrornvFJqcig7/3P6MlWHkL5GEEMVFM/GHWPIvDzd
-         EuRA==
-X-Gm-Message-State: AOAM531HJ68V5UhOdCNzhzSINJGxvNunr87sa97CIt/ht8s+pnGg68cW
-        1CRheCZkNYxUF70jAhMNRTg=
-X-Google-Smtp-Source: ABdhPJykJwlP+KqTh6zSzndCpDSZzE2bN4aLh28OSmyBBaWLei6TdHv4i/sMtFtkO4GxsNuXK9LBkw==
-X-Received: by 2002:a17:906:68c2:b0:6b4:9f26:c099 with SMTP id y2-20020a17090668c200b006b49f26c099mr18827008ejr.41.1646134097608;
-        Tue, 01 Mar 2022 03:28:17 -0800 (PST)
-Received: from smtpclient.apple ([2a02:8109:9d80:3f6c:6db3:8d4c:747e:98ad])
-        by smtp.gmail.com with ESMTPSA id a25-20020a50ff19000000b0040f84cd806csm7036870edu.59.2022.03.01.03.28.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 01 Mar 2022 03:28:17 -0800 (PST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-From:   Jakob Koschel <jakobkoschel@gmail.com>
-In-Reply-To: <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
-Date:   Tue, 1 Mar 2022 12:28:15 +0100
-Cc:     =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        alsa-devel@alsa-project.org, linux-aspeed@lists.ozlabs.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        samba-technical@lists.samba.org,
-        linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
-        linux-arch <linux-arch@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        KVM list <kvm@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        linux-staging@lists.linux.dev, "Bos, H.J." <h.j.bos@vu.nl>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        intel-wired-lan@lists.osuosl.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        bcm-kernel-feedback-list@broadcom.com,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergman <arnd@arndb.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        v9fs-developer@lists.sourceforge.net,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-sgx@vger.kernel.org,
-        linux-block <linux-block@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux F2FS Dev Mailing List 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        tipc-discussion@lists.sourceforge.net,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        dma <dmaengine@vger.kernel.org>,
-        linux-mediatek@lists.infradead.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Mike Rapoport <rppt@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CEDAD0D9-56EE-4105-9107-72C2EAD940B0@gmail.com>
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
- <20220228110822.491923-3-jakobkoschel@gmail.com>
- <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
- <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
- <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com>
- <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
- <FC710A1A-524E-481B-A668-FC258F529A2E@gmail.com>
- <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-X-Mailer: Apple Mail (2.3693.60.0.1.1)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232498AbiCALcl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 06:32:41 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D3F95498;
+        Tue,  1 Mar 2022 03:31:49 -0800 (PST)
+Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K7FRb6VMRz67wcQ;
+        Tue,  1 Mar 2022 19:30:35 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Tue, 1 Mar 2022 12:31:47 +0100
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 1 Mar
+ 2022 11:31:46 +0000
+Date:   Tue, 1 Mar 2022 11:31:45 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        <linux-iio@vger.kernel.org>, Paul Cercueil <paul@crapouillou.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        "Tomasz Duszynski" <tomasz.duszynski@octakon.com>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 2/8] PM: core: Add NS varients of
+ EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and runtime pm equiv
+Message-ID: <20220301113145.00004ce4@Huawei.com>
+In-Reply-To: <CAJZ5v0iwFJizKf-SEr10M-8HFirMzH8=LkONLvtZ30pfEk4AOA@mail.gmail.com>
+References: <20220220181522.541718-1-jic23@kernel.org>
+        <20220220181522.541718-3-jic23@kernel.org>
+        <6cd17744-d060-1094-098d-e30a10f96600@intel.com>
+        <20220227114628.219c7055@jic23-huawei>
+        <CAJZ5v0iwFJizKf-SEr10M-8HFirMzH8=LkONLvtZ30pfEk4AOA@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml711-chm.china.huawei.com (10.201.108.62) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 28 Feb 2022 21:13:25 +0100
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
+> On Sun, Feb 27, 2022 at 12:39 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Mon, 21 Feb 2022 20:37:57 +0100
+> > "Rafael J. Wysocki" <rafael.j.wysocki@intel.com> wrote:
+> >
+> > Hi Rafael,  
+> > > CC: linux-pm  
+> >
+> > Oops. Stupid omission on my part, sorry about that!
+> >  
+> > >
+> > > On 2/20/2022 7:15 PM, Jonathan Cameron wrote:  
+> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > >
+> > > > As more drivers start to use namespaces, we need to have varients of these
+> > > > useful macros that allow the export to be in a particular namespace.
+> > > >
+> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > Cc: Paul Cercueil <paul@crapouillou.net>
+> > > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>  
+> > >
+> > > I'd rather route this through linux-pm unless you have dependent changes.  
+> >
+> > Ok.
+> >
+> > The kxsd9 patch (4) is dependent on other changes queued for
+> > the merge window in IIO. If we want to do it through linux-pm I'd
+> > love it if we can manage to get the ground work in for the coming merge window.
+> >
+> > So options are:
+> >
+> > 1) This patch alone via linux-pm and I queue the users up for next cycle
+> >    Fine by me but always awkward to have infrastructure with no users.
+> > 2) First 3 patches via linux-pm so we have a user (scd30) in a low churn
+> >    driver and I'll queue the rest for 5.19.  Fine by me as well.
+> >    That goes on cleanly on 5.17-rc1 and there is nothing else in my review
+> >    queue touching that driver.  
+> 
+> That would work for me.
 
-> On 1. Mar 2022, at 01:41, Linus Torvalds =
-<torvalds@linux-foundation.org> wrote:
->=20
-> On Mon, Feb 28, 2022 at 1:47 PM Jakob Koschel <jakobkoschel@gmail.com> =
-wrote:
->>=20
->> The goal of this is to get compiler warnings right? This would indeed =
-be great.
->=20
-> Yes, so I don't mind having a one-time patch that has been gathered
-> using some automated checker tool, but I don't think that works from a
-> long-term maintenance perspective.
->=20
-> So if we have the basic rule being "don't use the loop iterator after
-> the loop has finished, because it can cause all kinds of subtle
-> issues", then in _addition_ to fixing the existing code paths that
-> have this issue, I really would want to (a) get a compiler warning for
-> future cases and (b) make it not actually _work_ for future cases.
->=20
-> Because otherwise it will just happen again.
->=20
->> Changing the list_for_each_entry() macro first will break all of =
-those cases
->> (e.g. the ones using 'list_entry_is_head()).
->=20
-> So I have no problems with breaking cases that we basically already
-> have a patch for due to  your automated tool. There were certainly
-> more than a handful, but it didn't look _too_ bad to just make the
-> rule be "don't use the iterator after the loop".
->=20
-> Of course, that's just based on that patch of yours. Maybe there are a
-> ton of other cases that your patch didn't change, because they didn't
-> match your trigger case, so I may just be overly optimistic here.
+Great.  Let's do that then.  Are you fine picking them from this thread, or
+would you like me to resend with just those 3 patches as a fresh series?
 
-Based on the coccinelle script there are ~480 cases that need fixing
-in total. I'll now finish all of them and then split them by
-submodules as Greg suggested and repost a patch set per submodule.
-Sounds good?
+> 
+> > I'm also interested to hear your view on the discussion going on in reply
+> > to the cover letter. Specifically Paul suggested we 'only' have the
+> > namespaced versions of these macros.  
+> 
+> Well, I'm a bit afraid that providing the namespaced versions only
+> would slow down the adoption.
 
->=20
-> But basically to _me_, the important part is that the end result is
-> maintainable longer-term. I'm more than happy to have a one-time patch
-> to fix a lot of dubious cases if we can then have clean rules going
-> forward.
->=20
->> I assumed it is better to fix those cases first and then have a =
-simple
->> coccinelle script changing the macro + moving the iterator into the =
-scope
->> of the macro.
->=20
-> So that had been another plan of mine, until I actually looked at
-> changing the macro. In the one case I looked at, it was ugly beyond
-> belief.
->=20
-> It turns out that just syntactically, it's really nice to give the
-> type of the iterator from outside the way we do now. Yeah, it may be a
-> bit odd, and maybe it's partly because I'm so used to the
-> "list_for_each_list_entry()" syntax, but moving the type into the loop
-> construct really made it nasty - either one very complex line, or
-> having to split it over two lines which was even worse.
->=20
-> Maybe the place I looked at just happened to have a long typename, but
-> it's basically always going to be a struct, so it's never a _simple_
-> type. And it just looked very odd adn unnatural to have the type as
-> one of the "arguments" to that list_for_each_entry() macro.
->=20
-> So yes, initially my idea had been to just move the iterator entirely
-> inside the macro. But specifying the type got so ugly that I think
-> that
->=20
->        typeof (pos) pos
->=20
-> trick inside the macro really ends up giving us the best of all =
-worlds:
->=20
-> (a) let's us keep the existing syntax and code for all the nice cases
-> that did everything inside the loop anyway
->=20
-> (b) gives us a nice warning for any normal use-after-loop case
-> (unless you explicitly initialized it like that
-> sgx_mmu_notifier_release() function did for no good reason
->=20
-> (c) also guarantees that even if you don't get a warning,
-> non-converted (or newly written) bad code won't actually _work_
->=20
-> so you end up getting the new rules without any ambiguity or mistaken
->=20
->> With this you are no longer able to set the 'outer' pos within the =
-list
->> iterator loop body or am I missing something?
->=20
-> Correct. Any assignment inside the loop will be entirely just to the
-> local loop case. So any "break;" out of the loop will have to set
-> another variable - like your updated patch did.
->=20
->> I fail to see how this will make most of the changes in this
->> patch obsolete (if that was the intention).
->=20
-> I hope my explanation above clarifies my thinking: I do not dislike
-> your patch, and in fact your patch is indeed required to make the new
-> semantics work.
+Agreed, that's a concern and as Paul was happy with the route of
+adding NS and perhaps looking eventually at dropping the non NS variant
+I think we can move forward with this patch.
 
-ok it's all clear now, thanks for clarifying.
-I've defined all the 'tmp' iterator variables uninitialized so applying
-your patch on top of that later will just give the nice compiler warning=20=
+Thanks,
 
-if they are used past the loop body.
+Jonathan
 
->=20
-> What I disliked was always the maintainability of your patch - making
-> the rules be something that isn't actually visible in the source code,
-> and letting the old semantics still work as well as they ever did, and
-> having to basically run some verification pass to find bad users.
-
-Since this patch is not a complete list of cases that need fixing (30%)
-I haven't included the actual change of moving the iterator variable
-into the loop and thought that would be a second step coming after this
-is merged.
-
-With these changes alone, yes you still rely on manual verification =
-passes.
-
->=20
-> (I also disliked your original patch that mixed up the "CPU
-> speculation type safety" with the actual non-speculative problems, but
-> that was another issue).
->=20
->                Linus
-
-- Jakob
 

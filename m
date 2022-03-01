@@ -2,122 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DACCD4C854E
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 08:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E09D04C8AAD
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 12:28:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233052AbiCAHgD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Mar 2022 02:36:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49974 "EHLO
+        id S234508AbiCAL3C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Mar 2022 06:29:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233037AbiCAHgC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 02:36:02 -0500
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 212407E08A;
-        Mon, 28 Feb 2022 23:35:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XRMXTeyCtgWCRoAHCXdB0YtCPZCSJG6SzliW2Y9ZgHV7f130B60HJFswuR/akwB3cX3P5TS463R/IY9xFCmAYc8s4ZBumfVGE97iz1qZH1eZf1kyRUPpOPuJJHwDStMa2Wi+FzA2yOo1eaN+/mYIQ/cHSbJ/UUymbny5tMIo29Qkn3vZjPDKxPCIvasCVanTpfwD9X1kSH7IOpCg8J850vmp3U1W9Z76cRlUa4fU/0jhyJcnvglO2pL0ATZcPZ0yRwUPqFvwATpooIrvMQX8ed86Nnchbfg423PL+sQrtFqMaN69DwuXyL3q45TgOBWY9LX89i5ZbfGzed+uCfXXiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ctwdyr8iIRoRJgujIFn6rQaLx9Uur2dD5Qit6JaY6kQ=;
- b=FDmBepSW1UgJ3WhRmLi/U9ZeU0peR6Du+b/ImwKEVers1vB1aAERtd5+els2FFpsVgR38A012PRplub4Je5KNtTaH8OY/2LaLjOn7SI+VDHopfeyLLy3urss3QagD2tIr99g6WYhsMunPd+kMe76x5PNmGnDUGk8Xszv98FjclIrLR6gi869XwaC/B+Zr4xTxrapt+Ok47EtVSlM1YkTzSgs0YqMgRHKhM+Cdww59DuyLkZ3cf1fmmuFDYrt3lCq/Pdv8NpoamGZnq/IRz8ti+Z/WJYAdJPFx7IOETEECk/SsMmX2Th2NK1FXW/M2iYIrNcz5zp9nW5N3APhlouWXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.62.198) smtp.rcpttodomain=kernel.org smtp.mailfrom=xilinx.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
- dkim=none (message not signed); arc=none
+        with ESMTP id S229576AbiCAL3A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 06:29:00 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54B1A46652;
+        Tue,  1 Mar 2022 03:28:19 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id gb39so30861217ejc.1;
+        Tue, 01 Mar 2022 03:28:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ctwdyr8iIRoRJgujIFn6rQaLx9Uur2dD5Qit6JaY6kQ=;
- b=mukTmm2Vz7lR3Xu85H6HheMaEKjG8MYeRVOEHL+Vda7BR3h7ZjC+ZN0YE8gvIleeBztE1YF+PptJXqBZpxz38yUeVqBpU1qevLkFsAVbkMBmZMQzGAeKwlUxHZkwZWe6vA9xqzfpczA/7bw22mIsAmzARVOPRFUb2ghX1IpvUgY=
-Received: from BN9PR03CA0569.namprd03.prod.outlook.com (2603:10b6:408:138::34)
- by PH0PR02MB7815.namprd02.prod.outlook.com (2603:10b6:510:54::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.22; Tue, 1 Mar
- 2022 07:35:20 +0000
-Received: from BN1NAM02FT038.eop-nam02.prod.protection.outlook.com
- (2603:10b6:408:138:cafe::92) by BN9PR03CA0569.outlook.office365.com
- (2603:10b6:408:138::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.22 via Frontend
- Transport; Tue, 1 Mar 2022 07:35:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.62.198)
- smtp.mailfrom=xilinx.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.62.198 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.62.198; helo=xsj-pvapexch02.xlnx.xilinx.com;
-Received: from xsj-pvapexch02.xlnx.xilinx.com (149.199.62.198) by
- BN1NAM02FT038.mail.protection.outlook.com (10.13.2.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5017.22 via Frontend Transport; Tue, 1 Mar 2022 07:35:19 +0000
-Received: from xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) by
- xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.14; Mon, 28 Feb 2022 23:35:18 -0800
-Received: from smtp.xilinx.com (172.19.127.96) by
- xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server id
- 15.1.2176.14 via Frontend Transport; Mon, 28 Feb 2022 23:35:18 -0800
-Envelope-to: jic23@kernel.org,
- robert.hancock@calian.com,
- lars@metafoo.de,
- linux-iio@vger.kernel.org,
- robh+dt@kernel.org,
- devicetree@vger.kernel.org
-Received: from [10.254.241.50] (port=59556)
-        by smtp.xilinx.com with esmtp (Exim 4.90)
-        (envelope-from <michal.simek@xilinx.com>)
-        id 1nOx1z-0003Ik-M9; Mon, 28 Feb 2022 23:34:47 -0800
-Message-ID: <d07f4040-9479-c9bf-2505-8886613ac19d@xilinx.com>
-Date:   Tue, 1 Mar 2022 08:34:45 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH v2 0/4] Xilinx AMS fixes
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>
-CC:     Robert Hancock <robert.hancock@calian.com>,
-        "anand.ashok.dumbre@xilinx.com" <anand.ashok.dumbre@xilinx.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "manish.narani@xilinx.com" <manish.narani@xilinx.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <20220127173450.3684318-1-robert.hancock@calian.com>
- <20220130124605.6268bfc5@jic23-huawei>
- <9aeda9dd153f470ae630cff79c374e66ffbeade8.camel@calian.com>
- <20220226164552.7fed4f1d@jic23-huawei>
- <56c261b2-2bf0-16d1-8fdb-a264709cba09@xilinx.com>
- <20220228182626.12544642@jic23-huawei>
-From:   Michal Simek <michal.simek@xilinx.com>
-In-Reply-To: <20220228182626.12544642@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 53607216-4d8c-4e85-e331-08d9fb5609a3
-X-MS-TrafficTypeDiagnostic: PH0PR02MB7815:EE_
-X-Microsoft-Antispam-PRVS: <PH0PR02MB781512481103C73CF4F150A6C6029@PH0PR02MB7815.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Rt1eO+COcxYrn8O+I+LAGzRDo4ZihOjqKH24x8j7did7UbOHkTPjJqhnVSxD5T9i0VcIPRD00U2RULaFGY18Ku4wFKcagLHPg7KL5Ksmye9b92rmAoEX3YanwOyWs2yHrLKd3A38lV6K/+Tg1Z8BYFNk/nYFav436jBLI5qpz0q0WdP8WSgoIo2YLbGj50AMmIwtrmEEFa0IMvJ4s5oApBT9AfEWWDcuOYnnfyC/gzB32igDaQIZuIWTW0z6eXqDo8M0DdkvGYuFCrszu7Qn3PE62jwFjD7NJxBfUhmX3S37G/bEQELHcBckBmlC3uQWCrdEpUjWTbbPpkcw+XEod2RrnS4UPsjhsI0bZJxu0IyX/v9IxJ8YiADep8wLUDN7wSr0n7OpiEUrWp21QUlktL3Yqh6Nj+0UJ6rq9LFntWuQdWagmK0MusMNXlhw93XVvB6kOoz8BUzq3pcFuXCck/1A8nb9yq8BcJd0prl+8+gdWBROEq32sivxEDifC6CRnRqz61Me02F5odB/5FNuOmsayXLtLKYSWrAL1I6ug7D/uqQHlNQ4WHCVsdgYBZ3xqYzUIYfOIP68F7htnVtH98kHavduLORvLqYFJCgy2iJpKDxEGc7xmuc6QfpanQOoX3Z/SMdZNNYTJQlk2liSKmvalzomUSoxfZDUKNw4kUDqEDITlmaggEUIo4JqOQTgB9+dDEN2gVY3XsDdGhXDHUHfRjz/3DlG6/wz4yusV18=
-X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch02.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(36860700001)(31686004)(53546011)(44832011)(70206006)(54906003)(5660300002)(70586007)(508600001)(83380400001)(4326008)(8676002)(36756003)(31696002)(356005)(47076005)(40460700003)(2906002)(316002)(9786002)(110136005)(8936002)(26005)(186003)(336012)(7636003)(2616005)(426003)(82310400004)(50156003)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2022 07:35:19.5724
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53607216-4d8c-4e85-e331-08d9fb5609a3
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.62.198];Helo=[xsj-pvapexch02.xlnx.xilinx.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1NAM02FT038.eop-nam02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7815
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        d=gmail.com; s=20210112;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=rLPvv7mVdDwWU3WqqHUc/M/t9o2wkfNNz2uUSA/i/Q0=;
+        b=ioxwEWwSec2mkWoQpVaP+m+cuqfrILVMZy97DsxGJQFNwUj5vt0t9wo5G7myUpC8Gn
+         ea9oHHWNkcI1g0+ETzPDSekL4muwhDYsG3jrD0dPjJWnH1vW4gUq2ufbL8yBIo9ax2rC
+         LCc4peu3G2+oC3D/CoxTwxe0jKznErkS9hGO2cQ4rpTAmgLJ5M6BCvPaoqQObgiQcr6n
+         RKDduahlScES6wicQqME3eGzY8GUno55Oqx2eUsC/sQVyrcKAkNt4/DW8JZWJd6l/Vwp
+         mTTzA+edxLDCldwyXcUf3Jn0ErW39L5ba+PqRXF7jiU95w3jgcW/Rs/bUGAwA8mWZWkw
+         L2Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=rLPvv7mVdDwWU3WqqHUc/M/t9o2wkfNNz2uUSA/i/Q0=;
+        b=giO4plcs+ABte//d8gwL+2pUDHZqwCPkblhelmffpXm7V53ATpHNorjmZ913XTgE1z
+         FqflQE315aEEKvoN0tFlsYijiUOy/DnmlpKWRDKWEfBOAoXEqD08HgbwPAszCPvNBAjd
+         zg5Pa6s8phaSWtCFkVz9Q0eIigW5ve0F0j4Py0dsWriP8rjA3UE8oEFTmpjoy22jC5sR
+         rJ8TqHMKfLTj0rkSBjkvZT5NOHYtUQ6nD1seea29RX4m9ege4KP3SoDbvLaXOZrEXyBv
+         9C7PQnNtTW6e9zXaD4JhioQRXRERrornvFJqcig7/3P6MlWHkL5GEEMVFM/GHWPIvDzd
+         EuRA==
+X-Gm-Message-State: AOAM531HJ68V5UhOdCNzhzSINJGxvNunr87sa97CIt/ht8s+pnGg68cW
+        1CRheCZkNYxUF70jAhMNRTg=
+X-Google-Smtp-Source: ABdhPJykJwlP+KqTh6zSzndCpDSZzE2bN4aLh28OSmyBBaWLei6TdHv4i/sMtFtkO4GxsNuXK9LBkw==
+X-Received: by 2002:a17:906:68c2:b0:6b4:9f26:c099 with SMTP id y2-20020a17090668c200b006b49f26c099mr18827008ejr.41.1646134097608;
+        Tue, 01 Mar 2022 03:28:17 -0800 (PST)
+Received: from smtpclient.apple ([2a02:8109:9d80:3f6c:6db3:8d4c:747e:98ad])
+        by smtp.gmail.com with ESMTPSA id a25-20020a50ff19000000b0040f84cd806csm7036870edu.59.2022.03.01.03.28.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 01 Mar 2022 03:28:17 -0800 (PST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+From:   Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
+Date:   Tue, 1 Mar 2022 12:28:15 +0100
+Cc:     =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        alsa-devel@alsa-project.org, linux-aspeed@lists.ozlabs.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        samba-technical@lists.samba.org,
+        linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
+        linux-arch <linux-arch@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        KVM list <kvm@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-staging@lists.linux.dev, "Bos, H.J." <h.j.bos@vu.nl>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        intel-wired-lan@lists.osuosl.org,
+        kgdb-bugreport@lists.sourceforge.net,
+        bcm-kernel-feedback-list@broadcom.com,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Arnd Bergman <arnd@arndb.de>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        v9fs-developer@lists.sourceforge.net,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-sgx@vger.kernel.org,
+        linux-block <linux-block@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux F2FS Dev Mailing List 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        tipc-discussion@lists.sourceforge.net,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        dma <dmaengine@vger.kernel.org>,
+        linux-mediatek@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Mike Rapoport <rppt@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CEDAD0D9-56EE-4105-9107-72C2EAD940B0@gmail.com>
+References: <20220228110822.491923-1-jakobkoschel@gmail.com>
+ <20220228110822.491923-3-jakobkoschel@gmail.com>
+ <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
+ <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
+ <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com>
+ <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
+ <FC710A1A-524E-481B-A668-FC258F529A2E@gmail.com>
+ <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -126,52 +128,135 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 2/28/22 19:26, Jonathan Cameron wrote:
-> On Mon, 28 Feb 2022 07:40:59 +0100
-> Michal Simek <michal.simek@xilinx.com> wrote:
-> 
->> On 2/26/22 17:45, Jonathan Cameron wrote:
->>> On Wed, 9 Feb 2022 19:49:27 +0000
->>> Robert Hancock <robert.hancock@calian.com> wrote:
->>>    
->>>> On Sun, 2022-01-30 at 12:46 +0000, Jonathan Cameron wrote:
->>>>> On Thu, 27 Jan 2022 11:34:46 -0600
->>>>> Robert Hancock <robert.hancock@calian.com> wrote:
->>>>>       
->>>>>> Various fixes for the Xilinx AMS driver.
->>>>>>
->>>>>> Changes since v1:
->>>>>> -drop addition to ZynqMP device tree, will be submitted elsewhere
->>>>>> -add patch to fix DT binding to add missing clock entry
->>>>>
->>>>> I'm fine with these but would like to leave them all on list a tiny
->>>>> bit longer so we can hopefully get some review, particularly on patches
->>>>> 1 and 4.
->>>>>
->>>>> Jonathan
->>>>
->>>> Hi all,
->>>>
->>>> I don't think I've gotten any feedback. Is anyone able to review/test?
->>>>   
->>> Michal,
->>>
->>> If you have a chance to take a quick look at this series that would
->>> be great.
->>
->> That series looks good to me. Please apply and feel free to add my
->>
->> Acked-by: Michal Simek <michal.simek@xilinx.com>
->>
-> Applied to the fixes-togreg branch of iio.git.
-> 
-> I'm not certain I'll get a fixes pull request out in time to make this
-> cycle so these might get dragged across to my togreg branch and
-> added to a pull request for the merge window. Or, possibly Greg
-> will take them for the merge window even if I do a separate pull given
-> we are close to the end of the cycle.
+> On 1. Mar 2022, at 01:41, Linus Torvalds =
+<torvalds@linux-foundation.org> wrote:
+>=20
+> On Mon, Feb 28, 2022 at 1:47 PM Jakob Koschel <jakobkoschel@gmail.com> =
+wrote:
+>>=20
+>> The goal of this is to get compiler warnings right? This would indeed =
+be great.
+>=20
+> Yes, so I don't mind having a one-time patch that has been gathered
+> using some automated checker tool, but I don't think that works from a
+> long-term maintenance perspective.
+>=20
+> So if we have the basic rule being "don't use the loop iterator after
+> the loop has finished, because it can cause all kinds of subtle
+> issues", then in _addition_ to fixing the existing code paths that
+> have this issue, I really would want to (a) get a compiler warning for
+> future cases and (b) make it not actually _work_ for future cases.
+>=20
+> Because otherwise it will just happen again.
+>=20
+>> Changing the list_for_each_entry() macro first will break all of =
+those cases
+>> (e.g. the ones using 'list_entry_is_head()).
+>=20
+> So I have no problems with breaking cases that we basically already
+> have a patch for due to  your automated tool. There were certainly
+> more than a handful, but it didn't look _too_ bad to just make the
+> rule be "don't use the iterator after the loop".
+>=20
+> Of course, that's just based on that patch of yours. Maybe there are a
+> ton of other cases that your patch didn't change, because they didn't
+> match your trigger case, so I may just be overly optimistic here.
 
-that's fine.
+Based on the coccinelle script there are ~480 cases that need fixing
+in total. I'll now finish all of them and then split them by
+submodules as Greg suggested and repost a patch set per submodule.
+Sounds good?
 
-Thanks,
-Michal
+>=20
+> But basically to _me_, the important part is that the end result is
+> maintainable longer-term. I'm more than happy to have a one-time patch
+> to fix a lot of dubious cases if we can then have clean rules going
+> forward.
+>=20
+>> I assumed it is better to fix those cases first and then have a =
+simple
+>> coccinelle script changing the macro + moving the iterator into the =
+scope
+>> of the macro.
+>=20
+> So that had been another plan of mine, until I actually looked at
+> changing the macro. In the one case I looked at, it was ugly beyond
+> belief.
+>=20
+> It turns out that just syntactically, it's really nice to give the
+> type of the iterator from outside the way we do now. Yeah, it may be a
+> bit odd, and maybe it's partly because I'm so used to the
+> "list_for_each_list_entry()" syntax, but moving the type into the loop
+> construct really made it nasty - either one very complex line, or
+> having to split it over two lines which was even worse.
+>=20
+> Maybe the place I looked at just happened to have a long typename, but
+> it's basically always going to be a struct, so it's never a _simple_
+> type. And it just looked very odd adn unnatural to have the type as
+> one of the "arguments" to that list_for_each_entry() macro.
+>=20
+> So yes, initially my idea had been to just move the iterator entirely
+> inside the macro. But specifying the type got so ugly that I think
+> that
+>=20
+>        typeof (pos) pos
+>=20
+> trick inside the macro really ends up giving us the best of all =
+worlds:
+>=20
+> (a) let's us keep the existing syntax and code for all the nice cases
+> that did everything inside the loop anyway
+>=20
+> (b) gives us a nice warning for any normal use-after-loop case
+> (unless you explicitly initialized it like that
+> sgx_mmu_notifier_release() function did for no good reason
+>=20
+> (c) also guarantees that even if you don't get a warning,
+> non-converted (or newly written) bad code won't actually _work_
+>=20
+> so you end up getting the new rules without any ambiguity or mistaken
+>=20
+>> With this you are no longer able to set the 'outer' pos within the =
+list
+>> iterator loop body or am I missing something?
+>=20
+> Correct. Any assignment inside the loop will be entirely just to the
+> local loop case. So any "break;" out of the loop will have to set
+> another variable - like your updated patch did.
+>=20
+>> I fail to see how this will make most of the changes in this
+>> patch obsolete (if that was the intention).
+>=20
+> I hope my explanation above clarifies my thinking: I do not dislike
+> your patch, and in fact your patch is indeed required to make the new
+> semantics work.
+
+ok it's all clear now, thanks for clarifying.
+I've defined all the 'tmp' iterator variables uninitialized so applying
+your patch on top of that later will just give the nice compiler warning=20=
+
+if they are used past the loop body.
+
+>=20
+> What I disliked was always the maintainability of your patch - making
+> the rules be something that isn't actually visible in the source code,
+> and letting the old semantics still work as well as they ever did, and
+> having to basically run some verification pass to find bad users.
+
+Since this patch is not a complete list of cases that need fixing (30%)
+I haven't included the actual change of moving the iterator variable
+into the loop and thought that would be a second step coming after this
+is merged.
+
+With these changes alone, yes you still rely on manual verification =
+passes.
+
+>=20
+> (I also disliked your original patch that mixed up the "CPU
+> speculation type safety" with the actual non-speculative problems, but
+> that was another issue).
+>=20
+>                Linus
+
+- Jakob
+

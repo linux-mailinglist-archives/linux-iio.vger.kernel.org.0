@@ -2,191 +2,228 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3CA4C970C
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 21:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5364C982F
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Mar 2022 23:13:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234227AbiCAUhP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Mar 2022 15:37:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53528 "EHLO
+        id S233020AbiCAWOA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Mar 2022 17:14:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbiCAUhO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 15:37:14 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935BF3EF31
-        for <linux-iio@vger.kernel.org>; Tue,  1 Mar 2022 12:36:32 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id gb39so33900027ejc.1
-        for <linux-iio@vger.kernel.org>; Tue, 01 Mar 2022 12:36:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rAZcpGOFnijhfBt719P+IqprCBqe8sD9TF0Sez9IwiQ=;
-        b=F+7BPGYsO9QeRc6BTbvPUJxguXCTYika7fzNVLbSEfMjTVK29FjvhOtCtbBO2oalkB
-         9cweHARFFeQAeiDWhTrtcdfTzbCEOfTOrVCN9rTTV3Ek5jpvIVUt3aua8OA61CgDhA1w
-         zQABsshAfnGl6gFdFI9HcnnKU8AOre3uWnEew=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rAZcpGOFnijhfBt719P+IqprCBqe8sD9TF0Sez9IwiQ=;
-        b=dMPiQZgUh8uAZNbaoofjvbC4nLoeG9sGCrTtFhZC0bbhEri3QJZpifXDqFN9VoTDbM
-         leMxO2bNHLmx4/Qa4bGF+CO6A5KUUJSBKywq4QXqQ6Y5NMfNKzPrRpK7viEBR7hhUgJc
-         Qn7ZjPfdzuotvlF67llEjPfQ/ZSOKcbKjWh+Ynhy9Gh5ZMjti8+7EereYvf3YxLQQxMY
-         YNWJoKxxdbk0SbD3MGikFjkxno8Z096x8xEtKFyGY3sXMxPDgfYP4pu6lSVLpTriMXFX
-         hhuTIlG98sqiEiEwWjBoQ5E8nig0Ly/Y6ysYQRhLn8OkQnyJ9lAs0pYh4AxG7PhInEfe
-         Svjg==
-X-Gm-Message-State: AOAM531QaBq+yQWU7xTtYXDtIwOYyiuXDfxyUzquub9l4iTXVk2Xp9Yn
-        CYGL/p/OYP7q32R8TfxewP61/nrGMYeucvFd8nw=
-X-Google-Smtp-Source: ABdhPJyMnPorC4HZdS69F5r5IWLcxqcfisrXtj5Z/fpN8A7bj3UMt1BSdmPGvlMwt9ZFfLeVrIWSFg==
-X-Received: by 2002:a17:906:f41:b0:6d5:c6bc:fbc7 with SMTP id h1-20020a1709060f4100b006d5c6bcfbc7mr19670962ejj.541.1646166990793;
-        Tue, 01 Mar 2022 12:36:30 -0800 (PST)
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com. [209.85.218.53])
-        by smtp.gmail.com with ESMTPSA id z11-20020a50e68b000000b00412ec8b2180sm7596245edm.90.2022.03.01.12.36.30
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Mar 2022 12:36:30 -0800 (PST)
-Received: by mail-ej1-f53.google.com with SMTP id d10so33856048eje.10
-        for <linux-iio@vger.kernel.org>; Tue, 01 Mar 2022 12:36:30 -0800 (PST)
-X-Received: by 2002:ac2:44a4:0:b0:445:8fc5:a12a with SMTP id
- c4-20020ac244a4000000b004458fc5a12amr10608648lfm.27.1646166980002; Tue, 01
- Mar 2022 12:36:20 -0800 (PST)
+        with ESMTP id S232907AbiCAWN7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Mar 2022 17:13:59 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0872B3F33B;
+        Tue,  1 Mar 2022 14:13:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9BE3CB81E52;
+        Tue,  1 Mar 2022 22:13:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34917C340EE;
+        Tue,  1 Mar 2022 22:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646172786;
+        bh=RQzpIjRH1UzPMi0GzJDEchanURFcHgCpVXny/vDQnJE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jN3Dgl1C1b9BIcEVfPPT+vQsFXRq9tuoV1JPtIo6bnP3C0s0XAK3cWxMsEBwJFDer
+         lun4X3zwPtHZPq+z5dT4nCEpSPMAR1EwIIvepGDCDFZAp/5Q/8svpQX32QFunTmq9l
+         yRgWz0fJnT/M5Bgck9QCyCrJ6ogAalkJEgzeoM45e9X0pazibMh04aZ9YS2xfo5B6F
+         RxKyX5Mqx5oxsuGUKW2eSnhdZKz+xbsJLZo1Qh3/M9iwjG//E8G7NrhcrgLz54Rp29
+         DLigWGJKFRvVhHzidBssqbYeIkuOCvagCfT9rgFdKRCeSQvKDwwcfUH0YOIFOIuEaB
+         K5Uh4RMU8d4TQ==
+Date:   Tue, 1 Mar 2022 22:20:14 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v4 0/3] Add support for LTC2688
+Message-ID: <20220301222014.6ec90d4e@jic23-huawei>
+In-Reply-To: <20220227124953.02ab01fc@jic23-huawei>
+References: <20220225130129.69-1-nuno.sa@analog.com>
+        <20220227124953.02ab01fc@jic23-huawei>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220228110822.491923-1-jakobkoschel@gmail.com> <20220228110822.491923-7-jakobkoschel@gmail.com>
-In-Reply-To: <20220228110822.491923-7-jakobkoschel@gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 1 Mar 2022 12:36:03 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgLtKofBbn9kSXRU3MpdX7S2OxN1V5Mc679oJpFnp_VnQ@mail.gmail.com>
-Message-ID: <CAHk-=wgLtKofBbn9kSXRU3MpdX7S2OxN1V5Mc679oJpFnp_VnQ@mail.gmail.com>
-Subject: Re: [PATCH 6/6] treewide: remove check of list iterator against head
- past the loop body
-To:     Jakob Koschel <jakobkoschel@gmail.com>
-Cc:     linux-arch <linux-arch@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergman <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-sgx@vger.kernel.org, drbd-dev@lists.linbit.com,
-        linux-block <linux-block@vger.kernel.org>,
-        linux-iio@vger.kernel.org,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        dma <dmaengine@vger.kernel.org>,
-        linux1394-devel@lists.sourceforge.net,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        nouveau@lists.freedesktop.org,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        intel-wired-lan@lists.osuosl.org, Netdev <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        linux-mediatek@lists.infradead.org, KVM list <kvm@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        samba-technical@lists.samba.org,
-        Linux F2FS Dev Mailing List 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        kgdb-bugreport@lists.sourceforge.net,
-        v9fs-developer@lists.sourceforge.net,
-        tipc-discussion@lists.sourceforge.net, alsa-devel@alsa-project.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-So looking at this patch, I really reacted to the fact that quite
-often the "use outside the loop" case is all kinds of just plain
-unnecessary, but _used_ to be a convenience feature.
+On Sun, 27 Feb 2022 12:49:53 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-I'll just quote the first chunk in it's entirely as an example - not
-because I think this chunk is particularly important, but because it's
-a good example:
+> On Fri, 25 Feb 2022 14:01:26 +0100
+> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>=20
+> Hi Nuno,
+>=20
+> Given we are close to the end of this cycle and Andy has been heavily inv=
+olved
+> in review of this one so I want to give more time for Andy to potentially=
+ take
+> another look..
+>=20
+> Hence, I'm going to do something unusual and push out an extra-testing br=
+anch with this
+> on so we can get through the autobuilder tests in parallel with that extr=
+a time.
+>=20
+> So, applied to the new extra-testing branch of iio.git with the intent to=
+ apply
+> it to togreg later in a day or two subject to any last minute feedback.
 
-On Mon, Feb 28, 2022 at 3:09 AM Jakob Koschel <jakobkoschel@gmail.com> wrote:
->
-> diff --git a/arch/arm/mach-mmp/sram.c b/arch/arm/mach-mmp/sram.c
-> index 6794e2db1ad5..fc47c107059b 100644
-> --- a/arch/arm/mach-mmp/sram.c
-> +++ b/arch/arm/mach-mmp/sram.c
-> @@ -39,19 +39,22 @@ static LIST_HEAD(sram_bank_list);
->  struct gen_pool *sram_get_gpool(char *pool_name)
->  {
->         struct sram_bank_info *info = NULL;
-> +       struct sram_bank_info *tmp;
->
->         if (!pool_name)
->                 return NULL;
->
->         mutex_lock(&sram_lock);
->
-> -       list_for_each_entry(info, &sram_bank_list, node)
-> -               if (!strcmp(pool_name, info->pool_name))
-> +       list_for_each_entry(tmp, &sram_bank_list, node)
-> +               if (!strcmp(pool_name, tmp->pool_name)) {
-> +                       info = tmp;
->                         break;
-> +               }
->
->         mutex_unlock(&sram_lock);
->
-> -       if (&info->node == &sram_bank_list)
-> +       if (!info)
->                 return NULL;
->
->         return info->gpool;
+Given we may be very near to the cut off for the merge window (I aim to do =
+a pull
+request after linux-next is out tomorrow), I've applied this to the togreg
+branch of iio.git and pushed it out to be picked up for linux-next.
 
-I realize this was probably at least auto-generated with coccinelle,
-but maybe that script could be taught to do avoid the "use after loop"
-by simply moving the code _into_ the loop.
+Thanks,
 
-IOW, this all would be cleaner and clear written as
+Jonathan
 
-        if (!pool_name)
-                return NULL;
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+>=20
+> > The ABI defined for this driver has some subtleties that were previously
+> > discussed in this RFC [1]. This might not be the final state but,
+> > hopefully, we are close to it:
+> >=20
+> > toggle mode channels:
+> >=20
+> >  * out_voltageY_toggle_en
+> >  * out_voltageY_raw0
+> >  * out_voltageY_raw1
+> >  * out_voltageY_symbol
+> >=20
+> > dither mode channels:
+> >=20
+> >  * out_voltageY_dither_en
+> >  * out_voltageY_dither_raw
+> >  * out_voltageY_dither_raw_available
+> >  * out_voltageY_dither_offset
+> >  * out_voltageY_dither_frequency
+> >  * out_voltageY_dither_frequency_available
+> >  * out_voltageY_dither_phase
+> >  * out_voltageY_dither_phase_available
+> >=20
+> > Default channels won't have any of the above ABIs. A channel is toggle
+> > capable if the devicetree 'adi,toggle-mode' flag is set. For dither, the
+> > assumption is more silent. If 'adi,toggle-mode' is not given and a
+> > channel is associated with a TGPx pin through 'adi,toggle-dither-input',
+> > then the channel is assumed to be dither capable (there's no point in
+> > having a dither capable channel without an input clock).
+> >=20
+> > changes in v2:
+> >=20
+> >  ltc2688:
+> >   * Use local buffer for regmap read. Do not assume that reg is part of
+> > larger buffer;
+> >   * Renamed GPIO to "clr" so that is consistent with the datasheet;
+> >   * Renamed 'mask' and 'm' to info. 'mask' is a thing from the past;
+> >   * Removed 'LTC2688_CHAN_TOGGLE()' and defined to static ext_info arra=
+ys;
+> >   * Use 'regmap_set_bits' to set external ref;
+> >   * Use FIELD_{PREP|GET} for dither amplitude and channel calibbias whe=
+re
+> > only 13bits are used;
+> >   * Use 'regmap_write()' instead of update_bits for channels settings;
+> >   * Init 'val' at the beginning of the channel configuration loop
+> > (and drop mask);
+> >   * Comment 'ltc2688_reg_writable()' to account for the special conditi=
+on;
+> >   * Kmemdup default channels so that it can be safely changed per probed
+> > device;
+> >   * Replace extended info multiplexer functions by individual functions;
+> >   * Use raw0 ABI for toggle channels;
+> >   * Use dedicated offset ABI for dither channels;
+> >   * Misc changes (spell fixes, blank lines...);
+> >   * Have a clock property per channel. Note that we this I moved to OF
+> > since we now have to use 'devm_get_clk_from_child()' which is using
+> > device_node. Note that I could use 'to_of_node()' but mixing of.h and
+> > property.h does not feel like a good idea.
+> >=20
+> >  ABI:
+> >   * Added out_voltageY_raw0 ABI for toggle mode;
+> >   * Added out_voltageY_dither_offset.
+> >=20
+> >  Bindings:
+> >   * Use standard microvolt unit;
+> >   * Added constrains for adi,output-range-microvolt and removed negative
+> > values from the dts example;
+> >   * Moved clocks to the channel object;
+> >   * Dropped clock-names;
+> >   * Add a dependency between 'adi,toggle-dither-input' and 'clocks'.
+> >=20
+> > Changes in v3:
+> >=20
+> >  ltc2688:
+> >   * Fix mismatch between functions and function pointers detected by ke=
+rnel
+> > test bot;=20
+> >   * Always use if (ret) when ret > 0 has no meaning;
+> >   * Rename ltc2688_bulk_disable -> ltc2688_disable_regulators;
+> >   * Report dither phase in radians rather than degrees.
+> >=20
+> >  ABI:
+> >   * Specify units for dither_phase and dither_freqency;=20
+> >   * Say why its useful to have dither_en and toggle_en;
+> >   * Combine out_voltageY_raw0 and out_voltageY_raw1;
+> >   * Fix some description issues in out_voltageY_raw{0|1} and
+> > out_voltageY_symbol.
+> >=20
+> >  Bindings:
+> >   * Remove mentions to ABI (linux specifix);
+> >   * Slightly rephrased VREF and adi,toggle-dither-input properties and
+> > suggested.
+> >   =20
+> > changes in v4:
+> >=20
+> >  ltc2688:
+> >   * Use reg_size + val_size instead of plain 3 in regmap;
+> >   * Use out_unlock instead of unlock in goto labels;
+> >   * Add comma to LTC2688_CHANNEL(), ltc2688_regmap_bus and
+> > ltc2688_regmap_bus;
+> >   * Use __clear_bit() instead of clear_bit();
+> >   * Flip the logic in vref regulator so that error condition is handled
+> > first;
+> >   * Change to device API. With this, we need to_of_node()
+> > for devm_get_clk_from_child().
+> >=20
+> >  ABI:
+> >   * Update kernel version.
+> >=20
+> >  Bindings:
+> >   * Add Rob's Rb tag.
+> >=20
+> > [1]: https://marc.info/?l=3Dlinux-iio&m=3D163662843603265&w=3D2
+> >=20
+> > Nuno S=C3=A1 (3):
+> >   iio: dac: add support for ltc2688
+> >   iio: ABI: add ABI file for the LTC2688 DAC
+> >   dt-bindings: iio: Add ltc2688 documentation
+> >=20
+> >  .../ABI/testing/sysfs-bus-iio-dac-ltc2688     |   86 ++
+> >  .../bindings/iio/dac/adi,ltc2688.yaml         |  146 +++
+> >  MAINTAINERS                                   |    9 +
+> >  drivers/iio/dac/Kconfig                       |   11 +
+> >  drivers/iio/dac/Makefile                      |    1 +
+> >  drivers/iio/dac/ltc2688.c                     | 1071 +++++++++++++++++
+> >  6 files changed, 1324 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
+> >  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc26=
+88.yaml
+> >  create mode 100644 drivers/iio/dac/ltc2688.c
+> >  =20
+>=20
 
-        mutex_lock(&sram_lock);
-        list_for_each_entry(info, &sram_bank_list, node) {
-                if (!strcmp(pool_name, info->pool_name)) {
-                        mutex_unlock(&sram_lock);
-                        return info;
-                }
-        }
-        mutex_unlock(&sram_lock);
-        return NULL;
-
-Ta-daa - no use outside the loop, no need for new variables, just a
-simple "just do it inside the loop". Yes, we end up having that lock
-thing twice, but it looks worth it from a "make the code obvious"
-standpoint.
-
-Would it be even cleaner if the locking was done in the caller, and
-the loop was some simple helper function? It probably would. But that
-would require a bit more smarts than probably a simple coccinelle
-script would do.
-
-                Linus

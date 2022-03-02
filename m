@@ -2,103 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4064CAF36
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 20:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B50C94CAF62
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 21:07:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242731AbiCBT5l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Mar 2022 14:57:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49236 "EHLO
+        id S242870AbiCBUIB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Mar 2022 15:08:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242744AbiCBT5k (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 14:57:40 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FCEDA850;
-        Wed,  2 Mar 2022 11:56:42 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id i8so4485550wrr.8;
-        Wed, 02 Mar 2022 11:56:42 -0800 (PST)
+        with ESMTP id S242865AbiCBUH5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 15:07:57 -0500
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FC7AD2068
+        for <linux-iio@vger.kernel.org>; Wed,  2 Mar 2022 12:07:06 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id bd1so2501918plb.13
+        for <linux-iio@vger.kernel.org>; Wed, 02 Mar 2022 12:07:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=NbmKVhEtPhGrxqVQA+EuZwuF4NJvA1JcTyRn1dRD68g=;
-        b=JUBJHYsFw231gHvFxRX5h9vuDM7kcPA0aoSHKOB0Jx6iOK2Kgj3Pr5/pXm86LkJlps
-         utqIRdAiq6uuLuFfCADAqKjXYjkZu1NMi1vHmdXX+F9VlcDYwzBbLX6PvgbEw8voRQuC
-         cL859Rf4UWB0q4CY6DGtUofMHtsRb/mTPBF4Khq5O8uN/8ocHZOf8pHU34lAKco83VIu
-         Hkay6RglaVyiYHlgnEpQT1Y4mAf0gclkSlaxxd9zK1k8euIsyj4P3iFEqBW4KEvZ59im
-         Av9nwLCzNsUhg25n6MAqxg+QFGwJ78coDwy7FMXY2tm5V6usIawZlCkj5ciewBmos07J
-         zd5Q==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=9llME+iRL2iH9L07jwvbWbmbHLr47Rbz7WJ4fOgTlZc=;
+        b=IvpJRwG7ynxkReEE85KaN5rJUYtD4xKNHA+hy6TwBmoQ8B3uYeJI+QViQcnaGiWq86
+         F88M3HTERkoil1v4VBpPtCvYuei+/tfueI2kCXzM7ddvcotxLyWZwiewhTHLUCy28lRK
+         BraqPBOXvwYRthhpbxTgJWS9pGCc3zSZJBqHk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=NbmKVhEtPhGrxqVQA+EuZwuF4NJvA1JcTyRn1dRD68g=;
-        b=tXWIO35uCdWuvvui5aQ6P4XMn4OJ2As0WbI/ELV5yaBXIKT8q55pYLhOUiWSur2Nxu
-         yEj26LfRJVdTizXJ5Wj5zZ3PZlBlqVQc9aDUibSrStdncetOrGI0yc/OKe6Yyg8lcaYz
-         2EKoI+FB/WWiNmV8xfKXjCeklRruYllYm2Yv/kavR0mvvllODOlXgjaIUo/fjcYbSaLH
-         Xe46m4CPm+GJuLNg3BQQu5AcmXPKkVaOFM9+7hrbnpNLTmeXy+716QWUd0E4HmUxCkaT
-         Ijwll20/lc5kA4uHdDl9eNcJnzkV2THYSSJqJOVCXhHhxdV2BFP3EdkRS/qrzGqOpIcV
-         BtNA==
-X-Gm-Message-State: AOAM532jIZ3czADg5KIvLg0LIxty8OS/35aVP6/IzwBCRMYE/1SlHD/K
-        VJRXYI4PjmDtVWq8t5iK/5U=
-X-Google-Smtp-Source: ABdhPJxt+gjYgCD5VpM8N/Snk43QbbhlCfEKawBGmlIzObus6knMb+mXHmVss6IEXKInyVN9TVSz0g==
-X-Received: by 2002:a05:6000:2ce:b0:1f0:481c:6f13 with SMTP id o14-20020a05600002ce00b001f0481c6f13mr1832965wry.354.1646251001272;
-        Wed, 02 Mar 2022 11:56:41 -0800 (PST)
-Received: from ?IPv6:2001:a61:2a40:5b01:34db:b959:7b84:68a? ([2001:a61:2a40:5b01:34db:b959:7b84:68a])
-        by smtp.gmail.com with ESMTPSA id m34-20020a05600c3b2200b00380e3225af9sm2031wms.0.2022.03.02.11.56.40
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9llME+iRL2iH9L07jwvbWbmbHLr47Rbz7WJ4fOgTlZc=;
+        b=WbQaJSzHIlQReSrQcV/959FxnwHDZcd8aCgzKdEfIEWkOibzMr6cII24uNJI1VOvY4
+         M2NZ06ImH+mCzuFgkxVexJGn943ewMDZ6Y5vnpOHDl5/rsNFHHJ5kUr2aruc3n9g6URO
+         nbbI0zupaYiFzozbMTpUq01mG8QQQbAYqy50naDfAe0hZhpLQxOwNcq3hzVOEY5WonA/
+         m5qQRs6KIyb5zE64UVvsU08rFsQqEJHTRD/gnOyDB90Tas/1A6zmJIr4/vPfQcunDrcR
+         4zmXr/GPAgzdUWgnNcmvrhoZ27t/5IumdW00a+PmmP7gyKUip63kD5txQ/CdB/E5MGEo
+         Q48g==
+X-Gm-Message-State: AOAM532Q4CjNyE1iJ7A4wGg3yTEc2QaIf+XVTU0Y/DGZ1v53b4FXkymu
+        RQ+NyDJmoabFOk7tnd0Sf+Bpuw==
+X-Google-Smtp-Source: ABdhPJyalZw/yElDAQSdRYusWOxjkvZUrvn+e5j/jboS/+hXUtUpvVb6mMnbBbqlv1j/a0ygzQBPkQ==
+X-Received: by 2002:a17:90b:94e:b0:1bc:c99f:ede1 with SMTP id dw14-20020a17090b094e00b001bcc99fede1mr1518926pjb.49.1646251625762;
+        Wed, 02 Mar 2022 12:07:05 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d25-20020a637359000000b0037843afb785sm6664pgn.25.2022.03.02.12.07.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Mar 2022 11:56:40 -0800 (PST)
-Message-ID: <f22f0f902079e10bbc065733de7c41f7dc164f98.camel@gmail.com>
-Subject: Re: [PATCH v3 1/3] iio: temperature: ltc2983: Don't hard code
- defined constants in messages
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Date:   Wed, 02 Mar 2022 20:56:40 +0100
-In-Reply-To: <Yh+SQgD0Bq5qq6Cm@smile.fi.intel.com>
-References: <20220210135522.26562-1-andriy.shevchenko@linux.intel.com>
-         <20220213175559.46e8dee2@jic23-huawei>
-         <Yh+SQgD0Bq5qq6Cm@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.3 (3.42.3-1.fc35) 
+        Wed, 02 Mar 2022 12:07:05 -0800 (PST)
+Date:   Wed, 2 Mar 2022 12:07:04 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        David Laight <David.Laight@aculab.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        KVM list <kvm@vger.kernel.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        "Bos, H.J." <h.j.bos@vu.nl>,
+        "linux1394-devel@lists.sourceforge.net" 
+        <linux1394-devel@lists.sourceforge.net>,
+        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "kgdb-bugreport@lists.sourceforge.net" 
+        <kgdb-bugreport@lists.sourceforge.net>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Arnd Bergman <arnd@arndb.de>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        dma <dmaengine@vger.kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jakob Koschel <jakobkoschel@gmail.com>,
+        "v9fs-developer@lists.sourceforge.net" 
+        <v9fs-developer@lists.sourceforge.net>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        linux-block <linux-block@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux F2FS Dev Mailing List 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        "tipc-discussion@lists.sourceforge.net" 
+        <tipc-discussion@lists.sourceforge.net>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Message-ID: <202203021158.DB5204A0@keescook>
+References: <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com>
+ <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
+ <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org>
+ <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
+ <CAHk-=wiT5HX6Kp0Qv4ZYK_rkq9t5fZ5zZ7vzvi6pub9kgp=72g@mail.gmail.com>
+ <7dc860874d434d2288f36730d8ea3312@AcuMS.aculab.com>
+ <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
+ <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com>
+ <CAHk-=wix0HLCBs5sxAeW3uckg0YncXbTjMsE-Tv8WzmkOgLAXQ@mail.gmail.com>
+ <78ccb184-405e-da93-1e02-078f90d2b9bc@rasmusvillemoes.dk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78ccb184-405e-da93-1e02-078f90d2b9bc@rasmusvillemoes.dk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2022-03-02 at 17:50 +0200, Andy Shevchenko wrote:
-> On Sun, Feb 13, 2022 at 05:55:59PM +0000, Jonathan Cameron wrote:
-> > On Thu, 10 Feb 2022 15:55:20 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > 
-> > > In a couple of messages the constants, which have their
-> > > definitions,
-> > > are hard coded into the message text. Unhardcode them.
-> > > 
-> > > While at it, add a trailing \n where it's currently missing.
-> > > 
-> > > Signed-off-by: Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com>
-> > > Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-> > 
-> > Mostly so I can remember what is going on with this patch,
-> > Nuno is OoO and planning to test this series when he returns.
-> > 
-> > Given that I'll wait on Nuno's testing.
+On Wed, Mar 02, 2022 at 10:29:31AM +0100, Rasmus Villemoes wrote:
+> This won't help the current issue (because it doesn't exist and might
+> never), but just in case some compiler people are listening, I'd like to
+> have some sort of way to tell the compiler "treat this variable as
+> uninitialized from here on". So one could do
 > 
-> Any news?
+> #define kfree(p) do { __kfree(p); __magic_uninit(p); } while (0)
 > 
-Started to prepare things by the end of the day. Should be tested by
-tomorrow.
+> with __magic_uninit being a magic no-op that doesn't affect the
+> semantics of the code, but could be used by the compiler's "[is/may be]
+> used uninitialized" machinery to flag e.g. double frees on some odd
+> error path etc. It would probably only work for local automatic
+> variables, but it should be possible to just ignore the hint if p is
+> some expression like foo->bar or has side effects. If we had that, the
+> end-of-loop test could include that to "uninitialize" the iterator.
 
-- Nuno Sá
+I've long wanted to change kfree() to explicitly set pointers to NULL on
+free. https://github.com/KSPP/linux/issues/87
 
+The thing stopping a trivial transformation of kfree() is:
+
+	kfree(get_some_pointer());
+
+I would argue, though, that the above is poor form: the thing holding
+the pointer should be the thing freeing it, so these cases should be
+refactored and kfree() could do the NULLing by default.
+
+Quoting myself in the above issue:
+
+
+Without doing massive tree-wide changes, I think we need compiler
+support. If we had something like __builtin_is_lvalue(), we could
+distinguish function returns from lvalues. For example, right now a
+common case are things like:
+
+	kfree(get_some_ptr());
+
+But if we could at least gain coverage of the lvalue cases, and detect
+them statically at compile-time, we could do:
+
+#define __kfree_and_null(x) do { __kfree(*x); *x = NULL; } while (0)
+#define kfree(x) __builtin_choose_expr(__builtin_is_lvalue(x),
+			__kfree_and_null(&(x)), __kfree(x))
+
+Alternatively, we could do a tree-wide change of the former case (findable
+with Coccinelle) and change them into something like kfree_no_null()
+and redefine kfree() itself:
+
+#define kfree_no_null(x) do { void *__ptr = (x); __kfree(__ptr); } while (0)
+#define kfree(x) do { __kfree(x); x = NULL; } while (0)
+
+-- 
+Kees Cook

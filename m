@@ -2,69 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928494CAF8B
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 21:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6354F4CB075
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 21:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233581AbiCBUTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Mar 2022 15:19:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37512 "EHLO
+        id S234176AbiCBVAR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Mar 2022 16:00:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243047AbiCBUTv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 15:19:51 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D467C7C2F
-        for <linux-iio@vger.kernel.org>; Wed,  2 Mar 2022 12:19:07 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id m14so4763742lfu.4
-        for <linux-iio@vger.kernel.org>; Wed, 02 Mar 2022 12:19:07 -0800 (PST)
+        with ESMTP id S244957AbiCBVAP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 16:00:15 -0500
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B467DBD23
+        for <linux-iio@vger.kernel.org>; Wed,  2 Mar 2022 12:59:30 -0800 (PST)
+Received: by mail-pg1-x529.google.com with SMTP id t14so2673230pgr.3
+        for <linux-iio@vger.kernel.org>; Wed, 02 Mar 2022 12:59:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Uy+qIY61mUv01aVZ77KYqcI4VQ6CnEr5ehBFaIlKwdg=;
-        b=Be+smD91jIehBxsphVP8GxPmG9fZ7UzsziFVI8sCcayH4ghcjVwFadN69qX3SSZZfA
-         w/nKcppYscRVDTynDM99u+3Int1mDvzuW1vHPoDdJ+8JxYLDdH7+xaY9DZL7COnmW4q3
-         yEVm7FisHcBkdW7xwzBny/SyDipBoZU1ONqUc=
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=R/oQqieG0aXWXHs93Td97reRxAIjZoSgBmUtDJFVhjU=;
+        b=d2ZFN7FzXJICmnX4Tyt0wAx0nHny3V7g7RBF7BzoFi4JqvMjvTlFe6r9CSmtZHYpfY
+         sI7cCbacBhQSn0c2nYjk/wWGRSWn9quhJSSynH9lMYRKPPdVW/LYlF+HQ4F3tfS4GoN+
+         rfxT6gA9HHGJJFfNnOWheyqKpysRyPxkd0f8U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Uy+qIY61mUv01aVZ77KYqcI4VQ6CnEr5ehBFaIlKwdg=;
-        b=tjS5oKP1vVNCp2TKUeFaRggI/xRXFSjr+5z94fKrvbtO6QZCmB610FuZdD7FdS4va2
-         rgPnD9u2pMDdqiZ2fntnUmprTbs+mzGXtaQzguxDYV7Zy0SI2WbROyTBya6Hfg+TMP7J
-         3vtYlDCJxlEWdAIeGDsGPJL8VQqBGTOvmoJ4d6K6UY1bxBJi0du3MGtT7RSxjRRS9uUf
-         04gVirqCmyqHY2eRNPkSknK9X9mYpePgtGFmTUVvl4kLh9tGc8GX1dGroHapJPrbBTed
-         Z+3/BsiYRI0VzxYwQMO7LZDPxoPfA2tkeS/BQPILs7eVO/1NgMc/xRmKiWJnlRwR7vKx
-         428Q==
-X-Gm-Message-State: AOAM5314CRTUywPL3NBSkANIs0EtJlCnJ5pDviiprwzsUPuOzG0vlwzG
-        ds5vw298zpt07u5Ui0UW3taNfONYbk02KhXGvA8=
-X-Google-Smtp-Source: ABdhPJyNRGfb7wZv1tpJCflppZVQuwyEdqmuu8dV7bk8P0clwDJne1HPjd3oeMgyPBqfpLt6arg9zQ==
-X-Received: by 2002:ac2:4577:0:b0:443:fac7:d701 with SMTP id k23-20020ac24577000000b00443fac7d701mr18878454lfm.384.1646252345642;
-        Wed, 02 Mar 2022 12:19:05 -0800 (PST)
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com. [209.85.208.178])
-        by smtp.gmail.com with ESMTPSA id w12-20020a05651234cc00b0044314ab3f22sm11468lfr.83.2022.03.02.12.19.02
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Mar 2022 12:19:03 -0800 (PST)
-Received: by mail-lj1-f178.google.com with SMTP id v28so3894167ljv.9
-        for <linux-iio@vger.kernel.org>; Wed, 02 Mar 2022 12:19:02 -0800 (PST)
-X-Received: by 2002:a2e:3013:0:b0:246:2ca9:365e with SMTP id
- w19-20020a2e3013000000b002462ca9365emr21092331ljw.291.1646252342192; Wed, 02
- Mar 2022 12:19:02 -0800 (PST)
-MIME-Version: 1.0
-References: <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com> <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
- <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org> <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
- <CAHk-=wiT5HX6Kp0Qv4ZYK_rkq9t5fZ5zZ7vzvi6pub9kgp=72g@mail.gmail.com>
- <7dc860874d434d2288f36730d8ea3312@AcuMS.aculab.com> <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
- <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com> <CAHk-=wix0HLCBs5sxAeW3uckg0YncXbTjMsE-Tv8WzmkOgLAXQ@mail.gmail.com>
- <78ccb184-405e-da93-1e02-078f90d2b9bc@rasmusvillemoes.dk> <202203021158.DB5204A0@keescook>
-In-Reply-To: <202203021158.DB5204A0@keescook>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 2 Mar 2022 12:18:45 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wikKPC0LUqZ8++EC5JOvGdBqVH9uUaTX=DvBioDoReYww@mail.gmail.com>
-Message-ID: <CAHk-=wikKPC0LUqZ8++EC5JOvGdBqVH9uUaTX=DvBioDoReYww@mail.gmail.com>
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-To:     Kees Cook <keescook@chromium.org>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=R/oQqieG0aXWXHs93Td97reRxAIjZoSgBmUtDJFVhjU=;
+        b=t0kGcDBt4YkDzYagDjbPmItal/dmFc2816PEjNSoDuoxIbdnLPSfUFgVAoyTGnvLhG
+         2Co3oN8kR294teDzJBgWJcuq5Uv+7XM/VBrrNbSeJi32D1S4KIe+mHHCbL1cvNWOVl/o
+         x3B1tSGq+Vi7dHtgaJsfisLM2zw+etvvexE6PdFdCohtlA1MecxbLddqFLKlZP1Dh5dK
+         2mjIKjS+UgtFmtKcoejrzkNtQsGb43reBSqiRqat6WEQg2VaZdodg/0DFis0qHp+DFkP
+         KZHaJMUid4MtAj99JZa1rnLRAEJBr8BvMIHwEU/l9L+R/dE4Xqmn45UtnbqWSwpbHa3J
+         3f6Q==
+X-Gm-Message-State: AOAM533xY0ZTzBqC9ne4ni8ykqehUZ2+TXGHPH8bnLrOvpI+Z9jGWhXH
+        3d9o9e64THXQ4lGFomMrO3CejA==
+X-Google-Smtp-Source: ABdhPJwV5Vftpu3BNFYOd1YAI3xcgBfQbmCq2DPnKYT59xnVma61vCMoUamoUdgwMbiUWTPibOctJw==
+X-Received: by 2002:a63:595e:0:b0:378:b203:a74e with SMTP id j30-20020a63595e000000b00378b203a74emr13280856pgm.328.1646254769698;
+        Wed, 02 Mar 2022 12:59:29 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id z9-20020a655a49000000b00373459df190sm58337pgs.35.2022.03.02.12.59.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Mar 2022 12:59:29 -0800 (PST)
+Date:   Wed, 2 Mar 2022 12:59:28 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         David Laight <David.Laight@aculab.com>,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
@@ -125,37 +107,64 @@ Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         <linux-mediatek@lists.infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
         Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Message-ID: <202203021256.69D7C4BCA6@keescook>
+References: <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org>
+ <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
+ <CAHk-=wiT5HX6Kp0Qv4ZYK_rkq9t5fZ5zZ7vzvi6pub9kgp=72g@mail.gmail.com>
+ <7dc860874d434d2288f36730d8ea3312@AcuMS.aculab.com>
+ <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
+ <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com>
+ <CAHk-=wix0HLCBs5sxAeW3uckg0YncXbTjMsE-Tv8WzmkOgLAXQ@mail.gmail.com>
+ <78ccb184-405e-da93-1e02-078f90d2b9bc@rasmusvillemoes.dk>
+ <202203021158.DB5204A0@keescook>
+ <CAHk-=wikKPC0LUqZ8++EC5JOvGdBqVH9uUaTX=DvBioDoReYww@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wikKPC0LUqZ8++EC5JOvGdBqVH9uUaTX=DvBioDoReYww@mail.gmail.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 2, 2022 at 12:07 PM Kees Cook <keescook@chromium.org> wrote:
->
-> I've long wanted to change kfree() to explicitly set pointers to NULL on
-> free. https://github.com/KSPP/linux/issues/87
+On Wed, Mar 02, 2022 at 12:18:45PM -0800, Linus Torvalds wrote:
+> On Wed, Mar 2, 2022 at 12:07 PM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > I've long wanted to change kfree() to explicitly set pointers to NULL on
+> > free. https://github.com/KSPP/linux/issues/87
+> 
+> We've had this discussion with the gcc people in the past, and gcc
+> actually has some support for it, but it's sadly tied to the actual
+> function name (ie gcc has some special-casing for "free()")
+> 
+> See
+> 
+>     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94527
+> 
+> for some of that discussion.
+> 
+> Oh, and I see some patch actually got merged since I looked there last
+> so that you can mark "deallocator" functions, but I think it's only
+> for the context matching, not for actually killing accesses to the
+> pointer afterwards.
 
-We've had this discussion with the gcc people in the past, and gcc
-actually has some support for it, but it's sadly tied to the actual
-function name (ie gcc has some special-casing for "free()")
+Ah! I missed that getting added in GCC 11. But yes, there it is:
 
-See
+https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-malloc-function-attribute
 
-    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94527
+Hah, now we may need to split __malloc from __alloc_size. ;)
 
-for some of that discussion.
+I'd still like the NULL assignment behavior, though, since some things
+can easily avoid static analysis.
 
-Oh, and I see some patch actually got merged since I looked there last
-so that you can mark "deallocator" functions, but I think it's only
-for the context matching, not for actually killing accesses to the
-pointer afterwards.
-
-               Linus
+-- 
+Kees Cook

@@ -2,162 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4347F4CC066
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 15:54:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 203B84CC1E6
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 16:47:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230029AbiCCOys (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Mar 2022 09:54:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55158 "EHLO
+        id S234782AbiCCPsg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Mar 2022 10:48:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiCCOyr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Mar 2022 09:54:47 -0500
-Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2217DE2E5;
-        Thu,  3 Mar 2022 06:53:58 -0800 (PST)
-Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
-        by mx0b-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 223ENPw9015915;
-        Thu, 3 Mar 2022 09:53:37 -0500
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2046.outbound.protection.outlook.com [104.47.66.46])
-        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3ej7p0e74g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 03 Mar 2022 09:53:37 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QmQbm0AMEI9YvZHo+Nvzw/iKmWWlbg8UcGbDBVILbOp3sI0Zm4rCiKY5sUV4UpiBuoKv6tAgoadvgKihqivSXM5ry5PBxw+HKlHp9mhLjXmk4oyK7BywCrJQHH8q23wbL6zbL/5PI+EjQ3nS+yVBaoxFuADov03fRHVQDCluQ8HWfq5H7vsIfNiac5Ha1rA/Iz6mI5n9+ono6WWfhSZ7IP5o0AtpoBO6nD12RBEZmYHGZ5FZUX654I/S3JGTDeNHqCVB7NudtsFFmhA75lP/azZkTmIcW4TGTA+uU+QDBGpvUckmzuiO8GZfBVlT4SEuu1mz2f/KOFaL2r6N6FjSXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bfrU2c+z383bm0sIqVn4HDJdygjWBu6/Afy+14uwgAw=;
- b=mapRbOr8ICtfHN/WNWnQ6hlxi7GZNoM53kXBGx0ZvDzfRriy9k9cZV5ong3zwoTC61c4qhD4z0jg5OD+zo6t0Kgi75ShrAdZs+j77pjS87hsy3EqwAME2ZpbkoFLk9uMYKIXj2PvOQKioHWbg8884mca7Kx/cwbHtp1d5pX2V6RLWITZDPMzAjc60uoAmJOC1x0Uu55B6Zy3E0+VW2EUrlriz3tr8fFe1Gn5JWnyT3J+HFv5SXxX+03QZKZ6E8NyzAk8vln/ATIoLQoHgT1Nrlh4E9fslEMHoJLWJpC2pMEAVdjAEkPuT3AoHkuoJ0/5kW0Y6MLLsn46s+EoCsO3/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        with ESMTP id S234654AbiCCPrz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Mar 2022 10:47:55 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E071965D0
+        for <linux-iio@vger.kernel.org>; Thu,  3 Mar 2022 07:47:07 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id ay10so8489026wrb.6
+        for <linux-iio@vger.kernel.org>; Thu, 03 Mar 2022 07:47:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bfrU2c+z383bm0sIqVn4HDJdygjWBu6/Afy+14uwgAw=;
- b=jFel/Yaxuvan99G7NaAl9dWVFbSUGvbclQU8Yjqy87fZW6iG51jPej30oka5JyelTjdx0lquxoerlujOIkEi9k4TSwpqhIfKH8Cke+/pP8hXXbSZc9tuvbK5Phgs1wSkWATuiWOL7gMOZI90RK4vJ8/Ag/t6JrCfVWb5a2uqVkk=
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com (2603:10b6:510:122::7)
- by DM6PR03MB5148.namprd03.prod.outlook.com (2603:10b6:5:1e3::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Thu, 3 Mar
- 2022 14:53:34 +0000
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::dce:606f:6d26:c794]) by PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::dce:606f:6d26:c794%5]) with mapi id 15.20.5038.014; Thu, 3 Mar 2022
- 14:53:34 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: RE: [PATCH v3 3/3] iio: temperature: ltc2983: Make use of device
- properties
-Thread-Topic: [PATCH v3 3/3] iio: temperature: ltc2983: Make use of device
- properties
-Thread-Index: AQHYHoXV68rIrkrTnkK2YIykAkr2haytxoqwgAAJrICAAA9wkA==
-Date:   Thu, 3 Mar 2022 14:53:33 +0000
-Message-ID: <PH0PR03MB6786318C7588EE3842D2183A99049@PH0PR03MB6786.namprd03.prod.outlook.com>
-References: <20220210135522.26562-1-andriy.shevchenko@linux.intel.com>
- <20220210135522.26562-3-andriy.shevchenko@linux.intel.com>
- <PH0PR03MB6786304A458CD4B11AF5C42699049@PH0PR03MB6786.namprd03.prod.outlook.com>
- <YiDJTZECF9FHFIS4@smile.fi.intel.com>
-In-Reply-To: <YiDJTZECF9FHFIS4@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
- =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctYjBlNTQ3MDMtOWIwMS0xMWVjLThiYzctZTRiOT?=
- =?iso-8859-1?Q?dhN2NjNzEwXGFtZS10ZXN0XGIwZTU0NzA1LTliMDEtMTFlYy04YmM3LWU0?=
- =?iso-8859-1?Q?Yjk3YTdjYzcxMGJvZHkudHh0IiBzej0iMjMxOCIgdD0iMTMyOTA3OTI4MT?=
- =?iso-8859-1?Q?E2ODYyNDA1IiBoPSJleWVVRHlvc01XeGczZHl3VlBiL1llVzFJVnM9IiBp?=
- =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FFb0NBQURGSFQxekRpL1lBYmhocTVuTjgzaHh1R0dybWMzemVIRURBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVZJRXZvUUFBQUFBQUFBQUFBQUFBQUo0?=
- =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
- =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
- =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
- =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
- =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
- =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
- =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 155be5e1-86d5-4c54-a6d4-08d9fd259720
-x-ms-traffictypediagnostic: DM6PR03MB5148:EE_
-x-microsoft-antispam-prvs: <DM6PR03MB5148F882E5908AAC23457D5899049@DM6PR03MB5148.namprd03.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fPswIsT/64+eC7EeRkqIkC8L6CB4JovqGMPeU3LZUFMr7G7SdaTYYLFBIED3n8T/EOjuKW905d+x6/orTdSPawhHRyT/PRRnkKvsRmTxTRN4jXtLCpfFVwa4J1TFIbwvrdCKtywRlI1yerdP3uD3yPgGcN89WG/DIJRrJ+TarfDomdOlNBo4joBoz79xBh0sVgxFH5ZuSLYWX+XTURf2ol0FF7ejIUaXGFzyLtFX82C6VBqX0Bb+n/7q+UC2TJMldTOSsK6iJfokSOXz1z1E2tWL5iHt61WBAni9xMX79cLRQFJ6XkOlxn4ngHCAvCHIortBOH+9eXvOOGRU46yLGskpataGbVJGMQhvY5m4eSkeuWBjpZj5WizHoeITbCnRTSFDwP4W6TwfHnvdit5287uk5wjqDqHBkEEnIny6gHAOKHr5rqKSoIZeYC7UwGdqmYNjsoZ7mlyslobFS1OW/jUHyoylP/KkLS8OXsDe+tHumXaWmRsisn0c5HQ9TicmnB4bOvJj3ZkYF1wigNrqcckO91L7XyqbmJ5xGRup+sE9aCccJyr/cVX28j8yxmnhl2z+ExymlPHISUlllc7exxcizyo+b7QsDmq1m51uQD6D9Tc5lzGuhTKmYuY94J78mNCgGxRp0OyM+DWNFXBgXnA6+SUXSoLIm9ShpxuSn83h1pKA8ca4dK+c8x8ptxtazvIhObV0LP6Yye8OPsWDPQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6786.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(9686003)(7696005)(6506007)(83380400001)(26005)(71200400001)(53546011)(186003)(2906002)(8936002)(4326008)(5660300002)(8676002)(76116006)(66446008)(66946007)(66556008)(66476007)(64756008)(52536014)(38100700002)(316002)(38070700005)(508600001)(55016003)(122000001)(86362001)(33656002)(6916009)(54906003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?LC2YrcjU8PdQdWbe8w7MWr6i0iVHICwG71Vu6U2ma+u95bqvNjv9Yq7/Po?=
- =?iso-8859-1?Q?gjxWrscDMl5gMhPxIBF99kCjiqK1dQz8lKoiy20GiQ5eRp9GyOkaNfBaTF?=
- =?iso-8859-1?Q?JAzUuBQ511P+NSTTDbLiS/Eg5Rv7zmB9lRbpYpNJ3H9pgRupSsy3Jhm7T2?=
- =?iso-8859-1?Q?goxzRh8ckHKyHMKvKvJ713oRdJvx38UpgzSBnH4qdkZ4MpZWCdb4yJaoO9?=
- =?iso-8859-1?Q?y6RVb9r5glKewIXTl47uNHTtArP+gyDskqHmhkEM9hxfoq2n6AcZgpTr4H?=
- =?iso-8859-1?Q?/BVr03HwBpjPk44+rijwznekErqkxWQDFeSvWo0k0pzFvgpRClij3mnth8?=
- =?iso-8859-1?Q?meCCOcCo6kerdkQ6/V3HD8XQKVRJ5wxJGToWoLqwNl2X5QYaDKb59WNwBm?=
- =?iso-8859-1?Q?XVOFUSQLKGf+kObwiAQpqcEPvuUIoSAo/2wDcgkmbfkkSPKh+WrvGYtmlZ?=
- =?iso-8859-1?Q?nZUjnVPH1FABaj107w7EezlCTsq/YV4nhsS4osKiMB+Z4h9ba9cvC2rRoK?=
- =?iso-8859-1?Q?lpkDhCoERgj9vRBGBXiU8GwN7ENmOsT6ntHeUJHKw7Dd1/X5NJQtv8f+9e?=
- =?iso-8859-1?Q?0cBdkFD1ukj6Mrj2nu78Md96FWBrg+uszuSf8tkZaFE/AjNDydEOLugz/G?=
- =?iso-8859-1?Q?7F0ojnjdVUJGa2MCec6LE2wL232H6dThFFSvqq/ypEmxeJpj6YU3r4Qs88?=
- =?iso-8859-1?Q?jgPNFx/iLSCw5CFd9p3OW6p8Y4a+AeQeB9U/VrruJyIpL5/HdiNCYnBD+4?=
- =?iso-8859-1?Q?G3lEG9KVK8rxIuBU5n9thIw0nTfcz5dwiPZwEkCERKLmatIlyETe38r9pn?=
- =?iso-8859-1?Q?7yk6tAtILBSA7E08NzvQK8v5P+EcgOEoroCV72MW7F6k6ZH18qJneC+jBh?=
- =?iso-8859-1?Q?8iZIUwhNN9S0l1hIfQxJeIusMlnjv8N2NblkuSfjGUIoy2rrfGAcyAIQ2l?=
- =?iso-8859-1?Q?uDZwW+NwdEsjUyUlQNdZgvkvmLBuusqZjnEY+nHFAw5vupdfYUdBUhwLxs?=
- =?iso-8859-1?Q?+UoEza0U//bvQFRtjwqZhtxFADVow14O7V8GkYWSOoMGWNaqnehLuvaADB?=
- =?iso-8859-1?Q?KJUE+UR9amUXkGLMWjtr0qhJSHl+8g/Q0bwml03Vpqrt1q/Ogscvp4BFo8?=
- =?iso-8859-1?Q?0Vi0Ox+fkxhWnt/OxHYpZVsM3ccz/YQ6Vu+yR8+1TnJqFL9QDFvnpnqqy9?=
- =?iso-8859-1?Q?3Kb9hnbzY38IVlARKJWZy8E64bSD/baQ3tHLFTa+HIyrOa61yPiVZpmO2y?=
- =?iso-8859-1?Q?YsIFBLQcvqf7CkM7sonA6tGhNPQkY74PlT/WeVNO/V7LtgNoV2h3wiMXNq?=
- =?iso-8859-1?Q?QN0rRll7SudBDEEZdyVyK2zMTHS6CFgl9cayOEeP0nsrWXGNVfo066jp+f?=
- =?iso-8859-1?Q?uP/gKgUER8AIPZiAWjvbzXS0+CaKXmask6Dd9FqX15GSHwj8hbjLJBJLkT?=
- =?iso-8859-1?Q?eWK0wPC/FVKF0WcIvrr1/JmX00mdxT1+ZiiHZOJFAS8WuZtg8EI9e3oujL?=
- =?iso-8859-1?Q?8h2etl6nxpN1+Y7n2t8XLXaw2lngJXifrMvEPjkCaCm3hp7EBetwtUx9lW?=
- =?iso-8859-1?Q?5dNVnjBgU4nn/Pdqks0umbmbMLsJgjSARXRx/ncHzXmOPOj4geSY6STOaP?=
- =?iso-8859-1?Q?8jANT1XY3COhDz8mWonToDFDtiCbVI21/5faZ4yDRwIgB2/wcrEHqAKg?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=8QwKOhFud2g5oV4HciSOBS0UdaFxVmP/mNsx4Aic93w=;
+        b=E94mxyznvWB9/76gLrfp6k3hjQ/M7wibawYx0sx2lG2nD/CaZcoKmMpQZBZPEJcxhA
+         HsNPKsf7lUPM0nEHH67TbH6miisrmYLnrjSauv0Y4zLamIpbclc/RfKQ+6Jt3T4JyquO
+         XBlveXfDZXOa+KhBUKSbSBJo+6xzlHAsw1AKZMOadfSNAlRIargVvOEatP6wEPcVz3C5
+         IuJI21RrSNCvALyY+TJ+ugzTld+aNO2kQdYD4ZWv9UI7F/CQkBRhsJt+iPgbA8Zmn5gA
+         YiHEozFrbBvQAJ2fNAAhkDXF9wvYu2S6pore8k2eheU7Zw1aOtWr8lN2rbEGmIzMLuBS
+         UG7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=8QwKOhFud2g5oV4HciSOBS0UdaFxVmP/mNsx4Aic93w=;
+        b=ykWTVp3xZuimeZno2UOBJMrjH2xLEDsaGnLwOJntyV4rWxDKcjrrHPyoyGn+N4UpUE
+         Mer61hPvAzGCG1KaYErOhYGfTtY8CTIxVKCj4K13eahfjzz2guGXBvHZMMH5FQE1f1+K
+         7rcXGdW2J54nZy9FrHx91ObRhGACCmhhkfgEUuF1UF6e4kCSZLj4TassRXwjda03Ryd8
+         ocQVRaxxjR+Yi3Gda0F9HqG0QXBr5blXO846355atgPJRYHaqNQIqd8ZsmqX/85dkJDf
+         T4RUr7sxyToop6nOdmp5nAPlOG9jYzW5zgysr8by6+Zph9mI6Nk+sjcUo0oBYHG4iRnu
+         sXIQ==
+X-Gm-Message-State: AOAM531dMbetROyvaL3BnNXctqSJPri0SAfU7PzVkLcqRQR8UwxSDuDo
+        99/VZN8+dJjci/kghaMRtmHLGA==
+X-Google-Smtp-Source: ABdhPJxkWgphUD8GPXcpQFr+v7B1rbuRSj9RDSVs7a0Thy+NSOhfY+Fb7pfuSWuLX7pTzf8WSWEayQ==
+X-Received: by 2002:adf:e104:0:b0:1ed:c11f:4ef with SMTP id t4-20020adfe104000000b001edc11f04efmr26455228wrz.410.1646322425843;
+        Thu, 03 Mar 2022 07:47:05 -0800 (PST)
+Received: from [192.168.0.30] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
+        by smtp.gmail.com with ESMTPSA id h17-20020a05600c351100b00381807bd920sm2772842wmq.28.2022.03.03.07.47.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Mar 2022 07:47:05 -0800 (PST)
+Message-ID: <52fccc04-01f9-50ea-e693-5133f169c25d@linaro.org>
+Date:   Thu, 3 Mar 2022 15:47:04 +0000
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6786.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 155be5e1-86d5-4c54-a6d4-08d9fd259720
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Mar 2022 14:53:33.9815
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +zk7E59E2/aOcOaiBXU3jkObms0Bvk3kDTFpjPyT7GlzRvxfDxrXtwA61+fVMb58Up/pjn7COYw9bT12dralRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5148
-X-Proofpoint-GUID: oT6DWOyvFWJprpgYZgJXGTy6eW1jGtET
-X-Proofpoint-ORIG-GUID: oT6DWOyvFWJprpgYZgJXGTy6eW1jGtET
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-03_07,2022-02-26_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2203030071
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v9 5/9] iio: adc: qcom-spmi-rradc: introduce round robin
+ adc
+Content-Language: en-US
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org
+References: <20220303040035.1454103-1-caleb.connolly@linaro.org>
+ <20220303040035.1454103-6-caleb.connolly@linaro.org>
+ <20220303143358.GK12451@workstation>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20220303143358.GK12451@workstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -167,65 +86,1097 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-> -----Original Message-----
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Sent: Thursday, March 3, 2022 2:58 PM
-> To: Sa, Nuno <Nuno.Sa@analog.com>
-> Cc: linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org; Jonathan
-> Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@metafoo.de>
-> Subject: Re: [PATCH v3 3/3] iio: temperature: ltc2983: Make use of
-> device properties
->=20
-> [External]
->=20
-> On Thu, Mar 03, 2022 at 01:31:56PM +0000, Sa, Nuno wrote:
-> > Hi Andy,
-> >
-> > Good that we waited to test this patch. The fundamental logic
-> change
-> > for fetching and writing the custom tables are fine. That said, there
-> > some issues that I had to fix to test the patch. See below...
->=20
-> Thanks and indeed it's a good news that we caught a bug beforehand.
->=20
-> > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Sent: Thursday, February 10, 2022 2:55 PM
->=20
-> ...
->=20
-> > > -	phandle =3D of_parse_phandle(child, "adi,cold-junction-handle",
-> > > 0);
-> > > -	if (phandle) {
-> > > -		ret =3D of_property_read_u32(phandle, "reg",
-> > > -					   &thermo-
-> > > >cold_junction_chan);
-> > > +	ref =3D fwnode_find_reference(child, "adi,cold-junction-
-> > > handle", 0);
-> > > +	if (ref) {
-> >
-> > This is nok. It needs to be 'if (IS_ERR(ref))'. We then should return
-> > ERR_CAST() in case of errors inside the if block. As this reference
-> > is also optional, we need to nullify ref in case we don't find the
-> > it. Otherwise fwnode_handle_put() breaks.
->=20
-> Got it (I hope).
-> Lemme go through it again and issue a v4.
->=20
-> > We also need to use ptr error logic in the other places where
-> > fwnode_find_reference() is used. Although, in the other cases
-> > the ref is mandatory, so there's no need to care with breaking
-> > fwnode_handle_put().
-> >
-> > After these changes (I think the changes are straight enough;
-> > but I can re-test if you or Jonathan ask for it):
-> >
-> > Tested-by: Nuno S=E1 <nuno.sa@analog.com>
->=20
-> I think of v4 where I may add this, but still would be nice to re-review
-> and
-> check if I got correctly your testing report.
+On 03/03/2022 14:33, Manivannan Sadhasivam wrote:
+> On Thu, Mar 03, 2022 at 04:00:31AM +0000, Caleb Connolly wrote:
+>> The Round Robin ADC is responsible for reading data about the rate of
+>> charge from the USB or DC input ports, it can also read the battery
+>> ID (resistence), skin temperature and the die temperature of the pmic.
+>> It is found on the PMI8998 and PM660 Qualcomm PMICs.
+>>
+>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+>> ---
+>>   drivers/iio/adc/Kconfig           |   12 +
+>>   drivers/iio/adc/Makefile          |    1 +
+>>   drivers/iio/adc/qcom-spmi-rradc.c | 1020 +++++++++++++++++++++++++++++
+>>   3 files changed, 1033 insertions(+)
+>>   create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
+>>
+>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+>> index 4fdc8bfbb407..66557b434fa8 100644
+>> --- a/drivers/iio/adc/Kconfig
+>> +++ b/drivers/iio/adc/Kconfig
+>> @@ -812,6 +812,18 @@ config QCOM_PM8XXX_XOADC
+>>   	  To compile this driver as a module, choose M here: the module
+>>   	  will be called qcom-pm8xxx-xoadc.
+>>   
+>> +config QCOM_SPMI_RRADC
+>> +	tristate "Qualcomm SPMI RRADC"
+>> +	depends on MFD_SPMI_PMIC
+>> +	help
+>> +	  This is for the PMIC Round Robin ADC driver.
+>> +
+>> +	  This driver exposes the battery ID resistor, battery thermal, PMIC die
+>> +	  temperature, charger USB in and DC in voltage and current.
+>> +
+>> +	  To compile this driver as a module, choose M here: the module will
+>> +	  be called qcom-qpmi-rradc.
+>> +
+>>   config QCOM_SPMI_IADC
+>>   	tristate "Qualcomm SPMI PMIC current ADC"
+>>   	depends on SPMI
+>> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+>> index 4a8f1833993b..b0dd7f142abd 100644
+>> --- a/drivers/iio/adc/Makefile
+>> +++ b/drivers/iio/adc/Makefile
+>> @@ -77,6 +77,7 @@ obj-$(CONFIG_NPCM_ADC) += npcm_adc.o
+>>   obj-$(CONFIG_PALMAS_GPADC) += palmas_gpadc.o
+>>   obj-$(CONFIG_QCOM_SPMI_ADC5) += qcom-spmi-adc5.o
+>>   obj-$(CONFIG_QCOM_SPMI_IADC) += qcom-spmi-iadc.o
+>> +obj-$(CONFIG_QCOM_SPMI_RRADC) += qcom-spmi-rradc.o
+>>   obj-$(CONFIG_QCOM_VADC_COMMON) += qcom-vadc-common.o
+>>   obj-$(CONFIG_QCOM_SPMI_VADC) += qcom-spmi-vadc.o
+>>   obj-$(CONFIG_QCOM_PM8XXX_XOADC) += qcom-pm8xxx-xoadc.o
+>> diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
+>> new file mode 100644
+>> index 000000000000..84a6b007ab8e
+>> --- /dev/null
+>> +++ b/drivers/iio/adc/qcom-spmi-rradc.c
+>> @@ -0,0 +1,1020 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (c) 2022 Linaro Limited.
+>> + *  Author: Caleb Connolly <caleb.connolly@linaro.org>
+> 
+Hi,
+> Just curious: Did you write this driver from scratch or inherited from
+> Qcom downstream? If it is the later, you should share the copyright with
+> Qcom/LF.
+Ah good point, I did originally port the downstream driver and there are a few 
+things left from that, I'll respin with corrected copyrights.
+> 
+> Thanks,
+> Mani
+> 
+>> + *
+>> + * This driver is for the Round Robin ADC found in the pmi8998 and pm660 PMICs.
+>> + */
+>> +
+>> +#include <linux/bitfield.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/math64.h>
+>> +#include <linux/module.h>
+>> +#include <linux/mod_devicetable.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/spmi.h>
+>> +#include <linux/types.h>
+>> +#include <linux/units.h>
+>> +
+>> +#include <asm/unaligned.h>
+>> +
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/iio/types.h>
+>> +
+>> +#include <soc/qcom/qcom-spmi-pmic.h>
+>> +
+>> +#define DRIVER_NAME "qcom-spmi-rradc"
+>> +
+>> +#define RR_ADC_EN_CTL 0x46
+>> +#define RR_ADC_SKIN_TEMP_LSB 0x50
+>> +#define RR_ADC_SKIN_TEMP_MSB 0x51
+>> +#define RR_ADC_CTL 0x52
+>> +#define RR_ADC_CTL_CONTINUOUS_SEL BIT(3)
+>> +#define RR_ADC_LOG 0x53
+>> +#define RR_ADC_LOG_CLR_CTRL BIT(0)
+>> +
+>> +#define RR_ADC_FAKE_BATT_LOW_LSB 0x58
+>> +#define RR_ADC_FAKE_BATT_LOW_MSB 0x59
+>> +#define RR_ADC_FAKE_BATT_HIGH_LSB 0x5A
+>> +#define RR_ADC_FAKE_BATT_HIGH_MSB 0x5B
+>> +
+>> +#define RR_ADC_BATT_ID_CTRL 0x60
+>> +#define RR_ADC_BATT_ID_CTRL_CHANNEL_CONV BIT(0)
+>> +#define RR_ADC_BATT_ID_TRIGGER 0x61
+>> +#define RR_ADC_BATT_ID_STS 0x62
+>> +#define RR_ADC_BATT_ID_CFG 0x63
+>> +#define BATT_ID_SETTLE_MASK GENMASK(7, 5)
+>> +#define RR_ADC_BATT_ID_5_LSB 0x66
+>> +#define RR_ADC_BATT_ID_5_MSB 0x67
+>> +#define RR_ADC_BATT_ID_15_LSB 0x68
+>> +#define RR_ADC_BATT_ID_15_MSB 0x69
+>> +#define RR_ADC_BATT_ID_150_LSB 0x6A
+>> +#define RR_ADC_BATT_ID_150_MSB 0x6B
+>> +
+>> +#define RR_ADC_BATT_THERM_CTRL 0x70
+>> +#define RR_ADC_BATT_THERM_TRIGGER 0x71
+>> +#define RR_ADC_BATT_THERM_STS 0x72
+>> +#define RR_ADC_BATT_THERM_CFG 0x73
+>> +#define RR_ADC_BATT_THERM_LSB 0x74
+>> +#define RR_ADC_BATT_THERM_MSB 0x75
+>> +#define RR_ADC_BATT_THERM_FREQ 0x76
+>> +
+>> +#define RR_ADC_AUX_THERM_CTRL 0x80
+>> +#define RR_ADC_AUX_THERM_TRIGGER 0x81
+>> +#define RR_ADC_AUX_THERM_STS 0x82
+>> +#define RR_ADC_AUX_THERM_CFG 0x83
+>> +#define RR_ADC_AUX_THERM_LSB 0x84
+>> +#define RR_ADC_AUX_THERM_MSB 0x85
+>> +
+>> +#define RR_ADC_SKIN_HOT 0x86
+>> +#define RR_ADC_SKIN_TOO_HOT 0x87
+>> +
+>> +#define RR_ADC_AUX_THERM_C1 0x88
+>> +#define RR_ADC_AUX_THERM_C2 0x89
+>> +#define RR_ADC_AUX_THERM_C3 0x8A
+>> +#define RR_ADC_AUX_THERM_HALF_RANGE 0x8B
+>> +
+>> +#define RR_ADC_USB_IN_V_CTRL 0x90
+>> +#define RR_ADC_USB_IN_V_TRIGGER 0x91
+>> +#define RR_ADC_USB_IN_V_STS 0x92
+>> +#define RR_ADC_USB_IN_V_LSB 0x94
+>> +#define RR_ADC_USB_IN_V_MSB 0x95
+>> +#define RR_ADC_USB_IN_I_CTRL 0x98
+>> +#define RR_ADC_USB_IN_I_TRIGGER 0x99
+>> +#define RR_ADC_USB_IN_I_STS 0x9A
+>> +#define RR_ADC_USB_IN_I_LSB 0x9C
+>> +#define RR_ADC_USB_IN_I_MSB 0x9D
+>> +
+>> +#define RR_ADC_DC_IN_V_CTRL 0xA0
+>> +#define RR_ADC_DC_IN_V_TRIGGER 0xA1
+>> +#define RR_ADC_DC_IN_V_STS 0xA2
+>> +#define RR_ADC_DC_IN_V_LSB 0xA4
+>> +#define RR_ADC_DC_IN_V_MSB 0xA5
+>> +#define RR_ADC_DC_IN_I_CTRL 0xA8
+>> +#define RR_ADC_DC_IN_I_TRIGGER 0xA9
+>> +#define RR_ADC_DC_IN_I_STS 0xAA
+>> +#define RR_ADC_DC_IN_I_LSB 0xAC
+>> +#define RR_ADC_DC_IN_I_MSB 0xAD
+>> +
+>> +#define RR_ADC_PMI_DIE_TEMP_CTRL 0xB0
+>> +#define RR_ADC_PMI_DIE_TEMP_TRIGGER 0xB1
+>> +#define RR_ADC_PMI_DIE_TEMP_STS 0xB2
+>> +#define RR_ADC_PMI_DIE_TEMP_CFG 0xB3
+>> +#define RR_ADC_PMI_DIE_TEMP_LSB 0xB4
+>> +#define RR_ADC_PMI_DIE_TEMP_MSB 0xB5
+>> +
+>> +#define RR_ADC_CHARGER_TEMP_CTRL 0xB8
+>> +#define RR_ADC_CHARGER_TEMP_TRIGGER 0xB9
+>> +#define RR_ADC_CHARGER_TEMP_STS 0xBA
+>> +#define RR_ADC_CHARGER_TEMP_CFG 0xBB
+>> +#define RR_ADC_CHARGER_TEMP_LSB 0xBC
+>> +#define RR_ADC_CHARGER_TEMP_MSB 0xBD
+>> +#define RR_ADC_CHARGER_HOT 0xBE
+>> +#define RR_ADC_CHARGER_TOO_HOT 0xBF
+>> +
+>> +#define RR_ADC_GPIO_CTRL 0xC0
+>> +#define RR_ADC_GPIO_TRIGGER 0xC1
+>> +#define RR_ADC_GPIO_STS 0xC2
+>> +#define RR_ADC_GPIO_LSB 0xC4
+>> +#define RR_ADC_GPIO_MSB 0xC5
+>> +
+>> +#define RR_ADC_ATEST_CTRL 0xC8
+>> +#define RR_ADC_ATEST_TRIGGER 0xC9
+>> +#define RR_ADC_ATEST_STS 0xCA
+>> +#define RR_ADC_ATEST_LSB 0xCC
+>> +#define RR_ADC_ATEST_MSB 0xCD
+>> +#define RR_ADC_SEC_ACCESS 0xD0
+>> +
+>> +#define RR_ADC_PERPH_RESET_CTL2 0xD9
+>> +#define RR_ADC_PERPH_RESET_CTL3 0xDA
+>> +#define RR_ADC_PERPH_RESET_CTL4 0xDB
+>> +#define RR_ADC_INT_TEST1 0xE0
+>> +#define RR_ADC_INT_TEST_VAL 0xE1
+>> +
+>> +#define RR_ADC_TM_TRIGGER_CTRLS 0xE2
+>> +#define RR_ADC_TM_ADC_CTRLS 0xE3
+>> +#define RR_ADC_TM_CNL_CTRL 0xE4
+>> +#define RR_ADC_TM_BATT_ID_CTRL 0xE5
+>> +#define RR_ADC_TM_THERM_CTRL 0xE6
+>> +#define RR_ADC_TM_CONV_STS 0xE7
+>> +#define RR_ADC_TM_ADC_READ_LSB 0xE8
+>> +#define RR_ADC_TM_ADC_READ_MSB 0xE9
+>> +#define RR_ADC_TM_ATEST_MUX_1 0xEA
+>> +#define RR_ADC_TM_ATEST_MUX_2 0xEB
+>> +#define RR_ADC_TM_REFERENCES 0xED
+>> +#define RR_ADC_TM_MISC_CTL 0xEE
+>> +#define RR_ADC_TM_RR_CTRL 0xEF
+>> +
+>> +#define RR_ADC_TRIGGER_EVERY_CYCLE BIT(7)
+>> +#define RR_ADC_TRIGGER_CTL BIT(0)
+>> +
+>> +#define RR_ADC_BATT_ID_RANGE 820
+>> +
+>> +#define RR_ADC_BITS 10
+>> +#define RR_ADC_CHAN_MSB (1 << RR_ADC_BITS)
+>> +#define RR_ADC_FS_VOLTAGE_MV 2500
+>> +
+>> +/* BATT_THERM 0.25K/LSB */
+>> +#define RR_ADC_BATT_THERM_LSB_K 4
+>> +
+>> +#define RR_ADC_TEMP_FS_VOLTAGE_NUM 5000000
+>> +#define RR_ADC_TEMP_FS_VOLTAGE_DEN 3
+>> +#define RR_ADC_DIE_TEMP_OFFSET 601400
+>> +#define RR_ADC_DIE_TEMP_SLOPE 2
+>> +#define RR_ADC_DIE_TEMP_OFFSET_MILLI_DEGC 25000
+>> +
+>> +#define RR_ADC_CHG_TEMP_GF_OFFSET_UV 1303168
+>> +#define RR_ADC_CHG_TEMP_GF_SLOPE_UV_PER_C 3784
+>> +#define RR_ADC_CHG_TEMP_SMIC_OFFSET_UV 1338433
+>> +#define RR_ADC_CHG_TEMP_SMIC_SLOPE_UV_PER_C 3655
+>> +#define RR_ADC_CHG_TEMP_660_GF_OFFSET_UV 1309001
+>> +#define RR_ADC_CHG_TEMP_660_GF_SLOPE_UV_PER_C 3403
+>> +#define RR_ADC_CHG_TEMP_660_SMIC_OFFSET_UV 1295898
+>> +#define RR_ADC_CHG_TEMP_660_SMIC_SLOPE_UV_PER_C 3596
+>> +#define RR_ADC_CHG_TEMP_660_MGNA_OFFSET_UV 1314779
+>> +#define RR_ADC_CHG_TEMP_660_MGNA_SLOPE_UV_PER_C 3496
+>> +#define RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC 25000
+>> +#define RR_ADC_CHG_THRESHOLD_SCALE 4
+>> +
+>> +#define RR_ADC_VOLT_INPUT_FACTOR 8
+>> +#define RR_ADC_CURR_INPUT_FACTOR 2000
+>> +#define RR_ADC_CURR_USBIN_INPUT_FACTOR_MIL 1886
+>> +#define RR_ADC_CURR_USBIN_660_FACTOR_MIL 9
+>> +#define RR_ADC_CURR_USBIN_660_UV_VAL 579500
+>> +
+>> +#define RR_ADC_GPIO_FS_RANGE 5000
+>> +#define RR_ADC_COHERENT_CHECK_RETRY 5
+>> +#define RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN 16
+>> +
+>> +#define RR_ADC_STS_CHANNEL_READING_MASK GENMASK(1, 0)
+>> +#define RR_ADC_STS_CHANNEL_STS BIT(1)
+>> +
+>> +#define RR_ADC_TP_REV_VERSION1 21
+>> +#define RR_ADC_TP_REV_VERSION2 29
+>> +#define RR_ADC_TP_REV_VERSION3 32
+>> +
+>> +#define RRADC_BATT_ID_DELAY_MAX 8
+>> +
+>> +enum rradc_channel_id {
+>> +	RR_ADC_BATT_ID = 0,
+>> +	RR_ADC_BATT_THERM,
+>> +	RR_ADC_SKIN_TEMP,
+>> +	RR_ADC_USBIN_I,
+>> +	RR_ADC_USBIN_V,
+>> +	RR_ADC_DCIN_I,
+>> +	RR_ADC_DCIN_V,
+>> +	RR_ADC_DIE_TEMP,
+>> +	RR_ADC_CHG_TEMP,
+>> +	RR_ADC_GPIO,
+>> +	RR_ADC_CHAN_MAX
+>> +};
+>> +
+>> +struct rradc_chip;
+>> +
+>> +/**
+>> + * struct rradc_channel - rradc channel data
+>> + * @label:		channel label
+>> + * @lsb:		Channel least significant byte
+>> + * @status:		Channel status address
+>> + * @size:		number of bytes to read
+>> + * @trigger_addr:	Trigger address, trigger is only used on some channels
+>> + * @trigger_mask:	Trigger mask
+>> + * @scale_fn:		Post process callback for channels which can't be exposed
+>> + *			as offset + scale.
+>> + */
+>> +struct rradc_channel {
+>> +	const char *label;
+>> +	u8 lsb;
+>> +	u8 status;
+>> +	int size;
+>> +	int trigger_addr;
+>> +	int trigger_mask;
+>> +	int (*scale_fn)(struct rradc_chip *chip, u16 adc_code, int *result);
+>> +};
+>> +
+>> +struct rradc_chip {
+>> +	struct device *dev;
+>> +	const struct qcom_spmi_pmic *pmic;
+>> +	/*
+>> +	 * Lock held while doing channel conversion
+>> +	 * involving multiple register read/writes
+>> +	 */
+>> +	struct mutex conversion_lock;
+>> +	struct regmap *regmap;
+>> +	u32 base;
+>> +	int batt_id_delay;
+>> +	u16 batt_id_data;
+>> +};
+>> +
+>> +static const int batt_id_delays[] = { 0, 1, 4, 12, 20, 40, 60, 80 };
+>> +static const struct rradc_channel rradc_chans[RR_ADC_CHAN_MAX];
+>> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX];
+>> +
+>> +static int rradc_read(struct rradc_chip *chip, u16 addr, __le16 *buf, int len)
+>> +{
+>> +	int ret, retry_cnt = 0;
+>> +	__le16 data_check[RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN / 2];
+>> +
+>> +	if (len > RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN) {
+>> +		dev_err(chip->dev,
+>> +			"Can't read more than %d bytes, but asked to read %d bytes.\n",
+>> +			RR_ADC_CHAN_MAX_CONTINUOUS_BUFFER_LEN, len);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	while (retry_cnt < RR_ADC_COHERENT_CHECK_RETRY) {
+>> +		ret = regmap_bulk_read(chip->regmap, chip->base + addr, buf,
+>> +				       len);
+>> +		if (ret < 0) {
+>> +			dev_err(chip->dev, "rr_adc reg 0x%x failed :%d\n", addr,
+>> +				ret);
+>> +			return ret;
+>> +		}
+>> +
+>> +		ret = regmap_bulk_read(chip->regmap, chip->base + addr,
+>> +				       data_check, len);
+>> +		if (ret < 0) {
+>> +			dev_err(chip->dev, "rr_adc reg 0x%x failed :%d\n", addr,
+>> +				ret);
+>> +			return ret;
+>> +		}
+>> +
+>> +		if (memcmp(buf, data_check, len) != 0) {
+>> +			retry_cnt++;
+>> +			dev_dbg(chip->dev,
+>> +				"coherent read error, retry_cnt:%d\n",
+>> +				retry_cnt);
+>> +			continue;
+>> +		}
+>> +
+>> +		break;
+>> +	}
+>> +
+>> +	if (retry_cnt == RR_ADC_COHERENT_CHECK_RETRY)
+>> +		dev_err(chip->dev, "Retry exceeded for coherrency check\n");
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int rradc_get_fab_coeff(struct rradc_chip *chip, int64_t *offset,
+>> +			       int64_t *slope)
+>> +{
+>> +	if (chip->pmic->subtype == PM660_SUBTYPE) {
+>> +		switch (chip->pmic->fab_id) {
+>> +		case PM660_FAB_ID_GF:
+>> +			*offset = RR_ADC_CHG_TEMP_660_GF_OFFSET_UV;
+>> +			*slope = RR_ADC_CHG_TEMP_660_GF_SLOPE_UV_PER_C;
+>> +			return 0;
+>> +		case PM660_FAB_ID_TSMC:
+>> +			*offset = RR_ADC_CHG_TEMP_660_SMIC_OFFSET_UV;
+>> +			*slope = RR_ADC_CHG_TEMP_660_SMIC_SLOPE_UV_PER_C;
+>> +			return 0;
+>> +		default:
+>> +			*offset = RR_ADC_CHG_TEMP_660_MGNA_OFFSET_UV;
+>> +			*slope = RR_ADC_CHG_TEMP_660_MGNA_SLOPE_UV_PER_C;
+>> +		}
+>> +	} else if (chip->pmic->subtype == PMI8998_SUBTYPE) {
+>> +		switch (chip->pmic->fab_id) {
+>> +		case PMI8998_FAB_ID_GF:
+>> +			*offset = RR_ADC_CHG_TEMP_GF_OFFSET_UV;
+>> +			*slope = RR_ADC_CHG_TEMP_GF_SLOPE_UV_PER_C;
+>> +			return 0;
+>> +		case PMI8998_FAB_ID_SMIC:
+>> +			*offset = RR_ADC_CHG_TEMP_SMIC_OFFSET_UV;
+>> +			*slope = RR_ADC_CHG_TEMP_SMIC_SLOPE_UV_PER_C;
+>> +			return 0;
+>> +		default:
+>> +			return -EINVAL;
+>> +		}
+>> +	}
+>> +
+>> +	return -EINVAL;
+>> +}
+>> +
+>> +/*
+>> + * These functions explicitly cast int64_t to int.
+>> + * They will never overflow, as the values are small enough.
+>> + */
+>> +static int rradc_post_process_batt_id(struct rradc_chip *chip, u16 adc_code,
+>> +				      int *result_ohms)
+>> +{
+>> +	uint32_t current_value;
+>> +	int64_t r_id;
+>> +
+>> +	current_value = chip->batt_id_data;
+>> +	r_id = ((int64_t)adc_code * RR_ADC_FS_VOLTAGE_MV);
+>> +	r_id = div64_s64(r_id, (RR_ADC_CHAN_MSB * current_value));
+>> +	*result_ohms = (int)(r_id * MILLI);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int rradc_enable_continuous_mode(struct rradc_chip *chip)
+>> +{
+>> +	int ret;
+>> +
+>> +	/* Clear channel log */
+>> +	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_LOG,
+>> +				 RR_ADC_LOG_CLR_CTRL, RR_ADC_LOG_CLR_CTRL);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "log ctrl update to clear failed:%d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_LOG,
+>> +				 RR_ADC_LOG_CLR_CTRL, 0);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "log ctrl update to not clear failed:%d\n",
+>> +			ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	/* Switch to continuous mode */
+>> +	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_CTL,
+>> +				 RR_ADC_CTL_CONTINUOUS_SEL,
+>> +				 RR_ADC_CTL_CONTINUOUS_SEL);
+>> +	if (ret < 0)
+>> +		dev_err(chip->dev, "Update to continuous mode failed:%d\n",
+>> +			ret);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int rradc_disable_continuous_mode(struct rradc_chip *chip)
+>> +{
+>> +	int ret;
+>> +
+>> +	/* Switch to non continuous mode */
+>> +	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_CTL,
+>> +				 RR_ADC_CTL_CONTINUOUS_SEL, 0);
+>> +	if (ret < 0)
+>> +		dev_err(chip->dev, "Update to non-continuous mode failed:%d\n",
+>> +			ret);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static bool rradc_is_ready(struct rradc_chip *chip,
+>> +			   enum rradc_channel_id chan_address)
+>> +{
+>> +	const struct rradc_channel *chan = &rradc_chans[chan_address];
+>> +	int ret;
+>> +	unsigned int status, mask;
+>> +
+>> +	/* BATT_ID STS bit does not get set initially */
+>> +	switch (chan_address) {
+>> +	case RR_ADC_BATT_ID:
+>> +		mask = RR_ADC_STS_CHANNEL_STS;
+>> +		break;
+>> +	default:
+>> +		mask = RR_ADC_STS_CHANNEL_READING_MASK;
+>> +		break;
+>> +	}
+>> +
+>> +	ret = regmap_read(chip->regmap, chip->base + chan->status, &status);
+>> +	if (ret < 0 || !(status & mask))
+>> +		return false;
+>> +
+>> +	return true;
+>> +}
+>> +
+>> +static int rradc_read_status_in_cont_mode(struct rradc_chip *chip,
+>> +					  enum rradc_channel_id chan_address)
+>> +{
+>> +	const struct rradc_channel *chan = &rradc_chans[chan_address];
+>> +	const struct iio_chan_spec *iio_chan = &rradc_iio_chans[chan_address];
+>> +	int ret, i;
+>> +
+>> +	if (chan->trigger_mask == 0) {
+>> +		dev_err(chip->dev, "Channel doesn't have a trigger mask\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	ret = regmap_update_bits(chip->regmap, chip->base + chan->trigger_addr,
+>> +				 chan->trigger_mask, chan->trigger_mask);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev,
+>> +			"Failed to apply trigger for channel '%s' ret=%d\n",
+>> +			iio_chan->extend_name, ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = rradc_enable_continuous_mode(chip);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "Failed to switch to continuous mode\n");
+>> +		goto disable_trigger;
+>> +	}
+>> +
+>> +	/*
+>> +	 * The wait/sleep values were found through trial and error,
+>> +	 * this is mostly for the battery ID channel which takes some
+>> +	 * time to settle.
+>> +	 */
+>> +	for (i = 0; i < 5; i++) {
+>> +		if (rradc_is_ready(chip, chan_address))
+>> +			break;
+>> +		usleep_range(50000, 50000 + 500);
+>> +	}
+>> +
+>> +	if (i == 5) {
+>> +		dev_err(chip->dev, "Channel '%s' is not ready\n",
+>> +			iio_chan->extend_name);
+>> +		ret = -ETIMEDOUT;
+>> +	}
+>> +
+>> +	rradc_disable_continuous_mode(chip);
+>> +
+>> +disable_trigger:
+>> +	regmap_update_bits(chip->regmap, chip->base + chan->trigger_addr,
+>> +			   chan->trigger_mask, 0);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int rradc_prepare_batt_id_conversion(struct rradc_chip *chip,
+>> +					    enum rradc_channel_id chan_address,
+>> +					    u16 *data)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
+>> +				 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV,
+>> +				 RR_ADC_BATT_ID_CTRL_CHANNEL_CONV);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "Enabling BATT ID channel failed:%d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = regmap_update_bits(chip->regmap,
+>> +				 chip->base + RR_ADC_BATT_ID_TRIGGER,
+>> +				 RR_ADC_TRIGGER_CTL, RR_ADC_TRIGGER_CTL);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "BATT_ID trigger set failed:%d\n", ret);
+>> +		goto out_disable_batt_id;
+>> +	}
+>> +
+>> +	ret = rradc_read_status_in_cont_mode(chip, chan_address);
+>> +
+>> +	/* Reset registers back to default values */
+>> +	regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_TRIGGER,
+>> +			   RR_ADC_TRIGGER_CTL, 0);
+>> +
+>> +out_disable_batt_id:
+>> +	regmap_update_bits(chip->regmap, chip->base + RR_ADC_BATT_ID_CTRL,
+>> +			   RR_ADC_BATT_ID_CTRL_CHANNEL_CONV, 0);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int rradc_do_conversion(struct rradc_chip *chip,
+>> +			       enum rradc_channel_id chan_address, u16 *data)
+>> +{
+>> +	const struct rradc_channel *chan = &rradc_chans[chan_address];
+>> +	const struct iio_chan_spec *iio_chan = &rradc_iio_chans[chan_address];
+>> +	int ret;
+>> +	__le16 buf[3];
+>> +
+>> +	mutex_lock(&chip->conversion_lock);
+>> +
+>> +	switch (chan_address) {
+>> +	case RR_ADC_BATT_ID:
+>> +		ret = rradc_prepare_batt_id_conversion(chip, chan_address, data);
+>> +		if (ret < 0) {
+>> +			dev_err(chip->dev, "Battery ID conversion failed:%d\n",
+>> +				ret);
+>> +			goto unlock_out;
+>> +		}
+>> +		break;
+>> +
+>> +	case RR_ADC_USBIN_V:
+>> +	case RR_ADC_DIE_TEMP:
+>> +		ret = rradc_read_status_in_cont_mode(chip, chan_address);
+>> +		if (ret < 0) {
+>> +			dev_err(chip->dev,
+>> +				"Error reading in continuous mode:%d\n", ret);
+>> +			goto unlock_out;
+>> +		}
+>> +		break;
+>> +	default:
+>> +		if (!rradc_is_ready(chip, chan_address)) {
+>> +			/*
+>> +			 * Usually this means the channel isn't attached, for example
+>> +			 * the in_voltage_usbin_v_input channel will not be ready if
+>> +			 * no USB cable is attached
+>> +			 */
+>> +			dev_dbg(chip->dev, "channel '%s' is not ready\n",
+>> +				iio_chan->extend_name);
+>> +			ret = -ENODATA;
+>> +			goto unlock_out;
+>> +		}
+>> +		break;
+>> +	}
+>> +
+>> +	ret = rradc_read(chip, chan->lsb, buf, chan->size);
+>> +	if (ret) {
+>> +		dev_err(chip->dev, "read data failed\n");
+>> +		goto unlock_out;
+>> +	}
+>> +
+>> +	/*
+>> +	 * For the battery ID we read the register for every ID ADC and then
+>> +	 * see which one is actually connected.
+>> +	 */
+>> +	if (chan_address == RR_ADC_BATT_ID) {
+>> +		u16 batt_id_150 = le16_to_cpu(buf[2]);
+>> +		u16 batt_id_15 = le16_to_cpu(buf[1]);
+>> +		u16 batt_id_5 = le16_to_cpu(buf[0]);
+>> +
+>> +		if (!batt_id_150 && !batt_id_15 && !batt_id_5) {
+>> +			dev_err(chip->dev,
+>> +				"Invalid batt_id values with all zeros\n");
+>> +			ret = -EINVAL;
+>> +			goto unlock_out;
+>> +		}
+>> +
+>> +		if (batt_id_150 <= RR_ADC_BATT_ID_RANGE) {
+>> +			*data = batt_id_150;
+>> +			chip->batt_id_data = 150;
+>> +		} else if (batt_id_15 <= RR_ADC_BATT_ID_RANGE) {
+>> +			*data = batt_id_15;
+>> +			chip->batt_id_data = 15;
+>> +		} else {
+>> +			*data = batt_id_5;
+>> +			chip->batt_id_data = 5;
+>> +		}
+>> +	} else {
+>> +		/*
+>> +		 * All of the other channels are either 1 or 2 bytes.
+>> +		 * We can rely on the second byte being 0 for 1-byte channels.
+>> +		 */
+>> +		*data = le16_to_cpu(buf[0]);
+>> +	}
+>> +
+>> +unlock_out:
+>> +	mutex_unlock(&chip->conversion_lock);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int rradc_read_scale(struct rradc_chip *chip, int chan_address, int *val,
+>> +			    int *val2)
+>> +{
+>> +	int64_t fab_offset, fab_slope;
+>> +	int ret;
+>> +
+>> +	ret = rradc_get_fab_coeff(chip, &fab_offset, &fab_slope);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "Unable to get fab id coefficients\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	switch (chan_address) {
+>> +	case RR_ADC_SKIN_TEMP:
+>> +		*val = MILLI;
+>> +		*val2 = RR_ADC_BATT_THERM_LSB_K;
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case RR_ADC_USBIN_I:
+>> +		*val = RR_ADC_CURR_USBIN_INPUT_FACTOR_MIL *
+>> +		       RR_ADC_FS_VOLTAGE_MV;
+>> +		*val2 = RR_ADC_CHAN_MSB;
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case RR_ADC_DCIN_I:
+>> +		*val = RR_ADC_CURR_INPUT_FACTOR * RR_ADC_FS_VOLTAGE_MV;
+>> +		*val2 = RR_ADC_CHAN_MSB;
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case RR_ADC_USBIN_V:
+>> +	case RR_ADC_DCIN_V:
+>> +		*val = RR_ADC_VOLT_INPUT_FACTOR * RR_ADC_FS_VOLTAGE_MV * MILLI;
+>> +		*val2 = RR_ADC_CHAN_MSB;
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case RR_ADC_GPIO:
+>> +		*val = RR_ADC_GPIO_FS_RANGE;
+>> +		*val2 = RR_ADC_CHAN_MSB;
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case RR_ADC_CHG_TEMP:
+>> +		/*
+>> +		 * We divide val2 by MILLI instead of multiplying val
+>> +		 * to avoid an integer overflow.
+>> +		 */
+>> +		*val = -RR_ADC_TEMP_FS_VOLTAGE_NUM;
+>> +		*val2 = div64_s64(RR_ADC_TEMP_FS_VOLTAGE_DEN * RR_ADC_CHAN_MSB *
+>> +					  fab_slope,
+>> +				  MILLI);
+>> +
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case RR_ADC_DIE_TEMP:
+>> +		*val = RR_ADC_TEMP_FS_VOLTAGE_NUM;
+>> +		*val2 = RR_ADC_TEMP_FS_VOLTAGE_DEN * RR_ADC_CHAN_MSB *
+>> +			RR_ADC_DIE_TEMP_SLOPE;
+>> +
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static int rradc_read_offset(struct rradc_chip *chip, int chan_address, int *val)
+>> +{
+>> +	int64_t fab_offset, fab_slope;
+>> +	int64_t offset1, offset2;
+>> +	int ret;
+>> +
+>> +	switch (chan_address) {
+>> +	case RR_ADC_SKIN_TEMP:
+>> +		/*
+>> +		 * Offset from kelvin to degC, divided by the
+>> +		 * scale factor (250). We lose some precision here.
+>> +		 * 273150 / 250 = 1092.6
+>> +		 */
+>> +		*val = div64_s64(ABSOLUTE_ZERO_MILLICELSIUS,
+>> +				 (MILLI / RR_ADC_BATT_THERM_LSB_K));
+>> +		return IIO_VAL_INT;
+>> +	case RR_ADC_CHG_TEMP:
+>> +		ret = rradc_get_fab_coeff(chip, &fab_offset, &fab_slope);
+>> +		if (ret < 0) {
+>> +			dev_err(chip->dev,
+>> +				"Unable to get fab id coefficients\n");
+>> +			return -EINVAL;
+>> +		}
+>> +		offset1 = -(fab_offset * RR_ADC_TEMP_FS_VOLTAGE_DEN *
+>> +			    RR_ADC_CHAN_MSB);
+>> +		offset1 += (int64_t)RR_ADC_TEMP_FS_VOLTAGE_NUM / 2ULL;
+>> +		offset1 = div64_s64(offset1,
+>> +				    (int64_t)(RR_ADC_TEMP_FS_VOLTAGE_NUM));
+>> +
+>> +		offset2 = (int64_t)RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC *
+>> +			  RR_ADC_TEMP_FS_VOLTAGE_DEN * RR_ADC_CHAN_MSB *
+>> +			  (int64_t)fab_slope;
+>> +		offset2 += ((int64_t)MILLI * RR_ADC_TEMP_FS_VOLTAGE_NUM) / 2;
+>> +		offset2 = div64_s64(
+>> +			offset2, ((int64_t)MILLI * RR_ADC_TEMP_FS_VOLTAGE_NUM));
+>> +
+>> +		/*
+>> +		 * The -1 is to compensate for lost precision.
+>> +		 * It should actually be -0.7906976744186046.
+>> +		 * This works out to every value being off
+>> +		 * by about +0.091 degrees C after applying offset and scale.
+>> +		 */
+>> +		*val = (int)(offset1 - offset2 - 1);
+>> +		return IIO_VAL_INT;
+>> +	case RR_ADC_DIE_TEMP:
+>> +		offset1 = -RR_ADC_DIE_TEMP_OFFSET *
+>> +			  (int64_t)RR_ADC_TEMP_FS_VOLTAGE_DEN *
+>> +			  (int64_t)RR_ADC_CHAN_MSB;
+>> +		offset1 = div64_s64(offset1, RR_ADC_TEMP_FS_VOLTAGE_NUM);
+>> +
+>> +		offset2 = -(int64_t)RR_ADC_CHG_TEMP_OFFSET_MILLI_DEGC *
+>> +			  RR_ADC_TEMP_FS_VOLTAGE_DEN * RR_ADC_CHAN_MSB *
+>> +			  RR_ADC_DIE_TEMP_SLOPE;
+>> +		offset2 = div64_s64(offset2,
+>> +				    ((int64_t)RR_ADC_TEMP_FS_VOLTAGE_NUM));
+>> +
+>> +		/*
+>> +		 * The result is -339, it should be -338.69789, this results
+>> +		 * in the calculated die temp being off by
+>> +		 * -0.004 - -0.0175 degrees C
+>> +		 */
+>> +		*val = (int)(offset1 - offset2);
+>> +		return IIO_VAL_INT;
+>> +	default:
+>> +		break;
+>> +	}
+>> +	return -EINVAL;
+>> +}
+>> +
+>> +static int rradc_read_raw(struct iio_dev *indio_dev,
+>> +			  struct iio_chan_spec const *chan_spec, int *val,
+>> +			  int *val2, long mask)
+>> +{
+>> +	struct rradc_chip *chip = iio_priv(indio_dev);
+>> +	const struct rradc_channel *chan;
+>> +	int ret;
+>> +	u16 adc_code;
+>> +
+>> +	if (chan_spec->address >= RR_ADC_CHAN_MAX) {
+>> +		dev_err(chip->dev, "Invalid channel index:%lu\n",
+>> +			chan_spec->address);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		return rradc_read_scale(chip, chan_spec->address, val, val2);
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		return rradc_read_offset(chip, chan_spec->address, val);
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +
+>> +		*val = adc_code;
+>> +		return IIO_VAL_INT;
+>> +	case IIO_CHAN_INFO_PROCESSED:
+>> +		chan = &rradc_chans[chan_spec->address];
+>> +		if (!chan->scale_fn)
+>> +			return -EINVAL;
+>> +		ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +
+>> +		*val = chan->scale_fn(chip, adc_code, val);
+>> +		return IIO_VAL_INT;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static int rradc_read_label(struct iio_dev *indio_dev,
+>> +			    struct iio_chan_spec const *chan, char *label)
+>> +{
+>> +	return snprintf(label, PAGE_SIZE, "%s\n",
+>> +			rradc_chans[chan->address].label);
+>> +}
+>> +
+>> +static const struct iio_info rradc_info = {
+>> +	.read_raw = rradc_read_raw,
+>> +	.read_label = rradc_read_label,
+>> +};
+>> +
+>> +static const struct rradc_channel rradc_chans[RR_ADC_CHAN_MAX] = {
+>> +	{
+>> +		.label = "batt_id",
+>> +		.scale_fn = rradc_post_process_batt_id,
+>> +		.lsb = RR_ADC_BATT_ID_5_LSB,
+>> +		.status = RR_ADC_BATT_ID_STS,
+>> +		.size = 6,
+>> +		.trigger_addr = RR_ADC_BATT_ID_TRIGGER,
+>> +		.trigger_mask = BIT(0),
+>> +	}, {
+>> +		.label = "batt",
+>> +		.lsb = RR_ADC_BATT_THERM_LSB,
+>> +		.status = RR_ADC_BATT_THERM_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_BATT_THERM_TRIGGER,
+>> +	}, {
+>> +		.label = "pmi8998_skin",
+>> +		.lsb = RR_ADC_SKIN_TEMP_LSB,
+>> +		.status = RR_ADC_AUX_THERM_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_AUX_THERM_TRIGGER,
+>> +	}, {
+>> +		.label = "usbin_i",
+>> +		.lsb = RR_ADC_USB_IN_I_LSB,
+>> +		.status = RR_ADC_USB_IN_I_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_USB_IN_I_TRIGGER,
+>> +	}, {
+>> +		.label = "usbin_v",
+>> +		.lsb = RR_ADC_USB_IN_V_LSB,
+>> +		.status = RR_ADC_USB_IN_V_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_USB_IN_V_TRIGGER,
+>> +		.trigger_mask = BIT(7),
+>> +	}, {
+>> +		.label = "dcin_i",
+>> +		.lsb = RR_ADC_DC_IN_I_LSB,
+>> +		.status = RR_ADC_DC_IN_I_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_DC_IN_I_TRIGGER,
+>> +	}, {
+>> +		.label = "dcin_v",
+>> +		.lsb = RR_ADC_DC_IN_V_LSB,
+>> +		.status = RR_ADC_DC_IN_V_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_DC_IN_V_TRIGGER,
+>> +	}, {
+>> +		.label = "pmi8998_die",
+>> +		.lsb = RR_ADC_PMI_DIE_TEMP_LSB,
+>> +		.status = RR_ADC_PMI_DIE_TEMP_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_PMI_DIE_TEMP_TRIGGER,
+>> +		.trigger_mask = RR_ADC_TRIGGER_EVERY_CYCLE,
+>> +	}, {
+>> +		.label = "chg",
+>> +		.lsb = RR_ADC_CHARGER_TEMP_LSB,
+>> +		.status = RR_ADC_CHARGER_TEMP_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_CHARGER_TEMP_TRIGGER,
+>> +	}, {
+>> +		.label = "gpio",
+>> +		.lsb = RR_ADC_GPIO_LSB,
+>> +		.status = RR_ADC_GPIO_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_GPIO_TRIGGER,
+>> +	},
+>> +};
+>> +
+>> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX] = {
+>> +	{
+>> +		.type = IIO_RESISTANCE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>> +		.address = RR_ADC_BATT_ID,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>> +		.address = RR_ADC_BATT_THERM,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>> +				      BIT(IIO_CHAN_INFO_OFFSET),
+>> +		.address = RR_ADC_SKIN_TEMP,
+>> +		.channel = 1,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_CURRENT,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_USBIN_I,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_VOLTAGE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_USBIN_V,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_CURRENT,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_DCIN_I,
+>> +		.channel = 1,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_VOLTAGE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_DCIN_V,
+>> +		.channel = 1,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>> +				      BIT(IIO_CHAN_INFO_OFFSET),
+>> +		.address = RR_ADC_DIE_TEMP,
+>> +		.channel = 2,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_OFFSET) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_CHG_TEMP,
+>> +		.channel = 3,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_VOLTAGE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_GPIO,
+>> +		.channel = 2,
+>> +		.indexed = 1,
+>> +	},
+>> +};
+>> +
+>> +static int rradc_probe(struct platform_device *pdev)
+>> +{
+>> +	struct device *dev = &pdev->dev;
+>> +	struct iio_dev *indio_dev;
+>> +	struct rradc_chip *chip;
+>> +	int ret, i, batt_id_delay;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*chip));
+>> +	if (!indio_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	chip = iio_priv(indio_dev);
+>> +	chip->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+>> +	if (!chip->regmap) {
+>> +		dev_err(dev, "Couldn't get parent's regmap\n");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	chip->dev = dev;
+>> +	mutex_init(&chip->conversion_lock);
+>> +
+>> +	ret = device_property_read_u32(dev, "reg", &chip->base);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "Couldn't find reg address, ret = %d\n",
+>> +			ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	batt_id_delay = -1;
+>> +	ret = device_property_read_u32(dev, "qcom,batt-id-delay-ms",
+>> +				       &batt_id_delay);
+>> +	if (!ret) {
+>> +		for (i = 0; i < RRADC_BATT_ID_DELAY_MAX; i++) {
+>> +			if (batt_id_delay == batt_id_delays[i])
+>> +				break;
+>> +		}
+>> +		if (i == RRADC_BATT_ID_DELAY_MAX)
+>> +			batt_id_delay = -1;
+>> +	}
+>> +
+>> +	if (batt_id_delay >= 0) {
+>> +		batt_id_delay = FIELD_PREP(BATT_ID_SETTLE_MASK, batt_id_delay);
+>> +		ret = regmap_update_bits(chip->regmap,
+>> +					 chip->base + RR_ADC_BATT_ID_CFG,
+>> +					 batt_id_delay, batt_id_delay);
+>> +		if (ret < 0) {
+>> +			dev_err(chip->dev,
+>> +				"BATT_ID settling time config failed:%d\n",
+>> +				ret);
+>> +		}
+>> +	}
+>> +
+>> +	/* Get the PMIC revision, we need it to handle some varying coefficients */
+>> +	chip->pmic = qcom_pmic_get(chip->dev);
+>> +	if (IS_ERR(chip->pmic)) {
+>> +		dev_err(chip->dev, "Unable to get reference to PMIC device\n");
+>> +		return PTR_ERR(chip->pmic);
+>> +	}
+>> +
+>> +	switch (chip->pmic->subtype) {
+>> +	case PMI8998_SUBTYPE:
+>> +		indio_dev->name = "pmi8998-rradc";
+>> +		break;
+>> +	case PM660_SUBTYPE:
+>> +		indio_dev->name = "pm660-rradc";
+>> +		break;
+>> +	default:
+>> +		indio_dev->name = DRIVER_NAME;
+>> +		break;
+>> +	}
+>> +	indio_dev->modes = INDIO_DIRECT_MODE;
+>> +	indio_dev->info = &rradc_info;
+>> +	indio_dev->channels = rradc_iio_chans;
+>> +	indio_dev->num_channels = ARRAY_SIZE(rradc_iio_chans);
+>> +
+>> +	return devm_iio_device_register(dev, indio_dev);
+>> +}
+>> +
+>> +static const struct of_device_id rradc_match_table[] = {
+>> +	{ .compatible = "qcom,pm660-rradc" },
+>> +	{ .compatible = "qcom,pmi8998-rradc" },
+>> +	{}
+>> +};
+>> +MODULE_DEVICE_TABLE(of, rradc_match_table);
+>> +
+>> +static struct platform_driver rradc_driver = {
+>> +	.driver		= {
+>> +		.name		= DRIVER_NAME,
+>> +		.of_match_table	= rradc_match_table,
+>> +	},
+>> +	.probe = rradc_probe,
+>> +};
+>> +module_platform_driver(rradc_driver);
+>> +
+>> +MODULE_DESCRIPTION("QCOM SPMI PMIC RR ADC driver");
+>> +MODULE_AUTHOR("Caleb Connolly <caleb.connolly@linaro.org>");
+>> +MODULE_LICENSE("GPL v2");
+>> -- 
+>> 2.35.1
+>>
 
-No problem... I will leave the setup up and re-test v4...
-
-- Nuno S=E1
-
+-- 
+Kind Regards,
+Caleb (they/them)

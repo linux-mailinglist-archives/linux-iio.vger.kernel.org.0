@@ -2,169 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6354F4CB075
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Mar 2022 21:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 822B04CB48B
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 02:57:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234176AbiCBVAR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Mar 2022 16:00:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45514 "EHLO
+        id S231416AbiCCBph (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Mar 2022 20:45:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244957AbiCBVAP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 16:00:15 -0500
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B467DBD23
-        for <linux-iio@vger.kernel.org>; Wed,  2 Mar 2022 12:59:30 -0800 (PST)
-Received: by mail-pg1-x529.google.com with SMTP id t14so2673230pgr.3
-        for <linux-iio@vger.kernel.org>; Wed, 02 Mar 2022 12:59:30 -0800 (PST)
+        with ESMTP id S231444AbiCCBph (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 20:45:37 -0500
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E612D1B60BF;
+        Wed,  2 Mar 2022 17:44:52 -0800 (PST)
+Received: by mail-qt1-x82b.google.com with SMTP id n11so3396454qtk.8;
+        Wed, 02 Mar 2022 17:44:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=R/oQqieG0aXWXHs93Td97reRxAIjZoSgBmUtDJFVhjU=;
-        b=d2ZFN7FzXJICmnX4Tyt0wAx0nHny3V7g7RBF7BzoFi4JqvMjvTlFe6r9CSmtZHYpfY
-         sI7cCbacBhQSn0c2nYjk/wWGRSWn9quhJSSynH9lMYRKPPdVW/LYlF+HQ4F3tfS4GoN+
-         rfxT6gA9HHGJJFfNnOWheyqKpysRyPxkd0f8U=
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2lALShrG5RlRyQzYP8HYz1ltaWcC6YOSE434382jSik=;
+        b=AHfLukQ8L5IgWu3TtC+euDoaI8JMHRYW5pG/xAT+3Y2qagtp379mkmvHoEYmoS00Jd
+         6fNqA1u9CEjIJ1c61c9Td7ZNSeMxTXOD+inF0hP/5f5vsXLczw85UO/tJcUn/Totenqv
+         Y81ruuXldGJx9QoEf0ORVAK4L4zY8WjKROmxfUtfxrKugsG6d4W40v7kYKHB+sVkp1Ai
+         YLYA6wZtnPLV9jKKbq8SiMVbnWaHH7u/CAXNv8ql5lhcMxt4WvmNowS82X8LMSNaLpZP
+         hO4rhivJzemlBIYznVTjR81MgUcWpPLrDgNqnvSpxQw5pRK9t6w0etkTbiJKb8QfOfSK
+         xYMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=R/oQqieG0aXWXHs93Td97reRxAIjZoSgBmUtDJFVhjU=;
-        b=t0kGcDBt4YkDzYagDjbPmItal/dmFc2816PEjNSoDuoxIbdnLPSfUFgVAoyTGnvLhG
-         2Co3oN8kR294teDzJBgWJcuq5Uv+7XM/VBrrNbSeJi32D1S4KIe+mHHCbL1cvNWOVl/o
-         x3B1tSGq+Vi7dHtgaJsfisLM2zw+etvvexE6PdFdCohtlA1MecxbLddqFLKlZP1Dh5dK
-         2mjIKjS+UgtFmtKcoejrzkNtQsGb43reBSqiRqat6WEQg2VaZdodg/0DFis0qHp+DFkP
-         KZHaJMUid4MtAj99JZa1rnLRAEJBr8BvMIHwEU/l9L+R/dE4Xqmn45UtnbqWSwpbHa3J
-         3f6Q==
-X-Gm-Message-State: AOAM533xY0ZTzBqC9ne4ni8ykqehUZ2+TXGHPH8bnLrOvpI+Z9jGWhXH
-        3d9o9e64THXQ4lGFomMrO3CejA==
-X-Google-Smtp-Source: ABdhPJwV5Vftpu3BNFYOd1YAI3xcgBfQbmCq2DPnKYT59xnVma61vCMoUamoUdgwMbiUWTPibOctJw==
-X-Received: by 2002:a63:595e:0:b0:378:b203:a74e with SMTP id j30-20020a63595e000000b00378b203a74emr13280856pgm.328.1646254769698;
-        Wed, 02 Mar 2022 12:59:29 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z9-20020a655a49000000b00373459df190sm58337pgs.35.2022.03.02.12.59.29
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2lALShrG5RlRyQzYP8HYz1ltaWcC6YOSE434382jSik=;
+        b=a0kSMKji/5fyc67Iz37ok7lTi81mqQAfWzriORrpzUBXnqrxbRrGEvdcbyNZ8RpydW
+         qxn+YbqS62Hc5e/B9kiMYJqnsjxJwLiLibcV6dV1fu53bD4M1e7qxr8aReTtzRCK7kQ+
+         nrO45ea4SPYdBoTp6SLjn9j14jlbeKeuSO3WSWjtDcDcDLj7KTl3/90Zvs30kJv1kBYc
+         KMSzVl+mBZ5D9c+u6syhubDibGo2E+JkETqaYByNNr5Gm5XFTEKyLKKW9gjFzjWKrf/q
+         EAnqwtlSZgyKVQGfJHWlvUqxcYMRvyM7Mbpv1YTC2vzZ/ElYfHl6xcbS8LqUAc7ebULw
+         l65A==
+X-Gm-Message-State: AOAM533tVHIBKPjRLmbThwMtLyVdNV6u3kiswMHSAqEVlrtgyr72Aasc
+        t7K/h+Ih/7VS3MGoLSruBUY=
+X-Google-Smtp-Source: ABdhPJwjRZtpAMgc2peRXFSfN5eGwNeknli9RFBbBAeDq5oXMxbyUtWyHDb35n22lckGuwSdO92tdQ==
+X-Received: by 2002:ac8:5d49:0:b0:2df:f30e:3fb5 with SMTP id g9-20020ac85d49000000b002dff30e3fb5mr20254433qtx.118.1646271891942;
+        Wed, 02 Mar 2022 17:44:51 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id g202-20020a379dd3000000b0064932a7b992sm396739qke.98.2022.03.02.17.44.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Mar 2022 12:59:29 -0800 (PST)
-Date:   Wed, 2 Mar 2022 12:59:28 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        David Laight <David.Laight@aculab.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        KVM list <kvm@vger.kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>,
-        "linux1394-devel@lists.sourceforge.net" 
-        <linux1394-devel@lists.sourceforge.net>,
-        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "kgdb-bugreport@lists.sourceforge.net" 
-        <kgdb-bugreport@lists.sourceforge.net>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Arnd Bergman <arnd@arndb.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        intel-gfx <intel-gfx@lists.freedesktop.org>,
-        Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        dma <dmaengine@vger.kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        "v9fs-developer@lists.sourceforge.net" 
-        <v9fs-developer@lists.sourceforge.net>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        linux-block <linux-block@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux F2FS Dev Mailing List 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        "tipc-discussion@lists.sourceforge.net" 
-        <tipc-discussion@lists.sourceforge.net>,
-        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Message-ID: <202203021256.69D7C4BCA6@keescook>
-References: <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org>
- <73fa82a20910c06784be2352a655acc59e9942ea.camel@HansenPartnership.com>
- <CAHk-=wiT5HX6Kp0Qv4ZYK_rkq9t5fZ5zZ7vzvi6pub9kgp=72g@mail.gmail.com>
- <7dc860874d434d2288f36730d8ea3312@AcuMS.aculab.com>
- <CAHk-=whKqg89zu4T95+ctY-hocR6kDArpo2qO14-kV40Ga7ufw@mail.gmail.com>
- <0ced2b155b984882b39e895f0211037c@AcuMS.aculab.com>
- <CAHk-=wix0HLCBs5sxAeW3uckg0YncXbTjMsE-Tv8WzmkOgLAXQ@mail.gmail.com>
- <78ccb184-405e-da93-1e02-078f90d2b9bc@rasmusvillemoes.dk>
- <202203021158.DB5204A0@keescook>
- <CAHk-=wikKPC0LUqZ8++EC5JOvGdBqVH9uUaTX=DvBioDoReYww@mail.gmail.com>
+        Wed, 02 Mar 2022 17:44:51 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, tangbin@cmss.chinamobile.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] iio/adc: Use of_device_get_match_data()
+Date:   Thu,  3 Mar 2022 01:44:45 +0000
+Message-Id: <20220303014445.2059205-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wikKPC0LUqZ8++EC5JOvGdBqVH9uUaTX=DvBioDoReYww@mail.gmail.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 02, 2022 at 12:18:45PM -0800, Linus Torvalds wrote:
-> On Wed, Mar 2, 2022 at 12:07 PM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > I've long wanted to change kfree() to explicitly set pointers to NULL on
-> > free. https://github.com/KSPP/linux/issues/87
-> 
-> We've had this discussion with the gcc people in the past, and gcc
-> actually has some support for it, but it's sadly tied to the actual
-> function name (ie gcc has some special-casing for "free()")
-> 
-> See
-> 
->     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=94527
-> 
-> for some of that discussion.
-> 
-> Oh, and I see some patch actually got merged since I looked there last
-> so that you can mark "deallocator" functions, but I think it's only
-> for the context matching, not for actually killing accesses to the
-> pointer afterwards.
+From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 
-Ah! I missed that getting added in GCC 11. But yes, there it is:
+Use of_device_get_match_data() to simplify the code.
 
-https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-malloc-function-attribute
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+---
+ drivers/iio/adc/twl6030-gpadc.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Hah, now we may need to split __malloc from __alloc_size. ;)
-
-I'd still like the NULL assignment behavior, though, since some things
-can easily avoid static analysis.
-
+diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
+index afdb59e0b526..6a022e583658 100644
+--- a/drivers/iio/adc/twl6030-gpadc.c
++++ b/drivers/iio/adc/twl6030-gpadc.c
+@@ -867,16 +867,11 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct twl6030_gpadc_data *gpadc;
+ 	const struct twl6030_gpadc_platform_data *pdata;
+-	const struct of_device_id *match;
+ 	struct iio_dev *indio_dev;
+ 	int irq;
+ 	int ret;
+ 
+-	match = of_match_device(of_twl6030_match_tbl, dev);
+-	if (!match)
+-		return -EINVAL;
+-
+-	pdata = match->data;
++	pdata = of_device_get_match_data(dev);
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*gpadc));
+ 	if (!indio_dev)
 -- 
-Kees Cook
+2.25.1
+

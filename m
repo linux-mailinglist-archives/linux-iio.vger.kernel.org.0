@@ -2,102 +2,191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 587B74CB5BD
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 05:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A35B4CB616
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 05:58:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbiCCECJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Mar 2022 23:02:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34666 "EHLO
+        id S229687AbiCCE7R convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Wed, 2 Mar 2022 23:59:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbiCCECG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 23:02:06 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA5315D383
-        for <linux-iio@vger.kernel.org>; Wed,  2 Mar 2022 20:01:20 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id d3so5815125wrf.1
-        for <linux-iio@vger.kernel.org>; Wed, 02 Mar 2022 20:01:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=60je+LDflCDSpm+PbhIAk73PJa9MombVHWRyiPaaQWE=;
-        b=I3qxxz85al0m2aBaXC6vxy5UEDUoBFOSzUamys/rReJRoyPeqfE2Jc/KRBomSVpbkt
-         qltfmZL8xs6FPoCoXCjx/7AHs277KmY+sQNZayHiuFRgQlNune/Ak1cDuqsmlMf4ldVk
-         N6+WC/iCNcvETgn170kXJRIlQ8sh7asywFEKOdxGTmJan9fFzwil4Kgz6Tez/KcywABW
-         OO/UUTbqPj3dmNeautr104Wchu4T26dIz1JnCU2W9kgwBhXqWcGFk3k4E8dMK3SW26M7
-         CV2Q0R/Pdk+twTM/TPXC0nLwUxXF/tx36PVSU1zF4kB5nMu/wYZECJ6abUVhgR5PsiR9
-         7qRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=60je+LDflCDSpm+PbhIAk73PJa9MombVHWRyiPaaQWE=;
-        b=Uu0JIziMJZjfzqb/BMr7bnqh/sp1WJ+uBLtQtxIgb73uZkTu191qxcw2SfC7sW+wyF
-         EiEDUipOzy0HOMAXeSapxc6f8tLbJANJSFKslGk/hC6KwKdTPWsApfCpMGVy5q2Pka4o
-         Cf24h3rALll2KJYIZfg5kePVgoFgAky5i2O1BiX1aTSIbSdYVbdx1lWcZwAORSpNPB8b
-         Djgd5TWXuUjQiViXInDD9ob2Re1CBc9LEPWZ0VYdY9KuSp63GERM8e/4m3EHul8eaiNq
-         1bA9PEamkoQZX/5Jov5YUNeiUaGaPcgOaUM62Gezst3W+UKeQ3Nfi5NKaJUKQECtHmwT
-         3cGA==
-X-Gm-Message-State: AOAM532d45UQ1hIwK23qR2BQp6QYcRcbhrO446gv0RQCvrR6j+pomGA8
-        BnyFqiImUU497Wjkqf0LYUftEg==
-X-Google-Smtp-Source: ABdhPJw4NrOABHxHCKYkrUqE1KPhGPpoKXJntO/K+tcGQy6+YNNtIadVdWh5FAreD+KqOOdpAhKPig==
-X-Received: by 2002:adf:90c1:0:b0:1e4:ad27:22b9 with SMTP id i59-20020adf90c1000000b001e4ad2722b9mr25047757wri.219.1646280079463;
-        Wed, 02 Mar 2022 20:01:19 -0800 (PST)
-Received: from localhost.localdomain (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id r16-20020a5d4e50000000b001f0075f4ca1sm702615wrt.105.2022.03.02.20.01.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Mar 2022 20:01:19 -0800 (PST)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc:     sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        john.stultz@linaro.org
-Subject: [PATCH v9 9/9] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable rradc
-Date:   Thu,  3 Mar 2022 04:00:35 +0000
-Message-Id: <20220303040035.1454103-10-caleb.connolly@linaro.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220303040035.1454103-1-caleb.connolly@linaro.org>
-References: <20220303040035.1454103-1-caleb.connolly@linaro.org>
+        with ESMTP id S229641AbiCCE7P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 23:59:15 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D1B2913D574
+        for <linux-iio@vger.kernel.org>; Wed,  2 Mar 2022 20:58:28 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mtapsc-5-c9saVIHFMHux_Sno3vxg6w-1; Thu, 03 Mar 2022 04:58:25 +0000
+X-MC-Unique: c9saVIHFMHux_Sno3vxg6w-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Thu, 3 Mar 2022 04:58:23 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Thu, 3 Mar 2022 04:58:23 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Xiaomeng Tong' <xiam0nd.tong@gmail.com>
+CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "bcm-kernel-feedback-list@broadcom.com" 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "bjohannesmeyer@gmail.com" <bjohannesmeyer@gmail.com>,
+        "c.giuffrida@vu.nl" <c.giuffrida@vu.nl>,
+        "christian.koenig@amd.com" <christian.koenig@amd.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "gustavo@embeddedor.com" <gustavo@embeddedor.com>,
+        "h.j.bos@vu.nl" <h.j.bos@vu.nl>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "jakobkoschel@gmail.com" <jakobkoschel@gmail.com>,
+        "jgg@ziepe.ca" <jgg@ziepe.ca>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        "kgdb-bugreport@lists.sourceforge.net" 
+        <kgdb-bugreport@lists.sourceforge.net>,
+        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+        "linux-f2fs-devel@lists.sourceforge.net" 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" 
+        <linux-mediatek@lists.infradead.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux1394-devel@lists.sourceforge.net" 
+        <linux1394-devel@lists.sourceforge.net>,
+        "linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "nathan@kernel.org" <nathan@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+        "rppt@kernel.org" <rppt@kernel.org>,
+        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "tipc-discussion@lists.sourceforge.net" 
+        <tipc-discussion@lists.sourceforge.net>,
+        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+        "v9fs-developer@lists.sourceforge.net" 
+        <v9fs-developer@lists.sourceforge.net>
+Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Thread-Topic: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Thread-Index: AQHYLhg9+DU/OogLf0+tiSFmjztyUKysHu+QgADRVYCAACVtoA==
+Date:   Thu, 3 Mar 2022 04:58:23 +0000
+Message-ID: <39404befad5b44b385698ff65465abe5@AcuMS.aculab.com>
+References: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
+ <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+In-Reply-To: <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Enable the PMI8998 RRADC.
+From: Xiaomeng Tong
+> Sent: 03 March 2022 02:27
+> 
+> On Wed, 2 Mar 2022 14:04:06 +0000, David Laight
+> <David.Laight@ACULAB.COM> wrote:
+> > I think that it would be better to make any alternate loop macro
+> > just set the variable to NULL on the loop exit.
+> > That is easier to code for and the compiler might be persuaded to
+> > not redo the test.
+> 
+> No, that would lead to a NULL dereference.
 
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
----
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-index 367389526b41..b3b6aa4e0fa3 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-@@ -312,6 +312,10 @@ resin {
- 	};
- };
+Why, it would make it b ethe same as the 'easy to use':
+	for (item = head; item; item = item->next) {
+		...
+		if (...)
+			break;
+		...
+	}
+	if (!item)
+		return;
  
-+&pmi8998_rradc {
-+	status = "okay";
-+};
-+
- /* QUAT I2S Uses 1 I2S SD Line for audio on TAS2559/60 amplifiers */
- &q6afedai {
- 	qi2s@22 {
--- 
-2.35.1
+> The problem is the mis-use of iterator outside the loop on exit, and
+> the iterator will be the HEAD's container_of pointer which pointers
+> to a type-confused struct. Sidenote: The *mis-use* here refers to
+> mistakely access to other members of the struct, instead of the
+> list_head member which acutally is the valid HEAD.
+
+The problem is that the HEAD's container_of pointer should never
+be calculated at all.
+This is what is fundamentally broken about the current definition.
+
+> IOW, you would dereference a (NULL + offset_of_member) address here.
+
+Where?
+
+> Please remind me if i missed something, thanks.
+>
+> Can you share your "alternative definitions" details? thanks!
+
+The loop should probably use as extra variable that points
+to the 'list node' in the next structure.
+Something like:
+	for (xxx *iter = head->next;
+		iter == &head ? ((item = NULL),0) : ((item = list_item(iter),1));
+		iter = item->member->next) {
+	   ...
+With a bit of casting you can use 'item' to hold 'iter'.
+
+> 
+> > OTOH there may be alternative definitions that can be used to get
+> > the compiler (or other compiler-like tools) to detect broken code.
+> > Even if the definition can't possibly generate a working kerrnel.
+> 
+> The "list_for_each_entry_inside(pos, type, head, member)" way makes
+> the iterator invisiable outside the loop, and would be catched by
+> compiler if use-after-loop things happened.
+
+It is also a compete PITA for anything doing a search.
+
+	David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 

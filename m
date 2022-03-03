@@ -2,197 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06AA14CBA39
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 10:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DEB74CBAB8
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 10:52:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbiCCJbI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Mar 2022 04:31:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34094 "EHLO
+        id S230076AbiCCJxW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Mar 2022 04:53:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231789AbiCCJbG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Mar 2022 04:31:06 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6242F16BFAF
-        for <linux-iio@vger.kernel.org>; Thu,  3 Mar 2022 01:30:19 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-318-HvTdrMxlM1W3jsGT6It_3A-1; Thu, 03 Mar 2022 09:30:16 +0000
-X-MC-Unique: HvTdrMxlM1W3jsGT6It_3A-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Thu, 3 Mar 2022 09:30:14 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Thu, 3 Mar 2022 09:30:14 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Xiaomeng Tong' <xiam0nd.tong@gmail.com>
-CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "arnd@arndb.de" <arnd@arndb.de>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "bjohannesmeyer@gmail.com" <bjohannesmeyer@gmail.com>,
-        "c.giuffrida@vu.nl" <c.giuffrida@vu.nl>,
-        "christian.koenig@amd.com" <christian.koenig@amd.com>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "gustavo@embeddedor.com" <gustavo@embeddedor.com>,
-        "h.j.bos@vu.nl" <h.j.bos@vu.nl>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "jakobkoschel@gmail.com" <jakobkoschel@gmail.com>,
-        "jgg@ziepe.ca" <jgg@ziepe.ca>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        "kgdb-bugreport@lists.sourceforge.net" 
-        <kgdb-bugreport@lists.sourceforge.net>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-f2fs-devel@lists.sourceforge.net" 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux1394-devel@lists.sourceforge.net" 
-        <linux1394-devel@lists.sourceforge.net>,
-        "linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "nathan@kernel.org" <nathan@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-        "rppt@kernel.org" <rppt@kernel.org>,
-        "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "tipc-discussion@lists.sourceforge.net" 
-        <tipc-discussion@lists.sourceforge.net>,
-        "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-        "v9fs-developer@lists.sourceforge.net" 
-        <v9fs-developer@lists.sourceforge.net>
-Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Thread-Topic: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Thread-Index: AQHYLhg9+DU/OogLf0+tiSFmjztyUKysHu+QgADRVYCAACVtoIAALj+AgAAE1XA=
-Date:   Thu, 3 Mar 2022 09:30:14 +0000
-Message-ID: <2d208771c50b4c6db4f43039e9d62851@AcuMS.aculab.com>
-References: <39404befad5b44b385698ff65465abe5@AcuMS.aculab.com>
- <20220303072657.11124-1-xiam0nd.tong@gmail.com>
-In-Reply-To: <20220303072657.11124-1-xiam0nd.tong@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S229998AbiCCJxV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Mar 2022 04:53:21 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B13F40E48
+        for <linux-iio@vger.kernel.org>; Thu,  3 Mar 2022 01:52:34 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id j17so6970998wrc.0
+        for <linux-iio@vger.kernel.org>; Thu, 03 Mar 2022 01:52:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=7sxk0gi7K/gEPgkPAW86oNPcDC6UYWLnAgn9FQdwzh8=;
+        b=F5JReUMm+aE6eQqymlEbM8qe/PfH788Ia/OqOdM3zvOQl6r4RpguDVY6lVDA80nPLm
+         9ylhE1F/YS+V57bge3B+5sHZtsug09u16n/uMDHMusPZ/Mztwa7r8Gvn5zqumWhA5eyM
+         HLeSyjzc8J63VyymRjLNpr286C3U0vFqVCZXz/hA5AdQTU2muMWegRQWyIwLIPzTkgtC
+         gkgapOHzZ6KVwMLPX4/hlhc4ePUCxhm/Rw6n+RHBIVp9v3vqQ0xZqoHQ/PJ4lV/zjKml
+         q1EU2irWgkLP1+9NvTvSy9gEWBnJq7xp6/k9ftVzU6HchuxSBA9XyKLP+gMq+L+67MEf
+         7aNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=7sxk0gi7K/gEPgkPAW86oNPcDC6UYWLnAgn9FQdwzh8=;
+        b=Y9mAagJXuiQydrLHYAILmpCDlEtuFwEKXFQuYcO24FFwuc7chUgZtynsnm+dFaeDBB
+         MIB5YfZqHw1O0pqX4R5899YWEtPKx6xcJKU1V6+VmtZl+N+YVpIsVZFrXgwiANeX6C2x
+         i0UD7XEeLYIWiY4tbbZuTmKL4LxnSxSDb9PxJETzQs+Kf8GUU2qJdnXBlTXZlDRingK7
+         iq64zbjGzDz14xt7ZtKOH12PGP1FlnyUXpCdieXJoJk5H4e93ev5HVbyxCyxwYWshEjk
+         06pkltdEpW0EOjOCn/HA0cMeLDShv+YKNeUPg97xUZmO2lK57JZuYAxlhMAkbbA5RRIb
+         YcVA==
+X-Gm-Message-State: AOAM530iwWcRoprPuO5M8pmPL94ZgkFlFdqzgyIxKPZgSRf6YfbVnAhK
+        mNAg8daFR1oxNrY5vPUVI84usg==
+X-Google-Smtp-Source: ABdhPJzSz7co5Gr4DzCxUOVBx6L6Q21HdHmiiy260WjUtW/O3KRGZ7JP0MFsCyGruqP65XknqhA0Zw==
+X-Received: by 2002:a05:6000:2ca:b0:1f0:46a2:bd63 with SMTP id o10-20020a05600002ca00b001f046a2bd63mr4170886wry.140.1646301153045;
+        Thu, 03 Mar 2022 01:52:33 -0800 (PST)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id l16-20020a05600c1d1000b003816edb5711sm8807931wms.26.2022.03.03.01.52.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Mar 2022 01:52:32 -0800 (PST)
+Date:   Thu, 3 Mar 2022 09:52:30 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v8 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid
+ information to clients
+Message-ID: <YiCP3gwEffbQiA5W@google.com>
+References: <20220221220743.541704-1-caleb.connolly@linaro.org>
+ <20220221220743.541704-3-caleb.connolly@linaro.org>
+ <Yhft4zNcbD3ojN6i@builder.lan>
+ <YhiYY/sXMvQ4VCZd@google.com>
+ <20220225090452.GP3943@kadam>
+ <YhigDPC6r7dTJUXd@google.com>
+ <20220225094024.GQ3943@kadam>
+ <da96bd50-e346-a20c-de53-561c996e826c@linaro.org>
+ <20220303090549.GM2812@kadam>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220303090549.GM2812@kadam>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-RnJvbTogWGlhb21lbmcgVG9uZw0KPiBTZW50OiAwMyBNYXJjaCAyMDIyIDA3OjI3DQo+IA0KPiBP
-biBUaHUsIDMgTWFyIDIwMjIgMDQ6NTg6MjMgKzAwMDAsIERhdmlkIExhaWdodCB3cm90ZToNCj4g
-PiBvbiAzIE1hciAyMDIyIDEwOjI3OjI5ICswODAwLCBYaWFvbWVuZyBUb25nIHdyb3RlOg0KPiA+
-ID4gVGhlIHByb2JsZW0gaXMgdGhlIG1pcy11c2Ugb2YgaXRlcmF0b3Igb3V0c2lkZSB0aGUgbG9v
-cCBvbiBleGl0LCBhbmQNCj4gPiA+IHRoZSBpdGVyYXRvciB3aWxsIGJlIHRoZSBIRUFEJ3MgY29u
-dGFpbmVyX29mIHBvaW50ZXIgd2hpY2ggcG9pbnRlcnMNCj4gPiA+IHRvIGEgdHlwZS1jb25mdXNl
-ZCBzdHJ1Y3QuIFNpZGVub3RlOiBUaGUgKm1pcy11c2UqIGhlcmUgcmVmZXJzIHRvDQo+ID4gPiBt
-aXN0YWtlbHkgYWNjZXNzIHRvIG90aGVyIG1lbWJlcnMgb2YgdGhlIHN0cnVjdCwgaW5zdGVhZCBv
-ZiB0aGUNCj4gPiA+IGxpc3RfaGVhZCBtZW1iZXIgd2hpY2ggYWN1dGFsbHkgaXMgdGhlIHZhbGlk
-IEhFQUQuDQo+ID4NCj4gPiBUaGUgcHJvYmxlbSBpcyB0aGF0IHRoZSBIRUFEJ3MgY29udGFpbmVy
-X29mIHBvaW50ZXIgc2hvdWxkIG5ldmVyDQo+ID4gYmUgY2FsY3VsYXRlZCBhdCBhbGwuDQo+ID4g
-VGhpcyBpcyB3aGF0IGlzIGZ1bmRhbWVudGFsbHkgYnJva2VuIGFib3V0IHRoZSBjdXJyZW50IGRl
-ZmluaXRpb24uDQo+IA0KPiBZZXMsIHRoZSBydWxlIGlzICJ0aGUgSEVBRCdzIGNvbnRhaW5lcl9v
-ZiBwb2ludGVyIHNob3VsZCBuZXZlciBiZQ0KPiBjYWxjdWxhdGVkIGF0IGFsbCBvdXRzaWRlIHRo
-ZSBsb29wIiwgYnV0IGhvdyBkbyB5b3UgbWFrZSBzdXJlIGV2ZXJ5b25lDQo+IGZvbGxvd3MgdGhp
-cyBydWxlPw0KPiBFdmVyeW9uZSBtYWtlcyBtaXN0YWtlcywgYnV0IHdlIGNhbiBlbGltaW5hdGUg
-dGhlbSBhbGwgZnJvbSB0aGUgYmVnaW5uaW5nDQo+IHdpdGggdGhlIGhlbHAgb2YgY29tcGlsZXIg
-d2hpY2ggY2FuIGNhdGNoIHN1Y2ggdXNlLWFmdGVyLWxvb3AgdGhpbmdzLg0KPiANCj4gPiA+IElP
-VywgeW91IHdvdWxkIGRlcmVmZXJlbmNlIGEgKE5VTEwgKyBvZmZzZXRfb2ZfbWVtYmVyKSBhZGRy
-ZXNzIGhlcmUuDQo+ID4NCj4gPldoZXJlPw0KPiANCj4gSW4gdGhlIGNhc2Ugd2hlcmUgYSBkZXZl
-bG9wZXIgZG8gbm90IGZvbGxvd3MgdGhlIGFib3ZlIHJ1bGUsIGFuZCBtaXN0YWtlbHkNCj4gYWNj
-ZXNzIGEgbm9uLWxpc3QtaGVhZCBtZW1iZXIgb2YgdGhlIEhFQUQncyBjb250YWluZXJfb2YgcG9p
-bnRlciBvdXRzaWRlDQo+IHRoZSBsb29wLiBGb3IgZXhhbXBsZToNCj4gICAgIHN0cnVjdCByZXF7
-DQo+ICAgICAgIGludCBhOw0KPiAgICAgICBzdHJ1Y3QgbGlzdF9oZWFkIGg7DQo+ICAgICB9DQo+
-ICAgICBzdHJ1Y3QgcmVxICpyOw0KPiAgICAgbGlzdF9mb3JfZWFjaF9lbnRyeShyLCBIRUFELCBo
-KSB7DQo+ICAgICAgIGlmIChyLT5hID09IDB4MTApDQo+ICAgICAgICAgYnJlYWs7DQo+ICAgICB9
-DQo+ICAgICAvLyB0aGUgZGV2ZWxvcGVyIG1hZGUgYSBtaXN0YWtlOiBoZSBkaWRuJ3QgdGFrZSB0
-aGlzIHNpdHVhdGlvbiBpbnRvDQo+ICAgICAvLyBhY2NvdW50IHdoZXJlIGFsbCBlbnRyaWVzIGlu
-IHRoZSBsaXN0IGFyZSAqci0+YSAhPSAweDEwKiwgYW5kIG5vdw0KPiAgICAgLy8gdGhlIHIgaXMg
-dGhlIEhFQUQncyBjb250YWluZXJfb2YgcG9pbnRlci4NCj4gICAgIHItPmEgPSAweDIwOw0KPiBU
-aHVzIHRoZSAici0+YSA9IDB4MjAiIHdvdWxkIGRlcmVmZXJlbmNlIGEgKE5VTEwgKyBvZmZzZXRf
-b2ZfbWVtYmVyKQ0KPiBhZGRyZXNzIGhlcmUuDQoNClRoYXQgaXMganVzdCBhIGJ1Zy4NCk5vIGRp
-ZmZlcmVudCB0byBmYWlsaW5nIHRvIGNoZWNrIGFueXRoaW5nIGVsc2UgbWlnaHQgJ3JldHVybicN
-CmEgTlVMTCBwb2ludGVyLg0KQmVjYXVzZSBpdCBpcyBhIE5VTEwgZGVyZWZlcmVuY2UgeW91IGZp
-bmQgb3V0IHByZXR0eSBxdWlja2x5Lg0KVGhlIGV4aXN0aW5nIGxvb3AgbGVhdmVzIHlvdSB3aXRo
-IGEgdmFsaWQgcG9pbnRlciB0byBzb21ldGhpbmcNCnRoYXQgaXNuJ3QgYSBsaXN0IGl0ZW0uDQoN
-Cj4gPiA+IFBsZWFzZSByZW1pbmQgbWUgaWYgaSBtaXNzZWQgc29tZXRoaW5nLCB0aGFua3MuDQo+
-ID4gPg0KPiA+ID4gQ2FuIHlvdSBzaGFyZSB5b3VyICJhbHRlcm5hdGl2ZSBkZWZpbml0aW9ucyIg
-ZGV0YWlscz8gdGhhbmtzIQ0KPiA+DQo+ID4gVGhlIGxvb3Agc2hvdWxkIHByb2JhYmx5IHVzZSBh
-cyBleHRyYSB2YXJpYWJsZSB0aGF0IHBvaW50cw0KPiA+IHRvIHRoZSAnbGlzdCBub2RlJyBpbiB0
-aGUgbmV4dCBzdHJ1Y3R1cmUuDQo+ID4gU29tZXRoaW5nIGxpa2U6DQo+ID4gCWZvciAoeHh4ICpp
-dGVyID0gaGVhZC0+bmV4dDsNCj4gPiAJCWl0ZXIgPT0gJmhlYWQgPyAoKGl0ZW0gPSBOVUxMKSww
-KSA6ICgoaXRlbSA9IGxpc3RfaXRlbShpdGVyKSwxKSk7DQo+ID4gCQlpdGVyID0gaXRlbS0+bWVt
-YmVyLT5uZXh0KSB7DQo+ID4gCSAgIC4uLg0KPiA+IFdpdGggYSBiaXQgb2YgY2FzdGluZyB5b3Ug
-Y2FuIHVzZSAnaXRlbScgdG8gaG9sZCAnaXRlcicuDQo+IA0KPiB5b3Ugc3RpbGwgY2FuIG5vdCBt
-YWtlIHN1cmUgZXZlcnlvbmUgZm9sbG93cyB0aGlzIHJ1bGU6DQo+ICJkbyBub3QgdXNlIGl0ZXJh
-dG9yIG91dHNpZGUgdGhlIGxvb3AiIHdpdGhvdXQgdGhlIGhlbHAgb2YgY29tcGlsZXIsDQo+IGJl
-Y2F1c2UgaXRlbSBpcyBkZWNsYXJlZCBvdXRzaWRlIHRoZSBsb29wLg0KDQpUaGF0IG9uZSBoYXMg
-J2l0ZXInIGRlZmluZWQgaW4gdGhlIGxvb3AuDQoNCj4gQlRXLCB0byBhdm9pZCBhbWJpZ3VpdHnv
-vIx0aGUgImFsdGVybmF0aXZlIGRlZmluaXRpb25zIiBoZXJlIGkgYXNrZWQgaXMNCj4gc29tZXRo
-aW5nIGZyb20geW91IGluIHRoaXMgY29udGV4dDoNCj4gIk9UT0ggdGhlcmUgbWF5IGJlIGFsdGVy
-bmF0aXZlIGRlZmluaXRpb25zIHRoYXQgY2FuIGJlIHVzZWQgdG8gZ2V0DQo+IHRoZSBjb21waWxl
-ciAob3Igb3RoZXIgY29tcGlsZXItbGlrZSB0b29scykgdG8gZGV0ZWN0IGJyb2tlbiBjb2RlLg0K
-PiBFdmVuIGlmIHRoZSBkZWZpbml0aW9uIGNhbid0IHBvc3NpYmx5IGdlbmVyYXRlIGEgd29ya2lu
-ZyBrZXJybmVsLiINCg0KSSB3YXMgdGhpbmtpbmcgb2Ygc29tZXRoaW5nIGxpa2U6DQoJaWYgKChw
-b3MgPSBsaXN0X2ZpcnN0KSksIDEpIHBvcyA9IE5VTEwgZWxzZQ0Kc28gdGhhdCB1bmNoZWNrZWQg
-ZGVyZWZlcmVuY2VzIGFmdGVyIHRoZSBsb29wIHdpbGwgYmUgZGV0ZWN0YWJsZQ0KYXMgTlVMTCBw
-b2ludGVyIG9mZnNldHMgLSBidXQgdGhhdCBpbiBpdHNlbGYgaXNuJ3QgZW5vdWdoIHRvIGF2b2lk
-DQpvdGhlciB3YXJuaW5ncy4NCg0KPiA+ID4gVGhlICJsaXN0X2Zvcl9lYWNoX2VudHJ5X2luc2lk
-ZShwb3MsIHR5cGUsIGhlYWQsIG1lbWJlcikiIHdheSBtYWtlcw0KPiA+ID4gdGhlIGl0ZXJhdG9y
-IGludmlzaWFibGUgb3V0c2lkZSB0aGUgbG9vcCwgYW5kIHdvdWxkIGJlIGNhdGNoZWQgYnkNCj4g
-PiA+IGNvbXBpbGVyIGlmIHVzZS1hZnRlci1sb29wIHRoaW5ncyBoYXBwZW5lZC4NCj4gDQo+ID4g
-SXQgaXMgYWxzbyBhIGNvbXBldGUgUElUQSBmb3IgYW55dGhpbmcgZG9pbmcgYSBzZWFyY2guDQo+
-IA0KPiBZb3UgbWVhbiBpdCB3b3VsZCBiZSBhIGJ1cmRlbiBvbiBzZWFyY2g/IGNhbiB5b3Ugc2hv
-dyBtZSBzb21lIGV4YW1wbGVzPw0KDQpUaGUgd2hvbGUgYnVzaW5lc3Mgb2YgaGF2aW5nIHRvIHNh
-dmUgdGhlIHBvaW50ZXIgdG8gdGhlIGxvY2F0ZWQgaXRlbQ0KYmVmb3JlIGJyZWFraW5nIHRoZSBs
-b29wLCByZW1lbWJlcmluZyB0byBoYXZlIHNldCBpdCB0byBOVUxMIGVhcmxpZXIgZXRjLg0KDQpJ
-dCBpcyBzbyBtdWNoIGJldHRlciBpZiB5b3UgY2FuIGp1c3QgZG86DQoJCWlmIChmb3VuZCkNCgkJ
-CWJyZWFrOw0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFt
-bGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3Ry
-YXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+On Thu, 03 Mar 2022, Dan Carpenter wrote:
 
+> On Thu, Mar 03, 2022 at 02:20:58AM +0000, Caleb Connolly wrote:
+> > 
+> > 
+> > On 25/02/2022 09:40, Dan Carpenter wrote:
+> > > On Fri, Feb 25, 2022 at 09:23:24AM +0000, Lee Jones wrote:
+> > > > On Fri, 25 Feb 2022, Dan Carpenter wrote:
+> > > > 
+> > > > > On Fri, Feb 25, 2022 at 08:50:43AM +0000, Lee Jones wrote:
+> > > > > > On Thu, 24 Feb 2022, Bjorn Andersson wrote:
+> > > > > > 
+> > > > > > > On Mon 21 Feb 16:07 CST 2022, Caleb Connolly wrote:
+> > > > > > > 
+> > > > > > > > Some PMIC functions such as the RRADC need to be aware of the PMIC
+> > > > > > > > chip revision information to implement errata or otherwise adjust
+> > > > > > > > behaviour, export the PMIC information to enable this.
+> > > > > > > > 
+> > > > > > > > This is specifically required to enable the RRADC to adjust
+> > > > > > > > coefficients based on which chip fab the PMIC was produced in,
+> > > > > > > > this can vary per unique device and therefore has to be read at
+> > > > > > > > runtime.
+> > > > > > > > 
+> > > > > > > > [bugs in previous revision]
+> > > > > > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > > > > > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > > > > > 
+> > > > > > > This says is that "kernel test robot" and Dan reported that something
+> > > > > > > needed to be fixed and this patch is the fix for this.
+> > > > > > > 
+> > > > > > > So even though their emails asks for you to give them credit like this
+> > > > > > > you can't do it for new patches.
+> > > > > > 
+> > > > > > Right, or else you'd have to give credit to anyone who provided you
+> > > > > > with a review.  This could potentially grow to quite a long list.
+> > > > > > 
+> > > > > 
+> > > > > I always feel like people who find crashing bugs should get credit but
+> > > > > no credit for complaining about style.  It's like we reward people for
+> > > > > reporting bugs after it gets merged but not before.
+> > > > > 
+> > > > > We've had this debate before and people don't agree with me or they say
+> > > > > that it's fine to just include the Reported-by kbuild tags and let
+> > > > > people figure out from the context that probably kbuild didn't tell
+> > > > > people to write a new driver.
+> > > > 
+> > > > Reviews will often consist of both style and logic recommendations.
+> > > > If not spotted and remedied, the latter of which would likely result
+> > > > in undesired behaviour a.k.a. bugs.  So at what point, or what type of
+> > > > bug would warrant a tag?
+> > > > 
+> > > 
+> > > If it's a crash or memory leak.  Style comments and fixing typos are
+> > > their own reward.  Basically it's the same rule as Fixes tags.  We
+> > > shouldn't use Fixes tags for typos.
+> > 
+> > Hi Dan,
+> > 
+> > How (if at all) would you like me to reference the bug reported by LKP
+> > in my next revision of this patch? It doesn't seem like a fixed conclusion
+> > was reached here.
+> > 
+> > It seems like Reported-by doesn't really represent things well, perhaps we
+> > could try for "Bugchecked-by" or something like that?
+> 
+> Just leave it out.  Those are automated emails and I just look them
+> over and hit forward or delete.
+> 
+> The thing is that I've been arguing for a new Fixes-from: tag since
+> before the kbuild-bot existed and on the last kernel summit email list
+> someone said to just use Reported-by so I've been trying to help people
+> consider that as an option...
+
+Nothing wrong with using Reported-by if located chronologically and
+annotated correctly.  Example was provided in a previous mail.
+
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

@@ -2,90 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FD3E4CB4F2
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 03:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BCFC4CB510
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Mar 2022 03:40:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231781AbiCCC2l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Mar 2022 21:28:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41870 "EHLO
+        id S231731AbiCCCbQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Mar 2022 21:31:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231743AbiCCC2i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 21:28:38 -0500
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B340D10FC6;
-        Wed,  2 Mar 2022 18:27:53 -0800 (PST)
-Received: by mail-pj1-x102e.google.com with SMTP id p3-20020a17090a680300b001bbfb9d760eso6464723pjj.2;
-        Wed, 02 Mar 2022 18:27:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=C6016/38QKZUQAyk5HMPjenTvm42Pe8sPBzTcqL5vmY=;
-        b=qBGtve+IuFrAkJa+gsN1WQjHRs2fvQkSK1D44BenBKAqsyswWIPF49CjeAw6Lc/Xiz
-         7VY9uX10GWOeYOq3Roffx9lK59MGCnSnWmLkHD6Zz3XGADMqQbIXFAspvzlfyt7tl87F
-         C44YITS/y0gKUKqqxM42VKL4jH/Xx4KasojD++jZOWXtcwkx1m//DlSoFwhQEbp4i/NS
-         eGEaCL2abI9d2Qo/vgVE47lljuFHl9RIsYb9haWI9DYl1+oIMHXMK3O9uyeK26H4D1AX
-         Jy4saNgfSyFkb5FP8pbKE6ds3BSqIpGBCoZu+qijzq/vfSl1dGYXTnehjmH9/ySByi+z
-         BIOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=C6016/38QKZUQAyk5HMPjenTvm42Pe8sPBzTcqL5vmY=;
-        b=CzJtZPcuhcWcftaDgdBMfTH8+c9EoS3XmQ505LWS57kdN7/Y7hxiGiFhGCtkVhWR4n
-         9QiYMg9DgjK+2U+OgCUW8Ihc/Zsz1tArsI+VPvsbHeizYXBDN8PT/Evowom4DSVx5ZKW
-         SbKPrObrC5eMgExacIP+ZPEND4qx5Us+NJQ0WRDXPRpYk5m/o2sqMuwebEko7dN7/HEk
-         eAq5ky/UWz0+SWqk5EOcM1gkci5Yts4Pn4Ct+p/tQQvAT2EONElmTfre57WvwdfOJKPi
-         0JSo3Tr1FuDqKJWi6MM1A+v0Yqa4E2WoDAES5x9cgi/rm9pPbPuEvHVBoD12sn5e/d+j
-         6agg==
-X-Gm-Message-State: AOAM531YwoKciGKl5/xB3iguH9sB6KyY7W/Y8igN4n9GDfpUTuo8ZSvU
-        LuwF03lr62QEMLGgZKYD3hLDUsWYyg5BSQ==
-X-Google-Smtp-Source: ABdhPJwdGKGtPoJbq9KB0b78P8kOQOqlHazHAUCZQHvA6TzNHcldJErwW75BUHOqmaVxrll88UvLqQ==
-X-Received: by 2002:a17:902:ec90:b0:151:a632:7ebb with SMTP id x16-20020a170902ec9000b00151a6327ebbmr1936164plg.154.1646274473191;
-        Wed, 02 Mar 2022 18:27:53 -0800 (PST)
-Received: from ubuntu.huawei.com ([119.3.119.19])
-        by smtp.googlemail.com with ESMTPSA id d15-20020a17090ab30f00b001b8e65326b3sm359822pjr.9.2022.03.02.18.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Mar 2022 18:27:52 -0800 (PST)
-From:   Xiaomeng Tong <xiam0nd.tong@gmail.com>
-To:     david.laight@aculab.com
-Cc:     akpm@linux-foundation.org, alsa-devel@alsa-project.org,
-        amd-gfx@lists.freedesktop.org, andriy.shevchenko@linux.intel.com,
-        arnd@arndb.de, bcm-kernel-feedback-list@broadcom.com,
-        bjohannesmeyer@gmail.com, c.giuffrida@vu.nl,
-        christian.koenig@amd.com, christophe.jaillet@wanadoo.fr,
-        dan.carpenter@oracle.com, dmaengine@vger.kernel.org,
-        drbd-dev@lists.linbit.com, dri-devel@lists.freedesktop.org,
-        gustavo@embeddedor.com, h.j.bos@vu.nl,
-        intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org,
-        jakobkoschel@gmail.com, jgg@ziepe.ca, keescook@chromium.org,
-        kgdb-bugreport@lists.sourceforge.net, kvm@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-block@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net,
-        linux-fsdevel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-sgx@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, linux@rasmusvillemoes.dk,
-        linuxppc-dev@lists.ozlabs.org, nathan@kernel.org,
-        netdev@vger.kernel.org, nouveau@lists.freedesktop.org,
-        rppt@kernel.org, samba-technical@lists.samba.org,
-        tglx@linutronix.de, tipc-discussion@lists.sourceforge.net,
-        torvalds@linux-foundation.org,
-        v9fs-developer@lists.sourceforge.net, xiam0nd.tong@gmail.com
-Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body as a ptr
-Date:   Thu,  3 Mar 2022 10:27:29 +0800
-Message-Id: <20220303022729.9321-1-xiam0nd.tong@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
-References: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        with ESMTP id S231700AbiCCCbQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Mar 2022 21:31:16 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D64846666;
+        Wed,  2 Mar 2022 18:30:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646274631; x=1677810631;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=53qEpt+GyHLf4k/a7W4+7EOByfhH4Bt+FR6ZxJQZXFw=;
+  b=VWDnTMmbgekfBXUS8uEY3TJJeBU6O9s/TpZ/p9cKHEpusrSqmrP2SX78
+   TuV23y1HrAFuaLmUby7R1ephM03357mGBMEvKZcIgpwaOqx6wk6OfXDpE
+   mQ1a9N2TiiALlzr5gJhb47cvP5oBs5ULPkCkgpVhRGeaCKKojyygj86Dv
+   1KNes7zU7Q8mCbf1PiUVJJi/KjipaEoaVxTtSqxfoOME4ATEuMSZl90we
+   G556QUCrXsQSWhrWR2NIE7wxMizX6uWGadYZkQ1dAZ1PRw7+VJxjKpL/R
+   AwC7KAkXj1BanhbV6JX9dHrW+6KHvcYZGCtUmp7Ide5j6RY2KhGwbyYe9
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10274"; a="251132928"
+X-IronPort-AV: E=Sophos;i="5.90,150,1643702400"; 
+   d="scan'208";a="251132928"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 18:30:31 -0800
+X-IronPort-AV: E=Sophos;i="5.90,150,1643702400"; 
+   d="scan'208";a="551532065"
+Received: from rli9-dbox.sh.intel.com (HELO rli9-dbox) ([10.239.159.142])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2022 18:30:26 -0800
+Date:   Thu, 3 Mar 2022 10:28:04 +0800
+From:   Philip Li <philip.li@intel.com>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v8 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid
+ information to clients
+Message-ID: <YiAntGyMdJnEjzsT@rli9-dbox>
+References: <20220221220743.541704-1-caleb.connolly@linaro.org>
+ <20220221220743.541704-3-caleb.connolly@linaro.org>
+ <Yhft4zNcbD3ojN6i@builder.lan>
+ <YhiYY/sXMvQ4VCZd@google.com>
+ <20220225090452.GP3943@kadam>
+ <YhigDPC6r7dTJUXd@google.com>
+ <20220225094024.GQ3943@kadam>
+ <da96bd50-e346-a20c-de53-561c996e826c@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <da96bd50-e346-a20c-de53-561c996e826c@linaro.org>
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -93,34 +75,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2 Mar 2022 14:04:06 +0000, David Laight
-<David.Laight@ACULAB.COM> wrote:
-> I think that it would be better to make any alternate loop macro
-> just set the variable to NULL on the loop exit.
-> That is easier to code for and the compiler might be persuaded to
-> not redo the test.
+On Thu, Mar 03, 2022 at 02:20:58AM +0000, Caleb Connolly wrote:
+> 
+> 
+> On 25/02/2022 09:40, Dan Carpenter wrote:
+> > On Fri, Feb 25, 2022 at 09:23:24AM +0000, Lee Jones wrote:
+> > > On Fri, 25 Feb 2022, Dan Carpenter wrote:
+> > > 
+> > > > On Fri, Feb 25, 2022 at 08:50:43AM +0000, Lee Jones wrote:
+> > > > > On Thu, 24 Feb 2022, Bjorn Andersson wrote:
+> > > > > 
+> > > > > > On Mon 21 Feb 16:07 CST 2022, Caleb Connolly wrote:
+> > > > > > 
+> > > > > > > Some PMIC functions such as the RRADC need to be aware of the PMIC
+> > > > > > > chip revision information to implement errata or otherwise adjust
+> > > > > > > behaviour, export the PMIC information to enable this.
+> > > > > > > 
+> > > > > > > This is specifically required to enable the RRADC to adjust
+> > > > > > > coefficients based on which chip fab the PMIC was produced in,
+> > > > > > > this can vary per unique device and therefore has to be read at
+> > > > > > > runtime.
+> > > > > > > 
+> > > > > > > [bugs in previous revision]
+> > > > > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > > > > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > > > > 
+> > > > > > This says is that "kernel test robot" and Dan reported that something
+> > > > > > needed to be fixed and this patch is the fix for this.
+> > > > > > 
+> > > > > > So even though their emails asks for you to give them credit like this
+> > > > > > you can't do it for new patches.
+> > > > > 
+> > > > > Right, or else you'd have to give credit to anyone who provided you
+> > > > > with a review.  This could potentially grow to quite a long list.
+> > > > > 
+> > > > 
+> > > > I always feel like people who find crashing bugs should get credit but
+> > > > no credit for complaining about style.  It's like we reward people for
+> > > > reporting bugs after it gets merged but not before.
+> > > > 
+> > > > We've had this debate before and people don't agree with me or they say
+> > > > that it's fine to just include the Reported-by kbuild tags and let
+> > > > people figure out from the context that probably kbuild didn't tell
+> > > > people to write a new driver.
+> > > 
+> > > Reviews will often consist of both style and logic recommendations.
+> > > If not spotted and remedied, the latter of which would likely result
+> > > in undesired behaviour a.k.a. bugs.  So at what point, or what type of
+> > > bug would warrant a tag?
+> > > 
+> > 
+> > If it's a crash or memory leak.  Style comments and fixing typos are
+> > their own reward.  Basically it's the same rule as Fixes tags.  We
+> > shouldn't use Fixes tags for typos.
+> 
+> Hi Dan,
+> 
+> How (if at all) would you like me to reference the bug reported by LKP
+> in my next revision of this patch? It doesn't seem like a fixed conclusion
+> was reached here.
 
-No, that would lead to a NULL dereference.
+Hi Caleb, this is Philip who maintains the LKP (0-day ci). You can ignore
+the Reported-by tag freely.
 
-The problem is the mis-use of iterator outside the loop on exit, and
-the iterator will be the HEAD's container_of pointer which pointers
-to a type-confused struct. Sidenote: The *mis-use* here refers to
-mistakely access to other members of the struct, instead of the
-list_head member which acutally is the valid HEAD.
+This is confusing sometimes for this Reported-by tag, even we mention to
+add it "as appropriately" to allow judgement from author for author's own
+situation. Some author uses the style like "Reported-by: xxx # compiling bug fix"
+but not all. We will look for how to improve this.
 
-IOW, you would dereference a (NULL + offset_of_member) address here.
+There's one discussion recently at https://lore.kernel.org/lkml/YfPzNNvK8Sy8YmGW@casper.infradead.org/T/
+which also encourages to add Reported-by for new features or upstreamed code.
 
-Please remind me if i missed something, thanks.
+Thanks
 
-> OTOH there may be alternative definitions that can be used to get
-> the compiler (or other compiler-like tools) to detect broken code.
-> Even if the definition can't possibly generate a working kerrnel.
-
-The "list_for_each_entry_inside(pos, type, head, member)" way makes
-the iterator invisiable outside the loop, and would be catched by
-compiler if use-after-loop things happened.
-
-Can you share your "alternative definitions" details? thanks!
-
---
-Xiaomeng Tong
+> 
+> It seems like Reported-by doesn't really represent things well, perhaps we
+> could try for "Bugchecked-by" or something like that?
+> > 
+> > regards,
+> > dan carpenter
+> > 
+> 
+> -- 
+> Kind Regards,
+> Caleb (they/them)
+> 

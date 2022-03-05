@@ -2,43 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B9E4CE5AF
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 17:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C81F4CE5B7
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 17:04:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231972AbiCEQAw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Mar 2022 11:00:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44296 "EHLO
+        id S231975AbiCEQFf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Mar 2022 11:05:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbiCEQAv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Mar 2022 11:00:51 -0500
+        with ESMTP id S229878AbiCEQFe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Mar 2022 11:05:34 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 837A4140C2;
-        Sat,  5 Mar 2022 08:00:01 -0800 (PST)
-Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K9qDG6LY7z67p52;
-        Sat,  5 Mar 2022 23:59:42 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C62369C1;
+        Sat,  5 Mar 2022 08:04:44 -0800 (PST)
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K9qJY32ffz67WtW;
+        Sun,  6 Mar 2022 00:03:25 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Sat, 5 Mar 2022 16:59:59 +0100
+ 15.1.2308.21; Sat, 5 Mar 2022 17:04:42 +0100
 Received: from localhost (10.47.66.18) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Sat, 5 Mar
- 2022 15:59:58 +0000
-Date:   Sat, 5 Mar 2022 15:59:55 +0000
+ 2022 16:04:42 +0000
+Date:   Sat, 5 Mar 2022 16:04:39 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Sicelo A. Mhlongo" <absicsz@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Denis Ciocca <denis.ciocca@st.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 0/3] Support LIS302DL in st_accel
-Message-ID: <20220305155955.000075eb@Huawei.com>
-In-Reply-To: <20220301225432.60844-1-absicsz@gmail.com>
-References: <20220301225432.60844-1-absicsz@gmail.com>
+To:     <cgel.zte@gmail.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        <tangbin@cmss.chinamobile.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: Re: [PATCH] iio:adc:twl6030: Use of_device_get_match_data()
+Message-ID: <20220305160439.00000184@Huawei.com>
+In-Reply-To: <20220304015932.2061712-1-chi.minghao@zte.com.cn>
+References: <20220304015932.2061712-1-chi.minghao@zte.com.cn>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -57,39 +55,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  2 Mar 2022 00:54:29 +0200
-"Sicelo A. Mhlongo" <absicsz@gmail.com> wrote:
+On Fri,  4 Mar 2022 01:59:32 +0000
+cgel.zte@gmail.com wrote:
 
-> Hi,
+> From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 > 
-> The ST Microelectronics LIS302DL is currently only supported in the
-> evdev framework driver in drivers/misc/lis3lv02d. This series enables
-> support for it in the iio framework.
+> Use of_device_get_match_data() to simplify the code.
 > 
-Other the the issues Andy raised around the tag and also
-adding SPI support this looks good to me. 
+> v1->v2:
+>   iio:adc:->iio:adc:twl6030:
+Hi,
 
-We are very late in this cycle, so it is now material for 5.19.
-Plenty of time to make those final little tidy ups and get this
-queued early in the next cycle.
+For IIO please put the change log below the ---
+A few areas of the kernel do this differently but we are consistent
+in using link tags (generated when I apply the patch) to give
+access to change logs rather than having them stored for ever
+in the main git log.
+
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+
+You haven't addressed my request in reply to previous posting
+to use device_get_match_data() and switch to the generic
+properties interfaces.  I'd rather see that done in one step
+then going via this cleanup.
 
 Thanks,
 
 Jonathan
 
-> Regards,
-> Sicelo
+> ---
+>  drivers/iio/adc/twl6030-gpadc.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
 > 
-> 
-> Sicelo A. Mhlongo (3):
->   dt-bindings: iio: st,st-sensors add LIS302DL
->   iio: accel: Remove unused enum in st_accel
->   iio: accel: add support for LIS302DL variant
-> 
->  .../bindings/iio/st,st-sensors.yaml           |  1 +
->  drivers/iio/accel/st_accel.h                  | 26 +------------------
->  drivers/iio/accel/st_accel_core.c             |  1 +
->  drivers/iio/accel/st_accel_i2c.c              |  5 ++++
->  4 files changed, 8 insertions(+), 25 deletions(-)
-> 
+> diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
+> index afdb59e0b526..6a022e583658 100644
+> --- a/drivers/iio/adc/twl6030-gpadc.c
+> +++ b/drivers/iio/adc/twl6030-gpadc.c
+> @@ -867,16 +867,11 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	struct twl6030_gpadc_data *gpadc;
+>  	const struct twl6030_gpadc_platform_data *pdata;
+> -	const struct of_device_id *match;
+>  	struct iio_dev *indio_dev;
+>  	int irq;
+>  	int ret;
+>  
+> -	match = of_match_device(of_twl6030_match_tbl, dev);
+> -	if (!match)
+> -		return -EINVAL;
+> -
+> -	pdata = match->data;
+> +	pdata = of_device_get_match_data(dev);
+>  
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*gpadc));
+>  	if (!indio_dev)
 

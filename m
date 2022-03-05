@@ -2,132 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347A44CE266
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 04:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04BFF4CE42F
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 11:28:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbiCEDXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Mar 2022 22:23:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51088 "EHLO
+        id S230084AbiCEK32 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Mar 2022 05:29:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbiCEDXA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Mar 2022 22:23:00 -0500
-X-Greylist: delayed 456 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 04 Mar 2022 19:22:09 PST
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F791405F3
-        for <linux-iio@vger.kernel.org>; Fri,  4 Mar 2022 19:22:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1646450525;
-        bh=MoRWkBCGHh6uj/3DTU7PAocT9mJ5UpfhoQY8dYgmb7M=;
-        h=From:To:Cc:Subject:Date;
-        b=Y0wswlwBjMVhrbdCc13ukZJcCO+brELuvLFB/mLfUKUfINEzcdq5+MS0dTInWIVac
-         NWszbqU2M8Rs/cKXFyb+gIxigpqEPG98JcSOm94Ks3nhwLqupNAiUVv/Rb2K7KDlp/
-         uIp28jbGpIYWb/krlhqNR8cmIxyiCHboL1aLvozo=
-Received: from localhost.localdomain ([218.197.153.188])
-        by newxmesmtplogicsvrszb6.qq.com (NewEsmtp) with SMTP
-        id 398186FF; Sat, 05 Mar 2022 11:14:24 +0800
-X-QQ-mid: xmsmtpt1646450064tj6nqdwyo
-Message-ID: <tencent_C920CFCC33B9CC1C63141FE1334A39FF8508@qq.com>
-X-QQ-XMAILINFO: MmpliBmRb3iCCGP4N5Q8XMBzTgW1bB6sAyaLNEOLz0Riv5fxR4iYWaAkIr7YYT
-         MKghDj0A7G68NVGVzv9hGqsUPnQKDjj3fqk1VWPFmonI4n56fsmUYGokbSJZcB/G5FiO9yT3ZAMO
-         lmsN/loqfL7ZR1/kfXWUeeD9Pz2s0A2TQbyzSVZnITwuDdhvyJvcbJPR+VwrfuV8jH8Q7XzKmtyn
-         YsFgyDtpVArt9aufcOni5iQ/MMkQUwSrOduGkQq9U1iVuisPKA68xdkNNyOpJqwySxEuq//wrNlv
-         QCiPut/KbKYyugn4nwMYxreSNXC+SrU5T+6zi2D4jGXcSxeq88gcxP7lK2w/c5VtQ2EYO7YN0zg5
-         ZHkf601MiexSbb9hl31xIbOpv8FViXwj8UASwTj3exO4BV0W97NOYB6/y+Tq7HXMnmS/e0HMsICv
-         g7UGPYpvLpiN3AGCQgEQR7b/Whoh9hbVXNszZpuquNNE59wpJTh+j9ER12s+JQuuKzvHTan14bfC
-         fjEANgduU1srY2ljIEq/GbHizI+VmbMRHA/PxuZV1IJIXJOtTo2soqn8Vk+0mmlm/KKa0mdaYeqt
-         Fux2zw15GRnwCFwAaYOLMdSpaHpUITRS8eRLcRlKCNNj9Wjcsw5YVGTA3Sxiy4n0Bmqay3aIiCwX
-         RWoXr2utfvKltiqd5rWWpp2TrkoAC3IaYNyrDrgV52jYwZ5Z29tgD546f7DL1bL8ZACFCd22R7nq
-         hK1gyUlbTTSC5sa583zup17/44oaYNk8zGfM+XHLMleRDcgewKVkwTL0ljYMv6Cy+jw7tReZw4hO
-         HDq+Xsi1aCt/b/rNMqag5bM/PhgDn3Opq7gHcRvW6gsTAKdvZ509z8a353iHUt0LzWYzP0WZ6fYd
-         ReW0CeLNKFg/rCr3DMxVW3ECFFIO8jkZh6VzFEnwnz+E7T/J7LDZRzvskrKgw904YZscqWl/JnfX
-         dyPFHDNMXm4/+VpJNfY2RS3yKZUC6uHQYvSC4/Rnw=
-From:   xkernel.wang@foxmail.com
-To:     jic23@kernel.org, jic23@jic23.retrosnub.co.uk
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Xiaoke Wang <xkernel.wang@foxmail.com>
-Subject: [PATCH v3] iio: dummy: iio_simple_dummy: check the return value of kstrdup()
-Date:   Sat,  5 Mar 2022 11:14:05 +0800
-X-OQ-MSGID: <20220305031405.5735-1-xkernel.wang@foxmail.com>
+        with ESMTP id S229897AbiCEK32 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Mar 2022 05:29:28 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E164ECE8
+        for <linux-iio@vger.kernel.org>; Sat,  5 Mar 2022 02:28:38 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id j15so18233220lfe.11
+        for <linux-iio@vger.kernel.org>; Sat, 05 Mar 2022 02:28:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=B3GY5pHxl40fgyTRDEfHUIewqx+99afdPdvQA2cgGa0=;
+        b=ImmE5WMlVq+YKZQ+V7DtrC8cjT3FeeZ53XNVKQl6B5JqBJI4CPjwieVN/zMErwWrOd
+         NNw/Ey82kzlZ39SHRZP2OzMQcN5aemCIr2ACcHlBcxm27915JIUQywe9MM3lYzaRKAqM
+         VZSRsFBJfW9e9VPPZNmmSio0xoLEhsXxysbR2xpUwmrEyBZGZrq/Mf5eXyQ1VvuSK/iE
+         lk8bnIgNtTQ0ZZ8eG+fnafolzgcxxzD2dfkP4c5Mf4lkcpFEEHUFvrq0OrQxDiqdFzKC
+         YH/bVE6WFQCrsGR9e6pE9ARH/oLpVw+/VqiblIguHIAr2ACKv9g4hGIgBraPGLX9h0NC
+         E3eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=B3GY5pHxl40fgyTRDEfHUIewqx+99afdPdvQA2cgGa0=;
+        b=w5UXBUydiyr0GNCs6Kwdve77qHI8WzLmUrXUplNSVTLbQKwVcbHRsylhf5rwS5jBP8
+         9eWbxDFKPAjqH8d2/fMIwAEDONGMGtOsSoE7hUhDrINAkIfbfhrV7tZMYOvQT93ttH9T
+         RUNQBV8LMrIeAUCSxlysU3lIWJ3YD0bV2kgtpRCGS6NAW9xkvHGFHt4Jp/l/F9x5fH+x
+         5mKSaalkHs6xuZfUFzlvH3kw72F9oOt4k4Wt8/fKFKbOX+YpHMCb1yFSN6jvIb/JjTzj
+         rU6wd85OX5MLeIEDFbQ8c8+FBO4v8e+b0Mob5j/VKZ4GvIhcKivkNmVuv2xqBSiaOcGS
+         qSVg==
+X-Gm-Message-State: AOAM533mcGsFOY8jqLrmwLeNmGe/ZwjlJ8y3Qsg9Dav7i5qBl2zPLO2E
+        JLb++Vku3/k73rwKjbT5/+fbr978IASY2zU2MAs=
+X-Google-Smtp-Source: ABdhPJx1wPczKrARywIlL+889LXeODVcVFlmFIY4RimQzhPKlhgMYi4zYGPBG+uymXtjUD2gO8ix3BsOJZOV/jcCnXM=
+X-Received: by 2002:a05:6512:3402:b0:448:c29:ce8a with SMTP id
+ i2-20020a056512340200b004480c29ce8amr1948239lfr.633.1646476116683; Sat, 05
+ Mar 2022 02:28:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6512:e8a:0:0:0:0 with HTTP; Sat, 5 Mar 2022 02:28:36
+ -0800 (PST)
+Reply-To: sgtkaylam28@gmail.com
+From:   sgtkayla manthey <sgtkaylam20@gmail.com>
+Date:   Sat, 5 Mar 2022 02:28:36 -0800
+Message-ID: <CA+RGHE-2YB+pR+K4Z-Ozoexgp0DnQ1gozfOaCC-E0x2De53Lkw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Xiaoke Wang <xkernel.wang@foxmail.com>
-
-kstrdup() is also a memory allocation-related function, it returns NULL
-when some memory errors happen. So it is better to check the return
-value of it so to catch the memory error in time. Besides, there should
-have a kfree() to clear up the allocation if we get a failure later in
-this function to prevent memory leak.
-
-Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
----
-I am sorry that I forgot to send this.
-Changelogs:
-v1->v2 add kfree() on the error path.
-v2->v3 change the err lable.
- drivers/iio/dummy/iio_simple_dummy.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
-index c0b7ef9..99e7731 100644
---- a/drivers/iio/dummy/iio_simple_dummy.c
-+++ b/drivers/iio/dummy/iio_simple_dummy.c
-@@ -575,10 +575,9 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	 */
- 
- 	swd = kzalloc(sizeof(*swd), GFP_KERNEL);
--	if (!swd) {
--		ret = -ENOMEM;
--		goto error_kzalloc;
--	}
-+	if (!swd)
-+		return ERR_PTR(-ENOMEM);
-+
- 	/*
- 	 * Allocate an IIO device.
- 	 *
-@@ -590,7 +589,7 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	indio_dev = iio_device_alloc(parent, sizeof(*st));
- 	if (!indio_dev) {
- 		ret = -ENOMEM;
--		goto error_ret;
-+		goto error_free_swd;
- 	}
- 
- 	st = iio_priv(indio_dev);
-@@ -616,6 +615,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- 	 *    indio_dev->name = spi_get_device_id(spi)->name;
- 	 */
- 	indio_dev->name = kstrdup(name, GFP_KERNEL);
-+	if (!indio_dev->name) {
-+		ret = -ENOMEM;
-+		goto error_free_device;
-+	}
- 
- 	/* Provide description of available channels */
- 	indio_dev->channels = iio_dummy_channels;
-@@ -650,10 +653,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
- error_unregister_events:
- 	iio_simple_dummy_events_unregister(indio_dev);
- error_free_device:
-+	kfree(indio_dev->name);
- 	iio_device_free(indio_dev);
--error_ret:
-+error_free_swd:
- 	kfree(swd);
--error_kzalloc:
- 	return ERR_PTR(ret);
- }
- 
--- 
+Greetings,
+Please did you receive my previous message? Write me back

@@ -2,83 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4E14CE24B
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 03:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 347A44CE266
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 04:22:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbiCECkd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Mar 2022 21:40:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54352 "EHLO
+        id S230014AbiCEDXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Mar 2022 22:23:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiCECkd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Mar 2022 21:40:33 -0500
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4497124F868
-        for <linux-iio@vger.kernel.org>; Fri,  4 Mar 2022 18:39:44 -0800 (PST)
-Received: by mail-oo1-xc32.google.com with SMTP id n5-20020a4a9545000000b0031d45a442feso11512802ooi.3
-        for <linux-iio@vger.kernel.org>; Fri, 04 Mar 2022 18:39:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=R36Re713qn0x9bA4c90DctwTgMsTX5nCST5fDiXQuK0=;
-        b=UsNDJp7sgWG5YqhEVNewuRSgDNXvyyRCPS/wsv7EyodRQscR0WUpCw2zc2z3xksEAG
-         OSJjcqNEIIDhsQwSrU5irPnurMOk5fzNribJ1Fp9HrFOqkSDDgi5Jlv1DMFkJKQlQvLR
-         loubkrTVYOZVt8iMPYES4Dd1yGgUSORiSn/3dIMYf2b6Ak5BG9m/L6RAPqVQjLMpEpCG
-         P+4lF51wO0aeqiAONjJe7tyiFr3rBLAIN6ZHnDu8j5fwHRqyl9BbJCi/etyOcXRPdIlf
-         askPNjhTTRHRbmYOOe3aWpnlXVxrCWL4OXUObZ9C4agBlovIECXD35YHsylNSv0JIqRY
-         OsOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=R36Re713qn0x9bA4c90DctwTgMsTX5nCST5fDiXQuK0=;
-        b=1ThJ64T39472HLWA60SlekuAiFViRkbaDjpvE8ITe3ordWRiTYphX2uy6w0l+pLNU7
-         6Nux4Gp+1vWnjWFy65ZZQMKlMGzB+Whq1wnGFjeXURQLzt4rmK9s0HgQ+4ArqZWytaq7
-         0xnnO+jM9I8ZJe/4OsTrGwb0NCYiLaaoRWIplTur0v95QeuPK19FcKjvQPmSfsydDz6Q
-         jF7pSuB6U8rTjN6idokomVdn8yuUwWiim+YuD+Ws+vPmEvHwtUlHVne7E1DsJNbOiwSh
-         t+xZ8emO0CXQ1N3qXxXlLZ6O+HrUPPuxYcxkooZi1KZgIvNkNH2jkoc3+Ldoj1Uwsno0
-         wjGw==
-X-Gm-Message-State: AOAM532Xy4HVRynMRg1gvjT4o6kdBJZJP1sassr4Nd2Nr/inWFUjNWzF
-        rV9RKXOUN/n8ZdHIZabH5po=
-X-Google-Smtp-Source: ABdhPJwGh6Vd3jLvUE71r4RwYlF0xmFi79mVGUWjfNBHTKOMG103z6bvsWBRkl0jm1iMINHFVbLX6A==
-X-Received: by 2002:a4a:4346:0:b0:316:7659:3fd0 with SMTP id l6-20020a4a4346000000b0031676593fd0mr549379ooj.42.1646447983631;
-        Fri, 04 Mar 2022 18:39:43 -0800 (PST)
-Received: from marsc.168.1.7 ([2804:30c:b7a:7b00:70e:e3d5:be94:991])
-        by smtp.gmail.com with ESMTPSA id w36-20020a05687033a400b000d75f1d9b82sm3119289oae.47.2022.03.04.18.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Mar 2022 18:39:43 -0800 (PST)
-Date:   Fri, 4 Mar 2022 23:39:40 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Colin Ian King <colin.i.king@gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7280a: Fix wrong variable used when setting
- thresholds.
-Message-ID: <YiLNbIrWUC+LzL/A@marsc.168.1.7>
-References: <20220226175604.662422-1-jic23@kernel.org>
+        with ESMTP id S229818AbiCEDXA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Mar 2022 22:23:00 -0500
+X-Greylist: delayed 456 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 04 Mar 2022 19:22:09 PST
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F791405F3
+        for <linux-iio@vger.kernel.org>; Fri,  4 Mar 2022 19:22:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1646450525;
+        bh=MoRWkBCGHh6uj/3DTU7PAocT9mJ5UpfhoQY8dYgmb7M=;
+        h=From:To:Cc:Subject:Date;
+        b=Y0wswlwBjMVhrbdCc13ukZJcCO+brELuvLFB/mLfUKUfINEzcdq5+MS0dTInWIVac
+         NWszbqU2M8Rs/cKXFyb+gIxigpqEPG98JcSOm94Ks3nhwLqupNAiUVv/Rb2K7KDlp/
+         uIp28jbGpIYWb/krlhqNR8cmIxyiCHboL1aLvozo=
+Received: from localhost.localdomain ([218.197.153.188])
+        by newxmesmtplogicsvrszb6.qq.com (NewEsmtp) with SMTP
+        id 398186FF; Sat, 05 Mar 2022 11:14:24 +0800
+X-QQ-mid: xmsmtpt1646450064tj6nqdwyo
+Message-ID: <tencent_C920CFCC33B9CC1C63141FE1334A39FF8508@qq.com>
+X-QQ-XMAILINFO: MmpliBmRb3iCCGP4N5Q8XMBzTgW1bB6sAyaLNEOLz0Riv5fxR4iYWaAkIr7YYT
+         MKghDj0A7G68NVGVzv9hGqsUPnQKDjj3fqk1VWPFmonI4n56fsmUYGokbSJZcB/G5FiO9yT3ZAMO
+         lmsN/loqfL7ZR1/kfXWUeeD9Pz2s0A2TQbyzSVZnITwuDdhvyJvcbJPR+VwrfuV8jH8Q7XzKmtyn
+         YsFgyDtpVArt9aufcOni5iQ/MMkQUwSrOduGkQq9U1iVuisPKA68xdkNNyOpJqwySxEuq//wrNlv
+         QCiPut/KbKYyugn4nwMYxreSNXC+SrU5T+6zi2D4jGXcSxeq88gcxP7lK2w/c5VtQ2EYO7YN0zg5
+         ZHkf601MiexSbb9hl31xIbOpv8FViXwj8UASwTj3exO4BV0W97NOYB6/y+Tq7HXMnmS/e0HMsICv
+         g7UGPYpvLpiN3AGCQgEQR7b/Whoh9hbVXNszZpuquNNE59wpJTh+j9ER12s+JQuuKzvHTan14bfC
+         fjEANgduU1srY2ljIEq/GbHizI+VmbMRHA/PxuZV1IJIXJOtTo2soqn8Vk+0mmlm/KKa0mdaYeqt
+         Fux2zw15GRnwCFwAaYOLMdSpaHpUITRS8eRLcRlKCNNj9Wjcsw5YVGTA3Sxiy4n0Bmqay3aIiCwX
+         RWoXr2utfvKltiqd5rWWpp2TrkoAC3IaYNyrDrgV52jYwZ5Z29tgD546f7DL1bL8ZACFCd22R7nq
+         hK1gyUlbTTSC5sa583zup17/44oaYNk8zGfM+XHLMleRDcgewKVkwTL0ljYMv6Cy+jw7tReZw4hO
+         HDq+Xsi1aCt/b/rNMqag5bM/PhgDn3Opq7gHcRvW6gsTAKdvZ509z8a353iHUt0LzWYzP0WZ6fYd
+         ReW0CeLNKFg/rCr3DMxVW3ECFFIO8jkZh6VzFEnwnz+E7T/J7LDZRzvskrKgw904YZscqWl/JnfX
+         dyPFHDNMXm4/+VpJNfY2RS3yKZUC6uHQYvSC4/Rnw=
+From:   xkernel.wang@foxmail.com
+To:     jic23@kernel.org, jic23@jic23.retrosnub.co.uk
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Xiaoke Wang <xkernel.wang@foxmail.com>
+Subject: [PATCH v3] iio: dummy: iio_simple_dummy: check the return value of kstrdup()
+Date:   Sat,  5 Mar 2022 11:14:05 +0800
+X-OQ-MSGID: <20220305031405.5735-1-xkernel.wang@foxmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220226175604.662422-1-jic23@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 02/26, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Name of variable change missed in refactoring patch.
-> 
-> Fixes: 112bf4aa4afb ("staging:iio:adc:ad7280a: Switch to standard event control")
-> Reported-by: Colin Ian King <colin.i.king@gmail.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+From: Xiaoke Wang <xkernel.wang@foxmail.com>
 
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+kstrdup() is also a memory allocation-related function, it returns NULL
+when some memory errors happen. So it is better to check the return
+value of it so to catch the memory error in time. Besides, there should
+have a kfree() to clear up the allocation if we get a failure later in
+this function to prevent memory leak.
+
+Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
+---
+I am sorry that I forgot to send this.
+Changelogs:
+v1->v2 add kfree() on the error path.
+v2->v3 change the err lable.
+ drivers/iio/dummy/iio_simple_dummy.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
+index c0b7ef9..99e7731 100644
+--- a/drivers/iio/dummy/iio_simple_dummy.c
++++ b/drivers/iio/dummy/iio_simple_dummy.c
+@@ -575,10 +575,9 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	 */
+ 
+ 	swd = kzalloc(sizeof(*swd), GFP_KERNEL);
+-	if (!swd) {
+-		ret = -ENOMEM;
+-		goto error_kzalloc;
+-	}
++	if (!swd)
++		return ERR_PTR(-ENOMEM);
++
+ 	/*
+ 	 * Allocate an IIO device.
+ 	 *
+@@ -590,7 +589,7 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	indio_dev = iio_device_alloc(parent, sizeof(*st));
+ 	if (!indio_dev) {
+ 		ret = -ENOMEM;
+-		goto error_ret;
++		goto error_free_swd;
+ 	}
+ 
+ 	st = iio_priv(indio_dev);
+@@ -616,6 +615,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	 *    indio_dev->name = spi_get_device_id(spi)->name;
+ 	 */
+ 	indio_dev->name = kstrdup(name, GFP_KERNEL);
++	if (!indio_dev->name) {
++		ret = -ENOMEM;
++		goto error_free_device;
++	}
+ 
+ 	/* Provide description of available channels */
+ 	indio_dev->channels = iio_dummy_channels;
+@@ -650,10 +653,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ error_unregister_events:
+ 	iio_simple_dummy_events_unregister(indio_dev);
+ error_free_device:
++	kfree(indio_dev->name);
+ 	iio_device_free(indio_dev);
+-error_ret:
++error_free_swd:
+ 	kfree(swd);
+-error_kzalloc:
+ 	return ERR_PTR(ret);
+ }
+ 
+-- 

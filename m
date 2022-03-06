@@ -2,113 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C81F4CE5B7
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Mar 2022 17:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C44D54CE9C7
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Mar 2022 07:51:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbiCEQFf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Mar 2022 11:05:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55092 "EHLO
+        id S233113AbiCFGw1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Mar 2022 01:52:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbiCEQFe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Mar 2022 11:05:34 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C62369C1;
-        Sat,  5 Mar 2022 08:04:44 -0800 (PST)
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K9qJY32ffz67WtW;
-        Sun,  6 Mar 2022 00:03:25 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Sat, 5 Mar 2022 17:04:42 +0100
-Received: from localhost (10.47.66.18) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Sat, 5 Mar
- 2022 16:04:42 +0000
-Date:   Sat, 5 Mar 2022 16:04:39 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     <cgel.zte@gmail.com>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>,
-        <tangbin@cmss.chinamobile.com>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: Re: [PATCH] iio:adc:twl6030: Use of_device_get_match_data()
-Message-ID: <20220305160439.00000184@Huawei.com>
-In-Reply-To: <20220304015932.2061712-1-chi.minghao@zte.com.cn>
-References: <20220304015932.2061712-1-chi.minghao@zte.com.cn>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S233098AbiCFGwC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Mar 2022 01:52:02 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D196A7090F
+        for <linux-iio@vger.kernel.org>; Sat,  5 Mar 2022 22:51:01 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id p20so16361322ljo.0
+        for <linux-iio@vger.kernel.org>; Sat, 05 Mar 2022 22:51:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=KDgAx1nMZI4VA0728iAuqALj69hyn7X0WLLUiz2m+OH09NDtWJqkn0K0IjhaqXccDL
+         nYA9IS56U+BvEYDp5ZuYOTDJ28DkbGQXOo4nCoFRXwOq8btCUGBKve+nLdvXGAtQGfZd
+         8/3HmQyIohZytZNIAaZ2YSJ+VGfF2cuAbX+92kqJIy7dPjcCYPV+qxcIVHj5OJkNioe8
+         RnnPJV63I7FofbcYlKCR7cawwHR+Gyj/OksLFoNh7LOBENUnMHRRrWfgS+R5N0DbQgRd
+         FM7OvtlHYW5haJ9bCovh/xFv8pj40s/F/HFWyLhlvxnDTkjGlvvz7xTkeBicCtgptiHh
+         fIkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=La6A6nvf6Znvo2WLhiYEbPtWjcQWPPDbHzHcTCaX5Efa2BEzpuTGoqTeQVmwoMs4TG
+         f0LQ7aGh7TKwFxGSaQFZjWQ6Q9+sgSPsh6dmHm4Kr7YHKg1Izq8kdVA8SRqLvFRJ5UFw
+         YMjExwaZnZk2UrSPeA6fWK3XSsncePMlIp9TLwWrf3+CL4udthAVSIrvUKIiQ1QNRghA
+         L1zSW1hYhnIkr1DTyOWXObH/zCrvdWQ8Z4+lxQWJR5/H5sBhMJDf9DMGhU3e21sF7pyb
+         EGIBFsKUU94Is1xPslAn9WzFklpG5fns7wkVYSztPdV5Z9g+7LjQtFXJHVsH6TTRet+Q
+         zigQ==
+X-Gm-Message-State: AOAM530xfkSJ9KufxbmHy5tkjM5hBNDMyjSGGChMxo0QpsxluqNVPigm
+        45v5i5sZlRczbYRFYYoevEHDETm1pEJSIUtKJZe5pUEpME0=
+X-Google-Smtp-Source: ABdhPJzq04i8VJyC6uwySEx5tzgrtxCg/XL0hqdBTWFWm66/zQAuy3m2ubrZV75jrYUP9jvmG0PdhfRUhLuebg8/B7w=
+X-Received: by 2002:a2e:94c7:0:b0:247:de4e:e9bc with SMTP id
+ r7-20020a2e94c7000000b00247de4ee9bcmr2397951ljh.397.1646549448778; Sat, 05
+ Mar 2022 22:50:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.66.18]
-X-ClientProxiedBy: lhreml721-chm.china.huawei.com (10.201.108.72) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawyann@gmail.com
+Received: by 2002:ab3:7d89:0:0:0:0:0 with HTTP; Sat, 5 Mar 2022 22:50:48 -0800 (PST)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sun, 6 Mar 2022 06:50:48 +0000
+X-Google-Sender-Auth: NOWRSnt_sskMD3s295a30bcHvEs
+Message-ID: <CACppo47TD9J4Sy+vaJu1wXHqd88WqFwMNn6OdkY1khwXu3TuFw@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  4 Mar 2022 01:59:32 +0000
-cgel.zte@gmail.com wrote:
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-> From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
-> 
-> Use of_device_get_match_data() to simplify the code.
-> 
-> v1->v2:
->   iio:adc:->iio:adc:twl6030:
-Hi,
-
-For IIO please put the change log below the ---
-A few areas of the kernel do this differently but we are consistent
-in using link tags (generated when I apply the patch) to give
-access to change logs rather than having them stored for ever
-in the main git log.
-
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
-
-You haven't addressed my request in reply to previous posting
-to use device_get_match_data() and switch to the generic
-properties interfaces.  I'd rather see that done in one step
-then going via this cleanup.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/twl6030-gpadc.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
-> index afdb59e0b526..6a022e583658 100644
-> --- a/drivers/iio/adc/twl6030-gpadc.c
-> +++ b/drivers/iio/adc/twl6030-gpadc.c
-> @@ -867,16 +867,11 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	struct twl6030_gpadc_data *gpadc;
->  	const struct twl6030_gpadc_platform_data *pdata;
-> -	const struct of_device_id *match;
->  	struct iio_dev *indio_dev;
->  	int irq;
->  	int ret;
->  
-> -	match = of_match_device(of_twl6030_match_tbl, dev);
-> -	if (!match)
-> -		return -EINVAL;
-> -
-> -	pdata = match->data;
-> +	pdata = of_device_get_match_data(dev);
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*gpadc));
->  	if (!indio_dev)
-
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.

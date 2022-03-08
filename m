@@ -2,61 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA82A4D12AB
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Mar 2022 09:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6A74D1858
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Mar 2022 13:53:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345124AbiCHItv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Mar 2022 03:49:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33698 "EHLO
+        id S232900AbiCHMyK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Mar 2022 07:54:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345123AbiCHItu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Mar 2022 03:49:50 -0500
-Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A2C37A33
-        for <linux-iio@vger.kernel.org>; Tue,  8 Mar 2022 00:48:54 -0800 (PST)
-Received: by mail.olerise.pl (Postfix, from userid 1001)
-        id 13C1E443CD; Tue,  8 Mar 2022 09:46:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
-        t=1646729224; bh=ZNYiuZLXlxCdAPtstEG/gwJieB5RBwA/cHj1SZ3Mpl0=;
-        h=Date:From:To:Subject:From;
-        b=Tbf+xyq1Hqt61jk714A/DSiy7ZaXiUV4qvX/rX3Kz7IIire1/wETVW+5R4uDNmIqU
-         KGqABvbClMgcvHNuvJTrahWP3cDrJvO9TQzahK7MggSVZFkdoC9KnFglsaRyP911Mw
-         DX6GXFsdJMVsuOQViB9FeZFWiWaehaWXAn4ldjoEKFt9uzGtSEGVuhtFvJ/SgVstrO
-         KoirNpEdjVqrhvpEFbutJpBCbNe2X2FpIWDuD2bd1KkZ/nfLk0dVWtySBB4efqLnbu
-         IvQqXrCd8rWN19FGgZ7EOuXaZwyBJxhChygAGvod5KQq0VjbfabuG+a2pDQwImrT6l
-         azjO20tGpT/kQ==
-Received: by mail.olerise.pl for <linux-iio@vger.kernel.org>; Tue,  8 Mar 2022 08:45:41 GMT
-Message-ID: <20220308084500-0.1.26.mthf.0.6kgqhpy8h3@olerise.pl>
-Date:   Tue,  8 Mar 2022 08:45:41 GMT
-From:   =?UTF-8?Q? "Miko=C5=82aj_Rudzik" ?= <mikolaj.rudzik@olerise.pl>
-To:     <linux-iio@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.olerise.pl
+        with ESMTP id S230080AbiCHMyJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Mar 2022 07:54:09 -0500
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EEF930F55;
+        Tue,  8 Mar 2022 04:53:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1646743985;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=ZOvjYMQJYuSAVm7O4zUbUg4wy9kHYFszMrdfygxpWys=;
+    b=O8RdOKrMTmwe9zOW6kqefvinD0r7fr3s6gvUeGqRv2GX4fhgZ9U5SeOF0FIGOI79j1
+    ly/I034R7Yt7Wv91wG0PKBtH20V5vxOACjIq6Mb9hgjDue/1U4B08EjnPyB36rHN8ktZ
+    FL9R+oCO5UkVp4Nfpjew8pWk/h3U+U3XdXyBf5XKjggaZsxacxhaQ8eZs0AUzhoUZcmK
+    bgYxLt9RO8k2HOU8FZrSKOncZ7wfIwBaU8svYtdhBueHCT87yw+cTbEQXdw4jLM8gX0V
+    7fI5rG57+41O5ubL/kAV7E8+rPVpXEzGbpU5JC+LdavnRvN1XV3mgBMXRYbZlQim3Pdv
+    KiZg==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UMf2MwPVbpc9Y="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+    by smtp.strato.de (RZmta 47.40.1 DYNA|AUTH)
+    with ESMTPSA id n729cey28Cr4SGq
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 8 Mar 2022 13:53:04 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Colin Ian King <colin.king@intel.com>,
+        Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+Subject: [PATCH] iio: palmas: shut up warning about calibration mismatch (due to noise)
+Date:   Tue,  8 Mar 2022 13:53:03 +0100
+Message-Id: <1cee45bfc3fa2ab59dcc17242fb52468035360a1.1646743982.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_BL,
-        RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Although technically checking for ADC values below 0 is correct,
+because they are outside of the calibration values, there is usually
+noise which spuriously fills the console log with error messages if
+calculated input voltage gets close to 0V.
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Ignore small negative calculated values, but clamp them to 0.
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ drivers/iio/adc/palmas_gpadc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
+index f9c8385c72d3..bcfa6a7f6cb2 100644
+--- a/drivers/iio/adc/palmas_gpadc.c
++++ b/drivers/iio/adc/palmas_gpadc.c
+@@ -376,7 +376,8 @@ static int palmas_gpadc_get_calibrated_code(struct palmas_gpadc *adc,
+ 					adc->adc_info[adc_chan].gain_error;
+ 
+ 	if (val < 0) {
+-		dev_err(adc->dev, "Mismatch with calibration\n");
++		if (val < -10)
++			dev_err(adc->dev, "Mismatch with calibration var = %d\n", val);
+ 		return 0;
+ 	}
+ 
+-- 
+2.33.0
 
-
-Pozdrawiam
-Miko=C5=82aj Rudzik

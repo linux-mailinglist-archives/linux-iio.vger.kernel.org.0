@@ -2,45 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 103F54D53DC
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Mar 2022 22:47:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49E3E4D555E
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Mar 2022 00:29:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236059AbiCJVrU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Mar 2022 16:47:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49740 "EHLO
+        id S235122AbiCJXaq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Mar 2022 18:30:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235276AbiCJVrT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Mar 2022 16:47:19 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58531194159
-        for <linux-iio@vger.kernel.org>; Thu, 10 Mar 2022 13:46:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S233249AbiCJXap (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Mar 2022 18:30:45 -0500
+X-Greylist: delayed 82519 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 10 Mar 2022 15:29:41 PST
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC44D74842
+        for <linux-iio@vger.kernel.org>; Thu, 10 Mar 2022 15:29:41 -0800 (PST)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 169AFB826A7
-        for <linux-iio@vger.kernel.org>; Thu, 10 Mar 2022 21:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DE1C340E8;
-        Thu, 10 Mar 2022 21:46:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1646948775;
-        bh=fEHLrQ+VErS61Jq3Je/J0aYP13WAW0GOmSDYSXN22rY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ohbHOR1ZABiQiWPTKaRmEaE60nbXCt9HxM8UrneLF16W0L5GIDl1kCIuayE6UdoYS
-         NQLFitc/gfKQKpy0B4QnvLVRLtIlJlrVwdmgWXxBJiQ+BJDqaYVQ64aYyPVObLh6AL
-         bj/fVWsqF/tcBB+L8Ek1bD/DRyPq52wM/EjJ8YEU=
-Date:   Thu, 10 Mar 2022 22:46:13 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     William Breathitt Gray <vilhelm.gray@gmail.com>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] Counter updates, cleanups, and features for 5.18
-Message-ID: <YipxpdPZEK2wpeoc@kroah.com>
-References: <YiItE3YONnTILC9Q@ishi>
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id E5AD28392C;
+        Fri, 11 Mar 2022 00:29:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1646954979;
+        bh=m3XZu/VIxe8GFVs1CggJRma0bSL/pTPn7RPKlrfTtH8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=m4MyIcVnXLaUyszpRBK36kGCZCfBgM0muUbh7rrsKv3UTO6XFLOIQqzRUt2MHvkqm
+         AwmLe37j0Nh+7tr0FT2TQBkNlwgXDIsArnq/da0z657i4JHX/1Wcv2Hg8qPEZk/G85
+         46vLipQF/skWcOi+9eF0vnZCvE746Cg6wFlOwhe5yE4twruM0GXZ3bl2mNFNAnw6JK
+         rOge1dNpsEMc69T8FS1LZdJisL+j0zWPhSWnHvkJwuvGAGy46F3XqHGjeVKrBPCgdx
+         f2jKJuZ4LwmEdDGRY2yRS5/aiiXio/tRq0e91GYL7LAzFBthAkl66yD3oMiZmZYb6X
+         z9KfuwoRJT3FQ==
+Message-ID: <082e1654-74b7-aed2-4915-f8dd304540d6@denx.de>
+Date:   Fri, 11 Mar 2022 00:29:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YiItE3YONnTILC9Q@ishi>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH 4/6] iio: adc: ti-ads1015: Deduplicate channel macros
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20220310003402.490478-1-marex@denx.de>
+ <20220310003402.490478-4-marex@denx.de> <YioKZ6EZvYHOOFMe@smile.fi.intel.com>
+From:   Marek Vasut <marex@denx.de>
+In-Reply-To: <YioKZ6EZvYHOOFMe@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,21 +59,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 04, 2022 at 10:15:31AM -0500, William Breathitt Gray wrote:
-> The following changes since commit 7e57714cd0ad2d5bb90e50b5096a0e671dec1ef3:
+On 3/10/22 15:25, Andy Shevchenko wrote:
+> On Thu, Mar 10, 2022 at 01:34:00AM +0100, Marek Vasut wrote:
+>> These macros differ only in the number of valid bits of each ADC sample
+>> and the shift of those bits, i.e. ADS1015 is 12bit ADC shifted by 4 left,
+>> ADS1115 is 16bit ADC shifted by 0. No functional change.
 > 
->   Linux 5.17-rc6 (2022-02-27 14:36:33 -0800)
+>> Signed-off-by: Marek Vasut <marex@denx.de>
 > 
-> are available in the Git repository at:
+> ...
 > 
->   https://gitlab.com/vilhelmgray/counter.git tags/counter-for-5.18a
+>> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+>> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> You may consider using --cc parameter in `git send-email` to avoid this noise
+> in the commit messages.
 
-I don't have a gpg key for you, and I really don't trust any
-non-kernel.org git infrastructure at the moment.  Any chance you can get
-a kernel.org account?
+This is deliberate so I can keep track of who to CC on which patch.
 
-In the meantime, can you send me these by email?
+> ...
+> 
+>> -		.realbits = 12,					\
+>> +		.realbits = (_realbits),			\
+>>   		.storagebits = 16,				\
+> 
+> This seems inconsistent a bit. What if the next chip wants to have more than
+> 16 bits in realbits?
 
-thanks,
+When such a chip exists, this can be parametrized as well.
 
-greg k-h
+> ...
+> 
+>> -		.realbits = 16,					\
+>> +		.realbits = (_realbits),			\
+>>   		.storagebits = 16,				\
+> 
+> Ditto.
+> 
+> I see two options:
+> 1) add static assert to make sure realbits <= storagebits;
+
+Does static_assert work in array of structures (I don't think it does) ?
+
+> 2) make it also configurable.
+
+That would be unnecessary duplication, this patch is trying to 
+DEduplicate the driver code, not REduplicate it differently.

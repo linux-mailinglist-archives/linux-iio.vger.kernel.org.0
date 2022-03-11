@@ -2,201 +2,314 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D93DF4D65EA
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Mar 2022 17:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE6B44D661E
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Mar 2022 17:25:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350157AbiCKQTx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Mar 2022 11:19:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50278 "EHLO
+        id S1350402AbiCKQ0t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Mar 2022 11:26:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240035AbiCKQTw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Mar 2022 11:19:52 -0500
-Received: from mxd1.seznam.cz (mxd1.seznam.cz [IPv6:2a02:598:a::78:210])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E01D1CD7E6;
-        Fri, 11 Mar 2022 08:18:45 -0800 (PST)
-Received: from email.seznam.cz
-        by email-smtpc21b.ko.seznam.cz (email-smtpc21b.ko.seznam.cz [10.53.18.27])
-        id 732ddcdc282388b572841082;
-        Fri, 11 Mar 2022 17:18:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz; s=beta;
-        t=1647015502; bh=+SW7gvP/Lj8jgIjjy9F4j1gSQrTfgZOYTRmKc2+iewE=;
-        h=Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding:X-szn-frgn:
-         X-szn-frgc;
-        b=AA8YgM41U/reS56yOeHlVqGucN3innKpwQtCIqMEr18w4SE27EE+oybUpVgw5Wkbp
-         nst9MqQGirDAtGJQwRLnSqz8fH9Oaw/iN8E0pDECpwJH4M6biz4ZpwhDxVbME5py+u
-         qEiKnU40B4HnA2Q2+VMLyPFna+VcdOx9eXnvOe2s=
-Received: from localhost.localdomain (ip-111-27.static.ccinternet.cz [147.161.27.111])
-        by email-relay29.ko.seznam.cz (Seznam SMTPD 1.3.136) with ESMTP;
-        Fri, 11 Mar 2022 17:18:17 +0100 (CET)  
-From:   michael.srba@seznam.cz
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH v2 2/2] iio: imu: inv_mpu6050: Add support for ICM-20608-D
-Date:   Fri, 11 Mar 2022 17:16:00 +0100
-Message-Id: <20220311161600.1469-3-michael.srba@seznam.cz>
+        with ESMTP id S1350342AbiCKQ0g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Mar 2022 11:26:36 -0500
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F41F1B8BF7;
+        Fri, 11 Mar 2022 08:25:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1647015902;
+  x=1678551902;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eqHYnpjKDOMF1TwiA1Bf1WVBNshhdDSbtR3z1p21pAk=;
+  b=LkpaT22z9yzvNZbzx0/U1CPCP2w2+HflUInWlFPV5q44tzUtQbOhBmWT
+   LJVC/RPbvDDO9siDFpGN6BLms1CZOz6Ab+h0tZFH2O2hTk7Pi/Mqu39yg
+   alOd7kEXNLs6jq6a6zuQGQfLvzlF69e0m0vT/q+TBmlntQW7A+Lp3y7b3
+   WAJSlvzconIXizP5VIR0cIs1t+WnsIvIndtVhFaGkpcpu0xuxeVwMfPXR
+   369R4GwH+Qjsx/4JHbFoy6SuHzeFqMj7Om0gZ1VCBCLZrrTE8396ujnCT
+   7UD6NFa/9w2g2PWK7MD+nZUHRnkVKjEUxUl3VMnsSIN8wzx70y/K5MKaQ
+   Q==;
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     <linux-kernel@vger.kernel.org>
+CC:     <kernel@axis.com>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        <devicetree@vger.kernel.org>, <linux-um@lists.infradead.org>,
+        <shuah@kernel.org>, <brendanhiggins@google.com>,
+        <linux-kselftest@vger.kernel.org>, <jic23@kernel.org>,
+        <linux-iio@vger.kernel.org>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <a.zummo@towertech.it>,
+        <alexandre.belloni@bootlin.com>, <linux-rtc@vger.kernel.org>,
+        <corbet@lwn.net>, <linux-doc@vger.kernel.org>
+Subject: [RFC v1 00/10] roadtest: a driver testing framework
+Date:   Fri, 11 Mar 2022 17:24:35 +0100
+Message-ID: <20220311162445.346685-1-vincent.whitchurch@axis.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220311161600.1469-1-michael.srba@seznam.cz>
-References: <20220311161600.1469-1-michael.srba@seznam.cz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-szn-frgn: <277e48de-6894-46fe-a3ab-fdc9f1a88712>
-X-szn-frgc: <0>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Michael Srba <Michael.Srba@seznam.cz>
+This patchset proposes roadtest, a device-driver testing framework.  Drivers
+are tested under User Mode Linux (UML) and interact with mocked/modelled
+hardware.  The tests and hardware models are written in Python, the former
+using Python's built-in unittest framework.
 
-The difference between the ICM-20608-D and the other ICM-20608
-variants is the addition of a DMP (Digital Motion Processor) core.
-This difference is deemed substantial enough to change the WHOAMI
-register value.
-Since this driver doesn't currently acknowledge the exisence of
-something like a DMP core, simply copy ICM-20608 except for the
-aforementioned WHOAMI register.
+Drivers are tested via their userspace interfaces.  The hardware models allow
+tests to inject values into registers and assert that drivers control the
+hardware in the right way and react as expected to stimuli.
 
-Signed-off-by: Michael Srba <Michael.Srba@seznam.cz>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
-changes:
- - v2: none
----
- drivers/iio/imu/inv_mpu6050/Kconfig        | 4 ++--
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 9 +++++++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  | 6 ++++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  | 2 ++
- drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c  | 5 +++++
- 5 files changed, 24 insertions(+), 2 deletions(-)
+Roadtest is meant to be used for relatively simple drivers, such as the ones
+part of the IIO, regulator and RTC subsystems.
 
-diff --git a/drivers/iio/imu/inv_mpu6050/Kconfig b/drivers/iio/imu/inv_mpu6050/Kconfig
-index 9c625517173a..3636b1bc90f1 100644
---- a/drivers/iio/imu/inv_mpu6050/Kconfig
-+++ b/drivers/iio/imu/inv_mpu6050/Kconfig
-@@ -16,7 +16,7 @@ config INV_MPU6050_I2C
- 	select REGMAP_I2C
- 	help
- 	  This driver supports the Invensense MPU6050/9150,
--	  MPU6500/6515/6880/9250/9255, ICM20608/20609/20689, ICM20602/ICM20690
-+	  MPU6500/6515/6880/9250/9255, ICM20608(D)/20609/20689, ICM20602/ICM20690
- 	  and IAM20680 motion tracking devices over I2C.
- 	  This driver can be built as a module. The module will be called
- 	  inv-mpu6050-i2c.
-@@ -28,7 +28,7 @@ config INV_MPU6050_SPI
- 	select REGMAP_SPI
- 	help
- 	  This driver supports the Invensense MPU6000,
--	  MPU6500/6515/6880/9250/9255, ICM20608/20609/20689, ICM20602/ICM20690
-+	  MPU6500/6515/6880/9250/9255, ICM20608(D)/20609/20689, ICM20602/ICM20690
- 	  and IAM20680 motion tracking devices over SPI.
- 	  This driver can be built as a module. The module will be called
- 	  inv-mpu6050-spi.
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 597768c29a72..86fbbe904050 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -217,6 +217,15 @@ static const struct inv_mpu6050_hw hw_info[] = {
- 		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
- 		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
- 	},
-+	{
-+		.whoami = INV_ICM20608D_WHOAMI_VALUE,
-+		.name = "ICM20608D",
-+		.reg = &reg_set_6500,
-+		.config = &chip_config_6500,
-+		.fifo_size = 512,
-+		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
-+		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
-+	},
- 	{
- 		.whoami = INV_ICM20609_WHOAMI_VALUE,
- 		.name = "ICM20609",
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-index fe03707ec2d3..ed52b27409ac 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-@@ -29,6 +29,7 @@ static bool inv_mpu_i2c_aux_bus(struct device *dev)
- 
- 	switch (st->chip_type) {
- 	case INV_ICM20608:
-+	case INV_ICM20608D:
- 	case INV_ICM20609:
- 	case INV_ICM20689:
- 	case INV_ICM20602:
-@@ -182,6 +183,7 @@ static const struct i2c_device_id inv_mpu_id[] = {
- 	{"mpu9250", INV_MPU9250},
- 	{"mpu9255", INV_MPU9255},
- 	{"icm20608", INV_ICM20608},
-+	{"icm20608d", INV_ICM20608D},
- 	{"icm20609", INV_ICM20609},
- 	{"icm20689", INV_ICM20689},
- 	{"icm20602", INV_ICM20602},
-@@ -225,6 +227,10 @@ static const struct of_device_id inv_of_match[] = {
- 		.compatible = "invensense,icm20608",
- 		.data = (void *)INV_ICM20608
- 	},
-+	{
-+		.compatible = "invensense,icm20608d",
-+		.data = (void *)INV_ICM20608D
-+	},
- 	{
- 		.compatible = "invensense,icm20609",
- 		.data = (void *)INV_ICM20609
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index c6aa36ee966a..8e14f20b1314 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -76,6 +76,7 @@ enum inv_devices {
- 	INV_MPU9250,
- 	INV_MPU9255,
- 	INV_ICM20608,
-+	INV_ICM20608D,
- 	INV_ICM20609,
- 	INV_ICM20689,
- 	INV_ICM20602,
-@@ -394,6 +395,7 @@ struct inv_mpu6050_state {
- #define INV_MPU9255_WHOAMI_VALUE		0x73
- #define INV_MPU6515_WHOAMI_VALUE		0x74
- #define INV_ICM20608_WHOAMI_VALUE		0xAF
-+#define INV_ICM20608D_WHOAMI_VALUE		0xAE
- #define INV_ICM20609_WHOAMI_VALUE		0xA6
- #define INV_ICM20689_WHOAMI_VALUE		0x98
- #define INV_ICM20602_WHOAMI_VALUE		0x12
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-index 6800356b25fb..ce8ab6db2bf2 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-@@ -74,6 +74,7 @@ static const struct spi_device_id inv_mpu_id[] = {
- 	{"mpu9250", INV_MPU9250},
- 	{"mpu9255", INV_MPU9255},
- 	{"icm20608", INV_ICM20608},
-+	{"icm20608d", INV_ICM20608D},
- 	{"icm20609", INV_ICM20609},
- 	{"icm20689", INV_ICM20689},
- 	{"icm20602", INV_ICM20602},
-@@ -113,6 +114,10 @@ static const struct of_device_id inv_of_match[] = {
- 		.compatible = "invensense,icm20608",
- 		.data = (void *)INV_ICM20608
- 	},
-+	{
-+		.compatible = "invensense,icm20608d",
-+		.data = (void *)INV_ICM20608D
-+	},
- 	{
- 		.compatible = "invensense,icm20609",
- 		.data = (void *)INV_ICM20609
+Questions and answers:
+
+= Why do we need this?
+
+There are a large amount of these kind of drivers in the kernel.  Most of the
+hardware is not available in current CI systems so most drivers can only, at
+best, be build-tested there.  Even basic soundness such as a driver
+successfully probing and binding to the devices it tries to be support cannot
+be tested.  Drivers cannot be easily regression-tested to ensure that bugs
+fixed once do not get reintroduced.
+
+Many drivers support multiple related hardware variants, and far from all patch
+submitters have access to all the variants which the driver that they are
+patching supports, so there is no way for them to easily verify that they
+haven't broken something basic on a variant which they do not own.
+
+Furthermore, hardware can be used in many different configurations with drivers
+supporting many different devicetree properties, so even just having access to
+all the variants would be insufficient.
+
+On top of that, some of the chips measure environmental conditions such as
+temperature, so testing extreme cases may not be simple even if one has access
+to the hardware.
+
+All this makes development, modification, maintenance, and reviewing of these
+drivers harder than it necessarily needs to be.  Roadtest hopes to make some of
+these things slightly easier by providing a framework to create hardware
+models/mocks and to write testcases which exercise drivers using these models.
+
+= Do you have some specific examples of the kind of code this could be used to
+  test?
+
+Here is an example of a patch which can easily be regression-tested using
+roadtest (in fact, this series includes such a regression test) but is much
+harder to do so automatically with real hardware since it requires specific
+environmental conditions:
+
+ iio: light: opt3001: Fixed timeout error when 0 lux
+ https://lore.kernel.org/lkml/20210920125351.6569-1-valek@2n.cz/
+
+Here is another example.  This driver has code which correctly parses a
+documented devicetree property (amstaos,proximity-diodes) but which then fails
+to actually communicate this setting to the hardware in any way.  Such code can
+be easily tested with roadtest since the framework integrates devicetree
+support and provides functions to assert that drivers writes expected registers
+with expected values:
+
+ drivers/iio/light/tsl2772.c tsl2772_read_prox_diodes()
+
+(Both the above examples happen to be from the same subsystem but that should
+in no way be taken to imply that such issues are unique to that subsystem or
+that that subsystem has more of them.)
+
+= How does this relate to kselftests?
+
+Tests in kselftests also test kernel code using the userspace interfaces, but
+that's about what's common between the frameworks.  kselftests has other goals
+and does not provide any kind of mechanism for hardware mocking.
+
+= How does this relate to kunit?
+
+Kunit is for unit testing of functions in kernel code, and is not meant for
+testing kernel code via userspace interfaces.  It could in theory be used to
+test some of the simple drivers too, but that would require (1) a large amount
+of mocking code in various kernel frameworks, and, more importantly, (2)
+refactoring of the drivers to be tested.
+
+This can be contrasted with roadtest which works with mostly unmodified drivers
+and which mocks the hardware at the lowest level without having to change
+kernel frameworks.
+
+= How do I use it?
+
+See Documentation/dev-tools/roadtest.rst added by the documentation patch for
+more information about running and writing tests using this framework.
+
+= What's included in the patchset?
+
+The current framework allows developing tests for hardware which uses the I2C
+bus.  Hardware models can also control GPIOs and use them to trigger
+interrupts.
+
+This series includes tests for some IIO, regulator and RTC drivers.  The
+regulator and RTC tests depend on a few driver patches which are either in
+review or in linux-next.  These are noted in the commit messages.
+
+The entire patch set, including the required dependencies, is also available in
+a git tree:
+
+ https://github.com/vwax/linux/commits/roadtest/rfc-v1
+
+Cc: linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+
+Cc: shuah@kernel.org
+Cc: brendanhiggins@google.com
+Cc: linux-kselftest@vger.kernel.org
+
+Cc: jic23@kernel.org
+Cc: linux-iio@vger.kernel.org
+
+Cc: lgirdwood@gmail.com
+Cc: broonie@kernel.org
+
+Cc: a.zummo@towertech.it
+Cc: alexandre.belloni@bootlin.com
+Cc: linux-rtc@vger.kernel.org
+
+Cc: corbet@lwn.net
+Cc: linux-doc@vger.kernel.org
+
+Vincent Whitchurch (10):
+  roadtest: import libvhost-user from QEMU
+  roadtest: add C backend
+  roadtest: add framework
+  roadtest: add base config
+  roadtest: add build files
+  roadtest: add documentation
+  iio: light: opt3001: add roadtest
+  iio: light: vcnl4000: add roadtest
+  regulator: tps62864: add roadtest
+  rtc: pcf8563: add roadtest
+
+ Documentation/dev-tools/index.rst             |    1 +
+ Documentation/dev-tools/roadtest.rst          |  669 ++++
+ tools/testing/roadtest/.gitignore             |    2 +
+ tools/testing/roadtest/Dockerfile             |   25 +
+ tools/testing/roadtest/Makefile               |   84 +
+ tools/testing/roadtest/init.sh                |   19 +
+ tools/testing/roadtest/pyproject.toml         |   10 +
+ tools/testing/roadtest/requirements.txt       |    4 +
+ tools/testing/roadtest/roadtest/__init__.py   |    2 +
+ .../roadtest/roadtest/backend/__init__.py     |    0
+ .../roadtest/roadtest/backend/backend.py      |   32 +
+ .../testing/roadtest/roadtest/backend/gpio.py |  111 +
+ .../testing/roadtest/roadtest/backend/i2c.py  |  123 +
+ .../testing/roadtest/roadtest/backend/main.py |   13 +
+ .../testing/roadtest/roadtest/backend/mock.py |   20 +
+ .../roadtest/roadtest/backend/test_gpio.py    |   98 +
+ .../roadtest/roadtest/backend/test_i2c.py     |   84 +
+ .../testing/roadtest/roadtest/cmd/__init__.py |    0
+ tools/testing/roadtest/roadtest/cmd/main.py   |  146 +
+ tools/testing/roadtest/roadtest/cmd/remote.py |   48 +
+ .../roadtest/roadtest/core/__init__.py        |    0
+ .../testing/roadtest/roadtest/core/control.py |   52 +
+ .../roadtest/roadtest/core/devicetree.py      |  155 +
+ .../roadtest/roadtest/core/hardware.py        |   94 +
+ tools/testing/roadtest/roadtest/core/log.py   |   42 +
+ .../testing/roadtest/roadtest/core/modules.py |   38 +
+ .../testing/roadtest/roadtest/core/opslog.py  |   35 +
+ tools/testing/roadtest/roadtest/core/proxy.py |   48 +
+ tools/testing/roadtest/roadtest/core/suite.py |  286 ++
+ tools/testing/roadtest/roadtest/core/sysfs.py |   77 +
+ .../roadtest/roadtest/core/test_control.py    |   35 +
+ .../roadtest/roadtest/core/test_devicetree.py |   31 +
+ .../roadtest/roadtest/core/test_hardware.py   |   41 +
+ .../roadtest/roadtest/core/test_log.py        |   54 +
+ .../roadtest/roadtest/core/test_opslog.py     |   27 +
+ .../roadtest/roadtest/tests/__init__.py       |    0
+ .../roadtest/roadtest/tests/base/config       |   84 +
+ .../roadtest/roadtest/tests/iio/__init__.py   |    0
+ .../roadtest/roadtest/tests/iio/config        |    1 +
+ .../roadtest/roadtest/tests/iio/iio.py        |  112 +
+ .../roadtest/tests/iio/light/__init__.py      |    0
+ .../roadtest/roadtest/tests/iio/light/config  |    2 +
+ .../roadtest/tests/iio/light/test_opt3001.py  |   95 +
+ .../roadtest/tests/iio/light/test_vcnl4000.py |  132 +
+ .../roadtest/tests/iio/light/test_vcnl4010.py |  282 ++
+ .../roadtest/tests/iio/light/test_vcnl4040.py |  104 +
+ .../roadtest/tests/iio/light/test_vcnl4200.py |   96 +
+ .../roadtest/tests/regulator/__init__.py      |    0
+ .../roadtest/roadtest/tests/regulator/config  |    4 +
+ .../roadtest/tests/regulator/test_tps62864.py |  187 ++
+ .../roadtest/roadtest/tests/rtc/__init__.py   |    0
+ .../roadtest/roadtest/tests/rtc/config        |    1 +
+ .../roadtest/roadtest/tests/rtc/rtc.py        |   73 +
+ .../roadtest/tests/rtc/test_pcf8563.py        |  348 ++
+ tools/testing/roadtest/src/.gitignore         |    1 +
+ tools/testing/roadtest/src/backend.c          |  884 +++++
+ .../src/libvhost-user/include/atomic.h        |  310 ++
+ .../src/libvhost-user/libvhost-user.c         | 2885 +++++++++++++++++
+ .../src/libvhost-user/libvhost-user.h         |  691 ++++
+ 59 files changed, 8798 insertions(+)
+ create mode 100644 Documentation/dev-tools/roadtest.rst
+ create mode 100644 tools/testing/roadtest/.gitignore
+ create mode 100644 tools/testing/roadtest/Dockerfile
+ create mode 100644 tools/testing/roadtest/Makefile
+ create mode 100755 tools/testing/roadtest/init.sh
+ create mode 100644 tools/testing/roadtest/pyproject.toml
+ create mode 100644 tools/testing/roadtest/requirements.txt
+ create mode 100644 tools/testing/roadtest/roadtest/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/backend.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/gpio.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/i2c.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/main.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/mock.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/test_gpio.py
+ create mode 100644 tools/testing/roadtest/roadtest/backend/test_i2c.py
+ create mode 100644 tools/testing/roadtest/roadtest/cmd/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/cmd/main.py
+ create mode 100644 tools/testing/roadtest/roadtest/cmd/remote.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/control.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/devicetree.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/hardware.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/log.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/modules.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/opslog.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/proxy.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/suite.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/sysfs.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/test_control.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/test_devicetree.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/test_hardware.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/test_log.py
+ create mode 100644 tools/testing/roadtest/roadtest/core/test_opslog.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/base/config
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/config
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/iio.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/config
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_opt3001.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4000.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4010.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4040.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4200.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/regulator/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/regulator/config
+ create mode 100644 tools/testing/roadtest/roadtest/tests/regulator/test_tps62864.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/__init__.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/config
+ create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/rtc.py
+ create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/test_pcf8563.py
+ create mode 100644 tools/testing/roadtest/src/.gitignore
+ create mode 100644 tools/testing/roadtest/src/backend.c
+ create mode 100644 tools/testing/roadtest/src/libvhost-user/include/atomic.h
+ create mode 100644 tools/testing/roadtest/src/libvhost-user/libvhost-user.c
+ create mode 100644 tools/testing/roadtest/src/libvhost-user/libvhost-user.h
+
 -- 
 2.34.1
 

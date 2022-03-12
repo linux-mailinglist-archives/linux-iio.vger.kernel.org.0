@@ -2,111 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEF5C4D68C0
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Mar 2022 19:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B70724D6C48
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Mar 2022 04:41:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345035AbiCKSxC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Mar 2022 13:53:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50120 "EHLO
+        id S229491AbiCLDmd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Mar 2022 22:42:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243689AbiCKSxC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Mar 2022 13:53:02 -0500
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A981C60C9
-        for <linux-iio@vger.kernel.org>; Fri, 11 Mar 2022 10:51:58 -0800 (PST)
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: marex@denx.de)
-        by phobos.denx.de (Postfix) with ESMTPSA id 00FE881DE9;
-        Fri, 11 Mar 2022 19:51:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-        s=phobos-20191101; t=1647024717;
-        bh=r2uBpMO+CmKIGzBX6d1wqTh7FrpeEYZqyolNXzlxUMc=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=GJNGVTuBhxsrtjJ2P4YNT1XujWmW6aOL92WuzBe20WE2T73LJCI5Jxmyq3MUlkJvQ
-         sVMdiyas8bHMwtNYuta8EYqqp/oQ+9YYB2RSUjujXjpFjox8hnEg/MhvPXBdpYGwb6
-         pChbzP4LOzbYJUcSQQIcTWfmaVRqu2E/rNcZzQM9moFv4vuTVinx8z/d1AxlbD63DW
-         I1IqN3dN6SHaVH+8jjG8tKHAqspvCK31GMGX48h5+19oc2TkyiP5cQ2XfLU2FlyBWI
-         e7EMs+iKbnrIQrnsqIS3ED+6EoLNvarHTvbVCOv5Lxn5YCCQoScT1eiX+cAMxICbA7
-         QQ17V6RdD4Bjg==
-Message-ID: <35811c26-2363-6be0-09fe-91ee77f29069@denx.de>
-Date:   Fri, 11 Mar 2022 19:51:56 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH 4/6] iio: adc: ti-ads1015: Deduplicate channel macros
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20220310003402.490478-1-marex@denx.de>
- <20220310003402.490478-4-marex@denx.de> <YioKZ6EZvYHOOFMe@smile.fi.intel.com>
- <082e1654-74b7-aed2-4915-f8dd304540d6@denx.de>
- <CAHp75VfDv5CE0cDSBDeMeWj4ub1JV9o-jPpqhLvwnmmN+=WJ0Q@mail.gmail.com>
- <1504edf0-5773-781a-1a4f-056f57dfbf15@denx.de>
- <YiuA3jvbpkSQfuFM@smile.fi.intel.com>
-From:   Marek Vasut <marex@denx.de>
-In-Reply-To: <YiuA3jvbpkSQfuFM@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230106AbiCLDmc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Mar 2022 22:42:32 -0500
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE3322501C;
+        Fri, 11 Mar 2022 19:41:27 -0800 (PST)
+Received: by mail-ot1-f44.google.com with SMTP id e25-20020a0568301e5900b005b236d5d74fso7692654otj.0;
+        Fri, 11 Mar 2022 19:41:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=Xv3rlApdfE6GpdB21993qe2umhTQgjPykPpzL3SYX2Q=;
+        b=mO5gBAxsCNfppvTLEpZpb/cELNOisHrHj4lbzos72+okGHxo1wXAaXgeSk553S4/3p
+         YET85Qc/3uw2vr2nwV/Hds9bwdZjcMKKCQ06XQYv5NR4vg60h8dh+IhJZpabAI7+XW1G
+         dArX6dDOYPw3X1RFusTv3RnvEuNvHkrzHvBQl589jEgx/fXWaPksmeqdtZFurDYIGadZ
+         eUFo+ETPk60shaykap3kliMttSH7ID8X+x7uE49ZLh6cJ71Lqs8uilDTY4UzCJR8eyTw
+         z0mSZlFGqjDBJpOsXzVD9EKz6+G1u5DI0zLZOzMHKuWTbSokMgra3pAbRiYUwUGnh6wR
+         vsfA==
+X-Gm-Message-State: AOAM530UFpnPJSL8DC4ILg8kVE4HWAN5s7QiAKrNnA/5MUh6T4x1KgSS
+        Sa6hBWW6pbUORXpYS7N55Xo6nC/gNg==
+X-Google-Smtp-Source: ABdhPJwYvVEBZMzt0Tf0iFJzN4YOWQ9jIaWkcBaYzN/8vU6ZlTeYNV6x1sBY3tFdspMBQyhv+MzSRw==
+X-Received: by 2002:a05:6830:35b:b0:5b2:5f31:3e5d with SMTP id h27-20020a056830035b00b005b25f313e5dmr6655186ote.312.1647056487064;
+        Fri, 11 Mar 2022 19:41:27 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id x14-20020a05680801ce00b002d97bda386fsm4497292oic.52.2022.03.11.19.41.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Mar 2022 19:41:26 -0800 (PST)
+Received: (nullmailer pid 724634 invoked by uid 1000);
+        Sat, 12 Mar 2022 03:41:25 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     michael.srba@seznam.cz
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Srba <Michael.Srba@seznam.cz>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+In-Reply-To: <20220311161600.1469-2-michael.srba@seznam.cz>
+References: <20220311161600.1469-1-michael.srba@seznam.cz> <20220311161600.1469-2-michael.srba@seznam.cz>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Document invensense,icm20608d
+Date:   Fri, 11 Mar 2022 21:41:25 -0600
+Message-Id: <1647056485.106523.724633.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 3/11/22 18:03, Andy Shevchenko wrote:
-> On Fri, Mar 11, 2022 at 12:33:49PM +0100, Marek Vasut wrote:
->> On 3/11/22 12:29, Andy Shevchenko wrote:
->>> On Fri, Mar 11, 2022 at 1:55 AM Marek Vasut <marex@denx.de> wrote:
->>>> On 3/10/22 15:25, Andy Shevchenko wrote:
->>>>> On Thu, Mar 10, 2022 at 01:34:00AM +0100, Marek Vasut wrote:
+On Fri, 11 Mar 2022 17:15:59 +0100, michael.srba@seznam.cz wrote:
+> From: Michael Srba <Michael.Srba@seznam.cz>
 > 
-> ...
+> ICM-20608-D differs from the other ICM-20608 variants by having
+> a DMP (Digital Motion Processor) core tacked on.
+> Despite having a different WHOAMI register, this variant is
+> completely interchangeable with the other ICM-20608 variants
+> by simply pretending the DMP core doesn't exist.
 > 
->>>>>> -            .realbits = 12,                                 \
->>>>>> +            .realbits = (_realbits),                        \
->>>>>>                .storagebits = 16,                              \
->>>>>
->>>>> This seems inconsistent a bit. What if the next chip wants to have more than
->>>>> 16 bits in realbits?
->>>>
->>>> When such a chip exists, this can be parametrized as well.
->>>
->>> Yes, My point is that it's error prone.
->>
->> Won't IIO core warn if realbits > storagebits ?
+> Signed-off-by: Michael Srba <Michael.Srba@seznam.cz>
+> ---
+> changelog:
+>  - v2: require specifying "invensense,icm20608" as a fallback compatible
+> ---
+>  .../bindings/iio/imu/invensense,mpu6050.yaml  | 34 +++++++++++--------
+>  1 file changed, 19 insertions(+), 15 deletions(-)
 > 
-> If it's the case, then it's very good!
 
-No, apparently it won't .
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-> ...
-> 
->>>>> I see two options:
->>>>> 1) add static assert to make sure realbits <= storagebits;
->>>>
->>>> Does static_assert work in array of structures (I don't think it does) ?
->>>
->>> You can check, but IIRC some of the macros have it. Don't remember the
->>> details, though.
->>
->> I already checked before replying, hence my question, as I didn't find a way
->> to make it work.
-> 
-> It seems that current use cases have it either in functions or in
-> the expressions as ({...}). I dunno if the result of ({...}) can be
-> a data structure or compound literal.
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml:19:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
+./Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml:34:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
 
-I added a patch to v2, but ugh, it isn't nice:
+dtschema/dtc warnings/errors:
 
-[PATCH v2 7/7] iio: adc: ti-ads1015: Add static assert to test if 
-shifted realbits fit into storagebits
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1604436
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

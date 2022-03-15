@@ -2,165 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9D04DA36C
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Mar 2022 20:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CD814DA3AE
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Mar 2022 21:05:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351388AbiCOTo2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Mar 2022 15:44:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        id S1351531AbiCOUGx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Mar 2022 16:06:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350498AbiCOTo2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Mar 2022 15:44:28 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11332717E;
-        Tue, 15 Mar 2022 12:43:11 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id q194so276013qke.5;
-        Tue, 15 Mar 2022 12:43:11 -0700 (PDT)
+        with ESMTP id S1351439AbiCOUGw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Mar 2022 16:06:52 -0400
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A43938D88
+        for <linux-iio@vger.kernel.org>; Tue, 15 Mar 2022 13:05:39 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id b188so436804oia.13
+        for <linux-iio@vger.kernel.org>; Tue, 15 Mar 2022 13:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=fDraLfdvNRPxu+1H1GYdFP58AdsfLAH58eveu7tc/9Q=;
-        b=Bpu++ll3hZg3OnQnB/onttugrvoTFv2mhnzJVQGdpMa4q2I2VBbw+6m/QKYMPe+EMA
-         C7O+0dj0iRfK7Q/RUd8hTQ+Ybhsue6QamZIamdl/R0XNCT50MztYcFJBa9Ev872aQPHx
-         HqkOf6xWCGEL26eFI9wlFu+/FNJNb4MVzFrRSgnqBNV5gpkz/K3jUoX7MuMrz7vzevcH
-         KBOxYc4JTI3bJ4wOA48eAN/lWzF7XtF+a70WmqdvH1NUOGXST1HGtctgEd37gdaK90nN
-         /RANaeYxMdXTFbvhNkGDF6dk/HhrjfhIYI1XKfxTDR2Ren1xz64KFxsRB+3KphpAIcPg
-         9Tvw==
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
+         :subject:to:cc;
+        bh=/o3xropamkzFBKoPxtFZcdplai1eBlHVrBe67ySlDPw=;
+        b=JLsHnoJ1+BP7StMAJyFdbBu/1fjFr9cuCKBxFd4S1z/X3eH2LsIbcdWp0pnymDHOkb
+         decoFea4hQgZNycvQeJRtOCJXk48+DqXeHoK08LV7/kW2DISenIpiDRQm5HZHG9PQZGV
+         wqYHWL+hN7+jOGU9daeOM61ccLYopC/WuhxrY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=fDraLfdvNRPxu+1H1GYdFP58AdsfLAH58eveu7tc/9Q=;
-        b=KdYzGixIi2WH0yt0HxS3c8gWG/3/C3D9S7BpP8EXIaMiiDWe0+GThuARLFhkmCksfQ
-         aPwGvU6Ql3Dtc3vUDBm4w6EYcMo5eAvGhNoiOILM8c/Z+TL2G8nRgTM6elviQE0QZiT5
-         Z6TuI+aC8/9A5LPH2CNxUpuwSueANpYiepQtu1j2rs5R1Dn8NBvpAkAijB+ObglRqz5p
-         NFDM/zW9Lr1CWViqD+ElmHHXd4GEuTHItSwL7jkKjzZd+Eod71KLnCbvTusnZPZ/4CKe
-         bRNfk/AAZOJcCgxlzszYDIs20FIWkkTrTDqDAS86Awy4CoN0bFBtODlzJE/TRDf8wwkD
-         v5BQ==
-X-Gm-Message-State: AOAM530tKVwsnJP2ddk7spFHo71AqP5N4Dxx5qAR6RZpyso80B1V819g
-        0n/vmJCAJOq8O3UTxlr7Twc9iMRorNvpmf7V
-X-Google-Smtp-Source: ABdhPJzL633RxLpZMRy4YKLhwVuVyiH/0mxFw8Qhx9o4qh/Fi5lxo0EVDPlRntfQwkCh8OlOuCAH9g==
-X-Received: by 2002:a37:9e43:0:b0:67b:312d:50e0 with SMTP id h64-20020a379e43000000b0067b312d50e0mr19410726qke.549.1647373390990;
-        Tue, 15 Mar 2022 12:43:10 -0700 (PDT)
-Received: from ishi.. (072-189-064-222.res.spectrum.com. [72.189.64.222])
-        by smtp.gmail.com with ESMTPSA id 1-20020a05620a078100b00648cc800c9dsm9845318qka.103.2022.03.15.12.43.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Mar 2022 12:43:10 -0700 (PDT)
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>
-Subject: [RESEND PATCH 1/1] counter: Stop using dev_get_drvdata() to get the counter device
-Date:   Tue, 15 Mar 2022 15:43:04 -0400
-Message-Id: <4a14311a3b935b62b33e665a97ecaaf2f078228a.1647373336.git.vilhelm.gray@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <cover.1647373336.git.vilhelm.gray@gmail.com>
-References: <cover.1647373336.git.vilhelm.gray@gmail.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from
+         :user-agent:date:message-id:subject:to:cc;
+        bh=/o3xropamkzFBKoPxtFZcdplai1eBlHVrBe67ySlDPw=;
+        b=n4+T+qwayWUeigHwjjRjC7VW2sucVU0sOZFeptSgTHo79M/GGrnIxy/Zy+VUxg3jpr
+         egobhpu/DvL0JDeFpvgW8XdjAQNy70qjMYBvFZ3wsmcWm3IrdzVsxuiimmZdDRhtmur/
+         vVu0I2e33MWJeXESlL+p2Ipxz440tO5GGkSznYVAgw7sdhXgZVZ/XYGeRf96aC2RTcM3
+         Otz2KSVi03PJS69pn8w+VScJ9UoF8Wam88XZrxXjPXDy0UTIC7gjkwjP+PsdV+EgxNIh
+         9IBPWo9A6eYLr8CBHbkb5h++CVwJ6pUduDbISpRtYWjRFTOn/NI6jpndX0ghzNIUN8Yp
+         xkDw==
+X-Gm-Message-State: AOAM533HhacyiFoqvs4go7YSgacgyMIy/O1fldB5S9o5bx4GSDoQMF3M
+        /hZiRU6oXt53gLPK/TrPwg3IMVJhVzcHwLPAZCzL3iZe4Xo=
+X-Google-Smtp-Source: ABdhPJzwxMSXgtiNKaV9w6N9EEl7NomfZoRdCu1gupIWYa8T+jMIeBOYHIntW0syvZTNE6KreyPn0CRVNQztgox+pOo=
+X-Received: by 2002:aca:a9c8:0:b0:2da:45b6:b796 with SMTP id
+ s191-20020acaa9c8000000b002da45b6b796mr2347731oie.193.1647374738637; Tue, 15
+ Mar 2022 13:05:38 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 15 Mar 2022 13:05:38 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220315173042.1325858-3-gwendal@chromium.org>
+References: <20220315173042.1325858-1-gwendal@chromium.org> <20220315173042.1325858-3-gwendal@chromium.org>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date:   Tue, 15 Mar 2022 13:05:38 -0700
+Message-ID: <CAE-0n52Lp9-F_DxHrb1aMQaiSU2qpuW6jKCp6qQ8FXyJ87WApg@mail.gmail.com>
+Subject: Re: [PATCH 2/7] dt-bindings: iio: sx9324: Add precharge resistor setting
+To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org,
+        robh+dt@kernel.org
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Quoting Gwendal Grignou (2022-03-15 10:30:37)
+> Allow configure the resistance used during precharge.
+>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  .../bindings/iio/proximity/semtech,sx9324.yaml           | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> index b8a6ee16854ff..cd8ed50f2882a 100644
+> --- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> @@ -126,6 +126,14 @@ properties:
+>        UINT_MAX (4294967295) represents infinite. Other values
+>        represent 1-1/N.
+>
+> +  semtech,input-precharge-resistor:
 
-dev_get_drvdata() returns NULL since commit b56346ddbd82 ("counter: Use
-container_of instead of drvdata to track counter_device") which wrongly
-claimed there were no users of drvdata. Convert to container_of() to
-fix a null pointer dereference.
+It is clearer when the units are in the name of the property.
 
-Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: b56346ddbd82 ("counter: Use container_of instead of drvdata to track counter_device")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/all/20220204082556.370348-1-u.kleine-koenig@pengutronix.de/
-Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
----
- drivers/counter/counter-sysfs.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
-index 7cc4d1d523ea..04eac41dad33 100644
---- a/drivers/counter/counter-sysfs.c
-+++ b/drivers/counter/counter-sysfs.c
-@@ -19,6 +19,11 @@
- 
- #include "counter-sysfs.h"
- 
-+static inline struct counter_device *counter_from_dev(struct device *dev)
-+{
-+	return container_of(dev, struct counter_device, dev);
-+}
-+
- /**
-  * struct counter_attribute - Counter sysfs attribute
-  * @dev_attr:	device attribute for sysfs
-@@ -90,7 +95,7 @@ static ssize_t counter_comp_u8_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u8 data = 0;
- 
-@@ -122,7 +127,7 @@ static ssize_t counter_comp_u8_store(struct device *dev,
- 				     const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	bool bool_data = 0;
- 	u8 data = 0;
-@@ -158,7 +163,7 @@ static ssize_t counter_comp_u32_show(struct device *dev,
- 				     struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	const struct counter_available *const avail = a->comp.priv;
- 	int err;
- 	u32 data = 0;
-@@ -221,7 +226,7 @@ static ssize_t counter_comp_u32_store(struct device *dev,
- 				      const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	struct counter_count *const count = a->parent;
- 	struct counter_synapse *const synapse = a->comp.priv;
- 	const struct counter_available *const avail = a->comp.priv;
-@@ -281,7 +286,7 @@ static ssize_t counter_comp_u64_show(struct device *dev,
- 				     struct device_attribute *attr, char *buf)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u64 data = 0;
- 
-@@ -309,7 +314,7 @@ static ssize_t counter_comp_u64_store(struct device *dev,
- 				      const char *buf, size_t len)
- {
- 	const struct counter_attribute *const a = to_counter_attribute(attr);
--	struct counter_device *const counter = dev_get_drvdata(dev);
-+	struct counter_device *const counter = counter_from_dev(dev);
- 	int err;
- 	u64 data = 0;
- 
--- 
-2.35.1
-
+	semtech,input-precharge-resistor-kohms

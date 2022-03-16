@@ -2,61 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F4994DABE5
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Mar 2022 08:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47A8B4DABE8
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Mar 2022 08:39:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345665AbiCPHjY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Mar 2022 03:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40940 "EHLO
+        id S1353645AbiCPHkp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Mar 2022 03:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344568AbiCPHjX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Mar 2022 03:39:23 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23E333E0B;
-        Wed, 16 Mar 2022 00:38:09 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-2e58e59d101so12967287b3.13;
-        Wed, 16 Mar 2022 00:38:09 -0700 (PDT)
+        with ESMTP id S1344568AbiCPHko (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Mar 2022 03:40:44 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C66D60A8A;
+        Wed, 16 Mar 2022 00:39:31 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id l2so2868744ybe.8;
+        Wed, 16 Mar 2022 00:39:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oyzqBAUobH5AqCttvDPX2yRj0zkubG2JVL8MLhBhiis=;
-        b=EFiEGOXHpw1QHkLoq6Zb5G8me9dDVX44GNt10gqtJ5bY6VThYCn7lfZgBzWcUbgWnS
-         yx0rIeqJhinNle2GAvAKGDJ+2jqTrEVIoCRGGyEyLex4u4YvkaI4/7YAYRZidJ5Zzh87
-         p5vAJs3mMDJv5tiE7T1877sgTtU0Vowz/dvElKPINAzhW4cHgWXbM/+0UE6ZSCuVqtrP
-         PLNqN40OhKT5rSxg6uVc7SvghC1aANFFeg9bBrJr2ieGn+IqyWx7jxXGoic3idCVo8ce
-         1unmjTjSYwj8UCqKpVh6+AHEkfhEExWNdQpLSTT/jd8SBWUEJ/j02+wyb//R8W+LYqcm
-         22LQ==
+         :cc:content-transfer-encoding;
+        bh=swtTTbB0/7kDb8ObR/4u+rhxApKEqsoQzZfjkFe/2yw=;
+        b=IFzOPYesNDI8IpfStramA+lqrEuYAiDx5VbbrOiCN+cLiV+96W3WC5867wf4E84JBZ
+         nthUlmDCCGJWZKrm/apHJGw2Wz/mKFt31tNKTOtf3N4feYLkvCD16KFgnNWUeqsPL+Ql
+         7Ye3ouZURRDBkTOU/hCax98L5kOsxSBY5P+Ylb3V20V/TYXaSgEkg6FeKO7EifrGkFRi
+         EpnN1i7l6xWGpleJpcecqjzQp2yV481WgVSUNAb+ztbvBanoSUQ3tI2dYQkD6kxqZMa0
+         xSba992dWBK4y+G1p+HMjdipywPMx8AAaM8fSKC3VZUZnf38T7iqdgWroCVTRSto4YTo
+         pskw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oyzqBAUobH5AqCttvDPX2yRj0zkubG2JVL8MLhBhiis=;
-        b=BT0LI7GUvbB25Vx+DDqVqdl1CjbCxuPwT6U5WtnMh9wy5auQdACRl2TO4ZakekNSKF
-         Gs04C8r4c4lIKSR5tS1jy6/sU3Zr4djXDm0g7tUUkq1qIHUDGfLXbJziW3jCesKmiyZ3
-         bYZK688hYtjhXkWBfGrMBJDRQNPvjzcQJ9U6jSmIaSPovXE9ycAx0HMVro9/C4npCWvH
-         F61keUDI98CefNhJ9VeKCi8QtHyjHXuzQ+gflWLZMup2YABKBRA9kFFurFpvc8aGyv+K
-         +wi/zdu2LMgKts6d5L73gNM2pKI9F6zo3tmotG/bT0Og89l/ILVrHPvmRgaPYTlL9/GJ
-         G+vg==
-X-Gm-Message-State: AOAM530oS8QrtPZi71ugJrNYr3acVSeZiUEOdvOZvX0g589hEAjG0Ugn
-        ttj/2ey0hPK3KjmRCKimK1jda6opecS8tnTHsrI=
-X-Google-Smtp-Source: ABdhPJyP4zynEnOKJhPA6/VdLS1G8//zvpj5AamASMzby3h/EFhGf2TKXxmqAXvZB6D3G/cNI4ww1RuxxBh4CuEHTJ8=
-X-Received: by 2002:a81:1cc6:0:b0:2d5:427c:a23e with SMTP id
- c189-20020a811cc6000000b002d5427ca23emr28475198ywc.496.1647416289010; Wed, 16
- Mar 2022 00:38:09 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=swtTTbB0/7kDb8ObR/4u+rhxApKEqsoQzZfjkFe/2yw=;
+        b=keQqlC43NhbrJi1hht3+0ThrboNR0M0YIFTVg8NBHoyWIXS76HB3AwYV0zoDyUeJl3
+         9jNqGlyEI1TlGQeRYIQUa+HEG0pQj2+PAQ7kiD6+nFUuEpBEXGcKUCR8yRTdr078qhUC
+         3Ez+DBdtFYTJ6mR4Rd0CCz5hCBkCtsnyGtmNTZrMZP7NmWsZx5Hm3VZizpqUMV7XBagR
+         x9ni+k9SCWVs89TUDMwDR1bkCvcMPs8Lzy71aDL8pGQN2kkBmdkvNOV/NPqj5bko5qVi
+         5tjCrCF2nWFL5sc2lAAAQxxE7ik5hR7DIz7iZNnv+HMtySv46HWxSGdMQX7xKQu1z784
+         g4Zw==
+X-Gm-Message-State: AOAM53256LIJ+DphS7Vki5JHkR0qkUX2GvPRV4oSx1TS8hEXJQTdTwFf
+        bEn7nsNEr0UE+6z9nDlQImmVppk+3cgKzgitmr9twFmAZl+HZHGd
+X-Google-Smtp-Source: ABdhPJy8oqY4tE9p/N4UpFjHe3zrTDZYZ2rFzS7OhGQ6cQJOdQxLpcuk9wkRcPFbe7uLntThDwRM4MdCybfytNNvhF0=
+X-Received: by 2002:a05:6902:20b:b0:628:61fa:520c with SMTP id
+ j11-20020a056902020b00b0062861fa520cmr27108609ybs.408.1647416370463; Wed, 16
+ Mar 2022 00:39:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1647373009.git.vilhelm.gray@gmail.com> <b98d1a3ed4b0b324b261b23defd1bdddddba4d44.1647373009.git.vilhelm.gray@gmail.com>
-In-Reply-To: <b98d1a3ed4b0b324b261b23defd1bdddddba4d44.1647373009.git.vilhelm.gray@gmail.com>
+References: <cover.1647373009.git.vilhelm.gray@gmail.com> <3917721e792d362ee108b2f12cd2223675449d05.1647373009.git.vilhelm.gray@gmail.com>
+In-Reply-To: <3917721e792d362ee108b2f12cd2223675449d05.1647373009.git.vilhelm.gray@gmail.com>
 From:   Syed Nayyar Waris <syednwaris@gmail.com>
-Date:   Wed, 16 Mar 2022 13:07:57 +0530
-Message-ID: <CACG_h5qPuMhJ-PAwArDXFqVCtn42qDypwNNOm9sP_ae4gPpYJQ@mail.gmail.com>
-Subject: Re: [RESEND PATCH 6/6] counter: add defaults to switch-statements
+Date:   Wed, 16 Mar 2022 13:09:18 +0530
+Message-ID: <CACG_h5pDbAi1M=8A9b5z6xiOX+UV8aW5NXdYW+=N-KaBg4PUaQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH 1/6] counter: 104-quad-8: Add COMPILE_TEST depends
 To:     William Breathitt Gray <vilhelm.gray@gmail.com>
 Cc:     gregkh@linuxfoundation.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Tom Rix <trix@redhat.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        linux-iio@vger.kernel.org,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -67,51 +69,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Mar 16, 2022 at 12:43 PM William Breathitt Gray
+On Wed, Mar 16, 2022 at 1:09 AM William Breathitt Gray
 <vilhelm.gray@gmail.com> wrote:
 >
-> From: Tom Rix <trix@redhat.com>
+> 104_QUAD_8 depends on X86, but compiles fine on ARCH=3Darm. This patch
+> adds support for COMPILE_TEST which is useful for compile testing code
+> changes to the driver and Counter subsystem.
 >
-> Clang static analysis reports this representative problem
-> counter-chrdev.c:482:3: warning: Undefined or garbage value
->   returned to caller
->   return ret;
->   ^~~~~~~~~~
->
-> counter_get_data() has a multilevel switches, some without
-> defaults, so ret is sometimes not set.
-> Add returning -EINVAL similar to other defaults.
->
-> Signed-off-by: Tom Rix <trix@redhat.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Link: https://lore.kernel.org/r/20220227161746.82776-1-trix@redhat.com
+> Suggested-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> Cc: Syed Nayyar Waris <syednwaris@gmail.com>
+> Acked-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> Link: https://lore.kernel.org/r/20220105094137.259111-1-vilhelm.gray@gmai=
+l.com
 > Signed-off-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 > ---
->  drivers/counter/counter-chrdev.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/counter/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
-> index b7c62f957a6a..69d340be9c93 100644
-> --- a/drivers/counter/counter-chrdev.c
-> +++ b/drivers/counter/counter-chrdev.c
-> @@ -477,6 +477,8 @@ static int counter_get_data(struct counter_device *const counter,
->                 case COUNTER_SCOPE_COUNT:
->                         ret = comp->count_u8_read(counter, parent, &value_u8);
->                         break;
-> +               default:
-> +                       return -EINVAL;
->                 }
->                 *value = value_u8;
->                 return ret;
-> @@ -496,6 +498,8 @@ static int counter_get_data(struct counter_device *const counter,
->                 case COUNTER_SCOPE_COUNT:
->                         ret = comp->count_u32_read(counter, parent, &value_u32);
->                         break;
-> +               default:
-> +                       return -EINVAL;
->                 }
->                 *value = value_u32;
->                 return ret;
+> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
+> index 3dcdb681c4e4..5edd155f1911 100644
+> --- a/drivers/counter/Kconfig
+> +++ b/drivers/counter/Kconfig
+> @@ -14,7 +14,7 @@ if COUNTER
+>
+>  config 104_QUAD_8
+>         tristate "ACCES 104-QUAD-8 driver"
+> -       depends on PC104 && X86
+> +       depends on (PC104 && X86) || COMPILE_TEST
+>         select ISA_BUS_API
+>         help
+>           Say yes here to build support for the ACCES 104-QUAD-8 quadratu=
+re
 > --
 > 2.35.1
 >

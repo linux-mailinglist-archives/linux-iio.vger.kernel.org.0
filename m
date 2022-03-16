@@ -2,167 +2,185 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA4E4DAF8D
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Mar 2022 13:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 653CE4DB312
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Mar 2022 15:24:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230507AbiCPMZk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Mar 2022 08:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51106 "EHLO
+        id S1356461AbiCPOZk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Mar 2022 10:25:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236424AbiCPMZi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Mar 2022 08:25:38 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4837D4BB96;
-        Wed, 16 Mar 2022 05:24:25 -0700 (PDT)
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22GBnC67002689;
-        Wed, 16 Mar 2022 12:24:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2021-07-09;
- bh=9iV3IFHzlIFL3gHFZ04m1JKR4FFq/t83wKSBM+77k2I=;
- b=EdMj0MJXYRdwen5Oqy+FqAIFcoAA81nkhbfd1laeFVgKhJfIvDme5dw9I2LRSqXiUTBT
- AErUlccj4jIgUQOZpKazCbITWd032Ek62XCNDFgYEtoqof2ac+4LwSh/71tUPIzRj5ZK
- MQ1usEr87S90SOd8vtjT1rvfkOA+d5JMqgtywFyo7XoEA/4pyyk8h7KwFahig7UkvmwX
- 5cVMhxgx2Ph2xuz2TcXhDhJws1IRktN/ZQncJfXZdV6QzStGn8aZnMNaWWAb8io9wF2z
- p0LhCApPfGQuEZjuwr4NeNvC7VRdmAVwMeQhfOAh8SpFV3dL3YIcCzue1OCzA4o/nVH2 OQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80] (may be forged))
-        by mx0b-00069f02.pphosted.com with ESMTP id 3et5fu62wa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Mar 2022 12:24:09 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 22GCAuNw072482;
-        Wed, 16 Mar 2022 12:24:08 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2101.outbound.protection.outlook.com [104.47.70.101])
-        by userp3030.oracle.com with ESMTP id 3et65pxhbs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 16 Mar 2022 12:24:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gCu6k2SLRhaNCRejEDiqiNHZIz79H2ZSAD1QuJoQBVYGm1L1Wv3Pg0KEP51+jyALOIcfmSehHyS5dR0Gs5BBQFjUMbPEyT/Cz4e15sSmOfcd1roi3LtH378yhC/3gBXLXcmN8zvQV9ixtuBuP8WHTIMf+YCGIyeu24cITBA/w4Xg7k2zRVQ1AqPs+g8n8yB6U6GJkSGWia6dOEtE9Gtcf8Lb6WYOgV9lTAJqiHeii16zj4K2bfzrWDmus0/YUoBZHxYCEPoZ98O+dwJe3cCH9XZHTM1wW+rEzEwXBkNYG27zaor9rqd0QbatW9SPrNqz3B1E0GXGhuhMaq0ebMIwKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9iV3IFHzlIFL3gHFZ04m1JKR4FFq/t83wKSBM+77k2I=;
- b=RFBbHQYVqHL38O2MhuPwJbjWbrHWLTDTo8E8MNR50bWSwG3il3FwDNGXX892ehfWUkDfyytYsPJTAHLlJaomwX5AeVA+h9xDulnommQhI5c/qvOfMvghIUoJZKZ007BCLCegWlWhNJZGnJEbcrA4La3qbbPD9k0kvMPf03NWTb+la3YDvPnReWIk4uzAzGtzPBDeQZ/dFYXrzuOH8iPpaHiAVXOixZUIr2xEe/87cKrNwOyU7vx6jSG/MRRGHi96QZQQoY1QqBQPRJSeKvpmmbOHsEipYzyrwGL3wOGMpWA3e6I352wc9/aukTkcJtDU8Z9s+IH/IOuSVUtk4vUy0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S1357985AbiCPOZE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Mar 2022 10:25:04 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2F729CB6
+        for <linux-iio@vger.kernel.org>; Wed, 16 Mar 2022 07:23:45 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id t1so2944235edc.3
+        for <linux-iio@vger.kernel.org>; Wed, 16 Mar 2022 07:23:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9iV3IFHzlIFL3gHFZ04m1JKR4FFq/t83wKSBM+77k2I=;
- b=pvUAgGOSnqHAIdE/FpVKY/BgObDW6wL2PSWd/RACLIRcs3ROaJRx/h6JoWUHp3SHHZaDxNuMxUlpXw69ibxcN2jubA9rF4ZISz35i8WtlmtzpIoHfSWu4nX+bKRZ+gueN3+07wtjZCQmN4hpl78kdJLmjlz8/7KKfSp1SUfA83k=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by BN6PR10MB1475.namprd10.prod.outlook.com
- (2603:10b6:404:44::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.14; Wed, 16 Mar
- 2022 12:24:06 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::2c3d:92b5:42b3:c1c5]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::2c3d:92b5:42b3:c1c5%4]) with mapi id 15.20.5081.015; Wed, 16 Mar 2022
- 12:24:05 +0000
-Date:   Wed, 16 Mar 2022 15:23:54 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Mihail Chindris <mihail.chindris@analog.com>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: dac: ad3552r: fix signedness bug in ad3552r_reset()
-Message-ID: <20220316122354.GA16825@kili>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: ZR0P278CA0008.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:16::18) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tgyUpNSsFselT8BQCvkE9dfRa9hFiCqWTYe85GuL8r4=;
+        b=W5GOm7pxdA9AHEGfIqqALUtRFpZ0VZQGkVxoELsdlDcrt8wzAbD2ZANDoYI5se54El
+         G24nO5Ey38sW+aBlr53c1KNrlm5KImMHhyTdwuswJ5zN9EEHVBvlLtwP+Gy8uzaCp7kC
+         AS+q9q+GJzDf5kMy7/y902UoXNDjtgL2Rgvh46gN6TJWlxo59KkKEdehpEQWBpQJzZIB
+         LeqngW47oB4xrdqG1Jsb/G+WzOXMvLuhGHuZ05yjddhG0bWYsCJxrSMH8MxuBHWM6aJP
+         Y1f7b8wqx4A7xKrtUzHAMQPOfDYS84micEtrlX7WBnzKQ6aBuK0GKGD7sII2oCMN6TL8
+         V09A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tgyUpNSsFselT8BQCvkE9dfRa9hFiCqWTYe85GuL8r4=;
+        b=CHtuCPos/wS+a4rXAcR2hkVGrmzqQygvDhk+6qy7VILrA2+4WECfk5SabYGPUr2kUo
+         xHq12Nh19DHR/laZC1TUSTpLR9NAsElFHDZX+BDQYJPGEZJpChEFV62ygT1P/JwkmVG2
+         gQUvJEC2bUgY/lXRj78/wcPkp6nljncyYSb6is+PFr+Z02NKYudNKUwqgsTjd6n/nlbH
+         FMiExR1iIzWWSiZ6ot6nKQnbzqXzvaQIDsAw8YnR9ExwwEjO/y/Ps4V2pgW9B2W3XVuJ
+         MX4sYWInEeFX4l+lkNyUNop1XH0x+MpmaPbEHJOEhS4IkZ81QtwReFhChD5St8oq9l7m
+         fqzQ==
+X-Gm-Message-State: AOAM531/RYKmbv/2tjjvPHKbXvYFA5HLIffNgchu5vLEk62Sj4MT3gRC
+        MzdElu2GLcjto9hw0sJeRSnRhg==
+X-Google-Smtp-Source: ABdhPJypeOupb1Oz2YhhTPbwH2ilnlvFL/6wlC0s+MrFj47MHOPxDt+MV8x7BkWOArCdXuI33mJEag==
+X-Received: by 2002:a05:6402:430c:b0:416:c695:7c23 with SMTP id m12-20020a056402430c00b00416c6957c23mr26260931edc.367.1647440624012;
+        Wed, 16 Mar 2022 07:23:44 -0700 (PDT)
+Received: from localhost.localdomain (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
+        by smtp.gmail.com with ESMTPSA id kw3-20020a170907770300b006b2511ea97dsm952263ejc.42.2022.03.16.07.23.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Mar 2022 07:23:43 -0700 (PDT)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+To:     caleb.connolly@linaro.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc:     sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org, kernel test robot <lkp@intel.com>
+Subject: [PATCH v12 0/9] iio: adc: introduce Qualcomm SPMI Round Robin ADC
+Date:   Wed, 16 Mar 2022 14:23:04 +0000
+Message-Id: <20220316142313.92371-1-caleb.connolly@linaro.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 15e2f1e9-d116-414c-fb14-08da0747dcec
-X-MS-TrafficTypeDiagnostic: BN6PR10MB1475:EE_
-X-Microsoft-Antispam-PRVS: <BN6PR10MB1475ADFACE0853B5805B22528E119@BN6PR10MB1475.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bR/L3aY3mTM7pyV8x7Lf5VKEcTUAlE8mAPescOjG8EwzcuXEkPicr4r11FLfAfpCpGvZSg98LJfeqNgKX0jiMfo4CVnHk9XxA08TRDy3Drpl04rqvP+s82LvDOTdacYVRKq9w4duuNk7Vte2Kiq5MONJ2HTnDBSHtZWxFMjn+Y4JZpnjh9CzeFV5J4039Nu7xFR8+Z4MKH+VuaYyTnprlfSJePORWXFeZvRivgVELZgmq1+6vV8NRmnZZBRI6VyQCo2jvmskzLxgH/tyWo4FMDGhX3JNoo4szonsKD2dwMOxG3vUT+MzesL07QdMRseNotGhous0fnjlBFC6ViEVd4FMDaVMksHgzqy+hYHJxfq9zl7FyFsSK8ibQzAvAseCFApMbr3rqjmg25CGXanwLTQAnESYz7bPfxfVOWwi1nldY1VJbYOcpix4bbRvfZ7J8iN5PFymqE2A0RupA6feEHWKLu01OH3ONRLa/fe6itzpMdN7tNIP8K+heUKSUIZLD6oWnE40z9ugz4UT+huCf5OZXdwQTbF/j0UFeIlAMu0cVjbHc3OdBrC+kVsr6OQy7z2qXUYJFsPr7+vuwYQh2OZdfzUff/Wq1r8667TwCgv59PlRuLHc5+6FBJtliBOaN7FK9BuC4p4CEZ2qi7lTfJsDmFeXa6VPhuVuBvVC/EXXycbkg3cgpDe7y8cOG+I3LjoAP18A4z7SJqUTFxaGMA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(7916004)(366004)(316002)(83380400001)(54906003)(110136005)(1076003)(33656002)(26005)(186003)(66946007)(86362001)(38350700002)(8676002)(4326008)(66476007)(66556008)(6666004)(6486002)(38100700002)(508600001)(6506007)(52116002)(33716001)(6512007)(9686003)(44832011)(4744005)(5660300002)(2906002)(8936002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rGo4+wjmmKxH8uzHw9QHzqzLYCTfDx3lep08fB5yJChPo0CJx9TH5ziRpRb+?=
- =?us-ascii?Q?V0rAvuXA4xHMf3DY3HO4seHkX/KXfqKGXG06PlHANYVxIZaJr/+HSfeqE77Q?=
- =?us-ascii?Q?HYMjcB0uVUO8NhhaKgFI4LG1zceIk16RnjVp3HLPkEMzn2tI/96j6WPXGO0N?=
- =?us-ascii?Q?HaziZV8pS6Pz/yUl9Xpas0cL9Qu9AMDWJCfJshLk2vvsFuR24LTSXMp5M/vG?=
- =?us-ascii?Q?5Lfmvjxd/N72BPbLeLzbEdDgsIehn+dGSdoSrz9NopPQOjNhPokOKvfaAAWr?=
- =?us-ascii?Q?GAK1y94/+770Go74OV7smqoOZdxBE4CQFT53odYuCbMMJXy8w81C1bDSA9Sh?=
- =?us-ascii?Q?a4lxWoFunMr4jpGCTgVLFzGa+hKETkBQTOht/VYe4zDhM/8fmkv//j6EPcpO?=
- =?us-ascii?Q?49ABEaqk3obygQ6EOACnsaIK3/PloS09IAOFitkzSep9KkrMgLeuvhJ3UuJh?=
- =?us-ascii?Q?wYm4v+lzy7th9yHBeFRLtRfiV3Iiyw/j0Q9sLww6ML6Tv0LbYOmskgm79qWd?=
- =?us-ascii?Q?nLA8DXGoq4bT2MbLTdMKHP/ofUthqnfjAAptrM2Z1cqOEGTt16YwDjBl5rY8?=
- =?us-ascii?Q?91qoARz6yw5eYT4EvBGOA44AKlBncTUvmhG7MR9FWGRGk5QefBsUdpAfD5R9?=
- =?us-ascii?Q?WtnYIABBR7nWXnnzL7OeH458zda945jkYHGdlfMS/Lv6GW2/co2s7ZKLYySX?=
- =?us-ascii?Q?7A69EjZb1g6kQ/otlOnTDS6xXnueuVic8qKGyCg4fW22eRfMO5afaM7cZAzm?=
- =?us-ascii?Q?GyHeKKrJrRrf12bd76VVGQ/vgLVpJud5l4BZ7xFwtS/EiWNFJ8Scth7t2yIi?=
- =?us-ascii?Q?5n6JP9Kdta9E4RqIzHvOYztSxlq7/RzE3k11P07I+7iF2EEsQfy32tGGlaW7?=
- =?us-ascii?Q?kcmLPA+f3YHu8iLurc+qBkWqgxRibwloGUr5+PP5u+43Xqh9AMCtMBqKCVrc?=
- =?us-ascii?Q?VbFH5IKuvNeSLWS5ILq/3MYHSRYbGfzmyWgTBnWv1vrMrzlosRV2QFlDMsf4?=
- =?us-ascii?Q?w3uOrd8ayIfpbOwx9z/oV+eb7/PVZYf4wbT9R/FUZDb7QSk6Hikuo4GkoYB0?=
- =?us-ascii?Q?/r9HjURDl6OG3i3QwC50c6Du3DpaMH7xctSY5/7SghnEnmiY6jYJr6Ztrsvk?=
- =?us-ascii?Q?lzNXd08kq0eSn4uZQdMUuE43BYBFNQvUJ9pOnWLLgEHWwmbZJvAlxNr0ITir?=
- =?us-ascii?Q?9a/2dx2CCDLgm3RgvoPGkVSD9kQ1ANn+8eWsQCcp0K4AEA8r/0yamp9/38bn?=
- =?us-ascii?Q?pSmqhJSdmYEzeV8+H6hCO9GdhBgAPIT1FdQeWdPLtCYl5J2CklYXVGrVOb1m?=
- =?us-ascii?Q?AH/+vEOV9u7OjlU2vVjOv5uQ+UaIGDe1GHrdZjZjJ7K+Km7ZO/JnRaQDkqa9?=
- =?us-ascii?Q?Rxi+eo9fIbpa705Gpe0q2ft1RO58g6nAahgRrbcrIx95aI5Epv6G2ZYM5ipW?=
- =?us-ascii?Q?0+bxlKJV5Uh4CUNqsF9XFlD6npgT7sa+Tuihp09B41G8R8V+0pGyPg=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15e2f1e9-d116-414c-fb14-08da0747dcec
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2022 12:24:05.8343
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OLgtEgnHINo5uTPmI1Bm9cSgF4RCtxEYrRTIEmKkswJxjqeD9SA1j05SKD2MSRtZRJdwnlpxYa4nQ6SJjPxHJN2TWqsFlHZ7c6iFN2TgzAs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR10MB1475
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10287 signatures=693139
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- suspectscore=0 adultscore=0 spamscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203160076
-X-Proofpoint-GUID: B0-HF-KBOlveaA0GeENQoslYJhcwyLJc
-X-Proofpoint-ORIG-GUID: B0-HF-KBOlveaA0GeENQoslYJhcwyLJc
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The "val" variable is used to store either negative error codes from
-ad3552r_read_reg_wrapper() or positive u16 values on success.  It needs
-to be signed for the error handling to work correctly.
+The RRADC is responsible for reading data about the current and
+voltage from the USB or DC in jacks, it can also read the battery
+ID (resistence) and some temperatures. It is found on the PMI8998 and
+PM660 Qualcomm PMICs.
 
-Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/iio/dac/ad3552r.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The RRADC has to calibrate some ADC values based on which chip fab
+the PMIC was produced in, to facilitate this the patches
+("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
+and ("mfd: qcom-spmi-pmic: read fab id on supported PMICs")
+expose the PMIC revision information and fab_id as a struct and register
+them as driver data in the Qualcomm SPMI PMIC driver so that it can be
+read by the RRADC.
 
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index 97f13c0b9631..e0a93b27e0e8 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -656,7 +656,7 @@ static int ad3552r_reset(struct ad3552r_desc *dac)
- {
- 	struct reg_addr_pool addr;
- 	int ret;
--	u16 val;
-+	int val;
- 
- 	dac->gpio_reset = devm_gpiod_get_optional(&dac->spi->dev, "reset",
- 						  GPIOD_OUT_LOW);
+The first 3 patches add support for looking up an SPMI device from a
+struct device_node, as well as introducing support for looking up the
+base USID of a Qcom PMIC, see patch comments for more details. These
+Address Bjorns comments on v2.
+
+Changes since v11:
+ * Remove debug logging which was left in ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
+ * Picked up Dmitry's Tested-by and Reviewed-by tags.
+
+Changes since v10:
+ * Don't inline spmi_device_from_of()
+Reported-by: kernel test robot <lkp@intel.com>
+
+Changes since v9:
+ * Add back missing copyright, this driver is originally derived from
+   downstream (Thanks Manivannan).
+
+Changes since v8:
+ * Drop Reported-by for the bugfix on previous revision reported by LKP
+ * Apply Jonathans suggestions
+ * Rework patch 2 ("expose the PMIC revid information to clients") to
+   handle PMICs with a single USID (thanks Dmitry)
+
+Changes since v7:
+ * Addressed Jonathans comments
+ * Fixed bug reported by LKP
+
+Changes since v6:
+ * Fix printf format warning in rradc
+
+Changes since v5:
+ * Add missing EXPORT_SYMBOL_GPL() to
+   ("spmi: add a helper to look up an SPMI device from a device node")
+
+Changes since v4:
+ * Addressed Jonathan's comments on v4
+ * Reworked the qcom-spmi-pmic patches to properly walk the devicetree
+   to find the base USID. I've tested this on SDM845 which has two PMICs
+   (pm8998 and pmi8998) and I'm able to look up the PMIC revid from all
+   4 USIDs.
+
+Changes since v3:
+ * Split PMIC patch in two, rework to support function drivers on a
+   sibling USID
+ * Completely rework RRADC driver to make use of the modern IIO
+   framework. This required re-arranging a lot of the equations and
+   results in some lost precision, where relevant I've left comments to
+   explain this. I don't think any of it is significant enough to
+   justify doing post-processing in driver.
+	Thanks a lot Jonathan and John Stultz for helping me out with
+	this 
+
+Changes since v2:
+ * Add missing include (thanks kernel test robot :D)
+ * Rework some confusing function return values, specifically
+   rradc_read_status_in_cont_mode and rradc_prepare_batt_id_conversion
+   both of which didn't correctly handle "ret". This also bought up an
+   issue as the previous implementation didn't actually wait for the
+   channel to be ready. It doesn't seem like that's strictly necessary
+   (same data is reported if I wait for the status to be good or not)
+   but I've included it anyway for good measure.
+
+Changes since v1:
+ * Rework the RRADC driver based on Jonathan's feedback
+ * Pick up Rob's reviewed by for the dt-binding patch.
+ ---
+Caleb Connolly (9):
+  spmi: add a helper to look up an SPMI device from a device node
+  mfd: qcom-spmi-pmic: expose the PMIC revid information to clients
+  mfd: qcom-spmi-pmic: read fab id on supported PMICs
+  dt-bindings: iio: adc: document qcom-spmi-rradc
+  iio: adc: qcom-spmi-rradc: introduce round robin adc
+  arm64: dts: qcom: pmi8998: add rradc node
+  arm64: dts: qcom: sdm845-oneplus: enable rradc
+  arm64: dts: qcom: sdm845-db845c: enable rradc
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: enable rradc
+
+ .../bindings/iio/adc/qcom,spmi-rradc.yaml     |   54 +
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi         |    8 +
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts    |    4 +
+ .../boot/dts/qcom/sdm845-oneplus-common.dtsi  |    4 +
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts |    4 +
+ drivers/iio/adc/Kconfig                       |   12 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/qcom-spmi-rradc.c             | 1021 +++++++++++++++++
+ drivers/mfd/qcom-spmi-pmic.c                  |  268 +++--
+ drivers/spmi/spmi.c                           |   17 +
+ include/linux/spmi.h                          |    3 +
+ include/soc/qcom/qcom-spmi-pmic.h             |   61 +
+ 12 files changed, 1367 insertions(+), 90 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+ create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
+ create mode 100644 include/soc/qcom/qcom-spmi-pmic.h
+
 -- 
-2.20.1
+2.35.1
 

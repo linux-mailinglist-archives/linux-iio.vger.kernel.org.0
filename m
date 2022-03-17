@@ -2,71 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F227D4DBB8E
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Mar 2022 01:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5E54DBF4E
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Mar 2022 07:19:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344743AbiCQAUX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Mar 2022 20:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34392 "EHLO
+        id S229609AbiCQGUj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Mar 2022 02:20:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbiCQAUV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Mar 2022 20:20:21 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CEEE1C930
-        for <linux-iio@vger.kernel.org>; Wed, 16 Mar 2022 17:19:05 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id b189so3222833qkf.11
-        for <linux-iio@vger.kernel.org>; Wed, 16 Mar 2022 17:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=4vfQyttDdobHbBrio36ZO852PxT9+1cO/BhU8vf48uk=;
-        b=pBadWm7ElG7W6NU8Ob+M2qAcyxZu2uWX6xQo81YvzoiOoACJj4exzkZP+U74rYCm6X
-         tUEJnv0kX7ZJsIAM5tNJsNQwBGrbSms3sLVUKn4TeQH+LyXbzMgAhO8jXYG34lSeKQ4B
-         Bv9wBOgYZOdrmN+xHyBdq7xSZFFpW/RNCGxS+6vtyagtrCRlMXdSL2RzSUSjNXoXEscu
-         iW8YxcUds8zUILyyzv470QMm5CQbGn6v5kdaaFfPJfheVZ5eCI0WLu4ZdsIt4lds2f2Q
-         Hx2ZHVHqWlcnIxRhMVs5J4nsqTKRRmvmYkh/1HLi6y54Qm32XjgSLedLbunEfaJ4QVVj
-         J8Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=4vfQyttDdobHbBrio36ZO852PxT9+1cO/BhU8vf48uk=;
-        b=2W1zvKraclMaQnC0dPhgRwmDQtWB5Ei2lnDFRjgdBQ8dGmeBbgjCviFVBR35zulYE5
-         YoXv8JPd1uaz9ytFg3jmaazmUMNSg/qGlPB+C4Pu/Oh7l0GGRICBx0MEzVxiscpiUEzv
-         tJ+YL2HMVMyWnyd+tpHR+yv7GuYGzrCm2ZifWXjk3sJFWGVdzxymzUslzoSEhSjKvxIv
-         jtqywUy07RfWIVAoSjiXgYUJ5rhv1JlSfwVCpjvLChFg1gQaS0qVT8+8sTL8GC0QbGrn
-         aVcYjF4iVhfHoY+1YJsghEJnO2bqev6sJ0Ygobcmudqdd9ysPC2H147ST3qnTgM3mvzl
-         9Veg==
-X-Gm-Message-State: AOAM5320yxTuyxgVlXkh+Hz6ebNhNFecHbOgCpEapBo0D1wJSnXuyCyb
-        /0FIARLltnmfA5XLCgzWOeMvZ1ybskCX5OdX3Y4=
-X-Google-Smtp-Source: ABdhPJx1ip/4TRKuh21GE/eMQMiql59UH3ItEGXfJP/UsTEr63Y4TJYtxMy9pQ3o8QYhwDucyazMQRzPmT2pDB9LSvg=
-X-Received: by 2002:a05:620a:198b:b0:67d:5ca1:c5de with SMTP id
- bm11-20020a05620a198b00b0067d5ca1c5demr1451806qkb.270.1647476344602; Wed, 16
- Mar 2022 17:19:04 -0700 (PDT)
+        with ESMTP id S229641AbiCQGUL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Mar 2022 02:20:11 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77345111777;
+        Wed, 16 Mar 2022 23:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+        :In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+        Reply-To:Cc:Content-ID:Content-Description;
+        bh=WKhGOsAACM1OV4BTcw0P1QEvmLUUvdDHRLBA83a5pII=; b=JuUbDD8Uhr3l+iB1i38NPYF/B+
+        A70rbezTyjtL7z/0OQscS4GGQ1WJ1TgLcjw4wmybUo6Rhqj5Ix+pfDHhB2J2iJX2J0+xOXl0DcWGE
+        ZSl8DuBGM/w+rWKsegxl9JNBLRwkwM214dynQ3+C287kWKj8CjDiGOYtk3BCIiDb0Sgu4z4CLXV9O
+        Z0RZKVWQG7eMrupLCFdrImhrp/kSQdP1eqV4AWmim+soaVxGObgrSPngtAB7GxPJYBKtrgRdeq5mU
+        ZVu2urOAiXpVWxdGBa5neqp0N3vgu+z/FkOQfWBgqEtGxeLsx3eKiS8hxK0aQzwegWAXd6TP8YMtO
+        XpNhE20Q==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nUhgf-001mDS-2Z; Thu, 17 Mar 2022 04:24:33 +0000
+Message-ID: <16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org>
+Date:   Wed, 16 Mar 2022 21:24:27 -0700
 MIME-Version: 1.0
-Sender: nakodegbe@gmail.com
-Received: by 2002:a05:622a:251:0:0:0:0 with HTTP; Wed, 16 Mar 2022 17:19:04
- -0700 (PDT)
-From:   Hannah Johnson <hannahjohnson8856@gmail.com>
-Date:   Thu, 17 Mar 2022 00:19:04 +0000
-X-Google-Sender-Auth: Y6o1ckMm-4QAaIxifEuN2geSCYo
-Message-ID: <CANBqjYZvB2UGD18p90ekccupLvSWoBt1fqeWw4WAdEhwc6QDqQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: mmotm 2022-03-16-17-42 uploaded (drivers/iio/afe/iio-rescale.o)
+Content-Language: en-US
+To:     Andrew Morton <akpm@linux-foundation.org>, broonie@kernel.org,
+        mhocko@suse.cz, sfr@canb.auug.org.au, linux-next@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org,
+        Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org
+References: <20220317004304.95F89C340E9@smtp.kernel.org>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220317004304.95F89C340E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+
+
+On 3/16/22 17:43, Andrew Morton wrote:
+> The mm-of-the-moment snapshot 2022-03-16-17-42 has been uploaded to
+> 
+>    https://www.ozlabs.org/~akpm/mmotm/
+> 
+> mmotm-readme.txt says
+> 
+> README for mm-of-the-moment:
+> 
+> https://www.ozlabs.org/~akpm/mmotm/
+> 
+> This is a snapshot of my -mm patch queue.  Uploaded at random hopefully
+> more than once a week.
+> 
+> You will need quilt to apply these patches to the latest Linus release (5.x
+> or 5.x-rcY).  The series file is in broken-out.tar.gz and is duplicated in
+> https://ozlabs.org/~akpm/mmotm/series
+
+
+on x86_64:
+
+ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
+
+
+
 -- 
-Hello
-Nice to meet you
-my name is Hannah Johnson i will be glad if we get to know each other
-more better and share pictures i am  expecting your reply
-thank you
+~Randy

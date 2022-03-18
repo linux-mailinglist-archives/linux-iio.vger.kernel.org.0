@@ -2,64 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FE2C4DDB56
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 15:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 946E74DDD43
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 16:49:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234403AbiCRON5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Mar 2022 10:13:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60864 "EHLO
+        id S237179AbiCRPux (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Mar 2022 11:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236846AbiCRON4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 10:13:56 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5BF228D2D;
-        Fri, 18 Mar 2022 07:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647612757; x=1679148757;
+        with ESMTP id S236491AbiCRPux (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 11:50:53 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F81A2D0241;
+        Fri, 18 Mar 2022 08:49:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1647618572;
+  x=1679154572;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=tU+/rM47jb0yzckoQPeArY4wRj/yQ13txRTRa2WwT6U=;
-  b=ilXV0neZUFrwCEWW53YxNK9KXqP0o3UzuSzMmzCpEyKn4lg+C0pOgjQQ
-   MxkZtmRgEMb4hLTacV2zWIfx3akF+T0C8YvOkj2UU77AIak3RPXDF+szb
-   EPnbjPkXs3xGnKEh6PnZxcoe+k4SzZhSzU91pd0yRBi8Ighdz/XqNQ3z9
-   Rf93JGfqJJAtGZ1qU3RjRGOs/TEd1bSy1xzUjsoKUIv0bB4CLAuhaPYv/
-   BJIZP3fFg741WbGMFNpBTfn4Pu4Leo4JRS0IMDawJWU8VpZh2b+lHFtJE
-   ChUMAqgt11DCOfagxCKxR4VDw8pYaDC151486OZ7dp98ICW1YG651jD5k
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10289"; a="257091616"
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
-   d="scan'208";a="257091616"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 07:12:37 -0700
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; 
-   d="scan'208";a="635767287"
-Received: from smile.fi.intel.com ([10.237.72.59])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2022 07:12:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nVDKd-002GWj-P6;
-        Fri, 18 Mar 2022 16:11:55 +0200
-Date:   Fri, 18 Mar 2022 16:11:55 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Tong Zhang <ztong0001@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio:imu:bmi160: disable regulator in error path
-Message-ID: <YjSTK4yun3kiulB1@smile.fi.intel.com>
-References: <20220318070900.2499370-1-ztong0001@gmail.com>
+  bh=wcKA0KxoiU/AM8nvFRewTqVOc2fCyIBAGriShKCLLSk=;
+  b=dfmcli8lf8C/XrNUNuU0x786nL0kFuaD/1YntgoYgOkvvwBibABvLFqR
+   8YnSP88uLG367QGRmB6CtOph3gD/bKCJsKLqXV51LZxaJ4A3Wb51+XcVv
+   gRLTNBMRpvtE8DYR12nTyt4z17lK/ZTk8odYASip4n5FVK0cgSvQkO6gu
+   iVVn9Ymg/3zeVY154dMkslySSKtEGFqvwOPIRZOJliBSQBAo+F4Nd7zHO
+   j5ZtfM2r5MK/8TkH6j1v9l0lmmoRRM2/sZKjAghrqU05Ko+lztH4yDDx4
+   5tYjz0V8FC5RJNZE2641t2usoyopTo2t2IhXLjTsh+2yfm/56KAYRel2R
+   g==;
+Date:   Fri, 18 Mar 2022 16:49:27 +0100
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Brendan Higgins <brendanhiggins@google.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel <kernel@axis.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "a.zummo@towertech.it" <a.zummo@towertech.it>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: Re: [RFC v1 07/10] iio: light: opt3001: add roadtest
+Message-ID: <20220318154927.GA32172@axis.com>
+References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
+ <20220311162445.346685-8-vincent.whitchurch@axis.com>
+ <CAFd5g47O2PbqaUZRoioRROtywTm=6t7cVgHqO7qc0ZGewQk16A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20220318070900.2499370-1-ztong0001@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+In-Reply-To: <CAFd5g47O2PbqaUZRoioRROtywTm=6t7cVgHqO7qc0ZGewQk16A@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,86 +65,167 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Mar 18, 2022 at 12:09:00AM -0700, Tong Zhang wrote:
-> regulator should be disabled in error path as mentioned in _regulator_put()
+On Tue, Mar 15, 2022 at 12:11:50AM +0100, Brendan Higgins wrote:
+> On Fri, Mar 11, 2022 at 11:24 AM Vincent Whitchurch
+> <vincent.whitchurch@axis.com> wrote:
+> > +class TestOPT3001(UMLTestCase):
 > 
-> [   16.233604] WARNING: CPU: 0 PID: 2177 at drivers/regulator/core.c:2257 _regulator_put
-> [   16.240453] Call Trace:
-> [   16.240572]  <TASK>
-> [   16.240676]  regulator_put+0x26/0x40
-> [   16.240853]  regulator_bulk_free+0x26/0x50
-> [   16.241050]  release_nodes+0x3f/0x70
-> [   16.241225]  devres_release_group+0x147/0x1c0
-> [   16.241441]  ? bmi160_core_probe+0x175/0x3a0 [bmi160_core]
+> I am partial to starting with UML since there are a lot of nice easy
+> things about starting there; however, I imagine people will eventually
+> want to use this on other architectures (speaking from experience).
+> How difficult do you think it would be to extend this to support
+> manipulating fake devices in say QEMU?
 
-Seems legit. Currently we call it only when something else is failed afterwards.
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+It should be possible, but upstream QEMU doesn't have everything that we
+need so some work is needed there.  Also, of course work is need to
+provide user space for running the tests and communicating between the
+virtual machine and the backend:
 
-> Fixes: 5dea3fb066f0 ("iio: imu: bmi160: added regulator support")
-> Signed-off-by: Tong Zhang <ztong0001@gmail.com>
-> ---
->  drivers/iio/imu/bmi160/bmi160_core.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
+- We need user space, so build scripts would need to be provided to
+  cross-compile busybox and Python (and whatever libraries it needs) for
+  the target architecture.
+
+- We also use UML's hostfs feature to make things transparent to the
+  user and to avoid having to set up things like networking for
+  communication between the host and the backend.  I think QEMU's 9pfs
+  support can be used as a rootfs too but it's not something I've
+  personally tested.
+
+- We use virtio-i2c and virtio-gpio and use virtio-uml which uses the
+  vhost-user API to communicate from UML to the backend.  The latest
+  version of QEMU has support for vhost-user-i2c, but vhost-user-gpio
+  doesn't seem to have been merged yet, so work is needed on the QEMU
+  side.  This will also be true for other buses in the future, if they
+  are implemented with new virtio devices.
+
+- For MMIO, UML has virtio-mmio which allows implementing any PCIe
+  device (and by extension any platform device) outside of UML, but last
+  I checked, upstream QEMU did not have something similar.
+
+> I also have some colleagues inside of Google that worked on some
+> projects to simulate simple devices on an FPGA to test software and
+> adjacent devices in a conceptually similar way; one of these teams
+> built a Domain Specific Language kind of like roadtest to implement
+> the tests and the environment for the tests. The main reason I mention
+> this here is I am thinking about maybe one day having an API you can
+> implement so you can run your roadtests on UML, QEMU, or on any
+> emulator or hardware testbed that implements the appropriate API.
 > 
-> diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
-> index 824b5124a5f5..f12446edb5ce 100644
-> --- a/drivers/iio/imu/bmi160/bmi160_core.c
-> +++ b/drivers/iio/imu/bmi160/bmi160_core.c
-> @@ -730,7 +730,7 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
->  
->  	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
->  	if (ret)
-> -		return ret;
-> +		goto disable_regulator;
->  
->  	usleep_range(BMI160_SOFTRESET_USLEEP, BMI160_SOFTRESET_USLEEP + 1);
->  
-> @@ -741,29 +741,34 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
->  	if (use_spi) {
->  		ret = regmap_read(data->regmap, BMI160_REG_DUMMY, &val);
->  		if (ret)
-> -			return ret;
-> +		goto disable_regulator;
->  	}
->  
->  	ret = regmap_read(data->regmap, BMI160_REG_CHIP_ID, &val);
->  	if (ret) {
->  		dev_err(dev, "Error reading chip id\n");
-> -		return ret;
-> +		goto disable_regulator;
->  	}
->  	if (val != BMI160_CHIP_ID_VAL) {
->  		dev_err(dev, "Wrong chip id, got %x expected %x\n",
->  			val, BMI160_CHIP_ID_VAL);
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto disable_regulator;
->  	}
->  
->  	ret = bmi160_set_mode(data, BMI160_ACCEL, true);
->  	if (ret)
-> -		return ret;
-> +		goto disable_regulator;
->  
->  	ret = bmi160_set_mode(data, BMI160_GYRO, true);
->  	if (ret)
-> -		return ret;
-> +		goto disable_regulator;
->  
->  	return 0;
-> +
-> +disable_regulator:
-> +	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
-> +	return ret;
->  }
->  
->  static int bmi160_data_rdy_trigger_set_state(struct iio_trigger *trig,
-> -- 
-> 2.25.1
+> I'll try to dig up some people who might be interested and add them here.
 > 
+> > +    dts = DtFragment(
+> > +        src="""
+> > +&i2c {
+> > +    light-sensor@$addr$ {
+> > +        compatible = "ti,opt3001";
+> > +        reg = <0x$addr$>;
+> > +    };
+> > +};
+> > +        """,
+> > +        variables={
+> > +            "addr": DtVar.I2C_ADDR,
+> > +        },
+> > +    )
+> > +
+> > +    @classmethod
+> > +    def setUpClass(cls) -> None:
+> > +        insmod("opt3001")
+> > +
+> > +    @classmethod
+> > +    def tearDownClass(cls) -> None:
+> > +        rmmod("opt3001")
+> > +
+> > +    def setUp(self) -> None:
+> > +        self.driver = I2CDriver("opt3001")
+> > +        self.hw = Hardware("i2c")
+> > +        self.hw.load_model(OPT3001)
+> > +
+> > +    def tearDown(self) -> None:
+> > +        self.hw.close()
+> > +
+> > +    def test_illuminance(self) -> None:
+> > +        data = [
+> > +            # Some values from datasheet, and 0
+> > +            (0b_0000_0000_0000_0000, 0),
+> > +            (0b_0000_0000_0000_0001, 0.01),
+> > +            (0b_0011_0100_0101_0110, 88.80),
+> > +            (0b_0111_1000_1001_1010, 2818.56),
+> > +        ]
+> > +        with self.driver.bind(self.dts["addr"]) as dev:
+> > +            luxfile = dev.path / "iio:device0/in_illuminance_input"
+> > +
+> > +            for regval, lux in data:
+> > +                self.hw.reg_write(REG_RESULT, regval)
+> > +                self.assertEqual(read_float(luxfile), lux)
+> 
+> I love the framework; this looks very easy to use.
+> 
+> One nit about this test; it seems like you cover just one test case
+> here - the happy path. Can you cover some other one? Particularly some
+> error paths?
+> 
+> Sorry, I am not trying to be cheeky here; it looks like this driver
+> actually should probably be fully (or very close to fully) testable
+> via roadtest as I understand it. It only looks like there are a
+> handful of cases to cover for the driver: the device is busy, the
+> device returned something invalid, the user requested something
+> invalid, and several SMBus read/write failures - it really only looks
+> like there are a handful of paths and I think they are all accessible
+> via the I2C interface (except for maybe the user requesting something
+> invalid).
 
--- 
-With Best Regards,
-Andy Shevchenko
+Yes, there are more things that could be tested in this driver.
+However, as the commit message says, I only indented this particular
+test to serve as a regression test for the specific bug fix, which would
+need an environment where the chip detects 0 lux to be able to test on
+real hardware.  There are a few reasons for this:
 
+ - Unlike the other drivers being tested in this series, I don't have
+   access to boards with this chip so my interest in this particular
+   piece of hardware is limited.
 
+ - I actually started writing more tests for this driver earlier on
+   (specifically, testing the configuration which uses interrupts), but
+   I quickly discovered that this driver has race conditions which
+   result in unbalanced mutex locking (in brief: the ok_to_ignore_lock
+   stuff is broken).  This shows the value of the test framework, but I
+   also didn't want to write non-trivial fixes for drivers where I
+   didn't have real hardware to test.
+
+ - Also, some paths in this driver needs a modification to be tested
+   under roadtest.  It uses wait_event_timeout() with a fixed value, but
+   we cannot guarantee that this constraint is met in the test
+   environment since it depends on things like CPU load on the host.
+
+   (Also, we use UML's "time travel" feature which essentially
+   fast-forwards through idle time, so the constraint can never be met
+   in practice.)
+   
+   So the timeout parameter would have to be made adjustable via say a
+   module parameter, to be able to make it infinite (to test the normal
+   case) and not (to be able to test timeout handling).  I think this
+   could be done fairly cleanly with a one- or two-liner patch to the
+   driver and by hiding the details in a header file behind a
+   roadtest-specific config option, but I wanted to avoid having to
+   patch the kernel proper for the initial version of the framework.
+
+For vcnl4000, I have actually inherited some out-of-tree patches which
+are in need of mainlining so the tests are a bit more complete since I'm
+hoping to send some patches to that driver soon.  The period mode busy
+handling is not tested there either though, I can try to add that.
+
+As for I2C API failures, I have not added tests for them in any of the
+drivers.  There's not much the test cases could assert, other than
+perhaps error propagation, so it's unclear if there is enough value
+compared to the effort required to implement test cases to make sure
+that every I2C transaction's failure path is tested.
+
+But I think that we do want to at least make sure the error paths are
+executed, to check that drivers don't crash or deadlock due to faulty
+cleanups and the like.  A way to solve this could be to implement fault
+injection support in the I2C framework.  The fail-nth feature could be
+used to systemically trigger each and every I2C transaction failure and
+check that the driver doesn't blow up, while using the roadtest as a
+means to hit the various code paths in the driver during each of the
+iterations of fail-nth.  Fault injection support would also be helpful
+when testing on real hardware.

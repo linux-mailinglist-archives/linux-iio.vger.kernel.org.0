@@ -2,230 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 946E74DDD43
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 16:49:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 859F54DDE54
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 17:18:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237179AbiCRPux (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Mar 2022 11:50:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35944 "EHLO
+        id S238973AbiCRQTS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Mar 2022 12:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236491AbiCRPux (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 11:50:53 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F81A2D0241;
-        Fri, 18 Mar 2022 08:49:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1647618572;
-  x=1679154572;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wcKA0KxoiU/AM8nvFRewTqVOc2fCyIBAGriShKCLLSk=;
-  b=dfmcli8lf8C/XrNUNuU0x786nL0kFuaD/1YntgoYgOkvvwBibABvLFqR
-   8YnSP88uLG367QGRmB6CtOph3gD/bKCJsKLqXV51LZxaJ4A3Wb51+XcVv
-   gRLTNBMRpvtE8DYR12nTyt4z17lK/ZTk8odYASip4n5FVK0cgSvQkO6gu
-   iVVn9Ymg/3zeVY154dMkslySSKtEGFqvwOPIRZOJliBSQBAo+F4Nd7zHO
-   j5ZtfM2r5MK/8TkH6j1v9l0lmmoRRM2/sZKjAghrqU05Ko+lztH4yDDx4
-   5tYjz0V8FC5RJNZE2641t2usoyopTo2t2IhXLjTsh+2yfm/56KAYRel2R
-   g==;
-Date:   Fri, 18 Mar 2022 16:49:27 +0100
-From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
-To:     Brendan Higgins <brendanhiggins@google.com>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel <kernel@axis.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
-        "shuah@kernel.org" <shuah@kernel.org>,
-        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "a.zummo@towertech.it" <a.zummo@towertech.it>,
-        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "corbet@lwn.net" <corbet@lwn.net>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Subject: Re: [RFC v1 07/10] iio: light: opt3001: add roadtest
-Message-ID: <20220318154927.GA32172@axis.com>
-References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
- <20220311162445.346685-8-vincent.whitchurch@axis.com>
- <CAFd5g47O2PbqaUZRoioRROtywTm=6t7cVgHqO7qc0ZGewQk16A@mail.gmail.com>
+        with ESMTP id S239143AbiCRQTF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 12:19:05 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24481103D88;
+        Fri, 18 Mar 2022 09:17:45 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22IDsqZ6013807;
+        Fri, 18 Mar 2022 12:17:43 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3evfqqmx5b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Mar 2022 12:17:42 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 22IGHf2L009326
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 18 Mar 2022 12:17:41 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 18 Mar 2022 12:17:41 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 18 Mar 2022 12:17:40 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 18 Mar 2022 12:17:40 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 22IGHWUf024583;
+        Fri, 18 Mar 2022 12:17:34 -0400
+From:   <alexandru.tachici@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: [PATCH v2 0/8] iio: adc: ad_sigma_delta: Add sequencer support
+Date:   Fri, 18 Mar 2022 18:27:14 +0200
+Message-ID: <20220318162722.51215-1-alexandru.tachici@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAFd5g47O2PbqaUZRoioRROtywTm=6t7cVgHqO7qc0ZGewQk16A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: xJ5_kHd-DwpnC4vE7qQGx5J-AQXI6wCp
+X-Proofpoint-ORIG-GUID: xJ5_kHd-DwpnC4vE7qQGx5J-AQXI6wCp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-18_11,2022-03-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=0 adultscore=0 clxscore=1011 impostorscore=0 bulkscore=0
+ mlxlogscore=958 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203180088
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 15, 2022 at 12:11:50AM +0100, Brendan Higgins wrote:
-> On Fri, Mar 11, 2022 at 11:24 AM Vincent Whitchurch
-> <vincent.whitchurch@axis.com> wrote:
-> > +class TestOPT3001(UMLTestCase):
-> 
-> I am partial to starting with UML since there are a lot of nice easy
-> things about starting there; however, I imagine people will eventually
-> want to use this on other architectures (speaking from experience).
-> How difficult do you think it would be to extend this to support
-> manipulating fake devices in say QEMU?
+From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-It should be possible, but upstream QEMU doesn't have everything that we
-need so some work is needed there.  Also, of course work is need to
-provide user space for running the tests and communicating between the
-virtual machine and the backend:
+Some sigma-delta chips support sampling of multiple
+channels in continuous mode.
 
-- We need user space, so build scripts would need to be provided to
-  cross-compile busybox and Python (and whatever libraries it needs) for
-  the target architecture.
+When the operating with more than one channel enabled,
+the channel sequencer cycles through the enabled channels
+in sequential order, from first channel to the last one.
+If a channel is disabled, it is skipped by the sequencer.
 
-- We also use UML's hostfs feature to make things transparent to the
-  user and to avoid having to set up things like networking for
-  communication between the host and the backend.  I think QEMU's 9pfs
-  support can be used as a rootfs too but it's not something I've
-  personally tested.
+If more than one channel is used in continuous mode,
+instruct the device to append the status to the SPI transfer
+(1 extra byte) every time we receive a sample.
+All sigma-delta chips possessing a sampling sequencer have
+this ability. Inside the status register there will be
+the number of the converted channel. In this way, even
+if the CPU won't keep up with the sampling rate, it won't
+send to userspace wrong channel samples.
 
-- We use virtio-i2c and virtio-gpio and use virtio-uml which uses the
-  vhost-user API to communicate from UML to the backend.  The latest
-  version of QEMU has support for vhost-user-i2c, but vhost-user-gpio
-  doesn't seem to have been merged yet, so work is needed on the QEMU
-  side.  This will also be true for other buses in the future, if they
-  are implemented with new virtio devices.
+1. Removed the 1 byte .shift from channel spec in AD7124,
+it confuses userspace apps (no need to shift right).
 
-- For MMIO, UML has virtio-mmio which allows implementing any PCIe
-  device (and by extension any platform device) outside of UML, but last
-  I checked, upstream QEMU did not have something similar.
+2. Add update_scan_mode to AD7124, it is required in order
+to enable/disable multiple channels at once
 
-> I also have some colleagues inside of Google that worked on some
-> projects to simulate simple devices on an FPGA to test software and
-> adjacent devices in a conceptually similar way; one of these teams
-> built a Domain Specific Language kind of like roadtest to implement
-> the tests and the environment for the tests. The main reason I mention
-> this here is I am thinking about maybe one day having an API you can
-> implement so you can run your roadtests on UML, QEMU, or on any
-> emulator or hardware testbed that implements the appropriate API.
-> 
-> I'll try to dig up some people who might be interested and add them here.
-> 
-> > +    dts = DtFragment(
-> > +        src="""
-> > +&i2c {
-> > +    light-sensor@$addr$ {
-> > +        compatible = "ti,opt3001";
-> > +        reg = <0x$addr$>;
-> > +    };
-> > +};
-> > +        """,
-> > +        variables={
-> > +            "addr": DtVar.I2C_ADDR,
-> > +        },
-> > +    )
-> > +
-> > +    @classmethod
-> > +    def setUpClass(cls) -> None:
-> > +        insmod("opt3001")
-> > +
-> > +    @classmethod
-> > +    def tearDownClass(cls) -> None:
-> > +        rmmod("opt3001")
-> > +
-> > +    def setUp(self) -> None:
-> > +        self.driver = I2CDriver("opt3001")
-> > +        self.hw = Hardware("i2c")
-> > +        self.hw.load_model(OPT3001)
-> > +
-> > +    def tearDown(self) -> None:
-> > +        self.hw.close()
-> > +
-> > +    def test_illuminance(self) -> None:
-> > +        data = [
-> > +            # Some values from datasheet, and 0
-> > +            (0b_0000_0000_0000_0000, 0),
-> > +            (0b_0000_0000_0000_0001, 0.01),
-> > +            (0b_0011_0100_0101_0110, 88.80),
-> > +            (0b_0111_1000_1001_1010, 2818.56),
-> > +        ]
-> > +        with self.driver.bind(self.dts["addr"]) as dev:
-> > +            luxfile = dev.path / "iio:device0/in_illuminance_input"
-> > +
-> > +            for regval, lux in data:
-> > +                self.hw.reg_write(REG_RESULT, regval)
-> > +                self.assertEqual(read_float(luxfile), lux)
-> 
-> I love the framework; this looks very easy to use.
-> 
-> One nit about this test; it seems like you cover just one test case
-> here - the happy path. Can you cover some other one? Particularly some
-> error paths?
-> 
-> Sorry, I am not trying to be cheeky here; it looks like this driver
-> actually should probably be fully (or very close to fully) testable
-> via roadtest as I understand it. It only looks like there are a
-> handful of cases to cover for the driver: the device is busy, the
-> device returned something invalid, the user requested something
-> invalid, and several SMBus read/write failures - it really only looks
-> like there are a handful of paths and I think they are all accessible
-> via the I2C interface (except for maybe the user requesting something
-> invalid).
+3. Add update_scan_mode to AD7192, it is required in order
+to enable/disable multiple channels at once
 
-Yes, there are more things that could be tested in this driver.
-However, as the commit message says, I only indented this particular
-test to serve as a regression test for the specific bug fix, which would
-need an environment where the chip detects 0 lux to be able to test on
-real hardware.  There are a few reasons for this:
+4. Add sequencer support for sigma_delta library.
 
- - Unlike the other drivers being tested in this series, I don't have
-   access to boards with this chip so my interest in this particular
-   piece of hardware is limited.
+5. Add sigma_delta_info values and callbacks for sequencer
+support in AD7124.
 
- - I actually started writing more tests for this driver earlier on
-   (specifically, testing the configuration which uses interrupts), but
-   I quickly discovered that this driver has race conditions which
-   result in unbalanced mutex locking (in brief: the ok_to_ignore_lock
-   stuff is broken).  This shows the value of the test framework, but I
-   also didn't want to write non-trivial fixes for drivers where I
-   didn't have real hardware to test.
+6. Add sigma_delta_info values and callbacks for sequencer
+support in AD7192.
 
- - Also, some paths in this driver needs a modification to be tested
-   under roadtest.  It uses wait_event_timeout() with a fixed value, but
-   we cannot guarantee that this constraint is met in the test
-   environment since it depends on things like CPU load on the host.
+7. Add disable_all() callback in AD7124 driver. Need this to
+disable channels in ad_sd_buffer_postdisable.
 
-   (Also, we use UML's "time travel" feature which essentially
-   fast-forwards through idle time, so the constraint can never be met
-   in practice.)
-   
-   So the timeout parameter would have to be made adjustable via say a
-   module parameter, to be able to make it infinite (to test the normal
-   case) and not (to be able to test timeout handling).  I think this
-   could be done fairly cleanly with a one- or two-liner patch to the
-   driver and by hiding the details in a header file behind a
-   roadtest-specific config option, but I wanted to avoid having to
-   patch the kernel proper for the initial version of the framework.
+8. Add disable_all() callback in AD7192 driver. Need this to
+disable channels in ad_sd_buffer_postdisable.
 
-For vcnl4000, I have actually inherited some out-of-tree patches which
-are in need of mainlining so the tests are a bit more complete since I'm
-hoping to send some patches to that driver soon.  The period mode busy
-handling is not tested there either though, I can try to add that.
+Alexandru Tachici (8):
+  iio: adc: ad7124: Remove shift from scan_type
+  iio: adc: ad7124: Add update_scan_mode
+  iio: adc: ad7192: Add update_scan_mode
+  iio: adc: ad_sigma_delta: Add sequencer support
+  iio: adc: ad7124: add sequencer support
+  iio: adc: ad7192: add sequencer support
+  iio: adc: ad7124: add disable_all() callback
+  iio: adc: ad7192: add disable_all() callback
 
-As for I2C API failures, I have not added tests for them in any of the
-drivers.  There's not much the test cases could assert, other than
-perhaps error propagation, so it's unclear if there is enough value
-compared to the effort required to implement test cases to make sure
-that every I2C transaction's failure path is tested.
+Changelog V1 -> V2:
+  - changed commits descriptions
+  - in ad_sd_buffer_postenable: switched from kzalloc to krealloc and added
+  space for the timestamp too.
+  - added a fast path that avoids the extra copies created during sample number tracking
+  for scans with (active_slots == 1) in ad_sd_trigger_handler
+  - in ad7192_update_scan_mode(), use for_each_set_bit() instead of a simple for()
+  - in ad_sd_init(), initialize num_slots to 1 if set on 0.
+  - added disable_all() callback in ad_sigma_delta_info that should disable all channels
+  It is always called in ad_sd_buffer_postdisable
+  - in ad_sd_buffer_postenable(), use ad_sigma_delta_set_channel() only for devices
+  with only one sequencer slot. For the ones with .num_slots > 1, update_scan_mode
+  will already have enabled the required channels
+  - add checks in ad_sd_init() for disable_all() and update_scan_mode() when
+  num_slots > 1 (these are needed for normal operation of the sequencer)
+  - in ad7124_update_scan_mode call set_channel on each channel
 
-But I think that we do want to at least make sure the error paths are
-executed, to check that drivers don't crash or deadlock due to faulty
-cleanups and the like.  A way to solve this could be to implement fault
-injection support in the I2C framework.  The fail-nth feature could be
-used to systemically trigger each and every I2C transaction failure and
-check that the driver doesn't blow up, while using the roadtest as a
-means to hit the various code paths in the driver during each of the
-iterations of fail-nth.  Fault injection support would also be helpful
-when testing on real hardware.
+ drivers/iio/adc/ad7124.c               |  62 +++++++++++-
+ drivers/iio/adc/ad7192.c               |  40 +++++++-
+ drivers/iio/adc/ad_sigma_delta.c       | 134 +++++++++++++++++++++++--
+ include/linux/iio/adc/ad_sigma_delta.h |  33 ++++++
+ 4 files changed, 254 insertions(+), 15 deletions(-)
+
+--
+2.25.1

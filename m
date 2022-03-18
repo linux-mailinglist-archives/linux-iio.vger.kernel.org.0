@@ -2,108 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D2E4DDE46
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 17:18:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 716ED4DE221
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 21:09:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238833AbiCRQTV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Mar 2022 12:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33262 "EHLO
+        id S240101AbiCRUKu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Mar 2022 16:10:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238771AbiCRQTN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 12:19:13 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FA6185477;
-        Fri, 18 Mar 2022 09:17:54 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22IE2Cpj013887;
-        Fri, 18 Mar 2022 12:17:53 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3evfqqmx68-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Mar 2022 12:17:52 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 22IGHpw6009335
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 18 Mar 2022 12:17:51 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 18 Mar 2022 12:17:51 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 18 Mar 2022 12:17:50 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 18 Mar 2022 12:17:50 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 22IGHWUn024583;
-        Fri, 18 Mar 2022 12:17:45 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH v2 8/8] iio: adc: ad7192: add disable_all() callback
-Date:   Fri, 18 Mar 2022 18:27:22 +0200
-Message-ID: <20220318162722.51215-9-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220318162722.51215-1-alexandru.tachici@analog.com>
-References: <20220318162722.51215-1-alexandru.tachici@analog.com>
+        with ESMTP id S229792AbiCRUKt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 16:10:49 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FBB523D76C;
+        Fri, 18 Mar 2022 13:09:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=O6uGUdoW6Lxm5JY3J83NMEK8xoTghOZASOlRneAdaZw=;
+        t=1647634168; x=1648843768; b=bQEwG1o/Vm4jlHUDF+ToofOnblLQp81bKySVJxlmbEbsTGn
+        4gvHkbTR8d8B3MxOztQno0siDPdV5gVSqAWK19RmH5esSBx41VpshuQQbAes/L7fDsZlG1FvbE+yW
+        km60nvngaxquE56d8CoLT9Pz71P0SHxF7cXiH4ITdhHSWhsZSluCGW/IxL43NADxXMySUK7FKMBCM
+        ZSiZ5bR3aU9bPSnXeY0LgBzU2MZoKNjydhmBzZEJnWDyXfp+xRxlh13U0E6fFejC/ZBY37KCpiV3f
+        exQi9IIl6VfLm+FroqGiypZHdOmoKjTfJbasmlV02WZMhDWilEIZixke0stAAqSA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nVIuF-00F0HF-AC;
+        Fri, 18 Mar 2022 21:09:03 +0100
+Message-ID: <1e61b0f21794e67fb4e87dc41fab90829d3c7cd6.camel@sipsolutions.net>
+Subject: Re: [RFC v1 07/10] iio: light: opt3001: add roadtest
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Brendan Higgins <brendanhiggins@google.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel <kernel@axis.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "a.zummo@towertech.it" <a.zummo@towertech.it>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Date:   Fri, 18 Mar 2022 21:09:02 +0100
+In-Reply-To: <20220318154927.GA32172@axis.com>
+References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
+         <20220311162445.346685-8-vincent.whitchurch@axis.com>
+         <CAFd5g47O2PbqaUZRoioRROtywTm=6t7cVgHqO7qc0ZGewQk16A@mail.gmail.com>
+         <20220318154927.GA32172@axis.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: t4TdTBlNolq3thiXMujeB4whPix7fIN-
-X-Proofpoint-ORIG-GUID: t4TdTBlNolq3thiXMujeB4whPix7fIN-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-18_11,2022-03-15_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- suspectscore=0 adultscore=0 clxscore=1015 impostorscore=0 bulkscore=0
- mlxlogscore=984 priorityscore=1501 spamscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203180088
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+On Fri, 2022-03-18 at 16:49 +0100, Vincent Whitchurch wrote:
+> 
+> It should be possible, but upstream QEMU doesn't have everything that we
+> need so some work is needed there.  Also, of course work is need to
+> provide user space for running the tests and communicating between the
+> virtual machine and the backend:
+> 
+> - We need user space, so build scripts would need to be provided to
+>   cross-compile busybox and Python (and whatever libraries it needs) for
+>   the target architecture.
 
-Add disable_all() callback to the ad_sigma_delta_info.
+You could possibly use some nix recipes for all of this, but that's a
+fairly arcane thing (we use it, but ...)
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- drivers/iio/adc/ad7192.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+> - We also use UML's hostfs feature to make things transparent to the
+>   user and to avoid having to set up things like networking for
+>   communication between the host and the backend.  I think QEMU's 9pfs
+>   support can be used as a rootfs too but it's not something I've
+>   personally tested.
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index e59753c61274..5bc929b5367a 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -299,9 +299,19 @@ static int ad7192_append_status(struct ad_sigma_delta *sd, bool append)
- 	return ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
- }
- 
-+static int ad7192_disable_all(struct ad_sigma_delta *sd)
-+{
-+	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
-+
-+	st->conf &= ~AD7192_CONF_CHAN_MASK;
-+
-+	return ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
-+}
-+
- static const struct ad_sigma_delta_info ad7192_sigma_delta_info = {
- 	.set_channel = ad7192_set_channel,
- 	.append_status = ad7192_append_status,
-+	.disable_all = ad7192_disable_all,
- 	.set_mode = ad7192_set_mode,
- 	.has_registers = true,
- 	.addr_shift = 3,
--- 
-2.25.1
+That works just fine, yes. We used to do exactly this in the wireless
+test suite before we switched to UML, but the switch to UML was due to
+the "time-travel" feature.
 
+https://w1.fi/cgit/hostap/tree/tests/hwsim/vm
+
+has support for both UML and qemu/kvm.
+
+> - We use virtio-i2c and virtio-gpio and use virtio-uml which uses the
+>   vhost-user API to communicate from UML to the backend.  The latest
+>   version of QEMU has support for vhost-user-i2c, but vhost-user-gpio
+>   doesn't seem to have been merged yet, so work is needed on the QEMU
+>   side.  This will also be true for other buses in the future, if they
+>   are implemented with new virtio devices.
+> 
+> - For MMIO, UML has virtio-mmio which allows implementing any PCIe
+>   device (and by extension any platform device) outside of UML, but last
+>   I checked, upstream QEMU did not have something similar.
+
+I think you have this a bit fuzzy.
+
+The virtio_uml[.c] you speak of is the "bus" driver for virtio in UML.
+Obviously, qemu has support for virtio, so you don't need those bits.
+
+Now, virtio_uml is actually the virtio (bus) driver inside the kernel,
+like you'd have virtio-mmio/virtio-pci in qemu. However, virtio_uml
+doesn't implement the devices in the hypervisor, where most qemu devices
+are implemented, but uses vhost-user to run the device implementation in
+a separate userspace. [1]
+
+Now we're talking about vhost-user to talk to the device, and qemu
+supports this as well, in fact the vhost-user spec is part of qemu:
+https://git.qemu.org/?p=qemu.git;a=blob;f=docs/system/devices/vhost-user.rst;h=86128114fa3788a73679f0af38e141021087c828;hb=1d60bb4b14601e38ed17384277aa4c30c57925d3
+https://www.qemu.org/docs/master/interop/vhost-user.html
+
+The docs on how to use it are here:
+https://www.qemu.org/docs/master/system/devices/vhost-user.html
+
+So once you have a device implementation (regardless of whether it's for
+use with any of the virtio-i2c, arch/um/drivers/virt-pci.c, virtio-gpio,
+virtio-net, ... drivers) you can actually connect it to virtual machines
+running as UML or in qemu.
+
+(Actually, that's not strictly true today since it's
+arch/um/drivers/virt-pci.c and I didn't get a proper device ID assigned
+etc since it was for experimentation, I guess if we make this more
+commonly used then we should move it to drivers/pci/controller/virtio-
+pci.c and actually specify it in the OASIS virtio spec., at the very
+least it'd have to be possible to compile this and lib/logic_iomem.c on
+x86, but that's possible. Anyway I think PCI(e) is probably low on your
+list of things ...)
+
+>  - Also, some paths in this driver needs a modification to be tested
+>    under roadtest.  It uses wait_event_timeout() with a fixed value, but
+>    we cannot guarantee that this constraint is met in the test
+>    environment since it depends on things like CPU load on the host.
+> 
+>    (Also, we use UML's "time travel" feature which essentially
+>    fast-forwards through idle time, so the constraint can never be met
+>    in practice.)
+
+Wohoo! This makes me very happy, finally somebody else who uses it :-)
+
+
+
+[1] As an aside, you might be interested in usfstl (which you can find
+at https://github.com/linux-test-project/usfstl) which is one way you
+could implement the device side - though the focus here is on making a
+device implementation easy while under "time-travel" mode.
+
+If you ever want to use time-travel with multiple machines or actually
+with virtio devices, it also contains the necessary controller program
+to glue the entire simulation together. We use this very successfully to
+test the (real but compiled for x86) wifi firmware for iwlwifi together
+with the real driver actually seeing a PCIe device in UML, under time-
+travel :)
+
+johannes

@@ -2,125 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFECC4DD7A4
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 11:08:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3AA94DD931
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Mar 2022 12:47:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234824AbiCRKJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Mar 2022 06:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
+        id S235594AbiCRLsl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Mar 2022 07:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231978AbiCRKJc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 06:09:32 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2884FABF44
-        for <linux-iio@vger.kernel.org>; Fri, 18 Mar 2022 03:08:14 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id w8so6596475pll.10
-        for <linux-iio@vger.kernel.org>; Fri, 18 Mar 2022 03:08:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=24ALj6df8DadrbfGiBDkQyMLABxJ1K5rvoSZDpzRXys=;
-        b=OdEFdMqN8nhoFp93J+fDW9yqJlVR+nfEDoVZre50QkgtBpj+QfKr+EM9GT0ovR0RZr
-         FELdQ1uxl7urZ7O8nUR+LfG7X5zB6UBXJWPsmtXNSU/vINdjs3nLMCisPChIdalFZ6R+
-         WjG0fSd5vzZWW2E7af68pci+e9bhuHI3J5R4qBnaoYgr40uD6NDX5tSrbadYyAQ2Mlq/
-         2qjxYjdAUx4zVLAmndYzTlkMdcDEsOnrqtZV/6SA+25iy3ZuIJTQKJA3x5mVoUId9PfA
-         UIDtGZaiOaXaFe7DseQSiams1zTzZPbsgmVzkQKBtDfk0KqNeBjdrpWGkaatnzOu+yZw
-         BYLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=24ALj6df8DadrbfGiBDkQyMLABxJ1K5rvoSZDpzRXys=;
-        b=i7TC+L/kikfgwdeiTGHZnnFUHDNL49BnPmEXbeIZn/xPylWqZeaKbI0+Atjs1GN5Uf
-         mT5LL6JJu0Ot+b5DJINQSlAnKyGns/AdJ9zNDXInEb72KOOO6jNX3T2mq+VMIds3hwID
-         kICoGXA/wtX3bzOJs7s3sJedF/YdNaFC0+PVHVv/jWllvr8/fE6JpRGWSbh2o7dg3bLQ
-         hFgrQVTXc8Cp3tTTUBSmUlha/Zo2C1nHVjHV0sq9BUpbr79/0iibxxO16kMC19v/dC1W
-         8KsB6wljP/jMQKQkLSt8NME/CaaLnlLrAETVr8A84eXrpeI3lkQEXAWQRGI26O9Jvzh4
-         VJfg==
-X-Gm-Message-State: AOAM530ggWLs3vJM0TTgNbYnaJpRMan3L9mbPZC4ddhdH2FpEvjrBLDM
-        vaJd67nmsOCuHb0yswq3Sglr2q+bLKboDWxycYM=
-X-Google-Smtp-Source: ABdhPJxSfL0mL/Q5qyTGi1CMdeRLhwA8L+AbtRkzGiyKU6poysKP4fjoZJwBHGr5UGqSlZgmDB5R0MMx0a8QcW5Y8EY=
-X-Received: by 2002:a17:90b:4d82:b0:1c5:d65:9a3a with SMTP id
- oj2-20020a17090b4d8200b001c50d659a3amr10342652pjb.112.1647598093603; Fri, 18
- Mar 2022 03:08:13 -0700 (PDT)
+        with ESMTP id S232272AbiCRLsk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Mar 2022 07:48:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC1E32CD81F
+        for <linux-iio@vger.kernel.org>; Fri, 18 Mar 2022 04:47:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56E61611FA
+        for <linux-iio@vger.kernel.org>; Fri, 18 Mar 2022 11:47:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEEBC340E8;
+        Fri, 18 Mar 2022 11:47:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1647604039;
+        bh=Ha2qipBfIzREFXTthGdvZpZbPOflIzc/avBGspK+s68=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tysBpDe3U1Z/OXYMezPA2uLqHY9gD25C9a6jDAmQe/6LVtkO6SNMJdyKS0UHulws6
+         eNpQjhTG1tPsVLAZvoCZm1AF5Tx6UG6PpPFLf7aG+/FHys+iptC5aR+J67xJEhu/Su
+         Kdzz6ZxSk5igcsfDfKMKwssn9QZj///nK+MvOgoY=
+Date:   Fri, 18 Mar 2022 12:42:30 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PULL] IIO new device support, features, fixes and cleanups for
+ 5.18
+Message-ID: <YjRwJpLfNEVg5bkt@kroah.com>
+References: <20220302135101.353b9470@jic23-huawei>
+ <20220302140256.279c7c51@jic23-huawei>
+ <20220315121025.00002e93@Huawei.com>
 MIME-Version: 1.0
-Sender: kadijat.ibrahimm@gmail.com
-Received: by 2002:a05:7300:8427:b0:59:3438:53ee with HTTP; Fri, 18 Mar 2022
- 03:08:12 -0700 (PDT)
-From:   Majid Khalid <khalidmajid576@gmail.com>
-Date:   Fri, 18 Mar 2022 03:08:12 -0700
-X-Google-Sender-Auth: 7V16hSOzexj5jXm_CNczFKdsgGc
-Message-ID: <CAHzY5sORPOB18+QBYovEORevNS603KfWENJiqZJozaLUu245hQ@mail.gmail.com>
-Subject: GREETING,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MILLION_USD,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:635 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5005]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [khalidmajid576[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 MILLION_USD BODY: Talks about millions of dollars
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  2.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  3.1 MONEY_FRAUD_5 Lots of money and many fraud phrases
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220315121025.00002e93@Huawei.com>
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Greeting my dear friend,
+On Tue, Mar 15, 2022 at 12:10:25PM +0000, Jonathan Cameron wrote:
+> On Wed, 2 Mar 2022 14:02:56 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > On Wed, 2 Mar 2022 13:51:01 +0000
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> > 
+> > > The following changes since commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07:
+> > > 
+> > >   Linux 5.17-rc1 (2022-01-23 10:12:53 +0200)
+> > > 
+> > > are available in the Git repository at:
+> > > 
+> > >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.18a
+> > > 
+> > > for you to fetch changes up to 0bf126163c3e7e6d722622073046aed567a5551e:
+> > > 
+> > >   iio: adc: xilinx-ams: Fix single channel switching sequence (2022-03-02 13:39:08 +0000)
+> > > 
+> > > ----------------------------------------------------------------  
+> > 
+> > Hi Greg,
+> 
+> Hi Greg,
+> 
+> Just wondering if you have any feedback on this pull request or maybe something
+> went wrong somewhere?  Absolutely fine if it's still in your todo pile!
 
-I am Mr. Majid Khalid from Damascus Syria, and I am now resigned from
-the government. I am a member of an opposition party government in
-Syria.
+Sorry for the delay.  Now pulled and pushed out, thanks,
 
-I need a foreign partner to enable me to transport my investment
-capital and then relocate with my family, honestly I wish I will
-discuss more and get along. I need a partner because my investment
-capital is in my international account. Am interested in buying
-Properties, houses, building real estates, my capital for investment
-is ($16.5Million USD), meanwhile if there is any profitable investment
-that you have so much experience on then we can join together as
-partners since I=E2=80=99m a foreigner.
-
-I came across your e-mail contact through private search while in need
-of your assistance and I decided to contact you directly to ask you if
-you know any Lucrative Business Investment in your Country I can
-invest my Money since my Country Syria Security and Economic
-Independent has lost to the Greatest Lower level, and our Culture has
-lost forever including our happiness has been taken away from us. Our
-Country has been on fire for many years now.
-
-If you are capable of handling this business Contact me for more
-details i will appreciate it if you can contact me immediately.
-
-You may as well tell me a little more about yourself. Contact me
-urgently to enable us to proceed with the business.
-
-I will be waiting for your response.
-
-Sincerely Yours,
-Mr. Majid Khalid.
+greg k-h

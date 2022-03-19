@@ -2,44 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8474DE8FE
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Mar 2022 16:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD864DE909
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Mar 2022 16:31:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234181AbiCSPUl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Mar 2022 11:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44540 "EHLO
+        id S243467AbiCSPco (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Mar 2022 11:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230497AbiCSPUk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Mar 2022 11:20:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C77227C4A;
-        Sat, 19 Mar 2022 08:19:19 -0700 (PDT)
+        with ESMTP id S243461AbiCSPco (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Mar 2022 11:32:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FEBA25278F;
+        Sat, 19 Mar 2022 08:31:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1D9A5B801BE;
-        Sat, 19 Mar 2022 15:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44030C340EC;
-        Sat, 19 Mar 2022 15:19:15 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 31412B801BD;
+        Sat, 19 Mar 2022 15:31:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED363C340EC;
+        Sat, 19 Mar 2022 15:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647703156;
-        bh=voeVY0dquz3eQPqFCqVamA7LalOvjToF8Z2pWGbtxWg=;
+        s=k20201202; t=1647703876;
+        bh=HsKRicTJPFvzoDCAO0YqkVB0YHJYjH6+NNPct+/DRyA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FJMqL4o+aFjBGTHdCCYF1S/NQGb0Dsrj2eI6ODOAvQ1JfsYarwk4lPbmw0PHuruSt
-         k/6XGWaOFPTC8PKJ4X8sEyVzSObOX4uHVHGN0JMmGSC3Dm8WqLfd0dZ+X96ZZ0/mD4
-         wWdxlMZbihplQ8L7P5QBNVwvXD6vLCqTz/COUx71j70iUTbfe54UsbxS71Jit6/XVe
-         vy1BNaPABNkWTLg3hP/MrTAz+CJennOnZHMe3mG7r9K52Q4rh8eLI6IIk2H4Yf1XVW
-         BJcj7TzQGLJ1xLfN4xnfNnuL5Vi16mLazDUngjplgDeagHJVTY1dUow5Ndq39X1qdi
-         DtRUATMPF4djA==
-Date:   Sat, 19 Mar 2022 15:26:41 +0000
+        b=S3Xc8i8MkvENmKsIi+24Ph154zItXKI7v5vpRqYA3t2K317NJVXnCBhVp5VcHngdi
+         xKhH0ddcBN4xpFcsJUaGC/BIA4NpTcS6JLXy4fuvIeW2EEfvJU1UCNrjwHi9WnbMwc
+         DPLi9Gre3IwGzgKrLij22Z38IJP+wcFvteqhM/03JT/XaoE2Q4v4dbFgxKJKuLrNo1
+         9bom5KO3SyzzMkRQlSeABX8avRETTAiA+SpzlI4vwWRb01rMXzqrwIBwAOdWPSwpvz
+         mqNgbQdIPUFEFDExZc3QNWZXVPaGmMoaehw4mikxgJMSYAAdvvsEV/YCPA6hDLWCxc
+         q6irFrWwiLB+w==
+Date:   Sat, 19 Mar 2022 15:38:41 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
-Message-ID: <20220319152641.49d8b3e1@jic23-huawei>
-In-Reply-To: <20220318204808.3404542-1-swboyd@chromium.org>
-References: <20220318204808.3404542-1-swboyd@chromium.org>
+To:     <alexandru.tachici@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/8] iio: adc: ad7124: Remove shift from scan_type
+Message-ID: <20220319153841.2483194a@jic23-huawei>
+In-Reply-To: <20220318162722.51215-2-alexandru.tachici@analog.com>
+References: <20220318162722.51215-1-alexandru.tachici@analog.com>
+        <20220318162722.51215-2-alexandru.tachici@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,69 +54,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Mar 2022 13:48:08 -0700
-Stephen Boyd <swboyd@chromium.org> wrote:
+On Fri, 18 Mar 2022 18:27:15 +0200
+<alexandru.tachici@analog.com> wrote:
 
-Hi Stephen,
-
-
-> There are four possible gain values according to sx9324_gain_vals[]: 1,
-> 2, 4, and 8. When writing and reading the register the values are off by
-> one. 
-> The bits should be set according to this equation:
+> From: Alexandru Tachici <alexandru.tachici@analog.com>
 > 
-> 	ilog2(<gain>) + 1
+> The 24 bits data is stored in 32 bits in BE. There
+> is no need to shift it. This confuses user-space apps.
 > 
-> so that a gain of 8 is 0x3 in the register field and a gain of 4 is 0x2
-> in the register field, etc. Fix up the functions.
+> Fixes: b3af341bbd966 ("iio: adc: Add ad7124 support")
+> Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+Hi Alexandru,
 
-So is the 0 value reserved?  I can't find an sx9324 datasheet but he
-9320 is online and that seems to be the case there.  If so please state
-that in this description as well.
+Just to confirm my understanding (which gets a bit messy when endian
+conversions are involved - and it occurs to me that our docs
+are not great on how to handle endian conversions with shifts).
 
-> 
-> Fixes: 4c18a890dff8 ("iio:proximity:sx9324: Add SX9324 support")
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+With a little endian cpu:
+After userspace performs the 32bit big endian to little endian conversion
+the value the shift would have previously dropped the bottom 8 bits
+of the channel reading?
+
+Looking at what ad_sigma_delta is doing it's documented as
+leaving the upper 8 bits as 0 so this would make sense.
+
+Have I understood the issue correctly?
+
+I'll need to hold this one for now as I'll need to rebase the
+fixes-togreg branch of iio.git after rc1 is available.
+
+Thanks,
+
+Jonathan
+
+
 > ---
->  drivers/iio/proximity/sx9324.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/ad7124.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> index 0d9bbbb50cb4..a3c8e02f5a56 100644
-> --- a/drivers/iio/proximity/sx9324.c
-> +++ b/drivers/iio/proximity/sx9324.c
-> @@ -379,7 +379,10 @@ static int sx9324_read_gain(struct sx_common_data *data,
->  	if (ret)
->  		return ret;
->  
-> -	*val = 1 << FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
-> +	regval = FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
-> +	if (regval)
-
-If 0 is reserved then I'd return and error code here to indicate
-we don't know what the gain is rather than carrying on regardless.
-Or is this going to cause problems as it will be an ABI change (error
-return possible when it wasn't really before)?
-
-> +		regval--;
-
-> +	*val = 1 << regval;
-
-
-
->  
->  	return IIO_VAL_INT;
->  }
-> @@ -725,7 +728,7 @@ static int sx9324_write_gain(struct sx_common_data *data,
->  	unsigned int gain, reg;
->  	int ret;
->  
-> -	gain = ilog2(val);
-> +	gain = ilog2(val) + 1;
->  	reg = SX9324_REG_PROX_CTRL0 + chan->channel / 2;
->  	gain = FIELD_PREP(SX9324_REG_PROX_CTRL0_GAIN_MASK, gain);
->  
-> 
-> base-commit: a8ee3b32f5da6c77a5ccc0e42c2250d61ba54fe0
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 998a342d51a6..7249db2c4422 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -188,7 +188,6 @@ static const struct iio_chan_spec ad7124_channel_template = {
+>  		.sign = 'u',
+>  		.realbits = 24,
+>  		.storagebits = 32,
+> -		.shift = 8,
+>  		.endianness = IIO_BE,
+>  	},
+>  };
 

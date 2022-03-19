@@ -2,162 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7078E4DE939
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Mar 2022 17:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD024DE9EC
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Mar 2022 19:10:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242922AbiCSQOJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Mar 2022 12:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53362 "EHLO
+        id S240544AbiCSSLv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Mar 2022 14:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229707AbiCSQOI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Mar 2022 12:14:08 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06753D49C;
-        Sat, 19 Mar 2022 09:12:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48928B80D77;
-        Sat, 19 Mar 2022 16:12:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641D8C340EC;
-        Sat, 19 Mar 2022 16:12:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647706364;
-        bh=HEyacrIGIQx8ML6gFJ0fCuLhS4KAbHC0o85BgDkcqos=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=butfp4FgFHm0rh60BX22Y4ltRLIH25uM4CSZrSxehKc7QUD9E9gGzJ8wCODRs1Ple
-         2QnQRkXCvHuiAY5oJHqjgeL3GVJiYfrwmOGJDika19Ei5Z8Ws6xSBHrLTwwSwOuuGI
-         JvZHKOgauBsGk0XUAZtoviZ+0ph1Z0y1atP4IY1jZoiPt5ZGAW9AKMk1n7DGORC6ZJ
-         4m3tHTvDYpYXu0UmIGOG/BS3YVQK212SvNmwHnCkfANYN1tproROz+E7Kj/SycMvYa
-         duWinaF5RnMVp3IIaHuptw75khFTw2BhD0njGxoyDC3d3xf/GvL0Og8dP3lPpAV5nD
-         5oTPqmRGirbXw==
-Date:   Sat, 19 Mar 2022 16:20:06 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Tong Zhang <ztong0001@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio:imu:bmi160: disable regulator in error path
-Message-ID: <20220319162006.13c60c1f@jic23-huawei>
-In-Reply-To: <YjSTK4yun3kiulB1@smile.fi.intel.com>
-References: <20220318070900.2499370-1-ztong0001@gmail.com>
-        <YjSTK4yun3kiulB1@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231363AbiCSSLu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Mar 2022 14:11:50 -0400
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 505EA8FE5F;
+        Sat, 19 Mar 2022 11:10:29 -0700 (PDT)
+Received: by mail-pg1-x52c.google.com with SMTP id s72so4678566pgc.5;
+        Sat, 19 Mar 2022 11:10:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=LtEYFIhXvvOvbebGSgHoPGrz8Zle3hfcrZFN/0LxkpU=;
+        b=a2/ipdQsDvhPI0UOcDkGgwuuCpw4QIJ5bRBz40eCL6hK/YbShxPAVUtP4LScDf9IMf
+         86nKDx//mXWzY6LVURNDkQQ5Kew0nF590eaFPt3ndUOP7UZWDBrsL9+IGH2B9ewGqAWM
+         kgZ2MN9uXpf8Zyrax+pqJzC0wmwxB1Mz5HpOjkJm2FH/6MvA+30dNcoKB0RS9VkJCb7X
+         30K6Stp6++6/phd5YGDYcXTwKjUxYRJMxxfF9YaF/x4w418T8hYxAMoqHGiipvmG1AKx
+         jsPawUq3YvF9rIQcVg9ok8c7n+Ab7S4nBTPogZYemf78qEM0I25wDuImuNJcJFXBYHXE
+         1qRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=LtEYFIhXvvOvbebGSgHoPGrz8Zle3hfcrZFN/0LxkpU=;
+        b=LjvKlnXya+SvgVwzx1iV2WRGA5om0Gxh+IyMErP9+7ijb8UCSk3/VTY+Hoe8ohAFRQ
+         5fzXaQtJwrusHvBruC9tQUqp21e39HdblL9gYJYiFnWFAMUlukHik2w56eBNTQ08ovy4
+         ChDLrbUZ5z/hAQsz399/5OpDzSaZ8WnYtoufDc8BABhslHEBTm88SiJd2jMHUph7OWlD
+         76W6Izn48GtWg/PudEsKxmtMBgCNqUGcZyUVKQyZhD9R29w/QAQc2XMFXSgNnxNKDfc4
+         L6Bshx/C96nIjZN81RpDNGr+i15A/UyMe+D1jVpbirmqTWwsItOAquYIhkSQEruG2xob
+         KtLA==
+X-Gm-Message-State: AOAM53029E5SVbOXIrgiw9YJIpHYbeDnqiXpcdB3UXPc+uPvvGeOD294
+        dTXD1iEegKimo8c5O0YB+Q8=
+X-Google-Smtp-Source: ABdhPJzL+VvGk+vdzMYdGs8VJnd7U/7/3SXXPNH6iUlgZv2OrGz4wVE+uv/xlrBteZ1dqZsdh+yOkQ==
+X-Received: by 2002:a63:6a41:0:b0:37c:53a1:b5b6 with SMTP id f62-20020a636a41000000b0037c53a1b5b6mr12312954pgc.245.1647713428798;
+        Sat, 19 Mar 2022 11:10:28 -0700 (PDT)
+Received: from localhost.localdomain ([115.99.145.231])
+        by smtp.gmail.com with ESMTPSA id nu4-20020a17090b1b0400b001bf497a9324sm16413981pjb.31.2022.03.19.11.10.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Mar 2022 11:10:28 -0700 (PDT)
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     dan@dlrobertson.com, jic23@kernel.org, andy.shevchenko@gmail.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/5] iio: accel: bma400: Add support for buffer and step
+Date:   Sat, 19 Mar 2022 23:40:18 +0530
+Message-Id: <20220319181023.8090-1-jagathjog1996@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Mar 2022 16:11:55 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+This patch series adds trigger buffer support with data ready interrupt,
+separate channel for step counter and an event for step change interrupt.
 
-> On Fri, Mar 18, 2022 at 12:09:00AM -0700, Tong Zhang wrote:
-> > regulator should be disabled in error path as mentioned in _regulator_put()
-> > 
-> > [   16.233604] WARNING: CPU: 0 PID: 2177 at drivers/regulator/core.c:2257 _regulator_put
-> > [   16.240453] Call Trace:
-> > [   16.240572]  <TASK>
-> > [   16.240676]  regulator_put+0x26/0x40
-> > [   16.240853]  regulator_bulk_free+0x26/0x50
-> > [   16.241050]  release_nodes+0x3f/0x70
-> > [   16.241225]  devres_release_group+0x147/0x1c0
-> > [   16.241441]  ? bmi160_core_probe+0x175/0x3a0 [bmi160_core]  
-> 
-> Seems legit. Currently we call it only when something else is failed afterwards.
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Jagath Jog J (5):
+  iio: accel: bma400: conversion to device-managed function
+  iio: accel: bma400: changing scale min and max macro values
+  iio: accel: bma400: Add triggered buffer support
+  iio: accel: bma400: Add separate channel for step counter
+  iio: accel: bma400: Add step change event
 
-Indeed this is fixing a real issue, but only one of two similar issues.
-(I'd never have looked closely at this code without you spotting the first one :)
+ drivers/iio/accel/Kconfig       |   2 +
+ drivers/iio/accel/bma400.h      |  19 +-
+ drivers/iio/accel/bma400_core.c | 315 +++++++++++++++++++++++++++++---
+ drivers/iio/accel/bma400_i2c.c  |  10 +-
+ drivers/iio/accel/bma400_spi.c  |  10 +-
+ 5 files changed, 304 insertions(+), 52 deletions(-)
 
-If I were writing this driver from scratch I would register
-multiple devm_add_action_or_reset() callbacks and I note that even though
-we might have turned the power off we haven't handled the other state
-set in this init function.
-
-1) Regulator disable.
-2) bmi160_set_mode(bmi_data, BMI160_GYRO, false);
-3) bmi160_set_mode(bmi_data, BMI160_ACCEL, false);
-
-An alternative is to add handling for the first set_mode() in here being
-unwound if the second fails.  See below.  
-
-> 
-> > Fixes: 5dea3fb066f0 ("iio: imu: bmi160: added regulator support")
-> > Signed-off-by: Tong Zhang <ztong0001@gmail.com>
-> > ---
-> >  drivers/iio/imu/bmi160/bmi160_core.c | 17 +++++++++++------
-> >  1 file changed, 11 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
-> > index 824b5124a5f5..f12446edb5ce 100644
-> > --- a/drivers/iio/imu/bmi160/bmi160_core.c
-> > +++ b/drivers/iio/imu/bmi160/bmi160_core.c
-> > @@ -730,7 +730,7 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
-> >  
-> >  	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto disable_regulator;
-> >  
-> >  	usleep_range(BMI160_SOFTRESET_USLEEP, BMI160_SOFTRESET_USLEEP + 1);
-> >  
-> > @@ -741,29 +741,34 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
-> >  	if (use_spi) {
-> >  		ret = regmap_read(data->regmap, BMI160_REG_DUMMY, &val);
-> >  		if (ret)
-> > -			return ret;
-> > +		goto disable_regulator;
-> >  	}
-> >  
-> >  	ret = regmap_read(data->regmap, BMI160_REG_CHIP_ID, &val);
-> >  	if (ret) {
-> >  		dev_err(dev, "Error reading chip id\n");
-> > -		return ret;
-> > +		goto disable_regulator;
-> >  	}
-> >  	if (val != BMI160_CHIP_ID_VAL) {
-> >  		dev_err(dev, "Wrong chip id, got %x expected %x\n",
-> >  			val, BMI160_CHIP_ID_VAL);
-> > -		return -ENODEV;
-> > +		ret = -ENODEV;
-> > +		goto disable_regulator;
-> >  	}
-> >  
-> >  	ret = bmi160_set_mode(data, BMI160_ACCEL, true);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto disable_regulator;
-> >  
-> >  	ret = bmi160_set_mode(data, BMI160_GYRO, true);
-> >  	if (ret)
-
-If this fails, we should also undo the previous call as well. For readability
-use goto disable_accel; then fix it under that new label.
- 
-> > -		return ret;
-> > +		goto disable_regulator;
-> >  
-> >  	return 0;
-> > +
-> > +disable_regulator:
-> > +	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
-> > +	return ret;
-> >  }
-> >  
-> >  static int bmi160_data_rdy_trigger_set_state(struct iio_trigger *trig,
-> > -- 
-> > 2.25.1
-> >   
-> 
+-- 
+2.17.1
 

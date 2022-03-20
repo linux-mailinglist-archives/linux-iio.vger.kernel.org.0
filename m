@@ -2,50 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E158D4E1C45
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 16:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 715E84E1C47
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 16:32:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245374AbiCTP2d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Mar 2022 11:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41576 "EHLO
+        id S245234AbiCTPd2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Mar 2022 11:33:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235395AbiCTP2c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 11:28:32 -0400
+        with ESMTP id S241296AbiCTPd1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 11:33:27 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BBF6A9960;
-        Sun, 20 Mar 2022 08:27:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAE401C934;
+        Sun, 20 Mar 2022 08:32:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CE0C5B80DC3;
-        Sun, 20 Mar 2022 15:27:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5052C340EE;
-        Sun, 20 Mar 2022 15:27:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4C5D6B80DC3;
+        Sun, 20 Mar 2022 15:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414E6C340EE;
+        Sun, 20 Mar 2022 15:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647790026;
-        bh=5H1gxkakWBmBtJqH2SJyAEEPgBoD0f9vFvJORCGszAA=;
+        s=k20201202; t=1647790321;
+        bh=I2fW2DdqNLY/ug4CBXSippa33Z0N+xv29/G1k8QsKmM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=unMG510N2lpk2tVs+CdlTgRSe80ah6BK4gp6wX+/j4H+OaP4M0KCWD8vOTDDBQGMN
-         8xcO+lnorn7tZjyECMZs70kwtR0OELxIbQoYT3YWSJXHCcnrPALe6TUT4fq/aRMjyJ
-         vm3D3ob+QiqSr5P7en6k7PNb8ZMqaJEktPUjnT+CiUadS1jpTeLMa/uylHak/NBhmF
-         EjgTekVLi4ZwUCyLsu9lrj2bhr9ewSbJ+tNU7CTQ0dXEDHHE4gIz905PkqcS1KIWMV
-         kzb6kd/6cFbnfRBXNEDMojLA8mlyypCuWcRt+G7LfXkXzucvMc0bywryZQbYCmGQP/
-         3Pq/EpZt/cMdg==
-Date:   Sun, 20 Mar 2022 15:34:28 +0000
+        b=JOaOpGdu7fFqvE6fUZxBZxUMph0BWJx8Bp+4/wdUadaARpL4pZEh7k5yY88GIDvhm
+         syJi9YcMeD5ar+0knenq/PS7RhiNC2wiwr90K3NRDkdcgBc36y9rr6euWE1gzUGagZ
+         xpzGIIXu4IkvhQO+rmgAt22DZKWhPPxw6m8OYUt7ePUCkFQyxSKMvQ62oHWNGAJCcm
+         jFSn78SgT17gTvMTuJh0L+3XA8RGFVGvHRHrAcWJeSIPdYpxD44uzww6ifErv2VNtl
+         JXVZ9quP5busRu610z2LHoX3a7RFzhPIWHKO1Gqju7cJs2Us0FvEySKGLksTQrCHgZ
+         48AYBcq+irnlw==
+Date:   Sun, 20 Mar 2022 15:39:25 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     "Sicelo A. Mhlongo" <absicsz@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Denis Ciocca <denis.ciocca@st.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        maemo-leste@lists.dyne.org
-Subject: Re: [PATCH v3 0/3] Support LIS302DL in st_accel
-Message-ID: <20220320153428.0e1a8695@jic23-huawei>
-In-Reply-To: <YiYPiStW3ELlfEUr@smile.fi.intel.com>
-References: <20220307132502.73854-1-absicsz@gmail.com>
-        <YiYPiStW3ELlfEUr@smile.fi.intel.com>
+To:     trix@redhat.com
+Cc:     roan@protonic.nl, lars@metafoo.de, nathan@kernel.org,
+        ndesaulniers@google.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v2] iio: scd4x: check return of scd4x_write_and_fetch
+Message-ID: <20220320153925.12bb01eb@jic23-huawei>
+In-Reply-To: <20220301025223.223223-1-trix@redhat.com>
+References: <20220301025223.223223-1-trix@redhat.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,48 +55,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 7 Mar 2022 15:58:33 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Mon, 28 Feb 2022 18:52:23 -0800
+trix@redhat.com wrote:
 
-> On Mon, Mar 07, 2022 at 03:24:59PM +0200, Sicelo A. Mhlongo wrote:
-> > Hi,
-> > 
-> > The ST Microelectronics LIS302DL is currently only supported in the
-> > evdev framework driver in drivers/misc/lis3lv02d. This series enables
-> > support for it in the iio framework.  
+> From: Tom Rix <trix@redhat.com>
 > 
-> The entire series is fine to me
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-This crossed with another series adding the sc7a20 so I hand tweaked
-it whilst applying.
+> Clang static analysis reports this problem
+> scd4x.c:474:10: warning: The left operand of '==' is a
+>   garbage value
+>   if (val == 0xff) {
+>       ~~~ ^
+> val is only set from a successful call to scd4x_write_and_fetch()
+> So check it's return.
+> 
+> Fixes: 49d22b695cbb ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
+> Signed-off-by: Tom Rix <trix@redhat.com>
 
-Applied to the togreg branch of iio.git but I'll be rebasing that on
-rc1 once available so in meantime just pushed out as testing.
+Hi Tom,
+
+This looks good to me.  Timing was a bit unfortunate so now I'll queue this up for post
+rc1.  Hence applied to my local copy of fixes-togreg (which includes the stuff that
+should go in during the merge window) but not pushed out until I can rebase on rc1.
 
 Thanks,
 
 Jonathan
 
+> ---
+> v2: rework return on error logic to be similar to existing code
 > 
-> > Regards,
-> > Sicelo
-> > 
-> > 
-> > 
-> > Sicelo A. Mhlongo (3):
-> >   dt-bindings: iio: st,st-sensors add LIS302DL
-> >   iio: accel: Remove unused enum in st_accel
-> >   iio: accel: add support for LIS302DL variant
-> > 
-> >  .../bindings/iio/st,st-sensors.yaml           |  1 +
-> >  drivers/iio/accel/st_accel.h                  | 26 +------------------
-> >  drivers/iio/accel/st_accel_core.c             |  1 +
-> >  drivers/iio/accel/st_accel_i2c.c              |  5 ++++
-> >  drivers/iio/accel/st_accel_spi.c              |  5 ++++
-> >  5 files changed, 13 insertions(+), 25 deletions(-)
-> > 
-> > -- 
-> > 2.35.1
-> >   
+>  drivers/iio/chemical/scd4x.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
+> diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+> index 20d4e7584e923..37143b5526ee6 100644
+> --- a/drivers/iio/chemical/scd4x.c
+> +++ b/drivers/iio/chemical/scd4x.c
+> @@ -471,12 +471,15 @@ static ssize_t calibration_forced_value_store(struct device *dev,
+>  	ret = scd4x_write_and_fetch(state, CMD_FRC, arg, &val, sizeof(val));
+>  	mutex_unlock(&state->lock);
+>  
+> +	if (ret)
+> +		return ret;
+> +
+>  	if (val == 0xff) {
+>  		dev_err(dev, "forced calibration has failed");
+>  		return -EINVAL;
+>  	}
+>  
+> -	return ret ?: len;
+> +	return len;
+>  }
+>  
+>  static IIO_DEVICE_ATTR_RW(calibration_auto_enable, 0);
 

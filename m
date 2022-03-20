@@ -2,51 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C4154E1BC7
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 14:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AA14E1BCF
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 14:15:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245052AbiCTNEp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Mar 2022 09:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43324 "EHLO
+        id S240371AbiCTNQX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Mar 2022 09:16:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235848AbiCTNEn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 09:04:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABEF6532E9
-        for <linux-iio@vger.kernel.org>; Sun, 20 Mar 2022 06:03:18 -0700 (PDT)
+        with ESMTP id S236759AbiCTNQW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 09:16:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9483B3586D
+        for <linux-iio@vger.kernel.org>; Sun, 20 Mar 2022 06:14:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 919B9610A0
-        for <linux-iio@vger.kernel.org>; Sun, 20 Mar 2022 13:03:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA96CC340ED;
-        Sun, 20 Mar 2022 13:03:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2172C610A2
+        for <linux-iio@vger.kernel.org>; Sun, 20 Mar 2022 13:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CCFC340E9;
+        Sun, 20 Mar 2022 13:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647781397;
-        bh=xGGyDuFQuAHfoomObPtgIIQRgA0zCdIsNkjY3uMDiNI=;
+        s=k20201202; t=1647782098;
+        bh=B+JQNGWZsjHcdVYzsssQHMMyqLdRj647LigJ4EivYkw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SdfHqtIYm8FsZNxVT3mRrNuIby7mxK/Y3coZ3U74ZR3lNh27xX4mlTY1N3X+wHhpq
-         vZ0caJXk2zge7qdo21MPm7CrNtelxU5aGp613Hd1yz8Lu1SSBKFj8uRx2Yz4jn0/Fa
-         hKpuCBE0ViYET/xAj3V+pORcZsbrg/jHZNBmgaOGXxmSAWvpYszhCZpVzoY7MoqU35
-         AHEnoUJrlKWqa7CVSdxHZFUuGb6OYTRLj2ravxpgiYpAGlEjRJ8S9W4WZmFS0qpDhE
-         ajUtALOVjV05ZMP9Czg+aVrumnp9ZIx3weyFLgFPXOYhI+jCgXW55/nzK6bRt5N4Pr
-         Hq6VoTg/fW8NQ==
-Date:   Sun, 20 Mar 2022 13:10:41 +0000
+        b=f4zD+bbMOCu/dEz2vg4PGQi5CQZgmY/AAqneyQsbsc6fDp5w89P3Qc/VY4NrbqWxl
+         33YL6T6eH1ywGw0//6vLRmzQVubjUsrY+gkKYu2ZkpGENl6HIja7gkBMNLdRljnBQJ
+         C+2xucOAlywVayB8MCZvWf5Y3XxCYHXTUZkBo1hTNmkN37x+3IA8hVw157y8623pwH
+         nJiNILsasKtd2GeYlQ305kYnmpLhnPRg3gyg1XhnD1eyu+v4sEZryYiO4UKw0FNyii
+         hLqlFDRgPXXVvGh1dMp8MJ2UQu0O6FUHX2YErgntkKS2WGEOyR3hDo1wp6Yse/3r8P
+         0iAYX/HQnODRg==
+Date:   Sun, 20 Mar 2022 13:22:22 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Marek Vasut <marex@denx.de>
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Daniel Baluta <daniel.baluta@nxp.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 7/7] iio: adc: ti-ads1015: Add static assert to test
- if shifted realbits fit into storagebits
-Message-ID: <20220320131041.4efcf35b@jic23-huawei>
-In-Reply-To: <65e934d0-b002-1cf1-1b4d-1ff53d04df50@denx.de>
-References: <20220311184925.99270-1-marex@denx.de>
-        <20220311184925.99270-7-marex@denx.de>
-        <CAHp75VdS+VRFSu8q3Si4yVEJd3aYxoFBaz4cYh7PXLGCLmNvaA@mail.gmail.com>
-        <65e934d0-b002-1cf1-1b4d-1ff53d04df50@denx.de>
+Subject: Re: [PATCH 4/6] iio: adc: ti-ads1015: Deduplicate channel macros
+Message-ID: <20220320132222.793abcea@jic23-huawei>
+In-Reply-To: <35811c26-2363-6be0-09fe-91ee77f29069@denx.de>
+References: <20220310003402.490478-1-marex@denx.de>
+        <20220310003402.490478-4-marex@denx.de>
+        <YioKZ6EZvYHOOFMe@smile.fi.intel.com>
+        <082e1654-74b7-aed2-4915-f8dd304540d6@denx.de>
+        <CAHp75VfDv5CE0cDSBDeMeWj4ub1JV9o-jPpqhLvwnmmN+=WJ0Q@mail.gmail.com>
+        <1504edf0-5773-781a-1a4f-056f57dfbf15@denx.de>
+        <YiuA3jvbpkSQfuFM@smile.fi.intel.com>
+        <35811c26-2363-6be0-09fe-91ee77f29069@denx.de>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,44 +63,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 12 Mar 2022 22:28:22 +0100
+On Fri, 11 Mar 2022 19:51:56 +0100
 Marek Vasut <marex@denx.de> wrote:
 
-> On 3/12/22 13:19, Andy Shevchenko wrote:
-> > On Fri, Mar 11, 2022 at 8:50 PM Marek Vasut <marex@denx.de> wrote:  
-> >>
-> >> Add compile-time static_assert wrapper to verify that shifted realbits
-> >> fit into storagebits. The macro is implemented in a more generic way so
-> >> it can be used to verify other values if required.  
+> On 3/11/22 18:03, Andy Shevchenko wrote:
+> > On Fri, Mar 11, 2022 at 12:33:49PM +0100, Marek Vasut wrote:  
+> >> On 3/11/22 12:29, Andy Shevchenko wrote:  
+> >>> On Fri, Mar 11, 2022 at 1:55 AM Marek Vasut <marex@denx.de> wrote:  
+> >>>> On 3/10/22 15:25, Andy Shevchenko wrote:  
+> >>>>> On Thu, Mar 10, 2022 at 01:34:00AM +0100, Marek Vasut wrote:  
 > > 
-> > Thanks! I think we may leave it to maintainers to decide if it is
-> > worth adding or not.  
+> > ...
+> >   
+> >>>>>> -            .realbits = 12,                                 \
+> >>>>>> +            .realbits = (_realbits),                        \
+> >>>>>>                .storagebits = 16,                              \  
+> >>>>>
+> >>>>> This seems inconsistent a bit. What if the next chip wants to have more than
+> >>>>> 16 bits in realbits?  
+> >>>>
+> >>>> When such a chip exists, this can be parametrized as well.  
+> >>>
+> >>> Yes, My point is that it's error prone.  
+> >>
+> >> Won't IIO core warn if realbits > storagebits ?  
+> > 
+> > If it's the case, then it's very good!  
 > 
-> Right, that's why I placed it as 7/7, since the macro is ... not pretty.
+> No, apparently it won't .
 
-It's ugly but that's all wrapped up in the macro so I'll take it and
-see what blows up :)
+Easy to add I think and a good idea. Though can only be a runtime
+check obviously.
 
-Longer term, maybe we'd should add a general runtime check in the IIO core?
-
-Not quite so nice as catching at compile time but would catch all such issues
-the moment anyone actually tries out a driver with whatever device they've
-just added support for.
-
-I'll let this sit a little longer for additional review before picking it up
-(missed this cycle anyway so lots of time).
-
-
-A few other comments on this driver whilst we are here on things we should
-cleanup at somepoint.
-1) Move over to the read_avail callback rather than having the attribute
-   groups.  It may well be slightly more code but then makes them available
-   to in kernel users.   Slowly moving all drivers with _available for standard
-   ABI over to the callback is on the todo list but it will take a while...
-2) Possibly introduced a static const array of
-   struct ad1015_chip_info {
-	all the per device stuff currently handled in code in probe
-   };
-Then simply access that directly using the the device_match_data.
+Put a verification check in iio_buffer_add_channel_sys() which
+is registering the _type attr used to get access to this info from
+user space.
 
 Jonathan
+
+> 
+> > ...
+> >   
+> >>>>> I see two options:
+> >>>>> 1) add static assert to make sure realbits <= storagebits;  
+> >>>>
+> >>>> Does static_assert work in array of structures (I don't think it does) ?  
+> >>>
+> >>> You can check, but IIRC some of the macros have it. Don't remember the
+> >>> details, though.  
+> >>
+> >> I already checked before replying, hence my question, as I didn't find a way
+> >> to make it work.  
+> > 
+> > It seems that current use cases have it either in functions or in
+> > the expressions as ({...}). I dunno if the result of ({...}) can be
+> > a data structure or compound literal.  
+> 
+> I added a patch to v2, but ugh, it isn't nice:
+> 
+> [PATCH v2 7/7] iio: adc: ti-ads1015: Add static assert to test if 
+> shifted realbits fit into storagebits
+

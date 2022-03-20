@@ -2,125 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 075B14E198A
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 04:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3DC14E19FD
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 06:33:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234222AbiCTDcV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Mar 2022 23:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49350 "EHLO
+        id S238538AbiCTFe3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Mar 2022 01:34:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231244AbiCTDcT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Mar 2022 23:32:19 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34AAA3D4B4;
-        Sat, 19 Mar 2022 20:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1647747057; x=1679283057;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=h1aRh4JEaVV6XjY9nMDTKMmS36IDjBZFJm+89+Hc6nU=;
-  b=h78V8YhoQiLynBzGlgHuyQl6F3hUPKq7xzgqHqpq+Ws6N+FBseidR5qe
-   GonL0yzGIrpyD1EgIq0r+F4wdxY7dbdOZQzBzieuLos50IW7FCPtyRxti
-   gbHAQ5NwkJWZAgNDtJn2v6kEK/vs65AIXnBv1+q1ndpsay95qck/AsvJV
-   1erdCcuhTLl5jhVvcQbAJwhB2MEe4KiDb6sztxTMDsJHZQtu5y8DVoV4T
-   n+AgXR3yCFUQyk6g4U6ciGeF/5Bjk2nky5iRMJ68hru80ExraXGcGCkjc
-   DCcEAW5SRQARMEEMq37rddrl+WIMjZT95NHzLU6xvGvqes98YdmHiWT+z
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10291"; a="257539876"
-X-IronPort-AV: E=Sophos;i="5.90,195,1643702400"; 
-   d="scan'208";a="257539876"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2022 20:30:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,195,1643702400"; 
-   d="scan'208";a="517985806"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 19 Mar 2022 20:30:54 -0700
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nVmHN-000GWN-Np; Sun, 20 Mar 2022 03:30:53 +0000
-Date:   Sun, 20 Mar 2022 11:30:50 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jagath Jog J <jagathjog1996@gmail.com>, dan@dlrobertson.com,
-        jic23@kernel.org, andy.shevchenko@gmail.com
-Cc:     kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 3/5] iio: accel: bma400: Add triggered buffer support
-Message-ID: <202203201124.OLMstZaW-lkp@intel.com>
-References: <20220319181023.8090-4-jagathjog1996@gmail.com>
+        with ESMTP id S234851AbiCTFe1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 01:34:27 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B11D62630;
+        Sat, 19 Mar 2022 22:33:00 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KLmZQ6QXRzfZ8X;
+        Sun, 20 Mar 2022 13:31:26 +0800 (CST)
+Received: from dggpemm500015.china.huawei.com (7.185.36.181) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Sun, 20 Mar 2022 13:32:57 +0800
+Received: from [10.174.177.133] (10.174.177.133) by
+ dggpemm500015.china.huawei.com (7.185.36.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Sun, 20 Mar 2022 13:32:57 +0800
+Subject: Re: [PATCH 1/2] iio:filter:admv8818: Add depends on REGMAP
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+CC:     "cj.chengjian@huawei.com" <cj.chengjian@huawei.com>,
+        "liwei391@huawei.com" <liwei391@huawei.com>,
+        "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>
+References: <20220318025914.2614812-1-bobo.shaobowang@huawei.com>
+ <20220318025914.2614812-2-bobo.shaobowang@huawei.com>
+ <PH0PR03MB678617206D33B41868D565B499139@PH0PR03MB6786.namprd03.prod.outlook.com>
+From:   "Wangshaobo (bobo)" <bobo.shaobowang@huawei.com>
+Message-ID: <2781b5e5-ad45-cd90-4bbb-813672098807@huawei.com>
+Date:   Sun, 20 Mar 2022 13:32:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220319181023.8090-4-jagathjog1996@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <PH0PR03MB678617206D33B41868D565B499139@PH0PR03MB6786.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.133]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500015.china.huawei.com (7.185.36.181)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jagath,
 
-Thank you for the patch! Perhaps something to improve:
+ÔÚ 2022/3/18 16:45, Sa, Nuno Ð´µÀ:
+> Hi Wang,
+>
+> Thanks for the patch
+>
+>> -----Original Message-----
+>> From: Wang ShaoBo <bobo.shaobowang@huawei.com>
+>> Sent: Friday, March 18, 2022 3:59 AM
+>> Cc: cj.chengjian@huawei.com; liwei391@huawei.com;
+>> bobo.shaobowang@huawei.com; Miclaus, Antoniu
+>> <Antoniu.Miclaus@analog.com>; linux-iio@vger.kernel.org; linux-
+>> kernel@vger.kernel.org; jic23@kernel.org;
+>> Jonathan.Cameron@huawei.com
+>> Subject: [PATCH 1/2] iio:filter:admv8818: Add depends on REGMAP
+>>
+>> [External]
+>>
+>> Add "depends on REGMAP" to CONFIG_ADMV8818, because
+>> admv8818 driver
+>> uses structure/symbols such as 'struct regmap_config' which are
+>> defined
+>> only when CONFIG_REGMAP is set.
+>>
+>> Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+>> Signed-off-by: Wang ShaoBo <bobo.shaobowang@huawei.com>
+>> ---
+>>   drivers/iio/filter/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/filter/Kconfig b/drivers/iio/filter/Kconfig
+>> index 3ae35817ad82..4bbf10f8692c 100644
+>> --- a/drivers/iio/filter/Kconfig
+>> +++ b/drivers/iio/filter/Kconfig
+>> @@ -7,7 +7,7 @@ menu "Filters"
+>>
+>>   config ADMV8818
+>>   	tristate "Analog Devices ADMV8818 High-Pass and Low-Pass
+>> Filter"
+>> -	depends on SPI && COMMON_CLK && 64BIT
+>> +	depends on REGMAP && SPI && COMMON_CLK && 64BIT
+> I think the best way is to have select REGMAP_SPI. Hence:
+>
+>      depends on SPI && COMMON_CLK && 64BIT
+>      select REGMAP_SPI
+>
+> This will automatically default CONFIG_REGMAP to y. with your
+> patch, I guess we can still have issues with ' __devm_regmap_init_spi()'
+>
+> - Nuno S¨¢
+> .
 
-[auto build test WARNING on v5.17-rc8]
-[cannot apply to jic23-iio/togreg next-20220318]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Yes, only set REGMAP but REGMAP_SPI may causing __devm_regmap_init_spi 
+undeined.
 
-url:    https://github.com/0day-ci/linux/commits/Jagath-Jog-J/iio-accel-bma400-Add-support-for-buffer-and-step/20220320-021114
-base:    09688c0166e76ce2fb85e86b9d99be8b0084cdf9
-config: i386-randconfig-s001 (https://download.01.org/0day-ci/archive/20220320/202203201124.OLMstZaW-lkp@intel.com/config)
-compiler: gcc-9 (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.4-dirty
-        # https://github.com/0day-ci/linux/commit/8dc9a46d5af9a53917108ce2b103b3d9a50986a5
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Jagath-Jog-J/iio-accel-bma400-Add-support-for-buffer-and-step/20220320-021114
-        git checkout 8dc9a46d5af9a53917108ce2b103b3d9a50986a5
-        # save the config file to linux build tree
-        mkdir build_dir
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 SHELL=/bin/bash drivers/iio/accel/
+-- wangshaobo
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/accel/bma400_core.c:906:13: sparse: sparse: restricted __le16 degrades to integer
-
-vim +906 drivers/iio/accel/bma400_core.c
-
-   891	
-   892	static irqreturn_t bma400_interrupt(int irq, void *private)
-   893	{
-   894		struct iio_dev *indio_dev = private;
-   895		struct bma400_data *data = iio_priv(indio_dev);
-   896		int ret;
-   897		__le16 status;
-   898	
-   899		mutex_lock(&data->mutex);
-   900		ret = regmap_bulk_read(data->regmap, BMA400_INT_STAT0_REG, &status,
-   901				       sizeof(status));
-   902		mutex_unlock(&data->mutex);
-   903		if (ret)
-   904			goto out;
-   905	
- > 906		if (status & BMA400_INT_DRDY_MSK)
-   907			iio_trigger_poll_chained(data->trig);
-   908	
-   909	out:
-   910		return IRQ_HANDLED;
-   911	}
-   912	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp

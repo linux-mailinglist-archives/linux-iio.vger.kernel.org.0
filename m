@@ -2,47 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E5F4E1B62
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 13:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D56244E1BAB
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 13:37:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244839AbiCTMB0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Mar 2022 08:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55200 "EHLO
+        id S242398AbiCTMig (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Mar 2022 08:38:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242916AbiCTMB0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 08:01:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC7F562D8;
-        Sun, 20 Mar 2022 05:00:02 -0700 (PDT)
+        with ESMTP id S235927AbiCTMif (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 08:38:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B6E182AE3;
+        Sun, 20 Mar 2022 05:37:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75E9B60FC1;
-        Sun, 20 Mar 2022 12:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F20EC340ED;
-        Sun, 20 Mar 2022 11:59:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B3A8CB80E59;
+        Sun, 20 Mar 2022 12:37:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF55C340E9;
+        Sun, 20 Mar 2022 12:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647777601;
-        bh=rtknE9wl83YeLcS+jxxy7owVyhePadw4/SffustgzjQ=;
+        s=k20201202; t=1647779828;
+        bh=WpQoEogN6iba9hlbQIyPhYzXrakGjrefu/tA7f0BAQk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SKo5sSulAiVLD2Gr90c9SyqLkGRitvsoF489+2KD7No7TFM3RuZKg2SBxiiDLf4in
-         t066/fRFPLxs2ET+f5x0abtzYpvo/Q+oetzntw9bfak3DlEUOCyzT4tcKkQU9GsHqt
-         V/u9yFGtntYB8XhuWjk3qc9e3ghRFfJ+rZTPXI2TYfsoR4Q3pMamgXKXKfKRurQlWn
-         9jB/YD/9wwIcm1zvWXJwPkwZkuFNMoZCXinEOQMdwzDNSJE370+jLglz3Ue11I8JLS
-         3/Un6M9+A1xt/wULQHX1ZgBe6rJVpED9B13MdUZpZWOl6M0g87A80yksuX/FeL3rUV
-         AVGZG6isV5CYA==
-Date:   Sun, 20 Mar 2022 12:07:25 +0000
+        b=pMtMcigyqk3x41651REZUSGoALa/S6ea07FVP0t4CcmIe/by074TEpMLofUIOeYor
+         dytcmiq9R6A/anyyyj32qzxxx2R2niIMY9Ytg4VW9TViXv9ycHbavAc2K2z0I/vE9K
+         Nd2WoxFmTGVTN2nreXVBN4dfFG118t6h7qPbaZpNmKymX2Uw2lM3BNpzcPz6IYYOjF
+         olD0onfT5g+sT6vaBu5SmYMN7ERXHf1I5uQ+RjGEUPGvtMiVyXxoWqhejIP0Gm+jQE
+         ibf9vqHXIfZb/ySMIHnRvwZhFn05+FstQkRRWB6Ft/8gY/VouCCMFpPZsLnlxfNcfY
+         AinlkVhUHsykw==
+Date:   Sun, 20 Mar 2022 12:44:32 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Gwendal Grignou <gwendal@chromium.org>, robh+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/7] dt-bindings: iio: sx9324: Add precharge resistor
- setting
-Message-ID: <20220320120725.13317345@jic23-huawei>
-In-Reply-To: <CAE-0n52Lp9-F_DxHrb1aMQaiSU2qpuW6jKCp6qQ8FXyJ87WApg@mail.gmail.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     robh+dt@kernel.org, swboyd@chromium.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 4/7] dt-bindings: iio: sx9324: Add internal compensation
+ resistor setting
+Message-ID: <20220320124432.69c06b72@jic23-huawei>
+In-Reply-To: <20220315173042.1325858-5-gwendal@chromium.org>
 References: <20220315173042.1325858-1-gwendal@chromium.org>
-        <20220315173042.1325858-3-gwendal@chromium.org>
-        <CAE-0n52Lp9-F_DxHrb1aMQaiSU2qpuW6jKCp6qQ8FXyJ87WApg@mail.gmail.com>
+        <20220315173042.1325858-5-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,36 +56,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 15 Mar 2022 13:05:38 -0700
-Stephen Boyd <swboyd@chromium.org> wrote:
+On Tue, 15 Mar 2022 10:30:39 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Quoting Gwendal Grignou (2022-03-15 10:30:37)
-> > Allow configure the resistance used during precharge.
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> > ---
-> >  .../bindings/iio/proximity/semtech,sx9324.yaml           | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > index b8a6ee16854ff..cd8ed50f2882a 100644
-> > --- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> > @@ -126,6 +126,14 @@ properties:
-> >        UINT_MAX (4294967295) represents infinite. Other values
-> >        represent 1-1/N.
-> >
-> > +  semtech,input-precharge-resistor:  
+> Allow setting the internal resistor used for compensation.
 > 
-> It is clearer when the units are in the name of the property.
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  .../bindings/iio/proximity/semtech,sx9324.yaml        | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
-> 	semtech,input-precharge-resistor-kohms
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> index cd8ed50f2882a..9a046f62579be 100644
+> --- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> @@ -126,6 +126,16 @@ properties:
+>        UINT_MAX (4294967295) represents infinite. Other values
+>        represent 1-1/N.
+>  
+> +  semtech,int-comp-resistor:
+> +    description:
+> +      Internal resistor setting for compensation.
 
-Added bonus is that you won't need the ref if the units chosen
-match one of the ones in 
-https://github.com/robherring/dt-schema/blob/master/schemas/property-units.yaml
+Can we add any info on how a board designer would choose this value?
+What is affect of going higher?
 
-Note kohms isn't there so unless we have an issue representing this in ohms,
-please use that instead.
+> +    enum:
+> +      - lowest
+> +      - low
+> +      - high
+> +      - highest
+> +    default: lowest
+> +
+>    semtech,input-precharge-resistor:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>      default: 4
+> @@ -165,6 +175,7 @@ examples:
+>          semtech,ph01-proxraw-strength = <2>;
+>          semtech,ph23-proxraw-strength = <2>;
+>          semtech,avg-pos-strength = <64>;
+> +        semtech,int-comp-resistor = "lowest";
+>          semtech,input-precharge-resistor = <2>;
+>        };
+>      };
 
-Jonathan

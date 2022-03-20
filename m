@@ -2,52 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 019BE4E1C27
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 16:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C784E1C2B
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Mar 2022 16:08:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245315AbiCTPG3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Mar 2022 11:06:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43958 "EHLO
+        id S245324AbiCTPJ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Mar 2022 11:09:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245312AbiCTPGY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 11:06:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEC513E3C;
-        Sun, 20 Mar 2022 08:05:01 -0700 (PDT)
+        with ESMTP id S245329AbiCTPJ1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Mar 2022 11:09:27 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A3613FAE;
+        Sun, 20 Mar 2022 08:08:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCF9161138;
-        Sun, 20 Mar 2022 15:05:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7BFC340E9;
-        Sun, 20 Mar 2022 15:04:57 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 41266B80E73;
+        Sun, 20 Mar 2022 15:08:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9904C340E9;
+        Sun, 20 Mar 2022 15:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647788700;
-        bh=owHPsnbfCStY5+TEuj2uO+SHgNq78C6bh6WcvxZRbJA=;
+        s=k20201202; t=1647788880;
+        bh=q/k6omWUC4vFENIVP+s1xcuF82EKnFzFSW43LrnV6jA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NifzXPJvq7pKpt0we2xlabCu0P9H7ASTqXR7t5C6AVE5tZ5hVl7ywp/RRuTd5DIf1
-         el6JNhe4WN8F/1jDtIqY/0x51DXj3VwXdqiCtg7ofpgthYsz/b6ME7BJMCjBbOgHjo
-         espspZXbe8+5S/pfHj4JQGUlHa6dX3O/Xis7vp36llYoUNeShgkJaf+8MTu+ZwIs7c
-         /lTadSLkJa0zYu4uEDzmt0o+T16TYO6d9A7fuoHgd5Bx2geGmRrY4SBGiT8Mih+N/6
-         jcMigBYtDzonr8jrmG1xQeW3bGx4rMMZAK00FAIvqQwJ6Q4u6KPS7DyjhOFmuesrYY
-         V7sHcr3zHqatQ==
-Date:   Sun, 20 Mar 2022 15:12:23 +0000
+        b=oPpzN8CLCoCjpHoDSJ8h9NHirYDCICT/2i7+sluwMyy3Y7BG+lC/63o9ZUdyEp5L5
+         OUC+HkUevCEmwiVcP5VAXIHK1eFiBLvsq0s01fOdwPg5b1KaH+9Q5dN1hn7EuLw4V9
+         lmhUEuU1oSFUwv+2hdVbAVnREeK946PXCxQsEsNaAiBUNaXgfeuT1UoMdKs9yHewNL
+         syQpuj3qtNDByrl8tLO0ZNvZRy7iDCNwySatkLL5jaRObqk+lm3ENxEhAsOoQi89R7
+         o6Mp/oPvwo21Hf53gb4LY3oFSH6QW7riQyjd6rdc9fz7Mx2wZNNEZe5BDyivjb0S3G
+         +lA0bbnP+77CA==
+Date:   Sun, 20 Mar 2022 15:15:25 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Michael Srba <Michael.Srba@seznam.cz>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     michael.srba@seznam.cz
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: mpu6050: Document
  invensense,icm20608d
-Message-ID: <20220320151223.3a9b13bd@jic23-huawei>
-In-Reply-To: <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
-References: <20220310133938.2495-1-michael.srba@seznam.cz>
-        <20220310133938.2495-2-michael.srba@seznam.cz>
-        <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
-        <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
-        <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
+Message-ID: <20220320151525.34db502c@jic23-huawei>
+In-Reply-To: <20220311161600.1469-2-michael.srba@seznam.cz>
+References: <20220311161600.1469-1-michael.srba@seznam.cz>
+        <20220311161600.1469-2-michael.srba@seznam.cz>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,72 +59,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Mar 2022 22:24:03 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+On Fri, 11 Mar 2022 17:15:59 +0100
+michael.srba@seznam.cz wrote:
 
-> On 10/03/2022 19:56, Michael Srba wrote:
-> > Hi,
-> > the thing is, the only reason the different compatible is needed at all
-> > is that the chip presents a different WHOAMI, and the invensense,icm20608
-> > compatible seems to imply the non-D WHOAMI value.  
+> From: Michael Srba <Michael.Srba@seznam.cz>
 > 
-> But this is a driver implementation issue, not related to bindings.
-> Bindings describe the hardware.
-
-Indeed, but the key thing here is the WHOAMI register is hardware.
-
+> ICM-20608-D differs from the other ICM-20608 variants by having
+> a DMP (Digital Motion Processor) core tacked on.
+> Despite having a different WHOAMI register, this variant is
+> completely interchangeable with the other ICM-20608 variants
+> by simply pretending the DMP core doesn't exist.
 > 
-> > I'm not sure how the driver would react to both compatibles being present,
-> > and looking at the driver code, it seems that icm20608d is not the only
-> > fully icm20608-compatible (to the extent of features supported by
-> > the driver, and excluding the WHOAMI value) invensense IC, yet none
-> > of these other ICs add the invensense,icm20608 compatible, so I guess I
-> > don't see a good reason to do something different.  
-> 
-> Probably my question should be asked earlier, when these other
-> compatibles were added in such way.
-> 
-> Skipping the DMP core, the new device is fully backwards compatible with
-> icm20608.
+> Signed-off-by: Michael Srba <Michael.Srba@seznam.cz>
+> ---
+> changelog:
+>  - v2: require specifying "invensense,icm20608" as a fallback compatible
 
-No. It is 'nearly' compatible...  The different WHOAMI value (used
-to check the chip is the one we expect) makes it incompatible.  Now we
-could change the driver to allow for that bit of incompatibility and
-some other drivers do (often warning when the whoami is wrong but continuing
-anyway). 
-
-> Therefore extending the compatible makes sense. This is not
-> only correct from devicetree point of view, but also is friendly towards
-> out of tree users of bindings.
-> 
-> The Linux driver behavior about whoami register does not matter here.
-> Not mentioning that it would be easy for driver to accept multiple
-> values of whoami.
-
-I disagree entirely. Any driver that makes use of the whoami will not
-be compatible with this new part.  It's a driver design choice on whether
-to make use of that, but it's a perfectly valid one to refuse to probe
-if it doesn't detect that the device is the one it expects.
-+ There is code out there today doing this so inherently it is not
+Apologies that I joined the thread for v1 late, but no. That doesn't work.
+If the older driver before the new ID is present with this binding
+it won't probe because of the WHOAMI value difference so it's not
 compatible.
 
-So no, a fall back compatible is not suitable here because it simply
-is not compatible.
+I'm fine with the v1 version.
 
-Now, if intent was to provide a backwards compatible path from this
-more advanced part then the behaviour of every register defined for
-the simpler part, must be identical on the more advanced part.
-Extra functionality could only make use of fields in registers marked
-reserved, or of new registers that didn't exist on the simpler device.
-
-There are other ways of handling backwards compatibility but they all
-require statements in the simpler device spec about how you can tell
-for future more complicated devices that they are compatible with this
-spec. E.g. Feature registers, version registers etc.
-
-Jonathan
+> ---
+>  .../bindings/iio/imu/invensense,mpu6050.yaml  | 34 +++++++++++--------
+>  1 file changed, 19 insertions(+), 15 deletions(-)
 > 
-> 
-> Best regards,
-> Krzysztof
+> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> index d69595a524c1..dbd214e7baba 100644
+> --- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+> @@ -14,21 +14,25 @@ description: |
+>  
+>  properties:
+>    compatible:
+> -    enum:
+> -      - invensense,iam20680
+> -      - invensense,icm20608
+> -      - invensense,icm20609
+> -      - invensense,icm20689
+> -      - invensense,icm20602
+> -      - invensense,icm20690
+> -      - invensense,mpu6000
+> -      - invensense,mpu6050
+> -      - invensense,mpu6500
+> -      - invensense,mpu6515
+> -      - invensense,mpu6880
+> -      - invensense,mpu9150
+> -      - invensense,mpu9250
+> -      - invensense,mpu9255
+> +    oneOf:
+> +      - enum:
+> +        - invensense,iam20680
+> +        - invensense,icm20608
+> +        - invensense,icm20609
+> +        - invensense,icm20689
+> +        - invensense,icm20602
+> +        - invensense,icm20690
+> +        - invensense,mpu6000
+> +        - invensense,mpu6050
+> +        - invensense,mpu6500
+> +        - invensense,mpu6515
+> +        - invensense,mpu6880
+> +        - invensense,mpu9150
+> +        - invensense,mpu9250
+> +        - invensense,mpu9255
+> +      - items:
+> +        - const: invensense,icm20608d
+> +        - const: invensense,icm20608
+>  
+>    reg:
+>      maxItems: 1
 

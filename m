@@ -2,94 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A5C4E2354
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 10:28:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0389C4E2483
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 11:41:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344632AbiCUJaO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Mar 2022 05:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56374 "EHLO
+        id S245239AbiCUKnR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Mar 2022 06:43:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238396AbiCUJaO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 05:30:14 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D4411A2D;
-        Mon, 21 Mar 2022 02:28:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1647854925; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aVrCF/2V/G1E36VXuX6ssaft/908rYw10LtHewuhQpk=;
-        b=HQJDghqRuYk7vr/fYw9xIQ6EefAjPgNraYg1zhVIO5ZaS0EjoS3CwCzI8vqadWft6Tu4f8
-        XhFwafzjwwCOJanoC31t+YmIBOCPjB/fVp+5RZs1qwRs5k/ZO48C5V91eOXaYn/19qT8C2
-        yHw7CsNWRxGQ3GyMtJJWuPfH8twYQwc=
-Date:   Mon, 21 Mar 2022 09:28:36 +0000
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH] iio: dac: ad5592r: Fix the missing return value.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Zizhuang Deng <sunsetdzz@gmail.com>, Jonathan.Cameron@huawei.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Paul Cercueil <paul.cercueil@analog.com>
-Message-Id: <OZ839R.NWJC2LY54LGX@crapouillou.net>
-In-Reply-To: <20220320152047.2a04a62e@jic23-huawei>
-References: <20220310125450.4164164-1-sunsetdzz@gmail.com>
-        <20220320152047.2a04a62e@jic23-huawei>
+        with ESMTP id S1346434AbiCUKmt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 06:42:49 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E756A143447
+        for <linux-iio@vger.kernel.org>; Mon, 21 Mar 2022 03:41:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647859284; x=1679395284;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jhdSicdwMGIbWFvE/49X/UMtc13YvTS8QovENWIKxO4=;
+  b=DUtXiWiEKd1abfr3kCKJCgwyXcglYl4eRq6AFkmRa5BR8fGVZSLP1S3s
+   fhopKevcjj4ltj01ToUl0/i5d9nH2OMBU9VsRVoETUqbZQXCxKjjMeRLS
+   JtGuFUpZnq+kQKN62BwqpVWR2u1fnyOc8VrL9oTeyOQXWtHigPJgQRdqn
+   2iBhhWhStzyPfbMRcgLU4WXA3yldyoONuoiipBHM64mWrV446k2fVOBQ0
+   Kybf9ihhdVVXdAfKSC5+jcHXHTwzD5n5JuYpCLalkphTuYTGa8wBAO6zz
+   TrdFzdMhBjbQQrmasB0QwUiXxT0Jt+bK7eJJY0KBXFa2Mwn45qHBe9Xn6
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10292"; a="257711023"
+X-IronPort-AV: E=Sophos;i="5.90,198,1643702400"; 
+   d="scan'208";a="257711023"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2022 03:41:24 -0700
+X-IronPort-AV: E=Sophos;i="5.90,198,1643702400"; 
+   d="scan'208";a="518382249"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2022 03:41:10 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nWFSi-003pK2-QG;
+        Mon, 21 Mar 2022 12:40:32 +0200
+Date:   Mon, 21 Mar 2022 12:40:32 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-iio@vger.kernel.org, Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: core: WARN in case sample bits do not fit storage
+ bits
+Message-ID: <YjhWIN6GsuhPskrs@smile.fi.intel.com>
+References: <20220320181542.168147-1-marex@denx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220320181542.168147-1-marex@denx.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Sun, Mar 20, 2022 at 07:15:42PM +0100, Marek Vasut wrote:
+> Add runtime check to verify whether storagebits are at least as big
+> as shifted realbits. This should help spot broken drivers which may
+> set realbits + shift above storagebits.
 
-Le dim., mars 20 2022 at 15:20:47 +0000, Jonathan Cameron=20
-<jic23@kernel.org> a =E9crit :
-> On Thu, 10 Mar 2022 20:54:50 +0800
-> Zizhuang Deng <sunsetdzz@gmail.com> wrote:
->=20
->>  The third call to `fwnode_property_read_u32` did not record
->>  the return value, resulting in `channel_offstate` possibly
->>  being assigned the wrong value.
->>=20
->>  Signed-off-by: Zizhuang Deng <sunsetdzz@gmail.com>
-> Hi,
->=20
-> Definitely rather odd looking and I think your conclusion is correct.
-> +CC Paul for confirmation that this isn't doing something clever..
+Thanks!
 
-It's been a while, but I don't think there was anything clever going on=20
-here - so the patch is fine.
+...
 
-Cheers,
--Paul
+>  
+> +			/* Verify that sample bits fit into storage */
+> +			WARN_ON(channels[i].scan_type.storagebits <
+> +				channels[i].scan_type.realbits +
+> +				channels[i].scan_type.shift);
 
->=20
->>  ---
->>   drivers/iio/dac/ad5592r-base.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>=20
->>  diff --git a/drivers/iio/dac/ad5592r-base.c=20
->> b/drivers/iio/dac/ad5592r-base.c
->>  index a424b7220b61..4434c1b2a322 100644
->>  --- a/drivers/iio/dac/ad5592r-base.c
->>  +++ b/drivers/iio/dac/ad5592r-base.c
->>  @@ -522,7 +522,7 @@ static int ad5592r_alloc_channels(struct=20
->> iio_dev *iio_dev)
->>   		if (!ret)
->>   			st->channel_modes[reg] =3D tmp;
->>=20
->>  -		fwnode_property_read_u32(child, "adi,off-state", &tmp);
->>  +		ret =3D fwnode_property_read_u32(child, "adi,off-state", &tmp);
->>   		if (!ret)
->>   			st->channel_offstate[reg] =3D tmp;
->>   	}
->=20
+Not sure WARN is a good level (it might be fatal on some setups and we won't that),
+besides the fact that we may use dev_WARN(). Perhaps dev_warn() would suffice?
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 

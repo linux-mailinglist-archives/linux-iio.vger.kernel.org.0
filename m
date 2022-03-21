@@ -2,73 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9A004E324A
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 22:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA954E3382
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 23:56:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbiCUVW1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Mar 2022 17:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53488 "EHLO
+        id S230043AbiCUWvE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Mar 2022 18:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbiCUVWZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 17:22:25 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BAA1AAFCC;
-        Mon, 21 Mar 2022 14:20:18 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id mj15-20020a17090b368f00b001c637aa358eso592115pjb.0;
-        Mon, 21 Mar 2022 14:20:18 -0700 (PDT)
+        with ESMTP id S230183AbiCUWuu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 18:50:50 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D4B38F732;
+        Mon, 21 Mar 2022 15:30:39 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-de48295467so209439fac.2;
+        Mon, 21 Mar 2022 15:30:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=mUKC2d+rgbadrMqKVzRP63ji1CbU8Dtk3LjZqErXfOE=;
-        b=M1cz0oNp0VZNd+EWrU5eo3Q9CNpBY6GlvjuOPjo7UNwwLLiok+jLmS1d/4hoTj9MHm
-         ql25H9sfRQ0n6q2e7wgqPMNlcr8T4Ra3okSeFY8ezPCqAcLO+9sSkslmQDRDAggYzRhj
-         gdsu45gccbRrFNc6/4mGVBGNKlWK0vdVbANxZpbEqQKfSAtkmB9cKHQpuMJQ4uERAWs/
-         sH480/8jecHqQX5ikXdo+NC/BEQ4z1k3OrFpTLCXMMaDyc1V59TnkXgHfJ9eELnUmxUn
-         7PQ73ETbMrhi0IM9DiyeDi8UdpRwEYehpaywLb6kFSWGLqWk3YW2+LWpS3zP+bc+93yL
-         eFeQ==
+        bh=fd0ioVJnCUxmBqE5v/1CktP1XfO1ct0lyiZbE7j35V8=;
+        b=JPbAJMKIYbgC77xWESrjn/RacBD6J3iRT8AHohuSQ5gNjCihvenph23+NrpNOEwu23
+         fPCOh4WFVaCtXprRY1+RoyESnxJHObyb3e7zwlzQlYoUxWD8FHJi6I8iZ2o/tt8seIDU
+         4nIQwRqYQtohiDBBUOWlgDQWgjE4V4hJEdtowkSEVAdKm95uEwcq0N5uN1xcj6py3ZPz
+         BLhvCVi/hfkUOm5lwjHvODcUlvous1XOim6kczc+LPjHJO7V0AKP5N1a6xbKQyd2csvb
+         48cV81fo25s6sCrryb8VX35V8a9ku+yauFAL9EFR7buUWgj7OdF+/03okeAHnJCCM5C2
+         Nxbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mUKC2d+rgbadrMqKVzRP63ji1CbU8Dtk3LjZqErXfOE=;
-        b=2NNpSFN54I3nJnzmaPWgzFLiFM68e+nvwcGeGl0TWc4YeP1nn6OHmLXDGh+A+AMDvA
-         TyiN0BEWVUQpPHeo1QLAnro7o+97X6sUFUEdbduPV1ZC+bnnSc3MkSnDX9BqpKBkSgk+
-         bUCmC01MkhhxDZrLMbz4apaCVP/7xrx/aQzyFb/mwiuS2JzW5FUELchfGLV7yaH1jxVw
-         OJGXv0D1Ng1IxsIgM40GArbAfX+pzLIEeyPmN2l19p5mrtbrNXq81l7eAz9PtZUOWTOc
-         OC08o7rkCsdZ915S1Fdo+g4Jm7/Y1jFZtN9BvWms9Q8OnVVYi4gVZaxlkZ7812q9PWy5
-         eqfA==
-X-Gm-Message-State: AOAM5305Ej4WVyBsB/FRau3uxemW/+X4OgQubHvZuSMy1uGvXoSsIZ/W
-        AeD+u7H8GxIIjJWTHKbNj+ovomAQww8PvxoB
-X-Google-Smtp-Source: ABdhPJzT7QSBE6LBEo1dSHapxVA/gwhWkgapC+sufWqb95WRdgxHj6lqgoAB825AlBFUQ7PBiGViig==
-X-Received: by 2002:a17:902:d48a:b0:154:7a1b:5f2b with SMTP id c10-20020a170902d48a00b001547a1b5f2bmr2327169plg.52.1647897617648;
-        Mon, 21 Mar 2022 14:20:17 -0700 (PDT)
+        bh=fd0ioVJnCUxmBqE5v/1CktP1XfO1ct0lyiZbE7j35V8=;
+        b=ALmCKxooUO1TR3I8C6PU53UPFOFOJLhl6GDA9bIZ4AZFJEQyKhQjDHY8PlaLwYlojG
+         Um0hm6453mxYP6TvXd2AGkzSIC1GDgihI6P3ZJx1K1HNO65IgwZ/C+3QqGiiAH0jcHjv
+         3Tk2eonbWn+zXcfOslZAo8Ga6DBAa+VVpGAbtoljCV4XpGgFU5sBIbm1+HqEBzpQMLnM
+         sMyG0RzHBbl/dmUYQvomQTMsXyjlkKQdxnObsd5rpjEbhkVBp8KImK3UAEJZz8Dd9gNQ
+         dK/sC8KnH6fVWiAREcY+VxV58/MCK5a3fd4xv3S+ceplyy6/ZIgFRVi0SdjPWmQqXZEN
+         xVWg==
+X-Gm-Message-State: AOAM533c2VgKHBXdGqVdEPkDhHn1V1xKilU7NkgP9stlNVMjZUlN3dnw
+        x8NVQTgIHFT5uqpBt8wW3g0TM7I4Nwyr5dG4
+X-Google-Smtp-Source: ABdhPJx9PqwCNkYnhrgCr9dl47xOE1L03ITPFHLHegqf7Cg046EHXDpNqRAOoGssllJToGvQO1sgow==
+X-Received: by 2002:a17:90a:5ae2:b0:1c6:7168:1164 with SMTP id n89-20020a17090a5ae200b001c671681164mr1354065pji.119.1647901282882;
+        Mon, 21 Mar 2022 15:21:22 -0700 (PDT)
 Received: from jagath-PC ([115.99.184.169])
-        by smtp.gmail.com with ESMTPSA id m11-20020a056a00080b00b004f791d0115esm22307990pfk.171.2022.03.21.14.20.15
+        by smtp.gmail.com with ESMTPSA id u22-20020a056a00125600b004fa3aec7f89sm16017098pfi.75.2022.03.21.15.21.21
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 21 Mar 2022 14:20:17 -0700 (PDT)
-Date:   Tue, 22 Mar 2022 02:50:13 +0530
+        Mon, 21 Mar 2022 15:21:22 -0700 (PDT)
+Date:   Tue, 22 Mar 2022 03:51:18 +0530
 From:   Jagath Jog J <jagathjog1996@gmail.com>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Dan Robertson <dan@dlrobertson.com>,
         Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 1/5] iio: accel: bma400: conversion to device-managed
- function
-Message-ID: <20220321212012.GB10058@jagath-PC>
+Subject: Re: [PATCH v1 3/5] iio: accel: bma400: Add triggered buffer support
+Message-ID: <20220321222117.GD10058@jagath-PC>
 References: <20220319181023.8090-1-jagathjog1996@gmail.com>
- <20220319181023.8090-2-jagathjog1996@gmail.com>
- <CAHp75Vem7DS1oXRt=d78pKe4WEWVOJ7uR8p9r33H5Ws9Rz4Qmg@mail.gmail.com>
+ <20220319181023.8090-4-jagathjog1996@gmail.com>
+ <CAHp75VdB5q+Y2R46OO-kCKCkPY58YzyLNjN3PjJiQhTOgV4n2w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAHp75Vem7DS1oXRt=d78pKe4WEWVOJ7uR8p9r33H5Ws9Rz4Qmg@mail.gmail.com>
+In-Reply-To: <CAHp75VdB5q+Y2R46OO-kCKCkPY58YzyLNjN3PjJiQhTOgV4n2w@mail.gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -77,37 +76,92 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hello Andy,
 
-On Mon, Mar 21, 2022 at 10:30:26AM +0200, Andy Shevchenko wrote:
+On Mon, Mar 21, 2022 at 10:39:22AM +0200, Andy Shevchenko wrote:
 > On Sat, Mar 19, 2022 at 8:10 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
 > >
-> > This is a conversion to device-managed by using devm_iio_device_register
-> > inside probe function, now disabling the regulator and putting bma400 to
-> > power down via a devm_add_action_or_reset() hook.
-> >
-> > The dev_set_drvdata() call, bma400_remove() function and hooks in the I2C
-> > and SPI driver struct is removed as devm_iio_device_register function is
-> > used to automatically unregister on driver detach.
+> > Added trigger buffer support to read continuous acceleration
+> > data from device with data ready interrupt which is mapped
+> > to INT1 pin.
 > 
 > ...
 > 
-> > +static void bma400_disable(void *data_ptr)
-> > +{
-> > +       struct bma400_data *data = data_ptr;
-> > +       int ret;
+> >  #include <linux/mutex.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/regulator/consumer.h>
+> > +#include <linux/bits.h>
+> > +#include <linux/bitfield.h>
 > 
-> > +       ret = bma400_set_power_mode(data, POWER_MODE_SLEEP);
-> > +       if (ret)
-> > +               dev_warn(data->dev, "Failed to put device into sleep mode (%pe)\n",
-> > +                        ERR_PTR(ret));
+> It would be nice to keep the above in order.
 > 
-> By what reason did you remove mutex around this call?
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/trigger_consumer.h>
 > 
-> > +       regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
-> > +}
-Sorry my mistake, I missed this.
-I will include the mutex calls in next patch version.
+> These ones, possibly including iio headers from the above piece, are
+> good to be grouped together here with a blank line in between the
+> above part and iio/*.
 > 
+> ...
 > 
+> > +static const unsigned long bma400_avail_scan_masks[] = {
+> > +       GENMASK(3, 0),
+> 
+> > +       0,
+> 
+> No need to have a comma in terminator entry.
+> 
+> > +};
+> 
+> ...
+> 
+> > +       ret = regmap_bulk_read(data->regmap, BMA400_X_AXIS_LSB_REG,
+> > +                              &data->buffer.buff, 3 * sizeof(__be16));
+> 
+> sizeof(buff)
+> 
+> ...
+> 
+> > +out:
+
+Just to skip the below "if()" if error occurs in previous regmap read,
+I used this label.
+       if (status & BMA400_INT_DRDY_MSK)
+             iio_trigger_poll_chained(data->trig);
+
+I will remove the label in next patch
+> 
+> A useless label. Moreover this raises a question: why is it okay to
+> always mark IRQ as handled?
+> 
+> > +       return IRQ_HANDLED;
+
+Since I was not using top-half of the interrupt so I marked IRQ as handled
+even for error case in the handler.
+
+> 
+> ...
+> 
+> > +                       dev_err(dev, "iio trigger register failed\n");
+> > +                       return ret;
+> 
+> return dev_err_probe();
+> 
+> ...
+> 
+> > +                       dev_err(dev, "request irq %d failed\n", irq);
+> > +                       return ret;
+> 
+> Ditto.
+> 
+> ...
+> 
+> > +               dev_err(dev, "iio triggered buffer setup failed\n");
+> > +               return ret;
+> 
+> Ditto.
+
+I will change this in the next patch version.
 > 
 > -- 
 > With Best Regards,

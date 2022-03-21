@@ -2,166 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E12044E21AD
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 09:04:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10A824E222D
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 09:28:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242596AbiCUIFl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Mar 2022 04:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60468 "EHLO
+        id S1345236AbiCUIaS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Mar 2022 04:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240711AbiCUIFj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 04:05:39 -0400
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19AF4EF7B7;
-        Mon, 21 Mar 2022 01:04:15 -0700 (PDT)
-Received: by mail-ed1-f51.google.com with SMTP id z92so15880104ede.13;
-        Mon, 21 Mar 2022 01:04:15 -0700 (PDT)
+        with ESMTP id S237054AbiCUIaS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 04:30:18 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A0A1B7AB;
+        Mon, 21 Mar 2022 01:28:50 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id p15so28252840ejc.7;
+        Mon, 21 Mar 2022 01:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5gCEz5dPRyK/flzz3OwRwSC02KK3yfqplin0VwWaXWE=;
+        b=QNwhaLiJEae5pMKgOMyy82/3orwYX6EmvDOiaeaMDKcv6Y6Y2zrqF5M6MHxYSAcXcw
+         S9knKiS0TVBHgQCOVMiG+j68JzdO89XbVQWaXhK8r9lyNa1CQYqVfjmOiwost+Y+ImBJ
+         5Woj49+X+/jvTzkJZB46UO5vbub60b3bzjlM/VhBR8iu07ah0fBXerD/Vjam8+johwS3
+         BIadP+T29VxWVlQhgrc1gtCpB36o2qgNVyhij5u97PPPMqFDKmjfIW6Zgpg9FjzlRjsV
+         o+Lqp5H+O8OsoIslyOLE/cWZEBMHDKTuiPdVjU2+AdtLjDXSFyssrib8aPY5X4FKtFUd
+         3UOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=seVgojW/zlWNvrBzb6hrZW5u7TKNx7byPEwEOUQQwbE=;
-        b=TAvu4/eHzAOgsdo3OMcl8RTTosOCqLNhsXzbQ8uqq+IrYl82NXNW+0H7NE8/yEkvg4
-         MuPQtroj6kbZ7Xat80EcctOSokCWF0uzPWf4WWt6pHK6KQxVV3kLNXIxwgjNUC6Z6eFu
-         dBukqM96tVMVr0rlJsbsCeRPwSUpaQjjY7v5oULMNpAuX/rsx/ceajM6G+cHQXPnf5HI
-         TLDO40LcLdAG8hfyA6EANTVrrtn6YlszczVQAGJs83w2YkxPKdukeWOA7V8TxRoX9hSn
-         3WrglEFgZQS05Plc8rTD+yjqj8oPQCbjKyOCscs++NwxrNDRtySEcSzKnBdAU1AwBGA2
-         +rLA==
-X-Gm-Message-State: AOAM531Je+Ohl7jtxuWRxNZZJrPuUDQ9SaRxfH/5XFocZyKDLoFTrPiy
-        kq9k9+ImgLapjvaauioKZFQ=
-X-Google-Smtp-Source: ABdhPJyyJlCtzapDTQNJIkOqJyC7Emqs/orbyZC4z6K6j5clqxhxGwdWlrk7cSYLB9tAUoRV/UVqUA==
-X-Received: by 2002:a05:6402:1148:b0:413:11e0:1f58 with SMTP id g8-20020a056402114800b0041311e01f58mr21182658edw.113.1647849853418;
-        Mon, 21 Mar 2022 01:04:13 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.googlemail.com with ESMTPSA id bw26-20020a170906c1da00b006c8aeca8febsm6581091ejb.47.2022.03.21.01.04.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Mar 2022 01:04:12 -0700 (PDT)
-Message-ID: <ca80bd79-338c-98a4-2f4d-4dcfc52ed538@kernel.org>
-Date:   Mon, 21 Mar 2022 09:04:11 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5gCEz5dPRyK/flzz3OwRwSC02KK3yfqplin0VwWaXWE=;
+        b=KiOihw55vt2Px1naCwQIFziOekLxfx3Yuq06v/iau8p0a/I45Y6IRbwp+CrVqSkBlp
+         XE8yv0hEMk5lz1RULFk7pIDImW6RIiNa319pdco83nXlW1QMODDFGD3TYlDXv6WCQS8q
+         L/WX9v0f54dfm5Ct0CFMjlYDKzjPrD+t1sWPE7Ikays9htK1B0Mrxv54lsIxUjJky3fO
+         2X0yOMS/9vvlTFetUXnsu5LOighgyKZvUllAFej8PWab48xMk3JA4O8yv+nFAW7YLc7Y
+         gxuuuwER5ZbEvl5GPqhpdTbcszQMXMqJskW9au1h4q5Ct5/bqWgzpuVRu/HvKi8uZaOr
+         NXFg==
+X-Gm-Message-State: AOAM531uTaawKNo526dgeyqeqAfMXwXemAVZwJxX6VGpTp4VhVvjP+7o
+        D5ZeDHsDfcehor+SJ54yIMsOe9kdaxKZhq37dGw=
+X-Google-Smtp-Source: ABdhPJxEC4DR4nHi3LTLgZLvnkWrkRiZcojwi3k7rZSh7MLaAb3zSZZJYU9EOHm3nchAhjlo+UMKK+rb5GCVm2zX5zU=
+X-Received: by 2002:a17:906:4cc7:b0:6d0:7efb:49f with SMTP id
+ q7-20020a1709064cc700b006d07efb049fmr19583930ejt.639.1647851328749; Mon, 21
+ Mar 2022 01:28:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
- invensense,icm20608d
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Michael Srba <Michael.Srba@seznam.cz>,
+References: <20220319162006.13c60c1f@jic23-huawei> <20220319193459.2628876-1-ztong0001@gmail.com>
+In-Reply-To: <20220319193459.2628876-1-ztong0001@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 21 Mar 2022 10:27:37 +0200
+Message-ID: <CAHp75Vfk+CQZoz+s5PuSTBb0Nb4KLB+yoNiTCJQ4NktxV1nycQ@mail.gmail.com>
+Subject: Re: [PATCH v2] iio:imu:bmi160: disable regulator in error path
+To:     Tong Zhang <ztong0001@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220310133938.2495-1-michael.srba@seznam.cz>
- <20220310133938.2495-2-michael.srba@seznam.cz>
- <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
- <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
- <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
- <20220320151223.3a9b13bd@jic23-huawei>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220320151223.3a9b13bd@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        Sean Nyekjaer <sean@geanix.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 20/03/2022 16:12, Jonathan Cameron wrote:
-> On Thu, 10 Mar 2022 22:24:03 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
-> 
->> On 10/03/2022 19:56, Michael Srba wrote:
->>> Hi,
->>> the thing is, the only reason the different compatible is needed at all
->>> is that the chip presents a different WHOAMI, and the invensense,icm20608
->>> compatible seems to imply the non-D WHOAMI value.  
->>
->> But this is a driver implementation issue, not related to bindings.
->> Bindings describe the hardware.
-> 
-> Indeed, but the key thing here is the WHOAMI register is hardware.
-> 
->>
->>> I'm not sure how the driver would react to both compatibles being present,
->>> and looking at the driver code, it seems that icm20608d is not the only
->>> fully icm20608-compatible (to the extent of features supported by
->>> the driver, and excluding the WHOAMI value) invensense IC, yet none
->>> of these other ICs add the invensense,icm20608 compatible, so I guess I
->>> don't see a good reason to do something different.  
->>
->> Probably my question should be asked earlier, when these other
->> compatibles were added in such way.
->>
->> Skipping the DMP core, the new device is fully backwards compatible with
->> icm20608.
-> 
-> No. It is 'nearly' compatible...  The different WHOAMI value (used
-> to check the chip is the one we expect) makes it incompatible.  Now we
-> could change the driver to allow for that bit of incompatibility and
-> some other drivers do (often warning when the whoami is wrong but continuing
-> anyway). 
+On Sun, Mar 20, 2022 at 8:44 AM Tong Zhang <ztong0001@gmail.com> wrote:
+>
+> Regulator should be disabled in error path as mentioned in _regulator_put().
+> Also disable accel if gyro cannot be enabled.
+>
+> [   16.233604] WARNING: CPU: 0 PID: 2177 at drivers/regulator/core.c:2257 _regulator_put
+> [   16.240453] Call Trace:
+> [   16.240572]  <TASK>
+> [   16.240676]  regulator_put+0x26/0x40
+> [   16.240853]  regulator_bulk_free+0x26/0x50
+> [   16.241050]  release_nodes+0x3f/0x70
+> [   16.241225]  devres_release_group+0x147/0x1c0
+> [   16.241441]  ? bmi160_core_probe+0x175/0x3a0 [bmi160_core]
 
-Different value of HW register within the same programming model does
-not make him incompatible. Quite contrary - it is compatible and to
-differentiate variants you do not need specific compatibles.
+Haven't I given you a tag?
 
-Using arguments how driver behaves is wrong. Driver does not determine
-hardware/bindings.
-
-> 
->> Therefore extending the compatible makes sense. This is not
->> only correct from devicetree point of view, but also is friendly towards
->> out of tree users of bindings.
->>
->> The Linux driver behavior about whoami register does not matter here.
->> Not mentioning that it would be easy for driver to accept multiple
->> values of whoami.
-> 
-> I disagree entirely. Any driver that makes use of the whoami will not
-> be compatible with this new part.
-
-Driver implementation is not related to bindings, does not matter. You
-cannot use driver implementation as argument in discussion about
-bindings and compatibility. Implementation differs, is limited, can be
-changed.
-
->   It's a driver design choice on whether
-> to make use of that, but it's a perfectly valid one to refuse to probe
-> if it doesn't detect that the device is the one it expects.
-
-Still not argument about bindings and compatibility but about driver.
-
-> + There is code out there today doing this so inherently it is not
-> compatible.
-
-Still code of driver, not bindings/DTS/hardware.
-
-> 
-> So no, a fall back compatible is not suitable here because it simply
-> is not compatible.
-> 
-> Now, if intent was to provide a backwards compatible path from this
-> more advanced part then the behaviour of every register defined for
-> the simpler part, must be identical on the more advanced part.
-
-There is no backwards compatibility of advanced path, so the DMP core.
-The device (not driver, we do not talk here about driver) is compatible
-with basic version fully. 100%. Only this part you need to keep always
-compatible between each other,
-
-> Extra functionality could only make use of fields in registers marked
-> reserved, or of new registers that didn't exist on the simpler device.
-
-Extra functionality is for new, extended compatible. See
-Documentation/devicetree/bindings/ABI.rst which exactly explains this case.
-
-
-
-Best regards,
-Krzysztof
+-- 
+With Best Regards,
+Andy Shevchenko

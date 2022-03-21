@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C37804E2260
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 09:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E1974E2266
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 09:46:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345364AbiCUIpo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Mar 2022 04:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59300 "EHLO
+        id S1345452AbiCUIsI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Mar 2022 04:48:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345384AbiCUIpn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 04:45:43 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BBFA6E01;
-        Mon, 21 Mar 2022 01:44:16 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id r22so8265719ejs.11;
-        Mon, 21 Mar 2022 01:44:16 -0700 (PDT)
+        with ESMTP id S1345420AbiCUIr7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 04:47:59 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC37A5E98;
+        Mon, 21 Mar 2022 01:46:35 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id b24so16904183edu.10;
+        Mon, 21 Mar 2022 01:46:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=9lpgJcQdQlBKAJYFJUSYY7ENfFRbW3QOjTcnst1b23M=;
-        b=CWPo3d5beAFi/UiV+IWMpdt78DyU/9MJzLK3lNa04df0EE06LvE4lz4FQOTOM3TZy6
-         AH56S6r8MfL9caVU9TH2RO4K2sEa4yOCv4VufRUgG1M7xLsuzMCKBnyVoPMx99rQsLeR
-         4aQ6lg3Wr83UO5CqqVk5abLXYyPUfp9q+eOWMwL2waJpYPZ65SVQ1f01JkW6jq2ygI+R
-         03bU5Sc3maA6cZSI7z/UsurAtN3bMua7X+KHpQbklpQCPZlALRmbyGZ26ihc6KWYn9uj
-         P9gAppYEZszxBCDPd3ocsITbXyQbUHiLy3bzxjrP59lwX0maUfbOnUrY/316dY5vLgWv
-         NK/g==
+        bh=MIXaXRe6fXniSeUMQJNT+Y5fVee3c9bLU6mP2FbFMEI=;
+        b=HPEi+s6WHuEIucuNESN+56exbAgTPW/IyPFiMDR2Nw8O9wqz9unVp50uQEeTWtZuhw
+         s0C8zfIUrdD+qRqYGEB/VT/kINCHD4Gsxnq70tFlohTshaid8zE3/0JI28LcE+FhwJai
+         Tjt+7PP7Rk1OBL5T/4J4Wk9WJN5X5mNJmMAROYxbm6Ryl5uog5EaiHgWi2CU/clspExU
+         NPeLJZ3lrPI7mpdmyDxTDW3vl2NBu6AgKbDDRM1f2GUOQsHt2hwd7CKmyx1M6ysI1Vhd
+         4AVhxqAEnlIDKMP8A+RSO7iNDm95sM9AIpdBSTAeolrhsl6uH0fUQyv+DvMBhJEqBefY
+         CzPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=9lpgJcQdQlBKAJYFJUSYY7ENfFRbW3QOjTcnst1b23M=;
-        b=Zuik0G2Vptklw4Y1VB4XYKICnRXaHjxe37sT0EUBOrvLgBjs0bULvQDiH3xmTwjVrI
-         QqqzDW4ae0viBea9yvJTV4OSlo0+e1PtAM8HVtG0Cat2jhMEAfbyZl8Owcz/AQTipJvZ
-         7XXalCFglGQ2tPellcvsF3vPYcYlDPeO5aFAniPa9xE61Hcbz8XOp7vbbXooIwyZJzg+
-         a1nVsCShAUD++XjJO2FRDO8iMftvLb3bDnDKDcx9N/ZGzSEmch45wdIaIvPIj9dDc7Fy
-         D3TNjY0Lnn7BqYdknXPpSE4OsH0ukNwxqwr5m15InW7cookr9zJYihGdIBQefpRrEmqh
-         9UWg==
-X-Gm-Message-State: AOAM533DgPwVFuTi2HsfK0yr4hpRiz50GDDwtQKIGLeYjcAcVmKOeBmh
-        FUdZRYgh75m5GA3nELKJE45bA7BXnGFpRgIPwKM=
-X-Google-Smtp-Source: ABdhPJw0yOoZV9tCsQCU9FcO9hVJ+gXGJWgl+6vviQZRZWHo3w4UwOaPPlf89/5QoTP3fccok7G+gWlYzOR6iVlg/6o=
-X-Received: by 2002:a17:907:162a:b0:6db:b0e8:9721 with SMTP id
- hb42-20020a170907162a00b006dbb0e89721mr19530083ejc.579.1647852255424; Mon, 21
- Mar 2022 01:44:15 -0700 (PDT)
+        bh=MIXaXRe6fXniSeUMQJNT+Y5fVee3c9bLU6mP2FbFMEI=;
+        b=5D29EnHZS+K/SRcxR+o0Znlaj/aDhsRHDH3TYV9wQioB/rlkjNMHC5gUCnODmLvLiE
+         0OIIUwHJPMjoG1CJdgUAyYCYF03W8GJ91q/2gEgUxTPf/HJuctGT9SBUKEIMLafyUYZo
+         x2cLS5icD1Swt42FM92exAkrUeAeMY202YTLNIyvS4FjZBhhzftKQHbDST97OoU1SodI
+         PUW4h5twjltFiQz8BWcD45nb4/iz7pnUKh+Q+xXro+jG6IdTeM4URlBGJ1iyRFlLCKyY
+         d3BrvuR4xtAT2M3j5S7jhYk+oXzCHRUoKzIw7lMYRzGEWWE7PdKLJQgfwklkNmns26wA
+         Wrkw==
+X-Gm-Message-State: AOAM531Dh6WcVGxvQCwWDpB7Is2peR8kIGseE9mpXBUR8khbbPX8/VD4
+        hlEjY/FaNY7XCjfyeWzpL8EyCaGOSRQbTWyg8Yc=
+X-Google-Smtp-Source: ABdhPJzGrrpF8+dvvOula2t4S/9UqiIemKjG4DATGdQN7z4LgmbXUHAt4N/jlvzNXegmK/U6INqdrAcQX5VkfvYc4cQ=
+X-Received: by 2002:aa7:d1ce:0:b0:419:19ed:725a with SMTP id
+ g14-20020aa7d1ce000000b0041919ed725amr12734450edp.270.1647852393881; Mon, 21
+ Mar 2022 01:46:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220319181023.8090-1-jagathjog1996@gmail.com> <20220319181023.8090-5-jagathjog1996@gmail.com>
-In-Reply-To: <20220319181023.8090-5-jagathjog1996@gmail.com>
+References: <20220319181023.8090-1-jagathjog1996@gmail.com> <20220319181023.8090-6-jagathjog1996@gmail.com>
+In-Reply-To: <20220319181023.8090-6-jagathjog1996@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 21 Mar 2022 10:43:04 +0200
-Message-ID: <CAHp75VenpFcXxpnNC40SEXvsCO7tjPrgA2_8nkiVbNZnerny_A@mail.gmail.com>
-Subject: Re: [PATCH v1 4/5] iio: accel: bma400: Add separate channel for step counter
+Date:   Mon, 21 Mar 2022 10:45:23 +0200
+Message-ID: <CAHp75VeKDpiLo9eJ+578XSqsoRx3YyKuJ4AJJJ3jTQLaENo=Lw@mail.gmail.com>
+Subject: Re: [PATCH v1 5/5] iio: accel: bma400: Add step change event
 To:     Jagath Jog J <jagathjog1996@gmail.com>
 Cc:     Dan Robertson <dan@dlrobertson.com>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -68,20 +68,64 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Sat, Mar 19, 2022 at 8:10 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
+>
+> Added support for event when there is a detection of single step
+> or double step change. INT1 pin is used to interrupt and event
+> is pushed to userspace.
 
-> +       {
-> +               .type = IIO_STEPS,
-> +               .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +                                     BIT(IIO_CHAN_INFO_ENABLE),
-> +               .scan_index = -1, /* No buffer support */
-> +       },
+...
 
-> +
+>  #include <linux/iio/trigger.h>
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/events.h>
 
-One more thing, seems like a stray blank line addition.
+Keep this block ordered,
 
->         IIO_CHAN_SOFT_TIMESTAMP(4),
->  };
+...
+
+> +       switch (chan->type) {
+> +       case IIO_STEPS:
+> +               switch (type) {
+> +               case IIO_EV_TYPE_CHANGE:
+> +                       return data->steps_enabled;
+> +               default:
+> +                       return -EINVAL;
+> +               }
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+> +       return 0;
+
+Dead code.
+
+...
+
+> +       case IIO_STEPS:
+> +               switch (type) {
+> +               case IIO_EV_TYPE_CHANGE:
+> +                       mutex_lock(&data->mutex);
+> +                       ret = regmap_update_bits(data->regmap,
+> +                                                BMA400_INT12_MAP_REG,
+> +                                                BMA400_STEP_INT_MSK,
+> +                                                FIELD_PREP(BMA400_STEP_INT_MSK,
+> +                                                           state));
+> +                       mutex_unlock(&data->mutex);
+> +                       if (ret)
+> +                               return ret;
+> +                       data->steps_enabled = state;
+> +                       return 0;
+> +               default:
+> +                       return -EINVAL;
+> +               }
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+> +       return 0;
+
+Ditto.
 
 -- 
 With Best Regards,

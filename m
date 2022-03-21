@@ -2,119 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85A0F4E217F
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 08:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E12044E21AD
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Mar 2022 09:04:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345000AbiCUHnt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Mar 2022 03:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
+        id S242596AbiCUIFl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Mar 2022 04:05:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344992AbiCUHns (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 03:43:48 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D901BA
-        for <linux-iio@vger.kernel.org>; Mon, 21 Mar 2022 00:42:23 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nWCfx-0000nF-Eb; Mon, 21 Mar 2022 08:42:01 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nWCfq-0022R3-5b; Mon, 21 Mar 2022 08:41:55 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nWCfq-00AdDS-F3; Mon, 21 Mar 2022 08:41:54 +0100
-Date:   Mon, 21 Mar 2022 08:41:54 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Tomislav Denis <tomislav.denis@avl.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Russell King <linux@armlinux.org.uk>,
-        =?utf-8?B?QW5kcsOp?= Gustavo Nakagomi Lopez <andregnl@usp.br>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-iio@vger.kernel.org, Cai Huoqing <caihuoqing@baidu.com>,
-        kernel@pengutronix.de, Nuno Sa <nuno.sa@analog.com>,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v8 04/16] iio: Make use of devm_clk_get_enabled()
-Message-ID: <20220321074154.rktt7e54q774puwj@pengutronix.de>
-References: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
- <20220314141643.22184-5-u.kleine-koenig@pengutronix.de>
- <20220319182240.30456776@jic23-huawei>
+        with ESMTP id S240711AbiCUIFj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Mar 2022 04:05:39 -0400
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19AF4EF7B7;
+        Mon, 21 Mar 2022 01:04:15 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id z92so15880104ede.13;
+        Mon, 21 Mar 2022 01:04:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=seVgojW/zlWNvrBzb6hrZW5u7TKNx7byPEwEOUQQwbE=;
+        b=TAvu4/eHzAOgsdo3OMcl8RTTosOCqLNhsXzbQ8uqq+IrYl82NXNW+0H7NE8/yEkvg4
+         MuPQtroj6kbZ7Xat80EcctOSokCWF0uzPWf4WWt6pHK6KQxVV3kLNXIxwgjNUC6Z6eFu
+         dBukqM96tVMVr0rlJsbsCeRPwSUpaQjjY7v5oULMNpAuX/rsx/ceajM6G+cHQXPnf5HI
+         TLDO40LcLdAG8hfyA6EANTVrrtn6YlszczVQAGJs83w2YkxPKdukeWOA7V8TxRoX9hSn
+         3WrglEFgZQS05Plc8rTD+yjqj8oPQCbjKyOCscs++NwxrNDRtySEcSzKnBdAU1AwBGA2
+         +rLA==
+X-Gm-Message-State: AOAM531Je+Ohl7jtxuWRxNZZJrPuUDQ9SaRxfH/5XFocZyKDLoFTrPiy
+        kq9k9+ImgLapjvaauioKZFQ=
+X-Google-Smtp-Source: ABdhPJyyJlCtzapDTQNJIkOqJyC7Emqs/orbyZC4z6K6j5clqxhxGwdWlrk7cSYLB9tAUoRV/UVqUA==
+X-Received: by 2002:a05:6402:1148:b0:413:11e0:1f58 with SMTP id g8-20020a056402114800b0041311e01f58mr21182658edw.113.1647849853418;
+        Mon, 21 Mar 2022 01:04:13 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.googlemail.com with ESMTPSA id bw26-20020a170906c1da00b006c8aeca8febsm6581091ejb.47.2022.03.21.01.04.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Mar 2022 01:04:12 -0700 (PDT)
+Message-ID: <ca80bd79-338c-98a4-2f4d-4dcfc52ed538@kernel.org>
+Date:   Mon, 21 Mar 2022 09:04:11 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2wcabes6ykcuxzxg"
-Content-Disposition: inline
-In-Reply-To: <20220319182240.30456776@jic23-huawei>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
+ invensense,icm20608d
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Michael Srba <Michael.Srba@seznam.cz>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20220310133938.2495-1-michael.srba@seznam.cz>
+ <20220310133938.2495-2-michael.srba@seznam.cz>
+ <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
+ <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
+ <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
+ <20220320151223.3a9b13bd@jic23-huawei>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20220320151223.3a9b13bd@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 20/03/2022 16:12, Jonathan Cameron wrote:
+> On Thu, 10 Mar 2022 22:24:03 +0100
+> Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+> 
+>> On 10/03/2022 19:56, Michael Srba wrote:
+>>> Hi,
+>>> the thing is, the only reason the different compatible is needed at all
+>>> is that the chip presents a different WHOAMI, and the invensense,icm20608
+>>> compatible seems to imply the non-D WHOAMI value.  
+>>
+>> But this is a driver implementation issue, not related to bindings.
+>> Bindings describe the hardware.
+> 
+> Indeed, but the key thing here is the WHOAMI register is hardware.
+> 
+>>
+>>> I'm not sure how the driver would react to both compatibles being present,
+>>> and looking at the driver code, it seems that icm20608d is not the only
+>>> fully icm20608-compatible (to the extent of features supported by
+>>> the driver, and excluding the WHOAMI value) invensense IC, yet none
+>>> of these other ICs add the invensense,icm20608 compatible, so I guess I
+>>> don't see a good reason to do something different.  
+>>
+>> Probably my question should be asked earlier, when these other
+>> compatibles were added in such way.
+>>
+>> Skipping the DMP core, the new device is fully backwards compatible with
+>> icm20608.
+> 
+> No. It is 'nearly' compatible...  The different WHOAMI value (used
+> to check the chip is the one we expect) makes it incompatible.  Now we
+> could change the driver to allow for that bit of incompatibility and
+> some other drivers do (often warning when the whoami is wrong but continuing
+> anyway). 
 
---2wcabes6ykcuxzxg
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Different value of HW register within the same programming model does
+not make him incompatible. Quite contrary - it is compatible and to
+differentiate variants you do not need specific compatibles.
 
-Hello,
+Using arguments how driver behaves is wrong. Driver does not determine
+hardware/bindings.
 
-On Sat, Mar 19, 2022 at 06:22:40PM +0000, Jonathan Cameron wrote:
-> On Mon, 14 Mar 2022 15:16:31 +0100
-> Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> wrote:
->=20
-> > Several drivers manually register a devm handler to disable their clk.
-> > Convert them to devm_clk_get_enabled().
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> If this does get picked up, can who ever does it please provide
-> an immutable branch. With some many drivers cleaned up, it's very
-> likely to cause some merge fun somewhere otherwise.
+> 
+>> Therefore extending the compatible makes sense. This is not
+>> only correct from devicetree point of view, but also is friendly towards
+>> out of tree users of bindings.
+>>
+>> The Linux driver behavior about whoami register does not matter here.
+>> Not mentioning that it would be easy for driver to accept multiple
+>> values of whoami.
+> 
+> I disagree entirely. Any driver that makes use of the whoami will not
+> be compatible with this new part.
 
-That would be good, indeed. If only the first two patches go in via clk
-tree, it would however also be OK for me if the other patches go in only
-after the clk changes are in an -rc1. I can care about rebasing if need
-be.
+Driver implementation is not related to bindings, does not matter. You
+cannot use driver implementation as argument in discussion about
+bindings and compatibility. Implementation differs, is limited, can be
+changed.
 
-Best regards
-Uwe
+>   It's a driver design choice on whether
+> to make use of that, but it's a perfectly valid one to refuse to probe
+> if it doesn't detect that the device is the one it expects.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Still not argument about bindings and compatibility but about driver.
 
---2wcabes6ykcuxzxg
-Content-Type: application/pgp-signature; name="signature.asc"
+> + There is code out there today doing this so inherently it is not
+> compatible.
 
------BEGIN PGP SIGNATURE-----
+Still code of driver, not bindings/DTS/hardware.
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmI4LD8ACgkQwfwUeK3K
-7Ane0ggAk/OC6FOfjgI2+mE4uiT6x6FG5DbQE8wP1WYf0HuOn9J6UyZ+y4p23iYj
-xPFUAJ6Nv9m4QowowoLoZLxOnXRzFjI6H8QZSpVkewX/KZiaIfZDgMjuyEugGwWS
-UlJTnD3DlE5Zt7jgJ7JMzelwvvaU4z9kXoLLf5gxS5gQGYJXKHxYbrtIZ8QLdC1S
-VyL2FQijmMxSTGOKm6Pkhm0vs/NKvDmbUFsUoXgFR64L1jPE3svr4b2tfu371UlY
-Z7Q7X1eD9BsU1CJ453EMfPFEA2s6t41ugfzPPeGKaqZCcRZ1HJehJpcICOdjE5p4
-UDIA81iXqHaabp8UqT921GZZOCBSCA==
-=ip33
------END PGP SIGNATURE-----
+> 
+> So no, a fall back compatible is not suitable here because it simply
+> is not compatible.
+> 
+> Now, if intent was to provide a backwards compatible path from this
+> more advanced part then the behaviour of every register defined for
+> the simpler part, must be identical on the more advanced part.
 
---2wcabes6ykcuxzxg--
+There is no backwards compatibility of advanced path, so the DMP core.
+The device (not driver, we do not talk here about driver) is compatible
+with basic version fully. 100%. Only this part you need to keep always
+compatible between each other,
+
+> Extra functionality could only make use of fields in registers marked
+> reserved, or of new registers that didn't exist on the simpler device.
+
+Extra functionality is for new, extended compatible. See
+Documentation/devicetree/bindings/ABI.rst which exactly explains this case.
+
+
+
+Best regards,
+Krzysztof

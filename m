@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDCCE4E3EDF
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 13:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C49E4E3EF0
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 13:59:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234004AbiCVM6O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 08:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55370 "EHLO
+        id S235058AbiCVNA0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 09:00:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233731AbiCVM6O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 08:58:14 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E90A5F247
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 05:56:46 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id k10so7815858edj.2
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 05:56:45 -0700 (PDT)
+        with ESMTP id S232851AbiCVNAZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 09:00:25 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0F025DA34
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 05:58:57 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id bg10so36001500ejb.4
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 05:58:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=RpNDE+NQdE9P4TAEep76tk6uwbTamSrXJxQiX7LzDmA=;
-        b=lX+X9maIKUJOLri8mprQ4Qmj91/gjBbEx8RQ4xszeU7Yez8pDm/yEYLFPEhfR9hoSi
-         fCSX+1wfijU6ET5bZ2wFPrqEZYX/7GdNpJAEzHf5bhtj9cINsyg/J7eNRxeohHzzxN/O
-         f45QGU5PKEyqIUbPr0/7y4h4NEoWfkDt7UHIgLU07InyvbtJtEqhHV0vmYAW1ekycXbS
-         UM+2URli33c3DuLbfgmfp05bsNtFdgYiWevAMFdHyWF3EDY7uvP0Mxz11O5XtkCJGkqn
-         KB8XwGM8+GFAYWiAMc/tCJl/yJ/jJLW+6bTp8o7/aOWwtJ7f+9vcYLbIiNWvh7MM/JH/
-         l8RQ==
+        bh=fdnG00+FVnrNPc7pRJZUf6p0lTeWtkmJlgm0eIX6kX4=;
+        b=AjNPKZIAqwx1xa9dhSiLiycGummqAab3uazQK7DKrwe4jObs6/BzrY3gxWNhbARWYA
+         hVNgYlQWf0qCGbhYxIsv5oba6QFc4dqbH4rVwMM63GJC+ZYcFQu8a9yfPLTJFtebEnvq
+         sS7TBQzwsITHfW0WlkcFqkMk1QckKj0PPIq++Nyvh30ESPvmnbwBBUoOt7bFvweLvZdB
+         w/lllBznyKU8j0PhZDsnxxdukqmUvbUT+TXMDDH4nTzZQSODMf8zRUFxktw8DUru0TN2
+         5ePBJm2QDozZZ+PV1buKYCWqMUNMkO6ABcF5+0IpVF09tAgWda+ewU0kKFbTVxSEqsMo
+         lT+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=RpNDE+NQdE9P4TAEep76tk6uwbTamSrXJxQiX7LzDmA=;
-        b=AXt3zGUSPxxVqbbUXRjtAbN+zh9hKeSyyJAy+e+2rxiZifB5c8QzAWSEK+e85UrcgD
-         TFRwQPn71LE7N1KbZH/xB6y3f6pno2jvlnQYIw6HBt/ba5/SFj9+QURBRaxqzjsBxjb3
-         tqhRA3RUW4LQ6B3ChXhFZJko1ZThmwaTjN66WfVgdu9aTyrSjMxcTy8vXZmwsx0tc6/v
-         a/eAxDwKcA9767MM8Lcs4e3+0LafVeFcWk4P6B/ZpjiIrMEbKkNwGmYxZkeGwJKVjedq
-         +NY0FHONY+HhjiXaD7YB3PqZ195ei60DVvi1jxckAsQJW/vP88ggGHkS/GDoo1FBGh8U
-         q+nA==
-X-Gm-Message-State: AOAM532A6BaDzhuB9YuGdTSyQ+YtfMNhcv0J6RaVBUe32b46HFTiB4Av
-        3JqDf1T/GeFdyfkP5c/5WBbpD1kAEBIKidufvzI=
-X-Google-Smtp-Source: ABdhPJxDMYmxXWtAPybkm95NxHlSLzAZxS7jp7bunCMyQFGxcOzHKiNga7Yb5Kaxy+uJgi+Yz/DQ56qp4e+cW1CDQFY=
-X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
- n13-20020a5099cd000000b00418d6c22405mr28043520edb.342.1647953804463; Tue, 22
- Mar 2022 05:56:44 -0700 (PDT)
+        bh=fdnG00+FVnrNPc7pRJZUf6p0lTeWtkmJlgm0eIX6kX4=;
+        b=uzWhERW/7GgiOwlHi+h4GfACbjqIlPlaGOz8U8wfdDvlkBthpaeJ0STi1atkahWwqc
+         CyQUwB6osjSJsYqZaS5XWoB1RuWTQzZy8BzbQuz3+qBStmrKc4Krp+L6qMta/2TzXGgz
+         BNiKvkvsAu9qljJymBihsVzuhnY5ZYe7A+UtB1mnbsDP8eJ1ioZlo15lxgKtlm7cZrEE
+         ngtdT+sY332mTCQkSZkQR8ehecBbSocvseSuJmpkqX2txkNpt4CnJXJvXg+jRAIB+1uT
+         b+SvNpqaUIxzNnEC+EQI3m3TtNFl9qb0L8uaT+DuaVB5vi0pk7yabKHd/WiH1TP5RRie
+         WkRg==
+X-Gm-Message-State: AOAM530R0X1agxgPxex2CoPJitsDUBnyI1uuBJYY4eUxYS+tZun73rpi
+        Qv1BMfkHd37tRFEsSYLnUVCpnUsQf/dIvbN67vU=
+X-Google-Smtp-Source: ABdhPJxJ5gfI3ASPs1ZQLPJ5mqeDxFjPhL/TbK+nPa5kjecR/ZD6LUe2SEjX0DqHf5k94THAgBevjCd50OdAmJ5sdEE=
+X-Received: by 2002:a17:907:d27:b0:6db:d928:a976 with SMTP id
+ gn39-20020a1709070d2700b006dbd928a976mr25969197ejc.24.1647953935879; Tue, 22
+ Mar 2022 05:58:55 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 22 Mar 2022 12:56:34 +0000
-Message-ID: <CAHpNFcMJwu1JDMxuYygeMZbP3Y+L+Cv9=YRuBBVtj_Koe9169A@mail.gmail.com>
+Date:   Tue, 22 Mar 2022 12:58:46 +0000
+Message-ID: <CAHpNFcNnW_gYDy4m-cVqta_hux0cW5O7hhOP=fDEN5Tbuxk=NA@mail.gmail.com>
 Subject: Reference Kernel Security: https://science.n-helix.com/2019/06/kernel.html
-To:     torvalds@linux-foundation.org
+To:     bandwidthalliance@cloudflare.com
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PDS_OTHER_BAD_TLD,
@@ -59,7 +59,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-https://science.n-helix.com/2019/06/kernel.html
+  https://science.n-helix.com/2019/06/kernel.html
 
 Trace ID : Kernel & Bios HASH Reference
 https://lkml.org/lkml/2022/3/22/446
@@ -248,5 +248,3 @@ yes cloudflare apex_eoso.nx7v.icu apex_eu.nx7v.icu apex_wes.nx7v.icu
 apex_eas.nx7v.icu
 
 USA: pop: apex_sv1.nx7v.icu apex_sv2.nx7v.icu apex_sv3.nx7v.icu
-
-*

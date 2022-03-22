@@ -2,64 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C1F4E48B7
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 22:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D9B4E48CB
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 23:02:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237121AbiCVV65 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 17:58:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33060 "EHLO
+        id S237293AbiCVWEB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 18:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237008AbiCVV65 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 17:58:57 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F216EB1E
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 14:57:27 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-d4164acd34so3095557fac.4
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 14:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
-         :subject:to:cc;
-        bh=SfPaV706mzf7LD/k9iodk6fw8mNgdKmY8MpWGwKVFSU=;
-        b=E31pR5kDUasDNZDFz0ARpHY1hIP1zTgG9pdO5YBzRYKZPLFCkCnfNdlv8a9kzoiwst
-         F00TE6wTwa6UIUZNnv4X8LBPH6v5vvyH9Myf8+76ViqGfDU4xvh+w+0u6wA++f8rrgGc
-         JwQwfAzobZw1AFiIkDiOwZ6Ldew0fVkKDURZ8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from
-         :user-agent:date:message-id:subject:to:cc;
-        bh=SfPaV706mzf7LD/k9iodk6fw8mNgdKmY8MpWGwKVFSU=;
-        b=yo5kRp/gBTb4R85+4W2akKCkAcqhrDv5Pv7nE9+Hb/TP98JRrN6N0UNx+0/nDmoKBe
-         ZE7pLWaIwGq2CrZ1UCTAdnSBaN4yYUQnbzhHaDA9NeFyuMhkusXZ1k+xRnVMHP51co/f
-         wGRQh2OgLT8HnbH97Q2qB+THHArWt1nNIEP1cK+YB5VosoLsWuW1eAjMFxm3ZZs1mWVI
-         6edMN5T7QPGiwTiLBB5tnw6NLg3s1LSSNIQEccBSs/XWSnEP7tIgM/I6li1/PGlsTa8G
-         d1z7ycVMfT4ou6VmLPENvDJft6B9eaZwi/8oj+BXKnTkEt2wJKfxm/OSk36ODPZ1Qa9/
-         mY/Q==
-X-Gm-Message-State: AOAM530/API/n3YGQvVkhi2l/VPEsC2wGLWqC5QgJWePg+8JKkAw+82g
-        juYPi08AI9gIrwg9iX6dwmUcvamNQfqZALFnrIXK1w==
-X-Google-Smtp-Source: ABdhPJwbSHhRs5Y++NGO3oszBoNTYAA6ag8jdOu5XrhXLUceI5d29DIZavih9eOM8SFOiz31smVOQp9zIBpax8wMtMg=
-X-Received: by 2002:a05:6870:b69c:b0:dd:b74b:4099 with SMTP id
- cy28-20020a056870b69c00b000ddb74b4099mr2510322oab.193.1647986247339; Tue, 22
- Mar 2022 14:57:27 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Mar 2022 17:57:26 -0400
+        with ESMTP id S236716AbiCVWEA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 18:04:00 -0400
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9684D6F4B2;
+        Tue, 22 Mar 2022 15:02:32 -0700 (PDT)
+Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 5803183B15;
+        Tue, 22 Mar 2022 23:02:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1647986550;
+        bh=4C0alZEoGYNFIv3M04nOK7lx4N6GoiN7TNk1icSBwmQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AkeP13JhO/F4cETMdnc5odhXCK65fjsIVhr0ENRmkArnfbrEf+oOJXpQYcPQScj6R
+         F7TrWxyz9k1qr7dKWhScQ1sKINWAV+NEsRQpIgb9G4HgjERBgmlZVALxGC+6NNl7D1
+         Zz/O9ovrp71eic65j1emqiiKX8g/EWaDJgsb2v34hFA/fOGKxf2LwElB5CTWthJuSv
+         6bruHYWmhDztFe16Ref/tmDeGsT6v/IhzzxcuhftpVFmnQB18449rlQlJAinT698MN
+         m4gLjdyvKKUTY1d92H2OWQTwaNgrO6L5gqo9svvDWMgyLCNjp57wdNEam4uTRKj/zW
+         vLSnOQXzTDIhw==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-iio@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: [PATCH v4 01/10] dt-bindings: iio: adc: ti,ads1015: Add missing ADS1115 compatible string
+Date:   Tue, 22 Mar 2022 23:02:01 +0100
+Message-Id: <20220322220210.207454-1-marex@denx.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-In-Reply-To: <20220322203844.0000466f@Huawei.com>
-References: <20220318204808.3404542-1-swboyd@chromium.org> <20220319152641.49d8b3e1@jic23-huawei>
- <CAE-0n52jDZz0qKhfg8OWVDmDg5+xXo-qSL3jNka82QHwA2-xsw@mail.gmail.com> <20220322203844.0000466f@Huawei.com>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Tue, 22 Mar 2022 17:57:26 -0400
-Message-ID: <CAE-0n51=ewQnTctWsmvawb_p3CrE0JgJFwLy+FR6rUPkWmTgHw@mail.gmail.com>
-Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,38 +56,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Jonathan Cameron (2022-03-22 13:38:44)
-> On Mon, 21 Mar 2022 19:36:33 +0100
-> Stephen Boyd <swboyd@chromium.org> wrote:
-> > Quoting Jonathan Cameron (2022-03-19 08:26:41)
-> > > On Fri, 18 Mar 2022 13:48:08 -0700
-> > > Stephen Boyd <swboyd@chromium.org> wrote:
-> > > >
-> > > > diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> > > > index 0d9bbbb50cb4..a3c8e02f5a56 100644
-> > > > --- a/drivers/iio/proximity/sx9324.c
-> > > > +++ b/drivers/iio/proximity/sx9324.c
-> > > > @@ -379,7 +379,10 @@ static int sx9324_read_gain(struct sx_common_data *data,
-> > > >       if (ret)
-> > > >               return ret;
-> > > >
-> > > > -     *val = 1 << FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
-> > > > +     regval = FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
-> > > > +     if (regval)
-> > >
-> > > If 0 is reserved then I'd return and error code here to indicate
-> > > we don't know what the gain is rather than carrying on regardless.
-> > > Or is this going to cause problems as it will be an ABI change (error
-> > > return possible when it wasn't really before)?
-> > >
-> >
-> > That sounds OK to me. The driver is only being introduced now so we can
-> > still fix it to reject a gain of 0. Unless 0 should mean "off", i.e.
-> > hardware gain of 1?
-> No.  I don't think we want to add that sort of fiddly definition.
-> So error is the way to go - I'd forgotten we only just introduced this
-> so no ABI breakage risk.
->
+Add missing ti,ads1115 compatible string. This compatible string is
+supported by the Linux kernel driver and the ads1015 is a 12bit ADC
+while ads1115 is 16bit ADC. Add the missing compatible string.
 
-Ok got it. Does the write_gain function also need to reject values
-greater than 8 and less than or equal to 0?
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andy Shevchenko <andy@kernel.org>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: devicetree@vger.kernel.org
+---
+V2: Add AB from Krzysztof
+V3: No change
+V4: No change
+---
+ Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+index 2c2d01bbc296d..c31c80989cc9a 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1015.yaml
+@@ -4,7 +4,7 @@
+ $id: http://devicetree.org/schemas/iio/adc/ti,ads1015.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: TI ADS1015 4 channel I2C analog to digital converter
++title: TI ADS1015/ADS1115 4 channel I2C analog to digital converter
+ 
+ maintainers:
+   - Daniel Baluta <daniel.baluta@nxp.com>
+@@ -15,7 +15,9 @@ description: |
+ 
+ properties:
+   compatible:
+-    const: ti,ads1015
++    enum:
++      - ti,ads1015
++      - ti,ads1115
+ 
+   reg:
+     maxItems: 1
+-- 
+2.35.1
+

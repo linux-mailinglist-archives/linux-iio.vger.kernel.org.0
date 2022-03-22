@@ -2,117 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 078C94E4893
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 22:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93C1F4E48B7
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 22:57:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236185AbiCVVoe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 17:44:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
+        id S237121AbiCVV65 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 17:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236198AbiCVVo2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 17:44:28 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8520D5F8C2
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 14:42:53 -0700 (PDT)
-Received: from fraeml702-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KNQ153Q70z67Zn3;
-        Wed, 23 Mar 2022 05:41:45 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml702-chm.china.huawei.com (10.206.15.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.24; Tue, 22 Mar 2022 22:42:50 +0100
-Received: from localhost (10.47.75.191) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 22 Mar
- 2022 21:42:50 +0000
-Date:   Tue, 22 Mar 2022 21:42:48 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Marek Vasut <marex@denx.de>
-CC:     <linux-iio@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        "Daniel Baluta" <daniel.baluta@nxp.com>
-Subject: Re: [PATCH v2] iio: core: Print error in case sample bits do not
- fit storage bits
-Message-ID: <20220322214248.00007194@Huawei.com>
-In-Reply-To: <20220322111619.54808-1-marex@denx.de>
-References: <20220322111619.54808-1-marex@denx.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S237008AbiCVV65 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 17:58:57 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F216EB1E
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 14:57:27 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-d4164acd34so3095557fac.4
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 14:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
+         :subject:to:cc;
+        bh=SfPaV706mzf7LD/k9iodk6fw8mNgdKmY8MpWGwKVFSU=;
+        b=E31pR5kDUasDNZDFz0ARpHY1hIP1zTgG9pdO5YBzRYKZPLFCkCnfNdlv8a9kzoiwst
+         F00TE6wTwa6UIUZNnv4X8LBPH6v5vvyH9Myf8+76ViqGfDU4xvh+w+0u6wA++f8rrgGc
+         JwQwfAzobZw1AFiIkDiOwZ6Ldew0fVkKDURZ8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from
+         :user-agent:date:message-id:subject:to:cc;
+        bh=SfPaV706mzf7LD/k9iodk6fw8mNgdKmY8MpWGwKVFSU=;
+        b=yo5kRp/gBTb4R85+4W2akKCkAcqhrDv5Pv7nE9+Hb/TP98JRrN6N0UNx+0/nDmoKBe
+         ZE7pLWaIwGq2CrZ1UCTAdnSBaN4yYUQnbzhHaDA9NeFyuMhkusXZ1k+xRnVMHP51co/f
+         wGRQh2OgLT8HnbH97Q2qB+THHArWt1nNIEP1cK+YB5VosoLsWuW1eAjMFxm3ZZs1mWVI
+         6edMN5T7QPGiwTiLBB5tnw6NLg3s1LSSNIQEccBSs/XWSnEP7tIgM/I6li1/PGlsTa8G
+         d1z7ycVMfT4ou6VmLPENvDJft6B9eaZwi/8oj+BXKnTkEt2wJKfxm/OSk36ODPZ1Qa9/
+         mY/Q==
+X-Gm-Message-State: AOAM530/API/n3YGQvVkhi2l/VPEsC2wGLWqC5QgJWePg+8JKkAw+82g
+        juYPi08AI9gIrwg9iX6dwmUcvamNQfqZALFnrIXK1w==
+X-Google-Smtp-Source: ABdhPJwbSHhRs5Y++NGO3oszBoNTYAA6ag8jdOu5XrhXLUceI5d29DIZavih9eOM8SFOiz31smVOQp9zIBpax8wMtMg=
+X-Received: by 2002:a05:6870:b69c:b0:dd:b74b:4099 with SMTP id
+ cy28-20020a056870b69c00b000ddb74b4099mr2510322oab.193.1647986247339; Tue, 22
+ Mar 2022 14:57:27 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 22 Mar 2022 17:57:26 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.75.191]
-X-ClientProxiedBy: lhreml742-chm.china.huawei.com (10.201.108.192) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220322203844.0000466f@Huawei.com>
+References: <20220318204808.3404542-1-swboyd@chromium.org> <20220319152641.49d8b3e1@jic23-huawei>
+ <CAE-0n52jDZz0qKhfg8OWVDmDg5+xXo-qSL3jNka82QHwA2-xsw@mail.gmail.com> <20220322203844.0000466f@Huawei.com>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date:   Tue, 22 Mar 2022 17:57:26 -0400
+Message-ID: <CAE-0n51=ewQnTctWsmvawb_p3CrE0JgJFwLy+FR6rUPkWmTgHw@mail.gmail.com>
+Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Mar 2022 12:16:19 +0100
-Marek Vasut <marex@denx.de> wrote:
+Quoting Jonathan Cameron (2022-03-22 13:38:44)
+> On Mon, 21 Mar 2022 19:36:33 +0100
+> Stephen Boyd <swboyd@chromium.org> wrote:
+> > Quoting Jonathan Cameron (2022-03-19 08:26:41)
+> > > On Fri, 18 Mar 2022 13:48:08 -0700
+> > > Stephen Boyd <swboyd@chromium.org> wrote:
+> > > >
+> > > > diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> > > > index 0d9bbbb50cb4..a3c8e02f5a56 100644
+> > > > --- a/drivers/iio/proximity/sx9324.c
+> > > > +++ b/drivers/iio/proximity/sx9324.c
+> > > > @@ -379,7 +379,10 @@ static int sx9324_read_gain(struct sx_common_data *data,
+> > > >       if (ret)
+> > > >               return ret;
+> > > >
+> > > > -     *val = 1 << FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
+> > > > +     regval = FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
+> > > > +     if (regval)
+> > >
+> > > If 0 is reserved then I'd return and error code here to indicate
+> > > we don't know what the gain is rather than carrying on regardless.
+> > > Or is this going to cause problems as it will be an ABI change (error
+> > > return possible when it wasn't really before)?
+> > >
+> >
+> > That sounds OK to me. The driver is only being introduced now so we can
+> > still fix it to reject a gain of 0. Unless 0 should mean "off", i.e.
+> > hardware gain of 1?
+> No.  I don't think we want to add that sort of fiddly definition.
+> So error is the way to go - I'd forgotten we only just introduced this
+> so no ABI breakage risk.
+>
 
-> Add runtime check to verify whether storagebits are at least as big
-> as shifted realbits. This should help spot broken drivers which may
-> set realbits + shift above storagebits.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> Cc: Andy Shevchenko <andy@kernel.org>
-> Cc: Daniel Baluta <daniel.baluta@nxp.com>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Hmm. I was thinking we'd fail the probe if this happens,
-though I guess there might be cases where we get away 
-(in kernel anyway) with a driver setting this wrong as
-many drivers don't use realbits internally in an explicit
-fashion, so maybe a message and skipping the channel is
-the right choice...
-
-Userspace running against such a description is likely
-to generate garbage though unless it's very lucky and
-the spill past storage bits is into padding space and
-the driver doesn't put anything in there (padding might
-contain old data or similar).
-
-Either way it's a definite improvement so I'm probably fine
-with the message and not failing the probe, (though will
-think a bit more about it before picking this up.)
-
-
-Jonathan`
-
-
-> ---
-> V2: Use dev_err() instead as WARN_ON() may panic() the kernel on existing machines
-> ---
->  drivers/iio/industrialio-buffer.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index b078eb2f3c9de..b5670398b06d7 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -1629,6 +1629,18 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
->  			if (channels[i].scan_index < 0)
->  				continue;
->  
-> +			/* Verify that sample bits fit into storage */
-> +			if (channels[i].scan_type.storagebits <
-> +			    channels[i].scan_type.realbits +
-> +			    channels[i].scan_type.shift) {
-> +				dev_err(&indio_dev->dev,
-> +					"Channel %d storagebits (%d) < shifted realbits (%d + %d)\n",
-> +					i, channels[i].scan_type.storagebits,
-> +					channels[i].scan_type.realbits,
-> +					channels[i].scan_type.shift);
-> +				continue;
-> +			}
-> +
->  			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
->  							 &channels[i]);
->  			if (ret < 0)
-
+Ok got it. Does the write_gain function also need to reject values
+greater than 8 and less than or equal to 0?

@@ -2,76 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33EAE4E3CA1
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A47FA4E3C9C
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:41:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233236AbiCVKmn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 06:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37500 "EHLO
+        id S232261AbiCVKmd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 06:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbiCVKmm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:42:42 -0400
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BAF81192;
-        Tue, 22 Mar 2022 03:41:15 -0700 (PDT)
-Received: by mail-ej1-f49.google.com with SMTP id r22so15193942ejs.11;
-        Tue, 22 Mar 2022 03:41:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
-         :subject:content-language:to:cc:references:in-reply-to
-         :content-transfer-encoding;
-        bh=qKsgBbH9sIwu8qSu/STqDYAzfDFmWwxMdPPPch9rKoo=;
-        b=YJtqJfb9YWQKxKRWY8XpJuB/us8RJ7zzZTuLakfyl0P2IbrYDeDEsQr31SS8uP0ivE
-         DL51QkNZ2sLoDG6j/6m3ylZ3fenvGcJpyEmlAJOAcuU9N9gfgrNqJrpR1sIpWyUPT7w+
-         4IJY7PUzPalcfj2PiD7O6IxFfD9PBq+zSgBe2QR6imcZYAzCbJzi7u6aG+gLGT/15jRE
-         /LIYJW+q+sBhbTjORvK7ySjbDwBm2Xpia3+3CyFXYTWu9GPxVrjplIf36M55ZHDmJNcE
-         iLCiATfy3O5GGGzjzb1FOnY+J2U7nyXz58TsVogsBO8sh/aoj93EB9Tgln8LFrQZUNVz
-         mDwQ==
-X-Gm-Message-State: AOAM533YalrMs+AEB+Zge3+nOfa9vPbu+pX82JEjtrQFEP0T9TF68gJ2
-        8EceFXVyy1eYHN3xreK++jY=
-X-Google-Smtp-Source: ABdhPJx3hmEoX2a/mq4nDJpm2NjVc9WqDd8OqoSNBqpEvjrjLfVZlO4te+uPT64JeyhAok2gWezbNw==
-X-Received: by 2002:a17:907:7e8c:b0:6dc:b357:2f4 with SMTP id qb12-20020a1709077e8c00b006dcb35702f4mr25039728ejc.434.1647945673640;
-        Tue, 22 Mar 2022 03:41:13 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.googlemail.com with ESMTPSA id n6-20020aa7c786000000b00410d2403ccfsm9404307eds.21.2022.03.22.03.41.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Mar 2022 03:41:12 -0700 (PDT)
-Message-ID: <5709ab75-2c9e-d7d3-eaf7-4619583bb6c6@kernel.org>
-Date:   Tue, 22 Mar 2022 11:41:11 +0100
+        with ESMTP id S233131AbiCVKmb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:42:31 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90CAC8118E;
+        Tue, 22 Mar 2022 03:41:04 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22M7Yd7G008885;
+        Tue, 22 Mar 2022 06:40:57 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ew9165je5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 22 Mar 2022 06:40:57 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 22MAeuq9036322
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 22 Mar 2022 06:40:56 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 22 Mar
+ 2022 06:40:55 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 22 Mar 2022 06:40:55 -0400
+Received: from localhost.localdomain ([10.48.65.12])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 22MAelC9008328;
+        Tue, 22 Mar 2022 06:40:50 -0400
+From:   <alexandru.tachici@analog.com>
+To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <jic23@kernel.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>
+Subject: [PATCH v3 0/6] iio: adc: ad_sigma_delta: Add sequencer support
+Date:   Tue, 22 Mar 2022 12:50:23 +0200
+Message-ID: <20220322105029.86389-1-alexandru.tachici@analog.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
- invensense,icm20608d
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Michael Srba <Michael.Srba@seznam.cz>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220310133938.2495-1-michael.srba@seznam.cz>
- <20220310133938.2495-2-michael.srba@seznam.cz>
- <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
- <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
- <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
- <20220320151223.3a9b13bd@jic23-huawei>
- <ca80bd79-338c-98a4-2f4d-4dcfc52ed538@kernel.org>
- <20220321150411.00002206@Huawei.com>
- <47d67c82-788e-2ced-54cc-4959c67922fc@kernel.org>
- <20220321174202.00007895@Huawei.com>
- <f8ba569f-d230-92a8-6a56-fbcaf620af36@seznam.cz>
- <20220322101916.0000759f@Huawei.com>
-In-Reply-To: <20220322101916.0000759f@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: ZcWShtxLslYC5WeAeL1DESe4-8tlT_Ey
+X-Proofpoint-ORIG-GUID: ZcWShtxLslYC5WeAeL1DESe4-8tlT_Ey
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-22_03,2022-03-22_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203220062
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,115 +65,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 22/03/2022 11:19, Jonathan Cameron wrote:
->>> Obviously it wouldn't work anyway with an old kernel, but
->>> without the fallback compatible at least there would be no error message
->>> saying that the device is not the icm20608 we expected to see.  
->> I'm not sure if that's really an issue?
->> The old kernel is clearly not handling the compatible "correctly",
->> since the compatible says that the interface is a superset of
->> the icm20608 interface, and that using the icm20608
->> interface will work.
->> If the driver makes the incorrect assumption that
->> the WHOAMI being different means the interface cannot
->> be icm20608 compatible, then that seems like an issue
->> with the driver?
->> And I believe the single reason for why catering to
->> a broken driver would ever be considered is if not doing
->> so would result in breaking the devicetree ABI promise,
->> which doesn't seem to happen here.
-> 
-> I'll be honest I no longer care that much either way.
-> 
-> If someone would point me to clear documentation of that
-> DT ABI promise 
+From: Alexandru Tachici <alexandru.tachici@analog.com>
 
-Documentation/devicetree/bindings/ABI.rst
+Some sigma-delta chips support sampling of multiple
+channels in continuous mode.
 
-> and how it describes things as being compatible
-> that would be great and provide me with a clear statement
-> to point others to in the future.
+When the operating with more than one channel enabled,
+the channel sequencer cycles through the enabled channels
+in sequential order, from first channel to the last one.
+If a channel is disabled, it is skipped by the sequencer.
 
-It's very concise, so let me decipher the first paragraph. It is safe to
-add new compatibles to the chain (so exactly like here "icm20608d,
-icm20608") because the system can bind:
-1. against new compatible bringing all new features,
-2. old compatible, working with "old" or limited set of features.
+If more than one channel is used in continuous mode,
+instruct the device to append the status to the SPI transfer
+(1 extra byte) every time we receive a sample.
+All sigma-delta chips possessing a sampling sequencer have
+this ability. Inside the status register there will be
+the number of the converted channel. In this way, even
+if the CPU won't keep up with the sampling rate, it won't
+send to userspace wrong channel samples.
 
-What I was explaining you in mails before, which you responded to with:
-"Whilst I don't personally agree with the definition of "compatible"
-and think you are making false distinctions between hardware and
-software..."
-we do not talk here about software, as in device driver. We talk about
-bindings which describe the hardware, therefore the compatible should be
-rather understood in the hardware model, not driver model.
+1. Removed the 1 byte .shift from channel spec in AD7124,
+it confuses userspace apps (no need to shift right).
 
-The compatible field does not mean that one driver is compatible with
-this or other hardware. It means that devices have a compatible
-programming model or interface.
+2. Add update_scan_mode to AD7124, it is required in order
+to enable/disable multiple channels at once
 
-Now driver should be implemented in that way. If driver handles
-"icm20608" compatible, it should nicely handle only icm20608 features,
-regardless whether device is icm20608 or icm20608d.
+3. Add update_scan_mode to AD7192, it is required in order
+to enable/disable multiple channels at once
 
-Now let's imagine, that icm20608d is slightly different than icm20608 in
-the basic feature set. Than it's not compatible and should deserve
-another separate binding entry, regardless how driver handles it.
+4. Add sequencer support for sigma_delta library.
 
-Keep in mind what Rob said - driver implementation can changed, but
-device compatibility in bindings should stay the same. Specially that
-bindings are used in other operating systems (*BSD) and software pieces
-(u-boot).
+5. Add sigma_delta_info values and callbacks for sequencer
+support in AD7124.
 
-> Perhaps I've just been missing that documentation or it
-> needs writing.
-> 
-> I think that having to ignore a WHOAMI value that
-> is unknown to the driver because there might be a future part
-> which is compatible is a very bad way to support
-> devices in a reliable fashion and going to lead to annoyed
-> users and bug reports.
+6. Add sigma_delta_info values and callbacks for sequencer
+support in AD7192.
 
-I see your point. It's a safer choice than just accepting any device.
-However it's a designer/programmers fault to provide a DTB with a
-matching compatible for a non-compatible device. Not driver programmer
-fault. Usually you do not have to protect the driver from it.
+Alexandru Tachici (5):
+  iio: adc: ad7124: Remove shift from scan_type
+  iio: adc: ad7124: Add update_scan_mode
+  iio: adc: ad7192: Add update_scan_mode
+  iio: adc: ad7124: add sequencer support
+  iio: adc: ad7192: add sequencer support
 
-> This is different to electing to
-> using a shared compatible when two parts are introduced at
-> the same time and we are doing detection in the driver of
-> which variant we have.
-> 
-> I mentioned earlier that we have this type of defensive coding
-> precisely because we have had false assessments about
-> compatibility in the past. This manufacturer does not in
-> general document compatibility across parts. I have no idea if
-> they do for this particular part as there doesn't seem to be
-> a public datasheet.
+Lars-Peter Clausen (1):
+  iio: adc: ad_sigma_delta: Add sequencer support
 
-Kind of continuing my previous thought also here - it's not a problem of
-driver developer, but DTB developer. If the devices are not compatible
-(thus driver will not work correctly), the person using that compatible
-in DTB made mistake. Bug reports should be sent to that person, not to
-driver developer, not to you.
+Changelog V2 -> V3:
+  - ad_sd_buffer_postenable(), aligned (slot * storagebits) to 8 bytes
+  - devm_krealloc instead of krealloc for samples_buf in ad_sd_buffer_postenable()
+  - in ad_sigma_delta_append_status, check return value before setting .status_appended
+  - iio: adc: ad_sigma_delta: Add sequencer support: added explanations on
+  desynchronization checking and recovery
+  - in ad7124_append_status() modify st->adc_control after write has taken place without errors
+  - in ad7124_update_scan_mode() take cfg mutex only once instead of every time a
+  set_channel happens
+  - in ad7192_disable_all() modify st->conf after write taken place without errors
+  - in ad7192_append_status() modify st->mode after write taken place without errors
 
-> It didn't work before, now it won't work and will complain about it
-> which may lead to some bug reports that won't be resolved but
-> I'll adopt the majority opinion which seems to be that we
-> don't care about that.
+ drivers/iio/adc/ad7124.c               |  86 ++++++++++++++-
+ drivers/iio/adc/ad7192.c               |  64 ++++++++++-
+ drivers/iio/adc/ad_sigma_delta.c       | 143 +++++++++++++++++++++++--
+ include/linux/iio/adc/ad_sigma_delta.h |  38 +++++++
+ 4 files changed, 315 insertions(+), 16 deletions(-)
 
-Yes, we don't care but the DTB/DTS person should. :)
-
->  I'd also be happy to see us reduce
-> the problem scope here by having a 'fix' for that rejection
-> of unknown IDs that we can push back to stable kernels.
-> Relaxing it to a warning should be sufficient, though we probably
-> want to screen out whatever comes back from the bus if there
-> is no device present at all as the WHOAMI check is also
-> providing that protection.
-
-A dev_warn() with a disclaimer might be actually better approach. Unless
-it might be a safety-critical device.
-
-Best regards,
-Krzysztof
+--
+2.25.1

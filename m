@@ -2,111 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C63F4E3C45
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 833534E3C4E
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232109AbiCVKQJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 06:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50064 "EHLO
+        id S231694AbiCVKUx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 06:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232003AbiCVKQJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:16:09 -0400
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95F5A31DC6
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 03:14:41 -0700 (PDT)
-Received: by mail-vs1-xe35.google.com with SMTP id m184so6043023vsm.12
-        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 03:14:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=qQJC07rCUNswiB5jjOD2VCw5tjxjTwuScyhxRRQmtMM=;
-        b=ZIvyg/LlRN1eAIM73sNBr+wlkLHyty1qRSbo+arkA33Gs6AwEgno6KW6QHWcePC7yu
-         FUUyBpzHmWmklsuhDuoCtLNNc3Jmu2u1GT+di0ynn179viSyaJbFVfrL2ebIYj48gU0N
-         BWyJpelI2EOspXb58mziAdc+nCCw4ictcZLY/AgTLOilebC9ttIOIeRr2HxWDxA99ovT
-         ktvmcFvdeNVJrVNpNnCjZxEPRGtLv23pWtSPD31DoV8e4RzQ8YDS0knmGRoDq90PuWC6
-         cN+UBz50Bb1GfO2jKJNViByeNWHzlG2IyxhBRWVmQRJiZv9RLTXAw8ByQOhRfUWBCLBI
-         RWPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=qQJC07rCUNswiB5jjOD2VCw5tjxjTwuScyhxRRQmtMM=;
-        b=Enjec2TvOryNag6Gfm9YcdgouQnQYL5qCAWlG1CxqguceSfuRGvT8WzNmZKusQbvp5
-         eWrl9nFIh9zxfkPY7R4b7NACsEnOSGp6fSHdQAWPS4mMSMg6bL1QalFvLjRLT3eWQUbo
-         mkBvkD+rGtscrQIgUacE5gTfCn+h8Pstjllb9/UFQQ5Pav+KdUmkpWBNauxvOV8g+DPo
-         +dq/JsEg6mm7o1tDWm8H7fNFnpO0ouYihIuYzQsPBnEwxcUfLW+emZwmeV4HVFxwB9Ln
-         yKTkD8EszuWeg6YNLCrrRT0Q5knYXlPIkMpAIi8Kk2asXrErfh2kTZvqYQbxJr6Z+os1
-         p3qw==
-X-Gm-Message-State: AOAM532V1jOz+KZhwt04rkZZtoEp9YNVQi961/SAYES9FvHA1GNG8FLQ
-        fHVRt8bC85jEsSnRqs12qREzbg56euTNRzc0SI4=
-X-Google-Smtp-Source: ABdhPJwDK3IkOxPRtHHX/6/xllV2nKZ5HZBE30HpEvOS2uoxAeNPv+06vFGQZBZ4ybMCqHX89Kmvs/11qFIdh6US+zo=
-X-Received: by 2002:a67:b40d:0:b0:325:2d3a:dabb with SMTP id
- x13-20020a67b40d000000b003252d3adabbmr1990441vsl.59.1647944080680; Tue, 22
- Mar 2022 03:14:40 -0700 (PDT)
+        with ESMTP id S231648AbiCVKUw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:20:52 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 653A52459D;
+        Tue, 22 Mar 2022 03:19:23 -0700 (PDT)
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KN6qB2LJZz67PcP;
+        Tue, 22 Mar 2022 18:17:10 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 22 Mar 2022 11:19:20 +0100
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 22 Mar
+ 2022 10:19:19 +0000
+Date:   Tue, 22 Mar 2022 10:19:16 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Michael Srba <Michael.Srba@seznam.cz>
+CC:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
+ invensense,icm20608d
+Message-ID: <20220322101916.0000759f@Huawei.com>
+In-Reply-To: <f8ba569f-d230-92a8-6a56-fbcaf620af36@seznam.cz>
+References: <20220310133938.2495-1-michael.srba@seznam.cz>
+        <20220310133938.2495-2-michael.srba@seznam.cz>
+        <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
+        <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
+        <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
+        <20220320151223.3a9b13bd@jic23-huawei>
+        <ca80bd79-338c-98a4-2f4d-4dcfc52ed538@kernel.org>
+        <20220321150411.00002206@Huawei.com>
+        <47d67c82-788e-2ced-54cc-4959c67922fc@kernel.org>
+        <20220321174202.00007895@Huawei.com>
+        <f8ba569f-d230-92a8-6a56-fbcaf620af36@seznam.cz>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20220217162710.33615-1-andrea.merello@gmail.com>
- <20220217162710.33615-8-andrea.merello@gmail.com> <ba1b2d78-bf4a-ec6d-88b8-76bbf2ff5e3e@pmeerw.net>
-In-Reply-To: <ba1b2d78-bf4a-ec6d-88b8-76bbf2ff5e3e@pmeerw.net>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Tue, 22 Mar 2022 11:14:29 +0100
-Message-ID: <CAN8YU5PARcdR6gb4iLPS7XxVQaYkPvgRgwDo=caP+pXa7Ht3FA@mail.gmail.com>
-Subject: Re: [v3 07/13] iio: imu: add Bosch Sensortec BNO055 core driver
-To:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml741-chm.china.huawei.com (10.201.108.191) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno gio 17 feb 2022 alle ore 22:58 Peter Meerwald-Stadler
-<pmeerw@pmeerw.net> ha scritto:
->
-> On Thu, 17 Feb 2022, Andrea Merello wrote:
->
-> nice work, minor comments below
+On Mon, 21 Mar 2022 19:07:26 +0100
+Michael Srba <Michael.Srba@seznam.cz> wrote:
 
-Thanks.
-Just an inline comment; OK for all the rest.
+> On 21. 03. 22 18:42, Jonathan Cameron wrote:
+> > On Mon, 21 Mar 2022 16:22:38 +0100
+> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >  
+> >> On 21/03/2022 16:04, Jonathan Cameron wrote:  
+> >>> On Mon, 21 Mar 2022 09:04:11 +0100
+> >>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >>>      
+> >>>> On 20/03/2022 16:12, Jonathan Cameron wrote:  
+> >>>>> On Thu, 10 Mar 2022 22:24:03 +0100
+> >>>>> Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+> >>>>>        
+> >>>>>> On 10/03/2022 19:56, Michael Srba wrote:  
+> >>>>>>> Hi,
+> >>>>>>> the thing is, the only reason the different compatible is needed at all
+> >>>>>>> is that the chip presents a different WHOAMI, and the invensense,icm20608
+> >>>>>>> compatible seems to imply the non-D WHOAMI value.  
+> >>>>>> But this is a driver implementation issue, not related to bindings.
+> >>>>>> Bindings describe the hardware.  
+> >>>>> Indeed, but the key thing here is the WHOAMI register is hardware.
+> >>>>>        
+> >>>>>>       
+> >>>>>>> I'm not sure how the driver would react to both compatibles being present,
+> >>>>>>> and looking at the driver code, it seems that icm20608d is not the only
+> >>>>>>> fully icm20608-compatible (to the extent of features supported by
+> >>>>>>> the driver, and excluding the WHOAMI value) invensense IC, yet none
+> >>>>>>> of these other ICs add the invensense,icm20608 compatible, so I guess I
+> >>>>>>> don't see a good reason to do something different.  
+> >>>>>> Probably my question should be asked earlier, when these other
+> >>>>>> compatibles were added in such way.
+> >>>>>>
+> >>>>>> Skipping the DMP core, the new device is fully backwards compatible with
+> >>>>>> icm20608.  
+> >>>>> No. It is 'nearly' compatible...  The different WHOAMI value (used
+> >>>>> to check the chip is the one we expect) makes it incompatible.  Now we
+> >>>>> could change the driver to allow for that bit of incompatibility and
+> >>>>> some other drivers do (often warning when the whoami is wrong but continuing
+> >>>>> anyway).  
+> >>>> Different value of HW register within the same programming model does
+> >>>> not make him incompatible. Quite contrary - it is compatible and to
+> >>>> differentiate variants you do not need specific compatibles.  
+> >>> Whilst I don't personally agree with the definition of "compatible"
+> >>> and think you are making false distinctions between hardware and software...
+> >>>
+> >>> I'll accept Rob's statement of best practice.  However we can't just
+> >>> add a compatible that won't work if someone uses it on a new board
+> >>> that happens to run an old kernel.
+> >>>      
+> >> The please explain me how this patch (the compatible set I proposed)
+> >> fails to work in such case? How a new board with icm20608 (not
+> >> icm20608d!) fails to work?  
+> > I'm confused.  An actual icm20608 would work.
+> > I guess you mean an icm20608d via compatible "invensense,icm20608"?
+> >  
+> >> To remind, the compatible has a format of:
+> >> comaptible = "new", "old"
+> >> e.g.: "invensense,icm20608d", "invensense,icm20608"  
+> > Old kernel fails to match invensense,icm20608d, matches on invensense,icm20608.
+> > Checks the WHOAMI value and reports a missmatched value and fails the probe
+> > as it has no idea what the part was so no idea how to support it.
+> >
+> > Obviously it wouldn't work anyway with an old kernel, but
+> > without the fallback compatible at least there would be no error message
+> > saying that the device is not the icm20608 we expected to see.  
+> I'm not sure if that's really an issue?
+> The old kernel is clearly not handling the compatible "correctly",
+> since the compatible says that the interface is a superset of
+> the icm20608 interface, and that using the icm20608
+> interface will work.
+> If the driver makes the incorrect assumption that
+> the WHOAMI being different means the interface cannot
+> be icm20608 compatible, then that seems like an issue
+> with the driver?
+> And I believe the single reason for why catering to
+> a broken driver would ever be considered is if not doing
+> so would result in breaking the devicetree ABI promise,
+> which doesn't seem to happen here.
 
-[...]
+I'll be honest I no longer care that much either way.
 
-> > +static bool bno055_regmap_writeable(struct device *dev, unsigned int reg)
-> > +{
-> > +     /*
-> > +      * Unreadable registers are indeed reserved; there are no WO regs
-> > +      * (except for a single bit in SYS_TRIGGER register)
-> > +      */
-> > +     if (!bno055_regmap_readable(dev, reg))
-> > +             return false;
-> > +
-> > +     /* data and status registers */
-> > +     if (reg >= BNO055_ACC_DATA_X_LSB_REG && reg <= BNO055_SYS_ERR_REG)
-> > +             return false;
-> > +
-> > +     /* IDs areas */
->
-> probably 'ID area'?
->
+If someone would point me to clear documentation of that
+DT ABI promise and how it describes things as being compatible
+that would be great and provide me with a clear statement
+to point others to in the future.
+Perhaps I've just been missing that documentation or it
+needs writing.
 
-I'd say 'ID areas' then, because there are two zones in which
-different IDs lay (one below the PAGESEL register that contains e.g.
-SW ID, internal gyro ID, accell ID, and the other that contains the
-chip UID)
+I think that having to ignore a WHOAMI value that
+is unknown to the driver because there might be a future part
+which is compatible is a very bad way to support
+devices in a reliable fashion and going to lead to annoyed
+users and bug reports. This is different to electing to
+using a shared compatible when two parts are introduced at
+the same time and we are doing detection in the driver of
+which variant we have.
 
-> > +     if (reg < BNO055_PAGESEL_REG ||
-> > +         (reg <= BNO055_UID_HIGHER_REG && reg >= BNO055_UID_LOWER_REG))
-> > +             return false;
-> > +
-> > +     return true;
-> > +}
-> > +
+I mentioned earlier that we have this type of defensive coding
+precisely because we have had false assessments about
+compatibility in the past. This manufacturer does not in
+general document compatibility across parts. I have no idea if
+they do for this particular part as there doesn't seem to be
+a public datasheet.
+
+It didn't work before, now it won't work and will complain about it
+which may lead to some bug reports that won't be resolved but
+I'll adopt the majority opinion which seems to be that we
+don't care about that.  I'd also be happy to see us reduce
+the problem scope here by having a 'fix' for that rejection
+of unknown IDs that we can push back to stable kernels.
+Relaxing it to a warning should be sufficient, though we probably
+want to screen out whatever comes back from the bus if there
+is no device present at all as the WHOAMI check is also
+providing that protection.
+
+Jonathan
+
+
+
+> 
+> btw, when this is resolved, I will be sending a v3 with
+> fixed dt-schema errors now that I managed to reproduce
+> those errors locally.
+> 
+> Regards,
+> Michael.
+> > Jonathan
+> >  
+> >> Best regards,
+> >> Krzysztof  
+> 
+

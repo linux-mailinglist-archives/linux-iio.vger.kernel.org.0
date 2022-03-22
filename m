@@ -2,198 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AC4B4E3C90
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33EAE4E3CA1
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:41:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231570AbiCVKj2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 06:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52350 "EHLO
+        id S233236AbiCVKmn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 06:42:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233103AbiCVKj0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:39:26 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D4919294;
-        Tue, 22 Mar 2022 03:37:59 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id y4so18538614vsd.11;
-        Tue, 22 Mar 2022 03:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=A8Uwl5R9FFhyS86G5PyV/+OCLLYlqbgHEjOZGBcExKg=;
-        b=THgrE5uqHYUftr0rIVpMCDI3nJyG9ASl9fqWURbpF4ljru1ObqwKEASBFjIfwRL4jb
-         ibo83ukpDUhcM1wXLObYxw/DKH0YggtwvueERPXiluejhpnLgz/zlWFI1e/ZBgLlInlQ
-         BSA7Uj6kfM1zfd0mjnQ2v5YVwJJp2kFrMC4Fo437YxZlbJ0fU/ea4onz/Se7kkBLcAFu
-         9eLGReIr1uzNJk8Cyu4zVMxhfHAFaZN1Y5JGxBNpa/h3yQb61cpilkvBVrFM9CIoU4J/
-         QU8jutKgLFC6jXxR4pixEpyWFfEkDJ4y9f8yyqMIhtZoDxg/ddRIzRIfosIz6Nvhobun
-         PTig==
+        with ESMTP id S233241AbiCVKmm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:42:42 -0400
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BAF81192;
+        Tue, 22 Mar 2022 03:41:15 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id r22so15193942ejs.11;
+        Tue, 22 Mar 2022 03:41:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=A8Uwl5R9FFhyS86G5PyV/+OCLLYlqbgHEjOZGBcExKg=;
-        b=zzHl0IBrrMphWQfWNB5IGTlp7drWpKo3/lXWE9/Nvy7xIN68JDrH/aVaqXQVG3XsMU
-         2l/45FAqGVPuyprFyaQA3hKOjsCnwKSMiGM8a7L2fjNqiUFh1xl7MyZbR4rH8v4zVB1m
-         mK7NdxiSqkSd5k5r/hcMogY9eExMTvJnxLP06xo42qCMcRu04cNwiOv5pkQ7ZCYOC3tc
-         kWIz+z+CzQzD38O5d/1qcs/2h/r13dJqIgXAT2dfto9HGPu5er1qLfYsMjYpZ0njHBGb
-         q3TMv7TpjimbwBzUG8/2SyWezXqwm89v3XkNcEpfEf2UUpHEnWmjcH0j+lNvfP7gcBBt
-         9c2g==
-X-Gm-Message-State: AOAM530ddrLTU4VDjffYb9/vTx+w05vJzL29on1+4W/srNk2/SrfU9j/
-        hd7tWtd+JosUFCw6NnzeJ2qQc0OkT6VM00tGJSwVbQ/0I/d0Fw==
-X-Google-Smtp-Source: ABdhPJzZDF9Lie8DORask+I9MnvoyLtQOR+yWRQ+SP4r5kBdT53viKN/6zUUyRt7PCs0/J8jU9dPUkET5am1U6aOqxU=
-X-Received: by 2002:a05:6102:284a:b0:31e:c455:5dee with SMTP id
- az10-20020a056102284a00b0031ec4555deemr8594948vsb.27.1647945478537; Tue, 22
- Mar 2022 03:37:58 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
+         :subject:content-language:to:cc:references:in-reply-to
+         :content-transfer-encoding;
+        bh=qKsgBbH9sIwu8qSu/STqDYAzfDFmWwxMdPPPch9rKoo=;
+        b=YJtqJfb9YWQKxKRWY8XpJuB/us8RJ7zzZTuLakfyl0P2IbrYDeDEsQr31SS8uP0ivE
+         DL51QkNZ2sLoDG6j/6m3ylZ3fenvGcJpyEmlAJOAcuU9N9gfgrNqJrpR1sIpWyUPT7w+
+         4IJY7PUzPalcfj2PiD7O6IxFfD9PBq+zSgBe2QR6imcZYAzCbJzi7u6aG+gLGT/15jRE
+         /LIYJW+q+sBhbTjORvK7ySjbDwBm2Xpia3+3CyFXYTWu9GPxVrjplIf36M55ZHDmJNcE
+         iLCiATfy3O5GGGzjzb1FOnY+J2U7nyXz58TsVogsBO8sh/aoj93EB9Tgln8LFrQZUNVz
+         mDwQ==
+X-Gm-Message-State: AOAM533YalrMs+AEB+Zge3+nOfa9vPbu+pX82JEjtrQFEP0T9TF68gJ2
+        8EceFXVyy1eYHN3xreK++jY=
+X-Google-Smtp-Source: ABdhPJx3hmEoX2a/mq4nDJpm2NjVc9WqDd8OqoSNBqpEvjrjLfVZlO4te+uPT64JeyhAok2gWezbNw==
+X-Received: by 2002:a17:907:7e8c:b0:6dc:b357:2f4 with SMTP id qb12-20020a1709077e8c00b006dcb35702f4mr25039728ejc.434.1647945673640;
+        Tue, 22 Mar 2022 03:41:13 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.googlemail.com with ESMTPSA id n6-20020aa7c786000000b00410d2403ccfsm9404307eds.21.2022.03.22.03.41.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Mar 2022 03:41:12 -0700 (PDT)
+Message-ID: <5709ab75-2c9e-d7d3-eaf7-4619583bb6c6@kernel.org>
+Date:   Tue, 22 Mar 2022 11:41:11 +0100
 MIME-Version: 1.0
-References: <20220217162710.33615-1-andrea.merello@gmail.com>
- <20220217162710.33615-12-andrea.merello@gmail.com> <CAHp75VcbkZV0ek6C-YKb3iuZKyQGp7U48j-hQ+UqXFuGEYgZ4Q@mail.gmail.com>
-In-Reply-To: <CAHp75VcbkZV0ek6C-YKb3iuZKyQGp7U48j-hQ+UqXFuGEYgZ4Q@mail.gmail.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Tue, 22 Mar 2022 11:37:47 +0100
-Message-ID: <CAN8YU5Pc6nto5pYgorrM4RHcn-EQXfyV+=V6ig4boG7cqBTznA@mail.gmail.com>
-Subject: Re: [v3 11/13] iio: imu: add BNO055 serdev driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
+ invensense,icm20608d
+Content-Language: en-US
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Michael Srba <Michael.Srba@seznam.cz>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20220310133938.2495-1-michael.srba@seznam.cz>
+ <20220310133938.2495-2-michael.srba@seznam.cz>
+ <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
+ <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
+ <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
+ <20220320151223.3a9b13bd@jic23-huawei>
+ <ca80bd79-338c-98a4-2f4d-4dcfc52ed538@kernel.org>
+ <20220321150411.00002206@Huawei.com>
+ <47d67c82-788e-2ced-54cc-4959c67922fc@kernel.org>
+ <20220321174202.00007895@Huawei.com>
+ <f8ba569f-d230-92a8-6a56-fbcaf620af36@seznam.cz>
+ <20220322101916.0000759f@Huawei.com>
+In-Reply-To: <20220322101916.0000759f@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Some inline comments, OK for the rest.
+On 22/03/2022 11:19, Jonathan Cameron wrote:
+>>> Obviously it wouldn't work anyway with an old kernel, but
+>>> without the fallback compatible at least there would be no error message
+>>> saying that the device is not the icm20608 we expected to see.  
+>> I'm not sure if that's really an issue?
+>> The old kernel is clearly not handling the compatible "correctly",
+>> since the compatible says that the interface is a superset of
+>> the icm20608 interface, and that using the icm20608
+>> interface will work.
+>> If the driver makes the incorrect assumption that
+>> the WHOAMI being different means the interface cannot
+>> be icm20608 compatible, then that seems like an issue
+>> with the driver?
+>> And I believe the single reason for why catering to
+>> a broken driver would ever be considered is if not doing
+>> so would result in breaking the devicetree ABI promise,
+>> which doesn't seem to happen here.
+> 
+> I'll be honest I no longer care that much either way.
+> 
+> If someone would point me to clear documentation of that
+> DT ABI promise 
 
-Il giorno lun 21 feb 2022 alle ore 21:28 Andy Shevchenko
-<andy.shevchenko@gmail.com> ha scritto:
->
-> On Thu, Feb 17, 2022 at 5:27 PM Andrea Merello <andrea.merello@gmail.com> wrote:
-> >
-> > This path adds a serdev driver for communicating to a BNO055 IMU via
-> > serial bus, and it enables the BNO055 core driver to work in this
-> > scenario.
+Documentation/devicetree/bindings/ABI.rst
 
-[...]
+> and how it describes things as being compatible
+> that would be great and provide me with a clear statement
+> to point others to in the future.
 
-> > +       /**
-> > +        * enum cmd_status - represent the status of a command sent to the HW.
-> > +        * @STATUS_OK:   The command executed successfully.
-> > +        * @STATUS_FAIL: The command failed: HW responded with an error.
-> > +        * @STATUS_CRIT: The command failed: the serial communication failed.
-> > +        */
-> > +       enum {
-> > +               STATUS_OK = 0,
-> > +               STATUS_FAIL = 1,
-> > +               STATUS_CRIT = -1
->
-> + Comma and sort them by value?
-> For the second part is an additional question, why negative?
+It's very concise, so let me decipher the first paragraph. It is safe to
+add new compatibles to the chain (so exactly like here "icm20608d,
+icm20608") because the system can bind:
+1. against new compatible bringing all new features,
+2. old compatible, working with "old" or limited set of features.
 
-For STATUS_CRIT, being a (bad) error, a negative value seemed
-appropriate to me. STATUS_OK is zero as usual, but maybe STATUS_FAIL
-should be negative also? It is some legal protocol status (unlike the
-STATUS_CRIT mess), in this sense I may consider it not an error, but
-still our command failed (because the IMU politely didn't accept it),
-so it's an error in this sense...
+What I was explaining you in mails before, which you responded to with:
+"Whilst I don't personally agree with the definition of "compatible"
+and think you are making false distinctions between hardware and
+software..."
+we do not talk here about software, as in device driver. We talk about
+bindings which describe the hardware, therefore the compatible should be
+rather understood in the hardware model, not driver model.
 
-I may just let all of them implicit if you prefer.
+The compatible field does not mean that one driver is compatible with
+this or other hardware. It means that devices have a compatible
+programming model or interface.
 
-[...]
+Now driver should be implemented in that way. If driver handles
+"icm20608" compatible, it should nicely handle only icm20608 features,
+regardless whether device is icm20608 or icm20608d.
 
-> > +       while (1) {
-> > +               ret = bno055_sl_send_chunk(priv, hdr + i * 2, 2);
-> > +               if (ret)
-> > +                       goto fail;
-> > +
-> > +               if (i++ == 1)
-> > +                       break;
-> > +               usleep_range(2000, 3000);
-> > +       }
->
-> The infinite loops are hard to read and understand.
-> Can you convert it to the regular while or for one?
->
-> Also, this looks like a repetition of something (however it seems that
-> it's two sequencial packets to send).
+Now let's imagine, that icm20608d is slightly different than icm20608 in
+the basic feature set. Than it's not compatible and should deserve
+another separate binding entry, regardless how driver handles it.
 
-Maybe it's worth to unroll then?
+Keep in mind what Rob said - driver implementation can changed, but
+device compatibility in bindings should stay the same. Specially that
+bindings are used in other operating systems (*BSD) and software pieces
+(u-boot).
 
-> ...
->
-> > +       const int retry_max = 5;
-> > +       int retry = retry_max;
->
-> > +       while (retry--) {
->
-> Instead simply use
->
-> unsigned int retries = 5;
->
-> do {
->   ...
-> } while (--retries);
->
-> which is much better to understand.
+> Perhaps I've just been missing that documentation or it
+> needs writing.
+> 
+> I think that having to ignore a WHOAMI value that
+> is unknown to the driver because there might be a future part
+> which is compatible is a very bad way to support
+> devices in a reliable fashion and going to lead to annoyed
+> users and bug reports.
 
-OK, but still have the const var for the max (see below)
+I see your point. It's a safer choice than just accepting any device.
+However it's a designer/programmers fault to provide a DTB with a
+matching compatible for a non-compatible device. Not driver programmer
+fault. Usually you do not have to protect the driver from it.
 
-> ...
->
-> > +               if (retry != (retry_max - 1))
-> > +                       dev_dbg(&priv->serdev->dev, "cmd retry: %d",
-> > +                               retry_max - retry);
->
-> This is an invariant to the loop.
+> This is different to electing to
+> using a shared compatible when two parts are introduced at
+> the same time and we are doing detection in the driver of
+> which variant we have.
+> 
+> I mentioned earlier that we have this type of defensive coding
+> precisely because we have had false assessments about
+> compatibility in the past. This manufacturer does not in
+> general document compatibility across parts. I have no idea if
+> they do for this particular part as there doesn't seem to be
+> a public datasheet.
 
-why? This triggers at all retries, not at the first attempt i.e. it
-prints only if this doesn't succeed at the first time. Indeed what
-seems wrong to me is that you need -1 also in the dev_dbg() argument
-to produce correct text.
+Kind of continuing my previous thought also here - it's not a problem of
+driver developer, but DTB developer. If the devices are not compatible
+(thus driver will not work correctly), the person using that compatible
+in DTB made mistake. Bug reports should be sent to that person, not to
+driver developer, not to you.
 
-[...]
+> It didn't work before, now it won't work and will complain about it
+> which may lead to some bug reports that won't be resolved but
+> I'll adopt the majority opinion which seems to be that we
+> don't care about that.
 
->
-> > +       reg_addr = ((u8 *)reg)[0];
->
-> This looks ugly.
-> Can't you supply the data struct pointer instead of void pointer?
+Yes, we don't care but the DTB/DTS person should. :)
 
-I confirm that it's ugly :)
+>  I'd also be happy to see us reduce
+> the problem scope here by having a 'fix' for that rejection
+> of unknown IDs that we can push back to stable kernels.
+> Relaxing it to a warning should be sufficient, though we probably
+> want to screen out whatever comes back from the bus if there
+> is no device present at all as the WHOAMI check is also
+> providing that protection.
 
-Not sure about what you exactly meant, sorry; what I can do is to
-introduce a local and split this ugly loc, as done in
-bno055_sl_write_reg(). Is this what you are suggesting?
+A dev_warn() with a disclaimer might be actually better approach. Unless
+it might be a safety-critical device.
 
-> ...
->
-> > +       if (serdev_device_set_baudrate(serdev, 115200) != 115200) {
->
-> Is it limitation / requirement by the hardware? Otherwise it should
-> come from DT / ACPI.
-
- It's a requirement. Not sure it's really by the HW; possibly it's
-statically set in device firmware.
-
-> ...
->
-> > +       ret = serdev_device_set_parity(serdev, SERDEV_PARITY_NONE);
->
-> Ditto.
-
-Ditto :)
-
-[...]
+Best regards,
+Krzysztof

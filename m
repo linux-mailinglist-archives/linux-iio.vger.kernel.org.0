@@ -2,170 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EB964E3C63
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF864E3C6F
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:27:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231185AbiCVKYv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 06:24:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46584 "EHLO
+        id S231539AbiCVK2y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 06:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232484AbiCVKYt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:24:49 -0400
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342D665D0;
-        Tue, 22 Mar 2022 03:23:22 -0700 (PDT)
-Received: by mail-wm1-f44.google.com with SMTP id p184-20020a1c29c1000000b0037f76d8b484so1128746wmp.5;
-        Tue, 22 Mar 2022 03:23:22 -0700 (PDT)
+        with ESMTP id S230474AbiCVK2y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:28:54 -0400
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E677D252BE
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 03:27:26 -0700 (PDT)
+Received: by mail-vs1-xe35.google.com with SMTP id 2so10572716vse.4
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 03:27:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=jJmINjJKg80LveJCwvqZHfQ8+WlS3IsI9JkMuHyHGPM=;
+        b=FYNvS4hpBmJ5P+A2K/e0O7O/yC4JLJTgatjbhmh0v8pPtJqqkt13KbLw5oxPCfEOqG
+         fJmnPdEy8/Vg1CLLkBIZnuKH9r06q0o5jzI41BiOg6wNVM9nYPjDHoTzi5xS3NOWf6DT
+         V9KlENR1Rwh0TAOSUR8XiMQHSRWZJl7s/gboJm6b6CxUmPCT3TVlJelQucV9QljB6HA8
+         3O/HkVeq8ouNG/3gtB43Oxq16aAColnULnQmW8lZCMs8ah/+XlLqlSix0/pzxnxebM4d
+         vG9I4DeM4ozTctQrLB++Xhdz1gvgGK+nUq1/c0X21m6HCJYZ/iGOG7ZHnmdqgxZdRt6Y
+         bkpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
-         :subject:content-language:to:cc:references:in-reply-to
-         :content-transfer-encoding;
-        bh=WG7JO6Gw41AnZmksgsF7DPkXyxm7aFIAWm2plOwedqE=;
-        b=vWymlx2I2OQgglQb6fOax+SBm/vHJ7dOSHcv8GBxGt6tQSM6CWwbAxwUAGgJqJmS3v
-         oIIoQP8kVbENvzPAxeCK+NkeJGiFWjVq+aayNjZjR0NwVpGO+WZItnBI21ajoZ/oetqu
-         DcvZzuTFcXjSYk/tWpFvqovQfC6ItvlClg+1e333o6fOg06RQqUtUl7BP/iI9rp87WqA
-         DRP30CQCn5AUHeVJJS0cYgA2vVfrYzUGqooUVGNrCrSr19DbF1NWg/GPW+kxYiqsF+Zr
-         9Q2KOwhtK+xjPxB6kTGP0F6qMtbVPYrDmDK39Yff8FN/pSKaGiwDeSJSsgbkVBQPe1WT
-         rcdA==
-X-Gm-Message-State: AOAM530jd3c3wtpBXh6+Cpt7f+g3Ybwyz34xDUtlHQgTOTgKlAdHvQg3
-        SDLo9YnqS5zCJ7ITbdLUcDu9upCjvZU=
-X-Google-Smtp-Source: ABdhPJwRZKlC5/1UGiNO1kFSY3oIGX64eh0i/6bWkIExp3pulv/L2z9gwB9D/tFzinbewSrbghw5ew==
-X-Received: by 2002:a05:600c:3545:b0:38c:ac1c:53c7 with SMTP id i5-20020a05600c354500b0038cac1c53c7mr3092887wmq.92.1647944600634;
-        Tue, 22 Mar 2022 03:23:20 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.googlemail.com with ESMTPSA id v8-20020a1cf708000000b0034d7b5f2da0sm1577202wmh.33.2022.03.22.03.23.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Mar 2022 03:23:20 -0700 (PDT)
-Message-ID: <6fae1b16-f898-adf6-4064-df7e45e8b041@kernel.org>
-Date:   Tue, 22 Mar 2022 11:23:18 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=jJmINjJKg80LveJCwvqZHfQ8+WlS3IsI9JkMuHyHGPM=;
+        b=5CjIAC+uz0zZtjIymhCiwyNMH2LjY4NfBUn7x2iVrh0sydJVEt3H6O8OhhayfsJipZ
+         jqi3mfYw3Ztnp9x8Hf4KvqEhLdteJo2EESqE8nrCcUvUAUv2pRd6i95JnQU12ICZYzgI
+         LNK2yFKxyXG1co5/UtbTWDL8KjoepQEg/rit+9vhvi9aw7EguG/cc9fABTZLhU/TKDbM
+         cD5+bCdWNf6x7bXCInLNDT6aXEc8kpsiE4G9yiRRBlb/y0zgR8mweQZ2DjvJvAhlDtZ2
+         95pNSRbXePkloIir02XPcudBylN+sLZ1N5OshyjbNOA2dEOSqx1UhpafdT5a4FN/hNy7
+         Aq0A==
+X-Gm-Message-State: AOAM532732U1bB73J+gQATDk9nVBru+PkTpLTJhp9e9J9oE4BkPpC3AR
+        4PTVgb1AC/4h04UbG415dfUvhxgRR3kDf5F/sIEtWihVqJ4=
+X-Google-Smtp-Source: ABdhPJxpP/WNG3Ek47+SUr7Z7CLPmiVFaGBTm5vUnOjclR5aTf64coURTDgdyxzpwfWPyCDhV4mRKKXCLlDETJWbwOg=
+X-Received: by 2002:a05:6102:284a:b0:31e:c455:5dee with SMTP id
+ az10-20020a056102284a00b0031ec4555deemr8578776vsb.27.1647944845988; Tue, 22
+ Mar 2022 03:27:25 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
- invensense,icm20608d
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220310133938.2495-1-michael.srba@seznam.cz>
- <20220310133938.2495-2-michael.srba@seznam.cz>
- <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
- <2af7be38-7784-96af-aa3f-84b87d983b38@seznam.cz>
- <145bddd6-0a7e-95f4-5282-b1900f020d88@canonical.com>
- <20220320151223.3a9b13bd@jic23-huawei>
- <ca80bd79-338c-98a4-2f4d-4dcfc52ed538@kernel.org>
- <20220321150411.00002206@Huawei.com>
- <47d67c82-788e-2ced-54cc-4959c67922fc@kernel.org>
- <20220321174202.00007895@Huawei.com>
-In-Reply-To: <20220321174202.00007895@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+References: <20220217162710.33615-1-andrea.merello@gmail.com>
+ <20220217162710.33615-8-andrea.merello@gmail.com> <ba1b2d78-bf4a-ec6d-88b8-76bbf2ff5e3e@pmeerw.net>
+ <20220219174141.4937297a@jic23-huawei>
+In-Reply-To: <20220219174141.4937297a@jic23-huawei>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Tue, 22 Mar 2022 11:27:14 +0100
+Message-ID: <CAN8YU5OCEBTF37hb6ozaguJ0=svPyv+fmGGsLhoBCPZA5Odgdw@mail.gmail.com>
+Subject: Re: [v3 07/13] iio: imu: add Bosch Sensortec BNO055 core driver
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/03/2022 18:42, Jonathan Cameron wrote:
-> On Mon, 21 Mar 2022 16:22:38 +0100
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
->> On 21/03/2022 16:04, Jonathan Cameron wrote:
->>> On Mon, 21 Mar 2022 09:04:11 +0100
->>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>>   
->>>> On 20/03/2022 16:12, Jonathan Cameron wrote:  
->>>>> On Thu, 10 Mar 2022 22:24:03 +0100
->>>>> Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
->>>>>     
->>>>>> On 10/03/2022 19:56, Michael Srba wrote:    
->>>>>>> Hi,
->>>>>>> the thing is, the only reason the different compatible is needed at all
->>>>>>> is that the chip presents a different WHOAMI, and the invensense,icm20608
->>>>>>> compatible seems to imply the non-D WHOAMI value.      
->>>>>>
->>>>>> But this is a driver implementation issue, not related to bindings.
->>>>>> Bindings describe the hardware.    
->>>>>
->>>>> Indeed, but the key thing here is the WHOAMI register is hardware.
->>>>>     
->>>>>>    
->>>>>>> I'm not sure how the driver would react to both compatibles being present,
->>>>>>> and looking at the driver code, it seems that icm20608d is not the only
->>>>>>> fully icm20608-compatible (to the extent of features supported by
->>>>>>> the driver, and excluding the WHOAMI value) invensense IC, yet none
->>>>>>> of these other ICs add the invensense,icm20608 compatible, so I guess I
->>>>>>> don't see a good reason to do something different.      
->>>>>>
->>>>>> Probably my question should be asked earlier, when these other
->>>>>> compatibles were added in such way.
->>>>>>
->>>>>> Skipping the DMP core, the new device is fully backwards compatible with
->>>>>> icm20608.    
->>>>>
->>>>> No. It is 'nearly' compatible...  The different WHOAMI value (used
->>>>> to check the chip is the one we expect) makes it incompatible.  Now we
->>>>> could change the driver to allow for that bit of incompatibility and
->>>>> some other drivers do (often warning when the whoami is wrong but continuing
->>>>> anyway).     
->>>>
->>>> Different value of HW register within the same programming model does
->>>> not make him incompatible. Quite contrary - it is compatible and to
->>>> differentiate variants you do not need specific compatibles.  
->>>
->>> Whilst I don't personally agree with the definition of "compatible"
->>> and think you are making false distinctions between hardware and software...
->>>
->>> I'll accept Rob's statement of best practice.  However we can't just
->>> add a compatible that won't work if someone uses it on a new board
->>> that happens to run an old kernel.
->>>   
->>
->> The please explain me how this patch (the compatible set I proposed)
->> fails to work in such case? How a new board with icm20608 (not
->> icm20608d!) fails to work?
-> 
-> I'm confused.  An actual icm20608 would work.
-> I guess you mean an icm20608d via compatible "invensense,icm20608"?
+Il giorno sab 19 feb 2022 alle ore 18:34 Jonathan Cameron
+<jic23@kernel.org> ha scritto:
+>
+> On Thu, 17 Feb 2022 22:58:14 +0100 (CET)
+> Peter Meerwald-Stadler <pmeerw@pmeerw.net> wrote:
+>
+> > On Thu, 17 Feb 2022, Andrea Merello wrote:
+> >
+> > nice work, minor comments below
+>
+> I'll review on top of Peter to save on duplication.
+>
+> Mostly really minor stuff.
 
-In your example, new board with old kernel (so old kernel not supporting
-icm20608d), icm20608d will work exactly the same. Meaning: not work. Old
-kernel does not support it, new kernel will weirdly try to read WHOAMI
-and return -EINVAL (or whatever is there). Same effect.
+:)
 
-> 
->>
->> To remind, the compatible has a format of:
->> comaptible = "new", "old"
->> e.g.: "invensense,icm20608d", "invensense,icm20608"
-> 
-> Old kernel fails to match invensense,icm20608d, matches on invensense,icm20608.
-> Checks the WHOAMI value and reports a missmatched value and fails the probe
-> as it has no idea what the part was so no idea how to support it.
+As usual, comments inline; OK for all the rest.
 
-And old kernel fails in your solution as well, because it does not know
-the compatible and refuses to bind.
+> Given this has crossed with the introduction of namespaces to quite
+> a few IIO drivers (I have another series to do on that once I get
+> caught up with reviews) I'd prefer it if you would move this into
+> a symbol namespace (EXPORT_SYMBOL_NS_GPL() and appropriate namespace
+> statements in the two bus modules.
+>
+> Save it being done as a follow up series.  If you prefer not to then
+> that's fine too as it'll be a trivial follow up patch.
 
-> 
-> Obviously it wouldn't work anyway with an old kernel, but
-> without the fallback compatible at least there would be no error message
-> saying that the device is not the icm20608 we expected to see.
+I'll include it in V4 directly.
 
-You said before:
-"...that won't work if someone uses..."
-so still please explain how does this "will not work" happens. It does
-not work with old kernel in both cases...
+[...]
 
-Best regards,
-Krzysztof
+> > > +   case IIO_CHAN_INFO_SCALE:
+> > > +           /* Table 3-31: 1 quaternion = 2^14 LSB */
+> > > +           if (size < 2)
+> > > +                   return -EINVAL;
+> > > +           vals[0] = 1;
+> > > +           vals[1] = 1 << 14;
+> > > +           return IIO_VAL_FRACTIONAL_LOG2;
+>
+> This doesn't look right.  Not vals[1] = 14 given FRACTIONAL_LOG2?
+
+Hum.. maybe just IIO_VAL_FRACTIONAL ?
+
+> > > +   default:
+> > > +           return -EINVAL;
+> > > +   }
+> > > +}
+> > > +
+
+[...]
+
+> > > +static IIO_DEVICE_ATTR_RO(sys_calibration_auto_status, 0);
+> > > +static IIO_DEVICE_ATTR_RO(in_accel_calibration_auto_status, 0);
+> > > +static IIO_DEVICE_ATTR_RO(in_gyro_calibration_auto_status, 0);
+> > > +static IIO_DEVICE_ATTR_RO(in_magn_calibration_auto_status, 0);
+> > > +static IIO_DEVICE_ATTR_RO(calibration_data, 0);
+>
+> This is documented as providing binary data but it's not using
+> a binary attribute and that rather surprised me.
+>
+> Off the top of my head I can't recall why it matters though, so please
+> take a look at whether a bin_attribute makes more sense for this.
+
+As far as I can see, it seems that a non-binary attributes only
+support to be read at once while the binary attributes read()
+operation supports random access i.e. it has the file position
+parameter.
+
+The calibration data is "dynamic", it's read from the HW every time,
+and I'm not sure it makes any sense to read it in several chunks (what
+if we read a chunk and the calibration data is updated by the HW
+before reading the second chunk?). So, despide the fitting "binary"
+name I'm tempted to stick with regular attribute. However I'm not sure
+this is the only difference related to binary attributes.
+
+> > > +
+> > > +static IIO_DEVICE_ATTR_RO(serial_number, 0);
+> > > +
+> > > +static struct attribute *bno055_attrs[] = {
+> > > +   &iio_dev_attr_in_accel_range_raw_available.dev_attr.attr,
+>
+> discussed in ABI documentation review.
+> I think these should be range_input to avoid implication they are
+> in _raw units (i.e. need _scale to be applied)
+
+They are raw indeed; they need scale to be applied, then they become m/s^2.
+
+I'll fix the doc to clarify this.
+
+[...]
+
+> > > +
+> > > +   priv->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+> > > +   if (IS_ERR(priv->reset_gpio))
+> > > +           return dev_err_probe(dev, PTR_ERR(priv->reset_gpio), "Failed to get reset GPIO");
+> > > +
+> > > +   priv->clk = devm_clk_get_optional(dev, "clk");
+> > > +   if (IS_ERR(priv->clk))
+> > > +           return dev_err_probe(dev, PTR_ERR(priv->clk), "Failed to get CLK");
+> > > +
+> > > +   ret = clk_prepare_enable(priv->clk);
+> > > +   if (ret)
+> > > +           return ret;
+> > > +
+> > > +   ret = devm_add_action_or_reset(dev, bno055_clk_disable, priv->clk);
+> > > +   if (ret)
+> > > +           return ret;
+> > > +
+> > > +   if (priv->reset_gpio) {
+> > > +           usleep_range(5000, 10000);
+> > > +           gpiod_set_value_cansleep(priv->reset_gpio, 1);
+> > > +           usleep_range(650000, 750000);
+>
+> Not a toggle on the reset?  I'd expect it to be set and then unset after
+> a pulse.
+
+Isn't the above devm_gpiod_get_optional() call that also initialize
+the initial GPIO value (then just wait and flip here) ?
+
+[...]

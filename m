@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C9A4E4765
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 21:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E4384E4784
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 21:29:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233191AbiCVUXv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 16:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
+        id S233375AbiCVUa4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 16:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230489AbiCVUXu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 16:23:50 -0400
+        with ESMTP id S233410AbiCVUaz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 16:30:55 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709E165825;
-        Tue, 22 Mar 2022 13:22:20 -0700 (PDT)
-Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KNND83Rvmz67lYX;
-        Wed, 23 Mar 2022 04:21:12 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4AEFCC2;
+        Tue, 22 Mar 2022 13:29:27 -0700 (PDT)
+Received: from fraeml709-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KNNNN2mjyz67mY4;
+        Wed, 23 Mar 2022 04:28:20 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
+ fraeml709-chm.china.huawei.com (10.206.15.37) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 22 Mar 2022 21:22:17 +0100
+ 15.1.2375.24; Tue, 22 Mar 2022 21:29:25 +0100
 Received: from localhost (10.47.75.191) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 22 Mar
- 2022 20:22:16 +0000
-Date:   Tue, 22 Mar 2022 20:22:15 +0000
+ 2022 20:29:25 +0000
+Date:   Tue, 22 Mar 2022 20:29:23 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Krzysztof Kozlowski <krzk@kernel.org>
-CC:     Michael Srba <Michael.Srba@seznam.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
 Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: Document
  invensense,icm20608d
-Message-ID: <20220322202215.000046f9@Huawei.com>
-In-Reply-To: <5709ab75-2c9e-d7d3-eaf7-4619583bb6c6@kernel.org>
+Message-ID: <20220322202923.00007a9c@Huawei.com>
+In-Reply-To: <6fae1b16-f898-adf6-4064-df7e45e8b041@kernel.org>
 References: <20220310133938.2495-1-michael.srba@seznam.cz>
         <20220310133938.2495-2-michael.srba@seznam.cz>
         <707f995e-9b09-ea23-5fc7-74239792dcbd@canonical.com>
@@ -48,9 +48,7 @@ References: <20220310133938.2495-1-michael.srba@seznam.cz>
         <20220321150411.00002206@Huawei.com>
         <47d67c82-788e-2ced-54cc-4959c67922fc@kernel.org>
         <20220321174202.00007895@Huawei.com>
-        <f8ba569f-d230-92a8-6a56-fbcaf620af36@seznam.cz>
-        <20220322101916.0000759f@Huawei.com>
-        <5709ab75-2c9e-d7d3-eaf7-4619583bb6c6@kernel.org>
+        <6fae1b16-f898-adf6-4064-df7e45e8b041@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -69,137 +67,107 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Mar 2022 11:41:11 +0100
+On Tue, 22 Mar 2022 11:23:18 +0100
 Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> On 22/03/2022 11:19, Jonathan Cameron wrote:
-> >>> Obviously it wouldn't work anyway with an old kernel, but
-> >>> without the fallback compatible at least there would be no error message
-> >>> saying that the device is not the icm20608 we expected to see.    
-> >> I'm not sure if that's really an issue?
-> >> The old kernel is clearly not handling the compatible "correctly",
-> >> since the compatible says that the interface is a superset of
-> >> the icm20608 interface, and that using the icm20608
-> >> interface will work.
-> >> If the driver makes the incorrect assumption that
-> >> the WHOAMI being different means the interface cannot
-> >> be icm20608 compatible, then that seems like an issue
-> >> with the driver?
-> >> And I believe the single reason for why catering to
-> >> a broken driver would ever be considered is if not doing
-> >> so would result in breaking the devicetree ABI promise,
-> >> which doesn't seem to happen here.  
+> On 21/03/2022 18:42, Jonathan Cameron wrote:
+> > On Mon, 21 Mar 2022 16:22:38 +0100
+> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >   
+> >> On 21/03/2022 16:04, Jonathan Cameron wrote:  
+> >>> On Mon, 21 Mar 2022 09:04:11 +0100
+> >>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >>>     
+> >>>> On 20/03/2022 16:12, Jonathan Cameron wrote:    
+> >>>>> On Thu, 10 Mar 2022 22:24:03 +0100
+> >>>>> Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> wrote:
+> >>>>>       
+> >>>>>> On 10/03/2022 19:56, Michael Srba wrote:      
+> >>>>>>> Hi,
+> >>>>>>> the thing is, the only reason the different compatible is needed at all
+> >>>>>>> is that the chip presents a different WHOAMI, and the invensense,icm20608
+> >>>>>>> compatible seems to imply the non-D WHOAMI value.        
+> >>>>>>
+> >>>>>> But this is a driver implementation issue, not related to bindings.
+> >>>>>> Bindings describe the hardware.      
+> >>>>>
+> >>>>> Indeed, but the key thing here is the WHOAMI register is hardware.
+> >>>>>       
+> >>>>>>      
+> >>>>>>> I'm not sure how the driver would react to both compatibles being present,
+> >>>>>>> and looking at the driver code, it seems that icm20608d is not the only
+> >>>>>>> fully icm20608-compatible (to the extent of features supported by
+> >>>>>>> the driver, and excluding the WHOAMI value) invensense IC, yet none
+> >>>>>>> of these other ICs add the invensense,icm20608 compatible, so I guess I
+> >>>>>>> don't see a good reason to do something different.        
+> >>>>>>
+> >>>>>> Probably my question should be asked earlier, when these other
+> >>>>>> compatibles were added in such way.
+> >>>>>>
+> >>>>>> Skipping the DMP core, the new device is fully backwards compatible with
+> >>>>>> icm20608.      
+> >>>>>
+> >>>>> No. It is 'nearly' compatible...  The different WHOAMI value (used
+> >>>>> to check the chip is the one we expect) makes it incompatible.  Now we
+> >>>>> could change the driver to allow for that bit of incompatibility and
+> >>>>> some other drivers do (often warning when the whoami is wrong but continuing
+> >>>>> anyway).       
+> >>>>
+> >>>> Different value of HW register within the same programming model does
+> >>>> not make him incompatible. Quite contrary - it is compatible and to
+> >>>> differentiate variants you do not need specific compatibles.    
+> >>>
+> >>> Whilst I don't personally agree with the definition of "compatible"
+> >>> and think you are making false distinctions between hardware and software...
+> >>>
+> >>> I'll accept Rob's statement of best practice.  However we can't just
+> >>> add a compatible that won't work if someone uses it on a new board
+> >>> that happens to run an old kernel.
+> >>>     
+> >>
+> >> The please explain me how this patch (the compatible set I proposed)
+> >> fails to work in such case? How a new board with icm20608 (not
+> >> icm20608d!) fails to work?  
 > > 
-> > I'll be honest I no longer care that much either way.
-> > 
-> > If someone would point me to clear documentation of that
-> > DT ABI promise   
+> > I'm confused.  An actual icm20608 would work.
+> > I guess you mean an icm20608d via compatible "invensense,icm20608"?  
 > 
-> Documentation/devicetree/bindings/ABI.rst
+> In your example, new board with old kernel (so old kernel not supporting
+> icm20608d), icm20608d will work exactly the same. Meaning: not work. Old
+> kernel does not support it, new kernel will weirdly try to read WHOAMI
+> and return -EINVAL (or whatever is there). Same effect.
 
-Hi Krzyztof,
+'work' that means 'not work' was the root of my confusion.
+With that in mind I now understand what you meant.
 
-I am not willfully ignoring your reference. I simply disagree
-that it says what you understand it to.  This may be an aspect of
-the intended meaning but it is sufficiently vague that I read
-that reference several times and did not come to the same
-conclusion as you have.
-
-If you want to take your description and propose it as additional
-documentation I would be happy to review it.
-
-I'm not keen to continue this discussion because we are talking
-cross purposes and going over the same ground with no fundamental
-change of opinions, so it is not productive use of time.
++ as suggested we should possibly 'fix' at least the kernels we can to relax
+to a warning in this case.
 
 Jonathan
 
 > 
-> > and how it describes things as being compatible
-> > that would be great and provide me with a clear statement
-> > to point others to in the future.  
-> 
-> It's very concise, so let me decipher the first paragraph.
-> It is safe to
-> add new compatibles to the chain (so exactly like here "icm20608d,
-> icm20608") because the system can bind:
-> 1. against new compatible bringing all new features,
-> 2. old compatible, working with "old" or limited set of features.
-> 
-> What I was explaining you in mails before, which you responded to with:
-> "Whilst I don't personally agree with the definition of "compatible"
-> and think you are making false distinctions between hardware and
-> software..."
-> we do not talk here about software, as in device driver. We talk about
-> bindings which describe the hardware, therefore the compatible should be
-> rather understood in the hardware model, not driver model.
-> 
-> The compatible field does not mean that one driver is compatible with
-> this or other hardware. It means that devices have a compatible
-> programming model or interface.
-> 
-> Now driver should be implemented in that way. If driver handles
-> "icm20608" compatible, it should nicely handle only icm20608 features,
-> regardless whether device is icm20608 or icm20608d.
-> 
-> Now let's imagine, that icm20608d is slightly different than icm20608 in
-> the basic feature set. Than it's not compatible and should deserve
-> another separate binding entry, regardless how driver handles it.
-> 
-> Keep in mind what Rob said - driver implementation can changed, but
-> device compatibility in bindings should stay the same. Specially that
-> bindings are used in other operating systems (*BSD) and software pieces
-> (u-boot).
-> 
-> > Perhaps I've just been missing that documentation or it
-> > needs writing.
+> >   
+> >>
+> >> To remind, the compatible has a format of:
+> >> comaptible = "new", "old"
+> >> e.g.: "invensense,icm20608d", "invensense,icm20608"  
 > > 
-> > I think that having to ignore a WHOAMI value that
-> > is unknown to the driver because there might be a future part
-> > which is compatible is a very bad way to support
-> > devices in a reliable fashion and going to lead to annoyed
-> > users and bug reports.  
+> > Old kernel fails to match invensense,icm20608d, matches on invensense,icm20608.
+> > Checks the WHOAMI value and reports a missmatched value and fails the probe
+> > as it has no idea what the part was so no idea how to support it.  
 > 
-> I see your point. It's a safer choice than just accepting any device.
-> However it's a designer/programmers fault to provide a DTB with a
-> matching compatible for a non-compatible device. Not driver programmer
-> fault. Usually you do not have to protect the driver from it.
+> And old kernel fails in your solution as well, because it does not know
+> the compatible and refuses to bind.
 > 
-> > This is different to electing to
-> > using a shared compatible when two parts are introduced at
-> > the same time and we are doing detection in the driver of
-> > which variant we have.
 > > 
-> > I mentioned earlier that we have this type of defensive coding
-> > precisely because we have had false assessments about
-> > compatibility in the past. This manufacturer does not in
-> > general document compatibility across parts. I have no idea if
-> > they do for this particular part as there doesn't seem to be
-> > a public datasheet.  
+> > Obviously it wouldn't work anyway with an old kernel, but
+> > without the fallback compatible at least there would be no error message
+> > saying that the device is not the icm20608 we expected to see.  
 > 
-> Kind of continuing my previous thought also here - it's not a problem of
-> driver developer, but DTB developer. If the devices are not compatible
-> (thus driver will not work correctly), the person using that compatible
-> in DTB made mistake. Bug reports should be sent to that person, not to
-> driver developer, not to you.
-> 
-> > It didn't work before, now it won't work and will complain about it
-> > which may lead to some bug reports that won't be resolved but
-> > I'll adopt the majority opinion which seems to be that we
-> > don't care about that.  
-> 
-> Yes, we don't care but the DTB/DTS person should. :)
-> 
-> >  I'd also be happy to see us reduce
-> > the problem scope here by having a 'fix' for that rejection
-> > of unknown IDs that we can push back to stable kernels.
-> > Relaxing it to a warning should be sufficient, though we probably
-> > want to screen out whatever comes back from the bus if there
-> > is no device present at all as the WHOAMI check is also
-> > providing that protection.  
-> 
-> A dev_warn() with a disclaimer might be actually better approach. Unless
-> it might be a safety-critical device.
+> You said before:
+> "...that won't work if someone uses..."
+> so still please explain how does this "will not work" happens. It does
+> not work with old kernel in both cases...
 > 
 > Best regards,
 > Krzysztof

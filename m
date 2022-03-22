@@ -2,150 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F107B4E3C9D
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 11:41:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD9C4E3D56
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Mar 2022 12:17:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233222AbiCVKmn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Mar 2022 06:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37482 "EHLO
+        id S234101AbiCVLSe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Mar 2022 07:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233131AbiCVKmj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 06:42:39 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E773181196;
-        Tue, 22 Mar 2022 03:41:08 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22M9gi83009968;
-        Tue, 22 Mar 2022 06:41:06 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ewc34vsvu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Mar 2022 06:41:06 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 22MAf5XS031550
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Mar 2022 06:41:05 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 22 Mar 2022 06:41:04 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 22 Mar 2022 06:41:04 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 22 Mar 2022 06:41:04 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 22MAelCF008328;
-        Tue, 22 Mar 2022 06:40:58 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH v3 6/6] iio: adc: ad7192: add sequencer support
-Date:   Tue, 22 Mar 2022 12:50:29 +0200
-Message-ID: <20220322105029.86389-7-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220322105029.86389-1-alexandru.tachici@analog.com>
-References: <20220322105029.86389-1-alexandru.tachici@analog.com>
+        with ESMTP id S234125AbiCVLSC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Mar 2022 07:18:02 -0400
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086A87DAA6
+        for <linux-iio@vger.kernel.org>; Tue, 22 Mar 2022 04:16:34 -0700 (PDT)
+Received: from tr.lan (ip-89-176-112-137.net.upcbroadband.cz [89.176.112.137])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 5CF538141D;
+        Tue, 22 Mar 2022 12:16:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1647947792;
+        bh=qi+/Id1O9WcCHafUwUqZWmjbiOukQxT+uoj5WPdiHTM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KfQ4xsPRUO0/AXwqFuHnBXik48/H2Spu9gAnrdpx2IXd6sG8/PHR63sNC5k1wGNfx
+         4lSxpjfNqNGVLwKhClTtw4y5ie5VbSqbcyLC/eZuTvRIuFNx8PdCvsWSaHmbzoHLVH
+         Mj1Vt92ht1hyiX6Q/4t9pne8gSco17kYXZlpCbXGkiV5CqaYNb8hd499Ej7JiqyYpq
+         7unmmoBbH+0fyTxfm5k7/48RoLeeebAMRRjEFm6mXAdW958ht/CSd+jEGU0uKEsFzO
+         mRoGYhbyzbfCI4VBavjwDqL3nppWxOl4uY2sR2JhivPigRzSL/NgR6OnMyMxRBzsTx
+         DnmtprUuqwtpA==
+From:   Marek Vasut <marex@denx.de>
+To:     linux-iio@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>, Andy Shevchenko <andy@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2] iio: core: Print error in case sample bits do not fit storage bits
+Date:   Tue, 22 Mar 2022 12:16:19 +0100
+Message-Id: <20220322111619.54808-1-marex@denx.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 3OYt1sdGeXDmq8zafdqaed3aptLYxB4R
-X-Proofpoint-ORIG-GUID: 3OYt1sdGeXDmq8zafdqaed3aptLYxB4R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-22_03,2022-03-22_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=999 malwarescore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203220062
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+Add runtime check to verify whether storagebits are at least as big
+as shifted realbits. This should help spot broken drivers which may
+set realbits + shift above storagebits.
 
-Add sequencer support for AD7192.
-
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andy Shevchenko <andy@kernel.org>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7192.c | 42 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+V2: Use dev_err() instead as WARN_ON() may panic() the kernel on existing machines
+---
+ drivers/iio/industrialio-buffer.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 4c004af4749f..ba3c82f33d74 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -58,7 +58,8 @@
- /* Mode Register Bit Designations (AD7192_REG_MODE) */
- #define AD7192_MODE_SEL(x)	(((x) & 0x7) << 21) /* Operation Mode Select */
- #define AD7192_MODE_SEL_MASK	(0x7 << 21) /* Operation Mode Select Mask */
--#define AD7192_MODE_DAT_STA	BIT(20) /* Status Register transmission */
-+#define AD7192_MODE_STA(x)	(((x) & 0x1) << 20) /* Status Register transmission */
-+#define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
- #define AD7192_MODE_CLKSRC(x)	(((x) & 0x3) << 18) /* Clock Source Select */
- #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
- #define AD7192_MODE_ACX		BIT(14) /* AC excitation enable(AD7195 only)*/
-@@ -288,12 +289,51 @@ static int ad7192_set_mode(struct ad_sigma_delta *sd,
- 	return ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
- }
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index b078eb2f3c9de..b5670398b06d7 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1629,6 +1629,18 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 			if (channels[i].scan_index < 0)
+ 				continue;
  
-+static int ad7192_append_status(struct ad_sigma_delta *sd, bool append)
-+{
-+	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
-+	unsigned int mode = st->mode;
-+	int ret;
++			/* Verify that sample bits fit into storage */
++			if (channels[i].scan_type.storagebits <
++			    channels[i].scan_type.realbits +
++			    channels[i].scan_type.shift) {
++				dev_err(&indio_dev->dev,
++					"Channel %d storagebits (%d) < shifted realbits (%d + %d)\n",
++					i, channels[i].scan_type.storagebits,
++					channels[i].scan_type.realbits,
++					channels[i].scan_type.shift);
++				continue;
++			}
 +
-+	mode &= ~AD7192_MODE_STA_MASK;
-+	mode |= AD7192_MODE_STA(append);
-+
-+	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, mode);
-+	if (ret < 0)
-+		return ret;
-+
-+	st->mode = mode;
-+
-+	return 0;
-+}
-+
-+static int ad7192_disable_all(struct ad_sigma_delta *sd)
-+{
-+	struct ad7192_state *st = ad_sigma_delta_to_ad7192(sd);
-+	u32 conf = st->conf;
-+	int ret;
-+
-+	conf &= ~AD7192_CONF_CHAN_MASK;
-+
-+	ret = ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, conf);
-+	if (ret < 0)
-+		return ret;
-+
-+	st->conf = conf;
-+
-+	return 0;
-+}
-+
- static const struct ad_sigma_delta_info ad7192_sigma_delta_info = {
- 	.set_channel = ad7192_set_channel,
-+	.append_status = ad7192_append_status,
-+	.disable_all = ad7192_disable_all,
- 	.set_mode = ad7192_set_mode,
- 	.has_registers = true,
- 	.addr_shift = 3,
- 	.read_mask = BIT(6),
-+	.status_ch_mask = GENMASK(3, 0),
-+	.num_slots = 4,
- 	.irq_flags = IRQF_TRIGGER_FALLING,
- };
- 
+ 			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
+ 							 &channels[i]);
+ 			if (ret < 0)
 -- 
-2.25.1
+2.35.1
 

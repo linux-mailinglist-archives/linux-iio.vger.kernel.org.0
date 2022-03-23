@@ -2,29 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ECA04E5209
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Mar 2022 13:18:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0BC4E520D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Mar 2022 13:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239549AbiCWMUS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Mar 2022 08:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35100 "EHLO
+        id S240376AbiCWMUW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Mar 2022 08:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234921AbiCWMUS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Mar 2022 08:20:18 -0400
+        with ESMTP id S239987AbiCWMUV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Mar 2022 08:20:21 -0400
 Received: from mxd2.seznam.cz (mxd2.seznam.cz [IPv6:2a02:598:2::210])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F5852E5B;
-        Wed, 23 Mar 2022 05:18:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 468F153B46;
+        Wed, 23 Mar 2022 05:18:51 -0700 (PDT)
 Received: from email.seznam.cz
-        by email-smtpc18b.ng.seznam.cz (email-smtpc18b.ng.seznam.cz [10.23.18.21])
-        id 6bd30b6430dd5f0d6a7ac73a;
-        Wed, 23 Mar 2022 13:18:15 +0100 (CET)
+        by email-smtpc15b.ng.seznam.cz (email-smtpc15b.ng.seznam.cz [10.23.14.195])
+        id 104155f54b4f019c11e899ab;
+        Wed, 23 Mar 2022 13:18:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz; s=beta;
-        t=1648037895; bh=cH5I5+ua42ikxVOB3r4IcFB04l7PFTclKG4TJdoGnkI=;
-        h=Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-         Content-Transfer-Encoding:X-szn-frgn:X-szn-frgc;
-        b=NJcvXkENICfXbfpKn4ynDv3Qmyj7AejNpVrFuMCKZC8krcsIGNte+gPtd+DuR0EXi
-         /TAePfNqXNKrhitDw8/pvH4NfDaAqL+MWAQXvMISJaMgJexB8jLx5f+O9KIXkjM/eq
-         wgDBogkP/nFqAcGNFwqLS2ARZY4f6bMcaKQaxcio=
+        t=1648037896; bh=WIjrcjEAOH3RC9G0YPcUKU+305TBgze9uCo3H5UFxqM=;
+        h=Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
+         References:MIME-Version:Content-Transfer-Encoding:X-szn-frgn:
+         X-szn-frgc;
+        b=DRbaiD7kIshNTLKeqppHGCcmcrc5ezaF+81pQ9KhATE8jLNuyQJz7SGo5hk/givFq
+         Hw6C7/AsDHjR1emLsNleET5AQSTgwhLtOsrxr9KvZUQ6eaKgQq1D+pTdo2CxtpV6Hr
+         xMUvgPYld6Ccne4rxB8lb3t46H9BqqhLAwMvI+D0=
 Received: from localhost.localdomain (ip-111-27.static.ccinternet.cz [147.161.27.111])
         by email-relay19.ng.seznam.cz (Seznam SMTPD 1.3.136) with ESMTP;
         Wed, 23 Mar 2022 13:18:11 +0100 (CET)  
@@ -36,13 +37,15 @@ Cc:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Michael Srba <Michael.Srba@seznam.cz>
-Subject: [PATCH v2 0/2] iio: imu: inv_mpu6050: Add support for ICM-20608-D
-Date:   Wed, 23 Mar 2022 13:15:48 +0100
-Message-Id: <20220323121550.16096-1-michael.srba@seznam.cz>
+Subject: [PATCH v3 1/2] dt-bindings: iio: imu: mpu6050: Document invensense,icm20608d
+Date:   Wed, 23 Mar 2022 13:15:49 +0100
+Message-Id: <20220323121550.16096-2-michael.srba@seznam.cz>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220323121550.16096-1-michael.srba@seznam.cz>
+References: <20220323121550.16096-1-michael.srba@seznam.cz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-szn-frgn: <54464e53-3b75-4f93-8539-b1341e89bca4>
+X-szn-frgn: <08f6a04d-8558-42bc-9ffe-b7288f70385f>
 X-szn-frgc: <0>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
@@ -56,33 +59,67 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Michael Srba <Michael.Srba@seznam.cz>
 
-This series copies the invensense icm20608 support in the inv_mpu6050
-driver for icm20608d, which is for all intents and purposes identical,
-except for the inclusion of a DMP (Digital Motion Processor), which
-is deemed significant enough to change the WHOAMI value, thereby making
-the driver fail if the invensense,icm20608 compatible is specified.
+ICM-20608-D differs from the other ICM-20608 variants by having
+a DMP (Digital Motion Processor) core tacked on.
+Despite having a different WHOAMI register, this variant is
+completely interchangeable with the other ICM-20608 variants
+by simply pretending the DMP core doesn't exist.
 
-Since the driver doesn't currently acknowledge that there is such thing
-as a DMP core, all that is needed is to copy the icm20608 support and
-change the WHOAMI value.
-
+Signed-off-by: Michael Srba <Michael.Srba@seznam.cz>
+---
 changelog:
- -v2: require specifying "invensense,icm20608" as a fallback compatible
-      in the binding, as suggested
- -v3: fix indentation issue with the binding
-
-Michael Srba (2):
-  dt-bindings: iio: imu: mpu6050: Document invensense,icm20608d
-  iio: imu: inv_mpu6050: Add support for ICM-20608-D
-
+ - v2: require specifying "invensense,icm20608" as a fallback
+       compatible
+ - v3: fix indentation
+---
  .../bindings/iio/imu/invensense,mpu6050.yaml  | 34 +++++++++++--------
- drivers/iio/imu/inv_mpu6050/Kconfig           |  4 +--
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |  9 +++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c     |  6 ++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  2 ++
- drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c     |  5 +++
- 6 files changed, 43 insertions(+), 17 deletions(-)
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+index d69595a524c1..3ebc6526d82d 100644
+--- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
++++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+@@ -14,21 +14,25 @@ description: |
+ 
+ properties:
+   compatible:
+-    enum:
+-      - invensense,iam20680
+-      - invensense,icm20608
+-      - invensense,icm20609
+-      - invensense,icm20689
+-      - invensense,icm20602
+-      - invensense,icm20690
+-      - invensense,mpu6000
+-      - invensense,mpu6050
+-      - invensense,mpu6500
+-      - invensense,mpu6515
+-      - invensense,mpu6880
+-      - invensense,mpu9150
+-      - invensense,mpu9250
+-      - invensense,mpu9255
++    oneOf:
++      - enum:
++          - invensense,iam20680
++          - invensense,icm20608
++          - invensense,icm20609
++          - invensense,icm20689
++          - invensense,icm20602
++          - invensense,icm20690
++          - invensense,mpu6000
++          - invensense,mpu6050
++          - invensense,mpu6500
++          - invensense,mpu6515
++          - invensense,mpu6880
++          - invensense,mpu9150
++          - invensense,mpu9250
++          - invensense,mpu9255
++      - items:
++          - const: invensense,icm20608d
++          - const: invensense,icm20608
+ 
+   reg:
+     maxItems: 1
 -- 
 2.35.1
 

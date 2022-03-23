@@ -2,202 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84DD44E520C
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Mar 2022 13:18:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C0B74E5337
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Mar 2022 14:36:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234921AbiCWMUT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Mar 2022 08:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        id S244330AbiCWNiF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Mar 2022 09:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239152AbiCWMUS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Mar 2022 08:20:18 -0400
-Received: from mxd2.seznam.cz (mxd2.seznam.cz [IPv6:2a02:598:2::210])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0309852E63;
-        Wed, 23 Mar 2022 05:18:47 -0700 (PDT)
-Received: from email.seznam.cz
-        by email-smtpc25b.ng.seznam.cz (email-smtpc25b.ng.seznam.cz [10.23.18.35])
-        id 02835ba5598d0fcc032a97fb;
-        Wed, 23 Mar 2022 13:18:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz; s=beta;
-        t=1648037896; bh=awM1rDsehR2wyeRn1zZaXShGQo6kRf4IVmYDQWGJWVw=;
-        h=Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding:X-szn-frgn:
-         X-szn-frgc;
-        b=JSuW+rbSKIFoAAn5MVQNrWUIciggqKnXPG+Cpe6X1b+LNR2YybqIYMBwP7a0sneav
-         3dJyzCXb6dZ0ny61gHRS3E0fLzWfpI0bueQHWy/VG5InvdZb/K/17QvvukkeyC1Yy3
-         UQs/UnuJpWuxtnCVEMbBPihOiW9FDQZqY7QxbRYQ=
-Received: from localhost.localdomain (ip-111-27.static.ccinternet.cz [147.161.27.111])
-        by email-relay19.ng.seznam.cz (Seznam SMTPD 1.3.136) with ESMTP;
-        Wed, 23 Mar 2022 13:18:12 +0100 (CET)  
-From:   michael.srba@seznam.cz
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH v3 2/2] iio: imu: inv_mpu6050: Add support for ICM-20608-D
-Date:   Wed, 23 Mar 2022 13:15:50 +0100
-Message-Id: <20220323121550.16096-3-michael.srba@seznam.cz>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220323121550.16096-1-michael.srba@seznam.cz>
-References: <20220323121550.16096-1-michael.srba@seznam.cz>
+        with ESMTP id S244310AbiCWNiD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Mar 2022 09:38:03 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010D2532F6
+        for <linux-iio@vger.kernel.org>; Wed, 23 Mar 2022 06:36:31 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id c62so1864470edf.5
+        for <linux-iio@vger.kernel.org>; Wed, 23 Mar 2022 06:36:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=eoJL8/ssTz//H6D1ky8wIdZCZtyYwQOapMLC4rpTJK4=;
+        b=bNAXkMThypJ8Fp6kfoI5Ak+DXC/qipME9qq62aGmE5rQINI4bXll1STdm+yJBTY1XJ
+         MAB6Colidi9wkqYkm7XWQwOKwYmnk4N/8QwaoLXdCBDgbO31bDjqhqNM7981z02PuoO3
+         M5L7fKggjZfAXBPxbyqoGJX8NduefdgX+vtezqdHOYoYD18Z5xNXH5mk1vIXUsDfCfO/
+         dURe8v8nEofP406hTLidblrYU8cfLUmEEdN7mt1/VBpZE2j2IUxhkmXtSwrxT0EowZJY
+         MteICWcMF6ES9/2/i6lSw8Gu7YZwdZjcjbUzz6HU0lS5Vrt7EMjMCphuPwK0KJ+6ciVZ
+         NmNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=eoJL8/ssTz//H6D1ky8wIdZCZtyYwQOapMLC4rpTJK4=;
+        b=JzWV5uAbgLtN0pamSO7BRhmBY/L2XKAC7gi4a7XpOFZuwjJJOm3GY97d4YYm9ENKIm
+         +XEyg2e+OUBMafKt65tbmOcWRgGDAE+4CIQh2xX+qit/bt0PMB0dvlJhD7Z61dSSLySm
+         +tDIkputv2bx6DKzQoVHdh5TT4RUq/PBlbpn+DDa9xPRtNwEsF4qdy3XCEOXJJ00K6I1
+         +2jDrhdd6ig4vPtlsCbfl7tmu38LjbVkSF4XZVavX/eVfchnP03j70fapNeZRl5w43Mf
+         0rwGjqikfz9mnhlgLEwtCaeSgP/BSRH7r0+vu5cFHaorgq4PHCBCGDFlasvJ857D3JVi
+         Zp/g==
+X-Gm-Message-State: AOAM532GzZycXBHCys+3mnzQRJgQcONfnMIT9B58uPAiZBxXlVZnOQSz
+        gylh93QkaNKgiZm0Q2+Nmk8WzAnLDvoU4iz4qpg=
+X-Google-Smtp-Source: ABdhPJwFcJm7rfKsAySs+0vGMiLsgkerhO1IJaAaoI5nIsMNewFDbxma8gXpcBnrN9wIhl6vxQwOyxG97McgmzXPrzY=
+X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
+ n13-20020a5099cd000000b00418d6c22405mr67804edb.342.1648042590389; Wed, 23 Mar
+ 2022 06:36:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-szn-frgn: <2703369f-32ce-446c-8977-19a4fd619181>
-X-szn-frgc: <0>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Wed, 23 Mar 2022 13:36:22 +0000
+Message-ID: <CAHpNFcM8p5hZ=wC5s+5JOw03yJbC-ZqApX0Cqpa48p=QdszTeg@mail.gmail.com>
+Subject: Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you
+ trade markerz ***** Dukes Of THRUST ******
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Michael Srba <Michael.Srba@seznam.cz>
+***** Dukes Of THRUST ******
 
-The difference between the ICM-20608-D and the other ICM-20608
-variants is the addition of a DMP (Digital Motion Processor) core.
-This difference is deemed substantial enough to change the WHOAMI
-register value.
-Since this driver doesn't currently acknowledge the exisence of
-something like a DMP core, simply copy ICM-20608 except for the
-aforementioned WHOAMI register.
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
 
-Signed-off-by: Michael Srba <Michael.Srba@seznam.cz>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
-changes:
- - v2: none
- - v3: none
----
- drivers/iio/imu/inv_mpu6050/Kconfig        | 4 ++--
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 9 +++++++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  | 6 ++++++
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h  | 2 ++
- drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c  | 5 +++++
- 5 files changed, 24 insertions(+), 2 deletions(-)
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
 
-diff --git a/drivers/iio/imu/inv_mpu6050/Kconfig b/drivers/iio/imu/inv_mpu6050/Kconfig
-index 9c625517173a..3636b1bc90f1 100644
---- a/drivers/iio/imu/inv_mpu6050/Kconfig
-+++ b/drivers/iio/imu/inv_mpu6050/Kconfig
-@@ -16,7 +16,7 @@ config INV_MPU6050_I2C
- 	select REGMAP_I2C
- 	help
- 	  This driver supports the Invensense MPU6050/9150,
--	  MPU6500/6515/6880/9250/9255, ICM20608/20609/20689, ICM20602/ICM20690
-+	  MPU6500/6515/6880/9250/9255, ICM20608(D)/20609/20689, ICM20602/ICM20690
- 	  and IAM20680 motion tracking devices over I2C.
- 	  This driver can be built as a module. The module will be called
- 	  inv-mpu6050-i2c.
-@@ -28,7 +28,7 @@ config INV_MPU6050_SPI
- 	select REGMAP_SPI
- 	help
- 	  This driver supports the Invensense MPU6000,
--	  MPU6500/6515/6880/9250/9255, ICM20608/20609/20689, ICM20602/ICM20690
-+	  MPU6500/6515/6880/9250/9255, ICM20608(D)/20609/20689, ICM20602/ICM20690
- 	  and IAM20680 motion tracking devices over SPI.
- 	  This driver can be built as a module. The module will be called
- 	  inv-mpu6050-spi.
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 597768c29a72..86fbbe904050 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -217,6 +217,15 @@ static const struct inv_mpu6050_hw hw_info[] = {
- 		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
- 		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
- 	},
-+	{
-+		.whoami = INV_ICM20608D_WHOAMI_VALUE,
-+		.name = "ICM20608D",
-+		.reg = &reg_set_6500,
-+		.config = &chip_config_6500,
-+		.fifo_size = 512,
-+		.temp = {INV_ICM20608_TEMP_OFFSET, INV_ICM20608_TEMP_SCALE},
-+		.startup_time = {INV_MPU6500_GYRO_STARTUP_TIME, INV_MPU6500_ACCEL_STARTUP_TIME},
-+	},
- 	{
- 		.whoami = INV_ICM20609_WHOAMI_VALUE,
- 		.name = "ICM20609",
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-index fe03707ec2d3..ed52b27409ac 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
-@@ -29,6 +29,7 @@ static bool inv_mpu_i2c_aux_bus(struct device *dev)
- 
- 	switch (st->chip_type) {
- 	case INV_ICM20608:
-+	case INV_ICM20608D:
- 	case INV_ICM20609:
- 	case INV_ICM20689:
- 	case INV_ICM20602:
-@@ -182,6 +183,7 @@ static const struct i2c_device_id inv_mpu_id[] = {
- 	{"mpu9250", INV_MPU9250},
- 	{"mpu9255", INV_MPU9255},
- 	{"icm20608", INV_ICM20608},
-+	{"icm20608d", INV_ICM20608D},
- 	{"icm20609", INV_ICM20609},
- 	{"icm20689", INV_ICM20689},
- 	{"icm20602", INV_ICM20602},
-@@ -225,6 +227,10 @@ static const struct of_device_id inv_of_match[] = {
- 		.compatible = "invensense,icm20608",
- 		.data = (void *)INV_ICM20608
- 	},
-+	{
-+		.compatible = "invensense,icm20608d",
-+		.data = (void *)INV_ICM20608D
-+	},
- 	{
- 		.compatible = "invensense,icm20609",
- 		.data = (void *)INV_ICM20609
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index c6aa36ee966a..8e14f20b1314 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -76,6 +76,7 @@ enum inv_devices {
- 	INV_MPU9250,
- 	INV_MPU9255,
- 	INV_ICM20608,
-+	INV_ICM20608D,
- 	INV_ICM20609,
- 	INV_ICM20689,
- 	INV_ICM20602,
-@@ -394,6 +395,7 @@ struct inv_mpu6050_state {
- #define INV_MPU9255_WHOAMI_VALUE		0x73
- #define INV_MPU6515_WHOAMI_VALUE		0x74
- #define INV_ICM20608_WHOAMI_VALUE		0xAF
-+#define INV_ICM20608D_WHOAMI_VALUE		0xAE
- #define INV_ICM20609_WHOAMI_VALUE		0xA6
- #define INV_ICM20689_WHOAMI_VALUE		0x98
- #define INV_ICM20602_WHOAMI_VALUE		0x12
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-index 6800356b25fb..ce8ab6db2bf2 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
-@@ -74,6 +74,7 @@ static const struct spi_device_id inv_mpu_id[] = {
- 	{"mpu9250", INV_MPU9250},
- 	{"mpu9255", INV_MPU9255},
- 	{"icm20608", INV_ICM20608},
-+	{"icm20608d", INV_ICM20608D},
- 	{"icm20609", INV_ICM20609},
- 	{"icm20689", INV_ICM20689},
- 	{"icm20602", INV_ICM20602},
-@@ -113,6 +114,10 @@ static const struct of_device_id inv_of_match[] = {
- 		.compatible = "invensense,icm20608",
- 		.data = (void *)INV_ICM20608
- 	},
-+	{
-+		.compatible = "invensense,icm20608d",
-+		.data = (void *)INV_ICM20608D
-+	},
- 	{
- 		.compatible = "invensense,icm20609",
- 		.data = (void *)INV_ICM20609
--- 
-2.35.1
+Microchip clock abd 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
 
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+***** Dukes Of THRUST ******
+
+Autism, Deafness & the hard of hearing : In need of ANC & Active audio
+clarification or correction 2022-01
+
+Sony & a few others make noise cancelling headphones that are suitable
+for people with Acute disfunction to brain function for ear drums ...
+Attention deficit or Autism,
+The newer Sony headsets are theoretically enablers of a clear
+confusion free world for Autistic people..
+Reaching out to a larger audience of people simply annoyed by a
+confusing world; While they listen to music..
+Can and does protect a small percentage of people who are confused &
+harassed by major discord located in all jurisdictions of life...
+
+Crazy noise levels, Or simply drowned in HISSING Static:
+
+Search for active voice enhanced noise cancellation today.
+
+Rupert S https://science.n-helix.com
+
+
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+
+https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
+
+
+https://www.orosound.com/
+
+https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/

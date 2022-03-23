@@ -2,154 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13ACD4E51D2
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Mar 2022 13:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ECA04E5209
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Mar 2022 13:18:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241974AbiCWMGD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Mar 2022 08:06:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58066 "EHLO
+        id S239549AbiCWMUS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Mar 2022 08:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244083AbiCWMGC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Mar 2022 08:06:02 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD2CC6462
-        for <linux-iio@vger.kernel.org>; Wed, 23 Mar 2022 05:04:31 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id 1so838084qke.1
-        for <linux-iio@vger.kernel.org>; Wed, 23 Mar 2022 05:04:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=6FvrDMe4gG4SIpRpME8UY5pB3GrWvgnyaHYuszBYf/A=;
-        b=g8LoN7R5ZKaH2yb6ca/pfLQCAxjdp+dW47mrqn0YstCZFD3FdMYhK4D3icxeXW7vp+
-         Hb5IB3Btw4qwtzvYqhm+u1fsY7kGP9NJLxxOW4GFha/Q+H7a91m+GDHoBKG1PgZtQ3fa
-         oan+/iolblRCp5Hr0RIjeaAxtxs5IuP93wiD0u4pxTzrZU8E48hhaWYDeSKsrQE98YGQ
-         kYcjOfIqMJd9w8al6/giNjnKdrP7wslTIhnR4CkSfwb75fESkzFyBZfaNwqxxWIw669S
-         CnL41upoi1hnnD08xNLKzQfVRG0MVMF+9EMKzxVYY/0fmDPag2wVN55BEoDkXksG8c5p
-         B7qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=6FvrDMe4gG4SIpRpME8UY5pB3GrWvgnyaHYuszBYf/A=;
-        b=jBoWjld9uzAb9MgJnk7jU3EorYt/ZdkVMbs9ybWcw1oZNsg4kfJqQROuz9hBDZj5Si
-         shxtdY1f5/wqI+Ao4ZiNdNXQnMlAHMmr7+ZcBJ7szjW5JPgO9//9QYytiFTuZT1h23+i
-         HzG1Yz9xZb2Red5cP+6EBypbE4oUvUwcqnNaSvRV0s99abHjWrusIhL4al/E20C59G8M
-         9+OFeGNJXXjSz059BgxN/mUaCquGZO22bIL8l/KxNNhe4ez7xc6m0N01jS07gbQzdB8A
-         BJ32QyDJA66Np4PHXJ/RSVJbYdIrG8WulKvo1VTkWjzgd8l4nGoRXjLK8KWLDa0SsdAZ
-         ffFg==
-X-Gm-Message-State: AOAM531LT6yFZRwB3tHl1+BMlIHjeGUSZlc/527ggRoJcof5QNryy5Lm
-        n6QZB755kO06/rKwNSsk7zU=
-X-Google-Smtp-Source: ABdhPJw7W1ijACaQv2ka9t7dyKclYPok4bBlP3xXOxj73NYjxFSv9VtQuzyoc5YJWYjWu21p9kg/Jw==
-X-Received: by 2002:a05:620a:142b:b0:67d:15f0:1dbc with SMTP id k11-20020a05620a142b00b0067d15f01dbcmr17999536qkj.497.1648037070952;
-        Wed, 23 Mar 2022 05:04:30 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef00:8400:3d36:58a:667a:1da9? (p200300f6ef0084003d36058a667a1da9.dip0.t-ipconnect.de. [2003:f6:ef00:8400:3d36:58a:667a:1da9])
-        by smtp.gmail.com with ESMTPSA id t72-20020a37464b000000b0067ec1c9dcaesm1970334qka.44.2022.03.23.05.04.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Mar 2022 05:04:29 -0700 (PDT)
-Message-ID: <52553cf76f5d4c7d7224117b528d111ab7ca5ae3.camel@gmail.com>
-Subject: Re: [PATCH v2] iio: core: Print error in case sample bits do not
- fit storage bits
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Marek Vasut <marex@denx.de>
-Cc:     linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
-        Daniel Baluta <daniel.baluta@nxp.com>
-Date:   Wed, 23 Mar 2022 13:05:01 +0100
-In-Reply-To: <20220322214248.00007194@Huawei.com>
-References: <20220322111619.54808-1-marex@denx.de>
-         <20220322214248.00007194@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+        with ESMTP id S234921AbiCWMUS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Mar 2022 08:20:18 -0400
+Received: from mxd2.seznam.cz (mxd2.seznam.cz [IPv6:2a02:598:2::210])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F5852E5B;
+        Wed, 23 Mar 2022 05:18:47 -0700 (PDT)
+Received: from email.seznam.cz
+        by email-smtpc18b.ng.seznam.cz (email-smtpc18b.ng.seznam.cz [10.23.18.21])
+        id 6bd30b6430dd5f0d6a7ac73a;
+        Wed, 23 Mar 2022 13:18:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz; s=beta;
+        t=1648037895; bh=cH5I5+ua42ikxVOB3r4IcFB04l7PFTclKG4TJdoGnkI=;
+        h=Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+         Content-Transfer-Encoding:X-szn-frgn:X-szn-frgc;
+        b=NJcvXkENICfXbfpKn4ynDv3Qmyj7AejNpVrFuMCKZC8krcsIGNte+gPtd+DuR0EXi
+         /TAePfNqXNKrhitDw8/pvH4NfDaAqL+MWAQXvMISJaMgJexB8jLx5f+O9KIXkjM/eq
+         wgDBogkP/nFqAcGNFwqLS2ARZY4f6bMcaKQaxcio=
+Received: from localhost.localdomain (ip-111-27.static.ccinternet.cz [147.161.27.111])
+        by email-relay19.ng.seznam.cz (Seznam SMTPD 1.3.136) with ESMTP;
+        Wed, 23 Mar 2022 13:18:11 +0100 (CET)  
+From:   michael.srba@seznam.cz
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Michael Srba <Michael.Srba@seznam.cz>
+Subject: [PATCH v2 0/2] iio: imu: inv_mpu6050: Add support for ICM-20608-D
+Date:   Wed, 23 Mar 2022 13:15:48 +0100
+Message-Id: <20220323121550.16096-1-michael.srba@seznam.cz>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-szn-frgn: <54464e53-3b75-4f93-8539-b1341e89bca4>
+X-szn-frgc: <0>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2022-03-22 at 21:42 +0000, Jonathan Cameron wrote:
-> On Tue, 22 Mar 2022 12:16:19 +0100
-> Marek Vasut <marex@denx.de> wrote:
-> 
-> > Add runtime check to verify whether storagebits are at least as big
-> > as shifted realbits. This should help spot broken drivers which may
-> > set realbits + shift above storagebits.
-> > 
-> > Signed-off-by: Marek Vasut <marex@denx.de>
-> > Cc: Andy Shevchenko <andy@kernel.org>
-> > Cc: Daniel Baluta <daniel.baluta@nxp.com>
-> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Hmm. I was thinking we'd fail the probe if this happens,
-> though I guess there might be cases where we get away 
-> (in kernel anyway) with a driver setting this wrong as
-> many drivers don't use realbits internally in an explicit
-> fashion, so maybe a message and skipping the channel is
-> the right choice...
-> 
-> Userspace running against such a description is likely
-> to generate garbage though unless it's very lucky and
-> the spill past storage bits is into padding space and
-> the driver doesn't put anything in there (padding might
-> contain old data or similar).
-> 
-> Either way it's a definite improvement so I'm probably fine
-> with the message and not failing the probe, (though will
-> think a bit more about it before picking this up.)
-> 
-> 
-> Jonathan`
-> 
+From: Michael Srba <Michael.Srba@seznam.cz>
 
-FWIW, if we assume we are ok with potentially some drivers starting to
-fail probe, I'm +1 on this should fail probe...
+This series copies the invensense icm20608 support in the inv_mpu6050
+driver for icm20608d, which is for all intents and purposes identical,
+except for the inclusion of a DMP (Digital Motion Processor), which
+is deemed significant enough to change the WHOAMI value, thereby making
+the driver fail if the invensense,icm20608 compatible is specified.
 
-- Nuno Sá
-> 
-> > ---
-> > V2: Use dev_err() instead as WARN_ON() may panic() the kernel on
-> > existing machines
-> > ---
-> >  drivers/iio/industrialio-buffer.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/drivers/iio/industrialio-buffer.c
-> > b/drivers/iio/industrialio-buffer.c
-> > index b078eb2f3c9de..b5670398b06d7 100644
-> > --- a/drivers/iio/industrialio-buffer.c
-> > +++ b/drivers/iio/industrialio-buffer.c
-> > @@ -1629,6 +1629,18 @@ static int
-> > __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
-> >                         if (channels[i].scan_index < 0)
-> >                                 continue;
-> >  
-> > +                       /* Verify that sample bits fit into storage
-> > */
-> > +                       if (channels[i].scan_type.storagebits <
-> > +                           channels[i].scan_type.realbits +
-> > +                           channels[i].scan_type.shift) {
-> > +                               dev_err(&indio_dev->dev,
-> > +                                       "Channel %d storagebits
-> > (%d) < shifted realbits (%d + %d)\n",
-> > +                                       i,
-> > channels[i].scan_type.storagebits,
-> > +                                       channels[i].scan_type.realb
-> > its,
-> > +                                       channels[i].scan_type.shift
-> > );
-> > +                               continue;
-> > +                       }
-> > +
-> >                         ret =
-> > iio_buffer_add_channel_sysfs(indio_dev, buffer,
-> >                                                         
-> > &channels[i]);
-> >                         if (ret < 0)
-> 
+Since the driver doesn't currently acknowledge that there is such thing
+as a DMP core, all that is needed is to copy the icm20608 support and
+change the WHOAMI value.
+
+changelog:
+ -v2: require specifying "invensense,icm20608" as a fallback compatible
+      in the binding, as suggested
+ -v3: fix indentation issue with the binding
+
+Michael Srba (2):
+  dt-bindings: iio: imu: mpu6050: Document invensense,icm20608d
+  iio: imu: inv_mpu6050: Add support for ICM-20608-D
+
+ .../bindings/iio/imu/invensense,mpu6050.yaml  | 34 +++++++++++--------
+ drivers/iio/imu/inv_mpu6050/Kconfig           |  4 +--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |  9 +++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c     |  6 ++++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  2 ++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c     |  5 +++
+ 6 files changed, 43 insertions(+), 17 deletions(-)
+
+-- 
+2.35.1
 

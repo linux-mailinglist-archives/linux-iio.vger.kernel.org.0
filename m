@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E19D4E5EA2
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Mar 2022 07:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B324E5F91
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Mar 2022 08:38:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347233AbiCXGY0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Mar 2022 02:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52286 "EHLO
+        id S1345650AbiCXHjG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Mar 2022 03:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242262AbiCXGYZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Mar 2022 02:24:25 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B497C96818;
-        Wed, 23 Mar 2022 23:22:50 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id j83so3965861oih.6;
-        Wed, 23 Mar 2022 23:22:50 -0700 (PDT)
+        with ESMTP id S243967AbiCXHjF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Mar 2022 03:39:05 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFD91B6;
+        Thu, 24 Mar 2022 00:37:34 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id u16so5335582wru.4;
+        Thu, 24 Mar 2022 00:37:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=rdzl6Jf6niYa4MMeejzQkrqz2P7au8ACLXhQDsT0pBI=;
-        b=EO8K1z8BS/6PReRIIFoQ+Sduaw9R2peQUYTyIFAutGKVo+RcXyF/uo+vSXXVndxwBN
-         l+ih26tIUR214XE/aObvcvzckQtXCHvy3kjpY6Qb5B3LAF8bSME3g2j+2uUhIe+qht3X
-         gIW8pi6/DghC0Quq2jjcaFOUqvSad4Mexv0hPKo01oMQvF2sn5HtYKRbwPa6fLN8SCJd
-         9NxRVMDNAYIS5vBlWCD/1xLIVanxtLEiHvzfFK9k2o+XhLZlb1w4yKX7F5y5iSinwI+p
-         1DLYpjyBFzSVINqcz4iSsshrwU7P8Y367+KPQ9k8LePCBumRIP1VpKPm96ybfsF3oFAW
-         DqiQ==
+        bh=jCVPCJICg9locbJaOYqFD84RnZE57Jl55NgEDRe/OGY=;
+        b=d9Y0con6YPsB1dIpXULd3jLFTkTuABc3w+m5HpRequP2RVLsLaatWJNJy/Yi0c3T5G
+         zK81X44glWZZK5LfJeM/uk0KMlm0ArwzsRQbra7NAQznRzl314WDjeLfm1ZOFe4rijKI
+         NPk2naPOGgXQB2X5x5rJ5xVXIudqezVgttJ9k7EIuWut5QKMVdSPw6q+e2iCxuIyml8g
+         SwlW47PZ0w0QWPFKhRqEAvffcCu9Z4FsBYQ8IVg5hzW3Sd0uBINvi6hUiyJeNw4OayZT
+         qYGAJPvh6ppROpdvG7aDD24HqkZLipzCHjDtmTOPnLU6KcERri5B37JGYK8tXJ1pxrys
+         mpQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=rdzl6Jf6niYa4MMeejzQkrqz2P7au8ACLXhQDsT0pBI=;
-        b=kEZBK4HDhdJUPYYLlbgblfpCFW+arMkYdhPaR0Hen/T4704gAm4W+nxXx0Si60anbu
-         SkcHorRB4OrN8ClQxifxJ70JSBE5c6SDWWBMzVIrgAKOzU43Fr3jngou4ujOr69e4loa
-         ljUxw2veMW3yld8blLWCgbzixSt+V0QlrxW7jxFAaSTCwLzR3BqjTdY84Zf/EKOe238e
-         Q5q2Cp5RSZb4ZMTXZsRpeR3SzEkVP1Ew2yzMNBfwcMCXJcLBqMDCJvMEkAertUQEj73l
-         iOpi5k0A7JNDroYNWVyavz5N9awvEo0LwRaZaIftN9+Ca67MffWQRNTx1WiBAVYohW0h
-         S5Dg==
-X-Gm-Message-State: AOAM532cVZVMsMBH1hV3W7xy1PNzEGFQGaGVKPJfdkkpDuYUJ3fzVn7r
-        iIgKCfcOxGJdT1TIjtc/hdPUvBaMiJrIMnloVL4BdyPfOgI0bSZy
-X-Google-Smtp-Source: ABdhPJwkl1nlYBOxuy2+4DJvoCItRF5uKq2+SVGIlCrOWlibkxJsklVyDYmabbg/+sNw0PITKUiGcz44TvUP2jJeS3k=
-X-Received: by 2002:aca:61c1:0:b0:2ec:d091:ff53 with SMTP id
- v184-20020aca61c1000000b002ecd091ff53mr6584829oib.235.1648102969953; Wed, 23
- Mar 2022 23:22:49 -0700 (PDT)
+        bh=jCVPCJICg9locbJaOYqFD84RnZE57Jl55NgEDRe/OGY=;
+        b=hV64kb/HVK9QtPl8c1QhYpJJQ04hlm9zkjLbSiF797Vm08SzQSvFD9DTjwTI9Z2tEG
+         aRzRrPElxHNkZf2wGXVV+ZC71j3v3LMAGFoYQKBeN+g4t+a6Lu6PbCKtHr08jCTTTPd/
+         o8y/4ISQugw+AFPh5+2uNiLpHh7ez2m7LtjV6CNL8QOv3jeaeRpyPy3s0BWFCeOWVhzf
+         VwPH1QJsFeOoUJ0ieTe0V+cM0RBmITS0sPCiSSLuo9e9NTk3tkS2ByNLXfjv6OKUpspV
+         Sr77gS61D0s4hFFnXj74BIKKTkQY2wdwloojSaV4+HCEMckNTMPQumd0jVl8filhz5DX
+         0gAg==
+X-Gm-Message-State: AOAM532tr4Hlkqwt5+DvLbH1xfaH1nxxOWD8fJ9tI9QL+ey3bvQil0/k
+        UJKAYPPbJqva87VwT07kfHi+u7s38FODyexu2IR9Hyq8GyL8lA==
+X-Google-Smtp-Source: ABdhPJxkSQmpeySAOI/QQ+/6O0r1eQ5Hm0qLSdNlE+wBlAjrwKZyC6XiR6wyrH3C+PE3XyWlNVKfRIMqBR0qMtpACmE=
+X-Received: by 2002:a5d:414b:0:b0:205:89b7:91bf with SMTP id
+ c11-20020a5d414b000000b0020589b791bfmr3348040wrq.217.1648107452650; Thu, 24
+ Mar 2022 00:37:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220311164628.378849-1-gengcixi@gmail.com> <20220311164628.378849-2-gengcixi@gmail.com>
- <6e4f64dc-bb3d-0e05-0380-7e6f3b1a823c@kernel.org>
-In-Reply-To: <6e4f64dc-bb3d-0e05-0380-7e6f3b1a823c@kernel.org>
+References: <20220311164628.378849-1-gengcixi@gmail.com> <20220311164628.378849-3-gengcixi@gmail.com>
+ <20220320133229.6026f51a@jic23-huawei>
+In-Reply-To: <20220320133229.6026f51a@jic23-huawei>
 From:   Cixi Geng <gengcixi@gmail.com>
-Date:   Thu, 24 Mar 2022 14:22:13 +0800
-Message-ID: <CAF12kFuKnm2qenvpmKhCVD4T+d=0SyruzdpJ5FX1RS8gvqbyNA@mail.gmail.com>
-Subject: Re: [PATCH V2 1/7] dt-bindings:iio:adc: add sprd,ump9620-adc dtbindings
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     jic23@kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+Date:   Thu, 24 Mar 2022 15:36:56 +0800
+Message-ID: <CAF12kFvPp4eVJtWD7zd=Kvx2mHQGWiy_dDOD1bvMLQgeNgBvzQ@mail.gmail.com>
+Subject: Re: [PATCH V2 2/7] iio: adc: sc27xx: fix read big scale voltage not right
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Orson Zhai <orsonzhai@gmail.com>,
         "baolin.wang7@gmail.com" <baolin.wang7@gmail.com>,
@@ -75,75 +75,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Krzysztof Kozlowski <krzk@kernel.org> =E4=BA=8E2022=E5=B9=B43=E6=9C=8820=E6=
-=97=A5=E5=91=A8=E6=97=A5 22:50=E5=86=99=E9=81=93=EF=BC=9A
+Jonathan Cameron <jic23@kernel.org> =E4=BA=8E2022=E5=B9=B43=E6=9C=8820=E6=
+=97=A5=E5=91=A8=E6=97=A5 21:25=E5=86=99=E9=81=93=EF=BC=9A
 >
-> On 11/03/2022 17:46, Cixi Geng wrote:
+> On Sat, 12 Mar 2022 00:46:23 +0800
+> Cixi Geng <gengcixi@gmail.com> wrote:
+>
 > > From: Cixi Geng <cixi.geng1@unisoc.com>
 > >
-> > sprd,ump9620-adc is one variant of sc27xx series, add ump9620 in
-> > dtbindings.
+> > Fix wrong configuration value of SC27XX_ADC_SCALE_MASK and
+> > SC27XX_ADC_SCALE_SHIFT by spec documetation.
 > >
-> > Signed-off-by: Chunyan Zhang <zhang.lyra@gmail.com>
+> > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
 > > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+> >
+> No blank lines in a tag block (they break people's scripts)
+> Also, if this is a fix, I'd expect a fixes tag.
+I will add in next version
+>
+> > Reviewed-by: Baolin Wang <baolin.wang7@gmail.com>
 > > ---
-> >  .../bindings/iio/adc/sprd,sc2720-adc.yaml     | 30 +++++++++++++++++--
-> >  1 file changed, 27 insertions(+), 3 deletions(-)
+> >  drivers/iio/adc/sc27xx_adc.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.=
-yaml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> > index caa3ee0b4b8c..331b08fb1761 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> > @@ -20,6 +20,7 @@ properties:
-> >        - sprd,sc2723-adc
-> >        - sprd,sc2730-adc
-> >        - sprd,sc2731-adc
-> > +      - sprd,ump9620-adc
+> > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.=
+c
+> > index 00098caf6d9e..aee076c8e2b1 100644
+> > --- a/drivers/iio/adc/sc27xx_adc.c
+> > +++ b/drivers/iio/adc/sc27xx_adc.c
+> > @@ -36,8 +36,8 @@
 > >
-> >    reg:
-> >      maxItems: 1
-> > @@ -37,9 +38,32 @@ properties:
-> >      maxItems: 2
+> >  /* Bits and mask definition for SC27XX_ADC_CH_CFG register */
+> >  #define SC27XX_ADC_CHN_ID_MASK               GENMASK(4, 0)
+> > -#define SC27XX_ADC_SCALE_MASK                GENMASK(10, 8)
+> > -#define SC27XX_ADC_SCALE_SHIFT               8
+> > +#define SC27XX_ADC_SCALE_MASK                GENMASK(10, 9)
+> > +#define SC27XX_ADC_SCALE_SHIFT               9
+>
+> This driver would benefit from use of FIELD_GET() / FIELD_PREP()
+> but that is obviously unrelated to this particular series.
+>
+the next patch in this set need to use the fixed define value
+>
+> Jonathan
+>
 > >
-> >    nvmem-cell-names:
-> > -    items:
-> > -      - const: big_scale_calib
-> > -      - const: small_scale_calib
+> >  /* Bits definitions for SC27XX_ADC_INT_EN registers */
+> >  #define SC27XX_ADC_IRQ_EN            BIT(0)
 >
-> Please test your changes with dt_binding_check and dtbs_check. Your
-> change looks not complete - you have still nvmem-cells =3D 2.
->
-Hi Krzysztof
-I test all is PASS on my local.  could you tell how did you test?
-my_logs:
-cixi.geng1@tj10039pcu:~/upsteatming/linux$ make DT_CHECKER_FLAGS=3D-m
-dt_binding_check &>dt_check.log
-cixi.geng1@tj10039pcu:~/upsteatming/linux$ cat dt_check.log |grep sprd,sc27=
-20
-  DTEX    Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example=
-.dts
-  DTC     Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example=
-.dt.yaml
-  CHECK   Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example=
-.dt.yaml
-cixi.geng1@tj10039pcu:~/upsteatming/linux$ tuxmake -C ${kernel_src} -b
-${topdir}/obj/gcc -o ${topdir}/dist/gcc -a $ARCH -t gcc  -K
-CONFIG_ARCH_${PLAT}=3Dy -K CONFIG_MFD_SC27XX_PMIC=3Dy -K
-CONFIG_SC27XX_ADC=3Dy
-
-I: config: PASS in 0:00:00.000549
-I: default: PASS in 0:10:20.931602
-I: kernel: PASS in 0:01:10.643458
-I: xipkernel: SKIP in 0:00:00.003244
-I: modules: PASS in 0:00:35.658938
-I: dtbs: PASS in 0:00:18.696416
-I: dtbs-legacy: SKIP in 0:00:00.005625
-I: debugkernel: PASS in 0:00:11.541855
-I: headers: PASS in 0:00:11.778253
-I: build output in /home/cixi.geng1/upsteatming/dist/gcc
-
-
->
-> Best regards,
-> Krzysztof

@@ -2,135 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24704E6233
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Mar 2022 12:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BA64E63CB
+	for <lists+linux-iio@lfdr.de>; Thu, 24 Mar 2022 14:00:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347113AbiCXLPm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Mar 2022 07:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S1350364AbiCXNCC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Mar 2022 09:02:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345652AbiCXLPk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Mar 2022 07:15:40 -0400
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E0A70071;
-        Thu, 24 Mar 2022 04:14:06 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id t1so5204724edc.3;
-        Thu, 24 Mar 2022 04:14:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=LnBHIWTMwUxu5CxDggWjU5OVRGTaM8mL8G6XsxB1wRI=;
-        b=wh2PoblV/v+pv0gEwbAddO84w/vfVumtRmFm/9Kl66Yid5rr++RoyqaMRfjRyK6875
-         f7pr/woPao+SB0MhtKK9PHQG4SEnj3GhMVS5phWIQhW9S4gJO+/G4HKck980QrU+2Yxt
-         2Ihu2SPLTBmUgv5QHSGzhjucSXOdqfSKvJnTiwNenVqWi4HIia9v3Dhbn62+hahuqAXR
-         cfQvUI7ycg7VnIvj16W+ROQhAUayXcc4CsGRFuz4sPSlwetS5Qp3oYCq+p77oM0nom8i
-         j8+XT6hO7K3yaWz/yZJdpGTXdIh3rG6GEcJwowGsusGiPzPExFC1ufs37fK+3lg8JcvP
-         yhtQ==
-X-Gm-Message-State: AOAM530LQf/Bt1RBAUPivdRZInlMVEqk6FtGtL8vrDm2+YgeEj3Ftcm5
-        5/71ZrYNBLoqj+9Y5/Xilezn9yXYid2d7w==
-X-Google-Smtp-Source: ABdhPJwwONi6y53eVNGRVDSTyVSgaZrT1JFMHVhb1HlojUu4EUk4lusp3clxvUhSpyT3gwBJLNHcmA==
-X-Received: by 2002:a05:6402:1907:b0:418:d2a8:a7f3 with SMTP id e7-20020a056402190700b00418d2a8a7f3mr6028406edz.245.1648120445050;
-        Thu, 24 Mar 2022 04:14:05 -0700 (PDT)
-Received: from [192.168.0.156] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.googlemail.com with ESMTPSA id d23-20020aa7d5d7000000b00418f7b2f1dbsm1266017eds.71.2022.03.24.04.14.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Mar 2022 04:14:04 -0700 (PDT)
-Message-ID: <327e5b31-5b9a-240f-26c1-98b8a29e2023@kernel.org>
-Date:   Thu, 24 Mar 2022 12:14:03 +0100
+        with ESMTP id S1350354AbiCXNCA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Mar 2022 09:02:00 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB93F90CEA;
+        Thu, 24 Mar 2022 06:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=YG01IvqBzypFttWyr61/58YsVshIZUGldKDL1nfzsRk=;
+        t=1648126828; x=1649336428; b=DuhBj2JSpSD9rd/13a4sA3PxCrlZTitxsNZPmMuyP8GHczM
+        HbnJCN1qUqUa/FXw5hTf/MxZd61rL2ugJ2M6X0bAE/+6Hm0VAHZjkfU5Azw7cz17seJQpaVIADgJK
+        Lj6tC5YMLATzMVB78XYdl8kELZMHpxcVP2ZuWEcKV+95raCTwe49e+LyNCfmEEkNVHUPVby8Cvd8q
+        vb27xv6T4J/WgwpGCjJFdJAU4gvbHCfqjds+SfvP+QvkWLJngVELiktioaWiVTYuzpQDyRKtqa22q
+        RXR8SN9AaqL1Z2wz69tTzFBD+0Y5Iv2HC8Q70YUgfLqBVU4HB9X/GiaOE4+2QPcw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.95)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1nXN4V-00HWDe-B6;
+        Thu, 24 Mar 2022 14:00:11 +0100
+Message-ID: <7f405d8d09a83954aa3411eff8b71ee687c7ec33.camel@sipsolutions.net>
+Subject: Re: [RFC v1 01/10] roadtest: import libvhost-user from QEMU
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        linux-kernel@vger.kernel.org
+Cc:     kernel@axis.com, devicetree@vger.kernel.org,
+        linux-um@lists.infradead.org, shuah@kernel.org,
+        brendanhiggins@google.com, linux-kselftest@vger.kernel.org,
+        jic23@kernel.org, linux-iio@vger.kernel.org, lgirdwood@gmail.com,
+        broonie@kernel.org, a.zummo@towertech.it,
+        alexandre.belloni@bootlin.com, linux-rtc@vger.kernel.org,
+        corbet@lwn.net, linux-doc@vger.kernel.org
+Date:   Thu, 24 Mar 2022 14:00:10 +0100
+In-Reply-To: <20220311162445.346685-2-vincent.whitchurch@axis.com>
+References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
+         <20220311162445.346685-2-vincent.whitchurch@axis.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH V2 1/7] dt-bindings:iio:adc: add sprd,ump9620-adc
- dtbindings
-Content-Language: en-US
-To:     Cixi Geng <gengcixi@gmail.com>
-Cc:     jic23@kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        "baolin.wang7@gmail.com" <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>, lgirdwood@gmail.com,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
-        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
-        Devicetree List <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20220311164628.378849-1-gengcixi@gmail.com>
- <20220311164628.378849-2-gengcixi@gmail.com>
- <6e4f64dc-bb3d-0e05-0380-7e6f3b1a823c@kernel.org>
- <CAF12kFuKnm2qenvpmKhCVD4T+d=0SyruzdpJ5FX1RS8gvqbyNA@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <CAF12kFuKnm2qenvpmKhCVD4T+d=0SyruzdpJ5FX1RS8gvqbyNA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/03/2022 07:22, Cixi Geng wrote:
-> Krzysztof Kozlowski <krzk@kernel.org> 于2022年3月20日周日 22:50写道：
->>
->> On 11/03/2022 17:46, Cixi Geng wrote:
->>> From: Cixi Geng <cixi.geng1@unisoc.com>
->>>
->>> sprd,ump9620-adc is one variant of sc27xx series, add ump9620 in
->>> dtbindings.
->>>
->>> Signed-off-by: Chunyan Zhang <zhang.lyra@gmail.com>
->>> Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
->>> ---
->>>  .../bindings/iio/adc/sprd,sc2720-adc.yaml     | 30 +++++++++++++++++--
->>>  1 file changed, 27 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
->>> index caa3ee0b4b8c..331b08fb1761 100644
->>> --- a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
->>> @@ -20,6 +20,7 @@ properties:
->>>        - sprd,sc2723-adc
->>>        - sprd,sc2730-adc
->>>        - sprd,sc2731-adc
->>> +      - sprd,ump9620-adc
->>>
->>>    reg:
->>>      maxItems: 1
->>> @@ -37,9 +38,32 @@ properties:
->>>      maxItems: 2
->>>
->>>    nvmem-cell-names:
->>> -    items:
->>> -      - const: big_scale_calib
->>> -      - const: small_scale_calib
->>
->> Please test your changes with dt_binding_check and dtbs_check. Your
->> change looks not complete - you have still nvmem-cells = 2.
->>
-> Hi Krzysztof
-> I test all is PASS on my local.  could you tell how did you test?
-> my_logs:
-> cixi.geng1@tj10039pcu:~/upsteatming/linux$ make DT_CHECKER_FLAGS=-m
-> dt_binding_check &>dt_check.log
-> cixi.geng1@tj10039pcu:~/upsteatming/linux$ cat dt_check.log |grep sprd,sc2720
->   DTEX    Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example.dts
->   DTC     Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example.dt.yaml
->   CHECK   Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.example.dt.yaml
-> cixi.geng1@tj10039pcu:~/upsteatming/linux$ tuxmake -C ${kernel_src} -b
-> ${topdir}/obj/gcc -o ${topdir}/dist/gcc -a $ARCH -t gcc  -K
-> CONFIG_ARCH_${PLAT}=y -K CONFIG_MFD_SC27XX_PMIC=y -K
-> CONFIG_SC27XX_ADC=y
+On Fri, 2022-03-11 at 17:24 +0100, Vincent Whitchurch wrote:
+> Import the libvhost-user from QEMU for use in the implementation of the
+> virtio devices in the roadtest backend.
 > 
 
-The method is correct, just please test sprd,ump9620-adc (either in
-example in the binding or your DTS with `make dtbs_check
-DT_SCHEMA_FILES=sprd,sc2720-adc.yaml).
+So hm, I wonder if this is the sensible thing to do?
 
-Best regards,
-Krzysztof
+Not that I mind importing qemu code, but:
+
+ 1) the implementation is rather complex in some places, and has support
+    for a LOT of virtio/vhost-user features that are really not needed
+    in these cases, for performance etc. It's also close to 4k LOC.
+
+ 2) the implementation doesn't support time-travel mode which might come
+    in handy
+
+We have another implementation that might be simpler:
+https://github.com/linux-test-project/usfstl/blob/main/src/vhost.c
+
+but it probably has dependencies on other things in this library, but
+vhost.c itself is only ~1k LOC. (But I need to update it, I'm sure we
+have some unpublished bugfixes etc. in this code)
+
+johannes

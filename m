@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA8E4E6DF0
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 06:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 966CD4E6F67
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 09:25:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356368AbiCYF6V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Mar 2022 01:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47154 "EHLO
+        id S1354890AbiCYI1R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Mar 2022 04:27:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358402AbiCYF6U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 01:58:20 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A3BCC6824
-        for <linux-iio@vger.kernel.org>; Thu, 24 Mar 2022 22:56:41 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id pv16so13382602ejb.0
-        for <linux-iio@vger.kernel.org>; Thu, 24 Mar 2022 22:56:41 -0700 (PDT)
+        with ESMTP id S1354562AbiCYI1B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 04:27:01 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B8ACC53B
+        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 01:25:25 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id p15so13847733ejc.7
+        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 01:25:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=00jzhQ/dm8OoWIsxpxpfQ9KmK+AHhnesfJOmQ5Fhuhg=;
-        b=JiKLFOGXsnBR5pGOTNDszUZ3rZ3+74PnGq8PmrEN03G4HPPRFhxxwj7IboR1xW4OmP
-         cozA1L4yuSv5hmqLfkgQoQLVfTVEQyP9U1BLZIvmxoSLJzMZtF8YdDoXfs4GShQf7GGv
-         EDPaBnTNcJJSfXPKQSIUW1JEjMlNi+JuJkAfkerZiiqgnNC8FdS0BUDFivbhxHBOtXyG
-         Zm8jNsLemVSLhnjv8huJMXka0Luju6W6vI+LXyavl9Zm41Gqh4UJdoj+A1ZoZ34C/+je
-         jJbxb91VzSkT09XH0m6FT3norGaweceCr0HOgT39Stpq5MSreIVuLfkefJPNQ+ayd0DF
-         BA2Q==
+        bh=vxuEjt+x3FHatgD8gb0ERxw6gFeQLnKCXkVjQiYkkvo=;
+        b=UoZ7RxzG3BkXZSKrkriILIdVE3pUvEj2qzCzOPDl5a7OjO8B4QBLOTr6a3LDfWxcAm
+         HLvWWiWzJP2yK4lSo2Nr3/fKeiLGM5jcNpnHGCSPt2hsSw7eFeM5u7WuwkhBMOtpMije
+         ttOV8ssNwBAN5AXWqO0t98vth1/VT16efjk5s9j5eb5XaFPD/THCYV3NvMXPiCYhEPKp
+         t8eXs3j3DbpLU7+GFvK6AXM4Hx3rPhWnklIcrGVYvwURMU+oWMUhulTfK5KZI1SkbSWW
+         +N3awaot63tAIIefDdYlQobQKENCvtv+0gbS0kwTdLMa51E64dB/kVnk7J/VOeVo/rQc
+         asGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=00jzhQ/dm8OoWIsxpxpfQ9KmK+AHhnesfJOmQ5Fhuhg=;
-        b=wnGS+QPI4mL0jl1bsxTJJsPue/KaoiksudJyGn9o9/vgPwlEBdhh6D1ejd1LZTxZ9q
-         m2ucw96US+YuN7RD3Wv71lO5kbgJVDSbF6BCfw9tMdNOttFgL93sMubBRBBQtZVEFEEh
-         ijUgARzrYbX1IQAjAhGaPBe/ZFBC1w+u4U+W34GsDNQGCgxQZMzRYZaKy+904ryPiKtX
-         LTgt+XZx3jKK+uen+JrezFZu0DZofo4gHP89BRRQXqenOrJ+UPjry2jW/+eMR5em0dQ7
-         TkxEtogM8s//by3sMWEyW5iZY4/9tfM/fBN/0Ji794gDH3VAFIg+0y9d8oW1T7NiNkVb
-         8G4w==
-X-Gm-Message-State: AOAM533DnnMNkXkCzRDqUavh8+QkdEC+9LgvnW8fo45Why+4jmtkwkuM
-        9fhCwi9jH7wt/KXPqZ3hxGEr5/cahOw5sOhxTXw=
-X-Google-Smtp-Source: ABdhPJyhdqkKjOrPvHRwnOrIP93xSoDBqanQXn2RcU0xxmwpOrdEfwIaYoc7su1E7s1ZLUIidJvkKP1W5VnosW+ayCI=
-X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
- ji13-20020a170907980d00b006d6f910513amr9210130ejc.643.1648187799830; Thu, 24
- Mar 2022 22:56:39 -0700 (PDT)
+        bh=vxuEjt+x3FHatgD8gb0ERxw6gFeQLnKCXkVjQiYkkvo=;
+        b=T9/q6Fkye6LAztnR9oFoKo3/Wbe3vs1Swdkaze/FIhM4c0PAYeRPfEdTiJeuwzTPRe
+         YPLwhxmocjXtCRzxwPLqAPc3V+rnCjQYtujFSAaVHiBku5bdDDZluwXMmE1XdlbI0g9w
+         E54BUBxrGQGhjTujZC44W8khD6Plp8kKGRa7QsM8u/8BhpaK96oJABrR9Y9KbRfQ5rGo
+         eTZEeLW9q/FWDliDIXBQQlECimTS7PeAyFxtFP3wUZMssI25CUccUxzn4zqk4hNdi+jM
+         lJfumv0XnvtkeVZEGh39O2o0KCeOZgCfySUhEtkq06Npu93FhK+hwb689XMQOW4/X6ZO
+         f9fA==
+X-Gm-Message-State: AOAM5320VXMp89xFJ1HRDCpK1L/ddyKlZ4U+4ymU75nodecHD/x2ncea
+        TtqO6ymE5Rk5VpjeOaPe3Tqe772ClODCJgv6k+c=
+X-Google-Smtp-Source: ABdhPJyvDxlfqslKHwgFMqg391XIWsdAF/iAkQ7dANXTahtI83BnSK2dyFuHwuGlhCq0vIRqDPn4eFdMZ/8lu8oGMVI=
+X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
+ cr21-20020a170906d55500b006db148e05ccmr10001431ejc.63.1648196722540; Fri, 25
+ Mar 2022 01:25:22 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 25 Mar 2022 05:56:28 +0000
-Message-ID: <CAHpNFcP4jWM7X5-X9_xKXxLDQt+dop_--=HDr-k3=Qx6s8tWjg@mail.gmail.com>
-Subject: Encryption GEA-1 and GEA-2 Open Source 'Ideal for USB Dongle & Radio'
- in Rust RS ' Ideal for Quality TPM Implementation' https://github.com/P1sec/gea-implementation
-To:     torvalds@linux-foundation.org
+Date:   Fri, 25 Mar 2022 08:25:10 +0000
+Message-ID: <CAHpNFcPpO+hi3v4hpjqQyt0sfHVkOk=pcYwP9QmzWDv+=crGRA@mail.gmail.com>
+Subject: You both know console controllers need a lot more than basic
+ bluetooth or simply the security this code offers? offer more but implement
+ this! RS
+To:     mobile@cloudflare.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PLING_QUERY,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,9 +61,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+You both know console controllers need a lot more than basic bluetooth
+or simply the security this code offers? offer more but implement
+this! RS
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
 ICE-SSRTP GEA Replacement 2022 + (c)RS
 
 IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
 
 "GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
 of GEA-1 with a higher amount of processing, and apparently not
@@ -142,6 +163,13 @@ https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
 https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
 
 https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
 
 *
 

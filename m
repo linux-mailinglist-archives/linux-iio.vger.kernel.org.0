@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8EDF4E74B6
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 15:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 532984E77FE
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 16:37:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358938AbiCYOEa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Mar 2022 10:04:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42422 "EHLO
+        id S1353994AbiCYPgf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Mar 2022 11:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359165AbiCYOE0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 10:04:26 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43493D8F45
-        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 07:02:50 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id lr4so7145055ejb.11
-        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 07:02:50 -0700 (PDT)
+        with ESMTP id S1378621AbiCYPfO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 11:35:14 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A1A27CC3
+        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 08:33:38 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a8so16067351ejc.8
+        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 08:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=mTkB/8ok0Jsn34jiNB203Plx4NPfqmN3UIIy2Jyu7bo=;
-        b=In8qGeWW39amfdfMaC7ALJwwk2vGMRr7lk3s0LuuCmMDrxlYuKp3Rw/6rsW5fK8Glk
-         owwPL6TsetbV897lpSyliYR53rBbH8Du7kfmVB1i0Wx9yhTKjEZhQsfhRlWmVajNgvOM
-         nhs+APW1gXhEvsnz0sfKQ/EUrupA0vRe1xplRl8+TDIn9B7Zncg8D4QuK/DlQ4WuexHq
-         UWWHyB9h7j7K03KcGsElBWO8Kkm7WPVH4bc32h1GD8EeuI25OMggTeHvyLN/rqLMAY8N
-         JKCGBqpmnvRhobpxCr29K1Y3o9HVPXUz4M0crNYKx0m2G2e+u0xQ2+x4B7N6x2u/wK/X
-         LWxQ==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=uXaRvLUj+1B5FMxtaQVDP6hPG33CuATLlxKJ63s1fLU=;
+        b=Sbh+T1BO8+3ApR6eVMpVAKbXp6SpXGcMBQtCiZlfz7NFEPoPimQzZt9BEE+5w6B8QD
+         F80MLlMNncTNvZ1tnh6MNHEHHD4jTPkzY8k83mLMg87ldf0igowUNCT6pyAC1rKxgaJV
+         hEjFj5N/YymVhkaCPSzx9kR1OJK9huGkFsVIvulUYTq75qflmdv9BTIegIWGd6nJ665x
+         5DflhY40NpU16yWA8tM1WLe1CSW743jeiMQR/RYc2JHmt+580uHk1VC76ZVQ01uwFNQQ
+         RsVcXwGkmYuQGexXGeBadvsMnPxo3pVoXwcf7/8JoUWh5OgTbBgKx7TYTsZEE77h6w5Y
+         A8uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=mTkB/8ok0Jsn34jiNB203Plx4NPfqmN3UIIy2Jyu7bo=;
-        b=gv5MxxTUo8oBslqTKyVlfkZDoMkRMTW6x1dmLGd+mFdnW5/SzlFOqLC2SudxqGBkCy
-         yZBv09sMrDJljmrjtjq3fEcMZ9msPmn1mAA/nXyKh6NUQbB96dKkKxe3k7207UUufOAJ
-         TU/oVPrsHjiMia3IgvNrg+S7seqPaPFaqEeipasHs1X3AXN97geRs4bUHXaysKRBw4XB
-         Uiwqq7/hzHmb7RigfNEu0djmf4u1TPD4NK60vvUrotPSAMthJXcyT4e4fEIg7lh030iu
-         4aBPlWh8IQ+aLQq3ictHw8jOmrHUoojqnD/9jdHwJ2eCsd0uWahh7ubL+0SkrTehloRs
-         ybPw==
-X-Gm-Message-State: AOAM530z+Gg1OF3gI39wnF625SKyAwGwg8KeMt34KgjMh8rU3S3djPS/
-        UXE8RuUQW5xU7M7GIL3nOgNGazNBChafto3v+1E=
-X-Google-Smtp-Source: ABdhPJwa+fESlJNgq3HJUEZBYThRPkGFuUFWog5FxbokThEcrv6N1wNu+ZKY4DjXlyBAga2mWsQ1PY/VlBrI93FD4kU=
-X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
- cr21-20020a170906d55500b006db148e05ccmr11527925ejc.63.1648216967841; Fri, 25
- Mar 2022 07:02:47 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=uXaRvLUj+1B5FMxtaQVDP6hPG33CuATLlxKJ63s1fLU=;
+        b=tE6/8jm2vpE9rwHjTKYYruKIzivMc/HA1aqoh8DvxRzhA7fgp0ARREl/EWMAqySYuO
+         hDsMm8MtIKeqnQt4RQpKai3lp7X/YgWr9J7GOwC3Nv/kukdp2MXEkozVkTenCZEeJm7o
+         A4BFWP6Am6dpDiFBQEWzxSiz7BwQl8pCiPcXPBi8xTkFhW7szLf39Zho5KvbzvOYxUCg
+         fZoqyqNPk8r8BpioAM0FGD/vrriTz7RZ3wCfdQJ6idgql47YmfjxTfUjm8BsipCyzVUX
+         FBci9gL6qMDX0Y2B4xiD/3L1mSTO1V6oa6f+mdnmIroJUAczcaJ4BDkA0TspJGlSz7gm
+         m/tA==
+X-Gm-Message-State: AOAM532nNscxNv4x5ExUc60MbeDNNA9ipMWegDxb3nRuOcrUnMokU572
+        uT/ZtQMy1Y2ILL/8DErs1lMVFnBLRkX3iB4zoN8=
+X-Google-Smtp-Source: ABdhPJyenhDlHryyBuR+2Cpy7wmcGZOGhoCB1eEejw6e3Mv+Gf31XEBQK/ehNc4s5S/0ClUPGZTw0hRTYcixjDhFx4E=
+X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
+ ji13-20020a170907980d00b006d6f910513amr11619163ejc.643.1648222416857; Fri, 25
+ Mar 2022 08:33:36 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 25 Mar 2022 14:02:37 +0000
-Message-ID: <CAHpNFcMj2Pr5EyTEW2S_UDnLSpzacEznEb=aSOr-arV5F-i4oA@mail.gmail.com>
-Subject: New GPU/CPU & Motherboard Bios strategy for ASUS unique RX6700XTC-FlareEdition2021
-To:     mobile@cloudflare.com
+Date:   Fri, 25 Mar 2022 15:33:26 +0000
+Message-ID: <CAHpNFcNnUSdaKnRS-QsCfXQ59YY58ZiZ5q+M=t0-zkd5uXgkVA@mail.gmail.com>
+Subject: Jitter RAND Support Data Set + GPRS Dongle usage Technology :
+ Alarming as the GPRS 20% of key '20% of the key discovered Full Potential
+ Hack' is With Real /Dev/random #NoHack
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -62,160 +61,89 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-https://www.phoronix.com/scan.php?page=3Dnews_item&px=3DLinux-5.18-x86-Plat=
-form-Drivers
+Jitter RAND Support Data Set + GPRS Dongle usage Technology : Alarming
+as the GPRS 20% of key '20% of the key discovered Full Potential Hack'
+is With Real /Dev/random #NoHack
 
-New GPU/CPU & Motherboard Bios strategy for ASUS unique
-RX6700XTC-FlareEdition2021
+Real hardened Rust Implementation & code for use:
+https://github.com/P1sec/gea-implementation
 
-Important Business : RS
-Date: Sun, Jan 3, 2021 at 11:12 AM
-To: Kr*****, L** <l**.kr****@amd.com>
-  To: <Med**@xilinx.com>
-
-FPGA BitFile & Code Opt (c)RS 2021-01
-
-Priority of Operating process for streamlining Dynamic FPGA units on
-CPU & GPU By Rupert S
-
-Factors common in FPGA are:100000 Gates to 750000 Gates (Ideal for
-complex tasks)
-
-Programmable Processor command implementation & reprogram  speed 3ns
-to 15 Seconds
-2 million gates
-Processor core usage to reprogram ?
-15% of a 200Mhz processor =3D 200ns programming time
-Processor core usage to reprogram ? 20% to 25% of a 200Mhz processor =3D
-30ns programming time
-
-250 to 2900 Gates 1uns to 2ns
-(ideal for small complex instructions)
-Processor usage (in programming) 2 to 5% CPU @200Mhz
-
-2000 to 12500 to 25000 Gates (ideal for very complex function)
-30uns to 8ns (ideal for small complex instructions & RISC)
-
-Processor usage (in programming) 2 to 9% CPU @200Mhz
-
-Plans to load a BitFile rely on constant use & not on the fly, However
-small gate arrays permit microsecond coding..
-
-However I do state that a parameter for operating order is specified &
-for most users Automatic.
-
-Operating system functions.. for example AUDIO are a priority & will
-stay consistent..
-
-So we will have specific common instructions that are specific to OS &
-BIOS Firmware..
-Commons will take 20% of a large FPGA (relative)
-
-With the aim of having at least 4 common & hard to match functions; As
-a core large ARRAY..The aim being not to reprogram every second,
-
-For example during boot process with: Bitfile preorder profile:
-1uns to 2ns (ideal for small complex instructions)
-
-During the operation of the Computer or array the FPGA may contain
-specific ANTIVirus & firewall functions, That we map to ML
-
-The small unit groups of fast reprogrammables will be ideal for
-application that we are using for more than 30 minutes.. & May be
-clustered.
-
-Optimus (Prime) bitfile : RS
-Obviously handheld devices require uniquely optimum feature set & tiny
-processor size..
-Create the boundry and push that limit.
-
-We will obviously prefer to enable Hardcode pre trained models such as :
-
-SiMD
-Tessellation & maths objective : for gaming & science
-Dynamic DMA Clusters (OS,Security,Root)
-Maths Unit
-HardDrive Accelerators
-Compressors
-Compiler optimisers CPU/GPU
-Core Prefetch/ML optimiser (on die)
-Combined Shader & function for both DirectX,Metal & Vulkan utility..
-GPU & CPU Synergy Network & Cache.
-Direct Audio & Video,Haptic processing dynamic; element 3D Extrapolation..
-Dynamic Meta Data processing & conversion ..
-(Very important because not all Meta data is understood directly in
-the used process.)
-
-Obviously handheld devices require uniquely optimum feature set & tiny
-processor size..
-Create the boundry and push that limit.
-
-(c)Rupert S https://science.n-helix.com
-
-"processor programs a reprogrammable execution unit with the bitfile
-so that the reprogrammable execution unit is capable of executing
-specialized instructions associated with the program."
-
-https://hothardware.com/news/amd-patent-hybrid-cpu-fpga-design-xilinx
-
-"AMD Patent Reveals Hybrid CPU-FPGA Design That Could Be Enabled By Xilinx =
-Tech
-xilinx office
-
-While they often aren=E2=80=99t as great as CPUs on their own, FPGAs can do=
- a
-wonderful job accelerating specific tasks. Whether it's accelerating
-acting as a fabric for wide-scale datacenter services boosting AI
-performance, an FPGA in the hands of a capable engineer can offload a
-wide variety of tasks from a CPU and speed processes along. Intel has
-talked a big game about integrating Xeons with FPGAs over the last six
-years, but it hasn't resulted in a single product hitting its lineup.
-A new patent by AMD, though, could mean that the FPGA newcomer might
-be ready to make one of its own.
-
-In October, AMD announced plans to acquire Xilinx as part of a big
-push into the datacenter. On Thursday, the United States Patent and
-Trademark Office (USPTO) published an AMD patent for integrating
-programmable execution units with a CPU. AMD made 20 claims in its
-patent application, but the gist is that a processor can include one
-or more execution units that can be programmed to handle different
-types of custom instruction sets. That's exactly what an FPGA does. It
-might be a little bit until we see products based on this design, as
-it seems a little too soon to be part of CPUs included in recent EPYC
-leaks.
-
-While AMD has made waves with its chiplet designs for Zen 2 and Zen 3
-processors, that doesn't seem to be what's happening here. The
-programmable unit in AMD's FPGA patent actually shares registers with
-the processor's floating-point and integer execution units, which
-would be difficult, or at least very slow, if they're not on the same
-package. This kind of integration should make it easy for developers
-to weave these custom instructions into applications, and the CPU
-would just know to pass those onto the on-processor FPGA. Those
-programmable units can handle atypical data types, specifically FP16
-(or half-precision) values used to speed up AI training and inference.
-
-xilinx vu19p
-
-In the case of multiple programmable units, each unit could be
-programmed with a different set of specialized instructions, so the
-processor could accelerate multiple instruction sets, and these
-programmable EUs can be reprogrammed on the fly. The idea is that when
-a processor loads a program, it also loads a bitfile that configures
-the programmable execution unit to speed up certain tasks. The CPU's
-own decode and dispatch unit could address the programmable unit,
-passing those custom instructions to be processed.
-
-AMD has been working on different ways to speed up AI calculations for
-years. First the company announced and released the Radeon Impact
-series of AI accelerators, which were just big headless Radeon
-graphics processors with custom drivers. The company doubled down on
-that with the release of the MI60, its first 7-nm GPU ahead of the
-Radeon RX 5000 series launch, in 2018. A shift to focusing on AI via
-FPGAs after the Xilinx acquisition makes sense, and we're excited to
-see what the company comes up with."
+Weekly Seed source : https://pollinate.n-helix.com/
 
 *****
+
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
 
 https://science.n-helix.com/2018/12/rng.html
 
@@ -227,8 +155,7 @@ https://science.n-helix.com/2022/02/interrupt-entropy.html
 
 https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
 
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
-tml
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
 
 
 Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
@@ -236,8 +163,6 @@ Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
 https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
 
 https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/11/ihmtes.html
 
 https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
 https://science.n-helix.com/2021/11/wave-focus-anc.html
@@ -249,3 +174,203 @@ Integral to Telecoms Security TRNG
 https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
 
 https://pollinate.n-helix.com
+
+*
+
+***** Dukes Of THRUST ******
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
+
+https://github.com/P1sec/gea-implementation
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+"A stream cipher, such as the well-known RC4 or GEA-1, usually works
+through using the Xor operation against a plaintext. The Xor operation
+being symmetrical, this means that encrypting should be considered the
+same operation as decrypting: GEA-1 and GEA-2 are basically
+pseudo-random data generators, taking a seed (the key, IV and
+direction bit of the GPRS data, which are concatenated),
+
+The generated random data (the keystream) is xored with the clear-text
+data (the plaintext) for encrypting. Then, later, the keystream is
+xored with the encrypted data (the ciphertext) for decrypting. That is
+why the functions called in the target library for decrypting and
+encrypting are the same.
+
+GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
+because their algorithms generate only one bit of pseudo-random data
+at once (derived from their internal state), while algorithms like RC4
+generate no less than one byte at once (in RC4's case, derived from
+
+permutation done in its internal state). Even though the keystream
+bits are put together by the current encryption / decryption C and
+Rust libraries into bytes in order to generate usable keystream,
+obviously.
+
+Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
+Linear Feedback Shift Register-oriented ciphers, because their
+internal state is stored into fixed-size registers. This includes the
+S and W registers which serve for initialization / key scheduling
+purposes and are respectively 64 and 97-bit wide registers, and the A,
+B, C (and for GEA-2 only D) registers which serve for the purpose of
+keystream generation, which are respectively 31, 32, 33 and 29-bit
+wide registers.
+
+On each iteration of the keystream generation, each register is
+bit-wise rotated by one position, while the bit being rotated from the
+left towards the right side (or conversely depending on in which bit
+order you internally represent your registers) is fed back to the
+algorithm and mutated depending on given conditions. Hence, the
+
+shifted-out bit is derived from other processing, and reinserted,
+while being for this reason possibly flipped depending on conditions
+depending on bits present at the other side of the given register.
+
+This is the explanation for the name of linear feedback shift register
+(shift because of the shift operation required for the rotation, and
+linear feedback because of the constant-time transform operation
+involved).
+
+The rest of the register may also be mutated at each iteration steps,
+as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
+differ for each register) may be applied depending on whether the
+rotated bit is a 0 or a 1.
+
+Note that a step where the register iterates is called clocking (the
+register is clocked), and that the fixed points where the register may
+be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
+function which may transmute the rotated bit at the clocking step
+(taking several bits of the original register as an input) is called
+the F function.
+
+Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
+GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
+hardware implementations in the late 80's and early 90's."
+
+*****
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+
+***** Dukes Of THRUST ******
+
+Autism, Deafness & the hard of hearing : In need of ANC & Active audio
+clarification or correction 2022-01
+
+Sony & a few others make noise cancelling headphones that are suitable
+for people with Acute disfunction to brain function for ear drums ...
+Attention deficit or Autism,
+The newer Sony headsets are theoretically enablers of a clear
+confusion free world for Autistic people..
+Reaching out to a larger audience of people simply annoyed by a
+confusing world; While they listen to music..
+Can and does protect a small percentage of people who are confused &
+harassed by major discord located in all jurisdictions of life...
+
+Crazy noise levels, Or simply drowned in HISSING Static:
+
+Search for active voice enhanced noise cancellation today.
+
+Rupert S https://science.n-helix.com
+
+
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+
+https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
+
+
+https://www.orosound.com/
+
+https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/

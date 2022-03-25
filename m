@@ -2,55 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 192F24E718D
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 11:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A284E7281
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 12:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348453AbiCYKvK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Mar 2022 06:51:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
+        id S1354186AbiCYMAO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Mar 2022 08:00:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234522AbiCYKvJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 06:51:09 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBDA21E01
-        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 03:49:34 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id h1so8786151edj.1
-        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 03:49:34 -0700 (PDT)
+        with ESMTP id S1345872AbiCYMAN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 08:00:13 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07850E008;
+        Fri, 25 Mar 2022 04:58:37 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id b24so8938009edu.10;
+        Fri, 25 Mar 2022 04:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=W1igGM1WsluVfytMkOoD9rahAF+bYDF3ee2Dn6NnyLs=;
-        b=kEU9oClKPA6napY8Am9GDPR2TG7lJoyYcAWInw0td78hQGhRnFdKEVefthiagcOkAc
-         1sFJWJBBn5iekSDtqQMnRQBFE9TwayysflOmGEOEc5fXLMTfYjszGZFQRV0nCWyaAQ2B
-         tsIbPDwJ4RNf/ETgzPSfFD/B4F9bnj9iBarDIgIslXWarG7bP8VybJAZKnsLOvAgbyp1
-         6d306tW/Tef6AfYYmJwX0F3BvrXEByOW9/R7+88DB2jbbyJMtu/aaS5+IW+L50zZcsL2
-         lPEUdolyuuviJvJ8taCqktGnqN/M+I0WYSO29tYdvLn5gSdvCwBz2zzjBsnYRA6DFhJH
-         iy9w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5HUtOUWp2sZ6TtVf8FyrTatTYVQYhhjB2DEeLm0DIl0=;
+        b=Bg2vRbrg9DC8jGkbN/gbK8JUSHWn8tszqPOOqDcsWhq4S6iO5qxDWltryZiQp8nEWq
+         oW5nGkC4I5+5JNYMYBQ6f7tm2HhCUkbCjBJMOc2UEkMlgcBVIW4gX3jKewoABH5VHC3V
+         fXrFoG7ZigtE6BY/TJizDV/Ah9/91kbNHiJ5hpy1HVK0v2xzhTp+ssVMpdjlcpjrrJN1
+         TcnIFzPiGrFApB0lRhcOUVI20sNlr3OlZ52uKYxUTk2EO6ZqgCBwHE6Z990iJw6x7v78
+         J4XkI3tntZuna9FXg4Lj/u3I3S9nZbWrryfstI7CNGkI/FNND00q+KQlTzXc6qXpBDux
+         NNmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=W1igGM1WsluVfytMkOoD9rahAF+bYDF3ee2Dn6NnyLs=;
-        b=GuqekXP320QomgYR+9ZWtSxie4LMfqK40cKGq4LAgki2MQ7PEsMXz2Fv8jPy7ki1xU
-         VGhUaP/CWdd3IHkXQPRgdKkmSe+bDNL0W5gtob688FxOERmTJl2kxj/cwlpYbdXqPNH3
-         oNym58Xi9YAbPZwQ+mp1gFa8R+WIm5skOF2FD2hLPDfPUKxAHvuRLV0XdVe+loqK9DXT
-         /OsyNYQLTu+PNA0XuwbqCtWc0qRsaFbBbJRiubFS+6SchOemhRQMOWCbsxvWJAuA3wAF
-         gVV20Zu8UNqTlcZkkaou6kjyOi+VkRKmyHiy/bHsmTMDQIayBJ4pT+LEQvUGt7PBBwja
-         546w==
-X-Gm-Message-State: AOAM532WzzKXhiHSBhUHoHZpYVB/1AOBOnMewmFrNB8G7Wi0OAMsix7G
-        4HqMIyNYaEwqw1K3DyaR3wrl0XwfJQlmE5LJQBk=
-X-Google-Smtp-Source: ABdhPJwno2Me2em4RdspVO1v9jY+/EaZNxE42yqkoKVmbcDzvBXjTLLBEhPxitN/iAsM/Qu4ynVDhNoo5br7gbAnJR0=
-X-Received: by 2002:a05:6402:4414:b0:419:28bc:55dc with SMTP id
- y20-20020a056402441400b0041928bc55dcmr12519198eda.130.1648205372155; Fri, 25
- Mar 2022 03:49:32 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5HUtOUWp2sZ6TtVf8FyrTatTYVQYhhjB2DEeLm0DIl0=;
+        b=XeFp9PS0snQF9/WCwjq/3Z/vrRGnPNvwIOqFg3P6LYrDJbhF8jPyRVzqh/MtOLVv6j
+         hufwLV1WcHuIggShiY61oWckp4XpBtkN9euq4KkvcnNWfr1bNuF14D9fABQH8JuSwzzB
+         MeCa+L0MkD6cdOglNZh5enSA7W1SEGFieOfRYVYNwqTP7/m8iMJ/VBQJk6tHh70/EBme
+         WZH5qbBdr6HaTq5xhdBHKxTUoD3t8C0bGAnGvVc/Yuxc7ajdAMpX83TwDFTLnbMNpvg0
+         wbj2BddGdmMzE1VZ8u6mxfc1zBkyFxxpF2i2S1Bna8gBY/QJrH7i8PgUINFM3/G5TYDY
+         WWGQ==
+X-Gm-Message-State: AOAM530BQ+RgXY3pSoITXPXwz/8QXk8dZdNnzX7rEzFVvGV+DcuzsH34
+        wltaPwL1iwMbtRlOj72wC42EkPmd2v3YXjRdhuJd0NzP0zg=
+X-Google-Smtp-Source: ABdhPJxxBxQy7rz7v8ypAhFqy/HT7mxKKkNRASnaabG6Xdhji28aPSrvtWzHmfMC2YJPtOaiBFr9jbln0E7ItrEv4Ng=
+X-Received: by 2002:a05:6402:54:b0:419:9b58:e305 with SMTP id
+ f20-20020a056402005400b004199b58e305mr5305571edu.158.1648209515478; Fri, 25
+ Mar 2022 04:58:35 -0700 (PDT)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 25 Mar 2022 10:49:18 +0000
-Message-ID: <CAHpNFcNGnnGdxdxR3-0Occta0gn7LK1fdL_+uxK14v-kY1Yz1w@mail.gmail.com>
-Subject: GPRS Is Basically secure with TRNG from https://pollinate.n-helix.com/
- & TPM/Jitter TimeCrystal, AS the report shows Origin /dev/random seed is a
- most important matter : 1 of 13,291 Audio, Visual & Bluetooth & Headset &
- mobile developments only go so far: https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-To:     service@2-sight.com, mobile@cloudflare.com
+References: <20220215081216.67706-1-antoniu.miclaus@analog.com> <20220220121414.48d7a3b6@jic23-huawei>
+In-Reply-To: <20220220121414.48d7a3b6@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 25 Mar 2022 13:57:26 +0200
+Message-ID: <CAHp75VdWPBNeX4=7ZzozodLR2A9=YxfKLpey=fhKhmW+y2HAPw@mail.gmail.com>
+Subject: Re: [PATCH v8 1/4] iio:frequency:admv1014: add support for ADMV1014
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -62,320 +68,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-GPRS Is Basically secure with TRNG from https://pollinate.n-helix.com/
-& TPM/Jitter TimeCrystal, AS the report shows Origin /dev/random seed
-is a most important matter : 1 of 13,291 Audio, Visual & Bluetooth &
-Headset & mobile developments only go so far:
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-As https://github.com/P1sec/gea-implementation basically shows Crypto
-Random Seed is the most important thing...
-
-The code there SHALL Work.
-
->> RS 2022
-
-ICE-SSRTP GEA Replacement 2022 + (c)RS
-
-IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
-
-Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
-
-ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
-'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
-Implementation'
-
-"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
-of GEA-1 with a higher amount of processing, and apparently not
-weakened) are bit-oriented stream ciphers."
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Example of use:
-
-Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
-
-Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
-Interleaved channel BAND.
-
-Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
-Coprocessor digital channel selector &
-
-channel Key selection based on unique..
-
-Crystal time Quartz with Synced Tick (Regulated & modular)
-
-All digital interface and resistor ring channel & sync selector with
-micro band tuning firmware.
-
-(c)Rupert S
-
-*
-
-Good for cables ? and noise ?
-
-Presenting :  IiCE-SSR for digital channel infrastructure & cables
-<Yes Even The Internet &+ Ethernet 5 Band>
-
-So the question of interleaved Bands & or signal inversion is a simple
-question but we have,
-
-SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
-
-In Audio inversion would be a strange way to hear! but the inversion
-does help alleviate ...
-
-Transistor emission fatigue...
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting : IiCE for digital channel infrastructure & cables <Yes
-Even The Internet &+ Ethernet 5 Band>
-
-(c) Rupert S
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
-
-
-Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/03/ice-ssrtp.html
-
-https://science.n-helix.com/2021/11/ihmtes.html
-
-https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-https://science.n-helix.com/2021/12/3d-audio-plugin.html
-
-Integral to Telecoms Security TRNG
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-*
-
-***** Dukes Of THRUST ******
-
-Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
-
-Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
-Interleaved channel BAND.
-
-Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
-Coprocessor digital channel selector &
-
-channel Key selection based on unique..
-
-Crystal time Quartz with Synced Tick (Regulated & modular)
-
-All digital interface and resistor ring channel & sync selector with
-micro band tuning firmware.
-
-(c)Rupert S
-
-Dev/Random : Importance
-
-Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
-implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
-GEA-2 Implementations we will improve with our /Dev/Random
-
-Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
-(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
-will improve with our /Dev/Random
-
-We can improve GPRS 2G to 5G networks still need to save power, GPRS
-Doubles a phones capacity to run all day,
-
-Code can and will be improved, Proposals include:
-
-Blake2
-ChaCha
-SM4
-SHA2
-SHA3
-
-Elliptic Encipher
-AES
-Poly ChaCha
-
-Firstly we need a good solid & stable /dev/random
-
-So we can examine the issue with a true SEED!
-
-Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-TRNG Samples & Method DRAND Proud!
-
-https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
-https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
-https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
-https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
-
-https://github.com/P1sec/gea-implementation
-
-"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
-of GEA-1 with a higher amount of processing, and apparently not
-weakened) are bit-oriented stream ciphers."
-
-"A stream cipher, such as the well-known RC4 or GEA-1, usually works
-through using the Xor operation against a plaintext. The Xor operation
-being symmetrical, this means that encrypting should be considered the
-same operation as decrypting: GEA-1 and GEA-2 are basically
-pseudo-random data generators, taking a seed (the key, IV and
-direction bit of the GPRS data, which are concatenated),
-
-The generated random data (the keystream) is xored with the clear-text
-data (the plaintext) for encrypting. Then, later, the keystream is
-xored with the encrypted data (the ciphertext) for decrypting. That is
-why the functions called in the target library for decrypting and
-encrypting are the same.
-
-GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
-because their algorithms generate only one bit of pseudo-random data
-at once (derived from their internal state), while algorithms like RC4
-generate no less than one byte at once (in RC4's case, derived from
-
-permutation done in its internal state). Even though the keystream
-bits are put together by the current encryption / decryption C and
-Rust libraries into bytes in order to generate usable keystream,
-obviously.
-
-Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
-Linear Feedback Shift Register-oriented ciphers, because their
-internal state is stored into fixed-size registers. This includes the
-S and W registers which serve for initialization / key scheduling
-purposes and are respectively 64 and 97-bit wide registers, and the A,
-B, C (and for GEA-2 only D) registers which serve for the purpose of
-keystream generation, which are respectively 31, 32, 33 and 29-bit
-wide registers.
-
-On each iteration of the keystream generation, each register is
-bit-wise rotated by one position, while the bit being rotated from the
-left towards the right side (or conversely depending on in which bit
-order you internally represent your registers) is fed back to the
-algorithm and mutated depending on given conditions. Hence, the
-
-shifted-out bit is derived from other processing, and reinserted,
-while being for this reason possibly flipped depending on conditions
-depending on bits present at the other side of the given register.
-
-This is the explanation for the name of linear feedback shift register
-(shift because of the shift operation required for the rotation, and
-linear feedback because of the constant-time transform operation
-involved).
-
-The rest of the register may also be mutated at each iteration steps,
-as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
-differ for each register) may be applied depending on whether the
-rotated bit is a 0 or a 1.
-
-Note that a step where the register iterates is called clocking (the
-register is clocked), and that the fixed points where the register may
-be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
-function which may transmute the rotated bit at the clocking step
-(taking several bits of the original register as an input) is called
-the F function.
-
-Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
-GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
-hardware implementations in the late 80's and early 90's."
-
-*****
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting :  IiCE-SSR for digital channel infrastructure & cables
-<Yes Even The Internet &+ Ethernet 5 Band>
-
-So the question of interleaved Bands & or signal inversion is a simple
-question but we have,
-
-SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
-
-In Audio inversion would be a strange way to hear! but the inversion
-does help alleviate ...
-
-Transistor emission fatigue...
-
-IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
-
-Interleaved signals help Isolate noise from a Signal Send & Receive ...
-
-Overlapping inverted waves are a profile for complex audio & FFT is the result.
-
-Interleaved, Inverted & Compressed & a simple encryption?
-
-Good for cables ? and noise ?
-
-Presenting : IiCE for digital channel infrastructure & cables <Yes
-Even The Internet &+ Ethernet 5 Band>
-
-(c) Rupert S
-
-
-***** Dukes Of THRUST ******
-
-Autism, Deafness & the hard of hearing : In need of ANC & Active audio
-clarification or correction 2022-01
-
-Sony & a few others make noise cancelling headphones that are suitable
-for people with Acute disfunction to brain function for ear drums ...
-Attention deficit or Autism,
-The newer Sony headsets are theoretically enablers of a clear
-confusion free world for Autistic people..
-Reaching out to a larger audience of people simply annoyed by a
-confusing world; While they listen to music..
-Can and does protect a small percentage of people who are confused &
-harassed by major discord located in all jurisdictions of life...
-
-Crazy noise levels, Or simply drowned in HISSING Static:
-
-Search for active voice enhanced noise cancellation today.
-
-Rupert S https://science.n-helix.com
-
-
-https://science.n-helix.com/2021/11/wave-focus-anc.html
-
-https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
-
-
-https://www.orosound.com/
-
-https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/
+On Sun, Feb 20, 2022 at 11:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Tue, 15 Feb 2022 10:12:13 +0200
+> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+>
+> > The ADMV1014 is a silicon germanium (SiGe), wideband,
+> > microwave downconverter optimized for point to point microwave
+> > radio designs operating in the 24 GHz to 44 GHz frequency range.
+> >
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1014.pdf
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+>
+> Hi Antoniu.
+>
+> One really trivial point inline that I noticed whilst having 'one last look'.
+>
+> I'll fix it up whilst applying but please check I didn't mess up!
+>
+> Series applied to the togreg branch of iio.git and initially pushed out as
+> testing to let 0-day poke at it an see if it can find anything we missed.
+
+On v5 I have given a few comments and the author didn't include me
+into the Cc list for the following series. It's not good. Not that I
+care too much about the series, but just to make the point for the
+future reactions on somebody's review.
+
+-- 
+With Best Regards,
+Andy Shevchenko

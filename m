@@ -2,412 +2,250 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B6004E7377
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 13:28:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8EDF4E74B6
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 15:03:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241233AbiCYM3y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Mar 2022 08:29:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40310 "EHLO
+        id S1358938AbiCYOEa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Mar 2022 10:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359504AbiCYM2I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 08:28:08 -0400
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF506D9E97;
-        Fri, 25 Mar 2022 05:25:17 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a8so14980891ejc.8;
-        Fri, 25 Mar 2022 05:25:17 -0700 (PDT)
+        with ESMTP id S1359165AbiCYOE0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 10:04:26 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43493D8F45
+        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 07:02:50 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id lr4so7145055ejb.11
+        for <linux-iio@vger.kernel.org>; Fri, 25 Mar 2022 07:02:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=mTkB/8ok0Jsn34jiNB203Plx4NPfqmN3UIIy2Jyu7bo=;
+        b=In8qGeWW39amfdfMaC7ALJwwk2vGMRr7lk3s0LuuCmMDrxlYuKp3Rw/6rsW5fK8Glk
+         owwPL6TsetbV897lpSyliYR53rBbH8Du7kfmVB1i0Wx9yhTKjEZhQsfhRlWmVajNgvOM
+         nhs+APW1gXhEvsnz0sfKQ/EUrupA0vRe1xplRl8+TDIn9B7Zncg8D4QuK/DlQ4WuexHq
+         UWWHyB9h7j7K03KcGsElBWO8Kkm7WPVH4bc32h1GD8EeuI25OMggTeHvyLN/rqLMAY8N
+         JKCGBqpmnvRhobpxCr29K1Y3o9HVPXUz4M0crNYKx0m2G2e+u0xQ2+x4B7N6x2u/wK/X
+         LWxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=olVkiltawHdnXhEXNKbgr8wPBREkH6kj7x4r7geYywk=;
-        b=SahEljtsVCZJCPrMbHnweoTMbhMm2O5FfcN+W0JyBWOrGKu00av5HcXT058dtSH28r
-         qm3e4+GMPeOYxxI7qRVUmI3n0OKCfj2tIFdgZP3yPZiBx60gJthgSgv3Y40wR8AgeNG4
-         q4AHhrdDf3QYEToOWg4S1s0w2LG7Pf0KgG01BwsyV6S/jq3d9aCo9uWCvJNZfrJOQlRm
-         5+uOXCKyptxptHJs52+4s9UXAWkd3MP5WtEeV1VZjzdI4ZiFXjB2wdRzLG1VSzrpqUji
-         72QH7C6QXs+VoNoaFbr7VYzWFHmQJQp84OxNKAdkrHbPlmOHaCort/R3GS8Hi+3/Agym
-         AJ5g==
-X-Gm-Message-State: AOAM532RZdF9Kjlac8vKsp5/Zp0WSg+QVfiRyUWbAYaTTh7Ezpl1m97r
-        JTgHYUHEVTdwqEFeUqAlVVY=
-X-Google-Smtp-Source: ABdhPJyB0tilidYDYhUj7lGBUIeMPp+wfyIKzzBUxxDQR317d3CQMJ72fhfgZnbX66U6HMAhQxxmrw==
-X-Received: by 2002:a17:906:c214:b0:6b3:d0d6:9fe6 with SMTP id d20-20020a170906c21400b006b3d0d69fe6mr11192249ejz.150.1648211116239;
-        Fri, 25 Mar 2022 05:25:16 -0700 (PDT)
-Received: from [192.168.0.160] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.googlemail.com with ESMTPSA id l2-20020a1709060cc200b006d3d91e88c7sm2268157ejh.214.2022.03.25.05.25.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Mar 2022 05:25:15 -0700 (PDT)
-Message-ID: <6ff0eb26-344d-dd78-9556-a96123b4f056@kernel.org>
-Date:   Fri, 25 Mar 2022 13:25:14 +0100
+        bh=mTkB/8ok0Jsn34jiNB203Plx4NPfqmN3UIIy2Jyu7bo=;
+        b=gv5MxxTUo8oBslqTKyVlfkZDoMkRMTW6x1dmLGd+mFdnW5/SzlFOqLC2SudxqGBkCy
+         yZBv09sMrDJljmrjtjq3fEcMZ9msPmn1mAA/nXyKh6NUQbB96dKkKxe3k7207UUufOAJ
+         TU/oVPrsHjiMia3IgvNrg+S7seqPaPFaqEeipasHs1X3AXN97geRs4bUHXaysKRBw4XB
+         Uiwqq7/hzHmb7RigfNEu0djmf4u1TPD4NK60vvUrotPSAMthJXcyT4e4fEIg7lh030iu
+         4aBPlWh8IQ+aLQq3ictHw8jOmrHUoojqnD/9jdHwJ2eCsd0uWahh7ubL+0SkrTehloRs
+         ybPw==
+X-Gm-Message-State: AOAM530z+Gg1OF3gI39wnF625SKyAwGwg8KeMt34KgjMh8rU3S3djPS/
+        UXE8RuUQW5xU7M7GIL3nOgNGazNBChafto3v+1E=
+X-Google-Smtp-Source: ABdhPJwa+fESlJNgq3HJUEZBYThRPkGFuUFWog5FxbokThEcrv6N1wNu+ZKY4DjXlyBAga2mWsQ1PY/VlBrI93FD4kU=
+X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
+ cr21-20020a170906d55500b006db148e05ccmr11527925ejc.63.1648216967841; Fri, 25
+ Mar 2022 07:02:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 3/3] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
-        krisman@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com
-References: <20220325103014.6597-1-shreeya.patel@collabora.com>
- <20220325103014.6597-4-shreeya.patel@collabora.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220325103014.6597-4-shreeya.patel@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Fri, 25 Mar 2022 14:02:37 +0000
+Message-ID: <CAHpNFcMj2Pr5EyTEW2S_UDnLSpzacEznEb=aSOr-arV5F-i4oA@mail.gmail.com>
+Subject: New GPU/CPU & Motherboard Bios strategy for ASUS unique RX6700XTC-FlareEdition2021
+To:     mobile@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 25/03/2022 11:30, Shreeya Patel wrote:
-> From: Zhigang Shi <Zhigang.Shi@liteon.com>
-> 
-> Add initial support for ltrf216a ambient light sensor.
-> 
-> Datasheet :-
-> https://gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTR-F216A-QT.pdf
-> 
-> 
-> Co-developed-by: Shreeya Patel <shreeya.patel@collabora.com>
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
-> Signed-off-by: Zhigang Shi <Zhigang.Shi@liteon.com>
-> ---
->  drivers/iio/light/Kconfig    |  10 ++
->  drivers/iio/light/Makefile   |   1 +
->  drivers/iio/light/ltrf216a.c | 334 +++++++++++++++++++++++++++++++++++
->  3 files changed, 345 insertions(+)
->  create mode 100644 drivers/iio/light/ltrf216a.c
-> 
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index a62c7b4b8678..08fa383a8ca7 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -318,6 +318,16 @@ config SENSORS_LM3533
->  	  changes. The ALS-control output values can be set per zone for the
->  	  three current output channels.
->  
-> +config LTRF216A
-> +        tristate "Liteon LTRF216A Light Sensor"
-> +        depends on I2C
-> +        help
-> +          If you say Y or M here, you get support for Liteon LTRF216A
-> +          Ambient Light Sensor.
-> +
-> +          If built as a dynamically linked module, it will be called
-> +          ltrf216a.
-> +
->  config LTR501
->  	tristate "LTR-501ALS-01 light sensor"
->  	depends on I2C
-> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> index d10912faf964..8fa91b9fe5b6 100644
-> --- a/drivers/iio/light/Makefile
-> +++ b/drivers/iio/light/Makefile
-> @@ -30,6 +30,7 @@ obj-$(CONFIG_SENSORS_ISL29028)	+= isl29028.o
->  obj-$(CONFIG_ISL29125)		+= isl29125.o
->  obj-$(CONFIG_JSA1212)		+= jsa1212.o
->  obj-$(CONFIG_SENSORS_LM3533)	+= lm3533-als.o
-> +obj-$(CONFIG_LTRF216A)		+= ltrf216a.o
->  obj-$(CONFIG_LTR501)		+= ltr501.o
->  obj-$(CONFIG_LV0104CS)		+= lv0104cs.o
->  obj-$(CONFIG_MAX44000)		+= max44000.o
-> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
-> new file mode 100644
-> index 000000000000..99295358a7fe
-> --- /dev/null
-> +++ b/drivers/iio/light/ltrf216a.c
-> @@ -0,0 +1,334 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * LTRF216A Ambient Light Sensor
-> + *
-> + * Copyright (C) 2021 Lite-On Technology Corp (Singapore)
-> + * Author: Shi Zhigang <Zhigang.Shi@liteon.com>
-> + *
-> + * IIO driver for LTRF216A (7-bit I2C slave address 0x53).
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/init.h>
-> +#include <linux/i2c.h>
-> +#include <linux/mutex.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/pm.h>
-> +#include <linux/delay.h>
-> +
-> +#define LTRF216A_DRV_NAME "ltrf216a"
-> +
-> +#define LTRF216A_MAIN_CTRL		0x00
-> +
-> +#define LTRF216A_ALS_MEAS_RATE		0x04
-> +#define LTRF216A_MAIN_STATUS		0x07
-> +#define LTRF216A_CLEAR_DATA_0		0x0A
-> +
-> +#define LTRF216A_ALS_DATA_0		0x0D
-> +
-> +static const int int_time_mapping[] = { 400000, 200000, 100000 };
-> +
-> +struct ltrf216a_data {
-> +	struct i2c_client *client;
-> +	u32			int_time;
-> +	u8			int_time_fac;
-> +	u8			als_gain_fac;
-> +	struct mutex mutex;
-> +};
-> +
-> +/* open air. need to update based on TP transmission rate. */
-> +#define WIN_FAC	1
-> +
-> +static const struct iio_chan_spec ltrf216a_channels[] = {
-> +	{
-> +		.type = IIO_LIGHT,
-> +		.info_mask_separate =
-> +			BIT(IIO_CHAN_INFO_PROCESSED) |
-> +			BIT(IIO_CHAN_INFO_INT_TIME),
-> +	}
-> +};
-> +
-> +static IIO_CONST_ATTR_INT_TIME_AVAIL("0.1 0.2 0.4");
-> +
-> +static struct attribute *ltrf216a_attributes[] = {
-> +	&iio_const_attr_integration_time_available.dev_attr.attr,
-> +	NULL
-> +};
-> +
-> +static const struct attribute_group ltrf216a_attribute_group = {
-> +	.attrs = ltrf216a_attributes,
-> +};
-> +
-> +static int ltrf216a_init(struct iio_dev *indio_dev)
-> +{
-> +	int ret;
-> +	struct ltrf216a_data *data = iio_priv(indio_dev);
-> +
-> +	ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_CTRL);
-> +	if (ret < 0) {
-> +		dev_err(&data->client->dev, "Error reading LTRF216A_MAIN_CTRL\n");
-> +		return ret;
-> +	}
-> +
-> +	/* enable sensor */
-> +	ret |= 0x02;
-> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, ret);
-> +	if (ret < 0) {
-> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ltrf216a_disable(struct iio_dev *indio_dev)
-> +{
-> +	int ret;
-> +	struct ltrf216a_data *data = iio_priv(indio_dev);
-> +
-> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, 0);
-> +	if (ret < 0)
-> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static int ltrf216a_set_it_time(struct ltrf216a_data *data, int itime)
-> +{
-> +	int i, ret, index = -1;
-> +	u8 reg;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(int_time_mapping); i++) {
-> +		if (int_time_mapping[i] == itime) {
-> +			index = i;
-> +			break;
-> +		}
-> +	}
-> +	/* Make sure integration time index is valid */
-> +	if (index < 0)
-> +		return -EINVAL;
-> +
-> +	if (index == 0) {
-> +		reg = 0x03;
-> +		data->int_time_fac = 4;
-> +	} else if (index == 1) {
-> +		reg = 0x13;
-> +		data->int_time_fac = 2;
-> +	} else {
-> +		reg = (index << 4) | 0x02;
-> +		data->int_time_fac = 1;
-> +	}
-> +
-> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_ALS_MEAS_RATE, reg);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	data->int_time = itime;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ltrf216a_get_it_time(struct ltrf216a_data *data, int *val, int *val2)
-> +{
-> +	*val = 0;
-> +	*val2 = data->int_time;
-> +
-> +	return IIO_VAL_INT_PLUS_MICRO;
-> +}
-> +
-> +static int ltrf216a_read_data(struct ltrf216a_data *data, u8 addr)
-> +{
-> +	int ret;
-> +	int tries = 25;
-> +	int val_0, val_1, val_2;
-> +
-> +	while (tries--) {
-> +		ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_STATUS);
-> +		if (ret < 0)
-> +			return ret;
-> +		if (ret & 0x08)
-> +			break;
-> +		msleep(20);
-> +	}
-> +
-> +	val_0 = i2c_smbus_read_byte_data(data->client, addr);
-> +	val_1 = i2c_smbus_read_byte_data(data->client, addr + 1);
-> +	val_2 = i2c_smbus_read_byte_data(data->client, addr + 2);
-> +	ret = (val_2 << 16) + (val_1 << 8) + val_0;
-> +
-> +	return ret;
-> +}
-> +
-> +static int ltrf216a_get_lux(struct ltrf216a_data *data)
-> +{
-> +	int greendata, cleardata, lux;
-> +
-> +	greendata = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
-> +	cleardata = ltrf216a_read_data(data, LTRF216A_CLEAR_DATA_0);
-> +
-> +	if (greendata < 0 || cleardata < 0)
-> +		lux = 0;
-> +	else
-> +		lux = greendata * 8 * WIN_FAC / data->als_gain_fac / data->int_time_fac / 10;
-> +
-> +	return lux;
-> +}
-> +
-> +static int ltrf216a_read_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan, int *val,
-> +			     int *val2, long mask)
-> +{
-> +	int ret;
-> +	struct ltrf216a_data *data = iio_priv(indio_dev);
-> +
-> +	mutex_lock(&data->mutex);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		ret = ltrf216a_get_lux(data);
-> +		*val = ret;
-> +		ret = IIO_VAL_INT;
-> +		break;
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		ret = ltrf216a_get_it_time(data, val, val2);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +	}
-> +
-> +	mutex_unlock(&data->mutex);
-> +
-> +	return ret;
-> +}
-> +
-> +static int ltrf216a_write_raw(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan, int val,
-> +			      int val2, long mask)
-> +{
-> +	struct ltrf216a_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		if (val != 0)
-> +			return -EINVAL;
-> +		mutex_lock(&data->mutex);
-> +		ret = ltrf216a_set_it_time(data, val2);
-> +		mutex_unlock(&data->mutex);
-> +		return ret;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info ltrf216a_info = {
-> +	.read_raw	= ltrf216a_read_raw,
-> +	.write_raw	= ltrf216a_write_raw,
-> +	.attrs		= &ltrf216a_attribute_group,
-> +};
-> +
-> +static int ltrf216a_probe(struct i2c_client *client,
-> +			  const struct i2c_device_id *id)
-> +{
-> +	struct ltrf216a_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-> +	data->client = client;
-> +
-> +	mutex_init(&data->mutex);
-> +
-> +	indio_dev->info = &ltrf216a_info;
-> +	indio_dev->name = LTRF216A_DRV_NAME;
-> +	indio_dev->channels = ltrf216a_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ltrf216a_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ret = ltrf216a_init(indio_dev);
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "ltrf216a chip init failed\n");
-> +		return ret;
-> +	}
-> +	data->int_time = 100000;
-> +	data->int_time_fac = 1;
-> +	data->als_gain_fac = 3;
-> +
-> +	ret = iio_device_register(indio_dev);
+https://www.phoronix.com/scan.php?page=3Dnews_item&px=3DLinux-5.18-x86-Plat=
+form-Drivers
 
-Use devm- function, assuming no issues with removal-steps (disable will
-be before iio unregister).
+New GPU/CPU & Motherboard Bios strategy for ASUS unique
+RX6700XTC-FlareEdition2021
 
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "failed to register iio dev\n");
-> +		goto err_init;
-> +	}
-> +
-> +	return 0;
+Important Business : RS
+Date: Sun, Jan 3, 2021 at 11:12 AM
+To: Kr*****, L** <l**.kr****@amd.com>
+  To: <Med**@xilinx.com>
 
-Blank line.
+FPGA BitFile & Code Opt (c)RS 2021-01
 
-> +err_init:
-> +	ltrf216a_disable(indio_dev);
-> +	return ret;
-> +}
-> +
+Priority of Operating process for streamlining Dynamic FPGA units on
+CPU & GPU By Rupert S
+
+Factors common in FPGA are:100000 Gates to 750000 Gates (Ideal for
+complex tasks)
+
+Programmable Processor command implementation & reprogram  speed 3ns
+to 15 Seconds
+2 million gates
+Processor core usage to reprogram ?
+15% of a 200Mhz processor =3D 200ns programming time
+Processor core usage to reprogram ? 20% to 25% of a 200Mhz processor =3D
+30ns programming time
+
+250 to 2900 Gates 1uns to 2ns
+(ideal for small complex instructions)
+Processor usage (in programming) 2 to 5% CPU @200Mhz
+
+2000 to 12500 to 25000 Gates (ideal for very complex function)
+30uns to 8ns (ideal for small complex instructions & RISC)
+
+Processor usage (in programming) 2 to 9% CPU @200Mhz
+
+Plans to load a BitFile rely on constant use & not on the fly, However
+small gate arrays permit microsecond coding..
+
+However I do state that a parameter for operating order is specified &
+for most users Automatic.
+
+Operating system functions.. for example AUDIO are a priority & will
+stay consistent..
+
+So we will have specific common instructions that are specific to OS &
+BIOS Firmware..
+Commons will take 20% of a large FPGA (relative)
+
+With the aim of having at least 4 common & hard to match functions; As
+a core large ARRAY..The aim being not to reprogram every second,
+
+For example during boot process with: Bitfile preorder profile:
+1uns to 2ns (ideal for small complex instructions)
+
+During the operation of the Computer or array the FPGA may contain
+specific ANTIVirus & firewall functions, That we map to ML
+
+The small unit groups of fast reprogrammables will be ideal for
+application that we are using for more than 30 minutes.. & May be
+clustered.
+
+Optimus (Prime) bitfile : RS
+Obviously handheld devices require uniquely optimum feature set & tiny
+processor size..
+Create the boundry and push that limit.
+
+We will obviously prefer to enable Hardcode pre trained models such as :
+
+SiMD
+Tessellation & maths objective : for gaming & science
+Dynamic DMA Clusters (OS,Security,Root)
+Maths Unit
+HardDrive Accelerators
+Compressors
+Compiler optimisers CPU/GPU
+Core Prefetch/ML optimiser (on die)
+Combined Shader & function for both DirectX,Metal & Vulkan utility..
+GPU & CPU Synergy Network & Cache.
+Direct Audio & Video,Haptic processing dynamic; element 3D Extrapolation..
+Dynamic Meta Data processing & conversion ..
+(Very important because not all Meta data is understood directly in
+the used process.)
+
+Obviously handheld devices require uniquely optimum feature set & tiny
+processor size..
+Create the boundry and push that limit.
+
+(c)Rupert S https://science.n-helix.com
+
+"processor programs a reprogrammable execution unit with the bitfile
+so that the reprogrammable execution unit is capable of executing
+specialized instructions associated with the program."
+
+https://hothardware.com/news/amd-patent-hybrid-cpu-fpga-design-xilinx
+
+"AMD Patent Reveals Hybrid CPU-FPGA Design That Could Be Enabled By Xilinx =
+Tech
+xilinx office
+
+While they often aren=E2=80=99t as great as CPUs on their own, FPGAs can do=
+ a
+wonderful job accelerating specific tasks. Whether it's accelerating
+acting as a fabric for wide-scale datacenter services boosting AI
+performance, an FPGA in the hands of a capable engineer can offload a
+wide variety of tasks from a CPU and speed processes along. Intel has
+talked a big game about integrating Xeons with FPGAs over the last six
+years, but it hasn't resulted in a single product hitting its lineup.
+A new patent by AMD, though, could mean that the FPGA newcomer might
+be ready to make one of its own.
+
+In October, AMD announced plans to acquire Xilinx as part of a big
+push into the datacenter. On Thursday, the United States Patent and
+Trademark Office (USPTO) published an AMD patent for integrating
+programmable execution units with a CPU. AMD made 20 claims in its
+patent application, but the gist is that a processor can include one
+or more execution units that can be programmed to handle different
+types of custom instruction sets. That's exactly what an FPGA does. It
+might be a little bit until we see products based on this design, as
+it seems a little too soon to be part of CPUs included in recent EPYC
+leaks.
+
+While AMD has made waves with its chiplet designs for Zen 2 and Zen 3
+processors, that doesn't seem to be what's happening here. The
+programmable unit in AMD's FPGA patent actually shares registers with
+the processor's floating-point and integer execution units, which
+would be difficult, or at least very slow, if they're not on the same
+package. This kind of integration should make it easy for developers
+to weave these custom instructions into applications, and the CPU
+would just know to pass those onto the on-processor FPGA. Those
+programmable units can handle atypical data types, specifically FP16
+(or half-precision) values used to speed up AI training and inference.
+
+xilinx vu19p
+
+In the case of multiple programmable units, each unit could be
+programmed with a different set of specialized instructions, so the
+processor could accelerate multiple instruction sets, and these
+programmable EUs can be reprogrammed on the fly. The idea is that when
+a processor loads a program, it also loads a bitfile that configures
+the programmable execution unit to speed up certain tasks. The CPU's
+own decode and dispatch unit could address the programmable unit,
+passing those custom instructions to be processed.
+
+AMD has been working on different ways to speed up AI calculations for
+years. First the company announced and released the Radeon Impact
+series of AI accelerators, which were just big headless Radeon
+graphics processors with custom drivers. The company doubled down on
+that with the release of the MI60, its first 7-nm GPU ahead of the
+Radeon RX 5000 series launch, in 2018. A shift to focusing on AI via
+FPGAs after the Xilinx acquisition makes sense, and we're excited to
+see what the company comes up with."
+
+*****
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
+tml
 
 
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
 
-Best regards,
-Krzysztof
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/11/ihmtes.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com

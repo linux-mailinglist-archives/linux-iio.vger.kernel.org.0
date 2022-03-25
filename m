@@ -2,97 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A284E7281
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 12:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37FE04E72F0
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Mar 2022 13:22:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354186AbiCYMAO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 25 Mar 2022 08:00:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56780 "EHLO
+        id S1355098AbiCYMXh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Mar 2022 08:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345872AbiCYMAN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 08:00:13 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07850E008;
-        Fri, 25 Mar 2022 04:58:37 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id b24so8938009edu.10;
-        Fri, 25 Mar 2022 04:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5HUtOUWp2sZ6TtVf8FyrTatTYVQYhhjB2DEeLm0DIl0=;
-        b=Bg2vRbrg9DC8jGkbN/gbK8JUSHWn8tszqPOOqDcsWhq4S6iO5qxDWltryZiQp8nEWq
-         oW5nGkC4I5+5JNYMYBQ6f7tm2HhCUkbCjBJMOc2UEkMlgcBVIW4gX3jKewoABH5VHC3V
-         fXrFoG7ZigtE6BY/TJizDV/Ah9/91kbNHiJ5hpy1HVK0v2xzhTp+ssVMpdjlcpjrrJN1
-         TcnIFzPiGrFApB0lRhcOUVI20sNlr3OlZ52uKYxUTk2EO6ZqgCBwHE6Z990iJw6x7v78
-         J4XkI3tntZuna9FXg4Lj/u3I3S9nZbWrryfstI7CNGkI/FNND00q+KQlTzXc6qXpBDux
-         NNmQ==
+        with ESMTP id S232166AbiCYMXg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Mar 2022 08:23:36 -0400
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46E4CC527;
+        Fri, 25 Mar 2022 05:22:02 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id y10so9021239edv.7;
+        Fri, 25 Mar 2022 05:22:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5HUtOUWp2sZ6TtVf8FyrTatTYVQYhhjB2DEeLm0DIl0=;
-        b=XeFp9PS0snQF9/WCwjq/3Z/vrRGnPNvwIOqFg3P6LYrDJbhF8jPyRVzqh/MtOLVv6j
-         hufwLV1WcHuIggShiY61oWckp4XpBtkN9euq4KkvcnNWfr1bNuF14D9fABQH8JuSwzzB
-         MeCa+L0MkD6cdOglNZh5enSA7W1SEGFieOfRYVYNwqTP7/m8iMJ/VBQJk6tHh70/EBme
-         WZH5qbBdr6HaTq5xhdBHKxTUoD3t8C0bGAnGvVc/Yuxc7ajdAMpX83TwDFTLnbMNpvg0
-         wbj2BddGdmMzE1VZ8u6mxfc1zBkyFxxpF2i2S1Bna8gBY/QJrH7i8PgUINFM3/G5TYDY
-         WWGQ==
-X-Gm-Message-State: AOAM530BQ+RgXY3pSoITXPXwz/8QXk8dZdNnzX7rEzFVvGV+DcuzsH34
-        wltaPwL1iwMbtRlOj72wC42EkPmd2v3YXjRdhuJd0NzP0zg=
-X-Google-Smtp-Source: ABdhPJxxBxQy7rz7v8ypAhFqy/HT7mxKKkNRASnaabG6Xdhji28aPSrvtWzHmfMC2YJPtOaiBFr9jbln0E7ItrEv4Ng=
-X-Received: by 2002:a05:6402:54:b0:419:9b58:e305 with SMTP id
- f20-20020a056402005400b004199b58e305mr5305571edu.158.1648209515478; Fri, 25
- Mar 2022 04:58:35 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=g0xq/qIctoWJV1cqa570U55ncjhwmhr6DMeMU/vi/PU=;
+        b=oTdAEuPGVVpTWWRKYM1BmfhyJOC6pIVWRhfe4G6Ss8ZLzMhIhwsWqV5qENNca/LKlg
+         5pO0U3RvTr5/JHUHl72B6E0bTbEum3u3Pbrk/oIXCJRP/lxhvlmpFfDpEDO95a7qZxBJ
+         L1sAZ8mTSeDwZnEfY6ilhrLGVmrpckkWWLS6J9WTLztRWAp2uTN+/PkMvtkrEllOMh2i
+         isM7K9+hp4ixQ0uvDR+KrEV0vgxZUNBIlZOkTmxFsCOJ8XbE/LQYH8mDiqbcF7OiA5pG
+         6ucTK3KrZl15IHt/fotpAo6TsqaYFU2daytAqvRDCmGzvTGPChrpR3SBI+njhsM5tvjJ
+         sLCw==
+X-Gm-Message-State: AOAM531W0Q1eiRFTcOOoM+CMahCSE7ZeZNh/pZbkV1AQlP/zC+PPzrpD
+        fudWiQa6XvNyeltHEDHCxkc=
+X-Google-Smtp-Source: ABdhPJzT/M5gSCP4XsxnObX+t7Mq4oYpOHOsEMA9QCn3JeRHgGitUw0un91B9TDcrXTVlrw1quPHyA==
+X-Received: by 2002:a50:ec16:0:b0:40f:28a0:d0d6 with SMTP id g22-20020a50ec16000000b0040f28a0d0d6mr12882210edr.368.1648210921181;
+        Fri, 25 Mar 2022 05:22:01 -0700 (PDT)
+Received: from [192.168.0.160] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.googlemail.com with ESMTPSA id sd7-20020a1709076e0700b006e015549bdfsm2182955ejc.53.2022.03.25.05.21.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Mar 2022 05:22:00 -0700 (PDT)
+Message-ID: <b4cda0c2-bfb1-bdea-2511-e2952fa5fdf8@kernel.org>
+Date:   Fri, 25 Mar 2022 13:21:59 +0100
 MIME-Version: 1.0
-References: <20220215081216.67706-1-antoniu.miclaus@analog.com> <20220220121414.48d7a3b6@jic23-huawei>
-In-Reply-To: <20220220121414.48d7a3b6@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 25 Mar 2022 13:57:26 +0200
-Message-ID: <CAHp75VdWPBNeX4=7ZzozodLR2A9=YxfKLpey=fhKhmW+y2HAPw@mail.gmail.com>
-Subject: Re: [PATCH v8 1/4] iio:frequency:admv1014: add support for ADMV1014
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as deprecated
+ vendor prefix
+Content-Language: en-US
+To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com
+References: <20220325103014.6597-1-shreeya.patel@collabora.com>
+ <20220325103014.6597-2-shreeya.patel@collabora.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20220325103014.6597-2-shreeya.patel@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Feb 20, 2022 at 11:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Tue, 15 Feb 2022 10:12:13 +0200
-> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
->
-> > The ADMV1014 is a silicon germanium (SiGe), wideband,
-> > microwave downconverter optimized for point to point microwave
-> > radio designs operating in the 24 GHz to 44 GHz frequency range.
-> >
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1014.pdf
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
->
-> Hi Antoniu.
->
-> One really trivial point inline that I noticed whilst having 'one last look'.
->
-> I'll fix it up whilst applying but please check I didn't mess up!
->
-> Series applied to the togreg branch of iio.git and initially pushed out as
-> testing to let 0-day poke at it an see if it can find anything we missed.
+On 25/03/2022 11:30, Shreeya Patel wrote:
+> 'liteon' is the correct vendor prefix for devices released by
+> LITE-ON Technology Corp. But one of the released device which uses
+> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
+> ACPI.
+> 
+> Hence, add 'ltr' as a deprecated vendor prefix which would suppress the
+> following warning in case the compatible string used in ltrf216a driver
+> is "ltr,ltrf216a"
+> 
+> WARNING: DT compatible string vendor "ltr" appears un-documented --
+> check ./Documentation/devicetree/bindings/vendor-prefixes.yaml
+> 364: FILE: drivers/iio/light/ltrf216a.c:313:
+> +    { .compatible = "ltr,ltrf216a" },
+> 
+> 
+> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> index baed2b007d0e..e78091d51443 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -691,6 +691,9 @@ patternProperties:
+>      description: Linx Technologies
+>    "^liteon,.*":
+>      description: LITE-ON Technology Corp.
+> +  "^ltr,.*":
+> +    description: LITE-ON Technology Corp.
+> +    deprecated: true
 
-On v5 I have given a few comments and the author didn't include me
-into the Cc list for the following series. It's not good. Not that I
-care too much about the series, but just to make the point for the
-future reactions on somebody's review.
+Keep in alphabetical order. With the change:
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+Best regards,
+Krzysztof

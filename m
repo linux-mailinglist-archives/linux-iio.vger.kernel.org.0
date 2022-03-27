@@ -2,50 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BA574E8876
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 17:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C04BB4E887B
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 17:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233863AbiC0Plq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 11:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38524 "EHLO
+        id S232094AbiC0Ppk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 11:45:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232094AbiC0Plp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 11:41:45 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686BB2FFF7;
-        Sun, 27 Mar 2022 08:40:06 -0700 (PDT)
+        with ESMTP id S231623AbiC0Ppj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 11:45:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C01133587E;
+        Sun, 27 Mar 2022 08:44:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 9826ECE0ED0;
-        Sun, 27 Mar 2022 15:40:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3FFC340EC;
-        Sun, 27 Mar 2022 15:40:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6473061045;
+        Sun, 27 Mar 2022 15:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C9BC340EC;
+        Sun, 27 Mar 2022 15:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648395602;
-        bh=5UJUIysu5G+FC3sQcWa7rO+707a6q3tbUEAraheZZmY=;
+        s=k20201202; t=1648395839;
+        bh=1b5ZrLzlxq7Xxei9lvUlEtImFI2R3O8POV3NpenbAjk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZaEcuvQLDZg4Pn6TSqrqPxuPYSP9+X9i6vgs6r5VwzoG9/nIExmakROQ0zdmVxpy7
-         WGX5TAfkCYUjyrnPHxo7o9B6JeAx4wXUxxvl7I1oUrwA3I+ll78LyKeP9uqGECR9/2
-         BaVuNU4K6/5crBzMJKLqI89V44TKQIiObLDUxMY4pXLp/aCx1d/1vV7o+KKxLwiKkL
-         FzpcDh+3uesTJSnCtbA8Xxt1VNRicQzR30ckq4VHo7FZTkcNJLTV3Hiyrjkowrm9r1
-         jkm7CB8i+53Qc8T3f7PF++RMFh3kPXoViOP/t7ZFn2719yQDyA+cP98C21HOSg1n3p
-         78WigHtMmlooA==
-Date:   Sun, 27 Mar 2022 16:47:34 +0100
+        b=MFIeqPi2aso8KXW9KzZq/pmgRCdIFJXZ5nNRlvFmpw93noaNHyceqMiv4AJUdYt2j
+         RpJuPEmwDc0J0u6yZakyh/8QU+mMjzRtphF21D2gmPDjjEBTWa91nmhLrQe7UF+LJW
+         vydt4m2EVU+uTpx9ZopQHhMCMspUqlhgxHRiMkJCKJwrp3KNrMQ4510+7B+ddP1I48
+         buOYD8cYGJiC55a2F0RuTv6+KOXnkLzu+nDuC7wgD/ac+8Ch25HLGWxZjOgkDHhunf
+         g2yv9HdaMx+9VjlVKrlG6f5V2XxGlSRUS9UxJBva7P2X7hkphNdt27CaXoIyqadXif
+         9sBwDhfo0MUlw==
+Date:   Sun, 27 Mar 2022 16:51:30 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Tong Zhang <ztong0001@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
-Message-ID: <20220327164734.4b678562@jic23-huawei>
-In-Reply-To: <CAE-0n51=ewQnTctWsmvawb_p3CrE0JgJFwLy+FR6rUPkWmTgHw@mail.gmail.com>
-References: <20220318204808.3404542-1-swboyd@chromium.org>
-        <20220319152641.49d8b3e1@jic23-huawei>
-        <CAE-0n52jDZz0qKhfg8OWVDmDg5+xXo-qSL3jNka82QHwA2-xsw@mail.gmail.com>
-        <20220322203844.0000466f@Huawei.com>
-        <CAE-0n51=ewQnTctWsmvawb_p3CrE0JgJFwLy+FR6rUPkWmTgHw@mail.gmail.com>
+        Sean Nyekjaer <sean@geanix.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio:imu:bmi160: disable regulator in error path
+Message-ID: <20220327165130.51e3c9d2@jic23-huawei>
+In-Reply-To: <CAHp75VfzWpabLsCDDuifpEDgN+pCnU-agi47iO0exYV29k6nSA@mail.gmail.com>
+References: <20220319162006.13c60c1f@jic23-huawei>
+        <20220319193459.2628876-1-ztong0001@gmail.com>
+        <CAHp75Vfk+CQZoz+s5PuSTBb0Nb4KLB+yoNiTCJQ4NktxV1nycQ@mail.gmail.com>
+        <CAA5qM4DE7Qehn2G3bOJfJ7wNfOBA01tzAFOuGZa_O4=6Ocb61g@mail.gmail.com>
+        <CAHp75VfzWpabLsCDDuifpEDgN+pCnU-agi47iO0exYV29k6nSA@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,46 +65,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Mar 2022 17:57:26 -0400
-Stephen Boyd <swboyd@chromium.org> wrote:
+On Mon, 21 Mar 2022 18:22:10 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Quoting Jonathan Cameron (2022-03-22 13:38:44)
-> > On Mon, 21 Mar 2022 19:36:33 +0100
-> > Stephen Boyd <swboyd@chromium.org> wrote:  
-> > > Quoting Jonathan Cameron (2022-03-19 08:26:41)  
-> > > > On Fri, 18 Mar 2022 13:48:08 -0700
-> > > > Stephen Boyd <swboyd@chromium.org> wrote:  
-> > > > >
-> > > > > diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> > > > > index 0d9bbbb50cb4..a3c8e02f5a56 100644
-> > > > > --- a/drivers/iio/proximity/sx9324.c
-> > > > > +++ b/drivers/iio/proximity/sx9324.c
-> > > > > @@ -379,7 +379,10 @@ static int sx9324_read_gain(struct sx_common_data *data,
-> > > > >       if (ret)
-> > > > >               return ret;
-> > > > >
-> > > > > -     *val = 1 << FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
-> > > > > +     regval = FIELD_GET(SX9324_REG_PROX_CTRL0_GAIN_MASK, regval);
-> > > > > +     if (regval)  
-> > > >
-> > > > If 0 is reserved then I'd return and error code here to indicate
-> > > > we don't know what the gain is rather than carrying on regardless.
-> > > > Or is this going to cause problems as it will be an ABI change (error
-> > > > return possible when it wasn't really before)?
-> > > >  
-> > >
-> > > That sounds OK to me. The driver is only being introduced now so we can
-> > > still fix it to reject a gain of 0. Unless 0 should mean "off", i.e.
-> > > hardware gain of 1?  
-> > No.  I don't think we want to add that sort of fiddly definition.
-> > So error is the way to go - I'd forgotten we only just introduced this
-> > so no ABI breakage risk.
-> >  
+> On Mon, Mar 21, 2022 at 5:53 PM Tong Zhang <ztong0001@gmail.com> wrote:
+> > On Mon, Mar 21, 2022 at 1:28 AM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:  
+> > > On Sun, Mar 20, 2022 at 8:44 AM Tong Zhang <ztong0001@gmail.com> wrote:  
 > 
-> Ok got it. Does the write_gain function also need to reject values
-> greater than 8 and less than or equal to 0?
+> ...
+> 
+> > > Haven't I given you a tag?  
+> 
+> > Hi Any, Thank you for reviewing the patch. I appreciate it.
+> > I thought I would need another tag since this patch is a v2.  
+> 
+> It depends on the nature of the changes you made. As far as I read the
+> code the changes you made are in addition to what I have tagged and I
+> see nothing that prevents you from keeping the tag.
+> 
+> > Sorry for this back and forth. Have a great one.  
+> 
+> NP.
+> 
 
-Ah. Yes, it should indeed as the value is coming from userspace
-so we shouldn't trust it to be sensible.
+Applied to the fixes-togreg branch of iio.git but I won't push
+it out until I've rebased that on rc1 once available.
+
+Thanks,
 
 Jonathan
+

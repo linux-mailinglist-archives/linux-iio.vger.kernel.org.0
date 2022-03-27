@@ -2,44 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9303D4E87E7
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 15:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD064E87E9
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 15:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233399AbiC0Nlv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 09:41:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60128 "EHLO
+        id S234827AbiC0NtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 09:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229513AbiC0Nlu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 09:41:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497E940E66;
-        Sun, 27 Mar 2022 06:40:12 -0700 (PDT)
+        with ESMTP id S229513AbiC0NtW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 09:49:22 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D62213E94;
+        Sun, 27 Mar 2022 06:47:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D481961019;
-        Sun, 27 Mar 2022 13:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218D3C340EC;
-        Sun, 27 Mar 2022 13:40:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E7345B8013C;
+        Sun, 27 Mar 2022 13:47:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D99C340EC;
+        Sun, 27 Mar 2022 13:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648388411;
-        bh=5i/rEfC0HB9GBKSSLEUACxI9jlRbRA6ciFFumg8pWD8=;
+        s=k20201202; t=1648388859;
+        bh=GcofGmQumimhl5OM4grJQX7kjo1GV6TWDaRRje8li8E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mkGyJSfxo4wbot8NgY6KtoGBwgSonbdWA/I+AbwpVBOHDHd8yjSUZeugPWhEkmgIi
-         hveVOJ6eQNLH1fNdIp6IYAbcYqCJqGDM0I7pAb5M3EOUvOEVhLis5AzSO8mfl3Xvci
-         w+kQG+A7mbsuXU8iIl4rPEm1MUGm5AkTFxNMVPunGa1F2CWtIlAfjXlvxOrWQiZAdB
-         IjCB7gEi6MlIsHWFszGXNRWMfVmiU6376j0RySs2Ag0LBqn3k8gng5XqTDrYpRVH/e
-         QH/vCP/9fnxssWF4KEhX9pxGBB7Y4kka+bAe/Jx9SYVsFGAwaEdZKkRgoI6XeerzPN
-         fGUHfb26BcuIQ==
-Date:   Sun, 27 Mar 2022 14:47:43 +0100
+        b=DVQEy2ex/vXD/NWI7KoNA5kIgUAVdd5vGyP4CG3hIh7nfMTVyQeQO5Ir+jkYThHL5
+         zRVVCumoQMVF0Tpd15Gfle0lul0LGBIsjhXbGvnwgf5bs5OxhnZQeOki8CGIN8tENg
+         w0D0sobt4gRRJChRVfQeRccEX96obw2BK09zh1p2qPMuIVC+ysi+lK/KRQwPMDsQy2
+         x+8TJRrjDmH6bRtbxsm2X1MIRQh6//az54g1CusTZSE6temv6JQMqXC6u0B+zDhwMo
+         yViHnXdP8SQYrVlp+98noCPB6pP5ZdTMipSYahDM/dB6f/kCL8bgoTe1b5amVSSgPY
+         BhJwuUjk8wmag==
+Date:   Sun, 27 Mar 2022 14:55:11 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     robh+dt@kernel.org, swboyd@chromium.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 0/8] Add settings for precharge and internal resistor
-Message-ID: <20220327144743.4b29fa57@jic23-huawei>
-In-Reply-To: <20220325220827.3719273-1-gwendal@chromium.org>
-References: <20220325220827.3719273-1-gwendal@chromium.org>
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com
+Subject: Re: [PATCH 2/3] dt-bindings: Document ltrf216a light sensor
+ bindings
+Message-ID: <20220327145511.2d36dd10@jic23-huawei>
+In-Reply-To: <20220325103014.6597-3-shreeya.patel@collabora.com>
+References: <20220325103014.6597-1-shreeya.patel@collabora.com>
+        <20220325103014.6597-3-shreeya.patel@collabora.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,48 +58,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 25 Mar 2022 15:08:19 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Fri, 25 Mar 2022 16:00:13 +0530
+Shreeya Patel <shreeya.patel@collabora.com> wrote:
 
-> For Semtech sensors SX9324 and SX9360, allow confugration of the
-> pre-charge resistor (9324/9360) and internal resistor (9324).
+> Add devicetree bindings for ltrf216a ambient light sensor
 > 
-> Fix register name spelling mistakes first and set default value properly
-> for sx9324 internal resistor register.
-> 
-> The 9360 changes are independent from the 9324 changes, but they are
-> very similar.
-> 
-> Changes since v2:
-> - use -ohms instead of -kohms, as ohms is a defined unit in
->   dt-schema.git dtschema/schemas/property-units.yaml
-> 
-> Changes sinve v1:
-> - Add kOhm Unit, add a new patch to fix invalid register setting.
+> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+Hi Shreeya,
 
-This version looks good to me, but will leave time for dt review.
-We aren't in a rush anyway at the moment so I'll probably not pick
-it up until after rc1 is available.
+As we are making this Zhigang Shi's problem to maintain, I'm 
+looking for an ack.  Bit mean otherwise :)
 
-Thanks,
+Except for the deprecated part this could just have gone in
+trivial-bindings.yaml.
+
+I guess you don't need it for your existing board, but best
+practice would probably include ensuring whatever supplies
+the device needs are here so that platforms that don't enable
+them by default can turn them on.
+
+Also, there is an interrupt according to the datasheet linked
+from patch 3 and that should definitely be in the binding
+even if the driver isn't using it.
 
 Jonathan
 
+
+> ---
+>  .../bindings/iio/light/liteon,ltrf216a.yaml   | 42 +++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
 > 
-> Gwendal Grignou (8):
->   iio: sx9324: Fix default precharge internal resistance register
->   iio: sx9324: Fix register field spelling
->   dt-bindings: iio: sx9324: Add precharge resistor setting
->   iio: sx9324: Add precharge internal resistance setting
->   dt-bindings: iio: sx9324: Add internal compensation resistor setting
->   iio: sx9324: Add Setting for internal compensation resistor
->   dt-bindings: iio: sx9360: Add precharge resistor setting
->   iio: sx9360: Add pre-charge resistor setting
-> 
->  .../iio/proximity/semtech,sx9324.yaml         | 19 ++++++++
->  .../iio/proximity/semtech,sx9360.yaml         |  9 ++++
->  drivers/iio/proximity/sx9324.c                | 44 ++++++++++++++++---
->  drivers/iio/proximity/sx9360.c                | 12 ++++-
->  4 files changed, 78 insertions(+), 6 deletions(-)
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml b/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+> new file mode 100644
+> index 000000000000..275d86a0353a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/light/liteon,ltrf216a.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: LTRF216A Ambient Light Sensor
+> +
+> +maintainers:
+> +  - Zhigang Shi <Zhigang.Shi@liteon.com>
+> +
+> +description: |
+> +  Ambient sensing with an i2c interface.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - liteon,ltrf216a
+> +      - ltr,ltrf216a
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@53 {
+> +                compatible = "ltr,ltrf216a";
+> +                reg = <0x53>;
+> +        };
+> +    };
+> +...
 

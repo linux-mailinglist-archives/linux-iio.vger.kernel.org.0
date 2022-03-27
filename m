@@ -2,49 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30A594E8895
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 17:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 273ED4E88A4
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232367AbiC0P6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 11:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58300 "EHLO
+        id S234214AbiC0QFO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 12:05:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231913AbiC0P6L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 11:58:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB60B37BF8;
-        Sun, 27 Mar 2022 08:56:31 -0700 (PDT)
+        with ESMTP id S235603AbiC0QFN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:05:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F4BBE0B9
+        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 09:03:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7A234B80C6A;
-        Sun, 27 Mar 2022 15:56:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99535C340EC;
-        Sun, 27 Mar 2022 15:56:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13B2D6106C
+        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 16:03:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC531C340EC;
+        Sun, 27 Mar 2022 16:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648396589;
-        bh=99XWUGNcYcXgLJNtg4593P83O+3v/mcb8SoYcQTDK04=;
+        s=k20201202; t=1648397012;
+        bh=HVO0AklOw87ya2p82O6e/QG5Qk+oaFLWHj2PHbpF+Xk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=E25RRXF5xyKXcRW0nslSs4qvLNi1K9ARcpeNh8Blk56am5K74pwRi+hFlup14k3ph
-         DCR3BofUcwt/5Mqt/xB4QgGWdpl/OjgCToBfUFC7xaXXqpgo51n83Hd6lqjOuG8fxx
-         GdNAnvD44iAdanpZXCOkTdiheOP77vrOqUpixh7m0l49NuQAB+X4SmcKNOzpLUZiuv
-         pakJa5Qyn9ODPk6Xw7teTTPQKTtuoOQUVNbDt77LPJyBhVXrgHUplRKPh1zAr/aoPe
-         ryjS0Yb+a3GqSUXj6Itlu9LJiYP6Y5C4gGuW8KsBu3JIlHt8MG3Ozi08FoA+4Yvo33
-         dPFq1K5nsJI5Q==
-Date:   Sun, 27 Mar 2022 17:04:01 +0100
+        b=iwR03V3cpbOx4Rk5M2r6BNQ7I//w5bY3ryKgC/hwlejmvTIBFz2ogP2erIpeweBPx
+         jxm62hFg10Da6iXv3igB266G/tqtvnfMmDbxN8j0fxSbPcIxirfFpSnLhqmeSWfdln
+         /iaoGGxTi2DbENi9xQidPGBz8NTodwMqkvJso8eO1H4b983nDKfzDAZa8bCJHDsVbg
+         0BN3PjBjJ4Q7noNW3eKoMb5v1eE9TJKXfgfl/GeRwIIVcVdjtSGuTi6v5C3ikCd89Z
+         gEpbDkZO1whksJsBr6MEk0PGNepsSyw/nEb5rWgiTKJ3vwr/Xi6Vuj8eS85wv+v42j
+         tubGzG/7rReww==
+Date:   Sun, 27 Mar 2022 17:11:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 1/4] iio:frequency:admv1014: add support for ADMV1014
-Message-ID: <20220327170401.3ca0d228@jic23-huawei>
-In-Reply-To: <CAHp75VdWPBNeX4=7ZzozodLR2A9=YxfKLpey=fhKhmW+y2HAPw@mail.gmail.com>
-References: <20220215081216.67706-1-antoniu.miclaus@analog.com>
-        <20220220121414.48d7a3b6@jic23-huawei>
-        <CAHp75VdWPBNeX4=7ZzozodLR2A9=YxfKLpey=fhKhmW+y2HAPw@mail.gmail.com>
+        Andrea Merello <andrea.merello@iit.it>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [v3 07/13] iio: imu: add Bosch Sensortec BNO055 core driver
+Message-ID: <20220327171104.051fcbd2@jic23-huawei>
+In-Reply-To: <CAN8YU5OCEBTF37hb6ozaguJ0=svPyv+fmGGsLhoBCPZA5Odgdw@mail.gmail.com>
+References: <20220217162710.33615-1-andrea.merello@gmail.com>
+        <20220217162710.33615-8-andrea.merello@gmail.com>
+        <ba1b2d78-bf4a-ec6d-88b8-76bbf2ff5e3e@pmeerw.net>
+        <20220219174141.4937297a@jic23-huawei>
+        <CAN8YU5OCEBTF37hb6ozaguJ0=svPyv+fmGGsLhoBCPZA5Odgdw@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,35 +60,147 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 25 Mar 2022 13:57:26 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 22 Mar 2022 11:27:14 +0100
+Andrea Merello <andrea.merello@gmail.com> wrote:
 
-> On Sun, Feb 20, 2022 at 11:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Tue, 15 Feb 2022 10:12:13 +0200
-> > Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+> Il giorno sab 19 feb 2022 alle ore 18:34 Jonathan Cameron
+> <jic23@kernel.org> ha scritto:
+> >
+> > On Thu, 17 Feb 2022 22:58:14 +0100 (CET)
+> > Peter Meerwald-Stadler <pmeerw@pmeerw.net> wrote:
 > >  
-> > > The ADMV1014 is a silicon germanium (SiGe), wideband,
-> > > microwave downconverter optimized for point to point microwave
-> > > radio designs operating in the 24 GHz to 44 GHz frequency range.
+> > > On Thu, 17 Feb 2022, Andrea Merello wrote:
 > > >
-> > > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADMV1014.pdf
-> > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>  
+> > > nice work, minor comments below  
 > >
-> > Hi Antoniu.
+> > I'll review on top of Peter to save on duplication.
 > >
-> > One really trivial point inline that I noticed whilst having 'one last look'.
-> >
-> > I'll fix it up whilst applying but please check I didn't mess up!
-> >
-> > Series applied to the togreg branch of iio.git and initially pushed out as
-> > testing to let 0-day poke at it an see if it can find anything we missed.  
-> 
-> On v5 I have given a few comments and the author didn't include me
-> into the Cc list for the following series. It's not good. Not that I
-> care too much about the series, but just to make the point for the
-> future reactions on somebody's review.
-> 
+> > Mostly really minor stuff.  
 
-Noted. Thanks for the heads up.
++CC Greg for binary attribute questions.
+
+> 
+> :)
+> 
+> As usual, comments inline; OK for all the rest.
+> 
+> > Given this has crossed with the introduction of namespaces to quite
+> > a few IIO drivers (I have another series to do on that once I get
+> > caught up with reviews) I'd prefer it if you would move this into
+> > a symbol namespace (EXPORT_SYMBOL_NS_GPL() and appropriate namespace
+> > statements in the two bus modules.
+> >
+> > Save it being done as a follow up series.  If you prefer not to then
+> > that's fine too as it'll be a trivial follow up patch.  
+> 
+> I'll include it in V4 directly.
+> 
+> [...]
+> 
+> > > > +   case IIO_CHAN_INFO_SCALE:
+> > > > +           /* Table 3-31: 1 quaternion = 2^14 LSB */
+> > > > +           if (size < 2)
+> > > > +                   return -EINVAL;
+> > > > +           vals[0] = 1;
+> > > > +           vals[1] = 1 << 14;
+> > > > +           return IIO_VAL_FRACTIONAL_LOG2;  
+> >
+> > This doesn't look right.  Not vals[1] = 14 given FRACTIONAL_LOG2?  
+> 
+> Hum.. maybe just IIO_VAL_FRACTIONAL ?
+
+That works as well, though I'd argue FRACTIONAL_LOG2 is the
+better option as it makes it clear the divisor is a power of 2
+and the precision might potentially be better as a result (I've not
+checked!)
+
+> 
+> > > > +   default:
+> > > > +           return -EINVAL;
+> > > > +   }
+> > > > +}
+> > > > +  
+> 
+> [...]
+> 
+> > > > +static IIO_DEVICE_ATTR_RO(sys_calibration_auto_status, 0);
+> > > > +static IIO_DEVICE_ATTR_RO(in_accel_calibration_auto_status, 0);
+> > > > +static IIO_DEVICE_ATTR_RO(in_gyro_calibration_auto_status, 0);
+> > > > +static IIO_DEVICE_ATTR_RO(in_magn_calibration_auto_status, 0);
+> > > > +static IIO_DEVICE_ATTR_RO(calibration_data, 0);  
+> >
+> > This is documented as providing binary data but it's not using
+> > a binary attribute and that rather surprised me.
+> >
+> > Off the top of my head I can't recall why it matters though, so please
+> > take a look at whether a bin_attribute makes more sense for this.  
+> 
+> As far as I can see, it seems that a non-binary attributes only
+> support to be read at once while the binary attributes read()
+> operation supports random access i.e. it has the file position
+> parameter.
+> 
+> The calibration data is "dynamic", it's read from the HW every time,
+> and I'm not sure it makes any sense to read it in several chunks (what
+> if we read a chunk and the calibration data is updated by the HW
+> before reading the second chunk?). So, despide the fitting "binary"
+> name I'm tempted to stick with regular attribute. However I'm not sure
+> this is the only difference related to binary attributes.
+
++Cc Greg.  Valid choice to use a normal attribute for this?
+
+> 
+> > > > +
+> > > > +static IIO_DEVICE_ATTR_RO(serial_number, 0);
+> > > > +
+> > > > +static struct attribute *bno055_attrs[] = {
+> > > > +   &iio_dev_attr_in_accel_range_raw_available.dev_attr.attr,  
+> >
+> > discussed in ABI documentation review.
+> > I think these should be range_input to avoid implication they are
+> > in _raw units (i.e. need _scale to be applied)  
+> 
+> They are raw indeed; they need scale to be applied, then they become m/s^2.
+> 
+> I'll fix the doc to clarify this.
+
+Ah. Ok.
+
+> 
+> [...]
+> 
+> > > > +
+> > > > +   priv->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+> > > > +   if (IS_ERR(priv->reset_gpio))
+> > > > +           return dev_err_probe(dev, PTR_ERR(priv->reset_gpio), "Failed to get reset GPIO");
+> > > > +
+> > > > +   priv->clk = devm_clk_get_optional(dev, "clk");
+> > > > +   if (IS_ERR(priv->clk))
+> > > > +           return dev_err_probe(dev, PTR_ERR(priv->clk), "Failed to get CLK");
+> > > > +
+> > > > +   ret = clk_prepare_enable(priv->clk);
+> > > > +   if (ret)
+> > > > +           return ret;
+> > > > +
+> > > > +   ret = devm_add_action_or_reset(dev, bno055_clk_disable, priv->clk);
+> > > > +   if (ret)
+> > > > +           return ret;
+> > > > +
+> > > > +   if (priv->reset_gpio) {
+> > > > +           usleep_range(5000, 10000);
+> > > > +           gpiod_set_value_cansleep(priv->reset_gpio, 1);
+> > > > +           usleep_range(650000, 750000);  
+> >
+> > Not a toggle on the reset?  I'd expect it to be set and then unset after
+> > a pulse.  
+> 
+> Isn't the above devm_gpiod_get_optional() call that also initialize
+> the initial GPIO value (then just wait and flip here) ?
+
+good point.  Missed that.
 
 Jonathan
+
+> 
+> [...]
+

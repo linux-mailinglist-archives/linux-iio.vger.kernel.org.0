@@ -2,52 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A5604E884E
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 16:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40C84E884F
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 17:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234817AbiC0O7u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 10:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48844 "EHLO
+        id S235226AbiC0PDJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 11:03:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbiC0O7t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 10:59:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7C8B2BF3;
-        Sun, 27 Mar 2022 07:58:08 -0700 (PDT)
+        with ESMTP id S229518AbiC0PDJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 11:03:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FAF24F16
+        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 08:01:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7A9B4B80BEC;
-        Sun, 27 Mar 2022 14:58:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107D9C340EC;
-        Sun, 27 Mar 2022 14:58:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B57F361033
+        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 15:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FBAC340EC;
+        Sun, 27 Mar 2022 15:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648393086;
-        bh=8lIko6mJwkpTvm5lEokpGEKrsooA240QrxLFkeg3is8=;
+        s=k20201202; t=1648393289;
+        bh=u6fr6ldl97v51d9k4AIAYiDQiwhcP4Y1sNZK+PyWFHQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=A5bNTLIsuNOMcsotbLzkLxJKsqP5HLsP1e2oSgNlU5iuF4FKM6mkkGQJVydMX5/7j
-         uzVWK3NcXDgnlyizRgCMowvV9XfKZl2xjdb34NXbX6tRHitRLpk/JGtcNx7cXoTRjA
-         9PjI7ziOTRoQCGsVVtjkt/my1sUUTL0u0CH2PfXYUbMElB4abZJKmM094NK/Ea8/r0
-         ZZfsP5fG8ixKs0QUT/kUA97NOSnVcvYUbMxEKIrXYlM0aMoLRp73nDs57QolzL08Xu
-         vC3nxFWar3qUOgZC7TguA0B+hi8CTuMFqCDZMawpr/IvCttt5TvULV8o7z8hfpWOwa
-         F2J3YJYOKO7wQ==
-Date:   Sun, 27 Mar 2022 16:05:39 +0100
+        b=I3/+5CvxC5aGLqTx6V9HLHE38yyraGRxL04dXQx7Gs8Kq/2eDgLDX8Sl2F2bRQMRM
+         ctWuaEYxWScwcT5N1Ip6s8BrVWP/c6AnBIC31LTDJ05mPY2M2qbtI4KsedYuIYd+/N
+         fGZAzlZHt3wtDQG9bndKZwVW/TTflja7YB9lZUfhp7uhCSJwv6xSU9VLcBHyznBO2X
+         6aQquLdToMt8jnOsEadWVFHta41T09JlTfAeiinXiRekRXe8N5BuiXbc6ORfY9pNNj
+         Z9Z8+EZ2Wrt+k9OnJVhZfMP2hMBPn/4yjo6gYj8Jv81e1Ou3SkJtDb4lAbaKElTItu
+         wNizTNHdg7ltw==
+Date:   Sun, 27 Mar 2022 16:09:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     michael.srba@seznam.cz
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] iio: imu: inv_mpu6050: Add support for
- ICM-20608-D
-Message-ID: <20220327160530.41befccc@jic23-huawei>
-In-Reply-To: <20220323121550.16096-1-michael.srba@seznam.cz>
-References: <20220323121550.16096-1-michael.srba@seznam.cz>
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v2] iio: core: Print error in case sample bits do not
+ fit storage bits
+Message-ID: <20220327160903.63cde092@jic23-huawei>
+In-Reply-To: <52553cf76f5d4c7d7224117b528d111ab7ca5ae3.camel@gmail.com>
+References: <20220322111619.54808-1-marex@denx.de>
+        <20220322214248.00007194@Huawei.com>
+        <52553cf76f5d4c7d7224117b528d111ab7ca5ae3.camel@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,45 +59,141 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Mar 2022 13:15:48 +0100
-michael.srba@seznam.cz wrote:
+On Wed, 23 Mar 2022 13:05:01 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> From: Michael Srba <Michael.Srba@seznam.cz>
-> 
-> This series copies the invensense icm20608 support in the inv_mpu6050
-> driver for icm20608d, which is for all intents and purposes identical,
-> except for the inclusion of a DMP (Digital Motion Processor), which
-> is deemed significant enough to change the WHOAMI value, thereby making
-> the driver fail if the invensense,icm20608 compatible is specified.
-> 
-> Since the driver doesn't currently acknowledge that there is such thing
-> as a DMP core, all that is needed is to copy the icm20608 support and
-> change the WHOAMI value.
+> On Tue, 2022-03-22 at 21:42 +0000, Jonathan Cameron wrote:
+> > On Tue, 22 Mar 2022 12:16:19 +0100
+> > Marek Vasut <marex@denx.de> wrote:
+> >  =20
+> > > Add runtime check to verify whether storagebits are at least as big
+> > > as shifted realbits. This should help spot broken drivers which may
+> > > set realbits + shift above storagebits.
+> > >=20
+> > > Signed-off-by: Marek Vasut <marex@denx.de>
+> > > Cc: Andy Shevchenko <andy@kernel.org>
+> > > Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> > > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com> =20
+> >=20
+> > Hmm. I was thinking we'd fail the probe if this happens,
+> > though I guess there might be cases where we get away=20
+> > (in kernel anyway) with a driver setting this wrong as
+> > many drivers don't use realbits internally in an explicit
+> > fashion, so maybe a message and skipping the channel is
+> > the right choice...
+> >=20
+> > Userspace running against such a description is likely
+> > to generate garbage though unless it's very lucky and
+> > the spill past storage bits is into padding space and
+> > the driver doesn't put anything in there (padding might
+> > contain old data or similar).
+> >=20
+> > Either way it's a definite improvement so I'm probably fine
+> > with the message and not failing the probe, (though will
+> > think a bit more about it before picking this up.)
+> >=20
+> >=20
+> > Jonathan`
+> >  =20
+>=20
+> FWIW, if we assume we are ok with potentially some drivers starting to
+> fail probe, I'm +1 on this should fail probe...
 
-Series applied to my local togreg branch, but I'll be rebasing that after
-rc1 so for now only pushed out as testing to let 0-day see if it can
-find anything we missed.
+I think we are.  If anyone has messed this up the results are
+pretty ugly and so good to know asap and get those drivers fixed.
+
+I'm probably falsely hopeful that no one has messed this up because
+it would normally be very easy to spot in a driver assuming there
+isn't a bunch of macro magic hiding the actual value assignment.
+
+So unless you feel strongly that it should be a warning, Marek
+would you mind spinning a v3 that fails the probe by
+returning an error.
 
 Thanks,
 
 Jonathan
 
-> 
-> changelog:
->  -v2: require specifying "invensense,icm20608" as a fallback compatible
->       in the binding, as suggested
->  -v3: fix indentation issue with the binding
-> 
-> Michael Srba (2):
->   dt-bindings: iio: imu: mpu6050: Document invensense,icm20608d
->   iio: imu: inv_mpu6050: Add support for ICM-20608-D
-> 
->  .../bindings/iio/imu/invensense,mpu6050.yaml  | 34 +++++++++++--------
->  drivers/iio/imu/inv_mpu6050/Kconfig           |  4 +--
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    |  9 +++++
->  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c     |  6 ++++
->  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  2 ++
->  drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c     |  5 +++
->  6 files changed, 43 insertions(+), 17 deletions(-)
-> 
+
+>=20
+> - Nuno S=C3=A1
+> >  =20
+> > > ---
+> > > V2: Use dev_err() instead as WARN_ON() may panic() the kernel on
+> > > existing machines
+> > > ---
+> > > =C2=A0drivers/iio/industrialio-buffer.c | 12 ++++++++++++
+> > > =C2=A01 file changed, 12 insertions(+)
+> > >=20
+> > > diff --git a/drivers/iio/industrialio-buffer.c
+> > > b/drivers/iio/industrialio-buffer.c
+> > > index b078eb2f3c9de..b5670398b06d7 100644
+> > > --- a/drivers/iio/industrialio-buffer.c
+> > > +++ b/drivers/iio/industrialio-buffer.c
+> > > @@ -1629,6 +1629,18 @@ static int
+> > > __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+if (channels[i].scan_index < 0)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0continue;
+> > > =C2=A0
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* =
+Verify that sample bits fit into storage
+> > > */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if =
+(channels[i].scan_type.storagebits <
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 channels[i].scan_type.realbits +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 channels[i].scan_type.shift) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_err(&indio_dev->dev,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0"Channel %d storagebits
+> > > (%d) < shifted realbits (%d + %d)\n",
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0i,
+> > > channels[i].scan_type.storagebits,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0channels[i].scan_type.realb
+> > > its,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0channels[i].scan_type.shift
+> > > );
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0continue;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > +
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ret =3D
+> > > iio_buffer_add_channel_sysfs(indio_dev, buffer,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > > &channels[i]);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+if (ret < 0) =20
+> >  =20
+>=20
 

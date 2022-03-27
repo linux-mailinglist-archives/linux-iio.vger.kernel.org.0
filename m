@@ -2,224 +2,377 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C9B44E83D7
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Mar 2022 20:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E57E34E854F
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 05:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234805AbiCZTnl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Mar 2022 15:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47030 "EHLO
+        id S233819AbiC0Dzm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Mar 2022 23:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234791AbiCZTnj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Mar 2022 15:43:39 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3941D173F6E;
-        Sat, 26 Mar 2022 12:42:02 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id e5so11456596pls.4;
-        Sat, 26 Mar 2022 12:42:02 -0700 (PDT)
+        with ESMTP id S233891AbiC0Dzj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Mar 2022 23:55:39 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECB113DE9
+        for <linux-iio@vger.kernel.org>; Sat, 26 Mar 2022 20:53:57 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id z92so13391235ede.13
+        for <linux-iio@vger.kernel.org>; Sat, 26 Mar 2022 20:53:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=llFGG5Ln4GVOwfUYH1k+vdT3vwWNdoegXKZ4vtGyn6w=;
-        b=fzzCsS/pr1ErTf+UmtXWcKGuM7JjCovPVf3AI3L19HoMtAfYfsSvgGqbMejQFbn/4e
-         XuuQEkR5ia1bjCQYGJeDMmkwnaG4dq6O4jySw8xxGXB1EhNkYD4OwovlxTZW50BBYQhW
-         dSISrgeDWJnGtP1XBLWPrR53nipTR2Pw45VSiWzmD27wv6rFv66+6MG/NP2LbjzSRlpL
-         Zf34xgWaAlyeXTUHtCxiuEoQsEUiWTM8t5ZDz6psWVLgDGOvntLpDXP9VGVd8kNXgMs3
-         MXDVgrPVcF9t9UGnmgjRBIRUSqV3sndfDN30YVxwR4e2i2HasbmndbgaOGiR+d/a/7Kp
-         DCag==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=uXaRvLUj+1B5FMxtaQVDP6hPG33CuATLlxKJ63s1fLU=;
+        b=WHbYB3D/saNPToEkj0WBAa6nXvL0HqfyU+Y5hpaCgsZHyQXCuaSeRuenQPGDxRBqMG
+         UyzlGbn3CCnOsy+T29J1n/Ld8koFyyfXtS+nBvXASsct4dvFn9CXwkNCJoWK3vzn4pI+
+         8aOjLzCUBC5MtfXmPdaXpVWaBCcNeELP+IpTc4EYHOCf9zYkZv/mX9DIeboIUOcBWdb2
+         1CXdUy3wyYocilgEY3l2a0JX2G0Awwjp6eqAFl5AonsT2Ntdll4p+K9ZMH6+tScCs29o
+         arF7GSfy4Hw1iTLsjoJf5JZsA/FlydB32Ii8bfHAo1IZJO6yfLV94YxeP1orA4QxKF7n
+         9DXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=llFGG5Ln4GVOwfUYH1k+vdT3vwWNdoegXKZ4vtGyn6w=;
-        b=D5ILTXFyLU3pu49XziLtZ4xHDfDJUF0mrjbySCr8t1Q/NVVNfOUVoOegnDoxvrbpKS
-         qE7BKdz5WOre0RLC6RrDslOEaM8UsUtmjQlyxsHoviazgbN8jkD8Ub7FkcFdM3/C1E55
-         JflImBZGdX8i9MmdaH4eFzgqwJcFJ+U/nuerIIyP/lT584DvXdkCZM8o/7uBxvVAw9Fu
-         FpJsKhjay/QBTavz4Ldxd7buUHKRRQQUFOxCNQt/xKWedMHAP2mhdrEOkVvt60BTJMnI
-         NElcrTEjYUYRgystC57pPgJhyTycWZ7NRYVHKmtA2XrxCTZ6FPqaXlrWus6pC4PN7T81
-         +Ajg==
-X-Gm-Message-State: AOAM532TW+5R6YC7VuaaQd1WtGodNxfpFQFYKfFxOlivPwGQ5hK5/OJ4
-        0vuyvvXwrrdJpHkTqV3KDKM=
-X-Google-Smtp-Source: ABdhPJxSSj3KRzh+Cczwjgvy6iW74+dHes/vn6ViGSr7LL639XjTIyxHg8AvRoIGSjk9pgOSCXiaow==
-X-Received: by 2002:a17:902:7109:b0:153:2ed8:b140 with SMTP id a9-20020a170902710900b001532ed8b140mr18735814pll.52.1648323721535;
-        Sat, 26 Mar 2022 12:42:01 -0700 (PDT)
-Received: from localhost.localdomain ([116.75.119.161])
-        by smtp.gmail.com with ESMTPSA id k185-20020a6384c2000000b003821dcd9020sm8778784pgd.27.2022.03.26.12.41.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Mar 2022 12:42:01 -0700 (PDT)
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     dan@dlrobertson.com, jic23@kernel.org, andy.shevchenko@gmail.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] iio: accel: bma400: Add step change event
-Date:   Sun, 27 Mar 2022 01:11:46 +0530
-Message-Id: <20220326194146.15549-6-jagathjog1996@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220326194146.15549-1-jagathjog1996@gmail.com>
-References: <20220326194146.15549-1-jagathjog1996@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=uXaRvLUj+1B5FMxtaQVDP6hPG33CuATLlxKJ63s1fLU=;
+        b=S12OSHC+wA1Uf9VMHLF8oJY5Qe8DdmiqXJ/Qn67apXWExozMHB3FjquyPx4X4S1Kpx
+         OcgIIZAg/hd3ruM4LHDS9MYmxgvgm/KLrL+v8bm0qL59PWdd6rW5+w+kSr3nBGLhOaOT
+         J85GLNH5wrZurZRHMngmfdzVUxw+cvEcaPk+6BBa2tLkDvWMwnhpU2znRJJKd/WEegc5
+         dVJQ0KVA+yF1EERrqjAlOL9BejJTrCdi37IdbL5Uk+jGUSJHk1lHfzDjcVIjxHFHnGF7
+         BhmIXlzpWb203eepj6mmEXtnNIQ3Q2IhilrkyVHQoFHE1F8o5Jssws+4iN535ucGE+yG
+         vvsA==
+X-Gm-Message-State: AOAM532jJTcag7akj5g3090SCWQ+Z7WGyaG67kY80DTSZGoNh2J+9PyX
+        oovx88JqsS3Mf34iujvPh/YCEp4av4u6hHTyzgo=
+X-Google-Smtp-Source: ABdhPJzZD8Z2yWonCFr6uw6HTW3jwHIxz8mSt1fdP844JxY8by8YlapVE2a4JgJWnjZlUWC1MJLGeCDgSiCh9jr8jcY=
+X-Received: by 2002:a05:6402:8d7:b0:419:1162:a507 with SMTP id
+ d23-20020a05640208d700b004191162a507mr8313467edz.157.1648353235326; Sat, 26
+ Mar 2022 20:53:55 -0700 (PDT)
+MIME-Version: 1.0
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Sun, 27 Mar 2022 04:53:45 +0100
+Message-ID: <CAHpNFcNX7G+exq5KiyHS=EC5Ptuu8to+gn5v3tP4RCyX2cg+OA@mail.gmail.com>
+Subject: GPRS New Solutions ViaSystems 2022 : For VIA 2G> 5G Security IS THE
+ LAW We Will Progress GPRS Will Survive as a manageable system in Africa &
+ south america "We The People Are Hungry" Leaf Random & GPRS Security :
+ Operating Systems will manage, But how long will we survive with No KLOGS :
+ progress in linux ? https://lkml.org/lkml/2022/3/25/991
+To:     info@vialicensing.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Added support for event when there is a detection of step change.
-INT1 pin is used to interrupt and event is pushed to userspace.
+Jitter RAND Support Data Set + GPRS Dongle usage Technology : Alarming
+as the GPRS 20% of key '20% of the key discovered Full Potential Hack'
+is With Real /Dev/random #NoHack
 
-Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
----
- drivers/iio/accel/bma400.h      |  2 +
- drivers/iio/accel/bma400_core.c | 73 +++++++++++++++++++++++++++++++++
- 2 files changed, 75 insertions(+)
+Real hardened Rust Implementation & code for use:
+https://github.com/P1sec/gea-implementation
 
-diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-index c9b856b37021..c4ec0cf6dc00 100644
---- a/drivers/iio/accel/bma400.h
-+++ b/drivers/iio/accel/bma400.h
-@@ -39,6 +39,7 @@
- #define BMA400_INT_STAT0_REG        0x0e
- #define BMA400_INT_STAT1_REG        0x0f
- #define BMA400_INT_STAT2_REG        0x10
-+#define BMA400_INT12_MAP_REG	    0x23
- 
- /* Temperature register */
- #define BMA400_TEMP_DATA_REG        0x11
-@@ -54,6 +55,7 @@
- #define BMA400_STEP_CNT3_REG        0x17
- #define BMA400_STEP_STAT_REG        0x18
- #define BMA400_STEP_INT_MSK	    BIT(0)
-+#define BMA400_STEP_STAT_MASK	    GENMASK(9, 8)
- 
- /*
-  * Read-write configuration registers
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index ec2f9c380bda..aaa104a2698b 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -24,6 +24,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/buffer.h>
-+#include <linux/iio/events.h>
- #include <linux/iio/trigger.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
-@@ -70,6 +71,7 @@ struct bma400_data {
- 	int scale;
- 	struct iio_trigger *trig;
- 	int steps_enabled;
-+	bool step_event_en;
- 	/* Correct time stamp alignment */
- 	struct {
- 		__le16 buff[3];
-@@ -167,6 +169,12 @@ static const struct iio_chan_spec_ext_info bma400_ext_info[] = {
- 	{ }
- };
- 
-+static const struct iio_event_spec bma400_step_detect_event = {
-+	.type = IIO_EV_TYPE_CHANGE,
-+	.dir = IIO_EV_DIR_NONE,
-+	.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+};
-+
- #define BMA400_ACC_CHANNEL(_index, _axis) { \
- 	.type = IIO_ACCEL, \
- 	.modified = 1, \
-@@ -209,6 +217,8 @@ static const struct iio_chan_spec bma400_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
- 				      BIT(IIO_CHAN_INFO_ENABLE),
- 		.scan_index = -1, /* No buffer support */
-+		.event_spec = &bma400_step_detect_event,
-+		.num_event_specs = 1,
- 	},
- 	IIO_CHAN_SOFT_TIMESTAMP(4),
- };
-@@ -878,6 +888,58 @@ static int bma400_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int bma400_read_event_config(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir)
-+{
-+	struct bma400_data *data = iio_priv(indio_dev);
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_CHANGE:
-+		return data->step_event_en;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bma400_write_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir, int state)
-+{
-+	int ret;
-+	struct bma400_data *data = iio_priv(indio_dev);
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_CHANGE:
-+		mutex_lock(&data->mutex);
-+		if (!data->steps_enabled) {
-+			ret = regmap_update_bits(data->regmap,
-+						 BMA400_INT_CONFIG1_REG,
-+						 BMA400_STEP_INT_MSK,
-+						 FIELD_PREP(BMA400_STEP_INT_MSK,
-+							    1));
-+			if (ret)
-+				return ret;
-+			data->steps_enabled = 1;
-+		}
-+
-+		ret = regmap_update_bits(data->regmap,
-+					 BMA400_INT12_MAP_REG,
-+					 BMA400_STEP_INT_MSK,
-+					 FIELD_PREP(BMA400_STEP_INT_MSK,
-+						    state));
-+		mutex_unlock(&data->mutex);
-+		if (ret)
-+			return ret;
-+		data->step_event_en = state;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int bma400_data_rdy_trigger_set_state(struct iio_trigger *trig,
- 					     bool state)
- {
-@@ -910,6 +972,8 @@ static const struct iio_info bma400_info = {
- 	.read_avail        = bma400_read_avail,
- 	.write_raw         = bma400_write_raw,
- 	.write_raw_get_fmt = bma400_write_raw_get_fmt,
-+	.read_event_config = bma400_read_event_config,
-+	.write_event_config = bma400_write_event_config,
- };
- 
- static const struct iio_trigger_ops bma400_trigger_ops = {
-@@ -965,6 +1029,15 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
- 		ret = IRQ_HANDLED;
- 	}
- 
-+	if (FIELD_GET(BMA400_STEP_STAT_MASK, le16_to_cpu(status))) {
-+		iio_push_event(indio_dev,
-+			       IIO_EVENT_CODE(IIO_STEPS, 0, IIO_NO_MOD,
-+					      IIO_EV_DIR_NONE,
-+					      IIO_EV_TYPE_CHANGE, 0, 0, 0),
-+			       iio_get_time_ns(indio_dev));
-+		ret = IRQ_HANDLED;
-+	}
-+
- 	return ret;
- }
- 
--- 
-2.17.1
+Weekly Seed source : https://pollinate.n-helix.com/
 
+*****
+
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+*
+
+***** Dukes Of THRUST ******
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
+
+https://github.com/P1sec/gea-implementation
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+"A stream cipher, such as the well-known RC4 or GEA-1, usually works
+through using the Xor operation against a plaintext. The Xor operation
+being symmetrical, this means that encrypting should be considered the
+same operation as decrypting: GEA-1 and GEA-2 are basically
+pseudo-random data generators, taking a seed (the key, IV and
+direction bit of the GPRS data, which are concatenated),
+
+The generated random data (the keystream) is xored with the clear-text
+data (the plaintext) for encrypting. Then, later, the keystream is
+xored with the encrypted data (the ciphertext) for decrypting. That is
+why the functions called in the target library for decrypting and
+encrypting are the same.
+
+GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
+because their algorithms generate only one bit of pseudo-random data
+at once (derived from their internal state), while algorithms like RC4
+generate no less than one byte at once (in RC4's case, derived from
+
+permutation done in its internal state). Even though the keystream
+bits are put together by the current encryption / decryption C and
+Rust libraries into bytes in order to generate usable keystream,
+obviously.
+
+Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
+Linear Feedback Shift Register-oriented ciphers, because their
+internal state is stored into fixed-size registers. This includes the
+S and W registers which serve for initialization / key scheduling
+purposes and are respectively 64 and 97-bit wide registers, and the A,
+B, C (and for GEA-2 only D) registers which serve for the purpose of
+keystream generation, which are respectively 31, 32, 33 and 29-bit
+wide registers.
+
+On each iteration of the keystream generation, each register is
+bit-wise rotated by one position, while the bit being rotated from the
+left towards the right side (or conversely depending on in which bit
+order you internally represent your registers) is fed back to the
+algorithm and mutated depending on given conditions. Hence, the
+
+shifted-out bit is derived from other processing, and reinserted,
+while being for this reason possibly flipped depending on conditions
+depending on bits present at the other side of the given register.
+
+This is the explanation for the name of linear feedback shift register
+(shift because of the shift operation required for the rotation, and
+linear feedback because of the constant-time transform operation
+involved).
+
+The rest of the register may also be mutated at each iteration steps,
+as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
+differ for each register) may be applied depending on whether the
+rotated bit is a 0 or a 1.
+
+Note that a step where the register iterates is called clocking (the
+register is clocked), and that the fixed points where the register may
+be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
+function which may transmute the rotated bit at the clocking step
+(taking several bits of the original register as an input) is called
+the F function.
+
+Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
+GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
+hardware implementations in the late 80's and early 90's."
+
+*****
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+
+***** Dukes Of THRUST ******
+
+Autism, Deafness & the hard of hearing : In need of ANC & Active audio
+clarification or correction 2022-01
+
+Sony & a few others make noise cancelling headphones that are suitable
+for people with Acute disfunction to brain function for ear drums ...
+Attention deficit or Autism,
+The newer Sony headsets are theoretically enablers of a clear
+confusion free world for Autistic people..
+Reaching out to a larger audience of people simply annoyed by a
+confusing world; While they listen to music..
+Can and does protect a small percentage of people who are confused &
+harassed by major discord located in all jurisdictions of life...
+
+Crazy noise levels, Or simply drowned in HISSING Static:
+
+Search for active voice enhanced noise cancellation today.
+
+Rupert S https://science.n-helix.com
+
+
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+
+https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
+
+
+https://www.orosound.com/
+
+https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/

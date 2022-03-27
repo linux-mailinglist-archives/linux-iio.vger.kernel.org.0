@@ -2,48 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC91D4E8727
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 11:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68CEC4E87E0
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 15:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231793AbiC0Jvo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 05:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56794 "EHLO
+        id S232359AbiC0Ncd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 09:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230219AbiC0Jvn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 05:51:43 -0400
-X-Greylist: delayed 547 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 27 Mar 2022 02:50:04 PDT
-Received: from ivy.e-design4all.at (ivy.e-design4all.at [5.35.247.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C42C31DF4
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 02:50:04 -0700 (PDT)
-Received: from www.dontwasteinvest.com (ginger.e-design4all.at [83.169.2.100])
-        by ivy.e-design4all.at (Postfix) with ESMTPSA id 554EF101567
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 11:40:55 +0200 (CEST)
-Date:   Sun, 27 Mar 2022 09:40:55 +0000
-To:     linux-iio@vger.kernel.org
-From:   "Kontaktformular www.dontwasteinvest.com" 
-        <website@dontwasteinvest.com>
-Reply-To: linux-iio@vger.kernel.org
-Subject: Dont`t waste // Invest  Firmendirektanfrage
-Message-ID: <GZCewTWM3mm8gbbWlPKXEceAaPIv8AbKROqniOZGwg@www.dontwasteinvest.com>
-X-Mailer: PHPMailer 6.5.3 (https://github.com/PHPMailer/PHPMailer)
+        with ESMTP id S229513AbiC0Ncd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 09:32:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDAFB36E2F;
+        Sun, 27 Mar 2022 06:30:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6033061016;
+        Sun, 27 Mar 2022 13:30:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37216C340EC;
+        Sun, 27 Mar 2022 13:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648387853;
+        bh=iueUggcwK5JXu0x796gR3JLrqk4cfY0hnskSijVeJq8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dnvA2DQoQrE+adwpFzDFcsa8J6t7KSAFALrYXxSI9Xqb6YDqryhs+3Lj5BKmB9Iyf
+         cbvH+r9lmhNlytkB400sZmPb/BUC3vZV1Tl0WGFOmlj791IyN5ziLhV/Yd6gGb14bP
+         tNioc4z5GHDqayNDpZuvz2gHzA/jcqX9wOduACGGOhlaegeOK9yEZ6YgcUPmS3djpT
+         ojbA66qUs4TtVh95ZDCJCb2wwLP11RmqZs2X64ysQZVZdVeM5puYoNV6eJ+cXbVJFN
+         PzH9Eu/4cVzCaWA03gOcgM3ywuE1RgwyGOzGJ80AYajB8JNB1CykR1m20IbcqHJIVF
+         urQxpn2Zy+KYQ==
+Date:   Sun, 27 Mar 2022 14:38:20 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     kbuild-all@lists.01.org, linux-arm-kernel@lists.infradead.org,
+        Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Hyun Kwon <hyun.kwon@xilinx.com>,
+        Shubhrajyoti Datta <shubhraj@xilinx.com>,
+        Jean-Francois Dagenais <jeff.dagenais@gmail.com>,
+        Olivier Dugas <dugaso@sonatest.com>,
+        Manish Narani <mnarani@xilinx.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: fix for_each_child.cocci warnings
+Message-ID: <20220327143820.45fc1d6d@jic23-huawei>
+In-Reply-To: <alpine.DEB.2.22.394.2203260927200.3141@hadrien>
+References: <alpine.DEB.2.22.394.2203260927200.3141@hadrien>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=3.5 required=5.0 tests=BAYES_60,SHORT_SHORTNER,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Vorname:💌 You have unread messages (4) from Julie! Read now: https://clck.ru/eSWzz?p2f6 💌
-Nachname:mm84d4r
-E-Mail: linux-iio@vger.kernel.org
-Firma: 9xj35zl8
+On Sat, 26 Mar 2022 09:28:12 +0100 (CET)
+Julia Lawall <julia.lawall@inria.fr> wrote:
 
-Anfrage:
-wrmfmlzi
+> From: kernel test robot <lkp@intel.com>
+> 
+> For_each_child_of_node should have of_node_put() before return.
+> 
+> Generated by: scripts/coccinelle/iterators/for_each_child.cocci
+> 
+> CC: Rajnikant Bhojani <rajnikant.bhojani@xilinx.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
+
+The upstream version (in IIO for now, but I'd imagine will hit Linus'
+tree in next few days) of this looks rather different (no dt code an more)
+so I suspect this fix is for a now dead branch...
+
+Jonathan
+
+> ---
+> 
+> tree:   https://github.com/Xilinx/linux-xlnx xlnx_rebase_v5.15_LTS
+> head:   1870e0fa79a9d58c6748c34550f3ccea0b515933
+> commit: d073b83d3f8f3ba83c59f7502371b1cf9eb35e92 [541/1029] iio: adc: Add Xilinx AMS driver
+> :::::: branch date: 35 hours ago
+> :::::: commit date: 8 weeks ago
+> 
+> Please take the patch only if it's a positive warning. Thanks!
+> 
+>  drivers/iio/adc/xilinx-ams.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> --- a/drivers/iio/adc/xilinx-ams.c
+> +++ b/drivers/iio/adc/xilinx-ams.c
+> @@ -920,6 +920,7 @@ static int ams_parse_dt(struct iio_dev *
+>  					      ams_channels + num_channels);
+>  			if (ret < 0) {
+>  				kfree(ams_channels);
+> +				of_node_put(child_node);
+>  				return ret;
+>  			}
+> 
 

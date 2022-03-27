@@ -2,46 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70CF44E88D6
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E486E4E88E3
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbiC0QaE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 12:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49206 "EHLO
+        id S236028AbiC0Qj4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 12:39:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236028AbiC0QaC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:30:02 -0400
+        with ESMTP id S236042AbiC0Qjz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:39:55 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 533F36430;
-        Sun, 27 Mar 2022 09:28:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93515CE7;
+        Sun, 27 Mar 2022 09:38:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 05A18B80D87;
-        Sun, 27 Mar 2022 16:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E91C340EC;
-        Sun, 27 Mar 2022 16:28:16 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 10A85B80D88;
+        Sun, 27 Mar 2022 16:38:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3C1C340EC;
+        Sun, 27 Mar 2022 16:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648398498;
-        bh=hbtabaqAl60KDXR0ALM8mPHH4bvEdZJyIUMFPMJYXBQ=;
+        s=k20201202; t=1648399092;
+        bh=ohmr/grIdQuAq8gGll+TPucDDR6vVnZqbYEs4VnBTBE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=B1FdCTAk+Cqbt9oVx3VrAeIQuVnLIaVpKuy8/CQRhHfvTkfbp2XnQt75427fDAj3X
-         JrVeiLzbhkqg9vNqAHF8DeLD/kewKhQqo+viwxOqcwKsbjMmwJ2X81pZwxHm9fygiZ
-         11q3yCxig+TDD9+bbGkFh/oEPZNfcm1mLSgtIpCBilsKJhkC0eoH5oCGlMNv86DknH
-         nNGNUjmaIfJ/dEcONx9X1RXnrySgr1L7SYvUD2vg0cMYDe3Jwe58yv2mVld7n9FOWG
-         te0pjDzukBbXh1tmUjiypB6K+clW6hMivK6yClhc0w2Opny+hiBC8vkRoZ6MOilh8M
-         ZFmKWRogMrSYQ==
-Date:   Sun, 27 Mar 2022 17:35:51 +0100
+        b=kLFL+JzMsK1Rvt9ZeC/RzS05s5JBkUcDEkaZVxoUlPTVoOvpwdd2Qr8ztrrjFWRyh
+         8PQfXbBiYt9H6VnF+JN28w5+u8ThhPnNi7r2iPUXhqyxY0yE27diW+QAY/zhr9OWKj
+         O0f1Ka4aGjTjimaOqpm+1G3gQHQv4/PRKVYHxAqlSi+PPyq5RGtdlrWS3yk10PGUGd
+         st7mrvXDEop0l7MIMmc5Uc3kp6LHDF1OcMn4CqoGfbcd2uDnp45zGz8Uw16aQIwu3X
+         DURhzOWPqVt4pP98mkMWnWXy7dH+EfIFklbMuSLBm5+o09kwTRTNvBUxz7sSRbkNr3
+         Jvbe9i02LdJIA==
+Date:   Sun, 27 Mar 2022 17:45:45 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jagath Jog J <jagathjog1996@gmail.com>
 Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] iio: accel: bma400: conversion to device-managed
- function
-Message-ID: <20220327173551.4fdcc706@jic23-huawei>
-In-Reply-To: <20220326194146.15549-3-jagathjog1996@gmail.com>
+Subject: Re: [PATCH v2 3/5] iio: accel: bma400: Add triggered buffer support
+Message-ID: <20220327174545.41a15150@jic23-huawei>
+In-Reply-To: <20220326194146.15549-4-jagathjog1996@gmail.com>
 References: <20220326194146.15549-1-jagathjog1996@gmail.com>
-        <20220326194146.15549-3-jagathjog1996@gmail.com>
+        <20220326194146.15549-4-jagathjog1996@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,201 +55,140 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 27 Mar 2022 01:11:43 +0530
+On Sun, 27 Mar 2022 01:11:44 +0530
 Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> This is a conversion to device-managed by using devm_iio_device_register
-> inside probe function, now disabling the regulator and putting bma400 to
-> power down via a devm_add_action_or_reset() hook.
-
-I would state here that previously the bma400 was not put into power down
-mode in some error paths in probe where it now is, but that should cause no
-harm.
-> 
-> The dev_set_drvdata() call, bma400_remove() function and hooks in the I2C
-> and SPI driver struct is removed as devm_iio_device_register function is
-> used to automatically unregister on driver detach.
+> Added trigger buffer support to read continuous acceleration
+> data from device with data ready interrupt which is mapped
+> to INT1 pin.
 > 
 > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
-one other minor thing inline.
+Hi Jagath,
+
+Just a few small things noticed on this read through.
+
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/accel/bma400.h      |  2 -
->  drivers/iio/accel/bma400_core.c | 77 ++++++++++++++++-----------------
->  drivers/iio/accel/bma400_i2c.c  |  8 ----
->  drivers/iio/accel/bma400_spi.c  |  8 ----
->  4 files changed, 38 insertions(+), 57 deletions(-)
+>  drivers/iio/accel/Kconfig       |   2 +
+>  drivers/iio/accel/bma400.h      |  10 +-
+>  drivers/iio/accel/bma400_core.c | 162 ++++++++++++++++++++++++++++++--
+>  drivers/iio/accel/bma400_i2c.c  |   2 +-
+>  drivers/iio/accel/bma400_spi.c  |   2 +-
+>  5 files changed, 168 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> index 190366debdb3..c1b3dbfbd98f 100644
-> --- a/drivers/iio/accel/bma400.h
-> +++ b/drivers/iio/accel/bma400.h
-> @@ -112,6 +112,4 @@ extern const struct regmap_config bma400_regmap_config;
->  
->  int bma400_probe(struct device *dev, struct regmap *regmap, const char *name);
->  
-> -void bma400_remove(struct device *dev);
-> -
->  #endif
+
 > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-> index fd2647b728d3..dc273381a0a2 100644
+> index dc273381a0a2..fa3f4b5f229f 100644
 > --- a/drivers/iio/accel/bma400_core.c
 > +++ b/drivers/iio/accel/bma400_core.c
-> @@ -560,6 +560,26 @@ static void bma400_init_tables(void)
->  	}
->  }
+> @@ -11,16 +11,22 @@
+>   *  - Create channel for sensor time
+>   */
 >  
-> +static void bma400_regulators_disable(void *data_ptr)
-> +{
-> +	struct bma400_data *data = data_ptr;
-> +
-> +	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
-> +}
-> +
-> +static void bma400_power_disable(void *data_ptr)
-> +{
-> +	struct bma400_data *data = data_ptr;
-> +	int ret;
-> +
-> +	mutex_lock(&data->mutex);
-> +	ret = bma400_set_power_mode(data, POWER_MODE_SLEEP);
-> +	if (ret)
-> +		dev_warn(data->dev, "Failed to put device into sleep mode (%pe)\n",
-> +			 ERR_PTR(ret));
+> +#include <linux/bitfield.h>
+>  #include <linux/bitops.h>
+>  #include <linux/device.h>
+> -#include <linux/iio/iio.h>
+> -#include <linux/iio/sysfs.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/regmap.h>
+>  #include <linux/regulator/consumer.h>
+>  
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
 
-Drop the check on ret out of the locked region.  No reason for it to be done
-under the lock so generally nice not to do so.  Also matches the previous
-ordering so there shouldnt' be any questions about it.
+Is iio/sysfs.h actually used?  It rarely is these days as it contains
+the infrastructure for custom attributes and we try not to use any
+of those anymore.
 
-> +	mutex_unlock(&data->mutex);
-> +}
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
 > +
->  static int bma400_init(struct bma400_data *data)
->  {
->  	unsigned int val;
-> @@ -569,13 +589,12 @@ static int bma400_init(struct bma400_data *data)
->  	ret = regmap_read(data->regmap, BMA400_CHIP_ID_REG, &val);
->  	if (ret) {
->  		dev_err(data->dev, "Failed to read chip id register\n");
-> -		goto out;
-> +		return ret;
->  	}
+This reorganization of headers is good but shouldn't be in this patch.
+Add an earlier patch in the series to move the existing pair down here
+before this patch then adds the new ones.
+
+
+...
+
 >  
->  	if (val != BMA400_ID_REG_VAL) {
->  		dev_err(data->dev, "Chip ID mismatch\n");
-> -		ret = -ENODEV;
-> -		goto out;
-> +		return -ENODEV;
->  	}
+>  static int bma400_get_temp_reg(struct bma400_data *data, int *val, int *val2)
+> @@ -659,6 +687,10 @@ static int bma400_init(struct bma400_data *data)
+>  	if (ret)
+>  		return ret;
 >  
->  	data->regulators[BMA400_VDD_REGULATOR].supply = "vdd";
-> @@ -589,27 +608,31 @@ static int bma400_init(struct bma400_data *data)
->  				"Failed to get regulators: %d\n",
->  				ret);
->  
-> -		goto out;
-> +		return ret;
->  	}
->  	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
->  				    data->regulators);
->  	if (ret) {
->  		dev_err(data->dev, "Failed to enable regulators: %d\n",
->  			ret);
-> -		goto out;
-> +		return ret;
->  	}
->  
-> +	ret = devm_add_action_or_reset(data->dev, bma400_regulators_disable, data);
+> +	/* Configure INT1 pin to open drain */
+> +	ret = regmap_write(data->regmap, BMA400_INT_IO_CTRL_REG, 0x06);
 > +	if (ret)
 > +		return ret;
-> +
->  	ret = bma400_get_power_mode(data);
->  	if (ret) {
->  		dev_err(data->dev, "Failed to get the initial power-mode\n");
-> -		goto err_reg_disable;
-> +		return ret;
->  	}
->  
->  	if (data->power_mode != POWER_MODE_NORMAL) {
->  		ret = bma400_set_power_mode(data, POWER_MODE_NORMAL);
->  		if (ret) {
->  			dev_err(data->dev, "Failed to wake up the device\n");
-> -			goto err_reg_disable;
-> +			return ret;
->  		}
->  		/*
->  		 * TODO: The datasheet waits 1500us here in the example, but
-> @@ -618,19 +641,23 @@ static int bma400_init(struct bma400_data *data)
->  		usleep_range(1500, 2000);
->  	}
->  
-> +	ret = devm_add_action_or_reset(data->dev, bma400_power_disable, data);
-> +	if (ret)
-> +		return ret;
-> +
->  	bma400_init_tables();
->  
->  	ret = bma400_get_accel_output_data_rate(data);
->  	if (ret)
-> -		goto err_reg_disable;
-> +		return ret;
->  
->  	ret = bma400_get_accel_oversampling_ratio(data);
->  	if (ret)
-> -		goto err_reg_disable;
-> +		return ret;
->  
->  	ret = bma400_get_accel_scale(data);
->  	if (ret)
-> -		goto err_reg_disable;
-> +		return ret;
->  
 >  	/*
 >  	 * Once the interrupt engine is supported we might use the
-> @@ -639,12 +666,6 @@ static int bma400_init(struct bma400_data *data)
->  	 * channel.
->  	 */
->  	return regmap_write(data->regmap, BMA400_ACC_CONFIG2_REG, 0x00);
-> -
-> -err_reg_disable:
-> -	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
-> -			       data->regulators);
-> -out:
-> -	return ret;
+>  	 * data_src_reg, but for now ensure this is set to the
+> @@ -807,6 +839,33 @@ static int bma400_write_raw_get_fmt(struct iio_dev *indio_dev,
+>  	}
 >  }
 >  
->  static int bma400_read_raw(struct iio_dev *indio_dev,
-> @@ -822,32 +843,10 @@ int bma400_probe(struct device *dev, struct regmap *regmap, const char *name)
->  	indio_dev->num_channels = ARRAY_SIZE(bma400_channels);
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  
-> -	dev_set_drvdata(dev, indio_dev);
-> -
-> -	return iio_device_register(indio_dev);
-> +	return devm_iio_device_register(dev, indio_dev);
->  }
->  EXPORT_SYMBOL(bma400_probe);
->  
-> -void bma400_remove(struct device *dev)
-> -{
-> -	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> -	struct bma400_data *data = iio_priv(indio_dev);
-> -	int ret;
-> -
-> -	mutex_lock(&data->mutex);
-> -	ret = bma400_set_power_mode(data, POWER_MODE_SLEEP);
-> -	mutex_unlock(&data->mutex);
-> -
-> -	if (ret)
-> -		dev_warn(dev, "Failed to put device into sleep mode (%pe)\n", ERR_PTR(ret));
-> -
-> -	regulator_bulk_disable(ARRAY_SIZE(data->regulators),
-> -			       data->regulators);
-> -
-> -	iio_device_unregister(indio_dev);
-> -}
-> -EXPORT_SYMBOL(bma400_remove);
-> -
+> +static int bma400_data_rdy_trigger_set_state(struct iio_trigger *trig,
+> +					     bool state)
+> +{
+> +	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> +	struct bma400_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG,
+> +				 BMA400_INT_DRDY_MSK,
+> +				 FIELD_PREP(BMA400_INT_DRDY_MSK, state));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
+> +				 BMA400_INT_DRDY_MSK,
+> +				 FIELD_PREP(BMA400_INT_DRDY_MSK, state));
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+
+	return regmap_update_bits()...
+
+> +}
+
+...
+
+
+> +static irqreturn_t bma400_interrupt(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev = private;
+> +	struct bma400_data *data = iio_priv(indio_dev);
+> +	irqreturn_t ret = IRQ_NONE;
+> +	__le16 status;
+> +
+> +	mutex_lock(&data->mutex);
+> +	ret = regmap_bulk_read(data->regmap, BMA400_INT_STAT0_REG, &status,
+> +			       sizeof(status));
+> +	mutex_unlock(&data->mutex);
+> +	if (ret)
+> +		return IRQ_NONE;
+> +
+> +	if (FIELD_GET(BMA400_INT_DRDY_MSK, le16_to_cpu(status))) {
+> +		iio_trigger_poll_chained(data->trig);
+> +		ret = IRQ_HANDLED;
+Preference for this style
+		return IRQ_HANDLED;
+> +	}
+> +
+return IRQ_NONE;
+and don't initialize above.
+
+> +	return ret;
+> +}
+> +
+
 

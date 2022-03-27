@@ -2,303 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E58C24E8857
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 17:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DC74E8878
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 17:40:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232365AbiC0PMp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 11:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57562 "EHLO
+        id S235871AbiC0PmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 11:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231449AbiC0PMo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 11:12:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53ECF4A3EF
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 08:11:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 06323B80BAA
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 15:11:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29344C340EC;
-        Sun, 27 Mar 2022 15:10:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648393861;
-        bh=IsvuCYaEfO3pBZbFHKvqpVVL5StKzbsl6oKb4IOeQOI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Ary4rcFvvKqZz4zjTE9NMnq9LF9oz5YptiLcjovavkV+lkHQerSwCrQm8gW5U3y06
-         Khtr6fDB348GnAWZNb3MRSQ5/kw31smoqpXOJ3GFL08MaAUA65TPNQKUjgRBHP3WtK
-         Ob8RWKbvcerI+t3Ck5JrKqjTFLlqpjPZFCNX4YMy9IbQet8GfR/4DM3rkGabrQpgcS
-         qhHF8EFGxiiVTWxwVhEncH1veqlv61uNuXhOzrP42RzoqqNQ+Wk2rBNVdRH7ya6XDN
-         8Fe6rjRqgH95K9Y7/hbf1RjGYiYs0LpJHd9ZPKJJ7TGEosa3dGZ8A83Ho+iZ3+JKC3
-         OhoUKCxkOqjNw==
-Date:   Sun, 27 Mar 2022 16:18:35 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 10/10] iio: adc: ti-ads1015: Switch to read_avail
-Message-ID: <20220327161835.5c661300@jic23-huawei>
-In-Reply-To: <20220322220210.207454-10-marex@denx.de>
-References: <20220322220210.207454-1-marex@denx.de>
-        <20220322220210.207454-10-marex@denx.de>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S232094AbiC0PmJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 11:42:09 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F92340C9;
+        Sun, 27 Mar 2022 08:40:31 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id o68-20020a17090a0a4a00b001c686a48263so10130525pjo.1;
+        Sun, 27 Mar 2022 08:40:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=kreZfOtcisOTnml8W90tAIXoUjRu/s5AG1dtKzhwH84=;
+        b=fWXHJ6At+IMlrusJiEsKH2IDCPezbhS3cXGdZJ3wn1pe5b73ZbnMYDbBr72Ca20A6n
+         gASapkrcj4KGZd5hCqlgWMQGEXyiyZj2K1pv+qm7bH9bGvPG3Ob2dmiTaANY3SP0dhAs
+         90QfVq09RXfVYNfj2D3SI1T+prenczoZBdYgmy9jVe23k6sB/7ndxMsuxOSRKeDVZfNL
+         44/p5L9t35GdG0FoMUJSyUrpqtHugpnIoafAtj2K28DtFE29G6e98RexMUjR2MoTn7tt
+         g4KZ+C6hkWzSKjSvk+r61pkP96FObwE0UhZY+oWlmz+l+XVi+m6mEKJhBkhKd1LWlHHA
+         xcpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=kreZfOtcisOTnml8W90tAIXoUjRu/s5AG1dtKzhwH84=;
+        b=kYebGLUWUeBK9/tTInrOP4/lKx5cnEsF9gM/D3KYLy6ZHdaLlskYZEd3tne6fxCePZ
+         CbcMKGuDvaj4WojumQcBNUxAwu52Z7fp2HA9OY6m4LC2QCWbIbyIa1NNqTJ11CtAImt7
+         D9KoA+a9p53mO/GEhGprYFxLM5BveymrSpmVqErF4Wy5qM13Hyjmva560sPMXb0PFtX7
+         ZQUi3bkDcK4AXggxcQLg7MvUyoSmKh0cftmLeNYiCzlmB+T/BtmXJ0VYlM7m8UCn4tqh
+         qiFjj+iMgbSIi0Na0HCrr4XfOxlSWrX3bE0K+jtZVSdqk2AzTEUgd/XE5VXUtBRelWQY
+         d1HQ==
+X-Gm-Message-State: AOAM531DYTuqrOLJefyj5Zm1HUvHqPsln/+O2MH31GYDUW39CPVtXtHq
+        LMHmOvYQ3MKDbdRoXKqVnYE=
+X-Google-Smtp-Source: ABdhPJzPDAM7vgFyjcWLVVVz+TIZCH4/oqTss580KSxoKXccxa3B/WC/PLFd3YtqY64z+IliQbYV/Q==
+X-Received: by 2002:a17:902:9008:b0:14f:b1f9:5271 with SMTP id a8-20020a170902900800b0014fb1f95271mr21502345plp.86.1648395630347;
+        Sun, 27 Mar 2022 08:40:30 -0700 (PDT)
+Received: from tong-desktop.local ([2600:1700:3ec7:421f:a2f1:f139:4101:142a])
+        by smtp.googlemail.com with ESMTPSA id o65-20020a17090a0a4700b001bef5cffea7sm13331959pjo.0.2022.03.27.08.40.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Mar 2022 08:40:29 -0700 (PDT)
+From:   Tong Zhang <ztong0001@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Tong Zhang <ztong0001@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] iio:imu:bmi160: disable regulator in error path
+Date:   Sun, 27 Mar 2022 08:40:05 -0700
+Message-Id: <20220327154005.806049-1-ztong0001@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220318070900.2499370-1-ztong0001@gmail.com>
+References: <20220318070900.2499370-1-ztong0001@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Mar 2022 23:02:10 +0100
-Marek Vasut <marex@denx.de> wrote:
+Regulator should be disabled in error path as mentioned in _regulator_put().
+Also disable accel if gyro cannot be enabled.
 
-> Replace sysfs attributes with read_avail() callback. This also permits
-> removal of ads1115_info, since the scale attribute tables are now part
-> of chip data.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> Cc: Andy Shevchenko <andy@kernel.org>
-> Cc: Daniel Baluta <daniel.baluta@nxp.com>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[   16.233604] WARNING: CPU: 0 PID: 2177 at drivers/regulator/core.c:2257 _regulator_put
+[   16.240453] Call Trace:
+[   16.240572]  <TASK>
+[   16.240676]  regulator_put+0x26/0x40
+[   16.240853]  regulator_bulk_free+0x26/0x50
+[   16.241050]  release_nodes+0x3f/0x70
+[   16.241225]  devres_release_group+0x147/0x1c0
+[   16.241441]  ? bmi160_core_probe+0x175/0x3a0 [bmi160_core]
 
-Sorry, I didn't catch your question on v3 about why I was advocating
-signed.
+Fixes: 5dea3fb066f0 ("iio: imu: bmi160: added regulator support")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Tong Zhang <ztong0001@gmail.com>
+---
+v2: also disable accel when gyro fail to enable
+v3: add tag
+ drivers/iio/imu/bmi160/bmi160_core.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-You are passing pointers to those arrays as signed in the
-read_avail.
-
-Obviously you can 'get away with it' because the values are small
-positive numbers and hence in 2's complement the data representation
-will be the same.  Not pretty though so my inclination would
-be to keep them signed everywhere.
-
-If you are fine with that change I can change it whilst applying if
-nothing else comes up in review.
-
-Given there are some (admittedly trivial) dt binding additions,
-I'll leave this on list until Rob has had a chance to take
-a look at them.  Also, Andy might want to take another glance
-or give a tag given his previous interest in this series.
-
-Thanks,
-
-Jonathan
-
-
-> ---
-> V3: New patch
-> V4: - Reformat ads1x15 scale ranges pairwise
->     - Turn the scale ranges into unsigned int
-> ---
->  drivers/iio/adc/ti-ads1015.c | 112 +++++++++++++++++++++--------------
->  1 file changed, 67 insertions(+), 45 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-> index 18a94a09854e9..5bb085c392d7a 100644
-> --- a/drivers/iio/adc/ti-ads1015.c
-> +++ b/drivers/iio/adc/ti-ads1015.c
-> @@ -81,6 +81,9 @@ struct ads1015_chip_data {
->  	int				num_channels;
->  	const struct iio_info		*info;
->  	const unsigned int		*data_rate;
-> +	const unsigned int		data_rate_len;
-> +	const unsigned int		*scale;
-> +	const unsigned int		scale_len;
->  	bool				has_comparator;
->  };
->  
-> @@ -108,10 +111,28 @@ static const unsigned int ads1115_data_rate[] = {
->   * Translation from PGA bits to full-scale positive and negative input voltage
->   * range in mV
->   */
-> -static int ads1015_fullscale_range[] = {
-> +static const unsigned int ads1015_fullscale_range[] = {
->  	6144, 4096, 2048, 1024, 512, 256, 256, 256
->  };
->  
-> +static const unsigned int ads1015_scale[] = {	/* 12bit ADC */
-> +	256, 11,
-> +	512, 11,
-> +	1024, 11,
-> +	2048, 11,
-> +	4096, 11,
-> +	6144, 11
-> +};
-> +
-> +static const unsigned int ads1115_scale[] = {	/* 16bit ADC */
-> +	256, 15,
-> +	512, 15,
-> +	1024, 15,
-> +	2048, 15,
-> +	4096, 15,
-> +	6144, 15
-> +};
-> +
->  /*
->   * Translation from COMP_QUE field value to the number of successive readings
->   * exceed the threshold values before an interrupt is generated
-> @@ -166,6 +187,9 @@ static const struct iio_event_spec ads1015_events[] = {
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
->  				BIT(IIO_CHAN_INFO_SCALE) |	\
->  				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-> +	.info_mask_shared_by_all_available =			\
-> +				BIT(IIO_CHAN_INFO_SCALE) |	\
-> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
->  	.scan_index = _addr,					\
->  	.scan_type = {						\
->  		.sign = 's',					\
-> @@ -189,6 +213,9 @@ static const struct iio_event_spec ads1015_events[] = {
->  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
->  				BIT(IIO_CHAN_INFO_SCALE) |	\
->  				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
-> +	.info_mask_shared_by_all_available =			\
-> +				BIT(IIO_CHAN_INFO_SCALE) |	\
-> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
->  	.scan_index = _addr,					\
->  	.scan_type = {						\
->  		.sign = 's',					\
-> @@ -470,7 +497,7 @@ static int ads1015_set_data_rate(struct ads1015_data *data, int chan, int rate)
->  {
->  	int i;
->  
-> -	for (i = 0; i < ARRAY_SIZE(ads1015_data_rate); i++) {
-> +	for (i = 0; i < data->chip->data_rate_len; i++) {
->  		if (data->chip->data_rate[i] == rate) {
->  			data->channel_data[chan].data_rate = i;
->  			return 0;
-> @@ -480,6 +507,32 @@ static int ads1015_set_data_rate(struct ads1015_data *data, int chan, int rate)
->  	return -EINVAL;
->  }
->  
-> +static int ads1015_read_avail(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      const int **vals, int *type, int *length,
-> +			      long mask)
-> +{
-> +	struct ads1015_data *data = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EINVAL;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*type = IIO_VAL_FRACTIONAL_LOG2;
-> +		*vals =  data->chip->scale;
-> +		*length = data->chip->scale_len;
-> +		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*type = IIO_VAL_INT;
-> +		*vals = data->chip->data_rate;
-> +		*length = data->chip->data_rate_len;
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->  static int ads1015_read_raw(struct iio_dev *indio_dev,
->  			    struct iio_chan_spec const *chan, int *val,
->  			    int *val2, long mask)
-> @@ -828,60 +881,20 @@ static const struct iio_buffer_setup_ops ads1015_buffer_setup_ops = {
->  	.validate_scan_mask = &iio_validate_scan_mask_onehot,
->  };
->  
-> -static IIO_CONST_ATTR_NAMED(ads1015_scale_available, scale_available,
-> -	"3 2 1 0.5 0.25 0.125");
-> -static IIO_CONST_ATTR_NAMED(ads1115_scale_available, scale_available,
-> -	"0.1875 0.125 0.0625 0.03125 0.015625 0.007813");
-> -
-> -static IIO_CONST_ATTR_NAMED(ads1015_sampling_frequency_available,
-> -	sampling_frequency_available, "128 250 490 920 1600 2400 3300");
-> -static IIO_CONST_ATTR_NAMED(ads1115_sampling_frequency_available,
-> -	sampling_frequency_available, "8 16 32 64 128 250 475 860");
-> -
-> -static struct attribute *ads1015_attributes[] = {
-> -	&iio_const_attr_ads1015_scale_available.dev_attr.attr,
-> -	&iio_const_attr_ads1015_sampling_frequency_available.dev_attr.attr,
-> -	NULL,
-> -};
-> -
-> -static const struct attribute_group ads1015_attribute_group = {
-> -	.attrs = ads1015_attributes,
-> -};
-> -
-> -static struct attribute *ads1115_attributes[] = {
-> -	&iio_const_attr_ads1115_scale_available.dev_attr.attr,
-> -	&iio_const_attr_ads1115_sampling_frequency_available.dev_attr.attr,
-> -	NULL,
-> -};
-> -
-> -static const struct attribute_group ads1115_attribute_group = {
-> -	.attrs = ads1115_attributes,
-> -};
-> -
->  static const struct iio_info ads1015_info = {
-> +	.read_avail	= ads1015_read_avail,
->  	.read_raw	= ads1015_read_raw,
->  	.write_raw	= ads1015_write_raw,
->  	.read_event_value = ads1015_read_event,
->  	.write_event_value = ads1015_write_event,
->  	.read_event_config = ads1015_read_event_config,
->  	.write_event_config = ads1015_write_event_config,
-> -	.attrs          = &ads1015_attribute_group,
-> -};
-> -
-> -static const struct iio_info ads1115_info = {
-> -	.read_raw	= ads1015_read_raw,
-> -	.write_raw	= ads1015_write_raw,
-> -	.read_event_value = ads1015_read_event,
-> -	.write_event_value = ads1015_write_event,
-> -	.read_event_config = ads1015_read_event_config,
-> -	.write_event_config = ads1015_write_event_config,
-> -	.attrs          = &ads1115_attribute_group,
->  };
->  
->  static const struct iio_info tla2024_info = {
-> +	.read_avail	= ads1015_read_avail,
->  	.read_raw	= ads1015_read_raw,
->  	.write_raw	= ads1015_write_raw,
-> -	.attrs          = &ads1015_attribute_group,
->  };
->  
->  static int ads1015_client_get_channels_config(struct i2c_client *client)
-> @@ -1128,14 +1141,20 @@ static const struct ads1015_chip_data ads1015_data = {
->  	.num_channels	= ARRAY_SIZE(ads1015_channels),
->  	.info		= &ads1015_info,
->  	.data_rate	= ads1015_data_rate,
-> +	.data_rate_len	= ARRAY_SIZE(ads1015_data_rate),
-> +	.scale		= ads1015_scale,
-> +	.scale_len	= ARRAY_SIZE(ads1015_scale),
->  	.has_comparator	= true,
->  };
->  
->  static const struct ads1015_chip_data ads1115_data = {
->  	.channels	= ads1115_channels,
->  	.num_channels	= ARRAY_SIZE(ads1115_channels),
-> -	.info		= &ads1115_info,
-> +	.info		= &ads1015_info,
->  	.data_rate	= ads1115_data_rate,
-> +	.data_rate_len	= ARRAY_SIZE(ads1115_data_rate),
-> +	.scale		= ads1115_scale,
-> +	.scale_len	= ARRAY_SIZE(ads1115_scale),
->  	.has_comparator	= true,
->  };
->  
-> @@ -1144,6 +1163,9 @@ static const struct ads1015_chip_data tla2024_data = {
->  	.num_channels	= ARRAY_SIZE(tla2024_channels),
->  	.info		= &tla2024_info,
->  	.data_rate	= ads1015_data_rate,
-> +	.data_rate_len	= ARRAY_SIZE(ads1015_data_rate),
-> +	.scale		= ads1015_scale,
-> +	.scale_len	= ARRAY_SIZE(ads1015_scale),
->  	.has_comparator	= false,
->  };
->  
+diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
+index 824b5124a5f5..01336105792e 100644
+--- a/drivers/iio/imu/bmi160/bmi160_core.c
++++ b/drivers/iio/imu/bmi160/bmi160_core.c
+@@ -730,7 +730,7 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+ 
+ 	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
+ 	if (ret)
+-		return ret;
++		goto disable_regulator;
+ 
+ 	usleep_range(BMI160_SOFTRESET_USLEEP, BMI160_SOFTRESET_USLEEP + 1);
+ 
+@@ -741,29 +741,37 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+ 	if (use_spi) {
+ 		ret = regmap_read(data->regmap, BMI160_REG_DUMMY, &val);
+ 		if (ret)
+-			return ret;
++			goto disable_regulator;
+ 	}
+ 
+ 	ret = regmap_read(data->regmap, BMI160_REG_CHIP_ID, &val);
+ 	if (ret) {
+ 		dev_err(dev, "Error reading chip id\n");
+-		return ret;
++		goto disable_regulator;
+ 	}
+ 	if (val != BMI160_CHIP_ID_VAL) {
+ 		dev_err(dev, "Wrong chip id, got %x expected %x\n",
+ 			val, BMI160_CHIP_ID_VAL);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto disable_regulator;
+ 	}
+ 
+ 	ret = bmi160_set_mode(data, BMI160_ACCEL, true);
+ 	if (ret)
+-		return ret;
++		goto disable_regulator;
+ 
+ 	ret = bmi160_set_mode(data, BMI160_GYRO, true);
+ 	if (ret)
+-		return ret;
++		goto disable_accel;
+ 
+ 	return 0;
++
++disable_accel:
++	bmi160_set_mode(data, BMI160_ACCEL, false);
++
++disable_regulator:
++	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
++	return ret;
+ }
+ 
+ static int bmi160_data_rdy_trigger_set_state(struct iio_trigger *trig,
+-- 
+2.25.1
 

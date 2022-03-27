@@ -2,51 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E409F4E8840
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 16:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0B134E8844
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 16:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230381AbiC0Ov2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 10:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60312 "EHLO
+        id S232461AbiC0O4Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 10:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbiC0Ov1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 10:51:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0054F4091F
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 07:49:47 -0700 (PDT)
+        with ESMTP id S229518AbiC0O4Q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 10:56:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F155855A8;
+        Sun, 27 Mar 2022 07:54:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 11C25B80BEC
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 14:49:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFD9C340EC;
-        Sun, 27 Mar 2022 14:49:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C7FD61028;
+        Sun, 27 Mar 2022 14:54:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74DDC340EC;
+        Sun, 27 Mar 2022 14:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648392584;
-        bh=SNTTSseWk+lxTtx4lZbxlGpWHAzNNJsy6qL6vT1+8e8=;
+        s=k20201202; t=1648392875;
+        bh=bRXhuKrJ6pznB4+tu0/oJB6VVtpKMq6WO6RpNjLduIE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TZ+S6X2ar+fSKveCY3w3SywZUr+6RFnVjL8ErYeHfX5npO7EGApNaCSHnEC4pCo71
-         0XfnbCaJRfGAT2nH9gs39eEy9A6p8Mxeo7DcyAHMcYmeCiGrksi7D04bFaV2zx4Gaf
-         NNE7y9/WuU6NlWV/sk4Kzm2GjJRLcGvUu11EdajPxGw968SUIvf5NhW4ABuo3v4oKb
-         sG/9/OeiS/QOV71BhGKHZwSgk93p/VxNzech0JcSTCTEAojt5rAcF7foGHQ+63vzUp
-         MXwSCjtWpTSdcjwc93TpQ/BBXwkGLnew7/5TeBFt5YC8y0IJtEuBsw2CaYuqABUPjm
-         ecdJO/k48ZKqg==
-Date:   Sun, 27 Mar 2022 15:57:18 +0100
+        b=gH4YpmPiIGVPp7HGcinCOjxpo/+eVFtsiib44X5NFaUojH9gINQd7BgNsPxkotSPc
+         B8qS5IDgHqZyfIFarKwZf0lEyJVsWcrqeFgg2Gf6PM9dx/WZK7dU7CjKhOwd1eJfUI
+         gkm+EtlB5vADr/uuQjDaQVRQjCOw0q6mg8iIUjFl7vyNnFz02u9lay62GLn0IVz05/
+         V2j9gPivYxQfDGjA78zxDtL3DcyJM6xyUGflz95wj8dTd9Eblwf+5spRtEH3Xagvuf
+         9Y8f66zZWjOhsVFJGhmIWZpqWCvW/edDhYIjEY6wlQICDsYIgjFQiZ0S09I06nmOiJ
+         rWO3bbJn6LKFg==
+Date:   Sun, 27 Mar 2022 16:02:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jackie Liu <liu.yun@linux.dev>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: da9150-gpadc: fix build on mips
- CONFIG_MIKROTIK_RB532=y
-Message-ID: <20220327155718.0d00be25@jic23-huawei>
-In-Reply-To: <CAHp75VfEyhB92iP8sRyGn+2WLzazFtok=47xzewhCt=bo=a7Zw@mail.gmail.com>
-References: <20220324055821.3184872-1-liu.yun@linux.dev>
-        <CAHp75VfEyhB92iP8sRyGn+2WLzazFtok=47xzewhCt=bo=a7Zw@mail.gmail.com>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: Re: [PATCH v13 4/9] dt-bindings: iio: adc: document qcom-spmi-rradc
+Message-ID: <20220327160206.41c9b86d@jic23-huawei>
+In-Reply-To: <20220323162820.110806-5-caleb@connolly.tech>
+References: <20220323162820.110806-1-caleb@connolly.tech>
+        <20220323162820.110806-5-caleb@connolly.tech>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,62 +63,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Mar 2022 12:18:14 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Wed, 23 Mar 2022 16:28:15 +0000
+Caleb Connolly <caleb.connolly@linaro.org> wrote:
 
-> On Thu, Mar 24, 2022 at 7:58 AM Jackie Liu <liu.yun@linux.dev> wrote:
-> >
-> > From: Jackie Liu <liuyun01@kylinos.cn>
-> >
-> > kernel robot report build fail by randconfig:
-> >
-> > [...]
-> > drivers/iio/adc/da9150-gpadc.c:254:13: error: =E2=80=98DA9150_GPADC_CHA=
-N_0x08=E2=80=99 undeclared here (not in a function); did you mean =E2=80=98=
-DA9150_GPADC_CHAN_TBAT=E2=80=99?
-> >   254 |  .channel =3D DA9150_GPADC_CHAN_##_id,   \
-> >       |             ^~~~~~~~~~~~~~~~~~
-> > drivers/iio/adc/da9150-gpadc.c:273:2: note: in expansion of macro =E2=
-=80=98DA9150_GPADC_CHANNEL=E2=80=99
-> >   273 |  DA9150_GPADC_CHANNEL(_id, _hw_id, _type,   \
-> >       |  ^~~~~~~~~~~~~~~~~~~~
-> > drivers/iio/adc/da9150-gpadc.c:281:2: note: in expansion of macro =E2=
-=80=98DA9150_GPADC_CHANNEL_PROCESSED=E2=80=99
-> >   281 |  DA9150_GPADC_CHANNEL_PROCESSED(GPIOD, GPIOD_6V, IIO_VOLTAGE, N=
-ULL),
-> >       |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ =20
->=20
-> > make[4]: *** [../scripts/Makefile.build:288: drivers/iio/adc/da9150-gpa=
-dc.o] Error 1
-> > make[3]: *** [../scripts/Makefile.build:550: drivers/iio/adc] Error 2
-> > make[3]: *** Waiting for unfinished jobs....
-> > [...] =20
->=20
-> These lines are noise and no need to be in the commit message.
->=20
-> > +/*
-> > + * Workaround for arch/mips/include/asm/mach-rc32434/rb.h
-> > + *   #define GPIOD 0x08
-> > + */
-> > +#undef GPIOD =20
->=20
-> Looking at the bottom here the better approach seems to be namespacing
-> of GPIO registers in the above mentioned header and corresponding
-> users.
+> From: Caleb Connolly <caleb.connolly@linaro.org>
+> 
+> Add dt-binding docs for the Qualcomm SPMI RRADC found in PMICs like
+> PMI8998 and PMI8994
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+On basis I don't mind if Lee want's to pick this up and send me an
+immutable branch. If not, once Lee has taken a look I can create
+an immutable branch for this.
 
-Agreed.  Having around it here is just going to the tip of the iceberg long
-term.  The header + users need fixing if it's going to be widely enough
-included that we can see it in places like this.
-
-=46rom some very basic grepping I 'suspect' you could just push the defines
-down into arch/mips/rb532/gpio.c but I may well be wrong...
-
-Jonathan
-
->=20
-> >  /* Supported channels */
-> >  static const struct iio_chan_spec da9150_gpadc_channels[] =3D {
-> >         DA9150_GPADC_CHANNEL_PROCESSED(GPIOA, GPIOA_6V, IIO_VOLTAGE, NU=
-LL), =20
->=20
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  .../bindings/iio/adc/qcom,spmi-rradc.yaml     | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+> new file mode 100644
+> index 000000000000..c8cbfd3444be
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/qcom,spmi-rradc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm's SPMI PMIC Round Robin ADC
+> +
+> +maintainers:
+> +  - Caleb Connolly <caleb.connolly@linaro.org>
+> +
+> +description: |
+> +  The Qualcomm SPMI Round Robin ADC (RRADC) provides interface to clients to
+> +  read the voltage, current and temperature for supported peripherals such as
+> +  the battery thermistor die temperature, charger temperature, USB and DC input
+> +  voltage / current and battery ID resistor.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,pmi8998-rradc
+> +      - qcom,pm660-rradc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  qcom,batt-id-delay-ms:
+> +    description: Sets the hardware settling time for the battery ID resistor.
+> +    enum: [0, 1, 4, 12, 20, 40, 60, 80]
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    pmic {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      pmic_rradc: adc@4500 {
+> +          compatible = "qcom,pmi8998-rradc";
+> +          reg = <0x4500>;
+> +          #io-channel-cells  = <1>;
+> +      };
+> +    };
 

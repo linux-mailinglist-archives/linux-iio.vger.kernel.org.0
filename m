@@ -2,56 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 477464E88A9
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF8B4E88B2
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235309AbiC0QHy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 12:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54774 "EHLO
+        id S232127AbiC0QNX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 12:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230232AbiC0QHx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:07:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1FC12617;
-        Sun, 27 Mar 2022 09:06:14 -0700 (PDT)
+        with ESMTP id S235009AbiC0QNX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:13:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C1022B19;
+        Sun, 27 Mar 2022 09:11:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 14A39B80BFA;
-        Sun, 27 Mar 2022 16:06:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56A8C340EC;
-        Sun, 27 Mar 2022 16:06:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D8A6106E;
+        Sun, 27 Mar 2022 16:11:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62632C340EC;
+        Sun, 27 Mar 2022 16:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648397171;
-        bh=hInmacrtqqLCdMotd9oxcwLtJbwkVKG97iU/e/STNnk=;
+        s=k20201202; t=1648397504;
+        bh=NSeryNnkj69DaAR2H5ykOSi3ChtK6EsLFYoZgqVQBjo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pc8P3/fmvIb2IQx5O871aJOyhREnvqIDmex0+sOUHG2RVUHs5rzDKGvWqCs8qY5/2
-         YOt+Ou3wzKTRnISQeAnWqWmegSjYKsimFBOJjVHs6Ehtd+AsPPIzk+ol+4G6qXX7aB
-         40O9SIHJPnTcLgM0fmvuCfR3EMc50PRUf2PIMn2sPIRyjRDemvcaDFiP8UejGpWG3l
-         FjWPgyeb198uLZWEgGdN+F2exmzLZ4s7sAQKGI1t72fFfNIpPeVCbsKwYSdS6R8l5U
-         kOwUvhj/DQD1W26rQKnU1ZcazYmPSFTNmu7rI4uZosUBK4B6K708m4VFRlhH9rorNa
-         5vLdpMhsADq3g==
-Date:   Sun, 27 Mar 2022 17:13:43 +0100
+        b=F4dJRnH8SPye953DLDoK5WSTi3XJFbZpmHki/3pKZnNyyEIML33fXjoQgbblBcwM5
+         5gmfkWjWHUeFke4kA9WrWBWlNIRnyj0w5hja+oiDGGfSfpHY0prTMoNkgfFCvXJqZr
+         eydyYw8sTa63rHnC/DkhmU5moDiZg9NoxWW6+93vwRJcUhzNZWWOg5upVU30H7si70
+         niwHt0uWAAHgMKXlfDqjqeyjGoOcplXXEufTMjpwS7c4PRgs7Y6LLFuIdbErsDWYnZ
+         Fw+Tl6CAlKlCwdOGzU2pMiKuKFO8zxJmmxslr4Ddl2Tk4fNRExCRiUbonVOH2d5ff3
+         BLh5uA88gskGA==
+Date:   Sun, 27 Mar 2022 17:19:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Colin Ian King <colin.king@intel.com>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] iio: palmas: shut up warning about calibration mismatch
- (due to noise)
-Message-ID: <20220327171343.28d582e7@jic23-huawei>
-In-Reply-To: <18533164-C17A-4CA1-A882-5A160D370498@goldelico.com>
-References: <1cee45bfc3fa2ab59dcc17242fb52468035360a1.1646743982.git.hns@goldelico.com>
-        <20220320155259.0fc79dd3@jic23-huawei>
-        <18533164-C17A-4CA1-A882-5A160D370498@goldelico.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Zizhuang Deng <sunsetdzz@gmail.com>, Jonathan.Cameron@huawei.com,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Paul Cercueil <paul.cercueil@analog.com>
+Subject: Re: [PATCH] iio: dac: ad5592r: Fix the missing return value.
+Message-ID: <20220327171916.5d6c7b18@jic23-huawei>
+In-Reply-To: <OZ839R.NWJC2LY54LGX@crapouillou.net>
+References: <20220310125450.4164164-1-sunsetdzz@gmail.com>
+        <20220320152047.2a04a62e@jic23-huawei>
+        <OZ839R.NWJC2LY54LGX@crapouillou.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -62,65 +57,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 20 Mar 2022 17:28:21 +0100
-"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+On Mon, 21 Mar 2022 09:28:36 +0000
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-> Hi Jonathan,
-> 
-> > Am 20.03.2022 um 16:52 schrieb Jonathan Cameron <jic23@kernel.org>:
-> > 
-> > On Tue,  8 Mar 2022 13:53:03 +0100
-> > "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
-> >   
-> >> Although technically checking for ADC values below 0 is correct,
-> >> because they are outside of the calibration values, there is usually
-> >> noise which spuriously fills the console log with error messages if
-> >> calculated input voltage gets close to 0V.
-> >> 
-> >> Ignore small negative calculated values, but clamp them to 0.
-> >> 
-> >> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>  
-> > Hi.
-> > 
-> > Should we treat this as a fix or a cleanup?
-> > 
-> > I don't mind either way.  
-> 
-> I don't mind either since we have it for long time in our distribution kernel.
-> 
-> BR and thanks,
-> Nikolaus
+> Hi,
+>=20
+> Le dim., mars 20 2022 at 15:20:47 +0000, Jonathan Cameron=20
+> <jic23@kernel.org> a =C3=A9crit :
+> > On Thu, 10 Mar 2022 20:54:50 +0800
+> > Zizhuang Deng <sunsetdzz@gmail.com> wrote:
+> >  =20
+> >>  The third call to `fwnode_property_read_u32` did not record
+> >>  the return value, resulting in `channel_offstate` possibly
+> >>  being assigned the wrong value.
+> >>=20
+> >>  Signed-off-by: Zizhuang Deng <sunsetdzz@gmail.com> =20
+> > Hi,
+> >=20
+> > Definitely rather odd looking and I think your conclusion is correct.
+> > +CC Paul for confirmation that this isn't doing something clever.. =20
+>=20
+> It's been a while, but I don't think there was anything clever going on=20
+> here - so the patch is fine.
 
-Treated as cleanup so applied to the togreg branch of iio.git, but for now
-only pushed out as testing because I'll be rebasing on rc1 next week.
+Added a fixes tag (it was driver introduction) and marked for stable
+given this could have some weird side effects if anyone actually
+had a dt that hit this path.  Applied to the fixes-togreg branch of iio.git
+but not pushed out yet as I'll be rebasing that branch on rc1 next week.
 
 Thanks,
 
 Jonathan
 
-> 
-> > 
-> > Jonathan
-> > 
-> >   
-> >> ---
-> >> drivers/iio/adc/palmas_gpadc.c | 3 ++-
-> >> 1 file changed, 2 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> >> index f9c8385c72d3..bcfa6a7f6cb2 100644
-> >> --- a/drivers/iio/adc/palmas_gpadc.c
-> >> +++ b/drivers/iio/adc/palmas_gpadc.c
-> >> @@ -376,7 +376,8 @@ static int palmas_gpadc_get_calibrated_code(struct palmas_gpadc *adc,
-> >> 					adc->adc_info[adc_chan].gain_error;
-> >> 
-> >> 	if (val < 0) {
-> >> -		dev_err(adc->dev, "Mismatch with calibration\n");
-> >> +		if (val < -10)
-> >> +			dev_err(adc->dev, "Mismatch with calibration var = %d\n", val);
-> >> 		return 0;
-> >> 	}
-> >>   
-> >   
-> 
+>=20
+> Cheers,
+> -Paul
+>=20
+> >  =20
+> >>  ---
+> >>   drivers/iio/dac/ad5592r-base.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>=20
+> >>  diff --git a/drivers/iio/dac/ad5592r-base.c=20
+> >> b/drivers/iio/dac/ad5592r-base.c
+> >>  index a424b7220b61..4434c1b2a322 100644
+> >>  --- a/drivers/iio/dac/ad5592r-base.c
+> >>  +++ b/drivers/iio/dac/ad5592r-base.c
+> >>  @@ -522,7 +522,7 @@ static int ad5592r_alloc_channels(struct=20
+> >> iio_dev *iio_dev)
+> >>   		if (!ret)
+> >>   			st->channel_modes[reg] =3D tmp;
+> >>=20
+> >>  -		fwnode_property_read_u32(child, "adi,off-state", &tmp);
+> >>  +		ret =3D fwnode_property_read_u32(child, "adi,off-state", &tmp);
+> >>   		if (!ret)
+> >>   			st->channel_offstate[reg] =3D tmp;
+> >>   	} =20
+> >  =20
+>=20
+>=20
 

@@ -2,63 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A504E8977
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 21:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDA1B4E898E
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 21:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235686AbiC0TEQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 15:04:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36730 "EHLO
+        id S235246AbiC0TK7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 15:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbiC0TEP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 15:04:15 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACC7140D4;
-        Sun, 27 Mar 2022 12:02:36 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id j15so24518185eje.9;
-        Sun, 27 Mar 2022 12:02:36 -0700 (PDT)
+        with ESMTP id S235161AbiC0TK6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 15:10:58 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D09722B0E;
+        Sun, 27 Mar 2022 12:09:16 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id bq8so10604456ejb.10;
+        Sun, 27 Mar 2022 12:09:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=kA48y2HXjqj25T0IDSVplJZk1xExHaagDZIM0X0POGU=;
-        b=HQyBU3Y4eyFwnc9ahSty/SHtBQR0l4T5z30Iaw7sPwZxEiZHLFgqcMq8XSlzluMC4X
-         QERKdGVSzhiUT5bLJfYTPccVEcvEfIJ14S6dfyLx+jmSx9pZVqRzXHDptnWhrmFSxvv6
-         gld1gXtkn2cemadcSG5soGuoeEwhBe4rfzxb0f/c74TC/E4GECEoCtx4xIwyruYPXR6n
-         8LyfvvGnRUsblW947aLpdmJYI+v+XbfVn7fv3sG6dZQuteMCKgZbAMD5hOAmHdY9YA5P
-         2n02PSgxeOYrQPE3BJ8W7GckrNFw5leo6fdXaK+4hFUHG2NJLaInXOAWcnRLnigqTFLM
-         bHIw==
+        bh=yHTo90e+pgzSDpNnHp4JH/jEnvng/GvATMflbVHHS0Y=;
+        b=Orh7nTeGm1vtfIcyTxf2ill2xZvAyunOZm56IzCf93aaLx9xC0Sl/tFNuoFogV4ufq
+         IL/iuRMfGN20r0w9ys5S3WE7pcms8fQwDvbZVqRADEFh/IoWMYR+jDjTABjNw0Br6k2k
+         oLe0UH0AiQOe2NCg/eamCFBuch7h44jTmM0QRY4Mrm5075wzypxoemQ4WfQLa+cP5Ar0
+         iiir80nLzmNiU5LBzoqWxHK0jLJ3ohREP6tKLuqGZRoAw/NGSqb6+rQkhgVUt4uwBCMc
+         DT7pn1GsXr+4gT5MiC8jjQVEFXQsA9pyhzBVfSyH8yThHp3rD0w4bW/QJoniDKWnQ3JG
+         HC3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=kA48y2HXjqj25T0IDSVplJZk1xExHaagDZIM0X0POGU=;
-        b=jmzUL3tUNCsRYAW0KkrZzw6kofXaAxNUzam/nf6jDhmW+eVA1TPdiyEG8wtxv2ridA
-         IB4h2er2Gl/11pRENshhImAt/iU4HQrCo+wG1IIayuokp/Q2/jr1zKw3i/5BQk7VXFo5
-         j7LIHXGPTXiE5NTJrN3ZH35ZK5/9wDX+PpCAwNlUEpcAwtSp3erMfzM3qiL+VBkStsYj
-         Tv2Q1tZXY3HvtVaDaYltEfQpo7aTs9oypqHtXGDc/z1nMKjDRD0Zq1bYorUoat3rMIkQ
-         BWNZxZ2BTV6NCkI9onrs1uV5Oz4EfhgkZ6n076swxLn7zqDcixwoKKbzKHfCyiHtXtPC
-         vA1Q==
-X-Gm-Message-State: AOAM533ATHi0YPlX7k+d5XL/kLqw4fBdyp7kfZhiZ2e9s8axJwmJQufx
-        Ouobrf5F/EVRI76armGqUu2FLhGuq0yz1nVpYUw=
-X-Google-Smtp-Source: ABdhPJzirTH9/1YtP5SVBpqCJMYl08ZB1cYfp6bCIVm3LSwRTQTubHsEoYrEOBozFmqsYMN3k5ScunZdiJ7ltGlpZBc=
-X-Received: by 2002:a17:907:968e:b0:6db:aed5:43c8 with SMTP id
- hd14-20020a170907968e00b006dbaed543c8mr23318941ejc.636.1648407754845; Sun, 27
- Mar 2022 12:02:34 -0700 (PDT)
+        bh=yHTo90e+pgzSDpNnHp4JH/jEnvng/GvATMflbVHHS0Y=;
+        b=fMJFakdGHlpq78rIJLPXg1bTCatzhG7HoF/T36InK3QvavTmQ/kztoMTzzoHnkGXzN
+         pSOwlbQO4czOfPHRXjVj/+lgpRtnr2H7RW3sHO3QVny51IBtwE3akRC3hy89yF3E15mR
+         lP5TIMtNkX9SePGYYdV3UtR6Rb1S3QzJvPngX11Xm3tgcc9O31hq5N8LnjOu04FlRa4I
+         q8HJNAxz6O2Psnv/diDiCC9MytQN/4TQr6IwErTBBHQMtaZ6kLfQwOnZn+LzTQI1s4On
+         3gh/t2WkJd1sZzsUzS/d1bRXTXsun8k68p9GpuiyU2kxngaC1Qc6Gupdb7lz0PaiCoWF
+         eGJg==
+X-Gm-Message-State: AOAM532GnTG90aHUwbTy8m0qB0Eswv+IkolWVOZC/uj+RzqMEX+x7Rq0
+        24Iu1rR4xZua92t0j01XKOWZYLdy1wSSUSQFBmRRoiNgulnxag==
+X-Google-Smtp-Source: ABdhPJxqtBf1ohvPQEvmcZoDnAzrKtn59oxHBEQufBwkmCf+EmIIHx91LW0Q6A8phW+D4SNkCJrAm8jaZ1O+tzb9l0w=
+X-Received: by 2002:a17:906:4cc7:b0:6d0:7efb:49f with SMTP id
+ q7-20020a1709064cc700b006d07efb049fmr23354395ejt.639.1648408155047; Sun, 27
+ Mar 2022 12:09:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220325220827.3719273-1-gwendal@chromium.org> <20220325220827.3719273-2-gwendal@chromium.org>
-In-Reply-To: <20220325220827.3719273-2-gwendal@chromium.org>
+References: <20220325220827.3719273-1-gwendal@chromium.org> <20220325220827.3719273-7-gwendal@chromium.org>
+In-Reply-To: <20220325220827.3719273-7-gwendal@chromium.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 27 Mar 2022 22:01:58 +0300
-Message-ID: <CAHp75VfYmXoWtG-Reu+Yqt4bOY4rCvFiMVdU_em5Akm3WGw+KQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/8] iio: sx9324: Fix default precharge internal
- resistance register
+Date:   Sun, 27 Mar 2022 22:08:39 +0300
+Message-ID: <CAHp75VdJkUoZPqQC347DxfrsQEmznhZtF8C-Aa_Rvt0hXJpppQ@mail.gmail.com>
+Subject: Re: [PATCH v3 6/8] iio: sx9324: Add Setting for internal compensation resistor
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Stephen Boyd <swboyd@chromium.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
+        devicetree <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -72,18 +70,30 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Sat, Mar 26, 2022 at 12:34 AM Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> Fix the default value for the register that set the resistance:
-> it has to be 0x10.
-
-Has to be according to what? Datasheet? Reverse engineering?
+> Based on device tree setting, set the internal compensation resistor.
 
 ...
 
-> +#define SX9324_REG_AFE_CTRL8_RSVD      0x10
+> +               if (!strcmp(res, "lowest"))
+> +                       reg_def->def |= SX9324_REG_AFE_CTRL0_RINT_LOWEST;
+> +               else if (!strcmp(res, "low"))
+> +                       reg_def->def |= SX9324_REG_AFE_CTRL0_RINT_LOW;
+> +               else if (!strcmp(res, "high"))
+> +                       reg_def->def |= SX9324_REG_AFE_CTRL0_RINT_HIGH;
+> +               else if (!strcmp(res, "highest"))
+> +                       reg_def->def |= SX9324_REG_AFE_CTRL0_RINT_HIGHEST;
 
-Seems like a BIT() mask here. Also I don't think it's a good idea to
-put RSVD. Does it mean "reserved"? Is it really how it's written in
-the datasheet?
+As far as I can see the values, you can simply put the string literals
+into the array:
+
+static const char * const sx9324_rints = { "lowest", "low", "high", "highest" };
+
+Then
+
+  ret = match_string(sx9324_rints, ARRAY_SIZE(sx9324_rints), res);
+  if (ret < 0)
+    return ret;
+  reg_def->def |= ret << SX9324_REG_AFE_CTRL0_RINT_SHIFT;
 
 -- 
 With Best Regards,

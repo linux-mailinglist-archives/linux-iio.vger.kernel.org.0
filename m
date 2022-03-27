@@ -2,47 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF8B4E88B2
-	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC954E88C7
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Mar 2022 18:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232127AbiC0QNX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 12:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
+        id S235346AbiC0QRM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 12:17:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235009AbiC0QNX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:13:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C1022B19;
-        Sun, 27 Mar 2022 09:11:45 -0700 (PDT)
+        with ESMTP id S234341AbiC0QRL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 12:17:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238B136B48;
+        Sun, 27 Mar 2022 09:15:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D8A6106E;
-        Sun, 27 Mar 2022 16:11:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62632C340EC;
-        Sun, 27 Mar 2022 16:11:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B64766106D;
+        Sun, 27 Mar 2022 16:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB24C340EC;
+        Sun, 27 Mar 2022 16:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648397504;
-        bh=NSeryNnkj69DaAR2H5ykOSi3ChtK6EsLFYoZgqVQBjo=;
+        s=k20201202; t=1648397732;
+        bh=nsHF7/lCAErDCtCYXXbx66rNfi9PbiN9g5HgcBT+RqQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=F4dJRnH8SPye953DLDoK5WSTi3XJFbZpmHki/3pKZnNyyEIML33fXjoQgbblBcwM5
-         5gmfkWjWHUeFke4kA9WrWBWlNIRnyj0w5hja+oiDGGfSfpHY0prTMoNkgfFCvXJqZr
-         eydyYw8sTa63rHnC/DkhmU5moDiZg9NoxWW6+93vwRJcUhzNZWWOg5upVU30H7si70
-         niwHt0uWAAHgMKXlfDqjqeyjGoOcplXXEufTMjpwS7c4PRgs7Y6LLFuIdbErsDWYnZ
-         Fw+Tl6CAlKlCwdOGzU2pMiKuKFO8zxJmmxslr4Ddl2Tk4fNRExCRiUbonVOH2d5ff3
-         BLh5uA88gskGA==
-Date:   Sun, 27 Mar 2022 17:19:16 +0100
+        b=tr/82D5aMQfcQypRkmTPFGOf6CwP9yeBo+qVpfjjHaM6HjTqd79AMDxNS5owmhbV2
+         Ay1hZAp80QOD1XK6qQD0mYSkiKxhTrpsHX+gLue+eCQrRdkkKzCXuBpOIY46koTc40
+         WIRBkeUalOfhGSGNr3DOESAanxTUKzVfRO9jVAABuo0GnTw9R5ZdMXM5UUXJ3qhaga
+         IkRQghfcd2xI7sSCL51WNj3wI9SlGIMPVE+jAfF8Z6wuHDl5iKlNtVkxBVtqWhP7EJ
+         Q/ZYitHObfvQvJpvWBJFNoXtkqCCX+r9PDwKtZ77Mwt12TatBRIBNAHF09f+F2K5yd
+         DJT4cW//X35BA==
+Date:   Sun, 27 Mar 2022 17:23:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Zizhuang Deng <sunsetdzz@gmail.com>, Jonathan.Cameron@huawei.com,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Paul Cercueil <paul.cercueil@analog.com>
-Subject: Re: [PATCH] iio: dac: ad5592r: Fix the missing return value.
-Message-ID: <20220327171916.5d6c7b18@jic23-huawei>
-In-Reply-To: <OZ839R.NWJC2LY54LGX@crapouillou.net>
-References: <20220310125450.4164164-1-sunsetdzz@gmail.com>
-        <20220320152047.2a04a62e@jic23-huawei>
-        <OZ839R.NWJC2LY54LGX@crapouillou.net>
+To:     Cixi Geng <gengcixi@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        "baolin.wang7@gmail.com" <baolin.wang7@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>, lgirdwood@gmail.com,
+        Mark Brown <broonie@kernel.org>,
+        "=?UTF-8?B?5pyx546J?= =?UTF-8?B?5piO?= (Yuming Zhu/11457)" 
+        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
+        Devicetree List <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH V2 2/7] iio: adc: sc27xx: fix read big scale voltage not
+ right
+Message-ID: <20220327172302.142ee9bd@jic23-huawei>
+In-Reply-To: <CAF12kFvPp4eVJtWD7zd=Kvx2mHQGWiy_dDOD1bvMLQgeNgBvzQ@mail.gmail.com>
+References: <20220311164628.378849-1-gengcixi@gmail.com>
+        <20220311164628.378849-3-gengcixi@gmail.com>
+        <20220320133229.6026f51a@jic23-huawei>
+        <CAF12kFvPp4eVJtWD7zd=Kvx2mHQGWiy_dDOD1bvMLQgeNgBvzQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,63 +66,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 21 Mar 2022 09:28:36 +0000
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Thu, 24 Mar 2022 15:36:56 +0800
+Cixi Geng <gengcixi@gmail.com> wrote:
 
-> Hi,
->=20
-> Le dim., mars 20 2022 at 15:20:47 +0000, Jonathan Cameron=20
-> <jic23@kernel.org> a =C3=A9crit :
-> > On Thu, 10 Mar 2022 20:54:50 +0800
-> > Zizhuang Deng <sunsetdzz@gmail.com> wrote:
-> >  =20
-> >>  The third call to `fwnode_property_read_u32` did not record
-> >>  the return value, resulting in `channel_offstate` possibly
-> >>  being assigned the wrong value.
-> >>=20
-> >>  Signed-off-by: Zizhuang Deng <sunsetdzz@gmail.com> =20
-> > Hi,
-> >=20
-> > Definitely rather odd looking and I think your conclusion is correct.
-> > +CC Paul for confirmation that this isn't doing something clever.. =20
->=20
-> It's been a while, but I don't think there was anything clever going on=20
-> here - so the patch is fine.
+> Jonathan Cameron <jic23@kernel.org> =E4=BA=8E2022=E5=B9=B43=E6=9C=8820=E6=
+=97=A5=E5=91=A8=E6=97=A5 21:25=E5=86=99=E9=81=93=EF=BC=9A
+> >
+> > On Sat, 12 Mar 2022 00:46:23 +0800
+> > Cixi Geng <gengcixi@gmail.com> wrote:
+> > =20
+> > > From: Cixi Geng <cixi.geng1@unisoc.com>
+> > >
+> > > Fix wrong configuration value of SC27XX_ADC_SCALE_MASK and
+> > > SC27XX_ADC_SCALE_SHIFT by spec documetation.
+> > >
+> > > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
+> > > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+> > > =20
+> > No blank lines in a tag block (they break people's scripts)
+> > Also, if this is a fix, I'd expect a fixes tag. =20
+> I will add in next version
+> > =20
+> > > Reviewed-by: Baolin Wang <baolin.wang7@gmail.com>
+> > > ---
+> > >  drivers/iio/adc/sc27xx_adc.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_ad=
+c.c
+> > > index 00098caf6d9e..aee076c8e2b1 100644
+> > > --- a/drivers/iio/adc/sc27xx_adc.c
+> > > +++ b/drivers/iio/adc/sc27xx_adc.c
+> > > @@ -36,8 +36,8 @@
+> > >
+> > >  /* Bits and mask definition for SC27XX_ADC_CH_CFG register */
+> > >  #define SC27XX_ADC_CHN_ID_MASK               GENMASK(4, 0)
+> > > -#define SC27XX_ADC_SCALE_MASK                GENMASK(10, 8)
+> > > -#define SC27XX_ADC_SCALE_SHIFT               8
+> > > +#define SC27XX_ADC_SCALE_MASK                GENMASK(10, 9)
+> > > +#define SC27XX_ADC_SCALE_SHIFT               9 =20
+> >
+> > This driver would benefit from use of FIELD_GET() / FIELD_PREP()
+> > but that is obviously unrelated to this particular series.
+> > =20
+> the next patch in this set need to use the fixed define value
 
-Added a fixes tag (it was driver introduction) and marked for stable
-given this could have some weird side effects if anyone actually
-had a dt that hit this path.  Applied to the fixes-togreg branch of iio.git
-but not pushed out yet as I'll be rebasing that branch on rc1 next week.
+Understood.  I was suggesting a future cleanup on top of this series
+to avoid the need for both MASK and SHIFT being defined for
+each field.  FIELD_GET/FIELD_PREP() are used to do that.
 
-Thanks,
+What you have in this series is fine without that change.
 
 Jonathan
 
->=20
-> Cheers,
-> -Paul
->=20
-> >  =20
-> >>  ---
-> >>   drivers/iio/dac/ad5592r-base.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>=20
-> >>  diff --git a/drivers/iio/dac/ad5592r-base.c=20
-> >> b/drivers/iio/dac/ad5592r-base.c
-> >>  index a424b7220b61..4434c1b2a322 100644
-> >>  --- a/drivers/iio/dac/ad5592r-base.c
-> >>  +++ b/drivers/iio/dac/ad5592r-base.c
-> >>  @@ -522,7 +522,7 @@ static int ad5592r_alloc_channels(struct=20
-> >> iio_dev *iio_dev)
-> >>   		if (!ret)
-> >>   			st->channel_modes[reg] =3D tmp;
-> >>=20
-> >>  -		fwnode_property_read_u32(child, "adi,off-state", &tmp);
-> >>  +		ret =3D fwnode_property_read_u32(child, "adi,off-state", &tmp);
-> >>   		if (!ret)
-> >>   			st->channel_offstate[reg] =3D tmp;
-> >>   	} =20
-> >  =20
->=20
->=20
+> >
+> > Jonathan
+> > =20
+> > >
+> > >  /* Bits definitions for SC27XX_ADC_INT_EN registers */
+> > >  #define SC27XX_ADC_IRQ_EN            BIT(0) =20
+> > =20
 

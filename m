@@ -2,59 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F1644E8A63
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 00:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302A94E8A70
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 00:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236843AbiC0WPF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 18:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
+        id S232694AbiC0WS1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 18:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234008AbiC0WPF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 18:15:05 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A21496BF
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 15:13:26 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id h1so14984307edj.1
-        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 15:13:26 -0700 (PDT)
+        with ESMTP id S232336AbiC0WS1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 18:18:27 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27314EF41;
+        Sun, 27 Mar 2022 15:16:47 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id u26so14935969eda.12;
+        Sun, 27 Mar 2022 15:16:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WDySBlxQ+Nz0DTmu06UDJZd80+mN/K47Fg5Hb87k06Q=;
-        b=AtRNcIcdBf8OmWFWjk2KgfzbTK4GgCAtpWwMyk27L3+mdp9VedBy8t/yZisZ6vf5fR
-         InO9avLPCirHiwGcdfXPSj0ZoDsZ7248jb1FzcVV5JR4hkhFP1Z/zwwxF5osBjAVAvf7
-         G2qBTz3tk8GE2I/grcpBGUHX9Mkk9nl6fOibthigGQpwxpaQMrbIkW1c+Ejrt5hDKdlf
-         DJfMBGIld9U6x+F/MQZZaCBvwJkDMMbsweP+k1lQbRbam9BbEYpXSJwP0zMyppugW2i+
-         vJ0wDZXZ0ccF4X2RWPnOtH0ldyEc0LeB2UjD93qDl5owrjYJQ0i4gOYcdI8/PNIT0TNQ
-         xBpg==
+        bh=+YqXAKsRg5NB+t2/EKrR18CcSxKRanJcc5WsAI2eJ+c=;
+        b=KHQSM9EtyCnVj/5hAoKqe+N0taL8HPZRXGxFKZSxmDxyh8ZnvNQHPM8F2R9jbP1H1Y
+         n9tdxfkj+UldMkZ/oqC9qNSPjJX9WA8mFsNRA2c8hvuMHZl/eqhQUQwkmUZlo7KkhJy+
+         2Yjwawx6/uX67adhHg8z7VcIfv6Nb15+HH02vUYEfCA36W/f2MviL/7GInQt0Llp6DDb
+         ifoktV8tjJsHH4Gs+KG2u8M2pJGDp5lORY0JzUBRTLrhF5pDgFvZiYwZD5bipKBroZiw
+         LWMfNMIP99eENLDQHRXKGVvX7NWQLrBf9/A6zmtZ48Jy1c4yN0JrW/fjQrBVXaSAsQPG
+         nLkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WDySBlxQ+Nz0DTmu06UDJZd80+mN/K47Fg5Hb87k06Q=;
-        b=rDVMr1qIebdmwjNsZfUlEgg9Q7sO7e09Tv8+AA1UrcHK1UXIp1shG8eQ85aHFlfPmQ
-         N5l3BE9yrMOa2iI3J9HebIBLYQEj7Sb4tnqcwHzomXUx/Oqa7RFZF6iGU+s1wYcoRBnx
-         nSvd6L1o5SuJzKG216jrMe52kZJGOnebbHmovGgQfOEU6FYPowuqDZ3hQS801vDrvd5y
-         dzEsBjD4C9zNF8rTI5qAZxABVYHC6qqVTk+RUW8tWFqk4PcK7k69OBNJn358BlA8HD1I
-         fFi7JwC2SRUZAnqy/Uo1oSR2rzJPPm1f151mCsJgrMtG8DOuJIDQCIx2/PxZbiznmtoB
-         qxHg==
-X-Gm-Message-State: AOAM532yJsUHKwsyopj8RmKmFxa+qjOYR4lXX5KUsZvVG/3mSKIsPOiB
-        +eunoc7igRpcR549/1vywCdkWBdnW2U+FVQyhPI=
-X-Google-Smtp-Source: ABdhPJwc2o1hZEh9N+C7bvlQoYwoGN9nJwwrVtgdpEYtZPbc+QheA5SI1Icq72pyrg1/FP/FAYUfyTihT9kjS5t3MJM=
-X-Received: by 2002:a05:6402:54:b0:419:9b58:e305 with SMTP id
- f20-20020a056402005400b004199b58e305mr12651490edu.158.1648419204748; Sun, 27
- Mar 2022 15:13:24 -0700 (PDT)
+        bh=+YqXAKsRg5NB+t2/EKrR18CcSxKRanJcc5WsAI2eJ+c=;
+        b=dgkNR4Tl7xciL77r/ihk+k1vMQJHrWIU2+088uQJsdURYpUdjkvYDT5gdb3us1RlWX
+         RJOm6dymw8+b/cLmEByxGSLdE8TKLe3rHJaZhYyAYQye4sDq5Ff/ybVjbUYWTUJcv3xo
+         /C9NYUEAd6Vn2FF08KcAVPqEnvvpseMJNe11UvrLoVyiyco2oOFzzNhVzJXMLYAz6ry9
+         b/zIpp+9zkywjvqanEP5Za9YUSjkfgyeUWvVp/v9AQIDgDAbtpckiY31RoceY5KZW90t
+         r5gr4HB/Y9f4kkgOpWI493vyMUlO9cnYfSz27fNGoVVXQuFdhefLc+/RHcb+lgCeM3hw
+         5G2g==
+X-Gm-Message-State: AOAM531SuU9+eJRlUBXZLsFYRLpfCePfW6ykHjulEMo34watBd9dtPW1
+        f5yKktOZnh3dW+87M4N+sU6BTBk1Sv8smmxAk3hWEOUyhJs=
+X-Google-Smtp-Source: ABdhPJxiw+SGdXidWk7bAM3x5T6Bu4MVtCnAYoiQmq/+gTmPbRn7lYtP2eNXnFcu7EYEsc+FzoDTBfDTArIYTctFjQM=
+X-Received: by 2002:a05:6402:27d1:b0:419:1b02:4a04 with SMTP id
+ c17-20020a05640227d100b004191b024a04mr12436901ede.218.1648419406297; Sun, 27
+ Mar 2022 15:16:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220324110157.13143-1-jianchunfu@cmss.chinamobile.com>
-In-Reply-To: <20220324110157.13143-1-jianchunfu@cmss.chinamobile.com>
+References: <20220318204808.3404542-1-swboyd@chromium.org>
+In-Reply-To: <20220318204808.3404542-1-swboyd@chromium.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 28 Mar 2022 01:12:48 +0300
-Message-ID: <CAHp75VfT6rXihJrqVGLTs-pUbOueXh8z8on2PZAGpk4AHxU2og@mail.gmail.com>
-Subject: Re: [PATCH] tools:iio: Fix the potential stack overflow risk
-To:     jianchunfu <jianchunfu@cmss.chinamobile.com>
+Date:   Mon, 28 Mar 2022 01:16:10 +0300
+Message-ID: <CAHp75Ve+SiiAM6VkiwPt95w68KEDk46vXR6ZzjOR7ZgaeZ80HA@mail.gmail.com>
+Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
+To:     Stephen Boyd <swboyd@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -66,18 +68,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Mar 24, 2022 at 3:15 PM jianchunfu
-<jianchunfu@cmss.chinamobile.com> wrote:
+On Sat, Mar 19, 2022 at 5:58 AM Stephen Boyd <swboyd@chromium.org> wrote:
 >
-> Add judgment to fix the potential stack overflow risk.
+> There are four possible gain values according to sx9324_gain_vals[]: 1,
+> 2, 4, and 8. When writing and reading the register the values are off by
+> one. The bits should be set according to this equation:
+>
+>         ilog2(<gain>) + 1
+>
+> so that a gain of 8 is 0x3 in the register field and a gain of 4 is 0x2
+> in the register field, etc. Fix up the functions.
 
->                 trigger_name = malloc(IIO_MAX_NAME_LENGTH);
-> +               if (!trigger_name) {
-> +                       ret = -ENOMEM;
-> +                       goto error;
-> +               }
+...
 
-Isn't malloc() sets errno? Why not use it instead?
+> +       *val = 1 << regval;
+
+I see it's similar in the original code, but this is still problematic
+from C standard point of view, i.e. if regval = 31, the C standard
+calls it UB (Undefined Behaviour).
 
 -- 
 With Best Regards,

@@ -2,442 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 105D64E9F9E
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 21:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9AA14E9FA8
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 21:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237328AbiC1TS3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Mar 2022 15:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44832 "EHLO
+        id S240250AbiC1TTi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 15:19:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343587AbiC1TSH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 15:18:07 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC9D6663F;
-        Mon, 28 Mar 2022 12:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1648494984; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bR+5ek2By7kDQ4MDZLE82wSKnOnXLjg0yQ+z90nLqXE=;
-        b=Y/OYuheazXHpu1GEObnPnrWFEJ5vTPCYieMCY9BJwtco180FyNGrXAp8hNZQDWGGWaVmdG
-        aXsx4iMkvQQhEMHoFi1BA0Dh9idiOE0GGMpDub54xvYbE49lKiH83y/SLrM9yJH9i4P6N+
-        15Lg8l46yEr678RsDsDJDw0L+Esd5hg=
-Date:   Mon, 28 Mar 2022 20:16:13 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v2 07/12] iio: buffer-dma: Use DMABUFs instead of custom
- solution
+        with ESMTP id S234167AbiC1TTi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 15:19:38 -0400
+Received: from mail.thepaulodoom.com (www.thepaulodoom.com [45.77.108.202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1A88766C9A;
+        Mon, 28 Mar 2022 12:17:55 -0700 (PDT)
+Received: from hp-amd-paul (c-98-240-189-147.hsd1.mn.comcast.net [98.240.189.147])
+        by vultr.guest (OpenSMTPD) with ESMTPSA id 19d4373f (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Mon, 28 Mar 2022 19:17:53 +0000 (UTC)
+Date:   Mon, 28 Mar 2022 14:17:51 -0500
+From:   Paul Lemmermann <thepaulodoom@thepaulodoom.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Message-Id: <1VYG9R.1JAKRTCN4I411@crapouillou.net>
-In-Reply-To: <20220328185425.56b51f4a@jic23-huawei>
-References: <20220207125933.81634-1-paul@crapouillou.net>
-        <20220207125933.81634-8-paul@crapouillou.net>
-        <20220328185425.56b51f4a@jic23-huawei>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] IIO: accel: fixed coding style issues
+Message-ID: <YkIJ3/nkVNMy/qv8@hp-amd-paul>
+References: <YkHOpCT2Gad1YaxN@hp-amd-paul>
+ <20220328180623.1380d23e@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220328180623.1380d23e@jic23-huawei>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-
-Le lun., mars 28 2022 at 18:54:25 +0100, Jonathan Cameron=20
-<jic23@kernel.org> a =E9crit :
-> On Mon,  7 Feb 2022 12:59:28 +0000
-> Paul Cercueil <paul@crapouillou.net> wrote:
->=20
->>  Enhance the current fileio code by using DMABUF objects instead of
->>  custom buffers.
->>=20
->>  This adds more code than it removes, but:
->>  - a lot of the complexity can be dropped, e.g. custom kref and
->>    iio_buffer_block_put_atomic() are not needed anymore;
->>  - it will be much easier to introduce an API to export these DMABUF
->>    objects to userspace in a following patch.
->>=20
->>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+On Mon, Mar 28, 2022 at 06:06:23PM +0100, Jonathan Cameron wrote:
+> On Mon, 28 Mar 2022 10:05:08 -0500
+> Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
+> 
+> > Fixed case statement issues and spacing issues.
+> > 
+> > Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
 > Hi Paul,
->=20
-> I'm a bit rusty on dma mappings, but you seem to have
-> a mixture of streaming and coherent mappings going on in here.
+> 
+> Thanks for the patch.
+> 
+> These are drivers written / maintained by different authors, so one
+> patch per driver preferred.  Particularly handy as people might not
+> agree with all of them so separate patches would allow me to pick
+> and choose which ones to pick up.
+> 
+> Comments inline.
+> 
+> Please state how you identified the changes btw.  Script?
 
-That's OK, so am I. What do you call "streaming mappings"?
+I used the checkpatch.pl script to identify these changes.
 
-> Is it the case that the current code is using the coherent mappings
-> and a potential 'other user' of the dma buffer might need
-> streaming mappings?
-
-Something like that. There are two different things; on both cases,=20
-userspace needs to create a DMABUF with IIO_BUFFER_DMABUF_ALLOC_IOCTL,=20
-and the backing memory is allocated with dma_alloc_coherent().
-
-- For the userspace interface, you then have a "cpu access" IOCTL=20
-(DMA_BUF_IOCTL_SYNC), that allows userspace to inform when it will=20
-start/finish to process the buffer in user-space (which will=20
-sync/invalidate the data cache if needed). A buffer can then be=20
-enqueued for DMA processing (TX or RX) with the new=20
-IIO_BUFFER_DMABUF_ENQUEUE_IOCTL.
-
-- When the DMABUF created via the IIO core is sent to another driver=20
-through the driver's custom DMABUF import function, this driver will=20
-call dma_buf_attach(), which will call iio_buffer_dma_buf_map(). Since=20
-it has to return a "struct sg_table *", this function then simply=20
-creates a sgtable with one entry that points to the backing memory.
-
-Note that I added the iio_buffer_dma_buf_map() / _unmap() functions=20
-because the dma-buf core would WARN() if these were not provided. But=20
-since this code doesn't yet support importing/exporting DMABUFs to=20
-other drivers, these are never called, and I should probably just make=20
-them return a ERR_PTR() unconditionally.
-
-Cheers,
--Paul
-
+> 
 > Jonathan
->=20
->>  ---
->>   drivers/iio/buffer/industrialio-buffer-dma.c | 192=20
->> ++++++++++++-------
->>   include/linux/iio/buffer-dma.h               |   8 +-
->>   2 files changed, 122 insertions(+), 78 deletions(-)
->>=20
->>  diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c=20
->> b/drivers/iio/buffer/industrialio-buffer-dma.c
->>  index 15ea7bc3ac08..54e6000cd2ee 100644
->>  --- a/drivers/iio/buffer/industrialio-buffer-dma.c
->>  +++ b/drivers/iio/buffer/industrialio-buffer-dma.c
->>  @@ -14,6 +14,7 @@
->>   #include <linux/poll.h>
->>   #include <linux/iio/buffer_impl.h>
->>   #include <linux/iio/buffer-dma.h>
->>  +#include <linux/dma-buf.h>
->>   #include <linux/dma-mapping.h>
->>   #include <linux/sizes.h>
->>=20
->>  @@ -90,103 +91,145 @@
->>    * callback is called from within the custom callback.
->>    */
->>=20
->>  -static void iio_buffer_block_release(struct kref *kref)
->>  -{
->>  -	struct iio_dma_buffer_block *block =3D container_of(kref,
->>  -		struct iio_dma_buffer_block, kref);
->>  -
->>  -	WARN_ON(block->state !=3D IIO_BLOCK_STATE_DEAD);
->>  -
->>  -	dma_free_coherent(block->queue->dev, PAGE_ALIGN(block->size),
->>  -					block->vaddr, block->phys_addr);
->>  -
->>  -	iio_buffer_put(&block->queue->buffer);
->>  -	kfree(block);
->>  -}
->>  -
->>  -static void iio_buffer_block_get(struct iio_dma_buffer_block=20
->> *block)
->>  -{
->>  -	kref_get(&block->kref);
->>  -}
->>  -
->>  -static void iio_buffer_block_put(struct iio_dma_buffer_block=20
->> *block)
->>  -{
->>  -	kref_put(&block->kref, iio_buffer_block_release);
->>  -}
->>  -
->>  -/*
->>  - * dma_free_coherent can sleep, hence we need to take some special=20
->> care to be
->>  - * able to drop a reference from an atomic context.
->>  - */
->>  -static LIST_HEAD(iio_dma_buffer_dead_blocks);
->>  -static DEFINE_SPINLOCK(iio_dma_buffer_dead_blocks_lock);
->>  -
->>  -static void iio_dma_buffer_cleanup_worker(struct work_struct *work)
->>  -{
->>  -	struct iio_dma_buffer_block *block, *_block;
->>  -	LIST_HEAD(block_list);
->>  -
->>  -	spin_lock_irq(&iio_dma_buffer_dead_blocks_lock);
->>  -	list_splice_tail_init(&iio_dma_buffer_dead_blocks, &block_list);
->>  -	spin_unlock_irq(&iio_dma_buffer_dead_blocks_lock);
->>  -
->>  -	list_for_each_entry_safe(block, _block, &block_list, head)
->>  -		iio_buffer_block_release(&block->kref);
->>  -}
->>  -static DECLARE_WORK(iio_dma_buffer_cleanup_work,=20
->> iio_dma_buffer_cleanup_worker);
->>  -
->>  -static void iio_buffer_block_release_atomic(struct kref *kref)
->>  -{
->>  +struct iio_buffer_dma_buf_attachment {
->>  +	struct scatterlist sgl;
->>  +	struct sg_table sg_table;
->>   	struct iio_dma_buffer_block *block;
->>  -	unsigned long flags;
->>  -
->>  -	block =3D container_of(kref, struct iio_dma_buffer_block, kref);
->>  -
->>  -	spin_lock_irqsave(&iio_dma_buffer_dead_blocks_lock, flags);
->>  -	list_add_tail(&block->head, &iio_dma_buffer_dead_blocks);
->>  -	spin_unlock_irqrestore(&iio_dma_buffer_dead_blocks_lock, flags);
->>  -
->>  -	schedule_work(&iio_dma_buffer_cleanup_work);
->>  -}
->>  -
->>  -/*
->>  - * Version of iio_buffer_block_put() that can be called from=20
->> atomic context
->>  - */
->>  -static void iio_buffer_block_put_atomic(struct=20
->> iio_dma_buffer_block *block)
->>  -{
->>  -	kref_put(&block->kref, iio_buffer_block_release_atomic);
->>  -}
->>  +};
->>=20
->>   static struct iio_dma_buffer_queue *iio_buffer_to_queue(struct=20
->> iio_buffer *buf)
->>   {
->>   	return container_of(buf, struct iio_dma_buffer_queue, buffer);
->>   }
->>=20
->>  +static struct iio_buffer_dma_buf_attachment *
->>  +to_iio_buffer_dma_buf_attachment(struct sg_table *table)
->>  +{
->>  +	return container_of(table, struct iio_buffer_dma_buf_attachment,=20
->> sg_table);
->>  +}
->>  +
->>  +static void iio_buffer_block_get(struct iio_dma_buffer_block=20
->> *block)
->>  +{
->>  +	get_dma_buf(block->dmabuf);
->>  +}
->>  +
->>  +static void iio_buffer_block_put(struct iio_dma_buffer_block=20
->> *block)
->>  +{
->>  +	dma_buf_put(block->dmabuf);
->>  +}
->>  +
->>  +static int iio_buffer_dma_buf_attach(struct dma_buf *dbuf,
->>  +				     struct dma_buf_attachment *at)
->>  +{
->>  +	at->priv =3D dbuf->priv;
->>  +
->>  +	return 0;
->>  +}
->>  +
->>  +static struct sg_table *iio_buffer_dma_buf_map(struct=20
->> dma_buf_attachment *at,
->>  +					       enum dma_data_direction dma_dir)
->>  +{
->>  +	struct iio_dma_buffer_block *block =3D at->priv;
->>  +	struct iio_buffer_dma_buf_attachment *dba;
->>  +	int ret;
->>  +
->>  +	dba =3D kzalloc(sizeof(*dba), GFP_KERNEL);
->>  +	if (!dba)
->>  +		return ERR_PTR(-ENOMEM);
->>  +
->>  +	sg_init_one(&dba->sgl, block->vaddr, PAGE_ALIGN(block->size));
->>  +	dba->sg_table.sgl =3D &dba->sgl;
->>  +	dba->sg_table.nents =3D 1;
->>  +	dba->block =3D block;
->>  +
->>  +	ret =3D dma_map_sgtable(at->dev, &dba->sg_table, dma_dir, 0);
->>  +	if (ret) {
->>  +		kfree(dba);
->>  +		return ERR_PTR(ret);
->>  +	}
->>  +
->>  +	return &dba->sg_table;
->>  +}
->>  +
->>  +static void iio_buffer_dma_buf_unmap(struct dma_buf_attachment *at,
->>  +				     struct sg_table *sg_table,
->>  +				     enum dma_data_direction dma_dir)
->>  +{
->>  +	struct iio_buffer_dma_buf_attachment *dba =3D
->>  +		to_iio_buffer_dma_buf_attachment(sg_table);
->>  +
->>  +	dma_unmap_sgtable(at->dev, &dba->sg_table, dma_dir, 0);
->>  +	kfree(dba);
->>  +}
->>  +
->>  +static void iio_buffer_dma_buf_release(struct dma_buf *dbuf)
->>  +{
->>  +	struct iio_dma_buffer_block *block =3D dbuf->priv;
->>  +	struct iio_dma_buffer_queue *queue =3D block->queue;
->>  +
->>  +	WARN_ON(block->state !=3D IIO_BLOCK_STATE_DEAD);
->>  +
->>  +	mutex_lock(&queue->lock);
->>  +
->>  +	dma_free_coherent(queue->dev, PAGE_ALIGN(block->size),
->>  +			  block->vaddr, block->phys_addr);
->>  +	kfree(block);
->>  +
->>  +	mutex_unlock(&queue->lock);
->>  +	iio_buffer_put(&queue->buffer);
->>  +}
->>  +
->>  +static const struct dma_buf_ops iio_dma_buffer_dmabuf_ops =3D {
->>  +	.attach			=3D iio_buffer_dma_buf_attach,
->>  +	.map_dma_buf		=3D iio_buffer_dma_buf_map,
->>  +	.unmap_dma_buf		=3D iio_buffer_dma_buf_unmap,
->>  +	.release		=3D iio_buffer_dma_buf_release,
->>  +};
->>  +
->>   static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
->>   	struct iio_dma_buffer_queue *queue, size_t size)
->>   {
->>   	struct iio_dma_buffer_block *block;
->>  +	DEFINE_DMA_BUF_EXPORT_INFO(einfo);
->>  +	struct dma_buf *dmabuf;
->>  +	int err =3D -ENOMEM;
->>=20
->>   	block =3D kzalloc(sizeof(*block), GFP_KERNEL);
->>   	if (!block)
->>  -		return NULL;
->>  +		return ERR_PTR(err);
->>=20
->>   	block->vaddr =3D dma_alloc_coherent(queue->dev, PAGE_ALIGN(size),
->>   		&block->phys_addr, GFP_KERNEL);
->>  -	if (!block->vaddr) {
->>  -		kfree(block);
->>  -		return NULL;
->>  +	if (!block->vaddr)
->>  +		goto err_free_block;
->>  +
->>  +	einfo.ops =3D &iio_dma_buffer_dmabuf_ops;
->>  +	einfo.size =3D PAGE_ALIGN(size);
->>  +	einfo.priv =3D block;
->>  +	einfo.flags =3D O_RDWR;
->>  +
->>  +	dmabuf =3D dma_buf_export(&einfo);
->>  +	if (IS_ERR(dmabuf)) {
->>  +		err =3D PTR_ERR(dmabuf);
->>  +		goto err_free_dma;
->>   	}
->>=20
->>  +	block->dmabuf =3D dmabuf;
->>   	block->size =3D size;
->>   	block->state =3D IIO_BLOCK_STATE_DONE;
->>   	block->queue =3D queue;
->>   	INIT_LIST_HEAD(&block->head);
->>  -	kref_init(&block->kref);
->>=20
->>   	iio_buffer_get(&queue->buffer);
->>=20
->>   	return block;
->>  +
->>  +err_free_dma:
->>  +	dma_free_coherent(queue->dev, PAGE_ALIGN(size),
->>  +			  block->vaddr, block->phys_addr);
->>  +err_free_block:
->>  +	kfree(block);
->>  +	return ERR_PTR(err);
->>   }
->>=20
->>   static void _iio_dma_buffer_block_done(struct iio_dma_buffer_block=20
->> *block)
->>  @@ -223,7 +266,7 @@ void iio_dma_buffer_block_done(struct=20
->> iio_dma_buffer_block *block)
->>   	_iio_dma_buffer_block_done(block);
->>   	spin_unlock_irqrestore(&queue->list_lock, flags);
->>=20
->>  -	iio_buffer_block_put_atomic(block);
->>  +	iio_buffer_block_put(block);
->>   	iio_dma_buffer_queue_wake(queue);
->>   }
->>   EXPORT_SYMBOL_GPL(iio_dma_buffer_block_done);
->>  @@ -249,7 +292,8 @@ void iio_dma_buffer_block_list_abort(struct=20
->> iio_dma_buffer_queue *queue,
->>   		list_del(&block->head);
->>   		block->bytes_used =3D 0;
->>   		_iio_dma_buffer_block_done(block);
->>  -		iio_buffer_block_put_atomic(block);
->>  +
->>  +		iio_buffer_block_put(block);
->>   	}
->>   	spin_unlock_irqrestore(&queue->list_lock, flags);
->>=20
->>  @@ -340,8 +384,8 @@ int iio_dma_buffer_request_update(struct=20
->> iio_buffer *buffer)
->>=20
->>   		if (!block) {
->>   			block =3D iio_dma_buffer_alloc_block(queue, size);
->>  -			if (!block) {
->>  -				ret =3D -ENOMEM;
->>  +			if (IS_ERR(block)) {
->>  +				ret =3D PTR_ERR(block);
->>   				goto out_unlock;
->>   			}
->>   			queue->fileio.blocks[i] =3D block;
->>  diff --git a/include/linux/iio/buffer-dma.h=20
->> b/include/linux/iio/buffer-dma.h
->>  index 490b93f76fa8..6b3fa7d2124b 100644
->>  --- a/include/linux/iio/buffer-dma.h
->>  +++ b/include/linux/iio/buffer-dma.h
->>  @@ -8,7 +8,6 @@
->>   #define __INDUSTRIALIO_DMA_BUFFER_H__
->>=20
->>   #include <linux/list.h>
->>  -#include <linux/kref.h>
->>   #include <linux/spinlock.h>
->>   #include <linux/mutex.h>
->>   #include <linux/iio/buffer_impl.h>
->>  @@ -16,6 +15,7 @@
->>   struct iio_dma_buffer_queue;
->>   struct iio_dma_buffer_ops;
->>   struct device;
->>  +struct dma_buf;
->>=20
->>   /**
->>    * enum iio_block_state - State of a struct iio_dma_buffer_block
->>  @@ -39,8 +39,8 @@ enum iio_block_state {
->>    * @vaddr: Virutal address of the blocks memory
->>    * @phys_addr: Physical address of the blocks memory
->>    * @queue: Parent DMA buffer queue
->>  - * @kref: kref used to manage the lifetime of block
->>    * @state: Current state of the block
->>  + * @dmabuf: Underlying DMABUF object
->>    */
->>   struct iio_dma_buffer_block {
->>   	/* May only be accessed by the owner of the block */
->>  @@ -56,13 +56,13 @@ struct iio_dma_buffer_block {
->>   	size_t size;
->>   	struct iio_dma_buffer_queue *queue;
->>=20
->>  -	/* Must not be accessed outside the core. */
->>  -	struct kref kref;
->>   	/*
->>   	 * Must not be accessed outside the core. Access needs to hold
->>   	 * queue->list_lock if the block is not owned by the core.
->>   	 */
->>   	enum iio_block_state state;
->>  +
->>  +	struct dma_buf *dmabuf;
->>   };
->>=20
->>   /**
->=20
+> 
+> > ---
+> >  drivers/iio/accel/bmc150-accel-core.c | 15 +++++++++++----
+> >  drivers/iio/accel/dmard09.c           |  2 +-
+> >  drivers/iio/accel/kxsd9-spi.c         |  4 ++--
+> >  3 files changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+> > index d11f66801..f7dd7ec2c 100644
+> > --- a/drivers/iio/accel/bmc150-accel-core.c
+> > +++ b/drivers/iio/accel/bmc150-accel-core.c
+> > @@ -432,10 +432,17 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
+> >  
+> >  		for (j = 0; j < 3; j++) {
+> >  			switch (val[j]) {
+> > -			case -1: str = "-1"; break;
+> > -			case 0:  str = "0";  break;
+> > -			case 1:  str = "1";  break;
+> > -			default: goto unknown_format;
+> > +			case -1:
+> > +				str = "-1";
+> > +				break;
+> > +			case 0:
+> > +				str = "0";
+> > +				break;
+> > +			case 1:
+> > +				str = "1";
+> > +				break;
+> > +			default:
+> > +				goto unknown_format;
+> 
+> I'm not seeing any clear advantage to this change.
+>
+The reason for this change is that most, if not all, case statements in
+the kernel are multiple lines. Also, in the kernel docs (https://docs.kernel.org/process/coding-style.html)
+it says, to not put multiple statements on one line.
 
-
+Thanks,
+Paul
+> 
+> >  			}
+> >  			orientation->rotation[i * 3 + j] = str;
+> >  		}
+> > diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
+> > index e6e28c964..87bc38d4d 100644
+> > --- a/drivers/iio/accel/dmard09.c
+> > +++ b/drivers/iio/accel/dmard09.c
+> > @@ -24,7 +24,7 @@
+> >  #define DMARD09_AXIS_Y 1
+> >  #define DMARD09_AXIS_Z 2
+> >  #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
+> > -#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
+> > +#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
+> 
+> This is one is good.
+> 
+> >  #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
+> >  
+> >  struct dmard09_data {
+> > diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
+> > index 57c451cfb..989f53fb0 100644
+> > --- a/drivers/iio/accel/kxsd9-spi.c
+> > +++ b/drivers/iio/accel/kxsd9-spi.c
+> > @@ -44,8 +44,8 @@ static const struct spi_device_id kxsd9_spi_id[] = {
+> >  MODULE_DEVICE_TABLE(spi, kxsd9_spi_id);
+> >  
+> >  static const struct of_device_id kxsd9_of_match[] = {
+> > -        { .compatible = "kionix,kxsd9" },
+> > -        { },
+> > +	{ .compatible = "kionix,kxsd9" },
+> 
+> Also good to clean up.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+> > +	{ },
+> >  };
+> >  MODULE_DEVICE_TABLE(of, kxsd9_of_match);
+> >  
+> 

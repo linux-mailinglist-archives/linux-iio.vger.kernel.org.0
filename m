@@ -2,91 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302A94E8A70
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 00:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A8F4E8B3C
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 02:31:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232694AbiC0WS1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 18:18:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
+        id S230525AbiC1AdQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 27 Mar 2022 20:33:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232336AbiC0WS1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 18:18:27 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27314EF41;
-        Sun, 27 Mar 2022 15:16:47 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id u26so14935969eda.12;
-        Sun, 27 Mar 2022 15:16:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+YqXAKsRg5NB+t2/EKrR18CcSxKRanJcc5WsAI2eJ+c=;
-        b=KHQSM9EtyCnVj/5hAoKqe+N0taL8HPZRXGxFKZSxmDxyh8ZnvNQHPM8F2R9jbP1H1Y
-         n9tdxfkj+UldMkZ/oqC9qNSPjJX9WA8mFsNRA2c8hvuMHZl/eqhQUQwkmUZlo7KkhJy+
-         2Yjwawx6/uX67adhHg8z7VcIfv6Nb15+HH02vUYEfCA36W/f2MviL/7GInQt0Llp6DDb
-         ifoktV8tjJsHH4Gs+KG2u8M2pJGDp5lORY0JzUBRTLrhF5pDgFvZiYwZD5bipKBroZiw
-         LWMfNMIP99eENLDQHRXKGVvX7NWQLrBf9/A6zmtZ48Jy1c4yN0JrW/fjQrBVXaSAsQPG
-         nLkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+YqXAKsRg5NB+t2/EKrR18CcSxKRanJcc5WsAI2eJ+c=;
-        b=dgkNR4Tl7xciL77r/ihk+k1vMQJHrWIU2+088uQJsdURYpUdjkvYDT5gdb3us1RlWX
-         RJOm6dymw8+b/cLmEByxGSLdE8TKLe3rHJaZhYyAYQye4sDq5Ff/ybVjbUYWTUJcv3xo
-         /C9NYUEAd6Vn2FF08KcAVPqEnvvpseMJNe11UvrLoVyiyco2oOFzzNhVzJXMLYAz6ry9
-         b/zIpp+9zkywjvqanEP5Za9YUSjkfgyeUWvVp/v9AQIDgDAbtpckiY31RoceY5KZW90t
-         r5gr4HB/Y9f4kkgOpWI493vyMUlO9cnYfSz27fNGoVVXQuFdhefLc+/RHcb+lgCeM3hw
-         5G2g==
-X-Gm-Message-State: AOAM531SuU9+eJRlUBXZLsFYRLpfCePfW6ykHjulEMo34watBd9dtPW1
-        f5yKktOZnh3dW+87M4N+sU6BTBk1Sv8smmxAk3hWEOUyhJs=
-X-Google-Smtp-Source: ABdhPJxiw+SGdXidWk7bAM3x5T6Bu4MVtCnAYoiQmq/+gTmPbRn7lYtP2eNXnFcu7EYEsc+FzoDTBfDTArIYTctFjQM=
-X-Received: by 2002:a05:6402:27d1:b0:419:1b02:4a04 with SMTP id
- c17-20020a05640227d100b004191b024a04mr12436901ede.218.1648419406297; Sun, 27
- Mar 2022 15:16:46 -0700 (PDT)
+        with ESMTP id S230373AbiC1AdP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 20:33:15 -0400
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1554A4889B
+        for <linux-iio@vger.kernel.org>; Sun, 27 Mar 2022 17:31:35 -0700 (PDT)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id C830881FBB;
+        Mon, 28 Mar 2022 02:31:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1648427493;
+        bh=oSFMfqD1hSlMJ3Eusc6TwiNGpDSyAJoP7J2jncMGexc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=zjD7dUPNa8VqmCVF6rpnIPkdMKt0DpCe/iCWMLUTpTWChwgHIw7ftHIiQR8N7Jy8F
+         S9gyaEpQWELz4oH9sjq0FWu+pBZUwRLXvVo3qMBmHmcaejoTlwcmqyJQ3JMW4Klo3I
+         rZ4mq9/glnchU9JROkpA8Q5XElnG92nlql+K2HmLl1f49Dcrb2iLLAcAn4kcSz/uar
+         kWgGz/8Gj0zu7iYI5vCvQ6H0pFgJFGzMuudO2Y/egLl1F9B/nE99sQ5rPhwvA4rwFS
+         TwwF2oWqrPiQRxXzdam0xGxjSqbrLUP5liVO0nW2KWEjyiP/YdbMkAcYA0VFnFN1IQ
+         a0+/FKlK+EL7g==
+Message-ID: <2a5699df-51b0-de6f-6651-b0e0eefd8667@denx.de>
+Date:   Mon, 28 Mar 2022 02:31:32 +0200
 MIME-Version: 1.0
-References: <20220318204808.3404542-1-swboyd@chromium.org>
-In-Reply-To: <20220318204808.3404542-1-swboyd@chromium.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 28 Mar 2022 01:16:10 +0300
-Message-ID: <CAHp75Ve+SiiAM6VkiwPt95w68KEDk46vXR6ZzjOR7ZgaeZ80HA@mail.gmail.com>
-Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Gwendal Grignou <gwendal@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v4 10/10] iio: adc: ti-ads1015: Switch to read_avail
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20220322220210.207454-1-marex@denx.de>
+ <20220322220210.207454-10-marex@denx.de>
+ <20220327161835.5c661300@jic23-huawei>
+From:   Marek Vasut <marex@denx.de>
+In-Reply-To: <20220327161835.5c661300@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Mar 19, 2022 at 5:58 AM Stephen Boyd <swboyd@chromium.org> wrote:
->
-> There are four possible gain values according to sx9324_gain_vals[]: 1,
-> 2, 4, and 8. When writing and reading the register the values are off by
-> one. The bits should be set according to this equation:
->
->         ilog2(<gain>) + 1
->
-> so that a gain of 8 is 0x3 in the register field and a gain of 4 is 0x2
-> in the register field, etc. Fix up the functions.
+On 3/27/22 17:18, Jonathan Cameron wrote:
+> On Tue, 22 Mar 2022 23:02:10 +0100
+> Marek Vasut <marex@denx.de> wrote:
+> 
+>> Replace sysfs attributes with read_avail() callback. This also permits
+>> removal of ads1115_info, since the scale attribute tables are now part
+>> of chip data.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> Cc: Andy Shevchenko <andy@kernel.org>
+>> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Sorry, I didn't catch your question on v3 about why I was advocating
+> signed.
+> 
+> You are passing pointers to those arrays as signed in the
+> read_avail.
+> 
+> Obviously you can 'get away with it' because the values are small
+> positive numbers and hence in 2's complement the data representation
+> will be the same.  Not pretty though so my inclination would
+> be to keep them signed everywhere.
+> 
+> If you are fine with that change I can change it whilst applying if
+> nothing else comes up in review.
 
-...
-
-> +       *val = 1 << regval;
-
-I see it's similar in the original code, but this is still problematic
-from C standard point of view, i.e. if regval = 31, the C standard
-calls it UB (Undefined Behaviour).
-
--- 
-With Best Regards,
-Andy Shevchenko
+I'm fine with it, although I did switch them all to unsigned int in this 
+V4 (unless I'm missing something still).

@@ -2,158 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 220944E973D
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 15:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 060E54E9A99
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 17:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238219AbiC1NEZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Mar 2022 09:04:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40224 "EHLO
+        id S237116AbiC1PNu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 11:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbiC1NEY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 09:04:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBF25D18B
-        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 06:02:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AC4A60F28
-        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 13:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDE6C340ED;
-        Mon, 28 Mar 2022 13:02:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1648472563;
-        bh=4BNd/nr5yAr1TLLYnFwVd4+nHk8Hao7pRJssMMM+m4w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mTn53ivRLlkPXgMJzrcLMIOgTslPRAexnBeQM+cD029i+ZTMoY0Vj+INlMn1oKJKw
-         N68zIGfkEJsfI0vob/Bgrp+pofhV/OSXc0xwHiPmHTa9PKnlz7VrYfRXF4u0zE/D0o
-         2IoV963zxtZTjXZ3jInWpnT3gd3SJZtaNZEPuVG8=
-Date:   Mon, 28 Mar 2022 15:02:39 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andrea Merello <andrea.merello@gmail.com>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [v3 07/13] iio: imu: add Bosch Sensortec BNO055 core driver
-Message-ID: <YkGx76vJUuKj2hVC@kroah.com>
-References: <20220217162710.33615-1-andrea.merello@gmail.com>
- <20220217162710.33615-8-andrea.merello@gmail.com>
- <ba1b2d78-bf4a-ec6d-88b8-76bbf2ff5e3e@pmeerw.net>
- <20220219174141.4937297a@jic23-huawei>
- <CAN8YU5OCEBTF37hb6ozaguJ0=svPyv+fmGGsLhoBCPZA5Odgdw@mail.gmail.com>
- <20220327171104.051fcbd2@jic23-huawei>
+        with ESMTP id S244563AbiC1PNd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 11:13:33 -0400
+X-Greylist: delayed 399 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Mar 2022 08:11:52 PDT
+Received: from mail.thepaulodoom.com (www.thepaulodoom.com [45.77.108.202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 80A7D1C91F
+        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 08:11:52 -0700 (PDT)
+Received: from hp-amd-paul (c-98-240-189-147.hsd1.mn.comcast.net [98.240.189.147])
+        by vultr.guest (OpenSMTPD) with ESMTPSA id 4453a9ce (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+        Mon, 28 Mar 2022 15:05:11 +0000 (UTC)
+Date:   Mon, 28 Mar 2022 10:05:08 -0500
+From:   Paul Lemmermann <thepaulodoom@thepaulodoom.com>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] IIO: accel: fixed coding style issues
+Message-ID: <YkHOpCT2Gad1YaxN@hp-amd-paul>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220327171104.051fcbd2@jic23-huawei>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Mar 27, 2022 at 05:11:04PM +0100, Jonathan Cameron wrote:
-> On Tue, 22 Mar 2022 11:27:14 +0100
-> Andrea Merello <andrea.merello@gmail.com> wrote:
-> 
-> > Il giorno sab 19 feb 2022 alle ore 18:34 Jonathan Cameron
-> > <jic23@kernel.org> ha scritto:
-> > >
-> > > On Thu, 17 Feb 2022 22:58:14 +0100 (CET)
-> > > Peter Meerwald-Stadler <pmeerw@pmeerw.net> wrote:
-> > >  
-> > > > On Thu, 17 Feb 2022, Andrea Merello wrote:
-> > > >
-> > > > nice work, minor comments below  
-> > >
-> > > I'll review on top of Peter to save on duplication.
-> > >
-> > > Mostly really minor stuff.  
-> 
-> +CC Greg for binary attribute questions.
-> 
-> > 
-> > :)
-> > 
-> > As usual, comments inline; OK for all the rest.
-> > 
-> > > Given this has crossed with the introduction of namespaces to quite
-> > > a few IIO drivers (I have another series to do on that once I get
-> > > caught up with reviews) I'd prefer it if you would move this into
-> > > a symbol namespace (EXPORT_SYMBOL_NS_GPL() and appropriate namespace
-> > > statements in the two bus modules.
-> > >
-> > > Save it being done as a follow up series.  If you prefer not to then
-> > > that's fine too as it'll be a trivial follow up patch.  
-> > 
-> > I'll include it in V4 directly.
-> > 
-> > [...]
-> > 
-> > > > > +   case IIO_CHAN_INFO_SCALE:
-> > > > > +           /* Table 3-31: 1 quaternion = 2^14 LSB */
-> > > > > +           if (size < 2)
-> > > > > +                   return -EINVAL;
-> > > > > +           vals[0] = 1;
-> > > > > +           vals[1] = 1 << 14;
-> > > > > +           return IIO_VAL_FRACTIONAL_LOG2;  
-> > >
-> > > This doesn't look right.  Not vals[1] = 14 given FRACTIONAL_LOG2?  
-> > 
-> > Hum.. maybe just IIO_VAL_FRACTIONAL ?
-> 
-> That works as well, though I'd argue FRACTIONAL_LOG2 is the
-> better option as it makes it clear the divisor is a power of 2
-> and the precision might potentially be better as a result (I've not
-> checked!)
-> 
-> > 
-> > > > > +   default:
-> > > > > +           return -EINVAL;
-> > > > > +   }
-> > > > > +}
-> > > > > +  
-> > 
-> > [...]
-> > 
-> > > > > +static IIO_DEVICE_ATTR_RO(sys_calibration_auto_status, 0);
-> > > > > +static IIO_DEVICE_ATTR_RO(in_accel_calibration_auto_status, 0);
-> > > > > +static IIO_DEVICE_ATTR_RO(in_gyro_calibration_auto_status, 0);
-> > > > > +static IIO_DEVICE_ATTR_RO(in_magn_calibration_auto_status, 0);
-> > > > > +static IIO_DEVICE_ATTR_RO(calibration_data, 0);  
-> > >
-> > > This is documented as providing binary data but it's not using
-> > > a binary attribute and that rather surprised me.
-> > >
-> > > Off the top of my head I can't recall why it matters though, so please
-> > > take a look at whether a bin_attribute makes more sense for this.  
-> > 
-> > As far as I can see, it seems that a non-binary attributes only
-> > support to be read at once while the binary attributes read()
-> > operation supports random access i.e. it has the file position
-> > parameter.
-> > 
-> > The calibration data is "dynamic", it's read from the HW every time,
-> > and I'm not sure it makes any sense to read it in several chunks (what
-> > if we read a chunk and the calibration data is updated by the HW
-> > before reading the second chunk?). So, despide the fitting "binary"
-> > name I'm tempted to stick with regular attribute. However I'm not sure
-> > this is the only difference related to binary attributes.
-> 
-> +Cc Greg.  Valid choice to use a normal attribute for this?
+Fixed case statement issues and spacing issues.
 
-binary attributes are to ONLY be used for data that flows to/from a
-device without the kernel ever modifying the data at all.  The kerneln
-is just a pass-through here.
+Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
+---
+ drivers/iio/accel/bmc150-accel-core.c | 15 +++++++++++----
+ drivers/iio/accel/dmard09.c           |  2 +-
+ drivers/iio/accel/kxsd9-spi.c         |  4 ++--
+ 3 files changed, 14 insertions(+), 7 deletions(-)
 
-There are a few minor exceptions, but they were exceptions, please don't
-use them as a valid reason to use a binary attribute.
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index d11f66801..f7dd7ec2c 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -432,10 +432,17 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
+ 
+ 		for (j = 0; j < 3; j++) {
+ 			switch (val[j]) {
+-			case -1: str = "-1"; break;
+-			case 0:  str = "0";  break;
+-			case 1:  str = "1";  break;
+-			default: goto unknown_format;
++			case -1:
++				str = "-1";
++				break;
++			case 0:
++				str = "0";
++				break;
++			case 1:
++				str = "1";
++				break;
++			default:
++				goto unknown_format;
+ 			}
+ 			orientation->rotation[i * 3 + j] = str;
+ 		}
+diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
+index e6e28c964..87bc38d4d 100644
+--- a/drivers/iio/accel/dmard09.c
++++ b/drivers/iio/accel/dmard09.c
+@@ -24,7 +24,7 @@
+ #define DMARD09_AXIS_Y 1
+ #define DMARD09_AXIS_Z 2
+ #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
+-#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
++#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
+ #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
+ 
+ struct dmard09_data {
+diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
+index 57c451cfb..989f53fb0 100644
+--- a/drivers/iio/accel/kxsd9-spi.c
++++ b/drivers/iio/accel/kxsd9-spi.c
+@@ -44,8 +44,8 @@ static const struct spi_device_id kxsd9_spi_id[] = {
+ MODULE_DEVICE_TABLE(spi, kxsd9_spi_id);
+ 
+ static const struct of_device_id kxsd9_of_match[] = {
+-        { .compatible = "kionix,kxsd9" },
+-        { },
++	{ .compatible = "kionix,kxsd9" },
++	{ },
+ };
+ MODULE_DEVICE_TABLE(of, kxsd9_of_match);
+ 
+-- 
+2.35.1
 
-does that help?
-
-greg k-h

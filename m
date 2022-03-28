@@ -2,103 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 060E54E9A99
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 17:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF014E9C69
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 18:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237116AbiC1PNu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Mar 2022 11:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
+        id S238437AbiC1Qnu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 12:43:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244563AbiC1PNd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 11:13:33 -0400
-X-Greylist: delayed 399 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Mar 2022 08:11:52 PDT
-Received: from mail.thepaulodoom.com (www.thepaulodoom.com [45.77.108.202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 80A7D1C91F
-        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 08:11:52 -0700 (PDT)
-Received: from hp-amd-paul (c-98-240-189-147.hsd1.mn.comcast.net [98.240.189.147])
-        by vultr.guest (OpenSMTPD) with ESMTPSA id 4453a9ce (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Mon, 28 Mar 2022 15:05:11 +0000 (UTC)
-Date:   Mon, 28 Mar 2022 10:05:08 -0500
-From:   Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] IIO: accel: fixed coding style issues
-Message-ID: <YkHOpCT2Gad1YaxN@hp-amd-paul>
+        with ESMTP id S237488AbiC1Qnt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 12:43:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B193CA6F;
+        Mon, 28 Mar 2022 09:42:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5ECEB61490;
+        Mon, 28 Mar 2022 16:42:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EF7C004DD;
+        Mon, 28 Mar 2022 16:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648485727;
+        bh=5X3VzaKGXv6wzStW8GD1dizbc3RlHFRryRbv7GAqST8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=l4Xqc7G7xuR8Dq5RaxuxUrp1zfwaElk1uPobKgX5pGlX5NTz+g9zq8Q59IWiWmM6H
+         vNdc7WuniKq5ERP1hk79CMO4YO0yecuxgBHDH98tFbuSnPH0DXCudAshvpEV+e8aU9
+         hhZ2DF0gWLb0ekFKn5e+pMb+k9IMWus10WH8lRARWRPl4VP+NX7BfrOKdwr9FXPeXr
+         L3Hzl7L5JMmwqumQYy1PTW7cbmvg4MWRg3tIsZ05I0rqqckO9j3G+HPpXaBO5uD0Rx
+         o/wJLFLpEQlWNeowh80GRvR7obxNDjxEAcTAtOG0BvlgcBp0grPpDnNKkOJeEkp8M4
+         pL+nKI0WASY1w==
+Date:   Mon, 28 Mar 2022 17:49:44 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: Re: [PATCH] iio:proximity:sx9324: Fix hardware gain read/write
+Message-ID: <20220328174944.2c8d3460@jic23-huawei>
+In-Reply-To: <CAHp75Ve+SiiAM6VkiwPt95w68KEDk46vXR6ZzjOR7ZgaeZ80HA@mail.gmail.com>
+References: <20220318204808.3404542-1-swboyd@chromium.org>
+        <CAHp75Ve+SiiAM6VkiwPt95w68KEDk46vXR6ZzjOR7ZgaeZ80HA@mail.gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fixed case statement issues and spacing issues.
+On Mon, 28 Mar 2022 01:16:10 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
----
- drivers/iio/accel/bmc150-accel-core.c | 15 +++++++++++----
- drivers/iio/accel/dmard09.c           |  2 +-
- drivers/iio/accel/kxsd9-spi.c         |  4 ++--
- 3 files changed, 14 insertions(+), 7 deletions(-)
+> On Sat, Mar 19, 2022 at 5:58 AM Stephen Boyd <swboyd@chromium.org> wrote:
+> >
+> > There are four possible gain values according to sx9324_gain_vals[]: 1,
+> > 2, 4, and 8. When writing and reading the register the values are off by
+> > one. The bits should be set according to this equation:
+> >
+> >         ilog2(<gain>) + 1
+> >
+> > so that a gain of 8 is 0x3 in the register field and a gain of 4 is 0x2
+> > in the register field, etc. Fix up the functions.  
+> 
+> ...
+> 
+> > +       *val = 1 << regval;  
+> 
+> I see it's similar in the original code, but this is still problematic
+> from C standard point of view, i.e. if regval = 31, the C standard
+> calls it UB (Undefined Behaviour).
+> 
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index d11f66801..f7dd7ec2c 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -432,10 +432,17 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
- 
- 		for (j = 0; j < 3; j++) {
- 			switch (val[j]) {
--			case -1: str = "-1"; break;
--			case 0:  str = "0";  break;
--			case 1:  str = "1";  break;
--			default: goto unknown_format;
-+			case -1:
-+				str = "-1";
-+				break;
-+			case 0:
-+				str = "0";
-+				break;
-+			case 1:
-+				str = "1";
-+				break;
-+			default:
-+				goto unknown_format;
- 			}
- 			orientation->rotation[i * 3 + j] = str;
- 		}
-diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
-index e6e28c964..87bc38d4d 100644
---- a/drivers/iio/accel/dmard09.c
-+++ b/drivers/iio/accel/dmard09.c
-@@ -24,7 +24,7 @@
- #define DMARD09_AXIS_Y 1
- #define DMARD09_AXIS_Z 2
- #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
--#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
-+#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
- #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
- 
- struct dmard09_data {
-diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
-index 57c451cfb..989f53fb0 100644
---- a/drivers/iio/accel/kxsd9-spi.c
-+++ b/drivers/iio/accel/kxsd9-spi.c
-@@ -44,8 +44,8 @@ static const struct spi_device_id kxsd9_spi_id[] = {
- MODULE_DEVICE_TABLE(spi, kxsd9_spi_id);
- 
- static const struct of_device_id kxsd9_of_match[] = {
--        { .compatible = "kionix,kxsd9" },
--        { },
-+	{ .compatible = "kionix,kxsd9" },
-+	{ },
- };
- MODULE_DEVICE_TABLE(of, kxsd9_of_match);
- 
--- 
-2.35.1
+I don't see that as a problem as regval is coming from a FIELD_GET() with a 3 bit mask
+so we can't hit the UB case (can only be up to 7 - well 6 because of the --)
+
+Jonathan
+
 

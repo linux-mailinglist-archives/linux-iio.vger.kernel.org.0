@@ -2,48 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B714E9CE0
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 18:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7875C4E9CEF
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 18:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239239AbiC1Q4W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Mar 2022 12:56:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48636 "EHLO
+        id S243627AbiC1RAa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 13:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239070AbiC1Q4T (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 12:56:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486AD4C41F;
-        Mon, 28 Mar 2022 09:54:37 -0700 (PDT)
+        with ESMTP id S234838AbiC1RA3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 13:00:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F7C60DA8;
+        Mon, 28 Mar 2022 09:58:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D670F6138B;
-        Mon, 28 Mar 2022 16:54:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDA9C004DD;
-        Mon, 28 Mar 2022 16:54:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0FD4FB810D5;
+        Mon, 28 Mar 2022 16:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5950C004DD;
+        Mon, 28 Mar 2022 16:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648486476;
-        bh=wecLqM+6wj4MYjctE+l0MU6HzWzPoE6xPZCJaeMiP3w=;
+        s=k20201202; t=1648486725;
+        bh=fc1ZqAVDO0efw8axuiPEWNcZoPrAnCItKAK5ldZG1EY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Fd+1Rpszy2FjIs8nnvc5MeP6yn3XiSkzp93oaGnmP1bFHDXzcyLqrdUFCqSm+mSlI
-         NXy5WWoUDcK9brEOVznVNkzMCoHi1XwLZEX81TgbUCWCyHt4pSxCVZiNkavXqRzeBM
-         wePrLbbEks2hzJSHnb5+pZ46iByE/M1WGu1ElITYrl7fPF9VCuzqVX4AyMcPI1ZjO3
-         I7/8GwAJqKYupPTB9QDt/TMMoed2fqJuZiJke6c7i0twT4KdCNsg4EslqtwQJ16+qj
-         sdmMcf+jnaP1EuiSTF120B4jqpZfwTaIgNtrO9Ss00Mo9KQa4ELnPzbeD8kwWiFLua
-         wRGmEC/z7W68w==
-Date:   Mon, 28 Mar 2022 18:02:12 +0100
+        b=o2T5CvXfvYNhjsxOwg9KcQkxv9jT4itsTBvvL2bLNQEG2jyZUQxEaJM8QtGWfNwTU
+         70PVLeCXiRc2Wv7bPhOqXl8a1zkvmfloiwRROzSk6aag/qVBkjFpYp0jVSbT+RHN6z
+         SsFyKCaDdenUG0S1DqPE0T86hjYLL9LN9bfJsgsRz+y08Av4FMih7RQquEY6zsdQai
+         +wCceg1AXiiUg3O/TCV01bdFgfA4pBug1QbnpHwSYbKabsXIkpg1uGd9JB2RPS6LmF
+         tbJSpL1b+IwWGi0jMuzS+FAvPgYnhbdGt+SBjIZFxeXSUC3SVDKPn6qkLPTOQxSqe4
+         zhI1vDn3vUYnQ==
+Date:   Mon, 28 Mar 2022 18:06:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jagath Jog J <jagathjog1996@gmail.com>,
-        Dan Robertson <dan@dlrobertson.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/5] iio: accel: bma400: Add triggered buffer support
-Message-ID: <20220328180212.0bac53fe@jic23-huawei>
-In-Reply-To: <CAHp75Vdx3ZWFc9Xa7AhLGM=-4AzfamEqTkZxvBeu=Hu4KF7pSg@mail.gmail.com>
-References: <20220326194146.15549-1-jagathjog1996@gmail.com>
-        <20220326194146.15549-4-jagathjog1996@gmail.com>
-        <CAHp75Vdx3ZWFc9Xa7AhLGM=-4AzfamEqTkZxvBeu=Hu4KF7pSg@mail.gmail.com>
+To:     Paul Lemmermann <thepaulodoom@thepaulodoom.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] IIO: accel: fixed coding style issues
+Message-ID: <20220328180623.1380d23e@jic23-huawei>
+In-Reply-To: <YkHOpCT2Gad1YaxN@hp-amd-paul>
+References: <YkHOpCT2Gad1YaxN@hp-amd-paul>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,36 +53,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 27 Mar 2022 22:45:16 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 28 Mar 2022 10:05:08 -0500
+Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
 
-> On Sat, Mar 26, 2022 at 9:41 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> >
-> > Added trigger buffer support to read continuous acceleration
-> > data from device with data ready interrupt which is mapped
-> > to INT1 pin.  
+> Fixed case statement issues and spacing issues.
 > 
-> ...
-> 
-> > +       struct {  
-> 
-> > +               __le16 buff[3];  
-> 
-> In my (mostly review) practice it's rare that sensors operate in LE mode.
-> Please, double check that.
+> Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
+Hi Paul,
 
-Just for giggles, we've had sensors that had most channels little endian
-but with one that was big endian...  Thankfully this isn't one of those.
+Thanks for the patch.
 
-I checked the datasheet and whilst indeed less common, these do appear to
-be little endian.
-https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bma400-ds000.pdf
-page 50
-ACC_X_LSB at address 0x04
-ACC_X_MSB at address 0x05
+These are drivers written / maintained by different authors, so one
+patch per driver preferred.  Particularly handy as people might not
+agree with all of them so separate patches would allow me to pick
+and choose which ones to pick up.
+
+Comments inline.
+
+Please state how you identified the changes btw.  Script?
+
+Jonathan
+
+> ---
+>  drivers/iio/accel/bmc150-accel-core.c | 15 +++++++++++----
+>  drivers/iio/accel/dmard09.c           |  2 +-
+>  drivers/iio/accel/kxsd9-spi.c         |  4 ++--
+>  3 files changed, 14 insertions(+), 7 deletions(-)
 > 
-> > +               u8 temperature;
-> > +               s64 ts __aligned(8);
-> > +       } buffer ____cacheline_aligned;  
-> 
+> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+> index d11f66801..f7dd7ec2c 100644
+> --- a/drivers/iio/accel/bmc150-accel-core.c
+> +++ b/drivers/iio/accel/bmc150-accel-core.c
+> @@ -432,10 +432,17 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
+>  
+>  		for (j = 0; j < 3; j++) {
+>  			switch (val[j]) {
+> -			case -1: str = "-1"; break;
+> -			case 0:  str = "0";  break;
+> -			case 1:  str = "1";  break;
+> -			default: goto unknown_format;
+> +			case -1:
+> +				str = "-1";
+> +				break;
+> +			case 0:
+> +				str = "0";
+> +				break;
+> +			case 1:
+> +				str = "1";
+> +				break;
+> +			default:
+> +				goto unknown_format;
+
+I'm not seeing any clear advantage to this change.
+
+
+>  			}
+>  			orientation->rotation[i * 3 + j] = str;
+>  		}
+> diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
+> index e6e28c964..87bc38d4d 100644
+> --- a/drivers/iio/accel/dmard09.c
+> +++ b/drivers/iio/accel/dmard09.c
+> @@ -24,7 +24,7 @@
+>  #define DMARD09_AXIS_Y 1
+>  #define DMARD09_AXIS_Z 2
+>  #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
+> -#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
+> +#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
+
+This is one is good.
+
+>  #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
+>  
+>  struct dmard09_data {
+> diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
+> index 57c451cfb..989f53fb0 100644
+> --- a/drivers/iio/accel/kxsd9-spi.c
+> +++ b/drivers/iio/accel/kxsd9-spi.c
+> @@ -44,8 +44,8 @@ static const struct spi_device_id kxsd9_spi_id[] = {
+>  MODULE_DEVICE_TABLE(spi, kxsd9_spi_id);
+>  
+>  static const struct of_device_id kxsd9_of_match[] = {
+> -        { .compatible = "kionix,kxsd9" },
+> -        { },
+> +	{ .compatible = "kionix,kxsd9" },
+
+Also good to clean up.
+
+Thanks,
+
+Jonathan
+
+
+> +	{ },
+>  };
+>  MODULE_DEVICE_TABLE(of, kxsd9_of_match);
+>  
 

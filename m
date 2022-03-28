@@ -2,47 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32034E8C4F
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 04:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CADD04E8CBA
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Mar 2022 05:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237692AbiC1CvI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 27 Mar 2022 22:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54842 "EHLO
+        id S230270AbiC1EBP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 00:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237686AbiC1CvG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 27 Mar 2022 22:51:06 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B4443AF7;
-        Sun, 27 Mar 2022 19:49:26 -0700 (PDT)
+        with ESMTP id S229627AbiC1EBP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 00:01:15 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 022D5433A3;
+        Sun, 27 Mar 2022 20:59:34 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: krisman)
-        with ESMTPSA id D6E141F42E8E
+        with ESMTPSA id DAC9B1F42E3D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1648435765;
-        bh=WBy+NdgrMIzJ3AKUedzuJEhPjlvydZ03Twj00zAxYz4=;
+        s=mail; t=1648439973;
+        bh=p5kFKkno7W8Otr+MEWs2MZhZGWjZxlAPNrorp3vcRNg=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=U3HkSb6POVvUJbAp6jHygGoEOaVyoi8l0Klzz5SmXmhTVofrR1p1nTiR+uWW5jdqX
-         UN1KUGIcImPUaXDtH2vuW52wos7Og6P7mKML3/LZ/qCU5TTOOQut7je/MyJ2uIFUHD
-         /7yLlGkpB3nOgw96VAIRUmok/5+jzodHVky0vKDI4X0e12zlBvIahqpgAFKL33ibpN
-         v5jXh3msmHzjAqTIa4+7gRLRjNRmG7YGV6QwmiJrSE+jZN+/PRYrw09zdD+7V5ZF6h
-         WPCikNH/4djTYKBlbTAlaoH2olFO8fW/T99NL973+iDEDG6OwVickaV+KHI715hBMA
-         EcWrj3LAdcEQg==
+        b=My6E3QlN7FcjxmfTvX/c1wcXd90XrxliEgJQI9mTs+dDK4g532bhf6jeJU4cHhpeS
+         bDhiVMHbh6agyEwnuI4LY6+5D3nmDjZAtAq4n8K6+nW5xk8kjN84QwhyWW2tHqYLrg
+         D3uUGaJKkaWSqWcsxWx6o5F/RLQPjsHxLA/aC3D1EkJnUkhnjB0l6Ua+yzCqW58mhq
+         TxfuHpglNpHqReT9r8Z4AJ+38k4i43K6eJ51tVoUzQue6IDPk5/g/foRRJtP0KqlbB
+         UyOv/2pFB6XA/O20XhG5+54r6iJ7FJoyeauSdzO/JrzS3v88vWjnj2WxGC9uAhwj35
+         OYq/mbx5Dos/w==
 From:   Gabriel Krisman Bertazi <krisman@collabora.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Shreeya Patel <shreeya.patel@collabora.com>, lars@metafoo.de,
-        robh+dt@kernel.org, Zhigang.Shi@liteon.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com
-Subject: Re: [PATCH 2/3] dt-bindings: Document ltrf216a light sensor bindings
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        Zhigang.Shi@liteon.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com
+Subject: Re: [PATCH 3/3] iio: light: Add support for ltrf216a sensor
 Organization: Collabora
 References: <20220325103014.6597-1-shreeya.patel@collabora.com>
-        <20220325103014.6597-3-shreeya.patel@collabora.com>
-        <20220327145511.2d36dd10@jic23-huawei>
-Date:   Sun, 27 Mar 2022 22:49:20 -0400
-In-Reply-To: <20220327145511.2d36dd10@jic23-huawei> (Jonathan Cameron's
-        message of "Sun, 27 Mar 2022 14:55:11 +0100")
-Message-ID: <87czi6ssen.fsf@collabora.com>
+        <20220325103014.6597-4-shreeya.patel@collabora.com>
+Date:   Sun, 27 Mar 2022 23:59:28 -0400
+In-Reply-To: <20220325103014.6597-4-shreeya.patel@collabora.com> (Shreeya
+        Patel's message of "Fri, 25 Mar 2022 16:00:14 +0530")
+Message-ID: <878rsusp5r.fsf@collabora.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -56,92 +54,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan Cameron <jic23@kernel.org> writes:
+Shreeya Patel <shreeya.patel@collabora.com> writes:
 
-> On Fri, 25 Mar 2022 16:00:13 +0530
-> Shreeya Patel <shreeya.patel@collabora.com> wrote:
+> From: Zhigang Shi <Zhigang.Shi@liteon.com>
 >
->> Add devicetree bindings for ltrf216a ambient light sensor
->> 
->> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
-> Hi Shreeya,
+> Add initial support for ltrf216a ambient light sensor.
 >
-> As we are making this Zhigang Shi's problem to maintain, I'm 
-> looking for an ack.  Bit mean otherwise :)
+> Datasheet :-
+> https://gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTR-F216A-QT.pdf
+> +	struct ltrf216a_data *data = iio_priv(indio_dev);
+> +
+> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, 0);
+> +	if (ret < 0)
+> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
+> +
+> +	return ret;
+> +}
+> +
+> +static int ltrf216a_set_it_time(struct ltrf216a_data *data, int itime)
 
-Alternatively, Shreeya could take over the maintainership of this
-schema, since she wrote it. :)
+ltrf216a_set_int_time instad of it_time?  although, ltr501 also uses
+"it" instead of "int" on the function name..
 
->
-> Except for the deprecated part this could just have gone in
-> trivial-bindings.yaml.
->
-> I guess you don't need it for your existing board, but best
-> practice would probably include ensuring whatever supplies
-> the device needs are here so that platforms that don't enable
-> them by default can turn them on.
->
-> Also, there is an interrupt according to the datasheet linked
-> from patch 3 and that should definitely be in the binding
-> even if the driver isn't using it.
->
-> Jonathan
->
->
->> ---
->>  .../bindings/iio/light/liteon,ltrf216a.yaml   | 42 +++++++++++++++++++
->>  1 file changed, 42 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
->> 
->> diff --git a/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml b/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
->> new file mode 100644
->> index 000000000000..275d86a0353a
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
->> @@ -0,0 +1,42 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/light/liteon,ltrf216a.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: LTRF216A Ambient Light Sensor
->> +
->> +maintainers:
->> +  - Zhigang Shi <Zhigang.Shi@liteon.com>
->> +
->> +description: |
->> +  Ambient sensing with an i2c interface.
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - liteon,ltrf216a
->> +      - ltr,ltrf216a
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    i2c {
->> +
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +
->> +        light-sensor@53 {
->> +                compatible = "ltr,ltrf216a";
->> +                reg = <0x53>;
->> +        };
->> +    };
->> +...
->
+> +
+> +static int ltrf216a_get_lux(struct ltrf216a_data *data)
+> +{
+> +	int greendata, cleardata, lux;
+> +
+> +	greendata = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
+> +	cleardata = ltrf216a_read_data(data, LTRF216A_CLEAR_DATA_0);
+> +
+> +	if (greendata < 0 || cleardata < 0)
+> +		lux = 0;
+> +	else
+> +		lux = greendata * 8 * WIN_FAC / data->als_gain_fac / data->int_time_fac / 10;
+
+This could be rewritten to avoid most of the divisions.
+
+But it also doesn't fit the calculation shown in page 20 on the
+datasheet.
+
+I suspect that 8 was calculated from a specific Window Factor (~1.77),
+which is specific to one device, but I'm not sure.  The datasheet
+formula is:
+
+lux = (ALS_DATA_X * 0.45 * window_factor) / (gain * int_time)
+
+Shouldn't WIN_FAC be a configurable parameter, instead of constant?
 
 -- 
 Gabriel Krisman Bertazi

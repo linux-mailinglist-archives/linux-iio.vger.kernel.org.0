@@ -2,59 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 137284EA2E9
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 00:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74D1D4EA448
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 02:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbiC1WSp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Mar 2022 18:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
+        id S231488AbiC2AqK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 20:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230058AbiC1WSd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 18:18:33 -0400
-Received: from mail.thepaulodoom.com (www.thepaulodoom.com [45.77.108.202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 84E02762BF;
-        Mon, 28 Mar 2022 15:14:58 -0700 (PDT)
-Received: from hp-amd-paul (c-98-240-189-147.hsd1.mn.comcast.net [98.240.189.147])
-        by vultr.guest (OpenSMTPD) with ESMTPSA id 67ef8706 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Mon, 28 Mar 2022 21:48:17 +0000 (UTC)
-Date:   Mon, 28 Mar 2022 16:48:16 -0500
-From:   Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-To:     jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] IIO: accel: dmard09: fixed code styling issues
-Message-ID: <YkItIE5sp3P4sZdY@hp-amd-paul>
+        with ESMTP id S231536AbiC2AqJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 20:46:09 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B9125C4E;
+        Mon, 28 Mar 2022 17:44:26 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2FC772F7;
+        Tue, 29 Mar 2022 02:44:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1648514664;
+        bh=i5iRhPBwnmnl9B4ceK9gfhmqBCY0o1t5TCQ4wN7LXYE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tI4Uiff+S8txeE5+xP6JQO/hHwktDe1ZN0w+aWVSE3KZNmdub1lERECURI0h7omBJ
+         kSNb5G+88c++DnvEnDhPWSDFAyVtojXPBV/GYAexpHmRd1xB7M+W/W8XsGvPfqndOo
+         1GFdAmAQT1LrGZLKrbqvrN62ntkLHPTUTIf9zKwQ=
+Date:   Tue, 29 Mar 2022 03:44:21 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Wolfram Sang <wsa@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
+        Jose Cazarin <joseespiriki@gmail.com>,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF
+ devices
+Message-ID: <YkJWZQJ2f2tyS6sH@pendragon.ideasonboard.com>
+References: <20210723183114.26017-3-laurent.pinchart@ideasonboard.com>
+ <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
+ <20210724154308.55afb03c@jic23-huawei>
+ <YRwfpOuyVEstwsza@kunai>
+ <YRwhej9Hz00qnvlQ@pendragon.ideasonboard.com>
+ <YRwi62E4xYcMyyFi@kunai>
+ <YRwoAgie/mDDunn9@pendragon.ideasonboard.com>
+ <YkF99t+NlO+IKMXg@ninjato>
+ <YkGIJ5MQoZ7RN6Y5@pendragon.ideasonboard.com>
+ <YkGogxobUcRddA4L@ninjato>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <YkGogxobUcRddA4L@ninjato>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Cleaning up code.
+Hi Wolfram,
 
-Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
----
- drivers/iio/accel/dmard09.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Mar 28, 2022 at 02:22:27PM +0200, Wolfram Sang wrote:
+> 
+> > > I think the proper fix would be naming the I2C client after the actually
+> > > matched compatible property, and not after the first one? I am a bit
+> > > afraid of regressions when we change that, however...
+> > 
+> > That would be the right way indeed. I have the same concern regarding
+> > regressions though. Is it worth a try to see what could break ?
+> 
+> Sure! Only problem: Patches welcome(tm) or I put it on my to-do-list(tm)
+> ;)
 
-diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
-index 53ab6078c..cb0246ca7 100644
---- a/drivers/iio/accel/dmard09.c
-+++ b/drivers/iio/accel/dmard09.c
-@@ -24,7 +24,7 @@
- #define DMARD09_AXIS_Y 1
- #define DMARD09_AXIS_Z 2
- #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
--#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
-+#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
- #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
- 
- struct dmard09_data {
+I've had a look, but it seems to be problematic. The name of the client
+is set in i2c_new_client_device(), way before we match with a driver.
+The name is used in the uevent sent to userspace, so changing it
+afterwards is likely not a good idea.
+
 -- 
-2.35.1
+Regards,
 
+Laurent Pinchart

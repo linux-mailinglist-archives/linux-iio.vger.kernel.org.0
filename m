@@ -2,116 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9E394EA461
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 03:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 647D04EA50B
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 04:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbiC2BFg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Mar 2022 21:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44212 "EHLO
+        id S230230AbiC2CSt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Mar 2022 22:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiC2BFe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 21:05:34 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 114A363E2
-        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 18:03:52 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id u3so22672307wrg.3
-        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 18:03:51 -0700 (PDT)
+        with ESMTP id S230205AbiC2CSt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Mar 2022 22:18:49 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2F823F3BB
+        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 19:17:05 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id z92so19036706ede.13
+        for <linux-iio@vger.kernel.org>; Mon, 28 Mar 2022 19:17:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ut6/8hZdrXD6w/oKBdhI6ASQdLFjjPrfHdMT0KxbqNc=;
-        b=Q9DxsFzTxtnXUjJcNfoqSwU9EeguB7NnHpw5VATApO+dkF19Zp4ihOwcB2UAo/1JFU
-         XBS5X/KlGH1I3Nd3ZFGi/X10/Th52J3+oVVGrnMvIhGTM+BF+3QPVzD3oIm27UlbYZ/F
-         VmkULRI8mIf2dwmCmyugT7/pDgy3Y7iwKY+iiR3oHFjXvmDzrnFC0fJTmRQR+c+hIuOS
-         wtMw+/vPD+gh1Yb5LnAMspiO7NMQVyhSnaIDD/sqf4MnH5KjpWnKS/r346A1hN7PQeh+
-         dnv+3P7n1xkUY9wBdhCpL2SYJne6+/V78bhQ9yGHSSzOlm8Cc+hvDZSsf/T0srxieAmy
-         KQWA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=OgOwwwPtBqtH2Nfvw1oTQa9WeHu8kROOmi+nT3PQOWs=;
+        b=V7+/CQTv/H4n6YyDO8BLudQHcJgZxpoNa9CD/3M3UIY/1jEZXiWxext68upgmuvFwF
+         BjngFaVv5dGVhg4VDJI5HYCL6/kzbJXP7GRK754XfWFlOyw4Z9ApV049UlrmyqTyM4Zv
+         kkfiZEncbpF3dD3yofGwLrJ9Y8U0zARijB2jtTZx9kBPdoVTNiJhCYOUp+gBvrwQ6lVC
+         w2+Dd7W5+5Z9DjOX89fTRhJlos0ncJXGJa1SgdOfIGQ0TgOgDBI0Xqnsy0z+7seCrSQ+
+         C8UWfBv35a+04581MsPqEEpXrGQpKxiKZu2MrOwsZUy+uI7Zz9nfoKYBt1qVIsrcp2ph
+         dS6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ut6/8hZdrXD6w/oKBdhI6ASQdLFjjPrfHdMT0KxbqNc=;
-        b=b8EPXaSCU4vCkU3zbsh/ITcQMe7eQHxiUjsK3YQkD9ssjmJx2LAP61J2Z8W4EzBHlW
-         7tSiCstIGceo6/1m38fDNWIvjOqb0oVCUrEMK5jU6xDFZA3y9/3C+xJX+NDT0okJamdN
-         Q/RATIwzm0p9FSQM4Z+3XT2oj8ZsG+qfFJzfzh0h+fHBaT97zNK8Kju70rHVcn/WmPrl
-         zJ0RQvhFN7zkrALw8UkuAgk+5GIgwJhWTG1Aazq+94Rkjlu/N8nIIV/peA0pzLrPcQer
-         BLP2REArMX7AGflA1nS5te+3PWE4Qf8AcSGwtRcBuAwturuLI1M9m38UEUOb5A29OAXq
-         53PA==
-X-Gm-Message-State: AOAM533z8JvtX7BXnu4Nn9Vk63LNGdHcktX1ibq3QnLzLj4KHApU1m9f
-        d8So0J4rQ1V9BW0fT7jc5XF9W48TC+6GcawAvPgagNJ2vAIesA==
-X-Google-Smtp-Source: ABdhPJxvJ3d/GmuzRjeOdM7wmWKMWpuGrDsteCLwFbaB+W4h9FhrTLk/XgrM3ri9JSdHR5ndo3Qxh74Ui2FQy3NPFA8=
-X-Received: by 2002:a17:907:968e:b0:6db:aed5:43c8 with SMTP id
- hd14-20020a170907968e00b006dbaed543c8mr31129973ejc.636.1648515475429; Mon, 28
- Mar 2022 17:57:55 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=OgOwwwPtBqtH2Nfvw1oTQa9WeHu8kROOmi+nT3PQOWs=;
+        b=upVI5jkEPxByBQfASJrqAWpvROK0Rlt6lOsyeOEYreyiqsgTr/k6T8MwRiETkmFv1J
+         hnrNDPbkCjPJPEj2xN35+SPenXnI468iwA5L+rqb6J2iscO2x/3xHcIRP9twEo+gVXDE
+         XuW7P5SY9Y0BdQXMz8cxy6FPrxYGhYOVPj9yY5ESltc/es0ZuUhv5f55Bo3f6VwmDah4
+         WEZfPYzEQLooGAhDS3G+brBqE5aBgs8ls44hTt/UUWraEadOIVbIX0ZeDxaRBZHgFeSC
+         9CAs6OdeMWqHTUE/C/QWK5hxiqptCfKamYjAB6jYZGroQvyvLyUHVtILV7vaoJWSC3tf
+         sQRQ==
+X-Gm-Message-State: AOAM531sELjHrcETMMo7mj6QSKlZDmM8u957a+gY5SR4QrGJhlV3kgKC
+        u3QfQ8kNK5YNe/JAQBFApQ/7DjrS46IymSAG7L8=
+X-Google-Smtp-Source: ABdhPJyuFLNxU6tDwxqf3G3+4NkWH0WP5fgIDlKCEEToOCDFNckn0o8usGU5L7W468nFbMiVibAYURDgefwZiDNvWq0=
+X-Received: by 2002:a50:d592:0:b0:415:e599:4166 with SMTP id
+ v18-20020a50d592000000b00415e5994166mr1251977edi.195.1648520224123; Mon, 28
+ Mar 2022 19:17:04 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a17:907:76b9:b0:6df:8386:dfcb with HTTP; Mon, 28 Mar 2022
- 17:57:54 -0700 (PDT)
-From:   TORGNY LEBENBERG <torgnylebenberg35@gmail.com>
-Date:   Tue, 29 Mar 2022 01:57:54 +0100
-Message-ID: <CACyUgj+ToDpgEhLK7JgEFYiYTfj_P7wgCscPQ7cQp+QK2MG8xQ@mail.gmail.com>
-Subject: CONFIDENTIAL
-To:     undisclosed-recipients:;
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Tue, 29 Mar 2022 03:16:55 +0100
+Message-ID: <CAHpNFcMxWJHfjAbAX+5uLsd7LaK1Kfo2DArFMOeSMt1pkeFh2w@mail.gmail.com>
+Subject: Dev/Random : 4096-bit LFSR used for entropy collection : Submission 118
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_FRIEND,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MILLION_HUNDRED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:441 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [torgnylebenberg35[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [torgnylebenberg35[at]gmail.com]
-        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        *  2.6 DEAR_FRIEND BODY: Dear Friend? That's not very dear!
-        *  0.0 T_US_DOLLARS_3 BODY: Mentions millions of $ ($NN,NNN,NNN.NN)
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.4 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ******
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear Friend,
+Dev/Random : 4096-bit LFSR used for entropy collection
+
+Basically the HASH is what makes a difference, In respect to BLAKE2
+running out of entropy...
+An internal backup PKI AES/Blake2 Secondary HASH stored in Kernel...
+
+Bear in mind that the backup seed is worked from quality Random & is
+99% unique : "We are The 99%"
+
+This keeps simple Pseudo numbers from being the bearer of predictable
+kernel Security behavior,
+Nothing wrong with keeping more! & we can for system device pools for example!
+
+For reference core HASH reserve storage can be per type:
+
+Main groups for Secondary hash main leaf HASH:
+
+/Dev
+/Memory
+/Storage
+/Keys
+/Con
+
+Rupert S
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
 
 
-I'm Dr. Torgny Lebenberg. Contacting you in regards to a Claim of
-(Eighteen Million Two Hundred Thousand Dollars) $18,200,000.00
-connecting you to my late client.
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
 
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
 
-Kindly respond swiftly.
+https://science.n-helix.com/2022/03/ice-ssrtp.html
 
+https://science.n-helix.com/2021/11/ihmtes.html
 
-DR. TORGNY LEBENBERG
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
 
-LEBENBERG ADVOKATBYR=C3=85 AB.
+https://aka.ms/win10rng
 
-Attorney at Law; LL.M.; Partner
+"https://www.spinics.net/lists/stable/msg543787.html
 
-Address: Grev Turegatan 44, 114 38
+From: "Jason A. Donenfeld" <Jason@xxxxxxxxx>
 
-Stockholm,Sweden.
+[ Upstream commit 6e8ec2552c7d13991148e551e3325a624d73fac6 ]
+
+The current 4096-bit LFSR used for entropy collection had a few
+desirable attributes for the context in which it was created. For
+example, the state was huge, which meant that /dev/random would be able
+to output quite a bit of accumulated entropy before blocking. It was
+also, in its time, quite fast at accumulating entropy byte-by-byte,
+which matters given the varying contexts in which mix_pool_bytes() is
+called. And its diffusion was relatively high, which meant that changes
+would ripple across several words of state rather quickly.
+
+However, it also suffers from a few security vulnerabilities. In
+particular, inputs learned by an attacker can be undone, but moreover,
+if the state of the pool leaks, its contents can be controlled and
+entirely zeroed out. I've demonstrated this attack with this SMT2
+script, <https://xn--4db.cc/5o9xO8pb>, which Boolector/CaDiCal solves in
+a matter of seconds on a single core of my laptop, resulting in little
+proof of concept C demonstrators such as <https://xn--4db.cc/jCkvvIaH/c>.
+
+For basically all recent formal models of RNGs, these attacks represent
+a significant cryptographic flaw. But how does this manifest
+practically? If an attacker has access to the system to such a degree
+that he can learn the internal state of the RNG, arguably there are
+other lower hanging vulnerabilities -- side-channel, infoleak, or
+otherwise -- that might have higher priority. On the other hand, seed
+files are frequently used on systems that have a hard time generating
+much entropy on their own, and these seed files, being files, often leak
+or are duplicated and distributed accidentally, or are even seeded over
+the Internet intentionally, where their contents might be recorded or
+tampered with. Seen this way, an otherwise quasi-implausible
+vulnerability is a bit more practical than initially thought.
+
+Another aspect of the current mix_pool_bytes() function is that, while
+its performance was arguably competitive for the time in which it was
+created, it's no longer considered so. This patch improves performance
+significantly: on a high-end CPU, an i7-11850H, it improves performance
+of mix_pool_bytes() by 225%, and on a low-end CPU, a Cortex-A7, it
+improves performance by 103%.
+
+This commit replaces the LFSR of mix_pool_bytes() with a straight-
+forward cryptographic hash function, BLAKE2s, which is already in use
+for pool extraction. Universal hashing with a secret seed was considered
+too, something along the lines of <https://eprint.iacr.org/2013/338>,
+but the requirement for a secret seed makes for a chicken & egg problem.
+Instead we go with a formally proven scheme using a computational hash
+function, described in sections 5.1, 6.4, and B.1.8 of
+<https://eprint.iacr.org/2019/198>."

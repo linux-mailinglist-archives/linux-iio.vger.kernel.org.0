@@ -2,49 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFCA4EAA38
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 11:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909854EAAB5
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 11:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234479AbiC2JNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Mar 2022 05:13:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35596 "EHLO
+        id S234068AbiC2Jt0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Mar 2022 05:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232089AbiC2JNM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 05:13:12 -0400
+        with ESMTP id S233341AbiC2Jt0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 05:49:26 -0400
 Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E0D65D2B;
-        Tue, 29 Mar 2022 02:11:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0AF523B3F8;
+        Tue, 29 Mar 2022 02:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1648545084; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1648547260; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OMAjaC6Xw9SY4zhfvb3pKA4ot1/J4vIm+YtJOA8m/zE=;
-        b=pwWs/q9k23KWG7HgdNFF25NnQ76o5gHr+LF7wTk332YU0sRuDJRoCvHBgjgjDNDYgdyxcb
-        owrNs15C2GzTF2MeRMVxffGqYVRQxbS1T/EJFXlMcLzq3P1X3S8AiXiQEIv1AZuXP/Jyn2
-        A0rcspXWffbD9k4wC1psO2d0Y1p4V3Q=
-Date:   Tue, 29 Mar 2022 10:11:14 +0100
+        bh=e8RgERyOiW+i+GwydncfsHV1G1M1TmxHobeUS8u9jq4=;
+        b=Z/BO0tiDIQpKj0a5aKQmLM7Y9WyMII/XnpqKHAjueN1dLp3XhBsqxs4GcLXarRrNnn07Gv
+        Kmskxk6LAOg9r/RBxVE3j29PkKi8Myc0t4dAA4CVEKmTjhCA7Lvap82oM26LP4xTWMshGB
+        RfDhQY5k2tc5ylIDMTc25PAUZQfTE08=
+Date:   Tue, 29 Mar 2022 10:47:23 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v2 00/12] iio: buffer-dma: write() and new DMABUF based
- API
+Subject: Re: [PATCH v2 12/12] Documentation: iio: Document high-speed DMABUF
+ based API
 To:     Daniel Vetter <daniel@ffwll.ch>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linaro-mm-sig@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
         Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>
-Message-Id: <QI1I9R.GDPWLM86I45S@crapouillou.net>
-In-Reply-To: <YkLEXJzs8ukrxG8s@phenom.ffwll.local>
+Message-Id: <Z63I9R.MKYUKBH4V8L41@crapouillou.net>
+In-Reply-To: <YkLJU7Pp98CPIHfY@phenom.ffwll.local>
 References: <20220207125933.81634-1-paul@crapouillou.net>
-        <20220213184616.669b490b@jic23-huawei>
-        <N8XC7R.5FP2M8552CGT3@crapouillou.net> <YkLEXJzs8ukrxG8s@phenom.ffwll.local>
+        <20220207130140.81891-1-paul@crapouillou.net>
+        <20220207130140.81891-2-paul@crapouillou.net>
+        <YkLJU7Pp98CPIHfY@phenom.ffwll.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-13; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
@@ -57,186 +56,206 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Daniel,
 
-Le mar., mars 29 2022 at 10:33:32 +0200, Daniel Vetter=20
+Le mar., mars 29 2022 at 10:54:43 +0200, Daniel Vetter=20
 <daniel@ffwll.ch> a =E9crit :
-> On Tue, Feb 15, 2022 at 05:43:35PM +0000, Paul Cercueil wrote:
->>  Hi Jonathan,
+> On Mon, Feb 07, 2022 at 01:01:40PM +0000, Paul Cercueil wrote:
+>>  Document the new DMABUF based API.
 >>=20
->>  Le dim., f=E9vr. 13 2022 at 18:46:16 +0000, Jonathan Cameron
->>  <jic23@kernel.org> a =E9crit :
->>  > On Mon,  7 Feb 2022 12:59:21 +0000
->>  > Paul Cercueil <paul@crapouillou.net> wrote:
->>  >
->>  > >  Hi Jonathan,
->>  > >
->>  > >  This is the V2 of my patchset that introduces a new userspace
->>  > > interface
->>  > >  based on DMABUF objects to complement the fileio API, and adds
->>  > > write()
->>  > >  support to the existing fileio API.
->>  >
->>  > Hi Paul,
->>  >
->>  > It's been a little while. Perhaps you could summarize the various=20
->> view
->>  > points around the appropriateness of using DMABUF for this?
->>  > I appreciate it is a tricky topic to distil into a brief summary=20
->> but
->>  > I know I would find it useful even if no one else does!
+>>  v2: - Explicitly state that the new interface is optional and is
+>>        not implemented by all drivers.
+>>      - The IOCTLs can now only be called on the buffer FD returned by
+>>        IIO_BUFFER_GET_FD_IOCTL.
+>>      - Move the page up a bit in the index since it is core stuff=20
+>> and not
+>>        driver-specific.
 >>=20
->>  So we want to have a high-speed interface where buffers of samples=20
->> are
->>  passed around between IIO devices and other devices (e.g. USB or=20
->> network),
->>  or made available to userspace without copying the data.
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  ---
+>>   Documentation/driver-api/dma-buf.rst |  2 +
+>>   Documentation/iio/dmabuf_api.rst     | 94=20
+>> ++++++++++++++++++++++++++++
+>>   Documentation/iio/index.rst          |  2 +
+>>   3 files changed, 98 insertions(+)
+>>   create mode 100644 Documentation/iio/dmabuf_api.rst
 >>=20
->>  DMABUF is, at least in theory, exactly what we need. Quoting the
->>  documentation
->>  (https://www.kernel.org/doc/html/v5.15/driver-api/dma-buf.html):
->>  "The dma-buf subsystem provides the framework for sharing buffers=20
->> for
->>  hardware (DMA) access across multiple device drivers and=20
->> subsystems, and for
->>  synchronizing asynchronous hardware access. This is used, for=20
->> example, by
->>  drm =B4prime=A1 multi-GPU support, but is of course not limited to=20
->> GPU use
->>  cases."
+>>  diff --git a/Documentation/driver-api/dma-buf.rst=20
+>> b/Documentation/driver-api/dma-buf.rst
+>>  index 2cd7db82d9fe..d3c9b58d2706 100644
+>>  --- a/Documentation/driver-api/dma-buf.rst
+>>  +++ b/Documentation/driver-api/dma-buf.rst
+>>  @@ -1,3 +1,5 @@
+>>  +.. _dma-buf:
+>>  +
+>>   Buffer Sharing and Synchronization
+>>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >>=20
->>  The problem is that right now DMABUF is only really used by DRM,=20
->> and to
->>  quote Daniel, "dma-buf looks like something super generic and=20
->> useful, until
->>  you realize that there's a metric ton of gpu/accelerator bagage=20
->> piled in".
->>=20
->>  Still, it seems to be the only viable option. We could add a custom
->>  buffer-passing interface, but that would mean implementing the same
->>  buffer-passing interface on the network and USB stacks, and before=20
->> we know
->>  it we re-invented DMABUFs.
+>>  diff --git a/Documentation/iio/dmabuf_api.rst=20
+>> b/Documentation/iio/dmabuf_api.rst
+>>  new file mode 100644
+>>  index 000000000000..43bb2c1b9fdc
+>>  --- /dev/null
+>>  +++ b/Documentation/iio/dmabuf_api.rst
+>>  @@ -0,0 +1,94 @@
+>>  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>  +High-speed DMABUF interface for IIO
+>>  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>  +
+>>  +1. Overview
+>>  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>  +
+>>  +The Industrial I/O subsystem supports access to buffers through a=20
+>> file-based
+>>  +interface, with read() and write() access calls through the IIO=20
+>> device's dev
+>>  +node.
+>>  +
+>>  +It additionally supports a DMABUF based interface, where the=20
+>> userspace
+>>  +application can allocate and append DMABUF objects to the buffer's=20
+>> queue.
+>>  +This interface is however optional and is not available in all=20
+>> drivers.
+>>  +
+>>  +The advantage of this DMABUF based interface vs. the read()
+>>  +interface, is that it avoids an extra copy of the data between the
+>>  +kernel and userspace. This is particularly useful for high-speed
+>>  +devices which produce several megabytes or even gigabytes of data=20
+>> per
+>>  +second.
+>>  +
+>>  +The data in this DMABUF interface is managed at the granularity of
+>>  +DMABUF objects. Reducing the granularity from byte level to block=20
+>> level
+>>  +is done to reduce the userspace-kernelspace synchronization=20
+>> overhead
+>>  +since performing syscalls for each byte at a few Mbps is just not
+>>  +feasible.
+>>  +
+>>  +This of course leads to a slightly increased latency. For this=20
+>> reason an
+>>  +application can choose the size of the DMABUFs as well as how many=20
+>> it
+>>  +allocates. E.g. two DMABUFs would be a traditional double buffering
+>>  +scheme. But using a higher number might be necessary to avoid
+>>  +underflow/overflow situations in the presence of scheduling=20
+>> latencies.
 >=20
-> dma-buf also doesn't support sharing with network and usb stacks, so=20
-> I'm a
-> bit confused why exactly this is useful?
+> So this reads a lot like reinventing io-uring with pre-registered=20
+> O_DIRECT
+> memory ranges. Except it's using dma-buf and hand-rolling a lot of=20
+> pieces
+> instead of io-uring and O_DIRECT.
 
-There is an attempt to get dma-buf support in the network stack, called=20
-"zctap". Last patchset was sent last november. USB stack does not=20
-support dma-buf, but we can add it later I guess.
+I don't see how io_uring would help us. It's an async I/O framework,=20
+does it allow us to access a kernel buffer without copying the data?=20
+Does it allow us to zero-copy the data to a network interface?
 
-> So yeah unless there's some sharing going on with gpu stuff (for data
-> processing maybe) I'm not sure this makes a lot of sense really. Or at
-> least some zero-copy sharing between drivers, but even that would
-> minimally require a dma-buf import ioctl of some sorts. Which I either
-> missed or doesn't exist.
+> At least if the entire justification for dma-buf support is zero-copy
+> support between the driver and userspace it's _really_ not the right=20
+> tool
+> for the job. dma-buf is for zero-copy between devices, with cpu access
+> from userpace (or kernel fwiw) being very much the exception (and=20
+> often
+> flat-out not supported at all).
 
-We do want zero-copy between drivers, the network stack, and the USB=20
-stack. It's not just about having a userspace interface.
+We want both. Using dma-bufs for the driver/userspace interface is a=20
+convenience as we then have a unique API instead of two distinct ones.
 
-> If there's none of that then just hand-roll your buffer handling code
-> (xarray is cheap to use in terms of code for this), you can always add
-> dma-buf import/export later on when the need arises.
->=20
-> Scrolling through patches you only have dma-buf export, but no=20
-> importing,
-> so the use-case that works is with one of the existing subsystems that
-> supporting dma-buf importing.
->=20
-> I think minimally we need the use-case (in form of code) that needs=20
-> the
-> buffer sharing here.
-
-I'll try with zctap and report back.
+Why should CPU access from userspace be the exception? It works fine=20
+for IIO dma-bufs. You keep warning about this being a terrible design,=20
+but I simply don't see it.
 
 Cheers,
 -Paul
 
->>  > >
->>  > >  Changes since v1:
->>  > >
->>  > >  - the patches that were merged in v1 have been (obviously)=20
->> dropped
->>  > > from
->>  > >    this patchset;
->>  > >  - the patch that was setting the write-combine cache setting=20
->> has
->>  > > been
->>  > >    dropped as well, as it was simply not useful.
->>  > >  - [01/12]:
->>  > >      * Only remove the outgoing queue, and keep the incoming=20
->> queue,
->>  > > as we
->>  > >        want the buffer to start streaming data as soon as it is
->>  > > enabled.
->>  > >      * Remove IIO_BLOCK_STATE_DEQUEUED, since it is now=20
->> functionally
->>  > > the
->>  > >        same as IIO_BLOCK_STATE_DONE.
->>  > >  - [02/12]:
->>  > >      * Fix block->state not being reset in
->>  > >        iio_dma_buffer_request_update() for output buffers.
->>  > >      * Only update block->bytes_used once and add a comment=20
->> about
->>  > > why we
->>  > >        update it.
->>  > >      * Add a comment about why we're setting a different state=20
->> for
->>  > > output
->>  > >        buffers in iio_dma_buffer_request_update()
->>  > >      * Remove useless cast to bool (!!) in iio_dma_buffer_io()
->>  > >  - [05/12]:
->>  > >      Only allow the new IOCTLs on the buffer FD created with
->>  > >      IIO_BUFFER_GET_FD_IOCTL().
->>  > >  - [12/12]:
->>  > >      * Explicitly state that the new interface is optional and=20
->> is
->>  > >        not implemented by all drivers.
->>  > >      * The IOCTLs can now only be called on the buffer FD=20
->> returned by
->>  > >        IIO_BUFFER_GET_FD_IOCTL.
->>  > >      * Move the page up a bit in the index since it is core=20
->> stuff
->>  > > and not
->>  > >        driver-specific.
->>  > >
->>  > >  The patches not listed here have not been modified since v1.
->>  > >
->>  > >  Cheers,
->>  > >  -Paul
->>  > >
->>  > >  Alexandru Ardelean (1):
->>  > >    iio: buffer-dma: split iio_dma_buffer_fileio_free() function
->>  > >
->>  > >  Paul Cercueil (11):
->>  > >    iio: buffer-dma: Get rid of outgoing queue
->>  > >    iio: buffer-dma: Enable buffer write support
->>  > >    iio: buffer-dmaengine: Support specifying buffer direction
->>  > >    iio: buffer-dmaengine: Enable write support
->>  > >    iio: core: Add new DMABUF interface infrastructure
->>  > >    iio: buffer-dma: Use DMABUFs instead of custom solution
->>  > >    iio: buffer-dma: Implement new DMABUF based userspace API
->>  > >    iio: buffer-dmaengine: Support new DMABUF based userspace API
->>  > >    iio: core: Add support for cyclic buffers
->>  > >    iio: buffer-dmaengine: Add support for cyclic buffers
->>  > >    Documentation: iio: Document high-speed DMABUF based API
->>  > >
->>  > >   Documentation/driver-api/dma-buf.rst          |   2 +
->>  > >   Documentation/iio/dmabuf_api.rst              |  94 +++
->>  > >   Documentation/iio/index.rst                   |   2 +
->>  > >   drivers/iio/adc/adi-axi-adc.c                 |   3 +-
->>  > >   drivers/iio/buffer/industrialio-buffer-dma.c  | 610
->>  > > ++++++++++++++----
->>  > >   .../buffer/industrialio-buffer-dmaengine.c    |  42 +-
->>  > >   drivers/iio/industrialio-buffer.c             |  60 ++
->>  > >   include/linux/iio/buffer-dma.h                |  38 +-
->>  > >   include/linux/iio/buffer-dmaengine.h          |   5 +-
->>  > >   include/linux/iio/buffer_impl.h               |   8 +
->>  > >   include/uapi/linux/iio/buffer.h               |  30 +
->>  > >   11 files changed, 749 insertions(+), 145 deletions(-)
->>  > >   create mode 100644 Documentation/iio/dmabuf_api.rst
->>  > >
->>  >
+>>  +
+>>  +2. User API
+>>  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>  +
+>>  +``IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req *)``
+>>  +----------------------------------------------------------------
+>>  +
+>>  +Each call will allocate a new DMABUF object. The return value (if=20
+>> not
+>>  +a negative errno value as error) will be the file descriptor of=20
+>> the new
+>>  +DMABUF.
+>>  +
+>>  +``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *)``
+>>  +--------------------------------------------------------
+>>  +
+>>  +Place the DMABUF object into the queue pending for hardware=20
+>> process.
+>>  +
+>>  +These two IOCTLs have to be performed on the IIO buffer's file
+>>  +descriptor, obtained using the `IIO_BUFFER_GET_FD_IOCTL` ioctl.
+>>  +
+>>  +3. Usage
+>>  +=3D=3D=3D=3D=3D=3D=3D=3D
+>>  +
+>>  +To access the data stored in a block by userspace the block must be
+>>  +mapped to the process's memory. This is done by calling mmap() on=20
+>> the
+>>  +DMABUF's file descriptor.
+>>  +
+>>  +Before accessing the data through the map, you must use the
+>>  +DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
+>>  +DMA_BUF_SYNC_START flag, to make sure that the data is available.
+>>  +This call may block until the hardware is done with this block.=20
+>> Once
+>>  +you are done reading or writing the data, you must use this ioctl=20
+>> again
+>>  +with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF to the
+>>  +kernel's queue.
+>>  +
+>>  +If you need to know when the hardware is done with a DMABUF, you=20
+>> can
+>>  +poll its file descriptor for the EPOLLOUT event.
+>>  +
+>>  +Finally, to destroy a DMABUF object, simply call close() on its=20
+>> file
+>>  +descriptor.
+>>  +
+>>  +For more information about manipulating DMABUF objects, see:=20
+>> :ref:`dma-buf`.
+>>  +
+>>  +A typical workflow for the new interface is:
+>>  +
+>>  +    for block in blocks:
+>>  +      DMABUF_ALLOC block
+>>  +      mmap block
+>>  +
+>>  +    enable buffer
+>>  +
+>>  +    while !done
+>>  +      for block in blocks:
+>>  +        DMABUF_ENQUEUE block
+>>  +
+>>  +        DMABUF_SYNC_START block
+>>  +        process data
+>>  +        DMABUF_SYNC_END block
+>>  +
+>>  +    disable buffer
+>>  +
+>>  +    for block in blocks:
+>>  +      close block
+>>  diff --git a/Documentation/iio/index.rst=20
+>> b/Documentation/iio/index.rst
+>>  index 58b7a4ebac51..669deb67ddee 100644
+>>  --- a/Documentation/iio/index.rst
+>>  +++ b/Documentation/iio/index.rst
+>>  @@ -9,4 +9,6 @@ Industrial I/O
 >>=20
+>>      iio_configfs
+>>=20
+>>  +   dmabuf_api
+>>  +
+>>      ep93xx_adc
+>>  --
+>>  2.34.1
 >>=20
 >=20
 > --

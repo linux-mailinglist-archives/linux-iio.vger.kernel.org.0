@@ -2,94 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B70E4EB4B0
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 22:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DCD24EB5EA
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 00:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbiC2U1R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Mar 2022 16:27:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59992 "EHLO
+        id S234544AbiC2WbY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Mar 2022 18:31:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229700AbiC2U1Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 16:27:16 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50B6E93189
-        for <linux-iio@vger.kernel.org>; Tue, 29 Mar 2022 13:25:32 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id i11-20020a9d4a8b000000b005cda3b9754aso13526719otf.12
-        for <linux-iio@vger.kernel.org>; Tue, 29 Mar 2022 13:25:32 -0700 (PDT)
+        with ESMTP id S237196AbiC2WbY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 18:31:24 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4D5A68987
+        for <linux-iio@vger.kernel.org>; Tue, 29 Mar 2022 15:29:40 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id v64-20020a1cac43000000b0038cfd1b3a6dso129774wme.5
+        for <linux-iio@vger.kernel.org>; Tue, 29 Mar 2022 15:29:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
-         :subject:to:cc;
-        bh=SFrq+HkhY8EOOEHs10edXecMcSZIs6/OF4q1ev8rVPs=;
-        b=ZXBiMuTCpQ95TzEDmK8L4ho9oCJZxa3gxbUmjHjcUOMxq5dmZfs5TpoLjnQuwQ80FF
-         2QcUThWMORa98tz4xapDW4dUoPODp9zFLDZ7MrFvb4YTfttQ59Wzmr9reE/caETJokIu
-         6jpSgmpt5IqfH7lZvEK8vTfhnfeDmn/WyKxXI=
+        d=gmail.com; s=20210112;
+        h=message-id:mime-version:content-transfer-encoding
+         :content-description:subject:to:from:date:reply-to;
+        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
+        b=F+JLqqoyR4wko8jydlJ3TiMlSwuZ6gEaNIyb1WlX23R1qVYs8/xfk3XsZGW9n6kE2H
+         EUIowL+y5Ngvd9RNj+ZfOckgF3Q3Ww9ra93HUay5yZb4di6BooHBbMJY/q//cKDkUsAf
+         hX0u9pSpiBOmu79rc7VsPnnHxgyTUSQiDXqxPFgM8SeuupQFww2aw0H192xhGScePrs9
+         mVcBQsiEu7hXYHPAByioT+G3Go6SUkREfFfktKqzJB1Kfc5RA9N1thjijBe8YyylaWir
+         51uURzBCMuakQWhqB+1bFhyXSRpW9pWqgbAVALNh7rpBWqa2SjelIviw+7/xqmErfNjP
+         eX1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from
-         :user-agent:date:message-id:subject:to:cc;
-        bh=SFrq+HkhY8EOOEHs10edXecMcSZIs6/OF4q1ev8rVPs=;
-        b=7yzf00HKeFfW2gIQlb4/qg0zXwVuVzpMBMf0F+leQdEk+zD3WTdYE1RNh45lnz4xoC
-         Hqln8dxO32kFLipEgFp8kSzwtGhkCAvlZZoqNkYavVnltclcT/K7W0tBU1A5QCnIt72z
-         8xUXQSl/CISYox3Ec7Nz1v1bwwsb84+ghwsbcgHYEnAmjJsjhTD00snG+qq3JPd2O1QK
-         bzF+dNA+VcgkxhT+95AZHhF9ai6KBO/hQvuH1TOB98cb/KA8ewyrqsB9cdRUqPSPI2+Z
-         AXVOTkWXdXJe3f0N4P0kHOPbbSxK3JEC7drPTv0IhcJTibzs+NqMDM1FWECuNQA1Ryk5
-         mBRQ==
-X-Gm-Message-State: AOAM530lPp0u5Dd9G0NNSzbqWxG8OQz4nZdwU1Rnx4CaQgSzde3pihxN
-        gl288D5O1MkrU3A2iG/g8CVG3+rMGc8IIrvp5//ePg==
-X-Google-Smtp-Source: ABdhPJwFap4yUqGDUQMinigojaLdGmmnd2GrXlRfBs04gEvioesOAE3NzyeFCZ3fpthNyz+tBYNsGF5TzhbGRtExpZU=
-X-Received: by 2002:a9d:b85:0:b0:5cb:3eeb:d188 with SMTP id
- 5-20020a9d0b85000000b005cb3eebd188mr1918913oth.77.1648585531687; Tue, 29 Mar
- 2022 13:25:31 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 29 Mar 2022 22:25:31 +0200
+        h=x-gm-message-state:message-id:mime-version
+         :content-transfer-encoding:content-description:subject:to:from:date
+         :reply-to;
+        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
+        b=zfM6n27kfbR2NO6WByYNlvE33t9DWtFivxVAbuZ1vKwS3zdDTnN1srkyPDSsiWzhC7
+         PHxnmIVxGgby/Iy7AdPnCUP+aXGLWwX6+n/t2dhIezcFf0pubUs0ebyUEkDvThxVknT2
+         C9Tif9+0vUTvwKbL0GPSRBljPl4z+PREmcL+CpcL3Ern5vgXhMSR0LKSJDbjO3QzPLZQ
+         XZlKXnLSFGyhIQKv4CKlxtKdL0KyctZ75QL7VF0z6f1lj+FQlI65MwszrGNVgqnQd1v/
+         TzRpie97TZL5m2Ive6GGkRuEfQDbtPrm6TLKPcJErqmYURmk+xYhQgInXlnoMiQqFAl2
+         Twtg==
+X-Gm-Message-State: AOAM530UAjLdtxfoG63BSqlAKVTTrgBfccBFrPuLOd6hd6fZ0yC5wlZi
+        EcDJrMcBFaOY8XIq7eeDK28=
+X-Google-Smtp-Source: ABdhPJz7qvut3D92JvlncuCOD3y+hQOQqfnz6SuOiqAPhwgfy15/7QfM+ewyeRtCiszYfIy2OpmTuw==
+X-Received: by 2002:a1c:2946:0:b0:37b:d710:f565 with SMTP id p67-20020a1c2946000000b0037bd710f565mr1664073wmp.10.1648592979326;
+        Tue, 29 Mar 2022 15:29:39 -0700 (PDT)
+Received: from [172.20.10.4] ([102.91.4.187])
+        by smtp.gmail.com with ESMTPSA id p16-20020a5d48d0000000b00205cf199abcsm2851970wrs.46.2022.03.29.15.29.33
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 29 Mar 2022 15:29:37 -0700 (PDT)
+Message-ID: <62438851.1c69fb81.a7286.bcd3@mx.google.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <20220327155147.52e898b4@jic23-huawei>
-References: <20220324222928.874522-1-swboyd@chromium.org> <20220327155147.52e898b4@jic23-huawei>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Tue, 29 Mar 2022 22:25:31 +0200
-Message-ID: <CAE-0n50T9uqcB9EK-RnGXPGhd6RWdrsE9pA5FJY9yC58xd=05A@mail.gmail.com>
-Subject: Re: [PATCH v2] iio:proximity:sx9324: Fix hardware gain read/write
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Gefeliciteerd, er is geld aan je gedoneerd
+To:     Recipients <adeboyejofolashade55@gmail.com>
+From:   adeboyejofolashade55@gmail.com
+Date:   Tue, 29 Mar 2022 23:29:26 +0100
+Reply-To: mike.weirsky.foundation003@gmail.com
+X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3 autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Jonathan Cameron (2022-03-27 07:51:47)
-> On Thu, 24 Mar 2022 15:29:28 -0700
-> Stephen Boyd <swboyd@chromium.org> wrote:
->
-> > There are four possible gain values according to 'sx9324_gain_vals[]':
-> >
-> >       1, 2, 4, and 8
-> >
-> > The values are off by one when writing and reading the register. The
-> > bits should be set according to this equation:
-> >
-> >       ilog2(<gain>) + 1
-> >
-> > so that a gain of 8 is 0x3 in the register field and a gain of 4 is 0x2
-> > in the register field, etc
->
-> Example seems wrong...
->
-> ilog2(8) + 1 = 3 + 1 = 0x4
-> ilog2(4) + 1 = 2 + 1 = 0x3
-> ilog2(2) + 1 = 1 + 1 = 0x2
-> ilog2(1) + 1 = 0 + 1 = 0x1
->                        0x0 reserved.
->
-> or have I misunderstood?
+Beste begunstigde,
 
-Nope. I hit the wrong key but your table is correct. Can you fix it when
-applying?
+ Je hebt een liefdadigheidsdonatie van ($ 10.000.000,00) van Mr. Mike Weirs=
+ky, een winnaar van een powerball-jackpotloterij van $ 273 miljoen.  Ik don=
+eer aan 5 willekeurige personen als je deze e-mail ontvangt, dan is je e-ma=
+il geselecteerd na een spin-ball. Ik heb vrijwillig besloten om het bedrag =
+van $ 10 miljoen USD aan jou te doneren als een van de geselecteerde 5, om =
+mijn winst te verifi=EBren
+ =
+
+  Vriendelijk antwoord op: mike.weirsky.foundation003@gmail.com
+ Voor uw claim.

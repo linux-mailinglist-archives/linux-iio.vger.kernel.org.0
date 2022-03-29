@@ -2,69 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A4624EA69C
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 06:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54E8E4EA857
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 09:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232041AbiC2Edl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Mar 2022 00:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33406 "EHLO
+        id S232859AbiC2HM5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Mar 2022 03:12:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230357AbiC2Edk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 00:33:40 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0535832044;
-        Mon, 28 Mar 2022 21:31:58 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id n63-20020a1c2742000000b0038d0c31db6eso711187wmn.1;
-        Mon, 28 Mar 2022 21:31:57 -0700 (PDT)
+        with ESMTP id S233315AbiC2HM4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 03:12:56 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4B223D750;
+        Tue, 29 Mar 2022 00:11:13 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id p25so13376649qkj.10;
+        Tue, 29 Mar 2022 00:11:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=M6q0ziPfO+aI8ZFi1uzU1SciRFsF3Dbngun8DDFrbXw=;
-        b=hzpSSofFNoXc98hBPOpon5UCPE1T5YNufpGDTtxX9Atd4L8cDackUS+6WLQXPK8TNO
-         I27Fb8TU5EWDotTxIbtvQHz6Gx7PDzCkXyXlTxEhUCyjfggx1nP9xcjYodlb1qZnIXEX
-         3Pj7LYir4y2v/0ch6kTYKD/A53kijDbFtjyxsDveJBlmQTFf+QQOsCZE7b2GkKzo8E3U
-         uMHb7ucpS+0EWJN3d3M036J5VputrI2ECwGaXrCzjOV/IOEb8Pihn7hsK087e/JzlesE
-         bXXBMT1xYiQDm6xnrYGQwJvH+q9GamzVmkmPoYWU0iVnw+t7NOb5rA0VRmp7rWRxpLkE
-         9slQ==
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=2Jpv9X1mRqJBbBsT23UY5br7jZqVXCd74N7s1FPvLr4=;
+        b=aalhu3Sn2nCA2dfMtZ5bg8U92vZKzbYYf8SrKTbvgcuwConxVqtEYxu+UbeK/CJKxp
+         J2XW8EhweBztEFHH7svb39CtM57BYUnEa7U+pYtiJYBB5XUHBvrnsp+cPrefNgiMcLrZ
+         62Llq4Z4FsR8ZRjtmDyiamTrk9hpftq7UQzCsIhIrvZfUdHmBtdZGK89rhJOfeP85PpH
+         eVGG2mAClPGGFETMVpQWYnprmSsUIpJW+u6MwF45N/uNc6ZpXKMiZ3fb5Ov5AVu7FhxV
+         Gv1tT+uDa8zgT/Sr4alxIm2XyNmsemas9yiRD5o83DGQuSVhR5K1LYSgo7DCLFccDPw9
+         0LAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=M6q0ziPfO+aI8ZFi1uzU1SciRFsF3Dbngun8DDFrbXw=;
-        b=2Tp+y5NUeRXDmYjsvBdYmeE4gwBkm4rmMtWoLYGWw/oAwCc8CpiSCN0UswpnB0Zwtz
-         C2KEjF6YDMFIU3c5YQB9U+SIoV+BZjd1xqdIZ7eWWoAvInmxRhUAzXEFcRIoaSNX1cZz
-         fZuSxePPJ3wLmtL+lcjbphcO48imrhUfxNDcZ3POksIR/4zJ5PS5FICrN948PEzI4FSQ
-         pmycBgxxiumiuNdULmB0ikJOoDivKNtQu0nEfcwU37b3TN2HBEReEke+Pnc2A84zIs22
-         bin9s/3Vo1wCa4nvC64q/jh/HeOD7uHNSmMOmR9k3KYPxU3yQ4vJcBvNZLiw1BVC6EwV
-         xMSg==
-X-Gm-Message-State: AOAM533NREb7c1l6Po2XvekNVeiaTEyDr2E5lDa8Mbd4clI5SN7cI5SG
-        /FMQX/FI6/qTqHlsXmR+Oi1jv+eBOYKmtxq6D8o=
-X-Google-Smtp-Source: ABdhPJyGCItzRoYc5wfGtuXFL3PNtrpS4XqPRp3sPlge5FqpimmYPbhCyx5vRKRLPraXCbVmjuxQHQLRavEPkSgDCXg=
-X-Received: by 2002:a05:600c:5029:b0:38c:9768:b4c with SMTP id
- n41-20020a05600c502900b0038c97680b4cmr3886589wmr.123.1648528316414; Mon, 28
- Mar 2022 21:31:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220311164628.378849-1-gengcixi@gmail.com> <20220311164628.378849-4-gengcixi@gmail.com>
- <CADBw62pAitwJK6cf_zMo-N=-NGf3Y5S9SPBRcLpbz5yzNefQOQ@mail.gmail.com>
-In-Reply-To: <CADBw62pAitwJK6cf_zMo-N=-NGf3Y5S9SPBRcLpbz5yzNefQOQ@mail.gmail.com>
-From:   Cixi Geng <gengcixi@gmail.com>
-Date:   Tue, 29 Mar 2022 12:31:20 +0800
-Message-ID: <CAF12kFs-=s5Rj42gSfVHYRQ30m2m_gdmAjBmB0cdb7VMS5evjw@mail.gmail.com>
-Subject: Re: [PATCH V2 3/7] iio: adc: sc27xx: structure adjuststment and optimization
-To:     Baolin Wang <baolin.wang7@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=2Jpv9X1mRqJBbBsT23UY5br7jZqVXCd74N7s1FPvLr4=;
+        b=0UkBsFYIwuTTothcSDuQh4bmQlpYerkbq72aiv+CE/8rTfyI5Tgr7cLuGYMdjDODYE
+         s+5aBIuLKg6HKsYBZbgRi3s+uYWChfJ76IWi7HEkYYkbN95LMhvaWnnWFCy+0zAeFzJo
+         g37sE9nNsND1PBDBei825Os4JAtibmRbgA7gX5ZHEUdaCXUlgPv6vS4Wl3ejE9CtmFmT
+         PO7ASQlTx2MtyTyk2NLn6Ldysioa1hDnsD/bPr+R8RhwUhW3y2zmxMzUVZBempDb8vVU
+         sWXUYrWcmC7ax/MLdDCkbteamlCuy/vEODTvXan5BwM1T4YmwRIXkvIFSy47srV3qnDP
+         M3CA==
+X-Gm-Message-State: AOAM533E5MEjxTlfuOffbKTciSEKmAeEPvXfGR2wsHhtlqUba1X9vwSs
+        1BsnS1viax6Bqt15qWyqvT4=
+X-Google-Smtp-Source: ABdhPJy+jP697xainM6j70Eo1PTqkiP/ca6UtAdVU/oGW4GfmOgL8tApjwuNxpCwyJzVAWUtTBOa6g==
+X-Received: by 2002:a37:9a47:0:b0:680:aeaa:d89c with SMTP id c68-20020a379a47000000b00680aeaad89cmr15826074qke.591.1648537872342;
+        Tue, 29 Mar 2022 00:11:12 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef00:8400:3d36:58a:667a:1da9? (p200300f6ef0084003d36058a667a1da9.dip0.t-ipconnect.de. [2003:f6:ef00:8400:3d36:58a:667a:1da9])
+        by smtp.gmail.com with ESMTPSA id j1-20020a05620a288100b0067b1be3201bsm8843300qkp.112.2022.03.29.00.11.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Mar 2022 00:11:11 -0700 (PDT)
+Message-ID: <deb2cd86196addbc47908455880000c618b984be.camel@gmail.com>
+Subject: Re: [PATCH v2 02/12] iio: buffer-dma: Enable buffer write support
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>, lgirdwood@gmail.com,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
-        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
-        Devicetree List <devicetree@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Date:   Tue, 29 Mar 2022 09:11:48 +0200
+In-Reply-To: <96XG9R.3NOIIEN7IS001@crapouillou.net>
+References: <20220207125933.81634-1-paul@crapouillou.net>
+         <20220207125933.81634-3-paul@crapouillou.net>
+         <20220328182409.1e959386@jic23-huawei>
+         <96XG9R.3NOIIEN7IS001@crapouillou.net>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.42.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -75,284 +81,83 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Baolin Wang <baolin.wang7@gmail.com> =E4=BA=8E2022=E5=B9=B43=E6=9C=8823=E6=
-=97=A5=E5=91=A8=E4=B8=89 21:55=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Sat, Mar 12, 2022 at 12:47 AM Cixi Geng <gengcixi@gmail.com> wrote:
-> >
-> > From: Cixi Geng <cixi.geng1@unisoc.com>
-> >
-> > Introduce one variant device data structure to be compatible
-> > with SC2731 PMIC since it has different scale and ratio calculation
-> > and so on.
-> >
-> > Signed-off-by: Yuming Zhu <yuming.zhu1@unisoc.com>
-> > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-> > ---
-> >  drivers/iio/adc/sc27xx_adc.c | 95 ++++++++++++++++++++++++++++++------
-> >  1 file changed, 80 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.=
-c
-> > index aee076c8e2b1..68629fbcfec5 100644
-> > --- a/drivers/iio/adc/sc27xx_adc.c
-> > +++ b/drivers/iio/adc/sc27xx_adc.c
-> > @@ -12,9 +12,9 @@
-> >  #include <linux/slab.h>
-> >
-> >  /* PMIC global registers definition */
-> > -#define SC27XX_MODULE_EN               0xc08
-> > +#define SC2731_MODULE_EN               0xc08
-> >  #define SC27XX_MODULE_ADC_EN           BIT(5)
-> > -#define SC27XX_ARM_CLK_EN              0xc10
-> > +#define SC2731_ARM_CLK_EN              0xc10
-> >  #define SC27XX_CLK_ADC_EN              BIT(5)
-> >  #define SC27XX_CLK_ADC_CLK_EN          BIT(6)
-> >
-> > @@ -78,6 +78,23 @@ struct sc27xx_adc_data {
-> >         int channel_scale[SC27XX_ADC_CHANNEL_MAX];
-> >         u32 base;
-> >         int irq;
-> > +       const struct sc27xx_adc_variant_data *var_data;
-> > +};
-> > +
-> > +/*
-> > + * Since different PMICs of SC27xx series can have different
-> > + * address and ratio, we should save ratio config and base
-> > + * in the device data structure.
-> > + */
-> > +struct sc27xx_adc_variant_data {
-> > +       u32 module_en;
-> > +       u32 clk_en;
-> > +       u32 scale_shift;
-> > +       u32 scale_mask;
-> > +       const struct sc27xx_adc_linear_graph *bscale_cal;
-> > +       const struct sc27xx_adc_linear_graph *sscale_cal;
-> > +       void (*init_scale)(struct sc27xx_adc_data *data);
-> > +       int (*get_ratio)(int channel, int scale);
-> >  };
-> >
-> >  struct sc27xx_adc_linear_graph {
-> > @@ -103,6 +120,17 @@ static struct sc27xx_adc_linear_graph small_scale_=
-graph =3D {
-> >         100, 341,
-> >  };
-> >
-> > +/* Add these for sc2731 pmic, and the [big|small]_scale_graph_calib fo=
-r common's */
-> > +static const struct sc27xx_adc_linear_graph sc2731_big_scale_graph_cal=
-ib =3D {
-> > +       4200, 850,
-> > +       3600, 728,
-> > +};
-> > +
-> > +static const struct sc27xx_adc_linear_graph sc2731_small_scale_graph_c=
-alib =3D {
-> > +       1000, 838,
-> > +       100, 84,
-> > +};
-> > +
-> >  static const struct sc27xx_adc_linear_graph big_scale_graph_calib =3D =
-{
-> >         4200, 856,
-> >         3600, 733,
-> > @@ -130,11 +158,11 @@ static int sc27xx_adc_scale_calibration(struct sc=
-27xx_adc_data *data,
-> >         size_t len;
-> >
-> >         if (big_scale) {
-> > -               calib_graph =3D &big_scale_graph_calib;
-> > +               calib_graph =3D data->var_data->bscale_cal;
-> >                 graph =3D &big_scale_graph;
-> >                 cell_name =3D "big_scale_calib";
-> >         } else {
-> > -               calib_graph =3D &small_scale_graph_calib;
-> > +               calib_graph =3D data->var_data->sscale_cal;
->
-> Now which function will use big_scale_graph_calib and
-> small_scale_graph_calib?  Seems you add an unused warning?
-yes, it is a unused, since these calibs used for sc2730 and sc2720
-I will remove in this patch and add in patch4/7.
->
-> >                 graph =3D &small_scale_graph;
-> >                 cell_name =3D "small_scale_calib";
-> >         }
-> > @@ -160,7 +188,7 @@ static int sc27xx_adc_scale_calibration(struct sc27=
-xx_adc_data *data,
-> >         return 0;
-> >  }
-> >
-> > -static int sc27xx_adc_get_ratio(int channel, int scale)
-> > +static int sc2731_adc_get_ratio(int channel, int scale)
-> >  {
-> >         switch (channel) {
-> >         case 1:
-> > @@ -185,6 +213,21 @@ static int sc27xx_adc_get_ratio(int channel, int s=
-cale)
-> >         return SC27XX_VOLT_RATIO(1, 1);
-> >  }
-> >
-> > +/*
-> > + * According to the datasheet set specific value on some channel.
-> > + */
-> > +static void sc2731_adc_scale_init(struct sc27xx_adc_data *data)
-> > +{
-> > +       int i;
-> > +
-> > +       for (i =3D 0; i < SC27XX_ADC_CHANNEL_MAX; i++) {
-> > +               if (i =3D=3D 5)
-> > +                       data->channel_scale[i] =3D 1;
->
-> Can you add some comments to explain why channel 5 needs to set scale to =
-1?
-In the current software design, SC2731 supports 2 scales, channel 5
-uses big scale, others use smale
-I will add the comment in next version.
->
-> > +               else
-> > +                       data->channel_scale[i] =3D 0;
-> > +       }
-> > +}
-> > +
-> >  static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
-> >                            int scale, int *val)
-> >  {
-> > @@ -208,10 +251,11 @@ static int sc27xx_adc_read(struct sc27xx_adc_data=
- *data, int channel,
-> >                 goto disable_adc;
-> >
-> >         /* Configure the channel id and scale */
-> > -       tmp =3D (scale << SC27XX_ADC_SCALE_SHIFT) & SC27XX_ADC_SCALE_MA=
-SK;
-> > +       tmp =3D (scale << data->var_data->scale_shift) & data->var_data=
-->scale_mask;
-> >         tmp |=3D channel & SC27XX_ADC_CHN_ID_MASK;
-> >         ret =3D regmap_update_bits(data->regmap, data->base + SC27XX_AD=
-C_CH_CFG,
-> > -                                SC27XX_ADC_CHN_ID_MASK | SC27XX_ADC_SC=
-ALE_MASK,
-> > +                                SC27XX_ADC_CHN_ID_MASK |
-> > +                                data->var_data->scale_mask,
-> >                                  tmp);
-> >         if (ret)
-> >                 goto disable_adc;
-> > @@ -262,8 +306,9 @@ static void sc27xx_adc_volt_ratio(struct sc27xx_adc=
-_data *data,
-> >                                   int channel, int scale,
-> >                                   u32 *div_numerator, u32 *div_denomina=
-tor)
-> >  {
-> > -       u32 ratio =3D sc27xx_adc_get_ratio(channel, scale);
-> > +       u32 ratio;
-> >
-> > +       ratio =3D data->var_data->get_ratio(channel, scale);
-> >         *div_numerator =3D ratio >> SC27XX_RATIO_NUMERATOR_OFFSET;
-> >         *div_denominator =3D ratio & SC27XX_RATIO_DENOMINATOR_MASK;
-> >  }
-> > @@ -432,13 +477,13 @@ static int sc27xx_adc_enable(struct sc27xx_adc_da=
-ta *data)
-> >  {
-> >         int ret;
-> >
-> > -       ret =3D regmap_update_bits(data->regmap, SC27XX_MODULE_EN,
-> > +       ret =3D regmap_update_bits(data->regmap, data->var_data->module=
-_en,
-> >                                  SC27XX_MODULE_ADC_EN, SC27XX_MODULE_AD=
-C_EN);
-> >         if (ret)
-> >                 return ret;
-> >
-> >         /* Enable ADC work clock and controller clock */
-> > -       ret =3D regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
-> > +       ret =3D regmap_update_bits(data->regmap, data->var_data->clk_en=
-,
-> >                                  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK=
-_EN,
-> >                                  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK=
-_EN);
-> >         if (ret)
-> > @@ -456,10 +501,10 @@ static int sc27xx_adc_enable(struct sc27xx_adc_da=
-ta *data)
-> >         return 0;
-> >
-> >  disable_clk:
-> > -       regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->clk_en,
-> >                            SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0=
-);
-> >  disable_adc:
-> > -       regmap_update_bits(data->regmap, SC27XX_MODULE_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->module_en,
-> >                            SC27XX_MODULE_ADC_EN, 0);
-> >
-> >         return ret;
-> > @@ -470,21 +515,39 @@ static void sc27xx_adc_disable(void *_data)
-> >         struct sc27xx_adc_data *data =3D _data;
-> >
-> >         /* Disable ADC work clock and controller clock */
-> > -       regmap_update_bits(data->regmap, SC27XX_ARM_CLK_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->clk_en,
-> >                            SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0=
-);
-> >
-> > -       regmap_update_bits(data->regmap, SC27XX_MODULE_EN,
-> > +       regmap_update_bits(data->regmap, data->var_data->module_en,
-> >                            SC27XX_MODULE_ADC_EN, 0);
-> >  }
-> >
-> > +static const struct sc27xx_adc_variant_data sc2731_data =3D {
-> > +       .module_en =3D SC2731_MODULE_EN,
-> > +       .clk_en =3D SC2731_ARM_CLK_EN,
-> > +       .scale_shift =3D SC27XX_ADC_SCALE_SHIFT,
-> > +       .scale_mask =3D SC27XX_ADC_SCALE_MASK,
-> > +       .bscale_cal =3D &sc2731_big_scale_graph_calib,
-> > +       .sscale_cal =3D &sc2731_small_scale_graph_calib,
-> > +       .init_scale =3D sc2731_adc_scale_init,
-> > +       .get_ratio =3D sc2731_adc_get_ratio,
-> > +};
-> > +
-> >  static int sc27xx_adc_probe(struct platform_device *pdev)
-> >  {
-> >         struct device *dev =3D &pdev->dev;
-> >         struct device_node *np =3D dev->of_node;
-> >         struct sc27xx_adc_data *sc27xx_data;
-> > +       const struct sc27xx_adc_variant_data *pdata;
-> >         struct iio_dev *indio_dev;
-> >         int ret;
-> >
-> > +       pdata =3D of_device_get_match_data(dev);
-> > +       if (!pdata) {
-> > +               dev_err(dev, "No matching driver data found\n");
-> > +               return -EINVAL;
-> > +       }
-> > +
-> >         indio_dev =3D devm_iio_device_alloc(dev, sizeof(*sc27xx_data));
-> >         if (!indio_dev)
-> >                 return -ENOMEM;
-> > @@ -520,6 +583,8 @@ static int sc27xx_adc_probe(struct platform_device =
-*pdev)
-> >         }
-> >
-> >         sc27xx_data->dev =3D dev;
-> > +       sc27xx_data->var_data =3D pdata;
-> > +       sc27xx_data->var_data->init_scale(sc27xx_data);
-> >
-> >         ret =3D sc27xx_adc_enable(sc27xx_data);
-> >         if (ret) {
-> > @@ -546,7 +611,7 @@ static int sc27xx_adc_probe(struct platform_device =
-*pdev)
-> >  }
-> >
-> >  static const struct of_device_id sc27xx_adc_of_match[] =3D {
-> > -       { .compatible =3D "sprd,sc2731-adc", },
-> > +       { .compatible =3D "sprd,sc2731-adc", .data =3D &sc2731_data},
-> >         { }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, sc27xx_adc_of_match);
-> > --
-> > 2.25.1
-> >
->
->
-> --
-> Baolin Wang
+On Mon, 2022-03-28 at 19:39 +0100, Paul Cercueil wrote:
+> Hi Jonathan,
+> 
+> Le lun., mars 28 2022 at 18:24:09 +0100, Jonathan Cameron 
+> <jic23@kernel.org> a écrit :
+> > On Mon,  7 Feb 2022 12:59:23 +0000
+> > Paul Cercueil <paul@crapouillou.net> wrote:
+> > 
+> > >  Adding write support to the buffer-dma code is easy - the
+> > > write()
+> > >  function basically needs to do the exact same thing as the
+> > > read()
+> > >  function: dequeue a block, read or write the data, enqueue the
+> > > block
+> > >  when entirely processed.
+> > > 
+> > >  Therefore, the iio_buffer_dma_read() and the new 
+> > > iio_buffer_dma_write()
+> > >  now both call a function iio_buffer_dma_io(), which will perform
+> > > this
+> > >  task.
+> > > 
+> > >  The .space_available() callback can return the exact same value
+> > > as 
+> > > the
+> > >  .data_available() callback for input buffers, since in both
+> > > cases we
+> > >  count the exact same thing (the number of bytes in each
+> > > available
+> > >  block).
+> > > 
+> > >  Note that we preemptively reset block->bytes_used to the
+> > > buffer's 
+> > > size
+> > >  in iio_dma_buffer_request_update(), as in the future the
+> > >  iio_dma_buffer_enqueue() function won't reset it.
+> > > 
+> > >  v2: - Fix block->state not being reset in
+> > >        iio_dma_buffer_request_update() for output buffers.
+> > >      - Only update block->bytes_used once and add a comment about
+> > > why we
+> > >        update it.
+> > >      - Add a comment about why we're setting a different state
+> > > for 
+> > > output
+> > >        buffers in iio_dma_buffer_request_update()
+> > >      - Remove useless cast to bool (!!) in iio_dma_buffer_io()
+> > > 
+> > >  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > >  Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+> > One comment inline.
+> > 
+> > I'd be tempted to queue this up with that fixed, but do we have
+> > any users?  Even though it's trivial I'm not that keen on code
+> > upstream well in advance of it being used.
+> 
+> There's a userspace user in libiio. On the kernel side we do have 
+> drivers that use it in ADI's downstream kernel, that we plan to 
+> upstream in the long term (but it can take some time, as we need to 
+> upstream other things first, like JESD204B support).
+> 
+> 
+
+You mean, users for DMA output buffers? If so, I have on my queue to
+add the dac counterpart of this one:
+
+https://elixir.bootlin.com/linux/latest/source/drivers/iio/adc/adi-axi-adc.c
+
+Which is a user of DMA buffers. Though this one does not depend on
+JESD204, I suspect it will also be a tricky process mainly because I
+think there are major issues on how things are done right now (on the
+ADC driver).
+
+But yeah, not a topic here and I do plan to first start the discussion
+on the mailing list before starting developing (hopefully in the coming
+weeks)...
+
+- Nuno Sá
+
+

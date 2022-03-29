@@ -2,81 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6D2B4EA9D8
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 10:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 256CF4EA9ED
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 10:59:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234289AbiC2I4b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Mar 2022 04:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55216 "EHLO
+        id S234348AbiC2JBA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Mar 2022 05:01:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232627AbiC2I4b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 04:56:31 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C483A7770
-        for <linux-iio@vger.kernel.org>; Tue, 29 Mar 2022 01:54:48 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id r7so22628633wrc.0
-        for <linux-iio@vger.kernel.org>; Tue, 29 Mar 2022 01:54:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=AKQCa5BXj3nCU08wphZwQiPGLu+26prlcxnHAtm3VJI=;
-        b=JptjAoEckriZUf4zPujrteZ8s/NjMjT2ifzJiasv3jr8gD6d2FEM3pB0Uo5ATE9iAI
-         VBHJZ8AQuo7sU274dzli6jcmkRGhGsJBfZxO9ClibftgH1ggxrUC7fkoULKC0iPqnfZ7
-         683RUPXa73EJ+BaZYfown49PfOmqyEzjPkES4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=AKQCa5BXj3nCU08wphZwQiPGLu+26prlcxnHAtm3VJI=;
-        b=54eFvEgrrrYQV/z4vGkK4ih/Y6q81gOhf3VHtp+LoGam8htYIxvGtF03UyGZVnSZl/
-         3HCGUJvVzBr1TS/0nR8Oc+ko5F1SCtEF4GDPt67ktMV1hisZgCFqZyGKU5Ou4FvXNkEM
-         k08jQ4k9ohgUvF7srHrvS9eBg+043KFZjgl+vpSayOkGjyRTlSDYQm22Q/nnel0cDFGl
-         0gcjgiSIpi9ifhPEo9/wL/DvEz8zbYReb4eMZq6pkxR4w1kkxwwwQBDZ9e0jvwb/ZXOr
-         ZfDSv9mbqyvYWGDkQonIzN+jWltiugRNj94xS+cEgamSLthqHYewD9QVQA9eY/xApLdT
-         +lJA==
-X-Gm-Message-State: AOAM532SYmqcbsQm1T1mfOy3Khzga58H9cM5l6MNsU2ToEpfUa6O0IOR
-        F9UCMEykED3dTIXmXQKiNxeVEg==
-X-Google-Smtp-Source: ABdhPJyh7a/JYQQVslvrEv4/VrglTy3NUcoYOA6Ic3/C5QjREHupUrY0ULUNmJyK+0rJ6Zuz0toy4A==
-X-Received: by 2002:a05:6000:186d:b0:204:110a:d832 with SMTP id d13-20020a056000186d00b00204110ad832mr29779909wri.47.1648544086671;
-        Tue, 29 Mar 2022 01:54:46 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id c11-20020a05600c0a4b00b0037c91e085ddsm1902614wmq.40.2022.03.29.01.54.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Mar 2022 01:54:45 -0700 (PDT)
-Date:   Tue, 29 Mar 2022 10:54:43 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Subject: Re: [PATCH v2 12/12] Documentation: iio: Document high-speed DMABUF
- based API
-Message-ID: <YkLJU7Pp98CPIHfY@phenom.ffwll.local>
-Mail-Followup-To: Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-References: <20220207125933.81634-1-paul@crapouillou.net>
- <20220207130140.81891-1-paul@crapouillou.net>
- <20220207130140.81891-2-paul@crapouillou.net>
+        with ESMTP id S234344AbiC2JA7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 05:00:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199181DE59A;
+        Tue, 29 Mar 2022 01:59:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC4E7615F4;
+        Tue, 29 Mar 2022 08:59:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6B3C340F2;
+        Tue, 29 Mar 2022 08:59:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648544356;
+        bh=u4u0Oj/nXBybt46EJgPF/pPuLsbdH4xX+S6TUsf5Bws=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=H/SGEVIrZnSvAuZ7Zt1Wwnc++TUokR+j+blPDTwsaWEoGGfzhC6gev1tedRFNUm4Y
+         dblH1Kj4FvHxmJFE/tKcxekXq+IGDaw+1XFioR97CX5P8aHxYovlXw5ihm/mCtrbTu
+         AYocTsmoIZHJfaONSCbH6dsCx5CBQUfhFzl/h1C9k/ebQFXc/A369MjwsqeQ5Wj7gP
+         ADdu9Y1tAz8fEm5+j1Pk+MBuAkuo6wih2jFl51An30SkB9+k/HKuC9hhGPp6bk5d9I
+         78lPIjdZwnsUxamf8pNQTN6Vi8wxKOSKW6wvzC1L4GttdhQWR3F37i4b8pfCCpJkno
+         5OzsH1WezM6uQ==
+Date:   Tue, 29 Mar 2022 10:59:07 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sean Nyekjaer <sean@geanix.com>, devicetree@vger.kernel.org,
+        Jose Cazarin <joseespiriki@gmail.com>,
+        linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v1.1 2/2] iio: dac: dac5571: Fix chip id detection for OF
+ devices
+Message-ID: <YkLKW7pIQcf2Qbji@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
+        devicetree@vger.kernel.org, Jose Cazarin <joseespiriki@gmail.com>,
+        linux-i2c@vger.kernel.org
+References: <20210724000654.23168-1-laurent.pinchart@ideasonboard.com>
+ <20210724154308.55afb03c@jic23-huawei>
+ <YRwfpOuyVEstwsza@kunai>
+ <YRwhej9Hz00qnvlQ@pendragon.ideasonboard.com>
+ <YRwi62E4xYcMyyFi@kunai>
+ <YRwoAgie/mDDunn9@pendragon.ideasonboard.com>
+ <YkF99t+NlO+IKMXg@ninjato>
+ <YkGIJ5MQoZ7RN6Y5@pendragon.ideasonboard.com>
+ <YkGogxobUcRddA4L@ninjato>
+ <YkJWZQJ2f2tyS6sH@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4/xIa57C4s+C0PDg"
 Content-Disposition: inline
-In-Reply-To: <20220207130140.81891-2-paul@crapouillou.net>
-X-Operating-System: Linux phenom 5.10.0-8-amd64 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <YkJWZQJ2f2tyS6sH@pendragon.ideasonboard.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,162 +75,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Feb 07, 2022 at 01:01:40PM +0000, Paul Cercueil wrote:
-> Document the new DMABUF based API.
-> 
-> v2: - Explicitly state that the new interface is optional and is
->       not implemented by all drivers.
->     - The IOCTLs can now only be called on the buffer FD returned by
->       IIO_BUFFER_GET_FD_IOCTL.
->     - Move the page up a bit in the index since it is core stuff and not
->       driver-specific.
-> 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> ---
->  Documentation/driver-api/dma-buf.rst |  2 +
->  Documentation/iio/dmabuf_api.rst     | 94 ++++++++++++++++++++++++++++
->  Documentation/iio/index.rst          |  2 +
->  3 files changed, 98 insertions(+)
->  create mode 100644 Documentation/iio/dmabuf_api.rst
-> 
-> diff --git a/Documentation/driver-api/dma-buf.rst b/Documentation/driver-api/dma-buf.rst
-> index 2cd7db82d9fe..d3c9b58d2706 100644
-> --- a/Documentation/driver-api/dma-buf.rst
-> +++ b/Documentation/driver-api/dma-buf.rst
-> @@ -1,3 +1,5 @@
-> +.. _dma-buf:
-> +
->  Buffer Sharing and Synchronization
->  ==================================
->  
-> diff --git a/Documentation/iio/dmabuf_api.rst b/Documentation/iio/dmabuf_api.rst
-> new file mode 100644
-> index 000000000000..43bb2c1b9fdc
-> --- /dev/null
-> +++ b/Documentation/iio/dmabuf_api.rst
-> @@ -0,0 +1,94 @@
-> +===================================
-> +High-speed DMABUF interface for IIO
-> +===================================
-> +
-> +1. Overview
-> +===========
-> +
-> +The Industrial I/O subsystem supports access to buffers through a file-based
-> +interface, with read() and write() access calls through the IIO device's dev
-> +node.
-> +
-> +It additionally supports a DMABUF based interface, where the userspace
-> +application can allocate and append DMABUF objects to the buffer's queue.
-> +This interface is however optional and is not available in all drivers.
-> +
-> +The advantage of this DMABUF based interface vs. the read()
-> +interface, is that it avoids an extra copy of the data between the
-> +kernel and userspace. This is particularly useful for high-speed
-> +devices which produce several megabytes or even gigabytes of data per
-> +second.
-> +
-> +The data in this DMABUF interface is managed at the granularity of
-> +DMABUF objects. Reducing the granularity from byte level to block level
-> +is done to reduce the userspace-kernelspace synchronization overhead
-> +since performing syscalls for each byte at a few Mbps is just not
-> +feasible.
-> +
-> +This of course leads to a slightly increased latency. For this reason an
-> +application can choose the size of the DMABUFs as well as how many it
-> +allocates. E.g. two DMABUFs would be a traditional double buffering
-> +scheme. But using a higher number might be necessary to avoid
-> +underflow/overflow situations in the presence of scheduling latencies.
 
-So this reads a lot like reinventing io-uring with pre-registered O_DIRECT
-memory ranges. Except it's using dma-buf and hand-rolling a lot of pieces
-instead of io-uring and O_DIRECT.
+--4/xIa57C4s+C0PDg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-At least if the entire justification for dma-buf support is zero-copy
-support between the driver and userspace it's _really_ not the right tool
-for the job. dma-buf is for zero-copy between devices, with cpu access
-from userpace (or kernel fwiw) being very much the exception (and often
-flat-out not supported at all).
--Daniel
 
-> +
-> +2. User API
-> +===========
-> +
-> +``IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req *)``
-> +----------------------------------------------------------------
-> +
-> +Each call will allocate a new DMABUF object. The return value (if not
-> +a negative errno value as error) will be the file descriptor of the new
-> +DMABUF.
-> +
-> +``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *)``
-> +--------------------------------------------------------
-> +
-> +Place the DMABUF object into the queue pending for hardware process.
-> +
-> +These two IOCTLs have to be performed on the IIO buffer's file
-> +descriptor, obtained using the `IIO_BUFFER_GET_FD_IOCTL` ioctl.
-> +
-> +3. Usage
-> +========
-> +
-> +To access the data stored in a block by userspace the block must be
-> +mapped to the process's memory. This is done by calling mmap() on the
-> +DMABUF's file descriptor.
-> +
-> +Before accessing the data through the map, you must use the
-> +DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
-> +DMA_BUF_SYNC_START flag, to make sure that the data is available.
-> +This call may block until the hardware is done with this block. Once
-> +you are done reading or writing the data, you must use this ioctl again
-> +with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF to the
-> +kernel's queue.
-> +
-> +If you need to know when the hardware is done with a DMABUF, you can
-> +poll its file descriptor for the EPOLLOUT event.
-> +
-> +Finally, to destroy a DMABUF object, simply call close() on its file
-> +descriptor.
-> +
-> +For more information about manipulating DMABUF objects, see: :ref:`dma-buf`.
-> +
-> +A typical workflow for the new interface is:
-> +
-> +    for block in blocks:
-> +      DMABUF_ALLOC block
-> +      mmap block
-> +
-> +    enable buffer
-> +
-> +    while !done
-> +      for block in blocks:
-> +        DMABUF_ENQUEUE block
-> +
-> +        DMABUF_SYNC_START block
-> +        process data
-> +        DMABUF_SYNC_END block
-> +
-> +    disable buffer
-> +
-> +    for block in blocks:
-> +      close block
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index 58b7a4ebac51..669deb67ddee 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -9,4 +9,6 @@ Industrial I/O
->  
->     iio_configfs
->  
-> +   dmabuf_api
-> +
->     ep93xx_adc
-> -- 
-> 2.34.1
-> 
+> I've had a look, but it seems to be problematic. The name of the client
+> is set in i2c_new_client_device(), way before we match with a driver.
+> The name is used in the uevent sent to userspace, so changing it
+> afterwards is likely not a good idea.
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Okay, that is a definitive no-go. Thanks for checking. Seems we really
+need to update i2c_match_id to handle the extra case as you suggested.
+
+
+--4/xIa57C4s+C0PDg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJCylcACgkQFA3kzBSg
+Kbbq4BAAjwfwH/GzKBWMz7XQORgDgxHrlNlEoHGfwSgnzTHsixbAM44xgl1ZoyGx
+h4sMczAPYMs9SWhnREBahx3V80gzgbgrXcInPPaHO9twpxkzyZ5uPsFq2E3YO+Ud
+Jw1BJH+ssyNl7Z9qLU4v2miY1eXP5aCyOPy9McUhrykI/hpMjfpQjOuKEKpw5ldA
+C8hQGjNQOr7jLgC5VHSyCvCjFWERR/QKcfOlB8aB7TfwBIbclQsgsN5kBBLo+XmG
+x272UmrFnICJp7TSYqqoUybfiSDRB5IrYx/ed26oZ0db6ZpM20zPb3iokkWH8Cyx
+N9WWA4HeoAyYGhT1Bpz8koWtcKrOSb5IxFNxxdvBJJ4AsD+QOH9WaWZMxNnf/QCu
+BLXg4SENMRckUxQC3bWCL0/VGCBsVOfqp3kHyHCQfWufsvCYaMiR0H/XKUnmQuU2
+UpaNA1pNctcbI3TzHBJvnmtAKWNXoso/CUXFQV15/XgIs/FTpEtR9e38MJn1qUKZ
+jiB+Y65DCtlzp53FBJ86CwzguOWhDKVg5tUSLqxL1y8VOjHPACzsrpGQawPLFv/q
+E6uTF5cep7cI38x5Tr42VhFChjgUf2SS0eLo1e2fXzCbi4bxMWskaE1rTpDllSMw
+yFUXOc0jIzuB+zWU6vaRmtPCGSehZvi12lssd1f1oJoL0UR1uBo=
+=RA6W
+-----END PGP SIGNATURE-----
+
+--4/xIa57C4s+C0PDg--

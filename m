@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D28EB4EB2C1
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 19:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EB44EB467
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Mar 2022 22:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240239AbiC2Rg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 29 Mar 2022 13:36:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42346 "EHLO
+        id S241135AbiC2UFN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 29 Mar 2022 16:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240237AbiC2Rg4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 13:36:56 -0400
-Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C377D33E9E;
-        Tue, 29 Mar 2022 10:35:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1648575309; h=from:from:sender:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ydnHfdEEE0cGh6LLp0gLHchr/PKeynmaO3DCRfqS8HA=;
-        b=zT3ds71tygHqEtam0GxwVSYvIN6zC+o3vlPdEROo1KmNjd9Lytb/tuDBWH0+ngULRl6ZOg
-        tR3AOOUrxW6Ix95y5pMyo13nJCcMvQpGhR6U6otajP+TZK2x9dkWwrIhlc6D0alP4pw9gh
-        cHm/9lTvIKvCdZHpN/Xwuy0xbSzswww=
-Date:   Tue, 29 Mar 2022 18:34:58 +0100
-From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v2 12/12] Documentation: iio: Document high-speed DMABUF
- based API
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Christian =?iso-8859-1?b?S/ZuaWc=?= <christian.koenig@amd.com>
-Message-Id: <AUOI9R.I8SSZ2CC5S2W2@crapouillou.net>
-In-Reply-To: <YkMSmcQy1sKQJ5rJ@phenom.ffwll.local>
-References: <20220207125933.81634-1-paul@crapouillou.net>
-        <20220207130140.81891-1-paul@crapouillou.net>
-        <20220207130140.81891-2-paul@crapouillou.net>
-        <YkLJU7Pp98CPIHfY@phenom.ffwll.local> <Z63I9R.MKYUKBH4V8L41@crapouillou.net>
-        <YkMSmcQy1sKQJ5rJ@phenom.ffwll.local>
+        with ESMTP id S236378AbiC2UFM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 29 Mar 2022 16:05:12 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501AEDF58;
+        Tue, 29 Mar 2022 13:03:27 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: shreeya)
+        with ESMTPSA id 2FAD31F4411F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1648584206;
+        bh=qKwzCqQrv+nM84chg1ZPLIL+gxZ31afi35nkvUA/wk8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=f8yqAWt3toWNfmefvQZDIc6I47wLYNymD6BT9gt2qQLkHK5WurbiCQdKbkqfZxTX4
+         mSXP/DT0elDXJYuRu7ImhUheFlTv8NrNLWeRWwq+P1qYlYPV+cN3wKVLUfWGHfqHgS
+         iYxcd05AT8GH21TuHO2wjOFOASADauWJcutJDoDBt4hYtoc9ilS+i4Kgd6KY3f9a20
+         OAk/qMYyz0hkwP4nTEl14KAVo0EJGnQV71ZDm0roK1rCrK/OTwRXD29WPOPWn/Ty3Z
+         V4PDK/LEgM826PcnJus5nwTxHVRLaqnm80jRZ4Uh/Y/PKgyEsKDbcl3PzsQ4WuGoFE
+         drOZRnmUMjBqA==
+Message-ID: <ffcdf821-38f2-f8d7-2bcd-8ea51cad1b96@collabora.com>
+Date:   Wed, 30 Mar 2022 01:33:19 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH 3/3] iio: light: Add support for ltrf216a sensor
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com
+References: <20220325103014.6597-1-shreeya.patel@collabora.com>
+ <20220325103014.6597-4-shreeya.patel@collabora.com>
+ <20220327153049.10e525e9@jic23-huawei>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <20220327153049.10e525e9@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -57,310 +57,536 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+On 27/03/22 20:00, Jonathan Cameron wrote:
 
-Le mar., mars 29 2022 at 16:07:21 +0200, Daniel Vetter=20
-<daniel@ffwll.ch> a =E9crit :
-> On Tue, Mar 29, 2022 at 10:47:23AM +0100, Paul Cercueil wrote:
->>  Hi Daniel,
->>=20
->>  Le mar., mars 29 2022 at 10:54:43 +0200, Daniel Vetter=20
->> <daniel@ffwll.ch> a
->>  =E9crit :
->>  > On Mon, Feb 07, 2022 at 01:01:40PM +0000, Paul Cercueil wrote:
->>  > >  Document the new DMABUF based API.
->>  > >
->>  > >  v2: - Explicitly state that the new interface is optional and=20
->> is
->>  > >        not implemented by all drivers.
->>  > >      - The IOCTLs can now only be called on the buffer FD=20
->> returned by
->>  > >        IIO_BUFFER_GET_FD_IOCTL.
->>  > >      - Move the page up a bit in the index since it is core=20
->> stuff
->>  > > and not
->>  > >        driver-specific.
->>  > >
->>  > >  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
->>  > >  ---
->>  > >   Documentation/driver-api/dma-buf.rst |  2 +
->>  > >   Documentation/iio/dmabuf_api.rst     | 94
->>  > > ++++++++++++++++++++++++++++
->>  > >   Documentation/iio/index.rst          |  2 +
->>  > >   3 files changed, 98 insertions(+)
->>  > >   create mode 100644 Documentation/iio/dmabuf_api.rst
->>  > >
->>  > >  diff --git a/Documentation/driver-api/dma-buf.rst
->>  > > b/Documentation/driver-api/dma-buf.rst
->>  > >  index 2cd7db82d9fe..d3c9b58d2706 100644
->>  > >  --- a/Documentation/driver-api/dma-buf.rst
->>  > >  +++ b/Documentation/driver-api/dma-buf.rst
->>  > >  @@ -1,3 +1,5 @@
->>  > >  +.. _dma-buf:
->>  > >  +
->>  > >   Buffer Sharing and Synchronization
->>  > >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>  > >
->>  > >  diff --git a/Documentation/iio/dmabuf_api.rst
->>  > > b/Documentation/iio/dmabuf_api.rst
->>  > >  new file mode 100644
->>  > >  index 000000000000..43bb2c1b9fdc
->>  > >  --- /dev/null
->>  > >  +++ b/Documentation/iio/dmabuf_api.rst
->>  > >  @@ -0,0 +1,94 @@
->>  > >  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>  > >  +High-speed DMABUF interface for IIO
->>  > >  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>  > >  +
->>  > >  +1. Overview
->>  > >  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>  > >  +
->>  > >  +The Industrial I/O subsystem supports access to buffers=20
->> through a
->>  > > file-based
->>  > >  +interface, with read() and write() access calls through the=20
->> IIO
->>  > > device's dev
->>  > >  +node.
->>  > >  +
->>  > >  +It additionally supports a DMABUF based interface, where the
->>  > > userspace
->>  > >  +application can allocate and append DMABUF objects to the=20
->> buffer's
->>  > > queue.
->>  > >  +This interface is however optional and is not available in all
->>  > > drivers.
->>  > >  +
->>  > >  +The advantage of this DMABUF based interface vs. the read()
->>  > >  +interface, is that it avoids an extra copy of the data=20
->> between the
->>  > >  +kernel and userspace. This is particularly useful for=20
->> high-speed
->>  > >  +devices which produce several megabytes or even gigabytes of=20
->> data
->>  > > per
->>  > >  +second.
->>  > >  +
->>  > >  +The data in this DMABUF interface is managed at the=20
->> granularity of
->>  > >  +DMABUF objects. Reducing the granularity from byte level to=20
->> block
->>  > > level
->>  > >  +is done to reduce the userspace-kernelspace synchronization
->>  > > overhead
->>  > >  +since performing syscalls for each byte at a few Mbps is just=20
->> not
->>  > >  +feasible.
->>  > >  +
->>  > >  +This of course leads to a slightly increased latency. For this
->>  > > reason an
->>  > >  +application can choose the size of the DMABUFs as well as how=20
->> many
->>  > > it
->>  > >  +allocates. E.g. two DMABUFs would be a traditional double=20
->> buffering
->>  > >  +scheme. But using a higher number might be necessary to avoid
->>  > >  +underflow/overflow situations in the presence of scheduling
->>  > > latencies.
->>  >
->>  > So this reads a lot like reinventing io-uring with pre-registered
->>  > O_DIRECT
->>  > memory ranges. Except it's using dma-buf and hand-rolling a lot of
->>  > pieces
->>  > instead of io-uring and O_DIRECT.
->>=20
->>  I don't see how io_uring would help us. It's an async I/O=20
->> framework, does it
->>  allow us to access a kernel buffer without copying the data? Does=20
->> it allow
->>  us to zero-copy the data to a network interface?
->=20
-> With networking, do you mean rdma, or some other kind of networking?
-> Anything else than rdma doesn't support dma-buf, and I don't think it=20
-> will
-> likely ever do so. Similar it's really tricky to glue dma-buf support=20
-> into
-> the block layer.
+Hi Jonathan,
 
-By networking I mean standard sockets. If I'm not mistaken, Jonathan=20
-Lemon's work on zctap was to add dma-buf import/export support to=20
-standard sockets.
+Thanks for your detailed review. I am working on v2 with the modifications
+suggested by you.
 
-> Wrt io_uring, yes it's async, but that's not the point. The point is=20
-> that
-> with io_uring you pre-register ranges for reads and writes to target,
-> which in combination with O_DIRECT, makes it effectively (and=20
-> efficient!)
-> zero-copy. Plus it has full integration with both networking and=20
-> normal
-> file io, which dma-buf just doesn't have.
->=20
-> Like you _cannot_ do zero copy from a dma-buf into a normal file. You
-> absolutely can do the same with io_uring.
+Just one comment inline.
 
-I believe io_uring does zero-copy the same way as splice(), by=20
-duplicating/moving pages? Because that wouldn't work with DMA coherent=20
-memory, which is contiguous and not backed by pages.
+> On Fri, 25 Mar 2022 16:00:14 +0530
+> Shreeya Patel <shreeya.patel@collabora.com> wrote:
+>
+> Hi Zhigang, Shreeya,
+>
+> Comments inline.
+>
+> Thanks,
+>
+> Jonathan
+>> From: Zhigang Shi <Zhigang.Shi@liteon.com>
+>>
+>> Add initial support for ltrf216a ambient light sensor.
+>>
+>> Datasheet :-
+>> https://gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTR-F216A-QT.pdf
+> We now have a Datasheet tag, so make this part of the tag block so automated
+> tools can find it easily:
+>>
+> Datasheet: https://gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTR-F216A-QT.pdf
+>> Co-developed-by: Shreeya Patel <shreeya.patel@collabora.com>
+>> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+>> Signed-off-by: Zhigang Shi <Zhigang.Shi@liteon.com>
+>> ---
+>>   drivers/iio/light/Kconfig    |  10 ++
+>>   drivers/iio/light/Makefile   |   1 +
+>>   drivers/iio/light/ltrf216a.c | 334 +++++++++++++++++++++++++++++++++++
+>>   3 files changed, 345 insertions(+)
+>>   create mode 100644 drivers/iio/light/ltrf216a.c
+>>
+>> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+>> index a62c7b4b8678..08fa383a8ca7 100644
+>> --- a/drivers/iio/light/Kconfig
+>> +++ b/drivers/iio/light/Kconfig
+>> @@ -318,6 +318,16 @@ config SENSORS_LM3533
+>>   	  changes. The ALS-control output values can be set per zone for the
+>>   	  three current output channels.
+>>   
+>> +config LTRF216A
+>> +        tristate "Liteon LTRF216A Light Sensor"
+>> +        depends on I2C
+>> +        help
+>> +          If you say Y or M here, you get support for Liteon LTRF216A
+>> +          Ambient Light Sensor.
+>> +
+>> +          If built as a dynamically linked module, it will be called
+>> +          ltrf216a.
+>> +
+>>   config LTR501
+>>   	tristate "LTR-501ALS-01 light sensor"
+>>   	depends on I2C
+>> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+>> index d10912faf964..8fa91b9fe5b6 100644
+>> --- a/drivers/iio/light/Makefile
+>> +++ b/drivers/iio/light/Makefile
+>> @@ -30,6 +30,7 @@ obj-$(CONFIG_SENSORS_ISL29028)	+= isl29028.o
+>>   obj-$(CONFIG_ISL29125)		+= isl29125.o
+>>   obj-$(CONFIG_JSA1212)		+= jsa1212.o
+>>   obj-$(CONFIG_SENSORS_LM3533)	+= lm3533-als.o
+>> +obj-$(CONFIG_LTRF216A)		+= ltrf216a.o
+>>   obj-$(CONFIG_LTR501)		+= ltr501.o
+>>   obj-$(CONFIG_LV0104CS)		+= lv0104cs.o
+>>   obj-$(CONFIG_MAX44000)		+= max44000.o
+>> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+>> new file mode 100644
+>> index 000000000000..99295358a7fe
+>> --- /dev/null
+>> +++ b/drivers/iio/light/ltrf216a.c
+>> @@ -0,0 +1,334 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * LTRF216A Ambient Light Sensor
+>> + *
+>> + * Copyright (C) 2021 Lite-On Technology Corp (Singapore)
+>> + * Author: Shi Zhigang <Zhigang.Shi@liteon.com>
+>> + *
+>> + * IIO driver for LTRF216A (7-bit I2C slave address 0x53).
+>> + */
+>> +
+>> +#include <linux/module.h>
+>> +#include <linux/init.h>
+>> +#include <linux/i2c.h>
+>> +#include <linux/mutex.h>
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/iio/sysfs.h>
+> mod_devicetable.h for the id tables
+>
+>> +#include <linux/pm.h>
+>> +#include <linux/delay.h>
+>> +
+>> +#define LTRF216A_DRV_NAME "ltrf216a"
+>> +
+>> +#define LTRF216A_MAIN_CTRL		0x00
+>> +
+>> +#define LTRF216A_ALS_MEAS_RATE		0x04
+> MEAS_RES seems more appropriate from datasheet.
+> As mentioned below, also add defines for all the fields
+> of the registers you will access and where the fields are
+> obvious numerical things, add defines for the values they
+> can take.
+>
+>
+>> +#define LTRF216A_MAIN_STATUS		0x07
+>> +#define LTRF216A_CLEAR_DATA_0		0x0A
+>> +
+>> +#define LTRF216A_ALS_DATA_0		0x0D
+>> +
+>> +static const int int_time_mapping[] = { 400000, 200000, 100000 };
+>> +
+>> +struct ltrf216a_data {
+>> +	struct i2c_client *client;
+>> +	u32			int_time;
+>> +	u8			int_time_fac;
+>> +	u8			als_gain_fac;
+>> +	struct mutex mutex;
+> All locks need a comment to say exactly what they are protecting.
+>
+>> +};
+>> +
+>> +/* open air. need to update based on TP transmission rate. */
+>> +#define WIN_FAC	1
+>> +
+>> +static const struct iio_chan_spec ltrf216a_channels[] = {
+>> +	{
+>> +		.type = IIO_LIGHT,
+>> +		.info_mask_separate =
+>> +			BIT(IIO_CHAN_INFO_PROCESSED) |
+>> +			BIT(IIO_CHAN_INFO_INT_TIME),
+>> +	}
+>> +};
+>> +
+>> +static IIO_CONST_ATTR_INT_TIME_AVAIL("0.1 0.2 0.4");
+>> +
+>> +static struct attribute *ltrf216a_attributes[] = {
+>> +	&iio_const_attr_integration_time_available.dev_attr.attr,
+> please use the read_avail callback and set the appropriate
+> _available bit.
+>
+> That allows in kernel access to this information + is probably
+> shorter in this case as you won't have an attribute group etc
+> to deal wtih.
+>
+>> +	NULL
+>> +};
+>> +
+>> +static const struct attribute_group ltrf216a_attribute_group = {
+>> +	.attrs = ltrf216a_attributes,
+>> +};
+>> +
+>> +static int ltrf216a_init(struct iio_dev *indio_dev)
+>> +{
+>> +	int ret;
+>> +	struct ltrf216a_data *data = iio_priv(indio_dev);
+>> +
+>> +	ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_CTRL);
+>> +	if (ret < 0) {
+>> +		dev_err(&data->client->dev, "Error reading LTRF216A_MAIN_CTRL\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	/* enable sensor */
+>> +	ret |= 0x02;
+> Needs a #define and preferably use
+> 	ret |= FIELD_PREP()...
+>
+>> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, ret);
+>> +	if (ret < 0) {
+>> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int ltrf216a_disable(struct iio_dev *indio_dev)
+>> +{
+>> +	int ret;
+>> +	struct ltrf216a_data *data = iio_priv(indio_dev);
+>> +
+>> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, 0);
+>> +	if (ret < 0)
+>> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int ltrf216a_set_it_time(struct ltrf216a_data *data, int itime)
+>> +{
+>> +	int i, ret, index = -1;
+>> +	u8 reg;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(int_time_mapping); i++) {
+>> +		if (int_time_mapping[i] == itime) {
+>> +			index = i;
+>> +			break;
+>> +		}
+>> +	}
+>> +	/* Make sure integration time index is valid */
+>> +	if (index < 0)
+>> +		return -EINVAL;
+>> +
+>> +	if (index == 0) {
+> Switch statement seems more appropriate than this stack of if else
+>
+>> +		reg = 0x03;
+> reg isn't a great name as I assume this is the value, not the address
+> which was my first thought... Perhaps reg_val?
+>> +		data->int_time_fac = 4;
+>> +	} else if (index == 1) {
+>> +		reg = 0x13;
+>> +		data->int_time_fac = 2;
+>> +	} else {
+>> +		reg = (index << 4) | 0x02;
+> Unless I'm missing something index == 2 if we get here.
+> So why the calculation?  I'd suggest defining the two fields and using
+> FIELD_PREP() to set up each part probably to one of a set of
+> #define LTRF216A_ALS_MEAS_RATE_
 
->>  > At least if the entire justification for dma-buf support is=20
->> zero-copy
->>  > support between the driver and userspace it's _really_ not the=20
->> right
->>  > tool
->>  > for the job. dma-buf is for zero-copy between devices, with cpu=20
->> access
->>  > from userpace (or kernel fwiw) being very much the exception (and=20
->> often
->>  > flat-out not supported at all).
->>=20
->>  We want both. Using dma-bufs for the driver/userspace interface is a
->>  convenience as we then have a unique API instead of two distinct=20
->> ones.
->>=20
->>  Why should CPU access from userspace be the exception? It works=20
->> fine for IIO
->>  dma-bufs. You keep warning about this being a terrible design, but=20
->> I simply
->>  don't see it.
->=20
-> It depends really on what you're trying to do, and there's extremely=20
-> high
-> chances it will simply not work.
+I think the calculation here is to set the default value when the
+integration time = 1. In this case, reg value will be 34 (0x22) which
+is the default value of ALS_MEAS_RATE register.
 
-Well it does work though. The userspace interface is stupidly simple=20
-here - one dma-buf, backed by DMA coherent memory, is enqueued for=20
-processing by the DMA. The userspace calling the "sync" ioctl on the=20
-dma-buf will block until the transfer is complete, and then userspace=20
-can access it again.
+I will still confirm it once from Zhigang before sending a v2.
 
-
-> Unless you want to do zero copy with a gpu, or something which is in=20
-> that
-> ecosystem of accelerators and devices, then dma-buf is probably not=20
-> what
-> you're looking for.
-> -Daniel
-
-I want to do zero-copy between a IIO device and the network/USB, and=20
-right now there is absolutely nothing in place that allows me to do=20
-that. So I have to get creative.
-
-Cheers,
--Paul
-
->>=20
->>  > >  +
->>  > >  +2. User API
->>  > >  +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>  > >  +
->>  > >  +``IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req=20
->> *)``
->>  > > =20
->> +----------------------------------------------------------------
->>  > >  +
->>  > >  +Each call will allocate a new DMABUF object. The return value=20
->> (if
->>  > > not
->>  > >  +a negative errno value as error) will be the file descriptor=20
->> of
->>  > > the new
->>  > >  +DMABUF.
->>  > >  +
->>  > >  +``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *)``
->>  > >  +--------------------------------------------------------
->>  > >  +
->>  > >  +Place the DMABUF object into the queue pending for hardware
->>  > > process.
->>  > >  +
->>  > >  +These two IOCTLs have to be performed on the IIO buffer's file
->>  > >  +descriptor, obtained using the `IIO_BUFFER_GET_FD_IOCTL`=20
->> ioctl.
->>  > >  +
->>  > >  +3. Usage
->>  > >  +=3D=3D=3D=3D=3D=3D=3D=3D
->>  > >  +
->>  > >  +To access the data stored in a block by userspace the block=20
->> must be
->>  > >  +mapped to the process's memory. This is done by calling=20
->> mmap() on
->>  > > the
->>  > >  +DMABUF's file descriptor.
->>  > >  +
->>  > >  +Before accessing the data through the map, you must use the
->>  > >  +DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
->>  > >  +DMA_BUF_SYNC_START flag, to make sure that the data is=20
->> available.
->>  > >  +This call may block until the hardware is done with this=20
->> block.
->>  > > Once
->>  > >  +you are done reading or writing the data, you must use this=20
->> ioctl
->>  > > again
->>  > >  +with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF=20
->> to the
->>  > >  +kernel's queue.
->>  > >  +
->>  > >  +If you need to know when the hardware is done with a DMABUF,=20
->> you
->>  > > can
->>  > >  +poll its file descriptor for the EPOLLOUT event.
->>  > >  +
->>  > >  +Finally, to destroy a DMABUF object, simply call close() on=20
->> its
->>  > > file
->>  > >  +descriptor.
->>  > >  +
->>  > >  +For more information about manipulating DMABUF objects, see:
->>  > > :ref:`dma-buf`.
->>  > >  +
->>  > >  +A typical workflow for the new interface is:
->>  > >  +
->>  > >  +    for block in blocks:
->>  > >  +      DMABUF_ALLOC block
->>  > >  +      mmap block
->>  > >  +
->>  > >  +    enable buffer
->>  > >  +
->>  > >  +    while !done
->>  > >  +      for block in blocks:
->>  > >  +        DMABUF_ENQUEUE block
->>  > >  +
->>  > >  +        DMABUF_SYNC_START block
->>  > >  +        process data
->>  > >  +        DMABUF_SYNC_END block
->>  > >  +
->>  > >  +    disable buffer
->>  > >  +
->>  > >  +    for block in blocks:
->>  > >  +      close block
->>  > >  diff --git a/Documentation/iio/index.rst
->>  > > b/Documentation/iio/index.rst
->>  > >  index 58b7a4ebac51..669deb67ddee 100644
->>  > >  --- a/Documentation/iio/index.rst
->>  > >  +++ b/Documentation/iio/index.rst
->>  > >  @@ -9,4 +9,6 @@ Industrial I/O
->>  > >
->>  > >      iio_configfs
->>  > >
->>  > >  +   dmabuf_api
->>  > >  +
->>  > >      ep93xx_adc
->>  > >  --
->>  > >  2.34.1
->>  > >
->>  >
->>  > --
->>  > Daniel Vetter
->>  > Software Engineer, Intel Corporation
->>  > http://blog.ffwll.ch
->>=20
->>=20
->=20
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
-
-
+>> +		data->int_time_fac = 1;
+>> +	}
+>> +
+>> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_ALS_MEAS_RATE, reg);
+> Called MEAS_RES on the datasheet, why this name for the register?
+>
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	data->int_time = itime;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int ltrf216a_get_it_time(struct ltrf216a_data *data, int *val, int *val2)
+>> +{
+>> +	*val = 0;
+>> +	*val2 = data->int_time;
+> I'd put this inline as it avoids a question I had at the call site on why
+> you passed *val in as it would always be 0.
+>
+>> +
+>> +	return IIO_VAL_INT_PLUS_MICRO;
+>> +}
+>> +
+>> +static int ltrf216a_read_data(struct ltrf216a_data *data, u8 addr)
+>> +{
+>> +	int ret;
+>> +	int tries = 25;
+>> +	int val_0, val_1, val_2;
+>> +
+>> +	while (tries--) {
+>> +		ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_STATUS);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +		if (ret & 0x08)
+> That 0x08 is a magic number and also better defined using BIT(3)
+> Anyhow, use a define for that.
+>
+>> +			break;
+>> +		msleep(20);
+>> +	}
+>> +
+>> +	val_0 = i2c_smbus_read_byte_data(data->client, addr);
+> All of these can return errors so you should check.
+> Device doesn't support any larger reads?
+>
+>> +	val_1 = i2c_smbus_read_byte_data(data->client, addr + 1);
+>> +	val_2 = i2c_smbus_read_byte_data(data->client, addr + 2);
+>> +	ret = (val_2 << 16) + (val_1 << 8) + val_0;
+> This is a le24_to_cpu() conversion.
+> Preferred choice would be to use something like
+> 	u8 buf[3];
+> 	int i;
+>
+> 	for (i = 0; i < 3; i++) {
+> 		ret = i2c_smbus_read_byte_data(data->client, addr);
+> 		if (ret < 0)
+> 			return ret;
+> 		buf[i] = ret;
+> 	}
+> 	return le24_to_cpu(buf);
+>
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int ltrf216a_get_lux(struct ltrf216a_data *data)
+>> +{
+>> +	int greendata, cleardata, lux;
+>> +
+>> +	greendata = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
+>> +	cleardata = ltrf216a_read_data(data, LTRF216A_CLEAR_DATA_0);
+>> +
+>> +	if (greendata < 0 || cleardata < 0)
+> I'd rather see the error passed all the way up than eaten here.
+>
+>> +		lux = 0;
+>> +	else
+>> +		lux = greendata * 8 * WIN_FAC / data->als_gain_fac / data->int_time_fac / 10;
+> This feels like it would be better reported as
+> IIO_VAL_FRACTIONAL;
+> Won't make any difference if the only user is sysfs, but if anyone
+> ever wants to use the in kernel access to this device they will get
+> access to better precision.
+>
+> Also possible the core handling for IIO_VAL_FRACTIONAL will do a better
+> job on retaining precision.
+>
+>> +
+>> +	return lux;
+>> +}
+>> +
+>> +static int ltrf216a_read_raw(struct iio_dev *indio_dev,
+>> +			     struct iio_chan_spec const *chan, int *val,
+>> +			     int *val2, long mask)
+>> +{
+>> +	int ret;
+>> +	struct ltrf216a_data *data = iio_priv(indio_dev);
+>> +
+>> +	mutex_lock(&data->mutex);
+>> +
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_PROCESSED:
+>> +		ret = ltrf216a_get_lux(data);
+>> +		*val = ret;
+>> +		ret = IIO_VAL_INT;
+>> +		break;
+>> +	case IIO_CHAN_INFO_INT_TIME:
+>> +		ret = ltrf216a_get_it_time(data, val, val2);
+>> +		break;
+>> +	default:
+>> +		ret = -EINVAL;
+>> +	}
+>> +
+>> +	mutex_unlock(&data->mutex);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int ltrf216a_write_raw(struct iio_dev *indio_dev,
+>> +			      struct iio_chan_spec const *chan, int val,
+>> +			      int val2, long mask)
+>> +{
+>> +	struct ltrf216a_data *data = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_INT_TIME:
+>> +		if (val != 0)
+>> +			return -EINVAL;
+>> +		mutex_lock(&data->mutex);
+>> +		ret = ltrf216a_set_it_time(data, val2);
+>> +		mutex_unlock(&data->mutex);
+>> +		return ret;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static const struct iio_info ltrf216a_info = {
+>> +	.read_raw	= ltrf216a_read_raw,
+>> +	.write_raw	= ltrf216a_write_raw,
+>> +	.attrs		= &ltrf216a_attribute_group,
+>> +};
+>> +
+>> +static int ltrf216a_probe(struct i2c_client *client,
+>> +			  const struct i2c_device_id *id)
+> Whilst it's taking a long time to clean out the old
+> approach, probe_new() callback preferred for new i2c drivers.
+>
+>> +{
+>> +	struct ltrf216a_data *data;
+>> +	struct iio_dev *indio_dev;
+>> +	int ret;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>> +	if (!indio_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	data = iio_priv(indio_dev);
+>> +	i2c_set_clientdata(client, indio_dev);
+>> +	data->client = client;
+>> +
+>> +	mutex_init(&data->mutex);
+>> +
+>> +	indio_dev->info = &ltrf216a_info;
+>> +	indio_dev->name = LTRF216A_DRV_NAME;
+>> +	indio_dev->channels = ltrf216a_channels;
+>> +	indio_dev->num_channels = ARRAY_SIZE(ltrf216a_channels);
+>> +	indio_dev->modes = INDIO_DIRECT_MODE;
+>> +
+>> +	ret = ltrf216a_init(indio_dev);
+>> +	if (ret < 0) {
+>> +		dev_err(&client->dev, "ltrf216a chip init failed\n");
+>> +		return ret;
+> As below, slightly preference for dev_err_probe().
+> It doesn't really matter when deferral isn't a possibility but using
+> that function ends up slightly neater.
+>
+>> +	}
+> blank line here.  Adding separation so we have
+> "function call
+> error handler
+>
+> next thing.."
+>
+> Just makes things a tiny bit easier to read quickly.
+>
+>
+>> +	data->int_time = 100000;
+>> +	data->int_time_fac = 1;
+>> +	data->als_gain_fac = 3;
+>> +
+>> +	ret = iio_device_register(indio_dev);
+>> +	if (ret < 0) {
+>> +		dev_err(&client->dev, "failed to register iio dev\n");
+> Once using devm, this can be
+> 		return dev_err_probe(&client->dev, ret,
+> 				     "failed to register iio dev\n");
+>
+> Which is neater but only use this function to print errors for things
+> that happen in probe.
+>   
+>> +		goto err_init;
+>> +	}
+>> +
+>> +	return 0;
+>> +err_init:
+>> +	ltrf216a_disable(indio_dev);
+>> +	return ret;
+>> +}
+>> +
+>> +static int ltrf216a_remove(struct i2c_client *client)
+>> +{
+>> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+>> +
+>> +	iio_device_unregister(indio_dev);
+>> +	ltrf216a_disable(indio_dev);
+> As Kryzstof mentioned, use
+> devm versions and where they don't exist you can use
+> devm_add_action_or_reset() (e.g. for this disable)
+>
+> That way we don't need error handling or a remove function.
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +#ifdef CONFIG_PM_SLEEP
+>> +static int ltrf216a_suspend(struct device *dev)
+>> +{
+>> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+>> +
+>> +	return ltrf216a_disable(indio_dev);
+>> +}
+>> +
+>> +static int ltrf216a_resume(struct device *dev)
+>> +{
+>> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+>> +
+>> +	return ltrf216a_init(indio_dev);
+>> +}
+>> +
+>> +static SIMPLE_DEV_PM_OPS(ltrf216a_pm_ops, ltrf216a_suspend, ltrf216a_resume);
+>> +#define LTRF216A_PM_OPS (&ltrf216a_pm_ops)
+>> +#else
+>> +#define LTRF216A_PM_OPS NULL
+>> +#endif
+> Recently some 'magic' macros were added to pm.h that allow you to just
+> specify this stuff without guards
+>
+> static DEFINE_SIMPLE_PM_OPS(ltrf216a_pm_ops, lt..._)
+>
+> and use
+>
+> .pm = pm_sleep_ptr(&ltrf216a_pm_ops),
+>
+> below
+>
+> and then the compiler can see enough to remove the unused code
+> if CONFIG_PM_SLEEP isn't defined without the need for messy
+> __maybe_unused etc.
+>
+> We are part way through driving this change through IIO and
+> less of the way along with the rest of the kernel, but it's
+> a nice cleanup so please apply it to new code like this.
+>
+>> +
+>> +static const struct i2c_device_id ltrf216a_id[] = {
+>> +	{ LTRF216A_DRV_NAME, 0},
+> Space after 0
+>
+>> +	{}
+>> +};
+>> +MODULE_DEVICE_TABLE(i2c, ltrf216a_id);
+>> +
+>> +static const struct of_device_id ltrf216a_of_match[] = {
+>> +	{ .compatible = "ltr,ltrf216a", },
+>> +	{ .compatible = "liteon,ltrf216a", },
+>> +	{}
+>> +};
+>> +MODULE_DEVICE_TABLE(of, ltrf216a_of_match);
+>> +
+>> +static struct i2c_driver ltrf216a_driver = {
+>> +	.driver = {
+>> +		.name = LTRF216A_DRV_NAME,
+>> +		.pm = LTRF216A_PM_OPS,
+>> +		.of_match_table = ltrf216a_of_match,
+>> +	},
+>> +	.probe		= ltrf216a_probe,
+>> +	.remove		= ltrf216a_remove,
+>> +	.id_table	= ltrf216a_id,
+>> +};
+>> +
+>> +module_i2c_driver(ltrf216a_driver);
+>> +
+>> +MODULE_AUTHOR("Shi Zhigang <Zhigang.Shi@liteon.com>");
+>> +MODULE_DESCRIPTION("LTRF216A ambient light sensor driver");
+>> +MODULE_LICENSE("GPL v2");
+>

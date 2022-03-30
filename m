@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7EA04EBD80
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 11:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 230F84EBD8D
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 11:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244719AbiC3JVO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Mar 2022 05:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33146 "EHLO
+        id S244749AbiC3JYM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Mar 2022 05:24:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239524AbiC3JVN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Mar 2022 05:21:13 -0400
+        with ESMTP id S236477AbiC3JYL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Mar 2022 05:24:11 -0400
 Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0033F2AC78
-        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 02:19:27 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id q20so11840916wmq.1
-        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 02:19:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 515D32AE0B
+        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 02:22:26 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id l7-20020a05600c1d0700b0038c99618859so823231wms.2
+        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 02:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ffwll.ch; s=google;
         h=date:from:to:cc:subject:message-id:mail-followup-to:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=BjvaahtIsng/TZTSS+ZLGH9DkC6uyw+QOr3R4CbvEwA=;
-        b=PvZ2uaOMM804ZV6olrT1ose8FexLJBR86tzLTmt96xq+4DEZIepwKKqPLJGvhXkAk1
-         ODIHx0dQWKaaX2xuMogIgrrOOr+hU9N+hGDuKq0vjvAYtj1+IJ1lOqQLEaShnODcLGPr
-         HZjfBDaJb1ETDaXHPJp7q1z5KLR5oa62e926c=
+        bh=6nD/I4kMAKrtqDEqRY0M5yAOEN5U7/IDEqc6nl8dsQE=;
+        b=WhmUMZcJlNyvp9GaS3eS2dmZlgPvM0A8M829EOkDwvb1RZq4PRuBuvwhdLJK6Yt3Uz
+         cQfrMCTDEcybEbu1sVI+uFEVpW96hau4zUCF599xAzPy9QdHMD+7resniasNMwkg4I01
+         qjUXS6h7HB6LqwkJ53mESZHi0wRbdpEGpaFAE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id
          :mail-followup-to:references:mime-version:content-disposition
          :content-transfer-encoding:in-reply-to;
-        bh=BjvaahtIsng/TZTSS+ZLGH9DkC6uyw+QOr3R4CbvEwA=;
-        b=FbewaYldP9q3iENtLyXoonaCGK3nFmtXg/y9h/UyTatB0VH6FyFPeEgSwEQ2NA4oID
-         7G0YO2VP8ndki0339xTl6ydl3k3nh0pJ/A8/tb1r4wirXcuKKspy1/Et7XiFb50CK4tL
-         GUHr7vCww03m4hni9rrMrDZUVB2Vot8oRAgn8cNV+tSPxVOaxTbZUoQI/Nw0jHadiU4p
-         h0MXKYzxw2nA4RKuAzw1h8PksqTfegSrW3QAdVOzvOk3AR8jG0NkWiKKs1IY72bS3C1p
-         SzlbFGfdiw++OZQUnG8ydMoJNMFHlOpFXHvqpMxz88TwNolOoSwXNNZaGLo4tNkE2Gph
-         DVcA==
-X-Gm-Message-State: AOAM533tMq2ntzKNqPa0eX5fl9Y5qNCiQD6sc34SONYFCxsxBsm5OaIp
-        JG9c7x/pAqKIg5R9keKkOLMMNA==
-X-Google-Smtp-Source: ABdhPJy+LT8MMat8kRBweRrDpiWhyLK1kwpF4rETyVQeSR73vutuwtBN875Ec14LZ77RQUXeBlbHKw==
-X-Received: by 2002:a05:600c:4ec9:b0:38b:f1fd:b6b9 with SMTP id g9-20020a05600c4ec900b0038bf1fdb6b9mr3412692wmq.7.1648631966316;
-        Wed, 30 Mar 2022 02:19:26 -0700 (PDT)
+        bh=6nD/I4kMAKrtqDEqRY0M5yAOEN5U7/IDEqc6nl8dsQE=;
+        b=OwXBsYQ/gWDMM6kiicsygvpDHxqOcca6QR7bYyTMj9lITNu5LQ3PaDF04ECnWrO+Kn
+         LcvzmuDswq8wFZ3Pb2e19by3Ze2653ifVRwm5kL28S0z3mOVGulrDelnyj4YiTDPTdaw
+         TE32W5wnyPXFAp1T7qtLHAVHaG7s7Enk5Xmqrva8qOe5LZIQ/0/1kMADWMG4KlOdOjrK
+         /tc7a7CAq0tM6ArPW6xIAqsGoJbXnQ3cJDRBpngh1inVH/ni/Zk7om88aZ7g8bwk0bm2
+         2R7Hep2w+8YkzvpCV3T86b/tIHnV+8ERmNWuxR2TzqWelR9ZULDLR8nuGVspQJMy4u2v
+         YAzA==
+X-Gm-Message-State: AOAM532Ab/SlDL3Ctqp9cfk7Ri/9jPkrWgIE3fWrVevl3qACBzRYv1o0
+        gEl7AMwJg0kZC2VaP9dSYwXSMQ==
+X-Google-Smtp-Source: ABdhPJzGWB1LDAO/Hz2gcmh/frjW/+Is2Xz8GPTL1nfINGJb8XtPCpcE3mAtT5+0Y3SgFxlFYgkyXg==
+X-Received: by 2002:a05:600c:1ca7:b0:38e:27a6:5546 with SMTP id k39-20020a05600c1ca700b0038e27a65546mr3463771wms.188.1648632144805;
+        Wed, 30 Mar 2022 02:22:24 -0700 (PDT)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id v5-20020adfe4c5000000b001edc1e5053esm16383776wrm.82.2022.03.30.02.19.25
+        by smtp.gmail.com with ESMTPSA id h10-20020a05600c144a00b0038ccc75a6adsm4263403wmi.37.2022.03.30.02.22.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Mar 2022 02:19:25 -0700 (PDT)
-Date:   Wed, 30 Mar 2022 11:19:23 +0200
+        Wed, 30 Mar 2022 02:22:24 -0700 (PDT)
+Date:   Wed, 30 Mar 2022 11:22:22 +0200
 From:   Daniel Vetter <daniel@ffwll.ch>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Daniel Vetter <daniel@ffwll.ch>,
@@ -55,37 +55,33 @@ Cc:     Daniel Vetter <daniel@ffwll.ch>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linaro-mm-sig@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
         Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Subject: Re: [PATCH v2 00/12] iio: buffer-dma: write() and new DMABUF based
- API
-Message-ID: <YkQgmxlCMCzCWq8c@phenom.ffwll.local>
+Subject: Re: [PATCH v2 12/12] Documentation: iio: Document high-speed DMABUF
+ based API
+Message-ID: <YkQhTvwJOh0+ooQp@phenom.ffwll.local>
 Mail-Followup-To: Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <jic23@kernel.org>,
         Jonathan Lemon <jonathan.lemon@gmail.com>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linaro-mm-sig@lists.linaro.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
         Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
 References: <20220207125933.81634-1-paul@crapouillou.net>
- <20220213184616.669b490b@jic23-huawei>
- <N8XC7R.5FP2M8552CGT3@crapouillou.net>
- <YkLEXJzs8ukrxG8s@phenom.ffwll.local>
- <QI1I9R.GDPWLM86I45S@crapouillou.net>
- <YkMTZLea4+X39Fp8@phenom.ffwll.local>
- <80OI9R.QH1992Y5TBBX1@crapouillou.net>
+ <20220207130140.81891-1-paul@crapouillou.net>
+ <20220207130140.81891-2-paul@crapouillou.net>
+ <YkLJU7Pp98CPIHfY@phenom.ffwll.local>
+ <Z63I9R.MKYUKBH4V8L41@crapouillou.net>
+ <YkMSmcQy1sKQJ5rJ@phenom.ffwll.local>
+ <AUOI9R.I8SSZ2CC5S2W2@crapouillou.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <80OI9R.QH1992Y5TBBX1@crapouillou.net>
+In-Reply-To: <AUOI9R.I8SSZ2CC5S2W2@crapouillou.net>
 X-Operating-System: Linux phenom 5.10.0-8-amd64 
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -97,272 +93,309 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Mar 29, 2022 at 06:16:56PM +0100, Paul Cercueil wrote:
-> Hi Daniel,
+On Tue, Mar 29, 2022 at 06:34:58PM +0100, Paul Cercueil wrote:
 > 
-> Le mar., mars 29 2022 at 16:10:44 +0200, Daniel Vetter <daniel@ffwll.ch> a
-> écrit :
-> > On Tue, Mar 29, 2022 at 10:11:14AM +0100, Paul Cercueil wrote:
+> 
+> Le mar., mars 29 2022 at 16:07:21 +0200, Daniel Vetter <daniel@ffwll.ch> a
+> �crit :
+> > On Tue, Mar 29, 2022 at 10:47:23AM +0100, Paul Cercueil wrote:
 > > >  Hi Daniel,
 > > > 
-> > >  Le mar., mars 29 2022 at 10:33:32 +0200, Daniel Vetter
+> > >  Le mar., mars 29 2022 at 10:54:43 +0200, Daniel Vetter
 > > > <daniel@ffwll.ch> a
-> > >  écrit :
-> > >  > On Tue, Feb 15, 2022 at 05:43:35PM +0000, Paul Cercueil wrote:
-> > >  > >  Hi Jonathan,
+> > >  �crit :
+> > >  > On Mon, Feb 07, 2022 at 01:01:40PM +0000, Paul Cercueil wrote:
+> > >  > >  Document the new DMABUF based API.
 > > >  > >
-> > >  > >  Le dim., févr. 13 2022 at 18:46:16 +0000, Jonathan Cameron
-> > >  > >  <jic23@kernel.org> a écrit :
-> > >  > >  > On Mon,  7 Feb 2022 12:59:21 +0000
-> > >  > >  > Paul Cercueil <paul@crapouillou.net> wrote:
-> > >  > >  >
-> > >  > >  > >  Hi Jonathan,
-> > >  > >  > >
-> > >  > >  > >  This is the V2 of my patchset that introduces a new
-> > > userspace
-> > >  > >  > > interface
-> > >  > >  > >  based on DMABUF objects to complement the fileio API, and
-> > > adds
-> > >  > >  > > write()
-> > >  > >  > >  support to the existing fileio API.
-> > >  > >  >
-> > >  > >  > Hi Paul,
-> > >  > >  >
-> > >  > >  > It's been a little while. Perhaps you could summarize the
-> > > various
-> > >  > > view
-> > >  > >  > points around the appropriateness of using DMABUF for this?
-> > >  > >  > I appreciate it is a tricky topic to distil into a brief
-> > > summary
-> > >  > > but
-> > >  > >  > I know I would find it useful even if no one else does!
+> > >  > >  v2: - Explicitly state that the new interface is optional and
+> > > is
+> > >  > >        not implemented by all drivers.
+> > >  > >      - The IOCTLs can now only be called on the buffer FD
+> > > returned by
+> > >  > >        IIO_BUFFER_GET_FD_IOCTL.
+> > >  > >      - Move the page up a bit in the index since it is core
+> > > stuff
+> > >  > > and not
+> > >  > >        driver-specific.
 > > >  > >
-> > >  > >  So we want to have a high-speed interface where buffers of
-> > > samples
-> > >  > > are
-> > >  > >  passed around between IIO devices and other devices (e.g. USB
-> > > or
-> > >  > > network),
-> > >  > >  or made available to userspace without copying the data.
+> > >  > >  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > >  > >  ---
+> > >  > >   Documentation/driver-api/dma-buf.rst |  2 +
+> > >  > >   Documentation/iio/dmabuf_api.rst     | 94
+> > >  > > ++++++++++++++++++++++++++++
+> > >  > >   Documentation/iio/index.rst          |  2 +
+> > >  > >   3 files changed, 98 insertions(+)
+> > >  > >   create mode 100644 Documentation/iio/dmabuf_api.rst
 > > >  > >
-> > >  > >  DMABUF is, at least in theory, exactly what we need. Quoting
-> > > the
-> > >  > >  documentation
+> > >  > >  diff --git a/Documentation/driver-api/dma-buf.rst
+> > >  > > b/Documentation/driver-api/dma-buf.rst
+> > >  > >  index 2cd7db82d9fe..d3c9b58d2706 100644
+> > >  > >  --- a/Documentation/driver-api/dma-buf.rst
+> > >  > >  +++ b/Documentation/driver-api/dma-buf.rst
+> > >  > >  @@ -1,3 +1,5 @@
+> > >  > >  +.. _dma-buf:
+> > >  > >  +
+> > >  > >   Buffer Sharing and Synchronization
+> > >  > >   ==================================
 > > >  > >
-> > > (https://www.kernel.org/doc/html/v5.15/driver-api/dma-buf.html):
-> > >  > >  "The dma-buf subsystem provides the framework for sharing
-> > > buffers
-> > >  > > for
-> > >  > >  hardware (DMA) access across multiple device drivers and
-> > >  > > subsystems, and for
-> > >  > >  synchronizing asynchronous hardware access. This is used, for
-> > >  > > example, by
-> > >  > >  drm “prime” multi-GPU support, but is of course not limited to
-> > > GPU
-> > >  > > use
-> > >  > >  cases."
-> > >  > >
-> > >  > >  The problem is that right now DMABUF is only really used by
-> > > DRM,
-> > >  > > and to
-> > >  > >  quote Daniel, "dma-buf looks like something super generic and
-> > >  > > useful, until
-> > >  > >  you realize that there's a metric ton of gpu/accelerator bagage
-> > >  > > piled in".
-> > >  > >
-> > >  > >  Still, it seems to be the only viable option. We could add a
-> > > custom
-> > >  > >  buffer-passing interface, but that would mean implementing the
-> > > same
-> > >  > >  buffer-passing interface on the network and USB stacks, and
-> > > before
-> > >  > > we know
-> > >  > >  it we re-invented DMABUFs.
-> > >  >
-> > >  > dma-buf also doesn't support sharing with network and usb stacks,
-> > > so I'm
-> > >  > a
-> > >  > bit confused why exactly this is useful?
-> > > 
-> > >  There is an attempt to get dma-buf support in the network stack,
-> > > called
-> > >  "zctap". Last patchset was sent last november. USB stack does not
-> > > support
-> > >  dma-buf, but we can add it later I guess.
-> > > 
-> > >  > So yeah unless there's some sharing going on with gpu stuff (for
+> > >  > >  diff --git a/Documentation/iio/dmabuf_api.rst
+> > >  > > b/Documentation/iio/dmabuf_api.rst
+> > >  > >  new file mode 100644
+> > >  > >  index 000000000000..43bb2c1b9fdc
+> > >  > >  --- /dev/null
+> > >  > >  +++ b/Documentation/iio/dmabuf_api.rst
+> > >  > >  @@ -0,0 +1,94 @@
+> > >  > >  +===================================
+> > >  > >  +High-speed DMABUF interface for IIO
+> > >  > >  +===================================
+> > >  > >  +
+> > >  > >  +1. Overview
+> > >  > >  +===========
+> > >  > >  +
+> > >  > >  +The Industrial I/O subsystem supports access to buffers
+> > > through a
+> > >  > > file-based
+> > >  > >  +interface, with read() and write() access calls through the
+> > > IIO
+> > >  > > device's dev
+> > >  > >  +node.
+> > >  > >  +
+> > >  > >  +It additionally supports a DMABUF based interface, where the
+> > >  > > userspace
+> > >  > >  +application can allocate and append DMABUF objects to the
+> > > buffer's
+> > >  > > queue.
+> > >  > >  +This interface is however optional and is not available in all
+> > >  > > drivers.
+> > >  > >  +
+> > >  > >  +The advantage of this DMABUF based interface vs. the read()
+> > >  > >  +interface, is that it avoids an extra copy of the data
+> > > between the
+> > >  > >  +kernel and userspace. This is particularly useful for
+> > > high-speed
+> > >  > >  +devices which produce several megabytes or even gigabytes of
 > > > data
-> > >  > processing maybe) I'm not sure this makes a lot of sense really.
-> > > Or at
-> > >  > least some zero-copy sharing between drivers, but even that would
-> > >  > minimally require a dma-buf import ioctl of some sorts. Which I
-> > > either
-> > >  > missed or doesn't exist.
-> > > 
-> > >  We do want zero-copy between drivers, the network stack, and the
-> > > USB stack.
-> > >  It's not just about having a userspace interface.
-> > 
-> > I think in that case we need these other pieces too. And we need acks
-> > from
-> > relevant subsystems that these other pieces are a) ready for upstream
-> > merging and also that the dma-buf side of things actually makes sense.
-> 
-> Ok...
-> 
-> > >  > If there's none of that then just hand-roll your buffer handling
-> > > code
-> > >  > (xarray is cheap to use in terms of code for this), you can
-> > > always add
-> > >  > dma-buf import/export later on when the need arises.
+> > >  > > per
+> > >  > >  +second.
+> > >  > >  +
+> > >  > >  +The data in this DMABUF interface is managed at the
+> > > granularity of
+> > >  > >  +DMABUF objects. Reducing the granularity from byte level to
+> > > block
+> > >  > > level
+> > >  > >  +is done to reduce the userspace-kernelspace synchronization
+> > >  > > overhead
+> > >  > >  +since performing syscalls for each byte at a few Mbps is just
+> > > not
+> > >  > >  +feasible.
+> > >  > >  +
+> > >  > >  +This of course leads to a slightly increased latency. For this
+> > >  > > reason an
+> > >  > >  +application can choose the size of the DMABUFs as well as how
+> > > many
+> > >  > > it
+> > >  > >  +allocates. E.g. two DMABUFs would be a traditional double
+> > > buffering
+> > >  > >  +scheme. But using a higher number might be necessary to avoid
+> > >  > >  +underflow/overflow situations in the presence of scheduling
+> > >  > > latencies.
 > > >  >
-> > >  > Scrolling through patches you only have dma-buf export, but no
-> > >  > importing,
-> > >  > so the use-case that works is with one of the existing subsystems
-> > > that
-> > >  > supporting dma-buf importing.
-> > >  >
-> > >  > I think minimally we need the use-case (in form of code) that
-> > > needs the
-> > >  > buffer sharing here.
+> > >  > So this reads a lot like reinventing io-uring with pre-registered
+> > >  > O_DIRECT
+> > >  > memory ranges. Except it's using dma-buf and hand-rolling a lot of
+> > >  > pieces
+> > >  > instead of io-uring and O_DIRECT.
 > > > 
-> > >  I'll try with zctap and report back.
+> > >  I don't see how io_uring would help us. It's an async I/O
+> > > framework, does it
+> > >  allow us to access a kernel buffer without copying the data? Does
+> > > it allow
+> > >  us to zero-copy the data to a network interface?
 > > 
-> > Do you have a link for this? I just checked dri-devel on lore, and it's
-> > not there. Nor anywhere else.
+> > With networking, do you mean rdma, or some other kind of networking?
+> > Anything else than rdma doesn't support dma-buf, and I don't think it
+> > will
+> > likely ever do so. Similar it's really tricky to glue dma-buf support
+> > into
+> > the block layer.
 > 
-> The code is here: https://github.com/jlemon/zctap_kernel
+> By networking I mean standard sockets. If I'm not mistaken, Jonathan Lemon's
+> work on zctap was to add dma-buf import/export support to standard sockets.
 > 
-> I know Jonathan Lemon (Cc'd) was working on upstreaming it, I saw a few
-> patchsets.
+> > Wrt io_uring, yes it's async, but that's not the point. The point is
+> > that
+> > with io_uring you pre-register ranges for reads and writes to target,
+> > which in combination with O_DIRECT, makes it effectively (and
+> > efficient!)
+> > zero-copy. Plus it has full integration with both networking and normal
+> > file io, which dma-buf just doesn't have.
+> > 
+> > Like you _cannot_ do zero copy from a dma-buf into a normal file. You
+> > absolutely can do the same with io_uring.
+> 
+> I believe io_uring does zero-copy the same way as splice(), by
+> duplicating/moving pages? Because that wouldn't work with DMA coherent
+> memory, which is contiguous and not backed by pages.
 
-Yeah if the goal here is to zero-copy from iio to network sockets, then I
-think we really need the full picture first, at least as a prototype.
+Yeah if your memory has to be contig and/or write-combined/uncached for
+dma reasons, then we're much more firmly into dma-buf territory. But also
+that means we really need dma-buf support in the networking stack, and
+that might be a supreme challenge.
 
-And also a rough consensus among all involved subsystems that this is the
-right approach and that there's no fundamental issues. I really have no
-clue about network to make a call there.
+E.g. dma-buf is all about pre-registering memory (dma_buf_attach is
+potentilly very expensive) for a specific device. With full generality
+networking, none of this is possible since until you make the dynamic
+decision to send stuff out, you might not even know the device the packets
+go out on.
 
-I'm bringing this up because a few folks wanted to look into zero-copy
-between gpu and nvme, using dma-buf. And after lots of
-head-banging-against-solid-concrete-walls, at least my conclusion is that
-due to locking issues it's really not possible without huge changes to the
-block i/o. And those are not on the table.
+Also with filtering and everything cpu access is pretty much assumed, and
+doing that with dma-buf is a bit a challenge.
 -Daniel
 
+> 
+> > >  > At least if the entire justification for dma-buf support is
+> > > zero-copy
+> > >  > support between the driver and userspace it's _really_ not the
+> > > right
+> > >  > tool
+> > >  > for the job. dma-buf is for zero-copy between devices, with cpu
+> > > access
+> > >  > from userpace (or kernel fwiw) being very much the exception (and
+> > > often
+> > >  > flat-out not supported at all).
+> > > 
+> > >  We want both. Using dma-bufs for the driver/userspace interface is a
+> > >  convenience as we then have a unique API instead of two distinct
+> > > ones.
+> > > 
+> > >  Why should CPU access from userspace be the exception? It works
+> > > fine for IIO
+> > >  dma-bufs. You keep warning about this being a terrible design, but
+> > > I simply
+> > >  don't see it.
+> > 
+> > It depends really on what you're trying to do, and there's extremely
+> > high
+> > chances it will simply not work.
+> 
+> Well it does work though. The userspace interface is stupidly simple here -
+> one dma-buf, backed by DMA coherent memory, is enqueued for processing by
+> the DMA. The userspace calling the "sync" ioctl on the dma-buf will block
+> until the transfer is complete, and then userspace can access it again.
+> 
+> 
+> > Unless you want to do zero copy with a gpu, or something which is in
+> > that
+> > ecosystem of accelerators and devices, then dma-buf is probably not what
+> > you're looking for.
+> > -Daniel
+> 
+> I want to do zero-copy between a IIO device and the network/USB, and right
+> now there is absolutely nothing in place that allows me to do that. So I
+> have to get creative.
 > 
 > Cheers,
 > -Paul
 > 
-> > We really need all the pieces, and if block layer reaction is anything
-> > to
-> > judge by, dma-buf wont happen for networking either. There's some really
-> > nasty and fairly fundamental issues with locking and memory reclaim that
-> > make this utter pain or outright impossible.
-> > -Daniel
-> > 
 > > > 
-> > >  Cheers,
-> > >  -Paul
-> > > 
-> > >  > >  > >
-> > >  > >  > >  Changes since v1:
-> > >  > >  > >
-> > >  > >  > >  - the patches that were merged in v1 have been (obviously)
-> > >  > > dropped
-> > >  > >  > > from
-> > >  > >  > >    this patchset;
-> > >  > >  > >  - the patch that was setting the write-combine cache
-> > > setting
-> > >  > > has
-> > >  > >  > > been
-> > >  > >  > >    dropped as well, as it was simply not useful.
-> > >  > >  > >  - [01/12]:
-> > >  > >  > >      * Only remove the outgoing queue, and keep the
-> > > incoming
-> > >  > > queue,
-> > >  > >  > > as we
-> > >  > >  > >        want the buffer to start streaming data as soon as
-> > > it is
-> > >  > >  > > enabled.
-> > >  > >  > >      * Remove IIO_BLOCK_STATE_DEQUEUED, since it is now
-> > >  > > functionally
-> > >  > >  > > the
-> > >  > >  > >        same as IIO_BLOCK_STATE_DONE.
-> > >  > >  > >  - [02/12]:
-> > >  > >  > >      * Fix block->state not being reset in
-> > >  > >  > >        iio_dma_buffer_request_update() for output buffers.
-> > >  > >  > >      * Only update block->bytes_used once and add a comment
-> > >  > > about
-> > >  > >  > > why we
-> > >  > >  > >        update it.
-> > >  > >  > >      * Add a comment about why we're setting a different
-> > > state
-> > >  > > for
-> > >  > >  > > output
-> > >  > >  > >        buffers in iio_dma_buffer_request_update()
-> > >  > >  > >      * Remove useless cast to bool (!!) in
-> > > iio_dma_buffer_io()
-> > >  > >  > >  - [05/12]:
-> > >  > >  > >      Only allow the new IOCTLs on the buffer FD created
-> > > with
-> > >  > >  > >      IIO_BUFFER_GET_FD_IOCTL().
-> > >  > >  > >  - [12/12]:
-> > >  > >  > >      * Explicitly state that the new interface is optional
-> > > and
-> > >  > > is
-> > >  > >  > >        not implemented by all drivers.
-> > >  > >  > >      * The IOCTLs can now only be called on the buffer FD
-> > >  > > returned by
-> > >  > >  > >        IIO_BUFFER_GET_FD_IOCTL.
-> > >  > >  > >      * Move the page up a bit in the index since it is core
-> > >  > > stuff
-> > >  > >  > > and not
-> > >  > >  > >        driver-specific.
-> > >  > >  > >
-> > >  > >  > >  The patches not listed here have not been modified since
-> > > v1.
-> > >  > >  > >
-> > >  > >  > >  Cheers,
-> > >  > >  > >  -Paul
-> > >  > >  > >
-> > >  > >  > >  Alexandru Ardelean (1):
-> > >  > >  > >    iio: buffer-dma: split iio_dma_buffer_fileio_free()
-> > > function
-> > >  > >  > >
-> > >  > >  > >  Paul Cercueil (11):
-> > >  > >  > >    iio: buffer-dma: Get rid of outgoing queue
-> > >  > >  > >    iio: buffer-dma: Enable buffer write support
-> > >  > >  > >    iio: buffer-dmaengine: Support specifying buffer
-> > > direction
-> > >  > >  > >    iio: buffer-dmaengine: Enable write support
-> > >  > >  > >    iio: core: Add new DMABUF interface infrastructure
-> > >  > >  > >    iio: buffer-dma: Use DMABUFs instead of custom solution
-> > >  > >  > >    iio: buffer-dma: Implement new DMABUF based userspace
-> > > API
-> > >  > >  > >    iio: buffer-dmaengine: Support new DMABUF based
-> > > userspace API
-> > >  > >  > >    iio: core: Add support for cyclic buffers
-> > >  > >  > >    iio: buffer-dmaengine: Add support for cyclic buffers
-> > >  > >  > >    Documentation: iio: Document high-speed DMABUF based API
-> > >  > >  > >
-> > >  > >  > >   Documentation/driver-api/dma-buf.rst          |   2 +
-> > >  > >  > >   Documentation/iio/dmabuf_api.rst              |  94 +++
-> > >  > >  > >   Documentation/iio/index.rst                   |   2 +
-> > >  > >  > >   drivers/iio/adc/adi-axi-adc.c                 |   3 +-
-> > >  > >  > >   drivers/iio/buffer/industrialio-buffer-dma.c  | 610
-> > >  > >  > > ++++++++++++++----
-> > >  > >  > >   .../buffer/industrialio-buffer-dmaengine.c    |  42 +-
-> > >  > >  > >   drivers/iio/industrialio-buffer.c             |  60 ++
-> > >  > >  > >   include/linux/iio/buffer-dma.h                |  38 +-
-> > >  > >  > >   include/linux/iio/buffer-dmaengine.h          |   5 +-
-> > >  > >  > >   include/linux/iio/buffer_impl.h               |   8 +
-> > >  > >  > >   include/uapi/linux/iio/buffer.h               |  30 +
-> > >  > >  > >   11 files changed, 749 insertions(+), 145 deletions(-)
-> > >  > >  > >   create mode 100644 Documentation/iio/dmabuf_api.rst
-> > >  > >  > >
-> > >  > >  >
+> > >  > >  +
+> > >  > >  +2. User API
+> > >  > >  +===========
+> > >  > >  +
+> > >  > >  +``IIO_BUFFER_DMABUF_ALLOC_IOCTL(struct iio_dmabuf_alloc_req
+> > > *)``
 > > >  > >
+> > > +----------------------------------------------------------------
+> > >  > >  +
+> > >  > >  +Each call will allocate a new DMABUF object. The return value
+> > > (if
+> > >  > > not
+> > >  > >  +a negative errno value as error) will be the file descriptor
+> > > of
+> > >  > > the new
+> > >  > >  +DMABUF.
+> > >  > >  +
+> > >  > >  +``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *)``
+> > >  > >  +--------------------------------------------------------
+> > >  > >  +
+> > >  > >  +Place the DMABUF object into the queue pending for hardware
+> > >  > > process.
+> > >  > >  +
+> > >  > >  +These two IOCTLs have to be performed on the IIO buffer's file
+> > >  > >  +descriptor, obtained using the `IIO_BUFFER_GET_FD_IOCTL`
+> > > ioctl.
+> > >  > >  +
+> > >  > >  +3. Usage
+> > >  > >  +========
+> > >  > >  +
+> > >  > >  +To access the data stored in a block by userspace the block
+> > > must be
+> > >  > >  +mapped to the process's memory. This is done by calling
+> > > mmap() on
+> > >  > > the
+> > >  > >  +DMABUF's file descriptor.
+> > >  > >  +
+> > >  > >  +Before accessing the data through the map, you must use the
+> > >  > >  +DMA_BUF_IOCTL_SYNC(struct dma_buf_sync *) ioctl, with the
+> > >  > >  +DMA_BUF_SYNC_START flag, to make sure that the data is
+> > > available.
+> > >  > >  +This call may block until the hardware is done with this
+> > > block.
+> > >  > > Once
+> > >  > >  +you are done reading or writing the data, you must use this
+> > > ioctl
+> > >  > > again
+> > >  > >  +with the DMA_BUF_SYNC_END flag, before enqueueing the DMABUF
+> > > to the
+> > >  > >  +kernel's queue.
+> > >  > >  +
+> > >  > >  +If you need to know when the hardware is done with a DMABUF,
+> > > you
+> > >  > > can
+> > >  > >  +poll its file descriptor for the EPOLLOUT event.
+> > >  > >  +
+> > >  > >  +Finally, to destroy a DMABUF object, simply call close() on
+> > > its
+> > >  > > file
+> > >  > >  +descriptor.
+> > >  > >  +
+> > >  > >  +For more information about manipulating DMABUF objects, see:
+> > >  > > :ref:`dma-buf`.
+> > >  > >  +
+> > >  > >  +A typical workflow for the new interface is:
+> > >  > >  +
+> > >  > >  +    for block in blocks:
+> > >  > >  +      DMABUF_ALLOC block
+> > >  > >  +      mmap block
+> > >  > >  +
+> > >  > >  +    enable buffer
+> > >  > >  +
+> > >  > >  +    while !done
+> > >  > >  +      for block in blocks:
+> > >  > >  +        DMABUF_ENQUEUE block
+> > >  > >  +
+> > >  > >  +        DMABUF_SYNC_START block
+> > >  > >  +        process data
+> > >  > >  +        DMABUF_SYNC_END block
+> > >  > >  +
+> > >  > >  +    disable buffer
+> > >  > >  +
+> > >  > >  +    for block in blocks:
+> > >  > >  +      close block
+> > >  > >  diff --git a/Documentation/iio/index.rst
+> > >  > > b/Documentation/iio/index.rst
+> > >  > >  index 58b7a4ebac51..669deb67ddee 100644
+> > >  > >  --- a/Documentation/iio/index.rst
+> > >  > >  +++ b/Documentation/iio/index.rst
+> > >  > >  @@ -9,4 +9,6 @@ Industrial I/O
+> > >  > >
+> > >  > >      iio_configfs
+> > >  > >
+> > >  > >  +   dmabuf_api
+> > >  > >  +
+> > >  > >      ep93xx_adc
+> > >  > >  --
+> > >  > >  2.34.1
 > > >  > >
 > > >  >
 > > >  > --

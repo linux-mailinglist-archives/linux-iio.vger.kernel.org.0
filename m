@@ -2,59 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E670F4EC480
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 14:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E3114EC77A
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 16:53:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242457AbiC3Mln (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Mar 2022 08:41:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42612 "EHLO
+        id S1347555AbiC3OzO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Mar 2022 10:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345449AbiC3Mlb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Mar 2022 08:41:31 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01189EE4D4;
-        Wed, 30 Mar 2022 05:30:41 -0700 (PDT)
-Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KT5MM1vyfz67NYQ;
-        Wed, 30 Mar 2022 20:28:47 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 30 Mar 2022 14:30:39 +0200
-Received: from localhost (10.47.70.51) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.24; Wed, 30 Mar
- 2022 13:30:39 +0100
-Date:   Wed, 30 Mar 2022 13:30:37 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        <linux-iio@vger.kernel.org>, Paul Cercueil <paul@crapouillou.net>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        "Tomasz Duszynski" <tomasz.duszynski@octakon.com>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 2/8] PM: core: Add NS varients of
- EXPORT[_GPL]_SIMPLE_DEV_PM_OPS and runtime pm equiv
-Message-ID: <20220330133037.000044b2@Huawei.com>
-In-Reply-To: <20220301113145.00004ce4@Huawei.com>
-References: <20220220181522.541718-1-jic23@kernel.org>
-        <20220220181522.541718-3-jic23@kernel.org>
-        <6cd17744-d060-1094-098d-e30a10f96600@intel.com>
-        <20220227114628.219c7055@jic23-huawei>
-        <CAJZ5v0iwFJizKf-SEr10M-8HFirMzH8=LkONLvtZ30pfEk4AOA@mail.gmail.com>
-        <20220301113145.00004ce4@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S1347668AbiC3Oyh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Mar 2022 10:54:37 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CF64B1D0
+        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 07:52:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1648651967; x=1680187967;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h+kpo0IzEnXiF5ibFqqkWNafwNzcqM+4NGAOasFLGMw=;
+  b=fyQAnuSBN89mv1w7miL4LGkH8tzIjGrFYZz6AFOIp7ZJPjvu83Yje7vL
+   fxi2bv4UNL0IWOml7Gn4pJi9rm22SRR+PWLduOHw75YXI4BIwO1/P71GT
+   wUSUSKOUD1fRmu67xCNG4Ne6B0g3M2EEqpEjEXmXsDYwmqL6Nvt1YAwv0
+   /psDmRFhrR6jSNcWGeuSbmYpSbUhHlFCRhLLVhOtuiY4rNllbWXn4nXmh
+   WL1DBnmPV6T6Ll1EYpcpTSqDpGxjtEbXQ2q5xSb0+QVI39LWj1h0J+QPO
+   ZZ4O1qsgbhfhUNm3Jj5s3tI/C52SPL99j3xnjSFDl56+Pgo1/gnCI6iUR
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10301"; a="284470320"
+X-IronPort-AV: E=Sophos;i="5.90,222,1643702400"; 
+   d="scan'208";a="284470320"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 07:52:47 -0700
+X-IronPort-AV: E=Sophos;i="5.90,222,1643702400"; 
+   d="scan'208";a="639753020"
+Received: from smile.fi.intel.com ([10.237.72.59])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2022 07:52:46 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1nZZgD-009Scr-Ai;
+        Wed, 30 Mar 2022 17:52:13 +0300
+Date:   Wed, 30 Mar 2022 17:52:13 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
+To:     Marek Vasut <marex@denx.de>
+Cc:     linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3] iio: core: Print error in case sample bits do not fit
+ storage bits
+Message-ID: <YkRunZ15S5noNYbJ@smile.fi.intel.com>
+References: <20220328195307.154422-1-marex@denx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.70.51]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220328195307.154422-1-marex@denx.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,79 +65,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 1 Mar 2022 11:31:45 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Mon, Mar 28, 2022 at 09:53:07PM +0200, Marek Vasut wrote:
+> Add runtime check to verify whether storagebits are at least as big
+> as shifted realbits. This should help spot broken drivers which may
+> set realbits + shift above storagebits.
 
-> On Mon, 28 Feb 2022 21:13:25 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> 
-> > On Sun, Feb 27, 2022 at 12:39 PM Jonathan Cameron <jic23@kernel.org> wrote:  
-> > >
-> > > On Mon, 21 Feb 2022 20:37:57 +0100
-> > > "Rafael J. Wysocki" <rafael.j.wysocki@intel.com> wrote:
-> > >
-> > > Hi Rafael,    
-> > > > CC: linux-pm    
-> > >
-> > > Oops. Stupid omission on my part, sorry about that!
-> > >    
-> > > >
-> > > > On 2/20/2022 7:15 PM, Jonathan Cameron wrote:    
-> > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > >
-> > > > > As more drivers start to use namespaces, we need to have varients of these
-> > > > > useful macros that allow the export to be in a particular namespace.
-> > > > >
-> > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > > Cc: Paul Cercueil <paul@crapouillou.net>
-> > > > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>    
-> > > >
-> > > > I'd rather route this through linux-pm unless you have dependent changes.    
-> > >
-> > > Ok.
-> > >
-> > > The kxsd9 patch (4) is dependent on other changes queued for
-> > > the merge window in IIO. If we want to do it through linux-pm I'd
-> > > love it if we can manage to get the ground work in for the coming merge window.
-> > >
-> > > So options are:
-> > >
-> > > 1) This patch alone via linux-pm and I queue the users up for next cycle
-> > >    Fine by me but always awkward to have infrastructure with no users.
-> > > 2) First 3 patches via linux-pm so we have a user (scd30) in a low churn
-> > >    driver and I'll queue the rest for 5.19.  Fine by me as well.
-> > >    That goes on cleanly on 5.17-rc1 and there is nothing else in my review
-> > >    queue touching that driver.    
-> > 
-> > That would work for me.  
-> 
-> Great.  Let's do that then.  Are you fine picking them from this thread, or
-> would you like me to resend with just those 3 patches as a fresh series?
-Hi Rafael,
+Let's go with it.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-I've not heard back from you, so have been assuming you'd pick those first
-3 patches up from this series.  Is that a correct assumption?
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> Cc: Andy Shevchenko <andy@kernel.org>
+> Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> V2: Use dev_err() instead as WARN_ON() may panic() the kernel on existing machines
+> V3: Abort probe and return -EINVAL in case this condition is triggered
+> ---
+>  drivers/iio/industrialio-buffer.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index b078eb2f3c9de..75a1c57b49102 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -1629,6 +1629,19 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+>  			if (channels[i].scan_index < 0)
+>  				continue;
+>  
+> +			/* Verify that sample bits fit into storage */
+> +			if (channels[i].scan_type.storagebits <
+> +			    channels[i].scan_type.realbits +
+> +			    channels[i].scan_type.shift) {
+> +				dev_err(&indio_dev->dev,
+> +					"Channel %d storagebits (%d) < shifted realbits (%d + %d)\n",
+> +					i, channels[i].scan_type.storagebits,
+> +					channels[i].scan_type.realbits,
+> +					channels[i].scan_type.shift);
+> +				ret = -EINVAL;
+> +				goto error_cleanup_dynamic;
+> +			}
+> +
+>  			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
+>  							 &channels[i]);
+>  			if (ret < 0)
+> -- 
+> 2.35.1
+> 
 
-Thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Jonathan
-
-> 
-> >   
-> > > I'm also interested to hear your view on the discussion going on in reply
-> > > to the cover letter. Specifically Paul suggested we 'only' have the
-> > > namespaced versions of these macros.    
-> > 
-> > Well, I'm a bit afraid that providing the namespaced versions only
-> > would slow down the adoption.  
-> 
-> Agreed, that's a concern and as Paul was happy with the route of
-> adding NS and perhaps looking eventually at dropping the non NS variant
-> I think we can move forward with this patch.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
 

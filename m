@@ -2,150 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDECB4ECA24
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 18:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31B554ECA2D
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Mar 2022 18:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349112AbiC3Q6y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Mar 2022 12:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33626 "EHLO
+        id S1349123AbiC3RAr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Mar 2022 13:00:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349104AbiC3Q6w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Mar 2022 12:58:52 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF704BFE6
-        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 09:57:03 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id b15so25188706edn.4
-        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 09:57:03 -0700 (PDT)
+        with ESMTP id S1349115AbiC3RAq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Mar 2022 13:00:46 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 648212646
+        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 09:58:59 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id j15so42739008eje.9
+        for <linux-iio@vger.kernel.org>; Wed, 30 Mar 2022 09:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=fEzld4oIJa86hl09sRy64K2e8LGIGCRfWuc+U0PWYOs=;
-        b=pz8Axq5e3iFbz7Jw0eIdKg+hWyV0eg5X/OrzwVODe4qALsVNW5P6XCIffz7jZBls1S
-         Ay8G4ifJkD57k5cn7sKOqZqcX8jZz7AiV0A+xfY0usJu+I228VzlXlRNwtFfpvWDYChT
-         tCTa4NX0jot2hZU9MZto6acQS6j1L5ezvPVFwjTq5mozRXGJ/05EDtzB/X0fdtun30yf
-         E7wrNN00iG4bycxxZuXuO6Zu97SotlzoyB98sU++D3zFCPA3T7stPpKNzWvbRrSL+Hzq
-         CLmsL7H9fVbfmMMXR72/C2K+zdLRiND4Sk71buZAy/vXVdCalN6MK04NuIfO07hJu1FF
-         XYsQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=tC9xiYjFteTOncjiaBTt8b1lonIMt5KBs2kzaARMTvg=;
+        b=gKilfGZ/BW4ymBas9eTaslJMraxFS69x8emaggw5hq09SM6nYnv9h+AV/76n0VI0oV
+         diIJ1dvJN+Iyfdp/NHmHmzUOK/AdR4GMzuzjkXkLM3ssOqJC0deW4IAX7imMiRryVMIN
+         EuX3A6lcmpNH2R9sEPCFSjiWmFK/9V7Q4WBxUIAyqOa4e2UHy/OUW2A/kumVQAYtHwGF
+         0LZevRFY4+Dp8P4U115YBFCZKlro1ppgzRYDJ2gmZr2v3KKtvvgsqWWX7Rgv+1B8d4i7
+         BjEZvJ5KglcpLyachzbPFEWjCjXho5hmJ05TNYs3Bp+uE2j4sGUf6kvtIJ9p03RcNJd/
+         S08w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=fEzld4oIJa86hl09sRy64K2e8LGIGCRfWuc+U0PWYOs=;
-        b=ZK+Ip0gg6sZU8fwOhi8D7qFbvhDFRUrBtuXoicUN06toAqtRQXebp378/48Hlk1WNF
-         W/U1QvZzIyONJ3SuPeZ0Hmn4ERyIM7HQkWwMPIYBXByvhB6G70ZSP8czWZ/eo0so+Mo3
-         1306l7rCOYkntYAqxzvQl4ILlhYphswFvNsHkeyHLtIsCO4o8RpGplGlKkR/jvFgWken
-         I08r0P5ouyLkwegp83agQnHZHPpVF129z0sb12E4vkPvyOlyBUEFISCyT1GISwqGBuTY
-         xToIwjex7wXSwVKfXcSDfOfjURBOwv3U9sZ8J8nw2jR8S3ogEfBTYezRWuDFifGuVhWB
-         xVuA==
-X-Gm-Message-State: AOAM5330DMWQFv12YyK40EKKVTHGKRACw/zYi91D9J1V5czHrwqDZItB
-        KHYv1ga/fQVajOnWCMzt4dl/cA==
-X-Google-Smtp-Source: ABdhPJyCpxyw7R6T+pFO1zsX01vbrvk5lvAApJ9RbFPs/LdEa4c5G+bltActTe6FNicQwS1ouiR2cg==
-X-Received: by 2002:a05:6402:d67:b0:419:48b:a762 with SMTP id ec39-20020a0564020d6700b00419048ba762mr11695300edb.291.1648659422507;
-        Wed, 30 Mar 2022 09:57:02 -0700 (PDT)
-Received: from [192.168.0.164] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id q15-20020a1709060e4f00b006cdf4535cf2sm8394201eji.67.2022.03.30.09.57.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Mar 2022 09:57:01 -0700 (PDT)
-Message-ID: <e13ceaad-d5f7-3c50-774e-28cabb2e1fe6@linaro.org>
-Date:   Wed, 30 Mar 2022 18:57:00 +0200
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=tC9xiYjFteTOncjiaBTt8b1lonIMt5KBs2kzaARMTvg=;
+        b=SuOBSF2p5TpwA8zDt6mblDHIL6NwB+R9/A4705O782X2K9Cl36DcDpP3J8GDjhe1CF
+         F8+E5r2sj1C3NKke/Iufuz9wEZ0sgGIQYdXSEkncbDGHNQlKu9ukRseJk+OBHxTPCLTU
+         DnnNd7UuShYT3CWoSf54V4Mwh14DoMq+glccSdgs3i8MOQIglRLZenLK4DcpsJH3JAQ4
+         JDk+tAgxsN49QPRcMKpCEDm1a/CP2OZTbjBCeK6wCG4iwzimyZpIu2/cg/HxKa3qqPG5
+         hmXeNoTBVTaWV7bEWSK4xzzjqOJeiuGCt41BEI6GHgxJzd50j2ZtreDhTlS5rSschESO
+         kbWw==
+X-Gm-Message-State: AOAM530UaN0pAe5q+iHTFYIUbVVFzhmm3vUAyr1S1QPMoyTQRVbOnlPz
+        /qe+ArCMSAPAaX3yVP175MCuQ66vHo+pS5oyJv4=
+X-Google-Smtp-Source: ABdhPJww1SXOxh8nP7o9HrnJ/L1MBAAibUfwnCN0DkBlbqocQ/BR/7lGbG0fiXP7I2EAmgZqSgcPOR/b/3gCtBN78cU=
+X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
+ ji13-20020a170907980d00b006d6f910513amr447634ejc.643.1648659537865; Wed, 30
+ Mar 2022 09:58:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] dt-bindings: Fix incomplete if/then/else schemas
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Dmitry Osipenko <digetx@gmail.com>, linux-iio@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-mmc@vger.kernel.org,
-        linux-tegra@vger.kernel.org, netdev@vger.kernel.org,
-        linux-phy@lists.infradead.org
-References: <20220330145741.3044896-1-robh@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220330145741.3044896-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Wed, 30 Mar 2022 17:58:53 +0100
+Message-ID: <CAHpNFcNLTDRtiLZ4sSTzWpOtX_UgdNOZUowgfKoMrTbJN44V8A@mail.gmail.com>
+Subject: (Security & Performance Profile : RS-PSPVita) +PSP ARM Features &
+ Secure DMA : headers cpufeatures: Sync with the kernel sources https://lkml.org/lkml/2022/3/30/1060
+To:     submissions@vialicensing.com
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 30/03/2022 16:57, Rob Herring wrote:
-> A recent review highlighted that the json-schema meta-schema allows any
-> combination of if/then/else schema keywords even though if, then or else
-> by themselves makes little sense. With an added meta-schema to only
-> allow valid combinations, there's a handful of schemas found which need
-> fixing in a variety of ways. Incorrect indentation is the most common
-> issue.
-> 
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Georgi Djakov <djakov@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-> Cc: Dmitry Osipenko <digetx@gmail.com>
-> Cc: linux-iio@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-phy@lists.infradead.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../bindings/iio/adc/adi,ad7476.yaml          |  1 +
->  .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  |  8 +-
->  .../bindings/iio/dac/adi,ad5360.yaml          |  6 +-
->  .../bindings/interconnect/qcom,rpm.yaml       | 84 +++++++++----------
->  .../bindings/mmc/nvidia,tegra20-sdhci.yaml    |  2 +
->  .../bindings/net/ti,davinci-mdio.yaml         |  1 +
->  .../bindings/phy/nvidia,tegra20-usb-phy.yaml  | 20 ++---
->  .../bindings/phy/qcom,usb-hs-phy.yaml         | 36 ++++----
->  .../bindings/regulator/fixed-regulator.yaml   | 34 ++++----
->  .../bindings/sound/st,stm32-sai.yaml          |  6 +-
->  .../devicetree/bindings/sram/sram.yaml        | 16 ++--
->  11 files changed, 108 insertions(+), 106 deletions(-)
+(Security & Performance Profile : RS-PSPVita) +PSP ARM Features &
+Secure DMA : headers cpufeatures: Sync with the kernel sources
+https://lkml.org/lkml/2022/3/30/1060
 
-Looks good:
+So + Properties PSP & for simple reasons ARCH Basics By Creational A-Sym-metry
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+RS
 
-Best regards,
-Krzysztof
+On the subject of PSP processors : Arm features include NEON2!
+Why not use this to our advantage? if safely potentiated! Every SiMD
+matters after all,
+
+Particularly preparing for the GPU & Audio output!
+As a driver specific the advantages are around 13% improved
+performance & 20% improved code flexibility on SiMD compatibility.
+
+We can also directly utilize for Automated Direct Reactive Secure DMA or ADRSDMA
+
+(signed RS)
+
+ARM Patches 3 arte enabled! https://lkml.org/lkml/2022/3/30/977
+
+*
+
+GPRS for immediate use in all SFR SIM's & SFR Firmware & routers &
+boxes including ADSL & Fibre
+
+Cloudflare Kernels & VM linux, I pretty obviously would like to be
+able to utilise cloudflare Kernel & Linux & cloudflare is very special
+to me
+
+Submissions for review
+
+RS
+
+https://drive.google.com/drive/folders/1X5fUvsXkvBU6td78uq3EdEUJ_S6iUplA?usp=sharing
+
+https://lore.kernel.org/lkml/20220329164117.1449-1-mario.limonciello@amd.com/
+
+https://www.phoronix.com/scan.php?page=news_item&px=AMD-PSP-Sysfs-Expose

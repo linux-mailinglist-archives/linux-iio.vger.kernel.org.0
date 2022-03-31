@@ -2,135 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5448D4EE2B3
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Mar 2022 22:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6137A4EE309
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Mar 2022 23:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241451AbiCaUgz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 31 Mar 2022 16:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40196 "EHLO
+        id S241625AbiCaVGS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 31 Mar 2022 17:06:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241456AbiCaUgy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Mar 2022 16:36:54 -0400
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F27AD4470;
-        Thu, 31 Mar 2022 13:35:03 -0700 (PDT)
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-deb9295679so529437fac.6;
-        Thu, 31 Mar 2022 13:35:03 -0700 (PDT)
+        with ESMTP id S241628AbiCaVGS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Mar 2022 17:06:18 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A69480216
+        for <linux-iio@vger.kernel.org>; Thu, 31 Mar 2022 14:04:28 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id i11so727345plr.1
+        for <linux-iio@vger.kernel.org>; Thu, 31 Mar 2022 14:04:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cXtJh38aI7rFhwSkhNj8FWqiXd2HNKnAb8Z05DuJmvg=;
+        b=VU+HkxENuiBH0omyCyOgv/F8rvOeDdoiIUYe707WQABTk/xZLcJcetc8hqCQqdZqBf
+         dX5MUqN0Z8PmbJEgBLdPTk9Pidg03XZTQdyPGtKLA7epdfp1mS9JhwXc+gB3uyf7n7WJ
+         mBQfXZzPOJ05Rp9t13bvxEJYECXHCQit9mJJQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=7o8q97xCtSsryTgEf+sdFsnMX0/U036sQhYghPoefl4=;
-        b=iPJMIel6KouTEDry7C1kbBk8yMK/XG0f8n5a/xdpTicgN470n1MAIZqq0O9XIQkTQT
-         1iAELBGJ99xBVFuBGbsK66w77QlYA4Y9z7bSbwe064IL8vRgvZQGNIJOgb8klFDl6yyb
-         mOTYM2AgQPuSVzZ0xUp2PqQIGS2vA9vKOIKyuLChLPNuVD2d6h297HDDKQy/4P+BDFyA
-         VG8AbLUNJK1Nr0BKgwjIuypNESUa7lk7vmMryzHIdlI6sY9ljUtvrxBCA7f+oC07LQSF
-         Qs3PqTOguNnRiVdnhVMTWUcZXWhU8sJ5a5FIKPQCLvWnl3ZMEQG6C0We+GGB/XGJEPWR
-         P2/Q==
-X-Gm-Message-State: AOAM532BTv+JLmhPhYRdJu1nFGVk2U16AQRXbCyCqXhV/q7iFgS1ZSWI
-        WVaDs2lxCAejO6OyUHA4LQ==
-X-Google-Smtp-Source: ABdhPJyOtg9v8M3rgMoWnDenrT80lRaoyYQt7XKsnQHhmcrqEG9E/JNZKDO/sxj1EcCQH8b9oxX0lA==
-X-Received: by 2002:a05:6870:79d:b0:da:56e3:fe99 with SMTP id en29-20020a056870079d00b000da56e3fe99mr3441337oab.95.1648758902507;
-        Thu, 31 Mar 2022 13:35:02 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r35-20020a056870582300b000df0dc42ff5sm219227oap.0.2022.03.31.13.34.59
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cXtJh38aI7rFhwSkhNj8FWqiXd2HNKnAb8Z05DuJmvg=;
+        b=L0gRbKKkxIZtGg4TjVvaOGwxYUEHTK/t5EfIyyJo2lV5BWUhLV9/GEjt+dnxcAuF9Y
+         RtdVdDJc3hrOcJGdgmV5s4/+vc/0eUqxC93HeusomDeF/0a/tF1K74e2mPZTxHyOWEcB
+         xki7Kb6qckE4O74PjV+I4nTahxLDLAjiLI5m9N/wvAndH4Z0OEDfR5l0Ffj9tceNisgI
+         q6ZT2TbecnIg+pvwQq6pZZkVfa4cFDAGuDQ+/98PIPqtTRmcPlNXHOnn0B5Ly209c4hP
+         BRHfRD0ghw6RIw3BJ2Sw5vlUViA0yL71lu4cDU2/FHd0sKP+9lic7GQxxM7KoIMf7sZ8
+         MTEQ==
+X-Gm-Message-State: AOAM533HlnvVspwwVVF1cJ+Rx4d3dyY6j2zn4fx8pwPTf4uB1j1KT4WH
+        h5m5HmQUUnmq99CucGhVk733eJZd6NajpA==
+X-Google-Smtp-Source: ABdhPJzGO+ht/Ae+Vv6wSxnABo8FauouW9END+e7QuZYMsr9TxK82jlGU047uC4bDOa7QhQPMGLMBQ==
+X-Received: by 2002:a17:90b:314b:b0:1c7:4a4f:6740 with SMTP id ip11-20020a17090b314b00b001c74a4f6740mr8137766pjb.145.1648760667609;
+        Thu, 31 Mar 2022 14:04:27 -0700 (PDT)
+Received: from smtp.gmail.com ([2620:15c:202:201:f6f:d194:b010:bb5f])
+        by smtp.gmail.com with ESMTPSA id d10-20020a056a0024ca00b004fd90388a86sm381426pfv.173.2022.03.31.14.04.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Mar 2022 13:35:00 -0700 (PDT)
-Received: (nullmailer pid 1446207 invoked by uid 1000);
-        Thu, 31 Mar 2022 20:34:59 -0000
-Date:   Thu, 31 Mar 2022 15:34:59 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, alsa-devel@alsa-project.org,
-        Georgi Djakov <djakov@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Mark Brown <broonie@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-tegra@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Subject: Re: [PATCH] dt-bindings: Fix incomplete if/then/else schemas
-Message-ID: <YkYQc/r8P5LYI6dt@robh.at.kernel.org>
-References: <20220330145741.3044896-1-robh@kernel.org>
+        Thu, 31 Mar 2022 14:04:27 -0700 (PDT)
+From:   Stephen Boyd <swboyd@chromium.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH] iio:proximity:sx_common: Fix device property parsing on DT systems
+Date:   Thu, 31 Mar 2022 14:04:25 -0700
+Message-Id: <20220331210425.3908278-1-swboyd@chromium.org>
+X-Mailer: git-send-email 2.35.1.1094.g7c7d902a7c-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220330145741.3044896-1-robh@kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 30 Mar 2022 09:57:41 -0500, Rob Herring wrote:
-> A recent review highlighted that the json-schema meta-schema allows any
-> combination of if/then/else schema keywords even though if, then or else
-> by themselves makes little sense. With an added meta-schema to only
-> allow valid combinations, there's a handful of schemas found which need
-> fixing in a variety of ways. Incorrect indentation is the most common
-> issue.
-> 
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
-> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Georgi Djakov <djakov@kernel.org>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Kishon Vijay Abraham I <kishon@ti.com>
-> Cc: Vinod Koul <vkoul@kernel.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-> Cc: Dmitry Osipenko <digetx@gmail.com>
-> Cc: linux-iio@vger.kernel.org
-> Cc: alsa-devel@alsa-project.org
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-phy@lists.infradead.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../bindings/iio/adc/adi,ad7476.yaml          |  1 +
->  .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  |  8 +-
->  .../bindings/iio/dac/adi,ad5360.yaml          |  6 +-
->  .../bindings/interconnect/qcom,rpm.yaml       | 84 +++++++++----------
->  .../bindings/mmc/nvidia,tegra20-sdhci.yaml    |  2 +
->  .../bindings/net/ti,davinci-mdio.yaml         |  1 +
->  .../bindings/phy/nvidia,tegra20-usb-phy.yaml  | 20 ++---
->  .../bindings/phy/qcom,usb-hs-phy.yaml         | 36 ++++----
->  .../bindings/regulator/fixed-regulator.yaml   | 34 ++++----
->  .../bindings/sound/st,stm32-sai.yaml          |  6 +-
->  .../devicetree/bindings/sram/sram.yaml        | 16 ++--
->  11 files changed, 108 insertions(+), 106 deletions(-)
-> 
+After commit 7a3605bef878 ("iio: sx9310: Support ACPI property") we
+started using the 'indio_dev->dev' to extract device properties for
+various register settings in sx9310_get_default_reg(). This broke DT
+based systems because dev_fwnode() used in the device_property*() APIs
+can't find an 'of_node'. That's because the 'indio_dev->dev.of_node'
+pointer isn't set until iio_device_register() is called. Set the pointer
+earlier, next to where the ACPI companion is set, so that the device
+property APIs work on DT systems.
 
-Applied, thanks!
+Cc: Gwendal Grignou <gwendal@chromium.org>
+Fixes: 7a3605bef878 ("iio: sx9310: Support ACPI property")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
+ drivers/iio/proximity/sx_common.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+index a7c07316a0a9..8ad814d96b7e 100644
+--- a/drivers/iio/proximity/sx_common.c
++++ b/drivers/iio/proximity/sx_common.c
+@@ -521,6 +521,7 @@ int sx_common_probe(struct i2c_client *client,
+ 		return dev_err_probe(dev, ret, "error reading WHOAMI\n");
+ 
+ 	ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(dev));
++	indio_dev->dev.of_node = client->dev.of_node;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+ 	indio_dev->channels =  data->chip_info->iio_channels;
+-- 
+https://chromeos.dev
+

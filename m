@@ -2,122 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B594EE474
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 01:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B25DF4EE7E5
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 07:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242771AbiCaXJI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 31 Mar 2022 19:09:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55518 "EHLO
+        id S245185AbiDAFvz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Apr 2022 01:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242767AbiCaXJH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 31 Mar 2022 19:09:07 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32115241A13;
-        Thu, 31 Mar 2022 16:07:19 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id c10so2244011ejs.13;
-        Thu, 31 Mar 2022 16:07:19 -0700 (PDT)
+        with ESMTP id S245189AbiDAFvy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 01:51:54 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 207D1224767
+        for <linux-iio@vger.kernel.org>; Thu, 31 Mar 2022 22:50:04 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id h4so1703291edr.3
+        for <linux-iio@vger.kernel.org>; Thu, 31 Mar 2022 22:50:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Dbd+FeFljOdDtTjz0SE9OURXlnjXbAIwzSzKI/SK8Hs=;
-        b=oPmqCMSQjmk62BS1YZ2/0YxmoKih7cVsZOjbV01H/cpzCZXanTD3d+oAcdX2qAT8Oo
-         OJ6zmB/cbMgqWwCjTZX9YHglYfvNyKkXL0dBQkpvJ6bOSJwen1FY9tRttbCFwqBF6TzO
-         RNlET5odbw5xuBYazYYMj+FmmmY80K9h7Ow3n/vLJdKOBgKwTKSfoRwHd+yrX7i06b4H
-         kHN3WV21ODDDom6U3LE578k/SU6cdEFz8PPfbV9MG3nFI9F3iaf96ynZYO5hLR//USCT
-         MEBACGkXBQ+aaKwzYBllBhXZ5d97CXEhh/L0cJjrvxe1Y7Hn1Uod9pfnWatBNNsyDhCY
-         LMTg==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=ppHqKeKh+Y7gLl6VUDX29RPztSoubgtGlWJ4DyZKx/4=;
+        b=SrFIMyQmbcifUZtE2XZV9zXfqRE/TCP1E4NsZnkzG13uBXCopfUUfGcv2QegxSP8ef
+         RP/+bGAq/wfwxbri7yClPbM4OoLT20QZEOuzI8NNJe8vRa05ZGRe/QnpFeCFDiBAiqGv
+         eKXdnJaIaVF2nIo/j5VEOsS+LO752p+I+P5C+mS7k74dOX145Prx0c1U4CZymrhxZH0G
+         v0N7GLzVYAOAhzauF1mlKJnAFcX2z//yLeMvNGVI9HsZaGHbX/rwNOc4i2KpmqbnR/2+
+         AgWLD2hDQybrCIFZog++dc9DEvy9zC7YntGydkLyTKNk7+fmEvFQq/wpsd1yX7qq0v3d
+         cKeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Dbd+FeFljOdDtTjz0SE9OURXlnjXbAIwzSzKI/SK8Hs=;
-        b=pvLXYK9V8cE20/5OJHtbSZg86WHYzVjhMt6b7SCbmhuhL/1ojAARojB5F+QFnXhSxu
-         JcJ6Z8yfLoNFVikq5L/ZieHF9S56qdz6N6RPGACH3fVf2R3GwwyboYKvusPgzMKW533W
-         M71LvSdisDSi1PiNLiY+EomSp6YOzJjT1XDsO11zrZm9mzHVV7X72p6VMTF331Fr9Ewo
-         KkUa/DF5/VCAJkenS3o92dsP9fgVula12/bXvDtUczZ/hH1qq2fRt+3kS1ZbZQUhnvYv
-         OxA6b+oB/R6VwK0oN9sPNioEtcXmZM9En1Zib4hL/eWugUs6JmxgGTlEEasfTx5HdfO1
-         wMZA==
-X-Gm-Message-State: AOAM533Wpo7+f58m/kIE7+LKhGo+DGJACP5z9caSP5Tj3ODlN2BTt/dZ
-        q6jfhYNb2tzgBPAwdKKX4rU=
-X-Google-Smtp-Source: ABdhPJyrF6FjKgnMDnGC1tbIqIH9Sh1hVWToOj0/1UDT7ZU9e3El36RtthXnxRjHHqBDctFTTptAsQ==
-X-Received: by 2002:a17:906:2a85:b0:6ce:36bd:bcd9 with SMTP id l5-20020a1709062a8500b006ce36bdbcd9mr6819245eje.318.1648768037754;
-        Thu, 31 Mar 2022 16:07:17 -0700 (PDT)
-Received: from localhost.localdomain (i130160.upc-i.chello.nl. [62.195.130.160])
-        by smtp.googlemail.com with ESMTPSA id p12-20020a17090635cc00b006e055c9c91esm297131ejb.101.2022.03.31.16.07.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Mar 2022 16:07:17 -0700 (PDT)
-From:   Jakob Koschel <jakobkoschel@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Jakob Koschel <jakobkoschel@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mike Rapoport <rppt@kernel.org>,
-        "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
-        Cristiano Giuffrida <c.giuffrida@vu.nl>,
-        "Bos, H.J." <h.j.bos@vu.nl>
-Subject: [PATCH 3/3] iio: sysfs-trigger: replace usage of found with dedicated list iterator variable
-Date:   Fri,  1 Apr 2022 01:06:32 +0200
-Message-Id: <20220331230632.957634-3-jakobkoschel@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220331230632.957634-1-jakobkoschel@gmail.com>
-References: <20220331230632.957634-1-jakobkoschel@gmail.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=ppHqKeKh+Y7gLl6VUDX29RPztSoubgtGlWJ4DyZKx/4=;
+        b=M1pILf+54GNBgqE0T98oyeNxTxfw/HVagZcLKhwGJqZVDKgPzIh1eizC88h7j0Fl3r
+         DZ07e9/RI9EWyomYgWfLK25J/WAbk6aL+mKL/4/6nnmmaINtmEujAi03s9h3GPXJingd
+         k02KOONENawzuIKBHdtQ2Q5XJcjfQfstYDI/dd4u7/wyounnmBg6NZtp4TA3TjH/vkM2
+         SYsSbeObUwxTqxxpyD0pgv80Q+gLS06MGRszumsuvhyoCBajpP6bv7TGFbr+mR1sPuYW
+         YSRSapCvwGSItWDoiRiOIJwhFOZhoxgfGh33VlOBD3wAmr8BAgHrGf7L5FXSJbY5QpOn
+         0wRQ==
+X-Gm-Message-State: AOAM5336inpVIVcq2Etvcp1h5CoYdgXRzQFqQvjoTHhZV0HpvfBPI3nq
+        HRgciH/gPrMKzIGCXViR0Ng0OhsvdXg8eeAdczA=
+X-Google-Smtp-Source: ABdhPJxdw69QRhZcQ645gQ1IgdvpT2+04O1H4WlJhDiamWBUDRGKhNKV0kw4z6AwIbTOtVIZGb7qJbUOnNFNlf2iu8o=
+X-Received: by 2002:a50:99cd:0:b0:418:d6c2:2405 with SMTP id
+ n13-20020a5099cd000000b00418d6c22405mr19628573edb.342.1648792202191; Thu, 31
+ Mar 2022 22:50:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Fri, 1 Apr 2022 06:49:47 +0100
+Message-ID: <CAHpNFcOiFu-ZUBKiEHzzbVusUVVceMaKFTsNpr5S01qjCvbCdQ@mail.gmail.com>
+Subject: OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
+ Mode & Desktop Rendering modes
+To:     submissions@vialicensing.com
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To move the list iterator variable into the list_for_each_entry_*()
-macro in the future it should be avoided to use the list iterator
-variable after the loop body.
+VecSR - Vector Standard Render
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
+VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
+Consolas & other brilliant fonts : (c)RS
 
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
----
- drivers/iio/trigger/iio-trig-sysfs.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
+Mode & Desktop Rendering modes
 
-diff --git a/drivers/iio/trigger/iio-trig-sysfs.c b/drivers/iio/trigger/iio-trig-sysfs.c
-index 2a4b75897910..f1a8704e6cc1 100644
---- a/drivers/iio/trigger/iio-trig-sysfs.c
-+++ b/drivers/iio/trigger/iio-trig-sysfs.c
-@@ -176,16 +176,15 @@ static int iio_sysfs_trigger_probe(int id)
- 
- static int iio_sysfs_trigger_remove(int id)
- {
--	bool foundit = false;
--	struct iio_sysfs_trig *t;
-+	struct iio_sysfs_trig *t = NULL, *iter;
- 
- 	mutex_lock(&iio_sysfs_trig_list_mut);
--	list_for_each_entry(t, &iio_sysfs_trig_list, l)
--		if (id == t->id) {
--			foundit = true;
-+	list_for_each_entry(iter, &iio_sysfs_trig_list, l)
-+		if (id == iter->id) {
-+			t = iter;
- 			break;
- 		}
--	if (!foundit) {
-+	if (!t) {
- 		mutex_unlock(&iio_sysfs_trig_list_mut);
- 		return -EINVAL;
- 	}
--- 
-2.25.1
+Improve Console & TV & BIOS & General Animated Render
 
+Vector Display Standards with low relative CPU Weight
+SiMD Polygon Font Method Render
+
+Default option point scaling (the space) : Metadata Vector Fonts with
+Curl mathematical vector :
+
+16 Bit : SiMD 1 width
+32 Bit : SiMD Double Width
+
+High precision for AVX 32Bit to 256Bit width precision.
+
+Vectoring with SiMD allows traditional CPU mastered VESA Emulation
+desktops & safe mode to be super fast & displays to conform to VESA
+render standards with little effort & a 1MB Table ROM.
+
+https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
+
+https://science.n-helix.com/2019/06/vulkan-stack.html
+
+https://science.n-helix.com/2019/06/kernel.html
+
+https://science.n-helix.com/2022/03/fsr-focal-length.html
+
+https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.html
+
+https://bit.ly/VESA_BT
+
+*
+
+*Application of SiMD Polygon Font Method Render
+*3D Render method with Console input DEMO : RS
+
+3D Display access to correct display of fonts at angles in games &
+apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
+font or shape. (c)Rupert S
+
+3rd dimensional access with vector fonts by a simple method:
+
+Render text to virtual screen layer AKA a fully rendered monochrome, 2
+colour or multi colour..
+
+Bitmap/Texture,
+
+Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
+
+Can be higher resolution & we can sub sample with closer view priority...
+
+We then rotate the texture on our output polygon & factor size differential.
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize
+
+Why ? Because rotating a polygon is harder than subtracting or adding
+width, Hight & direction to fully complex polygon Fonts & Polygon
+lines or curves...
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize.
+
+https://bit.ly/VESA_BT
+
+https://www.phoronix.com/scan.php?page=news_item&px=FreeType-2.12-Released
+
+FreeType 2.12 Released With Support For OT-SVG Fonts
+Written by Michael Larabel in Desktop on 1 April 2022 at 12:00 AM EDT.
+Add A Comment
+DESKTOP -- FreeType as the widely-used, open-source library for font
+rendering is out with FreeType 2.12 as its first big feature release
+since last summer.
+
+Most significant to FreeType 2.12 is introducing support for OT-SVG
+(OpenType-SVG) fonts. OpenType-SVG fonts have been backed by the likes
+of Adobe and Mozilla for adding an SVG table to OpenType fonts.
+FreeType relies on an external SVG rendering engine via the svg-hooks
+property of OT-SVG. FreeType's demo programs are making use of librsvg
+as its SVG rendering engine.
+
+FreeType 2.12 also updates its internal Zlib code, provides minor
+improvements to the build system, support for non-desktop Universal
+Windows Platforms, and has a wide variety of bug fixes.
+
+Downloads and more details on FreeType 2.12 via FreeType.org.

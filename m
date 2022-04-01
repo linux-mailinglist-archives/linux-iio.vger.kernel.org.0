@@ -2,64 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C884EE954
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 09:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CCE64EEAD4
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 11:57:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343996AbiDAHxY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Apr 2022 03:53:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39498 "EHLO
+        id S1344843AbiDAJ7j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Apr 2022 05:59:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235432AbiDAHxX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 03:53:23 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54456261DF7
-        for <linux-iio@vger.kernel.org>; Fri,  1 Apr 2022 00:51:33 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id pv16so4240602ejb.0
-        for <linux-iio@vger.kernel.org>; Fri, 01 Apr 2022 00:51:33 -0700 (PDT)
+        with ESMTP id S1344846AbiDAJ7g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 05:59:36 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C4A26D10B
+        for <linux-iio@vger.kernel.org>; Fri,  1 Apr 2022 02:57:45 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id c10so4651112ejs.13
+        for <linux-iio@vger.kernel.org>; Fri, 01 Apr 2022 02:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=nXjAzXLpXSZdHQ34t/UZmSG0B+pcFpFO0TzLkKO37nA=;
-        b=R5qxyMq0KSgMLORzVFr6f8JZchVpBqg3vw6QZkgQMBmMpmrWvKJXEkPbDrZs+NDRNX
-         Q03+2GBXLOuu+WGHr2ImgjCSP8i5ANZM6zdGZHPChpz6m1xhNKPBNPmzSPCmhFczeIiG
-         zBBE5QrYUxqLcx7KAqLrrRxVbscoBuS+Nz0+d/T4WtF+Fz7Cyc0JvzCcF5/+dviBqJWY
-         GhXtl/dXbzv1w9GW18RawAEXaU70jdKR1CPuevT7lUMwFRzc8G1G+ukqTCVltycG1Dwb
-         4kf+VTT2GgdcwdOYxr1ksgSfhfhDaqD3WpPlg0ZS9r0RijRNPPQu60iG14SENDohcZyP
-         MHIQ==
+        bh=ME1P1OVaPsxsLJKBK1FIyPVS66/NXOmvGf0UviNhLbo=;
+        b=cZtR0y8jMeMXwv5FoLYkHYt58MPIIrlf6/UGFp/l98ZgRdNjtji5SBaNs+fpKo39k1
+         nyqzkGOcThBJGJwCSNKd/3NAOb/h4Cp0m0hxewBCuCN9cYvfJksAWnQoqKAhgtJkbwAX
+         8efBlin0lI6meOfWc6AdaekWj2iiTwYOaRz0Kgz0nfsoRYcIR6qPLFgsQ/yM4qIoS0QQ
+         YuB2NE7RLxTHbV1Bc/tkip+G7U3hU+EDdqRLUbSNKAjuB/Jv4JxRqUM4tk0UcJkNtpYv
+         eJVf6eUcWTCiEM8BYe7bRfImPgZ08kFvKqHFHsS/1mNOxv5+Av+mCv8bKASzf6VPYhRx
+         OwmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=nXjAzXLpXSZdHQ34t/UZmSG0B+pcFpFO0TzLkKO37nA=;
-        b=dYBo9weUWQ/hf32QNWMAOow86ZlJsCCG+x2UIWlKQhf/g2dKfq01Je4/vKlgglEqe7
-         thJvJ1pj15HF4AJMhKdDugScLI02n5Jo4ouCjc5smt3OP5HVY/Z7+Ir3SmKGcwiav0Oj
-         /+SbVJVQGuNJHxVimtjYIhBiKBwqmni7zqyBlw1iRsctfNROOdpF5UZoIT/pAv6OWYlv
-         jX0TmevRvJw58Kjg7DPaFmanM6Dmiy2TrUnxhJcpQew2r7yPOJHM9/cZN3+xHvORkeZO
-         EEe7IQTYZ/knilS+UI9VKqe89XVkJtmRlS6xJgfGxnfoJUGQNNuLGX3k05kLfkbRI1un
-         yiIw==
-X-Gm-Message-State: AOAM530vLjaDSu6Z6axaTYfpYOct8uOJpj2x7RVL7ozdLT+2ebjDRJLc
-        OLpYT0qlJ6zrgI0bBGkTk0QllW9o/SE/JE5/pqk=
-X-Google-Smtp-Source: ABdhPJy15tXaBUCoFtBaiXbg+DtyxG4m2FK0tsoBWDirs3TPeDTGqKEPNXZ3qdpz2WbQOSw71PF4td1cPe7M8XL04po=
-X-Received: by 2002:a17:907:980d:b0:6d6:f910:513a with SMTP id
- ji13-20020a170907980d00b006d6f910513amr7769180ejc.643.1648799491620; Fri, 01
- Apr 2022 00:51:31 -0700 (PDT)
+        bh=ME1P1OVaPsxsLJKBK1FIyPVS66/NXOmvGf0UviNhLbo=;
+        b=r/fy6Swwm5a+PoNDJG9V0N8ZxyKmI/nKCcDbNfMNbVhLOV5Q/cgJytS0ModUT/hYQE
+         ns7bofqd8rGVRBJLrySWwM8tdrElaCImtXje2VqmYeQOQOpxB0+bIdDROg8qiFuKlSk3
+         L4/SyeLN1vLqk0q92RVuQ+WNELf8VC9wFN7EEZo6KC4mq3X7DI26/EXVRTSZGuAy8L0I
+         kTTNcQW3Lz8pmqwL2yzRynodJphIQtPIOTHPWNO4lsQyPCnkbWQ4HsUrDvVDT1JvQ0Qm
+         QkHmui+UEI2mxcYMPJFwV7eqfb7q4WlOQckR4H6FrZzMlhNE9T1r64Y7osThYVbWbiYe
+         pmEQ==
+X-Gm-Message-State: AOAM530Q2YQ1Fo63uMOGBmUNHlCLN/ozCiuzYFPjTyE73gfrn2A0RH5X
+        t0WYtQG/kIb8NnTDhl1JwyR9yGoQMsBpeDaz5e8=
+X-Google-Smtp-Source: ABdhPJwFSBf8pUatqD1Z+LtgdQEYw0B3SGfVWaBOFbuaVP42+s4nweKhdbd7IA9cIoJ9FAcgNuFoaupigz6lppEb+vc=
+X-Received: by 2002:a17:907:1b10:b0:6e4:bac5:f080 with SMTP id
+ mp16-20020a1709071b1000b006e4bac5f080mr4426872ejc.24.1648807063596; Fri, 01
+ Apr 2022 02:57:43 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Fri, 1 Apr 2022 08:51:30 +0100
-Message-ID: <CAHpNFcPUVeOhEnL_10u9Omb+LDpYXjTPkYzteduPYWFiLe90bw@mail.gmail.com>
-Subject: Though the VESA & HDMI & DisplayPort standards Facilitates direct low
- bandwidth transport of and transformation of 3D & 2D graphics & fonts into
- directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-To:     moderator@vesa.org
+Date:   Fri, 1 Apr 2022 10:57:42 +0100
+Message-ID: <CAHpNFcPmGicZpXCboh0PWfTsZRqxc-W-qA_cx2+vA+OWb0_A6w@mail.gmail.com>
+Subject: VecSR Firmware update 2022 For immediate implementation in all
+ operating systems, monitors, TV's & equipment such as Mouses, Audio Systems & Webcams
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
+
+Date: Fri, Apr 1, 2022 at 9:48 AM
 
 VecSR - Vector Standard Render
 

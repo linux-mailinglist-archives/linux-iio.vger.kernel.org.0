@@ -2,53 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 024474EED61
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 14:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7BF84EEE9A
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 15:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344949AbiDAMpi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Apr 2022 08:45:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
+        id S235801AbiDAN5Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Apr 2022 09:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241268AbiDAMph (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 08:45:37 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B984195D97;
-        Fri,  1 Apr 2022 05:43:46 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 231AWHcv003760;
-        Fri, 1 Apr 2022 08:43:23 -0400
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2171.outbound.protection.outlook.com [104.47.59.171])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3f5yqsgq5s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 01 Apr 2022 08:43:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=N6RsGyUHc/pCaawGJyGxuwtFA9o7kl8RgHObjffDnemaCMfDYBgHccsr2xjjal3dryQveVd5Xcv5g/5jA80K2vvpXnk6cfZF8P8/zngMfZSf0X1RabeHYGTQMSsp9qHanUDRCx0yC4z03A3q0ZPRtE77+0KRTfgXMGvs0Q0FScn3dMBIGsQYL2hojCnhb0MleyAodqz8GxY9Aa+FnzMiR8AHY/TCTpjx5xWayJhX7sSHuqBr9f96VBZ+ZkVOiojhVdoesWJcLO962rZ/10HNDJ1ih9u/z48tHquh/FEmuxRwz0Ezi1dnv3RzGS/G1Pi4/vhBj/v/2DwRyendHXPZXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CRaP7JEVptUab6SpzX8T/MXeSSE65ZVBbDVY85xw71E=;
- b=H2sbB4/pwnHsxg3CKEgHt7c3sYz6sNoWxBfMupnC5bWICFdS0Ut3IUL56nv+WHUg9fxiQwWq5WBGUXVTAExDeHIdE43C1CjUr6nDmhMYLd8NWv9ZaA2Ce8RgG4MxBRFf0to5rCn/XyKeyiaL5gEDRB/udT2HzR4wGpNbdaDt38sZmfuKY2Su0oOUl4AI5Z1oyuk8ZV+hhVJtIFBDIvxRHWH27XsFusoxkKZRvQNRw2IdnSSzcaIK8xQSMdPvK/7RwvlDiyTDeoKGx29lyZDYxjeW108eZnCNjCBDZvcZ06KOmr3YBZO0ohzxChMgtNLAudUbpt2AsKu/+Qeczkdb5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        with ESMTP id S235550AbiDAN5P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 09:57:15 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC0C1DC985;
+        Fri,  1 Apr 2022 06:55:24 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id lr4so5968622ejb.11;
+        Fri, 01 Apr 2022 06:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CRaP7JEVptUab6SpzX8T/MXeSSE65ZVBbDVY85xw71E=;
- b=OqcQA7yj+bnQgmH0LPp9QAoy9T74kq0Z7UFh9TpUcEzGHb9MSTUheodUNWMpFdCRjGVLKTHML+UIdmpXaJ3AW67l1m95QxJua7+/vyp7sVa1axEig9Q9X3fBhWAQSwCL4aXG+dhiSqHRmSexBkwQ1TemlZ2kFWmDhH7DwU2Aj4c=
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com (2603:10b6:510:122::7)
- by MW5PR03MB6960.namprd03.prod.outlook.com (2603:10b6:303:1ab::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.19; Fri, 1 Apr
- 2022 12:43:21 +0000
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::a97e:a520:c3a6:d2ae]) by PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::a97e:a520:c3a6:d2ae%7]) with mapi id 15.20.5123.026; Fri, 1 Apr 2022
- 12:43:21 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Jakob Koschel <jakobkoschel@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        d=gmail.com; s=20210112;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=p3P1QxNSvNFi/Xhftp0DPxXtemptZBUwlKISHBBOqG8=;
+        b=W53hTvmT9kUY5y0yoXxrsD36TOw6zVOXu3BWlp2GVykG8rOvMDzf6iQj9+J20IPrRQ
+         uQU+54OecOjhL27WAsf6qMALNtMDvzLy56hBISGNCnrpFHgUsqRmH2qEhzYveiVZ/99p
+         gqt8rBkMIqzDnJs0QJxeRBHEjLNfnRA/OFj7Y7LGzgaTBIk4HCcJOchMobDqc9vY8jyJ
+         13YFpLfLKk9eFn+6t9IjBQa8I+l8iXxAKGjdGbck/PFZ7gBDA6dJJD2lrForq2UYJ8BC
+         6UrZxEeFQERX+dMSXxn/uI7WhAAXXosAgDIIs8+HwJdMekwDutn6BAD4VkKcyXZeTaJG
+         ETvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=p3P1QxNSvNFi/Xhftp0DPxXtemptZBUwlKISHBBOqG8=;
+        b=z4MdTJ8ceRqC+Q2Mm4t68rWjw+7iBbdnshzD33b5sXf5HL8r/B+s25hDuygYtJ2X8M
+         vb9UTQJcD8L/IEHf8AnPhRO5P5xb2nOwZv25b6seNYzK2dtbDjDDGVYpobiS2TIWL7Ce
+         jdtDdReLL/PxU2Sop1rGtm48wM24M/EVL+wjVxZgwlFKB5ls41qBkhjUC9WApIBT6Ejs
+         fVewN0Fg9pzt+Pi4VDl8iA/U9y86X+X9VOz+he2bAdEsehCHHrLZLAT6bjLtC486Gk94
+         /2clCTtrUX0DGeijo0vR5ti3TsvLQ35Kfp8Nqqm5ldVZUki84uQcwQVJaGIn8zU9bhBS
+         IgjA==
+X-Gm-Message-State: AOAM5304fG9Byl1n70KptnY03/9dltPK1n4/tnjnuNqNJDeiTGl2CTBG
+        aqMmS0vx2N5YhX3RWpvDy40=
+X-Google-Smtp-Source: ABdhPJy3VDSxT0/EAHD21emIaMJg2Y1ayVaZNTS9dX3W2FnUIEGH6BGZTU1f7XpfzWPuxn5UvbTVmg==
+X-Received: by 2002:a17:907:72c4:b0:6df:917c:df6f with SMTP id du4-20020a17090772c400b006df917cdf6fmr9470466ejc.120.1648821322418;
+        Fri, 01 Apr 2022 06:55:22 -0700 (PDT)
+Received: from smtpclient.apple (i130160.upc-i.chello.nl. [62.195.130.160])
+        by smtp.gmail.com with ESMTPSA id kw3-20020a170907770300b006b2511ea97dsm1056848ejc.42.2022.04.01.06.55.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 01 Apr 2022 06:55:21 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
+Subject: Re: [PATCH 1/3] iio: buffer: remove usage of list iterator variable
+ for list_for_each_entry_continue_reverse()
+From:   Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <PH0PR03MB6786326401D38B60141CAC9799E09@PH0PR03MB6786.namprd03.prod.outlook.com>
+Date:   Fri, 1 Apr 2022 15:55:20 +0200
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Dan Carpenter <dan.carpenter@oracle.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -56,116 +64,16 @@ CC:     Lars-Peter Clausen <lars@metafoo.de>,
         Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
         Cristiano Giuffrida <c.giuffrida@vu.nl>,
         "Bos, H.J." <h.j.bos@vu.nl>
-Subject: RE: [PATCH 2/3] iio: ssp_sensors: replace usage of found with
- dedicated list iterator variable
-Thread-Topic: [PATCH 2/3] iio: ssp_sensors: replace usage of found with
- dedicated list iterator variable
-Thread-Index: AQHYRVQWzVTHnxHR10i24e3FWXGAAqzbAR8g
-Date:   Fri, 1 Apr 2022 12:43:21 +0000
-Message-ID: <PH0PR03MB67869AFC7667ABCD9A57CB9099E09@PH0PR03MB6786.namprd03.prod.outlook.com>
-References: <20220331230632.957634-1-jakobkoschel@gmail.com>
- <20220331230632.957634-2-jakobkoschel@gmail.com>
-In-Reply-To: <20220331230632.957634-2-jakobkoschel@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
- =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctNGVjZjA0MzEtYjFiOS0xMWVjLThiZDUtZmM3Nz?=
- =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XDRlY2YwNDMzLWIxYjktMTFlYy04YmQ1LWZj?=
- =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMTU4NSIgdD0iMTMyOTMyOTA2MD?=
- =?iso-8859-1?Q?AxMDAxMzMyIiBoPSI0VU1kWkpNTllXQ3lQWTdQRlFHY2FtSjZDaGM9IiBp?=
- =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FFb0NBQUIwYXlZUnhrWFlBZVE4YlRNMzJzb3M1RHh0TXpmYXlpd0RBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVZJRXZvUUFBQUFBQUFBQUFBQUFBQUo0?=
- =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
- =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
- =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
- =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
- =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
- =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
- =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 763f85af-5a24-4ffe-11c3-08da13dd348d
-x-ms-traffictypediagnostic: MW5PR03MB6960:EE_
-x-microsoft-antispam-prvs: <MW5PR03MB6960FB43C4213C7502C234BD99E09@MW5PR03MB6960.namprd03.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: vdIPtrOvFQxy/+He1AazoNnDq01N858qkTwfyflCIAftGEedahN5h2oBWQtRrZ0gsi6qzYJqsvvZa7ibOy9l3F72oG1QoRR4xDcvO5+6shQqCPdYKWMQdCPDTGc9XT5pvdU7AfXJXrlW+lTc6yeT2rXP4IoYKpXNnjiiej+7QsIhZDh/avMXyOeq4ZoWxN2JwEe6bjHJjAoQa9tSoTiU3GgD+Z1xv5MmxaVCNHE6VUcpqPr1Cb5xvwxGbCveElIqDcMt3R9qaDZ3Aplv4pjOR+33t5DyB/zZ/lyfUPPfxXRcgLj/iku/Vy5pQ7iVmvQOuMoovCRVP8NWnFlkyp897CBGMBAUKT7mIyT3JrUtbJcP4hUeDEDZHxLx0jMcP/4fu2DioGy49Pjjk8HlDypd5B/hy3H5csv9wExd9H3ZCEBgdlKBjikUEQJ1uCHCTGZ1CQrwPeryTw3TUTaTMUHZyuGQDw28lZo4wZsImjG/HhnQzadYaIf0QZ8XckRomz8gebhZ6KXsQs4RT7a05MnmsC4Q3aC314zEFiEW5FVyHmlFXHIlo1HEOJ7gLIsmdsDlZkYUDt8IsZ1dqmDz1dZGPN0utdfvC1qa9kNwm3EhS/WWY1rUK27M7gZkM6+r5YkBITIrK2XsaNjCQh2BQSL329kny3FltXS+UOCUKKt4csa9XV6NhaKOqJB7ScdH+7UWoKktLOJE4KqVwLLmJl+XwTBdAzDu3ZGn7v0u2S3/SPVqEdArFfofXCkVxdSjjCAq0jGOu5SWZ0itVI9xJVRKx4iiQ8UkUbcwhgewwpKumTE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6786.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(66476007)(122000001)(53546011)(8676002)(9686003)(64756008)(66446008)(38100700002)(76116006)(4326008)(33656002)(7696005)(71200400001)(66556008)(55016003)(6506007)(38070700005)(966005)(83380400001)(8936002)(5660300002)(508600001)(86362001)(186003)(2906002)(52536014)(7416002)(110136005)(316002)(54906003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?orVnz4qiXyq4J6seUMT4ZxgiTpKhzp4SzkkMtM2zA0g7UrdkbGbq2Xb7UX?=
- =?iso-8859-1?Q?bcZETTcM46bfmyf9LVpoK6ntotJ/wrQKf+6Y5eomH+RKyDxwea/SJFE8ns?=
- =?iso-8859-1?Q?9z+mvvkTeHluB9KZH17/Y0IIi2kpJ5cjT1DhJdrwIAuCcFgvmIIYEz0rmx?=
- =?iso-8859-1?Q?1qqrSgyVnjZPzF/uHged8xVn6C6dbCOfaVRLyh02bpbS9OzS1Ld4HD6azq?=
- =?iso-8859-1?Q?HMkqrjUURDHag22322XSpbLsJo5bACZGpTo9ycT+3bS8zPh21LxQ/jtHrg?=
- =?iso-8859-1?Q?IE7DBUAiPtDsGiQOmrWZrNwTEi7sF8hEXs8/0GLG9rN4QW5RZXVFl4UeFx?=
- =?iso-8859-1?Q?VwJ3P2zqgwNKt+D/lcVD9hsabTLe45Ah457EhPl28ToZp1T1GUngDJJG36?=
- =?iso-8859-1?Q?C5wC9p/YnzHJGUksGLaXvwqbkIjn9Gb5AErp+B1Qo85kPAm8MzUrR+tEa6?=
- =?iso-8859-1?Q?phKeWX6jAAalU2klHVIcjQxJl8+lwgJMVX3QUPSL9WGUFI0Mu8wqTn+4w+?=
- =?iso-8859-1?Q?pOkQSnZGTRNXQlVLb2YJpt4bOVhw1504N8/TOAx5A+e8Qmf+Gtsa1TrKXt?=
- =?iso-8859-1?Q?wldZ30zDhXK52CD5iiUPrGZT7FJy6bsTQ0k095T7DL7aqOk/DEVERu8ilI?=
- =?iso-8859-1?Q?xPgzLAlCzUExJXF0wMST+yTHcg+tQuFPccVZVJuwv9wD3THSe0foa39N9w?=
- =?iso-8859-1?Q?eC5MtMECf+fhvQdBbRGsRN8ATD0St5dcKfdimoEMQeaFsBJ7wADfJb0Cru?=
- =?iso-8859-1?Q?JVZmVwJPoXFCm7Zmszni0z5rydRw3SQhjqbIsLbYmKlf6RTGgMdFQjAs3l?=
- =?iso-8859-1?Q?eQ4KkB+BzzG4JbRZg1+QXIePuaU/7KfTma6+wZTaMMTbhX9jFccJJXKlYY?=
- =?iso-8859-1?Q?tiMgi6cQDHdTibhIdPoRGOs9+VqyBT9zImgyr0QBNsq2wz+VC9A33ot1ep?=
- =?iso-8859-1?Q?zSG3zy8cPR0C9Uh1avgM2tUDsWutrqe3pYDhQjUhYrEh5AbyOPt2pmu0ku?=
- =?iso-8859-1?Q?xZ0EhZrfm/EJyKQLMQ6KMwKjaUtZWoz9QtDXtUclU6Q6wUaVYfN3un6eze?=
- =?iso-8859-1?Q?atZgCSwwPZJ4VUYwLd261z49E+rv9c4sy0CA6MfZU3dLWV29S5wEdfiV8Q?=
- =?iso-8859-1?Q?5i+V5/MTg1a1ZH8XcCuW2t6oIc0MHcMC2FrTzj6WHa9Lqzyn50iaKBmds6?=
- =?iso-8859-1?Q?WAUNPB77IeT4kGsF7+9XNaGStd1oomacDtlfvVuJsOPntL58dbV3udhCnh?=
- =?iso-8859-1?Q?psUg7T/A1U+F56EmF2KhtmuoU3oJqHJhIiDyRzhdCdfpx0aJHsbd2QuFI9?=
- =?iso-8859-1?Q?c0Y2mJtCh1VMWQkjwKO7pzkK84F6UK8M/GBuaHgoF5IqZugZYAXylGEloS?=
- =?iso-8859-1?Q?YZmnJQ2orRIC5v1SSxRiYashxgyQTrw+t7bfVrbR0thw2ZdbLEJ/Lv4j1v?=
- =?iso-8859-1?Q?Nha5siEy9UDofhI8jyurYcr/XIRPlX9dA6KvVlXCYreII/jq14gZIgF0EO?=
- =?iso-8859-1?Q?o/oA28BZfYkWDsJR0x1bM07cCmzVEzwBStLqBW3QE2WXzaONTWivMRduum?=
- =?iso-8859-1?Q?0e6ow6XA2xUuN6F1fM4RVZHYWbg8wENzucckWJpwRD+JIJJv+NFH3pHYwL?=
- =?iso-8859-1?Q?W3nIsHC2RBlkl494BahocBmYxxjRLhdBEbNEnDtDktC6KJn618mO/sEhp4?=
- =?iso-8859-1?Q?9TF0fAOg0m2chsM3IIHe7bqCwOD/8kScm7t6isM7qtgXH7uSTb2sKfhx22?=
- =?iso-8859-1?Q?iUItUb3z9vByVGKSi6wCoQY071QOP0P3j4p/Deyayp+Z9+D6XbymkXTflu?=
- =?iso-8859-1?Q?A/oay1Fj8VeiqL/gktIARv66WqPujBmhKtv/9JwUjrPY6Wu4WQ4GG4W4ZL?=
- =?iso-8859-1?Q?hA?=
-x-ms-exchange-antispam-messagedata-1: zOsSx7HcqoRBfA==
-Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6786.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 763f85af-5a24-4ffe-11c3-08da13dd348d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Apr 2022 12:43:21.5925
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: khCIDRUwhqRrFGJx4Tr+0sgdWjWcEDXVr2H0DvtOnw4JmASU2kdPPi9NzKXeDVHcNMUdYShkNnQ89OVtNLPszw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR03MB6960
-X-Proofpoint-ORIG-GUID: LyNk0mjSCb4XdwVh-FwtvnHlQLCPgT7C
-X-Proofpoint-GUID: LyNk0mjSCb4XdwVh-FwtvnHlQLCPgT7C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-04-01_04,2022-03-31_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204010058
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Message-Id: <80A5A418-FBBE-47BF-ACFF-0470027875F6@gmail.com>
+References: <20220331230632.957634-1-jakobkoschel@gmail.com>
+ <PH0PR03MB6786326401D38B60141CAC9799E09@PH0PR03MB6786.namprd03.prod.outlook.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -174,40 +82,145 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-> -----Original Message-----
-> From: Jakob Koschel <jakobkoschel@gmail.com>
-> Sent: Friday, April 1, 2022 1:07 AM
-> To: Jonathan Cameron <jic23@kernel.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>; Dan Carpenter
-> <dan.carpenter@oracle.com>; Jakob Koschel
-> <jakobkoschel@gmail.com>; linux-iio@vger.kernel.org; linux-
-> kernel@vger.kernel.org; Mike Rapoport <rppt@kernel.org>; Brian
-> Johannesmeyer <bjohannesmeyer@gmail.com>; Cristiano Giuffrida
-> <c.giuffrida@vu.nl>; Bos, H.J. <h.j.bos@vu.nl>
-> Subject: [PATCH 2/3] iio: ssp_sensors: replace usage of found with
-> dedicated list iterator variable
+> On 1. Apr 2022, at 14:40, Sa, Nuno <Nuno.Sa@analog.com> wrote:
 >=20
-> [External]
+> Hi Jakob,
 >=20
-> To move the list iterator variable into the list_for_each_entry_*()
-> macro in the future it should be avoided to use the list iterator
-> variable after the loop body.
+>> -----Original Message-----
+>> From: Jakob Koschel <jakobkoschel@gmail.com>
+>> Sent: Friday, April 1, 2022 1:07 AM
+>> To: Jonathan Cameron <jic23@kernel.org>
+>> Cc: Lars-Peter Clausen <lars@metafoo.de>; Dan Carpenter
+>> <dan.carpenter@oracle.com>; Jakob Koschel
+>> <jakobkoschel@gmail.com>; linux-iio@vger.kernel.org; linux-
+>> kernel@vger.kernel.org; Mike Rapoport <rppt@kernel.org>; Brian
+>> Johannesmeyer <bjohannesmeyer@gmail.com>; Cristiano Giuffrida
+>> <c.giuffrida@vu.nl>; Bos, H.J. <h.j.bos@vu.nl>
+>> Subject: [PATCH 1/3] iio: buffer: remove usage of list iterator =
+variable
+>> for list_for_each_entry_continue_reverse()
+>>=20
+>> [External]
+>>=20
+>> In preparation to limit the scope of the list iterator variable to =
+the
+>> list traversal loop, use a dedicated pointer to iterate through the
+>> list [1].
+>>=20
+>> Since that variable should not be used past the loop iteration, a
+>> separate variable is used to 'remember the current location within =
+the
+>> loop'.
+>>=20
+>> To either continue iterating from that position or start a new
+>> iteration (if the previous iteration was complete) =
+list_prepare_entry()
+>> is used.
+>>=20
+>> Link: https://urldefense.com/v3/__https://lore.kernel.org/all/CAHk-
+>> =3DwgRr_D8CB-D9Kg-
+>> c=3DEHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/__;!!A3Ni8CS0y
+>> 2Y!q8llw5UCaMIsAU7tPtPDhwVor0wy032I7FJHv0VxBZksNuRJF04HjWe
+>> 0XYG7OQ$  [1]
+>> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+>> ---
+>> drivers/iio/industrialio-buffer.c | 7 +++++--
+>> 1 file changed, 5 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/drivers/iio/industrialio-buffer.c =
+b/drivers/iio/industrialio-
+>> buffer.c
+>> index 208b5193c621..151a77c2affd 100644
+>> --- a/drivers/iio/industrialio-buffer.c
+>> +++ b/drivers/iio/industrialio-buffer.c
+>> @@ -1059,7 +1059,7 @@ static int iio_enable_buffers(struct iio_dev
+>> *indio_dev,
+>> 	struct iio_device_config *config)
+>> {
+>> 	struct iio_dev_opaque *iio_dev_opaque =3D
+>> to_iio_dev_opaque(indio_dev);
+>> -	struct iio_buffer *buffer;
+>> +	struct iio_buffer *buffer, *tmp =3D NULL;
+>> 	int ret;
+>>=20
+>> 	indio_dev->active_scan_mask =3D config->scan_mask;
+>> @@ -1097,8 +1097,10 @@ static int iio_enable_buffers(struct iio_dev
+>> *indio_dev,
+>>=20
+>> 	list_for_each_entry(buffer, &iio_dev_opaque->buffer_list,
+>> buffer_list) {
+>> 		ret =3D iio_buffer_enable(buffer, indio_dev);
+>> -		if (ret)
+>> +		if (ret) {
+>> +			tmp =3D buffer;
+>> 			goto err_disable_buffers;
+>> +		}
+>> 	}
+>>=20
+>> 	if (indio_dev->currentmode =3D=3D INDIO_BUFFER_TRIGGERED) {
+>> @@ -1125,6 +1127,7 @@ static int iio_enable_buffers(struct iio_dev
+>> *indio_dev,
+>> 					     indio_dev->pollfunc);
+>> 	}
+>> err_disable_buffers:
+>> +	buffer =3D list_prepare_entry(tmp, &iio_dev_opaque-
+>>> buffer_list, buffer_list);
 >=20
-> To *never* use the list iterator variable after the loop it was
-> concluded to use a separate iterator variable instead of a
-> found boolean [1].
+> Ok, it's Friday so I might be seeing ghosts... But looking at =
+'list_prepare_entry()'...
+> If tmp !=3D NULL, then all goes well but if tmp =3D=3D NULL, then we =
+get
 >=20
-> This removes the need to use a found variable and simply checking if
-> the variable was set, can determine if the break/goto was hit.
+> list_entry(&iio_dev_opaque->buffer_list, struct iio_buffer, =
+buffer_list) which
+> would require 'struct iio_dev_opaque'. It looks like like =
+'list_prepare_entry()'
+> assumes that pos and head are of the same type...=20
 >=20
-> Link: https://urldefense.com/v3/__https://lore.kernel.org/all/CAHk-
-> =3DwgRr_D8CB-D9Kg-
-> c=3DEHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/__;!!A3Ni8CS0y
-> 2Y!tqcYepOSYys02RcvKD7LiZk3mHwPmSLa_1S0QglWPRZSCoPnXk3ccjY
-> _XzsDDA$  [1]
-> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-> ---
+> Am I missing something?
 
-Reviewed-by: Nuno S=E1 <nuno.sa@analog.com>
+The list iterators are weird in this perspective...
 
+If you look at the original code, list_for_each_entry_continue_reverse() =
+is called on 'buffer'.
+
+'buffer' would be a valid struct element of &iio_dev_opaque->buffer_list =
+if the break is hit,
+but if no break is hit in the earlier list_for_each_entry() buffer is =
+not a valid entry.
+
+Before the terminating condition of list_for_each_entry() is met, it =
+essentially does:
+
+	buffer =3D list_entry(&iio_dev_opaque->buffer_list, =
+typeof(*buffer), buffer_list);
+
+the buffer returned here is not a valid pointer to struct however.
+But since list_for_each_entry_continue_reverse() immediately calls =
+list_prev_entry(buffer, buffer_list)
+on it you end up with the last entry of the list again and start =
+iterating with that one.
+
+It's a very weird design choice but since =
+list_for_each_entry_continue_reverse() expects
+a pointer to the element struct and not the list_head struct, you need =
+to pass in this 'bogus'
+pointer if you want it to start on the head element.
+
+
+Keep in mind that the code here is just a more explicit version of this =
+'type confusion' whereas
+with the original code it was just hidden within the =
+list_for_each_entry() macro and far less obvious.
+The functionality is exactly the same.
+
+PS: list_prepare_entry() was made for this use case, so basically it is =
+expected to craft this bogus pointer from
+the head if pos =3D=3D NULL.
+
+>=20
+> - Nuno S=C3=A1
+
+Thanks,
+Jakob
 

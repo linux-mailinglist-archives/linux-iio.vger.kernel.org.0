@@ -2,45 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 922304F04DA
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 18:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F4044F04E2
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 18:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358040AbiDBQ3X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Apr 2022 12:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53520 "EHLO
+        id S1350386AbiDBQbS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Apr 2022 12:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345180AbiDBQ3X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 12:29:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B2A158D9C;
-        Sat,  2 Apr 2022 09:27:30 -0700 (PDT)
+        with ESMTP id S1349268AbiDBQbR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 12:31:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B496556;
+        Sat,  2 Apr 2022 09:29:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E277DB80AB2;
-        Sat,  2 Apr 2022 16:27:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D2BC340F3;
-        Sat,  2 Apr 2022 16:27:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CA5760B0B;
+        Sat,  2 Apr 2022 16:29:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1BAC340EE;
+        Sat,  2 Apr 2022 16:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648916847;
-        bh=m6wRN/Ozv9b5FQGVEHdRnB+vvT2QvfMHvXSoL21Mhc4=;
+        s=k20201202; t=1648916964;
+        bh=0zTZVCqwikHoAkGPgno+BTuZyaWtzijYrNpFzKqJ33M=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Hn+y7TS8hLCS2OAWIiI17VtbVNBAVhCgS/91kyR+Xq7JA0MBeX+IInlwvj0hxTKNS
-         JAHrg5T2sSPLxFRitJ3dqnfFdcDiV3Q3B335zPsPYozns8cNxuB8Lvjw5+I0Kx5zdF
-         NbO5ouy+9XNBr+OSVTNm7RQa8eCfxQoO+YESQnecNl/Y2CSgM9oAA2+ZE/bcD/8CPZ
-         8dbJphB5b+SZMI8hxpi6pqm4qhSlkw7/+jgjsG+1C8cgxAsI0iJj2+L9xR5Js5iENZ
-         f+v7U7ZV1hXvuwthxnSnuyJ0gF9eq22ARVuWoKw9U3rx/Zx5IW/V+MEVMvvbNGu2JR
-         eFy/eJv0N3erg==
-Date:   Sat, 2 Apr 2022 17:35:10 +0100
+        b=D3sNX+PDnxEVBgBLoyl/H0BCVQAtjYdWojhjsdti04zD0d0hHa8tqx/bfxguMzeVI
+         TxvCDp/8oVW2QmUGNYd98MS4k85VTsrn9zLw1s9+XPYQmB+Uzp2mewNgEgMqnnKBPs
+         wtzydlwqx3z2w9zoXW7WtqOqgLOeGvl28ObSa25s1VZeaUGoI2vupaINCbRBRr/OdO
+         37M1iBVIVtAx+hvAhGNCeDJLET8nu3v+Pj0egVM9ePucO7bhGq8NgWMDFoj1iH9YOb
+         rv2OFfmL5HLGFLAn5f3CfggRypBgV2BFpj1htHzprg+NhOEcRq/2rCCXBAwdIMtgYT
+         sOEL6Gpu6Oorw==
+Date:   Sat, 2 Apr 2022 17:37:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] IIO: accel: fixed coding style issues
-Message-ID: <20220402173510.2b38e261@jic23-huawei>
-In-Reply-To: <YkIJ3/nkVNMy/qv8@hp-amd-paul>
-References: <YkHOpCT2Gad1YaxN@hp-amd-paul>
-        <20220328180623.1380d23e@jic23-huawei>
-        <YkIJ3/nkVNMy/qv8@hp-amd-paul>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] iio: accel: bma400: Add step change event
+Message-ID: <20220402173707.426cb005@jic23-huawei>
+In-Reply-To: <20220328203710.GA8027@jagath-PC>
+References: <20220326194146.15549-1-jagathjog1996@gmail.com>
+        <20220326194146.15549-6-jagathjog1996@gmail.com>
+        <20220327175036.4b026481@jic23-huawei>
+        <20220328203710.GA8027@jagath-PC>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,123 +57,203 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Mar 2022 14:17:51 -0500
-Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
+On Tue, 29 Mar 2022 02:07:11 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> On Mon, Mar 28, 2022 at 06:06:23PM +0100, Jonathan Cameron wrote:
-> > On Mon, 28 Mar 2022 10:05:08 -0500
-> > Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
+> Hi Jonathan,
+> 
+> On Sun, Mar 27, 2022 at 05:50:36PM +0100, Jonathan Cameron wrote:
+> > On Sun, 27 Mar 2022 01:11:46 +0530
+> > Jagath Jog J <jagathjog1996@gmail.com> wrote:
 > >   
-> > > Fixed case statement issues and spacing issues.
+> > > Added support for event when there is a detection of step change.
+> > > INT1 pin is used to interrupt and event is pushed to userspace.
 > > > 
-> > > Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>  
-> > Hi Paul,
+> > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>  
 > > 
-> > Thanks for the patch.
-> > 
-> > These are drivers written / maintained by different authors, so one
-> > patch per driver preferred.  Particularly handy as people might not
-> > agree with all of them so separate patches would allow me to pick
-> > and choose which ones to pick up.
-> > 
-> > Comments inline.
-> > 
-> > Please state how you identified the changes btw.  Script?  
+> > These last two patches look fine to me.  Simply having the
+> > event enable the channel makes things simpler.  
 > 
-> I used the checkpatch.pl script to identify these changes.
-Please mention that in patch descriptions in future.
-It's useful to anyone tracking this sort of information.
+> Means do I need to drop the step _INFO_ENABLE and handle the
+> enabling and disabling of step channel through the event enable and
+> disable?
 
-I added it to the broken out patches whilst applying.
-
-Thanks,
-
-Jonathan
+No.  I was trying to say I like the solution you have now.
 
 > 
+> > I briefly wondered if we need to care about sequences like
 > > 
-> > Jonathan
-> >   
-> > > ---
-> > >  drivers/iio/accel/bmc150-accel-core.c | 15 +++++++++++----
-> > >  drivers/iio/accel/dmard09.c           |  2 +-
-> > >  drivers/iio/accel/kxsd9-spi.c         |  4 ++--
-> > >  3 files changed, 14 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-> > > index d11f66801..f7dd7ec2c 100644
-> > > --- a/drivers/iio/accel/bmc150-accel-core.c
-> > > +++ b/drivers/iio/accel/bmc150-accel-core.c
-> > > @@ -432,10 +432,17 @@ static bool bmc150_apply_bosc0200_acpi_orientation(struct device *dev,
-> > >  
-> > >  		for (j = 0; j < 3; j++) {
-> > >  			switch (val[j]) {
-> > > -			case -1: str = "-1"; break;
-> > > -			case 0:  str = "0";  break;
-> > > -			case 1:  str = "1";  break;
-> > > -			default: goto unknown_format;
-> > > +			case -1:
-> > > +				str = "-1";
-> > > +				break;
-> > > +			case 0:
-> > > +				str = "0";
-> > > +				break;
-> > > +			case 1:
-> > > +				str = "1";
-> > > +				break;
-> > > +			default:
-> > > +				goto unknown_format;  
+> > 1) Enable event
+> > 2) Enable channel (already enabled, but perhaps this indicates separate intent)
+> > 3) Disable event.
+> > 4) Is the channel still enabled?
 > > 
-> > I'm not seeing any clear advantage to this change.
-> >  
-> The reason for this change is that most, if not all, case statements in
-> the kernel are multiple lines. Also, in the kernel docs (https://docs.kernel.org/process/coding-style.html)
-> it says, to not put multiple statements on one line.
-> 
-> Thanks,
-> Paul
-> >   
-> > >  			}
-> > >  			orientation->rotation[i * 3 + j] = str;
-> > >  		}
-> > > diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
-> > > index e6e28c964..87bc38d4d 100644
-> > > --- a/drivers/iio/accel/dmard09.c
-> > > +++ b/drivers/iio/accel/dmard09.c
-> > > @@ -24,7 +24,7 @@
-> > >  #define DMARD09_AXIS_Y 1
-> > >  #define DMARD09_AXIS_Z 2
-> > >  #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
-> > > -#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
-> > > +#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)  
+> > or the simpler case of whether we should disable the channel if the event is
+> > disabled and it wasn't otherwise turned on.
 > > 
-> > This is one is good.
-> >   
-> > >  #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
-> > >  
-> > >  struct dmard09_data {
-> > > diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
-> > > index 57c451cfb..989f53fb0 100644
-> > > --- a/drivers/iio/accel/kxsd9-spi.c
-> > > +++ b/drivers/iio/accel/kxsd9-spi.c
-> > > @@ -44,8 +44,8 @@ static const struct spi_device_id kxsd9_spi_id[] = {
-> > >  MODULE_DEVICE_TABLE(spi, kxsd9_spi_id);
-> > >  
-> > >  static const struct of_device_id kxsd9_of_match[] = {
-> > > -        { .compatible = "kionix,kxsd9" },
-> > > -        { },
-> > > +	{ .compatible = "kionix,kxsd9" },  
-> > 
-> > Also good to clean up.
+> > However, I can't see a sensible way to do so. Hence I think what you have
+> > gone with is the best we can do.
 > > 
 > > Thanks,
 > > 
-> > Jonathan
-> > 
+> > Jonathan  
+> 
+> Thanks for reviewing the patch series. I will also address all the comments
+> from Andy in the next patch v3.
+> 
+> Thank you
+> Jagath
 > >   
-> > > +	{ },
+> > > ---
+> > >  drivers/iio/accel/bma400.h      |  2 +
+> > >  drivers/iio/accel/bma400_core.c | 73 +++++++++++++++++++++++++++++++++
+> > >  2 files changed, 75 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+> > > index c9b856b37021..c4ec0cf6dc00 100644
+> > > --- a/drivers/iio/accel/bma400.h
+> > > +++ b/drivers/iio/accel/bma400.h
+> > > @@ -39,6 +39,7 @@
+> > >  #define BMA400_INT_STAT0_REG        0x0e
+> > >  #define BMA400_INT_STAT1_REG        0x0f
+> > >  #define BMA400_INT_STAT2_REG        0x10
+> > > +#define BMA400_INT12_MAP_REG	    0x23
+> > >  
+> > >  /* Temperature register */
+> > >  #define BMA400_TEMP_DATA_REG        0x11
+> > > @@ -54,6 +55,7 @@
+> > >  #define BMA400_STEP_CNT3_REG        0x17
+> > >  #define BMA400_STEP_STAT_REG        0x18
+> > >  #define BMA400_STEP_INT_MSK	    BIT(0)
+> > > +#define BMA400_STEP_STAT_MASK	    GENMASK(9, 8)
+> > >  
+> > >  /*
+> > >   * Read-write configuration registers
+> > > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> > > index ec2f9c380bda..aaa104a2698b 100644
+> > > --- a/drivers/iio/accel/bma400_core.c
+> > > +++ b/drivers/iio/accel/bma400_core.c
+> > > @@ -24,6 +24,7 @@
+> > >  #include <linux/iio/iio.h>
+> > >  #include <linux/iio/sysfs.h>
+> > >  #include <linux/iio/buffer.h>
+> > > +#include <linux/iio/events.h>
+> > >  #include <linux/iio/trigger.h>
+> > >  #include <linux/iio/trigger_consumer.h>
+> > >  #include <linux/iio/triggered_buffer.h>
+> > > @@ -70,6 +71,7 @@ struct bma400_data {
+> > >  	int scale;
+> > >  	struct iio_trigger *trig;
+> > >  	int steps_enabled;
+> > > +	bool step_event_en;
+> > >  	/* Correct time stamp alignment */
+> > >  	struct {
+> > >  		__le16 buff[3];
+> > > @@ -167,6 +169,12 @@ static const struct iio_chan_spec_ext_info bma400_ext_info[] = {
+> > >  	{ }
 > > >  };
-> > >  MODULE_DEVICE_TABLE(of, kxsd9_of_match);
+> > >  
+> > > +static const struct iio_event_spec bma400_step_detect_event = {
+> > > +	.type = IIO_EV_TYPE_CHANGE,
+> > > +	.dir = IIO_EV_DIR_NONE,
+> > > +	.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> > > +};
+> > > +
+> > >  #define BMA400_ACC_CHANNEL(_index, _axis) { \
+> > >  	.type = IIO_ACCEL, \
+> > >  	.modified = 1, \
+> > > @@ -209,6 +217,8 @@ static const struct iio_chan_spec bma400_channels[] = {
+> > >  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> > >  				      BIT(IIO_CHAN_INFO_ENABLE),
+> > >  		.scan_index = -1, /* No buffer support */
+> > > +		.event_spec = &bma400_step_detect_event,
+> > > +		.num_event_specs = 1,
+> > >  	},
+> > >  	IIO_CHAN_SOFT_TIMESTAMP(4),
+> > >  };
+> > > @@ -878,6 +888,58 @@ static int bma400_write_raw_get_fmt(struct iio_dev *indio_dev,
+> > >  	}
+> > >  }
+> > >  
+> > > +static int bma400_read_event_config(struct iio_dev *indio_dev,
+> > > +				    const struct iio_chan_spec *chan,
+> > > +				    enum iio_event_type type,
+> > > +				    enum iio_event_direction dir)
+> > > +{
+> > > +	struct bma400_data *data = iio_priv(indio_dev);
+> > > +
+> > > +	switch (type) {
+> > > +	case IIO_EV_TYPE_CHANGE:
+> > > +		return data->step_event_en;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > > +static int bma400_write_event_config(struct iio_dev *indio_dev,
+> > > +				     const struct iio_chan_spec *chan,
+> > > +				     enum iio_event_type type,
+> > > +				     enum iio_event_direction dir, int state)
+> > > +{
+> > > +	int ret;
+> > > +	struct bma400_data *data = iio_priv(indio_dev);
+> > > +
+> > > +	switch (type) {
+> > > +	case IIO_EV_TYPE_CHANGE:
+> > > +		mutex_lock(&data->mutex);
+> > > +		if (!data->steps_enabled) {
+> > > +			ret = regmap_update_bits(data->regmap,
+> > > +						 BMA400_INT_CONFIG1_REG,
+> > > +						 BMA400_STEP_INT_MSK,
+> > > +						 FIELD_PREP(BMA400_STEP_INT_MSK,
+> > > +							    1));
+> > > +			if (ret)
+> > > +				return ret;
+> > > +			data->steps_enabled = 1;
+> > > +		}
+> > > +
+> > > +		ret = regmap_update_bits(data->regmap,
+> > > +					 BMA400_INT12_MAP_REG,
+> > > +					 BMA400_STEP_INT_MSK,
+> > > +					 FIELD_PREP(BMA400_STEP_INT_MSK,
+> > > +						    state));
+> > > +		mutex_unlock(&data->mutex);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +		data->step_event_en = state;
+> > > +		return 0;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > >  static int bma400_data_rdy_trigger_set_state(struct iio_trigger *trig,
+> > >  					     bool state)
+> > >  {
+> > > @@ -910,6 +972,8 @@ static const struct iio_info bma400_info = {
+> > >  	.read_avail        = bma400_read_avail,
+> > >  	.write_raw         = bma400_write_raw,
+> > >  	.write_raw_get_fmt = bma400_write_raw_get_fmt,
+> > > +	.read_event_config = bma400_read_event_config,
+> > > +	.write_event_config = bma400_write_event_config,
+> > >  };
+> > >  
+> > >  static const struct iio_trigger_ops bma400_trigger_ops = {
+> > > @@ -965,6 +1029,15 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
+> > >  		ret = IRQ_HANDLED;
+> > >  	}
+> > >  
+> > > +	if (FIELD_GET(BMA400_STEP_STAT_MASK, le16_to_cpu(status))) {
+> > > +		iio_push_event(indio_dev,
+> > > +			       IIO_EVENT_CODE(IIO_STEPS, 0, IIO_NO_MOD,
+> > > +					      IIO_EV_DIR_NONE,
+> > > +					      IIO_EV_TYPE_CHANGE, 0, 0, 0),
+> > > +			       iio_get_time_ns(indio_dev));
+> > > +		ret = IRQ_HANDLED;
+> > > +	}
+> > > +
+> > >  	return ret;
+> > >  }
 > > >    
 > >   
 

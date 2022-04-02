@@ -2,43 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 531BA4F04D1
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 18:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A79E94F04D7
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 18:24:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241672AbiDBQXp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Apr 2022 12:23:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35004 "EHLO
+        id S1346290AbiDBQ0m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Apr 2022 12:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358127AbiDBQXk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 12:23:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35545CBE6C;
-        Sat,  2 Apr 2022 09:21:49 -0700 (PDT)
+        with ESMTP id S232338AbiDBQ0m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 12:26:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D67158D97
+        for <linux-iio@vger.kernel.org>; Sat,  2 Apr 2022 09:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E2681B80A6C;
-        Sat,  2 Apr 2022 16:21:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A68C340F3;
-        Sat,  2 Apr 2022 16:21:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0160560B01
+        for <linux-iio@vger.kernel.org>; Sat,  2 Apr 2022 16:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009EAC340F3;
+        Sat,  2 Apr 2022 16:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648916506;
-        bh=R4xX0nZUJB2h/jpS68lCERpoTucJ4KN+l6ypGuDvodE=;
+        s=k20201202; t=1648916689;
+        bh=NWcA15qpX8CuDA6YW5Vak+d/ThM6esGgpMW7rxPUaRg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DH3ob2v4SNXbHTxI1nUAp/0E22Xi++fkd0M69I04Qv8LUl5gUcrE/L/C1zS+OeOZm
-         dyB2amV8L8ylkcui9Nyr5M57L7PkT2O3pIqLCaADs2lHWXhES1iM0SNiMaQu9SNIV2
-         El/7D068OM5FLpqCOFsrez1clQZzvpZgWf/5Mq1PJYKiwIwiAyao70wxJN5yi7NgZN
-         I2soWoQqDivz5S1oBd1zAMi7JIDf3wC6ygg4f5lU0g21xBBS8VQVrbk18QvuKEMt19
-         WVmrm9KE5ey86Qf4nQi6Mcd3BZExTcVgwHhm6YCimyLPvvsZeTPi6mttiicVa+RZXk
-         lxrDJP3u/Hlfw==
-Date:   Sat, 2 Apr 2022 17:29:29 +0100
+        b=Z93WQZj+65+6FxucK9nYK051ji/sb2x3GI4oo0Q7QcZZK+hT9v2eNBrapsyXTodYH
+         9+zRKbjylhrVN0d/NABsWiKCM9wVzlmFmexfhYKI78n1pbtCMYEMgU9q6HY0ixFLbd
+         EEKLfJLgT4JNi46lvs9UCNDeMdg375EjceR2gpufWQtY4F9QWRFb/wI3ZaPSzJ1t/u
+         fiBMKPG5X10MCzRUrChHrk9oiniT8SNhln00Ls1J42dZtEKflkqEAfvvB0pCAZjw6f
+         fKw9Qi3wGMz/BGyFQYAWgm7a0+0jXY7D2vVZMEz6C43CnRzDxSIInZc3/fGu94E0mJ
+         MTHx4mUpFq/TQ==
+Date:   Sat, 2 Apr 2022 17:32:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] IIO: accel: kxsd9-spi: changed leading spaces to tabs
-Message-ID: <20220402172929.05be6a63@jic23-huawei>
-In-Reply-To: <YkInN6SL7pP2f5Sf@hp-amd-paul>
-References: <YkInN6SL7pP2f5Sf@hp-amd-paul>
+To:     Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc:     Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org,
+        Andy Shevchenko <andy@kernel.org>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3] iio: core: Print error in case sample bits do not
+ fit storage bits
+Message-ID: <20220402173231.492a8c3a@jic23-huawei>
+In-Reply-To: <YkRunZ15S5noNYbJ@smile.fi.intel.com>
+References: <20220328195307.154422-1-marex@denx.de>
+        <YkRunZ15S5noNYbJ@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,37 +58,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 28 Mar 2022 16:23:03 -0500
-Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
+On Wed, 30 Mar 2022 17:52:13 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> Changed the leading spaces to tabs, in accordance with kernel coding
-> conventions, and removed trailing comma.
+> On Mon, Mar 28, 2022 at 09:53:07PM +0200, Marek Vasut wrote:
+> > Add runtime check to verify whether storagebits are at least as big
+> > as shifted realbits. This should help spot broken drivers which may
+> > set realbits + shift above storagebits.  
 > 
-> Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-Applied to the togreg branch of iio.git and pushed out as testing to let
-0-day take a look at it and see what it thinks.  Note I'll also be
-rebasing that tree after rc1 is out.
+> Let's go with it.
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Agreed.  Applied with a slight change to the title to make it clear
+we don't just print the error, we also fail the iio_device_register() call
+
+Applied to the togreg branch of iio.git and pushed out as testing both to let
+0-day poke at it and because I will rebase on rc1 once available.
 
 Thanks,
 
 Jonathan
-> ---
->  drivers/iio/accel/kxsd9-spi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+
 > 
-> diff --git a/drivers/iio/accel/kxsd9-spi.c b/drivers/iio/accel/kxsd9-spi.c
-> index ec17e35e5..b7b5af454 100644
-> --- a/drivers/iio/accel/kxsd9-spi.c
-> +++ b/drivers/iio/accel/kxsd9-spi.c
-> @@ -44,8 +44,8 @@ static const struct spi_device_id kxsd9_spi_id[] = {
->  MODULE_DEVICE_TABLE(spi, kxsd9_spi_id);
->  
->  static const struct of_device_id kxsd9_of_match[] = {
-> -        { .compatible = "kionix,kxsd9" },
-> -        { },
-> +	{ .compatible = "kionix,kxsd9" },
-> +	{ }
->  };
->  MODULE_DEVICE_TABLE(of, kxsd9_of_match);
->  
+> > Signed-off-by: Marek Vasut <marex@denx.de>
+> > Cc: Andy Shevchenko <andy@kernel.org>
+> > Cc: Daniel Baluta <daniel.baluta@nxp.com>
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > V2: Use dev_err() instead as WARN_ON() may panic() the kernel on existing machines
+> > V3: Abort probe and return -EINVAL in case this condition is triggered
+> > ---
+> >  drivers/iio/industrialio-buffer.c | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> > 
+> > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> > index b078eb2f3c9de..75a1c57b49102 100644
+> > --- a/drivers/iio/industrialio-buffer.c
+> > +++ b/drivers/iio/industrialio-buffer.c
+> > @@ -1629,6 +1629,19 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+> >  			if (channels[i].scan_index < 0)
+> >  				continue;
+> >  
+> > +			/* Verify that sample bits fit into storage */
+> > +			if (channels[i].scan_type.storagebits <
+> > +			    channels[i].scan_type.realbits +
+> > +			    channels[i].scan_type.shift) {
+> > +				dev_err(&indio_dev->dev,
+> > +					"Channel %d storagebits (%d) < shifted realbits (%d + %d)\n",
+> > +					i, channels[i].scan_type.storagebits,
+> > +					channels[i].scan_type.realbits,
+> > +					channels[i].scan_type.shift);
+> > +				ret = -EINVAL;
+> > +				goto error_cleanup_dynamic;
+> > +			}
+> > +
+> >  			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
+> >  							 &channels[i]);
+> >  			if (ret < 0)
+> > -- 
+> > 2.35.1
+> >   
+> 
 

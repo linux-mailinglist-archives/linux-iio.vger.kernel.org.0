@@ -2,99 +2,113 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483604EFBE6
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Apr 2022 22:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC5984EFD75
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 02:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352690AbiDAU44 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Apr 2022 16:56:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38598 "EHLO
+        id S238758AbiDBAhi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Apr 2022 20:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352689AbiDAU4z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 16:56:55 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B051C4B27
-        for <linux-iio@vger.kernel.org>; Fri,  1 Apr 2022 13:55:03 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id 9so4610763iou.5
-        for <linux-iio@vger.kernel.org>; Fri, 01 Apr 2022 13:55:03 -0700 (PDT)
+        with ESMTP id S234760AbiDBAhh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 20:37:37 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D787E15041B
+        for <linux-iio@vger.kernel.org>; Fri,  1 Apr 2022 17:35:45 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id bh17so9062080ejb.8
+        for <linux-iio@vger.kernel.org>; Fri, 01 Apr 2022 17:35:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zxdKMcfYeDJl9VEeQV5qTQKbRI36bdOnubpQqFT5Dsc=;
-        b=VwlCrhVv95bdY6Xvn636FGICBwdC53ZsHE0X8eiAXzNCA8X1yA8mnM+bXTgrnVvm39
-         0q3bKePS4uw2NnrV31eBbKglSewWfiWfCo6Ph7+LtBdZcTR2LnDxPxVb2aw2Lo2XS0/C
-         RP5s/2T/GI8uCQhVeBHSOCU4dDCmri/fKKHtU=
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=f08GXqZtud8OgjECJ8SjYsoAp5Xep/EAO8UcsMYcRMo=;
+        b=cKnW3+PJMrbIDZz+f8AuaaqCwKn4AVq1rfarIlLVJPAoK0lHJTFgqI0uqK+n7M/QGT
+         Vw0YbouR8SLRWwk3tFrP8xYfSLpPwtt7fgcjTi/xKpU5JZHyMPzHz09mbd04vQgg3oJQ
+         0i3mMDw6AwZ4VACWDMYOyxQmw2QkV5zTQ5Dbb5K9g21TTKGJfqaNUNpEKvdcpSCZm8Xr
+         9k8LYNpLfl5n19jNxij1UL8h2QuwuC1rvC3mh+0Fql+JNPzRsTyS+hDoA94bIAM97lFj
+         YQ83eQEl6HfqXL3CWvLxegMc8cY7XH6rSf/nqdCRtExSzPjabsvsWiuWyI+yFaL8YQB1
+         fFWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zxdKMcfYeDJl9VEeQV5qTQKbRI36bdOnubpQqFT5Dsc=;
-        b=PoNKcoYGUntkDrqBE0s8c3sEPo589Bm1LWw/u9C6dwlLt6UPVsbvsgV7cAPqU3H4Cs
-         o23rJLaZ9w5ymhHWnr7aoV/TTsTLTm5Z6T+z+vPibI/XViOCULMqG3a95lS43LCJobaR
-         H/mag+26x44z/oF0ZDknp1SAY2upjRvQ7LDvknEu5O0iCkfGtNZSgPO5DNYDg/LxKVas
-         pr5F+NHIAMIR7SqBThF4fotxqztY9N0SEBH3TfNpm/g4hTeOgzhgxv1rBKmfF6gvDGq1
-         uNpqzuqI/nRmvnT3ZNRtMbu9ysRYPojDw2Dn2OOOAfiVZa3nd/RfV6UwZtEEUkA4DdIf
-         F3NQ==
-X-Gm-Message-State: AOAM532beBRMW4DlK8ygOzOo0Z03D9yH1z37gOMCMu55dIPwU0+JZPTf
-        wgC2pJz2o4piT+tAvtnDF+UoMjiUOjIZro0QtPLo4wIWqmaBkQ==
-X-Google-Smtp-Source: ABdhPJxmivihRzSeIJe8SsSHZgn0rvB4pN75ADkEmltV9+C+9ga7+Ptqw3/wvSK7dEe0fAODnxEhRVHBoaTGNDj619M=
-X-Received: by 2002:a05:6602:3281:b0:648:d45d:22e with SMTP id
- d1-20020a056602328100b00648d45d022emr657622ioz.7.1648846503250; Fri, 01 Apr
- 2022 13:55:03 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=f08GXqZtud8OgjECJ8SjYsoAp5Xep/EAO8UcsMYcRMo=;
+        b=bquY+2d/vOh2ce4PUlVZvryEKTmT8Lv8KAM4ZCrpoBPqMOTEx6GuhCoF64HEJqlAKl
+         RyzTjrlUA784GJi4gIJ5TxnZcKcXjIYg2TtqiwfgjX/4ffvAwfF8tHNSnE+nJpjFOz2Q
+         p8CWzywpqK2M9B1L110hfCzVaGqMDx6vRNyWLFgxtSqjd7ZM6gc/4wxgAk9k7c404zHQ
+         uaW+jvfardSA7Szx0jz5He84CSg5j9Rx7mIxyHlJJHLd29nBLjcypDmiAOotQHmHaAg9
+         9r45fIntEUDuaMlA3n3pzPd8WL2MqziKiTXIayCc3yqbkVpVXeahK1crqL62ntBwV3zl
+         zL1g==
+X-Gm-Message-State: AOAM532EdYvNV07eqFxhoysPeNBS0iQn1OQsNCPnBLvy75P3+mscjw/a
+        n02TiZtEglx5x6S+NGBsyfAFhSvJuKvkKTw9aBY=
+X-Google-Smtp-Source: ABdhPJzb7XOeBgl8qtVm1Y5+oHjxENBGW/o8EiqrTykpbt8f/A/67/czFA6VIzz61oBUZBpaE3kGXlRcW4iabFBF+YU=
+X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
+ cr21-20020a170906d55500b006db148e05ccmr1927274ejc.63.1648859744290; Fri, 01
+ Apr 2022 17:35:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220331210425.3908278-1-swboyd@chromium.org>
-In-Reply-To: <20220331210425.3908278-1-swboyd@chromium.org>
-From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Fri, 1 Apr 2022 13:54:51 -0700
-Message-ID: <CAPUE2uvpBaE+YLkg6RXq4CCEFBr5ZFhjS1dXkbse9nyH8C=2Jg@mail.gmail.com>
-Subject: Re: [PATCH] iio:proximity:sx_common: Fix device property parsing on
- DT systems
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Sat, 2 Apr 2022 01:35:45 +0100
+Message-ID: <CAHpNFcPot+RrkVqu1=_Jk6NPRf9r9C4SmKQN9oc64ZMwsVCHGw@mail.gmail.com>
+Subject: Nesting a kernel under an unbreakable VM Is now possible with
+ GunYeah! ARM8+ only
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SCC_BODY_URI_ONLY,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Mar 31, 2022 at 2:04 PM Stephen Boyd <swboyd@chromium.org> wrote:
->
-> After commit 7a3605bef878 ("iio: sx9310: Support ACPI property") we
-> started using the 'indio_dev->dev' to extract device properties for
-> various register settings in sx9310_get_default_reg(). This broke DT
-> based systems because dev_fwnode() used in the device_property*() APIs
-> can't find an 'of_node'. That's because the 'indio_dev->dev.of_node'
-> pointer isn't set until iio_device_register() is called. Set the pointer
-> earlier, next to where the ACPI companion is set, so that the device
-> property APIs work on DT systems.
->
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Fixes: 7a3605bef878 ("iio: sx9310: Support ACPI property")
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
-> ---
->  drivers/iio/proximity/sx_common.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-> index a7c07316a0a9..8ad814d96b7e 100644
-> --- a/drivers/iio/proximity/sx_common.c
-> +++ b/drivers/iio/proximity/sx_common.c
-> @@ -521,6 +521,7 @@ int sx_common_probe(struct i2c_client *client,
->                 return dev_err_probe(dev, ret, "error reading WHOAMI\n");
->
->         ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(dev));
-> +       indio_dev->dev.of_node = client->dev.of_node;
->         indio_dev->modes = INDIO_DIRECT_MODE;
->
->         indio_dev->channels =  data->chip_info->iio_channels;
-> --
-> https://chromeos.dev
->
+Nesting a kernel under an unbreakable VM Is now possible with GunYeah!
+ARM8+ only
+
+Rupert S https://bit.ly/VESA_BT
+
+https://www.phoronix.com/scan.php?page=news_item&px=QuiC-Gunyah-Hypervisor-Linux-v1
+
+Qualcomm Posts Linux Driver Patches For New "Gunyah" Hypervisor
+Written by Michael Larabel in Virtualization on 24 February 2022 at
+04:35 AM EST. 12 Comments
+VIRTUALIZATION -- Qualcomm by way of their QuiC innovation center have
+been developing Gunyah as an open-source type-1 hypervisor. Posted on
+Wednesday were the initial patches providing Linux driver support for
+Gunyah.
+
+The Gunyah hypervisor code was originally published last year and to
+date its public GitHib repo has seen just ten commits. Gunyah is
+self-described there as:
+Gunyah is a Type-1 hypervisor, meaning that it is independent of any
+high-level OS kernel, and runs in a higher CPU privilege level. It
+does not depend on any lower-privileged OS kernel/code for its core
+functionality. This increases its security and can support a much
+smaller trusted computing base than a Type-2 hypervisor.
+
+Gunyah's design principle is not dissimilar to a traditional
+microkernel in that it provides only a minimal set of critical
+services to its clients, and delegates the provision of non-critical
+services to non-privileged (or less-privileged) processes, wherever
+this is possible without an adverse impact on performance or security.
+
+The hypervisor uses the CPU's virtualization mode and features to
+isolate itself from OS kernels in VMs. On ARM, this includes trapping
+privileged registers, using GIC virtualization support, and the
+Stage-2 MMU to provide isolated VMs in EL1/0.
+
+The primary focuses of Gunyah are on providing strong security,
+performance especially for mobile devices and delivering efficient
+battery life, and being of a modular design.At the moment Gunyah can
+only target ARMv8.2+ hardware with no other architectures supported
+and older AArch64 hardware not being supported due to depending upon
+EL2 in VHE mode. With mentioning mobile devices, only targeting newer
+AArch64, and being developed by Qualcomm/QuIC, this hypervisor does
+seem to be focused for mobile use-cases moving forward.
+
+Sent out on Wednesday were these 11 patches for the Linux kernel
+providing Gunyah hypervisor driver support. The QuIC patch series sums
+it up as, "This series adds the initial support for Gunyah hypercalls,
+IPC via message queues, communication with the Gunyah Resource Manager
+to enable Gunyah's paravirtualized console."
+
+We'll see how much interesr or adoption of Gunyah there is moving forward.
+12 Comments

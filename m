@@ -2,162 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB954EFDB6
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 03:21:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 202FD4F0053
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 12:10:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348921AbiDBBWH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Apr 2022 21:22:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51358 "EHLO
+        id S238300AbiDBKLt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Apr 2022 06:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244552AbiDBBWG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Apr 2022 21:22:06 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B7D2ED76
-        for <linux-iio@vger.kernel.org>; Fri,  1 Apr 2022 18:20:14 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id i16so9164452ejk.12
-        for <linux-iio@vger.kernel.org>; Fri, 01 Apr 2022 18:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=IaS1hkvmveC5IBbs3iH06s2bJz4c3BLVqz2F+DTX2Y4=;
-        b=DkN2+IoGQRNVn9I3tQluJaEc0MtViO8LRtF2NJ4s7IaMBLZLmCvQWoKwHzIenK2Uvt
-         oM6wyR7cpVpw/DP2N18V03yoXgGRVrapdyCInNpevW5rlrzsyvf5gqZL4sA2Rw4B9ZJg
-         3UOY3d8SQ47sXetoK5U9iEEGwQTb8Ff0UQw5PtcJEam5PYMgJASsTyuSg/uaNe/g3fMz
-         yqwj0iiYgM3HaLEVT5o3TRcIIHaIQnbEZiSbYiR2x9jyWrHznvIUDRuJBO5JN4SX+MQD
-         8mzqNLGq4bG6euGysH79oPKXg+fJLacgaCYuRQu3I8s681Fy18Rz98Cx4bqbek74Luqn
-         hifw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=IaS1hkvmveC5IBbs3iH06s2bJz4c3BLVqz2F+DTX2Y4=;
-        b=QWE6QYIeoqsUQTI4/WMdfGkRTUvfGEJfpHPfazdRbaPRlTq+71QVkvcTsduFAbEzeI
-         YlBMRxU2j8brvTqyLQ8loSmsbfwFRPx6HXIZmOhWTTRXVu3ANwC5ivbKsl/IeknovSB0
-         4qY7m7X01ZudQO2Q5NwA9MSUV+pz+25tsYJXj6Fr5PXusAh7YCt87e++eBxLccQ8viTP
-         xx35jdnkRn5VMzc6nv4xyWN7SJEUuvUVR8hvFCo0LTTYvUwNl/W11gtt0MM49H4V2Gce
-         PcOgTpw8YDR3GrjamwfpE/XK9xNjDc61YbaExCAMGF/4mSMD5ntnJ34a9J6XaUvbGpVm
-         xcIw==
-X-Gm-Message-State: AOAM531sTlT4+5XESLf/nQ2xYY3HjrDqXRQVpR1BGR+DmlIT2A77fc4O
-        R/BT3E8sYAkmOvdiDrenkC4rXqNpYt5VnpR7YaI=
-X-Google-Smtp-Source: ABdhPJxdMQmVZLNF+7vq8tj4btDtW9ROcnQCx3SXwX2vXAT2C3lTN7xw3dnuRurNZE+ZiQItXzYYUylWjK6AIFqxWz8=
-X-Received: by 2002:a17:907:6e06:b0:6e4:dae7:9574 with SMTP id
- sd6-20020a1709076e0600b006e4dae79574mr2172572ejc.540.1648862413069; Fri, 01
- Apr 2022 18:20:13 -0700 (PDT)
+        with ESMTP id S236495AbiDBKLs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 06:11:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16038527D3;
+        Sat,  2 Apr 2022 03:09:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D0C77B80689;
+        Sat,  2 Apr 2022 10:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E929C340EC;
+        Sat,  2 Apr 2022 10:09:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648894194;
+        bh=CXMartoYjubWeMV3E1H9s8ARDUAdYfTP7uWl0ij+SGg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kipW2BQRZ41shGiNObLooDWizusP+q192QYflwQiKGgepT+y66dJq2r/cvV5Fm+MY
+         mIO4zSduiXSIWDiKpZCVGRZUOojJuIjdsQEeoTuy4AtG1EGfm5vb7HUyQgyoaCubJc
+         6pjoZBDeDA9jbnHjtAgh1/GCbv3JHc4Pqd3HZXJcmNcjO9mBFyHZ28PCLmejzKvQUH
+         wGmNshvSNYysY7LVTSg/LzOYY4e6AsmOF1kxJEsBdbtvnD/qwfudxVoxk0TgWg3uCU
+         QIkGdm1mMnLiONN3zjYYssPBj2S6vsgTlo92+tkf4WIwubzV0LctaeK8HU6GxeuHxU
+         zJkWQU8lovR7Q==
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, robh@kernel.org
+Subject: [PATCH 0/2] add support for ASM330LHHX
+Date:   Sat,  2 Apr 2022 12:09:28 +0200
+Message-Id: <cover.1648893892.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sat, 2 Apr 2022 02:20:14 +0100
-Message-ID: <CAHpNFcOpX0JwcqrPSQkP0oV10EFhJmCiMZOYKis+xSQO5C_rDg@mail.gmail.com>
-Subject: Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
- Class VESA Console + With Console in VecSR you can 3DText & Audio + VecSR
- Firmware update 2022 For immediate implementation in all operating systems & ROM's
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems, monitors, TV's & equipment such as Mouses, Audio
-Systems & Webcams
+Add support for ASM330LHHX IMU mems sensor
+https://www.st.com/resource/en/datasheet/asm330lhhx.pdf
 
-VecSR - Vector Standard Render
+Lorenzo Bianconi (2):
+  iio: imu: st_lsm6dsx: add support to ASM330LHHX
+  dt-bindings: iio: imu: st_lsm6dsx: add asm330lhhx device bindings
 
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
+ Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 1 +
+ drivers/iio/imu/st_lsm6dsx/Kconfig                        | 6 +++---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h                   | 2 ++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c            | 3 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c              | 6 +++++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c               | 5 +++++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c               | 5 +++++
+ 7 files changed, 23 insertions(+), 5 deletions(-)
 
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+-- 
+2.35.1
 
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
-
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-(c)Rupert S
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.html
-
-https://bit.ly/VESA_BT
-
-*
-
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
-
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
-
-3rd dimensional access with vector fonts by a simple method:
-
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
-
-Bitmap/Texture,
-
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
-
-Can be higher resolution & we can sub sample with closer view priority...
-
-We then rotate the texture on our output polygon & factor size differential.
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
-
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
-
-https://science.n-helix.com/2022/04/vecsr.html

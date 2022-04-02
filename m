@@ -2,44 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE304F04CB
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 18:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3336B4F04CE
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 18:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357904AbiDBQTc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Apr 2022 12:19:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47008 "EHLO
+        id S1353375AbiDBQW3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Apr 2022 12:22:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357901AbiDBQT0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 12:19:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4291814866A
-        for <linux-iio@vger.kernel.org>; Sat,  2 Apr 2022 09:17:35 -0700 (PDT)
+        with ESMTP id S1357947AbiDBQW0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 12:22:26 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3102583B9;
+        Sat,  2 Apr 2022 09:20:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DE152B80A3B
-        for <linux-iio@vger.kernel.org>; Sat,  2 Apr 2022 16:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C3FC340EE;
-        Sat,  2 Apr 2022 16:17:31 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 6313ECE094D;
+        Sat,  2 Apr 2022 16:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2845C340EC;
+        Sat,  2 Apr 2022 16:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648916252;
-        bh=JjiCaLCOtGqxTPWyRFDgeLaIyJeWN08cA4T4oFW6ni0=;
+        s=k20201202; t=1648916431;
+        bh=XgXaNNuEeJ937JoBXfirPFs0iHTDR3KVxroTM16ZOXU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XzXv0Y+uT/yfeEQsjSfLgXRZ6EfgvI6fonVmeYHW8Xc46NCbcaYUxE5m25ALAKd5o
-         6pxgCP4MQXv+ioFVTEY9XM1SRRFGoD4fPmGV5ZVjVGXFzwj94phJWlEzs0uxPTbC7Z
-         thJNm9/XdPHMuFTZNcGQrwUBRw2Rt8y7J4GClzvwu9hF1QR8PtZMkfazghgA0VQUbO
-         vVeqCNWvErKgI8Na5kXuk6D3qW3yKELBOEf7wq+4EiXz8pclO7TTzrwD3hfnvYKchC
-         SetobM75ANLsxpOEYavtERR2imyP62vARKTm68EeycTFRUdviXEGCAlI2K2KLHSBef
-         PMBRzWooo8PmQ==
-Date:   Sat, 2 Apr 2022 17:25:15 +0100
+        b=vPb4/LeXLtPgTtnh7SrubheryX+KZ17p/OHrO4TkrXgkO9FhxVggv5bJT9FYBWDrq
+         aX80NsOmWenz6OU8e9MeBUpt9eM1o/xRzR4aMdWW3XEdLd7p3eWfolcg+xSuyfd60B
+         n5JblRKN3D6nc5uLOCywV5qK78+9yFd+FcFAwAnUQLfk0ZaPMwuQcM9Q9LOoX7fV5K
+         7Kv5IGozbe4fWdJ4UGunY6520k0GykjiGT1PqlGyK1DWkv22CdDNf/ftWTFqS1/UJV
+         vmK0qLUku6ASQSQuYINzy5BNWPBxfQhm+voxZoWDjDNa51CgFNI67kAIbUb4hnMQpw
+         TjnqwWrgwZwyQ==
+Date:   Sat, 2 Apr 2022 17:28:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        Fawzi Khaber <fawzi.khaber@tdk.com>
-Subject: Re: [PATCH] iio: imu: inv_icm42600: Fix I2C init possible nack
-Message-ID: <20220402172515.1d1dcee5@jic23-huawei>
-In-Reply-To: <20220331091121.2680-1-jmaneyrol@invensense.com>
-References: <20220331091121.2680-1-jmaneyrol@invensense.com>
+To:     Paul Lemmermann <thepaulodoom@thepaulodoom.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] IIO: accel: dmard09: fixed code styling issues
+Message-ID: <20220402172814.5117cdb7@jic23-huawei>
+In-Reply-To: <YkItIE5sp3P4sZdY@hp-amd-paul>
+References: <YkItIE5sp3P4sZdY@hp-amd-paul>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,55 +53,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 31 Mar 2022 11:11:21 +0200
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
+On Mon, 28 Mar 2022 16:48:16 -0500
+Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
 
-> From: Fawzi Khaber <fawzi.khaber@tdk.com>
+> Cleaning up code.
 > 
-> This register write to REG_INTF_CONFIG6 enables a spike filter that
-> is impacting the line and can prevent the I2C ACK to be seen by the
-> controller. So we don't test the return value.
-> 
-> Signed-off-by: Fawzi Khaber <fawzi.khaber@tdk.com>
+> Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
+Applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to see if it can find anything we did wrong.
 
-Jean-Baptiste, this needs your sign-off as well as you were part of the
-path the patch is taking to mainline (see the DCO stuff in submitting
-patches).
+BTW.  You seem to have sent two identical copies of this patch.
+I randomly decided to apply this second one.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+>  drivers/iio/accel/dmard09.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> index 33d9afb1ba91..9c1e373a5daf 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> @@ -18,12 +18,16 @@ static int inv_icm42600_i2c_bus_setup(struct inv_icm42600_state *st)
->  	unsigned int mask, val;
->  	int ret;
-> 
-> -	/* setup interface registers */
-> -	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG6,
-> +	/*
-> +	 * setup interface registers
-> +	 * This register write to REG_INTF_CONFIG6 enables a spike filter that
-> +	 * is impacting the line and can prevent the I2C ACK to be seen by the
-> +	 * controller. So we don't test the return value.
-> +	 */
-> +	regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG6,
->  				 INV_ICM42600_INTF_CONFIG6_MASK,
->  				 INV_ICM42600_INTF_CONFIG6_I3C_EN);
-> -	if (ret)
-> -		return ret;
-> +
-Drop this additional blank line.  One is enough!
-> 
->  	ret = regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
->  				 INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY, 0);
-> --
-> 2.25.1
+> diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
+> index 53ab6078c..cb0246ca7 100644
+> --- a/drivers/iio/accel/dmard09.c
+> +++ b/drivers/iio/accel/dmard09.c
+> @@ -24,7 +24,7 @@
+>  #define DMARD09_AXIS_Y 1
+>  #define DMARD09_AXIS_Z 2
+>  #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
+> -#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
+> +#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
+>  #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
+>  
+>  struct dmard09_data {
 

@@ -2,95 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE4724F0606
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Apr 2022 22:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1FA64F06DC
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Apr 2022 05:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244056AbiDBUEI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Apr 2022 16:04:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44260 "EHLO
+        id S231194AbiDCDHa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Apr 2022 23:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243739AbiDBUEI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 16:04:08 -0400
-Received: from mail.thepaulodoom.com (www.thepaulodoom.com [45.77.108.202])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AFD3910FD2;
-        Sat,  2 Apr 2022 13:02:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thepaulodoom.com;
-        s=mail; t=1648929731;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fJ4mwsha3lQSqlBrzoJlxnsLLf/Tzlgc86esu7PtlcA=;
-        b=MNNXOUkVP5cBP8wi+pvh/BperKoqa8Vb/0jWXD9lJYD3lzBlvhX25xDPiNQGv6uwQadte3
-        H6zLAQJLX8qRhnkaOoC65lq3v9te975SvGdHtlRHaSdVL81t463f+ZX8z1O6bvg5/fugmo
-        Tyt4W4QPLOs0vtvBiDf/88OXBaC3LEPeRUYeea/DPsXqyPDGC4V+AqrmiAUniGBMBQgfa/
-        FiF512e/zKirwKzHm0AzhFTly4sy5xLMzL4XmGr6rJ1TLiDgmvQ1tXpYrxmPfAASoX9o00
-        kaFM0BcVLvGka9M5FkkHPu49Zt+FfOfv1A3Ky/m4SENjWOIj24k+s9YeT42XzhVsGWpW6J
-        TAPSTnc2mzHg306zmMLPEwdcqG0QsvIbfSpZMkBSa5vTaQ4IX8hEn0fD1v4QlXElTwdgBp
-        +BIbBGA3MPNEf7+DRtrlQSwm9CpHzHZBuXkqwFxgDEgZyeV+jkaOwJRAdiHFhwbH5PmA1+
-        ZXB0TOMYM8+bnQp8x09JkTK4vgKVoFkwSG/V2hA+/ZfFaixFNuZhbaVXpl4XH2AurWE5ax
-        kyh2eInBZCNfOMHUM4t16a0IL8YilMTpNSvc0hEaqq3VPw2L4uMQNlTDd2gkCBqPEwvjKI
-        tEO4rfKSSTbVjFwd9KAJrX1CgO0MnFKVUTNVhQp9FhG68jYcodYlg=
-Received: from hp-amd-paul (c-98-240-189-147.hsd1.mn.comcast.net [98.240.189.147])
-        by vultr.guest (OpenSMTPD) with ESMTPSA id cdd70f66 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-        Sat, 2 Apr 2022 20:02:11 +0000 (UTC)
-Date:   Sat, 2 Apr 2022 15:02:09 -0500
-From:   Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] IIO: accel: dmard09: fixed code styling issues
-Message-ID: <YkirwZaMWfgNTtS1@hp-amd-paul>
-References: <YkItIE5sp3P4sZdY@hp-amd-paul>
- <20220402172814.5117cdb7@jic23-huawei>
+        with ESMTP id S231258AbiDCDH3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Apr 2022 23:07:29 -0400
+X-Greylist: delayed 312 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Apr 2022 20:05:34 PDT
+Received: from mta-out-06.alice.it (mta-out-06.alice.it [217.169.118.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0B8EE30562
+        for <linux-iio@vger.kernel.org>; Sat,  2 Apr 2022 20:05:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alice.it; s=20211207; t=1648955135; 
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        h=Reply-To:From:To:Date:Message-ID:MIME-Version;
+        b=u7oRignAPuT/sGkWXT7KMlt4mGwfvFch7jJxw7JZVn9Z6D+imV1KhKeVoEuhNFrBt76brchp+yZ/X9whPIqy06vVepkYEDHUEI6YFEsg65oAxzlXw2iag7wPQuIoBs8L4/7hd+PDsfZrMN7Ra2iv2lLJPyMgK9cUfWaZIOyXQ29M+8EWfYmArQGJMp8Hkncl0zfurHlfUm6DLxeFk+OkSh0rnNON1vGwrMTm+9O9qGq8nFV/30OwB7l96sG5W4upXTpDMszHp4dmzK8gFgTPA83HG/y7O2DPqtjwCEJrckqdXL6D2WS4arK7VHg45p6p+RbOX5veDxM5oKpNWQeu+w==
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudeiledgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuvffgnffgvefqoffkvfetnffktedpqfgfvfenuceurghilhhouhhtmecufedtudenucfgmhhpthihuchsuhgsjhgvtghtucdluddtmdengfhmphhthicusghougihucdlhedtmdenucfjughrpehrhffvfffkggestddtfedttddttdenucfhrhhomhephggvuchhrghvvgcurghnuchofhhfvghruchtohcuihhnvhgvshhtuchinhcuhihouhhrucgtohhunhhtrhihuchunhguvghrucgruchjohhinhhtuchvvghnthhurhgvuchprghrthhnvghrshhhihhpuchplhgvrghsvgcurhgvphhlhicufhhorhcumhhorhgvucguvghtrghilhhsuceofhgpphgvnhhnrgesrghlihgtvgdrihhtqeenucggtffrrghtthgvrhhnpeehjeetgefhleetiedtkeelfffgjeeugeegleekueffgfegtdekkeeifedvvdffteenucfkphepudejiedrvddvjedrvdegvddrudeltdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegrlhhitggvrdhithdpihhnvghtpedujeeirddvvdejrddvgedvrdduledtpdhmrghilhhfrhhomhepfhgpphgvnhhnrgesrghlihgtvgdrihhtpdhnsggprhgtphhtthhopedupdhrtghpthhtoheplhhinhhugidqihhiohesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-RazorGate-Vade-Verdict: clean 60
+X-RazorGate-Vade-Classification: clean
+Received: from alice.it (176.227.242.190) by mta-out-06.alice.it (5.8.807.04) (authenticated as f_penna@alice.it)
+        id 623C9D2100ECF550 for linux-iio@vger.kernel.org; Sun, 3 Apr 2022 05:00:21 +0200
+Reply-To: dougfield20@inbox.lv
+From:   We have an offer to invest in your country under a
+         joint venture partnership please reply for more
+         details <f_penna@alice.it>
+To:     linux-iio@vger.kernel.org
+Date:   02 Apr 2022 20:00:19 -0700
+Message-ID: <20220402200019.4CA40D50BB173A50@alice.it>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220402172814.5117cdb7@jic23-huawei>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,BODY_EMPTY,
+        DKIM_INVALID,DKIM_SIGNED,EMPTY_MESSAGE,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,MISSING_SUBJECT,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
+        *       low trust
+        *      [217.169.118.12 listed in list.dnswl.org]
+        *  0.0 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
+        *      [217.169.118.12 listed in bl.mailspike.net]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5003]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [f_penna[at]alice.it]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [dougfield20[at]inbox.lv]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  2.3 EMPTY_MESSAGE Message appears to have no textual parts and no
+        *      Subject: text
+        *  1.8 MISSING_SUBJECT Missing Subject: header
+        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
+        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
+        *  0.0 BODY_EMPTY No body text in message
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Apr 02, 2022 at 05:28:14PM +0100, Jonathan Cameron wrote:
-> On Mon, 28 Mar 2022 16:48:16 -0500
-> Paul Lemmermann <thepaulodoom@thepaulodoom.com> wrote:
-> 
-> > Cleaning up code.
-> > 
-> > Signed-off-by: Paul Lemmermann <thepaulodoom@thepaulodoom.com>
-> Applied to the togreg branch of iio.git and pushed out as testing
-> for 0-day to see if it can find anything we did wrong.
-> 
-> BTW.  You seem to have sent two identical copies of this patch.
-> I randomly decided to apply this second one.
-
-Yes, I accidentally sent two identical patches. Sorry!
-
-Thank you so much for applying my patch,
-Paul
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/accel/dmard09.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/accel/dmard09.c b/drivers/iio/accel/dmard09.c
-> > index 53ab6078c..cb0246ca7 100644
-> > --- a/drivers/iio/accel/dmard09.c
-> > +++ b/drivers/iio/accel/dmard09.c
-> > @@ -24,7 +24,7 @@
-> >  #define DMARD09_AXIS_Y 1
-> >  #define DMARD09_AXIS_Z 2
-> >  #define DMARD09_AXIS_X_OFFSET ((DMARD09_AXIS_X + 1) * 2)
-> > -#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1 )* 2)
-> > +#define DMARD09_AXIS_Y_OFFSET ((DMARD09_AXIS_Y + 1) * 2)
-> >  #define DMARD09_AXIS_Z_OFFSET ((DMARD09_AXIS_Z + 1) * 2)
-> >  
-> >  struct dmard09_data {
-> 

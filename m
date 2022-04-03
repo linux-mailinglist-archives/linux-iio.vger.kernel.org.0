@@ -2,254 +2,453 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BAE4F08F5
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Apr 2022 13:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D563B4F0943
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Apr 2022 14:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356493AbiDCLRD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Apr 2022 07:17:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
+        id S1357445AbiDCMOw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Apr 2022 08:14:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356871AbiDCLRD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Apr 2022 07:17:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C72AA2ED76;
-        Sun,  3 Apr 2022 04:15:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5793E61035;
-        Sun,  3 Apr 2022 11:15:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD61C340F0;
-        Sun,  3 Apr 2022 11:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648984508;
-        bh=u/JUR2HcE09owMn/zh6CuDg+VeXjsm74g9DSzWR3tjU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e5v/VM4rKaUHSK9Q0PnHjPfsKIiWTfpQuqRcbb30JanPPGnfROxHfjC9NwmV6Kw2X
-         Ny4/NSIZj5AXX/CqxkhBAMbyIYV+ScMTbELc/iTLCLIRg37fyUyffOKzvJLCDJXaHt
-         RQCf3wHCCyaCDzIx5Tvzja4LeR2KPxde8J6t4U7NpZJ8Us0fJYWOtsLdnniJZrwmH1
-         bDGSpVCvbrm0jHIfMBuP3Gd3TEO0NVQ+doxW27RCnkzPx0vsixlHy1xLTzrzmKYM3u
-         0yU5/+u6Q8hVD0g35vKABlTlauzuKET28ixVDQRu9lu4xXMlinD+vZZ+0KkX6wUZtK
-         bac557IDtmAFg==
-Date:   Sun, 3 Apr 2022 13:15:04 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, robh@kernel.org
-Subject: Re: [PATCH 1/2] iio: imu: st_lsm6dsx: add support to ASM330LHHX
-Message-ID: <YkmBuDOSrHzh3pFc@lore-desk>
-References: <cover.1648893892.git.lorenzo@kernel.org>
- <05cd9e612bf7304542aa1adf12025ae396b87cf2.1648893892.git.lorenzo@kernel.org>
- <20220402172240.2465e7f5@jic23-huawei>
+        with ESMTP id S1357263AbiDCMOv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Apr 2022 08:14:51 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE9C3135D
+        for <linux-iio@vger.kernel.org>; Sun,  3 Apr 2022 05:12:55 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id p23so416117edi.8
+        for <linux-iio@vger.kernel.org>; Sun, 03 Apr 2022 05:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=NQyHn+U8eVPdUIPvGzN3lKmJI7IauuBDznn8eNpqpKU=;
+        b=KGcQD8Mn0/jy05r0IiH697GNb2wCmzwZbm1upjSDYVA4CrGiZICd/wJ16EB3hFD6k+
+         ePwbGKjhG8cTaEhTK0KPo6YdDaJFO2ADS3aAZjoAusxrXZcKmUb+0y3njw9AHnLWj/oB
+         AVu2tjwTyTtn0TZNJ0WsNIa33TNyjwHK66UlU57sqJBAiXaCDCA7FWkvGhZVuGAYuZSy
+         6T97y0Ksn0gr0IBCy/89ZGuntkoyAqFrKrbji61sttvF1xH1sbVVcDw9BOm3B/N6CeVh
+         somEY6uunZWTeubgTPXFpG18Tt1drLl6CDfTuWETGPkylpADgARxwClkTUVateepNHAk
+         QMXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=NQyHn+U8eVPdUIPvGzN3lKmJI7IauuBDznn8eNpqpKU=;
+        b=AI/XLwkP6H692ew3KNwBTosBuWBJe6ZUUXnq4demQQ8WJ4uMzlAt7WdWd7yIzyyEDj
+         pJC5PEVEvrWuglRCdsNYGIuRr1mfSEZp1PC0OtWUAMEqPNFEx1JXRNms0rcMTBDM/J+S
+         va86N8zDKmeZbQkBdjfhJRBDo/jWfIwsKNgmB0OXobJrGhFNjeXJTipoNlUIkygzLApe
+         hqIsZeMRp4zdCOQ6VzKCXaYelH0a1o7lYyBZ4zN+sVFvzhV1P+MF59EW/1JXU6aoRVJc
+         mSewjof6G3XCPjk952A0xPcOBzCdU+GCUVdQ5hrEPznTkTbtSczV2NftM+9bO6NP2cYy
+         FElg==
+X-Gm-Message-State: AOAM530eiqUIob+Hb4HMnYa5vEVFG9gq8OlcTtiQXHPkKsLkN8ppmO/L
+        8CbfkWxrWf8650ElGs1atVxl084rybHvVpKjNXE=
+X-Google-Smtp-Source: ABdhPJyee7Uspz+HoclvXe8kI62vrNVU1vInYowNLQoL1xZMYCxmrtlG9iHpvglxvFXB7O9vIzLApbU6+78IPl+19sA=
+X-Received: by 2002:a50:ce03:0:b0:41c:c36b:c75 with SMTP id
+ y3-20020a50ce03000000b0041cc36b0c75mr1687142edi.195.1648987973246; Sun, 03
+ Apr 2022 05:12:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="F5Fav6UVPwVhK7sH"
-Content-Disposition: inline
-In-Reply-To: <20220402172240.2465e7f5@jic23-huawei>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Sun, 3 Apr 2022 13:12:57 +0100
+Message-ID: <CAHpNFcMwsTH6cCHms0MwckbSZqy8RoSu=Bcs_dfx9uE5sdDr4g@mail.gmail.com>
+Subject: Modulus Dual Encrypt & Decrypt package : Processor feature RS AES-CCM
+ & AES-GCM & Other Cypher Modulus
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
 
---F5Fav6UVPwVhK7sH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
 
-> On Sat,  2 Apr 2022 12:09:29 +0200
-> Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->=20
-> > Add support to STM  ASM330LHHX (acc + gyro) Mems sensor
-> > https://www.st.com/resource/en/datasheet/asm330lhhx.pdf
-> Use a Datasheet tag as below.
-> Perhaps mention it's an automotive rated sensor and that
-> it's compatible otherwise with xxx existing part.
+Processor feature & package : Module list:
 
-ack, will do
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
 
->=20
-> Quick glance at the datasheet suggests this part has a sensor hub...
-> Should it be in a the block with parameters for that as you
-> currently have it in the one for no sensorhub I think.
->=20
-> Or is it using an incompatible sensor hub interface?
+*reference*
 
-asm330lhhx supports sensor hub with the same configuration of LSM6DSR or
-LSM6DSO.
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
 
-Regards,
-Lorenzo
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
 
->=20
-> >=20
-> Datasheet: https://www.st.com/resource/en/datasheet/asm330lhhx.pdf
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/iio/imu/st_lsm6dsx/Kconfig             | 6 +++---
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h        | 2 ++
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 3 ++-
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 6 +++++-
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c    | 5 +++++
-> >  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c    | 5 +++++
-> >  6 files changed, 22 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_ls=
-m6dsx/Kconfig
-> > index 85860217aaf3..fefd0b939100 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/Kconfig
-> > +++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> > @@ -11,9 +11,9 @@ config IIO_ST_LSM6DSX
-> >  	help
-> >  	  Say yes here to build support for STMicroelectronics LSM6DSx imu
-> >  	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
-> > -	  ism330dlc, lsm6dso, lsm6dsox, asm330lhh, lsm6dsr, lsm6ds3tr-c,
-> > -	  ism330dhcx, lsm6dsrx, lsm6ds0, lsm6dsop, the accelerometer/gyroscope
-> > -	  of lsm9ds1 and lsm6dst.
-> > +	  ism330dlc, lsm6dso, lsm6dsox, asm330lhh, asm330lhhx, lsm6dsr,
-> > +	  lsm6ds3tr-c, ism330dhcx, lsm6dsrx, lsm6ds0, lsm6dsop,
-> > +	  the accelerometer/gyroscope of lsm9ds1 and lsm6dst.
-> > =20
-> >  	  To compile this driver as a module, choose M here: the module
-> >  	  will be called st_lsm6dsx.
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/=
-st_lsm6dsx/st_lsm6dsx.h
-> > index 6ac4eac36458..a86dd29a4738 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> > @@ -31,6 +31,7 @@
-> >  #define ST_LSM6DSRX_DEV_NAME	"lsm6dsrx"
-> >  #define ST_LSM6DST_DEV_NAME	"lsm6dst"
-> >  #define ST_LSM6DSOP_DEV_NAME	"lsm6dsop"
-> > +#define ST_ASM330LHHX_DEV_NAME	"asm330lhhx"
-> > =20
-> >  enum st_lsm6dsx_hw_id {
-> >  	ST_LSM6DS3_ID,
-> > @@ -49,6 +50,7 @@ enum st_lsm6dsx_hw_id {
-> >  	ST_LSM6DSRX_ID,
-> >  	ST_LSM6DST_ID,
-> >  	ST_LSM6DSOP_ID,
-> > +	ST_ASM330LHHX_ID,
-> >  	ST_LSM6DSX_MAX_ID,
-> >  };
-> > =20
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/i=
-io/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > index 16730a780964..38bb5f645ebd 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> > @@ -14,7 +14,8 @@
-> >   * (e.g. Gx, Gy, Gz, Ax, Ay, Az), then data are repeated depending on =
-the
-> >   * value of the decimation factor and ODR set for each FIFO data set.
-> >   *
-> > - * LSM6DSO/LSM6DSOX/ASM330LHH/LSM6DSR/LSM6DSRX/ISM330DHCX/LSM6DST/LSM6=
-DSOP:
-> > + * LSM6DSO/LSM6DSOX/ASM330LHH/ASM330LHHX/LSM6DSR/LSM6DSRX/ISM330DHCX/
-> > + * LSM6DST/LSM6DSOP:
-> >   * The FIFO buffer can be configured to store data from gyroscope and
-> >   * accelerometer. Each sample is queued with a tag (1B) indicating data
-> >   * source (gyroscope, accelerometer, hw timer).
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > index b1d8d5a66f01..910397716833 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> > @@ -26,7 +26,7 @@
-> >   *   - Gyroscope supported full-scale [dps]: +-125/+-245/+-500/+-1000/=
-+-2000
-> >   *   - FIFO size: 4KB
-> >   *
-> > - * - LSM6DSO/LSM6DSOX/ASM330LHH/LSM6DSR/ISM330DHCX/LSM6DST/LSM6DSOP:
-> > + * - LSM6DSO/LSM6DSOX/ASM330LHH/ASM330LHHX/LSM6DSR/ISM330DHCX/LSM6DST/=
-LSM6DSOP:
-> >   *   - Accelerometer/Gyroscope supported ODR [Hz]: 12.5, 26, 52, 104, =
-208, 416,
-> >   *     833
-> >   *   - Accelerometer supported full-scale [g]: +-2/+-4/+-8/+-16
-> > @@ -786,6 +786,10 @@ static const struct st_lsm6dsx_settings st_lsm6dsx=
-_sensor_settings[] =3D {
-> >  				.hw_id =3D ST_LSM6DST_ID,
-> >  				.name =3D ST_LSM6DST_DEV_NAME,
-> >  				.wai =3D 0x6d,
-> > +			}, {
-> > +				.hw_id =3D ST_ASM330LHHX_ID,
-> > +				.name =3D ST_ASM330LHHX_DEV_NAME,
-> > +				.wai =3D 0x6b,
->=20
-> Probably nicer to put it next to he other 0x6b entries.
->=20
-> >  			},
-> >  		},
-> >  		.channels =3D {
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/=
-imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > index 8b4fc2c15622..715fbdc8190e 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> > @@ -101,6 +101,10 @@ static const struct of_device_id st_lsm6dsx_i2c_of=
-_match[] =3D {
-> >  		.compatible =3D "st,lsm6dsop",
-> >  		.data =3D (void *)ST_LSM6DSOP_ID,
-> >  	},
-> > +	{
-> > +		.compatible =3D "st,asm330lhhx",
-> > +		.data =3D (void *)ST_ASM330LHHX_ID,
-> > +	},
-> >  	{},
-> >  };
-> >  MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
-> > @@ -122,6 +126,7 @@ static const struct i2c_device_id st_lsm6dsx_i2c_id=
-_table[] =3D {
-> >  	{ ST_LSM6DSRX_DEV_NAME, ST_LSM6DSRX_ID },
-> >  	{ ST_LSM6DST_DEV_NAME, ST_LSM6DST_ID },
-> >  	{ ST_LSM6DSOP_DEV_NAME, ST_LSM6DSOP_ID },
-> > +	{ ST_ASM330LHHX_DEV_NAME, ST_ASM330LHHX_ID },
-> >  	{},
-> >  };
-> >  MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
-> > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/=
-imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> > index e80110b6b280..f5767cf76c1d 100644
-> > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> > @@ -101,6 +101,10 @@ static const struct of_device_id st_lsm6dsx_spi_of=
-_match[] =3D {
-> >  		.compatible =3D "st,lsm6dsop",
-> >  		.data =3D (void *)ST_LSM6DSOP_ID,
-> >  	},
-> > +	{
-> > +		.compatible =3D "st,asm330lhhx",
-> > +		.data =3D (void *)ST_ASM330LHHX_ID,
-> > +	},
-> >  	{},
-> >  };
-> >  MODULE_DEVICE_TABLE(of, st_lsm6dsx_spi_of_match);
-> > @@ -122,6 +126,7 @@ static const struct spi_device_id st_lsm6dsx_spi_id=
-_table[] =3D {
-> >  	{ ST_LSM6DSRX_DEV_NAME, ST_LSM6DSRX_ID },
-> >  	{ ST_LSM6DST_DEV_NAME, ST_LSM6DST_ID },
-> >  	{ ST_LSM6DSOP_DEV_NAME, ST_LSM6DSOP_ID },
-> > +	{ ST_ASM330LHHX_DEV_NAME, ST_ASM330LHHX_ID },
-> >  	{},
-> >  };
-> >  MODULE_DEVICE_TABLE(spi, st_lsm6dsx_spi_id_table);
->=20
 
---F5Fav6UVPwVhK7sH
-Content-Type: application/pgp-signature; name="signature.asc"
+*****
 
------BEGIN PGP SIGNATURE-----
+ICE-SSRTP GEA Replacement 2022 + (c)RS
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYkmBuAAKCRA6cBh0uS2t
-rNCLAPwOlL1TO/TLEa2oHtEiWmQXBf/FzpcQla7MJhAV0L/h6wEAmQ0i/b69G1Ut
-XutngZL+C0E6/4tFJT6f07eWp8k/AwQ=
-=RV1J
------END PGP SIGNATURE-----
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
 
---F5Fav6UVPwVhK7sH--
+GEA-2 > GEA-3 is therefor 64Bit Safe (Mobile calls) & 128Bit Safe
+(Reasonable security)
+SHA2, SHA3therefor 128Bit Safe (Reasonable security Mobile) ++
+AES & PolyChaCha both provide a premise of 128Bit++
+
+So by reason alone GEA has a place in our hearts.
+
+*
+
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+*
+
+Time differentiated : Interleave, Inversion & differentiating Elliptic curve.
+
+We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
+
+We know of a cypher but : (Principle RS)
+
+We blend the cypher..
+Interleaved pages of a cypher obfuscate : PAL CScam does this
+
+Timed : Theoretically unique to you in principle for imprecision, But
+we cannot really have imprecise in Crypto!
+
+But we can have a set time & in effect Elliptic curve a transient variable T,
+With this, Interleave the resulting pages (RAM Buffer Concept)
+
+Invert them over Time Var = T
+
+We can do all & principally this is relatively simple.
+
+(c)RS
+
+*
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+
+*
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/11/ihmtes.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+*
+
+***** Dukes Of THRUST ******
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
+
+https://github.com/P1sec/gea-implementation
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+"A stream cipher, such as the well-known RC4 or GEA-1, usually works
+through using the Xor operation against a plaintext. The Xor operation
+being symmetrical, this means that encrypting should be considered the
+same operation as decrypting: GEA-1 and GEA-2 are basically
+pseudo-random data generators, taking a seed (the key, IV and
+direction bit of the GPRS data, which are concatenated),
+
+The generated random data (the keystream) is xored with the clear-text
+data (the plaintext) for encrypting. Then, later, the keystream is
+xored with the encrypted data (the ciphertext) for decrypting. That is
+why the functions called in the target library for decrypting and
+encrypting are the same.
+
+GEA-1 and GEA-2 are bit-oriented, unlike RC4 which is byte-oriented,
+because their algorithms generate only one bit of pseudo-random data
+at once (derived from their internal state), while algorithms like RC4
+generate no less than one byte at once (in RC4's case, derived from
+
+permutation done in its internal state). Even though the keystream
+bits are put together by the current encryption / decryption C and
+Rust libraries into bytes in order to generate usable keystream,
+obviously.
+
+Based on this, you can understand that GEA-1 and GEA-2 are LFSR:
+Linear Feedback Shift Register-oriented ciphers, because their
+internal state is stored into fixed-size registers. This includes the
+S and W registers which serve for initialization / key scheduling
+purposes and are respectively 64 and 97-bit wide registers, and the A,
+B, C (and for GEA-2 only D) registers which serve for the purpose of
+keystream generation, which are respectively 31, 32, 33 and 29-bit
+wide registers.
+
+On each iteration of the keystream generation, each register is
+bit-wise rotated by one position, while the bit being rotated from the
+left towards the right side (or conversely depending on in which bit
+order you internally represent your registers) is fed back to the
+algorithm and mutated depending on given conditions. Hence, the
+
+shifted-out bit is derived from other processing, and reinserted,
+while being for this reason possibly flipped depending on conditions
+depending on bits present at the other side of the given register.
+
+This is the explanation for the name of linear feedback shift register
+(shift because of the shift operation required for the rotation, and
+linear feedback because of the constant-time transform operation
+involved).
+
+The rest of the register may also be mutated at each iteration steps,
+as in the case of the GEA-1 and 2, whole fixed Xor sequences (which
+differ for each register) may be applied depending on whether the
+rotated bit is a 0 or a 1.
+
+Note that a step where the register iterates is called clocking (the
+register is clocked), and that the fixed points where the register may
+be Xor'ed when the rotated bit becomes a 1 are called taps. The linear
+function which may transmute the rotated bit at the clocking step
+(taking several bits of the original register as an input) is called
+the F function.
+
+Those kind of bit-oriented LFSR algorithms, such as GEA-1 and 2 (for
+GPRS) and A5/1 and 2 (for GSM), were designed this way for optimal
+hardware implementations in the late 80's and early 90's."
+
+*****
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+
+***** Dukes Of THRUST ******
+
+Autism, Deafness & the hard of hearing : In need of ANC & Active audio
+clarification or correction 2022-01
+
+Sony & a few others make noise cancelling headphones that are suitable
+for people with Acute disfunction to brain function for ear drums ...
+Attention deficit or Autism,
+The newer Sony headsets are theoretically enablers of a clear
+confusion free world for Autistic people..
+Reaching out to a larger audience of people simply annoyed by a
+confusing world; While they listen to music..
+Can and does protect a small percentage of people who are confused &
+harassed by major discord located in all jurisdictions of life...
+
+Crazy noise levels, Or simply drowned in HISSING Static:
+
+Search for active voice enhanced noise cancellation today.
+
+Rupert S https://science.n-helix.com
+
+
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+
+https://science.n-helix.com/2021/10/noise-violation-technology-bluetooth.html
+
+
+https://www.orosound.com/
+
+https://www.consumerreports.org/noise-canceling-headphone/best-noise-canceling-headphones-of-the-year-a1166868524/

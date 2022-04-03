@@ -2,227 +2,282 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6134F081B
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Apr 2022 08:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 682404F0853
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Apr 2022 09:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352627AbiDCGpd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Apr 2022 02:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51260 "EHLO
+        id S1355457AbiDCHuW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Apr 2022 03:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232339AbiDCGpb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Apr 2022 02:45:31 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063C52DC2
-        for <linux-iio@vger.kernel.org>; Sat,  2 Apr 2022 23:43:35 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a6so2949703ejk.0
-        for <linux-iio@vger.kernel.org>; Sat, 02 Apr 2022 23:43:34 -0700 (PDT)
+        with ESMTP id S239368AbiDCHuU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Apr 2022 03:50:20 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D66DE82;
+        Sun,  3 Apr 2022 00:48:24 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id a16-20020a17090a6d9000b001c7d6c1bb13so6216505pjk.4;
+        Sun, 03 Apr 2022 00:48:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3Xx2ErVMBxvM/FsKeVuUk3St6Mlwp0omh3F7AKnqaSI=;
-        b=i9rDzybQOX37P+qV8TaQQg/OWkO8nhv8kgK42pzWL139Z8Xu9iSCKQwDblvXomhQdz
-         erv8P/h9REJoC4eMGW651lYjvDDBy3NA7QOPQL8DfMmtPpvkbCZ6n7//UrRniEAi29yw
-         4tSlQ1bvLmKZJeBSJwKQV45geF/xfvB/Lm3lHTu/WbIlhhLZQ8DqrR+FpcUJpM2zaJZm
-         LRVQ0cFP1rJPYw3si2S3se7+ZTQmjcFLpmEc4dDx+6seXPz/iiZziII8dEb84JGicwcN
-         IuS8ILoduby5VIzBgGJF+E7viQ/8AwAUImqesCBKIfbnxqlXVNc4drxfJZAMlQi7wTS2
-         SACQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=7ykERee7OgSh1nFhBzsy5cq2aVIaRqvjq9HpBUba5u0=;
+        b=kFY7Z97F9caWxtCZ9foOx8rrG3Ojxu0OOb0/X3kyr+RpweTyXJoPetEMo/Ojb7pGXN
+         Axx1/Z/Zw8BVLEymHX3ThDjMmqnjAMXDiJcNK3+rNzROzaMjCi66Yby5L79/OkmNwbbN
+         L2igND6/B3JkqNyQ6AAat7fY3sGVHo1LPbGY/zpXZHvjG7QBBGk29r5/47i/pEZGxYOb
+         Tz/Pc+hzhsP9oivEzPOrq/S1fsR66p5fKrnJnjHA7PhnGgUxN+qoTyVUyRR9bwXrgpfs
+         D602w+uYoBKz0MKciAp1S3czHkNf/ZWmcEbIapQtXUNFW+pdR7d8dpeH+ZAh7hnXBpmg
+         1Egg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3Xx2ErVMBxvM/FsKeVuUk3St6Mlwp0omh3F7AKnqaSI=;
-        b=m3B3DieNoZ9U2oW4qg/IS+SnUkSBTsWxxt26MLmTHzAebotbxUHY9m/lTGvccg34B8
-         oAtD4MPtd5ZgducoAhCiHfw+0V65xubfmgyApw5koeLMsm12v9lJcrePScUAXF4LyZL5
-         ALH60D6hVRFC0hkaKaSFuIGXJHJW2u3mK904Iyre/MBxgDSJnpZrZg6q9v0g1nLlsyUu
-         E4BGDZwvQGgPQMkLieVf+eBmBE7679YX9d6TjWZuN9V7Dj++k/ztbRf7w0JLHf8dAm7q
-         zC6HFzvkC7BtaIZMdfTymPxSNWlGlLCv9tZJYJQK0lidC7PvpOAO10Z242mD+57zQR1F
-         5hEw==
-X-Gm-Message-State: AOAM532T1+lGhe//n31Fbg37kce2y1l4CkIoz572DRKgGnGHggk5TU0W
-        pmV7N821pZRGeT5WTc3NPcBCkI2ISorxbZl5Geo=
-X-Google-Smtp-Source: ABdhPJx/3YPNiIHFwcdTaaNlKfTfaMhjgdlgvxJs/3tX27AB4qh3X5TrQZv3Z73xqSyo00fOZ3JUVsT4gKwvPn2U1js=
-X-Received: by 2002:a17:907:6e06:b0:6e4:dae7:9574 with SMTP id
- sd6-20020a1709076e0600b006e4dae79574mr6451508ejc.540.1648968213486; Sat, 02
- Apr 2022 23:43:33 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7ykERee7OgSh1nFhBzsy5cq2aVIaRqvjq9HpBUba5u0=;
+        b=FeUtI15sdP7dXb8WHqRIoeLrMaUjzah/v9vtKfewSVeIyxa07wyCs/j176VJApzFvi
+         XVxpc888vaiCs8XkojDDeWeyUcuetJrJwgKOOy+EHSAEp4mdb+Xq81zrxa418RCvIZJU
+         vIPPKNGNWfkoeUjVC3wY9wWSMXoHwEh5WyZ8LgrsAGfRPhsUc+Db2O4MDHYAyp/uqsLG
+         pa3DkNIAu6DtR8iLF0kon73/inAZunNI3j59JmwiLlp/MdOSY0mhOU/J/ZAzzRqGePzj
+         8WG4n4EgTBpsp5NESxwSL8+IxZR0KQrintWgpEC4WuK0RY0L6stdARfYElUXQUlnNjWm
+         6+vA==
+X-Gm-Message-State: AOAM530ogMuW8dqQsfSvljDUc9lokDoVbgQIVDighdESUcCrq/yggBVN
+        Jt+DA5sEYJs0cc/5u1dHcEo=
+X-Google-Smtp-Source: ABdhPJztaG+X1kktHViNe9OXKc9wf944R11upCrAfU3p6f98USawmPP7u7+XAuO3Oaxz81kwkeh5tQ==
+X-Received: by 2002:a17:902:d88a:b0:156:1609:1e62 with SMTP id b10-20020a170902d88a00b0015616091e62mr32035572plz.143.1648972104227;
+        Sun, 03 Apr 2022 00:48:24 -0700 (PDT)
+Received: from jagath-PC ([115.99.128.226])
+        by smtp.gmail.com with ESMTPSA id f19-20020a056a00229300b004fb157f136asm8314281pfe.153.2022.04.03.00.48.22
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 03 Apr 2022 00:48:23 -0700 (PDT)
+Date:   Sun, 3 Apr 2022 13:18:20 +0530
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] iio: accel: bma400: Add step change event
+Message-ID: <20220403074818.GA7583@jagath-PC>
+References: <20220326194146.15549-1-jagathjog1996@gmail.com>
+ <20220326194146.15549-6-jagathjog1996@gmail.com>
+ <20220327175036.4b026481@jic23-huawei>
+ <20220328203710.GA8027@jagath-PC>
+ <20220402173707.426cb005@jic23-huawei>
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Sun, 3 Apr 2022 07:43:37 +0100
-Message-ID: <CAHpNFcNqkhWQ3xpSw1+MowYrVWii8FMjVOzv_DViCPSBMAHz0g@mail.gmail.com>
-Subject: VecSR Compression (HDMI & DP) & X-OR DSC1.2C & Along with our
- brilliant security features in NTP Folder (Security bat & WebHSM) & Default
- JS VESA_BT sure to please all on their servers
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220402173707.426cb005@jic23-huawei>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-VecSR Compression (HDMI  & DP) & X-OR DSC1.2C & Along with our
-brilliant security features in NTP Folder (Security bat & WebHSM) &
-Default JS https://bit.ly/VESA_BT sure to please all on their servers
+On Sat, Apr 02, 2022 at 05:37:07PM +0100, Jonathan Cameron wrote:
+> On Tue, 29 Mar 2022 02:07:11 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> 
+> > Hi Jonathan,
+> > 
+> > On Sun, Mar 27, 2022 at 05:50:36PM +0100, Jonathan Cameron wrote:
+> > > On Sun, 27 Mar 2022 01:11:46 +0530
+> > > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> > >   
+> > > > Added support for event when there is a detection of step change.
+> > > > INT1 pin is used to interrupt and event is pushed to userspace.
+> > > > 
+> > > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>  
+> > > 
+> > > These last two patches look fine to me.  Simply having the
+> > > event enable the channel makes things simpler.  
+> > 
+> > Means do I need to drop the step _INFO_ENABLE and handle the
+> > enabling and disabling of step channel through the event enable and
+> > disable?
+> 
+> No.  I was trying to say I like the solution you have now.
 
-is QFT a Zero compression or low level compression version of DSC
-1.2b? Maybe X-OR X=3D1 New Data & X=3D0 being not sent ? Therefore Masking
-The Frame Buffer!
+Thanks, I will keep the solution same.
+Currently I am testing the BMA400 activity events like STILL, WALKING,
+RUNNING and also BMA400 acceleration threshold events, soon I will send the
+next v3 patch series by including these events.
 
-If not i dually submit it for inclusion in the standard along with
-Vector Compression VESA Standard Display protocol 3
-https://lkml.org/lkml/2022/4/2/328
-https://lkml.org/lkml/2022/4/2/295
-
-Include vector today *important* RS
-https://vesa.org/vesa-display-compression-codecs/
-
-"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
-latency=E2=80=9D, which is the amount of time between a frame being ready f=
-or
-transport in the GPU and that frame being completely displayed. This
-latency is the sum of the transport time through the source=E2=80=99s outpu=
-t
-circuits, the transport time across the interface, the processing of
-the video data in the display, and the painting of the screen with the
-new data. This overall latency affects the responsiveness of games:
-how long it appears between a button is pressed to the time at which
-the resultant action is observed on the screen.
-
-While there are a lot of variables in this equation, not many are
-adjustable from an HDMI specification perspective. QFT operates on the
-transport portion of this equation by reducing the time it takes to
-send only the active video across the cable. This results in reduced
-display latency and increased responsiveness."
-
-*****
-
-VecSR - Vector Standard Render
-
-VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
-Consolas & other brilliant fonts : (c)RS
-
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
-
-OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
-Mode & Desktop Rendering modes
-
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-(c)Rupert S
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
-ml
-
-https://bit.ly/VESA_BT
-
-*
-
-*Application of SiMD Polygon Font Method Render
-*3D Render method with Console input DEMO : RS
-
-3D Display access to correct display of fonts at angles in games &
-apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
-font or shape. (c)Rupert S
-
-3rd dimensional access with vector fonts by a simple method:
-
-Render text to virtual screen layer AKA a fully rendered monochrome, 2
-colour or multi colour..
-
-Bitmap/Texture,
-
-Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
-
-Can be higher resolution & we can sub sample with closer view priority...
-
-We then rotate the texture on our output polygon & factor size differential=
-.
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize
-
-Why ? Because rotating a polygon is harder than subtracting or adding
-width, Hight & direction to fully complex polygon Fonts & Polygon
-lines or curves...
-
-The maths is simple enough to implement in games on an SSE configured
-Celeron D (depending on resolution and Bilinear filter & resize.
-
-*
-
-VecSR is really good for secondary loading of sprites & text; In these
-terms very good for pre loading on for example the X86, RISC, AMIGA &
-Famicon type devices,
-With appropriate loading into Sprite buffers or Emulated Secondaries
-(Special Animations) or Font Buffers.
-
-Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
-with Integer & Emulated Float (Library); Traditional BitMap fonts work
-well in a Set Size & can resize well if cached!
-
-The full process leads upto the terminal & how to optimise CON,
-We can & will need to exceed capacities of any system & To improve them!
-
-presenting: Dev-Con-VectorE=C2=B2
-Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
-Class VESA Console +
-
-With Console in VecSR you can 3DText & Audio,
-
-VecSR Firmware update 2022 For immediate implementation in all
-operating systems & ROM's
-
-Potential is fast & useful.
-
-*
-
-https://science.n-helix.com/2022/04/vecsr.html
+> 
+> > 
+> > > I briefly wondered if we need to care about sequences like
+> > > 
+> > > 1) Enable event
+> > > 2) Enable channel (already enabled, but perhaps this indicates separate intent)
+> > > 3) Disable event.
+> > > 4) Is the channel still enabled?
+> > > 
+> > > or the simpler case of whether we should disable the channel if the event is
+> > > disabled and it wasn't otherwise turned on.
+> > > 
+> > > However, I can't see a sensible way to do so. Hence I think what you have
+> > > gone with is the best we can do.
+> > > 
+> > > Thanks,
+> > > 
+> > > Jonathan  
+> > 
+> > Thanks for reviewing the patch series. I will also address all the comments
+> > from Andy in the next patch v3.
+> > 
+> > Thank you
+> > Jagath
+> > >   
+> > > > ---
+> > > >  drivers/iio/accel/bma400.h      |  2 +
+> > > >  drivers/iio/accel/bma400_core.c | 73 +++++++++++++++++++++++++++++++++
+> > > >  2 files changed, 75 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+> > > > index c9b856b37021..c4ec0cf6dc00 100644
+> > > > --- a/drivers/iio/accel/bma400.h
+> > > > +++ b/drivers/iio/accel/bma400.h
+> > > > @@ -39,6 +39,7 @@
+> > > >  #define BMA400_INT_STAT0_REG        0x0e
+> > > >  #define BMA400_INT_STAT1_REG        0x0f
+> > > >  #define BMA400_INT_STAT2_REG        0x10
+> > > > +#define BMA400_INT12_MAP_REG	    0x23
+> > > >  
+> > > >  /* Temperature register */
+> > > >  #define BMA400_TEMP_DATA_REG        0x11
+> > > > @@ -54,6 +55,7 @@
+> > > >  #define BMA400_STEP_CNT3_REG        0x17
+> > > >  #define BMA400_STEP_STAT_REG        0x18
+> > > >  #define BMA400_STEP_INT_MSK	    BIT(0)
+> > > > +#define BMA400_STEP_STAT_MASK	    GENMASK(9, 8)
+> > > >  
+> > > >  /*
+> > > >   * Read-write configuration registers
+> > > > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> > > > index ec2f9c380bda..aaa104a2698b 100644
+> > > > --- a/drivers/iio/accel/bma400_core.c
+> > > > +++ b/drivers/iio/accel/bma400_core.c
+> > > > @@ -24,6 +24,7 @@
+> > > >  #include <linux/iio/iio.h>
+> > > >  #include <linux/iio/sysfs.h>
+> > > >  #include <linux/iio/buffer.h>
+> > > > +#include <linux/iio/events.h>
+> > > >  #include <linux/iio/trigger.h>
+> > > >  #include <linux/iio/trigger_consumer.h>
+> > > >  #include <linux/iio/triggered_buffer.h>
+> > > > @@ -70,6 +71,7 @@ struct bma400_data {
+> > > >  	int scale;
+> > > >  	struct iio_trigger *trig;
+> > > >  	int steps_enabled;
+> > > > +	bool step_event_en;
+> > > >  	/* Correct time stamp alignment */
+> > > >  	struct {
+> > > >  		__le16 buff[3];
+> > > > @@ -167,6 +169,12 @@ static const struct iio_chan_spec_ext_info bma400_ext_info[] = {
+> > > >  	{ }
+> > > >  };
+> > > >  
+> > > > +static const struct iio_event_spec bma400_step_detect_event = {
+> > > > +	.type = IIO_EV_TYPE_CHANGE,
+> > > > +	.dir = IIO_EV_DIR_NONE,
+> > > > +	.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> > > > +};
+> > > > +
+> > > >  #define BMA400_ACC_CHANNEL(_index, _axis) { \
+> > > >  	.type = IIO_ACCEL, \
+> > > >  	.modified = 1, \
+> > > > @@ -209,6 +217,8 @@ static const struct iio_chan_spec bma400_channels[] = {
+> > > >  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> > > >  				      BIT(IIO_CHAN_INFO_ENABLE),
+> > > >  		.scan_index = -1, /* No buffer support */
+> > > > +		.event_spec = &bma400_step_detect_event,
+> > > > +		.num_event_specs = 1,
+> > > >  	},
+> > > >  	IIO_CHAN_SOFT_TIMESTAMP(4),
+> > > >  };
+> > > > @@ -878,6 +888,58 @@ static int bma400_write_raw_get_fmt(struct iio_dev *indio_dev,
+> > > >  	}
+> > > >  }
+> > > >  
+> > > > +static int bma400_read_event_config(struct iio_dev *indio_dev,
+> > > > +				    const struct iio_chan_spec *chan,
+> > > > +				    enum iio_event_type type,
+> > > > +				    enum iio_event_direction dir)
+> > > > +{
+> > > > +	struct bma400_data *data = iio_priv(indio_dev);
+> > > > +
+> > > > +	switch (type) {
+> > > > +	case IIO_EV_TYPE_CHANGE:
+> > > > +		return data->step_event_en;
+> > > > +	default:
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +}
+> > > > +
+> > > > +static int bma400_write_event_config(struct iio_dev *indio_dev,
+> > > > +				     const struct iio_chan_spec *chan,
+> > > > +				     enum iio_event_type type,
+> > > > +				     enum iio_event_direction dir, int state)
+> > > > +{
+> > > > +	int ret;
+> > > > +	struct bma400_data *data = iio_priv(indio_dev);
+> > > > +
+> > > > +	switch (type) {
+> > > > +	case IIO_EV_TYPE_CHANGE:
+> > > > +		mutex_lock(&data->mutex);
+> > > > +		if (!data->steps_enabled) {
+> > > > +			ret = regmap_update_bits(data->regmap,
+> > > > +						 BMA400_INT_CONFIG1_REG,
+> > > > +						 BMA400_STEP_INT_MSK,
+> > > > +						 FIELD_PREP(BMA400_STEP_INT_MSK,
+> > > > +							    1));
+> > > > +			if (ret)
+> > > > +				return ret;
+> > > > +			data->steps_enabled = 1;
+> > > > +		}
+> > > > +
+> > > > +		ret = regmap_update_bits(data->regmap,
+> > > > +					 BMA400_INT12_MAP_REG,
+> > > > +					 BMA400_STEP_INT_MSK,
+> > > > +					 FIELD_PREP(BMA400_STEP_INT_MSK,
+> > > > +						    state));
+> > > > +		mutex_unlock(&data->mutex);
+> > > > +		if (ret)
+> > > > +			return ret;
+> > > > +		data->step_event_en = state;
+> > > > +		return 0;
+> > > > +	default:
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +}
+> > > > +
+> > > >  static int bma400_data_rdy_trigger_set_state(struct iio_trigger *trig,
+> > > >  					     bool state)
+> > > >  {
+> > > > @@ -910,6 +972,8 @@ static const struct iio_info bma400_info = {
+> > > >  	.read_avail        = bma400_read_avail,
+> > > >  	.write_raw         = bma400_write_raw,
+> > > >  	.write_raw_get_fmt = bma400_write_raw_get_fmt,
+> > > > +	.read_event_config = bma400_read_event_config,
+> > > > +	.write_event_config = bma400_write_event_config,
+> > > >  };
+> > > >  
+> > > >  static const struct iio_trigger_ops bma400_trigger_ops = {
+> > > > @@ -965,6 +1029,15 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
+> > > >  		ret = IRQ_HANDLED;
+> > > >  	}
+> > > >  
+> > > > +	if (FIELD_GET(BMA400_STEP_STAT_MASK, le16_to_cpu(status))) {
+> > > > +		iio_push_event(indio_dev,
+> > > > +			       IIO_EVENT_CODE(IIO_STEPS, 0, IIO_NO_MOD,
+> > > > +					      IIO_EV_DIR_NONE,
+> > > > +					      IIO_EV_TYPE_CHANGE, 0, 0, 0),
+> > > > +			       iio_get_time_ns(indio_dev));
+> > > > +		ret = IRQ_HANDLED;
+> > > > +	}
+> > > > +
+> > > >  	return ret;
+> > > >  }
+> > > >    
+> > >   
+> 

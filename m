@@ -2,35 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AE314F1443
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Apr 2022 14:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B8104F14B8
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Apr 2022 14:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235121AbiDDMET (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Apr 2022 08:04:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57264 "EHLO
+        id S244415AbiDDM2j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Apr 2022 08:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234569AbiDDMES (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Apr 2022 08:04:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78943527B;
-        Mon,  4 Apr 2022 05:02:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 88DE1B81608;
-        Mon,  4 Apr 2022 12:02:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CFCC340EE;
-        Mon,  4 Apr 2022 12:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1649073740;
-        bh=D/Vuu1Efh10DrjnfMeFaJx5tjWBKjQcsLECUsZvdKqM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TFDhCUePm0ddXfoqny4l8DyDXi4vHw5bzwZ1ifeeo/2XY8mUGypdbbcu5F8zLy798
-         6x0TBU2vIESELoL5esXnXn7H/ZUOPtPtqu7k1/ccKhKEQgB4islWjUp5Afb69vgooB
-         LrZBVEusFqXoO92vlrVRIz+QslnbRt0d6PsuhPN0=
-Date:   Mon, 4 Apr 2022 14:02:17 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
+        with ESMTP id S229891AbiDDM2h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Apr 2022 08:28:37 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4777E3B56D;
+        Mon,  4 Apr 2022 05:26:41 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id w21so8196402pgm.7;
+        Mon, 04 Apr 2022 05:26:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=fnJuoERhv8ETdvaOu3dlxEyvw1tLWFCWvEfVDiqOVwA=;
+        b=mfDrhSuJdnac+yngsaGZ+Hp2hIExeUoenhoMUwzY5LXt4nybrn72WBXJR2o54ZHW6x
+         LVn7J6O9An6adSvQKWDw6efWPFN6ONzz7fPs9S1qi5TJecttVD3EnP1e9qJ/G/8IGpJO
+         RcEjEi1DdF3noaCLypmC9OpWDh7ETfWRwDDH6VpcY/5m8Im4Xs+baHHDdMzbzOmrO6o6
+         V9TQ77aecz29Xa1NNEC4FiEUoNXgVgLJr5RKX0G/aMdNWaNmKl34d3Y62NygjznZDinF
+         njbmqPWfrDOcqdqhV33ViC31nBBW2+z7NnP2SepGUYC0xJXryLamyEF0d7qhtPozjHFY
+         TbNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=fnJuoERhv8ETdvaOu3dlxEyvw1tLWFCWvEfVDiqOVwA=;
+        b=MUWpvku7bjcT8Clq7StphNZ6F6x7nUNpi/QJGnYCSqxAMY0lGid3Twg/z8kOoqfdjb
+         l4ThXQXWrqyite2dHWhpHgcKUpQIuLSRHseFj90/+VU0dAy9Vmn81F23IY4Z92tvgvaQ
+         7/aKaJq6GvHcuIzOOnaoAy23kkTR2BemMX9RRJCigyzhdNUxaEg8V0XuGR9SqCdZ4fxt
+         2/1zfaJQnjgIFsvTnAqnhIxnrZszpFgpPFZ4Qd9tadXnJ6CICK70ZpviNC9ptb5w0ZCR
+         uSC4W1FaGJK2uDow+7G3Og0+cj8z73aP6fEPSpMTfW31bqwsm658uRcQ7qxRJMxabWcz
+         uhzg==
+X-Gm-Message-State: AOAM531wUTkmzJd5CuXgvMSA0ZqJshEzB4ui4D6wwJ5Bv+Maf/gydzej
+        XzYSqpFodv28levJXuCSrPg=
+X-Google-Smtp-Source: ABdhPJyX6xOF2bGRTjJTAbyf2AybJrm7dFZdvpTwDq4+J1eMMgc95JCJX2Ta9y0JGpGWiIKud7tKnQ==
+X-Received: by 2002:a63:2b0d:0:b0:386:322:f05c with SMTP id r13-20020a632b0d000000b003860322f05cmr26074315pgr.11.1649075200737;
+        Mon, 04 Apr 2022 05:26:40 -0700 (PDT)
+Received: from [192.168.43.80] (subs03-180-214-233-68.three.co.id. [180.214.233.68])
+        by smtp.gmail.com with ESMTPSA id mr10-20020a17090b238a00b001caab109ff3sm1959211pjb.23.2022.04.04.05.26.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Apr 2022 05:26:39 -0700 (PDT)
+Message-ID: <abc7cc7d-b21c-7b6e-487d-f8f8896b40e7@gmail.com>
+Date:   Mon, 4 Apr 2022 19:26:33 +0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: unexpected indentation warning in
+ Documentation/ABI/testing/sysfs-*
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-doc@vger.kernel.org,
         'Linux Kernel' <linux-kernel@vger.kernel.org>,
         platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com,
@@ -48,55 +74,37 @@ Cc:     linux-doc@vger.kernel.org,
         "David E. Box" <david.e.box@linux.intel.com>,
         Mark Gross <markgross@kernel.org>,
         Hans de Goede <hdegoede@redhat.com>
-Subject: Re: unexpected indentation warning in
- Documentation/ABI/testing/sysfs-*
-Message-ID: <YkreSbV4+KmW1/zV@kroah.com>
 References: <564f87a9-dd57-d3a1-d476-d81350baf75d@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <564f87a9-dd57-d3a1-d476-d81350baf75d@gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <YkreSbV4+KmW1/zV@kroah.com>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <YkreSbV4+KmW1/zV@kroah.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 04, 2022 at 06:58:16PM +0700, Bagas Sanjaya wrote:
-> Hi,
+On 04/04/22 19.02, Greg Kroah-Hartman wrote:
+>> Presumably because Sphinx mistakes these documentation files without
+>> extensions for .rst files? I dunno.
+>>
+>> Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
 > 
-> Doing "make htmldocs" for Linux v5.18-rc1, I get new warnings:
+> Care to send patches to fix these up?
 > 
-> <path/to/linux>/Documentation/ABI/testing/sysfs-driver-intel_sdsi:2: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-driver-intel_sdsi:2: WARNING: Block quote ends without a blank line; unexpected unindent.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-driver-intel_sdsi:2: WARNING: Definition list ends without a blank line; unexpected unindent.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-bus-nvdimm:11: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-bus-iio-sx9324:2: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-class-firmware-attributes:130: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-class-firmware-attributes:130: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-class-firmware-attributes:130: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-fs-erofs:10: WARNING: Unexpected indentation.
-> <path/to/linux>/Documentation/ABI/testing/sysfs-fs-erofs:10: WARNING: Block quote ends without a blank line; unexpected unindent.
+> thanks,
 > 
-> Introduced by 2546c60004309e (platform/x86: Add Intel Software Defined
-> Silicon driver, 2022-02-11), 2bec6d9aa89cbe (docs: ABI: sysfs-bus-nvdimm:
-> Document sysfs event format entries for nvdimm pmu, 2022-02-25),
-> e8a60aa7404bfe (platform/x86: Introduce support for Systems Management
-> Driver over WMI for Dell Systems), 40452ffca3c1a0 (erofs: add sysfs
-> node to control sync decompression strategy, 2021-12-06), and
-> 4c18a890dff8d9 (iio:proximity:sx9324: Add SX9324 support, 2022-01-01).
-> 
-> Presumably because Sphinx mistakes these documentation files without
-> extensions for .rst files? I dunno.
-> 
-> Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> greg k-h
 
-Care to send patches to fix these up?
+Hi Greg,
 
-thanks,
+I'm sorry I couldn't do any fixes for now. I'm just reporting.
 
-greg k-h
+-- 
+An old man doll... just what I always wanted! - Clara

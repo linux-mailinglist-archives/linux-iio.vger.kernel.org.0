@@ -2,107 +2,367 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46A674F1B58
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Apr 2022 23:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A45F4F20B8
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Apr 2022 04:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355480AbiDDVUG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Apr 2022 17:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49004 "EHLO
+        id S229478AbiDEBUA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Apr 2022 21:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380584AbiDDUh6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Apr 2022 16:37:58 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A03D26AC8
-        for <linux-iio@vger.kernel.org>; Mon,  4 Apr 2022 13:36:00 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id e25-20020a0568301e5900b005b236d5d74fso8086907otj.0
-        for <linux-iio@vger.kernel.org>; Mon, 04 Apr 2022 13:36:00 -0700 (PDT)
+        with ESMTP id S229460AbiDEBT7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Apr 2022 21:19:59 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F5C324A758
+        for <linux-iio@vger.kernel.org>; Mon,  4 Apr 2022 17:32:56 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id m30so16971242wrb.1
+        for <linux-iio@vger.kernel.org>; Mon, 04 Apr 2022 17:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
-         :subject:to:cc;
-        bh=kg/HA+QVDj4BE3Pqgs7Z5r8nQIoSf5HmU9Y6IMHvcQ4=;
-        b=UVy/2H9XcZxhjUlG0pYTnPvMihiwPuXQOj7n67eXl88rrzpXlhojBgVlnVFlDpSu4L
-         CrXdTnuAdKochmYTpKdEYeBgTUI5N0by54eD0eZz37TSdHUNjKnsLDZK2XXj6SPQtxZ1
-         fJu3eDe/uIOk1oFujxuRIgdsO2/npaXmdg/KE=
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=P/touLBFbje11XznNDWx7VX2zR8LaBFmb8S0S5DQre4=;
+        b=SO13OPc0fPsKwO0ZIKHYM7Zm+tOstO2QdOw8WwSV99O/VyDJffuH15n/sDLG1WoUci
+         3ifOsWLOPxUqsVfoFOtP1XWi4AsMdG0JxsH0amuTz73yv4PczOCwtyr6ybuB704AiUZJ
+         Z+OvAjnb4XWveU4z38EC4syaBLjm6L4Fw9ffZNmmDTZ0WVhiHEY277E83ywMOMVtkEcX
+         gJtxgH5AU9obOg35AZ20Jy2jQKcFMQ6kk8VwqMH/Gb3XUmSzLWGXb30OMHCAmu5FoChl
+         K2eKbrufwGdUaMBCmT0rsrCUgAT2LrbgAeO04J7bFBwXIEX6MLLqPhCQJpPL0i+6ON3A
+         glsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from
-         :user-agent:date:message-id:subject:to:cc;
-        bh=kg/HA+QVDj4BE3Pqgs7Z5r8nQIoSf5HmU9Y6IMHvcQ4=;
-        b=7FKEH3zHKTU1t8MxVd5dQ/m/eo0AIaFq2ohXXNlOkR4UQxfzVSpoubjEVPvytduHyx
-         HQRm/I7UTM9OCSNFk3rvNh0neu/f2bnOlUhhknZ0zCApADdCRnMEmlw6Qb26DcBQXG63
-         KK0geJHxuTRQjeFSTlYzarDq6TrqVpfI8MDuiR5r1gXyo34QXps/npAXgKNDcxUsmmJz
-         iIMVfMPXCr4jDx2b+2/XYPARYgl2tB324G1FN3G1ch80mjYD9b69dWy0Oj1jG5I5HWot
-         H16yUgMxQlkNY4iyt75rLYyjMLBzBSPcjgtD4QojwakMV/fZMHSzSGK4nLHWUWCdIe5c
-         2S/Q==
-X-Gm-Message-State: AOAM530O7bFigNF2yl6hrbKOdLbSkZvmw0OGmq/GjjkQFsmvnLU1ClW2
-        okBGXOL9Df17wHNxLC5xYiSazx4QMAR3cix1I5SYPw==
-X-Google-Smtp-Source: ABdhPJx/Lq/nxMT92DUF/KzpDcHBIOBMR/7Ec7G1dTVR2ng1S2RYXmK8ST+N3xxfbiKsvwc+yRZ4cDCJFzXmSyQu4NM=
-X-Received: by 2002:a05:6830:61b:b0:5cc:e44:7dc3 with SMTP id
- w27-20020a056830061b00b005cc0e447dc3mr36332oti.159.1649104559265; Mon, 04 Apr
- 2022 13:35:59 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 4 Apr 2022 15:35:58 -0500
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=P/touLBFbje11XznNDWx7VX2zR8LaBFmb8S0S5DQre4=;
+        b=R6gvv4YrJb/Hnzg1PatL3wdAzJFgAAHoeGtD65zh1D69C4Y1FG/X9JWwXPAw7KEKwj
+         JkCkWJNEiOMDsybgssJTug4DDXvUf5ISKooq+njQxefhD6mKjiKEX1hIxVE7MI6FN7FJ
+         UuIT/cNLVSZorh3KvON8n03YyNK0IbtYzBQAaLZzl0Aj22UrsbvjKmmXr21e+C1qxLCA
+         uvDSXlFwy0YhG2hmOpvQUg9iaaIKiUAN3SKjbZivDwV03+jjDd7hZblFEq34f4yK7jbZ
+         salwbCVLM1YQbyH6ZMZ6saDFr0W2V0dxajiIS6sPmWNLfbcJVuZNuaV0hWYeGXKhFnBf
+         XjRA==
+X-Gm-Message-State: AOAM532XSDbddYVz2UmR4BWg4jW7lLEhNEvxwbctBMdikpuj75GL3ae7
+        zFaGi0BhJAvJ4Ytm9VQUKFh17TIQPZ/XFF2wNk7A/W74zMoJKZ+K
+X-Google-Smtp-Source: ABdhPJyjYND/2D4yJzqnD940Ja4ubNvUJ6/2cjcU9bQAbsFCYlo25MJ6zs6/GD+P6HCN9vpRwG+yIDiH5/y4ih1Yef0=
+X-Received: by 2002:a05:6402:1e8b:b0:41c:59f6:2c26 with SMTP id
+ f11-20020a0564021e8b00b0041c59f62c26mr797219edf.156.1649118049885; Mon, 04
+ Apr 2022 17:20:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20220402175131.75bb95de@jic23-huawei>
-References: <20220324222928.874522-1-swboyd@chromium.org> <20220327155147.52e898b4@jic23-huawei>
- <CAE-0n50T9uqcB9EK-RnGXPGhd6RWdrsE9pA5FJY9yC58xd=05A@mail.gmail.com> <20220402175131.75bb95de@jic23-huawei>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Mon, 4 Apr 2022 15:35:58 -0500
-Message-ID: <CAE-0n53iU+Wne7Tvxr_ivwdqLVd3Mg-FNM7xLJ=ztsAF3QEALg@mail.gmail.com>
-Subject: Re: [PATCH v2] iio:proximity:sx9324: Fix hardware gain read/write
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Tue, 5 Apr 2022 01:20:36 +0100
+Message-ID: <CAHpNFcPeL6=b3+npcgQKJQ0xei6rZhQrbS1x0FMiBa1M_S6fCQ@mail.gmail.com>
+Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators (indirect) -
+ Plan & method RS
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Jonathan Cameron (2022-04-02 09:51:31)
-> On Tue, 29 Mar 2022 22:25:31 +0200
-> Stephen Boyd <swboyd@chromium.org> wrote:
->
-> > Quoting Jonathan Cameron (2022-03-27 07:51:47)
-> > > On Thu, 24 Mar 2022 15:29:28 -0700
-> > > Stephen Boyd <swboyd@chromium.org> wrote:
-> > >
-> > > > There are four possible gain values according to 'sx9324_gain_vals[]':
-> > > >
-> > > >       1, 2, 4, and 8
-> > > >
-> > > > The values are off by one when writing and reading the register. The
-> > > > bits should be set according to this equation:
-> > > >
-> > > >       ilog2(<gain>) + 1
-> > > >
-> > > > so that a gain of 8 is 0x3 in the register field and a gain of 4 is 0x2
-> > > > in the register field, etc
-> > >
-> > > Example seems wrong...
-> > >
-> > > ilog2(8) + 1 = 3 + 1 = 0x4
-> > > ilog2(4) + 1 = 2 + 1 = 0x3
-> > > ilog2(2) + 1 = 1 + 1 = 0x2
-> > > ilog2(1) + 1 = 0 + 1 = 0x1
-> > >                        0x0 reserved.
-> > >
-> > > or have I misunderstood?
-> >
-> > Nope. I hit the wrong key but your table is correct. Can you fix it when
-> > applying?
->
-> Done and applied to the fixes-togreg branch of iio.git but I haven't pushed
-> it out yet as I want to rebase that tree on rc1 when it comes out.
->
-> After that, please take a quick look check I didn't mess up.
->
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
 
-Thanks. Looks good.
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+Parallax Cryptographic Processing Unit: RS
+
+The capacity To Multiply decryption on specific hardware in situations
+such as lower Bit precision is to be implemented as follows:
+
+On AES-NI & ARM Cryptographic processors; In particular PPS(ARM+) & SiMD ..
+
+The capacity to exploit the fact that the nonce is 16Bit to 64Bit &
+full float upto 128Bit for legal decryption (client) means there is a
+simple method to use:
+
+In situations that a AES-NI & ARM Cryptographic unit can process 2
+threads on a 256Bit Function we can do both the main 128Bit/192Bit &
+the nonce 16Bit to 64Bit & Enable a single instruction Roll to
+Synchronise both The main HASH & Nonce.
+
+AES & Crypto hardware can utilise the CPU/GPU/Processor FPU & SiMD to
+decrypt the nonce (smaller so fast) & in the same 8bto to 64Bits of
+code; Inline & parallax the cryptographic function.
+
+With a 256Bit AES-NI & Cryptographic unit : Parallel Decryption &
+Return Encryption by using 2x 128Bit & a Processor Enciphered Nonce.
+
+(c)Rupert S
+
+*reference* https://bit.ly/VESA_BT
+
+Dual Encrypt & Decrypt : Hardware Accelerators (indirect)
+https://lkml.org/lkml/2022/4/4/1153
+https://lore.kernel.org/linux-crypto/20220223080400.139367-1-gilad@benyossef.com/T/#u,
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+*****
+
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+GEA-2 > GEA-3 is therefor 64Bit Safe (Mobile calls) & 128Bit Safe
+(Reasonable security)
+SHA2, SHA3therefor 128Bit Safe (Reasonable security Mobile) ++
+AES & PolyChaCha both provide a premise of 128Bit++
+
+So by reason alone GEA has a place in our hearts.
+
+*
+
+ICE-SSRTP GEA Replacement 2022 + (c)RS
+
+IiCE-SSR for digital channel infrastructure can help heal GPRS+ 3G+ 4G+ 5G+
+
+Time NTP Protocols : is usable in 2G+ <> 5G+LTE Network SIM
+
+ICE-SSRTP Encryption AES,Blake2, Poly ChaCha, SM4, SHA2, SHA3, GEA-1 and GEA-2
+'Ideal for USB Dongle & Radio' in Rust RS ' Ideal for Quality TPM
+Implementation'
+
+"GEA-1 and GEA-2, which are very similar (GEA-2 is just an extension
+of GEA-1 with a higher amount of processing, and apparently not
+weakened) are bit-oriented stream ciphers."
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+*
+
+Time differentiated : Interleave, Inversion & differentiating Elliptic curve.
+
+We will be able to know and test the Cypher : PRINCIPLE OF INTENT TO TRUST
+
+We know of a cypher but : (Principle RS)
+
+We blend the cypher..
+Interleaved pages of a cypher obfuscate : PAL CScam does this
+
+Timed : Theoretically unique to you in principle for imprecision, But
+we cannot really have imprecise in Crypto!
+
+But we can have a set time & in effect Elliptic curve a transient variable T,
+With this, Interleave the resulting pages (RAM Buffer Concept)
+
+Invert them over Time Var = T
+
+We can do all & principally this is relatively simple.
+
+(c)RS
+
+*
+
+Modulus Dual Encrypt & Decrypt package : Processor feature (c)RS
+
+AES-CCM & AES-GCM & Other Cypher Modulus + CCM & GCM can be
+accelerated with a joint AES Crypto module,
+
+Processor feature & package : Module list:
+
+2 Decryption pipelines working in parallel,
+With a Shared cache & RAM Module
+Modulus & Semi-parallel modulating decryption & Encryption combined
+with Encapsulation Cypher IP Protocol packet
+
+Parallax Cryptographic Processing Unit: RS
+
+The capacity To Multiply decryption on specific hardware in situations
+such as lower Bit precision is to be implemented as follows:
+
+On AES-NI & ARM Cryptographic processors; In particular PSP+PPS(ARM+) & SiMD ..
+
+The capacity to exploit the fact that the nonce is 16Bit to 64Bit &
+full float upto 128Bit for legal decryption (client) means there is a
+simple method to use:
+
+In situations that a AES-NI & ARM Cryptographic unit can process 2
+threads on a 256Bit Function we can do both the main 128Bit/192Bit &
+the nonce 16Bit to 64Bit & Enable a single instruction Roll to
+Synchronise both The main HASH & Nonce.
+
+AES & Crypto hardware can utilise the CPU/GPU/Processor FPU & SiMD to
+decrypt the nonce (smaller so fast) & in the same 8bto to 64Bits of
+code; Inline & parallax the cryptographic function.
+
+With a 256Bit AES-NI & Cryptographic unit : Parallel Decryption &
+Return Encryption by using 2x 128Bit & a Processor Enciphered Nonce.
+
+(c)Rupert S
+
+*reference*
+
+Performance Comparison of AES-CCM and AES-GCM Authenticated Encryption Modes
+http://worldcomp-proceedings.com/proc/p2016/SAM9746.pdf
+
+Basic comparison of Modes for Authenticated-Encryption -IAPM, XCBC,
+OCB, CCM, EAX, CWC, GCM, PCFB, CS
+https://www.fi.muni.cz/~xsvenda/docs/AE_comparison_ipics04.pdf
+
+
+*
+
+Example of use:
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade marker
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+*
+
+Good for cables ? and noise ?
+
+Presenting :  IiCE-SSR for digital channel infrastructure & cables
+<Yes Even The Internet &+ Ethernet 5 Band>
+
+So the question of interleaved Bands & or signal inversion is a simple
+question but we have,
+
+SSD & HDD Cables & does signal inversion help us? Do interleaving bands help us?
+
+In Audio inversion would be a strange way to hear! but the inversion
+does help alleviate ...
+
+Transistor emission fatigue...
+
+IiCE-SSRTP : Interleaved Inverted Signal Send & Receive Time Crystal Protocol
+
+Interleaved signals help Isolate noise from a Signal Send & Receive ...
+
+Overlapping inverted waves are a profile for complex audio & FFT is the result.
+
+Interleaved, Inverted & Compressed & a simple encryption?
+
+Good for cables ? and noise ?
+
+Presenting : IiCE for digital channel infrastructure & cables <Yes
+Even The Internet &+ Ethernet 5 Band>
+
+(c) Rupert S
+
+https://science.n-helix.com/2018/12/rng.html
+
+https://science.n-helix.com/2022/02/rdseed.html
+
+https://science.n-helix.com/2017/04/rng-and-random-web.html
+
+https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
+
+https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.html
+
+
+Audio, Visual & Bluetooth & Headset & mobile developments only go so far:
+
+https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
+
+https://science.n-helix.com/2022/03/ice-ssrtp.html
+
+https://science.n-helix.com/2021/11/ihmtes.html
+
+https://science.n-helix.com/2021/10/eccd-vr-3datmos-enhanced-codec.html
+https://science.n-helix.com/2021/11/wave-focus-anc.html
+https://science.n-helix.com/2021/12/3d-audio-plugin.html
+
+Integral to Telecoms Security TRNG
+
+*RAND OP Ubuntu :
+https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
+
+https://pollinate.n-helix.com
+
+*
+
+***** Dukes Of THRUST ******
+
+Nostalgic TriBand : Independence RADIO : Send : Receive :Rebel-you trade markerz
+
+Nostalgic TriBand 5hz banding 2 to 5 bands, Close proximity..
+Interleaved channel BAND.
+
+Microchip clock and 50Mhz Risc Rio processor : 8Bit : 16Bit : 18Bit
+Coprocessor digital channel selector &
+
+channel Key selection based on unique..
+
+Crystal time Quartz with Synced Tick (Regulated & modular)
+
+All digital interface and resistor ring channel & sync selector with
+micro band tuning firmware.
+
+(c)Rupert S
+
+Dev/Random : Importance
+
+Dev/Random : Importance : Our C/T/RNG Can Help GEA-2 Open Software
+implementation of 3 Bits (T/RNG) Not 1 : We need Chaos : GEA-1 and
+GEA-2 Implementations we will improve with our /Dev/Random
+
+Our C/T/RNG Can Help GEA-2 Open Software implementation of 3 Bits
+(T/RNG) Not 1 : We need Chaos : GEA-1 and GEA-2 Implementations we
+will improve with our /Dev/Random
+
+We can improve GPRS 2G to 5G networks still need to save power, GPRS
+Doubles a phones capacity to run all day,
+
+Code can and will be improved, Proposals include:
+
+Blake2
+ChaCha
+SM4
+SHA2
+SHA3
+
+Elliptic Encipher
+AES
+Poly ChaCha
+
+Firstly we need a good solid & stable /dev/random
+
+So we can examine the issue with a true SEED!
+
+Rupert S https://science.n-helix.com/2022/02/interrupt-entropy.html
+
+TRNG Samples & Method DRAND Proud!
+
+https://drive.google.com/file/d/1b_Sl1oI7qTlc6__ihLt-N601nyLsY7QU/view?usp=drive_web
+https://drive.google.com/file/d/1yi4ERt0xdPc9ooh9vWrPY1LV_eXV-1Wc/view?usp=drive_web
+https://drive.google.com/file/d/11dKUNl0ngouSIJzOD92lO546tfGwC0tu/view?usp=drive_web
+https://drive.google.com/file/d/10a0E4Gh5S-itzBVh0fOaxS7JS9ru-68T/view?usp=drive_web
+
+https://github.com/P1sec/gea-implementation

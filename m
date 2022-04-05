@@ -2,93 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D684F45FC
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 00:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3750C4F4C67
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 03:14:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236305AbiDEOJ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Apr 2022 10:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54618 "EHLO
+        id S231697AbiDEXTn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Apr 2022 19:19:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358098AbiDEMKc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Apr 2022 08:10:32 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319938F98F
-        for <linux-iio@vger.kernel.org>; Tue,  5 Apr 2022 04:22:41 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id ot30so16048049ejb.12
-        for <linux-iio@vger.kernel.org>; Tue, 05 Apr 2022 04:22:41 -0700 (PDT)
+        with ESMTP id S1392189AbiDEPft (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Apr 2022 11:35:49 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518DA12D;
+        Tue,  5 Apr 2022 06:48:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=3n64ZO6Zi2LKzrWKKoARN+uqERGYLr1xbe1J9am2lEg=;
-        b=ihTiCa7wj1hV3pmq40yuVqleQPfTOhQcOnzBW/X3xqPufmWtXOElWJgVjVjj4dSnMT
-         DSR5lJrc1mqE7WeYjzbFtOyWXtBG13GxrJeztUTLrxQWKBb9yVpn/lSgmq6cv8M+mu6i
-         aJBLklF5PI4IrypJs5KANZdMN/tvPOWBYzj1h3I6P51299uDdZMP4TgxZwhIZ9LCLw9d
-         4fkEnJjhXSmTvpKl+zWhcXBQza5bkBM+rc/qo9CC+zILfT1Z2A8SWo1sKPjO01SWWz5Z
-         E0ufQGJW4mqkAf5TR2bxr/bA7hmWTZtDk8a4E9dAIDhoaiYkJ6U/KK7KY7HIN4oZJS65
-         hYnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=3n64ZO6Zi2LKzrWKKoARN+uqERGYLr1xbe1J9am2lEg=;
-        b=e1AK0n8qVQCcCVW9mL3JOUc8hdMEiPaP3wP8/jPRajYwjb/Q/aWPYsvEbHc66QHajA
-         0fxSfOL087+fVU59EFbP7TaqNvS2vxLP/Ig9S2is1VBJ54ouOxGnDdk1RwCO68h2sUPG
-         bo+intl6Cull9MxmyehGo0Y4V9eXQwH1r5vU89OZWpLTStyApztg4jgsqzllD/+N6RfT
-         RhAbE7xv2XWneQiM+2/3X5d8BsWUEOz3QYfCi31RP2x6XjJL1M0v1Hge8SEKLfrHEnIA
-         FF6To+//rSSOOn6p6IR9NCHIdrIlon1qTMmt8NCmtQy2nsvnCHTtJqbVJHtcxJYHg7Il
-         1ymA==
-X-Gm-Message-State: AOAM531zSGuXLlVcBT771JuXebPHSPBwYugCaqUiNWSJmWLsy9bilSJD
-        qFqsWKkcDjyK9DJZ1/6waFUyFw==
-X-Google-Smtp-Source: ABdhPJzbAzUWiQ2rSATW807UfIMBntbyM9kwwaxJtsRgY2UiyPXJpPD1r7VRIosw1z9ls4bXKBkx4A==
-X-Received: by 2002:a17:906:1b46:b0:6e8:4cc:b381 with SMTP id p6-20020a1709061b4600b006e804ccb381mr2982724ejg.563.1649157759830;
-        Tue, 05 Apr 2022 04:22:39 -0700 (PDT)
-Received: from [192.168.0.181] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id z6-20020a056402274600b004194fc1b7casm6478339edd.48.2022.04.05.04.22.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Apr 2022 04:22:39 -0700 (PDT)
-Message-ID: <d27af04d-0a18-fc0a-b5b8-91e65e2d65aa@linaro.org>
-Date:   Tue, 5 Apr 2022 13:22:38 +0200
+  d=axis.com; q=dns/txt; s=axis-central1; t=1649166488;
+  x=1680702488;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=79rrKpJvSV/IyMMLjk1fyhAdjuzODykc4KbTAF2mUFs=;
+  b=FiOVSqtEplqlpGbV24QKDAr+i8WFGbW038mF84zzzjMGLHloCAF5NPgY
+   spNiGw/JW64vBk2PDKMYeRrzNnvvX9UHBY/B/HepKgx6Ad8lZokZPYdBy
+   7OpaZ9BsvHs1aZCwW+kuNlJhW2Z2+5tJgZDQoPpNYBx3HZTZqRoW8yTb2
+   L/kbhgJPZ67FRSZN5VimMCXaFg5e7MBpW2w5kOfvVuD4jRmwgAUY0TEzv
+   O9FAaZn51Fi/MSdDTB4FNunqqBA9Ty8O7mk1/2xsvz1tde3N99GsfhgrV
+   4GYLxtosbMlYV/YxgZvfwIh/MPM7kvdpyaf1CLkQR25ioPVRlRFcC7BrW
+   w==;
+Date:   Tue, 5 Apr 2022 15:48:05 +0200
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel <kernel@axis.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "brendanhiggins@google.com" <brendanhiggins@google.com>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "a.zummo@towertech.it" <a.zummo@towertech.it>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: Re: [RFC v1 08/10] iio: light: vcnl4000: add roadtest
+Message-ID: <20220405134805.GA28574@axis.com>
+References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
+ <20220311162445.346685-9-vincent.whitchurch@axis.com>
+ <20220320170253.5b946c84@jic23-huawei>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: imu: st_lsm6dsx: add asm330lhhx
- device bindings
-Content-Language: en-US
-To:     Lorenzo Bianconi <lorenzo@kernel.org>, jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, robh@kernel.org
-References: <cover.1649100168.git.lorenzo@kernel.org>
- <2e5304b7e11085d4e701b4b591fd79cc54f01301.1649100168.git.lorenzo@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <2e5304b7e11085d4e701b4b591fd79cc54f01301.1649100168.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220320170253.5b946c84@jic23-huawei>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/04/2022 21:24, Lorenzo Bianconi wrote:
-> Add device bindings for asm330lhhx IMU sensor.
-> Use lsm6dsr as fallback device for asm330lhhx since it implements all
-> the features currently supported by asm330lhhx.
+On Sun, Mar 20, 2022 at 06:02:53PM +0100, Jonathan Cameron wrote:
+> Very interesting bit of work. My current approach for similar testing
+> is to write a qemu model for the hardware, but that currently
+> requires carefully crafted tests. Most of the time I'm only doing
+> that to verify refactoring of existing drivers. 
+
+Thank you for taking a look!
+
+> One thing that makes me nervous here is the python element though
+> as I've not written significant python in about 20 years.
+> That is going to be a burden for kernel developers and maintainers...
+> Nothing quite like badly written tests to make for a mess in the long run
+> and I suspect my python for example would be very very badly written :)
+
+There's a bunch of static checkers to ensure that the code follows some
+basic guidelines, and CI can check that the tests work consistently, and
+also calculate metrics such as test execution time and code coverage, so
+even non-idiomatic Python in the tests wouldn't be entirely broken.
+
+And unlike driver code, if the tests for a particular driver later do
+turn out to be bad (in what way?), we could just throw those particular
+tests out without breaking anybody's system.
+
+> Cut and paste will of course get us a long way...
+
+Isn't some amount of copy/paste followed by modification to be expected
+even if the framework is written in say C (just as there's already
+copy/paste + modification involved when writing drivers)?
+
+As for the core logic of individual driver tests excluding the framework
+bits, I have a hard time imagining what Python syntax looks like to
+someone with no knowledge of Python, so yes, I guess it's going to be
+harder to review.
+
+> I dream of a world where every driver is testable by people with out hardware
+> but I fear it may be a while yet.  Hopefully this will get us a little
+> closer!
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  .../bindings/iio/imu/st,lsm6dsx.yaml          | 38 ++++++++++---------
->  1 file changed, 21 insertions(+), 17 deletions(-)
+> I more or less follow what is going on here (good docs btw in the earlier
+> patch definitely helped).
 > 
+> So far I'm thoroughly in favour of road test subject to actually being
+> able to review the tests or getting sufficient support to do so.
+> It's a 'how to scale it' question really...
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
-Best regards,
-Krzysztof
+Would rewriting the framework in C and forcing tests to be written in
+that language mean that maintainers would be able to review tests
+without external support?

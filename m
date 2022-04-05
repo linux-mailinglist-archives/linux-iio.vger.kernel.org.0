@@ -2,106 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 600374F2757
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Apr 2022 10:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 827094F27C6
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Apr 2022 10:08:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbiDEIFW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Apr 2022 04:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48172 "EHLO
+        id S233657AbiDEII4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Apr 2022 04:08:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234466AbiDEH6g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Apr 2022 03:58:36 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9E8AA1473;
-        Tue,  5 Apr 2022 00:52:29 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id kw18so4846585pjb.5;
-        Tue, 05 Apr 2022 00:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=TgBLJeTUy6jVJ2xafVPcKSUbrGijHeGdKDekFNJpES0=;
-        b=aSMeYscyjfPJ2j6WMIt8esKgLv+cCuEG4DZPmO25jSIgyFHFNthTEgjQWkML+GAsZo
-         sfyoc9olWYN1DoYbUFMZJz/3xOg9AI+pSaG6rQGNVombA5eN5censAMjYkrUnh0N7cp0
-         VasbFqTcDXjOKc4QvMO3qHl8UxazmUpkfUXfedYDhKa3qmj2oviN65D+MClQTzAc8kW5
-         4U7v6v+wpnTFd/6mazsybeib5GY/iM8b1zIvJ63foPySXQKx7b6zaUEFg5Am08pNPbB1
-         zrqvFH1xVq/0iC0tIEaTAq05uIyEJlRGxNCVYCatVgBpvP6VF2IzpeBmxQ8OLcpjjxWD
-         dREw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=TgBLJeTUy6jVJ2xafVPcKSUbrGijHeGdKDekFNJpES0=;
-        b=7G606hXRhc0SU/ms8DpFDf6iz06FnZodNfV/u9PlyQI+x1VNoNSZ3sxgvREuTn2QMW
-         /5uiG4qh5HSipvaGEuH+x+f24+VVFTsB+3Ra+RbwmWCtWUrr+nqdwprZWbaISaTnlQdO
-         suP5/Aalgkr7Jl10QyHVBTCJ4pUMbILP6aI+g+Pc7L0FpzGFdoM9lp9WpJeqeKK4QPKy
-         iw3Y4Y6eXAJhYnsqE0UcocYcnV1lgT9qS7M74NA36AIZ4H0dCnbSPkFeMlKO/ug65K9I
-         vrwDvzk/BoN1fYWNf+SXmglrWiQk9yc2+cXhxigqaFW5Jrwp4R0obGULxGy/dTRlpQZC
-         cFqQ==
-X-Gm-Message-State: AOAM530d7mxSrjNR9Pc/fWPP5a/oE/Lweduz/DUHubQtBDtsKj3Ebksi
-        1FedWG0RFmWRdwE9rnEqkis=
-X-Google-Smtp-Source: ABdhPJxwe5VM3sjwzmEQs7uSfq/7UjTSJjpOPqAE2YvqWv6No8h0U9MnptFRrXgdvlyfWFHIJLhlTg==
-X-Received: by 2002:a17:902:bf07:b0:150:9b8a:a14f with SMTP id bi7-20020a170902bf0700b001509b8aa14fmr2206809plb.127.1649145148521;
-        Tue, 05 Apr 2022 00:52:28 -0700 (PDT)
-Received: from [192.168.43.80] (subs28-116-206-12-39.three.co.id. [116.206.12.39])
-        by smtp.gmail.com with ESMTPSA id g3-20020a63ad03000000b003821d0f0ef4sm12821367pgf.71.2022.04.05.00.52.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Apr 2022 00:52:27 -0700 (PDT)
-Message-ID: <1b01580f-f888-5725-e571-816073148303@gmail.com>
-Date:   Tue, 5 Apr 2022 14:52:18 +0700
+        with ESMTP id S233661AbiDEIIr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Apr 2022 04:08:47 -0400
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0EA6B0B6
+        for <linux-iio@vger.kernel.org>; Tue,  5 Apr 2022 01:02:08 -0700 (PDT)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 7BD0760006;
+        Tue,  5 Apr 2022 08:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1649145723;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DJuT0CGY/gEjE8kpQ+PyqxUGM3vV5Pla3ENMpWl5Lk8=;
+        b=lrXeoVzXMFzdcV/HWAnKuIczUDlFcnS21uDTqnG2dqHuahGOz9vj9A7wJfpIZ2zIHRbZs2
+        4fuos3FbTX3Ua2utmc5XBvC/xn2yJBQysibDxOI/4kbfi8/joWthBMCS0ubV/p2vPjetfk
+        7ux9HeU1uxXJO88mm9nrid3ts10O4AoPgHl0oGuAoOKQixhdKZ5ELRo1wawyDAOJOznDXZ
+        4kAB/9dTCPUWDBhLkHbacAEddc1IwGeIax8OXntvWe64Qsr7WzVxiVfROIOYw5QPXSWkBZ
+        dwjqMWjg6nq0e5XQOQG+7G/5DjG0OW+2OCOueeQC7qNHeQLAwsBEwZBi5k+WjQ==
+Date:   Tue, 5 Apr 2022 10:02:00 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Denis Ciocca <denis.ciocca@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        christophe.priouzeau@st.com
+Subject: Re: [PATCH v3 13/13] iio: core: Clarify the modes
+Message-ID: <20220405100200.4063e712@xps13>
+In-Reply-To: <20220315164450.2fca5fcf@xps13>
+References: <20220207143840.707510-1-miquel.raynal@bootlin.com>
+        <20220207143840.707510-14-miquel.raynal@bootlin.com>
+        <20220213184224.1644ddbc@jic23-huawei>
+        <20220214095308.42e52f34@xps13>
+        <20220227133549.016935a1@jic23-huawei>
+        <20220315164450.2fca5fcf@xps13>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: unexpected indentation warning in
- Documentation/ABI/testing/sysfs-*
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>, linux-doc@vger.kernel.org,
-        'Linux Kernel' <linux-kernel@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com,
-        linux-iio@vger.kernel.org
-Cc:     Gao Xiang <hsiangkao@linux.alibaba.com>,
-        Huang Jianan <huangjianan@oppo.com>, Chao Yu <chao@kernel.org>,
-        Divya Bharathi <divya.bharathi@dell.com>,
-        Mark Pearson <markpearson@lenovo.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "David E. Box" <david.e.box@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>
-References: <564f87a9-dd57-d3a1-d476-d81350baf75d@gmail.com>
- <4df1fc93-2a2a-3482-085f-3a88970440ff@redhat.com>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <4df1fc93-2a2a-3482-085f-3a88970440ff@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/04/22 19.54, Hans de Goede wrote:
-> 
-> These 2 are fixed by this (pending) patch:
-> https://lore.kernel.org/linux-kernel/20220324165918.22005-4-hdegoede@redhat.com/
-> 
-> And I also have this pending patch for a pre-existing warning:
-> https://lore.kernel.org/linux-kernel/20220324165918.22005-3-hdegoede@redhat.com/
-> 
-> I'm not sure who should pick these 2 up ?
-> 
+Hi Jonathan,
 
-I think linux-doc can pick them, if no subsystems do it.
+miquel.raynal@bootlin.com wrote on Tue, 15 Mar 2022 16:44:50 +0100:
 
--- 
-An old man doll... just what I always wanted! - Clara
+> Hello,
+>=20
+> + Christophe
+>=20
+> jic23@kernel.org wrote on Sun, 27 Feb 2022 13:35:49 +0000:
+>=20
+> > On Mon, 14 Feb 2022 09:53:08 +0100
+> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> >  =20
+> > > Hi Jonathan,
+> > >=20
+> > > jic23@kernel.org wrote on Sun, 13 Feb 2022 18:42:24 +0000:
+> > >    =20
+> > > > On Mon,  7 Feb 2022 15:38:40 +0100
+> > > > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> > > >      =20
+> > > > > As part of a previous discussion with Jonathan Cameron [1], it ap=
+peared
+> > > > > necessary to clarify the meaning of each mode so that new develop=
+ers
+> > > > > could understand better what they should use or not use and when.
+> > > > >=20
+> > > > > The idea of renaming these modes as been let aside because naming=
+ is a
+> > > > > big deal and requires a lot of thinking. So for now let's focus on
+> > > > > correctly explaining what each mode implies.
+> > > > >=20
+> > > > > [1] https://lore.kernel.org/linux-iio/20210930165510.2295e6c4@jic=
+23-huawei/
+> > > > >=20
+> > > > > Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> > > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>       =20
+> > > > One trivial thing inline as a result of edits in v3.
+> > > >=20
+> > > > Otherwise, I want to let this series sit a little longer and ideall=
+y get
+> > > > some eyes on the st_sensors patches.     =20
+
+Sometimes there is no other choice than applying patches to get
+feedback :) Hopefully nothing unexpected will happen, but as this
+series lived almost two month on the mailing list already, I would
+propose to merge the series as it is. We can still drop/revert it as we
+are rather soon in the new cycle. If rebasing is needed just let me
+know.
+
+Cheers,
+Miqu=C3=A8l
+
+> > >=20
+> > > Sure.   =20
+> >=20
+> > Denis, Linus, Lorenzo,
+> >=20
+> > If any of you have time to take a look at patches 4-8 in this series or=
+ ideally
+> > to run basic sanity tests with series in place that would be great.
+> > https://patchwork.kernel.org/project/linux-iio/list/?series=3D611853
+> >=20
+> > I don't have a convenient platform to test that driver on any more and =
+the
+> > changes are invasive enough to make me a little nervous about taking the
+> > series without someone more familiar with that driver taking a look. =20
+>=20
+> I'm adding Christophe from ST who might also help having these patches
+> tested or at least reviewed.
+>=20
+> TLDR: as part of a wider cleanup, I ended up "playing" with locks in
+> the st_sensors drivers, so any testing or feedback is welcome!
+>=20
+> Thanks,
+> Miqu=C3=A8l
+
+

@@ -2,378 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE09E4F4C69
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 03:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F22B4F4C6B
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 03:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230413AbiDEXTq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Apr 2022 19:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44216 "EHLO
+        id S233165AbiDEXTy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Apr 2022 19:19:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1573073AbiDERxN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Apr 2022 13:53:13 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4BFDE09E
-        for <linux-iio@vger.kernel.org>; Tue,  5 Apr 2022 10:51:11 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id k23so24838440ejd.3
-        for <linux-iio@vger.kernel.org>; Tue, 05 Apr 2022 10:51:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
-        b=TWaP8JwC5o8iBLTw9CODzM5aRo0JC/FLK+j+aWugaAWMVUqJa3ytY5ypTcq7HlgQNT
-         vMyudlVc3uFiCg5wlfZj4es1DKKUsZnsAyrNmPleekmNiHH9X9kiAmw58x1QBUZWhouA
-         B+CnACM2mjA30xil9LgJNEfH6/6FvEm8WD1XknfPOg8PvZHpLsab+uDwrMIdxv5fAS5j
-         EsvmxXh5sSXIC7rgcUH/OWYBBSTDctz0P10laxSUMfNxjiY8HMxlHuxOPFFipbGLUvMd
-         vUWuD62m0P7jQdxjKrM2L6XSW6AODE7UiBDuqkn95bfFdlKqE7aP/foEJfxLyJ8/fBTw
-         yxUw==
+        with ESMTP id S1573211AbiDESVW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Apr 2022 14:21:22 -0400
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A90D92558F;
+        Tue,  5 Apr 2022 11:19:23 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-2eb43ad7909so1134637b3.2;
+        Tue, 05 Apr 2022 11:19:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=71VjE26wPh9ej6RgLNzZLjV1gyE1eSSpA4bJwgE7Yx0=;
-        b=i3803NvL1xJtEp+FjiiQp6qeiHfjdWC45Nj0wAs7SENMzlYHUKCkTIqq/fBoS5944b
-         9ju4vZ+1OsdY233tsKjMu4wEZuqLwGL5tafBSyXMvOiJ/bmtrwxXvvEfuz4zYQS2Vc0x
-         T/qhWs3SseOlOn6Bw+4pXBO6C8p5yEyh5U2yJYFv1tbFdBMEdwpjNSZvcNVq+kUSZ7ij
-         R7qKsqzC+k6pcFP2RwaRmudhUezUt6tCREsxev0Kj2Vk8o0nQ7AhhHHlNvU5bKUQ0qZK
-         IAQCcQosYfRKuaHUKTAlgCs2xeJ4bHt5tQl38niHO49qgw2nc6ReoLQw+t5gktpuJz35
-         ifHQ==
-X-Gm-Message-State: AOAM531hPuW2g4CytWd3NCyEaeoUCxDJfFK8D0NMq8J8VorOthCScpEW
-        xBlo9+/oeZcztuMKP7goF5+4kIyU2CZGUabmlFk=
-X-Google-Smtp-Source: ABdhPJy3WqnbFWhFyzR2jjv9wo3teILmv3rquwAOArhBIyRmnyDnYZLaGkiIJ7sloKGihwZJppz+pMAkxRt4WJz8Q/4=
-X-Received: by 2002:a17:906:d555:b0:6db:148e:5cc with SMTP id
- cr21-20020a170906d55500b006db148e05ccmr4559155ejc.63.1649181069336; Tue, 05
- Apr 2022 10:51:09 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wp5BQRPZX31Tau7Z/BAzOvMpyk9uV0bPZM8M4VsBras=;
+        b=gE0BaAvZ9okEO2GPTdjhpnnNT3Sz+VQw7q3NppHwMa0HdA6WbutUKUDRKSdsrUZoHK
+         tg7bznR2ssbZgEl9skhQTnFHTyWdcCNBL4VAx5zE59AmNpSo99Hk+5ztBpOaWFoi6r/O
+         n12ko5TTY8PhyIuCC+aWvdCEx1lf+wf5+XyZf5lby6F7F/fbPb7Ub/kQR/7LYlHZ8aOr
+         EAEKQ3YeI9qtPalaINQYLOfo5XWtPFSw+66fOwD6WLp6Yz2QnttgQvKOW7bkII6TBpJs
+         vz+AmptSE7Vm+SiuKTy11bV0FfLajEODRmzW0NJypL5Gke9tpSOCNktJIZNaiOxLi//b
+         2qww==
+X-Gm-Message-State: AOAM531OK7vT+NwPwVAa0oKRi7ZmbZTz5yxtubxWwM7J/pB/aIAzCXUa
+        1IpW3mf9tQND99Tl4SfA+LLNPw7CwhMJIjpEzQvbslYc
+X-Google-Smtp-Source: ABdhPJxgCOYicaGfabBQSX1TtzVkx4wjUpVl5764g8J8U/cZkdTPkmlBdt3znmSbx1ACV5tSfliK7lhe83x3Kk2vnAs=
+X-Received: by 2002:a81:bc5:0:b0:2e6:dcfe:bfcb with SMTP id
+ 188-20020a810bc5000000b002e6dcfebfcbmr3974299ywl.19.1649182762847; Tue, 05
+ Apr 2022 11:19:22 -0700 (PDT)
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 18:50:57 +0100
-Message-ID: <CAHpNFcPDv_NYw-h50YgH5qmQmFmpWVL6DCf4jvjg-KE0iSN2OQ@mail.gmail.com>
-Subject: USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
- need a /dev/random Seed Saved for their Cryptological security for both the
- device & the USB Dongle>
-To:     torvalds@linux-foundation.org
+References: <20220401140605.31871-1-Jonathan.Cameron@huawei.com> <20220401140605.31871-2-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20220401140605.31871-2-Jonathan.Cameron@huawei.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 5 Apr 2022 20:19:11 +0200
+Message-ID: <CAJZ5v0gUECCmFJoVnmR8SK-pBg5v4QrtLgeKT7VTmgdykuZAzA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] iio: chemical: scd30: Export dev_pm_ops instead of
+ suspend() and resume()
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        Linux PM <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-USB & Dongle & Bluetooth & 2.4g Devices 'Example' Logitech devices'
-need a /dev/random Seed Saved for their Cryptological security for
-both the device & the USB Dongle>
-
-Instructions  *RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-*****
-
-NT Interrupt counter Entropy : A counter theory : RS
-
-"more importantly, our
-distribution is not 2-monotone like NT's, because in addition to the
-cycle counter, we also include in those 4 words a register value, a
-return address, and an inverted jiffies. (Whether capturing anything
-beyond the cycle counter in the interrupt handler is even adding much of
-value is a question for a different time.)"
-
-NT Interrupt counter Entropy : A counter theory : RS
-
-To be clear interrupts are old fashioned (NT & Bios) : Points
-
-Network cards have offloading? Yes & why cannot we?
-
-Offloaded does not mean that a time differential matrix HASH AES of 32Bit w=
-ords,
-Cross pollinated though MMX, AVX , SiMD is plausible!
-
-Combined with even network latency timing & interrupt latency...
-
-Various system differentials can alternate line in our table per clock sync=
-!
-
-In this reference Quartz clock instability is not only counter acted by NTP=
-...
-But also utilized as a variable co-modifier.
-
-So why not also advantage ourselves of the clock frequency scaling
-effect to confuse odds again for Entropy (Random, Not Entropy)
-
-SSD does also have a write counter & a cleared state, not so boring as
-one thinks if per 32KB segment is hashed in 4Bit, 8,Bit 32Bit float!
-(remember we have DOT3 DOT 4 & INT8 in ML)
-
-We can utilize write cycle statistics & all hardware; Interrupts by
-themselves are rather Boring!
-
-Computed timings on processes multiplexed over 3 Threads per group in
-competition is also a potential complexifier of Random
-
-Rupert S
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/03/security-aspect-leaf-hash-identifiers.h=
-tml
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-****
-
-PreSEED Poly Elliptic SiMD RAND : RS
-
-Preseed ; 3 Seeds with AES or Poly ChaCha or even 1 : 2 would be
-rather fast Init
-
-Blending them would make a rather paranoid Kernel developer feel safe! :D
-
-Like so List:
-
-3 seeds 32Bit or 64Bit :
-Examples :
-
-1 Seed : Pre seeded from CPU IRQ & Net 16Bit values each & merged
-2 & 3 from server https://pollinate.n-helix.com &or System TRNG
-
-4 Seed mix 128Bit Value
-
-Advantages :
-
-AVX & SiMD Mixxer is fast 'Byte Swap & Maths etcetera" & MultiThreaded
-AES Support is common :
-
-*
-HASH : RSA Source Cert C/TRNG : (c)RS
-
-Elliptic RSA : Cert Mixer : RSA 4096/2048/1024Temporal : 384/256/192
-ECC Temporal
-
-Centric Entropy HASH: Butterfly Effects
-
-Blake2
-ChaCha
-SM4
-SHA2
-SHA3
-
-Elliptic Encipher
-AES
-Poly ChaCha
-
-Elliptic : Time Variance : Tick Count Variance : On & Off Variance : IRQ
-
-*
-Time & Crystal : Quartz as a diffraction point fractal differentiator : RS
-
-RDTSC Variable bit differentiation & deviation of the quartz sub .0001
-Value combined with complexity of unique interplay with Alternative
-clocks such as Network cards, Audio cards & USB Sticks & Bluetooth
-radio clocks & Ultimately the NTP Pools themselves when required.
-
-(TIME Differential Float maths) TSC : RDTSC : RDTSCP : TCE supports
-single and half precision floating-point calculations
-
-Processor features: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr
-pge mca cmov pat pse36 clflush mmx fxsr sse sse2 htt pni ssse3 fma
-cx16 sse4_1 sse4_2 popcnt aes f16c syscall nx lm avx svm sse4a osvw
-ibs xop skinit wdt lwp fma4 tce tbm topx page1gb rdtscp bmi1
-
-*
-For RDTSCP =3D TValue TV1=3D16.0685 TV2=3D16.1432 TV3=3D15.1871
-When Processor Mzh =3D PV1 PV2 PV3
-RAND Source =3D Es1 Es2 Es3
-
-If Xt =3D 1.9 < then roll right
-
-((TV1 - TV2) * (PV1 - PV2)) / ((TV1 - TV3) * (PV1 - PV3)) =3D FractorXt(Xt)
-
-Es1 * Xt =3D Differential
-
-Es2 Es3
-
-(c) Rupert S
-
-Quartz as a diffraction point fractal differentiator : RS
-
-https://tches.iacr.org/index.php/TCHES/article/download/7274/6452
-https://perso.univ-rennes1.fr/david.lubicz/articles/gda.pdf
-https://patents.google.com/patent/US9335971
-*
-
-"Taking spinlocks from IRQ context is problematic for PREEMPT_RT. That
-is, in part, why we take trylocks instead. But apparently this still
-trips up various lock dependency analysers. That seems like a bug in the
-analyser's that should be fixed, rather than having to change things
-here.
-
-But maybe there's another reason to change things up: by deferring the
-crng pre-init loading to the worker, we can use the cryptographic hash
-function rather than xor, which is perhaps a meaningful difference when
-considering this data has only been through the relatively weak
-fast_mix() function.
-
-The biggest downside of this approach is that the pre-init loading is
-now deferred until later, which means things that need random numbers
-after interrupts are enabled, but before work-queues are running -- or
-before this particular worker manages to run -- are going to get into
-trouble. Hopefully in the real world, this window is rather small,
-especially since this code won't run until 64 interrupts have occurred."
-
-https://lore.kernel.org/lkml/Yhc4LwK3biZFIqwQ@owl.dominikbrodowski.net/T/
-
-Rupert S
-
-*****
-Serve C-TRNG QT Fractional Differentiator(c)RS
-
-Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
-32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
-differentiator.
-
-SipHash: a fast short-input PRF
-
-Rotation Alignment : "The advantage of choosing such =E2=80=9Caligned=E2=80=
-=9D
-rotation counts is that aligned rotation counts are much faster than
-unaligned rotation counts on many non-64-bit architectures."
-
-http://cr.yp.to/siphash/siphash-20120918.pdf
-
-https://www.aumasson.jp/siphash/siphash.pdf
-
-"Choice of rotation counts. Finding really bad rotation counts for ARX
-algorithms turns out to be difficult. For example, randomly setting
-all rotations in
-BLAKE-512 or Skein to a value in {8, 16, 24, . . . , 56} may allow known at=
-tacks
-to reach slightly more rounds, but no dramatic improvement is expected.
-The advantage of choosing such =E2=80=9Caligned=E2=80=9D rotation counts is=
- that
-aligned rotation counts are much faster than unaligned rotation counts
-on many non-64-bit
-architectures. Many 8-bit microcontrollers have only 1-bit shifts of bytes,=
- so
-rotation by (e.g.) 3 bits is particularly expensive; implementing a rotatio=
-n by
-a mere permutation of bytes greatly speeds up ARX algorithms. Even 64-bit
-systems can benefit from alignment, when a sequence of shift-shift-xor can =
-be
-replaced by SSSE3=E2=80=99s pshufb byte-shuffling instruction. For comparis=
-on,
-implementing BLAKE-256=E2=80=99s 16- and 8-bit rotations with pshufb led to=
- a
-20% speedup
-on Intel=E2=80=99s Nehalem microarchitecture."
-
-https://www.kernel.org/doc/html/latest/security/siphash.html
-
-https://en.wikipedia.org/wiki/SipHash
-
-Code SIP-HASH
-https://github.com/veorq/SipHash
-
-Serve C-TRNG QT Fractional Differentiator(c)RS
-
-Server C/TRNG Quarts Time * Fractional differentiator : 8Bit, 16Bit,
-32Bit, Float Int32 : Fractional Differentiator : fig-mantuary micro
-differentiator.
-
-As we see rotation may benefact from the addition of Quartz crystal
-alignment sync data from 4 cycles & aligning data blocks,
-
-Obviously we can pre share 4 64Bit blocks use use a pre seed AES/ChaCha Qua=
-d!
-Indeed we can have 16 64Bit pre Seeds & chose them by time sync for kernel
-
-Security bug; Solutions & explanation's (contains additional RANDOM
-Security Methods) :RS
-
-https://science.n-helix.com/2020/06/cryptoseed.html
-https://science.n-helix.com/2019/05/zombie-load.html
-https://science.n-helix.com/2018/01/microprocessor-bug-meltdown.html
-
-Rupert S https://science.n-helix.com
-
-*RAND OP Ubuntu :
-https://manpages.ubuntu.com/manpages/trusty/man1/pollinate.1.html
-
-https://pollinate.n-helix.com
-
-https://science.n-helix.com/2018/12/rng.html
-
-https://science.n-helix.com/2022/02/rdseed.html
-
-https://science.n-helix.com/2017/04/rng-and-random-web.html
-
-https://science.n-helix.com/2021/11/monticarlo-workload-selector.html
-
-https://science.n-helix.com/2022/02/visual-acuity-of-eye-replacements.html
-
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-https://aka.ms/win10rng
-*
-
-Encryption Methods:
-https://tools.ietf.org/id/?doc=3Dhash
-
-https://tools.ietf.org/id/?doc=3Dencrypt
-
-HASH :
-
-https://datatracker.ietf.org/doc/html/draft-ietf-cose-hash-algs
-
-https://tools.ietf.org/id/draft-ribose-cfrg-sm4-10.html
-
-https://tools.ietf.org/id/?doc=3Dsha
-
-https://tools.ietf.org/id/?doc=3Drsa
-
-Encryption Common Support:
-
-https://tools.ietf.org/id/?doc=3Dchacha
-
-https://tools.ietf.org/id/?doc=3Daes
-
-SM4e does seem a good possibility for C/T/RNG CORE HASH Functions!
-
-ARM Crypto Extensions Code (Maybe AES Extensions would work here)
-https://lkml.org/lkml/2022/3/15/324
-
-ARM Neon / SiMD / AVX Compatible (GPU is possible)
-https://lkml.org/lkml/2022/3/15/323
-
-*
-
-197 FIPS NIST Standards Specification C/T/RNG
-https://science.n-helix.com/2022/02/interrupt-entropy.html
-
-Only a Neanderthal would approve a non additive source combination
-that is injected into the HASH & Re-HASHED ,
-
-One does not Procreate inadequate RANDOM from a simple bias KERNEL,
-Hardware RNG's added together may add around 450% Complexity!
-
-Hardware RNG devices MUST be able to Re-HASH to their 197 NIST
-Standards Specification, That is FINAL 2022 DT
-
-KEYS: trusted: allow use of kernel RNG for key material
-
-https://lkml.org/lkml/2022/3/16/598
-
-CAAM PRNG Reference : https://lkml.org/lkml/2022/3/16/649
+On Fri, Apr 1, 2022 at 4:06 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> Whilst here move to the new infrastructure using pm_sleep_ptr()
+> and EXPORT_DEV_PM_OPS() so as to let the compiler remove the unused
+> code if CONFIG_SLEEP is not defined.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> ---
+>  drivers/iio/chemical/scd30.h        | 5 +----
+>  drivers/iio/chemical/scd30_core.c   | 8 ++++----
+>  drivers/iio/chemical/scd30_i2c.c    | 2 +-
+>  drivers/iio/chemical/scd30_serial.c | 2 +-
+>  4 files changed, 7 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/iio/chemical/scd30.h b/drivers/iio/chemical/scd30.h
+> index f60127bfe0f4..1ac9f3f79271 100644
+> --- a/drivers/iio/chemical/scd30.h
+> +++ b/drivers/iio/chemical/scd30.h
+> @@ -68,10 +68,7 @@ struct scd30_state {
+>         scd30_command_t command;
+>  };
+>
+> -int scd30_suspend(struct device *dev);
+> -int scd30_resume(struct device *dev);
+> -
+> -static __maybe_unused SIMPLE_DEV_PM_OPS(scd30_pm_ops, scd30_suspend, scd30_resume);
+> +extern const struct dev_pm_ops scd30_pm_ops;
+>
+>  int scd30_probe(struct device *dev, int irq, const char *name, void *priv, scd30_command_t command);
+>
+> diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+> index 9fe6bbe9ee04..6c6c11c2772a 100644
+> --- a/drivers/iio/chemical/scd30_core.c
+> +++ b/drivers/iio/chemical/scd30_core.c
+> @@ -517,7 +517,7 @@ static const struct iio_chan_spec scd30_channels[] = {
+>         IIO_CHAN_SOFT_TIMESTAMP(3),
+>  };
+>
+> -int __maybe_unused scd30_suspend(struct device *dev)
+> +static int scd30_suspend(struct device *dev)
+>  {
+>         struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>         struct scd30_state *state  = iio_priv(indio_dev);
+> @@ -529,9 +529,8 @@ int __maybe_unused scd30_suspend(struct device *dev)
+>
+>         return regulator_disable(state->vdd);
+>  }
+> -EXPORT_SYMBOL(scd30_suspend);
+>
+> -int __maybe_unused scd30_resume(struct device *dev)
+> +static int scd30_resume(struct device *dev)
+>  {
+>         struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>         struct scd30_state *state = iio_priv(indio_dev);
+> @@ -543,7 +542,8 @@ int __maybe_unused scd30_resume(struct device *dev)
+>
+>         return scd30_command_write(state, CMD_START_MEAS, state->pressure_comp);
+>  }
+> -EXPORT_SYMBOL(scd30_resume);
+> +
+> +EXPORT_SIMPLE_DEV_PM_OPS(scd30_pm_ops, scd30_suspend, scd30_resume);
+>
+>  static void scd30_stop_meas(void *data)
+>  {
+> diff --git a/drivers/iio/chemical/scd30_i2c.c b/drivers/iio/chemical/scd30_i2c.c
+> index 875892a070ee..7c332e4e8e46 100644
+> --- a/drivers/iio/chemical/scd30_i2c.c
+> +++ b/drivers/iio/chemical/scd30_i2c.c
+> @@ -128,7 +128,7 @@ static struct i2c_driver scd30_i2c_driver = {
+>         .driver = {
+>                 .name = KBUILD_MODNAME,
+>                 .of_match_table = scd30_i2c_of_match,
+> -               .pm = &scd30_pm_ops,
+> +               .pm = pm_sleep_ptr(&scd30_pm_ops),
+>         },
+>         .probe_new = scd30_i2c_probe,
+>  };
+> diff --git a/drivers/iio/chemical/scd30_serial.c b/drivers/iio/chemical/scd30_serial.c
+> index 568b34486c44..8664f3ce6b33 100644
+> --- a/drivers/iio/chemical/scd30_serial.c
+> +++ b/drivers/iio/chemical/scd30_serial.c
+> @@ -252,7 +252,7 @@ static struct serdev_device_driver scd30_serdev_driver = {
+>         .driver = {
+>                 .name = KBUILD_MODNAME,
+>                 .of_match_table = scd30_serdev_of_match,
+> -               .pm = &scd30_pm_ops,
+> +               .pm = pm_sleep_ptr(&scd30_pm_ops),
+>         },
+>         .probe = scd30_serdev_probe,
+>  };
+> --
+
+Applied as 5.19 material along with the [2-3/3].
+
+Please let me know if you need a non-mutable branch to pull from in
+order to base other work on these commits.
+
+Thanks!

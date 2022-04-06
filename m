@@ -2,213 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A804F65D2
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 18:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 533434F66B5
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 19:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237572AbiDFQil (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Apr 2022 12:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41218 "EHLO
+        id S238650AbiDFRRK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Apr 2022 13:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238874AbiDFQi0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 12:38:26 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043EA28A007
-        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 06:57:27 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id dr20so4429085ejc.6
-        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 06:57:27 -0700 (PDT)
+        with ESMTP id S238790AbiDFRRA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 13:17:00 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAE633E8E5D
+        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 08:12:42 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id e4so2706799oif.2
+        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 08:12:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
+        d=usp.br; s=usp-google;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
          :content-transfer-encoding;
-        bh=12C6tMvUOqmE7iPeN67Buox9hidIxbeU6o+nTMIlrmg=;
-        b=TIHndFfPo+aaXhrleHu1XKHsvk8SmC+eKthCJ1x8k1jOU+FlmZp1HraGZe+KRNSejw
-         lAdLIaFuzOEvGXFyAJm6TYPZxSDLp8r3tTzTA7hH4bWGi5bmSlmjb/JhO4m81EX/23zo
-         JMC37cyMVhkPc2YolTh/ZQH4C8yQX30KAKqpvHjDMS121yd+bZ+kGjC4fw/VSDTd/Bel
-         r++sz3h90Y1q3YMtz3u9vkqTtI9AnQYD9Dxw44zbHFq/3sIfbG/fosSlnR1j3w9I45Hd
-         c20ZFtPU/2IMcvlxH0WaArlfD88e06eBvHl6UAsbzD3EpoCHHQmgMnUL6JnMa80b+0IK
-         VdEw==
+        bh=/g2L7JPkn6C2YVAVneUn/BxXp+WB2voVVlguKc7I6O0=;
+        b=wIaF4g8LyYmBT9nsKoniqqKHWdF58uE5m/r+9mtuPaoSBd19GD5qQF769nGSf6kh8W
+         z0J0RCiNkT3+aQCih3lMC1NI0MO/yhoHFOd/6Zuw7hVoHJr0gXtMSzU+VOawJBZEWXFN
+         2qGVNthNXv0G7n9kZ7/iT/QWUO+/ZxeyCP277uri/ri+H6kZW3UfpyKByMrY7EU+Qja+
+         RtPuPTjSCkxrjhea7YWBOiopTCNqZfcN7d6nhZp1mueGrl2NQBndzvEY7ZUUC6A3UQyj
+         txWOl2yqHBYa/mCGVRuykWHvduf4BX9ZmabkmSZ6oC7A3iIUMt9DR5FHiI1veRJQ1yRK
+         r0/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=12C6tMvUOqmE7iPeN67Buox9hidIxbeU6o+nTMIlrmg=;
-        b=sxpttlO9dxr7GKet0wcbGt3YLgd0rDB6fxBuVZLjpQ4rRl/Hj3mqxXMXFNxrwk83EC
-         v+aqLw/C/dcL9ZToA7Q/kBUMGB2eDhAu/O3maJc39KlkF5RsKAVwlgijQe1d6KXg/Elk
-         kIK55n+EvkBh5Nd0SWl9QP75Y2DPJ581v2fBZs+Mn8FjhcGyrDMDD8OKkTnuZLi2Bz+t
-         ZJqBn3ZXaxMl6sKJAA8wMHtD/xIo+99a/QEZEeL4LoArbTMUdUcN/OwvHgC6FbXmc47e
-         FF/dz9ZVOJy9Aeocn7ZfTdSr0hjn+Itbb2aDQ962H6Er8TwOwdVxUTmgwuBWSWIt04y+
-         lHyA==
-X-Gm-Message-State: AOAM533hhbnCN5/8C+p/1fIQVURGZea5c0jHeIzNP7VfRHaAt+JSXd+5
-        fnMhNV5aqCAtot9jDV7t6hJWbHpe+cWRTAQ+/YM=
-X-Google-Smtp-Source: ABdhPJzFnHz+H9bUAOi37zIlujICLHHCorayrVW8scWF90/ZOC3VDJeoKK7oBD1gDjScx2MY4DTEtjSy2PyuLZI+P4Y=
-X-Received: by 2002:a17:907:6e06:b0:6e4:dae7:9574 with SMTP id
- sd6-20020a1709076e0600b006e4dae79574mr8718896ejc.540.1649253445762; Wed, 06
- Apr 2022 06:57:25 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding;
+        bh=/g2L7JPkn6C2YVAVneUn/BxXp+WB2voVVlguKc7I6O0=;
+        b=Gn7e++P7iatN8Ex8YfIYQGlbLW6MqJmSaj5G8QChwcxbDod+3+EsC0zW6yfoYDMnuM
+         jZjJhTvj231khcpj6ZwWJbfatnzZMHtB8Jefh9A5Zp2BXBYPt6aXIe1muE7s8fPpmaqx
+         R5K4VuIcVLixXWP59bkCWmfA2HMnYVgTntODKZfzppmyqpRExvMg0RPcXRhBNSXZuarI
+         06xWRxonb31+vqUanYChDKT3RCmP7xDjEQaFE695mh6yNwwyWOUoJHLGctPWh0STuIoi
+         XcVCrHUWpPa8yMuPkBWxcEKOV9cPsLyx6v9gHAyCqZ2ol5gGRVdIvfiMCyFurQN+rifG
+         Lp4Q==
+X-Gm-Message-State: AOAM5307HEwZvDz6PysektSPkULfs4C8XsxhFkL2PbP+X8U6PVVyc5cJ
+        SBLV8snPNR05StLaECvrV3DpAQm6EJ/Igx7S
+X-Google-Smtp-Source: ABdhPJynqBbOyknd/9G7kXviNn+mXel7sWBGugvOU+3Pr7MhUbgE9Y7MIi+E3+Z0kAGPR4Em5aH1lg==
+X-Received: by 2002:a05:6808:1294:b0:2f7:5e83:f0f with SMTP id a20-20020a056808129400b002f75e830f0fmr3912451oiw.77.1649257961263;
+        Wed, 06 Apr 2022 08:12:41 -0700 (PDT)
+Received: from fedora ([2804:14d:8084:84c6:2e13:8e30:84f7:1597])
+        by smtp.gmail.com with ESMTPSA id k124-20020aca3d82000000b002ef4c5bb9dbsm6462397oia.0.2022.04.06.08.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Apr 2022 08:12:40 -0700 (PDT)
+Date:   Wed, 6 Apr 2022 12:12:36 -0300
+From:   =?iso-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
+To:     michael.hennerich@analog.com, lars@metafoo.de, jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: ad7266: convert probe to full device-managed
+Message-ID: <Yk2t5D2x2+YorkTd@fedora>
 MIME-Version: 1.0
-From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Wed, 6 Apr 2022 14:57:14 +0100
-Message-ID: <CAHpNFcObr9v28HTpqKS=eAKC5wV2z7k0NaVXz94ga6JN1kJ_vA@mail.gmail.com>
-Subject: Display Stream Compression Support - 3D Mux , 3D Mu-X by GPU & CPU
- though SiMD & AVX 32Bit IfNotOR to a Singular planar Frame Buffer
-To:     torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-https://lkml.org/lkml/2022/4/6/401
+Convert probe functions to device-managed variants, with exception of
+the regulator, which required a devm_add_action_or_reset() hook
+registration.
 
-*
-[PATCH v7 13/14] drm/msm: Update generated headers Vinod Koul
-  [PATCH v7 07/14] drm/msm/disp/dpu1: Add support for DSC in encoder Vinod =
-Koul
-  [PATCH v7 09/14] drm/msm: Add missing num_dspp field documentation Vinod =
-Koul
-  [PATCH v7 06/14] drm/msm/disp/dpu1: Add DSC support in hw_ctl Vinod Koul
-  [PATCH v7 08/14] drm/msm/dpu: don't use merge_3d if DSC merge topo
-... Vinod Koul
-  [PATCH v7 03/14] drm/msm/disp/dpu1: Add support for DSC Vinod Koul
-  [PATCH v7 01/14] drm/msm/dsi: add support for dsc data Vinod Koul
-[New] [PATCH v7 00/14] drm/msm: Add Display Stream Compression Support
-Vinod Koul
-*
-3D Mux , 3D Mu-X by GPU & CPU though SiMD & AVX 32Bit IfNotOR to a
-Single planar Frame Buffer is logical in the case of Multi Window
-desktops,
-A Blitter Frame Works well for X-OR.
+Signed-off-by: Maíra Canal <maira.canal@usp.br>
+---
+I apologize if you received this email more than once. For some reason, the
+patch is not showing up on the linux-iio mailing list. I believe that the
+problem was that Michael's Hennerich email on the MAINTAINERS list was
+Michael.Hennerich@analog.com instead of michael.hennerich@analog.com. Anyway,
+I am truly sorry with you received this email more than once.
+---
+ drivers/iio/adc/ad7266.c | 43 +++++++++++++---------------------------
+ 1 file changed, 14 insertions(+), 29 deletions(-)
 
-The relevance is that a Single Frame buffer per Eye does 3D Imagery!
-(Google Glass & MS & PS4 VR)
+diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+index c17d9b5fbaf6..4f8f07d5c1a3 100644
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -378,6 +378,11 @@ static const char * const ad7266_gpio_labels[] = {
+ 	"ad0", "ad1", "ad2",
+ };
+ 
++static void ad7266_reg_disable(void *reg)
++{
++	regulator_disable(reg);
++}
++
+ static int ad7266_probe(struct spi_device *spi)
+ {
+ 	struct ad7266_platform_data *pdata = spi->dev.platform_data;
+@@ -398,9 +403,13 @@ static int ad7266_probe(struct spi_device *spi)
+ 		if (ret)
+ 			return ret;
+ 
++		ret = devm_add_action_or_reset(&spi->dev, ad7266_reg_disable, st->reg);
++		if (ret)
++			return ret;
++
+ 		ret = regulator_get_voltage(st->reg);
+ 		if (ret < 0)
+-			goto error_disable_reg;
++			return ret;
+ 
+ 		st->vref_mv = ret / 1000;
+ 	} else {
+@@ -423,7 +432,7 @@ static int ad7266_probe(struct spi_device *spi)
+ 						      GPIOD_OUT_LOW);
+ 				if (IS_ERR(st->gpios[i])) {
+ 					ret = PTR_ERR(st->gpios[i]);
+-					goto error_disable_reg;
++					return ret;
+ 				}
+ 			}
+ 		}
+@@ -459,35 +468,12 @@ static int ad7266_probe(struct spi_device *spi)
+ 	spi_message_add_tail(&st->single_xfer[1], &st->single_msg);
+ 	spi_message_add_tail(&st->single_xfer[2], &st->single_msg);
+ 
+-	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
++	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, &iio_pollfunc_store_time,
+ 		&ad7266_trigger_handler, &iio_triggered_buffer_setup_ops);
+ 	if (ret)
+-		goto error_disable_reg;
+-
+-	ret = iio_device_register(indio_dev);
+-	if (ret)
+-		goto error_buffer_cleanup;
+-
+-	return 0;
+-
+-error_buffer_cleanup:
+-	iio_triggered_buffer_cleanup(indio_dev);
+-error_disable_reg:
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
+-
+-	return ret;
+-}
+-
+-static void ad7266_remove(struct spi_device *spi)
+-{
+-	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct ad7266_state *st = iio_priv(indio_dev);
++		return ret;
+ 
+-	iio_device_unregister(indio_dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
++	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
+ 
+ static const struct spi_device_id ad7266_id[] = {
+@@ -502,7 +488,6 @@ static struct spi_driver ad7266_driver = {
+ 		.name	= "ad7266",
+ 	},
+ 	.probe		= ad7266_probe,
+-	.remove		= ad7266_remove,
+ 	.id_table	= ad7266_id,
+ };
+ module_spi_driver(ad7266_driver);
+-- 
+2.35.1
 
-We can and will need more; For this Substance Called Flexibility we
-need 2 Details:
-
-ReDirectable DMA & Multi Frame Blitter...
-
-By this method we can literally write every detail if we wish in
-Shader, But we do not need to worry!
-
-X-OR Blitter Recovers from Overwrite by detecting details that are new.
-
-Simple is best but keep in mind that CPU Frame Buffer (In RAM & Cache)
-& GPU Frame Buffer (in GPU) & Direct Access RAM : ReBAR to
-Transparently access GPU RAM!
-
-Allowing ALL.
-
-****
-
-Vector Compression VESA Standard Display protocol 3 +
-DSC : Zero compression or low level compression version of DSC
-1.2bc
-
-Frame by Frame compression with vector prediction.
-
-X-OR Frame Buffer Compression & Blank Space Compression:
-
-X-OR X=3D1 New Data & X=3D0 being not sent,
-Therefore Masking the frame buffer,
-
-A Frame buffer needs a cleared aria; A curve or ellipsoid for example,
-Draw the ellipsoid; This is the mask & can be in 3 levels:
-
-X-OR : Draw or not Draw Aria : Blitter XOR
-AND : Draw 1 Value & The other : Blitter Additive
-Variable Value Resistor : Draw 1 Value +- The other : Blitter + or - Modifi=
-er
-*
-
-Vector Compression VESA Standard Display protocol 3 : RS
-
-SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
-Improve Console & TV & BIOS & General Animated Render
-
-Vector Display Standards with low relative CPU Weight
-SiMD Polygon Font Method Render
-
-Default option point scaling (the space) : Metadata Vector Fonts with
-Curl mathematical vector :
-
-16 Bit : SiMD 1 width
-32 Bit : SiMD Double Width
-
-High precision for AVX 32Bit to 256Bit width precision.
-
-Vectoring with SiMD allows traditional CPU mastered VESA Emulation
-desktops & safe mode to be super fast & displays to conform to VESA
-render standards with little effort & a 1MB Table ROM.
-
-Though the VESA & HDMI & DisplayPort standards Facilitates direct low
-bandwidth transport of and transformation of 3D & 2D graphics & fonts
-into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
-
-Display Standards Vector Render : DSVR-SiMD Can and will be directly
-rendered to a Surface for visual element : SfVE-Vec
-
-As such transport of Vectors & transformation onto display (Monitor,
-3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
-
-Directly resolve The total graphics pipeline into high quality output
-or input & allow communication of almost infinite Floating point
-values for all rendered 3D & 2D Elements on a given surface (RAM
-Render Page or Surface)
-
-In high precision that is almost unbeatable & yet consumes many levels
-less RAM & Transport Protocol bandwidth,
-
-Further more can also render Vector 3D & 2D Audio & other elements
-though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
-Harmonic reproduction units for example Yamaha and Casio keyboards.
-
-"QFT a Zero compression or low level compression version of DSC
-1.2bc
-
-X-OR Frame Buffer Compression & Blank Space Compression:
-Vector Compression VESA Standard Display protocol 3"
-
-"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
-latency=E2=80=9D, which is the amount of time between a frame being ready f=
-or
-transport in the GPU and that frame being completely displayed. This
-latency is the sum of the transport time through the source=E2=80=99s outpu=
-t
-circuits, the transport time across the interface, the processing of
-the video data in the display, and the painting of the screen with the
-new data. This overall latency affects the responsiveness of games:
-how long it appears between a button is pressed to the time at which
-the resultant action is observed on the screen.
-
-
-While there are a lot of variables in this equation, not many are
-adjustable from an HDMI specification perspective. QFT operates on the
-transport portion of this equation by reducing the time it takes to
-send only the active video across the cable. This results in reduced
-display latency and increased responsiveness."
-*
-
-(c)Rupert S
-
-Include vector today *important* RS
-https://vesa.org/vesa-display-compression-codecs/
-
-https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
-
-https://science.n-helix.com/2019/06/vulkan-stack.html
-
-https://science.n-helix.com/2019/06/kernel.html
-
-https://science.n-helix.com/2022/03/fsr-focal-length.html
-
-https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
-ml
-
-https://bit.ly/VESA_BT
-
-Rupert S

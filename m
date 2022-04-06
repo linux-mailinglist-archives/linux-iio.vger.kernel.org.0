@@ -2,56 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5044F4F6938
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 20:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 853EA4F68BE
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 20:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240084AbiDFSNO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Apr 2022 14:13:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44562 "EHLO
+        id S239877AbiDFSNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Apr 2022 14:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240149AbiDFSNK (ORCPT
+        with ESMTP id S240232AbiDFSNK (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 14:13:10 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159201255BF
-        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 09:50:29 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id b15so2987194pfm.5
-        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 09:50:29 -0700 (PDT)
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B195129862
+        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 09:50:31 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id k14so2726849pga.0
+        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 09:50:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ElIDyEfWm0NLb325CUldpOG/323/DcoKYpxnTGj9mDg=;
-        b=DEFU0XCJJrDs1lpYQRMwMGHIlnlCltDlhl3XinTZomSnJMaldQqEubd+hRUW2+3wBB
-         IiRFx5+LmXw9yer02zZBmXZx86VWpf31r/b4V40bAWnEdwia+DXAL727nrnhLwO4wKa0
-         W/MxrmRV9VK0W3sncI6gbuo60vgTrTg/tpf6I=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=GW2h7uu/G+YD6BBAeZyxfMtvERVI7M6Q3BgRXDcSV4A=;
+        b=a1KL0Vafp4K4XREnlA3e1N5MECziD/SZsjf2K+Hpuv5hfmogDWxNdlysx3Ekb7TEdn
+         5wsbHuueaPKFcONHLT/5VJHooiOyzZquXUwtNyRKM4phqPPG0GKMoM1XtreweA3Ixn8Z
+         mKYJZREC9gTSGJAxjq4/9OA3961nSCP+Jzi+E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ElIDyEfWm0NLb325CUldpOG/323/DcoKYpxnTGj9mDg=;
-        b=NC7525iL8HSBwgK/w6BjW9dnrF3RkFJFYmglWXBJDLCcj0RarkajWUBk8xwKjjUPmp
-         AEneq3Bu192eTTOuL40viu3IAyBWz94EQkNyAlS4OC+8iY9vKaS0+rWMKQPnpjHSIqch
-         ZYQZoPUyowHO1k12fbGzq1H1h/iL/g5SKlFa47Xp7ALrl7gZInB06Ey1Vll8lyukmdXC
-         jpxsxZJ8RaADoU6Gq1XiJ3drSEQa7qR4LyquumKx7XGimXwQ3ETRIyyjx49ZwQpgJ/R3
-         338NXCwMNVkjdwgpxnLzxX1iiqF9rW0+XrniHI2qNfusvybisDrigWy2RcoS9+e6+Djh
-         1NGA==
-X-Gm-Message-State: AOAM532G6A4rgPiWcZjMy+r0DixBzgyHEAWqv5RjSy4VS0g470BMoB4H
-        u5UHrbbt8MWL3BjfIqHCcdcBbo9vLSpXgw==
-X-Google-Smtp-Source: ABdhPJxZFbRGDK/wziWpEehlgBfHtsEl3sLXu9a2TNNouZl/yalMWJb8Ujf3sKYCSCrlTpWoLsxeVQ==
-X-Received: by 2002:a05:6a00:1828:b0:4fd:e0e5:6115 with SMTP id y40-20020a056a00182800b004fde0e56115mr9845652pfa.52.1649263829402;
-        Wed, 06 Apr 2022 09:50:29 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=GW2h7uu/G+YD6BBAeZyxfMtvERVI7M6Q3BgRXDcSV4A=;
+        b=w1aClTolDDTkzV29dYfIkqKzwWUkavMl2/3UkL1L1/lOGXHAQaCsNfc7mrjVo5370D
+         uxXUiA6dSU6uAYbZHmK73RzBgbG8U9zvz9CR7J4bVbVlObOJgO14Drx0JE6TNUtooyuG
+         gkebUQqxAsXEDXh7w79WMj2Ks6S06tfR3On5NkH9Fd0Ibag8TgpuPSS3VBkBk/2Nd4CL
+         MRSk85jFqsbHEc8Bu+MJSJnPJpFbnG3+U+UfQkqxjc0WXqxFx4iR0eMdTvPe0alrkMY/
+         Kg2T9nf7K8I3PEAGZICMAbPJzQ3duqB4fdmJJptX9Furkqf1gY+KEnJpdsqdt5uJyAnc
+         8blA==
+X-Gm-Message-State: AOAM530voyWVcMsHcAEDLEwvSEiAul9KqH71TFMcJLLfxWU6Ve8ZmLY/
+        ZRwDwjuJU2dl8Tl5ZxFn+ZGoNA==
+X-Google-Smtp-Source: ABdhPJzw8im6C+w2FNo2HMIGFsmoGHqaaZ0XpHY9mxxQOUtuyAq8unohXz0ANiytA4yABbl1dnmDtw==
+X-Received: by 2002:a63:5023:0:b0:399:2202:2f80 with SMTP id e35-20020a635023000000b0039922022f80mr7766059pgb.621.1649263830920;
+        Wed, 06 Apr 2022 09:50:30 -0700 (PDT)
 Received: from localhost ([2620:15c:202:201:c9d3:469f:91e4:c022])
-        by smtp.gmail.com with UTF8SMTPSA id x6-20020a17090aa38600b001ca2f87d271sm6286474pjp.15.2022.04.06.09.50.28
+        by smtp.gmail.com with UTF8SMTPSA id x5-20020aa79a45000000b00504a1c8b75asm101255pfj.165.2022.04.06.09.50.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Apr 2022 09:50:28 -0700 (PDT)
+        Wed, 06 Apr 2022 09:50:30 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     jic23@kernel.org, robh+dt@kernel.org, swboyd@chromium.org
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v4 0/8] Add settings for precharge and internal resistor
-Date:   Wed,  6 Apr 2022 09:50:03 -0700
-Message-Id: <20220406165011.10202-1-gwendal@chromium.org>
+        Gwendal Grignou <gwendal@chromium.org>, stable@vger.kernel.org
+Subject: [PATCH v4 1/8] iio: sx9324: Fix default precharge internal resistance register
+Date:   Wed,  6 Apr 2022 09:50:04 -0700
+Message-Id: <20220406165011.10202-2-gwendal@chromium.org>
 X-Mailer: git-send-email 2.35.1.1094.g7c7d902a7c-goog
+In-Reply-To: <20220406165011.10202-1-gwendal@chromium.org>
+References: <20220406165011.10202-1-gwendal@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -64,43 +66,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-For Semtech sensors SX9324 and SX9360, allow confugration of the
-pre-charge resistor (9324/9360) and internal resistor (9324).
+Fix the default value for the register that set the resistance:
+it has to be 0x10 per datasheet.
 
-Fix register name spelling mistakes first and set default value properly
-for sx9324 internal resistor register.
-
-The 9360 changes are independent from the 9324 changes, but they are
-very similar.
-
+Fixes: 4c18a890dff8d ("iio:proximity:sx9324: Add SX9324 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+---
 Changes since v3:
-- Rename reserved field as _RESERVED_
-- Fix invalid string matching with match_string()
-- Fix cut and paste error in device tree bindings.
-
+- Fix commit, use RESERVED instead of RSVD.
 Changes since v2:
-- use -ohms instead of -kohms, as ohms is a defined unit in
-  dt-schema.git dtschema/schemas/property-units.yaml
+- no changes
 
-Changes sinve v1:
-- Add kOhm Unit, add a new patch to fix invalid register setting.
+Changes since v1:
+- new patch.
 
-Gwendal Grignou (8):
-  iio: sx9324: Fix default precharge internal resistance register
-  iio: sx9324: Fix register field spelling
-  dt-bindings: iio: sx9324: Add precharge resistor setting
-  iio: sx9324: Add precharge internal resistance setting
-  dt-bindings: iio: sx9324: Add internal compensation resistor setting
-  iio: sx9324: Add Setting for internal compensation resistor
-  dt-bindings: iio: sx9360: Add precharge resistor setting
-  iio: sx9360: Add pre-charge resistor setting
+ drivers/iio/proximity/sx9324.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- .../iio/proximity/semtech,sx9324.yaml         | 19 +++++++++
- .../iio/proximity/semtech,sx9360.yaml         |  9 ++++
- drivers/iio/proximity/sx9324.c                | 41 ++++++++++++++++---
- drivers/iio/proximity/sx9360.c                | 12 +++++-
- 4 files changed, 75 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+index 0d9bbbb50cb45..378c2a17bae6e 100644
+--- a/drivers/iio/proximity/sx9324.c
++++ b/drivers/iio/proximity/sx9324.c
+@@ -70,7 +70,8 @@
+ #define SX9324_REG_AFE_PH2		0x2a
+ #define SX9324_REG_AFE_PH3		0x2b
+ #define SX9324_REG_AFE_CTRL8		0x2c
+-#define SX9324_REG_AFE_CTRL8_RESFILTN_4KOHM 0x02
++#define SX9324_REG_AFE_CTRL8_RESERVED	0x10
++#define SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM 0x02
+ #define SX9324_REG_AFE_CTRL9		0x2d
+ #define SX9324_REG_AFE_CTRL9_AGAIN_1	0x08
+ 
+@@ -781,7 +782,8 @@ static const struct sx_common_reg_default sx9324_default_regs[] = {
+ 	{ SX9324_REG_AFE_PH2, 0x1a },
+ 	{ SX9324_REG_AFE_PH3, 0x16 },
+ 
+-	{ SX9324_REG_AFE_CTRL8, SX9324_REG_AFE_CTRL8_RESFILTN_4KOHM },
++	{ SX9324_REG_AFE_CTRL8, SX9324_REG_AFE_CTRL8_RESERVED |
++		SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM },
+ 	{ SX9324_REG_AFE_CTRL9, SX9324_REG_AFE_CTRL9_AGAIN_1 },
+ 
+ 	{ SX9324_REG_PROX_CTRL0, SX9324_REG_PROX_CTRL0_GAIN_1 |
 -- 
 2.35.1.1094.g7c7d902a7c-goog
 

@@ -2,61 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 036194F62C9
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 17:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9433D4F6372
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 17:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235841AbiDFPRV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Apr 2022 11:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46016 "EHLO
+        id S236131AbiDFP3m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Apr 2022 11:29:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235933AbiDFPQn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 11:16:43 -0400
+        with ESMTP id S235682AbiDFP3P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 11:29:15 -0400
 Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6362520E64
-        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 05:16:34 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-deb9295679so2664630fac.6
-        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 05:16:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6D156122D
+        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 05:29:09 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so2689628fac.7
+        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 05:29:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=usp.br; s=usp-google;
-        h=from:to:cc:subject:date:message-id:mime-version
+        h=date:from:to:subject:message-id:mime-version:content-disposition
          :content-transfer-encoding;
-        bh=MRK2iHcZ9JGwfO4QnMiDs/a6NPe5T+0ewcruwhEjB8U=;
-        b=EWHuYiPJIn2gnHd8UHZ5X+qZee96O656e2rBtF4Dn3vTqVNEcMKnSDWfDSE2gcS7sW
-         SmR1H2sun0Hzg1N7Ydi7C15ssqZ29XAa/pQbDg4nXua1fD7TKeeGrGSB92I4NcebMR1q
-         4o2mSR5vB8HDzmieQ7rNPPtYrdSH+nRp9bO8blvTEkyppXR7V9udJiXfU8+KOd9MmJow
-         1QNEJrEuIThJtYMAWoa80J8AQEfUCRyczT7qEPK+AysX8UE1e2YrevC33uwQFagLUcuQ
-         O9znufBQpN22sqv6WQCsD07uIxMhvH2JGUMl7TOYB4v5WN4HudMjrOVwPeNIE/3Xkl8n
-         KMhw==
+        bh=f9uUO1j3Pv/5fo7aHMxUGqKZLMa4C4Cbm+pCSR0pZdg=;
+        b=Jgn1UZ4t04iIJsvgNJOclG2gtp7Az/+qysNdFnh3eLRkCs+8SzZAHC/1WjOVLWQMh/
+         PzmtRz7Wuv1otNj2iwwR/t8RxAWBwq/SL24Pq2pJJZUqURusxQwV1J3DCX5o9Cp0OY1e
+         OjBqIMZ2PfAS2qXVbVSQbAj79dZrvfnx9WJujiLQ0uZP8KHzcs3siWWFRujYH+Cp3KHx
+         9p4L3rozr4sl9jwpP0MLavEy3LFOc6pQnGLgNCVExt5n9kgB2YWZEzu/MCG88B0nlUYy
+         PxxJbJ+hI15qzgqJ2shzKQ3An7yVR5UKdqr1VI72+5z2umJ7jpddHjn/7Nos+V6ZGxIM
+         LGPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MRK2iHcZ9JGwfO4QnMiDs/a6NPe5T+0ewcruwhEjB8U=;
-        b=ArUB8+vo64fPj8piaF5o/cujc4LKSvPkMWFP7ki2AA/cMqVTntQ79daAvBASK23VJ8
-         SdV8QyTOArUYL4BzK32y/O/zbIjzluVgCfsPFeWKUcyRht893kXAgH9laqo3iuujXJ+O
-         onathGz7HJtuGn+Kp10Vitw6RNpVDLbnZbPCxIz7c9lffC7sD5Zz53CvpXbS1yo1wNOF
-         cYnaEnLEy010o5LdRToozvDuRRDw8wn5DArfo4cZT4oxwTeFzdS2uy3Mq7OStEU2KuNU
-         dTF0i1Ghkz1i9nhGjIqK7S9oVbLhEmh9Gf1z2tT0IZ/wrdjsg2py4IHBUt7o97YKATsX
-         +jEg==
-X-Gm-Message-State: AOAM531iZIKSO0VzzqHj4/3EPekLLV+2xcEByhsgg5t5pHFa1zMvNyTJ
-        pu1BMoZ962F6bZ/E+qkHASCG2pzVQ7jDKcEL
-X-Google-Smtp-Source: ABdhPJyAvDBkXbpZIInakNZ6h93PhBwf4bkzSKscwcQKjaFgR4e2+tKbyjkjmp4L8SQtKCHpPVfxEQ==
-X-Received: by 2002:a05:6870:a106:b0:de:de08:4e42 with SMTP id m6-20020a056870a10600b000dede084e42mr3708390oae.247.1649247389569;
-        Wed, 06 Apr 2022 05:16:29 -0700 (PDT)
-Received: from fedora.. ([2804:14d:8084:84c6:2e13:8e30:84f7:1597])
-        by smtp.gmail.com with ESMTPSA id q6-20020a056870028600b000d9be0ee766sm6349049oaf.57.2022.04.06.05.16.27
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding;
+        bh=f9uUO1j3Pv/5fo7aHMxUGqKZLMa4C4Cbm+pCSR0pZdg=;
+        b=JHgnGNWgWqa1ES4dbJyYtT8HrRSMW6JES+UXnd/dWaJnYJvMonXXWe6Xx7O3xSMp5B
+         OUH9pYqs4WoP09uBlywdouH+LYy6U0H75YcGzuBgOPFMb7IlWsNZ2Zu0xcp8+JgyxIk1
+         toJ+qDKIBEB6DsTxElJ0RivRfUyO7yVCDw2UyBCNHVPTvK5LQNyY5eUQg3NiRFNHI0wv
+         E/vJKsOrPauHBOpKpP3kPqUvcDIE853yYA1qHvwibIrKmt18ZPKIRBG+AnRhYqzmZeoZ
+         xOrvlHmuv7KfPyZGOgUPa84eEhmPs6UrrSXPE3nQArcxyvmxWCZqM6k70iLpQprf8Qn3
+         CCyQ==
+X-Gm-Message-State: AOAM530b/f1JyvHPj0mBiolXwd3ILeX5cN0PUBq7eFISj5+2/wJK0BLM
+        ndcEZN8urn8pUmTlOyNivYFPqg==
+X-Google-Smtp-Source: ABdhPJxQAh7U7BTJOVmhbyWXNLrCv5Youq0bLX6t3zA8GC5zw7+zx9Xbj6Cz7ncvfDCYrPI+MjDeag==
+X-Received: by 2002:a05:6870:1cc:b0:e1:fabc:6e03 with SMTP id n12-20020a05687001cc00b000e1fabc6e03mr3753415oad.16.1649248148501;
+        Wed, 06 Apr 2022 05:29:08 -0700 (PDT)
+Received: from fedora ([2804:14d:8084:84c6:2e13:8e30:84f7:1597])
+        by smtp.gmail.com with ESMTPSA id t4-20020a0568301e2400b005c9781086d9sm6575055otr.9.2022.04.06.05.29.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Apr 2022 05:16:28 -0700 (PDT)
-From:   =?UTF-8?q?Ma=C3=ADra=20Canal?= <maira.canal@usp.br>
-To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <maira.canal@usp.br>
+        Wed, 06 Apr 2022 05:29:08 -0700 (PDT)
+Date:   Wed, 6 Apr 2022 09:29:04 -0300
+From:   =?iso-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
+To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: [PATCH] iio: ad7266: convert probe to full device-managed
-Date:   Wed,  6 Apr 2022 09:16:20 -0300
-Message-Id: <20220406121620.912350-1-maira.canal@usp.br>
-X-Mailer: git-send-email 2.35.1
+Message-ID: <Yk2HkOcjQhOo6y2X@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -72,7 +71,7 @@ Convert probe functions to device-managed variants, with exception of
 the regulator, which required a devm_add_action_or_reset() hook
 registration.
 
-Signed-off-by: MaÃ­ra Canal <maira.canal@usp.br>
+Signed-off-by: Maíra Canal <maira.canal@usp.br>
 ---
  drivers/iio/adc/ad7266.c | 43 +++++++++++++---------------------------
  1 file changed, 14 insertions(+), 29 deletions(-)

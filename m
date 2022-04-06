@@ -2,167 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9433D4F6372
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 17:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7764F63AF
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 17:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236131AbiDFP3m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Apr 2022 11:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
+        id S236632AbiDFPt6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Apr 2022 11:49:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235682AbiDFP3P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 11:29:15 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6D156122D
-        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 05:29:09 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-d6e29fb3d7so2689628fac.7
-        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 05:29:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google;
-        h=date:from:to:subject:message-id:mime-version:content-disposition
-         :content-transfer-encoding;
-        bh=f9uUO1j3Pv/5fo7aHMxUGqKZLMa4C4Cbm+pCSR0pZdg=;
-        b=Jgn1UZ4t04iIJsvgNJOclG2gtp7Az/+qysNdFnh3eLRkCs+8SzZAHC/1WjOVLWQMh/
-         PzmtRz7Wuv1otNj2iwwR/t8RxAWBwq/SL24Pq2pJJZUqURusxQwV1J3DCX5o9Cp0OY1e
-         OjBqIMZ2PfAS2qXVbVSQbAj79dZrvfnx9WJujiLQ0uZP8KHzcs3siWWFRujYH+Cp3KHx
-         9p4L3rozr4sl9jwpP0MLavEy3LFOc6pQnGLgNCVExt5n9kgB2YWZEzu/MCG88B0nlUYy
-         PxxJbJ+hI15qzgqJ2shzKQ3An7yVR5UKdqr1VI72+5z2umJ7jpddHjn/7Nos+V6ZGxIM
-         LGPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-disposition:content-transfer-encoding;
-        bh=f9uUO1j3Pv/5fo7aHMxUGqKZLMa4C4Cbm+pCSR0pZdg=;
-        b=JHgnGNWgWqa1ES4dbJyYtT8HrRSMW6JES+UXnd/dWaJnYJvMonXXWe6Xx7O3xSMp5B
-         OUH9pYqs4WoP09uBlywdouH+LYy6U0H75YcGzuBgOPFMb7IlWsNZ2Zu0xcp8+JgyxIk1
-         toJ+qDKIBEB6DsTxElJ0RivRfUyO7yVCDw2UyBCNHVPTvK5LQNyY5eUQg3NiRFNHI0wv
-         E/vJKsOrPauHBOpKpP3kPqUvcDIE853yYA1qHvwibIrKmt18ZPKIRBG+AnRhYqzmZeoZ
-         xOrvlHmuv7KfPyZGOgUPa84eEhmPs6UrrSXPE3nQArcxyvmxWCZqM6k70iLpQprf8Qn3
-         CCyQ==
-X-Gm-Message-State: AOAM530b/f1JyvHPj0mBiolXwd3ILeX5cN0PUBq7eFISj5+2/wJK0BLM
-        ndcEZN8urn8pUmTlOyNivYFPqg==
-X-Google-Smtp-Source: ABdhPJxQAh7U7BTJOVmhbyWXNLrCv5Youq0bLX6t3zA8GC5zw7+zx9Xbj6Cz7ncvfDCYrPI+MjDeag==
-X-Received: by 2002:a05:6870:1cc:b0:e1:fabc:6e03 with SMTP id n12-20020a05687001cc00b000e1fabc6e03mr3753415oad.16.1649248148501;
-        Wed, 06 Apr 2022 05:29:08 -0700 (PDT)
-Received: from fedora ([2804:14d:8084:84c6:2e13:8e30:84f7:1597])
-        by smtp.gmail.com with ESMTPSA id t4-20020a0568301e2400b005c9781086d9sm6575055otr.9.2022.04.06.05.29.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Apr 2022 05:29:08 -0700 (PDT)
-Date:   Wed, 6 Apr 2022 09:29:04 -0300
-From:   =?iso-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
-To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: ad7266: convert probe to full device-managed
-Message-ID: <Yk2HkOcjQhOo6y2X@fedora>
+        with ESMTP id S236667AbiDFPse (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 11:48:34 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37754282532;
+        Wed,  6 Apr 2022 06:08:32 -0700 (PDT)
+Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KYPrK32NKz67xGv;
+        Wed,  6 Apr 2022 21:05:21 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 6 Apr 2022 15:08:18 +0200
+Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 6 Apr
+ 2022 14:08:17 +0100
+Date:   Wed, 6 Apr 2022 14:08:16 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel <kernel@axis.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "brendanhiggins@google.com" <brendanhiggins@google.com>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "a.zummo@towertech.it" <a.zummo@towertech.it>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: Re: [RFC v1 08/10] iio: light: vcnl4000: add roadtest
+Message-ID: <20220406140816.000038ce@Huawei.com>
+In-Reply-To: <20220405134805.GA28574@axis.com>
+References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
+        <20220311162445.346685-9-vincent.whitchurch@axis.com>
+        <20220320170253.5b946c84@jic23-huawei>
+        <20220405134805.GA28574@axis.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.41]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert probe functions to device-managed variants, with exception of
-the regulator, which required a devm_add_action_or_reset() hook
-registration.
+On Tue, 5 Apr 2022 15:48:05 +0200
+Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
 
-Signed-off-by: Maíra Canal <maira.canal@usp.br>
----
- drivers/iio/adc/ad7266.c | 43 +++++++++++++---------------------------
- 1 file changed, 14 insertions(+), 29 deletions(-)
+> On Sun, Mar 20, 2022 at 06:02:53PM +0100, Jonathan Cameron wrote:
+> > Very interesting bit of work. My current approach for similar testing
+> > is to write a qemu model for the hardware, but that currently
+> > requires carefully crafted tests. Most of the time I'm only doing
+> > that to verify refactoring of existing drivers.   
+> 
+> Thank you for taking a look!
+> 
+> > One thing that makes me nervous here is the python element though
+> > as I've not written significant python in about 20 years.
+> > That is going to be a burden for kernel developers and maintainers...
+> > Nothing quite like badly written tests to make for a mess in the long run
+> > and I suspect my python for example would be very very badly written :)  
+> 
+> There's a bunch of static checkers to ensure that the code follows some
+> basic guidelines, and CI can check that the tests work consistently, and
+> also calculate metrics such as test execution time and code coverage, so
+> even non-idiomatic Python in the tests wouldn't be entirely broken.
+> 
+> And unlike driver code, if the tests for a particular driver later do
+> turn out to be bad (in what way?), we could just throw those particular
+> tests out without breaking anybody's system.
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index c17d9b5fbaf6..4f8f07d5c1a3 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -378,6 +378,11 @@ static const char * const ad7266_gpio_labels[] = {
- 	"ad0", "ad1", "ad2",
- };
- 
-+static void ad7266_reg_disable(void *reg)
-+{
-+	regulator_disable(reg);
-+}
-+
- static int ad7266_probe(struct spi_device *spi)
- {
- 	struct ad7266_platform_data *pdata = spi->dev.platform_data;
-@@ -398,9 +403,13 @@ static int ad7266_probe(struct spi_device *spi)
- 		if (ret)
- 			return ret;
- 
-+		ret = devm_add_action_or_reset(&spi->dev, ad7266_reg_disable, st->reg);
-+		if (ret)
-+			return ret;
-+
- 		ret = regulator_get_voltage(st->reg);
- 		if (ret < 0)
--			goto error_disable_reg;
-+			return ret;
- 
- 		st->vref_mv = ret / 1000;
- 	} else {
-@@ -423,7 +432,7 @@ static int ad7266_probe(struct spi_device *spi)
- 						      GPIOD_OUT_LOW);
- 				if (IS_ERR(st->gpios[i])) {
- 					ret = PTR_ERR(st->gpios[i]);
--					goto error_disable_reg;
-+					return ret;
- 				}
- 			}
- 		}
-@@ -459,35 +468,12 @@ static int ad7266_probe(struct spi_device *spi)
- 	spi_message_add_tail(&st->single_xfer[1], &st->single_msg);
- 	spi_message_add_tail(&st->single_xfer[2], &st->single_msg);
- 
--	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
-+	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, &iio_pollfunc_store_time,
- 		&ad7266_trigger_handler, &iio_triggered_buffer_setup_ops);
- 	if (ret)
--		goto error_disable_reg;
--
--	ret = iio_device_register(indio_dev);
--	if (ret)
--		goto error_buffer_cleanup;
--
--	return 0;
--
--error_buffer_cleanup:
--	iio_triggered_buffer_cleanup(indio_dev);
--error_disable_reg:
--	if (!IS_ERR(st->reg))
--		regulator_disable(st->reg);
--
--	return ret;
--}
--
--static void ad7266_remove(struct spi_device *spi)
--{
--	struct iio_dev *indio_dev = spi_get_drvdata(spi);
--	struct ad7266_state *st = iio_priv(indio_dev);
-+		return ret;
- 
--	iio_device_unregister(indio_dev);
--	iio_triggered_buffer_cleanup(indio_dev);
--	if (!IS_ERR(st->reg))
--		regulator_disable(st->reg);
-+	return devm_iio_device_register(&spi->dev, indio_dev);
- }
- 
- static const struct spi_device_id ad7266_id[] = {
-@@ -502,7 +488,6 @@ static struct spi_driver ad7266_driver = {
- 		.name	= "ad7266",
- 	},
- 	.probe		= ad7266_probe,
--	.remove		= ad7266_remove,
- 	.id_table	= ad7266_id,
- };
- module_spi_driver(ad7266_driver);
--- 
-2.35.1
+True.  Though CI test triage folk may disagree ;)
+
+> 
+> > Cut and paste will of course get us a long way...  
+> 
+> Isn't some amount of copy/paste followed by modification to be expected
+> even if the framework is written in say C (just as there's already
+> copy/paste + modification involved when writing drivers)?
+> 
+> As for the core logic of individual driver tests excluding the framework
+> bits, I have a hard time imagining what Python syntax looks like to
+> someone with no knowledge of Python, so yes, I guess it's going to be
+> harder to review.
+
+I messed around the other day with writing tests for
+drivers/staging/iio/cdc/ad7746.c and wasn't "too bad" and was useful for
+verifying some refactoring (and identified a possible precision problem
+in some integer approximation of floating point calcs)
+I'll try and find time to flesh that test set out more in the near future and
+post it so you can see how bad my python is. It amused my wife if nothing
+else :)
+
+However a future project is to see if I can use this to hook up the SPDM
+attestation stack via mctp over i2c - just because I like to live dangerously :)
+
+For IIO use more generally we need a sensible path to SPI (and also platform
+drivers).  For my day job I'd like to mess around with doing PCI devices
+as well.  The PCI DOE support for example would be nice to run against a
+test set that doesn't involve spinning up QEMU.
+DOE driver support:
+https://lore.kernel.org/all/20220330235920.2800929-1-ira.weiny@intel.com/
+
+Effort wise, it's similar effort to hacking equivalent in QEMU but with the
+obvious advantage of being in tree and simpler for CI systems etc to use.
+
+It would be nice to only have to use QEMU for complex system CI tests
+like the ones we are doing for CXL.
+
+> 
+> > I dream of a world where every driver is testable by people with out hardware
+> > but I fear it may be a while yet.  Hopefully this will get us a little
+> > closer!
+> > 
+> > I more or less follow what is going on here (good docs btw in the earlier
+> > patch definitely helped).
+> > 
+> > So far I'm thoroughly in favour of road test subject to actually being
+> > able to review the tests or getting sufficient support to do so.
+> > It's a 'how to scale it' question really...  
+> 
+> Would rewriting the framework in C and forcing tests to be written in
+> that language mean that maintainers would be able to review tests
+> without external support?
+
+I was wondering that.  If we stayed in python I think we'd definitely want
+someone to be the 'roadtester/tests' maintainer (or group of maintainers) 
+and their Ack to be expected for all tests we upstream.  Idea being they'd
+sanity check correct use of framework and just how bad the python code
+us C developers are writing is ;)
+
+However, we'd still need a good chunk of that 'framework' use review even
+if doing this in C.
+
+Anyhow, very promising bit of work.
+
+Thanks,
+
+Jonathan
+
+
+
 

@@ -2,62 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B2734F61F6
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 16:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 036194F62C9
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Apr 2022 17:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234797AbiDFOeN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Apr 2022 10:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57618 "EHLO
+        id S235841AbiDFPRV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Apr 2022 11:17:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234937AbiDFOdx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 10:33:53 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B444D4CAB
-        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 03:57:28 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 236A0eDn002597;
-        Wed, 6 Apr 2022 06:57:09 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3f6gb7cub5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 06 Apr 2022 06:57:09 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 236Av8mj002114
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 6 Apr 2022 06:57:08 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 6 Apr 2022
- 06:57:07 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 6 Apr 2022 06:57:07 -0400
-Received: from localhost.localdomain ([10.44.3.40])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 236Aur07020920;
-        Wed, 6 Apr 2022 06:56:56 -0400
-From:   <michael.hennerich@analog.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>
-CC:     <linux-iio@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>
-Subject: [PATCH] iio: dac: ad5446: Fix read_raw not returning set value
-Date:   Wed, 6 Apr 2022 12:56:20 +0200
-Message-ID: <20220406105620.1171340-1-michael.hennerich@analog.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S235933AbiDFPQn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 11:16:43 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6362520E64
+        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 05:16:34 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-deb9295679so2664630fac.6
+        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 05:16:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=usp.br; s=usp-google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MRK2iHcZ9JGwfO4QnMiDs/a6NPe5T+0ewcruwhEjB8U=;
+        b=EWHuYiPJIn2gnHd8UHZ5X+qZee96O656e2rBtF4Dn3vTqVNEcMKnSDWfDSE2gcS7sW
+         SmR1H2sun0Hzg1N7Ydi7C15ssqZ29XAa/pQbDg4nXua1fD7TKeeGrGSB92I4NcebMR1q
+         4o2mSR5vB8HDzmieQ7rNPPtYrdSH+nRp9bO8blvTEkyppXR7V9udJiXfU8+KOd9MmJow
+         1QNEJrEuIThJtYMAWoa80J8AQEfUCRyczT7qEPK+AysX8UE1e2YrevC33uwQFagLUcuQ
+         O9znufBQpN22sqv6WQCsD07uIxMhvH2JGUMl7TOYB4v5WN4HudMjrOVwPeNIE/3Xkl8n
+         KMhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MRK2iHcZ9JGwfO4QnMiDs/a6NPe5T+0ewcruwhEjB8U=;
+        b=ArUB8+vo64fPj8piaF5o/cujc4LKSvPkMWFP7ki2AA/cMqVTntQ79daAvBASK23VJ8
+         SdV8QyTOArUYL4BzK32y/O/zbIjzluVgCfsPFeWKUcyRht893kXAgH9laqo3iuujXJ+O
+         onathGz7HJtuGn+Kp10Vitw6RNpVDLbnZbPCxIz7c9lffC7sD5Zz53CvpXbS1yo1wNOF
+         cYnaEnLEy010o5LdRToozvDuRRDw8wn5DArfo4cZT4oxwTeFzdS2uy3Mq7OStEU2KuNU
+         dTF0i1Ghkz1i9nhGjIqK7S9oVbLhEmh9Gf1z2tT0IZ/wrdjsg2py4IHBUt7o97YKATsX
+         +jEg==
+X-Gm-Message-State: AOAM531iZIKSO0VzzqHj4/3EPekLLV+2xcEByhsgg5t5pHFa1zMvNyTJ
+        pu1BMoZ962F6bZ/E+qkHASCG2pzVQ7jDKcEL
+X-Google-Smtp-Source: ABdhPJyAvDBkXbpZIInakNZ6h93PhBwf4bkzSKscwcQKjaFgR4e2+tKbyjkjmp4L8SQtKCHpPVfxEQ==
+X-Received: by 2002:a05:6870:a106:b0:de:de08:4e42 with SMTP id m6-20020a056870a10600b000dede084e42mr3708390oae.247.1649247389569;
+        Wed, 06 Apr 2022 05:16:29 -0700 (PDT)
+Received: from fedora.. ([2804:14d:8084:84c6:2e13:8e30:84f7:1597])
+        by smtp.gmail.com with ESMTPSA id q6-20020a056870028600b000d9be0ee766sm6349049oaf.57.2022.04.06.05.16.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Apr 2022 05:16:28 -0700 (PDT)
+From:   =?UTF-8?q?Ma=C3=ADra=20Canal?= <maira.canal@usp.br>
+To:     lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <maira.canal@usp.br>
+Subject: [PATCH] iio: ad7266: convert probe to full device-managed
+Date:   Wed,  6 Apr 2022 09:16:20 -0300
+Message-Id: <20220406121620.912350-1-maira.canal@usp.br>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 1eoED63KiNqKcC6Og06bzkoAKXFPFpGi
-X-Proofpoint-ORIG-GUID: 1eoED63KiNqKcC6Og06bzkoAKXFPFpGi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-04-06_04,2022-04-06_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 spamscore=0 clxscore=1011 bulkscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204060050
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,30 +68,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Michael Hennerich <michael.hennerich@analog.com>
+Convert probe functions to device-managed variants, with exception of
+the regulator, which required a devm_add_action_or_reset() hook
+registration.
 
-read_raw should return the un-scaled value.
-
-Fixes: 5e06bdfb46e8b ("staging:iio:dac:ad5446: Return cached value for 'raw' attribute")
-
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Maíra Canal <maira.canal@usp.br>
 ---
- drivers/iio/dac/ad5446.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7266.c | 43 +++++++++++++---------------------------
+ 1 file changed, 14 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-index 14cfabacbea5..fdf824041497 100644
---- a/drivers/iio/dac/ad5446.c
-+++ b/drivers/iio/dac/ad5446.c
-@@ -178,7 +178,7 @@ static int ad5446_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+index c17d9b5fbaf6..4f8f07d5c1a3 100644
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -378,6 +378,11 @@ static const char * const ad7266_gpio_labels[] = {
+ 	"ad0", "ad1", "ad2",
+ };
  
- 	switch (m) {
- 	case IIO_CHAN_INFO_RAW:
--		*val = st->cached_val;
-+		*val = st->cached_val >> chan->scan_type.shift;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = st->vref_mv;
++static void ad7266_reg_disable(void *reg)
++{
++	regulator_disable(reg);
++}
++
+ static int ad7266_probe(struct spi_device *spi)
+ {
+ 	struct ad7266_platform_data *pdata = spi->dev.platform_data;
+@@ -398,9 +403,13 @@ static int ad7266_probe(struct spi_device *spi)
+ 		if (ret)
+ 			return ret;
+ 
++		ret = devm_add_action_or_reset(&spi->dev, ad7266_reg_disable, st->reg);
++		if (ret)
++			return ret;
++
+ 		ret = regulator_get_voltage(st->reg);
+ 		if (ret < 0)
+-			goto error_disable_reg;
++			return ret;
+ 
+ 		st->vref_mv = ret / 1000;
+ 	} else {
+@@ -423,7 +432,7 @@ static int ad7266_probe(struct spi_device *spi)
+ 						      GPIOD_OUT_LOW);
+ 				if (IS_ERR(st->gpios[i])) {
+ 					ret = PTR_ERR(st->gpios[i]);
+-					goto error_disable_reg;
++					return ret;
+ 				}
+ 			}
+ 		}
+@@ -459,35 +468,12 @@ static int ad7266_probe(struct spi_device *spi)
+ 	spi_message_add_tail(&st->single_xfer[1], &st->single_msg);
+ 	spi_message_add_tail(&st->single_xfer[2], &st->single_msg);
+ 
+-	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
++	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, &iio_pollfunc_store_time,
+ 		&ad7266_trigger_handler, &iio_triggered_buffer_setup_ops);
+ 	if (ret)
+-		goto error_disable_reg;
+-
+-	ret = iio_device_register(indio_dev);
+-	if (ret)
+-		goto error_buffer_cleanup;
+-
+-	return 0;
+-
+-error_buffer_cleanup:
+-	iio_triggered_buffer_cleanup(indio_dev);
+-error_disable_reg:
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
+-
+-	return ret;
+-}
+-
+-static void ad7266_remove(struct spi_device *spi)
+-{
+-	struct iio_dev *indio_dev = spi_get_drvdata(spi);
+-	struct ad7266_state *st = iio_priv(indio_dev);
++		return ret;
+ 
+-	iio_device_unregister(indio_dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+-	if (!IS_ERR(st->reg))
+-		regulator_disable(st->reg);
++	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
+ 
+ static const struct spi_device_id ad7266_id[] = {
+@@ -502,7 +488,6 @@ static struct spi_driver ad7266_driver = {
+ 		.name	= "ad7266",
+ 	},
+ 	.probe		= ad7266_probe,
+-	.remove		= ad7266_remove,
+ 	.id_table	= ad7266_id,
+ };
+ module_spi_driver(ad7266_driver);
 -- 
-2.25.1
+2.35.1
 

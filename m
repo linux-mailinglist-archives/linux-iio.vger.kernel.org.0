@@ -2,60 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D80A14F7358
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Apr 2022 05:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D20F4F7972
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Apr 2022 10:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbiDGDZp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Apr 2022 23:25:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
+        id S236825AbiDGIYL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 7 Apr 2022 04:24:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231672AbiDGDZp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Apr 2022 23:25:45 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1F1BC9E
-        for <linux-iio@vger.kernel.org>; Wed,  6 Apr 2022 20:23:42 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id d10so4932164edj.0
-        for <linux-iio@vger.kernel.org>; Wed, 06 Apr 2022 20:23:42 -0700 (PDT)
+        with ESMTP id S238215AbiDGIYK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 7 Apr 2022 04:24:10 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22A463FE;
+        Thu,  7 Apr 2022 01:22:08 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id o5-20020a17090ad20500b001ca8a1dc47aso8234760pju.1;
+        Thu, 07 Apr 2022 01:22:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google;
-        h=mime-version:from:date:message-id:subject:to
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=VlzCigy76xYUM7Sr4dfFx1Uvh5TMtepSHk9Ek/p6vuA=;
-        b=yV4/Kmxo3T9D2npxcxJTZscyzBw9RGEl17wd7RxJfa6XnmWiXFmwjMXpdbCoi/N431
-         /2sOo8b3eY9FkC6Nx5tFbHRP8RWPVNAhuWauZOIUbi2AH36iiRX8bTnEVHNFpLXGCvoX
-         kH5wq8Zuir9Czad69c9TxaO8Ik1WV/mxKZ7M27JgQG5c1IPFhZnOmgfy7su+f+bgetcF
-         yB0XBkCeA3f/QlEOd4JiCvbfTnF1P1Razk0eUi+Rl4tQFPbadwFGDhY09lSVX85hYOQl
-         SKJfu0RedQZR96XlDdLI+XwYsXDC8XZdA9iKO3gaCGCAwtfyXudnemmeF0UtJmzA+/Fo
-         TLQg==
+        bh=UFrIrtsQKJqbLPQjNpD6vU6LHMWV1LB2ZOEwvrNBHME=;
+        b=KPiSW8LpcJ6t0UL64bRLu/9z1LUsnBgNurE/ke3Le9+wfmbVAnBIvjoiFK4gvbHVgp
+         sPBfWVCnccOPUWF12cfGWz21BbuW8GUCPyeuGNcuNgHqFD/UaZp/LwJgInWpLI6icq/a
+         wwM+2cvuCRErwy91/3r/Vo4jothmJBEDSGvUFgcfwrEPTknC4kIP5Dof14ZX+dFJnAeL
+         NL0ZjS0UykPIIbfiwFWCS2SYGXirYA1fho1UjNPkU3Nrna5ezSzgGKrpVmovmentrWY5
+         riRg+k0HlslMV3uUXtABIfeXDzyfzNIT70QDyaPI423YKI5e0oEeEoMdgG13DD8/9OXb
+         76tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=VlzCigy76xYUM7Sr4dfFx1Uvh5TMtepSHk9Ek/p6vuA=;
-        b=g33MdZaY5Iql9a47xxWOljXtmQNkgoUaMKs7SPLXH9gggWeClUr7N3SRTr2h1bEfnE
-         1ug/Hv9ZAiv40Bp3xec3WtEvWpS5cmuXJsj5OHtRkOTRyDyMBtlehsjrZKd2pWyhfXxk
-         U08ASqw22gIPV80vBbUwjk2Ic4B4o8m7Q5xjHrCh8p54UjiQ3HdRkldcy+4pjKIh1Pto
-         cowKh+nFsWd5xWz7d3Z/6l8xwIz63Ub5R3V4C80xSvtak88Yu1AoeaStMpmmUe27gm8j
-         g1h2KHQ8de9W5Hh+28+JBGPoeJMWab/VOmISemI0OIfaj1rvkHHwTC/hknMLMuPmRNvt
-         QZqA==
-X-Gm-Message-State: AOAM533uGkTN3vNQEN0eSnItCO0IUS/BDFBnDo7ULVdydQ97MBWlG6mc
-        G+EgLU+QORMdGwVuQVIOosUesacX0KHXjBzw41W/2kKc2yU35xG3eys=
-X-Google-Smtp-Source: ABdhPJz3uh9z0f+PP23DEQKm6FZyh+8cmlGBP+MVJmeDrhCVMGHSnoZYYpxsss+6CdI83/iAhlGEfouAC7/212nqtd0=
-X-Received: by 2002:a05:6402:5201:b0:419:4c82:8f11 with SMTP id
- s1-20020a056402520100b004194c828f11mr11805292edd.133.1649301820899; Wed, 06
- Apr 2022 20:23:40 -0700 (PDT)
+        bh=UFrIrtsQKJqbLPQjNpD6vU6LHMWV1LB2ZOEwvrNBHME=;
+        b=g0khBpyn5OBJfXhPh5qoiocWI+36C8Nd9aC+ggDYci7M2As6SRpF62fOdMOqz0XxzR
+         DbVKMrVGzxcoCSlqEJzxDroiP1nkczjiYyXp0jgTMbmQoUam4qDI89qrM7fONdg4cAJS
+         dFx68QPKQTGhR44p/pMAgXYWw4H66wBA69bBii7+/0CuBroNz5nFXfr/vR8WEF2VWUr0
+         ECA/S+iY1dVLEPZjDPuEyqZjeDYl8h9AVxxu4fdIMfuI7wuC/L6PHvF/nE47ywHpi8O0
+         txm5vVRf1fAUp7ESObRRyUgZKh+Du+WQx6vqGphrv5c8YztHEqF31ZzAdGqmtr89r+Lw
+         RX/w==
+X-Gm-Message-State: AOAM531kWP8eRJsESt6TbjLG1fQfOW8AcRXVlWKp1lStMUpXB8PNWnGw
+        3/klbkKQLbqbNyQnTrqARPuN4rY/8b4fkNyu
+X-Google-Smtp-Source: ABdhPJwl+4jS25HkUfJ1nHHSohvoh5MZd46me0EcXxw+ubdbRge2AuoYkai3a8ZWAkmm+R6jKwCfGA==
+X-Received: by 2002:a17:902:aa8b:b0:156:c639:7283 with SMTP id d11-20020a170902aa8b00b00156c6397283mr12709951plr.13.1649319728450;
+        Thu, 07 Apr 2022 01:22:08 -0700 (PDT)
+Received: from tj10039pcu.spreadtrum.com ([117.18.48.102])
+        by smtp.gmail.com with ESMTPSA id a38-20020a056a001d2600b004f70d5e92basm22248098pfx.34.2022.04.07.01.22.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Apr 2022 01:22:08 -0700 (PDT)
+From:   Cixi Geng <gengcixi@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        orsonzhai@gmail.com, baolin.wang7@gmail.com, zhang.lyra@gmail.com
+Cc:     yuming.zhu1@unisoc.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V3 0/7] iio: adc: sc27xx: adjust structure and add PMIC's support
+Date:   Thu,  7 Apr 2022 16:21:41 +0800
+Message-Id: <20220407082148.571442-1-gengcixi@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-From:   =?UTF-8?B?TWHDrXJhIENhbmFs?= <maira.canal@usp.br>
-Date:   Thu, 7 Apr 2022 00:23:29 -0300
-Message-ID: <CAH7FV3=UJn98PRp1dke7iAH2j8pj4-VSbnb11OfzRUKmkAEL8Q@mail.gmail.com>
-Subject: GSoC Proposal 2022
-To:     linux-iio@vger.kernel.org, jic23@kernel.org,
-        dragos.bogdan@analog.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,26 +68,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi everyone, I am Ma=C3=ADra Canal an undergrad student at the University
-of S=C3=A3o Paulo, Brazil, pursuing
-computer engineering. I wish to participate in the GSoC 2021 as a part
-of the Linux Foundation, IIO Project.
+From: Cixi Geng <cixi.geng1@unisoc.com>
 
-I have been contributing to the Linux kernel for a couple of months
-and have more than 20
-accepted patches in a couple of subsystems.
+this patchset add a sc27xx_adc_variant_data structure
+and add sc272*,sc273* and ump9620 PMIC support.
 
-I started looking through the catalog of Analog Devices Inc. and I'm
-pretty interested in writing a driver for gyroscopes, inertial
-measurement units (IMUs), magnetometers, pressure sensors, proximity
-sensors, or temperature sensors. But, while looking through the
-catalog, I could not figure out a sensor that would be relevant to
-Linux Kernel. I mean, I would like to work on a sensor that would be
-relevant to the community and to Analog Devices Inc.
+Cixi Geng (7):
+  dt-bindings:iio:adc: add sprd,ump9620-adc dt-binding
+  iio: adc: sc27xx: fix read big scale voltage not right
+  iio: adc: sc27xx: structure adjuststment and optimization
+  iio: adc: refactor some functions for support more PMiCs
+  iio: adc: sc27xx: add support for PMIC sc2720 and sc2721
+  iio: adc: sc27xx: add support for PMIC sc2730
+  iio: adc: sc27xx: add support for PMIC ump9620
 
-In that sense, I would like to know if anyone in the IIO community
-could recommend a sensor that would make sense for the company and the
-IIO community. Any suggestion is appreciated!
+v2 changes:
+  fix dt_binding_check error
+  adjust some code-style issue
+  optimize the copy-paste functions
+  the smatch warnings found by lkp
+  and  ohter comments by v1 patches.
 
-Sincerely,
-Ma=C3=ADra Canal
+v3 changes:
+  fix nvmem-cells Items value and add ump9620 dt sample
+  add the correct signature for each patch
+  fix the unused warning in 3/7, add explain for set the scales
+  remove duplicate code,add goto label in sc27xx_adc_read
+  pull out the refactor code into a single patch
+  delete the suspend and resume pm for ump9620
+  
+
+ .../bindings/iio/adc/sprd,sc2720-adc.yaml     |  57 +-
+ drivers/iio/adc/sc27xx_adc.c                  | 717 ++++++++++++++++--
+ 2 files changed, 710 insertions(+), 64 deletions(-)
+
+-- 
+2.25.1
+

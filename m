@@ -2,49 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2F24FAF25
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 19:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9399B4FAF27
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 19:05:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240724AbiDJREz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Apr 2022 13:04:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57156 "EHLO
+        id S243684AbiDJRHb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Apr 2022 13:07:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240707AbiDJREs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 13:04:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ADD059A4D
-        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 10:02:37 -0700 (PDT)
+        with ESMTP id S242571AbiDJRHa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 13:07:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5AB3101CF;
+        Sun, 10 Apr 2022 10:05:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48D94B80E42
-        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 17:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0885C385A4;
-        Sun, 10 Apr 2022 17:02:33 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 52F75B80E28;
+        Sun, 10 Apr 2022 17:05:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C674EC385A4;
+        Sun, 10 Apr 2022 17:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649610155;
-        bh=5AQwNT0klAA7HNBAlR/+bQ0OjLs/pMl5PIQAp9zgXLY=;
+        s=k20201202; t=1649610317;
+        bh=7quyUdm7Aq4txqWmhfJZl/DrSbjN8BfInAOcqAh00as=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=p23Cl8nK3Vok57e0w1SxyYzhHXrWDv60c80ectn9sB/kOuQQ7SaS5i2e9NWh4l4Q9
-         fPvsgmVL4Z5kDZfb1GSiPiQkZgUwZPg2Nr9Yh0ihCigTLWI8LP9PfECWlHttrnlSmq
-         zxOkg28/8CkjDTAr2XIy/u+2kbJ9h+kOZZv9tf9m9oS4Ohpb1EsBBzzFmZyUs5MO4s
-         8nPGJyYQSIp0T8zEJLlT4zguw/qbxPftb8mz7wOxLfNUF8B9sQ8rioBzih6M+vtmqc
-         vvhI88Kx/kut00XeFDXRAoX+eC5uAGtAei6OzJmdaGkxsUpfgX+M4lWLZMxJcsYn9d
-         cxAnDUzEIl/bw==
-Date:   Sun, 10 Apr 2022 18:10:26 +0100
+        b=A6Pv/CVY9iPEZ3OxWr/blSZDtVbew9r5Q2ZvtxTeW8KmSL7V9Zp+zCbpecR6pGulj
+         3CjtK/b0gMI2uZtDmgyV3e1I9yWVkWHcwLnJtyQGQYqg4PypXWz07uoOO6w15oqUn4
+         MBUcwdmX04t1H+nlbaIxSWyzyHZVczKG+Lvn67gPmAzkXU6jALqui1Lz4wfeLAMpDo
+         24qSeNvZ2R6O86bFcTS4Q2n+/p7glYlAkxll816NJp8KR+Nrkr/ixnNHG0VVgHjpFe
+         JLkvd+5wF0dTKVMIQmY+tSnQEjTb5nGd1rcaHJ2/lRYmcP5KdBj3qWoamvQuh8XJ8R
+         SZfAAi2NNmO3A==
+Date:   Sun, 10 Apr 2022 18:13:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        Fawzi Khaber <fawzi.khaber@tdk.com>
-Subject: Re: [PATCH v2] iio: imu: inv_icm42600: Fix I2C init possible nack
-Message-ID: <20220410181026.6cd0d569@jic23-huawei>
-In-Reply-To: <20220404084650.17377-1-jmaneyrol@invensense.com>
-References: <20220404084650.17377-1-jmaneyrol@invensense.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Puranjay Mohan <puranjay12@gmail.com>, gregkh@linuxfoundation.org,
+        rafael@kernel.org, heikki.krogerus@linux.intel.com,
+        kuba@kernel.org, saravanak@google.com,
+        linux-kernel@vger.kernel.org, lars@metafoo.de,
+        Michael.Hennerich@analog.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: accel: adxl355: use fwnode_irq_get_byname()
+Message-ID: <20220410181306.23202f25@jic23-huawei>
+In-Reply-To: <20220227124134.4d4e4644@jic23-huawei>
+References: <20211109200840.135019-1-puranjay12@gmail.com>
+        <20211109200840.135019-3-puranjay12@gmail.com>
+        <YflfEpKj0ilHnQQm@smile.fi.intel.com>
+        <20220227124134.4d4e4644@jic23-huawei>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,64 +60,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  4 Apr 2022 10:46:50 +0200
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
+On Sun, 27 Feb 2022 12:41:34 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> On Tue, 1 Feb 2022 18:25:54 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+> > On Wed, Nov 10, 2021 at 01:38:40AM +0530, Puranjay Mohan wrote:  
+> > > Use the generic fwnode_irq_get_byname() in place of of_irq_get_byname()
+> > > to get the IRQ number from the interrupt pin.    
+> > 
+> > Heads up, the fwnode_irq_get_byname() is in I2C tree and if Jonathan wants to
+> > apply this one, the PR [1] can be used.
+> > 
+> > [1]: https://lore.kernel.org/linux-i2c/YfRiGR3AT8tzyweG@shikoro/T/#u
+> >   
+> 
+> Thanks Andy. 
+> 
+> I'm going to let this go the slow way and pick up this patch after the
+> merge window when I can avoid pulling in that PR.
+> 
+> Basically I'm feeling lazy today :)
 
-=46rom should be Fawzi as the first author of the patch.
-Use=20
-git commit --amend --author=3D"Fawzi Khaber <fawzi.khaber@tdk.com>"
-To reset it appropriately - or confirm you are fine with me
-tweaking that whilst applying.
-
->=20
-> This register write to REG_INTF_CONFIG6 enables a spike filter that
-> is impacting the line and can prevent the I2C ACK to be seen by the
-> controller. So we don't test the return value.
->=20
-> Signed-off-by: Fawzi Khaber <fawzi.khaber@tdk.com>
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-I should have raised this last time...
-
-Fixes tag needed if I'm going to take this through my fixes
-branch / mark it for stable etc.
-
-If you don't mind it going the slow way and not getting backported
-then I can take it without.
+Now applied to the togreg branch of iio.git and pushed out as testing to
+see if 0-day can find any problems.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/ii=
-o/imu/inv_icm42600/inv_icm42600_i2c.c
-> index 33d9afb1ba91..01fd883c8459 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-> @@ -18,12 +18,15 @@ static int inv_icm42600_i2c_bus_setup(struct inv_icm4=
-2600_state *st)
->  	unsigned int mask, val;
->  	int ret;
-> =20
-> -	/* setup interface registers */
-> -	ret =3D regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG6,
-> +	/*
-> +	 * setup interface registers
-> +	 * This register write to REG_INTF_CONFIG6 enables a spike filter that
-> +	 * is impacting the line and can prevent the I2C ACK to be seen by the
-> +	 * controller. So we don't test the return value.
-> +	 */
-> +	regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG6,
->  				 INV_ICM42600_INTF_CONFIG6_MASK,
->  				 INV_ICM42600_INTF_CONFIG6_I3C_EN);
-> -	if (ret)
-> -		return ret;
-> =20
->  	ret =3D regmap_update_bits(st->map, INV_ICM42600_REG_INTF_CONFIG4,
->  				 INV_ICM42600_INTF_CONFIG4_I3C_BUS_ONLY, 0);
+> 
+> Jonathan
 

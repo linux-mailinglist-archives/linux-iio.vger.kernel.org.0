@@ -2,476 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C9C94FAE27
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 16:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6844FAE56
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 16:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239672AbiDJOPY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Apr 2022 10:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33874 "EHLO
+        id S236288AbiDJPBo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Apr 2022 11:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234650AbiDJOPX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 10:15:23 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3730E1838C
-        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 07:13:11 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id t25so2610033edt.9
-        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 07:13:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HiASZOpaKbZxgV4H6ymmLMIpeUeD2grL6bPTvrqRDEQ=;
-        b=J8aDzh+6zd1HqOKxGM9WIGr6ghhEqQ12QBvdfpPL02nl/n+7mepixuLqs+nhlnEkjI
-         zFx1YKACl6UgKolZ4ZhSTEmJlRlZEmIOVTe0HdFIGsl1mBEUN+UXXTMWJOORBQkyU9Ot
-         Op62VrEYa9zN4yzNCKQXt3a0RRjlB+znSH9VpvsEX+HsY/o9xuDKWX2WfydO/o8sVYIu
-         Lx+BPlN6OnaRnV6ZvaIVAt6Icio5dsYIGtobtnPRtGUROK32BMBP4VGWwNosttXQW9jO
-         YC9sjt7dMf94dAkwRQl4WU2oNJ5LmlIbh6rsCejZa5PWzM5uMcgmYitsQnN8UECjZdz1
-         B3kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HiASZOpaKbZxgV4H6ymmLMIpeUeD2grL6bPTvrqRDEQ=;
-        b=sRQFKksVic/1QbmC50kEo3TuO38Gff6U8wKm0onQwrm2QJHf4NW7SohtA4dqxjcdTY
-         n0vsf0tL7fcivDxJwrFhdtVsBSyiFlSUdHEafX+0pprqLJ/GRTpZXSGtKVW3REtHkLdd
-         eu/nN4+054hYhd7eXNiGaUVXBL9Pb6EyQ8nRxZOE9OlRnha/KU4uOztwQX22CXI60ogY
-         rxWLMN3TA22w8xRzv49+Q1g42Zv3O+U5hKbiPOJtYHr2bR3yPff2kgWb8m8AziMjLofG
-         fIdUYzcZC0lWF+jnIF9raR44OID9mR66MGwnNWfvn7lc4Va3V/h5tCib/rDfT7CUL1c+
-         jPUQ==
-X-Gm-Message-State: AOAM53345tmnlp/xhBsEEOipprJQV4EmXQOgQsUG7AY07RVPry18JGWC
-        XQ1oHO7v4G2B4n6g8edVEWrxtFcHu7zuGOdBHGg=
-X-Google-Smtp-Source: ABdhPJxfFKMXJ/psFh+PMhl6ZCAC5Tx24l19zOHf/fHgNxC1A7hIa4NYb7d9rwsWmY7co+6XfmS0nzO6vvBJjM82UlY=
-X-Received: by 2002:a05:6402:27d1:b0:419:1b02:4a04 with SMTP id
- c17-20020a05640227d100b004191b024a04mr28682489ede.218.1649599989584; Sun, 10
- Apr 2022 07:13:09 -0700 (PDT)
+        with ESMTP id S239516AbiDJPBm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 11:01:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99A8B369ED;
+        Sun, 10 Apr 2022 07:59:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F85761018;
+        Sun, 10 Apr 2022 14:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6551BC385A4;
+        Sun, 10 Apr 2022 14:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649602770;
+        bh=ebOziZA9Caj40n/+Kl1vXjrJRJV4DT3ko2rPxflMVY4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Ki0Hzkwwquhe87kylXJgitdKr8nF1vu8smwZUfBVjB0I/5vfjqNNJY9ynSV3nNmIO
+         SftHFbjfWeSYOk9JFaz9VMPtgpwVfeky23uokaHuTeaM6mYTd7SwhGoO0S0nYmqIBU
+         10UVCfaPRHieIiH94Iewn9CbMdxN4bmYBf5kuCw580XphND7IkYavRkauioEMPS74d
+         mH347u3zGSlSA2hzHvBeUyUDKFJcsaqTussEndwDDJkXDE0M+nPR7KLyniILALfn60
+         DqHuWuyqK4xLX2thjssKfeuZyyeh3IwLvW9cWRUt5auFyzdDpviAnqiQAIqRBwamXN
+         7OxtCyYPix4kA==
+Date:   Sun, 10 Apr 2022 16:07:20 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Chris Morgan <macromorgan@hotmail.com>
+Cc:     Artur Rojek <contact@artur-rojek.eu>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Chris Morgan <macroalpha82@gmail.com>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] input: adc-joystick: Stop using scan_index for reading
+ data
+Message-ID: <20220410160720.7f28a2a3@jic23-huawei>
+In-Reply-To: <SN6PR06MB5342727A065E9FA2223B6A45A5EB9@SN6PR06MB5342.namprd06.prod.outlook.com>
+References: <20220408212857.9583-1-macroalpha82@gmail.com>
+        <YlDqTKuo5rbkIL8V@google.com>
+        <2941de6570a6f808d6ea6e71d137ef87@artur-rojek.eu>
+        <SN6PR06MB5342727A065E9FA2223B6A45A5EB9@SN6PR06MB5342.namprd06.prod.outlook.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220409105812.2113895-1-lars@metafoo.de>
-In-Reply-To: <20220409105812.2113895-1-lars@metafoo.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 10 Apr 2022 17:12:33 +0300
-Message-ID: <CAHp75VeVVbWL80S8JZd3-d5z9iW6g-xwrsU-oykHgg6GEOc5RA@mail.gmail.com>
-Subject: Re: [PATCH] iio: Replace strtobool() with kstrtobool()
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Apr 9, 2022 at 1:58 PM Lars-Peter Clausen <lars@metafoo.de> wrote:
->
-> strtobool() is deprecated and just a wrapper around kstrtobool().Replace
-> it with kstrtobool() so the deprecated function can be removed eventually.
+On Sat, 9 Apr 2022 20:39:18 -0500
+Chris Morgan <macromorgan@hotmail.com> wrote:
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> On Sat, Apr 09, 2022 at 12:08:57PM +0200, Artur Rojek wrote:
+> > Hi Chris & Dmitry,
+> > 
+> > On 2022-04-09 04:07, Dmitry Torokhov wrote:  
+> > > Hi Chris,
+> > > 
+> > > On Fri, Apr 08, 2022 at 04:28:57PM -0500, Chris Morgan wrote:  
+> > > > From: Chris Morgan <macromorgan@hotmail.com>
+> > > > 
+> > > > For my Odroid Go Advance I noticed that the adc-joystick driver was
+> > > > only reporting the y channel and on the x axis. After debugging, I
+> > > > found that the driver was trying to read values from channels 0 and
+> > > > 1 even though my device is using channels 1 and 2. By changing the
+> > > > code
+> > > > to use the axis index instead of the scan index when unpacking the
+> > > > data
+> > > > from the buffer, the joystick begins working as expected.  
+> > > 
+> > > This sounds like some sort of misconfiguration, as your change
+> > > effectively removes the ability of using just some ADC channels for
+> > > joystick functionality...  
+> > 
+> > I agree, this sounds like either a case of misconfiguration, or an issue in
+> > the ADC driver that this device is using.
+> > The axis index corresponds to the iio channel associated with the joystick,
+> > but NOT to the order at which data is sampled by ADC.
+> > That's why each channel has a `scan_index` field. It sounds like in Chris'
+> > case the channels have wrong scan indices.
+> > I'd start by verifying that in the ADC driver that is being used.
+> > 
+> > In any case, this patch is wrong and removes functionality that existing
+> > devices depend on.  
+> 
+> I appreciate the feedback. If this driver is working as expected then
+> that means the issue I am experiencing is further up the stack. Based
+> on troubleshooting by getting the raw data that the rockchip-saradc
+> driver was putting into the triggered buffer and seeing what the
+> adc-joystick saw coming out of the triggered buffer I wonder if the
+> issue is with the rockchip-saradc driver? I noticed that the buffer
+> pushed by the driver's trigger handler would only (appear to) send the
+> channels that I was requesting data for. So basically the data buffer
+> would have the correct values in [0] and [1], but the adc-joystick
+> driver by using the idx would fetch values from [1] for x (which has
+> the y axis data) and [2] for y (which would have arbitrary data in
+> it, usually something around 65406 or so).
+> 
+> Do you think I should start looking at the rockchip-saradc driver then?
+> Should the saradc be putting stuff in the buffer for every channel with
+> empty data for channels that aren't to be reported?
 
-Thanks!
+No the ADC driver should be packing the data (actually it may well be
+the IIO core doing repacking depending on how clever the ADC in question is).
+The joystick driver is too simplistic unfortunately. scan_index is not the index
+of the data in the current scan - it is only guaranteed to be monotonic
+in the sense that for any given channel it's position will be (packed as
+best possible whilst being naturally aligned) after all channels with
+lower scan indicies.  scan_index effectively refers to the order of
+channels if 'all' channels are enabled.
 
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-> ---
->  drivers/iio/adc/ad7192.c                                  | 4 ++--
->  drivers/iio/adc/ad7280a.c                                 | 2 +-
->  drivers/iio/adc/ina2xx-adc.c                              | 2 +-
->  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 2 +-
->  drivers/iio/dac/ad5064.c                                  | 2 +-
->  drivers/iio/dac/ad5360.c                                  | 2 +-
->  drivers/iio/dac/ad5380.c                                  | 2 +-
->  drivers/iio/dac/ad5446.c                                  | 2 +-
->  drivers/iio/dac/ad5504.c                                  | 2 +-
->  drivers/iio/dac/ad5624r_spi.c                             | 2 +-
->  drivers/iio/dac/ad5686.c                                  | 2 +-
->  drivers/iio/dac/ad5755.c                                  | 2 +-
->  drivers/iio/dac/ad5791.c                                  | 2 +-
->  drivers/iio/dac/ad7303.c                                  | 2 +-
->  drivers/iio/dac/ltc2632.c                                 | 2 +-
->  drivers/iio/dac/max5821.c                                 | 2 +-
->  drivers/iio/dac/mcp4725.c                                 | 4 ++--
->  drivers/iio/dac/stm32-dac.c                               | 2 +-
->  drivers/iio/dac/ti-dac082s085.c                           | 2 +-
->  drivers/iio/dac/ti-dac5571.c                              | 2 +-
->  drivers/iio/dac/ti-dac7311.c                              | 2 +-
->  drivers/iio/frequency/ad9523.c                            | 2 +-
->  drivers/iio/industrialio-buffer.c                         | 6 +++---
->  drivers/iio/industrialio-event.c                          | 2 +-
->  drivers/staging/iio/cdc/ad7746.c                          | 2 +-
->  25 files changed, 29 insertions(+), 29 deletions(-)
->
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 770b4e59238f..335366c31743 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -225,7 +225,7 @@ static ssize_t ad7192_write_syscalib(struct iio_dev *indio_dev,
->         bool sys_calib;
->         int ret, temp;
->
-> -       ret = strtobool(buf, &sys_calib);
-> +       ret = kstrtobool(buf, &sys_calib);
->         if (ret)
->                 return ret;
->
-> @@ -457,7 +457,7 @@ static ssize_t ad7192_set(struct device *dev,
->         int ret;
->         bool val;
->
-> -       ret = strtobool(buf, &val);
-> +       ret = kstrtobool(buf, &val);
->         if (ret < 0)
->                 return ret;
->
-> diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
-> index ef9d27759961..2834e9d0aa28 100644
-> --- a/drivers/iio/adc/ad7280a.c
-> +++ b/drivers/iio/adc/ad7280a.c
-> @@ -488,7 +488,7 @@ static ssize_t ad7280_store_balance_sw(struct iio_dev *indio_dev,
->         bool readin;
->         int ret;
->
-> -       ret = strtobool(buf, &readin);
-> +       ret = kstrtobool(buf, &readin);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-> index 8d902a32a0fd..1ed474e854a1 100644
-> --- a/drivers/iio/adc/ina2xx-adc.c
-> +++ b/drivers/iio/adc/ina2xx-adc.c
-> @@ -550,7 +550,7 @@ static ssize_t ina2xx_allow_async_readout_store(struct device *dev,
->         bool val;
->         int ret;
->
-> -       ret = strtobool(buf, &val);
-> +       ret = kstrtobool(buf, &val);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index b2725c6adc7f..bf91675db8ce 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -413,7 +413,7 @@ static ssize_t cros_ec_sensors_calibrate(struct iio_dev *indio_dev,
->         int ret, i;
->         bool calibrate;
->
-> -       ret = strtobool(buf, &calibrate);
-> +       ret = kstrtobool(buf, &calibrate);
->         if (ret < 0)
->                 return ret;
->         if (!calibrate)
-> diff --git a/drivers/iio/dac/ad5064.c b/drivers/iio/dac/ad5064.c
-> index 27ee2c63c5d4..d87cf14daabe 100644
-> --- a/drivers/iio/dac/ad5064.c
-> +++ b/drivers/iio/dac/ad5064.c
-> @@ -288,7 +288,7 @@ static ssize_t ad5064_write_dac_powerdown(struct iio_dev *indio_dev,
->         bool pwr_down;
->         int ret;
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5360.c b/drivers/iio/dac/ad5360.c
-> index ecbc6a51d60f..22b000a40828 100644
-> --- a/drivers/iio/dac/ad5360.c
-> +++ b/drivers/iio/dac/ad5360.c
-> @@ -284,7 +284,7 @@ static ssize_t ad5360_write_dac_powerdown(struct device *dev,
->         bool pwr_down;
->         int ret;
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
-> index 82e1d9bd773e..a44c83242fb1 100644
-> --- a/drivers/iio/dac/ad5380.c
-> +++ b/drivers/iio/dac/ad5380.c
-> @@ -96,7 +96,7 @@ static ssize_t ad5380_write_dac_powerdown(struct iio_dev *indio_dev,
->         bool pwr_down;
->         int ret;
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-> index 14cfabacbea5..c6e685c6f6ea 100644
-> --- a/drivers/iio/dac/ad5446.c
-> +++ b/drivers/iio/dac/ad5446.c
-> @@ -114,7 +114,7 @@ static ssize_t ad5446_write_dac_powerdown(struct iio_dev *indio_dev,
->         bool powerdown;
->         int ret;
->
-> -       ret = strtobool(buf, &powerdown);
-> +       ret = kstrtobool(buf, &powerdown);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5504.c b/drivers/iio/dac/ad5504.c
-> index 8507573aa13e..a0817e799cc0 100644
-> --- a/drivers/iio/dac/ad5504.c
-> +++ b/drivers/iio/dac/ad5504.c
-> @@ -182,7 +182,7 @@ static ssize_t ad5504_write_dac_powerdown(struct iio_dev *indio_dev,
->         int ret;
->         struct ad5504_state *st = iio_priv(indio_dev);
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5624r_spi.c b/drivers/iio/dac/ad5624r_spi.c
-> index 371e812850eb..7e6f824de299 100644
-> --- a/drivers/iio/dac/ad5624r_spi.c
-> +++ b/drivers/iio/dac/ad5624r_spi.c
-> @@ -129,7 +129,7 @@ static ssize_t ad5624r_write_dac_powerdown(struct iio_dev *indio_dev,
->         int ret;
->         struct ad5624r_state *st = iio_priv(indio_dev);
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
-> index f78dd3f33199..15361d8bbf94 100644
-> --- a/drivers/iio/dac/ad5686.c
-> +++ b/drivers/iio/dac/ad5686.c
-> @@ -73,7 +73,7 @@ static ssize_t ad5686_write_dac_powerdown(struct iio_dev *indio_dev,
->         unsigned int val, ref_bit_msk;
->         u8 shift, address = 0;
->
-> -       ret = strtobool(buf, &readin);
-> +       ret = kstrtobool(buf, &readin);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
-> index 7a62e6e1d5f1..1a63b8456725 100644
-> --- a/drivers/iio/dac/ad5755.c
-> +++ b/drivers/iio/dac/ad5755.c
-> @@ -502,7 +502,7 @@ static ssize_t ad5755_write_powerdown(struct iio_dev *indio_dev, uintptr_t priv,
->         bool pwr_down;
->         int ret;
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
-> index 2b14914b4050..339564fe47d1 100644
-> --- a/drivers/iio/dac/ad5791.c
-> +++ b/drivers/iio/dac/ad5791.c
-> @@ -188,7 +188,7 @@ static ssize_t ad5791_write_dac_powerdown(struct iio_dev *indio_dev,
->         int ret;
->         struct ad5791_state *st = iio_priv(indio_dev);
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
-> index 91eaaf793b3e..03edf046dec6 100644
-> --- a/drivers/iio/dac/ad7303.c
-> +++ b/drivers/iio/dac/ad7303.c
-> @@ -77,7 +77,7 @@ static ssize_t ad7303_write_dac_powerdown(struct iio_dev *indio_dev,
->         bool pwr_down;
->         int ret;
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ltc2632.c b/drivers/iio/dac/ltc2632.c
-> index aed46c80757e..7f1a9900a359 100644
-> --- a/drivers/iio/dac/ltc2632.c
-> +++ b/drivers/iio/dac/ltc2632.c
-> @@ -149,7 +149,7 @@ static ssize_t ltc2632_write_dac_powerdown(struct iio_dev *indio_dev,
->         int ret;
->         struct ltc2632_state *st = iio_priv(indio_dev);
->
-> -       ret = strtobool(buf, &pwr_down);
-> +       ret = kstrtobool(buf, &pwr_down);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
-> index fce640b7f1c8..540f9ea7cada 100644
-> --- a/drivers/iio/dac/max5821.c
-> +++ b/drivers/iio/dac/max5821.c
-> @@ -116,7 +116,7 @@ static ssize_t max5821_write_dac_powerdown(struct iio_dev *indio_dev,
->         bool powerdown;
->         int ret;
->
-> -       ret = strtobool(buf, &powerdown);
-> +       ret = kstrtobool(buf, &powerdown);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/mcp4725.c b/drivers/iio/dac/mcp4725.c
-> index 842bad57cb88..7fcb86288823 100644
-> --- a/drivers/iio/dac/mcp4725.c
-> +++ b/drivers/iio/dac/mcp4725.c
-> @@ -80,7 +80,7 @@ static ssize_t mcp4725_store_eeprom(struct device *dev,
->         bool state;
->         int ret;
->
-> -       ret = strtobool(buf, &state);
-> +       ret = kstrtobool(buf, &state);
->         if (ret < 0)
->                 return ret;
->
-> @@ -178,7 +178,7 @@ static ssize_t mcp4725_write_powerdown(struct iio_dev *indio_dev,
->         bool state;
->         int ret;
->
-> -       ret = strtobool(buf, &state);
-> +       ret = kstrtobool(buf, &state);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
-> index b20192a071cb..daa42bcbae83 100644
-> --- a/drivers/iio/dac/stm32-dac.c
-> +++ b/drivers/iio/dac/stm32-dac.c
-> @@ -220,7 +220,7 @@ static ssize_t stm32_dac_write_powerdown(struct iio_dev *indio_dev,
->         bool powerdown;
->         int ret;
->
-> -       ret = strtobool(buf, &powerdown);
-> +       ret = kstrtobool(buf, &powerdown);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ti-dac082s085.c b/drivers/iio/dac/ti-dac082s085.c
-> index 4e1156e6deb2..106ce3546419 100644
-> --- a/drivers/iio/dac/ti-dac082s085.c
-> +++ b/drivers/iio/dac/ti-dac082s085.c
-> @@ -133,7 +133,7 @@ static ssize_t ti_dac_write_powerdown(struct iio_dev *indio_dev,
->         bool powerdown;
->         int ret;
->
-> -       ret = strtobool(buf, &powerdown);
-> +       ret = kstrtobool(buf, &powerdown);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ti-dac5571.c b/drivers/iio/dac/ti-dac5571.c
-> index 4a3b8d875518..ed27fb7078d9 100644
-> --- a/drivers/iio/dac/ti-dac5571.c
-> +++ b/drivers/iio/dac/ti-dac5571.c
-> @@ -178,7 +178,7 @@ static ssize_t dac5571_write_powerdown(struct iio_dev *indio_dev,
->         bool powerdown;
->         int ret;
->
-> -       ret = strtobool(buf, &powerdown);
-> +       ret = kstrtobool(buf, &powerdown);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/dac/ti-dac7311.c b/drivers/iio/dac/ti-dac7311.c
-> index e10d17e60ed3..4afc411725d9 100644
-> --- a/drivers/iio/dac/ti-dac7311.c
-> +++ b/drivers/iio/dac/ti-dac7311.c
-> @@ -123,7 +123,7 @@ static ssize_t ti_dac_write_powerdown(struct iio_dev *indio_dev,
->         u8 power;
->         int ret;
->
-> -       ret = strtobool(buf, &powerdown);
-> +       ret = kstrtobool(buf, &powerdown);
->         if (ret)
->                 return ret;
->
-> diff --git a/drivers/iio/frequency/ad9523.c b/drivers/iio/frequency/ad9523.c
-> index a0f92c336fc4..942870539268 100644
-> --- a/drivers/iio/frequency/ad9523.c
-> +++ b/drivers/iio/frequency/ad9523.c
-> @@ -516,7 +516,7 @@ static ssize_t ad9523_store(struct device *dev,
->         bool state;
->         int ret;
->
-> -       ret = strtobool(buf, &state);
-> +       ret = kstrtobool(buf, &state);
->         if (ret < 0)
->                 return ret;
->
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index b078eb2f3c9d..129452598e83 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -510,7 +510,7 @@ static ssize_t iio_scan_el_store(struct device *dev,
->         struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
->         struct iio_buffer *buffer = this_attr->buffer;
->
-> -       ret = strtobool(buf, &state);
-> +       ret = kstrtobool(buf, &state);
->         if (ret < 0)
->                 return ret;
->         mutex_lock(&indio_dev->mlock);
-> @@ -557,7 +557,7 @@ static ssize_t iio_scan_el_ts_store(struct device *dev,
->         struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
->         bool state;
->
-> -       ret = strtobool(buf, &state);
-> +       ret = kstrtobool(buf, &state);
->         if (ret < 0)
->                 return ret;
->
-> @@ -1300,7 +1300,7 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
->         struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
->         bool inlist;
->
-> -       ret = strtobool(buf, &requested_state);
-> +       ret = kstrtobool(buf, &requested_state);
->         if (ret < 0)
->                 return ret;
->
-> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-> index ce8b102ce52f..b5e059e15b0a 100644
-> --- a/drivers/iio/industrialio-event.c
-> +++ b/drivers/iio/industrialio-event.c
-> @@ -274,7 +274,7 @@ static ssize_t iio_ev_state_store(struct device *dev,
->         int ret;
->         bool val;
->
-> -       ret = strtobool(buf, &val);
-> +       ret = kstrtobool(buf, &val);
->         if (ret < 0)
->                 return ret;
->
-> diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> index 71c709771676..52b8957c19c9 100644
-> --- a/drivers/staging/iio/cdc/ad7746.c
-> +++ b/drivers/staging/iio/cdc/ad7746.c
-> @@ -290,7 +290,7 @@ static inline ssize_t ad7746_start_calib(struct device *dev,
->         int ret, timeout = 10;
->         bool doit;
->
-> -       ret = strtobool(buf, &doit);
-> +       ret = kstrtobool(buf, &doit);
->         if (ret < 0)
->                 return ret;
->
-> --
-> 2.30.2
->
+Hence the driver should work out the ordering from scan_index
+but not assume it corresponds to the position of the data
+(to make things worse there is no guarantee that the channels have the
+same number of bits so that should also be accounted for).
 
+So to take a pathlogical example.  If you have x,y mapping to
+scan index 5, 2 then only these two channels will be enabled.
+The driver correctly handles the ordering because of the mapping
+from channel to access code.  However to find the position
+it needs to walk the channels.  It needs to know that 5 is
+actually offset by whatever storagebits value the channel with
+index 2 has (potentially with additional padding to ensure
+we maintainer natural alignment - imagine, e.g. the channel with
+scan_index = 2 might be 8 bit and the one with scan_index 5 might
+be 16 bit.  In that case you would need to pad so the scan_index
+5 channel is 16 bit aligned in the buffer.  If they were the
+other way around there would be no padding between the channels.
 
--- 
-With Best Regards,
-Andy Shevchenko
+The ordering of channels from the joystick channel specific bit
+of the binding comes from device tree 'reg' value and the ordering
+of the IIO map comes from io-channels ordering.  So these should
+I think map one to one (without messing around with actual tests
+I'm not 100% sure on these two ordering questions).
+
+When the driver then maps all the channels in io-channels they will
+in turn have scan_index values (and sizes)  Unfortunately to know
+the ordering we'll have to index over them and put them in the
+appropriate order.  I'd suggest just storing the resulting
+offset in the data buffer during that initial scan so it can
+be easily used later.
+
+So some more complexity to handle I'm afraid!
+
+Jonathan
+
++CC linux-iio as this issue might occur with other consumers - I clearly
+haven't been paying close enough attention :(
+
+> 
+> Thank you.
+> 
+> > 
+> > Cheers,
+> > Artur
+> >   
+> > > 
+> > > Let's add Jonathan and Arthur for their take on this.
+> > >   
+> > > > 
+> > > > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> > > > ---
+> > > >  drivers/input/joystick/adc-joystick.c | 7 +++----
+> > > >  1 file changed, 3 insertions(+), 4 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/input/joystick/adc-joystick.c
+> > > > b/drivers/input/joystick/adc-joystick.c
+> > > > index 78ebca7d400a..fe3bbd0d4566 100644
+> > > > --- a/drivers/input/joystick/adc-joystick.c
+> > > > +++ b/drivers/input/joystick/adc-joystick.c
+> > > > @@ -32,24 +32,23 @@ static int adc_joystick_handle(const void *data,
+> > > > void *private)
+> > > >  {
+> > > >  	struct adc_joystick *joy = private;
+> > > >  	enum iio_endian endianness;
+> > > > -	int bytes, msb, val, idx, i;
+> > > > +	int bytes, msb, val, i;
+> > > >  	const u16 *data_u16;
+> > > >  	bool sign;
+> > > > 
+> > > >  	bytes = joy->chans[0].channel->scan_type.storagebits >> 3;
+> > > > 
+> > > >  	for (i = 0; i < joy->num_chans; ++i) {
+> > > > -		idx = joy->chans[i].channel->scan_index;
+> > > >  		endianness = joy->chans[i].channel->scan_type.endianness;
+> > > >  		msb = joy->chans[i].channel->scan_type.realbits - 1;
+> > > >  		sign = tolower(joy->chans[i].channel->scan_type.sign) == 's';
+> > > > 
+> > > >  		switch (bytes) {
+> > > >  		case 1:
+> > > > -			val = ((const u8 *)data)[idx];
+> > > > +			val = ((const u8 *)data)[i];
+> > > >  			break;
+> > > >  		case 2:
+> > > > -			data_u16 = (const u16 *)data + idx;
+> > > > +			data_u16 = (const u16 *)data + i;
+> > > > 
+> > > >  			/*
+> > > >  			 * Data is aligned to the sample size by IIO core.
+> > > > --
+> > > > 2.25.1
+> > > >   
+> > > 
+> > > Thanks.  
+

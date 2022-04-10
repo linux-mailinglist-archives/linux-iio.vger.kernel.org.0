@@ -2,57 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A054FAF50
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 19:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 910964FB0B0
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Apr 2022 00:38:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233236AbiDJRhl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Apr 2022 13:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
+        id S231124AbiDJWkN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Apr 2022 18:40:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230009AbiDJRhj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 13:37:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3A628E12;
-        Sun, 10 Apr 2022 10:35:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 297DE61141;
-        Sun, 10 Apr 2022 17:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DEDC385A1;
-        Sun, 10 Apr 2022 17:35:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649612127;
-        bh=Rg333jaCmUAY2Cl9e+LiJP2hnhlhivhPlhCbYLFKB2s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hkvw53vp8CkRnFj1jnL/3EUeFL4i142GL21W4MGmi/4km9Jp7oFV9jfD1g9boCldO
-         YQsAbn02p5IVd9/WFUFybmTkN38EdqbSdOUo9tnkNJmVXciSGVsgZN6R70zOG7dE/g
-         JuTHEnukkFiVUaYnfzMoo+tX4b1tAR0w1qi5igcxVhwrw9EW7qBNq1hL/BeLLoaJRb
-         p8HIKdCqYXBv/c7Mu2o/wF08k93XIra0Pk/mvdrxxjAleqiYKRLGiZ5XhYF+COmu5l
-         QnOBSNr8rvncqNmznR0bjtnpfQoBmQF+eazd8niCQnzTLb4L2hq4MvtULk9sS1cckf
-         uZuVqOQZPcYVQ==
-Date:   Sun, 10 Apr 2022 18:43:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Chris Morgan <macromorgan@hotmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Chris Morgan <macroalpha82@gmail.com>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] input: adc-joystick: Stop using scan_index for reading
- data
-Message-ID: <20220410184318.53c0de04@jic23-huawei>
-In-Reply-To: <c7ace6661c11183586420b431adb6bab@artur-rojek.eu>
-References: <20220408212857.9583-1-macroalpha82@gmail.com>
-        <YlDqTKuo5rbkIL8V@google.com>
-        <2941de6570a6f808d6ea6e71d137ef87@artur-rojek.eu>
-        <SN6PR06MB5342727A065E9FA2223B6A45A5EB9@SN6PR06MB5342.namprd06.prod.outlook.com>
-        <c7ace6661c11183586420b431adb6bab@artur-rojek.eu>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S230294AbiDJWkM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 18:40:12 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5782D1BE94
+        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 15:37:58 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-df22f50e0cso15419138fac.3
+        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 15:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=usp.br; s=usp-google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=kYdCeqNxfyFe+q4mlbB31hoROe3b0F3S6Np/YpvuNb8=;
+        b=BqrGf/v5BHYFjpkXECcMb/aua8b1UnWtW23b/1W0EA5MUf8v7RKe1se2NFwTD/XW2K
+         mgQ33wAlIkxH29GrVwR8CfNm5xSHvwV1stTVkXISCwKYN64wFR8bx3YeFpat90Wds7dR
+         7+baJTVQ0vHack8beaFphpHbWjihjWVKhNito697yP6sX9NMUvAbamXjihzWcYG23vc9
+         uteaVNIPinVAz+BZCmNdgcq9K2darXOV3SzZ9dd7hWLDqh8ZRBy/8krXk2/b6UqPWQ5l
+         CiJi9OyDawl+DljQD4W341fH48kwZgMp8stYTFqqeEC9odced/nmQVp2qB8XZW0OxT9S
+         gtsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=kYdCeqNxfyFe+q4mlbB31hoROe3b0F3S6Np/YpvuNb8=;
+        b=BB+kIb8gucWD24cNuSTdJQccScH8cPNUXYWoraHoI5Bbsv0rMjj/mnHK41g6GMB/td
+         ya4kpDbBJarKc71iiV4gw4Xslwu3CFtM5gEC83eGO8aOAcCZJVXOnnDwAicwKqbjoq9M
+         vfI3aHLOtecE/AxvQgDrXJCFzMl1EjkUI9m5PheDh1wA1cfN5xoGsiya2yQFuRKcXKxu
+         ztDlJNweneUpL7df2CtJwxc/TV3f7//dLr1gPLsO3UuLyUAm74w5pGb7VwebjHTxQBMv
+         UYEwt+Xr7l/OIK5pQnRMzXCPGQfXyB/w0dnG1nNTjKzihAxhfvLc193JDcRvQ0mrKMAg
+         ov3A==
+X-Gm-Message-State: AOAM532wYKoh0Z1AuA1J9mNIly5i/68qrPOMXAhbiBAe6OCKZAG9SGj7
+        6d3TNvGrbMzEq8Q5J5KExPfWGyEu0E009w==
+X-Google-Smtp-Source: ABdhPJyuZDh1aX3sEOiFjNaGHzGWv2r3iYVy+Ip51t9hYzl9qcs2WmdzvTAmb34O6M5P/YCSBqok/A==
+X-Received: by 2002:a05:6870:4341:b0:da:b3f:2b26 with SMTP id x1-20020a056870434100b000da0b3f2b26mr13173497oah.197.1649630277638;
+        Sun, 10 Apr 2022 15:37:57 -0700 (PDT)
+Received: from fedora ([187.64.132.161])
+        by smtp.gmail.com with ESMTPSA id w8-20020aca3008000000b002ef7e3ad3b8sm10678165oiw.29.2022.04.10.15.37.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Apr 2022 15:37:57 -0700 (PDT)
+Date:   Sun, 10 Apr 2022 19:37:52 -0300
+From:   =?iso-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, dragos.bogdan@analog.com
+Subject: Re: GSoC Proposal 2022
+Message-ID: <YlNcQEAZVGYBkdy5@fedora>
+References: <CAH7FV3=UJn98PRp1dke7iAH2j8pj4-VSbnb11OfzRUKmkAEL8Q@mail.gmail.com>
+ <20220410182819.23967855@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220410182819.23967855@jic23-huawei>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,238 +71,97 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 10 Apr 2022 16:58:48 +0200
-Artur Rojek <contact@artur-rojek.eu> wrote:
-
-> On 2022-04-10 03:39, Chris Morgan wrote:
-> > On Sat, Apr 09, 2022 at 12:08:57PM +0200, Artur Rojek wrote:  
-> >> Hi Chris & Dmitry,
-> >> 
-> >> On 2022-04-09 04:07, Dmitry Torokhov wrote:  
-> >> > Hi Chris,
-> >> >
-> >> > On Fri, Apr 08, 2022 at 04:28:57PM -0500, Chris Morgan wrote:  
-> >> > > From: Chris Morgan <macromorgan@hotmail.com>
-> >> > >
-> >> > > For my Odroid Go Advance I noticed that the adc-joystick driver was
-> >> > > only reporting the y channel and on the x axis. After debugging, I
-> >> > > found that the driver was trying to read values from channels 0 and
-> >> > > 1 even though my device is using channels 1 and 2. By changing the
-> >> > > code
-> >> > > to use the axis index instead of the scan index when unpacking the
-> >> > > data
-> >> > > from the buffer, the joystick begins working as expected.  
-> >> >
-> >> > This sounds like some sort of misconfiguration, as your change
-> >> > effectively removes the ability of using just some ADC channels for
-> >> > joystick functionality...  
-> >> 
-> >> I agree, this sounds like either a case of misconfiguration, or an 
-> >> issue in
-> >> the ADC driver that this device is using.
-> >> The axis index corresponds to the iio channel associated with the 
-> >> joystick,
-> >> but NOT to the order at which data is sampled by ADC.
-> >> That's why each channel has a `scan_index` field. It sounds like in 
-> >> Chris'
-> >> case the channels have wrong scan indices.
-> >> I'd start by verifying that in the ADC driver that is being used.
-> >> 
-> >> In any case, this patch is wrong and removes functionality that 
-> >> existing
-> >> devices depend on.  
+On 04/10, Jonathan Cameron wrote:
+> On Thu, 7 Apr 2022 00:23:29 -0300
+> Maíra Canal <maira.canal@usp.br> wrote:
+> 
+> > Hi everyone, I am Maíra Canal an undergrad student at the University
+> > of São Paulo, Brazil, pursuing
+> > computer engineering. I wish to participate in the GSoC 2021 as a part
+> > of the Linux Foundation, IIO Project.
+> 
+> Hi Maíra,
+> 
+> Nice to 'meet' you ;)
+> 
 > > 
-> > I appreciate the feedback. If this driver is working as expected then
-> > that means the issue I am experiencing is further up the stack. Based
-> > on troubleshooting by getting the raw data that the rockchip-saradc
-> > driver was putting into the triggered buffer and seeing what the
-> > adc-joystick saw coming out of the triggered buffer I wonder if the
-> > issue is with the rockchip-saradc driver? I noticed that the buffer
-> > pushed by the driver's trigger handler would only (appear to) send the
-> > channels that I was requesting data for. So basically the data buffer
-> > would have the correct values in [0] and [1], but the adc-joystick
-> > driver by using the idx would fetch values from [1] for x (which has
-> > the y axis data) and [2] for y (which would have arbitrary data in
-> > it, usually something around 65406 or so).
+> > I have been contributing to the Linux kernel for a couple of months
+> > and have more than 20
+> > accepted patches in a couple of subsystems.
 > > 
-> > Do you think I should start looking at the rockchip-saradc driver then?
-> > Should the saradc be putting stuff in the buffer for every channel with
-> > empty data for channels that aren't to be reported?
+> > I started looking through the catalog of Analog Devices Inc. and I'm
+> > pretty interested in writing a driver for gyroscopes, inertial
+> > measurement units (IMUs), magnetometers, pressure sensors, proximity
+> > sensors, or temperature sensors. But, while looking through the
+> > catalog, I could not figure out a sensor that would be relevant to
+> > Linux Kernel. I mean, I would like to work on a sensor that would be
+> > relevant to the community and to Analog Devices Inc.
 > > 
-> > Thank you.  
+> > In that sense, I would like to know if anyone in the IIO community
+> > could recommend a sensor that would make sense for the company and the
+> > IIO community. Any suggestion is appreciated!
 > 
-> Chris,
+> I'm not going to recommend a particular sensor, but more offer some general
+> tips on what 'sort' of device makes a good target for a GSOC.
+> Finding a sensor means trawling datasheets and I'm tight on time today
+> + I've no real insight into what the ADI folk might like to see
+> supported!
 > 
-> I analyzed the IIO core code some more and I think you are correct in 
-> your assessment.
-> The data buffer that `adc-joystick` receives will be the length of all 
-> the *active* channels combined.
-> That would mean scan index specifies the order of the channels by which 
-> they appear in the buffer, NOT their offsets in it.
+> The nature of a GSOC driver submission is often a little different to
+> how an experienced driver author might go about things, simply because you
+> will / should be looking for feedback at more stages of development and
+> hopefully to upstream things in multiple stages.  An old hand at IIO
+> drivers will often just jump directly to a driver supporting all the
+> features they wish to target.  As such, the 'perfect' device to target
+> should meet a few requirements that may not be true for the approach of jumping
+> straight to the end goal.  Note this is equally true for other people
+> starting out writing drivers - though they can often do very simple
+> devices first and that is not a good plan for a GSOC project where
+> you need to have a progression during the project.
 > 
-> That said, we can't rely on channel order from `joy->chans = 
-> devm_iio_channel_get_all(dev);`,
-> as channels might have out-of-order scan indices and thus this sequence 
-> can't be used to iterate the buffer.
-> I think the best approach would be to add an IIO helper to find a 
-> channel offset in a buffer.
-> Say, something like this:
+> Try to find something that offers some advanced features to provide
+> stretch goals but make sure the basic functionality will work with
+> a much simpler driver. So devices that provide straight forward
+> registers to access the latest channel value are great, whereas
+> those that only offer a streaming interfaces / fifo may be less suitable.
+> However if they offer both that is perfect as the fifo make a good
+> later feature for a GSOC project if things are going particularly
+> well!  For a real stretch goal, find a device with features that
+> we don't support at all today (perhaps new sensor types, or some
+> other new feature) as they'll give you the experience of defining
+> new ABI + possibly modifying the IIO core to meet some requirements.
 > 
-> ```
-> --- a/drivers/iio/buffer/industrialio-buffer-cb.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-cb.c
-> @@ -151,6 +151,27 @@ struct iio_dev
->   }
->   EXPORT_SYMBOL_GPL(iio_channel_cb_get_iio_dev);
+> Another thing to look at it is whether the part is sufficiently
+> different from those supported by existing drivers to justify a
+> separate driver. If not, you may find your GSOC project becomes
+> simply adding an ID! (then rapidly choosing a second device to
+> work on).
 > 
-> +int iio_find_channel_offset_in_buffer(const struct iio_channel 
-> *channel,
-> +                                     struct iio_cb_buffer *buffer)
-> +{
-> +       const struct iio_chan_spec *chan = channel->channel;
-> +       struct iio_dev *indio_dev = channel->indio_dev;
-> +       struct iio_buffer *buf = &buffer->buffer;
-> +       int ind, i = 0;
-> +
-> +       if (chan->scan_index < 0)
-> +               return -EINVAL;
-> +
-> +       for_each_set_bit(ind, buf->scan_mask, indio_dev->masklength) {
-> +               if (ind == chan->scan_index)
-> +                       return i;
-> +               ++i;
-> +       }
-> +
-> +       return -EINVAL;
-> +}
-> +EXPORT_SYMBOL_GPL(iio_find_channel_offset_in_buffer);
+> Hope that provides a few hints on what to look at.  Probably the best
+> way around is to suggest one or more parts you think look interesting
+> then we can give feedback on whether we think they'd be a good choice
+> or not.
 
-Almost.  You need to take into account the size of each
-channel and the alignment rules as well (everything is naturally
-aligned) which will unfortunately require searching the channel
-list for each channel with a scan_index below this one.
+Hi Jonathan,
 
-Useful function to hav so I'm in favour of adding something like
-this it will just need to also take the iio_dev to get access to the
-sizes of other channels.
+I really appreciate the answer. Thank you for your attention and time!
 
-Note similar code occurs in iio_buffer_update_demux() (though what you need
-here is thankfully rather simpler). 
+During the week, I ended up picking the ADXL375 accelerometer (although I am
+open to any change proposed by ADI or the IIO community). Based on that device,
+I wrote a proposal and I would appreciate if you provide some feedback on the
+device choice and proposal: https://pt.overleaf.com/read/xsmmdpvzqrhd.
 
-We have iio_storage_bytes_for_si() to make things a bit simpler as it'll
-do the reverse lookups for you. 
-You'll need to export some of the utility functions.
+Regards,
+Maíra
 
-However, I'd put this in a more generic location as it's potentially useful
-for cases other than callback buffers and that should reduce what you need
-to export.  Probably put it in industrialio-buffer.c / iio/buffer.h
-
-
-
-
-> +
-> ```
 > 
-> ...and then the only change in `adc-joystick` has to be:
+> Good luck!
 > 
-> ```
-> --- a/drivers/input/joystick/adc-joystick.c
-> +++ b/drivers/input/joystick/adc-joystick.c
-> @@ -39,10 +39,13 @@ static int adc_joystick_handle(const void *data, 
-> void *private)
->          bytes = joy->chans[0].channel->scan_type.storagebits >> 3;
+> Jonathan
 > 
->          for (i = 0; i < joy->num_chans; ++i) {
-> -               idx = joy->chans[i].channel->scan_index;
->                  endianness = 
-> joy->chans[i].channel->scan_type.endianness;
->                  msb = joy->chans[i].channel->scan_type.realbits - 1;
->                  sign = tolower(joy->chans[i].channel->scan_type.sign) == 
-> 's';
-> +               idx = iio_find_channel_offset_in_buffer(&joy->chans[i],
-> +                                                       joy->buffer);
-> +               if (idx < 0)
-> +                       return idx;
 > 
->                  switch (bytes) {
->                  case 1:
-> ```
 > 
-> On a side note, this potentially uncovered an issue in an unrelated 
-> `ingenic-adc` driver,
-> where data pushed into the buffer is always the size of all the 
-> available channels, not just active ones.
-
-That would be fine, if it were also setting available_scan_masks as then
-the IIO core would repack only the requested channels (which is
-what that update_demux mentioned earlier sets up).
-
-However, given the driver is doing readl() only for the channels
-that are enabled, it probably makes more sense to pack them correctly.
-
-Jonathan
-
-
-> I was using that driver while writing `adc-joystick`, which explains why 
-> I never encountered your problem.
+> > 
+> > Sincerely,
+> > Maíra Canal
 > 
-> With all that said, let's wait for Jonathan to speak out before we 
-> proceed with v2.
-> 
-> Cheers,
-> Artur
-> 
-> >   
-> >> 
-> >> Cheers,
-> >> Artur
-> >>   
-> >> >
-> >> > Let's add Jonathan and Arthur for their take on this.
-> >> >  
-> >> > >
-> >> > > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> >> > > ---
-> >> > >  drivers/input/joystick/adc-joystick.c | 7 +++----
-> >> > >  1 file changed, 3 insertions(+), 4 deletions(-)
-> >> > >
-> >> > > diff --git a/drivers/input/joystick/adc-joystick.c
-> >> > > b/drivers/input/joystick/adc-joystick.c
-> >> > > index 78ebca7d400a..fe3bbd0d4566 100644
-> >> > > --- a/drivers/input/joystick/adc-joystick.c
-> >> > > +++ b/drivers/input/joystick/adc-joystick.c
-> >> > > @@ -32,24 +32,23 @@ static int adc_joystick_handle(const void *data,
-> >> > > void *private)
-> >> > >  {
-> >> > >  	struct adc_joystick *joy = private;
-> >> > >  	enum iio_endian endianness;
-> >> > > -	int bytes, msb, val, idx, i;
-> >> > > +	int bytes, msb, val, i;
-> >> > >  	const u16 *data_u16;
-> >> > >  	bool sign;
-> >> > >
-> >> > >  	bytes = joy->chans[0].channel->scan_type.storagebits >> 3;
-> >> > >
-> >> > >  	for (i = 0; i < joy->num_chans; ++i) {
-> >> > > -		idx = joy->chans[i].channel->scan_index;
-> >> > >  		endianness = joy->chans[i].channel->scan_type.endianness;
-> >> > >  		msb = joy->chans[i].channel->scan_type.realbits - 1;
-> >> > >  		sign = tolower(joy->chans[i].channel->scan_type.sign) == 's';
-> >> > >
-> >> > >  		switch (bytes) {
-> >> > >  		case 1:
-> >> > > -			val = ((const u8 *)data)[idx];
-> >> > > +			val = ((const u8 *)data)[i];
-> >> > >  			break;
-> >> > >  		case 2:
-> >> > > -			data_u16 = (const u16 *)data + idx;
-> >> > > +			data_u16 = (const u16 *)data + i;
-> >> > >
-> >> > >  			/*
-> >> > >  			 * Data is aligned to the sample size by IIO core.
-> >> > > --
-> >> > > 2.25.1
-> >> > >  
-> >> >
-> >> > Thanks.  
-

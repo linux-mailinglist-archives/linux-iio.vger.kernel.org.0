@@ -2,46 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC424FAEFF
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 18:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 230924FAF07
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Apr 2022 18:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237408AbiDJQli (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Apr 2022 12:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39090 "EHLO
+        id S243667AbiDJQoQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Apr 2022 12:44:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238345AbiDJQle (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 12:41:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537014B1DE;
-        Sun, 10 Apr 2022 09:39:24 -0700 (PDT)
+        with ESMTP id S238184AbiDJQoP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 12:44:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E264B841;
+        Sun, 10 Apr 2022 09:42:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AAC0361126;
-        Sun, 10 Apr 2022 16:39:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A94C385A1;
-        Sun, 10 Apr 2022 16:39:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C8FAFB80E18;
+        Sun, 10 Apr 2022 16:42:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326A2C385BB;
+        Sun, 10 Apr 2022 16:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649608763;
-        bh=le7VTby28qDZRTdyYn91f4YnkwNsrt1b0tZymqNAtBg=;
+        s=k20201202; t=1649608921;
+        bh=01McTTLBX/RzXMJb16VibZQqPQGnBa6CpsLcFull0FE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BzOuwwF0VJy7xH/UQfMvxKQn+DEMQZEYL98Dv2vy5QrzZCpc7rzPjO1TZyN2mts7x
-         uympxRBYpJLkUYc9lPIlUUiNYqzyhulVOW0UYfRPQYVSU8b1hoEOf5hlqyQ4cRwbbl
-         uzf/0dslp6rlVsUfi6t3mmT09HTbExwLQVelsQ85btyHfjUFKfULiOZBSZRJPXaLlq
-         dsB6TCusSMPcMAMU1g/6/28tyO8e+LPxyRGTkOkOSfwPw3K/CMd++iwgus4VG8vylO
-         1dBaVHJDoUSo3uDshbUQExSy1BVesvV94h0n6JaT5g9eOctsNWiDkHI70WyOz2tndE
-         /prqDv1SXEkwg==
-Date:   Sun, 10 Apr 2022 17:47:13 +0100
+        b=ij509aT4VHMEslbHqIP9u1UZVsFJjf+yJDNAiDFuek0LIFlF+QCvXw4SMLiR6qOkq
+         YYbq5Nme7To3cov2yvKCEGdlRM6yT0o3J8U+1EnkWiqHF8QrL7HtjSun793aoKa2W5
+         XZPTMs9lY5D8XLJKgN39yLvyKbNkufygnx/n9KnO2aKchCzaH5RP3sLclffVNMfQif
+         eGao9Ck0QAxaT5FlRB9ez5pJBqHZdsgSKZLePPbP551t8zwPuS85KRclEDBXWcCMg1
+         tmoUXK4Bn8IyKds7MfdDWHY8NWbXbyXyeM/xIPTeuBskGFTkEbyCs0i56029Nx9O7U
+         d7h/Y3LZhulyA==
+Date:   Sun, 10 Apr 2022 17:49:52 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>
-Subject: Re: [PATCH] iio: adc: Kconfig: Make RZG2L_ADC depend on ARCH_RZG2L
-Message-ID: <20220410174713.1a4e013f@jic23-huawei>
-In-Reply-To: <20220406070315.13862-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20220406070315.13862-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Gwendal Grignou <gwendal@chromium.org>, robh+dt@kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/8] iio: sx9324: Fix default precharge internal
+ resistance register
+Message-ID: <20220410174952.6660e013@jic23-huawei>
+In-Reply-To: <CAE-0n532f37UD8OyiFc0_ROzgc24Hb=aOYN+ALgruiehiNTfuQ@mail.gmail.com>
+References: <20220406165011.10202-1-gwendal@chromium.org>
+        <20220406165011.10202-2-gwendal@chromium.org>
+        <CAE-0n532f37UD8OyiFc0_ROzgc24Hb=aOYN+ALgruiehiNTfuQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,39 +58,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  6 Apr 2022 08:03:15 +0100
-Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+On Wed, 6 Apr 2022 10:14:01 -0700
+Stephen Boyd <swboyd@chromium.org> wrote:
 
-> ADC block is common on Renesas RZ/G2L and RZ/V2L SoC's, so instead of
-> adding dependency for each SoC's add dependency on ARCH_RZG2L. The
-> ARCH_RZG2L config option is already selected by ARCH_R9A07G044 and
-> ARCH_R9A07G054.
+> Quoting Gwendal Grignou (2022-04-06 09:50:04)
+> > Fix the default value for the register that set the resistance:
+> > it has to be 0x10 per datasheet.
+> >
+> > Fixes: 4c18a890dff8d ("iio:proximity:sx9324: Add SX9324 support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> > ---  
 > 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Sounds like a fix?
+> Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Applied to the fixes-togreg branch of iio.git.
 
-If so, please supply a Fixes tag.
-no need to resend, just reply with one to this email.
-
-thanks,
+I'm crossing my fingers that I'll be able to simultaneously
+queue this fix and the rest of the series on different branches
+without any significant merge problems...
 
 Jonathan
-
-> ---
->  drivers/iio/adc/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 71ab0a06aa82..48ace7412874 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -910,7 +910,7 @@ config ROCKCHIP_SARADC
->  
->  config RZG2L_ADC
->  	tristate "Renesas RZ/G2L ADC driver"
-> -	depends on ARCH_R9A07G044 || COMPILE_TEST
-> +	depends on ARCH_RZG2L || COMPILE_TEST
->  	help
->  	  Say yes here to build support for the ADC found in Renesas
->  	  RZ/G2L family.
 

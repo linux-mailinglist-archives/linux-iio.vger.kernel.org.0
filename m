@@ -2,46 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A694FB646
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Apr 2022 10:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00AC04FB65F
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Apr 2022 10:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343937AbiDKIrO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Apr 2022 04:47:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
+        id S244175AbiDKIyh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 11 Apr 2022 04:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232060AbiDKIrN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Apr 2022 04:47:13 -0400
+        with ESMTP id S234411AbiDKIyh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Apr 2022 04:54:37 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427A93A182
-        for <linux-iio@vger.kernel.org>; Mon, 11 Apr 2022 01:44:58 -0700 (PDT)
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KcMlp37rCz67ZJR;
-        Mon, 11 Apr 2022 16:41:42 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682A52DFE
+        for <linux-iio@vger.kernel.org>; Mon, 11 Apr 2022 01:52:23 -0700 (PDT)
+Received: from fraeml715-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KcMxb5Vzvz6855X;
+        Mon, 11 Apr 2022 16:50:11 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
+ fraeml715-chm.china.huawei.com (10.206.15.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 11 Apr 2022 10:44:54 +0200
+ 15.1.2375.24; Mon, 11 Apr 2022 10:52:21 +0200
 Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 11 Apr
- 2022 09:44:54 +0100
-Date:   Mon, 11 Apr 2022 09:44:52 +0100
+ 2022 09:52:20 +0100
+Date:   Mon, 11 Apr 2022 09:52:19 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: freq: admv1014: Fix warning about dubious x & !y
- and improve readability
-Message-ID: <20220411094452.00001fd1@Huawei.com>
-In-Reply-To: <CY4PR03MB339994ADA257E9EA436FD8129BEA9@CY4PR03MB3399.namprd03.prod.outlook.com>
-References: <20220319181401.136810-1-jic23@kernel.org>
-        <20220410181628.084fcf3b@jic23-huawei>
-        <CY4PR03MB339994ADA257E9EA436FD8129BEA9@CY4PR03MB3399.namprd03.prod.outlook.com>
+To:     =?ISO-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        <dragos.bogdan@analog.com>
+Subject: Re: GSoC Proposal 2022
+Message-ID: <20220411095219.000058a8@Huawei.com>
+In-Reply-To: <YlNcQEAZVGYBkdy5@fedora>
+References: <CAH7FV3=UJn98PRp1dke7iAH2j8pj4-VSbnb11OfzRUKmkAEL8Q@mail.gmail.com>
+        <20220410182819.23967855@jic23-huawei>
+        <YlNcQEAZVGYBkdy5@fedora>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.226.41]
 X-ClientProxiedBy: lhreml710-chm.china.huawei.com (10.201.108.61) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -55,112 +54,117 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 11 Apr 2022 07:18:10 +0000
-"Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
+On Sun, 10 Apr 2022 19:37:52 -0300
+Maíra Canal <maira.canal@usp.br> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Sunday, April 10, 2022 8:16 PM
-> > To: linux-iio@vger.kernel.org
-> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Miclaus, Antoniu
-> > <Antoniu.Miclaus@analog.com>
-> > Subject: Re: [PATCH] iio: freq: admv1014: Fix warning about dubious x & !y
-> > and improve readability
-> > 
-> > [External]
-> > 
-> > On Sat, 19 Mar 2022 18:14:01 +0000
-> > Jonathan Cameron <jic23@kernel.org> wrote:
+> On 04/10, Jonathan Cameron wrote:
+> > On Thu, 7 Apr 2022 00:23:29 -0300
+> > Maíra Canal <maira.canal@usp.br> wrote:
 > >   
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >
-> > > The warning comes from __BF_FIELD_CHECK()
-> > > specifically
-> > >
-> > > BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?		\
-> > > 		 ~((_mask) >> __bf_shf(_mask)) & (_val) : 0, \
-> > > 		 _pfx "value too large for the field"); \
-> > >
-> > > The code was using !(enum value) which is not particularly easy to follow
-> > > so replace that with explicit matching and use of ? 0 : 1; or ? 1 : 0;
-> > > to improve readability.
-> > >
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>  
+> > > Hi everyone, I am Maíra Canal an undergrad student at the University
+> > > of São Paulo, Brazil, pursuing
+> > > computer engineering. I wish to participate in the GSoC 2021 as a part
+> > > of the Linux Foundation, IIO Project.  
 > > 
-> > Antoniu, or anyone else who has time, can you sanity check this one?
-> > I'd like to clean up the warning asap but don't really trust myself
-> > enough to not have done something stupid ;)
+> > Hi Maíra,
 > > 
-> > Jonathan
+> > Nice to 'meet' you ;)
 > >   
-> > > ---
-> > >  drivers/iio/frequency/admv1014.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/frequency/admv1014.c  
-> > b/drivers/iio/frequency/admv1014.c  
-> > > index a7994f8e6b9b..802835efbec7 100644
-> > > --- a/drivers/iio/frequency/admv1014.c
-> > > +++ b/drivers/iio/frequency/admv1014.c
-> > > @@ -700,8 +700,10 @@ static int admv1014_init(struct admv1014_state  
-> > *st)  
-> > >  			 ADMV1014_DET_EN_MSK;
-> > >
-> > >  	enable_reg = FIELD_PREP(ADMV1014_P1DB_COMPENSATION_MSK,  
-> > st->p1db_comp ? 3 : 0) |  
-> > > -		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK, !(st-
-> > >input_mode)) |
-> > > -		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK, st-
-> > >input_mode) |
-> > > +		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK,
-> > > +				(st->input_mode == ADMV1014_IQ_MODE)  
-> > ? 0 : 1) |  
-> > > +		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK,
-> > > +				(st->input_mode == ADMV1014_IQ_MODE)  
-> > ? 1 : 0) |  
-> Hello Jonathan,
+> > > 
+> > > I have been contributing to the Linux kernel for a couple of months
+> > > and have more than 20
+> > > accepted patches in a couple of subsystems.
+> > > 
+> > > I started looking through the catalog of Analog Devices Inc. and I'm
+> > > pretty interested in writing a driver for gyroscopes, inertial
+> > > measurement units (IMUs), magnetometers, pressure sensors, proximity
+> > > sensors, or temperature sensors. But, while looking through the
+> > > catalog, I could not figure out a sensor that would be relevant to
+> > > Linux Kernel. I mean, I would like to work on a sensor that would be
+> > > relevant to the community and to Analog Devices Inc.
+> > > 
+> > > In that sense, I would like to know if anyone in the IIO community
+> > > could recommend a sensor that would make sense for the company and the
+> > > IIO community. Any suggestion is appreciated!  
+> > 
+> > I'm not going to recommend a particular sensor, but more offer some general
+> > tips on what 'sort' of device makes a good target for a GSOC.
+> > Finding a sensor means trawling datasheets and I'm tight on time today
+> > + I've no real insight into what the ADI folk might like to see
+> > supported!
+> > 
+> > The nature of a GSOC driver submission is often a little different to
+> > how an experienced driver author might go about things, simply because you
+> > will / should be looking for feedback at more stages of development and
+> > hopefully to upstream things in multiple stages.  An old hand at IIO
+> > drivers will often just jump directly to a driver supporting all the
+> > features they wish to target.  As such, the 'perfect' device to target
+> > should meet a few requirements that may not be true for the approach of jumping
+> > straight to the end goal.  Note this is equally true for other people
+> > starting out writing drivers - though they can often do very simple
+> > devices first and that is not a good plan for a GSOC project where
+> > you need to have a progression during the project.
+> > 
+> > Try to find something that offers some advanced features to provide
+> > stretch goals but make sure the basic functionality will work with
+> > a much simpler driver. So devices that provide straight forward
+> > registers to access the latest channel value are great, whereas
+> > those that only offer a streaming interfaces / fifo may be less suitable.
+> > However if they offer both that is perfect as the fifo make a good
+> > later feature for a GSOC project if things are going particularly
+> > well!  For a real stretch goal, find a device with features that
+> > we don't support at all today (perhaps new sensor types, or some
+> > other new feature) as they'll give you the experience of defining
+> > new ABI + possibly modifying the IIO core to meet some requirements.
+> > 
+> > Another thing to look at it is whether the part is sufficiently
+> > different from those supported by existing drivers to justify a
+> > separate driver. If not, you may find your GSOC project becomes
+> > simply adding an ID! (then rapidly choosing a second device to
+> > work on).
+> > 
+> > Hope that provides a few hints on what to look at.  Probably the best
+> > way around is to suggest one or more parts you think look interesting
+> > then we can give feedback on whether we think they'd be a good choice
+> > or not.  
 > 
-> I think it should be vice-versa:
-> 		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK,
-> 				(st->input_mode == ADMV1014_IQ_MODE) ? 1 : 0) |
-> 		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK,
-> 				(st->input_mode == ADMV1014_IQ_MODE) ? 0 : 1) |
+> Hi Jonathan,
 > 
-> "To set the ADMV1014 in I/Q mode, set BB_AMP_PD
-> (Register 0x03, Bit 8) to 0 and set IF_AMP_PD (Register 0x03,
-> Bit 11) to 1."
+> I really appreciate the answer. Thank you for your attention and time!
 > 
-> "To configure the ADMV1014 in IF mode, set BB_AMP_PD
-> (Register 0x03, Bit 8) to 1 and set IF_AMP_PD (Register 0x03,
-> Bit 11) to 0"
+> During the week, I ended up picking the ADXL375 accelerometer (although I am
+> open to any change proposed by ADI or the IIO community). Based on that device,
+> I wrote a proposal and I would appreciate if you provide some feedback on the
+> device choice and proposal: https://pt.overleaf.com/read/xsmmdpvzqrhd.
 
-And that's why I need sanity checks on 'obvious' patches. Thanks!
+Unfortunately that part hits the second to last paragraph above.
 
-You are correct that I've inverted it by matching on the 0 enum value,
-whereas the original code was effectively starting with the 1 enum value.
-Keeping closer to the original code it would be:
+It's so nearly compatible with the ADXL345 that the driver already supports it:
+https://elixir.bootlin.com/linux/v5.18-rc1/source/drivers/iio/accel/adxl345_i2c.c#L42
+This is very common for these types of devices as there are often many similar
+variants, usually with different ranges or with small additional features, or numbers
+of interrupt pins etc.  Another fun one is parts with ratings for different applications
+but identical software interfaces being given different part numbers.
+I think in this case the two parts have different scaling, but are otherwise
+identical.
 
- 		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK,
- 				(st->input_mode == ADMV1014_IF_MODE) ? 0 : 1) |
- 		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK,
- 				(st->input_mode == ADMV1014_IF_MODE) ? 1 : 0) |
-
-I'm tempted to go with that version rather than your equivalent one because
-it keeps the sense of the statements the same so in theory should be a more
-obvious patch.
-
-Will send a v2.
-
-Thanks,
+So probably need to find another part.
 
 Jonathan
 
 > 
 > Regards,
-> > >  		     FIELD_PREP(ADMV1014_DET_EN_MSK, st->det_en);
-> > >
-> > >  	return __admv1014_spi_update_bits(st, ADMV1014_REG_ENABLE,  
-> > enable_reg_msk, enable_reg);  
+> Maíra
 > 
+> > 
+> > Good luck!
+> > 
+> > Jonathan
+> > 
+> > 
+> >   
+> > > 
+> > > Sincerely,
+> > > Maíra Canal  
+> >   
 

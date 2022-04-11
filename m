@@ -2,166 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 910964FB0B0
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Apr 2022 00:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74FDF4FB35E
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Apr 2022 07:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231124AbiDJWkN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 10 Apr 2022 18:40:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50826 "EHLO
+        id S235110AbiDKF7b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Apr 2022 01:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230294AbiDJWkM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Apr 2022 18:40:12 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5782D1BE94
-        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 15:37:58 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-df22f50e0cso15419138fac.3
-        for <linux-iio@vger.kernel.org>; Sun, 10 Apr 2022 15:37:58 -0700 (PDT)
+        with ESMTP id S229637AbiDKF73 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Apr 2022 01:59:29 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDE9255A4;
+        Sun, 10 Apr 2022 22:57:16 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id j17so12204915pfi.9;
+        Sun, 10 Apr 2022 22:57:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=kYdCeqNxfyFe+q4mlbB31hoROe3b0F3S6Np/YpvuNb8=;
-        b=BqrGf/v5BHYFjpkXECcMb/aua8b1UnWtW23b/1W0EA5MUf8v7RKe1se2NFwTD/XW2K
-         mgQ33wAlIkxH29GrVwR8CfNm5xSHvwV1stTVkXISCwKYN64wFR8bx3YeFpat90Wds7dR
-         7+baJTVQ0vHack8beaFphpHbWjihjWVKhNito697yP6sX9NMUvAbamXjihzWcYG23vc9
-         uteaVNIPinVAz+BZCmNdgcq9K2darXOV3SzZ9dd7hWLDqh8ZRBy/8krXk2/b6UqPWQ5l
-         CiJi9OyDawl+DljQD4W341fH48kwZgMp8stYTFqqeEC9odced/nmQVp2qB8XZW0OxT9S
-         gtsA==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=H/wt1Dqohp8jVPvDDRc0KxiJo8crSPIUF9LEUiFGtwI=;
+        b=LI5XL5iOur9GxwX+qAbAH1+jRaw7e/ACmUQKrKqUeQgWQwjStd0MJajPReby0Hjdfv
+         RJODZZ0a1lprRYycDrkiB3IKrecMv+S3SdufQC11+XXrGXiD1rYdbB4vQZ/kLI2Cqa92
+         r00KfnHOWGs4TvuW/Q3u3j27s4IbbtFHJLz1JjzjancwofZpaAwDUOzb68WN3eQeEOgP
+         VLnxsPYJm7xueeAI8Loq8cZ33Ji7qosrZZ4ddlgBKVWx0qYFOeQxxyrKoYtN0Ntus/Bg
+         q8rl1AlHWG4kwPuVznHJe0k2LkF9IFC0XI9swAIa97FF3Ouxn9UuxqXOAIw1IzjRfY4G
+         n7fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=kYdCeqNxfyFe+q4mlbB31hoROe3b0F3S6Np/YpvuNb8=;
-        b=BB+kIb8gucWD24cNuSTdJQccScH8cPNUXYWoraHoI5Bbsv0rMjj/mnHK41g6GMB/td
-         ya4kpDbBJarKc71iiV4gw4Xslwu3CFtM5gEC83eGO8aOAcCZJVXOnnDwAicwKqbjoq9M
-         vfI3aHLOtecE/AxvQgDrXJCFzMl1EjkUI9m5PheDh1wA1cfN5xoGsiya2yQFuRKcXKxu
-         ztDlJNweneUpL7df2CtJwxc/TV3f7//dLr1gPLsO3UuLyUAm74w5pGb7VwebjHTxQBMv
-         UYEwt+Xr7l/OIK5pQnRMzXCPGQfXyB/w0dnG1nNTjKzihAxhfvLc193JDcRvQ0mrKMAg
-         ov3A==
-X-Gm-Message-State: AOAM532wYKoh0Z1AuA1J9mNIly5i/68qrPOMXAhbiBAe6OCKZAG9SGj7
-        6d3TNvGrbMzEq8Q5J5KExPfWGyEu0E009w==
-X-Google-Smtp-Source: ABdhPJyuZDh1aX3sEOiFjNaGHzGWv2r3iYVy+Ip51t9hYzl9qcs2WmdzvTAmb34O6M5P/YCSBqok/A==
-X-Received: by 2002:a05:6870:4341:b0:da:b3f:2b26 with SMTP id x1-20020a056870434100b000da0b3f2b26mr13173497oah.197.1649630277638;
-        Sun, 10 Apr 2022 15:37:57 -0700 (PDT)
-Received: from fedora ([187.64.132.161])
-        by smtp.gmail.com with ESMTPSA id w8-20020aca3008000000b002ef7e3ad3b8sm10678165oiw.29.2022.04.10.15.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Apr 2022 15:37:57 -0700 (PDT)
-Date:   Sun, 10 Apr 2022 19:37:52 -0300
-From:   =?iso-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, dragos.bogdan@analog.com
-Subject: Re: GSoC Proposal 2022
-Message-ID: <YlNcQEAZVGYBkdy5@fedora>
-References: <CAH7FV3=UJn98PRp1dke7iAH2j8pj4-VSbnb11OfzRUKmkAEL8Q@mail.gmail.com>
- <20220410182819.23967855@jic23-huawei>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=H/wt1Dqohp8jVPvDDRc0KxiJo8crSPIUF9LEUiFGtwI=;
+        b=7dvaAy9cx7oJBZTvky3304PujG4dnGdlM65koakaX5hhYPzrS1Ts1gjakreJeJQPHM
+         IDH62wOe7X5BOTSD5zTfC2K7S+opqH4i3C3MUJa/NscLsDkeIaF/EG+ZRJSTO4NzXj6n
+         6YxW+s4r0LC7QxdAqk/QfzKa0IlLlIW7PufNi8etHhTRUA2ezoZwQ6xqkWv4OrrJSmLC
+         HtO0rjccg8moDjLbLXv7R8J3yguZfzA2iwfAhLLa2S7eRaeTPSHw2AXuAGAHjY2cI5KR
+         KrKQ4+XynPIuTENDV/nnjWCIpNZbkWRYCx787bFkle1g4opMiMCdFENy3nc/E3XtWQ/W
+         jjLA==
+X-Gm-Message-State: AOAM531DXexZu+xbrBKHVC5doyC7zpE38L7uIh1zeLo+nVnQg+wm2yaL
+        XFcpLazZP7Zb3NlNteTZCupvfknN4V56GMVcxCBwwBuVP0K5
+X-Google-Smtp-Source: ABdhPJw+2kcN0wShNiGOmkptbcJh3nW6L86otjXm6ZDOL02fONP92h3/kqcJdxHX2uqQ7kiejzaZ9WKFjXCX7wd78to=
+X-Received: by 2002:a63:610:0:b0:39d:300c:ad9b with SMTP id
+ 16-20020a630610000000b0039d300cad9bmr6144210pgg.113.1649656636463; Sun, 10
+ Apr 2022 22:57:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220410182819.23967855@jic23-huawei>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220409034849.3717231-1-zheyuma97@gmail.com> <20220409034849.3717231-2-zheyuma97@gmail.com>
+ <20220410170127.058fc942@jic23-huawei>
+In-Reply-To: <20220410170127.058fc942@jic23-huawei>
+From:   Zheyu Ma <zheyuma97@gmail.com>
+Date:   Mon, 11 Apr 2022 13:57:05 +0800
+Message-ID: <CAMhUBjkctv-8kvGvdEt0nakyt9EXGwgzey=gQxYbesYrXbW6yQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: magnetometer: ak8975: Fix the error handling in ak8975_power_on()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linus.walleij@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/10, Jonathan Cameron wrote:
-> On Thu, 7 Apr 2022 00:23:29 -0300
-> Maíra Canal <maira.canal@usp.br> wrote:
-> 
-> > Hi everyone, I am Maíra Canal an undergrad student at the University
-> > of São Paulo, Brazil, pursuing
-> > computer engineering. I wish to participate in the GSoC 2021 as a part
-> > of the Linux Foundation, IIO Project.
-> 
-> Hi Maíra,
-> 
-> Nice to 'meet' you ;)
-> 
-> > 
-> > I have been contributing to the Linux kernel for a couple of months
-> > and have more than 20
-> > accepted patches in a couple of subsystems.
-> > 
-> > I started looking through the catalog of Analog Devices Inc. and I'm
-> > pretty interested in writing a driver for gyroscopes, inertial
-> > measurement units (IMUs), magnetometers, pressure sensors, proximity
-> > sensors, or temperature sensors. But, while looking through the
-> > catalog, I could not figure out a sensor that would be relevant to
-> > Linux Kernel. I mean, I would like to work on a sensor that would be
-> > relevant to the community and to Analog Devices Inc.
-> > 
-> > In that sense, I would like to know if anyone in the IIO community
-> > could recommend a sensor that would make sense for the company and the
-> > IIO community. Any suggestion is appreciated!
-> 
-> I'm not going to recommend a particular sensor, but more offer some general
-> tips on what 'sort' of device makes a good target for a GSOC.
-> Finding a sensor means trawling datasheets and I'm tight on time today
-> + I've no real insight into what the ADI folk might like to see
-> supported!
-> 
-> The nature of a GSOC driver submission is often a little different to
-> how an experienced driver author might go about things, simply because you
-> will / should be looking for feedback at more stages of development and
-> hopefully to upstream things in multiple stages.  An old hand at IIO
-> drivers will often just jump directly to a driver supporting all the
-> features they wish to target.  As such, the 'perfect' device to target
-> should meet a few requirements that may not be true for the approach of jumping
-> straight to the end goal.  Note this is equally true for other people
-> starting out writing drivers - though they can often do very simple
-> devices first and that is not a good plan for a GSOC project where
-> you need to have a progression during the project.
-> 
-> Try to find something that offers some advanced features to provide
-> stretch goals but make sure the basic functionality will work with
-> a much simpler driver. So devices that provide straight forward
-> registers to access the latest channel value are great, whereas
-> those that only offer a streaming interfaces / fifo may be less suitable.
-> However if they offer both that is perfect as the fifo make a good
-> later feature for a GSOC project if things are going particularly
-> well!  For a real stretch goal, find a device with features that
-> we don't support at all today (perhaps new sensor types, or some
-> other new feature) as they'll give you the experience of defining
-> new ABI + possibly modifying the IIO core to meet some requirements.
-> 
-> Another thing to look at it is whether the part is sufficiently
-> different from those supported by existing drivers to justify a
-> separate driver. If not, you may find your GSOC project becomes
-> simply adding an ID! (then rapidly choosing a second device to
-> work on).
-> 
-> Hope that provides a few hints on what to look at.  Probably the best
-> way around is to suggest one or more parts you think look interesting
-> then we can give feedback on whether we think they'd be a good choice
-> or not.
+On Sun, Apr 10, 2022 at 11:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sat,  9 Apr 2022 11:48:49 +0800
+> Zheyu Ma <zheyuma97@gmail.com> wrote:
+>
+> > When the driver fails to enable the regulator 'vid', we will get the
+> > following splat:
+> >
+> > [   79.955610] WARNING: CPU: 5 PID: 441 at drivers/regulator/core.c:2257 _regulator_put+0x3ec/0x4e0
+> > [   79.959641] RIP: 0010:_regulator_put+0x3ec/0x4e0
+> > [   79.967570] Call Trace:
+> > [   79.967773]  <TASK>
+> > [   79.967951]  regulator_put+0x1f/0x30
+> > [   79.968254]  devres_release_group+0x319/0x3d0
+> > [   79.968608]  i2c_device_probe+0x766/0x940
+> >
+> > Fix this by disabling the 'vdd' regulator when failing to enable 'vid'
+> > regulator.
+> >
+> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> This driver doesn't really have a maintainer any more, though Linus W actually
+> last touched this bit of code. So +CC.
+>
+> However, it's pretty obviously correct so applied to the fixes-togreg branch of iio.git.
+>
+> For future reference, please don't send one fix as reply to a fix on a different driver.
+> Makes a mess of thread handling and tracking in patchwork etc.
 
-Hi Jonathan,
+Sorry for the confusion, I will take care of it next time.
 
-I really appreciate the answer. Thank you for your attention and time!
+> Ideally also please provide a fixes tag.  For this one I have applied with out it
+> because it was a long time back and looks like the bug predates a bunch of refactoring
+> of this code.
 
-During the week, I ended up picking the ADXL375 accelerometer (although I am
-open to any change proposed by ADI or the IIO community). Based on that device,
-I wrote a proposal and I would appreciate if you provide some feedback on the
-device choice and proposal: https://pt.overleaf.com/read/xsmmdpvzqrhd.
+Thanks for your reminder, I will add the fixes tag in the next submission.
 
 Regards,
-Maíra
-
-> 
-> Good luck!
-> 
-> Jonathan
-> 
-> 
-> 
-> > 
-> > Sincerely,
-> > Maíra Canal
-> 
+Zheyu Ma

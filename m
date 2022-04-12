@@ -2,144 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 956764FDC77
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Apr 2022 13:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BC84FDEB1
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Apr 2022 13:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351758AbiDLKar (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Apr 2022 06:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S236461AbiDLL6m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Apr 2022 07:58:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359427AbiDLKTU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Apr 2022 06:19:20 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303127CB29;
-        Tue, 12 Apr 2022 02:16:35 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id p15so36033991ejc.7;
-        Tue, 12 Apr 2022 02:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EHG2IbCAiVOF3vEZ4P/yUZxJg6ubvPpIH2rRWthOYrg=;
-        b=G92Gn1YJZuxQyQgqMa+NS6Km5+yE1SrRMLyGFD3365N87vl2wEmsHL2KkEobxIy6J2
-         soQ40KENXoB2sJjJmZerSMF5oiRPd7j15Tw3JFo3dKken455nMA5sZKtvdPFxoLDhFX6
-         9CfRWFAqrg+X0hBsFl2y7lUiRj+gw9VGPYx51a9/96ks5WgrersDjJbZRab3tKrekG1+
-         IgyaO3hcAjfF0DyBLEEPPo1JrELJg3hFROlNxkoeBrucG+6IEP19L/O7NeameZo2foeB
-         zvd9r1FcB/4zSxS2fi4qwOar8bUypCC3sGjU+Q6LixImmDwLVFOVfr3xSf15SQshYkMr
-         VABA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EHG2IbCAiVOF3vEZ4P/yUZxJg6ubvPpIH2rRWthOYrg=;
-        b=iamKGvYtyGZinPt5eKdmwafbA356gnq0uBF8ysjWPx3nX4tKuJvlYmGyuxTAgDN5S7
-         2Cw5pL0BJvUhiy2R6KD3Mdweta65Mpx/FAvafvgy0BOMZuug8k8Ur3ybwW3MgBrqX4Z9
-         YcfQ3qBifQ607LArI7eHNYK8Cm5P1nXt5zFAK3g7rqO4FeRin/cF6++GXNLwHdewMmWk
-         B3vhSO4E/2OXyr6xB6t46wKnXjMf12SAoyud8zrlu8ctJedoFNMOi/XhATLCPO9Y55SJ
-         kuiIN0AY8z7b00uaG6U/43Xv3GcS7TJidv934NfYb04BuUvphyBhezXQVvKBkpsn26Tx
-         wDyw==
-X-Gm-Message-State: AOAM532Etsnd7jENw0qLJ1qriHaTQFy+EfdndBjV89qbWkGh9nlPYa2W
-        +44UCVrF9LbjZ6k140gIEXdQj2q/wIHBS42LM9XJMIVwROo=
-X-Google-Smtp-Source: ABdhPJwecXWgLi/Y0O7C3BqMQAaINjC0g6xtKLweks3Mu+GmHo72tEFDcESkWd70UasQljW6QhRYWtBTmsjQXWqxG9w=
-X-Received: by 2002:a17:907:e8d:b0:6e0:19e7:9549 with SMTP id
- ho13-20020a1709070e8d00b006e019e79549mr33953776ejc.44.1649754994299; Tue, 12
- Apr 2022 02:16:34 -0700 (PDT)
+        with ESMTP id S1345816AbiDLL44 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Apr 2022 07:56:56 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7764160CF6;
+        Tue, 12 Apr 2022 03:42:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649760130; x=1681296130;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zpueg+jyVnMsOFoZwW8zB/OcFNbXOpiTPlELbqYLlwc=;
+  b=nW6qxJeyxnEknF1riWv3R253BFhnRrlq+239kG5dMahU2qu7UONHYzmy
+   GSJ79WfPqKFJ6gZq8+nwNsNAf5WOIxVX58lZ5a2sSZkUyZ2PVITslZock
+   mbiUmH7hFDScrJCKPEl6O4291+x9GRRiwkUvnKKoudpKIHvqGvEO8l/jL
+   NmKCYtF52/PeMB01ynydkvljE/dTtPN9Jp6gb+iii1oFfMDadpkTZWbYy
+   OkW+VLllaT8YUVI5B7GfoYXKDHPghnSaHwkNUUAJXELPIq2D7TstOY+RT
+   za8xdZw6/HmjJe0oTuWQI6M8NGTc8dlveZBdeYtV3zdkxHxndlPOVa6cd
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10314"; a="261192960"
+X-IronPort-AV: E=Sophos;i="5.90,253,1643702400"; 
+   d="scan'208";a="261192960"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 03:42:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,253,1643702400"; 
+   d="scan'208";a="660438063"
+Received: from lkp-server02.sh.intel.com (HELO d3fc50ef50de) ([10.239.97.151])
+  by orsmga004.jf.intel.com with ESMTP; 12 Apr 2022 03:42:07 -0700
+Received: from kbuild by d3fc50ef50de with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1neDyJ-0002m8-8p;
+        Tue, 12 Apr 2022 10:42:07 +0000
+Date:   Tue, 12 Apr 2022 18:41:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>, dan@dlrobertson.com,
+        jic23@kernel.org, andy.shevchenko@gmail.com
+Cc:     kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 9/9] iio: accel: bma400: Add support for activity and
+ inactivity events
+Message-ID: <202204121837.e1RdwIqu-lkp@intel.com>
+References: <20220411203133.19929-10-jagathjog1996@gmail.com>
 MIME-Version: 1.0
-References: <20220411203133.19929-1-jagathjog1996@gmail.com> <20220411203133.19929-5-jagathjog1996@gmail.com>
-In-Reply-To: <20220411203133.19929-5-jagathjog1996@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 12 Apr 2022 12:12:21 +0300
-Message-ID: <CAHp75VfHa9afhSdyi8dj5GpzrYE=hLacayu58+PHjXhMxTo9eg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] iio: accel: bma400: Add triggered buffer support
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     Dan Robertson <dan@dlrobertson.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220411203133.19929-10-jagathjog1996@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Apr 11, 2022 at 11:31 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
->
-> Added trigger buffer support to read continuous acceleration
-> data from device with data ready interrupt which is mapped
-> to INT1 pin.
+Hi Jagath,
 
-Can you explain the locking schema in this driver?
+Thank you for the patch! Yet something to improve:
 
-> +       /* Configure INT1 pin to open drain */
-> +       ret = regmap_write(data->regmap, BMA400_INT_IO_CTRL_REG, 0x06);
-> +       if (ret)
-> +               return ret;
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on v5.18-rc2 next-20220412]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-No locking (or regmap only locking).
+url:    https://github.com/intel-lab-lkp/linux/commits/Jagath-Jog-J/iio-accel-bma400-Add-buffer-step-and-activity-inactivity/20220412-043436
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: mips-allmodconfig (https://download.01.org/0day-ci/archive/20220412/202204121837.e1RdwIqu-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/15ee6de45ed7a028569638c198e170bb98cef4ab
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jagath-Jog-J/iio-accel-bma400-Add-buffer-step-and-activity-inactivity/20220412-043436
+        git checkout 15ee6de45ed7a028569638c198e170bb98cef4ab
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=mips SHELL=/bin/bash
 
-...
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-> +static int bma400_data_rdy_trigger_set_state(struct iio_trigger *trig,
-> +                                            bool state)
-> +{
-> +       struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> +       struct bma400_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG,
-> +                                BMA400_INT_DRDY_MSK,
-> +                                FIELD_PREP(BMA400_INT_DRDY_MSK, state));
-> +       if (ret)
-> +               return ret;
-> +
-> +       return regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
-> +                                 BMA400_INT_DRDY_MSK,
-> +                                 FIELD_PREP(BMA400_INT_DRDY_MSK, state));
-> +}
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-Ditto.
-
-...
-
-> +       mutex_lock(&data->mutex);
-> +
-> +       /* bulk read six registers, with the base being the LSB register */
-> +       ret = regmap_bulk_read(data->regmap, BMA400_X_AXIS_LSB_REG,
-> +                              &data->buffer.buff, sizeof(data->buffer.buff));
-> +       mutex_unlock(&data->mutex);
-> +       if (ret)
-> +               return IRQ_NONE;
-
-But here only above with locking...
-
-> +       ret = regmap_read(data->regmap, BMA400_TEMP_DATA_REG, &temp);
-> +       if (ret)
-> +               return IRQ_NONE;
-
-...followed by no locking.
-
-...
-
-> +       mutex_lock(&data->mutex);
-> +       ret = regmap_bulk_read(data->regmap, BMA400_INT_STAT0_REG, &status,
-> +                              sizeof(status));
-> +       mutex_unlock(&data->mutex);
-> +       if (ret)
-> +               return IRQ_NONE;
-
-And again with locking.
-
-...
-
-So,
-1) Does regmap is configured with locking? What for?
-2) What's the role of data->mutex?
+>> ERROR: modpost: "__cmpxchg_small" [drivers/iio/accel/bma400_core.ko] undefined!
 
 -- 
-With Best Regards,
-Andy Shevchenko
+0-DAY CI Kernel Test Service
+https://01.org/lkp

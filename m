@@ -2,63 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3F14FD10E
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Apr 2022 08:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7D34FD7A0
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Apr 2022 12:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351016AbiDLG5D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Apr 2022 02:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48364 "EHLO
+        id S239685AbiDLHV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Apr 2022 03:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351540AbiDLGx5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Apr 2022 02:53:57 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C854186E0;
-        Mon, 11 Apr 2022 23:42:22 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id j17so15193278pfi.9;
-        Mon, 11 Apr 2022 23:42:22 -0700 (PDT)
+        with ESMTP id S1351710AbiDLHMv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Apr 2022 03:12:51 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F171E15FE7;
+        Mon, 11 Apr 2022 23:51:55 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id q19so16335177pgm.6;
+        Mon, 11 Apr 2022 23:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=oIBDhcdWSaE7vQbKGazUcowf2lwLjEe8FI7+3jjOTMs=;
-        b=FYGUdST2//KLw3IMPTIMx0PfdT9wSS77bKBOMhv6Nxwnr5QxDAulcTw8z1kSzzx86/
-         DWF3bZT7bCoIU6/+RPkJxK/GrDSUJI5MPwr8q5Jvw2eZu+7sqw8TdpPLkkssTitPPARr
-         zxnvphd8O1XhS1NNmEnDY3XBY2QK24svSHcMx9JuIZfLl6M9YEMtJTEhiMQK80ljGF7a
-         ccVTF5cTDjwI2hhQlXgYDJzXn66V5GH0COb2Zgfy19Iwickp4YDfgmVWWFzgLem9Q5QQ
-         WDwe83SkXys0Ms8zceDEqVBRrsH8QdKnW/HkAvyfCz4iBUyVA9+eSM1cNUGK47ab8sm2
-         ypvw==
+        h=from:to:subject:date:message-id:in-reply-to:references;
+        bh=RBbYU01e+AFbhWY3ZuGeFMRIuU/CVxN8Q/n9EQ09lHU=;
+        b=a8AKCKRLwEJ+ICpyl0Ua49RR5GoUvlGs65zLny8zLr9rq8FPqaowjaciyPlu0e0Ra5
+         K38C9SACTeDtneV0qgjKDJBJUEWchIR3VIhC9SpjB3IXVvUnsnuVOkKl9UFn60wHF9N4
+         JMw0aiBOyEdWx9p+NYgkcgqLhB7jNVb8eS1V2+vluyREM6O2fqdKfAdlLOt1xz7uWDTN
+         dws3dSdt0MyP5UQhVa68Spk7WNjnYcPTgH+KtTzNkjZwyCBJHqy2nDP9oqdP1YDoavPZ
+         MA6Qx75v3pkISAyQJgVWK+UJjDfbAk4jHEqdT5BM1mpcOuzxHlGUkGZ32J3dlFvJxCxN
+         SZcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references;
-        bh=oIBDhcdWSaE7vQbKGazUcowf2lwLjEe8FI7+3jjOTMs=;
-        b=yllyzhaOKPgy9N9N8UdHajaoawnUCHbjTief+HRF1zMB2NwIb4/EpTcNnj6upV0Tcf
-         vI7I6nMS8QitzrzCNFsPdb8yBcmHOL4dNwltGeSz9SfhNUq4Xm6hyr88MAJatM0T3oM5
-         gBJMty0J4VpVjwvS3+jqbjhWprIkE8JIHE+nG6gM/5yLG4PDR2zzIzggnj942cFjiFcf
-         C5avBBI1RWUEPtVFty9aJkJTlCA/kXXWcn0UekxOjkNaPVSCHN0COPId2ewipU7xzg8g
-         pjCi1d8Z4SO9PSmdhpebAIxT6nnH2GRXe/IgPpo/dZe4jjv5FLZYZ1DHLKww6ZxFoD5A
-         s0Xg==
-X-Gm-Message-State: AOAM531DqfiOVjcaVS5weCJe8uSsJkp1mw8zIEZ0anvt8bbiH8EX1ryB
-        H/w4TcAU9v8hfzsJms9vf+Y=
-X-Google-Smtp-Source: ABdhPJwkDNzf1gmAwCceiQIT3v9UrRANN9Vn1yUYO2C5fplpnnA2P1eiazgHb1CoPJAd0DSD6XQfBg==
-X-Received: by 2002:a63:495b:0:b0:399:8cd:81de with SMTP id y27-20020a63495b000000b0039908cd81demr28660222pgk.508.1649745741684;
-        Mon, 11 Apr 2022 23:42:21 -0700 (PDT)
+        bh=RBbYU01e+AFbhWY3ZuGeFMRIuU/CVxN8Q/n9EQ09lHU=;
+        b=YIqAbpAtf2hwWBiPWfpIWDryoprTp9g9xkBpfgTwBCV852cqazVIAl5tRtX8UWO2TG
+         0ftFffsEWSKSEr8qBvY2gWdUy00ERydWBlM3Sku5flgw9bJgLwNcPRa9hB5YLgHcXGvo
+         awaO13NC+pSoxHtGMxBoqs4Af0B3hpL7E9gpxClnIEkpmgHqy/UTZw8pwjPltgN8hXeH
+         YHWx8U2H3Lpx9KDFqAbXUpGHeG7MdCY84jKQjBm6OW0271UqGHrcI3mesU77wLgyNGPg
+         kGuzIMl2QrhgffkvUJ3ESbY7HipbEvyF6/mpjd4DMnCes9h27bGtx/GrvGITmEiFzESA
+         u2mA==
+X-Gm-Message-State: AOAM530gMkwAUxPgeaGu/7k5zsLvldYKNrycSvr9R9LPilV3tt1w4FZr
+        P24L3X/TTEQ7jDAUDBDJXk8=
+X-Google-Smtp-Source: ABdhPJxPK9vIH5rkg+Zivi5zxRj7BATlOjv/oQFrgbrSqTgZiffo9i573UyyUxob/kW5MlB279CmGA==
+X-Received: by 2002:a05:6a00:1488:b0:4fa:ac61:8b11 with SMTP id v8-20020a056a00148800b004faac618b11mr37315301pfu.58.1649746315502;
+        Mon, 11 Apr 2022 23:51:55 -0700 (PDT)
 Received: from localhost.localdomain ([159.226.95.43])
-        by smtp.googlemail.com with ESMTPSA id j9-20020aa78009000000b004fde2dd78b0sm31712830pfi.109.2022.04.11.23.42.19
+        by smtp.googlemail.com with ESMTPSA id ng17-20020a17090b1a9100b001c9f79927bfsm1654577pjb.25.2022.04.11.23.51.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Apr 2022 23:42:21 -0700 (PDT)
+        Mon, 11 Apr 2022 23:51:55 -0700 (PDT)
 From:   Miaoqian Lin <linmq006@gmail.com>
-To:     Song Qiang <songqiang1304521@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ivan Drobyshevskyi <drobyshevskyi@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     linmq006@gmail.com
-Subject: [PATCH v2] iio: proximity: vl53l0x:  Fix return value check of wait_for_completion_timeout
-Date:   Tue, 12 Apr 2022 06:42:09 +0000
-Message-Id: <20220412064210.10734-1-linmq006@gmail.com>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Philippe Schenker <philippe.schenker@toradex.com>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3] iio: adc: stmpe-adc: Fix wait_for_completion_timeout return value check
+Date:   Tue, 12 Apr 2022 06:51:45 +0000
+Message-Id: <20220412065150.14486-1-linmq006@gmail.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <PH0PR03MB6786F62DE142E3E2C66C937F99ED9@PH0PR03MB6786.namprd03.prod.outlook.com>
-References: <PH0PR03MB6786F62DE142E3E2C66C937F99ED9@PH0PR03MB6786.namprd03.prod.outlook.com>
+In-Reply-To: <PH0PR03MB6786157EDA63137DF0071D1F99ED9@PH0PR03MB6786.namprd03.prod.outlook.com>
+References: <PH0PR03MB6786157EDA63137DF0071D1F99ED9@PH0PR03MB6786.namprd03.prod.outlook.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -69,45 +73,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-wait_for_completion_timeout() returns unsigned long not int.
-It returns 0 if timed out, and positive if completed.
+wait_for_completion_timeout() returns unsigned long not long.
+it returns 0 if timed out, and positive if completed.
 The check for <= 0 is ambiguous and should be == 0 here
-indicating timeout which is the only error case.
+indicating timeout which is the only error case
 
-Fixes: 3cef2e31b54b ("iio: proximity: vl53l0x: Add IRQ support")
+Fixes: e813dde6f833 ("iio: stmpe-adc: Use wait_for_completion_timeout")
 Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
-Changes in v2:
-- add driver name in patch subject.
+changes in v2:
+- Fix same issue in stmpe_read_temp.
 ---
- drivers/iio/proximity/vl53l0x-i2c.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+changes in v3:
+- update the patch subject.
+---
+ drivers/iio/adc/stmpe-adc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 661a79ea200d..a284b20529fb 100644
---- a/drivers/iio/proximity/vl53l0x-i2c.c
-+++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -104,6 +104,7 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
- 	u16 tries = 20;
- 	u8 buffer[12];
- 	int ret;
-+	unsigned long time_left;
+diff --git a/drivers/iio/adc/stmpe-adc.c b/drivers/iio/adc/stmpe-adc.c
+index d2d405388499..83e0ac4467ca 100644
+--- a/drivers/iio/adc/stmpe-adc.c
++++ b/drivers/iio/adc/stmpe-adc.c
+@@ -61,7 +61,7 @@ struct stmpe_adc {
+ static int stmpe_read_voltage(struct stmpe_adc *info,
+ 		struct iio_chan_spec const *chan, int *val)
+ {
+-	long ret;
++	unsigned long ret;
  
- 	ret = i2c_smbus_write_byte_data(client, VL_REG_SYSRANGE_START, 1);
- 	if (ret < 0)
-@@ -112,10 +113,8 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
- 	if (data->client->irq) {
- 		reinit_completion(&data->completion);
+ 	mutex_lock(&info->lock);
  
--		ret = wait_for_completion_timeout(&data->completion, HZ/10);
--		if (ret < 0)
--			return ret;
--		else if (ret == 0)
-+		time_left = wait_for_completion_timeout(&data->completion, HZ/10);
-+		if (time_left == 0)
- 			return -ETIMEDOUT;
+@@ -79,7 +79,7 @@ static int stmpe_read_voltage(struct stmpe_adc *info,
  
- 		vl53l0x_clear_irq(data);
+ 	ret = wait_for_completion_timeout(&info->completion, STMPE_ADC_TIMEOUT);
+ 
+-	if (ret <= 0) {
++	if (ret == 0) {
+ 		stmpe_reg_write(info->stmpe, STMPE_REG_ADC_INT_STA,
+ 				STMPE_ADC_CH(info->channel));
+ 		mutex_unlock(&info->lock);
+@@ -96,7 +96,7 @@ static int stmpe_read_voltage(struct stmpe_adc *info,
+ static int stmpe_read_temp(struct stmpe_adc *info,
+ 		struct iio_chan_spec const *chan, int *val)
+ {
+-	long ret;
++	unsigned long ret;
+ 
+ 	mutex_lock(&info->lock);
+ 
+@@ -114,7 +114,7 @@ static int stmpe_read_temp(struct stmpe_adc *info,
+ 
+ 	ret = wait_for_completion_timeout(&info->completion, STMPE_ADC_TIMEOUT);
+ 
+-	if (ret <= 0) {
++	if (ret == 0) {
+ 		mutex_unlock(&info->lock);
+ 		return -ETIMEDOUT;
+ 	}
 -- 
 2.17.1
 

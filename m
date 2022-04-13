@@ -2,133 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4434FF92A
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0260D4FF97A
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236192AbiDMOoN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 10:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
+        id S234569AbiDMO4i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 10:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236211AbiDMOoL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:44:11 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 926DD50448;
-        Wed, 13 Apr 2022 07:41:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649860910; x=1681396910;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=sFYf0sR2D6x6PkN6iFJFvdQCnCDMjDUCNFCP0vNEokQ=;
-  b=V29MBnsXXTW2696E/v20xyED3N4eTtgZ2t3M7mGf2N7PdBoLyZcKQFLi
-   EvQ3P0RdxZh/r1JTixFjVXW/DnEypBeKBKMo0txuDgDA66LrI6rnSU4Is
-   YEPWvdx5WsvdMxtiLwrnyK4FNggOxaEPqZ2SpSeW5DH3fMbCePInwirdz
-   dst9hULHAl0CWQgZN/sVinmk10KO7+Wbu8R1XIoVDqBus5qPhZla1IkZL
-   xpI2KjEdGxl4vhl0y2+2IHTT7uHKC4DbRdiqKIMq1m6u5osK97SSsqlTQ
-   CE+FPbmo9Mrr1Y773lglFk35Lv3TSGllvZSZLmqIOiNYNZQ8C1uYTDP0W
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="325590559"
-X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
-   d="scan'208";a="325590559"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 07:41:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
-   d="scan'208";a="623708423"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga004.fm.intel.com with ESMTP; 13 Apr 2022 07:41:44 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id E5568236; Wed, 13 Apr 2022 17:41:43 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v1 3/3] iio: imu: adis16480: Fix getting the optional clocks
-Date:   Wed, 13 Apr 2022 17:41:24 +0300
-Message-Id: <20220413144124.72537-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220413144124.72537-1-andriy.shevchenko@linux.intel.com>
-References: <20220413144124.72537-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S235915AbiDMO4h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:56:37 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C8435853;
+        Wed, 13 Apr 2022 07:54:15 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id v4so2686088edl.7;
+        Wed, 13 Apr 2022 07:54:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MsuM3bWxLpM0X8gDoogn/CmcOLdvtiIpUqO+59cr1LA=;
+        b=cVIvzMZK3+X9w8Y8SlSIQ/kSqVSvwVRLF4mCx/phZOopUu2JsH/DrNh09pl99rMSgW
+         yF81A9Xo7Azt7dIih2sHI0iazTfboB1e4dKZ8PqTjrWvoG7xz3AJTu4p/gEVO2UJELlP
+         37rctWcVIbgJGk9rJ2hEzd36cktyy6aEjPvKGzFea9S3D0kyI3a3s2RJ3jE+KwJH7yG9
+         QbyA1Ka/IM6OKHp244AUjPHT6ZB52t/IzFGHKCIcsI1xiSU8Zok4CefKf3g76xKIV+TS
+         UKxY8GHCuDv24tRqX2ABPbbV1EDLFTBvBQ9WaspjdwmaASfOTF/rOfUKDKH1qKTqRFas
+         bH7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MsuM3bWxLpM0X8gDoogn/CmcOLdvtiIpUqO+59cr1LA=;
+        b=gDEF1U/leYgGmHYKyVJcY9fA12Fo0ebL1Og0EQTaDz1p0rb7z0qMcx25x8WJ5tpDM3
+         Vq5goxL4gBdcVmTevWd4e1LhDALwYO08kTRymxRburqM7aN7razZLnVLiSdneN/6K9vo
+         XP57ObOHWwS4gBZAtLwlht2ly/+tr++EGlMeIhd2N3tNCaMPFHWbNg26OSbwytNLM1Kp
+         9GXgnT5xhfAkIaGDpwtljq7fAK8Ms+sDYJDYG2i0Oumnhb2TQMHliyJ+HTfPals7dobZ
+         bFnqgX3ObApDsiysbsBZ74BXxPbCntmHLA1XZQBrOc3BklPDJSyku7vpHEUFl+eROvV2
+         og5Q==
+X-Gm-Message-State: AOAM5334fZ90+LNZJrNVGmZNvJfkiRMUrk1zrqism39bY/QyFPYXfMsf
+        uEzLwbUXvtBjL6eTFfCzBRIz7LWhUi6jSnDZL4U=
+X-Google-Smtp-Source: ABdhPJxPoCxL9183qcM2JHaUk1J7xZA0AhCa/tILcvARmu0cjoFPH48I3A5IVHobbtiSKzTzkZ/GOZzCOCjs2xAvWD4=
+X-Received: by 2002:a50:cc9e:0:b0:41d:7123:d3ba with SMTP id
+ q30-20020a50cc9e000000b0041d7123d3bamr21071739edi.296.1649861653819; Wed, 13
+ Apr 2022 07:54:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
+In-Reply-To: <20220413094011.185269-1-cosmin.tanislav@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 13 Apr 2022 17:50:01 +0300
+Message-ID: <CAHp75VfjexQG_y5XkQWUd_aWwTyDBcwJ2-As+casajBH1ns6aQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] dt-bindings: iio: adc: add AD4130
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The extended clocks are optional and may not be present for some SoCs
-supported by this driver. Nevertheless, in case the clock is provided
-but some error happens during its getting, that error should be handled
-properly. Use devm_clk_get_optional() API for that. Also report possible
-errors using dev_err_probe() to handle properly -EPROBE_DEFER error.
+On Wed, Apr 13, 2022 at 2:08 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+>
+> AD4130-8 is an ultra-low power, high precision,
+> measurement solution for low bandwidth battery
+> operated applications.
+>
+> The fully integrated AFE (Analog Front-End)
+> includes a multiplexer for up to 16 single-ended
+> or 8 differential inputs, PGA (Programmable Gain
+> Amplifier), 24-bit Sigma-Delta ADC, on-chip
+> reference and oscillator, selectable filter
+> options, smart sequencer, sensor biasing and
+> excitation options, diagnostics, and a FIFO
+> buffer.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/imu/adis16480.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+Something is wrong about the indentation above. It may be reconfigured
+to fit more characters per line.
 
-diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-index 287914016f28..fe520194a837 100644
---- a/drivers/iio/imu/adis16480.c
-+++ b/drivers/iio/imu/adis16480.c
-@@ -1362,31 +1362,25 @@ static int adis16480_get_ext_clocks(struct adis16480 *st)
- {
- 	struct device *dev = &st->adis.spi->dev;
- 
--	st->clk_mode = ADIS16480_CLK_INT;
--	st->ext_clk = devm_clk_get(dev, "sync");
--	if (!IS_ERR_OR_NULL(st->ext_clk)) {
-+	st->ext_clk = devm_clk_get_optional(dev, "sync");
-+	if (IS_ERR(st->ext_clk))
-+		return dev_err_probe(dev, PTR_ERR(st->ext_clk), "failed to get ext clk\n");
-+	if (st->ext_clk) {
- 		st->clk_mode = ADIS16480_CLK_SYNC;
- 		return 0;
- 	}
- 
--	if (PTR_ERR(st->ext_clk) != -ENOENT) {
--		dev_err(dev, "failed to get ext clk\n");
--		return PTR_ERR(st->ext_clk);
--	}
--
- 	if (st->chip_info->has_pps_clk_mode) {
--		st->ext_clk = devm_clk_get(dev, "pps");
--		if (!IS_ERR_OR_NULL(st->ext_clk)) {
-+		st->ext_clk = devm_clk_get_optional(dev, "pps");
-+		if (IS_ERR(st->ext_clk))
-+			return dev_err_probe(dev, PTR_ERR(st->ext_clk), "failed to get ext clk\n");
-+		if (st->ext_clk) {
- 			st->clk_mode = ADIS16480_CLK_PPS;
- 			return 0;
- 		}
--
--		if (PTR_ERR(st->ext_clk) != -ENOENT) {
--			dev_err(dev, "failed to get ext clk\n");
--			return PTR_ERR(st->ext_clk);
--		}
- 	}
- 
-+	st->clk_mode = ADIS16480_CLK_INT;
- 	return 0;
- }
- 
-@@ -1447,7 +1441,7 @@ static int adis16480_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	if (!IS_ERR_OR_NULL(st->ext_clk)) {
-+	if (st->ext_clk) {
- 		ret = adis16480_ext_clk_config(st, true);
- 		if (ret)
- 			return ret;
 -- 
-2.35.1
-
+With Best Regards,
+Andy Shevchenko

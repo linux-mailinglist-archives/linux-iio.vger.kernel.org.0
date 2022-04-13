@@ -2,60 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5F714FE9F4
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Apr 2022 23:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56B184FED4A
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 05:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229899AbiDLVcM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Apr 2022 17:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32798 "EHLO
+        id S231905AbiDMDIN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Apr 2022 23:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbiDLVcL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Apr 2022 17:32:11 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD75AE2F6A
-        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 14:10:43 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id y6so152052plg.2
-        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 14:10:43 -0700 (PDT)
+        with ESMTP id S231971AbiDMDIL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Apr 2022 23:08:11 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309B74CD71
+        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 20:05:51 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-de3ca1efbaso716417fac.9
+        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 20:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xEUu/MaezyCu7NV0F9OnzDW2+DRu4/dWujqrFfn2gVU=;
-        b=NvIhOZgVCSmqcp1cZwMeJfrMdiAXFNNryT7HgEi2zNP8inn+xchq+jkp0Yixy+k2eH
-         AoDPcvIJlVkGaMkldBbtC0u23958g0SB4YadZEvAvax9dpRCgxzkxb9eXdeG0qiYB2lw
-         jHHohtq6o4jBzP7z0NZFON8cvIECVkPynR9j4=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=AV6FQDX1VthlUISCOaITepsyFEcrXTvSkcCNqe+B3tw=;
+        b=E6KSGvCZ4UHSODXO9nxeZChlUplaA9i4B1QYOam6+4278CsUiLU5LcBIn169PPDzym
+         v/D8ojd/cgw+lFqEPBEOtjnj6iWV7tlqtlpjWwBWwraTQstI1lodiPiSVE89tHmGI+mx
+         BRZgs9A3ZBckCpmRgvPBLQYiBO76j+AEjgqByCaVdoST33mdduP8CJmrhkMaZFNea7uj
+         N+dTXriBAYumEMmEPRLj18TMpyWZdT/WmwExHA1lOA/6HEljgUb1CLxHRoAbttnYoR7e
+         5ywvPyQArrlwc9Sa4n8ZxhPmyKvd0ytW5Y0tFVfAsuRQJ7GjHQBRrmiKIeuR8WXCD7Bo
+         CorA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xEUu/MaezyCu7NV0F9OnzDW2+DRu4/dWujqrFfn2gVU=;
-        b=69T3UUUnuh9PabWmUNMUPM6b8TGoHLQwSaOG+Rj3NbrYGfjwDhqySTU6Vt9Gduadd0
-         ZPxH82AmbjLjWIDtFPISfn/ig1fcil3k4a+Ny/Mr/WlajHD8G5WlpDBnwZGKz/xKGG3T
-         T9bJHbbPVoDjl8FQDLMW6YvsqWCw8I0B89ovxqUIPIwxYmipAQ3GC0ucAXsAancXg6px
-         H7I/2fgutY3zUCOb98liCEl9suNe2kBImobFyyz5JDORp3wwVXDYzPjk5DOkblWrbkSW
-         lBNy3ALxXPNw6XUs8SWxKutz8rcrePNbxXm54o39hzasKkX6muA2X825Jfw0bZ+9uOkJ
-         m0tg==
-X-Gm-Message-State: AOAM531YCniRgQDInPNosZgogNAbf6thVTlozNJVu4xtTLF2BFo+3ZpZ
-        IEU9zNh4RGzrMr0Xvr40o6ePQg==
-X-Google-Smtp-Source: ABdhPJx4iEVjTWG2PLhElPIDLbnrrw6d2D8wTEOkN5JU4gaIZYn+B1Y5xRf58JK6Nz6iwTPeMF8HNw==
-X-Received: by 2002:a17:90b:4a02:b0:1c6:c1a1:d65c with SMTP id kk2-20020a17090b4a0200b001c6c1a1d65cmr7143394pjb.97.1649797628431;
-        Tue, 12 Apr 2022 14:07:08 -0700 (PDT)
-Received: from localhost ([2620:15c:202:201:71a2:6c31:3702:8c4f])
-        by smtp.gmail.com with UTF8SMTPSA id c139-20020a624e91000000b005060cdff4ffsm479270pfb.129.2022.04.12.14.07.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Apr 2022 14:07:07 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, enric.balletbo@collabora.com
-Cc:     bleung@chromium.org, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH] iio: common: cros_ec_sensors: Add label attribute
-Date:   Tue, 12 Apr 2022 14:07:03 -0700
-Message-Id: <20220412210703.3842914-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.35.1.1178.g4f1659d476-goog
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=AV6FQDX1VthlUISCOaITepsyFEcrXTvSkcCNqe+B3tw=;
+        b=q+5tU9OL1DgsS6gf1p368iyedLzWmBtHEogfi+oJIwBS0EM0Yk1RQiOjaG20NnhiHH
+         Wau6PwLfl2SqhuTpBHC81QgyUdNQUY+YfLxo4mWip0fHhRC5P7CjsuLGm6/4+tYCJ24B
+         gvGhNc9iptZqN27CjBwkRzRRJMlzemGZCodryHNdAI8uBISl3mXo4JFNW4Ds3Enwy7b4
+         hdNtJoagvgJFv/SvYdJX0r/V86nuLjcxFNbOyWwFL7NP16xZ/orLf2IqW9o3cI3qTfky
+         G7zJ9Wr4Se17Rbh8nlmR/P5LePGSAbshhP+ljUQp9jexgjXuAn6AC/nfa46+cuC1a8cH
+         nbJg==
+X-Gm-Message-State: AOAM531gcJycLxDce7vPquTxww0zgi6rJIdUhplRn2WbQPWfFIikOdND
+        N2zWG+LQ6v/YEmosTTGx5eoCzw==
+X-Google-Smtp-Source: ABdhPJxumK4dt0tVoaXDimHUGuwrLIfEWXKVWiNm5tfkC5WXO+tBrY8ncF8eOu5OoJuK0uw/PwENnA==
+X-Received: by 2002:a05:6870:a40e:b0:e2:c51f:1c49 with SMTP id m14-20020a056870a40e00b000e2c51f1c49mr3358424oal.263.1649819150541;
+        Tue, 12 Apr 2022 20:05:50 -0700 (PDT)
+Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
+        by smtp.gmail.com with ESMTPSA id i4-20020a4addc4000000b00324bd261e5fsm12957289oov.11.2022.04.12.20.05.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Apr 2022 20:05:49 -0700 (PDT)
+Date:   Tue, 12 Apr 2022 20:08:03 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>
+Cc:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        sumit.semwal@linaro.org, amit.pundir@linaro.org,
+        john.stultz@linaro.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: Re: [PATCH v13 5/9] iio: adc: qcom-spmi-rradc: introduce round robin
+ adc
+Message-ID: <YlY+k4FcWoT/jEkJ@ripper>
+References: <20220323162820.110806-1-caleb@connolly.tech>
+ <20220323162820.110806-6-caleb@connolly.tech>
+ <20220327160329.6a3866d7@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220327160329.6a3866d7@jic23-huawei>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,48 +80,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-When sensor location is known, populate iio sysfs "label" attribute:
+On Sun 27 Mar 08:03 PDT 2022, Jonathan Cameron wrote:
 
-* "accel-base" : the sensor is in the base of the convertible (2-1)
-  device.
-* "accel-display" : the sensor is in the lid/display plane of the
-  device.
+> On Wed, 23 Mar 2022 16:28:16 +0000
+> Caleb Connolly <caleb.connolly@linaro.org> wrote:
+> 
+> > From: Caleb Connolly <caleb.connolly@linaro.org>
+> > 
+> > The Round Robin ADC is responsible for reading data about the rate of
+> > charge from the USB or DC input ports, it can also read the battery
+> > ID (resistence), skin temperature and the die temperature of the pmic.
+> > It is found on the PMI8998 and PM660 Qualcomm PMICs.
+> > 
+> > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Whilst I said this patch was fine a few versions ago I didn't add a tag
+> on basis I would probably end up picking it up.
+> 
+> To make things more flexible, I'll add one and either Lee or I can
+> do the immutable branch once Lee has had a chance to take a look and
+> is happy with the mfd parts.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
 
-It apply to standalone accelerometer and IMU (accelerometer +
-gyroscope).
+Are either of you planning to pick up the driver changes?
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c    | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+The dts changes can be merged independently, so I would prefer to pick
+those through my tree. But I would like to know that the binding and
+implementation is agreed upon before doing so.
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 989b109a82f47..f86b938b36bf8 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -325,6 +325,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 	indio_dev->name = pdev->name;
- 
- 	if (physical_device) {
-+		enum motionsensor_location loc;
-+
- 		state->param.cmd = MOTIONSENSE_CMD_INFO;
- 		state->param.info.sensor_num = sensor_platform->sensor_num;
- 		ret = cros_ec_motion_send_host_cmd(state, 0);
-@@ -333,7 +335,12 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			return ret;
- 		}
- 		state->type = state->resp->info.type;
--		state->loc = state->resp->info.location;
-+		loc = state->resp->info.location;
-+		if (loc == MOTIONSENSE_LOC_BASE)
-+			indio_dev->label = "accel-base";
-+		else if (loc == MOTIONSENSE_LOC_LID)
-+			indio_dev->label = "accel-display";
-+		state->loc = loc;
- 
- 		/* Set sign vector, only used for backward compatibility. */
- 		memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
--- 
-2.35.1.1178.g4f1659d476-goog
-
+Thanks,
+Bjorn

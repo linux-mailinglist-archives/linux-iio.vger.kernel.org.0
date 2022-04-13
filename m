@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 107EB4FFEFB
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 21:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F25A34FFF12
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 21:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236273AbiDMTSm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 15:18:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43644 "EHLO
+        id S236022AbiDMTY3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 15:24:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237464AbiDMTSi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 15:18:38 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A765547AE0;
-        Wed, 13 Apr 2022 12:16:14 -0700 (PDT)
+        with ESMTP id S232634AbiDMTY3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 15:24:29 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB5E483B0;
+        Wed, 13 Apr 2022 12:22:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649877375; x=1681413375;
+  t=1649877727; x=1681413727;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=+CW/WSr8XX3TMv+N0o2bnxngt07Q45WJ59o1iwCVt2E=;
-  b=Wc9HKJ3KECnBNVAbwaz8NkwWHmtbDJuZbHOwTlQ/x85L0gLTWrQqNmMj
-   E2mpc4icK7ti73Ju2UtWl/xy73lsVl7NfBfe4vNJYBmWlbwPmtHVEc5/l
-   0vS4Nx/YV2i7GGx6RCIbsqaDbsGOXV3e38yU+L94a6Coskh/8VrLa9iKP
-   AFXVmV6tCRDUkRsKh+oliYod7zUIKIq8gQ5xn4qjUmJFD2RG2Mfh2cRYD
-   6t7MTT0AOmu9pcFbyYzySwumeQXIMlvR/XhhGubczJ2DWcTK2jI9jmPkQ
-   lGkYTFXP+lwI9C+qJdhAQNnqiUfPaFUQUPt2iIGlInZShFciAYRuZVZT3
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="262193392"
+  bh=rEe9sUcXX2q4XOWlTXNb/QZdbafBBPtBZwPWEFvOMcQ=;
+  b=WDEcG06zZbvod9rjDGlIgTBSgqOiRrivB1pAVqSl7IXy3B1T43BKPw1U
+   zMG5v7bzj64lR+40QmNjwdCaeGRDFqthVo+dW1tvZc6TXPb62dVr8qSGj
+   QUodJr0tOOaCkLfQWjSkDt1qEGWXwa4yq1YGeYrnnEZ11BJO5sIrf27ze
+   DY+fofFh9dPs3Fcd/LacbLKRR4hMFRwbNnH611tRLux7HvkJGVJbO9xKd
+   L1r9bYhvnvREEOSr2T10aISQ8viZCFerwTpArLx0xFF0e77XVUjcClIXv
+   n+1yAM132ekc+q9rbW3gSwNW6F9ChRq2uHn5EXcWAKYvpuw+Zb0YNjwz7
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="250044159"
 X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
-   d="scan'208";a="262193392"
+   d="scan'208";a="250044159"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 12:16:14 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 12:22:07 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
-   d="scan'208";a="526593327"
+   d="scan'208";a="526594626"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 13 Apr 2022 12:16:12 -0700
+  by orsmga002.jf.intel.com with ESMTP; 13 Apr 2022 12:22:05 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 6863912C; Wed, 13 Apr 2022 22:16:12 +0300 (EEST)
+        id 56EB512C; Wed, 13 Apr 2022 22:22:05 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 1/1] iio: dac: vf610: Drop dependency on OF
-Date:   Wed, 13 Apr 2022 22:16:11 +0300
-Message-Id: <20220413191611.46204-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: dac: ltc2632: Make use of device properties
+Date:   Wed, 13 Apr 2022 22:22:03 +0300
+Message-Id: <20220413192203.46704-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -60,27 +60,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Nothing in this driver depends on OF firmware so drop the dependency
-and update the headers to remove the false impression such a dependency
-exists.
+Convert the module to be property provider agnostic and allow
+it to be used on non-OF platforms.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/dac/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/dac/ltc2632.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 7ab3b0839e55..015d307a9c6d 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -441,7 +441,6 @@ config TI_DAC7612
+diff --git a/drivers/iio/dac/ltc2632.c b/drivers/iio/dac/ltc2632.c
+index aed46c80757e..c0255f402056 100644
+--- a/drivers/iio/dac/ltc2632.c
++++ b/drivers/iio/dac/ltc2632.c
+@@ -10,6 +10,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/module.h>
+ #include <linux/iio/iio.h>
++#include <linux/property.h>
+ #include <linux/regulator/consumer.h>
  
- config VF610_DAC
- 	tristate "Vybrid vf610 DAC driver"
--	depends on OF
- 	depends on HAS_IOMEM
- 	help
- 	  Say yes here to support Vybrid board digital-to-analog converter.
+ #include <asm/unaligned.h>
+@@ -362,8 +363,7 @@ static int ltc2632_probe(struct spi_device *spi)
+ 		}
+ 	}
+ 
+-	indio_dev->name = dev_of_node(&spi->dev) ? dev_of_node(&spi->dev)->name
+-						 : spi_get_device_id(spi)->name;
++	indio_dev->name = fwnode_get_name(dev_fwnode(&spi->dev)) ?: spi_get_device_id(spi)->name;
+ 	indio_dev->info = &ltc2632_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = chip_info->channels;
+@@ -469,7 +469,7 @@ MODULE_DEVICE_TABLE(of, ltc2632_of_match);
+ static struct spi_driver ltc2632_driver = {
+ 	.driver		= {
+ 		.name	= "ltc2632",
+-		.of_match_table = of_match_ptr(ltc2632_of_match),
++		.of_match_table = ltc2632_of_match,
+ 	},
+ 	.probe		= ltc2632_probe,
+ 	.remove		= ltc2632_remove,
 -- 
 2.35.1
 

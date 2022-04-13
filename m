@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E0D4FF3CB
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 11:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C4874FF3C4
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 11:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230117AbiDMJmp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 05:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
+        id S234608AbiDMJmr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 05:42:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232272AbiDMJmo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 05:42:44 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9393586F;
-        Wed, 13 Apr 2022 02:40:23 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id c6so1645361edn.8;
-        Wed, 13 Apr 2022 02:40:23 -0700 (PDT)
+        with ESMTP id S234604AbiDMJmr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 05:42:47 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6A235863;
+        Wed, 13 Apr 2022 02:40:25 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id bg10so2768098ejb.4;
+        Wed, 13 Apr 2022 02:40:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QV2H8Zpc3cQYjchDu8RYw5gWfW1y7hY5+ft9F48s9lg=;
-        b=qPQtL4dx5UsyjmfJN1u2zFmTxY9nARpLmPh3SIwgOeAl6LunvZ77eTTgWZkXe1Db2n
-         5dgiV02CRGnQXBnQ2kbmEnt7wvHMlZb1Dx49BbrzoICLWJuF+iDqQlI5MoWKryXGBO0N
-         uLWkc+kTAWpUSgC0qylQGE4aRCXDqZUWoSBtaJY1GVbKf6HsjhPZb1DRHjfsgNqzuHJa
-         UusJTCm/Sci4jSYGYk7OpRcgBVxkK7ggF0N88v88nL13GxAIQ3IzqGf79bYmLpr9E0Z8
-         JaDAxI9jf1xBqzomjPy16HrmpRhH9mf+nlruximkz8tmRp5HimoB7fVl5cvXPNvD3B6c
-         0Vkw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Vl7mHwjbFJUwGNfezeH0wT3+eHhNeFd4f92YI2gTXZQ=;
+        b=Mvl/zm+FJg7S5tEy+CQnEmIgSezVmthI3ntgWt2OQv1cqn/RZFZ+Dx9lpO0nn7cW9A
+         13+f6DkL34WP3ab7TehXT2SoL5XlZ4Mcwvzlou0pzrhLpMIC0kflU7lUbl5jayVIGugF
+         G8gfTt8auYrThQ+Y3ubir8Prail9T2LLhCMJXBAfPOKECx/r0fAiDmTKN2Pz90/Co9qO
+         kPdROQoJavzV02A89FfP1oILkY1w64qraTaHjpgZ7BmFClyl+W5+G9QOZ2v5TnXFfSGj
+         fx3aAn2/f4sqPZyzMvNEPFSJyUUKd64A29wDH/KtyI1LPpmsXFYQIVHR+DZBpmznGLa5
+         S+Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QV2H8Zpc3cQYjchDu8RYw5gWfW1y7hY5+ft9F48s9lg=;
-        b=6kTEXOvNEche1e3F0fir6CyvvyaAyfctj22npkPtRV7WJ5moGqOmk8/qB5R7K7e2EQ
-         nmJgvSjLu5StKCFcYMJ8vyGy6wa/Qu15mnLSzhz586uiXh9A5nwE1XipjqD2OyMIfLyl
-         i8PNGKmmBL5XAXRDKf6ElRTz5p37pEoW84VyILf+KZZwjqMQzqUXmY2E4ZUojOeRYDA+
-         Y2ZYQRCQkAYfJIqQKuKlCZihbBew5kz9mrqXtgFUF8Ob2RW2zA10o9AetW7s2rf2cwhD
-         6/GiROiUd96cMFUwWVgkzWE3gWu/F5QWADphI1Mi91WzM9R6eYUiLyKnz8S0420sVv9/
-         JIZg==
-X-Gm-Message-State: AOAM530yUelcsbMeoVwSB0WVdhvKJaCrew9Z8j81VrNMIV48GK/Y66zw
-        OlRrlR6PyZ7H8YLdAabRGz8=
-X-Google-Smtp-Source: ABdhPJwQTDqwvRxq+U5T7h87eKFZua1Dz6/aJbupJ6rps5B27cxrMfXpWPKTvZmoPdRkG6trWPSZJQ==
-X-Received: by 2002:a05:6402:2881:b0:41d:8c32:917 with SMTP id eg1-20020a056402288100b0041d8c320917mr9355516edb.328.1649842822325;
-        Wed, 13 Apr 2022 02:40:22 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Vl7mHwjbFJUwGNfezeH0wT3+eHhNeFd4f92YI2gTXZQ=;
+        b=N9T1R3nvKSVrVZVrvvm2r6Xy4+a7qR+d8s95RYK/51hYjtnEVq8lRWTuA1bsHTo+YK
+         OCuR4DK8iocXcDL+8ZchrRu8LIAHbXGmeK+r2WWetVXnA8ARJef5pJucOHvIDuownna4
+         5rH6G4sYJIEYCG0PGJu2hHhGdnNB4xvLUkloEVp2wYExsmdhyBMwpwvPGP3Ul/0McKr5
+         kFoVXPLo8/Xr73tvUWuyr6hB+egUXe9bcFyh3HEFoTroJ9WeBL7ecFAHjXLBQ2qHor9r
+         qBLKh/T6cLFw+YM1jdPI5W1/haT8Ik9yTZTbIoXySIOowmnw91Qt9sgI71xVfaVZMWGy
+         SplQ==
+X-Gm-Message-State: AOAM533EoEGBdUJs1ZK/Dveq/plAJAdAGmeUEAq+6/3a0R08Ve9pD2ea
+        M4h8iLIMHfEz3e8G+SYtqeULyTw5wx0=
+X-Google-Smtp-Source: ABdhPJxuu9PfRuWqwvpVTz73/7aAA/uVOUZtOUmuVvasWJZHE/VZA1t6r3XRy6PbK3rs8N54LClVFg==
+X-Received: by 2002:a17:907:90d0:b0:6e8:9a64:4f2d with SMTP id gk16-20020a17090790d000b006e89a644f2dmr10650468ejb.444.1649842824148;
+        Wed, 13 Apr 2022 02:40:24 -0700 (PDT)
 Received: from demon-pc.localdomain ([188.24.22.234])
-        by smtp.gmail.com with ESMTPSA id t1-20020a170906178100b006e7edb2c0bdsm11403265eje.15.2022.04.13.02.40.21
+        by smtp.gmail.com with ESMTPSA id t1-20020a170906178100b006e7edb2c0bdsm11403265eje.15.2022.04.13.02.40.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 02:40:21 -0700 (PDT)
+        Wed, 13 Apr 2022 02:40:23 -0700 (PDT)
 From:   Cosmin Tanislav <demonsingur@gmail.com>
 X-Google-Original-From: Cosmin Tanislav <cosmin.tanislav@analog.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -55,12 +55,13 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: [PATCH v1 1/3] dt-bindings: iio: adc: add AD4130
-Date:   Wed, 13 Apr 2022 12:40:09 +0300
-Message-Id: <20220413094011.185269-1-cosmin.tanislav@analog.com>
+Subject: [PATCH v1 2/3] iio: ABI: adc: ad4130: document filter_mode{,_available}
+Date:   Wed, 13 Apr 2022 12:40:10 +0300
+Message-Id: <20220413094011.185269-2-cosmin.tanislav@analog.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220413094011.185269-1-cosmin.tanislav@analog.com>
+References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -88,271 +89,52 @@ buffer.
 
 Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 ---
- .../bindings/iio/adc/adi,ad4130.yaml          | 255 ++++++++++++++++++
- 1 file changed, 255 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
 new file mode 100644
-index 000000000000..e9dce54e9802
+index 000000000000..942150991e75
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
-@@ -0,0 +1,255 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2022 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad4130.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+@@ -0,0 +1,36 @@
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_mode_available
++KernelVersion:
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Reading returns a list with the possible filter modes.
++		"sinc4"       - Sinc 4. Excellent noise performance. Long 1st
++				conversion time. No natural 50/60Hz rejection.
++		"sinc4+sinc1" - Sinc4 + averaging by 8. Low 1st conversion time.
++		"sinc3"	      - Sinc3. Moderate 1st conversion time. Good noise
++				performance.
++		"sinc3+rej60" - Sinc3 + 60Hz rejection. At a sampling frequency
++				of 50Hz, achieves simultaneous 50Hz and 60Hz
++				rejection.
++		"sinc3+sinc1" - Sinc3 + averaging by 8. Low 1st conversion time.
++				Best used with a sampling frequency of at least
++				216.19Hz.
++		"sinc3+pf1"   - Sinc3 + Post Filter 1.
++				53dB rejection @ 50Hz, 58dB rejection @ 60Hz.
++		"sinc3+pf2"   - Sinc3 + Post Filter 2.
++				70dB rejection @ 50Hz, 70dB rejection @ 60Hz.
++		"sinc3+pf3"   - Sinc3 + Post Filter 3.
++				99dB rejection @ 50Hz, 103dB rejection @ 60Hz.
++		"sinc3+pf4"   - Sinc3 + Post Filter 4.
++				103dB rejection @ 50Hz, 109dB rejection @ 60Hz.
 +
-+title: Analog Devices AD4130 ADC device driver
-+
-+maintainers:
-+  - Cosmin Tanislav <cosmin.tanislav@analog.com>
-+
-+description: |
-+  Bindings for the Analog Devices AD4130 ADC. Datasheet can be found here:
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4130-8.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad4130-8-16-lfcsp
-+      - adi,ad4130-8-16-wlcsp
-+      - adi,ad4130-8-24-lfcsp
-+      - adi,ad4130-8-24-wlcsp
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+    description: phandle to the master clock (mclk)
-+
-+  clock-names:
-+    items:
-+      - const: mclk
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 1
-+
-+  interrupt-names:
-+    minItems: 1
-+    maxItems: 1
-+    description:
-+      Default if not supplied is dout-int.
-+    items:
-+      enum:
-+        - dout-int
-+        - clk
-+        - p1
-+        - dout
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  refin1-supply:
-+    description: refin1 supply. Can be used as reference for conversion.
-+
-+  refin2-supply:
-+    description: refin2 supply. Can be used as reference for conversion.
-+
-+  avdd-supply:
-+    description: AVDD voltage supply. Can be used as reference for conversion.
-+
-+  iovdd-supply:
-+    description: IOVDD voltage supply. Used for the chip interface.
-+
-+  spi-max-frequency:
-+    maximum: 5000000
-+
-+  adi,mclk-sel:
-+    description: |
-+      Select the clock.
-+      0: Internal 76.8kHz clock.
-+      1: Internal 76.8kHz clock, output to the CLK pin.
-+      2: External 76.8kHz clock.
-+      3. External 153.6kHz clock.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2, 3]
-+    default: 0
-+
-+  adi,int-ref-en:
-+    description: |
-+      Specify if internal reference should be enabled.
-+    type: boolean
-+    default: true
-+
-+  adi,bipolar:
-+    description: Specify if the device should be used in bipolar mode.
-+    type: boolean
-+    default: false
-+
-+  adi,vbias-pins:
-+    description: Analog inputs to apply a voltage bias of (AVDD − AVSS) / 2 to.
-+    items:
-+      minimum: 0
-+      maximum: 15
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+patternProperties:
-+  "^channel@([0-9]|1[0-5])$":
-+    type: object
-+    $ref: adc.yaml
-+
-+    properties:
-+      reg:
-+        description: |
-+          The channel number.
-+        items:
-+          minimum: 0
-+          maximum: 15
-+
-+      diff-channels:
-+        description: |
-+          Besides the analog inputs available, internal inputs can be used.
-+          16: Internal temperature sensor.
-+          17: AVss
-+          18: Internal reference.
-+          19: DGND.
-+          20: (AVDD − AVSS)/6+
-+          21: (AVDD − AVSS)/6-
-+          22: (IOVDD − DGND)/6+
-+          23: (IOVDD − DGND)/6-
-+          24: (ALDO − AVSS)/6+
-+          25: (ALDO − AVSS)/6-
-+          26: (DLDO − DGND)/6+
-+          27: (DLDO − DGND)/6-
-+          28: V_MV_P
-+          29: V_MV_M
-+        $ref: adc.yaml
-+        items:
-+          minimum: 0
-+          maximum: 29
-+
-+      adi,reference-select:
-+        description: |
-+          Select the reference source to use when converting on the
-+          specific channel. Valid values are:
-+          0: REFIN1(+)/REFIN1(−).
-+          1: REFIN2(+)/REFIN2(−).
-+          2: REFOUT/AVSS (Internal reference)
-+          3: AVDD/AVSS
-+          If not specified, internal reference is used.
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        enum: [0, 1, 2, 3]
-+        default: 2
-+
-+      adi,excitation-pin-0:
-+        description: |
-+          Analog input to apply excitation current to while the channel
-+          is active.
-+        minimum: 0
-+        maximum: 15
-+        default: 0
-+
-+      adi,excitation-pin-1:
-+        description: |
-+          Analog input to apply excitation current to while this channel
-+          is active.
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        minimum: 0
-+        maximum: 15
-+        default: 0
-+
-+      adi,excitation-current-0-nanoamps:
-+        description: |
-+          Excitation current in nanoamps to be applied to pin specified in
-+          adi,excitation-pin-0 while this channel is active.
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
-+        default: 0
-+
-+      adi,excitation-current-1-nanoamps:
-+        description: |
-+          Excitation current in nanoamps to be applied to pin specified in
-+          adi,excitation-pin-1 while this channel is active.
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
-+        default: 0
-+
-+      adi,burnout-current-nanoamps:
-+        description: |
-+          Burnout current in nanoamps to be applied for this channel.
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        enum: [0, 500, 2000, 4000]
-+        default: 0
-+
-+      adi,buffered-positive:
-+        description: Enable buffered mode for positive input.
-+        type: boolean
-+
-+      adi,buffered-negative:
-+        description: Enable buffered mode for negative input.
-+        type: boolean
-+
-+    required:
-+      - reg
-+      - diff-channels
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      adc@0 {
-+        compatible = "adi,ad4130-8-24-wlcsp";
-+        reg = <0>;
-+
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        spi-max-frequency = <5000000>;
-+        interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
-+        interrupt-parent = <&gpio>;
-+
-+        channel@0 {
-+          reg = <0>;
-+          /* AIN8, AIN9 */
-+          diff-channels = <8 9>;
-+        };
-+
-+        channel@1 {
-+          reg = <1>;
-+          /* AIN10, AIN11 */
-+          diff-channels = <10 11>;
-+        };
-+
-+        channel@2 {
-+          reg = <2>;
-+          /* Temperature Sensor, DGND */
-+          diff-channels = <16 19>;
-+        };
-+
-+        channel@3 {
-+          reg = <3>;
-+          /* Internal reference, DGND */
-+          diff-channels = <18 19>;
-+        };
-+
-+        channel@4 {
-+          reg = <4>;
-+          /* DGND, DGND */
-+          diff-channels = <19 19>;
-+        };
-+      };
-+    };
++What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_filter_mode
++KernelVersion:
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Set the filter mode of the differential channel. When the filter
++		mode changes, the in_voltageY-voltageZ_sampling_frequency and
++		in_voltageY-voltageZ_sampling_frequency_available attributes
++		might also change to accomodate the new filter mode.
++		If the current sampling frequency is out of range for the new
++		filter mode, the sampling frequency will be changed to the
++		closest valid one.
 -- 
 2.35.1
 

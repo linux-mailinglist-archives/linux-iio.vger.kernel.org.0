@@ -2,71 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 807D94FEFD1
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 08:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A4514FF021
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 08:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232475AbiDMGaq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 02:30:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
+        id S233058AbiDMGyZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 02:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232024AbiDMGap (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 02:30:45 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4376340ED
-        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 23:28:20 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id b19so1076595wrh.11
-        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 23:28:20 -0700 (PDT)
+        with ESMTP id S229490AbiDMGyY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 02:54:24 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1495B10F2
+        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 23:52:04 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id p15so1947473ejc.7
+        for <linux-iio@vger.kernel.org>; Tue, 12 Apr 2022 23:52:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=DwsDzk3cGTeVoEdkuuBjikCrGOrGDxfJnWlv3d6LKdI=;
-        b=Y4SPTU2bEzYm2XbMfSoko/dGKSNneQxEoRZzMacjUa73q8ZyueIl7v0aUaWeaAmXys
-         vDgBuccTnEDEvuIUWRvks/LQewlxBzfiyHDTvZzIo9TK0hoJHJP8E37Q7J6fHR1Kbdk/
-         ficJJZan5npG5Cp7Re2pfKdMoLqIXWVdHHKRKCGgLFndoTDt48Ct7jAsCWJGYX4VNL4K
-         gOvS3FN2Y/iZ43AdOmlX40wmVY7REocNiTRkbpQYdv041IwL5MpTkx8hpY02fAF97Piq
-         yUW7CW1LQmON/Vwqw/Xp6ICFYxiOh4wJaLcWNjnEetGv/l3CyNKIXmmhEZcArDP1+TAd
-         OzyA==
+        bh=8bgy75n4r6EuA1ve+vfhmIAzPRAe0prSAeF9WLtXlts=;
+        b=q42FmhOyIFkmVSEP3NQHsZrLaPyIS4x4/BLgilhhC1Mw7rFqh0vaMTWgmWGn29h4He
+         RHssQ+oK44napw0tV3hG3IF9E9lhZBo09PbL9uh/MntaR2Wbzx9FT/Nk71FNEyz9gPWk
+         2pRBNqnXWT7x6ZqEseQF4vYoCDA4dqPeiV/RY+KqtgXkTAP/lUqLI+jAw96cR0H69oFL
+         lBRz/aoWaCLnSCl12nIu49eXQcOOUlN1KfzbaTDnozrEZ+rQMS4tV0fxt8qJ0X/mLDzi
+         XjmBjqZKx7pl/uAxzrd791DrfQF8DEzp0rkW9EHjLU8fbBsjt2j4ndtuU922IAeqNJdX
+         kRjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=DwsDzk3cGTeVoEdkuuBjikCrGOrGDxfJnWlv3d6LKdI=;
-        b=ofBjISfrRGWgvSt3ORSFX0yCMmA2rg/QFo5nxRIm56vx05xcExj6BatlafzzYsUBtY
-         QjHNs/boc6xPZ5/AHvlersM4rXB0lIAO9Q72MmUPFbzNLX1QAh7R9x5lRHJROhUTduD1
-         vKm/8zWW80wU3do+dTGDbfjw16h1WikI1+w7UK1AXFfAe2wjdyeO2lTAMA52gPV2tWTO
-         nUg3jO6/XrLMeGmAwuwp8bZgIQ7jFDvLPL9FF3wDbhNiCJvchWFK3oVbi+Xiun21Lfj2
-         f+4ze4GgDMAiiAr08UEKS7l4R3ff3+JX1BmbduSnMuo9aL9ofdKtJWaLR4S+J9sHOwqU
-         P2aA==
-X-Gm-Message-State: AOAM532Tp70yf4lNbgBgKck83cqc7pQTo+6MKL1G+dnOzIvTKSUQ9dQr
-        R33olcJAEcB9C8dHRK0nJVI=
-X-Google-Smtp-Source: ABdhPJxjYq/ADtqGcLWAdRrcQaAz7iekg/w6geFb37xOc+IDJC0yajCdhgWPpGex56TcUQEKjEr7dA==
-X-Received: by 2002:a05:6000:1f83:b0:207:a4d8:5173 with SMTP id bw3-20020a0560001f8300b00207a4d85173mr12010701wrb.556.1649831299245;
-        Tue, 12 Apr 2022 23:28:19 -0700 (PDT)
+        bh=8bgy75n4r6EuA1ve+vfhmIAzPRAe0prSAeF9WLtXlts=;
+        b=2TWOzZVfu7chSHTryxV6xZ3DKckl4NabgFvXF6aysjs/k+wTFKnVcawsC1dS0zsPTH
+         FL29kzHtH7veRoGeJZm09bThfC0wQwX+L6mWyG3i1n82cUp+9vdVjFXantzvFVwo28cK
+         bj0u+SJkzmx1bLTUpozEcxnYJN/zaWxvJadgBgvT06sFgVYa1+KNTG8pDHXZkgjQhpN9
+         w2oXNbq533q4LV1gTKqEind2uzsMkaZVIhkJtSE0s55ADHZMYbhq6bmZMghtllHK2xzb
+         xvBfNedJgoo+b48jg5Q7gR/1QUZMNrr5FD4/udKrAXh1EKs4vC9+9trNoByU6oT1qDSt
+         pD2A==
+X-Gm-Message-State: AOAM53037kuc2VFDmDRM/azYCoc9aESyDhQurAkxMag5fCJrF0g3v4OP
+        Ug0gWK9NymnNCUvNsAQJKqU=
+X-Google-Smtp-Source: ABdhPJxCmmF5/4cWLQEFgaajhHik/PJyNN2MJEIY48jEfdOtEMFYg4faExT1qaosBBgi3CnYSlmLrA==
+X-Received: by 2002:a17:906:f0d4:b0:6e8:67c9:9ce0 with SMTP id dk20-20020a170906f0d400b006e867c99ce0mr18857098ejb.218.1649832722454;
+        Tue, 12 Apr 2022 23:52:02 -0700 (PDT)
 Received: from ?IPv6:2001:a61:2b2c:c401:dd5:7d95:7a65:6518? ([2001:a61:2b2c:c401:dd5:7d95:7a65:6518])
-        by smtp.gmail.com with ESMTPSA id a16-20020a056000051000b00207b5d9f51fsm1384608wrf.41.2022.04.12.23.28.18
+        by smtp.gmail.com with ESMTPSA id k14-20020a50e18e000000b0041b6f23f7f6sm811801edl.22.2022.04.12.23.52.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Apr 2022 23:28:18 -0700 (PDT)
-Message-ID: <3a6be0aab9639081774be6dd011e0b68df53e204.camel@gmail.com>
+        Tue, 12 Apr 2022 23:52:01 -0700 (PDT)
+Message-ID: <e6c272a05b9073718a6b869533537bf163bf4ad5.camel@gmail.com>
 Subject: Re: GSoC Proposal 2022
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     =?ISO-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        =?ISO-8859-1?Q?Ma=EDra?= Canal <maira.canal@usp.br>,
         Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         "Bogdan, Dragos" <dragos.bogdan@analog.com>,
         "Hegbeli, Ciprian" <ciprian.hegbeli@analog.com>,
         Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Puranjay Mohan <puranjay12@gmail.com>
-Date:   Wed, 13 Apr 2022 08:28:17 +0200
-In-Reply-To: <20220412165926.000004c7@Huawei.com>
+Date:   Wed, 13 Apr 2022 08:52:01 +0200
+In-Reply-To: <YlXR0d7waKW9xncd@fedora>
 References: <CAH7FV3=UJn98PRp1dke7iAH2j8pj4-VSbnb11OfzRUKmkAEL8Q@mail.gmail.com>
          <20220410182819.23967855@jic23-huawei> <YlNcQEAZVGYBkdy5@fedora>
          <20220411095219.000058a8@Huawei.com> <YlQpcZvwZuabMsz+@fedora>
          <CAHp75VeWHgn_c9n4-t2Ofi5S7U+K2o_Sa9hNc6PvXUfR_ENtCg@mail.gmail.com>
          <59c37b67bbc4a24336e5220a7ad4f242d854fb76.camel@gmail.com>
-         <20220412165926.000004c7@Huawei.com>
+         <YlVvhoBNap4Yip3O@fedora>
+         <a5f002afb956c96b20c5f5589c34ecaa1bdfadc6.camel@gmail.com>
+         <20220412171933.00002d1d@Huawei.com> <YlXR0d7waKW9xncd@fedora>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
@@ -81,66 +83,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2022-04-12 at 16:59 +0100, Jonathan Cameron wrote:
-> On Tue, 12 Apr 2022 14:06:21 +0200
-> Nuno Sá <noname.nuno@gmail.com> wrote:
-> 
-> > On Tue, 2022-04-12 at 11:48 +0300, Andy Shevchenko wrote:
-> > > On Tue, Apr 12, 2022 at 10:43 AM Maíra Canal <maira.canal@usp.br>
-> > > wrote:  
-> > > > On 04/11, Jonathan Cameron wrote:  
-> > > 
-> > > ...
-> > >   
-> > > > I took another look at the Analog Devices Inc. catalog and
-> > > > choose
-> > > > another
-> > > > couple of options:
+On Tue, 2022-04-12 at 16:24 -0300, Maíra Canal wrote:
+> On 04/12, Jonathan Cameron wrote:
+> > On Tue, 12 Apr 2022 16:23:55 +0200
+> > Nuno Sá <noname.nuno@gmail.com> wrote:
+> > 
+> > > On Tue, 2022-04-12 at 09:24 -0300, Maíra Canal wrote:
+> > > > On 04/12, Nuno Sá wrote:  
+> > > > > On Tue, 2022-04-12 at 11:48 +0300, Andy Shevchenko wrote:  
+> > > > > > On Tue, Apr 12, 2022 at 10:43 AM Maíra Canal
+> > > > > > <maira.canal@usp.br>
+> > > > > > wrote:  
+> > > > > > > On 04/11, Jonathan Cameron wrote:  
+> > > > > 
+> > > > > The MAX31875 looks to be a fairly simple one (maybe a good
+> > > > > candidate
+> > > > > for a first driver) but, IMO, having it in IIO boils down to
+> > > > > have
+> > > > > support for continuos mode which would mean triggered buffer
+> > > > > support.  
 > > > > 
-> > > >     - ADPD188BI and ADPD410x: are optical devices based on
-> > > > SPI/I2C.
-> > > > I guess they
-> > > >     might be too bold for a GSoC project.
-> > > >     - MAX31875: is a Temperature Sensor based on I2C. Different
-> > > > than the optical
-> > > >     devices, this one might be too simple.  
-> > >   
-> > > >     - LTC2499: is a multiplexed ADC sensor. For now, it is my
-> > > > best
-> > > > option.  
-> > > 
-> > > Have you checked if it has similarities to 2496 and 2497
-> > > variants? We
-> > > already have drivers for those, it makes sense to double check.
-> > >   
+> > > > I took another look at the Maxim Integrated catalog and end up
+> > > > finding
+> > > > the MAX31889 Temperature Sensor.
+> > > > 
+> > > > I guess this sensor has an interesting challenge level with the
+> > > > need
+> > > > to
+> > > > implement FIFO and interrupts support. 
+> > > > 
+> > > > Have you guys some thoughts on this one?
+> > Hmm. The fifo is interesting, but I'm somewhat doubtful that it's
+> > actually
+> > much use when connected to a linux system.  The sampling rate is
+> > 1Hz.
+> > At that rate even in busy systems or low power situations, there is
+> > little reason not to just poll the device.
 > > 
-> > Yeah, after a quick look on the datasheet, they look very
-> > similar...
+> > You 'could' wire up a PWM or similar to the gpio and have it
+> > operate
+> > like a 'self clocked' device but with sampling rates so low it's a
+> > fairly
+> > contrived situation.
 > > 
-> > The MAX31875 looks to be a fairly simple one (maybe a good
-> > candidate
-> > for a first driver) but, IMO, having it in IIO boils down to have
-> > support for continuos mode which would mean triggered buffer
-> > support.
-> > 
-> > And this brings me to something that already crossed my mind...
-> > Jonathan, would it make sense to be able to change the trigger
-> > "sampling frequency" depending on some device configuration? In
-> > this
-> > case, if we want to have continous mode, I guess a hrtimer trigger
-> > would be, for example, one good candidate of a trigger to attach.
-> > And, as we can have different SPS, we would want to have the
-> > trigger
-> > fireing depending on that... This could also be an additional
-> > "task"
-> > for you (if it makes sense of course).
+> > Temperature sensors in general are often a bad fit for IIO
+> > precisely because
+> > they are mostly designed for monitoring type purposes which HWMON
+> > covers.
+> > The exceptions are high speed or high accuracy devices or weird
+> > ones like
+> > infrared thermometers.
 > 
-> In this case what defines the SPS? 
+> Okay, so temperature sensors are not a good choice for an IIO
+> project.
+> 
+> Just another two suggestions: AD5124/AD5144/AD5144A potenciometer and
+> AD7294-2
+> ADC. Any of those are a good idea for IIO?
+> 
 
-Yeah, it is something that you can set on the device so a writable
-sampling_frequency attr. I think it fits on your 3rd point. Anyways, it
-din't even crossed my mind that these rates are so low that buffering
-is is not worth it...
-> 
+Both options look promising being AD7294-2, at first glance, more
+complex. The latter actually looks like it fits iio/addac category of
+devices. I just briefly looked at the datasheets so I cannot really say
+for sure if buffering makese sense for these (for adc/dac often it
+does).
 
 - Nuno Sá
+> > 
+

@@ -2,59 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 342474FF86D
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BC7B4FF8A8
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235975AbiDMOG0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 10:06:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42272 "EHLO
+        id S229605AbiDMOLJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 10:11:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235982AbiDMOGZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:06:25 -0400
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAF5606D8;
-        Wed, 13 Apr 2022 07:04:03 -0700 (PDT)
-Received: by mail-qt1-f172.google.com with SMTP id bb38so1415799qtb.3;
-        Wed, 13 Apr 2022 07:04:03 -0700 (PDT)
+        with ESMTP id S231937AbiDMOLH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:11:07 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D656D61A3A;
+        Wed, 13 Apr 2022 07:08:42 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id g17-20020a9d6191000000b005e8d8583c36so1239188otk.8;
+        Wed, 13 Apr 2022 07:08:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=V7pjazVef+DOYF0C0vXfWeCRJdWePXo1vwtP6FRieUk=;
+        b=RRzY9iqiEBjIxfZsXWX6JNs/IOVhZyL1kBtF1NGpWtG4WfeiwwPg+yZg7jqvF4aWHf
+         CMy3Ckx7Pu8VMWoTiuYMakxw9j660enbSyf5rBCO8cl4XEDu/HOI7ryp0R3s+ZBp2qEX
+         SNL7Qmd1z3nZJ1qbD8HDItvjHgfVXakCyAVBywLbN7X/FGlFyaJz+d5PvjzH7vXK3muk
+         BcNJqkLOSMIoEoniBn0G3tXC1wV+S5rJeXYXqjTBbTq5FQzOG/VKpuk450N5A9OQ8wj1
+         gmbEipZle3FVAK2RGuLGhZgYCp2sjt/Rjtff2xiD4VDqrUFKGeVdf6XrQyjalqlg/nvU
+         2A7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K7k2FVqabmscQZ4JxpUNIhsQJ2p2uLnZJ6vhHbip+cU=;
-        b=KGROf9msqOAvoydijjYn0VeidPRRedB/mo7EKuZx9WddWEVkh6gcf5ZRP+JZvJQb8G
-         ZHI6cTKJfrNVuFYU4TJbMSWEKOGcvWsplxtc4FheLwN5mEkvS69N15S/z4qwmP4hEZiC
-         bV+Fv+iJb9/vGDY36zCF8Ejyk+I6VbGaOq1UM47MOfTZFCSg6A6Dk2osSgihd09YY8CM
-         GdOLwh4aZBJgXxDL6R4tJ9sLuPTQm051klLkyDMFomQXwJvdsd4GdLfZ4LdIHIl6kuxI
-         trcZiTGE+6xfvyBdo1c/ElAi6c2DuVJkGTHFN6DAgAxa/R8htPw8sioheuFOZ/JJ6V54
-         WTYA==
-X-Gm-Message-State: AOAM533miyLkFAmL9cPGgfK7yu7O+y5cJKuVgQd/RKJLvUOjnC3XRf7E
-        3N2dOW4+8kM89HiccqilmzXhH0uWsyACIw==
-X-Google-Smtp-Source: ABdhPJzFfqZxfkKVX8TcauCZOe9gFqky0Z+hrcHzsfRU6bBeQWBcHpU7IBNZyqZHc9HR+FgmZU5iMg==
-X-Received: by 2002:ac8:71ce:0:b0:2f1:d5ee:2f6 with SMTP id i14-20020ac871ce000000b002f1d5ee02f6mr420809qtp.56.1649858642117;
-        Wed, 13 Apr 2022 07:04:02 -0700 (PDT)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
-        by smtp.gmail.com with ESMTPSA id q8-20020a37a708000000b0069bf1337047sm8737536qke.5.2022.04.13.07.04.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Apr 2022 07:04:01 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id q19so3910757ybd.6;
-        Wed, 13 Apr 2022 07:04:01 -0700 (PDT)
-X-Received: by 2002:a25:9e89:0:b0:63c:ad37:a5de with SMTP id
- p9-20020a259e89000000b0063cad37a5demr29615442ybq.342.1649858640966; Wed, 13
- Apr 2022 07:04:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220413140121.3132837-1-robh@kernel.org>
-In-Reply-To: <20220413140121.3132837-1-robh@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 13 Apr 2022 16:03:49 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUQK9nQF==3Zg8ikwNfQc=F6gHXabvPCxaKprPMoMO+7A@mail.gmail.com>
-Message-ID: <CAMuHMdUQK9nQF==3Zg8ikwNfQc=F6gHXabvPCxaKprPMoMO+7A@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Fix array constraints on scalar properties
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=V7pjazVef+DOYF0C0vXfWeCRJdWePXo1vwtP6FRieUk=;
+        b=HzZWm2sNdv+OAQc97obKDg/IYWewasLaA2426rxGsTHrn53PHjd71avdpKGM8TOrrS
+         yaTuoeuSe1RYetaOwCxG0WgQ373Kb4ScBDQC7/0haqXWh34M8eyKiuR3CgnQRqtqoCs2
+         Ej8PZ6WyHr2e+h2x1JkJhLbIuCMa5L1JDZwEIW/FRbqnLYrQGaRaNaAONh6eTX4rhE+k
+         w+StdTYS5yhR9pFzGqORBI9iz4aEE1psVNBVhMeq0iFmS/ZIC8XvB4Mjd5LVNV943C0N
+         Ns67np77QFzeD0TmYpj3RmmeEPYlhwuFRBX+nFOJHrlaKYSvtgITPCZjtsxUUbp+7tZ5
+         ZK0g==
+X-Gm-Message-State: AOAM532FSHNVwN5knPWjhX2TnH23BV3kPS2NCKS83ewOUtlHEiTVZWUn
+        YSWQNdbHd8KpfBjiXy7GU8E=
+X-Google-Smtp-Source: ABdhPJy1DrnrepGB5CIyKFQ9qwuH9a+TUnwLgD7Bxt7ac/cp5F6MDKiCm/tj1hqMjocWbdXBVgAwmA==
+X-Received: by 2002:a05:6830:1012:b0:5b2:36d1:f15d with SMTP id a18-20020a056830101200b005b236d1f15dmr14494741otp.219.1649858922171;
+        Wed, 13 Apr 2022 07:08:42 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id e9-20020aca3709000000b002ed1930b253sm13604917oia.30.2022.04.13.07.08.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Apr 2022 07:08:41 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 13 Apr 2022 07:08:39 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
 To:     Rob Herring <robh@kernel.org>
-Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Agathe Porte <agathe.porte@nokia.com>,
-        Guenter Roeck <linux@roeck-us.net>,
         Jean Delvare <jdelvare@suse.com>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Olivier Moysan <olivier.moysan@foss.st.com>,
@@ -69,42 +67,199 @@ Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
         Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Yunfei Dong <yunfei.dong@mediatek.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-hwmon@vger.kernel.org,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        linux-iio@vger.kernel.org,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
-        <linux-remoteproc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        linux-hwmon@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Fix array constraints on scalar properties
+Message-ID: <20220413140839.GA2398533@roeck-us.net>
+References: <20220413140121.3132837-1-robh@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220413140121.3132837-1-robh@kernel.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 13, 2022 at 4:01 PM Rob Herring <robh@kernel.org> wrote:
+On Wed, Apr 13, 2022 at 09:01:21AM -0500, Rob Herring wrote:
 > Scalar properties shouldn't have array constraints (minItems, maxItems,
 > items). These constraints can simply be dropped with any constraints under
 > 'items' moved up a level.
-
+> 
+> Cc: Agathe Porte <agathe.porte@nokia.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Cc: Yunfei Dong <yunfei.dong@mediatek.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: linux-hwmon@vger.kernel.org
+> Cc: alsa-devel@alsa-project.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-remoteproc@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
 > Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml       | 5 ++---
 
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 +---
+>  Documentation/devicetree/bindings/media/coda.yaml            | 1 -
+>  .../devicetree/bindings/media/mediatek,vcodec-decoder.yaml   | 2 --
+>  .../devicetree/bindings/media/mediatek,vcodec-encoder.yaml   | 2 --
+>  .../bindings/media/mediatek,vcodec-subdev-decoder.yaml       | 1 -
+>  .../devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml | 4 +---
 >  Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml  | 2 --
-
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>  8 files changed, 4 insertions(+), 17 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
+> index 801ca9ba7d34..e7493e25a7d2 100644
+> --- a/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
+> +++ b/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
+> @@ -58,9 +58,8 @@ patternProperties:
+>            The value (two's complement) to be programmed in the channel specific N correction register.
+>            For remote channels only.
+>          $ref: /schemas/types.yaml#/definitions/int32
+> -        items:
+> -          minimum: -128
+> -          maximum: 127
+> +        minimum: -128
+> +        maximum: 127
+>  
+>      required:
+>        - reg
+> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> index 7c260f209687..952bc900d0fa 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+> @@ -108,9 +108,7 @@ patternProperties:
+>            - [1-5]: order 1 to 5.
+>            For audio purpose it is recommended to use order 3 to 5.
+>          $ref: /schemas/types.yaml#/definitions/uint32
+> -        items:
+> -          minimum: 0
+> -          maximum: 5
+> +        maximum: 5
+>  
+>        "#io-channel-cells":
+>          const: 1
+> diff --git a/Documentation/devicetree/bindings/media/coda.yaml b/Documentation/devicetree/bindings/media/coda.yaml
+> index 36781ee4617f..c9d5adbc8c4a 100644
+> --- a/Documentation/devicetree/bindings/media/coda.yaml
+> +++ b/Documentation/devicetree/bindings/media/coda.yaml
+> @@ -65,7 +65,6 @@ properties:
+>    iram:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+>      description: phandle pointing to the SRAM device node
+> -    maxItems: 1
+>  
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+> index 9b179bb44dfb..aa55ca65d6ed 100644
+> --- a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+> +++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+> @@ -63,13 +63,11 @@ properties:
+>  
+>    mediatek,vpu:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> -    maxItems: 1
+>      description:
+>        Describes point to vpu.
+>  
+>    mediatek,scp:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> -    maxItems: 1
+>      description:
+>        Describes point to scp.
+>  
+> diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+> index e7b65a91c92c..2746dea3ce79 100644
+> --- a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+> +++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+> @@ -55,13 +55,11 @@ properties:
+>  
+>    mediatek,vpu:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> -    maxItems: 1
+>      description:
+>        Describes point to vpu.
+>  
+>    mediatek,scp:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> -    maxItems: 1
+>      description:
+>        Describes point to scp.
+>  
+> diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+> index 7687be0f50aa..c73bf2352aca 100644
+> --- a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+> +++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+> @@ -61,7 +61,6 @@ properties:
+>  
+>    mediatek,scp:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+> -    maxItems: 1
+>      description: |
+>        The node of system control processor (SCP), using
+>        the remoteproc & rpmsg framework.
+> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
+> index 2424de733ee4..d99a729d2710 100644
+> --- a/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
+> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
+> @@ -104,8 +104,7 @@ properties:
+>    qcom,smem-state-names:
+>      $ref: /schemas/types.yaml#/definitions/string
+>      description: The names of the state bits used for SMP2P output
+> -    items:
+> -      - const: stop
+> +    const: stop
+>  
+>    glink-edge:
+>      type: object
+> @@ -130,7 +129,6 @@ properties:
+>        qcom,remote-pid:
+>          $ref: /schemas/types.yaml#/definitions/uint32
+>          description: ID of the shared memory used by GLINK for communication with WPSS
+> -        maxItems: 1
+>  
+>      required:
+>        - interrupts
+> diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+> index b104899205f6..5de710adfa63 100644
+> --- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+> +++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+> @@ -124,7 +124,6 @@ properties:
+>      description: |
+>        Override the default TX fifo size.  Unit is words.  Ignored if 0.
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> -    maxItems: 1
+>      default: 64
+>  
+>    renesas,rx-fifo-size:
+> @@ -132,7 +131,6 @@ properties:
+>      description: |
+>        Override the default RX fifo size.  Unit is words.  Ignored if 0.
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> -    maxItems: 1
+>      default: 64
+>  
+>  required:

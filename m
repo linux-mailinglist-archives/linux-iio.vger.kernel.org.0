@@ -2,109 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C524FF985
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 733E44FF9A8
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 17:05:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbiDMO6c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 10:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47486 "EHLO
+        id S233196AbiDMPHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 11:07:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234367AbiDMO6c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:58:32 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 998CEE0DD;
-        Wed, 13 Apr 2022 07:56:10 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id lc2so4454796ejb.12;
-        Wed, 13 Apr 2022 07:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MXDRi2nnaXpmTvbxw2dgQTuBsMOOy1/I/di9bKsVPUE=;
-        b=aNT4a0hgVXfh34wZO4AZcl1QySQWNDk20i5GSbAIzd2DwalGkhx9rNpgQcY2d5X/Es
-         YH7KJkEKSwa8QSOIOJZ2KTBGsURATGKY+3c8Wlr4686FygRAdCrBO+/wtuUoAn6FLLzC
-         bgpnPRHuWU9oRCSpR3JE9aIgeGO/2lFWdzaNQHwy+9oxHZ3QKCsRs+Qu+7d8STG+ForU
-         VQi++3nMWQkfT4ldLBdkkWSohKGnj67yA2y1MJ5TlpY4Tk2LmuS3KVPSwCHtxcn/Moth
-         dY+FTaeqQxIGkOoJLGchWgxgjMGRT4eUN0MNF2a00uL5nMLLUrZoy7Fx7JABHMlxyJ1v
-         JWzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MXDRi2nnaXpmTvbxw2dgQTuBsMOOy1/I/di9bKsVPUE=;
-        b=JMWgBjXu51DlrRJ5s7NnjAQWPhH6f1Bz+w3mN9IAahfJ+/iaqkaj5jte0554wM3Nd2
-         FQSQVYAK3+L6RnS/G3AZHpRJG7lZdPbc7rKt9SJhDq6r23NqkiqfaaLlbdtt7fR1K0R4
-         GdT5IUF01PYFRk083nJhY0pON9VW8Xgojm7WLvTCimDdhDFTeIaizHhqy06aY481jn+j
-         dhQPmHm8yFm+65dO9kK5rtLzob0WplICXjeN7FG9xEjdG2A5qt+ej9kILEJ3vVb1Ok2a
-         sYWhsjgCLyWdVsXlM9Ca30Cb3eJGt5K7GqctaHq8HlEjlkxRwnqy+dxqrEckNeZZYfMB
-         /1tw==
-X-Gm-Message-State: AOAM533PN0en3Ju+C8JMbDA+WwquoF2SjYBDQjM4sqkRtuPBqnu4ah8W
-        Zlw7L7oyLEqq4daH9uOZtxVfkNlnPYXuXa2cgf0=
-X-Google-Smtp-Source: ABdhPJw/adFhHAFsrTBlvFb8K2Wp4aBtafuEsINtvoCqxDo4Bqx/NK9WXjmFzlIXM+HAr6LfzmtFTxoLfgW1ulNTuj8=
-X-Received: by 2002:a17:907:e8d:b0:6e0:19e7:9549 with SMTP id
- ho13-20020a1709070e8d00b006e019e79549mr39432086ejc.44.1649861769049; Wed, 13
- Apr 2022 07:56:09 -0700 (PDT)
+        with ESMTP id S230492AbiDMPHT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 11:07:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5DD82A271;
+        Wed, 13 Apr 2022 08:04:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4193861D1D;
+        Wed, 13 Apr 2022 15:04:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66F2C385A6;
+        Wed, 13 Apr 2022 15:04:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649862297;
+        bh=VjQY5nrpmgcSuXTK7yu3ew0bxgkZKQoSqOgDwl0n0qs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XPlaH6Uwu0ASIIeC4tABPUXxD+o5rD0bVVjxiaGSaGJzSnoa7pEbwYOJVPzdwxBr8
+         gjmVBL3QASH7L3+kPUTYd3ATwDf+Ww0FtHN/+gbvrLwirjJnoM+Ox8JGAveDN8iQhi
+         SdaVZOW03yWFbj2CcXTV4aWWL0XDafDczT09RCDSqlvv7X+Rl5IVzmVger+t9Iy9eH
+         jThrWoEVjusVit/qemkFT1q2MPHcWZwM9WuBMXMhtyTzr35msxMUgJEUao4rjg/dAk
+         2SM9lnWA7c1kD7cKtP8brJcgyKbwO3srdZROYmi951/rZzD5QjgTYtIODfsI9TJUc5
+         LmilSMYDd1Pwg==
+Date:   Wed, 13 Apr 2022 16:04:49 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Agathe Porte <agathe.porte@nokia.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-hwmon@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Fix array constraints on scalar properties
+Message-ID: <YlbmkSFqY34UuVzN@sirena.org.uk>
+References: <20220413140121.3132837-1-robh@kernel.org>
 MIME-Version: 1.0
-References: <20220413094011.185269-1-cosmin.tanislav@analog.com> <20220413094011.185269-2-cosmin.tanislav@analog.com>
-In-Reply-To: <20220413094011.185269-2-cosmin.tanislav@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 13 Apr 2022 17:51:57 +0300
-Message-ID: <CAHp75VexJBnAqoQ53=_nif=bso0-cNj4EsTbUwKGKxfNq_Fvyw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/3] iio: ABI: adc: ad4130: document filter_mode{,_available}
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="VekwRPP0COgtFOIs"
+Content-Disposition: inline
+In-Reply-To: <20220413140121.3132837-1-robh@kernel.org>
+X-Cookie: The horror... the horror!
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 13, 2022 at 4:17 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-It's good you provided documentation, but I think the part "ABI:" is
-not needed in the Subject.
+--VekwRPP0COgtFOIs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> AD4130-8 is an ultra-low power, high precision,
-> measurement solution for low bandwidth battery
-> operated applications.
->
-> The fully integrated AFE (Analog Front-End)
-> includes a multiplexer for up to 16 single-ended
-> or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip
-> reference and oscillator, selectable filter
-> options, smart sequencer, sensor biasing and
-> excitation options, diagnostics, and a FIFO
-> buffer.
+On Wed, Apr 13, 2022 at 09:01:21AM -0500, Rob Herring wrote:
+> Scalar properties shouldn't have array constraints (minItems, maxItems,
+> items). These constraints can simply be dropped with any constraints under
+> 'items' moved up a level.
 
-Indentation issue as per patch 1.
+Acked-by: Mark Brown <broonie@kernel.org>
 
-...
+--VekwRPP0COgtFOIs
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +               Set the filter mode of the differential channel. When the filter
-> +               mode changes, the in_voltageY-voltageZ_sampling_frequency and
-> +               in_voltageY-voltageZ_sampling_frequency_available attributes
-> +               might also change to accomodate the new filter mode.
+-----BEGIN PGP SIGNATURE-----
 
-accommodate
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJW5pAACgkQJNaLcl1U
+h9DmlQf+J09i7xHNBLa9qVJkVXaOe/HVJYPPltu9GIpREcAJsawEZ8ZgDKwby26+
++O8wcS47jwyM2wZ375w8CG/0FcziZRNk6g7yndlWyV64CN/Df4tje+K9ZC9Gdo4n
+OQrfdNzqXLPs7KxCpSYGQUhDaEKBAd0bUY/L+lszBvk1MzWBaDVeexfjwLGy+YVL
+4M+OkSQ++mNAsRvPNgyOqID8nPkKlrnkXL5dm/GG8SHl39P3GxGKl4Cag+Gd1/R9
+yIrjCokgS3AhWjKGygEYh1AFNJZqueydevyr6s4e1JRm/Fi6lYL0xRlPPx5aPsGZ
+xfaeAjTvT59WiM8RA/ZX4aZX46zCXg==
+=O1L2
+-----END PGP SIGNATURE-----
 
-> +               If the current sampling frequency is out of range for the new
-> +               filter mode, the sampling frequency will be changed to the
-> +               closest valid one.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+--VekwRPP0COgtFOIs--

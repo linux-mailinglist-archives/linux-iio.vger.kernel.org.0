@@ -2,110 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34F014FF778
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 15:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B52574FF77D
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 15:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbiDMNP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 09:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56166 "EHLO
+        id S230373AbiDMNRk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 09:17:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230502AbiDMNP6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 09:15:58 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E573955BC2;
-        Wed, 13 Apr 2022 06:13:33 -0700 (PDT)
-Received: from fraeml711-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kdjdy4qjrz6842y;
-        Wed, 13 Apr 2022 21:11:18 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml711-chm.china.huawei.com (10.206.15.60) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 13 Apr 2022 15:13:31 +0200
-Received: from localhost (10.81.205.148) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 13 Apr
- 2022 14:13:30 +0100
-Date:   Wed, 13 Apr 2022 14:13:26 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
+        with ESMTP id S230198AbiDMNRk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 09:17:40 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A1B3CA77;
+        Wed, 13 Apr 2022 06:15:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649855718; x=1681391718;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mi5xUNRmf+1Ozgvqotw6ofQAMA9YFxk6Tt7KpAvccm4=;
+  b=NFz6gutJn3+eecymSdLQfncALj4fciZgqaD9q/KN7gPclvl61FZLE1zj
+   JPZA+YbWYE12ag3Brr65u8ZNDeb+B39Tak6IxTxlICGzrkensH0PsaRVm
+   zUkF7lSKxKJ9MTuGMRjMuj6JSTugvM+2jSM4kW0zw3R+EDU3j4SPQrw9C
+   CQoIWuTo+J02G3h8mY7IhXAJoddiTxci9wItexmcu3So79WIj4vlka3ev
+   w/tu647rwDN/vVUreh4PsGWM2DnfxBnx2Wgb9FPR1xA5lK35JhYtygqoD
+   3RTntzfZ8A/5b/s2syY33DQKdcK8YbRWf2N2phA7r9TNRL6UzfVoyP0Ft
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="323102578"
+X-IronPort-AV: E=Sophos;i="5.90,256,1643702400"; 
+   d="scan'208";a="323102578"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 06:15:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,256,1643702400"; 
+   d="scan'208";a="559741533"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 13 Apr 2022 06:15:14 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B3803191; Wed, 13 Apr 2022 16:15:14 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Rui Miguel Silva <rmfrfs@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <sumit.semwal@linaro.org>, <amit.pundir@linaro.org>,
-        <john.stultz@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: Re: [PATCH v13 5/9] iio: adc: qcom-spmi-rradc: introduce round
- robin adc
-Message-ID: <20220413141326.000018af@Huawei.com>
-In-Reply-To: <YlY+k4FcWoT/jEkJ@ripper>
-References: <20220323162820.110806-1-caleb@connolly.tech>
-        <20220323162820.110806-6-caleb@connolly.tech>
-        <20220327160329.6a3866d7@jic23-huawei>
-        <YlY+k4FcWoT/jEkJ@ripper>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: gyro: fxas21002c: Make use of device properties
+Date:   Wed, 13 Apr 2022 16:15:13 +0300
+Message-Id: <20220413131513.59258-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.205.148]
-X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 12 Apr 2022 20:08:03 -0700
-Bjorn Andersson <bjorn.andersson@linaro.org> wrote:
+Convert the module to be property provider agnostic and allow
+it to be used on non-OF platforms.
 
-> On Sun 27 Mar 08:03 PDT 2022, Jonathan Cameron wrote:
-> 
-> > On Wed, 23 Mar 2022 16:28:16 +0000
-> > Caleb Connolly <caleb.connolly@linaro.org> wrote:
-> >   
-> > > From: Caleb Connolly <caleb.connolly@linaro.org>
-> > > 
-> > > The Round Robin ADC is responsible for reading data about the rate of
-> > > charge from the USB or DC input ports, it can also read the battery
-> > > ID (resistence), skin temperature and the die temperature of the pmic.
-> > > It is found on the PMI8998 and PM660 Qualcomm PMICs.
-> > > 
-> > > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>  
-> > Whilst I said this patch was fine a few versions ago I didn't add a tag
-> > on basis I would probably end up picking it up.
-> > 
-> > To make things more flexible, I'll add one and either Lee or I can
-> > do the immutable branch once Lee has had a chance to take a look and
-> > is happy with the mfd parts.
-> > 
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >   
-> 
-> Are either of you planning to pick up the driver changes?
-> 
-> The dts changes can be merged independently, so I would prefer to pick
-> those through my tree. But I would like to know that the binding and
-> implementation is agreed upon before doing so.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/gyro/fxas21002c_core.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-I need an Ack from Lee for the mfd changes and ideally Stephen for the SPMI
-patch.
-
-Lee, guessing you are busy, but if you have a chance to check this set over
-that would be great.
-
-Jonathan
-
-> 
-> Thanks,
-> Bjorn
+diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
+index 410e5e9f2672..0923fd793492 100644
+--- a/drivers/iio/gyro/fxas21002c_core.c
++++ b/drivers/iio/gyro/fxas21002c_core.c
+@@ -7,9 +7,9 @@
+ 
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+-#include <linux/of_irq.h>
+ #include <linux/pm.h>
+ #include <linux/pm_runtime.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ 
+@@ -822,7 +822,6 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
+ {
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+-	struct device_node *np = indio_dev->dev.of_node;
+ 	unsigned long irq_trig;
+ 	bool irq_open_drain;
+ 	int irq1;
+@@ -831,8 +830,7 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
+ 	if (!data->irq)
+ 		return 0;
+ 
+-	irq1 = of_irq_get_byname(np, "INT1");
+-
++	irq1 = fwnode_irq_get_byname(dev_fwnode(dev), "INT1");
+ 	if (irq1 == data->irq) {
+ 		dev_info(dev, "using interrupt line INT1\n");
+ 		ret = regmap_field_write(data->regmap_fields[F_INT_CFG_DRDY],
+@@ -843,7 +841,7 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
+ 
+ 	dev_info(dev, "using interrupt line INT2\n");
+ 
+-	irq_open_drain = of_property_read_bool(np, "drive-open-drain");
++	irq_open_drain = device_property_read_bool(dev, "drive-open-drain");
+ 
+ 	data->dready_trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+ 						   indio_dev->name,
+-- 
+2.35.1
 

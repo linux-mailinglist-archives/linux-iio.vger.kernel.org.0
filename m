@@ -2,206 +2,713 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 853594FFA6F
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 17:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1794FFA92
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 17:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236607AbiDMPl0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 11:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46720 "EHLO
+        id S236543AbiDMPsM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 11:48:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236606AbiDMPlZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 11:41:25 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D242765791;
-        Wed, 13 Apr 2022 08:39:04 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23DCm8EU013059;
-        Wed, 13 Apr 2022 11:38:49 -0400
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2103.outbound.protection.outlook.com [104.47.55.103])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3fb7w8cebm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 13 Apr 2022 11:38:48 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X9wzvFk7aVuCrfBzu7hPsd/O+Jd3Yy+3/h4v/6iV8ir9NYgjVBYFIHGlahWErCV4hFAGZPSuTXsjU9TrvIQKRItWxOvaIWMCmbd/MYHjTETVovS0c5YHY57VbOP9YazxuWwmrp7UPMjpk4tGXPrWiXOKmRtC6dTugbyVqQhnk8N2Vc0uRBF3kPLLsrHlky4ceYcm2KkPo4tCrQUj21Kid4oAi1ortNFBQ4aYY4VKvj59QFa1s20rdn9crr4r0jjRSSo50CAxKtFdaykwVTbsLNJ1Dz51/YqGPlZA1uWOgcVJxOcWRvYrTAwB8pBUvQqGf3/1ORpRPeq2W3+USgKkJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MUTca4VO4bb+F+IcBAZ7TFC83CiLgCtxRuTj6XR4YB0=;
- b=UvB71jId9EmcOZdmff3Y4T1+nGL9RzNzj9GPuLGC3j9brkAl/PCsJNLz+0q/NwJEK6yz77lC8arZpuOk3Ow/Olp5uu133zvcCCnTQ/ZK7LUOjiNxtWSovGNs8Remj8w0JHhXMz1DG6gZuFimK/mfDpyJ4dwpmBt+aKAWPICvf7CPNpkyqEeMA/SZaN7HlikIsnkEoNPsmZUqQRm9vV/8XwX7Hx9aF0Zrs2G4/yIWaxhNQwYBeGvp4wsdwP6nfzra4hE6cBHO3B38KLJLjSM5CYb8HyezqH9E9n3y67omlBrrRCIsHWtu0irdWQSkGdGLvEHCQinjd8Nm+4T9krCDPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+        with ESMTP id S231373AbiDMPsK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 11:48:10 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 046715EBF7;
+        Wed, 13 Apr 2022 08:45:48 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id bg10so4831153ejb.4;
+        Wed, 13 Apr 2022 08:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MUTca4VO4bb+F+IcBAZ7TFC83CiLgCtxRuTj6XR4YB0=;
- b=Sq7rfrDX71KDmOw1t+AK4wP1OxZS6GozSmU0OZUgsjQsrQkhM8+kBX+3F2doRxsjBxs9DoO7oaf0gNxV3EGU930r77PztoQsxaoRTSuCfG+Vt1J5Ggs5F7coGOb3327HX/STfUnDyxTRGQBrzCJZqUWBMj70aasFO6ek/6GqcIU=
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com (2603:10b6:510:122::7)
- by BYAPR03MB3528.namprd03.prod.outlook.com (2603:10b6:a02:b4::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5144.29; Wed, 13 Apr
- 2022 15:38:47 +0000
-Received: from PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::a97e:a520:c3a6:d2ae]) by PH0PR03MB6786.namprd03.prod.outlook.com
- ([fe80::a97e:a520:c3a6:d2ae%9]) with mapi id 15.20.5164.020; Wed, 13 Apr 2022
- 15:38:47 +0000
-From:   "Sa, Nuno" <Nuno.Sa@analog.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: RE: [PATCH v1 3/3] iio: imu: adis16480: Fix getting the optional
- clocks
-Thread-Topic: [PATCH v1 3/3] iio: imu: adis16480: Fix getting the optional
- clocks
-Thread-Index: AQHYT0SimMwpSDVIaEuZFYVh6Y0wNazt+DxA
-Date:   Wed, 13 Apr 2022 15:38:47 +0000
-Message-ID: <PH0PR03MB67865D24BB7546CAF805D7BE99EC9@PH0PR03MB6786.namprd03.prod.outlook.com>
-References: <20220413144124.72537-1-andriy.shevchenko@linux.intel.com>
- <20220413144124.72537-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220413144124.72537-3-andriy.shevchenko@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
- =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctY2NhMDJhODMtYmIzZi0xMWVjLThiZGQtZmM3Nz?=
- =?iso-8859-1?Q?c0MjFmY2FlXGFtZS10ZXN0XGNjYTAyYTg0LWJiM2YtMTFlYy04YmRkLWZj?=
- =?iso-8859-1?Q?Nzc3NDIxZmNhZWJvZHkudHh0IiBzej0iMTQ2MSIgdD0iMTMyOTQzMzc5Mj?=
- =?iso-8859-1?Q?Q0MDU3NDc1IiBoPSJkbVlYUDRVTFVybkJvRURZdytZZmg4NVNPeFk9IiBp?=
- =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FFb0NBQUNEQXhXUFRFL1lBU0VwVU1IS3M4cFpJU2xRd2Nxenlsa0RBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVZJRXZvUUFBQUFBQUFBQUFBQUFBQUo0?=
- =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
- =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
- =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
- =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
- =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
- =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
- =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6b6ef58e-e096-4976-202f-08da1d63b331
-x-ms-traffictypediagnostic: BYAPR03MB3528:EE_
-x-microsoft-antispam-prvs: <BYAPR03MB352877A524F33255EAF216E999EC9@BYAPR03MB3528.namprd03.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: CS6Md/X2AKb0pPDeXQF7sHWUXGqyJ3VlXMpFwTn15JGBTw6Qtxg2IT21OkrMmsdgYlED3wIHsVCa0KzMoa/oLZ6d9qx70AZYrilcUGJ0y/z/5F4pbPI/v6QkxvnPnzgYAHT638ctRPXjX3sVHeyCFcEQ9vaGc7RLTgAFtaKOOUwvBDRCurcVYPiL+YBvjJfqVWInxVhKTuNNrAu101CR9WhPqyqjxaO+aURh5m1Oobo0YibrRu30xrB2VOiBG6dxW3RKgYrI5Z1jZKUEouvxBORhJ299Sjp33R61gM0oiJSLJb/7XJCfduKjurKEGQuBDbDldg1jfikB731jef6/p5CM+1OJ8sK/m7U5ggrDgOm90G3RbSILko9vMknBhDDishpFqynqxkgPlpekzpJlM198W1rdpqtF3/QxIvsMloaVqy2ReEQMFek3vAvtcf6i6e2UuDpw9K7+x1CJ/FiiEe412+FawRVfttohCjNi3orTXgbn9SXFf5yGAiGVCS0jdESCANzKpkyNnZzDlLw/bHkiSvEy3GcPmxoyFfC6fFCnL+cDOAh/tEqG6ATrrwTa2hN4I89s7LbT6bDtv9Nda5NO4CqbKfvB6BglRqk1RwM7EgtvravFK8AKT54SzwMY6YHiuUp9BFSaNIGr6GpZY4XWcKk02mKmJtR0l1LW2mxrMGkbukggj7ZnSHLXz2NTbWyChH/DqhjP9D67w20ArA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6786.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(122000001)(9686003)(4326008)(71200400001)(316002)(86362001)(508600001)(7696005)(54906003)(6506007)(2906002)(33656002)(38070700005)(110136005)(53546011)(5660300002)(38100700002)(8676002)(66556008)(64756008)(66446008)(66476007)(76116006)(66946007)(83380400001)(8936002)(52536014)(55016003)(186003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?3M3GXfQ6N3AB04RAk0gcKcepZGn8nErYAaY0DoDuxZO2xLJqgW+PVW9N/n?=
- =?iso-8859-1?Q?0qsQjwy1x9B6ngNlYbOeTLGZ4K+9rpZogGABdmoZwgVRvT+rSr98+ccUsg?=
- =?iso-8859-1?Q?eMy4Ox2nmX9WP9+EO/wn1Szyvl3X29CdulgTR0EdlM3ZPF9znyPDCWZTQx?=
- =?iso-8859-1?Q?aMuSyTU+e+vGfqN4LBD00+GD3MhHxsZxVVslIlMjk9OdD10GovcCQASQlV?=
- =?iso-8859-1?Q?n9GI5EwcNta5ZTVtv0haYb0E9nJWmPzcLOOFsHXV1ewXP2RHCTEqQhJn7y?=
- =?iso-8859-1?Q?4d9mRkBlOI1DlWI4ZCCT06RnpXzKNoo2NmGVSKJUHlfr1/HoOeHENbM3sv?=
- =?iso-8859-1?Q?uSSaM3thTc+qKx3oYUBWkXwAkR62R+XeRmAWqtLAAoii3SbWujEEDPpgCH?=
- =?iso-8859-1?Q?kWHp/8GkVslKbcd4B3rTxSQJsFEN9pEBqHeFRI0Tkzhn9YjdnygQxvFwX8?=
- =?iso-8859-1?Q?YuFg/bZOnE6FRXnrV0lNCThyr9524eWbgEr81eBenE0diLMJUcSYP1xigB?=
- =?iso-8859-1?Q?v1kYv7C/AUC6jf7M3jmToxu97E7xjKcC0bmLW/BmYLRY3Ci2fplsAO0gKK?=
- =?iso-8859-1?Q?UuDvCaziNKY9+Kg4LrjtTIMICG5TWU/h7vVQin1RZ0UUCEAZaLnEwNtX7F?=
- =?iso-8859-1?Q?SjaQai1CSQq5LAQo9M/OdgoFIyzLcjuxXAi6is6m7d05X6+LRMGjkGCX0B?=
- =?iso-8859-1?Q?553bSYjASatB3P5HBjzEQEHa/gk3IsA9RCLotMVOLYv1S0JOrdccDKszdx?=
- =?iso-8859-1?Q?0QYPU1HLIfk+W+H/Wzymz0Hg8xNJNE/0RU9eTs05DJEGPsFdZKeYw0/paj?=
- =?iso-8859-1?Q?q80HD5EtiHrpkXYZPDKYp4Xe2GOZRxuCvJx2ObWPlkvVA9bDd93XHWZl5d?=
- =?iso-8859-1?Q?+9umSK9jmSS93N/cAuSdZEophBFxbsEfGhCIqQreBEC0YUwERAXtu7vFd8?=
- =?iso-8859-1?Q?v5tapmyqRUlJA6kqmqCOK0XB8m1nVSh/yiX9gFO7W7TO08mjJDmKwITWn2?=
- =?iso-8859-1?Q?LQqoeX8JhTxfQV5eCWDtW+vyG9FR7dV3VQFsnNJx4N8wMuv8pRLOmwwXYX?=
- =?iso-8859-1?Q?p2QiT6n8BMPP5Ug6qPHZI2wIs3OeQTemwDhjlYYHjm6K1IkXaXxZbnTOKj?=
- =?iso-8859-1?Q?dPd3jwXTaLhPNyEyCm6I5DEQpgvvKeU2s2EEFQQxvNnKmW5W39/H6zD+66?=
- =?iso-8859-1?Q?HFTg36Akw4B9D7/f9p+GvXrsQwaiF2HU8G075DP0vujrBVz4KwrEXMti8S?=
- =?iso-8859-1?Q?mw3u5pFAdQA+lzs+eab668v3CoEAn0lWMwS5kI3fst6hdwrENsFz3+gdg6?=
- =?iso-8859-1?Q?FOg/x9SzdWyH83ymieGTniIrWj7bFF04Dnj8eqK8nm1GZ59i/7IoTTvoy1?=
- =?iso-8859-1?Q?XjuK9ljQiZhSo7xgJBvB+GA2aXQQyHmqRPOYLGHj18pOsMTCOhZCzr1UZ6?=
- =?iso-8859-1?Q?Ams3an9L6HqWEc5AMnd0gjiHmCi0CxbmA+90JqPihQxBhIMXn8V5LvrubV?=
- =?iso-8859-1?Q?hHySk3R0GkxWemO/SgkfTt2ZL1DbsJaNTA9W1gn93UeT0zvaKkyyzwqxE0?=
- =?iso-8859-1?Q?/UMVRUDsyb2BzxUlX6rqJFOo1u942q9tuR0oEtCmymvEUIrTnKWT3ve8X3?=
- =?iso-8859-1?Q?erwgu+4ndvbdNdPEzRP0+lBWMtRoTw1oOrOJ2BR1fcu9TAg7kzsaph+ziw?=
- =?iso-8859-1?Q?aJFlZ9PwwGS+yZDlBFDIKUL3+Uzu5rqUA5U1Cei0cX36GSFzFJxgLphTV6?=
- =?iso-8859-1?Q?0xTkz7m4Rx8NjL6GTEFoO2poaHiA1C8Fbc+OktzvWkYaXQLUW27aj9N7SN?=
- =?iso-8859-1?Q?2Bq5uVYHq73FBTLx7ZQa+SXzYaoR9pXIhAcIzj3V88UYd9mIcdg6ttGefR?=
- =?iso-8859-1?Q?hs?=
-x-ms-exchange-antispam-messagedata-1: E1uXODJbTO27hw==
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/Pnp4ULPqXAWXDJDnJ6hpu6arXJ+roplkLjdaDjW8b0=;
+        b=ieBvnif6uLuAzvAkhp0WVpVrlmNrYIQqvraNtFn8r3Dix/7ms+NI/GLi4vQJpMknrc
+         taGL2w2jmyJYYfEFUO8V9+fz5kJONwJoqZasDxEeie2odxIFXwecQkPk7J1C3ErMJvLl
+         OI1gM4jbnedIoWKI4eIzUv0TnyEMP+cwGkQwzkIBM6IJh0WlQKl+bQqCyy4jsRewca8m
+         RRYEYOwagtu1GLK4AKpJDXYimfvDVQszATEP7ngtdl1wvkqOLJxmWpneIhR2dQculGVD
+         FxNBVto4cFKrfCXzuj/HpKAqZuLe1BD+pdrNqq43UTjbpy0NPT8IXxQ3f9PiK1I9sPPa
+         Mbpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/Pnp4ULPqXAWXDJDnJ6hpu6arXJ+roplkLjdaDjW8b0=;
+        b=RtXgMH14h0nLrJ7kmxS//LlJ5Rp2WL23faaoZXlQYTfjNAFvN5h43GO4P9nqdHDqeB
+         E/R5fMe1Krx7fW4pCn1k4ZV4I/1pydAXiDPQBmxGi931xMaH5JABmOy0n77Ykd2Ku8AJ
+         2Paag/nimh2qVFjA01FSwIYM5gcLWrX0wh2PCk3FmTFYTEJrJLu9V1V0xC2HspTbhFJ3
+         k7aIuzXELcaUZ04iuFOuc7hohZoJAlDWN7R/i8rd5milTE8VifXzgeJjf/SkLKkgtb94
+         4aOcm6aP61lTytUkTgRhErWIzObt3XwMkqHQ7f2mbUTnB+qBH0oMIhoNDiGOCpJS6WV7
+         S3ww==
+X-Gm-Message-State: AOAM530L9F3lHApO7BiaT6Dvw32ZhLN4mWPaNdEBRCNvRKhLg2Ttlxc9
+        MJTSsOUDCS1kG63e/+9Dt+CiLJnGRIhCFeUBAV0=
+X-Google-Smtp-Source: ABdhPJzQLQmu2W5m6COoSNP+uuFC3IcDcfeC2sjIbtLEuWbPYX/QyPRuqc+svHYs71ggMHfxB6uv3FdBCqanqEfxpfs=
+X-Received: by 2002:a17:907:e8d:b0:6e0:19e7:9549 with SMTP id
+ ho13-20020a1709070e8d00b006e019e79549mr39645887ejc.44.1649864746322; Wed, 13
+ Apr 2022 08:45:46 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6786.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b6ef58e-e096-4976-202f-08da1d63b331
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2022 15:38:47.1030
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VPbDrPLC/c4XEiB14h53nPEZa9svYXcaolRd10Ta9rYKpuDdwPN1iBabmapCPvF+pNfGSmNdMLM4e9IPjUaf8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR03MB3528
-X-Proofpoint-GUID: DYwIrhPtjBcKar1dbabsWKpjm5Zs50q2
-X-Proofpoint-ORIG-GUID: DYwIrhPtjBcKar1dbabsWKpjm5Zs50q2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-04-13_02,2022-04-13_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 mlxscore=0 priorityscore=1501 adultscore=0 clxscore=1015
- mlxlogscore=672 impostorscore=0 bulkscore=0 spamscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204130083
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220413094011.185269-1-cosmin.tanislav@analog.com> <20220413094011.185269-3-cosmin.tanislav@analog.com>
+In-Reply-To: <20220413094011.185269-3-cosmin.tanislav@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 13 Apr 2022 18:41:34 +0300
+Message-ID: <CAHp75VfzX8u45J3634yN5p-QTeT7w0Bos27OxeWOsb3MQ2VRVw@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] iio: adc: ad4130: add AD4130 driver
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Sent: Wednesday, April 13, 2022 4:41 PM
-> To: Sa, Nuno <Nuno.Sa@analog.com>; Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com>; linux-iio@vger.kernel.org;
-> linux-kernel@vger.kernel.org
-> Cc: Lars-Peter Clausen <lars@metafoo.de>; Hennerich, Michael
-> <Michael.Hennerich@analog.com>; Jonathan Cameron
-> <jic23@kernel.org>
-> Subject: [PATCH v1 3/3] iio: imu: adis16480: Fix getting the optional
-> clocks
->=20
-> [External]
->=20
-> The extended clocks are optional and may not be present for some
-> SoCs
-> supported by this driver. Nevertheless, in case the clock is provided
-> but some error happens during its getting, that error should be
-> handled
-> properly. Use devm_clk_get_optional() API for that. Also report
-> possible
-> errors using dev_err_probe() to handle properly -EPROBE_DEFER
-> error.
->=20
-> Signed-off-by: Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com>
-> ---
+On Wed, Apr 13, 2022 at 1:41 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-This is a nice cleanup patch... But the subject might be a bit
-misleading as it says "Fix". So I would expect a Fixes tag which
-I'm not sure it's really worth it here. Yes, the code was pretty much
-doing clk_get_optional() "by hand" but I think it was still functional.
-So to me, this is more an improvement rather than a fix...
 
-Anyways,
+Thanks for the contribution, my comments below.
 
-Reviewed-by: Nuno S=E1 <nuno.sa@analog.com>
+> AD4130-8 is an ultra-low power, high precision,
+> measurement solution for low bandwidth battery
+> operated applications.
+>
+> The fully integrated AFE (Analog Front-End)
+> includes a multiplexer for up to 16 single-ended
+> or 8 differential inputs, PGA (Programmable Gain
+> Amplifier), 24-bit Sigma-Delta ADC, on-chip
+> reference and oscillator, selectable filter
+> options, smart sequencer, sensor biasing and
+> excitation options, diagnostics, and a FIFO
+> buffer.
 
+Indentation issue as per previous patches.
+
+...
+
+> +// SPDX-License-Identifier: GPL-2.0+
+
+The
+
+// SPDX-License-Identifier: GPL-2.0-or-later
+
+can be a bit more explicit, but it's up to your company lawyers.
+
+...
+
+> +#include <asm/div64.h>
+> +#include <asm/unaligned.h>
+
+Please, move this after linux/*
+
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+> +#include <linux/clk.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/gpio/driver.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/irq.h>
+> +#include <linux/kernel.h>
+
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/kfifo_buf.h>
+
+Looks like iio.h is missed, in any case, can you split this group of
+headers and put it after all the rest of linux/* and asm/* ? Ah, you
+even have them below, so move these there.
+
+> +#include <linux/module.h>
+
+> +#include <linux/of_irq.h>
+
+Get rid of this one.
+
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+
+...
+
+> +#define AD4130_8_NAME                  "ad4130-8"
+
+What the meaning of -8 ? Is it number of channels? Or is it part of
+the official model (part number)? Can we see, btw, Datasheet: tag with
+a corresponding link in the commit message?
+
+...
+
+> +#define AD4130_RESET_CLK_COUNT         64
+> +#define AD4130_RESET_BUF_SIZE          (AD4130_RESET_CLK_COUNT / 8)
+
+To be more precise shouldn't the above need to have DIV_ROUND_UP() ?
+
+...
+
+> +#define AD4130_SOFT_RESET_SLEEP                (160 * 1000000 / AD4130_MCLK_FREQ_76_8KHZ)
+
+Units? Also, can you use definitions from units.h?
+
+...
+
+> +#define AD4130_FREQ_FACTOR             1000000000ull
+> +#define AD4130_DB3_FACTOR              1000
+
+Ditto.
+
+...
+
+> +enum ad4130_mclk_sel {
+> +       AD4130_MCLK_76_8KHZ,
+> +       AD4130_MCLK_76_8KHZ_OUT,
+> +       AD4130_MCLK_76_8KHZ_EXT,
+> +       AD4130_MCLK_153_6KHZ_EXT,
+> +       AD4130_MCLK_SEL_MAX,
+
+No comma after MAX, if I understood correctly that it's a terminator.
+Ditto for other MAXes in the other enums.
+
+> +};
+
+...
+
+> +enum ad4130_fifo_mode {
+> +       AD4130_FIFO_MODE_DISABLED = 0b00,
+> +       AD4130_FIFO_MODE_WATERMARK = 0b01,
+> +};
+> +
+> +enum ad4130_mode {
+> +       AD4130_MODE_CONTINUOUS = 0b0000,
+> +       AD4130_MODE_IDLE = 0b0100,
+> +};
+
+0b?! Hmm... Not that this is bad, just not so usual :-)
+
+...
+
+> +enum ad4130_pin_function {
+> +       AD4130_PIN_FN_NONE,
+> +       AD4130_PIN_FN_SPECIAL = 1 << 0,
+> +       AD4130_PIN_FN_DIFF = 1 << 1,
+> +       AD4130_PIN_FN_EXCITATION = 1 << 2,
+> +       AD4130_PIN_FN_VBIAS = 1 << 3,
+
+Why not BIT()?
+
+> +};
+
+...
+
+> +#define AD4130_SETUP_SIZE              offsetof(struct ad4130_setup_info, \
+> +                                                enabled_channels)
+
+It's uglier than simply
+
+#define AD4130_SETUP_SIZE              offsetof(struct
+ad4130_setup_info, enabled_channels)
+
+or
+
+#define AD4130_SETUP_SIZE              \
+        offsetof(struct ad4130_setup_info, enabled_channels)
+
+...
+
+> +struct ad4130_filter_config {
+> +       enum ad4130_filter_mode         filter_mode;
+> +       unsigned int                    odr_div;
+> +       unsigned int                    fs_max;
+> +       unsigned int                    db3_div;
+> +       enum iio_available_type         samp_freq_avail_type;
+> +       int                             samp_freq_avail_len;
+> +       int                             samp_freq_avail[3][2];
+> +       enum iio_available_type         db3_freq_avail_type;
+> +       int                             db3_freq_avail_len;
+> +       int                             db3_freq_avail[3][2];
+
+These 3:s can be defined?
+
+> +};
+
+...
+
+> +       int                             scale_tbls[AD4130_REF_SEL_MAX]
+> +                                                 [AD4130_PGA_NUM][2];
+
+Why not on one line?
+
+...
+
+> +       u32                     int_pin_sel;
+> +       bool                    int_ref_en;
+> +       u32                     int_ref_uv;
+> +       u32                     mclk_sel;
+> +       bool                    bipolar;
+
+You may save a few bytes if you group bool:s.
+
+...
+
+> +       u8                      fifo_rx_buf[AD4130_FIFO_SIZE *
+> +                                           AD4130_FIFO_MAX_SAMPLE_SIZE];
+
+One line?
+
+Also it might be good to add a static_assert() to make sure that
+multiplication don't overflow.
+
+...
+
+
+> +static int ad4130_get_reg_size(struct ad4130_state *st, unsigned int reg,
+> +                              unsigned int *size)
+> +{
+
+> +       if (reg >= ARRAY_SIZE(ad4130_reg_size))
+> +               return -EINVAL;
+
+When this condition is true?
+
+> +       if (reg == AD4130_REG_DATA) {
+> +               *size = ad4130_data_reg_size(st);
+> +               return 0;
+> +       }
+> +
+> +       *size = ad4130_reg_size[reg];
+
+> +
+
+Redundant blank line.
+
+> +       if (!*size)
+> +               return -EINVAL;
+> +
+> +       return 0;
+> +}
+
+...
+
+> +       regmap_update_bits(st->regmap, AD4130_REG_IO_CONTROL, mask,
+> +                          value ? mask : 0);
+
+One line?
+
+No error check?
+
+> +}
+
+...
+
+> +static int ad4130_set_watermark_interrupt_en(struct ad4130_state *st, bool en)
+> +{
+> +       return regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
+> +                                 AD4130_WATERMARK_INT_EN_MASK,
+> +                                 en ? AD4130_WATERMARK_INT_EN_MASK : 0);
+
+I believe with temporary variable for mask it will be neater.
+
+> +}
+
+...
+
+> +       if (setup_info->enabled_channels)
+> +               return -EINVAL;
+
+-EBUSY?
+
+...
+
+> +       ret = regmap_update_bits(st->regmap, AD4130_REG_CHANNEL_X(channel),
+> +                                AD4130_CHANNEL_EN_MASK,
+> +                                status ? AD4130_CHANNEL_EN_MASK : 0);
+
+Temporary variable for mask?
+
+...
+
+> +static void ad4130_freq_to_fs(enum ad4130_filter_mode filter_mode,
+> +                             int val, int val2, unsigned int *fs, bool db3)
+> +{
+> +       const struct ad4130_filter_config *filter_config =
+> +               &ad4130_filter_configs[filter_mode];
+> +       unsigned long long dividend, divisor;
+> +       int temp;
+> +
+> +       dividend = filter_config->fs_max * filter_config->odr_div *
+> +                  (val * AD4130_FREQ_FACTOR + val2);
+> +       divisor = AD4130_MAX_ODR * AD4130_FREQ_FACTOR;
+> +
+> +       if (db3) {
+> +               dividend *= AD4130_DB3_FACTOR;
+> +               divisor *= filter_config->db3_div;
+> +       }
+> +
+> +       temp = AD4130_FS_MIN + filter_config->fs_max -
+> +              DIV64_U64_ROUND_CLOSEST(dividend, divisor);
+> +
+> +       if (temp < AD4130_FS_MIN)
+> +               temp = AD4130_FS_MIN;
+> +       else if (temp > filter_config->fs_max)
+> +               temp = filter_config->fs_max;
+> +
+> +       *fs = temp;
+
+Would be nice to put a comment explaining the math behind this code.
+
+> +}
+> +
+> +static void ad4130_fs_to_freq(enum ad4130_filter_mode filter_mode,
+> +                             unsigned int fs, int *val, int *val2, bool db3)
+> +{
+> +       const struct ad4130_filter_config *filter_config =
+> +               &ad4130_filter_configs[filter_mode];
+> +       unsigned int dividend, divisor;
+> +       u64 temp;
+> +
+> +       dividend = (filter_config->fs_max - fs + AD4130_FS_MIN) *
+> +                  AD4130_MAX_ODR;
+> +       divisor = filter_config->fs_max * filter_config->odr_div;
+> +
+> +       if (db3) {
+> +               dividend *= filter_config->db3_div;
+> +               divisor *= AD4130_DB3_FACTOR;
+> +       }
+> +
+> +       temp = div_u64(dividend * AD4130_FREQ_FACTOR, divisor);
+> +       *val = div_u64_rem(temp, AD4130_FREQ_FACTOR, val2);
+
+
+Ditto.
+
+> +}
+
+...
+
+> + out:
+
+out_unlock: ?
+Ditto for similar cases.
+
+> +       mutex_unlock(&st->lock);
+> +
+> +       return ret;
+
+...
+
+> +static const struct iio_enum ad4130_filter_mode_enum = {
+> +       .items = ad4130_filter_modes_str,
+> +       .num_items = ARRAY_SIZE(ad4130_filter_modes_str),
+> +       .set = ad4130_set_filter_mode,
+
+> +       .get = ad4130_get_filter_mode
+
++ Comma at the end.
+
+> +};
+
+...
+
+> +static const struct iio_chan_spec_ext_info ad4130_filter_mode_ext_info[] = {
+> +       IIO_ENUM("filter_mode", IIO_SEPARATE, &ad4130_filter_mode_enum),
+> +       IIO_ENUM_AVAILABLE("filter_mode", IIO_SHARED_BY_TYPE,
+> +                          &ad4130_filter_mode_enum),
+
+> +       { },
+
+No comma for terminator.
+
+> +};
+
+...
+
+> +               *val = st->bipolar ? -(1 << (chan->scan_type.realbits - 1)) : 0;
+
+Hmm... It seems like specific way to have a sign_extended, or actually
+reduced) mask.
+Can you rewrite it with the (potential)UB-free approach?
+
+(Note, that if realbits == 32, this will have a lot of fun in
+accordance with C standard.)
+
+...
+
+> +               *vals = (int *)st->scale_tbls[setup_info->ref_sel];
+
+Can we get rid of casting here and in the similar cases?
+
+...
+
+> +       for (i = 0; i < indio_dev->num_channels; i++) {
+> +               bool status = test_bit(i, scan_mask);
+> +
+> +               if (!status)
+> +                       continue;
+
+Can't you use for_each_set_bit() instead?
+
+> +       }
+
+...
+
+> +static int ad4130_set_fifo_watermark(struct iio_dev *indio_dev, unsigned int val)
+> +{
+> +       struct ad4130_state *st = iio_priv(indio_dev);
+> +       unsigned int eff;
+
+> +       int ret = 0;
+
+Redundant assignment
+
+> +
+> +       if (val > AD4130_FIFO_SIZE)
+> +               return -EINVAL;
+> +
+> +       /*
+> +        * Always set watermark to a multiple of the number of enabled channels
+> +        * to avoid making the FIFO unaligned.
+> +        */
+> +       eff = rounddown(val, st->num_enabled_channels);
+> +
+> +       mutex_lock(&st->lock);
+> +
+> +       ret = regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
+> +                                AD4130_WATERMARK_MASK,
+> +                                FIELD_PREP(AD4130_WATERMARK_MASK,
+> +                                           ad4130_watermark_reg_val(eff)));
+
+Temporary variable for mask?
+
+> +       if (ret)
+> +               goto out;
+> +
+> +       st->effective_watermark = eff;
+> +       st->watermark = val;
+> +
+> +out:
+
+out_unlock: ?
+
+> +       mutex_unlock(&st->lock);
+> +
+> +       return ret;
+> +}
+
+...
+
+> +static IIO_CONST_ATTR(hwfifo_watermark_min, "1");
+> +static IIO_CONST_ATTR(hwfifo_watermark_max,
+> +                     __stringify(AD4130_FIFO_SIZE));
+> +static IIO_DEVICE_ATTR(hwfifo_watermark, 0444,
+> +                      ad4130_get_fifo_watermark, NULL, 0);
+> +static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
+> +                      ad4130_get_fifo_enabled, NULL, 0);
+
+Can these all be oneliners?
+
+...
+
+> +static const struct attribute *ad4130_fifo_attributes[] = {
+> +       &iio_const_attr_hwfifo_watermark_min.dev_attr.attr,
+> +       &iio_const_attr_hwfifo_watermark_max.dev_attr.attr,
+> +       &iio_dev_attr_hwfifo_watermark.dev_attr.attr,
+> +       &iio_dev_attr_hwfifo_enabled.dev_attr.attr,
+
+> +       NULL,
+
+No comma for terminator.
+
+> +};
+
+...
+
+> +static int ad4130_get_ref_voltage(struct ad4130_state *st,
+> +                                 enum ad4130_ref_sel ref_sel,
+> +                                 unsigned int *ref_uv)
+> +{
+> +       struct device *dev = &st->spi->dev;
+> +       int ret;
+> +
+> +       switch (ref_sel) {
+> +       case AD4130_REF_REFIN1:
+> +               ret = regulator_get_voltage(st->regulators[2].consumer);
+> +               break;
+> +       case AD4130_REF_REFIN2:
+> +               ret = regulator_get_voltage(st->regulators[3].consumer);
+> +               break;
+> +       case AD4130_REF_AVDD_AVSS:
+> +               ret = regulator_get_voltage(st->regulators[0].consumer);
+> +               break;
+> +       case AD4130_REF_REFOUT_AVSS:
+
+> +               if (!st->int_ref_en) {
+> +                       ret = -EINVAL;
+> +                       break;
+> +               }
+> +
+> +               ret = st->int_ref_uv;
+> +               break;
+
+Can be one if-else instead.
+
+> +       default:
+> +               ret = -EINVAL;
+> +               break;
+> +       }
+> +
+> +       if (ret <= 0)
+
+= 0 ?! Can you elaborate, please, this case taking into account below?
+
+> +               return dev_err_probe(dev, ret, "Cannot use reference %u\n",
+> +                                    ref_sel);
+> +
+> +       if (ref_uv)
+> +               *ref_uv = ret;
+> +
+> +       return 0;
+> +}
+
+...
+
+> +       ret = ad4130_get_ref_voltage(st, setup_info->ref_sel, NULL);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return 0;
+
+  return ad4130_get_ref_voltage(st, setup_info->ref_sel, NULL);
+
+...
+
+> +       fwnode_property_read_u32(child, "adi,excitation-pin-0",
+> +                                &chan_info->iout0);
+
+No default and/or error check?
+
+...
+
+> +       fwnode_property_read_u32(child, "adi,excitation-pin-1",
+> +                                &chan_info->iout1);
+
+Ditto.
+
+...
+
+> +static int ad4130_parse_fw_children(struct iio_dev *indio_dev)
+> +{
+> +       struct ad4130_state *st = iio_priv(indio_dev);
+> +       struct device *dev = &st->spi->dev;
+> +       struct fwnode_handle *child;
+> +       int ret;
+> +
+> +       indio_dev->channels = st->chans;
+> +
+> +       device_for_each_child_node(dev, child) {
+> +               ret = ad4130_parse_fw_channel(indio_dev, child);
+> +               if (ret)
+> +                       break;
+> +       }
+
+> +       fwnode_handle_put(child);
+
+There is no need to put fwnode if child is NULL. Moreover, the above
+pattern might be percepted wrongly, i.e. one may think that
+fwnode_handle_put() is a must after a loop.
+
+> +       return ret;
+> +}
+
+...
+
+> +       for (i = 0; i < ARRAY_SIZE(ad4130_int_pin_names); i++) {
+> +               irq = of_irq_get_byname(dev->of_node, ad4130_int_pin_names[i]);
+
+fwnode_irq_get_byname()
+
+> +               if (irq > 0) {
+> +                       st->int_pin_sel = i;
+> +                       break;
+> +               }
+> +       }
+
+...
+
+> +               st->num_vbias_pins = ret;
+
+I haven't checked this, but be sure that it won't overflow any
+preallocated array in the code.
+
+> +               ret = device_property_read_u32_array(dev, "adi,vbias-pins",
+> +                                                    st->vbias_pins,
+> +                                                    st->num_vbias_pins);
+> +               if (ret)
+> +                       return dev_err_probe(dev, ret,
+> +                                            "Failed to read vbias pins\n");
+
+...
+
+> +               for (j = 0; j < AD4130_PGA_NUM; j++) {
+> +                       unsigned int pow = st->chip_info->resolution + j -
+> +                                          st->bipolar;
+> +                       unsigned int nv = div_u64(((ref_uv * 1000000000ull) >>
+> +                                                  pow), 1000);
+
+Perhaps macros from units.h?
+
+> +                       st->scale_tbls[i][j][0] = 0;
+> +                       st->scale_tbls[i][j][1] = nv;
+> +               }
+
+...
+
+> +       [ID_AD4130_8_24_LFCSP] = {
+> +               .name = AD4130_8_NAME,
+> +               .resolution = 24,
+
+> +               .has_int_pin = false,
+
+No need.
+
+> +       },
+
+...
+
+> +       [ID_AD4130_8_16_LFCSP] = {
+> +               .name = AD4130_8_NAME,
+> +               .resolution = 16,
+
+> +               .has_int_pin = false,
+
+Ditto.
+
+> +       },
+
+...
+
+> +static const struct of_device_id ad4130_of_match[] = {
+
+> +       { },
+
+No comma for terminator.
+
+> +};
+
+...
+
+Can you explain why regmap locking is needed?
+
+-- 
+With Best Regards,
+Andy Shevchenko

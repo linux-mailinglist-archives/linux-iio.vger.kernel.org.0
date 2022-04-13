@@ -2,116 +2,250 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B52574FF77D
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 15:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 975B34FF84C
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbiDMNRk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 09:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60332 "EHLO
+        id S234011AbiDMODs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 10:03:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230198AbiDMNRk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 09:17:40 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A1B3CA77;
-        Wed, 13 Apr 2022 06:15:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649855718; x=1681391718;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mi5xUNRmf+1Ozgvqotw6ofQAMA9YFxk6Tt7KpAvccm4=;
-  b=NFz6gutJn3+eecymSdLQfncALj4fciZgqaD9q/KN7gPclvl61FZLE1zj
-   JPZA+YbWYE12ag3Brr65u8ZNDeb+B39Tak6IxTxlICGzrkensH0PsaRVm
-   zUkF7lSKxKJ9MTuGMRjMuj6JSTugvM+2jSM4kW0zw3R+EDU3j4SPQrw9C
-   CQoIWuTo+J02G3h8mY7IhXAJoddiTxci9wItexmcu3So79WIj4vlka3ev
-   w/tu647rwDN/vVUreh4PsGWM2DnfxBnx2Wgb9FPR1xA5lK35JhYtygqoD
-   3RTntzfZ8A/5b/s2syY33DQKdcK8YbRWf2N2phA7r9TNRL6UzfVoyP0Ft
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="323102578"
-X-IronPort-AV: E=Sophos;i="5.90,256,1643702400"; 
-   d="scan'208";a="323102578"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 06:15:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,256,1643702400"; 
-   d="scan'208";a="559741533"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 13 Apr 2022 06:15:14 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id B3803191; Wed, 13 Apr 2022 16:15:14 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Rui Miguel Silva <rmfrfs@gmail.com>,
+        with ESMTP id S233491AbiDMODp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:03:45 -0400
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7924475F;
+        Wed, 13 Apr 2022 07:01:24 -0700 (PDT)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-df02f7e2c9so2063692fac.10;
+        Wed, 13 Apr 2022 07:01:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Kj/dMLICDp8pu3HTv362IKpvU4oSd9uXdOmA9Gpau0o=;
+        b=z0VpJoE5jcdkaUq22SCpK0IKN+VixZhFFmt0goYR5g5tGzi1IpYvH0lAYOxjuJggQ7
+         T/x96Oru4CIvuI8M+dhyEJEZbHZ1ZysTO99PDr6HnsRHfYKiOyIzNs7Ft/ZsaPleOzSy
+         UlSUcJqA1l821n+RWh0ni46GEy7Zp7aR4Qpc97vXFlE8IGFxwxroJSteUgzt3aumEwYW
+         byU8lW7xaKZn9SW6zum6mH+Yv/k4pdRpPEbjnqtCQ+AyLg8OOcBoRfJiXCaq13X8yFPo
+         4gfvfpicibivSJ8PEBCNEGxWbbU9JGfiJp5NGVTREAEP89edntIXQV5cI2bGF48RZYCW
+         OEPQ==
+X-Gm-Message-State: AOAM530WRuKZlmd5p/hLe+v+zauBUTh7vybbvnO+uMw1GPuzJdIG1I7U
+        UzV63H/mO/PbuCEJOxFmPTWQQ0ASMA==
+X-Google-Smtp-Source: ABdhPJysepoRmg0UJTcPB4IkpN1yDuH8vtXxsQePwZZquqTXl0dPKH9xPDWoEW7s3ArRKkyQKapuAw==
+X-Received: by 2002:a05:6870:8896:b0:da:f5e5:5b62 with SMTP id m22-20020a056870889600b000daf5e55b62mr4345486oam.229.1649858483572;
+        Wed, 13 Apr 2022 07:01:23 -0700 (PDT)
+Received: from xps15.. (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.googlemail.com with ESMTPSA id c20-20020a4a2854000000b00329d3f076aasm2157772oof.24.2022.04.13.07.01.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Apr 2022 07:01:23 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Agathe Porte <agathe.porte@nokia.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] iio: gyro: fxas21002c: Make use of device properties
-Date:   Wed, 13 Apr 2022 16:15:13 +0300
-Message-Id: <20220413131513.59258-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-hwmon@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org
+Subject: [PATCH] dt-bindings: Fix array constraints on scalar properties
+Date:   Wed, 13 Apr 2022 09:01:21 -0500
+Message-Id: <20220413140121.3132837-1-robh@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the module to be property provider agnostic and allow
-it to be used on non-OF platforms.
+Scalar properties shouldn't have array constraints (minItems, maxItems,
+items). These constraints can simply be dropped with any constraints under
+'items' moved up a level.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Agathe Porte <agathe.porte@nokia.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Yunfei Dong <yunfei.dong@mediatek.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-hwmon@vger.kernel.org
+Cc: alsa-devel@alsa-project.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-remoteproc@vger.kernel.org
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/iio/gyro/fxas21002c_core.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml       | 5 ++---
+ .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 +---
+ Documentation/devicetree/bindings/media/coda.yaml            | 1 -
+ .../devicetree/bindings/media/mediatek,vcodec-decoder.yaml   | 2 --
+ .../devicetree/bindings/media/mediatek,vcodec-encoder.yaml   | 2 --
+ .../bindings/media/mediatek,vcodec-subdev-decoder.yaml       | 1 -
+ .../devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml | 4 +---
+ Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml  | 2 --
+ 8 files changed, 4 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
-index 410e5e9f2672..0923fd793492 100644
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -7,9 +7,9 @@
+diff --git a/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml b/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
+index 801ca9ba7d34..e7493e25a7d2 100644
+--- a/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
++++ b/Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml
+@@ -58,9 +58,8 @@ patternProperties:
+           The value (two's complement) to be programmed in the channel specific N correction register.
+           For remote channels only.
+         $ref: /schemas/types.yaml#/definitions/int32
+-        items:
+-          minimum: -128
+-          maximum: 127
++        minimum: -128
++        maximum: 127
  
- #include <linux/interrupt.h>
- #include <linux/module.h>
--#include <linux/of_irq.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
+     required:
+       - reg
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+index 7c260f209687..952bc900d0fa 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+@@ -108,9 +108,7 @@ patternProperties:
+           - [1-5]: order 1 to 5.
+           For audio purpose it is recommended to use order 3 to 5.
+         $ref: /schemas/types.yaml#/definitions/uint32
+-        items:
+-          minimum: 0
+-          maximum: 5
++        maximum: 5
  
-@@ -822,7 +822,6 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
--	struct device_node *np = indio_dev->dev.of_node;
- 	unsigned long irq_trig;
- 	bool irq_open_drain;
- 	int irq1;
-@@ -831,8 +830,7 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
- 	if (!data->irq)
- 		return 0;
+       "#io-channel-cells":
+         const: 1
+diff --git a/Documentation/devicetree/bindings/media/coda.yaml b/Documentation/devicetree/bindings/media/coda.yaml
+index 36781ee4617f..c9d5adbc8c4a 100644
+--- a/Documentation/devicetree/bindings/media/coda.yaml
++++ b/Documentation/devicetree/bindings/media/coda.yaml
+@@ -65,7 +65,6 @@ properties:
+   iram:
+     $ref: /schemas/types.yaml#/definitions/phandle
+     description: phandle pointing to the SRAM device node
+-    maxItems: 1
  
--	irq1 = of_irq_get_byname(np, "INT1");
--
-+	irq1 = fwnode_irq_get_byname(dev_fwnode(dev), "INT1");
- 	if (irq1 == data->irq) {
- 		dev_info(dev, "using interrupt line INT1\n");
- 		ret = regmap_field_write(data->regmap_fields[F_INT_CFG_DRDY],
-@@ -843,7 +841,7 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
+ required:
+   - compatible
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+index 9b179bb44dfb..aa55ca65d6ed 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-decoder.yaml
+@@ -63,13 +63,11 @@ properties:
  
- 	dev_info(dev, "using interrupt line INT2\n");
+   mediatek,vpu:
+     $ref: /schemas/types.yaml#/definitions/phandle
+-    maxItems: 1
+     description:
+       Describes point to vpu.
  
--	irq_open_drain = of_property_read_bool(np, "drive-open-drain");
-+	irq_open_drain = device_property_read_bool(dev, "drive-open-drain");
+   mediatek,scp:
+     $ref: /schemas/types.yaml#/definitions/phandle
+-    maxItems: 1
+     description:
+       Describes point to scp.
  
- 	data->dready_trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
- 						   indio_dev->name,
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+index e7b65a91c92c..2746dea3ce79 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-encoder.yaml
+@@ -55,13 +55,11 @@ properties:
+ 
+   mediatek,vpu:
+     $ref: /schemas/types.yaml#/definitions/phandle
+-    maxItems: 1
+     description:
+       Describes point to vpu.
+ 
+   mediatek,scp:
+     $ref: /schemas/types.yaml#/definitions/phandle
+-    maxItems: 1
+     description:
+       Describes point to scp.
+ 
+diff --git a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+index 7687be0f50aa..c73bf2352aca 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,vcodec-subdev-decoder.yaml
+@@ -61,7 +61,6 @@ properties:
+ 
+   mediatek,scp:
+     $ref: /schemas/types.yaml#/definitions/phandle
+-    maxItems: 1
+     description: |
+       The node of system control processor (SCP), using
+       the remoteproc & rpmsg framework.
+diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
+index 2424de733ee4..d99a729d2710 100644
+--- a/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml
+@@ -104,8 +104,7 @@ properties:
+   qcom,smem-state-names:
+     $ref: /schemas/types.yaml#/definitions/string
+     description: The names of the state bits used for SMP2P output
+-    items:
+-      - const: stop
++    const: stop
+ 
+   glink-edge:
+     type: object
+@@ -130,7 +129,6 @@ properties:
+       qcom,remote-pid:
+         $ref: /schemas/types.yaml#/definitions/uint32
+         description: ID of the shared memory used by GLINK for communication with WPSS
+-        maxItems: 1
+ 
+     required:
+       - interrupts
+diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+index b104899205f6..5de710adfa63 100644
+--- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
++++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+@@ -124,7 +124,6 @@ properties:
+     description: |
+       Override the default TX fifo size.  Unit is words.  Ignored if 0.
+     $ref: /schemas/types.yaml#/definitions/uint32
+-    maxItems: 1
+     default: 64
+ 
+   renesas,rx-fifo-size:
+@@ -132,7 +131,6 @@ properties:
+     description: |
+       Override the default RX fifo size.  Unit is words.  Ignored if 0.
+     $ref: /schemas/types.yaml#/definitions/uint32
+-    maxItems: 1
+     default: 64
+ 
+ required:
 -- 
-2.35.1
+2.32.0
 

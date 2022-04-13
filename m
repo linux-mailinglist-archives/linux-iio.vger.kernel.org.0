@@ -2,189 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA764FF6C2
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 14:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F014FF778
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 15:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235504AbiDMM2c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 08:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35086 "EHLO
+        id S231447AbiDMNP7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 09:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232891AbiDMM2b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 08:28:31 -0400
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5835651E4E;
-        Wed, 13 Apr 2022 05:26:10 -0700 (PDT)
-Received: by mail-oo1-f41.google.com with SMTP id v19-20020a056820101300b0032488bb70f5so314708oor.5;
-        Wed, 13 Apr 2022 05:26:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=S0aRwqpDS6rngBma2Gi2fYH+8a0XLfJUHOogpLlyjvo=;
-        b=WPhDIfyP9Y4CXIhZi4w4xrd09ygGj4PJBZUCAMkuzibI7un6T2XKKt5GLEHsHAB9Kv
-         ngn/bT1KgJemi74HbjWhelw/ZDO58+3N4SAKR9bfLp5N6Xia+KcyfsiRhkOrFrfS3Ys6
-         ickxABNBkLMPlHBIiJInKEreG1x83K6PFK7xWXhgU2e3HXZkvKmt9NO0I9VOolokPSlr
-         gDepAATlH5VJEzakrjQoOhrx/TcBjWqsJ0gp7eood2Ya9/svK0UcnMIgubUu8e8Mjpfn
-         dk5fcGTgKKcIH/0eP7uLw/x26PEHLhJqdUIGx413bUHVP7wzisOin0FZAliiKwvQ23Ux
-         0oyg==
-X-Gm-Message-State: AOAM530wT9pSDcd2BNbm91ixwvnGO1G9PyQNSDvUo4fxcEHMWR/yt348
-        iYJnTtI8Q2dEw8v9VoBuOQ==
-X-Google-Smtp-Source: ABdhPJwjTGH/YI3AnbUmwp0jGCq97XHBV6V+VIGoHJBjqXE2giohj0FVKXscDDlXZZA+hK5t+vWQqQ==
-X-Received: by 2002:a4a:de16:0:b0:321:3be1:803e with SMTP id y22-20020a4ade16000000b003213be1803emr13102003oot.71.1649852769255;
-        Wed, 13 Apr 2022 05:26:09 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r6-20020a0568301ac600b005cdbc6e62a9sm14257731otc.39.2022.04.13.05.26.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 05:26:08 -0700 (PDT)
-Received: (nullmailer pid 2930031 invoked by uid 1000);
-        Wed, 13 Apr 2022 12:26:08 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-In-Reply-To: <20220413094011.185269-1-cosmin.tanislav@analog.com>
-References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v1 1/3] dt-bindings: iio: adc: add AD4130
-Date:   Wed, 13 Apr 2022 07:26:08 -0500
-Message-Id: <1649852768.314703.2930030.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S230502AbiDMNP6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 09:15:58 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E573955BC2;
+        Wed, 13 Apr 2022 06:13:33 -0700 (PDT)
+Received: from fraeml711-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kdjdy4qjrz6842y;
+        Wed, 13 Apr 2022 21:11:18 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml711-chm.china.huawei.com (10.206.15.60) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 13 Apr 2022 15:13:31 +0200
+Received: from localhost (10.81.205.148) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 13 Apr
+ 2022 14:13:30 +0100
+Date:   Wed, 13 Apr 2022 14:13:26 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <sumit.semwal@linaro.org>, <amit.pundir@linaro.org>,
+        <john.stultz@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: Re: [PATCH v13 5/9] iio: adc: qcom-spmi-rradc: introduce round
+ robin adc
+Message-ID: <20220413141326.000018af@Huawei.com>
+In-Reply-To: <YlY+k4FcWoT/jEkJ@ripper>
+References: <20220323162820.110806-1-caleb@connolly.tech>
+        <20220323162820.110806-6-caleb@connolly.tech>
+        <20220327160329.6a3866d7@jic23-huawei>
+        <YlY+k4FcWoT/jEkJ@ripper>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.205.148]
+X-ClientProxiedBy: lhreml743-chm.china.huawei.com (10.201.108.193) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Apr 2022 12:40:09 +0300, Cosmin Tanislav wrote:
-> AD4130-8 is an ultra-low power, high precision,
-> measurement solution for low bandwidth battery
-> operated applications.
+On Tue, 12 Apr 2022 20:08:03 -0700
+Bjorn Andersson <bjorn.andersson@linaro.org> wrote:
+
+> On Sun 27 Mar 08:03 PDT 2022, Jonathan Cameron wrote:
 > 
-> The fully integrated AFE (Analog Front-End)
-> includes a multiplexer for up to 16 single-ended
-> or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip
-> reference and oscillator, selectable filter
-> options, smart sequencer, sensor biasing and
-> excitation options, diagnostics, and a FIFO
-> buffer.
+> > On Wed, 23 Mar 2022 16:28:16 +0000
+> > Caleb Connolly <caleb.connolly@linaro.org> wrote:
+> >   
+> > > From: Caleb Connolly <caleb.connolly@linaro.org>
+> > > 
+> > > The Round Robin ADC is responsible for reading data about the rate of
+> > > charge from the USB or DC input ports, it can also read the battery
+> > > ID (resistence), skin temperature and the die temperature of the pmic.
+> > > It is found on the PMI8998 and PM660 Qualcomm PMICs.
+> > > 
+> > > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>  
+> > Whilst I said this patch was fine a few versions ago I didn't add a tag
+> > on basis I would probably end up picking it up.
+> > 
+> > To make things more flexible, I'll add one and either Lee or I can
+> > do the immutable branch once Lee has had a chance to take a look and
+> > is happy with the mfd parts.
+> > 
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >   
 > 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  .../bindings/iio/adc/adi,ad4130.yaml          | 255 ++++++++++++++++++
->  1 file changed, 255 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+> Are either of you planning to pick up the driver changes?
 > 
+> The dts changes can be merged independently, so I would prefer to pick
+> those through my tree. But I would like to know that the binding and
+> implementation is agreed upon before doing so.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+I need an Ack from Lee for the mfd changes and ideally Stephen for the SPMI
+patch.
 
-yamllint warnings/errors:
+Lee, guessing you are busy, but if you have a chance to check this set over
+that would be great.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: patternProperties:^channel@([0-9]|1[0-5])$:properties:adi,excitation-pin-0: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('minimum', 'maximum', 'default' were unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: patternProperties:^channel@([0-9]|1[0-5])$:properties:adi,excitation-pin-0: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: patternProperties:^channel@([0-9]|1[0-5])$:properties:adi,excitation-pin-0: 'oneOf' conditional failed, one must be fixed:
-		'$ref' is a required property
-		'allOf' is a required property
-		hint: A vendor property needs a $ref to types.yaml
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:interrupts: 'anyOf' conditional failed, one must be fixed:
-	'minItems' is not one of ['maxItems', 'description', 'deprecated']
-		hint: Only "maxItems" is required for a single entry if there are no constraints defined for the values.
-	'minItems' is not one of ['description', 'deprecated', 'const', 'enum', 'minimum', 'maximum', 'multipleOf', 'default', '$ref']
-	'maxItems' is not one of ['description', 'deprecated', 'const', 'enum', 'minimum', 'maximum', 'multipleOf', 'default', '$ref']
-	1 is less than the minimum of 2
-		hint: Arrays must be described with a combination of minItems/maxItems/items
-	hint: cell array properties must define how many entries and what the entries are when there is more than one entry.
-	from schema $id: http://devicetree.org/meta-schemas/interrupts.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,int-ref-en: 'oneOf' conditional failed, one must be fixed:
-	Additional properties are not allowed ('default' was unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,int-ref-en: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	Additional properties are not allowed ('type', 'default' were unexpected)
-		hint: A vendor string property with exact values has an implicit type
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,int-ref-en: 'oneOf' conditional failed, one must be fixed:
-		'$ref' is a required property
-		'allOf' is a required property
-		hint: A vendor property needs a $ref to types.yaml
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,vbias-pins: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-		hint: A vendor boolean property can use "type: boolean"
-	Additional properties are not allowed ('items' was unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,vbias-pins: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,vbias-pins: 'oneOf' conditional failed, one must be fixed:
-		'$ref' is a required property
-		'allOf' is a required property
-		hint: A vendor property needs a $ref to types.yaml
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,bipolar: 'oneOf' conditional failed, one must be fixed:
-	Additional properties are not allowed ('default' was unexpected)
-		hint: A vendor boolean property can use "type: boolean"
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,bipolar: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-		hint: A vendor string property with exact values has an implicit type
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	Additional properties are not allowed ('type', 'default' were unexpected)
-		hint: A vendor string property with exact values has an implicit type
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: properties:adi,bipolar: 'oneOf' conditional failed, one must be fixed:
-		'$ref' is a required property
-		'allOf' is a required property
-		hint: A vendor property needs a $ref to types.yaml
-		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
-	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml: ignoring, error in schema: patternProperties: ^channel@([0-9]|1[0-5])$: properties: adi,excitation-pin-0
-Error: Documentation/devicetree/bindings/iio/adc/adi,ad4130.example.dts:35.30-31 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/iio/adc/adi,ad4130.example.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1401: dt_binding_check] Error 2
+Jonathan
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+> 
+> Thanks,
+> Bjorn
 

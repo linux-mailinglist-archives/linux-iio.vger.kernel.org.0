@@ -2,275 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A9764FF8DD
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 717894FF929
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Apr 2022 16:42:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234278AbiDMO0P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Apr 2022 10:26:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43630 "EHLO
+        id S234472AbiDMOoJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Apr 2022 10:44:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233908AbiDMO0O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:26:14 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED8145EBF7;
-        Wed, 13 Apr 2022 07:23:51 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id a21so2125616pfv.10;
-        Wed, 13 Apr 2022 07:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=qGn5f7k2yKCgkj76DQyVMzIi7+OrsbeUPXvf0P2SY2M=;
-        b=CnLieJzQV++9j5D60413ZX/83NOL/QRBxR+aLxN1M4jx1vHBCwvxb9tlb0hjhhsPS1
-         cwEoI2Yw1LeUbogR94teFmwe25lVCOX0IOlryzntsqhU+Qk4hLyhQXvhTbp7tNly/QAk
-         8eTcm9zkE0nZ227frEcOwiKj+C/xFPNRFXxh2BXxMYsRy94zU7YdlPmhk/Gj9bj0kaAu
-         mYXboxjMrYl+6asLx64mnXnx287AGoXBkJDcW1QFqLym6E9IqY4/n0GW+OvkIUua9JoJ
-         3ctTef1GWjfb1FxPOoDPe7tHrWNPNzSlqWSw8NNBjDhww3ZJveGlpOdC1XQOL23Jffq6
-         lgQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=qGn5f7k2yKCgkj76DQyVMzIi7+OrsbeUPXvf0P2SY2M=;
-        b=JMsGHraVKgwal7I4rInNStsa7AiIjDOIKz0uCUtzsSM0jaDraVAiqC/IHe2AJ7TfJr
-         ywmnrilR9e/JUg2j/D21y5fm5FPU7IrySUBkalFVK9oheTTD93vxwL+UskjRLm8qs8uR
-         O8+cTVIwopzf+twtMTdZCwbHUHlnhf+ENVogEmHPAVFWNfSv0b7eEHhSeHA/FrT/xtYh
-         DaC1Ln7LHXTpSF16DhTzV6/Y/FJJs7nc7+Qec1pC2Mo+4n8+kUEv38MN2OvAp3rJWFgR
-         Wn7IJwi2I4BwdApNqNmX0e+KvXPYyP77Y+ZXtfkUdtX3cnJdgnHa+87BJuaIFQZl18Mj
-         Kn4Q==
-X-Gm-Message-State: AOAM5322nfXyyETk7kF7+1FY0ayQidvCfm3ImLdgdNqZkq7fBwPrCt2D
-        3AxUAPCteAJ8wKFcXJ/kzi4=
-X-Google-Smtp-Source: ABdhPJzdTxqKmn32bzrzu2vfAdtQLbkM7pjzkYz7VLLkmWVupFe/a6VCGJmYQ9xX2omgC3FJcCTyfQ==
-X-Received: by 2002:a05:6a00:b44:b0:505:a8f3:6958 with SMTP id p4-20020a056a000b4400b00505a8f36958mr10069350pfo.22.1649859831286;
-        Wed, 13 Apr 2022 07:23:51 -0700 (PDT)
-Received: from jagath-PC ([27.4.62.241])
-        by smtp.gmail.com with ESMTPSA id 137-20020a63078f000000b0039d9c13cd39sm5461569pgh.67.2022.04.13.07.23.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 13 Apr 2022 07:23:50 -0700 (PDT)
-Date:   Wed, 13 Apr 2022 19:53:46 +0530
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dan Robertson <dan@dlrobertson.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 4/9] iio: accel: bma400: Add triggered buffer support
-Message-ID: <20220413142345.GA3283@jagath-PC>
-References: <20220411203133.19929-1-jagathjog1996@gmail.com>
- <20220411203133.19929-5-jagathjog1996@gmail.com>
- <CAHp75VfHa9afhSdyi8dj5GpzrYE=hLacayu58+PHjXhMxTo9eg@mail.gmail.com>
- <20220412193013.GA25279@jagath-PC>
- <CAHp75Vc9MO2GxX81JQfzGRjM=nWLaQ-Uy9bV-dR1GMj1oQwjSQ@mail.gmail.com>
- <CAHp75Vef21YmiKAvz-Kt-C=jb+mMCJeV_fwPAza9UwCuKy6omQ@mail.gmail.com>
+        with ESMTP id S236192AbiDMOoH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Apr 2022 10:44:07 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1EE850448;
+        Wed, 13 Apr 2022 07:41:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649860906; x=1681396906;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=h0eLVFFWViG1x6V21DPemjegErPK0/jqGlo5FApwXHc=;
+  b=BOQOilJaUo6u+3xPXSA8Yp/1wDYauNx1uNbh+j9p2xC/uYa+z+AdFSx2
+   3Qq/y2DiD/HjBSK5rHTmdeVA3N/lPGd9ReipZiMXdHRjNSZYF1CG3Wg2N
+   xFMDbUPpYeM47GmRGCanOTG9M/GOQSucSk8tDLn/Lpdq7eIPQYcVk0K97
+   Yf2QtTx6hK8XzlpINXUW0GiQ0lF21PeWt/NBkq8CcZnW203OYIsQP2XW/
+   QGP9YWLgpBKlu7wUSxNpOezKwO6rR6EWGT9cLIOnidjoqJQAESmbweq0T
+   TPeolwLtzitbO/P9kLCt35pGN5vg0hQM64yUx3RETdTjLSfYYD7KvcRPq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="323129488"
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="323129488"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 07:41:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="526500571"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga002.jf.intel.com with ESMTP; 13 Apr 2022 07:41:43 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id D1E15191; Wed, 13 Apr 2022 17:41:43 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH v1 1/3] iio: imu: adis16480: Make use of device properties
+Date:   Wed, 13 Apr 2022 17:41:22 +0300
+Message-Id: <20220413144124.72537-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vef21YmiKAvz-Kt-C=jb+mMCJeV_fwPAza9UwCuKy6omQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 13, 2022 at 12:24:54AM +0300, Andy Shevchenko wrote:
-> On Wednesday, April 13, 2022, Andy Shevchenko <andy.shevchenko@gmail.com>
-> wrote:
-> 
-> >
-> >
-> > On Tuesday, April 12, 2022, Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> >
-> >> Hello Andy,
-> >>
-> >> On Tue, Apr 12, 2022 at 12:12:21PM +0300, Andy Shevchenko wrote:
-> >> > On Mon, Apr 11, 2022 at 11:31 PM Jagath Jog J <jagathjog1996@gmail.com>
-> >> wrote:
-> >> > >
-> >> > > Added trigger buffer support to read continuous acceleration
-> >> > > data from device with data ready interrupt which is mapped
-> >> > > to INT1 pin.
-> >> >
-> >> > Can you explain the locking schema in this driver?
-> >> >
-> >> > > +       /* Configure INT1 pin to open drain */
-> >> > > +       ret = regmap_write(data->regmap, BMA400_INT_IO_CTRL_REG,
-> >> 0x06);
-> >> > > +       if (ret)
-> >> > > +               return ret;
-> >> >
-> >> > No locking (or regmap only locking).
-> >>
-> >> This is bma400_init() function which will run when probe runs so there is
-> >> no
-> >> locking in this bma400_init().
-> >>
-> >> >
-> >> > ...
-> >> >
-> >> > > +static int bma400_data_rdy_trigger_set_state(struct iio_trigger
-> >> *trig,
-> >> > > +                                            bool state)
-> >> > > +{
-> >> > > +       struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> >> > > +       struct bma400_data *data = iio_priv(indio_dev);
-> >> > > +       int ret;
-> >> > > +
-> >> > > +       ret = regmap_update_bits(data->regmap,
-> >> BMA400_INT_CONFIG0_REG,
-> >> > > +                                BMA400_INT_DRDY_MSK,
-> >> > > +                                FIELD_PREP(BMA400_INT_DRDY_MSK,
-> >> state));
-> >> > > +       if (ret)
-> >> > > +               return ret;
-> >> > > +
-> >> > > +       return regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
-> >> > > +                                 BMA400_INT_DRDY_MSK,
-> >> > > +                                 FIELD_PREP(BMA400_INT_DRDY_MSK,
-> >> state));
-> >> > > +}
-> >> >
-> >> > Ditto.
-> >>
-> >> Sorry, I missed this.
-> >> I will add lock and unlocking in the next patch.
-> >>
-> >> >
-> >> > ...
-> >> >
-> >> > > +       mutex_lock(&data->mutex);
-> >> > > +
-> >> > > +       /* bulk read six registers, with the base being the LSB
-> >> register */
-> >> > > +       ret = regmap_bulk_read(data->regmap, BMA400_X_AXIS_LSB_REG,
-> >> > > +                              &data->buffer.buff,
-> >> sizeof(data->buffer.buff));
-> >> > > +       mutex_unlock(&data->mutex);
-> >> > > +       if (ret)
-> >> > > +               return IRQ_NONE;
-> >> >
-> >> > But here only above with locking...
-> >> >
-> >> > > +       ret = regmap_read(data->regmap, BMA400_TEMP_DATA_REG, &temp);
-> >> > > +       if (ret)
-> >> > > +               return IRQ_NONE;
-> >> >
-> >> > ...followed by no locking.
-> >>
-> >> Okay I will add lock in the next patch.
-> >>
-> >> >
-> >> > ...
-> >> >
-> >> > > +       mutex_lock(&data->mutex);
-> >> > > +       ret = regmap_bulk_read(data->regmap, BMA400_INT_STAT0_REG,
-> >> &status,
-> >> > > +                              sizeof(status));
-> >> > > +       mutex_unlock(&data->mutex);
-> >> > > +       if (ret)
-> >> > > +               return IRQ_NONE;
-> >> >
-> >> > And again with locking.
-> >> >
-> >> > ...
-> >> >
-> >> > So,
-> >> > 1) Does regmap is configured with locking? What for?
-> >> > 2) What's the role of data->mutex?
-> >>
-> >> 1.
-> >> NO,
-> >
-> >
-> > Are you sure?
-> >
-> >
-> >>  regmap is not configured with locking.
-> >> In the remap_config structure variable below these members are not defined
-> >> in the driver.
-> >>
-> >> struct regmap_config {
-> >>         regmap_lock lock;
-> >>         regmap_unlock unlock;
-> >>         void *lock_arg;
-> >>
-> >>
-> > It means that default may be used.
-> >
-> >
-> >> 2.
-> >> data->mutex is used to protect the register read, write access from the
-> >> device.
-> >>
-> >> Is the regmap functions handle locking and unlocking internally if these
-> >> below
-> >> struct members are not defined?
-> >
-> >
-> > Yes. Look at this: https://elixir.bootlin.com/linux/latest/C/ident/
-> > disable_locking
+Convert the module to be property provider agnostic and allow
+it to be used on non-OF platforms.
 
-Please your advise will be very helpful for this.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/imu/adis16480.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-I'm going through the same documentation. In this driver, disable_locking is
-not initialized.
+diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+index 44bbe3d19907..68eed088cca6 100644
+--- a/drivers/iio/imu/adis16480.c
++++ b/drivers/iio/imu/adis16480.c
+@@ -7,14 +7,16 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/bitfield.h>
+-#include <linux/of_irq.h>
+ #include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/math.h>
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/spi/spi.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/lcm.h>
++#include <linux/property.h>
+ #include <linux/swab.h>
+ #include <linux/crc32.h>
+ 
+@@ -1239,9 +1241,10 @@ static int adis16480_enable_irq(struct adis *adis, bool enable)
+ 	return __adis_write_reg_16(adis, ADIS16480_REG_FNCTIO_CTRL, val);
+ }
+ 
+-static int adis16480_config_irq_pin(struct device_node *of_node,
+-				    struct adis16480 *st)
++static int adis16480_config_irq_pin(struct adis16480 *st)
+ {
++	struct device *dev = &st->adis.spi->dev;
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct irq_data *desc;
+ 	enum adis16480_int_pin pin;
+ 	unsigned int irq_type;
+@@ -1267,7 +1270,7 @@ static int adis16480_config_irq_pin(struct device_node *of_node,
+ 	 */
+ 	pin = ADIS16480_PIN_DIO1;
+ 	for (i = 0; i < ARRAY_SIZE(adis16480_int_pin_names); i++) {
+-		irq = of_irq_get_byname(of_node, adis16480_int_pin_names[i]);
++		irq = fwnode_irq_get_byname(fwnode, adis16480_int_pin_names[i]);
+ 		if (irq > 0) {
+ 			pin = i;
+ 			break;
+@@ -1295,15 +1298,15 @@ static int adis16480_config_irq_pin(struct device_node *of_node,
+ 	return adis_write_reg_16(&st->adis, ADIS16480_REG_FNCTIO_CTRL, val);
+ }
+ 
+-static int adis16480_of_get_ext_clk_pin(struct adis16480 *st,
+-					struct device_node *of_node)
++static int adis16480_fw_get_ext_clk_pin(struct adis16480 *st)
+ {
++	struct device *dev = &st->adis.spi->dev;
+ 	const char *ext_clk_pin;
+ 	enum adis16480_int_pin pin;
+ 	int i;
+ 
+ 	pin = ADIS16480_PIN_DIO2;
+-	if (of_property_read_string(of_node, "adi,ext-clk-pin", &ext_clk_pin))
++	if (device_property_read_string(dev, "adi,ext-clk-pin", &ext_clk_pin))
+ 		goto clk_input_not_found;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(adis16480_int_pin_names); i++) {
+@@ -1317,9 +1320,7 @@ static int adis16480_of_get_ext_clk_pin(struct adis16480 *st,
+ 	return pin;
+ }
+ 
+-static int adis16480_ext_clk_config(struct adis16480 *st,
+-				    struct device_node *of_node,
+-				    bool enable)
++static int adis16480_ext_clk_config(struct adis16480 *st, bool enable)
+ {
+ 	unsigned int mode, mask;
+ 	enum adis16480_int_pin pin;
+@@ -1330,7 +1331,7 @@ static int adis16480_ext_clk_config(struct adis16480 *st,
+ 	if (ret)
+ 		return ret;
+ 
+-	pin = adis16480_of_get_ext_clk_pin(st, of_node);
++	pin = adis16480_fw_get_ext_clk_pin(st);
+ 	/*
+ 	 * Each DIOx pin supports only one function at a time. When a single pin
+ 	 * has two assignments, the enable bit for a lower priority function
+@@ -1438,7 +1439,7 @@ static int adis16480_probe(struct spi_device *spi)
+ 			return ret;
+ 	}
+ 
+-	ret = adis16480_config_irq_pin(spi->dev.of_node, st);
++	ret = adis16480_config_irq_pin(st);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1447,7 +1448,7 @@ static int adis16480_probe(struct spi_device *spi)
+ 		return ret;
+ 
+ 	if (!IS_ERR_OR_NULL(st->ext_clk)) {
+-		ret = adis16480_ext_clk_config(st, spi->dev.of_node, true);
++		ret = adis16480_ext_clk_config(st, true);
+ 		if (ret)
+ 			return ret;
+ 
+-- 
+2.35.1
 
-The functions which are called in the bma400_init() are not protected by mutex
-for regmap since bma400_init() will run when the probe runs.
-
-The functions which are called by read_raw() and write_raw() are protected by
-mutex for regmap access.
-
-There are some members in the device's private data structure and they are being
-accessed in multiple places in the driver.
-
-struct bma400_data {
-enum bma400_power_mode power_mode;                                      
-struct bma400_sample_freq sample_freq;                                  
-int oversampling_ratio;
-int scale;
-.....
-
-I think mutex is used to protect these above struct members since they are
-critical resource, but in the struct bma400_data comment for mutex 
-is "data register lock".
-
-
-> >
-> >
-> >>
-> >> regmap_lock lock;
-> >> regmap_unlock unlock;
-> >> void *lock_arg;
-> >>
-> >>
-> >> >
-> >> > --
-> >> > With Best Regards,
-> >> > Andy Shevchenko
-> >>
-> >
-> >>
-> 
-> You may read the kernel documentation what those fields mean:
->  https://elixir.bootlin.com/linux/latest/source/include/linux/regmap.h#L278
-> 
-> 
-> 
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
-> >
-> >
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-
-Thank you,
-Jagath

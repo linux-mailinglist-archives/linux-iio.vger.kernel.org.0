@@ -2,279 +2,285 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2772A500F00
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 15:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03FF95015C5
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 17:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244080AbiDNNXt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 09:23:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37818 "EHLO
+        id S239092AbiDNNfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Apr 2022 09:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244229AbiDNNWk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 09:22:40 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F0F92D33;
-        Thu, 14 Apr 2022 06:18:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649942289; x=1681478289;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=NMZ03U0eg6eBQhOA9m78Pt/d+FZJvd2t8GerBvBRu4c=;
-  b=KiyqWrO5+g01GBkMpftI1Hk8ZyjV3BiAXCFbnHXr09R25bCfB7PUdXYe
-   JOLnSr2BwmYe05KNZ+T+U6Hbu/2BuD/DSxh508/++mrs2a9ICA79fSg23
-   PkOtpYgalWZi4R1VCI5N/uFe4AbYyD6Btgn/h6SpRZy0VjHPbvnQwOgCC
-   mrGrPUHzZjWI4vdRmuL4ySmHnfGS/tR8P3ajZ6FbyJBX3z7zla3Z3m47+
-   OeNBObbmc9+52u1h48ufp+g4CxTKmRgULR+EgEFc5nArsbPx9m/l9uRhL
-   nztiuolg4h4RhWBQXyD5PYwkHMoqOk6p5HVGPH4fjBsoizs4loEYUn4/t
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="260522554"
-X-IronPort-AV: E=Sophos;i="5.90,259,1643702400"; 
-   d="scan'208";a="260522554"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2022 06:18:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,259,1643702400"; 
-   d="scan'208";a="591188379"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 14 Apr 2022 06:18:07 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 2D62B144; Thu, 14 Apr 2022 16:18:07 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v2 1/1] iio: imu: bmi160: Make use of device properties
-Date:   Thu, 14 Apr 2022 16:18:04 +0300
-Message-Id: <20220414131804.25227-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S245346AbiDNN2w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 09:28:52 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94239BACC;
+        Thu, 14 Apr 2022 06:22:29 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id mm4-20020a17090b358400b001cb93d8b137so9298944pjb.2;
+        Thu, 14 Apr 2022 06:22:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=iG0+fzJA3WfbtsbeAXJRn3UF7d+JM9mLiaa4XhIRYeQ=;
+        b=nMBgd09CE7b5rTckWpLklvzI5V3JTVPhgkT8CcThKiiEliAJhR7K7nJxePO/wmrbSK
+         qurcoT2FL16z98UiL0l2apGMiLJ+46C/LOC+yr+5N9YOOXpIK93wASr8DjGt/MeSVCFV
+         7loVjKar43XQlaMstd0tEJTUxxpKtkIHuPng33ETlGlev4TefuT4B6RPBpKTHY6rvlfd
+         6nQdAYxD3x/8ZvEdq74hlhnCcC0kGmxFRe/9nN5/ICdoqYWP/nmXEtYzGxNeQGzH+b8G
+         csLTldLprtLtZ6NEQNMgpX0vd9e0UGSu+vf5urR6JZTqREiprEOlY41xXmPL/nrCHRAM
+         LLxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=iG0+fzJA3WfbtsbeAXJRn3UF7d+JM9mLiaa4XhIRYeQ=;
+        b=W5HR8GI957ciLR8K0FUKZShP+0tqjqsM3Co6VpJAcyHXTrBTr7/Qi4N2uqIob+O6l+
+         L2WnovGPhCFOCzcLnzSi1yu5LWu7jYPUVjcQIu8rfyUkvKyqxAxkRUe47E9ulaIPgcsO
+         r+APytAro4Pa8e10C5eCaW38pbEMbCBy1CNqgNvrFGYjt2Mh+nUBRbF9ErSFpHeO7BlG
+         QKPvY3VGnjhOkhBKJSHr4nnzdSVSWRiLFxRNkZzS5dlaXgnpJK4yxucohyHmeAEJAPwu
+         L75iKEqwtDflwIqiuV92tuaE2b5Qe8YXOoAqM+bw/Ko9aDmTAZXqvdoj4NArpx22MsIa
+         broQ==
+X-Gm-Message-State: AOAM530NpI9Vakf1u8XflL7oZNtQzbyWVK0qFnJeKRqKcbLVyd4o5I0L
+        7RivtWBfk1me2ILkhfzr/JU=
+X-Google-Smtp-Source: ABdhPJyAQBZUGFm0lZEIn8UwJD25eH1DbMwB/a8BKyw1vd6GZwDGGWGDsxBcQU7m6nLL7AsyktkpuQ==
+X-Received: by 2002:a17:90a:7:b0:1c7:c286:abc2 with SMTP id 7-20020a17090a000700b001c7c286abc2mr3756658pja.65.1649942549138;
+        Thu, 14 Apr 2022 06:22:29 -0700 (PDT)
+Received: from jagath-PC ([115.99.143.29])
+        by smtp.gmail.com with ESMTPSA id r32-20020a17090a43a300b001cdbda883ccsm2326255pjg.38.2022.04.14.06.22.26
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 14 Apr 2022 06:22:28 -0700 (PDT)
+Date:   Thu, 14 Apr 2022 18:52:24 +0530
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 4/9] iio: accel: bma400: Add triggered buffer support
+Message-ID: <20220414132223.GA3742@jagath-PC>
+References: <20220411203133.19929-1-jagathjog1996@gmail.com>
+ <20220411203133.19929-5-jagathjog1996@gmail.com>
+ <CAHp75VfHa9afhSdyi8dj5GpzrYE=hLacayu58+PHjXhMxTo9eg@mail.gmail.com>
+ <20220412193013.GA25279@jagath-PC>
+ <CAHp75Vc9MO2GxX81JQfzGRjM=nWLaQ-Uy9bV-dR1GMj1oQwjSQ@mail.gmail.com>
+ <CAHp75Vef21YmiKAvz-Kt-C=jb+mMCJeV_fwPAza9UwCuKy6omQ@mail.gmail.com>
+ <20220413142345.GA3283@jagath-PC>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220413142345.GA3283@jagath-PC>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the module to be property provider agnostic and allow
-it to be used on non-OF platforms.
+Hi Andy,
 
-While at it, reuse temporary device pointer in the same function.
+On Wed, Apr 13, 2022 at 07:53:46PM +0530, Jagath Jog J wrote:
+> On Wed, Apr 13, 2022 at 12:24:54AM +0300, Andy Shevchenko wrote:
+> > On Wednesday, April 13, 2022, Andy Shevchenko <andy.shevchenko@gmail.com>
+> > wrote:
+> > 
+> > >
+> > >
+> > > On Tuesday, April 12, 2022, Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> > >
+> > >> Hello Andy,
+> > >>
+> > >> On Tue, Apr 12, 2022 at 12:12:21PM +0300, Andy Shevchenko wrote:
+> > >> > On Mon, Apr 11, 2022 at 11:31 PM Jagath Jog J <jagathjog1996@gmail.com>
+> > >> wrote:
+> > >> > >
+> > >> > > Added trigger buffer support to read continuous acceleration
+> > >> > > data from device with data ready interrupt which is mapped
+> > >> > > to INT1 pin.
+> > >> >
+> > >> > Can you explain the locking schema in this driver?
+> > >> >
+> > >> > > +       /* Configure INT1 pin to open drain */
+> > >> > > +       ret = regmap_write(data->regmap, BMA400_INT_IO_CTRL_REG,
+> > >> 0x06);
+> > >> > > +       if (ret)
+> > >> > > +               return ret;
+> > >> >
+> > >> > No locking (or regmap only locking).
+> > >>
+> > >> This is bma400_init() function which will run when probe runs so there is
+> > >> no
+> > >> locking in this bma400_init().
+> > >>
+> > >> >
+> > >> > ...
+> > >> >
+> > >> > > +static int bma400_data_rdy_trigger_set_state(struct iio_trigger
+> > >> *trig,
+> > >> > > +                                            bool state)
+> > >> > > +{
+> > >> > > +       struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+> > >> > > +       struct bma400_data *data = iio_priv(indio_dev);
+> > >> > > +       int ret;
+> > >> > > +
+> > >> > > +       ret = regmap_update_bits(data->regmap,
+> > >> BMA400_INT_CONFIG0_REG,
+> > >> > > +                                BMA400_INT_DRDY_MSK,
+> > >> > > +                                FIELD_PREP(BMA400_INT_DRDY_MSK,
+> > >> state));
+> > >> > > +       if (ret)
+> > >> > > +               return ret;
+> > >> > > +
+> > >> > > +       return regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
+> > >> > > +                                 BMA400_INT_DRDY_MSK,
+> > >> > > +                                 FIELD_PREP(BMA400_INT_DRDY_MSK,
+> > >> state));
+> > >> > > +}
+> > >> >
+> > >> > Ditto.
+> > >>
+> > >> Sorry, I missed this.
+> > >> I will add lock and unlocking in the next patch.
+> > >>
+> > >> >
+> > >> > ...
+> > >> >
+> > >> > > +       mutex_lock(&data->mutex);
+> > >> > > +
+> > >> > > +       /* bulk read six registers, with the base being the LSB
+> > >> register */
+> > >> > > +       ret = regmap_bulk_read(data->regmap, BMA400_X_AXIS_LSB_REG,
+> > >> > > +                              &data->buffer.buff,
+> > >> sizeof(data->buffer.buff));
+> > >> > > +       mutex_unlock(&data->mutex);
+> > >> > > +       if (ret)
+> > >> > > +               return IRQ_NONE;
+> > >> >
+> > >> > But here only above with locking...
+> > >> >
+> > >> > > +       ret = regmap_read(data->regmap, BMA400_TEMP_DATA_REG, &temp);
+> > >> > > +       if (ret)
+> > >> > > +               return IRQ_NONE;
+> > >> >
+> > >> > ...followed by no locking.
+> > >>
+> > >> Okay I will add lock in the next patch.
+> > >>
+> > >> >
+> > >> > ...
+> > >> >
+> > >> > > +       mutex_lock(&data->mutex);
+> > >> > > +       ret = regmap_bulk_read(data->regmap, BMA400_INT_STAT0_REG,
+> > >> &status,
+> > >> > > +                              sizeof(status));
+> > >> > > +       mutex_unlock(&data->mutex);
+> > >> > > +       if (ret)
+> > >> > > +               return IRQ_NONE;
+> > >> >
+> > >> > And again with locking.
+> > >> >
+> > >> > ...
+> > >> >
+> > >> > So,
+> > >> > 1) Does regmap is configured with locking? What for?
+> > >> > 2) What's the role of data->mutex?
+> > >>
+> > >> 1.
+> > >> NO,
+> > >
+> > >
+> > > Are you sure?
+> > >
+> > >
+> > >>  regmap is not configured with locking.
+> > >> In the remap_config structure variable below these members are not defined
+> > >> in the driver.
+> > >>
+> > >> struct regmap_config {
+> > >>         regmap_lock lock;
+> > >>         regmap_unlock unlock;
+> > >>         void *lock_arg;
+> > >>
+> > >>
+> > > It means that default may be used.
+> > >
+> > >
+> > >> 2.
+> > >> data->mutex is used to protect the register read, write access from the
+> > >> device.
+> > >>
+> > >> Is the regmap functions handle locking and unlocking internally if these
+> > >> below
+> > >> struct members are not defined?
+> > >
+> > >
+> > > Yes. Look at this: https://elixir.bootlin.com/linux/latest/C/ident/
+> > > disable_locking
+> 
+> Please your advise will be very helpful for this.
+> 
+> I'm going through the same documentation. In this driver, disable_locking is
+> not initialized.
+> 
+> The functions which are called in the bma400_init() are not protected by mutex
+> for regmap since bma400_init() will run when the probe runs.
+> 
+> The functions which are called by read_raw() and write_raw() are protected by
+> mutex for regmap access.
+> 
+> There are some members in the device's private data structure and they are being
+> accessed in multiple places in the driver.
+> 
+> struct bma400_data {
+> enum bma400_power_mode power_mode;                                      
+> struct bma400_sample_freq sample_freq;                                  
+> int oversampling_ratio;
+> int scale;
+> .....
+> 
+> I think mutex is used to protect these above struct members since they are
+> critical resource, but in the struct bma400_data comment for mutex 
+> is "data register lock".
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v2: fixed subject to use proper part number in it
- drivers/iio/imu/bmi160/bmi160_core.c | 27 ++++++---------------------
- drivers/iio/imu/bmi160/bmi160_i2c.c  | 13 ++++++-------
- drivers/iio/imu/bmi160/bmi160_spi.c  | 18 +++++++++++-------
- 3 files changed, 23 insertions(+), 35 deletions(-)
+Sorry, I got my mistake about mutex lock and unlocking and I will correct those
+in the next patch series.
 
-diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
-index 01336105792e..e7aec56ea136 100644
---- a/drivers/iio/imu/bmi160/bmi160_core.c
-+++ b/drivers/iio/imu/bmi160/bmi160_core.c
-@@ -11,10 +11,9 @@
-  */
- #include <linux/module.h>
- #include <linux/regmap.h>
--#include <linux/acpi.h>
- #include <linux/delay.h>
- #include <linux/irq.h>
--#include <linux/of_irq.h>
-+#include <linux/property.h>
- #include <linux/regulator/consumer.h>
- 
- #include <linux/iio/iio.h>
-@@ -525,17 +524,6 @@ static const struct iio_info bmi160_info = {
- 	.attrs = &bmi160_attrs_group,
- };
- 
--static const char *bmi160_match_acpi_device(struct device *dev)
--{
--	const struct acpi_device_id *id;
--
--	id = acpi_match_device(dev->driver->acpi_match_table, dev);
--	if (!id)
--		return NULL;
--
--	return dev_name(dev);
--}
--
- static int bmi160_write_conf_reg(struct regmap *regmap, unsigned int reg,
- 				 unsigned int mask, unsigned int bits,
- 				 unsigned int write_usleep)
-@@ -647,18 +635,18 @@ int bmi160_enable_irq(struct regmap *regmap, bool enable)
- }
- EXPORT_SYMBOL(bmi160_enable_irq);
- 
--static int bmi160_get_irq(struct device_node *of_node, enum bmi160_int_pin *pin)
-+static int bmi160_get_irq(struct fwnode_handle *fwnode, enum bmi160_int_pin *pin)
- {
- 	int irq;
- 
- 	/* Use INT1 if possible, otherwise fall back to INT2. */
--	irq = of_irq_get_byname(of_node, "INT1");
-+	irq = fwnode_irq_get_byname(fwnode, "INT1");
- 	if (irq > 0) {
- 		*pin = BMI160_PIN_INT1;
- 		return irq;
- 	}
- 
--	irq = of_irq_get_byname(of_node, "INT2");
-+	irq = fwnode_irq_get_byname(fwnode, "INT2");
- 	if (irq > 0)
- 		*pin = BMI160_PIN_INT2;
- 
-@@ -688,7 +676,7 @@ static int bmi160_config_device_irq(struct iio_dev *indio_dev, int irq_type,
- 		return -EINVAL;
- 	}
- 
--	open_drain = of_property_read_bool(dev->of_node, "drive-open-drain");
-+	open_drain = device_property_read_bool(dev, "drive-open-drain");
- 
- 	return bmi160_config_pin(data->regmap, pin, open_drain, irq_mask,
- 				 BMI160_NORMAL_WRITE_USLEEP);
-@@ -872,9 +860,6 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
- 	if (ret)
- 		return ret;
- 
--	if (!name && ACPI_HANDLE(dev))
--		name = bmi160_match_acpi_device(dev);
--
- 	indio_dev->channels = bmi160_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(bmi160_channels);
- 	indio_dev->name = name;
-@@ -887,7 +872,7 @@ int bmi160_core_probe(struct device *dev, struct regmap *regmap,
- 	if (ret)
- 		return ret;
- 
--	irq = bmi160_get_irq(dev->of_node, &int_pin);
-+	irq = bmi160_get_irq(dev_fwnode(dev), &int_pin);
- 	if (irq > 0) {
- 		ret = bmi160_setup_irq(indio_dev, irq, int_pin);
- 		if (ret)
-diff --git a/drivers/iio/imu/bmi160/bmi160_i2c.c b/drivers/iio/imu/bmi160/bmi160_i2c.c
-index 26398614eddf..02f149d37b17 100644
---- a/drivers/iio/imu/bmi160/bmi160_i2c.c
-+++ b/drivers/iio/imu/bmi160/bmi160_i2c.c
-@@ -8,10 +8,9 @@
-  *      - 0x68 if SDO is pulled to GND
-  *      - 0x69 if SDO is pulled to VDDIO
-  */
--#include <linux/acpi.h>
- #include <linux/i2c.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/regmap.h>
- 
- #include "bmi160.h"
-@@ -20,7 +19,7 @@ static int bmi160_i2c_probe(struct i2c_client *client,
- 			    const struct i2c_device_id *id)
- {
- 	struct regmap *regmap;
--	const char *name = NULL;
-+	const char *name;
- 
- 	regmap = devm_regmap_init_i2c(client, &bmi160_regmap_config);
- 	if (IS_ERR(regmap)) {
-@@ -31,6 +30,8 @@ static int bmi160_i2c_probe(struct i2c_client *client,
- 
- 	if (id)
- 		name = id->name;
-+	else
-+		name = dev_name(&client->dev);
- 
- 	return bmi160_core_probe(&client->dev, regmap, name, false);
- }
-@@ -47,19 +48,17 @@ static const struct acpi_device_id bmi160_acpi_match[] = {
- };
- MODULE_DEVICE_TABLE(acpi, bmi160_acpi_match);
- 
--#ifdef CONFIG_OF
- static const struct of_device_id bmi160_of_match[] = {
- 	{ .compatible = "bosch,bmi160" },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, bmi160_of_match);
--#endif
- 
- static struct i2c_driver bmi160_i2c_driver = {
- 	.driver = {
- 		.name			= "bmi160_i2c",
--		.acpi_match_table	= ACPI_PTR(bmi160_acpi_match),
--		.of_match_table		= of_match_ptr(bmi160_of_match),
-+		.acpi_match_table	= bmi160_acpi_match,
-+		.of_match_table		= bmi160_of_match,
- 	},
- 	.probe		= bmi160_i2c_probe,
- 	.id_table	= bmi160_i2c_id,
-diff --git a/drivers/iio/imu/bmi160/bmi160_spi.c b/drivers/iio/imu/bmi160/bmi160_spi.c
-index 61389b41c6d9..24f7d75c7903 100644
---- a/drivers/iio/imu/bmi160/bmi160_spi.c
-+++ b/drivers/iio/imu/bmi160/bmi160_spi.c
-@@ -5,9 +5,8 @@
-  * Copyright (c) 2016, Intel Corporation.
-  *
-  */
--#include <linux/acpi.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/regmap.h>
- #include <linux/spi/spi.h>
- 
-@@ -17,6 +16,7 @@ static int bmi160_spi_probe(struct spi_device *spi)
- {
- 	struct regmap *regmap;
- 	const struct spi_device_id *id = spi_get_device_id(spi);
-+	const char *name;
- 
- 	regmap = devm_regmap_init_spi(spi, &bmi160_regmap_config);
- 	if (IS_ERR(regmap)) {
-@@ -24,7 +24,13 @@ static int bmi160_spi_probe(struct spi_device *spi)
- 			regmap);
- 		return PTR_ERR(regmap);
- 	}
--	return bmi160_core_probe(&spi->dev, regmap, id->name, true);
-+
-+	if (id)
-+		name = id->name;
-+	else
-+		name = dev_name(&spi->dev);
-+
-+	return bmi160_core_probe(&spi->dev, regmap, name, true);
- }
- 
- static const struct spi_device_id bmi160_spi_id[] = {
-@@ -39,20 +45,18 @@ static const struct acpi_device_id bmi160_acpi_match[] = {
- };
- MODULE_DEVICE_TABLE(acpi, bmi160_acpi_match);
- 
--#ifdef CONFIG_OF
- static const struct of_device_id bmi160_of_match[] = {
- 	{ .compatible = "bosch,bmi160" },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, bmi160_of_match);
--#endif
- 
- static struct spi_driver bmi160_spi_driver = {
- 	.probe		= bmi160_spi_probe,
- 	.id_table	= bmi160_spi_id,
- 	.driver = {
--		.acpi_match_table	= ACPI_PTR(bmi160_acpi_match),
--		.of_match_table		= of_match_ptr(bmi160_of_match),
-+		.acpi_match_table	= bmi160_acpi_match,
-+		.of_match_table		= bmi160_of_match,
- 		.name			= "bmi160_spi",
- 	},
- };
--- 
-2.35.1
-
+Thank you
+Jagath
+> 
+> 
+> > >
+> > >
+> > >>
+> > >> regmap_lock lock;
+> > >> regmap_unlock unlock;
+> > >> void *lock_arg;
+> > >>
+> > >>
+> > >> >
+> > >> > --
+> > >> > With Best Regards,
+> > >> > Andy Shevchenko
+> > >>
+> > >
+> > >>
+> > 
+> > You may read the kernel documentation what those fields mean:
+> >  https://elixir.bootlin.com/linux/latest/source/include/linux/regmap.h#L278
+> > 
+> > 
+> > 
+> > > --
+> > > With Best Regards,
+> > > Andy Shevchenko
+> > >
+> > >
+> > >
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko
+> 
+> Thank you,
+> Jagath

@@ -2,285 +2,299 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03FF95015C5
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 17:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 723C6501267
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 17:08:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239092AbiDNNfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 09:35:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49970 "EHLO
+        id S230188AbiDNOhX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Apr 2022 10:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245346AbiDNN2w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 09:28:52 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94239BACC;
-        Thu, 14 Apr 2022 06:22:29 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id mm4-20020a17090b358400b001cb93d8b137so9298944pjb.2;
-        Thu, 14 Apr 2022 06:22:29 -0700 (PDT)
+        with ESMTP id S1346237AbiDNN4G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 09:56:06 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115E0B0A70;
+        Thu, 14 Apr 2022 06:46:13 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 21so6471091edv.1;
+        Thu, 14 Apr 2022 06:46:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=iG0+fzJA3WfbtsbeAXJRn3UF7d+JM9mLiaa4XhIRYeQ=;
-        b=nMBgd09CE7b5rTckWpLklvzI5V3JTVPhgkT8CcThKiiEliAJhR7K7nJxePO/wmrbSK
-         qurcoT2FL16z98UiL0l2apGMiLJ+46C/LOC+yr+5N9YOOXpIK93wASr8DjGt/MeSVCFV
-         7loVjKar43XQlaMstd0tEJTUxxpKtkIHuPng33ETlGlev4TefuT4B6RPBpKTHY6rvlfd
-         6nQdAYxD3x/8ZvEdq74hlhnCcC0kGmxFRe/9nN5/ICdoqYWP/nmXEtYzGxNeQGzH+b8G
-         csLTldLprtLtZ6NEQNMgpX0vd9e0UGSu+vf5urR6JZTqREiprEOlY41xXmPL/nrCHRAM
-         LLxw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8971MOMZxe8ny/GbZyrl9W3T/ga8R+8j2kZQrMH59YY=;
+        b=VYSEPCPdidBLauO5Wo9kny4AC5GPOq1kV3qgrR05UiNdJNZFy+Ly+Fs/4ODbYQUYo9
+         ZzGWKaahTO52NP+gta5HFse3u7r3MW4BHh/BhVbu7i6S8G00b1aNXFQ6L7v709h4yREW
+         Rzff2SHB0AxSg3thExjDZ6dd5V84600P/3wwxUGi4voiqd1/ndHuCQ9DNWZHRxm9g3r4
+         +bLjBb18OS3VGGZ1U6fBqH9e/EEyNdMt9n3iwCV865VJbLm6qmFWMG1sx/FcFG5JpJkY
+         UzFmTYV4DLMSVsBu4iLkvAADMQlS6tFm0kogL67zc36zWwlfBU+8+KbvD5M86vL1nR4+
+         xVfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iG0+fzJA3WfbtsbeAXJRn3UF7d+JM9mLiaa4XhIRYeQ=;
-        b=W5HR8GI957ciLR8K0FUKZShP+0tqjqsM3Co6VpJAcyHXTrBTr7/Qi4N2uqIob+O6l+
-         L2WnovGPhCFOCzcLnzSi1yu5LWu7jYPUVjcQIu8rfyUkvKyqxAxkRUe47E9ulaIPgcsO
-         r+APytAro4Pa8e10C5eCaW38pbEMbCBy1CNqgNvrFGYjt2Mh+nUBRbF9ErSFpHeO7BlG
-         QKPvY3VGnjhOkhBKJSHr4nnzdSVSWRiLFxRNkZzS5dlaXgnpJK4yxucohyHmeAEJAPwu
-         L75iKEqwtDflwIqiuV92tuaE2b5Qe8YXOoAqM+bw/Ko9aDmTAZXqvdoj4NArpx22MsIa
-         broQ==
-X-Gm-Message-State: AOAM530NpI9Vakf1u8XflL7oZNtQzbyWVK0qFnJeKRqKcbLVyd4o5I0L
-        7RivtWBfk1me2ILkhfzr/JU=
-X-Google-Smtp-Source: ABdhPJyAQBZUGFm0lZEIn8UwJD25eH1DbMwB/a8BKyw1vd6GZwDGGWGDsxBcQU7m6nLL7AsyktkpuQ==
-X-Received: by 2002:a17:90a:7:b0:1c7:c286:abc2 with SMTP id 7-20020a17090a000700b001c7c286abc2mr3756658pja.65.1649942549138;
-        Thu, 14 Apr 2022 06:22:29 -0700 (PDT)
-Received: from jagath-PC ([115.99.143.29])
-        by smtp.gmail.com with ESMTPSA id r32-20020a17090a43a300b001cdbda883ccsm2326255pjg.38.2022.04.14.06.22.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 14 Apr 2022 06:22:28 -0700 (PDT)
-Date:   Thu, 14 Apr 2022 18:52:24 +0530
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Dan Robertson <dan@dlrobertson.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 4/9] iio: accel: bma400: Add triggered buffer support
-Message-ID: <20220414132223.GA3742@jagath-PC>
-References: <20220411203133.19929-1-jagathjog1996@gmail.com>
- <20220411203133.19929-5-jagathjog1996@gmail.com>
- <CAHp75VfHa9afhSdyi8dj5GpzrYE=hLacayu58+PHjXhMxTo9eg@mail.gmail.com>
- <20220412193013.GA25279@jagath-PC>
- <CAHp75Vc9MO2GxX81JQfzGRjM=nWLaQ-Uy9bV-dR1GMj1oQwjSQ@mail.gmail.com>
- <CAHp75Vef21YmiKAvz-Kt-C=jb+mMCJeV_fwPAza9UwCuKy6omQ@mail.gmail.com>
- <20220413142345.GA3283@jagath-PC>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8971MOMZxe8ny/GbZyrl9W3T/ga8R+8j2kZQrMH59YY=;
+        b=Wx6k4njRos4DGfy4qn+knjborJKyLsn0PlvzTaImO6Nt/3zUMFLq6sJoTKmkXF/ijG
+         Lbk9cYHocBsHQbP6BY+nQYFtVPrDZpO+Lhcb7guDKwO3gvbBa3kQoqv6WuVB9m/wTP9H
+         xclWsMozelBvm9Vu4zZTqBRyHVm/QFu73SJo8FlP89K3anCKia6/iSRkoHRhyGwXTwMX
+         yEqgnpIdx6lOEPPYsxaYLGih5+gMgOnWQWUrSO3SfPFMt/tRzBaZw3eNT7L19aCC7otu
+         K6k5YzsR3Z1ZyNKEHdJAUaYBsEBK6su6YThR1KJigmRJZJtMeklE/wh5yov89LtcQv7q
+         J6rw==
+X-Gm-Message-State: AOAM5315iPnjwtbfzgIKXpTg4wfDxfveGEPZwhYG+H9/ll7dV6YwH+fF
+        2ZNLiRNoL+6S9XRLzDN1sWsVvzNlI4uTx3bOGXw=
+X-Google-Smtp-Source: ABdhPJylfPV678F4xdZmfc1hw6sU/WM4TROFlt3eNeAuggaOYOkrMV1UHEQRqSaCKp+O/eP8yn/eeOKXd7ddj+14m3U=
+X-Received: by 2002:a05:6402:27d1:b0:419:1b02:4a04 with SMTP id
+ c17-20020a05640227d100b004191b024a04mr3037825ede.218.1649943971848; Thu, 14
+ Apr 2022 06:46:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220413142345.GA3283@jagath-PC>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
+ <20220413094011.185269-3-cosmin.tanislav@analog.com> <CAHp75VfzX8u45J3634yN5p-QTeT7w0Bos27OxeWOsb3MQ2VRVw@mail.gmail.com>
+ <80196942-4c33-7625-3945-86ce5b7b347f@gmail.com>
+In-Reply-To: <80196942-4c33-7625-3945-86ce5b7b347f@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 14 Apr 2022 16:45:35 +0300
+Message-ID: <CAHp75VfAjvJz2KHYfDM+-8D+hSBtdKJm521EBY3VgCfUsAgt8Q@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] iio: adc: ad4130: add AD4130 driver
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,PDS_OTHER_BAD_TLD,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+On Thu, Apr 14, 2022 at 2:06 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> On 4/13/22 18:41, Andy Shevchenko wrote:
+> > On Wed, Apr 13, 2022 at 1:41 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-On Wed, Apr 13, 2022 at 07:53:46PM +0530, Jagath Jog J wrote:
-> On Wed, Apr 13, 2022 at 12:24:54AM +0300, Andy Shevchenko wrote:
-> > On Wednesday, April 13, 2022, Andy Shevchenko <andy.shevchenko@gmail.com>
-> > wrote:
-> > 
-> > >
-> > >
-> > > On Tuesday, April 12, 2022, Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> > >
-> > >> Hello Andy,
-> > >>
-> > >> On Tue, Apr 12, 2022 at 12:12:21PM +0300, Andy Shevchenko wrote:
-> > >> > On Mon, Apr 11, 2022 at 11:31 PM Jagath Jog J <jagathjog1996@gmail.com>
-> > >> wrote:
-> > >> > >
-> > >> > > Added trigger buffer support to read continuous acceleration
-> > >> > > data from device with data ready interrupt which is mapped
-> > >> > > to INT1 pin.
-> > >> >
-> > >> > Can you explain the locking schema in this driver?
-> > >> >
-> > >> > > +       /* Configure INT1 pin to open drain */
-> > >> > > +       ret = regmap_write(data->regmap, BMA400_INT_IO_CTRL_REG,
-> > >> 0x06);
-> > >> > > +       if (ret)
-> > >> > > +               return ret;
-> > >> >
-> > >> > No locking (or regmap only locking).
-> > >>
-> > >> This is bma400_init() function which will run when probe runs so there is
-> > >> no
-> > >> locking in this bma400_init().
-> > >>
-> > >> >
-> > >> > ...
-> > >> >
-> > >> > > +static int bma400_data_rdy_trigger_set_state(struct iio_trigger
-> > >> *trig,
-> > >> > > +                                            bool state)
-> > >> > > +{
-> > >> > > +       struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
-> > >> > > +       struct bma400_data *data = iio_priv(indio_dev);
-> > >> > > +       int ret;
-> > >> > > +
-> > >> > > +       ret = regmap_update_bits(data->regmap,
-> > >> BMA400_INT_CONFIG0_REG,
-> > >> > > +                                BMA400_INT_DRDY_MSK,
-> > >> > > +                                FIELD_PREP(BMA400_INT_DRDY_MSK,
-> > >> state));
-> > >> > > +       if (ret)
-> > >> > > +               return ret;
-> > >> > > +
-> > >> > > +       return regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
-> > >> > > +                                 BMA400_INT_DRDY_MSK,
-> > >> > > +                                 FIELD_PREP(BMA400_INT_DRDY_MSK,
-> > >> state));
-> > >> > > +}
-> > >> >
-> > >> > Ditto.
-> > >>
-> > >> Sorry, I missed this.
-> > >> I will add lock and unlocking in the next patch.
-> > >>
-> > >> >
-> > >> > ...
-> > >> >
-> > >> > > +       mutex_lock(&data->mutex);
-> > >> > > +
-> > >> > > +       /* bulk read six registers, with the base being the LSB
-> > >> register */
-> > >> > > +       ret = regmap_bulk_read(data->regmap, BMA400_X_AXIS_LSB_REG,
-> > >> > > +                              &data->buffer.buff,
-> > >> sizeof(data->buffer.buff));
-> > >> > > +       mutex_unlock(&data->mutex);
-> > >> > > +       if (ret)
-> > >> > > +               return IRQ_NONE;
-> > >> >
-> > >> > But here only above with locking...
-> > >> >
-> > >> > > +       ret = regmap_read(data->regmap, BMA400_TEMP_DATA_REG, &temp);
-> > >> > > +       if (ret)
-> > >> > > +               return IRQ_NONE;
-> > >> >
-> > >> > ...followed by no locking.
-> > >>
-> > >> Okay I will add lock in the next patch.
-> > >>
-> > >> >
-> > >> > ...
-> > >> >
-> > >> > > +       mutex_lock(&data->mutex);
-> > >> > > +       ret = regmap_bulk_read(data->regmap, BMA400_INT_STAT0_REG,
-> > >> &status,
-> > >> > > +                              sizeof(status));
-> > >> > > +       mutex_unlock(&data->mutex);
-> > >> > > +       if (ret)
-> > >> > > +               return IRQ_NONE;
-> > >> >
-> > >> > And again with locking.
-> > >> >
-> > >> > ...
-> > >> >
-> > >> > So,
-> > >> > 1) Does regmap is configured with locking? What for?
-> > >> > 2) What's the role of data->mutex?
-> > >>
-> > >> 1.
-> > >> NO,
-> > >
-> > >
-> > > Are you sure?
-> > >
-> > >
-> > >>  regmap is not configured with locking.
-> > >> In the remap_config structure variable below these members are not defined
-> > >> in the driver.
-> > >>
-> > >> struct regmap_config {
-> > >>         regmap_lock lock;
-> > >>         regmap_unlock unlock;
-> > >>         void *lock_arg;
-> > >>
-> > >>
-> > > It means that default may be used.
-> > >
-> > >
-> > >> 2.
-> > >> data->mutex is used to protect the register read, write access from the
-> > >> device.
-> > >>
-> > >> Is the regmap functions handle locking and unlocking internally if these
-> > >> below
-> > >> struct members are not defined?
-> > >
-> > >
-> > > Yes. Look at this: https://elixir.bootlin.com/linux/latest/C/ident/
-> > > disable_locking
-> 
-> Please your advise will be very helpful for this.
-> 
-> I'm going through the same documentation. In this driver, disable_locking is
-> not initialized.
-> 
-> The functions which are called in the bma400_init() are not protected by mutex
-> for regmap since bma400_init() will run when the probe runs.
-> 
-> The functions which are called by read_raw() and write_raw() are protected by
-> mutex for regmap access.
-> 
-> There are some members in the device's private data structure and they are being
-> accessed in multiple places in the driver.
-> 
-> struct bma400_data {
-> enum bma400_power_mode power_mode;                                      
-> struct bma400_sample_freq sample_freq;                                  
-> int oversampling_ratio;
-> int scale;
-> .....
-> 
-> I think mutex is used to protect these above struct members since they are
-> critical resource, but in the struct bma400_data comment for mutex 
-> is "data register lock".
+...
 
-Sorry, I got my mistake about mutex lock and unlocking and I will correct those
-in the next patch series.
+> >> +#define AD4130_8_NAME                  "ad4130-8"
+> >
+> > What the meaning of -8 ? Is it number of channels? Or is it part of
+> > the official model (part number)? Can we see, btw, Datasheet: tag with
+> > a corresponding link in the commit message?
+>
+> That's just the name specified in the datasheet. I honestly don't have
+> much of an idea about why it is like that. Also, I already put the
+> datasheet in the .yaml documentation.
 
-Thank you
-Jagath
-> 
-> 
-> > >
-> > >
-> > >>
-> > >> regmap_lock lock;
-> > >> regmap_unlock unlock;
-> > >> void *lock_arg;
-> > >>
-> > >>
-> > >> >
-> > >> > --
-> > >> > With Best Regards,
-> > >> > Andy Shevchenko
-> > >>
-> > >
-> > >>
-> > 
-> > You may read the kernel documentation what those fields mean:
-> >  https://elixir.bootlin.com/linux/latest/source/include/linux/regmap.h#L278
-> > 
-> > 
-> > 
-> > > --
-> > > With Best Regards,
-> > > Andy Shevchenko
-> > >
-> > >
-> > >
-> > 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko
-> 
-> Thank you,
-> Jagath
+That's cool!
+
+> Do you really also want it
+> in each commit message too?
+
+No, just in this one.
+
+...
+
+> >> +#define AD4130_RESET_CLK_COUNT         64
+> >> +#define AD4130_RESET_BUF_SIZE          (AD4130_RESET_CLK_COUNT / 8)
+> >
+> > To be more precise shouldn't the above need to have DIV_ROUND_UP() ?
+>
+> Does it look like 64 / 8 needs any rounding?
+
+Currently no, but if someone puts 63 there or 65, what would be the outcome?
+OTOH, you may add a static assert to guarantee that CLK_COUNT is multiple of 8.
+
+...
+
+> >> +#define AD4130_FREQ_FACTOR             1000000000ull
+> >> +#define AD4130_DB3_FACTOR              1000
+> >
+> > Ditto.
+>
+> AD4130_DB3_FACTOR is unit-less. In the datasheet, the relation between
+> sampling frequency and 3db frequency is represented as a 0.xyz value,
+> hence why the db3_div values and 1000 factor.
+
+But does the above mean MILLI or KILO? Similar for the FREQ factor.
+
+...
+
+> >> +       int                             samp_freq_avail_len;
+> >> +       int                             samp_freq_avail[3][2];
+
+> >> +       int                             db3_freq_avail_len;
+> >> +       int                             db3_freq_avail[3][2];
+> >
+> > These 3:s can be defined?
+> >
+> I could define IIO_AVAIL_RANGE_LEN and IIO_AVAIL_SINGLE_LEN and then
+> define another IIO_AVAIL_LEN that is the max between the two.
+> But that's just over-complicating it, really.
+
+I was talking only about 3:s (out array). IIRC I saw 3 hard coded in
+the driver, but not sure if its meaning is the same. Might be still
+good to define.
+
+...
+
+> >> +       if (reg >= ARRAY_SIZE(ad4130_reg_size))
+> >> +               return -EINVAL;
+> >
+> > When this condition is true?
+>
+> When the user tries reading a register from direct_reg_access
+> that hasn't had its size defined.
+
+But how is it possible? Is the reg parameter taken directly from the user?
+
+...
+
+> >> +       regmap_update_bits(st->regmap, AD4130_REG_IO_CONTROL, mask,
+> >> +                          value ? mask : 0);
+> >
+> > One line?
+> >
+> > No error check?
+>
+> I actually can't think of a scenario where this would fail. It doesn't
+> if the chip is not even connected.
+
+Why to check errors in many other cases then? Be consistent one way or
+the other.
+
+...
+
+> >> +       if (setup_info->enabled_channels)
+> >> +               return -EINVAL;
+> >
+> > -EBUSY?
+> >
+>
+> Eh, I don't think so. It would be pretty impossible for the code to hit
+> this if statement, taking into account the ad4130_find_slot() logic.
+> I could as well not have it at all.
+
+If it's a dead code, we do not want it.
+
+...
+
+> >> + out:
+> >
+> > out_unlock: ?
+> > Ditto for similar cases.
+>
+> There's a single label in the function, and there's a mutex being
+> taken, and, logically, the mutex must be released on the exit path.
+> It's clear what the label is for to me.
+
+Wasn't clear to me until I went to the end of each of them (who
+guarantees that's the case for all of them?).
+
+...
+
+> >> +               *val = st->bipolar ? -(1 << (chan->scan_type.realbits - 1)) : 0;
+> >
+> > Hmm... It seems like specific way to have a sign_extended, or actually
+> > reduced) mask.
+> > Can you rewrite it with the (potential)UB-free approach?
+> >
+> > (Note, that if realbits == 32, this will have a lot of fun in
+> > accordance with C standard.)
+>
+> Can you elaborate on this? The purpose of this statement is to shift the
+> results so that, when bipolar configuration is enabled, the raw value is
+> offset with 1 << (realbits - 1) towards negative.
+>
+> For the 24bit chips, 0x800000 becomes 0x000000.
+>
+> Maybe you misread it as left shift on a negative number? The number
+> is turned negative only after the shift...
+
+1 << 31 is UB in accordance with the C standard.
+
+And the magic above seems to me the opposite to what sign_extend()
+does. Maybe even providing a general function for sign_comact() or so
+(you name it) would be also nice to have.
+
+...
+
+> >> +       ret = regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
+> >> +                                AD4130_WATERMARK_MASK,
+> >> +                                FIELD_PREP(AD4130_WATERMARK_MASK,
+> >> +                                           ad4130_watermark_reg_val(eff)));
+> >
+> > Temporary variable for mask?
+>
+> You mean for value?
+
+      mask = AD4130_WATERMARK_MASK;
+
+      ret = regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
+                               mask, FIELD_PREP(mask,
+ad4130_watermark_reg_val(eff)));
+
+...
+
+> >> +       if (ret <= 0)
+> >
+> > = 0 ?! Can you elaborate, please, this case taking into account below?
+> >
+>
+> I guess I just did it because voltage = 0 doesn't make sense and would
+> make scale be 0.0.
+
+Again, what's the meaning of having it in the conjunction with
+dev_err_probe() call?
+
+> >> +               return dev_err_probe(dev, ret, "Cannot use reference %u\n",
+> >> +                                    ref_sel);
+
+It's confusing. I believe you need two different messages if you want
+to handle the 0 case.
+
+...
+
+> >> +static int ad4130_parse_fw_children(struct iio_dev *indio_dev)
+> >> +{
+> >> +       struct ad4130_state *st = iio_priv(indio_dev);
+> >> +       struct device *dev = &st->spi->dev;
+> >> +       struct fwnode_handle *child;
+> >> +       int ret;
+> >> +
+> >> +       indio_dev->channels = st->chans;
+> >> +
+> >> +       device_for_each_child_node(dev, child) {
+> >> +               ret = ad4130_parse_fw_channel(indio_dev, child);
+> >> +               if (ret)
+> >> +                       break;
+> >> +       }
+> >
+> >> +       fwnode_handle_put(child);
+> >
+> > There is no need to put fwnode if child is NULL. Moreover, the above
+> > pattern might be percepted wrongly, i.e. one may think that
+> > fwnode_handle_put() is a must after a loop.
+> >
+>
+> fwnode_handle_put already checks if the child is NULL. Why do the same
+> check twice?
+
+Exactly my point. Why do you check it twice?
+
+...
+
+> > Can you explain why regmap locking is needed?
+
+> Am I supposed to set .disable_locking = true since SPI has its own
+> locking?
+
+You tell me. I have no idea of what the locking schema is being used
+in your code.
+
+-- 
+With Best Regards,
+Andy Shevchenko

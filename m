@@ -2,123 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F93500762
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 09:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C9A7500AFF
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 12:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240711AbiDNHpX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 03:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60320 "EHLO
+        id S229446AbiDNKXB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Apr 2022 06:23:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240708AbiDNHoB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 03:44:01 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C27F5C357;
-        Thu, 14 Apr 2022 00:41:12 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id lc2so8362984ejb.12;
-        Thu, 14 Apr 2022 00:41:12 -0700 (PDT)
+        with ESMTP id S229626AbiDNKXB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 06:23:01 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63D03FD80;
+        Thu, 14 Apr 2022 03:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=hsjfJ6kNyOdmk849dkXwmpwJx9bBByejcTJHu02YdnI=;
-        b=OOBFZscKCDVHuImiGxP4PahXd3VpmRBSqVBz0rxiuq7OgqnedoqYRC8XpPwzi4tXcf
-         cUoDpUA1jZqnPD1nBNrWjqNwVroHsRrlBgKu60+gffwg97pevSxwTUphb0qSbiYeGQKa
-         3YBOiLsr7YPWI7dv+QUgvUq20iYagdNq5n3kK+m8li9FDM9L4PpoYWuzERD4L5Nj3yz0
-         D/9jdIhTA4Il+/5bsbmj5/Q++mWJknGQXHBELqzt3v1InF+BrXRqoWXfByJhKYRGBpm/
-         SKL+eju+TOWUisO41z7uh73l2lWyZU0jcihVxK0BOnrPLb3zan7w6IJoCQIEyI+aT0fC
-         iTdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=hsjfJ6kNyOdmk849dkXwmpwJx9bBByejcTJHu02YdnI=;
-        b=p8ixT4yY6vvDBRi2InwVWBO1e7rn+nNraRVlCrAx60uN/tfj9odCki25ea9AthM5JA
-         1P0YwDfA+AbIHZfjMWvUjHwEb0b77X3LDt47/qygUV+p78jF+nMqV0k4kLE/cvhuKP2x
-         4NZjKaj5VDx5TBH1Ay9NZRzZL1ZkF53ydOLcDxs/oPuId32BjInDedfjw868+i3uiWjM
-         ofNthCjOHLVhqcT0vs0HFGWVKbtuYNUYh1Ym+H7ba+LdsTdhVZan8RcHBzkYACX8eZvp
-         qBo3KO6wf06LPRk6oN3u4NdrIv84hXbtcf9eu7ZusFDeXwBLkG1/oWgaTJb5prjhj+YJ
-         UDMg==
-X-Gm-Message-State: AOAM530TgwRt2n6l+G62EwTNabxSmV6wMWf2zUF/RU+YKKW8Qfe3VO16
-        rkbgU/H7YXLS3DOOi6Fb+GA=
-X-Google-Smtp-Source: ABdhPJyaJYKew2SO25i61AvtBgkDD8PLjatVIn+03272639bqiiIjwjiKiJpaQuYUMWnL9efVxDhTw==
-X-Received: by 2002:a17:906:7304:b0:6e0:6918:ef6f with SMTP id di4-20020a170906730400b006e06918ef6fmr1222274ejc.370.1649922070582;
-        Thu, 14 Apr 2022 00:41:10 -0700 (PDT)
-Received: from [192.168.0.182] ([188.24.22.234])
-        by smtp.gmail.com with ESMTPSA id lb4-20020a170907784400b006e0d13f65e5sm370876ejc.167.2022.04.14.00.41.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Apr 2022 00:41:10 -0700 (PDT)
-Message-ID: <0de7fcb5-0d5f-d8b3-448a-2bc14cef21ee@gmail.com>
-Date:   Thu, 14 Apr 2022 10:41:09 +0300
+  d=axis.com; q=dns/txt; s=axis-central1; t=1649931636;
+  x=1681467636;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I52ZeIB1sWjn9oq7mjMsLXKsTaoEgJRYAOxLZkkUSu4=;
+  b=eEeKiIL5VJKnCD47F5/zqC2gmVbLcXSW2iL+2arC7/Hjh1bHWiOPVaED
+   dbCErOVUBxYaBByZadhjoI3oJOrABd6NA/kCln4huQkJyUfMGPqtVN7vH
+   ZEQ/+vt8+MIywKJWTgTRng9N38bGFVi4RtYD7JZK3xkMXCGH1+emoPx2v
+   UtlskYlZTJA55LeqZxw3f721cCqVEjlqOdzwezKVBmvvFmWOp298UEu9c
+   FKzTWWeqvzfziccVELZmRSWh7gRmltmGxkJdrto3nnmA/RFt1pPeFzY+X
+   VPd13vCH3qXVYjIMyVYWPpF68/9FDR0MG90tWr7x30VB19pGdcmvmMwzu
+   A==;
+Date:   Thu, 14 Apr 2022 12:20:33 +0200
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        kernel <kernel@axis.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "brendanhiggins@google.com" <brendanhiggins@google.com>,
+        "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "a.zummo@towertech.it" <a.zummo@towertech.it>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        "corbet@lwn.net" <corbet@lwn.net>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: Re: [RFC v1 08/10] iio: light: vcnl4000: add roadtest
+Message-ID: <20220414102033.GA13937@axis.com>
+References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
+ <20220311162445.346685-9-vincent.whitchurch@axis.com>
+ <20220320170253.5b946c84@jic23-huawei>
+ <20220405134805.GA28574@axis.com>
+ <20220406140816.000038ce@Huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v1 2/3] iio: ABI: adc: ad4130: document
- filter_mode{,_available}
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
- <20220413094011.185269-2-cosmin.tanislav@analog.com>
- <CAHp75VexJBnAqoQ53=_nif=bso0-cNj4EsTbUwKGKxfNq_Fvyw@mail.gmail.com>
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <CAHp75VexJBnAqoQ53=_nif=bso0-cNj4EsTbUwKGKxfNq_Fvyw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220406140816.000038ce@Huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Apr 06, 2022 at 03:08:16PM +0200, Jonathan Cameron wrote:
+> On Tue, 5 Apr 2022 15:48:05 +0200
+> Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
+> I messed around the other day with writing tests for
+> drivers/staging/iio/cdc/ad7746.c and wasn't "too bad" and was useful for
+> verifying some refactoring (and identified a possible precision problem
+> in some integer approximation of floating point calcs)
 
+Good to hear!
 
-On 4/13/22 17:51, Andy Shevchenko wrote:
-> On Wed, Apr 13, 2022 at 4:17 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> I'll try and find time to flesh that test set out more in the near future and
+> post it so you can see how bad my python is. It amused my wife if nothing
+> else :)
 > 
-> It's good you provided documentation, but I think the part "ABI:" is
-> not needed in the Subject.
+> However a future project is to see if I can use this to hook up the SPDM
+> attestation stack via mctp over i2c - just because I like to live dangerously :)
 > 
+> For IIO use more generally we need a sensible path to SPI (and also platform
+> drivers).
 
-Then I guess I could merge this patch into the driver patch?
+I have SPI working now.  I was able to do this without patching the
+kernel by have the Python code emulate an SC18IS602 I2C-SPI bridge which
+has an existing driver.  There is a limitation of 200 bytes per
+transaction (in the SC18IS602 driver/chip) so not all SPI drivers will
+work, but many will, and the underlying backend can be changed later
+without having to change the test cases.  I used this to implement a
+test for drivers/iio/adc/ti-adc084s021.c.
 
->> AD4130-8 is an ultra-low power, high precision,
->> measurement solution for low bandwidth battery
->> operated applications.
->>
->> The fully integrated AFE (Analog Front-End)
->> includes a multiplexer for up to 16 single-ended
->> or 8 differential inputs, PGA (Programmable Gain
->> Amplifier), 24-bit Sigma-Delta ADC, on-chip
->> reference and oscillator, selectable filter
->> options, smart sequencer, sensor biasing and
->> excitation options, diagnostics, and a FIFO
->> buffer.
+Platform devices are going to take more work.  I did do some experiments
+(using arch/um/drivers/virt-pci.c) a while ago but I need to see how
+well it works with the rest of the framework in place.
+
+> For my day job I'd like to mess around with doing PCI devices
+> as well.  The PCI DOE support for example would be nice to run against a
+> test set that doesn't involve spinning up QEMU.
+> DOE driver support:
+> https://lore.kernel.org/all/20220330235920.2800929-1-ira.weiny@intel.com/
 > 
-> Indentation issue as per patch 1.
+> Effort wise, it's similar effort to hacking equivalent in QEMU but with the
+> obvious advantage of being in tree and simpler for CI systems etc to use.
 > 
-> ...
+> It would be nice to only have to use QEMU for complex system CI tests
+> like the ones we are doing for CXL.
 > 
->> +               Set the filter mode of the differential channel. When the filter
->> +               mode changes, the in_voltageY-voltageZ_sampling_frequency and
->> +               in_voltageY-voltageZ_sampling_frequency_available attributes
->> +               might also change to accomodate the new filter mode.
+> > 
+> > > I dream of a world where every driver is testable by people with out hardware
+> > > but I fear it may be a while yet.  Hopefully this will get us a little
+> > > closer!
+> > > 
+> > > I more or less follow what is going on here (good docs btw in the earlier
+> > > patch definitely helped).
+> > > 
+> > > So far I'm thoroughly in favour of road test subject to actually being
+> > > able to review the tests or getting sufficient support to do so.
+> > > It's a 'how to scale it' question really...  
+> > 
+> > Would rewriting the framework in C and forcing tests to be written in
+> > that language mean that maintainers would be able to review tests
+> > without external support?
 > 
-> accommodate
+> I was wondering that.  If we stayed in python I think we'd definitely want
+> someone to be the 'roadtester/tests' maintainer (or group of maintainers) 
+> and their Ack to be expected for all tests we upstream.  Idea being they'd
+> sanity check correct use of framework and just how bad the python code
+> us C developers are writing is ;)
 > 
->> +               If the current sampling frequency is out of range for the new
->> +               filter mode, the sampling frequency will be changed to the
->> +               closest valid one.
-> 
-> 
+> However, we'd still need a good chunk of that 'framework' use review even
+> if doing this in C.
+
+I think this is reasonable, especially for the first tests for each
+subsystem where there will likely be support code and framework bits
+missing.

@@ -2,69 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 442F55006CA
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 09:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F93500762
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 09:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240245AbiDNHTu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 03:19:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43436 "EHLO
+        id S240711AbiDNHpX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Apr 2022 03:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239131AbiDNHTt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 03:19:49 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1614D369F1;
-        Thu, 14 Apr 2022 00:17:25 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id u15so8262741ejf.11;
-        Thu, 14 Apr 2022 00:17:25 -0700 (PDT)
+        with ESMTP id S240708AbiDNHoB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 03:44:01 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C27F5C357;
+        Thu, 14 Apr 2022 00:41:12 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id lc2so8362984ejb.12;
+        Thu, 14 Apr 2022 00:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=lSMs6l95Aa4HubZ47TtOEpTFtR/B9ipIM8nu8U2XOBY=;
-        b=HntGjBdcpUVX0rjAbjH4K3HcKAohdWFHDE0kyRAFF0Hrwon/zxMWFgB2iPRD4Fk9e7
-         rKAOyO2L8ed3ClLi6GxPP5iG8QQ09aPaqRhijK+uwPATLLOYAlmt14LGcDG5JISwQWsw
-         5Pr3YFFoEpxrZozh4mfMaul8xqcnYtdK1N3meDCKT9USNO8Aa8NDi4wWetqzGM2WoY0Z
-         Y6PZeWTs/eQbaZz3enGu3x5BzYR3cP2wXspFhCFC0syyh9fN88vjmQckKsN47r2p2rN2
-         CLTocRhuHWll51R2SElYOHPGqoU4QQx5cvtpdEkDKiKE4sVTKBTimI6+n5X8q3drDcTW
-         M5Ig==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=hsjfJ6kNyOdmk849dkXwmpwJx9bBByejcTJHu02YdnI=;
+        b=OOBFZscKCDVHuImiGxP4PahXd3VpmRBSqVBz0rxiuq7OgqnedoqYRC8XpPwzi4tXcf
+         cUoDpUA1jZqnPD1nBNrWjqNwVroHsRrlBgKu60+gffwg97pevSxwTUphb0qSbiYeGQKa
+         3YBOiLsr7YPWI7dv+QUgvUq20iYagdNq5n3kK+m8li9FDM9L4PpoYWuzERD4L5Nj3yz0
+         D/9jdIhTA4Il+/5bsbmj5/Q++mWJknGQXHBELqzt3v1InF+BrXRqoWXfByJhKYRGBpm/
+         SKL+eju+TOWUisO41z7uh73l2lWyZU0jcihVxK0BOnrPLb3zan7w6IJoCQIEyI+aT0fC
+         iTdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=lSMs6l95Aa4HubZ47TtOEpTFtR/B9ipIM8nu8U2XOBY=;
-        b=A2B4IXRjGpwPaD4YfzNTAXwVV9e5jCqV15j3ggpC9xRZE3DjbZBdTHKGpsF+c14uIX
-         I1BLPf+iBvXFrYgaeudR/y8h4B8ta9mJIY+nbB5YVrsw03E7m0lKDRmopivgx4Tf9xPw
-         I17yOoNXBrIGHWne+UT0gP2G89EilQP+tz4EEhEJKjCniFysno/1RTj4dJCQlJUhMNhl
-         e8J+15+nsrqtmK2wMoTd8hnB9mbR7o2b62lil+Pk2N5mcjmc8e0FP/sx4sZ/nWufbK4f
-         PQZkMCXhoFj8BfxG2n/vLkdCjBBYyz1YaCaY4oFSsOEUkvwXD6cpsXQlxlhshGAJt/+e
-         zDFw==
-X-Gm-Message-State: AOAM533QBIqbCdJci7H7wb33FMeMCv82UEWiXrVFgeHFc8DdmJlUHoT9
-        CvPkXqNi9jwsY/uLz7YVCNA=
-X-Google-Smtp-Source: ABdhPJw11IhiSGrmELHGd/U29IfBfy5bHbAMd57P4VEjerEPcJXfjsQO75ho/8DCQRSdSqWCdMTd5g==
-X-Received: by 2002:a17:906:7056:b0:6d6:dd99:f2a4 with SMTP id r22-20020a170906705600b006d6dd99f2a4mr1144949ejj.43.1649920643487;
-        Thu, 14 Apr 2022 00:17:23 -0700 (PDT)
-Received: from ?IPv6:2001:a61:2b2c:c401:dd5:7d95:7a65:6518? ([2001:a61:2b2c:c401:dd5:7d95:7a65:6518])
-        by smtp.gmail.com with ESMTPSA id j10-20020aa7de8a000000b004215209b077sm70538edv.37.2022.04.14.00.17.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 00:17:23 -0700 (PDT)
-Message-ID: <fd9aa60147aba2d76e4b2d1b82011c610d3e52d6.camel@gmail.com>
-Subject: Re: [PATCH v1 1/1] iio: core: Convert to use firmware node handle
- instead of OF node
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Date:   Thu, 14 Apr 2022 09:17:22 +0200
-In-Reply-To: <20220413180202.19220-1-andriy.shevchenko@linux.intel.com>
-References: <20220413180202.19220-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=hsjfJ6kNyOdmk849dkXwmpwJx9bBByejcTJHu02YdnI=;
+        b=p8ixT4yY6vvDBRi2InwVWBO1e7rn+nNraRVlCrAx60uN/tfj9odCki25ea9AthM5JA
+         1P0YwDfA+AbIHZfjMWvUjHwEb0b77X3LDt47/qygUV+p78jF+nMqV0k4kLE/cvhuKP2x
+         4NZjKaj5VDx5TBH1Ay9NZRzZL1ZkF53ydOLcDxs/oPuId32BjInDedfjw868+i3uiWjM
+         ofNthCjOHLVhqcT0vs0HFGWVKbtuYNUYh1Ym+H7ba+LdsTdhVZan8RcHBzkYACX8eZvp
+         qBo3KO6wf06LPRk6oN3u4NdrIv84hXbtcf9eu7ZusFDeXwBLkG1/oWgaTJb5prjhj+YJ
+         UDMg==
+X-Gm-Message-State: AOAM530TgwRt2n6l+G62EwTNabxSmV6wMWf2zUF/RU+YKKW8Qfe3VO16
+        rkbgU/H7YXLS3DOOi6Fb+GA=
+X-Google-Smtp-Source: ABdhPJyaJYKew2SO25i61AvtBgkDD8PLjatVIn+03272639bqiiIjwjiKiJpaQuYUMWnL9efVxDhTw==
+X-Received: by 2002:a17:906:7304:b0:6e0:6918:ef6f with SMTP id di4-20020a170906730400b006e06918ef6fmr1222274ejc.370.1649922070582;
+        Thu, 14 Apr 2022 00:41:10 -0700 (PDT)
+Received: from [192.168.0.182] ([188.24.22.234])
+        by smtp.gmail.com with ESMTPSA id lb4-20020a170907784400b006e0d13f65e5sm370876ejc.167.2022.04.14.00.41.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Apr 2022 00:41:10 -0700 (PDT)
+Message-ID: <0de7fcb5-0d5f-d8b3-448a-2bc14cef21ee@gmail.com>
+Date:   Thu, 14 Apr 2022 10:41:09 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v1 2/3] iio: ABI: adc: ad4130: document
+ filter_mode{,_available}
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
+ <20220413094011.185269-2-cosmin.tanislav@analog.com>
+ <CAHp75VexJBnAqoQ53=_nif=bso0-cNj4EsTbUwKGKxfNq_Fvyw@mail.gmail.com>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <CAHp75VexJBnAqoQ53=_nif=bso0-cNj4EsTbUwKGKxfNq_Fvyw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,81 +82,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2022-04-13 at 21:02 +0300, Andy Shevchenko wrote:
-> Switch the IIO core to use firmware node handle instead of OF node.
-> This will allow to get label from firmware on non-OF systems.
+
+
+On 4/13/22 17:51, Andy Shevchenko wrote:
+> On Wed, Apr 13, 2022 at 4:17 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
 > 
-> Note, this doesn't change of_iio_*() APIs for now.
+> It's good you provided documentation, but I think the part "ABI:" is
+> not needed in the Subject.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/iio/industrialio-core.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
+
+Then I guess I could merge this patch into the driver patch?
+
+>> AD4130-8 is an ultra-low power, high precision,
+>> measurement solution for low bandwidth battery
+>> operated applications.
+>>
+>> The fully integrated AFE (Analog Front-End)
+>> includes a multiplexer for up to 16 single-ended
+>> or 8 differential inputs, PGA (Programmable Gain
+>> Amplifier), 24-bit Sigma-Delta ADC, on-chip
+>> reference and oscillator, selectable filter
+>> options, smart sequencer, sensor biasing and
+>> excitation options, diagnostics, and a FIFO
+>> buffer.
 > 
-> diff --git a/drivers/iio/industrialio-core.c
-> b/drivers/iio/industrialio-core.c
-> index 2f48e9a97274..ffbe76806e07 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1893,20 +1893,22 @@ static const struct iio_buffer_setup_ops
-> noop_ring_setup_ops;
->  int __iio_device_register(struct iio_dev *indio_dev, struct module
-> *this_mod)
->  {
->         struct iio_dev_opaque *iio_dev_opaque =
-> to_iio_dev_opaque(indio_dev);
-> -       const char *label;
-> +       struct fwnode_handle *fwnode;
->         int ret;
->  
->         if (!indio_dev->info)
->                 return -EINVAL;
->  
->         iio_dev_opaque->driver_module = this_mod;
-> -       /* If the calling driver did not initialize of_node, do it
-> here */
-> -       if (!indio_dev->dev.of_node && indio_dev->dev.parent)
-> -               indio_dev->dev.of_node = indio_dev->dev.parent-
-> >of_node;
->  
-> -       label = of_get_property(indio_dev->dev.of_node, "label",
-> NULL);
-> -       if (label)
-> -               indio_dev->label = label;
-> +       /* If the calling driver did not initialize firmware node, do
-> it here */
-> +       if (dev_fwnode(&indio_dev->dev))
-> +               fwnode = dev_fwnode(&indio_dev->dev);
-> +       else
-> +               fwnode = dev_fwnode(indio_dev->dev.parent);
-> +       device_set_node(&indio_dev->dev, fwnode);
-> +
-> +       fwnode_property_read_string(fwnode, "label", &indio_dev-
-> >label);
->  
->         ret = iio_check_unique_scan_index(indio_dev);
->         if (ret < 0)
-
-Hi Andy,
-
-So I was actually planning to send the same patch today or in the next
-few days. I do also have the conversion of inkern.c so I guess we can
-move in 3 different ways:
-
-1. If you are planning or already have some work with it, I'm more than
-fine in just forgetting my patches and let you do it (you are cleaning
-all the drivers already)
-
-2. I can send the patch (without this one) already for reviewing... It
-won't apply because I think there will be some conflicts with some of
-the drivers you changed already. Fun fact, remove of.h from iio.h and
-you see some drivers relying on it for property.h and mod_devicetable.h
-
-3. Just wait for your latest patches to be merged and send mine next
-week.
-
-Up to you :)
-
-- Nuno Sá
-
-
+> Indentation issue as per patch 1.
+> 
+> ...
+> 
+>> +               Set the filter mode of the differential channel. When the filter
+>> +               mode changes, the in_voltageY-voltageZ_sampling_frequency and
+>> +               in_voltageY-voltageZ_sampling_frequency_available attributes
+>> +               might also change to accomodate the new filter mode.
+> 
+> accommodate
+> 
+>> +               If the current sampling frequency is out of range for the new
+>> +               filter mode, the sampling frequency will be changed to the
+>> +               closest valid one.
+> 
+> 

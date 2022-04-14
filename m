@@ -2,68 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5474E500692
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 09:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 442F55006CA
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 09:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240233AbiDNHJ5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 03:09:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35730 "EHLO
+        id S240245AbiDNHTu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Apr 2022 03:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240232AbiDNHJ4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 03:09:56 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 685A353E06;
-        Thu, 14 Apr 2022 00:07:32 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id p15so8263386ejc.7;
-        Thu, 14 Apr 2022 00:07:32 -0700 (PDT)
+        with ESMTP id S239131AbiDNHTt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 03:19:49 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1614D369F1;
+        Thu, 14 Apr 2022 00:17:25 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id u15so8262741ejf.11;
+        Thu, 14 Apr 2022 00:17:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=oqwnBa3vRK8c7PWrMJXfLYeX+P589KiwcMk0Kfia4mA=;
-        b=Qc9E+wfQBU77wff9QdMJNpl1nbiuPHN4F3Tp+X2wNcFaNgeeepIJiX2qPGwOp7oyZL
-         B+2DJnGUjMdjqTO0wOENN9ShyxDU2usArOX9UTFZDGrNyNACPQcaNsEkdcn9RttdFG5S
-         pHbHUzgtRFH9IrYdt26x2B57aNUWLOgFXhtycGubpXKFhGp4iyk462xtIRQSeOHumUK1
-         hiLTHvnyNFwyU4k+opM2Ht6bRwaXJrk+OGPn3z8YGy7xYw6+U9tZbGQ+8+Onc37Bhxti
-         6QisIl6d8mZgwVBgSgO1tvZsloUmjQTEsgBjzGSVqQQN130s6qag7kSLKpa0CbSF55JB
-         rDVA==
+        bh=lSMs6l95Aa4HubZ47TtOEpTFtR/B9ipIM8nu8U2XOBY=;
+        b=HntGjBdcpUVX0rjAbjH4K3HcKAohdWFHDE0kyRAFF0Hrwon/zxMWFgB2iPRD4Fk9e7
+         rKAOyO2L8ed3ClLi6GxPP5iG8QQ09aPaqRhijK+uwPATLLOYAlmt14LGcDG5JISwQWsw
+         5Pr3YFFoEpxrZozh4mfMaul8xqcnYtdK1N3meDCKT9USNO8Aa8NDi4wWetqzGM2WoY0Z
+         Y6PZeWTs/eQbaZz3enGu3x5BzYR3cP2wXspFhCFC0syyh9fN88vjmQckKsN47r2p2rN2
+         CLTocRhuHWll51R2SElYOHPGqoU4QQx5cvtpdEkDKiKE4sVTKBTimI6+n5X8q3drDcTW
+         M5Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=oqwnBa3vRK8c7PWrMJXfLYeX+P589KiwcMk0Kfia4mA=;
-        b=7nbRKk/Nqa8n+jzsWdTxXXxOQE8VDkpEhIXimwFubgy8T/p1q5yjo22mg5EBz7SFlJ
-         NRTHVQRi3cupzLkAUQ/78TLDyJoyZkR8rZ7mprFKZk4blZefQe582phkzJyPYVUQ7dew
-         EipR2J6f10utf56eImHPC/sOPQIhBT4j+USbAFctf2ogri0sMwl+FQvOjSDTQZf2Vjb5
-         lyVG++Fa5MH7comi4Y7ubtW0EzGHiEjCSHg0xDspGcmCjyUEV9UOIJ/EoQV/eP5QxPow
-         BMBe7wbM6RMnxznvE94NoJuQNQ0t2WxyL31/SKM449hhl7ciEzv61yJ4b6x9vhjfdhYV
-         DB4A==
-X-Gm-Message-State: AOAM532UiLO3tj4EHTXSNPwEzSoj0ybIrcINK/YuVRnoVQhFN2X730qs
-        OMvRYXhwJEWjQQVs9lXFOME=
-X-Google-Smtp-Source: ABdhPJy9iBPa3gYce292bgP1ajNTxKBPZO03zfLAllYQv/BAhGL7Pb3FTNcFsG9XN8UgBHiQMNlAkg==
-X-Received: by 2002:a17:907:2d90:b0:6e8:720c:d8e1 with SMTP id gt16-20020a1709072d9000b006e8720cd8e1mr1152183ejc.514.1649920050834;
-        Thu, 14 Apr 2022 00:07:30 -0700 (PDT)
+        bh=lSMs6l95Aa4HubZ47TtOEpTFtR/B9ipIM8nu8U2XOBY=;
+        b=A2B4IXRjGpwPaD4YfzNTAXwVV9e5jCqV15j3ggpC9xRZE3DjbZBdTHKGpsF+c14uIX
+         I1BLPf+iBvXFrYgaeudR/y8h4B8ta9mJIY+nbB5YVrsw03E7m0lKDRmopivgx4Tf9xPw
+         I17yOoNXBrIGHWne+UT0gP2G89EilQP+tz4EEhEJKjCniFysno/1RTj4dJCQlJUhMNhl
+         e8J+15+nsrqtmK2wMoTd8hnB9mbR7o2b62lil+Pk2N5mcjmc8e0FP/sx4sZ/nWufbK4f
+         PQZkMCXhoFj8BfxG2n/vLkdCjBBYyz1YaCaY4oFSsOEUkvwXD6cpsXQlxlhshGAJt/+e
+         zDFw==
+X-Gm-Message-State: AOAM533QBIqbCdJci7H7wb33FMeMCv82UEWiXrVFgeHFc8DdmJlUHoT9
+        CvPkXqNi9jwsY/uLz7YVCNA=
+X-Google-Smtp-Source: ABdhPJw11IhiSGrmELHGd/U29IfBfy5bHbAMd57P4VEjerEPcJXfjsQO75ho/8DCQRSdSqWCdMTd5g==
+X-Received: by 2002:a17:906:7056:b0:6d6:dd99:f2a4 with SMTP id r22-20020a170906705600b006d6dd99f2a4mr1144949ejj.43.1649920643487;
+        Thu, 14 Apr 2022 00:17:23 -0700 (PDT)
 Received: from ?IPv6:2001:a61:2b2c:c401:dd5:7d95:7a65:6518? ([2001:a61:2b2c:c401:dd5:7d95:7a65:6518])
-        by smtp.gmail.com with ESMTPSA id g23-20020a170906199700b006e874c0f5eesm345987ejd.198.2022.04.14.00.07.30
+        by smtp.gmail.com with ESMTPSA id j10-20020aa7de8a000000b004215209b077sm70538edv.37.2022.04.14.00.17.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 00:07:30 -0700 (PDT)
-Message-ID: <03fa4823b820b3eb2499a002a7570e79641b4a78.camel@gmail.com>
-Subject: Re: [PATCH v1 3/3] iio: imu: adis16480: Fix getting the optional
- clocks
+        Thu, 14 Apr 2022 00:17:23 -0700 (PDT)
+Message-ID: <fd9aa60147aba2d76e4b2d1b82011c610d3e52d6.camel@gmail.com>
+Subject: Re: [PATCH v1 1/1] iio: core: Convert to use firmware node handle
+ instead of OF node
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Date:   Thu, 14 Apr 2022 09:07:29 +0200
-In-Reply-To: <YlcBMGkdmGTq/mnr@smile.fi.intel.com>
-References: <20220413144124.72537-1-andriy.shevchenko@linux.intel.com>
-         <20220413144124.72537-3-andriy.shevchenko@linux.intel.com>
-         <PH0PR03MB67865D24BB7546CAF805D7BE99EC9@PH0PR03MB6786.namprd03.prod.outlook.com>
-         <YlcBMGkdmGTq/mnr@smile.fi.intel.com>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Date:   Thu, 14 Apr 2022 09:17:22 +0200
+In-Reply-To: <20220413180202.19220-1-andriy.shevchenko@linux.intel.com>
+References: <20220413180202.19220-1-andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
@@ -78,51 +73,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2022-04-13 at 19:58 +0300, Andy Shevchenko wrote:
-> On Wed, Apr 13, 2022 at 03:38:47PM +0000, Sa, Nuno wrote:
-> > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Sent: Wednesday, April 13, 2022 4:41 PM
+On Wed, 2022-04-13 at 21:02 +0300, Andy Shevchenko wrote:
+> Switch the IIO core to use firmware node handle instead of OF node.
+> This will allow to get label from firmware on non-OF systems.
 > 
-> > > The extended clocks are optional and may not be present for some
-> > > SoCs
-> > > supported by this driver. Nevertheless, in case the clock is
-> > > provided
-> > > but some error happens during its getting, that error should be
-> > > handled
-> > > properly. Use devm_clk_get_optional() API for that. Also report
-> > > possible
-> > > errors using dev_err_probe() to handle properly -EPROBE_DEFER
-> > > error.
+> Note, this doesn't change of_iio_*() APIs for now.
 > 
-> > This is a nice cleanup patch... But the subject might be a bit
-> > misleading as it says "Fix". So I would expect a Fixes tag which
-> > I'm not sure it's really worth it here. Yes, the code was pretty
-> > much
-> > doing clk_get_optional() "by hand" but I think it was still
-> > functional.
-> > So to me, this is more an improvement rather than a fix...
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/iio/industrialio-core.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
 > 
-> Actually it is a fix, but not critical since no-one complains aloud
-> so far.
-> The problematic part is logs exhausting if repetitive deferred probe
-> happens.
-> 
+> diff --git a/drivers/iio/industrialio-core.c
+> b/drivers/iio/industrialio-core.c
+> index 2f48e9a97274..ffbe76806e07 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1893,20 +1893,22 @@ static const struct iio_buffer_setup_ops
+> noop_ring_setup_ops;
+>  int __iio_device_register(struct iio_dev *indio_dev, struct module
+> *this_mod)
+>  {
+>         struct iio_dev_opaque *iio_dev_opaque =
+> to_iio_dev_opaque(indio_dev);
+> -       const char *label;
+> +       struct fwnode_handle *fwnode;
+>         int ret;
+>  
+>         if (!indio_dev->info)
+>                 return -EINVAL;
+>  
+>         iio_dev_opaque->driver_module = this_mod;
+> -       /* If the calling driver did not initialize of_node, do it
+> here */
+> -       if (!indio_dev->dev.of_node && indio_dev->dev.parent)
+> -               indio_dev->dev.of_node = indio_dev->dev.parent-
+> >of_node;
+>  
+> -       label = of_get_property(indio_dev->dev.of_node, "label",
+> NULL);
+> -       if (label)
+> -               indio_dev->label = label;
+> +       /* If the calling driver did not initialize firmware node, do
+> it here */
+> +       if (dev_fwnode(&indio_dev->dev))
+> +               fwnode = dev_fwnode(&indio_dev->dev);
+> +       else
+> +               fwnode = dev_fwnode(indio_dev->dev.parent);
+> +       device_set_node(&indio_dev->dev, fwnode);
+> +
+> +       fwnode_property_read_string(fwnode, "label", &indio_dev-
+> >label);
+>  
+>         ret = iio_check_unique_scan_index(indio_dev);
+>         if (ret < 0)
 
-Still not really agree with it... In the commit message you state that
-errors are not properly handled and so let's use
-'devm_clk_get_optional()'. I don't think that is true because If im not
-missing nothing there's no fundamental change between the previous code
-and using 'devm_clk_get_optional()'. So to me this is an enhancement
-because we were doing something "by hand" when we have an API for it.
+Hi Andy,
 
-That said, introducing dev_err_probe() indeed stops possibly annoying
-error messages for EPROBE_DEFER (and that could be seen as a fix, not
-really devm_clk_get_optional()). I honestly still don't see it as fix
-but we are also not adding a Fixes tag so I don't really care :).
+So I was actually planning to send the same patch today or in the next
+few days. I do also have the conversion of inkern.c so I guess we can
+move in 3 different ways:
 
-(But I still think the commit message is a bit misleading)
+1. If you are planning or already have some work with it, I'm more than
+fine in just forgetting my patches and let you do it (you are cleaning
+all the drivers already)
+
+2. I can send the patch (without this one) already for reviewing... It
+won't apply because I think there will be some conflicts with some of
+the drivers you changed already. Fun fact, remove of.h from iio.h and
+you see some drivers relying on it for property.h and mod_devicetable.h
+
+3. Just wait for your latest patches to be merged and send mine next
+week.
+
+Up to you :)
 
 - Nuno Sá
-> 
-> 
+
 

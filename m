@@ -2,90 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27D95019B6
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 19:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0179B501AB5
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Apr 2022 20:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244276AbiDNRN2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 13:13:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45154 "EHLO
+        id S1344322AbiDNSEz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Apr 2022 14:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344066AbiDNRMx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 13:12:53 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DE5DBD1A;
-        Thu, 14 Apr 2022 10:04:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649955845; x=1681491845;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lZrj1oBd0y7HooWyS6SxzdEPNlLGWptWv5QdmhowQ7U=;
-  b=P+sfm98fWQch04JOMmWud8dkMiXG9hQGmuAIM2/Gl8JqfdU221tun8Bo
-   slphqmLF8jSDK2ZOWKF0UrXwc0C1/m+mld7OsZn6LzEp6N4UMJHytM1Ii
-   RXzuGa/07mG4bjuF8cpW3GdATSMBwnSRQKhFw/LZ0Hv1sgTbQ9c7lHXuF
-   6JAgq1/7U5iL3PeLw7dS56Qs1MI/PYASdM2MCTvGSDzFksRLov8jkVy49
-   V8VT2GlqfpM1doiYLXy8OTAlMyrYJaa4kSDEaZEwLSA4NrwCigdgKlSl6
-   i4w8K5ntfvgxYGzotxfVP+XDdqovChjbvbiKBu4cFaneV8IJNIt3rVqIp
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10317"; a="244865045"
-X-IronPort-AV: E=Sophos;i="5.90,260,1643702400"; 
-   d="scan'208";a="244865045"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2022 10:04:05 -0700
-X-IronPort-AV: E=Sophos;i="5.90,260,1643702400"; 
-   d="scan'208";a="560269969"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2022 10:04:02 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nf2sy-002PZi-1C;
-        Thu, 14 Apr 2022 20:04:00 +0300
-Date:   Thu, 14 Apr 2022 20:03:59 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: afe: rescale: Make use of device properties
-Message-ID: <YlhT/yiJSD7pFsF8@smile.fi.intel.com>
-References: <20220413190117.29814-1-andriy.shevchenko@linux.intel.com>
- <Ylgwhu9zdmwwYnAq@shaak>
+        with ESMTP id S229555AbiDNSEz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 14:04:55 -0400
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC26085974;
+        Thu, 14 Apr 2022 11:02:29 -0700 (PDT)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-dacc470e03so6032894fac.5;
+        Thu, 14 Apr 2022 11:02:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9kQY7KYrORAXRdj8BS7CtbvQFtLXKlCapss2LUGGejI=;
+        b=c8PYoXzbecyFSTn4hc9onZzN6TAVpvknh/77qbaTtRdVZV0/2AjHBKudu75x9iAf7Q
+         JkEm2f513e8Zq9oSfCMJu07c6YC4XHqRv67cGA0/EvyXfBNVwH5T/1riA1S04zOrgU0E
+         07zP/0KUO8wVS6bNhu1wLwIXAtwyvTBcxyXzz2UI9RUUDM5a/Nfel3X1QfARxfgZ9yWA
+         3XcYxmoH5Yye4P5jsKa/ENb5g6PEYBnex0cryVfvZSXkBGXR0vmhBcErbZl4vFY0QFu1
+         pfsMUnNe9TTElVj2X8v1dytjf4EcybN6CCCWgv00M0oIQ4QS3Zyzy7+Ih4ycLUzXPDs3
+         dZbg==
+X-Gm-Message-State: AOAM533rkZcWzuqcflzn/kGItqBSp3pON5n05xL1svkg4t2BFqmKfONs
+        GiYZbGj7EG82RHSN6vpxvA==
+X-Google-Smtp-Source: ABdhPJxg/IzXLr9/pK68rl/yhXiL0WZz7ZwJQGzyFx0L13S4P88U4n2DfT3AFMuvduEA0czJc4UQrw==
+X-Received: by 2002:a05:6870:c892:b0:de:5f75:d8 with SMTP id er18-20020a056870c89200b000de5f7500d8mr2133742oab.133.1649959349136;
+        Thu, 14 Apr 2022 11:02:29 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id e22-20020a056870239600b000e2f0c69849sm940449oap.11.2022.04.14.11.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Apr 2022 11:02:28 -0700 (PDT)
+Received: (nullmailer pid 2320842 invoked by uid 1000);
+        Thu, 14 Apr 2022 18:02:27 -0000
+Date:   Thu, 14 Apr 2022 13:02:27 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        linux-media@vger.kernel.org,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-hwmon@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Agathe Porte <agathe.porte@nokia.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-spi@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH] dt-bindings: Fix array constraints on scalar properties
+Message-ID: <Ylhhs2hgbQg8Ugeb@robh.at.kernel.org>
+References: <20220413140121.3132837-1-robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Ylgwhu9zdmwwYnAq@shaak>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220413140121.3132837-1-robh@kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Apr 14, 2022 at 10:32:38AM -0400, Liam Beguin wrote:
-> Hi Andy,
+On Wed, 13 Apr 2022 09:01:21 -0500, Rob Herring wrote:
+> Scalar properties shouldn't have array constraints (minItems, maxItems,
+> items). These constraints can simply be dropped with any constraints under
+> 'items' moved up a level.
 > 
-> On Wed, Apr 13, 2022 at 10:01:17PM +0300, Andy Shevchenko wrote:
-> > Convert the module to be property provider agnostic and allow
-> > it to be used on non-OF platforms.
-
-> > +#include <linux/mod_devicetable.h>
+> Cc: Agathe Porte <agathe.porte@nokia.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+> Cc: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Cc: Yunfei Dong <yunfei.dong@mediatek.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: linux-hwmon@vger.kernel.org
+> Cc: alsa-devel@alsa-project.org
+> Cc: linux-iio@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-remoteproc@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/hwmon/ti,tmp464.yaml       | 5 ++---
+>  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml      | 4 +---
+>  Documentation/devicetree/bindings/media/coda.yaml            | 1 -
+>  .../devicetree/bindings/media/mediatek,vcodec-decoder.yaml   | 2 --
+>  .../devicetree/bindings/media/mediatek,vcodec-encoder.yaml   | 2 --
+>  .../bindings/media/mediatek,vcodec-subdev-decoder.yaml       | 1 -
+>  .../devicetree/bindings/remoteproc/qcom,sc7280-wpss-pil.yaml | 4 +---
+>  Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml  | 2 --
+>  8 files changed, 4 insertions(+), 17 deletions(-)
 > 
-> Is this really needed?
 
-Yes.
-This header is missed. I can split its addition to a separate patch.
-
-> device_get_match_data() is already defined in <linux/property.h>
-
-It's indirectly related (just like we do when we clean up of.h). Since
-the original of.h is missed there is no header replacement, just adding.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Applied, thanks!

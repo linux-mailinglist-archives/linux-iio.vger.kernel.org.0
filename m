@@ -2,64 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 088D4502017
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 03:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3890A50271A
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 10:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345690AbiDOBXs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Apr 2022 21:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47344 "EHLO
+        id S1351575AbiDOIxD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Apr 2022 04:53:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343588AbiDOBXr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Apr 2022 21:23:47 -0400
-Received: from mail.meizu.com (edge05.meizu.com [157.122.146.251])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DC802A738;
-        Thu, 14 Apr 2022 18:21:20 -0700 (PDT)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail12.meizu.com
- (172.16.1.108) with Microsoft SMTP Server (TLS) id 14.3.487.0; Fri, 15 Apr
- 2022 09:21:19 +0800
-Received: from [172.16.137.70] (172.16.137.70) by IT-EXMB-1-125.meizu.com
- (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Fri, 15 Apr
- 2022 09:21:18 +0800
-Message-ID: <413b9d1c-922e-43cf-b864-52b73622a53d@meizu.com>
-Date:   Fri, 15 Apr 2022 09:21:17 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH] iio: gp2ap020a00f: Fix signedness bug
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1351534AbiDOIxB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 04:53:01 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3886B8236;
+        Fri, 15 Apr 2022 01:50:33 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: aferraris)
+        with ESMTPSA id 6CF7B1F4024A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1650012631;
+        bh=97YXroeyDkQDT1z2Pkh9zbKqmO8YB3LrWCRnc+QZ/pM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=R2iZCUxGUtu51GfEP0us/6f4qXcMLzQUz4z5gsV+kZcoCX6/2/MGpifOLm+uACjDc
+         iIFgc3f2RBhEAbES2LCrGBnvZ//5oGNxGm43lQgQq4RMUkdRoscVKdcJ+A98raArmf
+         nFoHcIIpWCYW8S4mzAVaJuribMeSFM26QCk33nhlQtnkCwdUVIRj0+pDW5PLtB1oGT
+         PmQLHI2AWzUNEiPKkyTJ5luYBJXBgoEA3G2/IHZI9dY7lZ7/3Jnupyohr/T+I+jKcz
+         wqfiynzKAea2LTqmj1H9DJ50JlCJigOmF/w+7MKgXrH/z9DXyKsX4Ga3/F+VNkySLL
+         RFO9WmNBN2S8g==
+From:   Arnaud Ferraris <arnaud.ferraris@collabora.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <1649933135-14236-1-git-send-email-baihaowen@meizu.com>
- <CAHp75VfbZhMvs7dHwadvNs6maPsBVOY3Mk5wkKSwZ1RANQQHDA@mail.gmail.com>
-From:   baihaowen <baihaowen@meizu.com>
-In-Reply-To: <CAHp75VfbZhMvs7dHwadvNs6maPsBVOY3Mk5wkKSwZ1RANQQHDA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com
+Subject: [PATCH 0/2] iio: stk3310: Export near level property for proximity sensor
+Date:   Fri, 15 Apr 2022 10:50:16 +0200
+Message-Id: <20220415085018.35063-1-arnaud.ferraris@collabora.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [172.16.137.70]
-X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
- IT-EXMB-1-125.meizu.com (172.16.1.125)
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        NICE_REPLY_A,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-在 4/14/22 9:47 PM, Andy Shevchenko 写道:
-> On Thu, Apr 14, 2022 at 2:19 PM Haowen Bai <baihaowen@meizu.com> wrote:
->> function gp2ap020a00f_get_thresh_reg() is unsigned but returning -EINVAL
->> errcode, and thresh_reg_l is unsigned but receiving -EINVAL errcode. so
->> we have to change u8 -> s8.
-> s8 is not enough to hold an (arbitrary) error code. To be on the safe
-> side you need to use int.
->
-Thank you for your suggestion.
+Userspace tools like iio-sensor-proxy need to be instructed the value from
+which they should consider an object is "near". This threshold can be
+exported through the sysfs ABI based on the "proximity-near-level"
+device-tree property.
+
+This patchset implements this property for the stk3310 driver and adds the
+necessary bits to export its value to userspace. It is based on similar
+changes applied to the vcnl4000 and ltr501 drivers.
+
+Arnaud Ferraris (2):
+  dt-bindings: iio: light: stk33xx: Add proximity-near-level
+  iio: stk3310: Export near level property for proximity sensor
+
+ .../bindings/iio/light/stk33xx.yaml           |  6 +++++
+ drivers/iio/light/stk3310.c                   | 26 +++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
 -- 
-Haowen Bai
-
+2.35.1

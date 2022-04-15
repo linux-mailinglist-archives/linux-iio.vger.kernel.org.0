@@ -2,47 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C4C502E76
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 19:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1422502E7D
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 19:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343970AbiDORzz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Apr 2022 13:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55354 "EHLO
+        id S1344553AbiDOR6f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Apr 2022 13:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244359AbiDORzy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 13:55:54 -0400
+        with ESMTP id S241675AbiDOR6e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 13:58:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8178CDAFFC
-        for <linux-iio@vger.kernel.org>; Fri, 15 Apr 2022 10:53:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CE9C2DA8A;
+        Fri, 15 Apr 2022 10:56:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D19A622FD
-        for <linux-iio@vger.kernel.org>; Fri, 15 Apr 2022 17:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45F8C385A5;
-        Fri, 15 Apr 2022 17:53:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE78F6230A;
+        Fri, 15 Apr 2022 17:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECC5C385A4;
+        Fri, 15 Apr 2022 17:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650045204;
-        bh=5+IEmpSS1GjiVuIKakf9YP/oN2rx7cw3sbeO4zyGZfE=;
+        s=k20201202; t=1650045365;
+        bh=T2xdRfkWG7nNM/RZqU/ytJtED300+Bj/aG4zjzKjp9s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D14O2ra5AQN39+R5kynBOQTCqClD2V3c3Q1JAhOybpmqMicj0j1qVFNgmC6JDfzoA
-         B4BJU5odhDYF/y4A+CreWes+zdNVebPS6ad4zDNQx5KHots5xeriyfNlmZFRnSJ+mG
-         FFp6rt6shAcvE6uM4KZe3Xoi/QX54BYlrZcAhCbJgtm8ICDc9DFxVLpb/hwmlqId3O
-         Gysrez2VrlUkH/NcjdA6kNpZA4e9CrhXz6/r+Z1PSahHgGzPu0kW6aXt09AZ1BxNmo
-         0z6SDHXCVvSLAO6jaw9htAJjXGNtvtcLw/JZ4s4p5N3lBhdDeiUNRO3Jg9XS/LvsoT
-         jlskYtYqZE4WA==
-Date:   Fri, 15 Apr 2022 19:01:22 +0100
+        b=ZH+OdZtuE3tmQdhMbm8jS+TzG2OjOf0Cdx5nUetecJAZqkcx7r69WXw/1a76uZXB8
+         PThcRlIRIQfXM16pRROtFRehyzpxZ3K3/n5LmmXvdSVVKLB/djuFuNVZK/KXuT+rXO
+         vLj7dw+jV3E/Ncm2fRaCk42RAIpWNGisHLtCaOotpzotT20iCt3QT7JruqY7zeeukF
+         FNe2H1Vjse6kCj1YO4QN7CoFcFa0XmtFv7/Yws6qHKwjRZ8bLU0/Pu37eIrDkc4d5F
+         WAL8+kI516kmPERSnxVaxilJqYlTwyPGTYEq9IIYTijgBIDyn3+0LHPlnU/GdZ4yDS
+         Q+6E5m4bMemVw==
+Date:   Fri, 15 Apr 2022 19:04:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Fawzi Khaber <Fawzi.Khaber@tdk.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: iio: imu new driver
-Message-ID: <20220415190122.0c36b6d7@jic23-huawei>
-In-Reply-To: <FR3P281MB175790BCD24EC802E3B22EC8CEEF9@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <FRYP281MB020540A2361C4DCDB9F315A694EF9@FRYP281MB0205.DEUP281.PROD.OUTLOOK.COM>
-        <89c89115-334b-27ae-413c-73b3006d3ffa@metafoo.de>
-        <FR3P281MB175790BCD24EC802E3B22EC8CEEF9@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v1 1/3] iio: imu: adis16480: Make use of device
+ properties
+Message-ID: <20220415190403.220b135d@jic23-huawei>
+In-Reply-To: <YlcBTfVdtp7nUhjR@smile.fi.intel.com>
+References: <20220413144124.72537-1-andriy.shevchenko@linux.intel.com>
+        <PH0PR03MB67867FD2A0043F5331D1C5E399EC9@PH0PR03MB6786.namprd03.prod.outlook.com>
+        <YlcBTfVdtp7nUhjR@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +60,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 14 Apr 2022 13:03:28 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+On Wed, 13 Apr 2022 19:58:53 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Hello,
+> On Wed, Apr 13, 2022 at 03:25:49PM +0000, Sa, Nuno wrote:
+> > > -----Original Message-----
+> > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > Sent: Wednesday, April 13, 2022 4:41 PM =20
 >=20
-> accel and gyro are synchronized and are outputting data inside the same h=
-ardware FIFO, as inv_icm42600 is doing. The issue is that the sensors have =
-different frequencies, using a header for signaling data availability, thus=
- demultiplexing from userspace is not possible in a standard way.
+> ...
 >=20
-> Solution found for inv_icm42600 was to use 2 devices with each one a buff=
-er. FIFO is read, data demultiplexed, and sent in each device. Now that we =
-can have 2 buffers for 1 device, is it simpler to use this solution rather =
-than 2 devices?
+> > You beat me to do this. I actually had planned to do this next week
+> > once I saw we already have fwnode_irq_get_byname(). Anyways...
+> >=20
+> > Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >=20
+> > (I will still give this a test next week) =20
 >=20
-
-yes.  I'd go with two buffers, one device now we have the option to do that.
-You 'could' do something special to allow the case where the sampling rates=
- are
-equal if that is sufficiently interesting but so far I don't think we have
-any drivers doing that sort of thing.
-
-Roughly speaking it would mean two buffers:
-1) Buffer A: All channels present - but you could only enable them all
-   if the sampling frequencies match.
-2) Buffer B: Other channels with separate sampling frequencies.
-
-Then a user could in theory pick the best of all possible worlds.
-I'm assuming that there are truely synchronised modes, but there
-are device out there where the sensors are independently clocked
-and just push into a common front end buffer. If it's one of those
-then this trick wouldn't work.
-
-Note I wouldn't enable this initially in the drive anyway as its
-going to be complex - start off with two buffers and get that upstream
-first.
+> Thanks!
+>=20
+I'll wait to apply it until you confirm all was good (mind you I haven't
+read it yet :)
 
 Thanks,
 
 Jonathan
-
-> Thanks for your advice,
-> JB
->=20
->=20
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> Sent: Thursday, April 14, 2022 13:19
-> To: Fawzi Khaber <Fawzi.Khaber@tdk.com>; jic23@kernel.org <jic23@kernel.o=
-rg>
-> Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; linux-iio <l=
-inux-iio@vger.kernel.org>
-> Subject: Re: iio: imu new driver=20
-> =C2=A0
-> [CAUTION] This is EXTERNAL email. Do not click any links or open attachme=
-nts unless you recognize the sender and know the content is safe.
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> On 4/14/22 12:35, Fawzi Khaber wrote:
-> > Hello Jonathan,
-> > We are currently implementing a new driver for an invensense chip simil=
-ar=C2=A0to
-> > iio/imu/inv_icm42600. The chip has 2 sensors a gyroscope and an
-> > accelerometer, and we are wandering if it was better the have two
-> > IIO devices, one for each sensor, or just one IIO device with two buffe=
-rs. =20
->=20
-> Are these two completely independent sensors that only sit in the same=20
-> package or do they share a common clock and the data acquisition can be=20
-> synchronized?
->=20
-> If it is the latter the best might be to have a single device with a=20
-> single buffer.
->=20
-> Typical algorithms that process IMU data, like odometry, want to process=
-=20
-> the accelerator and gyroscope data jointly. If the data gets=20
-> artificially separated into two buffers it first has to be re-aligned,=20
-> which might be tricky to do.
->=20
-> - Lars
-

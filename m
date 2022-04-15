@@ -2,66 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A84502ABD
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 15:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5664502C21
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 16:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353994AbiDONDg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Apr 2022 09:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41262 "EHLO
+        id S1354674AbiDOOt5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Apr 2022 10:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353935AbiDONDI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 09:03:08 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA29366AD;
-        Fri, 15 Apr 2022 06:00:39 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id b15so9851701edn.4;
-        Fri, 15 Apr 2022 06:00:39 -0700 (PDT)
+        with ESMTP id S1351580AbiDOOtz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 10:49:55 -0400
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99728C7F5;
+        Fri, 15 Apr 2022 07:47:26 -0700 (PDT)
+Received: by mail-qv1-xf2f.google.com with SMTP id kl29so6613786qvb.2;
+        Fri, 15 Apr 2022 07:47:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=1uuQGvfh8vFWU1llTooYRNPk+PjiEO3+SafqMRB+yTM=;
-        b=MmV3Nlngf1Oa8Eqp2bgiBSkaDi4MmYrtIQ7m6mkS7q+rvOtnL6mw0Ed2GcZDynGLng
-         80khJtznKxUY0/ag2Hn7PnyIofTF0wtDNMzUcVkLuDhs8Ff24ZufppNfbzqMFeMXH2h6
-         7r+AFUpkur87hKgGrsDlpnFwkbrh6T5x3CbYxxc8RTCiH3yYjPTghw9aOXjhTa1JCm6x
-         7zBNUFubyB/Rqva4UjoUnQGvCk/oZaP1R8Cr4BoW1Zjn9T7vW/twEcqx/5uXzVNkofru
-         NOgeWNYfXe80bVuBV8PGRC/9+p1ujqCx+YTy79S/HX3Kug1BTcAVuOjRN4KogXXnk6/s
-         eOuA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3tZc/sDxSA7pYch9ELbn7khfDuX4s4QTkY73ST3PUqQ=;
+        b=ZGWKTQSnUo5Tey22DxTS65N/VcRNb5BOHCYswh6L2Jpl0YupoHs2fYpN0rIavkINHu
+         ZlxzPVnt9ImYCnW6Gv2HqXoES7i9u14MIInO0c+qRXYwCQ0fxvqAjHuStYbA8uDcN+Aq
+         6pJiw6l50YlEgUV8xcfW5rXP9nnsayQtckuW4/zpEbwFwHKDIBNzvBSS0iOGhuIfxPhF
+         WRY+rG/4qqvp3h0h0Yy+q1NfKeXHVgAMkquKmp3iz/pvDUHMWdhxGTrock1T7+Grr0NZ
+         MR/Kq9xv1X5zXaxCxVY+xAx1b43Vwwzsm7YhRVhP4ztkl8TbJtT/hm6+w0djf6PGVnU9
+         6/UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=1uuQGvfh8vFWU1llTooYRNPk+PjiEO3+SafqMRB+yTM=;
-        b=vNuj4T08Y0PeLdw0w5OCy7YExX6lIJyF76VM6ue/zmKt1sFc/ccNWENwNTdRThKVTK
-         z/xaAUUeHRvNuSamPBM1ohRWWoboI+d76GNQjSjnq/fSCCvKgErkWBHqRx3CzCvWOSQ4
-         WSkA+juQmTC27CBGJAY0V7fw59+wtKUEPFmQypDE1+Qjo1Y9xBNdAMzWOG2OchDCNUCN
-         s6ZyESnujznHbmZKuEqbpPhI7VEZBUHOIcCBmdZ6UOxfMA1n+fdiFgitqRzAc7fjk8rb
-         peDfw1n25QlqGc/ysbzlqNwMwyQNlJQ4Gs8+4YN3UJyBvRyB5/MwXj3TQMw+5zWn8cSX
-         ZtQA==
-X-Gm-Message-State: AOAM531VuRPAfkksav9ryQ/YYOpm0U545vy+gSTTZgutCxHbB8WoRwVX
-        mLPKUyRTeNZTzpRjjUuuPbM=
-X-Google-Smtp-Source: ABdhPJyeAttSECor5jE+sp05qKsQlQKvNgaay0NnVVoJUNP2Qsnt3bPdTnOv5ZMJB9IMW8NqCkvOuA==
-X-Received: by 2002:a05:6402:238d:b0:41d:7630:2300 with SMTP id j13-20020a056402238d00b0041d76302300mr8172120eda.363.1650027638294;
-        Fri, 15 Apr 2022 06:00:38 -0700 (PDT)
-Received: from poker.lan (static.2-229-210-222.ip198.fastwebnet.it. [2.229.210.222])
-        by smtp.gmail.com with ESMTPSA id i26-20020a50d75a000000b0041e84bb406fsm2704715edj.0.2022.04.15.06.00.37
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3tZc/sDxSA7pYch9ELbn7khfDuX4s4QTkY73ST3PUqQ=;
+        b=BFH8Ys3Q2fXLOyWw3qY9Rb0dEkP5HKCpHvG+AUsHYFgW4NuuMrqYDnVo6bisrHOsc/
+         xIhFPZmJmVacTU7lpN0krVAKpFB3uaa6r1NI+4kResEAdTwVt8CMXOSztpJJ+r/ui4PE
+         mvTqTxGEXbBa7WtU4TxPyGWQAfnx8O/CMjsLubF/zh6K9xdWRk1DQnShXqa+01Zz9g28
+         Eq14jio8lCD1YhDyfSaHuDvaR31qM/0KopOoJMTRMMQhpVdQBLUm+vTxfpsCB97rYvKV
+         lywVfjpHkBPWAyUK8hzZVvbFMI+1mb4iIWUu9/kVZwi0XFPa6Bd5F+RT+3qOAbhCQcBh
+         oGSQ==
+X-Gm-Message-State: AOAM533fzL27g7lT5Nt5RMSiRkKdis8DgKKGczJKnYep32VReX6NVo39
+        UVVr9QaGqkbwrdJke502cxw=
+X-Google-Smtp-Source: ABdhPJzDuCTu5ptW/nWVY1Zlcjoo0oijfEaHHhMUQTQqzqZqXkLdTGuGyqfYaoa8jFnJplnqchgw+Q==
+X-Received: by 2002:a05:6214:2307:b0:432:e753:e0c4 with SMTP id gc7-20020a056214230700b00432e753e0c4mr7664795qvb.55.1650034045905;
+        Fri, 15 Apr 2022 07:47:25 -0700 (PDT)
+Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
+        by smtp.gmail.com with ESMTPSA id w4-20020a05620a0e8400b0067b1bcd081csm2400925qkm.66.2022.04.15.07.47.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Apr 2022 06:00:37 -0700 (PDT)
-From:   Andrea Merello <andrea.merello@gmail.com>
-To:     jic23@kernel.org, mchehab+huawei@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
-        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
-        jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
-Subject: [v4 14/14] docs: iio: add documentation for BNO055 driver
-Date:   Fri, 15 Apr 2022 15:00:05 +0200
-Message-Id: <20220415130005.85879-15-andrea.merello@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220415130005.85879-1-andrea.merello@gmail.com>
-References: <20220415130005.85879-1-andrea.merello@gmail.com>
+        Fri, 15 Apr 2022 07:47:25 -0700 (PDT)
+Date:   Fri, 15 Apr 2022 10:47:23 -0400
+From:   Liam Beguin <liambeguin@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: afe: rescale: Make use of device properties
+Message-ID: <YlmFezCYNeUxa8cL@shaak>
+References: <20220413190117.29814-1-andriy.shevchenko@linux.intel.com>
+ <Ylgwhu9zdmwwYnAq@shaak>
+ <YlhT/yiJSD7pFsF8@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YlhT/yiJSD7pFsF8@smile.fi.intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -72,84 +73,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Andrea Merello <andrea.merello@iit.it>
+On Thu, Apr 14, 2022 at 08:03:59PM +0300, Andy Shevchenko wrote:
+> On Thu, Apr 14, 2022 at 10:32:38AM -0400, Liam Beguin wrote:
+> > Hi Andy,
+> > 
+> > On Wed, Apr 13, 2022 at 10:01:17PM +0300, Andy Shevchenko wrote:
+> > > Convert the module to be property provider agnostic and allow
+> > > it to be used on non-OF platforms.
+> 
+> > > +#include <linux/mod_devicetable.h>
+> > 
+> > Is this really needed?
+> 
+> Yes.
+> This header is missed. I can split its addition to a separate patch.
 
-The bno055 driver is rather complex and have some oddities and not-obvious
-things that worth to document (e.g. calibration files)
+Understood, maybe a separate patch would make it more explicit.
 
-Signed-off-by: Andrea Merello <andrea.merello@iit.it>
----
- Documentation/iio/bno055.rst | 50 ++++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst  |  2 ++
- 2 files changed, 52 insertions(+)
- create mode 100644 Documentation/iio/bno055.rst
+Cheers,
+Liam
 
-diff --git a/Documentation/iio/bno055.rst b/Documentation/iio/bno055.rst
-new file mode 100644
-index 000000000000..af21376d7a25
---- /dev/null
-+++ b/Documentation/iio/bno055.rst
-@@ -0,0 +1,50 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+==============================
-+BNO055 driver
-+==============================
-+
-+1. Overview
-+===========
-+
-+This driver supports Bosch BNO055 IMUs (on both serial and I2C busses).
-+
-+Accelerometer, magnetometer and gyroscope measures are always provided.
-+When "fusion_enable" sysfs attribute is set to 1, orientation (both Euler
-+angles and quaternion), linear velocity and gravity vector are also
-+provided, but some sensor settings (e.g. low pass filtering and range)
-+became locked (the IMU firmware controls them).
-+
-+This driver supports also IIO buffers.
-+
-+2. Calibration
-+==============
-+
-+The IMU continuously performs an autocalibration procedure if (and only if)
-+operating in fusion mode. The magnetometer autocalibration can however be
-+disabled writing 0 in the sysfs in_magn_calibration_fast_enable attribute.
-+
-+The driver provides access to autocalibration flags (i.e. you can known if
-+the IMU has successfully autocalibrated) and to the calibration data blob.
-+
-+The user can save this blob in a firmware file (i.e. in /lib/firmware) that
-+the driver looks for at probe time. If found, then the IMU is initialized
-+with this calibration data. This saves the user from performing the
-+calibration procedure every time (which consist of moving the IMU in
-+various way).
-+
-+The driver looks for calibration data file using two different names: first
-+a file whose name is suffixed with the IMU unique ID (exposed in sysfs as
-+serial_number) is searched for; this is useful when there is more than one
-+IMU instance. If this file is not found, then a "generic" calibration file
-+is searched for (which can be used when only one IMU is present, without
-+struggling with fancy names, that change on each device).
-+
-+Valid calibration file names would be e.g.
-+ bno055-caldata-0e7c26a33541515120204a35342b04ff.dat
-+ bno055-caldata.dat
-+
-+In non-fusion mode the IIO 'offset' attributes provide access to the
-+offsets from calibration data (if any), so that the user can apply them to
-+the accel, angvel and magn IIO attributes. In fusion mode they are not
-+needed (the IMU firmware internally applies those corrections) and they
-+read as zero.
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 58b7a4ebac51..1b7292c58cd0 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -10,3 +10,5 @@ Industrial I/O
-    iio_configfs
- 
-    ep93xx_adc
-+
-+   bno055
--- 
-2.17.1
-
+> > device_get_match_data() is already defined in <linux/property.h>
+> 
+> It's indirectly related (just like we do when we clean up of.h). Since
+> the original of.h is missed there is no header replacement, just adding.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 

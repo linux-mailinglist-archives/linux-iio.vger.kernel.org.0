@@ -2,118 +2,296 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41B9F502E57
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 19:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 771E3502E52
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Apr 2022 19:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236852AbiDORmD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Apr 2022 13:42:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53522 "EHLO
+        id S239700AbiDORhm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Apr 2022 13:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236561AbiDORmC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 13:42:02 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 117751A3AB
-        for <linux-iio@vger.kernel.org>; Fri, 15 Apr 2022 10:39:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=ZdklwSBhCAghbfD2ef7/3NzxE6oGHM6+8f7OcSAKHjY=; b=Sep+oYv380ExNo3zK6Aw0pJk13
-        ANSootrJ77YRak0NdHgZMF44uT1VVHQasMjqvLIjngBguARvSb3Q7X1bESAATawKfTuogeXPS20Em
-        4vriunaMdaVLvzQsNMROwk9dGAMGuli0wOWBUideMDGO3e9IbKIb9ox9Ol18qKvQKy/ifRXcky3OF
-        rsO5DbJ+lDM6bcTguUyD2t0GUQCZ0MK+MsbdxfRHjnBOSPPAkXd5ORy1TeMcgkrosxZNhaax70TJ/
-        a+rp6ZrC0De7JTUi+V3jGGh65qFApWuMCthnfrxHXTPIn/SzRYTyNQu30V4qxZBrEbkq5qnTWQhBr
-        1+A5gvyA==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1nfPuq-0000hZ-Kj; Fri, 15 Apr 2022 19:39:28 +0200
-Received: from [2001:a61:2a5d:d701:9e5c:8eff:fe01:8578]
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1nfPuq-0004Wo-Fv; Fri, 15 Apr 2022 19:39:28 +0200
-Message-ID: <9dcc005b-20b4-6884-1096-6d81fedaddaf@metafoo.de>
-Date:   Fri, 15 Apr 2022 19:39:28 +0200
+        with ESMTP id S236394AbiDORhl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Apr 2022 13:37:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D8AF45AE2;
+        Fri, 15 Apr 2022 10:35:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36605621A7;
+        Fri, 15 Apr 2022 17:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E19C385A5;
+        Fri, 15 Apr 2022 17:35:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650044109;
+        bh=rL/Iu22dVqxNUTMaBt9ONG318iOM6T5p7OiX7xcE9tM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=SfM1Ar+y5byq6boTrZL0fUNgD8iSEm/d9Va0V53tHamhgpmXk6OBqOjxbxL4pIy2s
+         9FlpgNCoRYI5VwZpIpt9JPZ6RZNQ8n7D6UZpeZZKPz6OITXit+ANcAMlbyX91tpM3n
+         TcYcxV12pWP/+yyWJTJNDnTdtCGHR/Zl/m7/r3al/y4M8G2h9djhA8K4wR/av116b8
+         yJyN4KCMqIsZkoYFle+uNGftNhRo4g5OH1DXusOhYldKokMXLlzftTDpSgtM7+L3Q0
+         UlQjDDfxPZyKkC9YrvwgFGda0tIL3kZhArXXgOnaQ8HoHBakAUTELzsWNCHUOmtks4
+         ywMqWMAat1uEw==
+Date:   Fri, 15 Apr 2022 18:43:05 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, andy.shevchenko@gmail.com,
+        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
+        jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
+Subject: Re: [v4 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
+Message-ID: <20220415184305.03805452@jic23-huawei>
+In-Reply-To: <20220415130005.85879-9-andrea.merello@gmail.com>
+References: <20220415130005.85879-1-andrea.merello@gmail.com>
+        <20220415130005.85879-9-andrea.merello@gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: iio: imu new driver
-Content-Language: en-US
-To:     Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
-        Fawzi Khaber <Fawzi.Khaber@tdk.com>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>
-References: <FRYP281MB020540A2361C4DCDB9F315A694EF9@FRYP281MB0205.DEUP281.PROD.OUTLOOK.COM>
- <89c89115-334b-27ae-413c-73b3006d3ffa@metafoo.de>
- <FR3P281MB175790BCD24EC802E3B22EC8CEEF9@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <FR3P281MB175790BCD24EC802E3B22EC8CEEF9@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.5/26513/Fri Apr 15 10:22:35 2022)
-X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 4/14/22 15:03, Jean-Baptiste Maneyrol wrote:
-> Hello,
->
-> accel and gyro are synchronized and are outputting data inside the same hardware FIFO, as inv_icm42600 is doing. The issue is that the sensors have different frequencies, using a header for signaling data availability, thus demultiplexing from userspace is not possible in a standard way.
->
-> Solution found for inv_icm42600 was to use 2 devices with each one a buffer. FIFO is read, data demultiplexed, and sent in each device. Now that we can have 2 buffers for 1 device, is it simpler to use this solution rather than 2 devices?
->
-> Thanks for your advice,
-> JB
+On Fri, 15 Apr 2022 14:59:59 +0200
+Andrea Merello <andrea.merello@gmail.com> wrote:
 
-Hi,
+> From: Andrea Merello <andrea.merello@iit.it>
+> 
+> This patch adds a core driver for the BNO055 IMU from Bosch. This IMU
+> can be connected via both serial and I2C busses; separate patches will
+> add support for them.
+> 
+> The driver supports "AMG" (Accelerometer, Magnetometer, Gyroscope) mode,
+> that provides raw data from the said internal sensors, and a couple of
+> "fusion" modes (i.e. the IMU also do calculations in order to provide
+> euler angles, quaternions, linear acceleration and gravity measurements).
+> 
+> In fusion modes the AMG data is still available (with some calibration
+> refinements done by the IMU), but certain settings such as low pass
+> filters cut-off frequency and sensors ranges are fixed, while in AMG mode
+> they can be customized; this is why AMG mode can still be interesting.
+> 
+> Signed-off-by: Andrea Merello <andrea.merello@iit.it>
+Hi Andrea,
 
-So the data rates are synchronized, but different, i.e. integer ratios?
+A few trivial things from me on this read through.
 
-I think this might be a good use case to give the multi-buffer support a 
-bit of real world testing.
+I haven't commented on a lot of the patches because I was happy with them.
 
-- Lars
+Other than the small changes requested from me, we mostly need to get
+device tree review of the binding and allow time for others to take
+another look.
+
+Thanks,
+
+Jonathan
 
 
->
->
-> From: Lars-Peter Clausen <lars@metafoo.de>
-> Sent: Thursday, April 14, 2022 13:19
-> To: Fawzi Khaber <Fawzi.Khaber@tdk.com>; jic23@kernel.org <jic23@kernel.org>
-> Cc: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>; linux-iio <linux-iio@vger.kernel.org>
-> Subject: Re: iio: imu new driver
->   
-> [CAUTION] This is EXTERNAL email. Do not click any links or open attachments unless you recognize the sender and know the content is safe.
->
-> ======================================================================
-> On 4/14/22 12:35, Fawzi Khaber wrote:
->> Hello Jonathan,
->> We are currently implementing a new driver for an invensense chip similar to
->> iio/imu/inv_icm42600. The chip has 2 sensors a gyroscope and an
->> accelerometer, and we are wandering if it was better the have two
->> IIO devices, one for each sensor, or just one IIO device with two buffers.
-> Are these two completely independent sensors that only sit in the same
-> package or do they share a common clock and the data acquisition can be
-> synchronized?
->
-> If it is the latter the best might be to have a single device with a
-> single buffer.
->
-> Typical algorithms that process IMU data, like odometry, want to process
-> the accelerator and gyroscope data jointly. If the data gets
-> artificially separated into two buffers it first has to be re-aligned,
-> which might be tricky to do.
->
-> - Lars
+> ---
 
+...
+
+> +
+> +static int bno055_read_simple_chan(struct iio_dev *indio_dev,
+> +				   struct iio_chan_spec const *chan,
+> +				   int *val, int *val2, long mask)
+> +{
+> +	struct bno055_priv *priv = iio_priv(indio_dev);
+> +	__le16 raw_val;
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = regmap_bulk_read(priv->regmap, chan->address,
+> +				       &raw_val, sizeof(raw_val));
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = (s16)le16_to_cpu(raw_val);
+
+Hmm. I'd ever so slightly prefer
+
+sign_extend32(le16_to_cpu(raw_val), 15) as it makes it extremely clear
+what is going on and hopefully the compiler can do a good job
+of optimising it either way.  If you strongly prefer the current
+approach I'll cope :)
+
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		if (priv->operation_mode != BNO055_OPR_MODE_AMG) {
+> +			*val = 0;
+> +		} else {
+> +			ret = regmap_bulk_read(priv->regmap,
+> +					       chan->address +
+> +					       BNO055_REG_OFFSET_ADDR,
+> +					       &raw_val, sizeof(raw_val));
+> +			if (ret < 0)
+> +				return ret;
+> +			/*
+> +			 * IMU reports sensor offests; IIO wants correction
+> +			 * offset, thus we need the 'minus' here.
+> +			 */
+> +			*val = -(s16)le16_to_cpu(raw_val);
+> +		}
+> +		return IIO_VAL_INT;
+...
+
+> +}
+
+...
+
+> +
+> +static int bno055_read_quaternion(struct iio_dev *indio_dev,
+> +				  struct iio_chan_spec const *chan,
+> +				  int size, int *vals, int *val_len,
+> +				  long mask)
+> +{
+> +	struct bno055_priv *priv = iio_priv(indio_dev);
+> +	__le16 raw_vals[4];
+> +	int i, ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		if (size < 4)
+> +			return -EINVAL;
+> +		ret = regmap_bulk_read(priv->regmap,
+> +				       BNO055_QUAT_DATA_W_LSB_REG,
+> +				       raw_vals, sizeof(raw_vals));
+> +		if (ret < 0)
+> +			return ret;
+> +		for (i = 0; i < 4; i++)
+> +			vals[i] = (s16)le16_to_cpu(raw_vals[i]);
+> +		*val_len = 4;
+> +		return IIO_VAL_INT_MULTIPLE;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/* Table 3-31: 1 quaternion = 2^14 LSB */
+> +		if (size < 2)
+> +			return -EINVAL;
+> +		vals[0] = 14;
+> +		vals[1] = 1 << 14;
+This looks odd.  As you are using FRACTIONAL_LOG2, I think that should
+just be
+vals[0] = 1;
+vals[1] = 14;
+
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+
+
+
+...
+
+> +
+> +static void bno055_clk_disable(void *arg)
+> +{
+> +	clk_disable_unprepare((struct clk *)arg);
+> +}
+
+Hopefully one day: https://lore.kernel.org/all/CAHp75VdH4vGr57v6tfkRuxh-3agRKO8C08+DH8dsB1HnPfnz5Q@mail.gmail.com/
+will get merged...  Until then, this is the best we can do.
+
+> +
+> +int bno055_probe(struct device *dev, struct regmap *regmap,
+> +		 int xfer_burst_break_thr, bool sw_reset)
+> +{
+> +	const struct firmware *caldata;
+See comment below. I think you need to set this to NULL here
+
+
+> +
+> +	ret = regmap_read(priv->regmap, BNO055_CHIP_ID_REG, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (val != BNO055_CHIP_ID_MAGIC) {
+
+We've run into this a few times recently.  Traditionally IIO has been very
+restrictive on allowing drivers to probe if the Who Am I type values
+don't match.  That causes problems for backwards compatibility in
+device tree - e.g. (with made up compatible part number 055b :)
+compatible = "bosch,bno055b", "bosch,bno055"
+
+The viewpoint of the dt maintainers is that we should assume the
+dt is correct and at most warn about missmatched IDs before trying
+to carry on.  So to avoid hitting that again please relax this to a
+warning and cross your fingers after this point if it doesn't match.
+I'm fine on the firmware question because we know we are dealing
+with buggy firmware.  Ideally we'll get some working firmware
+additions at somepoint then we can just label the bad firmwares
+and assume one less bug in the ones that don't match :)
+
+> +		dev_err(dev, "Unrecognized chip ID 0x%x", val);
+> +		return -ENODEV;
+> +	}
+> +
+> +	/*
+> +	 * In case we haven't a HW reset pin, we can still reset the chip via
+> +	 * register write. This is probably nonsense in case we can't even
+> +	 * communicate with the chip or the chip isn't the one we expect (i.e.
+> +	 * we don't write to unknown chips), so we perform SW reset only after
+> +	 * chip magic ID check
+> +	 */
+> +	if (!priv->reset_gpio) {
+> +		ret = bno055_system_reset(priv);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+
+...
+
+> +	ret = regmap_bulk_read(priv->regmap, BNO055_UID_LOWER_REG,
+> +			       priv->uid, BNO055_UID_LEN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * This has nothing to do with the IMU firmware, this is for sensor
+> +	 * calibration data.
+
+I'd not say what it isn't.  What it is will be enough.
+
+	/* Sensor calibration data */
+
+> +	 */
+> +	fw_name_buf = kasprintf(GFP_KERNEL,
+> +				BNO055_FW_UID_NAME,
+> +				BNO055_UID_LEN, priv->uid);
+> +	if (!fw_name_buf)
+> +		return -ENOMEM;
+> +
+> +	ret = request_firmware(&caldata, fw_name_buf, dev);
+> +	kfree(fw_name_buf);
+> +	if (ret)
+> +		ret = request_firmware(&caldata, BNO055_FW_GENERIC_NAME, dev);
+> +
+> +	if (ret)
+> +		dev_notice(dev, "Calibration file load failed. See instruction in kernel Documentation/iio/bno055.rst");
+
+If no calibration files are found, is caldata guaranteed to have been set to NULL?
+I'm not seeing that in the documentation, so even if it is true today it might not
+be in future and I think that leaves you referencing a variable that may not
+have been set.   Probably just set caldata_data = NULL where you define
+the local variable at top of this function.
+
+> +
+> +	if (caldata) {
+> +		caldata_data = caldata->data;
+> +		caldata_size = caldata->size;
+> +	}
+> +	ret = bno055_init(priv, caldata_data, caldata_size);
+> +	if (caldata)
+> +		release_firmware(caldata);
+> +	if (ret)
+> +		return ret;
+> +
 

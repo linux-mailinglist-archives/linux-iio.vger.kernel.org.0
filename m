@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB57503543
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 10:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F953503547
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 10:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230377AbiDPImA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Apr 2022 04:42:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39556 "EHLO
+        id S229845AbiDPInp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Apr 2022 04:43:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229671AbiDPIl7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 04:41:59 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24BF390CCE;
-        Sat, 16 Apr 2022 01:39:28 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id p15so18912690ejc.7;
-        Sat, 16 Apr 2022 01:39:28 -0700 (PDT)
+        with ESMTP id S229671AbiDPIno (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 04:43:44 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F409D0C0;
+        Sat, 16 Apr 2022 01:41:12 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id ks6so18957231ejb.1;
+        Sat, 16 Apr 2022 01:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vdQ3f1meuqUiTKqJBFXcf6/BHrqM9M+dmR+/B9DSwzs=;
-        b=bAVoeB7Jn4k5j4WJmk0ilOh+g4NXX+hnPncMGU7vKFwSPRrVsc+m/KQo4IAU0ksVKg
-         UzEVbmR3kPbccu/r3N9ikhsIZrfeSVYlcdeTbA+BovjaElxgHRe1K3u4Vz3SyRIBDy8k
-         bYwhwNKZxpq3Zq6to4TV9P9btOvufN830zyk8yY1QdKnIWp8a4hkBypmV7YJYkjOhH9d
-         LUvWV8DQwLVgRmUvt4+BP3tEmubynVVCMqGIaJ3NBHI6b97rWCqBMwJO8+DT+IDLcNs/
-         1q8agqw93nkA65ggmSdE1zajAAEsYB8Ja1ISJZuJPvlJHWhUTWAMBawgwO30YfC2c+vn
-         2BAg==
+        bh=E99i9KfZnvDFyInCLoxSb8FAUQAIuI0Z0u1omhSERko=;
+        b=Qy774tUpKair7a4f/6Rx1rQWcKlFZ+TZAscac0Pu8BLdi4T/olgDPPRqV1maGru7P9
+         iEqKeAs4BayjYsDSfrSKYFDE2WHkJKw4YFhGbZiTFs1sWDZ88iRksXFPcq7PfD611YgM
+         AOjkpmXoIj7TfiLBMoLUcBIzcez4+zRcS9QudcSxe8LfxVQ3ja4FCKhXnKAECk1fvfow
+         2Su2YCZZ0yu6/xbopQndcPpFMcLaKrs+e/if+bFKbFh1Y9Md9a7w/9lRsCYIIauwIZ/L
+         cWu5z7zWzs3JNyjJl8d8280SF6lR5LkeCeWwGLJgfJt++KQ1CqzRs00YZN7D2H6N0SgA
+         XE4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vdQ3f1meuqUiTKqJBFXcf6/BHrqM9M+dmR+/B9DSwzs=;
-        b=rhUTVklHCoDMTeC98qEN7VZKlS9X77sYknvYNkUPGrABgF4L7CMh+44LTC3L5gEFls
-         7QFjCcPRuSJ6MYk1xexQMTLsD7yRgV1/LLX7ZkZv0k/xZOAFqdW/to7LJ+LSKRvk2ugK
-         +JSKPF6+dPMftjbXktySJOL21vc1hNkVCnrhJvpssGU6oEes9NV72qwpVZAcl1VUUvHG
-         lzOXXffrjGPnQDFD2PkcY1rGZVMuKg1xK7xyPBlGAAafnPNt+PYiiIJQ/F7XGRVANq2B
-         jiHI4p5gvdFeJOFNd11MFhSyu8gOM/vu7GAdF2VZPE4GaA5AqefA/rbBnBqQPDFuhbdI
-         2Q5g==
-X-Gm-Message-State: AOAM532HhIJY9waaQylG2D87FR2Wg6hhPYP/g2Iq7cGfQp/2UdOuf2JX
-        0zlv01cpsb3IjdhOlI8kkCOyaS4YX8saxlvK4XCRv83m8oxAVw==
-X-Google-Smtp-Source: ABdhPJwJb1KSpXvuOFOb1pzMWgRhZcp+hSKsBEBLulAyHFu+bvcNIOjbQH8CJAds/zfDBBHuKM5OxuX6MqkBkHJ03uA=
-X-Received: by 2002:a17:907:160b:b0:6ef:5da0:3e38 with SMTP id
- hb11-20020a170907160b00b006ef5da03e38mr2000876ejc.579.1650098366734; Sat, 16
- Apr 2022 01:39:26 -0700 (PDT)
+        bh=E99i9KfZnvDFyInCLoxSb8FAUQAIuI0Z0u1omhSERko=;
+        b=Q+qYV6CUZa91h/Q168jOrZOKvlwlp7j8Z0oUdMVoEkHghYHjQ/a/Bb1tjrSMtoj1b5
+         64DVAIeBwnVKqnOdx0gsxCRjD2D3Q1FmQO97VIjHUQ3k9B7C8IYy1WhL7YWXGK8mdEy3
+         6mAlrG+tONCellHlDqsCSvAj/EsAz94A/B8O0wOydkOG4sWu1pzaKZw86fjIHmcZ0Bs8
+         NWspGjqMv91wC9PK6/fhPq7f0GymobjL5wXoofcMNucMwQNHdT5NemQ105fXkI18+KIf
+         kMm+0mmgWOAW1vTO1YfmImz2eqLH4TaAKCC+RPN4eWL+eX2XCG8EHB9JFObQqe2sAmJT
+         VWiw==
+X-Gm-Message-State: AOAM530ruV/C5p+QZ6BcEsWjKVetKYkp1hLGWz18MNI6JaqhTRe2oFJa
+        StqwMf9tETLlVlDWUyBd174uFs+JLWf/tOGMlRE=
+X-Google-Smtp-Source: ABdhPJx9bvIrfc/rPOMmJL6ENIXjQD1s6MME5iCACgZQ40zGyEKBznjW8WNpUQtwGQr41ovsEG6z/Nu2hqaxuoMVUis=
+X-Received: by 2002:a17:907:628e:b0:6d9:c6fa:6168 with SMTP id
+ nd14-20020a170907628e00b006d9c6fa6168mr2058302ejc.132.1650098471243; Sat, 16
+ Apr 2022 01:41:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220415130005.85879-1-andrea.merello@gmail.com> <20220415130005.85879-5-andrea.merello@gmail.com>
-In-Reply-To: <20220415130005.85879-5-andrea.merello@gmail.com>
+References: <20220415130005.85879-1-andrea.merello@gmail.com>
+In-Reply-To: <20220415130005.85879-1-andrea.merello@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 16 Apr 2022 11:38:50 +0300
-Message-ID: <CAHp75VdmJFqA-EVZfJNQekwsybrPzBnAn18tW1c1a+qfVrOx2w@mail.gmail.com>
-Subject: Re: [v4 04/14] iio: add modifers for pitch, yaw, roll
+Date:   Sat, 16 Apr 2022 11:40:35 +0300
+Message-ID: <CAHp75VfmJV4ON7r+cp+CrKrOgU99v=q0ZmrCV4jCC=Aj0q=pDw@mail.gmail.com>
+Subject: Re: [v4 00/14] Add support for Bosch BNO055 IMU
 To:     Andrea Merello <andrea.merello@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
@@ -78,12 +78,33 @@ On Fri, Apr 15, 2022 at 4:00 PM Andrea Merello <andrea.merello@gmail.com> wrote:
 >
 > From: Andrea Merello <andrea.merello@iit.it>
 >
-> This patch adds modifiers for reporting rotations as euler angles (i.e.
-> yaw, pitch and roll).
+> This series (tries to) add support for Bosch BNO055 IMU to Linux IIO
+> subsystem. It is made up several patches:
+>
+>   1/13 to 7/12: add some IIO modifiers, and their documentation, to the IIO
+>                 core layer, in order to being able to expose the linear
+>                 acceleration and Euler angles among standard attributes.
+>                 Also update the IIO event monitor tool
+>
+>   7/13: fix binary attributes didn't work with IIO
+>
+>   8/13 to 11/13: add the core IIO BNO055 driver and documentation for sysfs
+>                  attributes and DT bindings
+>
+>   12/13: adds serdev BNO055 driver to actually use the IMU via serial line
+>
+>   13/13: adds I2C BNO055 driver to actually use the IMU via I2C wiring
+>
+>   14/13: add a documentation file that describe the bno055 driver and
+>          specifically the calibration
 
-s/This patch adds/Add/
+Thanks for a new version.
+So far I have noticed the issues with more than one patch:
+1) missed commit message;
+2) non-imperative mode of speaking in the commit messages.
 
-Please, read the Submitting Patches documentation where it explicitly tells.
+Please, take your time to refresh the Submitting Patches documentation
+and fix your series accordingly.
 
 -- 
 With Best Regards,

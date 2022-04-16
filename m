@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 526E85035F8
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 12:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D3A55035FB
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 12:40:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbiDPKj6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Apr 2022 06:39:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        id S231473AbiDPKml (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Apr 2022 06:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbiDPKjz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 06:39:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59ACC22516;
-        Sat, 16 Apr 2022 03:37:23 -0700 (PDT)
+        with ESMTP id S231470AbiDPKmj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 06:42:39 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 268F014002;
+        Sat, 16 Apr 2022 03:40:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F111560E97;
-        Sat, 16 Apr 2022 10:37:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1958C385A3;
-        Sat, 16 Apr 2022 10:37:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D41E5B81D17;
+        Sat, 16 Apr 2022 10:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBA6C385A3;
+        Sat, 16 Apr 2022 10:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650105442;
-        bh=wwQ2KXLmqbrL8x9yOhEPgpWxlE6/ANc23oINIAYBWFM=;
+        s=k20201202; t=1650105604;
+        bh=Oos9yoNwh3SAMIWdcwpd3Xw5BoBg+r+ad8P3SM2AUEc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=i9VenvH+J3jal44BpmmzyaoKF6o14szrhFaM3uLaTzK/8zM6T+FZTzu91yqBa/3YF
-         9gRGufeeB1J0Acf4JRzUO/iMfE/c2cbJoIEjkoCEhj3lO/92oHAT/gT08qX4KxoBVp
-         bjY1bA4SRJa5sl8qRmx6nM2gUANMfxNgvi6xZWmcqIDnIEAK1boQpgkmuraDGB8mNK
-         EToSJ8mxFrMD28uLMd+so1ok/qphy4py9p5DEZmPBN+DZOgkwAFR4xtccES6W7V4ux
-         RL3Kj4ahOh5iu7VP0J1oMriNKni5C0tgCz0r9uJUAGxQzl25/m59ZJT+OiT9jJwppq
-         u64TH94mHgzLw==
-Date:   Sat, 16 Apr 2022 11:45:19 +0100
+        b=Wu8fNiou8nfeGGtUNnSnv4UUdrbM4GFT123skfFr+xm4M7digTpwJTZrL9325fKil
+         hB/xTx9yvDQgYjSHv7l3bQYup3RsbXyqeostsyGNYKZpIfoVRxuOJJuPyW4gvysNM2
+         uWm7j8PNyDUrhU6XHdqK7OWR7ICq1sRkY1BjO4ihP8KKbWETplnIhikxPH/pnmkpFb
+         GL/e/qx/CtcIUu5j+O6x5wYw6azRsjVCa9s2csisqZb3X1LusRcfXP+KPoaenAQDP8
+         nczplE/l0J7dQgcJ/o8ZS5u4MTgCUse2EFEMCc908LF1dw+j4FIb8va5b4OZLj87oW
+         /8Au3mIdpZ1iw==
+Date:   Sat, 16 Apr 2022 11:48:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc:     Navin Sankar Velliangiri <navin@linumiz.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: accel: dmard06: Drop dependency on OF
-Message-ID: <20220416114519.4745b04f@jic23-huawei>
-In-Reply-To: <20220413190327.30054-1-andriy.shevchenko@linux.intel.com>
-References: <20220413190327.30054-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] iio: temperature: max31865: Make use of device
+ properties
+Message-ID: <20220416114801.0865fcba@jic23-huawei>
+In-Reply-To: <20220413185335.21743-1-andriy.shevchenko@linux.intel.com>
+References: <20220413185335.21743-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,34 +56,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Apr 2022 22:03:27 +0300
+On Wed, 13 Apr 2022 21:53:35 +0300
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Nothing in this driver depends on OF firmware so drop the dependency
-> and update the headers to remove the false impression such a dependency
-> exists.
-Applied. Note I amended the patch descriptions where relevant to drop
-reference to headers when they weren't touched in a given patch.
-Hopefully I caught all the cases of that.
+> Convert the module to be property provider agnostic and allow
+> it to be used on non-OF platforms.
+
+This one should call out the addition of missing mod_devicetable.h
+If nothing else comes up I can add that whilst applying.
+Looks fine to me but I'd like to give a little time for
+Navin to comment if they wish.
 
 Jonathan
 
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  drivers/iio/accel/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/iio/temperature/max31865.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index eac3f02662ae..b53f010f3e40 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -290,7 +290,6 @@ config DA311
+> diff --git a/drivers/iio/temperature/max31865.c b/drivers/iio/temperature/max31865.c
+> index 86c3f3509a26..e3bb78184c6e 100644
+> --- a/drivers/iio/temperature/max31865.c
+> +++ b/drivers/iio/temperature/max31865.c
+> @@ -12,9 +12,11 @@
+>  #include <linux/delay.h>
+>  #include <linux/err.h>
+>  #include <linux/init.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> +#include <linux/property.h>
+>  #include <linux/spi/spi.h>
+>  #include <asm/unaligned.h>
 >  
->  config DMARD06
->  	tristate "Domintech DMARD06 Digital Accelerometer Driver"
-> -	depends on OF || COMPILE_TEST
->  	depends on I2C
->  	help
->  	  Say yes here to build support for the Domintech low-g tri-axial
+> @@ -305,7 +307,7 @@ static int max31865_probe(struct spi_device *spi)
+>  	indio_dev->channels = max31865_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(max31865_channels);
+>  
+> -	if (of_property_read_bool(spi->dev.of_node, "maxim,3-wire")) {
+> +	if (device_property_read_bool(&spi->dev, "maxim,3-wire")) {
+>  		/* select 3 wire */
+>  		data->three_wire = 1;
+>  	} else {
 

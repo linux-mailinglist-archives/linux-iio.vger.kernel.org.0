@@ -2,48 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D224503643
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 13:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D1750364B
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 13:15:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbiDPLP1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Apr 2022 07:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34304 "EHLO
+        id S231728AbiDPLR6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Apr 2022 07:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231578AbiDPLP1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 07:15:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2B2E5413;
-        Sat, 16 Apr 2022 04:12:55 -0700 (PDT)
+        with ESMTP id S231733AbiDPLR5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 07:17:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9A6377FD;
+        Sat, 16 Apr 2022 04:15:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id ADAD1B80687;
-        Sat, 16 Apr 2022 11:12:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F59C385A5;
-        Sat, 16 Apr 2022 11:12:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BA4B60E99;
+        Sat, 16 Apr 2022 11:15:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A895DC385A5;
+        Sat, 16 Apr 2022 11:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650107572;
-        bh=bRGdM51RRpea4PxpnQqVJdFGDcc0UH0JobnMgITXHO8=;
+        s=k20201202; t=1650107724;
+        bh=nqtzCAVG0UydeJj9805KTNz5rLFTdeSKGY2+Q6Dlv4k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nSU3sdDdx3h/gZSdiEylXPuQRyQwHU/LiiVV7H2/mBRc8npIkZWRHUSWgXBPeu/DO
-         nQ3yGNn9TgbSbF+rCbx+2Sq2405UvarvQ6PE8GR3P3QxL8H8nRdPtbd83KJ6x532q9
-         TIO3vc4uHIHeVTQfENn+BjOrseJByvupo6eD9MBcLCAoikx2llMVeGDlvSeNjDHbpR
-         tjDpZd1NjMCweLd1a0TON4p0MPGKp/4JhM7YrJJPZZ12pamNFlG1hBMdg9F/mmhzAz
-         W2xG+xnht5w987U1ynGIJPKAwmmr6obMM/92KZ9iniFpW2zGhUGasFVk5+Eb4Eb738
-         JjTogovP4J2Ew==
-Date:   Sat, 16 Apr 2022 12:20:50 +0100
+        b=K+2dJ9pFOvsCgPHvg2S0S3x366hrjxBuSmjcsqUiS9p72g3EW0juNGCqpdL86ne4T
+         MjOu7YszoKpmLWSUOMXdSfzXKBX594H9cwF4evc/r9gSO6xo3+JGt2/0l8g1HWIk4F
+         n0n1QlN4xII1Yao19ZLH7czyqaFwIhgOdwwVRrv8BUQgMQlFUg0jImftfoVuBKMqeE
+         q3LdFkVbxgXu3/S5T7WPHZfpksGMxZ5KldpcQq+JPqXTX1E3uQ1rmgrroMZClUGoP9
+         iVWbwtWMYgHtQim1ovjFVL3d9OVlDDhRcfmRh5F0W47w6JMFBNuXHOeSSzxAVasYt/
+         Ey49IWzqDZNeQ==
+Date:   Sat, 16 Apr 2022 12:23:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rui Miguel Silva <rmfrfs@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: gyro: fxas21002c: Make use of device
- properties
-Message-ID: <20220416122050.72c88536@jic23-huawei>
-In-Reply-To: <20220413162623.azoqoehu23kggk4x@arch-thunder>
-References: <20220413131513.59258-1-andriy.shevchenko@linux.intel.com>
-        <20220413162623.azoqoehu23kggk4x@arch-thunder>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH] iio: adc: Kconfig: Make RZG2L_ADC depend on ARCH_RZG2L
+Message-ID: <20220416122322.7aa14706@jic23-huawei>
+In-Reply-To: <CAMuHMdViXg2ZpKG+fJJyMjA_uY-7Tu2E1WwWed97OX5LOMq4tQ@mail.gmail.com>
+References: <20220406070315.13862-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        <20220410174713.1a4e013f@jic23-huawei>
+        <CAMuHMdViXg2ZpKG+fJJyMjA_uY-7Tu2E1WwWed97OX5LOMq4tQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,79 +61,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Apr 2022 17:26:23 +0100
-Rui Miguel Silva <rmfrfs@gmail.com> wrote:
+On Mon, 11 Apr 2022 16:40:20 +0200
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
-> Hi Andy,
-> Thanks for the patch.
+> Hi Jonathan,
 > 
-> On Wed, Apr 13, 2022 at 04:15:13PM +0300, Andy Shevchenko wrote:
-> > Convert the module to be property provider agnostic and allow
-> > it to be used on non-OF platforms.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> On Sun, Apr 10, 2022 at 7:52 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Wed,  6 Apr 2022 08:03:15 +0100
+> > Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+> >  
+> > > ADC block is common on Renesas RZ/G2L and RZ/V2L SoC's, so instead of
+> > > adding dependency for each SoC's add dependency on ARCH_RZG2L. The
+> > > ARCH_RZG2L config option is already selected by ARCH_R9A07G044 and
+> > > ARCH_R9A07G054.
+> > >
+> > > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>  
 > 
-> This LGTM.
-> 
-> Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-> 
-Applied to the togreg branch of iio.git and pushed out as testing
-for 0-day to poke at it and see what we missed.
-
-Thanks,
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Applied. Thanks,
 
 Jonathan
 
-> Cheers,
->      Rui
 > 
-> > ---
-> >  drivers/iio/gyro/fxas21002c_core.c | 8 +++-----
-> >  1 file changed, 3 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
-> > index 410e5e9f2672..0923fd793492 100644
-> > --- a/drivers/iio/gyro/fxas21002c_core.c
-> > +++ b/drivers/iio/gyro/fxas21002c_core.c
-> > @@ -7,9 +7,9 @@
-> >  
-> >  #include <linux/interrupt.h>
-> >  #include <linux/module.h>
-> > -#include <linux/of_irq.h>
-> >  #include <linux/pm.h>
-> >  #include <linux/pm_runtime.h>
-> > +#include <linux/property.h>
-> >  #include <linux/regmap.h>
-> >  #include <linux/regulator/consumer.h>
-> >  
-> > @@ -822,7 +822,6 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
-> >  {
-> >  	struct device *dev = regmap_get_device(data->regmap);
-> >  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> > -	struct device_node *np = indio_dev->dev.of_node;
-> >  	unsigned long irq_trig;
-> >  	bool irq_open_drain;
-> >  	int irq1;
-> > @@ -831,8 +830,7 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
-> >  	if (!data->irq)
-> >  		return 0;
-> >  
-> > -	irq1 = of_irq_get_byname(np, "INT1");
-> > -
-> > +	irq1 = fwnode_irq_get_byname(dev_fwnode(dev), "INT1");
-> >  	if (irq1 == data->irq) {
-> >  		dev_info(dev, "using interrupt line INT1\n");
-> >  		ret = regmap_field_write(data->regmap_fields[F_INT_CFG_DRDY],
-> > @@ -843,7 +841,7 @@ static int fxas21002c_trigger_probe(struct fxas21002c_data *data)
-> >  
-> >  	dev_info(dev, "using interrupt line INT2\n");
-> >  
-> > -	irq_open_drain = of_property_read_bool(np, "drive-open-drain");
-> > +	irq_open_drain = device_property_read_bool(dev, "drive-open-drain");
-> >  
-> >  	data->dready_trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
-> >  						   indio_dev->name,
-> > -- 
-> > 2.35.1
-> >   
+> > Sounds like a fix?
+> >
+> > If so, please supply a Fixes tag.
+> > no need to resend, just reply with one to this email.  
+> 
+> This is not really a fix, as the original dependency was correct at
+> that time.
+> This is a change to add support for the RZ/V2L (r9a07g054) SoC, and
+> avoiding the need to update the dependencies when support is added
+> for more SoCs of the RZ/G2L family later.
+> 
+> > > --- a/drivers/iio/adc/Kconfig
+> > > +++ b/drivers/iio/adc/Kconfig
+> > > @@ -910,7 +910,7 @@ config ROCKCHIP_SARADC
+> > >
+> > >  config RZG2L_ADC
+> > >       tristate "Renesas RZ/G2L ADC driver"
+> > > -     depends on ARCH_R9A07G044 || COMPILE_TEST
+> > > +     depends on ARCH_RZG2L || COMPILE_TEST
+> > >       help
+> > >         Say yes here to build support for the ADC found in Renesas
+> > >         RZ/G2L family.  
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
 

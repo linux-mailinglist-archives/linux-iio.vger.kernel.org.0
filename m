@@ -2,44 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15C3F5035F1
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 12:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 655995035F3
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 12:28:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230475AbiDPK3M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Apr 2022 06:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58388 "EHLO
+        id S231425AbiDPKav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Apr 2022 06:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbiDPK3L (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 06:29:11 -0400
+        with ESMTP id S230108AbiDPKat (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 06:30:49 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CD53FDAB;
-        Sat, 16 Apr 2022 03:26:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D99D419A7;
+        Sat, 16 Apr 2022 03:28:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BCE5BB81D0A;
-        Sat, 16 Apr 2022 10:26:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4FCC385A3;
-        Sat, 16 Apr 2022 10:26:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 40A42B81D0A;
+        Sat, 16 Apr 2022 10:28:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A924C385A3;
+        Sat, 16 Apr 2022 10:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650104797;
-        bh=AsTNMnnFrylLkvAKOwNYV1qQNbmyfcozPFi2fyLHsKE=;
+        s=k20201202; t=1650104896;
+        bh=xA0Gm6xPW9sfLsGyMDopDPut4JiQe0nUfaa/4vSv7EY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LqCFt6AcWP0IJUg0922aSVt6BpGhy/0yCQbGoJpaYUVSpLAHdCqHSFz/CRHlKAQAC
-         IjUakhwy8ycAc56bfP+x2gmWVkIWoWLaeltDs7gUiGgFcKxuymfpRrlZyi4lfXwjQ3
-         jjpI5imUkd1Cavj9E8jSfUJeVthPrHMLvubVt/TmPb2LWr329/z5MEtOo2w7N48EIb
-         u1yiyWW1l4IEsEjcqQX90NyXv4fAtDR/neyVuN+Kj6QFIvoncjV94fv1u9pfgHi5wf
-         iE3SgQG8sFalF2le4Ioa4pYNedSbF1U7Z96rjT7m+nlM1edlslYz4PjlXyj1lvU0gP
-         lxhvHXcqrl1Pw==
-Date:   Sat, 16 Apr 2022 11:34:35 +0100
+        b=kBNFeAcHdkN2OG3bgcDWZy4juQUpD+uHb6jyRZm9DiFR1lpFWmUGhygwKtvt4QL7Q
+         5P9hFuBvh9GKjIcltFuDD+tsoGZHWdEGCZXEY1dIRzeRrwuMWjOOZO9GNy6OLfl/XM
+         NHkkiEHgHkwsMNqFVB4wZUdbTNPR9Cgvh77dxoRYtEROVJmaj7+sXZ5YAav+V0LC/L
+         PGeKtPyGiRovV6qnFDGA92ZV90ML+PrwyTBlT8p9VELjt81JJi2aVDMy5QRYwIIpM1
+         yYY3yd606nTfdmNvgmkBP1MLdPP2gdPgJmKsXbif+9LCqEC6SKc7KT1Qq5hZV1Lj6x
+         u3Hwq4pwvLUDQ==
+Date:   Sat, 16 Apr 2022 11:36:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: dac: lpc18xx: Drop dependency on OF
-Message-ID: <20220416113435.14f82d06@jic23-huawei>
-In-Reply-To: <20220413190819.38206-1-andriy.shevchenko@linux.intel.com>
-References: <20220413190819.38206-1-andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Rosin <peda@axentia.se>
+Subject: Re: [PATCH v1 1/1] iio: dac: dpot: Drop dependency on OF
+Message-ID: <20220416113612.7272f5db@jic23-huawei>
+In-Reply-To: <20220413190632.30365-1-andriy.shevchenko@linux.intel.com>
+References: <20220413190632.30365-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,7 +56,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Apr 2022 22:08:19 +0300
+On Wed, 13 Apr 2022 22:06:32 +0300
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
 > Nothing in this driver depends on OF firmware so drop the dependency
@@ -62,22 +64,28 @@ Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > exists.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied. Thanks,
++CC Peter.
+
+Given it's looks obviously correct applied.
+
+Thanks,
+
+Jonathan
+
 > ---
->  drivers/iio/dac/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/dac/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
 > 
 > diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index 8d5b3bad75ad..d578e242d74d 100644
+> index c0bf0d84197f..8d5b3bad75ad 100644
 > --- a/drivers/iio/dac/Kconfig
 > +++ b/drivers/iio/dac/Kconfig
-> @@ -304,7 +304,7 @@ config DS4424
->  config LPC18XX_DAC
->  	tristate "NXP LPC18xx DAC driver"
->  	depends on ARCH_LPC18XX || COMPILE_TEST
-> -	depends on OF && HAS_IOMEM
-> +	depends on HAS_IOMEM
->  	help
->  	  Say yes here to build support for NXP LPC18XX DAC.
+> @@ -285,7 +285,6 @@ config CIO_DAC
 >  
+>  config DPOT_DAC
+>  	tristate "DAC emulation using a DPOT"
+> -	depends on OF
+>  	help
+>  	  Say yes here to build support for DAC emulation using a digital
+>  	  potentiometer.
 

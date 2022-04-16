@@ -2,52 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A195036DD
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 15:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EAFF5036E0
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 15:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231728AbiDPNxo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Apr 2022 09:53:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56906 "EHLO
+        id S232130AbiDPN4G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Apr 2022 09:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbiDPNxo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 09:53:44 -0400
+        with ESMTP id S230055AbiDPN4F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 09:56:05 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBFE33881;
-        Sat, 16 Apr 2022 06:51:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F1FF3D1F2
+        for <linux-iio@vger.kernel.org>; Sat, 16 Apr 2022 06:53:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1CB9BB8241F;
-        Sat, 16 Apr 2022 13:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8E7C385A1;
-        Sat, 16 Apr 2022 13:51:07 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 469E1B82420
+        for <linux-iio@vger.kernel.org>; Sat, 16 Apr 2022 13:53:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3058C385A1;
+        Sat, 16 Apr 2022 13:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650117069;
-        bh=d8QKVxdG4FlCyd4OG5tSxmy/2lyoeJsbEk6g26b9g0s=;
+        s=k20201202; t=1650117210;
+        bh=eSk324J0H9ialpe5FTCYTFdNF3XTU8amm+ZpJmVMT2w=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=I9lICP1Y+XVpygKDt1AUNygvxAvyUKQCp0ybg/cxx1+PZUMzrehupBWrTUTvTWtzl
-         rbgGLkefFv4FCFBNi5VOKqzqPBux/BSiJHUZOud+GEi/rAvSHFLBvZ/aI7FergO5s6
-         yTdCf1N3sSaOmv7bgRWpTss3Ys8McXk3vj0rJZCm5u/EufcW3ThKtrnZixO2W7RCqF
-         YKfmLgHAa0YkladYYgLFzXk+lmMCA7kA7UZNgvsnNuE9A8oeT8p7MkVOEXqTfatZgY
-         Btd7e2+HNJk7qZ/yRlglX5YAzJO7yVsJAcPaTEvwfgh7iECvq+Putvt0AvoOaS9lRs
-         BIpSq3GzCe2yg==
-Date:   Sat, 16 Apr 2022 14:59:06 +0100
+        b=XKLVAzIWvYxk2/t0w+uyRdxsRnfPB69Tgtn16HzjjrvNpqVdRBpAF7YQEVz1qhi8K
+         7O38Md3SMppTUSA9AyuO+c3LWj953eznf+1eMMzSYgE5o5JW+t9N1cYErjsPq0xR/9
+         hxHx3oYXgTTL95GKRIoTvLzOz5bKSuBkdqhCGA3/tJQsxWcKKddDkf55vjOiXzY9Iq
+         n6/TgghaC4xUK7RHqr6ashPDTTDDNwaKQMiE+Evo/NRCV/SWOvAOIAypcBCUSpGORO
+         hf4dx1wWzRsbVEszU2yu6F5Qa2YeKlv82cmEp3g36xADrSexzAYvCs6mLCyAORX6HX
+         fixOgj2lcCAxA==
+Date:   Sat, 16 Apr 2022 15:01:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miaoqian Lin <linmq006@gmail.com>
-Cc:     Song Qiang <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ivan Drobyshevskyi <drobyshevskyi@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: proximity: vl53l0x:  Fix return value check of
- wait_for_completion_timeout
-Message-ID: <20220416145906.1162767c@jic23-huawei>
-In-Reply-To: <20220412064210.10734-1-linmq006@gmail.com>
-References: <PH0PR03MB6786F62DE142E3E2C66C937F99ED9@PH0PR03MB6786.namprd03.prod.outlook.com>
-        <20220412064210.10734-1-linmq006@gmail.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2] iio: dac: ltc2688: fix voltage scale read
+Message-ID: <20220416150128.1980889d@jic23-huawei>
+In-Reply-To: <20220412124916.61-1-nuno.sa@analog.com>
+References: <20220412124916.61-1-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,56 +53,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 12 Apr 2022 06:42:09 +0000
-Miaoqian Lin <linmq006@gmail.com> wrote:
+On Tue, 12 Apr 2022 14:49:16 +0200
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> wait_for_completion_timeout() returns unsigned long not int.
-> It returns 0 if timed out, and positive if completed.
-> The check for <= 0 is ambiguous and should be == 0 here
-> indicating timeout which is the only error case.
-> 
-> Fixes: 3cef2e31b54b ("iio: proximity: vl53l0x: Add IRQ support")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Hi,
+> Properly set *val2 (and not overwrite *val) to correctly return
+> IIO_VAL_FRACTIONAL_LOG2.
+>=20
+> Fixes: 832cb9eeb9312 ("iio: dac: add support for ltc2688")
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Dropped v1 and applied this instead. =20
 
-Applied to the togreg branch of iio.git ready for the next
-merge window. I'm not rushing this in because it's removing pointless
-and misleading code rather than fixing a bug as such.
+If you detect an issue with a patch you have sent yourself, it is helpful
+to reply to that patch to make it clear there will be a v2.
+I don't always catch up with all my email in one sitting so can end up
+pushing the wrong versions out....
 
 Thanks,
 
 Jonathan
 
 > ---
-> Changes in v2:
-> - add driver name in patch subject.
-> ---
->  drivers/iio/proximity/vl53l0x-i2c.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-> index 661a79ea200d..a284b20529fb 100644
-> --- a/drivers/iio/proximity/vl53l0x-i2c.c
-> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-> @@ -104,6 +104,7 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
->  	u16 tries = 20;
->  	u8 buffer[12];
->  	int ret;
-> +	unsigned long time_left;
->  
->  	ret = i2c_smbus_write_byte_data(client, VL_REG_SYSRANGE_START, 1);
->  	if (ret < 0)
-> @@ -112,10 +113,8 @@ static int vl53l0x_read_proximity(struct vl53l0x_data *data,
->  	if (data->client->irq) {
->  		reinit_completion(&data->completion);
->  
-> -		ret = wait_for_completion_timeout(&data->completion, HZ/10);
-> -		if (ret < 0)
-> -			return ret;
-> -		else if (ret == 0)
-> +		time_left = wait_for_completion_timeout(&data->completion, HZ/10);
-> +		if (time_left == 0)
->  			return -ETIMEDOUT;
->  
->  		vl53l0x_clear_irq(data);
+> v2:
+>  * Fixed repeated "not" in commit description and tweaked patch subject
+> to match the preferred format.
+>=20
+>  drivers/iio/dac/ltc2688.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
+> index d249fa28202c..937b0d25a11c 100644
+> --- a/drivers/iio/dac/ltc2688.c
+> +++ b/drivers/iio/dac/ltc2688.c
+> @@ -298,7 +298,7 @@ static int ltc2688_read_raw(struct iio_dev *indio_dev,
+>  		if (ret)
+>  			return ret;
+> =20
+> -		*val =3D 16;
+> +		*val2 =3D 16;
+>  		return IIO_VAL_FRACTIONAL_LOG2;
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+>  		ret =3D regmap_read(st->regmap,
 

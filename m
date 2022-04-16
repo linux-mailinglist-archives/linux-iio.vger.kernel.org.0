@@ -2,46 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 655995035F3
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 12:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E035035F5
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Apr 2022 12:34:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231425AbiDPKav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Apr 2022 06:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
+        id S231434AbiDPKg3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Apr 2022 06:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbiDPKat (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 06:30:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D99D419A7;
-        Sat, 16 Apr 2022 03:28:18 -0700 (PDT)
+        with ESMTP id S230108AbiDPKg3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Apr 2022 06:36:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0412BC7;
+        Sat, 16 Apr 2022 03:33:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 40A42B81D0A;
-        Sat, 16 Apr 2022 10:28:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A924C385A3;
-        Sat, 16 Apr 2022 10:28:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B6C2BB81D17;
+        Sat, 16 Apr 2022 10:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694F8C385A1;
+        Sat, 16 Apr 2022 10:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650104896;
-        bh=xA0Gm6xPW9sfLsGyMDopDPut4JiQe0nUfaa/4vSv7EY=;
+        s=k20201202; t=1650105232;
+        bh=RkfjwSY2V54oCcdnuPvXsSFQ3xDecQj7tVsVG5NkgEo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kBNFeAcHdkN2OG3bgcDWZy4juQUpD+uHb6jyRZm9DiFR1lpFWmUGhygwKtvt4QL7Q
-         5P9hFuBvh9GKjIcltFuDD+tsoGZHWdEGCZXEY1dIRzeRrwuMWjOOZO9GNy6OLfl/XM
-         NHkkiEHgHkwsMNqFVB4wZUdbTNPR9Cgvh77dxoRYtEROVJmaj7+sXZ5YAav+V0LC/L
-         PGeKtPyGiRovV6qnFDGA92ZV90ML+PrwyTBlT8p9VELjt81JJi2aVDMy5QRYwIIpM1
-         yYY3yd606nTfdmNvgmkBP1MLdPP2gdPgJmKsXbif+9LCqEC6SKc7KT1Qq5hZV1Lj6x
-         u3Hwq4pwvLUDQ==
-Date:   Sat, 16 Apr 2022 11:36:12 +0100
+        b=SRJdPBWD89TaY39pJ9OUMKyuhqcSnECbekubt+rtqVIPbunHrtzC/IIr2DB66yxxh
+         gpHXxPBcrUlwsiVmY9o7o82MW+XqvOFASV77gRIxwMDpFBrwUXocH9PaggplJ/w5ou
+         KA7AhqxiEswEUKcL7IGMc4AS5YZAwRq6u5CItWYyyjbs9ZMzWF+y4xsA0IqGjfqrbj
+         41Msmhm8SD/t9vKAC/2NmND0Mekk2AjwLvfYHk4stILmaWfkoRMUShgCpXn9C5zBQT
+         Pn/PE6TBho6HUk2AbNktszZs7jFymUvU+sucX6xBYeFdGZEU+w67uw7oOr7OENR7XP
+         LEs427tvpG/gA==
+Date:   Sat, 16 Apr 2022 11:41:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH v1 1/1] iio: dac: dpot: Drop dependency on OF
-Message-ID: <20220416113612.7272f5db@jic23-huawei>
-In-Reply-To: <20220413190632.30365-1-andriy.shevchenko@linux.intel.com>
-References: <20220413190632.30365-1-andriy.shevchenko@linux.intel.com>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: afe: rescale: Make use of device properties
+Message-ID: <20220416114150.171813b6@jic23-huawei>
+In-Reply-To: <YlmFezCYNeUxa8cL@shaak>
+References: <20220413190117.29814-1-andriy.shevchenko@linux.intel.com>
+        <Ylgwhu9zdmwwYnAq@shaak>
+        <YlhT/yiJSD7pFsF8@smile.fi.intel.com>
+        <YlmFezCYNeUxa8cL@shaak>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,36 +59,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Apr 2022 22:06:32 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Fri, 15 Apr 2022 10:47:23 -0400
+Liam Beguin <liambeguin@gmail.com> wrote:
 
-> Nothing in this driver depends on OF firmware so drop the dependency
-> and update the headers to remove the false impression such a dependency
-> exists.
+> On Thu, Apr 14, 2022 at 08:03:59PM +0300, Andy Shevchenko wrote:
+> > On Thu, Apr 14, 2022 at 10:32:38AM -0400, Liam Beguin wrote:  
+> > > Hi Andy,
+> > > 
+> > > On Wed, Apr 13, 2022 at 10:01:17PM +0300, Andy Shevchenko wrote:  
+> > > > Convert the module to be property provider agnostic and allow
+> > > > it to be used on non-OF platforms.  
+> >   
+> > > > +#include <linux/mod_devicetable.h>  
+> > > 
+> > > Is this really needed?  
+> > 
+> > Yes.
+> > This header is missed. I can split its addition to a separate patch.  
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-+CC Peter.
+> Understood, maybe a separate patch would make it more explicit.
 
-Given it's looks obviously correct applied.
+You could also argue that the main route people 'expect' that header via
+is of.h and given that include is dropped in this patch, we have even more reason
+mod_devicetable.h should be included.
 
-Thanks,
+So I'm fine with this in one patch on that basis.
+
+Also I'm lazy and not having to go to v2 on this saves me a little bit of effort :)
+
+Hence applied.
+
 
 Jonathan
 
-> ---
->  drivers/iio/dac/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> index c0bf0d84197f..8d5b3bad75ad 100644
-> --- a/drivers/iio/dac/Kconfig
-> +++ b/drivers/iio/dac/Kconfig
-> @@ -285,7 +285,6 @@ config CIO_DAC
->  
->  config DPOT_DAC
->  	tristate "DAC emulation using a DPOT"
-> -	depends on OF
->  	help
->  	  Say yes here to build support for DAC emulation using a digital
->  	  potentiometer.
+> Cheers,
+> Liam
+> 
+> > > device_get_match_data() is already defined in <linux/property.h>  
+> > 
+> > It's indirectly related (just like we do when we clean up of.h). Since
+> > the original of.h is missed there is no header replacement, just adding.
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko
+> > 
+> >   
 

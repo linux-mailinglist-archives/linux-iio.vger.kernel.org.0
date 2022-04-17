@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6327F504786
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Apr 2022 12:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44373504798
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Apr 2022 12:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233873AbiDQKTc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Apr 2022 06:19:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
+        id S232716AbiDQK3S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Apr 2022 06:29:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232241AbiDQKTc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Apr 2022 06:19:32 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C28825EBD;
-        Sun, 17 Apr 2022 03:16:56 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id bv19so22469381ejb.6;
-        Sun, 17 Apr 2022 03:16:56 -0700 (PDT)
+        with ESMTP id S229559AbiDQK3R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Apr 2022 06:29:17 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8123D2BB36;
+        Sun, 17 Apr 2022 03:26:41 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 11so9653257edw.0;
+        Sun, 17 Apr 2022 03:26:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=UYe07PNBLRxCxCEqLuavnWGb3HlH32JJiMGy4PnwOPs=;
-        b=Igd32dpxHGuHz7DJ9NDCGnBuicFC/j0mffzs5KXTgyyGMhh7dHGQQBWVt5Ps85GCwz
-         u9sktDYRy0VYv4JGtNek8GoWYQsqJrxJNa2Mn4bDPlYGu5lbSr0Sq2ggZBoJRh/t02i5
-         Zcvw3TrV1VgIpOM+l5k4bx1RI7twcsv5lfERonOQ62Cf1kKvUtp9GLN3h2mB9n0dUNyZ
-         52J9yIy3PaqvmBr1e8UN1E8RNI+nLSEkxN8R3yeOT4MmwH1wBU03EJlWm//hNTTgEwZE
-         gZKc3gHg3A75ZI8846z1zy3IqBfhT+2UY8or6nLJjSn91B9DVcWQlMNhTD1l4QZzpjTc
-         BZDw==
+        bh=blemm2sWm2iF7B/QYLW8dnNtVvrLCwj7pJsHJ0h7Wp4=;
+        b=mBTAhqWcfo3G990my3H2ftrvof+EMuYMxCksg79d2RO7ECek4uofvSg7bfDF89RSTj
+         1kOVTWRBNZuaWdJ6WsSVTQA8nCm78akCdnEHS+LXRnDd4sbE5zZ0K17cGYHfxVLo194B
+         vn+1dhBkYv2rKes565qWGsWrgvgVIlv9XxVWaivlWpTgCPOG37XO44i7bk7PUEjjdGhc
+         3kwC5vQ6W/4caZ7pq2bIMk3MhLkKydFJetmBIpFAuYB1OukUygnqP7ek5s3ser2+eADt
+         /1PlE4xo9FoF1WxmpHgfN/wRykY5W/8lymguLij6S+w6WKO9Rock0Z2538ZVC0pfL5YX
+         oQxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=UYe07PNBLRxCxCEqLuavnWGb3HlH32JJiMGy4PnwOPs=;
-        b=S6JQC00e+Je+UJCRXuERbVpl94ikLPb4s3Qa8IFi+BpZI9HDvGKzUIPFK5hmKYAPtA
-         KG5MhdzbyG/Ptx9Uwh4B9r6Na2tbg5/+GgF0lahv8pzVoF5/Uvud7WRw6hMhUVEV5nuc
-         nmuL8McnY0ecKOYVFL15Rj+ZSADdT3T+hh0xKQuptGY5KXz2BOIT3fGvlixu7p59VVUs
-         6YOLW5PtSQiL4xERRgoUyRHeOnQ26kfTTWCFhIZ98RdwusHdl9LvsgQ/UckLcCVTGAv9
-         nRvdDMYdefNNNhD95q8x6JE83qVx/PWznz+JKkGcS5zw4iV4Hq5Q4QazmqKpqiPA4vvA
-         n+Hw==
-X-Gm-Message-State: AOAM530K8P0feOATrujrS61qVABl5Xmvw6DFFiRqHdGwVI4UHO8f1PqT
-        lXWHs6R1hzJWZCd811Q51nU=
-X-Google-Smtp-Source: ABdhPJzUcAJBONWTtgEUtX3g8b7lNuV4fdBQU8XR18R2uPVolAoyW/iqw8EQB6po7+gMXP6k9alRIg==
-X-Received: by 2002:a17:907:86ab:b0:6e8:d60e:d6c3 with SMTP id qa43-20020a17090786ab00b006e8d60ed6c3mr5251761ejc.346.1650190614594;
-        Sun, 17 Apr 2022 03:16:54 -0700 (PDT)
+        bh=blemm2sWm2iF7B/QYLW8dnNtVvrLCwj7pJsHJ0h7Wp4=;
+        b=ifwSsV6HfqELnmErztkyg6L79u8dfVUhR1Oetq1Osb0mk5dml00OBch59I9tMTsFMw
+         P3+s1nniPr3FZBm+qNgpwtm4E59bmnlg+/ANZ5VGJ3JYKTtNvbtVtknWHr8CICtwsFWm
+         2p4j9Ic+Wu2bNNoyH3j+N2RfV0LBKK34uZaRQigpi5bssnsSKpRcmlY6tDngh7r7cSqV
+         B/bweHGrDoYtOLNgWX2QYz94zvAQ6m/L5wXmcz6RR+NmU5a7yUPecDKvkrI+t4CXJTcf
+         To/5UWGgkF6yNu6FNnYsq8CWAVLYN8AXFAvPrIA8g5mUUr9TR+uOZpczhChlmkcluqwM
+         F4Kw==
+X-Gm-Message-State: AOAM530jqDwsu85lO3+44/jP3IJMEPuAaNwAB1rkDbJmOI8v1pk2XoTT
+        ozh16dW3UKozq3x1qSXZ+AQ=
+X-Google-Smtp-Source: ABdhPJw5Z/QO+UhLphJEhOtTJLTfukSm+oz437jQIv2pQDcZjDGt2TccKbjqW2ZoWzv+KW0p+j/V8g==
+X-Received: by 2002:a05:6402:696:b0:41d:7345:41e1 with SMTP id f22-20020a056402069600b0041d734541e1mr7229843edy.179.1650191199771;
+        Sun, 17 Apr 2022 03:26:39 -0700 (PDT)
 Received: from [192.168.0.182] ([188.24.22.234])
-        by smtp.gmail.com with ESMTPSA id u6-20020a170906408600b006e87d654270sm3437383ejj.44.2022.04.17.03.16.53
+        by smtp.gmail.com with ESMTPSA id cb7-20020a170906a44700b006e879b4ba2dsm3441618ejb.56.2022.04.17.03.26.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Apr 2022 03:16:53 -0700 (PDT)
-Message-ID: <f0f90430-fa90-129e-77bc-f5594206b76d@gmail.com>
-Date:   Sun, 17 Apr 2022 13:16:53 +0300
+        Sun, 17 Apr 2022 03:26:39 -0700 (PDT)
+Message-ID: <59033522-9095-319e-2710-cfac79e2d7e4@gmail.com>
+Date:   Sun, 17 Apr 2022 13:26:38 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH v1 1/3] dt-bindings: iio: adc: add AD4130
+Subject: Re: [PATCH v1 3/3] iio: adc: ad4130: add AD4130 driver
 Content-Language: en-US
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -62,11 +62,12 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         Cosmin Tanislav <cosmin.tanislav@analog.com>
 References: <20220413094011.185269-1-cosmin.tanislav@analog.com>
- <20220416160040.7e0d6015@jic23-huawei>
+ <20220413094011.185269-3-cosmin.tanislav@analog.com>
+ <20220416172117.230b5d8c@jic23-huawei>
 From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <20220416160040.7e0d6015@jic23-huawei>
+In-Reply-To: <20220416172117.230b5d8c@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -79,8 +80,8 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-On 4/16/22 18:00, Jonathan Cameron wrote:
-> On Wed, 13 Apr 2022 12:40:09 +0300
+On 4/16/22 19:21, Jonathan Cameron wrote:
+> On Wed, 13 Apr 2022 12:40:11 +0300
 > Cosmin Tanislav <demonsingur@gmail.com> wrote:
 > 
 >> AD4130-8 is an ultra-low power, high precision,
@@ -95,417 +96,765 @@ On 4/16/22 18:00, Jonathan Cameron wrote:
 >> options, smart sequencer, sensor biasing and
 >> excitation options, diagnostics, and a FIFO
 >> buffer.
+>>
+>> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 > 
 > Hi Cosmin,
 > 
-> Please wrap at around 70-75 chars for patch descriptions.  That
-> leaves a bit of room for indenting due to automated tooling
-> / email threads before we hit 80 chars.  Definitely don't need
-> 30 chars of room for it!
+> I've only glanced at Andy's comments, so may well overlap in places
+> though I'll try and avoid too much repetition if I happen to remember
+> Andy commented on something already.
 > 
-
-Yeah, I'll do it.
-
-> It seems you hit a lot of things that Rob's bot had found that
-> you would have seen on doing a build test.  Please make sure
-> you do one in future to save time!
+> Only a few minor things from me.  For such a complex device this
+> is looking pretty good for a first version posted.
 > 
-
-Yeah, sorry. I already fixed them for V2.
-
-> Please use a cover letter for a series like this. It provides several
-> advantages:
+> Jonathan
 > 
-> 1) Somewhere to add a brief introduction to the whole series.
-> 2) Place for people to give tags for whole series that the b4 tool
->     I use to pick up patches can then automatically find them from.
-> 3) Gives series a nice unified name in patchwork ;)
-> https://patchwork.kernel.org/project/linux-iio/list/?series=631830
 > 
-
-Sure thing. I'll have it there for V2 anyway.
-
->>
->> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 >> ---
->>   .../bindings/iio/adc/adi,ad4130.yaml          | 255 ++++++++++++++++++
->>   1 file changed, 255 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+>>   MAINTAINERS              |    8 +
+>>   drivers/iio/adc/Kconfig  |   13 +
+>>   drivers/iio/adc/Makefile |    1 +
+>>   drivers/iio/adc/ad4130.c | 2072 ++++++++++++++++++++++++++++++++++++++
+>>   4 files changed, 2094 insertions(+)
+>>   create mode 100644 drivers/iio/adc/ad4130.c
 >>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+> 
+> ...
+> 
+>> diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
 >> new file mode 100644
->> index 000000000000..e9dce54e9802
+>> index 000000000000..89fb9b413ff0
 >> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
->> @@ -0,0 +1,255 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +# Copyright 2022 Analog Devices Inc.
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4130.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +++ b/drivers/iio/adc/ad4130.c
+>> @@ -0,0 +1,2072 @@
+>> +// SPDX-License-Identifier: GPL-2.0+
+>> +/*
+>> + * AD4130 SPI ADC driver
+>> + *
+>> + * Copyright 2022 Analog Devices Inc.
+>> + */
+>> +#include <asm/div64.h>
+>> +#include <asm/unaligned.h>
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bitops.h>
+>> +#include <linux/clk.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/device.h>
+>> +#include <linux/err.h>
+>> +#include <linux/gpio/driver.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/irq.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/iio/buffer.h>
+>> +#include <linux/iio/kfifo_buf.h>
+>> +#include <linux/module.h>
+>> +#include <linux/of_irq.h>
+>> +#include <linux/property.h>
+>> +#include <linux/regmap.h>
+>> +#include <linux/regulator/consumer.h>
+>> +#include <linux/spi/spi.h>
 >> +
->> +title: Analog Devices AD4130 ADC device driver
+>> +#include <linux/iio/iio.h>
+>> +#include <linux/iio/sysfs.h>
 >> +
->> +maintainers:
->> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> +#define AD4130_8_NAME			"ad4130-8"
 >> +
->> +description: |
->> +  Bindings for the Analog Devices AD4130 ADC. Datasheet can be found here:
->> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4130-8.pdf
+>> +#define AD4130_COMMS_READ_MASK		BIT(6)
 >> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - adi,ad4130-8-16-lfcsp
->> +      - adi,ad4130-8-16-wlcsp
->> +      - adi,ad4130-8-24-lfcsp
->> +      - adi,ad4130-8-24-wlcsp
+>> +#define AD4130_REG_STATUS		0x00
+>> +#define AD4130_STATUS_POR_FLAG_MASK	BIT(4)
+>> +
+>> +#define AD4130_REG_ADC_CONTROL		0x01
+>> +#define AD4130_BIPOLAR_MASK		BIT(14)
+> where possibly it is good to name register fields such that it's
+> obvious which register they are fields of.  Makes it easier
+> to be sure we have the right one.
+> (I fell into this trap myself this week and wasted an hour or
+> so before I figured out that there were two different registers
+> with fields with exactly the same name ;)
 > 
-> What are the variants?   They look to possibly be package differences?
-> + resolution differences.
-> They definitely need some description here.
-> It may make more sense to have one compatible and then some extra
-> booleans to say what it supported.
+> Lots of different conventions for this one and I don't mind
+> which one you pick. e.g.  This works, but isn't perfect by
+> any means.
+> 
+> #define AD4130_ADC_CTRL_REG
+> #define  AD4130_ADC_CTRL_BIPOLAR_MASK
+>  > Note I quite like the subtle indenting to make it easier
+> to read these definitions as well.
+> 
+
+Well. It's not late to change it now, if you insist.
+
+If you look at my past drivers, I kept the register prefix
+for masks, but it seemed kind of redundant and I dropped it
+for this one.
+
+By subtle indenting, you mean, making the masks look like
+sub-definitions of the register?
+
+>> +#define AD4130_INT_REF_VAL_MASK		BIT(13)
+>> +#define AD4130_INT_REF_2_5V		2500000
+>> +#define AD4130_INT_REF_1_25V		1250000
+>> +#define AD4130_CSB_EN_MASK		BIT(9)
+>> +#define AD4130_INT_REF_EN_MASK		BIT(8)
+>> +#define AD4130_MODE_MASK		GENMASK(5, 2)
+>> +#define AD4130_MCLK_SEL_MASK		GENMASK(1, 0)
+> 
+> ...
+> 
+> 
+>> +
+>> +#define AD4130_RESET_CLK_COUNT		64
+>> +#define AD4130_RESET_BUF_SIZE		(AD4130_RESET_CLK_COUNT / 8)
+>> +
+>> +#define AD4130_SOFT_RESET_SLEEP		(160 * 1000000 / AD4130_MCLK_FREQ_76_8KHZ)
+>> +
+>> +#define AD4130_INVALID_SLOT		-1
+>> +
+>> +#define AD4130_FREQ_FACTOR		1000000000ull
+> 
+> Arguably should use the standard define for NANO
+
+Already addressed by Andy.
+
+> 
+>> +#define AD4130_DB3_FACTOR		1000
+>> +
+> 
+>> +
+>> +struct ad4130_chip_info {
+>> +	const char	*name;
+>> +	u8		resolution;
+>> +	bool		has_int_pin;
+>> +};
+>> +
+>> +struct ad4130_setup_info {
+>> +	unsigned int			iout0_val;
+>> +	unsigned int			iout1_val;
+>> +	unsigned int			burnout;
+>> +	unsigned int			pga;
+>> +	unsigned int			fs;
+>> +	bool				ref_bufp;
+>> +	bool				ref_bufm;
+>> +	u32				ref_sel;
+>> +	enum ad4130_filter_mode		filter_mode;
+>> +	unsigned int			enabled_channels;
+>> +	unsigned int			channels;
+>> +};
+>> +
+>> +#define AD4130_SETUP_SIZE		offsetof(struct ad4130_setup_info, \
+>> +						 enabled_channels)
+> 
+> Perhaps a comment on what this is?  Or define this as one structure
+> containing another so that you can have the meta data alongside the
+> actual stuff you want to be able to compare.
+> 
+> Or just rename it as AD4130_SETUP_MATCH_SIZE or something along
+> those lines.
+> 
+
+Sure.
+
+> ...
+> 
+>> +struct ad4130_state {
+>> +	const struct ad4130_chip_info	*chip_info;
+>> +	struct spi_device		*spi;
+>> +	struct regmap			*regmap;
+>> +	struct clk			*mclk;
+>> +	struct regulator_bulk_data	regulators[4];
+>> +	u32				irq_trigger;
+>> +	u32				inv_irq_trigger;
+>> +
+>> +	/*
+>> +	 * Synchronize access to members of driver state, and ensure atomicity
+>> +	 * of consecutive regmap operations.
+>> +	 */
+>> +	struct mutex			lock;
+>> +	struct completion		completion;
+>> +
+>> +	struct iio_chan_spec		chans[AD4130_MAX_CHANNELS];
+>> +	struct ad4130_chan_info		chans_info[AD4130_MAX_CHANNELS];
+>> +	struct ad4130_setup_info	setups_info[AD4130_MAX_SETUPS];
+>> +	enum ad4130_pin_function	pins_fn[AD4130_MAX_ANALOG_PINS];
+>> +	u32				vbias_pins[AD4130_MAX_ANALOG_PINS];
+>> +	u32				num_vbias_pins;
+>> +	int				scale_tbls[AD4130_REF_SEL_MAX]
+>> +						  [AD4130_PGA_NUM][2];
+>> +	struct gpio_chip		gc;
+>> +	unsigned int			gpio_offsets[AD4130_MAX_GPIOS];
+>> +	unsigned int			num_gpios;
+>> +
+>> +	u32			int_pin_sel;
+>> +	bool			int_ref_en;
+>> +	u32			int_ref_uv;
+>> +	u32			mclk_sel;
+>> +	bool			bipolar;
+>> +
+>> +	unsigned int		num_enabled_channels;
+>> +	unsigned int		effective_watermark;
+>> +	unsigned int		watermark;
+>> +
+>> +	struct spi_message	fifo_msg;
+>> +	struct spi_transfer	fifo_xfer[2];
+>> +
+>> +	/*
+>> +	 * DMA (thus cache coherency maintenance) requires the
+>> +	 * transfer buffers to live in their own cache lines.
+>> +	 */
+>> +	u8			reset_buf[AD4130_RESET_BUF_SIZE] ____cacheline_aligned;
+>> +	u8			reg_write_tx_buf[4];
+>> +	u8			reg_read_tx_buf[1];
+>> +	u8			reg_read_rx_buf[3];
+>> +	u8			fifo_tx_buf[2];
+>> +	u8			fifo_rx_buf[AD4130_FIFO_SIZE *
+>> +					    AD4130_FIFO_MAX_SAMPLE_SIZE];
+> 
+> This is quite a large buffer.  Perhaps it would be better to drain the fifo
+> in multiple steps if it is very full?  I guess that could be added
+> later if anyone ever ran into a problem with the buffer size.
+> 
+
+We're quite time-constrained when receiving the FIFO watermark
+interrupt, I'm not sure two separate transfers would be any better.
+
+> 
+>> +};
+> 
+>> +
+>> +static const struct iio_info ad4130_info = {
+>> +	.read_raw = ad4130_read_raw,
+>> +	.read_avail = ad4130_read_avail,
+>> +	.write_raw_get_fmt = ad4130_write_raw_get_fmt,
+>> +	.write_raw = ad4130_write_raw,
+>> +	.update_scan_mode = ad4130_update_scan_mode,
+>> +	.hwfifo_set_watermark = ad4130_set_fifo_watermark,
+>> +	.debugfs_reg_access = ad4130_reg_access,
+>> +};
+>> +
+>> +static int ad4130_buffer_postenable(struct iio_dev *indio_dev)
+>> +{
+>> +	struct ad4130_state *st = iio_priv(indio_dev);
+>> +	int ret;
+>> +
+>> +	mutex_lock(&st->lock);
+>> +
+>> +	ret = ad4130_set_watermark_interrupt_en(st, true);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	/* When the chip enters FIFO mode, IRQ polarity is inversed. */
+> 
+> That is downright odd :)  Perhaps a datasheet section reference is
+> appropriate here.
+
+Page 65, FIFO Watermark Interrupt section.
+
++
+
+Page 71, Bit Descriptions for STATUS Register, RDYB.
+
+I'll add them as a comment.
+
+> 
+>> +	ret = irq_set_irq_type(st->spi->irq, st->inv_irq_trigger);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = ad4130_set_fifo_mode(st, AD4130_FIFO_MODE_WATERMARK);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = ad4130_set_mode(st, AD4130_MODE_CONTINUOUS);
+>> +
+>> +out:
+>> +	mutex_unlock(&st->lock);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int ad4130_buffer_predisable(struct iio_dev *indio_dev)
+>> +{
+>> +	struct ad4130_state *st = iio_priv(indio_dev);
+>> +	unsigned int i;
+>> +	int ret;
+>> +
+>> +	mutex_lock(&st->lock);
+>> +
+>> +	ret = ad4130_set_mode(st, AD4130_MODE_IDLE);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	/* When the chip exits FIFO mode, IRQ polarity returns to normal. */
+>> +	ret = irq_set_irq_type(st->spi->irq, st->irq_trigger);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = ad4130_set_fifo_mode(st, AD4130_FIFO_MODE_DISABLED);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = ad4130_set_watermark_interrupt_en(st, false);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	for (i = 0; i < indio_dev->num_channels; i++) {
+> Comment here on why we do this in predisable and not the equivalent in
+> postenable.  (I assume because we don't call update_scan_mode in
+> the disable path).
 >
 
-Packaging + available interrupt pins + resolution. Is having extra
-booleans to describe what is supported really the best approach?
-It's not really about how the hardware is configured anymore, is it?
-They're different chips.
+Yeah, that's exactly why. I'll add the comment.
 
-> Long shot, but do the different packages have different model IDs?
-> The datasheet says
-> Model ID: 24-bit WLCSP Model ID. These bits are set by default for each model and
-> are read only.  If there is one for each of these models then it would be
-> better to have a single compatible and do the detection of variant in
-> the driver.
+>> +		ret = ad4130_set_channel_enable(st, i, false);
+>> +		if (ret)
+>> +			goto out;
+>> +	}
+>> +
+>> +out:
+>> +	mutex_unlock(&st->lock);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static const struct iio_buffer_setup_ops ad4130_buffer_ops = {
+>> +	.postenable = ad4130_buffer_postenable,
+>> +	.predisable = ad4130_buffer_predisable,
+>> +};
+>> +
 > 
-> I'm not immediately spotting the resolution information in the data sheet.
-> It is marked Preliminary but if there are details missing, please mention
-> in cover letter so we don't go looking for information that doesn't exist.
->
-
-I don't have enough information about the other models to know what
-Model IDs they will have. That's why I took this approach.
-
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
->> +    description: phandle to the master clock (mclk)
->> +
->> +  clock-names:
->> +    items:
->> +      - const: mclk
->> +
->> +  interrupts:
->> +    minItems: 1
->> +    maxItems: 1
->> +
->> +  interrupt-names:
->> +    minItems: 1
->> +    maxItems: 1
->> +    description:
->> +      Default if not supplied is dout-int.
->> +    items:
->> +      enum:
->> +        - dout-int
->> +        - clk
->> +        - p1
+> ...
 > 
-> This is unusual.  It is probably helpful to add more description to
-> explain that the data ready/ fifo interrupt can be routed to any of these
-> pins.
-
-Is it unusual? ADIS16480 follows a similar approach.
-
-description: |
-   Specify which interrupt pin should be configured as Data Ready / FIFO
-   interrupt.
-   Default if not supplied is dout-int.
-
-How does this sound?
-
+>> +
+>> +static int find_table_index(const unsigned int *tbl, size_t len,
+>> +			    unsigned int val)
 > 
->> +        - dout
->> +
->> +  '#address-cells':
->> +    const: 1
->> +
->> +  '#size-cells':
->> +    const: 0
->> +
->> +  refin1-supply:
->> +    description: refin1 supply. Can be used as reference for conversion.
->> +
->> +  refin2-supply:
->> +    description: refin2 supply. Can be used as reference for conversion.
->> +
->> +  avdd-supply:
->> +    description: AVDD voltage supply. Can be used as reference for conversion.
-> 
-> Whilst these are optional in theory, you should call out that they must be
-> provided if any of the channels use them as a reference.
+> This is a generic enough name you may well find you have
+> ended up clashing with something added in a header in future.
+> So I'd prefix this with the part number.
 > 
 
-I thought that "Can be used as reference for conversion." + it being an
-option in adi,reference-select property would make it obvious, no?
+Sure thing.
 
+>> +{
+>> +	unsigned int i;
 >> +
->> +  iovdd-supply:
->> +    description: IOVDD voltage supply. Used for the chip interface.
+>> +	for (i = 0; i < len; i++)
+>> +		if (tbl[i] == val)
+>> +			return i;
 >> +
->> +  spi-max-frequency:
->> +    maximum: 5000000
+>> +	return -EINVAL;
+>> +}
 >> +
->> +  adi,mclk-sel:
->> +    description: |
->> +      Select the clock.
->> +      0: Internal 76.8kHz clock.
->> +      1: Internal 76.8kHz clock, output to the CLK pin.
->> +      2: External 76.8kHz clock.
->> +      3. External 153.6kHz clock.
-> 
-> For the external clocks, can we use the fact that one is supplied
-> as enough to tell us we should be using them?  Then query the
-> frequency directly from that clock?
-> 
-
-Aren't we supposed to set the frequency of that clock ourselves,
-in the driver?
-
-> If no clock provided then clearly internal.  All that is
-> necessary after that is a boolean to control if the CLK output
-> is enabled or not (and ideally constrain that to only be possible
-> if in internal clock mode).
-> 
-
-Well...
-
-So, mclk present => external, not present => internal.
-adi,int-clk-out-enable to specify if the internal clock should be
-exposed? adi,ext-clk-freq to specify the desired clock speed of the
-external clk?
-
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    enum: [0, 1, 2, 3]
->> +    default: 0
+>> +static int ad4130_get_ref_voltage(struct ad4130_state *st,
+>> +				  enum ad4130_ref_sel ref_sel,
+>> +				  unsigned int *ref_uv)
+>> +{
+>> +	struct device *dev = &st->spi->dev;
+>> +	int ret;
 >> +
->> +  adi,int-ref-en:
-> 
-> Mentioned below...
-> 
->> +    description: |
->> +      Specify if internal reference should be enabled.
->> +    type: boolean
->> +    default: true
+>> +	switch (ref_sel) {
+>> +	case AD4130_REF_REFIN1:
+>> +		ret = regulator_get_voltage(st->regulators[2].consumer);
+>> +		break;
+>> +	case AD4130_REF_REFIN2:
+>> +		ret = regulator_get_voltage(st->regulators[3].consumer);
+>> +		break;
+>> +	case AD4130_REF_AVDD_AVSS:
+>> +		ret = regulator_get_voltage(st->regulators[0].consumer);
+>> +		break;
+>> +	case AD4130_REF_REFOUT_AVSS:
+>> +		if (!st->int_ref_en) {
+>> +			ret = -EINVAL;
+>> +			break;
+>> +		}
 >> +
->> +  adi,bipolar:
->> +    description: Specify if the device should be used in bipolar mode.
->> +    type: boolean
->> +    default: false
+>> +		ret = st->int_ref_uv;
+>> +		break;
+>> +	default:
+>> +		ret = -EINVAL;
+>> +		break;
+>> +	}
 >> +
->> +  adi,vbias-pins:
->> +    description: Analog inputs to apply a voltage bias of (AVDD − AVSS) / 2 to.
->> +    items:
->> +      minimum: 0
->> +      maximum: 15
+>> +	if (ret <= 0)
+>> +		return dev_err_probe(dev, ret, "Cannot use reference %u\n",
+>> +				     ref_sel);
+>> +
+>> +	if (ref_uv)
+>> +		*ref_uv = ret;
 > 
-> If I read things correctly VBIAS_CONTROL is a bitmap across the 16 input lines.
-> So why use a single value rather than either a list of pins, or a bitmap?
+> I'd probably keep this simpler and have the caller always provide
+> ref_uv. Use a local dummy variable where it doesn't need the answer
+> or even better just return the voltage as positive value.
 > 
 
-Umm. Isn't this a list of pins? That's why everything is plural here.
-I guess I should add `maxItems: 16`?
-I already added `$ref: /schemas/types.yaml#/definitions/uint32-array`.
+I'll switch to returning it.
 
 >> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
->> +
->> +patternProperties:
->> +  "^channel@([0-9]|1[0-5])$":
->> +    type: object
->> +    $ref: adc.yaml
->> +
->> +    properties:
->> +      reg:
->> +        description: |
->> +          The channel number.
->> +        items:
->> +          minimum: 0
->> +          maximum: 15
->> +
->> +      diff-channels:
->> +        description: |
->> +          Besides the analog inputs available, internal inputs can be used.
->> +          16: Internal temperature sensor.
->> +          17: AVss
->> +          18: Internal reference.
->> +          19: DGND.
->> +          20: (AVDD − AVSS)/6+
->> +          21: (AVDD − AVSS)/6-
->> +          22: (IOVDD − DGND)/6+
->> +          23: (IOVDD − DGND)/6-
->> +          24: (ALDO − AVSS)/6+
->> +          25: (ALDO − AVSS)/6-
->> +          26: (DLDO − DGND)/6+
->> +          27: (DLDO − DGND)/6-
->> +          28: V_MV_P
->> +          29: V_MV_M
->> +        $ref: adc.yaml
->> +        items:
->> +          minimum: 0
->> +          maximum: 29
+>> +	return 0;
+>> +}
 > 
-> Interesting. So we have a part that has a 16 channel sequencer, but
-> can you have more channels as long as you don't want them all at once?
-> For example, I doubt anyone wants to permanently configure a device to monitor
-> the various supplies, but they will want to occasionally.
+> ...
 > 
-> As such, perhaps we need to treat this device more flexibly?
-> There are obviously contraints on what channels + references make sense
-> but maybe we should allow more than 16 to be specified?
+>> +static int ad4310_parse_fw(struct iio_dev *indio_dev)
+>> +{
+>> +	struct ad4130_state *st = iio_priv(indio_dev);
+>> +	struct device *dev = &st->spi->dev;
+>> +	unsigned int i;
+>> +	int avdd_uv;
+>> +	int irq;
+>> +	int ret;
+>> +
+>> +	st->mclk = devm_clk_get_optional(dev, "mclk");
+>> +	if (IS_ERR(st->mclk))
+>> +		return dev_err_probe(dev, PTR_ERR(st->mclk),
+>> +				     "Failed to get mclk\n");
+>> +
+>> +	st->int_pin_sel = AD4130_INT_PIN_DOUT_OR_INT;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(ad4130_int_pin_names); i++) {
+>> +		irq = of_irq_get_byname(dev->of_node, ad4130_int_pin_names[i]);
+> 
+> fwnode version.
 > 
 
-Ehhhhh. Look at the driver. It's already pushing 2k+ lines with
-the 8 setups for 16 channels situation + all the extra options the
-chip provides. If we also make it so that channels are rewritten at
-runtime, it will turn into a mess. Or at least I don't see a clean
-way of adding that. Besides, then I'd have to do all these extra
-allocations depending on the number of channels in the device tree...
-It gets complicated. If a customer expresses his interest in this,
-I guess I'll have to add it.
-Also, presumably the extra inputs are marketed as diagnostics.
+Yep, already mentioned by Andy.
 
+>> +		if (irq > 0) {
+>> +			st->int_pin_sel = i;
+>> +			break;
+>> +		}
+>> +	}
 >> +
->> +      adi,reference-select:
->> +        description: |
->> +          Select the reference source to use when converting on the
->> +          specific channel. Valid values are:
->> +          0: REFIN1(+)/REFIN1(−).
->> +          1: REFIN2(+)/REFIN2(−).
->> +          2: REFOUT/AVSS (Internal reference)
->> +          3: AVDD/AVSS
->> +          If not specified, internal reference is used.
+>> +	if (st->int_pin_sel == AD4130_INT_PIN_DOUT ||
+>> +	    (st->int_pin_sel == AD4130_INT_PIN_DOUT_OR_INT &&
+>> +	     !st->chip_info->has_int_pin))
+>> +		return dev_err_probe(dev, -EINVAL,
+>> +				     "Cannot use DOUT as interrupt pin\n");
+>> +
+>> +	if (st->int_pin_sel == AD4130_INT_PIN_P1)
+>> +		st->pins_fn[AD4130_AIN2_P1] = AD4130_PIN_FN_SPECIAL;
 > 
-> That's not a good idea if it might be turned off...
-> Perhaps a better approach would be to drop the int_ref_en and
-> simply walk the channels to find out if any of them use it.
-> If they don't turn it off, otherwise leave it on.
+> Looking at datasheet I see an option for P2, but not P1?
 > 
 
-Yeah, I guess I could do that.
+I messed this one up. Thanks.
 
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        enum: [0, 1, 2, 3]
->> +        default: 2
 >> +
->> +      adi,excitation-pin-0:
->> +        description: |
->> +          Analog input to apply excitation current to while the channel
->> +          is active.
->> +        minimum: 0
->> +        maximum: 15
->> +        default: 0
+>> +	st->mclk_sel = AD4130_MCLK_76_8KHZ;
+>> +	device_property_read_u32(dev, "adi,mclk-sel", &st->mclk_sel);
 >> +
->> +      adi,excitation-pin-1:
->> +        description: |
->> +          Analog input to apply excitation current to while this channel
->> +          is active.
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        minimum: 0
->> +        maximum: 15
->> +        default: 0
+>> +	if (st->mclk_sel >= AD4130_MCLK_SEL_MAX)
+>> +		return dev_err_probe(dev, -EINVAL, "Invalid clock %u\n",
+>> +				     st->mclk_sel);
 >> +
->> +      adi,excitation-current-0-nanoamps:
->> +        description: |
->> +          Excitation current in nanoamps to be applied to pin specified in
->> +          adi,excitation-pin-0 while this channel is active.
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
->> +        default: 0
+>> +	if (st->mclk && (st->mclk_sel == AD4130_MCLK_76_8KHZ ||
+>> +			 st->mclk_sel == AD4130_MCLK_76_8KHZ_OUT))
+>> +		return dev_err_probe(dev, -EINVAL,
+>> +				     "Cannot use external clock\n");
 >> +
->> +      adi,excitation-current-1-nanoamps:
->> +        description: |
->> +          Excitation current in nanoamps to be applied to pin specified in
->> +          adi,excitation-pin-1 while this channel is active.
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
->> +        default: 0
+>> +	if (st->int_pin_sel == AD4130_INT_PIN_CLK &&
+>> +	    st->mclk_sel != AD4130_MCLK_76_8KHZ)
+>> +		return dev_err_probe(dev, -EINVAL,
+>> +				     "Invalid clock %u for interrupt pin %u\n",
+>> +				     st->mclk_sel, st->int_pin_sel);
 >> +
->> +      adi,burnout-current-nanoamps:
->> +        description: |
->> +          Burnout current in nanoamps to be applied for this channel.
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        enum: [0, 500, 2000, 4000]
->> +        default: 0
+>> +	st->int_ref_en = true;
+>> +	if (device_property_present(dev, "adi,int-ref-en"))
+>> +		st->int_ref_en = device_property_read_bool(dev, "adi,int-ref-en");
 >> +
->> +      adi,buffered-positive:
->> +        description: Enable buffered mode for positive input.
->> +        type: boolean
+>> +	st->int_ref_uv = AD4130_INT_REF_2_5V;
 >> +
->> +      adi,buffered-negative:
->> +        description: Enable buffered mode for negative input.
->> +        type: boolean
+>> +	/*
+>> +	 * When the AVDD supply is set to below 2.5V the internal reference of
+>> +	 * 1.25V should be selected.
+> 
+> Good to give specific reference to datasheet section for things like this.
+> Seems to be in the ADC REFERENCE section.
+> 
+
+I'll add it.
+
+>> +	 */
+>> +	avdd_uv = regulator_get_voltage(st->regulators[0].consumer);
+>> +	if (avdd_uv > 0 && avdd_uv < AD4130_INT_REF_2_5V)
+>> +		st->int_ref_uv = AD4130_INT_REF_1_25V;
 >> +
->> +    required:
->> +      - reg
->> +      - diff-channels
+>> +	st->bipolar = device_property_read_bool(dev, "adi,bipolar");
 >> +
->> +additionalProperties: false
+>> +	ret = device_property_count_u32(dev, "adi,vbias-pins");
+>> +	if (ret > 0) {
+>> +		st->num_vbias_pins = ret;
 >> +
->> +examples:
->> +  - |
->> +    spi {
->> +      #address-cells = <1>;
->> +      #size-cells = <0>;
+>> +		ret = device_property_read_u32_array(dev, "adi,vbias-pins",
+>> +						     st->vbias_pins,
+>> +						     st->num_vbias_pins);
+>> +		if (ret)
+>> +			return dev_err_probe(dev, ret,
+>> +					     "Failed to read vbias pins\n");
 >> +
->> +      adc@0 {
->> +        compatible = "adi,ad4130-8-24-wlcsp";
->> +        reg = <0>;
+>> +		ret = ad4130_validate_vbias_pins(st, st->vbias_pins,
+>> +						 st->num_vbias_pins);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
 >> +
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
+>> +	ret = ad4130_parse_fw_children(indio_dev);
+>> +	if (ret)
+>> +		return ret;
 >> +
->> +        spi-max-frequency = <5000000>;
->> +        interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
->> +        interrupt-parent = <&gpio>;
+>> +	for (i = 0; i < AD4130_MAX_GPIOS; i++) {
+>> +		if (st->pins_fn[i + AD4130_AIN2_P1] != AD4130_PIN_FN_NONE)
+>> +			continue;
+> 
+> I'm a bit confused. pins_fn seems to be for the Analog pins, yet here is being
+> used for the GPIOs?  Maybe some explanatory comments
+> 
+
+AIN2 = P1, AIN3 = P2, AIN4 = P3, AIN5 = P4. I'll add some comments.
+
 >> +
->> +        channel@0 {
->> +          reg = <0>;
->> +          /* AIN8, AIN9 */
->> +          diff-channels = <8 9>;
->> +        };
+>> +		st->gpio_offsets[st->num_gpios++] = i;
+>> +	}
 >> +
->> +        channel@1 {
->> +          reg = <1>;
->> +          /* AIN10, AIN11 */
->> +          diff-channels = <10 11>;
->> +        };
+>> +	return 0;
+>> +}
+> 
+> ...
+> 
+>> +static int ad4130_setup(struct iio_dev *indio_dev)
+>> +{
+>> +	struct ad4130_state *st = iio_priv(indio_dev);
+>> +	struct device *dev = &st->spi->dev;
+>> +	unsigned int int_ref_val;
+>> +	unsigned long rate = AD4130_MCLK_FREQ_76_8KHZ;
+>> +	unsigned int val;
+>> +	unsigned int i;
+>> +	int ret;
 >> +
->> +        channel@2 {
->> +          reg = <2>;
->> +          /* Temperature Sensor, DGND */
->> +          diff-channels = <16 19>;
->> +        };
+>> +	if (st->mclk_sel == AD4130_MCLK_153_6KHZ_EXT)
+>> +		rate = AD4130_MCLK_FREQ_153_6KHZ;
 >> +
->> +        channel@3 {
->> +          reg = <3>;
->> +          /* Internal reference, DGND */
->> +          diff-channels = <18 19>;
->> +        };
+>> +	ret = clk_set_rate(st->mclk, rate);
+> 
+> Ah. I'd neglected in my review of the dt bindings that we'd
+> be specifying the clock in here. We will need a parameter
+> to specify the clock speed if external is used, but I'd still like
+> that separated from the question of internal vs external clocks.
+> 
+
+Addressed in the dt bindings reply.
+
+>> +	if (ret)
+>> +		return ret;
 >> +
->> +        channel@4 {
->> +          reg = <4>;
->> +          /* DGND, DGND */
->> +          diff-channels = <19 19>;
->> +        };
->> +      };
->> +    };
+>> +	ret = clk_prepare_enable(st->mclk);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = devm_add_action_or_reset(dev, ad4130_clk_disable_unprepare,
+>> +				       st->mclk);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	if (st->int_ref_uv == AD4130_INT_REF_2_5V)
+>> +		int_ref_val = AD4130_INT_REF_VAL_2_5V;
+>> +	else
+>> +		int_ref_val = AD4130_INT_REF_VAL_1_25V;
+>> +
+>> +	/* Switch to SPI 4-wire mode. */
+>> +	val = AD4130_CSB_EN_MASK;
+>> +	val |= st->bipolar ? AD4130_BIPOLAR_MASK : 0;
+> 
+> Prefer field PREP even for these single bit cases >
+
+Do you want this for the places where I used `status ? mask : 0`
+inside regmap_update_bits() calls too?
+
+>> +	val |= st->int_ref_en ? AD4130_INT_REF_EN_MASK : 0;
+>> +	val |= FIELD_PREP(AD4130_MODE_MASK, AD4130_MODE_IDLE);
+>> +	val |= FIELD_PREP(AD4130_MCLK_SEL_MASK, st->mclk_sel);
+>> +	val |= FIELD_PREP(AD4130_INT_REF_VAL_MASK, int_ref_val);
+>> +
+>> +	ret = regmap_write(st->regmap, AD4130_REG_ADC_CONTROL, val);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	val = FIELD_PREP(AD4130_INT_PIN_SEL_MASK, st->int_pin_sel);
+>> +	for (i = 0; i < st->num_gpios; i++)
+>> +		val |= BIT(st->gpio_offsets[i]);
+>> +
+>> +	ret = regmap_write(st->regmap, AD4130_REG_IO_CONTROL, val);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	val = 0;
+>> +	for (i = 0; i < st->num_vbias_pins; i++)
+>> +		val |= BIT(st->vbias_pins[i]);
+>> +
+>> +	ret = regmap_write(st->regmap, AD4130_REG_VBIAS, val);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
+>> +				 AD4130_ADD_FIFO_HEADER_MASK, 0);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* FIFO watermark interrupt starts out as enabled, disable it. */
+>> +	ret = ad4130_set_watermark_interrupt_en(st, false);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* Setup channels. */
+>> +	for (i = 0; i < indio_dev->num_channels; i++) {
+>> +		struct ad4130_chan_info *chan_info = &st->chans_info[i];
+>> +		struct iio_chan_spec *chan = &st->chans[i];
+>> +		unsigned int val;
+>> +
+>> +		val = FIELD_PREP(AD4130_AINP_MASK, chan->channel) |
+>> +		      FIELD_PREP(AD4130_AINM_MASK, chan->channel2) |
+>> +		      FIELD_PREP(AD4130_IOUT1_MASK, chan_info->iout0) |
+>> +		      FIELD_PREP(AD4130_IOUT2_MASK, chan_info->iout1);
+>> +
+>> +		ret = regmap_write(st->regmap, AD4130_REG_CHANNEL_X(i), val);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+> 
+> ...
+> 
+>> +static int ad4130_probe(struct spi_device *spi)
+>> +{
+>> +	const struct ad4130_chip_info *info;
+>> +	struct device *dev = &spi->dev;
+>> +	struct iio_dev *indio_dev;
+>> +	struct ad4130_state *st;
+>> +	int ret;
+>> +
+>> +	info = device_get_match_data(dev);
+>> +	if (!info)
+>> +		return -ENODEV;
+>> +
+>> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+>> +	if (!indio_dev)
+>> +		return -ENOMEM;
+>> +
+>> +	st = iio_priv(indio_dev);
+>> +
+>> +	memset(st->reset_buf, 0xff, AD4130_RESET_BUF_SIZE);
+>> +	init_completion(&st->completion);
+>> +	mutex_init(&st->lock);
+>> +	st->chip_info = info;
+>> +	st->spi = spi;
+>> +
+>> +	/*
+>> +	 * Xfer:   [ XFR1 ] [         XFR2         ]
+>> +	 * Master:  0x7D N   ......................
+>> +	 * Slave:   ......   DATA1 DATA2 ... DATAN
+>> +	 */
+>> +	st->fifo_tx_buf[0] = AD4130_COMMS_READ_MASK | AD4130_REG_FIFO_DATA;
+>> +	st->fifo_xfer[0].tx_buf = st->fifo_tx_buf;
+>> +	st->fifo_xfer[0].len = sizeof(st->fifo_tx_buf);
+>> +	st->fifo_xfer[1].rx_buf = st->fifo_rx_buf;
+>> +	spi_message_init_with_transfers(&st->fifo_msg, st->fifo_xfer,
+>> +					ARRAY_SIZE(st->fifo_xfer));
+>> +
+>> +	indio_dev->name = st->chip_info->name;
+>> +	indio_dev->modes = INDIO_DIRECT_MODE;
+>> +	indio_dev->info = &ad4130_info;
+>> +
+>> +	st->regmap = devm_regmap_init(dev, NULL, st,
+>> +				      &ad4130_regmap_config);
+> 
+> Don't wrap below 80 chars unless there is some extra meaning conveyed
+> by doing so.  Don't think that's true ehre.
+> 
+
+Sure.
+
+> 
+>> +	if (IS_ERR(st->regmap))
+>> +		return PTR_ERR(st->regmap);
+>> +
+>> +	st->regulators[0].supply = "avdd";
+>> +	st->regulators[1].supply = "iovdd";
+>> +	st->regulators[2].supply = "refin1";
+>> +	st->regulators[3].supply = "refin2";
+>> +
+>> +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(st->regulators),
+>> +				      st->regulators);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret,
+>> +				     "Failed to get regulators\n");
+>> +
+>> +	ret = regulator_bulk_enable(ARRAY_SIZE(st->regulators), st->regulators);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret,
+>> +				     "Failed to enable regulators\n");
+>> +
+>> +	ret = devm_add_action_or_reset(dev, ad4130_disable_regulators, st);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret,
+>> +				     "Failed to add regulators disable action\n");
+>> +
+>> +	ret = ad4130_soft_reset(st);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = ad4310_parse_fw(indio_dev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = ad4130_setup(indio_dev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ad4130_fill_scale_tbls(st);
+>> +
+>> +	if (st->num_gpios) {
+>> +		st->gc.owner = THIS_MODULE;
+>> +		st->gc.label = st->chip_info->name;
+>> +		st->gc.base = -1;
+>> +		st->gc.ngpio = AD4130_MAX_GPIOS;
+>> +		st->gc.parent = dev;
+>> +		st->gc.can_sleep = true;
+>> +		st->gc.get_direction = ad4130_gpio_get_direction;
+>> +		st->gc.set = ad4130_gpio_set;
+>> +
+>> +		ret = devm_gpiochip_add_data(dev, &st->gc, st);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	ret = devm_iio_kfifo_buffer_setup_ext(dev, indio_dev,
+>> +					      INDIO_BUFFER_SOFTWARE,
+>> +					      &ad4130_buffer_ops,
+>> +					      ad4130_fifo_attributes);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = devm_request_threaded_irq(dev, spi->irq, NULL,
+>> +					ad4130_irq_handler, IRQF_ONESHOT,
+>> +					indio_dev->name, indio_dev);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret, "Failed to request irq\n");
+>> +
+>> +	st->irq_trigger = irq_get_trigger_type(spi->irq);
+>> +	if (st->irq_trigger & IRQF_TRIGGER_RISING)
+>> +		st->inv_irq_trigger = IRQF_TRIGGER_FALLING;
+>> +	else if (st->irq_trigger & IRQF_TRIGGER_FALLING)
+>> +		st->inv_irq_trigger = IRQF_TRIGGER_RISING;
+>> +	else
+>> +		return dev_err_probe(dev, -EINVAL, "Invalid irq flags: %u\n",
+>> +				     st->irq_trigger);
+>> +
+>> +	return devm_iio_device_register(dev, indio_dev);
+>> +}
+>> +
 > 

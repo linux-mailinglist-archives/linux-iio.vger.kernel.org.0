@@ -2,126 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A81D1504AE2
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Apr 2022 04:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3BEE504C8A
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Apr 2022 08:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235825AbiDRCXQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Apr 2022 22:23:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33020 "EHLO
+        id S236741AbiDRGYT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Apr 2022 02:24:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232930AbiDRCXP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Apr 2022 22:23:15 -0400
-Received: from mail.meizu.com (edge05.meizu.com [157.122.146.251])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F392717E25;
-        Sun, 17 Apr 2022 19:20:36 -0700 (PDT)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail12.meizu.com
- (172.16.1.108) with Microsoft SMTP Server (TLS) id 14.3.487.0; Mon, 18 Apr
- 2022 10:20:37 +0800
-Received: from [172.16.137.70] (172.16.137.70) by IT-EXMB-1-125.meizu.com
- (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Mon, 18 Apr
- 2022 10:20:35 +0800
-Message-ID: <3d1b3b5b-6125-f14b-6a0b-85f5c94d6f7a@meizu.com>
-Date:   Mon, 18 Apr 2022 10:20:34 +0800
+        with ESMTP id S232163AbiDRGYR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Apr 2022 02:24:17 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C2B1837C
+        for <linux-iio@vger.kernel.org>; Sun, 17 Apr 2022 23:21:40 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id s16so1927511oie.0
+        for <linux-iio@vger.kernel.org>; Sun, 17 Apr 2022 23:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=gT0qunonoqmQDH3Sx35AGkd9jYv/vMqV6NEmgNMh3r8=;
+        b=CQWwoX1IxE8b+uF1gIBaZkweamlPS68OR7HgJzH9bHVUvSqZtyTLSitK8nZ/wkyxz0
+         55gSUwA10DEE4uZ2Lsg6yfVtlhKIcRqv5iJVHujCsLLknoB3Frd2Q/C7pCFh54Fyry4T
+         nixUVMj8/QRwIn/SoMgEIf8RiwgI6ETuE8qeiv17wSAUwW49MUVLgXcvplEKz8JZJ52r
+         K0OXuR2zrmPaoskDeEFD3+vUC5JLqNChRL/sFlh2IJMlY2c+3SSxO6evmmLY0GtvN8w3
+         RYXW+XzmyUrbZBpXv9ms8LLErA7AZzUWXzghnxtCUR+t8fZMKgK6FgpFgEdS2y13teTt
+         GXew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=gT0qunonoqmQDH3Sx35AGkd9jYv/vMqV6NEmgNMh3r8=;
+        b=hE7qH0hbEF7dP8jY9yS/u6g8SBEY98QPUi2rxIeikRCaxvwuI0AlwmYdLgLr9vYmFD
+         elURzjuYUDH3pYz2kcn/wzNveu8VvYRkL8NlOSJhUTvRop7p3Y2m0pJXZ+qOLUVhuWBM
+         n/lpzSuPJ5vglKQiHV58J+SB4xNBiCWgj10WmcXYg6v2ohueQ1JTJQTaR6ZtxG1Esevy
+         cZCkctI50CNo4gdNulIV3lQ7cUloOEkRRZRdRwr45YJzT2HpB45CsC4XKyDFyKSpXfoX
+         Prxcsm/81X6LpyJ6LGWH1CQQYdYSOtoKNJ5mDKaTFObeDw+aZPKi28vc1Z00KquWgq6I
+         rvQw==
+X-Gm-Message-State: AOAM530ZPm9M3xyUSZbMpk+vdgA05dHEPUpDEyHCl1dN6PDzlYQiDcA2
+        +m3ytIjt3shgzAzLTFsUk4+tUZ3viTb/mX1os8o=
+X-Google-Smtp-Source: ABdhPJyqxmX3/TuBoA+q6CDJ2Dkv2Lx64mMRNkmgkQDbwI5zR2zafXvlsrzhQQukU6210L8FdbpmiJDW1XIIaXB3iPM=
+X-Received: by 2002:a05:6808:23d0:b0:322:781a:65f4 with SMTP id
+ bq16-20020a05680823d000b00322781a65f4mr2584700oib.263.1650262899352; Sun, 17
+ Apr 2022 23:21:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH V2] iio: gp2ap020a00f: Fix signedness bug
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <CAHp75VfbZhMvs7dHwadvNs6maPsBVOY3Mk5wkKSwZ1RANQQHDA@mail.gmail.com>
- <1649985637-18854-1-git-send-email-baihaowen@meizu.com>
- <20220415185205.26a3d352@jic23-huawei>
-From:   baihaowen <baihaowen@meizu.com>
-In-Reply-To: <20220415185205.26a3d352@jic23-huawei>
+Reply-To: nafi177z@hotmail.com
+Sender: g.prosper001@gmail.com
+Received: by 2002:a4a:978f:0:0:0:0:0 with HTTP; Sun, 17 Apr 2022 23:21:38
+ -0700 (PDT)
+From:   Ms Nafisa Zongo <msnafisazongo@gmail.com>
+Date:   Sun, 17 Apr 2022 23:21:38 -0700
+X-Google-Sender-Auth: LtRfpaxvzhc6LGYcxsGvVA4JLl0
+Message-ID: <CAL_6emfx43_+FNkoQUoi0dC_kPHgGYeVawh5U+XBnQctvwVSvA@mail.gmail.com>
+Subject: RE.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [172.16.137.70]
-X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
- IT-EXMB-1-125.meizu.com (172.16.1.125)
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        NICE_REPLY_A,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:236 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4821]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [g.prosper001[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [g.prosper001[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-在 4/16/22 1:52 AM, Jonathan Cameron 写道:
-> On Fri, 15 Apr 2022 09:20:37 +0800
-> Haowen Bai <baihaowen@meizu.com> wrote:
->
->> function gp2ap020a00f_get_thresh_reg() is unsigned but returning -EINVAL 
->> errcode, and thresh_reg_l is unsigned but receiving -EINVAL errcode. so 
->> we have to change u8 -> int.
->>
->> Signed-off-by: Haowen Bai <baihaowen@meizu.com>
-> Hi,
->
-> The return value is not checked in *read_event_val(), so if we actually got
-> -EINVAL (in reality we can't because the switch in *_get_thresh_reg*) always
-> matches) then we'd use it to index an array (after performing some maths on
-> the value).  So please also add a check that the return value is not
-> negative in read_event_val()
->
-> Same is true or write_event_val.
->
->
-> Note that the bug here is probably the fact we return -EINVAL in the
-> first place. We could just stop doing that but it would be non obvious
-> when looking at the code that we couldn't get a failure to match in
-> the switch statement - so fixing as you have done (plus the extra
-> check I'm requesting) is probably the neatest solution.
->
-> Thanks,
->
-> Jonathan
->
->
->> ---
->> V1->V2: s8 is not enough to hold an (arbitrary) error code. To be on the safe
->> side we need to use int
->>
->>  drivers/iio/light/gp2ap020a00f.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
->> index b820041159f7..b0e62d3c6fa0 100644
->> --- a/drivers/iio/light/gp2ap020a00f.c
->> +++ b/drivers/iio/light/gp2ap020a00f.c
->> @@ -994,7 +994,7 @@ static irqreturn_t gp2ap020a00f_trigger_handler(int irq, void *data)
->>  	return IRQ_HANDLED;
->>  }
->>  
->> -static u8 gp2ap020a00f_get_thresh_reg(const struct iio_chan_spec *chan,
->> +static int gp2ap020a00f_get_thresh_reg(const struct iio_chan_spec *chan,
->>  					     enum iio_event_direction event_dir)
->>  {
->>  	switch (chan->type) {
->> @@ -1025,7 +1025,7 @@ static int gp2ap020a00f_write_event_val(struct iio_dev *indio_dev,
->>  	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
->>  	bool event_en = false;
->>  	u8 thresh_val_id;
->> -	u8 thresh_reg_l;
->> +	int thresh_reg_l;
->>  	int err = 0;
->>  
->>  	mutex_lock(&data->lock);
->> @@ -1082,7 +1082,7 @@ static int gp2ap020a00f_read_event_val(struct iio_dev *indio_dev,
->>  				       int *val, int *val2)
->>  {
->>  	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
->> -	u8 thresh_reg_l;
->> +	int thresh_reg_l;
->>  	int err = IIO_VAL_INT;
->>  
->>  	mutex_lock(&data->lock);
-hi Jonathan Cameron
+I seek for your partnership in a transaction business which you will
+be communicated in details upon response.
 
-Thank you for your suggestion. resended :).
-
--- 
-Haowen Bai
-
+Best regards
+Ms. Nafisa.

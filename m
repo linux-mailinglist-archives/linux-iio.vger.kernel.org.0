@@ -2,364 +2,415 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 152A2505E95
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Apr 2022 21:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05CFB505F9D
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 00:11:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236542AbiDRTjR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Apr 2022 15:39:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59222 "EHLO
+        id S230472AbiDRWO3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Apr 2022 18:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236253AbiDRTjQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Apr 2022 15:39:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0207D2253E;
-        Mon, 18 Apr 2022 12:36:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8014660F4C;
-        Mon, 18 Apr 2022 19:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABB6C385A1;
-        Mon, 18 Apr 2022 19:36:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650310594;
-        bh=opzS18o5uGo1m62aHvckfPRKloulevt82wvVatdoqkI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bTS++/LBgUArGQcmlnk2ZSEarRQ2VYdY2emsKfwjGxkfFW/wj2X50clQiGWNFcFEH
-         nFWhe4kcTK12gAW2xPWT5Gb3EplV60ofv9+50uTL5rUzZZ//YMWhvwTULbYiJLGQc1
-         Jnxkp2nGj7sBGfKdeobNN07tvq6u65YFBE8YzC1Pn2QfcwhpqVmdGNAgCk1919vaQ6
-         2Eiqs9ednFsSjZZp5furQH9dZ7DSPfAPcC7PvvAshzmsHQkN90zs7T0X2ZgoUmkqHQ
-         V4iRWqBTc11BaQYxEw43rg79iFGCBIIn6ymKvmp5gGFKw3M8tOxR4t4a12RwWNOBpd
-         NMRV8fTipKIng==
-Date:   Mon, 18 Apr 2022 20:44:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
-Cc:     <linux-kernel@vger.kernel.org>, <kernel@axis.com>,
-        <devicetree@vger.kernel.org>, <linux-um@lists.infradead.org>,
-        <shuah@kernel.org>, <brendanhiggins@google.com>,
-        <linux-kselftest@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lgirdwood@gmail.com>, <broonie@kernel.org>,
-        <a.zummo@towertech.it>, <alexandre.belloni@bootlin.com>,
-        <linux-rtc@vger.kernel.org>, <corbet@lwn.net>,
-        <linux-doc@vger.kernel.org>
-Subject: Re: [RFC v1 00/10] roadtest: a driver testing framework
-Message-ID: <20220418204430.2e6f2553@jic23-huawei>
-In-Reply-To: <20220311162445.346685-1-vincent.whitchurch@axis.com>
-References: <20220311162445.346685-1-vincent.whitchurch@axis.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S230384AbiDRWMd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Apr 2022 18:12:33 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B2910A0;
+        Mon, 18 Apr 2022 15:09:48 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id md4so14108581pjb.4;
+        Mon, 18 Apr 2022 15:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=KFgtlf9sXMO8UasKU8rCZcmfKt6EiIeryG73SRp/xMU=;
+        b=Faj6WMSbUkWJVTURZElWqf8aN0CJ5h6IPHrmXauc/bDvTg0efjjiuCtzEXKz2zyIgY
+         Dkx8rp9fg5iVwg005ToqBz6Jxg0TiKTNGLGkxYu/loHm0DX98Wn1U9Pd8f498M0WxL9t
+         O+JOxxfZxB4O0rSZh/8OLLHkbq+UncB4eazpLl68r4WSVTzcN9aJuGSVtBXrIolCFUPv
+         Nva5k2QCHHgEexwa0EWnyAne6GjN9jh2ueGb0urL92vaHBe4CNK3dZvJK9mJ5BvJn84A
+         tULI4nG1N89TK3p6cQdw7qIGR396RAIc8Rn0yy/6LZ07KQt6b2caQP4xCvVDoLU1kdYP
+         LUiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KFgtlf9sXMO8UasKU8rCZcmfKt6EiIeryG73SRp/xMU=;
+        b=lDuqMNtWUOa+122uATJLcWK0PGWnIMPVSBWqJ2ChF2jPgZD06WgcUWOa9mL6TMleqS
+         XKpz+cz7ghiB4BVw6uioEb8zeB0CwzxKY+S+TSE8JmD+my42sURmEysvvj0BgVUVCeLm
+         DUh6CKnn1pWpxzedYTFKurXdHYDzz0MnBdcy3xOXEnej3e4LKPrSRPHxstgWJrMrLtyX
+         /3BcqHSQwdmiKc5+DLh8nca3I0Z5xBmPY/o3bSdt+LioQtmgyikjTaMtXnvbspFoabTv
+         K+m6MX1Bk9BhQaeAryagidHgGeVUNV7t8sG7Njl03fYFGrco4bwHBn4YE+m613a6o6QQ
+         yAmA==
+X-Gm-Message-State: AOAM532c/pR+69838p8gePZccFsWpnwqmKWcRYPUbUlc322DFaKLllUl
+        JJWg9fF5PY3HO0KGgV8638AvOhGIICI=
+X-Google-Smtp-Source: ABdhPJyyk+n6fyH2TFtdWxS5IaHzkpE4x0LCGyCw1Ok7hF9dusdybrPNTOJxTQMHaNdL9H/mogVtzA==
+X-Received: by 2002:a17:902:e9c4:b0:158:f77d:afb7 with SMTP id 4-20020a170902e9c400b00158f77dafb7mr8509753plk.143.1650319787625;
+        Mon, 18 Apr 2022 15:09:47 -0700 (PDT)
+Received: from jagath-PC ([125.99.244.75])
+        by smtp.gmail.com with ESMTPSA id p1-20020a17090a680100b001d28905b214sm4803035pjj.39.2022.04.18.15.09.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 18 Apr 2022 15:09:47 -0700 (PDT)
+Date:   Tue, 19 Apr 2022 03:39:43 +0530
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 9/9] iio: accel: bma400: Add support for activity and
+ inactivity events
+Message-ID: <20220418220941.GA16030@jagath-PC>
+References: <20220411203133.19929-1-jagathjog1996@gmail.com>
+ <20220411203133.19929-10-jagathjog1996@gmail.com>
+ <20220416175537.193cfc10@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220416175537.193cfc10@jic23-huawei>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Mar 2022 17:24:35 +0100
-Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
+Hello Jonathan,
 
-> This patchset proposes roadtest, a device-driver testing framework.  Drivers
-> are tested under User Mode Linux (UML) and interact with mocked/modelled
-> hardware.  The tests and hardware models are written in Python, the former
-> using Python's built-in unittest framework.
-> 
-> Drivers are tested via their userspace interfaces.  The hardware models allow
-> tests to inject values into registers and assert that drivers control the
-> hardware in the right way and react as expected to stimuli.
-> 
-> Roadtest is meant to be used for relatively simple drivers, such as the ones
-> part of the IIO, regulator and RTC subsystems.
+Thanks for your suggestions, I will fix the locking and unlocking for all
+patches in the next series.
 
-Hi All,
+Please can you guide me for auto build test error reported by kernel test
+robot for set_mask_bits(&data->generic_event_en, msk, field_value);
+in this patch.
 
-Just wanted to very briefly report back on my experience of using this framework.
+On Sat, Apr 16, 2022 at 05:55:37PM +0100, Jonathan Cameron wrote:
+> On Tue, 12 Apr 2022 02:01:33 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> 
+> > Add support for activity and inactivity events for all axis based on the
+> > threshold, duration and hysteresis value set from the userspace. INT1 pin
+> > is used to interrupt and event is pushed to userspace.
+> > 
+> > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> > ---
+> >  drivers/iio/accel/bma400.h      |  11 ++
+> >  drivers/iio/accel/bma400_core.c | 229 ++++++++++++++++++++++++++++++++
+> >  2 files changed, 240 insertions(+)
+> > 
+> > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+> > index bc4641279be3..cbf8035c817e 100644
+> > --- a/drivers/iio/accel/bma400.h
+> > +++ b/drivers/iio/accel/bma400.h
+> > @@ -93,6 +93,17 @@
+> >  #define BMA400_ACC_ODR_MIN_WHOLE_HZ 25
+> >  #define BMA400_ACC_ODR_MIN_HZ       12
+> >  
+> > +/* Generic interrupts register */
+> > +#define BMA400_GEN1INT_CONFIG0      0x3f
+> > +#define BMA400_GEN2INT_CONFIG0      0x4A
+> > +#define BMA400_GEN_CONFIG1_OFF      0x01
+> > +#define BMA400_GEN_CONFIG2_OFF      0x02
+> > +#define BMA400_GEN_CONFIG3_OFF      0x03
+> > +#define BMA400_GEN_CONFIG31_OFF     0x04
+> > +#define BMA400_INT_GEN1_MSK         BIT(2)
+> > +#define BMA400_INT_GEN2_MSK         BIT(3)
+> > +#define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
+> > +
+> >  /*
+> >   * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
+> >   * converting to micro values for +-2g range.
+> > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> > index b6c79cfabaa4..226a5f63d1a6 100644
+> > --- a/drivers/iio/accel/bma400_core.c
+> > +++ b/drivers/iio/accel/bma400_core.c
+> > @@ -79,6 +79,7 @@ struct bma400_data {
+> >  	int steps_enabled;
+> >  	bool step_event_en;
+> >  	bool activity_event_en;
+> > +	u8 generic_event_en;
+> >  	/* Correct time stamp alignment */
+> >  	struct {
+> >  		__le16 buff[3];
+> > @@ -188,6 +189,25 @@ static const struct iio_event_spec bma400_activity_event = {
+> >  	.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
+> >  };
+> >  
+> > +static const struct iio_event_spec bma400_accel_event[] = {
+> > +	{
+> > +		.type = IIO_EV_TYPE_MAG,
+> > +		.dir = IIO_EV_DIR_FALLING,
+> > +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
+> > +				       BIT(IIO_EV_INFO_PERIOD) |
+> > +				       BIT(IIO_EV_INFO_HYSTERESIS) |
+> > +				       BIT(IIO_EV_INFO_ENABLE),
+> > +	},
+> > +	{
+> > +		.type = IIO_EV_TYPE_MAG,
+> > +		.dir = IIO_EV_DIR_RISING,
+> > +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
+> > +				       BIT(IIO_EV_INFO_PERIOD) |
+> > +				       BIT(IIO_EV_INFO_HYSTERESIS) |
+> > +				       BIT(IIO_EV_INFO_ENABLE),
+> > +	},
+> > +};
+> > +
+> >  #define BMA400_ACC_CHANNEL(_index, _axis) { \
+> >  	.type = IIO_ACCEL, \
+> >  	.modified = 1, \
+> > @@ -207,6 +227,8 @@ static const struct iio_event_spec bma400_activity_event = {
+> >  		.storagebits = 16,	\
+> >  		.endianness = IIO_LE,	\
+> >  	},				\
+> > +	.event_spec = bma400_accel_event,			\
+> > +	.num_event_specs = ARRAY_SIZE(bma400_accel_event)	\
+> >  }
+> >  
+> >  #define BMA400_ACTIVITY_CHANNEL(_chan2) {	\
+> > @@ -954,6 +976,17 @@ static int bma400_read_event_config(struct iio_dev *indio_dev,
+> >  	struct bma400_data *data = iio_priv(indio_dev);
+> >  
+> >  	switch (chan->type) {
+> > +	case IIO_ACCEL:
+> > +		switch (dir) {
+> > +		case IIO_EV_DIR_RISING:
+> > +			return FIELD_GET(BMA400_INT_GEN1_MSK,
+> > +					 data->generic_event_en);
+> > +		case IIO_EV_DIR_FALLING:
+> > +			return FIELD_GET(BMA400_INT_GEN2_MSK,
+> > +					 data->generic_event_en);
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> >  	case IIO_STEPS:
+> >  		return data->step_event_en;
+> >  	case IIO_ACTIVITY:
+> > @@ -970,8 +1003,74 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
+> >  {
+> >  	int ret;
+> >  	struct bma400_data *data = iio_priv(indio_dev);
+> > +	int reg, msk, value, field_value;
+> >  
+> >  	switch (chan->type) {
+> > +	case IIO_ACCEL:
+> > +		switch (dir) {
+> > +		case IIO_EV_DIR_RISING:
+> > +			reg = BMA400_GEN1INT_CONFIG0;
+> > +			msk = BMA400_INT_GEN1_MSK;
+> > +			value = 2;
+> > +			field_value = FIELD_PREP(BMA400_INT_GEN1_MSK, state);
+> 
+> Hopefully you can use msk in here and the compiler can tell it's constant...
 
-Given I wanted a suitable job to try out it's usefulness when doing refactoring
-/development, I decided to tidy up one of the remaining IIO drivers in staging
-and see how things went in developing tests to hit the particular code I was
-modifying.  At some point I might extend this to a more comprehensive test suite
-for that driver, but for now it does basic channel reading and a few other things
-+ verifies some of the register state changes seen on the hardware side of things.
-
-Whilst my python could be said to be decidedly rusty (last time I recall writing
-some was for an intern project 20 years back), it was fairly easy to get something
-working using the docs in this series and the fine engineering tool of cut and paste.
-
-Road test worked very well.
-
-Was it easier than my existing hacked up QEMU board emulation that lets me
-instantiate minimal emulation pretty quickly?
-
-Pretty similar on balance but big advantage here is I'm not having to ask people
-to go fetch a tree and build QEMU just to sanity check the driver changes.
-Also note I'm doing a lot of QEMU work for the day job at the moment, so it's not
-really a fair comparison if the question is what would most kernel driver
-developers find useful.
-
-So for now I'll probably mix and match depending on the complexity of the device
-I'm emulating, but roadtest is definitely a good addition to the toolkit.
-
-Note this is putting aside all the advantages of having tests in tree and the
-much lighter amount of infrastructure needed to run those over QEMU CI.
-
-If anyone is curious patch set with tests and the staging graduation of
-the AD7746 CDC driver.
-
-https://lore.kernel.org/all/20220418192907.763933-18-jic23@kernel.org/
-
-Great work Vincent. I'm looking forward to using this more.
-
-Thanks,
-
-Jonathan
+field_value = FIELD_PREP(msk, state); 
+is this the fix for error reported by kernel test robot?
 
 > 
-> Questions and answers:
+> > +			break;
+> > +		case IIO_EV_DIR_FALLING:
+> > +			reg = BMA400_GEN2INT_CONFIG0;
+> > +			msk = BMA400_INT_GEN2_MSK;
+> > +			value = 0;
+> > +			field_value = FIELD_PREP(BMA400_INT_GEN2_MSK, state);
+> > +			break;
+> > +		default:
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		mutex_lock(&data->mutex);
+> > +		/* Enabling all axis for interrupt evaluation */
+> > +		ret = regmap_write(data->regmap, reg, 0xF8);
+> > +		if (ret) {
+> > +			mutex_unlock(&data->mutex);
+> > +			return ret;
+> > +		}
+> > +
+> > +		/* OR combination of all axis for interrupt evaluation */
+> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG1_OFF,
+> > +				   value);
+> > +		if (ret) {
+> > +			mutex_unlock(&data->mutex);
+> > +			return ret;
+> > +		}
+> > +
+> > +		/* Initial value to avoid interrupts while enabling*/
+> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
+> > +				   0x0A);
+> > +		if (ret) {
+> > +			mutex_unlock(&data->mutex);
+> > +			return ret;
+> > +		}
+> > +
+> > +		/* Initial duration value to avoid interrupts while enabling*/
+> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG31_OFF,
+> > +				   0x0F);
+> > +		if (ret) {
+> > +			mutex_unlock(&data->mutex);
+> > +			return ret;
+> > +		}
+> > +
+> > +		ret = regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
+> > +					 msk, field_value);
+> > +		if (ret) {
+> > +			mutex_unlock(&data->mutex);
+> > +			return ret;
+> > +		}
+> > +
+> > +		ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG,
+> > +					 msk, field_value);
+> > +		mutex_unlock(&data->mutex);
+> > +		if (ret)
+> > +			return ret;
 > 
-> = Why do we need this?
+> This whole stack or mutex_unlock() error handling is a good hint that you should
+> just factor out this case as a separate function then you can use a goto to
+> deal with the unlock cleanly.
+
+Sure, I will fix the error handling in the proper way in the next patch.
+
 > 
-> There are a large amount of these kind of drivers in the kernel.  Most of the
-> hardware is not available in current CI systems so most drivers can only, at
-> best, be build-tested there.  Even basic soundness such as a driver
-> successfully probing and binding to the devices it tries to be support cannot
-> be tested.  Drivers cannot be easily regression-tested to ensure that bugs
-> fixed once do not get reintroduced.
+> > +
+> > +		set_mask_bits(&data->generic_event_en, msk, field_value);
+> > +		return 0;
+> >  	case IIO_STEPS:
+> >  		mutex_lock(&data->mutex);
+> >  		if (!data->steps_enabled) {
+> > @@ -1028,6 +1127,118 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
+> >  	}
+> >  }
+> >  
+> > +static int get_gen_config_reg(enum iio_event_direction dir)
+> > +{
+> > +	switch (dir) {
+> > +	case IIO_EV_DIR_FALLING:
+> > +		return BMA400_GEN2INT_CONFIG0;
+> > +	case IIO_EV_DIR_RISING:
+> > +		return BMA400_GEN1INT_CONFIG0;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static int bma400_read_event_value(struct iio_dev *indio_dev,
+> > +				   const struct iio_chan_spec *chan,
+> > +				   enum iio_event_type type,
+> > +				   enum iio_event_direction dir,
+> > +				   enum iio_event_info info,
+> > +				   int *val, int *val2)
+> > +{
+> > +	struct bma400_data *data = iio_priv(indio_dev);
+> > +	int ret;
+> > +	u8 reg, duration[2];
+> > +
+> > +	reg = get_gen_config_reg(dir);
+> > +	if (reg < 0)
+> > +		return -EINVAL;
+> > +
+> > +	*val2 = 0;
+> > +	switch (info) {
+> > +	case IIO_EV_INFO_VALUE:
+> > +		mutex_lock(&data->mutex);
+> > +		ret = regmap_read(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
+> > +				  val);
+> > +		mutex_unlock(&data->mutex);
+> > +		if (ret)
+> > +			return ret;
+> > +		return IIO_VAL_INT;
+> > +	case IIO_EV_INFO_PERIOD:
+> > +		mutex_lock(&data->mutex);
+> > +		ret = regmap_bulk_read(data->regmap,
+> > +				       reg + BMA400_GEN_CONFIG3_OFF,
+> > +				       duration, sizeof(duration));
+> > +		mutex_unlock(&data->mutex);
+> > +		if (ret)
+> > +			return ret;
+> > +		*val = get_unaligned_be16(duration);
 > 
-> Many drivers support multiple related hardware variants, and far from all patch
-> submitters have access to all the variants which the driver that they are
-> patching supports, so there is no way for them to easily verify that they
-> haven't broken something basic on a variant which they do not own.
+> As well as dma safety question, you could just have used a __be16 for
+> duration then you can use be16_to_cpu() as you know it is aligned.
+
+For dma safety, do I need to allocate memory by using local kmalloc() or
+I can use __be16 local variable for regmap_bulk_read()?
+
 > 
-> Furthermore, hardware can be used in many different configurations with drivers
-> supporting many different devicetree properties, so even just having access to
-> all the variants would be insufficient.
+> > +		return IIO_VAL_INT;
+> > +	case IIO_EV_INFO_HYSTERESIS:
+> > +		mutex_lock(&data->mutex);
+> > +		ret = regmap_read(data->regmap, reg, val);
+> > +		mutex_unlock(&data->mutex);
+> > +		if (ret)
+> > +			return ret;
+> > +		*val = FIELD_GET(BMA400_GEN_HYST_MSK, *val);
+> > +		return IIO_VAL_INT;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> > +static int bma400_write_event_value(struct iio_dev *indio_dev,
+> > +				    const struct iio_chan_spec *chan,
+> > +				    enum iio_event_type type,
+> > +				    enum iio_event_direction dir,
+> > +				    enum iio_event_info info,
+> > +				    int val, int val2)
+> > +{
+> > +	struct bma400_data *data = iio_priv(indio_dev);
+> > +	int ret;
+> > +	u8 reg, duration[2];
+> > +
+> > +	reg = get_gen_config_reg(dir);
+> > +	if (reg < 0)
+> > +		return -EINVAL;
+> > +
+> > +	switch (info) {
+> > +	case IIO_EV_INFO_VALUE:
+> > +		if (val < 1 || val > 255)
+> > +			return -EINVAL;
+> > +
+> > +		mutex_lock(&data->mutex);
+> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
+> > +				   val);
+> > +		mutex_unlock(&data->mutex);
+> > +		return ret;
+> > +	case IIO_EV_INFO_PERIOD:
+> > +		if (val < 1 || val > 65535)
+> > +			return -EINVAL;
+> > +
+> > +		put_unaligned_be16(val, duration);
+> > +
+> > +		mutex_lock(&data->mutex);
+> > +		ret = regmap_bulk_write(data->regmap,
+> > +					reg + BMA400_GEN_CONFIG3_OFF,
+> > +					duration, sizeof(duration));
 > 
-> On top of that, some of the chips measure environmental conditions such as
-> temperature, so testing extreme cases may not be simple even if one has access
-> to the hardware.
+> I can't remember if we are safe or not with bulk_writes but at least
+> in theory we might not be and should be using a dma safe buffer.
+
+Here also for regmap_bulk_write() can I allocate the memory locally by using
+kmalloc().
+
 > 
-> All this makes development, modification, maintenance, and reviewing of these
-> drivers harder than it necessarily needs to be.  Roadtest hopes to make some of
-> these things slightly easier by providing a framework to create hardware
-> models/mocks and to write testcases which exercise drivers using these models.
+> Also locking not necessary in various places in here.
+
+I will fix the locking in all the patches in the next series.
+
 > 
-> = Do you have some specific examples of the kind of code this could be used to
->   test?
-> 
-> Here is an example of a patch which can easily be regression-tested using
-> roadtest (in fact, this series includes such a regression test) but is much
-> harder to do so automatically with real hardware since it requires specific
-> environmental conditions:
-> 
->  iio: light: opt3001: Fixed timeout error when 0 lux
->  https://lore.kernel.org/lkml/20210920125351.6569-1-valek@2n.cz/
-> 
-> Here is another example.  This driver has code which correctly parses a
-> documented devicetree property (amstaos,proximity-diodes) but which then fails
-> to actually communicate this setting to the hardware in any way.  Such code can
-> be easily tested with roadtest since the framework integrates devicetree
-> support and provides functions to assert that drivers writes expected registers
-> with expected values:
-> 
->  drivers/iio/light/tsl2772.c tsl2772_read_prox_diodes()
-> 
-> (Both the above examples happen to be from the same subsystem but that should
-> in no way be taken to imply that such issues are unique to that subsystem or
-> that that subsystem has more of them.)
-> 
-> = How does this relate to kselftests?
-> 
-> Tests in kselftests also test kernel code using the userspace interfaces, but
-> that's about what's common between the frameworks.  kselftests has other goals
-> and does not provide any kind of mechanism for hardware mocking.
-> 
-> = How does this relate to kunit?
-> 
-> Kunit is for unit testing of functions in kernel code, and is not meant for
-> testing kernel code via userspace interfaces.  It could in theory be used to
-> test some of the simple drivers too, but that would require (1) a large amount
-> of mocking code in various kernel frameworks, and, more importantly, (2)
-> refactoring of the drivers to be tested.
-> 
-> This can be contrasted with roadtest which works with mostly unmodified drivers
-> and which mocks the hardware at the lowest level without having to change
-> kernel frameworks.
-> 
-> = How do I use it?
-> 
-> See Documentation/dev-tools/roadtest.rst added by the documentation patch for
-> more information about running and writing tests using this framework.
-> 
-> = What's included in the patchset?
-> 
-> The current framework allows developing tests for hardware which uses the I2C
-> bus.  Hardware models can also control GPIOs and use them to trigger
-> interrupts.
-> 
-> This series includes tests for some IIO, regulator and RTC drivers.  The
-> regulator and RTC tests depend on a few driver patches which are either in
-> review or in linux-next.  These are noted in the commit messages.
-> 
-> The entire patch set, including the required dependencies, is also available in
-> a git tree:
-> 
->  https://github.com/vwax/linux/commits/roadtest/rfc-v1
-> 
-> Cc: linux-kernel@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> 
-> Cc: shuah@kernel.org
-> Cc: brendanhiggins@google.com
-> Cc: linux-kselftest@vger.kernel.org
-> 
-> Cc: jic23@kernel.org
-> Cc: linux-iio@vger.kernel.org
-> 
-> Cc: lgirdwood@gmail.com
-> Cc: broonie@kernel.org
-> 
-> Cc: a.zummo@towertech.it
-> Cc: alexandre.belloni@bootlin.com
-> Cc: linux-rtc@vger.kernel.org
-> 
-> Cc: corbet@lwn.net
-> Cc: linux-doc@vger.kernel.org
-> 
-> Vincent Whitchurch (10):
->   roadtest: import libvhost-user from QEMU
->   roadtest: add C backend
->   roadtest: add framework
->   roadtest: add base config
->   roadtest: add build files
->   roadtest: add documentation
->   iio: light: opt3001: add roadtest
->   iio: light: vcnl4000: add roadtest
->   regulator: tps62864: add roadtest
->   rtc: pcf8563: add roadtest
-> 
->  Documentation/dev-tools/index.rst             |    1 +
->  Documentation/dev-tools/roadtest.rst          |  669 ++++
->  tools/testing/roadtest/.gitignore             |    2 +
->  tools/testing/roadtest/Dockerfile             |   25 +
->  tools/testing/roadtest/Makefile               |   84 +
->  tools/testing/roadtest/init.sh                |   19 +
->  tools/testing/roadtest/pyproject.toml         |   10 +
->  tools/testing/roadtest/requirements.txt       |    4 +
->  tools/testing/roadtest/roadtest/__init__.py   |    2 +
->  .../roadtest/roadtest/backend/__init__.py     |    0
->  .../roadtest/roadtest/backend/backend.py      |   32 +
->  .../testing/roadtest/roadtest/backend/gpio.py |  111 +
->  .../testing/roadtest/roadtest/backend/i2c.py  |  123 +
->  .../testing/roadtest/roadtest/backend/main.py |   13 +
->  .../testing/roadtest/roadtest/backend/mock.py |   20 +
->  .../roadtest/roadtest/backend/test_gpio.py    |   98 +
->  .../roadtest/roadtest/backend/test_i2c.py     |   84 +
->  .../testing/roadtest/roadtest/cmd/__init__.py |    0
->  tools/testing/roadtest/roadtest/cmd/main.py   |  146 +
->  tools/testing/roadtest/roadtest/cmd/remote.py |   48 +
->  .../roadtest/roadtest/core/__init__.py        |    0
->  .../testing/roadtest/roadtest/core/control.py |   52 +
->  .../roadtest/roadtest/core/devicetree.py      |  155 +
->  .../roadtest/roadtest/core/hardware.py        |   94 +
->  tools/testing/roadtest/roadtest/core/log.py   |   42 +
->  .../testing/roadtest/roadtest/core/modules.py |   38 +
->  .../testing/roadtest/roadtest/core/opslog.py  |   35 +
->  tools/testing/roadtest/roadtest/core/proxy.py |   48 +
->  tools/testing/roadtest/roadtest/core/suite.py |  286 ++
->  tools/testing/roadtest/roadtest/core/sysfs.py |   77 +
->  .../roadtest/roadtest/core/test_control.py    |   35 +
->  .../roadtest/roadtest/core/test_devicetree.py |   31 +
->  .../roadtest/roadtest/core/test_hardware.py   |   41 +
->  .../roadtest/roadtest/core/test_log.py        |   54 +
->  .../roadtest/roadtest/core/test_opslog.py     |   27 +
->  .../roadtest/roadtest/tests/__init__.py       |    0
->  .../roadtest/roadtest/tests/base/config       |   84 +
->  .../roadtest/roadtest/tests/iio/__init__.py   |    0
->  .../roadtest/roadtest/tests/iio/config        |    1 +
->  .../roadtest/roadtest/tests/iio/iio.py        |  112 +
->  .../roadtest/tests/iio/light/__init__.py      |    0
->  .../roadtest/roadtest/tests/iio/light/config  |    2 +
->  .../roadtest/tests/iio/light/test_opt3001.py  |   95 +
->  .../roadtest/tests/iio/light/test_vcnl4000.py |  132 +
->  .../roadtest/tests/iio/light/test_vcnl4010.py |  282 ++
->  .../roadtest/tests/iio/light/test_vcnl4040.py |  104 +
->  .../roadtest/tests/iio/light/test_vcnl4200.py |   96 +
->  .../roadtest/tests/regulator/__init__.py      |    0
->  .../roadtest/roadtest/tests/regulator/config  |    4 +
->  .../roadtest/tests/regulator/test_tps62864.py |  187 ++
->  .../roadtest/roadtest/tests/rtc/__init__.py   |    0
->  .../roadtest/roadtest/tests/rtc/config        |    1 +
->  .../roadtest/roadtest/tests/rtc/rtc.py        |   73 +
->  .../roadtest/tests/rtc/test_pcf8563.py        |  348 ++
->  tools/testing/roadtest/src/.gitignore         |    1 +
->  tools/testing/roadtest/src/backend.c          |  884 +++++
->  .../src/libvhost-user/include/atomic.h        |  310 ++
->  .../src/libvhost-user/libvhost-user.c         | 2885 +++++++++++++++++
->  .../src/libvhost-user/libvhost-user.h         |  691 ++++
->  59 files changed, 8798 insertions(+)
->  create mode 100644 Documentation/dev-tools/roadtest.rst
->  create mode 100644 tools/testing/roadtest/.gitignore
->  create mode 100644 tools/testing/roadtest/Dockerfile
->  create mode 100644 tools/testing/roadtest/Makefile
->  create mode 100755 tools/testing/roadtest/init.sh
->  create mode 100644 tools/testing/roadtest/pyproject.toml
->  create mode 100644 tools/testing/roadtest/requirements.txt
->  create mode 100644 tools/testing/roadtest/roadtest/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/backend.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/gpio.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/i2c.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/main.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/mock.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/test_gpio.py
->  create mode 100644 tools/testing/roadtest/roadtest/backend/test_i2c.py
->  create mode 100644 tools/testing/roadtest/roadtest/cmd/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/cmd/main.py
->  create mode 100644 tools/testing/roadtest/roadtest/cmd/remote.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/control.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/devicetree.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/hardware.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/log.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/modules.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/opslog.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/proxy.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/suite.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/sysfs.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/test_control.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/test_devicetree.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/test_hardware.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/test_log.py
->  create mode 100644 tools/testing/roadtest/roadtest/core/test_opslog.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/base/config
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/config
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/iio.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/config
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_opt3001.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4000.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4010.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4040.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/iio/light/test_vcnl4200.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/regulator/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/regulator/config
->  create mode 100644 tools/testing/roadtest/roadtest/tests/regulator/test_tps62864.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/__init__.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/config
->  create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/rtc.py
->  create mode 100644 tools/testing/roadtest/roadtest/tests/rtc/test_pcf8563.py
->  create mode 100644 tools/testing/roadtest/src/.gitignore
->  create mode 100644 tools/testing/roadtest/src/backend.c
->  create mode 100644 tools/testing/roadtest/src/libvhost-user/include/atomic.h
->  create mode 100644 tools/testing/roadtest/src/libvhost-user/libvhost-user.c
->  create mode 100644 tools/testing/roadtest/src/libvhost-user/libvhost-user.h
+> > +		mutex_unlock(&data->mutex);
+> > +		return ret;
+> > +	case IIO_EV_INFO_HYSTERESIS:
+> > +		if (val < 0 || val > 3)
+> > +			return -EINVAL;
+> > +
+> > +		mutex_lock(&data->mutex);
+> > +		ret = regmap_update_bits(data->regmap, reg,
+> > +					 BMA400_GEN_HYST_MSK,
+> > +					 FIELD_PREP(BMA400_GEN_HYST_MSK, val));
+> > +		mutex_unlock(&data->mutex);
+> > +		return ret;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
 > 
 
+Thank you,
+Jagath

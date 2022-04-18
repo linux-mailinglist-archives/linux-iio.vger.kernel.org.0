@@ -2,68 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A10F504CA0
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Apr 2022 08:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F98505A5D
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Apr 2022 16:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233533AbiDRG3p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Apr 2022 02:29:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
+        id S235001AbiDRO6a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Apr 2022 10:58:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230360AbiDRG3p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Apr 2022 02:29:45 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1417E1834E;
-        Sun, 17 Apr 2022 23:27:07 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id i20so17473060wrb.13;
-        Sun, 17 Apr 2022 23:27:07 -0700 (PDT)
+        with ESMTP id S1345110AbiDRO6F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Apr 2022 10:58:05 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCEC32EF8;
+        Mon, 18 Apr 2022 06:46:06 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id e21so18618068wrc.8;
+        Mon, 18 Apr 2022 06:46:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=s+1LbEHTZ4xb/p3MS2k3Xy2C6GVhDnJWDT9sJsoDOPA=;
-        b=aEtrZrDwD81IkQf7qqZzqWCOqcb7Q211AlcRLiYcoOuDujHbxfhOoluP2i1Kf+XV1e
-         TDqGfFdAYNsm4QK6bkR9NAq5Z07hYM15Fw8wpouvXX8J9wWqrVvRwDEFtC3YBUgaKyff
-         Bp0kzyniNrHLJvQi10iJf2ysjkWRr4lV2tPznLo6k84x+Q/miW+GahtshZtos33LYK3A
-         /nZ8QJjnPfvKhQWUo6Qjct8ZIlWufFokK1nRyFqDR4hD/67/yP3yMCemUt49QlTK8aMr
-         bCp2NlXbve0BRZn9f3tcZUfw9LNIEFsaxTU++OioT1ItfbYHxSU4CFnOERhlOwa+HVws
-         5q8Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yoyp44JzkHGTT8ZqJq8l6tDNGuUOI937tn9ZpUzw9Wk=;
+        b=gh/1az9LTsIQ8Waf71s3RlA7yMXX3Mse3hATc2/up5VvELAIhgtHel3pbElJrsVo2Z
+         ekz2AFEXacg2HIbAA2Fp1xbsgwpbyk0bAfqoC2FOK0P62HXf9rb8Zmo7vAj1LTpS3iEj
+         Ixi6t4b9Pd20eV09JXiONq1W46dNqBFKz4bhgiWiBdq2AVyq4uzV/BH3bEucMunsQkiF
+         E8kaThovYTKQQnqJ4dxlKqjbJUWNMkNR497vhYUMVd3zuW+G4AoI9Gz8tzqCZOLjjWk1
+         De79kUsuZqELYp1BmokBLWJ1QBrvDibANF6ZLTZEaqs49XeQBlZVX0ADsMUjKf2KtgH2
+         iUHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=s+1LbEHTZ4xb/p3MS2k3Xy2C6GVhDnJWDT9sJsoDOPA=;
-        b=ksz6akFeedbeQ9a12lqObzOuT19KX95QlSf9HHzHh/UYGl7pk2/cLGihPAx7O18bnX
-         94AirdLHpt0bTeTFNp7lhwuVs2uSwbm6ro3HGttJdOR6mQtkb3CN76FA6K0wOvXkc95w
-         4LodYaXJ4xVzzrzIdE1Xel3dqA79UK2aMrdzP+B1K1GYq84q9Mx3dw7hbOE8RiNpxFBp
-         PEDZ5kmrGddI5gTVkB19Dmm/k78DzqYJNzrCuvyu/vkZHvvYaNGYo1Z+6x944OhE8dDl
-         zfsqLKyHT9WiEfAQ++q48K12PdFDSNI/ufx9Ykthnr50mhSwbPqd1mxDEIxS/bUt/lEf
-         Alyg==
-X-Gm-Message-State: AOAM532xeEwgZKX7eGE9kqDhYbOnLcF6YuI0MB/mHOuaPGEMfuaTuvIs
-        BFc+OI/acHlahv+4peuvJpqwBaBfMPhYEGtNnwU=
-X-Google-Smtp-Source: ABdhPJzW2eAw+FwQCJpaDWa8O+sHyNYdtqXYOVCPpNDBj5c1YcLjVlfa6Qaw/+hh0JEa0XA4a6Yk/a7GrBprm47ed6g=
-X-Received: by 2002:a5d:6e85:0:b0:207:a435:d9a7 with SMTP id
- k5-20020a5d6e85000000b00207a435d9a7mr7165580wrz.217.1650263225527; Sun, 17
- Apr 2022 23:27:05 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yoyp44JzkHGTT8ZqJq8l6tDNGuUOI937tn9ZpUzw9Wk=;
+        b=lrOeSFWCoskZ4Z+OQ6Ryh0SW6EarHVbbpXdWVrS/PjcdlIbicCrokbR05kLALVW6AS
+         VNxeX2HAnZBhvOeCGEXBQMQ0wZ8aANlGbcHN0SDwniedJFEL6+LA81fEo/iNoNsAWcq9
+         OBki691CMZyBuB4Sa8lOz6jx3Kfpt+Fp+jq9pWR6JJW+8DzQkbpz+hBPJlLgWh1etIOy
+         W1QVSQXu/Hky51rpubp99scZX5ZbjbG5EEnhxPrb/0nsJd1ZmDGOpdEr53asYNfc8Jcy
+         SMEniYxZ6BCfEfRZV2DsMRfm+llcHJXuJGNEkZHSqHG6pH9024Uk1evIsOAbSJyko8WN
+         tP6A==
+X-Gm-Message-State: AOAM531rjiDvVPE7DLYAyW+WvY204F75s1ftjWkUDQyv2P6uymHEnRql
+        rD9EdgNE9hrzZnPYfphrYoDVNeoMvXw=
+X-Google-Smtp-Source: ABdhPJxAVkklnnI5HFoDgPCIommVtr6wdWI7ulYdjfDzlnh9LUgLfiMDzA4l6bYkJLTgZA9t1un9QA==
+X-Received: by 2002:a5d:67d2:0:b0:207:a5cf:c14d with SMTP id n18-20020a5d67d2000000b00207a5cfc14dmr8421376wrw.365.1650289564671;
+        Mon, 18 Apr 2022 06:46:04 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id v11-20020a056000144b00b0020a9c02f60dsm1835302wrx.50.2022.04.18.06.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Apr 2022 06:46:04 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: [PATCH] staging: iio: ad2s1210: remove redundant assignment to variable negative
+Date:   Mon, 18 Apr 2022 14:46:03 +0100
+Message-Id: <20220418134603.81336-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <20220407082148.571442-1-gengcixi@gmail.com> <20220407082148.571442-2-gengcixi@gmail.com>
- <YlcgtLmXwc2s2+oJ@robh.at.kernel.org>
-In-Reply-To: <YlcgtLmXwc2s2+oJ@robh.at.kernel.org>
-From:   Cixi Geng <gengcixi@gmail.com>
-Date:   Mon, 18 Apr 2022 14:26:29 +0800
-Message-ID: <CAF12kFuY_t4i2SpAaBvTAOagKVJOf3Awuds1O0J7xvKFgSEQQg@mail.gmail.com>
-Subject: Re: [PATCH V3 1/7] dt-bindings:iio:adc: add sprd,ump9620-adc dt-binding
-To:     Rob Herring <robh@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        "baolin.wang7@gmail.com" <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        =?UTF-8?B?5pyx546J5piOIChZdW1pbmcgWmh1LzExNDU3KQ==?= 
-        <yuming.zhu1@unisoc.com>, linux-iio@vger.kernel.org,
-        Devicetree List <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -74,120 +72,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Rob Herring <robh@kernel.org> =E4=BA=8E2022=E5=B9=B44=E6=9C=8814=E6=97=A5=
-=E5=91=A8=E5=9B=9B 03:12=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Thu, Apr 07, 2022 at 04:21:42PM +0800, Cixi Geng wrote:
-> > From: Cixi Geng <cixi.geng1@unisoc.com>
-> >
-> > sprd,ump9620-adc is one variant of sc27xx series, add ump9620
-> > description and sample in dt-bindings.
-> >
-> > Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-> > ---
-> >  .../bindings/iio/adc/sprd,sc2720-adc.yaml     | 57 +++++++++++++++++--
-> >  1 file changed, 53 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.=
-yaml b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> > index caa3ee0b4b8c..0d0f317b75c5 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/sprd,sc2720-adc.yaml
-> > @@ -20,6 +20,7 @@ properties:
-> >        - sprd,sc2723-adc
-> >        - sprd,sc2730-adc
-> >        - sprd,sc2731-adc
-> > +      - sprd,ump9620-adc
-> >
-> >    reg:
-> >      maxItems: 1
-> > @@ -34,12 +35,39 @@ properties:
-> >      maxItems: 1
-> >
-> >    nvmem-cells:
-> > -    maxItems: 2
-> > +    description: nvmem-cells.
-> >
-> >    nvmem-cell-names:
-> > -    items:
-> > -      - const: big_scale_calib
-> > -      - const: small_scale_calib
-> > +    description: Names for each nvmem-cells specified.
->
-> These descriptions of common properties are redundant. Just use 'true'
-> for the property values.
->
-> > +
-> > +if:
-> > +  not:
-> > +    properties:
-> > +      compatible:
-> > +        contains:
-> > +          enum:
-> > +            - sprd,ump9620-adc
->
-> Use 'const'
+Variable negative is being assigned a value that is never read, it is
+being re-assigned later. The assignment is redundant and can be removed.
 
-Hi Rob Herring=EF=BC=9A
-did you mean I should use "- const: sprd,ump9620-adc"? or change the
-enum to const?
-but the above two modification methods have failed for me to test
-dt-bindings-check.
->
-> > +then:
-> > +  properties:
-> > +    nvmem-cells:
-> > +      maxItems: 2
-> > +    nvmem-cell-names:
-> > +      items:
-> > +        - const: big_scale_calib
-> > +        - const: small_scale_calib
-> > +
-> > +else:
-> > +  properties:
-> > +    nvmem-cells:
-> > +      maxItems: 6
-> > +    nvmem-cell-names:
-> > +      items:
-> > +        - const: big_scale_calib1
-> > +        - const: big_scale_calib2
-> > +        - const: small_scale_calib1
-> > +        - const: small_scale_calib2
-> > +        - const: vbat_det_cal1
-> > +        - const: vbat_det_cal2
-> >
-> >  required:
-> >    - compatible
-> > @@ -69,4 +97,25 @@ examples:
-> >              nvmem-cell-names =3D "big_scale_calib", "small_scale_calib=
-";
-> >          };
-> >      };
-> > +
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    pmic {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +        adc@504 {
-> > +            compatible =3D "sprd,ump9620-adc";
-> > +            reg =3D <0x504>;
-> > +            interrupt-parent =3D <&ump9620_pmic>;
-> > +            interrupts =3D <0 IRQ_TYPE_LEVEL_HIGH>;
-> > +            #io-channel-cells =3D <1>;
-> > +            hwlocks =3D <&hwlock 4>;
-> > +            nvmem-cells =3D <&adc_bcal1>, <&adc_bcal2>,
-> > +                          <&adc_scal1>, <&adc_scal2>,
-> > +                          <&vbat_det_cal1>, <&vbat_det_cal2>;
-> > +            nvmem-cell-names =3D "big_scale_calib1", "big_scale_calib2=
-",
-> > +                               "small_scale_calib1", "small_scale_cali=
-b2",
-> > +                               "vbat_det_cal1", "vbat_det_cal2";
-> > +        };
-> > +    };
-> >  ...
-> > --
-> > 2.25.1
-> >
-> >
+Cleans up clang scan build warning:
+drivers/staging/iio/resolver/ad2s1210.c:502:3: warning: Value stored
+to 'negative' is never read [deadcode.DeadStores]
+
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/staging/iio/resolver/ad2s1210.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
+index 74adb82f37c3..c0b2716d0511 100644
+--- a/drivers/staging/iio/resolver/ad2s1210.c
++++ b/drivers/staging/iio/resolver/ad2s1210.c
+@@ -499,7 +499,6 @@ static int ad2s1210_read_raw(struct iio_dev *indio_dev,
+ 		ret = IIO_VAL_INT;
+ 		break;
+ 	case IIO_ANGL_VEL:
+-		negative = st->rx[0] & 0x80;
+ 		vel = be16_to_cpup((__be16 *)st->rx);
+ 		vel >>= 16 - st->resolution;
+ 		if (vel & 0x8000) {
+-- 
+2.35.1
+

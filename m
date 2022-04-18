@@ -2,83 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F1A5047EF
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Apr 2022 15:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177E1504AE0
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Apr 2022 04:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234194AbiDQNyf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Apr 2022 09:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54670 "EHLO
+        id S235817AbiDRCWU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Apr 2022 22:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbiDQNye (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Apr 2022 09:54:34 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25B81EC77
-        for <linux-iio@vger.kernel.org>; Sun, 17 Apr 2022 06:51:58 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id h8so21774524ybj.11
-        for <linux-iio@vger.kernel.org>; Sun, 17 Apr 2022 06:51:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=j1YC+4qj0ofm4fZxd2lXKtVJb4PrA/5HBQxOtfDvFQA=;
-        b=Pp2oHE+bhzP6O3Nv9ESmCrnqps2DiHpABagwyPuFmmbjq6zboHplyf9uiBC2eBXj7e
-         DWiBx9atRc52M1nWs5TMi8TeP0X7EBMeHog31TxViiJME0JB10iGMtKOYP61Aq1eVI3s
-         hJJweHM8tvt6t2KI8Sq3ITxRROWX8DM0ZzAtaTDse+ksFe1dYCT7rUWB02AtUHY2ItMB
-         laBNFrcQYa55P2p8kFLHT/1As8FXVz/Ob69vATD2Gm+KllA+uPKQ6WhSLNg2qibSeEzf
-         eaqpUYlG3rHKb4r9zy+jZLeDn1+ZiJTHRD+1yQKZ5+zdYg0ajCY6HkN/RaOXK2ks6jYm
-         5kig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=j1YC+4qj0ofm4fZxd2lXKtVJb4PrA/5HBQxOtfDvFQA=;
-        b=s66fVLlDwNzRayjE8BCHFYJa4tjeC1W+5GMggYNIu+tjI1WD+ee7GeEOoi8EsEP/96
-         3pb3/uOq8qKOHTyolnKophBp0U6rvePYDAgm+e1JK1TZrwsf2EjNInPqGn5hgPayI+35
-         JYumNt5MBPZ85nDRzkzSQ/kyOPby4g5hoDNGb1OjBWTJeNhN/n4rmBKw+vq0cS1Edqiw
-         VZnI9pMgJRluwLtT3uCNp7NFC12Uc0t4yjL5FJh1/HF7+U8PH+2O8VQwIGJLyVI2O14h
-         DQe+T8My0KU6fUH7TWNnqNfRMzB4ISbDpzwyCMHEdoxfWlg7NwCd9/fABfesCbxgeOpa
-         cjLQ==
-X-Gm-Message-State: AOAM530Af4l9wooPoyAYQEt5MykPoiFhyETT9nV5mwpXoR9lqp8Lq7+m
-        EwZMHOjUHde2Xntk8H313uikctnPcPnmt/7rtEHlyw==
-X-Google-Smtp-Source: ABdhPJzbb8iFPWriy129wK1T8jTk7tlK1sM0GemG9BO8OC56F+CZqre4jbAYLbbCjnwyLaH826YjGdVi0Rz4CNSfcO8=
-X-Received: by 2002:a5b:dc5:0:b0:624:f16d:7069 with SMTP id
- t5-20020a5b0dc5000000b00624f16d7069mr6401060ybr.295.1650203518028; Sun, 17
- Apr 2022 06:51:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220413163004.84789-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220413163004.84789-1-andriy.shevchenko@linux.intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 17 Apr 2022 15:51:46 +0200
-Message-ID: <CACRpkdaiwa4uC2qW38gwauBXmXhCwHxcHn-9nNbP=NSyd0OrTA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] iio: gyro: mpu3050: Make use of device properties
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S235820AbiDRCWS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Apr 2022 22:22:18 -0400
+Received: from mail.meizu.com (edge07.meizu.com [112.91.151.210])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 475E817E2B;
+        Sun, 17 Apr 2022 19:19:39 -0700 (PDT)
+Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail11.meizu.com
+ (172.16.1.15) with Microsoft SMTP Server (TLS) id 14.3.487.0; Mon, 18 Apr
+ 2022 10:19:38 +0800
+Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
+ (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Mon, 18 Apr
+ 2022 10:19:36 +0800
+From:   Haowen Bai <baihaowen@meizu.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+CC:     Haowen Bai <baihaowen@meizu.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH V3] iio: gp2ap020a00f: Fix signedness bug
+Date:   Mon, 18 Apr 2022 10:19:35 +0800
+Message-ID: <1650248375-6334-1-git-send-email-baihaowen@meizu.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <20220415185205.26a3d352@jic23-huawei>
+References: <20220415185205.26a3d352@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [172.16.137.70]
+X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
+ IT-EXMB-1-125.meizu.com (172.16.1.125)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 13, 2022 at 6:30 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+function gp2ap020a00f_get_thresh_reg() is unsigned but returning -EINVAL
+errcode, and thresh_reg_l is unsigned but receiving -EINVAL errcode. so
+we have to change u8 -> int. Also we need to do index bound check at
+gp2ap020a00f_read_event_val().
 
-> Convert the module to be property provider agnostic and allow
-> it to be used on non-OF platforms.
->
-> While at it, reuse temporary device pointer in the same function.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+---
+V1->V2: s8 is not enough to hold an (arbitrary) error code. To be on the safe
+side we need to use int.
+V2->V3: add bound check at gp2ap020a00f_read_event_val().
 
-Too late because Jonathan is trigger happy (which is good!) but FWIW:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Yours,
-Linus Walleij
+ drivers/iio/light/gp2ap020a00f.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
+index b820041159f7..f80d30786035 100644
+--- a/drivers/iio/light/gp2ap020a00f.c
++++ b/drivers/iio/light/gp2ap020a00f.c
+@@ -994,7 +994,7 @@ static irqreturn_t gp2ap020a00f_trigger_handler(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static u8 gp2ap020a00f_get_thresh_reg(const struct iio_chan_spec *chan,
++static int gp2ap020a00f_get_thresh_reg(const struct iio_chan_spec *chan,
+ 					     enum iio_event_direction event_dir)
+ {
+ 	switch (chan->type) {
+@@ -1025,7 +1025,7 @@ static int gp2ap020a00f_write_event_val(struct iio_dev *indio_dev,
+ 	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
+ 	bool event_en = false;
+ 	u8 thresh_val_id;
+-	u8 thresh_reg_l;
++	int thresh_reg_l;
+ 	int err = 0;
+ 
+ 	mutex_lock(&data->lock);
+@@ -1082,14 +1082,14 @@ static int gp2ap020a00f_read_event_val(struct iio_dev *indio_dev,
+ 				       int *val, int *val2)
+ {
+ 	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
+-	u8 thresh_reg_l;
++	int thresh_reg_l;
+ 	int err = IIO_VAL_INT;
+ 
+ 	mutex_lock(&data->lock);
+ 
+ 	thresh_reg_l = gp2ap020a00f_get_thresh_reg(chan, dir);
+ 
+-	if (thresh_reg_l > GP2AP020A00F_PH_L_REG) {
++	if (thresh_reg_l < 0 || thresh_reg_l > GP2AP020A00F_PH_L_REG) {
+ 		err = -EINVAL;
+ 		goto error_unlock;
+ 	}
+-- 
+2.7.4
+

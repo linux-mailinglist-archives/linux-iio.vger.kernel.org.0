@@ -2,130 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 756F350715E
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 17:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F150507164
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 17:10:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350672AbiDSPJg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Apr 2022 11:09:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35796 "EHLO
+        id S235986AbiDSPLV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Apr 2022 11:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343927AbiDSPJg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 11:09:36 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E270B3A5FE;
-        Tue, 19 Apr 2022 08:06:52 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id t25so21668345edt.9;
-        Tue, 19 Apr 2022 08:06:52 -0700 (PDT)
+        with ESMTP id S1348100AbiDSPLU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 11:11:20 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C806F3A722;
+        Tue, 19 Apr 2022 08:08:37 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id l7so33613678ejn.2;
+        Tue, 19 Apr 2022 08:08:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=yICZo35JVSCay/S/x1TB8kX9507M+hco0NaA8O/7pCU=;
-        b=dqhBAOnaEOaiRPgnwFlRiMHN3lB5cjbPy5HM5ysMYjsbjEcCoKfr7kln27sTR9pRgV
-         gE5PzIU0MJamXr0s+yAUwpgHUDOCYAE5LWPiTTJqtWn4BulTN10rSw9f/JjshFGaTM1L
-         YUTdDpHPJ02DV3sOMYKKCj86Y0cspr8Ys8jwmp9x38xRSrRXkgqDG0EGAjaRdSUDuZH/
-         DLzHUrk0uJg7sOLFCc8na9Jplo0SYN3U9ynpRRJfaU2I9hNcr01RuWySYDl0NbjwNHYi
-         kELwR6JUC8qvRI1xwp2ur+FRci7aVgOBkEsRITJyLUOcbjQQkHmWPBdNgjdFsoLWcndc
-         k7dA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vuZNI/cdrd7ALg+RLxl3FV30JyJrvpFFZT6HJ8etR/M=;
+        b=mHCGGA+HwKe5Avh4edsQcx1cukyJHQ9H3oa/kH0Me22SKnWbv7lqDHduCdlb63FPOz
+         Cvl0G3zaxZt8vbjP/7rGEhyoKnhguJm9KUZu0a0sCjINkdGL8gTO8gr7P7pgRTvvyZyI
+         x277s4RAu7nKEwaw05NRKH/NmAnduOmsQfhRi/21n+fydauYzVq+PdaJGEopTug3uXDj
+         HGEQKlHoWyVIHTTILTSxB+TGRmjzMquUEPI8c17Mc9nzFT3ieMsH5zEzuC3ndg2oCRD1
+         8C2ZCmi/9SnWS+N62ZKmH7QLUcmM3y6J4Egqs+XXSAUSTx24zdCiIFFEyOEeLVRJoWNy
+         23+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=yICZo35JVSCay/S/x1TB8kX9507M+hco0NaA8O/7pCU=;
-        b=CjFt3RuyUlQtj0ApaNJl+rs+r60vQblj6A0C6IKUtqi8XLA8MsPgZu/lKL0Q5ctDFf
-         3djTVSXv55GRtbSUVuiCrMhNKunWNrP19TqJ5Zg9CAPz3OSVnnwLY3eRZWEr3nAi2fzX
-         QYZn5wCFISUNbxRoodp3ob7Ly4fq/SrpsdJuxFR/72eQSQX5VqIzQfjlmh8p7Kiz5Jc2
-         KltNisGLif6+62iKKrY4dUJ7PoSLGR6iJO60Uo455TYxxk9K8Be5tD0LMgp4fHFzXzvc
-         i++QynjcYngKX7PswPn4s1nn2pqf7Vde1Th23qqbbkmGlbipwNXDn1jcPitFzRPCkaHa
-         BoXg==
-X-Gm-Message-State: AOAM533Qu48lnM9BzWjFg27YeFEj5AmU21yU5Bv8d6lsUVWbGT54LPTv
-        GOTH6DlTneoTjw/qSfRkP4w=
-X-Google-Smtp-Source: ABdhPJyydUHtFp3YDsnBHqpecx1FOJ26DObQViOuhiNGCtKScNX7BimnMLHUfAZfVE1+x3dHcfClpQ==
-X-Received: by 2002:aa7:c948:0:b0:413:2bed:e82e with SMTP id h8-20020aa7c948000000b004132bede82emr17908502edt.394.1650380811313;
-        Tue, 19 Apr 2022 08:06:51 -0700 (PDT)
-Received: from [192.168.0.182] ([188.24.22.234])
-        by smtp.gmail.com with ESMTPSA id kb9-20020a1709070f8900b006e889aad94esm5772063ejc.128.2022.04.19.08.06.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Apr 2022 08:06:50 -0700 (PDT)
-Message-ID: <417c3fdb-a264-250b-7385-d5f9acf166d1@gmail.com>
-Date:   Tue, 19 Apr 2022 18:06:48 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add AD4130
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-References: <20220419093506.135553-1-cosmin.tanislav@analog.com>
- <20220419093506.135553-2-cosmin.tanislav@analog.com>
- <1650370363.604220.1977871.nullmailer@robh.at.kernel.org>
+        bh=vuZNI/cdrd7ALg+RLxl3FV30JyJrvpFFZT6HJ8etR/M=;
+        b=WAKsrkZFaJnoqrp57OLdgRdITYFpj8fYORvPs7SaF/UAlg/rVZCuBG3EN03DgmACOq
+         4QgMefwGhyhO0NSH3+l16DeOn0GUddPw/6xQ3Y0jSgDzcOJcOgPjh1jQEm7UeZu45AW3
+         wlHxslCOKqjErJfjtgESt4yqdAMTJjOEPuwiYxma3ZgD8JqmTUzCuYDw+0MQFKxxIYY5
+         JwHPOXx1A33WGodEDLpfIFDmurfVSYgg4hpS0k6Lhej7J+oh4TfQBzULoepjSDp1s48E
+         vQPDC4rw+yLtEdrXrhVW385LliK+ynYpVKxAxa92/a5Fs7n/FQbEYio03UlB7MUEcWNG
+         s0KQ==
+X-Gm-Message-State: AOAM532/+rXTdh/hWHN+yzEV6HujeeN5ZOOdACl+gr0PaC25J6xfSH+I
+        8/lv0I+qjgWjbQWBQf/30XHBGqEzQjc=
+X-Google-Smtp-Source: ABdhPJx2/qBZoX9K8AvhlL70ZPhwxQgrhkQaPYSI7sH/d2bfaV2+Tgim0mEoH6k7qRke3gj0U7IGuQ==
+X-Received: by 2002:a17:906:5cb:b0:6cf:954:d84d with SMTP id t11-20020a17090605cb00b006cf0954d84dmr14390613ejt.560.1650380916414;
+        Tue, 19 Apr 2022 08:08:36 -0700 (PDT)
+Received: from demon-pc.localdomain ([188.24.22.234])
+        by smtp.gmail.com with ESMTPSA id m1-20020a170906234100b006ef83025804sm3548604eja.87.2022.04.19.08.08.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Apr 2022 08:08:35 -0700 (PDT)
 From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <1650370363.604220.1977871.nullmailer@robh.at.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+X-Google-Original-From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: [PATCH v3 0/2] AD4130
+Date:   Tue, 19 Apr 2022 18:08:26 +0300
+Message-Id: <20220419150828.191933-1-cosmin.tanislav@analog.com>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+AD4130-8 is an ultra-low power, high precision, measurement solution for
+low bandwidth battery operated applications.
 
+The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+selectable filter options, smart sequencer, sensor biasing and excitation
+options, diagnostics, and a FIFO buffer.
 
-On 4/19/22 15:12, Rob Herring wrote:
-> On Tue, 19 Apr 2022 12:35:05 +0300, Cosmin Tanislav wrote:
->> AD4130-8 is an ultra-low power, high precision, measurement solution for
->> low bandwidth battery operated applications.
->>
->> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
->> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
->> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
->> selectable filter options, smart sequencer, sensor biasing and excitation
->> options, diagnostics, and a FIFO buffer.
->>
->> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
->> ---
->>   .../bindings/iio/adc/adi,ad4130.yaml          | 263 ++++++++++++++++++
->>   1 file changed, 263 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
->>
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> Error: Documentation/devicetree/bindings/iio/adc/adi,ad4130.example.dts:35.30-31 syntax error
-> FATAL ERROR: Unable to parse input tree
-> make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/iio/adc/adi,ad4130.example.dtb] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> make: *** [Makefile:1401: dt_binding_check] Error 2
-> 
-> doc reference errors (make refcheckdocs):
-> 
-> See https://patchwork.ozlabs.org/patch/
-> 
-> This check can fail if there are any dependencies. The base for a patch
-> series is generally the most recent rc1.
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit.
-> 
+V1 -> V2
+ * add kernel version to ABI file
+ * merge ABI patch into driver patch
+ * make copyright header similar to other drivers
+ * rearrange includes
+ * use units.h defines where possible and add unit sufix to
+   SOFT_RESET_SLEEP define
+ * remove ending comma to last members of enums / lists
+ * remove unused FILTER_MAX define
+ * use BIT macro for PIN_FN_*
+ * rearrange SETUP_SIZE definition
+ * group bools in ad4130_state and ad4130_chan_info
+ * put scale_tbls definition on one line
+ * remove newline before reg size == 0 check
+ * put mask used as value in a variable
+ * remove useless ret = 0 assignment
+ * make buffer attrs oneline
+ * use for_each_set_bit in update_scan_mode
+ * use if else for internal reference voltage error checking
+ * inline reference voltage check
+ * check number of vbias pins
+ * remove .has_int_pin = false
+ * remove avail_len for IIO_AVAIL_RANGE
+ * remove useless enabled_channels check in unlink_slot
+ * remove unused AD4130_RESET_CLK_COUNT define
+ * only call fwnode_handle_put for child in case of error
+ * default adi,reference-select to REFIN1
+ * default adi,int-ref-en to false
+ * of_irq_get_byname -> fwnode_irq_get_byname
+ * P1 -> P2 as interrupt pin options
+ * add missing comma in db3_freq_avail init
+ * cast values to u64 to make math using units.h work
+ * add datasheet reference to IRQ polarity
+ * add comment about disabling channels in predisable
+ * add part number prefix find_table_index
+ * return voltage from get_ref_voltage
+ * add datasheet reference for internal reference voltage selection
+ * add comment explaining AIN and GPIO pin sharing
+ * parse channel setup before parsing excitation pins
+ * only validate excitation pin if value is not off
+ * use FIELD_PREP for bipolar and int_ref_en
+ * put devm_regmap_init call on one line
+ * introduce a slot_info struct to contain setup_info for each slot
+ * enable internal reference automatically if needed
+ * decide mclk sel based on adi,ext-clk-freq and adi,int-clk-out
+ * dt-bindings: use internal reference explicitly
+ * dt-bindings: set type for adi,excitation-pin-0
+ * dt-bindings: set $ref for adi,vbias-pins
+ * dt-bindings: remove minItems from interrupts property
+ * dt-bindings: remove adi,int-ref-en default value
+ * dt-bindings: remove adi,bipolar default value
+ * dt-bindings: inline adi,int-ref-en description
+ * dt-bindings: default adi,reference-select to REFIN1
+ * dt-bindings: clean up description for diff-channels and
+   adi,reference-select
+ * dt-bindings: add more text to interrupt-names description
+ * dt-bindings: turn interrupt-names into a single string
+ * dt-bindings: add maxItems to adi,vbias-pins
 
-Sending V3 to fix this. Please disregard.
+V2 -> V3
+ * dt-bindings: add interrupt controller include to example
+ * dt-bindings: remove $ref in diff-channels
+
+Cosmin Tanislav (2):
+  dt-bindings: iio: adc: add AD4130
+  iio: adc: ad4130: add AD4130 driver
+
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      |   36 +
+ .../bindings/iio/adc/adi,ad4130.yaml          |  264 +++
+ MAINTAINERS                                   |    8 +
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad4130.c                      | 2078 +++++++++++++++++
+ 6 files changed, 2400 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+ create mode 100644 drivers/iio/adc/ad4130.c
+
+-- 
+2.35.3
 

@@ -2,110 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7F45066F1
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 10:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CD35067BF
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 11:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350005AbiDSIdT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Apr 2022 04:33:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34548 "EHLO
+        id S1346696AbiDSJii (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Apr 2022 05:38:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343528AbiDSIdS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 04:33:18 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C043611C19;
-        Tue, 19 Apr 2022 01:30:36 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id u15so31300570ejf.11;
-        Tue, 19 Apr 2022 01:30:36 -0700 (PDT)
+        with ESMTP id S1347348AbiDSJih (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 05:38:37 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95BFE1C131;
+        Tue, 19 Apr 2022 02:35:53 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id u15so31625375ejf.11;
+        Tue, 19 Apr 2022 02:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4OiFs7ulzkmKAramSw5U/UagtmvyMZLn6GtNwoWbozk=;
-        b=QthceWOYPQDs1AOg0WckUxHDyE14D6jg6NVqJeea2fBLKkqyrVqIKoYdtOKtjDyjtp
-         lLTTsYiQgFJpnVVjtsj+rjKiEXZ296YfiEGnqNC31aKreLmnHNOcOHAbwiZXmCJu+lri
-         Y6U2ZOB48vPGFFhbjSOtOMJjuX1A5qHTCWxc8irzIRCzvlWHKAa3Yym3f5IxMesK1vSl
-         J8Cek9lXtPzhmCV8SjODmgVwPYvSphXMUCfIXBibnzgo4jP6QIJhcPAlJv5KulLU+wVj
-         6hzpRMGeBqKgat8hF5YkEKo0MiXwBucxR8wDXWRGiEZADmknKRicABFkfcEwyrdssL9y
-         9IMw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QuBxnJ189gQM2GpBkOVOWvPE4dRFJdO733PMpDnzugY=;
+        b=nXxmuvIW6ZxgfQv+rXPIMRnalWMl3L3e86JG8+k3vRoxeA4vceDGKJn+BCN4lZ38Ou
+         lnEtQ/tQJEajT0afMjqxQbnjOca7x/LS+6ySLrS8MfSNPZTy6g7NyPqKqVOCyBVVJrGH
+         1pXt8/eDJdMlnji5WPbxWpytdng/W6I8Q+4CekHmdS9uFIQ0LMtiz3KBKSWyjLaftcqN
+         pxLpd4gAK7bcxPWcqIkdDlcmypA6s60ZiCOBYw1K3gZyHDjKEYYwruEP/9w51ev08xHN
+         HjCOgYRaVFdErs0m2cY3NdVIg9D6xzNoH62lGKZyOl8Sook+STJ5HszY7LsEhlpL9wC/
+         eAWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4OiFs7ulzkmKAramSw5U/UagtmvyMZLn6GtNwoWbozk=;
-        b=VJYKokzEmQM2PY4GgLNF3hlIDGoB5OZEk19RS8rrjpHy3LAdVRgErT2JG1Rum/0kZj
-         EWX2W4OhOWkxy+10DK4VS0SAD3Gpkt8jMco73mMfhYdIX+A4OYKKcs5jGJwp/q/kurVX
-         U7+YpnK7MgBQpQXyIiHLh6UG2iabRCayGPtr/iVmOQ6QZ3KU8AGmriGIQvHW3gCxG8mr
-         AeaQFJtcB80yiZy2/uZh+day35NmjK3iDWDm7qWX/6j82rfM2NpF3/8zr78DbmSl31dM
-         Un0lBhmcBnP+gGf2wde/kWHwfKWBfPkxHlSZEVXQOXuVgzU0rGMc0NiOr5AaMTk05VXB
-         WVCA==
-X-Gm-Message-State: AOAM530zxnE0uzkircGW5drcCc2bVQhjc375o2ss2XLqjWi4h2U8b7/b
-        WNXpZYXDYv7Lwuvv2EQ4iBE8V5qAxXyDEM36rzM=
-X-Google-Smtp-Source: ABdhPJwuFgKeG5m9W8LUoWssPxFYUalbeGcev7sYoZsXiC2tgMwSWkKX6pCKIsldjIeRBrc2nK/Hpu2DY7UfXHOvZq4=
-X-Received: by 2002:a17:906:1cd1:b0:6ec:c59:6a1d with SMTP id
- i17-20020a1709061cd100b006ec0c596a1dmr11671524ejh.77.1650357035349; Tue, 19
- Apr 2022 01:30:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220415130005.85879-1-andrea.merello@gmail.com>
- <20220415130005.85879-13-andrea.merello@gmail.com> <20220415174808.3b81baa4@jic23-huawei>
- <CAHp75Ve_f2txO8izFzjFUCRiP6SkT2wVHshy5EtU8LGtjzDAkA@mail.gmail.com> <CAN8YU5PeDd8BQYHQVAzfkni_v55UjaJsRJ4ATs0FAVFt1KKX=g@mail.gmail.com>
-In-Reply-To: <CAN8YU5PeDd8BQYHQVAzfkni_v55UjaJsRJ4ATs0FAVFt1KKX=g@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 19 Apr 2022 11:29:59 +0300
-Message-ID: <CAHp75VfENRuhUEp2Pj09qv6u-4Ze=GLwzCiSS+s2sTgt-aNE_g@mail.gmail.com>
-Subject: Re: [v4 12/14] iio: imu: add BNO055 serdev driver
-To:     Andrea Merello <andrea.merello@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QuBxnJ189gQM2GpBkOVOWvPE4dRFJdO733PMpDnzugY=;
+        b=UiEFJ8j5T5CuB+l6lTRV66NcyFTirozYqySR4LaxMXNGWum5mcfssy2VPJy+8kBXza
+         E86i1W/p+xNyeNQChgvp9pSszPIEWzGie6FwiNJ6ohWOajDnkqdHI5jz5mTasKrwxLQg
+         eVmbv3wjpMJUJVV9mn9sXD1wUDU48p82hFTctTTLwtFEy38VgXswKrNfx/GLYdPgF2fh
+         lUUEeRId6W1hqgfWS0J/avzwJZOlYAJ8a06rt4Z4YUIxSkOuy7AO2wMcQvsoI8dE+uT+
+         JzXTKDxkrLNfTmCfB9gbdQzLGhkCMnJvnyMJKiCwjG1Bmj2zilEi18BHeKuusSQ6Pzbh
+         Y1lA==
+X-Gm-Message-State: AOAM530c31OWrHViB87EVYk27X12CcKJh3SlNnWQZ6CQLWGlnOEQq1Bx
+        3p+no5vatDjIMcdeDR9zeg5Z5cr6qJc=
+X-Google-Smtp-Source: ABdhPJy7WWXMrhON/4PDw44TT/n9U2Y4ulwTCX1Frl4nN88YjHFJgfbziOmg2l3Ye1N1I1iPuN6M7Q==
+X-Received: by 2002:a17:907:2d20:b0:6e8:56eb:531f with SMTP id gs32-20020a1709072d2000b006e856eb531fmr12191164ejc.380.1650360951926;
+        Tue, 19 Apr 2022 02:35:51 -0700 (PDT)
+Received: from demon-pc.localdomain ([188.24.22.234])
+        by smtp.gmail.com with ESMTPSA id u25-20020a170906b11900b006e08588afedsm5467198ejy.132.2022.04.19.02.35.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Apr 2022 02:35:51 -0700 (PDT)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+X-Google-Original-From: Cosmin Tanislav <cosmin.tanislav@analog.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        jmondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@iit.it>
-Content-Type: text/plain; charset="UTF-8"
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: [PATCH v2 0/2] AD4130
+Date:   Tue, 19 Apr 2022 12:35:04 +0300
+Message-Id: <20220419093506.135553-1-cosmin.tanislav@analog.com>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Apr 19, 2022 at 10:48 AM Andrea Merello
-<andrea.merello@gmail.com> wrote:
-> Il giorno sab 16 apr 2022 alle ore 10:45 Andy Shevchenko
-> <andy.shevchenko@gmail.com> ha scritto:
-> > On Fri, Apr 15, 2022 at 7:40 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > > On Fri, 15 Apr 2022 15:00:03 +0200
-> > > Andrea Merello <andrea.merello@gmail.com> wrote:
+V1 -> V2
+ * add kernel version to ABI file
+ * merge ABI patch into driver patch
+ * make copyright header similar to other drivers
+ * rearrange includes
+ * use units.h defines where possible and add unit sufix to
+   SOFT_RESET_SLEEP define
+ * remove ending comma to last members of enums / lists
+ * remove unused FILTER_MAX define
+ * use BIT macro for PIN_FN_*
+ * rearrange SETUP_SIZE definition
+ * group bools in ad4130_state and ad4130_chan_info
+ * put scale_tbls definition on one line
+ * remove newline before reg size == 0 check
+ * put mask used as value in a variable
+ * remove useless ret = 0 assignment
+ * make buffer attrs oneline
+ * use for_each_set_bit in update_scan_mode
+ * use if else for internal reference voltage error checking
+ * inline reference voltage check
+ * check number of vbias pins
+ * remove .has_int_pin = false
+ * remove avail_len for IIO_AVAIL_RANGE
+ * remove useless enabled_channels check in unlink_slot
+ * remove unused AD4130_RESET_CLK_COUNT define
+ * only call fwnode_handle_put for child in case of error
+ * default adi,reference-select to REFIN1
+ * default adi,int-ref-en to false
+ * of_irq_get_byname -> fwnode_irq_get_byname
+ * P1 -> P2 as interrupt pin options
+ * add missing comma in db3_freq_avail init
+ * cast values to u64 to make math using units.h work
+ * add datasheet reference to IRQ polarity
+ * add comment about disabling channels in predisable
+ * add part number prefix find_table_index
+ * return voltage from get_ref_voltage
+ * add datasheet reference for internal reference voltage selection
+ * add comment explaining AIN and GPIO pin sharing
+ * parse channel setup before parsing excitation pins
+ * only validate excitation pin if value is not off
+ * use FIELD_PREP for bipolar and int_ref_en
+ * put devm_regmap_init call on one line
+ * introduce a slot_info struct to contain setup_info for each slot
+ * enable internal reference automatically if needed
+ * decide mclk sel based on adi,ext-clk-freq and adi,int-clk-out
+ * dt-bindings: use internal reference explicitly
+ * dt-bindings: set type for adi,excitation-pin-0
+ * dt-bindings: set $ref for adi,vbias-pins
+ * dt-bindings: remove minItems from interrupts property
+ * dt-bindings: remove adi,int-ref-en default value
+ * dt-bindings: remove adi,bipolar default value
+ * dt-bindings: inline adi,int-ref-en description
+ * dt-bindings: default adi,reference-select to REFIN1
+ * dt-bindings: clean up description for diff-channels and
+   adi,reference-select
+ * dt-bindings: add more text to interrupt-names description
+ * dt-bindings: turn interrupt-names into a single string
+ * dt-bindings: add maxItems to adi,vbias-pins
 
-...
+Cosmin Tanislav (2):
+  dt-bindings: iio: adc: add AD4130
+  iio: adc: ad4130: add AD4130 driver
 
-> > > > +CFLAGS_bno055_ser.o := -I$(src)
-> > >
-> > > Via a bit of grepping I can see other instances of this pattern which point out
-> > > that it's to do with allowing the tracing framework to see trace.h.
-> > > Perhaps a similar comment here would be good (if nothing else I doubt I'll
-> > > remember why this magic is here in a few years time!)
-> >
-> > Can be done better way, see dwc3 or drivers/base/ trace point implementations.
->
-> May you elaborate, please? It appears that both dwc3 and driver/base
-> use this same trick of tweaking the CFLAGS in the Makefile in order to
-> fix the header file thing. What I see is different is that they both
-> use an (almost empty) trace.c file. Is this what you are suggesting?
-
-There are two differences in your code:
-1) no separate c module, which...
-2) is built depending on CONFIG_TRACE.
-
-Hence, no need to have a separate ugly config option.
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      |   36 +
+ .../bindings/iio/adc/adi,ad4130.yaml          |  263 +++
+ MAINTAINERS                                   |    8 +
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad4130.c                      | 2078 +++++++++++++++++
+ 6 files changed, 2399 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+ create mode 100644 drivers/iio/adc/ad4130.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.35.3
+

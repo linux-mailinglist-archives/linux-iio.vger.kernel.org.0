@@ -2,415 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05CFB505F9D
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 00:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A12A1506562
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 09:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbiDRWO3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Apr 2022 18:14:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60624 "EHLO
+        id S240261AbiDSHNt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Apr 2022 03:13:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230384AbiDRWMd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Apr 2022 18:12:33 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B2910A0;
-        Mon, 18 Apr 2022 15:09:48 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id md4so14108581pjb.4;
-        Mon, 18 Apr 2022 15:09:48 -0700 (PDT)
+        with ESMTP id S237402AbiDSHNs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 03:13:48 -0400
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1283056F;
+        Tue, 19 Apr 2022 00:11:07 -0700 (PDT)
+Received: by mail-vs1-xe36.google.com with SMTP id z139so9287803vsz.0;
+        Tue, 19 Apr 2022 00:11:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=KFgtlf9sXMO8UasKU8rCZcmfKt6EiIeryG73SRp/xMU=;
-        b=Faj6WMSbUkWJVTURZElWqf8aN0CJ5h6IPHrmXauc/bDvTg0efjjiuCtzEXKz2zyIgY
-         Dkx8rp9fg5iVwg005ToqBz6Jxg0TiKTNGLGkxYu/loHm0DX98Wn1U9Pd8f498M0WxL9t
-         O+JOxxfZxB4O0rSZh/8OLLHkbq+UncB4eazpLl68r4WSVTzcN9aJuGSVtBXrIolCFUPv
-         Nva5k2QCHHgEexwa0EWnyAne6GjN9jh2ueGb0urL92vaHBe4CNK3dZvJK9mJ5BvJn84A
-         tULI4nG1N89TK3p6cQdw7qIGR396RAIc8Rn0yy/6LZ07KQt6b2caQP4xCvVDoLU1kdYP
-         LUiQ==
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=fJRznz45+6b8f9tgPBJNZwr3gSIqLHvLJH94gCmXiWs=;
+        b=Hru924K0BBg56zYFePikkE2q8hrW26jqhVb5NGTx4S5VXYH+9FR37XeQTl7w8hka/I
+         NqwpWRJ54uoxIjTo2HOQt2Ys2oaqvcpgb0dbQVXkRBZ+GiQuWVV3ZTjUWc5d1oqJnYn7
+         /6KOI7Q/i6FR3G0zGkvQHKdUkvVU3Wg+1ZeskVutSF+Ea5d9O3RCFUCcH2Kc4tFgIuA8
+         ClF64wcN07XSD8NemlElU6P4Bx3MNZPh+qjy+O5jPv4CfFZjJVUULkbEhC1bj1sCPvB6
+         i9Vx8KSR5HTfGcZUkTa+AtvAQgTPG++P5xWs/KQ/VcKk2sN/7Dn9L3konkxTuTyjQud3
+         m8fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=KFgtlf9sXMO8UasKU8rCZcmfKt6EiIeryG73SRp/xMU=;
-        b=lDuqMNtWUOa+122uATJLcWK0PGWnIMPVSBWqJ2ChF2jPgZD06WgcUWOa9mL6TMleqS
-         XKpz+cz7ghiB4BVw6uioEb8zeB0CwzxKY+S+TSE8JmD+my42sURmEysvvj0BgVUVCeLm
-         DUh6CKnn1pWpxzedYTFKurXdHYDzz0MnBdcy3xOXEnej3e4LKPrSRPHxstgWJrMrLtyX
-         /3BcqHSQwdmiKc5+DLh8nca3I0Z5xBmPY/o3bSdt+LioQtmgyikjTaMtXnvbspFoabTv
-         K+m6MX1Bk9BhQaeAryagidHgGeVUNV7t8sG7Njl03fYFGrco4bwHBn4YE+m613a6o6QQ
-         yAmA==
-X-Gm-Message-State: AOAM532c/pR+69838p8gePZccFsWpnwqmKWcRYPUbUlc322DFaKLllUl
-        JJWg9fF5PY3HO0KGgV8638AvOhGIICI=
-X-Google-Smtp-Source: ABdhPJyyk+n6fyH2TFtdWxS5IaHzkpE4x0LCGyCw1Ok7hF9dusdybrPNTOJxTQMHaNdL9H/mogVtzA==
-X-Received: by 2002:a17:902:e9c4:b0:158:f77d:afb7 with SMTP id 4-20020a170902e9c400b00158f77dafb7mr8509753plk.143.1650319787625;
-        Mon, 18 Apr 2022 15:09:47 -0700 (PDT)
-Received: from jagath-PC ([125.99.244.75])
-        by smtp.gmail.com with ESMTPSA id p1-20020a17090a680100b001d28905b214sm4803035pjj.39.2022.04.18.15.09.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 18 Apr 2022 15:09:47 -0700 (PDT)
-Date:   Tue, 19 Apr 2022 03:39:43 +0530
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] iio: accel: bma400: Add support for activity and
- inactivity events
-Message-ID: <20220418220941.GA16030@jagath-PC>
-References: <20220411203133.19929-1-jagathjog1996@gmail.com>
- <20220411203133.19929-10-jagathjog1996@gmail.com>
- <20220416175537.193cfc10@jic23-huawei>
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=fJRznz45+6b8f9tgPBJNZwr3gSIqLHvLJH94gCmXiWs=;
+        b=kLKilO/qTpIz1q/wUtrsbeoGxZJB+SJrXlM1s76QCzNgvIMucPT6bS3ZVQWR8Z9dP2
+         TFUyWHJg9yyyF6b/awM0+dGZDdLKxgw22TZ/YpeVq5pAI2BYlUpGEPoaCYLHCY/2Vltm
+         sNWD/c+xTyUnvzdg8B9/uCblQFMQuf/ynSwM/oVaOifhfeicqyDFBb7zH1gjYGLJKSr0
+         74cnzGtZsw31UZzdMwLDzA9XelpvBBhmwIa3aHymOG3x+AOo4V0/5mhS+bLPorjOfeu0
+         /iebRFIiJs9RhlXtMK4aCkNa6FzC25v08D2kKL/zsXgiPr8+AAiBBh2AI1EGaXhZ4oQw
+         fx8w==
+X-Gm-Message-State: AOAM530UW2aFHnvAHLGMY7DG79p0Ta9UyIZ/Dkc+xcxnApglYiddQEij
+        swYtdNUhhmM9eIY1WbV5fGhAfDTIItqWH/l5LSw=
+X-Google-Smtp-Source: ABdhPJxwItw29QxufrFTI6tPUY/l1+fgfbzWDqzwcGFMB2auBxs9/K/icUT5zkTEnFEQPzZ5icyN4geQyINLrfYbwhk=
+X-Received: by 2002:a05:6102:199:b0:32a:5d51:1770 with SMTP id
+ r25-20020a056102019900b0032a5d511770mr1913464vsq.27.1650352266169; Tue, 19
+ Apr 2022 00:11:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220416175537.193cfc10@jic23-huawei>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220415130005.85879-1-andrea.merello@gmail.com>
+ <20220415130005.85879-9-andrea.merello@gmail.com> <20220415184305.03805452@jic23-huawei>
+In-Reply-To: <20220415184305.03805452@jic23-huawei>
+Reply-To: andrea.merello@gmail.com
+From:   Andrea Merello <andrea.merello@gmail.com>
+Date:   Tue, 19 Apr 2022 09:10:54 +0200
+Message-ID: <CAN8YU5Mz--8R2oE=bgok_JdM6NNW8m2h5_V8LZSocFnaa-PADA@mail.gmail.com>
+Subject: Re: [v4 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
+Il giorno ven 15 apr 2022 alle ore 19:35 Jonathan Cameron
+<jic23@kernel.org> ha scritto:
+>
+> On Fri, 15 Apr 2022 14:59:59 +0200
+> Andrea Merello <andrea.merello@gmail.com> wrote:
+>
+> > From: Andrea Merello <andrea.merello@iit.it>
+> >
+> > This patch adds a core driver for the BNO055 IMU from Bosch. This IMU
+> > can be connected via both serial and I2C busses; separate patches will
+> > add support for them.
+> >
+> > The driver supports "AMG" (Accelerometer, Magnetometer, Gyroscope) mode,
+> > that provides raw data from the said internal sensors, and a couple of
+> > "fusion" modes (i.e. the IMU also do calculations in order to provide
+> > euler angles, quaternions, linear acceleration and gravity measurements).
+> >
+> > In fusion modes the AMG data is still available (with some calibration
+> > refinements done by the IMU), but certain settings such as low pass
+> > filters cut-off frequency and sensors ranges are fixed, while in AMG mode
+> > they can be customized; this is why AMG mode can still be interesting.
+> >
+> > Signed-off-by: Andrea Merello <andrea.merello@iit.it>
+> Hi Andrea,
+>
+> A few trivial things from me on this read through.
+>
+> I haven't commented on a lot of the patches because I was happy with them.
+>
+> Other than the small changes requested from me, we mostly need to get
+> device tree review of the binding and allow time for others to take
+> another look.
+>
+> Thanks,
+>
+> Jonathan
 
-Thanks for your suggestions, I will fix the locking and unlocking for all
-patches in the next series.
+Ok, good! As usual, just a few inline comments, ok for the rest.
 
-Please can you guide me for auto build test error reported by kernel test
-robot for set_mask_bits(&data->generic_event_en, msk, field_value);
-in this patch.
-
-On Sat, Apr 16, 2022 at 05:55:37PM +0100, Jonathan Cameron wrote:
-> On Tue, 12 Apr 2022 02:01:33 +0530
-> Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> 
-> > Add support for activity and inactivity events for all axis based on the
-> > threshold, duration and hysteresis value set from the userspace. INT1 pin
-> > is used to interrupt and event is pushed to userspace.
-> > 
-> > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
-> > ---
-> >  drivers/iio/accel/bma400.h      |  11 ++
-> >  drivers/iio/accel/bma400_core.c | 229 ++++++++++++++++++++++++++++++++
-> >  2 files changed, 240 insertions(+)
-> > 
-> > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> > index bc4641279be3..cbf8035c817e 100644
-> > --- a/drivers/iio/accel/bma400.h
-> > +++ b/drivers/iio/accel/bma400.h
-> > @@ -93,6 +93,17 @@
-> >  #define BMA400_ACC_ODR_MIN_WHOLE_HZ 25
-> >  #define BMA400_ACC_ODR_MIN_HZ       12
-> >  
-> > +/* Generic interrupts register */
-> > +#define BMA400_GEN1INT_CONFIG0      0x3f
-> > +#define BMA400_GEN2INT_CONFIG0      0x4A
-> > +#define BMA400_GEN_CONFIG1_OFF      0x01
-> > +#define BMA400_GEN_CONFIG2_OFF      0x02
-> > +#define BMA400_GEN_CONFIG3_OFF      0x03
-> > +#define BMA400_GEN_CONFIG31_OFF     0x04
-> > +#define BMA400_INT_GEN1_MSK         BIT(2)
-> > +#define BMA400_INT_GEN2_MSK         BIT(3)
-> > +#define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
-> > +
-> >  /*
-> >   * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
-> >   * converting to micro values for +-2g range.
-> > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-> > index b6c79cfabaa4..226a5f63d1a6 100644
-> > --- a/drivers/iio/accel/bma400_core.c
-> > +++ b/drivers/iio/accel/bma400_core.c
-> > @@ -79,6 +79,7 @@ struct bma400_data {
-> >  	int steps_enabled;
-> >  	bool step_event_en;
-> >  	bool activity_event_en;
-> > +	u8 generic_event_en;
-> >  	/* Correct time stamp alignment */
-> >  	struct {
-> >  		__le16 buff[3];
-> > @@ -188,6 +189,25 @@ static const struct iio_event_spec bma400_activity_event = {
-> >  	.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-> >  };
-> >  
-> > +static const struct iio_event_spec bma400_accel_event[] = {
-> > +	{
-> > +		.type = IIO_EV_TYPE_MAG,
-> > +		.dir = IIO_EV_DIR_FALLING,
-> > +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> > +				       BIT(IIO_EV_INFO_PERIOD) |
-> > +				       BIT(IIO_EV_INFO_HYSTERESIS) |
-> > +				       BIT(IIO_EV_INFO_ENABLE),
-> > +	},
-> > +	{
-> > +		.type = IIO_EV_TYPE_MAG,
-> > +		.dir = IIO_EV_DIR_RISING,
-> > +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> > +				       BIT(IIO_EV_INFO_PERIOD) |
-> > +				       BIT(IIO_EV_INFO_HYSTERESIS) |
-> > +				       BIT(IIO_EV_INFO_ENABLE),
-> > +	},
-> > +};
-> > +
-> >  #define BMA400_ACC_CHANNEL(_index, _axis) { \
-> >  	.type = IIO_ACCEL, \
-> >  	.modified = 1, \
-> > @@ -207,6 +227,8 @@ static const struct iio_event_spec bma400_activity_event = {
-> >  		.storagebits = 16,	\
-> >  		.endianness = IIO_LE,	\
-> >  	},				\
-> > +	.event_spec = bma400_accel_event,			\
-> > +	.num_event_specs = ARRAY_SIZE(bma400_accel_event)	\
-> >  }
-> >  
-> >  #define BMA400_ACTIVITY_CHANNEL(_chan2) {	\
-> > @@ -954,6 +976,17 @@ static int bma400_read_event_config(struct iio_dev *indio_dev,
-> >  	struct bma400_data *data = iio_priv(indio_dev);
-> >  
-> >  	switch (chan->type) {
-> > +	case IIO_ACCEL:
-> > +		switch (dir) {
-> > +		case IIO_EV_DIR_RISING:
-> > +			return FIELD_GET(BMA400_INT_GEN1_MSK,
-> > +					 data->generic_event_en);
-> > +		case IIO_EV_DIR_FALLING:
-> > +			return FIELD_GET(BMA400_INT_GEN2_MSK,
-> > +					 data->generic_event_en);
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> >  	case IIO_STEPS:
-> >  		return data->step_event_en;
-> >  	case IIO_ACTIVITY:
-> > @@ -970,8 +1003,74 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
-> >  {
-> >  	int ret;
-> >  	struct bma400_data *data = iio_priv(indio_dev);
-> > +	int reg, msk, value, field_value;
-> >  
-> >  	switch (chan->type) {
-> > +	case IIO_ACCEL:
-> > +		switch (dir) {
-> > +		case IIO_EV_DIR_RISING:
-> > +			reg = BMA400_GEN1INT_CONFIG0;
-> > +			msk = BMA400_INT_GEN1_MSK;
-> > +			value = 2;
-> > +			field_value = FIELD_PREP(BMA400_INT_GEN1_MSK, state);
-> 
-> Hopefully you can use msk in here and the compiler can tell it's constant...
-
-field_value = FIELD_PREP(msk, state); 
-is this the fix for error reported by kernel test robot?
-
-> 
-> > +			break;
-> > +		case IIO_EV_DIR_FALLING:
-> > +			reg = BMA400_GEN2INT_CONFIG0;
-> > +			msk = BMA400_INT_GEN2_MSK;
-> > +			value = 0;
-> > +			field_value = FIELD_PREP(BMA400_INT_GEN2_MSK, state);
-> > +			break;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +
-> > +		mutex_lock(&data->mutex);
-> > +		/* Enabling all axis for interrupt evaluation */
-> > +		ret = regmap_write(data->regmap, reg, 0xF8);
-> > +		if (ret) {
-> > +			mutex_unlock(&data->mutex);
-> > +			return ret;
-> > +		}
-> > +
-> > +		/* OR combination of all axis for interrupt evaluation */
-> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG1_OFF,
-> > +				   value);
-> > +		if (ret) {
-> > +			mutex_unlock(&data->mutex);
-> > +			return ret;
-> > +		}
-> > +
-> > +		/* Initial value to avoid interrupts while enabling*/
-> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
-> > +				   0x0A);
-> > +		if (ret) {
-> > +			mutex_unlock(&data->mutex);
-> > +			return ret;
-> > +		}
-> > +
-> > +		/* Initial duration value to avoid interrupts while enabling*/
-> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG31_OFF,
-> > +				   0x0F);
-> > +		if (ret) {
-> > +			mutex_unlock(&data->mutex);
-> > +			return ret;
-> > +		}
-> > +
-> > +		ret = regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG,
-> > +					 msk, field_value);
-> > +		if (ret) {
-> > +			mutex_unlock(&data->mutex);
-> > +			return ret;
-> > +		}
-> > +
-> > +		ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG,
-> > +					 msk, field_value);
-> > +		mutex_unlock(&data->mutex);
-> > +		if (ret)
-> > +			return ret;
-> 
-> This whole stack or mutex_unlock() error handling is a good hint that you should
-> just factor out this case as a separate function then you can use a goto to
-> deal with the unlock cleanly.
-
-Sure, I will fix the error handling in the proper way in the next patch.
-
-> 
-> > +
-> > +		set_mask_bits(&data->generic_event_en, msk, field_value);
-> > +		return 0;
-> >  	case IIO_STEPS:
-> >  		mutex_lock(&data->mutex);
-> >  		if (!data->steps_enabled) {
-> > @@ -1028,6 +1127,118 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
-> >  	}
-> >  }
-> >  
-> > +static int get_gen_config_reg(enum iio_event_direction dir)
+> > +int bno055_probe(struct device *dev, struct regmap *regmap,
+> > +              int xfer_burst_break_thr, bool sw_reset)
 > > +{
-> > +	switch (dir) {
-> > +	case IIO_EV_DIR_FALLING:
-> > +		return BMA400_GEN2INT_CONFIG0;
-> > +	case IIO_EV_DIR_RISING:
-> > +		return BMA400_GEN1INT_CONFIG0;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static int bma400_read_event_value(struct iio_dev *indio_dev,
-> > +				   const struct iio_chan_spec *chan,
-> > +				   enum iio_event_type type,
-> > +				   enum iio_event_direction dir,
-> > +				   enum iio_event_info info,
-> > +				   int *val, int *val2)
-> > +{
-> > +	struct bma400_data *data = iio_priv(indio_dev);
-> > +	int ret;
-> > +	u8 reg, duration[2];
-> > +
-> > +	reg = get_gen_config_reg(dir);
-> > +	if (reg < 0)
-> > +		return -EINVAL;
-> > +
-> > +	*val2 = 0;
-> > +	switch (info) {
-> > +	case IIO_EV_INFO_VALUE:
-> > +		mutex_lock(&data->mutex);
-> > +		ret = regmap_read(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
-> > +				  val);
-> > +		mutex_unlock(&data->mutex);
-> > +		if (ret)
-> > +			return ret;
-> > +		return IIO_VAL_INT;
-> > +	case IIO_EV_INFO_PERIOD:
-> > +		mutex_lock(&data->mutex);
-> > +		ret = regmap_bulk_read(data->regmap,
-> > +				       reg + BMA400_GEN_CONFIG3_OFF,
-> > +				       duration, sizeof(duration));
-> > +		mutex_unlock(&data->mutex);
-> > +		if (ret)
-> > +			return ret;
-> > +		*val = get_unaligned_be16(duration);
-> 
-> As well as dma safety question, you could just have used a __be16 for
-> duration then you can use be16_to_cpu() as you know it is aligned.
+> > +     const struct firmware *caldata;
+> See comment below. I think you need to set this to NULL here
 
-For dma safety, do I need to allocate memory by using local kmalloc() or
-I can use __be16 local variable for regmap_bulk_read()?
+Hum. I'm confused here: I think I did set it to NULL (is some later
+LOC) in V2, but you argued against it, because hopefully
+request_firmware() does it by itself.
+https://www.spinics.net/lists/linux-iio/msg64896.html
 
-> 
-> > +		return IIO_VAL_INT;
-> > +	case IIO_EV_INFO_HYSTERESIS:
-> > +		mutex_lock(&data->mutex);
-> > +		ret = regmap_read(data->regmap, reg, val);
-> > +		mutex_unlock(&data->mutex);
-> > +		if (ret)
-> > +			return ret;
-> > +		*val = FIELD_GET(BMA400_GEN_HYST_MSK, *val);
-> > +		return IIO_VAL_INT;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static int bma400_write_event_value(struct iio_dev *indio_dev,
-> > +				    const struct iio_chan_spec *chan,
-> > +				    enum iio_event_type type,
-> > +				    enum iio_event_direction dir,
-> > +				    enum iio_event_info info,
-> > +				    int val, int val2)
-> > +{
-> > +	struct bma400_data *data = iio_priv(indio_dev);
-> > +	int ret;
-> > +	u8 reg, duration[2];
-> > +
-> > +	reg = get_gen_config_reg(dir);
-> > +	if (reg < 0)
-> > +		return -EINVAL;
-> > +
-> > +	switch (info) {
-> > +	case IIO_EV_INFO_VALUE:
-> > +		if (val < 1 || val > 255)
-> > +			return -EINVAL;
-> > +
-> > +		mutex_lock(&data->mutex);
-> > +		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
-> > +				   val);
-> > +		mutex_unlock(&data->mutex);
-> > +		return ret;
-> > +	case IIO_EV_INFO_PERIOD:
-> > +		if (val < 1 || val > 65535)
-> > +			return -EINVAL;
-> > +
-> > +		put_unaligned_be16(val, duration);
-> > +
-> > +		mutex_lock(&data->mutex);
-> > +		ret = regmap_bulk_write(data->regmap,
-> > +					reg + BMA400_GEN_CONFIG3_OFF,
-> > +					duration, sizeof(duration));
-> 
-> I can't remember if we are safe or not with bulk_writes but at least
-> in theory we might not be and should be using a dma safe buffer.
+What has changed or what I've missed? Was your original point just to
+move the NULL assignment back at declaration time?
 
-Here also for regmap_bulk_write() can I allocate the memory locally by using
-kmalloc().
-
-> 
-> Also locking not necessary in various places in here.
-
-I will fix the locking in all the patches in the next series.
-
-> 
-> > +		mutex_unlock(&data->mutex);
-> > +		return ret;
-> > +	case IIO_EV_INFO_HYSTERESIS:
-> > +		if (val < 0 || val > 3)
-> > +			return -EINVAL;
+>
 > > +
-> > +		mutex_lock(&data->mutex);
-> > +		ret = regmap_update_bits(data->regmap, reg,
-> > +					 BMA400_GEN_HYST_MSK,
-> > +					 FIELD_PREP(BMA400_GEN_HYST_MSK, val));
-> > +		mutex_unlock(&data->mutex);
-> > +		return ret;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
+> > +     ret = regmap_read(priv->regmap, BNO055_CHIP_ID_REG, &val);
+> > +     if (ret)
+> > +             return ret;
 > > +
-> 
+> > +     if (val != BNO055_CHIP_ID_MAGIC) {
+>
+> We've run into this a few times recently.  Traditionally IIO has been very
+> restrictive on allowing drivers to probe if the Who Am I type values
+> don't match.  That causes problems for backwards compatibility in
+> device tree - e.g. (with made up compatible part number 055b :)
+> compatible = "bosch,bno055b", "bosch,bno055"
+>
+> The viewpoint of the dt maintainers is that we should assume the
+> dt is correct and at most warn about missmatched IDs before trying
+> to carry on.  So to avoid hitting that again please relax this to a
+> warning and cross your fingers after this point if it doesn't match.
+> I'm fine on the firmware question because we know we are dealing
+> with buggy firmware.  Ideally we'll get some working firmware
+> additions at somepoint then we can just label the bad firmwares
+> and assume one less bug in the ones that don't match :)
 
-Thank you,
-Jagath
+To be honest my point wasn't about the correctness of the DT at all..
+
+I've hit this several times when I was switching my test board from
+serial to i2c and vice-versa, because I made wrong connections or I
+forgot to switch FPGA image (which contains the serial IP here). I got
+my test script failing because the IIO device didn't pop up at all,
+which is better than getting e.g. random data. In the real world
+people may have less chance to have to worry about this, but they may
+when e.g. they have an RPi and a hand-wired IMU.
+
+.. IOW I'm seeing this as a hardware self-test rather than a SW
+check.. But if the DT thing makes this a no-go, then I can live with
+the warning, and e.g. by making my script to check the kernel log..

@@ -2,107 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 174A5506C07
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 14:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1035C507073
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Apr 2022 16:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242146AbiDSMQH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Apr 2022 08:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34882 "EHLO
+        id S1348987AbiDSO2f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Apr 2022 10:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352057AbiDSMP4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 08:15:56 -0400
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D59E920BEE;
-        Tue, 19 Apr 2022 05:12:51 -0700 (PDT)
-Received: by mail-oo1-f49.google.com with SMTP id y27-20020a4a9c1b000000b0032129651bb0so2998572ooj.2;
-        Tue, 19 Apr 2022 05:12:51 -0700 (PDT)
+        with ESMTP id S1353446AbiDSO2B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Apr 2022 10:28:01 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA374615B;
+        Tue, 19 Apr 2022 07:25:16 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id s17so5073913plg.9;
+        Tue, 19 Apr 2022 07:25:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=d5wz0mPibPZZTEoFjOQeeIvFKSEaATByfDSSqqkPSZc=;
+        b=qZ89eNbxg2HFY5/pSU8PkiJ47WYAC6qi0bgAeU3XRv/XtpPO4QiZiH2skn00r3zjDE
+         yg9HcAv5ME7n3G9EtBv7ovw8QPlaDvURhcY9OSf/z0R2WAGmmrFM5Pd+dC49gKQ3uqFA
+         L1vbfBnwG6bBo+uh9g9McooycDTMUkmrr4jCzm6+WxUt1cvM5K00eeBezeK462uxJExU
+         lhnDR2d583ujVey/+axSJ1fCyQ0qq3rJ/GWRdCx7Ebp7+oAab5j8DkR0pzBmATJ7kuEo
+         kkaTkLAI0fp5xA0pX4OWk5wFOnrIPh8GbwowTT1Xig1fHIOR5JyMvSptk8Vn28CA1XGn
+         xqxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=Oi2UyeV7FTiASy8kn59y+2VbputKPdQLR2c1Xa4PCvM=;
-        b=qE5pdal0NSwnzu+Eg9PTWPSmXX43O1jT27Lr5UNLyNLR+o4UWJhqQSu5NNoZOkOb0b
-         /A9SpouUuw2bvH0r2RYYIhpxXdAAqY4KL22kEzKwX0J5Bm+6TYW/ZYJjDD2gFcRIF4+n
-         nZpPRhKLSmlvvYVgVTVcfOR44zknIjVaQBgwrMrZeKUuoTl5TPgQisihFXvLJbkY62VF
-         5u3o3ZBBIywsA8ADzM+Yqgd+ZMWLHk7BPyE4Mq6xCwjSBfTL8DfRReu18XWLvVjIllq6
-         QF9rLomewLxeOuI77iKEu7EvKsQqsSFnCY7aTj0p/KPAqAe1MvyGSYzfJ8fMm/HdqqBk
-         9FyQ==
-X-Gm-Message-State: AOAM531qgiKKzM4goCSivMIKPiC6oJSBrYRuX7j257bqBC+oEphOxHGA
-        rkCQ/nm6V1hQVtsbMuo9jQ==
-X-Google-Smtp-Source: ABdhPJz03tF+Z0gbQlUo469ixMVFxZOJrb9wmBz9B2zJ2fy8b50/S3xhK9Nm11m18gcVWFfnChv6Jw==
-X-Received: by 2002:a05:6820:555:b0:324:b7c5:d7b2 with SMTP id n21-20020a056820055500b00324b7c5d7b2mr5230585ooj.1.1650370371052;
-        Tue, 19 Apr 2022 05:12:51 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id o133-20020acaf08b000000b002ef7562e07csm5027600oih.41.2022.04.19.05.12.50
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=d5wz0mPibPZZTEoFjOQeeIvFKSEaATByfDSSqqkPSZc=;
+        b=3zbD+gpJpoAs4ts5LyBjdPDDX7GlQ/w/Us12VzixPDgjrNMH2HEspv8bILrW8KeaG2
+         gKjvYKoc9ysSqRrBbGyTNR9wA+uqVmdnA225BxzM1QCI7GJ2ymDI14t9J6EANSPy8PNt
+         nw+nQgBkEYRwvqGRKWWJcvW/8sEcgb657UjyTwR29cNcf+0WlaX5vQQf3IINdKsBYYeT
+         Of7ChBKevP2i4LJv6vo8ZVRu+UBQsTP0C4CW3eXQWcV++dH4khTRcqGZupI1xh186jgu
+         x3/1NPDQXuYhbq9Sf27Yc5V5F6PqRGaQAfpeLtHspvbet4VYg8UwATVUaA+zBNK8i4d2
+         pKNg==
+X-Gm-Message-State: AOAM531AOi7ld18lvrFMXiVW7TvJ7OP1Ow91u8KFr7gJrfZQzS3WGhGf
+        2ETu1cxOAMgW5tt2bLDHBnh3oNgqfpQ=
+X-Google-Smtp-Source: ABdhPJyhuD7hHHUs7YtB/6bFzuIb7pegX+hR+fLQm6tWhmjLrhKAn7yUCjkk/pl2ZzmcO8pkk4HdAg==
+X-Received: by 2002:a17:903:2441:b0:159:208:755c with SMTP id l1-20020a170903244100b001590208755cmr9439064pls.160.1650378315569;
+        Tue, 19 Apr 2022 07:25:15 -0700 (PDT)
+Received: from tj10039pcu.spreadtrum.com ([117.18.48.102])
+        by smtp.gmail.com with ESMTPSA id e15-20020a63ae4f000000b003995a4ce0aasm16681939pgp.22.2022.04.19.07.25.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Apr 2022 05:12:50 -0700 (PDT)
-Received: (nullmailer pid 1977872 invoked by uid 1000);
-        Tue, 19 Apr 2022 12:12:43 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
+        Tue, 19 Apr 2022 07:25:15 -0700 (PDT)
+From:   Cixi Geng <gengcixi@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, orsonzhai@gmail.com,
+        baolin.wang7@gmail.com, zhang.lyra@gmail.com,
+        yuming.zhu1@unisoc.com
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-In-Reply-To: <20220419093506.135553-2-cosmin.tanislav@analog.com>
-References: <20220419093506.135553-1-cosmin.tanislav@analog.com> <20220419093506.135553-2-cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add AD4130
-Date:   Tue, 19 Apr 2022 07:12:43 -0500
-Message-Id: <1650370363.604220.1977871.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        linux-kernel@vger.kernel.org
+Subject: [PATCH V4 0/7] iio: adc: sc27xx: adjust structure and add PMIC's support
+Date:   Tue, 19 Apr 2022 22:24:51 +0800
+Message-Id: <20220419142458.884933-1-gengcixi@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 19 Apr 2022 12:35:05 +0300, Cosmin Tanislav wrote:
-> AD4130-8 is an ultra-low power, high precision, measurement solution for
-> low bandwidth battery operated applications.
-> 
-> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
-> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
-> selectable filter options, smart sequencer, sensor biasing and excitation
-> options, diagnostics, and a FIFO buffer.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  .../bindings/iio/adc/adi,ad4130.yaml          | 263 ++++++++++++++++++
->  1 file changed, 263 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
-> 
+From: Cixi Geng <cixi.geng1@unisoc.com>
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+this patchset add a sc27xx_adc_variant_data structure
+and add sc272*,sc273* and ump9620 PMIC support.
 
-yamllint warnings/errors:
+v2 changes:
+  fix dt_binding_check error
+  adjust some code-style issue
+  optimize the copy-paste functions
+  the smatch warnings found by lkp
+  and  ohter comments by v1 patches.
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/iio/adc/adi,ad4130.example.dts:35.30-31 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/iio/adc/adi,ad4130.example.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1401: dt_binding_check] Error 2
+v3 changes:
+  fix nvmem-cells Items value and add ump9620 dt sample
+  add the correct signature for each patch
+  fix the unused warning in 3/7, add explain for set the scales
+  remove duplicate code,add goto label in sc27xx_adc_read
+  pull out the refactor code into a single patch
+  delete the suspend and resume pm for ump9620
 
-doc reference errors (make refcheckdocs):
+v4 changes:
+  Add fix tag in the 2/7 patch.
+  Separate modification and refactoring 3/7(v3) to 2 pathes.
+  remove the pmic_type struct instead of a boot set_volref
+  to define the specific feathure.
+  use switch statement in all scale_init functions.
+  remove ump9620 pmic support in this patchset, submit separately
+  in the next patches.
 
-See https://patchwork.ozlabs.org/patch/
+Cixi Geng (7):
+  dt-bindings:iio:adc: add sprd,ump9620-adc dt-binding
+  iio: adc: sc27xx: fix read big scale voltage not right
+  iio: adc: Fine tune the scale calibration values
+  iio: adc: sc27xx: structure adjustment and optimization
+  iio: adc: refactor some functions for support more PMiCs
+  iio: adc: sc27xx: add support for PMIC sc2720 and sc2721
+  iio: adc: sc27xx: add support for PMIC sc2730
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+ .../bindings/iio/adc/sprd,sc2720-adc.yaml     |  59 ++-
+ drivers/iio/adc/sc27xx_adc.c                  | 473 ++++++++++++++++--
+ 2 files changed, 491 insertions(+), 41 deletions(-)
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+-- 
+2.25.1
 

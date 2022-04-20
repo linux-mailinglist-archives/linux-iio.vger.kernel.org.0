@@ -2,180 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79433508203
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 09:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F24C55082A8
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 09:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359710AbiDTH0h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Apr 2022 03:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
+        id S1355210AbiDTHxN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Apr 2022 03:53:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241305AbiDTH0a (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 03:26:30 -0400
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F5533B544;
-        Wed, 20 Apr 2022 00:22:20 -0700 (PDT)
-Received: by mail-vs1-xe33.google.com with SMTP id b128so731863vsc.13;
-        Wed, 20 Apr 2022 00:22:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=an8Y6T4fVZE54BITp3FmoMlxViK/7pDo+RKZKhqsE+Y=;
-        b=OkCMl/iijHw/NECX67njrTVj1iP1oKTqTBm7dAdANNVJjHD1uj6kF9+Oifdxx8raTI
-         22oj0Oxz/qdELe5FwfUF8qrTTwtrE2CI0sEbIhz66sjvNtuYnAp/FTbsgaEvpF2tGh34
-         7m90kgS3wPIHaLicCi79lVCmC7r0jDXpF/UgGoWTchTro+GcXeW31pjtvA0Btcw7whIZ
-         GD8Vp4inyFdmwjZk3Yth16sj34vD+Mv8PovgyxcERHE3GZHAqsy2mUojz9kxy6cBtYXB
-         QNEyh6KupbOi3wTf6A8mf3WeLXo4Q1q1Up5MT26hQoVc1L2nhsd2j9DCsfgYB+YVXKYY
-         Up4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=an8Y6T4fVZE54BITp3FmoMlxViK/7pDo+RKZKhqsE+Y=;
-        b=aAlZztRlXuSGr/T6ZBMyU+k2sOhENSg0I3GCNLBrQbCMWL15ABVI8fwgnxSO6oT531
-         GorX6afi+LDp5FcQ64H4dtt7G5iACnK4bHMsfRH9njAHR0k/x9D2nnSNOwN6zu82WjUF
-         9mCB8lRlNT3K/5oKSOVCdjGzuudQUxh93M8QcXRMdQ0E52/gJQuES/w1JMrSvpeLO5C0
-         6Qou3aQW5/vCN06db/b20kBuQOw4VqD1r+HrB/PRxtsl4p1dVaOeFbEIPCD/yC6jeypc
-         LicEtYI55RDpVEYpuIekWHmJK1vYpQ4IY04pb3xUDaOsVMhz05JrvEXp48MZohiKCFhV
-         8c1w==
-X-Gm-Message-State: AOAM531ljLxXjbT3nSfyVIet5jOU/a2NqonQrZB/S1o+Ty9YEj8gxHdl
-        S6LUmrme5D+Nnb4tcZdYxWDY24cVYNzTSleYyXA=
-X-Google-Smtp-Source: ABdhPJxdyv8gWP16mCgcl0q+o4/I/z8NVR+Nl82FcpaIpoaMjrk3l90ZPZrN5oo4rLffj8g/nQZhHacUxjBg71rI3k4=
-X-Received: by 2002:a67:fd65:0:b0:32a:27e9:7c09 with SMTP id
- h5-20020a67fd65000000b0032a27e97c09mr5760412vsa.55.1650439338801; Wed, 20 Apr
- 2022 00:22:18 -0700 (PDT)
+        with ESMTP id S1376452AbiDTHwo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 03:52:44 -0400
+X-Greylist: delayed 443 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 20 Apr 2022 00:49:59 PDT
+Received: from mail.fixingbiz.pl (mail.fixingbiz.pl [217.61.22.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3553A6562
+        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 00:49:58 -0700 (PDT)
+Received: by mail.fixingbiz.pl (Postfix, from userid 1001)
+        id 0E57CA255E; Wed, 20 Apr 2022 08:41:21 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fixingbiz.pl; s=mail;
+        t=1650440488; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
+        h=Date:From:To:Subject:From;
+        b=PQ6kMyBFf2Bys2HAnIkThKvExyOtdmeiUrU+n6NhP6sQtHzKxSN+BR0EWQ1OI6o3Z
+         ibrcCLIbDvtf7Kxg9aQPW7MX0zN+SU0oyLDPX0cBbowLgR1nkEdJ1c3WzTAjDw1wDf
+         S/pBZIrYTx+ApzdZB+cgr6/q5eF/2VIfMsgdk18a7hRsWu6uUNAmuruSVlQr5j8jp7
+         ZO5ULcpZLiE3x7Z89edl7dkocrmMNFk6N9/hkMGS5pJQ6ahoBExx6K0tRGommfuzEE
+         lEmtxBGomDkkMN7ufcRhx7ouQcFVFf+QQ7pUJxhywLAPhWWfgQ/55c+I4y5ceu7GmI
+         22rSlP5Ev8RZA==
+Received: by mail.fixingbiz.pl for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 07:40:53 GMT
+Message-ID: <20220420074501-0.1.1x.6t89.0.mk65r797nq@fixingbiz.pl>
+Date:   Wed, 20 Apr 2022 07:40:53 GMT
+From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
+        <przemyslaw.wroblewski@fixingbiz.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.fixingbiz.pl
 MIME-Version: 1.0
-References: <20220415130005.85879-1-andrea.merello@gmail.com>
- <20220415130005.85879-13-andrea.merello@gmail.com> <20220415174808.3b81baa4@jic23-huawei>
-In-Reply-To: <20220415174808.3b81baa4@jic23-huawei>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Wed, 20 Apr 2022 09:22:07 +0200
-Message-ID: <CAN8YU5Pfc6t=3_Yj7v5PF36Ut=1_Vr86Li60z=+SENKRyn+iTw@mail.gmail.com>
-Subject: Re: [v4 12/14] iio: imu: add BNO055 serdev driver
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@iit.it>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno ven 15 apr 2022 alle ore 18:40 Jonathan Cameron
-<jic23@kernel.org> ha scritto:
->
-> On Fri, 15 Apr 2022 15:00:03 +0200
-> Andrea Merello <andrea.merello@gmail.com> wrote:
->
-> > From: Andrea Merello <andrea.merello@iit.it>
-> >
-> > This path adds a serdev driver for communicating to a BNO055 IMU via
-> > serial bus, and it enables the BNO055 core driver to work in this
-> > scenario.
-> >
-> > Signed-off-by: Andrea Merello <andrea.merello@iit.it>
-> Hi Andrea
->
-> A few really trivial things in here from me.
+Dzie=C5=84 dobry,
 
-Few inline comments below; OK for all indeed.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-> > +struct bno055_ser_priv {
-> > +     struct serdev_device *serdev;
-> > +     struct completion cmd_complete;
-> > +     enum {
-> > +             CMD_NONE,
-> > +             CMD_READ,
-> > +             CMD_WRITE,
-> > +     } expect_response;
-> > +     int expected_data_len;
-> > +     u8 *response_buf;
-> > +
-> > +     /**
-> > +      * enum cmd_status - represent the status of a command sent to the HW.
-> > +      * @STATUS_CRIT: The command failed: the serial communication failed.
-> > +      * @STATUS_OK:   The command executed successfully.
-> > +      * @STATUS_FAIL: The command failed: HW responded with an error.
-> > +      */
-> > +     enum {
-> > +             STATUS_CRIT = -1,
-> > +             STATUS_OK = 0,
-> > +             STATUS_FAIL = 1,
-> > +     } cmd_status;
->
-> Locks need documentation to say what scope they cover. In this case
-> I think it is most but not quite all of this structure.
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-I admit my comments here are awkward: I've put a couple of comment
-that indicate what doesn't need the lock.. I'll change to do the
-reverse (comment on what need the lock)
-
-> See comment on completion below.
->
-> > +     struct mutex lock;
-> > +
-> > +     /* Only accessed in RX callback context. No lock needed. */
-> > +     struct {
-> > +             enum {
-> > +                     RX_IDLE,
-> > +                     RX_START,
-> > +                     RX_DATA,
-> > +             } state;
-> > +             int databuf_count;
-> > +             int expected_len;
-> > +             int type;
-> > +     } rx;
-> > +
-> > +     /* Never accessed in behalf of RX callback context. No lock needed */
-> > +     bool cmd_stale;
-> > +};
->
-[...]
-
-> > +             }
-> > +             break;
-> > +
-> > +     case CMD_WRITE:
-> > +             priv->cmd_status = status;
-> > +             break;
-> > +     }
-> > +
-> > +     priv->expect_response = CMD_NONE;
-> > +     complete(&priv->cmd_complete);
->
-> I argued with myself a bit on whether the complete() should be inside the lock
-> or not - but then concluded it doesn't really matter and moving it out is
-> probably premature optimisation... Maybe it's worth moving it out simply
-> so that it's clear the lock isn't needed to protect it, or am I missing something?
-
-It should make no real difference to move the complete() out of the lock.
-
-I think I put it inside the lock because of the (paranoid, and
-hopefully not really required - would mean we have been too strict
-with completion timeout) reinit_completion(). On serdev rx handler
-side (i.e. bno055_ser_handle_rx()) we clear expect_response and
-complete(), on the other side (bno055_ser_send_cmd()) we set
-expect_response and clear spurious completed state, before issuing the
-command and waiting for outcome. This looks symmetric, but those two
-shouldn't really race in practice.
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
 
 
-> > +     mutex_unlock(&priv->lock);
-> > +}
-> > +
-> > +/*
+Pozdrawiam,
+Przemys=C5=82aw Wr=C3=B3blewski

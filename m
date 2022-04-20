@@ -2,124 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A10C5086F2
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 13:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF476508824
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 14:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378072AbiDTL3T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Apr 2022 07:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35566 "EHLO
+        id S1345412AbiDTMcx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Apr 2022 08:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357405AbiDTL3R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 07:29:17 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA89362E5;
-        Wed, 20 Apr 2022 04:26:31 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: aferraris)
-        with ESMTPSA id EB2CD1F4375F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1650453990;
-        bh=xnwSIcU9NhkZbooNPSsKPj3qxRSEyE8mP14pNaznZBI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E1plTEtJN9kJX2jnaqG9mZqBIKfGYgL4u5Vvw7jN0ftB55Rm7tEhfpWRhkOw0jLcQ
-         TDbWuhoqNOnV4t+rnmgv+yIjvpzFCNtqyo7b2D+Ser0/FJWrssPVAkUhTVTWyIT0yq
-         hGkcIs7LZ0MNck7dC2PvV3lFVeAQBvA87MnLUTq8bJEpATUgci4o6xW18P7FbYLTlZ
-         CQqq1H5DvC39+L8poWpZlvf8z45RfruVBoqWjqJPc3+BS8S95OBmX+TEelNpnhqBNr
-         0bwfMIj0ThAKBmxgtWM75FRzTOeazKT/7DT2MIhYE2AfYa6Eaqlcj0dAHTPNuGdmRC
-         gTvG2H/6kGLUQ==
-From:   Arnaud Ferraris <arnaud.ferraris@collabora.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com
-Subject: [PATCH v2 2/2] iio: stk3310: Export near level property for proximity sensor
-Date:   Wed, 20 Apr 2022 13:25:40 +0200
-Message-Id: <20220420112540.91907-3-arnaud.ferraris@collabora.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220420112540.91907-1-arnaud.ferraris@collabora.com>
-References: <20220420112540.91907-1-arnaud.ferraris@collabora.com>
+        with ESMTP id S1378704AbiDTMck (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 08:32:40 -0400
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6938B86C
+        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 05:29:54 -0700 (PDT)
+Received: by mail-qv1-xf33.google.com with SMTP id a5so1195476qvx.1
+        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 05:29:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=7eYOyIpqFCPoAIaPtGlclzYDgiifTBbcT/vot2KnzLE=;
+        b=WRgHW+wkW9jz5ht/mukIfk2IXwl5J7RwYhSwjUIejuaj9HW1SQfZMmAL7H2AFM8shk
+         o1RPghyxe6tWqNhFcVxVEYdc2MoIvkfMeoZOsHr9PYlb6RB/ZkLj6o5QeEkW1q5d7mJy
+         taFA8MXt1Ii5Ol8Kw39ayLUFEOE0pb97Gqvpy23HfKkPuzsyUN3iyWA8A7R3BPzFrd4o
+         e0o5BEacTz0hKTAfJrJi6xD01CaemKu3jn0z6dqEnolbyFxKDJiSMvfpaoWZV+OljA7Z
+         UzDtE0HV1jROL/cLXQrZC1qiVoJB9zrfvbifMLbT4UjQoi+k62swfdsqi342m7w8M509
+         njLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=7eYOyIpqFCPoAIaPtGlclzYDgiifTBbcT/vot2KnzLE=;
+        b=14Lzlmn5sFoIQWHYDZ2Q+TFRzHsS1wYFXvPi9uJe+EXY2h8ktUmAN/P7SQ07Rhr0Go
+         FIURi6nM/NuXmRsabtMGGvuL9/CFGD0pBnhDejahmyzYcxbUPd7Zu35lfSjpoxr7T8uA
+         0OQZpb9nz4PvlfJE4gihaHW/K9g0ZAk3uRZy8oD7wjgRZXVOErjFvz2s7McnsJVfUlhA
+         2G0iapIJY4gDUJHrUInujZOL+VynSPMvuwE6rTwmKSj+dTCSwd2AHKai9eVo8PhSich8
+         jzuYkh7sStMDXaT4nJJGhnFWVzntg9Zo4hBRDY212BFFblp/9H/vZbFhuPHZOWG7BJ4k
+         ARkg==
+X-Gm-Message-State: AOAM530qCGiyZ3V7F6OKDw1AfWo7EmnczuLfwRTT9e5Nc4GBDkQlYplj
+        vH8WZS9zoeCA6Zgw+w8WqP8=
+X-Google-Smtp-Source: ABdhPJxKdzDNxKXdusXADxEz3BYcrd2cU7AOT0lwedgNB17BeXgEmWzQh2DJMslIObLqjVcOZzWGYw==
+X-Received: by 2002:a05:6214:27cb:b0:444:4223:9e1e with SMTP id ge11-20020a05621427cb00b0044442239e1emr14779179qvb.36.1650457793709;
+        Wed, 20 Apr 2022 05:29:53 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef02:a900:c14b:a9e1:ff7d:55a1? (p200300f6ef02a900c14ba9e1ff7d55a1.dip0.t-ipconnect.de. [2003:f6:ef02:a900:c14b:a9e1:ff7d:55a1])
+        by smtp.gmail.com with ESMTPSA id o14-20020a05622a138e00b002f335c3dbf2sm1689873qtk.37.2022.04.20.05.29.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Apr 2022 05:29:53 -0700 (PDT)
+Message-ID: <bcb20a4bc1b877506596341aebfea28b628694b2.camel@gmail.com>
+Subject: Re: IIO: Ensuring DMA safe buffers.
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linux-iio@vger.kernel.org
+Cc:     lars@metafoo.de, catalin.marinas@arm.com
+Date:   Wed, 20 Apr 2022 14:30:36 +0200
+In-Reply-To: <20220419121241.00002e42@Huawei.com>
+References: <20220419121241.00002e42@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.0 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This makes the value from which an object should be considered "near"
-available to userspace. This hardware-dependent value should be set
-in the device-tree.
+On Tue, 2022-04-19 at 12:12 +0100, Jonathan Cameron wrote:
+> Hi All,
+>=20
+> For a long time IIO has been making assumption that
+> ____cacheline_aligned
+> was sufficient to ensure buffers were in their own cacheline and
+> hence
+> DMA safe.=C2=A0 We generally needed this for all SPI device drivers as
+> many
+> SPI ABI calls can pass the buffer directly through to be used for
+> DMA.
+> Not that regmap doesn't currently do this but it might in future (and
+> did
+> in the past).=C2=A0 I can't remember the history of this well enough to
+> know
+> why we did it that way. I don't remember the pain of debugging random
+> corruption caused by getting it wrong however...
+>=20
+> However it turns out via
+> https://lore.kernel.org/all/20220405135758.774016-1-catalin.marinas@arm.c=
+om/
+> =C2=A0
+> "[PATCH 00/10] mm, arm64: Reduce ARCH_KMALLOC_MINALIGN below the
+> cache line size"
+> discussion that there are platforms where this isn't true and need
+> 128 byte alignment despite a ____cacheline_size aligning to 64 bytes
+> on
+> all ARM64 platforms.
+>=20
 
-Signed-off-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
----
-Changes in v2:
-  - drop zero-assignment as the variable won't be set if DT property is
-    missing
+Oh boy... Here it goes my 5 cents on this
 
- drivers/iio/light/stk3310.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+> (I should probably have known that as the platform I support in my
+> day
+> job has 128 byte cachelines in L3 - however it's DMA coherent so
+> that's not a problem).
+>=20
+> The above series also highlights that we can do much better anyway on
+> some platforms
+> using the new ARCH_DMA_MINALIGN (currently it's only defined for some
+> archs but
+> after that patch everyone gets it).=C2=A0 We should be safe to use that
+> everywhere
+> we currently force ___cachline_aligned and waste a little less space
+> on padding
+> which is always nice ;)
+>=20
 
-diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-index 1d02dfbc29d1..b578b46276cc 100644
---- a/drivers/iio/light/stk3310.c
-+++ b/drivers/iio/light/stk3310.c
-@@ -106,6 +106,7 @@ struct stk3310_data {
- 	struct mutex lock;
- 	bool als_enabled;
- 	bool ps_enabled;
-+	uint32_t ps_near_level;
- 	u64 timestamp;
- 	struct regmap *regmap;
- 	struct regmap_field *reg_state;
-@@ -135,6 +136,25 @@ static const struct iio_event_spec stk3310_events[] = {
- 	},
- };
- 
-+static ssize_t stk3310_read_near_level(struct iio_dev *indio_dev,
-+				       uintptr_t priv,
-+				       const struct iio_chan_spec *chan,
-+				       char *buf)
-+{
-+	struct stk3310_data *data = iio_priv(indio_dev);
-+
-+	return sprintf(buf, "%u\n", data->ps_near_level);
-+}
-+
-+static const struct iio_chan_spec_ext_info stk3310_ext_info[] = {
-+	{
-+		.name = "nearlevel",
-+		.shared = IIO_SEPARATE,
-+		.read = stk3310_read_near_level,
-+	},
-+	{ /* sentinel */ }
-+};
-+
- static const struct iio_chan_spec stk3310_channels[] = {
- 	{
- 		.type = IIO_LIGHT,
-@@ -151,6 +171,7 @@ static const struct iio_chan_spec stk3310_channels[] = {
- 			BIT(IIO_CHAN_INFO_INT_TIME),
- 		.event_spec = stk3310_events,
- 		.num_event_specs = ARRAY_SIZE(stk3310_events),
-+		.ext_info = stk3310_ext_info,
- 	}
- };
- 
-@@ -581,6 +602,10 @@ static int stk3310_probe(struct i2c_client *client,
- 	data = iio_priv(indio_dev);
- 	data->client = client;
- 	i2c_set_clientdata(client, indio_dev);
-+
-+	device_property_read_u32(&client->dev, "proximity-near-level",
-+				 &data->ps_near_level);
-+
- 	mutex_init(&data->lock);
- 
- 	ret = stk3310_regmap_init(data);
--- 
-2.35.1
+The above series actually made me go an try to have some more
+understanding on kmalloc. I might be completely wrong but AFAIU, for
+our typical case, this won't matter much. Typically we have something
+like:
+
+struct something {
+    //typically we do have more parameters
+    int val;
+    u8 buffer[8] ____cacheline_aligned;
+};
+
+I thing the idea is to replace this by the compile time annotation
+ARCH_DMA_MINALIGN which is 128 (for arm64). That means that
+kmalloc(sizeof(struct something)) will put us already in the kmalloc-
+256 cache (right?) and then we will just get 256 aligned objects as
+this is a power of 2. The point is that as we normally do the compile
+time annotation we should still have the padding bytes as given by
+sizeof().
+
+If I understood things correctly, the above series is way more
+beneficial for smaller kmalloc calls (without annotation) that won't
+need the 128 align constrain or for structures with zero length arrays
+(annotated with ARCH_DMA_MINALIGN) where kmalloc() calls end up in the
+kmalloc-192 cache.
+
+Does the above make any sense?
+
+That said, I think that we also need to be careful in
+iio_device_alloc(). Ideally, to save some space, we only align to a
+real cache line (padding between iio and private struct) and not
+ARCH_DMA_MINALIGN. Would it be enough?
+
+> Given we have no reports of a problem with 128 byte non DMA coherent
+> platforms
+> I don't propose to 'fix' this until we can make use of the new define
+> in the above patch set.=C2=A0 That is going to make a mess of backporting
+> the
+> fix however.=C2=A0 I'm wishing we did what crypto has done and had a
+> subsystem
+> specific define for this but such is life.=C2=A0 We will also want to be
+
+We do have IIO_ALIGN but as we just found out is wrongly defined and
+was never enforced. Maybe now is a good time for enforcing it :)
+>=20
+
+- Nuno S=C3=A1

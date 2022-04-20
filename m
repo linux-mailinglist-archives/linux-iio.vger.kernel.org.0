@@ -2,88 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2334350866C
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 12:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B2635086F3
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 13:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354095AbiDTK4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Apr 2022 06:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55730 "EHLO
+        id S1357796AbiDTL3R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Apr 2022 07:29:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344742AbiDTK4u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 06:56:50 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98694403F0;
-        Wed, 20 Apr 2022 03:54:04 -0700 (PDT)
-Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KjyB56Bxnz6F9Dq;
-        Wed, 20 Apr 2022 18:50:21 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 20 Apr 2022 12:54:02 +0200
-Received: from localhost (10.202.226.41) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 20 Apr
- 2022 11:54:01 +0100
-Date:   Wed, 20 Apr 2022 11:54:00 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Rokosov Dmitry Dmitrievich <DDRokosov@sberdevices.ru>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Message-ID: <20220420115400.00005c48@Huawei.com>
-In-Reply-To: <20220419154555.24191-3-ddrokosov@sberdevices.ru>
-References: <20220419154555.24191-1-ddrokosov@sberdevices.ru>
-        <20220419154555.24191-3-ddrokosov@sberdevices.ru>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S243801AbiDTL3R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 07:29:17 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550385F5E;
+        Wed, 20 Apr 2022 04:26:31 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: aferraris)
+        with ESMTPSA id EF9941F4375C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1650453989;
+        bh=rX1tVK7ElPPUIHgX3PTzATWhJeReOOFh/dlM7zKsaWc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Adw6DJNbRcKHqoz0H3Lu9eOX3fdVCGVjjHt3kQE0hRV0VjBG2JeTAsxe0cTPyfoN/
+         OXdvNv35FZIxave1Ur61fp7YzsWmaPfLxE+H4QwQjdlxzXZc/Bc+4Q5iw9RvimBW0q
+         ZvCaRQPDE8MDuaKlpZVqpsX8u9w8v+XpLzoJjMz5KT/+aRDrHMwQZCYXHOTZNng8Qb
+         9ULogIQpQzBI7vfGIcNrKtIeZwDmEmzJ2LwudB7ruPZziwzCnlqADvUe6Sfy1wvWW3
+         SFBzK6DEDQeGyxlG/8lJOZO3hoX3IvuRxDdQDKH5T2JCo/d46cwEC1eek7VzjCN6+w
+         sywogCirFVrKA==
+From:   Arnaud Ferraris <arnaud.ferraris@collabora.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com
+Subject: [PATCH v2 0/2] iio: stk3310: Export near level property for proximity sensor
+Date:   Wed, 20 Apr 2022 13:25:38 +0200
+Message-Id: <20220420112540.91907-1-arnaud.ferraris@collabora.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.41]
-X-ClientProxiedBy: lhreml717-chm.china.huawei.com (10.201.108.68) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 19 Apr 2022 15:45:55 +0000
-Rokosov Dmitry Dmitrievich <DDRokosov@sberdevices.ru> wrote:
+Userspace tools like iio-sensor-proxy need to be instructed the value from
+which they should consider an object is "near". This threshold can be
+exported through the sysfs ABI based on the "proximity-near-level"
+device-tree property.
 
-> MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
-> sensitivity consumer applications. It has dynamical user selectable full
-> scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
-> with output data rates from 1Hz to 1000Hz.
-> 
-> This driver supports following MSA311 features:
->     - IIO interface
->     - Different power modes: NORMAL, SUSPEND and LOW (using pm_runtime)
->     - ODR (Output Data Rate) selection
->     - Scale and samp_freq selection
->     - IIO triggered buffer, IIO reg access
->     - NEW_DATA interrupt + trigger
-> 
-> Below features to be done:
->     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
-> 
+This patchset implements this property for the stk3310 driver and adds the
+necessary bits to export its value to userspace. It is based on similar
+changes applied to the vcnl4000 and ltr501 drivers.
 
-Forgot to mention. Please add a Datasheet: tag to this patch as it's
-the one introducing the actual driver.
+Changes in v2:
+  - drop zero-assignment as the variable won't be modified if DT property
+    is missing
 
-> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Arnaud Ferraris (2):
+  dt-bindings: iio: light: stk33xx: Add proximity-near-level
+  iio: stk3310: Export near level property for proximity sensor
+
+ .../bindings/iio/light/stk33xx.yaml           |  6 +++++
+ drivers/iio/light/stk3310.c                   | 25 +++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+-- 
+2.35.1

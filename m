@@ -2,399 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92BB5091D6
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Apr 2022 23:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 902BD50936E
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Apr 2022 01:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382386AbiDTVO2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Apr 2022 17:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52750 "EHLO
+        id S1354433AbiDTXRK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 20 Apr 2022 19:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382429AbiDTVOZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 17:14:25 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5427748895;
-        Wed, 20 Apr 2022 14:11:29 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id h1so3080908pfv.12;
-        Wed, 20 Apr 2022 14:11:29 -0700 (PDT)
+        with ESMTP id S242326AbiDTXRI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 19:17:08 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4BB13DF9
+        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 16:14:21 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2ebf3746f87so34798137b3.6
+        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 16:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=KDtBCxBd42917rOqXMzoKh0kTGTy3MMplQzqh97uOrE=;
-        b=leVno3F6MPxz3zgD389/T6skxK3PYaLyvgJUy1oT1/Posuzcdj5K6P7LnrKB8WrVlr
-         FSF1gdIOeFqlHFXQDHU1QLI8km40OLkGoYJEbcUac/IGVSQSISX2yh5/tE5IxnEKhXvA
-         vInoy3zWdYc830thx/jpIJsa0UAzclRxOhSgbP0iMwyjAJZARMRdVvXpni/aDiasuZtW
-         QvwN1ka3xhQFaHXEv73EQY/5+8k0tWPvX5a/V4trd90Mm2Ofx+6LscPCWiCuSjiA8GT5
-         VqVuXkhymubn5/JFOoDDUdr3/7+0Rrj5TgiskoUv9LioMCrE1o9fro9CYRuc3n1AvAFe
-         Qqtw==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qYRM9qktnYDaa3m8ekDwBnefJ70L+h8+LPGzeuAwAW8=;
+        b=PM9Q4FWkCG9dzfZg0PVI2vzhj45QKMnRwiq7QmmlnRFeMdzS74TyWfUFCtQNmsOjht
+         goEjr7b0a+mmKNjqg763zJCKW1Y3Vsj/ETv6gGXXor9fpSi02aizIOzJx9GlgWKOHvyV
+         fyUA6ogjKBV6nag2EKCpPT/UcN+bty/fNl/rOTijVnNi9mCxZMpvVzlMvB04wVZsxBHf
+         E6dio4yncjQwEqpTU/Q/DkMVJdZZ8aoDXGbg1FE3RuFTHhHiQVbtNEx2uGwW09PjUL+r
+         +d22UOmWFDu0jXwXwxcVO5Z3FWzl6HugwZ8NGiALvehDK9z8zUHO9bOuFxx3Pa/g+Dxq
+         0vgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=KDtBCxBd42917rOqXMzoKh0kTGTy3MMplQzqh97uOrE=;
-        b=d+tbEogarwb8owRbRI8AMEacb2mFT2e136E+PmuyDMX0A5Y1GgckjmR8sAOJ9NCJ+a
-         7JQY7GP0MnLT9XebnfbL7KozGaTyHrIx3Zz04c9YzGyxc5fhmBuURnn6Z4nveIDv1/1X
-         Ct80OQQ3b22fH7A+xCa2GQslSWyD5LlXsN+97kTZvrWLLS9avL+94U3DjHXWBA074Iq3
-         Ink8rO6w9YyG3xdUscT5A15S3Fi45eUz9eDd3WgYW6KCudGn4wTHNziaUzEIsrdB9hHZ
-         pH7vVDFE9QuENy7u1E10lbBUiEKtTaWouQJP9AcCksSpNSAlbwJUkLxHP2hbCqtBZ7Ys
-         6LGQ==
-X-Gm-Message-State: AOAM5324s7d29XOEYJq2wwbsov5H5GaOhfg90dIxFUkoN0YwpzacTKj5
-        +qtip+9uMi3WqGyxNfUKTD4=
-X-Google-Smtp-Source: ABdhPJx/ZihlUfA4rHRIIlAi5Giz+e3/2dkMI55BqgXciW2x8svo92/tzsdDz+qCsaLYDn3AXOzAHA==
-X-Received: by 2002:a63:5007:0:b0:3aa:1670:e327 with SMTP id e7-20020a635007000000b003aa1670e327mr12742585pgb.124.1650489088522;
-        Wed, 20 Apr 2022 14:11:28 -0700 (PDT)
-Received: from localhost.localdomain ([27.7.104.83])
-        by smtp.gmail.com with ESMTPSA id v13-20020a17090a00cd00b001cd4989fee4sm106652pjd.48.2022.04.20.14.11.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Apr 2022 14:11:28 -0700 (PDT)
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-To:     dan@dlrobertson.com, jic23@kernel.org, andy.shevchenko@gmail.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 9/9] iio: accel: bma400: Add support for activity and inactivity events
-Date:   Thu, 21 Apr 2022 02:41:05 +0530
-Message-Id: <20220420211105.14654-10-jagathjog1996@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220420211105.14654-1-jagathjog1996@gmail.com>
-References: <20220420211105.14654-1-jagathjog1996@gmail.com>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qYRM9qktnYDaa3m8ekDwBnefJ70L+h8+LPGzeuAwAW8=;
+        b=ghxw+j1Vqc8i26RbS/B8QbcOEuvBWPyb+PnPet9TJUi37xISHVsBYRIyQTpuCOMQDq
+         lvtOjXOwsO2HsaEImlffT/KNQB12A8x1k7S6r7QARWd0kP/p8d0aUhk4aZjBhdo/MPND
+         1bjwvZWLN0dxcrar2G51kGOpvxwXGSspwnMncCmvmikKAxqFg3yNJk6LuPW3xAbxmHgp
+         az999KAD+C/UpvCg+TvZVx4/ELGhKuHVaziuDk+MFPME1mE9muTTn1LKTL90lRVlGBwX
+         HOlmKb4pzk2qb3DXNd9VUb4SdLJbHbyGEYED17Y9D9yIna0I+2cJ/WVAVduPTDr30u1E
+         aH0w==
+X-Gm-Message-State: AOAM533JwIHTxBM7d9njzmEKmyMf8PWtmFXb+sAW6Uy+mT7a5OyKUIlM
+        HoTFvwqBqAKWKTQ+vP8W1f8tPTzYH9ZvA2hOL5yZKcCdMN0=
+X-Google-Smtp-Source: ABdhPJzrOvt+32bvB/JOtbibZUy7E1gzG00WtbSE17MMsGjTOm8rogn79zYa9DvcpEodQdUtI64CWfpl2gi/QFxwYI4=
+X-Received: by 2002:a81:5dc5:0:b0:2eb:3feb:686c with SMTP id
+ r188-20020a815dc5000000b002eb3feb686cmr23848260ywb.268.1650496460802; Wed, 20
+ Apr 2022 16:14:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220409034849.3717231-1-zheyuma97@gmail.com> <20220410165425.6c2f60e7@jic23-huawei>
+In-Reply-To: <20220410165425.6c2f60e7@jic23-huawei>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 21 Apr 2022 01:14:09 +0200
+Message-ID: <CACRpkdaFgB55HHR8a3vyVbZphu5fpguutBYemyVvGz=tcn6j+A@mail.gmail.com>
+Subject: Re: [PATCH] iio: magnetometer: ak8974: Fix the error handling of ak8974_probe()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Zheyu Ma <zheyuma97@gmail.com>, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for activity and inactivity events for all axis based on the
-threshold, duration and hysteresis value set from the userspace. INT1 pin
-is used to interrupt and event is pushed to userspace.
+On Sun, Apr 10, 2022 at 5:46 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Sat,  9 Apr 2022 11:48:48 +0800
+> Zheyu Ma <zheyuma97@gmail.com> wrote:
+>
+> > When the driver fail at devm_regmap_init_i2c(), we will get the
+> > following splat:
+> >
+> > [  106.797388] WARNING: CPU: 4 PID: 413 at drivers/regulator/core.c:2257 _regulator_put+0x3ec/0x4e0
+> > [  106.802183] RIP: 0010:_regulator_put+0x3ec/0x4e0
+> > [  106.811237] Call Trace:
+> > [  106.811515]  <TASK>
+> > [  106.811695]  regulator_bulk_free+0x82/0xe0
+> > [  106.812032]  devres_release_group+0x319/0x3d0
+> > [  106.812425]  i2c_device_probe+0x766/0x940
+> >
+> > Fix this by disabling the regulators at the error path.
+> >
+> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+> + CC Linus W as it's his driver.
+>
+> Fix looks correct to me, though the handling of runtime pm in here is
+> probably more complex than it needs to be (and hence this odd error
+> handling for this one place in the probe).
 
-Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
----
- drivers/iio/accel/bma400.h      |  11 ++
- drivers/iio/accel/bma400_core.c | 217 ++++++++++++++++++++++++++++++++
- 2 files changed, 228 insertions(+)
+At the time I discussed how to do runtime pm with Ulf Hansson a lot
+and I think it was the state of the art at that time. It might have
+changed since.
 
-diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-index 0faa40fdbbf8..e8f802a82300 100644
---- a/drivers/iio/accel/bma400.h
-+++ b/drivers/iio/accel/bma400.h
-@@ -94,6 +94,17 @@
- #define BMA400_ACC_ODR_MIN_WHOLE_HZ 25
- #define BMA400_ACC_ODR_MIN_HZ       12
- 
-+/* Generic interrupts register */
-+#define BMA400_GEN1INT_CONFIG0      0x3f
-+#define BMA400_GEN2INT_CONFIG0      0x4A
-+#define BMA400_GEN_CONFIG1_OFF      0x01
-+#define BMA400_GEN_CONFIG2_OFF      0x02
-+#define BMA400_GEN_CONFIG3_OFF      0x03
-+#define BMA400_GEN_CONFIG31_OFF     0x04
-+#define BMA400_INT_GEN1_MSK         BIT(2)
-+#define BMA400_INT_GEN2_MSK         BIT(3)
-+#define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
-+
- /*
-  * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
-  * converting to micro values for +-2g range.
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index 5b1b28972ef9..792336b3b9ca 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -80,6 +80,7 @@ struct bma400_data {
- 	int steps_enabled;
- 	bool step_event_en;
- 	bool activity_event_en;
-+	unsigned int generic_event_en;
- 	/* Correct time stamp alignment */
- 	struct {
- 		__le16 buff[3];
-@@ -87,6 +88,7 @@ struct bma400_data {
- 		s64 ts __aligned(8);
- 	} buffer ____cacheline_aligned;
- 	__le16 status;
-+	__be16 duration;
- };
- 
- static bool bma400_is_writable_reg(struct device *dev, unsigned int reg)
-@@ -190,6 +192,25 @@ static const struct iio_event_spec bma400_activity_event = {
- 	.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
- };
- 
-+static const struct iio_event_spec bma400_accel_event[] = {
-+	{
-+		.type = IIO_EV_TYPE_MAG,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-+				       BIT(IIO_EV_INFO_PERIOD) |
-+				       BIT(IIO_EV_INFO_HYSTERESIS) |
-+				       BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_MAG,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-+				       BIT(IIO_EV_INFO_PERIOD) |
-+				       BIT(IIO_EV_INFO_HYSTERESIS) |
-+				       BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
- #define BMA400_ACC_CHANNEL(_index, _axis) { \
- 	.type = IIO_ACCEL, \
- 	.modified = 1, \
-@@ -209,6 +230,8 @@ static const struct iio_event_spec bma400_activity_event = {
- 		.storagebits = 16,	\
- 		.endianness = IIO_LE,	\
- 	},				\
-+	.event_spec = bma400_accel_event,			\
-+	.num_event_specs = ARRAY_SIZE(bma400_accel_event)	\
- }
- 
- #define BMA400_ACTIVITY_CHANNEL(_chan2) {	\
-@@ -972,6 +995,17 @@ static int bma400_read_event_config(struct iio_dev *indio_dev,
- 	struct bma400_data *data = iio_priv(indio_dev);
- 
- 	switch (chan->type) {
-+	case IIO_ACCEL:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			return FIELD_GET(BMA400_INT_GEN1_MSK,
-+					 data->generic_event_en);
-+		case IIO_EV_DIR_FALLING:
-+			return FIELD_GET(BMA400_INT_GEN2_MSK,
-+					 data->generic_event_en);
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_STEPS:
- 		return data->step_event_en;
- 	case IIO_ACTIVITY:
-@@ -999,6 +1033,63 @@ static int bma400_steps_event_enable(struct bma400_data *data, int state)
- 	return 0;
- }
- 
-+static int bma400_activity_event_en(struct bma400_data *data,
-+				    enum iio_event_direction dir,
-+				    int state)
-+{
-+	int ret, reg, msk, value, field_value;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		reg = BMA400_GEN1INT_CONFIG0;
-+		msk = BMA400_INT_GEN1_MSK;
-+		value = 2;
-+		field_value = FIELD_PREP(msk, state);
-+		break;
-+	case IIO_EV_DIR_FALLING:
-+		reg = BMA400_GEN2INT_CONFIG0;
-+		msk = BMA400_INT_GEN2_MSK;
-+		value = 0;
-+		field_value = FIELD_PREP(msk, state);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	/* Enabling all axis for interrupt evaluation */
-+	ret = regmap_write(data->regmap, reg, 0xF8);
-+	if (ret)
-+		return ret;
-+
-+	/* OR combination of all axis for interrupt evaluation */
-+	ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG1_OFF, value);
-+	if (ret)
-+		return ret;
-+
-+	/* Initial value to avoid interrupts while enabling*/
-+	ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF, 0x0A);
-+	if (ret)
-+		return ret;
-+
-+	/* Initial duration value to avoid interrupts while enabling*/
-+	ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG31_OFF, 0x0F);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG, msk,
-+				 field_value);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG, msk,
-+				 field_value);
-+	if (ret)
-+		return ret;
-+
-+	set_mask_bits(&data->generic_event_en, msk, field_value);
-+	return 0;
-+}
-+
- static int bma400_write_event_config(struct iio_dev *indio_dev,
- 				     const struct iio_chan_spec *chan,
- 				     enum iio_event_type type,
-@@ -1008,6 +1099,11 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
- 	int ret;
- 
- 	switch (chan->type) {
-+	case IIO_ACCEL:
-+		mutex_lock(&data->mutex);
-+		ret = bma400_activity_event_en(data, dir, state);
-+		mutex_unlock(&data->mutex);
-+		return ret;
- 	case IIO_STEPS:
- 		mutex_lock(&data->mutex);
- 		ret = bma400_steps_event_enable(data, state);
-@@ -1030,6 +1126,108 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int get_gen_config_reg(enum iio_event_direction dir)
-+{
-+	switch (dir) {
-+	case IIO_EV_DIR_FALLING:
-+		return BMA400_GEN2INT_CONFIG0;
-+	case IIO_EV_DIR_RISING:
-+		return BMA400_GEN1INT_CONFIG0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bma400_read_event_value(struct iio_dev *indio_dev,
-+				   const struct iio_chan_spec *chan,
-+				   enum iio_event_type type,
-+				   enum iio_event_direction dir,
-+				   enum iio_event_info info,
-+				   int *val, int *val2)
-+{
-+	struct bma400_data *data = iio_priv(indio_dev);
-+	int ret, reg;
-+
-+	reg = get_gen_config_reg(dir);
-+	if (reg < 0)
-+		return -EINVAL;
-+
-+	*val2 = 0;
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		ret = regmap_read(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
-+				  val);
-+		if (ret)
-+			return ret;
-+		return IIO_VAL_INT;
-+	case IIO_EV_INFO_PERIOD:
-+		mutex_lock(&data->mutex);
-+		ret = regmap_bulk_read(data->regmap,
-+				       reg + BMA400_GEN_CONFIG3_OFF,
-+				       &data->duration, sizeof(data->duration));
-+		if (ret) {
-+			mutex_unlock(&data->mutex);
-+			return ret;
-+		}
-+		*val = be16_to_cpu(data->duration);
-+		mutex_unlock(&data->mutex);
-+		return IIO_VAL_INT;
-+	case IIO_EV_INFO_HYSTERESIS:
-+		ret = regmap_read(data->regmap, reg, val);
-+		if (ret)
-+			return ret;
-+		*val = FIELD_GET(BMA400_GEN_HYST_MSK, *val);
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bma400_write_event_value(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir,
-+				    enum iio_event_info info,
-+				    int val, int val2)
-+{
-+	struct bma400_data *data = iio_priv(indio_dev);
-+	int reg, ret;
-+
-+	reg = get_gen_config_reg(dir);
-+	if (reg < 0)
-+		return -EINVAL;
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		if (val < 1 || val > 255)
-+			return -EINVAL;
-+
-+		return regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF,
-+				    val);
-+	case IIO_EV_INFO_PERIOD:
-+		if (val < 1 || val > 65535)
-+			return -EINVAL;
-+
-+		mutex_lock(&data->mutex);
-+		put_unaligned_be16(val, &data->duration);
-+		ret = regmap_bulk_write(data->regmap,
-+					reg + BMA400_GEN_CONFIG3_OFF,
-+					&data->duration,
-+					sizeof(data->duration));
-+		mutex_unlock(&data->mutex);
-+		return ret;
-+	case IIO_EV_INFO_HYSTERESIS:
-+		if (val < 0 || val > 3)
-+			return -EINVAL;
-+
-+		return regmap_update_bits(data->regmap, reg,
-+					  BMA400_GEN_HYST_MSK,
-+					  FIELD_PREP(BMA400_GEN_HYST_MSK, val));
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int bma400_debugfs_reg_access(struct iio_dev *indio_dev,
- 				     unsigned int reg,
- 				     unsigned int writeval,
-@@ -1074,6 +1272,8 @@ static const struct iio_info bma400_info = {
- 	.read_event_config = bma400_read_event_config,
- 	.write_event_config = bma400_write_event_config,
- 	.debugfs_reg_access = bma400_debugfs_reg_access,
-+	.write_event_value = bma400_write_event_value,
-+	.read_event_value = bma400_read_event_value,
- };
- 
- static const struct iio_trigger_ops bma400_trigger_ops = {
-@@ -1122,6 +1322,7 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
- 	s64 timestamp = iio_get_time_ns(indio_dev);
- 	int ret;
- 	unsigned int act;
-+	unsigned int ev_dir = IIO_EV_DIR_NONE;
- 
- 	/* Lock to protect the data->status */
- 	mutex_lock(&data->mutex);
-@@ -1131,6 +1332,22 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
- 	if (ret)
- 		goto unlock_err;
- 
-+	if (FIELD_GET(BMA400_INT_GEN1_MSK, le16_to_cpu(data->status)))
-+		ev_dir = IIO_EV_DIR_RISING;
-+
-+	if (FIELD_GET(BMA400_INT_GEN2_MSK, le16_to_cpu(data->status)))
-+		ev_dir = IIO_EV_DIR_FALLING;
-+
-+	if (ev_dir != IIO_EV_DIR_NONE) {
-+		iio_push_event(indio_dev,
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-+						  IIO_MOD_X_OR_Y_OR_Z,
-+						  IIO_EV_TYPE_MAG, ev_dir),
-+			       timestamp);
-+		mutex_unlock(&data->mutex);
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (FIELD_GET(BMA400_STEP_STAT_MASK, le16_to_cpu(data->status))) {
- 		iio_push_event(indio_dev,
- 			       IIO_EVENT_CODE(IIO_STEPS, 0, IIO_NO_MOD,
--- 
-2.17.1
+> > ---
+> >  drivers/iio/magnetometer/ak8974.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
+> > index e54feacfb980..84bbf7ccc887 100644
+> > --- a/drivers/iio/magnetometer/ak8974.c
+> > +++ b/drivers/iio/magnetometer/ak8974.c
+> > @@ -862,6 +862,7 @@ static int ak8974_probe(struct i2c_client *i2c,
+> >               dev_err(&i2c->dev, "failed to allocate register map\n");
+> >               pm_runtime_put_noidle(&i2c->dev);
+> >               pm_runtime_disable(&i2c->dev);
+> > +             regulator_bulk_disable(ARRAY_SIZE(ak8974->regs), ak8974->regs);
 
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij

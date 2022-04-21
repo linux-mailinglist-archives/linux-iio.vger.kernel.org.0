@@ -2,112 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902BD50936E
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Apr 2022 01:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF67B509859
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Apr 2022 09:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354433AbiDTXRK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 20 Apr 2022 19:17:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56256 "EHLO
+        id S1344123AbiDUGyO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Apr 2022 02:54:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242326AbiDTXRI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 20 Apr 2022 19:17:08 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4BB13DF9
-        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 16:14:21 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2ebf3746f87so34798137b3.6
-        for <linux-iio@vger.kernel.org>; Wed, 20 Apr 2022 16:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qYRM9qktnYDaa3m8ekDwBnefJ70L+h8+LPGzeuAwAW8=;
-        b=PM9Q4FWkCG9dzfZg0PVI2vzhj45QKMnRwiq7QmmlnRFeMdzS74TyWfUFCtQNmsOjht
-         goEjr7b0a+mmKNjqg763zJCKW1Y3Vsj/ETv6gGXXor9fpSi02aizIOzJx9GlgWKOHvyV
-         fyUA6ogjKBV6nag2EKCpPT/UcN+bty/fNl/rOTijVnNi9mCxZMpvVzlMvB04wVZsxBHf
-         E6dio4yncjQwEqpTU/Q/DkMVJdZZ8aoDXGbg1FE3RuFTHhHiQVbtNEx2uGwW09PjUL+r
-         +d22UOmWFDu0jXwXwxcVO5Z3FWzl6HugwZ8NGiALvehDK9z8zUHO9bOuFxx3Pa/g+Dxq
-         0vgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qYRM9qktnYDaa3m8ekDwBnefJ70L+h8+LPGzeuAwAW8=;
-        b=ghxw+j1Vqc8i26RbS/B8QbcOEuvBWPyb+PnPet9TJUi37xISHVsBYRIyQTpuCOMQDq
-         lvtOjXOwsO2HsaEImlffT/KNQB12A8x1k7S6r7QARWd0kP/p8d0aUhk4aZjBhdo/MPND
-         1bjwvZWLN0dxcrar2G51kGOpvxwXGSspwnMncCmvmikKAxqFg3yNJk6LuPW3xAbxmHgp
-         az999KAD+C/UpvCg+TvZVx4/ELGhKuHVaziuDk+MFPME1mE9muTTn1LKTL90lRVlGBwX
-         HOlmKb4pzk2qb3DXNd9VUb4SdLJbHbyGEYED17Y9D9yIna0I+2cJ/WVAVduPTDr30u1E
-         aH0w==
-X-Gm-Message-State: AOAM533JwIHTxBM7d9njzmEKmyMf8PWtmFXb+sAW6Uy+mT7a5OyKUIlM
-        HoTFvwqBqAKWKTQ+vP8W1f8tPTzYH9ZvA2hOL5yZKcCdMN0=
-X-Google-Smtp-Source: ABdhPJzrOvt+32bvB/JOtbibZUy7E1gzG00WtbSE17MMsGjTOm8rogn79zYa9DvcpEodQdUtI64CWfpl2gi/QFxwYI4=
-X-Received: by 2002:a81:5dc5:0:b0:2eb:3feb:686c with SMTP id
- r188-20020a815dc5000000b002eb3feb686cmr23848260ywb.268.1650496460802; Wed, 20
- Apr 2022 16:14:20 -0700 (PDT)
+        with ESMTP id S1385400AbiDUGwA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Apr 2022 02:52:00 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A1DE19C3B;
+        Wed, 20 Apr 2022 23:46:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1650523592; x=1682059592;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7178CiCoImQ+f/EA4vdj+Vck0criqevbU3FVIO5GGOw=;
+  b=QBxlQveBE1UHvx3pkn0Sj7FZyvBN7NC6hIB/aLO9bUXLQzZYqo6z2KyS
+   cIqCddWfjTpqrEXqO7E80uLPDs9eJ1ICQCzvUudNCdgtidWIUyC3m0YvR
+   uuoYYyL48oxb31fRlgWv0exU8MLzJnfo9JbsVZt29r32vJ2mADcEdh8l7
+   h4917yjChM3KTKIOlIRfG8he6g1I9jg5e4PZMA8xyFXBoyOshKrdTyRHm
+   wLWkP1JsWU8cRRwBzadtUGkhwwkqCMIYoeBp7I/OgZXnDBsWGjitWwt/d
+   0zeyZnElVZDANdDSwp15tvMeDdQIUpyMDFllseK4VDGB+dC2t8Ef2C6/l
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10323"; a="263109847"
+X-IronPort-AV: E=Sophos;i="5.90,278,1643702400"; 
+   d="scan'208";a="263109847"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2022 23:45:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,278,1643702400"; 
+   d="scan'208";a="530132418"
+Received: from lkp-server01.sh.intel.com (HELO 3abc53900bec) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 20 Apr 2022 23:45:52 -0700
+Received: from kbuild by 3abc53900bec with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nhQZb-00082l-RB;
+        Thu, 21 Apr 2022 06:45:51 +0000
+Date:   Thu, 21 Apr 2022 14:45:05 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>, dan@dlrobertson.com,
+        jic23@kernel.org, andy.shevchenko@gmail.com
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 9/9] iio: accel: bma400: Add support for activity and
+ inactivity events
+Message-ID: <202204211211.febbJ6fy-lkp@intel.com>
+References: <20220420211105.14654-10-jagathjog1996@gmail.com>
 MIME-Version: 1.0
-References: <20220409034849.3717231-1-zheyuma97@gmail.com> <20220410165425.6c2f60e7@jic23-huawei>
-In-Reply-To: <20220410165425.6c2f60e7@jic23-huawei>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 21 Apr 2022 01:14:09 +0200
-Message-ID: <CACRpkdaFgB55HHR8a3vyVbZphu5fpguutBYemyVvGz=tcn6j+A@mail.gmail.com>
-Subject: Re: [PATCH] iio: magnetometer: ak8974: Fix the error handling of ak8974_probe()
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Zheyu Ma <zheyuma97@gmail.com>, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220420211105.14654-10-jagathjog1996@gmail.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Apr 10, 2022 at 5:46 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Sat,  9 Apr 2022 11:48:48 +0800
-> Zheyu Ma <zheyuma97@gmail.com> wrote:
->
-> > When the driver fail at devm_regmap_init_i2c(), we will get the
-> > following splat:
-> >
-> > [  106.797388] WARNING: CPU: 4 PID: 413 at drivers/regulator/core.c:2257 _regulator_put+0x3ec/0x4e0
-> > [  106.802183] RIP: 0010:_regulator_put+0x3ec/0x4e0
-> > [  106.811237] Call Trace:
-> > [  106.811515]  <TASK>
-> > [  106.811695]  regulator_bulk_free+0x82/0xe0
-> > [  106.812032]  devres_release_group+0x319/0x3d0
-> > [  106.812425]  i2c_device_probe+0x766/0x940
-> >
-> > Fix this by disabling the regulators at the error path.
-> >
-> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-> + CC Linus W as it's his driver.
->
-> Fix looks correct to me, though the handling of runtime pm in here is
-> probably more complex than it needs to be (and hence this odd error
-> handling for this one place in the probe).
+Hi Jagath,
 
-At the time I discussed how to do runtime pm with Ulf Hansson a lot
-and I think it was the state of the art at that time. It might have
-changed since.
+Thank you for the patch! Perhaps something to improve:
 
-> > ---
-> >  drivers/iio/magnetometer/ak8974.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-> > index e54feacfb980..84bbf7ccc887 100644
-> > --- a/drivers/iio/magnetometer/ak8974.c
-> > +++ b/drivers/iio/magnetometer/ak8974.c
-> > @@ -862,6 +862,7 @@ static int ak8974_probe(struct i2c_client *i2c,
-> >               dev_err(&i2c->dev, "failed to allocate register map\n");
-> >               pm_runtime_put_noidle(&i2c->dev);
-> >               pm_runtime_disable(&i2c->dev);
-> > +             regulator_bulk_disable(ARRAY_SIZE(ak8974->regs), ak8974->regs);
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v5.18-rc3 next-20220420]
+[cannot apply to linux/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+url:    https://github.com/intel-lab-lkp/linux/commits/Jagath-Jog-J/iio-accel-bma400-Add-buffer-step-and-activity-inactivity/20220421-051244
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: mips-randconfig-r031-20220420 (https://download.01.org/0day-ci/archive/20220421/202204211211.febbJ6fy-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project bac6cd5bf85669e3376610cfc4c4f9ca015e7b9b)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install mips cross compiling tool for clang build
+        # apt-get install binutils-mips-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/b33d9910aa7588ec8db7c1694dbc03c3ed200ebb
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jagath-Jog-J/iio-accel-bma400-Add-buffer-step-and-activity-inactivity/20220421-051244
+        git checkout b33d9910aa7588ec8db7c1694dbc03c3ed200ebb
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash drivers/iio/accel/
 
-Yours,
-Linus Walleij
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/accel/bma400_core.c:1047:17: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((msk), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (msk)))' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
+                   field_value = FIELD_PREP(msk, state);
+                                 ^~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
+                   __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
+                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
+                   BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+   include/linux/build_bug.h:39:58: note: expanded from macro 'BUILD_BUG_ON_MSG'
+   #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                       ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+   include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
+           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
+           __compiletime_assert(condition, msg, prefix, suffix)
+           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
+                   if (!(condition))                                       \
+                         ^~~~~~~~~
+   drivers/iio/accel/bma400_core.c:1053:17: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((msk), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (msk)))' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
+                   field_value = FIELD_PREP(msk, state);
+                                 ^~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
+                   __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
+                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
+                   BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+   include/linux/build_bug.h:39:58: note: expanded from macro 'BUILD_BUG_ON_MSG'
+   #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                       ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+   include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
+           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+           ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
+           __compiletime_assert(condition, msg, prefix, suffix)
+           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
+                   if (!(condition))                                       \
+                         ^~~~~~~~~
+   2 warnings generated.
+
+
+vim +1047 drivers/iio/accel/bma400_core.c
+
+  1035	
+  1036	static int bma400_activity_event_en(struct bma400_data *data,
+  1037					    enum iio_event_direction dir,
+  1038					    int state)
+  1039	{
+  1040		int ret, reg, msk, value, field_value;
+  1041	
+  1042		switch (dir) {
+  1043		case IIO_EV_DIR_RISING:
+  1044			reg = BMA400_GEN1INT_CONFIG0;
+  1045			msk = BMA400_INT_GEN1_MSK;
+  1046			value = 2;
+> 1047			field_value = FIELD_PREP(msk, state);
+  1048			break;
+  1049		case IIO_EV_DIR_FALLING:
+  1050			reg = BMA400_GEN2INT_CONFIG0;
+  1051			msk = BMA400_INT_GEN2_MSK;
+  1052			value = 0;
+  1053			field_value = FIELD_PREP(msk, state);
+  1054			break;
+  1055		default:
+  1056			return -EINVAL;
+  1057		}
+  1058	
+  1059		/* Enabling all axis for interrupt evaluation */
+  1060		ret = regmap_write(data->regmap, reg, 0xF8);
+  1061		if (ret)
+  1062			return ret;
+  1063	
+  1064		/* OR combination of all axis for interrupt evaluation */
+  1065		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG1_OFF, value);
+  1066		if (ret)
+  1067			return ret;
+  1068	
+  1069		/* Initial value to avoid interrupts while enabling*/
+  1070		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF, 0x0A);
+  1071		if (ret)
+  1072			return ret;
+  1073	
+  1074		/* Initial duration value to avoid interrupts while enabling*/
+  1075		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG31_OFF, 0x0F);
+  1076		if (ret)
+  1077			return ret;
+  1078	
+  1079		ret = regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG, msk,
+  1080					 field_value);
+  1081		if (ret)
+  1082			return ret;
+  1083	
+  1084		ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG, msk,
+  1085					 field_value);
+  1086		if (ret)
+  1087			return ret;
+  1088	
+  1089		set_mask_bits(&data->generic_event_en, msk, field_value);
+  1090		return 0;
+  1091	}
+  1092	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

@@ -2,209 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D3C850B131
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Apr 2022 09:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E1050B3C6
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Apr 2022 11:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444602AbiDVHQG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Apr 2022 03:16:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38154 "EHLO
+        id S233475AbiDVJQv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Apr 2022 05:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382656AbiDVHQF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Apr 2022 03:16:05 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D3D650E34
-        for <linux-iio@vger.kernel.org>; Fri, 22 Apr 2022 00:13:12 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id x24so4935562qtq.11
-        for <linux-iio@vger.kernel.org>; Fri, 22 Apr 2022 00:13:12 -0700 (PDT)
+        with ESMTP id S1445871AbiDVJMG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Apr 2022 05:12:06 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D7C51E6E
+        for <linux-iio@vger.kernel.org>; Fri, 22 Apr 2022 02:09:13 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id t11so15064177eju.13
+        for <linux-iio@vger.kernel.org>; Fri, 22 Apr 2022 02:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=0fmhi7nPReMevSqI0LI0Lo+X5D/NpCa5X0e1vGX4pqE=;
-        b=SbXSdkYb33nbdK37XXnqacmP2NnWS6f+RYYAkNixdKEpNI4s7hTkBGzU04iVF7G0ie
-         wfwVhLBV7vsvGBudc3mTaVgXWskfH3KUrunK2/W8+9TepWlC6Z3wwulZOqQ4eKVd6zw8
-         rol7aL+GQXKRWwPpoDtx2vObMaZ1ruPv4R4FCGUyVAXVQ6XOOR1HXHh0BytSEW2LZT/W
-         IaGvOkTdAuMU6B3eeGYrfiGJA3YY7LeqjvesrXrmh9FRxv++Qj+C6xWytq34eoSziB/r
-         uARc9lCOXym7kdgB5jSsyh4zGNTyuRZYn8XiJMbdoTbLvwWBMIuB3v0kXbbOPwCYcThy
-         ipIQ==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=VlCaDBv0lI+bMbyzSUvp/QCQTyaZL5yq76P9L1bSzBQ=;
+        b=yfbh/IVH9TL8f6D91rmaiLtVr9a+9hMrhh0G0Ce08L9K7Ir1dXIUPQ51SjLXHOpw1o
+         ZKJSnXshJ1ypF5ZGGPvX816do88C79vYfxQMZg6DgJqELawooJjpeW2QK2uv+fdc5FCf
+         yCL0oCldP18VaJcrPVGoZr1F8EDKJNgGYoqLbcKM5iMose5+wIrRercEBRQM39vRLMky
+         aV2+I+HeSbmLhiTWdw/wQYu2BHqE0fA21yDnDw+fbfZJGebOxpOEKjYAFjOvy8ymgxma
+         7aWVrWOcPKUq9z6enLAO6rLWVz3/WVV/am3m8SBNn4wF++RtpxXXap4UdF8SsXF12NPB
+         JhnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=0fmhi7nPReMevSqI0LI0Lo+X5D/NpCa5X0e1vGX4pqE=;
-        b=eX5n+3E6Pg/Ozwc4CGqROVkTbzwrTkmCbIIJY0rnagL2koiZchAAmuJX+hFlaM/HBr
-         X/1+/JUxTwAxj9oFu0dMlFH3H436eW9ngsVf+TNlLH9m7sFjFeGLFdXUf0uSm22q6TmA
-         VYvL+iaEWSjo1lMXNQVn8umzcCiRtbSnW8amdZux8ti0cpIkeDPrc4lo1kaWH8ACo2aY
-         Nrv2gfkfMd7YUtUGI+qt02TXhs8YAxLWoGp24G4cS1wmpn5e4QgNIoHq3kW4BMQ7V6B+
-         skI6MeJroI2uGzQUYivIcHjpfL2uYWSuZH8nJRPLLgXcXHPsBdoRpxFe1U+9vBXxWzAG
-         A03g==
-X-Gm-Message-State: AOAM533ZvOnzg3lbfDO34qgZEVNy40KJ1qPiQA49mTaeOSvC5CPCKgdW
-        GgSoSWB/IUlGgUdkt+mSzso=
-X-Google-Smtp-Source: ABdhPJwKgACLl/U540BaLpZIqgu+qqpp1UuvGieD3/V3Oqso1P/I87DMbNleXyKK9+x4gnpbfgEafw==
-X-Received: by 2002:ac8:5f8d:0:b0:2f3:3f9a:d5bb with SMTP id j13-20020ac85f8d000000b002f33f9ad5bbmr2209517qta.314.1650611591354;
-        Fri, 22 Apr 2022 00:13:11 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef01:8200:22bd:4059:2626:d604? (p200300f6ef01820022bd40592626d604.dip0.t-ipconnect.de. [2003:f6:ef01:8200:22bd:4059:2626:d604])
-        by smtp.gmail.com with ESMTPSA id j1-20020ac85c41000000b002f24ed4fc04sm871933qtj.83.2022.04.22.00.13.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 00:13:10 -0700 (PDT)
-Message-ID: <9cac1481126c7af052d62905d0414d71c2a052b3.camel@gmail.com>
-Subject: Re: IIO: Ensuring DMA safe buffers.
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-iio@vger.kernel.org, lars@metafoo.de, catalin.marinas@arm.com
-Date:   Fri, 22 Apr 2022 09:13:54 +0200
-In-Reply-To: <09b77aaad1f02f07c471fbc25069449aefa4a3b4.camel@gmail.com>
-References: <20220419121241.00002e42@Huawei.com>
-         <bcb20a4bc1b877506596341aebfea28b628694b2.camel@gmail.com>
-         <20220421100528.00006326@Huawei.com>
-         <09b77aaad1f02f07c471fbc25069449aefa4a3b4.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.0 
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=VlCaDBv0lI+bMbyzSUvp/QCQTyaZL5yq76P9L1bSzBQ=;
+        b=vRs1FDQUjIFplIV+DFkoGst2yocG9ATTRMZeIC5/k6M+w0l0DIsmfNVtc8pZxz5A0G
+         /0hQixdYYgLg1SUPLmf1IoUFLQp6MzPCei7w9zuwgHA7nWJpmpeogUmOmxQa/2dhVLkj
+         2axy7egNs1woqyaAD+sGYLH1/xw+a0vjI51gqebpmqah7KoLV0S2pc76/WSh/1ofwKwS
+         devOnNKNpFTMjFYDHy1RdoLrj3KAe5Maa25Wh8kHrVKHkI8nm7OSp7OizGYGQrlckfDk
+         myFFHVMb/WZ2LZ/Fm7G1x+wy9l621WCcGlGMr8x9hrOvUwT4bmNIHytWnHfCg6sZbot5
+         9aRw==
+X-Gm-Message-State: AOAM531ARYtx34hwZI2HifD20mvFNOTaQFXqq2ZvuJoszwBhGulh5wPA
+        FsAYlCXPvaiZqStrbrsj9Uob3RpAzSqn6A==
+X-Google-Smtp-Source: ABdhPJyJ1gxk2RK2g2BtIkquk3vuHYv5yKKdtM9KZTp5q96PgxAHQPNrOLJ2bGTM3i+6i+rH4s/W7A==
+X-Received: by 2002:a17:906:9458:b0:6e8:86e5:5b8c with SMTP id z24-20020a170906945800b006e886e55b8cmr3230369ejx.325.1650618552021;
+        Fri, 22 Apr 2022 02:09:12 -0700 (PDT)
+Received: from [192.168.0.232] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id v22-20020a50a456000000b00422a4841c61sm660278edb.58.2022.04.22.02.09.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Apr 2022 02:09:11 -0700 (PDT)
+Message-ID: <601a1b5b-7189-cb9e-a945-6f2d49583633@linaro.org>
+Date:   Fri, 22 Apr 2022 11:09:10 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2 2/3] dt-bindings: Document ltrf216a light sensor
+ bindings
+Content-Language: en-US
+To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com
+References: <20220421140133.354498-1-shreeya.patel@collabora.com>
+ <20220421140133.354498-3-shreeya.patel@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220421140133.354498-3-shreeya.patel@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 2022-04-21 at 12:35 +0200, Nuno S=C3=A1 wrote:
-> On Thu, 2022-04-21 at 10:05 +0100, Jonathan Cameron wrote:
-> > On Wed, 20 Apr 2022 14:30:36 +0200
-> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> >=20
-> > > On Tue, 2022-04-19 at 12:12 +0100, Jonathan Cameron wrote:
-> > > > Hi All,
-> > > >=20
-> > > > For a long time IIO has been making assumption that
-> > > > ____cacheline_aligned
-> > > > was sufficient to ensure buffers were in their own cacheline
-> > > > and
-> > > > hence
-> > > > DMA safe.=C2=A0 We generally needed this for all SPI device drivers
-> > > > as
-> > > > many
-> > > > SPI ABI calls can pass the buffer directly through to be used
-> > > > for
-> > > > DMA.
-> > > > Not that regmap doesn't currently do this but it might in
-> > > > future
-> > > > (and
-> > > > did
-> > > > in the past).=C2=A0 I can't remember the history of this well enoug=
-h
-> > > > to
-> > > > know
-> > > > why we did it that way. I don't remember the pain of debugging
-> > > > random
-> > > > corruption caused by getting it wrong however...
-> > > >=20
-> > > > However it turns out via
-> > > > https://lore.kernel.org/all/20220405135758.774016-1-catalin.marinas=
-@arm.com/
-> > > > =C2=A0
-> > > > "[PATCH 00/10] mm, arm64: Reduce ARCH_KMALLOC_MINALIGN below
-> > > > the
-> > > > cache line size"
-> > > > discussion that there are platforms where this isn't true and
-> > > > need
-> > > > 128 byte alignment despite a ____cacheline_size aligning to 64
-> > > > bytes
-> > > > on
-> > > > all ARM64 platforms.
-> > > > =C2=A0=20
-> > >=20
-> > > Oh boy... Here it goes my 5 cents on this
-> >=20
-> > :)
-> >=20
-> > >=20
-> > > > (I should probably have known that as the platform I support in
-> > > > my
-> > > > day
-> > > > job has 128 byte cachelines in L3 - however it's DMA coherent
-> > > > so
-> > > > that's not a problem).
-> > > >=20
-> > > > The above series also highlights that we can do much better
-> > > > anyway on
-> > > > some platforms
-> > > > using the new ARCH_DMA_MINALIGN (currently it's only defined
-> > > > for
-> > > > some
-> > > > archs but
-> > > > after that patch everyone gets it).=C2=A0 We should be safe to use
-> > > > that
-> > > > everywhere
-> > > > we currently force ___cachline_aligned and waste a little less
-> > > > space
-> > > > on padding
-> > > > which is always nice ;)
-> > > > =C2=A0=20
-> > >=20
-> > > The above series actually made me go an try to have some more
-> > > understanding on kmalloc. I might be completely wrong but AFAIU,
-> > > for
-> > > our typical case, this won't matter much. Typically we have
-> > > something
-> > > like:
-> > >=20
-> > > struct something {
-> > > =C2=A0=C2=A0=C2=A0 //typically we do have more parameters
-> > > =C2=A0=C2=A0=C2=A0 int val;
-> > > =C2=A0=C2=A0=C2=A0 u8 buffer[8] ____cacheline_aligned;
-> > > };
-> > >=20
-> > > I thing the idea is to replace this by the compile time
-> > > annotation
-> > > ARCH_DMA_MINALIGN which is 128 (for arm64). That means that
-> > > kmalloc(sizeof(struct something)) will put us already in the
-> > > kmalloc-
-> > > 256 cache (right?) and then we will just get 256 aligned objects
-> > > as
-> > > this is a power of 2. The point is that as we normally do the
-> > > compile
-> > > time annotation we should still have the padding bytes as given
-> > > by
-> > > sizeof().
-> > >=20
-> > > If I understood things correctly, the above series is way more
-> > > beneficial for smaller kmalloc calls (without annotation) that
-> > > won't
-> > > need the 128 align constrain or for structures with zero length
-> > > arrays
-> > > (annotated with ARCH_DMA_MINALIGN) where kmalloc() calls end up
-> > > in
-> > > the
-> > > kmalloc-192 cache.
-> > >=20
-> > > Does the above make any sense?
-> > If we keep the padding between iio_dev and iio_priv at
-> > ARCH_DMA_MINALIGN
-> > then we should be fine because we get
-> >=20
->=20
-> Sure... I was just thinking in a way of saving some space. But
-> ARCH_DMA_MINALIGN is probably the safest way to go if we want to make
-> sure things are right. For the record I was not even thinking in
-> KMALLOC_MINALIGN but using something like cache_line_size() to get
-> the
-> __real__ size. Even though I think KMALLOC_MINALIGN would work even
-> though our cache line might be 128. That will be already the case for
+On 21/04/2022 16:01, Shreeya Patel wrote:
 
-Well, this is total nonsense from me... KMALLOC_MINALIGN will fail
-miserably if our cache line is bigger than it. For arm64 that would be
-on KMALLOC_MINALIGN=3D=3D64 and cache line=3D=3D128. That said, aligning
-iio_priv() to a cache line would be safe and we could save some space
-in case the line is < ARCH_DMA_MINALIGN (which typically is).
+Thank you for your patch. There is something to discuss/improve.
 
-Anyways, as Jonathan pointed out we typically just have one IIO object
-per driver so the hassle is probably not worth it.
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@53 {
+> +                compatible = "liteon,ltrf216a";
 
-- Nuno S=C3=A1
+You have here unusual indentation - looks like 8 spaces, while the rest
+of example is properly indented with 4 spaces. Please use 4 spaces for
+entire DTS example.
+
+All rest looks good, so with indentation fixes:
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+> +                reg = <0x53>;
+> +                vdd-supply = <&vdd_regulator>;
+> +                interrupt-parent = <&gpio0>;
+> +                interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
+> +        };
+> +    };
 
 
+Best regards,
+Krzysztof

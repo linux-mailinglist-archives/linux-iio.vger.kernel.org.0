@@ -2,99 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFEA950C375
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Apr 2022 01:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 445D550C98E
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Apr 2022 13:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232976AbiDVW2l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Apr 2022 18:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38746 "EHLO
+        id S235194AbiDWL1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Apr 2022 07:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234059AbiDVW2W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Apr 2022 18:28:22 -0400
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D851A5DFB;
-        Fri, 22 Apr 2022 14:22:32 -0700 (PDT)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-e5c42b6e31so9898082fac.12;
-        Fri, 22 Apr 2022 14:22:32 -0700 (PDT)
+        with ESMTP id S231814AbiDWL1E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Apr 2022 07:27:04 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FDA1CDEF6
+        for <linux-iio@vger.kernel.org>; Sat, 23 Apr 2022 04:24:08 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id a21so1111288edb.1
+        for <linux-iio@vger.kernel.org>; Sat, 23 Apr 2022 04:24:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=heQS+dVDN4frEP6+SfBzBy/7n2LAR927HAbPZjQGj7M=;
+        b=MfWiWls5g93yczv8pKIuH1nSQpXT+An1g1Jjy2cu4chEvZ+evhwj38xixM8gAPEnds
+         A4RbYm155hHZpz36972BG4sADLOS4lOdJFBw56/vhTLLDznrq/KcvZrazH/XsyEl5fZQ
+         mG7+LCJxti2y/ASHqoDLw3/yMiqmcRnMPujDq5iAD5jdnkQTfPz+6aKDRoGKdqAu1BJ7
+         +pwNPdfqPO9Dfp08If2Juyf7NfxTIBpaFxojcNiE3wz3Xu4r+KOjHJ/JHRu/+seO520O
+         HDTPDqYvuFFoyUFxGEGQNIDzS0bVOHswQdpLLP7x6ATZOyYXLRn2g42SgrVUYdcf3yMr
+         ua3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=0GD2I3shbaNSD6vzQaqySalLolH0HoMXjX9mtXC2rw4=;
-        b=sXr5RL4oeQnDemv7SUBJqZpeW8ycJ21NDj+WVr0AFBejSJWrcqlcIm/LMygCueLhek
-         2bP2SbwCE+sj8YuJTI6fOmbzgFfNSxpUkcATEvRewnC7lHNzBJ5wIMeN2mtzvjDF9jJl
-         juGv2IfNmYDIDG69B+r0Lwc5uSh2GbBV34LPuUcCQoyqO8NVKRB5llp4ClGxUlEsyMVA
-         PGj4FIS4mchsNnTgI/ACo0tqpDqskSNMsfs9Xeso5MsDXbLRpNjlVZEcxEuFtCMJPxux
-         EibMIbGshrzIfeH3LByyH81LbNYwuNQW6dUvkE1ZbBrbYeB9YNg9JON9dnTlPEVOVH0u
-         VRWw==
-X-Gm-Message-State: AOAM532SlAsaYb3sV7TqNNa5mcxuA3auofi02eWOf6CGCIqDOxgpSL7/
-        AVq9AOOlpot4uVZz1ansYq2Zo4ngHg==
-X-Google-Smtp-Source: ABdhPJyCWTYuNLp/3p34tuoYQ+xy+uv7oNPjk1V39wjfw8QoXlE0QZYEd64pt6rvSAhL5vt/xJJkTA==
-X-Received: by 2002:a05:6808:11c3:b0:2f9:62e0:ebe with SMTP id p3-20020a05680811c300b002f962e00ebemr3061171oiv.22.1650655251553;
-        Fri, 22 Apr 2022 12:20:51 -0700 (PDT)
-Received: from xps15.. (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.googlemail.com with ESMTPSA id q203-20020acad9d4000000b002f8ee3f69e2sm1086501oig.52.2022.04.22.12.20.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 12:20:51 -0700 (PDT)
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        bh=heQS+dVDN4frEP6+SfBzBy/7n2LAR927HAbPZjQGj7M=;
+        b=ygkJbuyk9yIVxUmxKLbCHmjujXRBVMUPSMLRPUUjWSxOAsyARwAIBuFqvBj8PYOZgr
+         7a/iFsWwTRD1Q/HQuN6Jkkgt+nNJZa0AYI8LpM0KXhHlyQdaj0k6goxIkwsiYzcCRbAC
+         QgoMslSZc/3EIvuC5/6+2WLfZBkLs9zeQlnC8IhIcFlnatqN6lnuBiVX6hzhZV66e4ww
+         /uG1Txt7R6u5bsXFIsM2jn2YKfOCeY7+SlI0n2SPUnWDyM9AM65BSUQpFQY4UkE/UGC+
+         FxJQVmyjOw3tN3A9xkfiODmz2VqtNfQKHpQsyGm25xq2sXPzBB3c9chdpdB/0mHuMuHM
+         uqgg==
+X-Gm-Message-State: AOAM531SxeJAWMLq8XgIStyBHKdB09tviQd+0HdWx6LvG0aNFS4Ppsg6
+        byVZa4nGJSedUjUOmfO4Pxme3Q==
+X-Google-Smtp-Source: ABdhPJzHXBavCT4NUJHxfqpxC8uchKX6t2PgRhUD0mpd+tE/7tS9xtxwSeUtkCJo9vLrt8TEnxdtbw==
+X-Received: by 2002:a05:6402:1541:b0:41c:bfb9:d56b with SMTP id p1-20020a056402154100b0041cbfb9d56bmr9585687edx.344.1650713046706;
+        Sat, 23 Apr 2022 04:24:06 -0700 (PDT)
+Received: from [192.168.0.234] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id kw3-20020a170907770300b006b2511ea97dsm1587342ejc.42.2022.04.23.04.24.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Apr 2022 04:24:06 -0700 (PDT)
+Message-ID: <1bdfdfff-0de7-6fa1-b308-31691168d4fd@linaro.org>
+Date:   Sat, 23 Apr 2022 13:24:05 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] dt-bindings: iio: Fix incorrect compatible strings in
+ examples
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Michael Hennerich <michael.hennerich@analog.com>,
         Slawomir Stepien <sst@poczta.fm>
 Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: iio: Fix incorrect compatible strings in examples
-Date:   Fri, 22 Apr 2022 14:20:39 -0500
-Message-Id: <20220422192039.2590548-1-robh@kernel.org>
-X-Mailer: git-send-email 2.32.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20220422192039.2590548-1-robh@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220422192039.2590548-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Fix a couple of examples using incorrect compatible strings.
+On 22/04/2022 21:20, Rob Herring wrote:
+> Fix a couple of examples using incorrect compatible strings.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml     | 2 +-
+>  .../bindings/iio/potentiometer/microchip,mcp4131.yaml           | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml     | 2 +-
- .../bindings/iio/potentiometer/microchip,mcp4131.yaml           | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-index edf804d0aca2..b1eb77335d05 100644
---- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
-@@ -68,7 +68,7 @@ examples:
-       #size-cells = <0>;
- 
-       dac@0 {
--        compatible = "lltc,ltc2632";
-+        compatible = "lltc,ltc2632-l12";
-         reg = <0>;    /* CS0 */
-         spi-max-frequency = <1000000>;
-         vref-supply = <&vref>;
-diff --git a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
-index 945a2d644ddc..32e92bced81f 100644
---- a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
-+++ b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
-@@ -95,7 +95,7 @@ examples:
-         #size-cells = <0>;
- 
-         potentiometer@0 {
--            compatible = "mcp4131-502";
-+            compatible = "microchip,mcp4131-502";
-             reg = <0>;
-             spi-max-frequency = <500000>;
-         };
--- 
-2.32.0
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+
+Best regards,
+Krzysztof

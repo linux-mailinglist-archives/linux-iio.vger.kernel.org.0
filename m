@@ -2,53 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E25FA50D304
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Apr 2022 18:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA87250D309
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Apr 2022 18:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbiDXQFu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Apr 2022 12:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50548 "EHLO
+        id S233181AbiDXQHI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Apr 2022 12:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231513AbiDXQFt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Apr 2022 12:05:49 -0400
+        with ESMTP id S231513AbiDXQHI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Apr 2022 12:07:08 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E10974DDE;
-        Sun, 24 Apr 2022 09:02:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 558547B127;
+        Sun, 24 Apr 2022 09:04:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E6527B80AB3;
-        Sun, 24 Apr 2022 16:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6274DC385A7;
-        Sun, 24 Apr 2022 16:02:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 11F0FB80DD4;
+        Sun, 24 Apr 2022 16:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44783C385A9;
+        Sun, 24 Apr 2022 16:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650816165;
-        bh=KJ2aAXuTqumrNW/oYiBr11RoCkH9tnnRFX9BovDO7hI=;
+        s=k20201202; t=1650816244;
+        bh=g8dkPhiULK/SVyEdnpRLy5JR9O4qchMC2KRkj1DVmx0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=szRyjFyga826MuYSzKYOjgCiHGZyMqkHoHIrJp3Uxr9x0w0I6TFs8Yq8QGultW3Zu
-         NDNAYq404u6/oRYTtD/bvoCapNfDIU9P/1d3gVgxxrRbJgH4dg/VH/62hUFtTuQSGx
-         eS/q7EeRrsO4xopJ4pJagwVYj52p+o5WHIMiKKAskxZGHUz9O4SJyRQq+n9GYUF1Xt
-         F2NNRMJqLshexf42WrGRUj9obQ65VtTAaOl2q4WF/lwj5PI4NOgnEB/Hy4axJxI9Dh
-         VsyCa0CcqrnscGc2Hp/SttP+yaFBxS5YPTwU90BEMxnVPTEEaPr1soBSv6GfT6eCpW
-         8trBdqPPc9Heg==
-Date:   Sun, 24 Apr 2022 17:10:52 +0100
+        b=OdmrwaqhoK/HFNPQYlIIJDmZbLgVG9fZJG28WGp3SXEV1c6F3+qBQ5enRuBAykzWl
+         x8fvbxJWOHCoM7QIeiUJPyDMI+W7GrN/1CYA5Xg030L5M0FZFhbvHCmwNnUQ5VZHjp
+         Ayr40WNb7fI0t/4Zx+VbFHPYHN0Dg7oLnc+Nx6Loe1Ui3/g9c1FZmuH/9vf7LnadXW
+         9OpZ+jq4hQ7oso3NQ6RjwoP75gRbG7hzZMlrC9a2+TstaCSsO+7Z/nvj7K89OAJ6Pp
+         uANpriusle4YSoHmomU8kudET++FHffsJCWBMgIKEzX8RaAPuW2FB0ztulaYSofCkO
+         kRZkhVSfBZckA==
+Date:   Sun, 24 Apr 2022 17:12:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Rob Herring <robh@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>
-Subject: Re: [PATCH] dt-bindings: iio: adc: Document Renesas RZ/V2L ADC
-Message-ID: <20220424171052.0872ed89@jic23-huawei>
-In-Reply-To: <164bbdf7-e74d-7f30-6657-6c80d2f91a97@linaro.org>
-References: <20220423131654.131390-1-biju.das.jz@bp.renesas.com>
-        <164bbdf7-e74d-7f30-6657-6c80d2f91a97@linaro.org>
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Slawomir Stepien <sst@poczta.fm>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: Fix incorrect compatible strings in
+ examples
+Message-ID: <20220424171212.6d247854@jic23-huawei>
+In-Reply-To: <20220422192039.2590548-1-robh@kernel.org>
+References: <20220422192039.2590548-1-robh@kernel.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,27 +57,49 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 23 Apr 2022 20:57:26 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Fri, 22 Apr 2022 14:20:39 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-> On 23/04/2022 15:16, Biju Das wrote:
-> > Document renesas RZ/V2L ADC bindings. RZ/V2L ADC is identical to RZ/G2L
-> > with same number of channels.
-> > 
-> > While at it remove RZ/G2LC SoC from binding documentation as it does not
-> > support ADC.  
+> Fix a couple of examples using incorrect compatible strings.
 > 
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Applied to the togreg branch of iio.git.
+or I can pick these up through IIO if preferred.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml     | 2 +-
+>  .../bindings/iio/potentiometer/microchip,mcp4131.yaml           | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> 
-> Best regards,
-> Krzysztof
+> diff --git a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
+> index edf804d0aca2..b1eb77335d05 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/lltc,ltc2632.yaml
+> @@ -68,7 +68,7 @@ examples:
+>        #size-cells = <0>;
+>  
+>        dac@0 {
+> -        compatible = "lltc,ltc2632";
+> +        compatible = "lltc,ltc2632-l12";
+>          reg = <0>;    /* CS0 */
+>          spi-max-frequency = <1000000>;
+>          vref-supply = <&vref>;
+> diff --git a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
+> index 945a2d644ddc..32e92bced81f 100644
+> --- a/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
+> +++ b/Documentation/devicetree/bindings/iio/potentiometer/microchip,mcp4131.yaml
+> @@ -95,7 +95,7 @@ examples:
+>          #size-cells = <0>;
+>  
+>          potentiometer@0 {
+> -            compatible = "mcp4131-502";
+> +            compatible = "microchip,mcp4131-502";
+>              reg = <0>;
+>              spi-max-frequency = <500000>;
+>          };
 

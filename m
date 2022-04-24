@@ -2,48 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0129250D327
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Apr 2022 18:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AC0D50D340
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Apr 2022 18:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbiDXQO5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Apr 2022 12:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57990 "EHLO
+        id S233773AbiDXQ1J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Apr 2022 12:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231447AbiDXQO4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Apr 2022 12:14:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07645AA5A;
-        Sun, 24 Apr 2022 09:11:55 -0700 (PDT)
+        with ESMTP id S232940AbiDXQ1I (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Apr 2022 12:27:08 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0B57DE1A;
+        Sun, 24 Apr 2022 09:24:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E1F26106C;
-        Sun, 24 Apr 2022 16:11:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75579C385A9;
-        Sun, 24 Apr 2022 16:11:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C7EC1B80E45;
+        Sun, 24 Apr 2022 16:24:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF52C385A7;
+        Sun, 24 Apr 2022 16:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650816714;
-        bh=YiYXYzRSpHzJ4KkdlWiqMrx9Vbpw7WloumtFplX+OSk=;
+        s=k20201202; t=1650817445;
+        bh=SKkt44/pdWWtJDnAFjZyfdHI94wAj09CMu8k9vIQhF0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KTa3ffL6TnJHyN9dYx7EuobbIftflmIdF9QCKHAT534B/sZ6fKuErA69hNA8BP2Rv
-         /FNS1d1g+FQqUagwKdWRbfNCOJ4oCsPV3WneMiWLhGnzvmDCYFAzIpEZ0F7aU6BwXp
-         Q/FCE1oBaLnofD4R5CPbyO7N8fLoFRQaJ0VTgKEdop00ULF0aNUJmnYjbdI/9Essv+
-         aXV2rGM0qfThuFjPUw8GSi5NdXPJJCB4yY3hpu3gvTL8PEw+Vw0x9zeunC9eP1934u
-         ddNKWfjYFC08/vrlezNJ4Ooy6O43MIAmXff+xo3spDnmexITL8GZNSnaqgQuyFJN54
-         +HjDccgLK9cpA==
-Date:   Sun, 24 Apr 2022 17:20:02 +0100
+        b=QXHqVXxuifbmtoq8vQmDLAQa4ePAIET9jxbcqo1EU2YpPJvwYwMdMQrg2BgFW22HT
+         ZACr5tMW64j+0WiLqb30/EDOA1mSBAul6pjTVCj0SIlDOlzHrEvi+i3vxAU3CfqBrY
+         zHiWOqOHbu/3GSFzXnAbgThfq8j+l1PYpz/1pXcO8PxdhD5vPq551IPF6pTIBGvI6z
+         zjSSk7ZhvWcVXEM5CdNmagp0J/2KdPB53n06yuN7dZ7FTDezV9IbWJTTZU71F2/j4e
+         ObZ2M6BAoy1oiBl0lK/fePOnVcYISZocdWyZGSHq5t+TBdJxNnBovLmFW+Czd11/2b
+         gXk+UPtVEVoSQ==
+Date:   Sun, 24 Apr 2022 17:32:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     kernel test robot <lkp@intel.com>
-Cc:     Jagath Jog J <jagathjog1996@gmail.com>, dan@dlrobertson.com,
-        andy.shevchenko@gmail.com, llvm@lists.linux.dev,
-        kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 9/9] iio: accel: bma400: Add support for activity and
- inactivity events
-Message-ID: <20220424172002.7dd48dfa@jic23-huawei>
-In-Reply-To: <202204211211.febbJ6fy-lkp@intel.com>
-References: <20220420211105.14654-10-jagathjog1996@gmail.com>
-        <202204211211.febbJ6fy-lkp@intel.com>
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krzk@kernel.org, krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com
+Subject: Re: [PATCH v2 3/3] iio: light: Add support for ltrf216a sensor
+Message-ID: <20220424173210.554c8247@jic23-huawei>
+In-Reply-To: <20220421140133.354498-4-shreeya.patel@collabora.com>
+References: <20220421140133.354498-1-shreeya.patel@collabora.com>
+        <20220421140133.354498-4-shreeya.patel@collabora.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,152 +57,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Apr 2022 14:45:05 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Thu, 21 Apr 2022 19:31:33 +0530
+Shreeya Patel <shreeya.patel@collabora.com> wrote:
 
-> Hi Jagath,
+> From: Zhigang Shi <Zhigang.Shi@liteon.com>
 > 
-> Thank you for the patch! Perhaps something to improve:
+> Add initial support for ltrf216a ambient light sensor.
 > 
-> [auto build test WARNING on jic23-iio/togreg]
-> [also build test WARNING on linus/master v5.18-rc3 next-20220420]
-> [cannot apply to linux/master]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Jagath-Jog-J/iio-accel-bma400-Add-buffer-step-and-activity-inactivity/20220421-051244
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> config: mips-randconfig-r031-20220420 (https://download.01.org/0day-ci/archive/20220421/202204211211.febbJ6fy-lkp@intel.com/config)
-> compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project bac6cd5bf85669e3376610cfc4c4f9ca015e7b9b)
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # install mips cross compiling tool for clang build
->         # apt-get install binutils-mips-linux-gnu
->         # https://github.com/intel-lab-lkp/linux/commit/b33d9910aa7588ec8db7c1694dbc03c3ed200ebb
->         git remote add linux-review https://github.com/intel-lab-lkp/linux
->         git fetch --no-tags linux-review Jagath-Jog-J/iio-accel-bma400-Add-buffer-step-and-activity-inactivity/20220421-051244
->         git checkout b33d9910aa7588ec8db7c1694dbc03c3ed200ebb
->         # save the config file
->         mkdir build_dir && cp config build_dir/.config
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash drivers/iio/accel/
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All warnings (new ones prefixed by >>):
-> 
-> >> drivers/iio/accel/bma400_core.c:1047:17: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((msk), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (msk)))' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]  
->                    field_value = FIELD_PREP(msk, state);
->                                  ^~~~~~~~~~~~~~~~~~~~~~
->    include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
->                    __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
->                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
->                    BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
->                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
->    include/linux/build_bug.h:39:58: note: expanded from macro 'BUILD_BUG_ON_MSG'
->    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
->                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
->    include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
->            _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->            ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
->            __compiletime_assert(condition, msg, prefix, suffix)
->            ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
->                    if (!(condition))                                       \
->                          ^~~~~~~~~
->    drivers/iio/accel/bma400_core.c:1053:17: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((msk), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (msk)))' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
->                    field_value = FIELD_PREP(msk, state);
->                                  ^~~~~~~~~~~~~~~~~~~~~~
->    include/linux/bitfield.h:114:3: note: expanded from macro 'FIELD_PREP'
->                    __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
->                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/bitfield.h:71:53: note: expanded from macro '__BF_FIELD_CHECK'
->                    BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
->                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
->    include/linux/build_bug.h:39:58: note: expanded from macro 'BUILD_BUG_ON_MSG'
->    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
->                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
->    include/linux/compiler_types.h:352:22: note: expanded from macro 'compiletime_assert'
->            _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->            ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/compiler_types.h:340:23: note: expanded from macro '_compiletime_assert'
->            __compiletime_assert(condition, msg, prefix, suffix)
->            ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    include/linux/compiler_types.h:332:9: note: expanded from macro '__compiletime_assert'
->                    if (!(condition))                                       \
->                          ^~~~~~~~~
->    2 warnings generated.
-> 
-> 
-> vim +1047 drivers/iio/accel/bma400_core.c
-> 
->   1035	
->   1036	static int bma400_activity_event_en(struct bma400_data *data,
->   1037					    enum iio_event_direction dir,
->   1038					    int state)
->   1039	{
->   1040		int ret, reg, msk, value, field_value;
->   1041	
->   1042		switch (dir) {
->   1043		case IIO_EV_DIR_RISING:
->   1044			reg = BMA400_GEN1INT_CONFIG0;
->   1045			msk = BMA400_INT_GEN1_MSK;
->   1046			value = 2;
-> > 1047			field_value = FIELD_PREP(msk, state);
+> Datasheet: gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTRF216A.pdf
+> Co-developed-by: Shreeya Patel <shreeya.patel@collabora.com>
+> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> Signed-off-by: Zhigang Shi <Zhigang.Shi@liteon.com>
 
-Ah.  Will need to clamp state to 0/1
+Hi Shreeya,
 
-				field_value = FIELD_PREP(msk, state ? 1 : 0);
-perhaps?
-  
->   1048			break;
->   1049		case IIO_EV_DIR_FALLING:
->   1050			reg = BMA400_GEN2INT_CONFIG0;
->   1051			msk = BMA400_INT_GEN2_MSK;
->   1052			value = 0;
->   1053			field_value = FIELD_PREP(msk, state);
->   1054			break;
->   1055		default:
->   1056			return -EINVAL;
->   1057		}
->   1058	
->   1059		/* Enabling all axis for interrupt evaluation */
->   1060		ret = regmap_write(data->regmap, reg, 0xF8);
->   1061		if (ret)
->   1062			return ret;
->   1063	
->   1064		/* OR combination of all axis for interrupt evaluation */
->   1065		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG1_OFF, value);
->   1066		if (ret)
->   1067			return ret;
->   1068	
->   1069		/* Initial value to avoid interrupts while enabling*/
->   1070		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF, 0x0A);
->   1071		if (ret)
->   1072			return ret;
->   1073	
->   1074		/* Initial duration value to avoid interrupts while enabling*/
->   1075		ret = regmap_write(data->regmap, reg + BMA400_GEN_CONFIG31_OFF, 0x0F);
->   1076		if (ret)
->   1077			return ret;
->   1078	
->   1079		ret = regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG, msk,
->   1080					 field_value);
->   1081		if (ret)
->   1082			return ret;
->   1083	
->   1084		ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG, msk,
->   1085					 field_value);
->   1086		if (ret)
->   1087			return ret;
->   1088	
->   1089		set_mask_bits(&data->generic_event_en, msk, field_value);
->   1090		return 0;
->   1091	}
->   1092	
+Looking pretty good.  Just a few minor things in here - I very nearly
+just made the changes whilst applying but the one about reusing the
+available array is slightly more complex than I like to do without
+bouncing it back to the author.
+
+Thanks,
+
+Jonathan
+
+> ---
+> 
+> Changes in v2
+>   - Add support for 25ms and 50ms integration time.
+>   - Rename some of the macros as per names given in datasheet
+>   - Add a comment for the mutex lock
+>   - Use read_avail callback instead of attributes and set the
+>     appropriate _available bit.
+>   - Use FIELD_PREP() at appropriate places.
+>   - Add a constant lookup table for integration time and reg val
+>   - Use BIT() macro for magic numbers.
+>   - Improve error handling at few places.
+>   - Use get_unaligned_le24() and div_u64()
+>   - Use probe_new() callback and devm functions
+>   - Return errors in probe using dev_err_probe()
+>   - Use DEFINE_SIMPLE_DEV_PM_OPS()
+>   - Correct the formula for lux to use 0.45 instead of 0.8
+> 
+> 
+>  drivers/iio/light/Kconfig    |  10 +
+>  drivers/iio/light/Makefile   |   1 +
+>  drivers/iio/light/ltrf216a.c | 349 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 360 insertions(+)
+>  create mode 100644 drivers/iio/light/ltrf216a.c
 > 
 
+> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+> new file mode 100644
+> index 000000000000..de6d2e2e7f08
+> --- /dev/null
+> +++ b/drivers/iio/light/ltrf216a.c
+> @@ -0,0 +1,349 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * LTRF216A Ambient Light Sensor
+> + *
+> + * Copyright (C) 2021 Lite-On Technology Corp (Singapore)
+> + * Author: Shi Zhigang <Zhigang.Shi@liteon.com>
+> + *
+> + * IIO driver for LTRF216A (7-bit I2C slave address 0x53).
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/init.h>
+> +#include <linux/i2c.h>
+> +#include <linux/mutex.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+
+I don't think you are using anything from iio/sysfs.h any more so please
+drop this header (unless I'm missing something!)
+
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/pm.h>
+> +#include <linux/delay.h>
+> +#include <asm/unaligned.h>
+> +
+Where no other reason to have a particular order for headers IIO preference is
+3 blocks of headers.  First set are the non IIO related ones in alphabetical order.
+Second block typically IIO specific ones.  Final block the asm includes
+
+So here best order is something like
+
+#include <linux/bitfield.h>
+#include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/i2c.h>
+#include <linux/module.h>
+#include <linux/mod_devicetable.h>
+#include <linux/mutex.h>
+#include <linux/pm.h>
+
+#include <linux/iio/iio.h>
+
+#include <asm/unaligned.h>
+
+
+> +#define LTRF216A_ALS_DATA_0		0x0D
+> +
+> +static const int int_time_mapping[] = { 400000, 200000, 100000, 50000, 25000 };
+
+You should use the array below for the same matching purpose as this one and
+avoid duplicating data.
+
+> +
+> +static const int ltrf216a_int_time_available[5][2] = {
+> +	{0, 400000},
+> +	{0, 200000},
+> +	{0, 100000},
+> +	{0, 50000},
+> +	{0, 25000},
+> +};
+> +
+> +static const int ltrf216a_int_time_reg[5][2] = {
+> +	{400, 0x03},
+> +	{200, 0x13},
+> +	{100, 0x22},
+> +	{50, 0x31},
+> +	{25, 0x40},
+> +};
+> +
+> +struct ltrf216a_data {
+> +	struct i2c_client *client;
+> +	u32 int_time;
+> +	u8 int_time_fac;
+> +	u8 als_gain_fac;
+> +	struct mutex mutex; /* Protect read and write operations */
+
+This could probably have been more descriptive. I think you are also
+ensuring that the cached state and the device state are kept in sync.
+
+> +};
+
+
+> +
+> +static int ltrf216a_get_lux(struct ltrf216a_data *data)
+> +{
+> +	int greendata, cleardata;
+> +	u64 lux, div;
+> +
+> +	greendata = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
+> +	cleardata = ltrf216a_read_data(data, LTRF216A_CLEAR_DATA_0);
+> +
+> +	if (greendata < 0 || cleardata < 0) {
+> +		return -EINVAL;
+
+As this is an error case and you correctly return directly there is
+no need to have else.  That will reduce indentation and
+allow last line to simply be
+
+return div_u64(lux, div);
+
+> +
+> +	} else {
+> +		lux = greendata * 45 * WIN_FAC * 100;
+> +		div = data->als_gain_fac * data->int_time_fac * 100;
+> +		lux = div_u64(lux, div);
+> +	}
+> +
+> +	return lux;
+> +}
+> +

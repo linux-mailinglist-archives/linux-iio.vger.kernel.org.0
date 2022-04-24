@@ -2,48 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 267F250D39C
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Apr 2022 18:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E2150D3A1
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Apr 2022 18:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232795AbiDXQwE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 24 Apr 2022 12:52:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        id S235292AbiDXQy7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Apr 2022 12:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbiDXQwE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Apr 2022 12:52:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B23EC13E3B;
-        Sun, 24 Apr 2022 09:49:03 -0700 (PDT)
+        with ESMTP id S229486AbiDXQy6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Apr 2022 12:54:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAC1326AC3;
+        Sun, 24 Apr 2022 09:51:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 433D9611B4;
-        Sun, 24 Apr 2022 16:49:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5FEC385A9;
-        Sun, 24 Apr 2022 16:49:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF02D611B0;
+        Sun, 24 Apr 2022 16:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8449C385A9;
+        Sun, 24 Apr 2022 16:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650818942;
-        bh=77Pl2K8NTUry4sZCW3/QnIlnyl6J6z/j1k9mYvZOCNA=;
+        s=k20201202; t=1650819116;
+        bh=uUHvuDaxzupiV8CC0mle1UJqoM5VjVDjqLLXQIQ5as4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kdsEauZAbdyOaUz5DthJxSnOJEmeWAVplJlacmyj7v9YOhXxwSJ3QNDBaZ/DZGTPn
-         iyVQZjm1gYG9Hvn602mhdq4OZ0OhiGn1TmvhAJM4D3Hu0bv4nfxSjxufJzWMoCNDTn
-         flAFp7ovZxhBqPmRwDO6tt4UidF9y+8T+oeD//grWD9TO28cL9yjgA+ceTV6KAz2Lw
-         CdzSt9Of5Wj3JDItjTyltDEodBdgV8clKz+B5WeE6yDMgAV4DV5TK064aY7Ldxug4o
-         ydao8O9k6Dt27TZs+t4NU3WY2rzbn046Wiv2rOuPAIvFS8i0wga8FmIwT+U39xN9SK
-         YvVQvYFTFMsAg==
-Date:   Sun, 24 Apr 2022 17:57:10 +0100
+        b=Fv600yzwpAsgJRpbJAoJvJRVOf9W770gho10mrJUhiFu/8aCuB8TxY5Mo6gPbFTKm
+         ETA6ejRgPeYEOSs5OWndpa4QI7Ixy2ObWp60mNAi+At+LrD5dyNeMJXreKgzu7UHOa
+         bovMdW4YIqq2e5D7jJimOEwXbdeBS1Rsib9aZlv4aboR/O8Cw6cfNT6bOR0QikktDe
+         8gwA3eNib1B2oZ0QNprPfNH7gAL4ja1q6fRh/Q6iLvClKdUZq/MTMQr3HKJBxrYA+i
+         Vr5yaYxbzoWcJ5lIqaeURZweokBEdxCrcCrRqd2xBI6+XtDTbGVrPnF+fRwQDGSoU7
+         6DScuEWJACXwA==
+Date:   Sun, 24 Apr 2022 18:00:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v2 0/2] iio: stk3310: Export near level property for
- proximity sensor
-Message-ID: <20220424175710.0453ab11@jic23-huawei>
-In-Reply-To: <20220420112540.91907-1-arnaud.ferraris@collabora.com>
-References: <20220420112540.91907-1-arnaud.ferraris@collabora.com>
+To:     Cixi Geng <gengcixi@gmail.com>
+Cc:     lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, orsonzhai@gmail.com,
+        baolin.wang7@gmail.com, zhang.lyra@gmail.com,
+        yuming.zhu1@unisoc.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V4 2/7] iio: adc: sc27xx: fix read big scale voltage not
+ right
+Message-ID: <20220424180002.2d5d893b@jic23-huawei>
+In-Reply-To: <20220419142458.884933-3-gengcixi@gmail.com>
+References: <20220419142458.884933-1-gengcixi@gmail.com>
+        <20220419142458.884933-3-gengcixi@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,35 +58,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 20 Apr 2022 13:25:38 +0200
-Arnaud Ferraris <arnaud.ferraris@collabora.com> wrote:
+On Tue, 19 Apr 2022 22:24:53 +0800
+Cixi Geng <gengcixi@gmail.com> wrote:
 
-> Userspace tools like iio-sensor-proxy need to be instructed the value from
-> which they should consider an object is "near". This threshold can be
-> exported through the sysfs ABI based on the "proximity-near-level"
-> device-tree property.
+> From: Cixi Geng <cixi.geng1@unisoc.com>
 > 
-> This patchset implements this property for the stk3310 driver and adds the
-> necessary bits to export its value to userspace. It is based on similar
-> changes applied to the vcnl4000 and ltr501 drivers.
-> 
-Series applied to the togreg branch of iio.git and pushed out as testing for
-0-day to work it's magic.
+> Fix wrong configuration value of SC27XX_ADC_SCALE_MASK and
+> SC27XX_ADC_SCALE_SHIFT by spec documetation.
+> Fixes: 5df362a6cf49c (iio: adc: Add Spreadtrum SC27XX PMICs ADC support)
+No blank line here.  Fixes tag is part of the main tag block and
+some of the automation people use doesn't cope with blank lines
+in that block.
+
+If nothing else comes up in reviewing the rest of the series I'll
+tidy that up whilst applying.
 
 Thanks,
 
 Jonathan
 
-> Changes in v2:
->   - drop zero-assignment as the variable won't be modified if DT property
->     is missing
 > 
-> Arnaud Ferraris (2):
->   dt-bindings: iio: light: stk33xx: Add proximity-near-level
->   iio: stk3310: Export near level property for proximity sensor
+> Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+> Reviewed-by: Baolin Wang <baolin.wang7@gmail.com>
+> ---
+>  drivers/iio/adc/sc27xx_adc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
->  .../bindings/iio/light/stk33xx.yaml           |  6 +++++
->  drivers/iio/light/stk3310.c                   | 25 +++++++++++++++++++
->  2 files changed, 31 insertions(+)
-> 
+> diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+> index 00098caf6d9e..aee076c8e2b1 100644
+> --- a/drivers/iio/adc/sc27xx_adc.c
+> +++ b/drivers/iio/adc/sc27xx_adc.c
+> @@ -36,8 +36,8 @@
+>  
+>  /* Bits and mask definition for SC27XX_ADC_CH_CFG register */
+>  #define SC27XX_ADC_CHN_ID_MASK		GENMASK(4, 0)
+> -#define SC27XX_ADC_SCALE_MASK		GENMASK(10, 8)
+> -#define SC27XX_ADC_SCALE_SHIFT		8
+> +#define SC27XX_ADC_SCALE_MASK		GENMASK(10, 9)
+> +#define SC27XX_ADC_SCALE_SHIFT		9
+>  
+>  /* Bits definitions for SC27XX_ADC_INT_EN registers */
+>  #define SC27XX_ADC_IRQ_EN		BIT(0)
 

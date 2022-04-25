@@ -2,108 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C389650E3FE
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Apr 2022 17:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8263650E589
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Apr 2022 18:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239685AbiDYPIm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Apr 2022 11:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42256 "EHLO
+        id S243359AbiDYQ0N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Apr 2022 12:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242739AbiDYPIi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Apr 2022 11:08:38 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56F52BEB
-        for <linux-iio@vger.kernel.org>; Mon, 25 Apr 2022 08:05:28 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id e2so15024330wrh.7
-        for <linux-iio@vger.kernel.org>; Mon, 25 Apr 2022 08:05:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=l2YPXMptIRVUDg0/5cE6mEeIv9YZ982lwE8GUgZtShw=;
-        b=ZeWu1rkuYLOg5sVsb50fCIPjGGOEg5uO5KPDY4Egj3YOZkD5DOITRuMO8uFqdeLzT0
-         LRsHywFhtAj7su3yDl5tjhqWdF+mvdzYhsxHPkLPeDLdqYKt6GWJZB8mCHu/p2rByKbw
-         dWlj3e8u0Y5ynpRsgvvprlLzI3aGt3Sn2PNcEtP2Es5DYfTZieiOZLlBbpqzaZieIZK9
-         INBdFaywoygSM2SU9Tv0L3EWzjhaE+ipRMg0q9TFj3R3oXWqdZsF19y+PPm1sJI35CkT
-         tVHhQwJwVG8Vt+dLsP6BoXUvra7akIh0+3/qysbJVfdABQzpBSjNwE40B1VY3dFs6YHL
-         BmBg==
+        with ESMTP id S243288AbiDYQ0L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Apr 2022 12:26:11 -0400
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006A878FE6;
+        Mon, 25 Apr 2022 09:23:07 -0700 (PDT)
+Received: by mail-oi1-f173.google.com with SMTP id 12so17627481oix.12;
+        Mon, 25 Apr 2022 09:23:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=l2YPXMptIRVUDg0/5cE6mEeIv9YZ982lwE8GUgZtShw=;
-        b=AgZ+14jYqE9sdFqCiaY2ajLBZQvMZtX4lM9u/g/meFY0XrhR7CsqfqzgvQUkHCCXB+
-         d60TJ4fioPvhMx2hQyj1yV8nGTFzprcL/w5uq56NQnmf35zBOLHkGVIkhoGewhUoL51n
-         zg2nhdqJ6Y5qXN1M3y8jPUqhC3tno2TV/xhpmqBcmmGvBWEBpj+npCL1GPko1/ARJVa+
-         hXl9iQfRkguj85U4d/+B/3geZ7UeHcDQzQcQBvV2AZNUFbZm+zZ8zv+sb0INb72U+KgN
-         hmeNtFHaIhF1WSEERK/gfqxFI6noaMEyiy5qTQuY1RxbbJytO1AzjV9tqz//n2ZwICMP
-         Dccg==
-X-Gm-Message-State: AOAM533SBb3TN8ZXTJyKk6A1HMC4uQA4whQ2P+q86vJERJQF9FqyOBDh
-        nV9i4YXvIjzKPzyT3ACBunyzkw==
-X-Google-Smtp-Source: ABdhPJyJTkoDnJsWXj9rt65qzeyKTSNVAWRtPBJ39yltMrk8tHL5ZBppGS5gsV1MsL1EFIhyFojyXg==
-X-Received: by 2002:adf:ec03:0:b0:20a:d0b5:a06f with SMTP id x3-20020adfec03000000b0020ad0b5a06fmr10045489wrn.669.1650899127504;
-        Mon, 25 Apr 2022 08:05:27 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id f10-20020a5d64ca000000b0020aa97b0383sm9244610wri.113.2022.04.25.08.05.26
+         :mime-version:content-disposition:in-reply-to;
+        bh=lDcl2sN0B3cO0WiThw5+H3UGuxXX8o6v8eDh0eQ4Ajs=;
+        b=vKaRgmxxmVAHv3+DyNz16k6rkKz7otfpDM7zQVHdF4L3ziqTFZ/Rrke43Mz5Mmjfmz
+         6hSxLy1Zq3S/9qBsspD/U62s0aQzD8qiY1zYTQAhPD6LaAHfMDi9OZwQgYrJ0hqVbrI3
+         f7y0GE5jVLU3gjMVGzylubvV/qU3XBJyDquv5HCW6bSB4p8bcIxfYwamu3afpNcuFprm
+         OeC0zwPzt0Bz938cU2Z7IN7MeXKnRCCnjqoNTHoyIq7ESLgC9mj68U8NMFdRmwwoiYSr
+         Gd5pNcVGc/t2I+hxnGNhkhYAn65ZnSv4f+YylcyLtbm7fFrjlY3sCOJglbnC8wvnWzo6
+         Ux3w==
+X-Gm-Message-State: AOAM5321vJy2ZVcRAQ05BTj+5SVaTxwuAMdnIXFzTkuBghlyyI4D1tpJ
+        FSwIVi7OTiCsjK6YK6R1GgT+dSZtFw==
+X-Google-Smtp-Source: ABdhPJwJd2i2Q5DYrFdQU9C1yznqID18RyIZswfIlgeuRnWOJhp70Mxhw7j3awEePV0b/SsVIw8ZRQ==
+X-Received: by 2002:a05:6808:1b1f:b0:322:fb7a:8dbf with SMTP id bx31-20020a0568081b1f00b00322fb7a8dbfmr8405493oib.79.1650903787320;
+        Mon, 25 Apr 2022 09:23:07 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id bn41-20020a056808232900b003222f6e2ae8sm3751142oib.29.2022.04.25.09.23.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Apr 2022 08:05:27 -0700 (PDT)
-Date:   Mon, 25 Apr 2022 16:05:25 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Mon, 25 Apr 2022 09:23:06 -0700 (PDT)
+Received: (nullmailer pid 4000741 invoked by uid 1000);
+        Mon, 25 Apr 2022 16:23:06 -0000
+Date:   Mon, 25 Apr 2022 11:23:06 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        john.stultz@linaro.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v13 3/9] mfd: qcom-spmi-pmic: read fab id on supported
- PMICs
-Message-ID: <Yma4tXvPQ+U89Whr@google.com>
-References: <20220323162820.110806-1-caleb@connolly.tech>
- <20220323162820.110806-4-caleb@connolly.tech>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: ti-dac5571: Add ti,dac121c081
+Message-ID: <YmbK6nxoUuJAGfRE@robh.at.kernel.org>
+References: <90204a08-0c88-6c21-1492-6a5330184096@axentia.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220323162820.110806-4-caleb@connolly.tech>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <90204a08-0c88-6c21-1492-6a5330184096@axentia.se>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 23 Mar 2022, Caleb Connolly wrote:
-
-> From: Caleb Connolly <caleb.connolly@linaro.org>
+On Mon, 25 Apr 2022 08:02:25 +0200, Peter Rosin wrote:
+> It works much the same as ti,dac7571, so it fits in the "family" even
+> if the name is a little bit different.
 > 
-> The PMI8998 and PM660 expose the fab_id, this is needed by drivers like
-> the RRADC to calibrate ADC values.
-> 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Peter Rosin <peda@axentia.se>
 > ---
->  drivers/mfd/qcom-spmi-pmic.c      | 7 +++++++
->  include/soc/qcom/qcom-spmi-pmic.h | 1 +
->  2 files changed, 8 insertions(+)
+>   Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml | 1 +
+>   1 file changed, 1 insertion(+)
+> 
 
-Please change the Subject line to match the style of the sub-system?
-
-Once changed:
-
-  Acked-by: Lee Jones <lee.jones@linaro.org>
-
--- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Acked-by: Rob Herring <robh@kernel.org>

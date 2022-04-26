@@ -2,61 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE76D50FB9E
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Apr 2022 12:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D63A50FBAA
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Apr 2022 13:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233595AbiDZLBz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Apr 2022 07:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57168 "EHLO
+        id S233696AbiDZLII (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Apr 2022 07:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232013AbiDZLBx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Apr 2022 07:01:53 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D22152486
-        for <linux-iio@vger.kernel.org>; Tue, 26 Apr 2022 03:58:46 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id e23so808110eda.11
-        for <linux-iio@vger.kernel.org>; Tue, 26 Apr 2022 03:58:46 -0700 (PDT)
+        with ESMTP id S1345232AbiDZLIC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Apr 2022 07:08:02 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CD092980C;
+        Tue, 26 Apr 2022 04:04:54 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id l7so35340755ejn.2;
+        Tue, 26 Apr 2022 04:04:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=wDy5lX1+WJcizyo1B7AEWgzEIzi/95F+8se/3UhQk7c=;
-        b=TcnU++zA4Z8EN/Hp+TSo4HmBVp7VNoRzTOLef+mffC/tB9a2ePlHMWC6gGtMQW4zQD
-         fpK3QW0MmOG+sgWnl0koxpO8O5uXF+lkMAo9ke/58u5nEgSrd6xiLt09Snh9wwjJdY80
-         FcAV99qAc71EP5LPuXrmzHXl8WlYzlXRGQVgcPcdIBQlLOT6bij0VAvW6OEhSypSk4lM
-         a9jdupHKiURfKXNo6MjBNtTmlzAnzC6rqCdLp0KlaQJxhEadRNB13HH7V5SJXJ/TW3un
-         olLtPfrHJXipe4rwgeMfyqEeggsxfpXYrto0WciQRRaYs2XsR+yPi0GV7X5m+oU/OjxH
-         dpUQ==
+        bh=RZT1i1bg4sYs5M4LmcWJhxOR8/OR3mrbkBYeZo06MTg=;
+        b=mzzEUb46e1zXmJuTI8fy2KPLX12vNzdZRGW+EPQWiHk2x9wj+Nu0SN7lH/MTChb+v+
+         1W9MfBDGDeEYTc7VdPss6pliYhIiG9lyNbaCbSBYRywq2rWVUaTCmQE5I7gfLn5PtP/F
+         5LOaeCcBm66OZYzNmtNezW7Rk3zbEClrGOi0tfajM2hQ0yIGTwFOEyIrVrT9pxabBi7n
+         7PkslwxYPJZY6iYNGpcOtB0ahZWN26CEQpfAK85L1m8rH38OSnQgiDd0a0ECSXLbll6M
+         ZsFFjt+zRvPaC/H8TX7AytPUoLNiW8Kw+MClGkWIai0snpdf+8FxtLd7/pbwmMKFaW6R
+         ZYnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=wDy5lX1+WJcizyo1B7AEWgzEIzi/95F+8se/3UhQk7c=;
-        b=vg5i7GMErMiVD7wezPmI2KUqPoAiP6FFD9/Y8dxjhkLTfWHNcpoB+EoYDHCpu0+K0B
-         M5+6qwyDSb9C1kznh+zOvwT0zVFifC63QcklVGUw58HRQyVMu7HtkEdA3ILwsn/b3AdE
-         M4iPpjMWO3cWwAPxeQ3SwYQ055F3ethNWrnIEJNIxP766LK5JSV0EhXQTzvNd0DeA1uD
-         6/RPP3v6YaulNrLoedOYb8P4z3DWkUy1JBKqTjVZnftnrtGiYSvbll4vykeaZISQhN8Q
-         bycLKK9zBx9fIgxUKVYCqM53KP3Of2kniXPsWbXgJE+qP27/yaE7DEkDY48ozwQVjxuV
-         Kpew==
-X-Gm-Message-State: AOAM531KK3RGhqdiHN9fay4K+IE/+CXjquCbX+yNUOSlKTmNW/qW9olH
-        +fYt3ZLIXh19eAi6BjHQarFlGVN5hc55Yi3PV6EahIybcLMdqkmv
-X-Google-Smtp-Source: ABdhPJyUSxPGu4IBm5irG+CxUgYvibzcKnV781wzqAVYmIx5b/renSkSWUS/2VCWMMZsBAXQxlMXEzCkc0AEKElxyZU=
-X-Received: by 2002:a05:6402:54:b0:419:9b58:e305 with SMTP id
- f20-20020a056402005400b004199b58e305mr23658242edu.158.1650970725110; Tue, 26
- Apr 2022 03:58:45 -0700 (PDT)
+        bh=RZT1i1bg4sYs5M4LmcWJhxOR8/OR3mrbkBYeZo06MTg=;
+        b=Et68Pp2/Y5vLl6rvuufZrBsHzpGWZXcWh8Ms2eLvEjDC4z2yaNZxp3A4tYo9xFozsL
+         XWQlSu/Vb8pBOdsZqqZKqX3d4DLLufSKsnZLG92e3bpIYvJoH5q/CWOmWL6wKxnc5x2a
+         SwcimoKaY/pLl0CobuIy7yngmhFj3Trof5xhfhtzrzHPfB/0ym+oLppdW74u1Lb1Qq5M
+         5vBWozyVcTZIbVmMmi+Mdifes1/i+fpOR0Q5xL3U53QYB7YlkVZNHvvSzp+cLc+/Gwv7
+         g8jCuGtuAWocAwTVnF1Ur/GEU6WllrXtWFpC+bNrdMRvyJYiIQ07GddvRdIcbb/IECBO
+         m/jA==
+X-Gm-Message-State: AOAM533crocNdmTQRqXIR+kxb2kcJ+qh9Gr8N5OvFPX+dHRCpgGOjjDT
+        R8Lobb2DYDjGqbnCmjz7/364XC+7BzDo30v5CeFiLOpd+VTfiQCq
+X-Google-Smtp-Source: ABdhPJzo45LUaVfiVFoRAHmaqYkamE7qKUHdPDkdVJV+cBrONGgMcVeP1eEAcp3NQkbThRv6h24xxpgkhEQomo+l0Io=
+X-Received: by 2002:a17:906:3ce9:b0:6ef:a8aa:ab46 with SMTP id
+ d9-20020a1709063ce900b006efa8aaab46mr20316412ejh.579.1650971092856; Tue, 26
+ Apr 2022 04:04:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220418192907.763933-1-jic23@kernel.org> <20220418192907.763933-4-jic23@kernel.org>
-In-Reply-To: <20220418192907.763933-4-jic23@kernel.org>
+References: <20220420211105.14654-1-jagathjog1996@gmail.com>
+In-Reply-To: <20220420211105.14654-1-jagathjog1996@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 26 Apr 2022 12:58:05 +0200
-Message-ID: <CAHp75VctPO5JUWsXGoOVOQ4YE0Y3TdmvCMsdKv0bDUJwOOgxsg@mail.gmail.com>
-Subject: Re: [PATCH 03/17] staging: iio: cdc: ad7746: Use explicit be24 handling.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Date:   Tue, 26 Apr 2022 13:04:16 +0200
+Message-ID: <CAHp75VdyPekY7t8Y4-nyVXNt7wFZKB+yL2i6MNe1WLez178a6Q@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] iio: accel: bma400: Add buffer, step and activity/inactivity
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -68,54 +67,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 20, 2022 at 11:23 AM Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, Apr 20, 2022 at 11:11 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
 >
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Change from fiddly local implementation of be24 to cpu endian conversion
-> by reading into a 3 byte buffer and using get_unaligned_be24()
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/staging/iio/cdc/ad7746.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-> index 71c709771676..1f510610ed32 100644
-> --- a/drivers/staging/iio/cdc/ad7746.c
-> +++ b/drivers/staging/iio/cdc/ad7746.c
-> @@ -95,10 +95,7 @@ struct ad7746_chip_info {
->         u8      capdac[2][2];
->         s8      capdac_set;
->
-> -       union {
-> -               __be32 d32;
-> -               u8 d8[4];
-> -       } data ____cacheline_aligned;
-> +       u8 data[3] ____cacheline_aligned;
->  };
->
->  enum ad7746_chan {
-> @@ -547,12 +544,12 @@ static int ad7746_read_raw(struct iio_dev *indio_dev,
->
->                 ret = i2c_smbus_read_i2c_block_data(chip->client,
->                                                     chan->address >> 8, 3,
+> This patch series adds trigger buffer support with data ready interrupt,
+> separate channel for step counter, an event for step change interrupt,
+> activity recognition and activity/inactivity event support.
 
-At the same time it makes now sense to use sizeof() here.
+You forgot to add tags from the previous round of review, please be
+respectful to reviewers.
 
-> -                                                   &chip->data.d8[1]);
-> +                                                   chip->data);
+
+> changes since v3
+> 1. Removed all the unnecessary mutex locking for regmap.
+> 2. Corrected the mutex locking and unlocking for device private data
+> members.
+> 3. Mutex locking and unlocking is used to protect the device private
+> structure members.
+> 4. Using DMA safe buffer for regmap_bulk_write() and regmap_bulk_read().
 >
->                 if (ret < 0)
->                         goto out;
+> 1/9: Fixed the comment.
 >
-> -               *val = (be32_to_cpu(chip->data.d32) & 0xFFFFFF) - 0x800000;
-> +               *val = get_unaligned_be24(chip->data) - 0x800000;
+> 3/9: Added () for the function name in the comment.
 >
->                 switch (chan->type) {
->                 case IIO_TEMP:
+> 4/9: Handling error cases with goto in bma400_trigger_handler().
+>      Mutex locking and unlocking is used to protect the data->buffer.
+>      Using DMA safe buffer for regmap_bulk_read().
+>      Mutex locking and unlocking is used to protect the data->status in
+>      bma400_interrupt.
+>
+> 5/9: Using DMA safe buffers to read steps value by allocating memory internally.
+>      Using DMA safe buffers for regmap_bulk_write().
+>      Removed the lock for regmap().
+>
+> 6/9: Removed the duplication of code for enabling step, added function to handle
+>      the step enable.
+>
+> 7/9: Removed the lock for regmap().
+>      Mutex locking and unlocking is used to protect the data members.
+>
+> 8/9: Removed the lock for regmap().
+>
+> 9/9. Added __be16 duration in struct bma400_data.
+>      Fixed the warning - impossible condition '(reg < 0) => (0-255 < 0)'
+>      Fixed error: call to __compiletime_assert_272
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+>
+> changes since v2
+> 1. Reordering of header includes in the separate patch.
+> 2. Matching the IIO syntax for multiline comment.
+> 3. Following the preference in the interrupt handler for returning.
+> 4. Add support for activity recognition.
+> 5. Add support for debugfs to access registers from userspace.
+> 6. Add support for activity and inactivity events
+>
+> changes since v1
+> 1. Added comment section that describes the math for scale calculation.
+> 2. Added separate devm_add_action_or_reset() calls to disable regulator
+>    and to put the sensor in power down mode.
+> 3. Remove the err_reg_disable and out, goto labels and returning directly
+>    if error occurs.
+> 4. Added mutex calls while putting sensor in power down.
+> 5. Added ___cacheline_aligned for device data.
+> 6. Ordering the header includes.
+> 7. Handling erroneous and spurious interrupts in the interrupt handler
+>    by returning IRQ_NONE.
+> 8. Using dev_err_probe() instead of dev_err().
+> 9. Configured the interrupt to open drain.
+> 10. Using le16_to_cpu() to fix the sparse warning.
+> 11. Checking the step change event is enabled or not.
+> 12. Enabling the step change event will also enable the step channel.
+> 13. Using FIELD_GET() instead of bitwise operation.
+> 14. Removal of dead code in the _event_config().
+>
+> Jagath Jog J (9):
+>   iio: accel: bma400: Fix the scale min and max macro values
+>   iio: accel: bma400: Reordering of header files
+>   iio: accel: bma400: conversion to device-managed function
+>   iio: accel: bma400: Add triggered buffer support
+>   iio: accel: bma400: Add separate channel for step counter
+>   iio: accel: bma400: Add step change event
+>   iio: accel: bma400: Add activity recognition support
+>   iio: accel: bma400: Add debugfs register access support
+>   iio: accel: bma400: Add support for activity and inactivity events
+>
+>  drivers/iio/accel/Kconfig       |   2 +
+>  drivers/iio/accel/bma400.h      |  50 ++-
+>  drivers/iio/accel/bma400_core.c | 694 +++++++++++++++++++++++++++++---
+>  drivers/iio/accel/bma400_i2c.c  |  10 +-
+>  drivers/iio/accel/bma400_spi.c  |   8 +-
+>  5 files changed, 697 insertions(+), 67 deletions(-)
+>
 > --
-> 2.35.3
+> 2.17.1
 >
 
 

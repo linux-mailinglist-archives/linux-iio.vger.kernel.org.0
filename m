@@ -2,126 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9065511401
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 11:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6474511722
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 14:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbiD0JFX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 05:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42686 "EHLO
+        id S233959AbiD0McA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 08:32:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiD0JFX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 05:05:23 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E019F8E45;
-        Wed, 27 Apr 2022 02:02:07 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 295195FD13;
-        Wed, 27 Apr 2022 12:02:05 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1651050125;
-        bh=FlibZqz6Vs1KJA6OMN0S2VlRcGFGa/xmoTfPjJuhQtg=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=ekZbxxmsobxMJgoGh2uXEX8tsgy6L0NPWFygmbcNWajfzrV7bV80uov37EXsiv3EH
-         dz/ZKapovctI//fIG11BvoygCqTr2jQlG2Y1h4aAt6+dfWh4fsJ4Qsni16AK3pBnC4
-         k5/1BoOoHZDd2I3HlOf3rHkFMSWp/cUlvVGgxpJc0BPuAjUMl+3WPSOFxCSZH/4cee
-         2nY1/b2jBICu6QQwYE4S4caduOctJAdmFlXCxyeuoSc2gkn67I4a8xwx6o1RAbLWq3
-         zbvSVAQmz9LbeNaVCnitaiA7Xc7OvXv8tHfulVc4Xo0qJmoEX6+4ZXSd+rEr4VNNgk
-         AXCjSyNvl18zQ==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Wed, 27 Apr 2022 12:02:05 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Rob Herring <robh@kernel.org>
-CC:     "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 1/3] dt-bindings: vendor-prefixes: add MEMSensing
- Microsystems Co., Ltd.
-Thread-Topic: [PATCH v1 1/3] dt-bindings: vendor-prefixes: add MEMSensing
- Microsystems Co., Ltd.
-Thread-Index: AQHYVASMsRh3FoyxH0G3KQJPx6YT3q0Cfe6AgADSqIA=
-Date:   Wed, 27 Apr 2022 09:01:13 +0000
-Message-ID: <20220427090201.og6gwed364zr3cmd@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220419154555.24191-1-ddrokosov@sberdevices.ru>
- <20220419154555.24191-2-ddrokosov@sberdevices.ru>
- <YmhV08V2jTeB448O@robh.at.kernel.org>
-In-Reply-To: <YmhV08V2jTeB448O@robh.at.kernel.org>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <E31A6B890C3DC14C992872EDBF3A6437@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233906AbiD0McA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 08:32:00 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E40654B1D6;
+        Wed, 27 Apr 2022 05:28:48 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id l18so3068786ejc.7;
+        Wed, 27 Apr 2022 05:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kw5zpz+aCMYY/HztCabKV/LfJ4jXBfWWw5oj9qpGGgQ=;
+        b=VF9kZoHIFtLaDXLxUr9UK/2X3+5f5xDllVy0udiAJApqdvwWAUbue7nXjVoBn+aNKf
+         nrzws7ygH3l8Vm2eBOsSc9giQXV/2tL4lXxJhBm+FkjjnEL4WIr76ube/GsWCyTvEdMv
+         hspop4aKriUuwak1HiYUdf+NoZli8UAus1GtwAfwub/hQ1jENRMYXRmWSMJMH7J0kRc+
+         W+4gVs3dvmpizUMcNpjTkLzjwNR+tv1EG6yUB32e1KFtUWV7Eh+JS/O+g2fUrwa7Zmv6
+         YDYauZVT84KaEeCfF1/utfqq9TfNzBkI+TER9Td2Mo84YZ1C/jcnRbrRP0XEEGwrDywj
+         hOkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kw5zpz+aCMYY/HztCabKV/LfJ4jXBfWWw5oj9qpGGgQ=;
+        b=i8ZWw1/+ikjm5qrA6OXkrMrly5Biv/xGF8NcGpzs9IT/mn+49h7Uok2Grzwc24asqs
+         SQPhdB3FaCB56N1ZJ64YxPpHXpApaFU6Tikgl1dy+mb+fCoeKbylHl0lwI5hcfBELscl
+         WGRsGJJHlgTVqn37OANDeYDbx2GFKcf3NIQp4/VRij3ziulMTW5UVehVvS9rccLEqcYS
+         6AvWtYruUzp/drKzVwWXOWmkvVm7vW+OKpRbh+1qZZlyGMB4SYT2Taza1hTFk/BsnXHn
+         5DirmHO6UUtLVTjLkZ41ZvNDIi2Ha3R7qiVwyu9/49/WMWIjf8twfRjsSlKPRzoY8MPA
+         cERw==
+X-Gm-Message-State: AOAM531MDT7/G01eOuMemUXqav5Ou76xs5pPD4oex8aieDxL1pOCkwYo
+        26fsSrGgedrdt8CWD/YHjyLHxU9PP8gYflZvkXgArwOHaz9oBrP3
+X-Google-Smtp-Source: ABdhPJzAk0GUYlozJK8nur+vVombMrYz2DlytyZQpkqw+X81AdAFT4PwWnQLob0uQTOXw7t5sa3PZvoAdHd7FQ/sUsI=
+X-Received: by 2002:a17:907:6d22:b0:6f3:a9e5:d074 with SMTP id
+ sa34-20020a1709076d2200b006f3a9e5d074mr9316782ejc.639.1651062527496; Wed, 27
+ Apr 2022 05:28:47 -0700 (PDT)
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/04/27 03:59:00 #19365489
-X-KSMG-AntiVirus-Status: Clean, skipped
+References: <20220420211105.14654-1-jagathjog1996@gmail.com> <20220420211105.14654-2-jagathjog1996@gmail.com>
+In-Reply-To: <20220420211105.14654-2-jagathjog1996@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 27 Apr 2022 14:28:11 +0200
+Message-ID: <CAHp75VdKVAz7gs8r0Mp1_4LoG4+QZg0JepTVffHyDw9-ggq-Wg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/9] iio: accel: bma400: Fix the scale min and max
+ macro values
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Rob,
+On Wed, Apr 20, 2022 at 11:11 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
+>
+> Changing the scale macro values to match the bma400 sensitivity
+> for 1 LSB of all the available ranges.
 
-You are right, I've missed memsic definition, sorry for that. I'll move
-memsensing vendor prefix to proper place on the v2 then.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-On Tue, Apr 26, 2022 at 03:28:03PM -0500, Rob Herring wrote:
-> On Tue, Apr 19, 2022 at 03:45:51PM +0000, Rokosov Dmitry Dmitrievich wrot=
-e:
-> > MEMSensing Microsystems (Suzhou, China) Co., Ltd. operates as a micro
-> > electromechanical system technology company which produces micro
-> > electromechanical system microphones and sensors.
-> > MEMSensing Microsystems (Suzhou, China) Co., Ltd. applies its products
-> > in consumer electronics, industrial control, medical electronics
-> > and automotive, and other fields.
-> >=20
-> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-> > ---
-> >  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/D=
-ocumentation/devicetree/bindings/vendor-prefixes.yaml
-> > index 294093d..d8f29ad 100644
-> > --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> > +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> > @@ -737,6 +737,8 @@ patternProperties:
-> >      description: Mellanox Technologies
-> >    "^memsic,.*":
-> >      description: MEMSIC Inc.
-> > +  "^memsensing,.*":
-> > +    description: MEMSensing Microsystems Co., Ltd.
->=20
-> Alphabetical order. This needs to be before memsic.
->=20
+> Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> ---
+>  drivers/iio/accel/bma400.h | 23 +++++++++++++++++++++--
+>  1 file changed, 21 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+> index c4c8d74155c2..80330c7ce17f 100644
+> --- a/drivers/iio/accel/bma400.h
+> +++ b/drivers/iio/accel/bma400.h
+> @@ -83,8 +83,27 @@
+>  #define BMA400_ACC_ODR_MIN_WHOLE_HZ 25
+>  #define BMA400_ACC_ODR_MIN_HZ       12
+>
+> -#define BMA400_SCALE_MIN            38357
+> -#define BMA400_SCALE_MAX            306864
+> +/*
+> + * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
+> + * converting to micro values for +-2g range.
+> + *
+> + * For +-2g - 1 LSB = 0.976562 milli g = 0.009576 m/s^2
+> + * For +-4g - 1 LSB = 1.953125 milli g = 0.019153 m/s^2
+> + * For +-16g - 1 LSB = 7.8125 milli g = 0.076614 m/s^2
+> + *
+> + * The raw value which is used to select the different ranges is determined
+> + * by the first bit set position from the scale value, so BMA400_SCALE_MIN
+> + * should be odd.
+> + *
+> + * Scale values for +-2g, +-4g, +-8g and +-16g are populated into bma400_scales
+> + * array by left shifting BMA400_SCALE_MIN.
+> + * e.g.:
+> + * To select +-2g = 9577 << 0 = raw value to write is 0.
+> + * To select +-8g = 9577 << 2 = raw value to write is 2.
+> + * To select +-16g = 9577 << 3 = raw value to write is 3.
+> + */
+> +#define BMA400_SCALE_MIN            9577
+> +#define BMA400_SCALE_MAX            76617
+>
+>  #define BMA400_NUM_REGULATORS       2
+>  #define BMA400_VDD_REGULATOR        0
+> --
+> 2.17.1
+>
 
-Ack
 
-> >    "^menlo,.*":
-> >      description: Menlo Systems GmbH
-> >    "^mentor,.*":
-> > --=20
-> > 2.9.5
-> >=20
-
---=20
-Thank you,
-Dmitry=
+-- 
+With Best Regards,
+Andy Shevchenko

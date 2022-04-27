@@ -2,64 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A907251134E
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 10:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C0B5113F5
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 10:59:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359348AbiD0IOs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 04:14:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45988 "EHLO
+        id S230253AbiD0JC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 05:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359346AbiD0IOr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 04:14:47 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE4C25C5E;
-        Wed, 27 Apr 2022 01:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651047097; x=1682583097;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6eM5e62oXAvLaa18gkB8bzP55Ven4At3wrVREaGjxkI=;
-  b=Qh7VFSIEpIlWRDmmZG4/Qez7fs7YAdUTtOSHuUfKIsmSp0TdlxMlnuJm
-   5gPyPL9D2hGgiRoPZSdPR6EYQhPNmE5XnJAWSottnCvyLBLGdBZdfzdAn
-   3uyrdp6nLpjub9cSNtadTuWMjNav4XK7iRRseItMJr0jiXcO5DRkWkSKR
-   /522ZJV3fi88hoZ8znUP3LoNJyXgZlXXcScZ5GRdxLGHgT14K/1LXjnhc
-   uz4T/ZJ8UApliZMC4dZ8DGZegXmvCzVyAubpOyFl8zvd7i2lb9ZuTXYvc
-   XhB9WfhACzQTPCrFqZXVuN0WexDNwVeuYs1zB3dbuIfTk5n0zkP64H4hT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10329"; a="265381666"
-X-IronPort-AV: E=Sophos;i="5.90,292,1643702400"; 
-   d="scan'208";a="265381666"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2022 01:11:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,292,1643702400"; 
-   d="scan'208";a="564976596"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 27 Apr 2022 01:11:33 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1njclo-0004VD-JD;
-        Wed, 27 Apr 2022 08:11:32 +0000
-Date:   Wed, 27 Apr 2022 16:10:37 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrea Merello <andrea.merello@gmail.com>, jic23@kernel.org,
-        mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, lars@metafoo.de, robh+dt@kernel.org,
-        andy.shevchenko@gmail.com, matt.ranostay@konsulko.com,
-        ardeleanalex@gmail.com, jacopo@jmondi.org,
-        Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [v5 12/14] iio: imu: add BNO055 serdev driver
-Message-ID: <202204271554.EiuIRNPI-lkp@intel.com>
-References: <20220426131102.23966-13-andrea.merello@gmail.com>
+        with ESMTP id S229573AbiD0JC6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 05:02:58 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864AF1EE1FB;
+        Wed, 27 Apr 2022 01:59:40 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 2080B5FD13;
+        Wed, 27 Apr 2022 11:59:37 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1651049977;
+        bh=2mztbYGe3irG8fxZ5rjxop8bDyyrOgSYnSdRSoEfjfw=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=N8/GFe9oGWqVXdZpcAqhkQTzEuWKGpGs9jS0MJW3KHEnbucix+eZCoP0rBS4fWiDT
+         9xOKwOFRQ5AHi2ogzhFWnMcA0Fw8YWco2F6LxiRc5CoWXebLrIMsYU5vttsnleITUE
+         2r/wSk6s4obIP8Rlb4tx7XsxjRJP9n67aW3OXBnYQYRK9IaN+gDqA8mNMjviAQxXUI
+         Ubp1M6xN+abkInQi3e7kBk+QeId/uPq+F8bXwFjxdm6jNOzKxtU7VlxHwuvg8ZZ+G6
+         1pA/YHY/2EjqCQkskrSz0K77NUz60L9FtC7BfF5BB6hnCLamTYXiy2peGKwUk8Pa6B
+         Wk46sDUbHePEw==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Wed, 27 Apr 2022 11:59:36 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     Rob Herring <robh@kernel.org>
+CC:     "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 3/3] dt-bindings: iio: accel: add dt-binding schema for
+ msa311 accel driver
+Thread-Topic: [PATCH v1 3/3] dt-bindings: iio: accel: add dt-binding schema
+ for msa311 accel driver
+Thread-Index: AQHYVASQQZC393Ji1keuDd+e+35bUq0CfseAgADRHQA=
+Date:   Wed, 27 Apr 2022 08:58:45 +0000
+Message-ID: <20220427085932.z3l7h2vash4km4r2@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220419154555.24191-1-ddrokosov@sberdevices.ru>
+ <20220419154555.24191-4-ddrokosov@sberdevices.ru>
+ <YmhWic3rG8ERtCYY@robh.at.kernel.org>
+In-Reply-To: <YmhWic3rG8ERtCYY@robh.at.kernel.org>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <78FB6C8D15AE644680148FCB8B984191@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220426131102.23966-13-andrea.merello@gmail.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/04/27 03:59:00 #19365489
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,39 +78,140 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andrea,
+Hi Rob,
 
-Thank you for the patch! Yet something to improve:
+Thank you for review! I agree with all things you mentioned. It will be
+fixed in the next v2 patchset.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master linux/master v5.18-rc4 next-20220426]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+On Tue, Apr 26, 2022 at 03:31:05PM -0500, Rob Herring wrote:
+> On Tue, Apr 19, 2022 at 03:45:58PM +0000, Rokosov Dmitry Dmitrievich wrot=
+e:
+> > Introduce devicetree binding json-schema for MSA311 tri-axial,
+> > low-g accelerometer driver.
+> >=20
+> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> > ---
+> >  .../bindings/iio/accel/memsensing,msa311.yaml      | 64 ++++++++++++++=
+++++++++
+> >  MAINTAINERS                                        |  1 +
+> >  2 files changed, 65 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/accel/memsens=
+ing,msa311.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/accel/memsensing,msa=
+311.yaml b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.ya=
+ml
+> > new file mode 100644
+> > index 00000000..3e4660f
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yam=
+l
+> > @@ -0,0 +1,64 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> > +
+> > +%YAML 1.2
+> > +---
+> > +$id: "http://devicetree.org/schemas/iio/accel/memsensing,msa311.yaml#"
+> > +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> > +
+> > +title: MEMSensing digital 3-Axis accelerometer
+> > +
+> > +maintainers:
+> > +  - Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> > +
+> > +description: |
+> > +  MSA311 is a tri-axial, low-g accelerometer with I2C digital output f=
+or
+> > +  sensitivity consumer applications. It has dynamical user selectable =
+full
+> > +  scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measure=
+ments
+> > +  with output data rates from 1Hz to 1000Hz.
+> > +  Datasheet can be found at following URL
+> > +  https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: memsensing,msa311
+> > +
+>=20
+> > +  "#address-cells":
+> > +    const: 1
+> > +
+> > +  "#size-cells":
+> > +    const: 0
+>=20
+> These apply to 'reg' in a child node, but you don't have child nodes so=20
+> drop them.
+>=20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrea-Merello/Add-support-for-Bosch-BNO055-IMU/20220426-212132
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20220427/202204271554.EiuIRNPI-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/675ca9cd13af45cc5943dd15caad5e866fd7c971
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andrea-Merello/Add-support-for-Bosch-BNO055-IMU/20220426-212132
-        git checkout 675ca9cd13af45cc5943dd15caad5e866fd7c971
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
+Ack
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +    description: I2C registers address
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +    description: optional I2C int pin can be freely mapped to specific=
+ func
+> > +
+> > +  interrupt-names:
+> > +    const: irq
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +    i2c0 {
+>=20
+> i2c {
+>=20
 
-All errors (new ones prefixed by >>):
+Ack
 
->> make[5]: *** No rule to make target 'drivers/iio/imu/bno055/bno055_ser_trace.o', needed by 'drivers/iio/imu/bno055/built-in.a'.
-   make[5]: Target '__build' not remade because of errors.
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +        msa311: msa311@62 {
+>=20
+> accelerometer@62 {
+>=20
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Ack
+
+> > +            compatible =3D "memsensing,msa311";
+> > +            reg =3D <0x62>;
+> > +            interrupt-parent =3D <&gpio_intc>;
+> > +            interrupts =3D <29 IRQ_TYPE_LEVEL_HIGH>;
+> > +            interrupt-names =3D "irq";
+> > +            status =3D "okay";
+> > +        };
+> > +    };
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index c75be17..4227914 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -12482,6 +12482,7 @@ MEMSENSING MICROSYSTEMS MSA311 ACCELEROMETER DR=
+IVER
+> >  M:	Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> >  L:	linux-iio@vger.kernel.org
+> >  S:	Maintained
+> > +F:	Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
+> >  F:	drivers/iio/accel/msa311.c
+> > =20
+> >  MEN A21 WATCHDOG DRIVER
+> > --=20
+> > 2.9.5
+> >=20
+
+--=20
+Thank you,
+Dmitry=

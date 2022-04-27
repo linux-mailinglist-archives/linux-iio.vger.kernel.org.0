@@ -2,62 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E0785119FA
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 16:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3040C5119F2
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 16:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236200AbiD0Noz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 09:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55580 "EHLO
+        id S236266AbiD0Nqk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 09:46:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236170AbiD0Nov (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 09:44:51 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075D817FBDE;
-        Wed, 27 Apr 2022 06:41:39 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id be20so1969097edb.12;
-        Wed, 27 Apr 2022 06:41:39 -0700 (PDT)
+        with ESMTP id S236214AbiD0Nqj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 09:46:39 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C7C3B395E;
+        Wed, 27 Apr 2022 06:43:26 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id bv19so3491576ejb.6;
+        Wed, 27 Apr 2022 06:43:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sCpiXIu3nq73RxGaZx1WoL3R1rHmiodl/liNhywm500=;
-        b=XpAOstzAHkLF78OLo0w8Ad3S/RN1CVFO5WGyh3L0JGU8r2W5yRlWTwA1ARUPJtULTW
-         UDol8lT3VQBd8LjJq17KQj07yeHtPJ1d0L1ychLJhfbu4mZhk51aq3wAMf5eJg+IEryk
-         3pqK1MjEDP6OrcAcr1Ai1aTXnvB4E/JuXTtX/qgTaa3RBJ9rnMaEIZwdqefGGkF4vUxo
-         UUjFrFRVueIwuuB7sWv+7US1WSduPbcqPebet7Eo15kPA0IG+Rhc0zASQdo+Czd6Pz5G
-         jPdFc9UYUkFVk/2KWinQYsi0WpsBZy3h6b6jpL74cshLWH0qoh4KUA+2Z4n8R35zKwFd
-         /4Rw==
+        bh=hmu0bkgn//dXI/P5wHwHmQRu1pJCrmiNt9JAutGmxpM=;
+        b=jaZ8FHjruwTTLoIosbuLJKfJomhSpbPNpreE+dXl1UOQHyXVu+7mCgEc5MFDmKrAsV
+         aCZUK3EAfvK+FS36H58W99pBZA99fX2bvpApqdvcrTVLaMW50P3HIXsfVLTvbF0pwBxW
+         TQeM0uOY0E7hZr2sP7ysGv3AfmWiEo0rnJEfZSkIHaf3RBJh3LdU7TV1wytt1R9Tyu0K
+         Iq3PCn4phFMuAiHnwK/tFDZhgXpCeatq0UzaQxcV9if7j7OVsnQYMwKQXz+9GaoMhK+d
+         ytwRTw20lV8bD3uCFvWsN6BSYFakYmi34nHWavXsxFIPsoaEIBSykhu7WthFHSxtfTAO
+         iOBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sCpiXIu3nq73RxGaZx1WoL3R1rHmiodl/liNhywm500=;
-        b=TIXJRXE6q6W+XI/URIckvuB15/ZrM3LZdAEuCRZew3CgeELAO8nTJGnLug1p8Zyol0
-         ETm+tWd6twct0VAmAAY45pn+TA9n8oFBvy3aB2kNaO5CmZk/N7lVpXgYs9U8GU6W6gAo
-         GhbznrQIHPlliYN+IT6UPch+h7gF+HlbzxOzRHvt3nig6ZIJSmfKqSDsNQyUSgdSjbFM
-         hUbURpRx7Mc4vMei7xIgjpM7frOZ0o2sDGZEaLO86xKfX19BHIV+CIdN46VRoAGwcuNV
-         0K0jZP90NdDr/H8kSq97QkcdzI3IVm0QtUMJenzx6mZWxGDZP54psOi5Ojah7OObk4N2
-         Uc+A==
-X-Gm-Message-State: AOAM532QVOaDJl9/TLD2eRDOBgqMOI7BMa1Wo8R74uFzNpz3neOvdAzk
-        +ymYYRNZAgs2px94c2XrWnXAx+nTaNoXcSc+tyU=
-X-Google-Smtp-Source: ABdhPJyxERFm36uWDfRYGPwhyWzytql1H5nA9knbA61sEk82utfLeb8YTVdwsx2A7p5NycNZso2qdzQTZAgS4/rKo0k=
-X-Received: by 2002:a05:6402:54:b0:419:9b58:e305 with SMTP id
- f20-20020a056402005400b004199b58e305mr30028337edu.158.1651066898385; Wed, 27
- Apr 2022 06:41:38 -0700 (PDT)
+        bh=hmu0bkgn//dXI/P5wHwHmQRu1pJCrmiNt9JAutGmxpM=;
+        b=C1sGly9QwVxbBvhoVcfTZAIyq4wXiAKtiXKD3uphyieZOsKNb2zHNX1Myp04kNFiOz
+         0FRr7qQU302Yfgup28s1Sk3ppiNblgrU542kiekw8D3gdlYVTbBaoKPajVp57VsfsykU
+         mT9EcD7xKZLuUXpSxreU8VjTHZnh+NhRY8IMyD2bajqvQp0iphjc2ant/29Kt8gO+ylG
+         /Y4HOGv2QxKwMNBMBAdnGZechXo8nbJXO+tW6g3IwA+uT0/yILeUpHlSYmCAnCwNZzyN
+         7AjZ1aGQ+dFiQ6teuWfgnMJ/dfpOpDkQZepz/eHeBXggOrBXizZ9DnHK/8nm9YIdU/La
+         MgaA==
+X-Gm-Message-State: AOAM530hb8qjt6dIQ8PuwUgYc2x1cPxQbH+yaVlR6qWKNfNN9bfiP9lx
+        65rV3CqqQLVjhxzmjLGkrJTWmboPwxz+KtWBYzw=
+X-Google-Smtp-Source: ABdhPJzDbMVPJu0/8838MVBM+T1tFfZLPRx/fVoCq7YI3A22WU9Fmtl0KNXUMj6nqgxm0Ta1pcJyehX2can+m4DTBAA=
+X-Received: by 2002:a17:907:628e:b0:6d9:c6fa:6168 with SMTP id
+ nd14-20020a170907628e00b006d9c6fa6168mr26134448ejc.132.1651067005094; Wed, 27
+ Apr 2022 06:43:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220426131102.23966-13-andrea.merello@gmail.com> <202204271554.EiuIRNPI-lkp@intel.com>
-In-Reply-To: <202204271554.EiuIRNPI-lkp@intel.com>
+References: <20220426131102.23966-1-andrea.merello@gmail.com>
+In-Reply-To: <20220426131102.23966-1-andrea.merello@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 27 Apr 2022 15:41:02 +0200
-Message-ID: <CAHp75Vc34K=5U=kMCqtDm_h3VBmqyCqcWr0em+8fZBiM2n76rA@mail.gmail.com>
-Subject: Re: [v5 12/14] iio: imu: add BNO055 serdev driver
-To:     kernel test robot <lkp@intel.com>
-Cc:     Andrea Merello <andrea.merello@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+Date:   Wed, 27 Apr 2022 15:42:49 +0200
+Message-ID: <CAHp75VcoXu=0yvxmTwGAzexV_MgACXg-Cufkigt_kCEvbnwq_Q@mail.gmail.com>
+Subject: Re: [v5 00/14] Add support for Bosch BNO055 IMU
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>, kbuild-all@lists.01.org,
+        devicetree <devicetree@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Matt Ranostay <matt.ranostay@konsulko.com>,
@@ -75,46 +74,179 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Apr 27, 2022 at 10:11 AM kernel test robot <lkp@intel.com> wrote:
+On Tue, Apr 26, 2022 at 3:11 PM Andrea Merello <andrea.merello@gmail.com> wrote:
 >
-> Hi Andrea,
+> From: Andrea Merello <andrea.merello@iit.it>
 >
-> Thank you for the patch! Yet something to improve:
+> This series (tries to) add support for Bosch BNO055 IMU to Linux IIO
+> subsystem. It is made up several patches:
 >
-> [auto build test ERROR on jic23-iio/togreg]
-> [also build test ERROR on linus/master linux/master v5.18-rc4 next-20220426]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
+>   1/14 to 6/14: add some IIO modifiers, and their documentation, to the IIO
+>                 core layer, in order to being able to expose the linear
+>                 acceleration and Euler angles among standard attributes.
+>                 Also update the IIO event monitor tool
 >
-> url:    https://github.com/intel-lab-lkp/linux/commits/Andrea-Merello/Add-support-for-Bosch-BNO055-IMU/20220426-212132
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20220427/202204271554.EiuIRNPI-lkp@intel.com/config)
-> compiler: arceb-elf-gcc (GCC) 11.3.0
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # https://github.com/intel-lab-lkp/linux/commit/675ca9cd13af45cc5943dd15caad5e866fd7c971
->         git remote add linux-review https://github.com/intel-lab-lkp/linux
->         git fetch --no-tags linux-review Andrea-Merello/Add-support-for-Bosch-BNO055-IMU/20220426-212132
->         git checkout 675ca9cd13af45cc5943dd15caad5e866fd7c971
->         # save the config file
->         mkdir build_dir && cp config build_dir/.config
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=arc SHELL=/bin/bash
+>   7/14: fix binary attributes didn't work with IIO
 >
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
+>   8/14 to 11/14: add the core IIO BNO055 driver and documentation for sysfs
+>                  attributes and DT bindings
 >
-> All errors (new ones prefixed by >>):
+>   12/14: adds serdev BNO055 driver to actually use the IMU via serial line
 >
-> >> make[5]: *** No rule to make target 'drivers/iio/imu/bno055/bno055_ser_trace.o', needed by 'drivers/iio/imu/bno055/built-in.a'.
->    make[5]: Target '__build' not remade because of errors.
+>   13/14: adds I2C BNO055 driver to actually use the IMU via I2C wiring
+>
+>   14/14: add a documentation file that describe the bno055 driver and
+>          specifically the calibration
 
-You need to add a C-file with the only line
+FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+for non-commented patches (12 out of 14 AFAICS).
 
-#include <..._trace.h>
+> Differences wrt v4:
+> - be more tolerant wrt unrecognized chip IDs
+> - rename 'serial_number' attribute in 'serialnumber'
+> - fix missing NULL variable initialization
+> - use sign_extend32() instead of s16 casting where appropriate
+> - fix quaternion unit
+> - minor stuff (e.g. comments..)
+> - reduce (slightly) locking in serdev driver
+> - rework tracepoint support (e.g. remove dedicated config option)
+>
+> Differences wrt other BNO055 drivers:
+>
+>   Previously at least another driver for the very same chip has been posted
+>   to the Linux ML [0], but it has been never merged, and it seems no one
+>   cared of it since quite a long time.
+>
+>   This driver differs from the above driver on the following aspects:
+>
+>   - This driver supports also serial access (to be reliable, reset pin is
+>     required to be wired)
+>
+>   - The above driver tried to support all IMU HW modes by allowing to
+>     choose one in the DT, and adapting IIO attributes accordingly. This
+>     driver does not rely on DT for this, instead settings are done via
+>     sysfs attributes.  All IIO attributes are always exposed; more on this
+>     later on. This driver however supports only a subset of the
+>     HW-supported modes.
+>
+>   - This driver has some support for managing the IMU calibration
+>
+> Supported operation modes:
+>
+>   - AMG (accelerometer, magnetometer and gyroscope) mode, which provides
+>     raw (uncalibrated) measurements from the said sensors, and allows for
+>     setting some parameters about them (e.g. filter cut-off frequency, max
+>     sensor ranges, etc).
+>
+>   - Fusion mode, which still provides AMG measures, while it also provides
+>     other data calculated by the IMU (e.g. rotation angles, linear
+>     acceleration, etc). In this mode user has no freedom to set any sensor
+>     parameter, since the HW locks them. Autocalibration and correction is
+>     performed by the IMU.
+>
+>   IIO attributes exposing sensors parameters are always present, but in
+>   fusion modes the available values are constrained to just the one used by
+>   the HW. This is reflected in the '*_available' IIO attributes.
+>
+>   Trying to set a not-supported value always falls back to the closest
+>   supported one, which in this case is just the one in use by the HW.
+>
+>   IIO attributes for unavailable measurements (e.g. Euler angles in AMG
+>   mode) can't be read (return -EBUSY, or refuse to enable buffer).
+>
+> IMU calibration:
+>
+>   The IMU supports for two sets of calibration parameters:
+>
+>   - SIC matrix. user-provided; this driver doesn't currently support it
+>
+>   - Offset and radius parameters. The IMU automatically finds out them when
+>     it is running in fusion mode; supported by this driver.
+>
+>   The driver provides access to autocalibration flags (i.e. you can known
+>   if the IMU has successfully autocalibrated) and to calibration data blob.
+>   The user can save this blob in a "firmware" file (i.e. in /lib/firmware)
+>   that the driver looks for at probe time. If found, then the IMU is
+>   initialized with this calibration data. This saves the user from
+>   performing the calibration procedure every time (which consist of moving
+>   the IMU in various way).
+>
+>   The driver looks for calibration data file using two different names:
+>   first a file whose name is suffixed with the IMU unique ID is searched
+>   for; this is useful when there is more than one IMU instance. If this
+>   file is not found, then a "generic" calibration file is searched for
+>   (which can be used when only one IMU is present, without struggling with
+>   fancy names, that changes on each device).
+>
+>   In AMG mode the IIO 'offset' attributes provide access to the offsets
+>   from calibration data (if any), so that the user can apply them to the
+>   accel, angvel and magn IIO attributes. In fusion mode they are not needed
+>   and read as zero.
+>
+>
+> Access protocols and serdev module:
+>
+>   The serial protocol is quite simple, but there are tricks to make it
+>   really works. Those tricks and workarounds are documented in the driver
+>   source file.
+>
+>   The core BNO055 driver tries to group readings in burst when appropriate,
+>   in order to optimize triggered buffer operation. The threshold for
+>   splitting a burst (i.e. max number of unused bytes in the middle of a
+>   burst that will be throw away) is provided to the core driver by the
+>   lowlevel access driver (either serdev or I2C) at probe time.
+>
+> [0] https://www.spinics.net/lists/linux-iio/msg25508.html
+>
+> Andrea Merello (14):
+>   iio: add modifiers for linear acceleration
+>   iio: document linear acceleration modifiers
+>   iio: event_monitor: add linear acceleration modifiers
+>   iio: add modifers for pitch, yaw, roll
+>   iio: document pitch, yaw, roll modifiers
+>   iio: event_monitor: add pitch, yaw and roll modifiers
+>   iio: add support for binary attributes
+>   iio: imu: add Bosch Sensortec BNO055 core driver
+>   iio: document bno055 private sysfs attributes
+>   iio: document "serialnumber" sysfs attribute
+>   dt-bindings: iio/imu: Add Bosch BNO055
+>   iio: imu: add BNO055 serdev driver
+>   iio: imu: add BNO055 I2C driver
+>   docs: iio: add documentation for BNO055 driver
+>
+>  Documentation/ABI/testing/sysfs-bus-iio       |   25 +
+>  .../ABI/testing/sysfs-bus-iio-bno055          |   81 +
+>  .../bindings/iio/imu/bosch,bno055.yaml        |   59 +
+>  Documentation/iio/bno055.rst                  |   50 +
+>  Documentation/iio/index.rst                   |    2 +
+>  drivers/iio/imu/Kconfig                       |    1 +
+>  drivers/iio/imu/Makefile                      |    1 +
+>  drivers/iio/imu/bno055/Kconfig                |   25 +
+>  drivers/iio/imu/bno055/Makefile               |   10 +
+>  drivers/iio/imu/bno055/bno055.c               | 1710 +++++++++++++++++
+>  drivers/iio/imu/bno055/bno055.h               |   12 +
+>  drivers/iio/imu/bno055/bno055_i2c.c           |   57 +
+>  drivers/iio/imu/bno055/bno055_ser_core.c      |  560 ++++++
+>  drivers/iio/imu/bno055/bno055_ser_trace.h     |  104 +
+>  drivers/iio/industrialio-core.c               |   10 +-
+>  include/uapi/linux/iio/types.h                |    7 +-
+>  tools/iio/iio_event_monitor.c                 |    6 +
+>  17 files changed, 2718 insertions(+), 2 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-bno055
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,bno055.yaml
+>  create mode 100644 Documentation/iio/bno055.rst
+>  create mode 100644 drivers/iio/imu/bno055/Kconfig
+>  create mode 100644 drivers/iio/imu/bno055/Makefile
+>  create mode 100644 drivers/iio/imu/bno055/bno055.c
+>  create mode 100644 drivers/iio/imu/bno055/bno055.h
+>  create mode 100644 drivers/iio/imu/bno055/bno055_i2c.c
+>  create mode 100644 drivers/iio/imu/bno055/bno055_ser_core.c
+>  create mode 100644 drivers/iio/imu/bno055/bno055_ser_trace.h
+>
+> --
+> 2.17.1
 
-And drop that include from the ..._core.c.
 
 
 -- 

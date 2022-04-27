@@ -2,116 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60252511B5E
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 16:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 454F85120FF
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 20:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237774AbiD0O3M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 10:29:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35594 "EHLO
+        id S229538AbiD0Sly (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 14:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237809AbiD0O3K (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 10:29:10 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF38D29F;
-        Wed, 27 Apr 2022 07:25:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651069559; x=1682605559;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gFU2R6wlf2Alrac6+LofoISZC2O4Ez0lIBWYeC9XB9g=;
-  b=WVcSJKpfLInMzj+J2mpYZp1GKmQd64GUvUiegaUHOvDGVQhTlU4sB922
-   EulcWciIRTOfCVNI8urtp+UOjILGdJ9turE5zuGYwDvxTQGLmoYPboULm
-   w0TKhtV3NpWVJyxXIwJYatTqD22cIGPcmGo6cGKLxz3jjNgUC2QhTjsHs
-   S0qkYiIt9hys0QLfnotFjQ9II5Yzl/oMbSOWfNPK/GgoWbjmK2t/Uju3z
-   kxNqSZpqF/JHUsGpwua5R7/FPpqMXQuxzx1/VRUY/sGGGBbGLCIiY9QgV
-   yGRY/teIR9DjMf+DUvvINdHkRDkEiDgifeIOkTUZ17osego3QtuHLBWo1
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10330"; a="326435323"
-X-IronPort-AV: E=Sophos;i="5.90,293,1643702400"; 
-   d="scan'208";a="326435323"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2022 07:25:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,293,1643702400"; 
-   d="scan'208";a="650724525"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 27 Apr 2022 07:25:29 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1njibh-0004i6-7n;
-        Wed, 27 Apr 2022 14:25:29 +0000
-Date:   Wed, 27 Apr 2022 22:24:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrea Merello <andrea.merello@gmail.com>, jic23@kernel.org,
-        mchehab+huawei@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, lars@metafoo.de, robh+dt@kernel.org,
-        andy.shevchenko@gmail.com, matt.ranostay@konsulko.com,
-        ardeleanalex@gmail.com, jacopo@jmondi.org,
-        Andrea Merello <andrea.merello@iit.it>
-Subject: Re: [v5 12/14] iio: imu: add BNO055 serdev driver
-Message-ID: <202204272204.zqCIf1KV-lkp@intel.com>
-References: <20220426131102.23966-13-andrea.merello@gmail.com>
+        with ESMTP id S229568AbiD0SlX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 14:41:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B2DD447C
+        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 11:23:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8074161EE1
+        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 18:23:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD8CC385A9;
+        Wed, 27 Apr 2022 18:23:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651083821;
+        bh=DDD8fNEIkc3RFhAQYhhN7xQeA5RwKwzV2ZiHP3D5J7c=;
+        h=Date:From:To:Subject:From;
+        b=OxkQjhQaEhicmGyMDnbT14xRV0e3w5gXbAiKRsWMSNFTiAceKl0RPFIpjjghBrMg5
+         MKWDDLF84sxyq8ehppsRbqQwojI9StC0VUwMlskAPnLEkQ5aGfATAQo4CuTwzUKiY3
+         rg+1wTwc3hQVza+b16imQXE2VMpH7vZONUMBCuqSrC+gdXjiZHIkVZDUUmarg8uSbM
+         /xfkGtz39CzjReUHVn0LZf2FJuh3On6FJx2FpDVDMgw+Em1RhpvahSdeST5qCx/U0p
+         qO6yeApy5peJe5+e8i5e4fwTD2Bx295bV6GKFFMbFD0KhLmhlrSrW9jLEtkZ+zkysG
+         JkCJ+PmXc/cQg==
+Date:   Wed, 27 Apr 2022 19:31:53 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] 1st set of IIO fixes for 5.18
+Message-ID: <20220427193153.69d3237b@jic23-huawei>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220426131102.23966-13-andrea.merello@gmail.com>
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andrea,
+The following changes since commit 3123109284176b1532874591f7c81f3837bbdc17:
 
-Thank you for the patch! Perhaps something to improve:
+  Linux 5.18-rc1 (2022-04-03 14:08:21 -0700)
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master linux/master v5.18-rc4 next-20220427]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+are available in the Git repository at:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrea-Merello/Add-support-for-Bosch-BNO055-IMU/20220426-212132
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: alpha-randconfig-r036-20220427 (https://download.01.org/0day-ci/archive/20220427/202204272204.zqCIf1KV-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/675ca9cd13af45cc5943dd15caad5e866fd7c971
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andrea-Merello/Add-support-for-Bosch-BNO055-IMU/20220426-212132
-        git checkout 675ca9cd13af45cc5943dd15caad5e866fd7c971
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash drivers/iio/imu/bno055/
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fi=
+xes-for-5.18a
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+for you to fetch changes up to b5d6ba09b10d2ccb865ed9bc45941db0a41c6756:
 
-All warnings (new ones prefixed by >>):
+  iio: imu: inv_icm42600: Fix I2C init possible nack (2022-04-16 15:03:58 +=
+0100)
 
->> drivers/iio/imu/bno055/bno055.c:1317:5: warning: no previous prototype for 'bno055_debugfs_reg_access' [-Wmissing-prototypes]
-    1317 | int bno055_debugfs_reg_access(struct iio_dev *iio_dev, unsigned int reg,
-         |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------------------------------
+1st set of IIO fixes for the 5.18 cycle
 
+ad3552r:
+ - Fix a bug with error codes being stored in unsigned local variable.
+ - Fix IS_ERR when value is either NULL or not rather than ERR_PTR
+ad5446
+ - Fix shifting of read_raw value.
+ad5592r
+ - Fix missing return value being set for a fwnode property read.
+ad7280a
+ - Wrong variable being used to set thresholds.
+admv8818
+ - Kconfig dependency fix.
+ak8975
+ - Missing regulator disable in error path.
+bmi160
+ - Disable regulators in an error path.
+dac5571
+ - Fix chip id detection for devices with OF bindings.
+inv_icm42600
+ - Handle a case of a missing I2C NACK during initially configuration.
+ltc2688
+ - Fix voltage scaling where integer part was written twice and
+   decimal part not at all.
+scd4x
+ - Handle error before using value.
+sx9310
+ - Device property parsing against indio_dev->dev.of_node which
+   hasn't been set yet.
+sx9324
+ - Fix hardware gain related maths.
+ - Wrong defaults for precharge internal resistance register.
 
-vim +/bno055_debugfs_reg_access +1317 drivers/iio/imu/bno055/bno055.c
+----------------------------------------------------------------
+Dan Carpenter (2):
+      iio: dac: ad3552r: fix signedness bug in ad3552r_reset()
+      iio:dac:ad3552r: Fix an IS_ERR() vs NULL check
 
-2f40e22369ed70 Andrea Merello 2022-04-26  1316  
-2f40e22369ed70 Andrea Merello 2022-04-26 @1317  int bno055_debugfs_reg_access(struct iio_dev *iio_dev, unsigned int reg,
-2f40e22369ed70 Andrea Merello 2022-04-26  1318  			      unsigned int writeval, unsigned int *readval)
-2f40e22369ed70 Andrea Merello 2022-04-26  1319  {
-2f40e22369ed70 Andrea Merello 2022-04-26  1320  	return 0;
-2f40e22369ed70 Andrea Merello 2022-04-26  1321  }
-2f40e22369ed70 Andrea Merello 2022-04-26  1322  #endif
-2f40e22369ed70 Andrea Merello 2022-04-26  1323  
+Fawzi Khaber (1):
+      iio: imu: inv_icm42600: Fix I2C init possible nack
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Gwendal Grignou (1):
+      iio: sx9324: Fix default precharge internal resistance register
+
+Jonathan Cameron (1):
+      iio: adc: ad7280a: Fix wrong variable used when setting thresholds.
+
+Jose Cazarin (1):
+      iio: dac: dac5571: Fix chip id detection for OF devices
+
+Michael Hennerich (1):
+      iio: dac: ad5446: Fix read_raw not returning set value
+
+Nuno S=C3=A1 (1):
+      iio: dac: ltc2688: fix voltage scale read
+
+Stephen Boyd (2):
+      iio:proximity:sx_common: Fix device property parsing on DT systems
+      iio:proximity:sx9324: Fix hardware gain read/write
+
+Tom Rix (1):
+      iio: scd4x: check return of scd4x_write_and_fetch
+
+Tong Zhang (1):
+      iio:imu:bmi160: disable regulator in error path
+
+Wang ShaoBo (1):
+      iio:filter:admv8818: select REGMAP_SPI for ADMV8818
+
+Zheyu Ma (1):
+      iio: magnetometer: ak8975: Fix the error handling in ak8975_power_on()
+
+Zizhuang Deng (1):
+      iio: dac: ad5592r: Fix the missing return value.
+
+ drivers/iio/adc/ad7280a.c                       | 12 +++++-----
+ drivers/iio/chemical/scd4x.c                    |  5 +++-
+ drivers/iio/dac/ad3552r.c                       |  6 ++---
+ drivers/iio/dac/ad5446.c                        |  2 +-
+ drivers/iio/dac/ad5592r-base.c                  |  2 +-
+ drivers/iio/dac/ltc2688.c                       |  2 +-
+ drivers/iio/dac/ti-dac5571.c                    | 28 ++++++++++++++--------
+ drivers/iio/filter/Kconfig                      |  1 +
+ drivers/iio/imu/bmi160/bmi160_core.c            | 20 +++++++++++-----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 15 +++++++-----
+ drivers/iio/magnetometer/ak8975.c               |  1 +
+ drivers/iio/proximity/sx9324.c                  | 32 +++++++++++++++++++--=
+----
+ drivers/iio/proximity/sx_common.c               |  1 +
+ 13 files changed, 85 insertions(+), 42 deletions(-)

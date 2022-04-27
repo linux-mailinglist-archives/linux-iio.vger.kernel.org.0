@@ -2,40 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 454F85120FF
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 20:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E31512175
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 20:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbiD0Sly (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 14:41:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
+        id S230034AbiD0SsJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 14:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbiD0SlX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 14:41:23 -0400
+        with ESMTP id S230329AbiD0Srt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 14:47:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B2DD447C
-        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 11:23:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AFE98F4E;
+        Wed, 27 Apr 2022 11:29:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8074161EE1
-        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 18:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD8CC385A9;
-        Wed, 27 Apr 2022 18:23:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 355F861EE0;
+        Wed, 27 Apr 2022 18:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3E0C385A7;
+        Wed, 27 Apr 2022 18:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651083821;
-        bh=DDD8fNEIkc3RFhAQYhhN7xQeA5RwKwzV2ZiHP3D5J7c=;
-        h=Date:From:To:Subject:From;
-        b=OxkQjhQaEhicmGyMDnbT14xRV0e3w5gXbAiKRsWMSNFTiAceKl0RPFIpjjghBrMg5
-         MKWDDLF84sxyq8ehppsRbqQwojI9StC0VUwMlskAPnLEkQ5aGfATAQo4CuTwzUKiY3
-         rg+1wTwc3hQVza+b16imQXE2VMpH7vZONUMBCuqSrC+gdXjiZHIkVZDUUmarg8uSbM
-         /xfkGtz39CzjReUHVn0LZf2FJuh3On6FJx2FpDVDMgw+Em1RhpvahSdeST5qCx/U0p
-         qO6yeApy5peJe5+e8i5e4fwTD2Bx295bV6GKFFMbFD0KhLmhlrSrW9jLEtkZ+zkysG
-         JkCJ+PmXc/cQg==
-Date:   Wed, 27 Apr 2022 19:31:53 +0100
+        s=k20201202; t=1651084181;
+        bh=fRl5QBRUFoyxdbbm3vGEjIHcST0fn5HSwLbzywIOR88=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=S8NLpJlqQOJyElbKUJJOnr+U4ja2LlNcd+OC4joCmAKAScIa70Ye091wNYNzN5DRe
+         KjP7YG8mqFdNbFUr/EJs2+oPXu2WJo1Y9Re09xyPlQmvdtq7fB6Fa7VyUY2DEp62t7
+         aA7xm2Aad+zOw7UkxhDEJVPkgDNkOaBsxMpQ2XpW4lKkpediuXDLIGMfHzWsSJFog2
+         TpM06F+bNcPxOTlgDSUK1eCEKBM/LXpbEKFGtegRgnEXydGd8mrUA4hs85HecPwJHd
+         7RBrXPqFiatb3CZJF8pdREpRd6LFaxiPItMnyeybMvPP7gr4vKevqnRykBvGN92Bfe
+         d3bYarlrLQ+4A==
+Date:   Wed, 27 Apr 2022 19:37:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] 1st set of IIO fixes for 5.18
-Message-ID: <20220427193153.69d3237b@jic23-huawei>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Subject: Re: [PATCH v2 3/3] iio: imu: adis16480: Improve getting the
+ optional clocks
+Message-ID: <20220427193750.33d271be@jic23-huawei>
+In-Reply-To: <20220414131559.24694-3-andriy.shevchenko@linux.intel.com>
+References: <20220414131559.24694-1-andriy.shevchenko@linux.intel.com>
+        <20220414131559.24694-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -49,108 +57,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The following changes since commit 3123109284176b1532874591f7c81f3837bbdc17:
+On Thu, 14 Apr 2022 16:15:59 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-  Linux 5.18-rc1 (2022-04-03 14:08:21 -0700)
+> The extended clocks are optional and may not be present for some
+> configurations supported by this driver. Nevertheless, in case
+> the clock is provided but some error happens during its getting,
+> that error handling should be done properly.
+>=20
+> Use devm_clk_get_optional() API and report possible errors using
+> dev_err_probe() to handle properly -EPROBE_DEFER error.
+>=20
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Series applied with Nuno's Tested-by as sent to v1.
 
-are available in the Git repository at:
+Thanks,
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fi=
-xes-for-5.18a
+Jonathan
 
-for you to fetch changes up to b5d6ba09b10d2ccb865ed9bc45941db0a41c6756:
+> ---
+> v2: added tag (Nuno), massaged commit message (Nuno)
+>  drivers/iio/imu/adis16480.c | 26 ++++++++++----------------
+>  1 file changed, 10 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
+> index 287914016f28..fe520194a837 100644
+> --- a/drivers/iio/imu/adis16480.c
+> +++ b/drivers/iio/imu/adis16480.c
+> @@ -1362,31 +1362,25 @@ static int adis16480_get_ext_clocks(struct adis16=
+480 *st)
+>  {
+>  	struct device *dev =3D &st->adis.spi->dev;
+> =20
+> -	st->clk_mode =3D ADIS16480_CLK_INT;
+> -	st->ext_clk =3D devm_clk_get(dev, "sync");
+> -	if (!IS_ERR_OR_NULL(st->ext_clk)) {
+> +	st->ext_clk =3D devm_clk_get_optional(dev, "sync");
+> +	if (IS_ERR(st->ext_clk))
+> +		return dev_err_probe(dev, PTR_ERR(st->ext_clk), "failed to get ext clk=
+\n");
+> +	if (st->ext_clk) {
+>  		st->clk_mode =3D ADIS16480_CLK_SYNC;
+>  		return 0;
+>  	}
+> =20
+> -	if (PTR_ERR(st->ext_clk) !=3D -ENOENT) {
+> -		dev_err(dev, "failed to get ext clk\n");
+> -		return PTR_ERR(st->ext_clk);
+> -	}
+> -
+>  	if (st->chip_info->has_pps_clk_mode) {
+> -		st->ext_clk =3D devm_clk_get(dev, "pps");
+> -		if (!IS_ERR_OR_NULL(st->ext_clk)) {
+> +		st->ext_clk =3D devm_clk_get_optional(dev, "pps");
+> +		if (IS_ERR(st->ext_clk))
+> +			return dev_err_probe(dev, PTR_ERR(st->ext_clk), "failed to get ext cl=
+k\n");
+> +		if (st->ext_clk) {
+>  			st->clk_mode =3D ADIS16480_CLK_PPS;
+>  			return 0;
+>  		}
+> -
+> -		if (PTR_ERR(st->ext_clk) !=3D -ENOENT) {
+> -			dev_err(dev, "failed to get ext clk\n");
+> -			return PTR_ERR(st->ext_clk);
+> -		}
+>  	}
+> =20
+> +	st->clk_mode =3D ADIS16480_CLK_INT;
+>  	return 0;
+>  }
+> =20
+> @@ -1447,7 +1441,7 @@ static int adis16480_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (!IS_ERR_OR_NULL(st->ext_clk)) {
+> +	if (st->ext_clk) {
+>  		ret =3D adis16480_ext_clk_config(st, true);
+>  		if (ret)
+>  			return ret;
 
-  iio: imu: inv_icm42600: Fix I2C init possible nack (2022-04-16 15:03:58 +=
-0100)
-
-----------------------------------------------------------------
-1st set of IIO fixes for the 5.18 cycle
-
-ad3552r:
- - Fix a bug with error codes being stored in unsigned local variable.
- - Fix IS_ERR when value is either NULL or not rather than ERR_PTR
-ad5446
- - Fix shifting of read_raw value.
-ad5592r
- - Fix missing return value being set for a fwnode property read.
-ad7280a
- - Wrong variable being used to set thresholds.
-admv8818
- - Kconfig dependency fix.
-ak8975
- - Missing regulator disable in error path.
-bmi160
- - Disable regulators in an error path.
-dac5571
- - Fix chip id detection for devices with OF bindings.
-inv_icm42600
- - Handle a case of a missing I2C NACK during initially configuration.
-ltc2688
- - Fix voltage scaling where integer part was written twice and
-   decimal part not at all.
-scd4x
- - Handle error before using value.
-sx9310
- - Device property parsing against indio_dev->dev.of_node which
-   hasn't been set yet.
-sx9324
- - Fix hardware gain related maths.
- - Wrong defaults for precharge internal resistance register.
-
-----------------------------------------------------------------
-Dan Carpenter (2):
-      iio: dac: ad3552r: fix signedness bug in ad3552r_reset()
-      iio:dac:ad3552r: Fix an IS_ERR() vs NULL check
-
-Fawzi Khaber (1):
-      iio: imu: inv_icm42600: Fix I2C init possible nack
-
-Gwendal Grignou (1):
-      iio: sx9324: Fix default precharge internal resistance register
-
-Jonathan Cameron (1):
-      iio: adc: ad7280a: Fix wrong variable used when setting thresholds.
-
-Jose Cazarin (1):
-      iio: dac: dac5571: Fix chip id detection for OF devices
-
-Michael Hennerich (1):
-      iio: dac: ad5446: Fix read_raw not returning set value
-
-Nuno S=C3=A1 (1):
-      iio: dac: ltc2688: fix voltage scale read
-
-Stephen Boyd (2):
-      iio:proximity:sx_common: Fix device property parsing on DT systems
-      iio:proximity:sx9324: Fix hardware gain read/write
-
-Tom Rix (1):
-      iio: scd4x: check return of scd4x_write_and_fetch
-
-Tong Zhang (1):
-      iio:imu:bmi160: disable regulator in error path
-
-Wang ShaoBo (1):
-      iio:filter:admv8818: select REGMAP_SPI for ADMV8818
-
-Zheyu Ma (1):
-      iio: magnetometer: ak8975: Fix the error handling in ak8975_power_on()
-
-Zizhuang Deng (1):
-      iio: dac: ad5592r: Fix the missing return value.
-
- drivers/iio/adc/ad7280a.c                       | 12 +++++-----
- drivers/iio/chemical/scd4x.c                    |  5 +++-
- drivers/iio/dac/ad3552r.c                       |  6 ++---
- drivers/iio/dac/ad5446.c                        |  2 +-
- drivers/iio/dac/ad5592r-base.c                  |  2 +-
- drivers/iio/dac/ltc2688.c                       |  2 +-
- drivers/iio/dac/ti-dac5571.c                    | 28 ++++++++++++++--------
- drivers/iio/filter/Kconfig                      |  1 +
- drivers/iio/imu/bmi160/bmi160_core.c            | 20 +++++++++++-----
- drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c | 15 +++++++-----
- drivers/iio/magnetometer/ak8975.c               |  1 +
- drivers/iio/proximity/sx9324.c                  | 32 +++++++++++++++++++--=
-----
- drivers/iio/proximity/sx_common.c               |  1 +
- 13 files changed, 85 insertions(+), 42 deletions(-)

@@ -2,131 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B676F5121D6
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 20:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870CE512239
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 21:13:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231415AbiD0TA0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 15:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34374 "EHLO
+        id S232397AbiD0TQO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 15:16:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232000AbiD0TAV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 15:00:21 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF533E5FE
-        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 11:45:55 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id e2so3724530wrh.7
-        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 11:45:55 -0700 (PDT)
+        with ESMTP id S232878AbiD0TPx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 15:15:53 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BAAE56759
+        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 12:08:15 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id w17-20020a17090a529100b001db302efed6so947087pjh.4
+        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 12:08:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=f6A2106wpv8FyptFj0CXPhRPGyQFfkvsvlQQIXuralk=;
-        b=USObKSJ2kUmKR31NngLz5pIhR33a1ZqcyGnNJvvYxbtjXLPQ7/hNFRSGycWBoFt1nc
-         N59r9GCtKEmYZj+ib5amTDGDj14ILlYXGFtMVNvOyhmi5HMcGMWTx3wGdr9Kaa/Xd8Pv
-         JFg5T4JrpfTKFMvZurcH4H0qA/oFeuochOGfzpSJEYbSxIlXdWL0a6Ht91kjt5uiL5Vm
-         9MRD1gGbh3/YwNuS3P35nfQ97q+CWsojhI5X/qzkWKSGTLr3Wotx67sIZmRB9kBuy9QQ
-         ds6kBFj6Va/Tv0NYAzeJIwu+5RdbvIdSZZ7GeNN45cRktvWeQnnXVX1umxvn6He7Op+1
-         xCCg==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tHDiEZrHl9nH2N/zDBesAq/7lnCE6j8pHjNAhPQQfdI=;
+        b=brwMDR0fSvlwHWM+/vstq5+R2gcLlXx8UtsNM74Y2bVh0VoFFjT/ct9B5zb0UAb684
+         EkVOTHpAjgA9TWxHVmHFqgZ2K/jxt5OXaHUALZcKhcPTj/6HSAbNFncCVIy8w8egHC3q
+         HF5qJ4JndX/xP0h7HE3q7D1NYTXzx+CSTvR3o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=f6A2106wpv8FyptFj0CXPhRPGyQFfkvsvlQQIXuralk=;
-        b=IVguDTPONZ0AHJyg0U+1n+BNMxCuQoxIhuW2VcW0K+zE8QPWu+gPT0DVgU7yi/8FK+
-         yhMnxr+f3YA/GhIJeqiupxi65I6/0AeMPiuoxOjyDakA/xxQrWPj6Fv3/+39np5UmJeN
-         qY7uVyAfz1pW5jrDcUU4L6i290/EpnQ0EvRayFOe8mOTD3NXYBE5uwm6f1Z1VmCtq6iq
-         sxqKiEVZwR3D1zdw2kOG5FxKhmswEnBxZrfZTOjK7nw6Ft3EfESN/qGUf3kZFkp2xKKn
-         TbAgnZqC88qH6RxxgIkASvfQnMasPxhPpeLnlhjJ7Q6PZlAHaTTV6403CcVqFypdo0QE
-         ZvhQ==
-X-Gm-Message-State: AOAM531HzPFJrXWLuh4L2y1fLJyN7upM30w79d7N2flTEmEq8jjA4XYW
-        c+7GWWSnIymCrDIi9n/HaM7JBA==
-X-Google-Smtp-Source: ABdhPJxx/6zywqLRr3upfT6X/fKMN9/MUALq+nXlNuxuHRehXy0gUkKXOtbbfTTNa2tlTpDBgcRNkA==
-X-Received: by 2002:a5d:47c4:0:b0:20a:e090:8590 with SMTP id o4-20020a5d47c4000000b0020ae0908590mr10237714wrc.465.1651085154133;
-        Wed, 27 Apr 2022 11:45:54 -0700 (PDT)
-Received: from [192.168.0.33] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id n13-20020a5d51cd000000b0020af0706b9csm1774340wrv.53.2022.04.27.11.45.52
+        bh=tHDiEZrHl9nH2N/zDBesAq/7lnCE6j8pHjNAhPQQfdI=;
+        b=d7MzeIFdtL3PEFZSMXR79o6JBz0nWK7D0g+8LnCnH4GHZ3vHXC+gcyUUFqxBUMysTR
+         AIz/5iCP8ut8yqKIqTCRmX263c4uuQ4wM36H0mAq9L6wA0YAhWWeeAa4qlCJ6j/29Qw5
+         cLwij/QFMcu0MJvYx1XrT6RrexaT1XjlcTJqac72lUqCoPi/oh7pwq6Wg7/966OMQdzt
+         3pAEsSV5CaoXoUk+tz3NOBqO9J8YY4zGcMDmBa/EyUl2CYCQDx/0E68nQKM73Xa106u9
+         FvLVVx6+C2vZuaVwCgGhwrgLutbTbQm9oR8Wn3rCCK+LCeYaoSeBIdyY7Es2ghjFN+he
+         XiaA==
+X-Gm-Message-State: AOAM5324612Qvb6jKxrTx1bb7Lp+vDzv1FJNZJrixK5Bqo/KLw1ialK5
+        SHfy8uyakjgFNQnrzvsuQekzMA==
+X-Google-Smtp-Source: ABdhPJxtpPPkmBIxQlpoh2F3txapmusSSdcidX2DNysGdNuDpq2DCHguc9i9y565ffXX/VyYvJzlBw==
+X-Received: by 2002:a17:90b:4a4c:b0:1d9:4c8e:8d3d with SMTP id lb12-20020a17090b4a4c00b001d94c8e8d3dmr23946734pjb.215.1651086494641;
+        Wed, 27 Apr 2022 12:08:14 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:e71:6689:b6a2:6150])
+        by smtp.gmail.com with UTF8SMTPSA id m9-20020a17090aab0900b001d2bff34228sm7889925pjq.9.2022.04.27.12.08.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Apr 2022 11:45:52 -0700 (PDT)
-Message-ID: <850d2c2d-9531-ed4c-48fc-2daa0311e3e6@linaro.org>
-Date:   Wed, 27 Apr 2022 19:45:51 +0100
+        Wed, 27 Apr 2022 12:08:14 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     jic23@kernel.org
+Cc:     bleung@chromium.org, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH v2 0/2] chrome: Remove Custom ABI |location| attribute
+Date:   Wed, 27 Apr 2022 12:08:02 -0700
+Message-Id: <20220427190804.961697-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.36.0.464.gb9c8b46e94-goog
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v13 3/9] mfd: qcom-spmi-pmic: read fab id on supported
- PMICs
-Content-Language: en-US
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        sumit.semwal@linaro.org, amit.pundir@linaro.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-References: <20220323162820.110806-1-caleb@connolly.tech>
- <20220323162820.110806-4-caleb@connolly.tech> <Yma4tXvPQ+U89Whr@google.com>
- <10f7cb8e-4c2a-0bba-df55-16b56d429147@linaro.org>
- <Ymg455MYRIJTXgvW@google.com>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <Ymg455MYRIJTXgvW@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Instead of using the custom |location| attribute, use the |label| attribute
+introduced in kernel 5.8.
+A new location is required for sensors located in a camera subassembly that
+swivels.
 
+---
+ changes in v2:
+ * Add "accel-camera" define.
+ * remove |location| attribute completely.
 
-On 26/04/2022 19:24, Lee Jones wrote:
-> On Tue, 26 Apr 2022, Caleb Connolly wrote:
->> On 25/04/2022 16:05, Lee Jones wrote:
->>> On Wed, 23 Mar 2022, Caleb Connolly wrote:
->>>
->>>> From: Caleb Connolly <caleb.connolly@linaro.org>
->>>>
->>>> The PMI8998 and PM660 expose the fab_id, this is needed by drivers like
->>>> the RRADC to calibrate ADC values.
->>>>
->>>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
->>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->>>> Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->>>> ---
->>>>    drivers/mfd/qcom-spmi-pmic.c      | 7 +++++++
->>>>    include/soc/qcom/qcom-spmi-pmic.h | 1 +
->>>>    2 files changed, 8 insertions(+)
->>>
->>> Please change the Subject line to match the style of the sub-system?
->> Hi, sorry if this is a silly question, I don't quite understand what you
->> want me to change here, the subject line is in the same "mfd: driver:"
->> format as other patches in the subsystem?
-> 
-> mfd: qcom-spmi-pmic: Read fab ID on supported PMICs
-> 
-> What's 'fab' should that be capitalised too?
-"fab" is short for fabrication I think, the register value can be used to 
-determine which factory the chip was manufactured in.
+Gwendal Grignou (2):
+  iio: ABI: Add a new location label
+  iio: common: cros_ec_sensors: Add label attribute
 
-I can make it clearer and go for
-
-mfd: qcom-spmi-pmic: Read fabrication ID on supported PMICs
-> 
->>> Once changed:
->>>
->>>     Acked-by: Lee Jones <lee.jones@linaro.org>
->>>
->>
-> 
+ Documentation/ABI/testing/sysfs-bus-iio       |  5 ++++
+ drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
+ .../cros_ec_sensors/cros_ec_sensors_core.c    | 30 ++++++-------------
+ drivers/iio/light/cros_ec_light_prox.c        |  2 --
+ drivers/iio/pressure/cros_ec_baro.c           |  2 --
+ .../linux/iio/common/cros_ec_sensors_core.h   |  2 --
+ 6 files changed, 15 insertions(+), 28 deletions(-)
 
 -- 
-Kind Regards,
-Caleb (they/he)
+2.36.0.464.gb9c8b46e94-goog
+

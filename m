@@ -2,131 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 819F6512240
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 21:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FA61512430
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Apr 2022 23:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232982AbiD0TSG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Apr 2022 15:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
+        id S231615AbiD0VFO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Apr 2022 17:05:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233051AbiD0TR5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 15:17:57 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A166E552
-        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 12:10:50 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id o5so592289ils.11
-        for <linux-iio@vger.kernel.org>; Wed, 27 Apr 2022 12:10:50 -0700 (PDT)
+        with ESMTP id S229965AbiD0VFL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Apr 2022 17:05:11 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7A2BF43;
+        Wed, 27 Apr 2022 14:01:58 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id d23-20020a17090a115700b001d2bde6c234so4491202pje.1;
+        Wed, 27 Apr 2022 14:01:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
+        d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=+3PWt4Rx4ZteMbjxV0SmKDUTzic25+CKRGIaTJQR0N8=;
-        b=YmazCg27BiRRqmD3nSMJgXi8IoIQvs0pLjF/tBLV3gG46UabAK2gubBRokmpmjQjQc
-         xXLNwH3zDHL+y5sb6QF0UWNjlIwWExuhHUZwN5r8l8MA82OYo42UTzQvN7vNSku2LnPn
-         1zxGz0oBDqX/ufeSeggPSn54FnHE63bF+bEJY=
+        bh=DqYFNy0Ye1hG0JvZqo/UaJOYPE63YVH9ZWtIRJQCusE=;
+        b=XQLshbFroY/oV5ijkx6Jh5DxQyHuOqj2ianmBSoFT+s6hC/g6qq91dNna3cR24DCdj
+         4jI2UzB0lDjDClKeu3wVpDkKT9CgW5SGiOeYulemQwJAL94tLwkZ9BqD7N/ayIY01W66
+         RHG7Z53plRevZQRErpmKz7AxHUUDNybKQYZzxEIC+G35RUrxDqjnWLKWQDowOmNrFqI4
+         nzbvYc0swtbUGueZbtgttFuKKin+3PoqpVsbDAofEcS+t9H8+YUUCi92N6EU0gjjhMms
+         x1xY6UABX9aBNVrq5dmv1pOrj38SuNUicZ6xgQo35x9hv42UjhdT+daYI+ANNFk1WukP
+         edWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+3PWt4Rx4ZteMbjxV0SmKDUTzic25+CKRGIaTJQR0N8=;
-        b=ps1PhZTnRSacIqRCU1FcRRGx3UGjT2mRPb06IAZ3g9EBKQo0ORdx6I0NtzDsEIJ/JI
-         e98rXWFDvZvDA4ELruVFd5f5JrJIbxPVU5FV7XUxiWkIQ2ZdbPSUk7aczA2z7xa74bn/
-         WUrNh+mSv3rlPaSYHDW47+LAfIQqME2ctiZ9CKXMme2LuLf9BzKcf62B4dHovcShaSph
-         IL3dXEFpws7i6gjnGZ/UvP1Hl/1sUUQgDJFg9EZ6D9wOa1YQXKfPWpTgzkp1ceYPzt2h
-         W1uUyVyR7to82CBS2+Fn7RrnYuwNFMbh8CNRu7QSIyahPEAQ92tw1O1l9E2tdTia7x3q
-         4aZw==
-X-Gm-Message-State: AOAM5302H2ci61MOaZTcc+rMtDe8MVT6qmY+tuj1PEurP2DTdGP4mePA
-        pEnoKJu4z17MGLos6mYz+JYS/zOfbf++ixsAaKxkNou/4g0=
-X-Google-Smtp-Source: ABdhPJzKCyF0jBjQmjn+36I/2FVyp2iT8GhYYQuhQ06dWjwxCxTTkTnCHCpsmeiQz+nKu4Lv+cFLyObHzkRXoaG3UUM=
-X-Received: by 2002:a05:6e02:1ba3:b0:2cd:58d9:726f with SMTP id
- n3-20020a056e021ba300b002cd58d9726fmr11835774ili.61.1651086649469; Wed, 27
- Apr 2022 12:10:49 -0700 (PDT)
+        bh=DqYFNy0Ye1hG0JvZqo/UaJOYPE63YVH9ZWtIRJQCusE=;
+        b=N5OUJ0uruDRmCYAxttEEFcWWbuE0zJ1VHkIiY3J6COgP6I79T3Bbs8oW/bDB9N2Y8a
+         1LJks5GOdyO0v2XHXR4CYYkdORE/AMm6bh20QhFYhVvIJ6xIHPQ7/4ADSvS2cXRl0MnS
+         ZWtf3bdHxH0qjU2goDLBlCN/+ETgF4rfq7b2bB7/Kl/iCHewThHbd0Y065ev1T71/5D3
+         7oMvV8wPAen6rwdskSKGWyYgjmxFTpYuc0fB1kj4zlqZx7VPQPcdfFZp3HjwlwkdLOqS
+         hj7KfPFu9BQzeCsrrT2Rb2o9hw5y+l8ICFVaEO5/Bf/Sm47r0tEp9OJRXg60vV4IfBPL
+         wC8g==
+X-Gm-Message-State: AOAM533CoDlArrE5cAQESANZl/2FhtLVn2tode0h2jVZZag3FkkqsWLz
+        9hP2u9l+Q2Qs6kqKzT/D12oGIQABiEUHW95PSB4=
+X-Google-Smtp-Source: ABdhPJxpuB5tajITNAXKzFz4oroSs+BVtuP2/qtQEvVhRgsZMYpDDRUxPfKPCeC0hQ+aGsaNXz8nOdpgl9J6OPUDxg4=
+X-Received: by 2002:a17:90b:1d0e:b0:1d2:79e9:21aa with SMTP id
+ on14-20020a17090b1d0e00b001d279e921aamr45334321pjb.153.1651093318360; Wed, 27
+ Apr 2022 14:01:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220412210703.3842914-1-gwendal@chromium.org> <20220416151049.43844f70@jic23-huawei>
-In-Reply-To: <20220416151049.43844f70@jic23-huawei>
-From:   Gwendal Grignou <gwendal@chromium.org>
-Date:   Wed, 27 Apr 2022 12:10:38 -0700
-Message-ID: <CAPUE2ut4bv0EZt9EQ1xmN5s=LMMBzViYpZk0o1CyHP7HxqDvOA@mail.gmail.com>
-Subject: Re: [PATCH] iio: common: cros_ec_sensors: Add label attribute
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     enric.balletbo@collabora.com, bleung@chromium.org,
-        linux-iio@vger.kernel.org
+References: <20220420211105.14654-1-jagathjog1996@gmail.com>
+ <20220420211105.14654-6-jagathjog1996@gmail.com> <CAHp75Ve8mruPEyorSmydAHM27rnL9Wv+qNdWyQ9tVxz-+JJYiQ@mail.gmail.com>
+In-Reply-To: <CAHp75Ve8mruPEyorSmydAHM27rnL9Wv+qNdWyQ9tVxz-+JJYiQ@mail.gmail.com>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Thu, 28 Apr 2022 02:31:47 +0530
+Message-ID: <CAM+2EuJ3n4RVHVh9ZH-HkkjUm+zLLt=g34H5aOxPiDW673NOrw@mail.gmail.com>
+Subject: Re: [PATCH v4 5/9] iio: accel: bma400: Add separate channel for step counter
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Apr 16, 2022 at 7:02 AM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 12 Apr 2022 14:07:03 -0700
-> Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> > When sensor location is known, populate iio sysfs "label" attribute:
-> >
-> > * "accel-base" : the sensor is in the base of the convertible (2-1)
-> >   device.
-> > * "accel-display" : the sensor is in the lid/display plane of the
-> >   device.
-> >
-> > It apply to standalone accelerometer and IMU (accelerometer +
-> > gyroscope).
-> >
-> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
->
-> I'm happy with this change, but I think it would
-> be good for the patch description to include 'why' you want to
-> add this. I assume that's to make use of the standard ABI rather
-> than the custom ABI we introduced for this driver. We'd have
-> used label for this in the first place if it had been an option
-> at the time, but given we didn't what is the logic for duplicating
-> this information?
-I removed the duplication in v2, I needed to add a define for the
-narrow case where a sensor is in a camera subassembly.
-Note the location attribute can apply to other sensors than
-accelerometers (gyroscope, light sensor).
+Hi Andy,
 
-Thanks,
-
-Gwendal.
+On Wed, Apr 27, 2022 at 6:04 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  .../iio/common/cros_ec_sensors/cros_ec_sensors_core.c    | 9 ++++++++-
-> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> On Wed, Apr 20, 2022 at 11:11 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
 > >
-> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > index 989b109a82f47..f86b938b36bf8 100644
-> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> > @@ -325,6 +325,8 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >       indio_dev->name = pdev->name;
-> >
-> >       if (physical_device) {
-> > +             enum motionsensor_location loc;
+> > Added channel for step counter which can be enable or disable
+> > through the sysfs interface.
+>
+> ...
+>
+> > +static int bma400_enable_steps(struct bma400_data *data, int val)
+> > +{
+> > +       int ret;
 > > +
-> >               state->param.cmd = MOTIONSENSE_CMD_INFO;
-> >               state->param.info.sensor_num = sensor_platform->sensor_num;
-> >               ret = cros_ec_motion_send_host_cmd(state, 0);
-> > @@ -333,7 +335,12 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
-> >                       return ret;
-> >               }
-> >               state->type = state->resp->info.type;
-> > -             state->loc = state->resp->info.location;
-> > +             loc = state->resp->info.location;
-> > +             if (loc == MOTIONSENSE_LOC_BASE)
-> > +                     indio_dev->label = "accel-base";
-> > +             else if (loc == MOTIONSENSE_LOC_LID)
-> > +                     indio_dev->label = "accel-display";
-> > +             state->loc = loc;
-> >
-> >               /* Set sign vector, only used for backward compatibility. */
-> >               memset(state->sign, 1, CROS_EC_SENSOR_MAX_AXIS);
+> > +       if (data->steps_enabled == val)
+> > +               return 0;
+> > +
+> > +       ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG1_REG,
+> > +                                BMA400_STEP_INT_MSK,
+> > +                                FIELD_PREP(BMA400_STEP_INT_MSK, !!val));
 >
+> > +       data->steps_enabled = val;
+>
+> This will update the value even if we got an error and actual device
+> state is unknown here. Does this make sense?
+
+I will correct this in the next series.
+
+>
+> > +       return ret;
+> > +}
+>
+> ...
+>
+> I perhaps missed why kmalloc() is needed now. Any pointers to the discussion?
+
+Here step is a 24-bit value and since this is a sysfs channel read (slow path),
+kmalloc() is used to make the buffer DMA safe to read the multibyte value
+using regmap_bulk_read().
+
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+
+Thank you,
+Jagath

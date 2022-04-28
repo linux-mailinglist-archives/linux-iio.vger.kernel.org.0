@@ -2,48 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C84F9512EA1
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Apr 2022 10:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53702513714
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Apr 2022 16:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344291AbiD1Ijh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Apr 2022 04:39:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38990 "EHLO
+        id S1348511AbiD1Ol6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Apr 2022 10:41:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344705AbiD1IjJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Apr 2022 04:39:09 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25436AAE31
-        for <linux-iio@vger.kernel.org>; Thu, 28 Apr 2022 01:31:35 -0700 (PDT)
-Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KppgG6tfxz6864T;
-        Thu, 28 Apr 2022 16:28:58 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.24; Thu, 28 Apr 2022 10:31:32 +0200
-Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 28 Apr
- 2022 09:31:32 +0100
-Date:   Thu, 28 Apr 2022 09:31:30 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Gwendal Grignou <gwendal@chromium.org>
-CC:     <jic23@kernel.org>, <bleung@chromium.org>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] chrome: Remove Custom ABI |location| attribute
-Message-ID: <20220428093130.000051b2@Huawei.com>
-In-Reply-To: <20220427190804.961697-1-gwendal@chromium.org>
-References: <20220427190804.961697-1-gwendal@chromium.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S1345616AbiD1Ol5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Apr 2022 10:41:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1A1515BF
+        for <linux-iio@vger.kernel.org>; Thu, 28 Apr 2022 07:38:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 423B561E63
+        for <linux-iio@vger.kernel.org>; Thu, 28 Apr 2022 14:38:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4C6C385A9;
+        Thu, 28 Apr 2022 14:38:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1651156719;
+        bh=SNFj16B2i13xHLFMk2BBmzV4xdVrE3i2kWYMQwzWG3o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XDALSjA9LN8/IYZhpzpv7KrJLXOIncd6x50NgUx1gMukumEM+/qWxMxnPFiOOky6Q
+         Egwl6gFchiiQvVPErZ0nlEQYrFz+snDyt5HMG8rs9fvPUu1rhoCUJTtPhvpfVk3GFG
+         4+x2HGvY5Bn+Nls//t7Nhj36c0M5JWELuV7IZH1c=
+Date:   Thu, 28 Apr 2022 16:37:59 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] 1st set of IIO fixes for 5.18
+Message-ID: <Ymqmx1CrtDsV33HG@kroah.com>
+References: <20220427193153.69d3237b@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhreml719-chm.china.huawei.com (10.201.108.70) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220427193153.69d3237b@jic23-huawei>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,37 +48,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 Apr 2022 12:08:02 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
-
-> Instead of using the custom |location| attribute, use the |label| attribute
-> introduced in kernel 5.8.
-> A new location is required for sensors located in a camera subassembly that
-> swivels.
+On Wed, Apr 27, 2022 at 07:31:53PM +0100, Jonathan Cameron wrote:
+> The following changes since commit 3123109284176b1532874591f7c81f3837bbdc17:
 > 
-
-I'm assuming this ABI change is fine because you can change the software stack
-as well?
-
-Is this likely to break anyone relying on the old location attribute?
-
-Jonathan
-
-> ---
->  changes in v2:
->  * Add "accel-camera" define.
->  * remove |location| attribute completely.
+>   Linux 5.18-rc1 (2022-04-03 14:08:21 -0700)
 > 
-> Gwendal Grignou (2):
->   iio: ABI: Add a new location label
->   iio: common: cros_ec_sensors: Add label attribute
+> are available in the Git repository at:
 > 
->  Documentation/ABI/testing/sysfs-bus-iio       |  5 ++++
->  drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
->  .../cros_ec_sensors/cros_ec_sensors_core.c    | 30 ++++++-------------
->  drivers/iio/light/cros_ec_light_prox.c        |  2 --
->  drivers/iio/pressure/cros_ec_baro.c           |  2 --
->  .../linux/iio/common/cros_ec_sensors_core.h   |  2 --
->  6 files changed, 15 insertions(+), 28 deletions(-)
-> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.18a
 
+Pulled and pushed out, thanks.
+
+greg k-h

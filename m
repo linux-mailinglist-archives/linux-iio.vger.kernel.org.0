@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF6FD513C22
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Apr 2022 21:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6DC4513C2A
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Apr 2022 21:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240044AbiD1Tjq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Apr 2022 15:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34802 "EHLO
+        id S231975AbiD1Tkm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Apr 2022 15:40:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231975AbiD1Tjp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Apr 2022 15:39:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BB77246F;
-        Thu, 28 Apr 2022 12:36:29 -0700 (PDT)
+        with ESMTP id S1351454AbiD1Tkl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Apr 2022 15:40:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11BFAC93D
+        for <linux-iio@vger.kernel.org>; Thu, 28 Apr 2022 12:37:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 70582B82F43;
-        Thu, 28 Apr 2022 19:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9763C385A9;
-        Thu, 28 Apr 2022 19:36:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 824E6B82F9E
+        for <linux-iio@vger.kernel.org>; Thu, 28 Apr 2022 19:37:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF3BC385A0;
+        Thu, 28 Apr 2022 19:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651174587;
-        bh=cSMidqnlE3j/eY2lhTjf9VRgCqtFpz9vGthamTRuL+8=;
+        s=k20201202; t=1651174643;
+        bh=igRmVEiBraxE3aq3Sa0eE+GptGraV5NJ/ZOM6sTukI0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=u9oSBje68Ff1k3S8mO/tdyHLAVrulHZfJGmJ3RxzFAvsdOB5UlGFIdkvZz585++af
-         lKPOgEj+WJkFNq3wDBOy3YJFXiCLONuDzGE8GQw0vlMGzRv7jmuA0SPGc5cYSxRyYn
-         vsIVeL9O70Tcw9cCElhDd4FHoN3/aVNSBIsPuHIjVR+bCyyoYKyCe9iVim6z40ABGX
-         Gon1CgSBJgAtAHlosceV6sv05t5J79rnHJRpFUvtwohp15Pmg6SBC/dZXcg07StR9t
-         evPITLosBjXK2IlUPEhlZ6A2hAT8JhIjzV379I2AP705syW24R+pEw/iGezPQxgt4K
-         DRyQysF9rCrCw==
-Date:   Thu, 28 Apr 2022 20:44:39 +0100
+        b=ImwYrwVvkZ94Zlz9EGd+JaZQJ2SkEQCc6TD0rBY7q9ENSPXsa04W9T+QXAKEIIp4v
+         BqKYk1SLyFHB2xJBpEB7QyD4gJBLFZ7iZrHxBAjXMIpWiEtMHM8iDXjHXbd65TiOkf
+         7dM8PiE5vXXwfmkFBlgWs7KTXIybHqgd+TT2eOnQpI7VoY/mr4YeKivC94+PvXt6AA
+         8Qibwu3i/HHzoU+Lc96SYkJk1waO/tNq5CIeQpeatfLnyAR+cd3sCtTZnk2owrqTDR
+         wQ0+GfusBXqyjo34ITzN+N0x0bUXPocLJxIj6EQlv5WcuJg3zFOOR7MzOK+I5QreCj
+         hqmGSdXNBfDRw==
+Date:   Thu, 28 Apr 2022 20:45:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Add support for texas dac121c081 to the dac5571
- driver
-Message-ID: <20220428204439.4ec2b4ae@jic23-huawei>
-In-Reply-To: <42db911c-5eba-0511-3e8c-8011a2a5b44a@axentia.se>
-References: <42db911c-5eba-0511-3e8c-8011a2a5b44a@axentia.se>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH] iio: gyro: mpu3050: Make mpu3050_common_remove() return
+ void
+Message-ID: <20220428204535.21a5a506@jic23-huawei>
+In-Reply-To: <CACRpkdZJ0ay5rTt5kqeh8UrKEOjJCDOuHvJaauVshcTOni6ijw@mail.gmail.com>
+References: <20220425191735.59032-1-u.kleine-koenig@pengutronix.de>
+        <CACRpkdZJ0ay5rTt5kqeh8UrKEOjJCDOuHvJaauVshcTOni6ijw@mail.gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,34 +57,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Apr 2022 22:46:30 +0200
-Peter Rosin <peda@axentia.se> wrote:
+On Mon, 25 Apr 2022 22:11:01 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> Hi!
-> 
-> The new chip works much like the other chips supported by the driver, so
-> this is just adding another compatible to the list.
-> 
-> Chenages since v1:
-> - Guenter Roeck noticed elsewhere that my mail setup was botched and
->   that my patches were clobbered. Hopefully fixed. *blush*
-> - added tags from Sean Nyekjaer and Rob Herring
+> On Mon, Apr 25, 2022 at 9:17 PM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@pengutronix.de> wrote:
+>=20
+> > This function (up to now) returns zero unconditionally, so there isn't
+> > any benefit of returning a value. Make it return void to be able to see
+> > at a glance that the return value of mpu3050_i2c_remove is always zero.
+> >
+> > This patch is a preparation for making i2c remove callbacks return void.
+> >
+> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> =
+=20
+>=20
+> Makes sense.
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>=20
+> Yours,
+> Linus Walleij
 
-Applied.  Thanks
+Applied. Thanks,
 
 Jonathan
-
-> 
-> Cheers,
-> Peter
-> 
-> Peter Rosin (2):
->   dt-bindings: iio: ti-dac5571: Add ti,dac121c081
->   iio: dac: ti-dac5571: add support for ti,dac121c081
-> 
->  Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml | 1 +
->  drivers/iio/dac/Kconfig                                   | 2 +-
->  drivers/iio/dac/ti-dac5571.c                              | 3 +++
->  3 files changed, 5 insertions(+), 1 deletion(-)
-> 
-

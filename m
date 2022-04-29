@@ -2,85 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 100D4513C2E
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Apr 2022 21:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB3F5514048
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Apr 2022 03:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351454AbiD1Tmj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Apr 2022 15:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40070 "EHLO
+        id S1353954AbiD2BkT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Apr 2022 21:40:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345395AbiD1Tmj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Apr 2022 15:42:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23763B6477;
-        Thu, 28 Apr 2022 12:39:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C9218B82F9E;
-        Thu, 28 Apr 2022 19:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A19BC385A9;
-        Thu, 28 Apr 2022 19:39:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651174761;
-        bh=UgDPG16EQ1o8xT5G2Ea0j8kDFXnr+CSGOT2RWoE8VOQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=c7y6YjCSsmAN3yTZNCKeLD0pnnoxkXOqAzNcIsAG+ykcNkY7wO1D7sNxd1WhOX/9U
-         VkNwwUqyt0A51yyjIiOUaGMgHbp40DaRmW3+suRBO0XtcmyfnlVuHrrYwSa1Q78w2m
-         W6TkGQZAns9tM0dYAzafTiJwQo0Xadw/6RYSWiiUGHYOfwg7uyelm2qaQiXiJO+fU/
-         i78gaInD3AbaWjdSJOx7nCBKgKSXcEmnxGSAUKiqEbhszG4pLklSwnDQil8G13Xk5M
-         1x9h2J6vCkuMygB9lC4B7YW87ONYW3+n18bcq5v2MvPMMbyMgXJH2czp3z+bWIllJe
-         xZ/sUh7ZWqPDw==
-Date:   Thu, 28 Apr 2022 20:47:33 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Slawomir Stepien <sst@poczta.fm>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: Fix incorrect compatible strings in
- examples
-Message-ID: <20220428204733.6af91db6@jic23-huawei>
-In-Reply-To: <Ymb6TfADJKd+a6Ys@robh.at.kernel.org>
-References: <20220422192039.2590548-1-robh@kernel.org>
-        <20220424171212.6d247854@jic23-huawei>
-        <Ymb6TfADJKd+a6Ys@robh.at.kernel.org>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S234027AbiD2BkT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Apr 2022 21:40:19 -0400
+Received: from mail.meizu.com (unknown [14.29.68.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA672E9D6;
+        Thu, 28 Apr 2022 18:36:59 -0700 (PDT)
+Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail04.meizu.com
+ (172.16.1.16) with Microsoft SMTP Server (TLS) id 14.3.487.0; Fri, 29 Apr
+ 2022 09:36:59 +0800
+Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
+ (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Fri, 29 Apr
+ 2022 09:36:57 +0800
+From:   Haowen Bai <baihaowen@meizu.com>
+To:     <jic23@kernel.org>
+CC:     <baihaowen@meizu.com>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH V4] iio: gp2ap020a00f: Fix signedness bug
+Date:   Fri, 29 Apr 2022 09:36:54 +0800
+Message-ID: <1651196214-7114-1-git-send-email-baihaowen@meizu.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <20220428194132.5a02555c@jic23-huawei>
+References: <20220428194132.5a02555c@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [172.16.137.70]
+X-ClientProxiedBy: IT-EXMB-1-123.meizu.com (172.16.1.123) To
+ IT-EXMB-1-125.meizu.com (172.16.1.125)
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_SOFTFAIL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Apr 2022 14:45:17 -0500
-Rob Herring <robh@kernel.org> wrote:
+function gp2ap020a00f_get_thresh_reg() is unsigned but returning -EINVAL
+errcode, and thresh_reg_l is unsigned but receiving -EINVAL errcode. so
+we have to change u8 -> int. Also we need to do index bound check at
+gp2ap020a00f_read_event_val().
 
-> On Sun, Apr 24, 2022 at 05:12:12PM +0100, Jonathan Cameron wrote:
-> > On Fri, 22 Apr 2022 14:20:39 -0500
-> > Rob Herring <robh@kernel.org> wrote:
-> >   
-> > > Fix a couple of examples using incorrect compatible strings.
-> > > 
-> > > Signed-off-by: Rob Herring <robh@kernel.org>  
-> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > or I can pick these up through IIO if preferred.  
-> 
-> Yes, please apply.
+Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+---
+V1->V2: s8 is not enough to hold an (arbitrary) error code. To be on the safe
+side we need to use int.
+V2->V3: add bound check at gp2ap020a00f_read_event_val().
+V3->V4: 
+1. add fix tag.
+2. add check before use at gp2ap020a00f_write_event_val().
+3. returns an error we should pass that on unchanged at
+gp2ap020a00f_read_event_val()
 
-Done,
+ drivers/iio/light/gp2ap020a00f.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Thanks,
-
-Jonathan
-
-> 
-> Rob
+diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
+index b820041159f7..13583e1191d4 100644
+--- a/drivers/iio/light/gp2ap020a00f.c
++++ b/drivers/iio/light/gp2ap020a00f.c
+@@ -994,7 +994,7 @@ static irqreturn_t gp2ap020a00f_trigger_handler(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static u8 gp2ap020a00f_get_thresh_reg(const struct iio_chan_spec *chan,
++static int gp2ap020a00f_get_thresh_reg(const struct iio_chan_spec *chan,
+ 					     enum iio_event_direction event_dir)
+ {
+ 	switch (chan->type) {
+@@ -1025,12 +1025,18 @@ static int gp2ap020a00f_write_event_val(struct iio_dev *indio_dev,
+ 	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
+ 	bool event_en = false;
+ 	u8 thresh_val_id;
+-	u8 thresh_reg_l;
++	int thresh_reg_l;
+ 	int err = 0;
+ 
+ 	mutex_lock(&data->lock);
+ 
+ 	thresh_reg_l = gp2ap020a00f_get_thresh_reg(chan, dir);
++
++	if (thresh_reg_l < 0){
++		err = thresh_reg_l;
++		goto error_unlock;
++	}
++
+ 	thresh_val_id = GP2AP020A00F_THRESH_VAL_ID(thresh_reg_l);
+ 
+ 	if (thresh_val_id > GP2AP020A00F_THRESH_PH) {
+@@ -1082,13 +1088,16 @@ static int gp2ap020a00f_read_event_val(struct iio_dev *indio_dev,
+ 				       int *val, int *val2)
+ {
+ 	struct gp2ap020a00f_data *data = iio_priv(indio_dev);
+-	u8 thresh_reg_l;
++	int thresh_reg_l;
+ 	int err = IIO_VAL_INT;
+ 
+ 	mutex_lock(&data->lock);
+ 
+ 	thresh_reg_l = gp2ap020a00f_get_thresh_reg(chan, dir);
+ 
++	if (thresh_reg_l < 0)
++		return thresh_reg_l;
++
+ 	if (thresh_reg_l > GP2AP020A00F_PH_L_REG) {
+ 		err = -EINVAL;
+ 		goto error_unlock;
+-- 
+2.7.4
 

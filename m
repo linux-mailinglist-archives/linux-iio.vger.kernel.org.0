@@ -2,55 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3AF251463A
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Apr 2022 12:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C2BF514980
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Apr 2022 14:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238985AbiD2KJ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Apr 2022 06:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59208 "EHLO
+        id S1359311AbiD2Mjx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Apr 2022 08:39:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238829AbiD2KJ2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Apr 2022 06:09:28 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E6886AF2
-        for <linux-iio@vger.kernel.org>; Fri, 29 Apr 2022 03:06:09 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id c11so277641wrn.8
-        for <linux-iio@vger.kernel.org>; Fri, 29 Apr 2022 03:06:09 -0700 (PDT)
+        with ESMTP id S242740AbiD2Mju (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Apr 2022 08:39:50 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA21C9B4F
+        for <linux-iio@vger.kernel.org>; Fri, 29 Apr 2022 05:36:31 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id i5so10587551wrc.13
+        for <linux-iio@vger.kernel.org>; Fri, 29 Apr 2022 05:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=5CntfCmjV+jt6ob6/zxp3NJtpyFCYLSjmSO47xgDfgc=;
-        b=oXA9dlu2adoUv261G7eAKYGi1UusCO0BveMUWtGi/h0x1gYMNR/5kar9EilfjqWqeH
-         RbQQah1OR9W1Epej6xFXyO2DPjGjQFkkaMoGvEr4GF+mznfy281mAKd4maVjO7gYS2gh
-         FD8fp7mOMZK+CvC9/hJbl7kU3k5kbgm9z9yYicwcQnnq1hQL8LyKyhlxeNqGwDfKKXvb
-         6ix2grTS4VjS3pXgcX+OIwhC6ah39pI7b5teZJFxBjc3PWFjTe1W5w0fMrKiOH1Nuqoz
-         i23aqjE5MO7AaSiLMfI3UnMTr5UtsaJCO4LnSs0sGiFOPXLF+1ATN9KndhWsBw0r5WNS
-         xWVA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=eHBs6Wa9r1VbHh/2aicD7vVCojI5eLmVYJiucsgDFTk=;
+        b=XqZ+y6bbbSv2+K44Xm6/VbTJoc9xIp1XuWEYMITpXxYMPU9cFVPOLnVUT4NgcviQtA
+         WrRCGQYy21MIJC+ZIpySVhHvbyFGrgtvYyjQ+7gid1dXuUJW7pFE9eEzuzMmvnld4X5b
+         k7zB4O+sjQOmCFfTpmo5mN9fI6D5M9hNyfQ5CogrFytmz9ZYe3xlLLv0RXXUOO54kmea
+         LPQZvfAlXUrjM60hCjVsG/m9SxIlw7XwomTV3Do5+/X76KmpGbV5iz1W34zaISujW+O9
+         6VvLpjZZ27GZAVe3ZMwPcASx3QyQ/DEXa2gIXlkxN+IHzUU6cIn5eUEi05Z24L9H8d2g
+         2TQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=5CntfCmjV+jt6ob6/zxp3NJtpyFCYLSjmSO47xgDfgc=;
-        b=ffLjeQkK46ybefMYfyEMwTQEte/ulU3xamFCIvoXiF6dpOnDs+31rDZkXZAw4zNp2I
-         Fr4BEhPg3EK7WS0Q60uMK4IMu/4hG7OkTMSpjcm9goHzEqPkg2YuQpeGUmv1KdOHZI3F
-         KuHsUF93n0ckH6GMSOd9oVsYyqjyy0PNsmWbzBC0kZKW4On/ScegMq2JMmCY7g7vc5T9
-         n83KV/7FfcqxaFw632giDYMZClngRDbLJctAY61dfPg2XJaqCwGnmyB3E36MjRZFtQ2j
-         KIVussDFj/sOlgG/O96xIJ1sHNJhHL2lZLgTWryv/fcHnSmWAtXujO88VCUbAainsNTq
-         PGfQ==
-X-Gm-Message-State: AOAM531UCR+GSxiNjMvHcxGO3VmAYJBbcNKFthatJ8e6FYC4rTGYezp/
-        XdEWtVOKjGOJT5Ti7J4lzMk6qA==
-X-Google-Smtp-Source: ABdhPJyyUkGGUul0ToFA0PjtK9Hd8cYiW92xkX4JQwO7eX/nHbXxL2pHim5RFuxPS/MurU+O7q0yrg==
-X-Received: by 2002:adf:ec05:0:b0:20a:e496:dab5 with SMTP id x5-20020adfec05000000b0020ae496dab5mr14839951wrn.221.1651226768263;
-        Fri, 29 Apr 2022 03:06:08 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id x2-20020adfbb42000000b0020ae057045csm2094888wrg.28.2022.04.29.03.06.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Apr 2022 03:06:07 -0700 (PDT)
-Date:   Fri, 29 Apr 2022 11:06:05 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=eHBs6Wa9r1VbHh/2aicD7vVCojI5eLmVYJiucsgDFTk=;
+        b=avf52WT9Jkk4pnoR3DZenc2VAAxg3R541NkWfNaN1NsfmnsbobSNG5V39kKJpbrCp0
+         VR7h0Z2VvBxi6wFY3inoR/GBylcvOQy/erSbsMVq7pn0I+JuhtRZpJN+/urt+R9bbUE2
+         nd6hhe43UrTETjd+ncEQMYro3AKOTZRxRKWUJkrLzsJiMB/MifTITJDcIPGJs8xKgP9f
+         Mc9nlSwWi6mHJJTnMxlYTtT0rmvL0V+TQ4EEcQqcx4GOwjFB7j/MuRpiZ3pBjUaG9rBw
+         BF6Js1O+FYTRMiJ20wdWlMcweMTL9463Jkgv4nqBeyq2upCVyQqjVsFR+4vrB9i1EQBp
+         YwZw==
+X-Gm-Message-State: AOAM532Kt5IgsuwiK8RKyDWj24QaAzOmB5xEcRONsUMNzxgaoVRkRnBJ
+        USEhcVw5DahffLEg8A5Z4vBB7Q==
+X-Google-Smtp-Source: ABdhPJyy8JUFUfBnijB3GYFKp10PJWH4OqLaYHArQcZhhhkQ92FLDC0Q6RKTfrlQxwq7UZISf2kz9g==
+X-Received: by 2002:a05:6000:188b:b0:20c:47af:1058 with SMTP id a11-20020a056000188b00b0020c47af1058mr2787417wri.58.1651235790067;
+        Fri, 29 Apr 2022 05:36:30 -0700 (PDT)
+Received: from [192.168.0.33] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
+        by smtp.gmail.com with ESMTPSA id g5-20020a5d5545000000b0020af6c38da3sm2334651wrw.33.2022.04.29.05.36.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Apr 2022 05:36:29 -0700 (PDT)
+Message-ID: <d4d8d158-4f59-2158-1764-0c9ac61723eb@linaro.org>
+Date:   Fri, 29 Apr 2022 13:36:28 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v13 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid
+ information to clients
+Content-Language: en-US
+To:     Lee Jones <lee.jones@linaro.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
@@ -62,22 +68,18 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         john.stultz@linaro.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v13 2/9] mfd: qcom-spmi-pmic: expose the PMIC revid
- information to clients
-Message-ID: <Ymu4jUup3YiX6p3X@google.com>
 References: <20220323162820.110806-1-caleb@connolly.tech>
- <20220323162820.110806-3-caleb@connolly.tech>
- <Yma4T1+AglaISe2l@google.com>
+ <20220323162820.110806-3-caleb@connolly.tech> <Yma4T1+AglaISe2l@google.com>
  <2763f103-6947-e431-cef5-e202c324d678@linaro.org>
  <Ymq9Su3UE5IYiHnI@google.com>
  <cce2f4b7-3620-7a33-ef21-579eff9a7dac@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cce2f4b7-3620-7a33-ef21-579eff9a7dac@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+ <Ymu4jUup3YiX6p3X@google.com>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <Ymu4jUup3YiX6p3X@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,66 +87,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Apr 2022, Caleb Connolly wrote:
-> On 28/04/2022 17:14, Lee Jones wrote:
-> > On Wed, 27 Apr 2022, Caleb Connolly wrote:
-> > > On 25/04/2022 16:03, Lee Jones wrote:
-> > > > 
-> > > > On Wed, 23 Mar 2022, Caleb Connolly wrote:
-> > > > > From: Caleb Connolly <caleb.connolly@linaro.org>
-> > > > > 
-> > > > > Some PMIC functions such as the RRADC need to be aware of the PMIC
-> > > > > chip revision information to implement errata or otherwise adjust
-> > > > > behaviour, export the PMIC information to enable this.
-> > > > > 
-> > > > > This is specifically required to enable the RRADC to adjust
-> > > > > coefficients based on which chip fab the PMIC was produced in,
-> > > > > this can vary per unique device and therefore has to be read at
-> > > > > runtime.
-> > > > > 
-> > > > > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-> > > > > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > > > > Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > > > > ---
-> > > > >    drivers/mfd/qcom-spmi-pmic.c      | 261 +++++++++++++++++++-----------
-> > > > >    include/soc/qcom/qcom-spmi-pmic.h |  60 +++++++
-> > > > >    2 files changed, 231 insertions(+), 90 deletions(-)
-> > > > >    create mode 100644 include/soc/qcom/qcom-spmi-pmic.h
-> > 
-> > [...]
-> > 
-> > > > > +			/*
-> > > > > +			 * If the base USID for this PMIC hasn't probed yet
-> > > > > +			 * but the secondary USID has, then we need to defer
-> > > > > +			 * the function driver so that it will attempt to
-> > > > > +			 * probe again when the base USID is ready.
-> > > > > +			 */
-> > > > > +			if (pmic_addr == function_parent_usid  - (ctx->num_usids - 1))
-> > > > 
-> > > > Double "  ".
-> > > Ack
-> > > > 
-> > > > Over-bracketing of statements with matching operands.
-> > > I don't think x - (y - 1) is equal to x - y - 1? Or am I misunderstanding you here?
-> > 
-> > Can you give me an example when this would be the case?
-> According to the Python interpreter:
-> >>> x=7
-> >>> y=4
-> >>> x - y - 1
-> 2
-> >>> x - (y - 1)
-> 4
+
+
+On 29/04/2022 11:06, Lee Jones wrote:
+> On Thu, 28 Apr 2022, Caleb Connolly wrote:
+>> On 28/04/2022 17:14, Lee Jones wrote:
+>>> On Wed, 27 Apr 2022, Caleb Connolly wrote:
+>>>> On 25/04/2022 16:03, Lee Jones wrote:
+>>>>>
+>>>>> On Wed, 23 Mar 2022, Caleb Connolly wrote:
+>>>>>> From: Caleb Connolly <caleb.connolly@linaro.org>
+>>>>>>
+>>>>>> Some PMIC functions such as the RRADC need to be aware of the PMIC
+>>>>>> chip revision information to implement errata or otherwise adjust
+>>>>>> behaviour, export the PMIC information to enable this.
+>>>>>>
+>>>>>> This is specifically required to enable the RRADC to adjust
+>>>>>> coefficients based on which chip fab the PMIC was produced in,
+>>>>>> this can vary per unique device and therefore has to be read at
+>>>>>> runtime.
+>>>>>>
+>>>>>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+>>>>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>>>>>> Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>>>>>> ---
+>>>>>>     drivers/mfd/qcom-spmi-pmic.c      | 261 +++++++++++++++++++-----------
+>>>>>>     include/soc/qcom/qcom-spmi-pmic.h |  60 +++++++
+>>>>>>     2 files changed, 231 insertions(+), 90 deletions(-)
+>>>>>>     create mode 100644 include/soc/qcom/qcom-spmi-pmic.h
+>>>
+>>> [...]
+>>>
+>>>>>> +			/*
+>>>>>> +			 * If the base USID for this PMIC hasn't probed yet
+>>>>>> +			 * but the secondary USID has, then we need to defer
+>>>>>> +			 * the function driver so that it will attempt to
+>>>>>> +			 * probe again when the base USID is ready.
+>>>>>> +			 */
+>>>>>> +			if (pmic_addr == function_parent_usid  - (ctx->num_usids - 1))
+>>>>>
+>>>>> Double "  ".
+>>>> Ack
+>>>>>
+>>>>> Over-bracketing of statements with matching operands.
+>>>> I don't think x - (y - 1) is equal to x - y - 1? Or am I misunderstanding you here?
+>>>
+>>> Can you give me an example when this would be the case?
+>> According to the Python interpreter:
+>>>>> x=7
+>>>>> y=4
+>>>>> x - y - 1
+>> 2
+>>>>> x - (y - 1)
+>> 4
+>>
+>> C does also respect the first rule of BODMAS - parenthesis are always
+>> evaluated first.
 > 
-> C does also respect the first rule of BODMAS - parenthesis are always
-> evaluated first.
+> Fair point, well presented.
+> 
+> Thanks for this - I understand the problem now.
+Thanks,
 
-Fair point, well presented.
+Could you respond to my other two points in 
+https://lore.kernel.org/linux-arm-msm/2763f103-6947-e431-cef5-e202c324d678@linaro.org/
 
-Thanks for this - I understand the problem now.
+Regarding
+
+if (!of_match_device(pmic_spmi_id_table, dev))
+
+and
+
+ctx->num_usids = (long)of_device_get_match_data(&sdev->dev);
+> 
 
 -- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Kind Regards,
+Caleb (they/he)

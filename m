@@ -2,91 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7674D515B68
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Apr 2022 10:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB1A515E52
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Apr 2022 16:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234834AbiD3ITs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 30 Apr 2022 04:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58598 "EHLO
+        id S1382846AbiD3OsX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 30 Apr 2022 10:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241469AbiD3ITq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Apr 2022 04:19:46 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78C3D69CCD
-        for <linux-iio@vger.kernel.org>; Sat, 30 Apr 2022 01:16:25 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nkiH3-0001Iw-1l; Sat, 30 Apr 2022 10:16:17 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nkiH2-0066YY-5d; Sat, 30 Apr 2022 10:16:14 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nkiGz-006az6-Oy; Sat, 30 Apr 2022 10:16:13 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Colin Ian King <colin.king@intel.com>,
-        Brian Masney <masneyb@onstation.org>, linux-iio@vger.kernel.org
-Subject: [PATCH 9/9] iio:light:tsl2583: Remove duplicated error reporting in .remove()
-Date:   Sat, 30 Apr 2022 10:16:07 +0200
-Message-Id: <20220430081607.15078-10-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220430081607.15078-1-u.kleine-koenig@pengutronix.de>
-References: <20220430081607.15078-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S1382844AbiD3OsW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 30 Apr 2022 10:48:22 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D87674E8
+        for <linux-iio@vger.kernel.org>; Sat, 30 Apr 2022 07:45:00 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id n10so2949614ejk.5
+        for <linux-iio@vger.kernel.org>; Sat, 30 Apr 2022 07:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Oy0xVVppw3qelUQn91ueEZ7VduJvpy8odEjGqqKlo1o=;
+        b=u6xN0wCFJv3cexNP59tSC1QVYmfUiyE8i7LIuj/szhrIdwzshrYvdYV//O+mkjAGPh
+         W3bCDfq4VaftSpkOoUhoB8HP1mlOEBlXNg4uTwMOWYth1I7KD+KLZdZtGDLqiku+EqEv
+         719L5trEO48decxJx+WRmeI91lDT9zXsLruEBD4BWrv3XLCG7fa6YzecmEchFsbcMx30
+         SXXFRYHU9uLWmzgwVF1NWVLLBTX8tk9BxQf5byNAQLvTgSGOHDefjsvLFnovGOk8dUry
+         W5e0Ys9h7Jy3T/j94tC5PHuJwHPwCv+EoTk/q2Ucm1DLu1aCGhIJY15g+R0rnWXzcslz
+         PpfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Oy0xVVppw3qelUQn91ueEZ7VduJvpy8odEjGqqKlo1o=;
+        b=Bs9AVIIfQydh1Ivbqs4jVWThXkqT+0aKAVxHi390paVokYnS5iU67YzIAJFxW9ywkl
+         M4bkrrVQryGjmYM8C53DWbffU7VIlqWz3mJSKqaPl9DsxJf1GT6TMLfvd061JC+vj5q3
+         w+/KZ+oee6KMo4Umds/Yvlt2O6v6f/nRjQwtn4N+T5CoKKVHojK2pmzbLn8SRZIeciJo
+         ERLe02pGpv3IhEn53M7pA3Y1uJ2UEz/ZH+eZ0KazT9Y8qKcph4st3MYqlI7zOMn3lE2I
+         2u3iR0Vm7vgZjo+j8o1B1YYfR55BP985qNvXw26UlI6hzlQLkuHkuHb6UdlgIbcSKx0i
+         IZLQ==
+X-Gm-Message-State: AOAM530IzQwvljgVz+AjlLwH2kQIA+bB6cbjm6WBHRdYHPtoeLdoHRYf
+        G5swsbB8IjeBPu3Vs/NgnboHDA==
+X-Google-Smtp-Source: ABdhPJwV01wa7UN9N4o+K+6V9dicEDNKbkI9EsUJDussG7+bT4xtMjaSlzbFUiLEn1Vhuu6HSQL4Pg==
+X-Received: by 2002:a17:907:94c5:b0:6f3:f30e:8c52 with SMTP id dn5-20020a17090794c500b006f3f30e8c52mr4180004ejc.660.1651329898678;
+        Sat, 30 Apr 2022 07:44:58 -0700 (PDT)
+Received: from [192.168.0.180] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id hx14-20020a170906846e00b006f3ef214db6sm1675837ejc.28.2022.04.30.07.44.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Apr 2022 07:44:58 -0700 (PDT)
+Message-ID: <f56061fe-adec-a148-e085-0561f84e8b3d@linaro.org>
+Date:   Sat, 30 Apr 2022 16:44:57 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v14 04/10] dt-bindings: iio: adc: document qcom-spmi-rradc
+Content-Language: en-US
+To:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Cc:     Jami Kettunen <jami.kettunen@somainline.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>
+References: <20220429220904.137297-1-caleb.connolly@linaro.org>
+ <20220429220904.137297-5-caleb.connolly@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220429220904.137297-5-caleb.connolly@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1238; h=from:subject; bh=SOQeCVCK05+5ktyNKo67KJfuK9AYd8RWaj5Y3wRiGp8=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBibPA+IJ0luLCvhor20larPoZEpXsXnl8qbhuDbPuH +NPBKvGJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYmzwPgAKCRDB/BR4rcrsCXbYB/ 97RyI0+xF79G99uzLSJAWzajxQabHVNlGGZ9OYWqtUrV+9rIkv8cm2uK5iULaGLCEbpLzj8w8X0o3p wXq2uv7K+hEgvzZlD+Yb3rwFdddSN97Qv+u743iYWPuQD++p+QUXjvT5Y0uOOtb6sfxaEvjuDkbWU/ 4bCkDEwd57hLshzWkiFDk58EPsUiz3xeK+56fbLqN3CZI5bNHIESqphz5ucXALr3sr76iGRH3kmV82 ao1cEAjck3/Htf3IndK+0Q2tw7UuAOF6vYWy/nhVziEdEF104PYVlhv2IMPCt62GeVxF1aolM/WYyT BwijiRJ8wm08bUGHviqnmq5TUPlOCt
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Returning an error value in an i2c remove callback results in an error
-message being emitted by the i2c core, but otherwise it doesn't make a
-difference. The device goes away anyhow and the devm cleanups are
-called.
+On 30/04/2022 00:08, Caleb Connolly wrote:
+> Add dt-binding docs for the Qualcomm SPMI RRADC found in PMICs like
+> PMI8998 and PMI8994
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 
-As tsl2583_set_power_state() already emits an error message on failure
-and the additional error message by the i2c core doesn't add any useful
-information, change the return value to zero to suppress this message.
+You got my review tag, didn't you? Any changes in this patch?
 
-This patch is a preparation for making i2c remove callbacks return void.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/iio/light/tsl2583.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
-index 7e101d5f72ee..efb3c13cfc87 100644
---- a/drivers/iio/light/tsl2583.c
-+++ b/drivers/iio/light/tsl2583.c
-@@ -883,7 +883,9 @@ static int tsl2583_remove(struct i2c_client *client)
- 	pm_runtime_disable(&client->dev);
- 	pm_runtime_set_suspended(&client->dev);
- 
--	return tsl2583_set_power_state(chip, TSL2583_CNTL_PWR_OFF);
-+	tsl2583_set_power_state(chip, TSL2583_CNTL_PWR_OFF);
-+
-+	return 0;
- }
- 
- static int __maybe_unused tsl2583_suspend(struct device *dev)
--- 
-2.35.1
-
+Best regards,
+Krzysztof

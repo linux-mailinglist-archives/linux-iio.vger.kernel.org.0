@@ -2,49 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED5A5166D0
-	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 19:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C2BE5166DC
+	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 20:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238626AbiEAR7E (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 May 2022 13:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45122 "EHLO
+        id S241756AbiEASMS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 May 2022 14:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353556AbiEAR7C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 13:59:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5571A39B;
-        Sun,  1 May 2022 10:55:36 -0700 (PDT)
+        with ESMTP id S230050AbiEASMS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 14:12:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D4384EA38;
+        Sun,  1 May 2022 11:08:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6306D60F75;
-        Sun,  1 May 2022 17:55:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07C3C385A9;
-        Sun,  1 May 2022 17:55:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26AC260DF5;
+        Sun,  1 May 2022 18:08:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5BAC385AA;
+        Sun,  1 May 2022 18:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651427735;
-        bh=L5wYZWSFVoGzNdMX0h3jxQx9rzpHO69jZH46PS8EiH4=;
+        s=k20201202; t=1651428531;
+        bh=s+pVZUtUNrW1qG7CHMVMX+luiaEQlJlYBtdfoxArY8Y=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=m9BUdF0tMKH/aUr65QFJkuxnW7F51cBus71jRRaYcbXuH+/s7nHsdfX9qJWYTf7Fs
-         OEj6mT2U42TwAxekuSLozZwLBGMvLJP1hytVmynls3gqZxz4HaCAd4xu9X2FsyncOA
-         CNIDtUh/LUX/KaBdp9pxWzu8fbwnLBRDQFcTkUt7QoF1W+Xw07wSv3GTy0iBozSRy1
-         Epkg/vcxRtA5qKaZTzllPRLcx1rcNoYtJZRfBdL3vF3bbxf7PjoPrR6OszPrZbOw8T
-         Ju+OzcbU0Upskgesgmgqfqmtv3yyXNppY1lrYOx8ZUF2D5cT60r4gwEXsf+7XgpAC0
-         flRHn/nLw7mXA==
-Date:   Sun, 1 May 2022 19:03:49 +0100
+        b=S5L0H7J49V715mecunZeqcx4ITD7NL9yDTQoQt3LGUJ/maJOqUSYtr5UP7DhlK25K
+         8eYnHfm5tpVL/lri+UmUM3bg45IvPxcNx0wvrt8lWShtG2slQA8vgAAfwTHgw4s20Z
+         UYZuXOOspliIGGbew3r+5SCpD3xlimX9YDxT3KNVYggivO51AmrWIkvYj9Aw9wAbj+
+         efWKF4wx50sRxMf9FEz+J/vebCqFmg5lX7wQ0e2z41wu9VvmhUoWIzE+o3R/JldnRx
+         hiFCL8uj257IgeTBTidrhx40Uh0pfPrIKwiLBHqJ5R/0WyosCh4GFP6uW3esFkk9FS
+         1vHDfWa89yr1g==
+Date:   Sun, 1 May 2022 19:17:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Peter Rosin <peda@axentia.se>
-Cc:     linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sean Nyekjaer <sean@geanix.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Add support for texas dac121c081 to the dac5571
- driver
-Message-ID: <20220501190349.54aa48a3@jic23-huawei>
-In-Reply-To: <20220428204439.4ec2b4ae@jic23-huawei>
-References: <42db911c-5eba-0511-3e8c-8011a2a5b44a@axentia.se>
-        <20220428204439.4ec2b4ae@jic23-huawei>
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>
+Subject: Re: [PATCH v2] dt-bindings: iio: adc: Document Renesas RZ/G2UL ADC
+Message-ID: <20220501191705.19860b69@jic23-huawei>
+In-Reply-To: <20220501111952.45872-1-biju.das.jz@bp.renesas.com>
+References: <20220501111952.45872-1-biju.das.jz@bp.renesas.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,53 +61,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Apr 2022 20:44:39 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun,  1 May 2022 12:19:52 +0100
+Biju Das <biju.das.jz@bp.renesas.com> wrote:
 
-> On Mon, 25 Apr 2022 22:46:30 +0200
-> Peter Rosin <peda@axentia.se> wrote:
+> ADC found on RZ/G2UL SoC is almost identical to RZ/G2L SoC, but RZ/G2UL
+> has 2 analog input channels compared to 8 channels on RZ/G2L. Therefore,
+> added a new compatible to handle this difference.
 > 
-> > Hi!
-> > 
-> > The new chip works much like the other chips supported by the driver, so
-> > this is just adding another compatible to the list.
-> > 
-> > Chenages since v1:
-> > - Guenter Roeck noticed elsewhere that my mail setup was botched and
-> >   that my patches were clobbered. Hopefully fixed. *blush*
-> > - added tags from Sean Nyekjaer and Rob Herring  
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v1->v2:
+>  * Removed Items and used const for RZ/G2UL compatible
+>  * Add allOf:if:then restricting available channels per SoC variant.
+> ---
+>  .../bindings/iio/adc/renesas,rzg2l-adc.yaml   | 34 ++++++++++++++-----
+>  1 file changed, 25 insertions(+), 9 deletions(-)
 > 
-> Applied.  Thanks
+> diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> index d66c24cae1e1..d76c5ba3d625 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> @@ -17,11 +17,13 @@ description: |
+>  
+>  properties:
+>    compatible:
+> -    items:
+> -      - enum:
+> -          - renesas,r9a07g044-adc   # RZ/G2L
+> -          - renesas,r9a07g054-adc   # RZ/V2L
+> -      - const: renesas,rzg2l-adc
+> +    oneOf:
+> +      - const: renesas,renesas,r9a07g043-adc  # RZ/G2UL
+> +      - items:
+> +          - enum:
+> +              - renesas,r9a07g044-adc   # RZ/G2L
+> +              - renesas,r9a07g054-adc   # RZ/V2L
+> +          - const: renesas,rzg2l-adc
+>  
+>    reg:
+>      maxItems: 1
+> @@ -76,10 +78,24 @@ patternProperties:
+>      properties:
+>        reg:
+>          description: |
+> -          The channel number. It can have up to 8 channels numbered from 0 to 7.
+> -        items:
+> -          - minimum: 0
+> -            maximum: 7
+> +          The channel number. It can have up to 8 channels numbered from 0 to 7
+> +          for RZ/{G2L,V2L} SoCs or 2 channels numbered from 0 to 1 for RZ/G2UL
+> +          SoC.
+> +      allOf:
+> +        if:
+           - if:
+               properties:
+etc
 
-Backed out temporarily because they have crossed with a fix (that I'd
-forgotten about) and were requiring a non trivial merge in linux-next.
+Otherwise I think you can only have one in your allOf: which rather
+removes the point of having one.
 
-https://patchwork.kernel.org/project/linux-iio/patch/20220324234340.32402-1-laurent.pinchart@ideasonboard.com/
-
-Hopefully that will get resolved in my upstream fairly soon and I can
-fix this one up whilst applying it myself.
-
-Thanks,
+I was surprised this passed the checks, so added another if to verify my
+reasoning...
 
 Jonathan
 
-
-
-> 
-> Jonathan
-> 
-> > 
-> > Cheers,
-> > Peter
-> > 
-> > Peter Rosin (2):
-> >   dt-bindings: iio: ti-dac5571: Add ti,dac121c081
-> >   iio: dac: ti-dac5571: add support for ti,dac121c081
-> > 
-> >  Documentation/devicetree/bindings/iio/dac/ti,dac5571.yaml | 1 +
-> >  drivers/iio/dac/Kconfig                                   | 2 +-
-> >  drivers/iio/dac/ti-dac5571.c                              | 3 +++
-> >  3 files changed, 5 insertions(+), 1 deletion(-)
-> >   
-> 
+> +          properties:
+> +            compatible:
+> +              contains:
+> +                enum:
+> +                  - renesas,renesas,r9a07g043-adc
+> +        then:
+> +          items:
+> +            - minimum: 0
+> +              maximum: 1
+> +        else:
+> +          items:
+> +            - minimum: 0
+> +              maximum: 7
+>  
+>      required:
+>        - reg
 

@@ -2,144 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4775167C9
-	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 22:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 201875167F4
+	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 23:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349989AbiEAUbK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 May 2022 16:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33826 "EHLO
+        id S1354950AbiEAVDd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 May 2022 17:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244899AbiEAUbJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 16:31:09 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B71543EE7;
-        Sun,  1 May 2022 13:27:42 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id gj17-20020a17090b109100b001d8b390f77bso14636202pjb.1;
-        Sun, 01 May 2022 13:27:42 -0700 (PDT)
+        with ESMTP id S1354943AbiEAVDb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 17:03:31 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F751AF30
+        for <linux-iio@vger.kernel.org>; Sun,  1 May 2022 14:00:04 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id y2so23205367ybi.7
+        for <linux-iio@vger.kernel.org>; Sun, 01 May 2022 14:00:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=A0bEJs7qgg/eX6nUTN2NKhZYoTjWbfIDdjjcVr0MKn0=;
-        b=j+TvewDN/kI4TIXi0Uj6To92nH4CpMfaizm/t37LfhTx55UMcby1jK6vfE0cJ6gMKP
-         FasRMems0yURB5dgj96Jyt2oaqWtAhW5YHGnhn3lJRBjSDbC7QoWIOcM0jKWcEtXwuNM
-         wtl0XOD6AAj3u9B9jmDMSLGzzUkGueKu8uq3ch4YeeS8ecLtnz7xanl6ZLpRVObbGNOt
-         ytuy6BqXgQ8FjVsfGGwkIZ7GE93TWk0ienpbJkAbbkK24JFIsvhnWjpUsiupqAYNpVRp
-         ZQ8qgcLX1YxzjTx5/hegJJIv+mkOY0vpX/mXGEIX93s/P+SVcfGQR83hFY7Pa0wNOsf/
-         GMkA==
+         :cc:content-transfer-encoding;
+        bh=LhYhlh64BoR+tp9gHry6l05ysG5vXem36+SNUUa85u8=;
+        b=mr2CmCUWoVwMD/fFCzj586VU9j4oafdQJEdP0039pKTxU5J0Hn/yfttBBdWgJXQnf/
+         GpXURPI38tFMJGTBPR3dlKAmor+EbYIDEnuDlbQEB2aeQuQElGrt7aPELhDq0J3TQS0j
+         BNy9RTD0YGMZeU8CxZYHdV9GV/P+5rVHC19k8jpQmRrXj8GlryqPYRMjmyWDoZWbND5T
+         +hoy0P8kU1eA+JXz6w0qzYI/sZuVpFrjuF0U6mGm2H4UBo2lRqW6CogMTDTyyXn3tWW8
+         26hOBT+vYNBCN3XO9nrDabhToxQQFJRHYzgWp9jZscxB2cv2VCMjuEIgtRIlFa6yYtQY
+         KgHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=A0bEJs7qgg/eX6nUTN2NKhZYoTjWbfIDdjjcVr0MKn0=;
-        b=SjHzu4f0doOT5BkvhHz3R/VmEzynoDaz/CvgWW5TraV89igSKqitfYfGEH6WoGNtQV
-         sX5CvWrke/BLYzolBkuGOAjE2CMGdHmCK8uKTltgomCFT5IZgZvamYboL5f2reHb9V30
-         5b/tfp7cHwjeEPRJ7rtN5xkz3Ru4hhZ7clqJjMu4WVFGZIRd3EBJDPycgVoUsKPYTtIh
-         Cr1DnkRy79qQEEEa+nHMRW8vEzpT5EzKofPYaOWRAVpH7u5Xha5x0z/cZ0tWD9HYE+ug
-         /94HGRIloT8EWAEg+zsWPRF42biiz7yi2Wf5q/0URU2Py1ceeq27f7t2JDuu0nbDfOr2
-         rhKA==
-X-Gm-Message-State: AOAM532nlPqitKfipymgtWsf0ntFOsZt746JtWKOIdGAYntdwUc++LtG
-        l5PFvYKdi6hK2PCgc6bpEJaqsXlQqINNHrBQEe8=
-X-Google-Smtp-Source: ABdhPJwm7QsGb1flanj0/iVrkkfHHUEGVd7uWE4OvR8bWCBKO+qnfZgqzifffqvCmJEzL9FcLcasYZWXj1RV3BFTb4s=
-X-Received: by 2002:a17:902:f547:b0:15d:10ce:e2ff with SMTP id
- h7-20020a170902f54700b0015d10cee2ffmr8441158plf.80.1651436861735; Sun, 01 May
- 2022 13:27:41 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=LhYhlh64BoR+tp9gHry6l05ysG5vXem36+SNUUa85u8=;
+        b=Ya08gFnOmciS2l9+7PUhmETd5gEiXvDTHxvvz3EeV+n7iEF81LTYL/NFtpaYn0puTE
+         Ws+Y3nFDfu6+f5WjW6Z5oXEoKIFQ9RpXkWAuTr8iES0tQ5qpGeV2KjWC8D+boe2B4h7V
+         VvzIOKMlDQtQ+DCugKH95ztKBSJLPGQUR5iMK+5M+uoFzIF2w0j+fLJObyFnU7ueiyYZ
+         JQBV1ldzHbxVDESrI7sKUvElwQv1XX4pX9zN+OS6o7lLexZ9P8kZxUQcLxEbOxv1NYc7
+         VUOx/bfIxANAaSl5NCvsCykWcK8bpAszXW5Ic1DieHatWdQhDERQguJ4KN7gYjS1iSp3
+         ti6g==
+X-Gm-Message-State: AOAM532mptkgOZfeKZ0golKnbfJvKvWkiiY4OX/sZx+OxLR79zpOFy01
+        4vvmTCNEv4vvTmga4TD29lQ/U9xq7Ahi6ZR2w61n9A==
+X-Google-Smtp-Source: ABdhPJw4yPO23xJDQ1P9h3MPiDtVzc9AdpUeIyI4AtRKMmHsJDGbxoLRX44wpBTFv+ydLt9clTQQTzf8IJ0k8NGWvU4=
+X-Received: by 2002:a25:bcc7:0:b0:648:d728:d39 with SMTP id
+ l7-20020a25bcc7000000b00648d7280d39mr8394668ybm.514.1651438803619; Sun, 01
+ May 2022 14:00:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220420211105.14654-1-jagathjog1996@gmail.com>
- <20220420211105.14654-7-jagathjog1996@gmail.com> <20220501173110.67a18bf9@jic23-huawei>
-In-Reply-To: <20220501173110.67a18bf9@jic23-huawei>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Mon, 2 May 2022 01:57:30 +0530
-Message-ID: <CAM+2EuL7Qcj2znsmXPd6Q7wT-EQrUa=y6idcH=rryQdSiGSdOg@mail.gmail.com>
-Subject: Re: [PATCH v4 6/9] iio: accel: bma400: Add step change event
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Dan Robertson <dan@dlrobertson.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20220430081607.15078-1-u.kleine-koenig@pengutronix.de> <20220430081607.15078-5-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20220430081607.15078-5-u.kleine-koenig@pengutronix.de>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 1 May 2022 22:59:51 +0200
+Message-ID: <CACRpkdaQC-W61eMrcR-OObwh-nQ_+G0=fH7Q-cz1CTzq1eTTMg@mail.gmail.com>
+Subject: Re: [PATCH 4/9] iio:light:bh1780: Remove duplicated error reporting
+ in .remove()
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>, linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Sat, Apr 30, 2022 at 10:16 AM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@pengutronix.de> wrote:
 
-On Sun, May 1, 2022 at 9:52 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> Returning an error value in an i2c remove callback results in an error
+> message being emitted by the i2c core, but otherwise it doesn't make a
+> difference. The device goes away anyhow and the devm cleanups are
+> called.
 >
-> On Thu, 21 Apr 2022 02:41:02 +0530
-> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> As bh1780_remove() already emits an error message on failure and the
+> additional error message by the i2c core doesn't add any useful
+> information, change the return value to zero to suppress this message.
+> While at it, add the error code to the remaining error message.
 >
-> > Added support for event when there is a detection of step change.
-> > INT1 pin is used to interrupt and event is pushed to userspace.
-> >
-> > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
-> Hi Jagath,
+> This patch is a preparation for making i2c remove callbacks return void.
 >
-> A query about handling of multiple interrupts...
->
-> > ---
-> >  drivers/iio/accel/bma400.h      |  2 +
-> >  drivers/iio/accel/bma400_core.c | 75 +++++++++++++++++++++++++++++++++
-> >  2 files changed, 77 insertions(+)
-> >
-> >   * Read-write configuration registers
-> > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-> > index aafb5a40944d..fe101df7b773 100644
-> > --- a/drivers/iio/accel/bma400_core.c
-> > +++ b/drivers/iio/accel/bma400_core.c
->
-> >
-> >  static const struct iio_trigger_ops bma400_trigger_ops = {
-> > @@ -971,6 +1035,7 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
-> >  {
-> >       struct iio_dev *indio_dev = private;
-> >       struct bma400_data *data = iio_priv(indio_dev);
-> > +     s64 timestamp = iio_get_time_ns(indio_dev);
-> >       int ret;
-> >
-> >       /* Lock to protect the data->status */
-> > @@ -981,6 +1046,16 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
-> >       if (ret)
-> >               goto unlock_err;
-> >
-> > +     if (FIELD_GET(BMA400_STEP_STAT_MASK, le16_to_cpu(data->status))) {
-> > +             iio_push_event(indio_dev,
-> > +                            IIO_EVENT_CODE(IIO_STEPS, 0, IIO_NO_MOD,
-> > +                                           IIO_EV_DIR_NONE,
-> > +                                           IIO_EV_TYPE_CHANGE, 0, 0, 0),
-> > +                            timestamp);
-> > +             mutex_unlock(&data->mutex);
->
-> Is it possible for two interrupt sources to be active at the same time?
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-Yeah, it is possible when multiple interrupts are enabled like data ready,
-step and generic interrupts.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> Given the device is clearing interrupts on read (which is unusual enough to
-> make me check that on the datasheet) you will loose any other events.
->
-> Normal trick is to act on all set bits and if any of them were acted on
-> return HANDLED.
-
-Then I will push all the events that occurred and then in the end I will return
-HANDLED so that none of the events are missed.
-I will change this in the next version.
-
-Thank you,
-Jagath
-
-
->
-> > +             return IRQ_HANDLED;
-> > +     }
-> > +
-> >       if (FIELD_GET(BMA400_INT_DRDY_MSK, le16_to_cpu(data->status))) {
-> >               mutex_unlock(&data->mutex);
-> >               iio_trigger_poll_chained(data->trig);
->
+Yours,
+Linus Walleij

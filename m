@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5814851668D
-	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 19:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86955516695
+	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 19:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244243AbiEARSj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 May 2022 13:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34920 "EHLO
+        id S232070AbiEARYB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 May 2022 13:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231591AbiEARSh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 13:18:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BD7273C;
-        Sun,  1 May 2022 10:15:11 -0700 (PDT)
+        with ESMTP id S1352805AbiEARXo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 13:23:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE7E614E;
+        Sun,  1 May 2022 10:20:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 440A660F55;
-        Sun,  1 May 2022 17:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3251C385AA;
-        Sun,  1 May 2022 17:15:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5377A60F55;
+        Sun,  1 May 2022 17:20:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8364DC385B0;
+        Sun,  1 May 2022 17:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651425310;
-        bh=q81KPxQv/DdTYHvhbWpl5nvlycZTC4H7TFOwPSGsIA8=;
+        s=k20201202; t=1651425616;
+        bh=tHHxRDQDtWRjj5+yflIBb+axcnk5v0Qd22de8ghVlbc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=grgoDSHwp9dLge/VniJoEBVxekD00weuqGxY4sFGueaucI/NH2Y5NVilOTGOQMUv+
-         RdcgEn87Zx0hk2+gf1D5PXQiQ6JpqSJgQ26kGhQRHW/4SU2tBHT81Y3CxP9SRhkh3N
-         CxxAqrdE2sdMmLyPZOKz7QUPfvuPiZsmDR24gE+TVSBvnJ3Fze/DJOpL3QTzdoB2yd
-         ug7kzcop05tPIOAlePmR2RMrQMui8n943xGKt7l7hU559HWBxRKYDRPHk/PaGNuRFv
-         8mijEru5ngNclm6us8517QdOfPVZ6oZ817hW+pDtL0LPFotbN+YKbLXXidqYSDzVGb
-         5oOrdHfjiMKrA==
-Date:   Sun, 1 May 2022 18:23:23 +0100
+        b=mIQJGI+scSXSB7jbTDKA+XP5efWhavRxTmsYxijmpkMDUhQQNLlwMF/ZZuNl2dq2j
+         bFLkg+1hnJXjFvLRlL1UM5A/eljwuz7wKoYqi2TVde33gGC/SF0Leq13qLnpKbllQZ
+         /kuDeBnMFXcQuvhve+t/eP4pizEnB9Z9WFg+bGwTLwwWMQbSYs7SBHLTswVz+GUkqx
+         JG8jHHN6tsqiNDHk2g2KNbMEq8SuZqLefoBPpf99XZtPrAVDa2rvuaJUmwdnT+/2Ll
+         9XVeElLkssH0QKWLk6Mob0jj7gBh3DRB6Wp2nR6v2f4PdrVMbB8E5dq7/jkyzRxUm/
+         78tUH/1KLR3QQ==
+Date:   Sun, 1 May 2022 18:28:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Caleb Connolly <caleb.connolly@linaro.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -44,13 +44,14 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v14 01/10] spmi: add a helper to look up an SPMI device
- from a device node
-Message-ID: <20220501182323.7b672d8a@jic23-huawei>
-In-Reply-To: <20220429220904.137297-2-caleb.connolly@linaro.org>
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v14 02/10] mfd: qcom-spmi-pmic: expose the PMIC revid
+ information to clients
+Message-ID: <20220501182829.1edc181f@jic23-huawei>
+In-Reply-To: <20220429220904.137297-3-caleb.connolly@linaro.org>
 References: <20220429220904.137297-1-caleb.connolly@linaro.org>
-        <20220429220904.137297-2-caleb.connolly@linaro.org>
+        <20220429220904.137297-3-caleb.connolly@linaro.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,70 +66,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Apr 2022 23:08:56 +0100
+On Fri, 29 Apr 2022 23:08:57 +0100
 Caleb Connolly <caleb.connolly@linaro.org> wrote:
 
-> The helper function spmi_device_from_of() takes a device node and
-> returns the SPMI device associated with it.
-> This is like of_find_device_by_node but for SPMI devices.
+> Some PMIC functions such as the RRADC need to be aware of the PMIC
+> chip revision information to implement errata or otherwise adjust
+> behaviour, export the PMIC information to enable this.
 > 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org> 
+> This is specifically required to enable the RRADC to adjust
+> coefficients based on which chip fab the PMIC was produced in,
+> this can vary per unique device and therefore has to be read at
+> runtime.
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-Stephen, are you fine with this addition to spmi?
+...
 
-Given bulk of this series in in IIO I'm planning to pick up once
-everyone is happy with it.
+> +/**
+> + * qcom_pmic_get() - Get a pointer to the base PMIC device
+> + *
+> + * This function takes a struct device for a driver which is a child of a PMIC.
+> + * And locates the PMIC revision information for it.
+> + *
+> + * @dev: the pmic function device
+> + * @return: the struct qcom_spmi_pmic* pointer associated with the function device
+> + */
+> +inline const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev)
+> +{
+> +	struct spmi_device *sdev;
+> +	struct qcom_spmi_dev *spmi;
+> +
+> +	/*
+> +	 * Make sure the device is actually a child of a PMIC
+> +	 */
+> +	if (!of_match_device(pmic_spmi_id_table, dev->parent))
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	sdev = qcom_pmic_get_base_usid(dev->parent);
+>  
+> -	if (subtype == PM8110_SUBTYPE)
+> -		minor = rev2;
+> +	if (IS_ERR(sdev))
+> +		return ERR_CAST(sdev);
+>  
+> -	dev_dbg(dev, "%x: %s v%d.%d\n", subtype, name, major, minor);
+> +	spmi = (struct qcom_spmi_dev *)dev_get_drvdata(&sdev->dev);
 
-Thanks,
+Shouldn't need the cast as dev_get_drvdata() returns void * and you can
+implicitly cast that to any other pointer type.
+
+If this is all that comes up in the series I can fixup whilst applying.
 
 Jonathan
 
 
-> ---
->  drivers/spmi/spmi.c  | 17 +++++++++++++++++
->  include/linux/spmi.h |  3 +++
->  2 files changed, 20 insertions(+)
-> 
-> diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
-> index b37ead9e2fad..a456ce5141e1 100644
-> --- a/drivers/spmi/spmi.c
-> +++ b/drivers/spmi/spmi.c
-> @@ -386,6 +386,23 @@ static struct bus_type spmi_bus_type = {
->  	.uevent		= spmi_drv_uevent,
->  };
+> +
+> +	return &spmi->pmic;
+>  }
+> +EXPORT_SYMBOL(qcom_pmic_get);
 >  
-> +/**
-> + * spmi_device_from_of() - get the associated SPMI device from a device node
-> + *
-> + * @np:		device node
-> + *
-> + * Returns the struct spmi_device associated with a device node or NULL.
-> + */
-> +struct spmi_device *spmi_device_from_of(struct device_node *np)
-> +{
-> +	struct device *dev = bus_find_device_by_of_node(&spmi_bus_type, np);
-> +
-> +	if (dev)
-> +		return to_spmi_device(dev);
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(spmi_device_from_of);
-> +
->  /**
->   * spmi_controller_alloc() - Allocate a new SPMI device
->   * @ctrl:	associated controller
-> diff --git a/include/linux/spmi.h b/include/linux/spmi.h
-> index 729bcbf9f5ad..eac1956a8727 100644
-> --- a/include/linux/spmi.h
-> +++ b/include/linux/spmi.h
-> @@ -164,6 +164,9 @@ static inline void spmi_driver_unregister(struct spmi_driver *sdrv)
->  	module_driver(__spmi_driver, spmi_driver_register, \
->  			spmi_driver_unregister)
->  
-> +struct device_node;
-> +
-> +struct spmi_device *spmi_device_from_of(struct device_node *np);
->  int spmi_register_read(struct spmi_device *sdev, u8 addr, u8 *buf);
->  int spmi_ext_register_read(struct spmi_device *sdev, u8 addr, u8 *buf,
->  			   size_t len);
 

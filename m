@@ -2,48 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D7F516517
-	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 18:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 869C0516530
+	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 18:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345936AbiEAQPu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 May 2022 12:15:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48530 "EHLO
+        id S1346132AbiEAQ0X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 May 2022 12:26:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237946AbiEAQPt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 12:15:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69B43DFEA;
-        Sun,  1 May 2022 09:12:23 -0700 (PDT)
+        with ESMTP id S1343792AbiEAQ0W (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 12:26:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7931660DE;
+        Sun,  1 May 2022 09:22:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 21E9BB80E5A;
-        Sun,  1 May 2022 16:12:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758C0C385AA;
-        Sun,  1 May 2022 16:12:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BF0760F30;
+        Sun,  1 May 2022 16:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CECFC385A9;
+        Sun,  1 May 2022 16:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651421540;
-        bh=+JCdHDwwPGGZ+rAC+3PkQyPI2jD46/M4umIy3xmT3B8=;
+        s=k20201202; t=1651422175;
+        bh=qishdcbixWQETntHOf7vaokjpCbepI6++lreU4OEr0A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rSqMEvHkYyQwoShxYhQuXUuPAoEg0dhDviXIPkhPjOAG6JnHhdsjJrMsBmtcowfjn
-         MsBNzCE684Csvxjd9N5JNnVXkFJ+ILsslyv9KZn8JjVQjDuupYgQxDTRSiuJkNJfbK
-         aQB4EzM/Obw6ebxLKVH65iMCcJKcgAsDRVlgN50vb8WRY6oiMOJooT1K1S60rtCKyN
-         NzRLDOLRn/gQtpwrIELuFBAepdRN9MRoRkufY6iIIBQ/4EluuH2jlS7thUWv9I7su2
-         gYE/kLtX4khiV4RoUYDxA9wEQWoZtidj5eZesgo2TOvjOGg6ytJl3Lvu3vH4mz0vtg
-         o3BzemKWEexdA==
-Date:   Sun, 1 May 2022 17:20:37 +0100
+        b=HeDcvl06NnntL8LafiS+uEspQAlKCMVE6LO6QuqzX8Sr3Zb687Du2m/AJUM1fx8Sk
+         apIntfuxs3C/mJErsd5Sj0J+wUGgL9Gmw+06UPUThOBApvr3LCAmrJ+ZT5Hqmgpve4
+         LUswDtejm2PqUYhZmtPBiKf4td2epemyCGAJp/0nxs5eC0qupnXQUEb/JHNi/VE1tT
+         sg9hQwq0Y1Eo/AVcPsP6TF3NDI5QPEYaECy59GCCBBUM8zEIFQkW6Z+TTen3+A5HSK
+         qUr3aFJZAtAgKZ93yAlZA8uKeAi+dPrfzqqfH+iwdHAU/BsjAKO1ZY8VTiWffIXmDf
+         uzuwH/3WhCiJA==
+Date:   Sun, 1 May 2022 17:31:10 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jagath Jog J <jagathjog1996@gmail.com>,
-        Dan Robertson <dan@dlrobertson.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 4/9] iio: accel: bma400: Add triggered buffer support
-Message-ID: <20220501172037.5f3d446f@jic23-huawei>
-In-Reply-To: <CAHp75Vf5pS_TGm5ptN7TyNmhZe_Oz8pVmETT27VeC=BZk9+ezg@mail.gmail.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 6/9] iio: accel: bma400: Add step change event
+Message-ID: <20220501173110.67a18bf9@jic23-huawei>
+In-Reply-To: <20220420211105.14654-7-jagathjog1996@gmail.com>
 References: <20220420211105.14654-1-jagathjog1996@gmail.com>
-        <20220420211105.14654-5-jagathjog1996@gmail.com>
-        <CAHp75Vf5pS_TGm5ptN7TyNmhZe_Oz8pVmETT27VeC=BZk9+ezg@mail.gmail.com>
+        <20220420211105.14654-7-jagathjog1996@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,125 +55,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 Apr 2022 14:34:57 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Thu, 21 Apr 2022 02:41:02 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> On Wed, Apr 20, 2022 at 11:11 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> >
-> > Added trigger buffer support to read continuous acceleration
-> > data from device with data ready interrupt which is mapped
-> > to INT1 pin.  
+> Added support for event when there is a detection of step change.
+> INT1 pin is used to interrupt and event is pushed to userspace.
 > 
-> LGTM,
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Agreed.  A couple of 'comments' inline but no actual need to change anything.
-One is contingent on a fix I've not sent out yet for the rest of IIO.
-The other is potentially a minor improvement for the future.
+> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+Hi Jagath,
 
-Thanks,
+A query about handling of multiple interrupts...
 
-Jonathan
-
+> ---
+>  drivers/iio/accel/bma400.h      |  2 +
+>  drivers/iio/accel/bma400_core.c | 75 +++++++++++++++++++++++++++++++++
+>  2 files changed, 77 insertions(+)
 > 
-> > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
-> > ---
-> >  drivers/iio/accel/Kconfig       |   2 +
-> >  drivers/iio/accel/bma400.h      |  10 +-
-> >  drivers/iio/accel/bma400_core.c | 162 +++++++++++++++++++++++++++++++-
-> >  drivers/iio/accel/bma400_i2c.c  |   2 +-
-> >  drivers/iio/accel/bma400_spi.c  |   2 +-
-> >  5 files changed, 170 insertions(+), 8 deletions(-)
+>   * Read-write configuration registers
+> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> index aafb5a40944d..fe101df7b773 100644
+> --- a/drivers/iio/accel/bma400_core.c
+> +++ b/drivers/iio/accel/bma400_core.c
 
-> >
-> >  #include "bma400.h"
-> >
-> > @@ -61,6 +66,14 @@ struct bma400_data {
-> >         struct bma400_sample_freq sample_freq;
-> >         int oversampling_ratio;
-> >         int scale;
-> > +       struct iio_trigger *trig;
-> > +       /* Correct time stamp alignment */
-> > +       struct {
-> > +               __le16 buff[3];
-> > +               u8 temperature;
-> > +               s64 ts __aligned(8);
-> > +       } buffer ____cacheline_aligned;
+>  
+>  static const struct iio_trigger_ops bma400_trigger_ops = {
+> @@ -971,6 +1035,7 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
+>  {
+>  	struct iio_dev *indio_dev = private;
+>  	struct bma400_data *data = iio_priv(indio_dev);
+> +	s64 timestamp = iio_get_time_ns(indio_dev);
+>  	int ret;
+>  
+>  	/* Lock to protect the data->status */
+> @@ -981,6 +1046,16 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
+>  	if (ret)
+>  		goto unlock_err;
+>  
+> +	if (FIELD_GET(BMA400_STEP_STAT_MASK, le16_to_cpu(data->status))) {
+> +		iio_push_event(indio_dev,
+> +			       IIO_EVENT_CODE(IIO_STEPS, 0, IIO_NO_MOD,
+> +					      IIO_EV_DIR_NONE,
+> +					      IIO_EV_TYPE_CHANGE, 0, 0, 0),
+> +			       timestamp);
+> +		mutex_unlock(&data->mutex);
 
-If you are rolling again, could you change this to
-__aligned(IIO_ALIGN);  See
-https://lore.kernel.org/linux-iio/20220419121241.00002e42@Huawei.com/
-for why.
-Note that I'll be sending a fix patch out for IIO_ALIGN to define
-it as ARCH_KMALLOC_ALIGN in next few days.
+Is it possible for two interrupt sources to be active at the same time?
+Given the device is clearing interrupts on read (which is unusual enough to
+make me check that on the datasheet) you will loose any other events.
 
-If you'd pref not to get caught up in that, send it as it stands
-and I'll fix up once that fix is in place.  What's one more driver
-on top of the 80+ I have to do anyway :)
+Normal trick is to act on all set bits and if any of them were acted on
+return HANDLED.
 
-
-
-> > +       __le16 status;
-> >  };
-> >
-
-> > +
-> > +static const unsigned long bma400_avail_scan_masks[] = {
-> > +       GENMASK(3, 0),
-> > +       0
-> > +};
-> > +
-> >  static const struct iio_info bma400_info = {
-> >         .read_raw          = bma400_read_raw,
-> >         .read_avail        = bma400_read_avail,
-> > @@ -814,7 +869,72 @@ static const struct iio_info bma400_info = {
-> >         .write_raw_get_fmt = bma400_write_raw_get_fmt,
-> >  };
-> >
-> > -int bma400_probe(struct device *dev, struct regmap *regmap, const char *name)
-> > +static const struct iio_trigger_ops bma400_trigger_ops = {
-> > +       .set_trigger_state = &bma400_data_rdy_trigger_set_state,
-> > +       .validate_device = &iio_trigger_validate_own_device,
-> > +};
-> > +
-> > +static irqreturn_t bma400_trigger_handler(int irq, void *p)
-> > +{
-> > +       struct iio_poll_func *pf = p;
-> > +       struct iio_dev *indio_dev = pf->indio_dev;
-> > +       struct bma400_data *data = iio_priv(indio_dev);
-> > +       int ret, temp;
-> > +
-> > +       /* Lock to protect the data->buffer */
-> > +       mutex_lock(&data->mutex);
-> > +
-> > +       /* bulk read six registers, with the base being the LSB register */
-> > +       ret = regmap_bulk_read(data->regmap, BMA400_X_AXIS_LSB_REG,
-> > +                              &data->buffer.buff, sizeof(data->buffer.buff));
-> > +       if (ret)
-> > +               goto unlock_err;
-> > +
-> > +       ret = regmap_read(data->regmap, BMA400_TEMP_DATA_REG, &temp);
-
-Given the temperature read is a separate action, it seems like you could sensible
-add another entry to bma400_avail_scan_masks() for just the accelerometer axis
-and then only perform this read if the temperature is requested.
-
-It would be a feature though, so no need to have it in this patch if you
-prefer not to.
-
-> > +       if (ret)
-> > +               goto unlock_err;
-> > +
-> > +       data->buffer.temperature = temp;
-> > +
-> > +       iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
-> > +                                          iio_get_time_ns(indio_dev));
-> > +
-> > +       mutex_unlock(&data->mutex);
-> > +       iio_trigger_notify_done(indio_dev->trig);
-> > +       return IRQ_HANDLED;
-> > +
-> > +unlock_err:
-> > +       mutex_unlock(&data->mutex);
-> > +       return IRQ_NONE;
-> > +}
+> +		return IRQ_HANDLED;
+> +	}
+> +
+>  	if (FIELD_GET(BMA400_INT_DRDY_MSK, le16_to_cpu(data->status))) {
+>  		mutex_unlock(&data->mutex);
+>  		iio_trigger_poll_chained(data->trig);
 

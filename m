@@ -2,45 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7116C516550
-	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 18:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C739C51655D
+	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 18:43:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349471AbiEAQk6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 May 2022 12:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51562 "EHLO
+        id S1349808AbiEAQqa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 May 2022 12:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349589AbiEAQkz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 12:40:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F54E33A16
-        for <linux-iio@vger.kernel.org>; Sun,  1 May 2022 09:37:26 -0700 (PDT)
+        with ESMTP id S1349805AbiEAQq3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 12:46:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 670D51DA54;
+        Sun,  1 May 2022 09:43:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BD9D60F30
-        for <linux-iio@vger.kernel.org>; Sun,  1 May 2022 16:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11014C385A9;
-        Sun,  1 May 2022 16:37:23 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1663FB80E31;
+        Sun,  1 May 2022 16:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D715C385A9;
+        Sun,  1 May 2022 16:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651423045;
-        bh=ExaK1RoYsxzIEyuY5ugijDf1DOg8EdbdSCMrM9CkQcE=;
+        s=k20201202; t=1651423380;
+        bh=5iiuM2YB632xp1B0gLh45BZ+N3/79eXgk2RK6BlzzpA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RZzV0xKL3pt3rJlj+t0ofN2teYLj0993cYCrGWEvUQ75oqax428B6J0pUJG9Pq/z4
-         ebtAnlt6W9867CugdWpZI3Im6CTSGtFkLqDVXBTu5zrm06o/HkFfZy+HFcr6GwZwmY
-         hlyxY0/alfgvxKPv4nI7BoSPvlbI2aYpNTtitjdSb3ob77ElgyS4JEXOIWC6Gzcqov
-         ARoKnWfacmvfN8KFSm4NvzIFiAanCtsmV9pbpcT9c4GhFMY6TmofRkT60Nfm9YQDeB
-         XsZQsDJCPvzhwhDWO3yMifWUQNZLQ/s9pOYSPNwbhwB+ggCmQLQJS9A/NeCsXEKlAj
-         nR7/66PqFUW3w==
-Date:   Sun, 1 May 2022 17:45:40 +0100
+        b=n0xTwkLoSb0AzWyaHXJeEggDmse8eeQyuVoUUEoaMLokua+cGHyXPZVHr8tx1i2lS
+         FzOtbckl1b7cHziE/jUc6dPSKOG0SdfaPU1De3W2JFZoqhID6DaeTr668IUy285MAx
+         jpDSZjUAb6qco7qdSUfDVv4Qj/sQptdSKSKF4Jj4jJeyFzYaYVLHrF9vUtRbMaD8Cn
+         lfGtKKjJr7IlXp3iokWRv1lnx0nsjYZfElfYOlX0OzmkmRoG9OFDnBQgyJIAVxEnX4
+         ELTkZUzTW79i53uBjGSQcsOX5tuQDYaJ54nf6Yu8ZPllkWMgzCzltDekLsDWKgwL3g
+         FuMq/yjxFIjnA==
+Date:   Sun, 1 May 2022 17:51:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     haibo.chen@nxp.com
-Cc:     lars@metafoo.de, hdegoede@redhat.com, linux-iio@vger.kernel.org,
-        linux-imx@nxp.com
-Subject: Re: [PATCH] iio: mma8452: fix probe fail when device tree
- compatible is used.
-Message-ID: <20220501174540.17d7a27a@jic23-huawei>
-In-Reply-To: <1650876060-17577-1-git-send-email-haibo.chen@nxp.com>
-References: <1650876060-17577-1-git-send-email-haibo.chen@nxp.com>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS)
+Subject: Re: [RFC v2 13/39] iio: adc: Kconfig: add HAS_IOPORT dependencies
+Message-ID: <20220501175115.2520a946@jic23-huawei>
+In-Reply-To: <20220429135108.2781579-23-schnelle@linux.ibm.com>
+References: <20220429135108.2781579-1-schnelle@linux.ibm.com>
+        <20220429135108.2781579-23-schnelle@linux.ibm.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,50 +58,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 25 Apr 2022 16:41:00 +0800
-haibo.chen@nxp.com wrote:
+On Fri, 29 Apr 2022 15:50:20 +0200
+Niklas Schnelle <schnelle@linux.ibm.com> wrote:
 
-> From: Haibo Chen <haibo.chen@nxp.com>
+> In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> not being declared. We thus need to add HAS_IOPORT as dependency for
+> those drivers using them.
 > 
-> Correct the logic for the probe. First check of_match_table, if
-> not meet, then check i2c_driver.id_table. If both not meet, then
-> return fail.
-> 
-> Fixes: a47ac019e7e8 ("iio: mma8452: Fix probe failing when an i2c_device_id is used")
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Yikes.
+> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 
-Just goes to show review doesn't always pick up on the obvious :(
+Hi.
 
-Applied to the fixes-togreg branch of iio.git
+Please call out specific driver as that'll increase chance
+of relevant people noticing (there are quite a lot of ADC drivers!)
 
-Jonathan
+e.g.
+iio: adc: ad7606: ....
+
+Anyhow, looks fine to me
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Thanks,
+
 
 > ---
->  drivers/iio/accel/mma8452.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  drivers/iio/adc/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-> index 9c02c681c84c..4156d216c640 100644
-> --- a/drivers/iio/accel/mma8452.c
-> +++ b/drivers/iio/accel/mma8452.c
-> @@ -1556,11 +1556,13 @@ static int mma8452_probe(struct i2c_client *client,
->  	mutex_init(&data->lock);
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 71ab0a06aa82..c99843307e4f 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -130,7 +130,7 @@ config AD7606
 >  
->  	data->chip_info = device_get_match_data(&client->dev);
-> -	if (!data->chip_info && id) {
-> -		data->chip_info = &mma_chip_info_table[id->driver_data];
-> -	} else {
-> -		dev_err(&client->dev, "unknown device model\n");
-> -		return -ENODEV;
-> +	if (!data->chip_info) {
-> +		if (id) {
-> +			data->chip_info = &mma_chip_info_table[id->driver_data];
-> +		} else {
-> +			dev_err(&client->dev, "unknown device model\n");
-> +			return -ENODEV;
-> +		}
->  	}
->  
->  	ret = iio_read_mount_matrix(&client->dev, &data->orientation);
+>  config AD7606_IFACE_PARALLEL
+>  	tristate "Analog Devices AD7606 ADC driver with parallel interface support"
+> -	depends on HAS_IOMEM
+> +	depends on HAS_IOPORT
+>  	select AD7606
+>  	help
+>  	  Say yes here to build parallel interface support for Analog Devices:
 

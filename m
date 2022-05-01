@@ -2,40 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF876516293
-	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 10:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 655E251629E
+	for <lists+linux-iio@lfdr.de>; Sun,  1 May 2022 10:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243283AbiEAINe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 May 2022 04:13:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50150 "EHLO
+        id S244476AbiEAITI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 May 2022 04:19:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242703AbiEAINe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 04:13:34 -0400
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9A034188;
-        Sun,  1 May 2022 01:10:08 -0700 (PDT)
+        with ESMTP id S244156AbiEAIS6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 May 2022 04:18:58 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5CBC61133;
+        Sun,  1 May 2022 01:15:30 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="5.91,189,1647270000"; 
-   d="scan'208";a="119713076"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 01 May 2022 17:10:07 +0900
+   d="scan'208";a="118506505"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 01 May 2022 17:15:29 +0900
 Received: from localhost.localdomain (unknown [10.226.92.14])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 1F9E941DF2BE;
-        Sun,  1 May 2022 17:10:03 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 6F8924007F20;
+        Sun,  1 May 2022 17:15:26 +0900 (JST)
 From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        devicetree@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Chris Paterson <Chris.Paterson2@renesas.com>,
         Biju Das <biju.das@bp.renesas.com>
-Subject: [PATCH] dt-bindings: iio: adc: Document Renesas RZ/G2UL ADC
-Date:   Sun,  1 May 2022 09:10:01 +0100
-Message-Id: <20220501081001.21563-1-biju.das.jz@bp.renesas.com>
+Subject: [PATCH] iio: adc: rzg2l_adc: Add support for RZ/G2UL ADC
+Date:   Sun,  1 May 2022 09:15:23 +0100
+Message-Id: <20220501081523.22479-1-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -49,50 +46,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document Renesas RZ/G2UL ADC bindings. RZ/G2UL ADC is identical to
-RZ/G2L ADC but with fewer channels (2 vs 8) compared to RZ/G2L.
+ADC found on RZ/G2UL SoC is almost identical to RZ/G2L SoC, but RZ/G2UL
+has 2 analog input channels compared to 8 channels on RZ/G2L. Therefore,
+added a new compatible to handle this difference.
 
 Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- .../bindings/iio/adc/renesas,rzg2l-adc.yaml    | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/iio/adc/rzg2l_adc.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-index d66c24cae1e1..767fb734a1b5 100644
---- a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-@@ -17,11 +17,15 @@ description: |
+diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+index 7585144b9715..703b08254c9f 100644
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -16,6 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+@@ -61,6 +62,8 @@
+ #define RZG2L_ADC_CHN_MASK		0x7
+ #define RZG2L_ADC_TIMEOUT		usecs_to_jiffies(1 * 4)
  
- properties:
-   compatible:
--    items:
--      - enum:
--          - renesas,r9a07g044-adc   # RZ/G2L
--          - renesas,r9a07g054-adc   # RZ/V2L
--      - const: renesas,rzg2l-adc
-+    oneOf:
-+      - items:
-+          - const: renesas,renesas,r9a07g043-adc   # RZ/G2UL
++#define RZG2UL_ADC_MAX_CHANNELS		2
 +
-+      - items:
-+          - enum:
-+              - renesas,r9a07g044-adc   # RZ/G2L
-+              - renesas,r9a07g054-adc   # RZ/V2L
-+          - const: renesas,rzg2l-adc
+ struct rzg2l_adc_data {
+ 	const struct iio_chan_spec *channels;
+ 	u8 num_channels;
+@@ -76,6 +79,7 @@ struct rzg2l_adc {
+ 	const struct rzg2l_adc_data *data;
+ 	struct mutex lock;
+ 	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
++	u8 max_channels;
+ };
  
-   reg:
-     maxItems: 1
-@@ -76,7 +80,9 @@ patternProperties:
-     properties:
-       reg:
-         description: |
--          The channel number. It can have up to 8 channels numbered from 0 to 7.
-+          The channel number. It can have up to 8 channels numbered from 0 to 7
-+          for RZ/{G2L,V2L} SoCs or 2 channels numbered from 0 to 1 for RZ/G2UL
-+          SoC.
-         items:
-           - minimum: 0
-             maximum: 7
+ static const char * const rzg2l_adc_channel_name[] = {
+@@ -260,7 +264,9 @@ static int rzg2l_adc_read_label(struct iio_dev *iio_dev,
+ 				const struct iio_chan_spec *chan,
+ 				char *label)
+ {
+-	if (chan->channel >= RZG2L_ADC_MAX_CHANNELS)
++	struct rzg2l_adc *adc = iio_priv(iio_dev);
++
++	if (chan->channel >= adc->max_channels)
+ 		return -EINVAL;
+ 
+ 	return sysfs_emit(label, "%s\n", rzg2l_adc_channel_name[chan->channel]);
+@@ -290,7 +296,7 @@ static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
+ 	if (!intst)
+ 		return IRQ_NONE;
+ 
+-	for_each_set_bit(ch, &intst, RZG2L_ADC_MAX_CHANNELS)
++	for_each_set_bit(ch, &intst, adc->max_channels)
+ 		adc->last_val[ch] = rzg2l_adc_readl(adc, RZG2L_ADCR(ch)) & RZG2L_ADCR_AD_MASK;
+ 
+ 	/* clear the channel interrupt */
+@@ -321,7 +327,7 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
+ 		return -ENODEV;
+ 	}
+ 
+-	if (num_channels > RZG2L_ADC_MAX_CHANNELS) {
++	if (num_channels > adc->max_channels) {
+ 		dev_err(&pdev->dev, "num of channel children out of range\n");
+ 		return -EINVAL;
+ 	}
+@@ -337,7 +343,7 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
+ 		if (ret)
+ 			return ret;
+ 
+-		if (channel >= RZG2L_ADC_MAX_CHANNELS)
++		if (channel >= adc->max_channels)
+ 			return -EINVAL;
+ 
+ 		chan_array[i].type = IIO_VOLTAGE;
+@@ -437,6 +443,7 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+ 
+ 	adc = iio_priv(indio_dev);
+ 
++	adc->max_channels = (uintptr_t)of_device_get_match_data(dev);
+ 	ret = rzg2l_adc_parse_properties(pdev, adc);
+ 	if (ret)
+ 		return ret;
+@@ -540,7 +547,8 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+ }
+ 
+ static const struct of_device_id rzg2l_adc_match[] = {
+-	{ .compatible = "renesas,rzg2l-adc",},
++	{ .compatible = "renesas,r9a07g043-adc", .data = (void *)RZG2UL_ADC_MAX_CHANNELS },
++	{ .compatible = "renesas,rzg2l-adc", .data = (void *)RZG2L_ADC_MAX_CHANNELS },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, rzg2l_adc_match);
 -- 
 2.25.1
 

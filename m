@@ -2,114 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B47517011
-	for <lists+linux-iio@lfdr.de>; Mon,  2 May 2022 15:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02DE517192
+	for <lists+linux-iio@lfdr.de>; Mon,  2 May 2022 16:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385175AbiEBNQc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 May 2022 09:16:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46204 "EHLO
+        id S1349867AbiEBOco (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 May 2022 10:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351348AbiEBNQb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 May 2022 09:16:31 -0400
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35894C0C;
-        Mon,  2 May 2022 06:12:58 -0700 (PDT)
-Received: by mail-vs1-xe33.google.com with SMTP id z144so13497137vsz.13;
-        Mon, 02 May 2022 06:12:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=Q9PzyxjQuHY1spsfkApUPqmCQWtSz+AxNkiNIjpbrU8=;
-        b=mJDEqDsVQSGSuhg63i6rSSlbP++q3ToYeRW7DKxkb1Mgg6ahghRFMAMYVO8Z248Wpv
-         /zMAOvyhuFpiRAqn2VhRMA3uu9E2VH6ACglzHVwKn/4w8bGMp9mQx2Xcx1aHcJFCULwd
-         /WzVHWm330mmycVGKOMDo98gNZZW3mekRi0x/PDJGRx9yPLvbhVlqTbbAjcKUl3QFBOx
-         r5f57N5BwI9bpueFyyiPE8lmhgNPHdUr+4NejTLlWU9CozHtjS9GpXqjB0SCJG7l9tFN
-         reM2aggIX8NxhU2uBmPxOp9y1Y09HDqTmQmXVatCdmw685GsgJmU9inIuFvA4fvUDJ4+
-         S/sg==
+        with ESMTP id S1385496AbiEBOcn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 May 2022 10:32:43 -0400
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D37910FF4;
+        Mon,  2 May 2022 07:29:14 -0700 (PDT)
+Received: by mail-qt1-f180.google.com with SMTP id hh4so11186698qtb.10;
+        Mon, 02 May 2022 07:29:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=Q9PzyxjQuHY1spsfkApUPqmCQWtSz+AxNkiNIjpbrU8=;
-        b=VdLAWV52D5pn2k1CuyI1OZbZNcpOhc/XnOrelEDMdscMbG8L7ox9QW1ANuX38m3SxA
-         qUWwAq1KsqKFxPo6SRmiU4tZuEs5OWeElZEykY1UofV0mOdYuTd7KZCpYq9aFcZ5T7X9
-         cLpCzu5L0S8KDLq9f+yZp62fa2cSL2cpe//6uhAW89DonLd6V/iFcKKe9SNU7uprLNIj
-         iSXfnkkInNYMkkRyhRqKlMx3EFBG3ik4oTO0w/RaMYbRYw7Da227lfYLOu1fc85s4K3Q
-         mBsHF3rNK3eUi8XQXTjno44ISuOYjXx5AzDUZgOlY2Of1rrzq2n5LZIo06VwN4j8h6vZ
-         Yn7g==
-X-Gm-Message-State: AOAM531D+AaEh5TE2UYiOlLG9PhmKgW9WvB54Xje1xzfHINbv6LNGY/j
-        F7ai/IkOOjBwoqexkneSV/Lj+C0Gx16BjRak/2RYXwdybpjQwTF7
-X-Google-Smtp-Source: ABdhPJxbInO0MY7QS0qnVFBBJNpXUEKl/C28qXUrrFqVm+asE7qWtoiTdPab5crnAQKYbzgVZXYAV22vfuroIRfDXxo=
-X-Received: by 2002:a67:c107:0:b0:32d:3ac1:1e71 with SMTP id
- d7-20020a67c107000000b0032d3ac11e71mr1332770vsj.41.1651497177274; Mon, 02 May
- 2022 06:12:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4HNuvqLkw5GUbk+NYgaaNUf5vWaZBRKwBR44lb5mJzw=;
+        b=B4wo5DGeorz7C8+vsHFmrLnP26IYcTApyH6WB9nyePyEHcQmDjld/uVw6eCYbrds/7
+         AkvMKdda+rBin0R21FotYnVa+UkKtuONF6h4uxzJptu6EnME8OChV0JA5c5GwOOMaRde
+         NjF3MnIH853sRe3KfaiNWN+szgoDJnJeJg56Z8R1youoZK8BfG1f/tomt3NH8A7yLItd
+         EINBnjJ6uWJ4tq4hZGG1hk/vXcZPWpwrTNcQHhM9qyutVtTDLIarYMtl9evgvyKooaqu
+         TleCocUzl6o1yxhZ1FSWuUhCWAZA7IydFXje7QuwwPWZZ69rxGsQyFd0c5TPbFCfO4xN
+         n1Qg==
+X-Gm-Message-State: AOAM532Q+OftOZbFiUeA/3MIIjZkpQagu3yRrqxrwiWiJvdRqSs38A21
+        acUZbXMPjsSH9ThgpJozcRO5rfd1UJMfCw==
+X-Google-Smtp-Source: ABdhPJzl66vhnCret54B1u8lt4Oan1b1hm2TVAMg1FP7eTA8YMv7XevM9Y6Fb9A/GHaaMvVeZvlNJQ==
+X-Received: by 2002:ac8:7d08:0:b0:2f1:e349:adb7 with SMTP id g8-20020ac87d08000000b002f1e349adb7mr10317535qtb.616.1651501753661;
+        Mon, 02 May 2022 07:29:13 -0700 (PDT)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id m2-20020a37a302000000b0069ff51425a2sm603071qke.120.2022.05.02.07.29.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 May 2022 07:29:13 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-2f16645872fso149533907b3.4;
+        Mon, 02 May 2022 07:29:13 -0700 (PDT)
+X-Received: by 2002:a81:234b:0:b0:2f8:4082:bbd3 with SMTP id
+ j72-20020a81234b000000b002f84082bbd3mr11241893ywj.47.1651501752992; Mon, 02
+ May 2022 07:29:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220426131102.23966-1-andrea.merello@gmail.com>
- <20220426131102.23966-9-andrea.merello@gmail.com> <CAHp75VdLiBkg100UjFN36rW_vaOObOoJ_Mv9n=4LjSWb+dQWMw@mail.gmail.com>
- <CAN8YU5PzwmeQ9XA3qod7HejG6cCLCrPvda5eomCh5hUze_DWcA@mail.gmail.com> <CAHp75VfOZpD135q_eERnLk0NorXwPxY8DFbKMu+eKV8XahGC1A@mail.gmail.com>
-In-Reply-To: <CAHp75VfOZpD135q_eERnLk0NorXwPxY8DFbKMu+eKV8XahGC1A@mail.gmail.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Mon, 2 May 2022 15:12:45 +0200
-Message-ID: <CAN8YU5P_vGV0vrhdy273ef9GH2Y2=TbXbsiho=V9vG44NXAujA@mail.gmail.com>
-Subject: Re: [v5 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
+References: <20220501081523.22479-1-biju.das.jz@bp.renesas.com>
+ <OSZPR01MB7019299D00A457C964CC403DAAC19@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <OS0PR01MB5922CCDFA8C3648F49A10EB186C19@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+In-Reply-To: <OS0PR01MB5922CCDFA8C3648F49A10EB186C19@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 2 May 2022 16:29:01 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWHemJn2KUBzYA8oVYgtG4sX2H=4-AdRuF0uZ2EgQEk6w@mail.gmail.com>
+Message-ID: <CAMuHMdWHemJn2KUBzYA8oVYgtG4sX2H=4-AdRuF0uZ2EgQEk6w@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: rzg2l_adc: Add support for RZ/G2UL ADC
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        jmondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@iit.it>
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno lun 2 mag 2022 alle ore 12:12 Andy Shevchenko
-<andy.shevchenko@gmail.com> ha scritto:
+Hi Biju,
 
-One inline comment. OK for the rest
-
-> > > > +#define BNO055_ATTR_VALS(...)          \
-> > > > +       .vals = (int[]){ __VA_ARGS__},  \
-> > > > +       .len = ARRAY_SIZE(((int[]){__VA_ARGS__}))
-
-[...]
-
-> And my point about readability. The reader, and even the author after
-> some time, may have no clue in this forest of the macros and castings
-> what's going on.
-
-While I'm OK wrt your point in general, consider that it's just a
-three LOC macro, used only in a few structs just below. I wouldn't say
-it's so inricated; I've seen by far worse in the kernel :)
-
-> > but about avoiding as much as
-> > possible bugs caused by mismatched attr_vals, attr_aux and
-> > ARRAY_SIZE() arg. e.g:
-> > bno055_sysfs_attr_avail(priv, bno_foo_vals, ARRAY_SIZE(bno_bar_vals),
-> > bno_foobar_aux, vals, len)
-> >
-> > I used to make quite a lot of mess until I grouped all the stuff in
-> > one struct :/
+On Mon, May 2, 2022 at 8:18 AM Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> > Subject: RE: [PATCH] iio: adc: rzg2l_adc: Add support for RZ/G2UL ADC
+> > > Subject: [PATCH] iio: adc: rzg2l_adc: Add support for RZ/G2UL ADC
+> > >
+> > > ADC found on RZ/G2UL SoC is almost identical to RZ/G2L SoC, but
+> > > RZ/G2UL has 2 analog input channels compared to 8 channels on RZ/G2L.
+> > > Therefore, added a new compatible to handle this difference.
+> > >
+> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> > > ---
+> > >  drivers/iio/adc/rzg2l_adc.c | 18 +++++++++++++-----
+> > >  1 file changed, 13 insertions(+), 5 deletions(-)
+> > >
+> > I wonder if this changes is really required. RZ/G2UL can still use the
+> > "renesas,rzg2l-adc". As the driver populates the channels depending the
+> > number of elements in the array passed in the DTS and not always 8
+> > channels. For example on Renesas SMARC EVK only four channels are
+> > populated.
 >
-> If something you want to prevent at compile time, consider to utilize
-> static_assert() and / or BUILD_BUG_ON() depending on the place in the
-> code (the former is preferred).
+> For me that restriction is coming from board design, as SoC is capable of handling 8 channels,
+> But board design allows only 4.
+>
+> But on RZ/G2UL SoC, it is capable of handling only 2 channels. Other channels are invalid for RZ/G2UL SoC.
+>
+> That is the difference.
+>
+> > With this we don't have to differentiate RZ/G2UL SoC if just add two
+> > channel entries in the SoC DTSI and the driver will just create two
+> > channels.
+>
+> > @Geert - your thoughts on this.
 
-I would be happy to get rid of my macro and use those assertion
-things, but I can't see how exactly. Do you have any advice about how
-to take advantage of them for catching bugs like the one above in this
-specific case?
+It depends on the meaning of the channel subnodes: do they indicate
+(a) the number of channels present on the SoC, or (b) the number of
+channels used on the board?  The DT bindings are not clear about that.
+
+arch/arm64/boot/dts/renesas/r9a07g044.dtsi lists all channels and
+doesn't keep any disabled, which suggests (a).
+arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi does remove unused
+channels, which suggests (b).
+
+Is there any (perhaps performance?) reason we can't just use the number
+of channels present in DT? "make dtbs_check" can still validate this
+against the SoC-specific compatible value.
+
+Do we need to know at runtime both the number of channels physically
+present and the number of channels used?  If yes, we either need to
+use the SoC-specific compatible value, or add a num-channels property.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

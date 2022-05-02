@@ -2,129 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3C31516B5B
-	for <lists+linux-iio@lfdr.de>; Mon,  2 May 2022 09:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1E14516B67
+	for <lists+linux-iio@lfdr.de>; Mon,  2 May 2022 09:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358770AbiEBHlf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 2 May 2022 03:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46562 "EHLO
+        id S1383585AbiEBHvx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 2 May 2022 03:51:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358360AbiEBHlb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 May 2022 03:41:31 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B9EB87C
-        for <linux-iio@vger.kernel.org>; Mon,  2 May 2022 00:38:03 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nlQd3-0000eo-4I; Mon, 02 May 2022 09:37:57 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nlQd3-006UPG-MU; Mon, 02 May 2022 09:37:56 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nlQd1-0070zb-G7; Mon, 02 May 2022 09:37:55 +0200
-Date:   Mon, 2 May 2022 09:37:55 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 8/9] iio:light:stk3310: Remove duplicated error reporting
- in .remove()
-Message-ID: <20220502073755.rku3yv6il5efew2x@pengutronix.de>
-References: <20220430081607.15078-1-u.kleine-koenig@pengutronix.de>
- <20220430081607.15078-9-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S1358886AbiEBHvw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 2 May 2022 03:51:52 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB1E929CB4;
+        Mon,  2 May 2022 00:48:24 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id k23so26274619ejd.3;
+        Mon, 02 May 2022 00:48:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4+JqnNYbdTySkdzdeBZlUTvL7wp3wUNy6SficKihTqg=;
+        b=k71jvTwvwxhCF1t5yCzU3c6CVQHWEYDRt92r23U7g6cIpffTYeyn//gYFW+9GFTYfQ
+         Uza9PAjMloyWu3rKMbW9CIDtiqrnPb9m9w89RVipPDXTtJ51XYm+AsjQxs9V8vwqlYhV
+         D7+rPI9NV8lb6jii11rr6h/GIWBffU+KhkVis4Uhvyoo3zZGAmlOMIp/3H2WAAQs7BNU
+         NpmLNKt/OgyJZkPEsbeDfpU3QqfRLp5VPR9nz3o/RzjkrJkLx9ODdvfY+EX8UGnXUTdm
+         oe3+auK49L9NH1zJgOlffeC7+F/rLu7ZBDftUCLEkRK5yuSECdFg3JIKylQqk0FlQwY3
+         Zu6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4+JqnNYbdTySkdzdeBZlUTvL7wp3wUNy6SficKihTqg=;
+        b=QyyOhUjDt1ezC9x6Gu/BSmwC8UDzif+FBj1WOhIEKwNbxsaYwPF0pzZtSTSkubcBg2
+         CbIw5TteAp2pbd9dfdRKEjk4IO2hwHqBNsmY66SAeD4HCUacsYwcVqDpWoS22Hl/YowV
+         ZAWBa9amFDlm/I3ZNBkbl6jxKfBFGZCcugb9sbLLhbdlPsX0W3NymyrZmzh9YCe0Z9dh
+         mGohVwk05QiU4FxMEZ1ntDQj3wZILbhEbksYgqhq8SyluYajAhQJDdDnydVjH6j2geiS
+         ZvHpZTtZEcolQMdtTh4Yl1PuRERuOdkZ9JcjtqlE4IXnXU5tQ5Wp00l43dCrJHWMz1eh
+         QhdA==
+X-Gm-Message-State: AOAM530DYCQOoCYwtH5/ILxO2JbGfbDGzdCzFSLl/yLfaGxQMPWOJzut
+        AkTTJYmH9TpuaHGFOwsLTPMaE6JIGiIGWHW06AmaGY2fGHjjWnwjoUg=
+X-Google-Smtp-Source: ABdhPJyCbMB0QY8x2hEMvHq3vBYbFBHiGsfnRV8eiD/ogddy1MPWorEINB00yiTM0C0wnrJBluH2fqYpZLLK+oA0BvY=
+X-Received: by 2002:a17:906:1cd1:b0:6ec:c59:6a1d with SMTP id
+ i17-20020a1709061cd100b006ec0c596a1dmr10373516ejh.77.1651477703282; Mon, 02
+ May 2022 00:48:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6g6zfbmn6h6mnga3"
-Content-Disposition: inline
-In-Reply-To: <20220430081607.15078-9-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220426131102.23966-1-andrea.merello@gmail.com>
+ <CAHp75VcoXu=0yvxmTwGAzexV_MgACXg-Cufkigt_kCEvbnwq_Q@mail.gmail.com>
+ <20220501180303.75a0d0a5@jic23-huawei> <CAN8YU5PYkQhqrGP8qUK6BgVWVWWECQvYGrSiREU7P5r4kFxVjA@mail.gmail.com>
+In-Reply-To: <CAN8YU5PYkQhqrGP8qUK6BgVWVWWECQvYGrSiREU7P5r4kFxVjA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 2 May 2022 09:47:47 +0200
+Message-ID: <CAHp75VcFZYyU0ap8WSBCTTpsUtDmC6TqURLOpAOKxYNtbLHAOg@mail.gmail.com>
+Subject: Re: [v5 00/14] Add support for Bosch BNO055 IMU
+To:     Andrea Merello <andrea.merello@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        jmondi <jacopo@jmondi.org>,
+        Andrea Merello <andrea.merello@iit.it>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, May 2, 2022 at 8:33 AM Andrea Merello <andrea.merello@gmail.com> wrote:
+> Il giorno dom 1 mag 2022 alle ore 18:54 Jonathan Cameron
+> <jic23@kernel.org> ha scritto:
+> > On Wed, 27 Apr 2022 15:42:49 +0200
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > On Tue, Apr 26, 2022 at 3:11 PM Andrea Merello <andrea.merello@gmail.com> wrote:
 
---6g6zfbmn6h6mnga3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-Hello,
+> > > FWIW,
+> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > for non-commented patches (12 out of 14 AFAICS).
+> > >
+> > FWIW I'm fine with the series once you've tidied up the stuff Andy picked up
+> > on.
+> >
+> > Thanks Andy for the detailed reviewing btw.
 
-On Sat, Apr 30, 2022 at 10:16:06AM +0200, Uwe Kleine-K=F6nig wrote:
-> Returning an error value in an i2c remove callback results in an error
-> message being emitted by the i2c core, but otherwise it doesn't make a
-> difference. The device goes away anyhow and the devm cleanups are
-> called.
->=20
-> As stk3310_set_state() already emits an error message on failure and the
-> additional error message by the i2c core doesn't add any useful
-> information, change the return value to zero to suppress this message.
->=20
-> This patch is a preparation for making i2c remove callbacks return void.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/iio/light/stk3310.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-> index 1d02dfbc29d1..95a98af08b8a 100644
-> --- a/drivers/iio/light/stk3310.c
-> +++ b/drivers/iio/light/stk3310.c
-> @@ -627,9 +627,12 @@ static int stk3310_probe(struct i2c_client *client,
->  static int stk3310_remove(struct i2c_client *client)
->  {
->  	struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
-> +	int ret;
-> =20
->  	iio_device_unregister(indio_dev);
-> -	return stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
-> +	stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
-> +
-> +	return 0;
->  }
+You/re welcome!
 
-I just found a fixup in my tree that drops the
+> I'm very grateful to both of you and to everyone who commented on
+> those patches. Thanks :). Beside the "Reviewed-by" tags where
+> appropriate, is it usual/appropriate to put some tag like "Thanks-to
+> .. [for comments]" ?
 
-	+	int ret;
+Nope, just mention that in the cover letter.
 
-that I failed to squash in before sending.
+> BTW I have also gone through some kernel-robot reports; they also
+> state "If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>". I'd say that it would
+> be OK to add this tag to a patch that just fixes what is reported, but
+> I'm unsure whether it is appropriate to add this tag to the patches in
+> my series, because they add the code and the fix at once. Any advice
+> here?
 
-Jonathan: Tell me if you want to fixup yourself when you apply, or if
-you prefer a v2. If the latter, only for this patch or the whole series?
+For this we specifically amended the kernel documentation recently.
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
 
-Best regards
-Uwe
+"The tag is intended for bugs; please do not use it to credit feature requests."
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---6g6zfbmn6h6mnga3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmJvilAACgkQwfwUeK3K
-7AnC9gf8DIKhRYOCPzeQxrXVKDBeDev+kQ6Orgk/xjrNftapc2brBmObqvwNMouZ
-tiJRSEmAnRY/UOhz7wBPyjPFL7IeZ6MLwQpYn4est/r3b6y92q8e0IperQN6RQ+q
-J73hXqXCw2mZpfBoyvossVBLUHUfFP2xld9U9s9XjUb0g3u30FN3eUv4IlkoqpPc
-5FlC0y0w04glf4a+p3X+6rsRf3QjTWVqt/fHLwyBZ8xMle7uAsS/l1dlSCnIwiRR
-5GGsCRGC2kW7bjmezdKmEPY003vpj8UFX1mGwhEMh0o7p6yrcKJaLzY2A48b9Jk5
-95zXGGFhKE7+YEUzXO4EtEgQZhEfZg==
-=x1N0
------END PGP SIGNATURE-----
-
---6g6zfbmn6h6mnga3--
+-- 
+With Best Regards,
+Andy Shevchenko

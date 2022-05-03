@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37FA1518080
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C74EB518082
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233187AbiECJGQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:06:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
+        id S233189AbiECJG0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233175AbiECJGP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:06:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B24319C2E
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:02:43 -0700 (PDT)
+        with ESMTP id S233182AbiECJG0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:06:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9394D1BE93
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:02:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30B5261307
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2880C385B0;
-        Tue,  3 May 2022 09:02:33 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 45F56B81CA7
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:02:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFA1C385A4;
+        Tue,  3 May 2022 09:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568562;
-        bh=Ysnp6df9y0j0sWUgTd0LRze5Sb22RByTuKGgjtyPgTA=;
+        s=k20201202; t=1651568572;
+        bh=Fhlt/qW9Zs05subZawmiNh/9N1h+Q4FBt6IzKaoNDdg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dXZBIeyBlPxFv893jDb2lxhw6sWnOZdd1Hysln3MvV+kaoU+LO+3IsVokMOmzfm1t
-         +jXWkCUDWAu4HVJGitv698ZyW5KOHvun/WIYCHfwtxgVZtrfYcfu61fAzYZOkVCocM
-         oRsJvgfMSUP0N/kIjNHt3AAlXwsWF3wXZIhZBB1PfaXd/MNc0v162YsoP43IlwRmcj
-         bYgim4W4GkufC1rcbvFPnZ2A84sUoYK874thoPLdGK7zU/9G5A1TBy9u3oWyuxXepD
-         0+V1RIehfaFt4TVdCGy1vQ3HIsVI1eaK6nZ8piai4lc+CqOUTlF/0O2Ax4EX2LhcIH
-         7Z2NWRa4ZIU8g==
+        b=EKe7+fNUs2JXAtJcicnxwTXj8DbzXwWR+vRT5KgjNYAAWV3yAowi+xHc4bIQQuhWb
+         SkY4izmUlmi1Y5sa8DMDACDLD7mxnNJQWn4LSr9UttJWv4PJV4wJraQ96cVmRkDJ6U
+         OmSywfsaIuLE0WGp/o9jsRvCfZO2VwHJ+2/8prgXOvyAi/5qR5KdmQP1MgznxKoLWw
+         nmBbvqXNItyAoc4EbQ4dnHVWTCfN/zOqbw2UYQ1HUWuynZ7NzHQNutM48i4rfOEeTx
+         v7LNjv7jTIrVM23BrVdbYSZbS78SQaduH7BlNfL1C9QZRnr6n7/KB43XvV9x3FIchp
+         XxOdhk4grygJw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 70/92] iio: frequency: admv4420: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:59:13 +0100
-Message-Id: <20220503085935.1533814-71-jic23@kernel.org>
+Subject: [PATCH 71/92] iio: frequency: adrf6780: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:14 +0100
+Message-Id: <20220503085935.1533814-72-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -89,26 +89,26 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: b59c04155901 ("iio: frequency: admv4420.c: Add support for ADMV4420")
+Fixes: 63aaf6d06d87 ("iio: frequency: adrf6780: add support for ADRF6780")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Cristian Pop <cristian.pop@analog.com>
+Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>
 ---
- drivers/iio/frequency/admv4420.c | 2 +-
+ drivers/iio/frequency/adrf6780.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/frequency/admv4420.c b/drivers/iio/frequency/admv4420.c
-index 51134aee8510..71c1af6fd56b 100644
---- a/drivers/iio/frequency/admv4420.c
-+++ b/drivers/iio/frequency/admv4420.c
-@@ -113,7 +113,7 @@ struct admv4420_state {
- 	struct admv4420_n_counter	n_counter;
- 	enum admv4420_mux_sel		mux_sel;
- 	struct mutex			lock;
--	u8				transf_buf[4] ____cacheline_aligned;
-+	u8				transf_buf[4] __aligned(IIO_ALIGN);
+diff --git a/drivers/iio/frequency/adrf6780.c b/drivers/iio/frequency/adrf6780.c
+index 8255ffd174f6..788de3b05e3a 100644
+--- a/drivers/iio/frequency/adrf6780.c
++++ b/drivers/iio/frequency/adrf6780.c
+@@ -86,7 +86,7 @@ struct adrf6780_state {
+ 	bool			uc_bias_en;
+ 	bool			lo_sideband;
+ 	bool			vdet_out_en;
+-	u8			data[3] ____cacheline_aligned;
++	u8			data[3] __aligned(IIO_ALIGN);
  };
  
- static const struct regmap_config admv4420_regmap_config = {
+ static int __adrf6780_spi_read(struct adrf6780_state *st, unsigned int reg,
 -- 
 2.36.0
 

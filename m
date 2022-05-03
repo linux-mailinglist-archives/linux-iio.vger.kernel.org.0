@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E46751808E
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F29F2518090
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233212AbiECJHj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:07:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
+        id S233155AbiECJHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:07:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbiECJHi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:07:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8C21BE93
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:04:07 -0700 (PDT)
+        with ESMTP id S233215AbiECJHt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:07:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106B81BEA4
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:04:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA87F61259
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1EDC385B0;
-        Tue,  3 May 2022 09:03:56 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9B78B81BE9
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:04:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D95C385B2;
+        Tue,  3 May 2022 09:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568646;
-        bh=MjJjtUvNlgwtIKR33x5mDkH8Sj+HqWf68lmpgd85bfU=;
+        s=k20201202; t=1651568655;
+        bh=VAhpmlMeH2aApDfe/0axsTpA1LC4LtU6ooNWbXK4evE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ank5oFsJghhBMKlBOXkudwm+ulLKe5MLShEXy58WuePWrx1nHS2dHeCWzj5LueL5R
-         yZy8CPECThcWZQCWWA4AapJKsKB9k5Xbm3AhJOGJtaRyUnwy5AgLHdWe53cT8KfdaG
-         Shq4BML1PctERERW6QQ5P2kHYHj57R+d3tEeQS3vU9Eip7qmbpPteD62Gj/4h8mZd0
-         f8f3WhbsfUhFBdy6ax9P1IlZ+M1T4ViBMzkh1pp3pot2ZntE5mcmLyD3yxrrWvFAl0
-         nIX1pyagl75STFI1blxUfkMXkD0rmgUVFEPfROGPHxHrOs2T7nnI72tJD7tJMoc/Rr
-         h2NlAuXHglfKQ==
+        b=LmCOOiEMI04eVouaL/RbcjedPW97kPupxhgoebmivqbgoSkAfbq3jW1GlwZzYUUjd
+         ZJcPW+74zF9sKQ0IA7ubrTsEEQlipS7i+QT9aHgOHYgHUHjgIw35AkLbn6bE1kvtDS
+         BxiOx/kL2mjCauXEb5RDKZiVxePxzYmg6Vk8cndbKGHBVRufmO3diqeJ/talla5yXq
+         STtl0Et68yK0OUKIzoktvWbYfLwGjaFGuLifI0nmB3z65NCmpNPxyzy91saWC/ujoD
+         o2ASJtbMuyo0NUmqzARcQJdLWdMFpP9RGiCZPtvhhcu9eFoQXsOr3+ED7njX91f7ED
+         /2XhhdpABa9cA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 79/92] iio: imu: mpu6050: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:59:22 +0100
-Message-Id: <20220503085935.1533814-80-jic23@kernel.org>
+Subject: [PATCH 80/92] iio: potentiometer: ad5110: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:23 +0100
+Message-Id: <20220503085935.1533814-81-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -89,26 +89,31 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: 6b0cc5dce072 ("iio:imu:inv_mpu6050 Fix dma and ts alignment and data leak issues.")
+Fixes: d03a74bfacce ("iio: potentiometer: Add driver support for AD5110")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc: Mugilraj Dhavachelvan <dmugil2000@gmail.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/potentiometer/ad5110.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index c6aa36ee966a..18bd1a50463c 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -203,7 +203,7 @@ struct inv_mpu6050_state {
- 	s32 magn_raw_to_gauss[3];
- 	struct iio_mount_matrix magn_orient;
- 	unsigned int suspended_sensors;
--	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] ____cacheline_aligned;
-+	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] __aligned(IIO_ALIGN);
+diff --git a/drivers/iio/potentiometer/ad5110.c b/drivers/iio/potentiometer/ad5110.c
+index d4eeedae56e5..29f9a9037077 100644
+--- a/drivers/iio/potentiometer/ad5110.c
++++ b/drivers/iio/potentiometer/ad5110.c
+@@ -63,10 +63,10 @@ struct ad5110_data {
+ 	struct mutex            lock;
+ 	const struct ad5110_cfg	*cfg;
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
+-	 * transfer buffers to live in their own cache lines.
++	 * DMA (thus cache coherency maintenance) may require the
++	 * transfer buffers live in their own cache lines.
+ 	 */
+-	u8			buf[2] ____cacheline_aligned;
++	u8			buf[2] __aligned(IIO_ALIGN);
  };
  
- /*register and associated bit definition*/
+ static const struct iio_chan_spec ad5110_channels[] = {
 -- 
 2.36.0
 

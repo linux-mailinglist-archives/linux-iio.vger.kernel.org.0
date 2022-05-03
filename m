@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E26251808C
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A49051808D
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233209AbiECJHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
+        id S233184AbiECJH3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:07:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbiECJHT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:07:19 -0400
+        with ESMTP id S233155AbiECJH2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:07:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B684A1BE93
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:03:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18F41BEA4
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:03:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48D5C612CB
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:03:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7CDC385B2;
-        Tue,  3 May 2022 09:03:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 421AE61259
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:03:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3B3C385B1;
+        Tue,  3 May 2022 09:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568627;
-        bh=hKa55Ep6iyOANvTUBLMyRPtdKam6bEjIVeCJ094aaEY=;
+        s=k20201202; t=1651568636;
+        bh=w+VfPYd9WkpPK3s+Ftfter3H3ZY22JJBLNLTVx/wEU0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t/h7AImIaqjKu+hHjnM+t7+vWxIu2XlbG05cuGjxEEcVsHws486Ug+ZZIMwham0Sv
-         UGmRm4POqTciQY/MSfTX6GyBydL8U+RQ+aX2jfdiRPhFObmtOcpmyM6T4KKrIJx51U
-         dMQDo5wSZWhU276BGw+lESbnGPEiX67jJrDznuE5J48/01OC3pR49PBwXEB59pcuF9
-         EtVxKwtR0574slfGWU9pRFRK3gthF36M83sOOmWdA6E/aHabqc/WbjqOJ3WhRKegma
-         Gwn8PnpDS3SHup60UcJY2oEZKP2roUp2fZkojwPHA4UkkQA6b3p7LDoOcM9WKH9mYV
-         ndyC/W0nlI1/A==
+        b=aUgDvJVcK6f8KSTutVIO2u+azZ4gaNyj5fJPce350/drgF4JCUfabX5u9xI0IGY2V
+         Vzadp6It0t425h01wL1pYc7hUHBCHwucmFOWwK3V5T/5lzfBzvHwKRhVE+y4hcoaMt
+         cnVE7Cx9HwJJhyHdyfbBksVgJ0qwoOocaki3iTw0rGps5vo5RUwZDMSUxeObz67ZED
+         VezxHm41WYuH0u3clPVPhzjZZ/0l3+pkcniQSX3fYzqxVDfc5M51I2KXj+F7WPehN1
+         X8r0ArMyOOPxK/G11yaugy1QotFWsR5If6+K1ZWTVilzEl+62UcCrX8TJc0g3AVwv6
+         zXfdQaSkHVmIA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 77/92] iio: imu_icm42600: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:59:20 +0100
-Message-Id: <20220503085935.1533814-78-jic23@kernel.org>
+Subject: [PATCH 78/92] iio: imu: icm42600: Fix alignment for DMA safety in buffer code.
+Date:   Tue,  3 May 2022 09:59:21 +0100
+Message-Id: <20220503085935.1533814-79-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -85,33 +85,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Partial fix for this driver as a second instance was introduced in
-a later patch.
+Second fix for this driver due to different introducing patches.
 
 ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: a095fadb443b ("iio: imu: inv_icm42600: add gyroscope IIO device")
+Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600.h | 2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index c0f5059b13b3..5b3740cb364f 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -140,7 +140,7 @@ struct inv_icm42600_state {
- 	struct inv_icm42600_suspended suspended;
- 	struct iio_dev *indio_gyro;
- 	struct iio_dev *indio_accel;
--	uint8_t buffer[2] ____cacheline_aligned;
-+	uint8_t buffer[2] __aligned(IIO_ALIGN);
- 	struct inv_icm42600_fifo fifo;
- 	struct {
- 		int64_t gyro;
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
+index de2a3949dcc7..56545638bfcd 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
+@@ -39,7 +39,7 @@ struct inv_icm42600_fifo {
+ 		size_t accel;
+ 		size_t total;
+ 	} nb;
+-	uint8_t data[2080] ____cacheline_aligned;
++	uint8_t data[2080] __aligned(IIO_ALIGN);
+ };
+ 
+ /* FIFO data packet */
 -- 
 2.36.0
 

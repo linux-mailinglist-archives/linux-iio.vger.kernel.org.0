@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FBB1518027
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 10:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BB5151802B
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 10:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232891AbiECI50 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 04:57:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35928 "EHLO
+        id S233041AbiECI5g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 04:57:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230464AbiECI5Z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 04:57:25 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE18020BFD
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 01:53:53 -0700 (PDT)
+        with ESMTP id S230464AbiECI5e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 04:57:34 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E44B135DE9
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 01:54:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5FAB7B81A56
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 08:53:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924AAC385B0;
-        Tue,  3 May 2022 08:53:41 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9927CB81A56
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 08:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CD5C385A4;
+        Tue,  3 May 2022 08:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568031;
-        bh=SALcPILQlJ3wwKAouKog/dFWpS5n452LpWj7no2Rshc=;
+        s=k20201202; t=1651568040;
+        bh=nem98y3YJbF+X6WsRnQpMXvAhuEIpY19h6dWqMNoKAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TEFyfYZrj2QcXLrcbDP8SdOfh2CouDjETpL5kbVYHx1CcK53Gw6CHqWwh9Ij9dPA3
-         iaXehU4f9ZpZ5xyUC3krZH3r54YtaAh9om47li9qW3MoDH19zNi7SJ8Yu+l8byplNc
-         /OTFqDR4vXVNYpbsSGo8HJsOqScAc7ooPhyKnuVQghZtiq8fjWnSACj5jFy4fFVqyN
-         T5+kpQfJNKDkIfg68wCwYGB9ZqEDI6AQkrPORSg9OoI5iD+1l4VHEvIpeEdXMCdlO1
-         RveiZ9nUzRovdKlJ8CiEEBBysmK/HPuSjCoPBb43mZ6CtRbfebuE/5/AXxcCuCtK5V
-         6yEIAKBs6E8Mw==
+        b=gFhAWdgFGMzudVvIyf5IEAJ2o9HravxPu9j279Gn+24i6sPxUFxUxF6igFUDPTeZg
+         qnRaZ3XguV4kWQZrrHhHWH0Bk0spbqy3GU3tsSbU2cY0qkA20q+C5Ws/r7lidqtHHA
+         Ifu8OVluXTcDedGUYETs97hy0/6QXkxFYxh9+t6OjMjrL6TVJEHtMJ4s118rYfJVS/
+         0tv6c+JWuSLdClS5cnT+l+dyzRx7dvDY8W33UiTrKh+ibMhjYHti2ghflQAu4VFzrn
+         yonVJ4H4S+a0V00v9BskS4TQfD8Bre8UMrLLLzDSDgkuepfzTrcm86y52fH57okihm
+         w10odzx4PdDVA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 13/92] iio: adc: ad7476: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:58:16 +0100
-Message-Id: <20220503085935.1533814-14-jic23@kernel.org>
+Subject: [PATCH 14/92] iio: adc: ad7606: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:58:17 +0100
+Message-Id: <20220503085935.1533814-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -85,42 +85,38 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
- ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Update the comment to reflect that DMA safety 'may' require separate
-cachelines.
+Update the comment to reflect the fact DMA safety 'may' require
+separate cachelines.
 
-Fixes tag is unlikely to be the actual introdution of the problem but is
-far enough back to cover any likely backporting.
-
-Fixes: 7a28fe3c93d6 ("staging:iio:ad7476: Squash driver into a single file.")
+Fixes: 7989b4bb23fe ("iio: adc: ad7616: Add support for AD7616 ADC")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7476.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7606.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-index a1e8b32671cf..d02b1c801957 100644
---- a/drivers/iio/adc/ad7476.c
-+++ b/drivers/iio/adc/ad7476.c
-@@ -44,13 +44,12 @@ struct ad7476_state {
- 	struct spi_transfer		xfer;
- 	struct spi_message		msg;
+diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+index 4f82d7c9acfd..f52aedb1ecf3 100644
+--- a/drivers/iio/adc/ad7606.h
++++ b/drivers/iio/adc/ad7606.h
+@@ -116,11 +116,11 @@ struct ad7606_state {
+ 	struct completion		completion;
+ 
  	/*
 -	 * DMA (thus cache coherency maintenance) requires the
+-	 * transfer buffers to live in their own cache lines.
 +	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
- 	 * Make the buffer large enough for one 16 bit sample and one 64 bit
- 	 * aligned 64 bit timestamp.
++	 * transfer buffers live in their own cache lines.
+ 	 * 16 * 16-bit samples + 64-bit timestamp
  	 */
--	unsigned char data[ALIGN(2, sizeof(s64)) + sizeof(s64)]
--			____cacheline_aligned;
-+	unsigned char data[ALIGN(2, sizeof(s64)) + sizeof(s64)] __aligned(IIO_ALIGN);
+-	unsigned short			data[20] ____cacheline_aligned;
++	unsigned short			data[20] __aligned(IIO_ALIGN);
+ 	__be16				d16[2];
  };
  
- enum ad7476_supported_device_ids {
 -- 
 2.36.0
 

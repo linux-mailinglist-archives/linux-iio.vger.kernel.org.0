@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5704B51806E
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7417B51806F
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:00:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233186AbiECJEP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42414 "EHLO
+        id S233131AbiECJEV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233149AbiECJEH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:04:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D771A3BA
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:00:35 -0700 (PDT)
+        with ESMTP id S233148AbiECJES (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:04:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC8A1C912
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:00:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 081516135C
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:00:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4C8C385A4;
-        Tue,  3 May 2022 09:00:25 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7111AB81BE1
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:00:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346FEC385B0;
+        Tue,  3 May 2022 09:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568434;
-        bh=dzFwIHmPu33oQMmRRhP+izxTDX3Mte1bSsk4KHwWv3Y=;
+        s=k20201202; t=1651568444;
+        bh=pzVBy2LFFe1hhjptCXaKXdwxdHcXshmyyEK/8jYSAdE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JUGM56vPeXtVjOVmqyHODcwVizAM39+Xes1VULa+Udzk1/T2+Iyt0m0ETh4u8k0aN
-         2sR4K5f3WTvQBlSIay+tCnV3jk749AtgLBhfwflt3ed9t+URc55bNvwJQufDtAodph
-         JNd5ZE2H462TlR1OBAIG8NLRKuAekx5KnWee3VMv4pJEH871oWBpLJsP7lW+ro5xLT
-         npRj6pfpTTaVTzlBZ4ksi6FPHegRUx4IODPgYxPaIL+I17l8agKe16TEpiUlglawRT
-         3z4RMxm2xulGEBJqJwdjDcuw1aijI4aLSTgKCaK7aL/95ymRKSFEC9/3B3paLiGF5f
-         MlFnkGep+lfng==
+        b=O8eP/FGJHWnWnDbMCQXS6XZY2n/Eqe0/Y4UrJV/givjeWAIrpDURBBUOkLyJYoFtC
+         UtRCFfK/hB3xIxExeF3n5FDbOJ0M+OMo11b6WsxmYG0qmceVi24Wo3ihJP/MgI3uyo
+         vXSknjc6RFSTTpQ/upjHGPu4s9zbihul2OUHI2tdsx/4PYstPi8jg7M+eD+RjfLenu
+         sVa5D714WSBOVN5wUBKA8guQlOh5BwO4IIBtFYw2qknx+9TOnHtgsCsR9sSkCF4Ywj
+         HOgN8c1yvOzXqYCXgw2lB0PNKD/PvO/EpstxWckqJY2C4omCYeC2xc45CfsJJdr+gv
+         zzXHRDFXVbs1g==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 56/92] iio: dac: ad7293: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:58:59 +0100
-Message-Id: <20220503085935.1533814-57-jic23@kernel.org>
+Subject: [PATCH 57/92] iio: dac: ad7303: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:00 +0100
+Message-Id: <20220503085935.1533814-58-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -89,26 +89,31 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: 0bb12606c05f ("iio:dac:ad7293: add support for AD7293")
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- drivers/iio/dac/ad7293.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Update the comment to include 'may'.
 
-diff --git a/drivers/iio/dac/ad7293.c b/drivers/iio/dac/ad7293.c
-index 59a38ca4c3c7..c2532d431214 100644
---- a/drivers/iio/dac/ad7293.c
-+++ b/drivers/iio/dac/ad7293.c
-@@ -144,7 +144,7 @@ struct ad7293_state {
- 	struct regulator *reg_avdd;
- 	struct regulator *reg_vdrive;
- 	u8 page_select;
--	u8 data[3] ____cacheline_aligned;
-+	u8 data[3] __aligned(IIO_ALIGN);
+Fixes: f83478240e74 ("iio:dac: Add support for the AD7303")
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/dac/ad7303.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/dac/ad7303.c b/drivers/iio/dac/ad7303.c
+index 91eaaf793b3e..2a439ea9d1c7 100644
+--- a/drivers/iio/dac/ad7303.c
++++ b/drivers/iio/dac/ad7303.c
+@@ -44,10 +44,10 @@ struct ad7303_state {
+ 
+ 	struct mutex lock;
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	__be16 data ____cacheline_aligned;
++	__be16 data __aligned(IIO_ALIGN);
  };
  
- static int ad7293_page_select(struct ad7293_state *st, unsigned int reg)
+ static int ad7303_write(struct ad7303_state *st, unsigned int chan,
 -- 
 2.36.0
 

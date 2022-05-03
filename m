@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F89E518052
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 10:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3101518054
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 10:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232218AbiECJB7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:01:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39630 "EHLO
+        id S233111AbiECJCI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232655AbiECJB5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:01:57 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CAC36302
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 01:58:26 -0700 (PDT)
+        with ESMTP id S232655AbiECJCG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:02:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB7836154
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 01:58:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D1901B81AEC
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 08:58:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F83C385B2;
-        Tue,  3 May 2022 08:58:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D98CAB81AEC
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 08:58:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7DFC385B0;
+        Tue,  3 May 2022 08:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568303;
-        bh=kH4OfT6BluApA/vIitrHwnr5GXk6JL5ZqnPVVgRO4zY=;
+        s=k20201202; t=1651568312;
+        bh=JtTgjB6w6OkdDMTiRI0pNpCmNGjjJIdECmYml6sUtcQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HnpwsnjjZZlEEra44o/gZM1BWoIiD9cc+BRE35wp3tb7ELjjC/h2glyjcrpHSzMbR
-         ExXj+mRf1qio0paVVOh7WgyqnW8q2f1X99zBofYJuDGs8D3T1h2aykwhTgKkHhWzXT
-         Mt4Klf3ExArNEKdXk7CTkjmZZ9XSJqZYlvX7wd8CVIj0hyfPXH2A1k4kKhvbD/xApb
-         jp2WH2/MSV3sIilfA5OrbCI6LuDQhIGm1XNFAiKLxlc/hBJPFGq/67ET2CoaS7SPvQ
-         vNwph1UcYaZQxOBHdkv+lO0DS9yW0OUtMtzGi/PWoIg0DD8w4M/zrDI1omdz1dOTOp
-         lUMaDY1sPJeuQ==
+        b=TeRed+2byGVB2ORDbtRTgTrzSsb9vvG+qf4qX21/PXnq9ieFkFrwKOCtpSIYXizaT
+         GHI3wSP33SmtTLXyqGRV9QBV0pmXlxfB0j4HFq5jjlLE+v0PRl9hm5IzwQNrMuFyS1
+         r5wTmciu6yEByGcxtAN45L17bRCHk0QsrAfYgFHx/yPnOQAyFC2F+Iu3a/F8wNPACA
+         MekuQ43HRYlmB3XOgK37VuICVIEXqOu/sTNxrD3iA4V0O3EcbJngB3pFAocGxwrGN3
+         zeolE0Df29UdhtgC0vmpwwryHeY0qMR5uxQplxrGtqyyKvCev7Iq9rViZUMzk1fVQl
+         LbUfAZlWsDD4Q==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 42/92] iio: common: ssp: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:58:45 +0100
-Message-Id: <20220503085935.1533814-43-jic23@kernel.org>
+Subject: [PATCH 43/92] iio: dac: ad5064: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:58:46 +0100
+Message-Id: <20220503085935.1533814-44-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -89,26 +89,35 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/common/ssp_sensors/ssp.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Update the comment to include 'may'.
 
-diff --git a/drivers/iio/common/ssp_sensors/ssp.h b/drivers/iio/common/ssp_sensors/ssp.h
-index abb832795619..33927e837022 100644
---- a/drivers/iio/common/ssp_sensors/ssp.h
-+++ b/drivers/iio/common/ssp_sensors/ssp.h
-@@ -221,8 +221,7 @@ struct ssp_data {
- 	struct iio_dev *sensor_devs[SSP_SENSOR_MAX];
- 	atomic_t enable_refcount;
+Fixes: 6a17a0768f77 ("iio:dac:ad5064: Add support for the ad5629r and ad5669r")
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+---
+ drivers/iio/dac/ad5064.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/dac/ad5064.c b/drivers/iio/dac/ad5064.c
+index 27ee2c63c5d4..daeea263dc6a 100644
+--- a/drivers/iio/dac/ad5064.c
++++ b/drivers/iio/dac/ad5064.c
+@@ -115,13 +115,13 @@ struct ad5064_state {
+ 	struct mutex lock;
  
--	__le16 header_buffer[SSP_HEADER_BUFFER_SIZE / sizeof(__le16)]
--		____cacheline_aligned;
-+	__le16 header_buffer[SSP_HEADER_BUFFER_SIZE / sizeof(__le16)] __aligned(IIO_ALIGN);
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+ 	union {
+ 		u8 i2c[3];
+ 		__be32 spi;
+-	} data ____cacheline_aligned;
++	} data __aligned(IIO_ALIGN);
  };
  
- void ssp_clean_pending_list(struct ssp_data *data);
+ enum ad5064_type {
 -- 
 2.36.0
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C48351808B
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E26251808C
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:03:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbiECJHN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:07:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
+        id S233209AbiECJHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:07:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbiECJHM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:07:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9221BE93
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:03:40 -0700 (PDT)
+        with ESMTP id S233155AbiECJHT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:07:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B684A1BE93
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:03:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 59F35B81BE9
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:03:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D27C385A9;
-        Tue,  3 May 2022 09:03:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48D5C612CB
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:03:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7CDC385B2;
+        Tue,  3 May 2022 09:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568618;
-        bh=FlGFcLP4KxNfJ91DtbtHnXX2Y/L8RpM+poTkCPTUR+E=;
+        s=k20201202; t=1651568627;
+        bh=hKa55Ep6iyOANvTUBLMyRPtdKam6bEjIVeCJ094aaEY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JDmEv54YByLEW2CYUY/X/rroC1nEgBalozJrCp0zt188WSu2txZAR+g43Eas08OOb
-         0+KnnNe9Bge5C6TCGZOUFpGXmayknCs+GwLF8QugqG9GMEKMSo/Qd7IlCPdBSTy/wN
-         RTYD6RxAaj8zI2O3BlQn5auPIYZ7FmcYlfewatLiuRyjccrmK3brIhwJb8jFmjZkUo
-         +HYt7exePx1l3Caq1RJuZtAnlc2HuspSnvO7JAO1wndyOHd3U/THTYqTvPGVcbhFym
-         TrMJZP3zPypIS2aluzrUAc0qZWRw7uueZ8KkImd6gqZtwEaaZVYPlLb0FMSywOu243
-         O4DRaL2qlvb5Q==
+        b=t/h7AImIaqjKu+hHjnM+t7+vWxIu2XlbG05cuGjxEEcVsHws486Ug+ZZIMwham0Sv
+         UGmRm4POqTciQY/MSfTX6GyBydL8U+RQ+aX2jfdiRPhFObmtOcpmyM6T4KKrIJx51U
+         dMQDo5wSZWhU276BGw+lESbnGPEiX67jJrDznuE5J48/01OC3pR49PBwXEB59pcuF9
+         EtVxKwtR0574slfGWU9pRFRK3gthF36M83sOOmWdA6E/aHabqc/WbjqOJ3WhRKegma
+         Gwn8PnpDS3SHup60UcJY2oEZKP2roUp2fZkojwPHA4UkkQA6b3p7LDoOcM9WKH9mYV
+         ndyC/W0nlI1/A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 76/92] iio: imu: fxos8700: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:59:19 +0100
-Message-Id: <20220503085935.1533814-77-jic23@kernel.org>
+Subject: [PATCH 77/92] iio: imu_icm42600: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:20 +0100
+Message-Id: <20220503085935.1533814-78-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -85,30 +85,33 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
+Partial fix for this driver as a second instance was introduced in
+a later patch.
+
 ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
+Fixes: a095fadb443b ("iio: imu: inv_icm42600: add gyroscope IIO device")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Robert Jones <rjones@gateworks.com>
+Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
 ---
- drivers/iio/imu/fxos8700_core.c | 2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-index ab288186f36e..8d2a9b9533db 100644
---- a/drivers/iio/imu/fxos8700_core.c
-+++ b/drivers/iio/imu/fxos8700_core.c
-@@ -167,7 +167,7 @@
- struct fxos8700_data {
- 	struct regmap *regmap;
- 	struct iio_trigger *trig;
--	__be16 buf[FXOS8700_DATA_BUF_SIZE] ____cacheline_aligned;
-+	__be16 buf[FXOS8700_DATA_BUF_SIZE] __aligned(IIO_ALIGN);
- };
- 
- /* Regmap info */
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+index c0f5059b13b3..5b3740cb364f 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+@@ -140,7 +140,7 @@ struct inv_icm42600_state {
+ 	struct inv_icm42600_suspended suspended;
+ 	struct iio_dev *indio_gyro;
+ 	struct iio_dev *indio_accel;
+-	uint8_t buffer[2] ____cacheline_aligned;
++	uint8_t buffer[2] __aligned(IIO_ALIGN);
+ 	struct inv_icm42600_fifo fifo;
+ 	struct {
+ 		int64_t gyro;
 -- 
 2.36.0
 

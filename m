@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC360518095
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B08EB518097
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:05:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233215AbiECJIi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
+        id S233303AbiECJJF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233226AbiECJIh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:08:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061BD1D30B
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:05:05 -0700 (PDT)
+        with ESMTP id S233240AbiECJIr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:08:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80198DE4
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:05:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A6EA0B81BE1
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:05:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C58CC385A9;
-        Tue,  3 May 2022 09:04:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0792D61357
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:05:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183EBC385B1;
+        Tue,  3 May 2022 09:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568702;
-        bh=dTReXVHK7ChxtUh/hkSF98LAOU+2/MibHJLS4urHYYk=;
+        s=k20201202; t=1651568711;
+        bh=jY2MaLUibDxv+r82/k9lqoRPwb6qIHU86LKAoM7J2zg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sYyWYQCAIaDfC88KrdX1FVSDakdYKvAUqHCX77O920CDbTw5LGIQHOyiYLNoVUYRt
-         f7yZdXWSTqQRz/OgmkiVZj6Z1/twIQYvafoGnVwZ10xGzfb41/HTm6Aee0skswjpad
-         DXwYRGallkmPKSpPMX5Fcw4wFKC5qZNwCqUCeRcpPRFeiA/oLPTW4cAqVuEQHUqL4k
-         cCDyhEgVFb6/OpE/Z+FvvDptwEGKenYAL1PSPTnRQlkaU+RJ+f2wujvLbrGSQFskdE
-         5mWPC6ExgHrtEfqBo2Rf2MuGtiROT2ppDt3SH1a/fcAJGjxpbxu0BP1pP17xeAVdDp
-         tjfha40hnPsoQ==
+        b=N9NcUuXW0TSHf/euVgIkGSdPYGlPzz2QO2vT3jZDifAFV8p4mBaB1R2itmi9GBRDi
+         f56zWtB/6C54F2EyKniKN3KLHkUIPGY3ytlev3LgVXGM+k9PBG35AZ0Zf8J09RIz9l
+         KyseEZXK5XKDJR0DhHELqV23yMAFekmUIOIsZeqErNAP0MtPoIYiqW3a+Dh9t/xHTv
+         tv4eDbKlyoBofxjgqkjzSmTYAuWrv6je8QcUSxb5U65T1M+q9Ds9yOKPr+nfQ5RZRJ
+         Vf+Ppk4OY1DcirCs/0DPtikm7OCkuI8IW3LZw4yncFzwhEhPLsr31yO7C9Wun8HP5L
+         oHKxA6KZs/7hA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 85/92] iio: pressure: dlhl60d: Drop unnecessary alignment forcing.
-Date:   Tue,  3 May 2022 09:59:28 +0100
-Message-Id: <20220503085935.1533814-86-jic23@kernel.org>
+Subject: [PATCH 86/92] iio: proximity: as3935: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:29 +0100
+Message-Id: <20220503085935.1533814-87-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -85,28 +85,30 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I2C doesn't use the buffers directly for DMA so there is no need
-to enforce alignment.
+____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+on platforms with 128 byte cachelines above L1.  Switch to the updated
+IIO_ALIGN definition.
 
+Fixes: 24ddb0e4bba4 ("iio: Add AS3935 lightning sensor support")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Tomislav Denis <tomislav.denis@avl.com>
+Cc: Matt Ranostay <mranostay@gmail.com>
 ---
- drivers/iio/pressure/dlhl60d.c | 2 +-
+ drivers/iio/proximity/as3935.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-index ade73267d5eb..5f6bb3603a8b 100644
---- a/drivers/iio/pressure/dlhl60d.c
-+++ b/drivers/iio/pressure/dlhl60d.c
-@@ -47,7 +47,7 @@ struct dlh_state {
- 	struct dlh_info info;
- 	bool use_interrupt;
- 	struct completion completion;
--	u8 rx_buf[DLH_NUM_READ_BYTES] ____cacheline_aligned;
-+	u8 rx_buf[DLH_NUM_READ_BYTES];
+diff --git a/drivers/iio/proximity/as3935.c b/drivers/iio/proximity/as3935.c
+index 67891ce2bd09..e4a6d0de47f4 100644
+--- a/drivers/iio/proximity/as3935.c
++++ b/drivers/iio/proximity/as3935.c
+@@ -65,7 +65,7 @@ struct as3935_state {
+ 		u8 chan;
+ 		s64 timestamp __aligned(8);
+ 	} scan;
+-	u8 buf[2] ____cacheline_aligned;
++	u8 buf[2] __aligned(IIO_ALIGN);
  };
  
- static struct dlh_info dlh_info_tbl[] = {
+ static const struct iio_chan_spec as3935_channels[] = {
 -- 
 2.36.0
 

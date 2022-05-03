@@ -2,33 +2,32 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3195189CA
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 18:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 538FC5189DC
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 18:27:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239519AbiECQ2B convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 3 May 2022 12:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39594 "EHLO
+        id S239359AbiECQau (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 12:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239526AbiECQ2A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 12:28:00 -0400
+        with ESMTP id S239570AbiECQas (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 12:30:48 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949583CFFD
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:24:26 -0700 (PDT)
-Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kt4w01dPMz67bVT;
-        Wed,  4 May 2022 00:21:20 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149393A5CA
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:27:15 -0700 (PDT)
+Received: from fraeml711-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kt4zg4tgLz67ycB;
+        Wed,  4 May 2022 00:24:31 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
+ fraeml711-chm.china.huawei.com (10.206.15.60) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 3 May 2022 18:24:23 +0200
+ 15.1.2375.24; Tue, 3 May 2022 18:27:12 +0200
 Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Tue, 3 May
- 2022 17:24:22 +0100
-Date:   Tue, 3 May 2022 17:24:21 +0100
+ 2022 17:27:11 +0100
+Date:   Tue, 3 May 2022 17:27:10 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
+To:     Lars-Peter Clausen <lars@metafoo.de>
 CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
         "Akinobu Mita" <akinobu.mita@gmail.com>,
         Alexandru Lazar <alazar@startmail.com>,
@@ -41,36 +40,36 @@ CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
         Ivan Mikhaylov <i.mikhaylov@yadro.com>,
         Jacopo Mondi <jacopo+renesas@jmondi.org>,
         Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Marcelo Schmitt" <marcelo.schmitt1@gmail.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
         =?ISO-8859-1?Q?M=E5rten?= Lindahl <martenli@axis.com>,
         Matt Ranostay <mranostay@gmail.com>,
         Michael Hennerich <michael.hennerich@analog.com>,
         Michael Welling <mwelling@ieee.org>,
-        "Mugilraj Dhavachelvan" <dmugil2000@gmail.com>,
+        Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
         Navin Sankar Velliangiri <navin@linumiz.com>,
         Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        "Paul Cercueil" <paul@crapouillou.net>,
+        Paul Cercueil <paul@crapouillou.net>,
         Phil Reid <preid@electromag.com.au>,
         Puranjay Mohan <puranjay12@gmail.com>,
         Ricardo Ribalda <ribalda@kernel.org>,
         Robert Jones <rjones@gateworks.com>,
         Rui Miguel Silva <rui.silva@linaro.org>,
-        Sean Nyekjaer <sean.nyekjaer@prevas.dk>,
+        "Sean Nyekjaer" <sean.nyekjaer@prevas.dk>,
         Tomas Melin <tomas.melin@vaisala.com>,
-        Tomislav Denis <tomislav.denis@avl.com>
-Subject: Re: [PATCH 01/92] iio: core: Fix IIO_ALIGN as it was not
- sufficiently large on some platforms.
-Message-ID: <20220503172421.0000615c@Huawei.com>
-In-Reply-To: <20220503142725.h6pcf2socuxgteix@pengutronix.de>
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6ni?= =?ISO-8859-1?Q?g?= 
+        <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 02/92] iio: accel: adxl313: Fix alignment for DMA safety
+Message-ID: <20220503172710.00003fb0@Huawei.com>
+In-Reply-To: <8536c4e0-e2f7-b5bd-bf49-e28db42a4b50@metafoo.de>
 References: <20220503085935.1533814-1-jic23@kernel.org>
-        <20220503085935.1533814-2-jic23@kernel.org>
-        <20220503142725.h6pcf2socuxgteix@pengutronix.de>
+        <20220503085935.1533814-3-jic23@kernel.org>
+        <8536c4e0-e2f7-b5bd-bf49-e28db42a4b50@metafoo.de>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.202.226.42]
 X-ClientProxiedBy: lhreml723-chm.china.huawei.com (10.201.108.74) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
@@ -84,110 +83,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 May 2022 16:27:25 +0200
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
+On Tue, 3 May 2022 15:11:26 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> On Tue, May 03, 2022 at 09:58:04AM +0100, Jonathan Cameron wrote:
+> On 5/3/22 10:58, Jonathan Cameron wrote:
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Discussion of the series:
-> > https://lore.kernel.org/all/20220405135758.774016-1-catalin.marinas@arm.com/
-> > mm, arm64: Reduce ARCH_KMALLOC_MINALIGN brought to my attention that
-> > our current IIO usage of L1CACHE_ALIGN is insufficient as their are Arm
-> > platforms out their with non coherent DMA and larger cache lines at
-> > at higher levels of their cache hierarchy.
-> > 
-> > Note this patch will greatly reduce the padding on some architectures
-> > that have smaller requirements for DMA safe buffers.
-> > 
-> > The history of changing values of ARCH_KMALLOC_MINALIGN via
-> > ARCH_DMA_MINALIGN on arm64 is rather complex. I'm not tagging this
-> > as fixing a particular patch from that route as it's not clear what to tag.
-> > 
-> > Most recently a change to bring them back inline was reverted because
-> > of some Qualcomm Kryo cores with an L2 cache with 128-byte lines
-> > sitting above the point of coherency.
-> > 
-> > c1132702c71f Revert "arm64: cache: Lower ARCH_DMA_MINALIGN to 64 (L1_CACHE_BYTES)"
-> > That reverts:
-> > 65688d2a05de arm64: cache: Lower ARCH_DMA_MINALIGN to 64 (L1_CACHE_BYTES) which
-> > refers to the change originally being motivated by Thunder x1 performance
-> > rather than correctness.
-> > 
-> > Fixes: 6f7c8ee585e9d ("staging:iio: Add ability to allocate private data space to iio_allocate_device")
+> >
+> > ____cacheline_aligned is insufficient guarantee for non-coherent DMA.
+> > Switch to the update IIO_ALIGN definition.
+> >
+> > Fixes: 636d44633039 ("iio: accel: Add driver support for ADXL313")
 > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > ---
-> >  include/linux/iio/iio.h | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > index faf00f2c0be6..30937f8f9424 100644
-> > --- a/include/linux/iio/iio.h
-> > +++ b/include/linux/iio/iio.h
-> > @@ -9,6 +9,7 @@
-> >  
-> >  #include <linux/device.h>
-> >  #include <linux/cdev.h>
-> > +#include <linux/slab.h>
-> >  #include <linux/iio/types.h>
-> >  #include <linux/of.h>
-> >  /* IIO TODO LIST */
-> > @@ -657,8 +658,13 @@ static inline void *iio_device_get_drvdata(const struct iio_dev *indio_dev)
-> >  	return dev_get_drvdata(&indio_dev->dev);
-> >  }
-> >  
-> > -/* Can we make this smaller? */
-> > -#define IIO_ALIGN L1_CACHE_BYTES
-> > +/*
-> > + * Used to ensure the iio_priv() structure is aligned to allow that structure
-> > + * to in turn include IIO_ALIGN'd elements such as buffers which must not share
-> > + * cachelines with the rest of the structure, thus making them safe for use with
-> > + * non-coherent DMA.
-> > + */
-> > +#define IIO_ALIGN ARCH_KMALLOC_MINALIGN  
-> 
-> Given the purpose of IIO_ALIGN is to define the alignment for DMA'able
-> memory, I wonder why it's called "IIO_ALIGN" and not for example
-> "DMA_MINALIGN".
+> >   drivers/iio/accel/adxl313_core.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
+> > index 9e4193e64765..508fccbd4347 100644
+> > --- a/drivers/iio/accel/adxl313_core.c
+> > +++ b/drivers/iio/accel/adxl313_core.c
+> > @@ -46,7 +46,7 @@ EXPORT_SYMBOL_NS_GPL(adxl313_writable_regs_table, IIO_ADXL313);
+> >   struct adxl313_data {
+> >   	struct regmap	*regmap;
+> >   	struct mutex	lock; /* lock to protect transf_buf */
+> > -	__le16		transf_buf ____cacheline_aligned;
+> > +	__le16		transf_buf __aligned(IIO_ALIGN);  
+> How about making __aligned(IIO_ALIGN) a macro in case we ever want to 
+> change it.
 
-Much like crypto I want a single place that provides the IIO requirements
-for this.  Could rename it IIO_DMA_MINALIGN I guess.  The reason behind
-that is to allow for a switch on mass if a new approach is accepted
-along the lines of what Catalin proposed.  The discussions around
-CRYPTO made it clear that there are sometimes additional requirements
-from a subsystem beyond simply that of DMA (IIO has a similar issue
-to crypto that mean it's not simple to shift the alignment requirements
-at runtime because the compiler is getting told things are aligned to
-a higher degree than the allocations).
+Could do I suppose, though scripts are already getting confused enough
+at __aligned() :( (Try running check patch on this series!)
 
-https://lore.kernel.org/all/20220405135758.774016-8-catalin.marinas@arm.com/
-and below that point.
+That can be fixed but adds another step.
 
-> 
-> There is nothing iio specific about this value, is there? Then
-> consequently it doesn't need to be defined in an iio header, but
-> somewhere generic. Or even one step further: Why isn't there a macro
-> __align_for_dma that can be used directly to annotate the relevant
-> member in a struct?
-
-There is, but it's not currently available on all architectures.
-
-ARCH_DMA_MINALIGN
-
-Catalin's series proposed making it generally available:
-https://lore.kernel.org/all/20220405135758.774016-2-catalin.marinas@arm.com/
-
-but suggestion for now was to go with ARCH_KMALLOC_MINALIGN
-
-https://lore.kernel.org/linux-iio/Yl6jB5DOUy+Yqyzl@arm.com/
-
-Thanks,
+I also can't actually think of why we would want to change an
+align force to something other than an align force.  The value of
+IIO_ALIGN might well change of course.
 
 Jonathan
 
 
+
+> >   };
+> >   
+> >   static const int adxl313_odr_freqs[][2] = {  
 > 
-> Best regards
-> Uwe
 > 
 

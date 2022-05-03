@@ -2,103 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 914DF51866B
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 16:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 518925186B3
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 16:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235673AbiECOWW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 10:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47112 "EHLO
+        id S237077AbiECOds (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 10:33:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236956AbiECOWS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 10:22:18 -0400
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C8125E9E;
-        Tue,  3 May 2022 07:18:46 -0700 (PDT)
-Received: by mail-ot1-f47.google.com with SMTP id h10-20020a056830400a00b00605e92cc450so9769965ots.11;
-        Tue, 03 May 2022 07:18:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/aMt+iUL1CVqIgS6yg9mheyNXMFTAG1uctDwp9jLpck=;
-        b=Q0QTK4WNQAPlrFIeLia3/2cJGbVsHF1aLl2dgwpWT07gqFsVqL1hNNI3hnYTcumels
-         TAUhHWzTB44wZvCLZKWEV7Qp0LBwqqQTQKJuSgGdJwNuIzOb6R71qe0vA6HSLCWIuR/M
-         Y9scMmgqTytpq3pf+AMIyi5aPkRfXKWV7quV+YojAt+l6O67ZR9K1ALPlOAT9yjWFzEj
-         yB0aOjrph+SUpmVmIdxqivp7zjkYcXGIJdkMdZ/422mrkfeX2u4RjkzUJZslaNtJdpO0
-         EKEAnCF38+Qij8aGFGGcGxLpYfQpBzTzXI6XxmfzghhdzaJQV55RezlbfxuFubQmmc6s
-         mz0A==
-X-Gm-Message-State: AOAM533qinW4iQyuTYiNkPEV7CU8LW73KeGC2iV+N3ujCwCW/D+1MhD4
-        lEh684E0J0FPP68tWAqePczVE+vOIw==
-X-Google-Smtp-Source: ABdhPJy2p5eNvTSK+e4lPTi3BIf7IcquwGcze73MguD+vpeB8vzEjETxR5Ny0gGxkZHOQEReDlENHw==
-X-Received: by 2002:a9d:5913:0:b0:5cd:a050:8f55 with SMTP id t19-20020a9d5913000000b005cda0508f55mr5967584oth.44.1651587525443;
-        Tue, 03 May 2022 07:18:45 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id l24-20020a056820031800b0035eb4e5a6b0sm4984867ooe.6.2022.05.03.07.18.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 May 2022 07:18:44 -0700 (PDT)
-Received: (nullmailer pid 3575356 invoked by uid 1000);
-        Tue, 03 May 2022 14:18:44 -0000
-Date:   Tue, 3 May 2022 09:18:44 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: sx9324: Add CS idle/sleep mode
-Message-ID: <YnE5xMS13oSuR5rx@robh.at.kernel.org>
-References: <20220503004156.3559940-1-swboyd@chromium.org>
- <20220503004156.3559940-2-swboyd@chromium.org>
+        with ESMTP id S237079AbiECOdr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 10:33:47 -0400
+X-Greylist: delayed 429 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 03 May 2022 07:30:13 PDT
+Received: from mx-out1.startmail.com (mx-out1.startmail.com [145.131.90.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48C61107
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 07:30:13 -0700 (PDT)
+Message-ID: <8f16b39c-b20c-fc68-aa16-2df9c3b65c6e@startmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=startmail.com;
+        s=2020-07; t=1651587783;
+        bh=MIydjD9KEhWv1uqyMSAgNp/QDkROZvwgXFiugvhd4R8=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+         In-Reply-To:Content-Type:Content-Transfer-Encoding:From:Subject:To:
+         Date:Sender:Content-Type:Content-Transfer-Encoding:
+         Content-Disposition:Mime-Version:Reply-To:In-Reply-To:References:
+         Message-Id:Autocrypt;
+        b=kNd48eLSE89lIJyGXl00qTuBcPHQpw1UO+HkGT4ailV/9Lbkc0Um9aU8oJ8zpf4hc
+         SKEiwUULAk4ebnmfRKLIM55PkjYWvPF7KTqG3/9GRLExZKaHvfpfRE8XxqB9LowgYy
+         PK0NU+keioa7fP8C2aUgRjBfFg0MDkyQDsvROEVzriASjmdSIMAdey6yIdZ6+ywMDq
+         VCBfTps4cuGP4wraJ3rfG9MYC0LaBdRikuojDiynXKb9O5aOQmA6xuiEPVaiQPbllT
+         iZiVituFkAMbRfMhdEV7opuaVFFaF1x+wGx9I5Kslei9bJUS63ySyr8gC5q+c744uT
+         rpyVuUIBf0TDQ==
+Date:   Tue, 3 May 2022 17:23:02 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220503004156.3559940-2-swboyd@chromium.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 26/92] iio: adc: max1241: Fix alignment for DMA safety
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+References: <20220503085935.1533814-1-jic23@kernel.org>
+ <20220503085935.1533814-27-jic23@kernel.org>
+From:   Alexandru Lazar <alazar@startmail.com>
+In-Reply-To: <20220503085935.1533814-27-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 02, 2022 at 05:41:55PM -0700, Stephen Boyd wrote:
-> We need to configure the sleep and idle mode of the CS pins for this
-> device. Add a DT property to do this so pins are in a proper state
-> during sleep (either hi-z, grounded, or pulled up to vdd).
+
+
+On 5/3/2022 11:58 AM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Cc: Gwendal Grignou <gwendal@chromium.org>
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+> on platforms with 128 byte cachelines above L1.  Switch to the updated
+> IIO_ALIGN definition.
+> 
+> Fixes: 8a80a71d9020 ("iio: adc: Add MAX1241 driver")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Alexandru Lazar <alazar@startmail.com>
 > ---
->  .../devicetree/bindings/iio/proximity/semtech,sx9324.yaml | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>   drivers/iio/adc/max1241.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> index d265eb5258c8..6cec3481c8b2 100644
-> --- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
-> @@ -126,6 +126,14 @@ properties:
->        UINT_MAX (4294967295) represents infinite. Other values
->        represent 1-1/N.
->  
-> +  semtech,cs-idle-sleep:
-> +    description:
-> +      State of CS pins during sleep mode and idle time.
-> +    enum:
-> +      - hz
+> diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
+> index a5afd84af58b..e3dbcc2e4e77 100644
+> --- a/drivers/iio/adc/max1241.c
+> +++ b/drivers/iio/adc/max1241.c
+> @@ -26,7 +26,7 @@ struct max1241 {
+>   	struct regulator *vref;
+>   	struct gpio_desc *shutdown;
+>   
+> -	__be16 data ____cacheline_aligned;
+> +	__be16 data __aligned(IIO_ALIGN);
+>   };
+>   
+>   static const struct iio_chan_spec max1241_channels[] = {
 
-I was trying to figure out how Hertz was a pin state. 'hiz' or 'hi-z' 
-instead?
+Looks good, I think we can call this
 
-> +      - gnd
-> +      - vdd
-> +
->    semtech,int-comp-resistor:
->      description:
->        Internal resistor setting for compensation.
-> -- 
-> https://chromeos.dev
-> 
-> 
+Acked-by: Alexandru Lazar <alazar@startmail.com>
+
+Thanks!
+
+In addition to that, I also think the changes in max1118 and max1027 are 
+OK but I can't test either of them so take this with a grain of salt.
+
+All the best,
+Alex
+
+(P.S. Fingers crossed that Thunderbird doesn't screw this up, I'm 
+nowhere near my development machine for the next two weeks :-( . 
+Apologies if it does!)

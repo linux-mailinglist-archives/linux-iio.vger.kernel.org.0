@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F8D51809A
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C16451809B
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233228AbiECJJS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:09:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
+        id S233252AbiECJJ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233254AbiECJJP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:09:15 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE7734672
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:05:43 -0700 (PDT)
+        with ESMTP id S233253AbiECJJX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:09:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335672FFEA
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:05:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EFB93B81BE2
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:05:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32EAC385B0;
-        Tue,  3 May 2022 09:05:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E6078B81BE2
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CC3C385A4;
+        Tue,  3 May 2022 09:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568740;
-        bh=TJBL/IC0Y9IQSbI/bBwnIf2Jacmcgs1MDK2TXBfiuBw=;
+        s=k20201202; t=1651568749;
+        bh=wZoWv7dlXHVtEOIav7wJinD1bL6C9ELcXdYwh2HpiMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yft/t0WfhwAyK/Hk1gMonwGKEZBIRlBx2NKdB6oa1fBrUL41Uy4BruA3Qo6LK5o63
-         F6okdwSRIWOTMHpXUbFEjuz30BviPUnvjYnom8GqWaahDFSIsXzwuL8OtkmT0Aor/v
-         jReB/17tsjbHSDBLtlP0rFB9HyhQqGX2vuMsN37vN7zfHI7y3JPaDTb5A1DFto8nAN
-         Oa6H7MqfLYAoUKCfQ8tQ9wdYupc/TcQLfRnTyE7PMFfm9JchO0l1CM4e5QB+KlSy4/
-         eEipl8ODtRZuCgTDryVgvRsiRoukWOdsLQ8R3czVUJbUjr9bifC3blNt4JXUgvi0MT
-         ZIl+lEXytvRbg==
+        b=uc0QDEm8eSlhxZA1XX0P2cNBD1JcRFpWpIsWTjmlJ0PEfKx5+VG6sTM9YIpUWT/TW
+         U+/L3RkrldimXNSt/P9jA9WY+MoH4bb3ePUWOyoeBpxM01MzGGiYfnNrjt+PC3ALKe
+         imW2ena3APjH34EzmAmsVH8D3DYYiTmlrAh9EOFOAKPjj1Iw1GEc81660jM2V6wRKT
+         zGAebMBdkB+uxYsNZ6f8lDe3lIuO9EvRrNKUSxWiy/YbmUhM1B46BxwhwJiesF7qNa
+         Z8wAGo1BvLYUxmwFmzt5IjNJxdFZifG++cgeizMi+N22d/c1opqPUSFNw1YL0zjxlI
+         Xu114K3hmPHiQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,13 +65,14 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 89/92] iio: resolver: ad2s90: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:59:32 +0100
-Message-Id: <20220503085935.1533814-90-jic23@kernel.org>
+Subject: [PATCH 90/92] iio: temp: ltc2983: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:33 +0100
+Message-Id: <20220503085935.1533814-91-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -89,29 +90,32 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes tag is probably not where the issue was first introduced, but
-is likely to be far beyond the point where anyone considers
-backporting this fix.
-
-Fixes: 58f08b0af857 ("staging:iio:resolver:ad2s90 general cleanup")
+Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/resolver/ad2s90.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/temperature/ltc2983.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/resolver/ad2s90.c b/drivers/iio/resolver/ad2s90.c
-index d6a91f137e13..d8850e6cf911 100644
---- a/drivers/iio/resolver/ad2s90.c
-+++ b/drivers/iio/resolver/ad2s90.c
-@@ -24,7 +24,7 @@
- struct ad2s90_state {
- 	struct mutex lock; /* lock to protect rx buffer */
- 	struct spi_device *sdev;
--	u8 rx[2] ____cacheline_aligned;
-+	u8 rx[2] __aligned(IIO_ALIGN);
+diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
+index 301c3f13fb26..cc90a4abdf3d 100644
+--- a/drivers/iio/temperature/ltc2983.c
++++ b/drivers/iio/temperature/ltc2983.c
+@@ -200,11 +200,11 @@ struct ltc2983_data {
+ 	u8 num_channels;
+ 	u8 iio_channels;
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
+-	 * transfer buffers to live in their own cache lines.
++	 * DMA (thus cache coherency maintenance) may require the
++	 * transfer buffers live in their own cache lines.
+ 	 * Holds the converted temperature
+ 	 */
+-	__be32 temp ____cacheline_aligned;
++	__be32 temp __aligned(IIO_ALIGN);
  };
  
- static int ad2s90_read_raw(struct iio_dev *indio_dev,
+ struct ltc2983_sensor {
 -- 
 2.36.0
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E43451807A
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5938C51807B
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 11:02:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbiECJFn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 05:05:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
+        id S233144AbiECJFt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 05:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233143AbiECJFl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:05:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82B4819C2E
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:02:09 -0700 (PDT)
+        with ESMTP id S233143AbiECJFs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 05:05:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240CA17067
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 02:02:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3F49DB81AEC
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:02:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275AAC385A9;
-        Tue,  3 May 2022 09:01:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B3B6A61301
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 09:02:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94B5C385B1;
+        Tue,  3 May 2022 09:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568527;
-        bh=oQcmqylFB91K7l0dhVmtsNwaSNmXTk1+DyriF1ZjgJY=;
+        s=k20201202; t=1651568536;
+        bh=yyFaJmfOOnU47KgS6egUp1dbWzXKVMRObEI5wTNLXfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LilpYdWnFY/S4vfDzcSwZTlVPY8znsn0hmWx2Hp85F5yVCrka1lyDGSZa0LA7fr4s
-         N/5+Yak3NzeKSuasCVrqnf7r+IXZq3OcdNIEFrt1yuwyMjfX3YbPsuZzdSk5OTJl0I
-         YADpTSzO+KVSQsH5PPG2UzOE0wqsp8eIfh1/Zf+VUEP7KvjOXkyVn4eF0FLb2ipuR0
-         j1GV8SPebSeejm8fX42aSVzflG4XbnqC9XaWFNUB6JcX8l/WYO/UZNWtz9veTZpw0e
-         8/CGHQjriQLkaUU0SYX4bRuXurp1LB7wiMR80Du0wGwahckdhPETMfEHPhSgWkwDRf
-         lDkIcbETqI4Vw==
+        b=KQrfj1eANM1413svHL3dF8n7avGPlT7fAwt8C0khI1avA/ON12K8LVbQXQscfeyQw
+         dm0AwHW6N6lTDiVAB53EopF4ajJYdvBiaFHVQ1z/y+JcRluceOnUR7YoS+2Iw3ssHv
+         v1dE4MmM6vyRl4vgjGkRgZUrdbl83kJkZVPGnJ709JAul+u4artkmRvyFdkWenR1S4
+         76csta1NVnfhJRbNg/RYj6N1GuYO3RZlC4cLGqwfHRWN+PegIV1yatM7jXZza/bPOM
+         KehiYh7pPCs8wZv7Aow/uOWMFcJNCkkPQspAj6YPt7upX7dwdAgpqCnIkm04Y9o2t1
+         uzuVxMiAh9c7A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,9 +65,9 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 66/92] iio: frequency: adf4350: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:59:09 +0100
-Message-Id: <20220503085935.1533814-67-jic23@kernel.org>
+Subject: [PATCH 67/92] iio: frequency: adf4371: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:59:10 +0100
+Message-Id: <20220503085935.1533814-68-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
@@ -89,32 +89,25 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Updated help text to 'may' require buffers to be in their own cacheline.
-
-Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF4350/ADF4351 Wideband Synthesizers")
+Fixes: 7f699bd14913 ("iio: frequency: adf4371: Add support for ADF4371 PLL")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/frequency/adf4350.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/frequency/adf4371.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-index be1218d86291..eba8616fc295 100644
---- a/drivers/iio/frequency/adf4350.c
-+++ b/drivers/iio/frequency/adf4350.c
-@@ -56,10 +56,10 @@ struct adf4350_state {
- 	 */
- 	struct mutex			lock;
- 	/*
--	 * DMA (thus cache coherency maintenance) requires the
--	 * transfer buffers to live in their own cache lines.
-+	 * DMA (thus cache coherency maintenance) may require that
-+	 * transfer buffers live in their own cache lines.
- 	 */
--	__be32				val ____cacheline_aligned;
-+	__be32				val __aligned(IIO_ALIGN);
+diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
+index ecd5e18995ad..edc5d1e8b5d7 100644
+--- a/drivers/iio/frequency/adf4371.c
++++ b/drivers/iio/frequency/adf4371.c
+@@ -175,7 +175,7 @@ struct adf4371_state {
+ 	unsigned int mod2;
+ 	unsigned int rf_div_sel;
+ 	unsigned int ref_div_factor;
+-	u8 buf[10] ____cacheline_aligned;
++	u8 buf[10] __aligned(IIO_ALIGN);
  };
  
- static struct adf4350_platform_data default_pdata = {
+ static unsigned long long adf4371_pll_fract_n_get_rate(struct adf4371_state *st,
 -- 
 2.36.0
 

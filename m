@@ -2,59 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F8B518574
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 15:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E8951860B
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 16:04:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236162AbiECNdx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 09:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
+        id S236620AbiECOIR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 10:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbiECNdx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 09:33:53 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE15626A;
-        Tue,  3 May 2022 06:30:20 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id w124so16385399vsb.8;
-        Tue, 03 May 2022 06:30:20 -0700 (PDT)
+        with ESMTP id S236230AbiECOIR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 10:08:17 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F29C521274;
+        Tue,  3 May 2022 07:04:43 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id m20so33617722ejj.10;
+        Tue, 03 May 2022 07:04:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=D8VyT06Rmhow6nbFzDb81J943Raqjv8J7lLe+yncDm4=;
-        b=gZAKUayce+qo5ZZ2PTDNYyJ+rUuXBth60avc8uyVP0lE4tCmGqhmWk5hsakg7oIH/w
-         KYAxGeW0HMNrNbI3OprC2ZJ557ZwJlp1NoEKO6xJpygSfZrrWOxg9hZxC0st8iDAaa59
-         47IYZWhm7G8XfmZH2htd7f5B0aT99SO8SNEJKuhxTBZKlO3OLdKtPoGwozSqvwlwMqni
-         OvBSKiwhSdPQiqCVuNMDxxJgFGkJLybgQS+pYLcGnKwb2abGxitThjOPdDjbkEUuvprl
-         ZcOkvxFhyvoEellXdHu/w4H7+QL1rkZapBb1t2cDQxTbPiUyecL3MTSC9pGalv8Jk1EH
-         G6NQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uXCKqvLKkB4bXBbfle8OmINHHiIG/p2IXITk55h5KgU=;
+        b=nS+pd5b5Y8vYmII3eSWJN2Lpt8idlIk6j+bktKQncl+ZLXprPbsMVnULqAOu0yGVpX
+         Dkxw++aKU56zFZI8aK1HjXdgl98htcgKcO9k0IP+QQUDb5xbIoh0QnYXE3Ncmx4drsZB
+         PSeTk5h8k6bRoJwUEoZV1JVbDGMXuj9D/h3wUXN1DS/XCXb6z8xT0Stf4/EqFW/UKUmJ
+         gssnq9PSR1r34wW/lnkXyUoNvXLZ94idCNt6fY5daulany5zr+YXzrCm7GoH6bLNhDJ8
+         WRJJINiS/bevITBjvgGsPBPhY0tDuBE8K8R3xzAe7vavl8X+SHxMjwirDdk6ALYhcAJG
+         6NVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=D8VyT06Rmhow6nbFzDb81J943Raqjv8J7lLe+yncDm4=;
-        b=iM58MvNFrFcXVzGtmvdVm+WK3OP/noZ0S7HDewAweLktDMXzuUvMsuJSrkyyw7ZNNL
-         Z/Usn0pCSwDI+jfYKB2XkqGbmlovHr+mrHMuUUkle3Zh5fOGZzYjD/PBBVWWwtSbKdMC
-         ghVR1SYg4Hccc656lqczYOPPODg3cvJNk1BpmIbuZjMYEnT4ysgUYVIIZs5gUJqFvZqF
-         HpvSGbDq2IhdGIiGe9rON6ACR7g/b78KmRcNYBU4UlXxcDxSg9g2tcP9htDQPf8tAfO2
-         cnZH6NVzZ+PiFrg65fMV/uXOSAqwL3kDUfP3z8JekCR4uW5zeeaXUPdKNKIsxV6nUz0w
-         wGdA==
-X-Gm-Message-State: AOAM531oxZHmj+RfYWslP/I7CLnLO9LZ7BkLlUdpgrQbR4FyauEOntqJ
-        0Ocsy62pCNwLwyIunO5yPJPoTCpjQ+4lX/HG6lE=
-X-Google-Smtp-Source: ABdhPJzeaWMse/IxQ+MHYh8nFLU2d4sGaE6/ZeHGS7WgnAJWxByPgyh6KKkPLo96ZFJmpYy6Pp4QvQ15GSaCa3p+UjI=
-X-Received: by 2002:a05:6102:153:b0:32c:fe5a:3d3a with SMTP id
- a19-20020a056102015300b0032cfe5a3d3amr4838407vsr.55.1651584619831; Tue, 03
- May 2022 06:30:19 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uXCKqvLKkB4bXBbfle8OmINHHiIG/p2IXITk55h5KgU=;
+        b=DEbN9EaP1P6bjv3F8b/sJ6q2Ye9JSj6LBHa9Ge9DYEeWA2L8rH2Sj2K4+cRFq57vSB
+         DwZ54PlaPh8JmnVQVf1qegj+gZZZYlGMQJaaH8Y3ENCVJw7OwE6981bujBEbcBt9JYyc
+         CLtED2gtwTx/VfEFtWeQvjR4b6hoca6PeT57x7F653ISbZ5Dk6Eaz/kKJ4dIm2SQ2Gat
+         IxyapqyCdmWomDQOgu1gDo7seak9w1W/VNKxcUhlrFOJgp6pErrc1aea6jb/1VkfKzXE
+         tjsKfq8/v7WPUPhvyU6iZBlO/Pvez7uOpqkZZ5IzkajLZUcGyjXqrAA2SjML/YF8/l6G
+         BPPw==
+X-Gm-Message-State: AOAM531D1jaZo2v+lzZr/r3E0auAhZLAKj7LDBECzvOfi6LCGVFSw7Pb
+        vEQ6nZiYxvOR8cohV/Z9ZlrllwsA9G6VPLJ5Gd0=
+X-Google-Smtp-Source: ABdhPJw5mejn9tBEu18+E0KV5pNN9CQoBPtNOkfQWMp7usK7nHOEoSTTKL2x2iKOTKRWcwLyBQHb6j5LAIQF+H9Y42w=
+X-Received: by 2002:a17:907:86a1:b0:6f4:63ae:768 with SMTP id
+ qa33-20020a17090786a100b006f463ae0768mr7442763ejc.639.1651586682466; Tue, 03
+ May 2022 07:04:42 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220426131102.23966-13-andrea.merello@gmail.com>
  <202204271554.EiuIRNPI-lkp@intel.com> <CAHp75Vc34K=5U=kMCqtDm_h3VBmqyCqcWr0em+8fZBiM2n76rA@mail.gmail.com>
- <CAN8YU5OeYjf5pikMuLXyaYTO1bsArdFOQf3M6tYMNubeZxqe7A@mail.gmail.com>
-In-Reply-To: <CAN8YU5OeYjf5pikMuLXyaYTO1bsArdFOQf3M6tYMNubeZxqe7A@mail.gmail.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Tue, 3 May 2022 15:30:08 +0200
-Message-ID: <CAN8YU5PNUn9oVz9dRZ7BLzZmqfNpTehJp284ou+Y7-e4XgK7_Q@mail.gmail.com>
+ <CAN8YU5OeYjf5pikMuLXyaYTO1bsArdFOQf3M6tYMNubeZxqe7A@mail.gmail.com> <CAN8YU5PNUn9oVz9dRZ7BLzZmqfNpTehJp284ou+Y7-e4XgK7_Q@mail.gmail.com>
+In-Reply-To: <CAN8YU5PNUn9oVz9dRZ7BLzZmqfNpTehJp284ou+Y7-e4XgK7_Q@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 3 May 2022 16:04:06 +0200
+Message-ID: <CAHp75VeEzuQS5rOK7t5Lyq1wQKVQLNoU_W1K1M20Jx=a5U96TQ@mail.gmail.com>
 Subject: Re: [v5 12/14] iio: imu: add BNO055 serdev driver
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Andrea Merello <andrea.merello@gmail.com>
 Cc:     kernel test robot <lkp@intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
@@ -78,45 +77,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno mar 3 mag 2022 alle ore 09:48 Andrea Merello
-<andrea.merello@gmail.com> ha scritto:
-
-[...]
-
-> > You need to add a C-file with the only line
+On Tue, May 3, 2022 at 3:30 PM Andrea Merello <andrea.merello@gmail.com> wrote:
+>
+> Il giorno mar 3 mag 2022 alle ore 09:48 Andrea Merello
+> <andrea.merello@gmail.com> ha scritto:
+>
+> [...]
+>
+> > > You need to add a C-file with the only line
+> > >
+> > > #include <..._trace.h>
+> > >
+> > > And drop that include from the _core.c.
 > >
-> > #include <..._trace.h>
+> > Hum, I'm a bit confused here: the bno055_ser_core.c file explicitly
+> > looks for that tracepoints (e.g. it calls trace_send_chunks() and
+> > friends); dropping the include prevents build here because there would
+> > be no definition for those tracepoints.
 > >
-> > And drop that include from the _core.c.
+> > There is already a C file bno055_ser_trace.c that just contains the
+> > said include and it defines CREATE_TRACE_POINTS; I see other drivers
+> > like dwc3 do the same..
 >
-> Hum, I'm a bit confused here: the bno055_ser_core.c file explicitly
-> looks for that tracepoints (e.g. it calls trace_send_chunks() and
-> friends); dropping the include prevents build here because there would
-> be no definition for those tracepoints.
+> Oops.. it turned out that I just had this almost-empty C file as
+> untracked in my git tree, and it ended up not being included in
+> patches also. Being it laying in my src tree caused the build to
+> succeed.
 >
-> There is already a C file bno055_ser_trace.c that just contains the
-> said include and it defines CREATE_TRACE_POINTS; I see other drivers
-> like dwc3 do the same..
+> I have been misled by the other problem I (still) have (below); I was
+> focused on the wrong thing, sorry.
 
-Oops.. it turned out that I just had this almost-empty C file as
-untracked in my git tree, and it ended up not being included in
-patches also. Being it laying in my src tree caused the build to
-succeed.
+So, there are two reports:
+1) missed C file;
+2) possible missed prototype.
 
-I have been misled by the other problem I (still) have (below); I was
-focused on the wrong thing, sorry.
+To solve 1) you need to add the C file to the patch.
+To solve 2) you need either declare it static or put it into the
+header file (I haven't checked deeply which one is your case).
 
-> But my problem is that I cannot reproduce the issue found by the bot:
-> the compiler that is downloaded by the script doesn't run on my build
-> box because it wants a newer libc (I was hoping that those compilers
-> were statically linked, but they aren't), while any other attempt I
-> did with other older compilers resulted in either successful build or
-> failed with other weird, apparently unrelated, errors about relocation
-> issues (of course I tried with the arch and config used by the build
-> bot).
->
-> Is there any build farm publicly available or something like that?
->
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
+> > But my problem is that I cannot reproduce the issue found by the bot:
+> > the compiler that is downloaded by the script doesn't run on my build
+> > box because it wants a newer libc (I was hoping that those compilers
+> > were statically linked, but they aren't), while any other attempt I
+> > did with other older compilers resulted in either successful build or
+> > failed with other weird, apparently unrelated, errors about relocation
+> > issues (of course I tried with the arch and config used by the build
+> > bot).
+
+You may use compilers from kernel.org that don't require any libc at
+all (only good for kernel compilation).
+
+> > Is there any build farm publicly available or something like that?
+
+Not of my knowledge.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

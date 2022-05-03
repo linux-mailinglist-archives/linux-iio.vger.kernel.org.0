@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55013518033
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 10:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14CCA518034
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 10:55:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232906AbiECI62 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 04:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36492 "EHLO
+        id S232473AbiECI6i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 04:58:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232473AbiECI62 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 04:58:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C1335ABF
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 01:54:56 -0700 (PDT)
+        with ESMTP id S232983AbiECI6h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 04:58:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAB7235DD0
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 01:55:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2519661266
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 08:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EC8C385A9;
-        Tue,  3 May 2022 08:54:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67F1861264
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 08:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFAAC385B0;
+        Tue,  3 May 2022 08:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651568095;
-        bh=tUoUcUcidiwHWW8MIIah/YsyVkTHMvmw3z3Dgq20KxM=;
+        s=k20201202; t=1651568104;
+        bh=Wojjf1F8HxpMQH8Q/29IKDfXecdUDjdapdDceh53ct4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W6fRvpOGsnC2PXdwFkAOMl0R6JuLiFbjk3wYXSC3HTtFFOB+qAST/Pz3lw0EJ3GM1
-         o1dxDrgbf3rnKtgr2rtxGVmjVihpuxvbmGHVGOigrK/obA+kYEquag/mIqoix8XCvk
-         G8y/zCacRYB2lhJ0eqEXbu+T4PaLvSVVci4n9KYk32vFZdqeBrBk8MyYWjui599HaH
-         57dWMID1YpLAIlR3TCbO+A+ZjIvWnARXu+U7fRfTnRuj/z8eAcqKHH0JfU3D+NKYid
-         Z9rVkBLR0WZWK2cCrHdIUdfP1L8MJJMrctLyXtW0C1vztznaEugfbMJPlsz1IEJ8/O
-         aeZf3S4iUOAJg==
+        b=BFHnHOkVTYa3k5aePC94bvGu5rZHKn4XyjZxvrSv+HLGv5k2zahNN/DsPjRxK4tA0
+         pbxI0G0tiI94TmydTBPCftNw48h2zdL+FEBZhMLUcUtmhcEBayuD9ASZZqBzfYr0hc
+         /MoSRSJPOlVbStCJ8dHpwm3YSJx/G1/eSSh29eRtIS0SFS/yeYa+olP6HVvw3tbJ4C
+         wHX3CgVPCHCyuf/7cOxG5bpHibvUSGRI7jzjYcm1q/+fPNXLkCgWR9T1QaJEVcgWxs
+         04MO2002b7zJqM0IulSZfxJeHUKzFh8p5c2djQWwxX1/iU4ur9EKkM+beaaerNMXKO
+         WHpLD1lj6Xp4Q==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
@@ -65,13 +65,14 @@ Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 20/92] iio: adc: hi8435: Fix alignment for DMA safety
-Date:   Tue,  3 May 2022 09:58:23 +0100
-Message-Id: <20220503085935.1533814-21-jic23@kernel.org>
+Subject: [PATCH 21/92] iio: adc: ltc2496: Fix alignment for DMA safety
+Date:   Tue,  3 May 2022 09:58:24 +0100
+Message-Id: <20220503085935.1533814-22-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220503085935.1533814-1-jic23@kernel.org>
 References: <20220503085935.1533814-1-jic23@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -89,25 +90,32 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_ALIGN definition.
 
-Fixes: 72aa29ce0a59 ("iio: adc: hi8435: Holt HI-8435 threshold detector")
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/hi8435.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Update the comment to include 'may'.
 
-diff --git a/drivers/iio/adc/hi8435.c b/drivers/iio/adc/hi8435.c
-index 8eb0140df133..2a96a185b1db 100644
---- a/drivers/iio/adc/hi8435.c
-+++ b/drivers/iio/adc/hi8435.c
-@@ -49,7 +49,7 @@ struct hi8435_priv {
+Fixes: e4c5c4dfaa88 ("iio: adc: new driver to support Linear technology's ltc2496")
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/iio/adc/ltc2496.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/adc/ltc2496.c b/drivers/iio/adc/ltc2496.c
+index 5a55f79f2574..db1e14224ff9 100644
+--- a/drivers/iio/adc/ltc2496.c
++++ b/drivers/iio/adc/ltc2496.c
+@@ -24,10 +24,10 @@ struct ltc2496_driverdata {
+ 	struct spi_device *spi;
  
- 	unsigned threshold_lo[2]; /* GND-Open and Supply-Open thresholds */
- 	unsigned threshold_hi[2]; /* GND-Open and Supply-Open thresholds */
--	u8 reg_buffer[3] ____cacheline_aligned;
-+	u8 reg_buffer[3] __aligned(IIO_ALIGN);
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	unsigned char rxbuf[3] ____cacheline_aligned;
++	unsigned char rxbuf[3] __aligned(IIO_ALIGN);
+ 	unsigned char txbuf[3];
  };
  
- static int hi8435_readb(struct hi8435_priv *priv, u8 reg, u8 *val)
 -- 
 2.36.0
 

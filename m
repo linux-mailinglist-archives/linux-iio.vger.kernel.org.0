@@ -2,122 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF50B518D44
-	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 21:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4519F518DAA
+	for <lists+linux-iio@lfdr.de>; Tue,  3 May 2022 22:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237034AbiECTnR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 3 May 2022 15:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37154 "EHLO
+        id S230339AbiECUEK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 3 May 2022 16:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241951AbiECTnQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 15:43:16 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1B72E081
-        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 12:39:43 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id a11so15556750pff.1
-        for <linux-iio@vger.kernel.org>; Tue, 03 May 2022 12:39:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=68lFLMzdFWYn9TeG84Yby4hphKM/OE0fXGXg6JYNJHo=;
-        b=agSMD0mYwrZLWQyFktPHTmNxr53miZI5xh2A9CFUj0Az4lEqJsxLWnRfcf1ufjt+je
-         Zucdf6ioUwE19NKX9ek1d7dHI8J5djCxnSjKovvFKd9LFWUGxd3shtjXIgIfyxSo3Iup
-         ABMsV/xz75KORtZpf4o9dpjoIbuxouEpDtrKo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=68lFLMzdFWYn9TeG84Yby4hphKM/OE0fXGXg6JYNJHo=;
-        b=6spaWN9p97NWF+sntlZ8+qLG6uS5/YUu3Bir60MHlf/35SSNkKTEXmcXpXcdMUnWNV
-         C9RxWNPp37mq7bW4aNEEhzNLL9iVxfsQkQ8g5yQP8phYFki6WPz7wKkEcB2jFoq9lRQ4
-         jip8WsExpqbaZSWJui5B/jZmVpjlo8Q+11N5/30V01WLCYjS7/Sg4OuYUKOckdpUPNJE
-         v3KYalymzUKfhuAAUmNFFOPksu0922Uedjzkqlb3X1bgbYOUN/2e6hAgIf+fG8EGw4l8
-         w5zP83vPHcMaySgqL5az2LFKllX4KYChZNDaRhFuAaxTrCC+emeKX47aUXeBZNXr75wD
-         8x3w==
-X-Gm-Message-State: AOAM533lervSwFloYzFbRifc1qpSjZfGO/pzvMATffkVoiMLozsmm8o5
-        mh8IONc5uFs6LfiFKm2WkLe+AA==
-X-Google-Smtp-Source: ABdhPJwFb7VzKWz+rdPmAaYShya3oSzctVjAj8WRQ+y2WP3ynoKaRoLCqu7NRGV+8xoWFiqDNGLFPA==
-X-Received: by 2002:a63:5551:0:b0:3ab:84c3:1a0 with SMTP id f17-20020a635551000000b003ab84c301a0mr15295935pgm.604.1651606783136;
-        Tue, 03 May 2022 12:39:43 -0700 (PDT)
-Received: from smtp.gmail.com ([2620:15c:202:201:15e:c760:9a04:7fbe])
-        by smtp.gmail.com with ESMTPSA id e25-20020aa78c59000000b0050dc7628154sm6680804pfd.46.2022.05.03.12.39.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 May 2022 12:39:42 -0700 (PDT)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: [PATCH v2 2/2] iio: sx9324: Add setting for CS idle mode
-Date:   Tue,  3 May 2022 12:39:37 -0700
-Message-Id: <20220503193937.3794477-3-swboyd@chromium.org>
-X-Mailer: git-send-email 2.36.0.464.gb9c8b46e94-goog
-In-Reply-To: <20220503193937.3794477-1-swboyd@chromium.org>
-References: <20220503193937.3794477-1-swboyd@chromium.org>
+        with ESMTP id S230514AbiECUEJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 3 May 2022 16:04:09 -0400
+X-Greylist: delayed 1090 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 03 May 2022 13:00:35 PDT
+Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACAFC13CF9
+        for <linux-iio@vger.kernel.org>; Tue,  3 May 2022 13:00:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=I6M6V5n+Vdd8idAnHqAl/6PWIhDNoa40OfqBseGDhiw=; b=QhsXzU8FJGn5uIzwzlR2t2yDD7
+        U2brwf6EGB2ivMIgcCmMRsON5p7Ptji9oD3BOtkSdK6vwb18Iu32aQELkJt2YYpLWX/yW4mKbHGFR
+        EPJ6A5knHK/Q5UYRMKfpikSOjvU5tWvyJsZU+J8TfSQw01IuDWposP7TIO+kfyyWI6koDH9nJwW17
+        9HQBg0lMIjxVR3yR9FiK50CZo540DorkaDQ3V0boZwkpU6f8JNsA5c8+7zL8XcCl3BjuRfTkA4ofm
+        P8VmFwSU9HubjNzZP//Anpg7BMYOGcC2XGYR9YlduI0/if7jX+fXarBRRZaSKpNbw0FF6H3/3rGM1
+        Oa7XbXDA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:44990 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <david@lechnology.com>)
+        id 1nlyPV-0000Gg-7e;
+        Tue, 03 May 2022 15:42:18 -0400
+Message-ID: <a84d9625-75b2-083b-32f2-59457d487dde@lechnology.com>
+Date:   Tue, 3 May 2022 14:42:10 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 36/92] iio: adc: ti-ads7950: Fix alignment for DMA safety
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Cristian Pop <cristian.pop@analog.com>,
+        Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
+        Matt Ranostay <mranostay@gmail.com>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Michael Welling <mwelling@ieee.org>,
+        Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
+        Navin Sankar Velliangiri <navin@linumiz.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Phil Reid <preid@electromag.com.au>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Robert Jones <rjones@gateworks.com>,
+        Rui Miguel Silva <rui.silva@linaro.org>,
+        Sean Nyekjaer <sean.nyekjaer@prevas.dk>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20220503085935.1533814-1-jic23@kernel.org>
+ <20220503085935.1533814-37-jic23@kernel.org>
+From:   David Lechner <david@lechnology.com>
+In-Reply-To: <20220503085935.1533814-37-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Based on device tree setting, set the CS idle mode.
+On 5/3/22 3:58 AM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+> on platforms with 128 byte cachelines above L1.  Switch to the updated
+> IIO_ALIGN definition.
+> 
+> Update the comment to include 'may'.
+> 
+> Fixes: 902c4b2446d4 ("iio: adc: New driver for TI ADS7950 chips")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: David Lechner <david@lechnology.com>
+> ---
 
-Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
- drivers/iio/proximity/sx9324.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-index 7f367f63e362..c7fc75f7badc 100644
---- a/drivers/iio/proximity/sx9324.c
-+++ b/drivers/iio/proximity/sx9324.c
-@@ -57,6 +57,11 @@
- 	GENMASK(SX9324_REG_AFE_CTRL0_RINT_SHIFT + 1, \
- 		SX9324_REG_AFE_CTRL0_RINT_SHIFT)
- #define SX9324_REG_AFE_CTRL0_RINT_LOWEST	0x00
-+#define SX9324_REG_AFE_CTRL0_CSIDLE_SHIFT	4
-+#define SX9324_REG_AFE_CTRL0_CSIDLE_MASK \
-+	GENMASK(SX9324_REG_AFE_CTRL0_CSIDLE_SHIFT + 1, \
-+		SX9324_REG_AFE_CTRL0_CSIDLE_SHIFT)
-+#define SX9324_REG_AFE_CTRL0_RINT_LOWEST	0x00
- #define SX9324_REG_AFE_CTRL1		0x21
- #define SX9324_REG_AFE_CTRL2		0x22
- #define SX9324_REG_AFE_CTRL3		0x23
-@@ -872,6 +877,8 @@ sx9324_get_default_reg(struct device *dev, int idx,
- {
- 	static const char * const sx9324_rints[] = { "lowest", "low", "high",
- 		"highest" };
-+	static const char * const sx9324_csidle[] = { "hi-z", "hi-z", "gnd",
-+		"vdd" };
- #define SX9324_PIN_DEF "semtech,ph0-pin"
- #define SX9324_RESOLUTION_DEF "semtech,ph01-resolution"
- #define SX9324_PROXRAW_DEF "semtech,ph01-proxraw-strength"
-@@ -901,6 +908,15 @@ sx9324_get_default_reg(struct device *dev, int idx,
- 		reg_def->def = raw;
- 		break;
- 	case SX9324_REG_AFE_CTRL0:
-+		ret = device_property_read_string(dev,
-+				"semtech,cs-idle-sleep", &res);
-+		if (!ret)
-+			ret = match_string(sx9324_csidle, ARRAY_SIZE(sx9324_csidle), res);
-+		if (ret >= 0) {
-+			reg_def->def &= ~SX9324_REG_AFE_CTRL0_CSIDLE_MASK;
-+			reg_def->def |= ret << SX9324_REG_AFE_CTRL0_CSIDLE_SHIFT;
-+		}
-+
- 		ret = device_property_read_string(dev,
- 				"semtech,int-comp-resistor", &res);
- 		if (ret)
--- 
-https://chromeos.dev
+Acked-by: David Lechner <david@lechnology.com>
 

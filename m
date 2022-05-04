@@ -2,54 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7450E51AF6B
-	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 22:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B89751AF81
+	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 22:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378139AbiEDUlS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 May 2022 16:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
+        id S231246AbiEDUoU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 May 2022 16:44:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355912AbiEDUlQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 16:41:16 -0400
+        with ESMTP id S1378391AbiEDUoC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 16:44:02 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C2D049279;
-        Wed,  4 May 2022 13:37:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC311277E;
+        Wed,  4 May 2022 13:40:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DC417B82945;
-        Wed,  4 May 2022 20:37:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C5DC385A5;
-        Wed,  4 May 2022 20:37:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 82D12B82949;
+        Wed,  4 May 2022 20:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA24C385A5;
+        Wed,  4 May 2022 20:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651696657;
-        bh=x2k8eLmpAI5MhrBnDOm1e2daghSZLAuKoipmd98NfjA=;
+        s=k20201202; t=1651696821;
+        bh=aXVyvWfDxf+r8P4NAgCnCJj/TrGjcm2Y20m+/fpSGRE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=p6PPDNMR45buGLAqUlEo0R6GwTHIYs79XWGXpoLi589fZEP/Qqa/eZUhrK2UAEwQo
-         7Z2YFBuTgCDFjuvhy9tdxQA8pccHhv3Pb+3NDAiXN9+xjbMxsLxkBU70uyz6Tbr9aF
-         gPSFS1jw9aH8BJFn3zM6V6lEAZtIWlPCp16MMHUNYcGGcNVxLp5ScLRJieQpVVWpu2
-         MlqhqkX3qMrM63SRLKORcpd4hSq9/fBk4J9bFBPDAwOlf3qqGoOiVpeohxFn7ipl2A
-         roj8Ye6wjzgCiaJUAqTX2AprJXMcOsLgCajQHCwsHuDlqhxcNqIl8XMCww2HQtJITT
-         rItsnS9Kk5T0g==
-Date:   Wed, 4 May 2022 21:45:57 +0100
+        b=BXAZGtq/xcyCjYbAM605e+7L+PSL5pLriw5XZVhsNnocxU+8ZegluRgXL8dw73rdv
+         8c7Kt3udXccgQ2l+Z1ZNyWD5JoavY80wRMTMUpc8lXwkvngiq4c0iZTOTlQ1I5UvHN
+         EXijxrkT7j+NzjesFJjzcC3x7dEKzGHrot2GKCy0BJeuj86rQiJRKuwaHvfkP1U4Fn
+         uYKjY1CpJJI9ejJ7RJqHVxNNkSr4De7QkoeC11gfKivn3hW0yf1+H98BAKkewt6eBS
+         hCoaQNK8pU56uL5BnZmHizfWppbVmffeLKkqjDkM126S+9jL5I/A44IC0nRYZO1NX8
+         wjUJeeR20e/xA==
+Date:   Wed, 4 May 2022 21:48:40 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: Re: [PATCH v1 1/1] iio: trigger: stm32-lptimer-trigger: Make use of
- device properties
-Message-ID: <20220504214557.6a075da7@jic23-huawei>
-In-Reply-To: <28627ccb-21ef-1b86-e5d7-460daf672d6d@foss.st.com>
-References: <20220413185656.21994-1-andriy.shevchenko@linux.intel.com>
-        <20220428193304.016c46a3@jic23-huawei>
-        <YnEB97YfPYpe2aCn@smile.fi.intel.com>
-        <28627ccb-21ef-1b86-e5d7-460daf672d6d@foss.st.com>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     Rob Herring <robh@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 3/3] dt-bindings: iio: accel: add dt-binding schema
+ for msa311 accel driver
+Message-ID: <20220504214840.1ad32bff@jic23-huawei>
+In-Reply-To: <20220504183716.shhpi5adcxz4ufvj@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220419154555.24191-1-ddrokosov@sberdevices.ru>
+        <20220419154555.24191-4-ddrokosov@sberdevices.ru>
+        <YmhWic3rG8ERtCYY@robh.at.kernel.org>
+        <20220504183716.shhpi5adcxz4ufvj@CAB-WSD-L081021.sigma.sbrf.ru>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,45 +66,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 3 May 2022 14:25:37 +0200
-Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
+On Wed, 4 May 2022 18:36:33 +0000
+Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
-> On 5/3/22 12:20, Andy Shevchenko wrote:
-> > On Thu, Apr 28, 2022 at 07:33:04PM +0100, Jonathan Cameron wrote:  
-> >> On Wed, 13 Apr 2022 21:56:56 +0300
-> >> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >>  
-> >>> Convert the module to be property provider agnostic and allow
-> >>> it to be used on non-OF platforms.
-> >>>
-> >>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> >>
-> >> MAINTAINERS entry for this one uses extensive wild cards so may
-> >> escape scripts...
-> >>
-> >> +CC Fabrice.  
-> > 
-> > Thanks!
-> > 
-> > Not sure it might break anything, it's quite straightforward conversion.  
+> Hello Rob,
 > 
-> Hi Andy, Jonathan,
+> I've missed one note below, please check if possible.
 > 
-> You can add my:
-> Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> On Tue, Apr 26, 2022 at 03:31:05PM -0500, Rob Herring wrote:
+> > On Tue, Apr 19, 2022 at 03:45:58PM +0000, Rokosov Dmitry Dmitrievich wrote:  
+> > > +  "#address-cells":
+> > > +    const: 1
+> > > +
+> > > +  "#size-cells":
+> > > +    const: 0  
+> > 
+> > These apply to 'reg' in a child node, but you don't have child nodes so 
+> > drop them.
+> >   
+> 
+> I'm afraid, I made a mistake in the previous reply. Here I applied
+> address-cells and size-cells to show which type accelerometer's reg
+> property has, like this one:
+> 
+>     i2c {
+>         #address-cells = <1>;
+>         #size-cells = <0>;
+>     
+>         accelerometer@62 {
+>             compatible = "memsensing,msa311";
+>             reg = <0x62>;
+> 
+> Above accelerometer@62 is child node for i2c bus node, so address and
+> size cells mean accelerometer reg format. Am I missing something?
 
-Applied to the togreg branch of iio.git and pushed out as testing to
-let 0-day see if it can find anything we missed.
+They are characteristics of the i2c master and hence
+are listed in those binding docs, not the one for the accelerometer.
 
 Thanks,
 
 Jonathan
-
-
 > 
-> Thanks,
-> Best Regards,
-> Fabrice
-> 
-> >   
 

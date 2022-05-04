@@ -2,48 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EB0C51AFBF
-	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 22:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2BA51AFED
+	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 22:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378405AbiEDUyI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 May 2022 16:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
+        id S234572AbiEDVC0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 May 2022 17:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378412AbiEDUxz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 16:53:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5352DD7
-        for <linux-iio@vger.kernel.org>; Wed,  4 May 2022 13:50:18 -0700 (PDT)
+        with ESMTP id S232621AbiEDVCZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 17:02:25 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E61640E40
+        for <linux-iio@vger.kernel.org>; Wed,  4 May 2022 13:58:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 040B3B8293F
-        for <linux-iio@vger.kernel.org>; Wed,  4 May 2022 20:50:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E66FC385A5;
-        Wed,  4 May 2022 20:50:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C4FCDB8298D
+        for <linux-iio@vger.kernel.org>; Wed,  4 May 2022 20:58:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68907C385A4;
+        Wed,  4 May 2022 20:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651697415;
-        bh=L3umyqF+qlV4aDkA6vfR8MIaNI2Eb92s5S/0yr3FKSE=;
+        s=k20201202; t=1651697925;
+        bh=l1WJwsWLYz+ulbb8iY+KLKyiPv4eYktWOD8/eK71reE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=C0luMHE5w1vpxv/+iV6F/nNNp05ghnhCV6AQPOAeJbobHIq/f9GQZJLUOm9eTZyQP
-         4TRJUZNGIJzhcuj6i1t8B9CzgQtx+T77d60wOQS9iIrrPLjqv3IvP5eX3kK1H7YaoD
-         g1mhU5rETroMy/w58otkyCX8ins5QQqLpAA506PkqRaXgWJNuLvkshmcWFOkf5YA0J
-         Z9TpBLz3DXpHZNeP/Uj9apL4P5CnVnKMRoZ4ofXlc4bEMLefC/XVdnbiDuYYN/AUli
-         IvGzzkA7w73/zhIycMeNa8fSMcfaIFKS28YpkBAqp0ZHt0tC34ndsw7Wrae6O6yrue
-         /h4EIg5ZTPvcA==
-Date:   Wed, 4 May 2022 21:58:35 +0100
+        b=Cx+Ooitoubx7NC80Q6JDmQwhS769Eu2v5aytOKGszOljSNae07pri5h3r/7ihguyS
+         YMGZe2d5dgxRE2+lrEPm/CxheBkOzNcIXTneKO84GN49dXdZDvqnHNZ8z7RyDHJZ5l
+         w4KueZ+EY+/Kz35XIVNF1FkdTXd+ffdxaLrCryhtuPL3o33VGrvh1JEoN4Kl4Msa2C
+         I0yMS71zMf0KEkLdnEJHsztDO7LzFZbx0FsX44KB6W0pu2aaeNe0is21UZjBhtJd/4
+         TP3WmHZ0VXjOVZBhTP7Hg83f5ljS2wdk3j5v1lLBA519CUg+3w07gWxQ03lGrZzhWw
+         XpDxxFzN9Iq3g==
+Date:   Wed, 4 May 2022 22:06:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 8/9] iio:light:stk3310: Remove duplicated error
- reporting in .remove()
-Message-ID: <20220504215835.15becc2b@jic23-huawei>
-In-Reply-To: <20220502073755.rku3yv6il5efew2x@pengutronix.de>
-References: <20220430081607.15078-1-u.kleine-koenig@pengutronix.de>
-        <20220430081607.15078-9-u.kleine-koenig@pengutronix.de>
-        <20220502073755.rku3yv6il5efew2x@pengutronix.de>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        "Tachici, Alexandru" <Alexandru.Tachici@analog.com>,
+        "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
+        Cristian Pop <cristian.pop@analog.com>,
+        David Lechner <david@lechnology.com>,
+        Ivan Mikhaylov <i.mikhaylov@yadro.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        =?UTF-8?B?TcOlcnRlbg==?= Lindahl <martenli@axis.com>,
+        Matt Ranostay <mranostay@gmail.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Michael Welling <mwelling@ieee.org>,
+        Mugilraj Dhavachelvan <dmugil2000@gmail.com>,
+        Navin Sankar Velliangiri <navin@linumiz.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Phil Reid <preid@electromag.com.au>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Robert Jones <rjones@gateworks.com>,
+        Rui Miguel Silva <rui.silva@linaro.org>,
+        Sean Nyekjaer <sean.nyekjaer@prevas.dk>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?= =?UTF-8?B?Zw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>
+Subject: Re: [PATCH 00/92] IIO: Fix alignment of buffers for DMA
+Message-ID: <20220504220657.6f9f3f69@jic23-huawei>
+In-Reply-To: <PH0PR03MB67861B4A26E0297578E90CFC99C39@PH0PR03MB6786.namprd03.prod.outlook.com>
+References: <20220503085935.1533814-1-jic23@kernel.org>
+        <PH0PR03MB67861B4A26E0297578E90CFC99C39@PH0PR03MB6786.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,62 +86,111 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2 May 2022 09:37:55 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+On Wed, 4 May 2022 13:00:58 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> Hello,
+> Hi Jonathan,
 >=20
-> On Sat, Apr 30, 2022 at 10:16:06AM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > Returning an error value in an i2c remove callback results in an error
-> > message being emitted by the i2c core, but otherwise it doesn't make a
-> > difference. The device goes away anyhow and the devm cleanups are
-> > called.
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Tuesday, May 3, 2022 10:58 AM
+> > To: linux-iio@vger.kernel.org
+> > Cc: Akinobu Mita <akinobu.mita@gmail.com>; Alexandru Lazar
+> > <alazar@startmail.com>; Tachici, Alexandru
+> > <Alexandru.Tachici@analog.com>; Miclaus, Antoniu
+> > <Antoniu.Miclaus@analog.com>; Charles-Antoine Couret <charles- =20
+> > antoine.couret@essensium.com>; Tanislav, Cosmin =20
+> > <Cosmin.Tanislav@analog.com>; Cristian Pop
+> > <cristian.pop@analog.com>; David Lechner <david@lechnology.com>;
+> > Ivan Mikhaylov <i.mikhaylov@yadro.com>; Jacopo Mondi
+> > <jacopo+renesas@jmondi.org>; Jean-Baptiste Maneyrol
+> > <jmaneyrol@invensense.com>; Lars-Peter Clausen
+> > <lars@metafoo.de>; Marcelo Schmitt <marcelo.schmitt1@gmail.com>;
+> > M=C3=A5rten Lindahl <martenli@axis.com>; Matt Ranostay
+> > <mranostay@gmail.com>; Hennerich, Michael
+> > <Michael.Hennerich@analog.com>; Michael Welling
+> > <mwelling@ieee.org>; Mugilraj Dhavachelvan
+> > <dmugil2000@gmail.com>; Navin Sankar Velliangiri
+> > <navin@linumiz.com>; Sa, Nuno <Nuno.Sa@analog.com>; Paul
+> > Cercueil <paul@crapouillou.net>; Phil Reid
+> > <preid@electromag.com.au>; Puranjay Mohan
+> > <puranjay12@gmail.com>; Ricardo Ribalda <ribalda@kernel.org>;
+> > Robert Jones <rjones@gateworks.com>; Rui Miguel Silva
+> > <rui.silva@linaro.org>; Sean Nyekjaer <sean.nyekjaer@prevas.dk>;
+> > Tomas Melin <tomas.melin@vaisala.com>; Tomislav Denis
+> > <tomislav.denis@avl.com>; Uwe Kleine-K=C3=B6nig <u.kleine- =20
+> > koenig@pengutronix.de>; Jonathan Cameron =20
+> > <Jonathan.Cameron@huawei.com>; catalin.marinas@arm.com
+> > Subject: [PATCH 00/92] IIO: Fix alignment of buffers for DMA
 > >=20
-> > As stk3310_set_state() already emits an error message on failure and the
-> > additional error message by the i2c core doesn't add any useful
-> > information, change the return value to zero to suppress this message.
+> > [External]
 > >=20
-> > This patch is a preparation for making i2c remove callbacks return void.
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > >=20
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  drivers/iio/light/stk3310.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > Many years ago, IIO started using ____cacheline_aligned to ensure
+> > that buffers that might be used for DMA were not sharing a cacheline
+> > with other data that might lead to DMA safety issues.
 > >=20
-> > diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-> > index 1d02dfbc29d1..95a98af08b8a 100644
-> > --- a/drivers/iio/light/stk3310.c
-> > +++ b/drivers/iio/light/stk3310.c
-> > @@ -627,9 +627,12 @@ static int stk3310_probe(struct i2c_client *client,
-> >  static int stk3310_remove(struct i2c_client *client)
-> >  {
-> >  	struct iio_dev *indio_dev =3D i2c_get_clientdata(client);
-> > +	int ret;
-> > =20
-> >  	iio_device_unregister(indio_dev);
-> > -	return stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
-> > +	stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
-> > +
-> > +	return 0;
-> >  } =20
+> > As it turns out, that was fine at the time, but not based on the
+> > correct alignment requirement (though I believe it was a conservative
+> > choice at the time).  Note that on many architectures this was
+> > introducing
+> > unecessary padding.  We should have been using
+> > ARCH_KMALLOC_MINALIGN
+> > as other subsystems such as crypto have done for a long time.
+> >=20
+> > Patch 1 discription contains more information but in short, there are
+> > ARM64 SoCs out their that have a larger cachline size for caches
+> > beyond
+> > L1. In many cases they maintain coherency for all DMA devices
+> > attached
+> > and so this isn't a problem, but there are exceptions that do not.
+> >=20
+> > So, this is a rather large patch set and just covers those drivers
+> > that are in the last kernel release and in drivers/iio.
+> >=20
+> > Many of these drivers are somewhat old so I haven't specifically
+> > cc'd anyone so will be relying on those kind enough to sanity check
+> > patches on drivers that are beyond their own.
+> >=20
+> > Given there is ongoing discussion around reducing the alignment
+> > requirements where possible, I've adopted the existing IIO_ALIGN
+> > define througout.  That way we have a single point to update if
+> > that becomes relevant in future.
+> >  =20
 >=20
-> I just found a fixup in my tree that drops the
+> Nice to see this in... Since we are here, I guess in a couple of patches =
+where we have:
 >=20
-> 	+	int ret;
+> struct {
+> 	...
+> 	u8 rx[] __aligned();
+> 	u8 tx[] __aligned();
+> };
 >=20
-> that I failed to squash in before sending.
->=20
-> Jonathan: Tell me if you want to fixup yourself when you apply, or if
-> you prefer a v2. If the latter, only for this patch or the whole series?
+> we could make it such that only the first member is aligned. But bah, I g=
+et that this
+> is already a huge patchset to diverge from it. Anyhow,
 
-I'll fix it up when applying..
+Yup. I thought about tidying those up but decided it would just make
+things harder to explain so could be done as a follow up.
+I should have said so in the cover letter though!
 
-Thanks for letting me know.
+I particularly like the case where (a long time ago) I added
+a question on whether there was a need for separate alignment
+and left that question in the final code. Oops.
+>=20
+> Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+
+Thanks for looking through all these.
+
+We haven't yet concluded on the questions of naming and possible
+additional define for __aligned(XXX) but if we do make such a change
+it should be purely mechanical hence I'll keep all the tags people
+have given and not bother them again :)
+
+Thanks,
 
 Jonathan
 
->=20
-> Best regards
-> Uwe
->=20
+
 

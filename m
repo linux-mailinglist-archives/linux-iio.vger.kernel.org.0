@@ -2,115 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 278F851A266
-	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 16:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A184B51A301
+	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 17:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351390AbiEDOnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 May 2022 10:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
+        id S233488AbiEDPHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 May 2022 11:07:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351382AbiEDOnF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 10:43:05 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F3341306;
-        Wed,  4 May 2022 07:39:28 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id j6so3262797ejc.13;
-        Wed, 04 May 2022 07:39:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BT8BrcD290OhlXLzO/WMuO9iyvHDkVdQoNtwipl/it8=;
-        b=f8YKGkv96KqipMGRLRAqtvYuQU5pcL6bmvh6APgrpuajxzd6KJ1Yi0yaw0Vqv5XqpG
-         AIPrhM5kOXh4mzvaKjBInTE6626gSl/2PBj7QwowFxDd9WZVH/ya8UQGvaooKmhbSGSk
-         fJpuhfxPEUPMjW2r9EY6iUJy+Fz18cUlByOEqfMVBLhwriao+eUMc0+x1aggqNjt3Itz
-         /xAAIYm4ebEfc0sXMnU8cC9gmFgVcTdU3Ww4ivSjWKep2YKEx9lVl2zjhaAfAlbVd7ml
-         t1c2Zo8pwu7pelWphHS1o8zr+rY8uvTk+omRxkkxQD2DZQDnZJ8FJg6zIpabPB68A7NF
-         bdLw==
+        with ESMTP id S242710AbiEDPHU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 11:07:20 -0400
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F642FFD1;
+        Wed,  4 May 2022 08:03:44 -0700 (PDT)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-ed8a3962f8so1441081fac.4;
+        Wed, 04 May 2022 08:03:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BT8BrcD290OhlXLzO/WMuO9iyvHDkVdQoNtwipl/it8=;
-        b=3WaZ4mcIziG/QUpsect0G59F76i1tFAlMf0n3EyKBteu9gyyS1XWs7ZCozknHkAU6B
-         jIUxPFhXGM5C0QAE60yEJRtbWjmuqKxERCV5+iS88aDl620O9psXwvWgbZOoMI7t5jUQ
-         ngOnV4UgScWMZUq33fkcPtw+wKAHyD7lEe9AfO7J/SOD3vyT/slA7W6oHYOzwe9H31Bv
-         9mKaABsP3juV99roWsDtOaVFOUFWmQjZWIPMlq/uGSBW/QM6LTZC5xqKcvvTt+POXaAe
-         jVaNR9KosHVsVTZIyNLNnCFCUBDgokoMydUKz25KPedYsCZIJmBSy/oYXr1XidfLOPjw
-         lY7w==
-X-Gm-Message-State: AOAM530Zem37HGQ6IP8ZswrEb8MJlQx9UmHSwVLm/xLdbE/C/nVoNo/J
-        GA5kvD/Zj0ZjMI8nKhJL3eMUVLXnwPOj/mnEptWD1T/P+Q1A9u0M
-X-Google-Smtp-Source: ABdhPJzsXYIbUziV7EZsdqDOx8PlyMdpdiCWKdFtijm7TBxU9VjomPcWn0uGzn+kX6jz25hLou3tgpos6MBaauoe5is=
-X-Received: by 2002:a17:907:6e04:b0:6f4:d6f3:c72a with SMTP id
- sd4-20020a1709076e0400b006f4d6f3c72amr1151943ejc.636.1651675167204; Wed, 04
- May 2022 07:39:27 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=0XSZeXWgi4scPvbVkMMEIf9HkEBqk/lFaT7ukZmszpk=;
+        b=sZGtUYjY43mgvIrf/c2MNmU4SDTyBzWs895Qub/gUyb+WHjTo+3bxUK4JMG9m94Hab
+         PNFPCx6tqioltSH9iQq9antpTij8w+RsnB585snAiHZFFpS8I1NGqAdm/kg7P2WpxnkO
+         uxSFjemIhP2I9J7WA/W7DAtaBjdhqFqcWP4QSdW1O8e4uX57kZMd3ObubBHzQgLj7G61
+         wdIFRAvUWZ2K0MSNDKaVoIVZuSeX9HsDYJX4oLWSkLYoQ5SMnAQS+Ryxx3/uMtJUnR55
+         OJpVCVJrgVWtEZd9FFM0Uv4wPbZBi6QPUpKNWDaeug95vKkVOGuMjpvjjkmzi030oxot
+         EGvw==
+X-Gm-Message-State: AOAM530KDt8yIH9ey1XDjNHqELhPpxItVOm2WD0nZyGmxflJOpI5W5dW
+        CE/cHURXBBJL5N/IED99oA==
+X-Google-Smtp-Source: ABdhPJwyXyp8l3/4eYbxsDquSInxw4zswI4vbcnE0ZLs7FRe5OuFOWyn3uGDkvricFp3AuWNeqamNA==
+X-Received: by 2002:a05:6870:6196:b0:e1:e1a2:5c65 with SMTP id a22-20020a056870619600b000e1e1a25c65mr4042232oah.190.1651676623681;
+        Wed, 04 May 2022 08:03:43 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id j5-20020a9d7685000000b006060322125asm5350223otl.42.2022.05.04.08.03.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 May 2022 08:03:43 -0700 (PDT)
+Received: (nullmailer pid 1707807 invoked by uid 1000);
+        Wed, 04 May 2022 15:03:42 -0000
+Date:   Wed, 4 May 2022 10:03:42 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: sx9324: Add CS idle/sleep mode
+Message-ID: <YnKVzvAITXAHqSiX@robh.at.kernel.org>
+References: <20220503193937.3794477-1-swboyd@chromium.org>
+ <20220503193937.3794477-2-swboyd@chromium.org>
+ <faaa4ab4-8190-3cff-998e-3b6a6d3ce27c@linaro.org>
 MIME-Version: 1.0
-References: <20220504133612.604304-1-Qing-wu.Li@leica-geosystems.com.cn>
- <20220504133612.604304-4-Qing-wu.Li@leica-geosystems.com.cn>
- <CAHp75VeseZ2ChtbafmbgVavS4KvCvrQ4+XSRkeiJSyqr8__dSw@mail.gmail.com> <AM9PR06MB7844E8FE0EDF712C769271DAD7C39@AM9PR06MB7844.eurprd06.prod.outlook.com>
-In-Reply-To: <AM9PR06MB7844E8FE0EDF712C769271DAD7C39@AM9PR06MB7844.eurprd06.prod.outlook.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 4 May 2022 16:38:51 +0200
-Message-ID: <CAHp75VfEK_TXXA3NdGgjis7duHgoDo4aSOZntdO0wEGLw0sQ7g@mail.gmail.com>
-Subject: Re: [PATCH V3 3/5] iio: accel: sca3300: modified to support multi chips
-To:     LI Qingwu <qing-wu.li@leica-geosystems.com.cn>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tomas Melin <tomas.melin@vaisala.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <faaa4ab4-8190-3cff-998e-3b6a6d3ce27c@linaro.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 4, 2022 at 4:35 PM LI Qingwu
-<qing-wu.li@leica-geosystems.com.cn> wrote:
-> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Sent: Wednesday, May 4, 2022 10:20 PM
-> > On Wed, May 4, 2022 at 3:36 PM LI Qingwu
-> > <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+On Wed, May 04, 2022 at 08:20:40AM +0200, Krzysztof Kozlowski wrote:
+> On 03/05/2022 21:39, Stephen Boyd wrote:
+> > We need to configure the sleep and idle mode of the CS pins for this
+> > device. Add a DT property to do this so pins are in a proper state
+> > during sleep (either hi-z, grounded, or pulled up to vdd).
+> > 
+> > Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
+> > Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> > ---
+> >  .../bindings/iio/proximity/semtech,sx9324.yaml           | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> > index d265eb5258c8..b3aa2ebf9661 100644
+> > --- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> > @@ -126,6 +126,14 @@ properties:
+> >        UINT_MAX (4294967295) represents infinite. Other values
+> >        represent 1-1/N.
+> >  
+> > +  semtech,cs-idle-sleep:
+> > +    description:
+> > +      State of CS pins during sleep mode and idle time.
+> > +    enum:
+> > +      - hi-z
+> > +      - gnd
+> > +      - vdd
+> 
+> You need a ref to type (string).
 
-...
+Actually, it can be implicit for single strings.
 
-> > > +struct sca3300_chip_info {
-> > > +       const struct iio_chan_spec *channels;
-> > > +       const int (*accel_scale_table)[2];
-> > > +       const int *accel_scale_modes_map;
-> > > +       const unsigned long *scan_masks;
-> > > +       const int *avail_modes_table;
-> > > +       const int *freq_modes_map;
-> > > +       const int *freq_table;
-> > > +       const u8 num_accel_scales;
-> > > +       const u8 num_avail_modes;
-> > > +       const u8 num_channels;
-> > > +       const u8 num_freqs;
-> > > +       const u8 chip_id;
-> >
-> > Why do you have const qualifier on all members?  The last one is
-> > understandable, but the rest, esp. pointers should be justified.
-> Because I thought it was static and has fix value for each chip, unacceptable for you?
-
-But why const qualifier? What is the point of it for example for u8
-members if the entire object is qualified as const below in the same
-patch?
-
-On top of that, please explain what in your opinion the "const ...
-*foo" gives us, and what we will lose if we remove the "const" part
-out of them.
-
-> > > +       const char *name;
-> > > +};
-
--- 
-With Best Regards,
-Andy Shevchenko
+Rob

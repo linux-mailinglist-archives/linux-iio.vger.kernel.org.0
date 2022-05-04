@@ -2,100 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B3A51A386
-	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 17:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C12A51AC51
+	for <lists+linux-iio@lfdr.de>; Wed,  4 May 2022 20:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352106AbiEDPTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 May 2022 11:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41674 "EHLO
+        id S1376381AbiEDSJ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 4 May 2022 14:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352074AbiEDPTm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 11:19:42 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886C343EC8
-        for <linux-iio@vger.kernel.org>; Wed,  4 May 2022 08:15:58 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id b19so2456243wrh.11
-        for <linux-iio@vger.kernel.org>; Wed, 04 May 2022 08:15:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=1ryHoF3GX29l2BbumSx4LLa3+CSQ3y1WeeuUCuu7Qa0=;
-        b=Hcb/GxMIWz+LONYPEzve61zizt92isYqwX/yrmvvmtjTOdN26bELSBXrfCatavY/i9
-         zO0Oqvr3zwHUj40hzHgmV8SEvusTerF2fNSIN7KHYATj3tSBtZU9Rif2P38pyjfg33cd
-         guYC+H53g+0lZzxOYl2ZNspXpcMIslsrmSObD8wYTFb1O/eopStRxiyOYSwA/8OgzD+k
-         V7sIdiAaHrWrvBt2P+ESUMSARxGs2dG9a4B21L0sBP4/Luc29Q7Sxew/ri0Na2lHqyal
-         v6xDIUSvDBbq8ATjzHHHiiwFmojz0DUAr7kKlOmFsDxI3cr5ZK9CETnQMIPp5lWlFDTb
-         Aa/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=1ryHoF3GX29l2BbumSx4LLa3+CSQ3y1WeeuUCuu7Qa0=;
-        b=fU6GoNKYQoou+hasHAaghXU7rLMDisJxfa4Zp1XfG2hEzZshtwn7nvziUs2lP+KYma
-         6iAoEvG1AcdqDOXHOIk9MxJetazBITl61Bggf6tSHjZoOBGkJhhtXUneZPjmvbJNvvLU
-         KxTvJbGHNzOcEcdZ9cKNizSDVf408f7ETPIVUnyNnP9omnLBbREUQSgN3tldJfcWS8vM
-         Xsrx6vQ6QuzSDYn+GOLnIUmfHPNMU6qRX5/ix5O+E01XDhzf2Myzc/Fnt8QOV7L0n61W
-         sjMNcwoVLapnkzf3mlEonUCn+rGovTJoIbJ8YMcSpJX0koLUZemRWxeFagZR7Pe1b1jE
-         1S/Q==
-X-Gm-Message-State: AOAM5312iITdzStA5gtrvaOSJV1GB+OG3jXhGrJPHIPTqKTS8yWnXsk9
-        K58X/xZIf7UXD2/CGh7qoPOv/w==
-X-Google-Smtp-Source: ABdhPJybnL0RWDbmurfP0kvKpvO+WERTEmjRBhnccgIeENQnFqTbkIhbjnxVsk2LUs7nrd7EyXVXoQ==
-X-Received: by 2002:a05:6000:1814:b0:20a:cb21:8781 with SMTP id m20-20020a056000181400b0020acb218781mr16683539wrh.488.1651677357085;
-        Wed, 04 May 2022 08:15:57 -0700 (PDT)
-Received: from [192.168.0.215] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id j30-20020adfb31e000000b0020c5253d8bfsm11578357wrd.11.2022.05.04.08.15.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 May 2022 08:15:56 -0700 (PDT)
-Message-ID: <8aef897f-fff0-526e-62d0-6a92c301eb08@linaro.org>
-Date:   Wed, 4 May 2022 17:15:55 +0200
+        with ESMTP id S1376763AbiEDSIx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 14:08:53 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61459728F6;
+        Wed,  4 May 2022 10:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651685061; x=1683221061;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v851XFF7wlJdKL8425wlGESczY3BpKet3O8VZ3I0eCU=;
+  b=dMZgkNY+gW3EdePAO1hYE0LoAbwxEZ61phUScBOoHN6m69PDK6YrXJCZ
+   /eNzuedUA2SEmtthUTDFhOGloGzYdiySquz5H6HVDAdcrmurUxc1Wt4SG
+   mppjj0rCnZa0xfOB9FElUFdhW05U1tOjzs81HF8339rXMlHWQwLfXQFIT
+   4h/UNo5Qalnw22/k+Sf0axKuj6sEgI+f3hE6/gGPNrXOUIUj9D8sgFeNM
+   mCujPRf+ZZcrUW+0SrtqHLYk1Hs1uaBvtVsgp5l0fRjYy0n7GGVZzNv2P
+   /lZsgVcY90In9p0gIWf0+4/p/pYJzBCpkaJnQVh/dgl6oVneZI0uG64MP
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="267428440"
+X-IronPort-AV: E=Sophos;i="5.91,198,1647327600"; 
+   d="scan'208";a="267428440"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2022 10:24:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,198,1647327600"; 
+   d="scan'208";a="620898536"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 04 May 2022 10:24:17 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nmIjY-000Bej-PN;
+        Wed, 04 May 2022 17:24:16 +0000
+Date:   Thu, 5 May 2022 01:23:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, tomas.melin@vaisala.com,
+        andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH V3 5/5] iio: accel: sca3300: Add inclination channels
+Message-ID: <202205050139.AiGvfpnI-lkp@intel.com>
+References: <20220504133612.604304-6-Qing-wu.Li@leica-geosystems.com.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: sx9324: Add CS idle/sleep mode
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     Stephen Boyd <swboyd@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>
-References: <20220503193937.3794477-1-swboyd@chromium.org>
- <20220503193937.3794477-2-swboyd@chromium.org>
- <faaa4ab4-8190-3cff-998e-3b6a6d3ce27c@linaro.org>
- <YnKVzvAITXAHqSiX@robh.at.kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <YnKVzvAITXAHqSiX@robh.at.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220504133612.604304-6-Qing-wu.Li@leica-geosystems.com.cn>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/05/2022 17:03, Rob Herring wrote:
->>>  
->>> +  semtech,cs-idle-sleep:
->>> +    description:
->>> +      State of CS pins during sleep mode and idle time.
->>> +    enum:
->>> +      - hi-z
->>> +      - gnd
->>> +      - vdd
->>
->> You need a ref to type (string).
-> 
-> Actually, it can be implicit for single strings.
+Hi LI,
 
-Is this a generic preference?
+Thank you for the patch! Perhaps something to improve:
+
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on v5.18-rc5 next-20220504]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/LI-Qingwu/iio-accel-sca3300-add-compitible-for-scl3300/20220504-213941
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: x86_64-randconfig-a016 (https://download.01.org/0day-ci/archive/20220505/202205050139.AiGvfpnI-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 363b3a645a1e30011cc8da624f13dac5fd915628)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/7d890b741d98d981843f66de413c1420e3fa27d3
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review LI-Qingwu/iio-accel-sca3300-add-compitible-for-scl3300/20220504-213941
+        git checkout 7d890b741d98d981843f66de413c1420e3fa27d3
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/iio/accel/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/iio/accel/sca3300.c:152:28: warning: unused variable 'scl3300_scan_masks' [-Wunused-const-variable]
+   static const unsigned long scl3300_scan_masks[] = {
+                              ^
+   1 warning generated.
 
 
-Best regards,
-Krzysztof
+vim +/scl3300_scan_masks +152 drivers/iio/accel/sca3300.c
+
+   151	
+ > 152	static const unsigned long scl3300_scan_masks[] = {
+   153		BIT(SCA3300_ACC_X) | BIT(SCA3300_ACC_Y) | BIT(SCA3300_ACC_Z) |
+   154		BIT(SCA3300_TEMP) |
+   155		BIT(SCA3300_INCLI_X) | BIT(SCA3300_INCLI_Y) | BIT(SCA3300_INCLI_Z),
+   156		0
+   157	};
+   158	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

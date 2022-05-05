@@ -2,100 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B244651B3D9
-	for <lists+linux-iio@lfdr.de>; Thu,  5 May 2022 02:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9B851BC5D
+	for <lists+linux-iio@lfdr.de>; Thu,  5 May 2022 11:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235610AbiEEAGb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 4 May 2022 20:06:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41832 "EHLO
+        id S1346224AbiEEJrq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 5 May 2022 05:47:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351866AbiEDX6y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 4 May 2022 19:58:54 -0400
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A64506F7
-        for <linux-iio@vger.kernel.org>; Wed,  4 May 2022 16:54:12 -0700 (PDT)
-Received: by mail-yb1-xb42.google.com with SMTP id w17so5041925ybh.9
-        for <linux-iio@vger.kernel.org>; Wed, 04 May 2022 16:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=Dn1MT8x7p4Rbn+pctwVkt7IgIdUxT0LRLjox/JaF9ttsZ2N8sUUglHFRxQa3sl75aK
-         h1U1JpCoOjPff8rV+LL0edQuBh+YvYlTbZ4zx127Qa80qMcS49J0d2nS2s7mVVadwp/M
-         vGp6wV8qQhR9tMRiQjyWHIJslgvG4HigF7p24aLxixJ1l99K68kLikab9Y0HgtSpkDYW
-         0+riuhXlj9dAnGs04evyYz4sFXKtm0FlJKiBI2Dtbo7ebvKr6E7XJkxgxzCXhReMwL1D
-         yv9OUeo9KjH+/RIlVXefhsYivAQRdlwo604eWoXrrvRFVxcSgXwgPis+UtVhyLpBWx3z
-         WyWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=wqM5ByeOuss+8I2BV4gRjBR8eXkJIvZVaASHvTOfX6+w6zNI//HlK+LmUZ8lopZAkf
-         kdILPs07BrjETFYqMhz3VczSCm5twoAPRh6uijhoxmUgv3mNzKkpAb0jC+IponRLhzlt
-         NmyF8vkPKO238SZW48N24E1BgPaKjYFTNj2P4C1zRVc8MBjkYhQciLsZGjrN7bluCJkx
-         A1QvB2QJXDbFovgxDlzQXP6bmUtE5dpyVyOHij4GYXbUkZLf8B6tdcEvKDSPNTWqb4eV
-         M20BTnIAwx1+T5uHwlzCmJFIOl98TKuCoXmS3SYvcU9+xxm/vo8Fx/bGpOZ/0F/rbwV4
-         ohig==
-X-Gm-Message-State: AOAM533DXZWpi6z/8uNi8UvqcAK2wmW3VEQOPU/jMzPF+gsp2YC5ATrK
-        l2ijU1/DgU0DMJweT3cBss9D4SdxTxJevhVMsG9adiWTR+LWPg==
-X-Google-Smtp-Source: ABdhPJyXbFHNtxfp8+qt+M9kuv/iG7XfFeFFPd7I4/fmpdxuycMtmf6dIJw5ghtZAT2CwgvAVE/kUl0HxsirxLIU8v0=
-X-Received: by 2002:a9d:6b16:0:b0:605:e0eb:d3d6 with SMTP id
- g22-20020a9d6b16000000b00605e0ebd3d6mr8263208otp.213.1651708440302; Wed, 04
- May 2022 16:54:00 -0700 (PDT)
+        with ESMTP id S232773AbiEEJrn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 May 2022 05:47:43 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E5645AE2
+        for <linux-iio@vger.kernel.org>; Thu,  5 May 2022 02:44:02 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1nmY1e-0007BD-66; Thu, 05 May 2022 11:43:58 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1nmY1e-000TxV-HS; Thu, 05 May 2022 11:43:57 +0200
+Received: from mtr by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <mtr@pengutronix.de>)
+        id 1nmY1c-002oLm-9e; Thu, 05 May 2022 11:43:56 +0200
+From:   Michael Tretter <m.tretter@pengutronix.de>
+To:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org
+Cc:     anand.ashok.dumbre@xilinx.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, manish.narani@xilinx.com,
+        michal.simek@xilinx.com, m.tretter@pengutronix.de,
+        kernel@pengutronix.de
+Subject: [PATCH v13] arm64: zynqmp: DT: Add Xilinx AMS node
+Date:   Thu,  5 May 2022 11:43:56 +0200
+Message-Id: <20220505094356.670158-1-m.tretter@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:53:59
- -0700 (PDT)
-Reply-To: ortegainvestmmentforrealinvest@gmail.com
-From:   Info <joybhector64@gmail.com>
-Date:   Thu, 5 May 2022 05:23:59 +0530
-Message-ID: <CAP7KLYgH9LcKHS-KgR0zObHAgC6Fr3D+dOJSbDKurTc_12+iFw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b42 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [joybhector64[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [joybhector64[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-I am an investor. I came from the USA and I have many investments all
-over the world.
+From: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
 
-I want you to partner with me to invest in your country I am into many
-investment such as real Estate or buying of properties i can also
-invest money in any of existing business with equity royalty or by %
-percentage so on,
-Warm regards
+The Xilinx AMS includes an ADC as well as on-chip sensors that can be
+used to sample external and monitor on-die operating conditions, such as
+temperature and supply voltage levels.
+
+Co-developed-by: Manish Narani <manish.narani@xilinx.com>
+Signed-off-by: Manish Narani <manish.narani@xilinx.com>
+Signed-off-by: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+
+The patch series [0] for the AMS driver was applied, but the patch to
+add the node to the device tree was skipped. Thus, the driver is not
+probed at all.
+
+I added the xilinx_ams node to zynqmp-clk-ccf.dtsi, too, to allow the
+driver to find the firmware clock as mentioned in my review comment on
+the previous series.
+
+Michael
+
+[0] https://lore.kernel.org/all/20211203212358.31444-1-anand.ashok.dumbre@xilinx.com/
+
+Changelog:
+
+v13:
+- Add ams node to ZynqMP clock controller
+---
+ .../arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi |  4 ++++
+ arch/arm64/boot/dts/xilinx/zynqmp.dtsi        | 24 +++++++++++++++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+index 8493dd7d5f1f..e172fa05c9a0 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+@@ -239,6 +239,10 @@ &lpd_watchdog {
+ 	clocks = <&zynqmp_clk LPD_WDT>;
+ };
+ 
++&xilinx_ams {
++	clocks = <&zynqmp_clk AMS_REF>;
++};
++
+ &zynqmp_dpdma {
+ 	clocks = <&zynqmp_clk DPDMA_REF>;
+ };
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+index c715a18368c2..573afccfda6a 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+@@ -874,6 +874,30 @@ lpd_watchdog: watchdog@ff150000 {
+ 			timeout-sec = <10>;
+ 		};
+ 
++		xilinx_ams: ams@ffa50000 {
++			compatible = "xlnx,zynqmp-ams";
++			status = "disabled";
++			interrupt-parent = <&gic>;
++			interrupts = <0 56 4>;
++			reg = <0x0 0xffa50000 0x0 0x800>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++			#io-channel-cells = <1>;
++			ranges = <0 0 0xffa50800 0x800>;
++
++			ams_ps: ams-ps@0 {
++				compatible = "xlnx,zynqmp-ams-ps";
++				status = "disabled";
++				reg = <0 0x400>;
++			};
++
++			ams_pl: ams-pl@400 {
++				compatible = "xlnx,zynqmp-ams-pl";
++				status = "disabled";
++				reg = <0x400 0x400>;
++			};
++		};
++
+ 		zynqmp_dpdma: dma-controller@fd4c0000 {
+ 			compatible = "xlnx,zynqmp-dpdma";
+ 			status = "disabled";
+-- 
+2.30.2
+

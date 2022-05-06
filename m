@@ -2,76 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F43251C846
-	for <lists+linux-iio@lfdr.de>; Thu,  5 May 2022 20:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFBE551D21A
+	for <lists+linux-iio@lfdr.de>; Fri,  6 May 2022 09:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384702AbiEESs6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 5 May 2022 14:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54570 "EHLO
+        id S1389462AbiEFHVE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 6 May 2022 03:21:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384722AbiEESsZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 5 May 2022 14:48:25 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E3E276160A;
-        Thu,  5 May 2022 11:40:53 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.91,201,1647270000"; 
-   d="scan'208";a="118801312"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 06 May 2022 03:40:53 +0900
-Received: from localhost.localdomain (unknown [10.226.92.72])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 548C540078C4;
-        Fri,  6 May 2022 03:40:50 +0900 (JST)
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        with ESMTP id S1389463AbiEFHVD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 6 May 2022 03:21:03 -0400
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08E466FA3;
+        Fri,  6 May 2022 00:17:21 -0700 (PDT)
+Received: by mail-qv1-f51.google.com with SMTP id eq14so4873608qvb.4;
+        Fri, 06 May 2022 00:17:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7gUvCTF+zeKrO8IXhhvoks9ehUWGZScLpF4J5EMWPB8=;
+        b=P9Y09TMYsGP5Sa49nvp8fv2JGQ6qvaz0VFisV/JJwZPD8fIT0zrOFPXYSfvPVZ67Lp
+         MVHwaKeYhhhZJRWiZIVOqv4Iou3Jp3fPJfiD9zUnx3P7ypbWCnDtS2CV9gy1lMIfOrsp
+         eCnqfVsW2YA10AE3B2OjhqA2to/Cx8/HMoB6VZP+HkeC30oPqEvPCCxb3bCQbZySIT9X
+         fYCbuiSopdNzabeDL0kKL90vxzKGP6suJ8xf0M4tC5ZalFFTouy5ekVMMLIbvvM/sdqS
+         jM0FZu66tT5YQmy28mmrKcxCv0tNp82smbxpKQFPfQ1NsIMeV55FvSZcSozpJ6ZUOXp7
+         JDBQ==
+X-Gm-Message-State: AOAM530LDTZYRB0qE2GSlaxBxxyXNvk3lBl5PoDVMxu/dzMj8KFQC8IS
+        HLrzaYzw80Sb+N4oUOOVThhh5kuiTY4hOw==
+X-Google-Smtp-Source: ABdhPJwNZeIyBW5WSdhqLXco8Z2k2Ug+MDLskdTc00IPsnzQm6QfmMHLxrdSkPBvN3B2vK9R+YmwsA==
+X-Received: by 2002:ad4:4387:0:b0:456:cf82:2b9c with SMTP id s7-20020ad44387000000b00456cf822b9cmr1513922qvr.57.1651821440309;
+        Fri, 06 May 2022 00:17:20 -0700 (PDT)
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
+        by smtp.gmail.com with ESMTPSA id g13-20020a05620a40cd00b0069fc13ce1fasm2211931qko.43.2022.05.06.00.17.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 May 2022 00:17:19 -0700 (PDT)
+Received: by mail-yb1-f169.google.com with SMTP id w187so11430621ybe.2;
+        Fri, 06 May 2022 00:17:19 -0700 (PDT)
+X-Received: by 2002:a05:6902:905:b0:64a:2089:f487 with SMTP id
+ bu5-20020a056902090500b0064a2089f487mr1303655ybb.202.1651821439212; Fri, 06
+ May 2022 00:17:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220505184037.511295-1-biju.das.jz@bp.renesas.com> <20220505184037.511295-2-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20220505184037.511295-2-biju.das.jz@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 6 May 2022 09:17:07 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVV=MB8xa-Q-c_aZx9LGrW=9aP9iC3P-FMRSf-HiovOzA@mail.gmail.com>
+Message-ID: <CAMuHMdVV=MB8xa-Q-c_aZx9LGrW=9aP9iC3P-FMRSf-HiovOzA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Document Renesas RZ/G2UL ADC
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Chris Paterson <Chris.Paterson2@renesas.com>,
         Biju Das <biju.das@bp.renesas.com>
-Subject: [PATCH v2 2/2] iio: adc: rzg2l_adc: Remove unnecessary channel check from rzg2l_adc_read_label()
-Date:   Thu,  5 May 2022 19:40:37 +0100
-Message-Id: <20220505184037.511295-3-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220505184037.511295-1-biju.das.jz@bp.renesas.com>
-References: <20220505184037.511295-1-biju.das.jz@bp.renesas.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Remove unnecessary channel check from rzg2l_adc_read_label(), as the channel error
-handling is already done in probe(). Therefore no need to validate at runtime.
+Hi Biju,
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v2:
- * New patch
----
- drivers/iio/adc/rzg2l_adc.c | 3 ---
- 1 file changed, 3 deletions(-)
+On Thu, May 5, 2022 at 8:40 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> Document Renesas RZ/G2UL ADC bindings. RZ/G2UL ADC is almost identical
+> to RZ/G2L, but it has 2 analog input channels compared to 8 channels
+> on the RZ/G2L.
+>
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v1->v2:
+>  * Started using generic compatible for RZ/G2UL and added SoC specific validation
+>    for channels.
 
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 7585144b9715..bee5f9861acb 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -260,9 +260,6 @@ static int rzg2l_adc_read_label(struct iio_dev *iio_dev,
- 				const struct iio_chan_spec *chan,
- 				char *label)
- {
--	if (chan->channel >= RZG2L_ADC_MAX_CHANNELS)
--		return -EINVAL;
--
- 	return sysfs_emit(label, "%s\n", rzg2l_adc_channel_name[chan->channel]);
- }
- 
--- 
-2.25.1
+Thanks for the update!
 
+> --- a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
+> @@ -74,18 +75,48 @@ patternProperties:
+>        Represents the external channels which are connected to the ADC.
+>
+>      properties:
+> -      reg:
+> -        description: |
+> -          The channel number. It can have up to 8 channels numbered from 0 to 7.
+> -        items:
+> -          - minimum: 0
+> -            maximum: 7
+> -
+> +      reg: true
+>      required:
+>        - reg
+>
+>      additionalProperties: false
+>
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: renesas,r9a07g043-adc
+> +    then:
+> +      patternProperties:
+> +        "^channel@[0-7]$":
+
+[0-1]
+
+> +          type: object
+> +          properties:
+> +            reg:
+> +              description: |
+> +                The channel number. It can have up to 2 channels numbered from 0 to 1.
+> +              items:
+> +                - minimum: 0
+> +                  maximum: 1
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - renesas,r9a07g044-adc
+> +              - renesas,r9a07g054-adc
+> +    then:
+> +      patternProperties:
+> +        "^channel@[0-7]$":
+> +          type: object
+> +          properties:
+> +            reg:
+> +              description: |
+> +                The channel number. It can have up to 8 channels numbered from 0 to 7.
+> +              items:
+> +                - minimum: 0
+> +                  maximum: 7
+> +
+>  additionalProperties: false
+>
+>  examples:
+
+The rest LGTM, but I'm wondering if more of the channel subnodes
+description can be factored out to the common part?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,58 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1478751E7CD
-	for <lists+linux-iio@lfdr.de>; Sat,  7 May 2022 16:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9779651E7D2
+	for <lists+linux-iio@lfdr.de>; Sat,  7 May 2022 16:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231246AbiEGOeU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 May 2022 10:34:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37856 "EHLO
+        id S1385256AbiEGOh2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 May 2022 10:37:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234096AbiEGOeT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 May 2022 10:34:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 405AC63E7
-        for <linux-iio@vger.kernel.org>; Sat,  7 May 2022 07:30:31 -0700 (PDT)
+        with ESMTP id S1347909AbiEGOh1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 May 2022 10:37:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F781580B;
+        Sat,  7 May 2022 07:33:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DE75CB80185
-        for <linux-iio@vger.kernel.org>; Sat,  7 May 2022 14:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA382C385A6;
-        Sat,  7 May 2022 14:30:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 402A960B3D;
+        Sat,  7 May 2022 14:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8A3C385A9;
+        Sat,  7 May 2022 14:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651933828;
-        bh=3L70T+LcJEJ4M1Srks7vmvIBxKtZMe5/x7h/okmFRJA=;
+        s=k20201202; t=1651934019;
+        bh=QTQsvBXAXq+u552u7h6IkbyqINQY/MTcAhV9CyC5H2w=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fMPNjdrNL47ellXhmPyqZprnGZznXJ4dxa54Yxo9Rwi8QA6chhMM9vsMd65siVs7W
-         rFcZxw2iEX9rnQL1PiogakNa7ePh3+Pe1ZdDVY9g4Ztu/B+8QbAa4tYEKlUi7TNLcM
-         Au1zWw2CpzYJ1tjgbZnmsMLPFztuCyyx1PkpQQkDA/KyGbRvc2UXahdL2dI75J6xZc
-         J5V0utRjZz79XaNf15BtFd00ARqbpkxwVEewf24ArhgHzpK+vdDg4iGegmFVJjD3JQ
-         3/RHIaxOZTlCZ6JQLJRNnD29GMrEXHT0rq1lG4QQW7FgnrURgENG+m+eFIxtM8I/G/
-         ebcGqFiRyfvhQ==
-Date:   Sat, 7 May 2022 15:38:55 +0100
+        b=GzlWpqVpg2p5jIuObrLhrKSOypv6RjDK7ZulDZ7jfkMvZEDa7Zs8hykQeqF1/Cl9h
+         RYNvslJFfV+TFq4bmUhbTLIFG2g5HX6KMAqJ4OiEdg7RCQ8pMI6qHj/SRhWv0dz/hE
+         j4Qu4C9rYj5/saYBgjvTz+EmHx9Nc2cuSzwdgxrSQ7KQqxlDKE9UVYTnfyMONxDTbq
+         HnG4zvJeNBdqobtbokkaUMUc8S+wVWPxnTMP5ROMW4/hE/6738HgqLh/YW5mzfkKNI
+         xaK2BV805J08yvxEVtVdQ8P4C5DI7/HTwqfU5og+aUVewHEVXQuv9VUGeIzcyBUuiD
+         QriFlCg/yDJhQ==
+Date:   Sat, 7 May 2022 15:42:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Jiri Valek - 2N <valek@2n.cz>,
-        Colin Ian King <colin.king@intel.com>,
-        Brian Masney <masneyb@onstation.org>
-Subject: Re: [PATCH 0/9] iio: Remove duplicated error reporting in .remove()
-Message-ID: <20220507153855.6174601e@jic23-huawei>
-In-Reply-To: <20220501185123.3ba0367b@jic23-huawei>
-References: <20220430081607.15078-1-u.kleine-koenig@pengutronix.de>
-        <20220501184149.10b40610@jic23-huawei>
-        <20220501185123.3ba0367b@jic23-huawei>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     LI Qingwu <qing-wu.li@leica-geosystems.com.cn>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH V3 3/5] iio: accel: sca3300: modified to support multi
+ chips
+Message-ID: <20220507154206.328e2877@jic23-huawei>
+In-Reply-To: <CAHp75VcD-UpG=ppuE2Du2SsQK66MYdrwhXvjHksN5=gqcppYqA@mail.gmail.com>
+References: <20220504133612.604304-1-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220504133612.604304-4-Qing-wu.Li@leica-geosystems.com.cn>
+        <CAHp75VeseZ2ChtbafmbgVavS4KvCvrQ4+XSRkeiJSyqr8__dSw@mail.gmail.com>
+        <AM9PR06MB7844E8FE0EDF712C769271DAD7C39@AM9PR06MB7844.eurprd06.prod.outlook.com>
+        <CAHp75VfEK_TXXA3NdGgjis7duHgoDo4aSOZntdO0wEGLw0sQ7g@mail.gmail.com>
+        <AM9PR06MB7844C01CA580F046FA570B43D7C29@AM9PR06MB7844.eurprd06.prod.outlook.com>
+        <CAHp75VcD-UpG=ppuE2Du2SsQK66MYdrwhXvjHksN5=gqcppYqA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -68,94 +67,89 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 1 May 2022 18:51:23 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, 5 May 2022 20:01:22 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Sun, 1 May 2022 18:41:49 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
+> On Thu, May 5, 2022 at 4:12 PM LI Qingwu
+> <qing-wu.li@leica-geosystems.com.cn> wrote:
+> > > -----Original Message-----
+> > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > Sent: Wednesday, May 4, 2022 10:39 PM
+> > > On Wed, May 4, 2022 at 4:35 PM LI Qingwu
+> > > <qing-wu.li@leica-geosystems.com.cn> wrote: =20
+> > > > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > > > Sent: Wednesday, May 4, 2022 10:20 PM On Wed, May 4, 2022 at 3:36=
+ PM
+> > > > > LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote: =20
 >=20
-> > On Sat, 30 Apr 2022 10:15:58 +0200
-> > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
-> >  =20
-> > > Hello,
-> > >=20
-> > > this series adapts several i2c drivers that emit two error messages if
-> > > something in their remove function fails. The relevant issue is that =
-the
-> > > i2c core emits an error message if the remove callback returns a
-> > > non-zero value but the drivers already emit a (better) message. So
-> > > these patches change the drivers to return 0 even after an error. Note
-> > > there is no further error handling in the i2c core, if a remove callb=
-ack
-> > > returns an error code, the device is removed anyhow, so the only effe=
-ct
-> > > of making the return value zero is that the error message is suppress=
-ed.
-> > >=20
-> > > The motivation for this series is to eventually change the prototype =
-of
-> > > the i2c remove callback to return void. As a preparation all remove
-> > > functions should return 0 such that changing the prototype doesn't
-> > > change behaviour of individual drivers.   =20
-> >=20
-> > I think I'd rather have seen these called out as simply moving towards
-> > this second change as it feels wrong to deliberately not report an error
-> > so as to avoid repeated error messages!
-> >=20
-> > Meh, I don't care that strongly and you call out the real reason in each
-> > patch. =20
+> ...
 >=20
-> Series looks fine to me, but I'll leave the on list for a few days to let
-> others have time to take a look.
+> > > > > > +struct sca3300_chip_info {
+> > > > > > +       const struct iio_chan_spec *channels;
+> > > > > > +       const int (*accel_scale_table)[2];
+> > > > > > +       const int *accel_scale_modes_map;
+> > > > > > +       const unsigned long *scan_masks;
+> > > > > > +       const int *avail_modes_table;
+> > > > > > +       const int *freq_modes_map;
+> > > > > > +       const int *freq_table;
+> > > > > > +       const u8 num_accel_scales;
+> > > > > > +       const u8 num_avail_modes;
+> > > > > > +       const u8 num_channels;
+> > > > > > +       const u8 num_freqs;
+> > > > > > +       const u8 chip_id; =20
+> > > > >
+> > > > > Why do you have const qualifier on all members?  The last one is
+> > > > > understandable, but the rest, esp. pointers should be justified. =
+=20
+> > > > Because I thought it was static and has fix value for each chip, un=
+acceptable =20
+> > > for you?
+> > >
+> > > But why const qualifier? What is the point of it for example for u8 m=
+embers if
+> > > the entire object is qualified as const below in the same patch?
+> > >
+> > > On top of that, please explain what in your opinion the "const ...
+> > > *foo" gives us, and what we will lose if we remove the "const" part o=
+ut of them. =20
+> >
+> > Ah, you are right, those const are unnecessary for nonpointer members.
+> > for the pointers, the contexts that the pointer points to are still wri=
+table.
+> > what about if I remove all the const from nonpointer and keep it for th=
+e pointers?
+> > Like=EF=BC=9A
+> > const struct iio_chan_spec *channels;
+> > const int (*accel_scale_table)[2];
+> > const int (*incli_scale_table)[2];
+> > const int *accel_scale_modes_map;
+> > const int *incli_scale_modes_map;
+> > const unsigned long *scan_masks;
+> > const int *avail_modes_table;
+> > const int *freq_modes_map;
+> > const int *freq_table;
+> > const char *name;
+> > u8 num_accel_scales;
+> > u8 num_incli_scales;
+> > u8 num_avail_modes;
+> > u8 num_channels;
+> > u8 num_freqs;
+> > u8 chip_id;
+> > bool angle; =20
 >=20
-> Worth noting that some of these are crying out for use
-> of devm_add_action_or_reset() and getting rid of the remove functions
-> entirely now you've dropped the oddity of them returning non 0.
->=20
-> Low hanging fruit for any newbies who want to do it, or maybe I will
-> if I get bored :)
-
-Series applied to the togreg branch of iio.git and pushed out as testing for
-0-day to see if it can find anything we missed.
-
-Thanks,
+> It's better, but you still need to justify the rest with explanation
+> in the commit message.
+> And I leave this to maintainers to say if the const:s are needed or not.
+Where they are being set to point to
+static const int array[]=20
+then to my mind it makes sense to have them as const as makes it nice and o=
+bvious
+what is going on.
 
 Jonathan
 
 >=20
-> Thanks,
->=20
-> Jonathan
->=20
-> >  =20
-> > >=20
-> > > Best regards
-> > > Uwe
-> > >=20
-> > > Uwe Kleine-K=C3=B6nig (9):
-> > >   iio:accel:mc3230: Remove duplicated error reporting in .remove()
-> > >   iio:accel:stk8312: Remove duplicated error reporting in .remove()
-> > >   iio:accel:stk8ba50: Remove duplicated error reporting in .remove()
-> > >   iio:light:bh1780: Remove duplicated error reporting in .remove()
-> > >   iio:light:isl29028: Remove duplicated error reporting in .remove()
-> > >   iio:light:jsa1212: Remove duplicated error reporting in .remove()
-> > >   iio:light:opt3001: Remove duplicated error reporting in .remove()
-> > >   iio:light:stk3310: Remove duplicated error reporting in .remove()
-> > >   iio:light:tsl2583: Remove duplicated error reporting in .remove()
-> > >=20
-> > >  drivers/iio/accel/mc3230.c   | 4 +++-
-> > >  drivers/iio/accel/stk8312.c  | 4 +++-
-> > >  drivers/iio/accel/stk8ba50.c | 4 +++-
-> > >  drivers/iio/light/bh1780.c   | 7 +++----
-> > >  drivers/iio/light/isl29028.c | 4 +++-
-> > >  drivers/iio/light/jsa1212.c  | 4 +++-
-> > >  drivers/iio/light/opt3001.c  | 3 +--
-> > >  drivers/iio/light/stk3310.c  | 5 ++++-
-> > >  drivers/iio/light/tsl2583.c  | 4 +++-
-> > >  9 files changed, 26 insertions(+), 13 deletions(-)
-> > >=20
-> > >=20
-> > > base-commit: 3123109284176b1532874591f7c81f3837bbdc17   =20
-> >  =20
+> > > > > > +       const char *name;
+> > > > > > +}; =20
 >=20
 

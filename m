@@ -2,47 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C56951E7C8
-	for <lists+linux-iio@lfdr.de>; Sat,  7 May 2022 16:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1FA851E7CA
+	for <lists+linux-iio@lfdr.de>; Sat,  7 May 2022 16:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237265AbiEGO23 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 May 2022 10:28:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
+        id S234423AbiEGOa0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 May 2022 10:30:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234096AbiEGO22 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 May 2022 10:28:28 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4522343EE7;
-        Sat,  7 May 2022 07:24:42 -0700 (PDT)
+        with ESMTP id S234096AbiEGOaZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 May 2022 10:30:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D292DFC
+        for <linux-iio@vger.kernel.org>; Sat,  7 May 2022 07:26:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 84E8CCE0176;
-        Sat,  7 May 2022 14:24:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362E8C385A5;
-        Sat,  7 May 2022 14:24:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1087F608C3
+        for <linux-iio@vger.kernel.org>; Sat,  7 May 2022 14:26:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B272C385A6;
+        Sat,  7 May 2022 14:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651933478;
-        bh=sSXLpYu1t8UtQ4m0tCJJKWk/8Qphs0XLvUjn7yKWF80=;
+        s=k20201202; t=1651933597;
+        bh=r2RR8Oj94rmdytDHfyHW+xPREWfiOCu6MVxS088cpKU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J8ufkF6+pzihvNA5oZVEqSIsHo9HyWdlylM6eC23ALm28O9NWza/OdWtwDaRHIk5+
-         AW8aCvkizjtrRe4jBfDjexDkjRNRsgK+oya40rrygnPvqpM7TU4Z6gAihS2ebLZraN
-         fDGHnNpZBv2CI9GSR3VUmih/hekiuZNEh7qekfkcOUWABRdM0+AHErR0UTBaakVv8u
-         8VkPR9cKmHXvYkN2zpLiGDCTVWk2kvI2utODl4WUx9lbqJWc12xy0E1cmCVRlj4Ken
-         Z28BlrUt6Fz1kpnG3xIBaiZyAPonml58FPTyHKXRH3Kux+PZCWPLC6apvSqZYcDv7S
-         DbMRXdjVZpomA==
-Date:   Sat, 7 May 2022 15:33:06 +0100
+        b=Mf5yc42oL9iC1l6R0gsW2jj8GlEKuCOxFiCuftZkx86XhAqCPJ1V2/1KCs81NAZsd
+         mRLZgbf0QkauDplokzkXnF4BLSSXOQA6wq8mqWZJY/Ambl0JQtlGapPBDkNYv5dYS8
+         3xe0wutF20f0JvSkzpocc8utGZ5Fg4oL7laz3iL50lVqcjJ84EkPqMm7KTaeYhH/oi
+         JbKpf4fDqvHv8cZ4Z1wx9QbK/PDevfHY+S6f1nSBIaD6j9pmz6+XRFUiWL2ho8B9KH
+         pj0zc9Ml/IiaUmFBviYMmwloEzRITSrsBvHEikNPn47fSK2p4vTxpdja1yVh2QP6ah
+         DjNBYMf7gouuQ==
+Date:   Sat, 7 May 2022 15:35:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andreas Klinger <ak@it-klinger.de>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: proximity: srf04: Make use of device
- properties
-Message-ID: <20220507153306.51d5409f@jic23-huawei>
-In-Reply-To: <20220504113557.59048-1-andriy.shevchenko@linux.intel.com>
-References: <20220504113557.59048-1-andriy.shevchenko@linux.intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] iio: magnetometer: yas530: Fix memchr_inv() misuse
+Message-ID: <20220507153505.15a83c1a@jic23-huawei>
+In-Reply-To: <20220501195029.151852-1-linus.walleij@linaro.org>
+References: <20220501195029.151852-1-linus.walleij@linaro.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,58 +55,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  4 May 2022 14:35:57 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sun,  1 May 2022 21:50:29 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> Convert the module to be property provider agnostic and allow
-> it to be used on non-OF platforms.
+> The call to check if the calibration is all zeroes is doing
+> it wrong: memchr_inv() returns NULL if the the calibration
+> contains all zeroes, but the check is for != NULL.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied.
+> Fix it up. It's probably not an urgent fix because the inner
+> check for BIT(7) in data[13] will save us. But fix it.
+> 
+> Fixes: de8860b1ed47 ("iio: magnetometer: Add driver for Yamaha YAS530")
+> Reported-by: Jakob Hauser <jahau@rocketmail.com>
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/proximity/srf04.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
+>  drivers/iio/magnetometer/yamaha-yas530.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
-> index 4e6286765f01..05015351a34a 100644
-> --- a/drivers/iio/proximity/srf04.c
-> +++ b/drivers/iio/proximity/srf04.c
-> @@ -37,9 +37,8 @@
->  #include <linux/err.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
->  #include <linux/sched.h>
-> @@ -261,7 +260,7 @@ static int srf04_probe(struct platform_device *pdev)
+> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+> index 9ff7b0e56cf6..b2bc637150bf 100644
+> --- a/drivers/iio/magnetometer/yamaha-yas530.c
+> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
+> @@ -639,7 +639,7 @@ static int yas532_get_calibration_data(struct yas5xx *yas5xx)
+>  	dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
 >  
->  	data = iio_priv(indio_dev);
->  	data->dev = dev;
-> -	data->cfg = of_match_device(of_srf04_match, dev)->data;
-> +	data->cfg = device_get_match_data(dev);
->  
->  	mutex_init(&data->lock);
->  	init_completion(&data->rising);
-> @@ -289,10 +288,8 @@ static int srf04_probe(struct platform_device *pdev)
->  		return PTR_ERR(data->gpiod_power);
->  	}
->  	if (data->gpiod_power) {
-> -
-> -		if (of_property_read_u32(dev->of_node, "startup-time-ms",
-> -						&data->startup_time_ms))
-> -			data->startup_time_ms = 100;
-> +		data->startup_time_ms = 100;
-> +		device_property_read_u32(dev, "startup-time-ms", &data->startup_time_ms);
->  		dev_dbg(dev, "using power gpio: startup-time-ms=%d\n",
->  							data->startup_time_ms);
+>  	/* Sanity check, is this all zeroes? */
+> -	if (memchr_inv(data, 0x00, 13)) {
+> +	if (memchr_inv(data, 0x00, 13) == NULL) {
+>  		if (!(data[13] & BIT(7)))
+>  			dev_warn(yas5xx->dev, "calibration is blank!\n");
 >  	}
 

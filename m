@@ -2,46 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA9C51E876
-	for <lists+linux-iio@lfdr.de>; Sat,  7 May 2022 18:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53B1951E882
+	for <lists+linux-iio@lfdr.de>; Sat,  7 May 2022 18:27:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385956AbiEGQTi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 7 May 2022 12:19:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55804 "EHLO
+        id S240809AbiEGQbN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 7 May 2022 12:31:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232965AbiEGQTh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 May 2022 12:19:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92F113E2C;
-        Sat,  7 May 2022 09:15:49 -0700 (PDT)
+        with ESMTP id S240025AbiEGQbM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 7 May 2022 12:31:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64EC31222;
+        Sat,  7 May 2022 09:27:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C0EF612E6;
-        Sat,  7 May 2022 16:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D1AC385A9;
-        Sat,  7 May 2022 16:15:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F88961277;
+        Sat,  7 May 2022 16:27:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3E2C385A6;
+        Sat,  7 May 2022 16:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651940148;
-        bh=Vz3M/nqRG3cA+FhaaCNj7VcKlTqWYVLdzOxM5rlHhP4=;
+        s=k20201202; t=1651940843;
+        bh=3rr8bPT1a3oSQb1SQ5wfvUm81Gi7wyQPTmJOEcdlh2A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DbU+0vZXhWEWhANN+RcnV3m/vd2qGdm9no8dv20fRufHe+qKonyhRIPMFjyyJBdrO
-         av2QtvawkqA/Yb4XHf9EIyHE1dWU3se3uU/wt1684d6M+z9+X03wEG6vhOMhMCtRgj
-         kNaMtAC9ihSAFBFcH+FtLY43yxpLY6XVzoFenHxgbCDgWniVJ/rZ4Ecs78q/C1lde5
-         iQt/ZurPPRE7O3K4PgZk5hnnAolI28OHZOOeYS3CQReJjIIEwPAvFF/BlOjj2zu3X3
-         RGj7HB0kNh6DQ8veOmqdWmlaLh4o/BGPgdHPlumyWYk4XpBKHQL/TwSPUORkHbMUmc
-         9ua4ooESUd0dw==
-Date:   Sat, 7 May 2022 17:24:16 +0100
+        b=dqm5PdfERD+8qcwDSg/e8RFozVMjEnfGErAOdc6LJrU22OqtG3qYIdJig/qdNMkxM
+         6KTnVBi7SyqV0XbQR8/qWp1OxotQ4YxBXyCFKUSVsdArXze2M6P5deYbpEyawuaIKq
+         /IL9tGVPxpQzRsgJq1sZUni/mXUoMcZZZQpQTl0YjD+SkUc3w41LeEn0YroQmGo31U
+         3ztBgNuHz7CsIUeg9iDRIyJLdPMOZjrgUT21T4XE57FepY/Tj/cNMGfWSvDgvi98wQ
+         zW453DBNKHr7+/iQl/V7RPAv8WxZ0YOshOMsEDoX4Nz9hhCJLN/GgIUBQ0vZTUkKux
+         q6Pd7LVcjG+gQ==
+Date:   Sat, 7 May 2022 17:35:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     dan@dlrobertson.com, andy.shevchenko@gmail.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 09/10] iio: Add channel for tap and new modifiers for
- single and double tap
-Message-ID: <20220507172416.0c74d4cb@jic23-huawei>
-In-Reply-To: <20220505133021.22362-10-jagathjog1996@gmail.com>
-References: <20220505133021.22362-1-jagathjog1996@gmail.com>
-        <20220505133021.22362-10-jagathjog1996@gmail.com>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [PATCH v3 2/2] iio: adc: ad4130: add AD4130 driver
+Message-ID: <20220507173551.1bc45a82@jic23-huawei>
+In-Reply-To: <5d932a4a-790e-ca95-c5de-c2267e1f365c@gmail.com>
+References: <20220419150828.191933-1-cosmin.tanislav@analog.com>
+        <20220419150828.191933-3-cosmin.tanislav@analog.com>
+        <20220501170807.1e728524@jic23-huawei>
+        <5d932a4a-790e-ca95-c5de-c2267e1f365c@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,162 +60,171 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  5 May 2022 19:00:20 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-Strangely the last time I can remember discussion around how to
-support tap detection was way back in the early days of IIO, perhaps
-10 years ago. I don't recall us ever coming to a conclusion on how to do it.
+> >   
+> >> +static int ad4130_set_fifo_watermark(struct iio_dev *indio_dev, unsigned int val)
+> >> +{
+> >> +	struct ad4130_state *st = iio_priv(indio_dev);
+> >> +	unsigned int eff;
+> >> +	int ret;
+> >> +
+> >> +	if (val > AD4130_FIFO_SIZE)
+> >> +		return -EINVAL;
+> >> +
+> >> +	/*
+> >> +	 * Always set watermark to a multiple of the number of enabled channels
+> >> +	 * to avoid making the FIFO unaligned.
+> >> +	 */
+> >> +	eff = rounddown(val, st->num_enabled_channels);
+> >> +
+> >> +	mutex_lock(&st->lock);
+> >> +
+> >> +	ret = regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
+> >> +				 AD4130_WATERMARK_MASK,
+> >> +				 FIELD_PREP(AD4130_WATERMARK_MASK,
+> >> +					    ad4130_watermark_reg_val(eff)));
+> >> +	if (ret)
+> >> +		goto out;
+> >> +
+> >> +	st->effective_watermark = eff;
+> >> +	st->watermark = val;  
+> > 
+> > Hmm this is a potential inconsistency in the IIO ABI.
+> > ABI docs describes watermark as being number of 'scan elements' which is
+> > not the clearest text we could have gone with...
+> > 
+> > Now I may well have made a mistake in the following as it's rather a long time
+> > since I last looked at the core handling for this...
+> > 
+> > The core treats it as number datum (which is same as a scan) when using
+> > it for the main watermark attribute and also when using watermarks with the
+> > kfifo (the IIO fifo is made up of objects each of which is a scan. So kfifo_len()
+> > returns the number of scans.
+> >   
+> > Looking very quickly at a few other drivers
+> > adxl367 seems to use number of samples.
+> > adxl372 is using number of scans.
+> > bmc150 hardware seems to work on basis of frame count which I 'think' is probably scans.
+> > fxls8962 uses 'samples count' which is not clearly defined in the datasheet but there
+> > is an example showing that it's scans (I think)...
+> > lsm6dsx - some of the fifos used with this are based on tagged data so the connection to
+> > what hits the front end buffers is non obvious.
+> > 
+> > So, not great for consistency :(
+> > 
+> > Going forwards i think we should standardize the hardware fifo watermark on what is being
+> > used for the software watermark which I believe is number of scans.
+> > Not necessary much we can do about old drivers though due to risk of breaking ABI...
+> > We should make the documentation clearer though.
+> >   
+> 
+> I was confused too, but this seemed more logical to me at the time, and
+> since you didn't say anything regarding it on ADXL367, I did it the same
+> way here. I guess we can't go back and change it now on ADXL367, I'm
+> sorry for this. I'll fix it.
 
-> Add new channel type for tap and also add new modifiers for single and
-> double tap. This channel and modifiers may be used by accelerometer
-> sensors to express single and double tap events. For directional tap,
-> modifiers like IIO_MOD_(X/Y/Z) can be used along with rising and
-> falling direction.
+I missed it.  Review is never perfect (mine definitely aren't!)
 
-Not sure how that would work seeing as there is only one modifier
-field and it's not a bitmap. 
-The event code would need to encode both what type of tap and
-the direction and there aren't two fields in which to do that.
+Thinking more on the adxl367. We still have a window to  fix that as
+the driver isn't yet in a release kernel.  Would you mind spinning a
+patch to fix that one?  Even if we miss the rc cycle (it's a bit tight
+timing wise) we can sneak it in as an early fix in stable without
+significant risk of breaking anyone's userspace.
 
-One way I can see this 'might' work would be to use
-the event type to encode tap and the direction could be 'abused'
-to encode single vs double (or other events like this)
+There might be other drivers that have that interpretation we can't
+fix but if we can reduce the scope of the problem by changing the adxl367
+that would be great.
 
-in_accel_x_tap_single
-in_accel_x_tap_double
-
-We could possibly be more generic and have the 'type' as
-'event' or something like that allowing us to use the
-7 bit direction field to encode different detectable events
-(I'm not that keen on the name event though, could maybe
-map it to gesture which would cover some of the other
-motion pattern detection devices out there)
-
-That would give us
-
-in_accel_x_event_singletap
-in_accel_y_event_doubletap
-
-etc.
-
-How ever we move forwards we do it this want to be in a new series with a nice
-bold title to attract that attention of people who don't really
-care about he bma400 but do care about tap detection; it's
-a common feature of accelerometers.
-
-Jonathan
-
-
+We should also definitely improve the docs and perhaps add a note to say
+that due to need to maintain ABI, a few drivers use scans * number of channels
+rather than scans.
 
 > 
-> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
-
-
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio | 11 +++++++++++
->  drivers/iio/industrialio-core.c         |  3 +++
->  include/uapi/linux/iio/types.h          |  3 +++
->  tools/iio/iio_event_monitor.c           |  6 ++++++
->  4 files changed, 23 insertions(+)
+> >> +
+> >> +out:
+> >> +	mutex_unlock(&st->lock);
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +  
+> > 
+> > 
+> > ...
+> >   
+> >> +
+> >> +static int ad4130_parse_fw_channel(struct iio_dev *indio_dev,
+> >> +				   struct fwnode_handle *child)
+> >> +{
+> >> +	struct ad4130_state *st = iio_priv(indio_dev);
+> >> +	unsigned int index = indio_dev->num_channels++;
+> >> +	struct device *dev = &st->spi->dev;
+> >> +	struct ad4130_chan_info *chan_info;
+> >> +	struct iio_chan_spec *chan;
+> >> +	u32 pins[2];
+> >> +	int ret;
+> >> +
+> >> +	if (index >= AD4130_MAX_CHANNELS)
+> >> +		return dev_err_probe(dev, -EINVAL, "Too many channels\n");
+> >> +
+> >> +	chan = &st->chans[index];
+> >> +	chan_info = &st->chans_info[index];
+> >> +
+> >> +	*chan = ad4130_channel_template;
+> >> +	chan->scan_type.realbits = st->chip_info->resolution;
+> >> +	chan->scan_type.storagebits = st->chip_info->resolution;
+> >> +	chan->scan_index = index;
+> >> +
+> >> +	chan_info->slot = AD4130_INVALID_SLOT;
+> >> +	chan_info->setup.fs = AD4130_FS_MIN;
+> >> +	chan_info->initialized = true;
+> >> +
+> >> +	ret = fwnode_property_read_u32_array(child, "diff-channels", pins,
+> >> +					     ARRAY_SIZE(pins));
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = ad4130_validate_diff_channels(st, pins, ARRAY_SIZE(pins));
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	chan->channel = pins[0];
+> >> +	chan->channel2 = pins[1];
+> >> +
+> >> +	ret = ad4130_parse_fw_setup(st, child, &chan_info->setup);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	fwnode_property_read_u32(child, "adi,excitation-pin-0",
+> >> +				 &chan_info->iout0);
+> >> +	if (chan_info->setup.iout0_val != AD4130_IOUT_OFF) {  
+> > 
+> > It would be slightly better to set an explicit default value here as the fact it
+> > is 0 is hidden by the enum. e.g.
+> > 	chan_info->iout0 = AD4130_IOUT_OFF;
+> > 	fwnode_property_read_u32(child, "adi,excitation-pin-0",
+> > 			 	 &chan_info->iout0);
+> > 	if (chan_info->....
+> > That would save reviewers wondering what the default is and having to go
+> > check the enum (and I'm lazy :)  
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index d4ccc68fdcf0..bf2d10d6ad9b 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2030,3 +2030,14 @@ Description:
->  		Available range for the forced calibration value, expressed as:
->  
->  		- a range specified as "[min step max]"
-> +
-> +What:		/sys/.../events/in_tap_single_change_en
-> +What:		/sys/.../events/in_tap_double_change_en
-> +KernelVersion:	5.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Accelerometer device detects single or double taps and generate
-> +		events when threshold for minimum tap amplitide passes.
-> +		E.g. a single tap event is generated when acceleration value
-> +		crosses the minimum tap amplitude value set. Where tap threshold
-> +		value is set by using in_tap_change_value.
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index e1ed44dec2ab..9b0d7bbd07fc 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -87,6 +87,7 @@ static const char * const iio_chan_type_name_spec[] = {
->  	[IIO_POSITIONRELATIVE]  = "positionrelative",
->  	[IIO_PHASE] = "phase",
->  	[IIO_MASSCONCENTRATION] = "massconcentration",
-> +	[IIO_TAP] = "tap"
->  };
->  
->  static const char * const iio_modifier_names[] = {
-> @@ -134,6 +135,8 @@ static const char * const iio_modifier_names[] = {
->  	[IIO_MOD_ETHANOL] = "ethanol",
->  	[IIO_MOD_H2] = "h2",
->  	[IIO_MOD_O2] = "o2",
-> +	[IIO_MOD_TAP_SINGLE] = "single",
-> +	[IIO_MOD_TAP_DOUBLE] = "double",
->  };
->  
->  /* relies on pairs of these shared then separate */
-> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
-> index 472cead10d8d..d1e61c84e0d5 100644
-> --- a/include/uapi/linux/iio/types.h
-> +++ b/include/uapi/linux/iio/types.h
-> @@ -47,6 +47,7 @@ enum iio_chan_type {
->  	IIO_POSITIONRELATIVE,
->  	IIO_PHASE,
->  	IIO_MASSCONCENTRATION,
-> +	IIO_TAP,
->  };
->  
->  enum iio_modifier {
-> @@ -95,6 +96,8 @@ enum iio_modifier {
->  	IIO_MOD_ETHANOL,
->  	IIO_MOD_H2,
->  	IIO_MOD_O2,
-> +	IIO_MOD_TAP_SINGLE,
-> +	IIO_MOD_TAP_DOUBLE,
->  };
->  
->  enum iio_event_type {
-> diff --git a/tools/iio/iio_event_monitor.c b/tools/iio/iio_event_monitor.c
-> index 2f4581658859..7fa7d4285f40 100644
-> --- a/tools/iio/iio_event_monitor.c
-> +++ b/tools/iio/iio_event_monitor.c
-> @@ -59,6 +59,7 @@ static const char * const iio_chan_type_name_spec[] = {
->  	[IIO_POSITIONRELATIVE] = "positionrelative",
->  	[IIO_PHASE] = "phase",
->  	[IIO_MASSCONCENTRATION] = "massconcentration",
-> +	[IIO_TAP] = "tap",
->  };
->  
->  static const char * const iio_ev_type_text[] = {
-> @@ -122,6 +123,8 @@ static const char * const iio_modifier_names[] = {
->  	[IIO_MOD_PM4] = "pm4",
->  	[IIO_MOD_PM10] = "pm10",
->  	[IIO_MOD_O2] = "o2",
-> +	[IIO_MOD_TAP_SINGLE] = "single",
-> +	[IIO_MOD_TAP_DOUBLE] = "double",
->  };
->  
->  static bool event_is_known(struct iio_event_data *event)
-> @@ -164,6 +167,7 @@ static bool event_is_known(struct iio_event_data *event)
->  	case IIO_POSITIONRELATIVE:
->  	case IIO_PHASE:
->  	case IIO_MASSCONCENTRATION:
-> +	case IIO_TAP:
->  		break;
->  	default:
->  		return false;
-> @@ -215,6 +219,8 @@ static bool event_is_known(struct iio_event_data *event)
->  	case IIO_MOD_PM4:
->  	case IIO_MOD_PM10:
->  	case IIO_MOD_O2:
-> +	case IIO_MOD_TAP_SINGLE:
-> +	case IIO_MOD_TAP_DOUBLE:
->  		break;
->  	default:
->  		return false;
+> I understand the idea, but the default value for iout0 is not
+> AD4130_IOUT_OFF. iout0 is the pin that iout0_val current is
+> applied to, and AD4130_IOUT_OFF is a value for iout0_val.
+> Look at ad4130_parse_fw_setup.
+> 
+> For iout0, I guess I could do
+> #define AD4130_AIN0	0x0
+> ...
+> chan_info->iout0 = AD4130_AIN0;
+
+Oops.  I got confused.  Code is fine as it is.  Adding the define isn't going to make
+it much clearer.
+ 
+> 
+> >> +		}
+> >> +	}
+> >> +
+> >> +	return ret;
+> >> +}
+> >> +
 

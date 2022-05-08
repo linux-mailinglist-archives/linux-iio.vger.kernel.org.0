@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 045A951EFD8
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6766551EFF2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbiEHTR2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:17:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38700 "EHLO
+        id S229481AbiEHTSX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239152AbiEHRzm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:55:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3085DFEA
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:51:51 -0700 (PDT)
+        with ESMTP id S239153AbiEHRzu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:55:50 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0495FDFEA
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:52:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F7506128D
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:51:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95BEC385A4;
-        Sun,  8 May 2022 17:51:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A872FB80E5B
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:51:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CA8C385AF;
+        Sun,  8 May 2022 17:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032310;
-        bh=tWlXGj1wuhbxQvtR1Mb7vOtavNiKGCcLYoI2RtlXrhU=;
+        s=k20201202; t=1652032317;
+        bh=nfb8DPIytbDtANYHiZOfYa2EFaZ1/O0nIwT+0q55vYs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lWsXC1Bg2jTULojIgdP/Fqn4UcwEYF6cIWpSuX6uuxWPRMWiJDiP99Fdm8QVHMzct
-         eLrKr3tF2msU3g9bnKHlIlVLxKxKdKgMTklnYlkAzgN4+YjpPcMx3tmqk/fYEGWf/k
-         jgktb4tRjdB2LgjN8I3YhXZy1lQ17SFwXPsTjCY10V/Jrsbu9SjzHplPsNshacIv2v
-         AmreqsMJ+g/xxAXiDrI0bSLlCtARW6Il5KLdfdHP+hRjZGg9bX9v4+oRftyOr6pmMy
-         g1sp460sFiOLWuXBc5EaE5A04ZtPeDGJod9WhM32ylogDjaZjSisfGt6cTuaEVutsm
-         NF4St5bkjXM7Q==
+        b=tEKQjGEczsOXYmXqSUe6hJwv6aNTiUie1hTL1pLcGMEVsxbeRaYSb1GYDYmBDyL9z
+         sYdJVpuf1WC+E6XbM/uemlDYZh4DrqJC7a6NGqkTGX1zm0aHuOI3YHhZzGKhKbi11Y
+         gzCKBlbVBon0A6gQbVwUz+NszfXbvjcZ7vv9H08cR7sV99TH+HLbmsu7YsX+pzVqGf
+         URBi/IGB5g3A1/J7y7JIUG1cAobalAgGvpmbHlHDY6M3bKOB70rpY1+BEbYe8pE2uq
+         WlqjLv5lylo4LQ165OzfidIuyGgEyckJdee5ziEB5imOxXxuSfZAcboe4pYHplZ8MO
+         n7/lDpEboLYeQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 22/92] iio: adc: ltc2497: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:02 +0100
-Message-Id: <20220508175712.647246-23-jic23@kernel.org>
+Subject: [PATCH v2 23/92] iio: adc: max1027: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:03 +0100
+Message-Id: <20220508175712.647246-24-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,33 +90,26 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Update the comment to include 'may'.
-
-Fixes: bc82222fcca1 ("iio:adc: Driver for Linear Technology LTC2497 ADC")
+Fixes: fc167f624833 ("iio: add support of the max1027")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ltc2497.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/max1027.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
-index 1adddf5a88a9..f7c786f37ceb 100644
---- a/drivers/iio/adc/ltc2497.c
-+++ b/drivers/iio/adc/ltc2497.c
-@@ -20,10 +20,10 @@ struct ltc2497_driverdata {
- 	struct ltc2497core_driverdata common_ddata;
- 	struct i2c_client *client;
- 	/*
--	 * DMA (thus cache coherency maintenance) requires the
-+	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
- 	 */
--	__be32 buf ____cacheline_aligned;
-+	__be32 buf __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
+index 4daf1d576c4e..b725d012625c 100644
+--- a/drivers/iio/adc/max1027.c
++++ b/drivers/iio/adc/max1027.c
+@@ -272,7 +272,7 @@ struct max1027_state {
+ 	struct mutex			lock;
+ 	struct completion		complete;
+ 
+-	u8				reg ____cacheline_aligned;
++	u8				reg __aligned(IIO_DMA_MINALIGN);
  };
  
- static int ltc2497_result_and_measure(struct ltc2497core_driverdata *ddata,
+ static int max1027_wait_eoc(struct iio_dev *indio_dev)
 -- 
 2.36.0
 

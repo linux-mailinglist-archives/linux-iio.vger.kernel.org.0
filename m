@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9D8451EFA2
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73CE251EFB8
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238664AbiEHTPJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:15:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38088 "EHLO
+        id S229577AbiEHTQY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:16:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239069AbiEHRx4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:53:56 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EDEEDFC5
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:50:05 -0700 (PDT)
+        with ESMTP id S239070AbiEHRyD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:54:03 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE081DFC5
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:50:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 12C2CB80E4A
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:50:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2C7C385AC;
-        Sun,  8 May 2022 17:49:56 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3E1B8B80E47
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E59C385AF;
+        Sun,  8 May 2022 17:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032202;
-        bh=LvGt7gI4Gk3UAsgYBGnesSWvcmpRmjjUNMKeAZu4ayM=;
+        s=k20201202; t=1652032210;
+        bh=W/FF31gNZ5Tv5ZWIeG5E7J6iLZPdpT3qwKCzK8BYiPE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BZO9LR5bLas2XJEs2ZX7SUNLjGtLEAUpRT6R6mbvw9oEcbLrumlCaEasGxM0Q8OJX
-         LrtnQ2+sLN3eZUt2Vg84ebSXqlLl8R/HUBSyPWONzl1oLnbczDwaaIYXSyfSIjAYmM
-         GCcHIkAmURnhCiqpnBIH7OTywLt8R/PPq+fC+GBhRsKMWf0APbsKv4Rg5wkVsRXWxd
-         PBJuhNWrc9lEYpVaS54sQET6ExjtLqhW+Qachl3NSPsb+dLfNlrb3wcPNqfxV3JfJM
-         KlpskWDao/fwMtxOHt0rPA/QNq9uWIrYSWs+Wm8tNIMhCuPeWrsoiudGZUa//Yb/rK
-         f8aY0cn01P6kA==
+        b=XQC2MADXi9VnRU3I6G84ctb7Ls8cbmw4WedzleP/60zaZc6RQf8DngfNAxj6SD0xJ
+         QPnjqpzTXAYT+gt1Cqrh8rZl6mmmURGxlBJNDvZXl9mW2bebI9fbxL2Q/65X9LtbGz
+         Bxr3tE8z2edpFenI5IJqLMjEzHx8OhrJ5Pa1OHZ4K287g0cjm8CBMmhGpSGbu7s9Ed
+         SVCRKa6fLdUu4E0+BedPY3WHOMbSo6j4OW3JuVkXIregY8D9h5uOwbnuSndoDDgW0M
+         BLF+H2Kgs8HMq7krkpzg1cmiedMQXOUxyHWy8KsKFjQ4alozxPyJbtrKiKMPuYLweW
+         MEqYe7iab9A6A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 07/92] iio: accel: sca3000: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:55:47 +0100
-Message-Id: <20220508175712.647246-8-jic23@kernel.org>
+Subject: [PATCH v2 08/92] iio: accel: sca3300: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:55:48 +0100
+Message-Id: <20220508175712.647246-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -89,32 +89,27 @@ From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ____cacheline_aligned is insufficient guarantee for non-coherent DMA.
 Switch to the updated IIO_DMA_MINALIGN definition.
 
-The second alignment marking is left in place to avoid doing more than
-the simple fix in this patch.
-
-Fixes: ced5c03d360ae ("staging:iio:accel:sca3000 merge files into one.")
-Fixes: 152a6a884ae13 ("staging:iio:accel:sca3000 move to hybrid hard / soft buffer design.")
+Fixes: 9cc9806e22178 ("iio: accel: Add driver for Murata SCA3300 accelerometer")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Tomas Melin <tomas.melin@vaisala.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/accel/sca3000.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/accel/sca3300.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-index 83c81072511e..2eecd2ab72dd 100644
---- a/drivers/iio/accel/sca3000.c
-+++ b/drivers/iio/accel/sca3000.c
-@@ -167,8 +167,8 @@ struct sca3000_state {
- 	int				mo_det_use_count;
- 	struct mutex			lock;
- 	/* Can these share a cacheline ? */
--	u8				rx[384] ____cacheline_aligned;
--	u8				tx[6] ____cacheline_aligned;
-+	u8				rx[384] __aligned(IIO_DMA_MINALIGN);
-+	u8				tx[6] __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
+index f7ef8ecfd34a..39e0c24364ae 100644
+--- a/drivers/iio/accel/sca3300.c
++++ b/drivers/iio/accel/sca3300.c
+@@ -115,7 +115,7 @@ struct sca3300_data {
+ 		s16 channels[4];
+ 		s64 ts __aligned(sizeof(s64));
+ 	} scan;
+-	u8 txbuf[4] ____cacheline_aligned;
++	u8 txbuf[4] __aligned(IIO_DMA_MINALIGN);
+ 	u8 rxbuf[4];
  };
  
- /**
 -- 
 2.36.0
 

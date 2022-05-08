@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9115051EFB1
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D00051EFEB
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231645AbiEHTP4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40912 "EHLO
+        id S231338AbiEHTSN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240292AbiEHSC5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:02:57 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D770558C
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:59:06 -0700 (PDT)
+        with ESMTP id S240452AbiEHSDC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:03:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F16558C
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:59:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0DD30B80E5C
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0DFC385B0;
-        Sun,  8 May 2022 17:58:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CCEE6127D
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:59:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433B0C385AF;
+        Sun,  8 May 2022 17:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032743;
-        bh=8ujw263cRvevAritDYmfSjf5OqYXE/cVT+iuKR6UrY4=;
+        s=k20201202; t=1652032750;
+        bh=qSVIey7FP6OO/Us9CtnGekorBhyKk+2KagLr0xWITV4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u4aveleV07OCFaemY0PjByGhwGQQjdXJCxuFsJg0aiiaz79eNYJj82cfHIiBEwYkO
-         g2s6qU4YrGUZ00n8s8a18wqHINoqfEeFHATlzoxIdgi1Yr+4OHnv/9QGL8SilBULyy
-         cKEj/EwuaqrtLPiBqd8JbCH1Qnn+Izur+PLE/6zVY9vNj/I0P79Qww4jIeGntpy086
-         CCBYpW8wg52EI99QtwyakWjJPxWV9HZs+5hZLlS7B0ngG3LJ/8RoyVLUsXHiBnOkPN
-         BVLIaws8sro0trVsuJZYC/yVmjGL3H8KdTXRZythTtdgbhMjF67qQAre8xjwJPJHxj
-         j/TgzeAqCWCig==
+        b=lNsdvhc5R83Gy3u4Z7OwOfLH2HtxMlvdSe8QMElSjW6GwFrf4ubBmHl/GM1WOeTkk
+         c6++CfiUxRgYwMU2D9mTAGXc50NBKVG2wI5UFfUoDMSfjn78EQOPvnUVrTe07J0DSE
+         GM/IckvRtcYyOYtSknf5jIeMC9TIsnbGw2175MRIHb1pqdG1WwNE5LKSV1/n9f7hgI
+         IWDNDNhZTNxQAZarSiJiG7D9U+lFiKMSfpCsx6+iOljicZycY4wYlax6HA17sPOj+X
+         sujKAmvMuf4J8niJbit4In0pTHPOkkhF/KHAWnKutibIAFw5+YGAjCHVsmwA1fTy/v
+         0/AYIa4wIxb9w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -64,11 +64,10 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         Tomislav Denis <tomislav.denis@avl.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH v2 79/92] iio: imu: mpu6050: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:59 +0100
-Message-Id: <20220508175712.647246-80-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 80/92] iio: potentiometer: ad5110: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:57:00 +0100
+Message-Id: <20220508175712.647246-81-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -91,27 +90,31 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Fixes: 6b0cc5dce072 ("iio:imu:inv_mpu6050 Fix dma and ts alignment and data leak issues.")
+Fixes: d03a74bfacce ("iio: potentiometer: Add driver support for AD5110")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: Mugilraj Dhavachelvan <dmugil2000@gmail.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/potentiometer/ad5110.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-index c6aa36ee966a..32b58b797d57 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
-@@ -203,7 +203,7 @@ struct inv_mpu6050_state {
- 	s32 magn_raw_to_gauss[3];
- 	struct iio_mount_matrix magn_orient;
- 	unsigned int suspended_sensors;
--	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] ____cacheline_aligned;
-+	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/potentiometer/ad5110.c b/drivers/iio/potentiometer/ad5110.c
+index d4eeedae56e5..8fbcce482989 100644
+--- a/drivers/iio/potentiometer/ad5110.c
++++ b/drivers/iio/potentiometer/ad5110.c
+@@ -63,10 +63,10 @@ struct ad5110_data {
+ 	struct mutex            lock;
+ 	const struct ad5110_cfg	*cfg;
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	u8			buf[2] ____cacheline_aligned;
++	u8			buf[2] __aligned(IIO_DMA_MINALIGN);
  };
  
- /*register and associated bit definition*/
+ static const struct iio_chan_spec ad5110_channels[] = {
 -- 
 2.36.0
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 315CA51EFB6
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F5C051EFF7
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbiEHTQN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39114 "EHLO
+        id S230127AbiEHTS0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:18:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239209AbiEHR5R (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:57:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F21E8DFEA
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:53:26 -0700 (PDT)
+        with ESMTP id S236880AbiEHR51 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:57:27 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5903DFEA
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:53:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B48161208
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:53:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1417FC385B1;
-        Sun,  8 May 2022 17:53:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7FF32B80E3D
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:53:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8816AC385AC;
+        Sun,  8 May 2022 17:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032406;
-        bh=Jb1At6+A/8Hu+371M2fsZSgO1Ydy+iQ5u6rLkmRIr+M=;
+        s=k20201202; t=1652032414;
+        bh=2tlO3r2Cok22g+ZZtDm+Ig1OcR5KcmrfquQmSk3eDu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RSiOKEUPW1trSDSZu0E0U0z5oi/pEANgk2CmCPPWzJR/h2btMCyna5oUmynYraAT4
-         Xvuzx0jlPBq4fmvnnzujSLzkZBwZzXTwQqnCd5HGNjwCoIUqIR+BCk17bA4C20CMT/
-         x0f8QEIXcpeVrbWgZBUvd0l0MZChzUikhJMp2X8LjnT8xDm3QnEFh4Zpzn3OpCWnCZ
-         BvmYD/VkA6E8GUg3oudzWp3U3tvcjMZnm7Pc4YrEHUj6fkMLk+3WFGdRYElPxa//Kc
-         b0t57ylHO2Ugz8qH0kOYl8xFYDZGIouV97NaJ2AwgunXd8FWbQd+4DDFbnEEeF/aBp
-         XI5Oz+UoUCSzA==
+        b=RHh8dcA6EGg9q0bISBCy+wDmPTGfhthWQi7CDN3pQC/bqH8v553bC8mPJq1JnucbX
+         CDHRpT5rD1CS8xwQohUAPbmJXkxaRX/8uiBgPH4ahuP6RHTtcLh5dU1NjVm0wc6cYc
+         UYkbS8I+VJwWrTOPGr4YWpPeCBa4yZE6dDph/T3vLlGAwMDcvUKmOG05MiQtsgJ1cJ
+         xjFIyAXXMtNO4Hn2Qvlop16K21CttRprvl4cCnosy6daiEV1zu/GjUmHFsNBbAi4fm
+         GItQJip/oLkSkHpi5VTuunRsnq72IBz50TJhQw4D9t7vG2J+xgevE5qw6nuq2iGl3U
+         fw/EU56889aEA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 35/92] iio: adc: ti-ads131e08: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:15 +0100
-Message-Id: <20220508175712.647246-36-jic23@kernel.org>
+Subject: [PATCH v2 36/92] iio: adc: ti-ads7950: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:16 +0100
+Message-Id: <20220508175712.647246-37-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,27 +90,34 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Fixes: d935eddd2799 ("iio: adc: Add driver for Texas Instruments ADS131E0x ADC family")
+Update the comment to include 'may'.
+
+Fixes: 902c4b2446d4 ("iio: adc: New driver for TI ADS7950 chips")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Tomislav Denis <tomislav.denis@avl.com>
+Acked-by: David Lechner <david@lechnology.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ti-ads131e08.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ti-ads7950.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-index 0c2025a22575..0dd9a50a9138 100644
---- a/drivers/iio/adc/ti-ads131e08.c
-+++ b/drivers/iio/adc/ti-ads131e08.c
-@@ -105,7 +105,7 @@ struct ads131e08_state {
- 		s64 ts __aligned(8);
- 	} tmp_buf;
+diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
+index e3658b969c5b..2cc9a9bd9db6 100644
+--- a/drivers/iio/adc/ti-ads7950.c
++++ b/drivers/iio/adc/ti-ads7950.c
+@@ -102,11 +102,11 @@ struct ti_ads7950_state {
+ 	unsigned int		gpio_cmd_settings_bitmask;
  
--	u8 tx_buf[3] ____cacheline_aligned;
-+	u8 tx_buf[3] __aligned(IIO_DMA_MINALIGN);
  	/*
- 	 * Add extra one padding byte to be able to access the last channel
- 	 * value using u32 pointer
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+ 	u16 rx_buf[TI_ADS7950_MAX_CHAN + 2 + TI_ADS7950_TIMESTAMP_SIZE]
+-							____cacheline_aligned;
++		__aligned(IIO_DMA_MINALIGN);
+ 	u16 tx_buf[TI_ADS7950_MAX_CHAN + 2];
+ 	u16 single_tx;
+ 	u16 single_rx;
 -- 
 2.36.0
 

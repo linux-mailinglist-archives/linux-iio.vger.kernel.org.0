@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5D8F51EFC1
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 683B251EFCF
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229759AbiEHTQj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:16:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
+        id S231171AbiEHTRN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344379AbiEHSEK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:04:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A3E558C
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 11:00:19 -0700 (PDT)
+        with ESMTP id S240172AbiEHSEU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:04:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040F6558C
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 11:00:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B54B61262
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 18:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AA8C385A4;
-        Sun,  8 May 2022 18:00:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9B37B80E5B
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 18:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A916C385B0;
+        Sun,  8 May 2022 18:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032819;
-        bh=3AXDyWRPE1qksmDlPW4/LWb3unKf8qa9y+leRrT6I88=;
+        s=k20201202; t=1652032826;
+        bh=LN8zEZvhTlvWiHKaWmD9tw8c9oiVxwzQXUiHqdA4mr4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=osYteEqsV1hr7PlXFDfCIfc3Sqvm/b80OSbf8rgMcMmdFrKPiw/w1VD5XoiVnj35i
-         MUujKsq2wA9WmsxaSGAvhZ6uXPlf0kn85ft+c1Mvu2Ui6uj2wA6Gy3lV6oNvmar3Ro
-         Af58mCKON8W0x1mspyHfneoCPJudqxfDemc2SaOiilvsHOsBeg0IA8QgwlTmAOFqvo
-         9L65l1n08ufMQcEIlNAEA0S43vnoRvnHVG1cxObWb1vHNMp1TH7cb9XwSxHG4rQ1bD
-         Y+DDSMMnOJXNaaFkSc8yfGfNHMKh7NIJupdrBBkOJJl32RJcfNLtjDKyCi8Jnh3URH
-         UAUPT81g2Bd4w==
+        b=GQYaBstBRTZaD0eVFiJNWqXZ1kW9ThbgYRmN5Jp/y+fZGLtbVTCD3mg1PpqhPnvTL
+         S/NuxNs5Fpt8cr5DNqYxRoIA7+0qeJXTKcjrco0+ZzELURcnLa0W6WXKCmzobb6ft3
+         6SFGSXKIwIRyLyRX8TSzLB1Qmiz9QVex0NuWYL8xtfmfNyPJQ1krN1P3d/efZGu8xM
+         65xPArK9ugkEdevHu6PRVZks2Q6+inqhnO6EiPIUkniliBNo7m4yVZ0kMFroOZsKLy
+         sC8zKjUsY7FmVU5WCWHXUelgvirMFSDelyhbz3fw7hGavg5yFif7/L5j1+yi7Q6a35
+         09Vem45fKTzOQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 89/92] iio: resolver: ad2s90: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:57:09 +0100
-Message-Id: <20220508175712.647246-90-jic23@kernel.org>
+Subject: [PATCH v2 90/92] iio: temp: ltc2983: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:57:10 +0100
+Message-Id: <20220508175712.647246-91-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,30 +90,31 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Fixes tag is probably not where the issue was first introduced, but
-is likely to be far beyond the point where anyone considers
-backporting this fix.
-
-Fixes: 58f08b0af857 ("staging:iio:resolver:ad2s90 general cleanup")
+Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/resolver/ad2s90.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/temperature/ltc2983.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/resolver/ad2s90.c b/drivers/iio/resolver/ad2s90.c
-index d6a91f137e13..be6836e55376 100644
---- a/drivers/iio/resolver/ad2s90.c
-+++ b/drivers/iio/resolver/ad2s90.c
-@@ -24,7 +24,7 @@
- struct ad2s90_state {
- 	struct mutex lock; /* lock to protect rx buffer */
- 	struct spi_device *sdev;
--	u8 rx[2] ____cacheline_aligned;
-+	u8 rx[2] __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
+index 301c3f13fb26..1b8252d86889 100644
+--- a/drivers/iio/temperature/ltc2983.c
++++ b/drivers/iio/temperature/ltc2983.c
+@@ -200,11 +200,11 @@ struct ltc2983_data {
+ 	u8 num_channels;
+ 	u8 iio_channels;
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 * Holds the converted temperature
+ 	 */
+-	__be32 temp ____cacheline_aligned;
++	__be32 temp __aligned(IIO_DMA_MINALIGN);
  };
  
- static int ad2s90_read_raw(struct iio_dev *indio_dev,
+ struct ltc2983_sensor {
 -- 
 2.36.0
 

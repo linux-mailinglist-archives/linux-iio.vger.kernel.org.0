@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1FAB51EFDA
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1E5E51EFAB
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229842AbiEHTRa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:17:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38136 "EHLO
+        id S231539AbiEHTPq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235929AbiEHRyI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:54:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5BADFC5
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:50:17 -0700 (PDT)
+        with ESMTP id S239081AbiEHRyS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:54:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B3FDFC5
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:50:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 553F66128D
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:50:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6957EC385AC;
-        Sun,  8 May 2022 17:50:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A885EB80E3F
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:50:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FC3C385AF;
+        Sun,  8 May 2022 17:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032216;
-        bh=D92cGZabpHdxAvsCXtQMv3PS6YcTUwisbHSewNLG3e4=;
+        s=k20201202; t=1652032224;
+        bh=b1p+Mx7omwCX3+NOIIYHpoHlGo0TeqZGG4yTncp6nGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ML6Fw/jMpVwHPElCz3IcOgi2xpVOc8xaWKqzDsgaOkP91YT7/al/SxZJFYjqyVqjZ
-         4mtkzAKiFA4VC7aaqJAv3MlcbhkSjsuAEQkyv0AfBRla1KcmYUsfZA/WcZWA3jannP
-         GiV1cCbFKyIDKn/4B6pYK7/kONd7H3LdcPwYfSaM5zWzWKjvPwE5MA5VM1rnvU85ZT
-         DIGlouYtbb+7NTncb/ylqCCnEwVJ8jq77L/tQeDMfWME+3AkTdzaUfN+lKQO7EpoQv
-         5MiLaarxrRRqzvt4vvLs73pi7B/opSCe/5pAhq33xKPEFVRc62DEtilNjkkG032TBj
-         Edz2Izf79xA2w==
+        b=kh6xaNtMEDpsXbW7vISxLmPplZ4akHqwAsyGMLwC3fx3PlM4cgVddBYCN58NcnNky
+         tyM18UrwkGVzLLS221oAhyesyrFxeDXQok1sM7m90RG6VuJr0Hy5jzb9asoHXFicp8
+         sOLi3b4xkPMvtrjqO1z4ow0d53HkEih2w1ieVzX6J3RoMNzK4n5m8PRTQVx2lYjwdp
+         htkgXSZ7AFdes9ljWOyQyAlkNwkSVgq7oZe901C4oTequ0DGTDHSIX4lu+HA2+eAeD
+         RzRzvNxP3ndS1EbcBV2/cl990KrODwgcR1D8L51c5cODjDn6Qkcw4r9KLlf09cUOdd
+         CiMWQshJIKYUw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 09/92] iio: adc: ad7266: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:55:49 +0100
-Message-Id: <20220508175712.647246-10-jic23@kernel.org>
+Subject: [PATCH v2 10/92] iio: adc: ad7280a: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:55:50 +0100
+Message-Id: <20220508175712.647246-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,38 +90,26 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Update the comment to reflect that DMA safety 'may' require separate
-cachelines.
-
-Fixes: 54e018da3141 ("iio:ad7266: Mark transfer buffer as __be16")
+Fixes: 003f1d48de52 ("staging:iio:adc:ad7280a: Split buff[2] into tx and rx parts")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ad7266.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7280a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index c17d9b5fbaf6..53c83e04dde5 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -37,7 +37,7 @@ struct ad7266_state {
- 	struct gpio_desc	*gpios[3];
+diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
+index ec9acbf12b9a..047a9d0dbcf7 100644
+--- a/drivers/iio/adc/ad7280a.c
++++ b/drivers/iio/adc/ad7280a.c
+@@ -183,7 +183,7 @@ struct ad7280_state {
+ 	unsigned char			cb_mask[AD7280A_MAX_CHAIN];
+ 	struct mutex			lock; /* protect sensor state */
  
- 	/*
--	 * DMA (thus cache coherency maintenance) requires the
-+	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
- 	 * The buffer needs to be large enough to hold two samples (4 bytes) and
- 	 * the naturally aligned timestamp (8 bytes).
-@@ -45,7 +45,7 @@ struct ad7266_state {
- 	struct {
- 		__be16 sample[2];
- 		s64 timestamp;
--	} data ____cacheline_aligned;
-+	} data __aligned(IIO_DMA_MINALIGN);
+-	__be32				tx ____cacheline_aligned;
++	__be32				tx __aligned(IIO_DMA_MINALIGN);
+ 	__be32				rx;
  };
  
- static int ad7266_wakeup(struct ad7266_state *st)
 -- 
 2.36.0
 

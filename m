@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C2C951EFA7
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8119751EF9D
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbiEHTP3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:15:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38768 "EHLO
+        id S236310AbiEHTPD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:15:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239159AbiEHRz6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:55:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02BEDFEA
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:52:07 -0700 (PDT)
+        with ESMTP id S239163AbiEHR4E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:56:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16EE4DFEA
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:52:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 752E1B80E59
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:52:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D672AC385B0;
-        Sun,  8 May 2022 17:51:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A76EC6127D
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A140BC385AC;
+        Sun,  8 May 2022 17:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032325;
-        bh=lpwoPBGOl7B9Dix91+TGJN/eEz4/XFIeVsfg/KVLFTU=;
+        s=k20201202; t=1652032333;
+        bh=LUtFV/VpLeH2QZqdyJGIswKbijSeuCa4TOlOfFtP4Ho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qyb2DTDnKWzAQRPlx0F0knVdCpouZxspLwfHNVTahEmdaYu0Aho0AFwoYkjW/K7Yk
-         EJ3YGZDR3EIvJAYobxa83cyJQHsSa+JChfR5/GVQ22uOMtq6ZCDIHkQ2bhEvgWWTnQ
-         tnUgKyKOAyMRtcWVK1NAp/eZpkfpUE6YV4bdJfqemisxviseGBNdk5bER0O3+KPQBl
-         eiF/ToGI6LQ69kzI4ya8I9UGPnXK7FeUYtTB296zqh3uhAyf8EdQr3Ud1nN+ksyqCH
-         68snhyWij5R7SGp05vSb8b5vi7Ylg1rJu4D4OD5opl3YPfhaSMRuMEw2gmHL8xVpwq
-         lKjZ9O8udqwYQ==
+        b=rjnJ6ZwkoDQSR+Hk/OATmUl8b+iNxK1SQ0Ok6PR3mdetYVfX+mUdEarA+6eDHaHk0
+         Q1FJq4+tr8MqgViGbQdcSc7VUGfZtV/pvDTopGGluiXgIy5eynEs9F9VyXbWRYJ4+O
+         63ucMHV+fT/jEi4rmJnxwlyHAUhefGHCrIJHv4/gIsLhP42/bToV78VrG1pHjQbsxy
+         li4RbKfd3c73mTDbv7HRPNLpLzdkYJ8QiSpcNhm6IpcFq8Qj6uG9Iw3yLTcF8qGa3/
+         TXUzmQ+rJhiXX/hgVXAn+fuDryMxKcdW+GgzG1DhpTgCX1W9xM6xyuMJ4MXD/V6jU9
+         3B9wkqMvk8xqw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -64,11 +64,10 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         Tomislav Denis <tomislav.denis@avl.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jacopo Mondi <jacopo@jmondi.org>
-Subject: [PATCH v2 24/92] iio: adc: max11100: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:04 +0100
-Message-Id: <20220508175712.647246-25-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 25/92] iio: adc: max1118: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:05 +0100
+Message-Id: <20220508175712.647246-26-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -91,34 +90,27 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Update the comment to include 'may'.
-
-Fixes: a8e7e88df9ec ("iio: adc: Add Maxim MAX11100 driver")
+Fixes: a9e9c7153e96 ("iio: adc: add max1117/max1118/max1119 ADC driver")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jacopo Mondi <jacopo+renesas@jmondi.org>
-Acked-by: Jacopo Mondi <jacopo@jmondi.org>
+Cc: Akinobu Mita <akinobu.mita@gmail.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/max11100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/max1118.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/max11100.c b/drivers/iio/adc/max11100.c
-index eb1ce6a0315c..49e38dca8fe2 100644
---- a/drivers/iio/adc/max11100.c
-+++ b/drivers/iio/adc/max11100.c
-@@ -33,10 +33,10 @@ struct max11100_state {
- 	struct spi_device *spi;
+diff --git a/drivers/iio/adc/max1118.c b/drivers/iio/adc/max1118.c
+index a41bc570be21..75ab57d9aef7 100644
+--- a/drivers/iio/adc/max1118.c
++++ b/drivers/iio/adc/max1118.c
+@@ -42,7 +42,7 @@ struct max1118 {
+ 		s64 ts __aligned(8);
+ 	} scan;
  
- 	/*
--	 * DMA (thus cache coherency maintenance) requires the
-+	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
- 	 */
--	u8 buffer[3] ____cacheline_aligned;
-+	u8 buffer[3] __aligned(IIO_DMA_MINALIGN);
+-	u8 data ____cacheline_aligned;
++	u8 data __aligned(IIO_DMA_MINALIGN);
  };
  
- static const struct iio_chan_spec max11100_channels[] = {
+ #define MAX1118_CHANNEL(ch)						\
 -- 
 2.36.0
 

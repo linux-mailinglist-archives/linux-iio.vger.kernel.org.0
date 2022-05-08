@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9A1051EFA3
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4DE51EFAE
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237926AbiEHTPH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:15:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
+        id S229603AbiEHTPt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:15:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239955AbiEHSAN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:00:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE65558C
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:56:23 -0700 (PDT)
+        with ESMTP id S240579AbiEHSAU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:00:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D781558C
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:56:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DF05EB80E48
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:56:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E53C385AF;
-        Sun,  8 May 2022 17:56:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD35F61283
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:56:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B86C385B0;
+        Sun,  8 May 2022 17:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032580;
-        bh=BJE+A0ljdqV7O9zRI8XJoYO0P9lUebI106coz3WpzrQ=;
+        s=k20201202; t=1652032588;
+        bh=bhkzZLkd74lwiwhM1WdHhQOQXAjpo0JfxFUSearHju0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uky0coHoC1OXcEK2a8OVL30bcQuQTxqySSpRxFtBoNCdav98vOQjmkMLM2E3PYui3
-         MFjFCQpdW3WLw+3/6i22iKkyxNug0T+bmJsbeFqp8tO36kaAWTbzx8oIAR9K6bRdHO
-         W+N3eDb3b3B9LtY2DsYKGQdwj2PfdZ8MFbeXIHPuICcehcjDZPAinhuN0YlpVTEp0D
-         oK3D9gWz0fuS19jUB5eHCSy5BkpHWmXFABcwOZMWrB/w8OH8/pqpa7/1MR49D/KXfN
-         c1edyJmQuHJo84O9XA0nI8NZXocKRimnKBgHLscfPZGvN1irUCWjTXhCZLh7aO+NYK
-         XKR4wAdg8vS4A==
+        b=RQcKdlGn0IuwAdEiCOYcUNPop1uZ8XjtIhbLEO1Qar1bq4hHs3NFdK/Cw2VMvKBLB
+         QaSoqLaSwVviXptPl5LcGJzhL8nlXhomLTK0AaIP/cDc7V0KF+HMDAkt5saJftCAAF
+         rlb/e40a5DOw6SsR2fl2JZ9jxBEVA9Vr0utLRVTtYOm/JsLXPStINinhuSnhaWXV0q
+         P0HOu99/mpW6HmL4Teu3ZLL1Z9+79EgHhGtVTY9mOsbKX7fOVVw/hfL07r4cQhewYK
+         50D0/iaIhaLfJpqqIwWdAvkSqNBDNSdT+i/oPzptwiuQ5ft5P2kZ6VgiPU7dvs3dAc
+         eejzHkv5a0uWg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 58/92] iio: dac: ad8801: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:38 +0100
-Message-Id: <20220508175712.647246-59-jic23@kernel.org>
+Subject: [PATCH v2 59/92] iio: dac: ltc2688: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:39 +0100
+Message-Id: <20220508175712.647246-60-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,26 +90,32 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Fixes: 7f270bc9a2d9 ("iio: dac: AD8801: add Analog Devices AD8801/AD8803 support")
+Update the comment to include 'may'.
+
+Fixes: 832cb9eeb931 ("iio: dac: add support for ltc2688")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/dac/ad8801.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/dac/ltc2688.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/dac/ad8801.c b/drivers/iio/dac/ad8801.c
-index 6be35c92d435..919e8c880697 100644
---- a/drivers/iio/dac/ad8801.c
-+++ b/drivers/iio/dac/ad8801.c
-@@ -26,7 +26,7 @@ struct ad8801_state {
- 	struct regulator *vrefh_reg;
- 	struct regulator *vrefl_reg;
- 
--	__be16 data ____cacheline_aligned;
-+	__be16 data __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
+index 2f9c384885f4..04ec38b1cad1 100644
+--- a/drivers/iio/dac/ltc2688.c
++++ b/drivers/iio/dac/ltc2688.c
+@@ -91,10 +91,10 @@ struct ltc2688_state {
+ 	struct mutex lock;
+ 	int vref;
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 */
+-	u8 tx_data[6] ____cacheline_aligned;
++	u8 tx_data[6] __aligned(IIO_DMA_MINALIGN);
+ 	u8 rx_data[3];
  };
  
- static int ad8801_spi_write(struct ad8801_state *state,
 -- 
 2.36.0
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73CE251EFB8
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1FAB51EFDA
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbiEHTQY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:16:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38116 "EHLO
+        id S229842AbiEHTRa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:17:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239070AbiEHRyD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:54:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE081DFC5
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:50:12 -0700 (PDT)
+        with ESMTP id S235929AbiEHRyI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:54:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5BADFC5
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:50:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3E1B8B80E47
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E59C385AF;
-        Sun,  8 May 2022 17:50:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 553F66128D
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:50:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6957EC385AC;
+        Sun,  8 May 2022 17:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032210;
-        bh=W/FF31gNZ5Tv5ZWIeG5E7J6iLZPdpT3qwKCzK8BYiPE=;
+        s=k20201202; t=1652032216;
+        bh=D92cGZabpHdxAvsCXtQMv3PS6YcTUwisbHSewNLG3e4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XQC2MADXi9VnRU3I6G84ctb7Ls8cbmw4WedzleP/60zaZc6RQf8DngfNAxj6SD0xJ
-         QPnjqpzTXAYT+gt1Cqrh8rZl6mmmURGxlBJNDvZXl9mW2bebI9fbxL2Q/65X9LtbGz
-         Bxr3tE8z2edpFenI5IJqLMjEzHx8OhrJ5Pa1OHZ4K287g0cjm8CBMmhGpSGbu7s9Ed
-         SVCRKa6fLdUu4E0+BedPY3WHOMbSo6j4OW3JuVkXIregY8D9h5uOwbnuSndoDDgW0M
-         BLF+H2Kgs8HMq7krkpzg1cmiedMQXOUxyHWy8KsKFjQ4alozxPyJbtrKiKMPuYLweW
-         MEqYe7iab9A6A==
+        b=ML6Fw/jMpVwHPElCz3IcOgi2xpVOc8xaWKqzDsgaOkP91YT7/al/SxZJFYjqyVqjZ
+         4mtkzAKiFA4VC7aaqJAv3MlcbhkSjsuAEQkyv0AfBRla1KcmYUsfZA/WcZWA3jannP
+         GiV1cCbFKyIDKn/4B6pYK7/kONd7H3LdcPwYfSaM5zWzWKjvPwE5MA5VM1rnvU85ZT
+         DIGlouYtbb+7NTncb/ylqCCnEwVJ8jq77L/tQeDMfWME+3AkTdzaUfN+lKQO7EpoQv
+         5MiLaarxrRRqzvt4vvLs73pi7B/opSCe/5pAhq33xKPEFVRc62DEtilNjkkG032TBj
+         Edz2Izf79xA2w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 08/92] iio: accel: sca3300: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:55:48 +0100
-Message-Id: <20220508175712.647246-9-jic23@kernel.org>
+Subject: [PATCH v2 09/92] iio: adc: ad7266: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:55:49 +0100
+Message-Id: <20220508175712.647246-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -86,30 +86,42 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-____cacheline_aligned is insufficient guarantee for non-coherent DMA.
-Switch to the updated IIO_DMA_MINALIGN definition.
+____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+on platforms with 128 byte cachelines above L1.  Switch to the updated
+IIO_DMA_MINALIGN definition.
 
-Fixes: 9cc9806e22178 ("iio: accel: Add driver for Murata SCA3300 accelerometer")
+Update the comment to reflect that DMA safety 'may' require separate
+cachelines.
+
+Fixes: 54e018da3141 ("iio:ad7266: Mark transfer buffer as __be16")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Tomas Melin <tomas.melin@vaisala.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/accel/sca3300.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7266.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
-index f7ef8ecfd34a..39e0c24364ae 100644
---- a/drivers/iio/accel/sca3300.c
-+++ b/drivers/iio/accel/sca3300.c
-@@ -115,7 +115,7 @@ struct sca3300_data {
- 		s16 channels[4];
- 		s64 ts __aligned(sizeof(s64));
- 	} scan;
--	u8 txbuf[4] ____cacheline_aligned;
-+	u8 txbuf[4] __aligned(IIO_DMA_MINALIGN);
- 	u8 rxbuf[4];
+diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+index c17d9b5fbaf6..53c83e04dde5 100644
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -37,7 +37,7 @@ struct ad7266_state {
+ 	struct gpio_desc	*gpios[3];
+ 
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
++	 * DMA (thus cache coherency maintenance) may require the
+ 	 * transfer buffers to live in their own cache lines.
+ 	 * The buffer needs to be large enough to hold two samples (4 bytes) and
+ 	 * the naturally aligned timestamp (8 bytes).
+@@ -45,7 +45,7 @@ struct ad7266_state {
+ 	struct {
+ 		__be16 sample[2];
+ 		s64 timestamp;
+-	} data ____cacheline_aligned;
++	} data __aligned(IIO_DMA_MINALIGN);
  };
  
+ static int ad7266_wakeup(struct ad7266_state *st)
 -- 
 2.36.0
 

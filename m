@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F0651EFBA
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D168B51EFED
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbiEHTQ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:16:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S229898AbiEHTSR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239239AbiEHR5t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:57:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2330ADFEA
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:53:58 -0700 (PDT)
+        with ESMTP id S239240AbiEHR54 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:57:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 076ADDFEA
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:54:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B32F161284
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0F3C385AF;
-        Sun,  8 May 2022 17:53:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99BC361284
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:54:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB4FC385AC;
+        Sun,  8 May 2022 17:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032437;
-        bh=EFwzZNZmnFMbzGZjG3aBDgk+M0Y8Xm18papjZnY9lcQ=;
+        s=k20201202; t=1652032445;
+        bh=BVqjhY3d/eL6XsHHoYDbfkNGFV+vcqySsQc2X7S+0gs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RmQE/MrfgW30y2vvn+9HP2xJMEqdUYLVfSrbC69RXd+XZWplYMw8exQNHlbsKy+v7
-         FaDHzjSWxaVrsB05g922d4eosQkdPnhALyPOud+l70qTmKPqVJXLRwqfxeNa/a8M2V
-         yMQ0rociSPa+ASSTglNA2mrylidOgvhJNDb7/4byEQYVyn/GwX6j2rKmFKaqKVL6Y/
-         po9JIhkGVjX9sznPQNpHgxfFQsXLECF6WW4ocEHdEbCrd22JYsLTqm9TPtEejsO3SZ
-         rH4bACvYgVrSkyJl60XXhl/msk84i464BceNHi0RVDlsSJ6yfciuctU3UXec2SdvWk
-         6L7ihGzupYXEQ==
+        b=G51YGlPbumiv+dIcniGI3SGe6XnzfAL5dnHJq75MZlx0K8tPe0Xvm+M/3kvXIdCRy
+         TDTBg/+ac2qjVlQ3uwsTmnc/TtcbgavE75T1iI/zkUS+c6RRnW3r6a9G2p4tCB7+sc
+         BSDrKWZyv7+1qLZOoJ2nZvfTbJdQOmdjPVBfm8hZtTy6oabDPnGmZqzDpwUm94Ok2f
+         5qj8D4A/xvXIxeGMEUPYSxaSMZ9sQ6CIWTccFQeKgxFCu9t0mE7xDIPIOpKyZ7JC7Y
+         15/TWuT31HAEOk5wkpB8Toeq+YvHdF9mIw0J2ppv+D/jtwsfNhZCxO6sbRwE428XW+
+         mmXQkQPOvzPiw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 39/92] iio: adc: ti-tlc4541: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:19 +0100
-Message-Id: <20220508175712.647246-40-jic23@kernel.org>
+Subject: [PATCH v2 40/92] iio: addac: ad74413r: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:20 +0100
+Message-Id: <20220508175712.647246-41-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -92,32 +92,34 @@ IIO_DMA_MINALIGN definition.
 
 Update the comment to include 'may'.
 
-Fixes: ac2bec9d587c ("iio: adc: tlc4541: add support for TI tlc4541 adc")
+Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ti-tlc4541.c | 4 ++--
+ drivers/iio/addac/ad74413r.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-tlc4541.c b/drivers/iio/adc/ti-tlc4541.c
-index 2406eda9dfc6..30f629a553a1 100644
---- a/drivers/iio/adc/ti-tlc4541.c
-+++ b/drivers/iio/adc/ti-tlc4541.c
-@@ -37,12 +37,12 @@ struct tlc4541_state {
- 	struct spi_message              scan_single_msg;
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index acd230a6af35..6a66d7a65db7 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -77,13 +77,13 @@ struct ad74413r_state {
+ 	struct spi_transfer	adc_samples_xfer[AD74413R_CHANNEL_MAX + 1];
  
  	/*
 -	 * DMA (thus cache coherency maintenance) requires the
 +	 * DMA (thus cache coherency maintenance) may require the
  	 * transfer buffers to live in their own cache lines.
- 	 * 2 bytes data + 6 bytes padding + 8 bytes timestamp when
- 	 * call iio_push_to_buffers_with_timestamp.
  	 */
--	__be16                          rx_buf[8] ____cacheline_aligned;
-+	__be16                          rx_buf[8] __aligned(IIO_DMA_MINALIGN);
- };
+ 	struct {
+ 		u8 rx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
+ 		s64 timestamp;
+-	} adc_samples_buf ____cacheline_aligned;
++	} adc_samples_buf __aligned(IIO_DMA_MINALIGN);
  
- struct tlc4541_chip_info {
+ 	u8	adc_samples_tx_buf[AD74413R_FRAME_SIZE * AD74413R_CHANNEL_MAX];
+ 	u8	reg_tx_buf[AD74413R_FRAME_SIZE];
 -- 
 2.36.0
 

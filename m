@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5864051EFA0
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F6C51EFA9
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237220AbiEHTPG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:15:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38932 "EHLO
+        id S231435AbiEHTPk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:15:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238527AbiEHR4f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:56:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F29DFEA
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:52:44 -0700 (PDT)
+        with ESMTP id S236431AbiEHR4n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:56:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A572EDFEA
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:52:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 68598B80E3F
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453BAC385A4;
-        Sun,  8 May 2022 17:52:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5FAAFB80E3F
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:52:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99467C385AF;
+        Sun,  8 May 2022 17:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032362;
-        bh=fNzmzD6E7MgMUkFG6wsEsOcnhIbPOGw0dwtI54dqPbw=;
+        s=k20201202; t=1652032370;
+        bh=T5pwX6o44Wr8PyyefbNocyJqyKPsQ4Y7W4rONivg8x0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m21GDBzLprRl+HKkxSNxSa7WAfNQZKM/Vk5iaJ3uj3xpBXZBzkSM+w/95z7SO8Xli
-         gXdenkkTu3aso//DpB4y5tiJoVdXmITi++f6/5Dc8snQTz8/ecJeiDn3NbDV7KjOE8
-         bfcJqxDbPN2YXljomIM7iYFBRTcu94riO3FNfgBS05lC01oqo/X/YLEKaiCKHpZ5Bs
-         iqsPVYTnASZy23cv61d1f8LcEjlCss2dUi5FoBoJMUoZpT2sHY9PMGBuTjUBTMAXCD
-         InLnhMHDvWQErvcc8BJ2m+yRR5gycRIsSCLvfSL7MKC08BvnfCTNYuXhA6KXK4ZK+C
-         KeCnnx9QlG0+g==
+        b=aJ4AQUpSDPFl1p52Cbs5gxxHoNvJjGToE4JR9qHakol363o3jpM2jeyHjbUSktK7+
+         90VPW1FIh2uRP6Lt920sMVVdPLB+MG5IE+QWOiLU3yT1OdObkZYGm6p5uXpCcLd7rX
+         jDmAPnO08mfTSTRwjp5ENEJ1T4glzixSDnfsFBuyeScfZp9KOViJsWjPpAjY8WJQMw
+         vc0kiOJa4Dy7QkA/3lBZDrZXnqL0ZcanJIJCwEjfb8Ua6a5DvACXzSV5VDYcD103s6
+         3Es1OClmPZTD78ahbBljvbREyjJPsZKfLL30gk/E9NO69FlQ9pno07lOZX9gBZRtwG
+         43gO+hcBtO7EA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 29/92] iio: adc: ti-adc084s021: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:09 +0100
-Message-Id: <20220508175712.647246-30-jic23@kernel.org>
+Subject: [PATCH v2 30/92] iio: adc: ti-adc108s102: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:10 +0100
+Message-Id: <20220508175712.647246-31-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,33 +90,36 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Update the comment to include 'may'.
+Dual fixes tags as two cases that were introduced in different patches.
+One of those patches is a fix however and likely to have been backported
+to stable kernels.
+
+Note the second alignment marking is likely to be unnecessary, but is
+left for now to keep this fix simple.
 
 Fixes: 3691e5a69449 ("iio: adc: add driver for the ti-adc084s021 chip")
+Fixes: cbe5c6977604 ("iio: adc: ti-adc108s102: Fix alignment of buffer pushed to iio buffers.")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Mårten Lindahl <martenli@axis.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ti-adc084s021.c | 4 ++--
+ drivers/iio/adc/ti-adc108s102.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-adc084s021.c b/drivers/iio/adc/ti-adc084s021.c
-index c9b5d9aec3dc..1f6e53832e06 100644
---- a/drivers/iio/adc/ti-adc084s021.c
-+++ b/drivers/iio/adc/ti-adc084s021.c
-@@ -32,10 +32,10 @@ struct adc084s021 {
- 		s64 ts __aligned(8);
- 	} scan;
- 	/*
--	 * DMA (thus cache coherency maintenance) requires the
-+	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache line.
+diff --git a/drivers/iio/adc/ti-adc108s102.c b/drivers/iio/adc/ti-adc108s102.c
+index c8e48881c37f..c82a161630e1 100644
+--- a/drivers/iio/adc/ti-adc108s102.c
++++ b/drivers/iio/adc/ti-adc108s102.c
+@@ -77,8 +77,8 @@ struct adc108s102_state {
+ 	 *  tx_buf: 8 channel read commands, plus 1 dummy command
+ 	 *  rx_buf: 1 dummy response, 8 channel responses
  	 */
--	u16 tx_buf[4] ____cacheline_aligned;
-+	u16 tx_buf[4] __aligned(IIO_DMA_MINALIGN);
- 	__be16 rx_buf[5]; /* First 16-bits are trash */
+-	__be16				rx_buf[9] ____cacheline_aligned;
+-	__be16				tx_buf[9] ____cacheline_aligned;
++	__be16				rx_buf[9] __aligned(IIO_DMA_MINALIGN);
++	__be16				tx_buf[9] __aligned(IIO_DMA_MINALIGN);
  };
  
+ #define ADC108S102_V_CHAN(index)					\
 -- 
 2.36.0
 

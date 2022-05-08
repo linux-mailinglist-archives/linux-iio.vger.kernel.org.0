@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A82C551EFBB
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0A851EFFE
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:15:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229663AbiEHTQ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37938 "EHLO
+        id S229736AbiEHTSg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:18:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234220AbiEHRx2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:53:28 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55231DFC5
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:49:37 -0700 (PDT)
+        with ESMTP id S239036AbiEHRxd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:53:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74C75DFC5
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:49:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F2510B80E48
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0B2C385A4;
-        Sun,  8 May 2022 17:49:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DFDD61286
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39144C385B0;
+        Sun,  8 May 2022 17:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032174;
-        bh=vpIAjkNgFsDrmPglA7+07NoWOmCWCnW0y0xA0RJfggU=;
+        s=k20201202; t=1652032182;
+        bh=hjQgsBhbT7ICmgPO0M6ZbutIAZpaN/baR8k265nazXA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mftjfnBlzYrhubB3EyUwj+SzNdFdHdJomxB/M/xvlAWSHnFcRlN1tDy7DnUj9D3Tj
-         vdKAIHFamcpGfFuwLRN6cSOcPF7Vl2OL47LCDQJZWzAUuDcgqZsLwhQgba4VahC/JS
-         FkpILnUQDjuhCeL+Zkyu/2j59okc2r2sOfUno2ivZ/KjfF5YG8uNxIiGSy6uEaLcRI
-         8hI99I6CM2ePGEMuVo4SlOkyWu2z5gMLdtzLPzq2eFYdMcj63h4y1+XexEF7bJXsbh
-         +nqTkZRMiuIxL8QwF3eNqq0VpCLxI4XSeXwvh8+ReyFuyv7MBplYzUp4QQjgcfz31r
-         Yf4oYnNKunlxA==
+        b=FfJWBXwjm0zWltzpWyAm750dLvdjXPX0kr7EyCz1m/szF2dvEowkckngH2Z2m3Y3F
+         U0lnwdw3W1suN9wTciQYf5s1cNx9e6CYkhQtyoyISj21R/Y8l3mhwytigoUTKDBfJP
+         06QVN92XFUHkUZKR1L25XHz5jdycC/NHC6V4za348ySh0Ug2vtLrNvRgwTC1+wXF8u
+         KF+X3iF5jOcEVFNWAcx1qOLaJShFyfAxlG8FycO62nz8nxYLtqyELD0ORKNue+yzpT
+         7Uk2XGfnHSMv91NTU6142c8E+QXvVTCo8Hr+yThmb705Waftl9scREhB8t+yqpdPkp
+         SH9ISEidMmfQQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -64,10 +64,11 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         Tomislav Denis <tomislav.denis@avl.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 03/92] iio: accel: adxl355: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:55:43 +0100
-Message-Id: <20220508175712.647246-4-jic23@kernel.org>
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>
+Subject: [PATCH v2 04/92] iio: accel: adxl367: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:55:44 +0100
+Message-Id: <20220508175712.647246-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -86,30 +87,61 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
- ____cacheline_aligned is insufficient guarantee for non-coherent DMA.
+____cacheline_aligned is insufficient guarantee for non-coherent DMA.
 Switch to the updated IIO_DMA_MINALIGN definition.
 
-Fixes: 327a0eaf19d53 ("iio: accel: adxl355: Add triggered buffer support")
+Update comment to reflect that DMA safety may require separate
+cachelines.
+
+Fixes: cbab791c5e2a5 ("iio: accel: add ADXL367 driver")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Puranjay Mohan <puranjay12@gmail.com>
+Cc: Cosmin Tanislav <demonsingur@gmail.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/accel/adxl355_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/adxl367.c     | 2 +-
+ drivers/iio/accel/adxl367_spi.c | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-index e9c10c8c32f0..2dfe780d6144 100644
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -177,7 +177,7 @@ struct adxl355_data {
- 			u8 buf[14];
- 			s64 ts;
- 		} buffer;
--	} ____cacheline_aligned;
-+	} __aligned(IIO_DMA_MINALIGN);
- };
+diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+index 62960134ea19..d680bec05efc 100644
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -179,7 +179,7 @@ struct adxl367_state {
+ 	unsigned int	fifo_set_size;
+ 	unsigned int	fifo_watermark;
  
- static int adxl355_set_op_mode(struct adxl355_data *data,
+-	__be16		fifo_buf[ADXL367_FIFO_SIZE] ____cacheline_aligned;
++	__be16		fifo_buf[ADXL367_FIFO_SIZE] __aligned(IIO_DMA_MINALIGN);
+ 	__be16		sample_buf;
+ 	u8		act_threshold_buf[2];
+ 	u8		inact_time_buf[2];
+diff --git a/drivers/iio/accel/adxl367_spi.c b/drivers/iio/accel/adxl367_spi.c
+index 26dfc821ebbe..118c894015a5 100644
+--- a/drivers/iio/accel/adxl367_spi.c
++++ b/drivers/iio/accel/adxl367_spi.c
+@@ -9,6 +9,8 @@
+ #include <linux/regmap.h>
+ #include <linux/spi/spi.h>
+ 
++#include <linux/iio/iio.h>
++
+ #include "adxl367.h"
+ 
+ #define ADXL367_SPI_WRITE_COMMAND	0x0A
+@@ -28,10 +30,10 @@ struct adxl367_spi_state {
+ 	struct spi_transfer	fifo_xfer[2];
+ 
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
+-	 * transfer buffers to live in their own cache lines.
++	 * DMA (thus cache coherency maintenance) may require the
++	 * transfer buffers live in their own cache lines.
+ 	 */
+-	u8			reg_write_tx_buf[1] ____cacheline_aligned;
++	u8			reg_write_tx_buf[1] __aligned(IIO_DMA_MINALIGN);
+ 	u8			reg_read_tx_buf[2];
+ 	u8			fifo_tx_buf[1];
+ };
 -- 
 2.36.0
 

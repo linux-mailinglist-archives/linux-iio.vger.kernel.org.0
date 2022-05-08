@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE31951EF9C
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2623251EFD2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235949AbiEHTPC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
+        id S230025AbiEHTRR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236468AbiEHSCR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:02:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94584558C
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:58:26 -0700 (PDT)
+        with ESMTP id S236568AbiEHSCX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 14:02:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B452558C
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:58:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 49F8EB80BA8
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA2EC385B0;
-        Sun,  8 May 2022 17:58:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB6CE6128E
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DC2C385B1;
+        Sun,  8 May 2022 17:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032704;
-        bh=W9XDT+V3KiRP5mhazcu8AxHkS57sih/DWnzHi9JKOcs=;
+        s=k20201202; t=1652032712;
+        bh=ak6fsUHPMssR2g30KENBvEYoqPfbhTEYKRu+emGIIQ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ridokq6KibJWAA60OTolUnPjx8tlleeCQlkqN7CuTHSBmbuZkQ8Qx03hcNCWENvm7
-         gpINqmcZBvJmV6Ze2BSHFqhV9CkVWkjFb5Z84rIllpUrPe2JOGJdMmwqCGMWGYzb/d
-         qCpNOrbdu81uA6jwWpjvquRcfp1DamcwMvVhu8MQpwRNhB2yqMYoVEnk3YMgtz+rL0
-         sWfbB8J2Rp8NzHMwxHs8uBItJQs4l2H2h6XKuJbIxtqC1DhWFnVO7+KFliG1d0+dGl
-         w8W7EEuQwwL0JjBRPkEuQLtWcvu8xweuBX/i7Z4IuvBL2hJc1/7Z58urmz/5B5bbpU
-         lrmr5TTIfFyAw==
+        b=Cm5sRv/V4ut4KkJs19lNCdSkFM08B2XJAvqRt5+hek+fm2m/NoHzeaBgfX3YqngR1
+         A/BpeADB3+a1YDueM/zys8eEbAwYU+cyUXCdmE6EGMtabeC2f4LOtpYNuuHo/HULai
+         grstDbt/uasab2mY4yLR25/ekxsvRYATGM+2NwvP9Qh7Z4+3SeT3e4r2lMyJUZV/ob
+         1M1EfMTje/b7uXVPco33ZnAfBoWTVC3wuuAnq0mY75J+Hnnm3Qf5W6pvKM6qMhx6tM
+         5PaBlvg/5bhkeYcw4gHzf6XA8UCGb5smi0eJBBQ+XSQY9RYVFRcJecnYHBA3XGlbpz
+         0Ja/TMRYNPQTw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 74/92] iio: gyro: adxrs450: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:54 +0100
-Message-Id: <20220508175712.647246-75-jic23@kernel.org>
+Subject: [PATCH v2 75/92] iio: gyro: fxas210002c: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:55 +0100
+Message-Id: <20220508175712.647246-76-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,29 +90,34 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Fixes tag is inaccurate but unlikely anyone will be interested in
-backporting beyond that point.
+Updated the comment to 'may' require.
 
-Fixes: 53ac8500ba9b ("staging:iio:adxrs450: Move header file contents to main file")
+Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Rui Miguel Silva <rui.silva@linaro.org>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/gyro/adxrs450.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/gyro/fxas21002c_core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/gyro/adxrs450.c b/drivers/iio/gyro/adxrs450.c
-index 04f350025215..f84438e0c42c 100644
---- a/drivers/iio/gyro/adxrs450.c
-+++ b/drivers/iio/gyro/adxrs450.c
-@@ -73,7 +73,7 @@ enum {
- struct adxrs450_state {
- 	struct spi_device	*us;
- 	struct mutex		buf_lock;
--	__be32			tx ____cacheline_aligned;
-+	__be32			tx __aligned(IIO_DMA_MINALIGN);
- 	__be32			rx;
+diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
+index 410e5e9f2672..7a459a823f6e 100644
+--- a/drivers/iio/gyro/fxas21002c_core.c
++++ b/drivers/iio/gyro/fxas21002c_core.c
+@@ -150,10 +150,10 @@ struct fxas21002c_data {
+ 	struct regulator *vddio;
  
+ 	/*
+-	 * DMA (thus cache coherency maintenance) requires the
+-	 * transfer buffers to live in their own cache lines.
++	 * DMA (thus cache coherency maintenance) may require the
++	 * transfer buffers live in their own cache lines.
+ 	 */
+-	s16 buffer[8] ____cacheline_aligned;
++	s16 buffer[8] __aligned(IIO_DMA_MINALIGN);
  };
+ 
+ enum fxas21002c_channel_index {
 -- 
 2.36.0
 

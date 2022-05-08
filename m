@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D8A951EFB7
-	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 435C451EFC2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 May 2022 21:14:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbiEHTQS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 8 May 2022 15:16:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39324 "EHLO
+        id S229754AbiEHTQm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 8 May 2022 15:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239325AbiEHR6F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:58:05 -0400
+        with ESMTP id S239433AbiEHR6N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 8 May 2022 13:58:13 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B7B1DFEA
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:54:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 478E4DFEA
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 10:54:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4B8FCB80E3F
-        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:54:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E1DC385B0;
-        Sun,  8 May 2022 17:54:05 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F357DB80E3F
+        for <linux-iio@vger.kernel.org>; Sun,  8 May 2022 17:54:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B945C385A4;
+        Sun,  8 May 2022 17:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652032452;
-        bh=YG8ElcZYYzf2lr8dSw4skiMHwmriC+VUDlp/tzJOd3M=;
+        s=k20201202; t=1652032459;
+        bh=aH8YNNperI/poj9AmCgtkKVQL+tLzbatlbBWI76El0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eXCV5n3C9FK3utczlDP6r/X1R2AhM9mH99osJJFabsENlVPljlEP4GBh8PGhXky8H
-         +2LXMYwV6Epd6Do7j/+CMEpLd81lKR2D9BqHg3PiTHih+dWOD6z0EyUBRGtCxjwrA2
-         BqI0MUKIASLOMEs2EZZnUiyIwbkn8lnYTpzJw9sbxxbYpW4Rdz58qznukljOJZZgGB
-         3VFLIf1s/0ueTucGBDJ5FN9/pwnrfTkSfGgaNhqaJCcQAHpZ15XqvgxAq50veV7sRc
-         qXNwGET5+1hiy+EUK11Fi3F6ZWovV9FvPjzdgSeXj62fSPUNndQ0jBWWJe6DfQ0EJV
-         fm+t4ZDL0U2Dw==
+        b=duVcheFmG6mRurPr1TQyNMv31omvf5tEZxciveYD13M4ySTSkCuF1R1QaSTok1Aog
+         8QJh4K6ar/RJ/CfEVQdogvI1w6LuCgsGoNWBLOCmLgNvUP2oFC+6Db6OfQ8E6WMxWn
+         gUx4uAIM5/gQ7rf9YzCz+u96gpsmTjNGWn2IQr9uM/whwwUjsIldjCA1tU9nNZOkmX
+         lBJZ4VKfOgWXMwIsM/wcKXZcBTqPxisQTsqbnxBOCwGats5SMt4Yx2aUtjIM3MknNv
+         1QJxa8Q08SILbkQJkIqKUdqF77Ex++3o9zrD36uw114rEeRWDrirw5TG4Sv9ayMBoX
+         Kmp9ArUNLn9TA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Alexandru Lazar <alazar@startmail.com>,
@@ -65,9 +65,9 @@ Cc:     Alexandru Lazar <alazar@startmail.com>,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 41/92] iio: amplifiers: ad8366: Fix alignment for DMA safety
-Date:   Sun,  8 May 2022 18:56:21 +0100
-Message-Id: <20220508175712.647246-42-jic23@kernel.org>
+Subject: [PATCH v2 42/92] iio: common: ssp: Fix alignment for DMA safety
+Date:   Sun,  8 May 2022 18:56:22 +0100
+Message-Id: <20220508175712.647246-43-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220508175712.647246-1-jic23@kernel.org>
 References: <20220508175712.647246-1-jic23@kernel.org>
@@ -90,32 +90,27 @@ ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
 on platforms with 128 byte cachelines above L1.  Switch to the updated
 IIO_DMA_MINALIGN definition.
 
-Update the comment to include 'may'.
-
-Fixes: e71d42e03c60 ("iio: amplifiers: New driver for AD8366 Dual-Digital Variable Gain Amplifier")
+Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Acked-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/amplifiers/ad8366.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/common/ssp_sensors/ssp.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-index 1134ae12e531..f2c2ea79a07f 100644
---- a/drivers/iio/amplifiers/ad8366.c
-+++ b/drivers/iio/amplifiers/ad8366.c
-@@ -45,10 +45,10 @@ struct ad8366_state {
- 	enum ad8366_type	type;
- 	struct ad8366_info	*info;
- 	/*
--	 * DMA (thus cache coherency maintenance) requires the
-+	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
- 	 */
--	unsigned char		data[2] ____cacheline_aligned;
-+	unsigned char		data[2] __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/iio/common/ssp_sensors/ssp.h b/drivers/iio/common/ssp_sensors/ssp.h
+index abb832795619..f649cdecc277 100644
+--- a/drivers/iio/common/ssp_sensors/ssp.h
++++ b/drivers/iio/common/ssp_sensors/ssp.h
+@@ -221,8 +221,7 @@ struct ssp_data {
+ 	struct iio_dev *sensor_devs[SSP_SENSOR_MAX];
+ 	atomic_t enable_refcount;
+ 
+-	__le16 header_buffer[SSP_HEADER_BUFFER_SIZE / sizeof(__le16)]
+-		____cacheline_aligned;
++	__le16 header_buffer[SSP_HEADER_BUFFER_SIZE / sizeof(__le16)] __aligned(IIO_DMA_MINALIGN);
  };
  
- static struct ad8366_info ad8366_infos[] = {
+ void ssp_clean_pending_list(struct ssp_data *data);
 -- 
 2.36.0
 

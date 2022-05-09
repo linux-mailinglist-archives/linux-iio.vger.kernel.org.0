@@ -2,182 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C78651FD6B
-	for <lists+linux-iio@lfdr.de>; Mon,  9 May 2022 14:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF78B51FEB0
+	for <lists+linux-iio@lfdr.de>; Mon,  9 May 2022 15:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234877AbiEIMwt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 May 2022 08:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39426 "EHLO
+        id S236259AbiEINue (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 May 2022 09:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234858AbiEIMwq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 May 2022 08:52:46 -0400
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50061A9ACD;
-        Mon,  9 May 2022 05:48:52 -0700 (PDT)
-Received: by mail-qt1-f182.google.com with SMTP id x9so10850918qts.6;
-        Mon, 09 May 2022 05:48:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HPFsZbEvwzFtxYQPhoDO5rz/R82Uf8l5zkcCKFQ6xbo=;
-        b=CBQyVpkQ/pSyRAH3RckWZs1T7vQOB+neJuQ9RQFPWsM0YJdFqoD0yqlbbP6RzV2cZH
-         KlwuqPwBBppPtLsFC7h01o4m2P6wqQngCdMcgiJwvDH8tDUGMcoTNEufcRlXdmIZ9Bmk
-         0gOlzAmzRjLdjdDrPA5dH75WZ957fBtJ16ZM9nsBG9hmshyPi6cA0cPiHT814NlWdnff
-         ktqEBBREb1Imnk8DzlUY8FkOPBXw4ZearR/9iWsegfne9lz5dOn+6OF4J/07l6U/Pf9e
-         2hB9IbiNv6W8O88e0fKQI25o9vRelhl8fO+uU8GOya1r3yi30fms7AP7rrB7vGqP9Sug
-         OOmg==
-X-Gm-Message-State: AOAM531Q4W6cZb6lujFdHxqsppsRB5WrdEEJSzQfYNkUju1OG2Tgqrgw
-        XiBwaHlyP4dy9mIBI9EiKYRcwjF6H4uRrg==
-X-Google-Smtp-Source: ABdhPJzO8OYfohK1/YMKNEBIXi1DBdzzuGTjgBRofgc02mLJjck0BZEGKZEIloFhbv7MEbuiFL5HHA==
-X-Received: by 2002:a05:622a:1115:b0:2f3:bd60:a33b with SMTP id e21-20020a05622a111500b002f3bd60a33bmr14469795qty.292.1652100531626;
-        Mon, 09 May 2022 05:48:51 -0700 (PDT)
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com. [209.85.128.179])
-        by smtp.gmail.com with ESMTPSA id c68-20020a379a47000000b006a03cbb1323sm6344001qke.65.2022.05.09.05.48.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 May 2022 05:48:51 -0700 (PDT)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-2f7d621d1caso142673827b3.11;
-        Mon, 09 May 2022 05:48:50 -0700 (PDT)
-X-Received: by 2002:a81:913:0:b0:2f7:c833:f304 with SMTP id
- 19-20020a810913000000b002f7c833f304mr14135523ywj.283.1652100530441; Mon, 09
- May 2022 05:48:50 -0700 (PDT)
+        with ESMTP id S236236AbiEINuc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 May 2022 09:50:32 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2137.outbound.protection.outlook.com [40.107.21.137])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81F11611D0;
+        Mon,  9 May 2022 06:46:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I6V/fkp3/LkesJ/dmAshbrTwH/3m8D2DYAmO/5lYVxj8+NDp+vFuSNeurs9n3jGVMjk1/X5bdjfhKZ1UlFAQdZF+hvpDiCMuIhWt1HL43c5z2BcZ5PnIXRprsleBr3i8xsCIjz/pIZw8/iT0itQJJ1vMIXL3j2/iGZ4omKrZeTo42d7oeBOxxDQ5OcOgIQecZQWRvW+J5cQetRXMD+pEsRAW9COwJdG3pdaGCiiPjunQfVgRk5nAAsqY9UCGB0FBsGHg88WMwvdFfbspBgXpEYSpWzlnSoOueQDRcSA+AbX8ym5UsRErz3rllWxeeqhOiLfzGZIj8zSyOgqbPAYClA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cyerRPnmJDXI/SbMbiagp7xop6V39yvT/Sy8BMPlCDY=;
+ b=WuMlvFnyolAST3eTgrQyDak7fHWSAVKMXCv8cU+1moAxzu/8DlGaAO3ECI7vyVgvHgIDGSLvtp02qSuhfsnBOSZEC44MuNCwNreD8r8Y6cZFcoo8IiZd9dv4oXLKFOK25oPrU+x1/fvVMI0KaK3wTPcOf93Tipt2ClLgWXmgACqT5STJB/twA9w8FSJcvlxLcAXxqZ8tvSXsgmfg89qCWANaT0CEMCYtz+4j9wm6Q/ne8oDFzhZR6pLUsQcjeXEfWsbVYbmu2RcN4VGtw81S48DoQNLc6QSQV2NNNCtcK/5VR+l1TZRDx8zwXgn1Nm18qVLvsrJIng/s0pn06zp4sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=kernel.org
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=quarantine sp=quarantine
+ pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=leica-geosystems.com.cn; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cyerRPnmJDXI/SbMbiagp7xop6V39yvT/Sy8BMPlCDY=;
+ b=T8hiKwvlU9jR4VDmfDCx3T2J/eRlp/K2+SEUhuukhaq3yZ3b97ELn9IMQQHmhsDZ+oeAmJ9Dls8wP3JSNJdHcsJ8dCu2+98+XDIKcz5Fd3YKPXKXkGPot3gPEHbkOMQ2DMUShHKdCwZphEC167BeVsove9GkEv/4H9+At5jZ4w8=
+Received: from AS9PR04CA0076.eurprd04.prod.outlook.com (2603:10a6:20b:48b::18)
+ by AM6PR06MB5094.eurprd06.prod.outlook.com (2603:10a6:20b:67::30) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.23; Mon, 9 May
+ 2022 13:46:33 +0000
+Received: from VE1EUR02FT056.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:20b:48b:cafe::98) by AS9PR04CA0076.outlook.office365.com
+ (2603:10a6:20b:48b::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.23 via Frontend
+ Transport; Mon, 9 May 2022 13:46:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=aherlnxbspsrv01.lgs-net.com;
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.94) by
+ VE1EUR02FT056.mail.protection.outlook.com (10.152.13.71) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5227.15 via Frontend Transport; Mon, 9 May 2022 13:46:32 +0000
+From:   LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+To:     jic23@kernel.org, lars@metafoo.de, mchehab+huawei@kernel.org,
+        ardeleanalex@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qing-wu.Li@leica-geosystems.com.cn
+Subject: [PATCH V1 0/5] iio: accel: bmi088: support BMI085 BMI090L
+Date:   Mon,  9 May 2022 13:46:24 +0000
+Message-Id: <20220509134629.440965-1-Qing-wu.Li@leica-geosystems.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220505184037.511295-1-biju.das.jz@bp.renesas.com>
- <20220505184037.511295-2-biju.das.jz@bp.renesas.com> <CAMuHMdVV=MB8xa-Q-c_aZx9LGrW=9aP9iC3P-FMRSf-HiovOzA@mail.gmail.com>
- <OS0PR01MB59224E3B5A9E5D8FD5E55B2886C59@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-In-Reply-To: <OS0PR01MB59224E3B5A9E5D8FD5E55B2886C59@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 9 May 2022 14:48:38 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXDCDLhOSGgy9WWwawiHpE8C6isU2dLn6uSpY2gFAr38g@mail.gmail.com>
-Message-ID: <CAMuHMdXDCDLhOSGgy9WWwawiHpE8C6isU2dLn6uSpY2gFAr38g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Document Renesas RZ/G2UL ADC
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 7c79084b-5946-42a9-1997-08da31c25409
+X-MS-TrafficTypeDiagnostic: AM6PR06MB5094:EE_
+X-Microsoft-Antispam-PRVS: <AM6PR06MB5094C3D60A46BA911996CF56D7C69@AM6PR06MB5094.eurprd06.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TjIpDThEmkhaoQHWldtbqP8l/Xo9MQa66/Ua9WZEli+qfg+xktxNKfzbPS71T2AgVvMmcfdjf5dfMCHvTTQsoI01xZtfCzJ6241PDts9Q0d1UeLO+wiglRnukGkyLDRZmI8zm3MLLaI9JIXyjfI5TKk05sCpwg/mWeoPNduUQXjw/+Tgx6GibhHgTfrncgNHtb/wezaxsQswOs/pfiuOQQPpa1hLMHX1viGsqaPqKCgZBSgET/E8Hpkpu2ZMAmTyM9s1Wd2TirTgLTLqamgzEznFYCD6tVW4yDaWyS5VSOOff0YSuQJw+ox2n3Jq+28jExM/3atAuQiu/4bMwopdSkgo4c3JOBACXQ3ODvdKxBpcCuWy9nWLhk1rapF5JditL8il4flzx8F6UGKf5P7X4jiZTOByR+Shid2G4AvO5bcyvLH0CVFJedOsJm+lXlSC9hQqSNsJK0WJYiDlVPS6tM3q4lQwS2YgBDHe3kNibX6hohwSp8tfU7HdOQdyIg+clKqE0hkWJRuy7+/bRuZ6EYv8/V88rVwvO9x+3TpUiV2bJ2hEmyyu+jKQujB4oVnUAiIBobOmKLkbBOBwnO4ra90j1yT6XCrO0xhtMdwEddPDnehZsaupial/B18iOotqJ3c037m04Rxq3YZdkR8Rfwao2ljXWoHgSkvu6skgf6p2fmjXPuac/mFdr5Mpbyfx
+X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:aherlnxbspsrv01.lgs-net.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(36860700001)(6512007)(956004)(2616005)(40460700003)(508600001)(26005)(118246002)(1076003)(36756003)(8676002)(36736006)(82310400005)(186003)(47076005)(336012)(316002)(70586007)(70206006)(5660300002)(6506007)(86362001)(6666004)(8936002)(6486002)(2906002)(81166007)(83380400001)(356005)(4744005);DIR:OUT;SFP:1102;
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2022 13:46:32.7926
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c79084b-5946-42a9-1997-08da31c25409
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[aherlnxbspsrv01.lgs-net.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR02FT056.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB5094
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Biju,
+Modified the unit after application of scale from 100*m/s^2 to m/s^2,
+since the units in the ABI documents are m/s^2.
+Add supports for BMI085 accelerometer.
+Add supports for BMI090L accelerometer.
+Make it possible to config scales.
 
-On Fri, May 6, 2022 at 10:40 AM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Document Renesas RZ/G2UL
-> > On Thu, May 5, 2022 at 8:40 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > > Document Renesas RZ/G2UL ADC bindings. RZ/G2UL ADC is almost identical
-> > > to RZ/G2L, but it has 2 analog input channels compared to 8 channels
-> > > on the RZ/G2L.
-> > >
-> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+LI Qingwu (5):
+  iio: accel: bmi088: Modified the scale calculate
+  iio: accel: bmi088: Add support for bmi085 accel.
+  iio: accel: bmi088: Add support for bmi090l accel
+  iio: accel: bmi088: Make it possible to config scales.
+  iio: accel: bmi088: modifed the device name.
 
-> > > --- a/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml
-> > > @@ -74,18 +75,48 @@ patternProperties:
-> > >        Represents the external channels which are connected to the ADC.
-> > >
-> > >      properties:
-> > > -      reg:
-> > > -        description: |
-> > > -          The channel number. It can have up to 8 channels numbered from
-> > 0 to 7.
-> > > -        items:
-> > > -          - minimum: 0
-> > > -            maximum: 7
-> > > -
-> > > +      reg: true
-> > >      required:
-> > >        - reg
-> > >
-> > >      additionalProperties: false
-> > >
-> > > +allOf:
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            const: renesas,r9a07g043-adc
-> > > +    then:
-> > > +      patternProperties:
-> > > +        "^channel@[0-7]$":
-> >
-> > [0-1]
->
-> Looks like with this change, validation doesn't work as expected.
+ drivers/iio/accel/bmi088-accel-core.c | 62 ++++++++++++++++++++++++---
+ 1 file changed, 55 insertions(+), 7 deletions(-)
 
-OK, keep it at [0-7].
+-- 
+2.25.1
 
-> > > +          type: object
-> > > +          properties:
-> > > +            reg:
-> > > +              description: |
-> > > +                The channel number. It can have up to 2 channels
-> > numbered from 0 to 1.
-> > > +              items:
-> > > +                - minimum: 0
-> > > +                  maximum: 1
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            enum:
-> > > +              - renesas,r9a07g044-adc
-> > > +              - renesas,r9a07g054-adc
-> > > +    then:
-> > > +      patternProperties:
-> > > +        "^channel@[0-7]$":
-> > > +          type: object
-> > > +          properties:
-> > > +            reg:
-> > > +              description: |
-> > > +                The channel number. It can have up to 8 channels
-> > numbered from 0 to 7.
-> > > +              items:
-> > > +                - minimum: 0
-> > > +                  maximum: 7
-> > > +
-> > >  additionalProperties: false
-> > >
-> > >  examples:
-> >
-> > The rest LGTM, but I'm wondering if more of the channel subnodes
-> > description can be factored out to the common part?
->
-> You mean above reg: true?? ie, add as part of the below description??
->
-> type: object
->     description: |
->       Represents the external channels which are connected to the ADC.
-
-I think I've found a solution while converting the R-Car Gen2
-USB PHY bindings.  You can mark channels 3-7 false on RZ/G2UL,
-cfr. the second channel on RZ/G1C in "[PATCH] dt-bindings:
-phy: renesas,rcar-gen2-usb-phy: Convert to json-schema"
-https://lore.kernel.org/r/8e48edc5e7b65f8dfd8b76c583e0265b9b97e62b.1652099944.git.geert+renesas@glider.be/
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

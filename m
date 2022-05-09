@@ -2,129 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E24F45204C4
-	for <lists+linux-iio@lfdr.de>; Mon,  9 May 2022 20:51:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E085206C9
+	for <lists+linux-iio@lfdr.de>; Mon,  9 May 2022 23:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240291AbiEISyv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 May 2022 14:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60470 "EHLO
+        id S229698AbiEIVno (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 May 2022 17:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240293AbiEISyu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 May 2022 14:54:50 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A9A22BCB;
-        Mon,  9 May 2022 11:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652122256; x=1683658256;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bPFox0Qva+4I21dxyRS/dYCprSTnwFX2nf6DY0aKm+8=;
-  b=L+t/YLX4gyNcB48V1udakINjYeJjUWDjT8Av/OKdmx7wikCYtUQxG61Y
-   pYQ6QZzFi7N+RUiLtCSQX5T2zj/jJ7MfiAfHUimBLERgwjl6blLfwJPa2
-   mD5r7p1irtR+QslKO1YspmcnT/Zs75Wvzz2Ho/yPxJopFGQQySRl14HWD
-   Us5SQiPpbe0y9kyUeAtl+xqmUhl4zaaQNDWHjuqFgwL2qhFAMbIJqhv1o
-   UBDh1c2GSVi6bnyDOuhcWDb/TD6xtQ1OQycoI32IMR8IH9um0trIIW8yQ
-   Y0zbFktkJCdqB2L3DU7NfAUutNjTSYLT6t8eZB4uvkS6SPs9ErOza9/bU
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10342"; a="249042684"
-X-IronPort-AV: E=Sophos;i="5.91,212,1647327600"; 
-   d="scan'208";a="249042684"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 11:50:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,212,1647327600"; 
-   d="scan'208";a="519367514"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 09 May 2022 11:50:52 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1no8T6-000GnE-3P;
-        Mon, 09 May 2022 18:50:52 +0000
-Date:   Tue, 10 May 2022 02:50:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>, jic23@kernel.org,
-        lars@metafoo.de, mchehab+huawei@kernel.org, ardeleanalex@gmail.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org
-Subject: Re: [PATCH V1 4/5] iio: accel: bmi088: Make it possible to config
- scales.
-Message-ID: <202205100238.ZzT44bv1-lkp@intel.com>
-References: <20220509134629.440965-5-Qing-wu.Li@leica-geosystems.com.cn>
+        with ESMTP id S230213AbiEIVnh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 May 2022 17:43:37 -0400
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CCC135683;
+        Mon,  9 May 2022 14:39:36 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id m15-20020a9d608f000000b00606a788887aso986665otj.0;
+        Mon, 09 May 2022 14:39:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+KkqknBI/2K3Eq7hGd53E0RZ8mZ5a02S480GCyvqwzM=;
+        b=cuASTZQktzvZLQKVEMUiK3o557C4G9tnWtxWyr0cfyLRX+WZi82Vg0oqxIWmIA8/cy
+         kFOh2QXu4BCs8CbQkIaF1i2/Z6GYv0Xtb8rVnOsoK2n9NmtM5VC110Kq5twreZPagTyS
+         DeYxUZuguM4YKS5sSKLOzt71C7vpYjL+jxuqmcupr4UojIk5IHaNcqnhx8LwdRpUvcG9
+         Xg5wmpEXcGB7JyzYfgoUE87DDS7Q7eAi0RFL8xu9W9PxEotzDgL8VnVNDkn2S5KeLSBh
+         nIS+n/wwcp2WG+SF6olJaT8BHxOf1N476GiJczf3XfGEFgow6BWTwOI02IyrWUFIc59a
+         b9dg==
+X-Gm-Message-State: AOAM531ANc4kMdMwIpgfu6jBKcEyzt4Bnz25GoeYt748cechEeJN9kc0
+        KnloIyDE/I0Klr2RzFdrNZRMUsfOZg==
+X-Google-Smtp-Source: ABdhPJyBKwsYVpF+613L3NjhkodjdhNhTlNBEVF4zad8+lj7S3V5mZuzad0b7ALO+n88vjbc7x+Mqw==
+X-Received: by 2002:a05:6830:310e:b0:606:638d:cf00 with SMTP id b14-20020a056830310e00b00606638dcf00mr6415474ots.76.1652132375719;
+        Mon, 09 May 2022 14:39:35 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id o24-20020a9d6d18000000b0060603221271sm5086642otp.65.2022.05.09.14.39.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 May 2022 14:39:35 -0700 (PDT)
+Received: (nullmailer pid 243241 invoked by uid 1000);
+        Mon, 09 May 2022 21:39:34 -0000
+Date:   Mon, 9 May 2022 16:39:34 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: sx9324: Add CS idle/sleep mode
+Message-ID: <YnmKFiFqiR43I7Bb@robh.at.kernel.org>
+References: <20220503193937.3794477-1-swboyd@chromium.org>
+ <20220503193937.3794477-2-swboyd@chromium.org>
+ <faaa4ab4-8190-3cff-998e-3b6a6d3ce27c@linaro.org>
+ <YnKVzvAITXAHqSiX@robh.at.kernel.org>
+ <8aef897f-fff0-526e-62d0-6a92c301eb08@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220509134629.440965-5-Qing-wu.Li@leica-geosystems.com.cn>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <8aef897f-fff0-526e-62d0-6a92c301eb08@linaro.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi LI,
+On Wed, May 04, 2022 at 05:15:55PM +0200, Krzysztof Kozlowski wrote:
+> On 04/05/2022 17:03, Rob Herring wrote:
+> >>>  
+> >>> +  semtech,cs-idle-sleep:
+> >>> +    description:
+> >>> +      State of CS pins during sleep mode and idle time.
+> >>> +    enum:
+> >>> +      - hi-z
+> >>> +      - gnd
+> >>> +      - vdd
+> >>
+> >> You need a ref to type (string).
+> > 
+> > Actually, it can be implicit for single strings.
+> 
+> Is this a generic preference?
 
-Thank you for the patch! Perhaps something to improve:
+I don't have a preference, just noting that both are allowed. I like 
+having a smaller schema, but then it is a bit of a special case.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on v5.18-rc6 next-20220509]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/LI-Qingwu/iio-accel-bmi088-support-BMI085-BMI090L/20220509-215750
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: x86_64-randconfig-a003-20220509 (https://download.01.org/0day-ci/archive/20220510/202205100238.ZzT44bv1-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project a385645b470e2d3a1534aae618ea56b31177639f)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/70883e96ff4d7433fa8974815aba932f8bb2e8e7
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review LI-Qingwu/iio-accel-bmi088-support-BMI085-BMI090L/20220509-215750
-        git checkout 70883e96ff4d7433fa8974815aba932f8bb2e8e7
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/iio/accel/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/accel/bmi088-accel-core.c:243:6: warning: unused variable 'ret' [-Wunused-variable]
-           int ret;
-               ^
->> drivers/iio/accel/bmi088-accel-core.c:244:6: warning: unused variable 'reg' [-Wunused-variable]
-           int reg;
-               ^
-   2 warnings generated.
-
-
-vim +/ret +243 drivers/iio/accel/bmi088-accel-core.c
-
-   239	
-   240	static int bmi088_accel_set_scale(struct bmi088_accel_data *data, int val, int val2)
-   241	{
-   242		unsigned int i;
- > 243		int ret;
- > 244		int reg;
-   245	
-   246		for (i = 0; i < 4; i++)
-   247			if (val == data->chip_info->scale_table[i][0] &&
-   248			    val2 == data->chip_info->scale_table[i][1])
-   249				break;
-   250	
-   251		if (i >= 4)
-   252			return -EINVAL;
-   253	
-   254		return regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_RANGE, i);
-   255	}
-   256	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Rob

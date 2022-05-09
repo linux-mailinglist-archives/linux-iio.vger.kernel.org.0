@@ -2,162 +2,358 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7EBF51F8E9
-	for <lists+linux-iio@lfdr.de>; Mon,  9 May 2022 12:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1736651FBBF
+	for <lists+linux-iio@lfdr.de>; Mon,  9 May 2022 13:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbiEIJvf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 9 May 2022 05:51:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
+        id S233371AbiEIL5M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 9 May 2022 07:57:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235662AbiEIJ1p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 May 2022 05:27:45 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82D1202B1D;
-        Mon,  9 May 2022 02:23:50 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id gh6so25635262ejb.0;
-        Mon, 09 May 2022 02:23:50 -0700 (PDT)
+        with ESMTP id S233363AbiEIL5L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 9 May 2022 07:57:11 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84DE78232C
+        for <linux-iio@vger.kernel.org>; Mon,  9 May 2022 04:53:16 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id q23so19086126wra.1
+        for <linux-iio@vger.kernel.org>; Mon, 09 May 2022 04:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vBn4dTWE6t2YjSxYVSZ+XHjDtUdnCLlr7Yub++AF2JY=;
-        b=UMu99fQ7EvMM4azPSGgoeypDXe4MYng1mEZ0U21NvAcrEz1gntIWP1xBSZkWmXmk7F
-         CtpTZeQFa1+/kiBhnXjmM6LvhsoEModffF/1A2VG0q3jwVSUaS5xOF6mztXXnh1etJMb
-         z1yfkcB6Z3iY7Nv3cfYqN7kgyoBM4AbbaUyaUvpshu0X5PkLf1kYrUlIpEFiKcjh6CCb
-         LY2+ypStUcoiH1P/oQWrBIatVc71LtRUUDpNR2RULXF1A9++gxQNRBV7KWp7DdF+mbVo
-         idt0DpZFmRleGWqkd4ti7Rwojh2RsGWU73piA14Z2HLTp8o84T3YcXvBcHj1xGKoNxwk
-         dKaQ==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=RxUzrPlGd351YrggkQ+XVPFB6IRBoiOml8FovLXDQls=;
+        b=QkXMW5uuaL3UWTGchOY4X5vIz2WtCTt+ksTinRvBmWsybFlbwoMxdLcDQOxye3ohgi
+         gnmzf6e3rnEgJ0uOQrRNHKHMU+ULsY9FJBBhSFJH3TbPAzKHQRPdwW8EZk+j1tH88eFn
+         ODC8CR8RZbxKmtHeS/vTb/W53fH8Q0NSiS5Wf2GvXdi1xEIO75iAFQ3FqlQEB0N2SwPQ
+         NPldIAEDAPHH+KnG9POHjALKNJnbvNCs0azsHHRbqYi9pGvMmBcrZX+QIbQ6CfQXF/K9
+         jezmJsaQymWVYXSUG1qlVuJTpoy+2xkS7uvm/evWWoQo/OYMOBNVeeuOMLCRK4EA8ryy
+         rdtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vBn4dTWE6t2YjSxYVSZ+XHjDtUdnCLlr7Yub++AF2JY=;
-        b=DGobrNnbvRM2DncV82gg08LqQ7prH9s4l5ivgIezn+evsOLUFh14XYUHnSE/V9e2CS
-         nU+StEPrFwAjRd7IH1g5sipxL/u4IUUdZwOozKDNNgHe/3pVVj20pmIHvAlu1EjUk4bk
-         yuAEwi4M4OhAzi+ubav1u7hItMO39Zldxrlrfqgm5JB7COi2BcNmLVgZ0bOwdj/SAqhk
-         XtYd1JSMhFknmnGw5mrwZD3M4YlKM2MDCNmrp5jskI9sj5QiAyC1IdoOHEhV+vS1W+hd
-         +criqnseZ0nI7b2wgi+T9wYRaQJBFMLjIvCWhWTyn53WudvFQP+6EB9t8xllfQnMAuzW
-         N5Tw==
-X-Gm-Message-State: AOAM530p8XD/GucnHki00SfEEWKCWQiOPVOvNiJ8FdG72+zuh9cS+etU
-        T+Kp7nb2tqApX1EG+E1Td2n2phYLUKGddyCc1ic=
-X-Google-Smtp-Source: ABdhPJytr5Q53vJpxm+rLJz+lGQrPYFhRJ+0SJnhlbHOhGV5P7N4d3f0afif01iB4K46QbH/ug85c5+SUNjBcOj2+mI=
-X-Received: by 2002:a17:907:628e:b0:6d9:c6fa:6168 with SMTP id
- nd14-20020a170907628e00b006d9c6fa6168mr13501745ejc.132.1652088229173; Mon, 09
- May 2022 02:23:49 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=RxUzrPlGd351YrggkQ+XVPFB6IRBoiOml8FovLXDQls=;
+        b=Yn7dueA0WRxScsmcvvIssf0TiDTCtW8WahHavFyxhJMYjvUoUDSszVjb0rfw6wSfFf
+         val2Sv0Myvv3TnSzpqAOYQ11QtPmXkdJmqTG3Ym9MvIaeVMqahSlaFNcPB3zz8mE1fMG
+         bQAPB/hVH3QVHyGockZ4XOCn3qqQhQojmJfNplwkA73Jm16Zf3dw/5KTH2d95Z8HNRlF
+         HiNoG/xskpkPyuGosFWZdXgj2gcbMsgqxLx7+YLT30swHdbIQCTMldYE35VsuQ0CsQP8
+         RhxdD93dlGlHS7ujFa2MVTv/Tx9hO7oD/eIfpnKNeT7j+bGPDMqQdxqBXnLcRnbSDj2A
+         WVMg==
+X-Gm-Message-State: AOAM533Xh9ucul3B05uVaMZw/2Q2V+CmKDVGMqtZI0DNZkW7YEhw5eeV
+        s1LbFSZVXclmPlEB84eS85s4lw==
+X-Google-Smtp-Source: ABdhPJynPqQUzeFT4sckq1r/7NDs65EafIDtt517li/wAXth+qZSTmTNNlUOB6AgZGr6bSeEd4qyTw==
+X-Received: by 2002:a5d:598c:0:b0:20c:6912:6870 with SMTP id n12-20020a5d598c000000b0020c69126870mr13265519wri.465.1652097194941;
+        Mon, 09 May 2022 04:53:14 -0700 (PDT)
+Received: from [192.168.0.33] (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
+        by smtp.gmail.com with ESMTPSA id y17-20020a7bc191000000b003942a244f45sm5298524wmi.30.2022.05.09.04.53.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 May 2022 04:53:14 -0700 (PDT)
+Message-ID: <b148d9a1-9c3b-9e6f-1419-7a644bcd43b5@linaro.org>
+Date:   Mon, 9 May 2022 12:53:12 +0100
 MIME-Version: 1.0
-References: <20220509064928.2352796-1-Qing-wu.Li@leica-geosystems.com.cn> <20220509064928.2352796-4-Qing-wu.Li@leica-geosystems.com.cn>
-In-Reply-To: <20220509064928.2352796-4-Qing-wu.Li@leica-geosystems.com.cn>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 9 May 2022 11:23:13 +0200
-Message-ID: <CAHp75VcAvRkM84XzYtE7T=Zwoa0Ee=OfCbOV-KbsDELAsy+ZiA@mail.gmail.com>
-Subject: Re: [PATCH V4 3/5] iio: accel: sca3300: modified to support multi chips
-To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        tomas.melin@vaisala.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v14 05/10] iio: adc: qcom-spmi-rradc: introduce round
+ robin adc
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>
+References: <20220429220904.137297-1-caleb.connolly@linaro.org>
+ <20220429220904.137297-6-caleb.connolly@linaro.org>
+ <20220501183850.5bbbcbab@jic23-huawei>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20220501183850.5bbbcbab@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, May 9, 2022 at 8:49 AM LI Qingwu
-<Qing-wu.Li@leica-geosystems.com.cn> wrote:
->
-> The driver supports sca3300 only.
-> There are some other similar chips, for instance, SCL3300.
-> Prepare the way for multiple chips and additional channels.
-> Modify the driver to read the device id.
-> Add the tables for the corresponding id to support multiple chips.
-> Add prepares for the addition of extra channels.
-> Add prepares for handling the operation modes for multiple chips.
 
-Fancy style. Utilize the entire width of the line, i.e. ~72 characters.
 
-...
+On 01/05/2022 18:38, Jonathan Cameron wrote:
+> On Fri, 29 Apr 2022 23:09:00 +0100
+> Caleb Connolly <caleb.connolly@linaro.org> wrote:
+> 
+>> The Round Robin ADC is responsible for reading data about the rate of
+>> charge from the USB or DC input ports, it can also read the battery
+>> ID (resistence), skin temperature and the die temperature of the pmic.
+>> It is found on the PMI8998 and PM660 Qualcomm PMICs.
+>>
+>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Hi Caleb,
+Hi Jonathan,
 
-> +struct sca3300_chip_info {
-> +       const struct iio_chan_spec *channels;
-> +       u8 num_channels;
-> +       const unsigned long *scan_masks;
-> +       const int (*accel_scale)[2];
-> +       const int *accel_scale_map;
-> +       u8 num_accel_scales;
-> +       const int *freq_table;
-> +       const int *freq_map;
-> +       u8 num_freqs;
-> +       const int *avail_modes_table;
-> +       u8 num_avail_modes;
-> +       const char *name;
-> +       u8 chip_id;
-
-I recommend to shuffle it in a way that u8 members go closer to each
-other if possible.
-
-Like:
-
-       const unsigned long *scan_masks;
-       const struct iio_chan_spec *channels;
-       u8 num_channels;
-       u8 num_accel_scales;
-       const int (*accel_scale)[2];
-       const int *accel_scale_map;
-
-It will save a few bytes per object instance due to padding reduction.
-
-The idea about grouping all of them also can be done despite the
-comment given previously by someone.
-
-> +};
-
-...
-
-> +       for (i = 0; i < sca_data->chip->num_avail_modes; i++) {
-> +               if (sca_data->chip->avail_modes_table[i] == reg_val) {
-> +                       *index = i;
-> +                       return 0;
-> +               }
-> +       }
-> +
-> +       return -EINVAL;
-
-Can be modified to use standard pattern (return errors first), but
-it's up to maintainers, because the latter requires an additional
-check after the loop.
-
-...
-
-> +       for (i = 0; i < chip->num_avail_modes; i++) {
-> +               if (val == chip->freq_table[chip->freq_map[i]]) {
-> +                       if (chip->accel_scale[chip->accel_scale_map[index]] ==
-> +                           chip->accel_scale[chip->accel_scale_map[i]])
-> +                               return sca3300_set_op_mode(data, i);
-
-The
-  if (a) {
-    if (b) {
-      ...
-    }
-  }
-
-can be replaced by
-
-  if (a && b) {
-    ...
-  }
-
-> +               }
-> +       }
-> +
-> +       return -EINVAL;
-
-As per above.
+Thanks for spotting this, I completely missed it... Yeah this should be 
+IIO_INFO_PROCESSED, the battery ID calculation doesn't fit in the 
+raw/offset/scale format.
+> 
+> I took another quick read through of this and noticed that the battery channel
+> is providing on IIO_INFO_RAW but there is code for IIO_INFO_PROCESSED.
+> 
+> Something gone wrong along the way?  If all we need is to change it to
+> BIT(IIO_INFO_PROCESSED) I can do that whilst applying or you can do a v15 if
+> you prefer.
+That would be hugely appreciated, thanks a lot.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+> 
+>> diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
+>> new file mode 100644
+>> index 000000000000..c437546d8a4c
+>> --- /dev/null
+>> +++ b/drivers/iio/adc/qcom-spmi-rradc.c
+> 
+> 
+> ..
+> 
+>> +
+>> +/*
+>> + * These functions explicitly cast int64_t to int.
+>> + * They will never overflow, as the values are small enough.
+> 
+> See below. I don't think this gets used...
+> 
+>> + */
+>> +static int rradc_post_process_batt_id(struct rradc_chip *chip, u16 adc_code,
+>> +				      int *result_ohms)
+>> +{
+>> +	uint32_t current_value;
+>> +	int64_t r_id;
+>> +
+>> +	current_value = chip->batt_id_data;
+>> +	r_id = ((int64_t)adc_code * RR_ADC_FS_VOLTAGE_MV);
+>> +	r_id = div64_s64(r_id, (RR_ADC_CHAN_MSB * current_value));
+>> +	*result_ohms = (int)(r_id * MILLI);
+>> +
+>> +	return 0;
+>> +}
+>> +
+> 
+> 
+>> +
+>> +static int rradc_read_raw(struct iio_dev *indio_dev,
+>> +			  struct iio_chan_spec const *chan_spec, int *val,
+>> +			  int *val2, long mask)
+>> +{
+>> +	struct rradc_chip *chip = iio_priv(indio_dev);
+>> +	const struct rradc_channel *chan;
+>> +	int ret;
+>> +	u16 adc_code;
+>> +
+>> +	if (chan_spec->address >= RR_ADC_CHAN_MAX) {
+>> +		dev_err(chip->dev, "Invalid channel index:%lu\n",
+>> +			chan_spec->address);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		return rradc_read_scale(chip, chan_spec->address, val, val2);
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		return rradc_read_offset(chip, chan_spec->address, val);
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +
+>> +		*val = adc_code;
+>> +		return IIO_VAL_INT;
+>> +	case IIO_CHAN_INFO_PROCESSED:
+> 
+> This doesn't seem to apply to any channels....
+> 
+>> +		chan = &rradc_chans[chan_spec->address];
+>> +		if (!chan->scale_fn)
+>> +			return -EINVAL;
+>> +		ret = rradc_do_conversion(chip, chan_spec->address, &adc_code);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +
+>> +		*val = chan->scale_fn(chip, adc_code, val);
+>> +		return IIO_VAL_INT;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static int rradc_read_label(struct iio_dev *indio_dev,
+>> +			    struct iio_chan_spec const *chan, char *label)
+>> +{
+>> +	return snprintf(label, PAGE_SIZE, "%s\n",
+>> +			rradc_chans[chan->address].label);
+>> +}
+>> +
+>> +static const struct iio_info rradc_info = {
+>> +	.read_raw = rradc_read_raw,
+>> +	.read_label = rradc_read_label,
+>> +};
+>> +
+>> +static const struct rradc_channel rradc_chans[RR_ADC_CHAN_MAX] = {
+>> +	{
+>> +		.label = "batt_id",
+>> +		.scale_fn = rradc_post_process_batt_id,
+>> +		.lsb = RR_ADC_BATT_ID_5_LSB,
+>> +		.status = RR_ADC_BATT_ID_STS,
+>> +		.size = 6,
+>> +		.trigger_addr = RR_ADC_BATT_ID_TRIGGER,
+>> +		.trigger_mask = BIT(0),
+>> +	}, {
+>> +		.label = "batt",
+>> +		.lsb = RR_ADC_BATT_THERM_LSB,
+>> +		.status = RR_ADC_BATT_THERM_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_BATT_THERM_TRIGGER,
+>> +	}, {
+>> +		.label = "pmi8998_skin",
+>> +		.lsb = RR_ADC_SKIN_TEMP_LSB,
+>> +		.status = RR_ADC_AUX_THERM_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_AUX_THERM_TRIGGER,
+>> +	}, {
+>> +		.label = "usbin_i",
+>> +		.lsb = RR_ADC_USB_IN_I_LSB,
+>> +		.status = RR_ADC_USB_IN_I_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_USB_IN_I_TRIGGER,
+>> +	}, {
+>> +		.label = "usbin_v",
+>> +		.lsb = RR_ADC_USB_IN_V_LSB,
+>> +		.status = RR_ADC_USB_IN_V_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_USB_IN_V_TRIGGER,
+>> +		.trigger_mask = BIT(7),
+>> +	}, {
+>> +		.label = "dcin_i",
+>> +		.lsb = RR_ADC_DC_IN_I_LSB,
+>> +		.status = RR_ADC_DC_IN_I_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_DC_IN_I_TRIGGER,
+>> +	}, {
+>> +		.label = "dcin_v",
+>> +		.lsb = RR_ADC_DC_IN_V_LSB,
+>> +		.status = RR_ADC_DC_IN_V_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_DC_IN_V_TRIGGER,
+>> +	}, {
+>> +		.label = "pmi8998_die",
+>> +		.lsb = RR_ADC_PMI_DIE_TEMP_LSB,
+>> +		.status = RR_ADC_PMI_DIE_TEMP_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_PMI_DIE_TEMP_TRIGGER,
+>> +		.trigger_mask = RR_ADC_TRIGGER_EVERY_CYCLE,
+>> +	}, {
+>> +		.label = "chg",
+>> +		.lsb = RR_ADC_CHARGER_TEMP_LSB,
+>> +		.status = RR_ADC_CHARGER_TEMP_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_CHARGER_TEMP_TRIGGER,
+>> +	}, {
+>> +		.label = "gpio",
+>> +		.lsb = RR_ADC_GPIO_LSB,
+>> +		.status = RR_ADC_GPIO_STS,
+>> +		.size = 2,
+>> +		.trigger_addr = RR_ADC_GPIO_TRIGGER,
+>> +	},
+>> +};
+>> +
+>> +static const struct iio_chan_spec rradc_iio_chans[RR_ADC_CHAN_MAX] = {
+>> +	{
+>> +		.type = IIO_RESISTANCE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>> +		.address = RR_ADC_BATT_ID,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>> +		.address = RR_ADC_BATT_THERM,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>> +				      BIT(IIO_CHAN_INFO_OFFSET),
+>> +		.address = RR_ADC_SKIN_TEMP,
+>> +		.channel = 1,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_CURRENT,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_USBIN_I,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_VOLTAGE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_USBIN_V,
+>> +		.channel = 0,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_CURRENT,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_DCIN_I,
+>> +		.channel = 1,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_VOLTAGE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_DCIN_V,
+>> +		.channel = 1,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>> +				      BIT(IIO_CHAN_INFO_OFFSET),
+>> +		.address = RR_ADC_DIE_TEMP,
+>> +		.channel = 2,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_TEMP,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_OFFSET) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_CHG_TEMP,
+>> +		.channel = 3,
+>> +		.indexed = 1,
+>> +	}, {
+>> +		.type = IIO_VOLTAGE,
+>> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +				      BIT(IIO_CHAN_INFO_SCALE),
+>> +		.address = RR_ADC_GPIO,
+>> +		.channel = 2,
+>> +		.indexed = 1,
+>> +	},
+>> +};
+>> +
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Kind Regards,
+Caleb (they/he)

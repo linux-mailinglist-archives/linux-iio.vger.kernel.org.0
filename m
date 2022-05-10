@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5385D520D79
-	for <lists+linux-iio@lfdr.de>; Tue, 10 May 2022 08:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E50C520D8E
+	for <lists+linux-iio@lfdr.de>; Tue, 10 May 2022 08:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235390AbiEJGFb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 May 2022 02:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
+        id S236996AbiEJGJM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 May 2022 02:09:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233823AbiEJGF3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 May 2022 02:05:29 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3283F29ED22;
-        Mon,  9 May 2022 23:01:32 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id t11-20020a17090ad50b00b001d95bf21996so1185565pju.2;
-        Mon, 09 May 2022 23:01:32 -0700 (PDT)
+        with ESMTP id S236993AbiEJGJH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 May 2022 02:09:07 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BE512A3769;
+        Mon,  9 May 2022 23:05:11 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id c1-20020a17090a558100b001dca2694f23so1262012pji.3;
+        Mon, 09 May 2022 23:05:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XQQYvbl9hUacAPEZ+LW/8LA5nUubKeczZLoxSCDlwOw=;
-        b=jFTt+K4E8KUfJCl7/NROgzlyUhIUBKAfHN3HYk75JZXFpf6yTKMMea3l1BeO4P+KW+
-         dsevyiK2sBkhJmL9rTyc3MNI6++W4e1LDNb34baEZmft322rs/Nry8J6P9k+Pg5xAYr+
-         WXTzCdCBZvSag24xn9b1OvawRpvog4m3Je9Hbe/qNI0QScas4faIvR7oJZKxsHeeIqm7
-         YwTduWMbScgxnEgpbgmenTpyS3LJFZYMcAtaHZIi8sZ84rN1BDVYfSd9vcfUdQwcyXaL
-         A/fbP+Anc/wCs5TY15hjFUiBE4/sJ6RNdZHvKDm7fEqq6dqDJrbcujez6bqn0Gqqe4dv
-         boeg==
+        bh=dCUvLZt4bW4Bwx47k7lt8egIN7aXjve5QVb8kto9Q5c=;
+        b=qMwt8n8AMkpQzdatj6CPAFD88YO9ZdgrtcOQhIhxVWM/PkCmtBgC8aQ9e7/IJG3xO6
+         PgKxHjKa+vPyoxeT6rJRU1eVtxTULaBsFufBr6d6Fz/RkY6xg53cz9LRLo2pCyBVGlwp
+         8jKx/0J8KaASU5wWShn/yBqj/oKQNl7GJTY+sV0nI2251rhremIIRZ9Da0lppXvX1SqC
+         HQL3dqKxwGQyuhW+FM5tC43c5ZIn25e/ievE8ZUNgryUHuWLx0UB8oXIO+clmqc4mdMy
+         1F7sdUO28cPklXeSn2pXWvrOhelWDG1YtzLhsgB39qnHN+sUddt7ytqp3LBgVkWnUqJ9
+         O6ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XQQYvbl9hUacAPEZ+LW/8LA5nUubKeczZLoxSCDlwOw=;
-        b=0PAyU1BH80hHLY9gRaMTj5zT00djyRmV8olJkRtKsYqCM0S1O2lcEgIrAvIlYhLH/b
-         QEflH9+yplXL/ryYk24Z/4afD4FMElA7rZRzzOCCBhdSQ7pJj/TZuDFk9IDSrmFx5i3r
-         m06syhUDa0WWpqzLE0IoKQ0/IKubIe6bvqb+PjK2LSRqSkDCbcMWxgUZP2X4qhqGqgZD
-         f4N9sIz1rdRizJE4DvcJGON5GiqEHZrS7RFiRW4eK/ipYMqJkmstfE6bKR7qg8+m+erN
-         h1cdLCQS4U7FwxpHSjyHWClXmfIrnpIqtlFcs0ZP1SC9jBTPXhCmpyUOzaAQPWyupgXa
-         kGtA==
-X-Gm-Message-State: AOAM531vRMwK7Afvb/e50tx8GeLXH+0UUhsu0xUKc2jh2YLdOcMF3xgF
-        zulocuyuOo4NAFEermwdknk0J2I6XovAr2xx9Z6StK/j
-X-Google-Smtp-Source: ABdhPJyOmFJx+/p0huKYuxZ6kCYAoYW9ro3IU2imwqK05ydLZI0MtKW90ffY0cwPV7XVeW1p9gWlRo/dueIFhiTHChY=
+        bh=dCUvLZt4bW4Bwx47k7lt8egIN7aXjve5QVb8kto9Q5c=;
+        b=WpDeCvpuqPVlhDnkt2UaL/NOuzP97egm8sLS2RB14yVu7qnS9tOy1Rj9m/KxKbmQa8
+         g0LzxvoRiQL8HJlwrDTX7a/51ELFA8HRWaLsZjb/yQhhheFYlKEm4CF2sKO/eIllhvvD
+         lwdSdXqE44CUT7ttgl5LHw4zsZ16vU9eeXZIkHqUvOLotF+C5/4WZYUvdn/vs7VlqvDT
+         FdrTaJWUqIyjBrfUXvJq/Z+x6akDrCZJ+luXaDK0H1elhky93U3FblOwAOBOKr3nCfKn
+         65cRghB+Vlxsbm3OkmXlfrly4Gzum9wLL8fDsxw0t1n735fBA5Au0413x7rzS356gvDV
+         BfwQ==
+X-Gm-Message-State: AOAM530tgMs/H+2dQpF0NHoOz7+QZdr1YAYI7JxtZNy0x8pjOkth9BD7
+        tn/bnfSpwDHtV3/ngj3UzUWyZIztPF7qfOSMJNXfxQav
+X-Google-Smtp-Source: ABdhPJzAnMbNWoNEIgJFUaEv804fULylo089WZP4AMgo/qxTFvk6wup/QyXuxwCddXLySq20QcnBBV6h9+iE72TywwQ=
 X-Received: by 2002:a17:90b:4f81:b0:1dc:681e:248 with SMTP id
- qe1-20020a17090b4f8100b001dc681e0248mr30215317pjb.98.1652162491702; Mon, 09
- May 2022 23:01:31 -0700 (PDT)
+ qe1-20020a17090b4f8100b001dc681e0248mr30228183pjb.98.1652162710460; Mon, 09
+ May 2022 23:05:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220509134629.440965-1-Qing-wu.Li@leica-geosystems.com.cn> <20220509134629.440965-2-Qing-wu.Li@leica-geosystems.com.cn>
-In-Reply-To: <20220509134629.440965-2-Qing-wu.Li@leica-geosystems.com.cn>
+References: <20220509134629.440965-1-Qing-wu.Li@leica-geosystems.com.cn> <20220509134629.440965-3-Qing-wu.Li@leica-geosystems.com.cn>
+In-Reply-To: <20220509134629.440965-3-Qing-wu.Li@leica-geosystems.com.cn>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 10 May 2022 09:01:20 +0300
-Message-ID: <CA+U=DspAJMq7hp9RixzZcjW=rR7tEMdrHuyS23cgjmq62vmPeA@mail.gmail.com>
-Subject: Re: [PATCH V1 1/5] iio: accel: bmi088: Modified the scale calculate
+Date:   Tue, 10 May 2022 09:04:59 +0300
+Message-ID: <CA+U=DsqAbUmSpGGc4=-QHhROh99ASKfGAcF7=EFfawLgKxkkFw@mail.gmail.com>
+Subject: Re: [PATCH V1 2/5] iio: accel: bmi088: Add support for bmi085 accel.
 To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -70,80 +70,39 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Mon, May 9, 2022 at 4:46 PM LI Qingwu
 <Qing-wu.Li@leica-geosystems.com.cn> wrote:
 >
-> The units after application of scale are 100*m/s^2,
-> The scale calculation is only for the device
-> with the range of 3, 6, 12, and 24g,
-> but some other chips have a range of 2, 4, 6, and 8g.
+> Add supports for BMI085, an Inertial Measurement Unit,
+> with an accelerometer and gyroscope.
+> The commit adds the accelerometer driver for the SPI interface.
+> The gyroscope part is already supported by the BMG160 driver.
+> Different from BMI088, the BMI085 accelerometer has the range of
+> +/-2, 4, 6, and 8g.
 >
-> Modified the formula to a scale list.
-> The scales in the list are calculated by 1/sensitivity*9.8.
-> The new units after the application of scale are m/s^2.
->
+
+Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
+
 > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 > ---
->  drivers/iio/accel/bmi088-accel-core.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  drivers/iio/accel/bmi088-accel-core.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
 > diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-> index a06dae5c971d..0c58ffdd00e3 100644
+> index 0c58ffdd00e3..ac8acf6e2ff0 100644
 > --- a/drivers/iio/accel/bmi088-accel-core.c
 > +++ b/drivers/iio/accel/bmi088-accel-core.c
-> @@ -119,6 +119,7 @@ struct bmi088_accel_chip_info {
->         u8 chip_id;
->         const struct iio_chan_spec *channels;
->         int num_channels;
-> +       const int scale_table[4][2];
->  };
->
->  struct bmi088_accel_data {
-> @@ -280,6 +281,7 @@ static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
->         struct bmi088_accel_data *data = iio_priv(indio_dev);
->         struct device *dev = regmap_get_device(data->regmap);
->         int ret;
-> +       int reg;
->
->         switch (mask) {
->         case IIO_CHAN_INFO_RAW:
-> @@ -330,13 +332,12 @@ static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
->                                 return ret;
->
->                         ret = regmap_read(data->regmap,
-> -                                         BMI088_ACCEL_REG_ACC_RANGE, val);
-> +                                         BMI088_ACCEL_REG_ACC_RANGE, &reg);
-
-Curios: do we need to validate the value of `reg` here?
-If it goes outside of the 0...3 range, I can see a bit of access
-violation (kernel panic) happening.
-
->                         if (ret)
->                                 goto out_read_raw_pm_put;
-> -
-> -                       *val2 = 15 - (*val & 0x3);
-> -                       *val = 3 * 980;
-> -                       ret = IIO_VAL_FRACTIONAL_LOG2;
-
-Not sure what the policy is about changing this now.
-I'll leave this to Jonathan.
-
-> +                       *val = data->chip_info->scale_table[reg][0];
-> +                       *val2 = data->chip_info->scale_table[reg][1];
-> +                       ret = IIO_VAL_INT_PLUS_MICRO;
->
->                         goto out_read_raw_pm_put;
->                 default:
-> @@ -432,6 +433,7 @@ static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
->                 .chip_id = 0x1E,
->                 .channels = bmi088_accel_channels,
+> @@ -435,6 +435,13 @@ static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
 >                 .num_channels = ARRAY_SIZE(bmi088_accel_channels),
-> +               .scale_table = {{0, 897}, {0, 1795}, {0, 3590}, {0, 7179}},
-
-I like the idea of this scale_table.
-It makes things easier to see (what's happening) without looking into
-the datasheet much.
-
+>                 .scale_table = {{0, 897}, {0, 1795}, {0, 3590}, {0, 7179}},
 >         },
+> +       [1] = {
+> +               .name = "bmi085-accel",
+> +               .chip_id = 0x1F,
+> +               .channels = bmi088_accel_channels,
+> +               .num_channels = ARRAY_SIZE(bmi088_accel_channels),
+> +               .scale_table = {{0, 598}, {0, 1196}, {0, 2393}, {0, 4785}},
+> +       },
 >  };
 >
+>  static const struct iio_info bmi088_accel_info = {
 > --
 > 2.25.1
 >

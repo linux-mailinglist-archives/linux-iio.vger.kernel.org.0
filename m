@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 273FF520D92
-	for <lists+linux-iio@lfdr.de>; Tue, 10 May 2022 08:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2DF6520E6B
+	for <lists+linux-iio@lfdr.de>; Tue, 10 May 2022 09:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233823AbiEJGJZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 10 May 2022 02:09:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45410 "EHLO
+        id S237590AbiEJHfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 10 May 2022 03:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237000AbiEJGJS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 May 2022 02:09:18 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9C02A3BCA;
-        Mon,  9 May 2022 23:05:22 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id x52so14082967pfu.11;
-        Mon, 09 May 2022 23:05:22 -0700 (PDT)
+        with ESMTP id S238134AbiEJHFj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 10 May 2022 03:05:39 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47A52D1FF;
+        Tue, 10 May 2022 00:01:42 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d22so15934405plr.9;
+        Tue, 10 May 2022 00:01:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=TYoKj9SDisXrVyQgu04AJWDh/BOmuXH5bGQRnrO9Pis=;
-        b=oQ/LZEgPh8pL3Yje1n48XirpOlJKdNHpFt623KQmdcuNvr4b+e/Uh6TOS3zOH3c7cv
-         N6OoGy+XjY1RKdcxwxmOy6C4jzd1EplkjBuIk2mfY8N0aor+f+wULGjIfSdeqXItp8b+
-         mAZrQb9k4aQFnhdDjsytrENDEBXlmsVY8ndB6UNAFO2lmrNDa5U7lMFVFMKcomG4Mo5O
-         fxfkpbbxpotlML+SH8TGvEPkf0IBiCW720DQWcxJ9uC4Rz3ByYzdyawgxa7ujW8guBZ4
-         DhtvOpvw2jGpQd32I4afEkoDja9YdsNHXmKpbKTzqihpUZpASaqvNczTtcNxrl8mpOe6
-         j8jg==
+        bh=2bJfSI26+416H0cEFrU+Zj4BNqCl1B3sTgbKXFNXPmU=;
+        b=pH2kT7ap04SLVR0W2AufymCpw+0zDuir2vcSkD2zlgTbXoFv0I+hvEUmzHBhC0yVbP
+         bdCggCJk5d0N5vDSecMBSjkZmXMh/23fwOUvUlkEe7O11UP0qAlo6ZwGAYPdqiccZCZk
+         MGRU/GGJvh6X7CKhSQ7cG/RkMGSktmXYIVGWNr2sP9FU233uyKPK30EOLEa0t9T4c7XZ
+         2KLXjuqccEWbyT7XS0np1ZM/Xaz/3UuYYyKrhkUO4/pCVpHhenPI3VAlx5enizuLYPiZ
+         T00J+LS3BZpJ0jIiGwN9p8SXonfgYg74PtzMDhkkCIca+QBS3SWW9aZyn0e1s8J4gUu5
+         ckvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TYoKj9SDisXrVyQgu04AJWDh/BOmuXH5bGQRnrO9Pis=;
-        b=bcwbIPLsyuDJ15zx/DfRLjwn1nppVCIDFQsqfqN+r5V0vX35kiuAi6lxwQt0ny7paj
-         jc/SqpDX/WwkrwybBiSmGzUpcufGfd15YH7q9TKT0xVD6Wrp2t/vprYGMzAZQfx6ief3
-         qkomFQNAaMrjjCrmKSomnAUPoU1/mZYs8BG3ueOE4/8TihscIgxCIY1EykJVib1EL71m
-         ZDdWqA4JSBPnyW6HZabvKkKX5KejXu2aYf/675TId/aHmkdT3YTgbSj31UNaUn4C9s2d
-         +iIloWo1w1vqpXYNcVJYqeZndQvHSPhjw6b7R+VS8/NvFk/lr3ltwt1mfHBHa4QcBqBv
-         l24g==
-X-Gm-Message-State: AOAM531AMA2G9ZG70B67KMDXVk3PETCalhv3NRJwE18lQIKpEMs5YWgi
-        D+kf/emwSCyvCPNMrOpo/BQo+ygq7S5WZ+Ezn/g=
-X-Google-Smtp-Source: ABdhPJxl63vrCxM265OPPN2Xh/ht3Cuahd9Pze0ZH3b+3PqglcSrmqe8alm8j7HXbuOXdaxvwDZSUda8R+JsSjw5RkQ=
-X-Received: by 2002:a63:84c8:0:b0:3c6:4013:9e90 with SMTP id
- k191-20020a6384c8000000b003c640139e90mr15689360pgd.415.1652162722100; Mon, 09
- May 2022 23:05:22 -0700 (PDT)
+        bh=2bJfSI26+416H0cEFrU+Zj4BNqCl1B3sTgbKXFNXPmU=;
+        b=SZHNhBspEU0szhnnGwN5IZz7K/nwgJE+63NCZuCwkeNzYOQ7Ew+NYQ98xTFQsiIzWY
+         OSOHSs98TnfxxVjUj6gwqlD6vmN8TPJZwS9b4faO/5mV1v3eTZ8Ydj6IQnvwMIRTHjii
+         /MwKhg5WCgb/3OTAvDtyickVbvBVVBptdlN2+rk02HU6tBEGxnZqIvEesrsCXyfD07t6
+         42EnTWLtI0yR4a6Ad5auISE3Xb++qH6gAQcjhAB5BHpFAiUwJQBsSQgPykdVIahDJgzM
+         lTZeOg6yHWGNg5SMLAe+2sGw09erMGwwYNq/7IMeBk+4gqdxZsBCmYDnYvCKc2p2Ti6J
+         cAew==
+X-Gm-Message-State: AOAM530XBhliuUs7fra5X2etVETK16e1bqYXMZiXSi4g9CsyxO3wePb4
+        SPka+7e6U17yzQB43HmKCxyQj1KLvp77sIkU7H4=
+X-Google-Smtp-Source: ABdhPJyDmgLmJ+UkJgAmBSmdDMtmzjuyKFW/3yG342AEob6jkHlqPUT3Il3Ejn0ZEYkPLKl3+UiO/aPNPRmvT8azFCs=
+X-Received: by 2002:a17:902:6f16:b0:15e:f719:34ec with SMTP id
+ w22-20020a1709026f1600b0015ef71934ecmr15720145plk.166.1652166102198; Tue, 10
+ May 2022 00:01:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220509134629.440965-1-Qing-wu.Li@leica-geosystems.com.cn> <20220509134629.440965-4-Qing-wu.Li@leica-geosystems.com.cn>
-In-Reply-To: <20220509134629.440965-4-Qing-wu.Li@leica-geosystems.com.cn>
+References: <20220509134629.440965-1-Qing-wu.Li@leica-geosystems.com.cn> <20220509134629.440965-5-Qing-wu.Li@leica-geosystems.com.cn>
+In-Reply-To: <20220509134629.440965-5-Qing-wu.Li@leica-geosystems.com.cn>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Tue, 10 May 2022 09:05:10 +0300
-Message-ID: <CA+U=DsoRpNZY08R8vZSF9Wq1MUCq=U7ohUE9YSXF2GZeGFr7Qg@mail.gmail.com>
-Subject: Re: [PATCH V1 3/5] iio: accel: bmi088: Add support for bmi090l accel
+Date:   Tue, 10 May 2022 10:01:31 +0300
+Message-ID: <CA+U=Dsp_vvANuXUwjKC-6g8daBOCFargRZ0r=AbkCwG9KifgHA@mail.gmail.com>
+Subject: Re: [PATCH V1 4/5] iio: accel: bmi088: Make it possible to config scales.
 To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -70,38 +70,87 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Mon, May 9, 2022 at 4:46 PM LI Qingwu
 <Qing-wu.Li@leica-geosystems.com.cn> wrote:
 >
-> Add supports for BMI090L, it's a high-performance Inertial
-> Measurement Unit, with an accelerometer and gyroscope.
-> The commit adds the accelerometer driver for the SPI interface.
-> The gyroscope part is already supported by the BMG160 driver.
-> Same as BMI088, BMI090L have the range of +/-3, 6, 12, and 24g.
->
+> All the sensors can set the scales by writing the range register 0x41,
+> The current driver has no interface to configure it.
+> The commit adds the interface for config the scales.
+
+With the warnings fixed:
+
 
 Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 
+
+>
 > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 > ---
->  drivers/iio/accel/bmi088-accel-core.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/iio/accel/bmi088-accel-core.c | 32 +++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
 >
 > diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-> index ac8acf6e2ff0..44cbe098c093 100644
+> index 44cbe098c093..7c78cfb321ee 100644
 > --- a/drivers/iio/accel/bmi088-accel-core.c
 > +++ b/drivers/iio/accel/bmi088-accel-core.c
-> @@ -442,6 +442,13 @@ static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
->                 .num_channels = ARRAY_SIZE(bmi088_accel_channels),
->                 .scale_table = {{0, 598}, {0, 1196}, {0, 2393}, {0, 4785}},
->         },
-> +       [2] = {
-> +               .name = "bmi090l-accel",
-> +               .chip_id = 0x1A,
-> +               .channels = bmi088_accel_channels,
-> +               .num_channels = ARRAY_SIZE(bmi088_accel_channels),
-> +               .scale_table = {{0, 897}, {0, 1795}, {0, 3590}, {0, 7179}},
-> +       },
->  };
+> @@ -237,6 +237,23 @@ static int bmi088_accel_set_sample_freq(struct bmi088_accel_data *data, int val)
+>                                   BMI088_ACCEL_MODE_ODR_MASK, regval);
+>  }
 >
->  static const struct iio_info bmi088_accel_info = {
+> +static int bmi088_accel_set_scale(struct bmi088_accel_data *data, int val, int val2)
+> +{
+> +       unsigned int i;
+> +       int ret;
+> +       int reg;
+> +
+> +       for (i = 0; i < 4; i++)
+> +               if (val == data->chip_info->scale_table[i][0] &&
+> +                   val2 == data->chip_info->scale_table[i][1])
+> +                       break;
+> +
+> +       if (i >= 4)
+> +               return -EINVAL;
+> +
+> +       return regmap_write(data->regmap, BMI088_ACCEL_REG_ACC_RANGE, i);
+> +}
+> +
+>  static int bmi088_accel_get_temp(struct bmi088_accel_data *data, int *val)
+>  {
+>         int ret;
+> @@ -368,7 +385,13 @@ static int bmi088_accel_read_avail(struct iio_dev *indio_dev,
+>                              const int **vals, int *type, int *length,
+>                              long mask)
+>  {
+> +       struct bmi088_accel_data *data = iio_priv(indio_dev);
+>         switch (mask) {
+> +       case IIO_CHAN_INFO_SCALE:
+> +               *vals = (const int *)data->chip_info->scale_table;
+> +               *length = 8;
+> +               *type = IIO_VAL_INT_PLUS_MICRO;
+> +               return IIO_AVAIL_LIST;
+>         case IIO_CHAN_INFO_SAMP_FREQ:
+>                 *type = IIO_VAL_INT_PLUS_MICRO;
+>                 *vals = bmi088_sample_freqs;
+> @@ -388,6 +411,14 @@ static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
+>         int ret;
+>
+>         switch (mask) {
+> +       case IIO_CHAN_INFO_SCALE:
+> +               ret = pm_runtime_resume_and_get(dev);
+> +               if (ret)
+> +                       return ret;
+> +               ret = bmi088_accel_set_scale(data, val, val2);
+> +               pm_runtime_mark_last_busy(dev);
+> +               pm_runtime_put_autosuspend(dev);
+> +               return ret;
+>         case IIO_CHAN_INFO_SAMP_FREQ:
+>                 ret = pm_runtime_resume_and_get(dev);
+>                 if (ret)
+> @@ -410,6 +441,7 @@ static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
+>         .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
+>                                 BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+>         .info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+> +                               BIT(IIO_CHAN_INFO_SCALE ), \
+>         .scan_index = AXIS_##_axis, \
+>  }
+>
 > --
 > 2.25.1
 >

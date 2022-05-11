@@ -2,118 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFF23522EE4
-	for <lists+linux-iio@lfdr.de>; Wed, 11 May 2022 11:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D95F4522EFD
+	for <lists+linux-iio@lfdr.de>; Wed, 11 May 2022 11:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239982AbiEKJBe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 11 May 2022 05:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47508 "EHLO
+        id S229885AbiEKJIw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 11 May 2022 05:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240057AbiEKJB3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 May 2022 05:01:29 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B7A3525B;
-        Wed, 11 May 2022 02:01:22 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24B6N7Xw012575;
-        Wed, 11 May 2022 05:01:14 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3fwnp5y35m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 May 2022 05:01:13 -0400
-Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24B8qnYN025411;
-        Wed, 11 May 2022 05:01:12 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3fwnp5y35f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 11 May 2022 05:01:12 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 24B91BY9002624
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 11 May 2022 05:01:11 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Wed, 11 May 2022 05:01:09 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Wed, 11 May 2022 05:01:09 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 11 May 2022 05:01:09 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.132])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 24B90wqT026078;
-        Wed, 11 May 2022 05:01:00 -0400
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2] iio: freq: admv1014: Fix warning about dubious x & !y and improve readability
-Date:   Wed, 11 May 2022 12:00:06 +0300
-Message-ID: <20220511090006.90502-1-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S229972AbiEKJIv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 11 May 2022 05:08:51 -0400
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26AA2CC88;
+        Wed, 11 May 2022 02:08:50 -0700 (PDT)
+Received: by mail-qk1-f182.google.com with SMTP id m1so1800844qkn.10;
+        Wed, 11 May 2022 02:08:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HhYQv27JmheN+IIAmT/S+0BaIl0u3hjG9Yztl7Q3bYI=;
+        b=TZuPmOW70TUB+sleb5ZQWdRJQPFjoLL1L76Pr20kFnVei9sysu9k2O/m96cm+ckz2q
+         DupDFQRI2E1ZRtMrQgIWmpuTasgbcYgfothSwi8dTqF/9ASeXV5zB183uVm7KymqEgUX
+         bBDbEEWsgn+JUsF+smryPSN0D0It+/3Z4eGwtu3FJkz8+Ljk+vm3ICWho44fXPvfZ2a7
+         P3oTbV7uMEEyM8aV7aZ3LDBFYcqhzpvQjVb0QRbo8DUggq/Vv9jdlMNKzR019gUCaqqW
+         php8NQQcuIrhQxiI/0o269ppFwoW2JKGd2E5HsMf3l/RoKjqKmPmV5u57jisqzXiqtHj
+         5RXQ==
+X-Gm-Message-State: AOAM530GwRAIZsdYyHPWabd/N2gPjpB63x3CeBw1Gc6bwL1/2z09c5/W
+        LJQDYQ47bOdgt8sbFp6mrpgSFClpH3Idog==
+X-Google-Smtp-Source: ABdhPJxg1WI5OjXgKAjZqUrH7ZuN7HnyAf6ZevH92l8Hj5iZ3vCB+TFgdvEUzMVOaRMav2ryCEgAsQ==
+X-Received: by 2002:a05:620a:4449:b0:6a0:3f3c:c29d with SMTP id w9-20020a05620a444900b006a03f3cc29dmr18117946qkp.25.1652260129575;
+        Wed, 11 May 2022 02:08:49 -0700 (PDT)
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com. [209.85.219.178])
+        by smtp.gmail.com with ESMTPSA id v3-20020ac85783000000b002f39b99f6b8sm873292qta.82.2022.05.11.02.08.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 May 2022 02:08:48 -0700 (PDT)
+Received: by mail-yb1-f178.google.com with SMTP id w187so2780962ybe.2;
+        Wed, 11 May 2022 02:08:48 -0700 (PDT)
+X-Received: by 2002:a05:6902:905:b0:64a:2089:f487 with SMTP id
+ bu5-20020a056902090500b0064a2089f487mr22009190ybb.202.1652260128075; Wed, 11
+ May 2022 02:08:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: xr_h9GcanLM3thx0wB7n_-ynn5HFuU2r
-X-Proofpoint-ORIG-GUID: t2xRcMaxgyXEj3q-LloLDcjcbGdqMa5Q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-11_02,2022-05-10_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 phishscore=0 spamscore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=794
- clxscore=1011 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2202240000 definitions=main-2205110040
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220511082325.36185-1-biju.das.jz@bp.renesas.com> <20220511082325.36185-2-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20220511082325.36185-2-biju.das.jz@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 11 May 2022 11:08:36 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXpfV-u6Yk+J_fhh1pYd4+uPdJRhv2C4Zr7ajaQdzzDxQ@mail.gmail.com>
+Message-ID: <CAMuHMdXpfV-u6Yk+J_fhh1pYd4+uPdJRhv2C4Zr7ajaQdzzDxQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: Document Renesas RZ/G2UL ADC
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The warning comes from __BF_FIELD_CHECK()
-specifically
+On Wed, May 11, 2022 at 10:23 AM Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> Document Renesas RZ/G2UL ADC bindings. RZ/G2UL ADC is almost identical
+> to RZ/G2L, but it has 2 analog input channels compared to 8 channels
+> on the RZ/G2L.
+>
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v3->v4:
+>  * Removed unnecessary SoC specific reg description as it is
+>    equivalent to the logic used in reg.
+>  * Removed Items from reg.
 
-BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?		\
-		 ~((_mask) >> __bf_shf(_mask)) & (_val) : 0, \
-		 _pfx "value too large for the field"); \
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-The code was using !(enum value) which is not particularly easy to follow
-so replace that with explicit matching and use of ? 0 : 1; or ? 1 : 0;
-to improve readability.
+Gr{oetje,eeting}s,
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v2:
- - fix the logic for the input mode set bits
- drivers/iio/frequency/admv1014.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+                        Geert
 
-diff --git a/drivers/iio/frequency/admv1014.c b/drivers/iio/frequency/admv1014.c
-index a7994f8e6b9b..1aac5665b5de 100644
---- a/drivers/iio/frequency/admv1014.c
-+++ b/drivers/iio/frequency/admv1014.c
-@@ -700,8 +700,10 @@ static int admv1014_init(struct admv1014_state *st)
- 			 ADMV1014_DET_EN_MSK;
- 
- 	enable_reg = FIELD_PREP(ADMV1014_P1DB_COMPENSATION_MSK, st->p1db_comp ? 3 : 0) |
--		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK, !(st->input_mode)) |
--		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK, st->input_mode) |
-+		     FIELD_PREP(ADMV1014_IF_AMP_PD_MSK,
-+				(st->input_mode == ADMV1014_IF_MODE) ? 0 : 1) |
-+		     FIELD_PREP(ADMV1014_BB_AMP_PD_MSK,
-+				(st->input_mode == ADMV1014_IF_MODE) ? 1 : 0) |
- 		     FIELD_PREP(ADMV1014_DET_EN_MSK, st->det_en);
- 
- 	return __admv1014_spi_update_bits(st, ADMV1014_REG_ENABLE, enable_reg_msk, enable_reg);
--- 
-2.36.1
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

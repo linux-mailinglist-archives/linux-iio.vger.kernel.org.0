@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDFC452469F
-	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 09:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A816524704
+	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 09:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350822AbiELHPF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 03:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
+        id S238347AbiELHcC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 03:32:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350809AbiELHPA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 03:15:00 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F9079806;
-        Thu, 12 May 2022 00:14:59 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id x52so3987007pfu.11;
-        Thu, 12 May 2022 00:14:59 -0700 (PDT)
+        with ESMTP id S229502AbiELHcB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 03:32:01 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E5E833A3A;
+        Thu, 12 May 2022 00:32:00 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id cu23-20020a17090afa9700b001d98d8e53b7so5544023pjb.0;
+        Thu, 12 May 2022 00:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=xGQI4Uoj1dr+aEskjWCNFPVBtuNGecDaxcbPpm4ndbA=;
-        b=PnA7rPHXCzS0oh9lybb9R+lMue+sbKQL/J8VRDHkkRo9cxuqJmFC90BLUdvNpvQ3yx
-         qPXAmh0JFJQTnsYzKtSTuNsch+PM+pzpvqXqxqmJCG2fLiMobPUPeAmiPzfxzF0XWnS+
-         5PcntrBUmEy6FhaVNAByXc9KhN/x1BDMX/vOPaia5RKBnV84omjEVyuc1vf+LKeDxhoI
-         kfc7kgpU61zQZ9B7SeHh4qnI9lzvmrnwDcfAWwue1iiSLlrZBAv99QX8smQQiMaJptm4
-         3STjzwEVMbrpn5TsSZln4yuKG+nySs9CC47ZVfkRyYYWaPqG/Ch436vmVVVgwsYbm3e+
-         /GSg==
+        bh=PK+zEjT0FwnfyuqNzIGPbA6J7wMPiAnBkII/UnzliNo=;
+        b=I9ocdOKHMOQzPWcvTeVkMOm3iPrQGP6UTm/mB5DEmvSJsxSwCkmrtMDfYgSuPWKFP5
+         8FvYLhAGh+qlInjBDGuAPwJfxldrH8jQigVYJGDwLlCfzs6pUpmlhfybK78tIGDtG+hC
+         M/a5YLrYlHt3VKZAzXvGR9o1A+eq0kZL6S4tlfnbzbDlrae0K/EjWRmlIlEJNMvelERB
+         2FT3s1ChLewqy9+xI9v4iODVSpU8PvF3FNEcSNhrRsTXthBU5vPV8E9Rw5z0EZ0NLvA9
+         yqLK41Untd+oJaad1jYWBBQ8nd2I6PnaRD5TV3G/D+J9ud1XQVMNkuSLC6IZy/87Vgfj
+         9NeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xGQI4Uoj1dr+aEskjWCNFPVBtuNGecDaxcbPpm4ndbA=;
-        b=74rV3RvDmpq4fnSpiS3h8gGap8kCb0Lwq4Oguew7zsbO2uLSyQw3p8g3+H9DnACmox
-         HloOPnff1HvdOQfn+3N3zTyfD/iT197j4eS0KibXt0z6G//8k3ylXofr2Ed58q+LgQyj
-         8PZFutmx5y9Yicn6rTuzwG0Ud8JSrwnA8c90HnOt8d4W82HIyWQwBRXK5RzAA1+g0SuK
-         k6SOKfUyOqQAWQHj+QhhLdSBbNdVHNhxf7pkwz3++Wyvls1Pm5b5z0Pot8Z+DtDOq3Oh
-         DhfkbcR0bQD6r13Tq5lT2QTrdlqSF7yVkzcFDIdVWa8wQOzSTuDxqQlBNBjT1hEi+lDc
-         qkyg==
-X-Gm-Message-State: AOAM5316E5W7Y3jHCjDUoeDVUIyOwVHGUrImyMm2r8+ikpNTfs2Zq+gJ
-        VvGrEndzp7M4X+kFm4gkHE9rdaMKpeL4pMVWlPE=
-X-Google-Smtp-Source: ABdhPJw4HsvF11WbCOm9ikh5D4rNFJFGTUUhY31uegaRVy95168mD6K7vmft6BvhzVCuzBBmHpUrY5u54uUBWfWg6HI=
-X-Received: by 2002:a63:84c8:0:b0:3c6:4013:9e90 with SMTP id
- k191-20020a6384c8000000b003c640139e90mr23918919pgd.415.1652339698647; Thu, 12
- May 2022 00:14:58 -0700 (PDT)
+        bh=PK+zEjT0FwnfyuqNzIGPbA6J7wMPiAnBkII/UnzliNo=;
+        b=zFi4xMpG2Hg7YV4sGz483m6vptml3eLOPhvkhXmm9UoTmnVntLoieHseMQDolM+600
+         sTyF3Dw13Qn3ooGW2EgsRSuqTPn2sKtXKleGrvju/vq9i7YIQqj9x9zFY8iSCFVa2fu+
+         6DfdTNqe0SZ/I6OcSoKXKhha/02rIk4XQ6DWTRYzwexKFqiW6CymPXnJc1xVYHDZu75b
+         Ishd3vN0G5Wm0dfSca4hzPCGMfytDmhwoW6r4OwdpRwe5CbUxHTsUhGyqVXtki3bVRDc
+         Us79J+QUNJfj2VkIZ7J+v7JzEQFV5r7tkDZKQsPfPHphkLHbKFs4G0uQu7rfcb4Gl+wu
+         9hOA==
+X-Gm-Message-State: AOAM533mxTs5F9P7jbKNZNWV+TY/Zhgx8v52xr49Ytj18WWtjKsR24cp
+        cL25rUpPPHWde6B0e7Dfe4+0YVURZu3IqahuMNQ=
+X-Google-Smtp-Source: ABdhPJyNy2ltsylm+FZOgVt68fjIenNg5NWdfleHLhcviWLXS4BlU+/cc1KWA/xpzG7S/mnkaEmG/SnQe+e3DclLVeQ=
+X-Received: by 2002:a17:903:20f:b0:158:d86a:f473 with SMTP id
+ r15-20020a170903020f00b00158d86af473mr29201585plh.92.1652340719755; Thu, 12
+ May 2022 00:31:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220510141753.3878390-1-Qing-wu.Li@leica-geosystems.com.cn> <20220510141753.3878390-2-Qing-wu.Li@leica-geosystems.com.cn>
-In-Reply-To: <20220510141753.3878390-2-Qing-wu.Li@leica-geosystems.com.cn>
+References: <20220510141753.3878390-1-Qing-wu.Li@leica-geosystems.com.cn> <20220510141753.3878390-4-Qing-wu.Li@leica-geosystems.com.cn>
+In-Reply-To: <20220510141753.3878390-4-Qing-wu.Li@leica-geosystems.com.cn>
 From:   Alexandru Ardelean <ardeleanalex@gmail.com>
-Date:   Thu, 12 May 2022 10:14:47 +0300
-Message-ID: <CA+U=DsqUztHxrkYsWTNz8Xm1OxRK2Wkb7L7Csque4r1tEDz_ig@mail.gmail.com>
-Subject: Re: [PATCH V2 1/6] iio: accel: bmi088: Modified the scale calculate
+Date:   Thu, 12 May 2022 10:31:48 +0300
+Message-ID: <CA+U=Dsqu_5JVyhs8juznQ5SyBx1V6Q5yT-fsnYuoYHX9ESE=Tg@mail.gmail.com>
+Subject: Re: [PATCH V2 3/6] iio: accel: bmi088: modified the device name
 To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,85 +62,134 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 10, 2022 at 5:17 PM LI Qingwu
+On Tue, May 10, 2022 at 5:18 PM LI Qingwu
 <Qing-wu.Li@leica-geosystems.com.cn> wrote:
 >
-> The units after application of scale are 100*m/s^2,
-> The scale calculation is only for the device
-> with the range of 3, 6, 12, and 24g,
-> but some other chips have a range of 2, 4, 6, and 8g.
+> It is possible to have multiple sensors connected on the same platform,
+> To support multiple sensors, the commit makes it possible to obtain the
+> device name by reading the chip ID instead of the device-tree name.
+> To be compatible with previous versions, renam bmi088a to bmi088-accel.
+
+// my spellcheck in GMail found this :p
+
+typo: renam -> rename
+
+I also have a comment about a duplication that is highlighted by this change.
+
+You can disregard my comment about the duplication and leave this change as-is.
+
 >
-> Modified the formula to a scale list.
-> The scales in the list are calculated by 1/sensitivity*9.8.
-> The new units after the application of scale are m/s^2.
->
-
-Strictly on the code:
-
-Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
-
-On the change of IIO_VAL_FRACTIONAL_LOG2 -> IIO_VAL_INT_PLUS_MICRO  is
-still up for discussion.
-
 > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 > ---
->  drivers/iio/accel/bmi088-accel-core.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  drivers/iio/accel/bmi088-accel-core.c | 6 +++---
+>  drivers/iio/accel/bmi088-accel-spi.c  | 4 +---
+>  drivers/iio/accel/bmi088-accel.h      | 2 +-
+>  3 files changed, 5 insertions(+), 7 deletions(-)
 >
 > diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-> index a06dae5c971d..9300313b63cb 100644
+> index 8fee1d02e773..de2385e4dad5 100644
 > --- a/drivers/iio/accel/bmi088-accel-core.c
 > +++ b/drivers/iio/accel/bmi088-accel-core.c
-> @@ -119,6 +119,7 @@ struct bmi088_accel_chip_info {
->         u8 chip_id;
->         const struct iio_chan_spec *channels;
->         int num_channels;
-> +       const int scale_table[4][2];
->  };
+> @@ -459,7 +459,7 @@ static const struct iio_chan_spec bmi088_accel_channels[] = {
 >
->  struct bmi088_accel_data {
-> @@ -280,6 +281,7 @@ static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
->         struct bmi088_accel_data *data = iio_priv(indio_dev);
->         struct device *dev = regmap_get_device(data->regmap);
->         int ret;
-> +       int reg;
->
->         switch (mask) {
->         case IIO_CHAN_INFO_RAW:
-> @@ -330,13 +332,12 @@ static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
->                                 return ret;
->
->                         ret = regmap_read(data->regmap,
-> -                                         BMI088_ACCEL_REG_ACC_RANGE, val);
-> +                                         BMI088_ACCEL_REG_ACC_RANGE, &reg);
->                         if (ret)
->                                 goto out_read_raw_pm_put;
-> -
-> -                       *val2 = 15 - (*val & 0x3);
-> -                       *val = 3 * 980;
-> -                       ret = IIO_VAL_FRACTIONAL_LOG2;
-> +                       *val = data->chip_info->scale_table[reg&0x03][0];
-> +                       *val2 = data->chip_info->scale_table[reg&0x03][1];
-> +                       ret = IIO_VAL_INT_PLUS_MICRO;
->
->                         goto out_read_raw_pm_put;
->                 default:
-> @@ -432,6 +433,7 @@ static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
+>  static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
+>         [0] = {
+> -               .name = "bmi088a",
+> +               .name = "bmi088-accel",
 >                 .chip_id = 0x1E,
 >                 .channels = bmi088_accel_channels,
 >                 .num_channels = ARRAY_SIZE(bmi088_accel_channels),
-> +               .scale_table = {{0, 897}, {0, 1795}, {0, 3590}, {0, 7179}},
->         },
->  };
+> @@ -524,7 +524,7 @@ static int bmi088_accel_chip_init(struct bmi088_accel_data *data)
+>  }
 >
+>  int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
+> -       int irq, const char *name, bool block_supported)
+> +       int irq, bool block_supported)
+>  {
+>         struct bmi088_accel_data *data;
+>         struct iio_dev *indio_dev;
+> @@ -545,7 +545,7 @@ int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap,
+>
+>         indio_dev->channels = data->chip_info->channels;
+>         indio_dev->num_channels = data->chip_info->num_channels;
+> -       indio_dev->name = name ? name : data->chip_info->name;
+> +       indio_dev->name = data->chip_info->name;
+
+(with this change) i can better see, a bit of duplication between the
+spi_device table and the chip_info table
+
+this was not introduced by this change, but it was made a bit more
+obvious by this change;
+
+one way to address this, is to remove the `const char *name;` and
+continue using the `name` provided as a parameter from
+bmi088_accel_core_probe();
+(apologies if I seem to have changed my mind (from the previous
+changeset), but I did not see it too well before)
+
+and we can convert
+
+enum {
+   ID_BMI088,
+   ID_BMI085,
+   ...
+};
+
+ static const struct bmi088_accel_chip_info bmi088_accel_chip_info_tbl[] = {
+         [ID_BMI088] = {
+                 .chip_id = 0x1E,
+                 .channels = bmi088_accel_channels,
+                .num_channels = ARRAY_SIZE(bmi088_accel_channels),
+        },
+         [ID_BMI085] = {
+         ........
+
+>         indio_dev->available_scan_masks = bmi088_accel_scan_masks;
+>         indio_dev->modes = INDIO_DIRECT_MODE;
+>         indio_dev->info = &bmi088_accel_info;
+> diff --git a/drivers/iio/accel/bmi088-accel-spi.c b/drivers/iio/accel/bmi088-accel-spi.c
+> index dd1e3f6cf211..0fed0081e1fd 100644
+> --- a/drivers/iio/accel/bmi088-accel-spi.c
+> +++ b/drivers/iio/accel/bmi088-accel-spi.c
+> @@ -42,7 +42,6 @@ static struct regmap_bus bmi088_regmap_bus = {
+>  static int bmi088_accel_probe(struct spi_device *spi)
+>  {
+>         struct regmap *regmap;
+> -       const struct spi_device_id *id = spi_get_device_id(spi);
+>
+>         regmap = devm_regmap_init(&spi->dev, &bmi088_regmap_bus,
+>                         spi, &bmi088_regmap_conf);
+> @@ -52,8 +51,7 @@ static int bmi088_accel_probe(struct spi_device *spi)
+>                 return PTR_ERR(regmap);
+>         }
+>
+> -       return bmi088_accel_core_probe(&spi->dev, regmap, spi->irq, id->name,
+> -                                      true);
+> +       return bmi088_accel_core_probe(&spi->dev, regmap, spi->irq, true);
+>  }
+>
+>  static int bmi088_accel_remove(struct spi_device *spi)
+> diff --git a/drivers/iio/accel/bmi088-accel.h b/drivers/iio/accel/bmi088-accel.h
+> index 5c25f16b672c..c32afe9606a8 100644
+> --- a/drivers/iio/accel/bmi088-accel.h
+> +++ b/drivers/iio/accel/bmi088-accel.h
+> @@ -12,7 +12,7 @@ extern const struct regmap_config bmi088_regmap_conf;
+>  extern const struct dev_pm_ops bmi088_accel_pm_ops;
+>
+>  int bmi088_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> -                           const char *name, bool block_supported);
+> +                           bool block_supported);
+>  int bmi088_accel_core_remove(struct device *dev);
+>
+>  #endif /* BMI088_ACCEL_H */
 > --
 > 2.25.1
 >

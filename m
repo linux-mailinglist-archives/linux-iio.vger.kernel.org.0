@@ -2,127 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F8F525262
-	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 18:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD125252FD
+	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 18:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356390AbiELQUs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 12:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50838 "EHLO
+        id S1349749AbiELQtJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 12:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356402AbiELQUn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 12:20:43 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D47F4E3BC;
-        Thu, 12 May 2022 09:20:39 -0700 (PDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24CGGJ1T011323;
-        Thu, 12 May 2022 16:20:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=qlOWqXyfi0rR8T2Ty+QTIJ3Y8i5IUOUaQI1MNmkuf5Y=;
- b=ajCSLZXNoiOzc0MuSoezQqR5LBPSXbM8zcaqPKqq5uZcP2uqXhmRrCt6ZF2cg0XkZWJw
- jgiQYtIwSuD08vmUnUMcW0mwRCPHlyrKsXV3miH8PWvHyYx4XBt9FACXKs6kTp0QYHBr
- Wm6XrnTBVt6oB4tpmTQdoZMC+Q9lP0P9dpb63qS97zny50fwnkFyoDjsKE4caVRh2z5Q
- ZWvUhlJxZEdNgKzFLJP8lbR9NLZHDe9kVnNcSEi+d2H79gbMEEGxyr6WO/wTN9f1SqzJ
- Ba3zl3/GNjt5650uFoyH775l14tTbAx6nFMsO2Eb1IdxLUGR3c70Qu4UcVEntnDK+0Iu JA== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g15m102qw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 May 2022 16:20:26 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24CGHGoO008370;
-        Thu, 12 May 2022 16:20:25 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma03wdc.us.ibm.com with ESMTP id 3fwgd9vgwq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 May 2022 16:20:25 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24CGKOiI7930398
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 May 2022 16:20:24 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3ECFF112064;
-        Thu, 12 May 2022 16:20:24 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 59CB6112061;
-        Thu, 12 May 2022 16:20:23 +0000 (GMT)
-Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.211.56.168])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 12 May 2022 16:20:23 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-iio@vger.kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        lars@metafoo.de, jic23@kernel.org, miltonm@us.ibm.com,
-        eajames@linux.ibm.com
-Subject: [PATCH v2 2/2] iio: humidity: si7020: Check device property for skipping reset in probe
-Date:   Thu, 12 May 2022 11:20:20 -0500
-Message-Id: <20220512162020.33450-3-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
+        with ESMTP id S1348145AbiELQtI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 12:49:08 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90ECD268649;
+        Thu, 12 May 2022 09:49:06 -0700 (PDT)
+Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kzd2T6nn5z684JT;
+        Fri, 13 May 2022 00:46:09 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.24; Thu, 12 May 2022 18:49:03 +0200
+Received: from localhost (10.81.210.133) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 12 May
+ 2022 17:49:03 +0100
+Date:   Thu, 12 May 2022 17:48:59 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Eddie James <eajames@linux.ibm.com>
+CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>,
+        <lars@metafoo.de>, <jic23@kernel.org>, <miltonm@us.ibm.com>
+Subject: Re: [PATCH v2 0/2] iio: humidity: si7020: Check device property for
+ skipping reset in probe
+Message-ID: <20220512174859.000042b6@Huawei.com>
 In-Reply-To: <20220512162020.33450-1-eajames@linux.ibm.com>
 References: <20220512162020.33450-1-eajames@linux.ibm.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Sy1-cqgIabPnJkxxmFtJ1oADa_P0uQ2o
-X-Proofpoint-ORIG-GUID: Sy1-cqgIabPnJkxxmFtJ1oADa_P0uQ2o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-12_13,2022-05-12_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- spamscore=0 clxscore=1015 mlxscore=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205120076
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.210.133]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I2C commands issued after the SI7020 is starting up or after reset
-can potentially upset the startup sequence. Therefore, the host
-needs to wait for the startup sequence to finish before issuing
-further i2c commands. This is impractical in cases where the SI7020
-is on a shared bus or behind a mux, which may switch channels at
-any time (generating I2C traffic). Therefore, check for a device
-property that indicates that the driver should skip resetting the
-device when probing.
+On Thu, 12 May 2022 11:20:18 -0500
+Eddie James <eajames@linux.ibm.com> wrote:
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- drivers/iio/humidity/si7020.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+> I2C commands issued after the SI7020 is starting up or after reset
+> can potentially upset the startup sequence. Therefore, the host
+> needs to wait for the startup sequence to finish before issuing
+> further i2c commands. This is impractical in cases where the SI7020
+> is on a shared bus or behind a mux, which may switch channels at
+> any time (generating I2C traffic). Therefore, check for a device
+> property that indicates that the driver should skip resetting the
+> device when probing.
 
-diff --git a/drivers/iio/humidity/si7020.c b/drivers/iio/humidity/si7020.c
-index ab6537f136ba..49f6a1b1f5c4 100644
---- a/drivers/iio/humidity/si7020.c
-+++ b/drivers/iio/humidity/si7020.c
-@@ -115,12 +115,14 @@ static int si7020_probe(struct i2c_client *client,
- 				     I2C_FUNC_SMBUS_READ_WORD_DATA))
- 		return -EOPNOTSUPP;
- 
--	/* Reset device, loads default settings. */
--	ret = i2c_smbus_write_byte(client, SI7020CMD_RESET);
--	if (ret < 0)
--		return ret;
--	/* Wait the maximum power-up time after software reset. */
--	msleep(15);
-+	if (!device_property_read_bool(&client->dev, "silabs,skip-reset")) {
-+		/* Reset device, loads default settings. */
-+		ret = i2c_smbus_write_byte(client, SI7020CMD_RESET);
-+		if (ret < 0)
-+			return ret;
-+		/* Wait the maximum power-up time after software reset. */
-+		msleep(15);
-+	}
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
--- 
-2.27.0
+Why not lock the bus?  It's not ideal, but then not resetting and hence
+potentially ending up in an unknown state isn't great either.
+
+Jonathan
+
+> 
+> Changes since v1:
+>  - Fix dt binding document
+> 
+> Eddie James (2):
+>   dt-bindings: iio: humidity: Add si7020 bindings
+>   iio: humidity: si7020: Check device property for skipping reset in probe
+> 
+>  .../bindings/iio/humidity/silabs,si7020.yaml  | 47 +++++++++++++++++++
+>  .../devicetree/bindings/trivial-devices.yaml  |  2 -
+>  drivers/iio/humidity/si7020.c                 | 14 +++---
+>  3 files changed, 55 insertions(+), 8 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
+> 
 

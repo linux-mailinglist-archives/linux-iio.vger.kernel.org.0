@@ -2,42 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F4AF525304
-	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 18:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E55F052530E
+	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 18:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356699AbiELQvd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 12:51:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46208 "EHLO
+        id S1356735AbiELQza (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 12:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356452AbiELQvc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 12:51:32 -0400
+        with ESMTP id S1356716AbiELQz3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 12:55:29 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8ADA3CA51;
-        Thu, 12 May 2022 09:51:30 -0700 (PDT)
-Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kzd4b4TCPz67M49;
-        Fri, 13 May 2022 00:47:59 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22156E8D9;
+        Thu, 12 May 2022 09:55:27 -0700 (PDT)
+Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kzd985FVsz67lbv;
+        Fri, 13 May 2022 00:51:56 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.24; Thu, 12 May 2022 18:51:28 +0200
+ fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 12 May 2022 18:55:25 +0200
 Received: from localhost (10.81.210.133) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 12 May
- 2022 17:51:27 +0100
-Date:   Thu, 12 May 2022 17:51:25 +0100
+ 2022 17:55:24 +0100
+Date:   Thu, 12 May 2022 17:55:22 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Eddie James <eajames@linux.ibm.com>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>,
-        <lars@metafoo.de>, <jic23@kernel.org>, <miltonm@us.ibm.com>,
-        David Barksdale <dbarksdale@uplogix.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: humidity: Add si7020 bindings
-Message-ID: <20220512175125.00001a5a@Huawei.com>
-In-Reply-To: <20220512162020.33450-2-eajames@linux.ibm.com>
-References: <20220512162020.33450-1-eajames@linux.ibm.com>
-        <20220512162020.33450-2-eajames@linux.ibm.com>
+To:     Markuss Broks <markuss.broks@gmail.com>
+CC:     <linux-kernel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH v3 3/5] proximity: vl53l0x: Handle the VDD regulator
+Message-ID: <20220512175522.000013cb@Huawei.com>
+In-Reply-To: <20220512110757.5297-4-markuss.broks@gmail.com>
+References: <20220512110757.5297-1-markuss.broks@gmail.com>
+        <20220512110757.5297-4-markuss.broks@gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -56,86 +68,91 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 12 May 2022 11:20:19 -0500
-Eddie James <eajames@linux.ibm.com> wrote:
+On Thu, 12 May 2022 14:07:55 +0300
+Markuss Broks <markuss.broks@gmail.com> wrote:
 
-> Document the si7020 bindings with a new "silabs,skip-reset" property.
+> Handle the regulator supplying the VDD pin of VL53L0X.
 > 
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+Hi Markuss,
+
+One ordering question inline.
+
 > ---
->  .../bindings/iio/humidity/silabs,si7020.yaml  | 47 +++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml  |  2 -
->  2 files changed, 47 insertions(+), 2 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
+>  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
-> new file mode 100644
-> index 000000000000..9bee010f8d56
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
-> @@ -0,0 +1,47 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/humidity/silabs,si7020.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> index 12a3e2eff464..d8523e3981e8 100644
+> --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> @@ -43,6 +43,7 @@
+>  struct vl53l0x_data {
+>  	struct i2c_client *client;
+>  	struct completion completion;
+> +	struct regulator *vdd_supply;
+>  };
+>  
+>  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
+>  	.read_raw = vl53l0x_read_raw,
+>  };
+>  
+> +static void vl53l0x_power_off(void *_data)
+> +{
+> +	struct vl53l0x_data *data = _data;
 > +
-> +title: SI7020 humidity + temperature sensor
+> +	regulator_disable(data->vdd_supply);
+> +}
 > +
-> +maintainers:
-> +  - David Barksdale <dbarksdale@uplogix.com>
+> +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> +{
+> +	int ret;
+> +
+> +	ret = regulator_enable(data->vdd_supply);
+> +	if (ret)
+> +		return ret;
+> +
+> +	usleep_range(3200, 5000);
+> +
+> +	return 0;
+> +}
+> +
+>  static int vl53l0x_probe(struct i2c_client *client)
+>  {
+>  	struct vl53l0x_data *data;
+>  	struct iio_dev *indio_dev;
+> +	int error;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  				     I2C_FUNC_SMBUS_BYTE_DATA))
+>  		return -EOPNOTSUPP;
+>  
+> +	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
+> +	if (IS_ERR(data->vdd_supply))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> +				     "Unable to get VDD regulator\n");
+> +
+> +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
 
-At least cc David if you are going to commit him to maintaining this binding :)
-+CC David at that address.
+I don't follow why you have this before the power_on.  We haven't enabled the
+regulator yet so shouldn't be turning it off if we get an error whilst trying
+to enable it.  The or_reset part is to ensure that even if this call
+fails to register a devm action it will still call the callback thus allowing
+you safely do this after turning the power on.
 
+> +	if (error)
+> +		return dev_err_probe(&client->dev, error,
+> +				     "Failed to install poweroff action\n");
 > +
-> +description: |
-> +   The Silicon Labs Si7013/20/21 Relative Humidity and Temperature Sensors
-> +   are i2c devices which have an identical programming interface for
-> +   measuring relative humidity and temperature.
+> +	error = vl53l0x_power_on(data);
+> +	if (error)
+> +		return dev_err_probe(&client->dev, error,
+> +				     "Failed to power on the chip\n");
 > +
-> +properties:
-> +  compatible:
-> +    const: silabs,si7020
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  siliabs,skip-reset:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      Disables resetting of the device during probe
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c0 {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      si7021-a20@40 {
-> +        silabs,skip-reset;
-> +        compatible = "silabs,si7020";
-> +        reg = <0x40>;
-> +      };
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index e5295faef52f..47a00b478867 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -317,8 +317,6 @@ properties:
->            - sensortek,stk8ba50
->              # SGX Sensortech VZ89X Sensors
->            - sgx,vz89x
-> -            # Relative Humidity and Temperature Sensors
-> -          - silabs,si7020
->              # Skyworks SKY81452: Six-Channel White LED Driver with Touch Panel Bias Supply
->            - skyworks,sky81452
->              # Socionext SynQuacer TPM MMIO module
+>  	indio_dev->name = "vl53l0x";
+>  	indio_dev->info = &vl53l0x_info;
+>  	indio_dev->channels = vl53l0x_channels;
 

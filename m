@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1437F525889
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 01:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AFDE5258C6
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 01:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359553AbiELXl1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 19:41:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34838 "EHLO
+        id S1359669AbiELXy1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 19:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356155AbiELXl1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 19:41:27 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E36355238;
-        Thu, 12 May 2022 16:41:26 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 4so8343053ljw.11;
-        Thu, 12 May 2022 16:41:26 -0700 (PDT)
+        with ESMTP id S1359678AbiELXyM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 19:54:12 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ABF7289BE4;
+        Thu, 12 May 2022 16:54:12 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id i10so11706627lfg.13;
+        Thu, 12 May 2022 16:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=G9cI8oakPHDWuYiFFBljDMZOYZw1Mkbjku3GoliHgFc=;
-        b=B1CWBB64xhJMs/rCx2iqfL051WBSe6GmObrHiL6dcQS4u1h2Qbg/ERH9H4HRimJgDg
-         b0hSi2MG4MAjmJ/kCWp3CwdIgUc3HSawGHNIugpWO7R0u/C1NbkrksHdO/D0f1iWCNYd
-         n1UBNCZXvxNK3rr0MoaztpnEvhJrloJxdyzjF/LwGdx6rC3iaVGBjixqpAUFf1iCL7Xa
-         12X3eew/mY8/ZrjP+Zoo2XIG4zCF7gIKYtgivbk7HzLnpKAkBKJiYtOwkNrhMJ0PqcIL
-         UuLxxLlXEKfCEQgmQHbCNPkIKBj84nYfrGV3j2TxoxDrsCTuhg/deS1oyRZNfx256FHn
-         wb4Q==
+        bh=37RmwmhetMLvFkUyyZurfNorX4wG33rhqZukIX/qsiU=;
+        b=EUZY7FPLyS7TjeYz+IPq2u12F2zw0Ll8ANgdRwDBKYQ2WeQVk5WBloVPPxhlt+UNwl
+         zDK9r8QXjBm+Rj4QvwL4S7er5nFV6r0WYlLQ2PM9Y17wCV8feAQiS+iQyL55KnJAuXCO
+         qfK9GFHhyKHCoHiQumXm8FcN9ZHaDT6Lpfz6aBzYoX5+f9aBZjYFIKk7KLyKLyc90sX/
+         hfLczokeXBKvWnJVCE7nA0RJGlfA/gLewsbyRybyaLcbDLkmT8uX0mYsHj7XcJce80Be
+         kuDAg4UTjqkkMYnspWscCvBzbByYjXOowuXtwP82qQ0bhv5uczRm7qLFdB8B/3d1zhP5
+         BA2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=G9cI8oakPHDWuYiFFBljDMZOYZw1Mkbjku3GoliHgFc=;
-        b=MC8Y1rwyg+TzbHpVIcUgszW4RbV8aBTix3z8i+J3PjupcjcNg1bOTKrc1a+QLwk6hp
-         rN9fQOsyrvFrQ7el8pdqM50WmvuJEc0mxMx7khb4nD1cBFD0zQF5HLD/UF35h2rKJR+y
-         3zrH3mrp7CX8W26nHs06dPxbdZUYC/uqt0d47ZKlSh0WeacZmP5Lrc7w3ntGdydgW39t
-         zynohZdwz2gHhPjcvLoML9ORzoqcKB2WmbzJvv6RfAJ4ntrN3g6J5Dcu90h7MuDUcmpX
-         6ReluERcNKfIatMXTO+IT+Zf2yx0sPK+VUL8dbEKDDMN8N5v9FGfSC0WdEBPWR0wjh6P
-         l2Pw==
-X-Gm-Message-State: AOAM532L9JtIbXZm+ufl+r81ocm08uBtEQrYwixsl4TL4aHzPyBlrYAo
-        rzsJ+cCZ7pTjvhPngR+cRaA=
-X-Google-Smtp-Source: ABdhPJwaQgFD0cDr5u0ciJIbXgKaZTOsbiK0ek+aumlxU+KPyzV5SgDLiKuo8X2jVB9AGFXrWuo9yw==
-X-Received: by 2002:a05:651c:160b:b0:24d:a0fa:26cc with SMTP id f11-20020a05651c160b00b0024da0fa26ccmr1449169ljq.150.1652398884840;
-        Thu, 12 May 2022 16:41:24 -0700 (PDT)
+        bh=37RmwmhetMLvFkUyyZurfNorX4wG33rhqZukIX/qsiU=;
+        b=yNRQ12/v0ZPEqiiw7FgVtJdb2XxpZcx/TnMsRnv8nDlP1p1FtdQpEKEO6w10vcyNR4
+         BfipRzc9/FOuMrmhRTfGUKh3okximaGQ8SrS6nPk97sa1cOQwf1OtozNx+p9oIG6XUeC
+         vOLYq69EeT4DjDYqA+Ry4U14AjAc3KuTEIluNRnZGZ5pWyPAzwgf0HeCeeYYL0zcemu3
+         E7+iPzuh4HBNFYlKyde6JT4Nqerlr0XfK87f4U1DGGmTBd4qnqfUQf+f8bKYpARjWl3q
+         WiIK8+oOIdB0vTW6pDBQ+OpHdXL1zWFs/pCTgPTAYkgrU/kJa3rIFzAeIzDiwkQQYhSn
+         aoiA==
+X-Gm-Message-State: AOAM533kHyAe0zbPDWCBObg83rjZiA+pAt1hMInzZ/+I/Sc10vaLrqNy
+        XQE+GHLapsVXeAuhYERFnLI=
+X-Google-Smtp-Source: ABdhPJxl5WFutJe/hQmVHTHau5aGyCXCWmrCg9K/M5Vwj9gKNn3Zy+uLXi32B0pi7RSrZwnH4bO/RA==
+X-Received: by 2002:a05:6512:2296:b0:473:cf55:5acd with SMTP id f22-20020a056512229600b00473cf555acdmr1480365lfu.255.1652399650435;
+        Thu, 12 May 2022 16:54:10 -0700 (PDT)
 Received: from [192.168.2.145] (109-252-137-244.dynamic.spd-mgts.ru. [109.252.137.244])
-        by smtp.googlemail.com with ESMTPSA id g10-20020ac2538a000000b0047255d2111asm134998lfh.73.2022.05.12.16.41.23
+        by smtp.googlemail.com with ESMTPSA id r13-20020a2eb60d000000b0024f3d1daea8sm158279ljn.48.2022.05.12.16.54.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 May 2022 16:41:24 -0700 (PDT)
-Message-ID: <7a681440-a9bf-d63f-f090-efc96a7b3efe@gmail.com>
-Date:   Fri, 13 May 2022 02:41:23 +0300
+        Thu, 12 May 2022 16:54:09 -0700 (PDT)
+Message-ID: <a5929558-d09a-cb67-cba9-1dcfb5e43525@gmail.com>
+Date:   Fri, 13 May 2022 02:54:08 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
@@ -78,36 +78,25 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 11.05.2022 12:40, Shreeya Patel пишет:
-> +static int ltrf216a_probe(struct i2c_client *client)
+> +static int ltrf216a_init(struct iio_dev *indio_dev)
 > +{
-> +	struct ltrf216a_data *data;
-> +	struct iio_dev *indio_dev;
 > +	int ret;
+> +	struct ltrf216a_data *data = iio_priv(indio_dev);
 > +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
+> +	ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_CTRL);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error reading LTRF216A_MAIN_CTRL\n");
+> +		return ret;
+> +	}
 > +
-> +	data = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-> +	data->client = client;
-> +
-> +	mutex_init(&data->mutex);
-> +
-> +	indio_dev->info = &ltrf216a_info;
-> +	indio_dev->name = LTRF216A_DRV_NAME;
-> +	indio_dev->channels = ltrf216a_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ltrf216a_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ret = ltrf216a_init(indio_dev);
-> +	if (ret < 0)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "ltrf216a chip init failed\n");
+> +	/* enable sensor */
+> +	ret |= FIELD_PREP(LTRF216A_ALS_ENABLE_MASK, 1);
+> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, ret);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
+> +		return ret;
+> +	}
 
-Is it possible to enable sensor only when measurement is made for more
-power savings? Light sensor shouldn't consume much power, but nevertheless.
+Couldn't you write "1" directly without reading?
 
-You'll need to add msleep(power_on_delay + resolution_rate_delay) after
-enabling sensor and before reading the measurement to wait until
-measurement is made by h/w.
+What about doing SW reset?

@@ -2,181 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E979F52533C
-	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 19:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E77785253B6
+	for <lists+linux-iio@lfdr.de>; Thu, 12 May 2022 19:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356863AbiELRJa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 13:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57410 "EHLO
+        id S1357084AbiELRbw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 13:31:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238286AbiELRJY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 13:09:24 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363D2269EF6;
-        Thu, 12 May 2022 10:09:23 -0700 (PDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24CGqWDG004183;
-        Thu, 12 May 2022 17:09:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ePKra5FZpkKBNQOtZOHRk5h8AEU0vcuB/nXrxlxQZMI=;
- b=W7pXY+mF9c157K7UF/UpoCPupzyRkgWNvmeFE44FXujyi1+OlQGcAMuXLLNlO9uKJeRT
- QTaSAWdLFqky2fE8FFj+Q7veFXCkCGoZrHmtGw6hNG8aLJdrQlYAxmX4k73+OhuW26Mj
- dVlSIp9YhXKVkiSVPewOgvviMO3sStmMHW2oy00ZpVXqoLzh7szxFWsX+s2N/dF/xRAb
- ECMEtTJ+pGE0mcJFpbYlZP7zieApdtjkCu5kyafS2ywU+7ectrNW4zRhmrJre/4NiK6z
- ASK7E8SpSsAhuFm8dS9RD2c/pLiJlS8iILZdIgwVXt52X6fAoYwZENraV3zDefdEgUJj 6w== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g15tgrubh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 May 2022 17:09:00 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24CGmU3I030362;
-        Thu, 12 May 2022 17:08:59 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-        by ppma03dal.us.ibm.com with ESMTP id 3fwgdadsp2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 May 2022 17:08:59 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
-        by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24CH8wrX27460066
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 May 2022 17:08:58 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CC80628060;
-        Thu, 12 May 2022 17:08:58 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E3C052805E;
-        Thu, 12 May 2022 17:08:57 +0000 (GMT)
-Received: from [9.211.56.168] (unknown [9.211.56.168])
-        by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 12 May 2022 17:08:57 +0000 (GMT)
-Message-ID: <306c28b7-7318-9b8d-f512-d6e78bd05e51@linux.ibm.com>
-Date:   Thu, 12 May 2022 12:08:57 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: humidity: Add si7020 bindings
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org, lars@metafoo.de, jic23@kernel.org,
-        miltonm@us.ibm.com, David Barksdale <dbarksdale@uplogix.com>
-References: <20220512162020.33450-1-eajames@linux.ibm.com>
- <20220512162020.33450-2-eajames@linux.ibm.com>
- <20220512175125.00001a5a@Huawei.com>
-From:   Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <20220512175125.00001a5a@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: U9Osxt7RygooQvY3l0MSKtC5k4iFU75u
-X-Proofpoint-ORIG-GUID: U9Osxt7RygooQvY3l0MSKtC5k4iFU75u
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S1356894AbiELRbv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 13:31:51 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8084316D5C1;
+        Thu, 12 May 2022 10:31:50 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id w24so7118764edx.3;
+        Thu, 12 May 2022 10:31:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1fM6Q+QVCd0RgN41s9cVT8krA6k8tSlwArRQNdHsfaI=;
+        b=dTLmUVUtHPVrgETgl3SE8wEBx2LZCQdFe538atFhuB5eoiWSVbUxG3H9yWP377bIzB
+         YuLsvc9lc7VqlM2GBLfoDVk1mBna9O3HrxQqHEyeU0rzcP9y+ldK99ltAX1V+kAoB+Ob
+         y5MH3TU9ekkEm28zje1IsSyzr7OnRGeP7fsDA7pbVGx8uY4M28zCUdSrEPDNqKUIHHBK
+         mjjn9VliMaWqKvh3lb+xriMRmbA+FnSJlpQVxbjFA1w1YwR1oqZH2dB2Bj9Rjny/gDYw
+         gKv0fc3pcw9CpLdXZuCmR/ofkxPf9onuPuQVyM9dWYrxY3wvVcTRFr7ytzr7EFMdtwgK
+         8cYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1fM6Q+QVCd0RgN41s9cVT8krA6k8tSlwArRQNdHsfaI=;
+        b=C1TPsUJOo9ajFSbsR/fPpgydFpRMJqzeJKOMiVfxaVVAShYANjO6lxEaLs+l9hpFbI
+         GjrLrsHPnYMIgSPSVf9JnEXB269GXs95T/W5EJFt/CwRQjUpevW/CH65ExY8Xw3jpMag
+         cik2Y1TMrTHra8Nm6bPTvtgHN/mhrBR3HDpucI2LmeNODOxQdf3R2ki5o9iBTfqvMUG2
+         sk8oolr4To6FChzPbmzfQj0ziJl9P1qSZ5folZPBXBCtizdoyZvwF4YK+qCMVg1JK6bV
+         +FZHNgn9Y1R7Act9YNoNWTS0wJOfyuZBxsJe1JMJVeEhdmWawg3nSGDnB29wmAXmdXCo
+         IbZg==
+X-Gm-Message-State: AOAM532oMG9RqaQkEy6Plg6PrZmcnnXBS+96BR7xZTLmuOIHl3Fz6Aah
+        8MvbCzNLnPx0keNisbrnHQTF9jkXNcigzn5Ep+4=
+X-Google-Smtp-Source: ABdhPJxCtEmi5pEc/ZhnDEd1q03hRk+8aIdKlUWIhHKLAbZ9LpKs7uwP/v5cBKwHXMbxbjfcaJQ71QoTHNGDvYaotdI=
+X-Received: by 2002:aa7:d350:0:b0:425:e029:da56 with SMTP id
+ m16-20020aa7d350000000b00425e029da56mr36422902edr.296.1652376708905; Thu, 12
+ May 2022 10:31:48 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-12_14,2022-05-12_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 malwarescore=0 clxscore=1011 bulkscore=0 adultscore=0
- spamscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205120079
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220512160312.3880433-1-Qing-wu.Li@leica-geosystems.com.cn> <20220512160312.3880433-4-Qing-wu.Li@leica-geosystems.com.cn>
+In-Reply-To: <20220512160312.3880433-4-Qing-wu.Li@leica-geosystems.com.cn>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 12 May 2022 19:31:11 +0200
+Message-ID: <CAHp75Vc=duGJ+Y4QHvTG4ZZej3JbYCbhfj+LKhiOcd-+-sU5aw@mail.gmail.com>
+Subject: Re: [PATCH V5 3/5] iio: accel: sca3300: modified to support multi chips
+To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On 5/12/22 11:51, Jonathan Cameron wrote:
-> On Thu, 12 May 2022 11:20:19 -0500
-> Eddie James <eajames@linux.ibm.com> wrote:
+On Thu, May 12, 2022 at 6:03 PM LI Qingwu
+<Qing-wu.Li@leica-geosystems.com.cn> wrote:
 >
->> Document the si7020 bindings with a new "silabs,skip-reset" property.
->>
->> Signed-off-by: Eddie James <eajames@linux.ibm.com>
->> ---
->>   .../bindings/iio/humidity/silabs,si7020.yaml  | 47 +++++++++++++++++++
->>   .../devicetree/bindings/trivial-devices.yaml  |  2 -
->>   2 files changed, 47 insertions(+), 2 deletions(-)
->>   create mode 100644 Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
->> new file mode 100644
->> index 000000000000..9bee010f8d56
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
->> @@ -0,0 +1,47 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/humidity/silabs,si7020.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: SI7020 humidity + temperature sensor
->> +
->> +maintainers:
->> +  - David Barksdale <dbarksdale@uplogix.com>
-> At least cc David if you are going to commit him to maintaining this binding :)
-> +CC David at that address.
+> The driver supports sca3300 only, there are some other similar chips,
+> for instance, SCL3300. This commit prepares the way for multiple chips
+> and additional channels. Modify the driver to read the device ID and load
+> the corresponding sensor information from the table to support multiple
+> chips. add prepares for the addition of extra channels. Add prepares for
+> handling the operation modes for multiple chips.
 
+Reading it again I think you may format it better, i.e.
 
-Yes, my mail to him for v1 was undeliverable... I guess I should put 
-myself instead.
+Prepare the way for multiple chips and additional channels:
+- Modify the driver to read the device ID and load the corresponding
+sensor information from the table to support multiple chips
+- Add prepares for the addition of extra channels
+- Prepare for handling the operation modes for multiple chips
 
+...
 
->
->> +
->> +description: |
->> +   The Silicon Labs Si7013/20/21 Relative Humidity and Temperature Sensors
->> +   are i2c devices which have an identical programming interface for
->> +   measuring relative humidity and temperature.
->> +
->> +properties:
->> +  compatible:
->> +    const: silabs,si7020
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  siliabs,skip-reset:
->> +    $ref: /schemas/types.yaml#/definitions/flag
->> +    description:
->> +      Disables resetting of the device during probe
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    i2c0 {
->> +      #address-cells = <1>;
->> +      #size-cells = <0>;
->> +
->> +      si7021-a20@40 {
->> +        silabs,skip-reset;
->> +        compatible = "silabs,si7020";
->> +        reg = <0x40>;
->> +      };
->> +    };
->> +...
->> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
->> index e5295faef52f..47a00b478867 100644
->> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
->> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
->> @@ -317,8 +317,6 @@ properties:
->>             - sensortek,stk8ba50
->>               # SGX Sensortech VZ89X Sensors
->>             - sgx,vz89x
->> -            # Relative Humidity and Temperature Sensors
->> -          - silabs,si7020
->>               # Skyworks SKY81452: Six-Channel White LED Driver with Touch Panel Bias Supply
->>             - skyworks,sky81452
->>               # Socionext SynQuacer TPM MMIO module
+> +struct sca3300_chip_info {
+> +       const unsigned long *scan_masks;
+> +       const struct iio_chan_spec *channels;
+> +       u8 num_channels;
+> +       u8 num_accel_scales;
+> +       const int (*accel_scale)[2];
+> +       const int *accel_scale_map;
+> +       u8 num_freqs;
+> +       const int *freq_table;
+> +       const int *freq_map;
+
+> +       const char *name;
+
+You can put it in the first place.
+
+> +       const int *avail_modes_table;
+> +       u8 num_avail_modes;
+> +       u8 chip_id;
+> +};
+
+...
+
+> +static const struct sca3300_chip_info sca3300_chip_tbl[] = {
+> +       {       .scan_masks = sca3300_scan_masks,
+
+Keep { on a separate line.
+
+> +               .channels = sca3300_channels,
+> +               .num_channels = ARRAY_SIZE(sca3300_channels),
+> +               .num_accel_scales = ARRAY_SIZE(sca3300_accel_scale)*2,
+> +               .accel_scale = sca3300_accel_scale,
+> +               .accel_scale_map = sca3300_accel_scale_map,
+> +               .num_freqs = ARRAY_SIZE(sca3300_lp_freq),
+> +               .freq_table = sca3300_lp_freq,
+> +               .freq_map = sca3300_lp_freq_map,
+> +               .name = "sca3300",
+> +               .avail_modes_table = sca3300_avail_modes_map,
+> +               .num_avail_modes = 4,
+> +               .chip_id = SCA3300_WHOAMI_ID,
+> +       },
+> +};
+
+...
+
+> +       ret = sca3300_read_reg(sca_data, SCA3300_REG_MODE, &reg_val);
+> +       if (ret)
+> +               return ret;
+> +
+> +       for (i = 0; i < sca_data->chip->num_avail_modes; i++) {
+> +               if (sca_data->chip->avail_modes_table[i] == reg_val&0x03)
+> +                       break;
+> +       }
+
+> +
+
+This blank line is not needed as I explained.
+
+> +       if (i >= sca_data->chip->num_avail_modes)
+
+== is enough and better to understand.
+
+> +               return -EINVAL;
+> +
+> +       *index = i;
+> +       return 0;
+> +}
+
+...
+
+> +       int index;
+> +       int i;
+
+Both can be unsigned.
+
+...
+
+> +       for (i = 0; i < chip->num_avail_modes; i++) {
+> +               if ((val == chip->freq_table[chip->freq_map[i]]) &&
+> +                   (chip->accel_scale[chip->accel_scale_map[index]] ==
+> +                    chip->accel_scale[chip->accel_scale_map[i]]))
+> +                       break;
+> +       }
+> +
+> +       if (i >= chip->num_avail_modes)
+> +               return -EINVAL;
+
+Two comments as per above for-loop case.
+
+-- 
+With Best Regards,
+Andy Shevchenko

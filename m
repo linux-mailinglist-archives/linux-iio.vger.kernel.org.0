@@ -2,55 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B147E526764
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 18:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A63A5268DE
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 19:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358697AbiEMQrG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 May 2022 12:47:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
+        id S1382762AbiEMR7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 May 2022 13:59:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382476AbiEMQrF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 12:47:05 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 538E751E50;
-        Fri, 13 May 2022 09:47:04 -0700 (PDT)
-Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4L0Dwy2Fz9z67xX9;
-        Sat, 14 May 2022 00:43:30 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 13 May 2022 18:47:02 +0200
-Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.24; Fri, 13 May
- 2022 17:47:01 +0100
-Date:   Fri, 13 May 2022 17:47:00 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Eddie James <eajames@linux.ibm.com>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>,
-        <lars@metafoo.de>, <jic23@kernel.org>, <miltonm@us.ibm.com>,
-        David Barksdale <dbarksdale@uplogix.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: humidity: Add si7020 bindings
-Message-ID: <20220513174700.00005ef4@Huawei.com>
-In-Reply-To: <306c28b7-7318-9b8d-f512-d6e78bd05e51@linux.ibm.com>
-References: <20220512162020.33450-1-eajames@linux.ibm.com>
-        <20220512162020.33450-2-eajames@linux.ibm.com>
-        <20220512175125.00001a5a@Huawei.com>
-        <306c28b7-7318-9b8d-f512-d6e78bd05e51@linux.ibm.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S234536AbiEMR7e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 13:59:34 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3152610A;
+        Fri, 13 May 2022 10:59:32 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id y32so15801241lfa.6;
+        Fri, 13 May 2022 10:59:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=F9nVmxbxhPUjXlAFgxWdPottc/POpyAnJKeZJvdJb3Q=;
+        b=nDJ5l8PJQN6ErdgB5BQL9UoNqthpJEj8Ph+b6M5H6gCD5YJQOQLn9uVZW0TCxjV5d3
+         xWk/gd9SFSNISUuInNDzkEePTpVfVBA82xTxYgz5IIksYKh91DVz57K7Ikjnqx0K5gC5
+         5sKzwXwNFBue6IdUNQxncSJksQy+MYHAg25vbmbX80bMyfKEjLGNPP7es0kWv/bEIXKR
+         Hw2wsGYZbmfkXrLAalGWqMQX32xsODTl1Ushj8HBKuAr5avV2/t2JEnXWEirtKL+Sar9
+         4Sv0KYKsLnXHqFGPaKEcjshoSESRb+QNIW0Nieq1iie2dzne+s2KLGhMaZVnk6JSujr3
+         SLww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=F9nVmxbxhPUjXlAFgxWdPottc/POpyAnJKeZJvdJb3Q=;
+        b=QemadDMPwANQifbO4+RxC3dlgF4fdEU9f36FLZhfXzRU00Zttk24YcmArwB8EVGnbg
+         7j3wLEHzDXrkcXyzkow7AQrQVOfFQABTxNurNXWWDFHeKG+TLrcAjcsbI+/LA+zzzP+w
+         UHsbETeHkz0zJeuFJLaYnQrDPYQOqdRnvViDrCpIaO7oOj3HNroiVLMzZ25EhYF1Ar5S
+         pGTOBIdieLVk+gfnkr1UgmCY/amcuQ9haDfGIZsXBT0LNjeju9sRK4h+/s88elQ8uvl7
+         E3r8CcmXW6mKq2G8YPrXSOiiX/uTp7NWhFPjsQACKoQFfhsHhebGQNqanC4EUMTgxmHi
+         9Yfw==
+X-Gm-Message-State: AOAM533u0lQv0RFSNQeCp02s24wIt7k5jivUSwSh/8ZlA2NgIH2C2skz
+        endCmYkkVGgNvNqSO7bU4k6gFJzL8mc=
+X-Google-Smtp-Source: ABdhPJzROlR9JfnWELD1llXgexuPYrFMoAc1dOTyPtjP64jGm4kWCWLf8hy56AAM4zb4yA/N6eu63g==
+X-Received: by 2002:a05:6512:b11:b0:474:2b91:99c4 with SMTP id w17-20020a0565120b1100b004742b9199c4mr4252868lfu.347.1652464770749;
+        Fri, 13 May 2022 10:59:30 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-137-244.dynamic.spd-mgts.ru. [109.252.137.244])
+        by smtp.googlemail.com with ESMTPSA id b20-20020a05651c099400b0024f3d1dae82sm527639ljq.10.2022.05.13.10.59.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 May 2022 10:59:30 -0700 (PDT)
+Message-ID: <a3fa2e6d-55bc-2da0-9796-fc936583d78a@gmail.com>
+Date:   Fri, 13 May 2022 20:59:29 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhreml708-chm.china.huawei.com (10.201.108.57) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v4 3/3] iio: light: Add support for ltrf216a sensor
+Content-Language: en-US
+To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com
+References: <20220511094024.175994-1-shreeya.patel@collabora.com>
+ <20220511094024.175994-4-shreeya.patel@collabora.com>
+ <a5929558-d09a-cb67-cba9-1dcfb5e43525@gmail.com>
+ <88b33ada-e997-05e9-f555-b9c1ed369fb7@collabora.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+In-Reply-To: <88b33ada-e997-05e9-f555-b9c1ed369fb7@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,100 +79,19 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 12 May 2022 12:08:57 -0500
-Eddie James <eajames@linux.ibm.com> wrote:
-
-> On 5/12/22 11:51, Jonathan Cameron wrote:
-> > On Thu, 12 May 2022 11:20:19 -0500
-> > Eddie James <eajames@linux.ibm.com> wrote:
-> >  
-> >> Document the si7020 bindings with a new "silabs,skip-reset" property.
-> >>
-> >> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> >> ---
-> >>   .../bindings/iio/humidity/silabs,si7020.yaml  | 47 +++++++++++++++++++
-> >>   .../devicetree/bindings/trivial-devices.yaml  |  2 -
-> >>   2 files changed, 47 insertions(+), 2 deletions(-)
-> >>   create mode 100644 Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
-> >> new file mode 100644
-> >> index 000000000000..9bee010f8d56
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
-> >> @@ -0,0 +1,47 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/iio/humidity/silabs,si7020.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: SI7020 humidity + temperature sensor
-> >> +
-> >> +maintainers:
-> >> +  - David Barksdale <dbarksdale@uplogix.com>  
-> > At least cc David if you are going to commit him to maintaining this binding :)
-> > +CC David at that address.  
+13.05.2022 16:40, Shreeya Patel пишет:
+> Also, why would we want to do a SW reset here?
 > 
-> 
-> Yes, my mail to him for v1 was undeliverable... I guess I should put 
-> myself instead.
-> 
+> In the datasheet, I could see the following steps to enable the sensor
+> Supply VDD to Sensor (Sensor in Standby Mode) ---> Wait 100 ms (min) -
+> initial startup time
+> ---> I2C Command (Write) To enable sensor to Active Mode
 
-That's the best answer :)
-(backup is to rely on the fallback which is me but I'd definitely rather bindings
-had attentive maintainers where possible!).
+For example, if you'll do kexec from other kernel, say downstream
+kernel, then the h/w state is undetermined for us. It's a common problem
+with downstream drivers that they rely on a specific state left from
+bootloader, which is often unacceptable for upstream.
 
-> 
-> >  
-> >> +
-> >> +description: |
-> >> +   The Silicon Labs Si7013/20/21 Relative Humidity and Temperature Sensors
-> >> +   are i2c devices which have an identical programming interface for
-> >> +   measuring relative humidity and temperature.
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    const: silabs,si7020
-> >> +
-> >> +  reg:
-> >> +    maxItems: 1
-> >> +
-> >> +  siliabs,skip-reset:
-> >> +    $ref: /schemas/types.yaml#/definitions/flag
-> >> +    description:
-> >> +      Disables resetting of the device during probe
-> >> +
-> >> +required:
-> >> +  - compatible
-> >> +  - reg
-> >> +
-> >> +additionalProperties: false
-> >> +
-> >> +examples:
-> >> +  - |
-> >> +    i2c0 {
-> >> +      #address-cells = <1>;
-> >> +      #size-cells = <0>;
-> >> +
-> >> +      si7021-a20@40 {
-> >> +        silabs,skip-reset;
-> >> +        compatible = "silabs,si7020";
-> >> +        reg = <0x40>;
-> >> +      };
-> >> +    };
-> >> +...
-> >> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> >> index e5295faef52f..47a00b478867 100644
-> >> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> >> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> >> @@ -317,8 +317,6 @@ properties:
-> >>             - sensortek,stk8ba50
-> >>               # SGX Sensortech VZ89X Sensors
-> >>             - sgx,vz89x
-> >> -            # Relative Humidity and Temperature Sensors
-> >> -          - silabs,si7020
-> >>               # Skyworks SKY81452: Six-Channel White LED Driver with Touch Panel Bias Supply
-> >>             - skyworks,sky81452
-> >>               # Socionext SynQuacer TPM MMIO module  
-
+If we'll do the SW reset on probe, then we'll bring h/w into the
+predictable state and won't depend on state left from bootloader or
+anything else that touched h/w before us.

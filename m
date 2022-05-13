@@ -2,304 +2,172 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B77E526230
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 14:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 655D2526293
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 15:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380379AbiEMMmC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 May 2022 08:42:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43406 "EHLO
+        id S240402AbiEMNGj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 May 2022 09:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378504AbiEMMlq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 08:41:46 -0400
-Received: from EUR03-AM5-obe.outbound.protection.outlook.com (mail-eopbgr30111.outbound.protection.outlook.com [40.107.3.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A2B36E1C;
-        Fri, 13 May 2022 05:41:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hd1X9Gutb1yxEGM5MrPgoCn7QR17dtSmwbFVIbfs+ZvaKi1iYqFtM49N7/Ihu/UrdJjA3lK0lahcdEf+9NQFXjMq1n+PI/j1/0C6wtPL8NKztuGM/WqS0yuqae61RG3W7Mc7XM6ltlW/woahep9Gpn2/23iQjbu0p4SLMRYioxC6CtQLldLz1J1+oYQEC06KZRzyaPq0MwTpREWxODAHdW35LFlgklX80EiXL6hZMziG7TOBti+W9wIaQTPUW/5tYUrVscjooa/JyhGlq+2hwsUwu08uK2jEMSXs0yDlxDfO+PEpxMBXgF6YL6bFylecji5VAbgPnXslY7pttPi/Bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NG0uZlI8o+UNy9oS/hoK1dwvR0zWg5vlwduMmazLtJg=;
- b=FbwyvfombExD8r8rZ3Og9lsdyZ7L/7lEjEPkghVxdY0QitbEDUusM5cnUTcPAhZLXkd6oZlID/+eqqq4O2B3rj5CmGYmaoTSOYI997GiciQSDi4u6jh/fWQJdMjQHJbaG6x1PHIkm0skQSvQYq/+i1CV9lEBxUF9e0lMHAs1B8i1JgPQYNuilkY8iuIYEViPS9Rkw/seKJm02BbIueHNPXcrwMa/e/KARFVN45NswHUNJTkH4cW6C3ZT7L4IBDzbjTBrjMLQOudKBvV0mtjbD0o24N9G1aQFr8tYX0ue4plijy77pFZohqsstrDqFW9pdH0v0yfBL92/DRbuQ5PrFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.8.40.94) smtp.rcpttodomain=kernel.org
- smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=quarantine sp=quarantine
- pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=leica-geosystems.com.cn; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NG0uZlI8o+UNy9oS/hoK1dwvR0zWg5vlwduMmazLtJg=;
- b=ZwF166GjbJ1WNmxuYJCpuWBeum0DscOotkFRVSlKw00fgiOVPtgzxhO1ZfG8alqSPWIjMRew4m7w/lQv+mm7kJoCyohonuNa0givL2kHSyaWTKCRQcLjPObq9AYCCq7Odk/NleR6g5kvkwV7gEMQNNqir2NEEkr7hyg/Kjnczvw=
-Received: from AM6P194CA0078.EURP194.PROD.OUTLOOK.COM (2603:10a6:209:8f::19)
- by HE1PR0601MB2698.eurprd06.prod.outlook.com (2603:10a6:3:4b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.13; Fri, 13 May
- 2022 12:41:42 +0000
-Received: from VE1EUR02FT036.eop-EUR02.prod.protection.outlook.com
- (2603:10a6:209:8f:cafe::9b) by AM6P194CA0078.outlook.office365.com
- (2603:10a6:209:8f::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.13 via Frontend
- Transport; Fri, 13 May 2022 12:41:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
- smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
-Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
- designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.8.40.94; helo=aherlnxbspsrv01.lgs-net.com;
-Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.94) by
- VE1EUR02FT036.mail.protection.outlook.com (10.152.13.197) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5250.13 via Frontend Transport; Fri, 13 May 2022 12:41:42 +0000
-From:   LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        tomas.melin@vaisala.com, andy.shevchenko@gmail.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qing-wu.Li@leica-geosystems.com.cn
-Cc:     linux-iio@vger.kernel.org
-Subject: [PATCH V6 5/5] iio: accel: sca3300: Add inclination channels
-Date:   Fri, 13 May 2022 12:41:35 +0000
-Message-Id: <20220513124135.1295822-6-Qing-wu.Li@leica-geosystems.com.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220513124135.1295822-1-Qing-wu.Li@leica-geosystems.com.cn>
-References: <20220513124135.1295822-1-Qing-wu.Li@leica-geosystems.com.cn>
+        with ESMTP id S1359218AbiEMNG0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 09:06:26 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF9272613D;
+        Fri, 13 May 2022 06:06:22 -0700 (PDT)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24D9b4JG011535;
+        Fri, 13 May 2022 15:05:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=Pd2SgDujk/TY2OLUOJfQwv55lVNwIc4nqp1dIqPNY40=;
+ b=tuno4bN6wUGHtxkzXIfEtw2do/pSfIq3wrJjUaVSelvG4VgJh/7GBzBTR33O8s5WRVRd
+ Wph4iRvb/QF/gWvT1HmH3rwRPL7k8JLtr1cuulNQZ3LEyU6vGshqMDr8+pG/mlK3w6gm
+ MdCUV+Il49ixqImne/aQek9Du2OJM1aCtZ1V/cGnTTpwfB6ttvmJZxNEff/vIC7WgRea
+ ZF5QwsSXF2OgNIJ9gqSbY2GHVZOlrCQg19u1NboxvQr9gJZo7pxv8Xbvj9Bw2OUlq/+H
+ O/QVvYLhZN7pjk85rudsoApxldwUteCk3ewFLqy8ASENo+0iDAx35KzYghszia+ZMdQl 4Q== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3g1muyh82x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 13 May 2022 15:05:51 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C82F310002A;
+        Fri, 13 May 2022 15:05:48 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A26C621E69C;
+        Fri, 13 May 2022 15:05:48 +0200 (CEST)
+Received: from [10.252.23.200] (10.75.127.45) by SFHDAG2NODE2.st.com
+ (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Fri, 13 May
+ 2022 15:05:47 +0200
+Message-ID: <955f3ed8-fad9-95fc-e036-8a8a6f99de50@foss.st.com>
+Date:   Fri, 13 May 2022 15:05:46 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 06101efc-3151-4c3f-e3cf-08da34ddeea1
-X-MS-TrafficTypeDiagnostic: HE1PR0601MB2698:EE_
-X-Microsoft-Antispam-PRVS: <HE1PR0601MB2698460EFCEE841B32D91383D7CA9@HE1PR0601MB2698.eurprd06.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2/o+VdOWnkyNu9Ytz30bsobObnUxn7Vb9/qH0bqMIIXh4/XdAml3fjLnailWpmpWhwtUuvkHP57y/uBzV0QDq5g/ula3EQ55/ECjdg67d1JpEq0Ri+nYB8T8pGuQxL4N6AI8aSJTSnpzMSuQNnr0GJlUt9+pzA0N7M5+KZMaWSwFQIqHMCvv9bH0OzYc+vk0e7V8Wl5qeS7HuTg5TlYKUZxrBzObim1f8KGzqASVoeN7zwQBxrMfnECS+j14NAJF5zqH4/MPzaHovlmAZADHtzuN2OPs9NrW/qHcTQ8xny7/rNjLWZc4h4cL9iiSFSL9yfkN63kIZS5i8Fhm40DVVvnV2jS3aY0lM0B1dib4K3Qhfwa56kKTDjG+OmBXlqJXhyK5F+lzHYa5QZUSXUA0GbERP0zSiDaVtopmgRnMIBRqYzxKQHiPjBZ2hxwgr9WLcM4XI3q2RF8YIdTiGFe1QaIizgPzj88Ypdl/XC+5Kc1G2WatULH+DWuVbxO3n43WyRswf265jaObyb4A2F3LcPjztBIM+rHVyHIZt4mfL9s8Djr3VUqhgC1IOtKlypZXtkUd25XngTeVoqzH8ByhxPwcSRBEGgPL+w4wRrK9Abf6v0yfNjGs49PkD3MZ7b+pE+tDwMb8svFa+tzE12RGvT+Ud8q7ojwm+tnZ0q42ORQdYwvfaXOe4I9uMnt6c/by
-X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:aherlnxbspsrv01.lgs-net.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(6512007)(36860700001)(70206006)(70586007)(2906002)(36756003)(6486002)(508600001)(86362001)(316002)(4326008)(8676002)(36736006)(336012)(6506007)(83380400001)(356005)(81166007)(40460700003)(118246002)(5660300002)(26005)(8936002)(1076003)(186003)(82310400005)(47076005)(2616005)(956004)(6666004);DIR:OUT;SFP:1102;
-X-OriginatorOrg: leica-geosystems.com.cn
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2022 12:41:42.0319
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06101efc-3151-4c3f-e3cf-08da34ddeea1
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[aherlnxbspsrv01.lgs-net.com]
-X-MS-Exchange-CrossTenant-AuthSource: VE1EUR02FT036.eop-EUR02.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0601MB2698
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 1/2] iio: adc: stm32: Iterate through all ADCs in irq
+ handler
+Content-Language: en-US
+To:     Yannick Brosseau <yannick.brosseau@gmail.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>
+CC:     <paul@crapouillou.net>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20220506225617.1774604-1-yannick.brosseau@gmail.com>
+ <20220506225617.1774604-2-yannick.brosseau@gmail.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20220506225617.1774604-2-yannick.brosseau@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-13_04,2022-05-13_01,2022-02-23_01
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Different from SCA3300, SCL3300 can output inclination angles.
-Angles are formed from acceleration with following equations:
-ANG_X = atan2(accx , sqrt(pow(accy , 2) + pow(accz , 2)))
-ANG_Y = atan2(accy , sqrt(pow(accx , 2) + pow(accz , 2)))
-ANG_Z = atan2(accz , sqrt(pow(accx , 2) + pow(accy , 2)))
+On 5/7/22 00:56, Yannick Brosseau wrote:
+> The irq handler was only checking the mask for the first ADCs in the case of the
+> F4 and H7 generation, since it was using the num_irq value. This patch add
+> the number of ADC in the common register, which map to the number of entries of
+> eoc_msk and ovr_msk in stm32_adc_common_regs.
+> 
+> Tested on a STM32F429NIH6
+> 
+> Signed-off-by: Yannick Brosseau <yannick.brosseau@gmail.com>
+> ---
+>  drivers/iio/adc/stm32-adc-core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
 
-The commit adds the output of the raw value, scale
-and scale_available of angles.
 
-New interfaces:
-  in_incli_scale
-  in_incli_scale_available
-  in_incli_x_raw
-  in_incli_y_raw
-  in_incli_z_raw
-Data converted by application of scale to degrees.
+Hi Yannick,
 
-Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
----
- drivers/iio/accel/sca3300.c | 82 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 79 insertions(+), 3 deletions(-)
+I confirm you've identified and analyzed here a regression. This is
+something that I noticed also earlier (Olivier and I had some patches in
+our downstream tree for that. Shame on me that I haven't sent them right
+away).
 
-diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
-index 3dcb4296fad2..7060eba360ae 100644
---- a/drivers/iio/accel/sca3300.c
-+++ b/drivers/iio/accel/sca3300.c
-@@ -44,12 +44,18 @@
- #define SCA3300_VALUE_RS_ERROR	0x3
- #define SCA3300_MASK_RS_STATUS	GENMASK(1, 0)
- 
-+#define SCA3300_REG_ANG_CTRL 0x0C
-+#define SCA3300_ANG_ENABLE   0x1F
-+
- enum sca3300_scan_indexes {
- 	SCA3300_ACC_X = 0,
- 	SCA3300_ACC_Y,
- 	SCA3300_ACC_Z,
- 	SCA3300_TEMP,
- 	SCA3300_TIMESTAMP,
-+	SCA3300_INCLI_X,
-+	SCA3300_INCLI_Y,
-+	SCA3300_INCLI_Z,
- };
- 
- #define SCA3300_ACCEL_CHANNEL(index, reg, axis) {			\
-@@ -73,6 +79,24 @@ enum sca3300_scan_indexes {
- 	},								\
- }
- 
-+#define SCA3300_INCLI_CHANNEL(index, reg, axis) {			\
-+	.type = IIO_INCLI,						\
-+	.address = reg,							\
-+	.modified = 1,							\
-+	.channel2 = IIO_MOD_##axis,					\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
-+	.info_mask_shared_by_type_available =				\
-+	BIT(IIO_CHAN_INFO_SCALE),					\
-+	.scan_index = index,						\
-+	.scan_type = {							\
-+		.sign = 's',						\
-+		.realbits = 16,						\
-+		.storagebits = 16,					\
-+		.endianness = IIO_CPU,					\
-+	},								\
-+}
-+
- #define SCA3300_TEMP_CHANNEL(index, reg) {				\
- 		.type = IIO_TEMP,					\
- 		.address = reg,						\
-@@ -106,15 +130,36 @@ static const int sca3300_accel_scale_map[] = {0, 1, 2, 2};
- static const int scl3300_accel_scale[][2] = {{0, 167}, {0, 333}, {0, 83}};
- static const int scl3300_accel_scale_map[] = {0, 1, 2};
- 
-+static const int scl3300_incli_scale[][2] = {{0, 5495}};
-+static const int scl3300_incli_scale_map[] = {0, 0, 0};
-+
- static const int sca3300_avail_modes_map[] = {0, 1, 2, 3};
- static const int scl3300_avail_modes_map[] = {0, 1, 3};
- 
-+static const struct iio_chan_spec scl3300_channels[] = {
-+	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_X, 0x1, X),
-+	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Y, 0x2, Y),
-+	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Z, 0x3, Z),
-+	SCA3300_TEMP_CHANNEL(SCA3300_TEMP, 0x05),
-+	IIO_CHAN_SOFT_TIMESTAMP(SCA3300_TIMESTAMP),
-+	SCA3300_INCLI_CHANNEL(SCA3300_INCLI_X, 0x09, X),
-+	SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Y, 0x0A, Y),
-+	SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Z, 0x0B, Z),
-+};
-+
- static const unsigned long sca3300_scan_masks[] = {
- 	BIT(SCA3300_ACC_X) | BIT(SCA3300_ACC_Y) | BIT(SCA3300_ACC_Z) |
- 	BIT(SCA3300_TEMP),
- 	0
- };
- 
-+static const unsigned long scl3300_scan_masks[] = {
-+	BIT(SCA3300_ACC_X) | BIT(SCA3300_ACC_Y) | BIT(SCA3300_ACC_Z) |
-+	BIT(SCA3300_TEMP) |
-+	BIT(SCA3300_INCLI_X) | BIT(SCA3300_INCLI_Y) | BIT(SCA3300_INCLI_Z),
-+	0
-+};
-+
- struct sca3300_chip_info {
- 	const char *name;
- 	const unsigned long *scan_masks;
-@@ -123,14 +168,19 @@ struct sca3300_chip_info {
- 	u8 num_accel_scales;
- 	const int (*accel_scale)[2];
- 	const int *accel_scale_map;
-+	const int (*incli_scale)[2];
-+	const int *incli_scale_map;
-+	u8 num_incli_scales;
- 	u8 num_freqs;
- 	const int *freq_table;
- 	const int *freq_map;
- 	const int *avail_modes_table;
- 	u8 num_avail_modes;
- 	u8 chip_id;
-+	bool angle;
- };
- 
-+
- /**
-  * struct sca3300_data - device data
-  * @spi: SPI device structure
-@@ -160,19 +210,27 @@ static const struct sca3300_chip_info sca3300_chip_tbl[] = {
- 		.num_accel_scales = ARRAY_SIZE(sca3300_accel_scale)*2,
- 		.accel_scale = sca3300_accel_scale,
- 		.accel_scale_map = sca3300_accel_scale_map,
-+		.incli_scale = NULL,
-+		.incli_scale_map = NULL,
-+		.num_incli_scales = 0,
- 		.num_freqs = ARRAY_SIZE(sca3300_lp_freq),
- 		.freq_table = sca3300_lp_freq,
- 		.freq_map = sca3300_lp_freq_map,
- 		.avail_modes_table = sca3300_avail_modes_map,
- 		.num_avail_modes = 4,
- 		.chip_id = SCA3300_WHOAMI_ID,
-+		.angle = false,
- 	},
--	{	.scan_masks = sca3300_scan_masks,
--		.channels = sca3300_channels,
--		.num_channels = ARRAY_SIZE(sca3300_channels),
-+	{
-+		.scan_masks = scl3300_scan_masks,
-+		.channels = scl3300_channels,
-+		.num_channels = ARRAY_SIZE(scl3300_channels),
- 		.num_accel_scales = ARRAY_SIZE(scl3300_accel_scale)*2,
- 		.accel_scale = scl3300_accel_scale,
- 		.accel_scale_map = scl3300_accel_scale_map,
-+		.incli_scale = scl3300_incli_scale,
-+		.incli_scale_map = scl3300_incli_scale_map,
-+		.num_incli_scales =  ARRAY_SIZE(scl3300_incli_scale)*2,
- 		.num_freqs = ARRAY_SIZE(scl3300_lp_freq),
- 		.freq_table = scl3300_lp_freq,
- 		.freq_map = scl3300_lp_freq_map,
-@@ -180,6 +238,7 @@ static const struct sca3300_chip_info sca3300_chip_tbl[] = {
- 		.avail_modes_table = scl3300_avail_modes_map,
- 		.num_avail_modes = 3,
- 		.chip_id = SCL3300_WHOAMI_ID,
-+		.angle = true,
- 	},
- };
- 
-@@ -387,6 +446,11 @@ static int sca3300_read_raw(struct iio_dev *indio_dev,
- 		if (ret)
- 			return ret;
- 		switch (chan->type) {
-+		case IIO_INCLI:
-+			index = data->chip->incli_scale_map[index];
-+			*val = data->chip->incli_scale[index][0];
-+			*val2 = data->chip->incli_scale[index][1];
-+			return IIO_VAL_INT_PLUS_MICRO;
- 		case IIO_ACCEL:
- 			index = data->chip->accel_scale_map[index];
- 			*val = data->chip->accel_scale[index][0];
-@@ -473,6 +537,13 @@ static int sca3300_init(struct sca3300_data *sca_data,
- 
- 	sca_data->chip = &sca3300_chip_tbl[i];
- 
-+	if (sca_data->chip->angle) {
-+		ret = sca3300_write_reg(sca_data, SCA3300_REG_ANG_CTRL,
-+					SCA3300_ANG_ENABLE);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return 0;
- }
- 
-@@ -508,6 +579,11 @@ static int sca3300_read_avail(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
- 		switch (chan->type) {
-+		case IIO_INCLI:
-+			*vals = (const int *)data->chip->incli_scale;
-+			*length = data->chip->num_incli_scales;
-+			*type = IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_AVAIL_LIST;
- 		case IIO_ACCEL:
- 			*vals = (const int *)data->chip->accel_scale;
- 			*length = data->chip->num_accel_scales;
--- 
-2.25.1
+So, I'm fine with your current patch. Please add a Fixes: tag as
+suggested by Jonathan and Paul in the cover letter.
+Fixes: 695e2f5c289b ("iio: adc: stm32-adc: fix a regression when using
+dma and irq")
 
+While you're at it, I suggest to also mention "fix" in the commit
+tittle, to make it clear: e.g. it fixes a regression in irq handling on
+stm32f4 and stm32h7.
+
+
+> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+> index 142656232157..11c08c56acb0 100644
+> --- a/drivers/iio/adc/stm32-adc-core.c
+> +++ b/drivers/iio/adc/stm32-adc-core.c
+> @@ -64,6 +64,7 @@ struct stm32_adc_priv;
+>   * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
+>   * @has_syscfg: SYSCFG capability flags
+>   * @num_irqs:	number of interrupt lines
+> + * @num_adcs:   number of ADC instances in the common registers
+
+Minor comment here, this rather is the 'maximum' number of ADC
+instances. E.g. on stm32h7, there are two ADC blocks: ADC12 with 2 ADCs
+and ADC3 with 1 ADC instantiated separately. So you could update the
+comment and/or variable name.
+
+Thanks & Best Regards,
+Fabrice
+
+
+>   */
+>  struct stm32_adc_priv_cfg {
+>  	const struct stm32_adc_common_regs *regs;
+> @@ -71,6 +72,7 @@ struct stm32_adc_priv_cfg {
+>  	u32 max_clk_rate_hz;
+>  	unsigned int has_syscfg;
+>  	unsigned int num_irqs;
+> +	unsigned int num_adcs;
+>  };
+>  
+>  /**
+> @@ -352,7 +354,7 @@ static void stm32_adc_irq_handler(struct irq_desc *desc)
+>  	 * before invoking the interrupt handler (e.g. call ISR only for
+>  	 * IRQ-enabled ADCs).
+>  	 */
+> -	for (i = 0; i < priv->cfg->num_irqs; i++) {
+> +	for (i = 0; i < priv->cfg->num_adcs; i++) {
+>  		if ((status & priv->cfg->regs->eoc_msk[i] &&
+>  		     stm32_adc_eoc_enabled(priv, i)) ||
+>  		     (status & priv->cfg->regs->ovr_msk[i]))
+> @@ -792,6 +794,7 @@ static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
+>  	.clk_sel = stm32f4_adc_clk_sel,
+>  	.max_clk_rate_hz = 36000000,
+>  	.num_irqs = 1,
+> +	.num_adcs = 3,
+>  };
+>  
+>  static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
+> @@ -800,6 +803,7 @@ static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
+>  	.max_clk_rate_hz = 36000000,
+>  	.has_syscfg = HAS_VBOOSTER,
+>  	.num_irqs = 1,
+> +	.num_adcs = 2,
+>  };
+>  
+>  static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
+> @@ -808,6 +812,7 @@ static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
+>  	.max_clk_rate_hz = 40000000,
+>  	.has_syscfg = HAS_VBOOSTER | HAS_ANASWVDD,
+>  	.num_irqs = 2,
+> +	.num_adcs = 2,
+>  };
+>  
+>  static const struct of_device_id stm32_adc_of_match[] = {

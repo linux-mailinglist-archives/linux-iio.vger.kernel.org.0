@@ -2,169 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 727895262B5
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 15:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62DBF526319
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 15:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379841AbiEMNO0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 May 2022 09:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49348 "EHLO
+        id S233207AbiEMNuU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 May 2022 09:50:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232625AbiEMNOY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 09:14:24 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9576E56767;
-        Fri, 13 May 2022 06:14:23 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24D9bGVa024730;
-        Fri, 13 May 2022 15:13:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=IzNl3ypvVSCffY9EMumhPtUXRrFQRfuRQsI8WhiD7Bs=;
- b=R9br9S/jj1VNI29zac5haQIXRO7ozP7dOi0w7TqvuXYAN1GirwpWnpRiRnZyEObZdkZy
- eatXHagoKmbDH9F7cOuBvO2R60dtcRAuyyxUdBkx073bI7Eu5tqKUNHGND2+xJQtLSfn
- hVL+fqNg0atIWAeAl9fjmDIDJfq7v38RpD4OdAIwOW09tUF1dCuqRC8KbYm9oCg59XxO
- a3YDRIX6DwZQfe69c8QlI0vWrPd+9v75OPbQRyHcM8CuS+LjZXyAY69Q3euG7oUDCJLi
- uG+T+QGc3OoFGmd5TlM17AF2H2RK3jJ0G/WCkwBb96i0vWSp+cma2ZX3rotUKF+XBobv Lg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3g1mv1s9xu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 May 2022 15:13:56 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id ED03210002A;
-        Fri, 13 May 2022 15:13:54 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E59E421ED55;
-        Fri, 13 May 2022 15:13:54 +0200 (CEST)
-Received: from [10.252.23.200] (10.75.127.47) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Fri, 13 May
- 2022 15:13:53 +0200
-Message-ID: <32a7849b-c631-f80d-b29c-2a790ac641ec@foss.st.com>
-Date:   Fri, 13 May 2022 15:13:53 +0200
+        with ESMTP id S1378060AbiEMNkQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 09:40:16 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8922B13FAB;
+        Fri, 13 May 2022 06:40:14 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: shreeya)
+        with ESMTPSA id 20E7E1F4608A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1652449212;
+        bh=X8gPJfUaPvojokUrQ1VToFmt1LKmH1dH4HkLO7C9KHE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=CyYDwTVi4ueHyg/u7jL4r3bByMb9muNVhf6HiSrmSxIDn3/qh1ZgF4hKY0Ve7GJTq
+         NC1TSrTlB0lJuLsY2sFbzJpb7CwAoZBX0oqpF+p+IoGrcmuxmm/RBCHxEvQNnRllOO
+         f5yX2BHYZ/IrsOovE3YL32ovPyEW6ZlcM3IPTwl/kLyR35Qe59iDQHoDp8A/LKH2iD
+         nR8JyJJTEq6MZdtGHIqxLN1c9ppxEPIWfe9YXO6NTCvN0WhWiOJsb4BvRTwE0KkAou
+         aCv0jmHfaxIHZ/tqMfw2g1XqFG0zSiWl/Nthk3dmXLdzOxl1e91/cGnjMnjWHQQMP9
+         7GELqEiEDvEzQ==
+Message-ID: <88b33ada-e997-05e9-f555-b9c1ed369fb7@collabora.com>
+Date:   Fri, 13 May 2022 19:10:05 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 2/2] iio: adc: stm32: Fix check for spurious IRQs on
- STM32F4
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v4 3/3] iio: light: Add support for ltrf216a sensor
 Content-Language: en-US
-To:     Yannick Brosseau <yannick.brosseau@gmail.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>
-CC:     <paul@crapouillou.net>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220506225617.1774604-1-yannick.brosseau@gmail.com>
- <20220506225617.1774604-3-yannick.brosseau@gmail.com>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <20220506225617.1774604-3-yannick.brosseau@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-13_04,2022-05-13_01,2022-02-23_01
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+To:     Dmitry Osipenko <digetx@gmail.com>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com
+References: <20220511094024.175994-1-shreeya.patel@collabora.com>
+ <20220511094024.175994-4-shreeya.patel@collabora.com>
+ <a5929558-d09a-cb67-cba9-1dcfb5e43525@gmail.com>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <a5929558-d09a-cb67-cba9-1dcfb5e43525@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/7/22 00:56, Yannick Brosseau wrote:
-> The check for spurious IRQs introduced in 695e2f5c289bb assumed that the bits
-> in the control and status registers are aligned. This is true for the H7 and MP1
-> version, but not the F4.
-> 
-> Instead of comparing both registers bitwise, we check the bit in the status and control
-> for each interrupt we are interested in.
-> 
 
-Hi Yannick,
+On 13/05/22 05:24, Dmitry Osipenko wrote:
 
-I propose a different approach, see here after.
+Hi Dmitry,
 
-Same as for patch one,
-Fixes: 695e2f5c289b ("iio: adc: stm32-adc: fix a regression when using
-dma and irq")
+> 11.05.2022 12:40, Shreeya Patel пишет:
+>> +static int ltrf216a_init(struct iio_dev *indio_dev)
+>> +{
+>> +	int ret;
+>> +	struct ltrf216a_data *data = iio_priv(indio_dev);
+>> +
+>> +	ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_CTRL);
+>> +	if (ret < 0) {
+>> +		dev_err(&data->client->dev, "Error reading LTRF216A_MAIN_CTRL\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	/* enable sensor */
+>> +	ret |= FIELD_PREP(LTRF216A_ALS_ENABLE_MASK, 1);
+>> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, ret);
+>> +	if (ret < 0) {
+>> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
+>> +		return ret;
+>> +	}
+> Couldn't you write "1" directly without reading?
+>
+> What about doing SW reset?
 
-> Signed-off-by: Yannick Brosseau <yannick.brosseau@gmail.com>
-> ---
->  drivers/iio/adc/stm32-adc.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index a68ecbda6480..5b0f138333ee 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -1422,9 +1422,10 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  		return IRQ_HANDLED;
->  	}
->  
-> -	if (!(status & mask))
-> +	if(!((status & regs->isr_eoc.mask) && (mask & regs->ier_eoc.mask)) ||
-> +           ((status & regs->isr_ovr.mask) && (mask & regs->ier_ovr.mask)))
->  		dev_err_ratelimited(&indio_dev->dev,
-> -				    "Unexpected IRQ: IER=0x%08x, ISR=0x%08x\n",
-> +				    "Unexpected IRQ: CR1/IER=0x%08x, SR/ISR=0x%08x\n",
->  				    mask, status);
+I think we are doing a read here just to make sure device registers are 
+ready and accessible
+without any issues.
 
+Also, why would we want to do a SW reset here?
 
-Here, a slightly different approach could be used... There's a long
-pending discussion, where Olivier or I should push further patches to
-support threadirqs (hopefully soon).
-In this discussion with Jonathan [1], he exposed the need to remove this
-message. Words from Jonathan:
-"This seems 'unusual'.  If this is a spurious interrupt we should be
-returning IRQ_NONE and letting the spurious interrupt protection
-stuff kick in."
+In the datasheet, I could see the following steps to enable the sensor
+Supply VDD to Sensor (Sensor in Standby Mode) ---> Wait 100 ms (min) - 
+initial startup time
+---> I2C Command (Write) To enable sensor to Active Mode
 
-[1]
-https://lore.kernel.org/linux-arm-kernel/20210116175333.4d8684c5@archlinux/
+Thanks,
+Shreeya Patel
 
-So basically, I suggest to completely get rid of this message:
-
--	if (!(status & mask))
--		dev_err_ratelimited(&indio_dev->dev,
--				    "Unexpected IRQ: IER=0x%08x, ISR=0x%08x\n",
--				    mask, status);
-
->  
->  	return IRQ_NONE;
-> @@ -1438,7 +1439,9 @@ static irqreturn_t stm32_adc_isr(int irq, void *data)
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
->  	u32 mask = stm32_adc_readl(adc, regs->ier_eoc.reg);
->  
-> -	if (!(status & mask))
-> +	/* Check that we have the interrupt we care about are enabled and active */
-> +        if(!((status & regs->isr_eoc.mask) && (mask & regs->ier_eoc.mask)) ||
-> +           ((status & regs->isr_ovr.mask) && (mask & regs->ier_ovr.mask)))
->  		return IRQ_WAKE_THREAD;
-
-Here the statement becomes useless, so it could be removed:
--	u32 mask = stm32_adc_readl(adc, regs->ier_eoc.reg);
--
--	if (!(status & mask))
--		return IRQ_WAKE_THREAD;
-
-This would avoid some complexity here (and so headaches or regressions
-like the one you've hit).
-
-This also should serve the two purposes:
-- fall into kernel generic handler for spurious IRQs (by returning
-IRQ_NONE below)
-- by the way fix current issue in stm32f4
-
-
-I Hope this is still inline with Jonathan's words earlier ;-)
-
-Best Regards,
-Fabrice
-
->  
->  	if (status & regs->isr_ovr.mask) {
+>

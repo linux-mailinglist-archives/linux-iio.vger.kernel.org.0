@@ -2,91 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE79B5258E6
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 02:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B1565258F3
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 02:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358319AbiEMAMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 20:12:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
+        id S1359529AbiEMAaN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 20:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbiEMAMr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 20:12:47 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2CC652B23;
-        Thu, 12 May 2022 17:12:45 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id v4so8411554ljd.10;
-        Thu, 12 May 2022 17:12:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Ir54uCjbCQLor1M6H9orMXkqmrqN80NYNn3go1RhTOM=;
-        b=XtxItwL/MbtRBi8arGgCgg6xnSUQwvfa+FCMjXXlHsf1jpy8PoD31EuU7yubvkMPCH
-         Ev36d5pKXuEAv+WWb7KT7De48OkEk7F/PT9zANVNukfYwmWW2BB37PcDBu2hq7RiJzkS
-         L6SlwIIPenBk64g+aPysOYm4yKmg5MgowJU+Gt/v4YRv0fMCxwwTM97LXyjXCnZ1pMkF
-         hziixrVUrnmCLy2GisRmSaFl3x8QfkJxjnmAt5kFkCsLpjh8FBrClWpn0lwo0B0G9woz
-         e5C8P/KksEm3BctSbXc3Cjak+BBsTTO/E/gvkqaddfy94ppNV2aYOeW0BxbCPu6ApXlT
-         t8nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Ir54uCjbCQLor1M6H9orMXkqmrqN80NYNn3go1RhTOM=;
-        b=4l95hGr4XAXGipttak5MUdmmlS0KMWrE6CsxNHC6NsGKSFSP3aIiW+BVexbc7LILC/
-         ZLaxxOmFRaLW/ZCFjliaTHDaAZleGGl1Ljsk9gucL1wvQlBqQqLzJxXr/SvA2TLHSy5b
-         jDCdCrkyYdFbJTWoMzBmBFgHMsBDcXUDWTwCMomsBxNxmvC7gdXVS2ZiMHPBApZ7p6Me
-         Zkr+JTac2AXi+xN10VaTwpZW/NmfK0EuwLP8blqtWLHECSjGTdbmKhzck5+BB9RhHcbF
-         W0TihS1oB3j2JUcrOg5iyDJyhP9PYheDNbyjad8XCEKH1seT5/NMS8jIgNyfZT2zwuCv
-         bs6g==
-X-Gm-Message-State: AOAM531SHDYkyzZWJ5EJ+tI8BhtWIBym1IMhB8K3pCCUMe04D07J/lI2
-        bpw/4OI7/0Ud0G3oF1d9LXaXtY4TayI=
-X-Google-Smtp-Source: ABdhPJwnJjevalcn/CPFFiAIV1hi8T8WOFBpbBWi8ZY0DivCkcNyGmUhqUjui8cBAjYbbPTIDWCIJg==
-X-Received: by 2002:a05:651c:205e:b0:250:796a:e074 with SMTP id t30-20020a05651c205e00b00250796ae074mr1497943ljo.41.1652400764154;
-        Thu, 12 May 2022 17:12:44 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-137-244.dynamic.spd-mgts.ru. [109.252.137.244])
-        by smtp.googlemail.com with ESMTPSA id v4-20020a2e7a04000000b0024f3d1dae7esm172449ljc.6.2022.05.12.17.12.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 May 2022 17:12:43 -0700 (PDT)
-Message-ID: <6efaab50-12ef-3d37-3136-e3e00b47c613@gmail.com>
-Date:   Fri, 13 May 2022 03:12:42 +0300
+        with ESMTP id S229723AbiEMAaM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 20:30:12 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9495B27735B;
+        Thu, 12 May 2022 17:30:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652401811; x=1683937811;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/LYjnCj+smhmp4FhFlGE7I7bNwE9bmKNwBEG9Xyxqcg=;
+  b=b4uwFfeo4cOPms8onhGBHZ9Srmd+0rzD+6+isWmpaTTsi2UCZSd7xDb2
+   /okGyzPaF5H9PlgJozLPUbLkt6UiKyibRWXO5awqSo4fNgRuy4obXSSlb
+   1WfJLQrSMo79AJf0pZVOShWNzTWJ8qkWfLwpRL6ZJ3YtgXG1oSNgav3A7
+   SmUOjuuoLaD3frQy5BDFfMFyqzZGZAy4/8uHSrKYThFsaYWjrDXzWz0eG
+   aOXQd28252+6ixY7yT7LLvqLrWajdpDH0GyfrfaW4fe/S9n7DQ5DImmJH
+   VCIp7YWg7to1MaoQ+7vOvg6tNh2NOGY2TEpNNzHDqYc+QsgQmzOZAxhMt
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10345"; a="269008779"
+X-IronPort-AV: E=Sophos;i="5.91,221,1647327600"; 
+   d="scan'208";a="269008779"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2022 17:30:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,221,1647327600"; 
+   d="scan'208";a="566946556"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 12 May 2022 17:30:08 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1npJC3-000L6M-EN;
+        Fri, 13 May 2022 00:30:07 +0000
+Date:   Fri, 13 May 2022 08:29:10 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, tomas.melin@vaisala.com,
+        andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH V5 3/5] iio: accel: sca3300: modified to support multi
+ chips
+Message-ID: <202205130756.Q7e8x6jf-lkp@intel.com>
+References: <20220512160312.3880433-4-Qing-wu.Li@leica-geosystems.com.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v4 3/3] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
-        krisman@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com
-References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-4-shreeya.patel@collabora.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-In-Reply-To: <20220511094024.175994-4-shreeya.patel@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220512160312.3880433-4-Qing-wu.Li@leica-geosystems.com.cn>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-11.05.2022 12:40, Shreeya Patel пишет:
-> +static int ltrf216a_get_lux(struct ltrf216a_data *data)
-> +{
-> +	int greendata, cleardata;
-> +	u64 lux, div;
-> +
-> +	greendata = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
-> +	cleardata = ltrf216a_read_data(data, LTRF216A_CLEAR_DATA_0);
-> +
-> +	if (greendata < 0 || cleardata < 0)
-> +		return -EINVAL;
+Hi LI,
 
--EIO should be more appropriate error code here
+Thank you for the patch! Perhaps something to improve:
+
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on v5.18-rc6]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/LI-Qingwu/iio-accel-sca3300-add-compatible-for-scl3300/20220513-000857
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: arm-randconfig-c002-20220512 (https://download.01.org/0day-ci/archive/20220513/202205130756.Q7e8x6jf-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/15579266e58d7cdf4ff8e7ad7a4fa30a0bd3a589
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review LI-Qingwu/iio-accel-sca3300-add-compatible-for-scl3300/20220513-000857
+        git checkout 15579266e58d7cdf4ff8e7ad7a4fa30a0bd3a589
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash drivers/iio/accel/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   drivers/iio/accel/sca3300.c: In function 'sca3300_get_op_mode':
+>> drivers/iio/accel/sca3300.c:288:58: warning: suggest parentheses around comparison in operand of '&' [-Wparentheses]
+     288 |                 if (sca_data->chip->avail_modes_table[i] == reg_val&0x03)
+         |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+
+
+vim +288 drivers/iio/accel/sca3300.c
+
+   276	
+   277	static int sca3300_get_op_mode(struct sca3300_data *sca_data, int *index)
+   278	{
+   279		int reg_val;
+   280		int ret;
+   281		int i;
+   282	
+   283		ret = sca3300_read_reg(sca_data, SCA3300_REG_MODE, &reg_val);
+   284		if (ret)
+   285			return ret;
+   286	
+   287		for (i = 0; i < sca_data->chip->num_avail_modes; i++) {
+ > 288			if (sca_data->chip->avail_modes_table[i] == reg_val&0x03)
+   289				break;
+   290		}
+   291	
+   292		if (i >= sca_data->chip->num_avail_modes)
+   293			return -EINVAL;
+   294	
+   295		*index = i;
+   296		return 0;
+   297	}
+   298	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

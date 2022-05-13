@@ -2,44 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DBC952675C
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 18:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B147E526764
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 18:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382072AbiEMQpl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 May 2022 12:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
+        id S1358697AbiEMQrG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 May 2022 12:47:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359461AbiEMQpi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 12:45:38 -0400
+        with ESMTP id S1382476AbiEMQrF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 12:47:05 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19419B870;
-        Fri, 13 May 2022 09:45:37 -0700 (PDT)
-Received: from fraeml715-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4L0Dsj1Zgjz67LLT;
-        Sat, 14 May 2022 00:40:41 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 538E751E50;
+        Fri, 13 May 2022 09:47:04 -0700 (PDT)
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4L0Dwy2Fz9z67xX9;
+        Sat, 14 May 2022 00:43:30 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml715-chm.china.huawei.com (10.206.15.34) with Microsoft SMTP Server
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 13 May 2022 18:45:34 +0200
+ 15.1.2375.24; Fri, 13 May 2022 18:47:02 +0200
 Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.24; Fri, 13 May
- 2022 17:45:33 +0100
-Date:   Fri, 13 May 2022 17:45:31 +0100
+ 2022 17:47:01 +0100
+Date:   Fri, 13 May 2022 17:47:00 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Eddie James <eajames@linux.ibm.com>
 CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>,
         <krzysztof.kozlowski+dt@linaro.org>, <robh+dt@kernel.org>,
         <lars@metafoo.de>, <jic23@kernel.org>, <miltonm@us.ibm.com>,
-        Peter Rosin <peda@axentia.se>, <linux-i2c@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] iio: humidity: si7020: Check device property for
- skipping reset in probe
-Message-ID: <20220513174531.00007b9b@Huawei.com>
-In-Reply-To: <4fd44316-689e-1b72-d483-2c617d2a455d@linux.ibm.com>
+        David Barksdale <dbarksdale@uplogix.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: humidity: Add si7020 bindings
+Message-ID: <20220513174700.00005ef4@Huawei.com>
+In-Reply-To: <306c28b7-7318-9b8d-f512-d6e78bd05e51@linux.ibm.com>
 References: <20220512162020.33450-1-eajames@linux.ibm.com>
-        <20220512174859.000042b6@Huawei.com>
-        <4fd44316-689e-1b72-d483-2c617d2a455d@linux.ibm.com>
+        <20220512162020.33450-2-eajames@linux.ibm.com>
+        <20220512175125.00001a5a@Huawei.com>
+        <306c28b7-7318-9b8d-f512-d6e78bd05e51@linux.ibm.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -58,62 +58,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 12 May 2022 12:08:07 -0500
+On Thu, 12 May 2022 12:08:57 -0500
 Eddie James <eajames@linux.ibm.com> wrote:
 
-> On 5/12/22 11:48, Jonathan Cameron wrote:
-> > On Thu, 12 May 2022 11:20:18 -0500
+> On 5/12/22 11:51, Jonathan Cameron wrote:
+> > On Thu, 12 May 2022 11:20:19 -0500
 > > Eddie James <eajames@linux.ibm.com> wrote:
 > >  
-> >> I2C commands issued after the SI7020 is starting up or after reset
-> >> can potentially upset the startup sequence. Therefore, the host
-> >> needs to wait for the startup sequence to finish before issuing
-> >> further i2c commands. This is impractical in cases where the SI7020
-> >> is on a shared bus or behind a mux, which may switch channels at
-> >> any time (generating I2C traffic). Therefore, check for a device
-> >> property that indicates that the driver should skip resetting the
-> >> device when probing.  
-> > Why not lock the bus?  It's not ideal, but then not resetting and hence
-> > potentially ending up in an unknown state isn't great either.  
-> 
-> 
-> Agreed, but locking the bus doesn't work in the case where the chip is 
-> behind a mux. The mux core driver deselects the mux immediately after 
-> the transfer to reset the si7020, causing some i2c traffic, breaking the 
-> si7020. So it would also be a requirement to configure the mux to idle 
-> as-is... That's why I went with the optional skipping of the reset. 
-> Maybe I should add the bus lock too?
-> 
-
-+Cc Peter and linux-i2c for advice as we should resolve any potential
-issue with the mux side of things rather than hiding it in the driver
-(if possible!)
-
-Jonathan
-
-
-
-
-> 
-> Thanks,
-> 
-> Eddie
-> 
-> 
-> >
-> > Jonathan
-> >  
-> >> Changes since v1:
-> >>   - Fix dt binding document
+> >> Document the si7020 bindings with a new "silabs,skip-reset" property.
 > >>
-> >> Eddie James (2):
-> >>    dt-bindings: iio: humidity: Add si7020 bindings
-> >>    iio: humidity: si7020: Check device property for skipping reset in probe
-> >>
+> >> Signed-off-by: Eddie James <eajames@linux.ibm.com>
+> >> ---
 > >>   .../bindings/iio/humidity/silabs,si7020.yaml  | 47 +++++++++++++++++++
 > >>   .../devicetree/bindings/trivial-devices.yaml  |  2 -
-> >>   drivers/iio/humidity/si7020.c                 | 14 +++---
-> >>   3 files changed, 55 insertions(+), 8 deletions(-)
+> >>   2 files changed, 47 insertions(+), 2 deletions(-)
 > >>   create mode 100644 Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
-> >>  
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
+> >> new file mode 100644
+> >> index 000000000000..9bee010f8d56
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/iio/humidity/silabs,si7020.yaml
+> >> @@ -0,0 +1,47 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/iio/humidity/silabs,si7020.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: SI7020 humidity + temperature sensor
+> >> +
+> >> +maintainers:
+> >> +  - David Barksdale <dbarksdale@uplogix.com>  
+> > At least cc David if you are going to commit him to maintaining this binding :)
+> > +CC David at that address.  
+> 
+> 
+> Yes, my mail to him for v1 was undeliverable... I guess I should put 
+> myself instead.
+> 
+
+That's the best answer :)
+(backup is to rely on the fallback which is me but I'd definitely rather bindings
+had attentive maintainers where possible!).
+
+> 
+> >  
+> >> +
+> >> +description: |
+> >> +   The Silicon Labs Si7013/20/21 Relative Humidity and Temperature Sensors
+> >> +   are i2c devices which have an identical programming interface for
+> >> +   measuring relative humidity and temperature.
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    const: silabs,si7020
+> >> +
+> >> +  reg:
+> >> +    maxItems: 1
+> >> +
+> >> +  siliabs,skip-reset:
+> >> +    $ref: /schemas/types.yaml#/definitions/flag
+> >> +    description:
+> >> +      Disables resetting of the device during probe
+> >> +
+> >> +required:
+> >> +  - compatible
+> >> +  - reg
+> >> +
+> >> +additionalProperties: false
+> >> +
+> >> +examples:
+> >> +  - |
+> >> +    i2c0 {
+> >> +      #address-cells = <1>;
+> >> +      #size-cells = <0>;
+> >> +
+> >> +      si7021-a20@40 {
+> >> +        silabs,skip-reset;
+> >> +        compatible = "silabs,si7020";
+> >> +        reg = <0x40>;
+> >> +      };
+> >> +    };
+> >> +...
+> >> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> index e5295faef52f..47a00b478867 100644
+> >> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> >> @@ -317,8 +317,6 @@ properties:
+> >>             - sensortek,stk8ba50
+> >>               # SGX Sensortech VZ89X Sensors
+> >>             - sgx,vz89x
+> >> -            # Relative Humidity and Temperature Sensors
+> >> -          - silabs,si7020
+> >>               # Skyworks SKY81452: Six-Channel White LED Driver with Touch Panel Bias Supply
+> >>             - skyworks,sky81452
+> >>               # Socionext SynQuacer TPM MMIO module  
 

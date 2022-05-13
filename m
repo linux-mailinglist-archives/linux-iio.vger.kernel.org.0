@@ -2,101 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62DBF526319
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 15:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828FB526505
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 16:44:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbiEMNuU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 13 May 2022 09:50:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39864 "EHLO
+        id S1345159AbiEMOo3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 13 May 2022 10:44:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378060AbiEMNkQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 09:40:16 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8922B13FAB;
-        Fri, 13 May 2022 06:40:14 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: shreeya)
-        with ESMTPSA id 20E7E1F4608A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652449212;
-        bh=X8gPJfUaPvojokUrQ1VToFmt1LKmH1dH4HkLO7C9KHE=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=CyYDwTVi4ueHyg/u7jL4r3bByMb9muNVhf6HiSrmSxIDn3/qh1ZgF4hKY0Ve7GJTq
-         NC1TSrTlB0lJuLsY2sFbzJpb7CwAoZBX0oqpF+p+IoGrcmuxmm/RBCHxEvQNnRllOO
-         f5yX2BHYZ/IrsOovE3YL32ovPyEW6ZlcM3IPTwl/kLyR35Qe59iDQHoDp8A/LKH2iD
-         nR8JyJJTEq6MZdtGHIqxLN1c9ppxEPIWfe9YXO6NTCvN0WhWiOJsb4BvRTwE0KkAou
-         aCv0jmHfaxIHZ/tqMfw2g1XqFG0zSiWl/Nthk3dmXLdzOxl1e91/cGnjMnjWHQQMP9
-         7GELqEiEDvEzQ==
-Message-ID: <88b33ada-e997-05e9-f555-b9c1ed369fb7@collabora.com>
-Date:   Fri, 13 May 2022 19:10:05 +0530
+        with ESMTP id S1381840AbiEMOlX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 13 May 2022 10:41:23 -0400
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD5D1BA8C2;
+        Fri, 13 May 2022 07:35:24 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id j10-20020a17090a94ca00b001dd2131159aso11036984pjw.0;
+        Fri, 13 May 2022 07:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vHHqtzMVlHfYcU1U8QOow9ihTtqg81EMmNGRPSLtClk=;
+        b=lW6JuU4F569aT6xpHtRRuo1Ok8OC6O0nynwFQ5TpDqx6lJdEp9Wdgdd2Gp/eBGWRsO
+         imyenh+44frXfEyCijqT6ex41NKNLbZZap2Q8gUDQjtbohmWDLq6bHQoC7VCyvKANla3
+         7XrmMSjt3gWXtNymStECijYnFx9G7CAVSXX33glrwodUmg+CgfigMfe9/gEOF90K931p
+         nx4U34qK5lkljSzPiGvJXoO9GinypmYSHpHQCdJgYd5+SU6yIhumiC6yM1Q6ZdX9Qdtq
+         jkGmzOmpc76CjQHlrUnYEY9ef2Xe3qs0JenN2+tNKRZVVCutZZPTMoI27zrK6MfUpRzN
+         nD5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vHHqtzMVlHfYcU1U8QOow9ihTtqg81EMmNGRPSLtClk=;
+        b=A+w2M9s2NkWxuhENB+81QZvWUm1FL3owzzFLPsYY3VkC+O+N+JLM7MfKCa3saG9ba3
+         +YpHuT8Q0pYOpftm1UAhyq1oGWqX3Ydp6/0LnNfLDG7nWpn2Ff2IBaA7HtJDZw2pgoYw
+         armpya9JZS+yeX7Bk5D1BGJAEt7kGkro+wL73T7YhfT1VmUrxiNHpe1PGlV5PoLo1BK9
+         lAcPfR0sSKwOWpx93PIWP9VdbWRbPSMTmHYhwXl+kmzeicUC54AM6wLkUAorNR3kZTK0
+         8ApC4aU7+unU/rFmM2MK2vFN/Vmidl9X85Qf/OTJt2ev26UK2ZOYSO+xdIPxAEAcJOHe
+         Ni5Q==
+X-Gm-Message-State: AOAM532rsXedAnzCIXZqb3sCDsjSZ5ntY32BTGGJ0hHe3lI3PlAG3XsA
+        F2PJ2Iece5IzdCdyhRk/HADvUUEJGnEfK74=
+X-Google-Smtp-Source: ABdhPJw0pa5BbXPxdkcjwG5RAVOFLGCOc0pYpfw6NHdEcO6smejYUeuNW6BphUGd2i9TLXpDo7EmvA==
+X-Received: by 2002:a17:902:da90:b0:15e:adc2:191d with SMTP id j16-20020a170902da9000b0015eadc2191dmr4985750plx.134.1652452524252;
+        Fri, 13 May 2022 07:35:24 -0700 (PDT)
+Received: from localhost.localdomain ([144.202.91.207])
+        by smtp.gmail.com with ESMTPSA id b13-20020a170902e94d00b0015e8d4eb208sm1923696pll.82.2022.05.13.07.35.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 May 2022 07:35:23 -0700 (PDT)
+From:   Zheyu Ma <zheyuma97@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     andriy.shevchenko@linux.intel.com, sean@geanix.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zheyu Ma <zheyuma97@gmail.com>
+Subject: [PATCH] iio: imu: bmi160: Fix the error handling at bmi160_chip_init()
+Date:   Fri, 13 May 2022 22:35:13 +0800
+Message-Id: <20220513143513.2284425-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v4 3/3] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Dmitry Osipenko <digetx@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
-        krisman@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com
-References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-4-shreeya.patel@collabora.com>
- <a5929558-d09a-cb67-cba9-1dcfb5e43525@gmail.com>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <a5929558-d09a-cb67-cba9-1dcfb5e43525@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+When the driver fails in bmi160_chip_init(), it should disable the
+regulator.
 
-On 13/05/22 05:24, Dmitry Osipenko wrote:
+The following log shows it:
 
-Hi Dmitry,
+[   18.709662] WARNING: CPU: 0 PID: 294 at drivers/regulator/core.c:2257 _regulator_put+0x3ec/0x4e0
+[   18.712069] RIP: 0010:_regulator_put+0x3ec/0x4e0
+[   18.716395] Call Trace:
+[   18.716522]  <TASK>
+[   18.716636]  regulator_bulk_free+0x82/0xe0
+[   18.717077]  i2c_device_probe+0x6f0/0x800
 
-> 11.05.2022 12:40, Shreeya Patel пишет:
->> +static int ltrf216a_init(struct iio_dev *indio_dev)
->> +{
->> +	int ret;
->> +	struct ltrf216a_data *data = iio_priv(indio_dev);
->> +
->> +	ret = i2c_smbus_read_byte_data(data->client, LTRF216A_MAIN_CTRL);
->> +	if (ret < 0) {
->> +		dev_err(&data->client->dev, "Error reading LTRF216A_MAIN_CTRL\n");
->> +		return ret;
->> +	}
->> +
->> +	/* enable sensor */
->> +	ret |= FIELD_PREP(LTRF216A_ALS_ENABLE_MASK, 1);
->> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, ret);
->> +	if (ret < 0) {
->> +		dev_err(&data->client->dev, "Error writing LTRF216A_MAIN_CTRL\n");
->> +		return ret;
->> +	}
-> Couldn't you write "1" directly without reading?
->
-> What about doing SW reset?
+Fixes: 5dea3fb066f0 ("iio: imu: bmi160: added regulator support")
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+---
+ drivers/iio/imu/bmi160/bmi160_core.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-I think we are doing a read here just to make sure device registers are 
-ready and accessible
-without any issues.
+diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
+index 824b5124a5f5..33abfc2bbd7c 100644
+--- a/drivers/iio/imu/bmi160/bmi160_core.c
++++ b/drivers/iio/imu/bmi160/bmi160_core.c
+@@ -730,7 +730,7 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+ 
+ 	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
+ 	if (ret)
+-		return ret;
++		goto err_regulator_disable;
+ 
+ 	usleep_range(BMI160_SOFTRESET_USLEEP, BMI160_SOFTRESET_USLEEP + 1);
+ 
+@@ -741,29 +741,34 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+ 	if (use_spi) {
+ 		ret = regmap_read(data->regmap, BMI160_REG_DUMMY, &val);
+ 		if (ret)
+-			return ret;
++			goto err_regulator_disable;
+ 	}
+ 
+ 	ret = regmap_read(data->regmap, BMI160_REG_CHIP_ID, &val);
+ 	if (ret) {
+ 		dev_err(dev, "Error reading chip id\n");
+-		return ret;
++		goto err_regulator_disable;
+ 	}
+ 	if (val != BMI160_CHIP_ID_VAL) {
+ 		dev_err(dev, "Wrong chip id, got %x expected %x\n",
+ 			val, BMI160_CHIP_ID_VAL);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_regulator_disable;
+ 	}
+ 
+ 	ret = bmi160_set_mode(data, BMI160_ACCEL, true);
+ 	if (ret)
+-		return ret;
++		goto err_regulator_disable;
+ 
+ 	ret = bmi160_set_mode(data, BMI160_GYRO, true);
+ 	if (ret)
+-		return ret;
++		goto err_regulator_disable;
+ 
+ 	return 0;
++
++err_regulator_disable:
++	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
++	return ret;
+ }
+ 
+ static int bmi160_data_rdy_trigger_set_state(struct iio_trigger *trig,
+-- 
+2.25.1
 
-Also, why would we want to do a SW reset here?
-
-In the datasheet, I could see the following steps to enable the sensor
-Supply VDD to Sensor (Sensor in Standby Mode) ---> Wait 100 ms (min) - 
-initial startup time
----> I2C Command (Write) To enable sensor to Active Mode
-
-Thanks,
-Shreeya Patel
-
->

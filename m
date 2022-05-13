@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B4E25258D8
-	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 02:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE79B5258E6
+	for <lists+linux-iio@lfdr.de>; Fri, 13 May 2022 02:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359707AbiEMAFL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 12 May 2022 20:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
+        id S1358319AbiEMAMu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 12 May 2022 20:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234731AbiEMAFK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 20:05:10 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9247F28B692;
-        Thu, 12 May 2022 17:05:08 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id j4so11780356lfh.8;
-        Thu, 12 May 2022 17:05:08 -0700 (PDT)
+        with ESMTP id S229602AbiEMAMr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 12 May 2022 20:12:47 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2CC652B23;
+        Thu, 12 May 2022 17:12:45 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id v4so8411554ljd.10;
+        Thu, 12 May 2022 17:12:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=SlfhMbp5iyzTfChO69bAmUIAvfEyCMoB+tx0aPIA+Sg=;
-        b=atGEAT27zERw+mbC5R/3f5L3+yFIjuuh2dVyXLejPQiu+z/ksELwDSnGDl+278jWo/
-         55Yx9p33S3YChjtHQMq/squrzOYtlEeRQ70co9j0BkxvnOphGKXfNWwHWG1JvFw9VSzB
-         eSkreu85IktJChhF8Ib5XMZY/wofyCiF/timcngk3L0nYSTR0E7E5wwfWRtfD99kN2eZ
-         +OIn/+3ZXLtiZwqAreatcW5/elnXGmDm/U3Stcn+rsYAOZzPjrIRLo4xGXVImamVw4jT
-         2VPuVcHYzjGY5//HSvBzma22A0yWow4AytVvz13W8yz4DvXC4ODhfbRPNa3pZMd57do7
-         GZ5A==
+        bh=Ir54uCjbCQLor1M6H9orMXkqmrqN80NYNn3go1RhTOM=;
+        b=XtxItwL/MbtRBi8arGgCgg6xnSUQwvfa+FCMjXXlHsf1jpy8PoD31EuU7yubvkMPCH
+         Ev36d5pKXuEAv+WWb7KT7De48OkEk7F/PT9zANVNukfYwmWW2BB37PcDBu2hq7RiJzkS
+         L6SlwIIPenBk64g+aPysOYm4yKmg5MgowJU+Gt/v4YRv0fMCxwwTM97LXyjXCnZ1pMkF
+         hziixrVUrnmCLy2GisRmSaFl3x8QfkJxjnmAt5kFkCsLpjh8FBrClWpn0lwo0B0G9woz
+         e5C8P/KksEm3BctSbXc3Cjak+BBsTTO/E/gvkqaddfy94ppNV2aYOeW0BxbCPu6ApXlT
+         t8nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=SlfhMbp5iyzTfChO69bAmUIAvfEyCMoB+tx0aPIA+Sg=;
-        b=yhbq9bxFUqdVtgltNzpz8CsiSdepOy25fXGldEjZMb5mklN9+2Rtp9Wn74TM8CRzu1
-         +E5xcMQU2dVIAZD7EVNGfb+tzXZoyfIvOnHbZ4o761M8E194BXfSBtKVqPlasjEfzvnT
-         gx97zld7Am/8vL+pq5QrBtYHVlKtzZNJziBuOu155HaZygFKzt0DUs9oGCboEi714n2S
-         4bsqfYtrIeZ7y2T0AQvtEUvFJn0FspZyWGGLMWXHPVF53jHaO2r+3F4GiSjrm94wRFd+
-         vC1mTlxHncpwzTpoAzewpnrmyMocrIf4j1NIe/gVQhcxo4Ln/PHrUUJFp9D5uE5oTmQm
-         L5eA==
-X-Gm-Message-State: AOAM531KG1Ia+CVjBJDjZY1A3A8k7RZVZSx4CZuckVDyjMb4Idgv0Dx3
-        m1hSrjOTbQyEagWLWOlDmiU=
-X-Google-Smtp-Source: ABdhPJxkQsnFzJWKlV6Dad4XHTMXRwx2sJrDc18zpKcoER5jRaiKliUc5P2eZ+28Zyq2zQgbKSH1GQ==
-X-Received: by 2002:a19:ca0f:0:b0:474:40ca:af2 with SMTP id a15-20020a19ca0f000000b0047440ca0af2mr1560901lfg.320.1652400306859;
-        Thu, 12 May 2022 17:05:06 -0700 (PDT)
+        bh=Ir54uCjbCQLor1M6H9orMXkqmrqN80NYNn3go1RhTOM=;
+        b=4l95hGr4XAXGipttak5MUdmmlS0KMWrE6CsxNHC6NsGKSFSP3aIiW+BVexbc7LILC/
+         ZLaxxOmFRaLW/ZCFjliaTHDaAZleGGl1Ljsk9gucL1wvQlBqQqLzJxXr/SvA2TLHSy5b
+         jDCdCrkyYdFbJTWoMzBmBFgHMsBDcXUDWTwCMomsBxNxmvC7gdXVS2ZiMHPBApZ7p6Me
+         Zkr+JTac2AXi+xN10VaTwpZW/NmfK0EuwLP8blqtWLHECSjGTdbmKhzck5+BB9RhHcbF
+         W0TihS1oB3j2JUcrOg5iyDJyhP9PYheDNbyjad8XCEKH1seT5/NMS8jIgNyfZT2zwuCv
+         bs6g==
+X-Gm-Message-State: AOAM531SHDYkyzZWJ5EJ+tI8BhtWIBym1IMhB8K3pCCUMe04D07J/lI2
+        bpw/4OI7/0Ud0G3oF1d9LXaXtY4TayI=
+X-Google-Smtp-Source: ABdhPJwnJjevalcn/CPFFiAIV1hi8T8WOFBpbBWi8ZY0DivCkcNyGmUhqUjui8cBAjYbbPTIDWCIJg==
+X-Received: by 2002:a05:651c:205e:b0:250:796a:e074 with SMTP id t30-20020a05651c205e00b00250796ae074mr1497943ljo.41.1652400764154;
+        Thu, 12 May 2022 17:12:44 -0700 (PDT)
 Received: from [192.168.2.145] (109-252-137-244.dynamic.spd-mgts.ru. [109.252.137.244])
-        by smtp.googlemail.com with ESMTPSA id u6-20020a2e8546000000b0024f3d1daeeesm155864ljj.118.2022.05.12.17.05.05
+        by smtp.googlemail.com with ESMTPSA id v4-20020a2e7a04000000b0024f3d1dae7esm172449ljc.6.2022.05.12.17.12.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 May 2022 17:05:06 -0700 (PDT)
-Message-ID: <8f5f9c62-3809-baa9-416a-7a0860e9add7@gmail.com>
-Date:   Fri, 13 May 2022 03:05:05 +0300
+        Thu, 12 May 2022 17:12:43 -0700 (PDT)
+Message-ID: <6efaab50-12ef-3d37-3136-e3e00b47c613@gmail.com>
+Date:   Fri, 13 May 2022 03:12:42 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
@@ -85,5 +85,8 @@ X-Mailing-List: linux-iio@vger.kernel.org
 > +
 > +	greendata = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
 > +	cleardata = ltrf216a_read_data(data, LTRF216A_CLEAR_DATA_0);
+> +
+> +	if (greendata < 0 || cleardata < 0)
+> +		return -EINVAL;
 
-Could you please explain what is cleardata?
+-EIO should be more appropriate error code here

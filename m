@@ -2,46 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 374A15272BC
-	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 17:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73D4C5272C6
+	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 18:04:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231848AbiENPtu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 May 2022 11:49:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37482 "EHLO
+        id S234081AbiENQEn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 May 2022 12:04:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231569AbiENPts (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 11:49:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E1B2674
-        for <linux-iio@vger.kernel.org>; Sat, 14 May 2022 08:49:47 -0700 (PDT)
+        with ESMTP id S230453AbiENQEl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 12:04:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF4D2AC7B;
+        Sat, 14 May 2022 09:04:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6276A60F68
-        for <linux-iio@vger.kernel.org>; Sat, 14 May 2022 15:49:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955A7C340EE;
-        Sat, 14 May 2022 15:49:45 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 80547B808C9;
+        Sat, 14 May 2022 16:04:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4299BC340EE;
+        Sat, 14 May 2022 16:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652543386;
-        bh=Fl4QwbT27BXMDmofeX0tgCOs80iohgnrhqXSlDorTwg=;
+        s=k20201202; t=1652544278;
+        bh=ahkhJryacQr7ULePw0qjg+sVbSF/2SBQ/b0sTtL5hKc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bi7DdScLNFAU/fQhgytUa1mfU43rYgaWnCbX+ryyuAeRiyxz+T7v3jH8ie1p9Lxkb
-         yV9X5AQC6WY/8wimcQgMkwcdAEQP+O9s9qOUaYeaB+rI2ssLrOfgg9QqpAcFS8PKk9
-         eO0H1OEzKTLcM6KEVd98Hs7ryb6W+U/z2OTrsx7Jn0pD9I488f/G4S0ENgRQNGsO+W
-         ug5KZIuFuX4KJGYECzyZDp+ZLZl5MzWdlC4KFPnGaOrqVYlpmDHXoJPOohF5WNfxD6
-         SUOf3eg80HI9u4CN8wuHW4cmgWzF3PyukA/O+cepGBgGUZDUO9xiXXZMUU1te10cg4
-         HxgAOIfZjitaA==
-Date:   Sat, 14 May 2022 16:58:22 +0100
+        b=aoWMhXojLJv+afB8djzlOLgAZQLKrZ81hUWX6xvYGtmBRyWa3Nvj4lF0KFuhpbhI9
+         yeL04eD+01R3zSYoLLPL6yRS9xmbKihb+6LPr540g0Sq/NpNMDz3jeYGdVKcfymjs+
+         86OemoSG4NcAS++BPFSYGri2rYwRgFakEV8dFRJ7hkZ9Uxm3aiFGLxsTH6eNECJRRg
+         LVDawoo52+o3m4oCAlbdX0+a+Wd0CkJTBOXBlmko9Vtn4FjYDitHNZKRyexo8fCPFV
+         juwVvS8WgwAe6Y9aVQ91PWGYVm9qRrx449yR/ZfXSyIuMHSgeC0667jTMB7dES/4MZ
+         rEMuCoq8eOr+g==
+Date:   Sat, 14 May 2022 17:13:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Zheyu Ma <zheyuma97@gmail.com>, lars@metafoo.de,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: gyro: mpu3050: Fix the error handling in
- mpu3050_power_up()
-Message-ID: <20220514165822.1be198d3@jic23-huawei>
-In-Reply-To: <CACRpkda9Gbo9R15qRm35nwdjba0t79H=68+LuPL-HFbFgrONrw@mail.gmail.com>
-References: <20220510092431.1711284-1-zheyuma97@gmail.com>
-        <CACRpkda9Gbo9R15qRm35nwdjba0t79H=68+LuPL-HFbFgrONrw@mail.gmail.com>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/7] iio: adc: qcom-spmi-adc5: Add missing
+ VCOIN/AMUX_THM3/GPIO# channels
+Message-ID: <20220514171312.227a1f07@jic23-huawei>
+In-Reply-To: <20220511220613.1015472-5-marijn.suijten@somainline.org>
+References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
+        <20220511220613.1015472-5-marijn.suijten@somainline.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,28 +66,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 May 2022 00:08:37 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Thu, 12 May 2022 00:06:10 +0200
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
 
-> On Tue, May 10, 2022 at 11:24 AM Zheyu Ma <zheyuma97@gmail.com> wrote:
+> These channels are specified in downstream kernels [1] and actively used
+> by ie. the Sony Seine platform on the SM6125 SoC.
+
+Looking at the links, some of them are on that platform but not all.
+Better to make that explicit in this description.
+
 > 
-> > The driver should disable regulators when fails at regmap_update_bits().
-> >
-> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>  
+> [1]: https://source.codeaurora.org/quic/la/kernel/msm-4.14/tree/drivers/iio/adc/qcom-spmi-adc5.c?h=LA.UM.7.11.r1-05200-NICOBAR.0#n688
 > 
-> Looks correct!
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-I'm not going to rush this one in as
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
-Applied to the fixes-togreg branch of iio.git and marked for stable
-(I was a bit borderline in deciding on stable marking but meh, it's safe
-enough as fixes go and real issue, even if one we are unlikely to hit)
+I'm not keen on patches with no context being
+sent to mailing lists. Please cc all lists (and preferably individuals)
+on at least the cover letter so we can see overall discussion.
 
-Thanks,
+If nothing else, I've no idea if intent is that the patches go through different
+trees or all need to merge via one route.
+
+Patch itself looks fine,
 
 Jonathan
 
+
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> Yours.
-> Linus Walleij
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index 87438d1e5c0b..69c7fd44d34c 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -526,6 +526,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>  					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_VBAT_SNS]		= ADC5_CHAN_VOLT("vbat_sns", 1,
+>  					SCALE_HW_CALIB_DEFAULT)
+> +	[ADC5_VCOIN]		= ADC5_CHAN_VOLT("vcoin", 1,
+> +					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_DIE_TEMP]		= ADC5_CHAN_TEMP("die_temp", 0,
+>  					SCALE_HW_CALIB_PMIC_THERM)
+>  	[ADC5_USB_IN_I]		= ADC5_CHAN_VOLT("usb_in_i_uv", 0,
+> @@ -549,6 +551,16 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>  					SCALE_HW_CALIB_THERM_100K_PULLUP)
+>  	[ADC5_AMUX_THM2]	= ADC5_CHAN_TEMP("amux_thm2", 0,
+>  					SCALE_HW_CALIB_PM5_SMB_TEMP)
+> +	[ADC5_AMUX_THM3]	= ADC5_CHAN_TEMP("amux_thm3", 0,
+> +					SCALE_HW_CALIB_PM5_SMB_TEMP)
+> +	[ADC5_GPIO1_100K_PU]	= ADC5_CHAN_TEMP("gpio1_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+> +	[ADC5_GPIO2_100K_PU]	= ADC5_CHAN_TEMP("gpio2_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+> +	[ADC5_GPIO3_100K_PU]	= ADC5_CHAN_TEMP("gpio3_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+> +	[ADC5_GPIO4_100K_PU]	= ADC5_CHAN_TEMP("gpio4_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+>  };
+>  
+>  static const struct adc5_channels adc7_chans_pmic[ADC5_MAX_CHANNEL] = {
 

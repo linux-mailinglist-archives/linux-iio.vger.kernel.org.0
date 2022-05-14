@@ -2,208 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4DF527140
-	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 15:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36637527147
+	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 15:33:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232501AbiENNc3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 May 2022 09:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45044 "EHLO
+        id S232048AbiENNdL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 May 2022 09:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232550AbiENNc3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 09:32:29 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EFAE222A1;
-        Sat, 14 May 2022 06:32:27 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id y21so13055924edo.2;
-        Sat, 14 May 2022 06:32:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=cfFP3xfa8xoziXYuGDbSCKt0RTxwr0nsgNiwx+imKA0=;
-        b=YmK8Gm6dvg1hmXX0XRB5bV3MWQEQ0DGYM8C0ACNy6JqfvrhAmaxNZclAZSR03TCEJA
-         bP9YhnwETeCNkvsjGdw16hEfOQrmev9eSS8S+83BLzNJKwHjER0u0o2aoWcSHSk6kHr3
-         /rRDO1j4+DcBVKO80WxHzpdVhec7f2MeMiqJcYJhJ5CW2MgTLWFhcx3er/2hpc+OHfOn
-         0PHoUIedtnsHHfUkY0Vg+tOmKMtpdM+cWhowgZT0+KSSsr8Nra37zPecaRPqt61ILc0x
-         HVx7do/kxXO57Ut/BBcQjHl5JTqs8s06cV1eL+iXnIdRO4+efisxpGfNmRN/X9IxWU8J
-         Xp2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=cfFP3xfa8xoziXYuGDbSCKt0RTxwr0nsgNiwx+imKA0=;
-        b=JG9YuAkEUQyOgg8PanslDowIR7UrKWIOGlBtc01qKgChoRT7A2gO+sfWAawsbwmmUN
-         9al0Vf/idQwMzzjD94HUNQSuZtYTF1nGqoZFKiazFrkoHK3tQOl23vuIMIDJ9HLosFim
-         1STZukT6FI88cjaqV4+AWb+EqSxuvS1EA5t5Nk4TgiTwNLhw/FTbcdmlTZJgBswTENgZ
-         g4G1LsMuEkyCIJLzqd+IbazkKEI35/5qxVVwrLegmy3R9CHHnN5G/KGqx40MbWMoZALC
-         /xy1FYwTxc+pgoKkExt9JDsyMSsKyhIZqReJThqJdep99CKttSxFFwqS4qtX0iuihAxM
-         Xn9A==
-X-Gm-Message-State: AOAM530mJPCgtcDCaHdsBqezutC2f0XXA9T0hpW5nMsv0UXHmAC5GjFc
-        Lz7TVJ0zO+oOpqL1WnoX52wWD76/10A=
-X-Google-Smtp-Source: ABdhPJwSQdGzkpM8IMpJVsaMDIQhBaKThUul2amjq4BK1Mfs1gbXpG1WnhlimcyGx1iB12/mAgxprQ==
-X-Received: by 2002:aa7:cd10:0:b0:428:659e:a4c8 with SMTP id b16-20020aa7cd10000000b00428659ea4c8mr3902005edw.190.1652535145876;
-        Sat, 14 May 2022 06:32:25 -0700 (PDT)
-Received: from [192.168.0.182] ([188.24.86.218])
-        by smtp.gmail.com with ESMTPSA id s15-20020a50ab0f000000b0042617ba637fsm2286822edc.9.2022.05.14.06.32.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 May 2022 06:32:25 -0700 (PDT)
-Message-ID: <f5af3894-c76e-04b6-830a-2687427991b6@gmail.com>
-Date:   Sat, 14 May 2022 16:32:25 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v3 2/2] iio: adc: ad4130: add AD4130 driver
-Content-Language: en-US
+        with ESMTP id S232616AbiENNdJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 09:33:09 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4FC22536
+        for <linux-iio@vger.kernel.org>; Sat, 14 May 2022 06:33:08 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nprtA-0004sK-5m; Sat, 14 May 2022 15:32:56 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nprtA-002HtA-E4; Sat, 14 May 2022 15:32:55 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nprt8-009fvX-C0; Sat, 14 May 2022 15:32:54 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-References: <20220419150828.191933-1-cosmin.tanislav@analog.com>
- <20220419150828.191933-3-cosmin.tanislav@analog.com>
- <20220501170807.1e728524@jic23-huawei>
- <5d932a4a-790e-ca95-c5de-c2267e1f365c@gmail.com>
- <20220507173551.1bc45a82@jic23-huawei>
- <39cb9ade-14af-c53b-bd42-06a9b965b57f@gmail.com>
- <20220507180210.4c48a85f@jic23-huawei>
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <20220507180210.4c48a85f@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: [PATCH] iio:magnetometer:mbc150: Make bmc150_magn_remove() return void
+Date:   Sat, 14 May 2022 15:32:50 +0200
+Message-Id: <20220514133250.307955-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2562; h=from:subject; bh=t+OPSaDrfq/MLParFt7NgHrHvSyexuQsQjU/VbXXOgI=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBif699jaSHq3JLvVGelRpFylgv/DxB3DHb7bcKs0Xl GPVC4K+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYn+vfQAKCRDB/BR4rcrsCWQLB/ 9LNpA7TS9mWVhBKgRZQb62+OcmhQfpF9Gu13Xn3QT2pi1i6WbGHEIRWg5+ygwR7zjTYyLkd0gGc1qr sKr1IakD55WtnpdMgjsgqJK4WtxM01JAUWVWOnvkSngNWFLKJ4rk441prSYP3GikkzJ2bv+6A/Xc6g 5QXnOxl1o2foZJsnpkSqqI3DLOhd7EGhQpelGST/K2iKupK/awb8+9yfuqIZUCLsd9EIEAfK3W4XLp cPHw7ZSKDYBpODeMjRrGkYjZafsVZovGXyI+fNfuWFFX+q0Mx4KWLVdfY0O/whk5gcaD0etw8tLnRQ RN+Bn89rgxIcf3eXjQnSN7hYJvSrRl
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+bmc150_magn_remove() always returns zero. Make it return no value which
+makes it easier to see in the callers that there is no error to handle.
 
+Also the return value of i2c driver remove callbacks is ignored anyway.
+This prepares making i2c remove callbacks return void, too.
 
-On 5/7/22 20:04, Jonathan Cameron wrote:
-> On Sat, 7 May 2022 19:49:17 +0300
-> Cosmin Tanislav <demonsingur@gmail.com> wrote:
-> 
->> On 5/7/22 19:35, Jonathan Cameron wrote:
->>>    
->>>>>       
->>>>>> +static int ad4130_set_fifo_watermark(struct iio_dev *indio_dev, unsigned int val)
->>>>>> +{
->>>>>> +	struct ad4130_state *st = iio_priv(indio_dev);
->>>>>> +	unsigned int eff;
->>>>>> +	int ret;
->>>>>> +
->>>>>> +	if (val > AD4130_FIFO_SIZE)
->>>>>> +		return -EINVAL;
->>>>>> +
->>>>>> +	/*
->>>>>> +	 * Always set watermark to a multiple of the number of enabled channels
->>>>>> +	 * to avoid making the FIFO unaligned.
->>>>>> +	 */
->>>>>> +	eff = rounddown(val, st->num_enabled_channels);
->>>>>> +
->>>>>> +	mutex_lock(&st->lock);
->>>>>> +
->>>>>> +	ret = regmap_update_bits(st->regmap, AD4130_REG_FIFO_CONTROL,
->>>>>> +				 AD4130_WATERMARK_MASK,
->>>>>> +				 FIELD_PREP(AD4130_WATERMARK_MASK,
->>>>>> +					    ad4130_watermark_reg_val(eff)));
->>>>>> +	if (ret)
->>>>>> +		goto out;
->>>>>> +
->>>>>> +	st->effective_watermark = eff;
->>>>>> +	st->watermark = val;
->>>>>
->>>>> Hmm this is a potential inconsistency in the IIO ABI.
->>>>> ABI docs describes watermark as being number of 'scan elements' which is
->>>>> not the clearest text we could have gone with...
->>>>>
->>>>> Now I may well have made a mistake in the following as it's rather a long time
->>>>> since I last looked at the core handling for this...
->>>>>
->>>>> The core treats it as number datum (which is same as a scan) when using
->>>>> it for the main watermark attribute and also when using watermarks with the
->>>>> kfifo (the IIO fifo is made up of objects each of which is a scan. So kfifo_len()
->>>>> returns the number of scans.
->>>>>     
->>>>> Looking very quickly at a few other drivers
->>>>> adxl367 seems to use number of samples.
->>>>> adxl372 is using number of scans.
->>>>> bmc150 hardware seems to work on basis of frame count which I 'think' is probably scans.
->>>>> fxls8962 uses 'samples count' which is not clearly defined in the datasheet but there
->>>>> is an example showing that it's scans (I think)...
->>>>> lsm6dsx - some of the fifos used with this are based on tagged data so the connection to
->>>>> what hits the front end buffers is non obvious.
->>>>>
->>>>> So, not great for consistency :(
->>>>>
->>>>> Going forwards i think we should standardize the hardware fifo watermark on what is being
->>>>> used for the software watermark which I believe is number of scans.
->>>>> Not necessary much we can do about old drivers though due to risk of breaking ABI...
->>>>> We should make the documentation clearer though.
->>>>>       
->>>>
->>>> I was confused too, but this seemed more logical to me at the time, and
->>>> since you didn't say anything regarding it on ADXL367, I did it the same
->>>> way here. I guess we can't go back and change it now on ADXL367, I'm
->>>> sorry for this. I'll fix it.
->>>
->>> I missed it.  Review is never perfect (mine definitely aren't!)
->>>
->>> Thinking more on the adxl367. We still have a window to  fix that as
->>> the driver isn't yet in a release kernel.  Would you mind spinning a
->>> patch to fix that one?  Even if we miss the rc cycle (it's a bit tight
->>> timing wise) we can sneak it in as an early fix in stable without
->>> significant risk of breaking anyone's userspace.
->>>    
->>
->> I hope Monday is not too late to do it?
-> 
-> Any time next week should be fine.  If it ends up later that's fine as well.
-> We have at least a few weeks until the 5.18 release and then if we were to land
-> this during the first few weeks of the next cycle that would be fine as well.
-> No one should be insane enough to not pick up at least the first few stable
-> releases of a new kernel!
-> 
->> I can also try to do the changes tomorrow but I don't have the hardware
->> anymore so I won't be able to test until I get it back, which is only
->> next week.
->>
->>> There might be other drivers that have that interpretation we can't
->>> fix but if we can reduce the scope of the problem by changing the adxl367
->>> that would be great.
->>>
->>> We should also definitely improve the docs and perhaps add a note to say
->>> that due to need to maintain ABI, a few drivers use scans * number of channels
->>> rather than scans.
->>
->> I guess I could also do that at the same time.
-> 
-> Perfect :)
-> 
-> Thanks for sorting this out.
-> 
-> Jonathan
-> 
-> 
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/iio/magnetometer/bmc150_magn.c     | 3 +--
+ drivers/iio/magnetometer/bmc150_magn.h     | 2 +-
+ drivers/iio/magnetometer/bmc150_magn_i2c.c | 4 +++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-I've just had another good look at ADXL367. It seems that I'm quick at
-forgetting stuff about the code I write.
+diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+index 64e8b04e654b..06d5a1ef1fbd 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.c
++++ b/drivers/iio/magnetometer/bmc150_magn.c
+@@ -985,7 +985,7 @@ int bmc150_magn_probe(struct device *dev, struct regmap *regmap,
+ }
+ EXPORT_SYMBOL_NS(bmc150_magn_probe, IIO_BMC150_MAGN);
+ 
+-int bmc150_magn_remove(struct device *dev)
++void bmc150_magn_remove(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct bmc150_magn_data *data = iio_priv(indio_dev);
+@@ -1008,7 +1008,6 @@ int bmc150_magn_remove(struct device *dev)
+ 	mutex_unlock(&data->mutex);
+ 
+ 	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+-	return 0;
+ }
+ EXPORT_SYMBOL_NS(bmc150_magn_remove, IIO_BMC150_MAGN);
+ 
+diff --git a/drivers/iio/magnetometer/bmc150_magn.h b/drivers/iio/magnetometer/bmc150_magn.h
+index 3b69232afd2c..98c086d10c13 100644
+--- a/drivers/iio/magnetometer/bmc150_magn.h
++++ b/drivers/iio/magnetometer/bmc150_magn.h
+@@ -7,6 +7,6 @@ extern const struct dev_pm_ops bmc150_magn_pm_ops;
+ 
+ int bmc150_magn_probe(struct device *dev, struct regmap *regmap, int irq,
+ 		      const char *name);
+-int bmc150_magn_remove(struct device *dev);
++void bmc150_magn_remove(struct device *dev);
+ 
+ #endif /* _BMC150_MAGN_H_ */
+diff --git a/drivers/iio/magnetometer/bmc150_magn_i2c.c b/drivers/iio/magnetometer/bmc150_magn_i2c.c
+index e39b89661ad1..65c004411d0f 100644
+--- a/drivers/iio/magnetometer/bmc150_magn_i2c.c
++++ b/drivers/iio/magnetometer/bmc150_magn_i2c.c
+@@ -36,7 +36,9 @@ static int bmc150_magn_i2c_probe(struct i2c_client *client,
+ 
+ static int bmc150_magn_i2c_remove(struct i2c_client *client)
+ {
+-	return bmc150_magn_remove(&client->dev);
++	bmc150_magn_remove(&client->dev);
++
++	return 0;
+ }
+ 
+ static const struct acpi_device_id bmc150_magn_acpi_match[] = {
 
-In adxl367_set_fifo_samples(), fifo_watermark is multiplied by
-fifo_set_size, then, if it is larger than the maximum watermark,
-it is capped at the maximum watermark, and then, it is divided
-by fifo_set_size again.
+base-commit: 3123109284176b1532874591f7c81f3837bbdc17
+-- 
+2.35.1
 
-In the end, fifo_watermark actually seems to mean number of scans
-in that driver too.
-
-So this was a huge confusion. The different thing about AD4130 is that
-the register actually means number of samples, and not number of scans,
-so that's where that confussion stemmed from.
-
-Sorry for wasting your time on this.

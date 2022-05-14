@@ -2,61 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720AE5271E5
-	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 16:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 284BD5271F6
+	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 16:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233155AbiENOVW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 May 2022 10:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34628 "EHLO
+        id S233223AbiENO1w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 May 2022 10:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233383AbiENOVL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 10:21:11 -0400
+        with ESMTP id S233155AbiENO1v (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 10:27:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0720A1B1;
-        Sat, 14 May 2022 07:21:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C366B2BA;
+        Sat, 14 May 2022 07:27:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8537360F2A;
-        Sat, 14 May 2022 14:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8425FC340EE;
-        Sat, 14 May 2022 14:21:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A6B660F02;
+        Sat, 14 May 2022 14:27:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE01C340EE;
+        Sat, 14 May 2022 14:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652538067;
-        bh=fBJG7A+XsQUdGt9z4Q/dgnY9axRvsRVkKDu5cKbiVRQ=;
+        s=k20201202; t=1652538469;
+        bh=PyuhuQtevyldQ5YwVAm3vJo7rj0yjNlAxJbFhH2D4C4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pQqTcVRNOWdlHHOXC+4ME/GCYRzZnE8N7ttD47TT9CnJrMLVmTkjbLeWKpJQfeDhv
-         B2s6QGQXfNzXSAyTatQdpt8RwvlURF0V0iC1OVvNyb6mfs8iQcydgDnUBQeAjQfUFG
-         wRp1M52PJ3Y3DsWNx6TGCG1DposlLQ5GRCfW37nVU+4GUaHW2BoAvfJEle4Z6tLi5M
-         EkaXY4LY3LdzMDOg+ZDkxoilOA2mt8cAc4rljnfawj23clTnGXYhUBuBWSXk1unGLk
-         MUBg0K5zcwc22Hpg7igxdPA0VcDyMnHKMP2BmRVEHuc9RJp0a8cAIXywbAeagz6gSZ
-         vR9sGgUex9UPw==
-Date:   Sat, 14 May 2022 15:29:40 +0100
+        b=eVAwtu8PXM9fahwFSHqkHOj5ZFBQ+9liG8tanBNARTgdq+iJWR7qyOt+0fI/JeFaK
+         5MPZ2jUb7hFhtdtBtkkmpEg8i9vXBxzEeReWBJJzD6/JT9671kbBejiZntgB9tMTeS
+         /PgUfaDzSyV8jE3aQWPo3oVBem0QZkScIF6fNZSoJ60QrXKotJegzm95zSPb3rBbJl
+         vGyP58iZYx1MtWwgiu025yLX+Dct4fRXtfFjXVG3j2v/fDmbfwBqv6Bg4/iKCoII4u
+         +mVCcjCihgYvyvg8whmSDMV4B4vqrwdu6omqYjde6ZTT29CW0tx2F6ABnml+Wp8NtK
+         pPsLYahlvaYXA==
+Date:   Sat, 14 May 2022 15:36:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] dt-bindings: proximity: vl53l0x: Document
- optional supply and GPIO properties
-Message-ID: <20220514152940.1a212c7f@jic23-huawei>
-In-Reply-To: <f5ec4fd9-b9d7-10fa-1c27-2f268466274f@linaro.org>
-References: <20220512191334.61804-1-markuss.broks@gmail.com>
-        <20220512191334.61804-2-markuss.broks@gmail.com>
-        <f5ec4fd9-b9d7-10fa-1c27-2f268466274f@linaro.org>
+To:     Zheyu Ma <zheyuma97@gmail.com>
+Cc:     lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+        sean@geanix.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: bmi160: Fix the error handling at
+ bmi160_chip_init()
+Message-ID: <20220514153625.18c4d9f8@jic23-huawei>
+In-Reply-To: <20220513143513.2284425-1-zheyuma97@gmail.com>
+References: <20220513143513.2284425-1-zheyuma97@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -71,37 +56,92 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 May 2022 10:56:50 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Fri, 13 May 2022 22:35:13 +0800
+Zheyu Ma <zheyuma97@gmail.com> wrote:
 
-> On 12/05/2022 21:13, Markuss Broks wrote:
-> > This patch adds the optional properties for the VL53L0X ToF sensor to the
-> > device-tree binding.
-> > 
-> > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>  
+> When the driver fails in bmi160_chip_init(), it should disable the
+> regulator.
 > 
-> Wait, two days and three versions? Please give some time before
-> resending entire patchset.
-
-Yeah, several instances of this on the IIO list this week. Please
-let things sit for at least a few days between versions even if
-the requested changes are fairly minor.
-
+> The following log shows it:
 > 
-> Same comments apply as for v2 and v3...
->
-I 'could' fix this up, but given you've not responded to Krzysztof
-I think I'd prefer you send a v5 in the second half of next week or
-later (to give time for other review) with the patch description
-change Krzysztof suggested made.
+> [   18.709662] WARNING: CPU: 0 PID: 294 at drivers/regulator/core.c:2257 _regulator_put+0x3ec/0x4e0
+> [   18.712069] RIP: 0010:_regulator_put+0x3ec/0x4e0
+> [   18.716395] Call Trace:
+> [   18.716522]  <TASK>
+> [   18.716636]  regulator_bulk_free+0x82/0xe0
+> [   18.717077]  i2c_device_probe+0x6f0/0x800
+> 
+> Fixes: 5dea3fb066f0 ("iio: imu: bmi160: added regulator support")
+> Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
 
-Code wise the series looks fine to me.
+Hi,
+
+Good find, but Tong Zhang got their first and the resulting patch
+fixes an additional issue missed in this fix. See below.
 
 Jonathan
 
-
-
+> ---
+>  drivers/iio/imu/bmi160/bmi160_core.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
 > 
-> Best regards,
-> Krzysztof
+> diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi160/bmi160_core.c
+> index 824b5124a5f5..33abfc2bbd7c 100644
+> --- a/drivers/iio/imu/bmi160/bmi160_core.c
+> +++ b/drivers/iio/imu/bmi160/bmi160_core.c
+> @@ -730,7 +730,7 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+>  
+>  	ret = regmap_write(data->regmap, BMI160_REG_CMD, BMI160_CMD_SOFTRESET);
+>  	if (ret)
+> -		return ret;
+> +		goto err_regulator_disable;
+>  
+>  	usleep_range(BMI160_SOFTRESET_USLEEP, BMI160_SOFTRESET_USLEEP + 1);
+>  
+> @@ -741,29 +741,34 @@ static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+>  	if (use_spi) {
+>  		ret = regmap_read(data->regmap, BMI160_REG_DUMMY, &val);
+>  		if (ret)
+> -			return ret;
+> +			goto err_regulator_disable;
+>  	}
+>  
+>  	ret = regmap_read(data->regmap, BMI160_REG_CHIP_ID, &val);
+>  	if (ret) {
+>  		dev_err(dev, "Error reading chip id\n");
+> -		return ret;
+> +		goto err_regulator_disable;
+>  	}
+>  	if (val != BMI160_CHIP_ID_VAL) {
+>  		dev_err(dev, "Wrong chip id, got %x expected %x\n",
+>  			val, BMI160_CHIP_ID_VAL);
+> -		return -ENODEV;
+> +		ret = -ENODEV;
+> +		goto err_regulator_disable;
+>  	}
+>  
+>  	ret = bmi160_set_mode(data, BMI160_ACCEL, true);
+>  	if (ret)
+> -		return ret;
+> +		goto err_regulator_disable;
+>  
+>  	ret = bmi160_set_mode(data, BMI160_GYRO, true);
+>  	if (ret)
+
+A failure here does not disable the accelerometer (which is done
+in the uninit() function which we we never end
+up running.
+
+
+> -		return ret;
+> +		goto err_regulator_disable;
+>  
+>  	return 0;
+> +
+> +err_regulator_disable:
+> +	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
+> +	return ret;
+>  }
+>  
+>  static int bmi160_data_rdy_trigger_set_state(struct iio_trigger *trig,
 

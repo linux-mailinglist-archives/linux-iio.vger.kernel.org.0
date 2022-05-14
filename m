@@ -2,47 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D80E52717D
-	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 16:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65BE527193
+	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 16:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbiENOBg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 May 2022 10:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60338 "EHLO
+        id S232473AbiENOK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 May 2022 10:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230525AbiENOBc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 10:01:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBD262F0;
-        Sat, 14 May 2022 07:01:30 -0700 (PDT)
+        with ESMTP id S231211AbiENOK0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 10:10:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0DB412AAB;
+        Sat, 14 May 2022 07:10:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D9A960F0B;
-        Sat, 14 May 2022 14:01:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF1DC34115;
-        Sat, 14 May 2022 14:01:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B87660EDA;
+        Sat, 14 May 2022 14:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CA2C340EE;
+        Sat, 14 May 2022 14:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652536888;
-        bh=IjsexA4QKvKiPnu9VPIN+xBIIykcF8S/oKoPdCTOtAQ=;
+        s=k20201202; t=1652537424;
+        bh=b4Yqu2wA3dN7+oULR9UAd9cblXScNS6iqAVMaDg7EZE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sTkGtUXt+E6IHCibIDVmnOG9XEawnYpMLshN1jntf+wWSbROPd4B8zEQ7ohtDzODb
-         1F1rTgq6+2XRckCzITs/LFHpMFCb19FzJdu9ZHBYl4QDYY8qjVAMm2l7CAtP876c08
-         Co2k5OyMK3Jr5luaUCs99MOxejU1bY0qHIFWa0barJpPPR6WhoPBIf0qAJ5lt7vLt1
-         kH0J8uVpJ/5olht2BAOc4768/4FXZ38TEeWwHYph3nZVTAXzfCaQ3m/V3T3h3xjDrd
-         Z5cPKH761JUAmbX76JTCRRk4zieyKSdLfm2BPtWsgV5OxrEqm7IYQSwYnyB5Ua2LpR
-         gRDdGqs/CCKdA==
-Date:   Sat, 14 May 2022 15:10:03 +0100
+        b=LLwLyTCUREjf9+Z+WNGHiSAxcNJocRVUeO5DWnio4BFZPQrrEJ6MOIEfcMI7OKIh+
+         XYntVv8ore/SgqMGkY9jFvD3lWDhLjjOf8XOlfGSiohPUocmHu5L5rr102cwaJwJvS
+         mHKXAs4pFU3/vuO0AxHrb15rGc0zSHwG2bYYd2PvVe+iA3B94WPO1rhFya0yPY7Oak
+         9MmfivXBU79Np45ScUmdDwtWXtQM+3LgLMpofJHAyU7MhK1h9NqHx1Doyjik84eNj0
+         ovChgZ3nN3Goior9c69A90zSerh/BxXuGPOIepf882iro2kQGAzuph5L9y0bVJXi0U
+         yq3G+OLeMILwg==
+Date:   Sat, 14 May 2022 15:18:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc:     lars@metafoo.de, robh+dt@kernel.org, tomas.melin@vaisala.com,
-        andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH V6 3/5] iio: accel: sca3300: modified to support multi
- chips
-Message-ID: <20220514151003.42fa5044@jic23-huawei>
-In-Reply-To: <20220513124135.1295822-4-Qing-wu.Li@leica-geosystems.com.cn>
-References: <20220513124135.1295822-1-Qing-wu.Li@leica-geosystems.com.cn>
-        <20220513124135.1295822-4-Qing-wu.Li@leica-geosystems.com.cn>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        schnelle@linux.ibm.com, David Laight <David.Laight@aculab.com>,
+        macro@orcam.me.uk, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 0/8] Utilize iomap interface for PC104 and friends
+Message-ID: <20220514151859.692928dc@jic23-huawei>
+In-Reply-To: <CAMRc=McAe28ZwcGknzrju-PQTEZ7x2XAfoRyfLFMWpgGB8DVLw@mail.gmail.com>
+References: <cover.1652201921.git.william.gray@linaro.org>
+        <CAMRc=McAe28ZwcGknzrju-PQTEZ7x2XAfoRyfLFMWpgGB8DVLw@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,214 +60,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 13 May 2022 12:41:33 +0000
-LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+On Sat, 14 May 2022 14:57:49 +0200
+Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-> Prepare the way for multiple chips and additional channels:
-> - Modify the driver to read the device ID and load the corresponding
->   sensor information from the table to support multiple chips
-> - Add prepares for the addition of extra channels
-> - Prepare for handling the operation modes for multiple chips
+> On Tue, May 10, 2022 at 7:31 PM William Breathitt Gray
+> <william.gray@linaro.org> wrote:
+> >
+> > PC104 cards and similar devices do not need to access I/O ports directly
+> > via inb()/outb() and can instead use the more typical I/O memory
+> > ioread8()/iowrite8() accessor calls by first calling ioport_map(). This
+> > patchset converts the relevant PC104/ISA card drivers to do such. With
+> > these drivers now utilizing I/O memory accessor calls, work can be done
+> > to consolidate some similar devices (e.g. 104-idio-16, pci-idio-16,
+> > etc.) into a unified driver in a future patchset.
+> >
+> > This patchset spawned from a suggestion made in another thread titled
+> > "gpio: add HAS_IOPORT dependencies":
+> > https://lore.kernel.org/all/c3a3cdd99d4645e2bbbe082808cbb2a5@AcuMS.aculab.com/
+> >
+> > William Breathitt Gray (8):
+> >   counter: 104-quad-8: Utilize iomap interface
+> >   gpio: 104-dio-48e: Utilize iomap interface
+> >   gpio: 104-idi-48: Utilize iomap interface
+> >   gpio: 104-idio-16: Utilize iomap interface
+> >   gpio: gpio-mm: Utilize iomap interface
+> >   gpio: ws16c48: Utilize iomap interface
+> >   iio: adc: stx104: Utilize iomap interface
+> >   iio: dac: cio-dac: Utilize iomap interface
+> >
+> >  drivers/counter/104-quad-8.c    | 169 +++++++++++++++++---------------
+> >  drivers/gpio/gpio-104-dio-48e.c |  63 ++++++------
+> >  drivers/gpio/gpio-104-idi-48.c  |  27 ++---
+> >  drivers/gpio/gpio-104-idio-16.c |  33 ++++---
+> >  drivers/gpio/gpio-gpio-mm.c     |  43 ++++----
+> >  drivers/gpio/gpio-ws16c48.c     |  65 ++++++------
+> >  drivers/iio/adc/stx104.c        |  56 ++++++-----
+> >  drivers/iio/dac/cio-dac.c       |  14 +--
+> >  8 files changed, 248 insertions(+), 222 deletions(-)
+> >
+> >
+> > base-commit: ce522ba9ef7e2d9fb22a39eb3371c0c64e2a433e
+> > --
+> > 2.35.3
+> >  
 > 
-> Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-A few requests for additional comments inline where the handling
-is 'unusual' enough to be non obvious to figure out.
+> I don't see any dependencies so applied the GPIO part.
+Likewise, I've applied the IIO ones. Initially pushed out as testing
+to see if 0-day finds any issues. Given timing, we may well be looking
+at next merge window now though.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/accel/sca3300.c | 186 ++++++++++++++++++++++++++++--------
->  1 file changed, 145 insertions(+), 41 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
-> index ff16d2cc8c70..bc6e0213e4aa 100644
-> --- a/drivers/iio/accel/sca3300.c
-> +++ b/drivers/iio/accel/sca3300.c
-> @@ -93,15 +93,35 @@ static const struct iio_chan_spec sca3300_channels[] = {
->  	IIO_CHAN_SOFT_TIMESTAMP(4),
->  };
->  
-> -static const int sca3300_lp_freq[] = {70, 70, 70, 10};
-> -static const int sca3300_accel_scale[][2] = {{0, 370}, {0, 741}, {0, 185}, {0, 185}};
-> +static const int sca3300_lp_freq[] = {70, 10};
-> +static const int sca3300_lp_freq_map[] = {0, 0, 0, 1};
->  
-> +static const int sca3300_accel_scale[][2] = {{0, 370}, {0, 741}, {0, 185}};
-> +static const int sca3300_accel_scale_map[] = {0, 1, 2, 2};
-> +
-> +static const int sca3300_avail_modes_map[] = {0, 1, 2, 3};
->  static const unsigned long sca3300_scan_masks[] = {
->  	BIT(SCA3300_ACC_X) | BIT(SCA3300_ACC_Y) | BIT(SCA3300_ACC_Z) |
->  	BIT(SCA3300_TEMP),
->  	0
->  };
->  
-> +struct sca3300_chip_info {
-> +	const char *name;
-> +	const unsigned long *scan_masks;
-> +	const struct iio_chan_spec *channels;
-> +	u8 num_channels;
-> +	u8 num_accel_scales;
-> +	const int (*accel_scale)[2];
-> +	const int *accel_scale_map;
-> +	u8 num_freqs;
-> +	const int *freq_table;
-> +	const int *freq_map;
-> +	const int *avail_modes_table;
-> +	u8 num_avail_modes;
-> +	u8 chip_id;
-> +};
-> +
->  /**
->   * struct sca3300_data - device data
->   * @spi: SPI device structure
-> @@ -117,10 +137,29 @@ struct sca3300_data {
->  		s16 channels[4];
->  		s64 ts __aligned(sizeof(s64));
->  	} scan;
-> +	const struct sca3300_chip_info *chip;
+> Bart
 
-Needs documentation as struct sca3300_data has kernel doc.
-Also, move this above scan.  That way all the buffers used
-for various purposes will remain together.
-
->  	u8 txbuf[4] ____cacheline_aligned;
->  	u8 rxbuf[4];
->  };
->  
-> +static const struct sca3300_chip_info sca3300_chip_tbl[] = {
-> +	{
-> +		.name = "sca3300",
-> +		.scan_masks = sca3300_scan_masks,
-> +		.channels = sca3300_channels,
-> +		.num_channels = ARRAY_SIZE(sca3300_channels),
-> +		.num_accel_scales = ARRAY_SIZE(sca3300_accel_scale)*2,
-> +		.accel_scale = sca3300_accel_scale,
-> +		.accel_scale_map = sca3300_accel_scale_map,
-> +		.num_freqs = ARRAY_SIZE(sca3300_lp_freq),
-> +		.freq_table = sca3300_lp_freq,
-> +		.freq_map = sca3300_lp_freq_map,
-> +		.avail_modes_table = sca3300_avail_modes_map,
-> +		.num_avail_modes = 4,
-> +		.chip_id = SCA3300_WHOAMI_ID,
-> +	},
-> +};
-> +
->  DECLARE_CRC8_TABLE(sca3300_crc_table);
->  
->  static int sca3300_transfer(struct sca3300_data *sca_data, int *val)
-> @@ -227,36 +266,80 @@ static int sca3300_write_reg(struct sca3300_data *sca_data, u8 reg, int val)
->  	return sca3300_error_handler(sca_data);
->  }
->  
-> +static int sca3300_set_op_mode(struct sca3300_data *sca_data, int index)
-> +{
-> +	if ((index < 0) || (index >= sca_data->chip->num_avail_modes))
-> +		return -EINVAL;
-> +
-> +	return sca3300_write_reg(sca_data, SCA3300_REG_MODE,
-> +				 sca_data->chip->avail_modes_table[index]);
-> +}
-> +
-> +static int sca3300_get_op_mode(struct sca3300_data *sca_data, int *index)
-> +{
-> +	int reg_val;
-> +	int ret;
-> +	int i;
-> +
-> +	ret = sca3300_read_reg(sca_data, SCA3300_REG_MODE, &reg_val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	reg_val &= GENMASK(1, 0);
-> +	for (i = 0; i < sca_data->chip->num_avail_modes; i++) {
-> +		if (sca_data->chip->avail_modes_table[i] == reg_val)
-> +			break;
-> +	}
-> +	if (i == sca_data->chip->num_avail_modes)
-> +		return -EINVAL;
-> +
-> +	*index = i;
-> +	return 0;
-> +}
-> +
-> +static int sca3300_set_frequency(struct sca3300_data *data, int val)
-> +{
-> +	const struct sca3300_chip_info *chip = data->chip;
-> +	unsigned int index;
-> +	unsigned int i;
-> +
-> +	if (sca3300_get_op_mode(data, &index))
-> +		return -EINVAL;
-> +
-> +	for (i = 0; i < chip->num_avail_modes; i++) {
-> +		if ((val == chip->freq_table[chip->freq_map[i]]) &&
-
-The conditions being checked here are far from obvious, so I think this would benefit
-from an explanatory comment.
-
-Something along the lines of,
-"Find a mode in which the requested sampling frequency is available
- and the scaling currently set is retained".
-
-
-
-> +		    (chip->accel_scale[chip->accel_scale_map[index]] ==
-> +		     chip->accel_scale[chip->accel_scale_map[i]]))
-> +			break;
-> +	}
-> +	if (i == chip->num_avail_modes)
-> +		return -EINVAL;
-> +
-> +	return sca3300_set_op_mode(data, i);
-> +}
-> +
->  static int sca3300_write_raw(struct iio_dev *indio_dev,
->  			     struct iio_chan_spec const *chan,
->  			     int val, int val2, long mask)
->  {
->  	struct sca3300_data *data = iio_priv(indio_dev);
-> -	int reg_val;
-> -	int ret;
-> +	int index;
->  	int i;
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SCALE:
-> -		if (val)
-> +		if (chan->type != IIO_ACCEL)
->  			return -EINVAL;
-> -
-> -		for (i = 0; i < ARRAY_SIZE(sca3300_accel_scale); i++) {
-> -			if (val2 == sca3300_accel_scale[i][1])
-> -				return sca3300_write_reg(data, SCA3300_REG_MODE, i);
-> +		for (i = 0; i < data->chip->num_avail_modes; i++) {
-> +			index = data->chip->accel_scale_map[i];
-
-Also a comment here that we are letting scale take priority over
-sampling frequency. That makes sense given we can only ever end up increasing
-the sampling frequency which is unlikely to be a problem.
-
-> +			if ((val  == data->chip->accel_scale[index][0]) &&
-> +			    (val2 == data->chip->accel_scale[index][1])) {
-> +				return sca3300_set_op_mode(data, i);
-> +			}
->  		}
->  		return -EINVAL;
-> -
->  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> -		ret = sca3300_read_reg(data, SCA3300_REG_MODE, &reg_val);
-> -		if (ret)
-> -			return ret;
-> -		/* freq. change is possible only for mode 3 and 4 */
-> -		if (reg_val == 2 && val == sca3300_lp_freq[3])
-> -			return sca3300_write_reg(data, SCA3300_REG_MODE, 3);
-> -		if (reg_val == 3 && val == sca3300_lp_freq[2])
-> -			return sca3300_write_reg(data, SCA3300_REG_MODE, 2);
-> -		return -EINVAL;
-> +		return sca3300_set_frequency(data, val);
->  	default:
->  		return -EINVAL;
->  	}

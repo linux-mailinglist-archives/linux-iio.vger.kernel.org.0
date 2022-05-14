@@ -2,50 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A65BE527193
-	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 16:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 720AE5271E5
+	for <lists+linux-iio@lfdr.de>; Sat, 14 May 2022 16:21:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232473AbiENOK2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 14 May 2022 10:10:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
+        id S233155AbiENOVW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 14 May 2022 10:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231211AbiENOK0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 10:10:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0DB412AAB;
-        Sat, 14 May 2022 07:10:25 -0700 (PDT)
+        with ESMTP id S233383AbiENOVL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 14 May 2022 10:21:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0720A1B1;
+        Sat, 14 May 2022 07:21:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B87660EDA;
-        Sat, 14 May 2022 14:10:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CA2C340EE;
-        Sat, 14 May 2022 14:10:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8537360F2A;
+        Sat, 14 May 2022 14:21:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8425FC340EE;
+        Sat, 14 May 2022 14:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652537424;
-        bh=b4Yqu2wA3dN7+oULR9UAd9cblXScNS6iqAVMaDg7EZE=;
+        s=k20201202; t=1652538067;
+        bh=fBJG7A+XsQUdGt9z4Q/dgnY9axRvsRVkKDu5cKbiVRQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LLwLyTCUREjf9+Z+WNGHiSAxcNJocRVUeO5DWnio4BFZPQrrEJ6MOIEfcMI7OKIh+
-         XYntVv8ore/SgqMGkY9jFvD3lWDhLjjOf8XOlfGSiohPUocmHu5L5rr102cwaJwJvS
-         mHKXAs4pFU3/vuO0AxHrb15rGc0zSHwG2bYYd2PvVe+iA3B94WPO1rhFya0yPY7Oak
-         9MmfivXBU79Np45ScUmdDwtWXtQM+3LgLMpofJHAyU7MhK1h9NqHx1Doyjik84eNj0
-         ovChgZ3nN3Goior9c69A90zSerh/BxXuGPOIepf882iro2kQGAzuph5L9y0bVJXi0U
-         yq3G+OLeMILwg==
-Date:   Sat, 14 May 2022 15:18:59 +0100
+        b=pQqTcVRNOWdlHHOXC+4ME/GCYRzZnE8N7ttD47TT9CnJrMLVmTkjbLeWKpJQfeDhv
+         B2s6QGQXfNzXSAyTatQdpt8RwvlURF0V0iC1OVvNyb6mfs8iQcydgDnUBQeAjQfUFG
+         wRp1M52PJ3Y3DsWNx6TGCG1DposlLQ5GRCfW37nVU+4GUaHW2BoAvfJEle4Z6tLi5M
+         EkaXY4LY3LdzMDOg+ZDkxoilOA2mt8cAc4rljnfawj23clTnGXYhUBuBWSXk1unGLk
+         MUBg0K5zcwc22Hpg7igxdPA0VcDyMnHKMP2BmRVEHuc9RJp0a8cAIXywbAeagz6gSZ
+         vR9sGgUex9UPw==
+Date:   Sat, 14 May 2022 15:29:40 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        schnelle@linux.ibm.com, David Laight <David.Laight@aculab.com>,
-        macro@orcam.me.uk, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 0/8] Utilize iomap interface for PC104 and friends
-Message-ID: <20220514151859.692928dc@jic23-huawei>
-In-Reply-To: <CAMRc=McAe28ZwcGknzrju-PQTEZ7x2XAfoRyfLFMWpgGB8DVLw@mail.gmail.com>
-References: <cover.1652201921.git.william.gray@linaro.org>
-        <CAMRc=McAe28ZwcGknzrju-PQTEZ7x2XAfoRyfLFMWpgGB8DVLw@mail.gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] dt-bindings: proximity: vl53l0x: Document
+ optional supply and GPIO properties
+Message-ID: <20220514152940.1a212c7f@jic23-huawei>
+In-Reply-To: <f5ec4fd9-b9d7-10fa-1c27-2f268466274f@linaro.org>
+References: <20220512191334.61804-1-markuss.broks@gmail.com>
+        <20220512191334.61804-2-markuss.broks@gmail.com>
+        <f5ec4fd9-b9d7-10fa-1c27-2f268466274f@linaro.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,59 +71,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 May 2022 14:57:49 +0200
-Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On Fri, 13 May 2022 10:56:50 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On Tue, May 10, 2022 at 7:31 PM William Breathitt Gray
-> <william.gray@linaro.org> wrote:
-> >
-> > PC104 cards and similar devices do not need to access I/O ports directly
-> > via inb()/outb() and can instead use the more typical I/O memory
-> > ioread8()/iowrite8() accessor calls by first calling ioport_map(). This
-> > patchset converts the relevant PC104/ISA card drivers to do such. With
-> > these drivers now utilizing I/O memory accessor calls, work can be done
-> > to consolidate some similar devices (e.g. 104-idio-16, pci-idio-16,
-> > etc.) into a unified driver in a future patchset.
-> >
-> > This patchset spawned from a suggestion made in another thread titled
-> > "gpio: add HAS_IOPORT dependencies":
-> > https://lore.kernel.org/all/c3a3cdd99d4645e2bbbe082808cbb2a5@AcuMS.aculab.com/
-> >
-> > William Breathitt Gray (8):
-> >   counter: 104-quad-8: Utilize iomap interface
-> >   gpio: 104-dio-48e: Utilize iomap interface
-> >   gpio: 104-idi-48: Utilize iomap interface
-> >   gpio: 104-idio-16: Utilize iomap interface
-> >   gpio: gpio-mm: Utilize iomap interface
-> >   gpio: ws16c48: Utilize iomap interface
-> >   iio: adc: stx104: Utilize iomap interface
-> >   iio: dac: cio-dac: Utilize iomap interface
-> >
-> >  drivers/counter/104-quad-8.c    | 169 +++++++++++++++++---------------
-> >  drivers/gpio/gpio-104-dio-48e.c |  63 ++++++------
-> >  drivers/gpio/gpio-104-idi-48.c  |  27 ++---
-> >  drivers/gpio/gpio-104-idio-16.c |  33 ++++---
-> >  drivers/gpio/gpio-gpio-mm.c     |  43 ++++----
-> >  drivers/gpio/gpio-ws16c48.c     |  65 ++++++------
-> >  drivers/iio/adc/stx104.c        |  56 ++++++-----
-> >  drivers/iio/dac/cio-dac.c       |  14 +--
-> >  8 files changed, 248 insertions(+), 222 deletions(-)
-> >
-> >
-> > base-commit: ce522ba9ef7e2d9fb22a39eb3371c0c64e2a433e
-> > --
-> > 2.35.3
-> >  
+> On 12/05/2022 21:13, Markuss Broks wrote:
+> > This patch adds the optional properties for the VL53L0X ToF sensor to the
+> > device-tree binding.
+> > 
+> > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>  
 > 
-> I don't see any dependencies so applied the GPIO part.
-Likewise, I've applied the IIO ones. Initially pushed out as testing
-to see if 0-day finds any issues. Given timing, we may well be looking
-at next merge window now though.
+> Wait, two days and three versions? Please give some time before
+> resending entire patchset.
 
-Thanks,
+Yeah, several instances of this on the IIO list this week. Please
+let things sit for at least a few days between versions even if
+the requested changes are fairly minor.
+
+> 
+> Same comments apply as for v2 and v3...
+>
+I 'could' fix this up, but given you've not responded to Krzysztof
+I think I'd prefer you send a v5 in the second half of next week or
+later (to give time for other review) with the patch description
+change Krzysztof suggested made.
+
+Code wise the series looks fine to me.
 
 Jonathan
 
+
+
 > 
-> Bart
+> Best regards,
+> Krzysztof
 

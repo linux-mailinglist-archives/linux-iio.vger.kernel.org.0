@@ -2,60 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2545278C5
-	for <lists+linux-iio@lfdr.de>; Sun, 15 May 2022 18:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135D65278CB
+	for <lists+linux-iio@lfdr.de>; Sun, 15 May 2022 18:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237736AbiEOQcM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 May 2022 12:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        id S237768AbiEOQsn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 May 2022 12:48:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237732AbiEOQcK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 May 2022 12:32:10 -0400
+        with ESMTP id S229580AbiEOQsn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 May 2022 12:48:43 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381361C106;
-        Sun, 15 May 2022 09:32:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F040829CB5;
+        Sun, 15 May 2022 09:48:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 33AEEB80D23;
-        Sun, 15 May 2022 16:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CBFC385B8;
-        Sun, 15 May 2022 16:31:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9806BB80CFA;
+        Sun, 15 May 2022 16:48:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F73C385B8;
+        Sun, 15 May 2022 16:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652632323;
-        bh=4vBXeGOXH388BuK75d5Tbp+8kwGEur5G8fxJzz0bKYM=;
+        s=k20201202; t=1652633319;
+        bh=U6Jqcyy6UNs998/09V28bN9wjjuVoAeG2NPu9kKbJ04=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LZSZIAHpVmgathYw/TYcyOBMQIG8PO1S0uy4FplHjtoYiEcAfiAybb/29DMLDxz9C
-         wElDUYIbi72GszJ8cInKUChRyQgzb8x77SFu5QEFRxJBzqlHU1MCnmEwmRX5hpEuue
-         VMTQ+DBTn4td8XmSIs7Ux8ZQbRAOdFC3oP88h2cV7CdJW2m5duoORNhpOzpiYJbCDh
-         dIDjx7v3tZBFdA/bgsNna5pkq2OpCLU0a+d6EJ5PoCuomjUuxqx8/OaKrtRfAhJqwb
-         zWrCQuvR9G10e/H+5DPZLucT6glBf4oakcupfKJR1usj2lwxI0qhm6hu0Vddj0UbjM
-         jElHC+TaZVT5w==
-Date:   Sun, 15 May 2022 17:40:37 +0100
+        b=tGIGiEFwPnljT8UtIkqZCF4Ws4tmOsrgO2U6DofBJZv2EFFzdAIgGBnm5O7iKHr5U
+         p23u3WOtc3Y+EBRkzylX0xzLsTEePnGYnZruaCrGbOI5k8n5s0gBV59M3Gb5FC2U9c
+         fjPTjvG6OJH56V1Qsplw3z/yyu4Qhgj2Z7oMS38BlyzdrhBMqipa7nv52n9A+xGew8
+         eWXBytux4UoKb2Yf3rLYUlEEG6iAcpIW7cYb66vQaxkRN8ZTyaoK9y25OZmW6LrBee
+         bstzW7YBmpFSR9scUFUuZ50fomqRM5zU6RsgYj1FYQvUMb8HckbYeJ9pvaLuFBUqXX
+         7ad8P0+oHOMng==
+Date:   Sun, 15 May 2022 17:57:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Matti Vaittinen <Matti.Vaittinen@fi.rohmeurope.com>,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 05/22] iio: replace bitmap_weight with
- bitmap_weitght_{eq,le} where appropriate
-Message-ID: <20220515174037.614c6c6e@jic23-huawei>
-In-Reply-To: <58a70b4a91a184eef26f9823636bf81c573b2c3b.camel@perches.com>
-References: <20220510154750.212913-1-yury.norov@gmail.com>
-        <20220510154750.212913-6-yury.norov@gmail.com>
-        <20220514165309.7445c767@jic23-huawei>
-        <58a70b4a91a184eef26f9823636bf81c573b2c3b.camel@perches.com>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 4/7] iio: adc: qcom-spmi-adc5: Add missing
+ VCOIN/AMUX_THM3/GPIO# channels
+Message-ID: <20220515175714.20369e91@jic23-huawei>
+In-Reply-To: <20220515153004.iniplpuf6g5ibvjw@SoMainline.org>
+References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
+        <20220511220613.1015472-5-marijn.suijten@somainline.org>
+        <20220514171312.227a1f07@jic23-huawei>
+        <20220515153004.iniplpuf6g5ibvjw@SoMainline.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -70,63 +69,112 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 May 2022 09:31:23 -0700
-Joe Perches <joe@perches.com> wrote:
+On Sun, 15 May 2022 17:30:04 +0200
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
 
-> On Sat, 2022-05-14 at 16:53 +0100, Jonathan Cameron wrote:
-> > On Tue, 10 May 2022 08:47:33 -0700
-> > Yury Norov <yury.norov@gmail.com> wrote:
+> On 2022-05-14 17:13:12, Jonathan Cameron wrote:
+> > On Thu, 12 May 2022 00:06:10 +0200
+> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
 > >   
-> > > bitmap_weight_{eq,le} is better than bitmap_weight because it
-> > > may return earlier.
+> > > These channels are specified in downstream kernels [1] and actively used
+> > > by ie. the Sony Seine platform on the SM6125 SoC.  
+> > 
+> > Looking at the links, some of them are on that platform but not all.
+> > Better to make that explicit in this description.  
+> 
+> This has already been queued up for v2.  Adding these seemed easy at the
+> time but they are in fact not used, and I ended up sending the wrong
+> patch.
+> 
+> Just so that we're on the same page: only ADC5_AMUX_THM3 and
+> ADC5_GPIO2_100K_PU are unused by my platform.  It seems the first should
+> be dropped, but the latter can probably stay in the patch with an
+> explicit mention.  If you think both should stay, there are a bunch more
+> channels defined in the downstream kernel as per [1] and I'm not sure if
+> all should be added for completeness.
+
+Probably better to add them with a comment for platforms on which they
+apply (either in commit log or alongside the definitions in the code).
+
+Longer term we should think about whether the code can be adjusted
+to not need an explicit definition for these multi purpose channels
+though letting the dt itself describe them (under constraints of the
+hardware platform).  Not worth doing before this patch though.
+
+> 
 > > > 
-> > > CC: Jonathan Cameron <jic23@kernel.org>
-> > > CC: Lars-Peter Clausen <lars@metafoo.de>
-> > > CC: Michael Hennerich <Michael.Hennerich@analog.com>
-> > > CC: linux-iio@vger.kernel.org
-> > > CC: linux-kernel@vger.kernel.org
-> > > Signed-off-by: Yury Norov <yury.norov@gmail.com>  
-> > without being cc'd on the cover letter, there is no obvious way for
-> > me to know this is reliant in some series to be found in next.
+> > > [1]: https://source.codeaurora.org/quic/la/kernel/msm-4.14/tree/drivers/iio/adc/qcom-spmi-adc5.c?h=LA.UM.7.11.r1-05200-NICOBAR.0#n688
+> > > 
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>  
 > > 
-> > Please call out the exact dependency and whilst it's a long list,
-> > it is good to cc all people cc'd on individual patches also
-> > on the cover letter so they have that background information.  
+> > I'm not keen on patches with no context being
+> > sent to mailing lists. Please cc all lists (and preferably individuals)
+> > on at least the cover letter so we can see overall discussion.  
 > 
-> When doing a treewide change like this, vger would commonly
-> reject the message because of too many recipients.
+> That can be attributed to the terrible workflow for sending
+> patch-series.  Somehow only `git send-email` supports --cc-cmd yet I'd
+> expect it on `git format-patch` for auditing and possibly copying to the
+> cover letter, if `git format-patch --cover-letter` couldn't do this from
+> the beginning.
 
-Hmm. I took a look via lore before sending this moan and didn't think
-this actually had that large a list of CCs but maybe my counting wasn't
-great (lots of overlaps between different patches).
+It would definitely be nice as an option.  Can't do it every time because
+on tree wide change the cc list can become so large the mailing lists
+reject it.
 
-The series is also not a tree wide change.
-It's a set of changes related only by the fact they are using
-a call to the same set of functions and the series is based
-on next (which is usually a bad idea as a tree to base anything on).
-Arguably there are two different sets of functions at that (the bitmap
-ones and the cpumask ones)
+> At the same time `git send-email` has --[to/cc]-cover options to
+> propagate email addresses from the cover letter to all the individual
+> patch-replies, but not the inverse :(
+> 
+> In the end this leaves me manually running get_maintainer.pl over the
+> entire formatted patch-series, and manually copy-pasting + editing the
+> addresses into the cover letter... Which is easy to forget and is no
+> different here.
+> 
+> My apologies for (yet again) accidentally not sending at least the cover
+> letter to everyone.  That's a gross oversight, and I'm probably - no, I
+> must - be doing something wrong.  Suggestions and/or documentation
+> references are welcome.
 
-This is a good set of changes, but taking it slowly and sending these
-out as a number of different series after rc1 would have made
-much more sense to me.  That way visibility would have been good
-and they could have been applied through the various individual trees.
+Andy Shevchenko has some scripts to try and help with this:
+https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
 
-If there is a reason to want to take this via a common tree then
-that information needs to be conveyed to all the subsystem maintainers.
-
-Jonathan
-
+I've not started using them myself (not gotten around to it yet!) but
+he's pointed to them when I've missed people from cover letter cc lists
+in the past.
 
 > 
-> > 
-> > Change seems fine, but I've no idea when/if to pick it up because of
-> > that lack of information.  
+> > If nothing else, I've no idea if intent is that the patches go through different
+> > trees or all need to merge via one route.  
 > 
-> You could try using lore with the in-reply-to message header id
+> I have no idea either, and have not yet had an answer to a similar
+> question on a different list.  Usually it seems the maintainers work out
+> amongst themselves who picks what patch, putting them on hold where
+> necessary to preseve ordering.  If not, should the sender split patches
+> across multiple series, either holding off sending part of it or linking
+> to a dependent series?
+
+In this case I think I can pick this patch up directly into the IIO tree
+once everyone else is happy. As you note dts patches normally wait on
+knowing the necessary support is heading in.  If you have a view on what
+makes sense as the submitter it's good to stick it in the cover letter, but
+in this case sounds like you don't. :)
+
+Given we are near the end of this cycle, we are probably looking at next
+cycle anyway now, so plenty of time to figure it out!
+
 > 
-> https://lore.kernel.org/lkml/20220510154750.212913-6-yury.norov@gmail.com/
+> In this particular case DT has to wait for these driver patches to land,
+> otherwise they may define channels that do not exist and unnecessarily
+> fail probe.
 > 
-> that gives you the entire thread.
+> > Patch itself looks fine,  
 > 
+> Thanks.
+> 
+> Looking forward to your suggestions and answers,
+> 
+> - Marijn
+> 
+> > [..]  
 

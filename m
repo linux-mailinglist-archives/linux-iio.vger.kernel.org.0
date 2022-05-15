@@ -2,139 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D10527878
-	for <lists+linux-iio@lfdr.de>; Sun, 15 May 2022 17:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E18A85278A5
+	for <lists+linux-iio@lfdr.de>; Sun, 15 May 2022 18:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237277AbiEOPaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 15 May 2022 11:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52544 "EHLO
+        id S237516AbiEOQAJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 15 May 2022 12:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237247AbiEOPaK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 May 2022 11:30:10 -0400
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1044E1262C;
-        Sun, 15 May 2022 08:30:08 -0700 (PDT)
-Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 27B293F653;
-        Sun, 15 May 2022 17:30:06 +0200 (CEST)
-Date:   Sun, 15 May 2022 17:30:04 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
+        with ESMTP id S237477AbiEOQAH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 15 May 2022 12:00:07 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 498D315FCF
+        for <linux-iio@vger.kernel.org>; Sun, 15 May 2022 09:00:06 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nqGf2-0001DP-Ql; Sun, 15 May 2022 18:00:01 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nqGey-002V30-6S; Sun, 15 May 2022 17:59:54 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1nqGev-009uFs-RA; Sun, 15 May 2022 17:59:53 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     phone-devel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/7] iio: adc: qcom-spmi-adc5: Add missing
- VCOIN/AMUX_THM3/GPIO# channels
-Message-ID: <20220515153004.iniplpuf6g5ibvjw@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
- <20220511220613.1015472-5-marijn.suijten@somainline.org>
- <20220514171312.227a1f07@jic23-huawei>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        linux-iio@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        kernel@pengutronix.de
+Subject: [PATCH 0/8] iio: Improve error reporting for problems during .remove for various i2c drivers
+Date:   Sun, 15 May 2022 17:59:21 +0200
+Message-Id: <20220515155929.338656-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220514171312.227a1f07@jic23-huawei>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2021; h=from:subject; bh=O5cAG3agHOq2S3wgG5/5v/EhPFYXfY/H4Kz7PzUfjNk=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBigSMedULAKf71g97p6WED9LEysWNb/XvF9LI6HKXj REl74KSJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYoEjHgAKCRDB/BR4rcrsCcTtCA CDYenSpSrha80XL2hSxrYE29ldrVwOLNys3l8CIb4ZGUyjRxngMAnNy1ur3QiVNKFcLF2TDduvtlX0 3qXmWJeKNvOr9ajYjetO4VP3GwQaDD1DKEkEmeVRsIBKs8TDZalwmS8EbBeHz96DYrC5NcpzPu6tct zvcmzl96HT5rPV7quOgjn8RxjknXIyAflyJ1jFCI7eFDOxeWzI8QKpKbTGhD/2r6fAz8HfIf4f3Ra9 TgdJK9bDL3rtNNX8/TUL12noQlpDH1dFOSsJfSIH6hw2Mgu49hsfdfZU4fWI9JmYIGe7prqnprM7pz MvDpesagkmOHWM58F+xYDpoSc/OAFA
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2022-05-14 17:13:12, Jonathan Cameron wrote:
-> On Thu, 12 May 2022 00:06:10 +0200
-> Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> 
-> > These channels are specified in downstream kernels [1] and actively used
-> > by ie. the Sony Seine platform on the SM6125 SoC.
-> 
-> Looking at the links, some of them are on that platform but not all.
-> Better to make that explicit in this description.
+Hello,
 
-This has already been queued up for v2.  Adding these seemed easy at the
-time but they are in fact not used, and I ended up sending the wrong
-patch.
+the goal of this series is to improve the error messages emitted by
+remove callbacks by several i2c drivers. The status quo is that these
+might return an error code silently to the i2c core on remove. The
+effect is a very unhelpful message:
 
-Just so that we're on the same page: only ADC5_AMUX_THM3 and
-ADC5_GPIO2_100K_PU are unused by my platform.  It seems the first should
-be dropped, but the latter can probably stay in the patch with an
-explicit mention.  If you think both should stay, there are a bunch more
-channels defined in the downstream kernel as per [1] and I'm not sure if
-all should be added for completeness.
+	$bus $device: remove failed (EIO), will be ignored
 
-> > 
-> > [1]: https://source.codeaurora.org/quic/la/kernel/msm-4.14/tree/drivers/iio/adc/qcom-spmi-adc5.c?h=LA.UM.7.11.r1-05200-NICOBAR.0#n688
-> > 
-> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> 
-> I'm not keen on patches with no context being
-> sent to mailing lists. Please cc all lists (and preferably individuals)
-> on at least the cover letter so we can see overall discussion.
+. Note there is no further error handling and the device will be
+removed, all devm cleanups are called.
 
-That can be attributed to the terrible workflow for sending
-patch-series.  Somehow only `git send-email` supports --cc-cmd yet I'd
-expect it on `git format-patch` for auditing and possibly copying to the
-cover letter, if `git format-patch --cover-letter` couldn't do this from
-the beginning.
-At the same time `git send-email` has --[to/cc]-cover options to
-propagate email addresses from the cover letter to all the individual
-patch-replies, but not the inverse :(
+With the patches from this series applied the emitted message better
+tells what actually failed and the remove callback returns zero
+unconditionally.
 
-In the end this leaves me manually running get_maintainer.pl over the
-entire formatted patch-series, and manually copy-pasting + editing the
-addresses into the cover letter... Which is easy to forget and is no
-different here.
+The motivation for this change is to make i2c remove callbacks return
+void. The ability to return a value is misleading as driver authors
+might expect some kind of error handling from the i2c core.
 
-My apologies for (yet again) accidentally not sending at least the cover
-letter to everyone.  That's a gross oversight, and I'm probably - no, I
-must - be doing something wrong.  Suggestions and/or documentation
-references are welcome.
+Best regards
+Uwe
 
-> If nothing else, I've no idea if intent is that the patches go through different
-> trees or all need to merge via one route.
+Uwe Kleine-König (8):
+  iio:adc:ina2xx: Improve error reporting for problems during .remove()
+  iio:adc:ti-ads1015: Improve error reporting for problems during
+    .remove()
+  iio:chemical:atlas: Improve error reporting for problems during
+    .remove()
+  iio:chemical:ccs811: Improve error reporting for problems during
+    .remove()
+  iio:light:pa12203001: Improve error reporting for problems during
+    .remove()
+  iio:light:us5182d: Improve error reporting for problems during
+    .remove()
+  iio:light:vcnl4000: Improve error reporting for problems during
+    .remove()
+  iio:light:vcnl4035: Improve error reporting for problems during
+    .remove()
 
-I have no idea either, and have not yet had an answer to a similar
-question on a different list.  Usually it seems the maintainers work out
-amongst themselves who picks what patch, putting them on hold where
-necessary to preseve ordering.  If not, should the sender split patches
-across multiple series, either holding off sending part of it or linking
-to a dependent series?
+ drivers/iio/adc/ina2xx-adc.c        | 10 ++++++++--
+ drivers/iio/adc/ti-ads1015.c        |  8 +++++++-
+ drivers/iio/chemical/atlas-sensor.c |  8 +++++++-
+ drivers/iio/chemical/ccs811.c       | 10 ++++++++--
+ drivers/iio/light/pa12203001.c      |  8 +++++++-
+ drivers/iio/light/us5182d.c         |  8 +++++++-
+ drivers/iio/light/vcnl4000.c        |  8 +++++++-
+ drivers/iio/light/vcnl4035.c        | 10 ++++++++--
+ 8 files changed, 59 insertions(+), 11 deletions(-)
 
-In this particular case DT has to wait for these driver patches to land,
-otherwise they may define channels that do not exist and unnecessarily
-fail probe.
 
-> Patch itself looks fine,
+base-commit: 3123109284176b1532874591f7c81f3837bbdc17
+-- 
+2.35.1
 
-Thanks.
-
-Looking forward to your suggestions and answers,
-
-- Marijn
-
-> [..]

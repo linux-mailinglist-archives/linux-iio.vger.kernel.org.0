@@ -2,59 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3931528B7C
-	for <lists+linux-iio@lfdr.de>; Mon, 16 May 2022 19:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 552F3528B83
+	for <lists+linux-iio@lfdr.de>; Mon, 16 May 2022 19:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243503AbiEPRBT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 May 2022 13:01:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
+        id S231260AbiEPREL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 May 2022 13:04:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344109AbiEPRBC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 May 2022 13:01:02 -0400
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFDA1118;
-        Mon, 16 May 2022 10:01:01 -0700 (PDT)
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-f16a3e0529so10608964fac.2;
-        Mon, 16 May 2022 10:01:01 -0700 (PDT)
+        with ESMTP id S238266AbiEPREK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 May 2022 13:04:10 -0400
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 605CA23BCA;
+        Mon, 16 May 2022 10:04:09 -0700 (PDT)
+Received: by mail-oi1-f174.google.com with SMTP id v65so19321594oig.10;
+        Mon, 16 May 2022 10:04:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=PGM/f+MhCyogS9J2uiaZc8hzM6yWi20RzZ/UXGniMZE=;
-        b=nhVbITlZjzDLeNHy1JB6Y9tDHXmZQtTlWYdphKIlzU8aq5uM1wfSUJqRo4bKghgjzx
-         axYNyz3Q6exaZJ/OS+FDaXsBmWqBsUbIkT3pTToeaSBl8407SPkoMqoIYljbWuUbgPwh
-         +M7T6T++BUj7ESzYrRbZC9Ee6mO2dIHimweOZS38gXDnscCdZXj+1k5NlfwRRyhaifOB
-         hmgbO0tgPEjGFzMootNsyZrwHUGv2yO7/t4Ol9ySYIsJnPAy746npGVR5F7scaQ2IgbA
-         6e0BKuCSA32fsmF+uFoaluKcwgAa3MCAQ28SMrpGxr+7x+SaF3aYGaiei7Wq7PsbV2K4
-         rzcw==
-X-Gm-Message-State: AOAM533IN5jyjPq53AZo3Tt+pHb2akSBvx9s2M9IKB2m55IUTLRMQl/t
-        T/Vv6Cg+mAYfw13MJO8tN1pQRXWINA==
-X-Google-Smtp-Source: ABdhPJxPcuyWTl3Hm3q8uneVs71/9O97pkP/Wo+rxMwJ6UVBDkxctbrjym+kpKGqaBYXuoQw0M2NgQ==
-X-Received: by 2002:a05:6870:434d:b0:ed:5822:c104 with SMTP id x13-20020a056870434d00b000ed5822c104mr10224822oah.236.1652720460267;
-        Mon, 16 May 2022 10:01:00 -0700 (PDT)
+        bh=9f5HzgG2AyXvVHi+V+yniQ1ztCCNvOGuTGiailEIdRo=;
+        b=OGZSrfi3CX+iPO4l02wFXOx+8IXI3ydmYWCwU0mjVEqmexSkhCN07rok0LnseozIzG
+         DjBlIKOF4zELSLo6IopS757Inx5hMjSDvBsomxegy2SOjHgiNf5NBwlsfkUIUNZm6ejT
+         /epRnnbwesuKPknwBqLct43VarFAmyiBnycp9HH3H76dn/KJtKTpCC/SjqHmrNXame8e
+         PUPp+T+n2mCu3eAxkbkB0AzmLXA/BXlxHwDB5MJ6HsOcohJPMVFeFFM6iXbpYaLUfG3I
+         SHg0VnrSIIgfFFVUpGvpSOSdpNkNDPahDAqVxgnIkVnXnVYin4aCQKSJm1NA926fxRe/
+         WXPw==
+X-Gm-Message-State: AOAM5338HzS6yfhgvWurem1jIYjHVctlyYh0FuLrBInRZZrEnB9xvSwD
+        o+/GHhr5ZvitDJ+bEoOElQ==
+X-Google-Smtp-Source: ABdhPJw5znH+pkIp0ox568/1dxY2cidl5IbBLLw1GK01RTB0OMBKxx3nqqbM5avxqPc9HTxYi9gGjQ==
+X-Received: by 2002:a05:6808:300f:b0:2fa:6fd5:9723 with SMTP id ay15-20020a056808300f00b002fa6fd59723mr8166084oib.202.1652720648566;
+        Mon, 16 May 2022 10:04:08 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id fo26-20020a0568709a1a00b000e686d1387csm5587197oab.22.2022.05.16.10.00.59
+        by smtp.gmail.com with ESMTPSA id m19-20020a4add13000000b0035f627ac898sm4276185oou.10.2022.05.16.10.04.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 May 2022 10:00:59 -0700 (PDT)
-Received: (nullmailer pid 2887921 invoked by uid 1000);
-        Mon, 16 May 2022 17:00:58 -0000
-Date:   Mon, 16 May 2022 12:00:58 -0500
+        Mon, 16 May 2022 10:04:07 -0700 (PDT)
+Received: (nullmailer pid 2905188 invoked by uid 1000);
+        Mon, 16 May 2022 17:04:06 -0000
+Date:   Mon, 16 May 2022 12:04:06 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Shreeya Patel <shreeya.patel@collabora.com>
 Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
         krisman@collabora.com, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, alvaro.soliverez@collabora.com,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
- deprecated vendor prefix
-Message-ID: <20220516170058.GA2825626-robh@kernel.org>
+        kernel@collabora.com, alvaro.soliverez@collabora.com
+Subject: Re: [PATCH v4 2/3] dt-bindings: Document ltrf216a light sensor
+ bindings
+Message-ID: <20220516170406.GB2825626-robh@kernel.org>
 References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-2-shreeya.patel@collabora.com>
+ <20220511094024.175994-3-shreeya.patel@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220511094024.175994-2-shreeya.patel@collabora.com>
+In-Reply-To: <20220511094024.175994-3-shreeya.patel@collabora.com>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
@@ -66,50 +65,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
-> 'liteon' is the correct vendor prefix for devices released by
-> LITE-ON Technology Corp. But one of the released device which uses
-> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
-> ACPI.
-
-ACPI? NAK.
-
-There are no cases of 'ltr' for DT, so fix ACPI.
-
+On Wed, May 11, 2022 at 03:10:23PM +0530, Shreeya Patel wrote:
+> Add devicetree bindings for ltrf216a ambient light sensor.
 > 
-> Hence, add 'ltr' as a deprecated vendor prefix which would suppress the
-> following warning in case the compatible string used in ltrf216a driver
-> is "ltr,ltrf216a"
-> 
-> WARNING: DT compatible string vendor "ltr" appears un-documented --
-> check ./Documentation/devicetree/bindings/vendor-prefixes.yaml
-> 364: FILE: drivers/iio/light/ltrf216a.c:313:
-> +    { .compatible = "ltr,ltrf216a" },
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 > Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
 > ---
 > 
+> Changes in v3
+>   - Fix indentation in the example section
+> 
 > Changes in v2
->   - Add vendor prefix name as per the alphabetical order.
+>   - Take over the maintainership for the bindings
+>   - Add interrupt and power supply property in DT bindings
 > 
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 3 +++
->  1 file changed, 3 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 01430973ecec..02f94fba03b6 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -716,6 +716,9 @@ patternProperties:
->      description: Loongson Technology Corporation Limited
->    "^lsi,.*":
->      description: LSI Corp. (LSI Logic)
-> +  "^ltr,.*":
-> +    description: LITE-ON Technology Corp.
-> +    deprecated: true
->    "^lwn,.*":
->      description: Liebherr-Werk Nenzing GmbH
->    "^lxa,.*":
+>  .../bindings/iio/light/liteon,ltrf216a.yaml   | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml b/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+> new file mode 100644
+> index 000000000000..1389639cd7fd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/light/liteon,ltrf216a.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: LTRF216A Ambient Light Sensor
+> +
+> +maintainers:
+> +  - Shreeya Patel <shreeya.patel@collabora.com>
+> +
+> +description:
+> +  Ambient light sensing with an i2c interface.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: liteon,ltrf216a
+> +      - const: ltr,ltrf216a
+> +        deprecated: true
+
+As this is for ACPI, NAK. There's not really any point in having this in 
+schema as you can't use the schema with ACPI.
+
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Regulator that provides power to the sensor.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@53 {
+> +            compatible = "liteon,ltrf216a";
+> +            reg = <0x53>;
+> +            vdd-supply = <&vdd_regulator>;
+> +            interrupt-parent = <&gpio0>;
+> +            interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
+> +        };
+> +    };
 > -- 
 > 2.30.2
 > 

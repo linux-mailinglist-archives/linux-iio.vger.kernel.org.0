@@ -2,84 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1F6D5297E8
-	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 05:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED97529A67
+	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 09:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232291AbiEQDYI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 May 2022 23:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
+        id S238442AbiEQHG0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 May 2022 03:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbiEQDYH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 May 2022 23:24:07 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645A74506D;
-        Mon, 16 May 2022 20:24:06 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L2LxM2sqJz923h;
-        Tue, 17 May 2022 11:21:11 +0800 (CST)
-Received: from localhost.localdomain (10.175.103.91) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 17 May 2022 11:24:04 +0800
-From:   Jialin Zhang <zhangjialin11@huawei.com>
-To:     <prabhakar.mahadev-lad.rj@bp.renesas.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <biju.das.jz@bp.renesas.com>
-CC:     <linux-iio@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] iio: adc: rzg2l_adc: add missing fwnode_handle_put() in rzg2l_adc_parse_properties()
-Date:   Tue, 17 May 2022 11:35:26 +0800
-Message-ID: <20220517033526.2035735-1-zhangjialin11@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S235983AbiEQHGT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 03:06:19 -0400
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD65546B37;
+        Tue, 17 May 2022 00:06:18 -0700 (PDT)
+Received: by mail-qk1-f172.google.com with SMTP id j6so13937535qkp.9;
+        Tue, 17 May 2022 00:06:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4FNoWTSP55ndOPeC+jkUPZPRKqM/W1oOHqIRSNLtrZE=;
+        b=OBx16Kqb7r/+WLcnb5FTGr2Kr9wGIVdq5Jdby5mqBuZLdpVHcHK3E1WQF78mNvBBeh
+         XJDuNNkbP+cUaa3VCXcy6yju/xlqzLEZ4ocvbhDJ7xqUnBL/8lH1aoHAlhp6QPIdlKO3
+         XPJuMEq+d/3uCgAsJlskKVeBlvqFj2ssSuxFKY+/TU/NX+w/3gWu7N8D5C4xzANoZm5J
+         g8fZ5uCzYvEppngqlHoOtvuqeYwMvNvV/Tsy79ZeTFBGNr7ZIC78/0sYJJU0Ac5sG9lc
+         j9oAyiOEkOY1PFRt93WBfXgVMBV7HdsQzomoxxZB+TRErkdWHf6FSx0pS3Q9W1Wn9QCv
+         Q28g==
+X-Gm-Message-State: AOAM53303j8WQceCZHMUttYYLwqLBqrQuEmXDkAjEy94U+IuVG1ZCB93
+        n2hPm80moYX7m4Y/6+GQmw7fhDXxs1ZQFg==
+X-Google-Smtp-Source: ABdhPJyEQwLmWKk1r/vhQKb0WeaL4Uaac06SPYPu9OOYJ0V4eBPWc3vpFy/F66G7LnfhB9F/dbHjdw==
+X-Received: by 2002:a05:620a:859:b0:6a0:15d6:60ca with SMTP id u25-20020a05620a085900b006a015d660camr15091013qku.350.1652771177812;
+        Tue, 17 May 2022 00:06:17 -0700 (PDT)
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
+        by smtp.gmail.com with ESMTPSA id c4-20020ac81104000000b002f3b82571b1sm7326984qtj.1.2022.05.17.00.06.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 May 2022 00:06:17 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id o80so11135242ybg.1;
+        Tue, 17 May 2022 00:06:17 -0700 (PDT)
+X-Received: by 2002:a25:e04d:0:b0:64d:6f23:b906 with SMTP id
+ x74-20020a25e04d000000b0064d6f23b906mr13099556ybg.380.1652771177087; Tue, 17
+ May 2022 00:06:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500021.china.huawei.com (7.185.36.109)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220517033526.2035735-1-zhangjialin11@huawei.com>
+In-Reply-To: <20220517033526.2035735-1-zhangjialin11@huawei.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 17 May 2022 09:06:05 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW4Zm+iAu5Pwwsf4cF-QUSk-aqQXosK5VpL56Y1EOPXyw@mail.gmail.com>
+Message-ID: <CAMuHMdW4Zm+iAu5Pwwsf4cF-QUSk-aqQXosK5VpL56Y1EOPXyw@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: rzg2l_adc: add missing fwnode_handle_put() in rzg2l_adc_parse_properties()
+To:     Jialin Zhang <zhangjialin11@huawei.com>
+Cc:     "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        linux-iio@vger.kernel.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-fwnode_handle_put() should be used when terminating
-device_for_each_child_node() iteration with break or
-return to prevent stale device node references from
-being left behind.
+On Tue, May 17, 2022 at 6:44 AM Jialin Zhang <zhangjialin11@huawei.com> wrote:
+> fwnode_handle_put() should be used when terminating
+> device_for_each_child_node() iteration with break or
+> return to prevent stale device node references from
+> being left behind.
+>
+> Fixes: d484c21bacfa ("iio: adc: Add driver for Renesas RZ/G2L A/D converter")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jialin Zhang <zhangjialin11@huawei.com>
 
-Fixes: d484c21bacfa ("iio: adc: Add driver for Renesas RZ/G2L A/D converter")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Jialin Zhang <zhangjialin11@huawei.com>
----
- drivers/iio/adc/rzg2l_adc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 7585144b9715..5b09a93fdf34 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -334,11 +334,15 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
- 	i = 0;
- 	device_for_each_child_node(&pdev->dev, fwnode) {
- 		ret = fwnode_property_read_u32(fwnode, "reg", &channel);
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(fwnode);
- 			return ret;
-+		}
- 
--		if (channel >= RZG2L_ADC_MAX_CHANNELS)
-+		if (channel >= RZG2L_ADC_MAX_CHANNELS) {
-+			fwnode_handle_put(fwnode);
- 			return -EINVAL;
-+		}
- 
- 		chan_array[i].type = IIO_VOLTAGE;
- 		chan_array[i].indexed = 1;
--- 
-2.25.1
+Gr{oetje,eeting}s,
 
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

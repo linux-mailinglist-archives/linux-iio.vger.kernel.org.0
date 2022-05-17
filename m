@@ -2,105 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E146D529CF5
-	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 10:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 445FD529D0E
+	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 10:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243621AbiEQIy0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 May 2022 04:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59396 "EHLO
+        id S236107AbiEQI5l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 May 2022 04:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243803AbiEQIyZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 04:54:25 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC89F433BB
-        for <linux-iio@vger.kernel.org>; Tue, 17 May 2022 01:54:22 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id i8so2822624plr.13
-        for <linux-iio@vger.kernel.org>; Tue, 17 May 2022 01:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SUWQMmwZSct1NUq5pHL/uGOr0m/f9iWjJQkP63QJuAY=;
-        b=NvmQSJGdjKtpHGcAKlUwoZazkK2OPpkx5N0nn9RCxjpj5uE1sHV/4nN1H4jzBVujWw
-         sssuqqWi9bI+t7YPbxYbV54onnklAlgif0afvfGpQLC7L4RBPI1tWdpw5IrtWcoYTkFZ
-         EcVEHC+zueNhLXHPwnKeddsuIc/OaeSrbvcytLVH5ao0j7YNQU7FWKy6fcaBRNkFBDp3
-         4eydA5qZtrstDenXB2TB63waE6Sll4kxQxheRCPcrQtRa1rLp5s3yJhFf+4ng9hzZqRz
-         GKOkn4SFnQTW4cBYFv8IVs+4ZNH4tRnA5qINPHypJ+cYiwWwwCUxMuohdTU2C13Ql6Wr
-         6D+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SUWQMmwZSct1NUq5pHL/uGOr0m/f9iWjJQkP63QJuAY=;
-        b=POqN+kFXHZIxN5bc1eczcIi2J33pKzRGYfXT5HrkKo5fgvMh458c4PBWfK6zDp/a4w
-         wI05U/5+ffYVvUU4wn0wnI+uZ5s2TPMjIdXom7iY5NCfrWy3C2caQLbe5rwTyxHDYwnW
-         U9BoGPWHNSu10x2O+sAp6DKzm/1x7RuS26YjLuGY65NgA1mUoZVtvJEpDmpJZikamsqr
-         Hab3MVTO9eSE1Um/XX4fBnMM0l5ochRn4Wg3l0MatL+aGGrTNPJDz7maXKTlETocpkXO
-         5l7SPeV9kUF4qxWWlX5YafuQcYjfnILvlcDo/garrD/+aQtuh454Lry1+ss/9SKN9BaN
-         2TNA==
-X-Gm-Message-State: AOAM531Y5y3RPC3c6o5lMF4gCvsG44YrJGr/EWoIqf15yvIl3bO7Cxtr
-        EBfnSADx1orHXKKIle51SSEMxPyO3hljuRIflb4=
-X-Google-Smtp-Source: ABdhPJxhkXJnVZVBIdNk55MABZH32+ec4Cxt4kGWwtlLOGUKmJDqMINJclfGMMKzUOohqFDumtGRaCvJ7Rp2fWhJdyQ=
-X-Received: by 2002:a17:902:7401:b0:161:9465:809b with SMTP id
- g1-20020a170902740100b001619465809bmr5571379pll.161.1652777662205; Tue, 17
- May 2022 01:54:22 -0700 (PDT)
+        with ESMTP id S244412AbiEQI4r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 04:56:47 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824BFF7;
+        Tue, 17 May 2022 01:56:44 -0700 (PDT)
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24H5DVRE001600;
+        Tue, 17 May 2022 10:56:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=s2qEOZlKr9MsuU1i2OUrgyJrLsdjR7f4BRplr0JaGKE=;
+ b=XcGqhU3zHJ2vGX7bKwHNLw0WCyn2WeA+XqrtnnVkSqb66SawTiBCsfF+cGcRDIrhhESO
+ oP4Z2x+/mehBwZdNGkWW4YM2GFGHG49nhviHf8Bd2u5PYfVx0p3WhprMZbrMih9rQ53L
+ J9rFQHli1OU2JQUGXo7bVvy9rTFZNRDDqjYhrzgCdR+jeG47T9vaEdza3JzXReVpdLzY
+ 9Vq0MFP+tsbD+2ea62L5p2x0JGp56IIAV+EdhKxwZzJ0nmn4ROdGiwG2RlrV/kwdvli2
+ 6ppjcuYgt2AsL9ZJluWgc+o2FWr4iqu1kqjJvIzMx1ghlSQp0HskgPQn4n/5LXkx8fXn 4g== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3g23ahgnqd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 May 2022 10:56:10 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 6557610002A;
+        Tue, 17 May 2022 10:56:08 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 52128214D27;
+        Tue, 17 May 2022 10:56:08 +0200 (CEST)
+Received: from [10.48.1.102] (10.75.127.51) by SFHDAG2NODE2.st.com
+ (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Tue, 17 May
+ 2022 10:56:07 +0200
+Message-ID: <2330a9a6-877f-2f67-78ac-42aa3cde99dc@foss.st.com>
+Date:   Tue, 17 May 2022 10:56:07 +0200
 MIME-Version: 1.0
-Received: by 2002:a05:6a20:7208:b0:7f:52b4:286f with HTTP; Tue, 17 May 2022
- 01:54:21 -0700 (PDT)
-Reply-To: jub47823@gmail.com
-From:   Julian Bikram <kodjoadannou123@gmail.com>
-Date:   Tue, 17 May 2022 08:54:21 +0000
-Message-ID: <CAOtKoZ8vJ05A53XRPQjRBgB42BLMr1-1CEyUOU0Dm73M52u+DQ@mail.gmail.com>
-Subject: Please can i have your attention
-To:     undisclosed-recipients:;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v2 1/2] iio: adc: stm32: Fix ADCs iteration in irq handler
+Content-Language: en-US
+To:     Yannick Brosseau <yannick.brosseau@gmail.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>
+CC:     <paul@crapouillou.net>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20220516203939.3498673-1-yannick.brosseau@gmail.com>
+ <20220516203939.3498673-2-yannick.brosseau@gmail.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20220516203939.3498673-2-yannick.brosseau@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:634 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4987]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [kodjoadannou123[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [kodjoadannou123[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [jub47823[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.51]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
+ (10.75.127.5)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-17_01,2022-05-16_02,2022-02-23_01
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dear ,
+On 5/16/22 22:39, Yannick Brosseau wrote:
+> The irq handler was only checking the mask for the first ADCs in the case of the
+> F4 and H7 generation, since it was iterating up to the num_irq value. This patch add
+> the maximum number of ADC in the common register, which map to the number of entries of
+> eoc_msk and ovr_msk in stm32_adc_common_regs. This allow the handler to check all ADCs in
+> that module.
+> 
+> Tested on a STM32F429NIH6.
+> 
+> Fixes: 695e2f5c289b ("iio: adc: stm32-adc: fix a regression when using dma and irq")
+> Signed-off-by: Yannick Brosseau <yannick.brosseau@gmail.com>
 
+Hi Yannick,
 
-Please can I have your attention and possibly help me for humanity's
-sake please. I am writing this message with a heavy heart filled with
-sorrows and sadness.
+Feel free to add my:
 
-Please if you can respond, i have an issue that i will be most
-grateful if you could help me deal with it please.
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-Julian
+Thanks,
+Fabrice
+
+> ---
+>  drivers/iio/adc/stm32-adc-core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
+> index 142656232157..bb04deeb7992 100644
+> --- a/drivers/iio/adc/stm32-adc-core.c
+> +++ b/drivers/iio/adc/stm32-adc-core.c
+> @@ -64,6 +64,7 @@ struct stm32_adc_priv;
+>   * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
+>   * @has_syscfg: SYSCFG capability flags
+>   * @num_irqs:	number of interrupt lines
+> + * @num_adcs:   maximum number of ADC instances in the common registers
+>   */
+>  struct stm32_adc_priv_cfg {
+>  	const struct stm32_adc_common_regs *regs;
+> @@ -71,6 +72,7 @@ struct stm32_adc_priv_cfg {
+>  	u32 max_clk_rate_hz;
+>  	unsigned int has_syscfg;
+>  	unsigned int num_irqs;
+> +	unsigned int num_adcs;
+>  };
+>  
+>  /**
+> @@ -352,7 +354,7 @@ static void stm32_adc_irq_handler(struct irq_desc *desc)
+>  	 * before invoking the interrupt handler (e.g. call ISR only for
+>  	 * IRQ-enabled ADCs).
+>  	 */
+> -	for (i = 0; i < priv->cfg->num_irqs; i++) {
+> +	for (i = 0; i < priv->cfg->num_adcs; i++) {
+>  		if ((status & priv->cfg->regs->eoc_msk[i] &&
+>  		     stm32_adc_eoc_enabled(priv, i)) ||
+>  		     (status & priv->cfg->regs->ovr_msk[i]))
+> @@ -792,6 +794,7 @@ static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
+>  	.clk_sel = stm32f4_adc_clk_sel,
+>  	.max_clk_rate_hz = 36000000,
+>  	.num_irqs = 1,
+> +	.num_adcs = 3,
+>  };
+>  
+>  static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
+> @@ -800,6 +803,7 @@ static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
+>  	.max_clk_rate_hz = 36000000,
+>  	.has_syscfg = HAS_VBOOSTER,
+>  	.num_irqs = 1,
+> +	.num_adcs = 2,
+>  };
+>  
+>  static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
+> @@ -808,6 +812,7 @@ static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
+>  	.max_clk_rate_hz = 40000000,
+>  	.has_syscfg = HAS_VBOOSTER | HAS_ANASWVDD,
+>  	.num_irqs = 2,
+> +	.num_adcs = 2,
+>  };
+>  
+>  static const struct of_device_id stm32_adc_of_match[] = {

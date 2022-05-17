@@ -2,136 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EBA529D12
-	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 10:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D265529F9A
+	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 12:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231210AbiEQI5w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 May 2022 04:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36140 "EHLO
+        id S232136AbiEQKh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 May 2022 06:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244099AbiEQI5I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 04:57:08 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31AB912ACC;
-        Tue, 17 May 2022 01:57:07 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24H6ehTU014061;
-        Tue, 17 May 2022 10:56:44 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=NFkSiXvk9GeH0y6id+39wV1HHzqLZwH5JZ5X47VuFQs=;
- b=Sw6zuW7U2QLFAgPcGmuguFRvRlsQG4SHf5B1trNsqp6tRzu5sf/iHAxdxRd2VMT00QzR
- xqWm3+U73dYKoGrkccH+PSAw4aZdmjNcOlsyQY2AP3yfMcts+yg5tA6vlBvXFmWsdoCr
- dsqWMkTKAaoVIjbTtxa+jwGNwXOW2JYUsqhzeTEyWyzhAvb/idoRrWozhyFv/9tG5c7l
- VM3+gG1MpMxWshzzDOixrTT778pxG1ZyifDqc8HW3yOfTrhyjNSkCbpKUtAVYduwq4jm
- Hn6WfUNa0KpXZRMoFJLNQ97iRJmVxZEJAn2YN0RklRfQOoR2Q3J44RLMD575r3ytTxR9 jQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3g23ahgnun-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 May 2022 10:56:44 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BD21F10002A;
-        Tue, 17 May 2022 10:56:43 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node2.st.com [10.75.127.5])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B35F4214D1B;
-        Tue, 17 May 2022 10:56:43 +0200 (CEST)
-Received: from [10.48.1.102] (10.75.127.51) by SFHDAG2NODE2.st.com
- (10.75.127.5) with Microsoft SMTP Server (TLS) id 15.0.1497.26; Tue, 17 May
- 2022 10:56:43 +0200
-Message-ID: <bd36b061-9838-868e-d8c6-c7d1b01ea4ab@foss.st.com>
-Date:   Tue, 17 May 2022 10:56:42 +0200
+        with ESMTP id S236834AbiEQKhx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 06:37:53 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111A32AC74;
+        Tue, 17 May 2022 03:37:50 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: shreeya)
+        with ESMTPSA id 34CDB1F4449B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1652783869;
+        bh=/dsxBc72kvp9HLcx8a+NKXyzgg9ikDWp61IyWUXJyrE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=ZrDlo/lcb+N1riezflUawdelj07yo7FSY4S8D+aDjfeCqCdeEdjSp/VgaO189eyZ9
+         YdJu3PFqjWzKD+qwcYaUyiEkM2Xf/wS8HRqTlNJk8ccdQuq1fEPFOOKdj6aWy7MkdD
+         wxM8o6J5FZUcSJvZhkD5E42oZN6zfEAQSQLqnitdsTUTQDWv59bEZXqo7Js/YXh3IR
+         1FJXtHTx/vIgKx14x/yNgamDhBVf6pTHOEax7xTj5xW/njXLArkMqX0spDgfEpQq1f
+         B4m5Bx1Qen1xyuvXsLZ++sc/lG6J/fpTKmr0sIb8XIYO69Unp/UePqITul2od325fF
+         xQ7V8l+bTJfug==
+Message-ID: <83907dd2-2a53-2448-576b-ae26462d432a@collabora.com>
+Date:   Tue, 17 May 2022 16:07:33 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 2/2] iio: adc: stm32: Fix IRQs on STM32F4 by removing
- custom spurious IRQs message
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
+ deprecated vendor prefix
 Content-Language: en-US
-To:     Yannick Brosseau <yannick.brosseau@gmail.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>
-CC:     <paul@crapouillou.net>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220516203939.3498673-1-yannick.brosseau@gmail.com>
- <20220516203939.3498673-3-yannick.brosseau@gmail.com>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <20220516203939.3498673-3-yannick.brosseau@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+To:     Rob Herring <robh@kernel.org>
+Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com,
+        Krzysztof Kozlowski <krzk@kernel.org>
+References: <20220511094024.175994-1-shreeya.patel@collabora.com>
+ <20220511094024.175994-2-shreeya.patel@collabora.com>
+ <20220516170058.GA2825626-robh@kernel.org>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <20220516170058.GA2825626-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.51]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE2.st.com
- (10.75.127.5)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-17_01,2022-05-16_02,2022-02-23_01
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 5/16/22 22:39, Yannick Brosseau wrote:
-> The check for spurious IRQs introduced in 695e2f5c289bb assumed that the bits
-> in the control and status registers are aligned. This is true for the H7 and MP1
-> version, but not the F4. The interrupt was then never handled on the F4.
-> 
-> Instead of increasing the complexity of the comparison and check each bit specifically,
-> we remove this check completely and rely on the generic handler for spurious IRQs.
-> 
-> Fixes: 695e2f5c289b ("iio: adc: stm32-adc: fix a regression when using dma and irq")
-> Signed-off-by: Yannick Brosseau <yannick.brosseau@gmail.com>
 
-Hi Yannick,
+On 16/05/22 22:30, Rob Herring wrote:
+> On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
+>> 'liteon' is the correct vendor prefix for devices released by
+>> LITE-ON Technology Corp. But one of the released device which uses
+>> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
+>> ACPI.
+> ACPI? NAK.
+>
+> There are no cases of 'ltr' for DT, so fix ACPI.
 
-Feel free to add my:
+Hi Rob,
 
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Yes, we understand there are no cases of 'ltr', but we have released devices
+which uses this string for probing the ltrf216a light sensor driver ( 
+x86 with DT )
+
+If we don't document this in vendor-prefixes.yaml, then the following 
+warning
+is generated.
+
+WARNING: DT compatible string vendor "ltr" appears un-documented -- 
+check ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: 
+FILE: drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
+
+
+Can you suggest us what would be the right way to fix this warning if 
+not documenting
+in vendor-prefixes.yaml?
+
+
 
 Thanks,
-Fabrice
+Shreeya Patel
 
-> ---
->  drivers/iio/adc/stm32-adc.c | 10 ----------
->  1 file changed, 10 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-> index a68ecbda6480..8c5f05f593ab 100644
-> --- a/drivers/iio/adc/stm32-adc.c
-> +++ b/drivers/iio/adc/stm32-adc.c
-> @@ -1407,7 +1407,6 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  	struct stm32_adc *adc = iio_priv(indio_dev);
->  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
-> -	u32 mask = stm32_adc_readl(adc, regs->ier_eoc.reg);
->  
->  	/* Check ovr status right now, as ovr mask should be already disabled */
->  	if (status & regs->isr_ovr.mask) {
-> @@ -1422,11 +1421,6 @@ static irqreturn_t stm32_adc_threaded_isr(int irq, void *data)
->  		return IRQ_HANDLED;
->  	}
->  
-> -	if (!(status & mask))
-> -		dev_err_ratelimited(&indio_dev->dev,
-> -				    "Unexpected IRQ: IER=0x%08x, ISR=0x%08x\n",
-> -				    mask, status);
-> -
->  	return IRQ_NONE;
->  }
->  
-> @@ -1436,10 +1430,6 @@ static irqreturn_t stm32_adc_isr(int irq, void *data)
->  	struct stm32_adc *adc = iio_priv(indio_dev);
->  	const struct stm32_adc_regspec *regs = adc->cfg->regs;
->  	u32 status = stm32_adc_readl(adc, regs->isr_eoc.reg);
-> -	u32 mask = stm32_adc_readl(adc, regs->ier_eoc.reg);
-> -
-> -	if (!(status & mask))
-> -		return IRQ_WAKE_THREAD;
->  
->  	if (status & regs->isr_ovr.mask) {
->  		/*
+>
+>> Hence, add 'ltr' as a deprecated vendor prefix which would suppress the
+>> following warning in case the compatible string used in ltrf216a driver
+>> is "ltr,ltrf216a"
+>>
+>> WARNING: DT compatible string vendor "ltr" appears un-documented --
+>> check ./Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> 364: FILE: drivers/iio/light/ltrf216a.c:313:
+>> +    { .compatible = "ltr,ltrf216a" },
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+>> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+>> ---
+>>
+>> Changes in v2
+>>    - Add vendor prefix name as per the alphabetical order.
+>>
+>>   Documentation/devicetree/bindings/vendor-prefixes.yaml | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> index 01430973ecec..02f94fba03b6 100644
+>> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+>> @@ -716,6 +716,9 @@ patternProperties:
+>>       description: Loongson Technology Corporation Limited
+>>     "^lsi,.*":
+>>       description: LSI Corp. (LSI Logic)
+>> +  "^ltr,.*":
+>> +    description: LITE-ON Technology Corp.
+>> +    deprecated: true
+>>     "^lwn,.*":
+>>       description: Liebherr-Werk Nenzing GmbH
+>>     "^lxa,.*":
+>> -- 
+>> 2.30.2
+>>
+>>

@@ -2,31 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 165675297C8
-	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 05:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1F6D5297E8
+	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 05:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbiEQDTB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 16 May 2022 23:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
+        id S232291AbiEQDYI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 16 May 2022 23:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbiEQDTB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 May 2022 23:19:01 -0400
+        with ESMTP id S229592AbiEQDYH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 16 May 2022 23:24:07 -0400
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B42403DE;
-        Mon, 16 May 2022 20:19:00 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L2Lst5sgtzhZTM;
-        Tue, 17 May 2022 11:18:10 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 645A74506D;
+        Mon, 16 May 2022 20:24:06 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L2LxM2sqJz923h;
+        Tue, 17 May 2022 11:21:11 +0800 (CST)
 Received: from localhost.localdomain (10.175.103.91) by
  dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 17 May 2022 11:18:58 +0800
+ 15.1.2375.24; Tue, 17 May 2022 11:24:04 +0800
 From:   Jialin Zhang <zhangjialin11@huawei.com>
-To:     <tomislav.denis@avl.com>, <jic23@kernel.org>, <lars@metafoo.de>
-CC:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] iio: adc: ti-ads131e08: add missing fwnode_handle_put() in ads131e08_alloc_channels()
-Date:   Tue, 17 May 2022 11:30:20 +0800
-Message-ID: <20220517033020.2033324-1-zhangjialin11@huawei.com>
+To:     <prabhakar.mahadev-lad.rj@bp.renesas.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <biju.das.jz@bp.renesas.com>
+CC:     <linux-iio@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] iio: adc: rzg2l_adc: add missing fwnode_handle_put() in rzg2l_adc_parse_properties()
+Date:   Tue, 17 May 2022 11:35:26 +0800
+Message-ID: <20220517033526.2035735-1-zhangjialin11@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -49,55 +51,35 @@ device_for_each_child_node() iteration with break or
 return to prevent stale device node references from
 being left behind.
 
-Fixes: d935eddd2799 ("iio: adc: Add driver for Texas Instruments ADS131E0x ADC family")
+Fixes: d484c21bacfa ("iio: adc: Add driver for Renesas RZ/G2L A/D converter")
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Jialin Zhang <zhangjialin11@huawei.com>
 ---
- drivers/iio/adc/ti-ads131e08.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/iio/adc/rzg2l_adc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-index 0c2025a22575..80a09817c119 100644
---- a/drivers/iio/adc/ti-ads131e08.c
-+++ b/drivers/iio/adc/ti-ads131e08.c
-@@ -739,7 +739,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 	device_for_each_child_node(dev, node) {
- 		ret = fwnode_property_read_u32(node, "reg", &channel);
- 		if (ret)
--			return ret;
-+			goto err_child_out;
+diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+index 7585144b9715..5b09a93fdf34 100644
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -334,11 +334,15 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
+ 	i = 0;
+ 	device_for_each_child_node(&pdev->dev, fwnode) {
+ 		ret = fwnode_property_read_u32(fwnode, "reg", &channel);
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(fwnode);
+ 			return ret;
++		}
  
- 		ret = fwnode_property_read_u32(node, "ti,gain", &tmp);
- 		if (ret) {
-@@ -747,7 +747,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 		} else {
- 			ret = ads131e08_pga_gain_to_field_value(st, tmp);
- 			if (ret < 0)
--				return ret;
-+				goto err_child_out;
+-		if (channel >= RZG2L_ADC_MAX_CHANNELS)
++		if (channel >= RZG2L_ADC_MAX_CHANNELS) {
++			fwnode_handle_put(fwnode);
+ 			return -EINVAL;
++		}
  
- 			channel_config[i].pga_gain = tmp;
- 		}
-@@ -758,7 +758,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 		} else {
- 			ret = ads131e08_validate_channel_mux(st, tmp);
- 			if (ret)
--				return ret;
-+				goto err_child_out;
- 
- 			channel_config[i].mux = tmp;
- 		}
-@@ -784,6 +784,10 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
- 	st->channel_config = channel_config;
- 
- 	return 0;
-+
-+err_child_out:
-+	fwnode_handle_put(node);
-+	return ret;
- }
- 
- static void ads131e08_regulator_disable(void *data)
+ 		chan_array[i].type = IIO_VOLTAGE;
+ 		chan_array[i].indexed = 1;
 -- 
 2.25.1
 

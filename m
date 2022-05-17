@@ -2,109 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40315529FCE
-	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 12:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88A8252A164
+	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 14:23:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239664AbiEQKzW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 May 2022 06:55:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
+        id S1345346AbiEQMXp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 May 2022 08:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233495AbiEQKzV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 06:55:21 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8A93E5C4;
-        Tue, 17 May 2022 03:55:20 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: shreeya)
-        with ESMTPSA id 733811F417F4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652784919;
-        bh=OzW1IAdicjiRJe7jjcmuiLDwRUkXPi2uk9eLVcRy3/U=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=XsuIX+SCjnh9NhpU3jHgJJhEIq5NU9r/7/sC9RotLk/4tWeZSGzliBEa5tHryMAzh
-         X7i87+rMQQYbRrT9j+0Vi0+M89k9d60ACL/rAR/rEGWjXdxjOjYflS75CNN24tzngh
-         MSucP55dULCl8vIULj9QNMPxUJsltkdp9otHweppLO6uzSajxqpMinseEiOTcGef06
-         da8cTb4eDm7B//gutbd/F+W/74c2daYbvoq1/ZM8SpvSZFQ8QO/ZcIjT4uA722mav0
-         +Ti0qZa+AY1/LUlkTBRf7r9W2ezEFEiTc62SRSK01Uo6u8PAfVZXflErEA3fjhOUHY
-         hFyypKN8iayjQ==
-Message-ID: <c18c9fee-9cc1-526c-3d4a-23b317d9bbff@collabora.com>
-Date:   Tue, 17 May 2022 16:24:54 +0530
+        with ESMTP id S1345325AbiEQMXn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 08:23:43 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A0B44553F;
+        Tue, 17 May 2022 05:23:43 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id l7-20020a17090aaa8700b001dd1a5b9965so2080274pjq.2;
+        Tue, 17 May 2022 05:23:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=neFz4/gw4GZbGKQE+sKbAChYelz9V5KdJJ0LHprcTfk=;
+        b=oH82CmvDbeMGvzQ47QUPJHrPLVppZ0oRAJfwVGEhhIjs49n4Vl5G+6fke9/CgFpwXf
+         SEYEEyGv3RwuWEEA1oJcEn4JpQKa79XLAwD8M3QKYvWmOZR17YXEbyCpDpYlJnfoHz6m
+         vbfD4HN+LqBGJDLKu3PQyD/XtzMUBuCgzhTDnUOLk2wjuqPukHhaEiW4kQNMkYlpd/zS
+         fgyqYdSy5QH7IZH48Hq09TYk1O5/V8WQYGesU3fhBZquANZOec8hGc5KCuXbQulk6cst
+         G3ew2reEXWlt7seMuitot7HfPAeE4yspeoO0VqaWTj22EPTygZ+Kt4uzvj91B/9j8Uus
+         Df4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=neFz4/gw4GZbGKQE+sKbAChYelz9V5KdJJ0LHprcTfk=;
+        b=Vin8Y7M1WDO2o757zTId1IatXPl21OPjfIUJ7oBZVZgJA+/LTToOiDYHg4M42hpqp2
+         q0r2FRoReo3laPtGbBhwWCtmOqpZDFeQGYep7aljfmyoSkvincNTB9FcCzuVE0CNF5s/
+         7DtPzr89KTU+6R4SMWrVJ31mcGJsQgu8eXa52ZStSwY/zJt1EGUCri9lhqDYFHWsuV7D
+         vt4lzqvFBhikJC5n6fIhp+VYqvpSaRxLy/PX9KQ3ca1W+RPLas0TARX+S5HVcA1XXCyo
+         +Cjr6E5YCbbgEygHcQ29tegcv4VnKVzFUcNey+kYwFcRMYtGSNMXWLXJrKuYpbjOs6c3
+         CILQ==
+X-Gm-Message-State: AOAM533fj8o1ExngV87/NZ9CMuy/fg73Hvl1yWZvLd+s2vEO2F62EhvS
+        hL4XsE0NqvzgIL7QAY6R3Y9MpFLvmeSl12lYqEuv62aL9IfTZm8/pw==
+X-Google-Smtp-Source: ABdhPJwo4Zvtc0ieMoWlmo8DUTEhTnJNpzES7Sj+dAzCaYKUoKjzaeYEV1j14cMWIo8LcRIk3+gLHbNuIMRk207MRMY=
+X-Received: by 2002:a17:902:c2cf:b0:15f:1396:f54e with SMTP id
+ c15-20020a170902c2cf00b0015f1396f54emr22590323pla.161.1652790222510; Tue, 17
+ May 2022 05:23:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v4 3/3] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Dmitry Osipenko <digetx@gmail.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
-        krisman@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com
-References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-4-shreeya.patel@collabora.com>
- <a54012e3-291b-42e8-752a-9abc9a88ad6c@gmail.com>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <a54012e3-291b-42e8-752a-9abc9a88ad6c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220513143513.2284425-1-zheyuma97@gmail.com> <20220514153625.18c4d9f8@jic23-huawei>
+In-Reply-To: <20220514153625.18c4d9f8@jic23-huawei>
+From:   Zheyu Ma <zheyuma97@gmail.com>
+Date:   Tue, 17 May 2022 20:23:31 +0800
+Message-ID: <CAMhUBj=uq6HhzRpTUO_iqrFQeVjiKE0n0bJ6SMKw8ZTdvFkCEA@mail.gmail.com>
+Subject: Re: [PATCH] iio: imu: bmi160: Fix the error handling at bmi160_chip_init()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+        sean@geanix.com, linux-iio@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On 13/05/22 06:00, Dmitry Osipenko wrote:
-> 11.05.2022 12:40, Shreeya Patel пишет:
->> +static int ltrf216a_set_int_time(struct ltrf216a_data *data, int itime)
->> +{
->> +	int i, ret, index = -1;
->> +	u8 reg_val;
->> +
->> +	for (i = 0; i < ARRAY_SIZE(ltrf216a_int_time_available); i++) {
->> +		if (ltrf216a_int_time_available[i][1] == itime) {
->> +			index = i;
->> +			break;
->> +		}
->> +	}
->> +
->> +	if (index < 0)
->> +		return -EINVAL;
->> +
->> +	reg_val = ltrf216a_int_time_reg[index][1];
->> +	data->int_time_fac = ltrf216a_int_time_reg[index][0];
->> +
->> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_ALS_MEAS_RES, reg_val);
->> +	if (ret < 0)
->> +		return ret;
-> Should the data->int_time_fac be updated only if I2C write was successful?
-
-Yes, thanks for pointing it out. It should be updated only if write is 
-successful.
-
-> I'm not sure what reading of LTRF216A_CLEAR_DATA reg does, but if it
-> clears the measured data, then shouldn't the data be cleared after
-> changing the config?
-
-LTRF216A_CLEAR_DATA isn't used for clearing the measured data. Name is a
-bit confusing and even I assumed it is being used for clearing the data. 
-But from the
-datasheet, it seems that clear data registers provides light intensity 
-data related to infrared
-and ultravoilet.
-We are currently not using this anywhere in the driver so we could 
-remove the cleardata readings
-for now.
-
-
-Thanks,
-Shreeya Patel
->> +	data->int_time = itime;
->> +
->> +	return 0;
->> +}
+On Sat, May 14, 2022 at 10:27 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
+> On Fri, 13 May 2022 22:35:13 +0800
+> Zheyu Ma <zheyuma97@gmail.com> wrote:
+>
+> > When the driver fails in bmi160_chip_init(), it should disable the
+> > regulator.
+> >
+> > The following log shows it:
+> >
+> > [   18.709662] WARNING: CPU: 0 PID: 294 at drivers/regulator/core.c:2257 _regulator_put+0x3ec/0x4e0
+> > [   18.712069] RIP: 0010:_regulator_put+0x3ec/0x4e0
+> > [   18.716395] Call Trace:
+> > [   18.716522]  <TASK>
+> > [   18.716636]  regulator_bulk_free+0x82/0xe0
+> > [   18.717077]  i2c_device_probe+0x6f0/0x800
+> >
+> > Fixes: 5dea3fb066f0 ("iio: imu: bmi160: added regulator support")
+> > Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+>
+> Hi,
+>
+> Good find, but Tong Zhang got their first and the resulting patch
+> fixes an additional issue missed in this fix. See below.
+
+Thanks for your reply! I'll check the linux-next branch next time.
+
+Zheyu Ma

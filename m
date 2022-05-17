@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D265529F9A
-	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 12:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40315529FCE
+	for <lists+linux-iio@lfdr.de>; Tue, 17 May 2022 12:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232136AbiEQKh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 May 2022 06:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59904 "EHLO
+        id S239664AbiEQKzW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 17 May 2022 06:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236834AbiEQKhx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 06:37:53 -0400
+        with ESMTP id S233495AbiEQKzV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 06:55:21 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111A32AC74;
-        Tue, 17 May 2022 03:37:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8A93E5C4;
+        Tue, 17 May 2022 03:55:20 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: shreeya)
-        with ESMTPSA id 34CDB1F4449B
+        with ESMTPSA id 733811F417F4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652783869;
-        bh=/dsxBc72kvp9HLcx8a+NKXyzgg9ikDWp61IyWUXJyrE=;
+        s=mail; t=1652784919;
+        bh=OzW1IAdicjiRJe7jjcmuiLDwRUkXPi2uk9eLVcRy3/U=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=ZrDlo/lcb+N1riezflUawdelj07yo7FSY4S8D+aDjfeCqCdeEdjSp/VgaO189eyZ9
-         YdJu3PFqjWzKD+qwcYaUyiEkM2Xf/wS8HRqTlNJk8ccdQuq1fEPFOOKdj6aWy7MkdD
-         wxM8o6J5FZUcSJvZhkD5E42oZN6zfEAQSQLqnitdsTUTQDWv59bEZXqo7Js/YXh3IR
-         1FJXtHTx/vIgKx14x/yNgamDhBVf6pTHOEax7xTj5xW/njXLArkMqX0spDgfEpQq1f
-         B4m5Bx1Qen1xyuvXsLZ++sc/lG6J/fpTKmr0sIb8XIYO69Unp/UePqITul2od325fF
-         xQ7V8l+bTJfug==
-Message-ID: <83907dd2-2a53-2448-576b-ae26462d432a@collabora.com>
-Date:   Tue, 17 May 2022 16:07:33 +0530
+        b=XsuIX+SCjnh9NhpU3jHgJJhEIq5NU9r/7/sC9RotLk/4tWeZSGzliBEa5tHryMAzh
+         X7i87+rMQQYbRrT9j+0Vi0+M89k9d60ACL/rAR/rEGWjXdxjOjYflS75CNN24tzngh
+         MSucP55dULCl8vIULj9QNMPxUJsltkdp9otHweppLO6uzSajxqpMinseEiOTcGef06
+         da8cTb4eDm7B//gutbd/F+W/74c2daYbvoq1/ZM8SpvSZFQ8QO/ZcIjT4uA722mav0
+         +Ti0qZa+AY1/LUlkTBRf7r9W2ezEFEiTc62SRSK01Uo6u8PAfVZXflErEA3fjhOUHY
+         hFyypKN8iayjQ==
+Message-ID: <c18c9fee-9cc1-526c-3d4a-23b317d9bbff@collabora.com>
+Date:   Tue, 17 May 2022 16:24:54 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
- deprecated vendor prefix
+Subject: Re: [PATCH v4 3/3] iio: light: Add support for ltrf216a sensor
 Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
-        krisman@collabora.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, alvaro.soliverez@collabora.com,
-        Krzysztof Kozlowski <krzk@kernel.org>
+To:     Dmitry Osipenko <digetx@gmail.com>, jic23@kernel.org,
+        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com
 References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-2-shreeya.patel@collabora.com>
- <20220516170058.GA2825626-robh@kernel.org>
+ <20220511094024.175994-4-shreeya.patel@collabora.com>
+ <a54012e3-291b-42e8-752a-9abc9a88ad6c@gmail.com>
 From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <20220516170058.GA2825626-robh@kernel.org>
+In-Reply-To: <a54012e3-291b-42e8-752a-9abc9a88ad6c@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
@@ -59,75 +58,53 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-On 16/05/22 22:30, Rob Herring wrote:
-> On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
->> 'liteon' is the correct vendor prefix for devices released by
->> LITE-ON Technology Corp. But one of the released device which uses
->> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
->> ACPI.
-> ACPI? NAK.
->
-> There are no cases of 'ltr' for DT, so fix ACPI.
+On 13/05/22 06:00, Dmitry Osipenko wrote:
+> 11.05.2022 12:40, Shreeya Patel пишет:
+>> +static int ltrf216a_set_int_time(struct ltrf216a_data *data, int itime)
+>> +{
+>> +	int i, ret, index = -1;
+>> +	u8 reg_val;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(ltrf216a_int_time_available); i++) {
+>> +		if (ltrf216a_int_time_available[i][1] == itime) {
+>> +			index = i;
+>> +			break;
+>> +		}
+>> +	}
+>> +
+>> +	if (index < 0)
+>> +		return -EINVAL;
+>> +
+>> +	reg_val = ltrf216a_int_time_reg[index][1];
+>> +	data->int_time_fac = ltrf216a_int_time_reg[index][0];
+>> +
+>> +	ret = i2c_smbus_write_byte_data(data->client, LTRF216A_ALS_MEAS_RES, reg_val);
+>> +	if (ret < 0)
+>> +		return ret;
+> Should the data->int_time_fac be updated only if I2C write was successful?
 
-Hi Rob,
+Yes, thanks for pointing it out. It should be updated only if write is 
+successful.
 
-Yes, we understand there are no cases of 'ltr', but we have released devices
-which uses this string for probing the ltrf216a light sensor driver ( 
-x86 with DT )
+> I'm not sure what reading of LTRF216A_CLEAR_DATA reg does, but if it
+> clears the measured data, then shouldn't the data be cleared after
+> changing the config?
 
-If we don't document this in vendor-prefixes.yaml, then the following 
-warning
-is generated.
-
-WARNING: DT compatible string vendor "ltr" appears un-documented -- 
-check ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: 
-FILE: drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
-
-
-Can you suggest us what would be the right way to fix this warning if 
-not documenting
-in vendor-prefixes.yaml?
-
+LTRF216A_CLEAR_DATA isn't used for clearing the measured data. Name is a
+bit confusing and even I assumed it is being used for clearing the data. 
+But from the
+datasheet, it seems that clear data registers provides light intensity 
+data related to infrared
+and ultravoilet.
+We are currently not using this anywhere in the driver so we could 
+remove the cleardata readings
+for now.
 
 
 Thanks,
 Shreeya Patel
-
+>> +	data->int_time = itime;
+>> +
+>> +	return 0;
+>> +}
 >
->> Hence, add 'ltr' as a deprecated vendor prefix which would suppress the
->> following warning in case the compatible string used in ltrf216a driver
->> is "ltr,ltrf216a"
->>
->> WARNING: DT compatible string vendor "ltr" appears un-documented --
->> check ./Documentation/devicetree/bindings/vendor-prefixes.yaml
->> 364: FILE: drivers/iio/light/ltrf216a.c:313:
->> +    { .compatible = "ltr,ltrf216a" },
->>
->> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
->> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
->> ---
->>
->> Changes in v2
->>    - Add vendor prefix name as per the alphabetical order.
->>
->>   Documentation/devicetree/bindings/vendor-prefixes.yaml | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
->> index 01430973ecec..02f94fba03b6 100644
->> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
->> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
->> @@ -716,6 +716,9 @@ patternProperties:
->>       description: Loongson Technology Corporation Limited
->>     "^lsi,.*":
->>       description: LSI Corp. (LSI Logic)
->> +  "^ltr,.*":
->> +    description: LITE-ON Technology Corp.
->> +    deprecated: true
->>     "^lwn,.*":
->>       description: Liebherr-Werk Nenzing GmbH
->>     "^lxa,.*":
->> -- 
->> 2.30.2
->>
->>

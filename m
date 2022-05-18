@@ -2,91 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F212F52B2DA
-	for <lists+linux-iio@lfdr.de>; Wed, 18 May 2022 09:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161C752BA09
+	for <lists+linux-iio@lfdr.de>; Wed, 18 May 2022 14:38:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231576AbiERGvl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 May 2022 02:51:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
+        id S236441AbiERM0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 May 2022 08:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231877AbiERGvW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 May 2022 02:51:22 -0400
-X-Greylist: delayed 442 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 May 2022 23:51:06 PDT
-Received: from azure-sdnproxy-2.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 08F97CE38;
-        Tue, 17 May 2022 23:51:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-        Message-Id; bh=QqUT63+lVdVPLayOPSpvAYh9oQVOVeBSUyqI0pU89dU=; b=s
-        CjLQmnAVjtEEiXx8ljxJpqLF7jay2G0sp/WBT8qiaJNj4DlB6jlbNZIgSxFlzOt7
-        wSfTMs8TYV2IoP4CYa9aQo67usrzsQZmBQpar7ekU5EoWvUsF+VV1LFyFbSUGjwW
-        9QYnByNB76G2VzIXVhhUaR6ua5BbJ753cu54DjVVhU=
-Received: from localhost (unknown [10.129.21.144])
-        by front01 (Coremail) with SMTP id 5oFpogDHzaV5lYRiupBaBw--.38611S2;
-        Wed, 18 May 2022 14:43:05 +0800 (CST)
-From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
-To:     agross@kernel.org, bjorn.andersson@linaro.org, jic23@kernel.org,
-        lars@metafoo.de
-Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
-        Yongzhi Liu <lyz_cs@pku.edu.cn>
-Subject: [PATCH] iio: vadc: Fix potential dereference of NULL pointer
-Date:   Tue, 17 May 2022 23:43:00 -0700
-Message-Id: <1652856180-100582-1-git-send-email-lyz_cs@pku.edu.cn>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID: 5oFpogDHzaV5lYRiupBaBw--.38611S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtr43ZF1xurWrZrW3AF47Arb_yoWfWrbEk3
-        Wvqw1xXasakrWUCr4jkr4xWr98KFyUWrn5Xw1jvas3KasxJFs3AasFyr4Iyr47Aa1kZ3WD
-        Grs8G3sYkFWakjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb4xFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
-        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
-        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vEx4A2
-        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
-        GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-        8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK
-        82IY6x8ErcxFaVAv8VWkJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
-        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-        0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHUDUUU
-        UU=
-X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwEJBlPy7vIULQAHsO
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S236527AbiERM0X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 May 2022 08:26:23 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E6FD5FF0D;
+        Wed, 18 May 2022 05:26:18 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 3618C5FD02;
+        Wed, 18 May 2022 15:26:15 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1652876775;
+        bh=sFH5idW86lWQdWvgqVFesZuStLdWb38v0wu7UBLxe5s=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=hZpoRYairtXzQsb9c6qOeMBgrb8K9oiH3VkZuemIMBxs5nKXZXTdbtviPfb4H5iZE
+         1U0jaQnb83VUKUBQrSJ19/alHHVHqV++bFrralWmYqg5pC6/+By+OCM+KRdx5F/jkq
+         5U6WeMTFmEx093VTdDHbY4mxBSsMCXzi9rh0nZAyuWOIABJHJ5I1WGuOkkVMkF3kxd
+         N2TM1n4NBzCjPvQg+00dPGlr3QoouZP0DwTLkblzcc8YCQNeIUSioAPg4fQcY2Ib83
+         +3HyBTbeTVSXF6eRzTQidNzeojsVWkpD1EeQkADFk9vOOe22JdXGsQgybKEufKQMqr
+         lb3sR67M5lemA==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Wed, 18 May 2022 15:26:13 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Topic: [PATCH v1 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Index: AQHYVASOybrxT0DjfUWoYWuGUlWOX6z4bouAgAnb/gCAIkALgA==
+Date:   Wed, 18 May 2022 12:25:59 +0000
+Message-ID: <20220518122515.aby5lbb4xusr6pdt@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220419154555.24191-1-ddrokosov@sberdevices.ru>
+ <20220419154555.24191-3-ddrokosov@sberdevices.ru>
+ <20220420115023.00006a25@Huawei.com>
+ <20220426172406.s4h6g7nrpytaq263@CAB-WSD-L081021.sigma.sbrf.ru>
+In-Reply-To: <20220426172406.s4h6g7nrpytaq263@CAB-WSD-L081021.sigma.sbrf.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <AC753801DB3F2E4DBCBE5465066DECA8@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/05/18 09:28:00 #19466841
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The return value of vadc_get_channel() needs to be checked
-to avoid use of NULL pointer, which is followed by
-the caller 'vadc_do_conversion' of function 'vadc_configure'.
-Fix this by adding the null pointer check on prop
-in function 'vadc_configure'.
+Hi Jonathan,
 
-Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
----
- drivers/iio/adc/qcom-spmi-vadc.c | 3 +++
- 1 file changed, 3 insertions(+)
+I have two items to be discussed about iio_trigger_get().
+Please see my questions below and correct me if I'm wrong.
 
-diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-index 34202ba..d99bd72 100644
---- a/drivers/iio/adc/qcom-spmi-vadc.c
-+++ b/drivers/iio/adc/qcom-spmi-vadc.c
-@@ -210,6 +210,9 @@ static int vadc_configure(struct vadc_priv *vadc,
- 	u8 decimation, mode_ctrl;
- 	int ret;
- 
-+	if (!prop)
-+		return -ENODEV;
-+
- 	/* Mode selection */
- 	mode_ctrl = (VADC_OP_MODE_NORMAL << VADC_OP_MODE_SHIFT) |
- 		     VADC_ADC_TRIM_EN | VADC_AMUX_TRIM_EN;
--- 
-2.7.4
+On Tue, Apr 26, 2022 at 08:24:10PM +0300, Dmitry Rokosov wrote:
+> > > +							       "%s-new-data",
+> > > +							       indio_dev->name);
+> > > +		if (!msa311->new_data_trig) {
+> > > +			dev_err(&i2c->dev, "cannot allocate new data trig\n");
+> > > +			err =3D -ENOMEM;
+> > > +			goto err_lock_destroy;
+> > > +		}
+> > > +
+> > > +		msa311->new_data_trig->dev.parent =3D &i2c->dev;
+> > > +		msa311->new_data_trig->ops =3D &msa311_new_data_trig_ops;
+> > > +		iio_trigger_set_drvdata(msa311->new_data_trig, indio_dev);
+> > > +		indio_dev->trig =3D msa311->new_data_trig;
+> >=20
+> > This will create a double free if you were to change the trigger.
+> > 		indio_dev->trig =3D iio_trigger_get(trig);
+> >=20
+>=20
+> I didn't take into account other trigger usage.
+> I'll rework this place for the v2.
+>=20
 
+The first one problem is module_get() calling for trigger get()
+semantic.
+I've applied iio_trigger_get() function to acquire module refcnt,
+but I've faced with rmmod busy problem. IIO driver module doesn't want to
+stop and unload due to not having zero module refcnt.
+Syscall delete_module() tries to stop module first and after calls
+driver exit() function (which executes devm_* handlers inside, including II=
+O
+trigger unregister). It means we have the chicken or the egg dilemma here.
+Module can't be unloaded until module refcnt is not zero and we can't
+execute IIO trigger unregister (decrease module refcnt) only when module
+refcnt is zero.
+I suppose the possible solution to such a problem is a different semantic
+for internal triggers (inside driver itself) and external drivers (like
+hwtimer trigger). What do you think?
+
+The second one issue is located in the different IIO drivers. Some modules
+call iio_trigger_get() before iio_trigger_register(), trig->owner is not
+initialized to the right value (THIS_MODULE) and we don't acquire refcnt
+for proper driver object.
+I'm going to send patchset to problem driver set, but I can test only
+buildable status for such modules, are you okay with that?
+
+--=20
+Thank you,
+Dmitry

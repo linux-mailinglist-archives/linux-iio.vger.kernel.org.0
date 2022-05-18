@@ -2,211 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAE4E52BDCE
-	for <lists+linux-iio@lfdr.de>; Wed, 18 May 2022 17:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E421052BE28
+	for <lists+linux-iio@lfdr.de>; Wed, 18 May 2022 17:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239017AbiEROtD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 18 May 2022 10:49:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46184 "EHLO
+        id S238987AbiERPEe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 May 2022 11:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238960AbiEROtC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 May 2022 10:49:02 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB34B14041F;
-        Wed, 18 May 2022 07:49:00 -0700 (PDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24IEgklD017414;
-        Wed, 18 May 2022 14:48:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=nS8D3m0qnTY32libStK8Li5Fg+hpem4T/K7bui0sFoE=;
- b=LAVK+5e5u+rFLxEkv2157ymojWBNmWKHPSUW9pj5rSEzyLWtaji0nmAyHTOcQvYf0rtJ
- Td+dqNzuy6WGhFvHC5FQ7dShuHnCCaOBYBlfghmfgm4fRSKvTri7vjmJXmgibi5D5JsY
- HwWokNV60DwLd9/jo908izzNCpmXdJpPqjwgQEfhdAkEg9bxEwWCtJTWcrt5CQddw3RB
- fgB658iH1uikRGEGJa8S8Q0XP/zMcdQfjGbuWEpZyZge2FIYJlDjxwjfyMg4g+M+8c+5
- lNefTdnkBD+u9b2eTi4Q0JEwgFtzaPva+lCT0quTnVsw3gAWtG8SXt2MoM0pdxDowCkw fw== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g52t70500-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 May 2022 14:48:25 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24IEloM5014767;
-        Wed, 18 May 2022 14:48:24 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-        by ppma02dal.us.ibm.com with ESMTP id 3g242amemb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 May 2022 14:48:24 +0000
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24IEmNKU12845410
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 May 2022 14:48:23 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A7D01BE054;
-        Wed, 18 May 2022 14:48:23 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 60F60BE051;
-        Wed, 18 May 2022 14:48:23 +0000 (GMT)
-Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.163.6.139])
-        by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Wed, 18 May 2022 14:48:23 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, lars@metafoo.de, jic23@kernel.org,
-        joel@jms.id.au, Eddie James <eajames@linux.ibm.com>
-Subject: [PATCH v2 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
-Date:   Wed, 18 May 2022 09:48:18 -0500
-Message-Id: <20220518144818.12957-3-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220518144818.12957-1-eajames@linux.ibm.com>
-References: <20220518144818.12957-1-eajames@linux.ibm.com>
+        with ESMTP id S238931AbiERPEd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 May 2022 11:04:33 -0400
+Received: from EUR03-AM5-obe.outbound.protection.outlook.com (mail-eopbgr30117.outbound.protection.outlook.com [40.107.3.117])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F35305047F;
+        Wed, 18 May 2022 08:04:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HCMrXzxp+kwtmpOQ/p2QtKifaJx8rnSGIPjUpGUslMZnssyyUWyku1Hs5y86lRYJjOfCNPk7pWCAU/Kt0Y59r7IeHq7QGmMsXAcJ2rPskTvb4xOQM9mIaectPKQY8XiFnNOFY62f9A4JI2Jzpu5yE+EzT/5tfFQM9YBnB0hJbABGk+PDOYKSccrZ8qTlDlfvAXv+I7PbYB6xRiyS5Ip4sj1+w4qgdgtGfj43GtMchy416pPiaZatod4lJRzGxm1cfVjmZ1AduRdDOH+fiNImVTLo/Y/VdKysus5Xg+TDtkEoLVHAmxPrD36I6ksYyaIVMnPO7L9so9nypXEUg9xlqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qaJ4PO7LNkAp+E2Y7VFlxT27frZ8yCb3+u/s7KTKLIk=;
+ b=MH+5aMua1DbEDDqypCeG5oLjik2oHrCKzx980dDhenihrhGedxlECNJVn47e+ZRh2w92h8PnJxKDpbAnwC5UayQPPjtrldGuAVnDLWVpBEPOg+ypgWvgMyBan4g8J++g7ncVCa1/JDQOiAHe5Tr5rZeeRLBaAaC8PUdWGDryeSlqtELAH9Eb3suCHiQbunRS0085vLGut6HfEKYewiL0Rxrcc25F0bfhNV28vS4FNcj9ZfkYDKuoRHJ7HIq0cK7xco3XUI3nx1+cuxGA5QKPeAt/jPhLi/LlMHL+FdLia0+IuLzkIYxKhTrdQeqXamFN5lFJVeMcmY9jglGDZNy1PQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=kernel.org
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=quarantine sp=quarantine
+ pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=leica-geosystems.com.cn; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qaJ4PO7LNkAp+E2Y7VFlxT27frZ8yCb3+u/s7KTKLIk=;
+ b=NWx7d4aBBwDV9sUnicAqlr4oKCdstBt3LG90mlVfWfb/TvsI4g+XDlEFg8L67rTSOTM+ZMNVue2GknKDlwRibudo37oPUe6uxSErR48DC4QOU1u7h00FVgo3sBcCK/23hdK6pWMxNkEpX8pR96XgxcRFpvYJYGmqjsQHXNsrOMw=
+Received: from AS8PR05CA0027.eurprd05.prod.outlook.com (2603:10a6:20b:311::32)
+ by AM6PR06MB5880.eurprd06.prod.outlook.com (2603:10a6:20b:9c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.18; Wed, 18 May
+ 2022 15:04:28 +0000
+Received: from AM5EUR02FT028.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:20b:311:cafe::3a) by AS8PR05CA0027.outlook.office365.com
+ (2603:10a6:20b:311::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.14 via Frontend
+ Transport; Wed, 18 May 2022 15:04:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=aherlnxbspsrv01.lgs-net.com;
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.94) by
+ AM5EUR02FT028.mail.protection.outlook.com (10.152.8.115) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5250.13 via Frontend Transport; Wed, 18 May 2022 15:04:28 +0000
+From:   LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+To:     jic23@kernel.org, lars@metafoo.de, mchehab+huawei@kernel.org,
+        ardeleanalex@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qing-wu.Li@leica-geosystems.com.cn,
+        robh+dt@kernel.org, mike.looijmans@topic.nl,
+        devicetree@vger.kernel.org, thomas.haemmerle@leica-geosystems.com
+Subject: [PATCH V3 0/6] iio: accel: bmi088: support BMI085 BMI090L
+Date:   Wed, 18 May 2022 15:04:19 +0000
+Message-Id: <20220518150425.927988-1-Qing-wu.Li@leica-geosystems.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ewn2x_d5IaGYUIhWUkRgYKkT3-ALCWfZ
-X-Proofpoint-ORIG-GUID: Ewn2x_d5IaGYUIhWUkRgYKkT3-ALCWfZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-18_05,2022-05-17_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 clxscore=1015 priorityscore=1501 spamscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205180087
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 8aad18ba-82d9-4e3f-4378-08da38dfb4b1
+X-MS-TrafficTypeDiagnostic: AM6PR06MB5880:EE_
+X-Microsoft-Antispam-PRVS: <AM6PR06MB5880C711F5F7C97BFDB6C524D7D19@AM6PR06MB5880.eurprd06.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Bmi5zFfmlh/RMUBysuzxy15iAvkLPDyCaBEgBZq76CrhhQcXBK/1S7vAPci7T1QsGCclsPW/Bu5vIYOSyasuRJhRG7AjPI5e9wFP5dVSP+iWWWhovjIZnF2vUCsVv+SSPiY/Sgk+dRAhW9I08TQHxsMO0mHc8itKno0Rr4fe+Cye5d0Qc6mO6pGB2fMRLyUwW08WYhlMfN4Ev0unG4VBr+disMRrp8QNqdoCg89iPYi7AN8AB+ISPF00lzXVkt77xknl/DFhxnURq0jYuYRms9BzaFY66hVdIGmpGXtLzQrIIMide5KJShQw6vNjds82Cp9MJPTlMNY39CBxph2eaBNvkgCWj28eKv6lgH49m0WL/zu8rql7Jjm65Qr3Jz1QsxUWuF2uQmuNOYDAs0t3o06R2TGRNo16kJDAE5Sc9FeJLKUcgWzNnd07Apn1EPLq2QuZDe/xB/wX2Q/dZwSW9uM3aU21buqMqwYzy4T87FZRiJ7K6tXw5T5SdaHPuAOPmft8a1LbU1sSal73Elp67J5h8M2sddBdkWQ7p6V6YziqQ5Sky5TE1FKElFVn5BtXp469z3eiOK9MV5MBnpEArCIBBAfx5rdW25VhrIcDGX8ISKfhDNNRPNvx0TI8QDoUvMFT9+ZIuWumxYfu6DRPebVfQCLHYDKWjDQEPJzOkQi6u0O04wiLj+pBGB9yt0gKMv0pI8AlNJ2GUEonXLWWlg==
+X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:aherlnxbspsrv01.lgs-net.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(6486002)(1076003)(40460700003)(186003)(2616005)(47076005)(5660300002)(8936002)(956004)(921005)(36860700001)(70206006)(70586007)(8676002)(118246002)(36756003)(6666004)(26005)(316002)(81166007)(356005)(508600001)(6506007)(6512007)(83380400001)(2906002)(336012)(86362001)(82310400005)(36736006);DIR:OUT;SFP:1102;
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2022 15:04:28.3912
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8aad18ba-82d9-4e3f-4378-08da38dfb4b1
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[aherlnxbspsrv01.lgs-net.com]
+X-MS-Exchange-CrossTenant-AuthSource: AM5EUR02FT028.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB5880
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Corruption of the MEAS_CFG register has been observed soon after
-system boot. In order to recover this scenario, check MEAS_CFG if
-measurement isn't ready, and if it's incorrect, reset the DPS310
-and execute the startup procedure.
+Modified the units after application of scale from 100*m/s^2 to m/s^2,
+since the units in the ABI documents are m/s^2.
+Add supports for the BMI085 accelerometer.
+Add supports for the BMI090L accelerometer.
+Make it possible to config scales.
 
-Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- drivers/iio/pressure/dps310.c | 89 ++++++++++++++++++++++++++++-------
- 1 file changed, 71 insertions(+), 18 deletions(-)
+Change in V3: 
 
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index f79b274bb38d..c6d02679ef33 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -397,6 +397,39 @@ static int dps310_get_temp_k(struct dps310_data *data)
- 	return scale_factors[ilog2(rc)];
- }
- 
-+/* Called with lock held */
-+static int dps310_check_reset_meas_cfg(struct dps310_data *data, int ready_bit)
-+{
-+	int en = DPS310_PRS_EN | DPS310_TEMP_EN | DPS310_BACKGROUND;
-+	int meas_cfg;
-+	int rc = regmap_read(data->regmap, DPS310_MEAS_CFG, &meas_cfg);
-+
-+	if (rc < 0)
-+		return rc;
-+
-+	if (meas_cfg & ready_bit)
-+		return 0;
-+
-+	if ((meas_cfg & en) != en) {
-+		/* DPS310 register state corrupt, better start from scratch */
-+		rc = regmap_write(data->regmap, DPS310_RESET,
-+				  DPS310_RESET_MAGIC);
-+		if (rc < 0)
-+			return rc;
-+
-+		/* Wait for device chip access: 2.5ms in specification */
-+		usleep_range(2500, 12000);
-+		rc = dps310_startup(data);
-+		if (rc)
-+			return rc;
-+
-+		dev_info(&data->client->dev,
-+			 "recovered from corrupted MEAS_CFG=%02x\n", meas_cfg);
-+	}
-+
-+	return 1;
-+}
-+
- static int dps310_read_pres_raw(struct dps310_data *data)
- {
- 	int rc;
-@@ -409,15 +442,25 @@ static int dps310_read_pres_raw(struct dps310_data *data)
- 	if (mutex_lock_interruptible(&data->lock))
- 		return -EINTR;
- 
--	rate = dps310_get_pres_samp_freq(data);
--	timeout = DPS310_POLL_TIMEOUT_US(rate);
--
--	/* Poll for sensor readiness; base the timeout upon the sample rate. */
--	rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
--				      ready & DPS310_PRS_RDY,
--				      DPS310_POLL_SLEEP_US(timeout), timeout);
--	if (rc)
--		goto done;
-+	rc = dps310_check_reset_meas_cfg(data, DPS310_PRS_RDY);
-+	if (rc) {
-+		if (rc < 0)
-+			goto done;
-+
-+		rate = dps310_get_pres_samp_freq(data);
-+		timeout = DPS310_POLL_TIMEOUT_US(rate);
-+
-+		/*
-+		 * Poll for sensor readiness; base the timeout upon the sample
-+		 * rate.
-+		 */
-+		rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
-+					      ready, ready & DPS310_PRS_RDY,
-+					      DPS310_POLL_SLEEP_US(timeout),
-+					      timeout);
-+		if (rc)
-+			goto done;
-+	}
- 
- 	rc = regmap_bulk_read(data->regmap, DPS310_PRS_BASE, val, sizeof(val));
- 	if (rc < 0)
-@@ -458,15 +501,25 @@ static int dps310_read_temp_raw(struct dps310_data *data)
- 	if (mutex_lock_interruptible(&data->lock))
- 		return -EINTR;
- 
--	rate = dps310_get_temp_samp_freq(data);
--	timeout = DPS310_POLL_TIMEOUT_US(rate);
--
--	/* Poll for sensor readiness; base the timeout upon the sample rate. */
--	rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
--				      ready & DPS310_TMP_RDY,
--				      DPS310_POLL_SLEEP_US(timeout), timeout);
--	if (rc < 0)
--		goto done;
-+	rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
-+	if (rc) {
-+		if (rc < 0)
-+			goto done;
-+
-+		rate = dps310_get_temp_samp_freq(data);
-+		timeout = DPS310_POLL_TIMEOUT_US(rate);
-+
-+		/*
-+		 * Poll for sensor readiness; base the timeout upon the sample
-+		 * rate.
-+		 */
-+		rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
-+					      ready, ready & DPS310_TMP_RDY,
-+					      DPS310_POLL_SLEEP_US(timeout),
-+					      timeout);
-+		if (rc < 0)
-+			goto done;
-+	}
- 
- 	rc = dps310_read_temp_ready(data);
- 
+Use FIELD_GET for checking register range. Reorder the chip info and 
+dt-bindings alphabetical. Add of_id_table. Modify the logic of loading
+sensor chip info. If the device was found in the table but the device 
+tree binding is different, the driver will carry on with the detected
+chip with a warning. If no matching device was found, the driver load
+the binding chip.
+
+
+LI Qingwu (6):
+  iio: accel: bmi088: Modified the scale calculate
+  iio: accel: bmi088: Make it possible to config scales
+  iio: accel: bmi088: modified the device name
+  iio: accel: bmi088: Add support for bmi085 accel
+  iio: accel: bmi088: Add support for bmi090l accel
+  dt-bindings: iio: accel: Add bmi085 and bmi090l bindings
+
+ .../bindings/iio/accel/bosch,bmi088.yaml      |  2 +
+ drivers/iio/accel/bmi088-accel-core.c         | 96 +++++++++++++++----
+ drivers/iio/accel/bmi088-accel-spi.c          | 17 +++-
+ drivers/iio/accel/bmi088-accel.h              |  9 +-
+ 4 files changed, 100 insertions(+), 24 deletions(-)
+
 -- 
-2.27.0
+2.25.1
 

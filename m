@@ -2,76 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD1BE52B032
-	for <lists+linux-iio@lfdr.de>; Wed, 18 May 2022 03:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F212F52B2DA
+	for <lists+linux-iio@lfdr.de>; Wed, 18 May 2022 09:10:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbiERBu0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 17 May 2022 21:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37934 "EHLO
+        id S231576AbiERGvl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 18 May 2022 02:51:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbiERBuZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 17 May 2022 21:50:25 -0400
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C056546B9;
-        Tue, 17 May 2022 18:50:24 -0700 (PDT)
-Received: by mail-oi1-f174.google.com with SMTP id q8so1009994oif.13;
-        Tue, 17 May 2022 18:50:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=LlSxDaLCHauGZrqN/giBvHhtN9qFCAg+kdEdfUnEMW0=;
-        b=Gq6goUrrsts9A7AfFXeiOUK0pkOGhZ28KgXkIVwoW0dM39SE5SMqysCAwznFWgaWVz
-         u9qpmdqkeIJCofOSyFbvhdTOJ8Dmqt7tVz+hTC49gVnwUNU5Z8xDof28X7y8VcSy5g3f
-         LAkqNbqyIZmQTUr4qS8Z3tr1niBsfcEKGeKvnKCxNM1m1Kpe1/L6zKk4cL/iduecOJdV
-         deKScvWEfHIEUhPe8TCzRB5IvcX9d+SQsafZvUvKNF4F6qX4oP0ShJ+JRbtW2nK1uxza
-         lqOq1afNEPFYHfOKZ1vRJ2zLM+dy+SejeIZqy/aExcxkgWhDLiEoMgSME1NRBQE0XIGQ
-         +VJw==
-X-Gm-Message-State: AOAM5328qXmBslp1JxTb9UWQU9PG+AehopmgS+KT8s8nB/hQR0sIartq
-        ANoiYD0LX9tj4sl75mlPg51jVbAjsA==
-X-Google-Smtp-Source: ABdhPJxt57AaLIoBe4gd7/llGhBOKO95nQjGdxw8b1GbZW2CUw2ffSQMWlHULWyl9syuQtuDjXYv/A==
-X-Received: by 2002:a05:6808:238f:b0:326:d4e1:a4b6 with SMTP id bp15-20020a056808238f00b00326d4e1a4b6mr12263742oib.241.1652838623504;
-        Tue, 17 May 2022 18:50:23 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id f19-20020a4ae613000000b0035eb4e5a6c6sm454635oot.28.2022.05.17.18.50.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 May 2022 18:50:22 -0700 (PDT)
-Received: (nullmailer pid 2056833 invoked by uid 1000);
-        Wed, 18 May 2022 01:50:21 -0000
-Date:   Tue, 17 May 2022 20:50:21 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Document Renesas RZ/G2UL
- ADC
-Message-ID: <20220518015021.GA2049643-robh@kernel.org>
-References: <20220505184037.511295-1-biju.das.jz@bp.renesas.com>
- <20220505184037.511295-2-biju.das.jz@bp.renesas.com>
- <CAMuHMdVV=MB8xa-Q-c_aZx9LGrW=9aP9iC3P-FMRSf-HiovOzA@mail.gmail.com>
- <OS0PR01MB59224E3B5A9E5D8FD5E55B2886C59@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <CAMuHMdXDCDLhOSGgy9WWwawiHpE8C6isU2dLn6uSpY2gFAr38g@mail.gmail.com>
- <OS0PR01MB5922CD6D965A6138721F9A5886C99@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <YnqPTQVUNADk/YO4@robh.at.kernel.org>
- <OS0PR01MB59222568C4189A74FE83D6B186C99@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <CAMuHMdVAxgsfnS1hjmrjT+pQrne8qGLejFgQ54+KDPdv=mq72g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVAxgsfnS1hjmrjT+pQrne8qGLejFgQ54+KDPdv=mq72g@mail.gmail.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        with ESMTP id S231877AbiERGvW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 18 May 2022 02:51:22 -0400
+X-Greylist: delayed 442 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 May 2022 23:51:06 PDT
+Received: from azure-sdnproxy-2.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 08F97CE38;
+        Tue, 17 May 2022 23:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+        Message-Id; bh=QqUT63+lVdVPLayOPSpvAYh9oQVOVeBSUyqI0pU89dU=; b=s
+        CjLQmnAVjtEEiXx8ljxJpqLF7jay2G0sp/WBT8qiaJNj4DlB6jlbNZIgSxFlzOt7
+        wSfTMs8TYV2IoP4CYa9aQo67usrzsQZmBQpar7ekU5EoWvUsF+VV1LFyFbSUGjwW
+        9QYnByNB76G2VzIXVhhUaR6ua5BbJ753cu54DjVVhU=
+Received: from localhost (unknown [10.129.21.144])
+        by front01 (Coremail) with SMTP id 5oFpogDHzaV5lYRiupBaBw--.38611S2;
+        Wed, 18 May 2022 14:43:05 +0800 (CST)
+From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
+To:     agross@kernel.org, bjorn.andersson@linaro.org, jic23@kernel.org,
+        lars@metafoo.de
+Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
+        Yongzhi Liu <lyz_cs@pku.edu.cn>
+Subject: [PATCH] iio: vadc: Fix potential dereference of NULL pointer
+Date:   Tue, 17 May 2022 23:43:00 -0700
+Message-Id: <1652856180-100582-1-git-send-email-lyz_cs@pku.edu.cn>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID: 5oFpogDHzaV5lYRiupBaBw--.38611S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtr43ZF1xurWrZrW3AF47Arb_yoWfWrbEk3
+        Wvqw1xXasakrWUCr4jkr4xWr98KFyUWrn5Xw1jvas3KasxJFs3AasFyr4Iyr47Aa1kZ3WD
+        Grs8G3sYkFWakjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb4xFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
+        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
+        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vEx4A2
+        jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+        x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+        GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+        8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK
+        82IY6x8ErcxFaVAv8VWkJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+        0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHUDUUU
+        UU=
+X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwEJBlPy7vIULQAHsO
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,24 +62,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 11, 2022 at 08:53:53AM +0200, Geert Uytterhoeven wrote:
-> Hi Biju,
-> 
-> On Tue, May 10, 2022 at 8:31 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > > Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Document Renesas RZ/G2UL
-> > > ADC
-> > > patternProperties:
-> > >   '^channel@[2-7]$': false
-> >
-> > This fixes the validation for channels. But how do we restrict reg index between 0-1 ?
-> > The below example is passing instead of failing.
-> >       channel@0 {
-> >         reg = <5>;
-> >       };
-> 
-> I expect that to be flagged by the generic unit-address vs. reg check?
+The return value of vadc_get_channel() needs to be checked
+to avoid use of NULL pointer, which is followed by
+the caller 'vadc_do_conversion' of function 'vadc_configure'.
+Fix this by adding the null pointer check on prop
+in function 'vadc_configure'.
 
-No such thing. All the unit-address vs. reg value checks are bus 
-specific (and in dtc). David G was against any generic/default check...
+Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
+---
+ drivers/iio/adc/qcom-spmi-vadc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Rob
+diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+index 34202ba..d99bd72 100644
+--- a/drivers/iio/adc/qcom-spmi-vadc.c
++++ b/drivers/iio/adc/qcom-spmi-vadc.c
+@@ -210,6 +210,9 @@ static int vadc_configure(struct vadc_priv *vadc,
+ 	u8 decimation, mode_ctrl;
+ 	int ret;
+ 
++	if (!prop)
++		return -ENODEV;
++
+ 	/* Mode selection */
+ 	mode_ctrl = (VADC_OP_MODE_NORMAL << VADC_OP_MODE_SHIFT) |
+ 		     VADC_ADC_TRIM_EN | VADC_AMUX_TRIM_EN;
+-- 
+2.7.4
+

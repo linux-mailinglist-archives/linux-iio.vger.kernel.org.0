@@ -2,133 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7378C52CBA3
-	for <lists+linux-iio@lfdr.de>; Thu, 19 May 2022 07:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E65F52CF2C
+	for <lists+linux-iio@lfdr.de>; Thu, 19 May 2022 11:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234216AbiESFvQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 May 2022 01:51:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35998 "EHLO
+        id S235921AbiESJTe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 19 May 2022 05:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229815AbiESFvP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 May 2022 01:51:15 -0400
-X-Greylist: delayed 83263 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 18 May 2022 22:51:10 PDT
-Received: from zg8tmtyylji0my4xnjqunzqa.icoremail.net (zg8tmtyylji0my4xnjqunzqa.icoremail.net [162.243.164.74])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 373195DA1A;
-        Wed, 18 May 2022 22:51:09 -0700 (PDT)
+        with ESMTP id S235915AbiESJTe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 May 2022 05:19:34 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D745D655;
+        Thu, 19 May 2022 02:19:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-        Message-Id:In-Reply-To:References; bh=pYmFxl5EX9FT7BHXjR4DHU5ZJg
-        yGAjXjcQaIbNKJXKE=; b=MCWf5bvh5uU6WiiccZj3Ar5RGbHE3eCBM/nHVmkPqC
-        2GaaKDPmNkMN9zWQhhU55rhg/OJ6YtaZbj5YJAbtD32HeX5slwP6WBKqWjZSnkHk
-        wgkMm+uUUPmm99L+8u59/g+uMhGwMsPHSzUgilmKF+ok/IXeJQyM+eYdGzcKhV1U
-        w=
-Received: from localhost (unknown [10.129.21.144])
-        by front02 (Coremail) with SMTP id 54FpogCnKXbC2oViDtOTBg--.16956S2;
-        Thu, 19 May 2022 13:50:58 +0800 (CST)
-From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
-To:     agross@kernel.org, bjorn.andersson@linaro.org, jic23@kernel.org,
-        lars@metafoo.de
-Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
-        Yongzhi Liu <lyz_cs@pku.edu.cn>
-Subject: [PATCH v2] iio: vadc: Fix potential dereference of NULL pointer
-Date:   Wed, 18 May 2022 22:50:55 -0700
-Message-Id: <1652939455-123139-1-git-send-email-lyz_cs@pku.edu.cn>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <YoUtezVzsPB8MAEO@google.com>
-References: <YoUtezVzsPB8MAEO@google.com>
-X-CM-TRANSID: 54FpogCnKXbC2oViDtOTBg--.16956S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7urWfuFyktr18KrWxGryfJFb_yoW8CF43pa
-        yktayrKry2ka1fJ3WftFWDXryaqw42q3yUGFWxJ3W3Ar43trnYyw1aqw1FkFn7uFWxC3ya
-        yr4YyFnYgr4Dur7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkK1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j
-        6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF
-        04k20xvE74AGY7Cv6cx26w4UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-        AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCI
-        c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
-        AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
-        Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbXdbU
-        UUUUU==
-X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwELBlPy7vJhCwABsZ
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+  d=axis.com; q=dns/txt; s=axis-central1; t=1652951973;
+  x=1684487973;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OxYs8AQ/Yf40t/h1rx2ef4PqcePFEJfDf4nYbKKVXi0=;
+  b=JU/7KakKeLarzlor2/jJqZMAVqz4j9l5YAxY5dMpiP3rgEhWA6fYvpjT
+   jSVbFrVC/dwNy/j6b1sK7WKTLxeRZL4A5RdsQ5Eocv87P+kyI8pxaZcZ/
+   tG6+EZc6cimuAtEhXwO5fGNKq7ehbySqTjnbGeyi1u8sciC8NUBowKV2D
+   zHBeWZRBSFfWXw9KojJGUL9Cg4rb6D3LrG+QidBeh2foRaKyeBvePp0jJ
+   +iH3prZLaWE8/uiWy9R4nG1Cd8vrmfvsImJbOPzFVlb5uDomNMPpfF9Ih
+   KcnOHK3h5uOFOs8LMsdXeYXUN3JDM9c//BIGBu9VXA9arvUOIJ3xrkbvp
+   g==;
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <kernel@axis.com>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] iio: trigger: sysfs: fix use-after-free on remove
+Date:   Thu, 19 May 2022 11:19:25 +0200
+Message-ID: <20220519091925.1053897-1-vincent.whitchurch@axis.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The return value of vadc_get_channel() needs to be checked
-to avoid use of NULL pointer. Fix this by adding the null
-pointer check on prop.
+Ensure that the irq_work has completed before the trigger is freed.
 
-Fixes: 0917de94c ("iio: vadc: Qualcomm SPMI PMIC voltage ADC driver")
+ ==================================================================
+ BUG: KASAN: use-after-free in irq_work_run_list
+ Read of size 8 at addr 0000000064702248 by task python3/25
 
-Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
+ Call Trace:
+  irq_work_run_list
+  irq_work_tick
+  update_process_times
+  tick_sched_handle
+  tick_sched_timer
+  __hrtimer_run_queues
+  hrtimer_interrupt
+
+ Allocated by task 25:
+  kmem_cache_alloc_trace
+  iio_sysfs_trig_add
+  dev_attr_store
+  sysfs_kf_write
+  kernfs_fop_write_iter
+  new_sync_write
+  vfs_write
+  ksys_write
+  sys_write
+
+ Freed by task 25:
+  kfree
+  iio_sysfs_trig_remove
+  dev_attr_store
+  sysfs_kf_write
+  kernfs_fop_write_iter
+  new_sync_write
+  vfs_write
+  ksys_write
+  sys_write
+
+ ==================================================================
+
+Fixes: e64e7d5c8c86e ("iio:trigger:sysfs Move out of staging.")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
 ---
- drivers/iio/adc/qcom-spmi-vadc.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/iio/trigger/iio-trig-sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-index 34202ba..9fa61fb 100644
---- a/drivers/iio/adc/qcom-spmi-vadc.c
-+++ b/drivers/iio/adc/qcom-spmi-vadc.c
-@@ -358,14 +358,25 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
- 	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
+diff --git a/drivers/iio/trigger/iio-trig-sysfs.c b/drivers/iio/trigger/iio-trig-sysfs.c
+index 2a4b75897910..3d911c24b265 100644
+--- a/drivers/iio/trigger/iio-trig-sysfs.c
++++ b/drivers/iio/trigger/iio-trig-sysfs.c
+@@ -191,6 +191,7 @@ static int iio_sysfs_trigger_remove(int id)
+ 	}
  
- 	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define 1.25V channel\n");
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_1);
- 	if (ret)
- 		goto err;
+ 	iio_trigger_unregister(t->trig);
++	irq_work_sync(&t->work);
+ 	iio_trigger_free(t->trig);
  
- 	/* Try with buffered 625mV channel first */
- 	prop = vadc_get_channel(vadc, VADC_SPARE1);
--	if (!prop)
-+	if (!prop) {
- 		prop = vadc_get_channel(vadc, VADC_REF_625MV);
-+		if (!prop) {
-+			dev_err(vadc->dev, "Please define 0.625V channel\n");
-+			ret = -ENODEV;
-+			goto err;
-+		}
-+	}
- 
- 	ret = vadc_do_conversion(vadc, prop, &read_2);
- 	if (ret)
-@@ -381,11 +392,21 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
- 
- 	/* Ratiometric calibration */
- 	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define VDD channel\n");
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_1);
- 	if (ret)
- 		goto err;
- 
- 	prop = vadc_get_channel(vadc, VADC_GND_REF);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define GND channel\n");
-+		ret = -ENODEV;
-+		goto err;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_2);
- 	if (ret)
- 		goto err;
+ 	list_del(&t->l);
 -- 
-2.7.4
+2.34.1
 

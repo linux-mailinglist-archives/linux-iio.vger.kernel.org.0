@@ -2,67 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3721552D681
-	for <lists+linux-iio@lfdr.de>; Thu, 19 May 2022 16:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 719EA52E7AD
+	for <lists+linux-iio@lfdr.de>; Fri, 20 May 2022 10:34:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbiESOzj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 19 May 2022 10:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58966 "EHLO
+        id S1347271AbiETIeo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 May 2022 04:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238629AbiESOzh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 19 May 2022 10:55:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CD46BFE5
-        for <linux-iio@vger.kernel.org>; Thu, 19 May 2022 07:55:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EC5CBB82552
-        for <linux-iio@vger.kernel.org>; Thu, 19 May 2022 14:55:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AD5C385AA;
-        Thu, 19 May 2022 14:55:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1652972132;
-        bh=LdO1NcwYNkpiFXkxDN/89MwWk/kLamFCSSpT6mK/cM8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LC4Ig8UY8smWEHYw/xNoj/Ys1f0I8ucR1S/NdVIWvy2RcqDdwKtPZeq0UQwkz/kwx
-         vYyOkwm/jw4BgeEwsyFC/MRkPE7o2Uglfsc1Jn0ms2VmvfaPZZa+hsQfHQPQr+gO9J
-         6X9LX9uKsIpz/nk0ziF5PU4nZa8S6Nc7rVH4L8KQ=
-Date:   Thu, 19 May 2022 16:54:10 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] 1st set of IIO new device support, features and cleanup
- for 5.19
-Message-ID: <YoZaEhvtxzIoZPVs@kroah.com>
-References: <20220504213700.7e2b8ba5@jic23-huawei>
+        with ESMTP id S1347276AbiETIeQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 04:34:16 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F9F60AB6
+        for <linux-iio@vger.kernel.org>; Fri, 20 May 2022 01:33:51 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id y32so13102817lfa.6
+        for <linux-iio@vger.kernel.org>; Fri, 20 May 2022 01:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=SUWQMmwZSct1NUq5pHL/uGOr0m/f9iWjJQkP63QJuAY=;
+        b=fxeNvNQP2IWeIuX/BVI3DOsHq3gFsfALDhgqW9uPjXXrObT881gN7ttPXDCPvrgw+n
+         wNfmkTh6+3+JLP3ZVlBr7ZP4LCli77pVIgQZ/wvf/N3/R7NaG7K7ZIJcqkivaiqJVjWz
+         i3fT8GBSmrDId9KPsQWsztQbMUTjVDzwTLqVQMPHbbrcvYh4NrirYA//a12zrh9RBbbX
+         xwszvLW608E5RyWqRm7OIBzbKHI0x1oKoUhoHZETEjIBWx0j26yhFz4PXdmM5eJXuu+Y
+         LRxUD9tC8J31f1EW7CxnrUFbhi9ztldopUSMfyHHSYEf3U7rUbMhj13PpckFSgmpF9dq
+         Hp1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=SUWQMmwZSct1NUq5pHL/uGOr0m/f9iWjJQkP63QJuAY=;
+        b=05vCA5KS2++RQVfGsOxNqBGRs3WMF9uj7cyb5SQjma+bj8uzOhxsiSWHDvatgmq+Ie
+         VwXeu+NJpsTzY6pfHtPQEHxjpHF5C5nqU2S7mOmkhpOKFdwN4KuAT9s/iFS4Co9WoLaz
+         ZT080TP7yHVUfdX0cizFgFu6CjBobzX+b7YPJoxGbX9bN6CC6Dw1brEPunyaNtERqSl3
+         131GWLM1bhez+Oe9rq4tu4pLIbaanor5NeHQmepD5iP+EObCBSL36cw5bQjB9SWCKKsp
+         kWYsKAqrREC6exxb+5koUX33y0m81m81CWhqxVSh0yM/sfnloS2iuu0YOXVa6GV9bvDa
+         h0NQ==
+X-Gm-Message-State: AOAM5312ww9t4FQciVOuJKJ2aQU+pKuJIppPWPId95Hw9ttDwnauBabc
+        ogcOh5GURCVcywnLJ0iD9XuWTroEWan3fT+zRpM=
+X-Google-Smtp-Source: ABdhPJyVZwXGq47OAzHrVPDC8cZfg2++2rkTUH8vNlXmcwI0Q7HDiCnFGFql3MNY/TkGz+ihEZOSMENFQfVZopO4qPA=
+X-Received: by 2002:a05:6512:33a2:b0:478:588a:d62b with SMTP id
+ i2-20020a05651233a200b00478588ad62bmr425400lfg.276.1653035629735; Fri, 20 May
+ 2022 01:33:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220504213700.7e2b8ba5@jic23-huawei>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Sender: dokoukomi77@gmail.com
+Received: by 2002:aa6:c265:0:b0:1d0:6e73:d87d with HTTP; Fri, 20 May 2022
+ 01:33:49 -0700 (PDT)
+From:   Julian Bikarm <jub47823@gmail.com>
+Date:   Fri, 20 May 2022 08:33:49 +0000
+X-Google-Sender-Auth: GUHZd4DgAZCsgM73UUEc3k-QI2c
+Message-ID: <CAAB_OehM5D9sMKp5UAeuekWd8FzeoW=7dgSa2s-SHj7oLO6rFA@mail.gmail.com>
+Subject: Please can i have your attention
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, May 04, 2022 at 09:37:00PM +0100, Jonathan Cameron wrote:
-> The following changes since commit 3123109284176b1532874591f7c81f3837bbdc17:
-> 
->   Linux 5.18-rc1 (2022-04-03 14:08:21 -0700)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-5.19a
-> 
-> for you to fetch changes up to eda75f8238b079a41aa11383bd47dc3297e74cb1:
-> 
->   iio: ti-ads8688: use of_device_id for OF matching (2022-05-01 19:01:13 +0100)
+Dear ,
 
-Sorry for the delay, now pulled and pushed out.
 
-greg k-h
+Please can I have your attention and possibly help me for humanity's
+sake please. I am writing this message with a heavy heart filled with
+sorrows and sadness.
+
+Please if you can respond, i have an issue that i will be most
+grateful if you could help me deal with it please.
+
+Julian

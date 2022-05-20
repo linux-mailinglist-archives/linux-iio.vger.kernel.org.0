@@ -2,143 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F25FF5301AF
-	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 09:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE2753022F
+	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 11:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233462AbiEVHs2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 May 2022 03:48:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50152 "EHLO
+        id S243307AbiEVJy1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 May 2022 05:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232774AbiEVHs1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 03:48:27 -0400
-Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC70A40E51
-        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 00:48:25 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.180.246])
-        by smtp.orange.fr with ESMTPA
-        id sgK6nMsvlvNzHsgK6nK1rI; Sun, 22 May 2022 09:48:23 +0200
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Sun, 22 May 2022 09:48:23 +0200
-X-ME-IP: 86.243.180.246
-Message-ID: <88ec0bd3-234c-a5ae-8a1a-a7a90e66e87c@wanadoo.fr>
-Date:   Sun, 22 May 2022 09:48:22 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH V7 4/5] iio: accel: sca3300: Add support for SCL3300
-Content-Language: en-US
+        with ESMTP id S243121AbiEVJyY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 05:54:24 -0400
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3543B3D2
+        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 02:54:20 -0700 (PDT)
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20220522095413epoutp02ed6e8073611dfbfa3b522aba1363d294~xZLHbooak2709127091epoutp02k
+        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 09:54:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20220522095413epoutp02ed6e8073611dfbfa3b522aba1363d294~xZLHbooak2709127091epoutp02k
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1653213253;
+        bh=wgE16UmZMNhGofOTzqynT0HP+Vygf2XdPtbyaeKSY1k=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=BV8dMVwCSaUh3vSbAdL9Ze0xMgqhvdJtbDaEw8YkVH0Y053yPNF1rt9vQIZZRHdhx
+         GVFbFYEYANGWkG7G1H/WPHI0Qbe1Jbx/OPAlEgR1VwGh4pkSSGlnwFritGhmXTX9FX
+         kiXqcbvayMD6lHCQFhXzaOSj82pauUoYPF0UscAo=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+        20220522095412epcas5p22c6bf3bf0f0500d0ae3a266d55c9024b~xZLGjAX2V3217932179epcas5p2E;
+        Sun, 22 May 2022 09:54:12 +0000 (GMT)
+Received: from epsmges5p3new.samsung.com (unknown [182.195.38.179]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 4L5bQS3H7gz4x9Pr; Sun, 22 May
+        2022 09:54:08 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+        epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        04.EF.09762.0480A826; Sun, 22 May 2022 18:54:08 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+        20220520145757epcas5p145e5546f71fe836ad6d6a5f1b40459ec~w2Bvsl7i32239322393epcas5p1S;
+        Fri, 20 May 2022 14:57:57 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20220520145757epsmtrp1eced6d6614a7a913a6477cb231a26245~w2BvrvLyZ2886928869epsmtrp1y;
+        Fri, 20 May 2022 14:57:57 +0000 (GMT)
+X-AuditID: b6c32a4b-213ff70000002622-25-628a08406270
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        04.3F.08924.57CA7826; Fri, 20 May 2022 23:57:57 +0900 (KST)
+Received: from Jaguar.sa.corp.samsungelectronics.net (unknown
+        [107.108.73.139]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20220520145755epsmtip123eaf73d2beaa1164bf995c1357e2402~w2Bttv13o3190931909epsmtip1C;
+        Fri, 20 May 2022 14:57:55 +0000 (GMT)
+From:   Tamseel Shams <m.shams@samsung.com>
 To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        tomas.melin@vaisala.com, andy.shevchenko@gmail.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qing-wu.Li@leica-geosystems.com.cn
-Cc:     linux-iio <linux-iio@vger.kernel.org>
-References: <20220522070419.409556-1-Qing-wu.Li@leica-geosystems.com.cn>
- <20220522070419.409556-5-Qing-wu.Li@leica-geosystems.com.cn>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20220522070419.409556-5-Qing-wu.Li@leica-geosystems.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        krzk+dt@kernel.org
+Cc:     geert@linux-m68k.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, alim.akhtar@samsung.com,
+        paul@crapouillou.net, linux-fsd@tesla.com,
+        Tamseel Shams <m.shams@samsung.com>
+Subject: [PATCH v2 0/3] Adds support of ADC for FSD SoC
+Date:   Fri, 20 May 2022 20:28:17 +0530
+Message-Id: <20220520145820.67667-1-m.shams@samsung.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPKsWRmVeSWpSXmKPExsWy7bCmlq4DR1eSQfccEYsH87axWcw/co7V
+        4tmtvUwWD5pWMVm8nHWPzWLJ5PmsFpseX2O1ePgq3GLekXcsFpd3zWGzmHF+H5PF3dbF7Bb9
+        iy+xWLTuPcLuwOex+lI7m8emVZ1sHocOdzB6bF5S77HkzSFWj74tqxg9/jXNZff4vEkugCMq
+        2yYjNTEltUghNS85PyUzL91WyTs43jne1MzAUNfQ0sJcSSEvMTfVVsnFJ0DXLTMH6GwlhbLE
+        nFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFKToFJgV5xYm5xaV66Xl5qiZWhgYGRKVBhQnbG
+        hpO2BedYK47MaWFrYFzK0sXIySEhYCLxt/0ycxcjF4eQwG5GidXnHjBBOJ8YJVat3ghWJSTw
+        mVFiUpMeTMe+jY9ZIYp2MUrsXvaBDcJpYZL48WUX0CwODjYBTYnj57lBTBEBf4nOvy4gJcwC
+        y5kkTq+bxgYySFjAXGLh5B52EJtFQFVic9d9FpB6XgELiVW/4iF2yUus3nCAGcL+yi6x6IEk
+        hO0icXv/azYIW1ji1fEt7BC2lMTL/jYoO11i7sNeJgi7QGLZru9QcXuJA1fmgK1iBrpy/S59
+        iLCsxNRT68DKmQX4JHp/P4Fq5ZXYMQ/GVpT4v7sfaoy4xLsVU1ghbA+JPf+vMUKCKlbizp0t
+        bBMYZWchbFjAyLiKUTK1oDg3PbXYtMA4L7UcHknJ+bmbGMEpUct7B+OjBx/0DjEycTAeYpTg
+        YFYS4d2e2JEkxJuSWFmVWpQfX1Sak1p8iNEUGGITmaVEk/OBSTmvJN7QxNLAxMzMzMTS2MxQ
+        SZxX4H9jkpBAemJJanZqakFqEUwfEwenVAOTOsvkQs5JOa1mH44nvOBX6T69dUWzxJ8J3hnb
+        Wb+9fiQdKCWssjRg8pMLd/PjXrztlTbkFb7H9/fzwYtzIoqu25/sf2sXVS/bllFetkng+Fd5
+        TqNbp7fsahY5sNj52qQrrx+tuee7dWOP7y1m2bdbWive7FyllPv3hOru359urw7dMOdk2dyI
+        lWLT1c7Vnu9M+Bfl9jGvO3wS95OGCfm+bif/qCbvSmM8M6t5n/PiaV9kT3c4fa7ctiu4Sktq
+        mvSP/kVK/73PTQudsHbays08XDfWrltpkZf6r5Ff+FFDzvNH21N3cB5N/n2YV/P//rx/eUsD
+        /Ret17S/9HufhZg3i4299JeWjvR1a1Wv6F/3/KzEUpyRaKjFXFScCABWcuy/EgQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLLMWRmVeSWpSXmKPExsWy7bCSnG7pmvYkg+n9KhYP5m1js5h/5Byr
+        xbNbe5ksHjStYrJ4Oesem8WSyfNZLTY9vsZq8fBVuMW8I+9YLC7vmsNmMeP8PiaLu62L2S36
+        F19isWjde4Tdgc9j9aV2No9NqzrZPA4d7mD02Lyk3mPJm0OsHn1bVjF6/Guay+7xeZNcAEcU
+        l01Kak5mWWqRvl0CV8aGk7YF51grjsxpYWtgXMrSxcjJISFgIrFv42PWLkYuDiGBHYwST2bv
+        Z4dIiEtM+7WfEcIWllj57zk7RFETk8TeK0eBOjg42AQ0JY6f5wapEREIllh86DAzSA2zwEYm
+        if+7u1hBEsIC5hILJ/eADWURUJXY3HWfBaSXV8BCYtWveIj58hKrNxxgnsDIs4CRYRWjZGpB
+        cW56brFhgVFearlecWJucWleul5yfu4mRnCIamntYNyz6oPeIUYmDsZDjBIczEoivIy5LUlC
+        vCmJlVWpRfnxRaU5qcWHGKU5WJTEeS90nYwXEkhPLEnNTk0tSC2CyTJxcEo1MHWxH8pvnWbU
+        WMJ5Qyb5kP7qOrME0WcXPn5P59/7uffkjr4jhnHBVT/SNY6t2x2ZMmlZ0XNZnX2hhx4/+Gtj
+        UTvH9qZx63PbiJfKWx2yW+O6vli3f0r+4v6qxrLFMMrr8O6/95qb+y9/+OPl3SrwKKXffkvn
+        n9s793usP6b15kqjwbG9655Fij/qaHT5eCVJ9ojbFCYfzd/n1xkyTy47c6LBc/k8gTcHitlf
+        zPq5aLO7YNbWh53VF60dnvL/uCXC2bZN2jm8s1L0U1MNxxGXro7bmlpMZpoaa2qnC1m7cF8W
+        v5W9oLt71Zd64786O7/uv1whd8Zh4op0xWz+rR4K4ivyrQKOTba80CN85emJYiWW4oxEQy3m
+        ouJEAEDXmgnAAgAA
+X-CMS-MailID: 20220520145757epcas5p145e5546f71fe836ad6d6a5f1b40459ec
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20220520145757epcas5p145e5546f71fe836ad6d6a5f1b40459ec
+References: <CGME20220520145757epcas5p145e5546f71fe836ad6d6a5f1b40459ec@epcas5p1.samsung.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le 22/05/2022 à 09:04, LI Qingwu a écrit :
-> Add support for Murata SCL3300, a 3-axis MEMS accelerometer.
-> Same as SCA3300, it has the accelerometer and temperature output.
-> 
-> Datasheet: www.murata.com/en-us/products/sensor/inclinometer/overview/lineup/scl3300
-> Signed-off-by: LI Qingwu <Qing-wu.Li-t1cy0uBObHa2smIkw38IFAiE/XJ0vlP8@public.gmane.org>
-> ---
->   drivers/iio/accel/sca3300.c | 28 ++++++++++++++++++++++++++--
->   1 file changed, 26 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
-> index e57aba79c32b..10bedb14d4f0 100644
-> --- a/drivers/iio/accel/sca3300.c
-> +++ b/drivers/iio/accel/sca3300.c
-> @@ -38,6 +38,7 @@
->   /* Device ID */
->   #define SCA3300_REG_WHOAMI	0x10
->   #define SCA3300_WHOAMI_ID	0x51
-> +#define SCL3300_WHOAMI_ID	0xC1
->   
->   /* Device return status and mask */
->   #define SCA3300_VALUE_RS_ERROR	0x3
-> @@ -96,10 +97,18 @@ static const struct iio_chan_spec sca3300_channels[] = {
->   static const int sca3300_lp_freq[] = {70, 10};
->   static const int sca3300_lp_freq_map[] = {0, 0, 0, 1};
->   
-> +static const int scl3300_lp_freq[] = {40, 70, 10};
-> +static const int scl3300_lp_freq_map[] = {0, 1, 2};
-> +
->   static const int sca3300_accel_scale[][2] = {{0, 370}, {0, 741}, {0, 185}};
->   static const int sca3300_accel_scale_map[] = {0, 1, 2, 2};
->   
-> +static const int scl3300_accel_scale[][2] = {{0, 167}, {0, 333}, {0, 83}};
-> +static const int scl3300_accel_scale_map[] = {0, 1, 2};
-> +
->   static const int sca3300_avail_modes_map[] = {0, 1, 2, 3};
-> +static const int scl3300_avail_modes_map[] = {0, 1, 3};
-> +
->   static const unsigned long sca3300_scan_masks[] = {
->   	BIT(SCA3300_ACC_X) | BIT(SCA3300_ACC_Y) | BIT(SCA3300_ACC_Z) |
->   	BIT(SCA3300_TEMP),
-> @@ -159,6 +168,20 @@ static const struct sca3300_chip_info sca3300_chip_tbl[] = {
->   		.num_avail_modes = 4,
->   		.chip_id = SCA3300_WHOAMI_ID,
->   	},
-> +	{	.scan_masks = sca3300_scan_masks,
-> +		.channels = sca3300_channels,
-> +		.num_channels = ARRAY_SIZE(sca3300_channels),
-> +		.num_accel_scales = ARRAY_SIZE(scl3300_accel_scale)*2,
-> +		.accel_scale = scl3300_accel_scale,
-> +		.accel_scale_map = scl3300_accel_scale_map,
-> +		.num_freqs = ARRAY_SIZE(scl3300_lp_freq),
-> +		.freq_table = scl3300_lp_freq,
-> +		.freq_map = scl3300_lp_freq_map,
-> +		.name = "scl3300",
-> +		.avail_modes_table = scl3300_avail_modes_map,
-> +		.num_avail_modes = 3,
-> +		.chip_id = SCL3300_WHOAMI_ID,
-> +	},
->   };
->   
->   DECLARE_CRC8_TABLE(sca3300_crc_table);
-> @@ -444,9 +467,9 @@ static int sca3300_init(struct sca3300_data *sca_data,
->   
->   	/*
->   	 * Wait 1ms after SW-reset command.
-> -	 * Wait 15ms for settling of signal paths.
-> +	 * Wait 25ms for settling of signal paths.
+This series of 3 patches adds support to ADC driver for
+FSD SoC, and also adds nodes in device tree. These patches
+were a part of large set of patches related to FSD SoC, but
+these are posted now separately as per review comments received.
 
-Hi,
-maybe the comment (IIUC) should say that the timing depends of sca3300 
-(15 ms) or scl3300 (25 ms) and that the max of the 2 values is taken.
-Or have this delay depends of the chip in the code below.
+M Tamseel Shams (3):
+  dt-bindings: iio: adc: Add FSD-HW variant
+  iio: adc: exynos-adc: Add support for ADC FSD-HW controller
+  arm64: dts: fsd: Add ADC device tree node
 
-CJ
+ .../bindings/iio/adc/samsung,exynos-adc.yaml  |  1 +
+ arch/arm64/boot/dts/tesla/fsd-evb.dts         |  4 ++
+ arch/arm64/boot/dts/tesla/fsd.dtsi            | 11 ++++
+ drivers/iio/adc/exynos_adc.c                  | 55 +++++++++++++++++++
+ 4 files changed, 71 insertions(+)
 
-
-
->   	 */
-> -	usleep_range(16e3, 50e3);
-> +	usleep_range(26e3, 50e3);
->   
->   	ret = sca3300_read_reg(sca_data, SCA3300_REG_WHOAMI, &value);
->   	if (ret)
-> @@ -573,6 +596,7 @@ static int sca3300_probe(struct spi_device *spi)
->   
->   static const struct of_device_id sca3300_dt_ids[] = {
->   	{ .compatible = "murata,sca3300"},
-> +	{ .compatible = "murata,scl3300"},
->   	{}
->   };
->   MODULE_DEVICE_TABLE(of, sca3300_dt_ids);
+-- 
+2.17.1
 

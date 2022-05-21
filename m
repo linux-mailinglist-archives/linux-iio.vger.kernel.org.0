@@ -2,130 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23AF652F15A
-	for <lists+linux-iio@lfdr.de>; Fri, 20 May 2022 19:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 342ED52F7A6
+	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 04:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352069AbiETRN3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 May 2022 13:13:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45100 "EHLO
+        id S1354365AbiEUCki (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 May 2022 22:40:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238817AbiETRN2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 13:13:28 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A809AAFAFD;
-        Fri, 20 May 2022 10:13:27 -0700 (PDT)
-Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4L4YFx32Hbz6H6mq;
-        Sat, 21 May 2022 01:13:09 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 20 May 2022 19:13:25 +0200
-Received: from localhost (10.122.247.231) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 20 May
- 2022 18:13:24 +0100
-Date:   Fri, 20 May 2022 18:13:23 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Yongzhi Liu <lyz_cs@pku.edu.cn>
-CC:     <agross@kernel.org>, <bjorn.andersson@linaro.org>,
-        <jic23@kernel.org>, <lars@metafoo.de>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <fuyq@stu.pku.edu.cn>
-Subject: Re: [PATCH v2] iio: vadc: Fix potential dereference of NULL pointer
-Message-ID: <20220520181323.00002892@huawei.com>
-In-Reply-To: <1652939455-123139-1-git-send-email-lyz_cs@pku.edu.cn>
-References: <YoUtezVzsPB8MAEO@google.com>
-        <1652939455-123139-1-git-send-email-lyz_cs@pku.edu.cn>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+        with ESMTP id S231826AbiEUCkh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 22:40:37 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D44A41900C0;
+        Fri, 20 May 2022 19:40:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        Subject:From:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=qyf/zwUprsQMdEvfmj9FeIk1Jd9GfDCSYtZB2ONQMLY=; b=dXFjCihoY61BXVzES0IK9PU3fq
+        VWU8C0i6nZNC4QiC719pzzq4vfhJIwKmrd8rGV1V9ptz4UJ7/7pKaWz93IP5+2Kmyp+QzpxwDLB5H
+        81sFQ/ginhwYSMkq961wEqs6Unt5qbWTIWzNchgfVBQl/nPTgQPGHhwshM1LsXW/g+IRtsNd/c65G
+        JaOmqzqms+NZ73h1c5zB3z1fJESSa4VqomKCKukHUs9v2zDWA8qy5Ra0PCRP/DCFpYRhAGeNKPcdF
+        XtzKy/M/pgRjME0ig89lEOz1fS4fedJjs6k2Z2wBj2pQyDusXzt1e0DO/K8egJgzBsu1N1Zd1lg4W
+        71M784ag==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nsF2d-00EJbS-Qk; Sat, 21 May 2022 02:40:32 +0000
+Message-ID: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
+Date:   Fri, 20 May 2022 19:40:26 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        KUnit Development <kunit-dev@googlegroups.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Subject: kbuild problem: ERROR: modpost: missing MODULE_LICENSE() in
+ drivers/iio/afe/iio-rescale.o
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhreml737-chm.china.huawei.com (10.201.108.187) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 May 2022 22:50:55 -0700
-Yongzhi Liu <lyz_cs@pku.edu.cn> wrote:
+Hi,
 
-> The return value of vadc_get_channel() needs to be checked
-> to avoid use of NULL pointer. Fix this by adding the null
-> pointer check on prop.
-> 
-> Fixes: 0917de94c ("iio: vadc: Qualcomm SPMI PMIC voltage ADC driver")
-> 
-> Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
-This function has a lot of goto err; where err just results in
-a print.
+In March I reported that a randconfig build complained:
 
-My suggestion is to just drop that print and use
-error specific prints as you have done here, then use direct returns.
+ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
 
-> ---
->  drivers/iio/adc/qcom-spmi-vadc.c | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> index 34202ba..9fa61fb 100644
-> --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> @@ -358,14 +358,25 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
->  	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
->  
->  	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
-> +	if (!prop) {
-> +		dev_err(vadc->dev, "Please define 1.25V channel\n");
-> +		ret = -ENODEV;
-> +		goto err;
-> +	}
->  	ret = vadc_do_conversion(vadc, prop, &read_1);
->  	if (ret)
->  		goto err;
->  
->  	/* Try with buffered 625mV channel first */
->  	prop = vadc_get_channel(vadc, VADC_SPARE1);
-> -	if (!prop)
-> +	if (!prop) {
->  		prop = vadc_get_channel(vadc, VADC_REF_625MV);
-> +		if (!prop) {
-> +			dev_err(vadc->dev, "Please define 0.625V channel\n");
-> +			ret = -ENODEV;
-> +			goto err;
-> +		}
-> +	}
->  
->  	ret = vadc_do_conversion(vadc, prop, &read_2);
->  	if (ret)
-> @@ -381,11 +392,21 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
->  
->  	/* Ratiometric calibration */
->  	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
-> +	if (!prop) {
-> +		dev_err(vadc->dev, "Please define VDD channel\n");
-> +		ret = -ENODEV;
-> +		goto err;
-> +	}
->  	ret = vadc_do_conversion(vadc, prop, &read_1);
->  	if (ret)
->  		goto err;
->  
->  	prop = vadc_get_channel(vadc, VADC_GND_REF);
-> +	if (!prop) {
-> +		dev_err(vadc->dev, "Please define GND channel\n");
-> +		ret = -ENODEV;
-> +		goto err;
-> +	}
->  	ret = vadc_do_conversion(vadc, prop, &read_2);
->  	if (ret)
->  		goto err;
+(https://lore.kernel.org/all/16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org/)
 
+I am still seeing this problem so I tried to dig into it a bit.
+However, I don't see why get_next_modinfo() and friends don't find the
+MODULE_LICENSE() since it is in the iio-rescale.o file.
+
+(BTW, I see this build error on many different $ARCH [around 15 tested]
+and with 2 different versions of GCC.)
+
+Q1: Is modpost checking both vmlinux and iio-rescale.o for modinfo license
+strings?
+
+It looks like it is, because it appears (?) that modpost is looking at
+drivers/iio/test/iio-test-rescale.o (<<<<< a kunit test, which is builtin
+in my .config) and at drivers/iio/afe/iio-rescale.o (which is built as a
+loadable module).
+
+Is this confusing modpost?
+I renamed drivers/iio/afe/iio-rescale.c to afe-rescale.c and changed its
+Makefile entry accordingly and the MODULE_LICENSE error goes away.
+
+Is this a modpost error or is kunit messing things up?
+
+thanks for looking.
+-- 
+~Randy

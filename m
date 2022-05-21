@@ -2,55 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE9CC52F7F0
-	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 05:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB5152F80E
+	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 05:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234715AbiEUDR2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 May 2022 23:17:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37334 "EHLO
+        id S239097AbiEUDbx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 May 2022 23:31:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232435AbiEUDR1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 23:17:27 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0289B15F6EB;
-        Fri, 20 May 2022 20:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=rCj+2wuo0EKtgYohW5UYvrq91l37l8Auyai5P939bcM=; b=eY916wTpVdbWeSyhgS6/LM/EVg
-        wGG+DJlO2ME20eHlyKZ1rSFbo2UxJFW6ZOJkLo6JTl3S3pMkIFaZJobXGqWrMUJjRHaDNRZp1O72V
-        fgB+i+zMtpth7F6hz9e0BDQOTfprhqTqiHnnm5maU7jXpLBifY5UNBwu61c9kqVFpeCaAy8Idzdwc
-        0Vm1pIhRF63+enTN5uvxg4TWItiGj9GhsEeC8HzEq/PEcTIk5gnVZLd7MrqyBHHAY5Wk4aLJuxCka
-        UIhCprEjcqHp7MpKBnZYA4uCEbL744hKJJrQKoPIHQcOVwFeTL778qWcKUUNAU2l/9WcGZbdXrqRy
-        TIlF1rSw==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nsFcI-00EKjX-IH; Sat, 21 May 2022 03:17:22 +0000
-Message-ID: <6671de03-c09c-bfaf-e06c-e45af70d4354@infradead.org>
-Date:   Fri, 20 May 2022 20:17:18 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: kbuild problem: ERROR: modpost: missing MODULE_LICENSE() in
- drivers/iio/afe/iio-rescale.o
-Content-Language: en-US
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Peter Rosin <peda@axentia.se>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        KUnit Development <kunit-dev@googlegroups.com>
-References: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
- <3ae306e0-c6c7-ed12-cacd-62b1c26dba3c@infradead.org>
-In-Reply-To: <3ae306e0-c6c7-ed12-cacd-62b1c26dba3c@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        with ESMTP id S230497AbiEUDbw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 23:31:52 -0400
+X-Greylist: delayed 125755 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 20 May 2022 20:31:47 PDT
+Received: from azure-sdnproxy-2.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 8804956759;
+        Fri, 20 May 2022 20:31:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+        Message-Id:In-Reply-To:References; bh=2+Vwb1brMiNx4lK7ZGRYMXQnW/
+        BV3o/Pw9gsvxTqgWw=; b=XFFi+A4zijJ9TWoxHBTKU9FwiZlN6swOxdnr60j7/v
+        zDXHm/YYvr1NNr9+blZmHLZu88wVRQFaolPNgGhh/X7S4+Cs9y2ocajsqyo5k4uK
+        zlYwtMJVIsiCWAEv2fgKG03m51t83Hnzaa7cPXQEhCXS4bycHVp4HqOM85t3olxZ
+        g=
+Received: from localhost (unknown [10.129.21.144])
+        by front02 (Coremail) with SMTP id 54FpogCHheX9XIhiUlHABg--.30761S2;
+        Sat, 21 May 2022 11:31:09 +0800 (CST)
+From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
+To:     agross@kernel.org, bjorn.andersson@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, svarbanov@mm-sol.com, iivanov@mm-sol.com,
+        jonathan.cameron@huawei.com
+Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
+        Yongzhi Liu <lyz_cs@pku.edu.cn>
+Subject: [PATCH] hv_netvsc: Fix potential dereference of NULL pointer
+Date:   Fri, 20 May 2022 20:31:02 -0700
+Message-Id: <1653103862-36104-1-git-send-email-lyz_cs@pku.edu.cn>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <20220520181323.00002892@huawei.com>
+References: <20220520181323.00002892@huawei.com>
+X-CM-TRANSID: 54FpogCHheX9XIhiUlHABg--.30761S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZw4UGr4UCw1rtw47CF1Utrb_yoWfXrg_Cr
+        48uF1rZr17AFy8KrsrCF4rZFy0yw1vqr1fZrW2y3y3tFy7ZrWDX395Zr97JF4fWa1Uur9x
+        Cwn2qFW5AryIgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUb3AFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AK
+        wVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20x
+        vE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E
+        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+        Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK
+        6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Kr1UJr1l4I8I3I0E4IkC6x
+        0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+        zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+        4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+        CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+        nIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
+X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwEMBlPy7vKeCwAFsl
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,50 +66,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The return value of netvsc_devinfo_get()
+needs to be checked to avoid use of NULL
+pointer in case of an allocation failure.
 
+Fixes: 0efeea5fb ("hv_netvsc: Add the support of hibernation")
 
-On 5/20/22 20:08, Randy Dunlap wrote:
-> 
-> 
-> On 5/20/22 19:40, Randy Dunlap wrote:
->> Hi,
->>
->> In March I reported that a randconfig build complained:
->>
->> ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
->>
->> (https://lore.kernel.org/all/16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org/)
->>
->> I am still seeing this problem so I tried to dig into it a bit.
->> However, I don't see why get_next_modinfo() and friends don't find the
->> MODULE_LICENSE() since it is in the iio-rescale.o file.
->>
->> (BTW, I see this build error on many different $ARCH [around 15 tested]
->> and with 2 different versions of GCC.)
->>
->> Q1: Is modpost checking both vmlinux and iio-rescale.o for modinfo license
->> strings?
->>
->> It looks like it is, because it appears (?) that modpost is looking at
->> drivers/iio/test/iio-test-rescale.o (<<<<< a kunit test, which is builtin
->> in my .config) and at drivers/iio/afe/iio-rescale.o (which is built as a
->> loadable module).
->>
->> Is this confusing modpost?
->> I renamed drivers/iio/afe/iio-rescale.c to afe-rescale.c and changed its
->> Makefile entry accordingly and the MODULE_LICENSE error goes away.
-> 
-> Oh well. This rename causes drivers/iio/test/iio-test-rescale.c to have
-> build errors, so that's not a solution, just some info...
+Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
+---
+ drivers/net/hyperv/netvsc_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-and that was due to not updating drivers/iio/test/Makefile.
-When that is done, the missing MODULE_LICENSE() is back in afe-rescale.o.
-
-> 
->> Is this a modpost error or is kunit messing things up?
->>
->> thanks for looking.
-> 
-
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index fde1c49..b1dece6 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2671,7 +2671,10 @@ static int netvsc_suspend(struct hv_device *dev)
+ 
+ 	/* Save the current config info */
+ 	ndev_ctx->saved_netvsc_dev_info = netvsc_devinfo_get(nvdev);
+-
++	if (!ndev_ctx->saved_netvsc_dev_info) {
++		ret = -ENOMEM;
++		goto out;
++	}
+ 	ret = netvsc_detach(net, nvdev);
+ out:
+ 	rtnl_unlock();
 -- 
-~Randy
+2.7.4
+

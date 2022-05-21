@@ -2,37 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 342ED52F7A6
-	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 04:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B611B52F7DE
+	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 05:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354365AbiEUCki (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 May 2022 22:40:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
+        id S242778AbiEUDIz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 May 2022 23:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231826AbiEUCkh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 22:40:37 -0400
+        with ESMTP id S231627AbiEUDIy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 23:08:54 -0400
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D44A41900C0;
-        Fri, 20 May 2022 19:40:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D185815E61A;
+        Fri, 20 May 2022 20:08:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        Subject:From:Cc:To:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=qyf/zwUprsQMdEvfmj9FeIk1Jd9GfDCSYtZB2ONQMLY=; b=dXFjCihoY61BXVzES0IK9PU3fq
-        VWU8C0i6nZNC4QiC719pzzq4vfhJIwKmrd8rGV1V9ptz4UJ7/7pKaWz93IP5+2Kmyp+QzpxwDLB5H
-        81sFQ/ginhwYSMkq961wEqs6Unt5qbWTIWzNchgfVBQl/nPTgQPGHhwshM1LsXW/g+IRtsNd/c65G
-        JaOmqzqms+NZ73h1c5zB3z1fJESSa4VqomKCKukHUs9v2zDWA8qy5Ra0PCRP/DCFpYRhAGeNKPcdF
-        XtzKy/M/pgRjME0ig89lEOz1fS4fedJjs6k2Z2wBj2pQyDusXzt1e0DO/K8egJgzBsu1N1Zd1lg4W
-        71M784ag==;
+        In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=GxNkNtUv6N3Tj2YSbc6Q95yX7yWRN2SSYpLlOny+k3w=; b=LvCw6ToyXw4MKse/VNChJdugHE
+        2BNemmkXG/9p9KPM3Je0Q4KPOtpd5VEby5fDaWrr8Jf3adgdRGEbQlzoGPPJH7RDKfYDPC5PCKonr
+        Zef6/lHQKmgSBZduaaq/ROYLdNJNDznXMWTy/CaXUNzmVlPvOBkuR23LFBItdOFxE2ZhBrprjddCI
+        WSflXL3NQb0O5CdQWeuEQt6G9O2113/wvJ7/K7L0MJeRU+C1GjqRGKnk/2/S5RDWNCKeVebt1dfWJ
+        5VkmfGFwmiOmyBIDQA8hfb+f6p0F+vdgElDJG7k0uBE3Hs0BNOV1cArHs8sadeiy+cqNw/eLvuc6Q
+        CBJQMCQw==;
 Received: from [2601:1c0:6280:3f0::aa0b]
         by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nsF2d-00EJbS-Qk; Sat, 21 May 2022 02:40:32 +0000
-Message-ID: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
-Date:   Fri, 20 May 2022 19:40:26 -0700
+        id 1nsFU1-00EKVz-7v; Sat, 21 May 2022 03:08:49 +0000
+Message-ID: <3ae306e0-c6c7-ed12-cacd-62b1c26dba3c@infradead.org>
+Date:   Fri, 20 May 2022 20:08:43 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
+Subject: Re: kbuild problem: ERROR: modpost: missing MODULE_LICENSE() in
+ drivers/iio/afe/iio-rescale.o
 Content-Language: en-US
+From:   Randy Dunlap <rdunlap@infradead.org>
 To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Masahiro Yamada <masahiroy@kernel.org>
 Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -40,50 +43,57 @@ Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "open list:KERNEL SELFTEST FRAMEWORK" 
         <linux-kselftest@vger.kernel.org>,
         KUnit Development <kunit-dev@googlegroups.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Subject: kbuild problem: ERROR: modpost: missing MODULE_LICENSE() in
- drivers/iio/afe/iio-rescale.o
+References: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
+In-Reply-To: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
 
-In March I reported that a randconfig build complained:
 
-ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
+On 5/20/22 19:40, Randy Dunlap wrote:
+> Hi,
+> 
+> In March I reported that a randconfig build complained:
+> 
+> ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
+> 
+> (https://lore.kernel.org/all/16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org/)
+> 
+> I am still seeing this problem so I tried to dig into it a bit.
+> However, I don't see why get_next_modinfo() and friends don't find the
+> MODULE_LICENSE() since it is in the iio-rescale.o file.
+> 
+> (BTW, I see this build error on many different $ARCH [around 15 tested]
+> and with 2 different versions of GCC.)
+> 
+> Q1: Is modpost checking both vmlinux and iio-rescale.o for modinfo license
+> strings?
+> 
+> It looks like it is, because it appears (?) that modpost is looking at
+> drivers/iio/test/iio-test-rescale.o (<<<<< a kunit test, which is builtin
+> in my .config) and at drivers/iio/afe/iio-rescale.o (which is built as a
+> loadable module).
+> 
+> Is this confusing modpost?
+> I renamed drivers/iio/afe/iio-rescale.c to afe-rescale.c and changed its
+> Makefile entry accordingly and the MODULE_LICENSE error goes away.
 
-(https://lore.kernel.org/all/16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org/)
+Oh well. This rename causes drivers/iio/test/iio-test-rescale.c to have
+build errors, so that's not a solution, just some info...
 
-I am still seeing this problem so I tried to dig into it a bit.
-However, I don't see why get_next_modinfo() and friends don't find the
-MODULE_LICENSE() since it is in the iio-rescale.o file.
 
-(BTW, I see this build error on many different $ARCH [around 15 tested]
-and with 2 different versions of GCC.)
+> Is this a modpost error or is kunit messing things up?
+> 
+> thanks for looking.
 
-Q1: Is modpost checking both vmlinux and iio-rescale.o for modinfo license
-strings?
-
-It looks like it is, because it appears (?) that modpost is looking at
-drivers/iio/test/iio-test-rescale.o (<<<<< a kunit test, which is builtin
-in my .config) and at drivers/iio/afe/iio-rescale.o (which is built as a
-loadable module).
-
-Is this confusing modpost?
-I renamed drivers/iio/afe/iio-rescale.c to afe-rescale.c and changed its
-Makefile entry accordingly and the MODULE_LICENSE error goes away.
-
-Is this a modpost error or is kunit messing things up?
-
-thanks for looking.
 -- 
 ~Randy

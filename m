@@ -2,160 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C58E52F819
-	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 05:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC5F52F826
+	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 05:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354467AbiEUDgI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 20 May 2022 23:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33638 "EHLO
+        id S1354484AbiEUDvQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 20 May 2022 23:51:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354466AbiEUDgH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 23:36:07 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id E1C15220F8;
-        Fri, 20 May 2022 20:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-        Message-Id:In-Reply-To:References; bh=wzgzdu7AuK5zx/MuP4XOVfBFXx
-        Nsi5pQH7m0wAb0gCo=; b=X5b2XxOOCRGY8Jb1B1DBIYP3XP74DSwIK3HUmUZpVV
-        i8vYsFwdMSFLYYqkHEtFHtPVUwV3NYtljq2vyAROP2ptfYr4nqa9xA1ebV65nZ3a
-        6C74csk6aLBGRgwjFl3RduR2TK+JUQUURq6G7PsYK8LbC2NMjgoiFF6jqdnG8984
-        A=
-Received: from localhost (unknown [10.129.21.144])
-        by front02 (Coremail) with SMTP id 54FpogAHinYKXohiR2PABg--.12714S2;
-        Sat, 21 May 2022 11:35:38 +0800 (CST)
-From:   Yongzhi Liu <lyz_cs@pku.edu.cn>
-To:     agross@kernel.org, bjorn.andersson@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, svarbanov@mm-sol.com, iivanov@mm-sol.com,
-        jonathan.cameron@huawei.com
-Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, fuyq@stu.pku.edu.cn,
-        Yongzhi Liu <lyz_cs@pku.edu.cn>
-Subject: [PATCH v3] iio: vadc: Fix potential dereference of NULL pointer
-Date:   Fri, 20 May 2022 20:35:35 -0700
-Message-Id: <1653104135-36259-1-git-send-email-lyz_cs@pku.edu.cn>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <20220520181323.00002892@huawei.com>
-References: <20220520181323.00002892@huawei.com>
-X-CM-TRANSID: 54FpogAHinYKXohiR2PABg--.12714S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7urWfuFy5Kry8Jr1xXr4fXwb_yoW5Jr1Upa
-        98JayrGry7Ka1fJFyfAFWDJF1aqw42qayUCFWxGanIyr1ayrnYyr4ag3WFyrn5CFyxCw43
-        Ar4jvFnY9F4DKF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU9F1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-        z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-        Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r10
-        6r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-        vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkIecxE
-        wVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26w4UJr1UMxC20s026xCaFV
-        Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-        x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-        1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-        JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-        sGvfC2KfnxnUUI43ZEXa7VU1a9aPUUUUU==
-X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwEMBlPy7vKeCwAIso
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229773AbiEUDvP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 20 May 2022 23:51:15 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111D3DF41;
+        Fri, 20 May 2022 20:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description;
+        bh=4WwopnVdiZchgwgyYgiOR5oYH5rI/26dfgb7iblNhk0=; b=IWc3nqi4c5ufGx+0zpQ3nEFFKl
+        4trofu8qu12i5wvDEhin7ta6+7OkCxakqrp4LNtnQ0yZllkPdAlxzlvR9ecDQ27MkTPKxGAuh4g/g
+        PzvakYn065Z/qEILQAb8ou518LJAXH5S/sYVzCY//Wwl2huSamsieZlK5TzdyzXu7ymuCiFxfLkVG
+        y60l1BrwB46WxHKYCRy9lRxvsyxMdoYBcwv0+luCZwji+kkiQmjTCCMPy6S/UghV8EwD2yEDE0oEa
+        QJGta8hoV1OVcSH93QOjsf1PpaLPuspGOwMCVzBzimaK0R2B/gN3v9ucIP0SUldWXNDqJKqv8DTxb
+        9tD4g3WQ==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nsG8z-00ELwI-CT; Sat, 21 May 2022 03:51:09 +0000
+Message-ID: <6601a387-de9a-a0d0-11b5-01e0cfa75657@infradead.org>
+Date:   Fri, 20 May 2022 20:51:05 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: kbuild problem: ERROR: modpost: missing MODULE_LICENSE() in
+ drivers/iio/afe/iio-rescale.o
+Content-Language: en-US
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Liam Beguin <liambeguin@gmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        KUnit Development <kunit-dev@googlegroups.com>
+References: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
+ <3ae306e0-c6c7-ed12-cacd-62b1c26dba3c@infradead.org>
+ <6671de03-c09c-bfaf-e06c-e45af70d4354@infradead.org>
+In-Reply-To: <6671de03-c09c-bfaf-e06c-e45af70d4354@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The return value of vadc_get_channel() needs to be checked to
-avoid use of NULL pointer. Fix this by adding the null pointer
-check on prop and dropping general error prints.
+Ok, one more.
+[also adding Liam here]
 
-Fixes: 0917de94c02f ("iio: vadc: Qualcomm SPMI PMIC voltage ADC driver")
-Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
----
- drivers/iio/adc/qcom-spmi-vadc.c | 38 ++++++++++++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 10 deletions(-)
+On 5/20/22 20:17, Randy Dunlap wrote:
+> 
+> 
+> On 5/20/22 20:08, Randy Dunlap wrote:
+>>
+>>
+>> On 5/20/22 19:40, Randy Dunlap wrote:
+>>> Hi,
+>>>
+>>> In March I reported that a randconfig build complained:
+>>>
+>>> ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
+>>>
+>>> (https://lore.kernel.org/all/16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org/)
+>>>
+>>> I am still seeing this problem so I tried to dig into it a bit.
+>>> However, I don't see why get_next_modinfo() and friends don't find the
+>>> MODULE_LICENSE() since it is in the iio-rescale.o file.
+>>>
+>>> (BTW, I see this build error on many different $ARCH [around 15 tested]
+>>> and with 2 different versions of GCC.)
+>>>
+>>> Q1: Is modpost checking both vmlinux and iio-rescale.o for modinfo license
+>>> strings?
+>>>
+>>> It looks like it is, because it appears (?) that modpost is looking at
+>>> drivers/iio/test/iio-test-rescale.o (<<<<< a kunit test, which is builtin
+>>> in my .config) and at drivers/iio/afe/iio-rescale.o (which is built as a
+>>> loadable module).
+>>>
+>>> Is this confusing modpost?
+>>> I renamed drivers/iio/afe/iio-rescale.c to afe-rescale.c and changed its
+>>> Makefile entry accordingly and the MODULE_LICENSE error goes away.
+>>
+>> Oh well. This rename causes drivers/iio/test/iio-test-rescale.c to have
+>> build errors, so that's not a solution, just some info...
+> 
+> and that was due to not updating drivers/iio/test/Makefile.
+> When that is done, the missing MODULE_LICENSE() is back in afe-rescale.o.
+> 
+>>
+>>> Is this a modpost error or is kunit messing things up?
+>>>
+>>> thanks for looking.
 
-diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-index 34202ba..43a52b1 100644
---- a/drivers/iio/adc/qcom-spmi-vadc.c
-+++ b/drivers/iio/adc/qcom-spmi-vadc.c
-@@ -358,22 +358,33 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
- 	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
- 
- 	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define 1.25V channel\n");
-+		ret = -ENODEV;
-+		return ret;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_1);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	/* Try with buffered 625mV channel first */
- 	prop = vadc_get_channel(vadc, VADC_SPARE1);
--	if (!prop)
-+	if (!prop) {
- 		prop = vadc_get_channel(vadc, VADC_REF_625MV);
-+		if (!prop) {
-+			dev_err(vadc->dev, "Please define 0.625V channel\n");
-+			ret = -ENODEV;
-+			return ret;
-+		}
-+	}
- 
- 	ret = vadc_do_conversion(vadc, prop, &read_2);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	if (read_1 == read_2) {
- 		ret = -EINVAL;
--		goto err;
-+		return ret;
- 	}
- 
- 	vadc->graph[VADC_CALIB_ABSOLUTE].dy = read_1 - read_2;
-@@ -381,25 +392,32 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
- 
- 	/* Ratiometric calibration */
- 	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define VDD channel\n");
-+		ret = -ENODEV;
-+		return ret;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_1);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	prop = vadc_get_channel(vadc, VADC_GND_REF);
-+	if (!prop) {
-+		dev_err(vadc->dev, "Please define GND channel\n");
-+		ret = -ENODEV;
-+		return ret;
-+	}
- 	ret = vadc_do_conversion(vadc, prop, &read_2);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	if (read_1 == read_2) {
- 		ret = -EINVAL;
--		goto err;
-+		return ret;
- 	}
- 
- 	vadc->graph[VADC_CALIB_RATIOMETRIC].dy = read_1 - read_2;
- 	vadc->graph[VADC_CALIB_RATIOMETRIC].gnd = read_2;
--err:
--	if (ret)
--		dev_err(vadc->dev, "measure reference points failed\n");
- 
- 	return ret;
- }
+Does this look OK? It allows afe/iio-rescale.o to build XOR
+test/iio-rescale.o (not both of them).
+
+--- a/drivers/iio/test/Kconfig
++++ b/drivers/iio/test/Kconfig
+@@ -6,7 +6,7 @@
+ # Keep in alphabetical order
+ config IIO_RESCALE_KUNIT_TEST
+        bool "Test IIO rescale conversion functions"
+-       depends on KUNIT=y && !IIO_RESCALE
++       depends on KUNIT=y && IIO_RESCALE=n
+        default KUNIT_ALL_TESTS
+        help
+          If you want to run tests on the iio-rescale code say Y here.
+
+
 -- 
-2.7.4
-
+~Randy

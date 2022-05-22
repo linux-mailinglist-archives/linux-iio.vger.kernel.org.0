@@ -2,53 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C4D5302B3
-	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 13:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6B205302B5
+	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 13:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232738AbiEVLlR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 May 2022 07:41:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42812 "EHLO
+        id S238162AbiEVLnl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 May 2022 07:43:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236361AbiEVLlQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 07:41:16 -0400
+        with ESMTP id S236361AbiEVLnl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 07:43:41 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96457E010
-        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 04:41:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5490252A1;
+        Sun, 22 May 2022 04:43:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AC793B80AF8
-        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 11:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE46C385AA;
-        Sun, 22 May 2022 11:41:09 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A0E7EB80AFD;
+        Sun, 22 May 2022 11:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A22C385AA;
+        Sun, 22 May 2022 11:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653219671;
-        bh=0lgDhlSqT8+Ta5HFKYwuGbv9jgDahB+uTaog7/h2VpM=;
+        s=k20201202; t=1653219817;
+        bh=/LjKyFCVKnu8SbI3/hspGFymhV3tKLeWdAdgdzZr/V0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BjCscAzhUt9Y8MTOQtHcpHYaqrvAc5MyMRiqBUMPDCtG7iJDfE+YJ9Ih8dm0GbANe
-         nAWsbQvekDcs6R7pXybH5ccFfdVOl3SS5pKwmJ6B0+iKtnwGYc0YsK4TQ6UuDmR1R3
-         ekaq97X7vnvCA+TN6bn8tp1F7kRfy0Y26B6kj1+PwC6dRejnpwM7NKbQcgcmynnuLa
-         1R0OgT61UMGgXyDe0Jbaug8AuOZYVzgDeer0rXxP2rPUlK1xJOa7tJ/eSamO8Ly8GD
-         mNePqOTONmcDz6PR1KlYh060zhjh/WMVBvMRckti8orCe3dmQGP2yzTzigpM6M/ZYS
-         NV3K+i0GuIwaA==
-Date:   Sun, 22 May 2022 12:49:56 +0100
+        b=I8cG2+0puRdQ1SRZidbGWrY4KcIguBqPat+daeeXXZXmx42QNTr+TzxJ6Ksqvtqei
+         YJ0Hf/I/Axup5VCd8viaD/RzHD/7wnlaSRtQjxJzuHXNB5Dpw4vzoFoHfPpF8jZv/t
+         peauXIWmCb17S1pVkepfNsWyX+YrAKwXBHfe4JQ/XUEfHurJL3anuWiXnQS7XdFAgD
+         cbaI4jcphl5wtTvceZtCLbfouUwN9CxZIUIiyJQJhcMu5q6vRiEDpB+vdMx6CPIf8D
+         2JEVCuMgyhiMsJ5ko+5P38Pz7EL7ELg6dVnOJJyz2YT1cvLgmfRSAswFDK6dkFnhFI
+         PM9IQrjgVvt7A==
+Date:   Sun, 22 May 2022 12:52:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH] iio:magnetometer:mbc150: Make bmc150_magn_remove()
- return void
-Message-ID: <20220522124956.5e667720@jic23-huawei>
-In-Reply-To: <20220514133250.307955-1-u.kleine-koenig@pengutronix.de>
-References: <20220514133250.307955-1-u.kleine-koenig@pengutronix.de>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [PATCH] iio: accel: adxl367: do not update FIFO watermark on
+ scan mode update
+Message-ID: <20220522125223.1b310ede@jic23-huawei>
+In-Reply-To: <20220514182010.152784-1-cosmin.tanislav@analog.com>
+References: <20220514182010.152784-1-cosmin.tanislav@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,81 +55,124 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 14 May 2022 15:32:50 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+On Sat, 14 May 2022 21:20:10 +0300
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> bmc150_magn_remove() always returns zero. Make it return no value which
-> makes it easier to see in the callers that there is no error to handle.
->=20
-> Also the return value of i2c driver remove callbacks is ignored anyway.
-> This prepares making i2c remove callbacks return void, too.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Applied.
+> Currently, the driver updates the FIFO watermark inside both
+> update_scan_mode() and hwfifo_set_watermark(). Inside the IIO core,
+> hwfifo_set_watermark() is called immediately after update_scan_mode(),
+> making the first call to set_fifo_samples() redundant.
+> 
+> Remove the first call to set_fifo_samples(), and merge the
+> set_fifo_samples() function into the set_fifo_watermark()
+> function. Also, since fifo_set_size is always set inside of
+> update_scan_mode(), and it cannot be set to 0, remove the
+> zero check from set_fifo_samples().
+> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+
+Applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to have it's fun
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/magnetometer/bmc150_magn.c     | 3 +--
->  drivers/iio/magnetometer/bmc150_magn.h     | 2 +-
->  drivers/iio/magnetometer/bmc150_magn_i2c.c | 4 +++-
->  3 files changed, 5 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magneto=
-meter/bmc150_magn.c
-> index 64e8b04e654b..06d5a1ef1fbd 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn.c
-> +++ b/drivers/iio/magnetometer/bmc150_magn.c
-> @@ -985,7 +985,7 @@ int bmc150_magn_probe(struct device *dev, struct regm=
-ap *regmap,
+>  drivers/iio/accel/adxl367.c | 46 ++++++++-----------------------------
+>  1 file changed, 9 insertions(+), 37 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+> index 0289ed8cf2c6..72a8c3fb27b9 100644
+> --- a/drivers/iio/accel/adxl367.c
+> +++ b/drivers/iio/accel/adxl367.c
+> @@ -447,21 +447,17 @@ static int adxl367_set_fifo_format(struct adxl367_state *st,
+>  					     fifo_format));
 >  }
->  EXPORT_SYMBOL_NS(bmc150_magn_probe, IIO_BMC150_MAGN);
-> =20
-> -int bmc150_magn_remove(struct device *dev)
-> +void bmc150_magn_remove(struct device *dev)
+>  
+> -static int adxl367_set_fifo_samples(struct adxl367_state *st,
+> -				    unsigned int fifo_watermark,
+> -				    unsigned int fifo_set_size)
+> +static int adxl367_set_fifo_watermark(struct adxl367_state *st,
+> +				      unsigned int fifo_watermark)
 >  {
->  	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
->  	struct bmc150_magn_data *data =3D iio_priv(indio_dev);
-> @@ -1008,7 +1008,6 @@ int bmc150_magn_remove(struct device *dev)
->  	mutex_unlock(&data->mutex);
-> =20
->  	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+> -	unsigned int fifo_samples = fifo_watermark * fifo_set_size;
+> +	unsigned int fifo_samples = fifo_watermark * st->fifo_set_size;
+>  	unsigned int fifo_samples_h, fifo_samples_l;
+>  	int ret;
+>  
+>  	if (fifo_samples > ADXL367_FIFO_MAX_WATERMARK)
+>  		fifo_samples = ADXL367_FIFO_MAX_WATERMARK;
+>  
+> -	if (fifo_set_size == 0)
+> -		return 0;
+> -
+> -	fifo_samples /= fifo_set_size;
+> +	fifo_samples /= st->fifo_set_size;
+>  
+>  	fifo_samples_h = FIELD_PREP(ADXL367_SAMPLES_H_MASK,
+>  				    FIELD_GET(ADXL367_SAMPLES_VAL_H_MASK,
+> @@ -475,30 +471,8 @@ static int adxl367_set_fifo_samples(struct adxl367_state *st,
+>  	if (ret)
+>  		return ret;
+>  
+> -	return regmap_update_bits(st->regmap, ADXL367_REG_FIFO_SAMPLES,
+> -				  ADXL367_SAMPLES_L_MASK, fifo_samples_l);
+> -}
+> -
+> -static int adxl367_set_fifo_set_size(struct adxl367_state *st,
+> -				     unsigned int fifo_set_size)
+> -{
+> -	int ret;
+> -
+> -	ret = adxl367_set_fifo_samples(st, st->fifo_watermark, fifo_set_size);
+> -	if (ret)
+> -		return ret;
+> -
+> -	st->fifo_set_size = fifo_set_size;
+> -
 > -	return 0;
->  }
->  EXPORT_SYMBOL_NS(bmc150_magn_remove, IIO_BMC150_MAGN);
-> =20
-> diff --git a/drivers/iio/magnetometer/bmc150_magn.h b/drivers/iio/magneto=
-meter/bmc150_magn.h
-> index 3b69232afd2c..98c086d10c13 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn.h
-> +++ b/drivers/iio/magnetometer/bmc150_magn.h
-> @@ -7,6 +7,6 @@ extern const struct dev_pm_ops bmc150_magn_pm_ops;
-> =20
->  int bmc150_magn_probe(struct device *dev, struct regmap *regmap, int irq,
->  		      const char *name);
-> -int bmc150_magn_remove(struct device *dev);
-> +void bmc150_magn_remove(struct device *dev);
-> =20
->  #endif /* _BMC150_MAGN_H_ */
-> diff --git a/drivers/iio/magnetometer/bmc150_magn_i2c.c b/drivers/iio/mag=
-netometer/bmc150_magn_i2c.c
-> index e39b89661ad1..65c004411d0f 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn_i2c.c
-> +++ b/drivers/iio/magnetometer/bmc150_magn_i2c.c
-> @@ -36,7 +36,9 @@ static int bmc150_magn_i2c_probe(struct i2c_client *cli=
-ent,
-> =20
->  static int bmc150_magn_i2c_remove(struct i2c_client *client)
+> -}
+> -
+> -static int adxl367_set_fifo_watermark(struct adxl367_state *st,
+> -				      unsigned int fifo_watermark)
+> -{
+> -	int ret;
+> -
+> -	ret = adxl367_set_fifo_samples(st, fifo_watermark, st->fifo_set_size);
+> +	ret = regmap_update_bits(st->regmap, ADXL367_REG_FIFO_SAMPLES,
+> +				 ADXL367_SAMPLES_L_MASK, fifo_samples_l);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -1276,14 +1250,11 @@ static int adxl367_update_scan_mode(struct iio_dev *indio_dev,
 >  {
-> -	return bmc150_magn_remove(&client->dev);
-> +	bmc150_magn_remove(&client->dev);
-> +
-> +	return 0;
->  }
-> =20
->  static const struct acpi_device_id bmc150_magn_acpi_match[] =3D {
->=20
-> base-commit: 3123109284176b1532874591f7c81f3837bbdc17
+>  	struct adxl367_state *st  = iio_priv(indio_dev);
+>  	enum adxl367_fifo_format fifo_format;
+> -	unsigned int fifo_set_size;
+>  	int ret;
+>  
+>  	if (!adxl367_find_mask_fifo_format(active_scan_mask, &fifo_format))
+>  		return -EINVAL;
+>  
+> -	fifo_set_size = bitmap_weight(active_scan_mask, indio_dev->masklength);
+> -
+>  	mutex_lock(&st->lock);
+>  
+>  	ret = adxl367_set_measure_en(st, false);
+> @@ -1294,11 +1265,12 @@ static int adxl367_update_scan_mode(struct iio_dev *indio_dev,
+>  	if (ret)
+>  		goto out;
+>  
+> -	ret = adxl367_set_fifo_set_size(st, fifo_set_size);
+> +	ret = adxl367_set_measure_en(st, true);
+>  	if (ret)
+>  		goto out;
+>  
+> -	ret = adxl367_set_measure_en(st, true);
+> +	st->fifo_set_size = bitmap_weight(active_scan_mask,
+> +					  indio_dev->masklength);
+>  
+>  out:
+>  	mutex_unlock(&st->lock);
 

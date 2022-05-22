@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 821665302A3
-	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 13:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FC635302A7
+	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 13:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237506AbiEVLXn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 May 2022 07:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42730 "EHLO
+        id S236826AbiEVL2h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 May 2022 07:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235232AbiEVLXn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 07:23:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F48119C1B;
-        Sun, 22 May 2022 04:23:42 -0700 (PDT)
+        with ESMTP id S235232AbiEVL2g (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 07:28:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDA82ED68;
+        Sun, 22 May 2022 04:28:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B482EB80AC0;
-        Sun, 22 May 2022 11:23:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7E6C385AA;
-        Sun, 22 May 2022 11:23:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DC7A60EFA;
+        Sun, 22 May 2022 11:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42281C385AA;
+        Sun, 22 May 2022 11:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653218619;
-        bh=9f2iXwecnVb772Z2NNfbPH7l5LuCIfXWdWIxvNZiS0M=;
+        s=k20201202; t=1653218914;
+        bh=I1TCglVaUOlQv9NY1yHyp/8XZg1F5alSwioMHOuiLOI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Kfl1qSvGcByxwj7QROpVX0BF4U1anyizOZLZ2xw+qaueFsWlDCPyvNqZ59RZGjTq3
-         daQdvN/1sbcS7u67LYlCVKsyXeVc4JkLCXiyvx7ogvR7zOTzn2hcB8B2e+hX3dMEqu
-         nx67UBDHLUqIoBVN3MRhgj1U/BsNb9+ffmNQIwbckpO6cVrBuGTHGxDrcW8BfIZOsR
-         r9UinJa5FNxDWBPipEGYvGP+HOQXuZ2uDSelKLHH1KA7vEsW9iRJCxqY3Oq8i/vfc8
-         NrE+zh/NPMpRWsHzBmqQKaZsZ2TblIE7iiISt9UAYUb2jn1aNskBalqhYzcDQZQWYw
-         syC1GNmFh143Q==
-Date:   Sun, 22 May 2022 12:32:25 +0100
+        b=edEcURbzrSmVoivNV/l85Tcq/+YRXHI5cR2eu5pjA0Sv23Xrjb5FPT6Cz09vqcn0R
+         yHBK+QMqd0ivdLGszxp2I5NBWvlXmwOCxBGlslpJF7A/X/ZgLy4w0sUo9hq02CYU2z
+         9qsRJ/da2mX9NBOMmlIQ+P7ewqEYlWswU0j98Jr1zA298CkHTqGimkGArz3zkgVo/z
+         8midgGKhZB94LkCA57NlQ469ykb4sJaaX94An75MYXn/tBLyU83636n3dNRdPuPdvd
+         4TgYLqw2kY93fwc5gey0G/gLo9ZYJURsKm28iDBmUOt1oo+zhPd0QyNBm1a8geSZx8
+         z23vmr7EtANbw==
+Date:   Sun, 22 May 2022 12:37:19 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jialin Zhang <zhangjialin11@huawei.com>
-Cc:     <tomislav.denis@avl.com>, <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: ti-ads131e08: add missing fwnode_handle_put()
- in ads131e08_alloc_channels()
-Message-ID: <20220522123225.3f948d5e@jic23-huawei>
-In-Reply-To: <20220517033020.2033324-1-zhangjialin11@huawei.com>
-References: <20220517033020.2033324-1-zhangjialin11@huawei.com>
+To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc:     lars@metafoo.de, mchehab+huawei@kernel.org, ardeleanalex@gmail.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, mike.looijmans@topic.nl,
+        devicetree@vger.kernel.org, thomas.haemmerle@leica-geosystems.com
+Subject: Re: [PATCH V3 0/6] iio: accel: bmi088: support BMI085 BMI090L
+Message-ID: <20220522123719.3e34bb6e@jic23-huawei>
+In-Reply-To: <20220518150425.927988-1-Qing-wu.Li@leica-geosystems.com.cn>
+References: <20220518150425.927988-1-Qing-wu.Li@leica-geosystems.com.cn>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,71 +56,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 17 May 2022 11:30:20 +0800
-Jialin Zhang <zhangjialin11@huawei.com> wrote:
+On Wed, 18 May 2022 15:04:19 +0000
+LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
 
-> fwnode_handle_put() should be used when terminating
-> device_for_each_child_node() iteration with break or
-> return to prevent stale device node references from
-> being left behind.
-This one seems obviously correct so I'll not wait on anyone else
-looking at it - still time though as I won't be sending a pull
-request until these have been in next for a day or two.
+> Modified the units after application of scale from 100*m/s^2 to m/s^2,
+> since the units in the ABI documents are m/s^2.
+> Add supports for the BMI085 accelerometer.
+> Add supports for the BMI090L accelerometer.
+> Make it possible to config scales.
+> 
+> Change in V3: 
+> 
+> Use FIELD_GET for checking register range. Reorder the chip info and 
+> dt-bindings alphabetical. Add of_id_table. Modify the logic of loading
+> sensor chip info. If the device was found in the table but the device 
+> tree binding is different, the driver will carry on with the detected
+> chip with a warning. If no matching device was found, the driver load
+> the binding chip.
 
-Applied to the fixes-togreg branch of iio.git.
-
-I rewrapped the description to use longer lines.
+All looks good to me. Unfortunately we've missed the 5.19 merge window
+now as it will probably open shortly.  As such we have lots of time so
+I'll leave this on list for a little longer for others to take a look at.
+Thanks,
 
 Jonathan
 
 > 
-> Fixes: d935eddd2799 ("iio: adc: Add driver for Texas Instruments ADS131E0x ADC family")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jialin Zhang <zhangjialin11@huawei.com>
-> ---
->  drivers/iio/adc/ti-ads131e08.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-> index 0c2025a22575..80a09817c119 100644
-> --- a/drivers/iio/adc/ti-ads131e08.c
-> +++ b/drivers/iio/adc/ti-ads131e08.c
-> @@ -739,7 +739,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
->  	device_for_each_child_node(dev, node) {
->  		ret = fwnode_property_read_u32(node, "reg", &channel);
->  		if (ret)
-> -			return ret;
-> +			goto err_child_out;
->  
->  		ret = fwnode_property_read_u32(node, "ti,gain", &tmp);
->  		if (ret) {
-> @@ -747,7 +747,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
->  		} else {
->  			ret = ads131e08_pga_gain_to_field_value(st, tmp);
->  			if (ret < 0)
-> -				return ret;
-> +				goto err_child_out;
->  
->  			channel_config[i].pga_gain = tmp;
->  		}
-> @@ -758,7 +758,7 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
->  		} else {
->  			ret = ads131e08_validate_channel_mux(st, tmp);
->  			if (ret)
-> -				return ret;
-> +				goto err_child_out;
->  
->  			channel_config[i].mux = tmp;
->  		}
-> @@ -784,6 +784,10 @@ static int ads131e08_alloc_channels(struct iio_dev *indio_dev)
->  	st->channel_config = channel_config;
->  
->  	return 0;
-> +
-> +err_child_out:
-> +	fwnode_handle_put(node);
-> +	return ret;
->  }
->  
->  static void ads131e08_regulator_disable(void *data)
+> LI Qingwu (6):
+>   iio: accel: bmi088: Modified the scale calculate
+>   iio: accel: bmi088: Make it possible to config scales
+>   iio: accel: bmi088: modified the device name
+>   iio: accel: bmi088: Add support for bmi085 accel
+>   iio: accel: bmi088: Add support for bmi090l accel
+>   dt-bindings: iio: accel: Add bmi085 and bmi090l bindings
+> 
+>  .../bindings/iio/accel/bosch,bmi088.yaml      |  2 +
+>  drivers/iio/accel/bmi088-accel-core.c         | 96 +++++++++++++++----
+>  drivers/iio/accel/bmi088-accel-spi.c          | 17 +++-
+>  drivers/iio/accel/bmi088-accel.h              |  9 +-
+>  4 files changed, 100 insertions(+), 24 deletions(-)
+> 
 

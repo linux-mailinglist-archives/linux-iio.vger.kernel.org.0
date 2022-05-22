@@ -2,143 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6624252FEC9
-	for <lists+linux-iio@lfdr.de>; Sat, 21 May 2022 20:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70F81530168
+	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 09:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348947AbiEUSXm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 21 May 2022 14:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
+        id S236774AbiEVHE3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 May 2022 03:04:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344480AbiEUSXm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 21 May 2022 14:23:42 -0400
-X-Greylist: delayed 885 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 May 2022 11:23:40 PDT
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02hn2246.outbound.protection.partner.outlook.cn [139.219.17.246])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F262E6543E
-        for <linux-iio@vger.kernel.org>; Sat, 21 May 2022 11:23:40 -0700 (PDT)
+        with ESMTP id S234574AbiEVHE2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 03:04:28 -0400
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-eopbgr00132.outbound.protection.outlook.com [40.107.0.132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43D842E0BE;
+        Sun, 22 May 2022 00:04:27 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MLvL4atHnsi45D3ykgl5AMG/Ce/zIvxw9uBJQGsDrkvJ6B4a8i7f5oBgul8C+T0xy58aU1+mQB8Z/kO2veOmaM8kQvBVZajhN7szpUuTUNNMMf9q6tZsNd8xF9qTtGr+2QCLx2pmU/DQLQ9k0A+z/l/MYFD4taFWzSbotEl3tE+TV7jkhNDb/XHwo72ikeoWNFhD5YXXi3t8xHex5jspfmrLyw17v7b3E7UwUD8bvxLiL3GndBynF3kR/Itg1yJJi7br1DyBSgycvTgjtdqCaGzCVqYLmRdZtNQ+61VKFUV383yfJ2lv8Fs2Dn1OELyLQeuVqakh1Y4V1271nX3o7A==
+ b=mcOjuuHWKlFqugi+9ZSgMXovlWWkoPxecG22eRjeo8RVdEeDnsZQo+gLNheQlMUdqXlLAis5xSJGwZUPLufXOh4nDLcIqSRIBpCVGXDBqMJkJp39jzcr7jf2lfSLTLpobwPHlbX3UTr2A/TGlBLjexIH56TTSszrdAikf8JFlct/tRP8cJD/e/6U1QDaSQ7gsmcP81lSKXULeW43B00x1SxS70ByAzstgUTSR1Fh/mju6vqGaHp5daYPnb5FbYb/AKAds/s2TTK0A9pKiQpmSMZ/+9dcfa1YbKMg37xnZR8IdteImUmLUwt1I12QXq2jPgzxI0pWzXTcp3gpEGQEhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3z5uhVUtqN5OyplYkKXQ17d4OAmlRJ8nVcEl3nfclrI=;
- b=eXSmA57GcvUX9LZBDWcU9QxHpumXmNRs9Hrtl7eqhgKKNk0XkJNt8siu0OISzT8AgPCTrEY+939gAFca0wyUHOQZTvbYXi1jvdG6Y1hcJDQIinBglZcJ1Vbtx48NzMdlF5PQ+5fEYmL5VcItkHFrK4lBP08mK843cY75AxAHINdNFQ2+MYxgX0R1sYau03ZTOVDcDXwPg0tXoaUij2px1J0YElKIVC6mrSsKE6V9DdWaIeQ6+FmJhCr1lJO8j4KeL9QUl3INktsZ6EJOnIwBg/9AcGeIgsLnRSxTDPDSBZPZPZH85pnoBIterVYXQMo73Y8Lo8TD6Ut5LaHTALm2Fg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gientech.com; dmarc=pass action=none header.from=gientech.com;
- dkim=pass header.d=gientech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gientech.com;
- s=selector1;
+ bh=5y6qHCdnPPHrNn51qWjmdQSTTIaKZdRXb1ZaNLAbxBQ=;
+ b=LajIhABhB/4gO4pRrSWZqsaPH8LafPtubeQn7urQzwyx2LBBqIspbxp2e6Al0U7Qw4njqgOGAbgPHDZkFeDkorED3UDlfVTlzCjtMDSHSY7yuJc0FAzr+hacYeSIVwBpVligFXypQrCeqCTKoaP0UAqlLUiZw/D9w359Opwdg1pp/XtQ72nDCDjwtX9ScYiKtnzDGy7z9Qq7iPCwhd7g3hSmKyrKG7/3wpXzNJqd4kWgtDzdBnbMFtN6gqp8oUfrafoZc6nq4vumfOzPC8xEmSMAZx6E4CplXldmFiTVbLHutOxnchFN7Vgsy3Oukz1MFUHDP/60cDZ/+Dj5gommLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=kernel.org
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=quarantine sp=quarantine
+ pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=leica-geosystems.com.cn; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3z5uhVUtqN5OyplYkKXQ17d4OAmlRJ8nVcEl3nfclrI=;
- b=KvPHzddAtK7g0KZdLd2LX6Tcv8/SIjBg+3e6bbiSPIzbKkcJsdOM4CvdWakCCeFLmEhDffL34hjIaOOUyqsH7UvqjbMvjxRsLt4CHNbA/YnsX9F6WuPtljqKmD3EkL8t1Xrsr3NahdLkKBBdqCwKkl/3O7RZaMKsKGZtKnuJc5j6t8pzWkiNkJdlC9pHPo9Hrse8LpKBPIOBGyk0S0i9QOfiE7brH9vK4jY42DFGgs51PNzZh832UDdAvEhNm7TPlz3Irnm050EvSu5aauamvFhY5Gn9clBubbHW7AHjUBb0prHiNcH9yMRWgG/AAX5xdRm+LHQTXhOvInjeA8fbdw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gientech.com;
-Received: from SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn (10.43.106.85) by
- SH0PR01MB0635.CHNPR01.prod.partner.outlook.cn (10.43.108.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5273.14; Sat, 21 May 2022 18:06:24 +0000
-Received: from SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn ([10.43.106.85])
- by SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn ([10.43.106.85]) with mapi
- id 15.20.5273.019; Sat, 21 May 2022 18:06:24 +0000
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: RE..
-To:     Recipients <tianjiao.yang@gientech.com>
-From:   "J Wu" <tianjiao.yang@gientech.com>
-Date:   Sun, 15 May 2022 12:39:16 +0000
-Reply-To: contact@jimmywu.online
-X-ClientProxiedBy: SH2PR01CA041.CHNPR01.prod.partner.outlook.cn (10.41.247.51)
- To SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn (10.43.106.85)
-Message-ID: <SH0PR01MB07295AE7A19E635A0EA490398ACC9@SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn>
+ bh=5y6qHCdnPPHrNn51qWjmdQSTTIaKZdRXb1ZaNLAbxBQ=;
+ b=kTvdQfNGhpRgC2+CqpiS+F08EqiMgZQCN/5LbXuxwq6iCUKfJUCVo5g6vO2HtxFtztNIKORTdSqNgVu+dWNRqjyqPCy78rtXvksN0hagpc/F9UU95Hc9qdBa59ryF76IIHxCvad3qD0ptBiCsv2oWYVGSxciLHXxCVFxY5WskzU=
+Received: from AM0PR10CA0119.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:e6::36)
+ by DB7PR06MB5321.eurprd06.prod.outlook.com (2603:10a6:10:76::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.17; Sun, 22 May
+ 2022 07:04:23 +0000
+Received: from VE1EUR02FT008.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:208:e6:cafe::39) by AM0PR10CA0119.outlook.office365.com
+ (2603:10a6:208:e6::36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.13 via Frontend
+ Transport; Sun, 22 May 2022 07:04:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=aherlnxbspsrv01.lgs-net.com; pr=C
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.94) by
+ VE1EUR02FT008.mail.protection.outlook.com (10.152.12.72) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5273.14 via Frontend Transport; Sun, 22 May 2022 07:04:21 +0000
+From:   LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        tomas.melin@vaisala.com, andy.shevchenko@gmail.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Qing-wu.Li@leica-geosystems.com.cn
+Cc:     linux-iio@vger.kernel.org
+Subject: [PATCH V7 0/5] iio: accel: sca3300: add compatible for scl3300
+Date:   Sun, 22 May 2022 07:04:14 +0000
+Message-Id: <20220522070419.409556-1-Qing-wu.Li@leica-geosystems.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a3457e84-16e0-4e18-63ca-08da366ff932
-X-MS-TrafficTypeDiagnostic: SH0PR01MB0635:EE_
-X-Microsoft-Antispam-PRVS: <SH0PR01MB0635C4409807CB2CC2766A6C8AD29@SH0PR01MB0635.CHNPR01.prod.partner.outlook.cn>
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 1799c782-1112-4999-e8c9-08da3bc14c13
+X-MS-TrafficTypeDiagnostic: DB7PR06MB5321:EE_
+X-Microsoft-Antispam-PRVS: <DB7PR06MB53212465DAA2C1BA4699DD4ED7D59@DB7PR06MB5321.eurprd06.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?Lvi2mOIbN2xtoVlyn/sAL6+0oh1fEReVo9gVA0iMK6+fjRnHonlcTaGqKO?=
- =?iso-8859-1?Q?3p4tyS0EYDTu+jS3t1KUFX1GFhxeypbl4ZbPE7pjkxSMoakiAF7xlRsm2x?=
- =?iso-8859-1?Q?t+04ZZS/GvFw47mFRTdyPfuAPP2gZUW/2sPOz1cGwUgxPi68Yk65cMy7x/?=
- =?iso-8859-1?Q?eMxJTvCdyq4Y7B45GVgsVOTo+TXZzBgwUGNhkzZ/fw6/vVCZOZor2zG4vk?=
- =?iso-8859-1?Q?yQmcw6aByvEQgMSY7voFM6vFkPxOiEbIY4uCjTFPYIo5A7sqBghtFYGM4q?=
- =?iso-8859-1?Q?f4gxT0ayfl4puK2Wa1NpA4Rxu4NIcE49s+ylMAiT/MzpgdojPiSk+S2iRn?=
- =?iso-8859-1?Q?XrG8Fb9CVFLQd2mz5Leo/bupNvwoxOuRqWhcx733Z8d8JLf7SKB7tPE+Dt?=
- =?iso-8859-1?Q?jRb22rEiSnEhGq4jiL59PF4mm4Nl66VsQykif5pnwg870Na+QbL5DCgc9a?=
- =?iso-8859-1?Q?G9aGR2LQKMEetRAmqtxjkFWWgca1CFV4pV8/AmsfYY5c7P2ov4+stsk6Uz?=
- =?iso-8859-1?Q?KA94l0O96boBLTYfHLdZweRwgOXAJrhEK0V7Jk58MMlj9rUxwGei+xof+G?=
- =?iso-8859-1?Q?5fHkrz30RlPnWR3qIf6z/Wn84FsYvPviyFqypUmqzLOSq/r298OloFgceF?=
- =?iso-8859-1?Q?WKfGioZP+1wnmarQ3S43E2oPmWeChG97hc0m5IbuTfY+dCYkHzOjG3s2gL?=
- =?iso-8859-1?Q?k4he2x5B1BttWycvTYcdCAE4g/fpHkUd1zcj2n2mvfSx4CY+I9hogRPQVB?=
- =?iso-8859-1?Q?6M7THbnsjXFk/9ou9JXAGNxjodj1h0d5fJXpqRCsiGgTVUsoY0xs+9XXlB?=
- =?iso-8859-1?Q?NPrak+Z7AVOY8vDZ3EW0X3xX878bsOgEmZID32Kz2J0qS0po9J1KhDyzWT?=
- =?iso-8859-1?Q?mbhhRoRaVp1zP/wiqzyJDsu454PrITUcK6Q+OgxGXr7lcAdbfOe0tCAYz4?=
- =?iso-8859-1?Q?we/lfDmKvpr4e6vGTYAARl9lt1OozIsxwbE5kwhmy/AAGUK8LLXkgGssVV?=
- =?iso-8859-1?Q?rWMixvpwQRD4EUJ267PW0EJS64/o6pFU+0v12PAxUwxOpPvk672B2Lp9Xm?=
- =?iso-8859-1?Q?Gw=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:OSPM;SFS:(13230001)(366004)(7696005)(9686003)(4270600006)(26005)(3480700007)(52116002)(38350700002)(38100700002)(2906002)(7366002)(7406005)(33656002)(6200100001)(7416002)(40180700001)(8936002)(19618925003)(55016003)(558084003)(86362001)(40160700002)(6862004)(8676002)(66476007)(66556008)(7116003)(508600001)(6666004)(66946007)(186003)(62346012);DIR:OUT;SFP:1501;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?K9GHf+QLc81TNV8hLjfOiWi5Zp9S2ugnM++UTn5G/MRwIy8+duWBMgExKe?=
- =?iso-8859-1?Q?qDUokNpQaaGfmntVqVwklAbK6kJmltCeueozt0Brsh1fMBaGPaI8VECvEk?=
- =?iso-8859-1?Q?6BBC+xuq7ynHOHYR9fDJhLUEb+OiojRyKS2YWmV5TDiQvdgvjID03PyasO?=
- =?iso-8859-1?Q?qIF15s6jLbeWsTH7oxmR9IJ3CcWQgQMI/GmUpOHyQKilqNyKkxtOovZ0ph?=
- =?iso-8859-1?Q?166LCF7tAqIF67XaawKoXZMADFhs8yaVjc/YSOM6Z7nl2XfKIptSKZJN2d?=
- =?iso-8859-1?Q?pyDTT8tx2/R2xtxaqb/ZI5UanP5syh1vV+XTOJcEbegXtoaA6sYxLayKdG?=
- =?iso-8859-1?Q?gSq6kktskFO+cY/ugo+eNJ287Oa+NjAiGWDMvnuV9uKSuaiJNZfM4y0JnF?=
- =?iso-8859-1?Q?fxF5RRoxb2b3cMp+g5TlqoNU4hlntixtZcWxmOndBTq8hzfeciViFFFoad?=
- =?iso-8859-1?Q?hNcIfbcb4c/BfG5I0gal6ZTsyuUmwbVB1r3djsyP/HEI51YvDbYq5acTdG?=
- =?iso-8859-1?Q?FYO6Zc4UKuQoAiOhT4ay6l9/upzGo9lUCWE6P3EkdD0wDQBZsV4VlVqtvN?=
- =?iso-8859-1?Q?O509LN8vz2pgHpVKP+sfXHPMqk/j+eND4g2SOgLeaXOTUPQcX9DqDu9y/P?=
- =?iso-8859-1?Q?2UcutMDTl4SEUww3CU1ti4dzwLsGP08kyWv88m7K0Yk0cmmuMNkRU8Q3oi?=
- =?iso-8859-1?Q?lgTCYKdBsCjS5VuNRxzswqGkjwUsVMzCxRLWBfdKhNtEuspkqUhVyCeUL5?=
- =?iso-8859-1?Q?FDexNIwMT6LtuGR/vBipc06KdE4CxFsKXiPcFssdZBEKRRs4clsyo6IxXz?=
- =?iso-8859-1?Q?cZQ/WMz39c+HWnpwMSoAtU6wdmFGncBf8GjCHgJnkJqmWHlnm2xYxg1BTM?=
- =?iso-8859-1?Q?75qmkWiiJUc4fJbPtCSNwHHT25eAilEri/dm+Z8jeQiI6yD+dDee8LzmKb?=
- =?iso-8859-1?Q?RZfyahv3Tu5Whj8RDbI/tgHcYGb7q/7AsMgrN8evPGSjM3QskgiYg1Od2Y?=
- =?iso-8859-1?Q?Y935jucxlfeaz4i4i7WLtzn5ZgG2TVGstpNJzdoUO9QKEkF8wYSimW+7j9?=
- =?iso-8859-1?Q?Azouo+1ICISDibIylTG2ECmP7eVuY7jOCN9VG7amJCqMR9Sc8jcau8nFsE?=
- =?iso-8859-1?Q?7vOqgkjlNsQ3IjRuqnbUBlSKZggbTFmMxPnRlkW3moIa01YovssQWRwzV9?=
- =?iso-8859-1?Q?9kKzSxPsn4p/GoiZLFvJfJsDq0xx9Ty/aIB0YOT9Tdc78LEVycITWP9TAx?=
- =?iso-8859-1?Q?p9S+3yyqvJigNpaZqzU8SQcbtTww1HgUUdUD9XMIXT1d6jG/YcCjstO+Qg?=
- =?iso-8859-1?Q?ZsSXo50iepwAwlSjoEqB1TJQ5L4qjL4AHD5Mtxa7ihhj9oJEHct4wr1RKm?=
- =?iso-8859-1?Q?fZzYUwAj89tsIMHYlTbpcKIf3urCabb1kJl1M551EKmp/XbV5eYY03gX3J?=
- =?iso-8859-1?Q?frD8xsuW+9NmanjzJbxv2DgKN19S30D3X7IAt2cYL1zIFXtkaPExrGRUfm?=
- =?iso-8859-1?Q?wRXK/G4ED0T3FjltFAhcvouf5wgCu0SmILxzsQQ2y1454cszwCOwO7AWmY?=
- =?iso-8859-1?Q?b/OrGjIyFlJcb8SvXVX0goRY+e0GyCXcI0P7akYbBhFVM/hVDgZ4s6+MsN?=
- =?iso-8859-1?Q?UWuGx+FN6jxfTNHTyCTfXGyYiMtwQy0QBJxjOmt2RHeRAm+bkUkoAL3rmU?=
- =?iso-8859-1?Q?h2+Jr2nJZTJ7K3uGTjPnKe3M/UL85xiBts8RyWcRCOEBrDjgJJo8Al4/SR?=
- =?iso-8859-1?Q?alYTWVUQ3r8V36DvCMFruj20I=3D?=
-X-OriginatorOrg: gientech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3457e84-16e0-4e18-63ca-08da366ff932
-X-MS-Exchange-CrossTenant-AuthSource: SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2022 12:39:37.7539
+X-Microsoft-Antispam-Message-Info: nDMQI6UAsZW56i0+zk3thhZRYygb+2ObVVqsYOlWErPCP0pSdFFJ7uLBx1cvcSZ6z/n1tcjecuJxNbCg5KmeRZk41k/EJsCzml+PdjC1chDH+iaXKVVh/tyQw4OLGQS/hQdTyxP7keafMSP+uG0HWMPNCd9EYfADHusjKCMGfnyCdvU464XDL0K/yHkbQeLR9fqu5RLPZO9rHYMwV+VlDiPL5UXkFyKmm6spc5sIJY4+k+D+E5oIDguptftMBZrspO5iZ1GNe5YQezK6PGeUrudz+5kgdmm3V7bCnFfsN/oviK+rSdlELA5Aw6T8enIKvIlasx6wC4L9m04O2x55aG8xnfTh/IVhX3ENW15E2qal+vXoabUzD3zz6uufr0fO04mTjJ8Y5ylQlYisYNMSO6Fc1Km80960Zxkui+Rr0HWurDT3ikyeZcMvEYMAncu07fv+tmcus45rM94rnnzcuONYNXjJb3+QbCHnhiyzDrEmh6/AIMM2HhvrKcoFOWMyFEorCKKS2AYuf6QyJVNOQIM143hTUOJpXPpM5s4jJkIdlRW9PETQTOBgomi8sAaEkqma2BovkavtkLZ30mlZHXZgrkz2jHFewvMuSHPVDRz4e1+pIHnRWxh0E0VB+H11yv2fwJFG8LJ/g0juQhwU4zgAC/rXv7NNLOSyEAXMze5b+Z1XUpP1UJwW6wYBRUOD
+X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:aherlnxbspsrv01.lgs-net.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(81166007)(8936002)(70206006)(186003)(47076005)(70586007)(8676002)(4326008)(2616005)(956004)(336012)(1076003)(508600001)(83380400001)(356005)(118246002)(82310400005)(316002)(6506007)(36756003)(36736006)(4744005)(6666004)(6486002)(40460700003)(36860700001)(26005)(86362001)(5660300002)(6512007)(2906002);DIR:OUT;SFP:1102;
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2022 07:04:21.5259
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 89592e53-6f9d-4b93-82b1-9f8da689f1b4
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Gb+ie0ayQs7p608ELSOdHPVldU8gmKUrG+jU8eLthI2ELCjrBiXSlZa+yATNSecx5b0YJRsXNdt0wTuZZVSyMMEy42YWoCFvivc42+jJ3o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SH0PR01MB0635
-X-Spam-Status: Yes, score=7.4 required=5.0 tests=BAYES_50,DATE_IN_PAST_96_XX,
-        DKIM_INVALID,DKIM_SIGNED,NIXSPAM_IXHASH,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4895]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  3.4 DATE_IN_PAST_96_XX Date: is 96 hours or more before Received:
-        *      date
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *******
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1799c782-1112-4999-e8c9-08da3bc14c13
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[aherlnxbspsrv01.lgs-net.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR02FT008.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR06MB5321
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Can we do this together
+The current driver support sca3300 only, modified to support SCL3300.
+Verified with SCL3300 on IMX8MM.
+
+SCL3300 is a three-axis accelerometer sensor with angle output, 
+the change adds the support of scl3300 and inclination data output.
+
+
+Changes in v7: 
+  - Add comments inline for non-obvious code.
+  - Documentation for sca3300_data change.
+  - Small refactor function sca3300_set_frequency.
+
+
+LI Qingwu (5):
+  dt-bindings: iio: accel: sca3300: Document murata,scl3300
+  iio: accel: sca3300: add define for temp channel for reuse.
+  iio: accel: sca3300: modified to support multi chips
+  iio: accel: sca3300: Add support for SCL3300
+  iio: accel: sca3300: Add inclination channels
+
+ .../bindings/iio/accel/murata,sca3300.yaml    |   1 +
+ drivers/iio/accel/sca3300.c                   | 323 +++++++++++++++---
+ 2 files changed, 269 insertions(+), 55 deletions(-)
+
+-- 
+2.25.1
+

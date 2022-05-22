@@ -2,115 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB68530238
-	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 11:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5688530268
+	for <lists+linux-iio@lfdr.de>; Sun, 22 May 2022 12:28:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243858AbiEVJyp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 22 May 2022 05:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45294 "EHLO
+        id S237902AbiEVK2P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 22 May 2022 06:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243834AbiEVJyn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 05:54:43 -0400
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10EA03B55F
-        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 02:54:37 -0700 (PDT)
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20220522095435epoutp0284952d0422d369ef62fe6014eb8b9a15~xZLbt6YfL3086230862epoutp02E
-        for <linux-iio@vger.kernel.org>; Sun, 22 May 2022 09:54:35 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20220522095435epoutp0284952d0422d369ef62fe6014eb8b9a15~xZLbt6YfL3086230862epoutp02E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1653213275;
-        bh=6EZLFpcIcXAcnbtuz8KzWE4q/yNrSXTZ39BdCObJjg4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jmf7X5Ro39Scm3ucrRrGxUhfbY3lhXtnP5LcRx0q9EQH8bNRjCq7WufZMGQ7GJ1IQ
-         ILRCPcMyQDduBxC/sQhpVAjz0pYj+DwEXARaww0Y1LPgwSP11N0ABPIfolun45WB4I
-         nMHEfRGWlZ5BjO/whVYWY4JcNkcOHX6gy80EV/Sg=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-        20220522095433epcas5p4368005cc2e7f431fa9f3c42eeeda64e4~xZLaspYbb2175721757epcas5p4S;
-        Sun, 22 May 2022 09:54:33 +0000 (GMT)
-Received: from epsmges5p3new.samsung.com (unknown [182.195.38.176]) by
-        epsnrtp2.localdomain (Postfix) with ESMTP id 4L5bQs6JTtz4x9Pt; Sun, 22 May
-        2022 09:54:29 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-        epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        E7.EF.09762.5580A826; Sun, 22 May 2022 18:54:29 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-        20220520145804epcas5p2925e66d30b18378fc62c92999ec269f7~w2B184iYh0456204562epcas5p29;
-        Fri, 20 May 2022 14:58:04 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20220520145804epsmtrp138c753df21232041dc3c99f929bd3ee3~w2B17_O4k2887028870epsmtrp1x;
-        Fri, 20 May 2022 14:58:04 +0000 (GMT)
-X-AuditID: b6c32a4b-1fdff70000002622-40-628a08557b85
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        67.E2.11276.C7CA7826; Fri, 20 May 2022 23:58:04 +0900 (KST)
-Received: from Jaguar.sa.corp.samsungelectronics.net (unknown
-        [107.108.73.139]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20220520145802epsmtip1f086d24ad2527b24530cf258e000919e~w2Bz7o-MV1683316833epsmtip1A;
-        Fri, 20 May 2022 14:58:02 +0000 (GMT)
-From:   Tamseel Shams <m.shams@samsung.com>
-To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzk+dt@kernel.org
-Cc:     geert@linux-m68k.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, alim.akhtar@samsung.com,
-        paul@crapouillou.net, linux-fsd@tesla.com,
-        Tamseel Shams <m.shams@samsung.com>
-Subject: [PATCH v2 3/3] arm64: dts: fsd: Add ADC device tree node
-Date:   Fri, 20 May 2022 20:28:20 +0530
-Message-Id: <20220520145820.67667-4-m.shams@samsung.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220520145820.67667-1-m.shams@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupjk+LIzCtJLcpLzFFi42LZdlhTQzeUoyvJ4OgTI4sH87axWcw/co7V
-        4tmtvUwWD5pWMVm8nHWPzWLJ5PmsFpseX2O1ePgq3GLekXcsFpd3zWGzmHF+H5PF3dbF7Bb9
-        iy+xWLTuPcLuwOex+lI7m8emVZ1sHocOdzB6bF5S77HkzSFWj74tqxg9/jXNZff4vEkugCMq
-        2yYjNTEltUghNS85PyUzL91WyTs43jne1MzAUNfQ0sJcSSEvMTfVVsnFJ0DXLTMH6GwlhbLE
-        nFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFKToFJgV5xYm5xaV66Xl5qiZWhgYGRKVBhQnbG
-        x/kfmQpecFfMuJ/bwHibs4uRk0NCwETiYfNxpi5GLg4hgd2MEuubXrNDOJ8YJb5OOsAG4Xxj
-        lNixdikrTMvc79OhEnsZJX41drOAJIQEWpgk3n6U6GLk4GAT0JQ4fp4bxBQR8Jfo/OsCUs4s
-        sJxJ4vS6aWwg5cICjhKXV8wEm8kioCqxoekCM4jNK2Ah0fxrJyPELnmJ1RsOgMU5BSwlvv5s
-        YgQZJCHQyyHx/e58ZogiF4mmOedYIGxhiVfHt7BD2FISL/vboOx0ibkPe5kg7AKJZbu+Q8Xt
-        JQ5cmcMCcigz0M3rd+lDhGUlpp5aB1bOLMAn0fv7CVQrr8SOeTC2osT/3f1QY8Ql3q2YAg0f
-        D4mOKeeg4dPDKPH5126WCYxysxBWLGBkXMUomVpQnJueWmxaYJyXWg6Ps+T83E2M4ISp5b2D
-        8dGDD3qHGJk4GA8xSnAwK4nwbk/sSBLiTUmsrEotyo8vKs1JLT7EaAoMwInMUqLJ+cCUnVcS
-        b2hiaWBiZmZmYmlsZqgkzivwvzFJSCA9sSQ1OzW1ILUIpo+Jg1OqgWl57roFm/7/Wrpvbvsh
-        pWjzPq4nXZfyixpPnGJ8s9Ju1U7FB2+27r2h/3wOW4lLr3dc/j7PGXGuif3f3kosZJH2PHaL
-        tS0l5LvhJwctjS2ru1Z8rnjrv7RmZYHRG/fco5IxGlIvnlgIGCvtTtwhIN9vm3J9rs/6WRsF
-        z5hskclPMpHU/6N3YipnkcTWmJVT7/uJpnxNTlz9Z6EsC+ebqPuVN/sKu9JTTmp/M+TKcL3r
-        wnFwxcvoqOent/pKrr3JG5lYXB/vdmXD7fM7fp2s5qhbn9hczta82GTG70e/1+ta9ZunnE9W
-        XT4vc/aW4JW1K6MtrBbvCfMy7ufoup7qcOugg3ltc0eOAQ93j6RSixJLcUaioRZzUXEiAIhz
-        Gm4hBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKLMWRmVeSWpSXmKPExsWy7bCSnG7NmvYkg4MfBCwezNvGZjH/yDlW
-        i2e39jJZPGhaxWTxctY9Noslk+ezWmx6fI3V4uGrcIt5R96xWFzeNYfNYsb5fUwWd1sXs1v0
-        L77EYtG69wi7A5/H6kvtbB6bVnWyeRw63MHosXlJvceSN4dYPfq2rGL0+Nc0l93j8ya5AI4o
-        LpuU1JzMstQifbsEroyP8z8yFbzgrphxP7eB8TZnFyMnh4SAicTc79PZQGwhgd2MEpeaZCDi
-        4hLTfu1nhLCFJVb+e87excgFVNPEJNFyu525i5GDg01AU+L4eW6QGhGBYInFhw4zg9QwC2xk
-        kvi/u4sVJCEs4ChxecVMMJtFQFViQ9MFZhCbV8BCovnXTqgF8hKrNxwAi3MKWEp8/dnECHGQ
-        hcSKxm/MExj5FjAyrGKUTC0ozk3PLTYsMMxLLdcrTswtLs1L10vOz93ECA5pLc0djNtXfdA7
-        xMjEwXiIUYKDWUmElzG3JUmINyWxsiq1KD++qDQntfgQozQHi5I474Wuk/FCAumJJanZqakF
-        qUUwWSYOTqkGpsADZgIz/5/+tKliblbhfc7KwCArY4bEpY7vu+MvrnC9JKBUd6sqeXXFJpGT
-        6qUnrZZr3Dlhs5hTPTYzyOHQhvCYULYzPH/OHBQ2nCiw66Qiw7ztc3YkPniXfCH2R3ux9RSd
-        15avMj+0WrpMbTvhszLw01wdlt3uy+/Ni3437+PbBYJ3NikEtC9Nun01fTEPg19Endav6x1b
-        dlqzL4q4KJslWfh/Qud+wSUvtZ/sYvysWquaY+F6lLlbOkDr//XlEllVP4XvBn19UxhsblGX
-        e6mylTf6idy7CV2fDBi9hIWCJ+4ufShZ6Ff9woRtq+jU/2qMplmTFlr+zLMUjbz40DPg/JUo
-        KZeUvU/e1eefUWIpzkg01GIuKk4EAP29IITYAgAA
-X-CMS-MailID: 20220520145804epcas5p2925e66d30b18378fc62c92999ec269f7
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220520145804epcas5p2925e66d30b18378fc62c92999ec269f7
-References: <20220520145820.67667-1-m.shams@samsung.com>
-        <CGME20220520145804epcas5p2925e66d30b18378fc62c92999ec269f7@epcas5p2.samsung.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        with ESMTP id S230336AbiEVK2P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 22 May 2022 06:28:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D59D039838;
+        Sun, 22 May 2022 03:28:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 82CCFB80B00;
+        Sun, 22 May 2022 10:28:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A85AC385AA;
+        Sun, 22 May 2022 10:28:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653215291;
+        bh=78L9xq8+jayZIp2ngKH0d9f+WN+dtJ0EX80ikGjIYVk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=IDtRu+QK7A9Ryg6Ai2i06P8ZcyfR2npgP2nPRrw1Cq3y27U85Q3KnNf9SJPPPRPGm
+         QvDb/Vc7KPqjvJi5Bxc+7CccDClcHq+lnS21WsyoH8I3IRfNaxR2vwHibteAFfuXwJ
+         EflVofSoRmKoE2d77snCCHsIk+mgTXXfTte8NjgqlC9k2PtbAKX1yy5k0AB8fOAJvv
+         ecIXxLLabXgZOWuAca0BRbGuOEK+ktHmrWOiaNtlwXqrrw0sMAu+9KI8Uq4wpCIBT2
+         p5sjEqwBxzOh0nJftNtD7NMlX37Dx5DAqZXWoSOYb2+32SSVR/yxxrfpMTkXd8vfjS
+         kJheQoEl9e15w==
+Date:   Sun, 22 May 2022 11:36:54 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Message-ID: <20220522113654.0e3c0023@jic23-huawei>
+In-Reply-To: <20220518122515.aby5lbb4xusr6pdt@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220419154555.24191-1-ddrokosov@sberdevices.ru>
+        <20220419154555.24191-3-ddrokosov@sberdevices.ru>
+        <20220420115023.00006a25@Huawei.com>
+        <20220426172406.s4h6g7nrpytaq263@CAB-WSD-L081021.sigma.sbrf.ru>
+        <20220518122515.aby5lbb4xusr6pdt@CAB-WSD-L081021.sigma.sbrf.ru>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -118,58 +68,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alim Akhtar <alim.akhtar@samsung.com>
+On Wed, 18 May 2022 12:25:59 +0000
+Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
-This patch adds ADC device tree node and enables the same
-on fsd platform.
+> Hi Jonathan,
+> 
+> I have two items to be discussed about iio_trigger_get().
+> Please see my questions below and correct me if I'm wrong.
+> 
+> On Tue, Apr 26, 2022 at 08:24:10PM +0300, Dmitry Rokosov wrote:
+> > > > +							       "%s-new-data",
+> > > > +							       indio_dev->name);
+> > > > +		if (!msa311->new_data_trig) {
+> > > > +			dev_err(&i2c->dev, "cannot allocate new data trig\n");
+> > > > +			err = -ENOMEM;
+> > > > +			goto err_lock_destroy;
+> > > > +		}
+> > > > +
+> > > > +		msa311->new_data_trig->dev.parent = &i2c->dev;
+> > > > +		msa311->new_data_trig->ops = &msa311_new_data_trig_ops;
+> > > > +		iio_trigger_set_drvdata(msa311->new_data_trig, indio_dev);
+> > > > +		indio_dev->trig = msa311->new_data_trig;  
+> > > 
+> > > This will create a double free if you were to change the trigger.
+> > > 		indio_dev->trig = iio_trigger_get(trig);
+> > >   
+> > 
+> > I didn't take into account other trigger usage.
+> > I'll rework this place for the v2.
+> >   
+> 
+> The first one problem is module_get() calling for trigger get()
+> semantic.
+> I've applied iio_trigger_get() function to acquire module refcnt,
+> but I've faced with rmmod busy problem. IIO driver module doesn't want to
+> stop and unload due to not having zero module refcnt.
 
-Signed-off-by: Alim Akhtar <alim.akhtar@samsung.com>
-Signed-off-by: Tamseel Shams <m.shams@samsung.com>
----
-- Changes since v1
-* Addressed Krzysztof's comment for corrections in dt files
+One option is to remove the trigger from sysfs - write an empty string
+current_trigger, but you are right this is a bit of a mess.
 
- arch/arm64/boot/dts/tesla/fsd-evb.dts |  4 ++++
- arch/arm64/boot/dts/tesla/fsd.dtsi    | 11 +++++++++++
- 2 files changed, 15 insertions(+)
+Probably the best option is just don't assign the trigger automatically at all.
 
-diff --git a/arch/arm64/boot/dts/tesla/fsd-evb.dts b/arch/arm64/boot/dts/tesla/fsd-evb.dts
-index 5af560c1b5e6..63f26a85053a 100644
---- a/arch/arm64/boot/dts/tesla/fsd-evb.dts
-+++ b/arch/arm64/boot/dts/tesla/fsd-evb.dts
-@@ -34,6 +34,10 @@
- 	clock-frequency = <24000000>;
- };
- 
-+&adc {
-+	status = "okay";
-+};
-+
- &serial_0 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/tesla/fsd.dtsi b/arch/arm64/boot/dts/tesla/fsd.dtsi
-index 9a652abcbcac..f63624f2f414 100644
---- a/arch/arm64/boot/dts/tesla/fsd.dtsi
-+++ b/arch/arm64/boot/dts/tesla/fsd.dtsi
-@@ -748,6 +748,17 @@
- 			clocks = <&fin_pll>, <&clock_imem IMEM_MCT_PCLK>;
- 			clock-names = "fin_pll", "mct";
- 		};
-+
-+		adc: adc@141a0000 {
-+			compatible = "samsung,exynos-adc-fsd-hw";
-+			reg = <0x0 0x141a0000 0x0 0x100>;
-+			interrupts = <GIC_SPI 173 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clock_peric PERIC_PCLK_ADCIF>;
-+			clock-names = "adc";
-+			#io-channel-cells = <1>;
-+			io-channel-ranges;
-+			status = "disabled";
-+		};
- 	};
- };
- 
--- 
-2.17.1
+This was what we almost always went with in the past.  If a driver
+supports multiple triggers (and if it doesn't why expose the trigger at allm
+there is no obligation to do so?)
+then it's a policy decision to associate a trigger in the first place
+so shouldn't really happen in kernel.
+
+There is a corner case for drivers which can only use a particular trigger,
+but that trigger can be more generally used (validate_trigger provided, but
+not validate_device).  Another corner case is drivers that didn't expose
+a trigger, but later gain support for other triggers then we need to set
+the default value.
+
+
+> Syscall delete_module() tries to stop module first and after calls
+> driver exit() function (which executes devm_* handlers inside, including IIO
+> trigger unregister). It means we have the chicken or the egg dilemma here.
+> Module can't be unloaded until module refcnt is not zero and we can't
+> execute IIO trigger unregister (decrease module refcnt) only when module
+> refcnt is zero.
+> I suppose the possible solution to such a problem is a different semantic
+> for internal triggers (inside driver itself) and external drivers (like
+> hwtimer trigger). What do you think?
+
+Potentially though it's going to be tricky as a driver doesn't generally
+have any way to know they are internal and we need to be careful not to
+underflow the reference counts.  We could hid a flag somewhere and
+add an iio_trigger_get_same_owner() or something that sets that flag allowing
+us to decide not to drop the reference count it if is automatically unassociated.
+In the path where you get:
+1) iio_trigger_get_same_owner() on probe
+2) sysfs write changes to another trigger.
+3) sysfs write back to original trigger
+it is reasonable to assume the need to clear the trigger
+before driver removal is possible, whereas clearing the trigger association
+if only step 1 happened is no intuitive.
+
+> 
+> The second one issue is located in the different IIO drivers. Some modules
+> call iio_trigger_get() before iio_trigger_register(), trig->owner is not
+> initialized to the right value (THIS_MODULE) and we don't acquire refcnt
+> for proper driver object.
+
+Ah. Good point. I guess we missed that when we were moving over to
+automated setting of the module.
+
+> I'm going to send patchset to problem driver set, but I can test only
+> buildable status for such modules, are you okay with that?
+That should be fine.  I can't immediately think of a case where it would
+be a problem as the iio_device_register() should be later and until that happens
+nothing can turn on the trigger - so there shouldn't be any other races.
+
+Jonathan
+
+> 
 

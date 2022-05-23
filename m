@@ -2,59 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D59453197D
-	for <lists+linux-iio@lfdr.de>; Mon, 23 May 2022 22:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A390531CD7
+	for <lists+linux-iio@lfdr.de>; Mon, 23 May 2022 22:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239421AbiEWSxC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 May 2022 14:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42408 "EHLO
+        id S230321AbiEWT17 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 May 2022 15:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243446AbiEWSvr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 14:51:47 -0400
+        with ESMTP id S230232AbiEWT1x (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 15:27:53 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C4CE74DE7;
-        Mon, 23 May 2022 11:37:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B32A30AF;
+        Mon, 23 May 2022 12:07:29 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id C70E25FD03;
-        Mon, 23 May 2022 21:37:23 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id 9CFAF5FD07;
+        Mon, 23 May 2022 22:07:26 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1653331043;
-        bh=Noow5oi6zcHI2WlvLtYK0Gx0bcKlwtT8V+5kTBP2c6I=;
+        s=mail; t=1653332846;
+        bh=DrfX8UyaYPB32fRXUNLHoBD1zfkxh/digB1yu9RXR7s=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=O0jSIUTM4hNah88u7snuulxaVkfltJpOaEmp3UWmlDwCQgw8KYrg91PCuNIqBSuIc
-         xt2ySfSwJOAXgl3m1fBZtfX5yMNqzxUQTBHVlv3WzhDD4x4Uxqp9NZhkMgcbR+YNXw
-         fjmCqZPRW7WrAaQYZlMutJnGEEg0Mud6RgLY/tYSh+9Vmur/FBVIc2eH9yJtUwqIT4
-         0EONHD3qEXArZ39PALpqdyodu8SB1/hRg2deax/Nhf0Wxp/Eq6drfcwySKhpukal5J
-         aUJ2tDrxeJFi0DVxQKi5Y1rjmXp7ii3jxNIb1egDPSdpaSN9eem9P43LNXjw34cmPf
-         G2YK8F9U6Zw7Q==
+        b=NqZB2zZTgdwirIhjrJekfdnaV7AyyaQj70JGkn5Wd3ESXRqFLreEZm/f+c3y1apr+
+         3AqY+t52bmjTEpRum0pRCQfNxn6eQNrSr/I7x9990T5XNMTKpMK2FXX7pSXSTHlqau
+         Nq18myE+dxtvWGhnoQv5Kw4QuUWyVq8khQGgywWoNmGNhjgQLknwMMPe+vcsWo9ks9
+         vy77Y5Oo79No/9tlwOGygSsBw7jfpUZSNJZHGZNu0/x9WdakGaScuKUflXNENlTKyk
+         bhmq52LHBirx6Ex4YEbrfDMT5V/ZMyLVFvnk5gv89PWFaEUj6XDO4b4EZ3/gDmr0ow
+         a9ZdLahWZshZA==
 Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Mon, 23 May 2022 21:37:23 +0300 (MSK)
+        Mon, 23 May 2022 22:07:15 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "jic23@kernel.org" <jic23@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "antoniu.miclaus@analog.com" <antoniu.miclaus@analog.com>,
+        "gwendal@chromium.org" <gwendal@chromium.org>,
+        "yangyingliang@huawei.com" <yangyingliang@huawei.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Subject: [PATCH v1 5/5] iio:humidity:hts221: rearrange iio trigger get and
- register
-Thread-Topic: [PATCH v1 5/5] iio:humidity:hts221: rearrange iio trigger get
- and register
-Thread-Index: AQHYbtQFJ4IV8bnfCkSEgy51IjLtng==
-Date:   Mon, 23 May 2022 18:36:30 +0000
-Message-ID: <20220523183716.20360-1-ddrokosov@sberdevices.ru>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 0/5] iio: treewide: rearrange iio trig get/register
+Thread-Topic: [PATCH v1 0/5] iio: treewide: rearrange iio trig get/register
+Thread-Index: AQHYbsP3wjZLsbk+IECvoYYw88GylK0siI6AgAAYMwA=
+Date:   Mon, 23 May 2022 19:06:19 +0000
+Message-ID: <20220523190704.3bz33f43yk5bohh4@CAB-WSD-L081021.sigma.sbrf.ru>
 References: <20220523164159.11579-1-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220523164159.11579-1-ddrokosov@sberdevices.ru>
+ <CAHp75VeuAxMWknoG28v8k-gKCpUQFJbwpq+pTaTVPeY45vQo2w@mail.gmail.com>
+In-Reply-To: <CAHp75VeuAxMWknoG28v8k-gKCpUQFJbwpq+pTaTVPeY45vQo2w@mail.gmail.com>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <904E8D114B7BB449A15C52EDAC985098@sberdevices.ru>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
@@ -73,38 +76,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-IIO trigger interface function iio_trigger_get() should be called after
-iio_trigger_register() (or its devm analogue) strictly, because of
-iio_trigger_get() acquires module refcnt based on the trigger->owner
-pointer, which is initialized inside iio_trigger_register() to
-THIS_MODULE.
-If this call order is wrong, the next iio_trigger_put() (from sysfs
-callbacks or rmmod) will derefence "default" module refcnt, which is
-completely incorrect.
+On Mon, May 23, 2022 at 07:40:27PM +0200, Andy Shevchenko wrote:
+Hello Andy,
 
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
----
- drivers/iio/humidity/hts221_buffer.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Thank you for quick feedback.
 
-diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/ht=
-s221_buffer.c
-index f29692b9d2db..66b32413cf5e 100644
---- a/drivers/iio/humidity/hts221_buffer.c
-+++ b/drivers/iio/humidity/hts221_buffer.c
-@@ -135,9 +135,12 @@ int hts221_allocate_trigger(struct iio_dev *iio_dev)
-=20
- 	iio_trigger_set_drvdata(hw->trig, iio_dev);
- 	hw->trig->ops =3D &hts221_trigger_ops;
-+
-+	err =3D devm_iio_trigger_register(hw->dev, hw->trig);
-+
- 	iio_dev->trig =3D iio_trigger_get(hw->trig);
-=20
--	return devm_iio_trigger_register(hw->dev, hw->trig);
-+	return err;
- }
-=20
- static int hts221_buffer_preenable(struct iio_dev *iio_dev)
+On Mon, May 23, 2022 at 07:40:27PM +0200, Andy Shevchenko wrote:
+> > If this call order is wrong, the next iio_trigger_put() (from sysfs
+> > callbacks or rmmod) will derefence "default" module refcnt, which is
+>=20
+> dereference
+Ah... good catch.
+
+> > completely incorrect.
+>=20
+> Cool set! But it sounds like a set of fixes, can you add a Fixes tag
+> to each of the patches?
+Sure, no problem, will provide Fixes tags in the next version.
+
 --=20
-2.36.0
+Thank you,
+Dmitry=

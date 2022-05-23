@@ -2,134 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE10C5312E0
-	for <lists+linux-iio@lfdr.de>; Mon, 23 May 2022 18:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 394B8531201
+	for <lists+linux-iio@lfdr.de>; Mon, 23 May 2022 18:21:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237449AbiEWO6a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 May 2022 10:58:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
+        id S237757AbiEWPWr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 May 2022 11:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237442AbiEWO60 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 10:58:26 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF945B3F5;
-        Mon, 23 May 2022 07:58:22 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: shreeya)
-        with ESMTPSA id 384CA1F4336F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1653317900;
-        bh=aux5DOKRhL9/c8YKccW5MZScsCscogspH5D5WmQhR4Q=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=NxRrlEthKxJEW1Lo1eSMTr0S3/yaHDr6nA5boHDOPpczZHxNtbYGqzE1LeAMT+gIN
-         qISMsreeeQ8NxK2AjyLrvV7W46uiDlRRszGhIuJGdWbOAWb7tyQQQdap+Ws8jeAPOK
-         b+/Sb3/FPUXRSa/3XmbZwqMFFn/2gdbV/IX1n8e2AdIBHMvHAXsmdiYJY9i3+f/eTs
-         6e9/mRsFQproojgjpI4sXtKJYjiRAJqSxy7V7DLkjDXVUwzyiJU+zfKIZLfcMWftsE
-         FFmn4t5LHVlR5EAqaOZBN8vMCBeQ4zNmnC46ImoefwQGjULO6ukQCJ6r7FIEInN31g
-         AQZCkyXNhqAdw==
-Message-ID: <f37bccaf-233c-a244-3d81-849a988b1a92@collabora.com>
-Date:   Mon, 23 May 2022 20:27:56 +0530
+        with ESMTP id S237768AbiEWPWg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 11:22:36 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F59F5DBF6;
+        Mon, 23 May 2022 08:22:32 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id er5so19538969edb.12;
+        Mon, 23 May 2022 08:22:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZWj/U+5aRM6YxLxUNdZYeVv9rpkLlT9yI/qdq2zgTLg=;
+        b=FgNOhRxvF7n6Gipa6/PPNIPg5VDHbFny7dCcnzs2l0K68Xdti83DwDmi+AV97zx30Y
+         vTgZVkBYg8WsTEG1CGoCXB+2DRds6QbHc8mazgniMatH/J4WG92yNrutUg4ETIyemwW/
+         wy2NFKG1qJES2535Yb7NkV4i4R+OFK1NdB2ldF157uF/7vpFmrZdRFAVdX0C7YAciWbI
+         q+yA/hXEcZYhcrk0T/jP0Lus9WBQD+R12YQvrLGjGJ5C8pdOw9ZOIE8UTF70mSCJF1G8
+         mB8zuMeSFFncbSpQt+WxOJg6ZkD4KNdeWF5fjA0APGDuTHMcW4IMMs03B36/V1b/u3pD
+         kUuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZWj/U+5aRM6YxLxUNdZYeVv9rpkLlT9yI/qdq2zgTLg=;
+        b=KcCFKSynKGkk2TY7kxj4Z6tLOmjqOku8c9Dns6pRfLSPRLWMlWjJZfO1+OYDAncTqF
+         aouRad2ovv481SXbxKmuYCZp4stXNttmt2lCvTeAxjLa6DNOKUD8f62pj+vTHtdFu2lM
+         c9E9ahRMa7ReUs/mxBlj/KcZsqh/JSwZ+WYRC30vc/N8wWLRIoiwXC06EvaloYH92ozh
+         OQNCa/cdGMZhfdypWSN4TLycQRjChgXw6ig+9u/YBFwiqI52+HrB3TMV3YdgRt0najEQ
+         wqMzWsZnlRSmoHOrplG7kacYcwu5mqQzWB5PBfvPBjPLCbOgST79cKl8qfOimyaP5ZNY
+         o3Pg==
+X-Gm-Message-State: AOAM532PjCGVTfX/WPjvD+28n/cVR4JMIjNAIHGfzADsYKhews/AHLtD
+        xmJVx7ULzHCFdBnXFLZvE65ElQSeutPHASA1MwI=
+X-Google-Smtp-Source: ABdhPJyURKoo/uqXFQDhgEaNf9F3kV8gtE7FemWSZi9W1OsMdpUpNmBouCeWIKlhY4Enw0z2cbJkIG9CdnTKGpNPhag=
+X-Received: by 2002:aa7:d911:0:b0:42a:af69:e167 with SMTP id
+ a17-20020aa7d911000000b0042aaf69e167mr23873693edr.54.1653319351194; Mon, 23
+ May 2022 08:22:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
- deprecated vendor prefix
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
-        krisman@collabora.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, alvaro.soliverez@collabora.com,
-        Krzysztof Kozlowski <krzk@kernel.org>
-References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-2-shreeya.patel@collabora.com>
- <20220516170058.GA2825626-robh@kernel.org>
- <83907dd2-2a53-2448-576b-ae26462d432a@collabora.com>
- <20220518163255.GE3302100-robh@kernel.org>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <20220518163255.GE3302100-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220520181323.00002892@huawei.com> <1653103862-36104-1-git-send-email-lyz_cs@pku.edu.cn>
+In-Reply-To: <1653103862-36104-1-git-send-email-lyz_cs@pku.edu.cn>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 23 May 2022 17:21:54 +0200
+Message-ID: <CAHp75Vc+fubwb0PGqVyDs5Np10ZW06F2REVKK=G26zOKT8gvFQ@mail.gmail.com>
+Subject: Re: [PATCH] hv_netvsc: Fix potential dereference of NULL pointer
+To:     Yongzhi Liu <lyz_cs@pku.edu.cn>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        "Ivan T. Ivanov" <iivanov@mm-sol.com>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        fuyq@stu.pku.edu.cn
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On 18/05/22 22:02, Rob Herring wrote:
-> On Tue, May 17, 2022 at 04:07:33PM +0530, Shreeya Patel wrote:
->> On 16/05/22 22:30, Rob Herring wrote:
->>> On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
->>>> 'liteon' is the correct vendor prefix for devices released by
->>>> LITE-ON Technology Corp. But one of the released device which uses
->>>> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
->>>> ACPI.
->>> ACPI? NAK.
->>>
->>> There are no cases of 'ltr' for DT, so fix ACPI.
->> Hi Rob,
->>
->> Yes, we understand there are no cases of 'ltr', but we have released devices
->> which uses this string for probing the ltrf216a light sensor driver ( x86
->> with DT )
-> That's not what your commit message says.
+On Sat, May 21, 2022 at 6:27 AM Yongzhi Liu <lyz_cs@pku.edu.cn> wrote:
 >
-> Even if this is DT based, given an undocumented vendor string is used,
-> it seems doubtful the rest of the binding would match upstream. What
-> about the rest of the DTB? Got a pointer to it or want to publish it?
+> The return value of netvsc_devinfo_get()
+> needs to be checked to avoid use of NULL
+> pointer in case of an allocation failure.
+
+> Fixes: 0efeea5fb ("hv_netvsc: Add the support of hibernation")
 >
->> If we don't document this in vendor-prefixes.yaml, then the following
->> warning
->> is generated.
->>
->> WARNING: DT compatible string vendor "ltr" appears un-documented -- check
->> ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
->> drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
->>
->>
->> Can you suggest us what would be the right way to fix this warning if not
->> documenting
->> in vendor-prefixes.yaml?
-> Fix the DT. We don't accept bindings simply because they are already
-> used in the field. If this was the only issue, it would be fine, but I
-> suspect it's the tip of the iceberg.
+> Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
 
+For the future independently of the subsystem or mailing list, the tag
+block (above) mustn't have lank lines.
 
-Hi Rob,
-
-To make things more clear, following is the modalias info of the device.
-
-(B+)(root@linux iio:device0)# cat 
-/sys/bus/i2c/devices/i2c-PRP0001\:01/modalias
-of:NltrfTCltr,ltrf216a
-
-It's a dt namespace on an ACPI based device. We used an of_device_id 
-table to be able to probe the driver
-using the vendor prefix and compatible string.
-
-But when we compile the driver, we get the following warning and hence 
-we documented it in vendor-prefixes.yaml
-and also added a complete device tree file [Patch 3/3] just to get rid 
-of the warning. In real life we are not using
-the device tree file at all.
-
-WARNING: DT compatible string vendor "ltr" appears un-documented -- check
-./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
-drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
-
-There are many existing devices used by people which has the vendor 
-prefix name as 'ltr'
-and it won't be possible to change that hence we are trying to upstream it.
-
-
-Thanks,
-Shreeya Patel
-
->
-> Rob
->
+-- 
+With Best Regards,
+Andy Shevchenko

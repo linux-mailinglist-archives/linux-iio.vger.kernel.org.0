@@ -2,65 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81807531335
-	for <lists+linux-iio@lfdr.de>; Mon, 23 May 2022 18:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A116C531C6E
+	for <lists+linux-iio@lfdr.de>; Mon, 23 May 2022 22:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238080AbiEWPpo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 May 2022 11:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
+        id S239042AbiEWQm7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 23 May 2022 12:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234711AbiEWPpi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 11:45:38 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 78FA4278;
-        Mon, 23 May 2022 08:45:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pku.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
-        In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Message-ID; bh=SarvGZ87dmgOXP19qr9K62mIuiEHpy939i/H
-        e2PcsV4=; b=BDl0MMOX444Z1IqDHYOSkLhUEaBjg2/X0DSqp9YWgUoOhnopLLHX
-        9jSL8ni2ZN64xMMjzIlTvl9e66yzacczk1Xavi/sxgDDU9zqW9rYqb/bchhU30x5
-        FdSlU/aHee61++QwZ+wIAr9dTZdSd6piQdDOCNsUC5FDOxry84PvSFQ=
-Received: by ajax-webmail-front02 (Coremail) ; Mon, 23 May 2022 23:45:16
- +0800 (GMT+08:00)
-X-Originating-IP: [10.129.37.75]
-Date:   Mon, 23 May 2022 23:45:16 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   =?UTF-8?B?5YiY5rC45b+X?= <lyz_cs@pku.edu.cn>
-To:     "andy shevchenko" <andy.shevchenko@gmail.com>
-Cc:     "andy gross" <agross@kernel.org>,
-        "bjorn andersson" <bjorn.andersson@linaro.org>,
-        "jonathan cameron" <jic23@kernel.org>,
-        "lars-peter clausen" <lars@metafoo.de>,
-        "stanimir varbanov" <svarbanov@mm-sol.com>,
-        "ivan t. ivanov" <iivanov@mm-sol.com>,
-        "jonathan cameron" <jonathan.cameron@huawei.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "linux kernel mailing list" <linux-kernel@vger.kernel.org>,
-        fuyq@stu.pku.edu.cn
-Subject: Re: Re: [PATCH] hv_netvsc: Fix potential dereference of NULL
- pointer
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20210104(ab8c30b6)
- Copyright (c) 2002-2022 www.mailtech.cn
- mispb-1ea67e80-64e4-49d5-bd9f-3beeae24b9f2-pku.edu.cn
-In-Reply-To: <CAHp75Vc+fubwb0PGqVyDs5Np10ZW06F2REVKK=G26zOKT8gvFQ@mail.gmail.com>
-References: <20220520181323.00002892@huawei.com>
- <1653103862-36104-1-git-send-email-lyz_cs@pku.edu.cn>
- <CAHp75Vc+fubwb0PGqVyDs5Np10ZW06F2REVKK=G26zOKT8gvFQ@mail.gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S239038AbiEWQmo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 12:42:44 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585B743492;
+        Mon, 23 May 2022 09:42:38 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 87F9A5FD03;
+        Mon, 23 May 2022 19:42:34 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1653324154;
+        bh=mWIoukga0+tGfS/FAdtt7NB8imysAOdX12ZSaxFpX+0=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=DKY+QJ14EQbPIZzARpRPEtRlv9S+5tf9D9MRjvsoRLTPwK0DsAlOgQaM8ePcAdtQl
+         V47RU7xqaIuD5JxOMQ1JFrzZDnBtKv0tGebbiA7nHbtbx4MHMX7UOC/ii+1AGFEEPM
+         ZdTHNPPwmF0SBvBc/cGU/tts6a5bRtVRds52tWEyeY9Im811MbAqD5Xti1T0KMhWlc
+         IKSFP+f9TE2pAYLzB8VzU11BtK1YFttGlV1n50Ax3bYPREX/FqlMXAhVTVSIPEUANL
+         YxozHHvAPRlYNeGUaHztV2sQxYS2zr0PX3432zh/tM5n64Np8exp+cWrsMHCmZAkPk
+         gdD0hLe805zvg==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Mon, 23 May 2022 19:42:28 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        "antoniu.miclaus@analog.com" <antoniu.miclaus@analog.com>,
+        "sean@geanix.com" <sean@geanix.com>,
+        "linmq006@gmail.com" <linmq006@gmail.com>,
+        "gwendal@chromium.org" <gwendal@chromium.org>,
+        "yangyingliang@huawei.com" <yangyingliang@huawei.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Subject: [PATCH v1 0/5] iio: treewide: rearrange iio trig get/register
+Thread-Topic: [PATCH v1 0/5] iio: treewide: rearrange iio trig get/register
+Thread-Index: AQHYbsP3wjZLsbk+IECvoYYw88GylA==
+Date:   Mon, 23 May 2022 16:41:35 +0000
+Message-ID: <20220523164159.11579-1-ddrokosov@sberdevices.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Message-ID: <2f9c2f19.3e20a.180f19810d9.Coremail.lyz_cs@pku.edu.cn>
-X-Coremail-Locale: en_US
-X-CM-TRANSID: 54FpogDnaXYMrIti7nH2Bg--.38396W
-X-CM-SenderInfo: irzqijirqukmo6sn3hxhgxhubq/1tbiAwEMBlPy7vKeCwAas6
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW7Jw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/05/23 07:03:00 #19535618
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,25 +77,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-CgoKPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2VzLS0tLS0KPiBGcm9tOiAiQW5keSBTaGV2Y2hlbmtv
-IiA8YW5keS5zaGV2Y2hlbmtvQGdtYWlsLmNvbT4KPiBTZW50IFRpbWU6IDIwMjItMDUtMjMgMjM6
-MjE6NTQgKE1vbmRheSkKPiBUbzogIllvbmd6aGkgTGl1IiA8bHl6X2NzQHBrdS5lZHUuY24+Cj4g
-Q2M6ICJBbmR5IEdyb3NzIiA8YWdyb3NzQGtlcm5lbC5vcmc+LCAiQmpvcm4gQW5kZXJzc29uIiA8
-Ympvcm4uYW5kZXJzc29uQGxpbmFyby5vcmc+LCAiSm9uYXRoYW4gQ2FtZXJvbiIgPGppYzIzQGtl
-cm5lbC5vcmc+LCAiTGFycy1QZXRlciBDbGF1c2VuIiA8bGFyc0BtZXRhZm9vLmRlPiwgIlN0YW5p
-bWlyIFZhcmJhbm92IiA8c3ZhcmJhbm92QG1tLXNvbC5jb20+LCAiSXZhbiBULiBJdmFub3YiIDxp
-aXZhbm92QG1tLXNvbC5jb20+LCAiSm9uYXRoYW4gQ2FtZXJvbiIgPGpvbmF0aGFuLmNhbWVyb25A
-aHVhd2VpLmNvbT4sIGxpbnV4LWFybS1tc20gPGxpbnV4LWFybS1tc21Admdlci5rZXJuZWwub3Jn
-PiwgbGludXgtaWlvIDxsaW51eC1paW9Admdlci5rZXJuZWwub3JnPiwgIkxpbnV4IEtlcm5lbCBN
-YWlsaW5nIExpc3QiIDxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnPiwgZnV5cUBzdHUucGt1
-LmVkdS5jbgo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIGh2X25ldHZzYzogRml4IHBvdGVudGlhbCBk
-ZXJlZmVyZW5jZSBvZiBOVUxMIHBvaW50ZXIKPiAKPiBPbiBTYXQsIE1heSAyMSwgMjAyMiBhdCA2
-OjI3IEFNIFlvbmd6aGkgTGl1IDxseXpfY3NAcGt1LmVkdS5jbj4gd3JvdGU6Cj4gPgo+ID4gVGhl
-IHJldHVybiB2YWx1ZSBvZiBuZXR2c2NfZGV2aW5mb19nZXQoKQo+ID4gbmVlZHMgdG8gYmUgY2hl
-Y2tlZCB0byBhdm9pZCB1c2Ugb2YgTlVMTAo+ID4gcG9pbnRlciBpbiBjYXNlIG9mIGFuIGFsbG9j
-YXRpb24gZmFpbHVyZS4KPiAKPiA+IEZpeGVzOiAwZWZlZWE1ZmIgKCJodl9uZXR2c2M6IEFkZCB0
-aGUgc3VwcG9ydCBvZiBoaWJlcm5hdGlvbiIpCj4gPgo+ID4gU2lnbmVkLW9mZi1ieTogWW9uZ3po
-aSBMaXUgPGx5el9jc0Bwa3UuZWR1LmNuPgo+CgpUaGFua3MgZm9yIHlvdXIgcmVwbHkgYW5kIGFk
-dmljZS4KCj4gRm9yIHRoZSBmdXR1cmUgaW5kZXBlbmRlbnRseSBvZiB0aGUgc3Vic3lzdGVtIG9y
-IG1haWxpbmcgbGlzdCwgdGhlIHRhZwo+IGJsb2NrIChhYm92ZSkgbXVzdG4ndCBoYXZlIGxhbmsg
-bGluZXMuCj4KPiAtLSAKPiBXaXRoIEJlc3QgUmVnYXJkcywKPiBBbmR5IFNoZXZjaGVua28K
+The following patchset resolves problems with iio_trigger_get() and
+iio_trigger_register() call order in the different IIO drivers.
+
+IIO trigger interface function iio_trigger_get() should be called after
+iio_trigger_register() (or its devm analogue) strictly, because of
+iio_trigger_get() acquires module refcnt based on the trigger->owner
+pointer, which is initialized inside iio_trigger_register() to
+THIS_MODULE.
+If this call order is wrong, the next iio_trigger_put() (from sysfs
+callbacks or rmmod) will derefence "default" module refcnt, which is
+completely incorrect.
+
+Dmitry Rokosov (5):
+  iio:accel:bma180: rearrange iio trigger get and register
+  iio:accel:kxcjk-1013: rearrange iio trigger get and register
+  iio:accel:mxc4005: rearrange iio trigger get and register
+  iio:chemical:ccs811: rearrange iio trigger get and register
+  iio:humidity:hts221: rearrange iio trigger get and register
+
+ drivers/iio/accel/bma180.c           | 3 ++-
+ drivers/iio/accel/kxcjk-1013.c       | 4 ++--
+ drivers/iio/accel/mxc4005.c          | 4 ++--
+ drivers/iio/chemical/ccs811.c        | 4 ++--
+ drivers/iio/humidity/hts221_buffer.c | 5 ++++-
+ 5 files changed, 12 insertions(+), 8 deletions(-)
+
+--=20
+2.36.0

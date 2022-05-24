@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DE685331F1
-	for <lists+linux-iio@lfdr.de>; Tue, 24 May 2022 21:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E11D9533206
+	for <lists+linux-iio@lfdr.de>; Tue, 24 May 2022 21:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238330AbiEXTwn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 May 2022 15:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
+        id S241201AbiEXTye (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 May 2022 15:54:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241076AbiEXTwm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 May 2022 15:52:42 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204FA63BC2;
-        Tue, 24 May 2022 12:52:40 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id s3so24377615edr.9;
-        Tue, 24 May 2022 12:52:40 -0700 (PDT)
+        with ESMTP id S241642AbiEXTyV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 May 2022 15:54:21 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A1697CB20;
+        Tue, 24 May 2022 12:54:10 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id gi33so28978082ejc.3;
+        Tue, 24 May 2022 12:54:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HWO0Oz6FSzVSjg0n1qsEvU7TZkBiPIk+EdOl96gTcAs=;
-        b=Htr+XH5PLNGhIQwErqbd9XRsT1oKRhWMlJBAiBBKoCJV34QfZsNXKMlu0eW/8LNRYk
-         +3rg/s7fkXY/TdPjvKugQdn9hr/0G67aVsRZdBlu8RpagD4pnHkx0aqrM2J6i0DhqWFN
-         Ju7+YJHJGgg0SuUGQQIgS/fsb49Rys0XRg8SFrJb/YX6XuA72lFMVN3dhePRkNVbiPrw
-         rFSOpABQQ8sF0SnoAGoEYn29DbJnUDzhlKfJsgl9PgE9BDVPa7f9U7W/eFzGYQAiBd4h
-         qSa+/RNGrT05vcjwc3asQ7pT3obImfmqWwQzL1QGUr3dwh1SeOpVRBxLhhA7Yp1gl9Mr
-         RWxQ==
+        bh=BM1TcEJ1rSjvHQ3DiiP4bMrjTXo3on1VRj5jI+ImT0c=;
+        b=nCBYghWbLbxT1ChNXklDtLZuce4dbmnHu4mmcoCKiXKulovNPkWF6cvFuz0npHmOHu
+         P6JoUKY3m46hiYVPUUpFXvyC1HWTxuErhziuokLysk//JdpZXUIUb/7k/9iZmc/LcsuC
+         c7SqApT0As3pqSCB7nsqDZz6GkKfZkhjLhDl3BkPVzNi4bQIm6W5CxuvjwubJNfzTEQo
+         /bfv0V4go7FpoYIn8m8aPPgrleSvI6HKX6bzvUZW0n3mbzUg7DpBnhLWqDwOiL/UkSJL
+         j7QC6rUolyr1AtXktjGgJOWNpci+LVv15/7ukGgCbSQdQHYC7v6S8Why7cbLYEydPykh
+         LHbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HWO0Oz6FSzVSjg0n1qsEvU7TZkBiPIk+EdOl96gTcAs=;
-        b=gSWmUgIGBqny3ZHgSevHqcIlwpEJn9n9IKy159kxZxXdYhglItVBYuWi/2+TnisC8H
-         v2rw2VP2AhDFaGVfyZgdFv8R8lG8dyNLDsjRglZoNHw1SR1Hpe3lKeV9kXjMItpQ7uan
-         lvGmy/DTiVACWDvc5NGQIqAow/qt8eIoEMTCigMtUSaBhTU5cCaIh0Ouc6oKr5iZAc8c
-         008h5T6QyBrXIC3+DjssEhSD0LXcgnWk1+0VcLXu3LYbqe3yBrXGPb+n5njFzJ0tgdhj
-         /rq7M3guW6SRbIBd2w8kpSEA9MmORTFwQYN36wTZrIUtIY1+rNV6lC8WiD7X8TfHSsQk
-         CZtA==
-X-Gm-Message-State: AOAM530/HRpOAMETnncXQUwqR9c4fm5Y76k2bqvhDekmXrcFWMASnHVD
-        KvwQr7WSHF9/w6+kf6nHHHa8R/nyqW2KTjiOb/4=
-X-Google-Smtp-Source: ABdhPJy97bG4vV3JeVnww0FCmSfau1qF0Iljx0lbd9yvGC7C48OGFP80su630DLKX71E0LeRD9HP+ONscpejuQ73ytg=
-X-Received: by 2002:a05:6402:1d48:b0:42b:6e02:5ece with SMTP id
- dz8-20020a0564021d4800b0042b6e025ecemr11121787edb.178.1653421958614; Tue, 24
- May 2022 12:52:38 -0700 (PDT)
+        bh=BM1TcEJ1rSjvHQ3DiiP4bMrjTXo3on1VRj5jI+ImT0c=;
+        b=jLdXFMDk0nVKV7Uf5SLVo8MQrWZXF5UfosU1L+oulPclhb5zpiPj6GARUGCgQYqvNg
+         Hega44erT2qhlWdm5+oKsn2q7oDAawF6tOpG1c9Ygu/1ETKetNqSrXrh0cjR1EtLM/ow
+         jVFrCciyAa7p5sL6ehei8VOnL2iC1qX4GNB4PCUETAicARJCkYAjrNQgB9yEFORFWlG0
+         bnvRWE2mJr573FHGfFz5lWhIWf25K95NXW7Nkmi6pJUe7CjtE6hhrMhhN6/x9K42YK6j
+         qalGwPdvBH5tUDKCGbFAx8TUX9tjd4Ywkn200EAxIEPuUNYyqvOZVgfFWgq9xueLdq0X
+         3ugQ==
+X-Gm-Message-State: AOAM533sI8VZjkqouKHdywNyp+AdXxGSVx76dRDBv08kWvp1pzMumDtE
+        FDLFAaPhYjr93i8w8x76NSB1J9Yv/1o5qPEiYK8=
+X-Google-Smtp-Source: ABdhPJzaOr1HrCCGCXVK5emjnaADAxldeFs8V//J5maGXkNHQVLCXsf5Lv3+INcjE2Vx4JJ8UDsszGRT5egoZfefRS8=
+X-Received: by 2002:a17:906:c115:b0:6ff:6e5:b4b1 with SMTP id
+ do21-20020a170906c11500b006ff06e5b4b1mr3780602ejc.497.1653422048613; Tue, 24
+ May 2022 12:54:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220524181150.9240-1-ddrokosov@sberdevices.ru> <20220524181150.9240-6-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220524181150.9240-6-ddrokosov@sberdevices.ru>
+References: <20220524181150.9240-1-ddrokosov@sberdevices.ru> <20220524181150.9240-2-ddrokosov@sberdevices.ru>
+In-Reply-To: <20220524181150.9240-2-ddrokosov@sberdevices.ru>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 24 May 2022 21:52:02 +0200
-Message-ID: <CAHp75VeF-ApaW1LKsg6HeQiYZ6aDubN093DU0hSBKcjR5qH+Yw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] iio:humidity:hts221: rearrange iio trigger get and register
+Date:   Tue, 24 May 2022 21:53:32 +0200
+Message-ID: <CAHp75Vdyk0228iPX+-D12DcogS0mDBNzUmjAaO=VGT6brH0eyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] iio:accel:bma180: rearrange iio trigger get and register
 To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
 Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "jic23@kernel.org" <jic23@kernel.org>,
@@ -87,30 +87,30 @@ On Tue, May 24, 2022 at 8:14 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> Fixes: e4a70e3e7d84 ("iio: humidity: add support to hts221 rh/temp combo device")
+> Fixes: 0668a4e4d297 ("iio: accel: bma180: Fix indio_dev->trig assignment")
 > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
 > ---
->  drivers/iio/humidity/hts221_buffer.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  drivers/iio/accel/bma180.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/iio/humidity/hts221_buffer.c b/drivers/iio/humidity/hts221_buffer.c
-> index f29692b9d2db..66b32413cf5e 100644
-> --- a/drivers/iio/humidity/hts221_buffer.c
-> +++ b/drivers/iio/humidity/hts221_buffer.c
-> @@ -135,9 +135,12 @@ int hts221_allocate_trigger(struct iio_dev *iio_dev)
+> diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+> index d8a454c266d5..5d0bd0fc3018 100644
+> --- a/drivers/iio/accel/bma180.c
+> +++ b/drivers/iio/accel/bma180.c
+> @@ -1006,11 +1006,12 @@ static int bma180_probe(struct i2c_client *client,
 >
->         iio_trigger_set_drvdata(hw->trig, iio_dev);
->         hw->trig->ops = &hts221_trigger_ops;
+>                 data->trig->ops = &bma180_trigger_ops;
+>                 iio_trigger_set_drvdata(data->trig, indio_dev);
+> -               indio_dev->trig = iio_trigger_get(data->trig);
+>
+>                 ret = iio_trigger_register(data->trig);
+>                 if (ret)
+>                         goto err_trigger_free;
 > +
-> +       err = devm_iio_trigger_register(hw->dev, hw->trig);
-> +
->         iio_dev->trig = iio_trigger_get(hw->trig);
+> +               indio_dev->trig = iio_trigger_get(data->trig);
+>         }
 >
-> -       return devm_iio_trigger_register(hw->dev, hw->trig);
-> +       return err;
->  }
->
->  static int hts221_buffer_preenable(struct iio_dev *iio_dev)
+>         ret = iio_triggered_buffer_setup(indio_dev, NULL,
 > --
 > 2.36.0
 

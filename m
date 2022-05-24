@@ -2,250 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5653C5320BF
-	for <lists+linux-iio@lfdr.de>; Tue, 24 May 2022 04:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4FF532458
+	for <lists+linux-iio@lfdr.de>; Tue, 24 May 2022 09:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232635AbiEXCND (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 23 May 2022 22:13:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S231482AbiEXHp2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 May 2022 03:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbiEXCND (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 23 May 2022 22:13:03 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4A99CC86;
-        Mon, 23 May 2022 19:13:01 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id h14so23698580wrc.6;
-        Mon, 23 May 2022 19:13:01 -0700 (PDT)
+        with ESMTP id S229451AbiEXHp1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 May 2022 03:45:27 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23BE74DF7;
+        Tue, 24 May 2022 00:45:26 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id bo5so15765622pfb.4;
+        Tue, 24 May 2022 00:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3HU2fErSCW64cphVZzBXmy0McbhLZkYkOtnsLhgiAR0=;
-        b=ACIOOrPXOorcGgBjqSJ80cC9PiWUL9CWObjTQHc3WFhpZz7xVIKl+DkllbcAqKxf88
-         JMGqGWg/HFlda3peBL7y/Lm2w2XeSIkXvDIdcJPE6RM1gjdOpocosIkAmyLS5vY1QPuf
-         5TMKhhlKFqO/TU60aEt+arnlWA3u0Oe8MbyIU=
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WE8ECtKBbnGRy9b4snuHYoLN1QU8z6Hzzxc9CUtUoTc=;
+        b=Xy7izo/V1daPixmOFDL9+o47bqTLCqXVmkJpwdW6Bu6aZ1GdGV0Uv2jH200W7X4L2t
+         HbhCOI17YL5VKsc4eM+n+KwdFpCC6r4TMru8Y8GRN8mBoruJ0s+hqc2e8hikHtEO674V
+         4ur4SQy8yiNry+WUnwgf3xs3k0hLh/+ysXaLGblXH+ZMto44ebbOFCee3ot/62ets94W
+         CPLbI9rHKUawzEVj1b74cB07nPJtSMEaPtjtynu3f2qHIUC7JkcrW5bgO+qzR03/rTK0
+         LU8iPucnab9r6bzSz+VlRFttw7YoCW7O37aPLU/PRThG/RXb4V/WgdEpGoPvQ3iQv1dz
+         a73A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3HU2fErSCW64cphVZzBXmy0McbhLZkYkOtnsLhgiAR0=;
-        b=mS753HCzXkpc4hAPxA5IJ6t6C7jIJzOlVCqXovXD4RXg8w67uJ8/33n16Ry323ho+z
-         lIVL07mNinnp2v+ex893+YGqEXQwCVw+HmYyigTx/PTjtaTaZkvigjk2PfBtJ76TmXFS
-         pIF0rN7zHhR5LOjyj9S/cjt7Pn8bB9gk9bve0vAOFJOFx3ksLF28qmPjRjxCH9Z09evy
-         +pI1Oo5NLYJlE0NOGEznpLzQpLHgeuSuQswIXVRJCOPJ/Vol+jw+BAH9DjRm4ecYOhOa
-         sP/nMsI0PViYWtZ5J0bijvYlgVTB0RT9YgMbkm/rOpNKz7v5wCZcmUYKn1S4e+Sinylc
-         8Tfw==
-X-Gm-Message-State: AOAM530rMDd2vTIbj4uh442N7bZZRp8swhihY9DkG2Jwiobjr9zdqRAG
-        7KT8e4VB5B1mMOfZrW/v+6sOdZzcnd7PnFSd3P8=
-X-Google-Smtp-Source: ABdhPJxq45wGU4YL3HmpZtgAJOnWLg8dwUX5ssBb89Y9i8L6UqGmdmarf4s98wOPz6IOHL16NV5piQTGVJP1FY8PQ44=
-X-Received: by 2002:a5d:47c9:0:b0:20f:e7da:6a48 with SMTP id
- o9-20020a5d47c9000000b0020fe7da6a48mr4252616wrc.315.1653358379867; Mon, 23
- May 2022 19:12:59 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WE8ECtKBbnGRy9b4snuHYoLN1QU8z6Hzzxc9CUtUoTc=;
+        b=FfMuycEXvD1Zx0JmD7aaTRS/WAC++pm7AZGO7Lcod9JARplQiUVo5gAFi9FxCohMiA
+         qpjkOH1v+HC5AMRajp2LYX4qWwNxK9bPhjV03yYZoHLasPJDTyzMDD5CXr7egb7gWbQj
+         ll2oi5Z7EN/sHhUwr/HtN5a3bXjjvcyKep5W+ty1nPL+Fqi1YFsGUqyjsjazBcaizPgk
+         XUMDpVj1EtlfE5kBuR3JDdhPJ/gJJZ3sSzjp6iuua5WNyCJMdTtTqcoTCINwzQhLZSta
+         h6xWJhzLvfwl6XVDEbZPmeRhUkuNz8l14l6MwUwV0H07rWtPMIMAqWsdvKDI9r4C82a5
+         MOQA==
+X-Gm-Message-State: AOAM530w/xTiV9u/aBlpvwpMTlIBSZ4ObwtYI090eHX0sIPRa1zzYfK3
+        B9kl0XgbmEM3QqL9RmP3wK0=
+X-Google-Smtp-Source: ABdhPJzDd6wR58FdjkqushS/72CayCU1FIViGtU12UpYsxM/6WUfeQMyNvdxKwcO3wsxeL4MLPO2Hw==
+X-Received: by 2002:a63:f921:0:b0:3f2:6c2f:a166 with SMTP id h33-20020a63f921000000b003f26c2fa166mr23506883pgi.124.1653378326143;
+        Tue, 24 May 2022 00:45:26 -0700 (PDT)
+Received: from localhost.localdomain ([202.120.234.246])
+        by smtp.googlemail.com with ESMTPSA id f20-20020a17090ace1400b001deb3cbd8f1sm990983pju.27.2022.05.24.00.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 May 2022 00:45:25 -0700 (PDT)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] iio: adc: adi-axi-adc: Fix refcount leak in adi_axi_adc_attach_client
+Date:   Tue, 24 May 2022 11:45:17 +0400
+Message-Id: <20220524074517.45268-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220518144818.12957-1-eajames@linux.ibm.com> <20220518144818.12957-3-eajames@linux.ibm.com>
-In-Reply-To: <20220518144818.12957-3-eajames@linux.ibm.com>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Tue, 24 May 2022 02:12:45 +0000
-Message-ID: <CACPK8XeOT6NvEe=oBZ9dUJynHougj-mTMAC2FCwDkvpzBaTKDQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 18 May 2022 at 14:48, Eddie James <eajames@linux.ibm.com> wrote:
->
-> Corruption of the MEAS_CFG register has been observed soon after
-> system boot. In order to recover this scenario, check MEAS_CFG if
-> measurement isn't ready, and if it's incorrect, reset the DPS310
-> and execute the startup procedure.
+of_parse_phandle() returns a node pointer with refcount
+incremented, we should use of_node_put() on it when not need anymore.
+Add missing of_node_put() to avoid refcount leak.
 
-I have some suggestions below on how to rework to make the code easier
-to understand. But before we got to that, I had some high level
-questions:
+Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/iio/adc/adi-axi-adc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index a73e3c2d212f..a9e655e69eaa 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -322,16 +322,19 @@ static struct adi_axi_adc_client *adi_axi_adc_attach_client(struct device *dev)
+ 
+ 		if (!try_module_get(cl->dev->driver->owner)) {
+ 			mutex_unlock(&registered_clients_lock);
++			of_node_put(cln);
+ 			return ERR_PTR(-ENODEV);
+ 		}
+ 
+ 		get_device(cl->dev);
+ 		cl->info = info;
+ 		mutex_unlock(&registered_clients_lock);
++		of_node_put(cln);
+ 		return cl;
+ 	}
+ 
+ 	mutex_unlock(&registered_clients_lock);
++	of_node_put(cln);
+ 
+ 	return ERR_PTR(-EPROBE_DEFER);
+ }
+-- 
+2.25.1
 
-You don't seem to be setting the en bits in the CFG register after
-doing the reset. Is that required?
-
-Are we ok to sleep for 2.5ms in the iio_info->read_raw callback?
-
-
->
-> Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> ---
->  drivers/iio/pressure/dps310.c | 89 ++++++++++++++++++++++++++++-------
->  1 file changed, 71 insertions(+), 18 deletions(-)
->
-> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-> index f79b274bb38d..c6d02679ef33 100644
-> --- a/drivers/iio/pressure/dps310.c
-> +++ b/drivers/iio/pressure/dps310.c
-> @@ -397,6 +397,39 @@ static int dps310_get_temp_k(struct dps310_data *data)
->         return scale_factors[ilog2(rc)];
->  }
->
-> +/* Called with lock held */
-
-Perhaps add this to your comment: Returns a negative value on error, a
-positive value when the device is not ready (and may have been reset
-due to corruption), and zero when the device is ready.
-
-> +static int dps310_check_reset_meas_cfg(struct dps310_data *data, int ready_bit)
-> +{
-> +       int en = DPS310_PRS_EN | DPS310_TEMP_EN | DPS310_BACKGROUND;
-> +       int meas_cfg;
-> +       int rc = regmap_read(data->regmap, DPS310_MEAS_CFG, &meas_cfg);
-> +
-> +       if (rc < 0)
-> +               return rc;
-> +
-> +       if (meas_cfg & ready_bit)
-> +               return 0;
-> +
-> +       if ((meas_cfg & en) != en) {
-> +               /* DPS310 register state corrupt, better start from scratch */
-> +               rc = regmap_write(data->regmap, DPS310_RESET,
-> +                                 DPS310_RESET_MAGIC);
-> +               if (rc < 0)
-> +                       return rc;
-> +
-> +               /* Wait for device chip access: 2.5ms in specification */
-> +               usleep_range(2500, 12000);
-> +               rc = dps310_startup(data);
-> +               if (rc)
-> +                       return rc;
-> +
-> +               dev_info(&data->client->dev,
-> +                        "recovered from corrupted MEAS_CFG=%02x\n", meas_cfg);
-> +       }
-> +
-> +       return 1;
-
-I'm confused about this case. We get there when the device doesn't
-have ready_bit set in meas_cfg and we've done a reset, but we also get
-here when the bit isn't set and we haven't done anything to resolve it
-(after re-reading the code I understand now, but perhaps reworking it
-as follows will make it clear):
-
-Could we write it like this:
-
-if (meas_cfg & ready_bit) {
-  /* Device ready, must be okay */
-  return 0;
-}
-
- if (meas_cfg & en) {
-   /* Device okay (but not ready), no action required */
-   return 1;
-}
-
-  /* DPS310 register state corrupt, better start from scratch */
-...
- return 1;
-
-
-> +}
-> +
->  static int dps310_read_pres_raw(struct dps310_data *data)
->  {
->         int rc;
-> @@ -409,15 +442,25 @@ static int dps310_read_pres_raw(struct dps310_data *data)
->         if (mutex_lock_interruptible(&data->lock))
->                 return -EINTR;
->
-> -       rate = dps310_get_pres_samp_freq(data);
-> -       timeout = DPS310_POLL_TIMEOUT_US(rate);
-> -
-> -       /* Poll for sensor readiness; base the timeout upon the sample rate. */
-> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-> -                                     ready & DPS310_PRS_RDY,
-> -                                     DPS310_POLL_SLEEP_US(timeout), timeout);
-> -       if (rc)
-> -               goto done;
-> +       rc = dps310_check_reset_meas_cfg(data, DPS310_PRS_RDY);
-
-can we do this:
-
- if (rc < 0)
-   goto done;
-
-if (rc > 0) {
-
-}
-
-The rework I suggest makes it clearer that we've considered the '0'
-case, when the device is ready before this code runs.
-
-> +       if (rc) {
-> +               if (rc < 0)
-> +                       goto done;
-> +
-> +               rate = dps310_get_pres_samp_freq(data);
-> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
-> +
-> +               /*
-> +                * Poll for sensor readiness; base the timeout upon the sample
-> +                * rate.
-> +                */
-> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
-> +                                             ready, ready & DPS310_PRS_RDY,
-> +                                             DPS310_POLL_SLEEP_US(timeout),
-> +                                             timeout);
-> +               if (rc)
-> +                       goto done;
-> +       }
->
->         rc = regmap_bulk_read(data->regmap, DPS310_PRS_BASE, val, sizeof(val));
->         if (rc < 0)
-> @@ -458,15 +501,25 @@ static int dps310_read_temp_raw(struct dps310_data *data)
->         if (mutex_lock_interruptible(&data->lock))
->                 return -EINTR;
->
-> -       rate = dps310_get_temp_samp_freq(data);
-> -       timeout = DPS310_POLL_TIMEOUT_US(rate);
-> -
-> -       /* Poll for sensor readiness; base the timeout upon the sample rate. */
-> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-> -                                     ready & DPS310_TMP_RDY,
-> -                                     DPS310_POLL_SLEEP_US(timeout), timeout);
-> -       if (rc < 0)
-> -               goto done;
-> +       rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
-> +       if (rc) {
-> +               if (rc < 0)
-> +                       goto done;
-> +
-> +               rate = dps310_get_temp_samp_freq(data);
-> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
-> +
-> +               /*
-> +                * Poll for sensor readiness; base the timeout upon the sample
-> +                * rate.
-> +                */
-> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
-> +                                             ready, ready & DPS310_TMP_RDY,
-> +                                             DPS310_POLL_SLEEP_US(timeout),
-> +                                             timeout);
-> +               if (rc < 0)
-> +                       goto done;
-> +       }
->
->         rc = dps310_read_temp_ready(data);
->
-> --
-> 2.27.0
->

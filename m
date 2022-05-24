@@ -2,304 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E3B532C18
-	for <lists+linux-iio@lfdr.de>; Tue, 24 May 2022 16:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2578532DD0
+	for <lists+linux-iio@lfdr.de>; Tue, 24 May 2022 17:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235174AbiEXOS6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 24 May 2022 10:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
+        id S239067AbiEXPrH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 24 May 2022 11:47:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234426AbiEXOS5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 May 2022 10:18:57 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E9655D5E7;
-        Tue, 24 May 2022 07:18:56 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24ODnosB004612;
-        Tue, 24 May 2022 14:18:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=FMYJgJ9m3gzum7FhzVBNLflIKQ8aVmM5jzQGFFlrQOY=;
- b=OdGiNejTeBkhvOmCM8+GDrqbOj7CccsXm8CKmpMKF83aTxIP0LXGtaWwrAXHl+qvHU68
- 35D4pj9Z9ZOK62ChtY943jLxQpyNBsrtyuFY7EK7ezlMEwqtz1PGMOkbbeBFTqA1LSg2
- WnoWItkQYc7ZUSAuVbPxRasbDJT8OEfcgpIQgzvwrsMLEYcgFFswbOEafGZAcdddRrW9
- REtDfKgjk2ReYFfiFb3fgur30la2TxcIUjluhYjkmDad2HLOqifB+z1E+u6Jg/AsXVeU
- a5L4DSQGili1OudXV4QiUOPaj7WHVq1CgPyzwhU/h4Jb/YJ7EGuJ5LOxOe6X+GBJyhK5 ug== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g905xsgbt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 May 2022 14:18:35 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24OECPMO023618;
-        Tue, 24 May 2022 14:18:34 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-        by ppma04wdc.us.ibm.com with ESMTP id 3g6qq9rhjx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 May 2022 14:18:33 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24OEIXrR17039796
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 May 2022 14:18:33 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 83323AE063;
-        Tue, 24 May 2022 14:18:33 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F03B9AE068;
-        Tue, 24 May 2022 14:18:32 +0000 (GMT)
-Received: from [9.211.82.60] (unknown [9.211.82.60])
-        by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 24 May 2022 14:18:32 +0000 (GMT)
-Message-ID: <a817037e-0c8f-a890-549a-6df42e2bb26d@linux.ibm.com>
-Date:   Tue, 24 May 2022 09:18:32 -0500
+        with ESMTP id S239065AbiEXPrG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 24 May 2022 11:47:06 -0400
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2AB46D957;
+        Tue, 24 May 2022 08:47:05 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-f1eafa567cso19316622fac.8;
+        Tue, 24 May 2022 08:47:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Z//6WfrePUVSRJ8xvhdm8OGFD1fAIoJvz+KPrDeYZiU=;
+        b=W2DLnVyq8ImLujMtgFA5MPrqxzCbBNAuNm6ITdBVS7TvCH4fYGISd6Di48Frv6JuWw
+         Mh51NERR6odX9L8UJ0hY+Smrrx5FwbVK+5jMWP//QfwR8kVEysd5e58g/1kgD3ULSHIP
+         AtILP2HIO1Auog469Bmrc3bL1omzVQ/kifpfnCfx/CfvdAQszprkEJpmrOqjGW8DRD7z
+         93YjwEmmLtdZEThheWmlxq4c6XjJNQ2QWnE+rROzBJwzMua+usiOc2sE+XkEghbplnfF
+         tvOFUTa4QhQZeQaEM1HpZkfHaS00cAWYW1yQiL+7MsC82dj98HqF1gtfqmwzD5nF/5nQ
+         W8gA==
+X-Gm-Message-State: AOAM5313FyOgBQ0DClTfBmBSjS81DzkcRiUnIdNNrqxhbTwnMA60rG9N
+        F7e5FsepZI9ajpne97vesJE1ccS6ZA==
+X-Google-Smtp-Source: ABdhPJxGHjUK+uccKHWZgjUZy9Ltn4kUmiM2LhZTy6e+gub3ldkNmSr6OrRkD5zYtjUTOhUHJkgJLA==
+X-Received: by 2002:a05:6870:61ca:b0:f1:aaef:e2b9 with SMTP id b10-20020a05687061ca00b000f1aaefe2b9mr2834492oah.130.1653407224977;
+        Tue, 24 May 2022 08:47:04 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id j15-20020a9d7f0f000000b006060322124esm5100262otq.30.2022.05.24.08.47.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 May 2022 08:47:04 -0700 (PDT)
+Received: (nullmailer pid 3860327 invoked by uid 1000);
+        Tue, 24 May 2022 15:47:03 -0000
+Date:   Tue, 24 May 2022 10:47:03 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
+ deprecated vendor prefix
+Message-ID: <20220524154703.GD3730540-robh@kernel.org>
+References: <20220511094024.175994-1-shreeya.patel@collabora.com>
+ <20220511094024.175994-2-shreeya.patel@collabora.com>
+ <20220516170058.GA2825626-robh@kernel.org>
+ <83907dd2-2a53-2448-576b-ae26462d432a@collabora.com>
+ <20220518163255.GE3302100-robh@kernel.org>
+ <f37bccaf-233c-a244-3d81-849a988b1a92@collabora.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v2 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is
- corrupt
-Content-Language: en-US
-To:     Joel Stanley <joel@jms.id.au>
-Cc:     linux-iio@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-References: <20220518144818.12957-1-eajames@linux.ibm.com>
- <20220518144818.12957-3-eajames@linux.ibm.com>
- <CACPK8XeOT6NvEe=oBZ9dUJynHougj-mTMAC2FCwDkvpzBaTKDQ@mail.gmail.com>
-From:   Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <CACPK8XeOT6NvEe=oBZ9dUJynHougj-mTMAC2FCwDkvpzBaTKDQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Fh_sWRZ9_APG2YXeNIxmYj-rd19rcIVc
-X-Proofpoint-ORIG-GUID: Fh_sWRZ9_APG2YXeNIxmYj-rd19rcIVc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-24_07,2022-05-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501 adultscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 clxscore=1015
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205240072
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f37bccaf-233c-a244-3d81-849a988b1a92@collabora.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, May 23, 2022 at 08:27:56PM +0530, Shreeya Patel wrote:
+> 
+> On 18/05/22 22:02, Rob Herring wrote:
+> > On Tue, May 17, 2022 at 04:07:33PM +0530, Shreeya Patel wrote:
+> > > On 16/05/22 22:30, Rob Herring wrote:
+> > > > On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
+> > > > > 'liteon' is the correct vendor prefix for devices released by
+> > > > > LITE-ON Technology Corp. But one of the released device which uses
+> > > > > ltr216a light sensor exposes the vendor prefix name as 'ltr' through
+> > > > > ACPI.
+> > > > ACPI? NAK.
+> > > > 
+> > > > There are no cases of 'ltr' for DT, so fix ACPI.
+> > > Hi Rob,
+> > > 
+> > > Yes, we understand there are no cases of 'ltr', but we have released devices
+> > > which uses this string for probing the ltrf216a light sensor driver ( x86
+> > > with DT )
+> > That's not what your commit message says.
+> > 
+> > Even if this is DT based, given an undocumented vendor string is used,
+> > it seems doubtful the rest of the binding would match upstream. What
+> > about the rest of the DTB? Got a pointer to it or want to publish it?
+> > 
+> > > If we don't document this in vendor-prefixes.yaml, then the following
+> > > warning
+> > > is generated.
+> > > 
+> > > WARNING: DT compatible string vendor "ltr" appears un-documented -- check
+> > > ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
+> > > drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
+> > > 
+> > > 
+> > > Can you suggest us what would be the right way to fix this warning if not
+> > > documenting
+> > > in vendor-prefixes.yaml?
+> > Fix the DT. We don't accept bindings simply because they are already
+> > used in the field. If this was the only issue, it would be fine, but I
+> > suspect it's the tip of the iceberg.
+> 
+> 
+> Hi Rob,
+> 
+> To make things more clear, following is the modalias info of the device.
+> 
+> (B+)(root@linux iio:device0)# cat
+> /sys/bus/i2c/devices/i2c-PRP0001\:01/modalias
+> of:NltrfTCltr,ltrf216a
+> 
+> It's a dt namespace on an ACPI based device. We used an of_device_id table
+> to be able to probe the driver
+> using the vendor prefix and compatible string.
 
-On 5/23/22 21:12, Joel Stanley wrote:
-> On Wed, 18 May 2022 at 14:48, Eddie James <eajames@linux.ibm.com> wrote:
->> Corruption of the MEAS_CFG register has been observed soon after
->> system boot. In order to recover this scenario, check MEAS_CFG if
->> measurement isn't ready, and if it's incorrect, reset the DPS310
->> and execute the startup procedure.
-> I have some suggestions below on how to rework to make the code easier
-> to understand. But before we got to that, I had some high level
-> questions:
->
->
-> You don't seem to be setting the en bits in the CFG register after
-> doing the reset. Is that required?
+Again, it's ACPI so I don't care. If someone cares about using DT 
+bindings in ACPI they can step up and help maintain them. It's not a DT 
+vs. ACPI thing, but just that I can only maintain so much and have to 
+draw the line somewhere.
 
+> But when we compile the driver, we get the following warning and hence we
+> documented it in vendor-prefixes.yaml
+> and also added a complete device tree file [Patch 3/3] just to get rid of
+> the warning. In real life we are not using
+> the device tree file at all.
+> 
+> WARNING: DT compatible string vendor "ltr" appears un-documented -- check
+> ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
+> drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
 
-It does set the enable bits in the startup procedure, called after the 
-reset.
-
-
->
-> Are we ok to sleep for 2.5ms in the iio_info->read_raw callback?
-
-
-I believe it's safe... the code already has a mutex, so its not called 
-in atomic context.
-
-
->
->
->> Fixes: ba6ec48e76bc ("iio: Add driver for Infineon DPS310")
->> Signed-off-by: Eddie James <eajames@linux.ibm.com>
->> ---
->>   drivers/iio/pressure/dps310.c | 89 ++++++++++++++++++++++++++++-------
->>   1 file changed, 71 insertions(+), 18 deletions(-)
->>
->> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
->> index f79b274bb38d..c6d02679ef33 100644
->> --- a/drivers/iio/pressure/dps310.c
->> +++ b/drivers/iio/pressure/dps310.c
->> @@ -397,6 +397,39 @@ static int dps310_get_temp_k(struct dps310_data *data)
->>          return scale_factors[ilog2(rc)];
->>   }
->>
->> +/* Called with lock held */
-> Perhaps add this to your comment: Returns a negative value on error, a
-> positive value when the device is not ready (and may have been reset
-> due to corruption), and zero when the device is ready.
-
-
-Good idea.
-
-
->
->> +static int dps310_check_reset_meas_cfg(struct dps310_data *data, int ready_bit)
->> +{
->> +       int en = DPS310_PRS_EN | DPS310_TEMP_EN | DPS310_BACKGROUND;
->> +       int meas_cfg;
->> +       int rc = regmap_read(data->regmap, DPS310_MEAS_CFG, &meas_cfg);
->> +
->> +       if (rc < 0)
->> +               return rc;
->> +
->> +       if (meas_cfg & ready_bit)
->> +               return 0;
->> +
->> +       if ((meas_cfg & en) != en) {
->> +               /* DPS310 register state corrupt, better start from scratch */
->> +               rc = regmap_write(data->regmap, DPS310_RESET,
->> +                                 DPS310_RESET_MAGIC);
->> +               if (rc < 0)
->> +                       return rc;
->> +
->> +               /* Wait for device chip access: 2.5ms in specification */
->> +               usleep_range(2500, 12000);
->> +               rc = dps310_startup(data);
->> +               if (rc)
->> +                       return rc;
->> +
->> +               dev_info(&data->client->dev,
->> +                        "recovered from corrupted MEAS_CFG=%02x\n", meas_cfg);
->> +       }
->> +
->> +       return 1;
-> I'm confused about this case. We get there when the device doesn't
-> have ready_bit set in meas_cfg and we've done a reset, but we also get
-> here when the bit isn't set and we haven't done anything to resolve it
-> (after re-reading the code I understand now, but perhaps reworking it
-> as follows will make it clear):
->
-> Could we write it like this:
->
-> if (meas_cfg & ready_bit) {
->    /* Device ready, must be okay */
->    return 0;
-> }
->
->   if (meas_cfg & en) {
->     /* Device okay (but not ready), no action required */
->     return 1;
-> }
->
->    /* DPS310 register state corrupt, better start from scratch */
-> ...
->   return 1;
+So, is someone telling you to fix this?
 
 
-Yea it could be clearer, I can update that.
+> There are many existing devices used by people which has the vendor prefix
+> name as 'ltr'
+> and it won't be possible to change that hence we are trying to upstream it.
 
+There are millions if not billions of DT based devices using 
+undocumented bindings. If those used "ltr,ltrf216a", I wouldn't accept 
+it either.
 
->
->
->> +}
->> +
->>   static int dps310_read_pres_raw(struct dps310_data *data)
->>   {
->>          int rc;
->> @@ -409,15 +442,25 @@ static int dps310_read_pres_raw(struct dps310_data *data)
->>          if (mutex_lock_interruptible(&data->lock))
->>                  return -EINTR;
->>
->> -       rate = dps310_get_pres_samp_freq(data);
->> -       timeout = DPS310_POLL_TIMEOUT_US(rate);
->> -
->> -       /* Poll for sensor readiness; base the timeout upon the sample rate. */
->> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
->> -                                     ready & DPS310_PRS_RDY,
->> -                                     DPS310_POLL_SLEEP_US(timeout), timeout);
->> -       if (rc)
->> -               goto done;
->> +       rc = dps310_check_reset_meas_cfg(data, DPS310_PRS_RDY);
-> can we do this:
->
->   if (rc < 0)
->     goto done;
->
-> if (rc > 0) {
->
-> }
->
-> The rework I suggest makes it clearer that we've considered the '0'
-> case, when the device is ready before this code runs.
-
-
-Sure. Thanks for the review, I'll get a v3 up.
-
-
-Thanks,
-
-Eddie
-
-
->
->> +       if (rc) {
->> +               if (rc < 0)
->> +                       goto done;
->> +
->> +               rate = dps310_get_pres_samp_freq(data);
->> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
->> +
->> +               /*
->> +                * Poll for sensor readiness; base the timeout upon the sample
->> +                * rate.
->> +                */
->> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
->> +                                             ready, ready & DPS310_PRS_RDY,
->> +                                             DPS310_POLL_SLEEP_US(timeout),
->> +                                             timeout);
->> +               if (rc)
->> +                       goto done;
->> +       }
->>
->>          rc = regmap_bulk_read(data->regmap, DPS310_PRS_BASE, val, sizeof(val));
->>          if (rc < 0)
->> @@ -458,15 +501,25 @@ static int dps310_read_temp_raw(struct dps310_data *data)
->>          if (mutex_lock_interruptible(&data->lock))
->>                  return -EINTR;
->>
->> -       rate = dps310_get_temp_samp_freq(data);
->> -       timeout = DPS310_POLL_TIMEOUT_US(rate);
->> -
->> -       /* Poll for sensor readiness; base the timeout upon the sample rate. */
->> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
->> -                                     ready & DPS310_TMP_RDY,
->> -                                     DPS310_POLL_SLEEP_US(timeout), timeout);
->> -       if (rc < 0)
->> -               goto done;
->> +       rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
->> +       if (rc) {
->> +               if (rc < 0)
->> +                       goto done;
->> +
->> +               rate = dps310_get_temp_samp_freq(data);
->> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
->> +
->> +               /*
->> +                * Poll for sensor readiness; base the timeout upon the sample
->> +                * rate.
->> +                */
->> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
->> +                                             ready, ready & DPS310_TMP_RDY,
->> +                                             DPS310_POLL_SLEEP_US(timeout),
->> +                                             timeout);
->> +               if (rc < 0)
->> +                       goto done;
->> +       }
->>
->>          rc = dps310_read_temp_ready(data);
->>
->> --
->> 2.27.0
->>
+Rob

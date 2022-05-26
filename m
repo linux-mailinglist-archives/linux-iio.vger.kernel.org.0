@@ -2,150 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 645A5534AD2
-	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 09:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91CA8534FFA
+	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 15:34:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344600AbiEZHdO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 May 2022 03:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42632 "EHLO
+        id S1345938AbiEZNeL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 May 2022 09:34:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234616AbiEZHdN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 May 2022 03:33:13 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6307692D34;
-        Thu, 26 May 2022 00:33:12 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: shreeya)
-        with ESMTPSA id 2F73A1F451F8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1653550390;
-        bh=XBjRr4zV7iqDwsqd8+WLNul7+0XXrRR/5iyVy4RBtnQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=VtmF5DhwKEE20g/IthAnqzs2a7+lBZ5pXA4i2d+al5SLa2MWVjx0sTNVDrRnJGBV1
-         rCpUwGJCngiKgle9iQ9+T3jt6aUn1lulMYNBHMv3QdSOpWV0coo+ITDLmlg4/IMpCP
-         fSSXC2uagn8+KwvnJV4j/0bI2DsNONy48Akxnwai/xpTc+Ixzd7Muhkgz7XnjZ+a1/
-         FNKjmpTZPdkJu7sgjdeYXby57hC0HOWJVX4TaMSCSiCEbv+Pa387PBaxi/HMUWQB/3
-         FwgL315QLVU1uAgjz+fecawbHrpNavf+p2OUaKtOZyABrIX8Qaid7dabpP56kflXAq
-         PxbdPorVN8Osg==
-Message-ID: <507d7711-3755-1a2e-473d-3c1c9e23563d@collabora.com>
-Date:   Thu, 26 May 2022 13:03:04 +0530
+        with ESMTP id S236656AbiEZNeJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 May 2022 09:34:09 -0400
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2135.outbound.protection.outlook.com [40.107.22.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D234BD80A4;
+        Thu, 26 May 2022 06:34:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bbNPG0EpdVG1N+CoWPw1bBWPwQCn7ki7YmbYE1N6pdknrgkN+VC+5ZAaaBssT4YH0XqNGa2B2kPYhd/ol64ZsKGJuLFK9Vap4iOqxJox5N4xYAo1/xmhV8/IKjdzhBFz3baPJit5inZKpRVaGXbqsKRhVtVlz/XiwlWJSf8hlwLUpQx86uSIBsXnLgit/44N0sZAAoor+I3Zcyok6ZZTMp3Xb5Gvb0kbHvelvZlR+Pd5oaJZDiFnqM0bf0+IDTHF7wvOvJAq0as9v3aRRvKUtnebBRh//ajKLxvAsrE9uB9qYTMN3+ym7lCjftoUBg3Mh3X83UXN5gnmxlQBRI+GmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1zhS88L53GPj7stELd4m70lXJ4lFFMhXdrK7X9tS5dY=;
+ b=e0i+BHDy1+rzU5stNjWSjDEjD4eneSsE2LcB8G0RpSZ1wcbv/UCX9ED0mhZzr1Biq8Rr6/mZmXQUiyIMgOOixz8Arr8nG1HT7tWX8rdOfsG9fqnhDoB0j2Yt1/nAB3k3zH4bsnMx4vUfACviMzz+FimAJfpatzBOuX5Lse0zVHl0jWZ5hRwkCYrP/60jRitCUGtABiSiM4n0vWQoS/K4E9UBKJsMCvctFMJMUcQQH4+IzOCFHvJVeRAY7VIw6CXVh48k3P+4zfnJRczklyZa0a/G8DOZIGAJWGLqcZsUUwyjh1TjTQZGTnQvFmj62fYpwdX4j/TLwy3bN1tlEVG9HQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.94) smtp.rcpttodomain=kernel.org
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=quarantine sp=quarantine
+ pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=leica-geosystems.com.cn; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1zhS88L53GPj7stELd4m70lXJ4lFFMhXdrK7X9tS5dY=;
+ b=JDTpR38FSPCjz1vALiNMF/FJ++NXzBUKgilj2sYVqQhdWgN3Qh73Zr8H6C+gSxbhsaDy0uW9oRiK/diyVGWNYa7w1pOGsWnS9KMmzVgEPC8tFHTNHI2ir5Mr1PRLw5p1R4qfaVjR3US/b9BoORfvEBZjSNhRMVM9a03AduSP0OU=
+Received: from AS9PR06CA0021.eurprd06.prod.outlook.com (2603:10a6:20b:462::27)
+ by AM6PR06MB5928.eurprd06.prod.outlook.com (2603:10a6:20b:93::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.16; Thu, 26 May
+ 2022 13:34:02 +0000
+Received: from VE1EUR02FT025.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:20b:462:cafe::59) by AS9PR06CA0021.outlook.office365.com
+ (2603:10a6:20b:462::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.15 via Frontend
+ Transport; Thu, 26 May 2022 13:34:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.94)
+ smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
+ designates 193.8.40.94 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.94; helo=aherlnxbspsrv01.lgs-net.com; pr=C
+Received: from aherlnxbspsrv01.lgs-net.com (193.8.40.94) by
+ VE1EUR02FT025.mail.protection.outlook.com (10.152.12.109) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5293.13 via Frontend Transport; Thu, 26 May 2022 13:34:01 +0000
+From:   LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+To:     jic23@kernel.org, lars@metafoo.de, mchehab+huawei@kernel.org,
+        ardeleanalex@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qing-wu.Li@leica-geosystems.com.cn,
+        robh+dt@kernel.org, mike.looijmans@topic.nl,
+        devicetree@vger.kernel.org
+Cc:     thomas.haemmerle@leica-geosystems.com
+Subject: [PATCH V5 0/6] iio: accel: bmi088: support BMI085 BMI090L
+Date:   Thu, 26 May 2022 13:33:53 +0000
+Message-Id: <20220526133359.2261928-1-Qing-wu.Li@leica-geosystems.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
- deprecated vendor prefix
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
-        krisman@collabora.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@collabora.com, alvaro.soliverez@collabora.com,
-        Krzysztof Kozlowski <krzk@kernel.org>
-References: <20220511094024.175994-1-shreeya.patel@collabora.com>
- <20220511094024.175994-2-shreeya.patel@collabora.com>
- <20220516170058.GA2825626-robh@kernel.org>
- <83907dd2-2a53-2448-576b-ae26462d432a@collabora.com>
- <20220518163255.GE3302100-robh@kernel.org>
- <f37bccaf-233c-a244-3d81-849a988b1a92@collabora.com>
- <20220524154703.GD3730540-robh@kernel.org>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <20220524154703.GD3730540-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 0ea3a880-3e9b-4132-6c8b-08da3f1c657e
+X-MS-TrafficTypeDiagnostic: AM6PR06MB5928:EE_
+X-Microsoft-Antispam-PRVS: <AM6PR06MB5928243C94E1252F279E2628D7D99@AM6PR06MB5928.eurprd06.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xf6jIZNLoaUeRH8lYyfs60NkHDYPU5PQz0xQknCfut4EcZ4ij4z3V8q5/Y4VDgWClBXs2qNL7UCnfN58zdypsJS7l0Hjd59coNEfmoy2gCjDQBSy+g7ZG9xeOsiNMxA53aP/s1tEZ7UuIreWM8HrO/0S1xxPg/qZZGkhH5yFmrrdZd0AkXd1eK792VtCRLbeFlH6MVCzTmpH5ruGh6x6TZMpV20+gowNrqKs2KmeWekJOh/KwmYDN4/Cy32iAtM3D6xalTPJ6URmytGGO6zE2L/NrbGvnvuhr2n6Bx/wwC1H/cWj/WCGrSvsxg3eTe2uKXAYOjoY/BIuiCISrwA6v058lP6fwAhdkwgUuidn5ySHwQVJw7zApqq3Ogwxzg4o3TJWZMcp/fapU6WWHyTm3WuZ+bWJV5ic0nS2YKzk2YIrEgthuF2bBV38B44W/fgfQKNfJzwxZ1jgmYIUeFwAeEoy9QDIpeA1wwgi4buPg0Ot5o9bg4oNuoor7R+VMduCnNJs4xpoOn4OTGBGhT+IFGSWfbKeoHiXyUnwhfcW1+Nj5aYZBQKoyw11cqSfY7six6OpUib4q7FEhG+Ur0whLEgl+2Xko+A1DXQRkR256FDOsxMwlqCpnBPfk9L9JCc0B92OAQvzbI2yphbcVHjXMT66ImUnlTObA7Jva0YvIC98isWT+kl9rGPdpgezN0KfbTKsBiHKQ0nNzFuZm4LZ9Q==
+X-Forefront-Antispam-Report: CIP:193.8.40.94;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:aherlnxbspsrv01.lgs-net.com;PTR:ahersrvdom50.leica-geosystems.com;CAT:NONE;SFS:(13230001)(4636009)(46966006)(36840700001)(40470700004)(8676002)(70206006)(2906002)(6666004)(6506007)(81166007)(6486002)(8936002)(5660300002)(36860700001)(4744005)(921005)(356005)(36756003)(956004)(83380400001)(36736006)(1076003)(336012)(47076005)(107886003)(70586007)(2616005)(82310400005)(186003)(40460700003)(6512007)(118246002)(4326008)(86362001)(508600001)(26005)(316002);DIR:OUT;SFP:1102;
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2022 13:34:01.8108
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ea3a880-3e9b-4132-6c8b-08da3f1c657e
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.94];Helo=[aherlnxbspsrv01.lgs-net.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR02FT025.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR06MB5928
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Modified the units after application of scale from 100*m/s^2 to m/s^2,
+since the units in the ABI documents are m/s^2.
+Add supports for the BMI085 accelerometer.
+Add supports for the BMI090L accelerometer.
+Make it possible to config scales.
 
-On 24/05/22 21:17, Rob Herring wrote:
-> On Mon, May 23, 2022 at 08:27:56PM +0530, Shreeya Patel wrote:
->> On 18/05/22 22:02, Rob Herring wrote:
->>> On Tue, May 17, 2022 at 04:07:33PM +0530, Shreeya Patel wrote:
->>>> On 16/05/22 22:30, Rob Herring wrote:
->>>>> On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
->>>>>> 'liteon' is the correct vendor prefix for devices released by
->>>>>> LITE-ON Technology Corp. But one of the released device which uses
->>>>>> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
->>>>>> ACPI.
->>>>> ACPI? NAK.
->>>>>
->>>>> There are no cases of 'ltr' for DT, so fix ACPI.
->>>> Hi Rob,
->>>>
->>>> Yes, we understand there are no cases of 'ltr', but we have released devices
->>>> which uses this string for probing the ltrf216a light sensor driver ( x86
->>>> with DT )
->>> That's not what your commit message says.
->>>
->>> Even if this is DT based, given an undocumented vendor string is used,
->>> it seems doubtful the rest of the binding would match upstream. What
->>> about the rest of the DTB? Got a pointer to it or want to publish it?
->>>
->>>> If we don't document this in vendor-prefixes.yaml, then the following
->>>> warning
->>>> is generated.
->>>>
->>>> WARNING: DT compatible string vendor "ltr" appears un-documented -- check
->>>> ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
->>>> drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
->>>>
->>>>
->>>> Can you suggest us what would be the right way to fix this warning if not
->>>> documenting
->>>> in vendor-prefixes.yaml?
->>> Fix the DT. We don't accept bindings simply because they are already
->>> used in the field. If this was the only issue, it would be fine, but I
->>> suspect it's the tip of the iceberg.
->>
->> Hi Rob,
->>
->> To make things more clear, following is the modalias info of the device.
->>
->> (B+)(root@linux iio:device0)# cat
->> /sys/bus/i2c/devices/i2c-PRP0001\:01/modalias
->> of:NltrfTCltr,ltrf216a
->>
->> It's a dt namespace on an ACPI based device. We used an of_device_id table
->> to be able to probe the driver
->> using the vendor prefix and compatible string.
-> Again, it's ACPI so I don't care. If someone cares about using DT
-> bindings in ACPI they can step up and help maintain them. It's not a DT
-> vs. ACPI thing, but just that I can only maintain so much and have to
-> draw the line somewhere.
->
->> But when we compile the driver, we get the following warning and hence we
->> documented it in vendor-prefixes.yaml
->> and also added a complete device tree file [Patch 3/3] just to get rid of
->> the warning. In real life we are not using
->> the device tree file at all.
->>
->> WARNING: DT compatible string vendor "ltr" appears un-documented -- check
->> ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
->> drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
-> So, is someone telling you to fix this?
+Change in v5: 
+- Fix the issue of 'undeclared function FIELD_GET'
+  Reported-by: kernel test robot <lkp@intel.com>
 
 
-So will it be right to just keep the warning and remove this patch?
-Is there a way you know to silent this warning?
+LI Qingwu (6):
+  iio: accel: bmi088: Modified the scale calculate
+  iio: accel: bmi088: Make it possible to config scales
+  iio: accel: bmi088: modified the device name
+  iio: accel: bmi088: Add support for bmi085 accel
+  iio: accel: bmi088: Add support for bmi090l accel
+  dt-bindings: iio: accel: Add bmi085 and bmi090l bindings
 
+ .../bindings/iio/accel/bosch,bmi088.yaml      |  2 +
+ drivers/iio/accel/bmi088-accel-core.c         | 97 +++++++++++++++----
+ drivers/iio/accel/bmi088-accel-spi.c          | 17 +++-
+ drivers/iio/accel/bmi088-accel.h              |  9 +-
+ 4 files changed, 101 insertions(+), 24 deletions(-)
 
-Thanks,
-Shreeya Patel
+-- 
+2.25.1
 
->
->
->> There are many existing devices used by people which has the vendor prefix
->> name as 'ltr'
->> and it won't be possible to change that hence we are trying to upstream it.
-> There are millions if not billions of DT based devices using
-> undocumented bindings. If those used "ltr,ltrf216a", I wouldn't accept
-> it either.
->
-> Rob
->

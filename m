@@ -2,126 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 761CC534819
-	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 03:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 645A5534AD2
+	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 09:33:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245286AbiEZB3c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 May 2022 21:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52402 "EHLO
+        id S1344600AbiEZHdO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 May 2022 03:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239482AbiEZB3b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 May 2022 21:29:31 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484D29D067;
-        Wed, 25 May 2022 18:29:30 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id l82so579552qke.3;
-        Wed, 25 May 2022 18:29:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FbPPFb9rMCeh0SoOtVc42/2NbWJSabE6UzVds4NMhYU=;
-        b=BOm/N6srzaQmptKq/40CH7xw/zMPM3qJmifHv3VbiyX3876cqB65IMMlrVc731N0eQ
-         xwh5P0N5dcpp5fs7qe5WaCU4lbT0u9hQOml0wOy0SAPZMqPhE74G0fpTAwIwkHoztc0m
-         ZASw18+4dlHKbcnCd0u2faA9Hsfu6rYRUT3Nz3s3slNhU5EUv0yarmPubQJv2INiMToa
-         hCDaCpUUm/nYLnU8wzkxCpUtLvLtaNfxcJUsrMEWto2ofPksKE6cAr6+YNwLTy9Cdfl0
-         Hxofy+sMIIn3ON9R40XfdY0/lqjqiVGmYWdu6Mm7zVyix0mZNnQTjnqckRIx6CX/y8SO
-         hetQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FbPPFb9rMCeh0SoOtVc42/2NbWJSabE6UzVds4NMhYU=;
-        b=Zs4lIJmN3lYv1gGNvC8K1QroBWjcR7ZEtLdZweChEhaChAusNA95e+1CJbfVfbO7xF
-         bbfpI0GsWPORaZBaVl4XvSW3KyV2dJ9e6Wg71gAKzACRPUqvED94AlzJKR2DcG4X38xD
-         xB62lrleCI7n8CoVKJHHaLGkC/aR1IIC9RnMDlW2osApNSja8WSsxz5XY4yueTi1BX40
-         wfoH4sWtL1ta0g8tenu0E0Xl5Vcggp0vThQCzrUhqdGN8HcIGW2dVtLZViggt/e3lKla
-         tLIjRvCrYlKeUm/l9b4v+AQRMvxgDRemvP1vZZOeM8fhHSW9TAIi9LhmahcVaUUNPDu0
-         /YGw==
-X-Gm-Message-State: AOAM531IyXNGoXqmm7k/LrDGl1/tjVBWL55fxv8NZ7gKGqfyFVjOs0E6
-        WUxz2budu152Celrx2jsf8FTrOvVJC0b4A==
-X-Google-Smtp-Source: ABdhPJwwpkcFO1ws/01FEXL4wTG6JIOaiT4NySHsersgMAFgDxqE0FBwsoKTX5BTb87QDwxZTo9jYg==
-X-Received: by 2002:a37:7cb:0:b0:6a3:51fa:9ec2 with SMTP id 194-20020a3707cb000000b006a351fa9ec2mr18026701qkh.735.1653528569354;
-        Wed, 25 May 2022 18:29:29 -0700 (PDT)
-Received: from shaak (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
-        by smtp.gmail.com with ESMTPSA id o7-20020a37a507000000b0069fc13ce225sm367478qke.86.2022.05.25.18.29.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 May 2022 18:29:28 -0700 (PDT)
-Date:   Wed, 25 May 2022 21:29:27 -0400
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Message-ID: <Yo7X9w6i3uiNZqpW@shaak>
-References: <20220524075448.140238-1-linus.walleij@linaro.org>
+        with ESMTP id S234616AbiEZHdN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 May 2022 03:33:13 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6307692D34;
+        Thu, 26 May 2022 00:33:12 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: shreeya)
+        with ESMTPSA id 2F73A1F451F8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1653550390;
+        bh=XBjRr4zV7iqDwsqd8+WLNul7+0XXrRR/5iyVy4RBtnQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=VtmF5DhwKEE20g/IthAnqzs2a7+lBZ5pXA4i2d+al5SLa2MWVjx0sTNVDrRnJGBV1
+         rCpUwGJCngiKgle9iQ9+T3jt6aUn1lulMYNBHMv3QdSOpWV0coo+ITDLmlg4/IMpCP
+         fSSXC2uagn8+KwvnJV4j/0bI2DsNONy48Akxnwai/xpTc+Ixzd7Muhkgz7XnjZ+a1/
+         FNKjmpTZPdkJu7sgjdeYXby57hC0HOWJVX4TaMSCSiCEbv+Pa387PBaxi/HMUWQB/3
+         FwgL315QLVU1uAgjz+fecawbHrpNavf+p2OUaKtOZyABrIX8Qaid7dabpP56kflXAq
+         PxbdPorVN8Osg==
+Message-ID: <507d7711-3755-1a2e-473d-3c1c9e23563d@collabora.com>
+Date:   Thu, 26 May 2022 13:03:04 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220524075448.140238-1-linus.walleij@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v4 1/3] dt-bindings: vendor-prefixes: Add 'ltr' as
+ deprecated vendor prefix
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+Cc:     jic23@kernel.org, lars@metafoo.de, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com,
+        Krzysztof Kozlowski <krzk@kernel.org>
+References: <20220511094024.175994-1-shreeya.patel@collabora.com>
+ <20220511094024.175994-2-shreeya.patel@collabora.com>
+ <20220516170058.GA2825626-robh@kernel.org>
+ <83907dd2-2a53-2448-576b-ae26462d432a@collabora.com>
+ <20220518163255.GE3302100-robh@kernel.org>
+ <f37bccaf-233c-a244-3d81-849a988b1a92@collabora.com>
+ <20220524154703.GD3730540-robh@kernel.org>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <20220524154703.GD3730540-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 24, 2022 at 09:54:48AM +0200, Linus Walleij wrote:
-> When introducing support for processed channels I needed
-> to invert the expression:
-> 
->   if (!iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
->       !iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE))
->         dev_err(dev, "source channel does not support raw/scale\n");
-> 
-> To the inverse, meaning detect when we can usse raw+scale
-> rather than when we can not. This was the result:
-> 
->   if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
->       iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE))
->        dev_info(dev, "using raw+scale source channel\n");
-> 
-> Ooops. Spot the error. Yep old George Boole came up and bit me.
-> That should be an &&.
-> 
-> The current code "mostly works" because we have not run into
-> systems supporting only raw but not scale or only scale but not
-> raw, and I doubt there are few using the rescaler on anything
-> such, but let's fix the logic.
 
-Maybe `iio: afe: rescale: Fix boolean logic bug` if you're resending,
-otherwise,
+On 24/05/22 21:17, Rob Herring wrote:
+> On Mon, May 23, 2022 at 08:27:56PM +0530, Shreeya Patel wrote:
+>> On 18/05/22 22:02, Rob Herring wrote:
+>>> On Tue, May 17, 2022 at 04:07:33PM +0530, Shreeya Patel wrote:
+>>>> On 16/05/22 22:30, Rob Herring wrote:
+>>>>> On Wed, May 11, 2022 at 03:10:22PM +0530, Shreeya Patel wrote:
+>>>>>> 'liteon' is the correct vendor prefix for devices released by
+>>>>>> LITE-ON Technology Corp. But one of the released device which uses
+>>>>>> ltr216a light sensor exposes the vendor prefix name as 'ltr' through
+>>>>>> ACPI.
+>>>>> ACPI? NAK.
+>>>>>
+>>>>> There are no cases of 'ltr' for DT, so fix ACPI.
+>>>> Hi Rob,
+>>>>
+>>>> Yes, we understand there are no cases of 'ltr', but we have released devices
+>>>> which uses this string for probing the ltrf216a light sensor driver ( x86
+>>>> with DT )
+>>> That's not what your commit message says.
+>>>
+>>> Even if this is DT based, given an undocumented vendor string is used,
+>>> it seems doubtful the rest of the binding would match upstream. What
+>>> about the rest of the DTB? Got a pointer to it or want to publish it?
+>>>
+>>>> If we don't document this in vendor-prefixes.yaml, then the following
+>>>> warning
+>>>> is generated.
+>>>>
+>>>> WARNING: DT compatible string vendor "ltr" appears un-documented -- check
+>>>> ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
+>>>> drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
+>>>>
+>>>>
+>>>> Can you suggest us what would be the right way to fix this warning if not
+>>>> documenting
+>>>> in vendor-prefixes.yaml?
+>>> Fix the DT. We don't accept bindings simply because they are already
+>>> used in the field. If this was the only issue, it would be fine, but I
+>>> suspect it's the tip of the iceberg.
+>>
+>> Hi Rob,
+>>
+>> To make things more clear, following is the modalias info of the device.
+>>
+>> (B+)(root@linux iio:device0)# cat
+>> /sys/bus/i2c/devices/i2c-PRP0001\:01/modalias
+>> of:NltrfTCltr,ltrf216a
+>>
+>> It's a dt namespace on an ACPI based device. We used an of_device_id table
+>> to be able to probe the driver
+>> using the vendor prefix and compatible string.
+> Again, it's ACPI so I don't care. If someone cares about using DT
+> bindings in ACPI they can step up and help maintain them. It's not a DT
+> vs. ACPI thing, but just that I can only maintain so much and have to
+> draw the line somewhere.
+>
+>> But when we compile the driver, we get the following warning and hence we
+>> documented it in vendor-prefixes.yaml
+>> and also added a complete device tree file [Patch 3/3] just to get rid of
+>> the warning. In real life we are not using
+>> the device tree file at all.
+>>
+>> WARNING: DT compatible string vendor "ltr" appears un-documented -- check
+>> ./Documentation/devicetree/bindings/vendor-prefixes.yaml 364: FILE:
+>> drivers/iio/light/ltrf216a.c:313: + { .compatible = "ltr,ltrf216a" },
+> So, is someone telling you to fix this?
 
-Reviewed-by: Liam Beguin <liambeguin@gmail.com>
+
+So will it be right to just keep the warning and remove this patch?
+Is there a way you know to silent this warning?
+
 
 Thanks,
-Liam
+Shreeya Patel
 
-> Cc: Liam Beguin <liambeguin@gmail.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 53ebee949980 ("iio: afe: iio-rescale: Support processed channels")
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  drivers/iio/afe/iio-rescale.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-> index 7e511293d6d1..dc426e1484f0 100644
-> --- a/drivers/iio/afe/iio-rescale.c
-> +++ b/drivers/iio/afe/iio-rescale.c
-> @@ -278,7 +278,7 @@ static int rescale_configure_channel(struct device *dev,
->  	chan->ext_info = rescale->ext_info;
->  	chan->type = rescale->cfg->type;
->  
-> -	if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
-> +	if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
->  	    iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
->  		dev_info(dev, "using raw+scale source channel\n");
->  	} else if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
-> -- 
-> 2.35.3
-> 
+>
+>
+>> There are many existing devices used by people which has the vendor prefix
+>> name as 'ltr'
+>> and it won't be possible to change that hence we are trying to upstream it.
+> There are millions if not billions of DT based devices using
+> undocumented bindings. If those used "ltr,ltrf216a", I wouldn't accept
+> it either.
+>
+> Rob
+>

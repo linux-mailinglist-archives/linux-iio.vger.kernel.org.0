@@ -2,98 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8555E534FEE
-	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 15:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67890535188
+	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 17:36:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347539AbiEZNa2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 May 2022 09:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33780 "EHLO
+        id S245120AbiEZPgv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 26 May 2022 11:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347545AbiEZNaV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 May 2022 09:30:21 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B72D80AE
-        for <linux-iio@vger.kernel.org>; Thu, 26 May 2022 06:30:19 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24QCfPD9032640;
-        Thu, 26 May 2022 09:30:17 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3g93vdnpcs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 May 2022 09:30:17 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 24QDUFP9011895
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 26 May 2022 09:30:15 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 26 May 2022 09:30:14 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 26 May 2022 09:30:14 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 26 May 2022 09:30:14 -0400
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 24QDTvG9027216;
-        Thu, 26 May 2022 09:30:08 -0400
-From:   <alexandru.tachici@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     <Michael.Hennerich@analog.com>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>
-Subject: [PATCH 5/5] dt-bindings: iio: imu: adis16480: update maintainers
-Date:   Thu, 26 May 2022 16:46:02 +0300
-Message-ID: <20220526134603.75216-6-alexandru.tachici@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220526134603.75216-1-alexandru.tachici@analog.com>
-References: <20220526134603.75216-1-alexandru.tachici@analog.com>
+        with ESMTP id S235987AbiEZPgv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 May 2022 11:36:51 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7FB2BDA3A;
+        Thu, 26 May 2022 08:36:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+        :In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=cz2tBlHujupjVKE2JuyYre4LY/Jweg2bry3B8ZlajT4=; b=ALDJYJMy6GstbzTOeqw3GSAx3x
+        EyusWqWlv8+IL9jMBmp9ma04RBhiT1tSpcdmavPfHCCVdYw10lEYgdr8z8fV5NKWEjFmorZSXM1VM
+        o1BfLSrfsjC8rg7srg96SErGKFCUi+TjZo0dw6ByYcTbdqE0KNkpMOwbtt5Qna8TsG7NpCb0hsM9o
+        rPU6ifHlVXzwqDayoGEOQb++vZB2MFTcR6uHpztqatBpZk6TT9PmMHKyfUJj2a9q2lkD4MbUzjFvA
+        WblB7AccPHNZJ22HUzkQr3mSjL1195tzgHL2sKbvEzA7dIZ+6jSvfq4BFWnVkFGBE6TZDQ2g0+qT4
+        STk7kffw==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nuFXT-001vPs-KS; Thu, 26 May 2022 15:36:41 +0000
+Message-ID: <7a97bac3-6ade-8e1b-cf0c-4a05c83163a3@infradead.org>
+Date:   Thu, 26 May 2022 08:36:34 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: RplLwoVOeqQcCMpk72mpOl4-xPQmxu4m
-X-Proofpoint-ORIG-GUID: RplLwoVOeqQcCMpk72mpOl4-xPQmxu4m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-26_07,2022-05-25_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501 mlxlogscore=828
- mlxscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2205260066
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: kbuild problem: ERROR: modpost: missing MODULE_LICENSE() in
+ drivers/iio/afe/iio-rescale.o
+Content-Language: en-US
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Liam Beguin <liambeguin@gmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        KUnit Development <kunit-dev@googlegroups.com>
+References: <18500f18-9cd5-a81c-4a55-14e999ed4496@infradead.org>
+ <3ae306e0-c6c7-ed12-cacd-62b1c26dba3c@infradead.org>
+ <6671de03-c09c-bfaf-e06c-e45af70d4354@infradead.org>
+ <6601a387-de9a-a0d0-11b5-01e0cfa75657@infradead.org>
+In-Reply-To: <6601a387-de9a-a0d0-11b5-01e0cfa75657@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alexandru Tachici <alexandru.tachici@analog.com>
+Liam:
 
-Update bindings maintainerns section.
+Any comment on this?
+Otherwise I'll just send a formal patch like this (below).
 
-Signed-off-by: Alexandru Tachici <alexandru.tachici@analog.com>
----
- Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks.
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-index 5dbe24be9925..dd29dc6c4c19 100644
---- a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-@@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: Analog Devices ADIS16480 and similar IMUs
- 
- maintainers:
--  - Alexandru Ardelean <alexandru.ardelean@analog.com>
-+  - Alexandru Tachici <alexandru.tachici@analog.com>
- 
- properties:
-   compatible:
+On 5/20/22 20:51, Randy Dunlap wrote:
+> Ok, one more.
+> [also adding Liam here]
+> 
+> On 5/20/22 20:17, Randy Dunlap wrote:
+>>
+>>
+>> On 5/20/22 20:08, Randy Dunlap wrote:
+>>>
+>>>
+>>> On 5/20/22 19:40, Randy Dunlap wrote:
+>>>> Hi,
+>>>>
+>>>> In March I reported that a randconfig build complained:
+>>>>
+>>>> ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
+>>>>
+>>>> (https://lore.kernel.org/all/16509fb6-e40c-e31b-2c80-264c44b0beb9@infradead.org/)
+>>>>
+>>>> I am still seeing this problem so I tried to dig into it a bit.
+>>>> However, I don't see why get_next_modinfo() and friends don't find the
+>>>> MODULE_LICENSE() since it is in the iio-rescale.o file.
+>>>>
+>>>> (BTW, I see this build error on many different $ARCH [around 15 tested]
+>>>> and with 2 different versions of GCC.)
+>>>>
+>>>> Q1: Is modpost checking both vmlinux and iio-rescale.o for modinfo license
+>>>> strings?
+>>>>
+>>>> It looks like it is, because it appears (?) that modpost is looking at
+>>>> drivers/iio/test/iio-test-rescale.o (<<<<< a kunit test, which is builtin
+>>>> in my .config) and at drivers/iio/afe/iio-rescale.o (which is built as a
+>>>> loadable module).
+>>>>
+>>>> Is this confusing modpost?
+>>>> I renamed drivers/iio/afe/iio-rescale.c to afe-rescale.c and changed its
+>>>> Makefile entry accordingly and the MODULE_LICENSE error goes away.
+>>>
+>>> Oh well. This rename causes drivers/iio/test/iio-test-rescale.c to have
+>>> build errors, so that's not a solution, just some info...
+>>
+>> and that was due to not updating drivers/iio/test/Makefile.
+>> When that is done, the missing MODULE_LICENSE() is back in afe-rescale.o.
+>>
+>>>
+>>>> Is this a modpost error or is kunit messing things up?
+>>>>
+>>>> thanks for looking.
+> 
+> Does this look OK? It allows afe/iio-rescale.o to build XOR
+> test/iio-rescale.o (not both of them).
+> 
+> --- a/drivers/iio/test/Kconfig
+> +++ b/drivers/iio/test/Kconfig
+> @@ -6,7 +6,7 @@
+>  # Keep in alphabetical order
+>  config IIO_RESCALE_KUNIT_TEST
+>         bool "Test IIO rescale conversion functions"
+> -       depends on KUNIT=y && !IIO_RESCALE
+> +       depends on KUNIT=y && IIO_RESCALE=n
+>         default KUNIT_ALL_TESTS
+>         help
+>           If you want to run tests on the iio-rescale code say Y here.
+> 
+> 
+
 -- 
-2.25.1
-
+~Randy

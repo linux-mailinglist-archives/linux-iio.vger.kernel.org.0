@@ -2,105 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB90534549
-	for <lists+linux-iio@lfdr.de>; Wed, 25 May 2022 22:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DE0D53478A
+	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 02:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236068AbiEYUsc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 25 May 2022 16:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40908 "EHLO
+        id S1343656AbiEZAi0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 25 May 2022 20:38:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241691AbiEYUsb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 May 2022 16:48:31 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F58B41F9
-        for <linux-iio@vger.kernel.org>; Wed, 25 May 2022 13:48:23 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id l32so4232078ybe.12
-        for <linux-iio@vger.kernel.org>; Wed, 25 May 2022 13:48:22 -0700 (PDT)
+        with ESMTP id S245531AbiEZAiZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 25 May 2022 20:38:25 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B35A12A86
+        for <linux-iio@vger.kernel.org>; Wed, 25 May 2022 17:38:24 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id l1so684587qvh.1
+        for <linux-iio@vger.kernel.org>; Wed, 25 May 2022 17:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=+uyh4vUIYntN7Mid2B5fbgguOxBR2RiHnKBh7A4r37I=;
-        b=MIznAoP29XHGMZwK2XaORcuFYY4KHU3SiD37YZr3IksbwEszYFwRGI6NMOaIsgw3Rc
-         MNWUak9e2Pk5zm0JPp6szTBpWptBOFEsDKaXw1mzZOTFcRGcvyjOwqdtF8UB9EvyuuJZ
-         fMICjT1+KZ7bxeE9NTTU8LESXRGeqFThSri55TjzyU4r+qSYB8KRkbeHsWYNf08X2bEy
-         pryupL2ykuBV+sygnkk+fqajrVN1/45XJT6UIDBI/J4JIiO7GZW4kaISjbo9xtOnIbu3
-         /lAT2wlHOnLDqj2MsvwscUqPgxRkbuhwflLse0VSR01xDxZYapbGb527uMRlqnyfWWDn
-         3l8g==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=9QG7nqKtgJmtAtajxYHgw8Tjr2fbVE88KF3FisGmd6E=;
+        b=V6ZScB09I3UqV/yE82NY3muW0hDBpd4sI0793TanTVrD1i5HHvGvBGp4OB4+RjhTOe
+         zitF/VIztMQ9g3SuAeY74P5pINnfao3InGRISTyQEgBt9kqhq+oqPD/I03FpXwBzUAyz
+         ZtY/6ZkIpn7XRtCO9j1ju8b9DEnTkDi2JiSpTyUFQ0Cllh4TMtHIe6OUDrNb2AouExeI
+         hAoNcNvcFcRmbBYxztdZwPAt1uL8thEp3ypDWSI5SdsbHPUKN8tDuFQ+cb5Vbeu3/JgK
+         gUHBiIbWW9M8YjmxNxiKmp70ppCEyAkbAOoauN4iWC3nw47SZdix66aCgovxw5MxrIjm
+         QU5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=+uyh4vUIYntN7Mid2B5fbgguOxBR2RiHnKBh7A4r37I=;
-        b=nBFxXAaclNliTCprX7SprjvWvOWdKT1FI0atNGoGe1XRrqOT3kVdUOS2XtUAsvyux3
-         7mghK6KShl5bxEedbqSiiZ/h1FLNzmHoHX36fqC0qfdtjcRhCr+Li41N+iOoU7EyCYIm
-         vD4sItQZrvLGZMJubO7OfYtoKqI2WE7CYu//38qkWxn50R+0dyzsq0QEYV2Xt6y+fGAS
-         2GvjCs94eOrQTwx8SuIvwGKWMLZnRaEzt6YSjhRNZ5Af4mU9H7fgRjchmNsxl0SkWDDd
-         n4iInne2eFcUSs3SMgs6mze8AlBwhyvMG4Yd8i6XE6Z54HB+ms5vG3Aaq4fcWzONzLIv
-         HY/Q==
-X-Gm-Message-State: AOAM530yozW+d/tNxr44394LZmNh0+Oi3u2TcNnbpbqamGgs0n9MVNoW
-        tJ8Vr0sbt8Z8MpCWcpmwolg/ODYKXoap/wn9I98=
-X-Google-Smtp-Source: ABdhPJygDnPWuNyLLxTk2B3Kv8LEKih1+m2wVtTUpsrNi1Bs8nM6GPylqvWzkD99kDlHZJJaie6GrPKCBIwCtXokpK8=
-X-Received: by 2002:a05:6902:1023:b0:64f:39e7:ef05 with SMTP id
- x3-20020a056902102300b0064f39e7ef05mr31533397ybt.126.1653511701867; Wed, 25
- May 2022 13:48:21 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=9QG7nqKtgJmtAtajxYHgw8Tjr2fbVE88KF3FisGmd6E=;
+        b=bT8kw1MSxLhNblWzS/vZLU3+ABOOro/FWOwnu4Z47l0QwVvwC+tnT2RRlFh3oQspTX
+         BTBZIqWAfa3Dvt6wMW/18sZiXWFieLG0c6Yxd7cRXihxrCGWFGd1nw5SRCe45Vt/wAaY
+         lL3ep1Mzhswv4QotVm8sX7dH/ACB+Eg5gXyy7Cu7RxTmZAUSKmVM7O3eif5bTDrJPHNk
+         8REGPHQu0ki/z7/uFVkUQrpI7wCpoNAvEK0zVZgv24yLZA/8mhywtamBiMKJ1OauMAJv
+         YVHIs1aCCKwVOmJJvisFxEgn8qI7pQT5FGRmfTFFA68VexOfyLHqkkynY/3ignAfLxt/
+         dVmw==
+X-Gm-Message-State: AOAM533yd3gpZ5ycCrO6UOWquNV1KWL8PGeYUOGUpm0GlEGDP+vzP3d0
+        SvR3EayUpIhsh9sEU7g/2m3lqDDwt8qLrrWJc+g5tg2LCPU=
+X-Google-Smtp-Source: ABdhPJzsCbPlHXcEdXSvMZHyp+tXZDofyVRc/nazV7dh638/M3ybYTmLB7CBM3jOUhaFfQsEsm5Wjxg2GGK6/QzTz4c=
+X-Received: by 2002:a05:6214:27ed:b0:462:1ee4:f029 with SMTP id
+ jt13-20020a05621427ed00b004621ee4f029mr19899624qvb.47.1653525503615; Wed, 25
+ May 2022 17:38:23 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:7110:3682:b0:17b:2b7b:c035 with HTTP; Wed, 25 May 2022
- 13:48:21 -0700 (PDT)
-From:   Colina Fernando <colinafernando724@gmail.com>
-Date:   Wed, 25 May 2022 22:48:21 +0200
-Message-ID: <CAP7Hh1-EL6tqrQsO0De_QJ1avJao_roXNeVStyzCoPtO9q14fg@mail.gmail.com>
-Subject: Bitte kontaktaufnahme Erforderlich !!! Please Contact Required !!!
-To:     contact@firstdiamondbk.com
-Cc:     info@firstdiamondbk.com
+Sender: yaoy0328@gmail.com
+Received: by 2002:a05:622a:120c:0:0:0:0 with HTTP; Wed, 25 May 2022 17:38:23
+ -0700 (PDT)
+From:   Hannah Johnson <hannahjohnson8856@gmail.com>
+Date:   Thu, 26 May 2022 00:38:23 +0000
+X-Google-Sender-Auth: zGyQNLOLZCR2Od6nng0_EwPnric
+Message-ID: <CABio398RRtHSW_apYHsw+MNDdVYH1F7qfG11_aufdeaX8WRxWw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Guten Tag,
+-- 
+Hello,
+Nice to meet you
 
-Ich habe mich nur gefragt, ob Sie meine vorherige E-Mail bekommen
-
-haben ?
-
-Ich habe versucht, Sie per E-Mail zu erreichen.
-
-Kommen Sie bitte schnell zu mir zur=C3=BCck, es ist sehr wichtig.
-
-Danke
-
-Fernando Colina
-
-colinafernando724@gmail.com
-
-
-
-
-----------------------------------
-
-
-
-
-Good Afternoon,
-
-I was just wondering if you got my Previous E-mail
-have ?
-
-I tried to reach you by E-mail.
-
-Please come back to me quickly, it is very Important.
-
-Thanks
-
-Fernando Colina
-
-colinafernando724@gmail.com
+My name is Hannah Johnson, i will be glad if we get to know each other more
+better and share pictures, i am expecting your reply thank you.

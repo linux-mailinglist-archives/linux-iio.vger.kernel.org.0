@@ -2,137 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D41535522
-	for <lists+linux-iio@lfdr.de>; Thu, 26 May 2022 22:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 255A0535CF8
+	for <lists+linux-iio@lfdr.de>; Fri, 27 May 2022 11:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348954AbiEZUyD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 26 May 2022 16:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33912 "EHLO
+        id S1350397AbiE0JBb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 May 2022 05:01:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241700AbiEZUyC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 26 May 2022 16:54:02 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 957FC6898A;
-        Thu, 26 May 2022 13:54:01 -0700 (PDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24QKe0B5018508;
-        Thu, 26 May 2022 20:53:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=OnXCdfCYseIt6Yhu7uE81bN07J9tc87Liz31HWBtdVo=;
- b=p4C+Cwqze6mfZZMXnLU6BHSE7Bd5tYyId3r3yRHKSLuxRLVvGu9V7xcxw2YqOZA4Vepn
- lXQc0kka2XyPBEG94JIfjW6j+dXQC/tlvoKTWdX9/4WrD0Fcwhyu6pPDEvxSCsLO3Yxd
- rF8ddZZoH7K+JkV/F721n44wGpIft86rjuJkJUZ4W3U8o1Gce0Zr4WwmZnTzS4WlKP+3
- ggKKvxD45Jlg1VqZT3lHGA+x8RgrCZFCy8pIWKf9rDt4Y8MGRltxThPuc3CVnB2Aw2kd
- gu/y/E+AbdyS8/Wxs2TL1BSzR9QWIFfUIHa9gEVdksvI3EYeL2IbkA9JyBTF6FaGd+20 qg== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gag42ry4m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 May 2022 20:53:39 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-        by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24QKoQUn001887;
-        Thu, 26 May 2022 20:53:38 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-        by ppma04dal.us.ibm.com with ESMTP id 3g93uub1cn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 May 2022 20:53:38 +0000
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24QKraTe17629512
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 May 2022 20:53:36 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8B8BD6A054;
-        Thu, 26 May 2022 20:53:36 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 16DB96A058;
-        Thu, 26 May 2022 20:53:36 +0000 (GMT)
-Received: from v0005c16.aus.stglabs.ibm.com (unknown [9.211.46.254])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu, 26 May 2022 20:53:36 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     linux-i2c@vger.kernel.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wsa@kernel.org, peda@axentia.se, jic23@kernel.org, lars@metafoo.de,
-        eajames@linux.ibm.com, miltonm@us.ibm.com, joel@jms.id.au
-Subject: [PATCH 2/2] iio: si7020: Lock root adapter to wait for reset
-Date:   Thu, 26 May 2022 15:53:34 -0500
-Message-Id: <20220526205334.64114-3-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220526205334.64114-1-eajames@linux.ibm.com>
-References: <20220526205334.64114-1-eajames@linux.ibm.com>
+        with ESMTP id S1350539AbiE0JAF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 May 2022 05:00:05 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D3E9F06;
+        Fri, 27 May 2022 01:56:12 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L8dsT26d5zbbs5;
+        Fri, 27 May 2022 16:54:37 +0800 (CST)
+Received: from dggpemm500018.china.huawei.com (7.185.36.111) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 27 May 2022 16:56:10 +0800
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm500018.china.huawei.com (7.185.36.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 27 May 2022 16:56:10 +0800
+From:   keliu <liuke94@huawei.com>
+To:     <jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     keliu <liuke94@huawei.com>
+Subject: [PATCH] iio:  Directly use ida_alloc()/free()
+Date:   Fri, 27 May 2022 09:17:39 +0000
+Message-ID: <20220527091739.2949426-1-liuke94@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LAtFz80v3tw9pt45GmV-_BiaE1K_fk3S
-X-Proofpoint-ORIG-GUID: LAtFz80v3tw9pt45GmV-_BiaE1K_fk3S
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-26_10,2022-05-25_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 malwarescore=0 spamscore=0 bulkscore=0
- impostorscore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2205260095
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500018.china.huawei.com (7.185.36.111)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use the new mux root operations to lock the root adapter while waiting for
-the reset to complete. I2C commands issued after the SI7020 is starting up
-or after reset can potentially upset the startup sequence. Therefore, the
-host needs to wait for the startup sequence to finish before issuing
-further I2C commands.
+Use ida_alloc()/ida_free() instead of deprecated
+ida_simple_get()/ida_simple_remove() .
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Signed-off-by: keliu <liuke94@huawei.com>
 ---
- drivers/iio/humidity/si7020.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/iio/industrialio-core.c    | 6 +++---
+ drivers/iio/industrialio-trigger.c | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/humidity/si7020.c b/drivers/iio/humidity/si7020.c
-index ab6537f136ba..76ca7863f35b 100644
---- a/drivers/iio/humidity/si7020.c
-+++ b/drivers/iio/humidity/si7020.c
-@@ -106,6 +106,7 @@ static const struct iio_info si7020_info = {
- static int si7020_probe(struct i2c_client *client,
- 			const struct i2c_device_id *id)
- {
-+	struct i2c_adapter *root;
- 	struct iio_dev *indio_dev;
- 	struct i2c_client **data;
- 	int ret;
-@@ -115,13 +116,24 @@ static int si7020_probe(struct i2c_client *client,
- 				     I2C_FUNC_SMBUS_READ_WORD_DATA))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e1ed44dec2ab..41daa10cd63d 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1618,7 +1618,7 @@ static void iio_dev_release(struct device *device)
  
-+	root = i2c_lock_select_bus(client->adapter);
-+	if (IS_ERR(root))
-+		return PTR_ERR(root);
-+
- 	/* Reset device, loads default settings. */
--	ret = i2c_smbus_write_byte(client, SI7020CMD_RESET);
--	if (ret < 0)
-+	ret = __i2c_smbus_xfer(root, client->addr, client->flags,
-+			       I2C_SMBUS_WRITE, SI7020CMD_RESET,
-+			       I2C_SMBUS_BYTE, NULL);
-+	if (ret < 0) {
-+		i2c_unlock_deselect_bus(client->adapter);
- 		return ret;
-+	}
-+
- 	/* Wait the maximum power-up time after software reset. */
- 	msleep(15);
+ 	iio_device_detach_buffers(indio_dev);
  
-+	i2c_unlock_deselect_bus(client->adapter);
-+
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
+-	ida_simple_remove(&iio_ida, iio_dev_opaque->id);
++	ida_free(&iio_ida, iio_dev_opaque->id);
+ 	kfree(iio_dev_opaque);
+ }
+ 
+@@ -1660,7 +1660,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	mutex_init(&iio_dev_opaque->info_exist_lock);
+ 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+ 
+-	iio_dev_opaque->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
++	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
+ 	if (iio_dev_opaque->id < 0) {
+ 		/* cannot use a dev_err as the name isn't available */
+ 		pr_err("failed to get device id\n");
+@@ -1669,7 +1669,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	}
+ 
+ 	if (dev_set_name(&indio_dev->dev, "iio:device%d", iio_dev_opaque->id)) {
+-		ida_simple_remove(&iio_ida, iio_dev_opaque->id);
++		ida_free(&iio_ida, iio_dev_opaque->id);
+ 		kfree(iio_dev_opaque);
+ 		return NULL;
+ 	}
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index f504ed351b3e..6eb9b721676e 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -71,7 +71,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+ 
+ 	trig_info->owner = this_mod;
+ 
+-	trig_info->id = ida_simple_get(&iio_trigger_ida, 0, 0, GFP_KERNEL);
++	trig_info->id = ida_alloc(&iio_trigger_ida, GFP_KERNEL);
+ 	if (trig_info->id < 0)
+ 		return trig_info->id;
+ 
+@@ -98,7 +98,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+ 	mutex_unlock(&iio_trigger_list_lock);
+ 	device_del(&trig_info->dev);
+ error_unregister_id:
+-	ida_simple_remove(&iio_trigger_ida, trig_info->id);
++	ida_free(&iio_trigger_ida, trig_info->id);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(__iio_trigger_register);
+@@ -109,7 +109,7 @@ void iio_trigger_unregister(struct iio_trigger *trig_info)
+ 	list_del(&trig_info->list);
+ 	mutex_unlock(&iio_trigger_list_lock);
+ 
+-	ida_simple_remove(&iio_trigger_ida, trig_info->id);
++	ida_free(&iio_trigger_ida, trig_info->id);
+ 	/* Possible issue in here */
+ 	device_del(&trig_info->dev);
+ }
 -- 
-2.27.0
+2.25.1
 

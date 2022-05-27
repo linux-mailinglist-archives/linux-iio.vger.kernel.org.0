@@ -2,124 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 255A0535CF8
-	for <lists+linux-iio@lfdr.de>; Fri, 27 May 2022 11:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 408015362DC
+	for <lists+linux-iio@lfdr.de>; Fri, 27 May 2022 14:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350397AbiE0JBb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 27 May 2022 05:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
+        id S1353205AbiE0Mnj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 27 May 2022 08:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350539AbiE0JAF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 May 2022 05:00:05 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D3E9F06;
-        Fri, 27 May 2022 01:56:12 -0700 (PDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L8dsT26d5zbbs5;
-        Fri, 27 May 2022 16:54:37 +0800 (CST)
-Received: from dggpemm500018.china.huawei.com (7.185.36.111) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 27 May 2022 16:56:10 +0800
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemm500018.china.huawei.com (7.185.36.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 27 May 2022 16:56:10 +0800
-From:   keliu <liuke94@huawei.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     keliu <liuke94@huawei.com>
-Subject: [PATCH] iio:  Directly use ida_alloc()/free()
-Date:   Fri, 27 May 2022 09:17:39 +0000
-Message-ID: <20220527091739.2949426-1-liuke94@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1352963AbiE0Mnb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 May 2022 08:43:31 -0400
+X-Greylist: delayed 5689 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 05:40:52 PDT
+Received: from mail.composit.net (mail.composit.net [195.49.185.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 50B3419284;
+        Fri, 27 May 2022 05:40:52 -0700 (PDT)
+Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
+        by mail.composit.net (Proxmox) with ESMTP id 70A2C38A824;
+        Fri, 27 May 2022 14:02:43 +0300 (MSK)
+Received: from mail.composit.net (mail.industrial-flow.com [192.168.101.14])
+        by mail.composit.net (Proxmox) with SMTP id 3733E38F9FA;
+        Fri, 27 May 2022 14:02:43 +0300 (MSK)
+Received: from [192.168.1.105] (Unknown [197.234.219.23])
+        by mail.composit.net with ESMTPSA
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
+        ; Fri, 27 May 2022 14:02:44 +0300
+Message-ID: <7ABC466F-919F-4F2A-9EAC-76D0177AB17D@mail.composit.net>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500018.china.huawei.com (7.185.36.111)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Greetings From Ukraine.  
+To:     Recipients <heiss@dnet.it>
+From:   "Kostiantyn Chichkov" <heiss@dnet.it>
+Date:   Fri, 27 May 2022 11:59:39 +0100
+Reply-To: kostiantync@online.ee
+X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_50,RCVD_IN_SBL,
+        RCVD_IN_SORBS_WEB,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use ida_alloc()/ida_free() instead of deprecated
-ida_simple_get()/ida_simple_remove() .
+Good Morning,
 
-Signed-off-by: keliu <liuke94@huawei.com>
----
- drivers/iio/industrialio-core.c    | 6 +++---
- drivers/iio/industrialio-trigger.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index e1ed44dec2ab..41daa10cd63d 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1618,7 +1618,7 @@ static void iio_dev_release(struct device *device)
- 
- 	iio_device_detach_buffers(indio_dev);
- 
--	ida_simple_remove(&iio_ida, iio_dev_opaque->id);
-+	ida_free(&iio_ida, iio_dev_opaque->id);
- 	kfree(iio_dev_opaque);
- }
- 
-@@ -1660,7 +1660,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	mutex_init(&iio_dev_opaque->info_exist_lock);
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
- 
--	iio_dev_opaque->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
-+	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
- 	if (iio_dev_opaque->id < 0) {
- 		/* cannot use a dev_err as the name isn't available */
- 		pr_err("failed to get device id\n");
-@@ -1669,7 +1669,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	}
- 
- 	if (dev_set_name(&indio_dev->dev, "iio:device%d", iio_dev_opaque->id)) {
--		ida_simple_remove(&iio_ida, iio_dev_opaque->id);
-+		ida_free(&iio_ida, iio_dev_opaque->id);
- 		kfree(iio_dev_opaque);
- 		return NULL;
- 	}
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index f504ed351b3e..6eb9b721676e 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -71,7 +71,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
- 
- 	trig_info->owner = this_mod;
- 
--	trig_info->id = ida_simple_get(&iio_trigger_ida, 0, 0, GFP_KERNEL);
-+	trig_info->id = ida_alloc(&iio_trigger_ida, GFP_KERNEL);
- 	if (trig_info->id < 0)
- 		return trig_info->id;
- 
-@@ -98,7 +98,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
- 	mutex_unlock(&iio_trigger_list_lock);
- 	device_del(&trig_info->dev);
- error_unregister_id:
--	ida_simple_remove(&iio_trigger_ida, trig_info->id);
-+	ida_free(&iio_trigger_ida, trig_info->id);
- 	return ret;
- }
- EXPORT_SYMBOL(__iio_trigger_register);
-@@ -109,7 +109,7 @@ void iio_trigger_unregister(struct iio_trigger *trig_info)
- 	list_del(&trig_info->list);
- 	mutex_unlock(&iio_trigger_list_lock);
- 
--	ida_simple_remove(&iio_trigger_ida, trig_info->id);
-+	ida_free(&iio_trigger_ida, trig_info->id);
- 	/* Possible issue in here */
- 	device_del(&trig_info->dev);
- }
--- 
-2.25.1
+Thank you.
+
+Yours expectantly,
+
+Kostiantyn Chichkov & Ms. Maryna Chudnovska,
+From Ukraine.
+
 

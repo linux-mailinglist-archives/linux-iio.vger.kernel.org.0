@@ -2,58 +2,169 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 408015362DC
-	for <lists+linux-iio@lfdr.de>; Fri, 27 May 2022 14:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36C0C5365B8
+	for <lists+linux-iio@lfdr.de>; Fri, 27 May 2022 18:09:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353205AbiE0Mnj convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 27 May 2022 08:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58034 "EHLO
+        id S1353800AbiE0QIo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 27 May 2022 12:08:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352963AbiE0Mnb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 May 2022 08:43:31 -0400
-X-Greylist: delayed 5689 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 05:40:52 PDT
-Received: from mail.composit.net (mail.composit.net [195.49.185.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 50B3419284;
-        Fri, 27 May 2022 05:40:52 -0700 (PDT)
-Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
-        by mail.composit.net (Proxmox) with ESMTP id 70A2C38A824;
-        Fri, 27 May 2022 14:02:43 +0300 (MSK)
-Received: from mail.composit.net (mail.industrial-flow.com [192.168.101.14])
-        by mail.composit.net (Proxmox) with SMTP id 3733E38F9FA;
-        Fri, 27 May 2022 14:02:43 +0300 (MSK)
-Received: from [192.168.1.105] (Unknown [197.234.219.23])
-        by mail.composit.net with ESMTPSA
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
-        ; Fri, 27 May 2022 14:02:44 +0300
-Message-ID: <7ABC466F-919F-4F2A-9EAC-76D0177AB17D@mail.composit.net>
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S1349472AbiE0QIn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 27 May 2022 12:08:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37AE61498D5
+        for <linux-iio@vger.kernel.org>; Fri, 27 May 2022 09:08:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C7A1161DCF
+        for <linux-iio@vger.kernel.org>; Fri, 27 May 2022 16:08:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 357BEC385A9
+        for <linux-iio@vger.kernel.org>; Fri, 27 May 2022 16:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653667721;
+        bh=Y2k/TCidYGU6zQQI0BlAf5ErlaM3biAWh5vxyPivEdM=;
+        h=From:To:Subject:Date:From;
+        b=q1Ygp1uRqIK9Zr+ALmKKGS72H++ogkASC93jBPZqyuZB6FSAIPyQmQzf4MdrqUIRx
+         5iWrOEKQfpj5tmp2SutiEMQadGYWXMH3nDG6ob1d6b4uT7tO4IYYWOGpcHoxnIsA5K
+         VbJ96Y9521WPTzvEiGQEl1wZhn0kINgB4igB7M4D18CCf3/WesUukC8HBoFS7Tw+5T
+         nv1c0FNUuHgpym4wAPE3I7jufU9kqzl3uEOPP881DOhI4jl3Hl12frt5t5Zj1kpCJc
+         uQ/QFGwbjAt2sGrMXj+OZd2HCtuY/OxFZlqpSNcR1z65iDekyfqz/KM9IvmTeR7pGG
+         38Jjk1Ux9mw6A==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+        id 14B2CC05FD5; Fri, 27 May 2022 16:08:41 +0000 (UTC)
+From:   bugzilla-daemon@kernel.org
+To:     linux-iio@vger.kernel.org
+Subject: [Bug 216037] New: Second MXC6655 accelerometer is not detected on
+ transformer Aquarius NS483 laptop
+Date:   Fri, 27 May 2022 16:08:40 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: nickel@altlinux.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cf_regression
+Message-ID: <bug-216037-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Greetings From Ukraine.  
-To:     Recipients <heiss@dnet.it>
-From:   "Kostiantyn Chichkov" <heiss@dnet.it>
-Date:   Fri, 27 May 2022 11:59:39 +0100
-Reply-To: kostiantync@online.ee
-X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_50,RCVD_IN_SBL,
-        RCVD_IN_SORBS_WEB,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Good Morning,
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216037
 
-We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
+            Bug ID: 216037
+           Summary: Second MXC6655 accelerometer is not detected on
+                    transformer Aquarius NS483 laptop
+           Product: Drivers
+           Version: 2.5
+    Kernel Version: 5.17.11
+          Hardware: All
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: IIO
+          Assignee: drivers_iio@kernel-bugs.kernel.org
+          Reporter: nickel@altlinux.org
+        Regression: No
 
-Thank you.
+A couple of accelerometers are used to detect the hinge angle in convertible
+laptops(one for display, one for base/keyboard).
 
-Yours expectantly,
+A discussion on the topic is available at [1]
 
-Kostiantyn Chichkov & Ms. Maryna Chudnovska,
-From Ukraine.
+But in my case while DSDT describes two I2C devices (if I interpret it righ=
+t):
 
+>Device (ACMG)
+>        {
+>            Name (_ADR, Zero)  // _ADR: Address
+>            Name (_HID, "MXC6655")  // _HID: Hardware ID
+>            Name (_CID, "MXC6655")  // _CID: Compatible ID
+>            Name (_DDN, "Accelerometer with Angle Calculation")  // _DDN: =
+DOS
+>            Device Name
+>            Name (_UID, One)  // _UID: Unique ID
+>            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource
+>            Settings
+>            {
+>                Name (RBUF, ResourceTemplate ()
+>                {
+>                    I2cSerialBusV2 (0x0015, ControllerInitiated, 0x00061A8=
+0,
+>                        AddressingMode7Bit, "\\_SB.PC00.I2C1",
+>                        0x00, ResourceConsumer, , Exclusive,
+>                        )
+>                    I2cSerialBusV2 (0x0015, ControllerInitiated, 0x00061A8=
+0,
+>                        AddressingMode7Bit, "\\_SB.PC00.I2C2",
+>                        0x00, ResourceConsumer, , Exclusive,
+>                        )
+>                })
+>                Return (RBUF) /* \_SB_.PC00.I2C1.ACMG._CRS.RBUF */
+>            }
 
+only one of them is detected (display side one, up and running, by the way):
+
+> P: /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-MXC6655:00
+> L: 0
+> E:
+> DEVPATH=3D/devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-MX=
+C6655:00
+> E: SUBSYSTEM=3Di2c
+> E: DRIVER=3Dmxc4005
+> E: MODALIAS=3Dacpi:MXC6655:MXC6655:
+>
+> P:
+> /devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-MXC6655:00/i=
+io:device0
+> N: iio:device0
+> L: 0
+> E:
+> DEVPATH=3D/devices/pci0000:00/0000:00:15.1/i2c_designware.1/i2c-16/i2c-MX=
+C6655:00/iio:device0
+> E: SUBSYSTEM=3Diio
+> E: DEVNAME=3D/dev/iio:device0
+> E: DEVTYPE=3Diio_device
+> E: MAJOR=3D238
+> E: MINOR=3D0
+> E: USEC_INITIALIZED=3D4954716
+> E: IIO_SENSOR_PROXY_TYPE=3Diio-poll-accel iio-buffer-accel
+> E: SYSTEMD_WANTS=3Diio-sensor-proxy.service
+> E: TAGS=3D:systemd:
+> E: CURRENT_TAGS=3D:systemd:
+
+There should be 2 I2C devices with DRIVER=3Dmxc4005, shouldn't they?
+
+Attaching detailed logs also.
+
+[1] https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/merge_requests=
+/338
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=

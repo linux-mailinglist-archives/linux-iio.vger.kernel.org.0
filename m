@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F2B5536DCB
-	for <lists+linux-iio@lfdr.de>; Sat, 28 May 2022 18:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E35F2536DD0
+	for <lists+linux-iio@lfdr.de>; Sat, 28 May 2022 18:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238564AbiE1QmH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 May 2022 12:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52684 "EHLO
+        id S238639AbiE1Qwl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 May 2022 12:52:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238307AbiE1QmG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 May 2022 12:42:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D0915721
-        for <linux-iio@vger.kernel.org>; Sat, 28 May 2022 09:42:05 -0700 (PDT)
+        with ESMTP id S235367AbiE1Qwk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 May 2022 12:52:40 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3480015FCC;
+        Sat, 28 May 2022 09:52:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52AD760F4C
-        for <linux-iio@vger.kernel.org>; Sat, 28 May 2022 16:42:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA1EC34100;
-        Sat, 28 May 2022 16:42:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BF106B801BD;
+        Sat, 28 May 2022 16:52:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB9FC34100;
+        Sat, 28 May 2022 16:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653756124;
-        bh=VIpPPu1RjXNZmMksRK1bL6YelkeODBGQsZ//Ac0e60s=;
+        s=k20201202; t=1653756755;
+        bh=l6YSFZs/3siq+Vk5NAEOpTNq431P3M8yNr8OeXJt/rc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tgmAdHu1U0lGYI2HrdlhxiIF0RrmE2iZjCfbNVfU95L0fXvY+zAqiyYcaYPeBfi0N
-         qPdk9nYrfkb4Qi/Q5b5dz7UjvGkcl6KuS6wmxANdNsO6Vb+S9fdCi6h+Jt7KX0Hi04
-         nlf/cFay5Ibmy2p2W5L/IwvtCK8V0Nm0SIwi6p+nUwMzMZDILulB1H2eEVxbLj1+UG
-         Qy5VHhMfRZvo0aei7+fRPSycEbYlXdjJwBvTJ5nfHVHyeXwJg8AT/J6JdJTFshf4Up
-         AxXOratcZyWlw/Ad8ShvuEhwZYtWcwrc/CceYbOKD0UxmJeAKHbtt9s25ZfXFsQvHz
-         YzMdAR0b/IQ8Q==
-Date:   Sat, 28 May 2022 17:50:55 +0100
+        b=vGms0P5QJaDOA8AIxCQMLhpB1FR+ZSa8/EsmIDYlYJ8NExl6doNNm8nK9qXZNFS1p
+         NoqH1OQBS/KGgzeLKbK7IinZ6coCczltfcM3xrRJ5QAgUPuffeRkKaMSa+OKws6sMo
+         IcveSdTIvnEHg32WLTaqkk/WiTBDw/2Jbqxem9esFkHpSzB2mE9kW40T2Rvkig5yvw
+         Or592vKgK1HSuTjoZA+4ikIq6ItR3x3D+GstkQ38xNfT+i2utPcmc66zXyGIXvfT1R
+         uRo/OADqSYgsarCRblzvYv/CT7S6ZdJ3u91KrEmdmAmhDHpBMpZVd9bAF2H5bJDgGL
+         s1WONz7sIiWng==
+Date:   Sat, 28 May 2022 18:01:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     <alexandru.tachici@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <Michael.Hennerich@analog.com>,
-        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: Re: [PATCH 0/5] dt-bindings: iio: update maintainers
-Message-ID: <20220528175055.091c4ea0@jic23-huawei>
-In-Reply-To: <20220526134603.75216-1-alexandru.tachici@analog.com>
-References: <20220526134603.75216-1-alexandru.tachici@analog.com>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+Message-ID: <20220528180128.3f160c51@jic23-huawei>
+In-Reply-To: <Yo7X9w6i3uiNZqpW@shaak>
+References: <20220524075448.140238-1-linus.walleij@linaro.org>
+        <Yo7X9w6i3uiNZqpW@shaak>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,40 +56,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 26 May 2022 16:45:57 +0300
-<alexandru.tachici@analog.com> wrote:
+On Wed, 25 May 2022 21:29:27 -0400
+Liam Beguin <liambeguin@gmail.com> wrote:
 
-> From: Alexandru Tachici <alexandru.tachici@analog.com>
+> On Tue, May 24, 2022 at 09:54:48AM +0200, Linus Walleij wrote:
+> > When introducing support for processed channels I needed
+> > to invert the expression:
+> > 
+> >   if (!iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
+> >       !iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE))
+> >         dev_err(dev, "source channel does not support raw/scale\n");
+> > 
+> > To the inverse, meaning detect when we can usse raw+scale
+> > rather than when we can not. This was the result:
+> > 
+> >   if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
+> >       iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE))
+> >        dev_info(dev, "using raw+scale source channel\n");
+> > 
+> > Ooops. Spot the error. Yep old George Boole came up and bit me.
+> > That should be an &&.
+> > 
+> > The current code "mostly works" because we have not run into
+> > systems supporting only raw but not scale or only scale but not
+> > raw, and I doubt there are few using the rescaler on anything
+> > such, but let's fix the logic.  
 > 
-> Some of the emails in bindings maintainers section are not
-> working anymore. Update them with current ones.
+> Maybe `iio: afe: rescale: Fix boolean logic bug` if you're resending,
+> otherwise,
 
-Hi Alexandru,
+Makes sense - I tweaked that whilst applying.
 
-Where possible for maintainer changes, cc the original person
-on their new email addresses.  Alexandru is still active on the
-list +CC.
-
-Now, if they don't reply I don't mind switching these maintainers
-over but nice to give them a heads up.
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
 > 
-> Alexandru Tachici (5):
->   dt-bindings: iio: accel: ADIS16240: update maintainers
->   dt-bindings: iio: adc: AD9467: update maintainers
->   dt-bindings: iio: adc: axi-adc: update maintainers
->   dt-bindings: iio: dac: AD5770R: update maintainers
->   dt-bindings: iio: imu: adis16480: update maintainers
+> Reviewed-by: Liam Beguin <liambeguin@gmail.com>
 > 
->  Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml | 2 +-
->  Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml      | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml     | 1 -
->  Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml     | 2 +-
->  Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml   | 2 +-
->  5 files changed, 3 insertions(+), 5 deletions(-)
+> Thanks,
+> Liam
 > 
+> > Cc: Liam Beguin <liambeguin@gmail.com>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 53ebee949980 ("iio: afe: iio-rescale: Support processed channels")
+> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> > ---
+> >  drivers/iio/afe/iio-rescale.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
+> > index 7e511293d6d1..dc426e1484f0 100644
+> > --- a/drivers/iio/afe/iio-rescale.c
+> > +++ b/drivers/iio/afe/iio-rescale.c
+> > @@ -278,7 +278,7 @@ static int rescale_configure_channel(struct device *dev,
+> >  	chan->ext_info = rescale->ext_info;
+> >  	chan->type = rescale->cfg->type;
+> >  
+> > -	if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) ||
+> > +	if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
+> >  	    iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
+> >  		dev_info(dev, "using raw+scale source channel\n");
+> >  	} else if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
+> > -- 
+> > 2.35.3
+> >   
 

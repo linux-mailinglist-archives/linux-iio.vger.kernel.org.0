@@ -2,47 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EA16536DDC
-	for <lists+linux-iio@lfdr.de>; Sat, 28 May 2022 19:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91870536DF2
+	for <lists+linux-iio@lfdr.de>; Sat, 28 May 2022 19:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238593AbiE1RO0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 28 May 2022 13:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43454 "EHLO
+        id S239080AbiE1RZQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 28 May 2022 13:25:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238561AbiE1ROZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 May 2022 13:14:25 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CE712D2D;
-        Sat, 28 May 2022 10:14:24 -0700 (PDT)
+        with ESMTP id S231777AbiE1RZP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 28 May 2022 13:25:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B8111A32;
+        Sat, 28 May 2022 10:25:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 05A75B801BF;
-        Sat, 28 May 2022 17:14:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60478C34100;
-        Sat, 28 May 2022 17:14:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E3998B807ED;
+        Sat, 28 May 2022 17:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C3BC34100;
+        Sat, 28 May 2022 17:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653758061;
-        bh=i1tX6uyAyQmWx3WtUEkfTOp6hj48zz27F+SBAk/tkrk=;
+        s=k20201202; t=1653758711;
+        bh=GdCxg+Hoqs4A5uVj70itM0dbHtrrCFfc1B7A5Kv46nA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OjzABn4vqPt8RdqtjbC+KUzFsJGO6g434tzB4B2wOg5sMUHnr4fBsvB5uOUWdkLDx
-         ksr5JIAVYe48EJGArGha8HdLNefJc39YPFeY8BcJGqkHhjSqILN1p+G77m7k+CKTlw
-         8xkH3DnFT2ntB4BFVa4RsXorOsvcLEDVi+KDDqtmZtCjrTLjEM2yrHidk8Rb/Ldtkk
-         jW+vX7QnxAEpBYrXtFJgQB0UYajjehEEjVr0j6hVBhm1eAbBgbniuPIONs1lGF3rWX
-         4Fp4c47x0RjYSEXI+9eWgG7Mr6X7ef8+yUGN/Y6U/96svbHfye+P9t82wUKt+GMkjm
-         DHTx6y7R1XMVA==
-Date:   Sat, 28 May 2022 18:23:14 +0100
+        b=FB63uImwGdFeA5/Z9TrQifFVx/+xCf8Ko2Rs/y5W1IGoJgSyHuusfcef+E3g5pzy0
+         Km4W1kx70qfQf5Pcq85PNL1yqX+IoErx9DlI6pXZhgBS4CUkEm5Pr+ewB7aF7BDcJ6
+         oF+VyBFJdXZEu/JQiZguzZt6E3DTAlA5QLOKTo6J1jlB1qzFlNbrvuqFJLUCAJWIZk
+         FDN6Pf+SOodovwP2l9MG9/ltlvjKAR21XFLRERbzwHpepBiU94sx2rSdFlbtVe5bOD
+         +TvKE9R46jwb9jmG6LvZw7mikGNzOrZjLYwC51QtBSLmAX9n+/tKgjN8Ol0EkwM9d+
+         8bmRuMnT0/PqQ==
+Date:   Sat, 28 May 2022 18:34:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc:     lars@metafoo.de, robh+dt@kernel.org, tomas.melin@vaisala.com,
-        andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        thomas.haemmerle@leica-geosystems.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH V8 5/5] iio: accel: sca3300: Add inclination channels
-Message-ID: <20220528182314.0785a92b@jic23-huawei>
-In-Reply-To: <20220523062312.1401944-6-Qing-wu.Li@leica-geosystems.com.cn>
-References: <20220523062312.1401944-1-Qing-wu.Li@leica-geosystems.com.cn>
-        <20220523062312.1401944-6-Qing-wu.Li@leica-geosystems.com.cn>
+To:     Joe Simmons-Talbott <joetalbott@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] iio: Prefer octal over symbolic permissions.
+Message-ID: <20220528183405.22b55033@jic23-huawei>
+In-Reply-To: <20220527185651.465204-1-joetalbott@gmail.com>
+References: <20220527185651.465204-1-joetalbott@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,56 +53,139 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 May 2022 06:23:12 +0000
-LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+On Fri, 27 May 2022 14:56:52 -0400
+Joe Simmons-Talbott <joetalbott@gmail.com> wrote:
 
-> Different from SCA3300, SCL3300 can output inclination angles.
-> Angles are formed from acceleration with following equations:
-> ANG_X = atan2(accx , sqrt(pow(accy , 2) + pow(accz , 2)))
-> ANG_Y = atan2(accy , sqrt(pow(accx , 2) + pow(accz , 2)))
-> ANG_Z = atan2(accz , sqrt(pow(accx , 2) + pow(accy , 2)))
+> As reported by checkpatch.pl use ocatl permissions rather than symbolic
+> permissions.
 > 
-> The commit adds the output of the raw value, scale
-> and scale_available of angles.
-> 
-> New interfaces:
->   in_incli_scale
->   in_incli_scale_available
->   in_incli_x_raw
->   in_incli_y_raw
->   in_incli_z_raw
-> Data converted by application of scale to degrees.
-> 
-> Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-> ---
+> Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
 
-Hi,
+Hi Joe,
 
-One comment inline.
+Why the resend?  Given change of description, I'm guessing this is v2
+because of feedback on a similar patch elsewhere. If so, please
+put the version number in the patch log and provide a changelog
+below the ---
 
->  struct sca3300_chip_info {
->  	const char *name;
->  	const unsigned long *scan_masks;
-> @@ -123,12 +167,16 @@ struct sca3300_chip_info {
->  	u8 num_accel_scales;
->  	const int (*accel_scale)[2];
->  	const int *accel_scale_map;
-> +	const int (*incli_scale)[2];
-> +	const int *incli_scale_map;
-> +	u8 num_incli_scales;
->  	u8 num_freqs;
->  	const int *freq_table;
->  	const int *freq_map;
->  	const int *avail_modes_table;
->  	u8 num_avail_modes;
->  	u8 chip_id;
-> +	bool angle;
+Hmm. I guess I don't really mind cleaning this up though it is
+some churn in core code which is usually something we try to avoid
+for fairly trivial style reasons.
 
-"angle" is a bit vague.  Perhaps "angle_supported"?
-
-Otherwise this looks good to me.
+One request inline (though I suspect it applies in several places,
+I just haven't checked ;)
 
 Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/industrialio-buffer.c  | 12 ++++++------
+>  drivers/iio/industrialio-core.c    | 10 +++++-----
+>  drivers/iio/industrialio-trigger.c |  4 ++--
+>  3 files changed, 13 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> index b078eb2f3c9d..c27f74a3c0f3 100644
+> --- a/drivers/iio/industrialio-buffer.c
+> +++ b/drivers/iio/industrialio-buffer.c
+> @@ -1391,17 +1391,17 @@ static ssize_t direction_show(struct device *dev,
+>  	}
+>  }
+>  
+> -static DEVICE_ATTR(length, S_IRUGO | S_IWUSR, iio_buffer_read_length,
+> +static DEVICE_ATTR(length, 0644, iio_buffer_read_length,
+>  		   iio_buffer_write_length);
+>  static struct device_attribute dev_attr_length_ro = __ATTR(length,
+> -	S_IRUGO, iio_buffer_read_length, NULL);
+> -static DEVICE_ATTR(enable, S_IRUGO | S_IWUSR,
+> +	0444, iio_buffer_read_length, NULL);
+> +static DEVICE_ATTR(enable, 0644,
+>  		   iio_buffer_show_enable, iio_buffer_store_enable);
+> -static DEVICE_ATTR(watermark, S_IRUGO | S_IWUSR,
+> +static DEVICE_ATTR(watermark, 0644,
+>  		   iio_buffer_show_watermark, iio_buffer_store_watermark);
+>  static struct device_attribute dev_attr_watermark_ro = __ATTR(watermark,
+> -	S_IRUGO, iio_buffer_show_watermark, NULL);
+> -static DEVICE_ATTR(data_available, S_IRUGO,
+> +	0444, iio_buffer_show_watermark, NULL);
+> +static DEVICE_ATTR(data_available, 0444,
+>  		iio_dma_show_data_available, NULL);
+
+a side effect of this change a slight shortening of how long the above
+two lines will be if combined into one.  It's now sub 80 chars
+I think, so please make them a single line.  Also check for similar
+cases elsewhere.
+
+
+>  static DEVICE_ATTR_RO(direction);
+>  
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index e1ed44dec2ab..35de348d686e 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1114,12 +1114,12 @@ int __iio_device_attr_init(struct device_attribute *dev_attr,
+>  	dev_attr->attr.name = name;
+>  
+>  	if (readfunc) {
+> -		dev_attr->attr.mode |= S_IRUGO;
+> +		dev_attr->attr.mode |= 0444;
+>  		dev_attr->show = readfunc;
+>  	}
+>  
+>  	if (writefunc) {
+> -		dev_attr->attr.mode |= S_IWUSR;
+> +		dev_attr->attr.mode |= 0200;
+>  		dev_attr->store = writefunc;
+>  	}
+>  
+> @@ -1401,7 +1401,7 @@ static ssize_t iio_show_dev_name(struct device *dev,
+>  	return sysfs_emit(buf, "%s\n", indio_dev->name);
+>  }
+>  
+> -static DEVICE_ATTR(name, S_IRUGO, iio_show_dev_name, NULL);
+> +static DEVICE_ATTR(name, 0444, iio_show_dev_name, NULL);
+>  
+>  static ssize_t iio_show_dev_label(struct device *dev,
+>  				 struct device_attribute *attr,
+> @@ -1411,7 +1411,7 @@ static ssize_t iio_show_dev_label(struct device *dev,
+>  	return sysfs_emit(buf, "%s\n", indio_dev->label);
+>  }
+>  
+> -static DEVICE_ATTR(label, S_IRUGO, iio_show_dev_label, NULL);
+> +static DEVICE_ATTR(label, 0444, iio_show_dev_label, NULL);
+>  
+>  static ssize_t iio_show_timestamp_clock(struct device *dev,
+>  					struct device_attribute *attr,
+> @@ -1509,7 +1509,7 @@ int iio_device_register_sysfs_group(struct iio_dev *indio_dev,
+>  	return 0;
+>  }
+>  
+> -static DEVICE_ATTR(current_timestamp_clock, S_IRUGO | S_IWUSR,
+> +static DEVICE_ATTR(current_timestamp_clock, 0644,
+>  		   iio_show_timestamp_clock, iio_store_timestamp_clock);
+>  
+>  static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> index f504ed351b3e..e22a35634f2c 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -54,7 +54,7 @@ static ssize_t iio_trigger_read_name(struct device *dev,
+>  	return sysfs_emit(buf, "%s\n", trig->name);
+>  }
+>  
+> -static DEVICE_ATTR(name, S_IRUGO, iio_trigger_read_name, NULL);
+> +static DEVICE_ATTR(name, 0444, iio_trigger_read_name, NULL);
+>  
+>  static struct attribute *iio_trig_dev_attrs[] = {
+>  	&dev_attr_name.attr,
+> @@ -494,7 +494,7 @@ static ssize_t iio_trigger_write_current(struct device *dev,
+>  	return ret;
+>  }
+>  
+> -static DEVICE_ATTR(current_trigger, S_IRUGO | S_IWUSR,
+> +static DEVICE_ATTR(current_trigger, 0644,
+>  		   iio_trigger_read_current,
+>  		   iio_trigger_write_current);
+>  
 

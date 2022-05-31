@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A2555398F6
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 23:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E660353991E
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 23:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343928AbiEaVsQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 17:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55436 "EHLO
+        id S1348261AbiEaVzD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 17:55:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233452AbiEaVsP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 17:48:15 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C859C8D69D;
-        Tue, 31 May 2022 14:48:13 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id c19so23574285lfv.5;
-        Tue, 31 May 2022 14:48:13 -0700 (PDT)
+        with ESMTP id S1348365AbiEaVxk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 17:53:40 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566E322B0D;
+        Tue, 31 May 2022 14:53:39 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id c2so9775855edf.5;
+        Tue, 31 May 2022 14:53:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ybk7O8dN6b6H5xbFDEoMCkqNz4qnfNPoCfwRQJbaMWE=;
-        b=Cgm6GprlcUCBuJ8R9gwHR/U6yIcGBQ1j0i9r/Y19cnMF6yfiex3zX156nHpM6PWbxZ
-         /pasrG3B9WLzDjRSg3Q7QpcnySf+6cBKafEA49vxuVLkZJpRnM/3XXQsyl+P3iqrP2SR
-         3M4Fa5Ey7i3i7bXM3pUJK/vKrvfXa+8U6Fhk1pVwZ9ygtYHkhjQV7qO0x04j9NMsccis
-         BTO4q01NB5fIL72dqBfydVgJ4d4gy5OrvsNgU7BYnblwB5wtD/MT2SyK/pBC3OJimTUd
-         8CrIKuGDEm/Ym6h5DCWj3n6hUn2ZSFdWWcm+1kdPlaOkhFqnPAyocNLGNNGYdKNwWKaC
-         lXZg==
+        bh=3jKLy2+1wJ6FvjsseDYfkSRIwq6bSkGwUcxVnEaBaHo=;
+        b=k9+rj8JVq7JLtvRHCT0gkLzsoLUqcwgI87tvWqPsUh3pgL8DstthzlcI6SWzSXXn9E
+         NoyAF1rZaD7uQPf/fFidt8v6Q0tz1zQZHVpGhsTzAcoyzu2QCTBQuJCN6ghcHA7MHG/c
+         NyBud0an2JLkmdzTZpxRg/SbQciP9LNFZ+5k0HcsB8L2/Oh02JKB0JFihba6zAqqKzLs
+         xlTqiIZQi+G61Apnx2aPPc8u2hLXtRbbi5vJtxNd0flO9/LkA3AWxmjXx3Ehoptb2WuV
+         N92wj3PeCZ7HaOagNsAi1c7e3ZdHhlqXTUhRrXQpNImp9pGf2/vIyGYaJQwLj72MoGek
+         A3xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ybk7O8dN6b6H5xbFDEoMCkqNz4qnfNPoCfwRQJbaMWE=;
-        b=YMTrGBWDQhefbnRIDiQLHEgOaPILwDU5xwi54alpQ3YVhk5j6+JwCTP9N81zXy2trB
-         WiVklSql+f0P0XwdjYfTeYKG1z2h7f+ihH6690IRkBvn+uIH7wr2S/Mk6+d98cbe+SBh
-         4hkAHDYHg4vEsiX+bSfFbW7OTavwe7A+cEXNhSS9+r/rtVR5zrWYF/v4rNKeP6GMBBWf
-         xyogARAYCcOvzhnRj0LI6uSAoGmIWgTx+JcuVDtgWHdxDrMwm1V9LGjf5+zWjD91CoB0
-         dmLn530h1/Xs9+oaGXbk7xBP1eSyhUHPinPG4hT7zQkyCn6Bi6NLLsJbg2tuydTx0EI5
-         /D8Q==
-X-Gm-Message-State: AOAM5322xdcHzCTkgrHPXoI23brmH/W2sbfiW9imnDffUCRXKtNQuksC
-        jRi5dUAQuRTxlZNjSeaOxZP5SfttaA0/QcWFnZFZ1hYVNHQ=
-X-Google-Smtp-Source: ABdhPJx+qwKcx7leYf5D73FowWhfAJA6/AHPi6i6vR9MWlyar+cEFQ36m84oTWlNMVbd2BNnkrqW7jTW3lQggmxgPas=
-X-Received: by 2002:a17:907:381:b0:6fe:9ca8:c4b4 with SMTP id
- ss1-20020a170907038100b006fe9ca8c4b4mr52900857ejb.147.1654033681191; Tue, 31
- May 2022 14:48:01 -0700 (PDT)
+        bh=3jKLy2+1wJ6FvjsseDYfkSRIwq6bSkGwUcxVnEaBaHo=;
+        b=bPPpBpn99Uz30R5IfSB7dzxFH5byBc2jTMsW/Fjbrh+axvQNgvfNuAu03njg0BDQjM
+         4vlht8FqpcV21o02mhIOhD4xGLq85Gl4Mm7JeJMzn/HUitdQbRVBU6U/wC4Yuaeg4drC
+         FyyGLZdE65zIMqKlQ+Nnrnd3vPgIWgsjjwrNMkPjcneTNOsHrHfoE0c/s6uRnYiCwjS1
+         tIwGnmZJfMTlvL27YmsF/P52mKKA6yd33dg2WJ5XoZYPuogT0Q+ZiVXAqxU7NSZiJLzu
+         Hq+5OikBMK29XYFIlo6M6g51PkJyKtnEoAllmPTzrd2H5dwF02AdUtr3imqOcWQw7GZS
+         2lCA==
+X-Gm-Message-State: AOAM533vYUgSmPIZZeBBS0B8CNFV9zymsgcTwV4tASn4WnYIvlOqn1kH
+        4QpLr4aNcL+KswzaocC4XQt/NuC96UXI60NGIow=
+X-Google-Smtp-Source: ABdhPJw7V2LqbZ6gntsjtVD/ZVuc1e6nKKIT+I2uXvIrAVuxJVfdZuF08H/Htj7WTo432yGeoXe+1LvBNyhatPFpxxE=
+X-Received: by 2002:a05:6402:254a:b0:42b:6c9a:c06c with SMTP id
+ l10-20020a056402254a00b0042b6c9ac06cmr47865254edb.199.1654034017881; Tue, 31
+ May 2022 14:53:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com> <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
+References: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
 From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 31 May 2022 23:47:50 +0200
-Message-ID: <CAFBinCDf4UfEPFV4_Qf3m16DE-NzNUk_ZVcHZhgxVvn_pokdgw@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] iio: adc: meson_saradc: Use temporary variable for
- struct device
+Date:   Tue, 31 May 2022 23:53:27 +0200
+Message-ID: <CAFBinCAXPGXmuChU9XrqbH4Di6L6rSihM3VSqfFzMrK0D4bLuw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] iio: adc: meson_saradc: Convert to use dev_err_probe()
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -73,26 +72,18 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Andy,
 
+overall this is looking great - thank you for this patch!
+
 On Tue, May 31, 2022 at 11:18 PM Andy Shevchenko
 <andriy.shevchenko@linux.intel.com> wrote:
 [...]
-> @@ -650,11 +648,12 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
->                                   void __iomem *base)
->  {
->         struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
-> +       struct device *idev = &indio_dev->dev;
-> +       struct device *dev = dev->parent;
-It looks like this should read:
-    struct device *dev = idev->parent;
+> +       if (IS_ERR(priv->tsc_regmap))
+> +               return dev_err_probe(dev, PTR_ERR(priv->tsc_regmap), "failed to get amlogic,hhi-sysctrl regmap\n");
+checkpatch complains:
+  WARNING: line length of 115 exceeds 100 columns
+  #44: FILE: drivers/iio/adc/meson_saradc.c:728:
 
-That said, I think this kind of typo is very easy with the current
-naming schema.
-It's been a while since I looked at other drivers but maybe the IIO
-maintainers have some recommendations for us (which would apply to
-multiple IIO drivers, not just meson_saradc).
-For example: I am not sure if iio_{err,warn} functions (which take a
-struct iio_dev pointer) have been proposed/discussed before. I think
-they could be useful for other drivers as well.
+Adding a line-break right before the error message will solve this problem
 
 
 Best regards,

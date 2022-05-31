@@ -2,89 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E660353991E
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 23:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03F395399B5
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 00:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348261AbiEaVzD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 17:55:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37140 "EHLO
+        id S1348533AbiEaWrC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 18:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348365AbiEaVxk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 17:53:40 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566E322B0D;
-        Tue, 31 May 2022 14:53:39 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id c2so9775855edf.5;
-        Tue, 31 May 2022 14:53:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3jKLy2+1wJ6FvjsseDYfkSRIwq6bSkGwUcxVnEaBaHo=;
-        b=k9+rj8JVq7JLtvRHCT0gkLzsoLUqcwgI87tvWqPsUh3pgL8DstthzlcI6SWzSXXn9E
-         NoyAF1rZaD7uQPf/fFidt8v6Q0tz1zQZHVpGhsTzAcoyzu2QCTBQuJCN6ghcHA7MHG/c
-         NyBud0an2JLkmdzTZpxRg/SbQciP9LNFZ+5k0HcsB8L2/Oh02JKB0JFihba6zAqqKzLs
-         xlTqiIZQi+G61Apnx2aPPc8u2hLXtRbbi5vJtxNd0flO9/LkA3AWxmjXx3Ehoptb2WuV
-         N92wj3PeCZ7HaOagNsAi1c7e3ZdHhlqXTUhRrXQpNImp9pGf2/vIyGYaJQwLj72MoGek
-         A3xw==
+        with ESMTP id S1348400AbiEaWrA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 18:47:00 -0400
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84FFDA466;
+        Tue, 31 May 2022 15:46:58 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-f2a4c51c45so355449fac.9;
+        Tue, 31 May 2022 15:46:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3jKLy2+1wJ6FvjsseDYfkSRIwq6bSkGwUcxVnEaBaHo=;
-        b=bPPpBpn99Uz30R5IfSB7dzxFH5byBc2jTMsW/Fjbrh+axvQNgvfNuAu03njg0BDQjM
-         4vlht8FqpcV21o02mhIOhD4xGLq85Gl4Mm7JeJMzn/HUitdQbRVBU6U/wC4Yuaeg4drC
-         FyyGLZdE65zIMqKlQ+Nnrnd3vPgIWgsjjwrNMkPjcneTNOsHrHfoE0c/s6uRnYiCwjS1
-         tIwGnmZJfMTlvL27YmsF/P52mKKA6yd33dg2WJ5XoZYPuogT0Q+ZiVXAqxU7NSZiJLzu
-         Hq+5OikBMK29XYFIlo6M6g51PkJyKtnEoAllmPTzrd2H5dwF02AdUtr3imqOcWQw7GZS
-         2lCA==
-X-Gm-Message-State: AOAM533vYUgSmPIZZeBBS0B8CNFV9zymsgcTwV4tASn4WnYIvlOqn1kH
-        4QpLr4aNcL+KswzaocC4XQt/NuC96UXI60NGIow=
-X-Google-Smtp-Source: ABdhPJw7V2LqbZ6gntsjtVD/ZVuc1e6nKKIT+I2uXvIrAVuxJVfdZuF08H/Htj7WTo432yGeoXe+1LvBNyhatPFpxxE=
-X-Received: by 2002:a05:6402:254a:b0:42b:6c9a:c06c with SMTP id
- l10-20020a056402254a00b0042b6c9ac06cmr47865254edb.199.1654034017881; Tue, 31
- May 2022 14:53:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Tue, 31 May 2022 23:53:27 +0200
-Message-ID: <CAFBinCAXPGXmuChU9XrqbH4Di6L6rSihM3VSqfFzMrK0D4bLuw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] iio: adc: meson_saradc: Convert to use dev_err_probe()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=AE9Fbrj6BPIXSH+6mmzzM5HJbPbBIVW+lbxzy622FhY=;
+        b=FC7YLCXVp+3Ey9OIsvgjO8KDG576KFeauHlGw9t9IKSPQoYy+B6Ehbg9N7Ys8Qmj2b
+         LmcAk4uBcXej5lFY3eJX00+fNT8nCYwM/FRlLQfSW+e63Gm5Ym6KP9OzTPCEBOOS4Nyb
+         9zDQIgoWggBTkFJizFd/bNEYl5SFd/MmWq8FTMjpzoQchlx9V8rP/Wn/KsfApTRhgMSS
+         LaPB5j8BSqzY4JQskTvNxp8wnrjQAM7K4YKN4W+xacuhXcIEcwiq4ZwFZ4MqP4kNam4g
+         7BvXB8v5N932AluPgFhuJUMJPCODzVK25uYIeDByuuvShMa0raQfnf/DEX1Q0e4kpZxD
+         VB+w==
+X-Gm-Message-State: AOAM531mZzff7zTh95UL62AZHhRlpQ7yBeIKsHZgTgAJaKmDydXz1SO+
+        k26Mv1kGjKXdj/z5e2B4Vg==
+X-Google-Smtp-Source: ABdhPJz9hzTJNp12uYZ4vHIk6ZhMev4DpgOt2zBvhqRIr7g1l5auyN0vlOttAqh+FCiKDf2dw2zOIw==
+X-Received: by 2002:a05:6870:b254:b0:ec:6ca4:c89f with SMTP id b20-20020a056870b25400b000ec6ca4c89fmr15083367oam.272.1654037217725;
+        Tue, 31 May 2022 15:46:57 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id u3-20020a056830248300b0060603221247sm7000503ots.23.2022.05.31.15.46.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 May 2022 15:46:57 -0700 (PDT)
+Received: (nullmailer pid 2476555 invoked by uid 1000);
+        Tue, 31 May 2022 22:46:54 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     heikki.krogerus@linux.intel.com, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, pavel@ucw.cz, sre@kernel.org,
+        dri-devel@lists.freedesktop.org, gregkh@linuxfoundation.org,
+        jic23@kernel.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        lgirdwood@gmail.com, linux-leds@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux@roeck-us.net,
+        chunfeng.yun@mediatek.com, linux-usb@vger.kernel.org,
+        alice_chen@richtek.com, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, cy_huang@richtek.com,
+        robh+dt@kernel.org, chiaen_wu@richtek.com,
+        linux-fbdev@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+        linux-pm@vger.kernel.org, lars@metafoo.de
+In-Reply-To: <20220531111900.19422-5-peterwu.pub@gmail.com>
+References: <20220531111900.19422-1-peterwu.pub@gmail.com> <20220531111900.19422-5-peterwu.pub@gmail.com>
+Subject: Re: [RESEND 04/14] dt-bindings: leds: Add Mediatek MT6370 flashlight binding
+Date:   Tue, 31 May 2022 17:46:54 -0500
+Message-Id: <1654037214.468113.2476554.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+On Tue, 31 May 2022 19:18:50 +0800, ChiaEn Wu wrote:
+> From: Alice Chen <alice_chen@richtek.com>
+> 
+> Add Mediatek MT6370 flashlight binding documentation
+> 
+> Signed-off-by: Alice Chen <alice_chen@richtek.com>
+> ---
+>  .../leds/mediatek,mt6370-flashlight.yaml      | 48 +++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml
+> 
 
-overall this is looking great - thank you for this patch!
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-On Tue, May 31, 2022 at 11:18 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-[...]
-> +       if (IS_ERR(priv->tsc_regmap))
-> +               return dev_err_probe(dev, PTR_ERR(priv->tsc_regmap), "failed to get amlogic,hhi-sysctrl regmap\n");
-checkpatch complains:
-  WARNING: line length of 115 exceeds 100 columns
-  #44: FILE: drivers/iio/adc/meson_saradc.c:728:
+yamllint warnings/errors:
 
-Adding a line-break right before the error message will solve this problem
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/leds/mediatek,mt6370-flashlight.yaml#
 
+doc reference errors (make refcheckdocs):
+Warning: Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/mt6370.yaml
+Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml: Documentation/devicetree/bindings/mfd/mt6370.yaml
 
-Best regards,
-Martin
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

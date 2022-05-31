@@ -2,140 +2,385 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A56D9539319
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 16:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2924C5395E6
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 20:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234252AbiEaOX6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 10:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50648 "EHLO
+        id S242817AbiEaSLH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 14:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345218AbiEaOX5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 10:23:57 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A3B8020A;
-        Tue, 31 May 2022 07:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654007036; x=1685543036;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rpF3VW7+9wXB4kzDnn1TnjadNGs2Y37n9bSd1jF1TNE=;
-  b=Dsj9+W0ylzTcGVXOT33GQviQkc7fjTezEj7uVpuTbxvBZGS/gEgly2pk
-   K02HZJYMgWXxU7lXf5IcoV0FrRRP/rr/b88jILvj0kZcHlKP3Ms6yAtVJ
-   nOy+lZEIO+jpyk06POw/MshcwJMMMr3lbPzg5ebuTSep06EPkQfI6wZZM
-   F6r+0UDZf9ZlK+QTqUAOZTRJ4na0HNKPB1lOzXcKWz960x8QfLJpWc4FQ
-   VSunqlgtbC8WGy8QgNqcrnOj6efr5bkqsbEIOLAg3hOl4z4znpNeB/XN6
-   YKt0snyGJh5xMiZXhEUacFlj3u0SPU4fvLg7yD/B5yDoT1bVXr7sdA9UP
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="272835147"
-X-IronPort-AV: E=Sophos;i="5.91,265,1647327600"; 
-   d="scan'208";a="272835147"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 07:23:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,265,1647327600"; 
-   d="scan'208";a="823293222"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 31 May 2022 07:23:52 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 820F814F; Tue, 31 May 2022 17:23:54 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-imx@nxp.com
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Haibo Chen <haibo.chen@nxp.com>
-Subject: [PATCH v1 1/1] iio: adc: vf610_adc: Make use of device properties
-Date:   Tue, 31 May 2022 17:23:53 +0300
-Message-Id: <20220531142353.64925-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S237803AbiEaSLF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 14:11:05 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2195A996A7;
+        Tue, 31 May 2022 11:11:04 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id ew15so3127373qtb.2;
+        Tue, 31 May 2022 11:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rgG+HZL25+Sq4rfZI6DR4wzIXou34HoqlI0ILL2AkQo=;
+        b=L4SKswsHnWJURM/zNqp7hWiCPrd33KTNyD0E6meBIjqLNCRDhbRhi4Qysw4RFW0qvu
+         ryDqARfp41mPsdCbsD+NRRX1NH+aypmCZLjfTczclF5fpVZpRjvxgYgCR6pNVlf5ADCb
+         roCiW+gcHgqSOESAH48SUi8NAjEYhfqe3fGPJk3aFDUgch0aTjnrn3l/6bbX223Ty8OH
+         ajLWp4G3H/Gv6/OLI5jKSFnaYDasEt35i5l2215uRKjhQFJp8WKN2FtcsP+jdoRccAOd
+         jlZ3Z7cPLBulBizrfrmiVZyHBN/krfdxun1TGSmdfvaztFjQSYPeq9+1zNKXxwEP1RvT
+         3P0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rgG+HZL25+Sq4rfZI6DR4wzIXou34HoqlI0ILL2AkQo=;
+        b=54TC2Dlr2s6npCauMM/ZewEXIkCxI5RLsTKOPTgiN+DhlWhyatiNl5y/j2dRjz6Q7d
+         H5A7WLeWDLDekBRhzM1n8aTiUiPB5KgG9klka4fcaH1LCXsTQdTEJSBYUfT3pc4DiYYB
+         qWw8SSo/MyrGyv6e8LK4PbxfItceDTDJGh28iUN79MmP8SbFDjtKRz+hNvOIFkkIJujy
+         Y+QWtGjtu4yPl3Bx8VZwEvX/ugPqeSLGqJydLRz8v0GGrZ3Ce/dLAdYrXLyrAQO2xqEo
+         UFafqly3WEjMhHWT1RQgkd3HbuiRGLZ9AMMU6hmCg3x0lpecTvTUZ6RwO0YwsqQnypoZ
+         kqeQ==
+X-Gm-Message-State: AOAM533GR0VPPfZl34wAyKrrlPMDJqpBtX3hrBxQulqG/BTyw+S+nVkb
+        xrdmbH8RtNLLDx23Xav8HiWhP8QmA6P8Aw==
+X-Google-Smtp-Source: ABdhPJwNlqdoRbW1B1bqQAoS3EiwJ6y4NzmDgWMkm0IOOiBf8mzjG7Tn1RYtj6Tkf5aApU7V1xChLg==
+X-Received: by 2002:ac8:5795:0:b0:2fa:3038:b8f3 with SMTP id v21-20020ac85795000000b002fa3038b8f3mr28911150qta.659.1654020663115;
+        Tue, 31 May 2022 11:11:03 -0700 (PDT)
+Received: from spruce.. (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id u23-20020a05622a199700b00304b506eec2sm3160554qtc.93.2022.05.31.11.11.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 May 2022 11:11:02 -0700 (PDT)
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
+To:     jic23@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>,
+        Joe Perches <joe@perches.com>
+Subject: [PATCH v2] iio: Use octal permissions and DEVICE_ATTR_{RO,RW}.
+Date:   Tue, 31 May 2022 14:10:16 -0400
+Message-Id: <20220531181016.76007-1-joetalbott@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the module to be property provider agnostic and allow
-it to be used on non-OF platforms.
+As reported by checkpatch.pl.  Where possible use DEVICE_ATTR_RO and
+DEVICE_ATTR_RW.  Change function names to be <var>_show() for read and
+<var>_store() for write.
 
-Add mod_devicetable.h include.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Suggested-by: Joe Perches <joe@perches.com>
+Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
 ---
- drivers/iio/adc/Kconfig     |  1 -
- drivers/iio/adc/vf610_adc.c | 15 ++++++---------
- 2 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 3b6a80786b51..448ae243cd31 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1257,7 +1257,6 @@ config TWL6030_GPADC
+Changes in v2:
+  - Use DEVICE_ATTR_RO and DEVICE_ATTR_RW rather than octal permissions
+	where applicable.  Rename functions to <var>-show() and
+	<var>-store().  Based on review by Joe Perches <joe@perches.com>
+
+ drivers/iio/industrialio-buffer.c  | 62 ++++++++++++++----------------
+ drivers/iio/industrialio-core.c    | 35 ++++++++---------
+ drivers/iio/industrialio-trigger.c | 32 ++++++++-------
+ 3 files changed, 61 insertions(+), 68 deletions(-)
+
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index b078eb2f3c9d..4bafadddd1f6 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -630,18 +630,18 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+ 	return ret;
+ }
  
- config VF610_ADC
- 	tristate "Freescale vf610 ADC driver"
--	depends on OF
- 	depends on HAS_IOMEM
- 	select IIO_BUFFER
- 	select IIO_TRIGGERED_BUFFER
-diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
-index c84293efc129..c6b16cf6e367 100644
---- a/drivers/iio/adc/vf610_adc.c
-+++ b/drivers/iio/adc/vf610_adc.c
-@@ -5,7 +5,9 @@
-  * Copyright 2013 Freescale Semiconductor, Inc.
-  */
- 
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/platform_device.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
-@@ -14,10 +16,7 @@
- #include <linux/io.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
--#include <linux/of.h>
--#include <linux/of_irq.h>
- #include <linux/regulator/consumer.h>
--#include <linux/of_platform.h>
- #include <linux/err.h>
- 
- #include <linux/iio/iio.h>
-@@ -799,6 +798,7 @@ MODULE_DEVICE_TABLE(of, vf610_adc_match);
- 
- static int vf610_adc_probe(struct platform_device *pdev)
+-static ssize_t iio_buffer_read_length(struct device *dev,
+-				      struct device_attribute *attr,
+-				      char *buf)
++static ssize_t length_show(struct device *dev,
++			   struct device_attribute *attr,
++			   char *buf)
  {
-+	struct device *dev = &pdev->dev;
- 	struct vf610_adc *info;
- 	struct iio_dev *indio_dev;
- 	int irq;
-@@ -846,13 +846,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
  
- 	info->vref_uv = regulator_get_voltage(info->vref);
+ 	return sysfs_emit(buf, "%d\n", buffer->length);
+ }
  
--	of_property_read_u32_array(pdev->dev.of_node, "fsl,adck-max-frequency",
--			info->max_adck_rate, 3);
-+	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+-static ssize_t iio_buffer_write_length(struct device *dev,
+-				       struct device_attribute *attr,
+-				       const char *buf, size_t len)
++static ssize_t length_store(struct device *dev,
++			    struct device_attribute *attr,
++			    const char *buf, size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+@@ -672,9 +672,9 @@ static ssize_t iio_buffer_write_length(struct device *dev,
+ 	return ret ? ret : len;
+ }
  
--	ret = of_property_read_u32(pdev->dev.of_node, "min-sample-time",
--			&info->adc_feature.default_sample_time);
--	if (ret)
--		info->adc_feature.default_sample_time = DEFAULT_SAMPLE_TIME;
-+	info->adc_feature.default_sample_time = DEFAULT_SAMPLE_TIME;
-+	device_property_read_u32(dev, "min-sample-time", &info->adc_feature.default_sample_time);
+-static ssize_t iio_buffer_show_enable(struct device *dev,
+-				      struct device_attribute *attr,
+-				      char *buf)
++static ssize_t enable_show(struct device *dev,
++			   struct device_attribute *attr,
++			   char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
  
- 	platform_set_drvdata(pdev, indio_dev);
+@@ -1289,10 +1289,10 @@ void iio_disable_all_buffers(struct iio_dev *indio_dev)
+ 	iio_buffer_deactivate_all(indio_dev);
+ }
  
+-static ssize_t iio_buffer_store_enable(struct device *dev,
+-				       struct device_attribute *attr,
+-				       const char *buf,
+-				       size_t len)
++static ssize_t enable_store(struct device *dev,
++			    struct device_attribute *attr,
++			    const char *buf,
++			    size_t len)
+ {
+ 	int ret;
+ 	bool requested_state;
+@@ -1322,19 +1322,19 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
+ 	return (ret < 0) ? ret : len;
+ }
+ 
+-static ssize_t iio_buffer_show_watermark(struct device *dev,
+-					 struct device_attribute *attr,
+-					 char *buf)
++static ssize_t watermark_show(struct device *dev,
++			      struct device_attribute *attr,
++			      char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+ 
+ 	return sysfs_emit(buf, "%u\n", buffer->watermark);
+ }
+ 
+-static ssize_t iio_buffer_store_watermark(struct device *dev,
+-					  struct device_attribute *attr,
+-					  const char *buf,
+-					  size_t len)
++static ssize_t watermark_store(struct device *dev,
++			       struct device_attribute *attr,
++			       const char *buf,
++			       size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+@@ -1366,9 +1366,9 @@ static ssize_t iio_buffer_store_watermark(struct device *dev,
+ 	return ret ? ret : len;
+ }
+ 
+-static ssize_t iio_dma_show_data_available(struct device *dev,
+-						struct device_attribute *attr,
+-						char *buf)
++static ssize_t data_available_show(struct device *dev,
++				   struct device_attribute *attr,
++				   char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+ 
+@@ -1391,18 +1391,14 @@ static ssize_t direction_show(struct device *dev,
+ 	}
+ }
+ 
+-static DEVICE_ATTR(length, S_IRUGO | S_IWUSR, iio_buffer_read_length,
+-		   iio_buffer_write_length);
++static DEVICE_ATTR_RW(length);
+ static struct device_attribute dev_attr_length_ro = __ATTR(length,
+-	S_IRUGO, iio_buffer_read_length, NULL);
+-static DEVICE_ATTR(enable, S_IRUGO | S_IWUSR,
+-		   iio_buffer_show_enable, iio_buffer_store_enable);
+-static DEVICE_ATTR(watermark, S_IRUGO | S_IWUSR,
+-		   iio_buffer_show_watermark, iio_buffer_store_watermark);
++	0444, length_show, NULL);
++static DEVICE_ATTR_RW(enable);
++static DEVICE_ATTR_RW(watermark);
+ static struct device_attribute dev_attr_watermark_ro = __ATTR(watermark,
+-	S_IRUGO, iio_buffer_show_watermark, NULL);
+-static DEVICE_ATTR(data_available, S_IRUGO,
+-		iio_dma_show_data_available, NULL);
++	0444, watermark_show, NULL);
++static DEVICE_ATTR_RO(data_available);
+ static DEVICE_ATTR_RO(direction);
+ 
+ /*
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e1ed44dec2ab..bb1dd00b99ac 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1114,12 +1114,12 @@ int __iio_device_attr_init(struct device_attribute *dev_attr,
+ 	dev_attr->attr.name = name;
+ 
+ 	if (readfunc) {
+-		dev_attr->attr.mode |= S_IRUGO;
++		dev_attr->attr.mode |= 0444;
+ 		dev_attr->show = readfunc;
+ 	}
+ 
+ 	if (writefunc) {
+-		dev_attr->attr.mode |= S_IWUSR;
++		dev_attr->attr.mode |= 0200;
+ 		dev_attr->store = writefunc;
+ 	}
+ 
+@@ -1393,29 +1393,29 @@ void iio_free_chan_devattr_list(struct list_head *attr_list)
+ 	}
+ }
+ 
+-static ssize_t iio_show_dev_name(struct device *dev,
+-				 struct device_attribute *attr,
+-				 char *buf)
++static ssize_t name_show(struct device *dev,
++			 struct device_attribute *attr,
++			 char *buf)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	return sysfs_emit(buf, "%s\n", indio_dev->name);
+ }
+ 
+-static DEVICE_ATTR(name, S_IRUGO, iio_show_dev_name, NULL);
++static DEVICE_ATTR_RO(name);
+ 
+-static ssize_t iio_show_dev_label(struct device *dev,
+-				 struct device_attribute *attr,
+-				 char *buf)
++static ssize_t label_show(struct device *dev,
++			  struct device_attribute *attr,
++			  char *buf)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	return sysfs_emit(buf, "%s\n", indio_dev->label);
+ }
+ 
+-static DEVICE_ATTR(label, S_IRUGO, iio_show_dev_label, NULL);
++static DEVICE_ATTR_RO(label);
+ 
+-static ssize_t iio_show_timestamp_clock(struct device *dev,
+-					struct device_attribute *attr,
+-					char *buf)
++static ssize_t current_timestamp_clock_show(struct device *dev,
++					    struct device_attribute *attr,
++					    char *buf)
+ {
+ 	const struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	const clockid_t clk = iio_device_get_clock(indio_dev);
+@@ -1459,9 +1459,9 @@ static ssize_t iio_show_timestamp_clock(struct device *dev,
+ 	return sz;
+ }
+ 
+-static ssize_t iio_store_timestamp_clock(struct device *dev,
+-					 struct device_attribute *attr,
+-					 const char *buf, size_t len)
++static ssize_t current_timestamp_clock_store(struct device *dev,
++					     struct device_attribute *attr,
++					     const char *buf, size_t len)
+ {
+ 	clockid_t clk;
+ 	int ret;
+@@ -1509,8 +1509,7 @@ int iio_device_register_sysfs_group(struct iio_dev *indio_dev,
+ 	return 0;
+ }
+ 
+-static DEVICE_ATTR(current_timestamp_clock, S_IRUGO | S_IWUSR,
+-		   iio_show_timestamp_clock, iio_store_timestamp_clock);
++static DEVICE_ATTR_RW(current_timestamp_clock);
+ 
+ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+ {
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index f504ed351b3e..21f113c0ee96 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -37,7 +37,7 @@ static LIST_HEAD(iio_trigger_list);
+ static DEFINE_MUTEX(iio_trigger_list_lock);
+ 
+ /**
+- * iio_trigger_read_name() - retrieve useful identifying name
++ * name_show() - retrieve useful identifying name
+  * @dev:	device associated with the iio_trigger
+  * @attr:	pointer to the device_attribute structure that is
+  *		being processed
+@@ -46,15 +46,15 @@ static DEFINE_MUTEX(iio_trigger_list_lock);
+  * Return: a negative number on failure or the number of written
+  *	   characters on success.
+  */
+-static ssize_t iio_trigger_read_name(struct device *dev,
+-				     struct device_attribute *attr,
+-				     char *buf)
++static ssize_t name_show(struct device *dev,
++			 struct device_attribute *attr,
++			 char *buf)
+ {
+ 	struct iio_trigger *trig = to_iio_trigger(dev);
+ 	return sysfs_emit(buf, "%s\n", trig->name);
+ }
+ 
+-static DEVICE_ATTR(name, S_IRUGO, iio_trigger_read_name, NULL);
++static DEVICE_ATTR_RO(name);
+ 
+ static struct attribute *iio_trig_dev_attrs[] = {
+ 	&dev_attr_name.attr,
+@@ -395,7 +395,7 @@ void iio_dealloc_pollfunc(struct iio_poll_func *pf)
+ EXPORT_SYMBOL_GPL(iio_dealloc_pollfunc);
+ 
+ /**
+- * iio_trigger_read_current() - trigger consumer sysfs query current trigger
++ * current_trigger_show() - trigger consumer sysfs query current trigger
+  * @dev:	device associated with an industrial I/O device
+  * @attr:	pointer to the device_attribute structure that
+  *		is being processed
+@@ -407,9 +407,9 @@ EXPORT_SYMBOL_GPL(iio_dealloc_pollfunc);
+  * Return: a negative number on failure, the number of characters written
+  *	   on success or 0 if no trigger is available
+  */
+-static ssize_t iio_trigger_read_current(struct device *dev,
+-					struct device_attribute *attr,
+-					char *buf)
++static ssize_t current_trigger_show(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 
+@@ -419,7 +419,7 @@ static ssize_t iio_trigger_read_current(struct device *dev,
+ }
+ 
+ /**
+- * iio_trigger_write_current() - trigger consumer sysfs set current trigger
++ * current_trigger_store() - trigger consumer sysfs set current trigger
+  * @dev:	device associated with an industrial I/O device
+  * @attr:	device attribute that is being processed
+  * @buf:	string buffer that holds the name of the trigger
+@@ -432,10 +432,10 @@ static ssize_t iio_trigger_read_current(struct device *dev,
+  * Return: negative error code on failure or length of the buffer
+  *	   on success
+  */
+-static ssize_t iio_trigger_write_current(struct device *dev,
+-					 struct device_attribute *attr,
+-					 const char *buf,
+-					 size_t len)
++static ssize_t current_trigger_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf,
++				     size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+@@ -494,9 +494,7 @@ static ssize_t iio_trigger_write_current(struct device *dev,
+ 	return ret;
+ }
+ 
+-static DEVICE_ATTR(current_trigger, S_IRUGO | S_IWUSR,
+-		   iio_trigger_read_current,
+-		   iio_trigger_write_current);
++static DEVICE_ATTR_RW(current_trigger);
+ 
+ static struct attribute *iio_trigger_consumer_attrs[] = {
+ 	&dev_attr_current_trigger.attr,
 -- 
-2.35.1
+2.35.3
 

@@ -2,188 +2,216 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6E4538D38
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 10:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 714C1538E12
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 11:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239543AbiEaIuu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 04:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40442 "EHLO
+        id S236560AbiEaJ5C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 05:57:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244995AbiEaIus (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 04:50:48 -0400
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25C38CCE0
-        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 01:50:40 -0700 (PDT)
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20220531085038epoutp0140b119aa8c5d17a13466f968db3e24a4~0JHLRkgU11015210152epoutp01I
-        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 08:50:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20220531085038epoutp0140b119aa8c5d17a13466f968db3e24a4~0JHLRkgU11015210152epoutp01I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1653987038;
-        bh=IpFxR21ycRBwZRy0NNV1Ev8sWHWxLpZ9m/zI8Ok5k78=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=sq0zHCQD0hRVep5tLQ4Hv46dD1HpoODAgE8GS1dGA6O+gbdjQRQ+56yQ0h77XWOHb
-         um5CAxfJYO9CtCMzrdEoWjVVTqnizviQwrFsda/C92apDfii6QVkGXYkKjMN8hbCRI
-         rfeS8OkfcR3Sv1YJj8GNAN/SEccouuyA3ljA7RMg=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas5p3.samsung.com (KnoxPortal) with ESMTP id
-        20220531085037epcas5p3f2c28435cbe804a2db53baf7d42dea94~0JHKfXJn00381703817epcas5p3R;
-        Tue, 31 May 2022 08:50:37 +0000 (GMT)
-Received: from epsmges5p3new.samsung.com (unknown [182.195.38.179]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4LC5Zv74jMz4x9QP; Tue, 31 May
-        2022 08:50:31 +0000 (GMT)
-Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
-        epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        C1.3B.09762.7D6D5926; Tue, 31 May 2022 17:50:31 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-        20220531084251epcas5p3101ab1f7043863212544b6fdeeb480bd~0JAYHlO5k2662826628epcas5p37;
-        Tue, 31 May 2022 08:42:51 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20220531084251epsmtrp2f050a837365c4169e2e72d7b83d767a4~0JAYDQdfV2385123851epsmtrp2I;
-        Tue, 31 May 2022 08:42:51 +0000 (GMT)
-X-AuditID: b6c32a4b-213ff70000002622-9a-6295d6d7d52a
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-        8F.59.08924.B05D5926; Tue, 31 May 2022 17:42:51 +0900 (KST)
-Received: from mshams02 (unknown [107.122.12.94]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20220531084249epsmtip1dec96aa9b1d1384b569338e8653bcf58~0JAWL0ZjF2129221292epsmtip1-;
-        Tue, 31 May 2022 08:42:49 +0000 (GMT)
-From:   "m.shams" <m.shams@samsung.com>
-To:     "'Jonathan Cameron'" <jic23@kernel.org>
-Cc:     <lars@metafoo.de>, <robh+dt@kernel.org>, <krzk+dt@kernel.org>,
-        <geert@linux-m68k.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <alim.akhtar@samsung.com>, <paul@crapouillou.net>,
-        <linux-fsd@tesla.com>
-In-Reply-To: <20220522122555.6c65d2b6@jic23-huawei>
-Subject: RE: [PATCH v2 2/3] iio: adc: exynos-adc: Add support for ADC FSD-HW
- controller
-Date:   Tue, 31 May 2022 14:12:46 +0530
-Message-ID: <015b01d874ca$69aa8bb0$3cffa310$@samsung.com>
+        with ESMTP id S240788AbiEaJ5A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 05:57:00 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8285FC5;
+        Tue, 31 May 2022 02:56:52 -0700 (PDT)
+Received: from fraeml736-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LC6zY07rdz67cpv;
+        Tue, 31 May 2022 17:53:29 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml736-chm.china.huawei.com (10.206.15.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 31 May 2022 11:56:49 +0200
+Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Tue, 31 May
+ 2022 10:56:49 +0100
+Date:   Tue, 31 May 2022 10:56:47 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Joe Talbott <joetalbott@gmail.com>, <linux-iio@vger.kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] iio: Prefer octal over symbolic permissions.
+Message-ID: <20220531105647.00006c00@Huawei.com>
+In-Reply-To: <CAL7gdfeoRM8APfLL77bbGiWWBa0qOF8g0rza+=7hCdo+jaYNLQ@mail.gmail.com>
+References: <20220527185651.465204-1-joetalbott@gmail.com>
+        <20220528183405.22b55033@jic23-huawei>
+        <CAL7gdfeoRM8APfLL77bbGiWWBa0qOF8g0rza+=7hCdo+jaYNLQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-in
-Thread-Index: AQIGNN21wa2G9ryxTCo9HfAX0Xxs4AIEb8M6AoyC4FABXCk8mKytwBtw
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGJsWRmVeSWpSXmKPExsWy7bCmlu71a1OTDDYfN7F4MG8bm8X8I+dY
-        LZ7d2stk8aBpFZPFy1n32CyWTJ7ParHp8TVWi4evwi3mHXnHYnF51xw2ixnn9zFZ9C++xGLR
-        uvcIuwOvx+pL7Wwem1Z1snkcOtzB6LF5Sb3HkjeHWD36tqxi9PjXNJfd4/MmuQCOqGybjNTE
-        lNQihdS85PyUzLx0WyXv4HjneFMzA0NdQ0sLcyWFvMTcVFslF58AXbfMHKCLlRTKEnNKgUIB
-        icXFSvp2NkX5pSWpChn5xSW2SqkFKTkFJgV6xYm5xaV56Xp5qSVWhgYGRqZAhQnZGV83vGIu
-        OMhbMXfafvYGxk9cXYycHBICJhIbOt6xdTFycQgJ7GaUePm0iRHC+cQoMb3vBzOE85lR4u+s
-        mYwwLd0X90AldjFKbDi0lxXCecYo8fvxeSCHg4NNQFVix00RkAYRAW2JvW8Ogo1lFrjMJHFn
-        6nU2kASngLFEY+NUVhBbWCBS4tv2SWA2C1Dvus0nmEDm8ApYSnR3SYOEeQUEJU7OfMICYjML
-        yEtsfzuHGeIgBYmfT5exQsTFJY7+7GGG2Osmsbb/MzvIXgmBGxwSMyd0s0E0uEjcnPkVqllY
-        4tXxLewQtpTE53d7oWrSJeY+7GWCsAsklu36DlVjL3HgyhwWkNuYBTQl1u/ShwjLSkw9tY4J
-        4gY+id7fT6BaeSV2zIOxFSX+7+6HGiMu8W7FFNYJjEqzkLw2C8lrs5C8Mwth2wJGllWMkqkF
-        xbnpqcWmBcZ5qeXwCE/Oz93ECE7QWt47GB89+KB3iJGJg/EQowQHs5IIb8muqUlCvCmJlVWp
-        RfnxRaU5qcWHGE2BwT2RWUo0OR+YI/JK4g1NLA1MzMzMTCyNzQyVxHkF/jcmCQmkJ5akZqem
-        FqQWwfQxcXBKNTAt93G+z73hReHejWWmt+P8vkl7l+sV9ZytUq4/a2idcHDr3wNbFr76aHXO
-        jLHYRMHP4Vfxr/mWz1bpMk5Z4fj66NKvV3llZ2x8m9T+L9tqWX4V84r7zBtnd72Yzx41S2rq
-        C6YnV3dXRO3aMMHTsDJ3B9/lhZHTHl7Xb8hc0xz2sOGXoLNL0XFh9XOHv8Vtaw+Neapzq3/X
-        I/urV/Xfb7pXPf9zs6ZJveBupiwJZ7v72pFVqhcnzVT8vnlCxu9N1pNizrRflX48OUDk/7ca
-        3/m+EwuMJuZyXXp3amrzrOT63rr0N5X/ZO+/UPt26lHJgWLDfk+2VjmvkGvLdx5KCdpxf4H9
-        p4kr1j9VY+n2NZP/ocRSnJFoqMVcVJwIAGA213ZZBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNIsWRmVeSWpSXmKPExsWy7bCSnC731alJBp03hSwezNvGZjH/yDlW
-        i2e39jJZPGhaxWTxctY9Noslk+ezWmx6fI3V4uGrcIt5R96xWFzeNYfNYsb5fUwW/YsvsVi0
-        7j3C7sDrsfpSO5vHplWdbB6HDncwemxeUu+x5M0hVo++LasYPf41zWX3+LxJLoAjissmJTUn
-        syy1SN8ugSvj64ZXzAUHeSvmTtvP3sD4iauLkZNDQsBEovviHmYQW0hgB6PE21eMEHFxiWm/
-        9kPZwhIr/z1n72LkAqp5wijRtr8LyOHgYBNQldhxUwSkRkRAW2Lvm4OMIDXMAg+ZJC6e/M4C
-        0XCPUWLKi+NgGzgFjCUaG6eygtjCAuESvz4sYwKxWYAGrdt8gglkKK+ApUR3lzRImFdAUOLk
-        zCcsIGFmAT2Jto1g9zALyEtsfzuHGeI2BYmfT5exQsTFJY7+7GGGuMdNYm3/Z/YJjMKzkEya
-        hTBpFpJJs5B0L2BkWcUomVpQnJueW2xYYJSXWq5XnJhbXJqXrpecn7uJERyfWlo7GPes+qB3
-        iJGJg/EQowQHs5IIb8muqUlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeS90nYwXEkhPLEnNTk0t
-        SC2CyTJxcEo1MHFszj8kU3AlxfvZ1rs2pg0X8hVnPkl8Nndi3W8B1z4Ndr7HJ2ZnRaa5+lls
-        Wp09+aq/POv/Ztvd88TunX0Uxxvan62r8H8yz8P4+fx7bzzXMVD58WVjm8kmpZU7GHWmerz7
-        17pC6chhg/kdIt/67Fb8CMu0bc15Kj2P822Q0lKZFYLfc6elv9MsSm8OyFoTqS3jJeDUnblh
-        Vlj6j3NnuTOuObN0ROzW7pKJUVPh/+J9jOV5n+fGvMdiDhV/2rlK31RUsqU5NV4RZ2b5uKlo
-        NYND89x7GjXu33xOL19/jO3fXQOjtxMv/+iRcLlf4zlvf778svPeMzOyJwi3HHNxqop+uD3m
-        g1vTy4eTlnWoK7EUZyQaajEXFScCAKTqlwU+AwAA
-X-CMS-MailID: 20220531084251epcas5p3101ab1f7043863212544b6fdeeb480bd
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhreml730-chm.china.huawei.com (10.201.108.81) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220520145802epcas5p2153cb572493e3bccd702e0ecce1171fb
-References: <20220520145820.67667-1-m.shams@samsung.com>
-        <CGME20220520145802epcas5p2153cb572493e3bccd702e0ecce1171fb@epcas5p2.samsung.com>
-        <20220520145820.67667-3-m.shams@samsung.com>
-        <20220522122555.6c65d2b6@jic23-huawei>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, 29 May 2022 10:08:21 -0400
+Joe Talbott <joetalbott@gmail.com> wrote:
 
-Hi Jonathan,
+> On Sat, May 28, 2022 at 1:25 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Fri, 27 May 2022 14:56:52 -0400
+> > Joe Simmons-Talbott <joetalbott@gmail.com> wrote:
+> >  
+> > > As reported by checkpatch.pl use ocatl permissions rather than symbolic
+> > > permissions.
+> > >
+> > > Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>  
+> >
+> > Hi Joe,
+> >
+> > Why the resend?  Given change of description, I'm guessing this is v2
+> > because of feedback on a similar patch elsewhere. If so, please
+> > put the version number in the patch log and provide a changelog
+> > below the ---  
+> 
+> 
+> I sent the patch again because I neglected to include linux-kernel and
+> you in the
+> original patch's recipients.  I wasn't sure if I should include the v2
+> but will in the future.
 
-On Fri, 20 May 2022 20:28:19 +0530
-Tamseel Shams <m.shams@samsung.com> wrote:
+For that case, common choice is [RESEND PATCH ....
+with a brief note in the cover letter that you missed some to/cc
 
->> From: Alim Akhtar <alim.akhtar@samsung.com>
->> 
->> Exynos's ADC-FSD-HW has some difference in registers set, number of 
->> programmable channels (16 channel) etc. This patch adds support for 
->> ADC-FSD-HW controller version.
->> 
->> Signed-off-by: Alim Akhtar <alim.akhtar@samsung.com>
->> Signed-off-by: Tamseel Shams <m.shams@samsung.com>
->
-> Hi,
->
-> One suggestion inline, otherwise LGTM. Plenty of time to tidy this up as
-this won't make the upcoming merge window - I'll be queuing it up for 5.20
->
+> Should I use v3 for my updated patch?
+v2 is fine given v2 doesn't yet exist - v3 also fine though...
+
+Jonathan
+
+> 
 > Thanks,
->
-> Jonathan
->
-
-Okay, Thanks for reviewing.
-
->> ---
->> - Changes since v1
->> * Addressed Jonathan's comment by using already provided isr handle
->> 
->>  drivers/iio/adc/exynos_adc.c | 55 
->> ++++++++++++++++++++++++++++++++++++
->>  1 file changed, 55 insertions(+)
->> 
->> diff --git a/drivers/iio/adc/exynos_adc.c 
->> b/drivers/iio/adc/exynos_adc.c index cff1ba57fb16..183ae591327a 100644
->> --- a/drivers/iio/adc/exynos_adc.c
->> +++ b/drivers/iio/adc/exynos_adc.c
->> @@ -55,6 +55,11 @@
->>  #define ADC_V2_INT_ST(x)	((x) + 0x14)
->>  #define ADC_V2_VER(x)		((x) + 0x20)
->>  
->> +/* ADC_FSD_HW register definitions */
->> +#define ADC_FSD_DAT(x)			((x) + 0x08)
->
-> I mention this below, but these different register sets should be in the
-struct exynos_adc_data to avoid the need for an if "compatible" == check on
-each use of > them.
->
-
-Can you clarify on how exactly you want me to add these register sets to
-struct exynos_adc_data?
-Do you mean just for these registers or other registers too which are
-defined in this way only?
-
-
-Thanks & Regards,
-Tamseel Shams
+> Joe
+> 
+> >
+> >
+> > Hmm. I guess I don't really mind cleaning this up though it is
+> > some churn in core code which is usually something we try to avoid
+> > for fairly trivial style reasons.
+> >
+> > One request inline (though I suspect it applies in several places,
+> > I just haven't checked ;)
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> > > ---
+> > >  drivers/iio/industrialio-buffer.c  | 12 ++++++------
+> > >  drivers/iio/industrialio-core.c    | 10 +++++-----
+> > >  drivers/iio/industrialio-trigger.c |  4 ++--
+> > >  3 files changed, 13 insertions(+), 13 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+> > > index b078eb2f3c9d..c27f74a3c0f3 100644
+> > > --- a/drivers/iio/industrialio-buffer.c
+> > > +++ b/drivers/iio/industrialio-buffer.c
+> > > @@ -1391,17 +1391,17 @@ static ssize_t direction_show(struct device *dev,
+> > >       }
+> > >  }
+> > >
+> > > -static DEVICE_ATTR(length, S_IRUGO | S_IWUSR, iio_buffer_read_length,
+> > > +static DEVICE_ATTR(length, 0644, iio_buffer_read_length,
+> > >                  iio_buffer_write_length);
+> > >  static struct device_attribute dev_attr_length_ro = __ATTR(length,
+> > > -     S_IRUGO, iio_buffer_read_length, NULL);
+> > > -static DEVICE_ATTR(enable, S_IRUGO | S_IWUSR,
+> > > +     0444, iio_buffer_read_length, NULL);
+> > > +static DEVICE_ATTR(enable, 0644,
+> > >                  iio_buffer_show_enable, iio_buffer_store_enable);
+> > > -static DEVICE_ATTR(watermark, S_IRUGO | S_IWUSR,
+> > > +static DEVICE_ATTR(watermark, 0644,
+> > >                  iio_buffer_show_watermark, iio_buffer_store_watermark);
+> > >  static struct device_attribute dev_attr_watermark_ro = __ATTR(watermark,
+> > > -     S_IRUGO, iio_buffer_show_watermark, NULL);
+> > > -static DEVICE_ATTR(data_available, S_IRUGO,
+> > > +     0444, iio_buffer_show_watermark, NULL);
+> > > +static DEVICE_ATTR(data_available, 0444,
+> > >               iio_dma_show_data_available, NULL);  
+> >
+> > a side effect of this change a slight shortening of how long the above
+> > two lines will be if combined into one.  It's now sub 80 chars
+> > I think, so please make them a single line.  Also check for similar
+> > cases elsewhere.
+> >
+> >  
+> > >  static DEVICE_ATTR_RO(direction);
+> > >
+> > > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > > index e1ed44dec2ab..35de348d686e 100644
+> > > --- a/drivers/iio/industrialio-core.c
+> > > +++ b/drivers/iio/industrialio-core.c
+> > > @@ -1114,12 +1114,12 @@ int __iio_device_attr_init(struct device_attribute *dev_attr,
+> > >       dev_attr->attr.name = name;
+> > >
+> > >       if (readfunc) {
+> > > -             dev_attr->attr.mode |= S_IRUGO;
+> > > +             dev_attr->attr.mode |= 0444;
+> > >               dev_attr->show = readfunc;
+> > >       }
+> > >
+> > >       if (writefunc) {
+> > > -             dev_attr->attr.mode |= S_IWUSR;
+> > > +             dev_attr->attr.mode |= 0200;
+> > >               dev_attr->store = writefunc;
+> > >       }
+> > >
+> > > @@ -1401,7 +1401,7 @@ static ssize_t iio_show_dev_name(struct device *dev,
+> > >       return sysfs_emit(buf, "%s\n", indio_dev->name);
+> > >  }
+> > >
+> > > -static DEVICE_ATTR(name, S_IRUGO, iio_show_dev_name, NULL);
+> > > +static DEVICE_ATTR(name, 0444, iio_show_dev_name, NULL);
+> > >
+> > >  static ssize_t iio_show_dev_label(struct device *dev,
+> > >                                struct device_attribute *attr,
+> > > @@ -1411,7 +1411,7 @@ static ssize_t iio_show_dev_label(struct device *dev,
+> > >       return sysfs_emit(buf, "%s\n", indio_dev->label);
+> > >  }
+> > >
+> > > -static DEVICE_ATTR(label, S_IRUGO, iio_show_dev_label, NULL);
+> > > +static DEVICE_ATTR(label, 0444, iio_show_dev_label, NULL);
+> > >
+> > >  static ssize_t iio_show_timestamp_clock(struct device *dev,
+> > >                                       struct device_attribute *attr,
+> > > @@ -1509,7 +1509,7 @@ int iio_device_register_sysfs_group(struct iio_dev *indio_dev,
+> > >       return 0;
+> > >  }
+> > >
+> > > -static DEVICE_ATTR(current_timestamp_clock, S_IRUGO | S_IWUSR,
+> > > +static DEVICE_ATTR(current_timestamp_clock, 0644,
+> > >                  iio_show_timestamp_clock, iio_store_timestamp_clock);
+> > >
+> > >  static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+> > > diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> > > index f504ed351b3e..e22a35634f2c 100644
+> > > --- a/drivers/iio/industrialio-trigger.c
+> > > +++ b/drivers/iio/industrialio-trigger.c
+> > > @@ -54,7 +54,7 @@ static ssize_t iio_trigger_read_name(struct device *dev,
+> > >       return sysfs_emit(buf, "%s\n", trig->name);
+> > >  }
+> > >
+> > > -static DEVICE_ATTR(name, S_IRUGO, iio_trigger_read_name, NULL);
+> > > +static DEVICE_ATTR(name, 0444, iio_trigger_read_name, NULL);
+> > >
+> > >  static struct attribute *iio_trig_dev_attrs[] = {
+> > >       &dev_attr_name.attr,
+> > > @@ -494,7 +494,7 @@ static ssize_t iio_trigger_write_current(struct device *dev,
+> > >       return ret;
+> > >  }
+> > >
+> > > -static DEVICE_ATTR(current_trigger, S_IRUGO | S_IWUSR,
+> > > +static DEVICE_ATTR(current_trigger, 0644,
+> > >                  iio_trigger_read_current,
+> > >                  iio_trigger_write_current);
+> > >  
+> >  
 

@@ -2,62 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9E0539626
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 20:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0157539699
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 20:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237441AbiEaSUv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 14:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52008 "EHLO
+        id S1346335AbiEaS5o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 14:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346983AbiEaSUv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 14:20:51 -0400
+        with ESMTP id S236812AbiEaS5n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 14:57:43 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4448F9CCAF;
-        Tue, 31 May 2022 11:20:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 198BF5004A;
+        Tue, 31 May 2022 11:57:41 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id F37C05FD12;
-        Tue, 31 May 2022 21:20:46 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id C70CC5FD12;
+        Tue, 31 May 2022 21:57:38 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1654021247;
-        bh=LLTMWVLTXK/FNIjG6+k6fRJKDBqVhP98JFRueLwzPG4=;
+        s=mail; t=1654023458;
+        bh=82PgbgtlfLL0OLIobUgaluCR8orTi30NpPT+gbBqytk=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=sjztjmrzsklrw8ter/VYZEpnIbkdWrfct1y+jaA06p0D3zbk+kjMm59zZps6GX6bh
-         qZVrqqLTr48c7z89RaRuk6cZxWf7va8LiGL0pkMSC4rvJ0eEzshGDsX1YaniEjgt65
-         QXqY4kLQK0oT5H937w5I+qNa/xk8VWvUhX1ijOvxN9j7cN1Po3c/K8R+awermjwa7a
-         gEP5MLdMaQMd46tEuliXRKItGuzR4jrie8hK6xVwdQbdvkIn80+GqPpqsVR0MN2LTi
-         BmckXpeEQRPeIJoj3pSNuKK/SO4G3VmvFQgIfl2uFq61bYoY4xUn4TP/pyz9hSD1NX
-         hqq/Fg0+eaeAA==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        b=dI8LMQ56+XB+pQnUVPqr7m1WK3scldAQwhoQhZPbbv9jH2RrevIFJrlOQAGt5VK+X
+         hOiMLCF2bNJjM7YkZd/OD7ixeAJRJeFZwX7DzQGCgTBxEReeHbAzRucq1aEXjktzxw
+         cjnk/d3hIv8dzMRwUdGBB7mswa6lWgP0HzHzAE8cElTjUv2c1c03EEyJs97n4tinzS
+         AANwSTo/HEjFzmotDsRP6UL9i0xOdpJrZBpFI55ghe8gMX2c+ld7rhaxkbnyCSCXjB
+         dSiAZ21MqoV95ivmNr9+s8hOno5lxgqjSXIg3ExB5xY8mDX/8iQDoIq6Y2+glqZ6g8
+         NQNSLKk98QAXw==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Tue, 31 May 2022 21:20:42 +0300 (MSK)
+        Tue, 31 May 2022 21:57:38 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+To:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
-        "srinivas.pandruvada@linux.intel.com" 
-        <srinivas.pandruvada@linux.intel.com>,
-        "teodora.baluta@intel.com" <teodora.baluta@intel.com>,
-        "narcisaanamaria12@gmail.com" <narcisaanamaria12@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         kernel <kernel@sberdevices.ru>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/5] iio: treewide: rearrange iio trig get/register
-Thread-Topic: [PATCH v2 0/5] iio: treewide: rearrange iio trig get/register
-Thread-Index: AQHYb5ohywOA3ErtcUWaOWHlaX8a+a00WgwAgATKtYA=
-Date:   Tue, 31 May 2022 18:20:34 +0000
-Message-ID: <20220531182018.gdw67ilmnsav2uyc@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220524181150.9240-1-ddrokosov@sberdevices.ru>
- <20220528181004.286e696d@jic23-huawei>
-In-Reply-To: <20220528181004.286e696d@jic23-huawei>
+Subject: Re: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Thread-Topic: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Thread-Index: AQHYdRpaUrhZ5pf6gEC6S1oZ2DfDiK05JA2A
+Date:   Tue, 31 May 2022 18:57:30 +0000
+Message-ID: <20220531185729.z6246gexteyo4xmd@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220531181457.26034-1-ddrokosov@sberdevices.ru>
+In-Reply-To: <20220531181457.26034-1-ddrokosov@sberdevices.ru>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <5105E27705BFF24D886B9C7708ABA9AF@sberdevices.ru>
+Content-ID: <A898A3C6A4D7CB49AFF74DBE28032B4D@sberdevices.ru>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
@@ -76,28 +72,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan,
+Hi Jonathan,
 
-I've submitted the patch with runtime WARN() as you suggested:
+I have one question about a cases when trigger owner is builtin module.
+In the such cases trig->owner =3D=3D null, because THIS_MODULE equals to
+null. How do you think, should we take into account such situations?
 
-https://lore.kernel.org/linux-iio/20220531181457.26034-1-ddrokosov@sberdevi=
-ces.ru/
+IMHO we have to take in and save this information to trig_info during
+trigger allocation call. For example we can check THIS_MODULE from the
+iio_trigger_alloc(), save builtin status to trig_info and look into it
+from iio_trigger_get().
 
-On Sat, May 28, 2022 at 06:10:04PM +0100, Jonathan Cameron wrote:
-> > If this call order is wrong, the next iio_trigger_put() (from sysfs
-> > callback or "delete module" path) will dereference "default" module
-> > refcnt, which is incorrect behaviour.
+On Tue, May 31, 2022 at 06:15:05PM +0000, Dmitry Rokosov wrote:
+> As a part of patch series about wrong trigger register() and get()
+> calls order in the some IIO drivers trigger initialization path:
 >=20
-> Hi Dmitry,
+> https://lore.kernel.org/all/20220524181150.9240-1-ddrokosov@sberdevices.r=
+u/
 >=20
-> Series applied to the fixes-togreg branch of iio.git and marked for stabl=
-e.
+> runtime WARN() is added to alarm IIO driver authors who make such
+> a mistake.
 >=20
-> Do you think it's also worth adding a runtime warning in iio_trigger_get(=
-)
-> on !trig->owner so that we catch any cases of this introduced in the futu=
-re?
+> When IIO driver allocates a new IIO trigger, it should register it before
+> calling get() operation. Otherwise, the next iio_trigger_put() will upset
+> refcnt balance.
 >=20
+> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> ---
+>  include/linux/iio/trigger.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>=20
+> diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
+> index 4c69b144677b..4a008b952710 100644
+> --- a/include/linux/iio/trigger.h
+> +++ b/include/linux/iio/trigger.h
+> @@ -93,6 +93,15 @@ static inline void iio_trigger_put(struct iio_trigger =
+*trig)
+>  static inline struct iio_trigger *iio_trigger_get(struct iio_trigger *tr=
+ig)
+>  {
+>  	get_device(&trig->dev);
+> +
+> +	/*
+> +	 * If driver hasn't called iio_trigger_register() before and trig->owne=
+r
+> +	 * wasn't initialized properly, trigger will have wrong number of users
+> +	 */
+> +	WARN(!trig->owner,
+> +	     "Ignore module getting for non-registered iio trigger %s\n",
+> +	     trig->name);
+> +
+>  	__module_get(trig->owner);
+> =20
+>  	return trig;
+> --=20
+> 2.36.0
 
 --=20
 Thank you,

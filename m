@@ -2,466 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FEAF539834
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 22:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A8CC539887
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 23:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347859AbiEaUq1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 16:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38110 "EHLO
+        id S245045AbiEaVSq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 17:18:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347853AbiEaUq0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 16:46:26 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 840AA8B0AB
-        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 13:46:23 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id gi33so29008745ejc.3
-        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 13:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=KcvmS0RVCH7dS0drP08+taDktOji7A6kv3U7tUCF6Ik=;
-        b=HTr4rtci7pN7h0V00Ch+MPN8QFo2ca3cbuR97hJFCjr/w9xXjQBq2dVHkwu2xOQxuP
-         1BAcI7MDZnyoPC+UpdTeLBJPlg2PhTf6pVAwFMZWgaAMuCIAkFRoqjReMoODOOjmEMJX
-         IjUtvCCX1SazMLSX9dPPH4ll/fvXY9zNkCpWYWWm6qiRiNScCJ5X+FtKaejGXadsVW5p
-         Lz/guvnDDwLOuKIEGKL0cTmlihLsXks9QmOOfUl3nvKkS4hvGf3sf1rozyplnW3X71yG
-         o2gtsW2bOmKqoFZiVYnKs8AIcYfZFHvPWTEsCleu1N6AOYbrFfsieqmW/d1LzaiWM6l2
-         +aOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=KcvmS0RVCH7dS0drP08+taDktOji7A6kv3U7tUCF6Ik=;
-        b=pt38gRgUV2eS+cm5Nzkt7xEfxzCXSQR8va48HtydZAOQNWLW6Ei0E7AdbrgLKEqb8c
-         XVz2Y4Zqj/lGGUZmvhKzRZH2dOhqHnVS2TOh5RtL1z4Uc5Qc7ZqqWD/1R1CelohGfFU2
-         2+IPEoa0u8ARjG7DyKh4cS+NAxbucHWQW48kTZwAekb3tloKuL1jFTQSrmFvSpz5fV7e
-         yb/xxo+hLIBo493pjGu5ajx+7MEILKbyPubEOo122Szt6ysSoo8pAA6eAh5xcf6Plpoc
-         LzicSYya88Qub94ds5DXECBaaPelbWvB3fS4cd+/zTrNNINZhb1Qfp26zTou7RRIh8E6
-         QVuA==
-X-Gm-Message-State: AOAM53062Cjh/c4V7KbCkCoA5PDfrY9CEXkDDdYi0pIUeKxy/jzV/y3N
-        EnuDwhZKrL/4lQ62a8J0jr1jfg==
-X-Google-Smtp-Source: ABdhPJxKQIk0np3addOYv0X6i3FNyMcBrbHc8niPiUYWepcaSBJXVhBWS9DiYV743l/82t3zhs6jFw==
-X-Received: by 2002:a17:906:685:b0:6fa:8e17:e9b5 with SMTP id u5-20020a170906068500b006fa8e17e9b5mr57334212ejb.522.1654029981975;
-        Tue, 31 May 2022 13:46:21 -0700 (PDT)
-Received: from [192.168.0.179] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id k2-20020a1709063e0200b006f3ef214e5bsm5182391eji.193.2022.05.31.13.46.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 May 2022 13:46:21 -0700 (PDT)
-Message-ID: <4ac3dc81-98e5-8c94-8dd4-b30ee587eb42@linaro.org>
-Date:   Tue, 31 May 2022 22:46:20 +0200
+        with ESMTP id S242111AbiEaVSp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 17:18:45 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F1AF5E175;
+        Tue, 31 May 2022 14:18:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654031924; x=1685567924;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=95N/U1wc3ENWDPrktkKLJxWiCnlTcRmWQDNgyhivVEs=;
+  b=ffxQ02M9MnQBz4gAndxIdZGv7mon5kA1ELqOHrE0K26298hX4Ba0RTCj
+   GjrAAbBEsjiscoMkgrmOUodZNVArSO5Y7u95lv8kBATkq7yAoc7IjCs19
+   amw1LBQAGMKSLZ4hBkO40RTLgK9LoW4syLMU4MODNcEYg3OeGXv3bEdRX
+   phtVd18nSdlSPRCJQyFKT656SylSiyJxEJ43Rj0lWklC993ETOwMpltlr
+   mdwbcL2Y/KBvdfuxpq6a2vmRpcGyE11LNfKYpssT/Gbr0ZjR8jptscJe2
+   KUUhGP8MMoUs09s+aj8Y6u8QhcNeaHLMLd6/o9l7eeMptYfpuBGelexZ1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="255258212"
+X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
+   d="scan'208";a="255258212"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 14:18:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
+   d="scan'208";a="823454439"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 31 May 2022 14:18:41 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E369B18B; Wed,  1 Jun 2022 00:18:43 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH v1 1/3] iio: adc: meson_saradc: Convert to use dev_err_probe()
+Date:   Wed,  1 Jun 2022 00:18:40 +0300
+Message-Id: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 14/14] dt-bindings: mfd: Add Mediatek MT6370 binding
- documentation
-Content-Language: en-US
-To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
-        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com, deller@gmx.de
-Cc:     cy_huang@richtek.com, alice_chen@richtek.com,
-        chiaen_wu@richtek.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
-References: <20220531102809.11976-1-peterwu.pub@gmail.com>
- <20220531102809.11976-15-peterwu.pub@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220531102809.11976-15-peterwu.pub@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 31/05/2022 12:28, ChiaEn Wu wrote:
-> From: ChiYuan Huang <cy_huang@richtek.com>
-> 
-> Add Mediatek MT6370 binding documentation.
+It's fine to call dev_err_probe() in ->probe() when error code is known.
+Convert the driver to use dev_err_probe().
 
-Subject: same as previous patches.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/adc/meson_saradc.c | 51 ++++++++++++----------------------
+ 1 file changed, 18 insertions(+), 33 deletions(-)
 
-> 
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> ---
->  .../bindings/mfd/mediatek,mt6370.yaml         | 282 ++++++++++++++++++
->  .../dt-bindings/iio/adc/mediatek,mt6370_adc.h |  18 ++
->  include/dt-bindings/mfd/mediatek,mt6370.h     |  83 ++++++
->  3 files changed, 383 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
->  create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
->  create mode 100644 include/dt-bindings/mfd/mediatek,mt6370.h
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml b/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
-> new file mode 100644
-> index 000000000000..96a12dce0108
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
-> @@ -0,0 +1,282 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/mediatek,mt6370.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Mediatek MT6370 SubPMIC
-> +
-> +maintainers:
-> +  - ChiYuan Huang <cy_huang@richtek.com>
-> +
-> +description: |
-> +  MT6370 is a highly-integrated smart power management IC, which includes a
-> +  single cell Li-Ion/Li-Polymer switching battery charger, a USB Type-C &
-> +  Power Delivery (PD) controller, dual flash LED current sources, a RGB LED
-> +  driver, a backlight WLED driver, a display bias driver and a general LDO for
-> +  portable devices.
-> +
-> +properties:
-> +  compatible:
-> +    const: mediatek,mt6370
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  wakeup-source: true
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  '#interrupt-cells':
-> +    const: 1
-> +
-> +  adc:
-> +    type: object
-> +    description: |
-> +      List the compatible configurations of MT6370 ADC.
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 62cc6fb0ef85..c2abbfc1396c 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -701,6 +701,7 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	u8 *buf, trimming_bits, trimming_mask, upper_adc_val;
++	struct device *dev = indio_dev->dev.parent;
+ 	struct nvmem_cell *temperature_calib;
+ 	size_t read_len;
+ 	int ret;
+@@ -717,30 +718,22 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
+ 		if (ret == -ENODEV)
+ 			return 0;
+ 
+-		return dev_err_probe(indio_dev->dev.parent, ret,
+-				     "failed to get temperature_calib cell\n");
++		return dev_err_probe(dev, ret, "failed to get temperature_calib cell\n");
+ 	}
+ 
+ 	priv->tsc_regmap =
+ 		syscon_regmap_lookup_by_phandle(indio_dev->dev.parent->of_node,
+ 						"amlogic,hhi-sysctrl");
+-	if (IS_ERR(priv->tsc_regmap)) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to get amlogic,hhi-sysctrl regmap\n");
+-		return PTR_ERR(priv->tsc_regmap);
+-	}
++	if (IS_ERR(priv->tsc_regmap))
++		return dev_err_probe(dev, PTR_ERR(priv->tsc_regmap), "failed to get amlogic,hhi-sysctrl regmap\n");
+ 
+ 	read_len = MESON_SAR_ADC_EFUSE_BYTES;
+ 	buf = nvmem_cell_read(temperature_calib, &read_len);
+-	if (IS_ERR(buf)) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to read temperature_calib cell\n");
+-		return PTR_ERR(buf);
+-	} else if (read_len != MESON_SAR_ADC_EFUSE_BYTES) {
++	if (IS_ERR(buf))
++		return dev_err_probe(dev, PTR_ERR(buf), "failed to read temperature_calib cell\n");
++	if (read_len != MESON_SAR_ADC_EFUSE_BYTES) {
+ 		kfree(buf);
+-		dev_err(indio_dev->dev.parent,
+-			"invalid read size of temperature_calib cell\n");
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL, "invalid read size of temperature_calib cell\n");
+ 	}
+ 
+ 	trimming_bits = priv->param->temperature_trimming_bits;
+@@ -765,6 +758,7 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
+ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
++	struct device *dev = indio_dev->dev.parent;
+ 	int regval, i, ret;
+ 
+ 	/*
+@@ -888,18 +882,12 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	ret = clk_set_parent(priv->adc_sel_clk, priv->clkin);
+-	if (ret) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to set adc parent to clkin\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to set adc parent to clkin\n");
+ 
+ 	ret = clk_set_rate(priv->adc_clk, priv->param->clock_rate);
+-	if (ret) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to set adc clock rate\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to set adc clock rate\n");
+ 
+ 	return 0;
+ }
+@@ -1186,24 +1174,21 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
+ {
+ 	const struct meson_sar_adc_data *match_data;
+ 	struct meson_sar_adc_priv *priv;
++	struct device *dev = &pdev->dev;
+ 	struct iio_dev *indio_dev;
+ 	void __iomem *base;
+ 	int irq, ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
+-	if (!indio_dev) {
+-		dev_err(&pdev->dev, "failed allocating iio device\n");
+-		return -ENOMEM;
+-	}
++	if (!indio_dev)
++		return dev_err_probe(dev, -ENOMEM, "failed allocating iio device\n");
+ 
+ 	priv = iio_priv(indio_dev);
+ 	init_completion(&priv->done);
+ 
+ 	match_data = of_device_get_match_data(&pdev->dev);
+-	if (!match_data) {
+-		dev_err(&pdev->dev, "failed to get match data\n");
+-		return -ENODEV;
+-	}
++	if (!match_data)
++		return dev_err_probe(dev, -ENODEV, "failed to get match data\n");
+ 
+ 	priv->param = match_data->param;
+ 
+-- 
+2.35.1
 
-This sentence does not make any sense. The "description" field is to
-describe, explain the meaning behind given property.
-
-> +
-> +    properties:
-> +      compatible:
-> +        const: mediatek,mt6370-adc
-> +
-> +      "#io-channel-cells":
-> +        const: 1
-> +
-> +    required:
-> +      - compatible
-> +      - '#io-channel-cells'
-> +
-> +  backlight:
-> +    type: object
-> +    $ref: /schemas/leds/backlight/mediatek,mt6370-backlight.yaml#
-> +
-> +  charger:
-> +    type: object
-> +    $ref: /schemas/power/supply/mediatek,mt6370-charger.yaml#
-> +
-> +  tcpc:
-> +    type: object
-> +    $ref: /schemas/usb/mediatek,mt6370-tcpc.yaml#
-> +
-> +  indicator:
-> +    type: object
-> +    $ref: /schemas/leds/mediatek,mt6370-indicator.yaml#
-> +
-> +  flashlight:
-> +    type: object
-> +    $ref: /schemas/leds/mediatek,mt6370-flashlight.yaml#
-> +
-> +  regulators:
-> +    type: object
-> +    description: |
-> +      List all supported regulators
-
-Ditto
-
-> +
-> +    patternProperties:
-> +      "^(dsvbst|vibldo)$":
-> +        $ref: /schemas/regulator/regulator.yaml#
-> +        type: object
-> +        unevaluatedProperties: false
-> +
-> +      "^(dsvpos|dsvneg)$":
-> +        $ref: /schemas/regulator/regulator.yaml#
-> +        type: object
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          enable-gpio:
-> +            maxItems: 1
-> +            description: |
-> +              Specify a valid 'enable' gpio for the regulator and it's optional
-
-Same comment as your patch #10.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - interrupt-controller
-> +  - '#interrupt-cells'
-> +  - regulators
-> +  - adc
-> +  - backlight
-> +  - indicator
-> +  - tcpc
-> +  - charger
-> +  - flashlight
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/leds/common.h>
-> +    #include <dt-bindings/mfd/mediatek,mt6370.h>
-> +    #include <dt-bindings/iio/adc/mediatek,mt6370_adc.h>
-> +    #include <dt-bindings/usb/pd.h>
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      mt6370@34 {
-
-Generic node name, so "pmic".
-
-> +        compatible = "mediatek,mt6370";
-> +        reg = <0x34>;
-> +        wakeup-source;
-> +        interrupts-extended = <&gpio26 3 IRQ_TYPE_LEVEL_LOW>;
-> +        interrupt-controller;
-> +        #interrupt-cells = <1>;
-> +
-> +        mt6370_adc: adc {
-> +          compatible = "mediatek,mt6370-adc";
-> +          #io-channel-cells = <1>;
-> +        };
-> +
-> +        backlight {
-> +          compatible = "mediatek,mt6370-backlight";
-> +          mediatek,bled-channel-use = /bits/ 8 <15>;
-> +        };
-> +
-> +        charger {
-> +          compatible = "mediatek,mt6370-charger";
-> +          interrupts = <MT6370_IRQ_ATTACH>, <MT6370_IRQ_OVPCTRL_UVP_D>,
-> +                       <MT6370_IRQ_CHG_MIVR>;
-> +          interrupt-names = "attach_i", "uvp_d_evt", "mivr";
-> +          io-channels = <&mt6370_adc MT6370_CHAN_IBUS>;
-> +
-> +          mt6370_otg_vbus: usb-otg-vbus {
-> +            regulator-compatible = "mt6370,otg-vbus";
-> +            regulator-name = "usb-otg-vbus";
-> +            regulator-min-microvolt = <4350000>;
-> +            regulator-max-microvolt = <5800000>;
-> +            regulator-min-microamp = <500000>;
-> +            regulator-max-microamp = <3000000>;
-> +          };
-> +        };
-> +
-> +        indicator {
-> +          compatible = "mediatek,mt6370-indicator";
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          multi-led@0 {
-> +            reg = <0>;
-> +            function = LED_FUNCTION_INDICATOR;
-> +            color = <LED_COLOR_ID_RGB>;
-> +            led-max-microamp = <24000>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            mediatek,soft-start = <3>;
-> +              led@0 {
-
-Messed up indentation.
-
-> +                reg = <0>;
-> +                color = <LED_COLOR_ID_RED>;
-> +              };
-> +              led@1 {
-> +                reg = <1>;
-> +                color = <LED_COLOR_ID_GREEN>;
-> +              };
-> +              led@2 {
-> +                reg = <2>;
-> +                color = <LED_COLOR_ID_BLUE>;
-> +              };
-> +            };
-> +          led@3 {
-> +            reg = <3>;
-> +            function = LED_FUNCTION_INDICATOR;
-> +            color = <LED_COLOR_ID_WHITE>;
-> +            led-max-microamp = <6000>;
-> +          };
-> +        };
-> +
-> +        flashlight {
-> +          compatible = "mediatek,mt6370-flashlight";
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +          led@0 {
-> +            reg = <0>;
-> +            led-sources = <0>;
-> +            function = LED_FUNCTION_FLASH;
-> +            color = <LED_COLOR_ID_WHITE>;
-> +            function-enumerator = <1>;
-> +            led-max-microamp = <200000>;
-> +            flash-max-microamp = <500000>;
-> +            flash-max-timeout-us = <1248000>;
-> +          };
-> +          led@1 {
-> +            reg = <1>;
-> +            led-sources = <1>;
-> +            function = LED_FUNCTION_FLASH;
-> +            color = <LED_COLOR_ID_WHITE>;
-> +            function-enumerator = <2>;
-> +            led-max-microamp = <200000>;
-> +            flash-max-microamp = <500000>;
-> +            flash-max-timeout-us = <1248000>;
-> +          };
-> +        };
-> +
-> +        tcpc {
-> +          compatible = "mediatek,mt6370-tcpc";
-> +          interrupts-extended = <&gpio26 4 IRQ_TYPE_LEVEL_LOW>;
-> +
-> +          connector {
-> +            compatible = "usb-c-connector";
-> +            label = "USB-C";
-> +            vbus-supply = <&mt6370_otg_vbus>;
-> +            data-role = "dual";
-> +            power-role = "dual";
-> +            try-power-role = "sink";
-> +            source-pdos = <PDO_FIXED(5000, 1000, PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP)>;
-> +            sink-pdos = <PDO_FIXED(5000, 2000, PDO_FIXED_DUAL_ROLE | PDO_FIXED_DATA_SWAP)>;
-> +            op-sink-microwatt = <10000000>;
-> +
-> +            ports {
-> +              #address-cells = <1>;
-> +              #size-cells = <0>;
-> +
-> +              port@0 {
-> +                reg = <0>;
-> +                endpoint {
-> +                  remote-endpoint = <&usb_hs>;
-> +                };
-> +              };
-> +              port@1 {
-> +                reg = <1>;
-> +                endpoint {
-> +                  remote-endpoint = <&usb_ss>;
-> +                };
-> +              };
-> +              port@2 {
-> +                reg = <2>;
-> +                endpoint {
-> +                  remote-endpoint = <&dp_aux>;
-> +                };
-> +              };
-> +            };
-> +          };
-> +        };
-> +
-> +        regulators {
-> +          dsvbst {
-> +            regulator-name = "mt6370-dsv-vbst";
-> +            regulator-min-microvolt = <4000000>;
-> +            regulator-max-microvolt = <6200000>;
-> +          };
-> +          dsvpos {
-> +            regulator-name = "mt6370-dsv-vpos";
-> +            regulator-min-microvolt = <4000000>;
-> +            regulator-max-microvolt = <6000000>;
-> +            regulator-boot-on;
-> +          };
-> +          dsvneg {
-> +            regulator-name = "mt6370-dsv-vneg";
-> +            regulator-min-microvolt = <4000000>;
-> +            regulator-max-microvolt = <6000000>;
-> +            regulator-boot-on;
-> +          };
-> +          vibldo {
-> +            regulator-name = "mt6370-vib-ldo";
-> +            regulator-min-microvolt = <1600000>;
-> +            regulator-max-microvolt = <4000000>;
-> +          };
-> +        };
-> +      };
-> +    };
-> diff --git a/include/dt-bindings/iio/adc/mediatek,mt6370_adc.h b/include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
-> new file mode 100644
-> index 000000000000..18ce2fef8f9e
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
-> @@ -0,0 +1,18 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-
-Same license as bindings, please.
-
-> +
-> +#ifndef __DT_BINDINGS_MEDIATEK_MT6370_ADC_H__
-> +#define __DT_BINDINGS_MEDIATEK_MT6370_ADC_H__
-> +
-> +/* ADC Channel Index */
-> +#define MT6370_CHAN_VBUSDIV5	0
-> +#define MT6370_CHAN_VBUSDIV2	1
-> +#define MT6370_CHAN_VSYS	2
-> +#define MT6370_CHAN_VBAT	3
-> +#define MT6370_CHAN_TS_BAT	4
-> +#define MT6370_CHAN_IBUS	5
-> +#define MT6370_CHAN_IBAT	6
-> +#define MT6370_CHAN_CHG_VDDP	7
-> +#define MT6370_CHAN_TEMP_JC	8
-> +#define MT6370_CHAN_MAX		9
-> +
-> +#endif
-> diff --git a/include/dt-bindings/mfd/mediatek,mt6370.h b/include/dt-bindings/mfd/mediatek,mt6370.h
-> new file mode 100644
-> index 000000000000..df641e5d651f
-> --- /dev/null
-> +++ b/include/dt-bindings/mfd/mediatek,mt6370.h
-> @@ -0,0 +1,83 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-
-Same license as bindings, please.
-
-> +
-> +#ifndef __DT_BINDINGS_MEDIATEK_MT6370_H__
-> +#define __DT_BINDINGS_MEDIATEK_MT6370_H__
-> +
-> +/* IRQ definitions */
-
-> +#define MT6370_IRQ_DIRCHGON		0
-> +#define MT6370_IRQ_CHG_TREG		4
-
-These should be IDs, so numbers incremented by one. Holes are not
-accepted. There is no point in encoding actual hardware numbers which
-are directly passed to implementation. Just pass the number, not define.
-Therefore remove entire file.
-
-> +#define MT6370_IRQ_CHG_AICR		5
-> +#define MT6370_IRQ_CHG_MIVR		6
-> +#define MT6370_IRQ_PWR_RDY		7
-> +#define MT6370_IRQ_FL_CHG_VINOVP	11
-Best regards,
-Krzysztof

@@ -2,111 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B715398E0
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 23:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A2555398F6
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 23:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348066AbiEaVj2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 17:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33946 "EHLO
+        id S1343928AbiEaVsQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 17:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239372AbiEaVj0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 17:39:26 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 349C173553;
-        Tue, 31 May 2022 14:39:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654033166; x=1685569166;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=W3LGc6UbOk46vOqseuqFkVY/oNvVjxu8CVHv7UXo3n8=;
-  b=WhYWn8FklYhVLU/W2xrPIo6q7rP8kB041IRJAuxCUKPeCTCClBY3J6sB
-   VdMInFByGhqGX/pYaOvyW+9H1ITxwGB6PoiXYvNMb/o28ybVsxlw+ySJq
-   oXjXs44IGkkI2C3nrAvRAONA63/6GTq0p70wUwBDfu09vtS/J3CzjOPHt
-   74mbGXCmlr2G6EBxFJ8i8G1YEB3qrDBAUBDg0ByrHFdes/td7OhPyOPJF
-   xbkvUmw/CSwcUvc/3JGai0wE0t+fftEZHAyC4FP3AJT8pBez1vdIJZmkJ
-   FGWSU9zLmoxqkGK3w8qrCpqPB9UP0393cFSyONFFYKeQFuy7iByW5NoLS
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="272962029"
-X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
-   d="scan'208";a="272962029"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 14:39:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
-   d="scan'208";a="633237026"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 31 May 2022 14:39:24 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id A7F2CD2; Wed,  1 Jun 2022 00:39:26 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] iio: adc: nau7802: Make use of device properties
-Date:   Wed,  1 Jun 2022 00:39:22 +0300
-Message-Id: <20220531213922.72992-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220531213922.72992-1-andriy.shevchenko@linux.intel.com>
-References: <20220531213922.72992-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S233452AbiEaVsP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 17:48:15 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C859C8D69D;
+        Tue, 31 May 2022 14:48:13 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id c19so23574285lfv.5;
+        Tue, 31 May 2022 14:48:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ybk7O8dN6b6H5xbFDEoMCkqNz4qnfNPoCfwRQJbaMWE=;
+        b=Cgm6GprlcUCBuJ8R9gwHR/U6yIcGBQ1j0i9r/Y19cnMF6yfiex3zX156nHpM6PWbxZ
+         /pasrG3B9WLzDjRSg3Q7QpcnySf+6cBKafEA49vxuVLkZJpRnM/3XXQsyl+P3iqrP2SR
+         3M4Fa5Ey7i3i7bXM3pUJK/vKrvfXa+8U6Fhk1pVwZ9ygtYHkhjQV7qO0x04j9NMsccis
+         BTO4q01NB5fIL72dqBfydVgJ4d4gy5OrvsNgU7BYnblwB5wtD/MT2SyK/pBC3OJimTUd
+         8CrIKuGDEm/Ym6h5DCWj3n6hUn2ZSFdWWcm+1kdPlaOkhFqnPAyocNLGNNGYdKNwWKaC
+         lXZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ybk7O8dN6b6H5xbFDEoMCkqNz4qnfNPoCfwRQJbaMWE=;
+        b=YMTrGBWDQhefbnRIDiQLHEgOaPILwDU5xwi54alpQ3YVhk5j6+JwCTP9N81zXy2trB
+         WiVklSql+f0P0XwdjYfTeYKG1z2h7f+ihH6690IRkBvn+uIH7wr2S/Mk6+d98cbe+SBh
+         4hkAHDYHg4vEsiX+bSfFbW7OTavwe7A+cEXNhSS9+r/rtVR5zrWYF/v4rNKeP6GMBBWf
+         xyogARAYCcOvzhnRj0LI6uSAoGmIWgTx+JcuVDtgWHdxDrMwm1V9LGjf5+zWjD91CoB0
+         dmLn530h1/Xs9+oaGXbk7xBP1eSyhUHPinPG4hT7zQkyCn6Bi6NLLsJbg2tuydTx0EI5
+         /D8Q==
+X-Gm-Message-State: AOAM5322xdcHzCTkgrHPXoI23brmH/W2sbfiW9imnDffUCRXKtNQuksC
+        jRi5dUAQuRTxlZNjSeaOxZP5SfttaA0/QcWFnZFZ1hYVNHQ=
+X-Google-Smtp-Source: ABdhPJx+qwKcx7leYf5D73FowWhfAJA6/AHPi6i6vR9MWlyar+cEFQ36m84oTWlNMVbd2BNnkrqW7jTW3lQggmxgPas=
+X-Received: by 2002:a17:907:381:b0:6fe:9ca8:c4b4 with SMTP id
+ ss1-20020a170907038100b006fe9ca8c4b4mr52900857ejb.147.1654033681191; Tue, 31
+ May 2022 14:48:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com> <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 31 May 2022 23:47:50 +0200
+Message-ID: <CAFBinCDf4UfEPFV4_Qf3m16DE-NzNUk_ZVcHZhgxVvn_pokdgw@mail.gmail.com>
+Subject: Re: [PATCH v1 3/3] iio: adc: meson_saradc: Use temporary variable for
+ struct device
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Convert the module to be property provider agnostic and allow
-it to be used on non-OF platforms.
+Hi Andy,
 
-Add mod_devicetable.h include.
+On Tue, May 31, 2022 at 11:18 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+[...]
+> @@ -650,11 +648,12 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
+>                                   void __iomem *base)
+>  {
+>         struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+> +       struct device *idev = &indio_dev->dev;
+> +       struct device *dev = dev->parent;
+It looks like this should read:
+    struct device *dev = idev->parent;
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/adc/nau7802.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+That said, I think this kind of typo is very easy with the current
+naming schema.
+It's been a while since I looked at other drivers but maybe the IIO
+maintainers have some recommendations for us (which would apply to
+multiple IIO drivers, not just meson_saradc).
+For example: I am not sure if iio_{err,warn} functions (which take a
+struct iio_dev pointer) have been proposed/discussed before. I think
+they could be useful for other drivers as well.
 
-diff --git a/drivers/iio/adc/nau7802.c b/drivers/iio/adc/nau7802.c
-index 2d71cdbcd82f..c1261ecd400c 100644
---- a/drivers/iio/adc/nau7802.c
-+++ b/drivers/iio/adc/nau7802.c
-@@ -8,10 +8,11 @@
- #include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/wait.h>
- #include <linux/log2.h>
--#include <linux/of.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -411,7 +412,6 @@ static int nau7802_probe(struct i2c_client *client)
- {
- 	struct iio_dev *indio_dev;
- 	struct nau7802_state *st;
--	struct device_node *np = client->dev.of_node;
- 	int i, ret;
- 	u8 data;
- 	u32 tmp = 0;
-@@ -451,7 +451,7 @@ static int nau7802_probe(struct i2c_client *client)
- 	if (!(ret & NAU7802_PUCTRL_PUR_BIT))
- 		return ret;
- 
--	of_property_read_u32(np, "nuvoton,vldo", &tmp);
-+	device_property_read_u32(&client->dev, "nuvoton,vldo", &tmp);
- 	st->vref_mv = tmp;
- 
- 	data = NAU7802_PUCTRL_PUD_BIT | NAU7802_PUCTRL_PUA_BIT |
--- 
-2.35.1
 
+Best regards,
+Martin

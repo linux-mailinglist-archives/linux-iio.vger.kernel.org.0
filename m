@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C024539233
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 15:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 552D4539242
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 15:51:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244789AbiEaNvH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 09:51:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43332 "EHLO
+        id S1345018AbiEaNvU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 09:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344946AbiEaNvA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 09:51:00 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8BE657B14
-        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 06:50:47 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id q7so7831467wrg.5
-        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 06:50:47 -0700 (PDT)
+        with ESMTP id S1344965AbiEaNvF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 09:51:05 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E471384A3F
+        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 06:50:50 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id h62-20020a1c2141000000b0039aa4d054e2so1292651wmh.1
+        for <linux-iio@vger.kernel.org>; Tue, 31 May 2022 06:50:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=84B5l6CLEYOYUre8rq3yJnmiSsiXoAiqgOdGcXH7KzA=;
-        b=wjCDUvAzmwhW8ShvFMODKlOAJvENmeZCAsQFEBBjpmCjVefXiQwTBynBslAevnS/ar
-         IXm4cXmqxylBQs193ugMlR1BjEOc3/Vk7U4T9LJteC5aqnNV4CXZ/jFlXuyrmnd+Hd5D
-         VCNQQUjf1leoYsHvfEgfO63Psj1/Zace3a/H4c4v0Ewdmwjm2AWqWy+FkXHdgjohoAH1
-         iYI0/ouaIN6JdlbiGEIUyAzSCsrHyrO24nEYivf97/369hIv7k81eCdJwjiidtXbLyUS
-         /+R4GrIUqCJ7UoFADiWq/7vAKLkpPNArYC6LGy40/7qc4u3ixQEjvWKr2h+AZvt1+nts
-         blQw==
+        bh=U4WzI4lbMxsj2AcBZqR5vJfiFGZXQzAZrwPqRI3jHz4=;
+        b=b2zDiF5YOiseW/nuXuuY1Fytkg1NjykULZ6Hq3k0ECX4k4blxfNvKM85svhajUrUv4
+         NMas0MJxswcK+uegrqPPzB+9HpE3HDll6zuJdAy0cKDy5dVGjHGRK8oVHa8SK9OuZyq9
+         ZklXo6kN4SPbHbg8jAVuW61GvMcabXOc68x6JuTtRtmt6IpQlp5Vsp9PTkVYp/6Zh+S2
+         3m67s1U9KYXFLM/NUMcMHxW1UjHZLLpNbL7KpwiyWIMg6TafVndkF7il3GILAPgr/QVl
+         c/zKokPzg1iagW/fjsvVLJVcdmIGNn/ZaikG9L7yUR/uBLIWUok6ifW4BBpNy8mlRid7
+         HKPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=84B5l6CLEYOYUre8rq3yJnmiSsiXoAiqgOdGcXH7KzA=;
-        b=f+XdFpolNUn9FBZqj7Lpckai7PeYofUBv2gh7CEWJ2UoDHXDSMsY0M3w92PF2kmvws
-         povsHRo56GLbtRCepIpnZVNKQdXxk22Ozdhr+GJy4ANUda5BjMqRpiOuNfMXxzGGScfN
-         IOrbtQQtRGm1RZxzHKObhdHlaEzyeJ79gZmSDJsnS95GsevU5mkXrETUWziLg1mjQYA+
-         FUT+invNslXodIa84CTNa6o1is+1O1xaD3Wvu5xyTiOrsonSxpyq3vhuFrHywKbAXik2
-         NhVibE/CghaHQiG/bki79WosgPZzh+NQOxHQAo7A1IOg2aGG2zUdLzyIdW/Tw4EOu+GH
-         OBig==
-X-Gm-Message-State: AOAM531+qDwWjKzj8ObjDHDR7BOgpJrsPG4sJvmTZDqusdCSzCzLX7uC
-        Q8wljPzorhC3onfBGbKnFKQisw==
-X-Google-Smtp-Source: ABdhPJx1HdFDNNiPkbLkJv2ksIxQsCl1lQetWRtoVAAGpHCrR8geKFAxOVuea00BT4mrXnnAAW7uhg==
-X-Received: by 2002:adf:ec84:0:b0:210:e87:113b with SMTP id z4-20020adfec84000000b002100e87113bmr20885976wrn.545.1654005047238;
-        Tue, 31 May 2022 06:50:47 -0700 (PDT)
+        bh=U4WzI4lbMxsj2AcBZqR5vJfiFGZXQzAZrwPqRI3jHz4=;
+        b=MffFpLkWPQNFZasMxVPnviCHVxBR98mEaeQzz1kLkmrE0XdEcaNCD+aHdzCo1nTGkS
+         y2NFLYztwu6xVuXeqPe338G6QpQYP10tvNWArILv5bsKDYlv7/krmhq1PJ91oixiF1pQ
+         WAjbrPznCoVzlEkqBPieb/Ukf1qciItV42kojU+3WoLGcR0xpXR0ZEBjyvHlbzgJB5ST
+         zVWKe+ZDko2NkgldrkWH543n7+5nkuwkjGORYhpI4vKMKglRooxHeSHRv4W2J6BTzWMU
+         NzFmDt0WEnpuOQDP9s5OwWY5MCOMZEOF3RQxQ5EzuSNSPnY+LAPB+qy+WCWSynnB/TJe
+         2KvA==
+X-Gm-Message-State: AOAM5327r2FVRA1O3sUdqedQnUSaFQC5SxeNvKPLY469R/zTXHSO66x9
+        sApvypE+MMVHeFj4eLKj7D7U4g==
+X-Google-Smtp-Source: ABdhPJyi7nZ5n+1hvGyQP/JdQ+9YpIzvsYsMnZlfaurRInqkxVdBqpLhXF6CQGT2vWAFmxAa1ycrnA==
+X-Received: by 2002:a05:600c:3c90:b0:39c:1f14:d2ba with SMTP id bg16-20020a05600c3c9000b0039c1f14d2bamr157154wmb.43.1654005049241;
+        Tue, 31 May 2022 06:50:49 -0700 (PDT)
 Received: from localhost.localdomain ([88.160.162.107])
-        by smtp.gmail.com with ESMTPSA id l11-20020a05600c1d0b00b00394351e35edsm2404806wms.26.2022.05.31.06.50.45
+        by smtp.gmail.com with ESMTPSA id l11-20020a05600c1d0b00b00394351e35edsm2404806wms.26.2022.05.31.06.50.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 06:50:46 -0700 (PDT)
+        Tue, 31 May 2022 06:50:48 -0700 (PDT)
 From:   Fabien Parent <fparent@baylibre.com>
 To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         vkoul@kernel.org, qii.wang@mediatek.com, matthias.bgg@gmail.com,
@@ -54,7 +54,8 @@ To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         ulf.hansson@linaro.org, srinivas.kandagatla@linaro.org,
         chunfeng.yun@mediatek.com, broonie@kernel.org,
         wim@linux-watchdog.org, linux@roeck-us.net,
-        Long Cheng <long.cheng@mediatek.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Zhiyong Tao <zhiyong.tao@mediatek.com>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
@@ -63,9 +64,9 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
         Fabien Parent <fparent@baylibre.com>
-Subject: [PATCH 05/17] dt-bindings: dma: mediatek,uart-dma: add MT8365 bindings
-Date:   Tue, 31 May 2022 15:50:14 +0200
-Message-Id: <20220531135026.238475-6-fparent@baylibre.com>
+Subject: [PATCH 06/17] dt-bindings: iio: adc: mediatek: add MT8365 SoC bindings
+Date:   Tue, 31 May 2022 15:50:15 +0200
+Message-Id: <20220531135026.238475-7-fparent@baylibre.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220531135026.238475-1-fparent@baylibre.com>
 References: <20220531135026.238475-1-fparent@baylibre.com>
@@ -81,25 +82,25 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add binding documentation in order to support the MT8365 SoC.
+Add binding for the ADC present in MT8365 SoC.
 
 Signed-off-by: Fabien Parent <fparent@baylibre.com>
 ---
- Documentation/devicetree/bindings/dma/mediatek,uart-dma.yaml | 1 +
+ .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/dma/mediatek,uart-dma.yaml b/Documentation/devicetree/bindings/dma/mediatek,uart-dma.yaml
-index 54d68fc688b5..19ea8dcbcbce 100644
---- a/Documentation/devicetree/bindings/dma/mediatek,uart-dma.yaml
-+++ b/Documentation/devicetree/bindings/dma/mediatek,uart-dma.yaml
-@@ -22,6 +22,7 @@ properties:
-       - items:
-           - enum:
-               - mediatek,mt2712-uart-dma
-+              - mediatek,mt8365-uart-dma
-               - mediatek,mt8516-uart-dma
-           - const: mediatek,mt6577-uart-dma
-       - enum:
+diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+index 65581ad4b816..364a23be73bc 100644
+--- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+@@ -37,6 +37,7 @@ properties:
+               - mediatek,mt8186-auxadc
+               - mediatek,mt8195-auxadc
+               - mediatek,mt8516-auxadc
++              - mediatek,mt8365-auxadc
+           - const: mediatek,mt8173-auxadc
+ 
+   reg:
 -- 
 2.36.1
 

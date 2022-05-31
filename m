@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DC235392F4
-	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 16:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56D9539319
+	for <lists+linux-iio@lfdr.de>; Tue, 31 May 2022 16:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345133AbiEaOLY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 10:11:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43680 "EHLO
+        id S234252AbiEaOX6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 31 May 2022 10:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345005AbiEaOLX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 10:11:23 -0400
+        with ESMTP id S1345218AbiEaOX5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 10:23:57 -0400
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7719265422;
-        Tue, 31 May 2022 07:11:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A3B8020A;
+        Tue, 31 May 2022 07:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654006282; x=1685542282;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=K2Sm7KR4WlYANKzzxvSs11cMHFq39jJccsP/ycyK3bY=;
-  b=oHemOSvPp4APn+z/NUfMWYfS4mreiS17DozPYsGCaryUHbXA5Am3NyD6
-   4LQs5MNu1ggXWFPmRPmA65GhfI+oz71UZySQeFKBnJv9WHxJ4IcecWUD9
-   MOyYzA4ZfKHw/61y1l/Fe1grNEVGkm3f2ddKHxzznG1yhAtsPEua+UMpM
-   C5EWr64Q+f/b/26OuEDk9VnqxwMV8T7DT+jdYYOw/156wpl3RhqaE7+qe
-   wwzHezQOSFvmoHKjrU/ScSDu6CFuMM1bURYfjZ6XdQ74giA6EdvlKI7L4
-   uyy8q4FPgsj4qr9+Iu3XEZ23rNJpk2zh0J0X/qscJnLIOA2qgarzjvefy
+  t=1654007036; x=1685543036;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rpF3VW7+9wXB4kzDnn1TnjadNGs2Y37n9bSd1jF1TNE=;
+  b=Dsj9+W0ylzTcGVXOT33GQviQkc7fjTezEj7uVpuTbxvBZGS/gEgly2pk
+   K02HZJYMgWXxU7lXf5IcoV0FrRRP/rr/b88jILvj0kZcHlKP3Ms6yAtVJ
+   nOy+lZEIO+jpyk06POw/MshcwJMMMr3lbPzg5ebuTSep06EPkQfI6wZZM
+   F6r+0UDZf9ZlK+QTqUAOZTRJ4na0HNKPB1lOzXcKWz960x8QfLJpWc4FQ
+   VSunqlgtbC8WGy8QgNqcrnOj6efr5bkqsbEIOLAg3hOl4z4znpNeB/XN6
+   YKt0snyGJh5xMiZXhEUacFlj3u0SPU4fvLg7yD/B5yDoT1bVXr7sdA9UP
    g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="272831554"
+X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="272835147"
 X-IronPort-AV: E=Sophos;i="5.91,265,1647327600"; 
-   d="scan'208";a="272831554"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 07:11:22 -0700
+   d="scan'208";a="272835147"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 07:23:54 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,265,1647327600"; 
-   d="scan'208";a="562335391"
+   d="scan'208";a="823293222"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 31 May 2022 07:11:20 -0700
+  by fmsmga006.fm.intel.com with ESMTP; 31 May 2022 07:23:52 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 5C9E2165; Tue, 31 May 2022 17:11:22 +0300 (EEST)
+        id 820F814F; Tue, 31 May 2022 17:23:54 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-imx@nxp.com
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] iio: adc: xilinx-xadc: Drop duplicate NULL check in xadc_parse_dt()
-Date:   Tue, 31 May 2022 17:11:18 +0300
-Message-Id: <20220531141118.64540-2-andriy.shevchenko@linux.intel.com>
+        Haibo Chen <haibo.chen@nxp.com>
+Subject: [PATCH v1 1/1] iio: adc: vf610_adc: Make use of device properties
+Date:   Tue, 31 May 2022 17:23:53 +0300
+Message-Id: <20220531142353.64925-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220531141118.64540-1-andriy.shevchenko@linux.intel.com>
-References: <20220531141118.64540-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -64,66 +63,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The fwnode_for_each_child_node() is NULL-aware, no need to check
-its parameters outside. Drop duplicate NULL check in xadc_parse_dt().
+Convert the module to be property provider agnostic and allow
+it to be used on non-OF platforms.
+
+Add mod_devicetable.h include.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/adc/xilinx-xadc-core.c | 38 ++++++++++++++----------------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+ drivers/iio/adc/Kconfig     |  1 -
+ drivers/iio/adc/vf610_adc.c | 15 ++++++---------
+ 2 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index e883f95f0cda..1b247722ba25 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1247,30 +1247,28 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, unsigned int *conf, int irq)
- 	chan = &channels[9];
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 3b6a80786b51..448ae243cd31 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1257,7 +1257,6 @@ config TWL6030_GPADC
  
- 	chan_node = device_get_named_child_node(dev, "xlnx,channels");
--	if (chan_node) {
--		fwnode_for_each_child_node(chan_node, child) {
--			if (num_channels >= max_channels) {
--				fwnode_handle_put(child);
--				break;
--			}
-+	fwnode_for_each_child_node(chan_node, child) {
-+		if (num_channels >= max_channels) {
-+			fwnode_handle_put(child);
-+			break;
-+		}
+ config VF610_ADC
+ 	tristate "Freescale vf610 ADC driver"
+-	depends on OF
+ 	depends on HAS_IOMEM
+ 	select IIO_BUFFER
+ 	select IIO_TRIGGERED_BUFFER
+diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+index c84293efc129..c6b16cf6e367 100644
+--- a/drivers/iio/adc/vf610_adc.c
++++ b/drivers/iio/adc/vf610_adc.c
+@@ -5,7 +5,9 @@
+  * Copyright 2013 Freescale Semiconductor, Inc.
+  */
  
--			ret = fwnode_property_read_u32(child, "reg", &reg);
--			if (ret || reg > 16)
--				continue;
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret || reg > 16)
-+			continue;
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/property.h>
+ #include <linux/platform_device.h>
+ #include <linux/interrupt.h>
+ #include <linux/delay.h>
+@@ -14,10 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+-#include <linux/of.h>
+-#include <linux/of_irq.h>
+ #include <linux/regulator/consumer.h>
+-#include <linux/of_platform.h>
+ #include <linux/err.h>
  
--			if (fwnode_property_read_bool(child, "xlnx,bipolar"))
--				chan->scan_type.sign = 's';
-+		if (fwnode_property_read_bool(child, "xlnx,bipolar"))
-+			chan->scan_type.sign = 's';
+ #include <linux/iio/iio.h>
+@@ -799,6 +798,7 @@ MODULE_DEVICE_TABLE(of, vf610_adc_match);
  
--			if (reg == 0) {
--				chan->scan_index = 11;
--				chan->address = XADC_REG_VPVN;
--			} else {
--				chan->scan_index = 15 + reg;
--				chan->address = XADC_REG_VAUX(reg - 1);
--			}
--			num_channels++;
--			chan++;
-+		if (reg == 0) {
-+			chan->scan_index = 11;
-+			chan->address = XADC_REG_VPVN;
-+		} else {
-+			chan->scan_index = 15 + reg;
-+			chan->address = XADC_REG_VAUX(reg - 1);
- 		}
-+		num_channels++;
-+		chan++;
- 	}
- 	fwnode_handle_put(chan_node);
+ static int vf610_adc_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	struct vf610_adc *info;
+ 	struct iio_dev *indio_dev;
+ 	int irq;
+@@ -846,13 +846,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
+ 
+ 	info->vref_uv = regulator_get_voltage(info->vref);
+ 
+-	of_property_read_u32_array(pdev->dev.of_node, "fsl,adck-max-frequency",
+-			info->max_adck_rate, 3);
++	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+ 
+-	ret = of_property_read_u32(pdev->dev.of_node, "min-sample-time",
+-			&info->adc_feature.default_sample_time);
+-	if (ret)
+-		info->adc_feature.default_sample_time = DEFAULT_SAMPLE_TIME;
++	info->adc_feature.default_sample_time = DEFAULT_SAMPLE_TIME;
++	device_property_read_u32(dev, "min-sample-time", &info->adc_feature.default_sample_time);
+ 
+ 	platform_set_drvdata(pdev, indio_dev);
  
 -- 
 2.35.1

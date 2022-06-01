@@ -2,123 +2,391 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30D2F53AC6D
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 20:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63A0F53AD17
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 20:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245473AbiFASDg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 14:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
+        id S229497AbiFASyn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 14:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230345AbiFASDg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 14:03:36 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC8B9C2FA;
-        Wed,  1 Jun 2022 11:03:33 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 3D5835FD02;
-        Wed,  1 Jun 2022 21:03:31 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1654106611;
-        bh=jwjcenm4v2FpMajJm2PZiHzbOon/1npcFDzjh9aQFGw=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=peagLzJJcjcF6Y0YrnxtbTcgHnzW+TWcqUepE2DGYH+hlTNYEv1XK3Y2F09guziqn
-         i81pPVjbKoCI5zbaxOk0h801khCye6yhF9JY5jY/TwkGUAbuD9iB7UNUZXWcG3x21Q
-         31blWHmQn5WUoRtfneajaU9/eg/ekfJSTwWKyGGgpkRhuWA5ZcchxMdyFeis8i7cpE
-         n3hqV+7A6hj5T4rsrXTPD8NyvV+v46vdh9UQjh+GXsy+DN7bIogacBjy8yY72pLAw8
-         Q2nwcUwhDtIQkzdsfJd/4XpMSFpF5DZm3E/AjNRrrK1cFzcWcnx/Mf/JEjOnS90vKP
-         r6S1LI2XsXLtQ==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Wed,  1 Jun 2022 21:03:30 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     =?utf-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Topic: [PATCH v1] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Index: AQHYdRpaUrhZ5pf6gEC6S1oZ2DfDiK05JA2AgADoBACAAB2gAIAAK1eAgABSQAA=
-Date:   Wed, 1 Jun 2022 18:03:15 +0000
-Message-ID: <20220601180326.3b6v4joykv5dryzm@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220531181457.26034-1-ddrokosov@sberdevices.ru>
- <20220531185729.z6246gexteyo4xmd@CAB-WSD-L081021.sigma.sbrf.ru>
- <786db9cf74473caef10dcea79975716b5516f47e.camel@gmail.com>
- <20220601103356.xlimabcihaay5jky@CAB-WSD-L081021.sigma.sbrf.ru>
- <5b808f06ba7532bbfd9c2745420aedfa9464a297.camel@gmail.com>
-In-Reply-To: <5b808f06ba7532bbfd9c2745420aedfa9464a297.camel@gmail.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <62A8C0C629BF304C825EDE739B3E04CF@sberdevices.ru>
-Content-Transfer-Encoding: base64
+        with ESMTP id S230179AbiFASyn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 14:54:43 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336AF150B42;
+        Wed,  1 Jun 2022 11:54:38 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id b11so2113147qvv.4;
+        Wed, 01 Jun 2022 11:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jp79uiNkitewXJJEA0IFePL2JbWC/ni1AeZZA9Y4DhU=;
+        b=LI53a8ZqfqMxPwpL9LSjEQXpzzOaEPFL5w7NqSpfTkm9zdFTc5xxLqaDiK+yN8G4Pn
+         jVE7fINvcr9d8EiqFTkcQTopf8gLhI9fFhySbUoZqGW+VuVPOF8N7+wb/TIU+l3f7u9W
+         InOzcdIY87L0HkcuCCeAxEAhydun4wVshTuUV/xtH1HLITfY6vIT5mLZAaX4SNkk22VB
+         YzBVrMJPacfWBLdsC2a/1H766iCsCC3YtlaM0dPFWla/fWmzs48os0d0tC3ogGKO7mxv
+         SSAhFcqQi5muFZir+4urFPwDZCVfvi1Twzdb4bkMtEa6RRGerPURY1NkuEyLZHIMGGgv
+         /8Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jp79uiNkitewXJJEA0IFePL2JbWC/ni1AeZZA9Y4DhU=;
+        b=n4HuUTtfM7pQ4FbMh+w0x4m4Ic3Pul9XOE1EUIwzgl1x+d1p/rDR8EFzWh6Y++2sKt
+         JY9r5n40+45eD7Evy3MKYdsKe2kkWOllZ29QcO8gkiQjO59zHhUApvEJx4Ahg5cCTN2Q
+         NJpI6GHB2dFM+FIeDgsiL1lldjMmbuS/JqmoIY1UotVOgBu5aAZ7Y7SlEz0PnDRhZljb
+         rHkGkZ3aLKGC626R462zcpOYJwAlo9/RH1NQRvHmrHLvfa2LCqBmPNKndz/ztqMuc0Nr
+         wGEu/+G+WX9KfyYKM31dHY10ZGrSXJTXrEfin40dWVRMI5jdkphDPqsMfpMhUgM0tHfG
+         fBRQ==
+X-Gm-Message-State: AOAM533LI9nbojaGDsEcVAj0ZHAGIe6kP5lb7kqMF0lRlZ1X8Vh2BIuP
+        O2Pmm/LImkogJNzJF++XVWY=
+X-Google-Smtp-Source: ABdhPJyH2sCVLycxrwYa1KUpY40TTIUVsUJFikvu9o2P0WviiVEF3BIlVQUIrIHs+ZNeHp1+zJ9pNg==
+X-Received: by 2002:a05:6214:29cd:b0:464:4ffa:bfb8 with SMTP id gh13-20020a05621429cd00b004644ffabfb8mr14129486qvb.34.1654109677091;
+        Wed, 01 Jun 2022 11:54:37 -0700 (PDT)
+Received: from spruce.. (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id t194-20020a3746cb000000b006a371ba1fa5sm1755961qka.32.2022.06.01.11.54.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jun 2022 11:54:36 -0700 (PDT)
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
+To:     jic23@kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v3] iio: Use octal permissions and DEVICE_ATTR_{RO,RW}.
+Date:   Wed,  1 Jun 2022 14:54:14 -0400
+Message-Id: <20220601185414.251571-1-joetalbott@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/01 07:23:00 #19635587
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sm9uYXRoYW4sIE51bm8sDQoNCkkndmUgc2VudCBSRkMgcGF0Y2ggd2l0aCB0cmlnLT5vd25lciBw
-b2ludGVyIGluaXRpYWxpemF0aW9uIG1vdmFsIGZyb20NCnJlZ2lzdGVyKCkgdG8gYWxsb2NhdGUo
-KSBzdGFnZSBhcyBOdW5vIHN1Z2dlc3RlZCBiZWZvcmU6DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwu
-b3JnL2xpbnV4LWlpby8yMDIyMDYwMTE3NDgzNy4yMDI5Mi0xLWRkcm9rb3NvdkBzYmVyZGV2aWNl
-cy5ydS8NCg0KUGxlYXNlIHJldmlldyBpZiBwb3NzaWJsZSBhbmQgc2hhcmUgeW91ciB0aG91Z2h0
-cy4NCg0KT24gV2VkLCBKdW4gMDEsIDIwMjIgYXQgMDM6MDk6MDNQTSArMDIwMCwgTnVubyBTw6Eg
-d3JvdGU6DQo+IE9uIFdlZCwgMjAyMi0wNi0wMSBhdCAxMDozMyArMDAwMCwgRG1pdHJ5IFJva29z
-b3Ygd3JvdGU6DQo+ID4gSGkgTnVubywNCj4gPiANCj4gPiBUaGFuayB5b3UgZm9yIGNvbW1lbnRz
-IQ0KPiA+IA0KPiA+IE9uIFdlZCwgSnVuIDAxLCAyMDIyIGF0IDEwOjQ3OjU0QU0gKzAyMDAsIE51
-bm8gU8OhIHdyb3RlOg0KPiA+ID4gT24gVHVlLCAyMDIyLTA1LTMxIGF0IDE4OjU3ICswMDAwLCBE
-bWl0cnkgUm9rb3NvdiB3cm90ZToNCj4gPiA+ID4gSGkgSm9uYXRoYW4sDQo+ID4gPiA+IA0KPiA+
-ID4gPiBJIGhhdmUgb25lIHF1ZXN0aW9uIGFib3V0IGEgY2FzZXMgd2hlbiB0cmlnZ2VyIG93bmVy
-IGlzIGJ1aWx0aW4NCj4gPiA+ID4gbW9kdWxlLg0KPiA+ID4gPiBJbiB0aGUgc3VjaCBjYXNlcyB0
-cmlnLT5vd25lciA9PSBudWxsLCBiZWNhdXNlIFRISVNfTU9EVUxFIGVxdWFscw0KPiA+ID4gPiB0
-bw0KPiA+ID4gPiBudWxsLiBIb3cgZG8geW91IHRoaW5rLCBzaG91bGQgd2UgdGFrZSBpbnRvIGFj
-Y291bnQgc3VjaA0KPiA+ID4gPiBzaXR1YXRpb25zPw0KPiA+ID4gPiANCj4gPiA+ID4gSU1ITyB3
-ZSBoYXZlIHRvIHRha2UgaW4gYW5kIHNhdmUgdGhpcyBpbmZvcm1hdGlvbiB0byB0cmlnX2luZm8N
-Cj4gPiA+ID4gZHVyaW5nDQo+ID4gPiA+IHRyaWdnZXIgYWxsb2NhdGlvbiBjYWxsLiBGb3IgZXhh
-bXBsZSB3ZSBjYW4gY2hlY2sgVEhJU19NT0RVTEUNCj4gPiA+ID4gZnJvbQ0KPiA+ID4gPiB0aGUN
-Cj4gPiA+IA0KPiA+ID4gSG1tbSwgSWYgd2Ugd2VyZSB0byBkbyBzb21ldGhpbmcgZHVyaW5nIGlp
-b190cmlnZ2VyX2FsbG9jKCksIHdlDQo+ID4gPiB3b3VsZA0KPiA+ID4gcmF0aGVyIGFzc2lnbiBh
-bHJlYWR5IFRISVNfTU9EVUxFIHRvIG93bmVyIGFuZCB3ZSB3b3VsZCBub3QgbmVlZA0KPiA+ID4g
-dGhpcw0KPiA+ID4gV0FSTigpLiBJIG1lYW4sIGlmIHNvbWVvbmUgY2FsbHMgaWlvX3RyaWdnZXJf
-Z2V0KCkgYmVmb3JlDQo+ID4gPiBhbGxvY2F0aW5nDQo+ID4gPiBpdCwgaXQgd2lsbCBoYXZlIGJp
-Z2dlciBwcm9ibGVtcyA6KS4NCj4gPiA+IA0KPiA+IA0KPiA+IFlvdSBhcmUgcmlnaHQsIG5vbi1h
-bGxvY2F0ZWQgcG9pbnRlciBkZXJlZmVyZW5jZSBpcyBtdWNoIGJpZ2dlcg0KPiA+IHByb2JsZW0g
-OikNCj4gPiANCj4gPiA+IEkgdGhpbmsgdGhpcyBjb3VsZCBhY3R1YWxseSBiZSBzb21ldGhpbmcg
-cmVhc29uYWJsZS4uLg0KPiA+IA0KPiA+IEkgdGhpbmsgaXQgY291bGQgYmUgYSBnb29kIHNvbHV0
-aW9uLCBidXQgaXQncyByZXF1aXJlZCBhIGxvdCBvZg0KPiA+IGNoYW5nZXMNCj4gPiBpbiB0aGUg
-SUlPIGRyaXZlcnMgY29kZSwgYmVjYXVzZSBpZiB3ZSBhc3NpZ24gdHJpZy0+b3duZXIgZnJvbQ0K
-PiA+IGlpb190cmlnZ2VyX2FsbG9jKCksIHdlIGRvIG5vdCBuZWVkIHRoaXNfbW9kIHBhcmFtZXRl
-ciBpbiB0aGUNCj4gPiBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIGlmYWNlIGFuZCBpdHMgd3JhcHBl
-cnMuDQo+ID4gU28gaXQgbWVhbnMgdG8gbWFrZSBpdCB3b3JrYWJsZSB3ZSBtdXN0Og0KPiA+IMKg
-wqDCoCAtIHJld29yayBpaW9fdHJpZ2dlcl9hbGxvYygpDQo+ID4gwqDCoMKgIC0gcmVkZXNpZ24g
-aWlvX3RyaWdnZXJfcmVnaXN0ZXIoKSBpZmFjZSBhbmQgaXRzIHdyYXBwZXJzDQo+ID4gwqDCoMKg
-IC0gY29ycmVjdCBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIGNhbGwgZnJvbSBhbGwgSUlPIGRyaXZl
-cnMNCj4gPiANCj4gPiBJIHN1cHBvc2Ugd2UgbmVlZCB0byB3YWl0IGZvciBKb25hdGhhbidzIGNv
-bW1lbnRzIGhlcmUuLi4NCj4gPiANCj4gDQo+IEkgdGhpbmsgd2UgY291bGQgYWN0dWFsbHkgZ2V0
-IHRoaXMgZG9uZSB3aXRob3V0IGhhdmluZyB0byBjaGFuZ2UgYWxsDQo+IHRoZSBkcml2ZXJzLiBO
-b3RlIG9uIGhvdyBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIHBhc3NlcyBUSElTX01PRFVMRSB0bw0K
-PiB0aGUgaW50ZXJuYWwgQVBJLiBXZSBjb3VsZCBhbHNvIHVzZSBtYWNyb3MgaW4gdGhlIGFsbG9j
-IGZ1bmN0aW9uIGluIGENCj4gd2F5IHRoYXQgb25seSBpbnRlcm5hbCBmdW5jdGlvbnMgd291bGQg
-bmVlZCB0byBiZSBjaGFuZ2VkLiBCdXQgaXQgYWxsDQo+IGRlcGVuZHMgb24gd2hldGhlciBvciBu
-b3QgSm9uYXRoYW4gd2FudHMgdGhpcyBtb3ZlZC4uLg0KPiANCj4gLSBOdW5vIFPDoQ0KDQotLSAN
-ClRoYW5rIHlvdSwNCkRtaXRyeQ==
+As reported by checkpatch.pl.  Where possible use DEVICE_ATTR_RO(),
+DEVICE_ATTR_RW(), and __ATTR_RO().  Change function names to be
+<var>_show() for read and <var>_store() for write.
+
+Suggested-by: Joe Perches <joe@perches.com>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
+---
+
+Changes in v3:
+  - Use __ATTR_RO() and add parens to DEVICE_ATTR_{RW,RO} in description
+    as suggested by Andy Shevchenko <andy.shevchenko@gmail.com>
+
+Changes in v2:
+  - Use DEVICE_ATTR_RO() and DEVICE_ATTR_RW() rather than octal permissions
+	where applicable.  Rename functions to <var>-show() and
+	<var>-store().  Based on review by Joe Perches <joe@perches.com>
+
+ drivers/iio/industrialio-buffer.c  | 64 ++++++++++++++----------------
+ drivers/iio/industrialio-core.c    | 35 ++++++++--------
+ drivers/iio/industrialio-trigger.c | 32 +++++++--------
+ 3 files changed, 61 insertions(+), 70 deletions(-)
+
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index b078eb2f3c9d..80121b1ac554 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -630,18 +630,18 @@ static int iio_buffer_add_channel_sysfs(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
+-static ssize_t iio_buffer_read_length(struct device *dev,
+-				      struct device_attribute *attr,
+-				      char *buf)
++static ssize_t length_show(struct device *dev,
++			   struct device_attribute *attr,
++			   char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+ 
+ 	return sysfs_emit(buf, "%d\n", buffer->length);
+ }
+ 
+-static ssize_t iio_buffer_write_length(struct device *dev,
+-				       struct device_attribute *attr,
+-				       const char *buf, size_t len)
++static ssize_t length_store(struct device *dev,
++			    struct device_attribute *attr,
++			    const char *buf, size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+@@ -672,9 +672,9 @@ static ssize_t iio_buffer_write_length(struct device *dev,
+ 	return ret ? ret : len;
+ }
+ 
+-static ssize_t iio_buffer_show_enable(struct device *dev,
+-				      struct device_attribute *attr,
+-				      char *buf)
++static ssize_t enable_show(struct device *dev,
++			   struct device_attribute *attr,
++			   char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+ 
+@@ -1289,10 +1289,10 @@ void iio_disable_all_buffers(struct iio_dev *indio_dev)
+ 	iio_buffer_deactivate_all(indio_dev);
+ }
+ 
+-static ssize_t iio_buffer_store_enable(struct device *dev,
+-				       struct device_attribute *attr,
+-				       const char *buf,
+-				       size_t len)
++static ssize_t enable_store(struct device *dev,
++			    struct device_attribute *attr,
++			    const char *buf,
++			    size_t len)
+ {
+ 	int ret;
+ 	bool requested_state;
+@@ -1322,19 +1322,19 @@ static ssize_t iio_buffer_store_enable(struct device *dev,
+ 	return (ret < 0) ? ret : len;
+ }
+ 
+-static ssize_t iio_buffer_show_watermark(struct device *dev,
+-					 struct device_attribute *attr,
+-					 char *buf)
++static ssize_t watermark_show(struct device *dev,
++			      struct device_attribute *attr,
++			      char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+ 
+ 	return sysfs_emit(buf, "%u\n", buffer->watermark);
+ }
+ 
+-static ssize_t iio_buffer_store_watermark(struct device *dev,
+-					  struct device_attribute *attr,
+-					  const char *buf,
+-					  size_t len)
++static ssize_t watermark_store(struct device *dev,
++			       struct device_attribute *attr,
++			       const char *buf,
++			       size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+@@ -1366,9 +1366,9 @@ static ssize_t iio_buffer_store_watermark(struct device *dev,
+ 	return ret ? ret : len;
+ }
+ 
+-static ssize_t iio_dma_show_data_available(struct device *dev,
+-						struct device_attribute *attr,
+-						char *buf)
++static ssize_t data_available_show(struct device *dev,
++				   struct device_attribute *attr,
++				   char *buf)
+ {
+ 	struct iio_buffer *buffer = to_iio_dev_attr(attr)->buffer;
+ 
+@@ -1391,18 +1391,12 @@ static ssize_t direction_show(struct device *dev,
+ 	}
+ }
+ 
+-static DEVICE_ATTR(length, S_IRUGO | S_IWUSR, iio_buffer_read_length,
+-		   iio_buffer_write_length);
+-static struct device_attribute dev_attr_length_ro = __ATTR(length,
+-	S_IRUGO, iio_buffer_read_length, NULL);
+-static DEVICE_ATTR(enable, S_IRUGO | S_IWUSR,
+-		   iio_buffer_show_enable, iio_buffer_store_enable);
+-static DEVICE_ATTR(watermark, S_IRUGO | S_IWUSR,
+-		   iio_buffer_show_watermark, iio_buffer_store_watermark);
+-static struct device_attribute dev_attr_watermark_ro = __ATTR(watermark,
+-	S_IRUGO, iio_buffer_show_watermark, NULL);
+-static DEVICE_ATTR(data_available, S_IRUGO,
+-		iio_dma_show_data_available, NULL);
++static DEVICE_ATTR_RW(length);
++static struct device_attribute dev_attr_length_ro = __ATTR_RO(length);
++static DEVICE_ATTR_RW(enable);
++static DEVICE_ATTR_RW(watermark);
++static struct device_attribute dev_attr_watermark_ro = __ATTR_RO(watermark);
++static DEVICE_ATTR_RO(data_available);
+ static DEVICE_ATTR_RO(direction);
+ 
+ /*
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e1ed44dec2ab..bb1dd00b99ac 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1114,12 +1114,12 @@ int __iio_device_attr_init(struct device_attribute *dev_attr,
+ 	dev_attr->attr.name = name;
+ 
+ 	if (readfunc) {
+-		dev_attr->attr.mode |= S_IRUGO;
++		dev_attr->attr.mode |= 0444;
+ 		dev_attr->show = readfunc;
+ 	}
+ 
+ 	if (writefunc) {
+-		dev_attr->attr.mode |= S_IWUSR;
++		dev_attr->attr.mode |= 0200;
+ 		dev_attr->store = writefunc;
+ 	}
+ 
+@@ -1393,29 +1393,29 @@ void iio_free_chan_devattr_list(struct list_head *attr_list)
+ 	}
+ }
+ 
+-static ssize_t iio_show_dev_name(struct device *dev,
+-				 struct device_attribute *attr,
+-				 char *buf)
++static ssize_t name_show(struct device *dev,
++			 struct device_attribute *attr,
++			 char *buf)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	return sysfs_emit(buf, "%s\n", indio_dev->name);
+ }
+ 
+-static DEVICE_ATTR(name, S_IRUGO, iio_show_dev_name, NULL);
++static DEVICE_ATTR_RO(name);
+ 
+-static ssize_t iio_show_dev_label(struct device *dev,
+-				 struct device_attribute *attr,
+-				 char *buf)
++static ssize_t label_show(struct device *dev,
++			  struct device_attribute *attr,
++			  char *buf)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	return sysfs_emit(buf, "%s\n", indio_dev->label);
+ }
+ 
+-static DEVICE_ATTR(label, S_IRUGO, iio_show_dev_label, NULL);
++static DEVICE_ATTR_RO(label);
+ 
+-static ssize_t iio_show_timestamp_clock(struct device *dev,
+-					struct device_attribute *attr,
+-					char *buf)
++static ssize_t current_timestamp_clock_show(struct device *dev,
++					    struct device_attribute *attr,
++					    char *buf)
+ {
+ 	const struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	const clockid_t clk = iio_device_get_clock(indio_dev);
+@@ -1459,9 +1459,9 @@ static ssize_t iio_show_timestamp_clock(struct device *dev,
+ 	return sz;
+ }
+ 
+-static ssize_t iio_store_timestamp_clock(struct device *dev,
+-					 struct device_attribute *attr,
+-					 const char *buf, size_t len)
++static ssize_t current_timestamp_clock_store(struct device *dev,
++					     struct device_attribute *attr,
++					     const char *buf, size_t len)
+ {
+ 	clockid_t clk;
+ 	int ret;
+@@ -1509,8 +1509,7 @@ int iio_device_register_sysfs_group(struct iio_dev *indio_dev,
+ 	return 0;
+ }
+ 
+-static DEVICE_ATTR(current_timestamp_clock, S_IRUGO | S_IWUSR,
+-		   iio_show_timestamp_clock, iio_store_timestamp_clock);
++static DEVICE_ATTR_RW(current_timestamp_clock);
+ 
+ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+ {
+diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+index f504ed351b3e..21f113c0ee96 100644
+--- a/drivers/iio/industrialio-trigger.c
++++ b/drivers/iio/industrialio-trigger.c
+@@ -37,7 +37,7 @@ static LIST_HEAD(iio_trigger_list);
+ static DEFINE_MUTEX(iio_trigger_list_lock);
+ 
+ /**
+- * iio_trigger_read_name() - retrieve useful identifying name
++ * name_show() - retrieve useful identifying name
+  * @dev:	device associated with the iio_trigger
+  * @attr:	pointer to the device_attribute structure that is
+  *		being processed
+@@ -46,15 +46,15 @@ static DEFINE_MUTEX(iio_trigger_list_lock);
+  * Return: a negative number on failure or the number of written
+  *	   characters on success.
+  */
+-static ssize_t iio_trigger_read_name(struct device *dev,
+-				     struct device_attribute *attr,
+-				     char *buf)
++static ssize_t name_show(struct device *dev,
++			 struct device_attribute *attr,
++			 char *buf)
+ {
+ 	struct iio_trigger *trig = to_iio_trigger(dev);
+ 	return sysfs_emit(buf, "%s\n", trig->name);
+ }
+ 
+-static DEVICE_ATTR(name, S_IRUGO, iio_trigger_read_name, NULL);
++static DEVICE_ATTR_RO(name);
+ 
+ static struct attribute *iio_trig_dev_attrs[] = {
+ 	&dev_attr_name.attr,
+@@ -395,7 +395,7 @@ void iio_dealloc_pollfunc(struct iio_poll_func *pf)
+ EXPORT_SYMBOL_GPL(iio_dealloc_pollfunc);
+ 
+ /**
+- * iio_trigger_read_current() - trigger consumer sysfs query current trigger
++ * current_trigger_show() - trigger consumer sysfs query current trigger
+  * @dev:	device associated with an industrial I/O device
+  * @attr:	pointer to the device_attribute structure that
+  *		is being processed
+@@ -407,9 +407,9 @@ EXPORT_SYMBOL_GPL(iio_dealloc_pollfunc);
+  * Return: a negative number on failure, the number of characters written
+  *	   on success or 0 if no trigger is available
+  */
+-static ssize_t iio_trigger_read_current(struct device *dev,
+-					struct device_attribute *attr,
+-					char *buf)
++static ssize_t current_trigger_show(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 
+@@ -419,7 +419,7 @@ static ssize_t iio_trigger_read_current(struct device *dev,
+ }
+ 
+ /**
+- * iio_trigger_write_current() - trigger consumer sysfs set current trigger
++ * current_trigger_store() - trigger consumer sysfs set current trigger
+  * @dev:	device associated with an industrial I/O device
+  * @attr:	device attribute that is being processed
+  * @buf:	string buffer that holds the name of the trigger
+@@ -432,10 +432,10 @@ static ssize_t iio_trigger_read_current(struct device *dev,
+  * Return: negative error code on failure or length of the buffer
+  *	   on success
+  */
+-static ssize_t iio_trigger_write_current(struct device *dev,
+-					 struct device_attribute *attr,
+-					 const char *buf,
+-					 size_t len)
++static ssize_t current_trigger_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf,
++				     size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+@@ -494,9 +494,7 @@ static ssize_t iio_trigger_write_current(struct device *dev,
+ 	return ret;
+ }
+ 
+-static DEVICE_ATTR(current_trigger, S_IRUGO | S_IWUSR,
+-		   iio_trigger_read_current,
+-		   iio_trigger_write_current);
++static DEVICE_ATTR_RW(current_trigger);
+ 
+ static struct attribute *iio_trigger_consumer_attrs[] = {
+ 	&dev_attr_current_trigger.attr,
+-- 
+2.35.3
+

@@ -2,67 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77BDA539A7A
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 02:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02DE2539E2C
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 09:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344253AbiFAAoj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 31 May 2022 20:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35418 "EHLO
+        id S1348345AbiFAH0V (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 03:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243000AbiFAAoi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 31 May 2022 20:44:38 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5EC8D69D;
-        Tue, 31 May 2022 17:44:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654044277; x=1685580277;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Edfpulig+ThWc0bbiQuZikx3D/q8pZAAGANvXImqB7M=;
-  b=cyIuT93ZHseURS5e5aue8hnMr9BNUPOsBgH8cuDCdmCFtSFPUTUsOdwF
-   DUky9M/fOcubqWuzbBx3Rd4ZF+C0gordV0NQUKAuGTgeoIc/hkt8MMqNM
-   tIQVuLrD9FjDjVMTwwFu3Drty/YycZN8ElA0glJwL4e5CF33zE5y+k7Lu
-   kgNhJI9q1KZMM1Xd6jqnQ5C014hnnpG34eyXxsgZPT3HeWF2Lg/eCdNpD
-   g05Q+f6R7LB9hOuLMcyfCjh6l7iNQdDISIzLwwun9Y86MYDHDK8O6lz6S
-   7AvRFpiXdLJlWiOtIiYi2paYgnT3pHQDCeY/sOgyx5Dy38UGHDE0VcM87
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="272995977"
-X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
-   d="scan'208";a="272995977"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2022 17:44:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
-   d="scan'208";a="720549427"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 31 May 2022 17:44:35 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nwCTS-0003Ie-Gz;
-        Wed, 01 Jun 2022 00:44:34 +0000
-Date:   Wed, 1 Jun 2022 08:44:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: Re: [PATCH v1 3/3] iio: adc: meson_saradc: Use temporary variable
- for struct device
-Message-ID: <202206010812.Xy2yMeXw-lkp@intel.com>
-References: <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S1345039AbiFAH0U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 03:26:20 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F7E606C8
+        for <linux-iio@vger.kernel.org>; Wed,  1 Jun 2022 00:26:16 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id w27so938787edl.7
+        for <linux-iio@vger.kernel.org>; Wed, 01 Jun 2022 00:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=yFS3Rnzfb0unp6UI0nuTf8G/mfgDKJWNbf+GB8d9uhI=;
+        b=yzkX1bG3uR7Qmo+F7Qn+hD60uiQC931MBqEyL6CGfUOrTBWOWU+fSEZRlHsxL+o36H
+         DaqBipXoh9uvBx5bddczFUvjkjeXBBibFH//xj8nkC6+BldNDlqO97uoNDCMjCR2tpbh
+         iXPv3e4OV0sFLNf+AQh/N2HDdJtQ+bcBqcEhEHrumECnJcXgYb0c9sI5pRHJ8gOZ+I4j
+         RKTmx02GpCBTx63+I8GebWfp/M1OilGCQSjE68nmPHe2DS2B4ln1SMWm5hTC543D1aM4
+         c1kvAk/OltrRUqX0oU3syh9MOBrJ4FDVR9It+1wYbKDr/j4x1mN/vt4gTx3gFDbEUdsS
+         MqPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=yFS3Rnzfb0unp6UI0nuTf8G/mfgDKJWNbf+GB8d9uhI=;
+        b=tYWEzrnIKQl0zc5+puLPY/u93SXk+gDR1zYbx2qyG44iT0bBaIKgo2ob0Rwsn1EMef
+         emzfx4TYpf9AWhfMQGiftbjUobioxHmtISgcgwK8e4zsKk5bMx1bRWhUkWROoJbiScrJ
+         ucn42trQEkX2El87chmXE2MUwszvya4qk1eEgYPaDdI519vMDlbuP6B+dcRFkV99dusz
+         HmFmdK+T0CIiZ2RThSOltYySm2jk5OAvApT3u5BeTognntX4w3jTHjMpXHJitYptXW59
+         0V1HSab7IuEs3m47bid6cafspqcwt1HhMP1grlCp8bgEeqJAaqx4BFFh2n2wGmTg4Z3m
+         Owrw==
+X-Gm-Message-State: AOAM532QTXY0MpUBKcN7hDCvp79dB910qbjoEvKH/f2khysg0YLmMzFG
+        hvCdGy/OVBDVcyFfgpmm7wOESQ==
+X-Google-Smtp-Source: ABdhPJyfhUlStTcZTz+Ssrs2TvVIfO4c18Qt7HTJuB/uTfvjqG5vQ05BQvumt+AGIXmDE9LMcb26HA==
+X-Received: by 2002:a05:6402:40ce:b0:42b:9d1:96e6 with SMTP id z14-20020a05640240ce00b0042b09d196e6mr66557011edb.262.1654068374634;
+        Wed, 01 Jun 2022 00:26:14 -0700 (PDT)
+Received: from [192.168.0.179] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id h15-20020a170906110f00b006fe98c7c7a9sm359838eja.85.2022.06.01.00.26.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Jun 2022 00:26:14 -0700 (PDT)
+Message-ID: <1f349852-34a7-ff27-3c34-462128802340@linaro.org>
+Date:   Wed, 1 Jun 2022 09:26:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 09/14] dt-bindings: usb: Add Mediatek MT6370 TCPC binding
+ documentation
+Content-Language: en-US
+To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de
+Cc:     cy_huang@richtek.com, alice_chen@richtek.com,
+        chiaen_wu@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20220531102809.11976-1-peterwu.pub@gmail.com>
+ <20220531102809.11976-10-peterwu.pub@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220531102809.11976-10-peterwu.pub@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,96 +86,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+On 31/05/2022 12:28, ChiaEn Wu wrote:
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> Add Mediatek MT6370 TCPC binding documentation.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> ---
+>  .../bindings/usb/mediatek,mt6370-tcpc.yaml    | 35 +++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml b/Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+> new file mode 100644
+> index 000000000000..49316633f92f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/usb/mediatek,mt6370-tcpc.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: Mediatek MT6370 Type-C Port Switch and Power Delivery controller DT bindings
 
-I love your patch! Perhaps something to improve:
+s/DT bindings//
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on v5.18 next-20220531]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+> +
+> +maintainers:
+> +  - ChiYuan Huang <cy_huang@richtek.com>
+> +
+> +description: |
+> +  Mediatek MT6370 is a multi-functional device. It integrates charger, ADC, flash, RGB indicators,
+> +  regulators (DSV/VIBLDO), and TypeC Port Switch with Power Delivery controller.
+> +  This document only describes MT6370 Type-C Port Switch and Power Delivery controller.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/iio-adc-meson_saradc-Convert-to-use-dev_err_probe/20220601-052117
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20220601/202206010812.Xy2yMeXw-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/d2d128394df620a157f32fab808d46e5983f73e5
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andy-Shevchenko/iio-adc-meson_saradc-Convert-to-use-dev_err_probe/20220601-052117
-        git checkout d2d128394df620a157f32fab808d46e5983f73e5
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/iio/
+These lines do not look like wrapped at 80.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - mediatek,mt6370-tcpc
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  connector:
+> +    type: object
+> +    $ref: /schemas/connector/usb-connector.yaml#
 
-All warnings (new ones prefixed by >>):
+You need unevaluatedProperties:false within connector.
 
-   drivers/iio/adc/meson_saradc.c: In function 'meson_sar_adc_clk_init':
->> drivers/iio/adc/meson_saradc.c:652:24: warning: 'dev' is used uninitialized [-Wuninitialized]
-     652 |         struct device *dev = dev->parent;
-         |                        ^~~
+> +    description:
+> +      Properties for usb c connector.
+
+Skip description, it's not helpful.
+
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
 
 
-vim +/dev +652 drivers/iio/adc/meson_saradc.c
-
-   646	
-   647	static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
-   648					  void __iomem *base)
-   649	{
-   650		struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
-   651		struct device *idev = &indio_dev->dev;
- > 652		struct device *dev = dev->parent;
-   653		struct clk_init_data init;
-   654		const char *clk_parents[1];
-   655	
-   656		init.name = devm_kasprintf(idev, GFP_KERNEL, "%s#adc_div", dev_name(dev));
-   657		if (!init.name)
-   658			return -ENOMEM;
-   659	
-   660		init.flags = 0;
-   661		init.ops = &clk_divider_ops;
-   662		clk_parents[0] = __clk_get_name(priv->clkin);
-   663		init.parent_names = clk_parents;
-   664		init.num_parents = 1;
-   665	
-   666		priv->clk_div.reg = base + MESON_SAR_ADC_REG3;
-   667		priv->clk_div.shift = MESON_SAR_ADC_REG3_ADC_CLK_DIV_SHIFT;
-   668		priv->clk_div.width = MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH;
-   669		priv->clk_div.hw.init = &init;
-   670		priv->clk_div.flags = 0;
-   671	
-   672		priv->adc_div_clk = devm_clk_register(idev, &priv->clk_div.hw);
-   673		if (WARN_ON(IS_ERR(priv->adc_div_clk)))
-   674			return PTR_ERR(priv->adc_div_clk);
-   675	
-   676		init.name = devm_kasprintf(idev, GFP_KERNEL, "%s#adc_en", dev_name(dev));
-   677		if (!init.name)
-   678			return -ENOMEM;
-   679	
-   680		init.flags = CLK_SET_RATE_PARENT;
-   681		init.ops = &clk_gate_ops;
-   682		clk_parents[0] = __clk_get_name(priv->adc_div_clk);
-   683		init.parent_names = clk_parents;
-   684		init.num_parents = 1;
-   685	
-   686		priv->clk_gate.reg = base + MESON_SAR_ADC_REG3;
-   687		priv->clk_gate.bit_idx = __ffs(MESON_SAR_ADC_REG3_CLK_EN);
-   688		priv->clk_gate.hw.init = &init;
-   689	
-   690		priv->adc_clk = devm_clk_register(idev, &priv->clk_gate.hw);
-   691		if (WARN_ON(IS_ERR(priv->adc_clk)))
-   692			return PTR_ERR(priv->adc_clk);
-   693	
-   694		return 0;
-   695	}
-   696	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Best regards,
+Krzysztof

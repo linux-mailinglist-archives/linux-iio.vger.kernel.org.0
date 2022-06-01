@@ -2,117 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B13353A268
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6874353A28C
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352005AbiFAKQD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 06:16:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59212 "EHLO
+        id S1352046AbiFAKaj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 06:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351990AbiFAKQC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:16:02 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342635F26E
-        for <linux-iio@vger.kernel.org>; Wed,  1 Jun 2022 03:16:00 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id er5so1466154edb.12
-        for <linux-iio@vger.kernel.org>; Wed, 01 Jun 2022 03:16:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=l19XAZ4RQlB6J7TkjVOMmvipD7uiUl1NY4xv6/LugyI=;
-        b=BtCIyFjN7SFARpIH1mnWAScPZAo/XJHoBZSi2HQQ7H83f88XfXLI/MeYvWG5YjOGez
-         q8hrM8fnZplltFJ8MOqPvahGQWiFqMo+jgX0/eKYCSAlzbXiEOBkZ/Xs+9UJj3+dCAlR
-         4+PnY1MSlS9esAdaRcE9nCR9J9JUnQ3jSYf97NA2Dw3NJ3I0WyGHJGJIEMdyqnOJ0H9E
-         bXa4sJB7S/LusFzZBuAnmy8Z1k72D609NjRBnvVsityJqE+4PtcST5BiKZkMwEju4QCJ
-         bLCtp5CXpJOQUQuceR7/5ipgBauLhhIZeuYEY6a/zfX/LzafUYE8w1vk3etCxbkkZhZn
-         Rypg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=l19XAZ4RQlB6J7TkjVOMmvipD7uiUl1NY4xv6/LugyI=;
-        b=A5tp2J3enJY/7YJTYM22Zsv3oivs/dOTsLMh5W3Rgp8FAWrQcNM6/P6PBfaak+MugG
-         9VGXc/mGIHFl1laud08PyEQaQpoXWKmDqYNbLbaO4p8y3FCxXiNr0XRv8KxtI8BeL3Jy
-         iKKQTzdLZYqURyM3JIrLcHWi1Swbm7Mdms3KTP4QZWCha3uE/8tYVwdteuOObBv0T9q1
-         q8kkvDFyUOd488GmR++C+0Y13J1yPk0NXKuhphWh1FDE04V2KEKZkGHmSCmy1vkVrzzI
-         krT2NSsWt1DbmUyqJo56lWp/Y3LZUdbtRtxSGo0yzoiSlIvybX7FoQ/n0iuhCEYYEdkJ
-         IKuQ==
-X-Gm-Message-State: AOAM532XYsc/reobEKQUTwN9i3zoDD02BBvmRJ1sgCEj+aV21Zj6WRD8
-        RbVaqpi+OcNdesQ/6xzZB9noJA==
-X-Google-Smtp-Source: ABdhPJwqLQ4Ui6MtgBlrktb1cmqeGlIiI3nvKGpc3MDfpcX9j7W/cB4tKjt/uwhPk3xrWT+HZr/CNw==
-X-Received: by 2002:a05:6402:4410:b0:427:ab6f:a39a with SMTP id y16-20020a056402441000b00427ab6fa39amr69619893eda.120.1654078558779;
-        Wed, 01 Jun 2022 03:15:58 -0700 (PDT)
-Received: from [192.168.0.179] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id l15-20020a17090615cf00b006f3ef214dd9sm534351ejd.63.2022.06.01.03.15.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jun 2022 03:15:58 -0700 (PDT)
-Message-ID: <7f4c0956-7663-60fc-a603-fd40f0317a1b@linaro.org>
-Date:   Wed, 1 Jun 2022 12:15:56 +0200
+        with ESMTP id S1350236AbiFAKai (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:30:38 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE56E56769;
+        Wed,  1 Jun 2022 03:30:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654079437; x=1685615437;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qD5rv9i5Du7irA/swnuN3jwbdILA1dofh7zhQ5sAHp8=;
+  b=PNGe5sU+fW4qZsgPwB/w23r//14zsGfqk8+hpkCgle3R5aoUkE0VXTCK
+   yD75S09mgRDw9gKrqYDNo/zBQUe+5mfksnJoUVz+ZjZ2UwdgTRi2za/Fd
+   Xu5SfDsuDs1qOaKD0KR2B3t3I2cw7RAddSkX3CnqJxdITZoiQDEGd9r4X
+   76Xn5Itj+8dnTwAg0ax4/fGej44TggPYScBQalJxS9LgcJzlitRW1nVGg
+   glnGUkw4lxt8noUUyQbAAPWm9xVssZjDl0UVVFLa5mRwDWatjpiunqpoz
+   Ti3/YycWYyaBPyjLzkZsz+SMZUrm+AxIfHJtT20GA0NsIg+Ubr/njmddP
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="361917350"
+X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
+   d="scan'208";a="361917350"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 03:30:37 -0700
+X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
+   d="scan'208";a="530002767"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 03:30:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nwLcV-000QYP-MW;
+        Wed, 01 Jun 2022 13:30:31 +0300
+Date:   Wed, 1 Jun 2022 13:30:31 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Subject: Re: [PATCH v1 3/3] iio: adc: meson_saradc: Use temporary variable
+ for struct device
+Message-ID: <Ypc/x2G+jgHvBjLY@smile.fi.intel.com>
+References: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
+ <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
+ <CAFBinCDf4UfEPFV4_Qf3m16DE-NzNUk_ZVcHZhgxVvn_pokdgw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 15/17] arm64: dts: mediatek: add mt6357 device-tree
-Content-Language: en-US
-To:     Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        qii.wang@mediatek.com, matthias.bgg@gmail.com, jic23@kernel.org,
-        chaotian.jing@mediatek.com, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, chunfeng.yun@mediatek.com,
-        broonie@kernel.org, wim@linux-watchdog.org, linux@roeck-us.net
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org
-References: <20220531135026.238475-1-fparent@baylibre.com>
- <20220531135026.238475-16-fparent@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220531135026.238475-16-fparent@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFBinCDf4UfEPFV4_Qf3m16DE-NzNUk_ZVcHZhgxVvn_pokdgw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 31/05/2022 15:50, Fabien Parent wrote:
-> Add device-tree for the MT6357 PMIC.
-> 
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> ---
->  arch/arm64/boot/dts/mediatek/mt6357.dtsi | 272 +++++++++++++++++++++++
->  1 file changed, 272 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/mediatek/mt6357.dtsi
-> 
-(...)
+On Tue, May 31, 2022 at 11:47:50PM +0200, Martin Blumenstingl wrote:
+> On Tue, May 31, 2022 at 11:18 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> [...]
+> > @@ -650,11 +648,12 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
+> >                                   void __iomem *base)
+> >  {
+> >         struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+> > +       struct device *idev = &indio_dev->dev;
+> > +       struct device *dev = dev->parent;
+> It looks like this should read:
+>     struct device *dev = idev->parent;
 
-> +
-> +		mt6357rtc: mt6357rtc {
+Oops, indeed.
 
-Generic node names, so "rtc".
+> That said, I think this kind of typo is very easy with the current
+> naming schema.
+> It's been a while since I looked at other drivers but maybe the IIO
+> maintainers have some recommendations for us (which would apply to
+> multiple IIO drivers, not just meson_saradc).
+> For example: I am not sure if iio_{err,warn} functions (which take a
+> struct iio_dev pointer) have been proposed/discussed before. I think
+> they could be useful for other drivers as well.
 
-> +			compatible = "mediatek,mt6357-rtc",
-> +				     "mediatek,mt6358-rtc";
-> +		};
-> +
-> +		mt6357keys: mt6357keys {
-
-Generic node names.
-
-> +			compatible = "mediatek,mt6357-keys";
-> +		};
-> +	};
-> +};
+Looking deeper into this example, I think the IIO dev usage might be wrong
+in the first place, but since there are managed resources attached, I dunno
+if it's the way to go. Let's wait for maintainers to chime in.
 
 
-Best regards,
-Krzysztof
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

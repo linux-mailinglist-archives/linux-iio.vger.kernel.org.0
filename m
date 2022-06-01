@@ -2,106 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6874353A28C
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6AF653A2AD
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352046AbiFAKaj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 06:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
+        id S1351480AbiFAKeV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 06:34:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350236AbiFAKai (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:30:38 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE56E56769;
-        Wed,  1 Jun 2022 03:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654079437; x=1685615437;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qD5rv9i5Du7irA/swnuN3jwbdILA1dofh7zhQ5sAHp8=;
-  b=PNGe5sU+fW4qZsgPwB/w23r//14zsGfqk8+hpkCgle3R5aoUkE0VXTCK
-   yD75S09mgRDw9gKrqYDNo/zBQUe+5mfksnJoUVz+ZjZ2UwdgTRi2za/Fd
-   Xu5SfDsuDs1qOaKD0KR2B3t3I2cw7RAddSkX3CnqJxdITZoiQDEGd9r4X
-   76Xn5Itj+8dnTwAg0ax4/fGej44TggPYScBQalJxS9LgcJzlitRW1nVGg
-   glnGUkw4lxt8noUUyQbAAPWm9xVssZjDl0UVVFLa5mRwDWatjpiunqpoz
-   Ti3/YycWYyaBPyjLzkZsz+SMZUrm+AxIfHJtT20GA0NsIg+Ubr/njmddP
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="361917350"
-X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
-   d="scan'208";a="361917350"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 03:30:37 -0700
-X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
-   d="scan'208";a="530002767"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 03:30:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nwLcV-000QYP-MW;
-        Wed, 01 Jun 2022 13:30:31 +0300
-Date:   Wed, 1 Jun 2022 13:30:31 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>
-Subject: Re: [PATCH v1 3/3] iio: adc: meson_saradc: Use temporary variable
- for struct device
-Message-ID: <Ypc/x2G+jgHvBjLY@smile.fi.intel.com>
-References: <20220531211842.71998-1-andriy.shevchenko@linux.intel.com>
- <20220531211842.71998-3-andriy.shevchenko@linux.intel.com>
- <CAFBinCDf4UfEPFV4_Qf3m16DE-NzNUk_ZVcHZhgxVvn_pokdgw@mail.gmail.com>
+        with ESMTP id S232851AbiFAKeU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:34:20 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 421197C148;
+        Wed,  1 Jun 2022 03:34:14 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 97F875FD12;
+        Wed,  1 Jun 2022 13:34:10 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1654079650;
+        bh=gPmZS9gDQOs2UR/qozCVvNZkS/tEoN45jNdZfD1NEgk=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=mDEh6wKX6tvIlSZ9m67+8Xs7niE8iziFpa+gqV5iNm2iKOxmxsSazS5fEHKutz6Dk
+         kzRXxTRgCIifqsy2SImjWPLn7RBwTxJjt7e7tkOXwEL+pe2BjJIGdaa/S40U1oGLvv
+         QM24sRiILRV6m0+Fq7L7Evb10ISJdtD6NeZu7IzAX/UYRg4VOsp+36wIROxu/V3T6H
+         Pa9x9HVT57ACGrdPl+6SyYUz0RsIdyvT0ZYXygHPBqIobIL/occM/K7HPRrYydlkgO
+         gUV4gy4wgQ8VOXhTfR8+36M4ctuRHvkVUAS94hJ4igQPuwKLVONFCZuIKb1OWV/hQa
+         N8z9H36ghXdPw==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Wed,  1 Jun 2022 13:34:01 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     =?utf-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Thread-Topic: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Thread-Index: AQHYdRpaUrhZ5pf6gEC6S1oZ2DfDiK05JA2AgADoBACAAB2gAA==
+Date:   Wed, 1 Jun 2022 10:33:46 +0000
+Message-ID: <20220601103356.xlimabcihaay5jky@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220531181457.26034-1-ddrokosov@sberdevices.ru>
+ <20220531185729.z6246gexteyo4xmd@CAB-WSD-L081021.sigma.sbrf.ru>
+ <786db9cf74473caef10dcea79975716b5516f47e.camel@gmail.com>
+In-Reply-To: <786db9cf74473caef10dcea79975716b5516f47e.camel@gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4B9A7B81D8500942895A27785D25EBFB@sberdevices.ru>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFBinCDf4UfEPFV4_Qf3m16DE-NzNUk_ZVcHZhgxVvn_pokdgw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/01 07:23:00 #19635587
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 31, 2022 at 11:47:50PM +0200, Martin Blumenstingl wrote:
-> On Tue, May 31, 2022 at 11:18 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> [...]
-> > @@ -650,11 +648,12 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
-> >                                   void __iomem *base)
-> >  {
-> >         struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
-> > +       struct device *idev = &indio_dev->dev;
-> > +       struct device *dev = dev->parent;
-> It looks like this should read:
->     struct device *dev = idev->parent;
-
-Oops, indeed.
-
-> That said, I think this kind of typo is very easy with the current
-> naming schema.
-> It's been a while since I looked at other drivers but maybe the IIO
-> maintainers have some recommendations for us (which would apply to
-> multiple IIO drivers, not just meson_saradc).
-> For example: I am not sure if iio_{err,warn} functions (which take a
-> struct iio_dev pointer) have been proposed/discussed before. I think
-> they could be useful for other drivers as well.
-
-Looking deeper into this example, I think the IIO dev usage might be wrong
-in the first place, but since there are managed resources attached, I dunno
-if it's the way to go. Let's wait for maintainers to chime in.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+SGkgTnVubywNCg0KVGhhbmsgeW91IGZvciBjb21tZW50cyENCg0KT24gV2VkLCBKdW4gMDEsIDIw
+MjIgYXQgMTA6NDc6NTRBTSArMDIwMCwgTnVubyBTw6Egd3JvdGU6DQo+IE9uIFR1ZSwgMjAyMi0w
+NS0zMSBhdCAxODo1NyArMDAwMCwgRG1pdHJ5IFJva29zb3Ygd3JvdGU6DQo+ID4gSGkgSm9uYXRo
+YW4sDQo+ID4gDQo+ID4gSSBoYXZlIG9uZSBxdWVzdGlvbiBhYm91dCBhIGNhc2VzIHdoZW4gdHJp
+Z2dlciBvd25lciBpcyBidWlsdGluDQo+ID4gbW9kdWxlLg0KPiA+IEluIHRoZSBzdWNoIGNhc2Vz
+IHRyaWctPm93bmVyID09IG51bGwsIGJlY2F1c2UgVEhJU19NT0RVTEUgZXF1YWxzIHRvDQo+ID4g
+bnVsbC4gSG93IGRvIHlvdSB0aGluaywgc2hvdWxkIHdlIHRha2UgaW50byBhY2NvdW50IHN1Y2gg
+c2l0dWF0aW9ucz8NCj4gPiANCj4gPiBJTUhPIHdlIGhhdmUgdG8gdGFrZSBpbiBhbmQgc2F2ZSB0
+aGlzIGluZm9ybWF0aW9uIHRvIHRyaWdfaW5mbyBkdXJpbmcNCj4gPiB0cmlnZ2VyIGFsbG9jYXRp
+b24gY2FsbC4gRm9yIGV4YW1wbGUgd2UgY2FuIGNoZWNrIFRISVNfTU9EVUxFIGZyb20NCj4gPiB0
+aGUNCj4gDQo+IEhtbW0sIElmIHdlIHdlcmUgdG8gZG8gc29tZXRoaW5nIGR1cmluZyBpaW9fdHJp
+Z2dlcl9hbGxvYygpLCB3ZSB3b3VsZA0KPiByYXRoZXIgYXNzaWduIGFscmVhZHkgVEhJU19NT0RV
+TEUgdG8gb3duZXIgYW5kIHdlIHdvdWxkIG5vdCBuZWVkIHRoaXMNCj4gV0FSTigpLiBJIG1lYW4s
+IGlmIHNvbWVvbmUgY2FsbHMgaWlvX3RyaWdnZXJfZ2V0KCkgYmVmb3JlIGFsbG9jYXRpbmcNCj4g
+aXQsIGl0IHdpbGwgaGF2ZSBiaWdnZXIgcHJvYmxlbXMgOikuDQo+IA0KDQpZb3UgYXJlIHJpZ2h0
+LCBub24tYWxsb2NhdGVkIHBvaW50ZXIgZGVyZWZlcmVuY2UgaXMgbXVjaCBiaWdnZXIgcHJvYmxl
+bSA6KQ0KDQo+IEkgdGhpbmsgdGhpcyBjb3VsZCBhY3R1YWxseSBiZSBzb21ldGhpbmcgcmVhc29u
+YWJsZS4uLg0KDQpJIHRoaW5rIGl0IGNvdWxkIGJlIGEgZ29vZCBzb2x1dGlvbiwgYnV0IGl0J3Mg
+cmVxdWlyZWQgYSBsb3Qgb2YgY2hhbmdlcw0KaW4gdGhlIElJTyBkcml2ZXJzIGNvZGUsIGJlY2F1
+c2UgaWYgd2UgYXNzaWduIHRyaWctPm93bmVyIGZyb20NCmlpb190cmlnZ2VyX2FsbG9jKCksIHdl
+IGRvIG5vdCBuZWVkIHRoaXNfbW9kIHBhcmFtZXRlciBpbiB0aGUNCmlpb190cmlnZ2VyX3JlZ2lz
+dGVyKCkgaWZhY2UgYW5kIGl0cyB3cmFwcGVycy4NClNvIGl0IG1lYW5zIHRvIG1ha2UgaXQgd29y
+a2FibGUgd2UgbXVzdDoNCiAgICAtIHJld29yayBpaW9fdHJpZ2dlcl9hbGxvYygpDQogICAgLSBy
+ZWRlc2lnbiBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIGlmYWNlIGFuZCBpdHMgd3JhcHBlcnMNCiAg
+ICAtIGNvcnJlY3QgaWlvX3RyaWdnZXJfcmVnaXN0ZXIoKSBjYWxsIGZyb20gYWxsIElJTyBkcml2
+ZXJzDQoNCkkgc3VwcG9zZSB3ZSBuZWVkIHRvIHdhaXQgZm9yIEpvbmF0aGFuJ3MgY29tbWVudHMg
+aGVyZS4uLg0KDQotLSANClRoYW5rIHlvdSwNCkRtaXRyeQ==

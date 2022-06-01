@@ -2,54 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA42A53A13E
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 11:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4171C53A148
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 11:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351479AbiFAJtk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 05:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52824 "EHLO
+        id S1350300AbiFAJwI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 05:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351500AbiFAJtj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 05:49:39 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7DE55FF2D;
-        Wed,  1 Jun 2022 02:49:35 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id u12so2589267eja.8;
-        Wed, 01 Jun 2022 02:49:35 -0700 (PDT)
+        with ESMTP id S1349979AbiFAJwI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 05:52:08 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DD55DE53;
+        Wed,  1 Jun 2022 02:52:07 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id fu3so1129415ejc.7;
+        Wed, 01 Jun 2022 02:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=27PUTNb2UH1CaFlaB6o+qtISHhMqVYpnRcYCFuMiVv4=;
-        b=RLZe4nVv/Ic2Sv7cEK7VnKNh8dqoPXLpxnLc7UHjGVmmaOPOdprU9K/lDH3Kr6SBBs
-         6QDIiqyi6WSTTNbbOkaJZQxy8YW00WXStF0ZngoQO8N9wcquuUTE85nb3APbRA0XivHe
-         pRiLCDAis4jbIvybxugAxhkZlTL8NK/7VRcrLnDf0uEQG2evVEh8fmhzHI46goYAy/Rj
-         q8Bbbjx+gKvOdjejX68tjSajQP70rVeZpFFv49Ib8lN+kErMrJya6+9vsV7cGjxOYuDc
-         3XgnvxTdqukRyUlMaSwf9b5Yn8Xatlmpk1zSwUk3glp21S87SI0Q0DdcTQbIgVdEgv4s
-         sXUA==
+        bh=y1mJGH5c1Uozsg7k4TIS92U6v6LjyV9oFoYVM0NRha8=;
+        b=pDzLCrKYfqkJbuKWjOE7YKh1BjW8iuiBm1bkNBWCdyl6ZXoEh4vEn7DK+SXSpbB90U
+         0mMySw+1KW+jWuSlprGFz1/ZihwNlBGfQoJ952/S65Zmwv3yE5hNf/jPQiWvymLTm2fF
+         5PkFkXZAasgyv3D7SLAriP98k8PabcZr76rGv9IlXeRbm0xbiyv3vYnBL++vOmRc3YHf
+         XDY8aMNfCeHWTJKIS7vTg70L9GewCHcK41H93Qqlgs6oPaArJ8adNouaJAAsPAr7X8F4
+         inDdCJvjhmWW8uwlHRhS2KKJQUa9JGtgmNjDKfkuu2t5FghP5ZU/AhZiljZlz8vr07eB
+         Bzbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=27PUTNb2UH1CaFlaB6o+qtISHhMqVYpnRcYCFuMiVv4=;
-        b=1C2x9Xdwy4Bs1peBFTJh47LRDOmAW7RdTOTF00nUKHQHyTwO2x1ywzNNOfLt35eSZp
-         QjoGnRBdlIxHJvXGYdTl5RayGjXsne7RthNEYtPlHcVwc82/A+0VsdlZH5Osof6jly0b
-         CJ1vqbEZOZ2EG4BzVgsxQuJDGkmn9b42Q0xZuAXT5T0Pw50ZY1PpQBy0qdvM2oK3jtTA
-         MV2LxuAne6Ws5zObDmjeR5oGQRFlzPch9Npm5Mv+9ew/XiEA62UDnFyEXZxZbDHUL4o1
-         fSyQRxnr49TGwVGaHuLJ0EcDMD31HJpeSfyV3ikbKuZAfbIUXTNO2UgBYszmYwBEsvLo
-         V9Qw==
-X-Gm-Message-State: AOAM530s4pfkYNdTuSt7i4dm/7TsXS8Np5KB77YWsPGd90gYbwrgweoA
-        A0hGavHcYgZGCWDAVAOQYZU9aZKWYrHn2/mNXFM=
-X-Google-Smtp-Source: ABdhPJyRwbLQFMmfl3jzbmPNjvUrFSOgiS+i5wMk8MNJphpsSnNZ8UtMTX/OTZ0ronnNTUPtL2vf7d9XmnEYugvrfuk=
-X-Received: by 2002:a17:907:6e1a:b0:6fe:f357:3837 with SMTP id
- sd26-20020a1709076e1a00b006fef3573837mr40896205ejc.44.1654076974098; Wed, 01
- Jun 2022 02:49:34 -0700 (PDT)
+        bh=y1mJGH5c1Uozsg7k4TIS92U6v6LjyV9oFoYVM0NRha8=;
+        b=oUCrpTF45P2VHH050RTHHZ2ulrytmNIPVKrS+SdWkiwLP+KTtUxKX3CngaZEdZspq7
+         ughpY0FpjN4UgbpkmQ+eLE76y5NDRTzV8x2fHVzhPG/NqnsaGpLvvA7epbkBvZ287FFm
+         0f4P/pkY3IFXChroItUS6JPtYEUjsglh0R1mNL26jgGQClPGsS6z9N+rYbdjILlQ6dUI
+         xGufeQSt5tLGAfAps8xuBC8TuW/3UEJFPrwbpj6fim74aan8excuvpVUDIhaRDNB0CnH
+         ujIvZKqvv5tLLNmiI/dOKGs6Iepn+N3EK9qQD9TPNgnYFa0L3kRDlBHvLPzpACx+20/W
+         TGRQ==
+X-Gm-Message-State: AOAM533p4t6FsyTpeu5Tppqvach0oRCNFN07lzyWjiHAc128peo+r2Ii
+        vvTJq67yuPM9Sx5NGwJlsWpY5WoZelX8UjfnhcA=
+X-Google-Smtp-Source: ABdhPJyqf9ZHomloEdcRczicdqSM2R1J6YhdToJV6ojkEOXFybYoQ0iogidyjBJ4Et6n0VcyKxc+QBr3vsPZaac7yDU=
+X-Received: by 2002:a17:906:2416:b0:6fe:a0be:91d5 with SMTP id
+ z22-20020a170906241600b006fea0be91d5mr54057142eja.132.1654077125409; Wed, 01
+ Jun 2022 02:52:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220531102809.11976-1-peterwu.pub@gmail.com> <20220531102809.11976-7-peterwu.pub@gmail.com>
-In-Reply-To: <20220531102809.11976-7-peterwu.pub@gmail.com>
+ <CAHp75Vd8taco19vsDmBcCv8euV1SvwSiY5=P9oMkA6zWsjwXxg@mail.gmail.com>
+In-Reply-To: <CAHp75Vd8taco19vsDmBcCv8euV1SvwSiY5=P9oMkA6zWsjwXxg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 1 Jun 2022 11:48:58 +0200
-Message-ID: <CAHp75Vd8taco19vsDmBcCv8euV1SvwSiY5=P9oMkA6zWsjwXxg@mail.gmail.com>
+Date:   Wed, 1 Jun 2022 11:51:30 +0200
+Message-ID: <CAHp75Vf245Oo3wmx5rh_EkXZ4FL_nnehpfuaDAiEdG6BenXxhw@mail.gmail.com>
 Subject: Re: [PATCH 06/14] leds: mt6370: Add Mediatek MT6370 Indicator support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
@@ -91,81 +92,94 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, May 31, 2022 at 1:16 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+On Wed, Jun 1, 2022 at 11:48 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Tue, May 31, 2022 at 1:16 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> >
+> > From: Alice Chen <alice_chen@richtek.com>
 >
-> From: Alice Chen <alice_chen@richtek.com>
+> All below comments are applicable to the rest of the series as well
+> (one way or another), so please fix all your patches where it's
+> appropriate.
 
-All below comments are applicable to the rest of the series as well
-(one way or another), so please fix all your patches where it's
-appropriate.
+Forgot to mention, please consider using
 
+  return dev_err_probe();
+
+pattern in the ->probe() and related funcitons. It will save a lot of LOCs.
+
+> > Add Mediatek MT6370 Indicator support
 >
-> Add Mediatek MT6370 Indicator support
+> What indicator?
+> Please also keep attention on English punctuation (missed period).
+>
+> ...
+>
+> > +       help
+> > +         Support 4 channels and reg/pwm/breath mode.
+> > +         Isink4 can also use as a CHG_VIN power good Indicator.
+>
+> be used
+>
+> > +         Say Y here to enable support for
+> > +         MT6370_RGB_LED device.
+>
+> ...
+>
+> > +#include <linux/module.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/platform_device.h>
+>
+> > +#include <linux/of.h>
+>
+> Are you sure this is the correct header? Seems you need
+> mod_devicetable.h instead.
+>
+> > +#include <linux/property.h>
+> > +#include <linux/regmap.h>
+>
+> ...
+>
+> > +struct mt6370_priv {
+> > +       struct mutex lock;
+>
+> Do you use regmap locking?
+>
+> > +       struct device *dev;
+>
+> > +       struct regmap *regmap;
+>
+> > +       struct regmap_field *fields[F_MAX_FIELDS];
+> > +       const struct reg_field *reg_fields;
+> > +       const struct linear_range *ranges;
+> > +       struct reg_cfg *reg_cfgs;
+> > +       unsigned int leds_count;
+> > +       unsigned int leds_active;
+> > +       bool is_mt6372;
+> > +       struct mt6370_led leds[];
+> > +};
+>
+> ...
+>
+> > +static const unsigned int common_tfreqs[] = {
+> > +       10000, 5000, 2000, 1000, 500, 200, 5, 1
+>
+> Leave a comma at the end.
+>
+> > +};
+> > +
+> > +static const unsigned int mt6372_tfreqs[] = {
+> > +       8000, 4000, 2000, 1000, 500, 250, 8, 4
+>
+> Ditto.
+>
+> > +};
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
-What indicator?
-Please also keep attention on English punctuation (missed period).
-
-...
-
-> +       help
-> +         Support 4 channels and reg/pwm/breath mode.
-> +         Isink4 can also use as a CHG_VIN power good Indicator.
-
-be used
-
-> +         Say Y here to enable support for
-> +         MT6370_RGB_LED device.
-
-...
-
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/platform_device.h>
-
-> +#include <linux/of.h>
-
-Are you sure this is the correct header? Seems you need
-mod_devicetable.h instead.
-
-> +#include <linux/property.h>
-> +#include <linux/regmap.h>
-
-...
-
-> +struct mt6370_priv {
-> +       struct mutex lock;
-
-Do you use regmap locking?
-
-> +       struct device *dev;
-
-> +       struct regmap *regmap;
-
-> +       struct regmap_field *fields[F_MAX_FIELDS];
-> +       const struct reg_field *reg_fields;
-> +       const struct linear_range *ranges;
-> +       struct reg_cfg *reg_cfgs;
-> +       unsigned int leds_count;
-> +       unsigned int leds_active;
-> +       bool is_mt6372;
-> +       struct mt6370_led leds[];
-> +};
-
-...
-
-> +static const unsigned int common_tfreqs[] = {
-> +       10000, 5000, 2000, 1000, 500, 200, 5, 1
-
-Leave a comma at the end.
-
-> +};
-> +
-> +static const unsigned int mt6372_tfreqs[] = {
-> +       8000, 4000, 2000, 1000, 500, 250, 8, 4
-
-Ditto.
-
-> +};
 
 
 -- 

@@ -2,422 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE7F53A2DD
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:41:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EBB253A5A7
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 15:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352128AbiFAKlL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 06:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
+        id S244732AbiFANIO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 09:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352141AbiFAKlK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:41:10 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6609D7E1D3
-        for <linux-iio@vger.kernel.org>; Wed,  1 Jun 2022 03:41:06 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id q1so2835924ejz.9
-        for <linux-iio@vger.kernel.org>; Wed, 01 Jun 2022 03:41:06 -0700 (PDT)
+        with ESMTP id S245269AbiFANIN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 09:08:13 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E32912099;
+        Wed,  1 Jun 2022 06:08:11 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id o9so960550wmd.0;
+        Wed, 01 Jun 2022 06:08:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=YnwlxkEskig5qSEZkf1OUJFDCbLfIauiQR7owBPAAo8=;
-        b=o3oy882DW5XoM121QxgLAIqDZmLSK6/PrEQb4XvQeRV0EbxfAnEYajgac3QLI9FcMp
-         4SF5C5oNQogqHKHnGl1RjMphuthUgorSKRQaD3mLQrEnRwutFisd/3XW2m/RJCzJ0+1v
-         tkp0rArEAuR2Tk4/dlGSFfTxR/sxOC1Cdk3lvFAiSzaUJCoeqQvk34iQ3YtoEwYP9jQC
-         vqMMi5q+lDHqZkOawknPynNZ7RJd/5GHehRkUcT7oK0EPZ21LSkvWGONymsEa+4JEP7i
-         qjK82e59DvTe0ppOR5EgGlx6B82dcRv5j9w7gCLxi/yDXx5qJ39cTI5FpLvoPg4bTzNf
-         MbMw==
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=G8G1wDJSbB2ex2GaSeSsf8H1z5vD3B/zuqms9eCbXDI=;
+        b=Rec1skFoe2Rnj1FvtON2aLb3K4CIsT8BEcZdVJciC9lMrkkAD9yjW91g3a8LwEr78R
+         ctPcLgH22B5UuiQTQP1Pet8EhLnRpe4Llor7YrUVzC9tWAxaC1oPQhXTB7v3l79zmesn
+         o9CPRSFeb778AWAmTB4rEDaxhX9qtCm0x5+djjtyDIOBlS5XKZLCyIRbLO6fAm29aQN3
+         zVpIArImbvG52GAOq/IzBFbM+vM/IzJa+gaezxSKUqzp6ImNPVjOgLh4aTO5KaQMU8SY
+         Hcy0JPc5eyF0jOShXLizAfmOewdm8EuoLqDORNEOvaQ45lnUTYc5YR0N+GBmvLwkFHVE
+         6UQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=YnwlxkEskig5qSEZkf1OUJFDCbLfIauiQR7owBPAAo8=;
-        b=LWZ7Iy9urCSAf/Ac61FjbNVKWohZe8HRaVzJl7PJxQmMyPlG+X4sf9F+YwS92FXllj
-         sWfC1fzpvKqq+928dwJvKaj18KkZxwRE3um2lfPOF319qziDTEPxQp/VIIygUC+2FEaa
-         9hy0VsJaxYBXWabjLJZvbV+5wKpKJsk/HLgEnmg0FdwO6g7fRRfzXUGNj15jYYJti2nW
-         0E5xUGcPrNHmcoEmgv5KWd0tYeNBweyy1MqxZz8q5+7QrLlcTr4pSRS0JQ/xSWM55zg5
-         eATGjDyFTiTn+pp/hvOoMx9YfJNc4KBN9u8YLUS8vN+9664q//QIQR+4iaAgQj1U+bVY
-         sfig==
-X-Gm-Message-State: AOAM533oi8CdW5x2OXeAnj/gtzzjGTNTXJdduWO8tguyFpMmcmf32Fzf
-        v7PjCEb/IBpXpuIiK6PVe65B6g==
-X-Google-Smtp-Source: ABdhPJyobmFzrAd7aGPFPzNizVmWKEMaqJL/SVLVJ4JJ7gg9SZs/2Gv6F8acA22LJi7CFkPE62rb6g==
-X-Received: by 2002:a17:907:9805:b0:6f4:fe0e:5547 with SMTP id ji5-20020a170907980500b006f4fe0e5547mr56262621ejc.426.1654080064935;
-        Wed, 01 Jun 2022 03:41:04 -0700 (PDT)
-Received: from [192.168.0.179] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id b17-20020a50e791000000b0042ac2705444sm774652edn.58.2022.06.01.03.41.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jun 2022 03:41:04 -0700 (PDT)
-Message-ID: <72329bd9-3d8d-a18c-236d-8a84e5dcc455@linaro.org>
-Date:   Wed, 1 Jun 2022 12:41:03 +0200
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=G8G1wDJSbB2ex2GaSeSsf8H1z5vD3B/zuqms9eCbXDI=;
+        b=Sv8yIm4P3vH5W2nUBoE0ZkgnO2W/hF5xoVFjxkMIYL8ruS9joe0YS/PafF5yx7VVNE
+         S7y2/60D8hyc8ZdpPkzGdrjJRF6dwx6tXNjDAUK/66hg/hsk22mHMXJI+iLkMC00L5Bz
+         1oPyMpVwil3rDGal1pTSYw7MzOHNtXSv3kyZbRX51XUWDHiaeWFi5PVBjfng4aSsyuBZ
+         56x0kl0NX+fcoisGpQ3eJwe2YaYZb1hFvuMrNbCY9FLNJPdRpnYWx02r3c1KcMpHR2GX
+         7YRxRpHma1kZfwqnMlKBraMz2kJMRWWGoCaUU7rtYXXqG06eeUpM2ZN7uB3bKc1iPlBb
+         7RGg==
+X-Gm-Message-State: AOAM533VslC7eHCZolXjQNZ5GUi3YGrjeQZlf1/zacxJ0RQNH0bDmylt
+        DhD2O5jGpZHE4w7JgN/rVkE=
+X-Google-Smtp-Source: ABdhPJwBuo/cKqq5pTiqjdVyhYMtSikGql1eGwHT2tWUqpu5BKFX8Hu1lO0l9SjqKVfNPECVMj5HLQ==
+X-Received: by 2002:a05:600c:a41:b0:39c:1512:98bd with SMTP id c1-20020a05600c0a4100b0039c151298bdmr11764958wmq.88.1654088889650;
+        Wed, 01 Jun 2022 06:08:09 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef02:1900:8f43:42cb:e8c8:c65c? (p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de. [2003:f6:ef02:1900:8f43:42cb:e8c8:c65c])
+        by smtp.gmail.com with ESMTPSA id 63-20020a1c1942000000b003974cb37a94sm5251307wmz.22.2022.06.01.06.08.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jun 2022 06:08:09 -0700 (PDT)
+Message-ID: <5b808f06ba7532bbfd9c2745420aedfa9464a297.camel@gmail.com>
+Subject: Re: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Wed, 01 Jun 2022 15:09:03 +0200
+In-Reply-To: <20220601103356.xlimabcihaay5jky@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220531181457.26034-1-ddrokosov@sberdevices.ru>
+         <20220531185729.z6246gexteyo4xmd@CAB-WSD-L081021.sigma.sbrf.ru>
+         <786db9cf74473caef10dcea79975716b5516f47e.camel@gmail.com>
+         <20220601103356.xlimabcihaay5jky@CAB-WSD-L081021.sigma.sbrf.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 17/17] arm64: dts: mediatek: add mt8365-evk board
- device-tree
-Content-Language: en-US
-To:     Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        qii.wang@mediatek.com, matthias.bgg@gmail.com, jic23@kernel.org,
-        chaotian.jing@mediatek.com, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, chunfeng.yun@mediatek.com,
-        broonie@kernel.org, wim@linux-watchdog.org, linux@roeck-us.net
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org
-References: <20220531135026.238475-1-fparent@baylibre.com>
- <20220531135026.238475-18-fparent@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220531135026.238475-18-fparent@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 31/05/2022 15:50, Fabien Parent wrote:
-> Add device-tree for the MT8365-EVK board. The MT8365 EVK board
-> has the following IOs:
-> * DPI <-> HDMI bridge and HDMI connector.
-> * 2 audio jack
-> * 1 USB Type-A Host port
-> * 2 UART to USB port
-> * 1 battery connector
-> * 1 eMMC
-> * 1 SD card
-> * 2 camera connectors
-> * 1 M.2 slot for connectivity
-> * 1 DSI connector + touchscreen connector
-> * RPI compatible header
-> * 1 Ethernet port
+On Wed, 2022-06-01 at 10:33 +0000, Dmitry Rokosov wrote:
+> Hi Nuno,
+>=20
+> Thank you for comments!
+>=20
+> On Wed, Jun 01, 2022 at 10:47:54AM +0200, Nuno S=C3=A1 wrote:
+> > On Tue, 2022-05-31 at 18:57 +0000, Dmitry Rokosov wrote:
+> > > Hi Jonathan,
+> > >=20
+> > > I have one question about a cases when trigger owner is builtin
+> > > module.
+> > > In the such cases trig->owner =3D=3D null, because THIS_MODULE equals
+> > > to
+> > > null. How do you think, should we take into account such
+> > > situations?
+> > >=20
+> > > IMHO we have to take in and save this information to trig_info
+> > > during
+> > > trigger allocation call. For example we can check THIS_MODULE
+> > > from
+> > > the
+> >=20
+> > Hmmm, If we were to do something during iio_trigger_alloc(), we
+> > would
+> > rather assign already THIS_MODULE to owner and we would not need
+> > this
+> > WARN(). I mean, if someone calls iio_trigger_get() before
+> > allocating
+> > it, it will have bigger problems :).
+> >=20
+>=20
+> You are right, non-allocated pointer dereference is much bigger
+> problem :)
+>=20
+> > I think this could actually be something reasonable...
+>=20
+> I think it could be a good solution, but it's required a lot of
+> changes
+> in the IIO drivers code, because if we assign trig->owner from
+> iio_trigger_alloc(), we do not need this_mod parameter in the
+> iio_trigger_register() iface and its wrappers.
+> So it means to make it workable we must:
+> =C2=A0=C2=A0=C2=A0 - rework iio_trigger_alloc()
+> =C2=A0=C2=A0=C2=A0 - redesign iio_trigger_register() iface and its wrappe=
+rs
+> =C2=A0=C2=A0=C2=A0 - correct iio_trigger_register() call from all IIO dri=
+vers
+>=20
+> I suppose we need to wait for Jonathan's comments here...
+>=20
 
-Thank you for your patch. There is something to discuss/improve.
+I think we could actually get this done without having to change all
+the drivers. Note on how iio_trigger_register() passes THIS_MODULE to
+the internal API. We could also use macros in the alloc function in a
+way that only internal functions would need to be changed. But it all
+depends on whether or not Jonathan wants this moved...
 
-> 
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> ---
->  arch/arm64/boot/dts/mediatek/Makefile       |   1 +
->  arch/arm64/boot/dts/mediatek/mt8365-evk.dts | 578 ++++++++++++++++++++
->  2 files changed, 579 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/mediatek/mt8365-evk.dts
-> 
-> diff --git a/arch/arm64/boot/dts/mediatek/Makefile b/arch/arm64/boot/dts/mediatek/Makefile
-> index c7d4636a2cb7..02a9f784358e 100644
-> --- a/arch/arm64/boot/dts/mediatek/Makefile
-> +++ b/arch/arm64/boot/dts/mediatek/Makefile
-> @@ -40,4 +40,5 @@ dtb-$(CONFIG_ARCH_MEDIATEK) += mt8183-pumpkin.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt8192-evb.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt8195-demo.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt8195-evb.dtb
-> +dtb-$(CONFIG_ARCH_MEDIATEK) += mt8365-evk.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt8516-pumpkin.dtb
-> diff --git a/arch/arm64/boot/dts/mediatek/mt8365-evk.dts b/arch/arm64/boot/dts/mediatek/mt8365-evk.dts
-> new file mode 100644
-> index 000000000000..8f472caa06a3
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/mediatek/mt8365-evk.dts
-> @@ -0,0 +1,578 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2021 BayLibre, SAS.
-> + * Author: Fabien Parent <fparent@baylibre.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/input/input.h>
-> +#include <dt-bindings/pinctrl/mt8365-pinfunc.h>
-> +#include "mt8365.dtsi"
-> +#include "mt6357.dtsi"
-> +
-> +/ {
-> +	model = "MediaTek MT8365 Open Platform EVK";
-> +	compatible = "mediatek,mt8365-evk", "mediatek,mt8365";
-> +
-> +	aliases {
-> +		serial0 = &uart0;
-> +	};
-> +
-> +	chosen {
-> +		stdout-path = "serial0:921600n8";
-> +	};
-> +
-> +	connector {
-> +		compatible = "hdmi-connector";
-> +		label = "hdmi";
-> +		type = "a";
-> +
-> +		port {
-> +			hdmi_connector_in: endpoint {
-> +				remote-endpoint = <&hdmi_connector_out>;
-> +			};
-> +		};
-> +	};
-> +
-> +	firmware {
-> +		optee {
-> +			compatible = "linaro,optee-tz";
-> +			method = "smc";
-> +		};
-> +	};
-> +
-> +	gpio-keys {
-> +		compatible = "gpio-keys";
-> +		input-name = "gpio-keys";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&gpio_keys>;
-> +
-> +		volume-up {
-
-key-volume-up, volume-up-key or key-0
-
-> +			gpios = <&pio 24 GPIO_ACTIVE_LOW>;
-> +			label = "volume_up";
-> +			linux,code = <KEY_VOLUMEUP>;
-> +			wakeup-source;
-> +			debounce-interval = <15>;
-> +		};
-> +	};
-> +
-> +	memory@40000000 {
-> +		device_type = "memory";
-> +		reg = <0 0x40000000 0 0xc0000000>;
-> +	};
-> +
-> +	usb_otg_vbus: regulator-2 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "otg_vbus";
-> +		regulator-min-microvolt = <5000000>;
-> +		regulator-max-microvolt = <5000000>;
-> +		gpio = <&pio 16 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		/* 12 MiB reserved for OP-TEE (BL32)
-> +		 * +-----------------------+ 0x43e0_0000
-> +		 * |      SHMEM 2MiB       |
-> +		 * +-----------------------+ 0x43c0_0000
-> +		 * |        | TA_RAM  8MiB |
-> +		 * + TZDRAM +--------------+ 0x4340_0000
-> +		 * |        | TEE_RAM 2MiB |
-> +		 * +-----------------------+ 0x4320_0000
-> +		 */
-> +		optee_reserved: optee@43200000 {
-> +			no-map;
-> +			reg = <0 0x43200000 0 0x00c00000>;
-> +		};
-> +	};
-> +};
-> +
-> +&cpu0 {
-> +	proc-supply = <&mt6357_vproc_reg>;
-> +	sram-supply = <&mt6357_vsram_proc_reg>;
-> +};
-> +
-> +&cpu1 {
-> +	proc-supply = <&mt6357_vproc_reg>;
-> +	sram-supply = <&mt6357_vsram_proc_reg>;
-> +};
-> +
-> +&cpu2 {
-> +	proc-supply = <&mt6357_vproc_reg>;
-> +	sram-supply = <&mt6357_vsram_proc_reg>;
-> +};
-> +
-> +&cpu3 {
-> +	proc-supply = <&mt6357_vproc_reg>;
-> +	sram-supply = <&mt6357_vsram_proc_reg>;
-> +};
-> +
-> +&dpi0 {
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&dpi_func_pins>;
-> +	pinctrl-1 = <&dpi_idle_pins>;
-> +	assigned-clocks = <&topckgen CLK_TOP_DPI0_SEL>;
-> +	assigned-clock-parents = <&topckgen CLK_TOP_LVDSPLL_D4>;
-> +
-> +	/*
-> +	 * Ethernet and HDMI are sharing pins.
-> +	 * Only one can be enabled at a time and require the physical switch
-> +	 * SW2101 to be set on DPI position
-> +	 */
-> +	status = "okay";
-> +
-> +	port {
-> +		dpi_out: endpoint {
-> +			remote-endpoint = <&it66121_in>;
-> +		};
-> +	};
-> +};
-> +
-> +&ethernet {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&ethernet_pins>;
-> +	phy-handle = <&eth_phy>;
-> +	phy-mode = "rmii";
-> +	mac-address = [00 00 00 00 00 00];
-> +
-> +	/*
-> +	 * Ethernet and HDMI are sharing pins.
-> +	 * Only one can be enabled at a time and require the physical switch
-> +	 * SW2101 to be set on LAN position
-> +	 */
-> +	status = "disabled";
-> +
-> +	mdio {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		eth_phy: ethernet-phy@0 {
-> +			reg = <0>;
-> +		};
-> +	};
-> +};
-> +
-> +&i2c1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c1_pins>;
-> +	clock-frequency = <100000>;
-> +	status = "okay";
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-
-You defined address/size in DTSI.
-
-> +
-> +	it66121hdmitx: hdmi@4c {
-> +		compatible = "ite,it66121";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&ite_pins>;
-> +		vcn33-supply = <&mt6357_vibr_reg>;
-> +		vcn18-supply = <&mt6357_vsim2_reg>;
-> +		vrf12-supply = <&mt6357_vrf12_reg>;
-> +		reset-gpios = <&pio 69 GPIO_ACTIVE_LOW>;
-> +		interrupts-extended = <&pio 68 IRQ_TYPE_LEVEL_LOW>;
-> +		#sound-dai-cells = <0>;
-> +		reg = <0x4c>;
-
-Put reg after compatible.
-
-> +
-> +		ports {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			port@0 {
-> +				reg = <0>;
-> +
-> +				it66121_in: endpoint {
-> +					bus-width = <12>;
-> +					remote-endpoint = <&dpi_out>;
-> +				};
-> +			};
-> +
-> +			port@1 {
-> +				reg = <1>;
-> +
-> +				hdmi_connector_out: endpoint {
-> +					remote-endpoint = <&hdmi_connector_in>;
-> +				};
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&mmc0 {
-> +	status = "okay";
-
-Status okay goes to the end. In some nodes you keep that style, in some
-not. Confusing.
-
-> +	pinctrl-names = "default", "state_uhs";
-> +	pinctrl-0 = <&mmc0_pins_default>;
-> +	pinctrl-1 = <&mmc0_pins_uhs>;
-> +	bus-width = <8>;
-> +	max-frequency = <200000000>;
-> +	cap-mmc-highspeed;
-> +	mmc-hs200-1_8v;
-> +	mmc-hs400-1_8v;
-> +	cap-mmc-hw-reset;
-> +	no-sdio;
-> +	no-sd;
-> +	hs400-ds-delay = <0x12012>;
-> +	vmmc-supply = <&mt6357_vemc_reg>;
-> +	vqmmc-supply = <&mt6357_vio18_reg>;
-> +	assigned-clocks = <&topckgen CLK_TOP_MSDC50_0_SEL>;
-> +	assigned-clock-parents = <&topckgen CLK_TOP_MSDCPLL>;
-> +	non-removable;
-> +};
-> +
-> +&mmc1 {
-> +	pinctrl-names = "default", "state_uhs";
-> +	pinctrl-0 = <&mmc1_pins_default>;
-> +	pinctrl-1 = <&mmc1_pins_uhs>;
-> +	cd-gpios = <&pio 76 GPIO_ACTIVE_LOW>;
-> +	bus-width = <4>;
-> +	max-frequency = <200000000>;
-> +	cap-sd-highspeed;
-> +	sd-uhs-sdr50;
-> +	sd-uhs-sdr104;
-> +	vmmc-supply = <&mt6357_vmch_reg>;
-> +	vqmmc-supply = <&mt6357_vio18_reg>;
-> +	status = "okay";
-> +};
-> +
-> +&mt6357_pmic {
-> +	interrupt-parent = <&pio>;
-> +	interrupts = <145 IRQ_TYPE_LEVEL_HIGH>;
-> +	interrupt-controller;
-> +	#interrupt-cells = <2>;
-> +};
-> +
-> +&mt6357_vibr_reg {
-> +	regulator-always-on;
-> +};
-> +
-> +/* Needed by MSDC1 */
-> +&mt6357_vmc_reg {
-> +	regulator-always-on;
-> +};
-> +
-> +&mt6357_vrf12_reg {
-> +	regulator-always-on;
-> +};
-> +
-> +&mt6357_vsim2_reg {
-> +	regulator-always-on;
-> +};
-> +
-> +&mt6357keys {
-> +	power-key {
-> +		label = "power";
-> +		linux,keycodes = <KEY_POWER>;
-> +		wakeup-source;
-> +	};
-> +
-> +	volume-down {
-
-volume-down-key
-
-> +		label = "volume_down";
-> +		linux,keycodes = <KEY_VOLUMEDOWN>;
-
-
-Best regards,
-Krzysztof
+- Nuno S=C3=A1

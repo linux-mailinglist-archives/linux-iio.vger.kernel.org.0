@@ -2,67 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6143B53A258
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B13353A268
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 12:16:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351939AbiFAKOo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 06:14:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
+        id S1352005AbiFAKQD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 06:16:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351954AbiFAKOj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:14:39 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986486A428
-        for <linux-iio@vger.kernel.org>; Wed,  1 Jun 2022 03:14:36 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id rq11so2744062ejc.4
-        for <linux-iio@vger.kernel.org>; Wed, 01 Jun 2022 03:14:36 -0700 (PDT)
+        with ESMTP id S1351990AbiFAKQC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 06:16:02 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342635F26E
+        for <linux-iio@vger.kernel.org>; Wed,  1 Jun 2022 03:16:00 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id er5so1466154edb.12
+        for <linux-iio@vger.kernel.org>; Wed, 01 Jun 2022 03:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=AlvALx0zMnGDVnEapBQ7KHJlm9HnZCeBAZQY2Z7YIfQ=;
-        b=KpJ7iB62rkYxYYPytNHxK/MzKHmZsF5SvunBuTcECK0tn0gBcv1PatBmUDZ+SvIPy6
-         2vqt4Zj3vabQUZh4U3OAndnCqt9yZyLZ0IKx3nkfjHESGq5PandWAV10KgQKMi2pMU2K
-         ho27qU7HddcfX1+Ll7SPEaP5cq7FDEBr9ywhMsVOarhAz563nJibiKkzZGXMSf/76XI2
-         7XJ+7WhqDvf4p9WEs5e88JGVmweks7E88ztDQGkWkgeXJYq1/x4N1OkEu7GCo0a4VD+U
-         Fk7xDFGl6MW00LFfN2Ek7iVNwZMl4z/F5PPhmDrLWw+2CH0XVcZpjoaDOzSaGaz4v3H1
-         wqHA==
+        bh=l19XAZ4RQlB6J7TkjVOMmvipD7uiUl1NY4xv6/LugyI=;
+        b=BtCIyFjN7SFARpIH1mnWAScPZAo/XJHoBZSi2HQQ7H83f88XfXLI/MeYvWG5YjOGez
+         q8hrM8fnZplltFJ8MOqPvahGQWiFqMo+jgX0/eKYCSAlzbXiEOBkZ/Xs+9UJj3+dCAlR
+         4+PnY1MSlS9esAdaRcE9nCR9J9JUnQ3jSYf97NA2Dw3NJ3I0WyGHJGJIEMdyqnOJ0H9E
+         bXa4sJB7S/LusFzZBuAnmy8Z1k72D609NjRBnvVsityJqE+4PtcST5BiKZkMwEju4QCJ
+         bLCtp5CXpJOQUQuceR7/5ipgBauLhhIZeuYEY6a/zfX/LzafUYE8w1vk3etCxbkkZhZn
+         Rypg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=AlvALx0zMnGDVnEapBQ7KHJlm9HnZCeBAZQY2Z7YIfQ=;
-        b=QsWCZ3csp9Bo2lRUrJeVSlukMd8SL/k/ghvvoH5Ym1nb6D76i23gtyhq1Fz2nVXKEI
-         pk9Emcv+3LFxANDJ3akXGLKqcw9b+3rDraSQqZ0xdoHOWYsjc2pkwD1lJ/cK1DzfMD4w
-         YjlU+MH3SBpQnVZrBAlw+rRCzpCfI//PJJjXbBvxP1ppD38z4e3AC755PZsZUuAJjrAy
-         A9fsage/DLSWmbeCHvVfVx56DeUNiyjC/y0Zx7iwBuLMj2NLAYix5O77zjjsEkMbV+fr
-         WsiKyfpc8NOniqoMZmy3b++P+AJ8G4Y70bkayI3v5oy2JcGQFE4oQSW50cZhkeP8hFhJ
-         WHwg==
-X-Gm-Message-State: AOAM533WdqKCHXkyiHtx6gYL1oTARXiy1+LEQ1ZD5sdqCGOV9IHxXWka
-        mzvsIYCHU2P2x6QO7Kpt+V7+5A==
-X-Google-Smtp-Source: ABdhPJxmm2Ul6Qx7gD8GTPvF4loAnXC4xOsCGIvm33g8Xu31YADXTnZMvU21oiaV1IKR3O6RT4tgSA==
-X-Received: by 2002:a17:907:7291:b0:6f9:a3b5:7ce4 with SMTP id dt17-20020a170907729100b006f9a3b57ce4mr58314733ejc.642.1654078475092;
-        Wed, 01 Jun 2022 03:14:35 -0700 (PDT)
+        bh=l19XAZ4RQlB6J7TkjVOMmvipD7uiUl1NY4xv6/LugyI=;
+        b=A5tp2J3enJY/7YJTYM22Zsv3oivs/dOTsLMh5W3Rgp8FAWrQcNM6/P6PBfaak+MugG
+         9VGXc/mGIHFl1laud08PyEQaQpoXWKmDqYNbLbaO4p8y3FCxXiNr0XRv8KxtI8BeL3Jy
+         iKKQTzdLZYqURyM3JIrLcHWi1Swbm7Mdms3KTP4QZWCha3uE/8tYVwdteuOObBv0T9q1
+         q8kkvDFyUOd488GmR++C+0Y13J1yPk0NXKuhphWh1FDE04V2KEKZkGHmSCmy1vkVrzzI
+         krT2NSsWt1DbmUyqJo56lWp/Y3LZUdbtRtxSGo0yzoiSlIvybX7FoQ/n0iuhCEYYEdkJ
+         IKuQ==
+X-Gm-Message-State: AOAM532XYsc/reobEKQUTwN9i3zoDD02BBvmRJ1sgCEj+aV21Zj6WRD8
+        RbVaqpi+OcNdesQ/6xzZB9noJA==
+X-Google-Smtp-Source: ABdhPJwqLQ4Ui6MtgBlrktb1cmqeGlIiI3nvKGpc3MDfpcX9j7W/cB4tKjt/uwhPk3xrWT+HZr/CNw==
+X-Received: by 2002:a05:6402:4410:b0:427:ab6f:a39a with SMTP id y16-20020a056402441000b00427ab6fa39amr69619893eda.120.1654078558779;
+        Wed, 01 Jun 2022 03:15:58 -0700 (PDT)
 Received: from [192.168.0.179] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id k24-20020aa7c398000000b0042dcac2afc6sm710131edq.72.2022.06.01.03.14.33
+        by smtp.gmail.com with ESMTPSA id l15-20020a17090615cf00b006f3ef214dd9sm534351ejd.63.2022.06.01.03.15.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jun 2022 03:14:34 -0700 (PDT)
-Message-ID: <30a4ce8f-366c-9e58-1a48-fc434ae739c0@linaro.org>
-Date:   Wed, 1 Jun 2022 12:14:33 +0200
+        Wed, 01 Jun 2022 03:15:58 -0700 (PDT)
+Message-ID: <7f4c0956-7663-60fc-a603-fd40f0317a1b@linaro.org>
+Date:   Wed, 1 Jun 2022 12:15:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [PATCH 14/17] dt-bindings: usb: mediatek,mtk-xhci: add MT8365 SoC
- bindings
+Subject: Re: [PATCH 15/17] arm64: dts: mediatek: add mt6357 device-tree
 Content-Language: en-US
 To:     Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
         qii.wang@mediatek.com, matthias.bgg@gmail.com, jic23@kernel.org,
         chaotian.jing@mediatek.com, ulf.hansson@linaro.org,
         srinivas.kandagatla@linaro.org, chunfeng.yun@mediatek.com,
-        broonie@kernel.org, wim@linux-watchdog.org, linux@roeck-us.net,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        broonie@kernel.org, wim@linux-watchdog.org, linux@roeck-us.net
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
@@ -71,9 +69,9 @@ Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org
 References: <20220531135026.238475-1-fparent@baylibre.com>
- <20220531135026.238475-15-fparent@baylibre.com>
+ <20220531135026.238475-16-fparent@baylibre.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220531135026.238475-15-fparent@baylibre.com>
+In-Reply-To: <20220531135026.238475-16-fparent@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -87,13 +85,33 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 31/05/2022 15:50, Fabien Parent wrote:
-> Add binding documentation for the MT8365 SoC.
+> Add device-tree for the MT6357 PMIC.
 > 
 > Signed-off-by: Fabien Parent <fparent@baylibre.com>
 > ---
+>  arch/arm64/boot/dts/mediatek/mt6357.dtsi | 272 +++++++++++++++++++++++
+>  1 file changed, 272 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/mediatek/mt6357.dtsi
+> 
+(...)
 
+> +
+> +		mt6357rtc: mt6357rtc {
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Generic node names, so "rtc".
+
+> +			compatible = "mediatek,mt6357-rtc",
+> +				     "mediatek,mt6358-rtc";
+> +		};
+> +
+> +		mt6357keys: mt6357keys {
+
+Generic node names.
+
+> +			compatible = "mediatek,mt6357-keys";
+> +		};
+> +	};
+> +};
 
 
 Best regards,

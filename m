@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4171C53A148
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 11:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B364253A164
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 11:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350300AbiFAJwI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 05:52:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
+        id S1344499AbiFAJ6D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 05:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349979AbiFAJwI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 05:52:08 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DD55DE53;
-        Wed,  1 Jun 2022 02:52:07 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id fu3so1129415ejc.7;
-        Wed, 01 Jun 2022 02:52:06 -0700 (PDT)
+        with ESMTP id S1350616AbiFAJ6C (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 05:58:02 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55B9633BF;
+        Wed,  1 Jun 2022 02:57:52 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id er5so1403784edb.12;
+        Wed, 01 Jun 2022 02:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=y1mJGH5c1Uozsg7k4TIS92U6v6LjyV9oFoYVM0NRha8=;
-        b=pDzLCrKYfqkJbuKWjOE7YKh1BjW8iuiBm1bkNBWCdyl6ZXoEh4vEn7DK+SXSpbB90U
-         0mMySw+1KW+jWuSlprGFz1/ZihwNlBGfQoJ952/S65Zmwv3yE5hNf/jPQiWvymLTm2fF
-         5PkFkXZAasgyv3D7SLAriP98k8PabcZr76rGv9IlXeRbm0xbiyv3vYnBL++vOmRc3YHf
-         XDY8aMNfCeHWTJKIS7vTg70L9GewCHcK41H93Qqlgs6oPaArJ8adNouaJAAsPAr7X8F4
-         inDdCJvjhmWW8uwlHRhS2KKJQUa9JGtgmNjDKfkuu2t5FghP5ZU/AhZiljZlz8vr07eB
-         Bzbg==
+        bh=8PCo0X+pMIpsY2Uf1dnrZhLPPiwDltwA+NDnzoDspis=;
+        b=XhPAQhUfhBI91dCm0a95O3zad9USLtdiUcVt34raOi5ptwRCbqGza/NaTDd4EyaLX1
+         v+lU4+0Cpv23sZE0fOO2N2HTBcIFXG/TrXkhJtsD7CDwNqGJypEeR7+wpAAfxQ1X488D
+         dE+CRh6Hkq089m6paqTZCvDHckNRC4IMxltEdMIcZKV16VY0YAbxtda5vGAtZ+29jWIB
+         wsP4WOukuw86fxqUt+VuAO/be5ZLtm8pPCExUs4n6YACXBrBBZ59DeQ84G1qh+H99nN5
+         aOtK25kj0UzNDeF/Trja2mohLceUsbRjs3gvT+99D2KTbrfsm8sfvH805b8ESjdWyxOW
+         REyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=y1mJGH5c1Uozsg7k4TIS92U6v6LjyV9oFoYVM0NRha8=;
-        b=oUCrpTF45P2VHH050RTHHZ2ulrytmNIPVKrS+SdWkiwLP+KTtUxKX3CngaZEdZspq7
-         ughpY0FpjN4UgbpkmQ+eLE76y5NDRTzV8x2fHVzhPG/NqnsaGpLvvA7epbkBvZ287FFm
-         0f4P/pkY3IFXChroItUS6JPtYEUjsglh0R1mNL26jgGQClPGsS6z9N+rYbdjILlQ6dUI
-         xGufeQSt5tLGAfAps8xuBC8TuW/3UEJFPrwbpj6fim74aan8excuvpVUDIhaRDNB0CnH
-         ujIvZKqvv5tLLNmiI/dOKGs6Iepn+N3EK9qQD9TPNgnYFa0L3kRDlBHvLPzpACx+20/W
-         TGRQ==
-X-Gm-Message-State: AOAM533p4t6FsyTpeu5Tppqvach0oRCNFN07lzyWjiHAc128peo+r2Ii
-        vvTJq67yuPM9Sx5NGwJlsWpY5WoZelX8UjfnhcA=
-X-Google-Smtp-Source: ABdhPJyqf9ZHomloEdcRczicdqSM2R1J6YhdToJV6ojkEOXFybYoQ0iogidyjBJ4Et6n0VcyKxc+QBr3vsPZaac7yDU=
-X-Received: by 2002:a17:906:2416:b0:6fe:a0be:91d5 with SMTP id
- z22-20020a170906241600b006fea0be91d5mr54057142eja.132.1654077125409; Wed, 01
- Jun 2022 02:52:05 -0700 (PDT)
+        bh=8PCo0X+pMIpsY2Uf1dnrZhLPPiwDltwA+NDnzoDspis=;
+        b=nedvMP7lRmLvzsUGnhIHa6lMA5bto4zrjOR/bSeb84Esg+BLzRRUolET/e/RR5yaDo
+         HuBYJSLQEvhhb8gp3us5esp97OctNQKEYI5cps7I+n2+HIbAWiExOp/RMdKStHqrsKan
+         3TiVlvRRdYqA4YrAhvley4Y8ysTK6L1MBrseWbg8orSqJ6J/2YHsq0dBh6gkfzyX+X6X
+         uzNwsjniWWVGlFd/VpH99ZAgLBM/3B+D4Ojp3JeAoHDBKZl/eAsTs2ldsIjv+qqDuaV8
+         X+5/39RgMip5NG5Ov6FcE1j/lvJlmKSFjqEfxu2uPuF1Tw6WiynijxTwsAzfRQw65lG8
+         lUhQ==
+X-Gm-Message-State: AOAM533QKdC+SAeD8xjd0XhUBjvJWMW/noXSpdFx3aKvNGehvSSBWPfj
+        Rv+kh7EkkyUklihV6CfG1A7A1tXbjqA3gSwczNY=
+X-Google-Smtp-Source: ABdhPJx5UwB9OK6uoDWwzcHechvusyUFa0L+DRuEojeZ5rXjdN4Kqx2DmQl8OM9CHARC3CjwaOQOEOHl8iMseiJla1c=
+X-Received: by 2002:a05:6402:249e:b0:42d:bb88:865b with SMTP id
+ q30-20020a056402249e00b0042dbb88865bmr21507509eda.141.1654077471168; Wed, 01
+ Jun 2022 02:57:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220531102809.11976-1-peterwu.pub@gmail.com> <20220531102809.11976-7-peterwu.pub@gmail.com>
- <CAHp75Vd8taco19vsDmBcCv8euV1SvwSiY5=P9oMkA6zWsjwXxg@mail.gmail.com>
-In-Reply-To: <CAHp75Vd8taco19vsDmBcCv8euV1SvwSiY5=P9oMkA6zWsjwXxg@mail.gmail.com>
+References: <20220531102809.11976-1-peterwu.pub@gmail.com> <20220531102809.11976-8-peterwu.pub@gmail.com>
+In-Reply-To: <20220531102809.11976-8-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 1 Jun 2022 11:51:30 +0200
-Message-ID: <CAHp75Vf245Oo3wmx5rh_EkXZ4FL_nnehpfuaDAiEdG6BenXxhw@mail.gmail.com>
-Subject: Re: [PATCH 06/14] leds: mt6370: Add Mediatek MT6370 Indicator support
+Date:   Wed, 1 Jun 2022 11:57:15 +0200
+Message-ID: <CAHp75VdUQqihr=AX-wEUD05jY1ReL63hMCL+eaqmjkN8CsS_Vg@mail.gmail.com>
+Subject: Re: [PATCH 07/14] leds: flashlight: mt6370: Add Mediatek MT6370
+ flashlight support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -92,96 +92,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 1, 2022 at 11:48 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Tue, May 31, 2022 at 1:16 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> >
-> > From: Alice Chen <alice_chen@richtek.com>
+On Tue, May 31, 2022 at 1:32 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> All below comments are applicable to the rest of the series as well
-> (one way or another), so please fix all your patches where it's
-> appropriate.
+> From: Alice Chen <alice_chen@richtek.com>
+>
+> Add Mediatek MT6370 flashlight support
 
-Forgot to mention, please consider using
+Same comments about the commit message.
 
-  return dev_err_probe();
+...
 
-pattern in the ->probe() and related funcitons. It will save a lot of LOCs.
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
 
-> > Add Mediatek MT6370 Indicator support
->
-> What indicator?
-> Please also keep attention on English punctuation (missed period).
->
-> ...
->
-> > +       help
-> > +         Support 4 channels and reg/pwm/breath mode.
-> > +         Isink4 can also use as a CHG_VIN power good Indicator.
->
-> be used
->
-> > +         Say Y here to enable support for
-> > +         MT6370_RGB_LED device.
->
-> ...
->
-> > +#include <linux/module.h>
-> > +#include <linux/mutex.h>
-> > +#include <linux/platform_device.h>
->
-> > +#include <linux/of.h>
->
-> Are you sure this is the correct header? Seems you need
-> mod_devicetable.h instead.
->
-> > +#include <linux/property.h>
-> > +#include <linux/regmap.h>
->
-> ...
->
-> > +struct mt6370_priv {
-> > +       struct mutex lock;
->
-> Do you use regmap locking?
->
-> > +       struct device *dev;
->
-> > +       struct regmap *regmap;
->
-> > +       struct regmap_field *fields[F_MAX_FIELDS];
-> > +       const struct reg_field *reg_fields;
-> > +       const struct linear_range *ranges;
-> > +       struct reg_cfg *reg_cfgs;
-> > +       unsigned int leds_count;
-> > +       unsigned int leds_active;
-> > +       bool is_mt6372;
-> > +       struct mt6370_led leds[];
-> > +};
->
-> ...
->
-> > +static const unsigned int common_tfreqs[] = {
-> > +       10000, 5000, 2000, 1000, 500, 200, 5, 1
->
-> Leave a comma at the end.
->
-> > +};
-> > +
-> > +static const unsigned int mt6372_tfreqs[] = {
-> > +       8000, 4000, 2000, 1000, 500, 250, 8, 4
->
-> Ditto.
->
-> > +};
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
++ blank line?
+
+> +#include <media/v4l2-flash-led-class.h>
+
++ blank line
+
+> +enum {
+> +       MT6370_LED_FLASH1,
+> +       MT6370_LED_FLASH2,
+> +       MT6370_MAX_LEDS
+> +};
+
+...
+
+> +       struct mt6370_led *led = container_of(fl_cdev, struct mt6370_led,
+> +                                             flash);
+
+> +       struct mt6370_led *led = container_of(fl_cdev, struct mt6370_led,
+> +                                             flash);
+
+Make a helper out of this
+
+  #define to_mt637_led()  container_of()
+
+and reuse.
+
+...
+
+> +       /*
+> +        * For the flash turn on/off, HW rampping up/down time is 5ms/500us,
+
+ramping
+
+> +        * respectively
+
+Period!
+
+> +        */
+
+...
+
+> +       const char * const states[] = { "off", "keep", "on" };
+> +       const char *str;
+> +       int ret;
+> +
+> +       if (!fwnode_property_read_string(init_data->fwnode,
+> +                                        "default-state", &str)) {
+> +               ret = match_string(states, ARRAY_SIZE(states), str);
+> +               if (ret < 0)
+> +                       ret = STATE_OFF;
+> +
+> +               led->default_state = ret;
+> +       }
+
+fwnode_property_match_string()?
+
+...
+
+> +       if (!count || count > MT6370_MAX_LEDS) {
+> +               dev_err(&pdev->dev,
+> +               "No child node or node count over max led number %lu\n", count);
+> +               return -EINVAL;
+
+return dev_err_probe(...);
+
+> +       }
 
 
-
--- 
+--
 With Best Regards,
 Andy Shevchenko

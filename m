@@ -2,58 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4694D53AC32
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 19:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D2F53AC6D
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Jun 2022 20:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356427AbiFARs5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 1 Jun 2022 13:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
+        id S245473AbiFASDg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 1 Jun 2022 14:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233130AbiFARs4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 13:48:56 -0400
+        with ESMTP id S230345AbiFASDg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 1 Jun 2022 14:03:36 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677846B0AA;
-        Wed,  1 Jun 2022 10:48:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC8B9C2FA;
+        Wed,  1 Jun 2022 11:03:33 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id D63725FD02;
-        Wed,  1 Jun 2022 20:48:48 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id 3D5835FD02;
+        Wed,  1 Jun 2022 21:03:31 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1654105728;
-        bh=SxukWBQmvI6xsER3OQeJrQgKcUlDX1d1f4Bcndax7+8=;
+        s=mail; t=1654106611;
+        bh=jwjcenm4v2FpMajJm2PZiHzbOon/1npcFDzjh9aQFGw=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=DAR6NmYNYFzfiVbpZOlY+ekb5FSOyJGqz0CXUCy+djImXnhODeadqRkr7sseD0YGK
-         gWwq5hBDiAOD0jGtuZV9SXIOz4dUu43vMg8Twb2fl967OtXRPNos0htF+vZMmnySea
-         9H15D8XGUy3+xTbPGTi1GYCP/DgRFHPhX6bQAM8t0ecIxSv23+ZtAWQuiWNHryJdkR
-         6pRhocsvW5crGLFmg6C6j/QDi4Q7tibD3s2uBMa8+z6YzkBcAjP9jDJoL+KY/zjdsd
-         vWKdI3kcs1q5d9IPL+OxwrTsUFznEPm1q4oRKT4MPknDV+O25xtiwzeIRqjolNq2Pz
-         FhfaBWYw/7wZQ==
+        b=peagLzJJcjcF6Y0YrnxtbTcgHnzW+TWcqUepE2DGYH+hlTNYEv1XK3Y2F09guziqn
+         i81pPVjbKoCI5zbaxOk0h801khCye6yhF9JY5jY/TwkGUAbuD9iB7UNUZXWcG3x21Q
+         31blWHmQn5WUoRtfneajaU9/eg/ekfJSTwWKyGGgpkRhuWA5ZcchxMdyFeis8i7cpE
+         n3hqV+7A6hj5T4rsrXTPD8NyvV+v46vdh9UQjh+GXsy+DN7bIogacBjy8yY72pLAw8
+         Q2nwcUwhDtIQkzdsfJd/4XpMSFpF5DZm3E/AjNRrrK1cFzcWcnx/Mf/JEjOnS90vKP
+         r6S1LI2XsXLtQ==
 Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Wed,  1 Jun 2022 20:48:48 +0300 (MSK)
+        Wed,  1 Jun 2022 21:03:30 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
+To:     =?utf-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
         "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "noname.nuno@gmail.com" <noname.nuno@gmail.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Subject: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
- allocate() stage
-Thread-Topic: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
- allocate() stage
-Thread-Index: AQHYdd/Pt2zXEFx7c0Or/RCut5+rEA==
-Date:   Wed, 1 Jun 2022 17:48:32 +0000
-Message-ID: <20220601174837.20292-1-ddrokosov@sberdevices.ru>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Thread-Topic: [PATCH v1] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Thread-Index: AQHYdRpaUrhZ5pf6gEC6S1oZ2DfDiK05JA2AgADoBACAAB2gAIAAK1eAgABSQAA=
+Date:   Wed, 1 Jun 2022 18:03:15 +0000
+Message-ID: <20220601180326.3b6v4joykv5dryzm@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220531181457.26034-1-ddrokosov@sberdevices.ru>
+ <20220531185729.z6246gexteyo4xmd@CAB-WSD-L081021.sigma.sbrf.ru>
+ <786db9cf74473caef10dcea79975716b5516f47e.camel@gmail.com>
+ <20220601103356.xlimabcihaay5jky@CAB-WSD-L081021.sigma.sbrf.ru>
+ <5b808f06ba7532bbfd9c2745420aedfa9464a297.camel@gmail.com>
+In-Reply-To: <5b808f06ba7532bbfd9c2745420aedfa9464a297.camel@gmail.com>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <62A8C0C629BF304C825EDE739B3E04CF@sberdevices.ru>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
 X-KSMG-Message-Action: clean
@@ -71,263 +77,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-To provide a new IIO trigger to the IIO core, usually driver executes the
-following pipeline: allocate()/register()/get(). Before, IIO core assigned
-trig->owner as a pointer to the module which registered this trigger at
-the register() stage. But actually the trigger object is owned by the
-module earlier, on the allocate() stage, when trigger object is
-successfully allocated for the driver.
-
-This patch moves trig->owner initialization from register()
-stage of trigger initialization pipeline to allocate() stage to
-eliminate all misunderstandings and time gaps between trigger object
-creation and owner acquiring.
-
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
----
- drivers/iio/industrialio-trigger.c | 46 ++++++++++++++++--------------
- include/linux/iio/iio.h            | 10 +++++--
- include/linux/iio/trigger.h        | 21 +++++++-------
- 3 files changed, 42 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-=
-trigger.c
-index f504ed351b3e..143c8f360499 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -64,13 +64,10 @@ ATTRIBUTE_GROUPS(iio_trig_dev);
-=20
- static struct iio_trigger *__iio_trigger_find_by_name(const char *name);
-=20
--int __iio_trigger_register(struct iio_trigger *trig_info,
--			   struct module *this_mod)
-+int iio_trigger_register(struct iio_trigger *trig_info)
- {
- 	int ret;
-=20
--	trig_info->owner =3D this_mod;
--
- 	trig_info->id =3D ida_simple_get(&iio_trigger_ida, 0, 0, GFP_KERNEL);
- 	if (trig_info->id < 0)
- 		return trig_info->id;
-@@ -101,7 +98,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info=
-,
- 	ida_simple_remove(&iio_trigger_ida, trig_info->id);
- 	return ret;
- }
--EXPORT_SYMBOL(__iio_trigger_register);
-+EXPORT_SYMBOL(iio_trigger_register);
-=20
- void iio_trigger_unregister(struct iio_trigger *trig_info)
- {
-@@ -552,8 +549,9 @@ static void iio_trig_subirqunmask(struct irq_data *d)
- 	trig->subirqs[d->irq - trig->subirq_base].enabled =3D true;
- }
-=20
--static __printf(2, 0)
-+static __printf(3, 0)
- struct iio_trigger *viio_trigger_alloc(struct device *parent,
-+				       struct module *this_mod,
- 				       const char *fmt,
- 				       va_list vargs)
- {
-@@ -581,6 +579,8 @@ struct iio_trigger *viio_trigger_alloc(struct device *p=
-arent,
- 	if (trig->name =3D=3D NULL)
- 		goto free_descs;
-=20
-+	trig->owner =3D this_mod;
-+
- 	trig->subirq_chip.name =3D trig->name;
- 	trig->subirq_chip.irq_mask =3D &iio_trig_subirqmask;
- 	trig->subirq_chip.irq_unmask =3D &iio_trig_subirqunmask;
-@@ -601,8 +601,9 @@ struct iio_trigger *viio_trigger_alloc(struct device *p=
-arent,
- }
-=20
- /**
-- * iio_trigger_alloc - Allocate a trigger
-+ * __iio_trigger_alloc - Allocate a trigger
-  * @parent:		Device to allocate iio_trigger for
-+ * @this_mod:		module allocating the trigger
-  * @fmt:		trigger name format. If it includes format
-  *			specifiers, the additional arguments following
-  *			format are formatted and inserted in the resulting
-@@ -610,18 +611,20 @@ struct iio_trigger *viio_trigger_alloc(struct device =
-*parent,
-  * RETURNS:
-  * Pointer to allocated iio_trigger on success, NULL on failure.
-  */
--struct iio_trigger *iio_trigger_alloc(struct device *parent, const char *f=
-mt, ...)
-+struct iio_trigger *__iio_trigger_alloc(struct device *parent,
-+					struct module *this_mod,
-+					const char *fmt, ...)
- {
- 	struct iio_trigger *trig;
- 	va_list vargs;
-=20
- 	va_start(vargs, fmt);
--	trig =3D viio_trigger_alloc(parent, fmt, vargs);
-+	trig =3D viio_trigger_alloc(parent, this_mod, fmt, vargs);
- 	va_end(vargs);
-=20
- 	return trig;
- }
--EXPORT_SYMBOL(iio_trigger_alloc);
-+EXPORT_SYMBOL(__iio_trigger_alloc);
-=20
- void iio_trigger_free(struct iio_trigger *trig)
- {
-@@ -636,10 +639,11 @@ static void devm_iio_trigger_release(struct device *d=
-ev, void *res)
- }
-=20
- /**
-- * devm_iio_trigger_alloc - Resource-managed iio_trigger_alloc()
-+ * __devm_iio_trigger_alloc - Resource-managed iio_trigger_alloc()
-  * Managed iio_trigger_alloc.  iio_trigger allocated with this function is
-  * automatically freed on driver detach.
-  * @parent:		Device to allocate iio_trigger for
-+ * @this_mod:		module allocating the trigger
-  * @fmt:		trigger name format. If it includes format
-  *			specifiers, the additional arguments following
-  *			format are formatted and inserted in the resulting
-@@ -649,7 +653,9 @@ static void devm_iio_trigger_release(struct device *dev=
-, void *res)
-  * RETURNS:
-  * Pointer to allocated iio_trigger on success, NULL on failure.
-  */
--struct iio_trigger *devm_iio_trigger_alloc(struct device *parent, const ch=
-ar *fmt, ...)
-+struct iio_trigger *__devm_iio_trigger_alloc(struct device *parent,
-+					     struct module *this_mod,
-+					     const char *fmt, ...)
- {
- 	struct iio_trigger **ptr, *trig;
- 	va_list vargs;
-@@ -661,7 +667,7 @@ struct iio_trigger *devm_iio_trigger_alloc(struct devic=
-e *parent, const char *fm
-=20
- 	/* use raw alloc_dr for kmalloc caller tracing */
- 	va_start(vargs, fmt);
--	trig =3D viio_trigger_alloc(parent, fmt, vargs);
-+	trig =3D viio_trigger_alloc(parent, this_mod, fmt, vargs);
- 	va_end(vargs);
- 	if (trig) {
- 		*ptr =3D trig;
-@@ -672,7 +678,7 @@ struct iio_trigger *devm_iio_trigger_alloc(struct devic=
-e *parent, const char *fm
-=20
- 	return trig;
- }
--EXPORT_SYMBOL_GPL(devm_iio_trigger_alloc);
-+EXPORT_SYMBOL_GPL(__devm_iio_trigger_alloc);
-=20
- static void devm_iio_trigger_unreg(void *trigger_info)
- {
-@@ -680,10 +686,9 @@ static void devm_iio_trigger_unreg(void *trigger_info)
- }
-=20
- /**
-- * __devm_iio_trigger_register - Resource-managed iio_trigger_register()
-+ * devm_iio_trigger_register - Resource-managed iio_trigger_register()
-  * @dev:	device this trigger was allocated for
-  * @trig_info:	trigger to register
-- * @this_mod:   module registering the trigger
-  *
-  * Managed iio_trigger_register().  The IIO trigger registered with this
-  * function is automatically unregistered on driver detach. This function
-@@ -693,19 +698,18 @@ static void devm_iio_trigger_unreg(void *trigger_info=
-)
-  * RETURNS:
-  * 0 on success, negative error number on failure.
-  */
--int __devm_iio_trigger_register(struct device *dev,
--				struct iio_trigger *trig_info,
--				struct module *this_mod)
-+int devm_iio_trigger_register(struct device *dev,
-+			      struct iio_trigger *trig_info)
- {
- 	int ret;
-=20
--	ret =3D __iio_trigger_register(trig_info, this_mod);
-+	ret =3D iio_trigger_register(trig_info);
- 	if (ret)
- 		return ret;
-=20
- 	return devm_add_action_or_reset(dev, devm_iio_trigger_unreg, trig_info);
- }
--EXPORT_SYMBOL_GPL(__devm_iio_trigger_register);
-+EXPORT_SYMBOL_GPL(devm_iio_trigger_register);
-=20
- bool iio_trigger_using_own(struct iio_dev *indio_dev)
- {
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 07025d6b3de1..853daa191b3c 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -669,9 +669,13 @@ static inline void *iio_priv(const struct iio_dev *ind=
-io_dev)
-=20
- void iio_device_free(struct iio_dev *indio_dev);
- struct iio_dev *devm_iio_device_alloc(struct device *parent, int sizeof_pr=
-iv);
--__printf(2, 3)
--struct iio_trigger *devm_iio_trigger_alloc(struct device *parent,
--					   const char *fmt, ...);
-+
-+#define devm_iio_trigger_alloc(parent, fmt, ...) \
-+	__devm_iio_trigger_alloc((parent), THIS_MODULE, (fmt), ##__VA_ARGS__)
-+__printf(3, 4)
-+struct iio_trigger *__devm_iio_trigger_alloc(struct device *parent,
-+					     struct module *this_mod,
-+					     const char *fmt, ...);
- /**
-  * iio_buffer_enabled() - helper function to test if the buffer is enabled
-  * @indio_dev:		IIO device structure for device
-diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
-index 4a008b952710..5abec8df5a18 100644
---- a/include/linux/iio/trigger.h
-+++ b/include/linux/iio/trigger.h
-@@ -135,16 +135,10 @@ static inline void *iio_trigger_get_drvdata(struct ii=
-o_trigger *trig)
-  * iio_trigger_register() - register a trigger with the IIO core
-  * @trig_info:	trigger to be registered
-  **/
--#define iio_trigger_register(trig_info) \
--	__iio_trigger_register((trig_info), THIS_MODULE)
--int __iio_trigger_register(struct iio_trigger *trig_info,
--			   struct module *this_mod);
-+int iio_trigger_register(struct iio_trigger *trig_info);
-=20
--#define devm_iio_trigger_register(dev, trig_info) \
--	__devm_iio_trigger_register((dev), (trig_info), THIS_MODULE)
--int __devm_iio_trigger_register(struct device *dev,
--				struct iio_trigger *trig_info,
--				struct module *this_mod);
-+int devm_iio_trigger_register(struct device *dev,
-+			      struct iio_trigger *trig_info);
-=20
- /**
-  * iio_trigger_unregister() - unregister a trigger from the core
-@@ -172,8 +166,13 @@ void iio_trigger_poll_chained(struct iio_trigger *trig=
-);
-=20
- irqreturn_t iio_trigger_generic_data_rdy_poll(int irq, void *private);
-=20
--__printf(2, 3)
--struct iio_trigger *iio_trigger_alloc(struct device *parent, const char *f=
-mt, ...);
-+#define iio_trigger_alloc(parent, fmt, ...) \
-+	__iio_trigger_alloc((parent), THIS_MODULE, (fmt), ##__VA_ARGS__)
-+
-+__printf(3, 4)
-+struct iio_trigger *__iio_trigger_alloc(struct device *parent,
-+					struct module *this_mod,
-+					const char *fmt, ...);
- void iio_trigger_free(struct iio_trigger *trig);
-=20
- /**
---=20
-2.36.0
+Sm9uYXRoYW4sIE51bm8sDQoNCkkndmUgc2VudCBSRkMgcGF0Y2ggd2l0aCB0cmlnLT5vd25lciBw
+b2ludGVyIGluaXRpYWxpemF0aW9uIG1vdmFsIGZyb20NCnJlZ2lzdGVyKCkgdG8gYWxsb2NhdGUo
+KSBzdGFnZSBhcyBOdW5vIHN1Z2dlc3RlZCBiZWZvcmU6DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwu
+b3JnL2xpbnV4LWlpby8yMDIyMDYwMTE3NDgzNy4yMDI5Mi0xLWRkcm9rb3NvdkBzYmVyZGV2aWNl
+cy5ydS8NCg0KUGxlYXNlIHJldmlldyBpZiBwb3NzaWJsZSBhbmQgc2hhcmUgeW91ciB0aG91Z2h0
+cy4NCg0KT24gV2VkLCBKdW4gMDEsIDIwMjIgYXQgMDM6MDk6MDNQTSArMDIwMCwgTnVubyBTw6Eg
+d3JvdGU6DQo+IE9uIFdlZCwgMjAyMi0wNi0wMSBhdCAxMDozMyArMDAwMCwgRG1pdHJ5IFJva29z
+b3Ygd3JvdGU6DQo+ID4gSGkgTnVubywNCj4gPiANCj4gPiBUaGFuayB5b3UgZm9yIGNvbW1lbnRz
+IQ0KPiA+IA0KPiA+IE9uIFdlZCwgSnVuIDAxLCAyMDIyIGF0IDEwOjQ3OjU0QU0gKzAyMDAsIE51
+bm8gU8OhIHdyb3RlOg0KPiA+ID4gT24gVHVlLCAyMDIyLTA1LTMxIGF0IDE4OjU3ICswMDAwLCBE
+bWl0cnkgUm9rb3NvdiB3cm90ZToNCj4gPiA+ID4gSGkgSm9uYXRoYW4sDQo+ID4gPiA+IA0KPiA+
+ID4gPiBJIGhhdmUgb25lIHF1ZXN0aW9uIGFib3V0IGEgY2FzZXMgd2hlbiB0cmlnZ2VyIG93bmVy
+IGlzIGJ1aWx0aW4NCj4gPiA+ID4gbW9kdWxlLg0KPiA+ID4gPiBJbiB0aGUgc3VjaCBjYXNlcyB0
+cmlnLT5vd25lciA9PSBudWxsLCBiZWNhdXNlIFRISVNfTU9EVUxFIGVxdWFscw0KPiA+ID4gPiB0
+bw0KPiA+ID4gPiBudWxsLiBIb3cgZG8geW91IHRoaW5rLCBzaG91bGQgd2UgdGFrZSBpbnRvIGFj
+Y291bnQgc3VjaA0KPiA+ID4gPiBzaXR1YXRpb25zPw0KPiA+ID4gPiANCj4gPiA+ID4gSU1ITyB3
+ZSBoYXZlIHRvIHRha2UgaW4gYW5kIHNhdmUgdGhpcyBpbmZvcm1hdGlvbiB0byB0cmlnX2luZm8N
+Cj4gPiA+ID4gZHVyaW5nDQo+ID4gPiA+IHRyaWdnZXIgYWxsb2NhdGlvbiBjYWxsLiBGb3IgZXhh
+bXBsZSB3ZSBjYW4gY2hlY2sgVEhJU19NT0RVTEUNCj4gPiA+ID4gZnJvbQ0KPiA+ID4gPiB0aGUN
+Cj4gPiA+IA0KPiA+ID4gSG1tbSwgSWYgd2Ugd2VyZSB0byBkbyBzb21ldGhpbmcgZHVyaW5nIGlp
+b190cmlnZ2VyX2FsbG9jKCksIHdlDQo+ID4gPiB3b3VsZA0KPiA+ID4gcmF0aGVyIGFzc2lnbiBh
+bHJlYWR5IFRISVNfTU9EVUxFIHRvIG93bmVyIGFuZCB3ZSB3b3VsZCBub3QgbmVlZA0KPiA+ID4g
+dGhpcw0KPiA+ID4gV0FSTigpLiBJIG1lYW4sIGlmIHNvbWVvbmUgY2FsbHMgaWlvX3RyaWdnZXJf
+Z2V0KCkgYmVmb3JlDQo+ID4gPiBhbGxvY2F0aW5nDQo+ID4gPiBpdCwgaXQgd2lsbCBoYXZlIGJp
+Z2dlciBwcm9ibGVtcyA6KS4NCj4gPiA+IA0KPiA+IA0KPiA+IFlvdSBhcmUgcmlnaHQsIG5vbi1h
+bGxvY2F0ZWQgcG9pbnRlciBkZXJlZmVyZW5jZSBpcyBtdWNoIGJpZ2dlcg0KPiA+IHByb2JsZW0g
+OikNCj4gPiANCj4gPiA+IEkgdGhpbmsgdGhpcyBjb3VsZCBhY3R1YWxseSBiZSBzb21ldGhpbmcg
+cmVhc29uYWJsZS4uLg0KPiA+IA0KPiA+IEkgdGhpbmsgaXQgY291bGQgYmUgYSBnb29kIHNvbHV0
+aW9uLCBidXQgaXQncyByZXF1aXJlZCBhIGxvdCBvZg0KPiA+IGNoYW5nZXMNCj4gPiBpbiB0aGUg
+SUlPIGRyaXZlcnMgY29kZSwgYmVjYXVzZSBpZiB3ZSBhc3NpZ24gdHJpZy0+b3duZXIgZnJvbQ0K
+PiA+IGlpb190cmlnZ2VyX2FsbG9jKCksIHdlIGRvIG5vdCBuZWVkIHRoaXNfbW9kIHBhcmFtZXRl
+ciBpbiB0aGUNCj4gPiBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIGlmYWNlIGFuZCBpdHMgd3JhcHBl
+cnMuDQo+ID4gU28gaXQgbWVhbnMgdG8gbWFrZSBpdCB3b3JrYWJsZSB3ZSBtdXN0Og0KPiA+IMKg
+wqDCoCAtIHJld29yayBpaW9fdHJpZ2dlcl9hbGxvYygpDQo+ID4gwqDCoMKgIC0gcmVkZXNpZ24g
+aWlvX3RyaWdnZXJfcmVnaXN0ZXIoKSBpZmFjZSBhbmQgaXRzIHdyYXBwZXJzDQo+ID4gwqDCoMKg
+IC0gY29ycmVjdCBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIGNhbGwgZnJvbSBhbGwgSUlPIGRyaXZl
+cnMNCj4gPiANCj4gPiBJIHN1cHBvc2Ugd2UgbmVlZCB0byB3YWl0IGZvciBKb25hdGhhbidzIGNv
+bW1lbnRzIGhlcmUuLi4NCj4gPiANCj4gDQo+IEkgdGhpbmsgd2UgY291bGQgYWN0dWFsbHkgZ2V0
+IHRoaXMgZG9uZSB3aXRob3V0IGhhdmluZyB0byBjaGFuZ2UgYWxsDQo+IHRoZSBkcml2ZXJzLiBO
+b3RlIG9uIGhvdyBpaW9fdHJpZ2dlcl9yZWdpc3RlcigpIHBhc3NlcyBUSElTX01PRFVMRSB0bw0K
+PiB0aGUgaW50ZXJuYWwgQVBJLiBXZSBjb3VsZCBhbHNvIHVzZSBtYWNyb3MgaW4gdGhlIGFsbG9j
+IGZ1bmN0aW9uIGluIGENCj4gd2F5IHRoYXQgb25seSBpbnRlcm5hbCBmdW5jdGlvbnMgd291bGQg
+bmVlZCB0byBiZSBjaGFuZ2VkLiBCdXQgaXQgYWxsDQo+IGRlcGVuZHMgb24gd2hldGhlciBvciBu
+b3QgSm9uYXRoYW4gd2FudHMgdGhpcyBtb3ZlZC4uLg0KPiANCj4gLSBOdW5vIFPDoQ0KDQotLSAN
+ClRoYW5rIHlvdSwNCkRtaXRyeQ==

@@ -2,88 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1457653BA19
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 15:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5858753BA43
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 15:58:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234021AbiFBNuX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jun 2022 09:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52234 "EHLO
+        id S235636AbiFBN6D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jun 2022 09:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235554AbiFBNuV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 09:50:21 -0400
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B611D9EB8;
-        Thu,  2 Jun 2022 06:50:17 -0700 (PDT)
-Received: by mail-oo1-f43.google.com with SMTP id f5-20020a4aa685000000b0040e7e819183so916124oom.3;
-        Thu, 02 Jun 2022 06:50:17 -0700 (PDT)
+        with ESMTP id S231286AbiFBN6A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 09:58:00 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DAD0793B2;
+        Thu,  2 Jun 2022 06:57:58 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id n10so10158719ejk.5;
+        Thu, 02 Jun 2022 06:57:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=lCjXd1DtLAOiKDUVepuP3tVKlqmoM9phz1lypZW4eiM=;
+        b=eKXUR7kiBU80Kt1ivUsBYC1Vp5ABsZgOFlwcUTfYnL3EYaoBLLC4llE6qNCbLYkoPK
+         yV/E9DUt2ifgfA2Nbk6ykWpgQhfm9txSuz+Z9LmYA2e0QtK14BpQdaIg86EMFNfuUWkx
+         hMXNoGeRpp7Hw5ALo7uCiIN/Vg+bFN+64MnxIrSs4784P1udBgejLUQnnHasBXCy/VJv
+         Hraq92Husrz3Xf7aLdubPKJuxySVXpGPA0CZZLKoHOr29+EvAoDaQOSqIfuA/pA2wdFl
+         oxnZHqbsTfLFBaxgW2BGhnhwkC0uMC12x04YUFSe3zvFWWisWKPD/j9A/tTeJZTOCSWO
+         kQFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=m7Egz3Eq4p4pH7ofqDEwdevk0tSPQ2S3OmzV9Rn7cog=;
-        b=idyLCUZqNwtt41GHHuJA3ehdPbn9+NytnkZgE+mlYnIQvgH0chZOeadDM/9WiShbeU
-         lFSUUwyBHGScRDEjY5N7JU7hDFWKApzERWO1BcwcAxDx9n/Hq2vdRvhuF0W4yvyvhnCx
-         1HINcGhCJf0fKEAJciggjC/tuDxH5g9vhkkl1aBklvl9TUr6vDC0lPkUvFlD6uVPmsSv
-         ltGnfYmDIG4m04eWfL7Qi7AX/LlkXVV06EjhuNpACOEAiHQvCllmiLA7FBfP7qzsz5Wi
-         ciw3myQG6bQyd5UNt11S3i2Q9Abjk/e6Xy9inu5fNwtNSFNWUq2VLhZKYRjoxTm73h+j
-         M58w==
-X-Gm-Message-State: AOAM5312ODdMqUe++aZn5yIlCvlxgeOp+tSojQ6ujkqOAQoftVK9nell
-        cHqF3QYC7R7IUTJYDL7VUg==
-X-Google-Smtp-Source: ABdhPJwJXAd51YLvPJ90VxQRsLC8hBY4/pzwaXaplOTizmH4wxfnS/mGPlNTwMHa0vECJ2olRL5iIQ==
-X-Received: by 2002:a4a:ba81:0:b0:40e:7cd9:afa1 with SMTP id d1-20020a4aba81000000b0040e7cd9afa1mr2078469oop.22.1654177816557;
-        Thu, 02 Jun 2022 06:50:16 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id t12-20020a056830082c00b0060b39282e7esm2182511ots.35.2022.06.02.06.50.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jun 2022 06:50:16 -0700 (PDT)
-Received: (nullmailer pid 2186777 invoked by uid 1000);
-        Thu, 02 Jun 2022 13:50:15 -0000
-Date:   Thu, 2 Jun 2022 08:50:15 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Subject: Re: [PATCH v2 1/3] dt-bindings: vendor-prefixes: add MEMSensing
- Microsystems Co., Ltd.
-Message-ID: <20220602135015.GA2186715-robh@kernel.org>
-References: <20220525181532.6805-1-ddrokosov@sberdevices.ru>
- <20220525181532.6805-2-ddrokosov@sberdevices.ru>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=lCjXd1DtLAOiKDUVepuP3tVKlqmoM9phz1lypZW4eiM=;
+        b=NWuso4ZzJ2XIOREiQvXrUw/xeTo07Z3fHySVFA9TDeKu07xHWPceLUwXEDFYALRl0S
+         uaeG7QzPp1TeVgLicOtPL8nwiXYTN3cgFBJrLk69g/Mx7HPVHkUb7rNoEPXj1qvDL4nv
+         oJaMJPPL/vAxZkKZv3B4ffi8V0TmuCV2SdURfhKLPZ/qGDXIes5HimrFntNNtz13e5zM
+         rkFSzx1v5Og1dZIrjRBTGpLPyUiVgR4nbuJehcnrg/yNqwr2SL18Vmvxwhr4yPzsD0u8
+         Y6QD6XDuj+bMSIQSRzwDVROxrZl4VAPwwt/izuS1JBcd5cAxpsi+DVO7mGdbD+ccmghI
+         yLwg==
+X-Gm-Message-State: AOAM5316Gy/jrnPFisdF0TmIb9D8QZ3WQg76+w3E9C+Cel0YmpXYq7K+
+        tOdhpMRUbSgymgoHxR4FF/WmYF9ZwQ9AeQW+Rb0=
+X-Google-Smtp-Source: ABdhPJw17vPxP2UwrASUkgWE75bkBumiXi0yzz2upgIbMhdhBA7mECqviI1+XnRf2zU0lOm4Q01q8wM9WsX0p02cGPY=
+X-Received: by 2002:a17:907:6e04:b0:6f4:d6f3:c72a with SMTP id
+ sd4-20020a1709076e0400b006f4d6f3c72amr4545345ejc.636.1654178277156; Thu, 02
+ Jun 2022 06:57:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220525181532.6805-2-ddrokosov@sberdevices.ru>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20220531102809.11976-1-peterwu.pub@gmail.com> <20220531102809.11976-8-peterwu.pub@gmail.com>
+ <CAHp75VdUQqihr=AX-wEUD05jY1ReL63hMCL+eaqmjkN8CsS_Vg@mail.gmail.com> <CA+hk2fasiriGHepNjsnPCqTMJOgAEbVHACmWrDRZY7cHPcOQqA@mail.gmail.com>
+In-Reply-To: <CA+hk2fasiriGHepNjsnPCqTMJOgAEbVHACmWrDRZY7cHPcOQqA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 2 Jun 2022 15:57:19 +0200
+Message-ID: <CAHp75Vf=ATRfaaaGFuuPHuQj6wTjnRPBw4W5WYfgYuUP-A-L=g@mail.gmail.com>
+Subject: Re: [PATCH 07/14] leds: flashlight: mt6370: Add Mediatek MT6370
+ flashlight support
+To:     szuni chen <szunichen@gmail.com>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>, cy_huang@richtek.com,
+        alice_chen@richtek.com, chiaen_wu@richtek.com,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 25 May 2022 18:15:30 +0000, Dmitry Rokosov wrote:
-> MEMSensing Microsystems (Suzhou, China) Co., Ltd. operates as a micro
-> electromechanical system technology company which produces micro
-> electromechanical system microphones and sensors.
-> MEMSensing Microsystems (Suzhou, China) Co., Ltd. applies its products
-> in consumer electronics, industrial control, medical electronics
-> and automotive, and other fields.
-> 
-> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-> ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+On Thu, Jun 2, 2022 at 2:07 PM szuni chen <szunichen@gmail.com> wrote:
+> Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=
+=9C=881=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=885:57=E5=AF=AB=E9=81=
+=93=EF=BC=9A
+> > On Tue, May 31, 2022 at 1:32 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote=
+:
 
-Acked-by: Rob Herring <robh@kernel.org>
+...
+
+> > > +       const char * const states[] =3D { "off", "keep", "on" };
+> > > +       const char *str;
+> > > +       int ret;
+> > > +
+> > > +       if (!fwnode_property_read_string(init_data->fwnode,
+> > > +                                        "default-state", &str)) {
+> > > +               ret =3D match_string(states, ARRAY_SIZE(states), str)=
+;
+> > > +               if (ret < 0)
+> > > +                       ret =3D STATE_OFF;
+> > > +
+> > > +               led->default_state =3D ret;
+> > > +       }
+> >
+> > fwnode_property_match_string()?
+> Sorry, but I think the use of this function is different from my target.
+> I want to read the string of the "default-state" property and figure
+> out if the string is in the states array.
+> But the fwnode_property_match_string aimed to figure out if the state
+> in the property array.
+> One is a property array and another one is a state array.
+
+Ah, indeed. Nevertheless you may reduce the code base by doing like
+the following (I wonder what your code do if there is no default-state
+property):
+
+  led->default_state =3D STATE_OFF; // it's by default off since
+kzalloc(), so I don't see why we need this line at all.
+
+  fwnode_property_read_string(init_data->fwnode, "default-state", &str);
+  ret =3D match_string(states, ARRAY_SIZE(states), str);
+  if (ret >=3D 0)
+    led->default_state =3D ret;
+
+
+--=20
+With Best Regards,
+Andy Shevchenko

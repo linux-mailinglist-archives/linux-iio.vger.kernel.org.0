@@ -2,163 +2,197 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C15EF53B620
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 11:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C98DC53B68F
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 12:06:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233069AbiFBJfg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jun 2022 05:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46922 "EHLO
+        id S233319AbiFBKGb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jun 2022 06:06:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231890AbiFBJff (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 05:35:35 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735CF2AA9AA;
-        Thu,  2 Jun 2022 02:35:34 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id a2so790190lfg.5;
-        Thu, 02 Jun 2022 02:35:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=rBGjBOMnZl6to9efJaumbeOWSvKP8/DOct/QBdXnYoE=;
-        b=jvY/M4TcfKUtycVJEjl3vv3zcqK0vVXzP6oHwxbhveiR6Eve6NDt0Von5+VteqUBV0
-         0L333UPalxOSb+vAx5ej9FW4zDL3jiSJBKKI5g/bfbegljG05danKDxYAC1Mawnygsr8
-         NfvqH2NN74NnI5rLy+2zi6GU0sJ4y2QMkIhCQuT0rdAnmGP6i+nYifRZZ1QarEQWaWqU
-         1sFUjgMVvdhRWoctqpRRBSRSxoYCb/XYfFaItHlctIxH4eSOMldKOv1TbUyAo4DKKvuT
-         uI9O7Tb6ZGTcE2JxUT1KvCqoqebUvm2IiT9ek+R0V9Lk4hCNqrOX4e+Amz04wcKyd1yK
-         Jadg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=rBGjBOMnZl6to9efJaumbeOWSvKP8/DOct/QBdXnYoE=;
-        b=7GGdRn5q889TtfbhfSX/2lkVjt+toLLjsBzfXA3SoA7EDJY1295dD/4IQGlyzyT10u
-         ASm5bOoUdzJLO4UbyTpT4GlmvTFJNz6cGqppX9xw1HtNGxQyKgFkgcH7cHWBoiwG6qr4
-         CvNAd4+syu4N3ezpmJtAG6xJNzs98AJfLPNiBPe2FKJCeZVGOIuMR65DkekuAPrJbOXt
-         MLdYCzffOKtxAq5TXYS5yaJexiTOssd4SnWVMvUCwt6ZLQ5OnsP2fORI6vBGQehevDMF
-         EoBnYyu/cFxXWEbb1H83Wxh47i4j4YK/9sIw/DEfSXFEywuef75EIwpMsg2Ao3luMagR
-         Kulg==
-X-Gm-Message-State: AOAM530Yy8JAUoW7NBXInmtDnlEZwxcGtiBEIfWN5+4/RfWX2tYfKczl
-        pueBwvIiHZapcBmyi1Jjzg3gByEqrQYYr/lWohM=
-X-Google-Smtp-Source: ABdhPJwGnEM9jHCmHkWGx92/jl3eJw4zP0SFatjlcRCflAAlB9cVfAhhX5EONP3FSiW4lO0wQLnMioV43pqGQELiTHo=
-X-Received: by 2002:a05:6512:2251:b0:478:fc67:b09f with SMTP id
- i17-20020a056512225100b00478fc67b09fmr2833144lfu.196.1654162532575; Thu, 02
- Jun 2022 02:35:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220531102809.11976-1-peterwu.pub@gmail.com> <20220531102809.11976-7-peterwu.pub@gmail.com>
- <CAHp75Vd8taco19vsDmBcCv8euV1SvwSiY5=P9oMkA6zWsjwXxg@mail.gmail.com>
- <20220602062643.GA13824@cyhuang-hp-elitebook-840-g3.rt> <CAHp75Vd-n=oLnhRCK=pR5ybOZbC6BKXrE2jRdwDbH90E4KYFGA@mail.gmail.com>
-In-Reply-To: <CAHp75Vd-n=oLnhRCK=pR5ybOZbC6BKXrE2jRdwDbH90E4KYFGA@mail.gmail.com>
-From:   ChiYuan Huang <u0084500@gmail.com>
-Date:   Thu, 2 Jun 2022 17:35:15 +0800
-Message-ID: <CADiBU3-73ktYfwZD=Dgd+5kWHraOuBkz1=bU_-+NNcxP12gcrQ@mail.gmail.com>
-Subject: Re: [PATCH 06/14] leds: mt6370: Add Mediatek MT6370 Indicator support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>, cy_huang <cy_huang@richtek.com>,
+        with ESMTP id S229437AbiFBKGa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 06:06:30 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF08C2ACB65;
+        Thu,  2 Jun 2022 03:06:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654164389; x=1685700389;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Tpy1h6rxcXVO9xLL8s23Z2+kWlBjSZ7Dkplh6lZNrSI=;
+  b=jxeztFlVDxqMPufxkg830hVNjbUK6n2pu2bCVpTW+4ZjnwTMGtuncTNf
+   GhFhKdapMrTPcaykZbhqoPtFy6ifQaNxjAimvSscRk2IU2zHb/5LXNs8R
+   KXGQUqjnEPPfwSAwSTzTruG0eWjGMWq7L/VDmlRPpYetsUJSi31N08r8t
+   TCQhoM0SnwtF5Qn5EDXWZ2LPqjyL9VpPQzdpacTjypZru2W6NX/ko+F1R
+   y4QutXyEscNSl0guHKcHPJIGj8RhBO+RMDaFdKXn8r+NmvEPkoIKwgxbL
+   PDufiz0VANk7uuXTK2wSqzeLVLtEoV3ID+R/OZmbDc+XyXdCjm8W2fwDf
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10365"; a="338946096"
+X-IronPort-AV: E=Sophos;i="5.91,270,1647327600"; 
+   d="scan'208";a="338946096"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2022 03:06:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,270,1647327600"; 
+   d="scan'208";a="582020563"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 02 Jun 2022 03:06:21 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nwhie-0004xf-QH;
+        Thu, 02 Jun 2022 10:06:20 +0000
+Date:   Thu, 2 Jun 2022 18:05:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de
+Cc:     kbuild-all@lists.01.org, cy_huang@richtek.com,
         alice_chen@richtek.com, chiaen_wu@richtek.com,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        peterwu.pub@gmail.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [RESEND 13/14] leds: flashlight: mt6370: Add Mediatek MT6370
+ flashlight support
+Message-ID: <202206021739.LZjU7zjg-lkp@intel.com>
+References: <20220531111900.19422-14-peterwu.pub@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220531111900.19422-14-peterwu.pub@gmail.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=9C=
-=882=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=885:18=E5=AF=AB=E9=81=93=
-=EF=BC=9A
->
-> On Thu, Jun 2, 2022 at 8:27 AM ChiYuan Huang <u0084500@gmail.com> wrote:
-> > On Wed, Jun 01, 2022 at 11:48:58AM +0200, Andy Shevchenko wrote:
-> > > On Tue, May 31, 2022 at 1:16 PM ChiaEn Wu <peterwu.pub@gmail.com> wro=
-te:
->
-> ...
->
-> > > What indicator?
-> > It's RGB curent sink type LED driver (maximum supported current is only=
- 24mA).
->
-> Make your commit messages a slightly more verbose.
->
-OK, will refine the commit message in next.
-> ...
->
-> > > > +#include <linux/of.h>
-> > >
-> > > Are you sure this is the correct header? Seems you need
-> > > mod_devicetable.h instead.
-> > >
-> > It's the correct header and be used for the struct 'of_device_id'.
->
-> Nope. Run the following command
-> $ git grep -n 'struct of_device_id {' -- include/linux/
->
-Got it, thanks.
-> ...
->
-> > > > +struct mt6370_priv {
-> > > > +       struct mutex lock;
-> > >
-> > > Do you use regmap locking?
-> > >
-> > MFD regmap register already the access lock.
-> >
-> > This lock is just to guarantee only one user can access the RGB registe=
-r
-> > part.
-> >
-> > Sorry, from the comment, do you want us to rename or remove this lock?
->
-> My point is, since you have two locks, explain why you need each of them.
->
-OK, will leave a comment line to explain the usage of this lock.
-> > > > +       struct device *dev;
-> > >
-> > > > +       struct regmap *regmap;
-> > >
-> > > > +       struct regmap_field *fields[F_MAX_FIELDS];
-> > > > +       const struct reg_field *reg_fields;
-> > > > +       const struct linear_range *ranges;
-> > > > +       struct reg_cfg *reg_cfgs;
-> > > > +       unsigned int leds_count;
-> > > > +       unsigned int leds_active;
-> > > > +       bool is_mt6372;
-> > > > +       struct mt6370_led leds[];
-> > > > +};
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Hi ChiaEn,
+
+Thank you for the patch! Perhaps something to improve:
+
+[auto build test WARNING on pavel-leds/for-next]
+[also build test WARNING on lee-mfd/for-mfd-next lee-backlight/for-backlight-next v5.18 next-20220602]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/ChiaEn-Wu/Add-Mediatek-MT6370-PMIC-support/20220531-211432
+base:   git://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds.git for-next
+config: nios2-allyesconfig (https://download.01.org/0day-ci/archive/20220602/202206021739.LZjU7zjg-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/805a8af17c769562ec4b85e9b7d2669d004fe3a6
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review ChiaEn-Wu/Add-Mediatek-MT6370-PMIC-support/20220531-211432
+        git checkout 805a8af17c769562ec4b85e9b7d2669d004fe3a6
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=nios2 SHELL=/bin/bash drivers/gpu/drm/v3d/ drivers/leds/ sound/core/
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/device.h:15,
+                    from include/linux/leds.h:12,
+                    from include/linux/led-class-flash.h:11,
+                    from drivers/leds/flash/leds-mt6370-flash.c:8:
+   drivers/leds/flash/leds-mt6370-flash.c: In function 'mt6370_led_probe':
+>> drivers/leds/flash/leds-mt6370-flash.c:591:17: warning: format '%lu' expects argument of type 'long unsigned int', but argument 3 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
+     591 |                 "No child node or node count over max led number %lu\n", count);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                              ^~~
+   include/linux/dev_printk.h:144:56: note: in expansion of macro 'dev_fmt'
+     144 |         dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                        ^~~~~~~
+   drivers/leds/flash/leds-mt6370-flash.c:590:17: note: in expansion of macro 'dev_err'
+     590 |                 dev_err(&pdev->dev,
+         |                 ^~~~~~~
+   drivers/leds/flash/leds-mt6370-flash.c:591:68: note: format string is defined here
+     591 |                 "No child node or node count over max led number %lu\n", count);
+         |                                                                  ~~^
+         |                                                                    |
+         |                                                                    long unsigned int
+         |                                                                  %u
+
+
+vim +591 drivers/leds/flash/leds-mt6370-flash.c
+
+   580	
+   581	static int mt6370_led_probe(struct platform_device *pdev)
+   582	{
+   583		struct mt6370_priv *priv;
+   584		struct fwnode_handle *child;
+   585		size_t count;
+   586		int i = 0, ret;
+   587	
+   588		count = device_get_child_node_count(&pdev->dev);
+   589		if (!count || count > MT6370_MAX_LEDS) {
+   590			dev_err(&pdev->dev,
+ > 591			"No child node or node count over max led number %lu\n", count);
+   592			return -EINVAL;
+   593		}
+   594	
+   595		priv = devm_kzalloc(&pdev->dev, struct_size(priv, leds, count),
+   596				    GFP_KERNEL);
+   597		if (!priv)
+   598			return -ENOMEM;
+   599	
+   600		priv->leds_count = count;
+   601		priv->dev = &pdev->dev;
+   602		mutex_init(&priv->lock);
+   603	
+   604		priv->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+   605		if (!priv->regmap) {
+   606			dev_err(&pdev->dev, "Failed to get parent regmap\n");
+   607			return -ENODEV;
+   608		}
+   609	
+   610		device_for_each_child_node(&pdev->dev, child) {
+   611			struct mt6370_led *led = priv->leds + i;
+   612			struct led_init_data init_data = { .fwnode = child, };
+   613	
+   614			led->priv = priv;
+   615			ret = mt6370_init_common_properties(led, &init_data);
+   616			if (ret)
+   617				goto out_flash_release;
+   618	
+   619			ret = mt6370_init_flash_properties(led, &init_data);
+   620	
+   621			if (ret)
+   622				goto out_flash_release;
+   623	
+   624			ret = mt6370_led_register(&pdev->dev, led, &init_data);
+   625			if (ret)
+   626				goto out_flash_release;
+   627	
+   628			i++;
+   629		}
+   630	
+   631		platform_set_drvdata(pdev, priv);
+   632		return 0;
+   633	
+   634	out_flash_release:
+   635		mt6370_v4l2_flash_release(priv);
+   636		return ret;
+   637	}
+   638	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

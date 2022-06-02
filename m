@@ -2,109 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B191E53BBD6
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 17:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB50353BD6A
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 19:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236571AbiFBPuP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jun 2022 11:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50714 "EHLO
+        id S237584AbiFBRkZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jun 2022 13:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbiFBPuO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 11:50:14 -0400
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65D62E09B;
-        Thu,  2 Jun 2022 08:50:12 -0700 (PDT)
-Received: by mail-oi1-f173.google.com with SMTP id k11so6966781oia.12;
-        Thu, 02 Jun 2022 08:50:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4M65yO1MSPMaaEDxpgxAeSakHO4GbEVK8l/HDI7ey7E=;
-        b=iGmzDqhtpsxMzxm22qQgnkRIBwk6TSQ+as4aB4Fnqk3F9hlmPE3g1BI7PGi4QpiIKP
-         PBZ73wi9zmxkjL7w+q6r+HeSOrxTig2Ex5qTsNk+yFY2nhlCGlC0eFApAMnzyU4TkuNx
-         C+ZIyqmUcfpxjogeNEjE2FP808P2WFkNltT9Ecnqh0JpAn/j5tyRWmzKRouGaELG1hbj
-         0JtOBEP3hhsBKwhXw3qgNrQg6rcfO0T8lA2aR7nA/SkA1C9LuKmLaeRjgSdC+85M4K9/
-         agGVdiblLongl+GofVWfGAhQyCieMh3FJcsUOTX0mNTLMBZaeiLuPPBcY5zU+NQjUJ1i
-         JmKw==
-X-Gm-Message-State: AOAM532zbcAqTILS8HI4m6C8e5wE5xCvZNTMl4WEhTjehrDmXjLxY6Aj
-        DLeczHowGONZD4R+hEMYUA==
-X-Google-Smtp-Source: ABdhPJweeB9Qgg0inliBye4ZwpAwslfzL2dtqBXMZ5lTOF4/7QDMtbhTUga29CdeEcyJUYzgbdCydQ==
-X-Received: by 2002:a05:6808:1646:b0:328:ffdf:6821 with SMTP id az6-20020a056808164600b00328ffdf6821mr3065177oib.115.1654185011996;
-        Thu, 02 Jun 2022 08:50:11 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id lq10-20020a0568708dca00b000e90544b79fsm2100598oab.41.2022.06.02.08.50.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jun 2022 08:50:11 -0700 (PDT)
-Received: (nullmailer pid 2398310 invoked by uid 1000);
-        Thu, 02 Jun 2022 15:50:10 -0000
-Date:   Thu, 2 Jun 2022 10:50:10 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        kernel <kernel@sberdevices.ru>,
+        with ESMTP id S232767AbiFBRkY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 13:40:24 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8118415A3E7;
+        Thu,  2 Jun 2022 10:40:21 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id A16455FD02;
+        Thu,  2 Jun 2022 20:40:18 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1654191618;
+        bh=Ns/jWLoocsXbGN/wByVw7QlxyQs2qa8peqP9XJPmR/w=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=o7YvEeHGOnknvDRHGo/oFgS+Mfv5ONp+m2rmOb1QGjeWtQpbsYwxmxkKmPxdmmGHe
+         6fpDwzhAIkBF1fPeTRlv2LR6rtyxZsbB1up5gwNYvxpYnDcCUrL9+Tx2Id6fJqmIKt
+         6Ss6ELPlfB9vRzdZOLN9z9/DHOWFoK4xfgWDi8V7D75S/gPXJi+5KOalOSEhcbvajk
+         GxUdkSuR5FnzeyWtElvUW9O/7NvYlrbGWNyyjOl/hWqEDSSVwjbjMo2WhPk+2vHlyv
+         esa0rq9GJBTo7uy/eW2JjZOAU6nRorDAHFZvdCmHdALj1u72p01uD/hL26hO9hwkrG
+         ESiSH0IBSSWzw==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Thu,  2 Jun 2022 20:40:18 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
         "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
         "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>
-Subject: Re: [PATCH v2 1/3] dt-bindings: vendor-prefixes: add MEMSensing
- Microsystems Co., Ltd.
-Message-ID: <20220602155010.GA2349024-robh@kernel.org>
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/3] dt-bindings: iio: accel: add dt-binding schema for
+ msa311 accel driver
+Thread-Topic: [PATCH v2 3/3] dt-bindings: iio: accel: add dt-binding schema
+ for msa311 accel driver
+Thread-Index: AQHYcGNsHieJqKs6FU67Uad334M2Aq0vuKGAgASpOICAB9q1gA==
+Date:   Thu, 2 Jun 2022 17:39:55 +0000
+Message-ID: <20220602174013.x4ygdpbivr2xv5iq@CAB-WSD-L081021.sigma.sbrf.ru>
 References: <20220525181532.6805-1-ddrokosov@sberdevices.ru>
- <20220525181532.6805-2-ddrokosov@sberdevices.ru>
- <20220602135015.GA2186715-robh@kernel.org>
- <20220602135934.f4exakny4rbrdboy@CAB-WSD-L081021.sigma.sbrf.ru>
+ <20220525181532.6805-4-ddrokosov@sberdevices.ru>
+ <20220525183255.lc7hmmcfj47yrxc3@CAB-WSD-L081021.sigma.sbrf.ru>
+ <20220528184337.0855c8cc@jic23-huawei>
+In-Reply-To: <20220528184337.0855c8cc@jic23-huawei>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <719AE3C7FD7B814D986963EEA545FF29@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220602135934.f4exakny4rbrdboy@CAB-WSD-L081021.sigma.sbrf.ru>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/02 12:19:00 #19650230
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 02, 2022 at 01:59:18PM +0000, Dmitry Rokosov wrote:
-> Rob,
-> 
-> Thank you for the Ack. I'm going to send v3 patch series and don't
-> understand, should I append Acked-by line to v3 version of vendor-prefix
-> patch... Please suggest me if possible.
+Jonathan,
 
-Yes. When you send another version, add any acks unless there are 
-significant changes that warrant not adding them. You don't need to send 
-another version just to add acks. The maintainer will add any given on 
-the current version.
+On Sat, May 28, 2022 at 06:43:37PM +0100, Jonathan Cameron wrote:
+> On Wed, 25 May 2022 18:32:45 +0000
+> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+>=20
+> > > +  interrupt-names:
+> > > +    const: irq =20
+> > I stay interrupt-names node here, because otherwise dt_binding_check
+> > command shows such a warning:
+> >=20
+> > =3D=3D=3D=3D
+> >   CHECK   Documentation/devicetree/bindings/iio/accel/memsensing,msa311=
+.example.dt.yaml
+> > Documentation/devicetree/bindings/iio/accel/memsensing,msa311.example.d=
+t.yaml: accelerometer@62: 'interrupt-names' does not match any of the regex=
+es: 'pinctrl-[0-9]+'
+> > =3D=3D=3D=3D
+> >=20
+> > I can't delete this node from the example as well, because it's require=
+d for
+> > msa311 dts i2c irq declaration.
+>=20
+> Sorry, you've lost me - what breaks if you drop it from the example?
+> I'd expect to see no interrupt-names being documented or in the example.
+>=20
+> >=20
+> > Please help me to resolve this problem properly if possible. If we can
+> > ignore such warning I'll delete interrupt-names in the next patchset's
+> > version.
+>=20
+> We can't ignore the warning, so this comes down to what am I missing with
+> the need for it in the example...
+>=20
 
-Rob
+You are totally right. I thought during i2c device probe we should
+provide interrupt-names dts property because i2c irq parsing requires
+it, but I was wrong. i2c_device_probe() function tries to parse irq
+value using interrupt-names property and fallbacks to simple
+of_irq_get() if interrupt-names property is missing. In other words,
+interrupt-names property is not required for device node declaration, so
+it can be removed from documentation. Thank you for pointing this out.
 
-> 
-> On Thu, Jun 02, 2022 at 08:50:15AM -0500, Rob Herring wrote:
-> > On Wed, 25 May 2022 18:15:30 +0000, Dmitry Rokosov wrote:
-> > > MEMSensing Microsystems (Suzhou, China) Co., Ltd. operates as a micro
-> > > electromechanical system technology company which produces micro
-> > > electromechanical system microphones and sensors.
-> > > MEMSensing Microsystems (Suzhou, China) Co., Ltd. applies its products
-> > > in consumer electronics, industrial control, medical electronics
-> > > and automotive, and other fields.
-> > > 
-> > > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-> > > ---
-> > >  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > 
-> > Acked-by: Rob Herring <robh@kernel.org>
-> 
-> -- 
-> Thank you,
-> Dmitry
+> >=20
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > > +    i2c {
+> > > +        #address-cells =3D <1>;
+> > > +        #size-cells =3D <0>;
+> > > + =20
+> > Properties #address-cells and #size-cells are still located in the
+> > schema example, because otherwise dt_binding_check raises the below=20
+> > warnings if we delete these properties:
+>=20
+> They should be there for the i2c node, (as they are required for an i2c b=
+us master
+> node) but you had them documented as being in the msa311 node.  If it's
+> not in the
+> accelerometer@62 {
+>=20
+> }
+>=20
+> section of the example documetnation doesn't belong on this file (it will=
+ be
+> elsewhere).=20
+>=20
+> The request is to drop the documentation of them (as we are documenting
+> the msa311 part of the binding only).  They should indeed still be there
+> in the example.
+>=20
+> Jonathan
+>=20
+
+I've removed #address-cells and #size-cells properties from
+doc section as well as interrupt-names. All dtbs checkings have passed
+successfully. Thank you!
+
+--=20
+Thank you,
+Dmitry=

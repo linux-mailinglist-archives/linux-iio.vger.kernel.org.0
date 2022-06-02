@@ -2,197 +2,190 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C98DC53B68F
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 12:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB7D453B7F6
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jun 2022 13:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233319AbiFBKGb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 2 Jun 2022 06:06:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54844 "EHLO
+        id S234185AbiFBLmq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 2 Jun 2022 07:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbiFBKGa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 06:06:30 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF08C2ACB65;
-        Thu,  2 Jun 2022 03:06:28 -0700 (PDT)
+        with ESMTP id S232316AbiFBLmo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 2 Jun 2022 07:42:44 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3949765D3;
+        Thu,  2 Jun 2022 04:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654164389; x=1685700389;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Tpy1h6rxcXVO9xLL8s23Z2+kWlBjSZ7Dkplh6lZNrSI=;
-  b=jxeztFlVDxqMPufxkg830hVNjbUK6n2pu2bCVpTW+4ZjnwTMGtuncTNf
-   GhFhKdapMrTPcaykZbhqoPtFy6ifQaNxjAimvSscRk2IU2zHb/5LXNs8R
-   KXGQUqjnEPPfwSAwSTzTruG0eWjGMWq7L/VDmlRPpYetsUJSi31N08r8t
-   TCQhoM0SnwtF5Qn5EDXWZ2LPqjyL9VpPQzdpacTjypZru2W6NX/ko+F1R
-   y4QutXyEscNSl0guHKcHPJIGj8RhBO+RMDaFdKXn8r+NmvEPkoIKwgxbL
-   PDufiz0VANk7uuXTK2wSqzeLVLtEoV3ID+R/OZmbDc+XyXdCjm8W2fwDf
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10365"; a="338946096"
-X-IronPort-AV: E=Sophos;i="5.91,270,1647327600"; 
-   d="scan'208";a="338946096"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2022 03:06:27 -0700
+  t=1654170163; x=1685706163;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oIz/mvMCV+BGSqUcB6eZa50Ln+1c3te5NV7Zv6a5Yeg=;
+  b=DwFbVff7SdCDlWC8/Gwd2llmlIdS01PvotgOVyvbJWNmCpm9MMS5Kzfy
+   sWi4o5oLSWryBucvds+lYDwp1N4pozQh0m6ahcc9etkGR8BHrRRRSRvq7
+   pT7vy3iJJagXuM4QcRZcxVL9ekQc/PUuOp6Wto1+tqfmrLuaaCNS8coMV
+   5wQE/XlpalnXgiobBki3CMM7KuWqwizsdvuaYi4BAIE2N7pk+4pRQ5rYS
+   qUAQtKri+8Ev9qH+19kYLnhb+DOFfrG/h8qFU4n6D1wqnGcR5X6OUElEA
+   BHXE2Us2+Jvo2/q0yRXJP6ehWEoDs0Eq1ySxX4gbXtyayxiyvaXp+wIUk
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10365"; a="362293255"
+X-IronPort-AV: E=Sophos;i="5.91,271,1647327600"; 
+   d="scan'208";a="362293255"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2022 04:42:43 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,270,1647327600"; 
-   d="scan'208";a="582020563"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 02 Jun 2022 03:06:21 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nwhie-0004xf-QH;
-        Thu, 02 Jun 2022 10:06:20 +0000
-Date:   Thu, 2 Jun 2022 18:05:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
-        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com, deller@gmx.de
-Cc:     kbuild-all@lists.01.org, cy_huang@richtek.com,
-        alice_chen@richtek.com, chiaen_wu@richtek.com,
-        peterwu.pub@gmail.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [RESEND 13/14] leds: flashlight: mt6370: Add Mediatek MT6370
- flashlight support
-Message-ID: <202206021739.LZjU7zjg-lkp@intel.com>
-References: <20220531111900.19422-14-peterwu.pub@gmail.com>
+X-IronPort-AV: E=Sophos;i="5.91,271,1647327600"; 
+   d="scan'208";a="721269396"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 02 Jun 2022 04:42:40 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id BEFD8F8; Thu,  2 Jun 2022 14:42:42 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Subject: [PATCH v2 1/3] iio: adc: meson_saradc: Convert to use dev_err_probe()
+Date:   Thu,  2 Jun 2022 14:42:39 +0300
+Message-Id: <20220602114241.12601-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220531111900.19422-14-peterwu.pub@gmail.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi ChiaEn,
+It's fine to call dev_err_probe() in ->probe() when error code is known.
+Convert the driver to use dev_err_probe().
 
-Thank you for the patch! Perhaps something to improve:
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: split long line (Martin)
+ drivers/iio/adc/meson_saradc.c | 52 +++++++++++++---------------------
+ 1 file changed, 19 insertions(+), 33 deletions(-)
 
-[auto build test WARNING on pavel-leds/for-next]
-[also build test WARNING on lee-mfd/for-mfd-next lee-backlight/for-backlight-next v5.18 next-20220602]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/ChiaEn-Wu/Add-Mediatek-MT6370-PMIC-support/20220531-211432
-base:   git://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds.git for-next
-config: nios2-allyesconfig (https://download.01.org/0day-ci/archive/20220602/202206021739.LZjU7zjg-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/805a8af17c769562ec4b85e9b7d2669d004fe3a6
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review ChiaEn-Wu/Add-Mediatek-MT6370-PMIC-support/20220531-211432
-        git checkout 805a8af17c769562ec4b85e9b7d2669d004fe3a6
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=nios2 SHELL=/bin/bash drivers/gpu/drm/v3d/ drivers/leds/ sound/core/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/device.h:15,
-                    from include/linux/leds.h:12,
-                    from include/linux/led-class-flash.h:11,
-                    from drivers/leds/flash/leds-mt6370-flash.c:8:
-   drivers/leds/flash/leds-mt6370-flash.c: In function 'mt6370_led_probe':
->> drivers/leds/flash/leds-mt6370-flash.c:591:17: warning: format '%lu' expects argument of type 'long unsigned int', but argument 3 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
-     591 |                 "No child node or node count over max led number %lu\n", count);
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                              ^~~
-   include/linux/dev_printk.h:144:56: note: in expansion of macro 'dev_fmt'
-     144 |         dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                                        ^~~~~~~
-   drivers/leds/flash/leds-mt6370-flash.c:590:17: note: in expansion of macro 'dev_err'
-     590 |                 dev_err(&pdev->dev,
-         |                 ^~~~~~~
-   drivers/leds/flash/leds-mt6370-flash.c:591:68: note: format string is defined here
-     591 |                 "No child node or node count over max led number %lu\n", count);
-         |                                                                  ~~^
-         |                                                                    |
-         |                                                                    long unsigned int
-         |                                                                  %u
-
-
-vim +591 drivers/leds/flash/leds-mt6370-flash.c
-
-   580	
-   581	static int mt6370_led_probe(struct platform_device *pdev)
-   582	{
-   583		struct mt6370_priv *priv;
-   584		struct fwnode_handle *child;
-   585		size_t count;
-   586		int i = 0, ret;
-   587	
-   588		count = device_get_child_node_count(&pdev->dev);
-   589		if (!count || count > MT6370_MAX_LEDS) {
-   590			dev_err(&pdev->dev,
- > 591			"No child node or node count over max led number %lu\n", count);
-   592			return -EINVAL;
-   593		}
-   594	
-   595		priv = devm_kzalloc(&pdev->dev, struct_size(priv, leds, count),
-   596				    GFP_KERNEL);
-   597		if (!priv)
-   598			return -ENOMEM;
-   599	
-   600		priv->leds_count = count;
-   601		priv->dev = &pdev->dev;
-   602		mutex_init(&priv->lock);
-   603	
-   604		priv->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-   605		if (!priv->regmap) {
-   606			dev_err(&pdev->dev, "Failed to get parent regmap\n");
-   607			return -ENODEV;
-   608		}
-   609	
-   610		device_for_each_child_node(&pdev->dev, child) {
-   611			struct mt6370_led *led = priv->leds + i;
-   612			struct led_init_data init_data = { .fwnode = child, };
-   613	
-   614			led->priv = priv;
-   615			ret = mt6370_init_common_properties(led, &init_data);
-   616			if (ret)
-   617				goto out_flash_release;
-   618	
-   619			ret = mt6370_init_flash_properties(led, &init_data);
-   620	
-   621			if (ret)
-   622				goto out_flash_release;
-   623	
-   624			ret = mt6370_led_register(&pdev->dev, led, &init_data);
-   625			if (ret)
-   626				goto out_flash_release;
-   627	
-   628			i++;
-   629		}
-   630	
-   631		platform_set_drvdata(pdev, priv);
-   632		return 0;
-   633	
-   634	out_flash_release:
-   635		mt6370_v4l2_flash_release(priv);
-   636		return ret;
-   637	}
-   638	
-
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index 62cc6fb0ef85..a2e83eca03e8 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -701,6 +701,7 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+ 	u8 *buf, trimming_bits, trimming_mask, upper_adc_val;
++	struct device *dev = indio_dev->dev.parent;
+ 	struct nvmem_cell *temperature_calib;
+ 	size_t read_len;
+ 	int ret;
+@@ -717,30 +718,23 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
+ 		if (ret == -ENODEV)
+ 			return 0;
+ 
+-		return dev_err_probe(indio_dev->dev.parent, ret,
+-				     "failed to get temperature_calib cell\n");
++		return dev_err_probe(dev, ret, "failed to get temperature_calib cell\n");
+ 	}
+ 
+ 	priv->tsc_regmap =
+ 		syscon_regmap_lookup_by_phandle(indio_dev->dev.parent->of_node,
+ 						"amlogic,hhi-sysctrl");
+-	if (IS_ERR(priv->tsc_regmap)) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to get amlogic,hhi-sysctrl regmap\n");
+-		return PTR_ERR(priv->tsc_regmap);
+-	}
++	if (IS_ERR(priv->tsc_regmap))
++		return dev_err_probe(dev, PTR_ERR(priv->tsc_regmap),
++				     "failed to get amlogic,hhi-sysctrl regmap\n");
+ 
+ 	read_len = MESON_SAR_ADC_EFUSE_BYTES;
+ 	buf = nvmem_cell_read(temperature_calib, &read_len);
+-	if (IS_ERR(buf)) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to read temperature_calib cell\n");
+-		return PTR_ERR(buf);
+-	} else if (read_len != MESON_SAR_ADC_EFUSE_BYTES) {
++	if (IS_ERR(buf))
++		return dev_err_probe(dev, PTR_ERR(buf), "failed to read temperature_calib cell\n");
++	if (read_len != MESON_SAR_ADC_EFUSE_BYTES) {
+ 		kfree(buf);
+-		dev_err(indio_dev->dev.parent,
+-			"invalid read size of temperature_calib cell\n");
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL, "invalid read size of temperature_calib cell\n");
+ 	}
+ 
+ 	trimming_bits = priv->param->temperature_trimming_bits;
+@@ -765,6 +759,7 @@ static int meson_sar_adc_temp_sensor_init(struct iio_dev *indio_dev)
+ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ {
+ 	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
++	struct device *dev = indio_dev->dev.parent;
+ 	int regval, i, ret;
+ 
+ 	/*
+@@ -888,18 +883,12 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	ret = clk_set_parent(priv->adc_sel_clk, priv->clkin);
+-	if (ret) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to set adc parent to clkin\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to set adc parent to clkin\n");
+ 
+ 	ret = clk_set_rate(priv->adc_clk, priv->param->clock_rate);
+-	if (ret) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to set adc clock rate\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to set adc clock rate\n");
+ 
+ 	return 0;
+ }
+@@ -1186,24 +1175,21 @@ static int meson_sar_adc_probe(struct platform_device *pdev)
+ {
+ 	const struct meson_sar_adc_data *match_data;
+ 	struct meson_sar_adc_priv *priv;
++	struct device *dev = &pdev->dev;
+ 	struct iio_dev *indio_dev;
+ 	void __iomem *base;
+ 	int irq, ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*priv));
+-	if (!indio_dev) {
+-		dev_err(&pdev->dev, "failed allocating iio device\n");
+-		return -ENOMEM;
+-	}
++	if (!indio_dev)
++		return dev_err_probe(dev, -ENOMEM, "failed allocating iio device\n");
+ 
+ 	priv = iio_priv(indio_dev);
+ 	init_completion(&priv->done);
+ 
+ 	match_data = of_device_get_match_data(&pdev->dev);
+-	if (!match_data) {
+-		dev_err(&pdev->dev, "failed to get match data\n");
+-		return -ENODEV;
+-	}
++	if (!match_data)
++		return dev_err_probe(dev, -ENODEV, "failed to get match data\n");
+ 
+ 	priv->param = match_data->param;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.1
+

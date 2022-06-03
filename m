@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B054353C99B
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 13:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FF5053C9A4
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 14:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244096AbiFCLw5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 07:52:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52754 "EHLO
+        id S238386AbiFCL5u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 07:57:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241403AbiFCLw4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:52:56 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA1D1C113
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:52:55 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id q1so15434721ejz.9
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:52:55 -0700 (PDT)
+        with ESMTP id S243652AbiFCL5s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:57:48 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0240721814
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:57:48 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id q1so15456961ejz.9
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=bs93fY/foEywu4lUw4CVKkhmrPneTFg28BrZIWCOUYk=;
-        b=Hrt8WO1BuqrdNvhQI3M+pKXs5/pndoPsJ3aYHvjEZelDOio9130bHoGeocLdXcPSPT
-         APkVfB6kYzONK7SHnAbaQsAjUrtBXkdtSy9Lv8YIDT3Mfvnod7wdCdKXOCj/AJ0MSkII
-         Wld+VXXnetwMWgxhDdlXQfA1k90zm6RpRa/H7SPJv/hnPuJ+lmHm5Fi15/7bCop5osVu
-         nkzLggqzRWf8AG8DhcHKMXAuESlinxB5SLoIih5ijeOfYJePKaaNlEbvMaclo/6KH0uI
-         0EnPpajxixqPhTqtrIf5l0VaCYHqf1or878UhbvJmZgU9dG3p262OdW+FP4ZCMKkJ58l
-         gGhw==
+        bh=GAiNawLk5ifUkYwy9NLxfWrPLQp41DKaqb5X0zwydAc=;
+        b=clH62Z6hiO2gYOqWJlqrzhvxlX8GUnYL7ghoRIqKWoZ0lZ8aUpOYBo6ivzAiaHU0sz
+         LUsKPdqnIt2LNZ7u7uYJrPXjoJ5KEiM289NJK/UrAMJ2w597IRL44XmXWlMXHN7MH2jU
+         rysTh4jZbNFGEV2Y6jQyeH5aANZsVzNgfUoZy0G2MqHrUz2W0q0/nQVEDthj4RpK6/Kv
+         sPWQpBY85dFlgk8b/GKTQVyxUg5crtJ28zA0qoq/CaSBg4HU8XX6N+mAW025McI9VFVO
+         yubCQPFtN5JuEOI39sZIHWLuEqOe//+PiY/r5doNX7sDy7Fm99Z2Kr6pTK/O+F2DHqio
+         PRbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=bs93fY/foEywu4lUw4CVKkhmrPneTFg28BrZIWCOUYk=;
-        b=FJcowU7Z5YTcTC3j+6INwcgE5FibKc/UYm1ROIKbX6C8XZBHNRcp8AWcz6jKtxviXz
-         HuGLh/Udfc07hEXkCQPBVvRShY57BOh5ka6/coEytZna65FrICXr7lITlSsAUh2jWjIp
-         litu9rN3WWP0Vrx9Ki5GfzyqpjCHofUpOLB+xVMMnXE3uFxTovFi1kiolscMalvsPxmk
-         43yeSxUHt1qLEJuMbzCK32IzLgc+Oj8JkNG3QLHmLj7IvWjPXGTo/h6lBeG7PAVv3iPW
-         JVPApcBA1bJo82eIEHH5CQdDsMCtv12SWtUECyVM9o5NeoOgEa6TLuVcI62YRct24K1r
-         BhPg==
-X-Gm-Message-State: AOAM531qgWs1NaVMQkD+QBq+xERXAaAXq8ZYdhYSotdekK6AWclHklTV
-        SAEydUiwug7CRmCcAmgQe9FlJiNpK2OIpc8ohHA=
-X-Google-Smtp-Source: ABdhPJxtx10G5V/MCYn0kNXfHBTWzBkbS+I3yCVUhG5dCu2/KSjMiwdOxMGxI5be1qZc5mPJuO/RQy3MF1fC9FMURkQ=
-X-Received: by 2002:a17:907:6e04:b0:6f4:d6f3:c72a with SMTP id
- sd4-20020a1709076e0400b006f4d6f3c72amr8489833ejc.636.1654257174201; Fri, 03
- Jun 2022 04:52:54 -0700 (PDT)
+        bh=GAiNawLk5ifUkYwy9NLxfWrPLQp41DKaqb5X0zwydAc=;
+        b=ZNtT+YAhvktToOMR/wuF9CeaddAkkeK+vtbidYfqdI85RO/6NoLP/6v4ywR/EieQho
+         xpIYGdFNGphD58dYyrw9u2lDhjr6FRZREZftRUQLUQycm44S1/oaZ8hRoBGS171nxFff
+         zW1lt/AjULxttY7+vu1QKUpyALXxpC8yuFHA+1l9joXWD0KSOv4ZvHS6vX5xE/o5xMS7
+         FJmREXdwr5PyLIAKhs0EKFN7MAsBCStArS+SfqrifQj3+0hUkle7kVBqtxKlF7taDkA4
+         ehnJmbj4biNZv3CC9AJhzy/YjGmAh0Sl/Iis1yAQe8V8W2AuFafxn1GDBPmAeGPoijFs
+         VyGA==
+X-Gm-Message-State: AOAM533Dwdrn7Albm3KUCD4gSi0ocaertsuXiG5rzh4jy3WBpAoc7kQc
+        U8kjBdX51qDauNvsBBIZOc+o6hkRxDRAQtavzPM=
+X-Google-Smtp-Source: ABdhPJxC53U3o3hPjlo88W+VHGiS2k+weJaggsT8GPQFURDHg7IAXl3F/BlYFKXcNQ7nk6KeAgp9BvrAhtQ9JZfgiBg=
+X-Received: by 2002:a17:907:868e:b0:6fa:2fe2:92d6 with SMTP id
+ qa14-20020a170907868e00b006fa2fe292d6mr8403764ejc.639.1654257465801; Fri, 03
+ Jun 2022 04:57:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-6-nuno.sa@analog.com>
 In-Reply-To: <20220602140400.213449-6-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Jun 2022 13:52:18 +0200
-Message-ID: <CAHp75VeHwqbNTMfWA03-epKaksPNgRrXh3f5hktEE0u6qjPyyw@mail.gmail.com>
+Date:   Fri, 3 Jun 2022 13:57:09 +0200
+Message-ID: <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com>
 Subject: Re: [RFC PATCH 5/6] iio: inkern: move to fwnode properties
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
@@ -105,91 +105,19 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->
-> This moves the IIO in kernel interface to use fwnode properties and thus
-> be firmware agnostic.
->
-> All the users had to be naturally updated to the new interface exposed by
-> IIO.
-
-I think you may split this in an easy way, i.e. convert core to
-fwnode, while providing inliners for of_node cases (like it's done in
-IRQ domain) and then remove them after conversion.
-
-I think of_xlate is not needed to be touched at all. Let it die with
-OF altogether. Yes, it won't be fully OF-independent, but it will down
-the scope of the next change where you can convert of_xlate to
-something agnostic.
 
 ...
 
-> --- a/drivers/iio/adc/ab8500-gpadc.c
-> +++ b/drivers/iio/adc/ab8500-gpadc.c
-> @@ -39,6 +39,7 @@
->  #include <linux/slab.h>
->  #include <linux/mfd/abx500.h>
->  #include <linux/mfd/abx500/ab8500.h>
-> +#include <linux/fwnode.h>
+> +       parent =3D fwnode_get_parent(fwnode);
+> +       while (parent) {
 
-Ordering.
+> +               parent =3D fwnode_get_next_parent(parent);
+>         }
 
-...
+Forgot to mention:
 
-> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> @@ -21,6 +21,7 @@
->  #include <linux/init.h>
->  #include <linux/interrupt.h>
->  #include <linux/regulator/consumer.h>
-> +#include <linux/fwnode.h>
-
-Ordering?
-
-...
-
->   * @consumer_channel:  Unique name to identify the channel on the consum=
-er
->   *                     side. This typically describes the channels use w=
-ithin
-
-used / usage ?
-
-...
-
->   * @consumer_channel:  Unique name to identify the channel on the consum=
-er
->   *                     side. This typically describes the channels use w=
-ithin
-
-Ditto.
-
->   *                     the consumer. E.g. 'battery_voltage'
-
-...
-
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 233d2e6b7721..18ca5a7cb154 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -10,13 +10,14 @@
->  #include <linux/device.h>
->  #include <linux/cdev.h>
->  #include <linux/iio/types.h>
-> -#include <linux/of.h>
-
-You may split this change easily since there is nothing from of.h in
-use. Just add forward declaration as you have done, but for the OF
-case.
-
-...
-
-That said, I think what you need is to split this series to three logical p=
-arts:
-1) shuffle header inclusions around so, iio.h will use forward
-declaration (on driver basis);
-2) convert inkern.c to fwnode while providing OF wrappers (to_of_node() hel=
-ps);
-3) convert of_xlate (on driver basis it might be tricky, up to you).
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3D87ffea09470d94c93dd6a5a22d4b2216b395d1ea
 
 --=20
 With Best Regards,

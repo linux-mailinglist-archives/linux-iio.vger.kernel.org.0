@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42A0853CA3A
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 14:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 495D353CA3E
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 14:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbiFCMwD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 08:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55908 "EHLO
+        id S236718AbiFCMx7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 08:53:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbiFCMwC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 08:52:02 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53246CE22
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 05:52:00 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id l2-20020a05600c1d0200b0039c35ef94c4so2081046wms.4
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 05:52:00 -0700 (PDT)
+        with ESMTP id S229936AbiFCMx7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 08:53:59 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA3E36E08
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 05:53:58 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id z17so4057287wmf.1
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 05:53:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :content-transfer-encoding:user-agent:mime-version;
-        bh=oM8u510fq95yGh6biC/xKnH8FDTdeNsTm34r3feNkB0=;
-        b=mVjun2JcqcRyUtpq0nD3bGqAUVlyIeZBA2i4t66fW3gDoeI7CONSmeQAm6QfVwIWuY
-         6uXy3BmSkXDQJMc426/mpqjKCvAwdRK7xBHfvR9ORXuaDSTcG2EjPcwHcU0bSHEamVoB
-         mFUzrQAYYhwsk5zYltJBtL2GJ/K2mvzTELNL7eX+wIOOggtWeCmJmPOt8mg1+3kgfq9G
-         +vVfhGgUHbszgujyI6tbMlgCZwz5DoP10g8cKrUchfwZqHX3dD+BMrYWBEf+bYHmLtwX
-         yGZLxk4D4QVpa04lK3suAqvBjgGflT+miFfk9TuMbhsZlw13rrkoC1qMcBfAYNNwQFh7
-         H7JA==
+        bh=YTs8VPz/2AXsPXPG75ovAhF2/Afdm8hhmMlI0rs55Wg=;
+        b=aAqvYEENzt47DWV29dlCRYNTmDyzRoxUGK4lBhop2LwAVIQ9W8NxTnwZ72XpBgAb7d
+         azA51aARw1tb/thWN/YV3aSnKq89xo6U9MQJaXNQ2hEgcHONsxm5OJ6VIjELtfDsx2Jc
+         InYNKSdCvGqTKOWrwGnXBQ+lLDWKXCYSxtcGcUCJDWGhM+u7grJhGTrXeglxUH7KCvDu
+         jc/3ZCsxqmNWK6znRMzHSN/rhBS5B+njAI11OQNe/S5i6JLO9FUnmc/fFyQduWqb/JcJ
+         G4XIo7SOSJpnD7EZ0wS0sN3UGSZ/U2IXxMMvE1AtWfRNh7M54pPx/AcRtZ16VF+u93BP
+         RqPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:content-transfer-encoding:user-agent:mime-version;
-        bh=oM8u510fq95yGh6biC/xKnH8FDTdeNsTm34r3feNkB0=;
-        b=gEww335xNoO/+H4lcoXTVp38AMIoOkQcFbRAEwMnafUUmKdSJtD/q8v+3zphhDhsKS
-         V1Qa2NWPp3Q4hJ1HiCw27oK89BhHt9R4Ek8KtMbh6eNK5qSm6awT35WTpwWy9M0caQjG
-         IAfn6zpUiLSU+hs266l/2wl2gghjHKwWqVsZ2RDJD0R9S/YXOurv5Gh0ffpiGQ8FLyfZ
-         vrrSvx8nfQ4Gs4XnzxlRQo0o+A/0rXCv/s3G5oAQD4r1hc2i4+uaOHCPZ8hjlDzeMrF/
-         /+cgsC7LG7qJFJZaaLOEXW3EwFkwRmBLEzCGndydH9HpuB2xFlnrdE5IH1sN3bhnqGN2
-         ckUQ==
-X-Gm-Message-State: AOAM531jHaQAMUd2kOPXCXY106GaewkWgCXVYbwQ1+JOrJ3BQD/13F+E
-        3U1Nnl5LkMdl0bx3zrLJT3Q=
-X-Google-Smtp-Source: ABdhPJzpRHo7PqJZG5incU6FcIQt/sZ9HBd3JvCy3XAFxSN8CFDghDjSLH1JmmOVWD96hUDPRwpDlg==
-X-Received: by 2002:a05:600c:414e:b0:397:55aa:ccc0 with SMTP id h14-20020a05600c414e00b0039755aaccc0mr38753613wmm.51.1654260718679;
-        Fri, 03 Jun 2022 05:51:58 -0700 (PDT)
+        bh=YTs8VPz/2AXsPXPG75ovAhF2/Afdm8hhmMlI0rs55Wg=;
+        b=TYqwcJCal9qbXyK0PZwEeUJZgKa1MoAUsco0WvxtFnFDA43eU72ypwZhGkskKTzFqF
+         D4gLGJsAGjVEaqpTF8+jAiHawkthYxEyXy5m7IXfbw47vGhHBfjq4lKnTbzfnDgv+gSM
+         2ofQHbfMpjJRkZmAJtWNzbPZm+OWkK9Vz0iw2o9QtXtpyqldTN+tRRaPkTRNeqeBGaD4
+         Kfi6ScKm9vHdWkDBOL2gGvsflCpxD/LIlUdxsjZ8y/0gQtr4t/AHRO8wWNehLkrCMQ5M
+         PTtiD2wf/LXT4jt9eoPsWaKgIXm6JMe3qlM5EshdCJKx0HdYvR06HWJU2OPywYf5vwAO
+         hSBw==
+X-Gm-Message-State: AOAM532g+2Osp2F+kI1f0OnGAeNYyZViOVCboCCdPrgE7UB2h1tk45HI
+        plnTIPHb1GkxoAJDVQpVKBo=
+X-Google-Smtp-Source: ABdhPJwleoAOhfXycXCNvyOQWrMtvVps8uyzJgaWZus6RKqmahjSgR/yQ/+XMgPxLav3YIC9MYeIFQ==
+X-Received: by 2002:a7b:c114:0:b0:397:506f:262c with SMTP id w20-20020a7bc114000000b00397506f262cmr37131430wmi.56.1654260836570;
+        Fri, 03 Jun 2022 05:53:56 -0700 (PDT)
 Received: from p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de (p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de. [2003:f6:ef02:1900:8f43:42cb:e8c8:c65c])
-        by smtp.gmail.com with ESMTPSA id c3-20020a7bc843000000b0039c3e6edb0asm2572163wml.2.2022.06.03.05.51.56
+        by smtp.gmail.com with ESMTPSA id b15-20020adfde0f000000b002103136623esm7597018wrm.85.2022.06.03.05.53.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jun 2022 05:51:58 -0700 (PDT)
-Message-ID: <543ab19106938b7655ee2877bf52c8e786c1c55a.camel@gmail.com>
+        Fri, 03 Jun 2022 05:53:56 -0700 (PDT)
+Message-ID: <46d4d0062324846faf65c697dcb10e4e53305edf.camel@gmail.com>
 Subject: Re: [RFC PATCH 5/6] iio: inkern: move to fwnode properties
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -92,11 +92,11 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Thara Gopinath <thara.gopinath@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>,
         Shawn Guo <shawnguo@kernel.org>
-Date:   Fri, 03 Jun 2022 14:52:51 +0200
-In-Reply-To: <CAHp75VeHwqbNTMfWA03-epKaksPNgRrXh3f5hktEE0u6qjPyyw@mail.gmail.com>
+Date:   Fri, 03 Jun 2022 14:54:49 +0200
+In-Reply-To: <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com>
 References: <20220602140400.213449-1-nuno.sa@analog.com>
          <20220602140400.213449-6-nuno.sa@analog.com>
-         <CAHp75VeHwqbNTMfWA03-epKaksPNgRrXh3f5hktEE0u6qjPyyw@mail.gmail.com>
+         <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.2 
@@ -111,124 +111,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2022-06-03 at 13:52 +0200, Andy Shevchenko wrote:
+On Fri, 2022-06-03 at 13:57 +0200, Andy Shevchenko wrote:
 > On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> >=20
-> > This moves the IIO in kernel interface to use fwnode properties and
-> > thus
-> > be firmware agnostic.
-> >=20
-> > All the users had to be naturally updated to the new interface
-> > exposed by
-> > IIO.
->=20
-> I think you may split this in an easy way, i.e. convert core to
-> fwnode, while providing inliners for of_node cases (like it's done in
-> IRQ domain) and then remove them after conversion.
->=20
-
-I see, in our case that might be really simple as we only have one user
-of devm_of_iio_channel_get_by_name() which is the only api directly
-using OF. of_iio_channel_get_by_name() has no users and all the other
-public APIs use 'struct device' so we can do the conversion
-internally...
-
-> I think of_xlate is not needed to be touched at all. Let it die with
-> OF altogether. Yes, it won't be fully OF-independent, but it will
-> down
-> the scope of the next change where you can convert of_xlate to
-> something agnostic.
 >=20
 > ...
 >=20
-> > --- a/drivers/iio/adc/ab8500-gpadc.c
-> > +++ b/drivers/iio/adc/ab8500-gpadc.c
-> > @@ -39,6 +39,7 @@
-> > =C2=A0#include <linux/slab.h>
-> > =C2=A0#include <linux/mfd/abx500.h>
-> > =C2=A0#include <linux/mfd/abx500/ab8500.h>
-> > +#include <linux/fwnode.h>
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parent =3D fwnode_get_parent(fwno=
+de);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 while (parent) {
 >=20
-> Ordering.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 parent =3D fwnode_get_next_parent(parent);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
 >=20
-
-The ordering is completely wrong anyways. So, I did not cared about
-ordering in drivers where it was already bad. Don't mind to fix it
-while adding the missing headers (if acceptable).
-
-> ...
+> Forgot to mention:
 >=20
-> > --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> > +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> > @@ -21,6 +21,7 @@
-> > =C2=A0#include <linux/init.h>
-> > =C2=A0#include <linux/interrupt.h>
-> > =C2=A0#include <linux/regulator/consumer.h>
-> > +#include <linux/fwnode.h>
->=20
-> Ordering?
->=20
-> ...
->=20
-> > =C2=A0 * @consumer_channel:=C2=A0 Unique name to identify the channel o=
-n the
-> > consumer
-> > =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 side. This typica=
-lly describes the channels
-> > use within
->=20
-> used / usage ?
->=20
-> ...
->=20
-> > =C2=A0 * @consumer_channel:=C2=A0 Unique name to identify the channel o=
-n the
-> > consumer
-> > =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 side. This typica=
-lly describes the channels
-> > use within
->=20
-> Ditto.
->=20
-> > =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the consumer. E.g=
-. 'battery_voltage'
->=20
-> ...
->=20
-> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > index 233d2e6b7721..18ca5a7cb154 100644
-> > --- a/include/linux/iio/iio.h
-> > +++ b/include/linux/iio/iio.h
-> > @@ -10,13 +10,14 @@
-> > =C2=A0#include <linux/device.h>
-> > =C2=A0#include <linux/cdev.h>
-> > =C2=A0#include <linux/iio/types.h>
-> > -#include <linux/of.h>
->=20
-> You may split this change easily since there is nothing from of.h in
-> use. Just add forward declaration as you have done, but for the OF
-> case.
->=20
-> ...
->=20
-> That said, I think what you need is to split this series to three
-> logical parts:
-> 1) shuffle header inclusions around so, iio.h will use forward
-> declaration (on driver basis);
-> 2) convert inkern.c to fwnode while providing OF wrappers
-> (to_of_node() helps);
-
-Just to be clear, we should still add an fwnode_xlate() callback? So we
-have both temporarily and if some new driver needs this interface it
-can already use it instead of of_xlate...
-
-> 3) convert of_xlate (on driver basis it might be tricky, up to you).
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3D87ffea09470d94c93dd6a5a22d4b2216b395d1ea
 >=20
 
-Yeah, I might see how easy it is to fully convert the drivers using=20
-of_xlate. If easy enough, I'll probably do it...
+I did looked for something like that but it's still not in the IIO
+testing tree.
+
+(still I actually followed that patchset but completely forgot about
+the helper)
 
 - Nuno S=C3=A1

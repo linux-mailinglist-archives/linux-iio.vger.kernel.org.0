@@ -2,46 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94FF453CC71
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12CDE53CC87
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243997AbiFCPmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 11:42:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42098 "EHLO
+        id S245661AbiFCPrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:47:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242335AbiFCPmK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:42:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B49B46241;
-        Fri,  3 Jun 2022 08:42:08 -0700 (PDT)
+        with ESMTP id S245657AbiFCPrp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:47:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F173286F8;
+        Fri,  3 Jun 2022 08:47:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50225618CD;
-        Fri,  3 Jun 2022 15:42:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90173C385A9;
-        Fri,  3 Jun 2022 15:42:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21199618CD;
+        Fri,  3 Jun 2022 15:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C28C385A9;
+        Fri,  3 Jun 2022 15:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654270927;
-        bh=uFt38kXWvTTdnaN2oP0GGgGo2/Cw36q2/icUr1V3lKo=;
+        s=k20201202; t=1654271263;
+        bh=DkHpOszBjvs97DI/fvHycYbfHbNLMuU6YAPeq1EHMUc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dJ+Ti4C0KVap4cUeztpqDfBH+7Guhimexya1pTrneKuxTIlHilQHmaPbkvFb7wSue
-         otbJhlmUQPqTomW8uWpzhMwboZF1BOTWsW5MGujz9/ZwSu2GQ26gOnS1Cgky/0jABZ
-         xASzRfrKhXQd1E6X8Zx8BIeC80YEebgsCG340vKSBB+Buc+uWnInKgZ8WEvPzC3rt8
-         zPFcwGo5ok9R9Nt9O/ixe04M0U2TTtVsm+bX0HCV0rQWDVqCHwcBp927s+wWlhR44M
-         r0udqBAhpk+Fnsj0ATYQLl8DlFjvurZvEkzJTDZVlv38mHQ5xXyRvHsbO1dS/hpC5N
-         hqA6yFTDHvtjw==
-Date:   Fri, 3 Jun 2022 16:51:06 +0100
+        b=DTc2jjhDIeM8HhagsgByJvmNNwsqDzXU0w3R7vhjfxhdayanpzV/2zgPYTOzqQ8/F
+         ZlEI/LJOVaNtYoZ2O7IWcbycGRkps53fEjq0oB0VHioXeV40BlmrFqaYQTjZEeQMLy
+         U6PREmURbMnDn/KE/mcJmZjYWVwZ2j+9aUOfKrrMUinnf95PlGiIPWzxzdd6wVm2h2
+         LrolcvuAhZOCJHK5jpPB4PCg06ei+QJDEf0cgw4zeFMo5SOyUDX/YVooRlfQ76UVys
+         RZmM9T86v9Hdtk2e6HuCYsHUHZawi+rwPVnpw2FRCPiEdbzDwext4x18zHntWXcj2P
+         Wam9Z0/pnbi+A==
+Date:   Fri, 3 Jun 2022 16:56:45 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc:     lars@metafoo.de, mchehab+huawei@kernel.org, ardeleanalex@gmail.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        robh+dt@kernel.org, mike.looijmans@topic.nl,
-        devicetree@vger.kernel.org, thomas.haemmerle@leica-geosystems.com
-Subject: Re: [PATCH V5 0/6] iio: accel: bmi088: support BMI085 BMI090L
-Message-ID: <20220603165106.78f13761@jic23-huawei>
-In-Reply-To: <20220526133359.2261928-1-Qing-wu.Li@leica-geosystems.com.cn>
-References: <20220526133359.2261928-1-Qing-wu.Li@leica-geosystems.com.cn>
+To:     keliu <liuke94@huawei.com>
+Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio:  Directly use ida_alloc()/free()
+Message-ID: <20220603165645.28ecc972@jic23-huawei>
+In-Reply-To: <20220527091739.2949426-1-liuke94@huawei.com>
+References: <20220527091739.2949426-1-liuke94@huawei.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,45 +54,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 26 May 2022 13:33:53 +0000
-LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+On Fri, 27 May 2022 09:17:39 +0000
+keliu <liuke94@huawei.com> wrote:
 
-> Modified the units after application of scale from 100*m/s^2 to m/s^2,
-> since the units in the ABI documents are m/s^2.
-> Add supports for the BMI085 accelerometer.
-> Add supports for the BMI090L accelerometer.
-> Make it possible to config scales.
+> Use ida_alloc()/ida_free() instead of deprecated
+> ida_simple_get()/ida_simple_remove() .
 > 
-> Change in v5: 
-> - Fix the issue of 'undeclared function FIELD_GET'
->   Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: keliu <liuke94@huawei.com>
+Looks good to me.
 
-I've applied this series to the togreg branch of iio.git and pushed
-out as testing.
-
-Note I can rebase that tree still (and will do anyway to move to
-rc1 or so once available) so we can resolve that question of
-whether Datasheet is a tag or not in parallel with letting 0-day
-see if it can find anything else we missed.
+Applied to the togreg branch of iio.git and pushed out initially as testing
+to let 0-day see if it can find any problems we missed.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/industrialio-core.c    | 6 +++---
+>  drivers/iio/industrialio-trigger.c | 6 +++---
+>  2 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> 
-> LI Qingwu (6):
->   iio: accel: bmi088: Modified the scale calculate
->   iio: accel: bmi088: Make it possible to config scales
->   iio: accel: bmi088: modified the device name
->   iio: accel: bmi088: Add support for bmi085 accel
->   iio: accel: bmi088: Add support for bmi090l accel
->   dt-bindings: iio: accel: Add bmi085 and bmi090l bindings
-> 
->  .../bindings/iio/accel/bosch,bmi088.yaml      |  2 +
->  drivers/iio/accel/bmi088-accel-core.c         | 97 +++++++++++++++----
->  drivers/iio/accel/bmi088-accel-spi.c          | 17 +++-
->  drivers/iio/accel/bmi088-accel.h              |  9 +-
->  4 files changed, 101 insertions(+), 24 deletions(-)
-> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index e1ed44dec2ab..41daa10cd63d 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1618,7 +1618,7 @@ static void iio_dev_release(struct device *device)
+>  
+>  	iio_device_detach_buffers(indio_dev);
+>  
+> -	ida_simple_remove(&iio_ida, iio_dev_opaque->id);
+> +	ida_free(&iio_ida, iio_dev_opaque->id);
+>  	kfree(iio_dev_opaque);
+>  }
+>  
+> @@ -1660,7 +1660,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+>  	mutex_init(&iio_dev_opaque->info_exist_lock);
+>  	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+>  
+> -	iio_dev_opaque->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
+> +	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
+>  	if (iio_dev_opaque->id < 0) {
+>  		/* cannot use a dev_err as the name isn't available */
+>  		pr_err("failed to get device id\n");
+> @@ -1669,7 +1669,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+>  	}
+>  
+>  	if (dev_set_name(&indio_dev->dev, "iio:device%d", iio_dev_opaque->id)) {
+> -		ida_simple_remove(&iio_ida, iio_dev_opaque->id);
+> +		ida_free(&iio_ida, iio_dev_opaque->id);
+>  		kfree(iio_dev_opaque);
+>  		return NULL;
+>  	}
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> index f504ed351b3e..6eb9b721676e 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -71,7 +71,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+>  
+>  	trig_info->owner = this_mod;
+>  
+> -	trig_info->id = ida_simple_get(&iio_trigger_ida, 0, 0, GFP_KERNEL);
+> +	trig_info->id = ida_alloc(&iio_trigger_ida, GFP_KERNEL);
+>  	if (trig_info->id < 0)
+>  		return trig_info->id;
+>  
+> @@ -98,7 +98,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+>  	mutex_unlock(&iio_trigger_list_lock);
+>  	device_del(&trig_info->dev);
+>  error_unregister_id:
+> -	ida_simple_remove(&iio_trigger_ida, trig_info->id);
+> +	ida_free(&iio_trigger_ida, trig_info->id);
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL(__iio_trigger_register);
+> @@ -109,7 +109,7 @@ void iio_trigger_unregister(struct iio_trigger *trig_info)
+>  	list_del(&trig_info->list);
+>  	mutex_unlock(&iio_trigger_list_lock);
+>  
+> -	ida_simple_remove(&iio_trigger_ida, trig_info->id);
+> +	ida_free(&iio_trigger_ida, trig_info->id);
+>  	/* Possible issue in here */
+>  	device_del(&trig_info->dev);
+>  }
 

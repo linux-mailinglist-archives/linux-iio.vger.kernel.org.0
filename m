@@ -2,47 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04FC853CD99
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 18:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F84D53CD9F
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 19:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344159AbiFCQ5X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 12:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47274 "EHLO
+        id S1344154AbiFCRBJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 13:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344158AbiFCQ5V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 12:57:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4D21A071;
-        Fri,  3 Jun 2022 09:57:20 -0700 (PDT)
+        with ESMTP id S243045AbiFCRBI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 13:01:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC07522D8;
+        Fri,  3 Jun 2022 10:01:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 64F98B8238F;
-        Fri,  3 Jun 2022 16:57:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA25C385A9;
-        Fri,  3 Jun 2022 16:57:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D2CB61A36;
+        Fri,  3 Jun 2022 17:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A025C385A9;
+        Fri,  3 Jun 2022 17:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654275438;
-        bh=JVE9HbaugiiB51hEgk5LaOAfHPFZnwaQGCoqDbrEHfs=;
+        s=k20201202; t=1654275666;
+        bh=RSQ8NkpnOkmzm6/aUP8DpyGlnoqBYtHZOvzZFrlSehs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cU5BKYLhgvfC7UST/dXizUd+1JDAT/niCvUbi9UZ5JYETNHyehaa3BJvn2TPRI7wQ
-         mDsHbY1T2H4UyU5JOmnTjP20VLzbZlYYWAZ0nHyTDTZ9VhsrGCU/dogqW5QfzPlwaC
-         SLXZhpRI9t0mK30L44Am8OXPEF6U3HBesLKeqA3CvOPXKGk/saujMiY5aUZVefdIAR
-         Uadu17PfOZVaIFBrI+T9mSrePP4JQEXgHp1NPseHJTyQhvZg9H+V2vu7iHJQBoi+7r
-         Wtg2SHHzuYdQCcM0wEGoYDnR8pBJcXkRUOFRAtkZW9YUSLkhkhfdK9jLy1lwhGLTVi
-         Y0rESlg2T9XhA==
-Date:   Fri, 3 Jun 2022 18:06:18 +0100
+        b=Pr7p+ki4uN5VzCRliCrBcm2J5wlHvJIcbX83rjlBZbFcnZRpQ0wn5aqLk2IVQ7XTr
+         A4XFHNrZjvtcsIfyIjdKL4nEujpPosu9Ne8rsGecdfnm32FUyxwNkKcChqJP9MIUYQ
+         uqMDUPyNyhBGxbmmxl8+R4OVohvaaEtImdZjmQ8ZU2c0ZRpZrNBa49jqR9824Lawsa
+         4pylqIseZNCNjoXSx+52+EoexjpnHn/xNNcGLZR0YpNC0AvthI0fq6ECD54b97iB5q
+         LLmYlHsuzv02vt/H8hFrpoWDpwqbnsLo6j9GxJsV5E4NYHgEKSSrCqW79BtBZbZcRo
+         cdm6s+8/BTleA==
+Date:   Fri, 3 Jun 2022 18:10:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: proximity: sx_common: Allow IIO core to
- take care of firmware node
-Message-ID: <20220603180618.4b643391@jic23-huawei>
-In-Reply-To: <20220530174326.1381-1-andriy.shevchenko@linux.intel.com>
-References: <20220530174326.1381-1-andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
+Message-ID: <20220603181006.2c5cc6c4@jic23-huawei>
+In-Reply-To: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
+References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,46 +59,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 30 May 2022 20:43:26 +0300
+On Mon, 30 May 2022 20:33:24 +0300
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> IIO core correctly will take care of firmware node if it's not set in
-> the driver. Drop ACPI and OF specifics from the driver and allow IIO
-> core to handle this.
+> First of all, the additional conversion from vIRQ, and this is exactly
+> what is returned by platform_get_irq_byname(), to vIRQ is not needed.
+Confusing sentence form.  Perhaps:
+
+First, the additional conversion from vIRQ (returned by platform_get_irq_byname())
+to vIRQ is not needed.
+
+> Hence, drop no-op call to irq_of_parse_and_map().
+> 
+> Second, assign the firmware node instead of of_node.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Looks fine to me.  As such I'll apply it now, but Gwendal, you've
-been active with this driver recently so if you have time to sanity check
-that would be great.  Once I've caught up with new stuff I plan to check
-where we are with your various series on this driver.
+Hi,
+
+Seems sensible to me, but I'd like a sanity check from someone more
+familiar with this driver.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/proximity/sx_common.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  drivers/iio/adc/mxs-lradc-adc.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-> index 8ad814d96b7e..6bb68c1835da 100644
-> --- a/drivers/iio/proximity/sx_common.c
-> +++ b/drivers/iio/proximity/sx_common.c
-> @@ -5,7 +5,6 @@
->   * Common part of most Semtech SAR sensor.
->   */
+> diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+> index bca79a93cbe4..25292bb8a13f 100644
+> --- a/drivers/iio/adc/mxs-lradc-adc.c
+> +++ b/drivers/iio/adc/mxs-lradc-adc.c
+> @@ -17,7 +17,6 @@
+>  #include <linux/mfd/core.h>
+>  #include <linux/mfd/mxs-lradc.h>
+>  #include <linux/module.h>
+> -#include <linux/of_irq.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/sysfs.h>
 >  
-> -#include <linux/acpi.h>
->  #include <linux/bitops.h>
->  #include <linux/byteorder/generic.h>
->  #include <linux/delay.h>
-> @@ -520,8 +519,6 @@ int sx_common_probe(struct i2c_client *client,
->  	if (ret)
->  		return dev_err_probe(dev, ret, "error reading WHOAMI\n");
+> @@ -692,7 +691,7 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+>  	struct mxs_lradc_adc *adc;
+>  	struct iio_dev *iio;
+>  	struct resource *iores;
+> -	int ret, irq, virq, i, s, n;
+> +	int ret, irq, i, s, n;
+>  	u64 scale_uv;
+>  	const char **irq_name;
 >  
-> -	ACPI_COMPANION_SET(&indio_dev->dev, ACPI_COMPANION(dev));
-> -	indio_dev->dev.of_node = client->dev.of_node;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
+> @@ -721,7 +720,7 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+>  	platform_set_drvdata(pdev, iio);
 >  
->  	indio_dev->channels =  data->chip_info->iio_channels;
+>  	iio->name = pdev->name;
+> -	iio->dev.of_node = dev->parent->of_node;
+> +	device_set_node(&iio->dev, dev_fwnode(dev->parent));
+>  	iio->info = &mxs_lradc_adc_iio_info;
+>  	iio->modes = INDIO_DIRECT_MODE;
+>  	iio->masklength = LRADC_MAX_TOTAL_CHANS;
+> @@ -747,9 +746,7 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
+>  		if (irq < 0)
+>  			return irq;
+>  
+> -		virq = irq_of_parse_and_map(dev->parent->of_node, irq);
+> -
+> -		ret = devm_request_irq(dev, virq, mxs_lradc_adc_handle_irq,
+> +		ret = devm_request_irq(dev, irq, mxs_lradc_adc_handle_irq,
+>  				       0, irq_name[i], iio);
+>  		if (ret)
+>  			return ret;
 

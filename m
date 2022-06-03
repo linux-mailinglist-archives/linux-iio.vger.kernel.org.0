@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 480DA53CD0C
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 18:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F2E553CD25
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 18:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244403AbiFCQU0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 12:20:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42988 "EHLO
+        id S1343887AbiFCQZJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 12:25:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240843AbiFCQUZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 12:20:25 -0400
+        with ESMTP id S237632AbiFCQZI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 12:25:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D4A39808;
-        Fri,  3 Jun 2022 09:20:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FBD5131C;
+        Fri,  3 Jun 2022 09:25:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 129846195F;
-        Fri,  3 Jun 2022 16:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DE9C385B8;
-        Fri,  3 Jun 2022 16:20:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB0896195F;
+        Fri,  3 Jun 2022 16:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A239C385A9;
+        Fri,  3 Jun 2022 16:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654273220;
-        bh=Wl6jNcEEZrNKgBUdf6JAvynPXfoygzNFLAPCwn93l58=;
+        s=k20201202; t=1654273507;
+        bh=4rw9dnXElz7aaMM5oeE5jfIs71mLFoPFuBfRRckUmRk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iNVcwujOuPJbVl+BIdBVWyszCXQ7Fb4XQjIcBWE3RG7YCSPVSclztPRGYGcTN8oHV
-         gRchtkFwLJfZD1Rd0M6Yf1O0G2NXYhE4dR1yeVnVxfTx71iEmPcgxdTqbLBpUotvye
-         8gy6bjTGA8E/aW+unfLyGtFgLkqTIpMlIp6hsAo54pxPT1wtIN+LRv/oLilD15N3Lw
-         rDYPG7DIv6+99RCcgYXmlf0T3Z3tAZi0351Y24fIzwR8hSeZ+60teryt91JLrt2s1+
-         Ed03pX2CxAfQPEyhEwNuh52MI+ydmRQ+QvJEALE1LZbooPCczEpxvKRUFhhUG1EVKN
-         QVpOtXvMtEF0g==
-Date:   Fri, 3 Jun 2022 17:29:20 +0100
+        b=jUrPgyXf8lp+ALxVFmsd5m8fqg6DzUeCDsk1uHrHqSxQ6Pfr951Vtu6O7upSVw845
+         eRckR2c2q9tIwqsCPGmzUtDZ7EiJN7KkabGeLhDeRKZI8a/N4oiMOcgoW+ui+lkrPR
+         wVyqnq3xUwMT3X9uVr3ST3n3jQfBa1/BiXw9pZ1iokMS2pLgJ5qH9vsTLdVyuP0Mmp
+         E2gpPUi73jEDopcSXLhOYPWj6uQaWMbCFQ+hyEjHmta/WtCMT72BxRpmGzMKvgK1/L
+         18ufwHNbk2pBaeJ9f7UCJRddmDreMuSJZOhppEeqL7DTbXTyZRJ88qbtMy0y97GWEh
+         sflnWPW9nqrqg==
+Date:   Fri, 3 Jun 2022 17:34:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Subject: Re: [PATCH v3 1/6] iio: adc: meson_saradc: Don't attach managed
- resource to IIO device object
-Message-ID: <20220603172920.3239bbd6@jic23-huawei>
-In-Reply-To: <20220603172307.5d2f3c52@jic23-huawei>
-References: <20220603100004.70336-1-andriy.shevchenko@linux.intel.com>
-        <20220603170612.561edfbf@jic23-huawei>
-        <20220603172307.5d2f3c52@jic23-huawei>
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
+        rafael@kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 03/10] dt-bindings: iio: adc: axp209: Add AXP192
+ compatible
+Message-ID: <20220603173404.4cb83647@jic23-huawei>
+In-Reply-To: <20220603135714.12007-4-aidanmacdonald.0x0@gmail.com>
+References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
+        <20220603135714.12007-4-aidanmacdonald.0x0@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,123 +61,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 3 Jun 2022 17:23:07 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri,  3 Jun 2022 14:57:07 +0100
+Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
 
-> On Fri, 3 Jun 2022 17:06:12 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
+> The AXP192 is identical to the AXP20x, except for two additional
+> GPIO ADC channels.
 > 
-> > On Fri,  3 Jun 2022 12:59:59 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >   
-> > > It feels wrong and actually inconsistent to attach managed resources
-> > > to the IIO device object, which is child of the physical device object.
-> > > The rest of the ->probe() calls do that against physical device.
-> > > 
-> > > Resolve this by reassigning managed resources to the physical device object.
-> > > 
-> > > Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
-> > > Suggested-by: Lars-Peter Clausen <lars@metafoo.de>
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>    
-> > Hi Andy,
-> > 
-> > This has come up a few times in the past (and we elected to not clean it up
-> > at the time, though it wasn't a decision to never do so!)
-> > 
-> > It would definitely be wrong if we had another driver binding against
-> > the resulting created device (funnily enough I reported a bug on a driver
-> > doing just that earlier this week), but in this case it's harmless because the
-> > the tear down will occur with a put_device() ultimately calling device_release()
-> > and devres_release_all()
-> > 
-> > https://elixir.bootlin.com/linux/latest/source/drivers/base/core.c#L2211
-> > 
-> > Has a comment that covers this case (more or less).
-> > "
-> > 	 * Some platform devices are driven without driver attached
-> > 	 * and managed resources may have been acquired.  Make sure
-> > 	 * all resources are released.
-> > "
-> > 
-> > Now, I definitely agree with your statement that it's a bit inconsistent to
-> > do this, just not the fixes tag.
-> > 
-> > One other suggestion below.
+> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 
-Andy, put a cover letter on these larger series - if nothing else it gives
-somewhere convenient for people to give tags for the whole series, or 
-maintainer to say what they are doing with it.
+There is an argument that could be made here to say this should
+have a fallback compatible to a suitable existing part as the driver
+would work, we'd just be missing a couple of channels.
 
-Anyhow, I'm fine with the series, but will leave it on list for a while
-longer, particularly to get patch 6 some eyes + testing.
+I don't feel strongly either way, but thought I'd raise the possibility.
 
-Currently I plan to drop the fixes tag from this first patch, but I'm prepared
-to be convinced it's a bug fix rather than a consistency cleanup.
+I guess it's irrelevant if an updated kernel is needed anyway to have
+it functional because of support needed for some other part of the chip
+though.
 
 Jonathan
 
-> > 
-> >   
-> > > ---
-> > > v3: new fix-patch
-> > >  drivers/iio/adc/meson_saradc.c | 12 +++++-------
-> > >  1 file changed, 5 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
-> > > index 62cc6fb0ef85..4fe6b997cd03 100644
-> > > --- a/drivers/iio/adc/meson_saradc.c
-> > > +++ b/drivers/iio/adc/meson_saradc.c
-> > > @@ -650,11 +650,11 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
-> > >  				  void __iomem *base)
-> > >  {
-> > >  	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
-> > > +	struct device *dev = indio_dev->dev.parent;    
-> > 
-> > I'd slightly prefer the device was passed in explicitly to this function rather
-> > than using the parent assignment which feels a little fragile.   
+> ---
+>  .../bindings/iio/adc/x-powers,axp209-adc.yaml  | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
 > 
-> Meh, ignore this. I see from one of the later patches, the driver is already
-> making the assumption this is set in other calls, so we aren't making anything
-> worse with this change.
-> 
-> Jonathan
-> 
-> > 
-> >   
-> > >  	struct clk_init_data init;
-> > >  	const char *clk_parents[1];
-> > >  
-> > > -	init.name = devm_kasprintf(&indio_dev->dev, GFP_KERNEL, "%s#adc_div",
-> > > -				   dev_name(indio_dev->dev.parent));
-> > > +	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s#adc_div", dev_name(dev));
-> > >  	if (!init.name)
-> > >  		return -ENOMEM;
-> > >  
-> > > @@ -670,13 +670,11 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
-> > >  	priv->clk_div.hw.init = &init;
-> > >  	priv->clk_div.flags = 0;
-> > >  
-> > > -	priv->adc_div_clk = devm_clk_register(&indio_dev->dev,
-> > > -					      &priv->clk_div.hw);
-> > > +	priv->adc_div_clk = devm_clk_register(dev, &priv->clk_div.hw);
-> > >  	if (WARN_ON(IS_ERR(priv->adc_div_clk)))
-> > >  		return PTR_ERR(priv->adc_div_clk);
-> > >  
-> > > -	init.name = devm_kasprintf(&indio_dev->dev, GFP_KERNEL, "%s#adc_en",
-> > > -				   dev_name(indio_dev->dev.parent));
-> > > +	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s#adc_en", dev_name(dev));
-> > >  	if (!init.name)
-> > >  		return -ENOMEM;
-> > >  
-> > > @@ -690,7 +688,7 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
-> > >  	priv->clk_gate.bit_idx = __ffs(MESON_SAR_ADC_REG3_CLK_EN);
-> > >  	priv->clk_gate.hw.init = &init;
-> > >  
-> > > -	priv->adc_clk = devm_clk_register(&indio_dev->dev, &priv->clk_gate.hw);
-> > > +	priv->adc_clk = devm_clk_register(dev, &priv->clk_gate.hw);
-> > >  	if (WARN_ON(IS_ERR(priv->adc_clk)))
-> > >  		return PTR_ERR(priv->adc_clk);
-> > >      
-> >   
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml b/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
+> index d6d3d8590171..1a68e650ac7d 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
+> @@ -14,6 +14,23 @@ description: |
+>    Device is a child of an axp209 multifunction device
+>    ADC channels and their indexes per variant:
+>  
+> +  AXP192
+> +  ------
+> +   0 | acin_v
+> +   1 | acin_i
+> +   2 | vbus_v
+> +   3 | vbus_i
+> +   4 | pmic_temp
+> +   5 | gpio0_v
+> +   6 | gpio1_v
+> +   7 | gpio2_v
+> +   8 | gpio3_v
+> +   9 | ipsout_v
+> +  10 | batt_v
+> +  11 | batt_chrg_i
+> +  12 | batt_dischrg_i
+> +  13 | ts_v
+> +
+>    AXP209
+>    ------
+>     0 | acin_v
+> @@ -50,6 +67,7 @@ description: |
+>  properties:
+>    compatible:
+>      oneOf:
+> +      - const: x-powers,axp192-adc
+>        - const: x-powers,axp209-adc
+>        - const: x-powers,axp221-adc
+>        - const: x-powers,axp813-adc
 

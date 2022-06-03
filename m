@@ -2,47 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B37F053CC31
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F81D53CC4B
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230493AbiFCPUi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 11:20:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55446 "EHLO
+        id S245512AbiFCP3b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:29:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245437AbiFCPUg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:20:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC353506DA;
-        Fri,  3 Jun 2022 08:20:34 -0700 (PDT)
+        with ESMTP id S243135AbiFCP3a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:29:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91CDF26C0;
+        Fri,  3 Jun 2022 08:29:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61FC161889;
-        Fri,  3 Jun 2022 15:20:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15397C385A9;
-        Fri,  3 Jun 2022 15:20:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 465DBB82369;
+        Fri,  3 Jun 2022 15:29:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07634C385B8;
+        Fri,  3 Jun 2022 15:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654269633;
-        bh=JRwtXeAAKkEjKJCXj/qjul5ZdfRH3VbHm2x/qf+JZLs=;
+        s=k20201202; t=1654270167;
+        bh=KpdflRmfJ1wqM76YeOe+UDrket/jjDmryFB7TRBR1sU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=F1FGdibcZgL16P5fANhB0tQPDR7Z6NyWv5G3ifuh3zaeQUfKb3VFxrTDf/PPM+Hxi
-         UJ5V6/yfQHsnTqe9W/CYoYQhrFoJsRXKGrD2S3TYaLeY++OaMYH8uZ4djdOtdPB3uq
-         DBqEwMXlqWdkOOKicILUVr9oEhrwlUFnE3JbP+tmSuFgMEy1rkyOxdZ19CLTjDjRMR
-         1nzbsVwDmbxx19cnCW77uWlo0zpzBNNcjJQfYKeQXdNymF2i6bM/4wDRiWh9JZbuaA
-         3fjcMxeQYLcq1GhpcY6lShQhCbdOFAFjmuWwz1B26lv02vN+qfbGvYun05z0+eVPDQ
-         Wv2W9NQ57ebTw==
-Date:   Fri, 3 Jun 2022 16:29:34 +0100
+        b=moR+UWAbJPl7c+xFlqYioyenD4HGkV4JkG2Lt8Cxw7Gy5AwD0m00YF1XhQ2ywzcCd
+         5Hu9DONZ3FzUnf835M67Nes1dD7rojh5sRvRXxePoW7hecrkluoi1QGbuHN9LQAC05
+         zmjcmNV7IbfipmGrcZlWxczSULCgHHPZL+KOj3t9N76oMM3n9peOQblqbRRu18mWyU
+         7BWpr9yZ0Dty3s0sNQVwcqV069ha4yH/vITDH9eBAm5pOtyTFq5Q/zBTFOfTD2cs2x
+         iF4WUSqYIkEMUqriFY2gTC/zzwHin7yByrpE0Vv6Olb9dcY9gDy/0IijE1LApnRuE5
+         qG1p0AoS16ljg==
+Date:   Fri, 3 Jun 2022 16:38:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miaoqian Lin <linmq006@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: adi-axi-adc: Fix refcount leak in
- adi_axi_adc_attach_client
-Message-ID: <20220603162934.7e6b0783@jic23-huawei>
-In-Reply-To: <20220524074517.45268-1-linmq006@gmail.com>
-References: <20220524074517.45268-1-linmq006@gmail.com>
+To:     LI Qingwu <qing-wu.li@leica-geosystems.com.cn>
+Cc:     Rob Herring <robh@kernel.org>, "lars@metafoo.de" <lars@metafoo.de>,
+        "mchehab+huawei@kernel.org" <mchehab+huawei@kernel.org>,
+        "ardeleanalex@gmail.com" <ardeleanalex@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "mike.looijmans@topic.nl" <mike.looijmans@topic.nl>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        HAEMMERLE Thomas <thomas.haemmerle@leica-geosystems.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH V5 6/6] dt-bindings: iio: accel: Add bmi085 and bmi090l
+ bindings
+Message-ID: <20220603163826.65d06e0a@jic23-huawei>
+In-Reply-To: <AM9PR06MB78445C0FE66A61F6BAC4CE35D7A19@AM9PR06MB7844.eurprd06.prod.outlook.com>
+References: <20220526133359.2261928-1-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220526133359.2261928-7-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220602135734.GA2198822-robh@kernel.org>
+        <AM9PR06MB78445C0FE66A61F6BAC4CE35D7A19@AM9PR06MB7844.eurprd06.prod.outlook.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,52 +65,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 24 May 2022 11:45:17 +0400
-Miaoqian Lin <linmq006@gmail.com> wrote:
+On Fri, 3 Jun 2022 07:32:17 +0000
+LI Qingwu <qing-wu.li@leica-geosystems.com.cn> wrote:
 
-> of_parse_phandle() returns a node pointer with refcount
-> incremented, we should use of_node_put() on it when not need anymore.
-> Add missing of_node_put() to avoid refcount leak.
-> 
-> Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> > -----Original Message-----
+> > From: Rob Herring <robh@kernel.org>
+> > Sent: Thursday, June 2, 2022 9:58 PM
+> > To: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+> > Cc: jic23@kernel.org; lars@metafoo.de; mchehab+huawei@kernel.org;
+> > ardeleanalex@gmail.com; linux-iio@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; mike.looijmans@topic.nl;
+> > devicetree@vger.kernel.org; HAEMMERLE Thomas
+> > <thomas.haemmerle@leica-geosystems.com>
+> > Subject: Re: [PATCH V5 6/6] dt-bindings: iio: accel: Add bmi085 and bmi090l
+> > bindings
+> > 
+> > This email is not from Hexagon's Office 365 instance. Please be careful while
+> > clicking links, opening attachments, or replying to this email.
+> > 
+> > 
+> > On Thu, May 26, 2022 at 01:33:59PM +0000, LI Qingwu wrote:  
+> > > Adds the device-tree bindings for the Bosch
+> > > BMI085 and BMI090L IMU, the accelerometer part.
+> > >
+> > > Datasheet:  
+> > https://eur02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.bos
+> > ch-sensortec.com%2Fmedia%2Fboschsensortec%2Fdownloads%2Fdatasheets%
+> > 2Fbst-bmi085-ds001.pdf&amp;data=05%7C01%7C%7C6bb7d63d627c49b946c4
+> > 08da449fd9bf%7C1b16ab3eb8f64fe39f3e2db7fe549f6a%7C0%7C0%7C6378977
+> > 51065729986%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjo
+> > iV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdat
+> > a=K3PYyQAGsySCIjKuo1QRVm1HE0cuC3BVXbjuAwwhMjM%3D&amp;reserved=
+> > 0  
+> > > Datasheet:  
+> > https://eur02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fmedia.di
+> > gikey.com%2Fpdf%2FData%2520Sheets%2FBosch%2FBST-BMI090L-DS000-00.p
+> > df&amp;data=05%7C01%7C%7C6bb7d63d627c49b946c408da449fd9bf%7C1b1
+> > 6ab3eb8f64fe39f3e2db7fe549f6a%7C0%7C0%7C637897751065729986%7CUnk
+> > nown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1h
+> > aWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=8GfqaDLkn5whi%2F
+> > bsEH9UATPNkJVgsy859sIifJGv%2BHg%3D&amp;reserved=0
+> > 
+> > blank line here. These aren't part of the tags.  
+> Thank you, Rob, I did check, the most datasheets are part of the tags,
+> and few of them has a blank line, do you agree to keep it?
 
-Looks 'obviously correct to me' so applied to the fixes togreg branch of iio.git
-and marked for stable.
+Seems we have some disagreement on this.  Personally I thought they'd been
+adopted as a standard tag block entry, though I can't immediately find
+a clear statement of that. 
 
-Great if anyone more familiar with this driver than me has a chance
-to take a quick look though.
++CC Andy who has commented on this before.
 
-Thanks,
 
-Jonathan
-
-> ---
->  drivers/iio/adc/adi-axi-adc.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index a73e3c2d212f..a9e655e69eaa 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -322,16 +322,19 @@ static struct adi_axi_adc_client *adi_axi_adc_attach_client(struct device *dev)
->  
->  		if (!try_module_get(cl->dev->driver->owner)) {
->  			mutex_unlock(&registered_clients_lock);
-> +			of_node_put(cln);
->  			return ERR_PTR(-ENODEV);
->  		}
->  
->  		get_device(cl->dev);
->  		cl->info = info;
->  		mutex_unlock(&registered_clients_lock);
-> +		of_node_put(cln);
->  		return cl;
->  	}
->  
->  	mutex_unlock(&registered_clients_lock);
-> +	of_node_put(cln);
->  
->  	return ERR_PTR(-EPROBE_DEFER);
->  }
+> > 
+> > With that,
+> > 
+> > Acked-by: Rob Herring <robh@kernel.org>
+> >   
+> > > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+> > > ---
+> > >  Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml  
+> > b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml  
+> > > index 911a1ae9c83f..272eb48eef5a 100644
+> > > --- a/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bmi088.yaml
+> > > @@ -17,7 +17,9 @@ description: |
+> > >  properties:
+> > >    compatible:
+> > >      enum:
+> > > +      - bosch,bmi085-accel
+> > >        - bosch,bmi088-accel
+> > > +      - bosch,bmi090l-accel
+> > >
+> > >    reg:
+> > >      maxItems: 1
+> > > --
+> > > 2.25.1
+> > >
+> > >  
 

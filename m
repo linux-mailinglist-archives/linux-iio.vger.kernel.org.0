@@ -2,48 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1DE53CBC8
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 16:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E07953CBE8
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:01:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245212AbiFCOx1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 10:53:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33970 "EHLO
+        id S245240AbiFCPBl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:01:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245210AbiFCOx0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 10:53:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9965536E29;
-        Fri,  3 Jun 2022 07:53:25 -0700 (PDT)
+        with ESMTP id S230457AbiFCPBk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:01:40 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815BD4249B;
+        Fri,  3 Jun 2022 08:01:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 54D49B82353;
-        Fri,  3 Jun 2022 14:53:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0635C34115;
-        Fri,  3 Jun 2022 14:53:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3762DB822D1;
+        Fri,  3 Jun 2022 15:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1264FC385A9;
+        Fri,  3 Jun 2022 15:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654268003;
-        bh=RGs1KTCePcSrsr1+5HQQpGae3Pc4JtwnBu3hdoIvrOY=;
+        s=k20201202; t=1654268496;
+        bh=P2GX9HtyRXt4RIWOGgfY4NtR2QmjoTRTaFyv7WzjYrY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WyGYjYddMk07o8bazntYbtCK4zbeCa7DEFE/TCozDMhF03Fe4kU8LPm3p5kSO9WSj
-         t3nk+MJHJEX0Yv2UYRgLUFBV3Hc84R61uyURYdZ3/eSIkFLkP6KKBi0TSTllFLd7JP
-         +2teddVxCFSl8S/YtwTHoTophTXWrIyq2O/Ug1pjO3cnW67rIVdln312x0G470x0UX
-         002zGcinS6p0imEfVb1ZI5xg2WnTpGyqcQGluIwWrbIwPXAZEWaRdvrWw/TLm8tfnw
-         Zp6/LuokL19/fMx0waN2xmdGuMl2dvo+KCy8Hpm+Ilj2IfHgr+e519ywVOgM2cn78o
-         PHgMnTz8aZq5g==
-Date:   Fri, 3 Jun 2022 16:02:22 +0100
+        b=e+rxoohAU8ECV40mEB9ppea8osoCte3S0eZZDHCiFnnTQ+eBOD59mnjdWlMKIQsiO
+         dssLF5PTV6BjUe7byCLCfoNlFwFxT1x9tIt4CYuDWxoik/UXWRXAFhQov5EawDYpdS
+         pmAXD4Xq6KMlaa6dVxtJi9JxL7TwqymhXdi8sZ0DUUfpMdCpbMWXskdVeS+cK+3iDi
+         SnZ9YDhh6tkcGj4XMwQXAQVcpeeMPJvenII0TdXcldiKBB1MHS/JT8GYbsAn5+9F1j
+         A4A3KhlcXLCy+Y1EELd0KLfiseIrEQzpSgf/YuXeF9e2kd4PTVjdPA2ew1CifF8Rrf
+         Josvx/T1N5mqA==
+Date:   Fri, 3 Jun 2022 16:10:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yongzhi Liu <lyz_cs@pku.edu.cn>
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lars@metafoo.de,
-        svarbanov@mm-sol.com, iivanov@mm-sol.com,
-        jonathan.cameron@huawei.com, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        fuyq@stu.pku.edu.cn
-Subject: Re: [PATCH v4] iio: vadc: Fix potential dereference of NULL pointer
-Message-ID: <20220603160222.1ad6ef49@jic23-huawei>
-In-Reply-To: <1653238427-73587-1-git-send-email-lyz_cs@pku.edu.cn>
-References: <20220522120109.7ead18a7@jic23-huawei>
-        <1653238427-73587-1-git-send-email-lyz_cs@pku.edu.cn>
+To:     "m.shams" <m.shams@samsung.com>
+Cc:     <lars@metafoo.de>, <robh+dt@kernel.org>, <krzk+dt@kernel.org>,
+        <geert@linux-m68k.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-samsung-soc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <alim.akhtar@samsung.com>, <paul@crapouillou.net>,
+        <linux-fsd@tesla.com>
+Subject: Re: [PATCH v2 2/3] iio: adc: exynos-adc: Add support for ADC FSD-HW
+ controller
+Message-ID: <20220603161035.0f22420b@jic23-huawei>
+In-Reply-To: <015b01d874ca$69aa8bb0$3cffa310$@samsung.com>
+References: <20220520145820.67667-1-m.shams@samsung.com>
+        <CGME20220520145802epcas5p2153cb572493e3bccd702e0ecce1171fb@epcas5p2.samsung.com>
+        <20220520145820.67667-3-m.shams@samsung.com>
+        <20220522122555.6c65d2b6@jic23-huawei>
+        <015b01d874ca$69aa8bb0$3cffa310$@samsung.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,144 +64,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 22 May 2022 09:53:47 -0700
-Yongzhi Liu <lyz_cs@pku.edu.cn> wrote:
+On Tue, 31 May 2022 14:12:46 +0530
+"m.shams" <m.shams@samsung.com> wrote:
 
-> The return value of vadc_get_channel() needs to be checked to
-> avoid use of NULL pointer. vadc_do_conversion() already provides
-> error prints in at least some of it's error paths. Thus it is
-> reasonable to add the null pointer check on prop and drop the
-> extra reporting in vadc_measure_ref_points().
+> Hi Jonathan,
 > 
-> Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
-
-Hi
-
-Biggest remaining thing is squashing
-ret = -ENODEV;
-return ret;
-
-into the shorter
-return -ENODEV;
-
-
-> ---
->  drivers/iio/adc/qcom-spmi-vadc.c | 38 ++++++++++++++++++++++++++++----------
->  1 file changed, 28 insertions(+), 10 deletions(-)
+> On Fri, 20 May 2022 20:28:19 +0530
+> Tamseel Shams <m.shams@samsung.com> wrote:
 > 
-> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> index 34202ba..43a52b1 100644
-> --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> @@ -358,22 +358,33 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
->  	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
->  
->  	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
-> +	if (!prop) {
-> +		dev_err(vadc->dev, "Please define 1.25V channel\n");
-Probably makes more sense to have the error as 
-"No 1.25V channel found\n");
+> >> From: Alim Akhtar <alim.akhtar@samsung.com>
+> >> 
+> >> Exynos's ADC-FSD-HW has some difference in registers set, number of 
+> >> programmable channels (16 channel) etc. This patch adds support for 
+> >> ADC-FSD-HW controller version.
+> >> 
+> >> Signed-off-by: Alim Akhtar <alim.akhtar@samsung.com>
+> >> Signed-off-by: Tamseel Shams <m.shams@samsung.com>  
+> >
+> > Hi,
+> >
+> > One suggestion inline, otherwise LGTM. Plenty of time to tidy this up as  
+> this won't make the upcoming merge window - I'll be queuing it up for 5.20
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> 
+> Okay, Thanks for reviewing.
+> 
+> >> ---
+> >> - Changes since v1
+> >> * Addressed Jonathan's comment by using already provided isr handle
+> >> 
+> >>  drivers/iio/adc/exynos_adc.c | 55 
+> >> ++++++++++++++++++++++++++++++++++++
+> >>  1 file changed, 55 insertions(+)
+> >> 
+> >> diff --git a/drivers/iio/adc/exynos_adc.c 
+> >> b/drivers/iio/adc/exynos_adc.c index cff1ba57fb16..183ae591327a 100644
+> >> --- a/drivers/iio/adc/exynos_adc.c
+> >> +++ b/drivers/iio/adc/exynos_adc.c
+> >> @@ -55,6 +55,11 @@
+> >>  #define ADC_V2_INT_ST(x)	((x) + 0x14)
+> >>  #define ADC_V2_VER(x)		((x) + 0x20)
+> >>  
+> >> +/* ADC_FSD_HW register definitions */
+> >> +#define ADC_FSD_DAT(x)			((x) + 0x08)  
+> >
+> > I mention this below, but these different register sets should be in the  
+> struct exynos_adc_data to avoid the need for an if "compatible" == check on
+> each use of > them.
+> >  
+> 
+> Can you clarify on how exactly you want me to add these register sets to
+> struct exynos_adc_data?
+> Do you mean just for these registers or other registers too which are
+> defined in this way only?
 
-It's not obvious to anyone getting this error what 'define' might mean
-without them looking at the code, so I'd rather we just said what had
-gone wrong rather offering incomplete advice.
+Any registers addresses that are different for the different chip variants
+supported by the driver.
 
-> +		ret = -ENODEV;
+In cases where the only difference between versions is a register address then
+define something like
+#define ADC_FSD_DAT_BASE 0x08
 
-Don't bother assigning a variable just to return it in the next line.
+In the structure have a
 
-return -ENODEV;
+dat_addr = ADC_FSD_DAT_BASE
 
-> +		return ret;
-> +	}
->  	ret = vadc_do_conversion(vadc, prop, &read_1);
->  	if (ret)
-> -		goto err;
-> +		return ret;
->  
->  	/* Try with buffered 625mV channel first */
->  	prop = vadc_get_channel(vadc, VADC_SPARE1);
-> -	if (!prop)
-> +	if (!prop) {
->  		prop = vadc_get_channel(vadc, VADC_REF_625MV);
-> +		if (!prop) {
-> +			dev_err(vadc->dev, "Please define 0.625V channel\n");
-"No 0.625V channel found\n"
-> +			ret = -ENODEV;
+and use dat_addr + x to access.
 
-return -ENODEV;
-
-> +			return ret;
-> +		}
-> +	}
->  
->  	ret = vadc_do_conversion(vadc, prop, &read_2);
->  	if (ret)
-> -		goto err;
-> +		return ret;
->  
->  	if (read_1 == read_2) {
->  		ret = -EINVAL;
-> -		goto err;
-> +		return ret;
->  	}
->  
->  	vadc->graph[VADC_CALIB_ABSOLUTE].dy = read_1 - read_2;
-> @@ -381,25 +392,32 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
->  
->  	/* Ratiometric calibration */
->  	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
-> +	if (!prop) {
-> +		dev_err(vadc->dev, "Please define VDD channel\n");
-
-"No VDD channel found\n"
-
-> +		ret = -ENODEV;
-> +		return ret;
-> +	}
->  	ret = vadc_do_conversion(vadc, prop, &read_1);
->  	if (ret)
-> -		goto err;
-> +		return ret;
->  
->  	prop = vadc_get_channel(vadc, VADC_GND_REF);
-> +	if (!prop) {
-> +		dev_err(vadc->dev, "Please define GND channel\n");
-
-"No GND channel found\n"
-
-> +		ret = -ENODEV;
-> +		return ret;
-
-return -ENODEV;
-
-> +	}
->  	ret = vadc_do_conversion(vadc, prop, &read_2);
->  	if (ret)
-> -		goto err;
-> +		return ret;
->  
->  	if (read_1 == read_2) {
->  		ret = -EINVAL;
-> -		goto err;
-> +		return ret;
-
-return -ENODEV;
-
->  	}
->  
->  	vadc->graph[VADC_CALIB_RATIOMETRIC].dy = read_1 - read_2;
->  	vadc->graph[VADC_CALIB_RATIOMETRIC].gnd = read_2;
-> -err:
-> -	if (ret)
-> -		dev_err(vadc->dev, "measure reference points failed\n");
->  
->  	return ret;
-
-Can't get here with anything other than ret == 0 so
-	return 0;
-to make that explicit.
+If things are more complex (and I haven't looked closely so that may apply to
+the example give above, the wrap the different access sequence and register
+addresses in a callback similar to already done for clear_irq.
 
 
->  }
+Jonathan
+
+
+> 
+> 
+> Thanks & Regards,
+> Tamseel Shams
+> 
 

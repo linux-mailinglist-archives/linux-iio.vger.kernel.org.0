@@ -2,57 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D473D53CC1B
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B37F053CC31
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240283AbiFCPO7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 11:14:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
+        id S230493AbiFCPUi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:20:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245403AbiFCPO4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:14:56 -0400
+        with ESMTP id S245437AbiFCPUg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:20:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB16506C1;
-        Fri,  3 Jun 2022 08:14:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC353506DA;
+        Fri,  3 Jun 2022 08:20:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0FE66186D;
-        Fri,  3 Jun 2022 15:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD19C385B8;
-        Fri,  3 Jun 2022 15:14:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61FC161889;
+        Fri,  3 Jun 2022 15:20:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15397C385A9;
+        Fri,  3 Jun 2022 15:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654269294;
-        bh=kCDqKxgSBW1zW4hSfO+3ZljVtjIYIRBqdB6IPefPA2g=;
+        s=k20201202; t=1654269633;
+        bh=JRwtXeAAKkEjKJCXj/qjul5ZdfRH3VbHm2x/qf+JZLs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GOfyERozHdsiH3+V20TajRS8VF+rK3pLspYPXYlV/wXnoOuBYCgvA5j6gRtfucZz5
-         5KNnZLXdh/CkU9CySG++EblXbebLNNLKOV8exqcXG1s6dMYhCEG9A3Ym6FJZKcBsMd
-         ElTzgdH7DMmopE0HAyhuGmyl3tHBlggJ0sZtmemeDT4vt0E/wfTSr1uX3Uq5P6a1Pi
-         qaygK9qyntxv2KPdHyxmTThxj+h/0sQQHfWoE1/Oqev1rDSgI3l2X3JBatFKiA9ZqZ
-         L5C6thelnCEVAdfrDUf6RbqMeByJEU5C6Ot9yLL2JekOf/GWf+7X++aM+YoXh1t07g
-         Hm2Dq9kp3Fnqg==
-Date:   Fri, 3 Jun 2022 16:23:51 +0100
+        b=F1FGdibcZgL16P5fANhB0tQPDR7Z6NyWv5G3ifuh3zaeQUfKb3VFxrTDf/PPM+Hxi
+         UJ5V6/yfQHsnTqe9W/CYoYQhrFoJsRXKGrD2S3TYaLeY++OaMYH8uZ4djdOtdPB3uq
+         DBqEwMXlqWdkOOKicILUVr9oEhrwlUFnE3JbP+tmSuFgMEy1rkyOxdZ19CLTjDjRMR
+         1nzbsVwDmbxx19cnCW77uWlo0zpzBNNcjJQfYKeQXdNymF2i6bM/4wDRiWh9JZbuaA
+         3fjcMxeQYLcq1GhpcY6lShQhCbdOFAFjmuWwz1B26lv02vN+qfbGvYun05z0+eVPDQ
+         Wv2W9NQ57ebTw==
+Date:   Fri, 3 Jun 2022 16:29:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v5 0/5] Add support for ToF sensor on Yoshino platform
-Message-ID: <20220603162351.69056bdf@jic23-huawei>
-In-Reply-To: <20220523175344.5845-1-markuss.broks@gmail.com>
-References: <20220523175344.5845-1-markuss.broks@gmail.com>
+To:     Miaoqian Lin <linmq006@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: adi-axi-adc: Fix refcount leak in
+ adi_axi_adc_attach_client
+Message-ID: <20220603162934.7e6b0783@jic23-huawei>
+In-Reply-To: <20220524074517.45268-1-linmq006@gmail.com>
+References: <20220524074517.45268-1-linmq006@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -67,58 +57,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 23 May 2022 20:53:39 +0300
-Markuss Broks <markuss.broks@gmail.com> wrote:
+On Tue, 24 May 2022 11:45:17 +0400
+Miaoqian Lin <linmq006@gmail.com> wrote:
 
-> This series adds support for the ToF proximity sensor installed on
-> Yoshino devices. As part of this series, support handling the reset
-> GPIO and VDD supply by the VL53L0X driver. Also stop hardcoding the
-> interrupt type, since on Yoshino devices it seems that edge triggering
-> doesn't work properly.
+> of_parse_phandle() returns a node pointer with refcount
+> incremented, we should use of_node_put() on it when not need anymore.
+> Add missing of_node_put() to avoid refcount leak.
 > 
-> Tested on Sony Xperia XZ1 (poplar).
-> 
-> Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Cc: Marijn Suijten <marijn.suijten@somainline.org>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Patches 1-4 applied to the togreg branch of iio.git.
+> Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 
-Note I plan to rebase that tree after the char-misc (and hence IIO tree)
-has been merged with mainline, so for now it is only pushed out as testing
-so that 0-day can see if it can find anything we missed.
+Looks 'obviously correct to me' so applied to the fixes togreg branch of iio.git
+and marked for stable.
+
+Great if anyone more familiar with this driver than me has a chance
+to take a quick look though.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/adi-axi-adc.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> v2:
-> - Fix a nasty issue: turns out grouping the pinctrl makes it not apply,
-> which was the main cause of edge interrupts not working correctly and
-> having to use level interrupts, which caused a large amount of false
-> detections.
-> - handle the irq type more gracefully: if it's not provided, default
-> to falling edge, but if it's provided, then use the provided one.
-> v3:
-> - add irq.h header (forgot to commit)
-> - reword commit message (already initialized -> pre-initialized)
-> v4:
-> - reorder powering on and power off action (Jonathan)
-> - sort pinctrls by GPIO number (Konrad)
-> v5:
-> - "This patch adds..." -> "Add ..." (Krzysztof)
-> 
-> Markuss Broks (5):
->   dt-bindings: proximity: vl53l0x: Document optional supply and GPIO
->     properties
->   proximity: vl53l0x: Get interrupt type from DT
->   proximity: vl53l0x: Handle the VDD regulator
->   proximity: vl53l0x: Handle the reset GPIO
->   arm64: dts: qcom: msm8998-xperia: Introduce ToF sensor support
-> 
->  .../bindings/iio/proximity/st,vl53l0x.yaml    |  5 ++
->  .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 34 +++++++++++++
->  drivers/iio/proximity/vl53l0x-i2c.c           | 50 ++++++++++++++++++-
->  3 files changed, 88 insertions(+), 1 deletion(-)
-> 
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index a73e3c2d212f..a9e655e69eaa 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -322,16 +322,19 @@ static struct adi_axi_adc_client *adi_axi_adc_attach_client(struct device *dev)
+>  
+>  		if (!try_module_get(cl->dev->driver->owner)) {
+>  			mutex_unlock(&registered_clients_lock);
+> +			of_node_put(cln);
+>  			return ERR_PTR(-ENODEV);
+>  		}
+>  
+>  		get_device(cl->dev);
+>  		cl->info = info;
+>  		mutex_unlock(&registered_clients_lock);
+> +		of_node_put(cln);
+>  		return cl;
+>  	}
+>  
+>  	mutex_unlock(&registered_clients_lock);
+> +	of_node_put(cln);
+>  
+>  	return ERR_PTR(-EPROBE_DEFER);
+>  }
 

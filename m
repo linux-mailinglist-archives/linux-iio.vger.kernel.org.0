@@ -2,49 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64AC553CBF8
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685C053CBFF
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245318AbiFCPES (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 11:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41660 "EHLO
+        id S245326AbiFCPHm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245315AbiFCPER (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:04:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C19764D0;
-        Fri,  3 Jun 2022 08:04:16 -0700 (PDT)
+        with ESMTP id S238913AbiFCPHl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:07:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A056FD30
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 08:07:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4B00617FF;
-        Fri,  3 Jun 2022 15:04:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7011BC34114;
-        Fri,  3 Jun 2022 15:04:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D42CCB82345
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 15:07:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E17C385A9;
+        Fri,  3 Jun 2022 15:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654268655;
-        bh=TfgOQQnio1Gq32hbniybR4SGAc81jw6qQ5iLxj317Zw=;
+        s=k20201202; t=1654268857;
+        bh=59NTbelirBWwsBYnPdzofxrleNSFoy2zAFd0FdXLezg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UlyEZNmeolP0ezSHCY2rR/CuZaNustyIj+Lb2cH3kzLD1ke4IL3zOGIEky2tm36nM
-         u4fgYK/H3g7YIMETzQH5pTNozxHZOmsyv3MbwXH81EMaB+QAeBFVWrJnVVWpOQBbSJ
-         vTTeu3i9s5eTQ3HLDVJGQxpWvQPbx2daITuae/WTFoAtkLE6RQ22CoxMLYwrClmFl4
-         BZe3egIxrK003JazP0RQ9FrRjMep9jeNLqkCjKnFxiMJY8nlI5rW9A8hQ0ds3v0rv8
-         Z1cZFxJNex0h6ImV/U8a6WxjcgBSmzjEvJ1SylcNKAD9jf5TmW9Kjk1f3szap45HNP
-         6AyZkBVWxyEZg==
-Date:   Fri, 3 Jun 2022 16:13:14 +0100
+        b=eAn4VyX+ja3LW43ESjPbCzk4hiZXCkesUYvvLSr1rsl+P2iqPreRjmpwfoDHwh/NR
+         qDah8BCbd7iPicDaRCe+sjKNxLjZoMNtBwjxvRWjfuXgGWsFF9yJIsHo9Iv6Tp+h/h
+         ozc7kRMhEcp6ZSykpQudYT0qYdSMVaf6fcaOS6LIxqY+ePgTs83L3BiUIyObNSFdaW
+         9I1ANeYym7NUZx03bXZ4ttjMUjUOzn/iRfY8l+6OCj8PJ0/bz10TbnI9B+QQaoQq+F
+         CHwRJK+FNRjyAeJOMhut6B1Pv+GnM6O4HqEbKJgx/aiA5A7lXDnynsShvUtOD/n8Oo
+         SJpTVSAg2Xdkw==
+Date:   Fri, 3 Jun 2022 16:16:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Liam Beguin <liambeguin@gmail.com>
-Cc:     rdunlap@infradead.org, peda@axentia.se, masahiroy@kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/1] iio: test: fix missing MODULE_LICENSE for
- IIO_RESCALE=m
-Message-ID: <20220603161314.041643be@jic23-huawei>
-In-Reply-To: <20220601142138.3331278-1-liambeguin@gmail.com>
-References: <20220601142138.3331278-1-liambeguin@gmail.com>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        kernel@pengutronix.de
+Subject: Re: [PATCH] io:health:afe4404: Remove duplicated error reporting in
+ .remove()
+Message-ID: <20220603161638.604ab6b7@jic23-huawei>
+In-Reply-To: <20220522195842.edba7snapyefug76@pengutronix.de>
+References: <20220514130432.304674-1-u.kleine-koenig@pengutronix.de>
+        <20220514143812.1d2325e6@jic23-huawei>
+        <20220522195842.edba7snapyefug76@pengutronix.de>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -55,58 +58,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  1 Jun 2022 10:21:38 -0400
-Liam Beguin <liambeguin@gmail.com> wrote:
+On Sun, 22 May 2022 21:58:42 +0200
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
-> When IIO_RESCALE_KUNIT_TEST=y and IIO_RESCALE=m,
-> drivers/iio/afe/iio-rescale.o is built twice causing the
-> MODULE_LICENSE() to be lost, as shown by:
-> 
-> 	ERROR: modpost: missing MODULE_LICENSE() in drivers/iio/afe/iio-rescale.o
-> 
-> Rework the build configuration to have the dependency specified in the
-> Kconfig.
-> 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Fixes: 8e74a48d17d5 ("iio: test: add basic tests for the iio-rescale driver")
-> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-> Acked-by: Randy Dunlap <rdunlap@infradead.org>
-> Tested-by: Randy Dunlap <rdunlap@infradead.org>
-> Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Applied to the fixes-togreg branch of iio.git.
-
-Thanks all for chasing this down and coming up with a resolution.
+> Hello Jonathan,
+>=20
+> On Sat, May 14, 2022 at 02:38:12PM +0100, Jonathan Cameron wrote:
+> > On Sat, 14 May 2022 15:04:32 +0200
+> > Uwe Kleine-K=C3=B6nig         <u.kleine-koenig@pengutronix.de> wrote:
+> >  =20
+> > > Returning an error value in an i2c remove callback results in an error
+> > > message being emitted by the i2c core, but otherwise it doesn't make a
+> > > difference.
+> > >=20
+> > > As afe4404_remove() already emits an error message on failure and the
+> > > additional error message by the i2c core doesn't add any useful
+> > > information, change the return value to zero to suppress this message.
+> > >=20
+> > > This patch is a preparation for making i2c remove callbacks return vo=
+id.
+> > >=20
+> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>=
+ =20
+> > Applied.
+> >=20
+> > Like the others this will sit in testing until I can rebase the togreg
+> > branch. =20
+>=20
+> Don't know if it's to late to fix already, but I just noticed we'd want
+> s/io/iio/ in the Subject line.
+Good spot. Fixed up as haven't pushed the tree out as non rebasing yet
+(I'm waiting as I normally rebase on rc1).
 
 Jonathan
 
-> ---
->  drivers/iio/test/Kconfig  | 2 +-
->  drivers/iio/test/Makefile | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
-> index 56ca0ad7e77a..4c66c3f18c34 100644
-> --- a/drivers/iio/test/Kconfig
-> +++ b/drivers/iio/test/Kconfig
-> @@ -6,7 +6,7 @@
->  # Keep in alphabetical order
->  config IIO_RESCALE_KUNIT_TEST
->  	bool "Test IIO rescale conversion functions"
-> -	depends on KUNIT=y && !IIO_RESCALE
-> +	depends on KUNIT=y && IIO_RESCALE=y
->  	default KUNIT_ALL_TESTS
->  	help
->  	  If you want to run tests on the iio-rescale code say Y here.
-> diff --git a/drivers/iio/test/Makefile b/drivers/iio/test/Makefile
-> index f15ae0a6394f..880360f8d02c 100644
-> --- a/drivers/iio/test/Makefile
-> +++ b/drivers/iio/test/Makefile
-> @@ -4,6 +4,6 @@
->  #
->  
->  # Keep in alphabetical order
-> -obj-$(CONFIG_IIO_RESCALE_KUNIT_TEST) += iio-test-rescale.o ../afe/iio-rescale.o
-> +obj-$(CONFIG_IIO_RESCALE_KUNIT_TEST) += iio-test-rescale.o
->  obj-$(CONFIG_IIO_TEST_FORMAT) += iio-test-format.o
->  CFLAGS_iio-test-format.o += $(DISABLE_STRUCTLEAK_PLUGIN)
+>=20
+> Best regards
+> Uwe
+>=20
 

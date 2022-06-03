@@ -2,49 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B66B353CC09
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D473D53CC1B
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:15:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245358AbiFCPLf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 11:11:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57002 "EHLO
+        id S240283AbiFCPO7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245354AbiFCPLe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:11:34 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD65506C4;
-        Fri,  3 Jun 2022 08:11:32 -0700 (PDT)
+        with ESMTP id S245403AbiFCPO4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:14:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB16506C1;
+        Fri,  3 Jun 2022 08:14:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 57071B82359;
-        Fri,  3 Jun 2022 15:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9814EC385A9;
-        Fri,  3 Jun 2022 15:11:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0FE66186D;
+        Fri,  3 Jun 2022 15:14:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD19C385B8;
+        Fri,  3 Jun 2022 15:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654269090;
-        bh=prtQe0mqDshbUfvhhY5Wz4YhnC7CpDqr1UqcZBTJU0M=;
+        s=k20201202; t=1654269294;
+        bh=kCDqKxgSBW1zW4hSfO+3ZljVtjIYIRBqdB6IPefPA2g=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=E2FwOiwTQSBSNmmrgyGTFQNEHYZIIc6srQpUMt+TgN99yinQuOC9sJfiHvxHj1NrN
-         9oOqavMqzrcNmEJkRKFrICftneUXpKdXaGxRcR5jx1t2qKMc2menxBOlT/1U5r7NsG
-         xOr3fi4k+Yb3ssAVlMo3Vo3zOGwicrCHHy8o/5mG4o3PSZfoRTTMEUXi9HRF1v9/mj
-         580/FZfvhnGYFzTELGemltU0I1hL5tfNjirkOf1yCVI5zVS+tX5oFWHry1H+QP1aCN
-         9AbUZDYOMuZFrtICz5UcLaNHeMsSMSauMkcKJTE/lls46JYe6E7IfpECXFL+r43QRE
-         JMVycKsRoc1IA==
-Date:   Fri, 3 Jun 2022 16:20:29 +0100
+        b=GOfyERozHdsiH3+V20TajRS8VF+rK3pLspYPXYlV/wXnoOuBYCgvA5j6gRtfucZz5
+         5KNnZLXdh/CkU9CySG++EblXbebLNNLKOV8exqcXG1s6dMYhCEG9A3Ym6FJZKcBsMd
+         ElTzgdH7DMmopE0HAyhuGmyl3tHBlggJ0sZtmemeDT4vt0E/wfTSr1uX3Uq5P6a1Pi
+         qaygK9qyntxv2KPdHyxmTThxj+h/0sQQHfWoE1/Oqev1rDSgI3l2X3JBatFKiA9ZqZ
+         L5C6thelnCEVAdfrDUf6RbqMeByJEU5C6Ot9yLL2JekOf/GWf+7X++aM+YoXh1t07g
+         Hm2Dq9kp3Fnqg==
+Date:   Fri, 3 Jun 2022 16:23:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yongzhi Liu <lyz_cs@pku.edu.cn>
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lars@metafoo.de,
-        svarbanov@mm-sol.com, iivanov@mm-sol.com,
-        jonathan.cameron@huawei.com, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        fuyq@stu.pku.edu.cn
-Subject: Re: [PATCH v4] iio: vadc: Fix potential dereference of NULL pointer
-Message-ID: <20220603162029.6ed3c3b3@jic23-huawei>
-In-Reply-To: <20220603160222.1ad6ef49@jic23-huawei>
-References: <20220522120109.7ead18a7@jic23-huawei>
-        <1653238427-73587-1-git-send-email-lyz_cs@pku.edu.cn>
-        <20220603160222.1ad6ef49@jic23-huawei>
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v5 0/5] Add support for ToF sensor on Yoshino platform
+Message-ID: <20220603162351.69056bdf@jic23-huawei>
+In-Reply-To: <20220523175344.5845-1-markuss.broks@gmail.com>
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,159 +67,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 3 Jun 2022 16:02:22 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 23 May 2022 20:53:39 +0300
+Markuss Broks <markuss.broks@gmail.com> wrote:
 
-> On Sun, 22 May 2022 09:53:47 -0700
-> Yongzhi Liu <lyz_cs@pku.edu.cn> wrote:
+> This series adds support for the ToF proximity sensor installed on
+> Yoshino devices. As part of this series, support handling the reset
+> GPIO and VDD supply by the VL53L0X driver. Also stop hardcoding the
+> interrupt type, since on Yoshino devices it seems that edge triggering
+> doesn't work properly.
 > 
-> > The return value of vadc_get_channel() needs to be checked to
-> > avoid use of NULL pointer. vadc_do_conversion() already provides
-> > error prints in at least some of it's error paths. Thus it is
-> > reasonable to add the null pointer check on prop and drop the
-> > extra reporting in vadc_measure_ref_points().
-> > 
-> > Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>  
+> Tested on Sony Xperia XZ1 (poplar).
 > 
-> Hi
-> 
-> Biggest remaining thing is squashing
-> ret = -ENODEV;
-> return ret;
-> 
-> into the shorter
-> return -ENODEV;
-> 
-One additional process thing I didn't mention before now as this is a
-single patch.
+> Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Cc: Marijn Suijten <marijn.suijten@somainline.org>
+> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Patches 1-4 applied to the togreg branch of iio.git.
 
-Generally for IIO at least, don't send new versions in reply to old threads.
-The threads can get very deep and confusing, so I'd much rather a new thread
-for each version.
+Note I plan to rebase that tree after the char-misc (and hence IIO tree)
+has been merged with mainline, so for now it is only pushed out as testing
+so that 0-day can see if it can find anything we missed.
 
 Thanks,
 
 Jonathan
 
 > 
-> > ---
-> >  drivers/iio/adc/qcom-spmi-vadc.c | 38 ++++++++++++++++++++++++++++----------
-> >  1 file changed, 28 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> > index 34202ba..43a52b1 100644
-> > --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> > +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> > @@ -358,22 +358,33 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
-> >  	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
-> >  
-> >  	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
-> > +	if (!prop) {
-> > +		dev_err(vadc->dev, "Please define 1.25V channel\n");  
-> Probably makes more sense to have the error as 
-> "No 1.25V channel found\n");
+> v2:
+> - Fix a nasty issue: turns out grouping the pinctrl makes it not apply,
+> which was the main cause of edge interrupts not working correctly and
+> having to use level interrupts, which caused a large amount of false
+> detections.
+> - handle the irq type more gracefully: if it's not provided, default
+> to falling edge, but if it's provided, then use the provided one.
+> v3:
+> - add irq.h header (forgot to commit)
+> - reword commit message (already initialized -> pre-initialized)
+> v4:
+> - reorder powering on and power off action (Jonathan)
+> - sort pinctrls by GPIO number (Konrad)
+> v5:
+> - "This patch adds..." -> "Add ..." (Krzysztof)
 > 
-> It's not obvious to anyone getting this error what 'define' might mean
-> without them looking at the code, so I'd rather we just said what had
-> gone wrong rather offering incomplete advice.
+> Markuss Broks (5):
+>   dt-bindings: proximity: vl53l0x: Document optional supply and GPIO
+>     properties
+>   proximity: vl53l0x: Get interrupt type from DT
+>   proximity: vl53l0x: Handle the VDD regulator
+>   proximity: vl53l0x: Handle the reset GPIO
+>   arm64: dts: qcom: msm8998-xperia: Introduce ToF sensor support
 > 
-> > +		ret = -ENODEV;  
-> 
-> Don't bother assigning a variable just to return it in the next line.
-> 
-> return -ENODEV;
-> 
-> > +		return ret;
-> > +	}
-> >  	ret = vadc_do_conversion(vadc, prop, &read_1);
-> >  	if (ret)
-> > -		goto err;
-> > +		return ret;
-> >  
-> >  	/* Try with buffered 625mV channel first */
-> >  	prop = vadc_get_channel(vadc, VADC_SPARE1);
-> > -	if (!prop)
-> > +	if (!prop) {
-> >  		prop = vadc_get_channel(vadc, VADC_REF_625MV);
-> > +		if (!prop) {
-> > +			dev_err(vadc->dev, "Please define 0.625V channel\n");  
-> "No 0.625V channel found\n"
-> > +			ret = -ENODEV;  
-> 
-> return -ENODEV;
-> 
-> > +			return ret;
-> > +		}
-> > +	}
-> >  
-> >  	ret = vadc_do_conversion(vadc, prop, &read_2);
-> >  	if (ret)
-> > -		goto err;
-> > +		return ret;
-> >  
-> >  	if (read_1 == read_2) {
-> >  		ret = -EINVAL;
-> > -		goto err;
-> > +		return ret;
-> >  	}
-> >  
-> >  	vadc->graph[VADC_CALIB_ABSOLUTE].dy = read_1 - read_2;
-> > @@ -381,25 +392,32 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
-> >  
-> >  	/* Ratiometric calibration */
-> >  	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
-> > +	if (!prop) {
-> > +		dev_err(vadc->dev, "Please define VDD channel\n");  
-> 
-> "No VDD channel found\n"
-> 
-> > +		ret = -ENODEV;
-> > +		return ret;
-> > +	}
-> >  	ret = vadc_do_conversion(vadc, prop, &read_1);
-> >  	if (ret)
-> > -		goto err;
-> > +		return ret;
-> >  
-> >  	prop = vadc_get_channel(vadc, VADC_GND_REF);
-> > +	if (!prop) {
-> > +		dev_err(vadc->dev, "Please define GND channel\n");  
-> 
-> "No GND channel found\n"
-> 
-> > +		ret = -ENODEV;
-> > +		return ret;  
-> 
-> return -ENODEV;
-> 
-> > +	}
-> >  	ret = vadc_do_conversion(vadc, prop, &read_2);
-> >  	if (ret)
-> > -		goto err;
-> > +		return ret;
-> >  
-> >  	if (read_1 == read_2) {
-> >  		ret = -EINVAL;
-> > -		goto err;
-> > +		return ret;  
-> 
-> return -ENODEV;
-> 
-> >  	}
-> >  
-> >  	vadc->graph[VADC_CALIB_RATIOMETRIC].dy = read_1 - read_2;
-> >  	vadc->graph[VADC_CALIB_RATIOMETRIC].gnd = read_2;
-> > -err:
-> > -	if (ret)
-> > -		dev_err(vadc->dev, "measure reference points failed\n");
-> >  
-> >  	return ret;  
-> 
-> Can't get here with anything other than ret == 0 so
-> 	return 0;
-> to make that explicit.
-> 
-> 
-> >  }  
+>  .../bindings/iio/proximity/st,vl53l0x.yaml    |  5 ++
+>  .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 34 +++++++++++++
+>  drivers/iio/proximity/vl53l0x-i2c.c           | 50 ++++++++++++++++++-
+>  3 files changed, 88 insertions(+), 1 deletion(-)
 > 
 

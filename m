@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86BF253CB96
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 16:35:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE46753CBC2
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 16:48:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230399AbiFCOfW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 10:35:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56384 "EHLO
+        id S245203AbiFCOsl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 10:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbiFCOfV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 10:35:21 -0400
+        with ESMTP id S235709AbiFCOsk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 10:48:40 -0400
 Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886B35045E
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 07:35:19 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id v19so10414680edd.4
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 07:35:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 889F627B18
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 07:48:39 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id x62so10453033ede.10
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 07:48:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=w/br5zIPpAAqgbsFvy3LMXAzcpSFslCRWL1RLLSho5w=;
-        b=bMEOgcRVYKvta6P+i4g59wHfpyiaED6X0+JnjPfhmMrDrEfAVt2fZeBhMfM0d3XBc3
-         BTAbMOEhwakdZqdBPFc5gk6kxIxpmOyi2CN/QoYv1aOKckjmNpGopYZ2eZNR0CBXMMtL
-         FCDdcoHE4E0ayfwVDRjajHTdQd8vr+SO0mTzAUH0Qrtuve/1i2rTyLL8ANn2c4oM48dX
-         FxxoxqhUYbT8wxXxPxb+HmD2hMgaSFNSkdfbKAo5IhSJXVbexPNU/9UCZKnIUywYBP1a
-         /NHLcSQ11kgPc0/QRa0xoFJB3Cesl1Vm6PIvogsmmA65Vw+87jaouzUsitAELAY3iKCZ
-         ZTkQ==
+        bh=gKgOdeh4hn7RZKv6w+AmPNJj8Cm7HVTvVAPq2v7BZis=;
+        b=ZF0w2BjiZ00EWl/huBH7p58JrTm8h9o/ohyQk6nbx9HK8ljChPPtSMI8NnEoSrU0tz
+         mK28KcxyzGSGiBkX2iJexHFavJ+iUG+3ytrNjRQSCerOYiwKrOnGVduL6XPM8EHQZ/KR
+         gWPlLwqmT2WaGVzHnUMrm0C+KrWyTjCvf/tD5g7gVtpLwoHjIRBO6JBM1OK//pC7JZsa
+         CqKy6iVz853OSybVJom0joMsbCp3jqtY4453u4cJeJZl0anEV9VnlVH+xspN/c98VDgf
+         oz1hwiOd7g3tSEY2U17rSdlXw8qPKgmqxsFVG20n5hFCXNT4/LmG/rp4DFP02d/WuwAE
+         uLxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=w/br5zIPpAAqgbsFvy3LMXAzcpSFslCRWL1RLLSho5w=;
-        b=eRcdRkLfR7FbSvNqgzZXLiaPUUuiUZPhefe60E0M5ei7/htyClxaS06ScccOePiPVU
-         l2XZzSHniudySfVkLgcv3KN+EFFk74rxAHc7ck72ul4rrT+LMTL7dRsJNSCpP7OXCxMu
-         q7a6DOPocr6x02IsQ4lHycXcEJxtn3gLCkaNYLmlstwHkv1HpXGKyOQbcC3btpp7t4gi
-         gLUcgOpvf4K6DqGZTeLBI5z622wakFZl46Dg4Nh3h1OzG2H+/eQxb+VD3n3Y/5mOnNBu
-         7Mx43AKOxNgwVPNmhzv201ccTUSL9KiLUXlBWr6aIA+vTRZXRUWK9tTsFDH5yWmIs5mB
-         O28Q==
-X-Gm-Message-State: AOAM533iOLScKZ7DWqPcY9FtM1tlWpQ5RZdRDOeoEAFKTdMfzHm7InUI
-        h/pfkq00NR/KN88m8e1l/ZX2SsLiVaoh6pDEhMc=
-X-Google-Smtp-Source: ABdhPJyzZWjZxRak5HVl9ylACVR2XvJxAF39HLv0gjZpleBmVAZDd/SoPpC+jbEnI28f2YUcmMbpdZsRrwDuBqtmZhg=
-X-Received: by 2002:a05:6402:4390:b0:42e:b7e:e9ac with SMTP id
- o16-20020a056402439000b0042e0b7ee9acmr9845735edc.97.1654266918078; Fri, 03
- Jun 2022 07:35:18 -0700 (PDT)
+        bh=gKgOdeh4hn7RZKv6w+AmPNJj8Cm7HVTvVAPq2v7BZis=;
+        b=yIWC8u/mdwtRNs1Y49OkNFdFFN8iAZ6HHBy2lEbnxREgmclCexKM3gtkZD1p/vuAjd
+         mIR33HaEdYH06Uh33W9+KnU/lyFgfvVT1bnNM6EGanYF7sqYRTqd4CKt/eNpPwceJ4ay
+         iTHtRUDSx6GI7l462LxVrndW2wL3m3WFNdYFGrC65cva4fnQg2IUOgDuJeg7cExbBDiE
+         Xp7DSVDtB4nerBuF0+MzliEXecNsRbpSx7geNxhjF7zQpncBulDajvFPgsDNhm7Zmh75
+         LqEHAa7iq/LCe+X4ohwUVZxtcKt2ki2DDxMOJDhKtjkVLn3LhUzXxI34bnqh5cJ/W6m1
+         g0qA==
+X-Gm-Message-State: AOAM531Trbj8a5WbzKOrnWKAQQEMxqNb4lF3BWCn01/l+w68XcUz319N
+        vWxxz8wzLA0da2uLtM3QwrAcOzi8yO9XLwqQJu8=
+X-Google-Smtp-Source: ABdhPJzytHAQUsTtP2HfDvocJoTcvjeKC++8bepZVLZUagwMqE4LKIBLb5Sy1cYVQw67BpcgZpHkUDDHwK7hqXlGn/U=
+X-Received: by 2002:a05:6402:2806:b0:42b:67fc:8565 with SMTP id
+ h6-20020a056402280600b0042b67fc8565mr11143193ede.230.1654267718114; Fri, 03
+ Jun 2022 07:48:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-6-nuno.sa@analog.com>
- <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com> <46d4d0062324846faf65c697dcb10e4e53305edf.camel@gmail.com>
-In-Reply-To: <46d4d0062324846faf65c697dcb10e4e53305edf.camel@gmail.com>
+ <CAHp75VeHwqbNTMfWA03-epKaksPNgRrXh3f5hktEE0u6qjPyyw@mail.gmail.com> <543ab19106938b7655ee2877bf52c8e786c1c55a.camel@gmail.com>
+In-Reply-To: <543ab19106938b7655ee2877bf52c8e786c1c55a.camel@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Jun 2022 16:34:42 +0200
-Message-ID: <CAHp75Vcy7hv7N3uqaXcs9sZNSpQTMAkb-GQH=+yg6mBNUyJzkA@mail.gmail.com>
+Date:   Fri, 3 Jun 2022 16:48:02 +0200
+Message-ID: <CAHp75VeD__cxLKoCqJGP4htqK6vtjHxcEE9w9w=PTvaa7xTv0Q@mail.gmail.com>
 Subject: Re: [RFC PATCH 5/6] iio: inkern: move to fwnode properties
 To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
 Cc:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
@@ -106,31 +106,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 3, 2022 at 2:53 PM Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> On Fri, 2022-06-03 at 13:57 +0200, Andy Shevchenko wrote:
+On Fri, Jun 3, 2022 at 2:51 PM Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> On Fri, 2022-06-03 at 13:52 +0200, Andy Shevchenko wrote:
 > > On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
 ...
 
-> > > +       parent =3D fwnode_get_parent(fwnode);
-> > > +       while (parent) {
-> >
-> > > +               parent =3D fwnode_get_next_parent(parent);
-> > >         }
-> >
-> > Forgot to mention:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D87ffea09470d94c93dd6a5a22d4b2216b395d1ea
+> > I think you may split this in an easy way, i.e. convert core to
+> > fwnode, while providing inliners for of_node cases (like it's done in
+> > IRQ domain) and then remove them after conversion.
 >
-> I did looked for something like that but it's still not in the IIO
-> testing tree.
+> I see, in our case that might be really simple as we only have one user
+> of devm_of_iio_channel_get_by_name() which is the only api directly
+> using OF. of_iio_channel_get_by_name() has no users and all the other
+> public APIs use 'struct device' so we can do the conversion
+> internally...
 
-Now it's in the upstream, which means it is just a matter of time to
-appear in IIO testing.
+Even better than I expected!
 
-> (still I actually followed that patchset but completely forgot about
-> the helper)
+...
+
+> > That said, I think what you need is to split this series to three
+> > logical parts:
+> > 1) shuffle header inclusions around so, iio.h will use forward
+> > declaration (on driver basis);
+> > 2) convert inkern.c to fwnode while providing OF wrappers
+> > (to_of_node() helps);
+>
+> Just to be clear, we should still add an fwnode_xlate() callback? So we
+> have both temporarily and if some new driver needs this interface it
+> can already use it instead of of_xlate...
+
+No, I mean to leave a callback to be OF-specific and pass fwnode with
+to_of_node(). Then convert it separately either on per driver basis
+(if possible and makes sense) or altogether.
+
+> > 3) convert of_xlate (on driver basis it might be tricky, up to you).
+>
+> Yeah, I might see how easy it is to fully convert the drivers using
+> of_xlate. If easy enough, I'll probably do it...
 
 --=20
 With Best Regards,

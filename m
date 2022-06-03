@@ -2,150 +2,200 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE46753CBC2
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 16:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C1DE53CBC8
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 16:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245203AbiFCOsl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 10:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53494 "EHLO
+        id S245212AbiFCOx1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 10:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235709AbiFCOsk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 10:48:40 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 889F627B18
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 07:48:39 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id x62so10453033ede.10
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 07:48:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=gKgOdeh4hn7RZKv6w+AmPNJj8Cm7HVTvVAPq2v7BZis=;
-        b=ZF0w2BjiZ00EWl/huBH7p58JrTm8h9o/ohyQk6nbx9HK8ljChPPtSMI8NnEoSrU0tz
-         mK28KcxyzGSGiBkX2iJexHFavJ+iUG+3ytrNjRQSCerOYiwKrOnGVduL6XPM8EHQZ/KR
-         gWPlLwqmT2WaGVzHnUMrm0C+KrWyTjCvf/tD5g7gVtpLwoHjIRBO6JBM1OK//pC7JZsa
-         CqKy6iVz853OSybVJom0joMsbCp3jqtY4453u4cJeJZl0anEV9VnlVH+xspN/c98VDgf
-         oz1hwiOd7g3tSEY2U17rSdlXw8qPKgmqxsFVG20n5hFCXNT4/LmG/rp4DFP02d/WuwAE
-         uLxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=gKgOdeh4hn7RZKv6w+AmPNJj8Cm7HVTvVAPq2v7BZis=;
-        b=yIWC8u/mdwtRNs1Y49OkNFdFFN8iAZ6HHBy2lEbnxREgmclCexKM3gtkZD1p/vuAjd
-         mIR33HaEdYH06Uh33W9+KnU/lyFgfvVT1bnNM6EGanYF7sqYRTqd4CKt/eNpPwceJ4ay
-         iTHtRUDSx6GI7l462LxVrndW2wL3m3WFNdYFGrC65cva4fnQg2IUOgDuJeg7cExbBDiE
-         Xp7DSVDtB4nerBuF0+MzliEXecNsRbpSx7geNxhjF7zQpncBulDajvFPgsDNhm7Zmh75
-         LqEHAa7iq/LCe+X4ohwUVZxtcKt2ki2DDxMOJDhKtjkVLn3LhUzXxI34bnqh5cJ/W6m1
-         g0qA==
-X-Gm-Message-State: AOAM531Trbj8a5WbzKOrnWKAQQEMxqNb4lF3BWCn01/l+w68XcUz319N
-        vWxxz8wzLA0da2uLtM3QwrAcOzi8yO9XLwqQJu8=
-X-Google-Smtp-Source: ABdhPJzytHAQUsTtP2HfDvocJoTcvjeKC++8bepZVLZUagwMqE4LKIBLb5Sy1cYVQw67BpcgZpHkUDDHwK7hqXlGn/U=
-X-Received: by 2002:a05:6402:2806:b0:42b:67fc:8565 with SMTP id
- h6-20020a056402280600b0042b67fc8565mr11143193ede.230.1654267718114; Fri, 03
- Jun 2022 07:48:38 -0700 (PDT)
+        with ESMTP id S245210AbiFCOx0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 10:53:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9965536E29;
+        Fri,  3 Jun 2022 07:53:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 54D49B82353;
+        Fri,  3 Jun 2022 14:53:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0635C34115;
+        Fri,  3 Jun 2022 14:53:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654268003;
+        bh=RGs1KTCePcSrsr1+5HQQpGae3Pc4JtwnBu3hdoIvrOY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=WyGYjYddMk07o8bazntYbtCK4zbeCa7DEFE/TCozDMhF03Fe4kU8LPm3p5kSO9WSj
+         t3nk+MJHJEX0Yv2UYRgLUFBV3Hc84R61uyURYdZ3/eSIkFLkP6KKBi0TSTllFLd7JP
+         +2teddVxCFSl8S/YtwTHoTophTXWrIyq2O/Ug1pjO3cnW67rIVdln312x0G470x0UX
+         002zGcinS6p0imEfVb1ZI5xg2WnTpGyqcQGluIwWrbIwPXAZEWaRdvrWw/TLm8tfnw
+         Zp6/LuokL19/fMx0waN2xmdGuMl2dvo+KCy8Hpm+Ilj2IfHgr+e519ywVOgM2cn78o
+         PHgMnTz8aZq5g==
+Date:   Fri, 3 Jun 2022 16:02:22 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Yongzhi Liu <lyz_cs@pku.edu.cn>
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lars@metafoo.de,
+        svarbanov@mm-sol.com, iivanov@mm-sol.com,
+        jonathan.cameron@huawei.com, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        fuyq@stu.pku.edu.cn
+Subject: Re: [PATCH v4] iio: vadc: Fix potential dereference of NULL pointer
+Message-ID: <20220603160222.1ad6ef49@jic23-huawei>
+In-Reply-To: <1653238427-73587-1-git-send-email-lyz_cs@pku.edu.cn>
+References: <20220522120109.7ead18a7@jic23-huawei>
+        <1653238427-73587-1-git-send-email-lyz_cs@pku.edu.cn>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-6-nuno.sa@analog.com>
- <CAHp75VeHwqbNTMfWA03-epKaksPNgRrXh3f5hktEE0u6qjPyyw@mail.gmail.com> <543ab19106938b7655ee2877bf52c8e786c1c55a.camel@gmail.com>
-In-Reply-To: <543ab19106938b7655ee2877bf52c8e786c1c55a.camel@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Jun 2022 16:48:02 +0200
-Message-ID: <CAHp75VeD__cxLKoCqJGP4htqK6vtjHxcEE9w9w=PTvaa7xTv0Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/6] iio: inkern: move to fwnode properties
-To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Benson Leung <bleung@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Wan Jiabing <wanjiabing@vivo.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Patrick Venture <venture@google.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Shawn Guo <shawnguo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 3, 2022 at 2:51 PM Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> On Fri, 2022-06-03 at 13:52 +0200, Andy Shevchenko wrote:
-> > On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Sun, 22 May 2022 09:53:47 -0700
+Yongzhi Liu <lyz_cs@pku.edu.cn> wrote:
 
-...
+> The return value of vadc_get_channel() needs to be checked to
+> avoid use of NULL pointer. vadc_do_conversion() already provides
+> error prints in at least some of it's error paths. Thus it is
+> reasonable to add the null pointer check on prop and drop the
+> extra reporting in vadc_measure_ref_points().
+> 
+> Signed-off-by: Yongzhi Liu <lyz_cs@pku.edu.cn>
 
-> > I think you may split this in an easy way, i.e. convert core to
-> > fwnode, while providing inliners for of_node cases (like it's done in
-> > IRQ domain) and then remove them after conversion.
->
-> I see, in our case that might be really simple as we only have one user
-> of devm_of_iio_channel_get_by_name() which is the only api directly
-> using OF. of_iio_channel_get_by_name() has no users and all the other
-> public APIs use 'struct device' so we can do the conversion
-> internally...
+Hi
 
-Even better than I expected!
+Biggest remaining thing is squashing
+ret = -ENODEV;
+return ret;
 
-...
+into the shorter
+return -ENODEV;
 
-> > That said, I think what you need is to split this series to three
-> > logical parts:
-> > 1) shuffle header inclusions around so, iio.h will use forward
-> > declaration (on driver basis);
-> > 2) convert inkern.c to fwnode while providing OF wrappers
-> > (to_of_node() helps);
->
-> Just to be clear, we should still add an fwnode_xlate() callback? So we
-> have both temporarily and if some new driver needs this interface it
-> can already use it instead of of_xlate...
 
-No, I mean to leave a callback to be OF-specific and pass fwnode with
-to_of_node(). Then convert it separately either on per driver basis
-(if possible and makes sense) or altogether.
+> ---
+>  drivers/iio/adc/qcom-spmi-vadc.c | 38 ++++++++++++++++++++++++++++----------
+>  1 file changed, 28 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+> index 34202ba..43a52b1 100644
+> --- a/drivers/iio/adc/qcom-spmi-vadc.c
+> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
+> @@ -358,22 +358,33 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
+>  	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
+>  
+>  	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
+> +	if (!prop) {
+> +		dev_err(vadc->dev, "Please define 1.25V channel\n");
+Probably makes more sense to have the error as 
+"No 1.25V channel found\n");
 
-> > 3) convert of_xlate (on driver basis it might be tricky, up to you).
->
-> Yeah, I might see how easy it is to fully convert the drivers using
-> of_xlate. If easy enough, I'll probably do it...
+It's not obvious to anyone getting this error what 'define' might mean
+without them looking at the code, so I'd rather we just said what had
+gone wrong rather offering incomplete advice.
 
---=20
-With Best Regards,
-Andy Shevchenko
+> +		ret = -ENODEV;
+
+Don't bother assigning a variable just to return it in the next line.
+
+return -ENODEV;
+
+> +		return ret;
+> +	}
+>  	ret = vadc_do_conversion(vadc, prop, &read_1);
+>  	if (ret)
+> -		goto err;
+> +		return ret;
+>  
+>  	/* Try with buffered 625mV channel first */
+>  	prop = vadc_get_channel(vadc, VADC_SPARE1);
+> -	if (!prop)
+> +	if (!prop) {
+>  		prop = vadc_get_channel(vadc, VADC_REF_625MV);
+> +		if (!prop) {
+> +			dev_err(vadc->dev, "Please define 0.625V channel\n");
+"No 0.625V channel found\n"
+> +			ret = -ENODEV;
+
+return -ENODEV;
+
+> +			return ret;
+> +		}
+> +	}
+>  
+>  	ret = vadc_do_conversion(vadc, prop, &read_2);
+>  	if (ret)
+> -		goto err;
+> +		return ret;
+>  
+>  	if (read_1 == read_2) {
+>  		ret = -EINVAL;
+> -		goto err;
+> +		return ret;
+>  	}
+>  
+>  	vadc->graph[VADC_CALIB_ABSOLUTE].dy = read_1 - read_2;
+> @@ -381,25 +392,32 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
+>  
+>  	/* Ratiometric calibration */
+>  	prop = vadc_get_channel(vadc, VADC_VDD_VADC);
+> +	if (!prop) {
+> +		dev_err(vadc->dev, "Please define VDD channel\n");
+
+"No VDD channel found\n"
+
+> +		ret = -ENODEV;
+> +		return ret;
+> +	}
+>  	ret = vadc_do_conversion(vadc, prop, &read_1);
+>  	if (ret)
+> -		goto err;
+> +		return ret;
+>  
+>  	prop = vadc_get_channel(vadc, VADC_GND_REF);
+> +	if (!prop) {
+> +		dev_err(vadc->dev, "Please define GND channel\n");
+
+"No GND channel found\n"
+
+> +		ret = -ENODEV;
+> +		return ret;
+
+return -ENODEV;
+
+> +	}
+>  	ret = vadc_do_conversion(vadc, prop, &read_2);
+>  	if (ret)
+> -		goto err;
+> +		return ret;
+>  
+>  	if (read_1 == read_2) {
+>  		ret = -EINVAL;
+> -		goto err;
+> +		return ret;
+
+return -ENODEV;
+
+>  	}
+>  
+>  	vadc->graph[VADC_CALIB_RATIOMETRIC].dy = read_1 - read_2;
+>  	vadc->graph[VADC_CALIB_RATIOMETRIC].gnd = read_2;
+> -err:
+> -	if (ret)
+> -		dev_err(vadc->dev, "measure reference points failed\n");
+>  
+>  	return ret;
+
+Can't get here with anything other than ret == 0 so
+	return 0;
+to make that explicit.
+
+
+>  }
+

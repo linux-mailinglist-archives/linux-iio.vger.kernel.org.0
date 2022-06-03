@@ -2,44 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12CDE53CC87
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7B153CCC5
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 17:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245661AbiFCPrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 11:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39540 "EHLO
+        id S1343533AbiFCP5R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 11:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245657AbiFCPrp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:47:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F173286F8;
-        Fri,  3 Jun 2022 08:47:44 -0700 (PDT)
+        with ESMTP id S1343509AbiFCP5Q (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 11:57:16 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B47F64DF;
+        Fri,  3 Jun 2022 08:57:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21199618CD;
-        Fri,  3 Jun 2022 15:47:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C28C385A9;
-        Fri,  3 Jun 2022 15:47:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 275F6B82376;
+        Fri,  3 Jun 2022 15:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E519C385A9;
+        Fri,  3 Jun 2022 15:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654271263;
-        bh=DkHpOszBjvs97DI/fvHycYbfHbNLMuU6YAPeq1EHMUc=;
+        s=k20201202; t=1654271832;
+        bh=HoAH8VUSJkTU91dOsuHMUpmGc42O1/PdsZRIM1Rg2LM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DTc2jjhDIeM8HhagsgByJvmNNwsqDzXU0w3R7vhjfxhdayanpzV/2zgPYTOzqQ8/F
-         ZlEI/LJOVaNtYoZ2O7IWcbycGRkps53fEjq0oB0VHioXeV40BlmrFqaYQTjZEeQMLy
-         U6PREmURbMnDn/KE/mcJmZjYWVwZ2j+9aUOfKrrMUinnf95PlGiIPWzxzdd6wVm2h2
-         LrolcvuAhZOCJHK5jpPB4PCg06ei+QJDEf0cgw4zeFMo5SOyUDX/YVooRlfQ76UVys
-         RZmM9T86v9Hdtk2e6HuCYsHUHZawi+rwPVnpw2FRCPiEdbzDwext4x18zHntWXcj2P
-         Wam9Z0/pnbi+A==
-Date:   Fri, 3 Jun 2022 16:56:45 +0100
+        b=Ibh+E3eXNswhfW0vlgaHdmD7Hj1o8MVbv/7ztFjLNsWTxRqu4l6DCdN7+DdxN7EOf
+         k4inn4zBbmxDKeTDVZfk7Pm0PXNaLlqphv474X53BPZhzQfpr6+busQS9A/0ECkdcB
+         cDfLLUUIeF6GlLDqCWWsAEsg+S9TJCG/4lp+ar+c3j+z/0XU9ktWHrixwMzrNykUZi
+         9xEB5Oc79xZ0w/6wxyPa4sIiH/ULTUKSmgdKgUGrTE5obhbERL91UvzdQ/s9x6mPbM
+         ePqVVc0lMwqvEKUlNnQbuTO9+CxmybY1UDoSUiEM0v/auy9UPzNlbCYPJNRVg72J1l
+         Yf3jVEapZk8EA==
+Date:   Fri, 3 Jun 2022 17:06:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     keliu <liuke94@huawei.com>
-Cc:     <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio:  Directly use ida_alloc()/free()
-Message-ID: <20220603165645.28ecc972@jic23-huawei>
-In-Reply-To: <20220527091739.2949426-1-liuke94@huawei.com>
-References: <20220527091739.2949426-1-liuke94@huawei.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: Re: [PATCH v3 1/6] iio: adc: meson_saradc: Don't attach managed
+ resource to IIO device object
+Message-ID: <20220603170612.561edfbf@jic23-huawei>
+In-Reply-To: <20220603100004.70336-1-andriy.shevchenko@linux.intel.com>
+References: <20220603100004.70336-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,87 +60,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 27 May 2022 09:17:39 +0000
-keliu <liuke94@huawei.com> wrote:
+On Fri,  3 Jun 2022 12:59:59 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Use ida_alloc()/ida_free() instead of deprecated
-> ida_simple_get()/ida_simple_remove() .
+> It feels wrong and actually inconsistent to attach managed resources
+> to the IIO device object, which is child of the physical device object.
+> The rest of the ->probe() calls do that against physical device.
 > 
-> Signed-off-by: keliu <liuke94@huawei.com>
-Looks good to me.
+> Resolve this by reassigning managed resources to the physical device object.
+> 
+> Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
+> Suggested-by: Lars-Peter Clausen <lars@metafoo.de>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hi Andy,
 
-Applied to the togreg branch of iio.git and pushed out initially as testing
-to let 0-day see if it can find any problems we missed.
+This has come up a few times in the past (and we elected to not clean it up
+at the time, though it wasn't a decision to never do so!)
 
-Thanks,
+It would definitely be wrong if we had another driver binding against
+the resulting created device (funnily enough I reported a bug on a driver
+doing just that earlier this week), but in this case it's harmless because the
+the tear down will occur with a put_device() ultimately calling device_release()
+and devres_release_all()
 
-Jonathan
+https://elixir.bootlin.com/linux/latest/source/drivers/base/core.c#L2211
+
+Has a comment that covers this case (more or less).
+"
+	 * Some platform devices are driven without driver attached
+	 * and managed resources may have been acquired.  Make sure
+	 * all resources are released.
+"
+
+Now, I definitely agree with your statement that it's a bit inconsistent to
+do this, just not the fixes tag.
+
+One other suggestion below.
+
 
 > ---
->  drivers/iio/industrialio-core.c    | 6 +++---
->  drivers/iio/industrialio-trigger.c | 6 +++---
->  2 files changed, 6 insertions(+), 6 deletions(-)
+> v3: new fix-patch
+>  drivers/iio/adc/meson_saradc.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index e1ed44dec2ab..41daa10cd63d 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1618,7 +1618,7 @@ static void iio_dev_release(struct device *device)
+> diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+> index 62cc6fb0ef85..4fe6b997cd03 100644
+> --- a/drivers/iio/adc/meson_saradc.c
+> +++ b/drivers/iio/adc/meson_saradc.c
+> @@ -650,11 +650,11 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
+>  				  void __iomem *base)
+>  {
+>  	struct meson_sar_adc_priv *priv = iio_priv(indio_dev);
+> +	struct device *dev = indio_dev->dev.parent;
+
+I'd slightly prefer the device was passed in explicitly to this function rather
+than using the parent assignment which feels a little fragile. 
+
+
+>  	struct clk_init_data init;
+>  	const char *clk_parents[1];
 >  
->  	iio_device_detach_buffers(indio_dev);
+> -	init.name = devm_kasprintf(&indio_dev->dev, GFP_KERNEL, "%s#adc_div",
+> -				   dev_name(indio_dev->dev.parent));
+> +	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s#adc_div", dev_name(dev));
+>  	if (!init.name)
+>  		return -ENOMEM;
 >  
-> -	ida_simple_remove(&iio_ida, iio_dev_opaque->id);
-> +	ida_free(&iio_ida, iio_dev_opaque->id);
->  	kfree(iio_dev_opaque);
->  }
+> @@ -670,13 +670,11 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
+>  	priv->clk_div.hw.init = &init;
+>  	priv->clk_div.flags = 0;
 >  
-> @@ -1660,7 +1660,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
->  	mutex_init(&iio_dev_opaque->info_exist_lock);
->  	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+> -	priv->adc_div_clk = devm_clk_register(&indio_dev->dev,
+> -					      &priv->clk_div.hw);
+> +	priv->adc_div_clk = devm_clk_register(dev, &priv->clk_div.hw);
+>  	if (WARN_ON(IS_ERR(priv->adc_div_clk)))
+>  		return PTR_ERR(priv->adc_div_clk);
 >  
-> -	iio_dev_opaque->id = ida_simple_get(&iio_ida, 0, 0, GFP_KERNEL);
-> +	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
->  	if (iio_dev_opaque->id < 0) {
->  		/* cannot use a dev_err as the name isn't available */
->  		pr_err("failed to get device id\n");
-> @@ -1669,7 +1669,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
->  	}
+> -	init.name = devm_kasprintf(&indio_dev->dev, GFP_KERNEL, "%s#adc_en",
+> -				   dev_name(indio_dev->dev.parent));
+> +	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s#adc_en", dev_name(dev));
+>  	if (!init.name)
+>  		return -ENOMEM;
 >  
->  	if (dev_set_name(&indio_dev->dev, "iio:device%d", iio_dev_opaque->id)) {
-> -		ida_simple_remove(&iio_ida, iio_dev_opaque->id);
-> +		ida_free(&iio_ida, iio_dev_opaque->id);
->  		kfree(iio_dev_opaque);
->  		return NULL;
->  	}
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index f504ed351b3e..6eb9b721676e 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -71,7 +71,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
+> @@ -690,7 +688,7 @@ static int meson_sar_adc_clk_init(struct iio_dev *indio_dev,
+>  	priv->clk_gate.bit_idx = __ffs(MESON_SAR_ADC_REG3_CLK_EN);
+>  	priv->clk_gate.hw.init = &init;
 >  
->  	trig_info->owner = this_mod;
+> -	priv->adc_clk = devm_clk_register(&indio_dev->dev, &priv->clk_gate.hw);
+> +	priv->adc_clk = devm_clk_register(dev, &priv->clk_gate.hw);
+>  	if (WARN_ON(IS_ERR(priv->adc_clk)))
+>  		return PTR_ERR(priv->adc_clk);
 >  
-> -	trig_info->id = ida_simple_get(&iio_trigger_ida, 0, 0, GFP_KERNEL);
-> +	trig_info->id = ida_alloc(&iio_trigger_ida, GFP_KERNEL);
->  	if (trig_info->id < 0)
->  		return trig_info->id;
->  
-> @@ -98,7 +98,7 @@ int __iio_trigger_register(struct iio_trigger *trig_info,
->  	mutex_unlock(&iio_trigger_list_lock);
->  	device_del(&trig_info->dev);
->  error_unregister_id:
-> -	ida_simple_remove(&iio_trigger_ida, trig_info->id);
-> +	ida_free(&iio_trigger_ida, trig_info->id);
->  	return ret;
->  }
->  EXPORT_SYMBOL(__iio_trigger_register);
-> @@ -109,7 +109,7 @@ void iio_trigger_unregister(struct iio_trigger *trig_info)
->  	list_del(&trig_info->list);
->  	mutex_unlock(&iio_trigger_list_lock);
->  
-> -	ida_simple_remove(&iio_trigger_ida, trig_info->id);
-> +	ida_free(&iio_trigger_ida, trig_info->id);
->  	/* Possible issue in here */
->  	device_del(&trig_info->dev);
->  }
 

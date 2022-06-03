@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F06053C95C
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 13:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9DB753C97E
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 13:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244014AbiFCLaX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 07:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
+        id S240286AbiFCLiK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 07:38:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244028AbiFCLaS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:30:18 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AD53C701
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:30:17 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id z7so9735667edm.13
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:30:17 -0700 (PDT)
+        with ESMTP id S230022AbiFCLiH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:38:07 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB1BDFCD
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:38:06 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id x5so4693420edi.2
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:38:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=YuoJXxYg+ultqKI/rbWfpD2nyRsY8FPC3rrrS/V1lBI=;
-        b=V+VvP6BdV6VIvqj8hvvKykGKwuS0sqSLkRojjzXqm5nNMKIRk4YFHt2RtVq+d7EZtG
-         mE3gQcT/3bMcYeuEyxlxJT92bdrFMs5EAVcqzHd1sR3xPoDNna1aqdXuglW6EJP4fo88
-         W0d7YHk9/2304kPZRUbSEh98gsi7vcQs7SOjy6rV5oGzV2tD/4Z05uB2TA/34WAr3ceV
-         T7MhvUN/sisOq1DpDeAJTp6hAaw9ewL2vHcmy8zhCA+nXuM8SOQTGYFAaR32rfVwU93f
-         mWurMieWDYEXuqdxhrS1wTkoShM6M+O0BZ219PKPnGyClt3M0ycxE+sPuXTPxrCTSGpZ
-         zKvg==
+        bh=owTN0aQcdcUgazgPvq6N4wFStuHNmRQMmCcbBwwZW+s=;
+        b=Vyl3HdhKW45syRFgxGRw4Rdpkwh4cSC1gA2ODenbBV2ZSpglcIqhjnIk3nsd1xqYDy
+         dF5YMBOuc4Uk1WyOTO8AJDQ7I3JHnDczDtJ1VmjUFmmdYuDSiuc5hERd+s0GPkvqYuJ+
+         0u9pMqyhVLRGl8oZHRx98srv2GVoGjrkPb8Vbev7wnhsw4O++gbv15y+6PK+eZ38yLeP
+         Zl4Ii3OFkEjOflHgfuIfgB0tFGKlvtiQTCWVnODYvAXjHCCTNLJsYFXTFp8EnBKUqn2q
+         tbj5KCvE/aj0LSOeoSqt4tYBthnLOF5gJY7RaR7iQIMK2b8FCT7bR0XV32UyOP1fu68l
+         2Y0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=YuoJXxYg+ultqKI/rbWfpD2nyRsY8FPC3rrrS/V1lBI=;
-        b=HupbMOHA7h0nz36sdr+mK8T7kUjVeJrCC+g7ts9CnrW7ChcLkG9fRm7x3U+w4k3bpK
-         3u8Q5+eGMrkIqtq4VUtP2bGFmikf3MPW3S48LT2gS2rfUp0xKF97hB0DQvN2/lSGzRXa
-         z55GlkJifI6DkdajE0cap5zxEDAmgzXRzB5emEuvbctHnzD1Slo6kYB4dUUgxRLjvHfu
-         C4quEepkL9fXiDU6QlsWw37/xgQM1uDTTSexqtg9Qlf/JoMNbl2vK/b3yLc2kKBlTh7a
-         2DIb9EwdIXXPEI8063/vk6KrF9aoSVrz7KDB4MIxYqn3Qf+aQHFcyLcQwM5CQmAEKp3s
-         aRsQ==
-X-Gm-Message-State: AOAM530rrdAoH0LB7xORFSQRX/UWpNC9wZDdNUG0EqQbqcbxEb0imLqq
-        MjTu5lu6+uqcbOJJ1oaBjqGILVqFmAW2Ua6f8Ck=
-X-Google-Smtp-Source: ABdhPJwq2FvYV2ksnd/O0Vb+e3WvsLK2XfW/bmYj/dRbtXqZH7pYu+o65EXAR/wLVSEtOK2wXj7aJ8DPArZ05yQ6V6o=
-X-Received: by 2002:aa7:d481:0:b0:42d:d5fd:f963 with SMTP id
- b1-20020aa7d481000000b0042dd5fdf963mr10219967edr.209.1654255816112; Fri, 03
- Jun 2022 04:30:16 -0700 (PDT)
+        bh=owTN0aQcdcUgazgPvq6N4wFStuHNmRQMmCcbBwwZW+s=;
+        b=Zlg0QP1it7S57DYOUsg5Kyf/BY1rRxioiNvagVA3ecmZIJKQGEScv2MLfwq6XxJU2+
+         XOQpZ4YhC5Decxm3LMSJ40z2DiDyRHOMsZzgKeEpNbgiG/EoTkdIibZe2rleyZ/ba8+/
+         cjowonS79OORRDLe4wOI9HKwYKEoYxkpuFN5JOlqqXoPlykfJNyjgwPZkpRpdiBPciVE
+         0yHi+YTMmbpAhiide7UbqmJmZmiw9FpgfVVWhqHO43gwFlT6wycqF6AWs0Q/WnDMfyF7
+         LN+JrJJaZDwtW3saVS4o7v3n8owSYw8x8h20EyzFzLdKeWB3MAZz5Ao1x/vAj3vnjCKr
+         Xp6w==
+X-Gm-Message-State: AOAM532CbfggNf1yhyAsVJGAAMbCnF5lnD5H7V838onJCW4c1W96g60t
+        kznO4Q3S2uubV+9ArEtmDwT/wbsHBT/FjXeXzaY=
+X-Google-Smtp-Source: ABdhPJxMO0cWwxeaz9vTcmQmU5laAX1W41VAnmwhwcW1584kflrY3XBrwZlVX97TZsY9L4Pq5tuSPk0j0opT2ooGjqA=
+X-Received: by 2002:aa7:c396:0:b0:42d:8b86:a8dc with SMTP id
+ k22-20020aa7c396000000b0042d8b86a8dcmr10035264edq.54.1654256284561; Fri, 03
+ Jun 2022 04:38:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-4-nuno.sa@analog.com>
-In-Reply-To: <20220602140400.213449-4-nuno.sa@analog.com>
+References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-5-nuno.sa@analog.com>
+In-Reply-To: <20220602140400.213449-5-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Jun 2022 13:29:40 +0200
-Message-ID: <CAHp75VeTZNEdokBZXDmGwf0zOqVQY9dnPmZ6_OPV8iKRdWsyPg@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/6] iio: treewide: explicitly add proper header files
+Date:   Fri, 3 Jun 2022 13:37:28 +0200
+Message-ID: <CAHp75VecehGSpv+KQgiowqTKo2kz8M_wUS14HHuDorrq1uc_xw@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/6] iio: inkern: split of_iio_channel_get_by_name()
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
@@ -106,25 +106,37 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
-> Apparently some drivers are relying on the fact that iio.h includes of.h
-> that in turn includes all the headers these drivers were relying on. Fix
-> it so that in a following patch we can make iio firmware agnostic and
-> remove of.h from iio.h.
-
-I believe it should be split on driver-basis.
+> This change splits of_iio_channel_get_by_name() so that it decouples
+> looking for channels in the current node from looking in it's parents
+> nodes. This will be helpful when moving to fwnode properties where we
+> need to release the handles when looking for channels in parent's nodes.
 
 ...
 
-> --- a/drivers/iio/adc/ingenic-adc.c
-> +++ b/drivers/iio/adc/ingenic-adc.c
-> @@ -18,6 +18,8 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/mutex.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
-> +#include <linux/of.h>
+> +       /*
+> +        * For named iio channels, first look up the name in the
+> +        * "io-channel-names" property.  If it cannot be found, the
+> +        * index will be an error code, and of_iio_channel_get()
+> +        * will fail.
+> +        */
+> +       if (name)
+> +               index =3D of_property_match_string(np, "io-channel-names"=
+, name);
+> +
+> +       chan =3D of_iio_channel_get(np, index);
+> +       if (!IS_ERR(chan) || PTR_ERR(chan) =3D=3D -EPROBE_DEFER) {
+> +               *parent_lookup =3D false;
+> +       } else if (name && index >=3D 0) {
 
-Ordering?
+> +               pr_err("ERROR: could not get IIO channel %pOF:%s(%i)\n",
+> +                      np, name ? name : "", index);
+
+It's one TAB less now, means you may compress more on one line,
+including replacing
+name ? name : "" --> name ?: ""
+
+> +               *parent_lookup =3D false;
+> +       }
 
 --=20
 With Best Regards,

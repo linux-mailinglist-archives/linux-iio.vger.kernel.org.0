@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A1A353C931
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 13:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F06053C95C
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 13:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbiFCLRZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 07:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46570 "EHLO
+        id S244014AbiFCLaX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 07:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238794AbiFCLRQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:17:16 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADAD19FB6
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:17:15 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id 25so9443017edw.8
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:17:15 -0700 (PDT)
+        with ESMTP id S244028AbiFCLaS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:30:18 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AD53C701
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:30:17 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id z7so9735667edm.13
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=pYgPlNnTwHU2r14tFACTBhke5qQdbZd39FwPnYREGxE=;
-        b=NSuAakcLdC82enHkYFWJgaT2vX84I3wJbCiIgiHtUUb1td4LCUvg0TRi7XOu9LjWWe
-         ot+QDXlrr/nSZXPUNB30hclWFbeBHwZ8EcoZmOAYGCWAFGR8hKBzL76vjM2rN0eNsgot
-         qbPOQWUfoF4bhSxnDmvDsgFlqpQpMq4y5aruoD3F52yJ+4rvA+MU09TLUSPJotFJuhKt
-         ubvr6EZlhrHJK4IgutpInCKpqrFp2lI3Cs2oz7AmQtrcpUbvZKIPrIBohpmVSW609kuW
-         0OiYWW29drjSrvtpBLVvNcHM/fH4qZhT7FKplxEJ7h6n2WrrtM953UiEYzdTiMzpGFkt
-         UeKQ==
+        bh=YuoJXxYg+ultqKI/rbWfpD2nyRsY8FPC3rrrS/V1lBI=;
+        b=V+VvP6BdV6VIvqj8hvvKykGKwuS0sqSLkRojjzXqm5nNMKIRk4YFHt2RtVq+d7EZtG
+         mE3gQcT/3bMcYeuEyxlxJT92bdrFMs5EAVcqzHd1sR3xPoDNna1aqdXuglW6EJP4fo88
+         W0d7YHk9/2304kPZRUbSEh98gsi7vcQs7SOjy6rV5oGzV2tD/4Z05uB2TA/34WAr3ceV
+         T7MhvUN/sisOq1DpDeAJTp6hAaw9ewL2vHcmy8zhCA+nXuM8SOQTGYFAaR32rfVwU93f
+         mWurMieWDYEXuqdxhrS1wTkoShM6M+O0BZ219PKPnGyClt3M0ycxE+sPuXTPxrCTSGpZ
+         zKvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=pYgPlNnTwHU2r14tFACTBhke5qQdbZd39FwPnYREGxE=;
-        b=acRzXdP2HNe4bb34gtQcY5zTsaVaVNcEOc8lLP22K5F9lF+EYbI2zjlUVEZ68mUGI5
-         go9pWO8w5B90TpO1ZnZz7quQn1sv5U9u+OKdlUiqoWVCL6R8shCsAsfvul37RO7Ssvlb
-         w8ls5kozLXPwID8wzxj0Lc8WdzaxAIRh7096pp8/GlSXkLZqucu89NrGn1K2HJRAhk8F
-         tVkX7gcoKGmlkmk2zAakaqolqRRUrd9pJrvQ25LyF7gx8MR4pO5sl6N9RaasemtucT7m
-         b3hhzFSNnXrMQ9yoWygPHSH+4Y186eu7Sv7+Rrw2a1VtEavLX7iXY7Hm6LU9750DtdcF
-         5jMA==
-X-Gm-Message-State: AOAM533pvX0QqpT74bL6QUdN0qRsbNGA+x+jgu5dJTsrhQ6+UlVf/WZF
-        FQRZP3I360VNPeMq878/mxex9joIDuOo6qEXChiUpAmT9qqo2g==
-X-Google-Smtp-Source: ABdhPJxjyko3Y8t0yYqCQwCwF91HH+T5EqzvMG6Mzj83ezqADxQ5tKW8a2Pq8c0F/6VKTUobDzzS+5OucXB3WyxcKr0=
-X-Received: by 2002:aa7:c396:0:b0:42d:8b86:a8dc with SMTP id
- k22-20020aa7c396000000b0042d8b86a8dcmr9935679edq.54.1654255034136; Fri, 03
- Jun 2022 04:17:14 -0700 (PDT)
+        bh=YuoJXxYg+ultqKI/rbWfpD2nyRsY8FPC3rrrS/V1lBI=;
+        b=HupbMOHA7h0nz36sdr+mK8T7kUjVeJrCC+g7ts9CnrW7ChcLkG9fRm7x3U+w4k3bpK
+         3u8Q5+eGMrkIqtq4VUtP2bGFmikf3MPW3S48LT2gS2rfUp0xKF97hB0DQvN2/lSGzRXa
+         z55GlkJifI6DkdajE0cap5zxEDAmgzXRzB5emEuvbctHnzD1Slo6kYB4dUUgxRLjvHfu
+         C4quEepkL9fXiDU6QlsWw37/xgQM1uDTTSexqtg9Qlf/JoMNbl2vK/b3yLc2kKBlTh7a
+         2DIb9EwdIXXPEI8063/vk6KrF9aoSVrz7KDB4MIxYqn3Qf+aQHFcyLcQwM5CQmAEKp3s
+         aRsQ==
+X-Gm-Message-State: AOAM530rrdAoH0LB7xORFSQRX/UWpNC9wZDdNUG0EqQbqcbxEb0imLqq
+        MjTu5lu6+uqcbOJJ1oaBjqGILVqFmAW2Ua6f8Ck=
+X-Google-Smtp-Source: ABdhPJwq2FvYV2ksnd/O0Vb+e3WvsLK2XfW/bmYj/dRbtXqZH7pYu+o65EXAR/wLVSEtOK2wXj7aJ8DPArZ05yQ6V6o=
+X-Received: by 2002:aa7:d481:0:b0:42d:d5fd:f963 with SMTP id
+ b1-20020aa7d481000000b0042dd5fdf963mr10219967edr.209.1654255816112; Fri, 03
+ Jun 2022 04:30:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-2-nuno.sa@analog.com>
-In-Reply-To: <20220602140400.213449-2-nuno.sa@analog.com>
+References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-4-nuno.sa@analog.com>
+In-Reply-To: <20220602140400.213449-4-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Jun 2022 13:16:37 +0200
-Message-ID: <CAHp75VftW=mR17gh=LiODYb7GyGbFFyH7pvpu-WarHL8MXjWZw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/6] iio: inkern: fix return value in devm_of_iio_channel_get_by_name()
+Date:   Fri, 3 Jun 2022 13:29:40 +0200
+Message-ID: <CAHp75VeTZNEdokBZXDmGwf0zOqVQY9dnPmZ6_OPV8iKRdWsyPg@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/6] iio: treewide: explicitly add proper header files
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
@@ -71,6 +71,7 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Wan Jiabing <wanjiabing@vivo.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Amit Kucheria <amitk@kernel.org>,
         Andy Gross <agross@kernel.org>,
@@ -90,8 +91,7 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Benjamin Fair <benjaminfair@google.com>,
         Thara Gopinath <thara.gopinath@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Baryshkov <dmitry.baryshkov@linaro.org>
+        Shawn Guo <shawnguo@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -106,29 +106,25 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
-> of_iio_channel_get_by_name() can either return NULL or an error pointer
-> so that only doing IS_ERR() is not enough. Fix it by checking the NULL
-> pointer case and return -ENODEV in that case. Note this is done like this
-> so that users of the function (which only check for error pointers) do
-> not need to be changed. This is not ideal since we are losing error codes
-> and as such, in a follow up change, things will be unified so that
-> of_iio_channel_get_by_name() only returns error codes.
+> Apparently some drivers are relying on the fact that iio.h includes of.h
+> that in turn includes all the headers these drivers were relying on. Fix
+> it so that in a following patch we can make iio firmware agnostic and
+> remove of.h from iio.h.
+
+I believe it should be split on driver-basis.
 
 ...
 
->         channel =3D of_iio_channel_get_by_name(np, channel_name);
-> -       if (IS_ERR(channel))
-> +       if (IS_ERR_OR_NULL(channel)) {
-> +               if (!channel)
-> +                       return ERR_PTR(-ENODEV);
->                 return channel;
-> +       }
+> --- a/drivers/iio/adc/ingenic-adc.c
+> +++ b/drivers/iio/adc/ingenic-adc.c
+> @@ -18,6 +18,8 @@
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/mutex.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/of.h>
 
-Why not make it not nested, i.e. just adding two lines after the existing c=
-heck?
-if (!channel)
-  return -ENODEV;
-
+Ordering?
 
 --=20
 With Best Regards,

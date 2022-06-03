@@ -2,138 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 495D353CA3E
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 14:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91ED353CAFB
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 15:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236718AbiFCMx7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 08:53:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
+        id S244863AbiFCN4k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 09:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbiFCMx7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 08:53:59 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA3E36E08
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 05:53:58 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id z17so4057287wmf.1
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 05:53:57 -0700 (PDT)
+        with ESMTP id S240660AbiFCN4j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 09:56:39 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA439393F4;
+        Fri,  3 Jun 2022 06:56:38 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id d5-20020a05600c34c500b0039776acee62so4849414wmq.1;
+        Fri, 03 Jun 2022 06:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=YTs8VPz/2AXsPXPG75ovAhF2/Afdm8hhmMlI0rs55Wg=;
-        b=aAqvYEENzt47DWV29dlCRYNTmDyzRoxUGK4lBhop2LwAVIQ9W8NxTnwZ72XpBgAb7d
-         azA51aARw1tb/thWN/YV3aSnKq89xo6U9MQJaXNQ2hEgcHONsxm5OJ6VIjELtfDsx2Jc
-         InYNKSdCvGqTKOWrwGnXBQ+lLDWKXCYSxtcGcUCJDWGhM+u7grJhGTrXeglxUH7KCvDu
-         jc/3ZCsxqmNWK6znRMzHSN/rhBS5B+njAI11OQNe/S5i6JLO9FUnmc/fFyQduWqb/JcJ
-         G4XIo7SOSJpnD7EZ0wS0sN3UGSZ/U2IXxMMvE1AtWfRNh7M54pPx/AcRtZ16VF+u93BP
-         RqPQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3Sl8htrp7f/bLQiWVIbkoPljNFJKTHKXwOdHEn31bUE=;
+        b=Rfl2TG6tufeeHWTdJNH1teNKgbTh0MtiZmWo+kzB4eCOJ2483TD38xdDYLBPK3hgmu
+         cecrH2INclg+a1G4+bEpeQzYVzSuA06+xcxF1XHzqqzuZ+vncQ/LaxGH+cCJAuB4BkuR
+         RCimEb3oiFE/mlYGs5eMwEtsyFNwPFGdDlir6oG+QzbXHyXWCusP9DSnGpCf7Zm5XtrW
+         eMBkxfziiclXALG6gnXIW8hNrcE0jjJPdyf6wm9qUWaYO2J5y/53SSz5B5bsc5Tj6+8f
+         bkTvIh7JRKaQzVnoSl31hZGZgkss6Kol9fmwlEHySpO31diwAtTE4xjMuh21csa6AbM1
+         kY7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=YTs8VPz/2AXsPXPG75ovAhF2/Afdm8hhmMlI0rs55Wg=;
-        b=TYqwcJCal9qbXyK0PZwEeUJZgKa1MoAUsco0WvxtFnFDA43eU72ypwZhGkskKTzFqF
-         D4gLGJsAGjVEaqpTF8+jAiHawkthYxEyXy5m7IXfbw47vGhHBfjq4lKnTbzfnDgv+gSM
-         2ofQHbfMpjJRkZmAJtWNzbPZm+OWkK9Vz0iw2o9QtXtpyqldTN+tRRaPkTRNeqeBGaD4
-         Kfi6ScKm9vHdWkDBOL2gGvsflCpxD/LIlUdxsjZ8y/0gQtr4t/AHRO8wWNehLkrCMQ5M
-         PTtiD2wf/LXT4jt9eoPsWaKgIXm6JMe3qlM5EshdCJKx0HdYvR06HWJU2OPywYf5vwAO
-         hSBw==
-X-Gm-Message-State: AOAM532g+2Osp2F+kI1f0OnGAeNYyZViOVCboCCdPrgE7UB2h1tk45HI
-        plnTIPHb1GkxoAJDVQpVKBo=
-X-Google-Smtp-Source: ABdhPJwleoAOhfXycXCNvyOQWrMtvVps8uyzJgaWZus6RKqmahjSgR/yQ/+XMgPxLav3YIC9MYeIFQ==
-X-Received: by 2002:a7b:c114:0:b0:397:506f:262c with SMTP id w20-20020a7bc114000000b00397506f262cmr37131430wmi.56.1654260836570;
-        Fri, 03 Jun 2022 05:53:56 -0700 (PDT)
-Received: from p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de (p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de. [2003:f6:ef02:1900:8f43:42cb:e8c8:c65c])
-        by smtp.gmail.com with ESMTPSA id b15-20020adfde0f000000b002103136623esm7597018wrm.85.2022.06.03.05.53.53
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3Sl8htrp7f/bLQiWVIbkoPljNFJKTHKXwOdHEn31bUE=;
+        b=4ioIsJbeP3CHuVakHpl6pqYn1PrluuJxr0znYfkvGccoAQRBlsdDHxr6ufIq86ioWA
+         CupmLlh2qMgIxGLsH3lg47CwcTBcIAKAsKespPMQU96+5cDNGnCipRX+ejOK/G1Ej8wr
+         5k03F7MCaOnWgaZqHNktccjJgGzVsDIwjBPRYn4ZOU2gl3/bEihWWubhNan097m/jJKZ
+         jEX95vJ3QvIcLjHtpjwlBMZtnN0f/OKTd5Iz7Kmlk7PFfo73eh1M7Q1c5l2kCAZtShKy
+         o9S9+e6i5h49DVwDoAigLBioDAbGHE+rfsMC2QVkhw1zsyuniErN2KFM15nMxkmiPFxp
+         uxJA==
+X-Gm-Message-State: AOAM532EdovK/dkY9BacY64FX4pDw7dRLSMDdMYlwyzAbcp0bqfKS7Kq
+        52RYnccggpH+47JytlcDZrE=
+X-Google-Smtp-Source: ABdhPJx3G6JcPO9f9Lx4lp6MC10FrxhY916fG6pxQTVuviBsQL7JtetKaQbK8nZ3y/6LrE/2wleVRA==
+X-Received: by 2002:a05:600c:1d91:b0:39c:2d34:34e with SMTP id p17-20020a05600c1d9100b0039c2d34034emr7483879wms.55.1654264597300;
+        Fri, 03 Jun 2022 06:56:37 -0700 (PDT)
+Received: from localhost (92.40.203.126.threembb.co.uk. [92.40.203.126])
+        by smtp.gmail.com with ESMTPSA id ay1-20020a5d6f01000000b0020fee88d0f2sm9596400wrb.0.2022.06.03.06.56.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jun 2022 05:53:56 -0700 (PDT)
-Message-ID: <46d4d0062324846faf65c697dcb10e4e53305edf.camel@gmail.com>
-Subject: Re: [RFC PATCH 5/6] iio: inkern: move to fwnode properties
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Benson Leung <bleung@chromium.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Wan Jiabing <wanjiabing@vivo.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Patrick Venture <venture@google.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Shawn Guo <shawnguo@kernel.org>
-Date:   Fri, 03 Jun 2022 14:54:49 +0200
-In-Reply-To: <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com>
-References: <20220602140400.213449-1-nuno.sa@analog.com>
-         <20220602140400.213449-6-nuno.sa@analog.com>
-         <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.2 
+        Fri, 03 Jun 2022 06:56:36 -0700 (PDT)
+From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+To:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com
+Cc:     lars@metafoo.de, rafael@kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 00/10] Add support for AXP192 PMIC
+Date:   Fri,  3 Jun 2022 14:57:04 +0100
+Message-Id: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2022-06-03 at 13:57 +0200, Andy Shevchenko wrote:
-> On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->=20
-> ...
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 parent =3D fwnode_get_parent(fwno=
-de);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 while (parent) {
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 parent =3D fwnode_get_next_parent(parent);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->=20
-> Forgot to mention:
->=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3D87ffea09470d94c93dd6a5a22d4b2216b395d1ea
->=20
+Hi all,
 
-I did looked for something like that but it's still not in the IIO
-testing tree.
+This patch series adds support for the X-Powers AXP192 PMIC to the
+AXP20x driver framework.
 
-(still I actually followed that patchset but completely forgot about
-the helper)
+The first patch is a small change to regmap-irq to support the AXP192's
+unusual IRQ register layout. It isn't possible to include all of the
+IRQ registers in one regmap-irq chip without this.
 
-- Nuno S=C3=A1
+The rest of the changes are pretty straightforward, I think the only
+notable parts are the axp20x_adc driver where there seems to be some
+opportunities for code reuse (the axp192 is nearly a duplicate of the
+axp20x) and the addition of a new pinctrl driver for the axp192, since
+the axp20x pinctrl driver was not very easy to adapt.
+
+Aidan MacDonald (10):
+  regmap-irq: Add get_irq_reg to support unusual register layouts
+  dt-bindings: mfd: add bindings for AXP192 MFD device
+  dt-bindings: iio: adc: axp209: Add AXP192 compatible
+  dt-bindings: power: supply: axp20x: Add AXP192 compatible
+  dt-bindings: gpio: Add AXP192 GPIO bindings
+  mfd: axp20x: Add support for AXP192
+  regulator: axp20x: Add support for AXP192
+  iio: adc: axp20x_adc: Add support for AXP192
+  power: supply: axp20x_usb_power: Add support for AXP192
+  pinctrl: Add AXP192 pin control driver
+
+ .../bindings/gpio/x-powers,axp192-gpio.yaml   |  59 ++
+ .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+ .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+ .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+ drivers/base/regmap/regmap-irq.c              |  19 +-
+ drivers/iio/adc/axp20x_adc.c                  | 289 ++++++++-
+ drivers/mfd/axp20x-i2c.c                      |   2 +
+ drivers/mfd/axp20x.c                          | 150 +++++
+ drivers/pinctrl/Kconfig                       |  14 +
+ drivers/pinctrl/Makefile                      |   1 +
+ drivers/pinctrl/pinctrl-axp192.c              | 589 ++++++++++++++++++
+ drivers/power/supply/axp20x_usb_power.c       |  75 ++-
+ drivers/regulator/axp20x-regulator.c          | 101 ++-
+ include/linux/mfd/axp20x.h                    |  84 +++
+ include/linux/regmap.h                        |   5 +
+ 15 files changed, 1375 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
+ create mode 100644 drivers/pinctrl/pinctrl-axp192.c
+
+-- 
+2.35.1
+

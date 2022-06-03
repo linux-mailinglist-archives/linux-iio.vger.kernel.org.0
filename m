@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FF5053C9A4
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 14:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E0053CA11
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 14:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238386AbiFCL5u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 07:57:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
+        id S230159AbiFCMf1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 08:35:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243652AbiFCL5s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 07:57:48 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0240721814
-        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 04:57:48 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id q1so15456961ejz.9
-        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 04:57:47 -0700 (PDT)
+        with ESMTP id S229793AbiFCMf0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 08:35:26 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A98D33700F
+        for <linux-iio@vger.kernel.org>; Fri,  3 Jun 2022 05:35:24 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id m32-20020a05600c3b2000b0039756bb41f2so4265820wms.3
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jun 2022 05:35:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=GAiNawLk5ifUkYwy9NLxfWrPLQp41DKaqb5X0zwydAc=;
-        b=clH62Z6hiO2gYOqWJlqrzhvxlX8GUnYL7ghoRIqKWoZ0lZ8aUpOYBo6ivzAiaHU0sz
-         LUsKPdqnIt2LNZ7u7uYJrPXjoJ5KEiM289NJK/UrAMJ2w597IRL44XmXWlMXHN7MH2jU
-         rysTh4jZbNFGEV2Y6jQyeH5aANZsVzNgfUoZy0G2MqHrUz2W0q0/nQVEDthj4RpK6/Kv
-         sPWQpBY85dFlgk8b/GKTQVyxUg5crtJ28zA0qoq/CaSBg4HU8XX6N+mAW025McI9VFVO
-         yubCQPFtN5JuEOI39sZIHWLuEqOe//+PiY/r5doNX7sDy7Fm99Z2Kr6pTK/O+F2DHqio
-         PRbQ==
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=fILpbKwSVybK14RohutE7tjq0XvbmfDBqKV5mmTQXRs=;
+        b=aZJm3na+2kdj7l+z6szBug/mlEbeOTJBkiMHtqPaiL/dXHUsmcDZT2HbhPpEgJ3xGz
+         WTlzEzzwE9uP6HyQIvs/63wvcuEjDVnMnwJ7ZSlrmvHYi3joe1U13WBR8D5o7nB9D+BR
+         vAKlE5X5bBSJJNTc2J4SqOf3FoxfyzHNnsO2uEKkOWtzkOB8gZ0ib70clY7+4kluTE3a
+         /aZvBg996RhzLz2JifLwB89aEKXilHvuZ2EM6SI7tEYAwQ++GeuE0UWqXEjZp0ROPjE5
+         CE5DwiqJb10PvU1T9piLmAHA0Nh0NnQnCjt+v7bp24YeuCCBpuMFe70PdaQ7Z8PFxOm+
+         jgKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=GAiNawLk5ifUkYwy9NLxfWrPLQp41DKaqb5X0zwydAc=;
-        b=ZNtT+YAhvktToOMR/wuF9CeaddAkkeK+vtbidYfqdI85RO/6NoLP/6v4ywR/EieQho
-         xpIYGdFNGphD58dYyrw9u2lDhjr6FRZREZftRUQLUQycm44S1/oaZ8hRoBGS171nxFff
-         zW1lt/AjULxttY7+vu1QKUpyALXxpC8yuFHA+1l9joXWD0KSOv4ZvHS6vX5xE/o5xMS7
-         FJmREXdwr5PyLIAKhs0EKFN7MAsBCStArS+SfqrifQj3+0hUkle7kVBqtxKlF7taDkA4
-         ehnJmbj4biNZv3CC9AJhzy/YjGmAh0Sl/Iis1yAQe8V8W2AuFafxn1GDBPmAeGPoijFs
-         VyGA==
-X-Gm-Message-State: AOAM533Dwdrn7Albm3KUCD4gSi0ocaertsuXiG5rzh4jy3WBpAoc7kQc
-        U8kjBdX51qDauNvsBBIZOc+o6hkRxDRAQtavzPM=
-X-Google-Smtp-Source: ABdhPJxC53U3o3hPjlo88W+VHGiS2k+weJaggsT8GPQFURDHg7IAXl3F/BlYFKXcNQ7nk6KeAgp9BvrAhtQ9JZfgiBg=
-X-Received: by 2002:a17:907:868e:b0:6fa:2fe2:92d6 with SMTP id
- qa14-20020a170907868e00b006fa2fe292d6mr8403764ejc.639.1654257465801; Fri, 03
- Jun 2022 04:57:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220602140400.213449-1-nuno.sa@analog.com> <20220602140400.213449-6-nuno.sa@analog.com>
-In-Reply-To: <20220602140400.213449-6-nuno.sa@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 3 Jun 2022 13:57:09 +0200
-Message-ID: <CAHp75Vc5DzQTd8hOydc5jn8BUGQFf=06Sad749387TYuHTTxew@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/6] iio: inkern: move to fwnode properties
-To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=fILpbKwSVybK14RohutE7tjq0XvbmfDBqKV5mmTQXRs=;
+        b=gzMqzMWH/y7zNyJbjJmteWk96DEHXgbVvjyk6bmaGyzzqN0YSZHP4Vkojuh+ZQNinF
+         yT1FhHfjtfI/NhHaeya8Y3LRPgh37WIBpIBBcrpZW5IepxI8fGUnAvb88mQGVPLAyOIO
+         DBsZg9mQCbV2p5DAYzjIcAlTCWwTjibq0+o0O2Bu81285OqTaokH+hVsuifjakLJjkHC
+         o5C6kv0HnrCk8GGV7uEW8ciEsTs37UM96kQOZ8VCnEBs5AoRCRVG2uSwe1W3K+BzbIuM
+         0zq/GaaQGYSOu2jDNMAj3JoML+m4WqVB1dSnadXOCx4/1B47GP8yIDebI1YNyDDNEamn
+         InGg==
+X-Gm-Message-State: AOAM533aTc5R3AyI2cqMdgqn7mZEsV707cIzyZzXkyfK0bSLRxy5FUrw
+        xUopfvSAHH76qOk56cRbqAI=
+X-Google-Smtp-Source: ABdhPJxtCw1OsXhHeXd4iCUF+tkyME2LbwtmMy+tr8szOUALpp3YQjZG75eoYjaiJq0GT/ECiGubIg==
+X-Received: by 2002:a05:600c:4618:b0:397:84aa:5585 with SMTP id m24-20020a05600c461800b0039784aa5585mr8510827wmo.21.1654259723048;
+        Fri, 03 Jun 2022 05:35:23 -0700 (PDT)
+Received: from p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de (p200300f6ef0219008f4342cbe8c8c65c.dip0.t-ipconnect.de. [2003:f6:ef02:1900:8f43:42cb:e8c8:c65c])
+        by smtp.gmail.com with ESMTPSA id r63-20020a1c2b42000000b003971fc23185sm11587121wmr.20.2022.06.03.05.35.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jun 2022 05:35:22 -0700 (PDT)
+Message-ID: <1e5b07dfa4d703ba1faff319be047fbd8b211f56.camel@gmail.com>
+Subject: Re: [RFC PATCH 1/6] iio: inkern: fix return value in
+ devm_of_iio_channel_get_by_name()
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
@@ -71,7 +72,6 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Wan Jiabing <wanjiabing@vivo.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Gwendal Grignou <gwendal@chromium.org>,
         Amit Kucheria <amitk@kernel.org>,
         Andy Gross <agross@kernel.org>,
@@ -91,9 +91,17 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Benjamin Fair <benjaminfair@google.com>,
         Thara Gopinath <thara.gopinath@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>,
-        Shawn Guo <shawnguo@kernel.org>
+        Shawn Guo <shawnguo@kernel.org>,
+        Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Fri, 03 Jun 2022 14:36:15 +0200
+In-Reply-To: <CAHp75VftW=mR17gh=LiODYb7GyGbFFyH7pvpu-WarHL8MXjWZw@mail.gmail.com>
+References: <20220602140400.213449-1-nuno.sa@analog.com>
+         <20220602140400.213449-2-nuno.sa@analog.com>
+         <CAHp75VftW=mR17gh=LiODYb7GyGbFFyH7pvpu-WarHL8MXjWZw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.2 
+MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -104,21 +112,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Fri, 2022-06-03 at 13:16 +0200, Andy Shevchenko wrote:
+> On Thu, Jun 2, 2022 at 4:04 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> >=20
+> > of_iio_channel_get_by_name() can either return NULL or an error
+> > pointer
+> > so that only doing IS_ERR() is not enough. Fix it by checking the
+> > NULL
+> > pointer case and return -ENODEV in that case. Note this is done
+> > like this
+> > so that users of the function (which only check for error pointers)
+> > do
+> > not need to be changed. This is not ideal since we are losing error
+> > codes
+> > and as such, in a follow up change, things will be unified so that
+> > of_iio_channel_get_by_name() only returns error codes.
+>=20
+> ...
+>=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 channel =3D of_iio_channel_g=
+et_by_name(np, channel_name);
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ERR(channel))
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ERR_OR_NULL(channel)) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (!channel)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ERR_=
+PTR(-ENODEV);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return channel;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> Why not make it not nested, i.e. just adding two lines after the
+> existing check?
+> if (!channel)
+> =C2=A0 return -ENODEV;
+>=20
+>=20
 
-...
+I see, well yeah I guess I can do it so the diff is even smaller...
 
-> +       parent =3D fwnode_get_parent(fwnode);
-> +       while (parent) {
+- Nuno S=C3=A1
 
-> +               parent =3D fwnode_get_next_parent(parent);
->         }
-
-Forgot to mention:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D87ffea09470d94c93dd6a5a22d4b2216b395d1ea
-
---=20
-With Best Regards,
-Andy Shevchenko

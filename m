@@ -2,49 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09FE353CDF5
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 19:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1178053CDF7
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jun 2022 19:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238989AbiFCRRc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 3 Jun 2022 13:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
+        id S238474AbiFCRTr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 3 Jun 2022 13:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344314AbiFCRRa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 13:17:30 -0400
+        with ESMTP id S234443AbiFCRTq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 3 Jun 2022 13:19:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81B9852B05;
-        Fri,  3 Jun 2022 10:17:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B999952536;
+        Fri,  3 Jun 2022 10:19:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0A6861A91;
-        Fri,  3 Jun 2022 17:17:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD596C385B8;
-        Fri,  3 Jun 2022 17:17:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5336861A7F;
+        Fri,  3 Jun 2022 17:19:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C5CC385B8;
+        Fri,  3 Jun 2022 17:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654276648;
-        bh=25W8vm1WR/xlJug3mdevOmNy9GipHwHhqTX4oo5o8Lo=;
+        s=k20201202; t=1654276783;
+        bh=yZaP5JwNf7HCqFEG529ib9QFmep3oDKSCc6iCmQJhj4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oSNaJW2ph29l1IqDszjEUzTPPnWLFCgcEl5UcGTo2DZNM6jLQLYG1BI5FiIVK6Jkn
-         HaSYPERhS76bCLotVOgii5sFp8KTL+1Dmke0YxeIbpvBzRY55sRQ+Ozf8bUIlq+J7i
-         MJUBiUMFUj+Hmi7WorZ3KajlirTpL2enviCl3NuiVGaGpleqIdwUstAe28UF6Ldx/r
-         V1kjgBflys5lnkzbm5Kp+sGCTqSz0D9ZD58M/7zzLpA4we8EzjU1FcW1zpRIUphZBG
-         R9+oW3Mc0la5vM0wV5mCU9ckgmmAXoA9V7pI/RHVmbCIbZWoEpXJbsit1XKtOQWW3a
-         GIfOe6x3Sc8dQ==
-Date:   Fri, 3 Jun 2022 18:26:28 +0100
+        b=fguOluzXlQQFZcg2tjsK3W1T8Txt+PLLyICgZn5MfU+mqerRyRvS/d7L9bEGOpJKl
+         upWNZGJxXZTtz4MPl2uSgmPFDP/UGYb3iVXF3w8UWdfLb3rIcQV/1Tmt1CNd2CyzRB
+         lqXShkJlMs/58+2Rg0O49hwaJb/mE/FuhquuIKh1Kz9cytrMhU98eOrzNCivnssEZ7
+         CXVpyYC+JTlRjYH29wRiUqkVOnFsk/m4lUZxhG/iW1fEne4UQI6m5JD6SyDxEhbFx7
+         /9kmjzJGzLX+HVZ5p8sfJ5gIn/89xVXYvlyCMAWVPE/HAf/AuMzCtmaAsD024TyD43
+         eyc8Upe2M0cXA==
+Date:   Fri, 3 Jun 2022 18:28:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        =?UTF-8?B?QW5kcsOp?= Gustavo Nakagomi Lopez <andregnl@usp.br>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Vladimir Zapolskiy <vz@mleia.com>
-Subject: Re: [PATCH v1 1/1] iio: adc: lpc18xx_adc: Switch from of headers to
- mod_devicetable.h
-Message-ID: <20220603182628.36f3a170@jic23-huawei>
-In-Reply-To: <20220531212218.72189-1-andriy.shevchenko@linux.intel.com>
-References: <20220531212218.72189-1-andriy.shevchenko@linux.intel.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH v1 1/1] iio: dac: ad5592r: Get rid of OF specifics
+Message-ID: <20220603182844.23da48f2@jic23-huawei>
+In-Reply-To: <20220531135320.63096-1-andriy.shevchenko@linux.intel.com>
+References: <20220531135320.63096-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,48 +56,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  1 Jun 2022 00:22:18 +0300
+On Tue, 31 May 2022 16:53:20 +0300
 Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> There is nothing directly using of specific interfaces in this driver,
-> so lets not include the headers.
-> 
-> While at it, drop dependency to OF, which currently makes no sense.
+> Use dev_fwnode() instead of direct OF node dereference when checking
+> for regulator API error code.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Applied
 > ---
->  drivers/iio/adc/Kconfig       | 2 +-
->  drivers/iio/adc/lpc18xx_adc.c | 3 +--
->  2 files changed, 2 insertions(+), 3 deletions(-)
+>  drivers/iio/dac/ad5592r-base.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 448ae243cd31..b9e913e25a5d 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -562,7 +562,7 @@ config LP8788_ADC
->  config LPC18XX_ADC
->  	tristate "NXP LPC18xx ADC driver"
->  	depends on ARCH_LPC18XX || COMPILE_TEST
-> -	depends on OF && HAS_IOMEM
-> +	depends on HAS_IOMEM
->  	help
->  	  Say yes here to build support for NXP LPC18XX ADC.
+> diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+> index 4434c1b2a322..7a9b5fc1e579 100644
+> --- a/drivers/iio/dac/ad5592r-base.c
+> +++ b/drivers/iio/dac/ad5592r-base.c
+> @@ -603,7 +603,7 @@ int ad5592r_probe(struct device *dev, const char *name,
 >  
-> diff --git a/drivers/iio/adc/lpc18xx_adc.c b/drivers/iio/adc/lpc18xx_adc.c
-> index ae9c9384f23e..42e6cd6fa6f7 100644
-> --- a/drivers/iio/adc/lpc18xx_adc.c
-> +++ b/drivers/iio/adc/lpc18xx_adc.c
-> @@ -17,10 +17,9 @@
->  #include <linux/iio/driver.h>
->  #include <linux/io.h>
->  #include <linux/iopoll.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/regulator/consumer.h>
+>  	st->reg = devm_regulator_get_optional(dev, "vref");
+>  	if (IS_ERR(st->reg)) {
+> -		if ((PTR_ERR(st->reg) != -ENODEV) && dev->of_node)
+> +		if ((PTR_ERR(st->reg) != -ENODEV) && dev_fwnode(dev))
+>  			return PTR_ERR(st->reg);
 >  
+>  		st->reg = NULL;
 

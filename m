@@ -2,46 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A1953D7A6
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jun 2022 18:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B6B53D7A9
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jun 2022 18:13:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237901AbiFDQM2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jun 2022 12:12:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60176 "EHLO
+        id S238031AbiFDQNI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jun 2022 12:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230079AbiFDQM1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jun 2022 12:12:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C383F2F393;
-        Sat,  4 Jun 2022 09:12:26 -0700 (PDT)
+        with ESMTP id S230079AbiFDQNH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jun 2022 12:13:07 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423C12F394;
+        Sat,  4 Jun 2022 09:13:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 79AD8B8069F;
-        Sat,  4 Jun 2022 16:12:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1E8C34119;
-        Sat,  4 Jun 2022 16:12:22 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id EC3DACE0936;
+        Sat,  4 Jun 2022 16:13:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50ADBC385B8;
+        Sat,  4 Jun 2022 16:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654359144;
-        bh=I8VlVQXjXLlp2GgiRWf6bxeQeuPAX7TTyjidHlAX0W8=;
+        s=k20201202; t=1654359182;
+        bh=vuLeWNtZJ8RsRpXAB7Rrc+9w0KJ1ynv7URHUu1GrFaQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nnCMDimlMCnE712voSSEiSnrEN9JFTac4EnpnJ2Q/bWz/1zk8lNO8m+H4bCdZxzYv
-         Qoxcc1C/zg5ECvySrx3p3iEyxZkzicegcaaVMx+NPhRczja0K7+QLFKtQh29CRq6tf
-         8y2K56jJ82W2JLuL5EfPKm/dYicbX6pnalswyWcnqCznLROBoomIVLVdjoiZIPukPP
-         GAGgjaXM7+0+QZ1P+CjwaF775rMvLr8Og9NB5gdp5j+f6Bn9mx8mkO9dHkZdJ8Hblg
-         WVWWp2m1w40GwhFZ0cAwlA5XbQz6fwgSVx6+yJCUInJcSWnJTmElwhfW+uzMEHGpo2
-         3xPAIpZJ4rVPA==
-Date:   Sat, 4 Jun 2022 17:21:26 +0100
+        b=fWHEpGLSMYZm4ML1+ujdAiqCjikcJKyuNA/U4dqNEqeopv3TFMKDMcnmXQLMp8YZj
+         nZl41da77RGNC/HfBAb1iM1OJvdI8eC7p0xmS9ZjbUpXiKAirsjO5MP9r3seJB7chh
+         MS0RX6t8yCe9+XU2kBhEpRv7H7Mfv2sXYtjv3SRliV0Z+ptjYHEfvMybQkvWryyMzH
+         JMVqTi6OVXjpBYgQyYgpV/7cxqvI//skBD0HxhaQ0pvrIG4uci6T0RfPvWS8J+0A8w
+         fSoccZOvGOsdOG182dI/SKlJuUGhLVL77OzAl+0SaxmVn0onocb1+Obv7xABFi/Exb
+         leyt0kDkMlfsw==
+Date:   Sat, 4 Jun 2022 17:22:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     robh+dt@kernel.org, swboyd@chromium.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 04/10] iio: sx9324: Add precharge internal resistance
- setting
-Message-ID: <20220604172126.1871be4d@jic23-huawei>
-In-Reply-To: <20220429220144.1476049-5-gwendal@chromium.org>
+        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v5 05/10] dt-bindings: iio: sx9324: Add internal
+ compensation resistor setting
+Message-ID: <20220604172203.506d69d2@jic23-huawei>
+In-Reply-To: <20220429220144.1476049-6-gwendal@chromium.org>
 References: <20220429220144.1476049-1-gwendal@chromium.org>
-        <20220429220144.1476049-5-gwendal@chromium.org>
+        <20220429220144.1476049-6-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,61 +56,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Apr 2022 15:01:38 -0700
+On Fri, 29 Apr 2022 15:01:39 -0700
 Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Add ability to set the precharge internal resistance from the device
-> tree.
+> Allow setting the internal resistor used for compensation.
 > 
 > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Applied
+> Acked-by: Rob Herring <robh@kernel.org>
+Applied.
 > ---
 > Changes since v4:
-> - Added missing tests when property is not found.
+> - no changes
 > 
 > Changes since v3:
 > - Added Review tags.
 > 
 > Changes since v2:
-> - Change kOhms into ohms.
+> - no changes
 > 
 > Changes since v1:
-> - Suffix field with kOhms unit.
-> - Split patch in 2.
+> - no changes
 > 
->  drivers/iio/proximity/sx9324.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  .../bindings/iio/proximity/semtech,sx9324.yaml         | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
-> index a7d9a53692a6d..8eec73f7641ee 100644
-> --- a/drivers/iio/proximity/sx9324.c
-> +++ b/drivers/iio/proximity/sx9324.c
-> @@ -72,6 +72,7 @@
->  #define SX9324_REG_AFE_CTRL8		0x2c
->  #define SX9324_REG_AFE_CTRL8_RESERVED	0x10
->  #define SX9324_REG_AFE_CTRL8_RESFILTIN_4KOHM 0x02
-> +#define SX9324_REG_AFE_CTRL8_RESFILTIN_MASK GENMASK(3, 0)
->  #define SX9324_REG_AFE_CTRL9		0x2d
->  #define SX9324_REG_AFE_CTRL9_AGAIN_1	0x08
+> diff --git a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> index d689b2bab71b4..0be87ac05b97a 100644
+> --- a/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> +++ b/Documentation/devicetree/bindings/iio/proximity/semtech,sx9324.yaml
+> @@ -126,6 +126,15 @@ properties:
+>        UINT_MAX (4294967295) represents infinite. Other values
+>        represent 1-1/N.
 >  
-> @@ -893,6 +894,18 @@ sx9324_get_default_reg(struct device *dev, int idx,
->  		reg_def->def |= FIELD_PREP(SX9324_REG_AFE_CTRL4_RESOLUTION_MASK,
->  					   raw);
->  		break;
-> +	case SX9324_REG_AFE_CTRL8:
-> +		ret = device_property_read_u32(dev,
-> +				"semtech,input-precharge-resistor-ohms",
-> +				&raw);
-> +		if (ret)
-> +			break;
+> +  semtech,int-comp-resistor:
+> +    description:
+> +      Internal resistor setting for compensation.
+> +    enum:
+> +      - lowest
+> +      - low
+> +      - high
+> +      - highest
 > +
-> +		reg_def->def &= ~SX9324_REG_AFE_CTRL8_RESFILTIN_MASK;
-> +		reg_def->def |= FIELD_PREP(SX9324_REG_AFE_CTRL8_RESFILTIN_MASK,
-> +					   raw / 2000);
-> +		break;
-> +
->  	case SX9324_REG_ADV_CTRL5:
->  		ret = device_property_read_u32(dev, "semtech,startup-sensor",
->  					       &start);
+>    semtech,input-precharge-resistor-ohms:
+>      default: 4000
+>      multipleOf: 2000
+> @@ -165,6 +174,7 @@ examples:
+>          semtech,ph01-proxraw-strength = <2>;
+>          semtech,ph23-proxraw-strength = <2>;
+>          semtech,avg-pos-strength = <64>;
+> +        semtech,int-comp-resistor = "lowest";
+>          semtech,input-precharge-resistor-ohms = <2000>;
+>        };
+>      };
 

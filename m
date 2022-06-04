@@ -2,45 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B912C53D7B2
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jun 2022 18:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BBCD53D7B4
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jun 2022 18:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238046AbiFDQRN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jun 2022 12:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39302 "EHLO
+        id S238078AbiFDQUJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jun 2022 12:20:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbiFDQRN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jun 2022 12:17:13 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF8360E9;
-        Sat,  4 Jun 2022 09:17:11 -0700 (PDT)
+        with ESMTP id S230027AbiFDQUJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jun 2022 12:20:09 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5680B3388C;
+        Sat,  4 Jun 2022 09:20:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 09009B8069F;
-        Sat,  4 Jun 2022 16:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C90BC385B8;
-        Sat,  4 Jun 2022 16:17:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1C7E7B802C7;
+        Sat,  4 Jun 2022 16:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8529EC385B8;
+        Sat,  4 Jun 2022 16:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654359428;
-        bh=nEeYiTSlxMDI3AR9zD/fk/tTDhm5zXZl+9DwgfzGx1Q=;
+        s=k20201202; t=1654359605;
+        bh=PE3Z/bGGTKYSm3vIXjeLGIwcHQHcqHXv+XN3i6CoFpo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=k9iUw47bArfPZ8VYa1vl2OYlMy/BBqu/NBW0bFQU5SPKpHeMVgiUrSenKlR4BxSSI
-         6i4R0RN5X3eQ5tARbabz7tM+gEBZL0k3Rfj4PBtyJzk3mwL3U0RuELBnE5YDD8YD6y
-         JL6TpQnkJ6JO8TA4sC+cNVd51Xdl7WWZjK27wJktMrVQMwQDIgJ3et/3pw16fUOBdw
-         JwjxeGbFqgDWrvcJ//g18exWFckakIi1ciNMUA50YqqCDCnEnYp+6o0DwtDfbXukJ0
-         TLe3z51scpl5tsrQOZgkt7udfRsgMogoXYO48XWfVdY5NJXRFrzySfx9iXv5uprlUi
-         J9eAipDgMj/Jg==
-Date:   Sat, 4 Jun 2022 17:26:10 +0100
+        b=LSFlZNoQ0Q9isOtG07ipQmLHDJi+mP+HyudDKGy3O4A/xV5UtSNVD+cXwHkZzE8TJ
+         2SUNDv3wck8I9fuNIxZ5S3GcpyvLfVV+iCWeMD7nKjOmYFBIYMtGtdqQpPWEdeHlBz
+         AMLD9UV2Gw1pdgrJqouDy3ADwpFfgV/jKKPWnoZVvveB1hmVXwdQgVfhFoV5D0qWQa
+         3nv28ePH1eGXOKI4kZ1OZuPtyHrO8/qpnlssPaGBcIIcsa52U6yXne624Tu5nEDuJ/
+         M6T1m+tkIrGOEdHFK3I+WqIIWgX3dH6ddKsqQO3WWDnHAbem7StVrJVhDOCq+x1J88
+         NF8zsOrOF6fnA==
+Date:   Sat, 4 Jun 2022 17:29:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     robh+dt@kernel.org, swboyd@chromium.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 10/10] iio: sx9360: Add pre-charge resistor setting
-Message-ID: <20220604172610.1f895c6f@jic23-huawei>
-In-Reply-To: <20220429220144.1476049-11-gwendal@chromium.org>
-References: <20220429220144.1476049-1-gwendal@chromium.org>
-        <20220429220144.1476049-11-gwendal@chromium.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: [PATCH v14 01/10] spmi: add a helper to look up an SPMI device
+ from a device node
+Message-ID: <20220604172905.36483a52@jic23-huawei>
+In-Reply-To: <20220501182323.7b672d8a@jic23-huawei>
+References: <20220429220904.137297-1-caleb.connolly@linaro.org>
+        <20220429220904.137297-2-caleb.connolly@linaro.org>
+        <20220501182323.7b672d8a@jic23-huawei>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,73 +66,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Apr 2022 15:01:44 -0700
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Sun, 1 May 2022 18:23:23 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Add ability to set the precharge internal resistance from the device
-> tree.
+> On Fri, 29 Apr 2022 23:08:56 +0100
+> Caleb Connolly <caleb.connolly@linaro.org> wrote:
 > 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+> > The helper function spmi_device_from_of() takes a device node and
+> > returns the SPMI device associated with it.
+> > This is like of_find_device_by_node but for SPMI devices.
+> > 
+> > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>   
+> 
+> Stephen, are you fine with this addition to spmi?
 
-Applied.  Thanks,
+Stephen.  This is still waiting for an SPMI ack.
+
+Thanks,
 
 Jonathan
 
-> ---
-> Changes since v4:
-> - Added missing tests when property is not found.
 > 
-> Changes since v3:
-> - Added Review tags.
+> Given bulk of this series in in IIO I'm planning to pick up once
+> everyone is happy with it.
 > 
-> Changes since v2:
-> - Change kOhms into ohms.
+> Thanks,
 > 
-> Changes since v1:
-> - Suffix field with kOhms unit.
+> Jonathan
 > 
->  drivers/iio/proximity/sx9360.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-> index 3ebb30c8a4f61..d9a12e6be6ca6 100644
-> --- a/drivers/iio/proximity/sx9360.c
-> +++ b/drivers/iio/proximity/sx9360.c
-> @@ -51,6 +51,8 @@
->  #define SX9360_REG_GNRL_REG_2_FREQ(_r)  (SX9360_FOSC_HZ / ((_r) * 8192))
->  
->  #define SX9360_REG_AFE_CTRL1		0x21
-> +#define SX9360_REG_AFE_CTRL1_RESFILTIN_MASK GENMASK(3, 0)
-> +#define SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS 0
->  #define SX9360_REG_AFE_PARAM0_PHR	0x22
->  #define SX9360_REG_AFE_PARAM1_PHR	0x23
->  #define SX9360_REG_AFE_PARAM0_PHM	0x24
-> @@ -671,7 +673,7 @@ static const struct sx_common_reg_default sx9360_default_regs[] = {
->  	{ SX9360_REG_GNRL_CTRL1, 0x00 },
->  	{ SX9360_REG_GNRL_CTRL2, SX9360_REG_GNRL_CTRL2_PERIOD_102MS },
->  
-> -	{ SX9360_REG_AFE_CTRL1, 0x00 },
-> +	{ SX9360_REG_AFE_CTRL1, SX9360_REG_AFE_CTRL1_RESFILTIN_0OHMS },
->  	{ SX9360_REG_AFE_PARAM0_PHR, SX9360_REG_AFE_PARAM0_RSVD |
->  		SX9360_REG_AFE_PARAM0_RESOLUTION_128 },
->  	{ SX9360_REG_AFE_PARAM1_PHR, SX9360_REG_AFE_PARAM1_AGAIN_PHM_6PF |
-> @@ -722,6 +724,17 @@ sx9360_get_default_reg(struct device *dev, int idx,
->  
->  	memcpy(reg_def, &sx9360_default_regs[idx], sizeof(*reg_def));
->  	switch (reg_def->reg) {
-> +	case SX9360_REG_AFE_CTRL1:
-> +		ret = device_property_read_u32(dev,
-> +				"semtech,input-precharge-resistor-ohms",
-> +				&raw);
-> +		if (ret)
-> +			break;
-> +
-> +		reg_def->def &= ~SX9360_REG_AFE_CTRL1_RESFILTIN_MASK;
-> +		reg_def->def |= FIELD_PREP(SX9360_REG_AFE_CTRL1_RESFILTIN_MASK,
-> +					   raw / 2000);
-> +		break;
->  	case SX9360_REG_AFE_PARAM0_PHR:
->  	case SX9360_REG_AFE_PARAM0_PHM:
->  		ret = device_property_read_u32(dev, "semtech,resolution", &raw);
+> > ---
+> >  drivers/spmi/spmi.c  | 17 +++++++++++++++++
+> >  include/linux/spmi.h |  3 +++
+> >  2 files changed, 20 insertions(+)
+> > 
+> > diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
+> > index b37ead9e2fad..a456ce5141e1 100644
+> > --- a/drivers/spmi/spmi.c
+> > +++ b/drivers/spmi/spmi.c
+> > @@ -386,6 +386,23 @@ static struct bus_type spmi_bus_type = {
+> >  	.uevent		= spmi_drv_uevent,
+> >  };
+> >  
+> > +/**
+> > + * spmi_device_from_of() - get the associated SPMI device from a device node
+> > + *
+> > + * @np:		device node
+> > + *
+> > + * Returns the struct spmi_device associated with a device node or NULL.
+> > + */
+> > +struct spmi_device *spmi_device_from_of(struct device_node *np)
+> > +{
+> > +	struct device *dev = bus_find_device_by_of_node(&spmi_bus_type, np);
+> > +
+> > +	if (dev)
+> > +		return to_spmi_device(dev);
+> > +	return NULL;
+> > +}
+> > +EXPORT_SYMBOL_GPL(spmi_device_from_of);
+> > +
+> >  /**
+> >   * spmi_controller_alloc() - Allocate a new SPMI device
+> >   * @ctrl:	associated controller
+> > diff --git a/include/linux/spmi.h b/include/linux/spmi.h
+> > index 729bcbf9f5ad..eac1956a8727 100644
+> > --- a/include/linux/spmi.h
+> > +++ b/include/linux/spmi.h
+> > @@ -164,6 +164,9 @@ static inline void spmi_driver_unregister(struct spmi_driver *sdrv)
+> >  	module_driver(__spmi_driver, spmi_driver_register, \
+> >  			spmi_driver_unregister)
+> >  
+> > +struct device_node;
+> > +
+> > +struct spmi_device *spmi_device_from_of(struct device_node *np);
+> >  int spmi_register_read(struct spmi_device *sdev, u8 addr, u8 *buf);
+> >  int spmi_ext_register_read(struct spmi_device *sdev, u8 addr, u8 *buf,
+> >  			   size_t len);  
+> 
 

@@ -2,52 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78E1353D7A1
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jun 2022 18:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 781CD53D7A3
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jun 2022 18:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236943AbiFDQIA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 4 Jun 2022 12:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55414 "EHLO
+        id S231224AbiFDQLB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 4 Jun 2022 12:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230079AbiFDQH7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jun 2022 12:07:59 -0400
+        with ESMTP id S230079AbiFDQLA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 4 Jun 2022 12:11:00 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A0928E07
-        for <linux-iio@vger.kernel.org>; Sat,  4 Jun 2022 09:07:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0471F274;
+        Sat,  4 Jun 2022 09:11:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 57FDCB8069F
-        for <linux-iio@vger.kernel.org>; Sat,  4 Jun 2022 16:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E2FC385B8;
-        Sat,  4 Jun 2022 16:07:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9739B8069F;
+        Sat,  4 Jun 2022 16:10:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4329C385B8;
+        Sat,  4 Jun 2022 16:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654358876;
-        bh=yLKbwF2gxK0JYmF+m2LXGBcu3usF2WL6JJ0OcvCD7sg=;
+        s=k20201202; t=1654359057;
+        bh=BR/gIt545qkwHAcr26HVThFM3VwGBkQEksbYZhnyxAo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rkLJzqw6jdU3blaBMbAt675h8gI3LZCGhjIBD4v5eok4aelZC2vteeC17VmnkGXUR
-         naRNfbeR3eBeaXkyjTUIkzHDGiDl4V0NOuHg6ISKCcuxzRtis/8vBbuSWRr5aHU23b
-         ARPMcKJo7njTPaAuG3DYrmF2/uFlzw93iB4E+GpEtRfGzVlekGOgNMSBwIkEmLS4a/
-         fFmx09ffYsgePs9oa3PAhTI1+W5AtdW2qISxCENl9ldQAYYXY7QDhrRavDKQ8Ne63x
-         EyALW4lwt2SoK2CiYI3c3oT45pXPpQH4mnLvqKJGXbIXwYZEMlO/pcdsmHyTy7gMkW
-         U2Pzelu0ydlew==
-Date:   Sat, 4 Jun 2022 17:16:57 +0100
+        b=BFiYoPb+ci9cHbHuzO5GqpB8/1WBERjCf3AVC5dnrUtpokvnbWr/uxLVP1jDSl2Tq
+         soiKgukQTHtr+IiD+zJd/XxawBdZty6xoQWkUt6mS2NV8H9MkI5PVQa3dSu2yZRPU9
+         tmC8zlwN/BjgTMa5LpLelBlcaylddjhrTt0ihgkaK1Mqlatv5n/ajS6ddRIIfTlPGg
+         qlEu8bONjJK1WhEbz7lPNZP/X1bsiHVTDqmU0QP3HF7zLTJuBRPSn+vqW106MYdvcq
+         NZ/bGAyVw6PnrUZSXKx3QKQfhzXgBko2rlQ1lCaMib6HGiRw1fl4PiQrp1pCvYYBLK
+         NYGbWOYmlCqRQ==
+Date:   Sat, 4 Jun 2022 17:19:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     Bough Chen <haibo.chen@nxp.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH] iio: accel: mma8452: remove the reset operation during
- driver probe
-Message-ID: <20220604171657.78eb7927@jic23-huawei>
-In-Reply-To: <YhfBZv7msnpvDVEs@ninjato>
-References: <1645505151-5789-1-git-send-email-haibo.chen@nxp.com>
-        <20220222164331.00002d18@Huawei.com>
-        <VI1PR04MB401628231C1D06E318820D26903D9@VI1PR04MB4016.eurprd04.prod.outlook.com>
-        <YhfBZv7msnpvDVEs@ninjato>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     robh+dt@kernel.org, swboyd@chromium.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 02/10] iio: sx9324: Fix register field spelling
+Message-ID: <20220604171958.28bcd451@jic23-huawei>
+In-Reply-To: <20220429220144.1476049-3-gwendal@chromium.org>
+References: <20220429220144.1476049-1-gwendal@chromium.org>
+        <20220429220144.1476049-3-gwendal@chromium.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,25 +55,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 24 Feb 2022 18:33:26 +0100
-Wolfram Sang <wsa@kernel.org> wrote:
+On Fri, 29 Apr 2022 15:01:36 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> > > Wolfram is there a standard way to work around missing ACK in cases like
-> > > this?  Would just ignoring the return value be fine or are their i2c masters
-> > > that will get stuck if they don't get the expected ack?  
+> Field for PROX_CTRL4 should contain PROX_CTRL4.
 > 
-> Did I get this right: the reset procedures terminates the ACK and STOP?
-> And the client expects a new START condition for communication?
+> Fixes: 4c18a890dff8d ("iio:proximity:sx9324: Add SX9324 support")
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Applied
+
+> ---
+> No Changes in v5.
+> Changes since v3:
+> - Added Review tags.
 > 
+> Changes since v2:
+> - no changes
+> 
+> Changes since v1:
+> - Add Fixes keyword in commit message.
+> 
+>  drivers/iio/proximity/sx9324.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> index 378c2a17bae6e..a7d9a53692a6d 100644
+> --- a/drivers/iio/proximity/sx9324.c
+> +++ b/drivers/iio/proximity/sx9324.c
+> @@ -90,7 +90,7 @@
+>  #define SX9324_REG_PROX_CTRL4_AVGNEGFILT_MASK	GENMASK(5, 3)
+>  #define SX9324_REG_PROX_CTRL4_AVGNEG_FILT_2 0x08
+>  #define SX9324_REG_PROX_CTRL4_AVGPOSFILT_MASK	GENMASK(2, 0)
+> -#define SX9324_REG_PROX_CTRL3_AVGPOS_FILT_256 0x04
+> +#define SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256 0x04
+>  #define SX9324_REG_PROX_CTRL5		0x35
+>  #define SX9324_REG_PROX_CTRL5_HYST_MASK			GENMASK(5, 4)
+>  #define SX9324_REG_PROX_CTRL5_CLOSE_DEBOUNCE_MASK	GENMASK(3, 2)
+> @@ -794,7 +794,7 @@ static const struct sx_common_reg_default sx9324_default_regs[] = {
+>  	{ SX9324_REG_PROX_CTRL3, SX9324_REG_PROX_CTRL3_AVGDEB_2SAMPLES |
+>  		SX9324_REG_PROX_CTRL3_AVGPOS_THRESH_16K },
+>  	{ SX9324_REG_PROX_CTRL4, SX9324_REG_PROX_CTRL4_AVGNEG_FILT_2 |
+> -		SX9324_REG_PROX_CTRL3_AVGPOS_FILT_256 },
+> +		SX9324_REG_PROX_CTRL4_AVGPOS_FILT_256 },
+>  	{ SX9324_REG_PROX_CTRL5, 0x00 },
+>  	{ SX9324_REG_PROX_CTRL6, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
+>  	{ SX9324_REG_PROX_CTRL7, SX9324_REG_PROX_CTRL6_PROXTHRESH_32 },
 
-@Bough Chen,
-
-I'm assuming this is still an issue for you?  If so can you reply to
-Wolfram so we can hopefully move this forwards.
-
-Found this because it's still listed as needing an action in the IIO
-patchwork.
-
-Thanks,
-
-Jonathan

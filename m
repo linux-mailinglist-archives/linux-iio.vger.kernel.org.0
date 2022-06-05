@@ -1,475 +1,296 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE0253DA38
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jun 2022 07:10:40 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1CB53DC81
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jun 2022 17:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237864AbiFEFIZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Jun 2022 01:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41264 "EHLO
+        id S1349987AbiFEPO4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 5 Jun 2022 11:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229987AbiFEFIY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Jun 2022 01:08:24 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF33320F40;
-        Sat,  4 Jun 2022 22:08:21 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id n8so9780554plh.1;
-        Sat, 04 Jun 2022 22:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=THrbA4LPfwfZr+VCF9dE4+Tkx7gN3vSkH6zMKCFiKvM=;
-        b=hRtVi4988JA+f+SfLeJuf1Lus0GFGwM+MlkvsHxeUZO6DUOlH21ceWsThP8trC0MWT
-         v/KAZIRLd2F+KRd8ZEFI9Wmnw1KltC20jfdbXOw9Oqaym8f00z2/WjBrPA1aRF4KAfF+
-         a09NLYyJItAKFXWguFYm2JeqYeMBOhQcUBHu9o+UZ5XpZlng1dPzDml6fQMiDjGBlX/9
-         GkyZDP1A8eADRXt9rSD/qyrhVP/+YQIq99nKFXfMH8cfzIiZjsim34DCqJjMfu49Ho38
-         VPLYDa0hLEa7TB+V7jSNQh62rvk88Q0zeunzruTEiTyqFS2gMp70UCBUk2ZFvqyFkLJR
-         b7uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=THrbA4LPfwfZr+VCF9dE4+Tkx7gN3vSkH6zMKCFiKvM=;
-        b=eLWtRjZ0U1bxUqmStJpChawAjDg/DiZuuR/+N8J3bTR2+68JJgPiFbZ8esE0OQmge8
-         CiWd430sDXwI8OtN6SjNMIk8vs0zY1cn5v09bxrvgGKHPIrhYtVZ6it0S60JD1sMszSe
-         rvkF+DfcJ4zwgdEzh/m4gW+0NpGYL7DZoJ+B/9UqLPNNvEsXS7XwlibU071uwaEtcPby
-         4RBenYbeAIPZrYQxLyvK71p66A0oAA+2WoHxgPzn0Hic+5EOLbK/gafCSu5LFBTC7TOH
-         P8mITqjRSdV/etXWkJmgg73MknFj7pxsgnN56CALP+w70eEzJc7D3GgXZUZnlEILte0u
-         LDcA==
-X-Gm-Message-State: AOAM533hjKD+R6bWSNEyXp5OHYMHG0HLEJB1yUS/uJV4ssfJIVGV5DkZ
-        78whF7ch5wpYiOImYhp+ZL/fN+3Toh6ibK3rCijs8Tm0AXXTSg==
-X-Google-Smtp-Source: ABdhPJxCkiGzXThmY7+VAtpUhCNJWYGicSpJXyyb8fXA9xJ4IBsFzZX4YdHDjq9KB6dh9T4qAt5V29ofbL1tRZkhGv4=
-X-Received: by 2002:a17:902:9a83:b0:15e:f718:4ced with SMTP id
- w3-20020a1709029a8300b0015ef7184cedmr17670558plp.69.1654405701249; Sat, 04
- Jun 2022 22:08:21 -0700 (PDT)
+        with ESMTP id S1349656AbiFEPOy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Jun 2022 11:14:54 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97FDB4D258;
+        Sun,  5 Jun 2022 08:14:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654442092; x=1685978092;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5vqv0WrGsXvXky938K71INLLwMDCpzXiMJBpNJggeF4=;
+  b=USWH+d8ekBlS+cXJ8CpUcvyNPWr2whRLlcG5Hr56cxkx2BUakNfpEloR
+   tSDFaWItdsjWCwKl7MxDh/kLhEBNmaGjhGQIUYUIzNY8schPWPxQ0Dv/4
+   OYWDDPfmbs2GIt3bjoiNaQXCtQXQOqJwRQdgMgh39XeeTAXvdVqX5G0+R
+   LI4dnhfkj0fZQ1EtTR592jyOg5XkAM9wXNPulyI+v5eN93tU1/BcZ4QqR
+   jhqvVs8yJI9YSxKHiW58acm44GyA/o7BPpBQ1Y1W1OWklxmxZZLqQQt0W
+   bamfuShCcUGGjgSi9dk7EEoOyBFIdpT5vSIc5wbI4sA8czptPRFZ936nC
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10369"; a="276625882"
+X-IronPort-AV: E=Sophos;i="5.91,279,1647327600"; 
+   d="scan'208";a="276625882"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2022 08:14:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,279,1647327600"; 
+   d="scan'208";a="554045783"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 05 Jun 2022 08:14:47 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nxrxm-000C0j-M3;
+        Sun, 05 Jun 2022 15:14:46 +0000
+Date:   Sun, 5 Jun 2022 23:13:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
+        linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org, lars@metafoo.de,
+        rafael@kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/10] power: supply: axp20x_usb_power: Add support for
+ AXP192
+Message-ID: <202206052337.XAGi8JAq-lkp@intel.com>
+References: <20220603135714.12007-10-aidanmacdonald.0x0@gmail.com>
 MIME-Version: 1.0
-References: <20220529040153.4878-1-jagathjog1996@gmail.com>
- <20220529040153.4878-3-jagathjog1996@gmail.com> <20220604160153.504e96ae@jic23-huawei>
-In-Reply-To: <20220604160153.504e96ae@jic23-huawei>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Sun, 5 Jun 2022 10:38:10 +0530
-Message-ID: <CAM+2EuLdTtXHGR5Oy6ay3yM__LK8Dea2rhXJMBNV35-S9HdmVg@mail.gmail.com>
-Subject: Re: [RFC 2/2] iio: accel: bma400: Add support for single and double
- tap events
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220603135714.12007-10-aidanmacdonald.0x0@gmail.com>
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan and Andy.
+Hi Aidan,
 
-On Sat, Jun 4, 2022 at 8:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sun, 29 May 2022 09:31:53 +0530
-> Jagath Jog J <jagathjog1996@gmail.com> wrote:
->
-> > Add support for single and double tap events based on the tap threshold
-> > value and minimum quite time value between the taps. INT1 pin is used to
-> > interrupt and event is pushed to userspace.
-> >
-> > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
->
-> Hi Jagath,
->
-> A few comments inline.
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/accel/bma400.h      |  11 ++
-> >  drivers/iio/accel/bma400_core.c | 186 ++++++++++++++++++++++++++++++--
-> >  2 files changed, 188 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> > index e8f802a82300..7331474433fa 100644
-> > --- a/drivers/iio/accel/bma400.h
-> > +++ b/drivers/iio/accel/bma400.h
-> > @@ -40,6 +40,7 @@
-> >  #define BMA400_INT_STAT1_REG        0x0f
-> >  #define BMA400_INT_STAT2_REG        0x10
-> >  #define BMA400_INT12_MAP_REG        0x23
-> > +#define BMA400_INT_ENG_OVRUN_MSK    BIT(4)
-> >
-> >  /* Temperature register */
-> >  #define BMA400_TEMP_DATA_REG        0x11
-> > @@ -105,6 +106,16 @@
-> >  #define BMA400_INT_GEN2_MSK         BIT(3)
-> >  #define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
-> >
-> > +/* TAP config registers */
-> > +#define BMA400_TAP_CONFIG           0x57
-> > +#define BMA400_TAP_CONFIG1          0x58
-> > +#define BMA400_S_TAP_MSK            BIT(2)
-> > +#define BMA400_D_TAP_MSK            BIT(3)
-> > +#define BMA400_INT_S_TAP_MSK        BIT(10)
-> > +#define BMA400_INT_D_TAP_MSK        BIT(11)
-> > +#define BMA400_TAP_SEN_MSK          GENMASK(2, 0)
-> > +#define BMA400_TAP_QUITE_MSK        GENMASK(3, 2)
+Thank you for the patch! Perhaps something to improve:
 
-Andy, I will correct this QUITE in the next patch version.
+[auto build test WARNING on lee-mfd/for-mfd-next]
+[also build test WARNING on linusw-pinctrl/devel broonie-regmap/for-next jic23-iio/togreg sre-power-supply/for-next v5.18 next-20220603]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> > +
-> >  /*
-> >   * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
-> >   * converting to micro values for +-2g range.
-> > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-> > index 517920400df1..2385883707f2 100644
-> > --- a/drivers/iio/accel/bma400_core.c
-> > +++ b/drivers/iio/accel/bma400_core.c
-> > @@ -88,6 +88,7 @@ struct bma400_data {
-> >       bool step_event_en;
-> >       bool activity_event_en;
-> >       unsigned int generic_event_en;
-> > +     unsigned int tap_event_en;
-> >       /* Correct time stamp alignment */
-> >       struct {
-> >               __le16 buff[3];
-> > @@ -216,6 +217,19 @@ static const struct iio_event_spec bma400_accel_event[] = {
-> >                                      BIT(IIO_EV_INFO_HYSTERESIS) |
-> >                                      BIT(IIO_EV_INFO_ENABLE),
-> >       },
-> > +     {
-> > +             .type = IIO_EV_TYPE_GESTURE,
-> > +             .dir = IIO_EV_DIR_SINGLETAP,
-> > +             .mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> > +                                    BIT(IIO_EV_INFO_ENABLE),
-> > +     },
-> > +     {
-> > +             .type = IIO_EV_TYPE_GESTURE,
-> > +             .dir = IIO_EV_DIR_DOUBLETAP,
-> > +             .mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> > +                                    BIT(IIO_EV_INFO_PERIOD) |
->
-> Feels like period isn't well defined for this case.  So probably needs a specific
-> ABI entry and period might not be best choice...  However, period has no logical
-> other meaning in this case (what does 'amount of time a double tap has been true for before
-> event mean?') so I think it is fine to use it, as long as ABI docs exist to say what it's
-> meaning is for this case.
+url:    https://github.com/intel-lab-lkp/linux/commits/Aidan-MacDonald/Add-support-for-AXP192-PMIC/20220605-165501
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git for-mfd-next
+config: riscv-randconfig-r023-20220605 (https://download.01.org/0day-ci/archive/20220605/202206052337.XAGi8JAq-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 416a5080d89066029f9889dc23f94de47c2fa895)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install riscv cross compiling tool for clang build
+        # apt-get install binutils-riscv64-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/1eaea00a34314bd851023b9feeea16d1219174a3
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Aidan-MacDonald/Add-support-for-AXP192-PMIC/20220605-165501
+        git checkout 1eaea00a34314bd851023b9feeea16d1219174a3
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=riscv SHELL=/bin/bash drivers/power/supply/
 
-I will add ABI docs for the period.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
->
-> > +                                    BIT(IIO_EV_INFO_ENABLE),
-> > +     },
-> >  };
-> >
-> >  #define BMA400_ACC_CHANNEL(_index, _axis) { \
-> > @@ -407,6 +421,14 @@ static int bma400_set_accel_output_data_rate(struct bma400_data *data,
-> >       unsigned int val;
-> >       int ret;
-> >
-> > +     /*
-> > +      * No need to change ODR when tap event is enabled because
->
-> Do not change ODR...
->
->
-> > +      * tap interrupt is operating with the data rate of 200Hz.
-> > +      * See datasheet page 124.
+All warnings (new ones prefixed by >>):
 
-I will update this with the proper datasheet section details.
+   In file included from drivers/power/supply/axp20x_usb_power.c:13:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:464:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           val = __raw_readb(PCI_IOBASE + addr);
+                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:477:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+                                                           ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+   #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+                                                     ^
+   In file included from drivers/power/supply/axp20x_usb_power.c:13:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:490:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+                                                           ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+   #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+                                                     ^
+   In file included from drivers/power/supply/axp20x_usb_power.c:13:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/riscv/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:501:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           __raw_writeb(value, PCI_IOBASE + addr);
+                               ~~~~~~~~~~ ^
+   include/asm-generic/io.h:511:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+                                                         ~~~~~~~~~~ ^
+   include/asm-generic/io.h:521:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+                                                         ~~~~~~~~~~ ^
+   include/asm-generic/io.h:1024:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+           return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
+                                                     ~~~~~~~~~~ ^
+>> drivers/power/supply/axp20x_usb_power.c:300:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+                   default:
+                   ^
+   drivers/power/supply/axp20x_usb_power.c:300:3: note: insert 'break;' to avoid fall-through
+                   default:
+                   ^
+                   break; 
+   8 warnings generated.
 
-> > +      */
-> > +     if (data->tap_event_en)
-> > +             return -EBUSY;
-> > +
-> >       if (hz >= BMA400_ACC_ODR_MIN_WHOLE_HZ) {
-> >               if (uhz || hz > BMA400_ACC_ODR_MAX_HZ)
-> >                       return -EINVAL;
-> > @@ -1012,6 +1034,10 @@ static int bma400_read_event_config(struct iio_dev *indio_dev,
-> >               case IIO_EV_DIR_FALLING:
-> >                       return FIELD_GET(BMA400_INT_GEN2_MSK,
-> >                                        data->generic_event_en);
-> > +             case IIO_EV_DIR_SINGLETAP:
-> > +                     return FIELD_GET(BMA400_S_TAP_MSK, data->tap_event_en);
-> > +             case IIO_EV_DIR_DOUBLETAP:
-> > +                     return FIELD_GET(BMA400_D_TAP_MSK, data->tap_event_en);
-> >               default:
-> >                       return -EINVAL;
-> >               }
-> > @@ -1101,6 +1127,74 @@ static int bma400_activity_event_en(struct bma400_data *data,
-> >       return 0;
-> >  }
-> >
-> > +static int bma400_tap_event_enable(struct bma400_data *data,
-> > +                                enum iio_event_direction dir, int state)
-> > +{
-> > +     int ret;
-> > +     unsigned int mask, field_value;
-> > +
-> > +     if (data->power_mode == POWER_MODE_SLEEP)
-> > +             return -EBUSY;
->
-> There are existing examples of this in driver, but I can't immediately
-> see how we end up in sleep mode.  Perhaps a comment on why this might happen?
->
-> > +
-> > +     /*
-> > +      * acc_filt1 is the data source for the tap interrupt and it is
-> > +      * operating on an input data rate of 200Hz.
-> > +      */
-> > +     if (!data->tap_event_en) {
->
-> Feels like checking the wrong thing.  If we need 200Hz, check if the
-> data rate is at 200Hz rather than if the tap_event is not enabled.
-> Obviously same result, but one seems more obvious.
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for RISCV_SBI_CPUIDLE
+   Depends on CPU_IDLE && RISCV && RISCV_SBI
+   Selected by
+   - SOC_VIRT && CPU_IDLE
 
-if (!data->tap_event_en)
-This checking is to make sure not to execute
-bma400_set_accel_output_data_rate() function while disabling the
-tap event to avoid the negative (-EBUSY) return value from the
-function bma400_set_accel_output_data_rate() when either of
-the tap is enabled.
 
->
-> Also if bma400_set_accel_output_data_rate() is effectively a noop when
-> the data rate is unchanged (and it should be with regmap caching) then
-> maybe just call it unconditionally?
->
-> This might be a nasty surprise for other users though - so if buffered
-> output is in use, maybe just don't allow the rate change, even if
-> that means not enabling tap detection.
->
-> > +             ret = bma400_set_accel_output_data_rate(data, 200, 0);
-> > +             if (ret)
-> > +                     return ret;
-> > +     }
-> > +
-> > +     ret = regmap_update_bits(data->regmap, BMA400_INT12_MAP_REG,
-> > +                              BMA400_S_TAP_MSK,
-> > +                              FIELD_PREP(BMA400_S_TAP_MSK, state));
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     switch (dir) {
-> > +     case IIO_EV_DIR_SINGLETAP:
-> > +             mask = BMA400_S_TAP_MSK;
-> > +             set_mask_bits(&field_value, BMA400_S_TAP_MSK,
-> > +                           FIELD_PREP(BMA400_S_TAP_MSK, state));
-> > +             break;
-> > +     case IIO_EV_DIR_DOUBLETAP:
-> > +             mask = BMA400_D_TAP_MSK;
-> > +             set_mask_bits(&field_value, BMA400_D_TAP_MSK,
-> > +                           FIELD_PREP(BMA400_D_TAP_MSK, state));
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG1_REG, mask,
-> > +                              field_value);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     set_mask_bits(&data->tap_event_en, mask, field_value);
->
-> blank line here
->
-> > +     return 0;
-> > +}
-> > +
-> > +static int bma400_disable_adv_interrupt(struct bma400_data *data)
-> > +{
-> > +     int ret;
-> > +
-> > +     ret = regmap_write(data->regmap, BMA400_INT_CONFIG0_REG, 0);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret = regmap_write(data->regmap, BMA400_INT_CONFIG1_REG, 0);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     data->tap_event_en = 0;
-> > +     data->generic_event_en = 0;
-> > +     data->step_event_en = 0;
-> > +     data->activity_event_en = 0;
->
-> blank line here
->
-> > +     return 0;
-> > +}
-> > +
-> >  static int bma400_write_event_config(struct iio_dev *indio_dev,
-> >                                    const struct iio_chan_spec *chan,
-> >                                    enum iio_event_type type,
-> > @@ -1111,10 +1205,20 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
-> >
-> >       switch (chan->type) {
-> >       case IIO_ACCEL:
-> > -             mutex_lock(&data->mutex);
-> > -             ret = bma400_activity_event_en(data, dir, state);
-> > -             mutex_unlock(&data->mutex);
-> > -             return ret;
-> > +             switch (type) {
-> > +             case IIO_EV_TYPE_MAG:
-> > +                     mutex_lock(&data->mutex);
-> > +                     ret = bma400_activity_event_en(data, dir, state);
-> > +                     mutex_unlock(&data->mutex);
-> > +                     return ret;
-> > +             case IIO_EV_TYPE_GESTURE:
-> > +                     mutex_lock(&data->mutex);
-> > +                     ret = bma400_tap_event_enable(data, dir, state);
->
-> Given existing naming event_en would seem more consistent.
->
-> > +                     mutex_unlock(&data->mutex);
-> > +                     return ret;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> >       case IIO_STEPS:
-> >               mutex_lock(&data->mutex);
-> >               ret = bma400_steps_event_enable(data, state);
-> > @@ -1159,8 +1263,8 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
-> >       struct bma400_data *data = iio_priv(indio_dev);
-> >       int ret, reg;
-> >
-> > -     switch (chan->type) {
-> > -     case IIO_ACCEL:
-> > +     switch (type) {
-> > +     case IIO_EV_TYPE_MAG:
-> >               reg = get_gen_config_reg(dir);
-> >               if (reg < 0)
-> >                       return -EINVAL;
-> > @@ -1196,6 +1300,25 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
-> >               default:
-> >                       return -EINVAL;
-> >               }
-> > +     case IIO_EV_TYPE_GESTURE:
-> > +             switch (info) {
-> > +             case IIO_EV_INFO_VALUE:
-> > +                     ret = regmap_read(data->regmap,
-> > +                                       BMA400_TAP_CONFIG, val);
->
-> Line wrap looks a bit premature - BMA400_TAP_CONFIG can fit on previous line.
->
-> > +                     if (ret)
-> > +                             return ret;
-> > +                     *val = FIELD_GET(BMA400_TAP_SEN_MSK, *val);
-> > +                     return IIO_VAL_INT;
-> > +             case IIO_EV_INFO_PERIOD:
-> > +                     ret = regmap_read(data->regmap,
-> > +                                       BMA400_TAP_CONFIG1, val);
-> > +                     if (ret)
-> > +                             return ret;
-> > +                     *val = FIELD_GET(BMA400_TAP_QUITE_MSK, *val);
-> > +                     return IIO_VAL_INT;
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> >       default:
-> >               return -EINVAL;
-> >       }
-> > @@ -1211,8 +1334,8 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
-> >       struct bma400_data *data = iio_priv(indio_dev);
-> >       int reg, ret;
-> >
-> > -     switch (chan->type) {
-> > -     case IIO_ACCEL:
-> > +     switch (type) {
-> > +     case IIO_EV_TYPE_MAG:
-> >               reg = get_gen_config_reg(dir);
-> >               if (reg < 0)
-> >                       return -EINVAL;
-> > @@ -1228,7 +1351,6 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
-> >               case IIO_EV_INFO_PERIOD:
-> >                       if (val < 1 || val > 65535)
-> >                               return -EINVAL;
-> > -
-> >                       mutex_lock(&data->mutex);
-> >                       put_unaligned_be16(val, &data->duration);
-> >                       ret = regmap_bulk_write(data->regmap,
-> > @@ -1248,6 +1370,30 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
-> >               default:
-> >                       return -EINVAL;
-> >               }
-> > +     case IIO_EV_TYPE_GESTURE:
-> > +             switch (info) {
-> > +             case IIO_EV_INFO_VALUE:
-> > +                     if (val < 0 || val > 7)
->
-> Add an _avail for the event control perhaps?
-> I think we never brought those into the core code, so you'll have to do
-> it manually by registering the additional event attr.
->
-> There are some examples in tree such as light/tsl2591
+vim +300 drivers/power/supply/axp20x_usb_power.c
 
-Thanks for the suggestion I will add _avail for value and also
-I will address other comments in the next patch.
+   198	
+   199	static int axp20x_usb_power_get_property(struct power_supply *psy,
+   200		enum power_supply_property psp, union power_supply_propval *val)
+   201	{
+   202		struct axp20x_usb_power *power = power_supply_get_drvdata(psy);
+   203		unsigned int input, v, reg;
+   204		int ret;
+   205	
+   206		switch (psp) {
+   207		case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+   208			ret = regmap_read(power->regmap, AXP20X_VBUS_IPSOUT_MGMT, &v);
+   209			if (ret)
+   210				return ret;
+   211	
+   212			val->intval = AXP20X_VBUS_VHOLD_uV(v);
+   213			return 0;
+   214		case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+   215			if (IS_ENABLED(CONFIG_AXP20X_ADC)) {
+   216				ret = iio_read_channel_processed(power->vbus_v,
+   217								 &val->intval);
+   218				if (ret)
+   219					return ret;
+   220	
+   221				/*
+   222				 * IIO framework gives mV but Power Supply framework
+   223				 * gives uV.
+   224				 */
+   225				val->intval *= 1000;
+   226				return 0;
+   227			}
+   228	
+   229			ret = axp20x_read_variable_width(power->regmap,
+   230							 AXP20X_VBUS_V_ADC_H, 12);
+   231			if (ret < 0)
+   232				return ret;
+   233	
+   234			val->intval = ret * 1700; /* 1 step = 1.7 mV */
+   235			return 0;
+   236		case POWER_SUPPLY_PROP_CURRENT_MAX:
+   237			if (power->axp20x_id == AXP813_ID)
+   238				return axp813_get_current_max(power, &val->intval);
+   239			else if (power->axp20x_id == AXP192_ID)
+   240				return axp192_get_current_max(power, &val->intval);
+   241			return axp20x_get_current_max(power, &val->intval);
+   242		case POWER_SUPPLY_PROP_CURRENT_NOW:
+   243			if (IS_ENABLED(CONFIG_AXP20X_ADC)) {
+   244				ret = iio_read_channel_processed(power->vbus_i,
+   245								 &val->intval);
+   246				if (ret)
+   247					return ret;
+   248	
+   249				/*
+   250				 * IIO framework gives mA but Power Supply framework
+   251				 * gives uA.
+   252				 */
+   253				val->intval *= 1000;
+   254				return 0;
+   255			}
+   256	
+   257			ret = axp20x_read_variable_width(power->regmap,
+   258							 AXP20X_VBUS_I_ADC_H, 12);
+   259			if (ret < 0)
+   260				return ret;
+   261	
+   262			val->intval = ret * 375; /* 1 step = 0.375 mA */
+   263			return 0;
+   264		default:
+   265			break;
+   266		}
+   267	
+   268		/* All the properties below need the input-status reg value */
+   269		ret = regmap_read(power->regmap, AXP20X_PWR_INPUT_STATUS, &input);
+   270		if (ret)
+   271			return ret;
+   272	
+   273		switch (psp) {
+   274		case POWER_SUPPLY_PROP_HEALTH:
+   275			if (!(input & AXP20X_PWR_STATUS_VBUS_PRESENT)) {
+   276				val->intval = POWER_SUPPLY_HEALTH_UNKNOWN;
+   277				break;
+   278			}
+   279	
+   280			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+   281	
+   282			switch (power->axp20x_id) {
+   283			case AXP192_ID:
+   284				/* Same layout as the AXP202, but different address */
+   285				reg = AXP192_USB_OTG_STATUS;
+   286				fallthrough;
+   287	
+   288			case AXP202_ID:
+   289				if (power->axp20x_id == AXP202_ID)
+   290					reg = AXP20X_USB_OTG_STATUS;
+   291	
+   292				ret = regmap_read(power->regmap, reg, &v);
+   293				if (ret)
+   294					return ret;
+   295	
+   296				if (!(v & AXP20X_USB_STATUS_VBUS_VALID))
+   297					val->intval =
+   298						POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+   299	
+ > 300			default:
+   301				break;
+   302			}
+   303			break;
+   304		case POWER_SUPPLY_PROP_PRESENT:
+   305			val->intval = !!(input & AXP20X_PWR_STATUS_VBUS_PRESENT);
+   306			break;
+   307		case POWER_SUPPLY_PROP_ONLINE:
+   308			val->intval = !!(input & AXP20X_PWR_STATUS_VBUS_USED);
+   309			break;
+   310		default:
+   311			return -EINVAL;
+   312		}
+   313	
+   314		return 0;
+   315	}
+   316	
 
->
-> > +                             return -EINVAL;
-> > +
-> > +                     return regmap_update_bits(data->regmap,
-> > +                                               BMA400_TAP_CONFIG,
-> > +                                               BMA400_TAP_SEN_MSK,
-> > +                                               FIELD_PREP(BMA400_TAP_SEN_MSK,
-> > +                                                          val));
-> > +
-> > +             case IIO_EV_INFO_PERIOD:
-> > +                     if (val < 0 || val > 3)
-> > +                             return -EINVAL;
-> > +
-> > +                     return regmap_update_bits(data->regmap,
-> > +                                               BMA400_TAP_CONFIG1,
-> > +                                               BMA400_TAP_QUITE_MSK,
-> > +                                               FIELD_PREP(BMA400_TAP_QUITE_MSK,
-> > +                                                          val));
-> > +             default:
-> > +                     return -EINVAL;
-> > +             }
-> >       default:
-> >               return -EINVAL;
-> >       }
-> > @@ -1350,6 +1496,28 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
-> >       if (ret || !data->status)
-> >               goto unlock_err;
-> >
-> > +     /* Disable all advance interrupts if interrupt engine overrun occurs */
->
-> Add a reference, or more detail on why this is the correct action if we get
-> an engine overrun.
->
-> > +     if (FIELD_GET(BMA400_INT_ENG_OVRUN_MSK, le16_to_cpu(data->status))) {
-> > +             bma400_disable_adv_interrupt(data);
-> > +             dev_err(data->dev, "Interrupt engine overrun\n");
-> > +             goto unlock_err;
-> > +     }
-> > +
-> > +     if (FIELD_GET(BMA400_INT_S_TAP_MSK, le16_to_cpu(data->status)))
-> > +             ev_dir = IIO_EV_DIR_SINGLETAP;
-> > +
-> > +     if (FIELD_GET(BMA400_INT_D_TAP_MSK, le16_to_cpu(data->status)))
->
-> If both can occur, send two events. If not, else if
->
-> > +             ev_dir = IIO_EV_DIR_DOUBLETAP;
-> > +
-> > +     if (ev_dir != IIO_EV_DIR_NONE) {
-> > +             iio_push_event(indio_dev,
-> > +                            IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-> > +                                               IIO_MOD_X_OR_Y_OR_Z,
-> > +                                               IIO_EV_TYPE_GESTURE, ev_dir),
-> > +                            timestamp);
-> > +     }
-> > +
-> > +     ev_dir = IIO_EV_DIR_NONE;
-> >       if (FIELD_GET(BMA400_INT_GEN1_MSK, le16_to_cpu(data->status)))
-> >               ev_dir = IIO_EV_DIR_RISING;
-> >
->
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

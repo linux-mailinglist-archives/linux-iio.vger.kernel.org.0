@@ -2,57 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 133C853E844
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 19:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A18453E652
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 19:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235264AbiFFLXu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jun 2022 07:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46596 "EHLO
+        id S235500AbiFFLik (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jun 2022 07:38:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235252AbiFFLXt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 07:23:49 -0400
+        with ESMTP id S235459AbiFFLij (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 07:38:39 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69C492738;
-        Mon,  6 Jun 2022 04:23:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0854C248D4;
+        Mon,  6 Jun 2022 04:38:37 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id C7D4F5FD02;
-        Mon,  6 Jun 2022 14:23:41 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id 02CED5FD02;
+        Mon,  6 Jun 2022 14:38:35 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1654514621;
-        bh=EaB/wZ+4oB8wPoMhXgqqF4RLNxf2c9wy8fYVj1Xjw7U=;
+        s=mail; t=1654515515;
+        bh=DCRzAOFNcwchMzh3Qw9HmKBEcRjHpcR6MWajCtB3vMQ=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=Yuu02zYXO3lq7/Hr641UiSfKXU6o+aUzRt6hZWFVU79sBuXlWaI1oSm1eeVrCkZ0p
-         170swWnaMTjN24H3R6Hy6qtcGRbo9OleWLQtUStEVWpwXiia2yMnkjw7/b0rl5JsRw
-         yrPvwlzmPm4psjjXqUcUIII14CfzSJS6Xru1lj81WfGA2tRBb901KkxSzYI4bv5iDS
-         P6d+fzYLLAqv7Als7kDE2hH1i21vL4OlaiZEPxEt/5MkU2NQ/H+nbGmhzBsvHBHD49
-         nkFr/CfsBkAhKjvkODm978VmSUoROTKEjDcSX6Vr6jV9PqGIvNU+v2HpqBCV5P7j3J
-         FUcy8C250R9cw==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        b=IMeWX4/yurvJRs1DIJEO9pjGRSpAlVZmGF/VxEbns5msssR/6Xv8ZuFj09ROgRKpy
+         Ms3qkrKCmRLqqJ+Ndl8dUt+nNdwR+J9pseTeBScc6aGeeavtpP6DKWH7vKGalFjdU/
+         H7OxyAOzileID5sPzbptfIR6hLmQnx6BcK89m2yMXX4SOeDqdvgJww6bdH9mgitrMj
+         g2LAa0Qm0AfLDrJGvltxY8ATpkPZ9FS0Rrq5xTlPUcFaWkpa9iJ7BSQaU6F6Lu13aT
+         ZcKOHPu1FkYbcKINIiIeb8XvhK535CV2ObqAMAFspEj3opDatSYlWlPu0WYSlsB9o1
+         +h6S8KDAuUdnQ==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Mon,  6 Jun 2022 14:23:32 +0300 (MSK)
+        Mon,  6 Jun 2022 14:38:34 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
         "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "noname.nuno@gmail.com" <noname.nuno@gmail.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Subject: [PATCH v2] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Topic: [PATCH v2] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Index: AQHYeZZUxOkpBS1pdUe6H6/GD97X1g==
-Date:   Mon, 6 Jun 2022 11:12:37 +0000
-Message-ID: <20220606111316.19265-1-ddrokosov@sberdevices.ru>
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
+ allocate() stage
+Thread-Topic: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
+ allocate() stage
+Thread-Index: AQHYdd/Pt2zXEFx7c0Or/RCut5+rEK0/GLKAgAL9JoA=
+Date:   Mon, 6 Jun 2022 11:37:42 +0000
+Message-ID: <20220606113829.kmiudrofm2s6onpc@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220601174837.20292-1-ddrokosov@sberdevices.ru>
+ <20220604145955.2a1108ca@jic23-huawei>
+In-Reply-To: <20220604145955.2a1108ca@jic23-huawei>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6408C0C4B285DA44A2696A4DF252A12B@sberdevices.ru>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
@@ -71,56 +74,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-As a part of patch series about wrong trigger register() and get()
-calls order in the some IIO drivers trigger initialization path:
+Hello Jonathan,
 
-https://lore.kernel.org/all/20220524181150.9240-1-ddrokosov@sberdevices.ru/
+Thank you for comments. I have a several questions about the flow,
+please find them below.
 
-runtime WARN() is added to alarm IIO driver authors who make such
-a mistake.
+On Sat, Jun 04, 2022 at 02:59:55PM +0100, Jonathan Cameron wrote:
+> On Wed, 1 Jun 2022 17:48:32 +0000
+> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+>=20
+> > To provide a new IIO trigger to the IIO core, usually driver executes t=
+he
+> > following pipeline: allocate()/register()/get(). Before, IIO core assig=
+ned
+> > trig->owner as a pointer to the module which registered this trigger at
+> > the register() stage. But actually the trigger object is owned by the
+> > module earlier, on the allocate() stage, when trigger object is
+> > successfully allocated for the driver.
+> >=20
+> > This patch moves trig->owner initialization from register()
+> > stage of trigger initialization pipeline to allocate() stage to
+> > eliminate all misunderstandings and time gaps between trigger object
+> > creation and owner acquiring.
+> >=20
+> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+>=20
+> Hi Dmitry,
+>=20
+> I 'think' this is fine, but its in the high risk category that I'd like
+> to keep it on list for a few weeks before applying.
+>=20
 
-When IIO driver allocates a new IIO trigger, it should register it before
-calling the get() operation. In other words, each IIO driver must abide by
-IIO trigger alloc()/register()/get() calls order.
+Could you please explain what it means? Do you have some testing branch
+with such dangerous patches or do we need just to wait other developers
+for more points of view? Thanks in advance.
 
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
----
- drivers/iio/industrialio-trigger.c | 2 ++
- include/linux/iio/trigger.h        | 5 +++++
- 2 files changed, 7 insertions(+)
+> Note I'm still keen that in general we keep the flow such that
+> we do allocate()/register()/get() as there is no guarantee that the get()
+> will never do anything that requires the trigger to be registered, even
+> though that is true today.  Which is another way of saying I'm still
+> keen we fix up any cases that sneak in after your fix up set dealt with
+> the current ones.
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-=
-trigger.c
-index f504ed351b3e..d6277e72d515 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -581,6 +581,8 @@ struct iio_trigger *viio_trigger_alloc(struct device *p=
-arent,
- 	if (trig->name =3D=3D NULL)
- 		goto free_descs;
-=20
-+	INIT_LIST_HEAD(&trig->list);
-+
- 	trig->subirq_chip.name =3D trig->name;
- 	trig->subirq_chip.irq_mask =3D &iio_trig_subirqmask;
- 	trig->subirq_chip.irq_unmask =3D &iio_trig_subirqunmask;
-diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
-index 4c69b144677b..2d71cb331f1c 100644
---- a/include/linux/iio/trigger.h
-+++ b/include/linux/iio/trigger.h
-@@ -93,6 +93,11 @@ static inline void iio_trigger_put(struct iio_trigger *t=
-rig)
- static inline struct iio_trigger *iio_trigger_get(struct iio_trigger *trig=
-)
- {
- 	get_device(&trig->dev);
-+
-+	WARN(list_empty(&trig->list),
-+	     "Getting non-registered iio trigger %s is prohibited\n",
-+	     trig->name);
-+
- 	__module_get(trig->owner);
-=20
- 	return trig;
+I fully agree with you. I suppose to resolve such a problem we need to
+have some indicators that the trigger is already registered or not.
+From my point of view, trig->list entry fits well to answer this question.
+Trigger is added to the global IIO triggers list during register()
+execution, so we can just check that entry is not empty to make sure that
+trigger is registered.
+
+I've sent a v2 patch version, where I use trig->list entry empty status to
+warn it:
+
+https://lore.kernel.org/linux-iio/20220606111316.19265-1-ddrokosov@sberdevi=
+ces.ru/
+
+>=20
+> Thanks for following up on this!
+>=20
+> Jonathan
+>=20
+
 --=20
-2.36.0
+Thank you,
+Dmitry=

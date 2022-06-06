@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D70353E2A8
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 10:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 981E053E2BB
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 10:54:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231788AbiFFIfy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jun 2022 04:35:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
+        id S231879AbiFFIhL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jun 2022 04:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231773AbiFFIfy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 04:35:54 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0504C14782C
-        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 01:35:53 -0700 (PDT)
+        with ESMTP id S231858AbiFFIhK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 04:37:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A1681DC
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 01:37:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 60C90CE0FD7
-        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 08:35:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25870C385A9;
-        Mon,  6 Jun 2022 08:35:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5C10DB81235
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 08:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661B0C385A9;
+        Mon,  6 Jun 2022 08:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654504549;
-        bh=Lwfl2GQggh0W+3ZGCY2FCaCAMsbiR6wGtDodrz0SZEI=;
+        s=k20201202; t=1654504624;
+        bh=WJBuHW4UxW5LboW3+gu/7UNcvX6OU0V1SDqShk3kQEI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pdVXbu7xuzGV/Xi6XRhNPhZGew3V5ojkD/z/dexMHynC0wx5Avi7U1Whp86c6KDSF
-         aeQgcj5XV7y6kh2QgyjXlmZ+Hdrs3lmIme+iGRyeGPRLuNt7DEG7xn5Ue/oz1O8EaS
-         xFYdxalAz3hBIayrgSFx5f08qmt0dJ+HVAWBU4gvt8/1I78NQsbAMxTETUXxEjJo+b
-         J6rO2p5VpmzfKRgQ518MZzYJknLbYaYtVLe2DuArnZoeADyiC6sEBxm9KLG7UbYqYn
-         ixgUP12Ps+jLxfLqEHyUh3AhqXsqpMrmNAAo21vy34Ja/fDW+TFpjxa6d97RWzVby1
-         rzxZdfK+eYNvw==
-Date:   Mon, 6 Jun 2022 10:35:45 +0200
+        b=nui/d2YvACC4O/IUfYNBDYq5gaWWunDjWs8PvZpgpUiQiblFSZ9GSl4i/2ygauLXk
+         aI95TKoqH/s/wbeESuo7v2EYpOYBes7HCXNIbEnhJjw9PVRs0UwPxcDa8J/mxfdE0S
+         3phAqU7biEB5Ic5ACxtW5lHxIBUi1S3LLKXNkqnlgM0sTfzKvdPQeQpnAKfzUaRqoc
+         Q97tne+sbco8HIqzog2wJxQDmiM21RUt9aaPOWwvCqdsOVIIIwG+tx8/kbdXZGRSGi
+         Og+VY4HshoYNwqb3AxscoPEjRNlrGnavdVCKuilNKNJkxCotTFQV7Yo+2lszCNBpb7
+         nj7Z/BdzzjrmQ==
+Date:   Mon, 6 Jun 2022 10:37:00 +0200
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RESEND PATCH 5/5] iio: imu: lsm6dsx: Move exported symbols to
- the IIO_LSM6DSX namespace
-Message-ID: <Yp28YfzYeWcLMm1E@lore-desk>
+Subject: Re: [RESEND PATCH 4/5] iio: imu: lsm6dsx: Use new pm_sleep_ptr() and
+ EXPORT_SIMPLE_DEV_PM_OPS()
+Message-ID: <Yp28rLIxHgcihx70@lore-desk>
 References: <20220604161223.461847-1-jic23@kernel.org>
- <20220604161223.461847-6-jic23@kernel.org>
+ <20220604161223.461847-5-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lutB5cFvVVHVBktC"
+        protocol="application/pgp-signature"; boundary="//4N/U3azP23z4ZN"
 Content-Disposition: inline
-In-Reply-To: <20220604161223.461847-6-jic23@kernel.org>
+In-Reply-To: <20220604161223.461847-5-jic23@kernel.org>
 X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,102 +57,124 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---lutB5cFvVVHVBktC
+--//4N/U3azP23z4ZN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> Avoid unnecessary pollution of the global symbol namespace by
-> moving library functions in to a specific namespace and import
-> that into the drivers that make use of the functions.
->=20
-> For more info: https://lwn.net/Articles/760045/
->=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Link: https://lore.kernel.org/r/20220220181522.541718-9-jic23@kernel.org
+> These new functions move the burden of removing unused code when
+> CONFIG_PM_SLEEP is not defined onto the compiler rather than requiring
+> the use of CONFIG_PM guards and similar.
 
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Link: https://lore.kernel.org/r/20220220181522.541718-8-jic23@kernel.org
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  | 1 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  | 1 +
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  | 1 +
->  4 files changed, 6 insertions(+), 3 deletions(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 10 ++++------
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  2 +-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  |  2 +-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  2 +-
+>  4 files changed, 7 insertions(+), 9 deletions(-)
 >=20
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
 mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 9e4aa5c1c8d6..6b268f1c5fc3 100644
+> index 910397716833..9e4aa5c1c8d6 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2289,7 +2289,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
+> @@ -2291,7 +2291,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
 nt hw_id,
-> =20
->  	return 0;
 >  }
-> -EXPORT_SYMBOL(st_lsm6dsx_probe);
-> +EXPORT_SYMBOL_NS(st_lsm6dsx_probe, IIO_LSM6DSX);
+>  EXPORT_SYMBOL(st_lsm6dsx_probe);
 > =20
->  static int st_lsm6dsx_suspend(struct device *dev)
+> -static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
+> +static int st_lsm6dsx_suspend(struct device *dev)
 >  {
-> @@ -2366,8 +2366,8 @@ static int st_lsm6dsx_resume(struct device *dev)
+>  	struct st_lsm6dsx_hw *hw =3D dev_get_drvdata(dev);
+>  	struct st_lsm6dsx_sensor *sensor;
+> @@ -2330,7 +2330,7 @@ static int __maybe_unused st_lsm6dsx_suspend(struct=
+ device *dev)
 >  	return err;
 >  }
 > =20
-> -EXPORT_SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend,
-> -			 st_lsm6dsx_resume);
-> +EXPORT_NS_SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend,
-> +			    st_lsm6dsx_resume, IIO_LSM6DSX);
+> -static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
+> +static int st_lsm6dsx_resume(struct device *dev)
+>  {
+>  	struct st_lsm6dsx_hw *hw =3D dev_get_drvdata(dev);
+>  	struct st_lsm6dsx_sensor *sensor;
+> @@ -2366,10 +2366,8 @@ static int __maybe_unused st_lsm6dsx_resume(struct=
+ device *dev)
+>  	return err;
+>  }
+> =20
+> -const struct dev_pm_ops st_lsm6dsx_pm_ops =3D {
+> -	SET_SYSTEM_SLEEP_PM_OPS(st_lsm6dsx_suspend, st_lsm6dsx_resume)
+> -};
+> -EXPORT_SYMBOL(st_lsm6dsx_pm_ops);
+> +EXPORT_SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend,
+> +			 st_lsm6dsx_resume);
 > =20
 >  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
 >  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/im=
 u/st_lsm6dsx/st_lsm6dsx_i2c.c
-> index 5bd565b93a8c..2ea34c0d3a8c 100644
+> index 715fbdc8190e..5bd565b93a8c 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> @@ -146,3 +146,4 @@ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.=
-com>");
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx i2c driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(IIO_LSM6DSX);
+> @@ -134,7 +134,7 @@ MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
+>  static struct i2c_driver st_lsm6dsx_driver =3D {
+>  	.driver =3D {
+>  		.name =3D "st_lsm6dsx_i2c",
+> -		.pm =3D &st_lsm6dsx_pm_ops,
+> +		.pm =3D pm_sleep_ptr(&st_lsm6dsx_pm_ops),
+>  		.of_match_table =3D st_lsm6dsx_i2c_of_match,
+>  	},
+>  	.probe =3D st_lsm6dsx_i2c_probe,
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/im=
 u/st_lsm6dsx/st_lsm6dsx_i3c.c
-> index 4df186499802..3b0c8b19c448 100644
+> index 35556cd04284..4df186499802 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> @@ -54,3 +54,4 @@ module_i3c_driver(st_lsm6dsx_driver);
->  MODULE_AUTHOR("Vitor Soares <vitor.soares@synopsys.com>");
->  MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx i3c driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(IIO_LSM6DSX);
+> @@ -44,7 +44,7 @@ static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cd=
+ev)
+>  static struct i3c_driver st_lsm6dsx_driver =3D {
+>  	.driver =3D {
+>  		.name =3D "st_lsm6dsx_i3c",
+> -		.pm =3D &st_lsm6dsx_pm_ops,
+> +		.pm =3D pm_sleep_ptr(&st_lsm6dsx_pm_ops),
+>  	},
+>  	.probe =3D st_lsm6dsx_i3c_probe,
+>  	.id_table =3D st_lsm6dsx_i3c_ids,
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/im=
 u/st_lsm6dsx/st_lsm6dsx_spi.c
-> index 3a206fd4d92c..6a8883f022a8 100644
+> index f5767cf76c1d..3a206fd4d92c 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> @@ -146,3 +146,4 @@ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.=
-com>");
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
->  MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx spi driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(IIO_LSM6DSX);
+> @@ -134,7 +134,7 @@ MODULE_DEVICE_TABLE(spi, st_lsm6dsx_spi_id_table);
+>  static struct spi_driver st_lsm6dsx_driver =3D {
+>  	.driver =3D {
+>  		.name =3D "st_lsm6dsx_spi",
+> -		.pm =3D &st_lsm6dsx_pm_ops,
+> +		.pm =3D pm_sleep_ptr(&st_lsm6dsx_pm_ops),
+>  		.of_match_table =3D st_lsm6dsx_spi_of_match,
+>  	},
+>  	.probe =3D st_lsm6dsx_spi_probe,
 > --=20
 > 2.36.1
 >=20
 
---lutB5cFvVVHVBktC
+--//4N/U3azP23z4ZN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYp28YQAKCRA6cBh0uS2t
-rAIRAP9i4CdWekcrINOksbGbzoSZGMMAIaArOp4pN45HMOiRggEA0Wq6yLmktJHy
-frC05VNdTV8sv/CvihYlbzDJ3KOnWA8=
-=jvAk
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYp28rAAKCRA6cBh0uS2t
+rD9JAQCrLYFQWZK4Y7b38vtPKbAnNY1CNhjfzFBA69uYybkR8AEAhcZqtfkipJ9m
+eqWAap1UnHh8VCWWfvTnUAY4loOxdQs=
+=iqR5
 -----END PGP SIGNATURE-----
 
---lutB5cFvVVHVBktC--
+--//4N/U3azP23z4ZN--

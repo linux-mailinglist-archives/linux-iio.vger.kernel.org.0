@@ -2,139 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A18453E652
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 19:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EAF153E647
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 19:07:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235500AbiFFLik (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jun 2022 07:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
+        id S235956AbiFFL6v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jun 2022 07:58:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235459AbiFFLij (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 07:38:39 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0854C248D4;
-        Mon,  6 Jun 2022 04:38:37 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 02CED5FD02;
-        Mon,  6 Jun 2022 14:38:35 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1654515515;
-        bh=DCRzAOFNcwchMzh3Qw9HmKBEcRjHpcR6MWajCtB3vMQ=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=IMeWX4/yurvJRs1DIJEO9pjGRSpAlVZmGF/VxEbns5msssR/6Xv8ZuFj09ROgRKpy
-         Ms3qkrKCmRLqqJ+Ndl8dUt+nNdwR+J9pseTeBScc6aGeeavtpP6DKWH7vKGalFjdU/
-         H7OxyAOzileID5sPzbptfIR6hLmQnx6BcK89m2yMXX4SOeDqdvgJww6bdH9mgitrMj
-         g2LAa0Qm0AfLDrJGvltxY8ATpkPZ9FS0Rrq5xTlPUcFaWkpa9iJ7BSQaU6F6Lu13aT
-         ZcKOHPu1FkYbcKINIiIeb8XvhK535CV2ObqAMAFspEj3opDatSYlWlPu0WYSlsB9o1
-         +h6S8KDAuUdnQ==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Mon,  6 Jun 2022 14:38:34 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
- allocate() stage
-Thread-Topic: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
- allocate() stage
-Thread-Index: AQHYdd/Pt2zXEFx7c0Or/RCut5+rEK0/GLKAgAL9JoA=
-Date:   Mon, 6 Jun 2022 11:37:42 +0000
-Message-ID: <20220606113829.kmiudrofm2s6onpc@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220601174837.20292-1-ddrokosov@sberdevices.ru>
- <20220604145955.2a1108ca@jic23-huawei>
-In-Reply-To: <20220604145955.2a1108ca@jic23-huawei>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <6408C0C4B285DA44A2696A4DF252A12B@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S236113AbiFFL6p (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 07:58:45 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34439643B
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 04:58:38 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id w2-20020a17090ac98200b001e0519fe5a8so12370899pjt.4
+        for <linux-iio@vger.kernel.org>; Mon, 06 Jun 2022 04:58:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=oFPao6+FHTUKOYc11RmLF8YTaUlvFn2TAMXlqT2wmEQ=;
+        b=Nw9H+Q5s1W8hmd+2f4FkFfV5zDv9vUC9f/i76RkmO9ByCNNx39f6iOnu+Q4vasA6/R
+         cIKYhqKdwN/LlaY6R4CCtviCtccl5yNoMBtJ7BZ9Pb9pSacd732UlSxBL9Pz5/9c7mSa
+         d/lZXbUW0A3RV97N03x54kGxzx9qa3ErjwwpExFeLzLj6zWLcS+tk7H/UDCU/GP/LUXh
+         FyH8EqgBHLK3HWKKz26PgWJEL6QDU+f0QP3Z6+4aXKjQBcZgH0latez3tAzZ4d75/WaF
+         3cfU80mED3VPtfAcB/qSfBv4k+E7JFVk9tThpKc9S41kHlTBEMuDiRr2igGSwTkCRZ+q
+         uLWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=oFPao6+FHTUKOYc11RmLF8YTaUlvFn2TAMXlqT2wmEQ=;
+        b=aOGPgU/s98o4bepW4r9Q6i3RhdGY3lbQ4n7itKRMHp4nnls7AXArArLhyVGgNRYml0
+         ytV6ElbENebyrSu+N0OwVG0hjuf5gIrUAFcz741aweHC82dJWT0BAWB7rssa2xYvKi6H
+         UxXQbPto/LKfmzzUmM723rqOnorjn4odRcLpjJbVHbOYAV5lfrrT8ztceAnWA8oAcWng
+         gbqBsTKyx1Ky2voh0W7tn4MlV8zlscDMgp+kKAmT1JzN+5cqIM8bTYAioT6IZ1/QYJqo
+         x2LCm1iAiNkKE3m3dl5IFKpUWPBWJ62JM0MgH7QT5uG/nBV7e2ZAswCt1Wen04gwlz4V
+         YXzQ==
+X-Gm-Message-State: AOAM532xNBDKVjq1hP8reA8KK7lJbIk4OUHzeB4JYb+3aBdi+g99H6HS
+        wTWlbrGXLopyg0qirwiBjQTUskjS+GUjGM7vyjE=
+X-Google-Smtp-Source: ABdhPJzEDe9mpjYP1J0W+/QxPiVTNVaEg61A8vEM1OJak7dr81/e/FSqHIv05PYC4CH0rEvo95OMMT3zeyNudRhcm0w=
+X-Received: by 2002:a17:902:c945:b0:163:c3c3:aff8 with SMTP id
+ i5-20020a170902c94500b00163c3c3aff8mr24064129pla.56.1654516717308; Mon, 06
+ Jun 2022 04:58:37 -0700 (PDT)
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/06 08:01:00 #19686715
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Sender: mohammeddrashok@gmail.com
+Received: by 2002:a05:6a11:e28c:0:0:0:0 with HTTP; Mon, 6 Jun 2022 04:58:36
+ -0700 (PDT)
+From:   Ibrahim idewu <ibrahimidewu4@gmail.com>
+Date:   Mon, 6 Jun 2022 12:58:36 +0100
+X-Google-Sender-Auth: M0qNExx_6xQoQCUm8NhVHS9uYJ4
+Message-ID: <CAL=ghb48ZZsQsNS0izjpj4wXRZud-j4mkdbRyOTOsJZ=RJYLGw@mail.gmail.com>
+Subject: GREETINGS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=ADVANCE_FEE_5_NEW_FRM_MNY,
+        BAYES_80,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FREEMAIL_FROM,HK_SCAM,LOTS_OF_MONEY,MONEY_FORM,
+        MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
+Dear,
+                       Can you trust a financial relationship that is
+mutually beneficial to us both? I have received your name and contact
+information from your country's banking data Information, hoping that
+you are interested in what I am going to tell you.
 
-Thank you for comments. I have a several questions about the flow,
-please find them below.
+I'm Mr. Ibrahim idewu from Ouagadougou, here in Burkina Faso. I work
+for coris bank international. I am writing to you about a business
+proposal that will be of great benefit to both of us. In my
+department, as a banker, I discovered $19,300,000 in the account of
+one of our deceased foreign clients.
+The choice to contact you depends on the sensitivity of the
+transaction and the confidentiality it contains. Now our bank has been
+waiting for one of the family members to file the application, but
+nobody has done so. Personally, I have not found family members for a
+long time. I ask for permission to present you as the next of kin /
+beneficiary of the deceased, so the proceeds of this account are worth
+$19,300,000 to you.
 
-On Sat, Jun 04, 2022 at 02:59:55PM +0100, Jonathan Cameron wrote:
-> On Wed, 1 Jun 2022 17:48:32 +0000
-> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
->=20
-> > To provide a new IIO trigger to the IIO core, usually driver executes t=
-he
-> > following pipeline: allocate()/register()/get(). Before, IIO core assig=
-ned
-> > trig->owner as a pointer to the module which registered this trigger at
-> > the register() stage. But actually the trigger object is owned by the
-> > module earlier, on the allocate() stage, when trigger object is
-> > successfully allocated for the driver.
-> >=20
-> > This patch moves trig->owner initialization from register()
-> > stage of trigger initialization pipeline to allocate() stage to
-> > eliminate all misunderstandings and time gaps between trigger object
-> > creation and owner acquiring.
-> >=20
-> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
->=20
-> Hi Dmitry,
->=20
-> I 'think' this is fine, but its in the high risk category that I'd like
-> to keep it on list for a few weeks before applying.
->=20
+This is paid or shared in these percentages, 60% for me and 40% for
+you. I have secured legal documents that can be used to substantiate
+this claim. The only thing I have to do is put your names in the
+documents and legalize them here in court to prove you as the rightful
+beneficiary. All I need now is your honest cooperation,
+confidentiality and your trust, so that we can complete this
+transaction. I guarantee that this transaction is 100% risk-free, as
+the transfer is subject to international banking law
 
-Could you please explain what it means? Do you have some testing branch
-with such dangerous patches or do we need just to wait other developers
-for more points of view? Thanks in advance.
+Please give me this as we have 5 days to work through this. This is very urgent.
 
-> Note I'm still keen that in general we keep the flow such that
-> we do allocate()/register()/get() as there is no guarantee that the get()
-> will never do anything that requires the trigger to be registered, even
-> though that is true today.  Which is another way of saying I'm still
-> keen we fix up any cases that sneak in after your fix up set dealt with
-> the current ones.
+1. Full Name:
+2. Your direct mobile number:
+3. Your contact address:
+4. Your job:
+5. Your nationality:
+6. Your gender / age:
 
-I fully agree with you. I suppose to resolve such a problem we need to
-have some indicators that the trigger is already registered or not.
-From my point of view, trig->list entry fits well to answer this question.
-Trigger is added to the global IIO triggers list during register()
-execution, so we can just check that entry is not empty to make sure that
-trigger is registered.
+Please confirm your message and interest to provide further
+information. Please do get back to me on time.
 
-I've sent a v2 patch version, where I use trig->list entry empty status to
-warn it:
-
-https://lore.kernel.org/linux-iio/20220606111316.19265-1-ddrokosov@sberdevi=
-ces.ru/
-
->=20
-> Thanks for following up on this!
->=20
-> Jonathan
->=20
-
---=20
-Thank you,
-Dmitry=
+Best regards
+Mr. Ibrahim idewu

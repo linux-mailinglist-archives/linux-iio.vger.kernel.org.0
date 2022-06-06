@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 981E053E2BB
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 10:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D695453E272
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 10:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231879AbiFFIhL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jun 2022 04:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34078 "EHLO
+        id S232018AbiFFIhw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jun 2022 04:37:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231858AbiFFIhK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 04:37:10 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A1681DC
-        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 01:37:07 -0700 (PDT)
+        with ESMTP id S231990AbiFFIht (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 04:37:49 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BBEE20BC5
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 01:37:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5C10DB81235
-        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 08:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661B0C385A9;
-        Mon,  6 Jun 2022 08:37:04 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 980B5CE1685
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 08:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81C1C34119;
+        Mon,  6 Jun 2022 08:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654504624;
-        bh=WJBuHW4UxW5LboW3+gu/7UNcvX6OU0V1SDqShk3kQEI=;
+        s=k20201202; t=1654504657;
+        bh=9+IXd6jGMtH+L05nxGQCdxAMG+ZxVbt263kMmdFKYKk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nui/d2YvACC4O/IUfYNBDYq5gaWWunDjWs8PvZpgpUiQiblFSZ9GSl4i/2ygauLXk
-         aI95TKoqH/s/wbeESuo7v2EYpOYBes7HCXNIbEnhJjw9PVRs0UwPxcDa8J/mxfdE0S
-         3phAqU7biEB5Ic5ACxtW5lHxIBUi1S3LLKXNkqnlgM0sTfzKvdPQeQpnAKfzUaRqoc
-         Q97tne+sbco8HIqzog2wJxQDmiM21RUt9aaPOWwvCqdsOVIIIwG+tx8/kbdXZGRSGi
-         Og+VY4HshoYNwqb3AxscoPEjRNlrGnavdVCKuilNKNJkxCotTFQV7Yo+2lszCNBpb7
-         nj7Z/BdzzjrmQ==
-Date:   Mon, 6 Jun 2022 10:37:00 +0200
+        b=Oz0Qj1oquMpSyXrHACqmx52lvLR7hJETb9SotuIrDVZ/NyHltqusFMCBPDkdikOfN
+         z1WmZK4WiRPw3RiUTuC8Ba3SmzDrwkdZxndcQjdDg+gr/9muXMBr0JU0ZIFeKyLHVp
+         c/FIfTHko+okwwcQ3G7zqFgLMa4l4YIEavNbaVze2osnIcVIugwMYDSkP8ZTaoE4gG
+         G+0PQl8FeUu3r6YWUgqsb03ZI0z/YIYszhqBdn8Zlxf0D6poaQHp9CNyyvbu81GPC3
+         sHobJo8fQ3Ujdp+vIk8RR/lxgiThv7+YbyTlyQ9zseR2e+Ro1sEJfd/cauzQToTgds
+         uuF41/xjrcqbA==
+Date:   Mon, 6 Jun 2022 10:37:33 +0200
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [RESEND PATCH 4/5] iio: imu: lsm6dsx: Use new pm_sleep_ptr() and
- EXPORT_SIMPLE_DEV_PM_OPS()
-Message-ID: <Yp28rLIxHgcihx70@lore-desk>
+Subject: Re: [RESEND PATCH 3/5] iio: humidity: hts221: Move symbol exports
+ into IIO_HTS221 namespace
+Message-ID: <Yp28zXP50rmhCdAz@lore-desk>
 References: <20220604161223.461847-1-jic23@kernel.org>
- <20220604161223.461847-5-jic23@kernel.org>
+ <20220604161223.461847-4-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="//4N/U3azP23z4ZN"
+        protocol="application/pgp-signature"; boundary="pn2KASQmQUZ2b2t9"
 Content-Disposition: inline
-In-Reply-To: <20220604161223.461847-5-jic23@kernel.org>
+In-Reply-To: <20220604161223.461847-4-jic23@kernel.org>
 X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,124 +57,89 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---//4N/U3azP23z4ZN
+--pn2KASQmQUZ2b2t9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> These new functions move the burden of removing unused code when
-> CONFIG_PM_SLEEP is not defined onto the compiler rather than requiring
-> the use of CONFIG_PM guards and similar.
+> Avoid unnecessary pollution of the global symbol namespace by
+> moving library functions in to a specific namespace and import
+> that into the drivers that make use of the functions.
+>=20
+> For more info: https://lwn.net/Articles/760045/
 
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
 >=20
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Link: https://lore.kernel.org/r/20220220181522.541718-8-jic23@kernel.org
+> Cc: Lorenzo Bianconi <lorenzo@kernel.org>
+> Link: https://lore.kernel.org/r/20220220181522.541718-7-jic23@kernel.org
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 10 ++++------
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  |  2 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  |  2 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  |  2 +-
->  4 files changed, 7 insertions(+), 9 deletions(-)
+>  drivers/iio/humidity/hts221_core.c | 5 +++--
+>  drivers/iio/humidity/hts221_i2c.c  | 1 +
+>  drivers/iio/humidity/hts221_spi.c  | 1 +
+>  3 files changed, 5 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 910397716833..9e4aa5c1c8d6 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -2291,7 +2291,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
-nt hw_id,
->  }
->  EXPORT_SYMBOL(st_lsm6dsx_probe);
+> diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/ht=
+s221_core.c
+> index da9c08432ef2..517158307d8c 100644
+> --- a/drivers/iio/humidity/hts221_core.c
+> +++ b/drivers/iio/humidity/hts221_core.c
+> @@ -668,7 +668,7 @@ int hts221_probe(struct device *dev, int irq, const c=
+har *name,
 > =20
-> -static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
-> +static int st_lsm6dsx_suspend(struct device *dev)
+>  	return devm_iio_device_register(hw->dev, iio_dev);
+>  }
+> -EXPORT_SYMBOL(hts221_probe);
+> +EXPORT_SYMBOL_NS(hts221_probe, IIO_HTS221);
+> =20
+>  static int hts221_suspend(struct device *dev)
 >  {
->  	struct st_lsm6dsx_hw *hw =3D dev_get_drvdata(dev);
->  	struct st_lsm6dsx_sensor *sensor;
-> @@ -2330,7 +2330,7 @@ static int __maybe_unused st_lsm6dsx_suspend(struct=
- device *dev)
+> @@ -694,7 +694,8 @@ static int hts221_resume(struct device *dev)
 >  	return err;
 >  }
 > =20
-> -static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
-> +static int st_lsm6dsx_resume(struct device *dev)
->  {
->  	struct st_lsm6dsx_hw *hw =3D dev_get_drvdata(dev);
->  	struct st_lsm6dsx_sensor *sensor;
-> @@ -2366,10 +2366,8 @@ static int __maybe_unused st_lsm6dsx_resume(struct=
- device *dev)
->  	return err;
->  }
-> =20
-> -const struct dev_pm_ops st_lsm6dsx_pm_ops =3D {
-> -	SET_SYSTEM_SLEEP_PM_OPS(st_lsm6dsx_suspend, st_lsm6dsx_resume)
-> -};
-> -EXPORT_SYMBOL(st_lsm6dsx_pm_ops);
-> +EXPORT_SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend,
-> +			 st_lsm6dsx_resume);
+> -EXPORT_SIMPLE_DEV_PM_OPS(hts221_pm_ops, hts221_suspend, hts221_resume);
+> +EXPORT_NS_SIMPLE_DEV_PM_OPS(hts221_pm_ops, hts221_suspend, hts221_resume,
+> +			    IIO_HTS221);
 > =20
 >  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
->  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/im=
-u/st_lsm6dsx/st_lsm6dsx_i2c.c
-> index 715fbdc8190e..5bd565b93a8c 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
-> @@ -134,7 +134,7 @@ MODULE_DEVICE_TABLE(i2c, st_lsm6dsx_i2c_id_table);
->  static struct i2c_driver st_lsm6dsx_driver =3D {
->  	.driver =3D {
->  		.name =3D "st_lsm6dsx_i2c",
-> -		.pm =3D &st_lsm6dsx_pm_ops,
-> +		.pm =3D pm_sleep_ptr(&st_lsm6dsx_pm_ops),
->  		.of_match_table =3D st_lsm6dsx_i2c_of_match,
->  	},
->  	.probe =3D st_lsm6dsx_i2c_probe,
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/im=
-u/st_lsm6dsx/st_lsm6dsx_i3c.c
-> index 35556cd04284..4df186499802 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
-> @@ -44,7 +44,7 @@ static int st_lsm6dsx_i3c_probe(struct i3c_device *i3cd=
-ev)
->  static struct i3c_driver st_lsm6dsx_driver =3D {
->  	.driver =3D {
->  		.name =3D "st_lsm6dsx_i3c",
-> -		.pm =3D &st_lsm6dsx_pm_ops,
-> +		.pm =3D pm_sleep_ptr(&st_lsm6dsx_pm_ops),
->  	},
->  	.probe =3D st_lsm6dsx_i3c_probe,
->  	.id_table =3D st_lsm6dsx_i3c_ids,
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/im=
-u/st_lsm6dsx/st_lsm6dsx_spi.c
-> index f5767cf76c1d..3a206fd4d92c 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
-> @@ -134,7 +134,7 @@ MODULE_DEVICE_TABLE(spi, st_lsm6dsx_spi_id_table);
->  static struct spi_driver st_lsm6dsx_driver =3D {
->  	.driver =3D {
->  		.name =3D "st_lsm6dsx_spi",
-> -		.pm =3D &st_lsm6dsx_pm_ops,
-> +		.pm =3D pm_sleep_ptr(&st_lsm6dsx_pm_ops),
->  		.of_match_table =3D st_lsm6dsx_spi_of_match,
->  	},
->  	.probe =3D st_lsm6dsx_spi_probe,
+>  MODULE_DESCRIPTION("STMicroelectronics hts221 sensor driver");
+> diff --git a/drivers/iio/humidity/hts221_i2c.c b/drivers/iio/humidity/hts=
+221_i2c.c
+> index 933b05e4d972..afbc611f7712 100644
+> --- a/drivers/iio/humidity/hts221_i2c.c
+> +++ b/drivers/iio/humidity/hts221_i2c.c
+> @@ -74,3 +74,4 @@ module_i2c_driver(hts221_driver);
+>  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
+>  MODULE_DESCRIPTION("STMicroelectronics hts221 i2c driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_HTS221);
+> diff --git a/drivers/iio/humidity/hts221_spi.c b/drivers/iio/humidity/hts=
+221_spi.c
+> index 888c5eab944c..fc4adb68faf6 100644
+> --- a/drivers/iio/humidity/hts221_spi.c
+> +++ b/drivers/iio/humidity/hts221_spi.c
+> @@ -66,3 +66,4 @@ module_spi_driver(hts221_driver);
+>  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
+>  MODULE_DESCRIPTION("STMicroelectronics hts221 spi driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_HTS221);
 > --=20
 > 2.36.1
 >=20
 
---//4N/U3azP23z4ZN
+--pn2KASQmQUZ2b2t9
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYp28rAAKCRA6cBh0uS2t
-rD9JAQCrLYFQWZK4Y7b38vtPKbAnNY1CNhjfzFBA69uYybkR8AEAhcZqtfkipJ9m
-eqWAap1UnHh8VCWWfvTnUAY4loOxdQs=
-=iqR5
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYp28zQAKCRA6cBh0uS2t
+rN1RAQDDdzSEesI02dXwT3zxoTvOtDsQSogDp5XpY2eTSp200QD7BUNjuQcnpluT
+FVBSobQ5L9fN0wSoWBSRoqfGuWMd5gE=
+=IsXq
 -----END PGP SIGNATURE-----
 
---//4N/U3azP23z4ZN--
+--pn2KASQmQUZ2b2t9--

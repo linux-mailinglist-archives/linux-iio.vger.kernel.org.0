@@ -2,88 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB76653E944
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 19:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE3453E872
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 19:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239929AbiFFOg1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 6 Jun 2022 10:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38624 "EHLO
+        id S240197AbiFFPA7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jun 2022 11:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239936AbiFFOgX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 10:36:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68876138B79;
-        Mon,  6 Jun 2022 07:36:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1B1B6146A;
-        Mon,  6 Jun 2022 14:36:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E025C385A9;
-        Mon,  6 Jun 2022 14:36:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654526178;
-        bh=gGiL7UP+UCHE8qudjPfXRRQzkXMWAY+JPxcumutHd/k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SbSnjyVUUzuwWifw9o8ka/MKbGIdxYFvyQxfrdMK2pzJU6WSWASMwRxTdFMWVa0vc
-         c2DezpK2eQTbKxHxLIlDEKXWy4SIKNCFrb4jQU4hPc/MNQJ5T+I4+8ai/+SR/kcD1O
-         E42GmUf/jqDNAmdBtjVsLAi/ycNL7tr3P/0Bl56pDzUrM8mwpRKUi9JVfkzyCa1XkL
-         CfQ06wnNM/T4kcBMHpsh8DzQAaW5aTy76upnfgZRUISqLHdMQWOPrIDBPpnnHgMEhD
-         DsGB0keK5imzKKylWzBR6ZCWVJ/zHBiauSGs421VaI0myOupU5cxhBmi2SMIjht+L+
-         0NoZ4I4VBUeuw==
-Date:   Mon, 6 Jun 2022 15:36:10 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        lee.jones@linaro.org, sre@kernel.org, gregkh@linuxfoundation.org,
-        lgirdwood@gmail.com, lars@metafoo.de, rafael@kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 07/10] regulator: axp20x: Add support for AXP192
-Message-ID: <Yp4Q2mNVjMfgzMv0@sirena.org.uk>
-References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
- <20220603135714.12007-8-aidanmacdonald.0x0@gmail.com>
+        with ESMTP id S240213AbiFFPAp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 11:00:45 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783D63202FB;
+        Mon,  6 Jun 2022 08:00:44 -0700 (PDT)
+Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LGxTy051sz68700;
+        Mon,  6 Jun 2022 22:59:34 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 6 Jun 2022 17:00:42 +0200
+Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 6 Jun
+ 2022 16:00:41 +0100
+Date:   Mon, 6 Jun 2022 16:00:40 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC 2/2] iio: accel: bma400: Add support for single and double
+ tap events
+Message-ID: <20220606160040.000053f8@Huawei.com>
+In-Reply-To: <CAM+2EuLdTtXHGR5Oy6ay3yM__LK8Dea2rhXJMBNV35-S9HdmVg@mail.gmail.com>
+References: <20220529040153.4878-1-jagathjog1996@gmail.com>
+        <20220529040153.4878-3-jagathjog1996@gmail.com>
+        <20220604160153.504e96ae@jic23-huawei>
+        <CAM+2EuLdTtXHGR5Oy6ay3yM__LK8Dea2rhXJMBNV35-S9HdmVg@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Uk4ld2o6r5VJ06+j"
-Content-Disposition: inline
-In-Reply-To: <20220603135714.12007-8-aidanmacdonald.0x0@gmail.com>
-X-Cookie: Bedfellows make strange politicians.
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, 5 Jun 2022 10:38:10 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
---Uk4ld2o6r5VJ06+j
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Hi Jonathan and Andy.
+> 
+> On Sat, Jun 4, 2022 at 8:22 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Sun, 29 May 2022 09:31:53 +0530
+> > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> >  
+> > > Add support for single and double tap events based on the tap threshold
+> > > value and minimum quite time value between the taps. INT1 pin is used to
+> > > interrupt and event is pushed to userspace.
+> > >
+> > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>  
+> >
+> > Hi Jagath,
+> >
+> > A few comments inline.
+> >
+> > Thanks,
+> >
+> > Jonathan
 
-On Fri, Jun 03, 2022 at 02:57:11PM +0100, Aidan MacDonald wrote:
-> Add support for the AXP192 PMIC.
 
-Acked-by: Mark Brown <broonie@kernel.org>
 
---Uk4ld2o6r5VJ06+j
-Content-Type: application/pgp-signature; name="signature.asc"
+> > > +
+> > > +     /*
+> > > +      * acc_filt1 is the data source for the tap interrupt and it is
+> > > +      * operating on an input data rate of 200Hz.
+> > > +      */
+> > > +     if (!data->tap_event_en) {  
+> >
+> > Feels like checking the wrong thing.  If we need 200Hz, check if the
+> > data rate is at 200Hz rather than if the tap_event is not enabled.
+> > Obviously same result, but one seems more obvious.  
+> 
+> if (!data->tap_event_en)
+> This checking is to make sure not to execute
+> bma400_set_accel_output_data_rate() function while disabling the
+> tap event to avoid the negative (-EBUSY) return value from the
+> function bma400_set_accel_output_data_rate() when either of
+> the tap is enabled.
 
------BEGIN PGP SIGNATURE-----
+Ah. Fair enough. It's a little odd looking though. You could push
+the check out of bma400_set_accel_output_data_rate() and into
+write_raw though would need to be within the lock to avoid potential
+race conditions.  Perhaps just not worth the effort.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKeENoACgkQJNaLcl1U
-h9BRxwf/b0P1wPzce+1thOKF1W1DrQfBWbTjDTd82nga68AyMAsQD5RuRHN+CD3S
-MU0+osmy2aXsijrMiEVW2Ibm/5QkbfgSpof9qMvnkH4TFVBcRraCYfgo03YLNHCo
-9Z90Kz1iYijvLMhhOdQ+VfxjbsPv7A2tIp8MeTNfKTNqKwWO0g3fHRnrLrUFJk1S
-b4fyQZLP3lCOTTfrFiCdm7c1uzem0lkivDO03iIoEbZUwgrhX9iJ/emSWdhSIqff
-XC7YkvnQ7kCTunE5FQKI3VfpxkgoKzqq+HliMFim/MAxQhD8RS3/i5RE0DLcPj52
-gLiDgoA+I5xLJKMf5muHXY7OwKCcHQ==
-=wwxP
------END PGP SIGNATURE-----
+Jonathan
 
---Uk4ld2o6r5VJ06+j--
+

@@ -2,157 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C2F53DFED
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 05:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D70353E2A8
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jun 2022 10:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352264AbiFFDMz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 5 Jun 2022 23:12:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57494 "EHLO
+        id S231788AbiFFIfy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 6 Jun 2022 04:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349220AbiFFDMz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 5 Jun 2022 23:12:55 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3CF4F46D;
-        Sun,  5 Jun 2022 20:12:53 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id m26so6640735wrb.4;
-        Sun, 05 Jun 2022 20:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=xQwH03eUdhwmKSD3Wqpf/OXltVtDgOmzI8xFQdlkuAU=;
-        b=o3BPeuKWpskf/nmERSRQZ7mKyW5ObyOUwafZVED4ziKHTp27U2firE+Lg3HG/d0zCy
-         r1m+1Ka74YCvs/5iQS83SYRUAJeAHpJ6bLu6gbpJrkAgmn2ohmO/oIOhH1FTh15pxvav
-         gruahLTIMRuBYIV9t/04c51vxOxOMIp7KXUJ2tpsIvc1gL8yQyWlGDMJ5OMHnGdTapXX
-         kwjNDeeuwr8oTsjgiOgtWIk5Ki91cmRaN0nwFXMbcJNKmxXueoijYJndXK2mDxYr/iTR
-         IHCgRDmrqjIoVVNdb5iYKDtkxlVLIFIKuvyR0UGXt1/utBzMJByVGN3Bdlvp/weR028I
-         2MnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=xQwH03eUdhwmKSD3Wqpf/OXltVtDgOmzI8xFQdlkuAU=;
-        b=4tx7Nuu5ClkcDMsTtpOY6ZHC4IpioTPdFooOqneYBxitvX3gsvwvtydi11i5TuhLOI
-         2ujy+aZBDRaMXkv1tsqrORc3lTSO39EeLLUpdr8WIN6kgdDZJFbL9LT+60rCTVIVta6l
-         WcOoeb5VMNkUtxn0Az1P0rsY18rucsrbLWS+mDDfkHqzWMtuZtMppYkZDKHLPHzQ0c2V
-         ofVdQtMlkIXUOLg8XsDTjGPYUfPWeMEYngeK/5cG63o0wSlI47Zt7UQNZKKIigk2IOyN
-         Xh2RDrFmUaEXUozxbG/8JHsLrMtDhdqjJ2gRJBvvI6ajA9m8F87iZRmajDW+zzvTPq3X
-         nq7Q==
-X-Gm-Message-State: AOAM5313crh4r02Ex1xrfJXD3wU689zhW05+AZFdcU9kFACJIep2+SS1
-        eZs8JNvxfc3MOhHzy6ZktC5hBxlaFrdPO4BhZKI=
-X-Google-Smtp-Source: ABdhPJxBUbYw3U2MPjpvu/zULIajZwXsBNlyGnAUBi30WP//50Wrff8qMrY9wz1OYUHmTjLMMwBueHpZKS6TTbPiW9M=
-X-Received: by 2002:a5d:4302:0:b0:20e:66db:b8f5 with SMTP id
- h2-20020a5d4302000000b0020e66dbb8f5mr18692708wrq.320.1654485171681; Sun, 05
- Jun 2022 20:12:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220530180910.2533-1-andriy.shevchenko@linux.intel.com> <20220603180347.2b0d0f08@jic23-huawei>
-In-Reply-To: <20220603180347.2b0d0f08@jic23-huawei>
-From:   Cixi Geng <gengcixi@gmail.com>
-Date:   Mon, 6 Jun 2022 11:12:15 +0800
-Message-ID: <CAF12kFueRHQJy2t6xitqfYwsY0kPagDSH289QKp0y0W0HzsshA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] iio: adc: sc27xx_adc: Re-use generic struct u32_fract
+        with ESMTP id S231773AbiFFIfy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 6 Jun 2022 04:35:54 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0504C14782C
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 01:35:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 60C90CE0FD7
+        for <linux-iio@vger.kernel.org>; Mon,  6 Jun 2022 08:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25870C385A9;
+        Mon,  6 Jun 2022 08:35:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654504549;
+        bh=Lwfl2GQggh0W+3ZGCY2FCaCAMsbiR6wGtDodrz0SZEI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pdVXbu7xuzGV/Xi6XRhNPhZGew3V5ojkD/z/dexMHynC0wx5Avi7U1Whp86c6KDSF
+         aeQgcj5XV7y6kh2QgyjXlmZ+Hdrs3lmIme+iGRyeGPRLuNt7DEG7xn5Ue/oz1O8EaS
+         xFYdxalAz3hBIayrgSFx5f08qmt0dJ+HVAWBU4gvt8/1I78NQsbAMxTETUXxEjJo+b
+         J6rO2p5VpmzfKRgQ518MZzYJknLbYaYtVLe2DuArnZoeADyiC6sEBxm9KLG7UbYqYn
+         ixgUP12Ps+jLxfLqEHyUh3AhqXsqpMrmNAAo21vy34Ja/fDW+TFpjxa6d97RWzVby1
+         rzxZdfK+eYNvw==
+Date:   Mon, 6 Jun 2022 10:35:45 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Cixi Geng <cixi.geng1@unisoc.com>, linux-iio@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [RESEND PATCH 5/5] iio: imu: lsm6dsx: Move exported symbols to
+ the IIO_LSM6DSX namespace
+Message-ID: <Yp28YfzYeWcLMm1E@lore-desk>
+References: <20220604161223.461847-1-jic23@kernel.org>
+ <20220604161223.461847-6-jic23@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="lutB5cFvVVHVBktC"
+Content-Disposition: inline
+In-Reply-To: <20220604161223.461847-6-jic23@kernel.org>
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan Cameron <jic23@kernel.org> =E4=BA=8E2022=E5=B9=B46=E6=9C=884=E6=97=
-=A5=E5=91=A8=E5=85=AD 01:44=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, 30 May 2022 21:09:10 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->
-> > Instead of custom data type re-use generic struct u32_fract.
->
-> There isn't a custom data type  - I'll reword this whilst applying
-> if there is no reason for a v2.
->
-> > No changes intended.
->
-> functional changes
->
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Given they have been active recently I'd ideally like Cixi Geng
-> to take a quick glance at this before I apply it.
-Acked-by: Cixi Geng <cixi.geng1@unisoc.com>
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/adc/sc27xx_adc.c | 15 +++++++--------
-> >  1 file changed, 7 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.=
-c
-> > index e9ff2d6a8a57..f8421cbba8fa 100644
-> > --- a/drivers/iio/adc/sc27xx_adc.c
-> > +++ b/drivers/iio/adc/sc27xx_adc.c
-> > @@ -579,15 +579,14 @@ static int sc27xx_adc_read(struct sc27xx_adc_data=
- *data, int channel,
-> >       return ret;
-> >  }
-> >
-> > -static void sc27xx_adc_volt_ratio(struct sc27xx_adc_data *data,
-> > -                               int channel, int scale,
-> > -                               u32 *div_numerator, u32 *div_denominato=
-r)
-> > +static void sc27xx_adc_volt_ratio(struct sc27xx_adc_data *data, int ch=
-annel, int scale,
-> > +                               struct u32_fract *fract)
-> >  {
-> >       u32 ratio;
-> >
-> >       ratio =3D data->var_data->get_ratio(channel, scale);
-> > -     *div_numerator =3D ratio >> SC27XX_RATIO_NUMERATOR_OFFSET;
-> > -     *div_denominator =3D ratio & SC27XX_RATIO_DENOMINATOR_MASK;
-> > +     fract->numerator =3D ratio >> SC27XX_RATIO_NUMERATOR_OFFSET;
-> > +     fract->denominator =3D ratio & SC27XX_RATIO_DENOMINATOR_MASK;
-> >  }
-> >
-> >  static int adc_to_volt(struct sc27xx_adc_linear_graph *graph,
-> > @@ -615,7 +614,7 @@ static int sc27xx_adc_to_volt(struct sc27xx_adc_lin=
-ear_graph *graph,
-> >  static int sc27xx_adc_convert_volt(struct sc27xx_adc_data *data, int c=
-hannel,
-> >                                  int scale, int raw_adc)
-> >  {
-> > -     u32 numerator, denominator;
-> > +     struct u32_fract fract;
-> >       u32 volt;
-> >
-> >       /*
-> > @@ -637,9 +636,9 @@ static int sc27xx_adc_convert_volt(struct sc27xx_ad=
-c_data *data, int channel,
-> >               break;
-> >       }
-> >
-> > -     sc27xx_adc_volt_ratio(data, channel, scale, &numerator, &denomina=
-tor);
-> > +     sc27xx_adc_volt_ratio(data, channel, scale, &fract);
-> >
-> > -     return DIV_ROUND_CLOSEST(volt * denominator, numerator);
-> > +     return DIV_ROUND_CLOSEST(volt * fract.denominator, fract.numerato=
-r);
-> >  }
-> >
-> >  static int sc27xx_adc_read_processed(struct sc27xx_adc_data *data,
->
+
+--lutB5cFvVVHVBktC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> Avoid unnecessary pollution of the global symbol namespace by
+> moving library functions in to a specific namespace and import
+> that into the drivers that make use of the functions.
+>=20
+> For more info: https://lwn.net/Articles/760045/
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Link: https://lore.kernel.org/r/20220220181522.541718-9-jic23@kernel.org
+
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 +++---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  | 1 +
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c  | 1 +
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c  | 1 +
+>  4 files changed, 6 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 9e4aa5c1c8d6..6b268f1c5fc3 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -2289,7 +2289,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, i=
+nt hw_id,
+> =20
+>  	return 0;
+>  }
+> -EXPORT_SYMBOL(st_lsm6dsx_probe);
+> +EXPORT_SYMBOL_NS(st_lsm6dsx_probe, IIO_LSM6DSX);
+> =20
+>  static int st_lsm6dsx_suspend(struct device *dev)
+>  {
+> @@ -2366,8 +2366,8 @@ static int st_lsm6dsx_resume(struct device *dev)
+>  	return err;
+>  }
+> =20
+> -EXPORT_SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend,
+> -			 st_lsm6dsx_resume);
+> +EXPORT_NS_SIMPLE_DEV_PM_OPS(st_lsm6dsx_pm_ops, st_lsm6dsx_suspend,
+> +			    st_lsm6dsx_resume, IIO_LSM6DSX);
+> =20
+>  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.com>");
+>  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/im=
+u/st_lsm6dsx/st_lsm6dsx_i2c.c
+> index 5bd565b93a8c..2ea34c0d3a8c 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+> @@ -146,3 +146,4 @@ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.=
+com>");
+>  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+>  MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx i2c driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_LSM6DSX);
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c b/drivers/iio/im=
+u/st_lsm6dsx/st_lsm6dsx_i3c.c
+> index 4df186499802..3b0c8b19c448 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i3c.c
+> @@ -54,3 +54,4 @@ module_i3c_driver(st_lsm6dsx_driver);
+>  MODULE_AUTHOR("Vitor Soares <vitor.soares@synopsys.com>");
+>  MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx i3c driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_LSM6DSX);
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c b/drivers/iio/im=
+u/st_lsm6dsx/st_lsm6dsx_spi.c
+> index 3a206fd4d92c..6a8883f022a8 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c
+> @@ -146,3 +146,4 @@ MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi@st.=
+com>");
+>  MODULE_AUTHOR("Denis Ciocca <denis.ciocca@st.com>");
+>  MODULE_DESCRIPTION("STMicroelectronics st_lsm6dsx spi driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_LSM6DSX);
+> --=20
+> 2.36.1
+>=20
+
+--lutB5cFvVVHVBktC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCYp28YQAKCRA6cBh0uS2t
+rAIRAP9i4CdWekcrINOksbGbzoSZGMMAIaArOp4pN45HMOiRggEA0Wq6yLmktJHy
+frC05VNdTV8sv/CvihYlbzDJ3KOnWA8=
+=jvAk
+-----END PGP SIGNATURE-----
+
+--lutB5cFvVVHVBktC--

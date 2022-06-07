@@ -2,183 +2,227 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE1853FBBE
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 12:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9861A53FB92
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 12:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241475AbiFGKpo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Jun 2022 06:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41612 "EHLO
+        id S241250AbiFGKlp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Jun 2022 06:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241459AbiFGKpf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 06:45:35 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0B61E3E7;
-        Tue,  7 Jun 2022 03:45:28 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id v1so23651420ejg.13;
-        Tue, 07 Jun 2022 03:45:28 -0700 (PDT)
+        with ESMTP id S241261AbiFGKlo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 06:41:44 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BA9E5290
+        for <linux-iio@vger.kernel.org>; Tue,  7 Jun 2022 03:41:40 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id z17so4245629wmi.1
+        for <linux-iio@vger.kernel.org>; Tue, 07 Jun 2022 03:41:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=references:from:to:cc:subject:date:in-reply-to:message-id
-         :mime-version;
-        bh=5iMSi5NreryGR8izdeYc2rW3YzGt+AHDIAmvUOT38HA=;
-        b=mUGaFDf9Gq0PSdRL0ePEpqPTGkc1KrPolQlTAYyeymOzOnlEIgzV3lIifZX+vORBp4
-         aPyi3xOaoTHuTDpvRYxKep8i1RKNnJYRIgY5tBNcScV9B7KDzNgI90XHeDYh39IVbeOm
-         16vSzWm/lkp6CP+owW9BVb6RLwQzLyt8C3F2yEumydUgagXiWzN9PVOyHBdcnrfVOn1O
-         bP7ZQOiYH9lJ5HYmQwV0OEfZ3ofCnzj5ei0Bbgw0TNWlmb6yeFsGHiqK/jvz+JeQ/++R
-         oOKpuNnTlQmbT0RrXb3m6K0MJDn0oDuHvSeYPrPle0WJmKDTGM3bmwvA6DW28RkBRquX
-         lbBg==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=qw8JacEfJNF9P2iNLjQzkAXW/8/vZkXuOjt3GnWBvjw=;
+        b=hyDSvJIfh0LYoaLEeqkmPROm1N2u7R8cMpaut6DZYA8pNoxIG7jthQ5F82HOCMq2rG
+         fYjscsLiZQgKk+uyZcbEemQ19fmtnvUYc1F4ZnC8f0xbYYmnoXgHcdlVqTkkiGAZFBqw
+         9s6rtFDUlnRG2c31zUx4ljO2jYpPUAnFu2CD7zbQdqqR7D+ujyFr+ex7gPKhkrnSR44Y
+         KTeHSqWku7fvSZxcJb7rgNvOQP8DFieQ2czxXmC8Grj3rVCEqXal1Ce2ctYVkpSgaPKD
+         4Q++EwprNd3zbAp7TC5+zWZnPLhJLp5WeJfaaKmzs3WBKvfUaGGXdb6qII//hNYJ6OuU
+         10vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:references:from:to:cc:subject:date:in-reply-to
-         :message-id:mime-version;
-        bh=5iMSi5NreryGR8izdeYc2rW3YzGt+AHDIAmvUOT38HA=;
-        b=MUO3LlOndnL+/OWB0NnHXS1pW2x9/C30lrB7SXlOen6nTsA3pSuNBXP2xT14se8ZD2
-         loFv00cBfZEqcCOI0E1E8gNPjZzBqlePs+v28e09v6GQedB16RgkKtEh0l8mHWfIcwj6
-         S9Od37U+9rPfXRKiIlAUxfUBCQ2r+qMgl3TgCgSvNtqOc9sUqNPoVnwY7bp8XNOoVk3j
-         YqwoiQHtIggpGJnLfdjRb0BBTu84+qov3MB4jLCxj7yo6aqE6AqpgmROI2CVRiy3wv0o
-         2gjHKQybw0VQ1NMIgm/2aPq/jgV6cJUn2HtLxgVbJ1MHFPYEb2X1D6zyw/AExsiDTLHr
-         CnGg==
-X-Gm-Message-State: AOAM5303tLabLlVHJ4R0GEmgB/tIZFHJMgZ2gpQ6pY4Jt8S2mOuTNr/F
-        eVAvbdROVHIw+E9uPDI3FeQ=
-X-Google-Smtp-Source: ABdhPJyC3axRmTgpQLe92bAYa+ea9uBIxBbgw9QtK8HQMRAK5klP6mYvkHGZslsJ56KeVDZNNFEhww==
-X-Received: by 2002:a17:907:761c:b0:6d6:e553:7bd1 with SMTP id jx28-20020a170907761c00b006d6e5537bd1mr25471613ejc.5.1654598726651;
-        Tue, 07 Jun 2022 03:45:26 -0700 (PDT)
-Received: from localhost (92.40.203.111.threembb.co.uk. [92.40.203.111])
-        by smtp.gmail.com with ESMTPSA id p4-20020a170906784400b00702d8b43df3sm7369536ejm.167.2022.06.07.03.45.25
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=qw8JacEfJNF9P2iNLjQzkAXW/8/vZkXuOjt3GnWBvjw=;
+        b=4w/+ZNDJlqM+Drh4x3Fw9n0HgqVjMJYwWneu3d5Dh56inVBjqDjl8p+gVo4SzFZmbs
+         BEqRGVEKc3uYSRkuJZ7ZUeaOjILvg6xqXq+MvPAsPNCMNzkWKe9i6opSYxiwlLemP4YY
+         cIcgq1NDUVxaPuWH+d0255iyE9EbgbG3jiG642js/knd+ylitGL7/79+sx462R+QB0eU
+         kD7mTMZD0JWEqwcBemcu4YEh4xIsaeiN6TidYkUGZK0mrWfimq9Sqoty5mWVSzo1KmV8
+         S7dzhluhm0RCWpL5GoxwK019Rr/HKvK2CO6ZoZtTggnXtVKVnfR0Sxf5fwjK5+0bXGTT
+         8jrQ==
+X-Gm-Message-State: AOAM532XF5g47g9Tklm3fhdh30WPuO9577QCoxDG3TIkYa6e7Qx4H4GJ
+        W0aMKJ+uk94TZsf2J0rz65nhYA==
+X-Google-Smtp-Source: ABdhPJz0rzj4eqfRw2wspCI3jipVGst2fbnr65Qmu05TDb5e0ptD3uTC6nEhOxZyIE8KFnMOZnH58g==
+X-Received: by 2002:a05:600c:3c8f:b0:39b:808c:b5cb with SMTP id bg15-20020a05600c3c8f00b0039b808cb5cbmr28760884wmb.11.1654598498995;
+        Tue, 07 Jun 2022 03:41:38 -0700 (PDT)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id n22-20020a05600c3b9600b00397342e3830sm27940708wms.0.2022.06.07.03.41.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jun 2022 03:45:25 -0700 (PDT)
-References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
- <20220603135714.12007-6-aidanmacdonald.0x0@gmail.com>
- <20220605225504.GA3678983-robh@kernel.org>
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
-        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
-        rafael@kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/10] dt-bindings: gpio: Add AXP192 GPIO bindings
-Date:   Tue, 07 Jun 2022 11:34:19 +0100
-In-reply-to: <20220605225504.GA3678983-robh@kernel.org>
-Message-ID: <7w5P7NKqcSgfwmILB1hRmmdtkmw7UXrH@localhost>
+        Tue, 07 Jun 2022 03:41:38 -0700 (PDT)
+Date:   Tue, 7 Jun 2022 11:41:36 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     lee.jones@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        ChiYuan Huang <cy_huang@richtek.com>, alice_chen@richtek.com,
+        chiaen_wu@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [RESEND 14/14] video: backlight: mt6370: Add Mediatek MT6370
+ support
+Message-ID: <20220607104136.cfnpwo6ajqiuafbf@maple.lan>
+References: <20220531111900.19422-1-peterwu.pub@gmail.com>
+ <20220531111900.19422-15-peterwu.pub@gmail.com>
+ <20220601094623.jnwh2fgsqepy72tc@maple.lan>
+ <CABtFH5+-o=cML_VCSY9frJwEU_TnZt0+myJebi8J7BpP+BOqOw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABtFH5+-o=cML_VCSY9frJwEU_TnZt0+myJebi8J7BpP+BOqOw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, Jun 03, 2022 at 03:14:56AM +0800, ChiaEn Wu wrote:
+> Daniel Thompson <daniel.thompson@linaro.org> 於 2022年6月1日 週三 下午5:46寫道：
+> >
+> > On Tue, May 31, 2022 at 07:19:00PM +0800, ChiaEn Wu wrote:
+> > > +#define MT6370_DT_PROP_DECL(_name, _type, _reg, _mask, _max, _inv)   \
+> > > +{                                                                    \
+> > > +     .name = "mediatek,bled-" #_name,                                \
+> >
+> > I'd rather have the whole DT property in the macro (because it helps
+> > with grepability).
+> 
+> Do you mean the _name parameter must be the full name of the DT
+> property and do not use "#" to concat like following example?
+> 
+> // in declare
+>             .name = _name,
+> // in use
+>             MT6370_DT_PROP_DECL(mediatek,bled-pwm-enable, ......)
 
-Rob Herring <robh@kernel.org> writes:
+Yes, I would prefer this form, although, as discussed below, I don't really
+like MT6370_DT_PROP_DECL().
 
-> On Fri, Jun 03, 2022 at 02:57:09PM +0100, Aidan MacDonald wrote:
->> The AXP192 PMIC is different enough from the PMICs supported by
->> the AXP20x GPIO driver to warrant a separate driver. The AXP192
->> driver also supports interrupts and pinconf settings.
->> 
->> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
->> ---
->>  .../bindings/gpio/x-powers,axp192-gpio.yaml   | 59 +++++++++++++++++++
->>  1 file changed, 59 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> 
->> diff --git a/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml b/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> new file mode 100644
->> index 000000000000..7a985640ade8
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> @@ -0,0 +1,59 @@
->> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
->> +%YAML 1.2
->> +---
->> +$id: "http://devicetree.org/schemas/gpio/x-powers,axp192-gpio.yaml#"
->> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->> +
->> +title: X-Powers AXP192 GPIO Device Tree Bindings
->> +
->> +maintainers:
->> +  - Chen-Yu Tsai <wens@csie.org>
->> +
->> +properties:
->> +  "#gpio-cells":
->> +    const: 2
->> +    description: >
->> +      The first cell is the pin number and the second is the GPIO flags.
->> +
->> +  compatible:
->> +    oneOf:
->> +      - enum:
->
-> No need for 'oneOf' with only 1 entry.
->
 
-Got it.
+> > > +     .type = MT6370_PARSE_TYPE_##_type,                              \
+> > > +     .reg = _reg,                                                    \
+> > > +     .mask = _mask,                                                  \
+> > > +     .max_val = _max,                                                \
+> > > +     .invert = _inv,                                                 \
+> > > +}
+> > > +
+> > > +static int mt6370_init_backlight_properties(struct mt6370_priv *priv,
+> > > +                                         struct backlight_properties *props)
+> > > +{
+> > > +     struct device *dev = priv->dev;
+> > > +     u8 prop_val;
+> > > +     u32 brightness;
+> > > +     unsigned int mask, val;
+> > > +     static const struct {
+> > > +             char *name;
+> > > +             enum mt6370_prop_type type;
+> > > +             unsigned int reg;
+> > > +             unsigned int mask;
+> > > +             u8 max_val;
+> > > +             bool invert;
+> > > +     } vendor_opt_props[] = {
+> > > +             MT6370_DT_PROP_DECL(pwm-enable, BOOL, MT6370_REG_BL_PWM,
+> > > +                                 MT6370_BL_PWM_EN_MASK, 1, false),
+> > > +             MT6370_DT_PROP_DECL(pwm-hys-enable, BOOL, MT6370_REG_BL_PWM,
+> > > +                                 MT6370_BL_PWM_HYS_EN_MASK, 1, false),
+> > > +             MT6370_DT_PROP_DECL(pwm-hys-sel, U8, MT6370_REG_BL_PWM,
+> > > +                                 MT6370_BL_PWM_HYS_SEL_MASK, 3, false),
+> > > +             MT6370_DT_PROP_DECL(ovp-level-sel, U8, MT6370_REG_BL_BSTCTRL,
+> > > +                                 MT6370_BL_OVP_SEL_MASK, 3, false),
+> > > +             MT6370_DT_PROP_DECL(ovp-shutdown, BOOL, MT6370_REG_BL_BSTCTRL,
+> > > +                                 MT6370_BL_OVP_EN_MASK, 1, true),
+> > > +             MT6370_DT_PROP_DECL(ocp-level-sel, U8, MT6370_REG_BL_BSTCTRL,
+> > > +                                 MT6370_BL_OC_SEL_MASK, 3, false),
+> > > +             MT6370_DT_PROP_DECL(ocp-shutdown, BOOL, MT6370_REG_BL_BSTCTRL,
+> > > +                                 MT6370_BL_OC_EN_MASK, 1, true),
+> > > +     }, *prop_now;
+> > > +     int i, ret;
+> > > +
+> > > +     /* vendor optional properties */
+> > > +     for (i = 0; i < ARRAY_SIZE(vendor_opt_props); i++) {
+> > > +             prop_now = vendor_opt_props + i;
+> > > +
+> > > +             switch (prop_now->type) {
+> > > +             case MT6370_PARSE_TYPE_BOOL:
+> > > +                     if (device_property_read_bool(dev, prop_now->name))
+> > > +                             val = 1;
+> > > +                     else
+> > > +                             val = 0;
+> > > +                     break;
+> > > +             case MT6370_PARSE_TYPE_U8:
+> > > +                     ret = device_property_read_u8(dev, prop_now->name,
+> > > +                                                   &prop_val);
+> > > +                     /* Property not exist, keep value in default */
+> > > +                     if (ret)
+> > > +                             continue;
+> > > +
+> > > +                     val = min_t(u8, prop_val, prop_now->max_val);
+> > > +                     break;
+> > > +             default:
+> > > +                     return -EINVAL;
+> > > +             }
+> > > +
+> > > +             if (prop_now->invert)
+> > > +                     val = prop_now->max_val - val;
+> > > +
+> > > +             val <<= ffs(prop_now->mask) - 1;
+> > > +
+> > > +             ret = regmap_update_bits(priv->regmap, prop_now->reg,
+> > > +                                      prop_now->mask, val);
+> > > +             if (ret)
+> > > +                     return ret;
+> > > +     }
+> >
+> > Is it really worth all this tricky code for 7 properties?
+> >
+> > The code would be much easier to read and maintain if it were coded
+> > directly. For example, the inverted boolean code is hard to read and
+> > can be written directly as:
+> >
+> >
+> >         val = device_property_read_bool(dev, "mediatek,bled-ovp_shutdown");
+> >         ret = regmap_update_bits(priv->regmap, MT6370_REG_BL_BST_CTRL,
+> >                                  MT6370_BL_OVP_EN_MASK,
+> >                                  MT6370_BL_OVP_EN_MASK * !val);
+> >         if (ret)
+> >                 return ret;
+> >
+> > The direct coded approach will probably also pay off if you switch
+> > the bindings over to microvolts/microamps since it becomes much more
+> > natural to call out to a lookup function to convert it into a register
+> > value.
+> >
+> 
+> The purpose of my code is trying to avoid the repeat code in this
+> function. And for loop can help to decrease the lines of code
+> effectively, that's why I use these code to parse the DT properties.
 
->> +          - x-powers,axp192-gpio
->> +
->> +  gpio-controller: true
->> +
->> +patternProperties:
->> +  "^.*-pins?$":
->
-> You can omit '^.*'
->
-> Why does 's' need to be optional?
->
+I'm not really convinced that is uses fewer lines of code. It
+certainly would if there were a very large number of properties
+but here there is only seven.
 
-TBH I just copied this from x-powers,axp209-gpio.yaml. A similar pattern
-is used in a few other bindings, eg. allwinner,sun4i-a10-pinctrl.yaml.
-I guess it's to allow the node names to sound more natural when there's
-only one pin.
+However I guess what I'm really complaining about is how hard it is to
+read the for loop. We have to study the macros, keep track six different
+arguments per property and review the complex logic of the for loop
+(which for example handles inverted u8's that don't actually exist).
 
-I am going to send a v2 with '-pins?$' but if you would prefer to have
-'-pins$' that's fine. I don't mind either way.
+To be clear, it's not that loops aren't useful for reducing boilerplate
+code. They can be. However trying to handle booleans and integers in the
+*same* loop ends up needlessly hard to read.
 
-Regards,
-Aidan
+Also, I think that if/when you adopt microamps/microvolts then the
+hard-to-read problem will get even worse unless you get loops to do only
+one thing!
 
->> +    $ref: /schemas/pinctrl/pinmux-node.yaml#
->> +
->> +    properties:
->> +      pins:
->> +        items:
->> +          enum:
->> +            - GPIO0
->> +            - GPIO1
->> +            - GPIO2
->> +            - GPIO3
->> +            - GPIO4
->> +            - N_RSTO
->> +
->> +      function:
->> +        enum:
->> +          - output
->> +          - input
->> +          - ldo
->> +          - pwm
->> +          - adc
->> +          - low_output
->> +          - floating
->> +          - ext_chg_ctl
->> +          - ldo_status
->> +
->> +required:
->> +  - compatible
->> +  - "#gpio-cells"
->> +  - gpio-controller
->> +
->> +additionalProperties: false
->> +
->> +...
->> -- 
->> 2.35.1
->> 
->> 
 
+Daniel.

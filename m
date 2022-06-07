@@ -2,113 +2,139 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15369540425
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 18:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7AB5409D4
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 20:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245454AbiFGQyv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Jun 2022 12:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52896 "EHLO
+        id S1350085AbiFGSON (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Jun 2022 14:14:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237216AbiFGQyu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 12:54:50 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3F5BC6D4;
-        Tue,  7 Jun 2022 09:54:46 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 68A4F5FD02;
-        Tue,  7 Jun 2022 19:54:43 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1654620883;
-        bh=SxIEs4Kr3MMdE6b27V4AwRdPMYxuMtwrvbNaADakNbo=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=D33E9B0XvzoFQnefaFP2y4+CA9e9ESM9bUAYUmsFgyI4fF/laHnHWcgz8vaJzof83
-         BFTykIevQMjyW6AXUaFSO4WRFu69epJNohdN59V3BzA8rOR7mymJambqs5vzAwZhJ1
-         o9/khYKABTJGlTp+kniJRjzDSRtlqT29l4KReKS1h5B8r3Wdfe4BsFUwvXOqMzYv00
-         0tB1CErSgIrtUzFi0oYDdMmyzWF1pDCJfQvSDB3pZKO8S/ZS9iqLb+jkGLaATR1JOh
-         jyruSRIXms3QYsStTeyTpEOq4dQ0i8ao7lPeVabauRxBGseFc0UOX/5jCyF0i8mLe8
-         eHR395I0Xk2/w==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Tue,  7 Jun 2022 19:54:42 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Topic: [PATCH v2] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Index: AQHYeZZUxOkpBS1pdUe6H6/GD97X1q1CID8AgAHY1QA=
-Date:   Tue, 7 Jun 2022 16:54:35 +0000
-Message-ID: <20220607165438.d4txhgccxfojlstv@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220606111316.19265-1-ddrokosov@sberdevices.ru>
- <CAHp75VfRF=NyU9TN0FJ=cj0w_C-cKL+foa+WskwpoBP9b+SfDA@mail.gmail.com>
-In-Reply-To: <CAHp75VfRF=NyU9TN0FJ=cj0w_C-cKL+foa+WskwpoBP9b+SfDA@mail.gmail.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <6436944E7330F2468150E8FB336F7C2F@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S1350194AbiFGSMy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 14:12:54 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E60CA63523;
+        Tue,  7 Jun 2022 10:48:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 62F4CB82239;
+        Tue,  7 Jun 2022 17:48:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E819C385A5;
+        Tue,  7 Jun 2022 17:48:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654624129;
+        bh=aT6YvPhoPElGUTTysLZKWXB1UMLXmkhkzGyEYMZj38o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=RQnuS2Mezn6+8pIxH0Omo++SR+BKiv+XOxze31IzL+MXKPpx2PzXiQVSdsb7SUFno
+         Qqh/iTirtAxtAmwGcBhEgR+h9TCbI9hngLh078q2/zDRKVPqOOlPTxCa8ESSwQ7Bjh
+         l4Uy9+9Yoh+GZQeD9ZlMKcJO1nc4+zj4pllrvN8WgS0z6qkowWLXfO4ka5QwU2AJ78
+         I4EK/6FBhJ9qAqPDjZpo25QWxvJOADgaIl0K69zDywDUcwYcNosHcN7rboNNbRr81i
+         sVQQKkoogSlS23WNuYmZAWB+kAEwhjC0Mx0iNvJaQf1Z2MtrmWmrGC/gKuigToWh/4
+         ZsYDlx54Rfm1g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Xiaoke Wang <xkernel.wang@foxmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.18 01/68] iio: dummy: iio_simple_dummy: check the return value of kstrdup()
+Date:   Tue,  7 Jun 2022 13:47:27 -0400
+Message-Id: <20220607174846.477972-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/07 11:12:00 #19699674
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Andy,
+From: Xiaoke Wang <xkernel.wang@foxmail.com>
 
-Thank you for the quick reply.
+[ Upstream commit ba93642188a6fed754bf7447f638bc410e05a929 ]
 
-On Mon, Jun 06, 2022 at 02:42:18PM +0200, Andy Shevchenko wrote:
-> On Mon, Jun 6, 2022 at 1:23 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> =
-wrote:
-> >
-> > As a part of patch series about wrong trigger register() and get()
-> > calls order in the some IIO drivers trigger initialization path:
-> >
-> > https://lore.kernel.org/all/20220524181150.9240-1-ddrokosov@sberdevices=
-.ru/
-> >
-> > runtime WARN() is added to alarm IIO driver authors who make such
-> > a mistake.
-> >
-> > When IIO driver allocates a new IIO trigger, it should register it befo=
-re
->=20
-> an IIO
->=20
-> > calling the get() operation. In other words, each IIO driver must abide=
- by
-> > IIO trigger alloc()/register()/get() calls order.
->=20
-> I believe triggers usually acquired at ->probe() time, means that in
-> case if the following code (however, I believe it will be quite rare)
-> goes into deferred probe cycle the WARN will be repeated. Perhaps
-> WARN_ONCE() ?
+kstrdup() is also a memory allocation-related function, it returns NULL
+when some memory errors happen. So it is better to check the return
+value of it so to catch the memory error in time. Besides, there should
+have a kfree() to clear up the allocation if we get a failure later in
+this function to prevent memory leak.
 
-You are totally right. I've tested deferred probing using -EPROBE_DEFER
-injection to probe() code path and WARN() was called each time. I'll fix
-it in the v3 as you suggested.
+Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_C920CFCC33B9CC1C63141FE1334A39FF8508@qq.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/dummy/iio_simple_dummy.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---=20
-Thank you,
-Dmitry=
+diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
+index c0b7ef900735..c24f609c2ade 100644
+--- a/drivers/iio/dummy/iio_simple_dummy.c
++++ b/drivers/iio/dummy/iio_simple_dummy.c
+@@ -575,10 +575,9 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	 */
+ 
+ 	swd = kzalloc(sizeof(*swd), GFP_KERNEL);
+-	if (!swd) {
+-		ret = -ENOMEM;
+-		goto error_kzalloc;
+-	}
++	if (!swd)
++		return ERR_PTR(-ENOMEM);
++
+ 	/*
+ 	 * Allocate an IIO device.
+ 	 *
+@@ -590,7 +589,7 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	indio_dev = iio_device_alloc(parent, sizeof(*st));
+ 	if (!indio_dev) {
+ 		ret = -ENOMEM;
+-		goto error_ret;
++		goto error_free_swd;
+ 	}
+ 
+ 	st = iio_priv(indio_dev);
+@@ -616,6 +615,10 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	 *    indio_dev->name = spi_get_device_id(spi)->name;
+ 	 */
+ 	indio_dev->name = kstrdup(name, GFP_KERNEL);
++	if (!indio_dev->name) {
++		ret = -ENOMEM;
++		goto error_free_device;
++	}
+ 
+ 	/* Provide description of available channels */
+ 	indio_dev->channels = iio_dummy_channels;
+@@ -632,7 +635,7 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 
+ 	ret = iio_simple_dummy_events_register(indio_dev);
+ 	if (ret < 0)
+-		goto error_free_device;
++		goto error_free_name;
+ 
+ 	ret = iio_simple_dummy_configure_buffer(indio_dev);
+ 	if (ret < 0)
+@@ -649,11 +652,12 @@ static struct iio_sw_device *iio_dummy_probe(const char *name)
+ 	iio_simple_dummy_unconfigure_buffer(indio_dev);
+ error_unregister_events:
+ 	iio_simple_dummy_events_unregister(indio_dev);
++error_free_name:
++	kfree(indio_dev->name);
+ error_free_device:
+ 	iio_device_free(indio_dev);
+-error_ret:
++error_free_swd:
+ 	kfree(swd);
+-error_kzalloc:
+ 	return ERR_PTR(ret);
+ }
+ 
+-- 
+2.35.1
+

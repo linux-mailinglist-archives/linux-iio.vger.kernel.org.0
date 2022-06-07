@@ -2,68 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061EF53FC18
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 12:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF9353FCB9
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 13:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241604AbiFGKtn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Jun 2022 06:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42776 "EHLO
+        id S242372AbiFGLBe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Jun 2022 07:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241816AbiFGKsk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 06:48:40 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BB3C3136E;
-        Tue,  7 Jun 2022 03:47:28 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id bg6so14520050ejb.0;
-        Tue, 07 Jun 2022 03:47:28 -0700 (PDT)
+        with ESMTP id S242549AbiFGLAT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 07:00:19 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F4D240AD;
+        Tue,  7 Jun 2022 03:57:45 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id b8so5781550edj.11;
+        Tue, 07 Jun 2022 03:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=references:from:to:cc:subject:date:in-reply-to:message-id
          :mime-version;
-        bh=Pgq5MawNxPb77sAjnIPnFN2fq8aE2jaJNXvjUTWy23s=;
-        b=e3kfSjAbsoTviVaMNfjdVxtoKtiTjcV2OsAN+3ENsSb1F1CXz9kskNbi+nMmkBTb/J
-         Sbq0w4htYEMnZCTs6zWgagvMnfgGN+3xv7XxOzRm52lyYk6bhPMqQZhG+mx4BUOmXi3u
-         4FGmSXXppL8R3yiREC0BCqDKgRRYUXzQJD41n2DgxSk+vvv1mTFB6mpGACcPD/4sk4pY
-         EbiG2y5lsTTNsY04+HxZUNXVC9tlDAC7dPO6TF9m3f2++E5OmgGg0gNSdAGuwEwB+TKf
-         5P6orTIcfqMHiDeQEMyYp2zYx/lcXShUu7Ls+evt7DXJZl6LcmY9kLURrzNePpq6h8qQ
-         CHhw==
+        bh=yPufLHAHmFZwiernSymaEB3w3KO3bi6vBnV8PeUhLxI=;
+        b=hnKKSGjrNlED/ZlKz+Mk3ptadzuBrA4J1vL8VD7NRqCFW31W644HRaVQWmcraWSz71
+         5dMMJhQ+BcrWbNn2bCO8fTqN5+WThdkCsK5+8qkojv9mzGUNfRJSpSKT+5aUzYU7AriE
+         N7h2CR0qwrfJOvOIgBnFh1Ojle66VSa4bdCOAgWpyASOVWzfksdaV8BbDK99daFoltnx
+         9sKL5RHXz4+K+NTOK/9S5RP0flCJurYELlgQNxb44NTX2PeREFNp8IFqImXVcc7UKaUX
+         41e5IN3X4u4zJ6l/4WTvjR7NZhLpY5SRHCdxpyg9Mzyz377bI/qPH89bq5szta5I48YR
+         Z6NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:references:from:to:cc:subject:date:in-reply-to
          :message-id:mime-version;
-        bh=Pgq5MawNxPb77sAjnIPnFN2fq8aE2jaJNXvjUTWy23s=;
-        b=suNR+cxqIlBNJ18JrA/2un55tHxdfv4rdHKjWbDKfE4jylDTWQkOA7z8QdvtNIcVkr
-         jvGgv/dfhD9QnVmMV5JQNk7/0e+dXkhARKFf5Vl9AKQpfV+bS6HH2lW18+iTsh0zdY/E
-         k+I8HRLtAce8crUbrDu/uQOhPI6mM7x3ke+NSAH0BmeSH9u5AMQyo7ZUUCtosGAzP9vy
-         lGKFTiiYhdZmwh2hlGnZiKou50ol/AjNWNIaF69+PgvdiVZmbmIvShuJHSjDBWTcBDtg
-         /FWlvOlIQJ9zulGqFE2U9MzSPSusz2Q9MdDb7AqtemcUsFGBJF67ZMqB2qWFBGDoa74M
-         5E1A==
-X-Gm-Message-State: AOAM533IJUl15eAX+TSYqgo8kAI3n1lMUo+nSOO6heB5lHgM0YPg3DRS
-        VO34Y4GSpqGUNJAWcNjDzIs=
-X-Google-Smtp-Source: ABdhPJwE12iAv0pTVW95ulxsPwHuM4wYaFcQKpFYRThN/bNbeSFLp8E2X/JkdJoBlaXq5YK50hXBCw==
-X-Received: by 2002:a17:906:a188:b0:70c:1e17:b833 with SMTP id s8-20020a170906a18800b0070c1e17b833mr22500662ejy.271.1654598846780;
-        Tue, 07 Jun 2022 03:47:26 -0700 (PDT)
-Received: from localhost (92.40.203.113.threembb.co.uk. [92.40.203.113])
-        by smtp.gmail.com with ESMTPSA id n24-20020aa7c698000000b0042bb229e81esm10044086edq.15.2022.06.07.03.47.25
+        bh=yPufLHAHmFZwiernSymaEB3w3KO3bi6vBnV8PeUhLxI=;
+        b=Gm/qfIlm1hviu7MYzhjE+rrnBeh601A0YerY2pCujipZ0abE1y1Swy3TE0vNNOgFCQ
+         AaSZRx4qn1ijiwSXHv2BhS40OsoylEaWAuG5PPoXUKhNTdG3tdnGjHA0jPqupFD/VH5C
+         K0mkxeaNlzHdM1b3P46c4NUjGlC6vHVC4CYpoLQ2qFcSCXBswNVZkPG9mE/U+105kbSp
+         19VGjvSqpamoDZsIpwIOROfA+608iF5RgLX3+SECq6SAS5hMnhGDpFN2F5M9f8RhSuIA
+         BFN4h5+WAWu7ePzIJwnzrUHYXK+tLwgUVa596lJGqBVZJ0e1RPfGDit8GjIUky0hgmml
+         wsxw==
+X-Gm-Message-State: AOAM532SuHrQTDBoIDzvmtT+yTPoesAb4fqNRiotBw41rHuejdG5pH+C
+        KSlCWgxwE/y0AwAoUjHZAjs=
+X-Google-Smtp-Source: ABdhPJyQ0oBf+aAihrAexYG8itdUihorYdbcNhw5dal9/wGkAvJYiJHkpOylC6RmzGwUA7Fxg7qaow==
+X-Received: by 2002:a05:6402:23a3:b0:42e:251a:c963 with SMTP id j35-20020a05640223a300b0042e251ac963mr27606354eda.173.1654599464256;
+        Tue, 07 Jun 2022 03:57:44 -0700 (PDT)
+Received: from localhost (92.40.203.141.threembb.co.uk. [92.40.203.141])
+        by smtp.gmail.com with ESMTPSA id gj12-20020a170906e10c00b006fed8dfcf78sm7396457ejb.225.2022.06.07.03.57.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jun 2022 03:47:26 -0700 (PDT)
+        Tue, 07 Jun 2022 03:57:43 -0700 (PDT)
 References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
- <20220603135714.12007-2-aidanmacdonald.0x0@gmail.com>
- <20220606174320.GA16522@quicinc.com>
+ <20220603135714.12007-9-aidanmacdonald.0x0@gmail.com>
+ <20220603174744.642157d8@jic23-huawei>
+ <e9ABtmBNzztlyRcJD5f36OmAYZW4i7KH@localhost>
+ <20220604152711.22268711@jic23-huawei>
 From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Guru Das Srinagesh <quic_gurus@quicinc.com>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
-        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
-        rafael@kernel.org, linux-gpio@vger.kernel.org,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, linus.walleij@linaro.org, brgl@bgdev.pl,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        wens@csie.org, lee.jones@linaro.org, sre@kernel.org,
+        broonie@kernel.org, gregkh@linuxfoundation.org,
+        lgirdwood@gmail.com, rafael@kernel.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/10] regmap-irq: Add get_irq_reg to support unusual
- register layouts
-Date:   Tue, 07 Jun 2022 11:46:54 +0100
-In-reply-to: <20220606174320.GA16522@quicinc.com>
-Message-ID: <shCOrWuZYFlO3x9fYvGVQDCINY4Z8d5E@localhost>
+Subject: Re: [PATCH 08/10] iio: adc: axp20x_adc: Add support for AXP192
+Date:   Tue, 07 Jun 2022 11:49:58 +0100
+In-reply-to: <20220604152711.22268711@jic23-huawei>
+Message-ID: <9Ju6ijQ68x8e8Es1zhzsVMZHprvKy16b@localhost>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,58 +78,72 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-Guru Das Srinagesh <quic_gurus@quicinc.com> writes:
+Jonathan Cameron <jic23@kernel.org> writes:
 
-> On Fri, Jun 03, 2022 at 02:57:05PM +0100, Aidan MacDonald wrote:
->> Add a new callback, get_irq_reg, for regmap IRQ chips, to support devices
->> with unusual register layouts. This is required in the rare cases where
->> the offset of an IRQ register is not constant with respect to the base
->> register. This is probably best illustrated with an example:
->> 
->>             mask    status
->>     IRQ0    0x40    0x44
->>     IRQ1    0x41    0x45
->>     IRQ2    0x42    0x46
->>     IRQ3    0x43    0x47
->>     IRQ4    0x4a    0x4d
->> 
->> If we set mask_base = 0x40 and status_base = 0x44, the offsets of each
->> register relative to the base are:
->> 
->>             mask    status
->>     IRQ0    0       0
->>     IRQ1    1       1
->>     IRQ2    2       2
->>     IRQ3    3       3
->>     IRQ4    10      9
->> 
->> The existing mapping mechanisms can't include IRQ4 in the same irqchip
->> as IRQ0-3 because the offset of IRQ4's register depends on which type
->> of register we're asking for, ie. which base register is used.
->> 
->> The get_irq_reg callback allows drivers to specify an arbitrary mapping
->> of (base register, register index) pairs to register addresses, instead
->> of the default linear mapping "base_register + register_index". This
->> allows unusual layouts, like the one above, to be handled using a single
->> regmap IRQ chip.
->> 
->> The drawback is that when get_irq_reg is used, it's impossible to use
->> bulk reads for status registers even if some of them are contiguous,
->> because the mapping is opaque to regmap-irq. This should be acceptable
->> for the case of a few infrequently-polled status registers.
+> On Sat, 04 Jun 2022 12:47:38 +0100
+> Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
 >
-> This patch does two things:
+>> Jonathan Cameron <jic23@kernel.org> writes:
+>> 
+>> > On Fri,  3 Jun 2022 14:57:12 +0100
+>> > Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
+>> >  
+>> >> The AXP192 is identical to the AXP20x, except for the addition of
+>> >> two more GPIO ADC channels.
+>> >> 
+>> >> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>  
+>> > Hi Aidan,
+>> >
+>> > A few minor questions and comments inline.
+>> >
+>> > Thanks,
+>> >
+>> > Jonathan
+>> >
+>> > Unless I missed a previous patch adding labels to the other devices supported,
+>> > this is the first driver to use these.  Why do they make sense here but not
+>> > to add to existing supported devices?
+>> >
+>> > I don't particularly mind this addition, just looking for an explanation.
+>> >  
+>> 
+>> That'd be because 1d4ef9b39ebecca8 ("iio: core: Add optional symbolic
+>> label to a device channel") added read_label in 2020, while the AXP
+>> driver was introduced in 2017. I could add read_label for the other
+>> chips while I'm here, for consistency.
 >
-> 1. Add a new callback `get_irq_reg`
-> 2. Replace unmask_offset calculation with call to sub_irq_reg()
+> Thanks, I don't really mind either way on adding support for additional parts.
 >
-> Could you please split the patch into two to better reflect this?
+>> 
+>> One question I have is why read_label exists when the kernel already has
+>> unique names for IIO channels. Why not just expose the datasheet_name to
+>> userspace from the IIO core instead of making drivers do it?
 >
-> Thank you.
+> In general, datasheet_name refers to the name of the pin on a datasheet for this
+> device, whereas label can refer to how it is used.
+> There are dt bindings to allow a per channel label letting a driver (where it
+> makes sense) provide them for each individual ADC channel.
+> (e.g. the ad7768-1 driver does this).
 >
-> Guru Das.
+> On other devices they come from entirely different sources such as the hardcoded
+> choices in hid-sensor-custom-intel-hinge.
+>
+> I vaguely recall that we've talked in the past about exposing datasheet name directly
+> but for many devices it's not that useful (the user doesn't care if a channel is
+> aux channel 1 or 7, but rather what it is wired up to).
+>
+> At the moment this driver just exposes all channels rather than having
+> per channel bindings, so we don't have the option to use labeling in the device
+> tree to assign the names.   If it's particularly useful to you to have labels
+> that are datasheet names that's fine.
+>
+> Jonathan
 
-No problem, I'll do that in my v2.
+Thanks for the explanation, makes sense that "gpio0_v" is probably not
+all that useful. I was thinking mainly of channels like battery charge
+current where the channel usage is fixed by hardware. The labels aren't
+terribly useful to me so I'll just leave them out, I'd rather not bother
+with adding dt labels.
 
 Regards,
 Aidan

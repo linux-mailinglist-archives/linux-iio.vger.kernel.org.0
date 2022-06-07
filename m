@@ -2,110 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C62653F720
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 09:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E5753F813
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 10:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbiFGHZf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Jun 2022 03:25:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44290 "EHLO
+        id S232071AbiFGIWX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Jun 2022 04:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237571AbiFGHZd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 03:25:33 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6894C5E49
-        for <linux-iio@vger.kernel.org>; Tue,  7 Jun 2022 00:25:31 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id bg6so13511072ejb.0
-        for <linux-iio@vger.kernel.org>; Tue, 07 Jun 2022 00:25:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=OHbou33WPhW0PDy9/CZae9mIrL4buN3/FALSld4obAM=;
-        b=CmizLCdUkCHQniGZ4iUmr8R03QR4tCO086jT6ADfiS8VP6aKTFRcT0upeq6SgvqdWY
-         aC7OA5fFEwoyPtwHHc4T89KDqtf1WQV7D9hJCXipz3FeeWGTMryoV32+2isimg+8fd6k
-         DbK3NgGHCa0xquCkgQJ11vuSZoQpAvHvGQuEgoy9FKjSTQVL/jZR+brMG7iNEB9ZpVmo
-         TDbdl60dUMHtDgAm6yp0JVDdZxmIIxBI50961DjUG4LYR8AHClgHs7Qa9K/866pbv/8m
-         0go+3hMj5PsGTMrynlH2b8QOtW5dUNnqd6ULJ4l1Sd4gwH9eoka4Yuu+Opu85A2074yN
-         imNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=OHbou33WPhW0PDy9/CZae9mIrL4buN3/FALSld4obAM=;
-        b=df0fx8968eVcsNAL4KICdPYGz71pxcbVf4/Z8E9IZ3z5WMBFkUOt+p48lsDkiE9hHp
-         15sK/fEPKTn3wqn0R55a2j1z/rKFQxZ9kljaGSr7zzi1MxicMdGyWJnzwTmdJeg9+nq0
-         4u3eqUucR2M4uhsUwMSzD0qeDuoS2uLMpcco1BKO3qEImwrDHo8aW9eWq7stAjyfJiHq
-         O6nl4Auv68M8KyhdEeZXk4FpcixlOnsuyyTfOI+NCfgPbu4Dniz93XpIDtk0x1GJ6CYX
-         U4i/6bVd2lfKKx1lNlSHTGWqhxOEfQjxDw0dbsQcz7LkxHx1MecCBVu+qF0aQFO/WsU/
-         WZBA==
-X-Gm-Message-State: AOAM53055JEhmPY8WvCnnDaBL8fBlBLrHQOzTRfnQgdllKJRSDrFhuKD
-        Qo5GZQVseHF+I78cbE6vrGtp9SQI5cfukI3Zl+c=
-X-Google-Smtp-Source: ABdhPJxyY8OYw9kzVkLnX5xkqvof1/SwCadEupsFP8YgqYYfX+CQw3PKOwc12xT65ew/6mE7xGY1M4W6OKng121HPMk=
-X-Received: by 2002:a17:906:85cb:b0:70b:ffb4:b0e with SMTP id
- i11-20020a17090685cb00b0070bffb40b0emr21770211ejy.533.1654586730901; Tue, 07
- Jun 2022 00:25:30 -0700 (PDT)
+        with ESMTP id S232052AbiFGIWW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 04:22:22 -0400
+X-Greylist: delayed 853 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 01:22:21 PDT
+Received: from mail.forindustry.pl (mail.forindustry.pl [37.187.225.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A5076473
+        for <linux-iio@vger.kernel.org>; Tue,  7 Jun 2022 01:22:20 -0700 (PDT)
+Received: by mail.forindustry.pl (Postfix, from userid 1002)
+        id E56A8A49F2; Tue,  7 Jun 2022 08:02:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=forindustry.pl;
+        s=mail; t=1654589022;
+        bh=Vw5jk5D1DE7WK/GNf/MxRQNyAyPYcC0rMJLibxKTj58=;
+        h=Date:From:To:Subject:From;
+        b=gVt+FdfmrvAaGNx392lkIgYE+myI6d5LNz2zABXr+dYZnySisZ0JVvbHN/OInUZe4
+         kTSUamZ7aQO8CXG4dnY4triU2LFK9rw57Uzr9WxDxeqvvuVj8eC6eCZNOvKbAEMvd4
+         glTTAJuWgtPM5xHZsrU3ZhnVxs8ldADen4fX2PNx9Edvnkm0KITuzgM3c8WRaz9ZYk
+         6bQIifpwVUrBwcKDGmc3eT5Xww9+efFztIdWIp1VTaIGpGOJyWQCr/WG655d1bXYPQ
+         IbZWsm3PkUwWEFgF4MTP69oKt5q/w+KkFvKEfABUEoCrZk/4eGc/R9dXyBrLhSSV/j
+         JtiNCQlZ8FiMQ==
+Received: by mail.forindustry.pl for <linux-iio@vger.kernel.org>; Tue,  7 Jun 2022 08:01:07 GMT
+Message-ID: <20220607064500-0.1.3o.ocpy.0.qw3cogca6q@forindustry.pl>
+Date:   Tue,  7 Jun 2022 08:01:07 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@forindustry.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.forindustry.pl
 MIME-Version: 1.0
-Received: by 2002:a05:6402:26c8:0:0:0:0 with HTTP; Tue, 7 Jun 2022 00:25:30
- -0700 (PDT)
-Reply-To: andyhalford22@gmail.com
-From:   Andy Halford <fameyemrf@gmail.com>
-Date:   Tue, 7 Jun 2022 00:25:30 -0700
-Message-ID: <CAATdNatDezvvFjLL_Lw3ivwhoUpdxTbAEMzu_LOx8DB2cB2=OA@mail.gmail.com>
-Subject: Dear Friend
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_50,DEAR_FRIEND,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:643 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [fameyemrf[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [andyhalford22[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  2.6 DEAR_FRIEND BODY: Dear Friend? That's not very dear!
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-Hello Sir
+Dzie=C5=84 dobry,
 
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99.
 
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-  I am Andy Halford from London, UK. Nice to meet you. Sorry for the
-inconvenience it's because of the time difference. I contacted you
-specifically regarding an important piece of information I intend
-sharing with you that will be of interest to you. Having gone through
-an intelligent methodical search, I decided to specifically contact
-you hoping that you will find this information useful. Kindly confirm
-I got the correct email by replying via same email to ensure I don't
-send the information to the wrong person.
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
-
-REGARDS
-Andy Halford
+Pozdrawiam,
+Arkadiusz Soko=C5=82owski

@@ -2,71 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 851005402A1
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 17:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA895402C8
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jun 2022 17:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344246AbiFGPko (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 7 Jun 2022 11:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49310 "EHLO
+        id S1344357AbiFGPw2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 7 Jun 2022 11:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236490AbiFGPkn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 11:40:43 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B19F748A;
-        Tue,  7 Jun 2022 08:40:42 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id w27so23495392edl.7;
-        Tue, 07 Jun 2022 08:40:42 -0700 (PDT)
+        with ESMTP id S1344354AbiFGPw1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 7 Jun 2022 11:52:27 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E452CDF5;
+        Tue,  7 Jun 2022 08:52:26 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id b8so6897064edj.11;
+        Tue, 07 Jun 2022 08:52:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=references:from:to:cc:subject:date:in-reply-to:message-id
-         :mime-version;
-        bh=qfl+39j7R9xCzETisivNB5VMNUjHYeFqx6KugSE8DOs=;
-        b=kc7RxpwnZjKOLy9IZK0kwjmON/0TUqFMCQwlz9VUZzYt3jUk8QuWBKUtQ7cNqFoXr8
-         GvjZ6Ba+d/lPH9SAkvcyGbsEJC4iUKpei9tmVJO1DNXcP/tafbFrpY8/iiNPDEwyoSu8
-         prpSLlPiTrvu/D5kmB31sLqF8uiP05H/UihF6vRcGqsyGGXryjaMMFOzrAYI34NHxjEX
-         gKSE5OXaPc6fDCrb6eLWFpwJcAIu9H+HpnPGN7Tf0rVJ8dpwka+wsRqZiLlBAEeSRt67
-         bhdmbjvMmrAZ09l1etJ4AravCXYUxwO46n5u+CfESH7vdF9MQk6yXsJtRm26DOEie/F5
-         eeeg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7WSf02wzt5xj7U1ZfNwlpnKYaY/88PxrNc7AsMYAPYE=;
+        b=oQ65244PK3dAAwIUNJvhfz31nnynzdOZeGl5JqjAaJAwLeB1JwVVzxXRagDTQ+EXr6
+         u3pu22m9RAIBN9H4Pj9xbPVAaODI1LXDpsUZKveNxNIDN/LQv4IgtHWguC4ojiu0CGYE
+         Ccw6hYBlPQ07LcCW0Vm9HpECMWW7KMOHYNRHUcq/TR2wG0Y6YHac/ly8GDlNOtVsGqch
+         W9dSDpmRAgBhhQGVxhbHGGwIXZL9o0md7HJFi2tPvNvEbNCCYfkV4cPl3iES45X4J329
+         PhTGVcUs6gdRiAjhonLvZPu4CF0R5DlJhkvpwc0G2dvjC1jWTaDX2pmb5M9R0kdU++EM
+         jRHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:references:from:to:cc:subject:date:in-reply-to
-         :message-id:mime-version;
-        bh=qfl+39j7R9xCzETisivNB5VMNUjHYeFqx6KugSE8DOs=;
-        b=QkkbhoGnXXv72u9vNjRe2CU6FJPDszNjELNSGAC5zD3Ukq1H30/adCjCOVmHLb7j1F
-         IvJjD0TfA+7b5fVNMiN1+Oy4+o4PaHvglvx4wCEM5q+nwFn/LF1YLJNx3KBqYQuamnR0
-         tg/G/+Xj4DA+UHInPZgD3VSzbtYJM45Lwbta1NSpiFMa5yFUlfKNW4Gt/AMwDF1hd5mG
-         mH4GZBw4jbVzv1XeCuuIJYLdadvIKHU0ahf0cnnOIXrBXitwYGPxQzCozQO7BQrs158G
-         j71Wyz93hdGtj+B1nxX4AnqncLGS/zJDBTlNZFyzRLoVkm0LYPoSXNPeTxgpN3zp9T8R
-         ZGuQ==
-X-Gm-Message-State: AOAM5322tsXDt4iiKw7SwX1aHWK7Vnyx97t717E+IF+DalFXrjWKksLk
-        zWGH2q5uW0qg5Z2AR92vwkRxch0YGQg=
-X-Google-Smtp-Source: ABdhPJyYWc6ZRgkMjIKqAY+JFaE6DX/4W10Tdpre7XOec6MZZmgCyRojIINNJjyMyIsgQJ8EXHB5Yw==
-X-Received: by 2002:aa7:d058:0:b0:42d:f33f:ad21 with SMTP id n24-20020aa7d058000000b0042df33fad21mr34135187edo.388.1654616440970;
-        Tue, 07 Jun 2022 08:40:40 -0700 (PDT)
-Received: from localhost (92.40.203.51.threembb.co.uk. [92.40.203.51])
-        by smtp.gmail.com with ESMTPSA id b5-20020a17090691c500b006feaa22e367sm7812132ejx.165.2022.06.07.08.40.39
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7WSf02wzt5xj7U1ZfNwlpnKYaY/88PxrNc7AsMYAPYE=;
+        b=oSVLfcIL7ZxoENglKFnrZU4oFUlsCC0mgHKO8XgFJRkFxEUHrusYtOqZJtd3dJlRBb
+         vLX2gSBeFCIkU5sE3qdWm723MDyqJQCeTxMfEGNet6DZsjrDo8zEOVy0GP8rAmGBqdJz
+         0zQ+nJsKwvMZN0Xow62bD+RrIJ6al++LM2rbjOWobFXNYGTYZYWmPY1rDJF9NbmdTL/p
+         //ZJXd1w+cxqgXHMAIizoS1MnpAxXc0hbbHWw23J+P9YN9PJ7gRh3zxv/5ywvJCXnSD6
+         cH4Eybgz5ANV9uwwe4xOWuiNhyjNcakR9oSTx1/gqSRv/1Rbw7QzlG/vrZKEwJpwP00R
+         K3uw==
+X-Gm-Message-State: AOAM532Y4VizH/CGcwpfmlH0rO8aZPSbEAfNQqpnkm8U1/OFAIuM31iM
+        MFlXvX+FJleDpRCFH5VD0dw=
+X-Google-Smtp-Source: ABdhPJw4MDtkxa92d06UvmSOWXXa3WAzFhpaCBvDESUtz0E9s01hviCjIvS0eCPxFZbvtUJeYeDjSA==
+X-Received: by 2002:a05:6402:528a:b0:42d:e116:fab8 with SMTP id en10-20020a056402528a00b0042de116fab8mr33525868edb.134.1654617144824;
+        Tue, 07 Jun 2022 08:52:24 -0700 (PDT)
+Received: from localhost (92.40.203.36.threembb.co.uk. [92.40.203.36])
+        by smtp.gmail.com with ESMTPSA id g1-20020a170906348100b00702d8b37a03sm8053692ejb.17.2022.06.07.08.52.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jun 2022 08:40:40 -0700 (PDT)
-References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
- <20220603135714.12007-6-aidanmacdonald.0x0@gmail.com>
- <20220605225504.GA3678983-robh@kernel.org>
- <7w5P7NKqcSgfwmILB1hRmmdtkmw7UXrH@localhost>
- <20220607151703.GB3254370-robh@kernel.org>
+        Tue, 07 Jun 2022 08:52:24 -0700 (PDT)
 From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl,
+To:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
         lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
-        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
-        rafael@kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/10] dt-bindings: gpio: Add AXP192 GPIO bindings
-Date:   Tue, 07 Jun 2022 16:40:55 +0100
-In-reply-to: <20220607151703.GB3254370-robh@kernel.org>
-Message-ID: <8lfT6C6izbY9ig2LRhvIxKJtQT7kLKKD@localhost>
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com
+Cc:     lars@metafoo.de, rafael@kernel.org, quic_gurus@quicinc.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: [PATCH v2 00/17] Add support for AXP192 PMIC
+Date:   Tue,  7 Jun 2022 16:53:07 +0100
+Message-Id: <20220607155324.118102-1-aidanmacdonald.0x0@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -77,78 +71,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Thanks to all reviewers for the feedback on v1. I believe I've made all
+the suggested changes, and I've also added support for the battery power
+supply in this version.
 
-Rob Herring <robh@kernel.org> writes:
+Changes in v2:
 
-> On Tue, Jun 07, 2022 at 11:34:19AM +0100, Aidan MacDonald wrote:
->> 
->> Rob Herring <robh@kernel.org> writes:
->> 
->> > On Fri, Jun 03, 2022 at 02:57:09PM +0100, Aidan MacDonald wrote:
->> >> The AXP192 PMIC is different enough from the PMICs supported by
->> >> the AXP20x GPIO driver to warrant a separate driver. The AXP192
->> >> driver also supports interrupts and pinconf settings.
->> >> 
->> >> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
->> >> ---
->> >>  .../bindings/gpio/x-powers,axp192-gpio.yaml   | 59 +++++++++++++++++++
->> >>  1 file changed, 59 insertions(+)
->> >>  create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> >> 
->> >> diff --git
->> >> a/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> >> b/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> >> new file mode 100644
->> >> index 000000000000..7a985640ade8
->> >> --- /dev/null
->> >> +++ b/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
->> >> @@ -0,0 +1,59 @@
->> >> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
->> >> +%YAML 1.2
->> >> +---
->> >> +$id: "http://devicetree.org/schemas/gpio/x-powers,axp192-gpio.yaml#"
->> >> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->> >> +
->> >> +title: X-Powers AXP192 GPIO Device Tree Bindings
->> >> +
->> >> +maintainers:
->> >> +  - Chen-Yu Tsai <wens@csie.org>
->> >> +
->> >> +properties:
->> >> +  "#gpio-cells":
->> >> +    const: 2
->> >> +    description: >
->> >> +      The first cell is the pin number and the second is the GPIO flags.
->> >> +
->> >> +  compatible:
->> >> +    oneOf:
->> >> +      - enum:
->> >
->> > No need for 'oneOf' with only 1 entry.
->> >
->> 
->> Got it.
->> 
->> >> +          - x-powers,axp192-gpio
->> >> +
->> >> +  gpio-controller: true
->> >> +
->> >> +patternProperties:
->> >> +  "^.*-pins?$":
->> >
->> > You can omit '^.*'
->> >
->> > Why does 's' need to be optional?
->> >
->> 
->> TBH I just copied this from x-powers,axp209-gpio.yaml. A similar pattern
->> is used in a few other bindings, eg. allwinner,sun4i-a10-pinctrl.yaml.
->> I guess it's to allow the node names to sound more natural when there's
->> only one pin.
->
-> Those cases were for compatibility with existing users. That shouldn't 
-> be the case here.
->
-> Rob
+* Do a little cleanup of axp20x_adc suggested by Jonathan Cameron
+* Consolidate ADC read functions in axp20x_adc
+* Drop the axp192's read_label callback in axp20x_adc
+* Clean up the axp192-gpio dt bindings
+* Rewrite a problematic bit of code in axp20x_usb_power reported
+  by kernel test robot
+* Support AXP192 in axp20x_battery
+* Split up regmap-irq changes to two separate patches
 
-OK, thanks for the clarification. I will use '-pins$' then.
+Cover letter from v1:
+
+Hi all,
+
+This patch series adds support for the X-Powers AXP192 PMIC to the
+AXP20x driver framework.
+
+The first patch is a small change to regmap-irq to support the AXP192's
+unusual IRQ register layout. It isn't possible to include all of the
+IRQ registers in one regmap-irq chip without this.
+
+The rest of the changes are pretty straightforward, I think the only
+notable parts are the axp20x_adc driver where there seems to be some
+opportunities for code reuse (the axp192 is nearly a duplicate of the
+axp20x) and the addition of a new pinctrl driver for the axp192, since
+the axp20x pinctrl driver was not very easy to adapt.
+
+Aidan MacDonald (17):
+  regmap-irq: Use sub_irq_reg() to calculate unmask register address
+  regmap-irq: Add get_irq_reg to support unusual register layouts
+  dt-bindings: mfd: add bindings for AXP192 MFD device
+  dt-bindings: iio: adc: axp209: Add AXP192 compatible
+  dt-bindings: power: supply: axp20x: Add AXP192 compatible
+  dt-bindings: gpio: Add AXP192 GPIO bindings
+  dt-bindings: power: axp20x-battery: Add AXP192 compatible
+  mfd: axp20x: Add support for AXP192
+  regulator: axp20x: Add support for AXP192
+  iio: adc: axp20x_adc: Minor code cleanups
+  iio: adc: axp20x_adc: Consolidate ADC raw read functions
+  iio: adc: axp20x_adc: Add support for AXP192
+  power: supply: axp20x_usb_power: Add support for AXP192
+  pinctrl: Add AXP192 pin control driver
+  power: axp20x_battery: Add constant charge current table
+  power: axp20x_battery: Support battery status without fuel gauge
+  power: axp20x_battery: Add support for AXP192
+
+ .../bindings/gpio/x-powers,axp192-gpio.yaml   |  57 ++
+ .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+ .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+ .../x-powers,axp20x-battery-power-supply.yaml |   1 +
+ .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+ drivers/base/regmap/regmap-irq.c              |  19 +-
+ drivers/iio/adc/axp20x_adc.c                  | 389 ++++++++++--
+ drivers/mfd/axp20x-i2c.c                      |   2 +
+ drivers/mfd/axp20x.c                          | 153 +++++
+ drivers/pinctrl/Kconfig                       |  14 +
+ drivers/pinctrl/Makefile                      |   1 +
+ drivers/pinctrl/pinctrl-axp192.c              | 589 ++++++++++++++++++
+ drivers/power/supply/axp20x_battery.c         | 136 +++-
+ drivers/power/supply/axp20x_usb_power.c       |  80 ++-
+ drivers/regulator/axp20x-regulator.c          | 101 ++-
+ include/linux/mfd/axp20x.h                    |  84 +++
+ include/linux/regmap.h                        |   5 +
+ 17 files changed, 1540 insertions(+), 111 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
+ create mode 100644 drivers/pinctrl/pinctrl-axp192.c
+
+-- 
+2.35.1
+

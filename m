@@ -2,30 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36610543151
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jun 2022 15:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673F554315D
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jun 2022 15:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240189AbiFHN2Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 8 Jun 2022 09:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39810 "EHLO
+        id S240315AbiFHNaZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 8 Jun 2022 09:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240094AbiFHN2P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Jun 2022 09:28:15 -0400
+        with ESMTP id S240310AbiFHNaY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 8 Jun 2022 09:30:24 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82A02E9E3;
-        Wed,  8 Jun 2022 06:28:12 -0700 (PDT)
-Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LJ7G51nx7z6880b;
-        Wed,  8 Jun 2022 21:23:25 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F12CE5C1;
+        Wed,  8 Jun 2022 06:30:23 -0700 (PDT)
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LJ7L04GtLz67J0f;
+        Wed,  8 Jun 2022 21:26:48 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.24; Wed, 8 Jun 2022 15:28:10 +0200
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 8 Jun 2022 15:30:21 +0200
 Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Wed, 8 Jun
- 2022 14:28:09 +0100
-Date:   Wed, 8 Jun 2022 14:28:08 +0100
+ 2022 14:30:20 +0100
+Date:   Wed, 8 Jun 2022 14:30:18 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 CC:     <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <robh+dt@kernel.org>,
@@ -38,7 +38,7 @@ CC:     <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <robh+dt@kernel.org>,
         <linux-iio@vger.kernel.org>, <linux-pm@vger.kernel.org>
 Subject: Re: [PATCH v2 11/17] iio: adc: axp20x_adc: Consolidate ADC raw read
  functions
-Message-ID: <20220608142808.00000650@Huawei.com>
+Message-ID: <20220608143018.00005aa6@Huawei.com>
 In-Reply-To: <20220607155324.118102-12-aidanmacdonald.0x0@gmail.com>
 References: <20220607155324.118102-1-aidanmacdonald.0x0@gmail.com>
         <20220607155324.118102-12-aidanmacdonald.0x0@gmail.com>
@@ -69,15 +69,7 @@ Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
 > 
 > Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 
-Hi Aidan,
-
-I'm not a big fan of using variant IDs, rather than a description
-of what is actually different between devices.  Long term, variant
-IDs tend to scale (as we add more supported devices) much worse
-than a flag describing the actual difference.
-
-Here I would have a field in struct axp_data called something like
-discharge_curr_res and set it to 12 or 13 as appropriate.
+Also, try building after this patch....
 
 > ---
 >  drivers/iio/adc/axp20x_adc.c | 83 +++++++++++++++---------------------
@@ -97,6 +89,9 @@ discharge_curr_res and set it to 12 or 13 as appropriate.
 > +	struct iio_chan_spec const	*channels;
 > +	unsigned long			adc_en1_mask;
 > +	unsigned long			adc_en2_mask;
+
+This new field should be in the next patch.
+
 > +	int				(*adc_rate)(struct axp20x_adc_iio *info,
 > +						    int rate);
 > +	struct iio_map			*maps;
@@ -127,9 +122,6 @@ discharge_curr_res and set it to 12 or 13 as appropriate.
 > +		 * bits.
 > +		 */
 > +		if (chan->type == IIO_CURRENT && chan->channel == AXP20X_BATT_DISCHRG_I)
-
-This line is getting a bit long, break it after the &&
-
 > +			size = 13;
 > +		else
 > +			size = 12;

@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C89B5446A7
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jun 2022 10:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C53CB5446CF
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jun 2022 10:59:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233983AbiFII4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Jun 2022 04:56:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S239127AbiFII6R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jun 2022 04:58:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242856AbiFII4W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jun 2022 04:56:22 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7795215D335
-        for <linux-iio@vger.kernel.org>; Thu,  9 Jun 2022 01:55:57 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-30ce6492a60so234001007b3.8
-        for <linux-iio@vger.kernel.org>; Thu, 09 Jun 2022 01:55:57 -0700 (PDT)
+        with ESMTP id S242922AbiFII5S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jun 2022 04:57:18 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B8B1F0A44
+        for <linux-iio@vger.kernel.org>; Thu,  9 Jun 2022 01:57:01 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3137eb64b67so32498817b3.12
+        for <linux-iio@vger.kernel.org>; Thu, 09 Jun 2022 01:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YQv5IHKS/Xq1nMBFmHNfBkfz9md7MY0lyVvFRrZc0DY=;
-        b=XRRHqGnAqOBQ84tBrj9wC8wQ7Y9vKI6Im80+NZQtea6d5zDrM21gQKGAe0EZYhUxi2
-         NdKzFqYxN6C4SCounbVFRqFuDGZd0zfWIhOQXrwf/CHx1b+a9GTQWe9Eno/yadSe97sb
-         8xsJywepKgtGYbShWy9VUgaeNbEqdAbqKjXKNInos0VC6YxooTNg213FKKLumlDqfKBP
-         0uS28v7Uv6tnpzc8q9XxyaQXxjXjv1eKFoz/eBO9/TVAm3bUMw/vTHAkOoDjBOpWAD5L
-         dCzw0Q+qebhDw7igIZoleVxKhXp6aqX498oqM4oSazTvGckqmzDXkDFIowRM/hQ6B1rB
-         08RQ==
+        bh=mBfkHwomqoQVJ5iP1a2Ln1xJk4/FQ1l7KDZnSrjGyvI=;
+        b=CYMqNPSHsyef6IYIjtBDYtFTSUn1o6iyPLDe8mf8prTfChI1zGYYhZJMnZbIm8FiUA
+         oFLPwxEEaLjzBwYEOVui5kYGjSsgNIAimczfx9M39BGZceNvvn7B+iLjim4VVSBu6fJZ
+         2jewT7TUVHYrl9g6+B2+aW4+4YvCT463SN4tgb9YALjUttohTGfZIrscesbKzhkMXkck
+         UIj8Em3qDrKGD46Qkwrg0aW6L3yLIueuP8Ui3YA4rbQfNNBg055qfNuYcPIkvwu/l9Pd
+         ZS6qlYwxguwdwJaiisIkYOG25JFfCkpxH9QSk8sJQ9B3/x7Xl8O7eO42Kv/QeUMEelcY
+         jguw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YQv5IHKS/Xq1nMBFmHNfBkfz9md7MY0lyVvFRrZc0DY=;
-        b=3zsuYqZ22ryeYkFxH+rU5f58PF9iUjKrW60X8dc0cW0xUZGGGtuiRTHgYTfVdI9BkT
-         S2VXaXagE1IFoCgFqfAN1H79kpBAyaUFF/XUTdBjdqW+AOkX5xGlvg0SplPHXs7Zu8/F
-         lN7Y21kuKl3qwx2TqboYKujaZtrWU0m/GBO3DTitqu3XVoDe+lLiIuY/Aoppwb8ZuXLJ
-         PMuOdkDIP86p2c5f9YgXA44QItgy9vDXxl3QoFIK2ugBw3iZCX5skg3FtPCFF3HYEWWv
-         BuO8KPpiR37BuBgsH295MNXXCcBICFbjDOkgs7DJwMmA29KYaGZmqgtJSYDjVu0YZQyt
-         SaKg==
-X-Gm-Message-State: AOAM530B7WykAvUnmsPAKR8PimcUZ9utUc/D4x+YZu+SAtVXgCb7tms9
-        J6/5/ukTU42hfOoRD0ngPwgRF+QXHBWXEBOqNMnH8A==
-X-Google-Smtp-Source: ABdhPJzYDsP+eH1L8OwT9ZaJDGbZWOYXDBP5LAhASPHy5wsNl4hkBJWT/yOlHskNuzzx/aENd9YGJwpvvGRp12PF8fw=
-X-Received: by 2002:a81:1154:0:b0:2fe:d5a4:f26b with SMTP id
- 81-20020a811154000000b002fed5a4f26bmr43330621ywr.140.1654764956789; Thu, 09
- Jun 2022 01:55:56 -0700 (PDT)
+        bh=mBfkHwomqoQVJ5iP1a2Ln1xJk4/FQ1l7KDZnSrjGyvI=;
+        b=exVxVq4hXXuQS8zC8U9WTqm6iwxT+zgrUcIFC2KFsuO7bOIyWb6XZ4XDiHCvcCXj7h
+         f8YhRbCKo1RsO3gCFJLoCbP8oTniEWTrKHhq7gTP7xhoECMp/BXNM47L+4AnpXvzMu9u
+         i6xXDGWUYogxxqimNbKL1fNg62eF0mjbxjDK2SGfu+1FRSRIMrKN/aXcVJwPoM1BHv4c
+         91R+GKnUuWNABAksVa4y03VpAOJjZV28kU6KNv6FanMaX+SGTe6xAZc7+sXVsxwbOM+/
+         x2DRZZyIuWtua406Fpg29fV2rjmvj1uJ0btbq68nAI3CCnK+CftVT242Gw8dYA5iRLg5
+         GXRA==
+X-Gm-Message-State: AOAM531fKjrtfE9SRtbTTGH0kxeaN3pncF0KG14wU1p+NV0Khn3puwNY
+        iA+mfW+s79b1RFWAgqmsyJ+jDrcFHgpvbwguwoR1eA==
+X-Google-Smtp-Source: ABdhPJxNzvkXPmRzVZDJz9jkuJQA/0Aqdy3mgR2XfgBXPstnVV58qlb0sz3vcA2VXVVLiI4X9Riy6fyHeYZoi1rfG0U=
+X-Received: by 2002:a0d:e246:0:b0:30c:5e77:7104 with SMTP id
+ l67-20020a0de246000000b0030c5e777104mr43630744ywe.448.1654765020379; Thu, 09
+ Jun 2022 01:57:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1654727058.git.jahau@rocketmail.com> <5ae4b9dda3032acba8b8b0e39352e9e3953e3f88.1654727058.git.jahau@rocketmail.com>
-In-Reply-To: <5ae4b9dda3032acba8b8b0e39352e9e3953e3f88.1654727058.git.jahau@rocketmail.com>
+References: <cover.1654727058.git.jahau@rocketmail.com> <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
+In-Reply-To: <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 9 Jun 2022 10:55:45 +0200
-Message-ID: <CACRpkdbzrqmj-XvL6ut1f4h-8J4Yz7981xUKzGrzSmsX91QUxg@mail.gmail.com>
-Subject: Re: [PATCH 6/7] iio: magnetometer: yas530: Remove redundant defaults
- on switch devid
+Date:   Thu, 9 Jun 2022 10:56:49 +0200
+Message-ID: <CACRpkdZzHcmGTeeVv+_EiwoPeFdyv4Dv_TOL9ZxjP-7UEoqhXQ@mail.gmail.com>
+Subject: Re: [PATCH 7/7] iio: magnetometer: yas530: Add YAS537 variant
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,7 +60,7 @@ Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -70,20 +69,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Jun 9, 2022 at 1:39 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> This is a preparation for adding YAS537 variant.
+> This adds support for the magnetometer Yamaha YAS537. The additions are based
+> on comparison of Yamaha Android kernel drivers for YAS532 [1] and YAS537 [2].
 >
-> In function yas5xx_probe(), there is a switch statement checking for device
-> IDs. If the ID is unknown, it exits with a device error. In later functions,
-> it's not neccessary to check the validity of the device IDs again.
+> Functions used by YAS530 & YAS532 only were renamed from yas5xx to yas530_532.
+> Registers were renamed accordingly.
 >
-> When adding YAS537 in a later patch, several of such switch statements will be
-> added. To make it more uniform, the redundant ones in YAS530/532 get herby
-> removed. This is done in a separate patch for better history control.
+> In the Yamaha YAS537 Android driver, there is an overflow/underflow control
+> implemented. For regular usage, this seems not necessary. A similar overflow/
+> underflow control of Yamaha YAS530/532 Android driver isn't integrated in the
+> mainline driver. It is therefore skipped for YAS537 in mainline too.
+>
+> Also in the Yamaha YAS537 Android driver, at the end of the reset_yas537()
+> function, a measurement is saved in "last_after_rcoil". Later on, this is
+> compared to current measurements. If the difference gets too big, a new
+> reset is intialized. The difference in measurements needs to be quite big,
+> it's hard to say if this is necessary for regular operation. Therefore this
+> isn't integrated in the mainline driver either.
+>
+> [1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c
+> [2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas537.c
 >
 > Cc: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
-No big deal for me, this works fine.
+Nice work! I have reviewed the drafts before in private and can't see
+any remaining issues with the final version so:
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Yours,

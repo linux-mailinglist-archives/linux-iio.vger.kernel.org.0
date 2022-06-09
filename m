@@ -2,374 +2,226 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0597754561B
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jun 2022 23:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9D82545639
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jun 2022 23:11:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236419AbiFIVDs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 9 Jun 2022 17:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35178 "EHLO
+        id S235068AbiFIVLd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 9 Jun 2022 17:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233386AbiFIVDr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jun 2022 17:03:47 -0400
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8783F262E26;
-        Thu,  9 Jun 2022 14:03:45 -0700 (PDT)
-Received: by mail-io1-f46.google.com with SMTP id s23so23415547iog.13;
-        Thu, 09 Jun 2022 14:03:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=by5YGyM5nsaylmOby7JhCd7PCoLNClphswYb2YEfmPA=;
-        b=JcHo7DFKSc+vBsBMDHYP8dtzX/dtKr4uIeukyNz61grSQjft/1PkGkFwcWdSYPbflw
-         +uNqJ0haB2Ubl9PuqHpAll4FC/ekjkukGwuIIMM6D0bJeimPO4xGKL9t3nPppRj4iZ4d
-         Sf6/ynIkb/4G+DxU46cObmg36xhlaTcmowZmXtRCQB9GqnufasSp1u2CTzCrxVbaXkJi
-         3WdeAZD3fFHIk+RgaE+hwV3Ir3nLRRxv6/wS5j4gc9zOgbN8o8TQq0a09jiSb9X1alpS
-         8iI7C2wyNvaprnh2inJD9R+d58pMSBB3xuPem539egROjjG9QXfa/8WubJpYMjXPUx49
-         XXMg==
-X-Gm-Message-State: AOAM5308sTJUIasKwKOs4IIKVCBi3OzVZV3E0TFRW1YTe32T2Jh71b+d
-        BeVvd43sZEmhV2S+DzOQfw==
-X-Google-Smtp-Source: ABdhPJwjT3380Kgb8o+b69IUX4+LvhmbE+YFqpieIN7LxiPYOz6isdPECyCGg9l3L78euSlkKwj8yQ==
-X-Received: by 2002:a05:6638:2722:b0:331:f878:e38b with SMTP id m34-20020a056638272200b00331f878e38bmr4382954jav.272.1654808624689;
-        Thu, 09 Jun 2022 14:03:44 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.251])
-        by smtp.gmail.com with ESMTPSA id i6-20020a056e0212c600b002cde6e352c2sm10856542ilm.12.2022.06.09.14.03.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jun 2022 14:03:44 -0700 (PDT)
-Received: (nullmailer pid 95138 invoked by uid 1000);
-        Thu, 09 Jun 2022 21:03:42 -0000
-Date:   Thu, 9 Jun 2022 15:03:42 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add AD4130
-Message-ID: <20220609210342.GA84096-robh@kernel.org>
-References: <20220608091238.403897-1-cosmin.tanislav@analog.com>
- <20220608091238.403897-2-cosmin.tanislav@analog.com>
+        with ESMTP id S229908AbiFIVLd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 9 Jun 2022 17:11:33 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BADA98A7;
+        Thu,  9 Jun 2022 14:11:31 -0700 (PDT)
+Received: from mercury (unknown [185.209.196.172])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3979C6601691;
+        Thu,  9 Jun 2022 22:11:30 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1654809090;
+        bh=iY1VOb8E7ORtMRxrDinmF/E6sgbCA/dJexyuWmvK1RE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GzP/fO8oIXMEYqXKiplucB6uiQkn1eGzzGp/tx8gcV7vHFyWorq81T03efRINtqqt
+         G9/+/de/c9YXnS0buenLItjewKvA61lpEzS4CSE/6wWvq4DZ9wn0bMmNZQuvgvbUSE
+         m7x0hzrxUqXuPlL0fUVsV3jy2pvPisiglo5J8Rw2XU9hySs0pBrzJQGnT7ZRMgX/0N
+         I06mjR5tE73dXYVh7NF/i8eqNaWIeWJhs4/X2OrbDKwL+w2Hidc6aYapMIUftqptwo
+         fHquF9xiwYvUGprAX6wH+y7Qoj6A5nPaLS72e0zacpxY3eumEF/fr0ueRnJX7gL4Z1
+         3gBCeXC3zYWLw==
+Received: by mercury (Postfix, from userid 1000)
+        id 4F9AC10605B9; Thu,  9 Jun 2022 23:11:28 +0200 (CEST)
+Date:   Thu, 9 Jun 2022 23:11:28 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
+        rafael@kernel.org, quic_gurus@quicinc.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 15/17] power: axp20x_battery: Add constant charge
+ current table
+Message-ID: <20220609211128.5knoptfwhongwrtq@mercury.elektranox.org>
+References: <20220607155324.118102-1-aidanmacdonald.0x0@gmail.com>
+ <20220607155324.118102-16-aidanmacdonald.0x0@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wgi7s7aty2en3a44"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220608091238.403897-2-cosmin.tanislav@analog.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220607155324.118102-16-aidanmacdonald.0x0@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 12:12:37PM +0300, Cosmin Tanislav wrote:
-> AD4130-8 is an ultra-low power, high precision, measurement solution for
-> low bandwidth battery operated applications.
-> 
-> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
-> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
-> selectable filter options, smart sequencer, sensor biasing and excitation
-> options, diagnostics, and a FIFO buffer.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+
+--wgi7s7aty2en3a44
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Tue, Jun 07, 2022 at 04:53:22PM +0100, Aidan MacDonald wrote:
+> Add a table-based lookup method for constant charge current,
+> which is necessary when the setting cannot be represented as
+> a linear range.
+>=20
+> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 > ---
->  .../bindings/iio/adc/adi,ad4130.yaml          | 262 ++++++++++++++++++
->  1 file changed, 262 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
-> new file mode 100644
-> index 000000000000..c06b8a96d31e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
-> @@ -0,0 +1,262 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2022 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4130.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD4130 ADC device driver
-> +
-> +maintainers:
-> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
-> +
-> +description: |
-> +  Bindings for the Analog Devices AD4130 ADC. Datasheet can be found here:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4130-8.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad4130
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: phandle to the master clock (mclk)
-> +
-> +  clock-names:
-> +    items:
-> +      - const: mclk
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-names:
-> +    description: |
-> +      Specify which interrupt pin should be configured as Data Ready / FIFO
-> +      interrupt.
-> +      Default if not supplied is int.
+>  drivers/power/supply/axp20x_battery.c | 53 +++++++++++++++++++++------
+>  1 file changed, 41 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply=
+/axp20x_battery.c
+> index 9106077c0dbb..87fb958f2224 100644
+> --- a/drivers/power/supply/axp20x_battery.c
+> +++ b/drivers/power/supply/axp20x_battery.c
+> @@ -61,6 +61,7 @@ struct axp20x_batt_ps;
+>  struct axp_data {
+>  	int	ccc_scale;
+>  	int	ccc_offset;
+> +	const int *ccc_table;
 
-       default: int
+Please document the struct; especially the fact that ccc_table must
+have a size of AXP20X_CHRG_CTRL1_TGT_CURR + 1.
 
-> +    enum:
-> +      - int
-> +      - clk
-> +      - p2
-> +      - dout
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  refin1-supply:
-> +    description: refin1 supply. Can be used as reference for conversion.
-> +
-> +  refin2-supply:
-> +    description: refin2 supply. Can be used as reference for conversion.
-> +
-> +  avdd-supply:
-> +    description: AVDD voltage supply. Can be used as reference for conversion.
-> +
-> +  iovdd-supply:
-> +    description: IOVDD voltage supply. Used for the chip interface.
-> +
-> +  spi-max-frequency:
-> +    maximum: 5000000
-> +
-> +  adi,int-clk-out:
-> +    description: Specify if the internal clock should be exposed on the CLK pin.
-> +    type: boolean
-> +
-> +  adi,ext-clk-freq:
-> +    description: Specify the frequency of the external clock.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
+-- Sebastian
 
--hz suffix and drop the type.
+>  	bool	has_fg_valid;
+>  	int	(*get_max_voltage)(struct axp20x_batt_ps *batt, int *val);
+>  	int	(*set_max_voltage)(struct axp20x_batt_ps *batt, int val);
+> @@ -176,7 +177,10 @@ static int axp20x_get_constant_charge_current(struct=
+ axp20x_batt_ps *axp,
+> =20
+>  	*val &=3D AXP20X_CHRG_CTRL1_TGT_CURR;
+> =20
+> -	*val =3D *val * axp->data->ccc_scale + axp->data->ccc_offset;
+> +	if (axp->data->ccc_table)
+> +		*val =3D axp->data->ccc_table[*val];
+> +	else
+> +		*val =3D *val * axp->data->ccc_scale + axp->data->ccc_offset;
+> =20
+>  	return 0;
+>  }
+> @@ -389,16 +393,36 @@ static int axp20x_battery_set_max_voltage(struct ax=
+p20x_batt_ps *axp20x_batt,
+>  				  AXP20X_CHRG_CTRL1_TGT_VOLT, val);
+>  }
+> =20
+> +static int axp20x_get_constant_charge_current_sel(struct axp20x_batt_ps =
+*axp_batt,
+> +						  int charge_current)
+> +{
+> +	int i;
+> +
+> +	if (axp_batt->data->ccc_table) {
+> +		for (i =3D AXP20X_CHRG_CTRL1_TGT_CURR; i >=3D 0; --i) {
+> +			if (axp_batt->data->ccc_table[i] <=3D charge_current)
+> +				return i;
+> +		}
+> +
+> +		return -EINVAL;
+> +	}
+> +
+> +	i =3D (charge_current - axp_batt->data->ccc_offset) / axp_batt->data->c=
+cc_scale;
+> +
+> +	if (i > AXP20X_CHRG_CTRL1_TGT_CURR || i < 0)
+> +		return -EINVAL;
+> +
+> +	return i;
+> +}
+> +
+>  static int axp20x_set_constant_charge_current(struct axp20x_batt_ps *axp=
+_batt,
+>  					      int charge_current)
+>  {
+>  	if (charge_current > axp_batt->max_ccc)
+>  		return -EINVAL;
+> =20
+> -	charge_current =3D (charge_current - axp_batt->data->ccc_offset) /
+> -		axp_batt->data->ccc_scale;
+> -
+> -	if (charge_current > AXP20X_CHRG_CTRL1_TGT_CURR || charge_current < 0)
+> +	charge_current =3D axp20x_get_constant_charge_current_sel(axp_batt, cha=
+rge_current);
+> +	if (charge_current < 0)
+>  		return -EINVAL;
+> =20
+>  	return regmap_update_bits(axp_batt->regmap, AXP20X_CHRG_CTRL1,
+> @@ -410,14 +434,14 @@ static int axp20x_set_max_constant_charge_current(s=
+truct axp20x_batt_ps *axp,
+>  {
+>  	bool lower_max =3D false;
+> =20
+> -	charge_current =3D (charge_current - axp->data->ccc_offset) /
+> -		axp->data->ccc_scale;
+> -
+> -	if (charge_current > AXP20X_CHRG_CTRL1_TGT_CURR || charge_current < 0)
+> +	charge_current =3D axp20x_get_constant_charge_current_sel(axp, charge_c=
+urrent);
+> +	if (charge_current < 0)
+>  		return -EINVAL;
+> =20
+> -	charge_current =3D charge_current * axp->data->ccc_scale +
+> -		axp->data->ccc_offset;
+> +	if (axp->data->ccc_table)
+> +		charge_current =3D axp->data->ccc_table[charge_current];
+> +	else
+> +		charge_current =3D charge_current * axp->data->ccc_scale + axp->data->=
+ccc_offset;
+> =20
+>  	if (charge_current > axp->max_ccc)
+>  		dev_warn(axp->dev,
+> @@ -629,7 +653,12 @@ static int axp20x_power_probe(struct platform_device=
+ *pdev)
+>  								   ccc)) {
+>  			dev_err(&pdev->dev,
+>  				"couldn't set constant charge current from DT: fallback to minimum v=
+alue\n");
+> -			ccc =3D 300000;
+> +
+> +			if (axp20x_batt->data->ccc_table)
+> +				ccc =3D axp20x_batt->data->ccc_table[0];
+> +			else
+> +				ccc =3D axp20x_batt->data->ccc_offset;
+> +
+>  			axp20x_batt->max_ccc =3D ccc;
+>  			axp20x_set_constant_charge_current(axp20x_batt, ccc);
+>  		}
+> --=20
+> 2.35.1
+>=20
 
-> +    enum: [76800, 153600]
-> +    default: 76800
-> +
-> +  adi,bipolar:
-> +    description: Specify if the device should be used in bipolar mode.
-> +    type: boolean
-> +
-> +  adi,vbias-pins:
-> +    description: Analog inputs to apply a voltage bias of (AVDD − AVSS) / 2 to.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    maxItems: 16
-> +    items:
-> +      minimum: 0
-> +      maximum: 15
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +patternProperties:
-> +  "^channel@([0-9]|1[0-5])$":
-> +    type: object
-> +    $ref: adc.yaml
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        description: |
+--wgi7s7aty2en3a44
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Don't need '|'.
+-----BEGIN PGP SIGNATURE-----
 
-> +          The channel number.
-> +        items:
-> +          minimum: 0
-> +          maximum: 15
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmKiYfkACgkQ2O7X88g7
++prwxQ/8DagaunLieops/FmoebSFQ9BtG0QCsmUttUvd1T0PRRJWfsLuCq7OTXUC
+nE6bK0SWz5H7FeK0VB8G5bNMqC4YOSFSPEQk2b/zQMxaKrCXjQfJ97esiK4bkVoB
+oXmlvCfst5OBvDJi7AgqJ2i2XaA7KQ6RorH0tZVAmVLK3VDmrVS+H89oaY/oLHGy
++e7iSdIB67088tqNGlU4Xb0ME2EbkDTTgee45l3FhYsmMFwq7cAZBr3Y2L4k/sWA
+plRhvdYFkyZnhWU4jAc9EbXv4TvcVNDgCI8/hHmd7uB5+/ERbPUC8anOEueDdo7p
+t8cl9E+sC8dICVq/THCnSuvfVb4dMNt3V8tpTXZBeDnNRdHOroZGf7zSkAUiOw3y
+nYH8BHURDUowqHy20t8J+USRIY5bsOrPm4ZCLsAb6W35NRt6OLr1tKxHpWJQIuyd
+0kPNC5n3qnRYW59ieqfM62fwwrzFxYifsd/5zmCRE6+qCH7d0ZudJodgm7Wttx8s
+2+nYii+6osTNIydJ6YywhPZdDKeuSML32rWURDBYLqGYlMdesZz8e7DNnJnzOqN0
+2ATxmMdBJNIltNyrH6XN14RbNvW8AVRv1q5YwsmSMY0KH+AWXK4sLdZT5YqRhi3x
+ICWkKVzM1MXS0h5Ib33I+yfcQ0zpEocZhaASeAHCJ1mHr23bOwo=
+=k7ui
+-----END PGP SIGNATURE-----
 
-This allows for more than 1 channel to be listed in reg. Is that intent? 
-If not, drop 'items'. If so and there a valid range, then add 
-minItems/maxItems.
-
-> +
-> +      diff-channels:
-> +        description: |
-> +          Besides the analog inputs available, internal inputs can be used.
-> +          16: Internal temperature sensor.
-> +          17: AVSS
-> +          18: Internal reference
-> +          19: DGND
-> +          20: (AVDD − AVSS)/6+
-> +          21: (AVDD − AVSS)/6-
-> +          22: (IOVDD − DGND)/6+
-> +          23: (IOVDD − DGND)/6-
-> +          24: (ALDO − AVSS)/6+
-> +          25: (ALDO − AVSS)/6-
-> +          26: (DLDO − DGND)/6+
-> +          27: (DLDO − DGND)/6-
-> +          28: V_MV_P
-> +          29: V_MV_M
-> +        items:
-> +          minimum: 0
-> +          maximum: 29
-> +
-> +      adi,reference-select:
-> +        description: |
-> +          Select the reference source to use when converting on the
-> +          specific channel. Valid values are:
-> +          0: REFIN1(+)/REFIN1(−)
-> +          1: REFIN2(+)/REFIN2(−)
-> +          2: REFOUT/AVSS (Internal reference)
-> +          3: AVDD/AVSS
-> +          If not specified, REFIN1 is used.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2, 3]
-> +        default: 0
-> +
-> +      adi,excitation-pin-0:
-> +        description: |
-> +          Analog input to apply excitation current to while the channel
-> +          is active.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        minimum: 0
-> +        maximum: 15
-> +        default: 0
-> +
-> +      adi,excitation-pin-1:
-> +        description: |
-> +          Analog input to apply excitation current to while this channel
-> +          is active.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        minimum: 0
-> +        maximum: 15
-> +        default: 0
-> +
-> +      adi,excitation-current-0-nanoamps:
-
-Prior property was 'adi,excitation-current-nanoamp'. Please match 
-'-nanoamp'.
-
-> +        description: |
-> +          Excitation current in nanoamps to be applied to pin specified in
-> +          adi,excitation-pin-0 while this channel is active.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
-> +        default: 0
-> +
-> +      adi,excitation-current-1-nanoamps:
-> +        description: |
-> +          Excitation current in nanoamps to be applied to pin specified in
-> +          adi,excitation-pin-1 while this channel is active.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
-> +        default: 0
-> +
-> +      adi,burnout-current-nanoamps:
-> +        description: |
-> +          Burnout current in nanoamps to be applied for this channel.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 500, 2000, 4000]
-> +        default: 0
-> +
-> +      adi,buffered-positive:
-> +        description: Enable buffered mode for positive input.
-> +        type: boolean
-> +
-> +      adi,buffered-negative:
-> +        description: Enable buffered mode for negative input.
-> +        type: boolean
-> +
-> +    required:
-> +      - reg
-> +      - diff-channels
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      adc@0 {
-> +        compatible = "adi,ad4130";
-> +        reg = <0>;
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        spi-max-frequency = <5000000>;
-> +        interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
-> +        interrupt-parent = <&gpio>;
-> +
-> +        channel@0 {
-> +          reg = <0>;
-> +
-> +          adi,reference-select = <2>;
-> +
-> +          /* AIN8, AIN9 */
-> +          diff-channels = <8 9>;
-> +        };
-> +
-> +        channel@1 {
-> +          reg = <1>;
-> +
-> +          adi,reference-select = <2>;
-> +
-> +          /* AIN10, AIN11 */
-> +          diff-channels = <10 11>;
-> +        };
-> +
-> +        channel@2 {
-> +          reg = <2>;
-> +
-> +          adi,reference-select = <2>;
-> +
-> +          /* Temperature Sensor, DGND */
-> +          diff-channels = <16 19>;
-> +        };
-> +
-> +        channel@3 {
-> +          reg = <3>;
-> +
-> +          adi,reference-select = <2>;
-> +
-> +          /* Internal reference, DGND */
-> +          diff-channels = <18 19>;
-> +        };
-> +
-> +        channel@4 {
-> +          reg = <4>;
-> +
-> +          adi,reference-select = <2>;
-> +
-> +          /* DGND, DGND */
-> +          diff-channels = <19 19>;
-> +        };
-> +      };
-> +    };
-> -- 
-> 2.36.1
-> 
-> 
+--wgi7s7aty2en3a44--

@@ -2,70 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E47546D97
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 21:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC84F546D9E
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 21:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348555AbiFJTt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 15:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39348 "EHLO
+        id S1348711AbiFJTvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 15:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233646AbiFJTt2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 15:49:28 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B6F3C3073;
-        Fri, 10 Jun 2022 12:49:26 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id m24so2957117wrb.10;
-        Fri, 10 Jun 2022 12:49:26 -0700 (PDT)
+        with ESMTP id S1348190AbiFJTvU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 15:51:20 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56AB11A0495;
+        Fri, 10 Jun 2022 12:51:19 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id fu3so4251ejc.7;
+        Fri, 10 Jun 2022 12:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=u9muj2CCpJ3bi2OBicnt3vUuhr/462OKXXDNMSoOjkA=;
-        b=nJO3QDlMK8Oo8cC2rEDrsS8zHoFWKSvz9V9tp5Slqj6XFK8gGsnauvl4/5a9Zlujsw
-         CorVf5dfKaQH6teMfzW+hEHcOqhkKmK+dqKhgaSLIk2OjK2OrHpiPiYlnLwU4fkOG5Z5
-         4PmGHwSchAW9lf+n6mIfhoGZyeWAKEIX9r6hS5AcDvGRjX5QHRl7KdZO9iqyazhYBNgz
-         7pfLKuBvFnE/1MuQV2//JtuGP6S3TUo035W5eNVrysQCBRxAgc/0GKH+7gd2XMdw+zE2
-         BOR2sXaNMk/Pkqsivac6peQf8L0kcC+Xa3RD9v9FKZpipTo6kRu9/aVYFutE3X708T/B
-         a27A==
+        bh=bNY4bb5ZsDGbijlscX/zWHp76bvVhoKTJQjCK2gLBow=;
+        b=DTARzN9ZKxLbpM5DnF604iI8/F/84/wIKw08CbQfw05YnVX88YGW6HVfBxQNHvMu4T
+         MLrV3I1t6KM5Qc6HlnyeXHSTGoq8+8DaWtqoRUwsLbX6Mzc8EpX122ha3qRBRoFfEqzN
+         Jk0f/3X9FLtgjhjaqJKanWVijWyNNRgDw6pmj5+2xfApIvc2SRAwOjLitceTonJ4eGE1
+         a1A9wbvVgJFRqD/0S50YXqjQh+yziCS7x5lzFW9SKapPD3uUc9it44OjhImJd8j2+oZt
+         Butz14g0HcCbwqNDkTuGrH/EVS+NkDJB41ZnGmOfym00EegEpO7qNAqhl52gA+RezkJc
+         GTxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=u9muj2CCpJ3bi2OBicnt3vUuhr/462OKXXDNMSoOjkA=;
-        b=vfTtHW1eggJliOh0AC1NgF83A3tkzclS3VzUHar+8fmS2lPPY5knhiTf6+tVrAuQrw
-         nacKbCX5gbLON47L6mBgaGCi8OoBowazoHq0uvHY3pW1Wn6fRsklqRb/wTHiR9I+4zv7
-         1vXNYeXfcxVfd/08XCcs+MrYl0amwcTSAJTYAtdpYZKOUbKnyexitCL6FiPkdJPLTLqB
-         AQ1m4DyHRl+5NMMBTaKrSEh622wXtd80Nnr6tI9n22kEoIgRO+52hbVefsg1yFRAVPfb
-         0euE0DHhb72XTcEC57xk6V/ZzpuUr/PGy8QQ5SurwYq4Jwj7Axece7cAj4hWSs5rPI4w
-         vPUw==
-X-Gm-Message-State: AOAM530ubZgR7Nan2wO4UqfIMscO4EPQ4kcsb40DNNQg7fd8qfbFP7PR
-        p063FC9ddrExL932zuxD5po=
-X-Google-Smtp-Source: ABdhPJw1wyN/M1WFaQFuP+jX/NGTq2GqnLXXrOE71+r/B9uelliduc7dUH3CHihgz35kd6pD213QmQ==
-X-Received: by 2002:adf:d1c6:0:b0:218:51ae:8812 with SMTP id b6-20020adfd1c6000000b0021851ae8812mr21038542wrd.178.1654890565371;
-        Fri, 10 Jun 2022 12:49:25 -0700 (PDT)
+        bh=bNY4bb5ZsDGbijlscX/zWHp76bvVhoKTJQjCK2gLBow=;
+        b=QqF1oYqxdj/8A49hslJ2q/OFkVEcmh9wT87J9OgJ577UXH8vNwpEF0zqOKGOrQUeS0
+         +fSwF741JqdfBJekKrkMmuLJgnV0oTp6stxUIsorbS/qFTztgeIDK7AJfwuyDK77KuUt
+         N/PTEEopPV4z68Sd4vCTUnfr17Ce2JcN4X/DXeVYIYrUBckMajMubyZSczTgF2ZE8aMj
+         ZFwMsZ5OXcfMTNmBmjXEAuaYYkcJL59wpSTSgosPLgCvmdP4nKC9JwanyoDRufgwz1aY
+         BxU0nmj3UNbr0jjEri1244So8EY0KGqAim5/T2BwQO0eUog3vKP3ImrmYqe+LIXFh9sg
+         iWUQ==
+X-Gm-Message-State: AOAM530cYdHQrLXISQwslZhAtTKr/UovRXqtYqz/ENC+JujLKq7tGTjB
+        sIaK4Hb8uSXYj0r41POte4Y=
+X-Google-Smtp-Source: ABdhPJxHRykgXinV3uoaEPm9Ud4a9M4gnh2v3qf5U98udrI7NhTVLe93fDw1Gnx05NF5PsnFjGIIwQ==
+X-Received: by 2002:a17:906:51d6:b0:712:c9:8a1b with SMTP id v22-20020a17090651d600b0071200c98a1bmr10665567ejk.656.1654890677793;
+        Fri, 10 Jun 2022 12:51:17 -0700 (PDT)
 Received: from ?IPv6:2001:a61:136e:3c01:8bd4:cf6f:76f1:a861? ([2001:a61:136e:3c01:8bd4:cf6f:76f1:a861])
-        by smtp.gmail.com with ESMTPSA id g15-20020a05600c4ecf00b0039c4945c753sm4278743wmq.39.2022.06.10.12.49.23
+        by smtp.gmail.com with ESMTPSA id ck16-20020a170906c45000b006feb20b5235sm12715703ejb.84.2022.06.10.12.51.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jun 2022 12:49:25 -0700 (PDT)
-Message-ID: <a67d3d01824db6376c2f15949021db4f2b6173cb.camel@gmail.com>
-Subject: Re: [PATCH 06/34] iio: adc: ingenic-adc: explicitly add proper
- header files
+        Fri, 10 Jun 2022 12:51:17 -0700 (PDT)
+Message-ID: <d083dd2c7e9e6eefb32124648a06799a9ebe8dfd.camel@gmail.com>
+Subject: Re: [PATCH 34/34] iio: inkern: fix coding style warnings
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+To:     Joe Simmons-Talbott <joetalbott@gmail.com>,
         Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     dl-linux-imx <linux-imx@nxp.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+Cc:     linux-imx@nxp.com, linux-renesas-soc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         chrome-platform@lists.linux.dev,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
+        linux-mediatek@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        openbmc@lists.ozlabs.org, Cai Huoqing <cai.huoqing@linux.dev>,
         Benjamin Fair <benjaminfair@google.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -93,6 +87,7 @@ Cc:     dl-linux-imx <linux-imx@nxp.com>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
@@ -106,11 +101,10 @@ Cc:     dl-linux-imx <linux-imx@nxp.com>,
         Olivier Moysan <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Date:   Fri, 10 Jun 2022 21:49:22 +0200
-In-Reply-To: <CAHp75VcU-oV4is_y9=oaOx2ugvTEOy53h2wvbd3-Z9_gv5Y=zA@mail.gmail.com>
+Date:   Fri, 10 Jun 2022 21:51:15 +0200
+In-Reply-To: <YqNo6U8r80aNFzUr@spruce>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
-         <20220610084545.547700-7-nuno.sa@analog.com>
-         <CAHp75VcU-oV4is_y9=oaOx2ugvTEOy53h2wvbd3-Z9_gv5Y=zA@mail.gmail.com>
+         <20220610084545.547700-35-nuno.sa@analog.com> <YqNo6U8r80aNFzUr@spruce>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
@@ -125,26 +119,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2022-06-10 at 16:45 +0200, Andy Shevchenko wrote:
-> On Fri, Jun 10, 2022 at 10:46 AM Nuno Sá <nuno.sa@analog.com> wrote:
+On Fri, 2022-06-10 at 11:53 -0400, Joe Simmons-Talbott wrote:
+> On Fri, Jun 10, 2022 at 10:45:45AM +0200, Nuno Sá wrote:
+> > Just cosmetics. No functional change intended...
 > > 
-> > Do not trust the fact that iio.h includes of.h which in turn
-> > includes
-> > all the headers we are relying on.
+> > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+> > ---
+> >  drivers/iio/inkern.c | 64 ++++++++++++++++++++++------------------
+> > ----
+> >  1 file changed, 32 insertions(+), 32 deletions(-)
 > > 
-> > The ultimate goal is to actually drop of.h from iio.h.
+> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> > index 7eb536560ded..526519cefcb9 100644
+> > --- a/drivers/iio/inkern.c
+> > +++ b/drivers/iio/inkern.c
+> > @@ -45,13 +45,13 @@ int iio_map_array_register(struct iio_dev
+> > *indio_dev, struct iio_map *maps)
+> >         int i = 0, ret = 0;
+> >         struct iio_map_internal *mapi;
+> >  
+> > -       if (maps == NULL)
+> > +       if (!maps)
+> >                 return 0;
+> >  
+> >         mutex_lock(&iio_map_list_lock);
+> > -       while (maps[i].consumer_dev_name != NULL) {
+> > +       while (!maps[i].consumer_dev_name) {
 > 
-> ...
-> 
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/property.h>
-> > +#include <linux/of.h>
-> 
-> Ordering (from the context I don't see it's messed up already)
+> Shouldn't this be?:
+> while (maps[i].consumer_dev_name) {
 > 
 
-Will double check on v2...
+Ups... Nice catch! I was probably in bot mode already.
 
 - Nuno Sá
+

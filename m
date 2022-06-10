@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B929545FDE
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 10:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBE9545FD5
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 10:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348241AbiFJIqe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 04:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
+        id S1348274AbiFJIqr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 04:46:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347824AbiFJIqd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 04:46:33 -0400
+        with ESMTP id S1348255AbiFJIqk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 04:46:40 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6312F3B292;
-        Fri, 10 Jun 2022 01:46:32 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A8fbnX010559;
-        Fri, 10 Jun 2022 04:46:32 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3gm00mh1rw-1
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B393D340D5;
+        Fri, 10 Jun 2022 01:46:39 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A7JPVQ005292;
+        Fri, 10 Jun 2022 04:46:39 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ghq33kpve-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Jun 2022 04:46:31 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 25A8kUOw023142
+        Fri, 10 Jun 2022 04:46:39 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 25A8kcZ0027471
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 10 Jun 2022 04:46:30 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+        Fri, 10 Jun 2022 04:46:38 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 10 Jun 2022 04:46:29 -0400
+ 15.2.986.14; Fri, 10 Jun 2022 04:46:37 -0400
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 10 Jun 2022 04:46:29 -0400
+ 15.2.986.14; Fri, 10 Jun 2022 04:46:36 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 10 Jun 2022 04:46:29 -0400
+ Transport; Fri, 10 Jun 2022 04:46:36 -0400
 Received: from nsa.ad.analog.com ([10.44.3.70])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 25A8imiV014275;
-        Fri, 10 Jun 2022 04:46:18 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 25A8imiW014275;
+        Fri, 10 Jun 2022 04:46:27 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         <linux-mips@vger.kernel.org>,
@@ -91,9 +91,9 @@ CC:     Cai Huoqing <cai.huoqing@linux.dev>,
         "Olivier Moysan" <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 09/34] iio: adc: npcm_adc: explicitly add proper header files
-Date:   Fri, 10 Jun 2022 10:45:20 +0200
-Message-ID: <20220610084545.547700-10-nuno.sa@analog.com>
+Subject: [PATCH 10/34] iio: adc: rzg2l_adc: explicitly add proper header files
+Date:   Fri, 10 Jun 2022 10:45:21 +0200
+Message-ID: <20220610084545.547700-11-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220610084545.547700-1-nuno.sa@analog.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
@@ -101,15 +101,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: VwJFELONcwJZ_YRBKsmfsKWSqi5epvZ-
-X-Proofpoint-GUID: VwJFELONcwJZ_YRBKsmfsKWSqi5epvZ-
+X-Proofpoint-ORIG-GUID: e5lRgS1l5c2oWgy06IJOCDtohXSOKtpc
+X-Proofpoint-GUID: e5lRgS1l5c2oWgy06IJOCDtohXSOKtpc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-10_02,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- malwarescore=0 mlxlogscore=758 lowpriorityscore=0 suspectscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=968 phishscore=0 priorityscore=1501 adultscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206100031
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -127,21 +127,21 @@ The ultimate goal is to actually drop of.h from iio.h.
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/npcm_adc.c | 1 +
+ drivers/iio/adc/rzg2l_adc.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
-index f7bc0bb7f112..a242e7993476 100644
---- a/drivers/iio/adc/npcm_adc.c
-+++ b/drivers/iio/adc/npcm_adc.c
-@@ -8,6 +8,7 @@
- #include <linux/iio/iio.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
+diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+index bee5f9861acb..c9403ab520d8 100644
+--- a/drivers/iio/adc/rzg2l_adc.c
++++ b/drivers/iio/adc/rzg2l_adc.c
+@@ -18,6 +18,7 @@
  #include <linux/module.h>
  #include <linux/platform_device.h>
- #include <linux/regmap.h>
+ #include <linux/pm_runtime.h>
++#include <linux/property.h>
+ #include <linux/reset.h>
+ 
+ #define DRIVER_NAME		"rzg2l-adc"
 -- 
 2.36.1
 

@@ -2,55 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1EA5468B1
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 16:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E655468C9
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 16:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237704AbiFJOqa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 10:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44580 "EHLO
+        id S1349641AbiFJOtI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 10:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344435AbiFJOp5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 10:45:57 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D571C4240;
-        Fri, 10 Jun 2022 07:45:56 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id u12so53943326eja.8;
-        Fri, 10 Jun 2022 07:45:56 -0700 (PDT)
+        with ESMTP id S1349558AbiFJOsS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 10:48:18 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80AB7443C4;
+        Fri, 10 Jun 2022 07:47:56 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id b8so18927422edj.11;
+        Fri, 10 Jun 2022 07:47:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=KoDE34zocTcx3MPzWCnR4QwZS2ytF1uI72CoiLyAcyQ=;
-        b=cPMR1qwhgBciQ4QuFRIqiyeHmWI4Ln4CHN421omnkh7YH9MB7rz/jhyXlDcjROB6tT
-         JiSpoNNM1qEgfFc/7U9Bzbww3hRJhk8lPntDxUJBZ89txLcz/l4eIrftQGXd/SjihNQ3
-         DYhEWO3cPHerQ6tMoyNMwIS+iCRH+4RQ3UEZLVQEmS5QOfbNGv833fIl2ncEf4jXl14U
-         yi4+tL0c+r7c5GU8P4oAYYhsdlfSHRZE9gQECvEhxRs3N2lDYwzDcaqkKjAEBpHjgt9p
-         K0sdA/V/R/iXE5p8XbseNASd66P628xRR1EgKSZHtqMGGV6sRCzr4iT7MWyT+gB6Znn7
-         cYEA==
+        bh=++QT23Kd+FIQRCrQZQe7WTN4LUSOZ4DgBVw4lFAkbv8=;
+        b=YwdpHX6f3Yq7XH6KVuJEH9ag++zBILZ6r8FsafNlXSwCgT0Dl8CqFiXT7KHM8bkxLF
+         Nf3apV6d4L93j7uQRUCQhfPnmHha/4rR3cl4CH0wTu2qP9AubKK84Y1/5SrnrJXh4Ahn
+         IHWXMQweEAe4L6rRNL8hyvGDC+tXkCijuh7kwaC6b4zb2Fi95twp90585Rpk40WBFx5Q
+         muSamB7AY2Fu4ZNvlMLB4lydiKJ0aoWk0nyFA1KImb/1g5oZTCP5Wbi/kMK06kNHl63V
+         +yQuuhfrlNx/YA3zsGLwtnf8allQ3v1lUsyKJ5ydnTMsCuw9LiMm1xrT9pUSobmkyPxj
+         gU/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=KoDE34zocTcx3MPzWCnR4QwZS2ytF1uI72CoiLyAcyQ=;
-        b=wDrtoqnXTRpv8dLCFfY+V16Aliq4Wd/Y4GllI6rseVOzempBmJ0FT7OyCKrijT7IBK
-         qVAmj+NhVjidwDwmuKK0LG1ddC7XSgfFEA2ZvfIBQ0DBpf796fEmFKXZ4U0vt7V23EgU
-         3sXRZTtMKTMgJ0q/JD7+jUaqt05yAUpbAIDr8VREsFsCGxz0F+7gxv0Qxdf84Bk4pay5
-         ZFew3eEKaC1N9g9XFqX4b25/lSZ/y8jC0ddq2RBUv+yU52ENBM56SfXCp3cx+sdOLW1S
-         fg/h/YDtZJkgl9hV8KOgjGb9lOdpHImyE+qtmuCKHeIR65Hp1RnfBfwrCT9fLpUhCE6T
-         MzEw==
-X-Gm-Message-State: AOAM530WrDjqBSUVTsz0Xukg5lrlj7nENB+R3jAMSCwCkLKwr0OaqLpD
-        NpR75/xgcg5q6xMeTdEw1S92rFn63KWlonBh3uI=
-X-Google-Smtp-Source: ABdhPJxizt9m4eKBTNu+PJtwHNsl6LS2ZuZ/AzA8lc7FGXQyzDHIdcU8VIdIbeQpqLpHnNiy07ZL4b6rgaPhYce2N3E=
-X-Received: by 2002:a17:906:1193:b0:70d:cf39:a4db with SMTP id
- n19-20020a170906119300b0070dcf39a4dbmr35595214eja.44.1654872354568; Fri, 10
- Jun 2022 07:45:54 -0700 (PDT)
+        bh=++QT23Kd+FIQRCrQZQe7WTN4LUSOZ4DgBVw4lFAkbv8=;
+        b=hlAxYgBIahCZlmn++Je1go/uOcN6Pv/OGwLGt2MCW90z+7i7mgJmm85NUKKSLav763
+         Yc6fFEZ581mw84paguycCnFZqLHDgt671BIubLt5IRHjAC+nGNaodMKz99PA3C1za0+1
+         wakTE72tuW7WJ2NBekTh0ZjIiIruIJzfUrsWdzhfpRrYBiHQp0Ig9xlgHKzLdXBzIbDd
+         V90E1bdAnewB/VTLcMz3Zv5lMxDBlsqZmpbD6g8ORCwXg7X6PPSQkGtF3Z+Q9pU580iJ
+         2+BVoT5WO/JBUFxURntj8tMv+22yFigxmBbF56rOoox0X4/gDt+BUru1jyaI42iw8s5W
+         AgFg==
+X-Gm-Message-State: AOAM531t8oe1dVsaB/ZVfRTxjnqk+SyvpMzETwYgU85qj2pRJRucYr+s
+        Z3gizNY1y+pLqFv6BFf+3ijdkSH/gFPguiIySi8=
+X-Google-Smtp-Source: ABdhPJxUxO59q0a4JvFZDrd7A8E4K6/eK/ZjPOa7JqgennKhOjFwPSMHvPp7iEiz3gXgkjUbucymQNwJhKdm75HJnyM=
+X-Received: by 2002:a05:6402:4390:b0:42e:b7e:e9ac with SMTP id
+ o16-20020a056402439000b0042e0b7ee9acmr50565604edc.97.1654872475078; Fri, 10
+ Jun 2022 07:47:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220610084545.547700-1-nuno.sa@analog.com> <20220610084545.547700-7-nuno.sa@analog.com>
-In-Reply-To: <20220610084545.547700-7-nuno.sa@analog.com>
+References: <20220610084545.547700-1-nuno.sa@analog.com> <20220610084545.547700-16-nuno.sa@analog.com>
+In-Reply-To: <20220610084545.547700-16-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 10 Jun 2022 16:45:07 +0200
-Message-ID: <CAHp75VcU-oV4is_y9=oaOx2ugvTEOy53h2wvbd3-Z9_gv5Y=zA@mail.gmail.com>
-Subject: Re: [PATCH 06/34] iio: adc: ingenic-adc: explicitly add proper header files
+Date:   Fri, 10 Jun 2022 16:47:16 +0200
+Message-ID: <CAHp75VdCrFa67_k3TJSznT0fzEK3h3+fk0MHpuwM6NBpTQODEw@mail.gmail.com>
+Subject: Re: [PATCH 15/34] iio: humidity: hts221_buffer: explicitly add proper
+ header files
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     dl-linux-imx <linux-imx@nxp.com>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
@@ -117,7 +118,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 10, 2022 at 10:46 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Fri, Jun 10, 2022 at 10:47 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
 > Do not trust the fact that iio.h includes of.h which in turn includes
 > all the headers we are relying on.
@@ -126,13 +127,14 @@ On Fri, Jun 10, 2022 at 10:46 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
 ...
 
->  #include <linux/mod_devicetable.h>
->  #include <linux/mutex.h>
->  #include <linux/platform_device.h>
+>  #include <linux/irqreturn.h>
+>  #include <linux/regmap.h>
+>  #include <linux/bitfield.h>
 > +#include <linux/property.h>
-> +#include <linux/of.h>
 
-Ordering (from the context I don't see it's messed up already)
+Yes, I see, but you can make life easier if you try to squeeze to the
+most sorted part. I do not see full context, but here I would put it
+before regmap.h.
 
 --=20
 With Best Regards,

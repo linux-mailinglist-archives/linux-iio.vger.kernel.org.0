@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012D254694E
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 17:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC29B546960
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 17:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235016AbiFJPVM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 11:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S238087AbiFJP3F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 11:29:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232387AbiFJPVL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 11:21:11 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA3B5FD4;
-        Fri, 10 Jun 2022 08:21:10 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id i29so26622872lfp.3;
-        Fri, 10 Jun 2022 08:21:10 -0700 (PDT)
+        with ESMTP id S233020AbiFJP3E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 11:29:04 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D3BD82;
+        Fri, 10 Jun 2022 08:29:03 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id y15so24568395ljc.0;
+        Fri, 10 Jun 2022 08:29:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=H+ga1sC9+ntYYTy6ffK9GjlUeE88A0FzNz+Ar82l8uE=;
-        b=QuszwAyXszuHI8ReemXfLsvKVbRYP/Ciej6NodQS4f4DxB0dYCz1JKt3Z8KqRQdbVX
-         Jqbo5bZLYC1v1EbQmqJbF588+MBvfJAEhBinRuB3cCDUahi9/8/q3PAe0W2Vgs45ckLW
-         /hiuFN/v5rZ/itjafx60G3maggGA2cuzdXxWkUwbpLNnOq8CiWcKz0KQDvAWhjQwa/9r
-         QOtElc4xrfhvBjGu9rsXtW8n9+fhA5ojdEZ/+ut9V4+pZWnRJ1pOf+C00H4egWSGhIy5
-         cr1goHKSiGEFoiuomtuXSN8DfgxD+HYZKIUFs35eLE9qua0p+q3zFgLJ1Xe+CnTMsAx4
-         6A2A==
+        bh=v+jZ6r+UjKDKeJGUYw7c5giWLtAjtBGzVupfZsrUfPw=;
+        b=YftxElw48vAzTMHF/1nfU7VfFHsJSYUmrN1ldESryIJDZgWI62xwEtnFBnCOtU1dBy
+         hugT6puqW7XaZIJXo1TEsfOzKiAxZbj7elvsLJSguBWcH268hWJLPJ9n6csgtT0bsFAu
+         oG+5atjoQLcNfaqFj1A/1giu0nztBRDoV5yyzxGAH+WDdZW8PWD5NPRMy9Jb68+jEOas
+         rO7SvIZAjGbxr/an2qmDZHU6GyFFqKxmQkILq2u14xvgnxAOPDhGLNNy8IiKfsMtIYqY
+         o3DiP0TqRJiGuuR8sP4NOpGYv3F2oz+tU1K7wiqJ+zfYH/pArdVyPDp3VHieI+PB2M76
+         nAtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=H+ga1sC9+ntYYTy6ffK9GjlUeE88A0FzNz+Ar82l8uE=;
-        b=b60sMNT7WzV/ejuo4zvD46EYCm0qBJd21aTj15A9IKiFikqtHeWfamX08pJyRpLwMC
-         cyoMPVFJ/Uo4wGpBZ2ehV9HFY15gvhHMn7VIhp2YBEppZaRta+lQR83MXcAwweLveS9A
-         Hzl63EqDKtdJO2v/D0sD8wm2Df+FZHI843LDznk7VM1kLm9KiSlR8NRh/Y7webYUFNQ6
-         TU6ej6TI+dIUto1byeYS5MbJ0FANrr8Jnq8AR7Dw2/0B/nWm5lLQ3INEqORsGmoiocGH
-         Cn8EmBOcYHqNvzYLhZO8Rop3XWlDItBTKHrsfQhKDdXN+UA3bHOVeCy0gAz7U4EzFDco
-         PjVQ==
-X-Gm-Message-State: AOAM532epmodAaahDHnil8BWmhGXem19LX92STCuCE2c5t4HO0e0kWTB
-        7Dj13JMb4Ya1nVTbRolQEy1tbm6b5sGZUVHnFk4=
-X-Google-Smtp-Source: ABdhPJy+kvE8MxchmBmksNafSpi+qANBoJkttBTTtDBUpDtpcRk/iOf7pFYhhSUgUCkmvGrvjJK5StTzheGUp//PDx4=
-X-Received: by 2002:a05:6512:308c:b0:479:54c2:c91 with SMTP id
- z12-20020a056512308c00b0047954c20c91mr13940269lfd.565.1654874468712; Fri, 10
- Jun 2022 08:21:08 -0700 (PDT)
+        bh=v+jZ6r+UjKDKeJGUYw7c5giWLtAjtBGzVupfZsrUfPw=;
+        b=7jm+buB8HKvwKL9Sn5W/7hYFbYU8IcK/sBfqKIWppWheM9hVA3ga2CJEWJB0M4101H
+         HVrihFAmUNSGknGLFsDdDFgFeGTNBUPhLdujo0CgGITrOQlpBG8AfXnSqXQd/fL6ahJV
+         N1WdWHgijltnAA5x4EAPHpzQJ5gi1PFcz6Qby8uJqWXPbGlwzcRXjLAZCOEQn5hBCv2P
+         jmeBGuBp0UxCBVKqqViZyUOq41t/DIalFGJCDmhYN0koEwnafmR2bjf/nBStB4gxmQcs
+         YuOdWa604n+O9Br2ieNcCK45cSUvYpKBRNo12OaXkHsefqZ4vD0PPBE5b99YeSeWaU5u
+         FsRg==
+X-Gm-Message-State: AOAM533oLUExYRk+W8CE7hqAFIaFmbvXdWfv0fRjqhfGs3rIi1B08ixY
+        pVrDWZv9w+pClYvEEOALb9alfYo4P76c54zoyHM=
+X-Google-Smtp-Source: ABdhPJwl2v2/H6OLQAJbbAo++RAUaoWbhTiq/DJO2nyXA23eqXmg6t46Wkkb2wH2XOIksQG/+e42V+8jRbh1NeB2EQY=
+X-Received: by 2002:a2e:b8d1:0:b0:255:bfef:7212 with SMTP id
+ s17-20020a2eb8d1000000b00255bfef7212mr8012769ljp.378.1654874942164; Fri, 10
+ Jun 2022 08:29:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220610084545.547700-1-nuno.sa@analog.com> <20220610084545.547700-26-nuno.sa@analog.com>
-In-Reply-To: <20220610084545.547700-26-nuno.sa@analog.com>
+References: <20220610084545.547700-1-nuno.sa@analog.com> <CAHp75VfhRoDupB2rFS+hg1zFN3=8RhnBcXrg0O72bKJYQz+8Kg@mail.gmail.com>
+In-Reply-To: <CAHp75VfhRoDupB2rFS+hg1zFN3=8RhnBcXrg0O72bKJYQz+8Kg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 10 Jun 2022 17:20:28 +0200
-Message-ID: <CAHp75VdYsPAS_1KZCrWvK5=By020Xxtw_FtogZwJQ=Srajdjbg@mail.gmail.com>
-Subject: Re: [PATCH 25/34] thermal: qcom: qcom-spmi-adc-tm5: convert to IIO
- fwnode API
+Date:   Fri, 10 Jun 2022 17:28:24 +0200
+Message-ID: <CAHp75VevzkT-WYz=BiWhDAETx==Sswe-rYCo_qxy7vyL2qRwVA@mail.gmail.com>
+Subject: Re: [PATCH 00/34] make iio inkern interface firmware agnostic
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     dl-linux-imx <linux-imx@nxp.com>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
@@ -118,12 +117,13 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 10, 2022 at 10:48 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->
-> Make usage of the new firmware agnostic API
-> 'devm_of_iio_channel_get_by_name()' to get the IIO channel.
+On Fri, Jun 10, 2022 at 4:48 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Fri, Jun 10, 2022 at 10:45 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-_of_ ?!
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+Ditto for patches 26-34.
 
 --=20
 With Best Regards,

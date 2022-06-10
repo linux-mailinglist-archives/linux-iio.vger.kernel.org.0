@@ -2,55 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 404755468E8
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 16:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AC125468FD
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 17:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234121AbiFJO5k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 10:57:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43070 "EHLO
+        id S229515AbiFJPG0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 11:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbiFJO5j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 10:57:39 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0F7E55B3;
-        Fri, 10 Jun 2022 07:57:35 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id gl15so40113058ejb.4;
-        Fri, 10 Jun 2022 07:57:35 -0700 (PDT)
+        with ESMTP id S232547AbiFJPGZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 11:06:25 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7873621CBE3;
+        Fri, 10 Jun 2022 08:06:24 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id bg6so34231835ejb.0;
+        Fri, 10 Jun 2022 08:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=FiFiZSOb5fy9Qyr8SrnJ9LwGpGEbO4FbIZTS4c08mfw=;
-        b=mHU8yDAtySOxuZnlqlJbNLpyJN3LBFi9PrnPSFEfeFm7M2jv5fjv8Qf76KtG5ym6pL
-         zkZuCdBdSgbcyNoKtu/B6lszfOt0Fqu8SsJ8CMw5fYM1VNDA/Y+sUBYi+0zJpPpd0xpX
-         GqJnvLd7h8gOjOxHxYZ/XhWYDauZ6ABgtRMVuL/FwV9lajqaalv5jN2AMxSm1u+li79y
-         SOozLN5MSK0xUqb+vCqGOgxuxQhV6pd7co2o75pIOxdiwQ9NIOtUiXyicUlKY7RcEXkx
-         D2hlqs1xCK/BKhcwcnjRNBLBnLizBihH24xIJcCjwlZlIblip3w3rkDylnKfA4zaFT3C
-         1Rhg==
+        bh=rmSZhFt+L2EkdTfA4PhCKlZgd+Ko2Rb6WSrQZb1cOCI=;
+        b=qCr8IJLDkZnLtvz4aw+Xn5xelUdctRwoMbU2miyXWPJSzLZTJK2NeLG1JzUB9nU2nE
+         5/RMCchvqx1ozjmNfNiBY4sJPZPjH7Ea5MpV7IYxt94+qFzIQuzmrr/zYYAP+dIEnmfQ
+         0fNqjCzWxWfSnGY9kbiR2idz19Ic+Z0cFo4bKxJeyYNHmLilyZVs6SAOptiXPyxSMutY
+         Q7ONB7ISiyNGWXXWBalOU8nD+18nZBZ9WdCwlSDCAAdrCEX08bVOGzs/5dUYND/pccgd
+         ragBkS8mjJZY0gn+bjB5N+tuF1Ez2mGm8CSLoHNzEXhhSe1/Zmu/grPIAqadHgCBJWvt
+         dswQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=FiFiZSOb5fy9Qyr8SrnJ9LwGpGEbO4FbIZTS4c08mfw=;
-        b=cpartEZ97ZtFc+KhlkLXStwSboW+hKfug095yUmOG1EOX7vlYV32uxwHC1oEDnFQth
-         ogwO4hOHRSza2uUzP9EYJxeKH4rS+kqIo/eScU3i+rRDTAtg3GAupwEYkr+AZwABsJS9
-         mnGx0MlJHQaQ4gjlO7gR0KTvPVz9GQa7dE53OmiUC1biDA9maG4sKzt4Q4SadlqzMfFA
-         2Zl3n1x7trbgsQ7QPnjmn7ZSRhm1kJy+rNsERX05wK44t8yLG3KkQEy9yl66l32qvc5R
-         zaBH86mceFyjcLQyV+robVytlubitUjpCUmuiW02QxPPJw0A/vwgSuQwy+/FWwB1toM4
-         QUdw==
-X-Gm-Message-State: AOAM532u9nVf0DrKJSgwxmiFXeqixri6W5D1WqDFNjN7DfInfpucmZTv
-        L8TL4os5AgMj/F6GmREgSrFFOHKS1U/AM+4PrxM=
-X-Google-Smtp-Source: ABdhPJwgw1cdwy7+7BSEWyUuttbgW9nGvtz5OwQueP4zXXWoa6V054VmGJY2Kj9j5Z7jUAiFw2Aa2m1Mt+A03k0tKIs=
-X-Received: by 2002:a17:906:434f:b0:711:eb76:c320 with SMTP id
- z15-20020a170906434f00b00711eb76c320mr15425618ejm.636.1654873054113; Fri, 10
- Jun 2022 07:57:34 -0700 (PDT)
+        bh=rmSZhFt+L2EkdTfA4PhCKlZgd+Ko2Rb6WSrQZb1cOCI=;
+        b=vgo1X/qjtQ6G9R8LRZMgn2JHzPyCF+OG/PerUsd/gwGxy7WOkzWrEt77MYpxtPHFxt
+         XRdpuOBs44YwvQpKtX0AHfd+ONn0OyCb2AimuqUTQ+YhXuVONy+O06rlJ843siroz41e
+         u+GTG0c/vUd9AOOmB5BOq0ZafRQJ+veDk5ngAjCDWeJxVT/t0LuMhseicGdosDT34dkS
+         vf9MJNvTZ7USKuqokqnb/ZNnpthED+cCwG89xrID8aRtsIxjovB/aC+8kiPWfZQEiz+Z
+         BIKzKVL2+rQEO5crw7gNphkCE5cwudiyj6hO9iq2uEMfRq9yt1M2hScwE7z5BDzWyRKt
+         TBvQ==
+X-Gm-Message-State: AOAM530IUO/XGPNEro+G8iNaDY+3pQy2wtpGHt5gKvyNqN8FdJk/P+vY
+        J7DkUAJhsCizAK3NegZN7nyvgtbTtRU1Suk6LWs=
+X-Google-Smtp-Source: ABdhPJxLQGYHGj7gcyVcctXCwCgpnEr2cRyaoQ3/TTAEPMeK3HCToHy6/n79bgCvIjvr7StG2KRTs/e28PmBV+zKUAU=
+X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
+ dc1-20020a170906c7c100b00711d2e999d0mr23093435ejb.639.1654873582571; Fri, 10
+ Jun 2022 08:06:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220610084545.547700-1-nuno.sa@analog.com> <20220610084545.547700-22-nuno.sa@analog.com>
-In-Reply-To: <20220610084545.547700-22-nuno.sa@analog.com>
+References: <20220610084545.547700-1-nuno.sa@analog.com> <20220610084545.547700-23-nuno.sa@analog.com>
+In-Reply-To: <20220610084545.547700-23-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 10 Jun 2022 16:56:57 +0200
-Message-ID: <CAHp75VdpAaO1VCy1WxUgR6z2LZ62gE+6Gp5aE=UrYdCqmZtBWw@mail.gmail.com>
-Subject: Re: [PATCH 21/34] iio: inkern: fix return value in devm_of_iio_channel_get_by_name()
+Date:   Fri, 10 Jun 2022 17:05:45 +0200
+Message-ID: <CAHp75VcPoZ4FKTwDN_F76EZAcWYzAe1CHmuRuaP0wg3BgmPtfA@mail.gmail.com>
+Subject: Re: [PATCH 22/34] iio: inkern: only return error codes in
+ iio_channel_get_*() APIs
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     dl-linux-imx <linux-imx@nxp.com>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
@@ -109,8 +110,8 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -119,42 +120,53 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Jun 10, 2022 at 10:48 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
-> of_iio_channel_get_by_name() can either return NULL or an error pointer
-> so that only doing IS_ERR() is not enough. Fix it by checking the NULL
-> pointer case and return -ENODEV in that case. Note this is done like this
-> so that users of the function (which only check for error pointers) do
-> not need to be changed. This is not ideal since we are losing error codes
-> and as such, in a follow up change, things will be unified so that
-> of_iio_channel_get_by_name() only returns error codes.
+> APIs like of_iio_channel_get_by_name() and of_iio_channel_get_all() were
+> returning a mix of NULL and error pointers being NULL the way to
+> "notify" that we should do a "system" lookup for channels. This make
+> it very confusing and prone to errors as commit dbbccf7c20bf
+> ("iio: inkern: fix return value in devm_of_iio_channel_get_by_name()")
+> proves. On top of this, patterns like 'if (channel !=3D NULL) return chan=
+nel'
+> were being used where channel could actually be an error code which
+> makes the code hard to read.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+...
 
-> Fixes: 6e39b145cef7 ("iio: provide of_iio_channel_get_by_name() and devm_=
- version it")
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
->  drivers/iio/inkern.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index 9d87057794fc..87fd2a0d44f2 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -412,6 +412,8 @@ struct iio_channel *devm_of_iio_channel_get_by_name(s=
-truct device *dev,
->         channel =3D of_iio_channel_get_by_name(np, channel_name);
->         if (IS_ERR(channel))
->                 return channel;
-> +       if (!channel)
+>                 np =3D np->parent;
+>                 if (np && !of_get_property(np, "io-channel-ranges", NULL)=
+)
+> -                       return NULL;
+> +                       return chan;
+
+Shouldn't it return a dedicated error code and not some arbitrary one?
+It may be I missed something and chan has a correct error code in this
+case...
+
+...
+
+> +       if (nummaps =3D=3D 0)       /* return -ENODEV to search map table=
+ */
+
+Comment is superfluous, the next line is self-explaining.
+
 > +               return ERR_PTR(-ENODEV);
->
->         ret =3D devm_add_action_or_reset(dev, devm_iio_channel_free, chan=
-nel);
->         if (ret)
-> --
-> 2.36.1
->
 
+...
+
+> -               if (channel !=3D NULL)
+> +               if (!IS_ERR(channel) || PTR_ERR(channel) =3D=3D -EPROBE_D=
+EFER)
+
+Btw, in the GPIO library we have a macro or inliner (don't remember)
+that represents such a conditional.
+Perhaps make it (if it's a macro) global, or introduce an inline in IIO?
+
+Okay, it's here:
+https://elixir.bootlin.com/linux/v5.19-rc1/source/drivers/gpio/gpiolib.h#L1=
+79
+
+It's similar, but not the same, so just play with an idea to introduce
+something in this file, maybe it's worth doing this, maybe not.
 
 --=20
 With Best Regards,

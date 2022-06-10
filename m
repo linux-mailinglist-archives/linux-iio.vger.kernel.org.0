@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3865154683C
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 16:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E371D546863
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 16:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229515AbiFJOZ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 10:25:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37376 "EHLO
+        id S1349567AbiFJOcw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 10:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbiFJOZ0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 10:25:26 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C1901EAF2;
-        Fri, 10 Jun 2022 07:25:25 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id kq6so40773732ejb.11;
-        Fri, 10 Jun 2022 07:25:25 -0700 (PDT)
+        with ESMTP id S1349577AbiFJOca (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 10:32:30 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D87B515437C;
+        Fri, 10 Jun 2022 07:31:49 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id g25so7354405ejh.9;
+        Fri, 10 Jun 2022 07:31:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZSjDv+clKk3USTb3Rg73MniliGLlOX4LPm3s11QIvdc=;
-        b=hBsFuVDraldmdKu8v7iI+Dv/AGT71N3Jjwp7QwmJ+vaZexjL128C46YmLMovhptDUQ
-         kfNBUsDroQeP32ZyTw1vhUj6QovSrA30ZI3+iT+bNYcRo0i+yIV2FfcfSFHVj3psduVp
-         bdelT/RUvhshnNoJC59GS6jsWDIgBjLKIFN86HNXlrzZQlUsRfXHfckMfFnmSYGQKZH3
-         2dlzACe6MoqDdjETENQt6S5bzezLUwYuaWEIvJAixeNj+acZwzHs1BpXqdvEwU4xvKKA
-         dDyV3ZvbGlnfx7sJPoHQ4/q3MLETtyEvezDO95SMEOho4mgZBguhE9LUqDdHdKSSuMCQ
-         kxfQ==
+        bh=3+fVfsr56ZNJ1kBWhEwk9U5dk2NYN/r0Jkvc4FKoC3s=;
+        b=MpnTpaZQ2mrRSxgivSG8oKX2lVNdrvs60JxH0aP5yhsBKEcONFGe56Yx/PxwQPNJMP
+         gQqQsYQgHcK85aZJzVkzSQAzBW+01NSuOAPYyqmR7F/MpE6aRMYaGtk6/yx4P4pB8rMd
+         gdd0a3fVJzguqbsgLNDxZZnooviKFIfNx6g1aCt1LA1JyvnK36ax4G4KBwAPsZq71tAp
+         ugfPrviuOyQNHJmmruLMEwf6Dv5krmeogv9r/x1DoZ5ZMIcT22uXWnUF6bcBj9cIhvwT
+         TOkeYklKqAyIcyorMrp0nJW8ojpl7PWMmEkRglIn6+VAGbTrldAy3k2CU2yBGacWhbTO
+         aq4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZSjDv+clKk3USTb3Rg73MniliGLlOX4LPm3s11QIvdc=;
-        b=e3Uu/gbStExVaibiNAkMPE6TyYBSKmMb+uqYsXiymmcgFBNm37m7pfiefQn9tJCb1u
-         /ImQKkCb8FI8Tb05mbFNpFb84YlKPdPA7Fk632NuFv383jCHXCGxO2N9kPWXRBIwTsbz
-         eSbacKJSqxTdNPmak3t3qycG6e9WUKNeWd3krzVdRoVSQntiYVPlX/yVCjBDlN0EirVt
-         imr3WOTDXhRQx3qn6d900ZQ4m9EEm7gkCecG/cF+OjXKU69cqSfa16KdkarXsCREAzZw
-         bfyVEFqHIHQ4eYKyc4jDd/Ma4KqKA+fskTzuJ1tyxlL6Bru29HLHj+YGc+6udbsLbAzN
-         XHLQ==
-X-Gm-Message-State: AOAM531kC2NSdLOZO8NozhzfjPkAToCIAzCtHmTlGpjuGhRJCCOvnRWI
-        WAQxbII5K6rBl4Q5dq+3a8dnCt/UXVEyFcP+r2I=
-X-Google-Smtp-Source: ABdhPJzjjNuGQ2Q9J73lU7SX2/EvzGoJgmk8pwRudNBI3mlZD9cUgVaYvcTli0XeXn4AwO9RPpL6/o6AVjXVsWj21VE=
+        bh=3+fVfsr56ZNJ1kBWhEwk9U5dk2NYN/r0Jkvc4FKoC3s=;
+        b=KGQ5Lpr4rw9nRoEnNFSIXlW9e+eInMoKW1NixWlEXCXSC7pLXkPDpeXIthXnn3lDpR
+         e/3OviLfJtgt6jukXPJneWXDgBMUk/I8cl3qPP6Ss26JBZ5MenSqQtNsScRyGlvqoN1p
+         cfKxneR4rXXErvkFqn5JnSQkC7P9KaE1aBChsSo718a/6Sh9F9hCKvrzhewPP0DoiNNe
+         yUqA6NBNfXcwOkMDlS0Q0NhZoYZKreZN55KcJVe4XZJcWxxhwZGjrmLN4/BNs/Kkl06/
+         jfXKzxgqMeIZTtjhHug8a1WMwH5nYBlfcJ/8usWYCIstAwfZhkikOxfHJKZreCp3ulwq
+         QdBg==
+X-Gm-Message-State: AOAM532t/TAD0hDj/Ki1U3JlUmcMi/G6cXRbqYUPL5vN5Mf7UIvB0Qic
+        e8z3E3peKUcUx0JgxS3WHH+ngCgaAlOCYTmNm8U=
+X-Google-Smtp-Source: ABdhPJydggPrmBwsUxSYNblLfPfIBMZLyji/UAM4KEjCxFK5F2wy2msFrxmOaHx0xW/0II3DoX1y3LoNwlCuCKHHrDg=
 X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
- dc1-20020a170906c7c100b00711d2e999d0mr22936721ejb.639.1654871123687; Fri, 10
- Jun 2022 07:25:23 -0700 (PDT)
+ dc1-20020a170906c7c100b00711d2e999d0mr22961166ejb.639.1654871507604; Fri, 10
+ Jun 2022 07:31:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1654727058.git.jahau@rocketmail.com> <5ae4b9dda3032acba8b8b0e39352e9e3953e3f88.1654727058.git.jahau@rocketmail.com>
-In-Reply-To: <5ae4b9dda3032acba8b8b0e39352e9e3953e3f88.1654727058.git.jahau@rocketmail.com>
+References: <cover.1654727058.git.jahau@rocketmail.com> <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
+In-Reply-To: <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 10 Jun 2022 16:24:45 +0200
-Message-ID: <CAHp75VcaVjOK=EK_x3qA6hPadw3t68VOw1xQC+BQOjRxmUKeqw@mail.gmail.com>
-Subject: Re: [PATCH 6/7] iio: magnetometer: yas530: Remove redundant defaults
- on switch devid
+Date:   Fri, 10 Jun 2022 16:31:10 +0200
+Message-ID: <CAHp75Vdg2i8NjrFn5gtKBKNbYrWd49nq31Exy=4K2RsxHeQ1hw@mail.gmail.com>
+Subject: Re: [PATCH 7/7] iio: magnetometer: yas530: Add YAS537 variant
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -75,33 +74,43 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Thu, Jun 9, 2022 at 1:44 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 >
-> This is a preparation for adding YAS537 variant.
+> This adds support for the magnetometer Yamaha YAS537. The additions are based
+> on comparison of Yamaha Android kernel drivers for YAS532 [1] and YAS537 [2].
 >
-> In function yas5xx_probe(), there is a switch statement checking for device
-> IDs. If the ID is unknown, it exits with a device error. In later functions,
-> it's not neccessary to check the validity of the device IDs again.
+> Functions used by YAS530 & YAS532 only were renamed from yas5xx to yas530_532.
+> Registers were renamed accordingly.
 >
-> When adding YAS537 in a later patch, several of such switch statements will be
-> added. To make it more uniform, the redundant ones in YAS530/532 get herby
-> removed. This is done in a separate patch for better history control.
+> In the Yamaha YAS537 Android driver, there is an overflow/underflow control
+> implemented. For regular usage, this seems not necessary. A similar overflow/
+> underflow control of Yamaha YAS530/532 Android driver isn't integrated in the
+> mainline driver. It is therefore skipped for YAS537 in mainline too.
+>
+> Also in the Yamaha YAS537 Android driver, at the end of the reset_yas537()
+> function, a measurement is saved in "last_after_rcoil". Later on, this is
+> compared to current measurements. If the difference gets too big, a new
+> reset is intialized. The difference in measurements needs to be quite big,
+
+initialized
+
+> it's hard to say if this is necessary for regular operation. Therefore this
+> isn't integrated in the mainline driver either.
+
+I understand that Linus knows well this code and may review this, but
+can you please split register renaming (at least, maybe something else
+can be split as well as preparatory change) to the separate patch?
 
 ...
 
-> -       default:
+> +                               regmap_read(yas5xx->map, i, &val);
+> +                               dev_dbg(yas5xx->dev, "register 0x%02x: %u\n",
+> +                                       i, val);
 
-Please, leave it. Some static analyzers or weird compiler versions may
-complain on this.
+Please, drop all these value reads/writes debug messages, they are
+quite expensive (by resource consuming), noisy (may spam logs), and
+most important duplicative. regmap API has tracepoints, use them!
 
-> -               dev_err(yas5xx->dev, "unknown data format\n");
-> -               ret = -EINVAL;
-
-> -               break;
-
-So leave this.
-
->         }
-
-Ditto for the rest.
+Perhaps it would require an additional patch to clean this up, if
+anything like this is present in the current code base..
 
 -- 
 With Best Regards,

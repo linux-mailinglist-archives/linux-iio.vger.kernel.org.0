@@ -2,43 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AD67546046
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 10:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A73A5546023
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 10:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348303AbiFJIsx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 04:48:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48674 "EHLO
+        id S1348297AbiFJIsz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 04:48:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348347AbiFJIr5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 04:47:57 -0400
+        with ESMTP id S1348369AbiFJIsM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 04:48:12 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7259753B6E;
-        Fri, 10 Jun 2022 01:47:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157D042ECB;
+        Fri, 10 Jun 2022 01:47:51 -0700 (PDT)
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A8T34t005277;
-        Fri, 10 Jun 2022 04:47:44 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ghq33kq6s-1
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A7WKNX005267;
+        Fri, 10 Jun 2022 04:47:50 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ghq33kq7t-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Jun 2022 04:47:43 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 25A8lgWv023245
+        Fri, 10 Jun 2022 04:47:50 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 25A8lnqA027535
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 10 Jun 2022 04:47:42 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 10 Jun 2022 04:47:41 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 10 Jun 2022 04:47:41 -0400
+        Fri, 10 Jun 2022 04:47:49 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 10 Jun
+ 2022 04:47:48 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 10 Jun 2022 04:47:41 -0400
+ Transport; Fri, 10 Jun 2022 04:47:48 -0400
 Received: from nsa.ad.analog.com ([10.44.3.70])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 25A8imif014275;
-        Fri, 10 Jun 2022 04:47:30 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 25A8imig014275;
+        Fri, 10 Jun 2022 04:47:36 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         <linux-mips@vger.kernel.org>,
@@ -52,7 +48,7 @@ To:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
 CC:     Cai Huoqing <cai.huoqing@linux.dev>,
         Benjamin Fair <benjaminfair@google.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Amit Kucheria <amitk@kernel.org>,
@@ -61,20 +57,20 @@ CC:     Cai Huoqing <cai.huoqing@linux.dev>,
         Haibo Chen <haibo.chen@nxp.com>,
         Benson Leung <bleung@chromium.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Christophe Branchereau <cbranchereau@gmail.com>,
         Patrick Venture <venture@google.com>,
         Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Gwendal Grignou" <gwendal@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
         Saravanan Sekar <sravanhome@gmail.com>,
-        "Tali Perry" <tali.perry1@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Thara Gopinath <thara.gopinath@linaro.org>,
         Avi Fishman <avifishman70@gmail.com>,
-        "Lorenzo Bianconi" <lorenzo@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -82,18 +78,18 @@ CC:     Cai Huoqing <cai.huoqing@linux.dev>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Shawn Guo <shawnguo@kernel.org>,
-        "Guenter Roeck" <groeck@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
         Fabio Estevam <festevam@gmail.com>,
-        "Olivier Moysan" <olivier.moysan@foss.st.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 19/34] iio: core: drop of.h from iio.h
-Date:   Fri, 10 Jun 2022 10:45:30 +0200
-Message-ID: <20220610084545.547700-20-nuno.sa@analog.com>
+Subject: [PATCH 20/34] iio: inkern: only relase the device node when done with it
+Date:   Fri, 10 Jun 2022 10:45:31 +0200
+Message-ID: <20220610084545.547700-21-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220610084545.547700-1-nuno.sa@analog.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
@@ -101,13 +97,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: lQT1feDz-2I25J5EKnPPS1Hh_mnUKOO1
-X-Proofpoint-GUID: lQT1feDz-2I25J5EKnPPS1Hh_mnUKOO1
+X-Proofpoint-ORIG-GUID: SkfWEkHBuamWrqTrmnu36au12Kn0EwdD
+X-Proofpoint-GUID: SkfWEkHBuamWrqTrmnu36au12Kn0EwdD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-10_02,2022-06-09_02,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=708 phishscore=0 priorityscore=1501 adultscore=0 clxscore=1015
+ mlxlogscore=924 phishscore=0 priorityscore=1501 adultscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 spamscore=0 impostorscore=0 bulkscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206100031
@@ -120,35 +116,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is no reason to include OF as we only need to forward declare
-'of_phandle_args'. Previously, some drivers were actually relying on
-this for some headers (those were already fixed).
+'of_node_put()' can potentially release the memory pointed to by
+'iiospec.np' which would leave us with an invalid pointer (and we would
+still pass it in 'of_xlate()'). As such, we can only release the node
+after we are done with it.
 
+Fixes: 17d82b47a215d ("iio: Add OF support")
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- include/linux/iio/iio.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/inkern.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 4e21a82b3756..d9b4a9ca9a0f 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -11,13 +11,14 @@
- #include <linux/cdev.h>
- #include <linux/slab.h>
- #include <linux/iio/types.h>
--#include <linux/of.h>
- /* IIO TODO LIST */
- /*
-  * Provide means of adjusting timer accuracy.
-  * Currently assumes nano seconds.
-  */
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index df74765d33dc..9d87057794fc 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -165,9 +165,10 @@ static int __of_iio_channel_get(struct iio_channel *channel,
  
-+struct of_phandle_args;
-+
- enum iio_shared_by {
- 	IIO_SEPARATE,
- 	IIO_SHARED_BY_TYPE,
+ 	idev = bus_find_device(&iio_bus_type, NULL, iiospec.np,
+ 			       iio_dev_node_match);
+-	of_node_put(iiospec.np);
+-	if (idev == NULL)
++	if (idev == NULL) {
++		of_node_put(iiospec.np);
+ 		return -EPROBE_DEFER;
++	}
+ 
+ 	indio_dev = dev_to_iio_dev(idev);
+ 	channel->indio_dev = indio_dev;
+@@ -175,6 +176,7 @@ static int __of_iio_channel_get(struct iio_channel *channel,
+ 		index = indio_dev->info->of_xlate(indio_dev, &iiospec);
+ 	else
+ 		index = __of_iio_simple_xlate(indio_dev, &iiospec);
++	of_node_put(iiospec.np);
+ 	if (index < 0)
+ 		goto err_put;
+ 	channel->channel = &indio_dev->channels[index];
 -- 
 2.36.1
 

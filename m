@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BC1B545FE9
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 10:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A482A545FB9
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jun 2022 10:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348238AbiFJIp7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 10 Jun 2022 04:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40596 "EHLO
+        id S1348200AbiFJIqG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 10 Jun 2022 04:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348200AbiFJIpo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 04:45:44 -0400
+        with ESMTP id S1348115AbiFJIqA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 10 Jun 2022 04:46:00 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25164205E3;
-        Fri, 10 Jun 2022 01:45:44 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A5dXqe010565;
-        Fri, 10 Jun 2022 04:45:43 -0400
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91BE33B02E;
+        Fri, 10 Jun 2022 01:45:49 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A8T342005277;
+        Fri, 10 Jun 2022 04:45:49 -0400
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3gm00mh1jd-1
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ghq33kppn-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 10 Jun 2022 04:45:43 -0400
+        Fri, 10 Jun 2022 04:45:48 -0400
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 25A8jfhg027444
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 25A8jlSR027447
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 10 Jun 2022 04:45:41 -0400
+        Fri, 10 Jun 2022 04:45:47 -0400
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 10 Jun
- 2022 04:45:40 -0400
+ 2022 04:45:46 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 10 Jun 2022 04:45:40 -0400
+ Transport; Fri, 10 Jun 2022 04:45:46 -0400
 Received: from nsa.ad.analog.com ([10.44.3.70])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 25A8imiO014275;
-        Fri, 10 Jun 2022 04:45:31 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 25A8imiP014275;
+        Fri, 10 Jun 2022 04:45:37 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         <linux-mips@vger.kernel.org>,
@@ -87,9 +87,9 @@ CC:     Cai Huoqing <cai.huoqing@linux.dev>,
         Olivier Moysan <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 02/34] iio: adc: ad7606_par: explicitly add proper header files
-Date:   Fri, 10 Jun 2022 10:45:13 +0200
-Message-ID: <20220610084545.547700-3-nuno.sa@analog.com>
+Subject: [PATCH 03/34] iio: adc: berlin2-adc: explicitly add proper header files
+Date:   Fri, 10 Jun 2022 10:45:14 +0200
+Message-ID: <20220610084545.547700-4-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220610084545.547700-1-nuno.sa@analog.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
@@ -97,15 +97,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: L46BpwneyhtI3GNdFP6pjW7i3IWCTReN
-X-Proofpoint-GUID: L46BpwneyhtI3GNdFP6pjW7i3IWCTReN
+X-Proofpoint-ORIG-GUID: 3bOI1SVfKwtBCpzB7Qoy07tpKwz_6S3B
+X-Proofpoint-GUID: 3bOI1SVfKwtBCpzB7Qoy07tpKwz_6S3B
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-10_02,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- malwarescore=0 mlxlogscore=827 lowpriorityscore=0 suspectscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=676 phishscore=0 priorityscore=1501 adultscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206100031
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -123,21 +123,23 @@ The ultimate goal is to actually drop of.h from iio.h.
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ad7606_par.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/adc/berlin2-adc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
-index 8888e56b5e90..b912b4df9b56 100644
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -5,6 +5,7 @@
-  * Copyright 2011 Analog Devices Inc.
-  */
- 
+diff --git a/drivers/iio/adc/berlin2-adc.c b/drivers/iio/adc/berlin2-adc.c
+index 03987d7e6b3d..3d2e8b4db61a 100644
+--- a/drivers/iio/adc/berlin2-adc.c
++++ b/drivers/iio/adc/berlin2-adc.c
+@@ -15,7 +15,9 @@
+ #include <linux/iio/machine.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
 +#include <linux/mod_devicetable.h>
  #include <linux/module.h>
++#include <linux/of.h>
  #include <linux/platform_device.h>
- #include <linux/types.h>
+ #include <linux/slab.h>
+ #include <linux/mfd/syscon.h>
 -- 
 2.36.1
 

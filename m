@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8CA6547520
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 16:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D436354752C
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 16:03:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233305AbiFKOAz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jun 2022 10:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59224 "EHLO
+        id S233116AbiFKODR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jun 2022 10:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233159AbiFKOAy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 10:00:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203DB225;
-        Sat, 11 Jun 2022 07:00:53 -0700 (PDT)
+        with ESMTP id S233796AbiFKODP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 10:03:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1CF2427E6;
+        Sat, 11 Jun 2022 07:03:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFAD060F2C;
-        Sat, 11 Jun 2022 14:00:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF58C34116;
-        Sat, 11 Jun 2022 14:00:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 64BE5B816AF;
+        Sat, 11 Jun 2022 14:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F738C34116;
+        Sat, 11 Jun 2022 14:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654956052;
-        bh=Wqp1FnaQ4bvi4M3HyvPsdk1MmcTs9Vn0Xjp0S774koQ=;
+        s=k20201202; t=1654956192;
+        bh=yVjUIo9j/8SDHnpOVBqCt3yY9KttJoBoglfxAPDEQ8M=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HlfWt105zoTrNDdHWpRzeqP8Cx0p0ezCkKZjlDkq9Y805ShhtSsBB0gM3nYJn6VMP
-         rh3FW7q8eL1jE24pMsbmGBvnQtJYnRKwuiZ4fZi2CVLcHiYw1QZ1mx7gO+PRFYs2Zs
-         5X2Op1ikh4LZbeh1tV7cExqPJ1Me4VZ/4cMds4VDOQF7D95/ig2Lcf13ZCABQmzJR+
-         HyH55ycZir4aOTCAQ5ESLpaAcHIWxaJnai49ABlG5teIqSYLlrB8N2EvhbC3AXS8Yq
-         hpUFMaoil1Q/ORh3GsY6+SR08vCV6ANqNY5nPx+jV8G9K3pTRQzHTtnNEbNbdMMQBs
-         6quNWNcaPKdaA==
-Date:   Sat, 11 Jun 2022 15:09:50 +0100
+        b=i4dm3ic0/BsqVRnsZxWFgneqFvzt3SMz+ny3u9sPogWoJ+XJKo6EEua8lNvaWjnlV
+         aYSCIgXZQOTh3OBj+zbacHRKpDokEgH97jPJiEzZ5WOGHCckB9IcMjFBrnON0zCHql
+         AhcXd6UgOQSGoD/mqYGoWiq42LxCA1OO0yFGpLTGZHpTiP8nj/0qEYb8g794Z18067
+         UX5yjFUmUOoeQMH25nWwSgzL9JiudXmZ7A02TcTs18PgBbupBzEmqu4dTgdgA+eLSM
+         Lo9enUnFFZTUPGJkL9eNrT+q8bMOtvc7jhpZ1I22A2xhGEk8JPW3KgymvDWULY7wF7
+         RdWOMJD/XMJRA==
+Date:   Sat, 11 Jun 2022 15:12:09 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
 Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
@@ -45,7 +45,7 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         <openbmc@lists.ozlabs.org>, Cai Huoqing <cai.huoqing@linux.dev>,
         Benjamin Fair <benjaminfair@google.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Amit Kucheria <amitk@kernel.org>,
@@ -54,20 +54,20 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         Haibo Chen <haibo.chen@nxp.com>,
         Benson Leung <bleung@chromium.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
         Christophe Branchereau <cbranchereau@gmail.com>,
         Patrick Venture <venture@google.com>,
         Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
+        "Gwendal Grignou" <gwendal@chromium.org>,
         Saravanan Sekar <sravanhome@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
+        "Tali Perry" <tali.perry1@gmail.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Thara Gopinath <thara.gopinath@linaro.org>,
         Avi Fishman <avifishman70@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
+        "Lorenzo Bianconi" <lorenzo@kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -75,20 +75,20 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        "Nicolas Ferre" <nicolas.ferre@microchip.com>,
         Zhang Rui <rui.zhang@intel.com>,
         Shawn Guo <shawnguo@kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
+        "Guenter Roeck" <groeck@chromium.org>,
         Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
+        "Olivier Moysan" <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 08/34] iio: adc: mt6360-adc: explicitly add proper
- header files
-Message-ID: <20220611150950.52510bef@jic23-huawei>
-In-Reply-To: <20220610084545.547700-9-nuno.sa@analog.com>
+Subject: Re: [PATCH 09/34] iio: adc: npcm_adc: explicitly add proper header
+ files
+Message-ID: <20220611151209.7f5be10d@jic23-huawei>
+In-Reply-To: <20220610084545.547700-10-nuno.sa@analog.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
-        <20220610084545.547700-9-nuno.sa@analog.com>
+        <20220610084545.547700-10-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -103,7 +103,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Jun 2022 10:45:19 +0200
+On Fri, 10 Jun 2022 10:45:20 +0200
 Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
 > Do not trust the fact that iio.h includes of.h which in turn includes
@@ -112,22 +112,27 @@ Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 > The ultimate goal is to actually drop of.h from iio.h.
 >=20
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied.
+
+Applied. It's funny, but I'd always assumed module.h included
+mod_devicetable.h (though tried never to rely on it).  Turns
+out nope, it doesn't :)
+
+Jonathan
 
 > ---
->  drivers/iio/adc/mt6360-adc.c | 1 +
+>  drivers/iio/adc/npcm_adc.c | 1 +
 >  1 file changed, 1 insertion(+)
 >=20
-> diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
-> index 07c0e6768391..35260d9e4e47 100644
-> --- a/drivers/iio/adc/mt6360-adc.c
-> +++ b/drivers/iio/adc/mt6360-adc.c
-> @@ -5,6 +5,7 @@
->  #include <linux/irq.h>
+> diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
+> index f7bc0bb7f112..a242e7993476 100644
+> --- a/drivers/iio/adc/npcm_adc.c
+> +++ b/drivers/iio/adc/npcm_adc.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/iio/iio.h>
+>  #include <linux/interrupt.h>
 >  #include <linux/kernel.h>
->  #include <linux/ktime.h>
 > +#include <linux/mod_devicetable.h>
 >  #include <linux/module.h>
->  #include <linux/mutex.h>
 >  #include <linux/platform_device.h>
+>  #include <linux/regmap.h>
 

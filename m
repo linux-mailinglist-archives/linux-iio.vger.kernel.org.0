@@ -2,49 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FD3954770A
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 20:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A75354770F
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 20:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbiFKSHY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jun 2022 14:07:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
+        id S229493AbiFKSOs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jun 2022 14:14:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234278AbiFKSHX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 14:07:23 -0400
+        with ESMTP id S229454AbiFKSOr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 14:14:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B0DD1929E;
-        Sat, 11 Jun 2022 11:07:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 776D33ED30;
+        Sat, 11 Jun 2022 11:14:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C4466120B;
-        Sat, 11 Jun 2022 18:07:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C115C34116;
-        Sat, 11 Jun 2022 18:07:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 053BA61225;
+        Sat, 11 Jun 2022 18:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C15C34116;
+        Sat, 11 Jun 2022 18:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654970841;
-        bh=if2s9G1Ax2BNvHiItUquxbYsizofOQR/sGlUL2Ao4no=;
+        s=k20201202; t=1654971285;
+        bh=CFqslnbWvEvZ0znPP3sF1QhuRFp6eEWOIDgY+I1I6Jg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nHoyyDhxr1VW9+AdFXDn4Zjtwxxo+8HxEJKJKwfVr8otx6sRmwlhDGEX8VPEAiyKa
-         T6ADzGPhOgxJsZRpSDdBGLXTyVMsYU/b4FQ1VBty6Y2O398CPl4vJX6lSALmWfHcPo
-         6CDVGVr0qrVGQ24EM0UjAwgSYHp47M+6x+7koLL+5aM1/IPRIwc/Y/cJtmdU4QmYAL
-         iGAXMK1+EwKFmnH6nsD6aUqecdl5cr1iIL/nJeY5RJxV9chn9PITM5Qdkz0HpEp6pM
-         kKswRq9Ymi0s23s6IS8EccCJeVTMg+qU9tnAl2azjD2B/+8xTZxLuAVYaF0xDktAHO
-         dDwnV/xIS+WxQ==
-Date:   Sat, 11 Jun 2022 19:16:29 +0100
+        b=ESKjLssWLq5tLSHDJeYKxVKgcHjy9D+AYBBFYljVTbHyQ21vCuLFq/6EsHGw2fCqc
+         NhD2K4k/Z9ud4imQZhT9pvRSobJW1udlUH9humQIABCMUQz8+TBi+lBCSS6CqUknH8
+         JaPovEsS+OweyrixlmIsJRNOKUV1jgBtR9TEm4POhRG4RRDJKnZjJnmvf0Qyx4AibC
+         ZefhfNJEXWxFOJetBOW3HNg+4wcYiqdVtBCYPKhx/4/vjMPqyQszPTANzWf4YILCeW
+         XSLOJJENL6C+DUN2s/kcKlQUdyQcILn4DGdId9V9GhbptPij9kQN2M+jgdJiEyIng+
+         GzINKyrSPwy7g==
+Date:   Sat, 11 Jun 2022 19:23:52 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Claudiu Beznea <claudiu.beznea@microchip.com>
-Cc:     <eugen.hristev@microchip.com>, <lars@metafoo.de>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <robh+dt@kernel.org>, <krzk+dt@kernel.org>,
-        <ludovic.desroches@atmel.com>, <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/16] iio: adc: at91-sama5d2_adc: add support for
- temperature sensor
-Message-ID: <20220611191629.2a0f6d2f@jic23-huawei>
-In-Reply-To: <20220609083213.1795019-1-claudiu.beznea@microchip.com>
-References: <20220609083213.1795019-1-claudiu.beznea@microchip.com>
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
+        rafael@kernel.org, quic_gurus@quicinc.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 11/17] iio: adc: axp20x_adc: Consolidate ADC raw read
+ functions
+Message-ID: <20220611192352.423eb29b@jic23-huawei>
+In-Reply-To: <6DEqBtaiVPj93S9KpELsBGaDLDnbWsEX@localhost>
+References: <20220607155324.118102-1-aidanmacdonald.0x0@gmail.com>
+        <20220607155324.118102-12-aidanmacdonald.0x0@gmail.com>
+        <20220608142808.00000650@Huawei.com>
+        <6DEqBtaiVPj93S9KpELsBGaDLDnbWsEX@localhost>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,73 +65,225 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 9 Jun 2022 11:31:57 +0300
-Claudiu Beznea <claudiu.beznea@microchip.com> wrote:
+On Thu, 09 Jun 2022 00:13:47 +0100
+Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
 
-> Hi,
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
 > 
-> The following series add support for temperature sensor available on
-> SAMA7G5.
+> > On Tue,  7 Jun 2022 16:53:18 +0100
+> > Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
+> >  
+> >> Add an axp20x_id variant field to the axp_data struct and use it
+> >> to consolidate the adc_raw functions, reducing code duplication.
+> >> Variant IDs are chosen to match the OF compatible strings.
+> >> 
+> >> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>  
+> >
+> > Hi Aidan,
+> >
+> > I'm not a big fan of using variant IDs, rather than a description
+> > of what is actually different between devices.  Long term, variant
+> > IDs tend to scale (as we add more supported devices) much worse
+> > than a flag describing the actual difference.
+> >
+> > Here I would have a field in struct axp_data called something like
+> > discharge_curr_res and set it to 12 or 13 as appropriate.
+> >  
 > 
-> Temperature sensor available on SAMA7G5 provides 2 outputs VTEMP and VBG.
-> VTEMP is proportional to the absolute temperature voltage and VBG is a
-> quasi-temperature independent voltage. Both are necessary in computing
-> the temperature (for better accuracy). Also, for better accuracy the
-> following settings were imposed when measusing the temperature:
-> oversampling rate of 256, sampling frequency of 10MHz, a startup time of
-> 512 ticks, MR.tracktim=0xf, EMR.trackx=0x3.
-> 
-> For computing the temperature measured by ADC calibration data is
-> necessary. This is provided via OTP memory available on SAMA7G5.
-> 
-> Patches 1/16-3/16 provides some fixes.
-> Patches 3/16-12/16 prepares for the addition of temperature sensor
-> support.
-> Patch 13/16 adds the temperature sensor support.
-> 
-> Along with temperature sensor support I took the chance and added
-> runtime PM support in this series, too (handled in patch 15/16).
-> 
-> The rest of patches in this series are minor cleanups.
-> 
-> Thank you,
-> Claudiu Beznea
+> I agree with your point in general, but here it seems impossible to get
+> away from variant IDs because the channel numbering depends on it and we
+> use the channel number to decide what number of bits to use.
 
-Hi CLaudiu,
+Ah. I'd missed that detail.  Perhaps add a comment to remind us that's
+the case in future.
 
-Those patches I haven't replied to individually look good to me.
+> The code
+> I'm replacing is just disguising the variant IDs by giving every variant
+> its own set of functions.
+> 
+> To me it seemed clearer to describe the channel properties and then use
+> one read_raw function for all variants, but when I did that it turned
+> out not to make any difference in size for x86. Probably because tables
+> encode a lot of redundant information compared to switches. It also
+> relied on a hack to associate extra info with an iio_chan_spec so it
+> wasn't much of an improvement, in the end.
+> 
+> So it's a question of using a variant ID explicitly or having separate
+> functions for each device. Combining the functions with an explicit ID
+> saves 752 bytes on x86, once the axp192 is added, and I don't think it
+> is any harder to understand than the separate functions. And it's still
+> possible to use a separate function when needed.
+> 
+> Nonetheless, if you'd prefer to stick with separate functions I'm fine
+> with that.
 
-Thanks,
+This may well be a case of doing what you have here for now, but revisit
+in future if we end up with more cases of this turning up in the function.
+It may well become too complex and need the separate functions again.
 
 Jonathan
 
 > 
-> Claudiu Beznea (16):
->   iio: adc: at91-sama5d2_adc: fix AT91_SAMA5D2_MR_TRACKTIM_MAX
->   iio: adc: at91-sama5d2_adc: lock around oversampling and sample freq
->   iio: adc: at91-sama5d2_adc: exit from write_raw() when buffers are
->     enabled
->   iio: adc: at91-sama5d2_adc: handle different EMR.OSR for different hw
->     versions
->   iio: adc: at91-sama5d2_adc: adjust osr based on specific platform data
->   iio: adc: at91-sama5d2_adc: add 64 and 256 oversampling ratio
->   iio: adc: at91-sama5d2_adc: simplify the code in
->     at91_adc_read_info_raw()
->   iio: adc: at91-sama5d2_adc: move oversampling storage in its function
->   iio: adc: at91-sama5d2_adc: update trackx on emr
->   iio: adc: at91-sama5d2_adc: add startup and tracktim as parameter for
->     at91_adc_setup_samp_freq()
->   iio: adc: at91-sama5d2_adc: add locking parameter to
->     at91_adc_read_info_raw()
->   dt-bindings: iio: adc: at91-sama5d2_adc: add id for temperature
->     channel
->   iio: adc: at91-sama5d2_adc: add support for temperature sensor
->   iio: adc: at91-sama5d2_adc: add empty line after functions
->   iio: adc: at91-sama5d2_adc: add runtime pm support
->   iio: adc: at91-sama5d2_adc: use pm_ptr()
+> Regards,
+> Aidan
 > 
->  drivers/iio/adc/at91-sama5d2_adc.c            | 633 +++++++++++++++---
->  .../dt-bindings/iio/adc/at91-sama5d2_adc.h    |   3 +
->  2 files changed, 548 insertions(+), 88 deletions(-)
+> >> ---
+> >>  drivers/iio/adc/axp20x_adc.c | 83 +++++++++++++++---------------------
+> >>  1 file changed, 34 insertions(+), 49 deletions(-)
+> >> 
+> >> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+> >> index 9d5b1de24908..0260433782d8 100644
+> >> --- a/drivers/iio/adc/axp20x_adc.c
+> >> +++ b/drivers/iio/adc/axp20x_adc.c
+> >> @@ -71,6 +71,18 @@ struct axp20x_adc_iio {
+> >>  	const struct axp_data	*data;
+> >>  };
+> >>  
+> >> +struct axp_data {
+> >> +	const struct iio_info		*iio_info;
+> >> +	int				num_channels;
+> >> +	struct iio_chan_spec const	*channels;
+> >> +	unsigned long			adc_en1_mask;
+> >> +	unsigned long			adc_en2_mask;
+> >> +	int				(*adc_rate)(struct axp20x_adc_iio *info,
+> >> +						    int rate);
+> >> +	struct iio_map			*maps;
+> >> +	enum axp20x_variants		axp20x_id;
+> >> +};
+> >> +
+> >>  enum axp20x_adc_channel_v {
+> >>  	AXP20X_ACIN_V = 0,
+> >>  	AXP20X_VBUS_V,
+> >> @@ -237,15 +249,24 @@ static int axp20x_adc_raw(struct iio_dev *indio_dev,
+> >>  	struct axp20x_adc_iio *info = iio_priv(indio_dev);
+> >>  	int ret, size;
+> >>  
+> >> -	/*
+> >> -	 * N.B.:  Unlike the Chinese datasheets tell, the charging current is
+> >> -	 * stored on 12 bits, not 13 bits. Only discharging current is on 13
+> >> -	 * bits.
+> >> -	 */
+> >> -	if (chan->type == IIO_CURRENT && chan->channel == AXP20X_BATT_DISCHRG_I)
+> >> -		size = 13;
+> >> -	else
+> >> +	switch (info->data->axp20x_id) {
+> >> +	case AXP202_ID:
+> >> +	case AXP209_ID:
+> >> +		/*
+> >> +		 * N.B.:  Unlike the Chinese datasheets tell, the charging current is
+> >> +		 * stored on 12 bits, not 13 bits. Only discharging current is on 13
+> >> +		 * bits.
+> >> +		 */
+> >> +		if (chan->type == IIO_CURRENT && chan->channel == AXP20X_BATT_DISCHRG_I)  
+> >
+> > This line is getting a bit long, break it after the &&
+> >  
+> >> +			size = 13;
+> >> +		else
+> >> +			size = 12;
+> >> +		break;
+> >> +
+> >> +	default:
+> >>  		size = 12;
+> >> +		break;
+> >> +	}
+> >>  
+> >>  	ret = axp20x_read_variable_width(info->regmap, chan->address, size);
+> >>  	if (ret < 0)
+> >> @@ -255,34 +276,6 @@ static int axp20x_adc_raw(struct iio_dev *indio_dev,
+> >>  	return IIO_VAL_INT;
+> >>  }
+> >>  
+> >> -static int axp22x_adc_raw(struct iio_dev *indio_dev,
+> >> -			  struct iio_chan_spec const *chan, int *val)
+> >> -{
+> >> -	struct axp20x_adc_iio *info = iio_priv(indio_dev);
+> >> -	int ret;
+> >> -
+> >> -	ret = axp20x_read_variable_width(info->regmap, chan->address, 12);
+> >> -	if (ret < 0)
+> >> -		return ret;
+> >> -
+> >> -	*val = ret;
+> >> -	return IIO_VAL_INT;
+> >> -}
+> >> -
+> >> -static int axp813_adc_raw(struct iio_dev *indio_dev,
+> >> -			  struct iio_chan_spec const *chan, int *val)
+> >> -{
+> >> -	struct axp20x_adc_iio *info = iio_priv(indio_dev);
+> >> -	int ret;
+> >> -
+> >> -	ret = axp20x_read_variable_width(info->regmap, chan->address, 12);
+> >> -	if (ret < 0)
+> >> -		return ret;
+> >> -
+> >> -	*val = ret;
+> >> -	return IIO_VAL_INT;
+> >> -}
+> >> -
+> >>  static int axp20x_adc_scale_voltage(int channel, int *val, int *val2)
+> >>  {
+> >>  	switch (channel) {
+> >> @@ -522,7 +515,7 @@ static int axp22x_read_raw(struct iio_dev *indio_dev,
+> >>  		return axp22x_adc_scale(chan, val, val2);
+> >>  
+> >>  	case IIO_CHAN_INFO_RAW:
+> >> -		return axp22x_adc_raw(indio_dev, chan, val);
+> >> +		return axp20x_adc_raw(indio_dev, chan, val);
+> >>  
+> >>  	default:
+> >>  		return -EINVAL;
+> >> @@ -542,7 +535,7 @@ static int axp813_read_raw(struct iio_dev *indio_dev,
+> >>  		return axp813_adc_scale(chan, val, val2);
+> >>  
+> >>  	case IIO_CHAN_INFO_RAW:
+> >> -		return axp813_adc_raw(indio_dev, chan, val);
+> >> +		return axp20x_adc_raw(indio_dev, chan, val);
+> >>  
+> >>  	default:
+> >>  		return -EINVAL;
+> >> @@ -620,17 +613,6 @@ static int axp813_adc_rate(struct axp20x_adc_iio *info, int rate)
+> >>  				 AXP813_ADC_RATE_HZ(rate));
+> >>  }
+> >>  
+> >> -struct axp_data {
+> >> -	const struct iio_info		*iio_info;
+> >> -	int				num_channels;
+> >> -	struct iio_chan_spec const	*channels;
+> >> -	unsigned long			adc_en1_mask;
+> >> -	int				(*adc_rate)(struct axp20x_adc_iio *info,
+> >> -						    int rate);
+> >> -	bool				adc_en2;
+> >> -	struct iio_map			*maps;
+> >> -};
+> >> -
+> >>  static const struct axp_data axp20x_data = {
+> >>  	.iio_info = &axp20x_adc_iio_info,
+> >>  	.num_channels = ARRAY_SIZE(axp20x_adc_channels),
+> >> @@ -639,6 +621,7 @@ static const struct axp_data axp20x_data = {
+> >>  	.adc_rate = axp20x_adc_rate,
+> >>  	.adc_en2 = true,
+> >>  	.maps = axp20x_maps,
+> >> +	.axp20x_id = AXP209_ID,
+> >>  };
+> >>  
+> >>  static const struct axp_data axp22x_data = {
+> >> @@ -649,6 +632,7 @@ static const struct axp_data axp22x_data = {
+> >>  	.adc_rate = axp22x_adc_rate,
+> >>  	.adc_en2 = false,
+> >>  	.maps = axp22x_maps,
+> >> +	.axp20x_id = AXP221_ID,
+> >>  };
+> >>  
+> >>  static const struct axp_data axp813_data = {
+> >> @@ -659,6 +643,7 @@ static const struct axp_data axp813_data = {
+> >>  	.adc_rate = axp813_adc_rate,
+> >>  	.adc_en2 = false,
+> >>  	.maps = axp22x_maps,
+> >> +	.axp20x_id = AXP813_ID,
+> >>  };
+> >>  
+> >>  static const struct of_device_id axp20x_adc_of_match[] = {  
 > 
 

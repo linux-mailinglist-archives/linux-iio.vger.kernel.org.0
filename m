@@ -2,47 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7751654750A
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 15:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB48547511
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 15:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232607AbiFKN4Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jun 2022 09:56:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38776 "EHLO
+        id S232372AbiFKN6M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jun 2022 09:58:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230319AbiFKN4X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 09:56:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D836537AAA;
-        Sat, 11 Jun 2022 06:56:22 -0700 (PDT)
+        with ESMTP id S232347AbiFKN6L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 09:58:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29035E92;
+        Sat, 11 Jun 2022 06:58:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 971B9B80108;
-        Sat, 11 Jun 2022 13:56:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C20C34116;
-        Sat, 11 Jun 2022 13:56:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C788D60F25;
+        Sat, 11 Jun 2022 13:58:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FBCC34116;
+        Sat, 11 Jun 2022 13:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654955780;
-        bh=HUk1m8Z7oVZABVRvChpbtgGXc/rMJfPU7EhN5cXmHIM=;
+        s=k20201202; t=1654955886;
+        bh=nbFGh7icD9NslwLu6nhPgTSnek+SfmmZhWf7P+5Ny8A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YYrIasQQPKZmBdeZ81lpElWH+f0O2IRR/8TQ/RBg2D4IO2YvRf3nJMbmAU2eTdz/j
-         0ScfRNxS6zvjlrl0S3/0gBWZdd0FHx2QFjDdaLQpYTf8xKQqZt2te5beKW5IAJfTJU
-         OR5YNdTVaUc52KwA+7ATdQr6fs1jdzt56CB5yZq4xSrZs//8CHoNZLV4J5/DvhDMq1
-         xVCoP8/rXaFUMLeuSVKMSa12CqdcfmcsN7QFGCMUWgeDRrBdfuMN4ckEXAA0F8kbJN
-         Yycb6j8L49HtO6mIRfT2PulCHDYJPo0A0zbf4qraVImvotCJjb8ibAWj5nqkwmyl1C
-         +e+uhBdbVtYAA==
-Date:   Sat, 11 Jun 2022 15:05:18 +0100
+        b=UmWdJYYOx2uNSGz9CgyVRZf7Iz8aVNIzGSC+5v8ilWDX/MiVq9rr2PzYv+k3kImhk
+         Dg5bxisg5HqmdOnOt0QDuNZzApXfOV3p8J8lXL2QeCV9gRUr0WYP6WuoiC2yG/ZiKO
+         xAJyZy93UG7Fy8bPXIowGrSbP/94Q6I6rKv0j4m2XyeThYt9nLnZnVNt2IgdcBbOs9
+         KCQ8Bt5th2zh1s0z3uYp3ec3Aq8Nwj4nkJVqhdZn64UEwVhx2n0FhfXD4fQT/JL3VF
+         OYtYVjzewS2i7BQdTpjtQwQZFDuPtaXZxyLIvSzdC8hFjiN/x/20m2kW+u9Cl8U94A
+         rMLdoTWEooFcg==
+Date:   Sat, 11 Jun 2022 15:07:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
-        <linux-mips@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <chrome-platform@lists.linux.dev>,
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        chrome-platform@lists.linux.dev,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "moderated list:ARM/Mediatek SoC support" 
         <linux-mediatek@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <openbmc@lists.ozlabs.org>, Cai Huoqing <cai.huoqing@linux.dev>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
         Benjamin Fair <benjaminfair@google.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -70,7 +76,6 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
@@ -83,12 +88,14 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         Olivier Moysan <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 05/34] iio: adc: imx8qxp-adc: explicitly add proper
+Subject: Re: [PATCH 06/34] iio: adc: ingenic-adc: explicitly add proper
  header files
-Message-ID: <20220611150518.695d1dd5@jic23-huawei>
-In-Reply-To: <20220610084545.547700-6-nuno.sa@analog.com>
+Message-ID: <20220611150704.483ccccd@jic23-huawei>
+In-Reply-To: <a67d3d01824db6376c2f15949021db4f2b6173cb.camel@gmail.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
-        <20220610084545.547700-6-nuno.sa@analog.com>
+        <20220610084545.547700-7-nuno.sa@analog.com>
+        <CAHp75VcU-oV4is_y9=oaOx2ugvTEOy53h2wvbd3-Z9_gv5Y=zA@mail.gmail.com>
+        <a67d3d01824db6376c2f15949021db4f2b6173cb.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -103,31 +110,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Jun 2022 10:45:16 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Fri, 10 Jun 2022 21:49:22 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Do not trust the fact that iio.h includes of.h which in turn includes
-> all the headers we are relying on.
+> On Fri, 2022-06-10 at 16:45 +0200, Andy Shevchenko wrote:
+> > On Fri, Jun 10, 2022 at 10:46 AM Nuno S=C3=A1 <nuno.sa@analog.com> wrot=
+e: =20
+> > >=20
+> > > Do not trust the fact that iio.h includes of.h which in turn
+> > > includes
+> > > all the headers we are relying on.
+> > >=20
+> > > The ultimate goal is to actually drop of.h from iio.h. =20
+> >=20
+> > ...
+> >  =20
+> > > =C2=A0#include <linux/mod_devicetable.h>
+> > > =C2=A0#include <linux/mutex.h>
+> > > =C2=A0#include <linux/platform_device.h>
+> > > +#include <linux/property.h>
+> > > +#include <linux/of.h> =20
+> >=20
+> > Ordering (from the context I don't see it's messed up already)
+> >  =20
 >=20
-> The ultimate goal is to actually drop of.h from iio.h.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied.
+> Will double check on v2...
 
-> ---
->  drivers/iio/adc/imx8qxp-adc.c | 1 +
->  1 file changed, 1 insertion(+)
+Fixed up whilst applying...
+
 >=20
-> diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
-> index 901dd8e1b32f..e8c9a69e10eb 100644
-> --- a/drivers/iio/adc/imx8qxp-adc.c
-> +++ b/drivers/iio/adc/imx8qxp-adc.c
-> @@ -19,6 +19,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
->  #include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
+> - Nuno S=C3=A1
 

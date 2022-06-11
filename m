@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18EEE547537
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 16:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 089D054753C
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 16:07:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233844AbiFKOGA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jun 2022 10:06:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53966 "EHLO
+        id S233419AbiFKOHY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jun 2022 10:07:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230056AbiFKOGA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 10:06:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C202BF9;
-        Sat, 11 Jun 2022 07:05:59 -0700 (PDT)
+        with ESMTP id S232552AbiFKOHX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 10:07:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1084B1DA53;
+        Sat, 11 Jun 2022 07:07:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A95D160F2F;
-        Sat, 11 Jun 2022 14:05:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9E0C34116;
-        Sat, 11 Jun 2022 14:05:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F7C160F35;
+        Sat, 11 Jun 2022 14:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6736C34116;
+        Sat, 11 Jun 2022 14:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654956358;
-        bh=OmUfGkRF4xL7PgWSrSTnTjbph9RD9p9o9gWv8vjGSHg=;
+        s=k20201202; t=1654956438;
+        bh=sYrcnctOT1kg2rtUoj2m7nGi8WnuwpUPezuz5OO1NN8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=s/NwO96uBMX+o2nM9eGSnt7eVSX4jqvSEZqkM27RqMGCzysNXsmCNSfHKYk+2w1DX
-         xW62AVOwiXdjLZYAD4tkKKX1EOq8YmkjNrD09fdjwNuWfawr0w9HEgLV0u11un8IoI
-         jiXlPZJ/OoqzgbhcnXWXzKJ1Al9KVFSJxpZaUaRMO3rYoB8DtHOQhRTmIqJF5Wq1Ls
-         DHdq9fD+W0XqUUNJdDNRMkgK/FuVBkEolBiw1uQzLdoAsIaasmVFhCt0fIophTyLSD
-         XbSJyDSBJ91XzayfJgSHvIrQYXIIoFAU7WtAnId+BDpo4Md91AZg3TKvCuxbHrz1aG
-         YELoLDy88lQ7g==
-Date:   Sat, 11 Jun 2022 15:14:56 +0100
+        b=bbXSpdcwgal7gAnf16jULcsmRlfACXBw6a77ZvEr6NSlsLv+8lH4Yw73ue78Q7laW
+         1x5yo0RCc5QtnxdmW3e85EDzoCUuj1EM/CPL4UXXvN0gL7/o3gzK/BLN1gcY/2KMvt
+         +9rTVuTl2t+2wYPgXvmT+Jh482GId+ORxUmnhvhy9ArQJqsF5uUxR+hXwJLMyYjLG6
+         W/p4U5bCmJNubnlMpHySZnyO7oo2IqtsZ+KTMcIZXQL6OXcCZvpOdCg3rJlO1eFh0U
+         7Bnf5TWv+Mnf59isUCSVFHpCkbFmjMmtcFTFcdusioLsSrRcxByVGMRo8q8SAuLUf/
+         wj9VhvuX6sEcA==
+Date:   Sat, 11 Jun 2022 15:16:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
 Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
@@ -83,12 +83,12 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         "Olivier Moysan" <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 11/34] iio: common: cros_ec_lid_angle: explicitly add
+Subject: Re: [PATCH 12/34] iio: common: cros_ec_sensors: explicitly add
  proper header files
-Message-ID: <20220611151456.24c66aa2@jic23-huawei>
-In-Reply-To: <20220610084545.547700-12-nuno.sa@analog.com>
+Message-ID: <20220611151618.10be5e3e@jic23-huawei>
+In-Reply-To: <20220610084545.547700-13-nuno.sa@analog.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
-        <20220610084545.547700-12-nuno.sa@analog.com>
+        <20220610084545.547700-13-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -103,7 +103,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Jun 2022 10:45:22 +0200
+On Fri, 10 Jun 2022 10:45:23 +0200
 Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
 > Do not trust the fact that iio.h includes of.h which in turn includes
@@ -112,23 +112,23 @@ Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 > The ultimate goal is to actually drop of.h from iio.h.
 >=20
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied.
+Applied
 
 > ---
->  drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c | 1 +
+>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c | 1 +
 >  1 file changed, 1 insertion(+)
 >=20
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/dri=
-vers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> index af801e203623..9f780fafaed9 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-> @@ -20,6 +20,7 @@
->  #include <linux/iio/triggered_buffer.h>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drive=
+rs/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 376a5b30010a..61e07a7bb199 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -16,6 +16,7 @@
 >  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
 >  #include <linux/kernel.h>
 > +#include <linux/mod_devicetable.h>
 >  #include <linux/module.h>
 >  #include <linux/platform_data/cros_ec_commands.h>
->  #include <linux/platform_device.h>
+>  #include <linux/platform_data/cros_ec_proto.h>
 

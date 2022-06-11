@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9C8547519
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 15:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CA6547520
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jun 2022 16:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232950AbiFKN7X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 11 Jun 2022 09:59:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50828 "EHLO
+        id S233305AbiFKOAz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 11 Jun 2022 10:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230319AbiFKN7X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 09:59:23 -0400
+        with ESMTP id S233159AbiFKOAy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 11 Jun 2022 10:00:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85BDB225;
-        Sat, 11 Jun 2022 06:59:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203DB225;
+        Sat, 11 Jun 2022 07:00:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1567860F2B;
-        Sat, 11 Jun 2022 13:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21ABFC34116;
-        Sat, 11 Jun 2022 13:59:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFAD060F2C;
+        Sat, 11 Jun 2022 14:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF58C34116;
+        Sat, 11 Jun 2022 14:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654955961;
-        bh=N+jRAl5SfO9WUpOuUQXZbSNHdLmCO/lTZsLDRArZBLo=;
+        s=k20201202; t=1654956052;
+        bh=Wqp1FnaQ4bvi4M3HyvPsdk1MmcTs9Vn0Xjp0S774koQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TCokVT0scSae+AleYkP+N54WodTFdGjBIAac+FBAGtk3KD1jkjb/LSS28ECi3xNad
-         P6sw04jqwVzo/Q7vaPiiUh5hUkXSodA7nhMixQGzy2Y+HBZ393J2NmbCiOwNAjnnMa
-         eRuSDyy+6C7yvx9wvQMogbe8IfX67t0mkIb9QJcnRHaVIGHk1dIblRJeSnqvNanwj8
-         DzK30nlM0/W7KxoBD52G3xErge3JI5iILKhfZeLvtYgi8eGSmjhighZw3xTB5EyKTE
-         jlFYQdKewdzlpQStWAD1SVorTtD7ffLVvKAXaJ7YgO93KkTOiF1aFRq9sBRVdhSr+8
-         /uAQAh/HHRnYw==
-Date:   Sat, 11 Jun 2022 15:08:20 +0100
+        b=HlfWt105zoTrNDdHWpRzeqP8Cx0p0ezCkKZjlDkq9Y805ShhtSsBB0gM3nYJn6VMP
+         rh3FW7q8eL1jE24pMsbmGBvnQtJYnRKwuiZ4fZi2CVLcHiYw1QZ1mx7gO+PRFYs2Zs
+         5X2Op1ikh4LZbeh1tV7cExqPJ1Me4VZ/4cMds4VDOQF7D95/ig2Lcf13ZCABQmzJR+
+         HyH55ycZir4aOTCAQ5ESLpaAcHIWxaJnai49ABlG5teIqSYLlrB8N2EvhbC3AXS8Yq
+         hpUFMaoil1Q/ORh3GsY6+SR08vCV6ANqNY5nPx+jV8G9K3pTRQzHTtnNEbNbdMMQBs
+         6quNWNcaPKdaA==
+Date:   Sat, 11 Jun 2022 15:09:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
 Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
@@ -45,7 +45,7 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         <openbmc@lists.ozlabs.org>, Cai Huoqing <cai.huoqing@linux.dev>,
         Benjamin Fair <benjaminfair@google.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Amit Kucheria <amitk@kernel.org>,
@@ -54,20 +54,20 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         Haibo Chen <haibo.chen@nxp.com>,
         Benson Leung <bleung@chromium.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Christophe Branchereau <cbranchereau@gmail.com>,
         Patrick Venture <venture@google.com>,
         Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Gwendal Grignou" <gwendal@chromium.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
         Saravanan Sekar <sravanhome@gmail.com>,
-        "Tali Perry" <tali.perry1@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Paul Cercueil <paul@crapouillou.net>,
         Thara Gopinath <thara.gopinath@linaro.org>,
         Avi Fishman <avifishman70@gmail.com>,
-        "Lorenzo Bianconi" <lorenzo@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -75,20 +75,20 @@ Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Zhang Rui <rui.zhang@intel.com>,
         Shawn Guo <shawnguo@kernel.org>,
-        "Guenter Roeck" <groeck@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
         Fabio Estevam <festevam@gmail.com>,
-        "Olivier Moysan" <olivier.moysan@foss.st.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 07/34] iio: adc: mp2629_adc: explicitly add proper
+Subject: Re: [PATCH 08/34] iio: adc: mt6360-adc: explicitly add proper
  header files
-Message-ID: <20220611150820.04d1f6d5@jic23-huawei>
-In-Reply-To: <20220610084545.547700-8-nuno.sa@analog.com>
+Message-ID: <20220611150950.52510bef@jic23-huawei>
+In-Reply-To: <20220610084545.547700-9-nuno.sa@analog.com>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
-        <20220610084545.547700-8-nuno.sa@analog.com>
+        <20220610084545.547700-9-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -103,7 +103,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Jun 2022 10:45:18 +0200
+On Fri, 10 Jun 2022 10:45:19 +0200
 Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
 > Do not trust the fact that iio.h includes of.h which in turn includes
@@ -115,17 +115,17 @@ Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 Applied.
 
 > ---
->  drivers/iio/adc/mp2629_adc.c | 1 +
+>  drivers/iio/adc/mt6360-adc.c | 1 +
 >  1 file changed, 1 insertion(+)
 >=20
-> diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
-> index aca084f1e78a..30a31f185d08 100644
-> --- a/drivers/iio/adc/mp2629_adc.c
-> +++ b/drivers/iio/adc/mp2629_adc.c
-> @@ -11,6 +11,7 @@
->  #include <linux/iio/iio.h>
->  #include <linux/iio/machine.h>
->  #include <linux/mfd/mp2629.h>
+> diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
+> index 07c0e6768391..35260d9e4e47 100644
+> --- a/drivers/iio/adc/mt6360-adc.c
+> +++ b/drivers/iio/adc/mt6360-adc.c
+> @@ -5,6 +5,7 @@
+>  #include <linux/irq.h>
+>  #include <linux/kernel.h>
+>  #include <linux/ktime.h>
 > +#include <linux/mod_devicetable.h>
 >  #include <linux/module.h>
 >  #include <linux/mutex.h>

@@ -2,161 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67EB3547963
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 11:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A427A5479A0
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 11:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233187AbiFLJAA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Jun 2022 05:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35766 "EHLO
+        id S232790AbiFLJ3H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Jun 2022 05:29:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235156AbiFLI77 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 04:59:59 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF6050003;
-        Sun, 12 Jun 2022 01:59:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7D17AB80B49;
-        Sun, 12 Jun 2022 08:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EDBC34115;
-        Sun, 12 Jun 2022 08:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655024395;
-        bh=2uqxVJ6jg6AwdHG0+C7+HQBXmirKuPi56pYKZPGKkCU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Gr6stL0vss5dlzJyCOgtqr6VGyPaDsNrheFDEXSHs4p0Y/J51CfagmXK44//qr6DU
-         pp3e8S/1AaBzYzeChlGrrUH1/YCxJ1kTIJG2Bau2VTAZRLfgISEEvcHjq62AUQLuif
-         aDahCJU85DqqJ8YCKrZbLG6fzfXDLslBJz7rUv0JLavzErW48xbQF/mE/cZpZt6Y3L
-         faECM0YTXIRSYqhUfaLwB+Glon1bsXQ2pTU7iJJK1wvTYFRZvb/PW4PVc0YEn4zaQm
-         jrrnue0D2aYHK0Hk8gHvo8LQrTQEXoZ5Pivq5uioAo7f6QGUrJFMn+lyI8Mpxl084u
-         DK8h2a1MntWFg==
-Date:   Sun, 12 Jun 2022 10:08:54 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cixi Geng <gengcixi@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Cixi Geng <cixi.geng1@unisoc.com>, linux-iio@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        with ESMTP id S236111AbiFLJ25 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 05:28:57 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D84FE193D1;
+        Sun, 12 Jun 2022 02:28:55 -0700 (PDT)
+Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 632BCCD3B7;
+        Sun, 12 Jun 2022 09:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1655026104; bh=+nsIAL6xFL6a1cABzXHA/MS1lpXQhXPaEkKDhejuBR0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=Rl4X0ZLpfjg4wS+aLRdSneRvN2IXBUuaaV9ns0bXAsb6REqNrsWuqsKntPSQWGDeC
+         vbUYr2qRa+5pbYZ5cAwgFrgZR3ocnRpQr/3BomaWOB9uhIUR8wpop1MCdLL8kNRxE8
+         7nsa0WaORfV4F9OfnihiAZFTbcRFtMakjwxLv3JM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: Re: [PATCH v1 1/1] iio: adc: sc27xx_adc: Re-use generic struct
- u32_fract
-Message-ID: <20220612100854.22e2c441@jic23-huawei>
-In-Reply-To: <CAF12kFueRHQJy2t6xitqfYwsY0kPagDSH289QKp0y0W0HzsshA@mail.gmail.com>
-References: <20220530180910.2533-1-andriy.shevchenko@linux.intel.com>
-        <20220603180347.2b0d0f08@jic23-huawei>
-        <CAF12kFueRHQJy2t6xitqfYwsY0kPagDSH289QKp0y0W0HzsshA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 3/5] proximity: vl53l0x: Handle the VDD regulator
+Date:   Sun, 12 Jun 2022 11:28:22 +0200
+Message-ID: <13033502.uLZWGnKmhe@g550jk>
+In-Reply-To: <20220612095333.1479464c@jic23-huawei>
+References: <20220523175344.5845-1-markuss.broks@gmail.com> <CKKOCWP2NYO5.GH08U776B1KU@otso> <20220612095333.1479464c@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
+        PDS_OTHER_BAD_TLD,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 6 Jun 2022 11:12:15 +0800
-Cixi Geng <gengcixi@gmail.com> wrote:
+Hi Jonathan,
 
-> Jonathan Cameron <jic23@kernel.org> =E4=BA=8E2022=E5=B9=B46=E6=9C=884=E6=
-=97=A5=E5=91=A8=E5=85=AD 01:44=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Mon, 30 May 2022 21:09:10 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > =20
-> > > Instead of custom data type re-use generic struct u32_fract. =20
-> >
-> > There isn't a custom data type  - I'll reword this whilst applying
-> > if there is no reason for a v2.
-> > =20
-> > > No changes intended. =20
-> >
-> > functional changes
-> > =20
-> > >
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> =20
-> > Given they have been active recently I'd ideally like Cixi Geng
-> > to take a quick glance at this before I apply it. =20
-> Acked-by: Cixi Geng <cixi.geng1@unisoc.com>
-
-Applied to the togreg branch of iio.git and will be pushed out initially
-as testing for 0-day to take a look.
-
-Thanks,
-
-Jonathan
-
-> >
-> > Thanks,
-> >
-> > Jonathan
-> > =20
+On Sonntag, 12. Juni 2022 10:53:33 CEST Jonathan Cameron wrote:
+> On Wed, 08 Jun 2022 12:18:52 +0200
+> 
+> "Luca Weiss" <luca.weiss@fairphone.com> wrote:
+> > Hi Markuss,
+> > 
+> > On Mon May 23, 2022 at 7:53 PM CEST, Markuss Broks wrote:
+> > > Handle the regulator supplying the VDD pin of VL53L0X.
+> > > 
+> > > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
 > > > ---
-> > >  drivers/iio/adc/sc27xx_adc.c | 15 +++++++--------
-> > >  1 file changed, 7 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_ad=
-c.c
-> > > index e9ff2d6a8a57..f8421cbba8fa 100644
-> > > --- a/drivers/iio/adc/sc27xx_adc.c
-> > > +++ b/drivers/iio/adc/sc27xx_adc.c
-> > > @@ -579,15 +579,14 @@ static int sc27xx_adc_read(struct sc27xx_adc_da=
-ta *data, int channel,
-> > >       return ret;
-> > >  }
-> > >
-> > > -static void sc27xx_adc_volt_ratio(struct sc27xx_adc_data *data,
-> > > -                               int channel, int scale,
-> > > -                               u32 *div_numerator, u32 *div_denomina=
-tor)
-> > > +static void sc27xx_adc_volt_ratio(struct sc27xx_adc_data *data, int =
-channel, int scale,
-> > > +                               struct u32_fract *fract)
+> > > 
+> > >  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+> > >  1 file changed, 37 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/proximity/vl53l0x-i2c.c
+> > > b/drivers/iio/proximity/vl53l0x-i2c.c index 12a3e2eff464..8581a873919f
+> > > 100644
+> > > --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> > > +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> > > @@ -43,6 +43,7 @@
+> > > 
+> > >  struct vl53l0x_data {
+> > >  
+> > >  	struct i2c_client *client;
+> > >  	struct completion completion;
+> > > 
+> > > +	struct regulator *vdd_supply;
+> > > 
+> > >  };
+> > >  
+> > >  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> > > 
+> > > @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
+> > > 
+> > >  	.read_raw = vl53l0x_read_raw,
+> > >  
+> > >  };
+> > > 
+> > > +static void vl53l0x_power_off(void *_data)
+> > > +{
+> > > +	struct vl53l0x_data *data = _data;
+> > > +
+> > > +	regulator_disable(data->vdd_supply);
+> > > +}
+> > > +
+> > > +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> > > +{
+> > > +	int ret;
+> > > +
+> > > +	ret = regulator_enable(data->vdd_supply);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	usleep_range(3200, 5000);
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > 
+> > >  static int vl53l0x_probe(struct i2c_client *client)
 > > >  {
-> > >       u32 ratio;
-> > >
-> > >       ratio =3D data->var_data->get_ratio(channel, scale);
-> > > -     *div_numerator =3D ratio >> SC27XX_RATIO_NUMERATOR_OFFSET;
-> > > -     *div_denominator =3D ratio & SC27XX_RATIO_DENOMINATOR_MASK;
-> > > +     fract->numerator =3D ratio >> SC27XX_RATIO_NUMERATOR_OFFSET;
-> > > +     fract->denominator =3D ratio & SC27XX_RATIO_DENOMINATOR_MASK;
-> > >  }
-> > >
-> > >  static int adc_to_volt(struct sc27xx_adc_linear_graph *graph,
-> > > @@ -615,7 +614,7 @@ static int sc27xx_adc_to_volt(struct sc27xx_adc_l=
-inear_graph *graph,
-> > >  static int sc27xx_adc_convert_volt(struct sc27xx_adc_data *data, int=
- channel,
-> > >                                  int scale, int raw_adc)
-> > >  {
-> > > -     u32 numerator, denominator;
-> > > +     struct u32_fract fract;
-> > >       u32 volt;
-> > >
-> > >       /*
-> > > @@ -637,9 +636,9 @@ static int sc27xx_adc_convert_volt(struct sc27xx_=
-adc_data *data, int channel,
-> > >               break;
-> > >       }
-> > >
-> > > -     sc27xx_adc_volt_ratio(data, channel, scale, &numerator, &denomi=
-nator);
-> > > +     sc27xx_adc_volt_ratio(data, channel, scale, &fract);
-> > >
-> > > -     return DIV_ROUND_CLOSEST(volt * denominator, numerator);
-> > > +     return DIV_ROUND_CLOSEST(volt * fract.denominator, fract.numera=
-tor);
-> > >  }
-> > >
-> > >  static int sc27xx_adc_read_processed(struct sc27xx_adc_data *data, =
-=20
-> > =20
+> > >  
+> > >  	struct vl53l0x_data *data;
+> > >  	struct iio_dev *indio_dev;
+> > > 
+> > > +	int error;
+> > > 
+> > >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> > >  	if (!indio_dev)
+> > > 
+> > > @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+> > > 
+> > >  				     I2C_FUNC_SMBUS_BYTE_DATA))
+> > >  		
+> > >  		return -EOPNOTSUPP;
+> > > 
+> > > +	data->vdd_supply = devm_regulator_get_optional(&client->dev, 
+"vdd");
+> > > +	if (IS_ERR(data->vdd_supply))
+> > > +		return dev_err_probe(&client->dev, PTR_ERR(data-
+>vdd_supply),
+> > > +				     "Unable to get VDD 
+regulator\n");
+> > 
+> > It looks like this optional regulator is not actually optional.
+> > 
+> > [    1.919995] vl53l0x-i2c 1-0029: error -ENODEV: Unable to get VDD
+> > regulator
+> > 
+> > When using devm_regulator_get instead, a dummy regulator gets returned
+> > which I think is what we want here:
+> > 
+> > [    1.905518] vl53l0x-i2c 1-0029: supply vdd not found, using dummy
+> > regulator
+> > 
+> > Can you fix this up or should I send a patch?
+> 
+> Hi Luca,
+> 
+> Please send a patch.
+
+Which commit sha can I use for Fixes: here?
+Based your togreg[0] branch currently shows "Age: 20 hours" I guess it was 
+rebased recently?
+
+Regards
+Luca
+
+[0]https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=togreg
+
+> 
+> Jonathan
+> 
+> > Regards
+> > Luca
+> > 
+> > > +
+> > > +	error = vl53l0x_power_on(data);
+> > > +	if (error)
+> > > +		return dev_err_probe(&client->dev, error,
+> > > +				     "Failed to power on the 
+chip\n");
+> > > +
+> > > +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off,
+> > > data);
+> > > +	if (error)
+> > > +		return dev_err_probe(&client->dev, error,
+> > > +				     "Failed to install poweroff 
+action\n");
+> > > +
+> > > 
+> > >  	indio_dev->name = "vl53l0x";
+> > >  	indio_dev->info = &vl53l0x_info;
+> > >  	indio_dev->channels = vl53l0x_channels;
+
+
+
 

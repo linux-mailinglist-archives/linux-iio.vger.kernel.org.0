@@ -2,61 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C99547949
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 10:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 605D554794D
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 10:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232001AbiFLIoi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Jun 2022 04:44:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60896 "EHLO
+        id S231919AbiFLIxK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Jun 2022 04:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbiFLIoh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 04:44:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D747039179;
-        Sun, 12 Jun 2022 01:44:35 -0700 (PDT)
+        with ESMTP id S230200AbiFLIxK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 04:53:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D780649903;
+        Sun, 12 Jun 2022 01:53:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 353AA60BA8;
-        Sun, 12 Jun 2022 08:44:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43799C34115;
-        Sun, 12 Jun 2022 08:44:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 94C3DB80B79;
+        Sun, 12 Jun 2022 08:53:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7721EC34115;
+        Sun, 12 Jun 2022 08:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655023474;
-        bh=Iuf05oYjNVfmVviJ3nzqABfbmmEH9K1yfExt9eMTwpw=;
+        s=k20201202; t=1655023986;
+        bh=VtgoVnezwgppbWJB6LoaSNYOo+Jq58Oon9TcheWQ7UU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rS3+hLCYfRFUyaB1xTljZaF2xc0BscWD3kt9vZzqOWo6MNCUf6x8aQAd3aGfwpPvz
-         7d4eexx64qXwik87NVBpnme4dqZcwA843f7r+Py7Z3ilmablhaN6Ec6JRZKUEu0MBf
-         M4FOF3j3QEFydrjOKwDp5lLTbDnRdCiBug+YTq+KKuUJPhYEWckcuvHRzMn3G9yyiy
-         EC9i4m4YpDBEhLRa/kgDjvkjXEIf1KHl8fSnzW2O2gTJi11JyIJF3Wu7ttcf0KKIwh
-         3nNqunAcNiKZQxrRtZJu83Pva096Rf+4/CIpPDi5q3OiUHePMb0v9EpqFQ1+xKDfTw
-         HHKpTVyeSv0hw==
-Date:   Sun, 12 Jun 2022 09:53:33 +0100
+        b=GfrvgGhhJ4I4SExFdEpr0GPZnqp09E+I4nJM+TE2DUAmr87VzCi/71BXze0kVPzNU
+         p4gXfopggT0QOUrD+iFFVPL4tcbIXVwX0lyuo3ZyaKWEsvKVZkjGzD92sD4nYzvBqc
+         vNL+izsM0BNglkqLFCl6SaXVliJ8b9pu7njyrhjcxiUeNfGt/93JcFRRB/IozXyMHa
+         p/hENEb7g9MEbOKUqSm+SIIMMH/oQXodVx6I/lUBk3s/p57ThJe//JqJk9SeLFO2En
+         Y0nlcJ+gwfaLKU9rfeH/4iZt0ZyMQkGFY0CanZdRtOIfgBIW47R+yyCBMGmfHrWLmk
+         cTbehz+aE3F0Q==
+Date:   Sun, 12 Jun 2022 10:02:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Luca Weiss" <luca.weiss@fairphone.com>
-Cc:     "Markuss Broks" <markuss.broks@gmail.com>,
-        <linux-kernel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@somainline.org>,
-        "Marijn Suijten" <marijn.suijten@somainline.org>,
-        "AngeloGioacchino Del Regno" 
-        <angelogioacchino.delregno@somainline.org>,
-        "Song Qiang" <songqiang1304521@gmail.com>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        "Liam Girdwood" <lgirdwood@gmail.com>,
-        "Mark Brown" <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH 3/5] proximity: vl53l0x: Handle the VDD regulator
-Message-ID: <20220612095333.1479464c@jic23-huawei>
-In-Reply-To: <CKKOCWP2NYO5.GH08U776B1KU@otso>
-References: <20220523175344.5845-1-markuss.broks@gmail.com>
-        <20220523175344.5845-4-markuss.broks@gmail.com>
-        <CKKOCWP2NYO5.GH08U776B1KU@otso>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Message-ID: <20220612100205.2cab2965@jic23-huawei>
+In-Reply-To: <20220609180923.e2q7hkeq5jldtdo2@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220525181532.6805-1-ddrokosov@sberdevices.ru>
+        <20220525181532.6805-3-ddrokosov@sberdevices.ru>
+        <20220528193335.646dd092@jic23-huawei>
+        <20220609180923.e2q7hkeq5jldtdo2@CAB-WSD-L081021.sigma.sbrf.ru>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -71,109 +66,132 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 08 Jun 2022 12:18:52 +0200
-"Luca Weiss" <luca.weiss@fairphone.com> wrote:
+On Thu, 9 Jun 2022 18:09:05 +0000
+Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
-> Hi Markuss,
+> Hello Jonathan,
 > 
-> On Mon May 23, 2022 at 7:53 PM CEST, Markuss Broks wrote:
-> > Handle the regulator supplying the VDD pin of VL53L0X.
-> >
-> > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> > ---
-> >  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
-> >  1 file changed, 37 insertions(+)
-> >
-> > diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-> > index 12a3e2eff464..8581a873919f 100644
-> > --- a/drivers/iio/proximity/vl53l0x-i2c.c
-> > +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-> > @@ -43,6 +43,7 @@
-> >  struct vl53l0x_data {
-> >  	struct i2c_client *client;
-> >  	struct completion completion;
-> > +	struct regulator *vdd_supply;
-> >  };
-> >  
-> >  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
-> > @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
-> >  	.read_raw = vl53l0x_read_raw,
-> >  };
-> >  
-> > +static void vl53l0x_power_off(void *_data)
-> > +{
-> > +	struct vl53l0x_data *data = _data;
-> > +
-> > +	regulator_disable(data->vdd_supply);
-> > +}
-> > +
-> > +static int vl53l0x_power_on(struct vl53l0x_data *data)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = regulator_enable(data->vdd_supply);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	usleep_range(3200, 5000);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int vl53l0x_probe(struct i2c_client *client)
-> >  {
-> >  	struct vl53l0x_data *data;
-> >  	struct iio_dev *indio_dev;
-> > +	int error;
-> >  
-> >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> >  	if (!indio_dev)
-> > @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
-> >  				     I2C_FUNC_SMBUS_BYTE_DATA))
-> >  		return -EOPNOTSUPP;
-> >  
-> > +	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
-> > +	if (IS_ERR(data->vdd_supply))
-> > +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
-> > +				     "Unable to get VDD regulator\n");  
+> Thank you for comments. Please find my replies below.
 > 
-> It looks like this optional regulator is not actually optional.
-> 
-> [    1.919995] vl53l0x-i2c 1-0029: error -ENODEV: Unable to get VDD regulator
-> 
-> When using devm_regulator_get instead, a dummy regulator gets returned
-> which I think is what we want here:
-> 
-> [    1.905518] vl53l0x-i2c 1-0029: supply vdd not found, using dummy regulator
-> 
-> Can you fix this up or should I send a patch?
+...
 
-Hi Luca,
+> > > +					i2c->name,
+> > > +					indio_dev);
+> > > +	if (err)
+> > > +		return dev_err_probe(dev, err,
+> > > +				     "failed to request irq (%d)\n", err);
+> > > +
+> > > +	trig = devm_iio_trigger_alloc(dev, "%s-new-data", i2c->name);
+> > > +	if (!trig)
+> > > +		return dev_err_probe(dev, -ENOMEM,
+> > > +				     "cannot allocate newdata trig\n");
+> > > +
+> > > +	msa311->new_data_trig = trig;
+> > > +	msa311->new_data_trig->dev.parent = dev;
+> > > +	msa311->new_data_trig->ops = &msa311_new_data_trig_ops;
+> > > +	iio_trigger_set_drvdata(msa311->new_data_trig, indio_dev);
+> > > +
+> > > +	err = devm_iio_trigger_register(dev, msa311->new_data_trig);
+> > > +	if (err)
+> > > +		return dev_err_probe(dev, err,
+> > > +				     "can't register newdata trig (%d)\n", err);
+> > > +
+> > > +	indio_dev->trig = iio_trigger_get(msa311->new_data_trig);  
+> > 
+> > Drop this.  Your driver now supports other triggers so leave
+> > this decision to userspace (thus avoiding the issue with remove discussed in
+> > v1).
+> >   
+> 
+> Okay, but many other drivers have such the same problem. May be it's
+> better to stay in the consistent state with them? What do you think?
 
-Please send a patch.
+There are special cases:
+- only one trigger supported.
+- originally only one trigger was supported, but that got relaxed later
+  and we need to maintain the default to avoid ABI changes.
+- maybe one or two that slipped through.
+
+We didn't start setting default triggers until fairly recently so lots
+of drivers don't set one.  That doesn't mean we shoudn't fix the
+issue you identified but in this case it's a policy decision so probably
+belongs in userspace anyway.
+
+
+...
+> > > +
+> > > +	/* Resume msa311 logic before any interactions with registers */
+> > > +	err = pm_runtime_resume_and_get(dev);
+> > > +	if (err)
+> > > +		return dev_err_probe(dev, err,
+> > > +				     "failed to resume runtime pm (%d)\n", err);  
+> > 
+> > Given you already report an error message on the failure path in resume,
+> > having one here as well is probably excessive as any other failure case
+> > is very unlikely.
+> >   
+> 
+> This dev_err() message is located here, because
+> pm_runtime_resume_and_get() can contain internal errors which are not
+> dependent on driver logic. So I try to catch such errors in this place.
+
+It's a trade off, but generally we don't spend too much effort printing
+errors for things that aren't reasonably likely to happen. Obviously
+we do return the error though so that we know some debugging is needed
+if it happens!
+
+> 
+> > > +
+> > > +	pm_runtime_set_autosuspend_delay(dev, MSA311_PWR_SLEEP_DELAY_MS);
+> > > +	pm_runtime_use_autosuspend(dev);
+> > > +
+> > > +	err = msa311_chip_init(msa311);
+> > > +	if (err)
+> > > +		return err;
+> > > +
+> > > +	indio_dev->modes = INDIO_DIRECT_MODE; /* setup buffered mode later */
+> > > +	indio_dev->channels = msa311_channels;
+> > > +	indio_dev->num_channels = ARRAY_SIZE(msa311_channels);
+> > > +	indio_dev->name = i2c->name;
+> > > +	indio_dev->info = &msa311_info;
+> > > +
+> > > +	err = devm_iio_triggered_buffer_setup(dev,
+> > > +					      indio_dev,
+> > > +					      iio_pollfunc_store_time,
+> > > +					      msa311_buffer_thread,
+> > > +					      &msa311_buffer_setup_ops);
+> > > +	if (err)
+> > > +		return dev_err_probe(dev, err,
+> > > +				     "cannot setup iio trig buf (%d)\n", err);
+> > > +
+> > > +	if (i2c->irq > 0) {
+> > > +		err = msa311_setup_interrupts(msa311);
+> > > +		if (err)
+> > > +			return err;
+> > > +	}
+> > > +
+> > > +	pm_runtime_mark_last_busy(dev);
+> > > +	pm_runtime_put_autosuspend(dev);
+> > > +
+> > > +	err = devm_add_action_or_reset(dev, msa311_powerdown, msa311);  
+> > 
+> > It's not immediately clear what this devm action corresponds to and hence
+> > why it is at this point in the probe.  Needs a comment.  I think it's
+> > a way of forcing suspend to have definitely occurred?
+> >   
+> 
+> Above devm action is needed to force driver to go to SUSPEND mode during
+> unloading. In other words, the device should be in SUSPEND mode in the two
+> cases:
+> 1) When driver is loaded, but we do not have any data or configuration
+> requests to it (we are solving it using autosuspend feature)
+> 2) When driver is unloaded and device is not used (devm action is used
+> in this case)
+> 
+That's fine, but add a comment to explain 2.
+As a general rule, devm_ actions clearly match against setup path actions
+so when they don't it's useful to provide a little more info.
 
 Jonathan
 
-> 
-> Regards
-> Luca
-> 
-> 
-> > +
-> > +	error = vl53l0x_power_on(data);
-> > +	if (error)
-> > +		return dev_err_probe(&client->dev, error,
-> > +				     "Failed to power on the chip\n");
-> > +
-> > +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
-> > +	if (error)
-> > +		return dev_err_probe(&client->dev, error,
-> > +				     "Failed to install poweroff action\n");
-> > +
-> >  	indio_dev->name = "vl53l0x";
-> >  	indio_dev->info = &vl53l0x_info;
-> >  	indio_dev->channels = vl53l0x_channels;
-> > -- 
-> > 2.36.1  
-> 
 

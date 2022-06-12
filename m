@@ -2,57 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81727547947
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 10:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C99547949
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 10:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231909AbiFLIka (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Jun 2022 04:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
+        id S232001AbiFLIoi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Jun 2022 04:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230218AbiFLIk3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 04:40:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02C11D0DD;
-        Sun, 12 Jun 2022 01:40:27 -0700 (PDT)
+        with ESMTP id S230200AbiFLIoh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 04:44:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D747039179;
+        Sun, 12 Jun 2022 01:44:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 55D2CB80B9D;
-        Sun, 12 Jun 2022 08:40:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15439C34115;
-        Sun, 12 Jun 2022 08:40:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 353AA60BA8;
+        Sun, 12 Jun 2022 08:44:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43799C34115;
+        Sun, 12 Jun 2022 08:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655023224;
-        bh=Y3/zdEYrNIh+3ecvcNshflYk4eVJpP4sH1/urx8J2fQ=;
+        s=k20201202; t=1655023474;
+        bh=Iuf05oYjNVfmVviJ3nzqABfbmmEH9K1yfExt9eMTwpw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TppMPssgr7fu/K/ICQkT7vTN8zfppudtahaIRVSwYEq0oKKm96DUEm5XboeJ+5Iik
-         2Dl8qyLYHlZHfvMt/c8tnqNLxeN6pGjzY0FdadxJ34lthD/ylaavlq+QTLzPdJsJ3n
-         Qmj4y8syqoeSQ2DEjaRv/oVvnr3Dp+vdweRh9cB071i/6zQhgKcrw8LkmkorB2CQh/
-         JMSVelWvb68Xy5Oejl9vFSQeXYXlQ3DoXCJEHaO/0uJNuCRxuRzRlp3QubcCG2sBTJ
-         1n6twc5Oxap7tt1fG/Bwj8iOkRhNbtJr6LCEvh6Z6fUT2vUDTm3NxCY1x4hzcdJPXE
-         8WsRtNr/Fq5/Q==
-Date:   Sun, 12 Jun 2022 09:49:23 +0100
+        b=rS3+hLCYfRFUyaB1xTljZaF2xc0BscWD3kt9vZzqOWo6MNCUf6x8aQAd3aGfwpPvz
+         7d4eexx64qXwik87NVBpnme4dqZcwA843f7r+Py7Z3ilmablhaN6Ec6JRZKUEu0MBf
+         M4FOF3j3QEFydrjOKwDp5lLTbDnRdCiBug+YTq+KKuUJPhYEWckcuvHRzMn3G9yyiy
+         EC9i4m4YpDBEhLRa/kgDjvkjXEIf1KHl8fSnzW2O2gTJi11JyIJF3Wu7ttcf0KKIwh
+         3nNqunAcNiKZQxrRtZJu83Pva096Rf+4/CIpPDi5q3OiUHePMb0v9EpqFQ1+xKDfTw
+         HHKpTVyeSv0hw==
+Date:   Sun, 12 Jun 2022 09:53:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Cercueil <paul@crapouillou.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>
-Subject: Re: [PATCH 2/2] iio: at91-sama5d2: Limit requested watermark value
- to hwfifo size
-Message-ID: <20220612094842.00ffc23b@jic23-huawei>
-In-Reply-To: <EO5ZCR.QO9V0UA1ZW04@crapouillou.net>
-References: <20220117102512.31725-1-paul@crapouillou.net>
-        <20220117102512.31725-2-paul@crapouillou.net>
-        <20220122170447.68f35cfa@jic23-huawei>
-        <20220604160557.1e82077e@jic23-huawei>
-        <EO5ZCR.QO9V0UA1ZW04@crapouillou.net>
+To:     "Luca Weiss" <luca.weiss@fairphone.com>
+Cc:     "Markuss Broks" <markuss.broks@gmail.com>,
+        <linux-kernel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@somainline.org>,
+        "Marijn Suijten" <marijn.suijten@somainline.org>,
+        "AngeloGioacchino Del Regno" 
+        <angelogioacchino.delregno@somainline.org>,
+        "Song Qiang" <songqiang1304521@gmail.com>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 3/5] proximity: vl53l0x: Handle the VDD regulator
+Message-ID: <20220612095333.1479464c@jic23-huawei>
+In-Reply-To: <CKKOCWP2NYO5.GH08U776B1KU@otso>
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
+        <20220523175344.5845-4-markuss.broks@gmail.com>
+        <CKKOCWP2NYO5.GH08U776B1KU@otso>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -63,108 +71,109 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 04 Jun 2022 23:41:02 +0100
-Paul Cercueil <paul@crapouillou.net> wrote:
+On Wed, 08 Jun 2022 12:18:52 +0200
+"Luca Weiss" <luca.weiss@fairphone.com> wrote:
 
-> Hi Jonathan,
->=20
-> Le sam., juin 4 2022 at 16:05:57 +0100, Jonathan Cameron=20
-> <jic23@kernel.org> a =C3=A9crit :
-> > On Sat, 22 Jan 2022 17:04:47 +0000
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> >  =20
-> >>  On Mon, 17 Jan 2022 10:25:12 +0000
-> >>  Paul Cercueil <paul@crapouillou.net> wrote:
-> >>  =20
-> >>  > Instead of returning an error if the watermark value is too high,  =
-=20
-> >> which =20
-> >>  > the core will silently ignore anyway, limit the value to the  =20
-> >> hardware =20
-> >>  > FIFO size; a lower-than-requested value is still better than  =20
-> >> using the =20
-> >>  > default, which is usually 1. =20
-> >>=20
-> >>  There is another potential error condition in this function which=20
-> >> will
-> >>  also be ignored by the core.
-> >>=20
-> >>  As such whilst I agree this is a sensible thing to do in this
-> >>  particular case I think we should also be handling the error in the=20
-> >> core.
-> >>=20
-> >>  I think it would be better to clean that up at the same time
-> >>  as these improvements - particularly as I'd guess you have a=20
-> >> convenient
-> >>  test setup to check the error unwind is correct? =20
-> >=20
-> > Hi Paul,
-> >=20
-> > I was trawling through patchwork and realised this one is stalled.
-> >=20
-> > Thoughts on the above? =20
->=20
-> Totally forgot about this patch.
->=20
-> Aren't you afraid that if we start handling these errors in the core,=20
-> we'll somehow break the ABI?
->=20
-Been a while, but I think my concern was more that there are other
-error conditions in these calls.  Whilst we can indeed clamp the
-watermark, the other conditions should probably be handled in the core.
+> Hi Markuss,
+> 
+> On Mon May 23, 2022 at 7:53 PM CEST, Markuss Broks wrote:
+> > Handle the regulator supplying the VDD pin of VL53L0X.
+> >
+> > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> > ---
+> >  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+> >  1 file changed, 37 insertions(+)
+> >
+> > diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> > index 12a3e2eff464..8581a873919f 100644
+> > --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> > +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> > @@ -43,6 +43,7 @@
+> >  struct vl53l0x_data {
+> >  	struct i2c_client *client;
+> >  	struct completion completion;
+> > +	struct regulator *vdd_supply;
+> >  };
+> >  
+> >  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> > @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
+> >  	.read_raw = vl53l0x_read_raw,
+> >  };
+> >  
+> > +static void vl53l0x_power_off(void *_data)
+> > +{
+> > +	struct vl53l0x_data *data = _data;
+> > +
+> > +	regulator_disable(data->vdd_supply);
+> > +}
+> > +
+> > +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = regulator_enable(data->vdd_supply);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	usleep_range(3200, 5000);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int vl53l0x_probe(struct i2c_client *client)
+> >  {
+> >  	struct vl53l0x_data *data;
+> >  	struct iio_dev *indio_dev;
+> > +	int error;
+> >  
+> >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> >  	if (!indio_dev)
+> > @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+> >  				     I2C_FUNC_SMBUS_BYTE_DATA))
+> >  		return -EOPNOTSUPP;
+> >  
+> > +	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
+> > +	if (IS_ERR(data->vdd_supply))
+> > +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> > +				     "Unable to get VDD regulator\n");  
+> 
+> It looks like this optional regulator is not actually optional.
+> 
+> [    1.919995] vl53l0x-i2c 1-0029: error -ENODEV: Unable to get VDD regulator
+> 
+> When using devm_regulator_get instead, a dummy regulator gets returned
+> which I think is what we want here:
+> 
+> [    1.905518] vl53l0x-i2c 1-0029: supply vdd not found, using dummy regulator
+> 
+> Can you fix this up or should I send a patch?
 
-I guess that doesn't mean i shouldn't take these in the meantime, just
-that there is more work to do here and I was sneakily trying to make
-it your problem *evil laugh*
+Hi Luca,
 
-As such, applied these two to, but if anyone has time to take a look
-at handling the error returns in the core that would be great.
-
-Applied to the togreg branch of iio.git and I'll push out as testing
-later (on train with dodgy wifi) for 0-day to take a look.
-
-Thanks,
+Please send a patch.
 
 Jonathan
 
-> -Paul
->=20
-> > Thanks,
-> >=20
-> > Jonathan
-> >  =20
-> >>=20
-> >>  Thanks,
-> >>=20
-> >>  Jonathan
-> >>  =20
-> >>  >
-> >>  > Cc: Eugen Hristev <eugen.hristev@microchip.com>
-> >>  > Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-> >>  > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> >>  > Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-> >>  > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> >>  > ---
-> >>  >  drivers/iio/adc/at91-sama5d2_adc.c | 2 +-
-> >>  >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>  >
-> >>  > diff --git a/drivers/iio/adc/at91-sama5d2_adc.c  =20
-> >> b/drivers/iio/adc/at91-sama5d2_adc.c =20
-> >>  > index 854b1f81d807..5cc84f4a17bb 100644
-> >>  > --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> >>  > +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> >>  > @@ -1752,7 +1752,7 @@ static int at91_adc_set_watermark(struct  =20
-> >> iio_dev *indio_dev, unsigned int val) =20
-> >>  >  	int ret;
-> >>  >
-> >>  >  	if (val > AT91_HWFIFO_MAX_SIZE)
-> >>  > -		return -EINVAL;
-> >>  > +		val =3D AT91_HWFIFO_MAX_SIZE;
-> >>  >
-> >>  >  	if (!st->selected_trig->hw_trig) {
-> >>  >  		dev_dbg(&indio_dev->dev, "we need hw trigger for DMA\n"); =20
-> >>  =20
-> >  =20
->=20
->=20
+> 
+> Regards
+> Luca
+> 
+> 
+> > +
+> > +	error = vl53l0x_power_on(data);
+> > +	if (error)
+> > +		return dev_err_probe(&client->dev, error,
+> > +				     "Failed to power on the chip\n");
+> > +
+> > +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
+> > +	if (error)
+> > +		return dev_err_probe(&client->dev, error,
+> > +				     "Failed to install poweroff action\n");
+> > +
+> >  	indio_dev->name = "vl53l0x";
+> >  	indio_dev->info = &vl53l0x_info;
+> >  	indio_dev->channels = vl53l0x_channels;
+> > -- 
+> > 2.36.1  
+> 
 

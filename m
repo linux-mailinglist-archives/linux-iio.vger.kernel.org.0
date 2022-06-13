@@ -2,117 +2,211 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 161B4549C65
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 20:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E3A549CBF
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 21:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243936AbiFMS56 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jun 2022 14:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
+        id S1346266AbiFMTET (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jun 2022 15:04:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344939AbiFMS52 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 14:57:28 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE182A43B
-        for <linux-iio@vger.kernel.org>; Mon, 13 Jun 2022 09:04:47 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id w17so233040wrg.7
-        for <linux-iio@vger.kernel.org>; Mon, 13 Jun 2022 09:04:47 -0700 (PDT)
+        with ESMTP id S1346091AbiFMTDK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 15:03:10 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927A02E9D8;
+        Mon, 13 Jun 2022 09:44:47 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id g7so7987645eda.3;
+        Mon, 13 Jun 2022 09:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=AXautoqWPbDGQ8jIW32Yr94ZX6pp2sRp2xY2VCYt9IQ=;
-        b=Y3Zaso87YlfTlu4ajq7LPn7acVP6OEqktDetC90IXLCFuqbxDLk/ScLjQ06HUaagv5
-         54S3UZWC99l+Oove5asnkJ0zAiiVjL/71E2YiANfvFRdMsbEPRHEahP0ZrKsuS5tui2o
-         hSYFIcmjJ6p6S+vTMGHMFi2ftGzpsmVFs70EA6Ay0LaLqWnBI330dyxWgV7GViTyDae6
-         8qD9ZQMMh4yjquXLbWCzhWjK0ZPtRHQDcvpco8v4JAmSNwTS23MPV4wi6gKF4pw3mGZV
-         zeltwKrUGX9pGV5cACkHc96u/m7hVCml7LrbbfNnrmQKW/r5mms1S4N/nBGDKFXMczFM
-         1ypw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=eGdfXfwfV78gnjcf5UQqAMy9o19LId4Sm/qy2tCjefs=;
+        b=gsPB1T8UwmLJ1VZ61mRDNQvLBYrwjhjBqt/329BAIA+3SWHdyZWq5P/srAA8mQz2Vg
+         X4SH0kJTHXqlUv4UfZXuA+pPanPwPwqsFxEYsoMy7nsTwoIRHMMrF10tZOmWrS4I8COp
+         T4kJWRqrqX/dZXSg4lRzX8AWr9U7kmdfdEKzUboA62O9M9+GnPu8XWQIPOV8C0rjW9U/
+         PWbTD1kgEcV5StqWbzVRUbaaDZp3zN1/hdNJrmv6o8JhYAoK8F6Fr+fCvUB+xL9X+gsu
+         B4fgGZ0ru7YLIs/i4HhVtBoMPyGEt43GMTiu2gYKp/IbCJcVuP3zrAjjrGZDgcyOeET9
+         xuBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=AXautoqWPbDGQ8jIW32Yr94ZX6pp2sRp2xY2VCYt9IQ=;
-        b=c7DhZIJRxWPKn7442QP9gf3oH5brPAv+lFEzNlnSlgfaQHe/otY/qqYCA2OdlL/3uP
-         jtkDG8RQhvdHPwRlVCjgqVGZHoTl/+GQGg8qtwV/BOyUsdxtG6WQo/ppc+hnQ+Ti7feO
-         q26PYIf2kHthnfeFLtRxwT2anoRBNF2S9kzIcBiVeMctGLwG1Iw8se1uTWTrIudt9PgN
-         gbUOOyY6RdJWfl6IZXVZjYhHi7Op0vm8bC21b6VZYTj+7KOZeG0JxLtKZkTfQAwmOUjB
-         fIFUuFY2/T83TnPiG8plmVxs7uvYM7Q8CFH6t65FukXtPUpAh950YzuyQ3HRmZ05MwVp
-         hVhw==
-X-Gm-Message-State: AJIora/sYOFEvr5VP4ynm2ySjljps3GWbP9FFDL8l+u4/IbgdMUGyR22
-        LHSqIO0peQDb5K6o5EftJ1Wf8hH3uQKRoS3uJr8=
-X-Google-Smtp-Source: AGRyM1ulfKHQ+oVC9xkJkpKGWNyo4mLoeS6sR4zeHou9luaombOz1cu7xil1EWh1T/1ovPEz8A8ywdSGjBZhhcbAByw=
-X-Received: by 2002:a5d:5142:0:b0:212:af29:530 with SMTP id
- u2-20020a5d5142000000b00212af290530mr550700wrt.444.1655136285655; Mon, 13 Jun
- 2022 09:04:45 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=eGdfXfwfV78gnjcf5UQqAMy9o19LId4Sm/qy2tCjefs=;
+        b=txPegyLmNPjX+yJo9QY1Spml6GdMmbSJyawVzUIkad7c99yWGzO9RUUB6z3guM+m3G
+         hrpy6nFcwhrT6J/JAvEtNhxPcn5+LJ6QpjqpwwUZhl6FR9Yk1NJWFC4bsILh5wIlm/6l
+         CrpCvW7TmXAdIJIW94lnlQz5nOAjE33R/1ibWi7U+FJj3pR/Cxm1mZjidTBtHjJAegsm
+         LAQKVPl8xd2P5CaEL3ANsyzQ2hHmNHrTo+XYVJ1jFJxMd77JvbeXyY+nN7EDhBrVQjAk
+         Ym7eiW1ILwj2ivUeOBaZSMfMtfe0nbu6ikrljiJCcOvmKsTEPjkKdj1AZRIVQkynlmVM
+         lCGA==
+X-Gm-Message-State: AOAM532Nnwp8E2qt/4tjGLxkyD7Xz1G7ae2Vk4N1nDwJwHlwGXpWamHb
+        xCDT6MTjndkrG0piWsJe7PyP7mWljDGlZ9oG/sY=
+X-Google-Smtp-Source: ABdhPJwG44xMdsA8yWvhv1Mlf7JhAM8ZMHZetdju+DGsqfsYqwGExdR6mkw15zu1TDUYOimhqvxQGFQqzsWwdcDfrV0=
+X-Received: by 2002:aa7:d481:0:b0:42d:d5fd:f963 with SMTP id
+ b1-20020aa7d481000000b0042dd5fdf963mr664238edr.209.1655138685998; Mon, 13 Jun
+ 2022 09:44:45 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a5d:5942:0:0:0:0:0 with HTTP; Mon, 13 Jun 2022 09:04:43
- -0700 (PDT)
-From:   nnani nawafo <nnadinawafo11@gmail.com>
-Date:   Mon, 13 Jun 2022 16:04:43 +0000
-Message-ID: <CAPhDfr06DxSLgxXXHS5_LbtZcjPKPRWbb-zuMQSD+7AaRMBW+g@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <20220613120534.36991-1-andrea.merello@iit.it> <20220613120534.36991-9-andrea.merello@iit.it>
+In-Reply-To: <20220613120534.36991-9-andrea.merello@iit.it>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 13 Jun 2022 18:44:09 +0200
+Message-ID: <CAHp75Vdh8kAH6540xCwzFh5uf=QMVTHC42a8pOgvkpObzjfD+w@mail.gmail.com>
+Subject: Re: [v6 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
+To:     Andrea Merello <andrea.merello@iit.it>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        jmondi <jacopo@jmondi.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Gratulujem!
+On Mon, Jun 13, 2022 at 2:05 PM <andrea.merello@iit.it> wrote:
+>
+> From: Andrea Merello <andrea.merello@iit.it>
+>
+> Add the core driver for the BNO055 IMU from Bosch. This IMU can be
+> connected via both serial and I2C busses; separate patches will add support
+> for them.
+>
+> The driver supports "AMG" (Accelerometer, Magnetometer, Gyroscope) mode,
+> that provides raw data from the said internal sensors, and a couple of
+> "fusion" modes (i.e. the IMU also does calculations in order to provide
+> euler angles, quaternions, linear acceleration and gravity measurements).
+>
+> In fusion modes the AMG data is still available (with some calibration
+> refinements done by the IMU), but certain settings such as low pass filters
+> cut-off frequency and sensors' ranges are fixed, while in AMG mode they can
+> be customized; this is why AMG mode can still be interesting.
 
-Organiz=C3=A1cia Spojen=C3=BDch n=C3=A1rodov dospela k z=C3=A1veru, =C5=BEe=
- schv=C3=A1li vyplatenie
-kompenza=C4=8Dn=C3=A9ho fondu vo v=C3=BD=C5=A1ke =C5=A1iestich mili=C3=B3no=
-v americk=C3=BDch dol=C3=A1rov (6
-000 000,00 USD) =C5=A1=C5=A5astn=C3=BDm pr=C3=ADjemcom na celom svete prost=
-redn=C3=ADctvom
-pomoci novozvolen=C3=A9ho prezidenta v d=C3=B4sledku ochorenia COVID-19
-(koronav=C3=ADrus), ktor=C3=BD sp=C3=B4sobil ekonomick=C3=BD kolaps v roku =
-r=C3=B4znych
-krajin=C3=A1ch a glob=C3=A1lne ohrozenie to=C4=BEk=C3=BDch =C5=BEivotov.
+...
 
- Organiz=C3=A1cia Spojen=C3=BDch n=C3=A1rodov poverila =C5=A1vaj=C4=8Diarsk=
-u svetov=C3=BA banku, aby
-v spolupr=C3=A1ci s bankou IBE v Spojenom kr=C3=A1=C4=BEovstve uvo=C4=BEnil=
-a platby z
-kompenza=C4=8Dn=C3=A9ho fondu.
+> +config BOSCH_BNO055_IIO
 
-Platba bude vystaven=C3=A1 na bankomatov=C3=BA v=C3=ADzov=C3=BA kartu a odo=
-slan=C3=A1 =C5=A1=C5=A5astn=C3=A9mu
-pr=C3=ADjemcovi, ktor=C3=BD o =C5=88u po=C5=BEiada prostredn=C3=ADctvom ban=
-ky IBE v Spojenom
-kr=C3=A1=C4=BEovstve prostredn=C3=ADctvom diplomatickej kuri=C3=A9rskej spo=
-lo=C4=8Dnosti v
-bl=C3=ADzkosti prij=C3=ADmaj=C3=BAcej krajiny.
+Does it need _IIO suffix? Any name collision?
 
-Toto s=C3=BA inform=C3=A1cie, ktor=C3=A9 vedenie Spojen=C3=A9ho kr=C3=A1=C4=
-=BEovstva vy=C5=BEaduje na
-doru=C4=8Denie platby z kompenza=C4=8Dn=C3=A9ho fondu do prij=C3=ADmacej kr=
-ajiny.
+...
 
-1. Va=C5=A1e meno:
-2. Adresa bydliska:
-3. Mesto:
-4. Krajina:
-5. Povolanie:
-6. Sex:
-7. Rodinn=C3=BD stav:
-8. Vek:
-9. Pas / ob=C4=8Diansky preukaz / vodi=C4=8Dsk=C3=BD preukaz
-10. Telef=C3=B3nne =C4=8D=C3=ADslo:
-Kontaktujte n=C3=A1=C5=A1ho e-mailov=C3=A9ho z=C3=A1stupcu:
-n=C3=A1zov solomo brandy
+> +static int bno055_acc_lpf_vals[] = {
+> +       7, 810000, 15, 630000, 31, 250000, 62, 500000,
+> +       125, 0, 250, 0, 500, 0, 1000, 0
 
-EMIL ADDRESS (solomonbrandyfiveone@gmail.com) pre va=C5=A1u platbu bez ome=
-=C5=A1kania,
++ Comma?
 
-S pozdravom
-Pani Mary J Robertsonov=C3=A1.
+> +};
+
+...
+
+> +                                /* G:   2,    4,    8,    16 */
+
+Indentation of this comment is a bit off.
+
+> +static int bno055_acc_range_vals[] = {1962, 3924, 7848, 15696};
+
+Perhaps split this to 4 lines and put the comment on top of the third line?
+
+...
+
+> +static int bno055_gyr_scale_vals[] = {
+> +       125, 1877467, 250, 1877467, 500, 1877467,
+> +       1000, 1877467, 2000, 1877467
+
++ Comma?
+
+> +};
+
+...
+
+> +#ifdef CONFIG_DEBUG_FS
+> +       struct dentry *debugfs;
+> +#endif
+
+...
+
+> +                       /*
+> +                        * IMU reports sensor offests; IIO wants correction
+
+offsets
+
+> +                        * offsets, thus we need the 'minus' here.
+> +                        */
+
+...
+
+> +       if (kstrtobool(buf, &en))
+> +               return -EINVAL;
+
+Why shadow an actual error code(s)?
+
+...
+
+> +       ret = kstrtoul(buf, 10, &val);
+> +       if (ret)
+> +               return ret;
+
+Here it's done properly (see just above).
+
+...
+
+> +static void bno055_debugfs_init(struct iio_dev *iio_dev)
+> +{
+> +       struct bno055_priv *priv = iio_priv(iio_dev);
+> +
+> +       priv->debugfs = debugfs_create_file("firmware_version", 0400,
+> +                                           iio_get_debugfs_dentry(iio_dev),
+> +                                           priv, &bno055_fw_version_ops);
+
+> +       devm_add_action_or_reset(priv->dev, bno055_debugfs_remove, priv->debugfs);
+
+Shouldn't we report the potential error here? It's not directly
+related to debugfs, but something which is not directly related.
+
+> +}
+
+...
+
+> +static IIO_DEVICE_ATTR(fusion_enable, 0644,
+> +                      bno055_fusion_enable_show,
+> +                      bno055_fusion_enable_store, 0);
+
+IIO_DEVICE_ATTR_RW()
+
+> +static IIO_DEVICE_ATTR(in_magn_calibration_fast_enable, 0644,
+> +                      bno055_fmc_enable_show,
+> +                      bno055_fmc_enable_store, 0);
+> +
+> +static IIO_DEVICE_ATTR(in_accel_range_raw, 0644,
+> +                      bno055_in_accel_range_show,
+> +                      bno055_in_accel_range_store, 0);
+
+Ditto for above.
+
+...
+
+> +       /*
+> +        * All chans are made up 1 16-bit sample, except for quaternion that is
+
+channels
+
+> +        * made up 4 16-bit values.
+> +        * For us the quaternion CH is just like 4 regular CHs.
+> +        * If our read starts past the quaternion make sure to adjust the
+> +        * starting offset; if the quaternion is contained in our scan then make
+> +        * sure to adjust the read len.
+> +        */
+
+-- 
+With Best Regards,
+Andy Shevchenko

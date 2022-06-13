@@ -2,37 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD4454A03C
+	by mail.lfdr.de (Postfix) with ESMTP id 3484154A038
 	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 22:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348470AbiFMUyc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jun 2022 16:54:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
+        id S1347036AbiFMUyb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jun 2022 16:54:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241971AbiFMUxF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 16:53:05 -0400
+        with ESMTP id S1351157AbiFMUxX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 16:53:23 -0400
 Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C11AE9C;
-        Mon, 13 Jun 2022 13:14:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E17810FD7;
+        Mon, 13 Jun 2022 13:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
         :In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
         Sender:Reply-To:Content-ID:Content-Description;
-        bh=CF9UJrdeWimgjo6b+3sLXnRZ+YKpG34Hd87mZaFsWOQ=; b=c7khjL9wMhgkexLmyAP5JznkUn
-        VxdBdmEKdzpLyXSV9VSwQobUMXr98PHFoytDWiQ3HIhBlu694lInFw+iOU7AnJf/nW+gz5S9kJ11G
-        SCoCRG5b1TjhHYBX4qaK92eN62Kt76eunJAA/aEgAf11AkTBq1iM/rhvPErEdPacMTQVFH70dhvb4
-        vlrHgpxrZYLBjXB9VHFcUeLsq640SfT4uzfotwf+a9hfdMe0MvLN0qnEEzsqT9SLr/PpswCycaTIA
-        r/Ujr7d4yuDkHzfFA9xKaomERUPE1mbxc9qUI9TWS/YLPX3BX+X3TDWnUnQ4BbxeUICwJXWQ9RVC2
-        fe3jX5OQ==;
+        bh=b8nNT/xprutxuiBevYoYuq5d2FkteRl+uXtHRkddO1w=; b=Yww0fYQTyEmxuLew3Ionpx8OMF
+        +g7pCz3zRQQ2OjT74EOB/aK/dKBfXJ737MYvDCWwla+U3+2mtAsnmAiqEJ+m8MN+Y8xvD/dr8Kk7+
+        CTHDzxZHuUbX84iCMrvOenFQ90E0I7QbBDBpbpRcv9DHuB1PBMnj3fkLJuLOL7pAOAjKHnv/fZxcZ
+        qBUgYfDwZbaAcDkLi/88MIc3QnzcG8sfkbK8gFuVv69yiLOeqZvVFHbgOvfC464+3bKiyAnRQs1T7
+        zAg+DPfZjGpXLgfVKZtkDdrn2AUTr2iAOHaX3ptXEXn0pcM/4bla3HnDKKuUovF0Gd78dX+qMf6AS
+        p+bpoqHg==;
 Received: from [2601:1c0:6280:3f0::aa0b]
         by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1o0qS4-007f8t-8C; Mon, 13 Jun 2022 20:14:23 +0000
-Message-ID: <4aef2e48-9717-1aca-b716-5f9486bf320e@infradead.org>
-Date:   Mon, 13 Jun 2022 13:14:11 -0700
+        id 1o0qTP-007fBI-DS; Mon, 13 Jun 2022 20:15:44 +0000
+Message-ID: <31b588e9-2233-3b40-e452-83f0f6bfb744@infradead.org>
+Date:   Mon, 13 Jun 2022 13:15:36 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [PATCH v2 08/15] mfd: mt6370: Add Mediatek MT6370 support
+Subject: Re: [PATCH v2 10/15] regulator: mt6370: Add mt6370 DisplayBias and
+ VibLDO support
 Content-Language: en-US
 To:     ChiaEn Wu <peterwu.pub@gmail.com>, jic23@kernel.org,
         lars@metafoo.de, matthias.bgg@gmail.com, lee.jones@linaro.org,
@@ -45,9 +46,9 @@ Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
         szunichen@gmail.com, ChiYuan Huang <cy_huang@richtek.com>
 References: <20220613111146.25221-1-peterwu.pub@gmail.com>
- <20220613111146.25221-9-peterwu.pub@gmail.com>
+ <20220613111146.25221-11-peterwu.pub@gmail.com>
 From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20220613111146.25221-9-peterwu.pub@gmail.com>
+In-Reply-To: <20220613111146.25221-11-peterwu.pub@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -63,35 +64,27 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 On 6/13/22 04:11, ChiaEn Wu wrote:
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 3b59456f5545..d9a7524a3e0e 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -937,6 +937,19 @@ config MFD_MT6360
->  	  PMIC part includes 2-channel BUCKs and 2-channel LDOs
->  	  LDO part includes 4-channel LDOs
+> diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+> index cbe0f96ca342..dcb6866dab53 100644
+> --- a/drivers/regulator/Kconfig
+> +++ b/drivers/regulator/Kconfig
+> @@ -804,6 +804,14 @@ config REGULATOR_MT6360
+>  	  2-channel buck with Thermal Shutdown and Overload Protection
+>  	  6-channel High PSRR and Low Dropout LDO.
 >  
-> +config MFD_MT6370
-> +	tristate "Mediatek MT6370 SubPMIC"
-> +	select MFD_CORE
-> +	select REGMAP_I2C
-> +	select REGMAP_IRQ
-> +	depends on I2C
+> +config REGULATOR_MT6370
+> +	tristate "MT6370 SubPMIC Regulator"
+> +	depends on MFD_MT6370
 > +	help
-> +	  Say Y here to enable MT6370 SubPMIC functional support.
-> +	  It integrate single cell battery charger with adc monitoring, RGB
+> +	  Say Y here to enable MT6370 regulator support.
+> +	  This driver support the control for DisplayBias voltages and one
 
-	     integrates                                 ADC  (?)
+	              supports
 
-> +	  LEDs, dual channel flashlight, WLED backlight driver, display bias
-> +	  voltage supply, one general purpose LDO, and cc logic
+> +	  general purpose LDO which commonly used to drive the vibrator.
 
-	                                               CC   (?)
-What is CC?
+	                      which is commonly used to drive the vibrator.
 
-> +	  controller with USBPD commmunication capable.
-
-	                                       capability.
 
 -- 
 ~Randy

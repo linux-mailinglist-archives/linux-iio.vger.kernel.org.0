@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB463547D56
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 03:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1862547D47
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 03:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234215AbiFMBRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 12 Jun 2022 21:17:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
+        id S234247AbiFMBRr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Jun 2022 21:17:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235547AbiFMBRj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 21:17:39 -0400
-Received: from sonic309-26.consmr.mail.ir2.yahoo.com (sonic309-26.consmr.mail.ir2.yahoo.com [77.238.179.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4851E2F646
-        for <linux-iio@vger.kernel.org>; Sun, 12 Jun 2022 18:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1655083056; bh=Oy+2Rh6qp6A6u+U0hZbSnk/Susg0ogMovS55aFUE2Rs=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=EoWteCLvGGRZsLEnwoS0mx0BcPzaT/wmHtNIWoVQ4W8+ECPHr7yABkwVtiiuLvR9h+ndqPhLJgzCkIlK3xZNGFW77wpX1tl60nYwRMowt02DwjEEcwT0E27m36rr1bk1ySkBVvT+PY8lgyFPuA3oGkfpz2BZhwqEk6LAIUhhtZP4islgsTjqkYDYMXl9QQrgS/pWKVnr7NSwkXRE2/uChhCRihUh08CYWtlPagnAREtW4TNVU7x+Nfkw+CLWa9Mli/OekqQBLy7VAi1e5zMoBHze0eyxJPb4cPVGEykfiLKU6Nk7fts1EXGJk+IJU/gqkTdpHeiNmddPh/IO/eting==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655083056; bh=e3yXvsqIFqA91T/9a2ztqe65MxsVQyq2ISwDk9ZE6QQ=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=M4ppwguxCXqT7mNPciqh7qWRrvjxcAKcpn0XuwriMwg4MpXqd8+jeQb8Ru9oa09acMhtLu/AFwc5shgRADQz1nJ1acCyuqcoO3hYqg9QmWoD/VGXeIKbFQoMsQ8ezFCBe27ed+d/uuTq5XK3TqCExv/Lzg8cG19Ccpb51hHBwcNED1sg13L5GUZ0a1hwfmSakCIxa1fwpghQaLgnv/80/ytXNXOhmZzIhni9Y/0FflJZ0zgkdozv09PCadRs6Ah8+SafQj3J019sV7pOzxSUKOjD3QY+zG28aPPOFt3gOeALySI9tvVEQpFXS6tQndDG7B+P4QAIWY49KqQ7S8Du3A==
-X-YMail-OSG: yJG04jwVM1lPlt5Ry19ml1uQMuEr.rDjY0nk_JYoXgSGY_eJnZlxfaAFrUSKUOz
- 5si49AjEJp7biDjqY_ISwY6J6Z9M5e__xFbLEs6XxRmdQhDNLBsFg28KwmLsBBhoUffwYfGLXnkk
- C0RKe5F9WLDZzbxmRtwG0jyDsY94g23CouN4vMiIxHymimw5UqUDoxdFAUO2zSiqteAYDlDXL2Ut
- yEylStM67YjaFktJuyiA0WlvhiBP5qkoWP_3Yh0eQhnH8FquxiUoC6R6J8XPjivE8TXWQAMCdLRP
- Y2YZ0.c_eehxbu8GHtKz2_HWwyWY1zIxWZ8hhBaoYpICv4mt2TjODQAC32wf6eLKlGyj1.fNBFBK
- 4f6Wp7nlhD9pRa5zU4dyYploJWVNtHsArY5ROgIcEpJowkeLBNFUuDe4owucE0j.NjNfNxmwdpLu
- lupnFvT6snpjJT5EQpLWgHnlqb.t02WitPpbdPz2_CEeUpGo.z6W5vKHrywv14YcKGwSI5jMPuye
- .wz8bEQCKjHBRMshZoMe.X1erlG6Yrny0twv3cyxGrPZQ.poFKSTOKiP1kz8Gt4tZvQfD.6dxoYu
- Q.aFBR3o8PTtSg_X2MmoO7962aJGr7MspxGxyK9ahXk0A5SQdr_.armp6EMcSnUr3Vh38e1C.Ekc
- fXOBYZjqeWiN8IE7HyHqEfjaGv0KO4GfKjZKBaSQJqvmIXnG8pM1_G4r4P8RRgmtEm0dve11M86O
- Un6PPPp4nXJQdedNwFQlaxvU2T8PKaKyfHyf22N8WpAma8jbsiX86ioUKf5Pi6Jw1UgNKBLbcqp8
- t0RtUu9tVnsb3e2VxSqRIO3LTvi_ud_5ky4Xoor0F5iOAAkVvWZX__X.AljpS4iDcTzMxcFatakh
- _mgIsitDMm_.kq8vkZwPqGvrE3slzqY7HB5AzUQgOltMJbRVSyyZGW460isyijLui.7TSbACnpLF
- Vdw9a_iJEHhaveZygxdjF4UbrIHaA28htqjUolZAjMj00kktrb6WKoMffVwAw75y9k9CSZdttRPk
- p7XnsG_j2Mm2eCflcYs2sib7KfmUM8MIXg3KfwNN_6dk5_gvacVroY6oT9OT3t6FfaiLQeVrGFFH
- f64s3mafH9lv_MGogdwx6lgdD0OJuWEW9YCcDQkb0hHvFkQQnqodfe66UOWmeCcz8aJZu47G1XbP
- RYHZ4jxIIhRGKrisQmb3r2QwveUrrhGLKbPwTmzwVpFTCKBwpBZDjtvOgxO.EYwMADDj5fs1wIMq
- u9eCUTCS3j5JuK81n2erjZrESHAR4rOHxoH.kGplXvx4UVj47PGC6_8.r85wA1RcyRjHAw9QMNsd
- 6eLx6KHLTo0JvPKmWhTDv23oChuD3QG3bnd1Mn3AFumcN.Un0GH.Se74Zh9kcwcOblLU5Kdy39sp
- V..dkpjk5bGo_WKNOJ8SfXkZwG90Hko1rAfhYowgOxoQ1h62u8doQjvZEPxyfJXonKi673HQ9Rlx
- 8V4LWx83hK6vSlZavm32HgBehTAWPKNN.JonTQJbKbhH3pVzfojv0SvBDnU4Al3JdpD_Xs5GAzAN
- zzjaJ3Idqmi3wKH.2FmozYFWfbpcya5skZttTMS6mu2pJrsH40T3so8ifEye6_E5KZGKNO_Ng7kh
- 6n860wTU9y9T9AR2joUJqHaqqgzZ3bb0y3LssH94LT.l7i74mLVb91AsiulJE19IRjDhPUCQ5wdz
- V5Js7HuH5hwWu0J3EtPif8krE0dYySat_XP8u1dB474RPT71f.CzpuH9tS2yFxdMlhUXvbuaWoi7
- WIkUjwNlauLJv52NOo.CzjtcJfVOEvnTZWEH93AmJ.V9d2C2nUhT_OkQyoVQYwBzNcYVMI3PFCMF
- _GQ3FtHpnuxemH0a65rMHAjJZDJauwVcw.HSqFmchFF0YGiCJVWPFG7bdOaE8omzRxHmt39T1dMA
- ._JPG9EcoIbTfWuEgqBK6z7caTa1Z7cHaWqxCJlj9sOdvRxz5joIvaIIPtjBUaNym694DEKAO0kL
- vWXANnAlEATn0KnZ62q7a7Jc5i5OIeRm.iTIr8_tgP.7WVeRwAt5W4jApFG2NNCjflAmAs0b3ZJ1
- cDJnrV_A1vuUUAJaB0RUsRsTkhlZBmIwnQRswgfcl1B8NJL9DA_FMcRef2nVqIj4ukOBYbA0n5fG
- Poi3Bv4ljtwfySI1yGvei5axSu_9YZ7KavNweHPUgdGpJ.Gs81mQiNA9oJRg9sXPWwoMf2eNT6gs
- ILzgcgZwX.DmQ1emv_8gO8QSc8lkNuD0gl5fl5eS7jNgfwquf7tZxyGOmgCi3J38rJVwl7AhoSWd
- ZZafApYHC7Q--
+        with ESMTP id S235972AbiFMBRq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 21:17:46 -0400
+Received: from sonic310-12.consmr.mail.ir2.yahoo.com (sonic310-12.consmr.mail.ir2.yahoo.com [77.238.177.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 866C92FFE5
+        for <linux-iio@vger.kernel.org>; Sun, 12 Jun 2022 18:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1655083063; bh=3HqEe7mLC0Oar+1I9oaYhBQWHlwZ68u3/FFRkU44PfY=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=SgMcrHpYjuqCgF0xYoPyp8PBFTOAedS1G4+cSXFOciTSI/99YvyLz33aDY/m3Xt7f3LfaU05BpQd+4X0RSof5HRfOda1B8CAlY+e1MtOhuanFvTchwPMaPUp35H+9ESPwgxefxAcDpvvYgUEHnppRmZbb+0uqolBuwwEyvvYmbvBI+edcxKZYIp7IZS1sN0Kf+WIG4hHA/9Wz8ZavuN+2mXrQSANnh05RQgYBDHPmLT6Ux/cy6fS4+uuzVeuypGiyQHvfaYAunyUFt9oQx956c2q5ziGimzOE9d3dsotTe6layN1nse6iwFl76r636QtNq9ngToedQaoCGN8YwpC0Q==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655083063; bh=wHVpexSUiBsklAMgiKQlRUDfZmMh7KevurCX6tN7JFT=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=BNjNPk9rQyosJrYhgST9bQMCpOP0TH6FsCXBYeUg5yVJCpmxGbHFaupNgumKXs9axYEboHw9kkNp+Elr9OeVAgsBuDy8IQ8II3F80nCMxIYs61yzX+O3xlehZjQwEsu6jextPQvt3XSQmII9fSmtzqyxINkF7ayVHyREB/V040SBixP7xruaJVqyJyizDmA0d6QnmvuMFIBG1iE+t/+HTh9feAfiOdSMxk1p5fEdCbX9HV2I0RHRW7M45FQI537oE8WhgnC5Ire1dLReLUIi4SLb3Cvf5vG9p24GLqLFyYoGRVb4M4FgFQ1XNjDyfD/InJ70Y2EWAizkz5h2DCXe4g==
+X-YMail-OSG: Ku_QcNEVM1m1ZM1jrlelZ8unGNz3gm5MgczgjhrrOrvqPE1TLrGR7Bx9HOuiLWh
+ 08JY8FzkUPTDT18JgmOOeensWyb4G7jeWeuNSg.vaBQ_QTjVpSTCq4rkPB1.uLQdi42njMtCMtpp
+ HBlW8POtxGYANEK1kztSBuDNZvihEnEYgqMrm96hl41svr_NXfizirkOokdIpp1iGGaej8jZouA_
+ tCHDKRWRTWFnjKmTEbWqZQ2rGbBoZjp3r5nb38CsJDitY0r9IWl.B6fSByNopKHgYfrb7s8M4.LC
+ CqCTk_D.AHToGhbtdMc92Z3yLnlboJe.Yoenl16JzyO_51fDStr5h5AFpeKoveCa_mXtNPJ014yd
+ FTbeOIqjxo_nxYiK9KUuqSJ_CD1WoiPM8oifsqfXDFO6Z4hkPskyCdr2xKt0Tmbdhlb1Pf3ejlLK
+ 2Y.daj0Cf5pXaeQc0OapGubrv69JanMB2N6nmIFy0j4O.G6pVP6gqQ4TxqVgeilbZN3WKp6rGBvo
+ RYt14hrSx6u990E5KaB_peLFT2j_3jFlK0ktbBSyFH_mPEk8YzKFrppZOdao62pPqfp.0ElIjmEk
+ Ofx0YU28etJ.banPuvar69w7UYSKvlA.MQQlkp329e4jsGLNoi.SLrPzGcXZ763qGT.Gaxf8esQ4
+ XyUMWCveOkenn9RnpkvBGGJfIFK1J6CMD51Bx.8MeIEWXkuYSkLc_3VJmwCDnjs2t37pFl1CfQgV
+ lHRiQ5AIHM_BoNQH6JFnOAOqhXh1sefY545HRQz59xBsXKTMHED5vuT9zHa9CgxrYLOnN7oVpQT9
+ mkfV_LA8h3pZ0CF9qm01i633IQsGfTsWRnMiOh4U7KWZlGHIbb4pOSRdLN1qt5muI5wqi1pq9Q4A
+ dWJYcTe95gEBwgb0VcLCpCTnrgWK5flEcNOTHzKs2lr91SPRRHCg9oXs0Pe7xQhm9w6vy4zeRnnM
+ c2K.Jvz9Ga8P9O9MJygN4DSkOhWjnPGFMC3g.ZEvWgQT4F2e3JYc9gvniDtGhLIx6uacCs8g00pG
+ DA_riDqp8L6RJU_9JE1DfNCniGjZnvG.ynKFVxDcxXBEyXfIKvE7V7bUGr.6zi6QHN2XvZcM.mf1
+ HIV5z7OP3qGwul_2G2t1C65Uetx3TM.JgA2wZbNxuARDJHKLoasF0NFfqV8o9WBAWcDEywnYu_AL
+ 78UF43bU42FD64b265hf_eWKVK69JGgnNb5RPuzpnYngnIp5Ai9eQPeLvuPMn5M7du6Dw6MYuVRN
+ K6tjJmShcXUsJwSb_B1w7MU5MBryX0_NCv0bwAUz1EZz2raEWA8fuV9Atim3KTDXckhf1N.dn_to
+ nh0JkPE2j8ytb4R9pAU7PFumd_9wsuO57RyNTlYcXfakpdjjjKpdQXc3Wx9AtAGgGo_E3Xsh_TS1
+ e41wK.inXVKGfqFtS88p9ogifCKlV_ojsOrIGUYlmJ2SXV.FcwquXY_JdW6ZYf8Sp4y7ltdXPsez
+ X78nU2H0WEkp3Ee7UBdg2pD2rOioHY_y0aBl.zm5szUhe.NalHRaP_R0IEiJ2.OJWhbKky5fUaHL
+ sXDt33QOa9PsCo9Ys3_gESeHfXzqe_jbRE1on9IHrWXSGJ8uIjCX42xd9nTlFviCUZqaOc1F1G9F
+ HOetrxThYaPhzKOTm.Qm7jFxKUNhJJ6H5YOKn3DSdIt4AERprXNqIQYp8vfUngT744jefRcD5bRi
+ NnmzwvRER6L9Ee4HHkMPa3OSLbSZpIj4yZdg1KUOb4NrsFMBujDEw56frDW9ELKxKoQDJmD.22yK
+ Dl3QymeMqmLGjE.gPOueRh.HyfQ9rrNzqMDIByRGRdO375Tja03NbaQuz1NGb458sAyC25Nv5GdT
+ fGbMklZt.C4NKGZdgjGmsiYiLajCCiX7DnnliPXtFN_hKwOe6EIzeFbz7JXLRu4Bn2uI3.PK8fl_
+ j_NVbUVe.o9ACoUB5B2.IMmKIYtFzPz88WMvrJkbus1O3EjmFeGUZJNSdhWhuPNLEpHNTMArAaqM
+ kGUeZfGw9lFQ94gfCqzYnt8GxdjzUNfH1kc0GgTTYOgpsCNZTsPBJ82ubeNvM6bXIYAF3pol7zAW
+ v0Poyi01eyKauU8Q0gDiGedaHBnN6ys7N_xLN28VUZDwYF9zc8by_PrZdQBLor6bDQKl0sLGConu
+ 8JNlw5GSmM5zM6lomzOron7ZBMH46JDXUTcVJnqv8DMEEqVBLLe3x2Lsjud92iV0Zilx6rlw3Rx_
+ MlADRptV4fIdUO.GgNn6qOPbS6SsJKMVvmUaU_dfpY2PSF3GL7FXSO6DR7dga5BuKbegM5VefGsI
+ zUIHqLob2JA.b4mk-
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Mon, 13 Jun 2022 01:17:36 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Mon, 13 Jun 2022 01:17:43 +0000
 Received: by hermes--canary-production-ir2-6c7595c778-c54g9 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4419c1e75f73c3038b6a16962b132f56;
-          Mon, 13 Jun 2022 01:17:32 +0000 (UTC)
+          Mon, 13 Jun 2022 01:17:39 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,9 +61,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH v2 1/7] iio: magnetometer: yas530: Change data type of hard_offsets to signed
-Date:   Mon, 13 Jun 2022 03:17:08 +0200
-Message-Id: <b9948169abc991e37f9afb3ca251a151b15d8881.1655081082.git.jahau@rocketmail.com>
+Subject: [PATCH v2 2/7] iio: magnetometer: yas530: Change range of data in volatile register
+Date:   Mon, 13 Jun 2022 03:17:09 +0200
+Message-Id: <02ece5db210dcee7511a3c322ca81041c6ebf8d1.1655081082.git.jahau@rocketmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1655081082.git.jahau@rocketmail.com>
 References: <cover.1655081082.git.jahau@rocketmail.com>
@@ -71,8 +71,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,35 +80,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The "hard_offsets" are currently unsigned u8 but they should be signed as they
-can get negative. They are signed in function yas5xx_meaure_offsets() and in the
-Yamaha drivers [1][2].
+In function yas5xx_volatile_reg(), the range for measure data should end at
+"YAS5XX_MEASURE_DATA + 7" instead of "+ 8" as we count from 0 to 7 here.
 
-[1] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas.h#L156
-[2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L91
+This change is of low importance as the "+ 8" register isn't called.
 
-Fixes: de8860b1ed47 ("iio: magnetometer: Add driver for Yamaha YAS530")
 Cc: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
  drivers/iio/magnetometer/yamaha-yas530.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 9ff7b0e56cf6..b58a9c51e9ff 100644
+index b58a9c51e9ff..2d71ae837bf5 100644
 --- a/drivers/iio/magnetometer/yamaha-yas530.c
 +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -132,7 +132,7 @@ struct yas5xx {
- 	unsigned int version;
- 	char name[16];
- 	struct yas5xx_calibration calibration;
--	u8 hard_offsets[3];
-+	s8 hard_offsets[3];
- 	struct iio_mount_matrix orientation;
- 	struct regmap *map;
- 	struct regulator_bulk_data regs[2];
+@@ -527,7 +527,7 @@ static bool yas5xx_volatile_reg(struct device *dev, unsigned int reg)
+ {
+ 	return reg == YAS5XX_ACTUATE_INIT_COIL ||
+ 		reg == YAS5XX_MEASURE ||
+-		(reg >= YAS5XX_MEASURE_DATA && reg <= YAS5XX_MEASURE_DATA + 8);
++		(reg >= YAS5XX_MEASURE_DATA && reg <= YAS5XX_MEASURE_DATA + 7);
+ }
+ 
+ /* TODO: enable regmap cache, using mark dirty and sync at runtime resume */
 -- 
 2.35.1
 

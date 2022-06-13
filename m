@@ -2,167 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ADAA547B49
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jun 2022 19:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6842E547D4B
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 03:18:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231818AbiFLRqB convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 12 Jun 2022 13:46:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
+        id S233083AbiFMBQN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 12 Jun 2022 21:16:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232764AbiFLRqA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 13:46:00 -0400
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 138B5E09E;
-        Sun, 12 Jun 2022 10:45:59 -0700 (PDT)
-Received: by mail-oo1-f48.google.com with SMTP id n24-20020a4ae758000000b0041b82638b42so830796oov.9;
-        Sun, 12 Jun 2022 10:45:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=xNhFuNm1nmnzKrxqQuO4XyzP0cAuS/p9Ps9ar4/pkNA=;
-        b=rBZpEbtDe9ogwyCl5aKAZeYuIeFNbLxCFj+voN3oYfsgr566qS87dpaPHK61BPXfxI
-         GYnatewn+qcvJEEKu3KkF6IMOxBJRhkP5lC8dQ/deQmpD/gyU1Rfk+mqInUhUIv+/Qrw
-         QDYivWpLJ4tTyT/SRUzMZ0eJk22aMNXnWqhoGgETmthCDGKYW8rJNSv4UWSzjVBqTQ0Y
-         rT5C2TCjbs5AQJ6cj1CDgpc/OzzqoqefVXK8uIyCtep5kk5985JECfRXQ7xJaudofEbH
-         ChwADx3hH89+7Q+cLlaY+UN2urLJW6SA3JQliOE76PVLhrjRb54wkjO5dnAgub5ll59w
-         FhBQ==
-X-Gm-Message-State: AOAM531JT+vGRTMVIQYtjL9BzYb6Sai4poqdMp/RMmkpHezbEZwLZCBo
-        PUaYOWLxkZdTXnHjoaoGnckJLguEY7aipw==
-X-Google-Smtp-Source: ABdhPJwAWF2Xwa4TwmfvQzub7spRW+GbwStg9EvmhgcPkRgW1jN+HOg7DXvyIpG8QMnMcBHrsrBjyA==
-X-Received: by 2002:a4a:d984:0:b0:329:a95a:d492 with SMTP id k4-20020a4ad984000000b00329a95ad492mr22457099oou.61.1655055958282;
-        Sun, 12 Jun 2022 10:45:58 -0700 (PDT)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com. [209.85.210.49])
-        by smtp.gmail.com with ESMTPSA id r9-20020a056830134900b0060afaae0e34sm2460700otq.0.2022.06.12.10.45.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jun 2022 10:45:58 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id a8-20020a05683012c800b0060c027c8afdso2984239otq.10;
-        Sun, 12 Jun 2022 10:45:58 -0700 (PDT)
-X-Received: by 2002:a81:4811:0:b0:30c:8021:4690 with SMTP id
- v17-20020a814811000000b0030c80214690mr60597100ywa.47.1655055588159; Sun, 12
- Jun 2022 10:39:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220610084545.547700-1-nuno.sa@analog.com> <20220610084545.547700-35-nuno.sa@analog.com>
- <YqNo6U8r80aNFzUr@spruce> <d083dd2c7e9e6eefb32124648a06799a9ebe8dfd.camel@gmail.com>
-In-Reply-To: <d083dd2c7e9e6eefb32124648a06799a9ebe8dfd.camel@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Sun, 12 Jun 2022 19:39:36 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXtLQOo2fiTHA-CBgWZE0hbPVUzv77sKrf_Qz8oHp7bkA@mail.gmail.com>
-Message-ID: <CAMuHMdXtLQOo2fiTHA-CBgWZE0hbPVUzv77sKrf_Qz8oHp7bkA@mail.gmail.com>
-Subject: Re: [PATCH 34/34] iio: inkern: fix coding style warnings
-To:     =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        chrome-platform@lists.linux.dev,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-iio@vger.kernel.org, openbmc@lists.ozlabs.org,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
+        with ESMTP id S232163AbiFMBQL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 12 Jun 2022 21:16:11 -0400
+Received: from sonic312-27.consmr.mail.ir2.yahoo.com (sonic312-27.consmr.mail.ir2.yahoo.com [77.238.178.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F32252A4
+        for <linux-iio@vger.kernel.org>; Sun, 12 Jun 2022 18:16:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1655082966; bh=LelxBL+H4LXzzd26k7repQu8RNdcXsem6I1K0C0CDr8=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=mPSsYeo5EsYBLXwcvjfsaF1ps3hY9zOx3nQUaPbR4ejTxL4GMy0PzxTXfkqRWuae1ivCFqefsTJM0jHs4tfHiiu3vDybWaUThTEQEolL0JxC+WMTW1JVB7+9G2S1NFAK33kjJKOQkysixW7Q/+mLJjWXUuspJxP5MFgUspOpA3TqjhmpCklWbXp57PXzGNP9rJ6S63xGSHJvmuMkAt6Hkfzkwq7i7a61d/ufRjqzBmHXt8oRLe84S3zoq6D7pmRfHOvTXf2VW3DHVhrdavoHi02QHESKnBWpkLKw/9GzniJU6lISB6v/+eKLReakI05sq2NENHaY1z7FqQwAs0qHSw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655082966; bh=d2A1P5ZVVPXwZLfMV7bYzjAduqUIdYT8Rf4krj+Piw7=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=WnN07UZ+7SGNNClpPeAD4fUjI4tgdiUsqoFDFgV6ZiLu/T08sAhZH3ITbktlN+GRx1Yk1tk19jx7EbJ8GEZ4vELD7vAPKgK1JR8jNVppssfSq1bn4H90/hXwtd64+9U8XCro+2wGaGwb5DnafjXNn9MEGPCqyO3wWJVAyV/yWoxypy5wiHLQ3pFqVAJKXN9g7hWDgmPUv931r7nMP2oRsVMF7pPJ3VoSVcuJPTW0WYW+P3UBozeLwEOsr787TCZFXGjtRqmbMRFQKFtvCJgWUP0a4iyS09cF1Ks841vDp1ZTccoLh5VlkNLFws3kyTqBBIItdVUsHyQiSJS1KhzXwQ==
+X-YMail-OSG: acUkulIVM1m4CeCW.T99UaYzxxaXgghQaz_bpnIiHv3uitMLrY8mc8S3KPTSvzs
+ aXmiF4rJIH8cKuUh.rJyHILJEpNVVAjkP.LRXSZR8tV9i9ocjG6RDvGKqwe.uJNeJkGZv21mQP5s
+ S4PQaoJ1i2K5lChoueksOO9H1L4EGTa4gnOTii9AkJu8G54OaJCifJjUgy0HlMkKSY.Z4VEDlDEs
+ xJ86VrqdJ4m.e2cp.N46Uo4rdsfYRxHwuQX0gePQ8HkaBOzW3v.OoWSBvztq_4kWfoc7VFpHjrsV
+ UE5Kcg8BfpHatbfQ9oIFeyeGYFKua0ar8RhTv8h5zqVTp5bhrkkRfrof0AFDVsdBf49E.YqVJYYs
+ 1rg.9tf0VmZYECwnHnTKkuXZz4_zD9L9pKY1qO9Whiqv9FKqUsBa0iE9oTr_bNngy7fd9p3jRwCi
+ uRpLb_vhbagjOupFLVH.y61zM0isfNsyx7JoBI1RC_b.yC8hfPw6.LPHTTnpt7A0bsVVNGxin2YJ
+ ZVNr5zcv0ZuWTpibumWd8ZEXGSgrVjehmuJJuvB7fGgaXUtWc_g.pNhET19IFfGgffJYMtQ_.uM1
+ aSsp0yfkhvYjtyByvDrE5c0eO8NZje5Wn3nlfr_4BAne1WQp.g.RLyoDllBNLBX1dN8G2uBP6dAh
+ pcTcth1C3d33LOhFfWd3s_MuKOoSc3PVMQrXaKC78M5pl7u_qAmgXj.F_kQ3AKTbVctCbH.JC39w
+ x278RwIeeUPMRkceg9pGBbhGNHihaGzxchmcbhvTLp55wb5GQkMFqhaJDGfxY3j3LFVo59jEZG3o
+ JFES5U4Ez3F9mr4GRQXoodiHiC3Pf73tYXbAGZ865zlMSikhVrGXfwdeqhrFu.oppjSXDwK0ORR5
+ liPBPQGYEnzY5KDijUaiiNqNmq3l3nh4y.upXb4DWgTou0XZ4.Thc8RWWgh2WzqX88FZ.xgH1qah
+ ZEvbvR8wu1b6G_a0_rc7xBFSYCttnGT.tlU9uQgMV8oZ.0pM66i9fGglp4adgGLe2RSNTX6D5H2Y
+ phNN4J7E.cdaIfDBeLcnaQefHpSyP163DslSJEs8qeQitCRpcwhoxPa2t6eRA2douW_VqVU8PWoN
+ bpVAv8sBP09i284PqPcHrlKIW6OHNnsElEKxX7R3hYcHMFLschQTIJZagXofGcJHzOgIIFUdn5Wc
+ 74ZG6JMQD7d0KdQhMZysxOH8AGwykwNPpkyR2ULVZqZkzlI7ClvFbw2c4sG_RcpxOIVtZVlkY71U
+ j84f2TDH62645HuTcgoW8EU2BWgV_xN18O81vljcnUltpQbgQalEm6U53ogtjdaBi5tt8zmG.OFx
+ vP_Mj_BWY7ir2DTdJgW29CmkW2N_m8uZkZzw1ShSyyBqmpzM34lNSyInbOmXGF9nCpQf_3Yd0vKf
+ RvEnS44OzsMNEnO5FJdi8oPfbBem75EY6Q1WUNBA8NtoFmGB16bgbb9MtxW65v2ETGoC85nnLWMs
+ Ls3Bxpm19MiFxChDo.1Q2eJ5WCZObBMjIn3.6Zfy9onyCBnCgdKIIxTgVsBCgiom0HHIfUAeYQPz
+ Vzt0q3RjCYW3to3dI1LPHq48WMTbNpvvcC.xqCJi9oA_W9tNHb7j28TPJMrI3TJnQRqRkb9C9Q0d
+ 4RR8btW4m7BGR6uYMcTHjnxVVW31R2PE9LWuCz7HclFqGKs2CKa5exCbVGiefkQEZvtSYK6RWoWl
+ N2obhsqlZGR1ma8iXFnMgrFBixoLNukV6D6rFUouBx.AIVmrJPmPElHAmcov72bKtQYEDEIj9cX_
+ VLJWzOCUvEPNCr0EaaSYzSWkNQgySzuOdroN.Xm4DAVx5uDqf0bLhTSe326Dd441UAqZV8v6p2yn
+ p4Vu5r1ueUpHDzo9pEjgpmYqLw0_qNoTjkAvZfyyBcXDxeErwcg_w8yRk6psOu9XVWLCjgmk73le
+ ixlrD2q.XIv1SkaHx.JFc5KzivpaOZHYwXW4GhhONcpUay.N6wocXJqUs708R2kqNGy3MXyYETfX
+ I7nejVN7nsg8t7qd395Xhv9uUqR_Jek2ctevWKW.CEcnRrdQMT_Dpvr3ZzVu6Ekadk8nYh8GYWFs
+ UymFWjUGEjP88qbkpHgfzXKZf9RvSfCL.KP0wEUDFwqQs7DoNjlY8WquuQvGrDzpcoUA5XuVktkz
+ Orp2wuSahWJE85oxl9H65bVyuddhsDP2yozaGyVDahkFrBwFcMHkYcxy7YxGdgyeLbNN9CLyHV2S
+ UQ6wfHXtxIL2l4SJSvuLOpQXsxmt5rIQuSQ9b3bX5TxC2gObY4yPywAa1W9iBvzdlQg1w.reQZxq
+ wX9hT
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ir2.yahoo.com with HTTP; Mon, 13 Jun 2022 01:16:06 +0000
+Received: by hermes--canary-production-ir2-6c7595c778-sh94p (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 533ecd9feb2951b8ddc71d59837c1eed;
+          Mon, 13 Jun 2022 01:16:04 +0000 (UTC)
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Benson Leung <bleung@chromium.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Christophe Branchereau <cbranchereau@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: [PATCH v2 0/7] Add support for magnetometer Yamaha YAS537
+Date:   Mon, 13 Jun 2022 03:15:05 +0200
+Message-Id: <cover.1655081082.git.jahau@rocketmail.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+References: <cover.1655081082.git.jahau.ref@rocketmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Nuno,
+This patchset adds YAS537 variant to the already existing driver for
+Yamaha YAS magnetometers.
 
-On Fri, Jun 10, 2022 at 9:52 PM Nuno Sá <noname.nuno@gmail.com> wrote:
-> On Fri, 2022-06-10 at 11:53 -0400, Joe Simmons-Talbott wrote:
-> > On Fri, Jun 10, 2022 at 10:45:45AM +0200, Nuno Sá wrote:
-> > > Just cosmetics. No functional change intended...
-> > >
-> > > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Patch 1 is a fix on the current driver.
+Patches 2-6 are cleanups and refactoring.
+Patch 7 finally adds the YAS537 variant.
 
-> > > --- a/drivers/iio/inkern.c
-> > > +++ b/drivers/iio/inkern.c
-> > > @@ -45,13 +45,13 @@ int iio_map_array_register(struct iio_dev
-> > > *indio_dev, struct iio_map *maps)
-> > >         int i = 0, ret = 0;
-> > >         struct iio_map_internal *mapi;
-> > >
-> > > -       if (maps == NULL)
-> > > +       if (!maps)
-> > >                 return 0;
-> > >
-> > >         mutex_lock(&iio_map_list_lock);
-> > > -       while (maps[i].consumer_dev_name != NULL) {
-> > > +       while (!maps[i].consumer_dev_name) {
-> >
-> > Shouldn't this be?:
-> > while (maps[i].consumer_dev_name) {
->
-> Ups... Nice catch! I was probably in bot mode already.
+Changes in v2:
+ - Reordered the patchset by moving patch 4 v1 to patch 1 v2.
+ - Removed patch 6 v1 ("Remove redundant defaults on switch devid")
+ - Accordingly, added "default:" to each switch statement in patch 7.
+ - Moved renamings in patch 7 v1 into a separate new patch 6 v2. I added
+   the "Reviewed-by:" tag of Linus to both patches, hope that's ok, else
+   feel free to comment.
+ - Removed regmap reads and related debug dumps in patch 7 in function
+   yas537_dump_calibration(). As this function now applies to version 1
+   only, replaced switch statement by if clause.
+ - Also removed "hard_offsets" debug dumps in that function.
+ - Fixed typo "initialized" in commit message of patch 7.
 
-When making a change with no functional change intended, it is always
-a good idea to compare the generated assembler before/after.  I.e.
+Jakob Hauser (7):
+  iio: magnetometer: yas530: Change data type of hard_offsets to signed
+  iio: magnetometer: yas530: Change range of data in volatile register
+  iio: magnetometer: yas530: Correct scaling of magnetic axes
+  iio: magnetometer: yas530: Correct temperature handling
+  iio: magnetometer: yas530: Change data type of calibration
+    coefficients
+  iio: magnetometer: yas530: Rename functions and registers
+  iio: magnetometer: yas530: Add YAS537 variant
 
-    make drivers/iio/inkern.s
-    mv drivers/iio/inkern.s drivers/iio/inkern.s.orig
-    [make your change]
-    make drivers/iio/inkern.s
-    diff -u drivers/iio/inkern.s{.orig,}
+ drivers/iio/magnetometer/Kconfig         |   4 +-
+ drivers/iio/magnetometer/yamaha-yas530.c | 790 +++++++++++++++++++----
+ 2 files changed, 684 insertions(+), 110 deletions(-)
 
-Gr{oetje,eeting}s,
+-- 
+2.35.1
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

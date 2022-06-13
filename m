@@ -2,123 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECC53549BF4
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 20:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161B4549C65
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 20:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348647AbiFMSoT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jun 2022 14:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45312 "EHLO
+        id S243936AbiFMS56 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jun 2022 14:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344231AbiFMSmN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 14:42:13 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E51A6438;
-        Mon, 13 Jun 2022 08:24:30 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id s12so11880809ejx.3;
-        Mon, 13 Jun 2022 08:24:30 -0700 (PDT)
+        with ESMTP id S1344939AbiFMS52 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 14:57:28 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE182A43B
+        for <linux-iio@vger.kernel.org>; Mon, 13 Jun 2022 09:04:47 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id w17so233040wrg.7
+        for <linux-iio@vger.kernel.org>; Mon, 13 Jun 2022 09:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gVUmU20kbF7o45eINMXcQWhA2++Jt1Gz7TIlLBAcfGY=;
-        b=bwm6mo5S+Gfcv1FtTvhbUmEl+3+gpq1UllxZg8RO3eCO4jH/9iRV+/9jRKxOB8I0v1
-         O53eX56xsqmNdIHD4FIIElyXl01I1g6vvb07e02rn/1y3BOaPFhG0NUkc3KvoB9QG1Ek
-         A3wPgchW4XJuBpVa8i4osiHqSkvDVk3Hn90gBQeCEHum7dmIMn7jQ/d4LtdvSxvsVKsS
-         Q+ijW6ghutHfQ2CR3/EgsDFx6JDWnq+Efe0NMhB4bh8n7XfZv71rHEgro93XnIJHGQy6
-         a3uT1QO1mlS6raV1UYEwivp+e+Rwh4aDsG34o8nMqXYJ0c9g0joEDX/8X+ocDsbhsQoo
-         6/Ww==
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=AXautoqWPbDGQ8jIW32Yr94ZX6pp2sRp2xY2VCYt9IQ=;
+        b=Y3Zaso87YlfTlu4ajq7LPn7acVP6OEqktDetC90IXLCFuqbxDLk/ScLjQ06HUaagv5
+         54S3UZWC99l+Oove5asnkJ0zAiiVjL/71E2YiANfvFRdMsbEPRHEahP0ZrKsuS5tui2o
+         hSYFIcmjJ6p6S+vTMGHMFi2ftGzpsmVFs70EA6Ay0LaLqWnBI330dyxWgV7GViTyDae6
+         8qD9ZQMMh4yjquXLbWCzhWjK0ZPtRHQDcvpco8v4JAmSNwTS23MPV4wi6gKF4pw3mGZV
+         zeltwKrUGX9pGV5cACkHc96u/m7hVCml7LrbbfNnrmQKW/r5mms1S4N/nBGDKFXMczFM
+         1ypw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gVUmU20kbF7o45eINMXcQWhA2++Jt1Gz7TIlLBAcfGY=;
-        b=4pmpYkpZlkluDuQ3DOy8/bg6eMfGnUfXpwBtCCxFWSGshO4A62NJQYIQ96bekivhjq
-         u8sKKNMse3BxJbI4BWbOZrHSjaqZ4XPh2r9ZFy6h44qF3HlYm3KVRRJwOKYUQaDCqM7T
-         PvsIPPnbyknNNxbBi8V1ryza6oBKOf+wawrxaozdsTX2zgykEXINsHVgsyWjpTfInxUV
-         lcy6BcEXwcsTR8135j8tadffknUcLkfARFhn1OxRKRxSR0r5LMD1YcNQfBVDfyV7AM7P
-         hXCKWQ3/jOBcnI4ezIVsavyg4/r+KM2HRcTYMq1AYv2/Vv0iOxPb2naNRC7+abjKpWAk
-         qZkw==
-X-Gm-Message-State: AJIora/AR/Y1dyqMNw9G9xO42dxxL5Nog9J3MsTXXR3+rviP9hWFhX3u
-        Ijybf12esY4MmI7E5kH9bbplDVQPeIQ2AZBDWpml3D7zTSS6xA==
-X-Google-Smtp-Source: ABdhPJwalqVJwz9r4TQJ/IECZdmTNaWdK14VSAxs6++szwRya79SW6hSRzILoyilYEaEWdeXSphA4YEWDHKA8TJtoaY=
-X-Received: by 2002:a17:906:434f:b0:711:eb76:c320 with SMTP id
- z15-20020a170906434f00b00711eb76c320mr351775ejm.636.1655133868940; Mon, 13
- Jun 2022 08:24:28 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=AXautoqWPbDGQ8jIW32Yr94ZX6pp2sRp2xY2VCYt9IQ=;
+        b=c7DhZIJRxWPKn7442QP9gf3oH5brPAv+lFEzNlnSlgfaQHe/otY/qqYCA2OdlL/3uP
+         jtkDG8RQhvdHPwRlVCjgqVGZHoTl/+GQGg8qtwV/BOyUsdxtG6WQo/ppc+hnQ+Ti7feO
+         q26PYIf2kHthnfeFLtRxwT2anoRBNF2S9kzIcBiVeMctGLwG1Iw8se1uTWTrIudt9PgN
+         gbUOOyY6RdJWfl6IZXVZjYhHi7Op0vm8bC21b6VZYTj+7KOZeG0JxLtKZkTfQAwmOUjB
+         fIFUuFY2/T83TnPiG8plmVxs7uvYM7Q8CFH6t65FukXtPUpAh950YzuyQ3HRmZ05MwVp
+         hVhw==
+X-Gm-Message-State: AJIora/sYOFEvr5VP4ynm2ySjljps3GWbP9FFDL8l+u4/IbgdMUGyR22
+        LHSqIO0peQDb5K6o5EftJ1Wf8hH3uQKRoS3uJr8=
+X-Google-Smtp-Source: AGRyM1ulfKHQ+oVC9xkJkpKGWNyo4mLoeS6sR4zeHou9luaombOz1cu7xil1EWh1T/1ovPEz8A8ywdSGjBZhhcbAByw=
+X-Received: by 2002:a5d:5142:0:b0:212:af29:530 with SMTP id
+ u2-20020a5d5142000000b00212af290530mr550700wrt.444.1655136285655; Mon, 13 Jun
+ 2022 09:04:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1655081082.git.jahau.ref@rocketmail.com> <cover.1655081082.git.jahau@rocketmail.com>
-In-Reply-To: <cover.1655081082.git.jahau@rocketmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 13 Jun 2022 17:23:52 +0200
-Message-ID: <CAHp75VdEyaENBYLP5MWh9aZ0kvxHPGzEMQCF+gHTpqc0Nqks9A@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] Add support for magnetometer Yamaha YAS537
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>
+Received: by 2002:a5d:5942:0:0:0:0:0 with HTTP; Mon, 13 Jun 2022 09:04:43
+ -0700 (PDT)
+From:   nnani nawafo <nnadinawafo11@gmail.com>
+Date:   Mon, 13 Jun 2022 16:04:43 +0000
+Message-ID: <CAPhDfr06DxSLgxXXHS5_LbtZcjPKPRWbb-zuMQSD+7AaRMBW+g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=2.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 13, 2022 at 3:16 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->
-> This patchset adds YAS537 variant to the already existing driver for
-> Yamaha YAS magnetometers.
->
-> Patch 1 is a fix on the current driver.
-> Patches 2-6 are cleanups and refactoring.
-> Patch 7 finally adds the YAS537 variant.
+Gratulujem!
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-for patches 2-6.
-Patch 1 is already reviewed, patch 7 needs a bit more work.
+Organiz=C3=A1cia Spojen=C3=BDch n=C3=A1rodov dospela k z=C3=A1veru, =C5=BEe=
+ schv=C3=A1li vyplatenie
+kompenza=C4=8Dn=C3=A9ho fondu vo v=C3=BD=C5=A1ke =C5=A1iestich mili=C3=B3no=
+v americk=C3=BDch dol=C3=A1rov (6
+000 000,00 USD) =C5=A1=C5=A5astn=C3=BDm pr=C3=ADjemcom na celom svete prost=
+redn=C3=ADctvom
+pomoci novozvolen=C3=A9ho prezidenta v d=C3=B4sledku ochorenia COVID-19
+(koronav=C3=ADrus), ktor=C3=BD sp=C3=B4sobil ekonomick=C3=BD kolaps v roku =
+r=C3=B4znych
+krajin=C3=A1ch a glob=C3=A1lne ohrozenie to=C4=BEk=C3=BDch =C5=BEivotov.
 
-> Changes in v2:
->  - Reordered the patchset by moving patch 4 v1 to patch 1 v2.
->  - Removed patch 6 v1 ("Remove redundant defaults on switch devid")
->  - Accordingly, added "default:" to each switch statement in patch 7.
->  - Moved renamings in patch 7 v1 into a separate new patch 6 v2. I added
->    the "Reviewed-by:" tag of Linus to both patches, hope that's ok, else
->    feel free to comment.
->  - Removed regmap reads and related debug dumps in patch 7 in function
->    yas537_dump_calibration(). As this function now applies to version 1
->    only, replaced switch statement by if clause.
->  - Also removed "hard_offsets" debug dumps in that function.
->  - Fixed typo "initialized" in commit message of patch 7.
+ Organiz=C3=A1cia Spojen=C3=BDch n=C3=A1rodov poverila =C5=A1vaj=C4=8Diarsk=
+u svetov=C3=BA banku, aby
+v spolupr=C3=A1ci s bankou IBE v Spojenom kr=C3=A1=C4=BEovstve uvo=C4=BEnil=
+a platby z
+kompenza=C4=8Dn=C3=A9ho fondu.
 
-> Jakob Hauser (7):
->   iio: magnetometer: yas530: Change data type of hard_offsets to signed
->   iio: magnetometer: yas530: Change range of data in volatile register
->   iio: magnetometer: yas530: Correct scaling of magnetic axes
->   iio: magnetometer: yas530: Correct temperature handling
->   iio: magnetometer: yas530: Change data type of calibration
->     coefficients
->   iio: magnetometer: yas530: Rename functions and registers
->   iio: magnetometer: yas530: Add YAS537 variant
->
->  drivers/iio/magnetometer/Kconfig         |   4 +-
->  drivers/iio/magnetometer/yamaha-yas530.c | 790 +++++++++++++++++++----
->  2 files changed, 684 insertions(+), 110 deletions(-)
->
-> --
-> 2.35.1
->
+Platba bude vystaven=C3=A1 na bankomatov=C3=BA v=C3=ADzov=C3=BA kartu a odo=
+slan=C3=A1 =C5=A1=C5=A5astn=C3=A9mu
+pr=C3=ADjemcovi, ktor=C3=BD o =C5=88u po=C5=BEiada prostredn=C3=ADctvom ban=
+ky IBE v Spojenom
+kr=C3=A1=C4=BEovstve prostredn=C3=ADctvom diplomatickej kuri=C3=A9rskej spo=
+lo=C4=8Dnosti v
+bl=C3=ADzkosti prij=C3=ADmaj=C3=BAcej krajiny.
 
+Toto s=C3=BA inform=C3=A1cie, ktor=C3=A9 vedenie Spojen=C3=A9ho kr=C3=A1=C4=
+=BEovstva vy=C5=BEaduje na
+doru=C4=8Denie platby z kompenza=C4=8Dn=C3=A9ho fondu do prij=C3=ADmacej kr=
+ajiny.
 
--- 
-With Best Regards,
-Andy Shevchenko
+1. Va=C5=A1e meno:
+2. Adresa bydliska:
+3. Mesto:
+4. Krajina:
+5. Povolanie:
+6. Sex:
+7. Rodinn=C3=BD stav:
+8. Vek:
+9. Pas / ob=C4=8Diansky preukaz / vodi=C4=8Dsk=C3=BD preukaz
+10. Telef=C3=B3nne =C4=8D=C3=ADslo:
+Kontaktujte n=C3=A1=C5=A1ho e-mailov=C3=A9ho z=C3=A1stupcu:
+n=C3=A1zov solomo brandy
+
+EMIL ADDRESS (solomonbrandyfiveone@gmail.com) pre va=C5=A1u platbu bez ome=
+=C5=A1kania,
+
+S pozdravom
+Pani Mary J Robertsonov=C3=A1.

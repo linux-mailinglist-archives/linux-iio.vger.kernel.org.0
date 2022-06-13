@@ -2,210 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7AC549A01
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 19:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7238A549A61
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 19:50:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236916AbiFMRbv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jun 2022 13:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39854 "EHLO
+        id S242284AbiFMRue (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jun 2022 13:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243998AbiFMRat (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 13:30:49 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85399A1BB;
-        Mon, 13 Jun 2022 05:53:03 -0700 (PDT)
-Received: from [10.5.50.66] (unknown [103.108.5.209])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: shreeya)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 630BB6601653;
-        Mon, 13 Jun 2022 13:52:58 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1655124782;
-        bh=wPVPeG0ehxwVBRfqVV1QMdSaUZUBQIBEq78jW56sV4o=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=AHeKSLCh5eGkJ6D/hN2EP4Yw6oO71wW7futn/cYMYl+/EHU1HMYTBq2KWP25QeJYS
-         KpPSlsjloVqRuoWomCv8cOFP3HP8LJeViwFTu6NDLfNqKWnE1eIhGBuiZzShkaEcZI
-         kepTO0cxJCDBB3x2B5WrO0FmQDm9xWdBJxslOluN158viHJUdPxTSAleqQgaR3chE7
-         D4dOU/oDyOS+Rj6dIrW/cEfNkRc+shCKUZIOZYSv/Gr1dbJpm891MeYCKojBgddlw+
-         OKmWCiBA+RINm9Hx9qAQ0J4Hzd1HkIvLWMUCeQB10P31sixFMrjTuy2qbsZtHutRVa
-         oeJn2dn7VnLmA==
-Message-ID: <a4334956-deca-d2cc-7bbd-6e5f305b9e35@collabora.com>
-Date:   Mon, 13 Jun 2022 18:22:53 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v5 2/2] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, Zhigang.Shi@liteon.com,
-        krisman@collabora.com, linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        alvaro.soliverez@collabora.com, Dmitry Osipenko <digetx@gmail.com>
-References: <20220608113553.32083-1-shreeya.patel@collabora.com>
- <20220608113553.32083-3-shreeya.patel@collabora.com>
- <CAHp75VcpHO-_Dghdc0VFjT=us-95h1b03Jmg32odJuuJZRy8aA@mail.gmail.com>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <CAHp75VcpHO-_Dghdc0VFjT=us-95h1b03Jmg32odJuuJZRy8aA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S233958AbiFMRuM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 13:50:12 -0400
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728CB3CFE7;
+        Mon, 13 Jun 2022 06:33:27 -0700 (PDT)
+Received: by mail-io1-f41.google.com with SMTP id q11so6047703iod.8;
+        Mon, 13 Jun 2022 06:33:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=vdZfN90YQu4hf8Uqw177MbmjixkJ2AAcNrLx6oY9MCU=;
+        b=0vEUpAa5zAKQ89i46hqzZ+3hHeTnn+DY1/X0kJqYTFueZ/FwBOmrWDjFsa9Z9odXwA
+         XIjIzf/6hM5JcDlSSzkHeMObN075lc2pXL6MO4JLhob4Y18jDKdvfTMrMv1IxFRWemqi
+         IekeaKiCXsLUYOKPMWwtBHZjYPlOQvFTiyS51PcrCX7Y2C+stDxntVkUIN7XsOBy43dA
+         u0xReuMw2mjoYysPsGqAcxIds4wIewSkd74UcCePomD/b6c7wQVujeaosljM/+6Uqey0
+         Vz3gXVjv0A4PGzhbEY+B87oYpb5ay9ATjp/elrD4yzI4Z4jFyKQQZLIpI8E7aucJg0pz
+         Ii2w==
+X-Gm-Message-State: AOAM532oZpiFlDl4z/q02iRfmE4Sw1UP9tpECriUzZLcRbTTDmksN14b
+        oYoyJUfpE5+LEyTXxGcKpg==
+X-Google-Smtp-Source: ABdhPJwxl/8h496O951i+ofEnsI3E+yQOwKm/ujxZmtouDcCZ56WJ1Frq7wX9lahXWnDMzS3ZoRpNQ==
+X-Received: by 2002:a6b:bf46:0:b0:669:c998:6b48 with SMTP id p67-20020a6bbf46000000b00669c9986b48mr6141923iof.67.1655127206555;
+        Mon, 13 Jun 2022 06:33:26 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id l16-20020a056e020e5000b002d1a16ef24dsm3870641ilk.82.2022.06.13.06.33.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jun 2022 06:33:26 -0700 (PDT)
+Received: (nullmailer pid 3564137 invoked by uid 1000);
+        Mon, 13 Jun 2022 13:33:17 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     pavel@ucw.cz, robh+dt@kernel.org, linux-pm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, szunichen@gmail.com,
+        lars@metafoo.de, matthias.bgg@gmail.com,
+        daniel.thompson@linaro.org, lee.jones@linaro.org,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        linux-leds@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        jingoohan1@gmail.com, devicetree@vger.kernel.org, jic23@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
+In-Reply-To: <20220613111146.25221-7-peterwu.pub@gmail.com>
+References: <20220613111146.25221-1-peterwu.pub@gmail.com> <20220613111146.25221-7-peterwu.pub@gmail.com>
+Subject: Re: [PATCH v2 06/15] dt-bindings: mfd: Add Mediatek MT6370
+Date:   Mon, 13 Jun 2022 07:33:17 -0600
+Message-Id: <1655127197.567546.3564136.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 13 Jun 2022 19:11:37 +0800, ChiaEn Wu wrote:
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> Add Mediatek MT6370 binding documentation.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> ---
+>  .../bindings/mfd/mediatek,mt6370.yaml         | 279 ++++++++++++++++++
+>  .../dt-bindings/iio/adc/mediatek,mt6370_adc.h |  18 ++
+>  2 files changed, 297 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+>  create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
+> 
 
-On 08/06/22 21:46, Andy Shevchenko wrote:
-> On Wed, Jun 8, 2022 at 1:37 PM Shreeya Patel
-> <shreeya.patel@collabora.com> wrote:
->> From: Zhigang Shi <Zhigang.Shi@liteon.com>
->>
->> Add initial support for ltrf216a ambient light sensor.
->>
->> Datasheet: gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTRF216A.pdf
-> https?
->
-> ...
->
->> +#define LTRF216A_ALS_READ_DATA_DELAY   20000
-> What units?
->
-> ...
->
->> +/* Window Factor is needed when device is under Window glass
-> the device
->
->> + * with coated tinted ink. This is to compensate the light loss
-> for the?
->
->> + * due to the lower transmission rate of the window glass.
->> + */
-> /*
->   * Multi-line comments should look
->   * like this very example. Find the difference.
->   */
->
-> ...
->
->> +static int ltrf216a_init(struct iio_dev *indio_dev)
->> +{
->> +       struct ltrf216a_data *data = iio_priv(indio_dev);
->> +       int ret = 0;
-> Useless assignment.
->
->> +
->> +       /* enable sensor */
->> +       ret |= FIELD_PREP(LTRF216A_ALS_ENABLE_MASK, 1);
-> This is bad code. Use another variable with distinguashable name.
->
->> +       ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, ret);
-> Can this driver utilize regmap I2C?
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Thanks for all your comments and yes we can use the regmap I2C
-but the plan is to get the basic version merged and then I'll be sending
-patches for any enhancements that we'd like to do.
+yamllint warnings/errors:
 
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/leds/backlight/mediatek,mt6370-backlight.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb: pmic@34: backlight: False schema does not allow {'compatible': ['mediatek,mt6370-backlight'], 'mediatek,bled-channel-use': b'\x0f'}
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb: pmic@34: charger: False schema does not allow {'compatible': ['mediatek,mt6370-charger'], 'interrupts': [[48], [68], [6]], 'interrupt-names': ['attach_i', 'uvp_d_evt', 'mivr'], 'io-channels': [[1, 5]], 'usb-otg-vbus-regulator': {'regulator-name': ['mt6370-usb-otg-vbus'], 'regulator-min-microvolt': [[4350000]], 'regulator-max-microvolt': [[5800000]], 'regulator-min-microamp': [[500000]], 'regulator-max-microamp': [[3000000]], 'phandle': [[2]]}}
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb: pmic@34: tcpc: False schema does not allow {'compatible': ['mediatek,mt6370-tcpc'], 'interrupts-extended': [[4294967295, 4, 8]], 'connector': {'compatible': ['usb-c-connector'], 'label': ['USB-C'], 'vbus-supply': [[2]], 'data-role': ['dual'], 'power-role': ['dual'], 'try-power-role': ['sink'], 'source-pdos': [[570527844]], 'sink-pdos': [[570527944]], 'op-sink-microwatt': [[10000000]], 'ports': {'#address-cells': [[1]], '#size-cells': [[0]], 'port@0': {'reg': [[0]], 'endpoint': {'remote-endpoint': [[4294967295]]}}, 'port@1': {'reg': [[1]], 'endpoint': {'remote-endpoint': [[4294967295]]}}, 'port@2': {'reg': [[2]], 'endpoint': {'remote-endpoint': [[4294967295]]}}}}}
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb: pmic@34: indicator: False schema does not allow {'compatible': ['mediatek,mt6370-indicator'], '#address-cells': [[1]], '#size-cells': [[0]], 'multi-led@0': {'reg': [[0]], 'function': ['indicator'], 'color': [[9]], 'led-max-microamp': [[24000]], '#address-cells': [[1]], '#size-cells': [[0]], 'led@0': {'reg': [[0]], 'color': [[1]]}, 'led@1': {'reg': [[1]], 'color': [[2]]}, 'led@2': {'reg': [[2]], 'color': [[3]]}}, 'led@3': {'reg': [[3]], 'function': ['indicator'], 'color': [[0]], 'led-max-microamp': [[6000]]}}
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb: pmic@34: flashlight: False schema does not allow {'compatible': ['mediatek,mt6370-flashlight'], '#address-cells': [[1]], '#size-cells': [[0]], 'led@0': {'reg': [[0]], 'led-sources': [[0]], 'function': ['flash'], 'color': [[0]], 'function-enumerator': [[1]], 'led-max-microamp': [[200000]], 'flash-max-microamp': [[500000]], 'flash-max-timeout-us': [[1248000]]}, 'led@1': {'reg': [[1]], 'led-sources': [[1]], 'function': ['flash'], 'color': [[0]], 'function-enumerator': [[2]], 'led-max-microamp': [[200000]], 'flash-max-microamp': [[500000]], 'flash-max-timeout-us': [[1248000]]}}
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb: backlight: mediatek,bled-channel-use: b'\x0f' is not of type 'object', 'array', 'boolean', 'null'
+	From schema: /usr/local/lib/python3.10/dist-packages/dtschema/schemas/dt-core.yaml
+Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb:0:0: /example-0/i2c/pmic@34/backlight: failed to match any schema with compatible: ['mediatek,mt6370-backlight']
+Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb:0:0: /example-0/i2c/pmic@34/charger: failed to match any schema with compatible: ['mediatek,mt6370-charger']
+Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb:0:0: /example-0/i2c/pmic@34/indicator: failed to match any schema with compatible: ['mediatek,mt6370-indicator']
+Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb:0:0: /example-0/i2c/pmic@34/flashlight: failed to match any schema with compatible: ['mediatek,mt6370-flashlight']
+Documentation/devicetree/bindings/mfd/mediatek,mt6370.example.dtb:0:0: /example-0/i2c/pmic@34/tcpc: failed to match any schema with compatible: ['mediatek,mt6370-tcpc']
 
+doc reference errors (make refcheckdocs):
 
-Thanks,
-Shreeya Patel
+See https://patchwork.ozlabs.org/patch/
 
->
->> +       if (ret < 0)
->> +               dev_err(&data->client->dev,
->> +                       "Error writing to LTRF216A_MAIN_CTRL while enabling the sensor: %d\n", ret);
->> +
->> +       return ret;
->> +}
-> ...
->
->> +static int ltrf216a_disable(struct iio_dev *indio_dev)
->> +{
->> +       struct ltrf216a_data *data = iio_priv(indio_dev);
->> +       int ret = 0;
-> Useless assignment.
->
->> +       ret = i2c_smbus_write_byte_data(data->client, LTRF216A_MAIN_CTRL, 0);
->> +       if (ret < 0)
->> +               dev_err(&data->client->dev,
->> +                       "Error writing to LTRF216A_MAIN_CTRL while disabling the sensor: %d\n",
->> +                       ret);
-> With a temporary variable for the device this may be located on one line.
-> Same for the similar cases.
->
->> +       return ret;
->> +}
-> ...
->
->> +#ifdef CONFIG_PM
-> Why? Can't it be hidden by using pm_sleep_ptr() or alike?
->
->> +static int ltrf216a_set_power_state(struct ltrf216a_data *data, bool on)
->> +{
->> +       struct device *dev = &data->client->dev;
->> +       int ret = 0, suspended;
-> Useless assignment. Please, go thru all your code and drop these
-> potentially dangerous assignments.
->
->> +
->> +       if (on) {
->> +               suspended = pm_runtime_suspended(dev);
->> +               ret = pm_runtime_get_sync(dev);
->> +
->> +               /* Allow one integration cycle before allowing a reading */
->> +               if (suspended)
->> +                       msleep(ltrf216a_int_time_reg[0][0]);
->> +       } else {
->> +               pm_runtime_mark_last_busy(dev);
->> +               ret = pm_runtime_put_autosuspend(dev);
->> +       }
->> +
->> +       return ret;
->> +}
->> +#else
->> +static int ltrf216a_set_power_state(struct ltrf216a_data *data, bool on)
->> +{
->> +       return 0;
->> +}
->> +#endif
->> +
->> +int ltrf216a_check_for_data(struct i2c_client *client)
->> +{
->> +       int ret;
->> +
->> +       ret = i2c_smbus_read_byte_data(client, LTRF216A_MAIN_STATUS);
->> +       if (ret < 0) {
->> +               dev_err(&client->dev, "Failed to read LTRF216A_MAIN_STATUS register: %d\n", ret);
->> +               return ret;
-> Dup.
->
->> +       }
->> +
->> +       return ret;
->> +}
-> ...
->
->> +#ifdef CONFIG_PM_SLEEP
-> Oh, please no.
->
->> +#endif
-> ...
->
->> +static const struct dev_pm_ops ltrf216a_pm_ops = {
->> +       SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
->> +                               pm_runtime_force_resume)
->> +       SET_RUNTIME_PM_OPS(ltrf216a_runtime_suspend,
->> +                          ltrf216a_runtime_resume, NULL)
->> +};
-> Use pm_sleep_ptr() and corresponding top-level macros.
->
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

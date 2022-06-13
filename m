@@ -2,65 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B25548038
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 09:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE95F548064
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 09:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233785AbiFMHGS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jun 2022 03:06:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56190 "EHLO
+        id S238816AbiFMHTl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jun 2022 03:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238890AbiFMHGD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 03:06:03 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2472418E35;
-        Mon, 13 Jun 2022 00:06:02 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id i25so3342809qtq.0;
-        Mon, 13 Jun 2022 00:06:02 -0700 (PDT)
+        with ESMTP id S232635AbiFMHTi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 03:19:38 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6790C1AF0A;
+        Mon, 13 Jun 2022 00:19:37 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id a184so3442547qkg.5;
+        Mon, 13 Jun 2022 00:19:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :content-transfer-encoding:user-agent:mime-version;
-        bh=yv1ygT3I3cNrjiki9LWaI9usnmiwYkji5v0xZWzW+js=;
-        b=BeUQU7At5w8QXnQumv31sTGFNuryglGKvde6SoIxLoHOJ5t/WGMn1AXz3Eknm6h5AI
-         kNL4PEd0uMir3gUr1z6XGSGK1rVD3INLVDD+LZJQYc8d9+62lYvyaguTm78kNak/rSak
-         T3okK5/4ndABoNywbeazmrsJmzecZtZstWGrOW2kSrrZPWoL+4bF34YazBYZMgWZX4Tb
-         Bt9W4HzigonIOzfvWB+W869hPSh+dfOJ4Kquh0y9Dsp8gm71SNYKkMAx9kDUk/JCp9Zv
-         0D3K88QtgS+P4vXBJD6FFG3yQbdUH3SbzIbxx14i72EO5NKMHtU9uCEpi/JGyYCXjqA1
-         +OOA==
+        bh=GB+StqyTCKj2HdFboJFVKMCJDxe3eEc2lGFDv1Opjlc=;
+        b=X68PW8XVsxQon0pHG8Sz5eBs3OS4NqSoIFXXe/2G6Nvk/Ompk2l/aeSLop0xsWcJ5E
+         r+imyj6yRhl2ZBY5gXu6epRIquTOxi5XRXkt8chNvQ9i2e6cKF0ixckJovb4CewVtw3a
+         u7m+l85fbDcOwBkr5wl8/iEJyWb9SDi2BND4tt8QxC/8hYJ+QSWoTwQJlI3MpdiaP0TW
+         6yNqcyKDvDSBqqDXyxsrnQmuDJ/Wm3MGqXQnOht4OpdpbeKyiQUmXcJUjIazEsf3nvgc
+         erjP+lgqHr0T63epVk4DXJ3R/zBrJtNJPJZug+u1Hzggan083EJkQVJsbMGQXRTKtTRs
+         dKKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:content-transfer-encoding:user-agent:mime-version;
-        bh=yv1ygT3I3cNrjiki9LWaI9usnmiwYkji5v0xZWzW+js=;
-        b=Dz8BMJ9ynznAPn48ga4uHAwUUG5WHlJQbPxmLrmcUr7xvebZvw4YnFLmi/GeZW9YAX
-         1YQOaO71xpBT3N8biVC8jsw5Jwqn9XOTZwq7lGquh+7/zch72SQqmiNknjadGNUKip4k
-         0I0rWNH5+zVCu8Rfkbrj8Dv0j7wOlOic4Oyf9jYM0tCyPvj8H6cddNC3MxEprq0vmJyE
-         J/Lm8EuKwGldJ4sxsuqZkBHAizYc1aI1uyCO6AnwU1vseMu+Q0bDrItBL7e06lBgaYdN
-         mtfhbxbFfc01HG3fH/stnTS/lTLxiNLukqqiDFLYaKy6StDwn/0i6OvuWeWSAB3qV5FV
-         yeYQ==
-X-Gm-Message-State: AOAM531TECGMbNUwORQbAV0X948eq+EHpHlYwPUyTe7TMJaCUEFXNEYy
-        695lZOWE5aR9+YnlGL5ZnQ8=
-X-Google-Smtp-Source: ABdhPJx1ATSZFfuRWjaAT70y9WnEKuNuBqF1XmR5jBeGYYoq9SJ4nRAMyKQM1AWqPTp0l7HO6v7YKg==
-X-Received: by 2002:a05:622a:311:b0:2f3:ddb0:4ae6 with SMTP id q17-20020a05622a031100b002f3ddb04ae6mr46319206qtw.140.1655103961023;
-        Mon, 13 Jun 2022 00:06:01 -0700 (PDT)
+        bh=GB+StqyTCKj2HdFboJFVKMCJDxe3eEc2lGFDv1Opjlc=;
+        b=PK4LDgpo79IB0o/5HvmgIwgH0JSOB0VYbX53VVPM/5bQK0NSglzEa71UjG+Zi3PqLJ
+         xSOVNdGwtU2ZBJ7HNf8T6qQjYManvOqkgz4KRT+Vn2Dqzop1CE9dGlTwciK0+qZCRsNc
+         71R8D1wCagwokCfVjeVTyAKivxdJOcq3JBtveTLsld/NxUNFDp00j2MUSSOQFmBcZqJu
+         Xjr/wpW+PrOiuTQz4BULgsJTmnl3G/evzwk3HAsGTz4h3HJXP7P/HZPha/6wR8jUKQRo
+         kwRRvYBb5cYWVUCtRbhUYvb3lv5dZ13nTUABNLVmGEZ3jaq5lHqrdlXH2ThgvuHzuimR
+         1QIA==
+X-Gm-Message-State: AOAM533FiSPtoQltpZbHtymejfDb+x2LiWwDUxB2z6tX8HHMuBmWc+OP
+        kO3Gt0AV5spZLzR5Ivc6UrQ=
+X-Google-Smtp-Source: ABdhPJzkwQ8Lh4v8HmiyNYZX3CyfRLZco1LI0RmoLkuXuUs3JtU60bnSz/zcTWm7wmCt5lo+xJyqEQ==
+X-Received: by 2002:a37:4454:0:b0:69f:c339:e2dc with SMTP id r81-20020a374454000000b0069fc339e2dcmr36709053qka.771.1655104776463;
+        Mon, 13 Jun 2022 00:19:36 -0700 (PDT)
 Received: from p200300f6ef062c0090c03b551078f99d.dip0.t-ipconnect.de (p200300f6ef062c0090c03b551078f99d.dip0.t-ipconnect.de. [2003:f6:ef06:2c00:90c0:3b55:1078:f99d])
-        by smtp.gmail.com with ESMTPSA id d3-20020a05620a240300b006a6a1e4aec2sm6086602qkn.49.2022.06.13.00.05.53
+        by smtp.gmail.com with ESMTPSA id f8-20020a05620a408800b006a77e6df09asm4182070qko.24.2022.06.13.00.19.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 00:06:00 -0700 (PDT)
-Message-ID: <35e7c36c9ecbdc67698b413cf867cf19442ccfa9.camel@gmail.com>
-Subject: Re: [PATCH 22/34] iio: inkern: only return error codes in
- iio_channel_get_*() APIs
+        Mon, 13 Jun 2022 00:19:35 -0700 (PDT)
+Message-ID: <5e81f73b996de80445c2e905c44ebb18c63a739b.camel@gmail.com>
+Subject: Re: [PATCH 20/34] iio: inkern: only relase the device node when
+ done with it
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-imx@nxp.com, linux-renesas-soc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
         chrome-platform@lists.linux.dev,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-mediatek@lists.infradead.org,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
         linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        openbmc@lists.ozlabs.org, Cai Huoqing <cai.huoqing@linux.dev>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
         Benjamin Fair <benjaminfair@google.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -88,7 +94,6 @@ Cc:     linux-imx@nxp.com, linux-renesas-soc@vger.kernel.org,
         Lorenzo Bianconi <lorenzo@kernel.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
@@ -100,12 +105,15 @@ Cc:     linux-imx@nxp.com, linux-renesas-soc@vger.kernel.org,
         Fabio Estevam <festevam@gmail.com>,
         Olivier Moysan <olivier.moysan@foss.st.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Date:   Mon, 13 Jun 2022 09:06:49 +0200
-In-Reply-To: <20220611161701.46a68837@jic23-huawei>
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Mark Brown <broonie@kernel.org>
+Date:   Mon, 13 Jun 2022 09:20:26 +0200
+In-Reply-To: <20220611155902.2a5a7738@jic23-huawei>
 References: <20220610084545.547700-1-nuno.sa@analog.com>
-         <20220610084545.547700-23-nuno.sa@analog.com>
-         <20220611161701.46a68837@jic23-huawei>
+         <20220610084545.547700-21-nuno.sa@analog.com>
+         <CAHp75VcdwjTYDF2c-StsL7-pLKtV3vGxinX8+1nJydqB_WNXiA@mail.gmail.com>
+         <ef73aa5801ae1c8078e6a930f22feb6214038176.camel@gmail.com>
+         <20220611155902.2a5a7738@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.2 
@@ -120,92 +128,97 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2022-06-11 at 16:17 +0100, Jonathan Cameron wrote:
-> On Fri, 10 Jun 2022 10:45:33 +0200
-> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Sat, 2022-06-11 at 15:59 +0100, Jonathan Cameron wrote:
 >=20
-> > APIs like of_iio_channel_get_by_name() and of_iio_channel_get_all()
-> > were
-> > returning a mix of NULL and error pointers being NULL the way to
+> +Cc Mark Brown for a query on ordering in device tree based SPI
+> setup.
 >=20
-> pointers with NULL being the way to...
+> On Fri, 10 Jun 2022 22:08:41 +0200
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 >=20
-> > "notify" that we should do a "system" lookup for channels. This
-> > make
-> > it very confusing and prone to errors as commit dbbccf7c20bf
-> > ("iio: inkern: fix return value in
-> > devm_of_iio_channel_get_by_name()")
-> > proves. On top of this, patterns like 'if (channel !=3D NULL) return
-> > channel'
-> > were being used where channel could actually be an error code which
-> > makes the code hard to read.
+> > On Fri, 2022-06-10 at 16:56 +0200, Andy Shevchenko wrote:
+> > > On Fri, Jun 10, 2022 at 10:48 AM Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > wrote:=C2=A0=20
+> > > >=20
+> > > > 'of_node_put()' can potentially release the memory pointed to
+> > > > by
+> > > > 'iiospec.np' which would leave us with an invalid pointer (and
+> > > > we
+> > > > would
+> > > > still pass it in 'of_xlate()'). As such, we can only release
+> > > > the
+> > > > node
+> > > > after we are done with it.=C2=A0=20
+> > >=20
+> > > The question you should answer in the commit message is the
+> > > following:
+> > > "Can an OF node, attached to a struct device, be gone before the
+> > > device itself?" If it so, then patch is good, otherwise there is
+> > > no
+> > > point in this patch in the first place.
+> > > =C2=A0=20
 > >=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/inkern.c | 24 +++++++++++-------------
-> > =C2=A01 file changed, 11 insertions(+), 13 deletions(-)
+> > Yeah, I might be wrong but from a quick look... yes, I think the
+> > node
+> > can be gone before the device. Take a look on the spi or i2c
+> > of_notify
+> > handling and you can see that the nodes are get/put on the
+> > add/remove
+> > notifcation. Meaning that the node lifespan is not really attached
+> > to
+> > the device lifespan. If it was, I would expect to see of_node_put()
+> > on
+> > the device release() function...
+>=20
+> I had a look at spi_of_notify() and indeed via
+> spi_unregister_device()
+> the node is put just before device_del() so I agree that at first
+> glance
+> it seems like there may be a race there against the useage here.
+> Mark (+CC) out of interest why are the node gets before the
+> device_add()
+> in spi_add_device() called from of_register_spi_device() but the
+> matching
+> node puts before the device_del() in spi_unregister_device()?
+> Seems like inconsistent ordering...
+>=20
+> Which is not to say we shouldn't fix the IIO usage as this patch
+> does!
+>=20
+
+Just to add something that came to my attention. In the IIO case, it
+does not even matter if the parent device has the OF node lifetime
+"linked" to it (as it actually happens for platform devices). The
+reason is that iio_dev only has a weak reference to it's parent and (I
+think) the parent can actually go away while the iio_dev is still
+around (eg: someone has an open fd to the iio_dev cdev).
+
 > >=20
-> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> > index 87fd2a0d44f2..31d9c122199a 100644
-> > --- a/drivers/iio/inkern.c
-> > +++ b/drivers/iio/inkern.c
-> > @@ -214,7 +214,7 @@ static struct iio_channel
-> > *of_iio_channel_get(struct device_node *np, int index)
-> > =C2=A0struct iio_channel *of_iio_channel_get_by_name(struct device_node
-> > *np,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *name)
-> > =C2=A0{
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_channel *chan =3D=
- NULL;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_channel *chan;
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Walk up the tree of =
-devices looking for a matching iio
-> > channel */
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (np) {
-> > @@ -231,11 +231,11 @@ struct iio_channel
-> > *of_iio_channel_get_by_name(struct device_node *np,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0chan =3D of_iio_channel_get(np, index);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!IS_ERR(chan) || PTR_ERR(chan) =3D=3D -
-> > EPROBE_DEFER)
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
+> > Again, I might be wrong and I admit I was not sure about including
+> > this
+> > patch because it's a very unlikely scenario even though I think, in
+> > theory, a possible one.
 >=20
-> This original behaviour is 'interesting'. If we get a error like -
-> ENOMEM
-> we should return it rather than carry on.=C2=A0 Do we have enough
-> knowledge
-> of possible errors here to be more explicit on when we keep looking
-> up
-> the tree?=C2=A0 I think we can get -ENOENT from
-> of_parse_phandle_with_args()
+> The patch is currently valid even if it's not a 'real' bug.
+> Given we are doing a put on that device_node, it makes sense for that
+> to occur after the local use has finished - we shouldn't be relying
+> on
+> what happens to be the case for lifetimes today.
 >=20
-> That raises an interesting question on whether -ENODEV is the right
-> response
-> for the previously NULL case or is -ENOENT more consistent with other
-> of_ functions?=C2=A0 No device could be thought of as being the case that
-> needs
-> to defer (in hope it turns up later) whereas no entry means it will
-> never
-> succeed.
+> Now, I did wonder if any drivers actually use it in their xlate
+> callbacks.
+> One does for an error print, so this is potentially real (if very
+> unlikely!)
+>=20
+> This isn't a 'fix' I'd expect to rush in, or necessarily backport to
+> stable
+> but I think it's a valid fix.
+>=20
 
-From what I could see, of_parse_phandle_with_args() either returns=C2=A0
--EINVAL or -ENOENT. We also have the internal of_iio_channel_get()
-which can return -ENOMEM. So I guess we should only continue looking if
-we get -ENOENT?
-
-To be clear, do you still prefer to explicitly return -ENODEV in the
-previous NULL cases or should we honor the return code from=20
-of_parse_phandle_with_args() and just return chans (and thus ENOENT)?
+Should I drop the fixes tag?
 
 - Nuno S=C3=A1
+
+
+
+

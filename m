@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E3A549CBF
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 21:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34302549CCB
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jun 2022 21:04:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346266AbiFMTET (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 13 Jun 2022 15:04:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
+        id S1347473AbiFMTEe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 13 Jun 2022 15:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346091AbiFMTDK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 15:03:10 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927A02E9D8;
-        Mon, 13 Jun 2022 09:44:47 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id g7so7987645eda.3;
-        Mon, 13 Jun 2022 09:44:47 -0700 (PDT)
+        with ESMTP id S1349615AbiFMTED (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 13 Jun 2022 15:04:03 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F8B99820;
+        Mon, 13 Jun 2022 09:53:11 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id me5so12363069ejb.2;
+        Mon, 13 Jun 2022 09:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=eGdfXfwfV78gnjcf5UQqAMy9o19LId4Sm/qy2tCjefs=;
-        b=gsPB1T8UwmLJ1VZ61mRDNQvLBYrwjhjBqt/329BAIA+3SWHdyZWq5P/srAA8mQz2Vg
-         X4SH0kJTHXqlUv4UfZXuA+pPanPwPwqsFxEYsoMy7nsTwoIRHMMrF10tZOmWrS4I8COp
-         T4kJWRqrqX/dZXSg4lRzX8AWr9U7kmdfdEKzUboA62O9M9+GnPu8XWQIPOV8C0rjW9U/
-         PWbTD1kgEcV5StqWbzVRUbaaDZp3zN1/hdNJrmv6o8JhYAoK8F6Fr+fCvUB+xL9X+gsu
-         B4fgGZ0ru7YLIs/i4HhVtBoMPyGEt43GMTiu2gYKp/IbCJcVuP3zrAjjrGZDgcyOeET9
-         xuBA==
+        bh=m54fqmNxbrKP+pbsMMfsGU6Rr5ZVtnOFyMTR7r0Kuok=;
+        b=EghSNnVASL4mrlpgZsze3kfxuLWsXPsiFjrA8ZarthHQmlUhB068B1PVcjon3r3bDK
+         6HvmUgSyoSGU2771AEr59ago4joxDJFoj79RLdNGtrrxpRq0+I7tthn/Xop5R2Q/VeP6
+         cOIpeep/KWK6b2G86pYZIPPApVzV7GU6c3S6eIvNeJwWyRcNXhPYLUaOLOKM2VW2MrhS
+         ai7d8T4PyTQgDo0PRxh/nKHSdZQary8ZX851VlC5qOffmpX4JJ8UwRSwOVuGb60W3lqn
+         vGghMBgXKkr1HLRX8azbg76qQg+9TOz77yPwjaS60Yuh4soeUlWmGNQGMIuoR7WVypRO
+         +iMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eGdfXfwfV78gnjcf5UQqAMy9o19LId4Sm/qy2tCjefs=;
-        b=txPegyLmNPjX+yJo9QY1Spml6GdMmbSJyawVzUIkad7c99yWGzO9RUUB6z3guM+m3G
-         hrpy6nFcwhrT6J/JAvEtNhxPcn5+LJ6QpjqpwwUZhl6FR9Yk1NJWFC4bsILh5wIlm/6l
-         CrpCvW7TmXAdIJIW94lnlQz5nOAjE33R/1ibWi7U+FJj3pR/Cxm1mZjidTBtHjJAegsm
-         LAQKVPl8xd2P5CaEL3ANsyzQ2hHmNHrTo+XYVJ1jFJxMd77JvbeXyY+nN7EDhBrVQjAk
-         Ym7eiW1ILwj2ivUeOBaZSMfMtfe0nbu6ikrljiJCcOvmKsTEPjkKdj1AZRIVQkynlmVM
-         lCGA==
-X-Gm-Message-State: AOAM532Nnwp8E2qt/4tjGLxkyD7Xz1G7ae2Vk4N1nDwJwHlwGXpWamHb
-        xCDT6MTjndkrG0piWsJe7PyP7mWljDGlZ9oG/sY=
-X-Google-Smtp-Source: ABdhPJwG44xMdsA8yWvhv1Mlf7JhAM8ZMHZetdju+DGsqfsYqwGExdR6mkw15zu1TDUYOimhqvxQGFQqzsWwdcDfrV0=
-X-Received: by 2002:aa7:d481:0:b0:42d:d5fd:f963 with SMTP id
- b1-20020aa7d481000000b0042dd5fdf963mr664238edr.209.1655138685998; Mon, 13 Jun
- 2022 09:44:45 -0700 (PDT)
+        bh=m54fqmNxbrKP+pbsMMfsGU6Rr5ZVtnOFyMTR7r0Kuok=;
+        b=29evODtA2p8nz/K1f+/xEc0yzCF9fdp3MTy3EHUJphDQSNVxx+1WWjBiw15/6VGN8H
+         mpuVFDOTh/D0RH82kXyx4q1sR3wzx2MEiohSCRq9VZHOu5raGEf8QagJufLZUJiEbgp8
+         1sceCk2lQB29aa/N6kPVu/vcvomhmAY5qXpY7MGP5xK4cWTAw8NmSERb5+OtKr+Cxhxg
+         Jx4TwOIMxIf1+FuaQlQmXDR1rba7Hw9/0GvAlpY30xFp5xQM18QF6QsxFm4wtik4sDRj
+         dr3Zun/RXSvg3pcp1YGoHd/x+iJrNkipGPAijPk1+zWYDFfyARoagxOm/miaz2UV3KAe
+         +vtg==
+X-Gm-Message-State: AOAM531cI0hrrfqPsAiPDFbPPqrZEbj1ykOvKHCHqNU3cJU/tMPv6xtD
+        osrrDLYiJqdaLcg0+ysPMkcHsIxf602S7ubfrkk=
+X-Google-Smtp-Source: ABdhPJxXdFA8yb3sYRLBzX8f7BYKMkJiPdDsY59o0s2SJp2VixfRBxS6FNX10msWO0RjSMiqaHZxU1CBZCU7x+SLiEE=
+X-Received: by 2002:a17:906:1193:b0:70d:cf39:a4db with SMTP id
+ n19-20020a170906119300b0070dcf39a4dbmr674806eja.44.1655139189796; Mon, 13 Jun
+ 2022 09:53:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220613120534.36991-1-andrea.merello@iit.it> <20220613120534.36991-9-andrea.merello@iit.it>
-In-Reply-To: <20220613120534.36991-9-andrea.merello@iit.it>
+References: <20220613120534.36991-1-andrea.merello@iit.it> <20220613120534.36991-13-andrea.merello@iit.it>
+In-Reply-To: <20220613120534.36991-13-andrea.merello@iit.it>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 13 Jun 2022 18:44:09 +0200
-Message-ID: <CAHp75Vdh8kAH6540xCwzFh5uf=QMVTHC42a8pOgvkpObzjfD+w@mail.gmail.com>
-Subject: Re: [v6 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
+Date:   Mon, 13 Jun 2022 18:52:33 +0200
+Message-ID: <CAHp75Ve4ZjOsi_MYru_fDB+dsGie6RxXVSuYPQmW_YHLjgA10A@mail.gmail.com>
+Subject: Re: [v6 12/14] iio: imu: add BNO055 serdev driver
 To:     Andrea Merello <andrea.merello@iit.it>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
@@ -77,135 +77,76 @@ On Mon, Jun 13, 2022 at 2:05 PM <andrea.merello@iit.it> wrote:
 >
 > From: Andrea Merello <andrea.merello@iit.it>
 >
-> Add the core driver for the BNO055 IMU from Bosch. This IMU can be
-> connected via both serial and I2C busses; separate patches will add support
-> for them.
->
-> The driver supports "AMG" (Accelerometer, Magnetometer, Gyroscope) mode,
-> that provides raw data from the said internal sensors, and a couple of
-> "fusion" modes (i.e. the IMU also does calculations in order to provide
-> euler angles, quaternions, linear acceleration and gravity measurements).
->
-> In fusion modes the AMG data is still available (with some calibration
-> refinements done by the IMU), but certain settings such as low pass filters
-> cut-off frequency and sensors' ranges are fixed, while in AMG mode they can
-> be customized; this is why AMG mode can still be interesting.
+> Add a serdev driver for communicating to a BNO055 IMU via serial bus, and
+> enable the BNO055 core driver to work in this scenario.
 
 ...
 
-> +config BOSCH_BNO055_IIO
+> + * This driver is besed on
 
-Does it need _IIO suffix? Any name collision?
+based
 
-...
-
-> +static int bno055_acc_lpf_vals[] = {
-> +       7, 810000, 15, 630000, 31, 250000, 62, 500000,
-> +       125, 0, 250, 0, 500, 0, 1000, 0
-
-+ Comma?
-
-> +};
+> + *     Plantower PMS7003 particulate matter sensor driver
+> + *     Which is
+> + *     Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
 
 ...
 
-> +                                /* G:   2,    4,    8,    16 */
+> +/*
+> + * Read operation overhead:
+> + *  4 bytes req + 2byte resp hdr.
+> + *  6 bytes = 60 bit (considering 1start + 1stop bits).
+> + *  60/115200 = ~520uS + about 2500mS dealay -> ~3mS
 
-Indentation of this comment is a bit off.
+delay
 
-> +static int bno055_acc_range_vals[] = {1962, 3924, 7848, 15696};
+> + * In 3mS we could read back about 34 bytes that means 17 samples, this means
+> + * that in case of scattered read in which the gap is 17 samples or less it is
 
-Perhaps split this to 4 lines and put the comment on top of the third line?
+reads
 
-...
-
-> +static int bno055_gyr_scale_vals[] = {
-> +       125, 1877467, 250, 1877467, 500, 1877467,
-> +       1000, 1877467, 2000, 1877467
-
-+ Comma?
-
-> +};
-
-...
-
-> +#ifdef CONFIG_DEBUG_FS
-> +       struct dentry *debugfs;
-> +#endif
+> + * still convenient to go for a burst.
+> + * We have to take into account also IMU response time - IMU seems to be often
+> + * reasonably quick to respond, but sometimes it seems to be in some "critical
+> + * section" in which it delays handling of serial protocol. Because of this we
+> + * round-up to 22, which is the max number of samples, always bursting indeed.
+> + */
 
 ...
 
-> +                       /*
-> +                        * IMU reports sensor offests; IIO wants correction
+> +/*
+> + * Sends a read or write command.
 
-offsets
-
-> +                        * offsets, thus we need the 'minus' here.
-> +                        */
+Send
 
 ...
 
-> +       if (kstrtobool(buf, &en))
-> +               return -EINVAL;
+> +/*
+> + * Handler for received data; this is called from the reicever callback whenever
 
-Why shadow an actual error code(s)?
+receiver
 
-...
+> + * it got some packet from the serial bus. The status tell us whether the
 
-> +       ret = kstrtoul(buf, 10, &val);
-> +       if (ret)
-> +               return ret;
+tells
 
-Here it's done properly (see just above).
+> + * packet is valid (i.e. header ok && received payload len consistent wrt the
+> + * header). It's now our responsability to check whether this is what we
 
-...
+responsibility
 
-> +static void bno055_debugfs_init(struct iio_dev *iio_dev)
-> +{
-> +       struct bno055_priv *priv = iio_priv(iio_dev);
-> +
-> +       priv->debugfs = debugfs_create_file("firmware_version", 0400,
-> +                                           iio_get_debugfs_dentry(iio_dev),
-> +                                           priv, &bno055_fw_version_ops);
-
-> +       devm_add_action_or_reset(priv->dev, bno055_debugfs_remove, priv->debugfs);
-
-Shouldn't we report the potential error here? It's not directly
-related to debugfs, but something which is not directly related.
-
-> +}
+> + * expected, of whether we got some unexpected, yet valid, packet.
+> + */
 
 ...
 
-> +static IIO_DEVICE_ATTR(fusion_enable, 0644,
-> +                      bno055_fusion_enable_show,
-> +                      bno055_fusion_enable_store, 0);
+> +               /*
+> +                * New packet.
+> +                * Check for its 1st byte, that identifies the pkt type.
 
-IIO_DEVICE_ATTR_RW()
+byte that
 
-> +static IIO_DEVICE_ATTR(in_magn_calibration_fast_enable, 0644,
-> +                      bno055_fmc_enable_show,
-> +                      bno055_fmc_enable_store, 0);
-> +
-> +static IIO_DEVICE_ATTR(in_accel_range_raw, 0644,
-> +                      bno055_in_accel_range_show,
-> +                      bno055_in_accel_range_store, 0);
-
-Ditto for above.
-
-...
-
-> +       /*
-> +        * All chans are made up 1 16-bit sample, except for quaternion that is
-
-channels
-
-> +        * made up 4 16-bit values.
-> +        * For us the quaternion CH is just like 4 regular CHs.
-> +        * If our read starts past the quaternion make sure to adjust the
-> +        * starting offset; if the quaternion is contained in our scan then make
-> +        * sure to adjust the read len.
-> +        */
+> +                */
 
 -- 
 With Best Regards,
